@@ -1558,7 +1558,8 @@ class LookingGlass extends St.BoxLayout {
     }
 
     _queueResize() {
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+        const laters = global.compositor.get_laters();
+        laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
             this._resize();
             return GLib.SOURCE_REMOVE;
         });

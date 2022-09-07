@@ -860,7 +860,8 @@ class WorkspacesDisplay extends St.Widget {
 
     _onDestroy() {
         if (this._parentSetLater) {
-            Meta.later_remove(this._parentSetLater);
+            const laters = global.compositor.get_laters();
+            laters.remove(this._parentSetLater);
             this._parentSetLater = 0;
         }
     }

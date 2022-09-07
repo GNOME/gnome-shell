@@ -814,7 +814,8 @@ function _runBeforeRedrawQueue() {
 function _queueBeforeRedraw(workId) {
     _beforeRedrawQueue.push(workId);
     if (_beforeRedrawQueue.length == 1) {
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+        const laters = global.compositor.get_laters();
+        laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
             _runBeforeRedrawQueue();
             return false;
         });

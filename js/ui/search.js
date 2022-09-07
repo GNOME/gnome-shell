@@ -470,7 +470,8 @@ class GridSearchResults extends SearchResultsBase {
 
     _onDestroy() {
         if (this._updateSearchLater) {
-            Meta.later_remove(this._updateSearchLater);
+            const laters = global.compositor.get_laters();
+            laters.remove(this._updateSearchLater);
             delete this._updateSearchLater;
         }
 
@@ -481,7 +482,8 @@ class GridSearchResults extends SearchResultsBase {
         if (this._notifyAllocationId)
             this.disconnect(this._notifyAllocationId);
         if (this._updateSearchLater) {
-            Meta.later_remove(this._updateSearchLater);
+            const laters = global.compositor.get_laters();
+            laters.remove(this._updateSearchLater);
             delete this._updateSearchLater;
         }
 
@@ -490,7 +492,8 @@ class GridSearchResults extends SearchResultsBase {
         this._notifyAllocationId = this.connect('notify::allocation', () => {
             if (this._updateSearchLater)
                 return;
-            this._updateSearchLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            const laters = global.compositor.get_laters();
+            this._updateSearchLater = laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
                 delete this._updateSearchLater;
                 super.updateSearch(...args);
                 return GLib.SOURCE_REMOVE;

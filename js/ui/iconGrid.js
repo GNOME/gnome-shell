@@ -677,7 +677,8 @@ var IconGridLayout = GObject.registerClass({
 
     _onDestroy() {
         if (this._updateIconSizesLaterId >= 0) {
-            Meta.later_remove(this._updateIconSizesLaterId);
+            const laters = global.compositor.get_laters();
+            laters.remove(this._updateIconSizesLaterId);
             this._updateIconSizesLaterId = 0;
         }
     }
@@ -962,8 +963,9 @@ var IconGridLayout = GObject.registerClass({
         this._pageSizeChanged = true;
 
         if (this._updateIconSizesLaterId === 0) {
+            const laters = global.compositor.get_laters();
             this._updateIconSizesLaterId =
-                Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
                     const iconSize = this._findBestIconSize();
 
                     if (this._iconSize !== iconSize) {

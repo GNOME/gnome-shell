@@ -678,7 +678,8 @@ var ScreenShield = class extends Signals.EventEmitter {
         let wasLocked = global.get_runtime_state('b', LOCKED_STATE_STR);
         if (wasLocked === null)
             return;
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+        const laters = global.compositor.get_laters();
+        laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
             this.lock(false);
             return GLib.SOURCE_REMOVE;
         });

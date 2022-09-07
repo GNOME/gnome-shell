@@ -626,7 +626,8 @@ var QuickSettingsMenu = class extends PopupMenu.PopupMenu {
 
         // Pick up additional spacing from any intermediate actors
         const updateOffset = () => {
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            const laters = global.compositor.get_laters();
+            laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
                 const offset = this._grid.apply_relative_transform_to_point(
                     this._boxPointer, new Graphene.Point3D());
                 yConstraint.offset = offset.y;

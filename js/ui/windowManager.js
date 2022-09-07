@@ -327,8 +327,11 @@ var WorkspaceTracker = class {
     }
 
     _queueCheckWorkspaces() {
-        if (this._checkWorkspacesId == 0)
-            this._checkWorkspacesId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, this._checkWorkspaces.bind(this));
+        if (this._checkWorkspacesId === 0) {
+            const laters = global.compositor.get_laters();
+            this._checkWorkspacesId =
+                laters.add(Meta.LaterType.BEFORE_REDRAW, this._checkWorkspaces.bind(this));
+        }
     }
 
     _nWorkspacesChanged() {

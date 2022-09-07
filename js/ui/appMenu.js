@@ -249,7 +249,8 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
         if (this._updateWindowsLaterId)
             return;
 
-        this._updateWindowsLaterId = Meta.later_add(
+        const laters = global.compositor.get_laters();
+        this._updateWindowsLaterId = laters.add(
             Meta.LaterType.BEFORE_REDRAW, () => {
                 this._updateWindowsSection();
                 return GLib.SOURCE_REMOVE;
@@ -257,8 +258,10 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
     }
 
     _updateWindowsSection() {
-        if (this._updateWindowsLaterId)
-            Meta.later_remove(this._updateWindowsLaterId);
+        if (this._updateWindowsLaterId) {
+            const laters = global.compositor.get_laters();
+            laters.remove(this._updateWindowsLaterId);
+        }
         this._updateWindowsLaterId = 0;
 
         this._windowSection.removeAll();

@@ -95,7 +95,8 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
             vertical: true,
         });
         box.connect('notify::height', () => {
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            const laters = global.compositor.get_laters();
+            laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
                 box.width = box.height;
                 return GLib.SOURCE_REMOVE;
             });

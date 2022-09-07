@@ -191,7 +191,8 @@ var UserList = GObject.registerClass({
 
         let focusSet = this.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         if (!focusSet) {
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            const laters = global.compositor.get_laters();
+            laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._moveFocusToItems();
                 return false;
             });

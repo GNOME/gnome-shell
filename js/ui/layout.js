@@ -982,8 +982,9 @@ var LayoutManager = GObject.registerClass({
 
     _queueUpdateRegions() {
         if (!this._updateRegionIdle) {
-            this._updateRegionIdle = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                                                    this._updateRegions.bind(this));
+            const laters = global.compositor.get_laters();
+            this._updateRegionIdle = laters.add(
+                Meta.LaterType.BEFORE_REDRAW, this._updateRegions.bind(this));
         }
     }
 
@@ -1006,7 +1007,8 @@ var LayoutManager = GObject.registerClass({
 
     _updateRegions() {
         if (this._updateRegionIdle) {
-            Meta.later_remove(this._updateRegionIdle);
+            const laters = global.compositor.get_laters();
+            laters.remove(this._updateRegionIdle);
             delete this._updateRegionIdle;
         }
 

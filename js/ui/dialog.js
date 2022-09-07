@@ -188,7 +188,8 @@ var MessageDialogContent = GObject.registerClass({
 
     _onDestroy() {
         if (this._updateTitleStyleLater) {
-            Meta.later_remove(this._updateTitleStyleLater);
+            const laters = global.compositor.get_laters();
+            laters.remove(this._updateTitleStyleLater);
             delete this._updateTitleStyleLater;
         }
     }
@@ -212,7 +213,8 @@ var MessageDialogContent = GObject.registerClass({
             if (this._updateTitleStyleLater)
                 return;
 
-            this._updateTitleStyleLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            const laters = global.compositor.get_laters();
+            this._updateTitleStyleLater = laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._updateTitleStyleLater = 0;
                 this._title.add_style_class_name('lightweight');
                 return GLib.SOURCE_REMOVE;

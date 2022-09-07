@@ -527,7 +527,8 @@ var WindowPreview = GObject.registerClass({
         this._delegate = null;
 
         if (this._longPressLater) {
-            Meta.later_remove(this._longPressLater);
+            const laters = global.compositor.get_laters();
+            laters.remove(this._longPressLater);
             delete this._longPressLater;
         }
 
@@ -615,7 +616,8 @@ var WindowPreview = GObject.registerClass({
 
             // A click cancels a long-press before any click handler is
             // run - make sure to not start a drag in that case
-            this._longPressLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            const laters = global.compositor.get_laters();
+            this._longPressLater = laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
                 delete this._longPressLater;
                 if (this._selected) {
                     this._selected = false;

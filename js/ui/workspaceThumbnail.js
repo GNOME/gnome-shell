@@ -1187,13 +1187,16 @@ var ThumbnailsBox = GObject.registerClass({
         if (this._updateStateId > 0)
             return;
 
-        this._updateStateId = Meta.later_add(
+        const laters = global.compositor.get_laters();
+        this._updateStateId = laters.add(
             Meta.LaterType.BEFORE_REDRAW, () => this._updateStates());
     }
 
     _unqueueUpdateStates() {
-        if (this._updateStateId)
-            Meta.later_remove(this._updateStateId);
+        if (this._updateStateId) {
+            const laters = global.compositor.get_laters();
+            laters.remove(this._updateStateId);
+        }
         this._updateStateId = 0;
     }
 
@@ -1329,7 +1332,8 @@ var ThumbnailsBox = GObject.registerClass({
             this._dropPlaceholder.allocate_preferred_size(
                 ...this._dropPlaceholder.get_position());
 
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            const laters = global.compositor.get_laters();
+            laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._dropPlaceholder.hide();
             });
         }
@@ -1359,7 +1363,8 @@ var ThumbnailsBox = GObject.registerClass({
 
                 this._dropPlaceholder.allocate(childBox);
 
-                Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                const laters = global.compositor.get_laters();
+                laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
                     this._dropPlaceholder.show();
                 });
                 x += placeholderWidth + spacing;

@@ -107,7 +107,8 @@ class ScreenshotItem extends QuickSettingsItem {
 
         this.connect('clicked', () => {
             const topMenu = Main.panel.statusArea.quickSettings.menu;
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            const laters = global.compositor.get_laters();
+            laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
                 Main.screenshotUI.open().catch(logError);
                 return GLib.SOURCE_REMOVE;
             });
