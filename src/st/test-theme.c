@@ -570,7 +570,7 @@ main (int argc, char **argv)
   theme = st_theme_new (file, NULL, NULL);
   g_object_unref (file);
 
-  backend = meta_get_backend ();
+  backend = meta_context_get_backend (context);
   stage = meta_backend_get_stage (backend);
   theme_context = st_theme_context_get_for_stage (CLUTTER_STAGE (stage));
   st_theme_context_set_theme (theme_context, theme);
