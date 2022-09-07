@@ -329,7 +329,7 @@ var LayoutManager = GObject.registerClass({
         display.connect('in-fullscreen-changed',
                         this._updateFullscreen.bind(this));
 
-        let monitorManager = Meta.MonitorManager.get();
+        const monitorManager = global.backend.get_monitor_manager();
         monitorManager.connect('monitors-changed',
                                this._monitorsChanged.bind(this));
         this._monitorsChanged();

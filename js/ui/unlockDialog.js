@@ -3,7 +3,7 @@
 
 const {
     AccountsService, Atk, Clutter, Gdm, Gio,
-    GnomeDesktop, GLib, GObject, Meta, Shell, St,
+    GnomeDesktop, GLib, GObject, Shell, St,
 } = imports.gi;
 
 const Background = imports.ui.background;
@@ -337,7 +337,7 @@ class UnlockDialogClock extends St.BoxLayout {
         this._seat.connectObject('notify::touch-mode',
             this._updateHint.bind(this), this);
 
-        this._monitorManager = Meta.MonitorManager.get();
+        this._monitorManager = global.backend.get_monitor_manager();
         this._monitorManager.connectObject('power-save-mode-changed',
             () => (this._hint.opacity = 0), this);
 

@@ -1,5 +1,5 @@
 /* exported getDefault */
-const { AccountsService, Clutter, Gdm, Gio, GLib, GObject, Meta } = imports.gi;
+const {AccountsService, Clutter, Gdm, Gio, GLib, GObject} = imports.gi;
 
 const GnomeSession = imports.misc.gnomeSession;
 const LoginManager = imports.misc.loginManager;
@@ -149,7 +149,7 @@ const SystemActions = GObject.registerClass({
 
         this._session = new GnomeSession.SessionManager();
         this._loginManager = LoginManager.getLoginManager();
-        this._monitorManager = Meta.MonitorManager.get();
+        this._monitorManager = global.backend.get_monitor_manager();
 
         this._userManager = AccountsService.UserManager.get_default();
 

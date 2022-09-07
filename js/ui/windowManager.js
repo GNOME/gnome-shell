@@ -56,7 +56,8 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
 
         this._wm = wm;
 
-        this._countDown = Meta.MonitorManager.get_display_configuration_timeout();
+        const monitorManager = global.backend.get_monitor_manager();
+        this._countDown = monitorManager.get_display_configuration_timeout();
 
         // Translators: This string should be shorter than 30 characters
         let title = _('Keep these display settings?');

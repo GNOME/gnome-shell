@@ -127,7 +127,7 @@ var GnomeShell = class {
 
         let monitorIndex = -1;
         if (connector) {
-            let monitorManager = Meta.MonitorManager.get();
+            const monitorManager = global.backend.get_monitor_manager();
             monitorIndex = monitorManager.get_monitor_for_connector(connector);
         }
 

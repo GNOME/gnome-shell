@@ -47,7 +47,7 @@ class OsdMonitorLabel extends St.Widget {
 
 var OsdMonitorLabeler = class {
     constructor() {
-        this._monitorManager = Meta.MonitorManager.get();
+        this._monitorManager = global.backend.get_monitor_manager();
         this._client = null;
         this._clientWatchId = 0;
         this._osdLabels = [];

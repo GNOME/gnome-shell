@@ -55,14 +55,14 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     show(backward, binding, mask) {
-        if (!Meta.MonitorManager.get().can_switch_config())
+        if (!global.backend.get_monitor_manager().can_switch_config())
             return false;
 
         return super.show(backward, binding, mask);
     }
 
     _initialSelection() {
-        let currentConfig = Meta.MonitorManager.get().get_switch_config();
+        let currentConfig = global.backend.get_monitor_manager().get_switch_config();
         let selectConfig = (currentConfig + 1) % this._items.length;
         this._select(selectConfig);
     }

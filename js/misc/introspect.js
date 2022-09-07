@@ -54,7 +54,7 @@ var IntrospectService = class {
             this._syncAnimationsEnabled.bind(this));
         this._syncAnimationsEnabled();
 
-        const monitorManager = Meta.MonitorManager.get();
+        const monitorManager = global.backend.get_monitor_manager();
         monitorManager.connect('monitors-changed',
             this._syncScreenSize.bind(this));
         this._syncScreenSize();
