@@ -584,8 +584,10 @@ export const UnlockDialog = GObject.registerClass({
         this._lockdownSettings.connect('changed::disable-user-switching',
             this._updateUserSwitchVisibility.bind(this));
 
-        this._user.connectObject('notify::is-loaded',
-            this._updateUserSwitchVisibility.bind(this), this);
+        this._user.connectObject(
+            'notify::is-loaded', () => this._updateUserSwitchVisibility(),
+            'notify::has-multiple-users', () => this._updateUserSwitchVisibility(),
+            this);
 
         this._updateUserSwitchVisibility();
 
@@ -849,6 +851,7 @@ export const UnlockDialog = GObject.registerClass({
 
     _updateUserSwitchVisibility() {
         this._otherUserButton.visible = this._userManager.can_switch() &&
+            this._userManager.has_multiple_users &&
             this._screenSaverSettings.get_boolean('user-switch-enabled') &&
             !this._lockdownSettings.get_boolean('disable-user-switching');
     }
