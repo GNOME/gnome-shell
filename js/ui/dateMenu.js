@@ -284,13 +284,12 @@ class EventsSection extends St.Button {
         Main.overview.hide();
         Main.panel.closeCalendar();
 
-        let appInfo = this._calendarApp;
-        if (appInfo.get_id() === 'org.gnome.Evolution.desktop') {
-            const app = this._appSys.lookup_app('evolution-calendar.desktop');
-            if (app)
-                appInfo = app.app_info;
-        }
-        appInfo.launch([], global.create_app_launch_context(0, -1));
+        const appInfo = this._calendarApp;
+        const context = global.create_app_launch_context(0, -1);
+        if (appInfo.get_id() === 'org.gnome.Evolution.desktop')
+            appInfo.launch_action('calendar', context);
+        else
+            appInfo.launch([], context);
     }
 
     _appInstalledChanged() {

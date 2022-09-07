@@ -56,7 +56,6 @@ src/*.gir
 src/*.typelib
 src/*-enum-types.[ch]
 src/*-marshal.[ch]
-src/calendar-server/evolution-calendar.desktop
 src/calendar-server/org.gnome.Shell.CalendarServer.service
 src/gnome-shell
 src/gnome-shell-calendar-server

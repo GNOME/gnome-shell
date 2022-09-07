@@ -26,12 +26,3 @@ configure_file(
   configuration: service_data,
   install_dir: servicedir
 )
-
-i18n.merge_file(
-  input: 'evolution-calendar.desktop.in',
-  output: 'evolution-calendar.desktop',
-  po_dir: po_dir,
-  install: true,
-  install_dir: desktopdir,
-  type: 'desktop'
-)
