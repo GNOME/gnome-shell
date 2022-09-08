@@ -55,6 +55,9 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
 
     _updateWorkAreaBox() {
         const monitor = Main.layoutManager.primaryMonitor;
+        if (!monitor)
+            return;
+
         const workArea = Main.layoutManager.getWorkAreaForMonitor(monitor.index);
         const startX = workArea.x - monitor.x;
         const startY = workArea.y - monitor.y;
