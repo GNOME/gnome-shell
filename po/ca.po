@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-08-15 11:56+0000\n"
-"PO-Revision-Date: 2022-08-18 19:05+0000\n"
+"PO-Revision-Date: 2022-09-09 19:05+0000\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -2076,6 +2076,54 @@ msgstr "Connecta a %s"
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Punt d'accés %s"
+
+#: ../js/ui/status/network.js:1467 ../js/ui/status/network.js:1483
+msgid "VPN"
+msgstr "VPN"
+
+#: ../js/ui/status/network.js:1468
+msgid "VPN Settings"
+msgstr "Paràmetres de la VPN"
+
+#: ../js/ui/status/network.js:1710
+msgid "Wi–Fi"
+msgstr "Wi-Fi"
+
+#: ../js/ui/status/network.js:1712
+msgid "All Networks"
+msgstr "Totes les xarxes"
+
+#: ../js/ui/status/network.js:1809
+msgid "Wired Connections"
+msgstr "Connexions per cable"
+
+#: ../js/ui/status/network.js:1810
+msgid "Wired Settings"
+msgstr "Paràmetres del cable"
+
+#: ../js/ui/status/network.js:1824
+msgid "Bluetooth Tethers"
+msgstr "Bluetooth Tethers"
+
+#: ../js/ui/status/network.js:1825
+msgid "Bluetooth Settings"
+msgstr "Paràmetres del Bluetooth"
+
+#: ../js/ui/status/network.js:1839
+msgid "Mobile Connections"
+msgstr "Connexions mòbils"
+
+#: ../js/ui/status/network.js:1841
+msgid "Mobile Broadband Settings"
+msgstr "Paràmetres de la banda ampla mòbil"
+
+#: ../js/ui/status/network.js:1953
+msgid "Connection failed"
+msgstr "Ha fallat la connexió"
+
+#: ../js/ui/status/network.js:1954
+msgid "Activation of network connection failed"
+msgstr "Ha fallat l'activació de la connexió de xarxa"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
