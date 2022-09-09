@@ -365,6 +365,7 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
             reactive: true,
             x_expand: true,
             y_expand: false,
+            height: 0,
             constraints,
         });
         this.actor._delegate = this;
@@ -445,17 +446,19 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
         this.actor.show();
         this.isOpen = true;
 
+        const previousHeight = this.actor.height;
         this.actor.height = -1;
         const [targetHeight] = this.actor.get_preferred_height(-1);
+        this.actor.height = previousHeight;
+        const distance = Math.abs(targetHeight - previousHeight);
 
         const duration = animate !== PopupAnimation.NONE
             ? POPUP_ANIMATION_TIME / 2
             : 0;
 
-        this.actor.height = 0;
         this.box.opacity = 0;
         this.actor.ease({
-            duration,
+            duration: duration * (distance / targetHeight),
             height: targetHeight,
             onComplete: () => {
                 this.box.ease({
@@ -472,12 +475,13 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
         if (!this.isOpen)
             return;
 
+        const {opacity} = this.box;
         const duration = animate !== PopupAnimation.NONE
             ? POPUP_ANIMATION_TIME / 2
             : 0;
 
         this.box.ease({
-            duration,
+            duration: duration * (opacity / 255),
             opacity: 0,
             onComplete: () => {
                 this.actor.ease({
