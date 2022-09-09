@@ -169,6 +169,43 @@ stale_app_remove_func (gpointer key,
   return app_is_stale (value);
 }
 
+static void
+collect_stale_windows (gpointer key,
+                       gpointer value,
+                       gpointer user_data)
+{
+  ShellApp *app = key;
+  GDesktopAppInfo *info;
+  GPtrArray *windows = user_data;
+
+  info = shell_app_cache_get_info (shell_app_cache_get_default (),
+                                   shell_app_get_id (app));
+
+  /* No info either means that the app became stale, or that it is
+   * window-backed. Re-tracking the app's windows allows us to reflect
+   * changes in either direction, i.e. from stale app to window-backed,
+   * or from window-backed to app-backed (if the app was launched right
+   * between installing the app and updating the app cache).
+   */
+  if (info == NULL)
+    {
+      GSList *l;
+
+      for (l = shell_app_get_windows (app); l; l = l->next)
+        g_ptr_array_add (windows, l->data);
+    }
+}
+
+static void
+retrack_window (gpointer data,
+                gpointer user_data)
+{
+  GObject *window = data;
+
+  /* Make ShellWindowTracker retrack the window */
+  g_object_notify (window, "wm-class");
+}
+
 static gboolean
 rescan_icon_theme_cb (gpointer user_data)
 {
@@ -214,10 +251,16 @@ static void
 installed_changed (ShellAppCache  *cache,
                    ShellAppSystem *self)
 {
+  GPtrArray *windows = g_ptr_array_new ();
+
   rescan_icon_theme (self);
   scan_startup_wm_class_to_id (self);
 
   g_hash_table_foreach_remove (self->priv->id_to_app, stale_app_remove_func, NULL);
+  g_hash_table_foreach (self->priv->running_apps, collect_stale_windows, windows);
+
+  g_ptr_array_foreach (windows, retrack_window, NULL);
+  g_ptr_array_free (windows, TRUE);
 
   g_signal_emit (self, signals[INSTALLED_CHANGED], 0, NULL);
 }
