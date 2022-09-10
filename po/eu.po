@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-15 11:56+0000\n"
-"PO-Revision-Date: 2022-08-16 12:15+0100\n"
+"POT-Creation-Date: 2022-08-18 15:25+0000\n"
+"PO-Revision-Date: 2022-09-10 12:15+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -709,7 +709,7 @@ msgstr "%B %-d, %H∶%M"
 #: js/misc/util.js:271
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
-msgstr "%B %d %Y, %H∶%M"
+msgstr "%Y %B %-d, %H∶%M"
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
@@ -746,7 +746,7 @@ msgstr "%B %-d, %l∶%M %p"
 #: js/misc/util.js:300
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%B %-d %Y, %l∶%M %p"
+msgstr "%Y %B %-d, %l∶%M %p"
 
 #: js/portalHelper/main.js:55
 msgid "Hotspot Login"
@@ -1116,7 +1116,7 @@ msgstr "Atrakagarria"
 #.
 #: js/ui/dateMenu.js:83
 msgid "%B %-d %Y"
-msgstr "%B %-d %Y"
+msgstr "%Y %B %-d"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
@@ -1124,7 +1124,7 @@ msgstr "%B %-d %Y"
 #.
 #: js/ui/dateMenu.js:90
 msgid "%A %B %e %Y"
-msgstr "%A, %Y(e)ko %Bren %e(a)"
+msgstr "%A, %Y %B %e"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/dateMenu.js:156
@@ -1136,7 +1136,7 @@ msgstr "%B %-d"
 #: js/ui/dateMenu.js:159
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
-msgstr "%B %-d %Y"
+msgstr "%Y %B %-d"
 
 #: js/ui/dateMenu.js:165
 msgid "Today"
@@ -1692,7 +1692,7 @@ msgstr "Pantaila-bideoak"
 #: js/ui/screenshot.js:1845
 #, no-c-format
 msgid "Screencast from %d %t.webm"
-msgstr "Pantaila-bideoa hemendik: %d %t.webm"
+msgstr "%d %t.webm"
 
 #. Translators: notification source name.
 #: js/ui/screenshot.js:1911 js/ui/screenshot.js:2123
@@ -1720,7 +1720,7 @@ msgstr "Erakutsi Fitxategiak aplikazioan"
 #: js/ui/screenshot.js:2083
 #, javascript-format
 msgid "Screenshot from %s"
-msgstr "Pantaila-argazkia hemendik: %s"
+msgstr "%s"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2129
