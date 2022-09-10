@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-03 12:39+0000\n"
-"PO-Revision-Date: 2022-08-03 17:55+0300\n"
+"POT-Creation-Date: 2022-09-09 15:03+0000\n"
+"PO-Revision-Date: 2022-09-10 10:46+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -61,7 +61,7 @@ msgid "Activate favorite application 9"
 msgstr "Стартиране на любима програма 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2070
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
 msgid "Screenshots"
 msgstr "Снимки на екрана"
 
@@ -532,7 +532,7 @@ msgstr "Към уеб страницата на разширението"
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
-#: js/ui/status/network.js:960 subprojects/extensions-app/js/main.js:173
+#: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "Отказване"
 
@@ -564,23 +564,23 @@ msgstr "(напр. потребител или %s)"
 msgid "Username"
 msgstr "Потребител"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1258
 msgid "Login Window"
 msgstr "Екран за идентификация"
 
-#: js/gdm/util.js:434
+#: js/gdm/util.js:431
 msgid "Authentication error"
 msgstr "Грешка при удостоверяване"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:606
+#: js/gdm/util.js:603
 msgid "(or swipe finger across reader)"
 msgstr "(или прекарайте пръст през сензора за отпечатъци)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:611
+#: js/gdm/util.js:608
 msgid "(or place finger on reader)"
 msgstr "(или поставете пръст на сензора за отпечатъци)"
 
@@ -838,6 +838,10 @@ msgstr "Отказване на достъп"
 msgid "Grant Access"
 msgstr "Позволяване на достъп"
 
+#: js/ui/appDisplay.js:1728
+msgid "Unnamed Folder"
+msgstr "Папка без име"
+
 #: js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been pinned to the dash."
@@ -885,7 +889,7 @@ msgstr "Стартиране с отделната графична карта"
 msgid "Select Audio Device"
 msgstr "Избор на устройство за аудио"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:103
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
 msgid "Sound Settings"
 msgstr "Настройки на звука"
 
@@ -897,7 +901,7 @@ msgstr "Слушалки"
 msgid "Headset"
 msgstr "Малки слушалки"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:359
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
 msgid "Microphone"
 msgstr "Микрофон"
 
@@ -972,7 +976,7 @@ msgstr "С"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:402
+#: js/ui/calendar.js:414
 msgid "%OB"
 msgstr "%OB"
 
@@ -985,37 +989,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:412
+#: js/ui/calendar.js:424
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:473
+#: js/ui/calendar.js:485
 msgid "Previous month"
 msgstr "Предния месец"
 
-#: js/ui/calendar.js:491
+#: js/ui/calendar.js:503
 msgid "Next month"
 msgstr "Следващия месец"
 
-#: js/ui/calendar.js:642
+#: js/ui/calendar.js:654
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:701
+#: js/ui/calendar.js:713
 msgid "Week %V"
 msgstr "%V-а седмица"
 
-#: js/ui/calendar.js:880
+#: js/ui/calendar.js:892
 msgid "No Notifications"
 msgstr "Няма известия"
 
-#: js/ui/calendar.js:937
+#: js/ui/calendar.js:949
 msgid "Do Not Disturb"
 msgstr "Не безпокойте!"
 
-#: js/ui/calendar.js:958
+#: js/ui/calendar.js:970
 msgid "Clear"
 msgstr "Изчистване"
 
@@ -1069,8 +1073,7 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "Може да се свържете и като натиснете бутона „WPS“ на рутъра."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:247
-#: js/ui/status/network.js:337 js/ui/status/network.js:965
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
 msgid "Connect"
 msgstr "Свързване"
 
@@ -1135,7 +1138,7 @@ msgstr "ПИН"
 msgid "A password is required to connect to “%s”."
 msgstr "За свързване към „%s“ се изисква парола."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1823
+#: js/ui/components/networkAgent.js:736
 msgid "Network Manager"
 msgstr "Управление на мрежата"
 
@@ -1523,13 +1526,11 @@ msgstr ""
 msgid "Leave On"
 msgstr "Оставяне включено"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/network.js:1347
+#: js/ui/kbdA11yDialog.js:55
 msgid "Turn On"
 msgstr "Включване"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:162
-#: js/ui/status/network.js:338 js/ui/status/network.js:1347
-#: js/ui/status/network.js:1454 js/ui/status/network.js:1525
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
 msgid "Turn Off"
 msgstr "Изключване"
 
@@ -1537,7 +1538,7 @@ msgstr "Изключване"
 msgid "Leave Off"
 msgstr "Оставяне изключено"
 
-#: js/ui/keyboard.js:258
+#: js/ui/keyboard.js:219
 msgid "Region & Language Settings"
 msgstr "Район и език"
 
@@ -1701,12 +1702,12 @@ msgstr "Натиснете произволен клавиш за изход"
 msgid "Activities"
 msgstr "Дейности"
 
-#: js/ui/panel.js:367 js/ui/panel.js:409
+#: js/ui/panel.js:338
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Системни"
 
-#: js/ui/panel.js:510
+#: js/ui/panel.js:457
 msgid "Top Bar"
 msgstr "Горна лента"
 
@@ -1737,99 +1738,99 @@ msgstr "Екранът трябва да бъде заключен от GNOME"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:650
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
 msgid "Unable to lock"
 msgstr "Неуспешно заключване"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:651
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
 msgid "Lock was blocked by an application"
 msgstr "Заключването беше блокирано от програма"
 
-#: js/ui/screenshot.js:1149
+#: js/ui/screenshot.js:1147
 msgid "Selection"
 msgstr "Избор"
 
-#: js/ui/screenshot.js:1159
+#: js/ui/screenshot.js:1157
 msgid "Area Selection"
 msgstr "Избор на област"
 
-#: js/ui/screenshot.js:1164
+#: js/ui/screenshot.js:1162
 msgid "Screen"
 msgstr "Екран"
 
-#: js/ui/screenshot.js:1174
+#: js/ui/screenshot.js:1172
 msgid "Screen Selection"
 msgstr "Избор на част от екрана"
 
-#: js/ui/screenshot.js:1179
+#: js/ui/screenshot.js:1177
 msgid "Window"
 msgstr "Прозорeц"
 
-#: js/ui/screenshot.js:1189
+#: js/ui/screenshot.js:1187
 msgid "Window Selection"
 msgstr "Избор на прозорец"
 
-#: js/ui/screenshot.js:1227
+#: js/ui/screenshot.js:1225
 msgid "Screenshot / Screencast"
 msgstr "Снимка/запис на екрана"
 
-#: js/ui/screenshot.js:1263
+#: js/ui/screenshot.js:1261
 msgid "Show Pointer"
 msgstr "Включване на показалеца"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1840
+#: js/ui/screenshot.js:1849
 msgid "Screencasts"
 msgstr "Записи на екрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1845
+#: js/ui/screenshot.js:1854
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Запис на екрана на %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1911 js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
 msgid "Screenshot"
 msgstr "Снимка на екрана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1917
+#: js/ui/screenshot.js:1926
 msgid "Screencast recorded"
 msgstr "Екранът е записан"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1928
 msgid "Click here to view the video."
 msgstr "Натиснете, за да прегледате видеото."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1922 js/ui/screenshot.js:2137
+#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
 msgid "Show in Files"
 msgstr "Показване във „Файлове“"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2083
+#: js/ui/screenshot.js:2092
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Снимка на екрана на %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:2138
 msgid "Screenshot captured"
 msgstr "Екранът е заснет"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2140
 msgid "You can paste the image from the clipboard."
 msgstr "Изображението е в буфера за обмен и може да го поставите."
 
-#: js/ui/screenshot.js:2184 js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
 msgid "Screenshot taken"
 msgstr "Екранът е заснет"
 
@@ -1974,11 +1975,11 @@ msgstr "Едър текст"
 msgid "Auto Rotate"
 msgstr "Автоматично завъртане"
 
-#: js/ui/status/bluetooth.js:153
+#: js/ui/status/bluetooth.js:171
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:34
 msgid "Brightness"
 msgstr "Яркост"
 
@@ -2030,239 +2031,31 @@ msgstr ""
 "Може да промените правата за достъп до местоположението през настройките за "
 "лични данни."
 
-#: js/ui/status/network.js:71
+#: js/ui/status/network.js:53
 msgid "<unknown>"
 msgstr "<неизвестно>"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:438 js/ui/status/network.js:1376
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:356
 #, javascript-format
-msgid "%s Off"
-msgstr "„%s“: изключен"
+msgid "Disconnect %s"
+msgstr "Прекъсване на връзката към „%s“"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:441
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:358
 #, javascript-format
-msgid "%s Connected"
-msgstr "„%s“: свързан"
-
-#. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu);
-#. %s is a network identifier
-#: js/ui/status/network.js:446
-#, javascript-format
-msgid "%s Unmanaged"
-msgstr "„%s“: без управление"
+msgid "Connect to %s"
+msgstr "Свързване към „%s“"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:449
+#: js/ui/status/network.js:1107
 #, javascript-format
-msgid "%s Disconnecting"
-msgstr "„%s“: прекъсване на връзката"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:456 js/ui/status/network.js:1368
-#, javascript-format
-msgid "%s Connecting"
-msgstr "„%s“: свързване"
-
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:459
-#, javascript-format
-msgid "%s Requires Authentication"
-msgstr "„%s“: изисква идентификация"
-
-#. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:467
-#, javascript-format
-msgid "Firmware Missing For %s"
-msgstr "Липсва фърмуер за „%s“"
-
-#. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:471
-#, javascript-format
-msgid "%s Unavailable"
-msgstr "„%s“: недостъпен"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:474
-#, javascript-format
-msgid "%s Connection Failed"
-msgstr "„%s“: неуспешна връзка"
-
-#: js/ui/status/network.js:486
-msgid "Wired Settings"
-msgstr "Настройки на жична връзка"
-
-#: js/ui/status/network.js:533
-msgid "Mobile Broadband Settings"
-msgstr "Настройки на мобилна широколентова връзка"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:589 js/ui/status/network.js:1373
-#, javascript-format
-msgid "%s Hardware Disabled"
-msgstr "„%s“: изключено устройство"
-
-#. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:593
-#, javascript-format
-msgid "%s Disabled"
-msgstr "„%s“: изключено"
-
-#: js/ui/status/network.js:628
-msgid "Bluetooth Settings"
-msgstr "Настройки на Bluetooth"
-
-#: js/ui/status/network.js:640
-msgid "Connect to Internet"
-msgstr "Свързване към Интернет"
-
-#: js/ui/status/network.js:840
-msgid "Airplane Mode is On"
-msgstr "Самолетният режим е включен"
-
-#: js/ui/status/network.js:841
-msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "Безжичната връзка е изключена при самолетен режим."
-
-#: js/ui/status/network.js:842
-msgid "Turn Off Airplane Mode"
-msgstr "Изключване на самолетен режим"
-
-#: js/ui/status/network.js:851
-msgid "Wi-Fi is Off"
-msgstr "Безжичната връзка е изключена"
-
-#: js/ui/status/network.js:852
-msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "Безжичната връзка трябва да е включена, за да се свържете към мрежа."
-
-#: js/ui/status/network.js:853
-msgid "Turn On Wi-Fi"
-msgstr "Включване на безжичната връзка"
-
-#: js/ui/status/network.js:881
-msgid "Wi-Fi Networks"
-msgstr "Безжични мрежи"
-
-#: js/ui/status/network.js:885
-msgid "Select a network"
-msgstr "Избор на мрежата"
-
-#: js/ui/status/network.js:921
-msgid "No Networks"
-msgstr "Липсват мрежи"
-
-#: js/ui/status/network.js:946
-msgid "Use hardware switch to turn off"
-msgstr "Изключване чрез физически бутон"
-
-#: js/ui/status/network.js:1259
-msgid "Select Network"
-msgstr "Избор на мрежа"
-
-#: js/ui/status/network.js:1265
-msgid "Wi-Fi Settings"
-msgstr "Настройки на безжична връзка"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:1364
-#, javascript-format
-msgid "%s Hotspot Active"
-msgstr "„%s“: включена безжична точка за достъп"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:1379
-#, javascript-format
-msgid "%s Not Connected"
-msgstr "„%s“: няма връзка"
-
-#: js/ui/status/network.js:1466
-msgid "unknown"
-msgstr "неизвестно"
-
-#: js/ui/status/network.js:1468
-msgid "activating…"
-msgstr "задействане…"
-
-#: js/ui/status/network.js:1472
-msgid "deactivating…"
-msgstr "изключване…"
-
-#: js/ui/status/network.js:1474
-msgid "deactivated"
-msgstr "изключено"
-
-#: js/ui/status/network.js:1542
-msgid "connecting…"
-msgstr "свързване…"
-
-#. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1545
-msgid "authentication required"
-msgstr "изисква се удостоверяване"
-
-#: js/ui/status/network.js:1547
-msgid "connection failed"
-msgstr "връзката е неуспешна"
-
-#: js/ui/status/network.js:1593
-msgid "VPN Settings"
-msgstr "Настройки на ВЧМ (VPN)"
-
-#: js/ui/status/network.js:1610
-msgid "VPN"
-msgstr "ВЧМ"
-
-#: js/ui/status/network.js:1620
-msgid "VPN Off"
-msgstr "Без ВЧМ"
-
-#: js/ui/status/network.js:1683
-msgid "Network Settings"
-msgstr "Настройки на мрежата"
-
-#: js/ui/status/network.js:1711
-#, javascript-format
-msgid "%s Wired Connection"
-msgid_plural "%s Wired Connections"
-msgstr[0] "%s жична връзка"
-msgstr[1] "%s жични връзки"
-
-#: js/ui/status/network.js:1715
-#, javascript-format
-msgid "%s Wi-Fi Connection"
-msgid_plural "%s Wi-Fi Connections"
-msgstr[0] "%s безжична връзка"
-msgstr[1] "%s безжични връзки"
-
-#: js/ui/status/network.js:1719
-#, javascript-format
-msgid "%s Modem Connection"
-msgid_plural "%s Modem Connections"
-msgstr[0] "%s връзка по модем"
-msgstr[1] "%s връзки по модем"
-
-#: js/ui/status/network.js:1864
-msgid "Connection failed"
-msgstr "Връзката е неуспешна"
-
-#: js/ui/status/network.js:1865
-msgid "Activation of network connection failed"
-msgstr "Неуспешна връзка към мрежата"
+msgid "%s Hotspot"
+msgstr "Безжична точка за достъп „%s“"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
 msgstr "Нощен режим"
-
-#: js/ui/status/power.js:85
-#, javascript-format
-msgid "%d %%"
-msgstr "%d %%"
 
 #: js/ui/status/powerProfiles.js:20
 msgctxt "Power profile"
@@ -2279,9 +2072,9 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Енергоспестяване"
 
-#: js/ui/status/powerProfiles.js:66
-msgid "Power Settings"
-msgstr "Настройки на захранването"
+#: js/ui/status/powerProfiles.js:68
+msgid "Power Profiles"
+msgstr "Профили за захранване"
 
 #: js/ui/status/remoteAccess.js:74
 msgid "Stop Screencast"
@@ -2295,43 +2088,54 @@ msgstr "Край на споделянето на екрана"
 msgid "Airplane Mode"
 msgstr "Самолетeн режим"
 
-#: js/ui/status/system.js:83
-msgid "Lock"
-msgstr "Заключване"
+#: js/ui/status/system.js:90
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
 
-#: js/ui/status/system.js:95
-msgid "Power Off / Log Out"
-msgstr "Изключване/Изход"
+#. Translators: entry in the window right click menu.
+#: js/ui/status/system.js:105 js/ui/windowMenu.js:29
+msgid "Take Screenshot"
+msgstr "Снимка на екрана"
 
-#: js/ui/status/system.js:98
+#: js/ui/status/system.js:161
+msgid "Power Off Menu"
+msgstr "Меню за изключване"
+
+#: js/ui/status/system.js:169
 msgid "Suspend"
 msgstr "Приспиване"
 
-#: js/ui/status/system.js:109
+#: js/ui/status/system.js:174
 msgid "Restart…"
 msgstr "Рестартиране…"
 
-#: js/ui/status/system.js:120
+#: js/ui/status/system.js:179
 msgid "Power Off…"
 msgstr "Изключване"
 
-#: js/ui/status/system.js:133
-msgid "Log Out"
-msgstr "Изход"
+#: js/ui/status/system.js:186
+#: subprojects/extensions-app/data/ui/extensions-window.ui:190
+msgid "Log Out…"
+msgstr "Изход…"
 
-#: js/ui/status/system.js:144
+#: js/ui/status/system.js:191
 msgid "Switch User…"
 msgstr "Смяна на потребител…"
 
-#: js/ui/status/thunderbolt.js:257
+#: js/ui/status/system.js:235
+msgid "Lock Screen"
+msgstr "Заключване на екрана"
+
+#: js/ui/status/thunderbolt.js:256
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:317
 msgid "Unknown Thunderbolt device"
 msgstr "Непознато устройство с Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:318
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2339,32 +2143,40 @@ msgstr ""
 "Засечено е ново устройство докато отсъствахте. За да го ползвате, извадете "
 "го и го поставете наново."
 
-#: js/ui/status/thunderbolt.js:322
+#: js/ui/status/thunderbolt.js:321
 msgid "Unauthorized Thunderbolt device"
 msgstr "Неодобрено устройство с Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:323
+#: js/ui/status/thunderbolt.js:322
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "Засечено е ново устройство, което трябва да се одобри от администратор."
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:328
 msgid "Thunderbolt authorization error"
 msgstr "Грешка при одобряване на устройство с Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:330
+#: js/ui/status/thunderbolt.js:329
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Устройството с Thunderbolt не може да се одобри: %s"
 
-#: js/ui/status/volume.js:235
+#: js/ui/status/volume.js:191
 msgid "Volume changed"
 msgstr "Променена сила на звука"
 
-#: js/ui/status/volume.js:296
+#: js/ui/status/volume.js:253
 msgid "Volume"
 msgstr "Сила на звука"
+
+#: js/ui/status/volume.js:269
+msgid "Sound Output"
+msgstr "Аудио изход"
+
+#: js/ui/status/volume.js:337
+msgid "Sound Input"
+msgstr "Аудио вход"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
@@ -2464,11 +2276,6 @@ msgstr[1] "Настройките ще се възстановят след %d �
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
-
-#. Translators: entry in the window right click menu.
-#: js/ui/windowMenu.js:29
-msgid "Take Screenshot"
-msgstr "Снимка на екрана"
 
 #: js/ui/windowMenu.js:41
 msgid "Hide"
@@ -2722,10 +2529,6 @@ msgstr ""
 #: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid "Extension Updates Ready"
 msgstr "Налични са обновления на разширенията"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:190
-msgid "Log Out…"
-msgstr "Изход…"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:222
@@ -3146,6 +2949,168 @@ msgstr[1] "%u входа"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Системни звуци"
+
+#, javascript-format
+#~ msgid "%s Off"
+#~ msgstr "„%s“: изключен"
+
+#, javascript-format
+#~ msgid "%s Connected"
+#~ msgstr "„%s“: свързан"
+
+#, javascript-format
+#~ msgid "%s Unmanaged"
+#~ msgstr "„%s“: без управление"
+
+#, javascript-format
+#~ msgid "%s Connecting"
+#~ msgstr "„%s“: свързване"
+
+#, javascript-format
+#~ msgid "%s Requires Authentication"
+#~ msgstr "„%s“: изисква идентификация"
+
+#, javascript-format
+#~ msgid "Firmware Missing For %s"
+#~ msgstr "Липсва фърмуер за „%s“"
+
+#, javascript-format
+#~ msgid "%s Unavailable"
+#~ msgstr "„%s“: недостъпен"
+
+#, javascript-format
+#~ msgid "%s Connection Failed"
+#~ msgstr "„%s“: неуспешна връзка"
+
+#~ msgid "Wired Settings"
+#~ msgstr "Настройки на жична връзка"
+
+#~ msgid "Mobile Broadband Settings"
+#~ msgstr "Настройки на мобилна широколентова връзка"
+
+#, javascript-format
+#~ msgid "%s Hardware Disabled"
+#~ msgstr "„%s“: изключено устройство"
+
+#, javascript-format
+#~ msgid "%s Disabled"
+#~ msgstr "„%s“: изключено"
+
+#~ msgid "Bluetooth Settings"
+#~ msgstr "Настройки на Bluetooth"
+
+#~ msgid "Connect to Internet"
+#~ msgstr "Свързване към Интернет"
+
+#~ msgid "Airplane Mode is On"
+#~ msgstr "Самолетният режим е включен"
+
+#~ msgid "Wi-Fi is disabled when airplane mode is on."
+#~ msgstr "Безжичната връзка е изключена при самолетен режим."
+
+#~ msgid "Turn Off Airplane Mode"
+#~ msgstr "Изключване на самолетен режим"
+
+#~ msgid "Wi-Fi is Off"
+#~ msgstr "Безжичната връзка е изключена"
+
+#~ msgid "Wi-Fi needs to be turned on in order to connect to a network."
+#~ msgstr ""
+#~ "Безжичната връзка трябва да е включена, за да се свържете към мрежа."
+
+#~ msgid "Turn On Wi-Fi"
+#~ msgstr "Включване на безжичната връзка"
+
+#~ msgid "Wi-Fi Networks"
+#~ msgstr "Безжични мрежи"
+
+#~ msgid "Select a network"
+#~ msgstr "Избор на мрежата"
+
+#~ msgid "No Networks"
+#~ msgstr "Липсват мрежи"
+
+#~ msgid "Use hardware switch to turn off"
+#~ msgstr "Изключване чрез физически бутон"
+
+#~ msgid "Select Network"
+#~ msgstr "Избор на мрежа"
+
+#~ msgid "Wi-Fi Settings"
+#~ msgstr "Настройки на безжична връзка"
+
+#, javascript-format
+#~ msgid "%s Not Connected"
+#~ msgstr "„%s“: няма връзка"
+
+#~ msgid "unknown"
+#~ msgstr "неизвестно"
+
+#~ msgid "activating…"
+#~ msgstr "задействане…"
+
+#~ msgid "deactivating…"
+#~ msgstr "изключване…"
+
+#~ msgid "deactivated"
+#~ msgstr "изключено"
+
+#~ msgid "connecting…"
+#~ msgstr "свързване…"
+
+#~ msgid "authentication required"
+#~ msgstr "изисква се удостоверяване"
+
+#~ msgid "connection failed"
+#~ msgstr "връзката е неуспешна"
+
+#~ msgid "VPN Settings"
+#~ msgstr "Настройки на ВЧМ (VPN)"
+
+#~ msgid "VPN"
+#~ msgstr "ВЧМ"
+
+#~ msgid "VPN Off"
+#~ msgstr "Без ВЧМ"
+
+#~ msgid "Network Settings"
+#~ msgstr "Настройки на мрежата"
+
+#, javascript-format
+#~ msgid "%s Wired Connection"
+#~ msgid_plural "%s Wired Connections"
+#~ msgstr[0] "%s жична връзка"
+#~ msgstr[1] "%s жични връзки"
+
+#, javascript-format
+#~ msgid "%s Wi-Fi Connection"
+#~ msgid_plural "%s Wi-Fi Connections"
+#~ msgstr[0] "%s безжична връзка"
+#~ msgstr[1] "%s безжични връзки"
+
+#, javascript-format
+#~ msgid "%s Modem Connection"
+#~ msgid_plural "%s Modem Connections"
+#~ msgstr[0] "%s връзка по модем"
+#~ msgstr[1] "%s връзки по модем"
+
+#~ msgid "Connection failed"
+#~ msgstr "Връзката е неуспешна"
+
+#~ msgid "Activation of network connection failed"
+#~ msgstr "Неуспешна връзка към мрежата"
+
+#~ msgid "Power Settings"
+#~ msgstr "Настройки на захранването"
+
+#~ msgid "Lock"
+#~ msgstr "Заключване"
+
+#~ msgid "Power Off / Log Out"
+#~ msgstr "Изключване/Изход"
+
+#~ msgid "Log Out"
+#~ msgstr "Изход"
 
 #, javascript-format
 #~ msgid "%d Connected"
