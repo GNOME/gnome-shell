@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-10 15:28+0000\n"
-"PO-Revision-Date: 2022-08-10 19:33+0300\n"
+"POT-Creation-Date: 2022-09-05 17:40+0000\n"
+"PO-Revision-Date: 2022-09-07 20:51+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -79,7 +79,7 @@ msgid "Activate favorite application 9"
 msgstr "Переключиться на избранное приложение 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2070
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
 msgid "Screenshots"
 msgstr "Снимки экрана"
 
@@ -995,7 +995,7 @@ msgstr "Сб"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:402
+#: js/ui/calendar.js:414
 msgid "%OB"
 msgstr "%OB"
 
@@ -1008,37 +1008,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:412
+#: js/ui/calendar.js:424
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:473
+#: js/ui/calendar.js:485
 msgid "Previous month"
 msgstr "Предыдущий месяц"
 
-#: js/ui/calendar.js:491
+#: js/ui/calendar.js:503
 msgid "Next month"
 msgstr "Следующий месяц"
 
-#: js/ui/calendar.js:642
+#: js/ui/calendar.js:654
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:701
+#: js/ui/calendar.js:713
 msgid "Week %V"
 msgstr "%V неделя"
 
-#: js/ui/calendar.js:880
+#: js/ui/calendar.js:892
 msgid "No Notifications"
 msgstr "Уведомлений нет"
 
-#: js/ui/calendar.js:937
+#: js/ui/calendar.js:949
 msgid "Do Not Disturb"
 msgstr "Не беспокоить"
 
-#: js/ui/calendar.js:958
+#: js/ui/calendar.js:970
 msgid "Clear"
 msgstr "Очистить"
 
@@ -1092,9 +1092,9 @@ msgstr ""
 "В качестве альтернативы вы можете подключиться, нажав кнопку «WPS» на вашем "
 "маршрутизаторе."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:443
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
 msgid "Connect"
-msgstr "Соединиться"
+msgstr "Подключиться"
 
 #: js/ui/components/networkAgent.js:218
 msgid "Key"
@@ -1127,7 +1127,7 @@ msgstr ""
 
 #: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:752
 msgid "Wired 802.1X authentication"
-msgstr "Аутентификация Wired 802.1X"
+msgstr "Проводная аутентификация 802.1X"
 
 #: js/ui/components/networkAgent.js:374
 msgid "Network name"
@@ -1552,7 +1552,7 @@ msgstr "Оставить включёнными"
 msgid "Turn On"
 msgstr "Включить"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:454
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
 msgid "Turn Off"
 msgstr "Выключить"
 
@@ -1560,7 +1560,7 @@ msgstr "Выключить"
 msgid "Leave Off"
 msgstr "Оставить выключенными"
 
-#: js/ui/keyboard.js:258
+#: js/ui/keyboard.js:219
 msgid "Region & Language Settings"
 msgstr "Настройки языка и региона"
 
@@ -1723,12 +1723,12 @@ msgstr "Нажмите любую клавишу для выхода"
 msgid "Activities"
 msgstr "Обзор"
 
-#: js/ui/panel.js:367 js/ui/panel.js:392
+#: js/ui/panel.js:338
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:503
+#: js/ui/panel.js:457
 msgid "Top Bar"
 msgstr "Верхняя панель"
 
@@ -1759,99 +1759,99 @@ msgstr "GNOME необходимо заблокировать экран"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:650
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
 msgid "Unable to lock"
 msgstr "Не удалось заблокировать"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:651
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
 msgid "Lock was blocked by an application"
 msgstr "Блокировке помешало приложение"
 
-#: js/ui/screenshot.js:1149
+#: js/ui/screenshot.js:1147
 msgid "Selection"
 msgstr "Область"
 
-#: js/ui/screenshot.js:1159
+#: js/ui/screenshot.js:1157
 msgid "Area Selection"
 msgstr "Выбор области"
 
-#: js/ui/screenshot.js:1164
+#: js/ui/screenshot.js:1162
 msgid "Screen"
 msgstr "Экран"
 
-#: js/ui/screenshot.js:1174
+#: js/ui/screenshot.js:1172
 msgid "Screen Selection"
 msgstr "Выбор экрана"
 
-#: js/ui/screenshot.js:1179
+#: js/ui/screenshot.js:1177
 msgid "Window"
 msgstr "Окно"
 
-#: js/ui/screenshot.js:1189
+#: js/ui/screenshot.js:1187
 msgid "Window Selection"
 msgstr "Выбор окна"
 
-#: js/ui/screenshot.js:1227
+#: js/ui/screenshot.js:1225
 msgid "Screenshot / Screencast"
 msgstr "Снимок экрана / Запись экрана"
 
-#: js/ui/screenshot.js:1263
+#: js/ui/screenshot.js:1261
 msgid "Show Pointer"
 msgstr "Показать курсор мыши"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1840
+#: js/ui/screenshot.js:1849
 msgid "Screencasts"
 msgstr "Записи экрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1845
+#: js/ui/screenshot.js:1854
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Запись экрана от %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1911 js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
 msgid "Screenshot"
 msgstr "Снимок экрана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1917
+#: js/ui/screenshot.js:1926
 msgid "Screencast recorded"
 msgstr "Запись экрана сделана"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1928
 msgid "Click here to view the video."
 msgstr "Нажмите здесь, чтобы посмотреть видео."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1922 js/ui/screenshot.js:2137
+#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
 msgid "Show in Files"
 msgstr "Показать в Файлах"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2083
+#: js/ui/screenshot.js:2092
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Снимок экрана от %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:2138
 msgid "Screenshot captured"
 msgstr "Снимок экрана сделан"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2140
 msgid "You can paste the image from the clipboard."
 msgstr "Вы можете вставить изображение из буфера обмена."
 
-#: js/ui/screenshot.js:2184 js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
 msgid "Screenshot taken"
 msgstr "Сделан снимок экрана"
 
@@ -1998,7 +1998,7 @@ msgstr "Крупный текст"
 msgid "Auto Rotate"
 msgstr "Автоповорот"
 
-#: js/ui/status/bluetooth.js:153
+#: js/ui/status/bluetooth.js:171
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -2054,28 +2054,67 @@ msgstr ""
 "Доступ к местоположению можно изменить в любое время в настройках "
 "конфиденциальности."
 
-#: js/ui/status/network.js:49
+#: js/ui/status/network.js:53
 msgid "<unknown>"
 msgstr "<неизвестно>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:363
+#: js/ui/status/network.js:356
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Отключить %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:365
+#: js/ui/status/network.js:358
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Подключиться к %s"
 
-# перенос иначе не влазит в панель
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1087
+#: js/ui/status/network.js:1107
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Точка доступа %s"
+
+#: js/ui/status/network.js:1464
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1465
+msgid "VPN Settings"
+msgstr "Настройки VPN"
+
+#: js/ui/status/network.js:1708
+msgid "Wi–Fi"
+msgstr "Wi–Fi"
+
+#: js/ui/status/network.js:1710
+msgid "All Networks"
+msgstr "Все сети"
+
+#: js/ui/status/network.js:1807
+msgid "Wired Connections"
+msgstr "Проводные соединения"
+
+#: js/ui/status/network.js:1808
+msgid "Wired Settings"
+msgstr "Настройки соединения"
+
+#: js/ui/status/network.js:1822
+msgid "Bluetooth Tethers"
+msgstr "Bluetooth соединения"
+
+#: js/ui/status/network.js:1823
+msgid "Bluetooth Settings"
+msgstr "Настройки Bluetooth"
+
+#: js/ui/status/network.js:1837
+msgid "Mobile Connections"
+msgstr "Мобильные соединения"
+
+#: js/ui/status/network.js:1839
+msgid "Mobile Broadband Settings"
+msgstr "Настройки мобильной связи"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
@@ -2098,7 +2137,7 @@ msgstr "Энергосберегающий"
 
 #: js/ui/status/powerProfiles.js:68
 msgid "Power Profiles"
-msgstr "Профили питания"
+msgstr "Профили электропитания"
 
 #: js/ui/status/remoteAccess.js:74
 msgid "Stop Screencast"
@@ -2113,36 +2152,42 @@ msgstr "Остановить совместный доступ к экрану"
 msgid "Airplane Mode"
 msgstr "Авиарежим"
 
-#: js/ui/status/system.js:89
+#: js/ui/status/system.js:90
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
 
-#: js/ui/status/system.js:140
+#. Translators: entry in the window right click menu.
+#: js/ui/status/system.js:105 js/ui/windowMenu.js:29
+msgid "Take Screenshot"
+msgstr "Сделать снимок экрана"
+
+#: js/ui/status/system.js:161
 msgid "Power Off Menu"
 msgstr "Меню выключения"
 
-#: js/ui/status/system.js:148
+#: js/ui/status/system.js:169
 msgid "Suspend"
 msgstr "Режим ожидания"
 
-#: js/ui/status/system.js:153
+#: js/ui/status/system.js:174
 msgid "Restart…"
 msgstr "Перезапуск…"
 
-#: js/ui/status/system.js:158
+#: js/ui/status/system.js:179
 msgid "Power Off…"
 msgstr "Выключение…"
 
-#: js/ui/status/system.js:165
-msgid "Log Out"
-msgstr "Выйти"
+#: js/ui/status/system.js:186
+#: subprojects/extensions-app/data/ui/extensions-window.ui:190
+msgid "Log Out…"
+msgstr "Выйти…"
 
-#: js/ui/status/system.js:170
+#: js/ui/status/system.js:191
 msgid "Switch User…"
 msgstr "Сменить пользователя…"
 
-#: js/ui/status/system.js:216
+#: js/ui/status/system.js:235
 msgid "Lock Screen"
 msgstr "Заблокировать экран"
 
@@ -2297,11 +2342,6 @@ msgstr[2] "Изменения настроек будут отменены че�
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
-
-#. Translators: entry in the window right click menu.
-#: js/ui/windowMenu.js:29
-msgid "Take Screenshot"
-msgstr "Сделать снимок экрана"
 
 #: js/ui/windowMenu.js:41
 msgid "Hide"
@@ -2550,10 +2590,6 @@ msgstr ""
 #: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid "Extension Updates Ready"
 msgstr "Доступны обновления расширений"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:190
-msgid "Log Out…"
-msgstr "Выйти…"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:222
@@ -2978,14 +3014,8 @@ msgstr[2] "%u входов"
 msgid "System Sounds"
 msgstr "Системные звуки"
 
-#~ msgid "Wired Settings"
-#~ msgstr "Настройки соединения"
-
-#~ msgid "Mobile Broadband Settings"
-#~ msgstr "Настройки мобильной связи"
-
-#~ msgid "Bluetooth Settings"
-#~ msgstr "Настройки Bluetooth"
+#~ msgid "Log Out"
+#~ msgstr "Выйти"
 
 #~ msgid "Connect to Internet"
 #~ msgstr "Подключиться к Интернету"
@@ -3028,12 +3058,6 @@ msgstr "Системные звуки"
 
 #~ msgid "Wi-Fi Settings"
 #~ msgstr "Настройки Wi-Fi"
-
-#~ msgid "VPN Settings"
-#~ msgstr "Настройки VPN"
-
-#~ msgid "VPN"
-#~ msgstr "VPN"
 
 #~ msgid "VPN Off"
 #~ msgstr ""
@@ -3166,7 +3190,7 @@ msgstr "Системные звуки"
 #~ msgstr "сбой подключения"
 
 #~ msgid "Power Settings"
-#~ msgstr "Настройки питания"
+#~ msgstr "Настройки электропитания"
 
 #~ msgid "Lock"
 #~ msgstr "Заблокировать"
