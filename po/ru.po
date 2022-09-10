@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-07-18 10:09+0000\n"
-"PO-Revision-Date: 2022-07-30 23:08+0300\n"
+"POT-Creation-Date: 2022-09-01 00:02+0000\n"
+"PO-Revision-Date: 2022-09-07 22:49+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -559,23 +559,23 @@ msgstr "(например, пользователь или %s)"
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1258
 msgid "Login Window"
 msgstr "Окно входа в систему"
 
-#: js/gdm/util.js:434
+#: js/gdm/util.js:431
 msgid "Authentication error"
 msgstr "Ошибка проверки подлинности"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:606
+#: js/gdm/util.js:603
 msgid "(or swipe finger across reader)"
 msgstr "(или проведите пальцем по считывающему устройству)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:611
+#: js/gdm/util.js:608
 msgid "(or place finger on reader)"
 msgstr "(или поместите палец на считывающее устройство)"
 
@@ -1072,7 +1072,7 @@ msgstr ""
 #: js/ui/components/networkAgent.js:103 js/ui/status/network.js:244
 #: js/ui/status/network.js:335 js/ui/status/network.js:961
 msgid "Connect"
-msgstr "Соединиться"
+msgstr "Подключиться"
 
 #: js/ui/components/networkAgent.js:218
 msgid "Key"
@@ -1167,7 +1167,7 @@ msgstr "Не удалось подтвердить подлинность. По�
 msgid "%s is now known as %s"
 msgstr "Контакт %s теперь известен как %s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:405
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:414
 msgid "Windows"
 msgstr "Окна"
 
@@ -1526,12 +1526,12 @@ msgstr ""
 msgid "Leave On"
 msgstr "Оставить включёнными"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:174
+#: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:177
 #: js/ui/status/network.js:1341
 msgid "Turn On"
 msgstr "Включить"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:174
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:177
 #: js/ui/status/network.js:160 js/ui/status/network.js:336
 #: js/ui/status/network.js:1341 js/ui/status/network.js:1456
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
@@ -1543,7 +1543,7 @@ msgstr "Выключить"
 msgid "Leave Off"
 msgstr "Оставить выключенными"
 
-#: js/ui/keyboard.js:258
+#: js/ui/keyboard.js:265
 msgid "Region & Language Settings"
 msgstr "Настройки языка и региона"
 
@@ -1644,11 +1644,11 @@ msgstr "Неизвестное название"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:315
+#: js/ui/overviewControls.js:324
 msgid "Type to search"
 msgstr "Введите для поиска"
 
-#: js/ui/overviewControls.js:393
+#: js/ui/overviewControls.js:402
 msgid "Applications"
 msgstr "Приложения"
 
@@ -1742,11 +1742,11 @@ msgstr "GNOME необходимо заблокировать экран"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:269 js/ui/screenShield.js:644
+#: js/ui/screenShield.js:269 js/ui/screenShield.js:646
 msgid "Unable to lock"
 msgstr "Не удалось заблокировать"
 
-#: js/ui/screenShield.js:270 js/ui/screenShield.js:645
+#: js/ui/screenShield.js:270 js/ui/screenShield.js:647
 msgid "Lock was blocked by an application"
 msgstr "Блокировке помешало приложение"
 
@@ -1977,16 +1977,16 @@ msgstr "Клавиши мыши"
 msgid "Large Text"
 msgstr "Крупный текст"
 
-#: js/ui/status/bluetooth.js:54
+#: js/ui/status/bluetooth.js:50
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:67 js/ui/status/network.js:626
+#: js/ui/status/bluetooth.js:63 js/ui/status/network.js:626
 msgid "Bluetooth Settings"
 msgstr "Настройки Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:166
+#: js/ui/status/bluetooth.js:169
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -1994,11 +1994,11 @@ msgstr[0] "Подключено %d"
 msgstr[1] "Подключено %d"
 msgstr[2] "Подключено %d"
 
-#: js/ui/status/bluetooth.js:170
+#: js/ui/status/bluetooth.js:173
 msgid "Bluetooth On"
 msgstr "Bluetooth включён"
 
-#: js/ui/status/bluetooth.js:172
+#: js/ui/status/bluetooth.js:175
 msgid "Bluetooth Off"
 msgstr "Bluetooth выключен"
 
@@ -2334,7 +2334,7 @@ msgstr "Отключить до завтра"
 
 #: js/ui/status/power.js:51 js/ui/status/powerProfiles.js:57
 msgid "Power Settings"
-msgstr "Настройки питания"
+msgstr "Настройки электропитания"
 
 #: js/ui/status/power.js:68
 msgid "Fully Charged"
