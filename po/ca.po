@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-08-15 11:56+0000\n"
-"PO-Revision-Date: 2022-09-09 19:05+0000\n"
+"PO-Revision-Date: 2022-09-11 19:05+0000\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -644,7 +644,7 @@ msgstr "bloqueja;pantalla;bloca"
 #: js/misc/systemActions.js:108
 msgctxt "search-result"
 msgid "Log Out"
-msgstr "Surt"
+msgstr "Tanca la sessió"
 
 #. Translators: A list of keywords that match the logout action, separated by
 #. semicolons
@@ -656,13 +656,13 @@ msgstr "desconnecta;sortida;surt"
 #: js/misc/systemActions.js:116
 msgctxt "search-result"
 msgid "Suspend"
-msgstr "Atura temporalment"
+msgstr "Suspèn"
 
 #. Translators: A list of keywords that match the suspend action, separated by
 #. semicolons
 #: js/misc/systemActions.js:119
 msgid "suspend;sleep"
-msgstr "atura temporalment;dorm"
+msgstr "suspèn;dorm"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:124
@@ -1295,31 +1295,31 @@ msgstr "Trieu una ubicació pel temps…"
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
-msgstr "Sortida %s"
+msgstr "Tanca la sessió %s"
 
 #: js/ui/endSessionDialog.js:42
 msgctxt "title"
 msgid "Log Out"
-msgstr "Sortida"
+msgstr "Tanca la sessió"
 
 #: js/ui/endSessionDialog.js:45
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s sortirà de la sessió automàticament d'aquí %d segon."
-msgstr[1] "%s sortirà de la sessió automàticament d'aquí %d segons."
+msgstr[0] "%s tancarà la sessió automàticament d'aquí %d segon."
+msgstr[1] "%s tancarà la sessió automàticament d'aquí %d segons."
 
 #: js/ui/endSessionDialog.js:51
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "Sortireu automàticament d'aquí %d segon."
-msgstr[1] "Sortireu automàticament d'aquí %d segons."
+msgstr[0] "Es tancarà la sessió automàticament d'aquí %d segon."
+msgstr[1] "Es tancarà la sessió automàticament d'aquí %d segons."
 
 #: js/ui/endSessionDialog.js:58
 msgctxt "button"
 msgid "Log Out"
-msgstr "Surt"
+msgstr "Tanca la sessió"
 
 #: js/ui/endSessionDialog.js:64
 msgctxt "title"
@@ -2171,7 +2171,7 @@ msgstr "Menú d'apagada"
 
 #: js/ui/status/system.js:148
 msgid "Suspend"
-msgstr "Atura temporalment"
+msgstr "Suspèn"
 
 #: js/ui/status/system.js:153
 msgid "Restart…"
@@ -2183,7 +2183,7 @@ msgstr "Apaga…"
 
 #: js/ui/status/system.js:165
 msgid "Log Out"
-msgstr "Surt"
+msgstr "Tanca la sessió"
 
 #: js/ui/status/system.js:170
 msgid "Switch User…"
@@ -2595,7 +2595,7 @@ msgstr "Les actualitzacions d'extensions preparades"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:190
 msgid "Log Out…"
-msgstr "Surt…"
+msgstr "Tanca la sessió…"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:222
