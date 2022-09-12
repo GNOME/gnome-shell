@@ -917,20 +917,16 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
             box.add_actor(bin);
             this._thumbnailBins.push(bin);
 
-            let title = windows[i].get_title();
-            if (title) {
-                let name = new St.Label({
-                    text: title,
-                    // St.Label doesn't support text-align
-                    x_align: Clutter.ActorAlign.CENTER,
-                });
-                this._labels.push(name);
-                box.add_actor(name);
+            const title = windows[i].get_title();
+            const name = new St.Label({
+                text: title,
+                // St.Label doesn't support text-align
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+            this._labels.push(name);
+            box.add_actor(name);
 
-                this.addItem(box, name);
-            } else {
-                this.addItem(box, null);
-            }
+            this.addItem(box, name);
         }
 
         this.connect('destroy', this._onDestroy.bind(this));
