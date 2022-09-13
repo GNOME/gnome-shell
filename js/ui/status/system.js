@@ -164,7 +164,7 @@ class ShutdownItem extends QuickSettingsItem {
         this._systemActions = new SystemActions.getDefault();
         this._items = [];
 
-        this.menu.setHeader('system-shutdown-symbolic', 'Power Off');
+        this.menu.setHeader('system-shutdown-symbolic', C_('title', 'Power Off'));
 
         this._addSystemAction(_('Suspend'), 'can-suspend', () => {
             this._systemActions.activateSuspend();
