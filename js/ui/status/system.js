@@ -232,7 +232,7 @@ class LockItem extends QuickSettingsItem {
             style_class: 'icon-button',
             can_focus: true,
             icon_name: 'system-lock-screen-symbolic',
-            accessible_name: _('Lock Screen'),
+            accessible_name: C_('action', 'Lock Screen'),
         });
 
         this._systemActions.bind_property('can-lock-screen',
