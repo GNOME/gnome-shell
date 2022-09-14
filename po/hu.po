@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-12 03:40+0000\n"
-"PO-Revision-Date: 2022-09-01 02:06+0200\n"
+"POT-Creation-Date: 2022-09-14 22:12+0000\n"
+"PO-Revision-Date: 2022-09-15 01:47+0200\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -62,7 +62,7 @@ msgid "Activate favorite application 9"
 msgstr "9. kedvenc alkalmazás aktiválása"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2070
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
 msgid "Screenshots"
 msgstr "Képernyőképek"
 
@@ -272,9 +272,9 @@ msgid ""
 "toggling between two profiles, this key records the last selected non-"
 "default profile."
 msgstr ""
-"Egyes rendszerek kettőnél több teljesítményprofilt támogatnak. Annak"
-" érdekében, hogy továbbra is támogassa a két profil közötti váltást, ez a"
-" kulcs rögzíti az utoljára kiválasztott nem alapértelmezett profilt."
+"Egyes rendszerek kettőnél több teljesítményprofilt támogatnak. Annak "
+"érdekében, hogy továbbra is támogassa a két profil közötti váltást, ez a "
+"kulcs rögzíti az utoljára kiválasztott nem alapértelmezett profilt."
 
 #: data/org.gnome.shell.gschema.xml.in:108
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
@@ -974,7 +974,7 @@ msgstr "Sz"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:402
+#: js/ui/calendar.js:414
 msgid "%OB"
 msgstr "%OB"
 
@@ -987,37 +987,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:412
+#: js/ui/calendar.js:424
 msgid "%OB %Y"
 msgstr "%Y. %OB"
 
-#: js/ui/calendar.js:473
+#: js/ui/calendar.js:485
 msgid "Previous month"
 msgstr "Előző hónap"
 
-#: js/ui/calendar.js:491
+#: js/ui/calendar.js:503
 msgid "Next month"
 msgstr "Következő hónap"
 
-#: js/ui/calendar.js:642
+#: js/ui/calendar.js:654
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:701
+#: js/ui/calendar.js:713
 msgid "Week %V"
 msgstr "%V. hét"
 
-#: js/ui/calendar.js:880
+#: js/ui/calendar.js:892
 msgid "No Notifications"
 msgstr "Nincsenek értesítések"
 
-#: js/ui/calendar.js:937
+#: js/ui/calendar.js:949
 msgid "Do Not Disturb"
 msgstr "Ne zavarjanak"
 
-#: js/ui/calendar.js:958
+#: js/ui/calendar.js:970
 msgid "Clear"
 msgstr "Törlés"
 
@@ -1296,7 +1296,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "Kijelentkezés"
 
-#: js/ui/endSessionDialog.js:64
+#: js/ui/endSessionDialog.js:64 js/ui/status/system.js:167
 msgctxt "title"
 msgid "Power Off"
 msgstr "Kikapcsolás"
@@ -1740,91 +1740,91 @@ msgstr "Nem lehet zárolni"
 msgid "Lock was blocked by an application"
 msgstr "A zárolást egy alkalmazás blokkolta"
 
-#: js/ui/screenshot.js:1149
+#: js/ui/screenshot.js:1147
 msgid "Selection"
 msgstr "Kijelölés"
 
-#: js/ui/screenshot.js:1159
+#: js/ui/screenshot.js:1157
 msgid "Area Selection"
 msgstr "Terület kijelölése"
 
-#: js/ui/screenshot.js:1164
+#: js/ui/screenshot.js:1162
 msgid "Screen"
 msgstr "Képernyő"
 
-#: js/ui/screenshot.js:1174
+#: js/ui/screenshot.js:1172
 msgid "Screen Selection"
 msgstr "Képernyő kijelölése"
 
-#: js/ui/screenshot.js:1179
+#: js/ui/screenshot.js:1177
 msgid "Window"
 msgstr "Ablak"
 
-#: js/ui/screenshot.js:1189
+#: js/ui/screenshot.js:1187
 msgid "Window Selection"
 msgstr "Ablak kijelölése"
 
-#: js/ui/screenshot.js:1227
+#: js/ui/screenshot.js:1225
 msgid "Screenshot / Screencast"
 msgstr "Képernyőkép vagy képernyőfelvétel"
 
-#: js/ui/screenshot.js:1263
+#: js/ui/screenshot.js:1261
 msgid "Show Pointer"
 msgstr "Mutató megjelenítése"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1840
+#: js/ui/screenshot.js:1849
 msgid "Screencasts"
 msgstr "Képernyőfelvételek"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1845
+#: js/ui/screenshot.js:1854
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Képernyőfelvétel ekkor: %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1911 js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
 msgid "Screenshot"
 msgstr "Képernyőkép"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1917
+#: js/ui/screenshot.js:1926
 msgid "Screencast recorded"
 msgstr "Képernyőfelvétel rögzítve"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1928
 msgid "Click here to view the video."
 msgstr "Kattintson ide a videó megtekintéséhez."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1922 js/ui/screenshot.js:2137
+#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
 msgid "Show in Files"
 msgstr "Megjelenítés a fájlokban"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2083
+#: js/ui/screenshot.js:2092
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Képernyőkép ekkor: %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:2138
 msgid "Screenshot captured"
 msgstr "Képernyőkép rögzítve"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2140
 msgid "You can paste the image from the clipboard."
 msgstr "Beillesztheti a képet a vágólapról."
 
-#: js/ui/screenshot.js:2184 js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
 msgid "Screenshot taken"
 msgstr "Képernyőkép elkészült"
 
@@ -1970,7 +1970,7 @@ msgstr "Nagy szöveg"
 msgid "Auto Rotate"
 msgstr "Automatikus forgatás"
 
-#: js/ui/status/bluetooth.js:160
+#: js/ui/status/bluetooth.js:171
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -2032,26 +2032,22 @@ msgstr "<ismeretlen>"
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/network.js:356
 #, javascript-format
-#| msgid "%s Disconnecting"
 msgid "Disconnect %s"
 msgstr "%s leválasztása"
 
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/network.js:358
 #, javascript-format
-#| msgid "Connect"
 msgid "Connect to %s"
 msgstr "Kapcsolódás ehhez: %s"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1107
 #, javascript-format
-#| msgid "%s Hotspot Active"
 msgid "%s Hotspot"
 msgstr "%s hotspot"
 
 #: js/ui/status/nightLight.js:20
-#| msgid "Night Light On"
 msgid "Night Light"
 msgstr "Éjszakai fény"
 
@@ -2071,8 +2067,6 @@ msgid "Power Saver"
 msgstr "Energiatakarékos"
 
 #: js/ui/status/powerProfiles.js:68
-#| msgctxt "search-result"
-#| msgid "Power Off"
 msgid "Power Profiles"
 msgstr "Teljesítményprofil"
 
@@ -2081,49 +2075,51 @@ msgid "Stop Screencast"
 msgstr "Képernyőfelvétel leállítása"
 
 #: js/ui/status/remoteAccess.js:144
-#| msgid "Stop Screencast"
 msgid "Stop Screen Sharing"
 msgstr "Képernyőmegosztás leállítása"
 
 #: js/ui/status/rfkill.js:96
-#| msgid "Airplane Mode On"
 msgid "Airplane Mode"
 msgstr "Repülőgép mód"
 
-#: js/ui/status/system.js:89
+#: js/ui/status/system.js:90
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
 
-#: js/ui/status/system.js:140
-#| msgctxt "search-result"
-#| msgid "Power Off"
+#. Translators: entry in the window right click menu.
+#: js/ui/status/system.js:105 js/ui/windowMenu.js:29
+msgid "Take Screenshot"
+msgstr "Képernyőkép készítése"
+
+#: js/ui/status/system.js:161
 msgid "Power Off Menu"
 msgstr "Kikapcsolás menü"
 
-#: js/ui/status/system.js:148
+#: js/ui/status/system.js:169
 msgid "Suspend"
 msgstr "Felfüggesztés"
 
-#: js/ui/status/system.js:153
+#: js/ui/status/system.js:174
 msgid "Restart…"
 msgstr "Újraindítás…"
 
-#: js/ui/status/system.js:158
+#: js/ui/status/system.js:179
 msgid "Power Off…"
 msgstr "Kikapcsolás…"
 
-#: js/ui/status/system.js:165
-msgid "Log Out"
-msgstr "Kijelentkezés"
+#: js/ui/status/system.js:186
+#: subprojects/extensions-app/data/ui/extensions-window.ui:190
+msgid "Log Out…"
+msgstr "Kijelentkezés…"
 
-#: js/ui/status/system.js:170
+#: js/ui/status/system.js:191
 msgid "Switch User…"
 msgstr "Felhasználóváltás…"
 
-#: js/ui/status/system.js:216
-#| msgctxt "search-result"
+#: js/ui/status/system.js:235
 #| msgid "Lock Screen"
+msgctxt "action"
 msgid "Lock Screen"
 msgstr "Zárolási képernyő"
 
@@ -2171,14 +2167,10 @@ msgid "Volume"
 msgstr "Hangerő"
 
 #: js/ui/status/volume.js:269
-#| msgid "%u Output"
-#| msgid_plural "%u Outputs"
 msgid "Sound Output"
 msgstr "Hangkimenet"
 
 #: js/ui/status/volume.js:337
-#| msgid "%u Input"
-#| msgid_plural "%u Inputs"
 msgid "Sound Input"
 msgstr "Hangbemenet"
 
@@ -2213,8 +2205,6 @@ msgstr "Csak a beépített"
 #. Translators: This is a time format for a date in
 #. long format
 #: js/ui/unlockDialog.js:364
-#| msgctxt "calendar heading"
-#| msgid "%B %-d"
 msgid "%A %B %-d"
 msgstr "%B %-d. %A"
 
@@ -2282,11 +2272,6 @@ msgstr[1] "A beállítások módosításai %d másodperc múlva visszavonásra k
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
-
-#. Translators: entry in the window right click menu.
-#: js/ui/windowMenu.js:29
-msgid "Take Screenshot"
-msgstr "Képernyőkép készítése"
 
 #: js/ui/windowMenu.js:41
 msgid "Hide"
@@ -2535,10 +2520,6 @@ msgstr ""
 #: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid "Extension Updates Ready"
 msgstr "A kiterjesztésfrissítések készen állnak"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:190
-msgid "Log Out…"
-msgstr "Kijelentkezés…"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:222
