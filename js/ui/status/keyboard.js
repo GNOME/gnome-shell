@@ -492,7 +492,7 @@ var InputSourceManager = class extends Signals.EventEmitter {
 
     _updateMruSources() {
         let sourcesList = [];
-        for (let i in this._inputSources)
+        for (let i of Object.keys(this._inputSources).sort((a, b) => a - b))
             sourcesList.push(this._inputSources[i]);
 
         this._keyboardManager.setUserLayouts(sourcesList.map(x => x.xkbId));
