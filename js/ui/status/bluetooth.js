@@ -64,7 +64,10 @@ const BtClient = GObject.registerClass({
             g_interface_info: rfkillManagerInfo,
         });
         this._proxy.connect('g-properties-changed', (p, properties) => {
-            if ('BluetoothHardwareAirplaneMode' in properties.unpack())
+            const changedProperties = properties.unpack();
+            if ('BluetoothHardwareAirplaneMode' in changedProperties)
+                this.notify('available');
+            else if ('BluetoothHasAirplaneMode' in changedProperties)
                 this.notify('available');
         });
         this._proxy.init_async(GLib.PRIORITY_DEFAULT, null)
@@ -79,21 +82,19 @@ const BtClient = GObject.registerClass({
             this._connectDeviceNotify(deviceStore.get_item(i));
 
         this._client.connect('device-removed', (c, path) => {
-            this._syncHadSetupDevices();
             this._deviceNotifyConnected.delete(path);
             this.emit('devices-changed');
         });
         this._client.connect('device-added', (c, device) => {
-            this._syncHadSetupDevices();
             this._connectDeviceNotify(device);
             this.emit('devices-changed');
         });
     }
 
     get available() {
-        // If there were set up devices, assume there is an adapter
-        // that can be powered on as long as we're not hard blocked
-        return this._hadSetupDevices
+        // If we have an rfkill switch, make sure it's not a hardware
+        // one as we can't get out of it in software
+        return this._proxy.BluetoothHasAirplaneMode
             ? !this._proxy.BluetoothHardwareAirplaneMode
             : this.active;
     }
