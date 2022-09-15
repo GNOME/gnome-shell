@@ -15,8 +15,6 @@ const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
 const RfkillManagerInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Rfkill');
 const rfkillManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(RfkillManagerInterface);
 
-const HAD_BLUETOOTH_DEVICES_SETUP = 'had-bluetooth-devices-setup';
-
 const BtClient = GObject.registerClass({
     Properties: {
         'available': GObject.ParamSpec.boolean('available', '', '',
@@ -35,8 +33,6 @@ const BtClient = GObject.registerClass({
 }, class BtClient extends GObject.Object {
     _init() {
         super._init();
-
-        this._hadSetupDevices = global.settings.get_boolean(HAD_BLUETOOTH_DEVICES_SETUP);
 
         this._client = new GnomeBluetooth.Client();
         this._client.connect('notify::default-adapter-powered', () => {
@@ -128,27 +124,10 @@ const BtClient = GObject.registerClass({
         if (this._devicesChangedId)
             return;
         this._devicesChangedId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-            this._syncHadSetupDevices();
             delete this._devicesChangedId;
             this.emit('devices-changed');
             return GLib.SOURCE_REMOVE;
         });
-    }
-
-    _syncHadSetupDevices() {
-        const {defaultAdapter} = this._client;
-        if (!defaultAdapter || !this._adapter)
-            return; // ignore changes while powering up/down
-
-        const [firstDevice] = this.getDevices();
-        const hadSetupDevices = !!firstDevice;
-
-        if (this._hadSetupDevices === hadSetupDevices)
-            return;
-
-        this._hadSetupDevices = hadSetupDevices;
-        global.settings.set_boolean(
-            HAD_BLUETOOTH_DEVICES_SETUP, this._hadSetupDevices);
     }
 
     _connectDeviceNotify(device) {
