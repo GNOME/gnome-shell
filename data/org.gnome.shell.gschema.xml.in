@@ -84,16 +84,6 @@
         This key sets the default state of the checkbox.
       </description>
     </key>
-    <key name="had-bluetooth-devices-setup" type="b">
-      <default>false</default>
-      <summary>Whether the default Bluetooth adapter had set up devices associated to it</summary>
-      <description>
-        The shell will only show a Bluetooth menu item if a Bluetooth
-        adapter is powered, or if there were devices set up associated
-        with the default adapter. This will be reset if the default
-        adapter is ever seen not to have devices associated to it.
-      </description>
-    </key>
     <key name="last-selected-power-profile" type="s">
       <default>"power-saver"</default>
       <summary>The last selected non-default power profile</summary>
