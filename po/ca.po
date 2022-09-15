@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-08-15 11:56+0000\n"
-"PO-Revision-Date: 2022-09-11 19:05+0000\n"
+"PO-Revision-Date: 2022-09-15 19:05+0000\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -2189,7 +2189,9 @@ msgstr "Tanca la sessió"
 msgid "Switch User…"
 msgstr "Canvia d'usuari…"
 
-#: js/ui/status/system.js:216
+
+#: js/ui/status/system.js:235
+msgctxt "action"
 msgid "Lock Screen"
 msgstr "Bloqueja la pantalla"
 
