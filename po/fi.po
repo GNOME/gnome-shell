@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-10 15:28+0000\n"
-"PO-Revision-Date: 2022-08-10 19:55+0300\n"
+"POT-Creation-Date: 2022-09-14 22:12+0000\n"
+"PO-Revision-Date: 2022-09-15 09:21+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -80,7 +80,7 @@ msgid "Activate favorite application 9"
 msgstr "Aktivoi suosikkisovellus 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2070
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
 msgid "Screenshots"
 msgstr "Kuvakaappaukset"
 
@@ -974,7 +974,7 @@ msgstr "L"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:402
+#: js/ui/calendar.js:414
 msgid "%OB"
 msgstr "%OB"
 
@@ -987,37 +987,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:412
+#: js/ui/calendar.js:424
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:473
+#: js/ui/calendar.js:485
 msgid "Previous month"
 msgstr "Edellinen kuukausi"
 
-#: js/ui/calendar.js:491
+#: js/ui/calendar.js:503
 msgid "Next month"
 msgstr "Seuraava kuukausi"
 
-#: js/ui/calendar.js:642
+#: js/ui/calendar.js:654
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:701
+#: js/ui/calendar.js:713
 msgid "Week %V"
 msgstr "Viikko %V"
 
-#: js/ui/calendar.js:880
+#: js/ui/calendar.js:892
 msgid "No Notifications"
 msgstr "Ei ilmoituksia"
 
-#: js/ui/calendar.js:937
+#: js/ui/calendar.js:949
 msgid "Do Not Disturb"
 msgstr "Älä häiritse"
 
-#: js/ui/calendar.js:958
+#: js/ui/calendar.js:970
 msgid "Clear"
 msgstr "Tyhjennä"
 
@@ -1070,7 +1070,7 @@ msgid ""
 msgstr ""
 "Vaihtoehtoisesti voit yhdistää painamalla reitittimesi “WPS”-painiketta."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:443
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
 msgid "Connect"
 msgstr "Yhdistä"
 
@@ -1294,7 +1294,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "Kirjaudu ulos"
 
-#: js/ui/endSessionDialog.js:64
+#: js/ui/endSessionDialog.js:64 js/ui/status/system.js:167
 msgctxt "title"
 msgid "Power Off"
 msgstr "Sammuta"
@@ -1527,7 +1527,7 @@ msgstr "Jätä käyttöön"
 msgid "Turn On"
 msgstr "Ota käyttöön"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:454
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
 msgid "Turn Off"
 msgstr "Sammuta"
 
@@ -1535,7 +1535,7 @@ msgstr "Sammuta"
 msgid "Leave Off"
 msgstr "Poista käytöstä"
 
-#: js/ui/keyboard.js:258
+#: js/ui/keyboard.js:219
 msgid "Region & Language Settings"
 msgstr "Kielen & alueen asetukset"
 
@@ -1697,12 +1697,12 @@ msgstr "Paina mitä tahansa näppäintä poistuaksesi"
 msgid "Activities"
 msgstr "Toiminnot"
 
-#: js/ui/panel.js:367 js/ui/panel.js:392
+#: js/ui/panel.js:338
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Järjestelmä"
 
-#: js/ui/panel.js:503
+#: js/ui/panel.js:457
 msgid "Top Bar"
 msgstr "Yläpalkki"
 
@@ -1733,99 +1733,99 @@ msgstr "Gnomen täytyy lukita näyttö"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:650
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
 msgid "Unable to lock"
 msgstr "Lukitus epäonnistui"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:651
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
 msgid "Lock was blocked by an application"
 msgstr "Lukitus estettiin sovelluksen toimesta"
 
-#: js/ui/screenshot.js:1149
+#: js/ui/screenshot.js:1147
 msgid "Selection"
 msgstr "Valinta"
 
-#: js/ui/screenshot.js:1159
+#: js/ui/screenshot.js:1157
 msgid "Area Selection"
 msgstr "Aluevalinta"
 
-#: js/ui/screenshot.js:1164
+#: js/ui/screenshot.js:1162
 msgid "Screen"
 msgstr "Näyttö"
 
-#: js/ui/screenshot.js:1174
+#: js/ui/screenshot.js:1172
 msgid "Screen Selection"
 msgstr "Näytön valinta"
 
-#: js/ui/screenshot.js:1179
+#: js/ui/screenshot.js:1177
 msgid "Window"
 msgstr "Ikkuna"
 
-#: js/ui/screenshot.js:1189
+#: js/ui/screenshot.js:1187
 msgid "Window Selection"
 msgstr "Ikkunan valinta"
 
-#: js/ui/screenshot.js:1227
+#: js/ui/screenshot.js:1225
 msgid "Screenshot / Screencast"
 msgstr "Kuvakaappaus / näyttötallennevideo"
 
-#: js/ui/screenshot.js:1263
+#: js/ui/screenshot.js:1261
 msgid "Show Pointer"
 msgstr "Näytä osoitin"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1840
+#: js/ui/screenshot.js:1849
 msgid "Screencasts"
 msgstr "Näyttötallennevideot"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1845
+#: js/ui/screenshot.js:1854
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Näyttötallennevideo - %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1911 js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
 msgid "Screenshot"
 msgstr "Kuvakaappaus"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1917
+#: js/ui/screenshot.js:1926
 msgid "Screencast recorded"
 msgstr "Näyttötallennevideo otettu"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1928
 msgid "Click here to view the video."
 msgstr "Napsauta tästä katsoaksesi videon."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1922 js/ui/screenshot.js:2137
+#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
 msgid "Show in Files"
 msgstr "Näytä tiedostohallinnassa"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2083
+#: js/ui/screenshot.js:2092
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Kuvakaappaus - %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:2138
 msgid "Screenshot captured"
 msgstr "Kuvakaappaus otettu"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2140
 msgid "You can paste the image from the clipboard."
 msgstr "Voit liittää kuvan leikepöydältä."
 
-#: js/ui/screenshot.js:2184 js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
 msgid "Screenshot taken"
 msgstr "Kuvakaappaus otettu"
 
@@ -1969,7 +1969,7 @@ msgstr "Suuri tekstin koko"
 msgid "Auto Rotate"
 msgstr "Automaattinen kääntö"
 
-#: js/ui/status/bluetooth.js:153
+#: js/ui/status/bluetooth.js:171
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -2025,24 +2025,24 @@ msgstr ""
 "Sijaintitiedon käyttöoikeuksia voi muuttaa milloin tahansa "
 "yksityisyysasetuksista."
 
-#: js/ui/status/network.js:49
+#: js/ui/status/network.js:53
 msgid "<unknown>"
 msgstr "<tuntematon>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:363
+#: js/ui/status/network.js:356
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Katkaise yhteys kohteeseen %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:365
+#: js/ui/status/network.js:358
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Yhdistä kohteeseen %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1087
+#: js/ui/status/network.js:1107
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s - Yhteyspiste"
@@ -2082,36 +2082,43 @@ msgstr "Lopeta näytön jakaminen"
 msgid "Airplane Mode"
 msgstr "Lentokonetila"
 
-#: js/ui/status/system.js:89
+#: js/ui/status/system.js:90
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
 
-#: js/ui/status/system.js:140
+#. Translators: entry in the window right click menu.
+#: js/ui/status/system.js:105 js/ui/windowMenu.js:29
+msgid "Take Screenshot"
+msgstr "Ota kuvakaappaus"
+
+#: js/ui/status/system.js:161
 msgid "Power Off Menu"
 msgstr "Sammutusvalikko"
 
-#: js/ui/status/system.js:148
+#: js/ui/status/system.js:169
 msgid "Suspend"
 msgstr "Valmiustila"
 
-#: js/ui/status/system.js:153
+#: js/ui/status/system.js:174
 msgid "Restart…"
 msgstr "Käynnistä uudelleen…"
 
-#: js/ui/status/system.js:158
+#: js/ui/status/system.js:179
 msgid "Power Off…"
 msgstr "Sammuta…"
 
-#: js/ui/status/system.js:165
-msgid "Log Out"
-msgstr "Kirjaudu ulos"
+#: js/ui/status/system.js:186
+#: subprojects/extensions-app/data/ui/extensions-window.ui:190
+msgid "Log Out…"
+msgstr "Kirjaudu ulos…"
 
-#: js/ui/status/system.js:170
+#: js/ui/status/system.js:191
 msgid "Switch User…"
 msgstr "Vaihda käyttäjää…"
 
-#: js/ui/status/system.js:216
+#: js/ui/status/system.js:235
+msgctxt "action"
 msgid "Lock Screen"
 msgstr "Lukitse näyttö"
 
@@ -2263,11 +2270,6 @@ msgstr[1] "Asetusmuutokset palautetaan %d sekunnissa"
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
-
-#. Translators: entry in the window right click menu.
-#: js/ui/windowMenu.js:29
-msgid "Take Screenshot"
-msgstr "Ota kuvakaappaus"
 
 #: js/ui/windowMenu.js:41
 msgid "Hide"
@@ -2486,8 +2488,8 @@ msgstr "Manuaalisesti asennettu"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "Etsi ja asenna laajennuksia osoitteessa <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
@@ -2511,10 +2513,6 @@ msgstr ""
 #: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid "Extension Updates Ready"
 msgstr "Laajennuspäivitykset valmiina"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:190
-msgid "Log Out…"
-msgstr "Kirjaudu ulos…"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:222
@@ -2936,6 +2934,9 @@ msgstr[1] "%u sisääntuloa"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Järjestelmän äänet"
+
+#~ msgid "Log Out"
+#~ msgstr "Kirjaudu ulos"
 
 #~ msgid "Bluetooth Settings"
 #~ msgstr "Bluetooth-asetukset"
