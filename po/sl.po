@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-31 17:30+0000\n"
-"PO-Revision-Date: 2022-08-31 20:52+0200\n"
+"POT-Creation-Date: 2022-09-16 19:21+0000\n"
+"PO-Revision-Date: 2022-09-16 21:42+0200\n"
 "Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -1174,7 +1174,7 @@ msgstr "Overitev je spodletela.. Poskusite znova."
 msgid "%s is now known as %s"
 msgstr "%s je sedaj znan kot v %s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:414
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
 msgid "Windows"
 msgstr "Okna"
 
@@ -1306,7 +1306,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "Odjavi"
 
-#: js/ui/endSessionDialog.js:64
+#: js/ui/endSessionDialog.js:64 js/ui/status/system.js:167
 msgctxt "title"
 msgid "Power Off"
 msgstr "Izklop sistema"
@@ -1651,11 +1651,11 @@ msgstr "Neznan naslov"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:324
+#: js/ui/overviewControls.js:327
 msgid "Type to search"
 msgstr "Poišči …"
 
-#: js/ui/overviewControls.js:402
+#: js/ui/overviewControls.js:405
 msgid "Applications"
 msgstr "Programi"
 
@@ -1989,7 +1989,7 @@ msgstr "Veliko besedilo"
 msgid "Auto Rotate"
 msgstr "Samodejno zavrti"
 
-#: js/ui/status/bluetooth.js:160
+#: js/ui/status/bluetooth.js:171
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -2129,14 +2129,16 @@ msgid "Power Off…"
 msgstr "Izklopi …"
 
 #: js/ui/status/system.js:186
-msgid "Log Out"
-msgstr "Odjavi"
+#: subprojects/extensions-app/data/ui/extensions-window.ui:190
+msgid "Log Out…"
+msgstr "Odjava …"
 
 #: js/ui/status/system.js:191
 msgid "Switch User…"
 msgstr "Preklopi uporabnika …"
 
 #: js/ui/status/system.js:235
+msgctxt "action"
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
@@ -2534,10 +2536,6 @@ msgstr ""
 #: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid "Extension Updates Ready"
 msgstr "Posodobitev razširitve je na voljo"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:190
-msgid "Log Out…"
-msgstr "Odjava …"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:222
@@ -2963,6 +2961,9 @@ msgstr[3] "%u dovodi naprave"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
+
+#~ msgid "Log Out"
+#~ msgstr "Odjavi"
 
 #~ msgid "Bluetooth Settings"
 #~ msgstr "Nastavitve za Bluetooth"
