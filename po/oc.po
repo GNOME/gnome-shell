@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master oc\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-01 00:08+0000\n"
-"PO-Revision-Date: 2022-09-04 20:51+0200\n"
+"POT-Creation-Date: 2022-09-14 22:12+0000\n"
+"PO-Revision-Date: 2022-09-16 21:21+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -1344,7 +1344,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "Tampar la session"
 
-#: js/ui/endSessionDialog.js:64
+#: js/ui/endSessionDialog.js:64 js/ui/status/system.js:167
 msgctxt "title"
 msgid "Power Off"
 msgstr "Atudar"
@@ -2019,7 +2019,7 @@ msgstr "Grand tèxte"
 msgid "Auto Rotate"
 msgstr "Rotacion auto"
 
-#: js/ui/status/bluetooth.js:160
+#: js/ui/status/bluetooth.js:171
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -2159,16 +2159,18 @@ msgid "Power Off…"
 msgstr "Atudar…"
 
 #: js/ui/status/system.js:186
-msgid "Log Out"
-msgstr "Tampar la session"
+#: subprojects/extensions-app/data/ui/extensions-window.ui:190
+msgid "Log Out…"
+msgstr "Tampar la session…"
 
 #: js/ui/status/system.js:191
 msgid "Switch User…"
 msgstr "Cambiar d’utilizaire…"
 
 #: js/ui/status/system.js:235
+msgctxt "action"
 msgid "Lock Screen"
-msgstr "Verrolhatge de l’ecran"
+msgstr "Verrolhar l'ecran"
 
 #: js/ui/status/thunderbolt.js:256
 msgid "Thunderbolt"
@@ -2565,10 +2567,6 @@ msgstr ""
 #: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid "Extension Updates Ready"
 msgstr "Mesas a jorn d’extensions prèstas"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:190
-msgid "Log Out…"
-msgstr "Tampar la session…"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:222
@@ -2991,6 +2989,9 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sons sistèma"
+
+#~ msgid "Log Out"
+#~ msgstr "Tampar la session"
 
 #~ msgid "%s Off"
 #~ msgstr "%s atudat"
