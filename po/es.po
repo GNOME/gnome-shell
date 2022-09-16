@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-05 17:40+0000\n"
-"PO-Revision-Date: 2022-09-09 17:02+0200\n"
+"POT-Creation-Date: 2022-09-14 22:12+0000\n"
+"PO-Revision-Date: 2022-09-16 10:38+0200\n"
 "Last-Translator: Daniel Mustieles García <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -1304,7 +1304,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "Cerrar la sesión"
 
-#: js/ui/endSessionDialog.js:64
+#: js/ui/endSessionDialog.js:64 js/ui/status/system.js:167
 msgctxt "title"
 msgid "Power Off"
 msgstr "Apagar"
@@ -2127,6 +2127,7 @@ msgid "Switch User…"
 msgstr "Cambiar de usuario…"
 
 #: js/ui/status/system.js:235
+msgctxt "action"
 msgid "Lock Screen"
 msgstr "Bloquear la pantalla"
 
