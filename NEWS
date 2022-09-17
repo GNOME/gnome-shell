@@ -1,3 +1,21 @@
+42.5
+====
+* Fix initial selection in switch-monitor popup on desktop [Yao; !2451]
+* Improve handling of recurring events [Milan; !2328]
+* Prevent SignalTracker from leaking objects [Sebastian; !2466]
+* Work around pipewire regression for screencasts [Sebastian; !2436]
+* Fix initial input source order [Carlos; #5873]
+* Fixed crash [Jonas; !2478]
+* Plugged leak [Florian; #5501]
+* Misc. bug fixes [Daniel, Carlos; !2429, !2288]
+
+Contributors:
+  Yao Wei (魏銘廷), Milan Crha, Carlos Garnacho, Sebastian Keller, Florian Müllner,
+  Daniel van Vugt, Jonas Ådahl
+
+Translators:
+  Jordi Mas [ca], Goran Vidović [hr], Balázs Úr [hu], Aleksandr Melman [ru]
+
 42.4
 ====
 * Fix adding suggestions from on-screen keyboard [Carlos, Florian; !2368, !2421]
