@@ -1,3 +1,23 @@
+43.0
+====
+* Fix rebooting into boot loader menu [Florian; !2472]
+* Improve entry legibility in GNOME Classic [Jakub; !2477]
+* Fixed crash [Jonas; !2478]
+* Misc. bug fixes and cleanups [sabriunal, Florian; !2467, !2484, !2485]
+
+Contributors:
+  Florian Müllner, Jakub Steiner, sabriunal, Jonas Ådahl
+
+Translators:
+  Jürgen Benvenuti [de], Quentin PAGÈS [oc], Aurimas Černius [lt],
+  Anders Jonsson [sv], Pawan Chitrakar [ne], Jordi Mas [ca],
+  Daniel Mustieles [es], Alexander Shopov [bg], Asier Sarasua Garmendia [eu],
+  Aleksandr Melman [ru], Alexandre Franke [fr], Goran Vidović [hr],
+  Emin Tufan Çetin [tr], Balázs Úr [hu], Marek Černocký [cs],
+  Yuri Chornoivan [uk], Jiri Grönroos [fi], Yosef Or Boczko [he],
+  Piotr Drąg [pl], Luming Zh [zh_CN], Fran Dieguez [gl],
+  Enrico Nicoletto [pt_BR], Alan Mortensen [da], Matej Urbančič [sl]
+
 43.rc
 =====
 * Tweak quick settings appearance [Sam; !2427, !2441, !2463]
