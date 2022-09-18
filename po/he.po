@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-14 22:12+0000\n"
+"POT-Creation-Date: 2022-09-17 18:27+0000\n"
 "PO-Revision-Date: 2022-09-15 13:50+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: Hebrew <>\n"
@@ -68,22 +68,22 @@ msgid "Screenshots"
 msgstr "צילומי מסך"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:234
 msgid "Take a screenshot interactively"
 msgstr "צילום מסך באופן הידודי"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:256
+#: data/org.gnome.shell.gschema.xml.in:246
 msgid "Take a screenshot"
 msgstr "צילום המסך"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:242
 msgid "Take a screenshot of a window"
 msgstr "צילום של חלון"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:248
+#: data/org.gnome.shell.gschema.xml.in:238
 msgid "Record a screencast interactively"
 msgstr "הסרטת המסך באופן הידודי"
 
@@ -244,28 +244,10 @@ msgstr ""
 "state of the checkbox."
 
 #: data/org.gnome.shell.gschema.xml.in:89
-msgid ""
-"Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
-"Whether the default Bluetooth adapter had set up devices associated to it"
-
-#: data/org.gnome.shell.gschema.xml.in:90
-msgid ""
-"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-"powered, or if there were devices set up associated with the default "
-"adapter. This will be reset if the default adapter is ever seen not to have "
-"devices associated to it."
-msgstr ""
-"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-"powered, or if there were devices set up associated with the default "
-"adapter. This will be reset if the default adapter is ever seen not to have "
-"devices associated to it."
-
-#: data/org.gnome.shell.gschema.xml.in:99
 msgid "The last selected non-default power profile"
 msgstr "The last selected non-default power profile"
 
-#: data/org.gnome.shell.gschema.xml.in:100
+#: data/org.gnome.shell.gschema.xml.in:90
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
 "toggling between two profiles, this key records the last selected non-"
@@ -275,11 +257,11 @@ msgstr ""
 "toggling between two profiles, this key records the last selected non-"
 "default profile."
 
-#: data/org.gnome.shell.gschema.xml.in:108
+#: data/org.gnome.shell.gschema.xml.in:98
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr "The last version the “Welcome to GNOME” dialog was shown for"
 
-#: data/org.gnome.shell.gschema.xml.in:109
+#: data/org.gnome.shell.gschema.xml.in:99
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -291,11 +273,11 @@ msgstr ""
 "number will represent versions that do not exist yet. This huge number can "
 "be used to effectively disable the dialog."
 
-#: data/org.gnome.shell.gschema.xml.in:142
+#: data/org.gnome.shell.gschema.xml.in:132
 msgid "Layout of the app picker"
 msgstr "Layout of the app picker"
 
-#: data/org.gnome.shell.gschema.xml.in:143
+#: data/org.gnome.shell.gschema.xml.in:133
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -307,103 +289,103 @@ msgstr ""
 "“application id” → 'data' pair. Currently, the following values are stored "
 "as 'data': • “position”: the position of the application icon in the page"
 
-#: data/org.gnome.shell.gschema.xml.in:158
+#: data/org.gnome.shell.gschema.xml.in:148
 msgid "Keybinding to open the application menu"
 msgstr "Keybinding to open the application menu"
 
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:149
 msgid "Keybinding to open the application menu."
 msgstr "Keybinding to open the application menu."
 
-#: data/org.gnome.shell.gschema.xml.in:165
-#: data/org.gnome.shell.gschema.xml.in:172
+#: data/org.gnome.shell.gschema.xml.in:155
+#: data/org.gnome.shell.gschema.xml.in:162
 msgid "Keybinding to shift between overview states"
 msgstr "Keybinding to shift between overview states"
 
-#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:156
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr "Keybinding to shift between session, window picker and app grid"
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:163
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr "Keybinding to shift between app grid, window picker and session"
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:169
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Keybinding to open the “Show Applications” view"
 
-#: data/org.gnome.shell.gschema.xml.in:180
+#: data/org.gnome.shell.gschema.xml.in:170
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:177
 msgid "Keybinding to open the overview"
 msgstr "Keybinding to open the overview"
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:178
 msgid "Keybinding to open the Activities Overview."
 msgstr "Keybinding to open the Activities Overview."
 
-#: data/org.gnome.shell.gschema.xml.in:194
+#: data/org.gnome.shell.gschema.xml.in:184
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Keybinding to toggle the visibility of the notification list"
 
-#: data/org.gnome.shell.gschema.xml.in:195
+#: data/org.gnome.shell.gschema.xml.in:185
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Keybinding to toggle the visibility of the notification list."
 
-#: data/org.gnome.shell.gschema.xml.in:201
+#: data/org.gnome.shell.gschema.xml.in:191
 msgid "Keybinding to focus the active notification"
 msgstr "Keybinding to focus the active notification"
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:192
 msgid "Keybinding to focus the active notification."
 msgstr "Keybinding to focus the active notification."
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:198
 msgid "Switch to application 1"
 msgstr "Switch to application 1"
 
-#: data/org.gnome.shell.gschema.xml.in:212
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Switch to application 2"
 msgstr "Switch to application 2"
 
-#: data/org.gnome.shell.gschema.xml.in:216
+#: data/org.gnome.shell.gschema.xml.in:206
 msgid "Switch to application 3"
 msgstr "Switch to application 3"
 
-#: data/org.gnome.shell.gschema.xml.in:220
+#: data/org.gnome.shell.gschema.xml.in:210
 msgid "Switch to application 4"
 msgstr "Switch to application 4"
 
-#: data/org.gnome.shell.gschema.xml.in:224
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "Switch to application 5"
 msgstr "Switch to application 5"
 
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:218
 msgid "Switch to application 6"
 msgstr "Switch to application 6"
 
-#: data/org.gnome.shell.gschema.xml.in:232
+#: data/org.gnome.shell.gschema.xml.in:222
 msgid "Switch to application 7"
 msgstr "Switch to application 7"
 
-#: data/org.gnome.shell.gschema.xml.in:236
+#: data/org.gnome.shell.gschema.xml.in:226
 msgid "Switch to application 8"
 msgstr "Switch to application 8"
 
-#: data/org.gnome.shell.gschema.xml.in:240
+#: data/org.gnome.shell.gschema.xml.in:230
 msgid "Switch to application 9"
 msgstr "Switch to application 9"
 
-#: data/org.gnome.shell.gschema.xml.in:265
-#: data/org.gnome.shell.gschema.xml.in:292
+#: data/org.gnome.shell.gschema.xml.in:255
+#: data/org.gnome.shell.gschema.xml.in:282
 msgid "Limit switcher to current workspace."
 msgstr "Limit switcher to current workspace."
 
-#: data/org.gnome.shell.gschema.xml.in:266
+#: data/org.gnome.shell.gschema.xml.in:256
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -411,11 +393,11 @@ msgstr ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:273
 msgid "The application icon mode."
 msgstr "The application icon mode."
 
-#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:274
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -424,66 +406,66 @@ msgstr ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
 "only” (shows only the application icon) or “both”."
+
+#: data/org.gnome.shell.gschema.xml.in:283
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
 
 #: data/org.gnome.shell.gschema.xml.in:293
-msgid ""
-"If true, only windows from the current workspace are shown in the switcher. "
-"Otherwise, all windows are included."
-msgstr ""
-"If true, only windows from the current workspace are shown in the switcher. "
-"Otherwise, all windows are included."
-
-#: data/org.gnome.shell.gschema.xml.in:303
 msgid "Locations"
 msgstr "Locations"
 
-#: data/org.gnome.shell.gschema.xml.in:304
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "The locations to show in world clocks"
 msgstr "The locations to show in world clocks"
 
-#: data/org.gnome.shell.gschema.xml.in:314
+#: data/org.gnome.shell.gschema.xml.in:304
 msgid "Automatic location"
 msgstr "Automatic location"
 
-#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:305
 msgid "Whether to fetch the current location or not"
 msgstr "Whether to fetch the current location or not"
 
-#: data/org.gnome.shell.gschema.xml.in:322
+#: data/org.gnome.shell.gschema.xml.in:312
 msgid "Location"
 msgstr "Location"
 
-#: data/org.gnome.shell.gschema.xml.in:323
+#: data/org.gnome.shell.gschema.xml.in:313
 msgid "The location for which to show a forecast"
 msgstr "The location for which to show a forecast"
 
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:325
 msgid "Attach modal dialog to the parent window"
 msgstr "Attach modal dialog to the parent window"
 
-#: data/org.gnome.shell.gschema.xml.in:336
-#: data/org.gnome.shell.gschema.xml.in:345
-#: data/org.gnome.shell.gschema.xml.in:353
-#: data/org.gnome.shell.gschema.xml.in:361
-#: data/org.gnome.shell.gschema.xml.in:369
+#: data/org.gnome.shell.gschema.xml.in:326
+#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:343
+#: data/org.gnome.shell.gschema.xml.in:351
+#: data/org.gnome.shell.gschema.xml.in:359
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 
-#: data/org.gnome.shell.gschema.xml.in:344
+#: data/org.gnome.shell.gschema.xml.in:334
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Enable edge tiling when dropping windows on screen edges"
 
-#: data/org.gnome.shell.gschema.xml.in:352
+#: data/org.gnome.shell.gschema.xml.in:342
 msgid "Workspaces are managed dynamically"
 msgstr "Workspaces are managed dynamically"
 
-#: data/org.gnome.shell.gschema.xml.in:360
+#: data/org.gnome.shell.gschema.xml.in:350
 msgid "Workspaces only on primary monitor"
 msgstr "Workspaces only on primary monitor"
 
-#: data/org.gnome.shell.gschema.xml.in:368
+#: data/org.gnome.shell.gschema.xml.in:358
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Delay focus changes in mouse mode until the pointer stops moving"
 
@@ -1163,7 +1145,7 @@ msgstr "פעולה זו לא הצליחה, נא לנסות שוב. עמך הסל
 msgid "%s is now known as %s"
 msgstr "השם של %s הוחלף ל־%s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:414
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
 msgid "Windows"
 msgstr "חלונות"
 
@@ -1630,11 +1612,11 @@ msgstr "כותרת לא ידועה"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:324
+#: js/ui/overviewControls.js:327
 msgid "Type to search"
 msgstr "יש להקליד כדי לחפש"
 
-#: js/ui/overviewControls.js:402
+#: js/ui/overviewControls.js:405
 msgid "Applications"
 msgstr "יישומים"
 
@@ -1966,7 +1948,7 @@ msgstr "טקסט גדול"
 msgid "Auto Rotate"
 msgstr "סיבוב אוטומטי"
 
-#: js/ui/status/bluetooth.js:171
+#: js/ui/status/bluetooth.js:151
 msgid "Bluetooth"
 msgstr "בלוטות'"
 
@@ -2042,6 +2024,46 @@ msgstr "התחברות אל %s"
 msgid "%s Hotspot"
 msgstr "נקודה חמה %s"
 
+#: js/ui/status/network.js:1464
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1465
+msgid "VPN Settings"
+msgstr "הגדרות VPN"
+
+#: js/ui/status/network.js:1708
+msgid "Wi–Fi"
+msgstr "רשת אלחוטית"
+
+#: js/ui/status/network.js:1710
+msgid "All Networks"
+msgstr "כל הרשתות"
+
+#: js/ui/status/network.js:1807
+msgid "Wired Connections"
+msgstr "התחברויות קוויות"
+
+#: js/ui/status/network.js:1808
+msgid "Wired Settings"
+msgstr "הגדרות רשת קווית"
+
+#: js/ui/status/network.js:1822
+msgid "Bluetooth Tethers"
+msgstr "קישרת בלוטות׳"
+
+#: js/ui/status/network.js:1823
+msgid "Bluetooth Settings"
+msgstr "הגדרות בלוטות׳"
+
+#: js/ui/status/network.js:1837
+msgid "Mobile Connections"
+msgstr "התחברויות ניידות"
+
+#: js/ui/status/network.js:1839
+msgid "Mobile Broadband Settings"
+msgstr "הגדרות פס־רחב נייד"
+
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
 msgstr "תאורת לילה"
@@ -2113,7 +2135,6 @@ msgid "Switch User…"
 msgstr "החלפת משתמש…"
 
 #: js/ui/status/system.js:235
-#| msgid "Lock Screen"
 msgctxt "action"
 msgid "Lock Screen"
 msgstr "נעילת מסך"
@@ -2486,8 +2507,8 @@ msgstr "הותקן ידנית"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
 "על מנת למצוא ולהוסיף הרחבות, יש לבקר באתר <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
@@ -2937,17 +2958,24 @@ msgstr[3] "‏‫%u ערוצי קלט"
 msgid "System Sounds"
 msgstr "צלילי מערכת"
 
+#~ msgid ""
+#~ "Whether the default Bluetooth adapter had set up devices associated to it"
+#~ msgstr ""
+#~ "Whether the default Bluetooth adapter had set up devices associated to it"
+
+#~ msgid ""
+#~ "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+#~ "powered, or if there were devices set up associated with the default "
+#~ "adapter. This will be reset if the default adapter is ever seen not to "
+#~ "have devices associated to it."
+#~ msgstr ""
+#~ "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+#~ "powered, or if there were devices set up associated with the default "
+#~ "adapter. This will be reset if the default adapter is ever seen not to "
+#~ "have devices associated to it."
+
 #~ msgid "Log Out"
 #~ msgstr "יציאה"
-
-#~ msgid "Wired Settings"
-#~ msgstr "הגדרות רשת קווית"
-
-#~ msgid "Mobile Broadband Settings"
-#~ msgstr "הגדרות פס־רחב נייד"
-
-#~ msgid "Bluetooth Settings"
-#~ msgstr "הגדרות בלוטות'"
 
 #~ msgid "Connect to Internet"
 #~ msgstr "התחברות לאינטרנט"
@@ -2987,12 +3015,6 @@ msgstr "צלילי מערכת"
 
 #~ msgid "Wi-Fi Settings"
 #~ msgstr "הגדרות רשת אלחוטית"
-
-#~ msgid "VPN Settings"
-#~ msgstr "הגדרות VPN"
-
-#~ msgid "VPN"
-#~ msgstr "VPN"
 
 #~ msgid "VPN Off"
 #~ msgstr "VPN כבוי"
