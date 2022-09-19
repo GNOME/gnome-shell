@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-05 17:40+0000\n"
-"PO-Revision-Date: 2022-09-05 22:44+0300\n"
+"POT-Creation-Date: 2022-09-17 18:27+0000\n"
+"PO-Revision-Date: 2022-09-19 22:50+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -69,22 +69,22 @@ msgid "Screenshots"
 msgstr "Ekrano nuotraukos"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:234
 msgid "Take a screenshot interactively"
 msgstr "Padaryti ekrano nuotrauką interaktyviai"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:256
+#: data/org.gnome.shell.gschema.xml.in:246
 msgid "Take a screenshot"
 msgstr "Padaryti ekrano nuotrauką"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:242
 msgid "Take a screenshot of a window"
 msgstr "Padaryti lango nuotrauką"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:248
+#: data/org.gnome.shell.gschema.xml.in:238
 msgid "Record a screencast interactively"
 msgstr "Interaktyviai įrašyti ekrano vaizdą"
 
@@ -246,28 +246,10 @@ msgstr ""
 "numatytąją žymimojo langelio būseną."
 
 #: data/org.gnome.shell.gschema.xml.in:89
-msgid ""
-"Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
-"Ar numatytasis Bluetooth adapteris buvo nusistatęs su juo susietus įrenginius"
-
-#: data/org.gnome.shell.gschema.xml.in:90
-msgid ""
-"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-"powered, or if there were devices set up associated with the default "
-"adapter. This will be reset if the default adapter is ever seen not to have "
-"devices associated to it."
-msgstr ""
-"Apvalkalas rodys Bluetooth meniu elementą tik tuo atveju, jei Bluetooth "
-"adapteris yra pajungtas arba jei buvo nustatyti įrenginiai, susieti su "
-"numatytuoju adapteriu. Tai bus atstatyta, jeigu kada nors bus pastebėta, kad "
-"numatytasis adapteris neturi su juo susietų įrenginių."
-
-#: data/org.gnome.shell.gschema.xml.in:99
 msgid "The last selected non-default power profile"
 msgstr "Paskutinis pasirinktas ne numatytasis energijos profilis"
 
-#: data/org.gnome.shell.gschema.xml.in:100
+#: data/org.gnome.shell.gschema.xml.in:90
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
 "toggling between two profiles, this key records the last selected non-"
@@ -277,13 +259,13 @@ msgstr ""
 "dviejų profilių keitimą, šiame rakte įrašomas paskutinis pasirinktas ne "
 "numatytasis profilis."
 
-#: data/org.gnome.shell.gschema.xml.in:108
+#: data/org.gnome.shell.gschema.xml.in:98
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr ""
 "Paskutinė versija, kuriai buvo rodytas dialogas „Sveiki pradėję naudoti "
 "GNOME“"
 
-#: data/org.gnome.shell.gschema.xml.in:109
+#: data/org.gnome.shell.gschema.xml.in:99
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -295,11 +277,11 @@ msgstr ""
 "versiją, o milžiniški skaičiai reiškia versijas, kurių dar nėra. Todėl "
 "milžiniškus skaičius galima naudoti šio dialogo išjungimui."
 
-#: data/org.gnome.shell.gschema.xml.in:142
+#: data/org.gnome.shell.gschema.xml.in:132
 msgid "Layout of the app picker"
 msgstr "Programų pasirinkimo išdėstymas"
 
-#: data/org.gnome.shell.gschema.xml.in:143
+#: data/org.gnome.shell.gschema.xml.in:133
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -312,108 +294,108 @@ msgstr ""
 "vertės yra įrašomos kaip „duomenys“: • “position”: programos piktogramos "
 "padėtis puslapyje"
 
-#: data/org.gnome.shell.gschema.xml.in:158
+#: data/org.gnome.shell.gschema.xml.in:148
 msgid "Keybinding to open the application menu"
 msgstr "Klavišų susiejimas, kuriuo atveriamas programų meniu"
 
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:149
 msgid "Keybinding to open the application menu."
 msgstr "Klavišų susiejimas, kuriuo atveriamas programų meniu."
 
-#: data/org.gnome.shell.gschema.xml.in:165
-#: data/org.gnome.shell.gschema.xml.in:172
+#: data/org.gnome.shell.gschema.xml.in:155
+#: data/org.gnome.shell.gschema.xml.in:162
 msgid "Keybinding to shift between overview states"
 msgstr "Klavišų susiejimas apžvalgos būsenų keitimui"
 
-#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:156
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Klavišų susiejimas perėjimui tarp seanso, langų pasirinkimo ir programų "
 "tinklelio"
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:163
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "Klavišų susiejimas perėjimui tarp programų tinklelio, langų pasirinkimo bei "
 "seanso."
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:169
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Klavišų susiejimas, kuriuo atveriamas rodinys „rodyti programas“"
 
-#: data/org.gnome.shell.gschema.xml.in:180
+#: data/org.gnome.shell.gschema.xml.in:170
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Klavišų susiejimas, kuriuo atveriamas rodinys „rodyti programas“ veiklų "
 "apžvalgoje."
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:177
 msgid "Keybinding to open the overview"
 msgstr "Klavišų susiejimas, kuriuo atveriama apžvalga"
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:178
 msgid "Keybinding to open the Activities Overview."
 msgstr "Klavišų susiejimas, kuriuo atveriama veiklų apžvalga."
 
-#: data/org.gnome.shell.gschema.xml.in:194
+#: data/org.gnome.shell.gschema.xml.in:184
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Klavišų susiejimas pranešimų juostos matomumui perjungti"
 
-#: data/org.gnome.shell.gschema.xml.in:195
+#: data/org.gnome.shell.gschema.xml.in:185
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Klavišų susiejimas pranešimų juostos matomumui perjungti."
 
-#: data/org.gnome.shell.gschema.xml.in:201
+#: data/org.gnome.shell.gschema.xml.in:191
 msgid "Keybinding to focus the active notification"
 msgstr "Klavišų susiejimas, kuriuo fokusuojamas aktyvus pranešimas"
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:192
 msgid "Keybinding to focus the active notification."
 msgstr "Klavišų susiejimas, kuriuo fokusuojamas aktyvus pranešimas."
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:198
 msgid "Switch to application 1"
 msgstr "Pereiti į programą 1"
 
-#: data/org.gnome.shell.gschema.xml.in:212
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Switch to application 2"
 msgstr "Pereiti į programą 2"
 
-#: data/org.gnome.shell.gschema.xml.in:216
+#: data/org.gnome.shell.gschema.xml.in:206
 msgid "Switch to application 3"
 msgstr "Pereiti į programą 3"
 
-#: data/org.gnome.shell.gschema.xml.in:220
+#: data/org.gnome.shell.gschema.xml.in:210
 msgid "Switch to application 4"
 msgstr "Pereiti į programą 4"
 
-#: data/org.gnome.shell.gschema.xml.in:224
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "Switch to application 5"
 msgstr "Pereiti į programą 5"
 
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:218
 msgid "Switch to application 6"
 msgstr "Pereiti į programą 6"
 
-#: data/org.gnome.shell.gschema.xml.in:232
+#: data/org.gnome.shell.gschema.xml.in:222
 msgid "Switch to application 7"
 msgstr "Pereiti į programą 7"
 
-#: data/org.gnome.shell.gschema.xml.in:236
+#: data/org.gnome.shell.gschema.xml.in:226
 msgid "Switch to application 8"
 msgstr "Pereiti į programą 8"
 
-#: data/org.gnome.shell.gschema.xml.in:240
+#: data/org.gnome.shell.gschema.xml.in:230
 msgid "Switch to application 9"
 msgstr "Pereiti į programą 9"
 
-#: data/org.gnome.shell.gschema.xml.in:265
-#: data/org.gnome.shell.gschema.xml.in:292
+#: data/org.gnome.shell.gschema.xml.in:255
+#: data/org.gnome.shell.gschema.xml.in:282
 msgid "Limit switcher to current workspace."
 msgstr "Apriboti perjungėją dabartine darbo sritimi."
 
-#: data/org.gnome.shell.gschema.xml.in:266
+#: data/org.gnome.shell.gschema.xml.in:256
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -421,11 +403,11 @@ msgstr ""
 "Jei teigiama, perjungimo lange bus rodomos tik programos, turinčios langų "
 "dabartinėje darbo srityje. Priešingu atveju įtraukiamos visos programos."
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:273
 msgid "The application icon mode."
 msgstr "Programos piktogramos veiksena."
 
-#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:274
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -435,7 +417,7 @@ msgstr ""
 "„thumbnail-only“ (rodo lango miniatiūrą), „app-icon-only“ (rodo tik "
 "programos piktogramą) arba „both“ (abu)."
 
-#: data/org.gnome.shell.gschema.xml.in:293
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -443,56 +425,56 @@ msgstr ""
 "Jei teigiama, perjungimo lange rodomi tik langai iš dabartinės darbo "
 "srities. Priešingu atveju įtraukiami visi langai."
 
-#: data/org.gnome.shell.gschema.xml.in:303
+#: data/org.gnome.shell.gschema.xml.in:293
 msgid "Locations"
 msgstr "Vietos"
 
-#: data/org.gnome.shell.gschema.xml.in:304
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "The locations to show in world clocks"
 msgstr "Vietos, kurias rodyti pasaulio laikrodžiuose"
 
-#: data/org.gnome.shell.gschema.xml.in:314
+#: data/org.gnome.shell.gschema.xml.in:304
 msgid "Automatic location"
 msgstr "Automatinė vieta"
 
-#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:305
 msgid "Whether to fetch the current location or not"
 msgstr "Ar gauti dabartinę vietą"
 
-#: data/org.gnome.shell.gschema.xml.in:322
+#: data/org.gnome.shell.gschema.xml.in:312
 msgid "Location"
 msgstr "Vieta"
 
-#: data/org.gnome.shell.gschema.xml.in:323
+#: data/org.gnome.shell.gschema.xml.in:313
 msgid "The location for which to show a forecast"
 msgstr "Vieta, kuriai rodyti prognozę"
 
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:325
 msgid "Attach modal dialog to the parent window"
 msgstr "Prikabinti modalinį dialogą prie tėvinio lango"
 
-#: data/org.gnome.shell.gschema.xml.in:336
-#: data/org.gnome.shell.gschema.xml.in:345
-#: data/org.gnome.shell.gschema.xml.in:353
-#: data/org.gnome.shell.gschema.xml.in:361
-#: data/org.gnome.shell.gschema.xml.in:369
+#: data/org.gnome.shell.gschema.xml.in:326
+#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:343
+#: data/org.gnome.shell.gschema.xml.in:351
+#: data/org.gnome.shell.gschema.xml.in:359
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr "Šis raktas perrašo org.gnome.mutter raktą, kai vykdoma GNOME Shell."
 
-#: data/org.gnome.shell.gschema.xml.in:344
+#: data/org.gnome.shell.gschema.xml.in:334
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Įjungti kraštų išplėtimą, kai langai numetami ekrano kraštuose"
 
-#: data/org.gnome.shell.gschema.xml.in:352
+#: data/org.gnome.shell.gschema.xml.in:342
 msgid "Workspaces are managed dynamically"
 msgstr "Darbo sritys yra tvarkomos dinamiškai"
 
-#: data/org.gnome.shell.gschema.xml.in:360
+#: data/org.gnome.shell.gschema.xml.in:350
 msgid "Workspaces only on primary monitor"
 msgstr "Darbo sritys tik pagrindiniame monitoriuje"
 
-#: data/org.gnome.shell.gschema.xml.in:368
+#: data/org.gnome.shell.gschema.xml.in:358
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Atidėti fokuso pakeitimus pelei iki žymiklis nustos judėti"
 
@@ -1171,7 +1153,7 @@ msgstr "Atsiprašome, tai nesuveikė. Bandykite dar kartą."
 msgid "%s is now known as %s"
 msgstr "%s nuo šiol vadinasi %s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:414
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
 msgid "Windows"
 msgstr "Langai"
 
@@ -1301,7 +1283,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "Atsijungti"
 
-#: js/ui/endSessionDialog.js:64
+#: js/ui/endSessionDialog.js:64 js/ui/status/system.js:167
 msgctxt "title"
 msgid "Power Off"
 msgstr "Išjungti"
@@ -1640,11 +1622,11 @@ msgstr "Nežinomas pavadinimas"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:324
+#: js/ui/overviewControls.js:327
 msgid "Type to search"
 msgstr "Rašykite, ko ieškote"
 
-#: js/ui/overviewControls.js:402
+#: js/ui/overviewControls.js:405
 msgid "Applications"
 msgstr "Programos"
 
@@ -1977,7 +1959,7 @@ msgstr "Didelis tekstas"
 msgid "Auto Rotate"
 msgstr "Automatiškai pasukti"
 
-#: js/ui/status/bluetooth.js:171
+#: js/ui/status/bluetooth.js:151
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -2038,26 +2020,22 @@ msgstr "<nežinoma>"
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/network.js:356
 #, javascript-format
-#| msgid "%s Disconnecting"
 msgid "Disconnect %s"
 msgstr "Atsijungti nuo %s"
 
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/network.js:358
 #, javascript-format
-#| msgid "Connect"
 msgid "Connect to %s"
 msgstr "Prisijungti prie %s"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1107
 #, javascript-format
-#| msgid "%s Hotspot Active"
 msgid "%s Hotspot"
 msgstr "Prieigos taškas %s"
 
 #: js/ui/status/nightLight.js:20
-#| msgid "Night Light On"
 msgid "Night Light"
 msgstr "Naktinis apšvietimas"
 
@@ -2077,8 +2055,6 @@ msgid "Power Saver"
 msgstr "Taupantis energiją"
 
 #: js/ui/status/powerProfiles.js:68
-#| msgctxt "search-result"
-#| msgid "Power off"
 msgid "Power Profiles"
 msgstr "Energijos profiliai"
 
@@ -2087,7 +2063,6 @@ msgid "Stop Screencast"
 msgstr "Stabdyti ekrano įrašą"
 
 #: js/ui/status/remoteAccess.js:144
-#| msgid "Stop Screencast"
 msgid "Stop Screen Sharing"
 msgstr "Stabdyti dalinimąsi ekranu"
 
@@ -2106,8 +2081,6 @@ msgid "Take Screenshot"
 msgstr "Padaryti ekrano nuotrauką"
 
 #: js/ui/status/system.js:161
-#| msgctxt "search-result"
-#| msgid "Power Off"
 msgid "Power Off Menu"
 msgstr "Išjungimo meniu"
 
@@ -2133,8 +2106,8 @@ msgid "Switch User…"
 msgstr "Keisti naudotoją…"
 
 #: js/ui/status/system.js:235
-#| msgctxt "search-result"
 #| msgid "Lock Screen"
+msgctxt "action"
 msgid "Lock Screen"
 msgstr "Ekrano užraktas"
 
@@ -2181,14 +2154,10 @@ msgid "Volume"
 msgstr "Garsumas"
 
 #: js/ui/status/volume.js:269
-#| msgid "%u Output"
-#| msgid_plural "%u Outputs"
 msgid "Sound Output"
 msgstr "Garso išvestis"
 
 #: js/ui/status/volume.js:337
-#| msgid "%u Input"
-#| msgid_plural "%u Inputs"
 msgid "Sound Input"
 msgstr "Garso įvestis"
 
@@ -2958,6 +2927,23 @@ msgstr[2] "%u įvesčių"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sistemos garsai"
+
+#~ msgid ""
+#~ "Whether the default Bluetooth adapter had set up devices associated to it"
+#~ msgstr ""
+#~ "Ar numatytasis Bluetooth adapteris buvo nusistatęs su juo susietus "
+#~ "įrenginius"
+
+#~ msgid ""
+#~ "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+#~ "powered, or if there were devices set up associated with the default "
+#~ "adapter. This will be reset if the default adapter is ever seen not to "
+#~ "have devices associated to it."
+#~ msgstr ""
+#~ "Apvalkalas rodys Bluetooth meniu elementą tik tuo atveju, jei Bluetooth "
+#~ "adapteris yra pajungtas arba jei buvo nustatyti įrenginiai, susieti su "
+#~ "numatytuoju adapteriu. Tai bus atstatyta, jeigu kada nors bus pastebėta, "
+#~ "kad numatytasis adapteris neturi su juo susietų įrenginių."
 
 #~ msgid "Bluetooth Settings"
 #~ msgstr "Bluetooth nustatymai"
