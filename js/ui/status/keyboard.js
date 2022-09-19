@@ -520,15 +520,18 @@ var InputSourceManager = class {
         }
 
         let mruSources = [];
-        for (let i = 0; i < this._mruSources.length; i++) {
-            for (let j = 0; j < sourcesList.length; j++) {
-                if (this._mruSources[i].type == sourcesList[j].type &&
-                    this._mruSources[i].id == sourcesList[j].id) {
-                    mruSources = mruSources.concat(sourcesList.splice(j, 1));
-                    break;
+        if (this._mruSources.length > 1) {
+            for (let i = 0; i < this._mruSources.length; i++) {
+                for (let j = 0; j < sourcesList.length; j++) {
+                    if (this._mruSources[i].type === sourcesList[j].type &&
+                        this._mruSources[i].id === sourcesList[j].id) {
+                        mruSources = mruSources.concat(sourcesList.splice(j, 1));
+                        break;
+                    }
                 }
             }
         }
+
         this._mruSources = mruSources.concat(sourcesList);
     }
 
