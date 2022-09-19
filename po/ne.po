@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nepali Translation Gnome 3.26 dev\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-05 17:40+0000\n"
-"PO-Revision-Date: 2022-09-08 03:22+0545\n"
+"POT-Creation-Date: 2022-09-17 18:27+0000\n"
+"PO-Revision-Date: 2022-09-19 10:55+0545\n"
 "Last-Translator: Pawan Chitrakar <chautari@gmail.com>\n"
 "Language-Team: Nepali Translation Team <chautari@gmail.com>\n"
 "Language: ne\n"
@@ -64,19 +64,19 @@ msgstr "मनपर्ने अनुप्रयोग ९ सक्रिय
 msgid "Screenshots"
 msgstr "स्क्रिनसट"
 
-#: data/50-gnome-shell-screenshots.xml:9 data/org.gnome.shell.gschema.xml.in:244
+#: data/50-gnome-shell-screenshots.xml:9 data/org.gnome.shell.gschema.xml.in:234
 msgid "Take a screenshot interactively"
 msgstr "अन्तरक्रियात्मक रूपमा स्क्रिनसट लिनुहोस्"
 
-#: data/50-gnome-shell-screenshots.xml:12 data/org.gnome.shell.gschema.xml.in:256
+#: data/50-gnome-shell-screenshots.xml:12 data/org.gnome.shell.gschema.xml.in:246
 msgid "Take a screenshot"
 msgstr "स्क्रीनको तस्बिर लीने"
 
-#: data/50-gnome-shell-screenshots.xml:15 data/org.gnome.shell.gschema.xml.in:252
+#: data/50-gnome-shell-screenshots.xml:15 data/org.gnome.shell.gschema.xml.in:242
 msgid "Take a screenshot of a window"
 msgstr "विन्डोको तस्बिर लीने"
 
-#: data/50-gnome-shell-screenshots.xml:18 data/org.gnome.shell.gschema.xml.in:248
+#: data/50-gnome-shell-screenshots.xml:18 data/org.gnome.shell.gschema.xml.in:238
 msgid "Record a screencast interactively"
 msgstr "अन्तरक्रियात्मक रूपमा स्क्रिनकास्ट रेकर्ड गर्नुहोस्"
 
@@ -127,12 +127,12 @@ msgstr "सक्षम पार्नका लागि विस्तार
 #: data/org.gnome.shell.gschema.xml.in:17
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which should be loaded. "
-"Any extension that wants to be loaded needs to be in this list. You can also manipulate this "
-"list with the EnableExtension and DisableExtension D-Bus methods on org.gnome.Shell."
+"Any extension that wants to be loaded needs to be in this list. You can also manipulate this list "
+"with the EnableExtension and DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"जिनोम शेल विस्तारसँग UUID गुण छ; यो कुञ्जीले लोड गर्नुपर्ने विस्तारहरू सूचीबद्ध गर्दछ । लोड हुन चाहने कुनै पनि "
-"विस्तार यो सूचीमा हुनु आवश्यक छ । तपाईँले org.gnome.Shell मा EnableExtension र DisableExtension D-Bus "
-"विधिहरूसँग पनि यो सूची मिलाउन सक्नुहुन्छ ।"
+"जिनोम शेल विस्तारसँग UUID गुण छ; यो कुञ्जीले लोड गर्नुपर्ने विस्तारहरू सूचीबद्ध गर्दछ । लोड हुन चाहने कुनै पनि विस्तार "
+"यो सूचीमा हुनु आवश्यक छ । तपाईँले org.gnome.Shell मा EnableExtension र DisableExtension D-Bus विधिहरूसँग "
+"पनि यो सूची मिलाउन सक्नुहुन्छ ।"
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "UUIDs of extensions to force disabling"
@@ -140,14 +140,14 @@ msgstr "अक्षम पार्नका लागि विस्तार
 
 #: data/org.gnome.shell.gschema.xml.in:27
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which should be "
-"disabled, even if loaded as part of the current mode. You can also manipulate this list with "
-"the EnableExtension and DisableExtension D-Bus methods on org.gnome.Shell. This key takes "
-"precedence over the “enabled-extensions” setting."
+"GNOME Shell extensions have a UUID property; this key lists extensions which should be disabled, "
+"even if loaded as part of the current mode. You can also manipulate this list with the "
+"EnableExtension and DisableExtension D-Bus methods on org.gnome.Shell. This key takes precedence "
+"over the “enabled-extensions” setting."
 msgstr ""
 "जिनोम शेल विस्तारसँग UUID गुण छ; यो कुञ्जीले हालको मोडको भागको रूपमा लोड गरिएको भएता पनि, अक्षम गरिनुपर्ने "
-"विस्तारहरू सूचीबद्ध गर्दछ । तपाईँले org.gnome.Shell मा EnableExtension र DisableExtension D-Bus "
-"विधिहरूसँग पनि यो सूची मिलाउन सक्नुहुन्छ । यो कुञ्जीले \"सक्षम-विस्तार\" सेटिङ भन्दा प्राथमिकता लिन्छ ।"
+"विस्तारहरू सूचीबद्ध गर्दछ । तपाईँले org.gnome.Shell मा EnableExtension र DisableExtension D-Bus विधिहरूसँग "
+"पनि यो सूची मिलाउन सक्नुहुन्छ । यो कुञ्जीले \"सक्षम-विस्तार\" सेटिङ भन्दा प्राथमिकता लिन्छ ।"
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -164,20 +164,19 @@ msgstr "विस्तार संस्करण अनुकूलताक�
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid ""
-"GNOME Shell will only load extensions that claim to support the current running version. "
-"Enabling this option will disable this check and try to load all extensions regardless of the "
-"versions they claim to support."
+"GNOME Shell will only load extensions that claim to support the current running version. Enabling "
+"this option will disable this check and try to load all extensions regardless of the versions "
+"they claim to support."
 msgstr ""
-"जिनोम शेलले हालको चलिरहेको संस्करणलाई समर्थन गर्ने दावा विस्तार मात्र लोड गर्नेछ । यो विकल्प सक्षम पार्दा यो "
-"जाँच अक्षम पारिनेछ र तिनीहरूले समर्थन गरेको दावी गरे तापनि सबै विस्तारहरू लोड गर्ने प्रयास गर्नुहोस् ।"
+"जिनोम शेलले हालको चलिरहेको संस्करणलाई समर्थन गर्ने दावा विस्तार मात्र लोड गर्नेछ । यो विकल्प सक्षम पार्दा यो जाँच "
+"अक्षम पारिनेछ र तिनीहरूले समर्थन गरेको दावी गरे तापनि सबै विस्तारहरू लोड गर्ने प्रयास गर्नुहोस् ।"
 
 #: data/org.gnome.shell.gschema.xml.in:54
 msgid "List of desktop file IDs for favorite applications"
 msgstr "अनुकूल अनुप्रयोगका लागि डेस्कटप फाइल IDको सूची"
 
 #: data/org.gnome.shell.gschema.xml.in:55
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the favorites area."
+msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
 msgstr "यी पहिचायकसँग सङ्गत अनुप्रयोगहरू मनपर्ने क्षेत्रमा प्रदर्शित हुनेछन् ।"
 
 #: data/org.gnome.shell.gschema.xml.in:62
@@ -195,10 +194,9 @@ msgstr "प्रयोगकर्ता मेनुमा जहिले प
 
 #: data/org.gnome.shell.gschema.xml.in:72
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in single-user, single-"
-"session situations."
-msgstr ""
-"यो कुञ्जीले एकल-प्रयोगकर्ता, एकल सत्र परिस्थितिहरूमा \"लग आउट\" मेनु वस्तुको स्वचालित लुकेर अधिरोहण गर्दछ ।"
+"This key overrides the automatic hiding of the “Log out” menu item in single-user, single-session "
+"situations."
+msgstr "यो कुञ्जीले एकल-प्रयोगकर्ता, एकल सत्र परिस्थितिहरूमा \"लग आउट\" मेनु वस्तुको स्वचालित लुकेर अधिरोहण गर्दछ ।"
 
 #: data/org.gnome.shell.gschema.xml.in:79
 msgid "Whether to remember password for mounting encrypted or remote filesystems"
@@ -206,173 +204,160 @@ msgstr "गुप्तिकरण गरिएको वा टाढाको
 
 #: data/org.gnome.shell.gschema.xml.in:80
 msgid ""
-"The shell will request a password when an encrypted device or a remote filesystem is mounted. "
-"If the password can be saved for future use a “Remember Password” checkbox will be present. "
-"This key sets the default state of the checkbox."
+"The shell will request a password when an encrypted device or a remote filesystem is mounted. If "
+"the password can be saved for future use a “Remember Password” checkbox will be present. This key "
+"sets the default state of the checkbox."
 msgstr ""
-"गुप्तिकृत यन्त्र वा टाढाको फाइल प्रणाली माउन्ट हुँदा शेलले पासवर्ड अनुरोध गर्नेछ । यदि भविष्यका लागि पासवर्ड "
-"बचत गर्न सकिन्छ भने \"पासवर्ड सम्झनुहोस्\" जाँच बाकस उपस्थित हुनेछ । यस कुञ्जीले जाँच बाकसको पूर्वनिर्धारित "
-"स्थिति सेट गर्दछ ।"
+"गुप्तिकृत यन्त्र वा टाढाको फाइल प्रणाली माउन्ट हुँदा शेलले पासवर्ड अनुरोध गर्नेछ । यदि भविष्यका लागि पासवर्ड बचत "
+"गर्न सकिन्छ भने \"पासवर्ड सम्झनुहोस्\" जाँच बाकस उपस्थित हुनेछ । यस कुञ्जीले जाँच बाकसको पूर्वनिर्धारित स्थिति सेट "
+"गर्दछ ।"
 
 #: data/org.gnome.shell.gschema.xml.in:89
-msgid "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr "पूर्वनिर्धारित ब्लुतुथ एडप्टरले यसमा सम्बन्धित यन्त्र सेटअप गरेको थियो या थिएन ।"
-
-#: data/org.gnome.shell.gschema.xml.in:90
-msgid ""
-"The shell will only show a Bluetooth menu item if a Bluetooth adapter is powered, or if there "
-"were devices set up associated with the default adapter. This will be reset if the default "
-"adapter is ever seen not to have devices associated to it."
-msgstr ""
-"यदि ब्लुतुथ एडप्टर शक्तिमा छ भने वा पूर्वनिर्धारित एडप्टरसँग सम्बन्धित यन्त्र सेट गरिएको भएमा शेलले ब्लुतुथ मेनु वस्तु "
-"मात्र देखाउनेछ । यदि पूर्वनिर्धारित एडप्टरसँग कहिल्यै पनि यन्त्र सम्बन्धित छैन भने यो रिसेट हुनेछ ।"
-
-#: data/org.gnome.shell.gschema.xml.in:99
 msgid "The last selected non-default power profile"
 msgstr "अन्तिम चयन गरिएको गैर-पूर्वनिर्धारित पावर प्रोफाइल"
 
-#: data/org.gnome.shell.gschema.xml.in:100
+#: data/org.gnome.shell.gschema.xml.in:90
 msgid ""
-"Some systems support more than two power profiles. In order to still support toggling between "
-"two profiles, this key records the last selected non-default profile."
+"Some systems support more than two power profiles. In order to still support toggling between two "
+"profiles, this key records the last selected non-default profile."
 msgstr ""
-"केही प्रणालीहरूले दुई भन्दा बढी पावर प्रोफाइलहरू समर्थन गर्दछ। अझै पनि दुई प्रोफाइलहरू बीच टगलिङ समर्थन गर्न, "
-"यो कुञ्जीले अन्तिम चयन गरिएको गैर-पूर्वनिर्धारित प्रोफाइल रेकर्ड गर्दछ।"
+"केही प्रणालीहरूले दुई भन्दा बढी पावर प्रोफाइलहरू समर्थन गर्दछ। अझै पनि दुई प्रोफाइलहरू बीच टगलिङ समर्थन गर्न, यो "
+"कुञ्जीले अन्तिम चयन गरिएको गैर-पूर्वनिर्धारित प्रोफाइल रेकर्ड गर्दछ।"
 
-#: data/org.gnome.shell.gschema.xml.in:108
+#: data/org.gnome.shell.gschema.xml.in:98
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr "\"जिनोममा स्वागत छ\" संवादको अन्तिम संस्करण यसका लागि देखाइएको थियो"
 
-#: data/org.gnome.shell.gschema.xml.in:109
+#: data/org.gnome.shell.gschema.xml.in:99
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last shown. An empty "
-"string represents the oldest possible version, and a huge number will represent versions that "
-"do not exist yet. This huge number can be used to effectively disable the dialog."
+"string represents the oldest possible version, and a huge number will represent versions that do "
+"not exist yet. This huge number can be used to effectively disable the dialog."
 msgstr ""
 "यस कुञ्जीले पछिल्लो पटक देखाइएको \"जिनोममा स्वागत छ\" संवाद कुन संस्करणका लागि निर्धारण गर्दछ । एउटा खाली "
-"स्ट्रिङले सबैभन्दा पुरानो सम्भावित संस्करणलाई प्रतिनिधित्व गर्दछ, र ठूलो सङ्ख्याले संस्करणहरूको प्रतिनिधित्व गर्दछ "
-"जुन अहिलेसम्म अवस्थित छैन । यो ठूलो सङ्ख्यालाई प्रभावकारी तरिकाले संवाद अक्षम पार्न प्रयोग गर्न सकिन्छ ।"
+"स्ट्रिङले सबैभन्दा पुरानो सम्भावित संस्करणलाई प्रतिनिधित्व गर्दछ, र ठूलो सङ्ख्याले संस्करणहरूको प्रतिनिधित्व गर्दछ जुन "
+"अहिलेसम्म अवस्थित छैन । यो ठूलो सङ्ख्यालाई प्रभावकारी तरिकाले संवाद अक्षम पार्न प्रयोग गर्न सकिन्छ ।"
 
-#: data/org.gnome.shell.gschema.xml.in:142
+#: data/org.gnome.shell.gschema.xml.in:132
 msgid "Layout of the app picker"
 msgstr "अनुप्रयोग पिकरको सजावट"
 
-#: data/org.gnome.shell.gschema.xml.in:143
+#: data/org.gnome.shell.gschema.xml.in:133
 msgid ""
-"Layout of the app picker. Each entry in the array is a page. Pages are stored in the order "
-"they appear in GNOME Shell. Each page contains an “application id” → 'data' pair. Currently, "
-"the following values are stored as 'data': • “position”: the position of the application icon "
-"in the page"
+"Layout of the app picker. Each entry in the array is a page. Pages are stored in the order they "
+"appear in GNOME Shell. Each page contains an “application id” → 'data' pair. Currently, the "
+"following values are stored as 'data': • “position”: the position of the application icon in the "
+"page"
 msgstr ""
-"अनुप्रयोग पिकरको सजावट । एरेमा प्रत्येक प्रविष्टि एउटा पृष्ठ हो । पृष्ठहरू जिनोम शेलमा देखिने क्रममा भण्डारण "
-"गरिएका छन् । प्रत्येक पृष्ठले 'डाटा' जोडी→ \"अनुप्रयोग आईडी\" समाविष्ट गर्दछ । हाल, निम्न मानहरू 'डाटा' को "
-"रूपमा भण्डारण गरिएका छन्: • \"स्थिति\": पृष्ठमा अनुप्रयोग प्रतिमाको स्थिति"
+"अनुप्रयोग पिकरको सजावट । एरेमा प्रत्येक प्रविष्टि एउटा पृष्ठ हो । पृष्ठहरू जिनोम शेलमा देखिने क्रममा भण्डारण गरिएका "
+"छन् । प्रत्येक पृष्ठले 'डाटा' जोडी→ \"अनुप्रयोग आईडी\" समाविष्ट गर्दछ । हाल, निम्न मानहरू 'डाटा' को रूपमा "
+"भण्डारण गरिएका छन्: • \"स्थिति\": पृष्ठमा अनुप्रयोग प्रतिमाको स्थिति"
 
-#: data/org.gnome.shell.gschema.xml.in:158
+#: data/org.gnome.shell.gschema.xml.in:148
 msgid "Keybinding to open the application menu"
 msgstr "मेनुबारलाई सक्रिय गर्न किबाइन्डिङ्ग"
 
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:149
 msgid "Keybinding to open the application menu."
 msgstr "मेनुबारलाई सक्रिय गर्न किबाइन्डिङ्ग।"
 
-#: data/org.gnome.shell.gschema.xml.in:165 data/org.gnome.shell.gschema.xml.in:172
+#: data/org.gnome.shell.gschema.xml.in:155 data/org.gnome.shell.gschema.xml.in:162
 msgid "Keybinding to shift between overview states"
 msgstr "सदृष्य स्थिति बीचमा शिफ्ट गर्न कुञ्जी बाइन्डिङ"
 
-#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:156
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr "सत्र, सञ्झ्याल पिकर र अनुप्रयोग ग्रिड बीचमा शिफ्ट गर्न कुञ्जी बाइन्डिङ ।"
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:163
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr "अनुप्रयोग ग्रिड, सञ्झ्याल पिकर र सत्र बीचमा शिफ्ट गर्न कुञ्जी बाइन्डिङ"
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:169
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "\"अनुप्रयोग देखाउनुहोस्\" दृश्य खोल्नका लागि कुञ्जी बाइन्डिङ ।"
 
-#: data/org.gnome.shell.gschema.xml.in:180
+#: data/org.gnome.shell.gschema.xml.in:170
 msgid "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr "क्रियाकलाप अवलोकनको \"अनुप्रयोग देखाउनुहोस्\" सदृश्य खोल्नका लागि कुञ्जी बाइन्डिङ ।"
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:177
 msgid "Keybinding to open the overview"
 msgstr "सदृश्य खुल्नका लागि कुञ्जी बाइन्डिङ"
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:178
 msgid "Keybinding to open the Activities Overview."
 msgstr "क्रियाकलापको सदृश्य खोल्नका लागि कुञ्जी बाइन्डिङ ।"
 
-#: data/org.gnome.shell.gschema.xml.in:194
+#: data/org.gnome.shell.gschema.xml.in:184
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "सूचना सूचीको दृश्यात्मकता टगल गर्ने कुञ्जी बाइन्डिङ"
 
-#: data/org.gnome.shell.gschema.xml.in:195
+#: data/org.gnome.shell.gschema.xml.in:185
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "सूचना सूचीको दृश्यात्मकता टगल गर्ने कुञ्जी बाइन्डिङ ।"
 
-#: data/org.gnome.shell.gschema.xml.in:201
+#: data/org.gnome.shell.gschema.xml.in:191
 msgid "Keybinding to focus the active notification"
 msgstr "सक्रिय सूचना केन्द्रित गर्न कुञ्जी बाइन्डिङ"
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:192
 msgid "Keybinding to focus the active notification."
 msgstr "सक्रिय सूचना केन्द्रित गर्न कुञ्जी बाइन्डिङ ।"
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:198
 msgid "Switch to application 1"
 msgstr "अनुप्रयोग १ स्विच गर्नुहोस्"
 
-#: data/org.gnome.shell.gschema.xml.in:212
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Switch to application 2"
 msgstr "अनुप्रयोग २ स्विच गर्नुहोस्"
 
-#: data/org.gnome.shell.gschema.xml.in:216
+#: data/org.gnome.shell.gschema.xml.in:206
 msgid "Switch to application 3"
 msgstr "अनुप्रयोग ३ स्विच गर्नुहोस्"
 
-#: data/org.gnome.shell.gschema.xml.in:220
+#: data/org.gnome.shell.gschema.xml.in:210
 msgid "Switch to application 4"
 msgstr "अनुप्रयोग ४ स्विच गर्नुहोस्"
 
-#: data/org.gnome.shell.gschema.xml.in:224
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "Switch to application 5"
 msgstr "अनुप्रयोग ५ स्विच गर्नुहोस्"
 
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:218
 msgid "Switch to application 6"
 msgstr "अनुप्रयोग ६ स्विच गर्नुहोस्"
 
-#: data/org.gnome.shell.gschema.xml.in:232
+#: data/org.gnome.shell.gschema.xml.in:222
 msgid "Switch to application 7"
 msgstr "अनुप्रयोग ७ स्विच गर्नुहोस्"
 
-#: data/org.gnome.shell.gschema.xml.in:236
+#: data/org.gnome.shell.gschema.xml.in:226
 msgid "Switch to application 8"
 msgstr "अनुप्रयोग ८ स्विच गर्नुहोस्"
 
-#: data/org.gnome.shell.gschema.xml.in:240
+#: data/org.gnome.shell.gschema.xml.in:230
 msgid "Switch to application 9"
 msgstr "अनुप्रयोग ९ स्विच गर्नुहोस्"
 
-#: data/org.gnome.shell.gschema.xml.in:265 data/org.gnome.shell.gschema.xml.in:292
+#: data/org.gnome.shell.gschema.xml.in:255 data/org.gnome.shell.gschema.xml.in:282
 msgid "Limit switcher to current workspace."
 msgstr "हालको कार्यस्थानमा स्विचर सिमित गर्नुहोस् ।"
 
-#: data/org.gnome.shell.gschema.xml.in:266
+#: data/org.gnome.shell.gschema.xml.in:256
 msgid ""
-"If true, only applications that have windows on the current workspace are shown in the "
-"switcher. Otherwise, all applications are included."
+"If true, only applications that have windows on the current workspace are shown in the switcher. "
+"Otherwise, all applications are included."
 msgstr ""
 "ठीक भएमा, हालको कार्यस्थानमा सञ्झ्याल भएका अनुप्रयोगहरू मात्र स्विचकर्तामा देखिन्छन् । अन्यथा, सबै अनुप्रयोगहरू "
 "समावेश गरिएका छन् ।"
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:273
 msgid "The application icon mode."
 msgstr "अनुप्रयोग प्रतिमा मात्रै."
 
-#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:274
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities are “thumbnail-"
 "only” (shows a thumbnail of the window), “app-icon-only” (shows only the application icon) or "
@@ -381,61 +366,60 @@ msgstr ""
 "स्विचरमा सञ्झ्याल देखाउने तरिका कन्फिगर गर्दछ । वैध सम्भावनाहरू \"थम्बनेल मात्र\" (सञ्झ्यालको थम्बनेल देखाउँदछ), "
 "\"अनुप्रयोग प्रतिमा-मात्र\" (अनुप्रयोग प्रतिमा मात्र देखाउँदछ) वा \"दुबै\" हुन्।"
 
-#: data/org.gnome.shell.gschema.xml.in:293
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. Otherwise, all "
 "windows are included."
 msgstr ""
-"ठीक भएमा, हालको कार्यस्थानबाट सञ्झ्याल मात्र स्विचकर्तामा देखाइन्छ । अन्यथा, सबै सञ्झ्यालहरू समावेश गरिएका छन् "
-"।"
+"ठीक भएमा, हालको कार्यस्थानबाट सञ्झ्याल मात्र स्विचकर्तामा देखाइन्छ । अन्यथा, सबै सञ्झ्यालहरू समावेश गरिएका छन् ।"
 
-#: data/org.gnome.shell.gschema.xml.in:303
+#: data/org.gnome.shell.gschema.xml.in:293
 msgid "Locations"
 msgstr "स्थानहरू"
 
-#: data/org.gnome.shell.gschema.xml.in:304
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "The locations to show in world clocks"
 msgstr "विश्व घडिमा प्रदर्शन हुने स्थानहरु"
 
-#: data/org.gnome.shell.gschema.xml.in:314
+#: data/org.gnome.shell.gschema.xml.in:304
 msgid "Automatic location"
 msgstr "स्वत: स्थान"
 
-#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:305
 msgid "Whether to fetch the current location or not"
 msgstr "हालको स्थान ल्याउने वा नल्याउने"
 
-#: data/org.gnome.shell.gschema.xml.in:322
+#: data/org.gnome.shell.gschema.xml.in:312
 msgid "Location"
 msgstr "स्थान"
 
-#: data/org.gnome.shell.gschema.xml.in:323
+#: data/org.gnome.shell.gschema.xml.in:313
 msgid "The location for which to show a forecast"
 msgstr "मौसम पूर्वानुमान देखाउनका लागि स्थान"
 
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:325
 msgid "Attach modal dialog to the parent window"
 msgstr "प्रमूल सञ्झ्यालमा मोडल संवाद संलग्न गर्नुहोस्"
 
-#: data/org.gnome.shell.gschema.xml.in:336 data/org.gnome.shell.gschema.xml.in:345
-#: data/org.gnome.shell.gschema.xml.in:353 data/org.gnome.shell.gschema.xml.in:361
-#: data/org.gnome.shell.gschema.xml.in:369
+#: data/org.gnome.shell.gschema.xml.in:326 data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:343 data/org.gnome.shell.gschema.xml.in:351
+#: data/org.gnome.shell.gschema.xml.in:359
 msgid "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr "यो कुञ्जीले जिनोम शेल चलाउदा org.gnome.mutter मा कुञ्जी अधिरोहण गर्दछ ।"
 
-#: data/org.gnome.shell.gschema.xml.in:344
+#: data/org.gnome.shell.gschema.xml.in:334
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "स्क्रिन किनाराहरूमा सञ्झ्याल छोड्दा किनारा टायल सक्षम गर्नुहोस्"
 
-#: data/org.gnome.shell.gschema.xml.in:352
+#: data/org.gnome.shell.gschema.xml.in:342
 msgid "Workspaces are managed dynamically"
 msgstr "कार्यस्थान गतिशील रूपमा व्यवस्थापन गरिन्छ"
 
-#: data/org.gnome.shell.gschema.xml.in:360
+#: data/org.gnome.shell.gschema.xml.in:350
 msgid "Workspaces only on primary monitor"
 msgstr "प्राथमिक मोनिटरमा मात्र कार्यस्थान"
 
-#: data/org.gnome.shell.gschema.xml.in:368
+#: data/org.gnome.shell.gschema.xml.in:358
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "सूचक ले चालन नरोकेसम्म माउस मोडमा फोकस परिवर्तन विलम्ब गर्नुहोस्"
 
@@ -450,11 +434,11 @@ msgstr "केही गलत भयो"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:23
 msgid ""
-"We’re very sorry, but there’s been a problem: the settings for this extension can’t be "
-"displayed. We recommend that you report the issue to the extension authors."
+"We’re very sorry, but there’s been a problem: the settings for this extension can’t be displayed. "
+"We recommend that you report the issue to the extension authors."
 msgstr ""
-"हामीलाई धेरै दुःख लाग्छ, तर त्यहाँ एउटा समस्या भएको छ: यो विस्तारका लागि सेटिङ हरू प्रदर्शन गर्न सकिँदैन। "
-"हामी तपाईँलाई यो विषय विस्तार लेखकलाई प्रतिवेदन गर्न सुझाव दिन्छौं ।"
+"हामीलाई धेरै दुःख लाग्छ, तर त्यहाँ एउटा समस्या भएको छ: यो विस्तारका लागि सेटिङ हरू प्रदर्शन गर्न सकिँदैन। हामी "
+"तपाईँलाई यो विषय विस्तार लेखकलाई प्रतिवेदन गर्न सुझाव दिन्छौं ।"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:48
 msgid "Technical Details"
@@ -758,11 +742,11 @@ msgstr "हटस्पट लगईन"
 
 #: js/portalHelper/main.js:108
 msgid ""
-"Your connection to this hotspot login is not secure. Passwords or other information you enter "
-"on this page can be viewed by people nearby."
+"Your connection to this hotspot login is not secure. Passwords or other information you enter on "
+"this page can be viewed by people nearby."
 msgstr ""
-"यो हटस्पट लगइनमा तपाईँको जडान सुरक्षित छैन । यो पृष्ठमा तपाईँले प्रविष्ट गरेको पासवर्ड वा अन्य जानकारी "
-"नजिकका मानिसहरूले हेर्न सक्छन् ।"
+"यो हटस्पट लगइनमा तपाईँको जडान सुरक्षित छैन । यो पृष्ठमा तपाईँले प्रविष्ट गरेको पासवर्ड वा अन्य जानकारी नजिकका "
+"मानिसहरूले हेर्न सक्छन् ।"
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -966,11 +950,10 @@ msgstr "\"%s\" ले प्रतिक्रिया दिइरहेको
 
 #: js/ui/closeDialog.js:41
 msgid ""
-"You may choose to wait a short while for it to continue or force the application to quit "
-"entirely."
+"You may choose to wait a short while for it to continue or force the application to quit entirely."
 msgstr ""
-"तपाईँले अनुप्रयोगलाई जारी राख्न केही समय प्रतिक्षा गर्नुहोस् रोज्न वा यसलाई पूर्ण रूपमा अन्त्य गर्न दवाब दिन "
-"सक्नुहुन्छ ।"
+"तपाईँले अनुप्रयोगलाई जारी राख्न केही समय प्रतिक्षा गर्नुहोस् रोज्न वा यसलाई पूर्ण रूपमा अन्त्य गर्न दवाब दिन सक्नुहुन्छ "
+"।"
 
 #: js/ui/closeDialog.js:69
 msgid "Force Quit"
@@ -1099,7 +1082,7 @@ msgstr "त्यो कार्य भएन : पुन प्रयास �
 msgid "%s is now known as %s"
 msgstr "%s अब %s भएको छ"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:414
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
 msgid "Windows"
 msgstr "सञ्झ्यालहरू"
 
@@ -1227,7 +1210,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "लगआउट"
 
-#: js/ui/endSessionDialog.js:64
+#: js/ui/endSessionDialog.js:64 js/ui/status/system.js:167
 msgctxt "title"
 msgid "Power Off"
 msgstr "पावर बन्द"
@@ -1314,11 +1297,11 @@ msgstr "पुन शुरु रस्तरवृद्धि गर्नु
 #: js/ui/endSessionDialog.js:128
 #, javascript-format
 msgid ""
-"%s %s will be installed after restart. Upgrade installation can take a long time: ensure that "
-"you have backed up and that the computer is plugged in."
+"%s %s will be installed after restart. Upgrade installation can take a long time: ensure that you "
+"have backed up and that the computer is plugged in."
 msgstr ""
-"%s %s पुन: सुरुआत पछि स्थापना हुनेछ । स्तरवृद्धि स्थापना गर्न धेरै समय लाग्न सक्छ: तपाईँले जगेडा गर्नुभएको छ र "
-"कम्प्युटर प्लगइन गरिएको छ भन्ने निश्चित गर्नुहोस् ।"
+"%s %s पुन: सुरुआत पछि स्थापना हुनेछ । स्तरवृद्धि स्थापना गर्न धेरै समय लाग्न सक्छ: तपाईँले जगेडा गर्नुभएको छ र कम्प्युटर "
+"प्लगइन गरिएको छ भन्ने निश्चित गर्नुहोस् ।"
 
 #: js/ui/endSessionDialog.js:285
 msgid "Low battery power: please plug in before installing updates."
@@ -1408,8 +1391,8 @@ msgstr "ढिलो कुञ्जी बन्द छ"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the Slow Keys "
-"feature, which affects the way your keyboard works."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the Slow Keys feature, "
+"which affects the way your keyboard works."
 msgstr ""
 "तपाईँले भर्खरै ८ सेकेन्डका लागि शिफ्ट कुञ्जी तल सार्नु भएको छ । यो सुस्त कुञ्जी विशेषताका लागि सर्टकट हो, जसले "
 "तपाईँको कुञ्जीपाटीले कार्य गर्ने तरिकालाई असर गर्दछ ।"
@@ -1432,11 +1415,11 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:45
 msgid ""
-"You just pressed two keys at once, or pressed the Shift key 5 times in a row. This turns off "
-"the Sticky Keys feature, which affects the way your keyboard works."
+"You just pressed two keys at once, or pressed the Shift key 5 times in a row. This turns off the "
+"Sticky Keys feature, which affects the way your keyboard works."
 msgstr ""
-"तपाईँले एकैपटकमा दुईवटा कुञ्जी थिच्नुहुन्छ, वा पङ्क्तिमा Shift कुञ्जी ५ पटक थिच्नुहुन्छ । यसले टाँसिने कुञ्जी विशेषता "
-"बन्द गर्दछ, जसले तपाईँको कुञ्जीपाटीले कार्य गर्ने तरिकालाई असर गर्दछ ।"
+"तपाईँले एकैपटकमा दुईवटा कुञ्जी थिच्नुहुन्छ, वा पङ्क्तिमा Shift कुञ्जी ५ पटक थिच्नुहुन्छ । यसले टाँसिने कुञ्जी विशेषता बन्द "
+"गर्दछ, जसले तपाईँको कुञ्जीपाटीले कार्य गर्ने तरिकालाई असर गर्दछ ।"
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
@@ -1524,11 +1507,11 @@ msgstr "विशेषाधिकार भएको प्रयोगकर�
 
 #: js/ui/main.js:335
 msgid ""
-"Running a session as a privileged user should be avoided for security reasons. If possible, "
-"you should log in as a normal user."
+"Running a session as a privileged user should be avoided for security reasons. If possible, you "
+"should log in as a normal user."
 msgstr ""
-"विशेषाधिकार पाएको प्रयोगकर्ताको रूपमा सत्र चलाउन सुरक्षाका कारणले रोक्नुपर्छ । यदि सम्भव भएमा, तपाईँले "
-"सामान्य प्रयोगकर्ताको रूपमा लगइन गर्नुपर्दछ ।."
+"विशेषाधिकार पाएको प्रयोगकर्ताको रूपमा सत्र चलाउन सुरक्षाका कारणले रोक्नुपर्छ । यदि सम्भव भएमा, तपाईँले सामान्य "
+"प्रयोगकर्ताको रूपमा लगइन गर्नुपर्दछ ।."
 
 #: js/ui/main.js:384
 msgid "Screen Lock disabled"
@@ -1554,11 +1537,11 @@ msgstr "अज्ञात शीर्षक"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:324
+#: js/ui/overviewControls.js:327
 msgid "Type to search"
 msgstr "खोजी गर्न टाईप गर्नुहोस्"
 
-#: js/ui/overviewControls.js:402
+#: js/ui/overviewControls.js:405
 msgid "Applications"
 msgstr "अनुप्रयोग"
 
@@ -1887,7 +1870,7 @@ msgstr "ठूलो पाठ शैली"
 msgid "Auto Rotate"
 msgstr "स्वतः घुमाउनुहोस्"
 
-#: js/ui/status/bluetooth.js:171
+#: js/ui/status/bluetooth.js:151
 msgid "Bluetooth"
 msgstr "ब्लुटुठ"
 
@@ -2033,6 +2016,7 @@ msgid "Switch User…"
 msgstr "प्रयोगकर्ता स्विच गर्नुहोस्…"
 
 #: js/ui/status/system.js:235
+msgctxt "action"
 msgid "Lock Screen"
 msgstr "पर्दा ताल्चा लगाउनुहोस्"
 
@@ -2046,11 +2030,11 @@ msgstr "अज्ञात थन्डरबोल्ट यन्त्र"
 
 #: js/ui/status/thunderbolt.js:318
 msgid ""
-"New device has been detected while you were away. Please disconnect and reconnect the device "
-"to start using it."
+"New device has been detected while you were away. Please disconnect and reconnect the device to "
+"start using it."
 msgstr ""
-"तपाईँ टाढा हुँदा नयाँ यन्त्र पत्ता लागेको छ । कृपया यसलाई प्रयोग गर्न सुरु गर्न यन्त्र विच्छेदन गर्नुहोस् र पुन: "
-"जडान गर्नुहोस् ।"
+"तपाईँ टाढा हुँदा नयाँ यन्त्र पत्ता लागेको छ । कृपया यसलाई प्रयोग गर्न सुरु गर्न यन्त्र विच्छेदन गर्नुहोस् र पुन: जडान "
+"गर्नुहोस् ।"
 
 #: js/ui/status/thunderbolt.js:321
 msgid "Unauthorized Thunderbolt device"
@@ -2313,8 +2297,8 @@ msgstr "जिनोम परियोजना"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:36
 msgid ""
-"GNOME Extensions handles updating extensions, configuring extension preferences and removing "
-"or disabling unwanted extensions."
+"GNOME Extensions handles updating extensions, configuring extension preferences and removing or "
+"disabling unwanted extensions."
 msgstr ""
 "जिनोम विस्तारले विस्तारअद्यावधिक ह्यान्डल गर्दछ, विस्तार प्राथमिकताहरू कन्फिगर गर्दछ र नचाहिएका विस्तारहरू "
 "हटाउँदै वा अक्षम पार्दैछ।"
@@ -2358,8 +2342,7 @@ msgstr[1] "%d विस्तार पछिल्लो लगइनमा अ
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "हालको जिनोम संस्करणसँग विस्तार मिल्दो छैन"
 
-#: subprojects/extensions-app/js/main.js:484
-#: subprojects/extensions-app/data/ui/extension-row.ui:52
+#: subprojects/extensions-app/js/main.js:484 subprojects/extensions-app/data/ui/extension-row.ui:52
 msgid "The extension had an error"
 msgstr "विस्तारमा एउटा त्रुटि थियो"
 
@@ -2388,8 +2371,8 @@ msgid ""
 "Extensions can cause performance and stability issues. Disable extensions if you encounter "
 "problems with your system."
 msgstr ""
-"एक्सटेन्सनले प्रदर्शन र स्थिरता समस्याहरू निम्त्याउन सक्छ। यदि तपाईँले आफ्नो प्रणालीमा समस्या हरू सामना गर्नुभयो "
-"भने एक्सटेन्सनहरू अक्षम पार्नुहोस् ।"
+"एक्सटेन्सनले प्रदर्शन र स्थिरता समस्याहरू निम्त्याउन सक्छ। यदि तपाईँले आफ्नो प्रणालीमा समस्या हरू सामना गर्नुभयो भने "
+"एक्सटेन्सनहरू अक्षम पार्नुहोस् ।"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:98
 msgid "Manually Installed"
@@ -2398,8 +2381,8 @@ msgstr "म्यानुअल तरिकाले स्थापना ग
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org\">extensions.gnome."
-"org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org\">extensions.gnome.org</"
+"a>."
 msgstr ""
 "विस्तारहरू फेला पार्न र थप गर्न <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a> "
 "हेर्नुहोस्।"
@@ -2414,8 +2397,8 @@ msgstr "विस्तार स्थापना गरिएको छैन
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:145
 msgid ""
-"We’re very sorry, but it was not possible to get the list of installed extensions. Make sure "
-"you are logged into GNOME and try again."
+"We’re very sorry, but it was not possible to get the list of installed extensions. Make sure you "
+"are logged into GNOME and try again."
 msgstr ""
 "हामी धेरै दुःखी छौं, तर स्थापना गरिएको विस्तारको सूची प्राप्त गर्न सम्भव थिएन । तपाईँ जिनोममा लग इन भएको "
 "निश्चित गर्नुहोस् र फेरि प्रयास गर्नुहोस् ।"
@@ -2439,8 +2422,7 @@ msgstr ""
 "नाम धेरै छोटो (वर्णनात्मक) स्ट्रिङ हुनुपर्दछ ।\n"
 "उदाहरणहरू: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:302
-#: subprojects/extensions-tool/src/main.c:238
+#: subprojects/extensions-tool/src/command-create.c:302 subprojects/extensions-tool/src/main.c:238
 msgid "Name"
 msgstr "नाम"
 
@@ -2453,8 +2435,7 @@ msgstr ""
 "वर्णन तपाईँको विस्तारले के गर्छ भन्ने एकल-वाक्य व्याख्या हो।\n"
 "उदाहरणहरू: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:322
-#: subprojects/extensions-tool/src/main.c:241
+#: subprojects/extensions-tool/src/command-create.c:322 subprojects/extensions-tool/src/main.c:241
 msgid "Description"
 msgstr "वर्णन"
 
@@ -2838,6 +2819,17 @@ msgstr[1] "%u आगत"
 msgid "System Sounds"
 msgstr "प्रणाली ध्वनिहरू"
 
+#~ msgid "Whether the default Bluetooth adapter had set up devices associated to it"
+#~ msgstr "पूर्वनिर्धारित ब्लुतुथ एडप्टरले यसमा सम्बन्धित यन्त्र सेटअप गरेको थियो या थिएन ।"
+
+#~ msgid ""
+#~ "The shell will only show a Bluetooth menu item if a Bluetooth adapter is powered, or if there "
+#~ "were devices set up associated with the default adapter. This will be reset if the default "
+#~ "adapter is ever seen not to have devices associated to it."
+#~ msgstr ""
+#~ "यदि ब्लुतुथ एडप्टर शक्तिमा छ भने वा पूर्वनिर्धारित एडप्टरसँग सम्बन्धित यन्त्र सेट गरिएको भएमा शेलले ब्लुतुथ मेनु वस्तु "
+#~ "मात्र देखाउनेछ । यदि पूर्वनिर्धारित एडप्टरसँग कहिल्यै पनि यन्त्र सम्बन्धित छैन भने यो रिसेट हुनेछ ।"
+
 #~ msgid "Enable introspection API"
 #~ msgstr "इन्ट्रोस्पेक्टAPI सक्षम पार्नुहोस्"
 
@@ -3074,8 +3066,8 @@ msgstr "प्रणाली ध्वनिहरू"
 #~ msgstr "चेतावनी"
 
 #~ msgid ""
-#~ "Extensions can cause system issues, including performance problems. If you encounter "
-#~ "problems with your system, it is recommended to disable all extensions."
+#~ "Extensions can cause system issues, including performance problems. If you encounter problems "
+#~ "with your system, it is recommended to disable all extensions."
 #~ msgstr ""
 #~ "विस्तारले कार्यसम्पादन समस्या लगायतका प्रणाली का समस्याहरू उत्पन्न गर्न सक्छ। यदि तपाईँले आफ्नो प्रणालीमा "
 #~ "समस्या सामना गर्नुभयो भने, सबै विस्तारहरू अक्षम पार्न सिफारिस गरिन्छ ।"
@@ -3103,8 +3095,8 @@ msgstr "प्रणाली ध्वनिहरू"
 #, fuzzy
 #~ msgid "Frequent"
 #~ msgstr ""
-#~ "यो त्रुटिका लागि एउटा निरन्तर कारण भनेको तपाईँको डाटाबेसको भाषाका लागि अनुपयुक्त क्यारेकटर सेट सेटिङ हो "
-#~ "। सम्पादन गर्नुहोस - डाटाबेस - गुणहरू रोजेर सेटिङ जाँच गर्नुहोस ।"
+#~ "यो त्रुटिका लागि एउटा निरन्तर कारण भनेको तपाईँको डाटाबेसको भाषाका लागि अनुपयुक्त क्यारेकटर सेट सेटिङ हो । "
+#~ "सम्पादन गर्नुहोस - डाटाबेस - गुणहरू रोजेर सेटिङ जाँच गर्नुहोस ।"
 
 #~ msgid "All"
 #~ msgstr "सबै"
