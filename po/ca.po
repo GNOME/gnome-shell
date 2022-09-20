@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-08-15 11:56+0000\n"
-"PO-Revision-Date: 2022-09-15 19:05+0000\n"
+"PO-Revision-Date: 2022-09-20 19:05+0000\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -2063,7 +2063,7 @@ msgstr "<desconegut>"
 #: js/ui/status/network.js:356
 #, javascript-format
 msgid "Disconnect %s"
-msgstr "Desconnecta  %s"
+msgstr "Desconnecta %s"
 
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/network.js:358
@@ -2241,11 +2241,11 @@ msgstr "Volum"
 
 #: js/ui/status/volume.js:269
 msgid "Sound Output"
-msgstr "Sortida de so"
+msgstr "Sortida del so"
 
 #: js/ui/status/volume.js:337
 msgid "Sound Input"
-msgstr "Entrada de so"
+msgstr "Entrada del so"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
