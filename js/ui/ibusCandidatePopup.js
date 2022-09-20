@@ -69,11 +69,27 @@ var CandidateArea = GObject.registerClass({
 
         this.add(this._buttonBox);
 
-        this._previousButton.connect('clicked', () => {
+        this._previousButton.connect('button-press-event', () => {
             this.emit('previous-page');
+            return Clutter.EVENT_STOP;
         });
-        this._nextButton.connect('clicked', () => {
+        this._previousButton.connect('touch-event', (actor, event) => {
+            if (event.type() === Clutter.EventType.TOUCH_BEGIN) {
+                this.emit('previous-page');
+                return Clutter.EVENT_STOP;
+            }
+            return Clutter.EVENT_PROPAGATE;
+        });
+        this._nextButton.connect('button-press-event', () => {
             this.emit('next-page');
+            return Clutter.EVENT_STOP;
+        });
+        this._nextButton.connect('touch-event', (actor, event) => {
+            if (event.type() === Clutter.EventType.TOUCH_BEGIN) {
+                this.emit('next-page');
+                return Clutter.EVENT_STOP;
+            }
+            return Clutter.EVENT_PROPAGATE;
         });
 
         this._orientation = -1;
