@@ -8,27 +8,28 @@
 # Danylo Korostil <ted.korostiled@gmail.com>, 2020.
 # Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022.
 # Olexander Movchan <olexander-movchan@ukr.net>, 2022.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-14 22:12+0000\n"
-"PO-Revision-Date: 2022-09-15 08:55+0300\n"
-"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"POT-Creation-Date: 2022-09-20 09:42+0000\n"
+"PO-Revision-Date: 2022-09-28 14:47+0300\n"
+"Last-Translator: Olexander Movchan <olexander-movchan@ukr.net>\n"
 "Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
-"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
-"X-Generator: Lokalize 20.12.0\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : "
+"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
+"X-Generator: Gtranslator 40.0\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: uk\n"
 "X-DL-Module: gnome-shell\n"
 "X-DL-Branch: main\n"
 "X-DL-Domain: po\n"
-"X-DL-State: None\n"
+"X-DL-State: Translating\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -76,22 +77,22 @@ msgid "Screenshots"
 msgstr "Знімки екрана"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:234
 msgid "Take a screenshot interactively"
 msgstr "Зробити знімок екрана інтерактивно"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:256
+#: data/org.gnome.shell.gschema.xml.in:246
 msgid "Take a screenshot"
 msgstr "Зробити знімок"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:242
 msgid "Take a screenshot of a window"
 msgstr "Зробити знімок вікна"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:248
+#: data/org.gnome.shell.gschema.xml.in:238
 msgid "Record a screencast interactively"
 msgstr "Записати з екрана інтерактивно"
 
@@ -255,26 +256,10 @@ msgstr ""
 "цього параметра."
 
 #: data/org.gnome.shell.gschema.xml.in:89
-msgid ""
-"Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr "Чи типовий адаптер Bluetooth зв'язаний з якимось пристроєм"
-
-#: data/org.gnome.shell.gschema.xml.in:90
-msgid ""
-"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-"powered, or if there were devices set up associated with the default "
-"adapter. This will be reset if the default adapter is ever seen not to have "
-"devices associated to it."
-msgstr ""
-"Оболонка покаже меню Bluetooth лише у випадку, коли адаптер Bluetooth "
-"увімкнено або пристрій зв'язано з типовим адаптером. Якщо типовий адаптер "
-"ніколи не був зв'язаний з жодним пристроєм, то його буде скинуто."
-
-#: data/org.gnome.shell.gschema.xml.in:99
 msgid "The last selected non-default power profile"
 msgstr "Останній вибраний нетиповий профіль живлення"
 
-#: data/org.gnome.shell.gschema.xml.in:100
+#: data/org.gnome.shell.gschema.xml.in:90
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
 "toggling between two profiles, this key records the last selected non-"
@@ -284,11 +269,11 @@ msgstr ""
 "перемикання між двома профілями у цьому ключі записано останній нетиповий "
 "профіль."
 
-#: data/org.gnome.shell.gschema.xml.in:108
+#: data/org.gnome.shell.gschema.xml.in:98
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr "Останню версію вікна «Вітаємо у GNOME» було показано для"
 
-#: data/org.gnome.shell.gschema.xml.in:109
+#: data/org.gnome.shell.gschema.xml.in:99
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -300,11 +285,11 @@ msgstr ""
 "велике число — версіям, яких іще не існує. Таким великим числом можна "
 "скористатися для того, щоб вимкнути показ вікна."
 
-#: data/org.gnome.shell.gschema.xml.in:142
+#: data/org.gnome.shell.gschema.xml.in:132
 msgid "Layout of the app picker"
 msgstr "Компонування засобу вибору програм"
 
-#: data/org.gnome.shell.gschema.xml.in:143
+#: data/org.gnome.shell.gschema.xml.in:133
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -317,106 +302,106 @@ msgstr ""
 "поточній версії як 'дані' може бути збережено такі значення: • “позиція”: "
 "позиція піктограми програми на сторінці"
 
-#: data/org.gnome.shell.gschema.xml.in:158
+#: data/org.gnome.shell.gschema.xml.in:148
 msgid "Keybinding to open the application menu"
 msgstr "Комбінація клавіш, щоб відкрити меню програм"
 
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:149
 msgid "Keybinding to open the application menu."
 msgstr "Комбінація клавіш, щоб відкрити меню програм."
 
-#: data/org.gnome.shell.gschema.xml.in:165
-#: data/org.gnome.shell.gschema.xml.in:172
+#: data/org.gnome.shell.gschema.xml.in:155
+#: data/org.gnome.shell.gschema.xml.in:162
 msgid "Keybinding to shift between overview states"
 msgstr "Комбінація клавіш для перемикання між станами огляду"
 
-#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:156
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Комбінація клавіш для переходу між сеансом, засобом вибору вікна та таблицею "
 "програм"
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:163
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "Комбінація клавіш для переходу між таблицею програм, засобом вибору вікна та "
 "сеансом"
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:169
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Комбінація клавіш, щоб «Показати програми»"
 
-#: data/org.gnome.shell.gschema.xml.in:180
+#: data/org.gnome.shell.gschema.xml.in:170
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr "Комбінація клавіш, щоб «Показати програми» в огляді діяльності."
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:177
 msgid "Keybinding to open the overview"
 msgstr "Комбінація клавіш, щоб відкрити огляд"
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:178
 msgid "Keybinding to open the Activities Overview."
 msgstr "Комбінація клавіш, щоб відкрити огляд діяльності."
 
-#: data/org.gnome.shell.gschema.xml.in:194
+#: data/org.gnome.shell.gschema.xml.in:184
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Комбінація клавіш, щоб змінювати видимість переліку сповіщень"
 
-#: data/org.gnome.shell.gschema.xml.in:195
+#: data/org.gnome.shell.gschema.xml.in:185
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Комбінація клавіш, щоб змінювати видимість переліку сповіщень."
 
-#: data/org.gnome.shell.gschema.xml.in:201
+#: data/org.gnome.shell.gschema.xml.in:191
 msgid "Keybinding to focus the active notification"
 msgstr "Комбінація клавіш, щоб перейти до активних сповіщень"
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:192
 msgid "Keybinding to focus the active notification."
 msgstr "Комбінація клавіш, щоб перейти до активних сповіщень."
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:198
 msgid "Switch to application 1"
 msgstr "Перемкнутися на програму 1"
 
-#: data/org.gnome.shell.gschema.xml.in:212
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Switch to application 2"
 msgstr "Перемкнутися на програму 2"
 
-#: data/org.gnome.shell.gschema.xml.in:216
+#: data/org.gnome.shell.gschema.xml.in:206
 msgid "Switch to application 3"
 msgstr "Перемкнутися на програму 3"
 
-#: data/org.gnome.shell.gschema.xml.in:220
+#: data/org.gnome.shell.gschema.xml.in:210
 msgid "Switch to application 4"
 msgstr "Перемкнутися на програму 4"
 
-#: data/org.gnome.shell.gschema.xml.in:224
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "Switch to application 5"
 msgstr "Перемкнутися на програму 5"
 
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:218
 msgid "Switch to application 6"
 msgstr "Перемкнутися на програму 6"
 
-#: data/org.gnome.shell.gschema.xml.in:232
+#: data/org.gnome.shell.gschema.xml.in:222
 msgid "Switch to application 7"
 msgstr "Перемкнутися на програму 7"
 
-#: data/org.gnome.shell.gschema.xml.in:236
+#: data/org.gnome.shell.gschema.xml.in:226
 msgid "Switch to application 8"
 msgstr "Перемкнутися на програму 8"
 
-#: data/org.gnome.shell.gschema.xml.in:240
+#: data/org.gnome.shell.gschema.xml.in:230
 msgid "Switch to application 9"
 msgstr "Перемкнутися на програму 9"
 
-#: data/org.gnome.shell.gschema.xml.in:265
-#: data/org.gnome.shell.gschema.xml.in:292
+#: data/org.gnome.shell.gschema.xml.in:255
+#: data/org.gnome.shell.gschema.xml.in:282
 msgid "Limit switcher to current workspace."
 msgstr "Обмежити перемикач на поточний робочий простір."
 
-#: data/org.gnome.shell.gschema.xml.in:266
+#: data/org.gnome.shell.gschema.xml.in:256
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -424,11 +409,11 @@ msgstr ""
 "Якщо це вказано, то тільки програми з поточного робочого простору будуть "
 "показані в перемикачі. Інакше — програми з усіх просторів."
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:273
 msgid "The application icon mode."
 msgstr "Режим піктограм для програм."
 
-#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:274
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -438,7 +423,7 @@ msgstr ""
 "«thumbnail-only» (показує мініатюру вікна), «app-icon-only» (показує тільки "
 "піктограми програм) або «both» (обидва)."
 
-#: data/org.gnome.shell.gschema.xml.in:293
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -446,57 +431,57 @@ msgstr ""
 "Якщо це вказано, то тільки вікна з поточного робочого простору будуть "
 "показані в перемикачі. Інакше — вікна з усіх просторів."
 
-#: data/org.gnome.shell.gschema.xml.in:303
+#: data/org.gnome.shell.gschema.xml.in:293
 msgid "Locations"
 msgstr "Місцевості"
 
-#: data/org.gnome.shell.gschema.xml.in:304
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "The locations to show in world clocks"
 msgstr "Місцевість для світового годинника"
 
-#: data/org.gnome.shell.gschema.xml.in:314
+#: data/org.gnome.shell.gschema.xml.in:304
 msgid "Automatic location"
 msgstr "Автоматичне визначення місцевості"
 
-#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:305
 msgid "Whether to fetch the current location or not"
 msgstr "Чи одержувати поточну локацію"
 
-#: data/org.gnome.shell.gschema.xml.in:322
+#: data/org.gnome.shell.gschema.xml.in:312
 msgid "Location"
 msgstr "Місцевість"
 
-#: data/org.gnome.shell.gschema.xml.in:323
+#: data/org.gnome.shell.gschema.xml.in:313
 msgid "The location for which to show a forecast"
 msgstr "Місцевість для прогнозу погоди"
 
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:325
 msgid "Attach modal dialog to the parent window"
 msgstr "Приєднати модальне вікно до батьківського вікна"
 
-#: data/org.gnome.shell.gschema.xml.in:336
-#: data/org.gnome.shell.gschema.xml.in:345
-#: data/org.gnome.shell.gschema.xml.in:353
-#: data/org.gnome.shell.gschema.xml.in:361
-#: data/org.gnome.shell.gschema.xml.in:369
+#: data/org.gnome.shell.gschema.xml.in:326
+#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:343
+#: data/org.gnome.shell.gschema.xml.in:351
+#: data/org.gnome.shell.gschema.xml.in:359
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Цей ключ перевизначає ключ у org.gnome.mutter, коли запущено GNOME Shell."
 
-#: data/org.gnome.shell.gschema.xml.in:344
+#: data/org.gnome.shell.gschema.xml.in:334
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Увімкнути розбиття країв, коли кладуться вікна на краї екрана"
 
-#: data/org.gnome.shell.gschema.xml.in:352
+#: data/org.gnome.shell.gschema.xml.in:342
 msgid "Workspaces are managed dynamically"
 msgstr "Робочі простори організовуються динамічно"
 
-#: data/org.gnome.shell.gschema.xml.in:360
+#: data/org.gnome.shell.gschema.xml.in:350
 msgid "Workspaces only on primary monitor"
 msgstr "Робочий простір лише на основному моніторі"
 
-#: data/org.gnome.shell.gschema.xml.in:368
+#: data/org.gnome.shell.gschema.xml.in:358
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Затримувати зміни фокусу миші, поки вказівник не перестане рухатись"
 
@@ -699,7 +684,7 @@ msgstr "Не вдалось виконати «%s»:"
 
 #: js/misc/util.js:191
 msgid "Just now"
-msgstr "Просто зараз"
+msgstr "Щойно"
 
 #: js/misc/util.js:193
 #, javascript-format
@@ -1116,8 +1101,7 @@ msgstr "Необхідна автентифікація"
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr ""
-"Потрібно паролі або зашифровані ключі для доступу до радіомережі «%s»."
+msgstr "Потрібно паролі або зашифровані ключі для доступу до радіомережі «%s»."
 
 #: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:752
 msgid "Wired 802.1X authentication"
@@ -1183,7 +1167,7 @@ msgstr "Вибачте, це не спрацювало. Спробуйте ще.
 msgid "%s is now known as %s"
 msgstr "%s тепер відомий як %s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:414
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
 msgid "Windows"
 msgstr "Вікна"
 
@@ -1375,8 +1359,7 @@ msgstr "Перезапустити і встановити оновлення"
 
 #: js/ui/endSessionDialog.js:106
 #, javascript-format
-msgid ""
-"The system will automatically restart and install updates in %d second."
+msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] ""
@@ -1658,11 +1641,11 @@ msgstr "Невідома назва"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:324
+#: js/ui/overviewControls.js:327
 msgid "Type to search"
 msgstr "Введіть текст для пошуку"
 
-#: js/ui/overviewControls.js:402
+#: js/ui/overviewControls.js:405
 msgid "Applications"
 msgstr "Програми"
 
@@ -1994,7 +1977,7 @@ msgstr "Більший текст"
 msgid "Auto Rotate"
 msgstr "Автоматичне обертання"
 
-#: js/ui/status/bluetooth.js:171
+#: js/ui/status/bluetooth.js:151
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -2143,7 +2126,6 @@ msgid "Switch User…"
 msgstr "Змінити користувача…"
 
 #: js/ui/status/system.js:235
-#| msgid "Lock Screen"
 msgctxt "action"
 msgid "Lock Screen"
 msgstr "Заблокувати екран"
@@ -2521,8 +2503,8 @@ msgstr "Встановлені вручну"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "Щоб знайти і додати потрібні вам розширення, відвідайте <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
@@ -2971,6 +2953,20 @@ msgstr[3] "%u вхід"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Системні звуки"
+
+#~ msgid ""
+#~ "Whether the default Bluetooth adapter had set up devices associated to it"
+#~ msgstr "Чи типовий адаптер Bluetooth зв'язаний з якимось пристроєм"
+
+#~ msgid ""
+#~ "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+#~ "powered, or if there were devices set up associated with the default "
+#~ "adapter. This will be reset if the default adapter is ever seen not to "
+#~ "have devices associated to it."
+#~ msgstr ""
+#~ "Оболонка покаже меню Bluetooth лише у випадку, коли адаптер Bluetooth "
+#~ "увімкнено або пристрій зв'язано з типовим адаптером. Якщо типовий адаптер "
+#~ "ніколи не був зв'язаний з жодним пристроєм, то його буде скинуто."
 
 #~ msgid "Log Out"
 #~ msgstr "Вийти"
