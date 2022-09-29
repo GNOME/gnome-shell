@@ -458,8 +458,7 @@ var Overview = class extends Signals.EventEmitter {
         if (this._shown) {
             let shouldBeModal = !this._inXdndDrag;
             if (shouldBeModal && !this._modal) {
-                if (global.display.get_grab_op() !== Meta.GrabOp.NONE &&
-                    global.display.get_grab_op() !== Meta.GrabOp.WAYLAND_POPUP) {
+                if (global.display.is_grabbed()) {
                     this.hide();
                     return false;
                 }
