@@ -57,13 +57,13 @@ var WindowMenu = class extends PopupMenu.PopupMenu {
             item.setSensitive(false);
 
         item = this.addAction(_("Move"), event => {
-            window.begin_grab_op(Meta.GrabOp.KEYBOARD_MOVING, true, event.get_time());
+            window.begin_grab_op(Meta.GrabOp.KEYBOARD_MOVING, event.get_time());
         });
         if (!window.allows_move())
             item.setSensitive(false);
 
         item = this.addAction(_("Resize"), event => {
-            window.begin_grab_op(Meta.GrabOp.KEYBOARD_RESIZING_UNKNOWN, true, event.get_time());
+            window.begin_grab_op(Meta.GrabOp.KEYBOARD_RESIZING_UNKNOWN, event.get_time());
         });
         if (!window.allows_resize())
             item.setSensitive(false);
