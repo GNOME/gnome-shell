@@ -113,8 +113,11 @@ const StreamSlider = GObject.registerClass({
         if (!device)
             return;
 
-        const item = new PopupMenu.PopupImageMenuItem(
-            device.get_description(), device.get_gicon());
+        const {description, origin} = device;
+        const name = origin
+            ? `${description} – ${origin}`
+            : description;
+        const item = new PopupMenu.PopupImageMenuItem(name, device.get_gicon());
         item.connect('activate', () => this._activateDevice(device));
 
         this._deviceSection.addMenuItem(item);
