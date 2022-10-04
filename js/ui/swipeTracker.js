@@ -470,6 +470,7 @@ var SwipeTracker = GObject.registerClass({
         this._distance = global.screen_height;
         this._history = new EventHistory();
         this._reset();
+        this._actor = actor;
 
         this._touchpadGesture = new TouchpadSwipeGesture(allowedModes);
         this._touchpadGesture.connect('begin', this._beginGesture.bind(this));
@@ -490,7 +491,7 @@ var SwipeTracker = GObject.registerClass({
         this.bind_property('orientation', this._touchGesture, 'orientation',
             GObject.BindingFlags.SYNC_CREATE);
         this.bind_property('distance', this._touchGesture, 'distance', 0);
-        global.stage.add_action_full('swipe', Clutter.EventPhase.CAPTURE, this._touchGesture);
+        actor.add_action_full('swipe', Clutter.EventPhase.CAPTURE, this._touchGesture);
 
         if (params.allowDrag) {
             this._dragGesture = new TouchSwipeGesture(allowedModes, 1,
@@ -780,7 +781,7 @@ var SwipeTracker = GObject.registerClass({
         }
 
         if (this._touchGesture) {
-            global.stage.remove_action(this._touchGesture);
+            this._actor.remove_action(this._touchGesture);
             delete this._touchGesture;
         }
     }
