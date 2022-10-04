@@ -329,6 +329,7 @@ const ScrollGesture = GObject.registerClass({
         this._allowedModes = allowedModes;
         this._began = false;
         this._enabled = true;
+        this._actor = actor;
 
         actor.connect('scroll-event', this._handleEvent.bind(this));
     }
@@ -397,6 +398,10 @@ const ScrollGesture = GObject.registerClass({
         this.emit('update', time, delta, distance);
 
         return Clutter.EVENT_STOP;
+    }
+
+    destroy() {
+        this._actor.disconnectObject(this);
     }
 });
 
@@ -783,6 +788,16 @@ var SwipeTracker = GObject.registerClass({
         if (this._touchGesture) {
             this._actor.remove_action(this._touchGesture);
             delete this._touchGesture;
+        }
+
+        if (this._dragGesture) {
+            this._actor.remove_action(this._dragGesture);
+            delete this._dragGesture;
+        }
+
+        if (this._scrollGesture) {
+            this._scrollGesture.destroy();
+            delete this._scrollGesture;
         }
     }
 });
