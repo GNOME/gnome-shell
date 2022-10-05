@@ -501,7 +501,7 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
 
             // Pointer devices (e.g. mouse) start the drag immediately
             if (isPointerOrTouchpad || ellapsedTime > this._dragTimeoutThreshold) {
-                this.startDrag(stageX, stageY, event.get_time(), this._touchSequence, event.get_device());
+                this.startDrag(this._dragStartX, this._dragStartY, event.get_time(), this._touchSequence, event.get_device());
                 this._updateDragPosition(event);
             } else {
                 this._dragThresholdIgnored = true;
