@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-11 04:13+0000\n"
-"PO-Revision-Date: 2022-08-12 05:39+0200\n"
+"POT-Creation-Date: 2022-09-20 09:42+0000\n"
+"PO-Revision-Date: 2022-10-06 23:21+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -59,27 +59,27 @@ msgid "Activate favorite application 9"
 msgstr "#9 რჩეული აპლიკაციის აქტივაცია"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2070
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
 msgid "Screenshots"
 msgstr "ეკრანის ანაბეჭდები"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:234
 msgid "Take a screenshot interactively"
 msgstr "ეკრანის ანაბეჭდის ინტერაქტიული გადაღება"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:256
+#: data/org.gnome.shell.gschema.xml.in:246
 msgid "Take a screenshot"
 msgstr "ეკრანის ანაბეჭდის გადაღება"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:242
 msgid "Take a screenshot of a window"
 msgstr "ფანჯრის ანაბეჭდის გადაღება"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:248
+#: data/org.gnome.shell.gschema.xml.in:238
 msgid "Record a screencast interactively"
 msgstr "ეკრანიდან ვიდეოს ჩაწერა"
 
@@ -214,34 +214,21 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:89
-msgid ""
-"Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr "აქვს თუ არა Bluetooth-ის ნაგულისხმევ ადაპტერს ერთი მოწყობილობა მაინც"
-
-#: data/org.gnome.shell.gschema.xml.in:90
-msgid ""
-"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-"powered, or if there were devices set up associated with the default "
-"adapter. This will be reset if the default adapter is ever seen not to have "
-"devices associated to it."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:99
 msgid "The last selected non-default power profile"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:100
+#: data/org.gnome.shell.gschema.xml.in:90
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
 "toggling between two profiles, this key records the last selected non-"
 "default profile."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:108
+#: data/org.gnome.shell.gschema.xml.in:98
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:109
+#: data/org.gnome.shell.gschema.xml.in:99
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -249,11 +236,11 @@ msgid ""
 "be used to effectively disable the dialog."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:142
+#: data/org.gnome.shell.gschema.xml.in:132
 msgid "Layout of the app picker"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:143
+#: data/org.gnome.shell.gschema.xml.in:133
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -261,118 +248,118 @@ msgid ""
 "as 'data': • “position”: the position of the application icon in the page"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:158
+#: data/org.gnome.shell.gschema.xml.in:148
 msgid "Keybinding to open the application menu"
 msgstr "კლავიატურის მალსახმობი აპლიკაციის მენიუს გასახსნელად"
 
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:149
 msgid "Keybinding to open the application menu."
 msgstr "კლავიატურის მალსახმობი აპლიკაციის მენიუს გასახსნელად."
 
-#: data/org.gnome.shell.gschema.xml.in:165
-#: data/org.gnome.shell.gschema.xml.in:172
+#: data/org.gnome.shell.gschema.xml.in:155
+#: data/org.gnome.shell.gschema.xml.in:162
 msgid "Keybinding to shift between overview states"
 msgstr "კლავიატურის მალსახმობი მდგომარეობებს შორის გადასართავად"
 
-#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:156
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "კლავიატურის მალსახმობი სესიებს, ფანჯრებსა და აპლიკაციის ბადეს შორის "
 "გადართავად"
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:163
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "კლავიატურის მალსახმობი აპლიკაციის ბადეს, ფანჯრებსა და სესიებს შორის "
 "გადასართავად"
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:169
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "კლავიატურის მალსახმობი \"აპლიკაციების ჩვენების\" ხედის გასახსნელად"
 
-#: data/org.gnome.shell.gschema.xml.in:180
+#: data/org.gnome.shell.gschema.xml.in:170
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "კლავიატურის მალსახმობი \"აპლიკაციების ჩვენების\" ხედის გასახსნელად "
 "ქმედებების მიმოხილვით."
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:177
 msgid "Keybinding to open the overview"
 msgstr "კლავიატურის მალსახმობი მიმოხილვის გასახსნელად"
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:178
 msgid "Keybinding to open the Activities Overview."
 msgstr "კლავიატურის მალსახმობი ქმედებების გადასახედად."
 
-#: data/org.gnome.shell.gschema.xml.in:194
+#: data/org.gnome.shell.gschema.xml.in:184
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "კლავიატურის მალსახმობი გაფრთხილებების სიის ხილვადობის ჩართ/გამორთ"
 
-#: data/org.gnome.shell.gschema.xml.in:195
+#: data/org.gnome.shell.gschema.xml.in:185
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "კლავიატურის მალსახმობი გაფრთხილებების სიის ხილვადობის ჩართ/გამორთ."
 
-#: data/org.gnome.shell.gschema.xml.in:201
+#: data/org.gnome.shell.gschema.xml.in:191
 msgid "Keybinding to focus the active notification"
 msgstr "კლავიატურის მალსახმობი აქტიურ გაფრთხილებაზე გადასართავად"
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:192
 msgid "Keybinding to focus the active notification."
 msgstr "კლავიატურის მალსახმობი აქტიურ გაფრთხილებაზე გადასართავად."
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:198
 msgid "Switch to application 1"
 msgstr "#1 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:212
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Switch to application 2"
 msgstr "#2 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:216
+#: data/org.gnome.shell.gschema.xml.in:206
 msgid "Switch to application 3"
 msgstr "#3 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:220
+#: data/org.gnome.shell.gschema.xml.in:210
 msgid "Switch to application 4"
 msgstr "#4 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:224
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "Switch to application 5"
 msgstr "#5 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:218
 msgid "Switch to application 6"
 msgstr "#6 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:232
+#: data/org.gnome.shell.gschema.xml.in:222
 msgid "Switch to application 7"
 msgstr "#7 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:236
+#: data/org.gnome.shell.gschema.xml.in:226
 msgid "Switch to application 8"
 msgstr "#8 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:240
+#: data/org.gnome.shell.gschema.xml.in:230
 msgid "Switch to application 9"
 msgstr "#9 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:265
-#: data/org.gnome.shell.gschema.xml.in:292
+#: data/org.gnome.shell.gschema.xml.in:255
+#: data/org.gnome.shell.gschema.xml.in:282
 msgid "Limit switcher to current workspace."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:266
+#: data/org.gnome.shell.gschema.xml.in:256
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:273
 msgid "The application icon mode."
 msgstr "აპლიკაციის ხატულების რეჟიმი."
 
-#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:274
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -381,62 +368,62 @@ msgstr ""
 "გადამრთველში ფანჯრების გარეგნობის მორგება. შესაძლო ვარიანტების \"მხოლოდ "
 "მინიატურები\", \"მხოლოდ აპლიკაციის ხატულები\" ან \"ორივე\"."
 
-#: data/org.gnome.shell.gschema.xml.in:293
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:303
+#: data/org.gnome.shell.gschema.xml.in:293
 msgid "Locations"
 msgstr "მდებარეობები"
 
-#: data/org.gnome.shell.gschema.xml.in:304
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "The locations to show in world clocks"
 msgstr "საათის ჩვენების მდებარეობა"
 
-#: data/org.gnome.shell.gschema.xml.in:314
+#: data/org.gnome.shell.gschema.xml.in:304
 msgid "Automatic location"
 msgstr "ავტომატური მდებარეობა"
 
-#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:305
 msgid "Whether to fetch the current location or not"
 msgstr "გამოვითხოვო თუ არა მდებარეობა"
 
-#: data/org.gnome.shell.gschema.xml.in:322
+#: data/org.gnome.shell.gschema.xml.in:312
 msgid "Location"
 msgstr "მდებარეობა"
 
-#: data/org.gnome.shell.gschema.xml.in:323
+#: data/org.gnome.shell.gschema.xml.in:313
 msgid "The location for which to show a forecast"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:325
 msgid "Attach modal dialog to the parent window"
 msgstr "მოდალური ფანჯრის მშობელ ფანჯარაზე მიმაგრება"
 
-#: data/org.gnome.shell.gschema.xml.in:336
-#: data/org.gnome.shell.gschema.xml.in:345
-#: data/org.gnome.shell.gschema.xml.in:353
-#: data/org.gnome.shell.gschema.xml.in:361
-#: data/org.gnome.shell.gschema.xml.in:369
+#: data/org.gnome.shell.gschema.xml.in:326
+#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:343
+#: data/org.gnome.shell.gschema.xml.in:351
+#: data/org.gnome.shell.gschema.xml.in:359
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:344
+#: data/org.gnome.shell.gschema.xml.in:334
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:352
+#: data/org.gnome.shell.gschema.xml.in:342
 msgid "Workspaces are managed dynamically"
 msgstr "სამუშაო სივრცეები დინამიკურად იმართება"
 
-#: data/org.gnome.shell.gschema.xml.in:360
+#: data/org.gnome.shell.gschema.xml.in:350
 msgid "Workspaces only on primary monitor"
 msgstr "სამუშაო მაგიდები მხოლოდ აქტიურ ეკრანზე"
 
-#: data/org.gnome.shell.gschema.xml.in:368
+#: data/org.gnome.shell.gschema.xml.in:358
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 
@@ -907,7 +894,7 @@ msgstr "კ"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:402
+#: js/ui/calendar.js:414
 msgid "%OB"
 msgstr "%OB"
 
@@ -920,37 +907,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:412
+#: js/ui/calendar.js:424
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:473
+#: js/ui/calendar.js:485
 msgid "Previous month"
 msgstr "წინა თვე"
 
-#: js/ui/calendar.js:491
+#: js/ui/calendar.js:503
 msgid "Next month"
 msgstr "შემდეგი თვე"
 
-#: js/ui/calendar.js:642
+#: js/ui/calendar.js:654
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:701
+#: js/ui/calendar.js:713
 msgid "Week %V"
 msgstr "%V კვირა"
 
-#: js/ui/calendar.js:880
+#: js/ui/calendar.js:892
 msgid "No Notifications"
 msgstr "შეტყობინებების გარეშე"
 
-#: js/ui/calendar.js:937
+#: js/ui/calendar.js:949
 msgid "Do Not Disturb"
 msgstr "არ შემაწუხო"
 
-#: js/ui/calendar.js:958
+#: js/ui/calendar.js:970
 msgid "Clear"
 msgstr "გასუფთავება"
 
@@ -1096,7 +1083,7 @@ msgstr "უკაცრავად, არ იმუშავა. კიდე�
 msgid "%s is now known as %s"
 msgstr "%s-ს ახლა ჰქვია %s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:414
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
 msgid "Windows"
 msgstr "ფანჯრები"
 
@@ -1222,7 +1209,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "გასვლა"
 
-#: js/ui/endSessionDialog.js:64
+#: js/ui/endSessionDialog.js:64 js/ui/status/system.js:167
 msgctxt "title"
 msgid "Power Off"
 msgstr "გამორთვა"
@@ -1550,11 +1537,11 @@ msgstr "უცნობი სათაური"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:324
+#: js/ui/overviewControls.js:327
 msgid "Type to search"
 msgstr "მოსაძებნად აკრიფეთ"
 
-#: js/ui/overviewControls.js:402
+#: js/ui/overviewControls.js:405
 msgid "Applications"
 msgstr "აპლიკაციები"
 
@@ -1656,91 +1643,91 @@ msgstr "ჩაკეტვის შეცდომა"
 msgid "Lock was blocked by an application"
 msgstr "ჩაკეტვა დაბლოკილია აპლიკაციის მიერ"
 
-#: js/ui/screenshot.js:1149
+#: js/ui/screenshot.js:1147
 msgid "Selection"
 msgstr "მონიშნული"
 
-#: js/ui/screenshot.js:1159
+#: js/ui/screenshot.js:1157
 msgid "Area Selection"
 msgstr "მონიშნული მონაკვეთი"
 
-#: js/ui/screenshot.js:1164
+#: js/ui/screenshot.js:1162
 msgid "Screen"
 msgstr "ეკრანი"
 
-#: js/ui/screenshot.js:1174
+#: js/ui/screenshot.js:1172
 msgid "Screen Selection"
 msgstr "ეკრანის არჩევანი"
 
-#: js/ui/screenshot.js:1179
+#: js/ui/screenshot.js:1177
 msgid "Window"
 msgstr "ფანჯარა"
 
-#: js/ui/screenshot.js:1189
+#: js/ui/screenshot.js:1187
 msgid "Window Selection"
 msgstr "ფანჯრის არჩევანი"
 
-#: js/ui/screenshot.js:1227
+#: js/ui/screenshot.js:1225
 msgid "Screenshot / Screencast"
 msgstr "ეკრანის ანაბეჭდი / ჩანაწერი"
 
-#: js/ui/screenshot.js:1263
+#: js/ui/screenshot.js:1261
 msgid "Show Pointer"
 msgstr "კურსორის ჩვენება"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1840
+#: js/ui/screenshot.js:1849
 msgid "Screencasts"
 msgstr "ეკრანის ვიდეოჩანაწერი"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1845
+#: js/ui/screenshot.js:1854
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "ეკრანის ვიდეოჩანაწერი %d %t-დან.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1911 js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
 msgid "Screenshot"
 msgstr "ეკრანის ანაბეჭდი"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1917
+#: js/ui/screenshot.js:1926
 msgid "Screencast recorded"
 msgstr "ეკრანის ვიდეოჩანაწერი დასრულებულია"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1928
 msgid "Click here to view the video."
 msgstr "ვიდეოს სანახავად დააწკაპუნეთ აქ."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1922 js/ui/screenshot.js:2137
+#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
 msgid "Show in Files"
 msgstr "ფაილებში ჩვენება"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2083
+#: js/ui/screenshot.js:2092
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "ეკრანის ანაბეჭდი %s-დან"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:2138
 msgid "Screenshot captured"
 msgstr "ეკრანის ანაბეჭდი დათრეულია"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2140
 msgid "You can paste the image from the clipboard."
 msgstr "შეგიძლიათ მიმოცვლის ბაფერიდან ჩასვათ."
 
-#: js/ui/screenshot.js:2184 js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
 msgid "Screenshot taken"
 msgstr "ეკრანის ანაბეჭდი აღებულია"
 
@@ -1884,7 +1871,7 @@ msgstr "დიდი ტექსტი"
 msgid "Auto Rotate"
 msgstr ""
 
-#: js/ui/status/bluetooth.js:160
+#: js/ui/status/bluetooth.js:151
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1997,36 +1984,43 @@ msgstr "ეკრანის გაზიარების შეწყვე�
 msgid "Airplane Mode"
 msgstr "თვითმფრინავის რეჟიმი"
 
-#: js/ui/status/system.js:89
+#: js/ui/status/system.js:90
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
 
-#: js/ui/status/system.js:140
+#. Translators: entry in the window right click menu.
+#: js/ui/status/system.js:105 js/ui/windowMenu.js:29
+msgid "Take Screenshot"
+msgstr "ეკრანის ანაბეჭდის გადაღება"
+
+#: js/ui/status/system.js:161
 msgid "Power Off Menu"
 msgstr "გამორთვის მენიუ"
 
-#: js/ui/status/system.js:148
+#: js/ui/status/system.js:169
 msgid "Suspend"
 msgstr "ძილი"
 
-#: js/ui/status/system.js:153
+#: js/ui/status/system.js:174
 msgid "Restart…"
 msgstr "გადატვირთვა…"
 
-#: js/ui/status/system.js:158
+#: js/ui/status/system.js:179
 msgid "Power Off…"
 msgstr "გამორთვა…"
 
-#: js/ui/status/system.js:165
-msgid "Log Out"
-msgstr "გასვლა"
+#: js/ui/status/system.js:186
+#: subprojects/extensions-app/data/ui/extensions-window.ui:190
+msgid "Log Out…"
+msgstr "გასვლა…"
 
-#: js/ui/status/system.js:170
+#: js/ui/status/system.js:191
 msgid "Switch User…"
 msgstr "მომხმარებლის გადართვა…"
 
-#: js/ui/status/system.js:216
+#: js/ui/status/system.js:235
+msgctxt "action"
 msgid "Lock Screen"
 msgstr "ეკრანის ჩაკეტვა"
 
@@ -2175,11 +2169,6 @@ msgstr[0] "კონფიგურაცია დაბრუნდება %
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
-
-#. Translators: entry in the window right click menu.
-#: js/ui/windowMenu.js:29
-msgid "Take Screenshot"
-msgstr "ეკრანის ანაბეჭდის გადაღება"
 
 #: js/ui/windowMenu.js:41
 msgid "Hide"
@@ -2413,10 +2402,6 @@ msgstr ""
 #: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid "Extension Updates Ready"
 msgstr "გაფართოების განახლება მზადაა"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:190
-msgid "Log Out…"
-msgstr "გასვლა…"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:222
@@ -2829,6 +2814,14 @@ msgstr[0] "%u შეტანა"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "სისტემური ხმები"
+
+#~ msgid ""
+#~ "Whether the default Bluetooth adapter had set up devices associated to it"
+#~ msgstr ""
+#~ "აქვს თუ არა Bluetooth-ის ნაგულისხმევ ადაპტერს ერთი მოწყობილობა მაინც"
+
+#~ msgid "Log Out"
+#~ msgstr "გასვლა"
 
 #~ msgid "Bluetooth Settings"
 #~ msgstr "Bluetooth-ის მორგება"
