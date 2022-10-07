@@ -204,6 +204,7 @@ const StreamSlider = GObject.registerClass({
         let muted = this._stream.is_muted;
         this._changeSlider(muted
             ? 0 : this._stream.volume / this._control.get_vol_max_norm());
+        this._updateIcon();
         this.emit('stream-updated');
     }
 
@@ -215,6 +216,10 @@ const StreamSlider = GObject.registerClass({
 
         if (this._stream)
             this._updateVolume();
+    }
+
+    _updateIcon() {
+        this.iconName = this.getIcon();
     }
 
     getIcon() {
@@ -308,9 +313,13 @@ class OutputStreamSlider extends StreamSlider {
             return;
 
         this._hasHeadphones = hasHeadphones;
+        this._updateIcon();
+    }
+
+    _updateIcon() {
         this.iconName = this._hasHeadphones
             ? 'audio-headphones-symbolic'
-            : 'audio-speakers-symbolic';
+            : this.getIcon();
     }
 });
 
