@@ -1569,11 +1569,11 @@ var Keyboard = GObject.registerClass({
         }
     }
 
-    _commitAction(keyval, str) {
+    async _commitAction(keyval, str) {
         if (this._modifiers.size === 0 && str !== '' &&
             keyval && this._oskCompletionEnabled) {
-            Main.inputMethod.handleVirtualKey(keyval);
-            return;
+            if (await Main.inputMethod.handleVirtualKey(keyval))
+                return;
         }
 
         if (str === '' || !Main.inputMethod.currentFocus ||

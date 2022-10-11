@@ -7,6 +7,8 @@ const Main = imports.ui.main;
 
 Gio._promisify(IBus.Bus.prototype,
     'create_input_context_async', 'create_input_context_async_finish');
+Gio._promisify(IBus.InputContext.prototype,
+    'process_key_event_async', 'process_key_event_async_finish');
 
 var HIDE_PANEL_TIME = 50;
 
@@ -332,10 +334,17 @@ var InputMethod = GObject.registerClass({
         return this._preeditVisible && this._preeditStr !== '' && this._preeditStr !== null;
     }
 
-    handleVirtualKey(keyval) {
-        this._context.process_key_event_async(
-            keyval, 0, 0, -1, null, null);
-        this._context.process_key_event_async(
-            keyval, 0, IBus.ModifierType.RELEASE_MASK, -1, null, null);
+    async handleVirtualKey(keyval) {
+        try {
+            if (!await this._context.process_key_event_async(
+                keyval, 0, 0, -1, null))
+                return false;
+
+            await this._context.process_key_event_async(
+                keyval, 0, IBus.ModifierType.RELEASE_MASK, -1, null);
+            return true;
+        } catch (e) {
+            return false;
+        }
     }
 });
