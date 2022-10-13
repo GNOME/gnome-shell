@@ -143,7 +143,7 @@
 //
 // since buttons are all flat an borderless now the mixin is simpler
 
-@mixin button($t, $tc:$fg_color, $c:$bg_color) {
+@mixin button($t, $tc:$fg_color, $c:$bg_color, $flat: false) {
 
   $button_bg_color: mix($tc, $c, $button_mix_factor);
   transition-duration: 100ms;
@@ -152,6 +152,9 @@
   @if $t==normal {
     color: $tc;
     background-color: $button_bg_color;
+    @if $flat {
+      background-color: transparent;
+    }
     @if $is_highcontrast == "true" {
       box-shadow: inset 0 0 0 1px $button_inset_color;
     }

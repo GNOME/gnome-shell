@@ -198,7 +198,7 @@ var QuickSlider = GObject.registerClass({
 
         this._menuButton = new St.Button({
             child: new St.Icon({icon_name: 'go-next-symbolic'}),
-            style_class: 'icon-button',
+            style_class: 'icon-button flat',
             can_focus: true,
             x_expand: false,
             y_expand: true,
