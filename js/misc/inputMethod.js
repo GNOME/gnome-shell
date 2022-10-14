@@ -273,6 +273,9 @@ var InputMethod = GObject.registerClass({
             ibusPurpose = IBus.InputPurpose.NAME;
         else if (purpose == Clutter.InputContentPurpose.PASSWORD)
             ibusPurpose = IBus.InputPurpose.PASSWORD;
+        else if (purpose === Clutter.InputContentPurpose.TERMINAL &&
+                 IBus.InputPurpose.TERMINAL)
+            ibusPurpose = IBus.InputPurpose.TERMINAL;
 
         this._setTerminalMode(
             purpose === Clutter.InputContentPurpose.TERMINAL);
