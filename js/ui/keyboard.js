@@ -1893,7 +1893,7 @@ var Keyboard = GObject.registerClass({
         }
 
         this._oskCompletionEnabled =
-            IBusManager.getIBusManager().setCompletionEnabled(true);
+            IBusManager.getIBusManager().setCompletionEnabled(true, () => Main.inputMethod.update());
         this._clearKeyboardRestTimer();
 
         if (immediate) {
@@ -1928,7 +1928,7 @@ var Keyboard = GObject.registerClass({
         if (!this._keyboardVisible)
             return;
 
-        IBusManager.getIBusManager().setCompletionEnabled(false);
+        IBusManager.getIBusManager().setCompletionEnabled(false, () => Main.inputMethod.update());
         this._oskCompletionEnabled = false;
         this._clearKeyboardRestTimer();
 
