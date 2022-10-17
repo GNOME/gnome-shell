@@ -217,8 +217,13 @@ var InputMethod = GObject.registerClass({
 
     vfunc_set_cursor_location(rect) {
         if (this._context) {
-            this._context.set_cursor_location(rect.get_x(), rect.get_y(),
-                                              rect.get_width(), rect.get_height());
+            this._cursorRect = {
+                x: rect.get_x(), y: rect.get_y(),
+                width: rect.get_width(), height: rect.get_height(),
+            };
+            this._context.set_cursor_location(
+                this._cursorRect.x, this._cursorRect.y,
+                this._cursorRect.width, this._cursorRect.height);
             this._emitRequestSurrounding();
         }
     }
