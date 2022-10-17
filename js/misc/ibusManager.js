@@ -288,7 +288,7 @@ var IBusManager = class extends Signals.EventEmitter {
         return this._engines.get(id);
     }
 
-    async setEngine(id, callback) {
+    async _setEngine(id, callback) {
         // Send id even if id == this._currentEngineName
         // because 'properties-registered' signal can be emitted
         // while this._ibusSources == null on a lock screen.
@@ -306,8 +306,23 @@ var IBusManager = class extends Signals.EventEmitter {
             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 logError(e);
         }
+
         if (callback)
             callback();
+    }
+
+    async setEngine(id, callback) {
+        if (this._preOskState)
+            this._preOskState.engine = id;
+
+        const isXkb = id.startsWith('xkb:');
+        if (this._oskCompletion && isXkb)
+            return;
+
+        if (this._oskCompletion)
+            this.setCompletionEnabled(false, callback);
+        else
+            await this._setEngine(id, callback);
     }
 
     preloadEngines(ids) {
@@ -339,7 +354,7 @@ var IBusManager = class extends Signals.EventEmitter {
 
     setCompletionEnabled(enabled, callback) {
         /* Needs typing-booster available */
-        if (!this._engines.has(TYPING_BOOSTER_ENGINE))
+        if (enabled && !this._engines.has(TYPING_BOOSTER_ENGINE))
             return false;
         /* Can do only on xkb engines */
         if (enabled && !this._currentEngineName.startsWith('xkb:'))
@@ -373,12 +388,12 @@ var IBusManager = class extends Signals.EventEmitter {
 
             settings.reset(KEY_INLINECOMPLETION);
             settings.set_string(KEY_INPUTMETHOD, 'NoIME');
-            this.setEngine(TYPING_BOOSTER_ENGINE, callback);
+            this._setEngine(TYPING_BOOSTER_ENGINE, callback);
         } else if (this._preOskState) {
             const {engine, emoji, langs, completion, inputMethod} =
                   this._preOskState;
             this._preOskState = null;
-            this.setEngine(engine, callback);
+            this._setEngine(engine, callback);
             settings.set_value(KEY_EMOJIPREDICTIONS, emoji);
             settings.set_value(KEY_DICTIONARY, langs);
             settings.set_value(KEY_INLINECOMPLETION, completion);
