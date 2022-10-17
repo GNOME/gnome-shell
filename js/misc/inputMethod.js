@@ -187,8 +187,10 @@ var InputMethod = GObject.registerClass({
 
     vfunc_focus_out() {
         this._currentFocus = null;
-        if (this._context)
+        if (this._context) {
+            this._fullReset();
             this._context.focus_out();
+        }
 
         if (this._preeditStr && this._preeditVisible) {
             // Unset any preedit text
@@ -351,6 +353,13 @@ var InputMethod = GObject.registerClass({
         } catch (e) {
             return false;
         }
+    }
+
+    _fullReset() {
+        this._context.set_content_type(0, 0);
+        this._context.set_cursor_location(0, 0, 0, 0);
+        this._context.set_capabilities(0);
+        this._context.reset();
     }
 
     update() {
