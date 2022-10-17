@@ -337,7 +337,7 @@ var IBusManager = class extends Signals.EventEmitter {
                 });
     }
 
-    setCompletionEnabled(enabled) {
+    setCompletionEnabled(enabled, callback) {
         /* Needs typing-booster available */
         if (!this._engines.has(TYPING_BOOSTER_ENGINE))
             return false;
@@ -373,12 +373,12 @@ var IBusManager = class extends Signals.EventEmitter {
 
             settings.reset(KEY_INLINECOMPLETION);
             settings.set_string(KEY_INPUTMETHOD, 'NoIME');
-            this.setEngine(TYPING_BOOSTER_ENGINE);
+            this.setEngine(TYPING_BOOSTER_ENGINE, callback);
         } else if (this._preOskState) {
             const {engine, emoji, langs, completion, inputMethod} =
                   this._preOskState;
             this._preOskState = null;
-            this.setEngine(engine);
+            this.setEngine(engine, callback);
             settings.set_value(KEY_EMOJIPREDICTIONS, emoji);
             settings.set_value(KEY_DICTIONARY, langs);
             settings.set_value(KEY_INLINECOMPLETION, completion);
