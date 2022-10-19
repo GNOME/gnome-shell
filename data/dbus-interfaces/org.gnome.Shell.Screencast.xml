@@ -10,6 +10,7 @@
       The interface used to record screen contents.
   -->
   <interface name="org.gnome.Shell.Screencast">
+    <property name="ScreencastSupported" type="b" access="read"/>
 
     <!--
         Screencast:

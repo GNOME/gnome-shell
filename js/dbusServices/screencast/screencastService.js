@@ -258,8 +258,16 @@ var Recorder = class {
 };
 
 var ScreencastService = class extends ServiceImplementation {
+    static canScreencast() {
+        return Gst.init_check(null) &&
+            Gst.ElementFactory.find('pipewiresrc') &&
+            Gst.ElementFactory.find('filesink');
+    }
+
     constructor() {
         super(ScreencastIface, '/org/gnome/Shell/Screencast');
+
+        this._canScreencast = ScreencastService.canScreencast();
 
         Gst.init(null);
         Gtk.init();
@@ -278,6 +286,10 @@ var ScreencastService = class extends ServiceImplementation {
         this._introspectProxy = new IntrospectProxy(Gio.DBus.session,
             'org.gnome.Shell.Introspect',
             '/org/gnome/Shell/Introspect');
+    }
+
+    get ScreencastSupported() {
+        return this._canScreencast;
     }
 
     _removeRecorder(sender) {

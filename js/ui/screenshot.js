@@ -3,7 +3,6 @@
 
 const { Clutter, Cogl, Gio, GObject, GLib, Graphene, Gtk, Meta, Shell, St } = imports.gi;
 
-const Config = imports.misc.config;
 const GrabHelper = imports.ui.grabHelper;
 const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
@@ -1019,6 +1018,19 @@ var ScreenshotUI = GObject.registerClass({
 
         this._screencastInProgress = false;
 
+        this._screencastProxy = new ScreencastProxy(
+            Gio.DBus.session,
+            'org.gnome.Shell.Screencast',
+            '/org/gnome/Shell/Screencast',
+            (object, error) => {
+                if (error !== null) {
+                    log('Error connecting to the screencast service');
+                    return;
+                }
+
+                this._castButton.visible = this._screencastProxy.ScreencastSupported;
+            });
+
         this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
 
         // The full-screen screenshot has a separate container so that we can
@@ -1212,7 +1224,7 @@ var ScreenshotUI = GObject.registerClass({
             style_class: 'screenshot-ui-shot-cast-button',
             icon_name: 'camera-web-symbolic',
             toggle_mode: true,
-            visible: Config.HAVE_RECORDER,
+            visible: false,
         });
         this._castButton.connect('notify::checked',
             this._onCastButtonToggled.bind(this));
@@ -1438,7 +1450,7 @@ var ScreenshotUI = GObject.registerClass({
         if (this._screencastInProgress)
             return;
 
-        if (mode === UIMode.SCREENCAST && !Config.HAVE_RECORDER)
+        if (mode === UIMode.SCREENCAST && !this._screencastProxy.ScreencastSupported)
             return;
 
         this._castButton.checked = mode === UIMode.SCREENCAST;
@@ -1809,7 +1821,7 @@ var ScreenshotUI = GObject.registerClass({
         }
     }
 
-    _startScreencast() {
+    async _startScreencast() {
         if (this._windowButton.checked)
             return; // TODO
 
@@ -1833,61 +1845,40 @@ var ScreenshotUI = GObject.registerClass({
         this.close(true);
 
         // This is a bit awkward because creating a proxy synchronously hangs Shell.
-        const doStartScreencast = async () => {
-            let method =
-                this._screencastProxy.ScreencastAsync.bind(this._screencastProxy);
-            if (w !== -1) {
-                method = this._screencastProxy.ScreencastAreaAsync.bind(
-                    this._screencastProxy, x, y, w, h);
-            }
-
-            try {
-                const [success, path] = await method(
-                    GLib.build_filenamev([
-                        /* Translators: this is the folder where recorded
-                           screencasts are stored. */
-                        _('Screencasts'),
-                        /* Translators: this is a filename used for screencast
-                         * recording, where "%d" and "%t" date and time, e.g.
-                         * "Screencast from 07-17-2013 10:00:46 PM.webm" */
-                        /* xgettext:no-c-format */
-                        _('Screencast from %d %t.webm'),
-                    ]),
-                    {'draw-cursor': new GLib.Variant('b', drawCursor)});
-                if (!success)
-                    throw new Error();
-                this._screencastPath = path;
-            } catch (error) {
-                this._setScreencastInProgress(false);
-                const {message} = error;
-                if (message)
-                    log(`Error starting screencast: ${message}`);
-                else
-                    log('Error starting screencast');
-            }
-        };
+        let method =
+            this._screencastProxy.ScreencastAsync.bind(this._screencastProxy);
+        if (w !== -1) {
+            method = this._screencastProxy.ScreencastAreaAsync.bind(
+                this._screencastProxy, x, y, w, h);
+        }
 
         // Set this before calling the method as the screen recording indicator
         // will check it before the success callback fires.
         this._setScreencastInProgress(true);
 
-        if (this._screencastProxy) {
-            doStartScreencast();
-        } else {
-            new ScreencastProxy(
-                Gio.DBus.session,
-                'org.gnome.Shell.Screencast',
-                '/org/gnome/Shell/Screencast',
-                (object, error) => {
-                    if (error !== null) {
-                        log('Error connecting to the screencast service');
-                        return;
-                    }
-
-                    this._screencastProxy = object;
-                    doStartScreencast();
-                }
-            );
+        try {
+            const [success, path] = await method(
+                GLib.build_filenamev([
+                    /* Translators: this is the folder where recorded
+                       screencasts are stored. */
+                    _('Screencasts'),
+                    /* Translators: this is a filename used for screencast
+                     * recording, where "%d" and "%t" date and time, e.g.
+                     * "Screencast from 07-17-2013 10:00:46 PM.webm" */
+                    /* xgettext:no-c-format */
+                    _('Screencast from %d %t.webm'),
+                ]),
+                {'draw-cursor': new GLib.Variant('b', drawCursor)});
+            if (!success)
+                throw new Error();
+            this._screencastPath = path;
+        } catch (error) {
+            this._setScreencastInProgress(false);
+            const {message} = error;
+            if (message)
+                log(`Error starting screencast: ${message}`);
+            else
+                log('Error starting screencast');
         }
     }
 
