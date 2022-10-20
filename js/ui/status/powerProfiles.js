@@ -58,7 +58,9 @@ class PowerProfilesToggle extends QuickMenuToggle {
                             this._syncProfiles();
                         this._sync();
                     });
-                    this._syncProfiles();
+
+                    if (this._proxy.g_name_owner)
+                        this._syncProfiles();
                 }
                 this._sync();
             });
