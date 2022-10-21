@@ -103,9 +103,21 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._reauthOnly = params.reauthenticationOnly;
 
         this._client = client;
+        this._cancellable = null;
 
         this._defaultService = null;
         this._preemptingService = null;
+
+        this._messageQueue = [];
+        this._messageQueueTimeoutId = 0;
+
+        this._failCounter = 0;
+        this._unavailableServices = new Set();
+
+        this._credentialManagers = {};
+
+        this.reauthenticating = false;
+        this.smartcardDetected = false;
 
         this._settings = new Gio.Settings({schema_id: LOGIN_SCREEN_SCHEMA});
         this._settings.connect('changed',
@@ -130,15 +142,6 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._smartcardManager.connectObject(
             'smartcard-inserted', this._checkForSmartcard.bind(this),
             'smartcard-removed', this._checkForSmartcard.bind(this), this);
-
-        this._messageQueue = [];
-        this._messageQueueTimeoutId = 0;
-        this.reauthenticating = false;
-
-        this._failCounter = 0;
-        this._unavailableServices = new Set();
-
-        this._credentialManagers = {};
 
         this.addCredentialManager(OVirt.SERVICE_NAME, OVirt.getOVirtCredentialsManager());
         this.addCredentialManager(Vmware.SERVICE_NAME, Vmware.getVmwareCredentialsManager());
