@@ -112,6 +112,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._messageQueueTimeoutId = 0;
 
         this._failCounter = 0;
+        this._activeServices = new Set();
         this._unavailableServices = new Set();
 
         this._credentialManagers = {};
@@ -228,6 +229,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         this._clearUserVerifier();
         this._clearMessageQueue();
+        this._activeServices.clear();
     }
 
     destroy() {
@@ -469,6 +471,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             'problem', this._onProblem.bind(this),
             'info-query', this._onInfoQuery.bind(this),
             'secret-info-query', this._onSecretInfoQuery.bind(this),
+            'conversation-started', this._onConversationStarted.bind(this),
             'conversation-stopped', this._onConversationStopped.bind(this),
             'service-unavailable', this._onServiceUnavailable.bind(this),
             'reset', this._onReset.bind(this),
@@ -532,6 +535,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     async _startService(serviceName) {
         this._hold.acquire();
         try {
+            this._activeServices.add(serviceName);
             if (this._userName) {
                 await this._userVerifier.call_begin_verification_for_user(
                     serviceName, this._userName, this._cancellable);
@@ -540,6 +544,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                     serviceName, this._cancellable);
             }
         } catch (e) {
+            this._activeServices.delete(serviceName);
             if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 return;
             if (!this.serviceIsForeground(serviceName)) {
@@ -657,6 +662,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     _onReset() {
         // Clear previous attempts to authenticate
         this._failCounter = 0;
+        this._activeServices.clear();
         this._unavailableServices.clear();
         this._updateDefaultService();
 
@@ -739,7 +745,13 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._queueMessage(serviceName, errorMessage, MessageType.ERROR);
     }
 
+    _onConversationStarted(client, serviceName) {
+        this._activeServices.add(serviceName);
+    }
+
     _onConversationStopped(client, serviceName) {
+        this._activeServices.delete(serviceName);
+
         // If the login failed with the preauthenticated oVirt credentials
         // then discard the credentials and revert to default authentication
         // mechanism.
