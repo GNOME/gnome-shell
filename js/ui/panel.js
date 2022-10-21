@@ -548,6 +548,8 @@ class Panel extends St.Widget {
 
         return dragWindow.begin_grab_op(
             Meta.GrabOp.MOVING,
+            event.get_device(),
+            event.get_event_sequence(),
             event.get_time()) ? Clutter.EVENT_STOP : Clutter.EVENT_PROPAGATE;
     }
 

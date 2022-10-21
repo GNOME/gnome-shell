@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*
 /* exported WindowMenuManager */
 
-const {Meta, St} = imports.gi;
+const {Clutter, Meta, St} = imports.gi;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
@@ -57,13 +57,39 @@ var WindowMenu = class extends PopupMenu.PopupMenu {
             item.setSensitive(false);
 
         item = this.addAction(_("Move"), event => {
-            window.begin_grab_op(Meta.GrabOp.KEYBOARD_MOVING, event.get_time());
+            const device = event.get_device();
+            const seat = device.get_seat();
+            const deviceType = device.get_device_type();
+            const pointer =
+                deviceType === Clutter.InputDeviceType.POINTER_DEVICE ||
+                deviceType === Clutter.InputDeviceType.TABLET_DEVICE ||
+                deviceType === Clutter.InputDeviceType.PEN_DEVICE ||
+                deviceType === Clutter.InputDeviceType.ERASER_DEVICE
+                    ? device : seat.get_pointer();
+
+            window.begin_grab_op(
+                Meta.GrabOp.KEYBOARD_MOVING,
+                pointer, null,
+                event.get_time());
         });
         if (!window.allows_move())
             item.setSensitive(false);
 
         item = this.addAction(_("Resize"), event => {
-            window.begin_grab_op(Meta.GrabOp.KEYBOARD_RESIZING_UNKNOWN, event.get_time());
+            const device = event.get_device();
+            const seat = device.get_seat();
+            const deviceType = device.get_device_type();
+            const pointer =
+                deviceType === Clutter.InputDeviceType.POINTER_DEVICE ||
+                deviceType === Clutter.InputDeviceType.TABLET_DEVICE ||
+                deviceType === Clutter.InputDeviceType.PEN_DEVICE ||
+                deviceType === Clutter.InputDeviceType.ERASER_DEVICE
+                    ? device : seat.get_pointer();
+
+            window.begin_grab_op(
+                Meta.GrabOp.KEYBOARD_RESIZING_UNKNOWN,
+                pointer, null,
+                event.get_time());
         });
         if (!window.allows_resize())
             item.setSensitive(false);
