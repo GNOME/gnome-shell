@@ -519,6 +519,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _updateDefaultService() {
+        const oldDefaultService = this._defaultService;
+
         if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
             this._defaultService = PASSWORD_SERVICE_NAME;
         else if (this._settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY))
@@ -530,6 +532,11 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             log('no authentication service is enabled, using password authentication');
             this._defaultService = PASSWORD_SERVICE_NAME;
         }
+
+        if (oldDefaultService &&
+            oldDefaultService !== this._defaultService &&
+            this._activeServices.has(oldDefaultService))
+            this._cancelAndReset();
     }
 
     async _startService(serviceName) {
