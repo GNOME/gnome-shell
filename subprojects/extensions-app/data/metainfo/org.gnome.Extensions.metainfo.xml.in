@@ -39,6 +39,7 @@
   </description>
 
   <releases>
+    <release version="43.1" date="2022-10-22"/>
     <release version="43.0" date="2022-09-17">
       <p>Modernize About window</p>
     </release>

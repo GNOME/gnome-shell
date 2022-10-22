@@ -1,3 +1,32 @@
+43.1
+====
+* Fix default keyboard layout during initial setup [Carlos; !2487, !2495]
+* Show Bluetooth switch in more cases [Bastien; !2488]
+* Include origin in sound device switcher [Florian; !2502]
+* Fix remembering inhibit-shortcut permission for multiple apps [Florian; !2504]
+* Forward TERMINAL input purpose to ibus [Jonas; !2511]
+* Fix style glitches [Sam; !2513, !2510]
+* Fix tracking of newly installed apps [Florian; !2480]
+* Fix space key getting stuck in on-screen keyboard [Carlos; !2508]
+* Fix showing passwords as on-screen keyboard suggestions [Carlos; !2512]
+* Fix network portal regression [Marco; !2524]
+* Fix possible freeze during initialization [Florian; !2519]
+* Misc. bug fixes and cleanups [Andy, Jonas, Alessandro, Florian, Sebastian;
+  !2470, !2476, !2471, !2483, !2518, !2503]
+
+Contributors:
+  Marco Trevisan (Treviño), Alessandro Bono, Carlos Garnacho, Sam Hewitt,
+  Andy Holmes, Sebastian Keller, Florian Müllner, Bastien Nocera, Jonas Ådahl
+
+Translators:
+  Baurzhan Muftakhidinov [kk], Марко Костић [sr], Yosef Or Boczko [he],
+  Guillaume Bernard [fr], Hugo Carvalho [pt], Kukuh Syafaat [id],
+  Pawan Chitrakar [ne], Aleksandr Melman [ru], Aurimas Černius [lt],
+  Anders Jonsson [sv], Jordi Mas [ca], Danial Behzadi [fa], Dušan Kazik [sk],
+  Fabio Tomat [fur], Olexander [uk], Nart Tlisha [ab], Cheng-Chia Tseng [zh_TW],
+  Alexander Shopov [bg], Zurab Kargareteli [ka], A S Alam [pa],
+  Kosmas Martakidis [el], Nathan Follens [nl]
+
 43.0
 ====
 * Fix rebooting into boot loader menu [Florian; !2472]
