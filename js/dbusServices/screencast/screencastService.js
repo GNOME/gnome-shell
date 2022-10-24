@@ -259,9 +259,13 @@ var Recorder = class {
 
 var ScreencastService = class extends ServiceImplementation {
     static canScreencast() {
+        const elements = [
+            'pipewiresrc',
+            'filesink',
+            ...DEFAULT_PIPELINE.split('!').map(e => e.trim().split(' ').at(0)),
+        ];
         return Gst.init_check(null) &&
-            Gst.ElementFactory.find('pipewiresrc') &&
-            Gst.ElementFactory.find('filesink');
+            elements.every(e => Gst.ElementFactory.find(e) != null);
     }
 
     constructor() {
