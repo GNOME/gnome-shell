@@ -25,4 +25,4 @@ var HAVE_RECORDER =
     pkg.checkSymbol('Gst', '1.0') &&
     imports.gi.Gst.init_check(null) &&
     imports.gi.Gst.ElementFactory.find('pipewiresrc') &&
-    imports.gi.Gst.ElementFactory.find('filesrc');
+    imports.gi.Gst.ElementFactory.find('filesink');
