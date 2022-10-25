@@ -1,3 +1,16 @@
+42.6
+====
+* Fix remembering inhibit-shortcut permission for multiple apps [Florian; !2504]
+* Forward TERMINAL input purpose to ibus [Jonas; !2511]
+* Fix default keyboard layout during initial setup [Carlos; !2495]
+* Fix tracking of newly installed apps [Florian; !2480]
+* Misc. bug fixes and cleanups [Andy, Alessandro, Florian, Sebastian; !2470,
+  !2471, !2483, !2503]
+
+Contributors:
+  Alessandro Bono, Carlos Garnacho, Andy Holmes, Sebastian Keller,
+  Florian Müllner, Jonas Ådahl
+
 42.5
 ====
 * Fix initial selection in switch-monitor popup on desktop [Yao; !2451]
