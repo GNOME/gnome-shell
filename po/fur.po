@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-20 09:42+0000\n"
-"PO-Revision-Date: 2022-09-27 13:20+0200\n"
+"POT-Creation-Date: 2022-09-27 11:20+0000\n"
+"PO-Revision-Date: 2022-10-25 02:41+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <f.t.public@gmail.com>\n"
 "Language: fur\n"
@@ -1931,7 +1931,7 @@ msgstr "Tastiere a Visôr"
 
 #: js/ui/status/accessibility.js:62
 msgid "Visual Alerts"
-msgstr "Avertencis Visuâi"
+msgstr "Avertencis visuâls"
 
 #: js/ui/status/accessibility.js:65
 msgid "Sticky Keys"
