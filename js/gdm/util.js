@@ -14,8 +14,8 @@ import {loadInterfaceXML} from '../misc/fileUtils.js';
 import * as Params from '../misc/params.js';
 import * as SmartcardManager from '../misc/smartcardManager.js';
 
-const FprintManagerIface = loadInterfaceXML('net.reactivated.Fprint.Manager');
-const FprintManagerProxy = Gio.DBusProxy.makeProxyWrapper(FprintManagerIface);
+const FprintManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(
+    loadInterfaceXML('net.reactivated.Fprint.Manager'));
 const FprintDeviceIface = loadInterfaceXML('net.reactivated.Fprint.Device');
 const FprintDeviceProxy = Gio.DBusProxy.makeProxyWrapper(FprintDeviceIface);
 
@@ -125,12 +125,15 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._updateDefaultService.bind(this));
         this._updateDefaultService();
 
-        this._fprintManager = new FprintManagerProxy(Gio.DBus.system,
-            'net.reactivated.Fprint',
-            '/net/reactivated/Fprint/Manager',
-            null,
-            null,
-            Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES);
+        this._fprintManager = new Gio.DBusProxy({
+            g_connection: Gio.DBus.system,
+            g_name: 'net.reactivated.Fprint',
+            g_object_path: '/net/reactivated/Fprint/Manager',
+            g_interface_name: FprintManagerInfo.name,
+            g_interface_info: FprintManagerInfo,
+            g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES,
+        });
+        this._fprintManager.init(null);
         this._smartcardManager = SmartcardManager.getSmartcardManager();
 
         // We check for smartcards right away, since an inserted smartcard
