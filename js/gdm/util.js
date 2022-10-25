@@ -170,7 +170,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._userName = userName;
         this.reauthenticating = false;
 
-        this._checkForFingerprintReader();
+        this._checkForFingerprintReader().catch(logError);
 
         // If possible, reauthenticate an already running session,
         // so any session specific credentials get updated appropriately
@@ -355,19 +355,17 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             return;
         }
 
-        try {
-            const [device] = await this._fprintManager.GetDefaultDeviceAsync(
-                Gio.DBusCallFlags.NONE, this._cancellable);
-            const fprintDeviceProxy = new FprintDeviceProxy(Gio.DBus.system,
-                'net.reactivated.Fprint',
-                device);
-            const fprintDeviceType = fprintDeviceProxy['scan-type'];
+        const [device] = await this._fprintManager.GetDefaultDeviceAsync(
+            Gio.DBusCallFlags.NONE, this._cancellable);
+        const fprintDeviceProxy = new FprintDeviceProxy(Gio.DBus.system,
+            'net.reactivated.Fprint',
+            device);
+        const fprintDeviceType = fprintDeviceProxy['scan-type'];
 
-            this._fingerprintReaderType = fprintDeviceType === 'swipe'
-                ? FingerprintReaderType.SWIPE
-                : FingerprintReaderType.PRESS;
-            this._updateDefaultService();
-        } catch (e) {}
+        this._fingerprintReaderType = fprintDeviceType === 'swipe'
+            ? FingerprintReaderType.SWIPE
+            : FingerprintReaderType.PRESS;
+        this._updateDefaultService();
     }
 
     _onCredentialManagerAuthenticated(credentialManager, _token) {
