@@ -84,7 +84,7 @@ const SystemActions = GObject.registerClass({
             name: C_("search-result", "Power Off"),
             iconName: 'system-shutdown-symbolic',
             // Translators: A list of keywords that match the power-off action, separated by semicolons
-            keywords: tokenizeKeywords(_('power off;shutdown;halt;stop')),
+            keywords: tokenizeKeywords(_('power off;poweroff;shutdown;halt;stop')),
             available: false,
         });
         this._actions.set(RESTART_ACTION_ID, {
