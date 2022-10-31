@@ -472,10 +472,6 @@ var AppSwitchAction = GObject.registerClass({
     _init() {
         super._init();
         this.set_n_touch_points(3);
-
-        global.display.connect('grab-op-begin', () => {
-            this.cancel();
-        });
     }
 
     vfunc_gesture_prepare(_actor) {
