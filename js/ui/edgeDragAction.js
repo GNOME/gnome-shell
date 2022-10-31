@@ -20,8 +20,6 @@ var EdgeDragAction = GObject.registerClass({
         this._allowedModes = allowedModes;
         this.set_n_touch_points(1);
         this.set_threshold_trigger_edge(Clutter.GestureTriggerEdge.AFTER);
-
-        global.display.connect('grab-op-begin', () => this.cancel());
     }
 
     _getMonitorRect(x, y) {
