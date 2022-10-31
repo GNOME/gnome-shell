@@ -232,11 +232,6 @@ const TouchSwipeGesture = GObject.registerClass({
 
         this._allowedModes = allowedModes;
         this._distance = global.screen_height;
-
-        global.display.connect('grab-op-begin', () => {
-            this.cancel();
-        });
-
         this._lastPosition = 0;
     }
 
