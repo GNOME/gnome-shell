@@ -167,6 +167,16 @@ export const PopupBaseMenuItem = GObject.registerClass({
             this.activate(event);
             return Clutter.EVENT_STOP;
         }
+
+        // Support wrapping navigation in the menu
+        if (symbol === Clutter.KEY_Up || symbol === Clutter.KEY_Down) {
+            const group = global.focus_manager.get_group(this);
+            const direction = symbol === Clutter.KEY_Up
+                ? St.DirectionType.UP
+                : St.DirectionType.DOWN;
+            if (group?.navigate_focus(this, direction, true))
+                return Clutter.EVENT_STOP;
+        }
         return Clutter.EVENT_PROPAGATE;
     }
 
