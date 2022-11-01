@@ -5,5 +5,6 @@
 
     <file>misc/config.js</file>
     <file>misc/dbusUtils.js</file>
+    <file>misc/fileUtils.js</file>
   </gresource>
 </gresources>
