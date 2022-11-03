@@ -135,7 +135,7 @@ $screenshot_ui_button_red: $error_color;
 }
 
 .screenshot-ui-window-selector {
-  background-color: $system_bg_color;
+  @extend %osd_panel;
 
   .screenshot-ui-window-selector-window-container {
     margin: 100px;
