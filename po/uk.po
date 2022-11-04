@@ -3,27 +3,27 @@
 # This file is distributed under the same license as the gnome-shell package.
 #
 #
+#
 # Maxim V. Dziumanenko <dziumanenko@gmail.com>, 2010.
 # Daniel Korostil <ted.korostiled@gmail.com>, 2013, 2014, 2015, 2016, 2017.
 # Danylo Korostil <ted.korostiled@gmail.com>, 2020.
 # Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022.
 # Olexander Movchan <olexander-movchan@ukr.net>, 2022.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-20 09:42+0000\n"
-"PO-Revision-Date: 2022-09-28 14:47+0300\n"
-"Last-Translator: Olexander Movchan <olexander-movchan@ukr.net>\n"
+"POT-Creation-Date: 2022-11-04 14:42+0000\n"
+"PO-Revision-Date: 2022-11-04 16:45+0200\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : "
-"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
-"X-Generator: Gtranslator 40.0\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
+"X-Generator: Lokalize 20.12.0\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: uk\n"
 "X-DL-Module: gnome-shell\n"
@@ -72,7 +72,7 @@ msgid "Activate favorite application 9"
 msgstr "Активувати улюблену програму 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2070
 msgid "Screenshots"
 msgstr "Знімки екрана"
 
@@ -901,7 +901,7 @@ msgstr "Навушники"
 msgid "Headset"
 msgstr "Гарнітура"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
 msgid "Microphone"
 msgstr "Мікрофон"
 
@@ -1101,7 +1101,8 @@ msgstr "Необхідна автентифікація"
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr "Потрібно паролі або зашифровані ключі для доступу до радіомережі «%s»."
+msgstr ""
+"Потрібно паролі або зашифровані ключі для доступу до радіомережі «%s»."
 
 #: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:752
 msgid "Wired 802.1X authentication"
@@ -1359,7 +1360,8 @@ msgstr "Перезапустити і встановити оновлення"
 
 #: js/ui/endSessionDialog.js:106
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid ""
+"The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] ""
@@ -1456,31 +1458,31 @@ msgstr "Випущено оновлення розширень"
 msgid "Extension updates are ready to be installed."
 msgstr "Приготовано до встановлення оновлення розширень."
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:75
 msgid "Allow inhibiting shortcuts"
 msgstr "Дозволити успадкування скорочень"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:82
+#: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
 msgstr "Програма %s бажає успадкувати клавіатурні скорочення"
 
-#: js/ui/inhibitShortcutsDialog.js:83
+#: js/ui/inhibitShortcutsDialog.js:79
 msgid "An application wants to inhibit shortcuts"
 msgstr "Програма бажає успадкувати скорочення"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:90
+#: js/ui/inhibitShortcutsDialog.js:86
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Можна відновити скорочення, натиснувши %s."
 
-#: js/ui/inhibitShortcutsDialog.js:101
+#: js/ui/inhibitShortcutsDialog.js:97
 msgid "Deny"
 msgstr "Заборонити"
 
-#: js/ui/inhibitShortcutsDialog.js:110
+#: js/ui/inhibitShortcutsDialog.js:106
 msgid "Allow"
 msgstr "Дозволити"
 
@@ -1747,91 +1749,91 @@ msgstr "Неможливо заблокувати"
 msgid "Lock was blocked by an application"
 msgstr "Блокування заборонено програмою"
 
-#: js/ui/screenshot.js:1147
+#: js/ui/screenshot.js:1159
 msgid "Selection"
 msgstr "Вибір"
 
-#: js/ui/screenshot.js:1157
+#: js/ui/screenshot.js:1169
 msgid "Area Selection"
 msgstr "Вибір ділянки"
 
-#: js/ui/screenshot.js:1162
+#: js/ui/screenshot.js:1174
 msgid "Screen"
 msgstr "Екран"
 
-#: js/ui/screenshot.js:1172
+#: js/ui/screenshot.js:1184
 msgid "Screen Selection"
 msgstr "Вибір екрана"
 
-#: js/ui/screenshot.js:1177
+#: js/ui/screenshot.js:1189
 msgid "Window"
 msgstr "Вікно"
 
-#: js/ui/screenshot.js:1187
+#: js/ui/screenshot.js:1199
 msgid "Window Selection"
 msgstr "Вибір вікна"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1237
 msgid "Screenshot / Screencast"
 msgstr "Знімок / Запис відео з екрана"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1273
 msgid "Show Pointer"
 msgstr "Показувати вказівник"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1849
+#: js/ui/screenshot.js:1864
 msgid "Screencasts"
 msgstr "Трансляції з екрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1854
+#: js/ui/screenshot.js:1869
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Запис з %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
+#: js/ui/screenshot.js:1911 js/ui/screenshot.js:2123
 msgid "Screenshot"
 msgstr "Знімок екрана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1926
+#: js/ui/screenshot.js:1917
 msgid "Screencast recorded"
 msgstr "Записано відео з екрана"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1928
+#: js/ui/screenshot.js:1919
 msgid "Click here to view the video."
 msgstr "Натисніть тут, щоб переглянути відео."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
+#: js/ui/screenshot.js:1922 js/ui/screenshot.js:2137
 msgid "Show in Files"
 msgstr "Показувати у «Файлах»"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2083
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Знімок екрана з %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2138
+#: js/ui/screenshot.js:2129
 msgid "Screenshot captured"
 msgstr "Знімок зроблено"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2140
+#: js/ui/screenshot.js:2131
 msgid "You can paste the image from the clipboard."
 msgstr "Ви можете вставити зображення з буфера обміну даними."
 
-#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
+#: js/ui/screenshot.js:2184 js/ui/screenshot.js:2349
 msgid "Screenshot taken"
 msgstr "Знімок зроблено"
 
@@ -1986,8 +1988,9 @@ msgid "Brightness"
 msgstr "Яскравість"
 
 #: js/ui/status/darkMode.js:11
-msgid "Dark Mode"
-msgstr "Темний режим"
+#| msgid "Dark Mode"
+msgid "Dark Style"
+msgstr "Темний стиль"
 
 #: js/ui/status/dwellClick.js:12
 msgid "Single Click"
@@ -2009,11 +2012,11 @@ msgstr "Правий клац"
 msgid "Dwell Click"
 msgstr "Затриманий клац"
 
-#: js/ui/status/keyboard.js:830
+#: js/ui/status/keyboard.js:833
 msgid "Keyboard"
 msgstr "Клавіатура"
 
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:850
 msgid "Show Keyboard Layout"
 msgstr "Показати розкладку клавіатури"
 
@@ -2074,7 +2077,7 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Заощадження"
 
-#: js/ui/status/powerProfiles.js:68
+#: js/ui/status/powerProfiles.js:70
 msgid "Power Profiles"
 msgstr "Профілі живлення"
 
@@ -2164,19 +2167,19 @@ msgstr "Помилка завірення Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Неможливо завірити пристрій Thunderbolt: %s"
 
-#: js/ui/status/volume.js:191
+#: js/ui/status/volume.js:194
 msgid "Volume changed"
 msgstr "Гучність змінено"
 
-#: js/ui/status/volume.js:253
+#: js/ui/status/volume.js:256
 msgid "Volume"
 msgstr "Гучність"
 
-#: js/ui/status/volume.js:269
+#: js/ui/status/volume.js:272
 msgid "Sound Output"
 msgstr "Виведення звуку"
 
-#: js/ui/status/volume.js:337
+#: js/ui/status/volume.js:340
 msgid "Sound Input"
 msgstr "Введення звуку"
 
@@ -2503,8 +2506,8 @@ msgstr "Встановлені вручну"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
 "Щоб знайти і додати потрібні вам розширення, відвідайте <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
