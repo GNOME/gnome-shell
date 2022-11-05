@@ -1886,10 +1886,11 @@ class AppViewItem extends St.Button {
 
         if (isDraggable) {
             this._draggable = DND.makeDraggable(this, {timeoutThreshold: 200});
-
-            this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
-            this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
-            this._draggable.connect('drag-end', this._onDragEnd.bind(this));
+            this._draggable.connectObject(
+                'drag-begin', this._onDragBegin.bind(this),
+                'drag-cancelled', this._onDragCancelled.bind(this),
+                'drag-end', this._onDragEnd.bind(this),
+                this);
         }
 
         this._otherIconIsHovering = false;

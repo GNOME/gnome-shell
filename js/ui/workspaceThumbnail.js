@@ -86,9 +86,11 @@ export const WindowClone = GObject.registerClass({
             dragActorMaxSize: Workspace.WINDOW_DND_SIZE,
             dragActorOpacity: Workspace.DRAGGING_WINDOW_OPACITY,
         });
-        this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
-        this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
-        this._draggable.connect('drag-end', this._onDragEnd.bind(this));
+        this._draggable.connectObject(
+            'drag-begin', this._onDragBegin.bind(this),
+            'drag-cancelled', this._onDragCancelled.bind(this),
+            'drag-end', this._onDragEnd.bind(this),
+            this);
         this.inDrag = false;
 
         const clickAction = new Clutter.ClickAction();

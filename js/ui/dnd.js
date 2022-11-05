@@ -119,7 +119,6 @@ class _Draggable extends Signals.EventEmitter {
 
             if (this._dragState === DragState.DRAGGING && this._dragCancellable)
                 this._cancelDrag(global.get_current_time());
-            this.disconnectAll();
         });
         this._onEventId = null;
         this._touchSequence = null;
