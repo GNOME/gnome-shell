@@ -271,10 +271,13 @@ var ScreencastService = class extends ServiceImplementation {
     constructor() {
         super(ScreencastIface, '/org/gnome/Shell/Screencast');
 
+        this.hold(); // gstreamer initializing can take a bit
         this._canScreencast = ScreencastService.canScreencast();
 
         Gst.init(null);
         Gtk.init();
+
+        this.release();
 
         this._recorders = new Map();
         this._senders = new Map();
