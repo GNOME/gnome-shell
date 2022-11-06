@@ -519,13 +519,13 @@ var Overview = class extends Signals.EventEmitter {
 
         Meta.disable_unredirect_for_display(global.display);
 
-        this._overview.prepareToEnterOverview();
-        this._overview.animateToOverview(state, () => this._showDone());
-
         Main.layoutManager.overviewGroup.set_child_above_sibling(
             this._coverPane, null);
         this._coverPane.show();
+
+        this._overview.prepareToEnterOverview();
         this.emit('showing');
+        this._overview.animateToOverview(state, () => this._showDone());
     }
 
     _showDone() {
@@ -573,13 +573,13 @@ var Overview = class extends Signals.EventEmitter {
         this._animationInProgress = true;
         this._visibleTarget = false;
 
-        this._overview.prepareToLeaveOverview();
-        this._overview.animateFromOverview(() => this._hideDone());
-
         Main.layoutManager.overviewGroup.set_child_above_sibling(
             this._coverPane, null);
         this._coverPane.show();
+
+        this._overview.prepareToLeaveOverview();
         this.emit('hiding');
+        this._overview.animateFromOverview(() => this._hideDone());
     }
 
     _hideDone() {
