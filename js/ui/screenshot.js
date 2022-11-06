@@ -1017,6 +1017,7 @@ var ScreenshotUI = GObject.registerClass({
         });
 
         this._screencastInProgress = false;
+        this._screencastSupported = false;
 
         this._screencastProxy = new ScreencastProxy(
             Gio.DBus.session,
@@ -1028,7 +1029,8 @@ var ScreenshotUI = GObject.registerClass({
                     return;
                 }
 
-                this._castButton.visible = this._screencastProxy.ScreencastSupported;
+                this._screencastSupported = this._screencastProxy.ScreencastSupported;
+                this._castButton.visible = this._screencastSupported;
             });
 
         this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
@@ -1450,7 +1452,7 @@ var ScreenshotUI = GObject.registerClass({
         if (this._screencastInProgress)
             return;
 
-        if (mode === UIMode.SCREENCAST && !this._screencastProxy.ScreencastSupported)
+        if (mode === UIMode.SCREENCAST && !this._screencastSupported)
             return;
 
         this._castButton.checked = mode === UIMode.SCREENCAST;
