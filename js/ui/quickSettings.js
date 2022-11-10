@@ -582,7 +582,7 @@ var QuickSettingsMenu = class extends PopupMenu.PopupMenu {
     constructor(sourceActor, nColumns = 1) {
         super(sourceActor, 0, St.Side.TOP);
 
-        this.actor = new St.Widget({reactive: true});
+        this.actor = new St.Widget({reactive: true, width: 0, height: 0});
         this.actor.add_child(this._boxPointer);
         this.actor._delegate = this;
 
