@@ -411,9 +411,14 @@ var InputSourceManager = class extends Signals.EventEmitter {
             return;
         }
 
-        let popup = new InputSourcePopup(this._mruSources, this._keybindingAction, this._keybindingActionBackward);
-        if (!popup.show(binding.is_reversed(), binding.get_name(), binding.get_mask()))
-            popup.fadeAndDestroy();
+        this._switcherPopup = new InputSourcePopup(
+            this._mruSources, this._keybindingAction, this._keybindingActionBackward);
+        this._switcherPopup.connect('destroy', () => {
+            this._switcherPopup = null;
+        });
+        if (!this._switcherPopup.show(
+            binding.is_reversed(), binding.get_name(), binding.get_mask()))
+            this._switcherPopup.fadeAndDestroy();
     }
 
     _keyboardOptionsChanged() {
@@ -675,6 +680,10 @@ var InputSourceManager = class extends Signals.EventEmitter {
     }
 
     _ibusSetContentType(im, purpose, _hints) {
+        // Avoid purpose changes while the switcher popup is shown, likely due to
+        // the focus change caused by the switcher popup causing this purpose change.
+        if (this._switcherPopup)
+            return;
         if (purpose == IBus.InputPurpose.PASSWORD) {
             if (Object.keys(this._inputSources).length == Object.keys(this._ibusSources).length)
                 return;
