@@ -1998,7 +1998,7 @@ class Indicator extends SystemIndicator {
             this._portalHelperProxy?.CloseAsync(path);
     }
 
-    async _portalHelperDone(proxy, emitter, parameters) {
+    async _portalHelperDone(parameters) {
         let [path, result] = parameters;
 
         if (result == PortalHelperResult.CANCELLED) {
@@ -2051,7 +2051,9 @@ class Indicator extends SystemIndicator {
                 g_interface_info: PortalHelperInfo,
             });
             this._portalHelperProxy.connectSignal('Done',
-                () => this._portalHelperDone().catch(logError));
+                (proxy, emitter, params) => {
+                    this._portalHelperDone(params).catch(logError);
+                });
 
             try {
                 await this._portalHelperProxy.init_async(
