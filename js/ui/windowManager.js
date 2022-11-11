@@ -1773,7 +1773,7 @@ var WindowManager = class {
             target--;
             newWs = workspaceManager.get_workspace_by_index(target);
 
-            if (workspaceManager.get_active_workspace().index() > target) {
+            if (workspaceManager.get_active_workspace_index() > target) {
                 if (vertical)
                     direction = Meta.MotionDirection.UP;
                 else if (rtl)
