@@ -1324,9 +1324,12 @@ class AppDisplay extends BaseAppView {
 
         this._placeholder = null;
 
-        Main.overview.connect('hidden', () => this.goToPage(0));
-
-        this._redisplayWorkId = Main.initializeDeferredWork(this, this._redisplay.bind(this));
+        this._overviewHiddenId = 0;
+        this._redisplayWorkId = Main.initializeDeferredWork(this, () => {
+            this._redisplay();
+            if (this._overviewHiddenId === 0)
+                this._overviewHiddenId = Main.overview.connect('hidden', () => this.goToPage(0));
+        });
 
         Shell.AppSystem.get_default().connect('installed-changed', () => {
             Main.queueDeferredWork(this._redisplayWorkId);
