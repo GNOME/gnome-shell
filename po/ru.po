@@ -606,7 +606,7 @@ msgstr "Выключить"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:87
-msgid "power off;shutdown;halt;stop"
+msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "выключение;завершение;остановка;стоп"
 
 #. Translators: The name of the restart action in search
@@ -2007,8 +2007,8 @@ msgid "Brightness"
 msgstr "Яркость"
 
 #: js/ui/status/darkMode.js:11
-msgid "Dark Mode"
-msgstr "Темный режим"
+msgid "Dark Style"
+msgstr "Темный стиль"
 
 #: js/ui/status/dwellClick.js:12
 msgid "Single Click"
@@ -2115,6 +2115,14 @@ msgstr "Мобильные соединения"
 #: js/ui/status/network.js:1839
 msgid "Mobile Broadband Settings"
 msgstr "Настройки мобильной связи"
+
+#: js/ui/status/network.js:1951
+msgid "Connection failed"
+msgstr "Сбой подключения"
+
+#: js/ui/status/network.js:1952
+msgid "Activation of network connection failed"
+msgstr "Не удалось активировать сетевое подключение"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
@@ -3095,12 +3103,6 @@ msgstr "Системные звуки"
 #~ msgstr[0] "%s модемное соединение"
 #~ msgstr[1] "%s модемных соединения"
 #~ msgstr[2] "%s модемных соединений"
-
-#~ msgid "Connection failed"
-#~ msgstr "Сбой подключения"
-
-#~ msgid "Activation of network connection failed"
-#~ msgstr "Не удалось активировать сетевое подключение"
 
 #, javascript-format
 #~ msgid "%s Off"
