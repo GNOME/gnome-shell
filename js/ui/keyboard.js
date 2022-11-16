@@ -1430,8 +1430,9 @@ var Keyboard = GObject.registerClass({
         this._ensureKeysForGroup(this._keyboardController.getCurrentGroup());
         this._setActiveLayer(0);
 
-        Main.inputMethod.connect(
-            'terminal-mode-changed', this._onTerminalModeChanged.bind(this));
+        Main.inputMethod.connectObject(
+            'terminal-mode-changed', this._onTerminalModeChanged.bind(this),
+            this);
 
         this._keyboardController.connectObject(
             'active-group', this._onGroupChanged.bind(this),
