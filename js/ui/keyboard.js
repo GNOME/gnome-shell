@@ -687,6 +687,10 @@ var EmojiPager = GObject.registerClass({
         this._swipeTracker = swipeTracker;
 
         this.connect('destroy', () => this._onDestroy());
+
+        this.bind_property(
+            'visible', this._swipeTracker, 'enabled',
+            GObject.BindingFlags.DEFAULT);
     }
 
     _onDestroy() {
