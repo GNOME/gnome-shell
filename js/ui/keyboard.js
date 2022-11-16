@@ -685,6 +685,15 @@ var EmojiPager = GObject.registerClass({
         swipeTracker.connect('update', this._onSwipeUpdate.bind(this));
         swipeTracker.connect('end', this._onSwipeEnd.bind(this));
         this._swipeTracker = swipeTracker;
+
+        this.connect('destroy', () => this._onDestroy());
+    }
+
+    _onDestroy() {
+        if (this._swipeTracker) {
+            this._swipeTracker.destroy();
+            delete this._swipeTracker;
+        }
     }
 
     get delta() {
