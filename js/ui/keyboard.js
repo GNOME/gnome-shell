@@ -1388,6 +1388,8 @@ var Keyboard = GObject.registerClass({
             this._languagePopup.destroy();
             this._languagePopup = null;
         }
+
+        IBusManager.getIBusManager().setCompletionEnabled(false, () => Main.inputMethod.update());
     }
 
     _setupKeyboard() {
