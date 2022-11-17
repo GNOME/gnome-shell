@@ -694,18 +694,17 @@ var LayoutManager = GObject.registerClass({
         });
         this.addChrome(this._coverPane);
 
+        // Force an update of the regions before we scale the UI group to
+        // get the correct allocation for the struts.
+        // Do this even when we don't animate on restart, so that maximized
+        // windows restore to the right size.
+        this._updateRegions();
+
         if (Meta.is_restart()) {
-            // On restart, we don't do an animation. Force an update of the
-            // regions immediately so that maximized windows restore to the
-            // right size taking struts into account.
-            this._updateRegions();
+            // On restart, we don't do an animation.
         } else if (Main.sessionMode.isGreeter) {
             this.panelBox.translation_y = -this.panelBox.height;
         } else {
-            // We need to force an update of the regions now before we scale
-            // the UI group to get the correct allocation for the struts.
-            this._updateRegions();
-
             this.keyboardBox.hide();
 
             let monitor = this.primaryMonitor;
