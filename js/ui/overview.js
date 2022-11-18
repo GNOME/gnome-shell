@@ -448,7 +448,8 @@ var Overview = class {
         if (this._shown) {
             let shouldBeModal = !this._inXdndDrag;
             if (shouldBeModal && !this._modal) {
-                if (global.display.get_grab_op() !== Meta.GrabOp.NONE) {
+                if (global.display.get_grab_op() !== Meta.GrabOp.NONE &&
+                    global.display.get_grab_op() !== Meta.GrabOp.WAYLAND_POPUP) {
                     this.hide();
                     return false;
                 }
