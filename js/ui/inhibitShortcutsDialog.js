@@ -143,7 +143,7 @@ var InhibitShortcutsDialog = GObject.registerClass({
 
                 if (permissions[appId] === undefined) // Not found
                     this._dialog.open();
-                else if (permissions[appId] === GRANTED)
+                else if (permissions[appId][0] === GRANTED)
                     this._emitResponse(DialogResponse.ALLOW);
                 else
                     this._emitResponse(DialogResponse.DENY);
