@@ -727,8 +727,6 @@ class ControlsManager extends St.Widget {
     animateToOverview(state, callback) {
         this._ignoreShowAppsButtonToggle = true;
 
-        this.prepareToEnterOverview();
-
         this._stateAdjustment.value = ControlsState.HIDDEN;
         this._stateAdjustment.ease(state, {
             duration: Overview.ANIMATION_TIME,
@@ -747,8 +745,6 @@ class ControlsManager extends St.Widget {
 
     animateFromOverview(callback) {
         this._ignoreShowAppsButtonToggle = true;
-
-        this.prepareToLeaveOverview();
 
         this._stateAdjustment.ease(ControlsState.HIDDEN, {
             duration: Overview.ANIMATION_TIME,
