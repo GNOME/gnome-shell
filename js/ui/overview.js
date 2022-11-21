@@ -78,6 +78,14 @@ class OverviewActor extends St.BoxLayout {
         this.add_child(this._controls);
     }
 
+    prepareToEnterOverview() {
+        this._controls.prepareToEnterOverview();
+    }
+
+    prepareToLeaveOverview() {
+        this._controls.prepareToLeaveOverview();
+    }
+
     animateToOverview(state, callback) {
         this._controls.animateToOverview(state, callback);
     }
@@ -511,6 +519,7 @@ var Overview = class extends Signals.EventEmitter {
 
         Meta.disable_unredirect_for_display(global.display);
 
+        this._overview.prepareToEnterOverview();
         this._overview.animateToOverview(state, () => this._showDone());
 
         Main.layoutManager.overviewGroup.set_child_above_sibling(
@@ -564,6 +573,7 @@ var Overview = class extends Signals.EventEmitter {
         this._animationInProgress = true;
         this._visibleTarget = false;
 
+        this._overview.prepareToLeaveOverview();
         this._overview.animateFromOverview(() => this._hideDone());
 
         Main.layoutManager.overviewGroup.set_child_above_sibling(
