@@ -12,16 +12,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-20 09:42+0000\n"
-"PO-Revision-Date: 2022-09-27 08:49+0200\n"
+"POT-Creation-Date: 2022-11-19 16:31+0000\n"
+"PO-Revision-Date: 2022-11-22 23:07+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0\n"
-"X-Generator: Gtranslator 40.0\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
+"X-Generator: Poedit 3.2.1\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Project-Style: gnome\n"
 
@@ -66,7 +66,7 @@ msgid "Activate favorite application 9"
 msgstr "Aktivovať obľúbenú aplikáciu č. 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
 msgid "Screenshots"
 msgstr "Snímky obrazovky"
 
@@ -923,7 +923,7 @@ msgstr "Slúchadlá"
 msgid "Headset"
 msgstr "Náhlavná súprava"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
 msgid "Microphone"
 msgstr "Mikrofón"
 
@@ -1370,9 +1370,9 @@ msgstr "Inštalácia aktualizácií a reštart"
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Systém sa automaticky reštartuje o %d sekundu."
-msgstr[1] "Systém sa automaticky reštartuje o %d sekundy."
-msgstr[2] "Systém sa automaticky reštartuje o %d sekúnd."
+msgstr[0] "Systém sa automaticky reštartuje o %d sekúnd."
+msgstr[1] "Systém sa automaticky reštartuje o %d sekundu."
+msgstr[2] "Systém sa automaticky reštartuje o %d sekundy."
 
 #: js/ui/endSessionDialog.js:95
 msgctxt "button"
@@ -1482,31 +1482,31 @@ msgid "Extension updates are ready to be installed."
 msgstr "Aktualizácie rozšírení sú pripravené na inštaláciu."
 
 # dialog title
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:75
 msgid "Allow inhibiting shortcuts"
 msgstr "Umožnenie potlačenia skratiek"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:82
+#: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
 msgstr "Aplikácia %s chce potlačiť skratky"
 
-#: js/ui/inhibitShortcutsDialog.js:83
+#: js/ui/inhibitShortcutsDialog.js:79
 msgid "An application wants to inhibit shortcuts"
 msgstr "Aplikácia chce potlačiť skratky"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:90
+#: js/ui/inhibitShortcutsDialog.js:86
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Skratky môžete obnoviť stlačením %s."
 
-#: js/ui/inhibitShortcutsDialog.js:101
+#: js/ui/inhibitShortcutsDialog.js:97
 msgid "Deny"
 msgstr "Odmietnuť"
 
-#: js/ui/inhibitShortcutsDialog.js:110
+#: js/ui/inhibitShortcutsDialog.js:106
 msgid "Allow"
 msgstr "Povoliť"
 
@@ -1782,92 +1782,92 @@ msgstr "Nepodarilo sa uzamknúť obrazovku"
 msgid "Lock was blocked by an application"
 msgstr "Uzamknutie bolo zablokované aplikáciou"
 
-#: js/ui/screenshot.js:1147
+#: js/ui/screenshot.js:1161
 msgid "Selection"
 msgstr "Výber"
 
-#: js/ui/screenshot.js:1157
+#: js/ui/screenshot.js:1171
 msgid "Area Selection"
 msgstr "Výber oblasti"
 
-#: js/ui/screenshot.js:1162
+#: js/ui/screenshot.js:1176
 msgid "Screen"
 msgstr "Obrazovka"
 
-#: js/ui/screenshot.js:1172
+#: js/ui/screenshot.js:1186
 msgid "Screen Selection"
 msgstr "Výber obrazovky"
 
-#: js/ui/screenshot.js:1177
+#: js/ui/screenshot.js:1191
 msgid "Window"
 msgstr "Okno"
 
-#: js/ui/screenshot.js:1187
+#: js/ui/screenshot.js:1201
 msgid "Window Selection"
 msgstr "Výber okna"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1239
 msgid "Screenshot / Screencast"
 msgstr "Snímka / záznam obrazovky"
 
 # tooltip
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1275
 msgid "Show Pointer"
 msgstr "Zobrazí ukazovateľ"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1849
+#: js/ui/screenshot.js:1866
 msgid "Screencasts"
 msgstr "Záznamy obrazovky"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1854
+#: js/ui/screenshot.js:1871
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Záznam obrazovky zo dňa %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
+#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
 msgid "Screenshot"
 msgstr "Snímka obrazovky"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1926
+#: js/ui/screenshot.js:1919
 msgid "Screencast recorded"
 msgstr "Záznam obrazovky zaznamenaný"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1928
+#: js/ui/screenshot.js:1921
 msgid "Click here to view the video."
 msgstr "Kliknutím sem zobrazíte video."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
+#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
 msgid "Show in Files"
 msgstr "Zobraziť v aplikácii Súbory"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2085
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Snímka obrazovky zo dňa %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2138
+#: js/ui/screenshot.js:2131
 msgid "Screenshot captured"
 msgstr "Snímka obrazovky zachytená"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2140
+#: js/ui/screenshot.js:2133
 msgid "You can paste the image from the clipboard."
 msgstr "Môžete vložiť obrázok zo schránky."
 
-#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
+#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
 msgid "Screenshot taken"
 msgstr "Snímka obrazovky bola zachytená"
 
@@ -2048,12 +2048,12 @@ msgstr "Druhotné kliknutie"
 msgid "Dwell Click"
 msgstr "Kliknutie zotrvaním"
 
-#: js/ui/status/keyboard.js:830
+#: js/ui/status/keyboard.js:833
 msgid "Keyboard"
 msgstr "Klávesnica"
 
 # menu item
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:850
 msgid "Show Keyboard Layout"
 msgstr "Zobraziť rozloženie klávesnice"
 
@@ -2080,26 +2080,22 @@ msgstr "<neznáme>"
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/network.js:356
 #, javascript-format
-#| msgid "%s Disconnecting"
 msgid "Disconnect %s"
 msgstr "Odpojiť zariadenie %s"
 
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/network.js:358
 #, javascript-format
-#| msgid "Connect"
 msgid "Connect to %s"
 msgstr "Pripojiť k zariadeniu %s"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1107
 #, javascript-format
-#| msgid "%s Hotspot Active"
 msgid "%s Hotspot"
 msgstr "Aktívny bod %s"
 
 #: js/ui/status/nightLight.js:20
-#| msgid "Night Light On"
 msgid "Night Light"
 msgstr "Nočné osvetlenie"
 
@@ -2118,9 +2114,7 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Šetrič energie"
 
-#: js/ui/status/powerProfiles.js:68
-#| msgctxt "search-result"
-#| msgid "Power off"
+#: js/ui/status/powerProfiles.js:70
 msgid "Power Profiles"
 msgstr "Profily napájania"
 
@@ -2129,7 +2123,6 @@ msgid "Stop Screencast"
 msgstr "Zastaviť záznam obrazovky"
 
 #: js/ui/status/remoteAccess.js:144
-#| msgid "Stop Screencast"
 msgid "Stop Screen Sharing"
 msgstr "Zastaviť sprístupnenie obrazovky"
 
@@ -2148,8 +2141,6 @@ msgid "Take Screenshot"
 msgstr "Zachytiť snímku obrazovky"
 
 #: js/ui/status/system.js:161
-#| msgctxt "search-result"
-#| msgid "Power Off"
 msgid "Power Off Menu"
 msgstr "Ponuka vypnutia"
 
@@ -2175,8 +2166,6 @@ msgid "Switch User…"
 msgstr "Prepnúť používateľa…"
 
 #: js/ui/status/system.js:235
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
 msgctxt "action"
 msgid "Lock Screen"
 msgstr "Uzamknúť obrazovku"
@@ -2216,23 +2205,19 @@ msgstr "Chyba pri overovaní totožnosti zariadenia Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nepodarilo sa overiť totožnosť zariadenia Thunderbolt: %s"
 
-#: js/ui/status/volume.js:191
+#: js/ui/status/volume.js:194
 msgid "Volume changed"
 msgstr "Hlasitosť bola zmenená"
 
-#: js/ui/status/volume.js:253
+#: js/ui/status/volume.js:256
 msgid "Volume"
 msgstr "Hlasitosť"
 
-#: js/ui/status/volume.js:269
-#| msgid "%u Output"
-#| msgid_plural "%u Outputs"
+#: js/ui/status/volume.js:272
 msgid "Sound Output"
 msgstr "Zvukový výstup"
 
-#: js/ui/status/volume.js:337
-#| msgid "%u Input"
-#| msgid_plural "%u Inputs"
+#: js/ui/status/volume.js:340
 msgid "Sound Input"
 msgstr "Zvukový vstup"
 
