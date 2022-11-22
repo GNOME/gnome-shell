@@ -26,6 +26,18 @@
 #include "config.h"
 
 static gboolean
+enable_extension_gsettings (const char *uuid)
+{
+  g_autoptr(GSettings) settings = get_shell_settings ();
+
+  if (settings == NULL)
+    return FALSE;
+
+  return settings_list_add (settings, "enabled-extensions", uuid) &&
+         settings_list_remove (settings, "disabled-extensions", uuid);
+}
+
+static gboolean
 enable_extension_dbus (GDBusProxy *proxy,
                        const char *uuid)
 {
@@ -42,10 +54,7 @@ enable_extension_dbus (GDBusProxy *proxy,
                                      &error);
 
   if (response == NULL)
-    {
-      g_printerr (_("Failed to connect to GNOME Shell\n"));
-      return FALSE;
-    }
+    return enable_extension_gsettings (uuid);
 
   g_variant_get (response, "(b)", &success);
 
@@ -53,18 +62,6 @@ enable_extension_dbus (GDBusProxy *proxy,
     g_printerr (_("Extension “%s” does not exist\n"), uuid);
 
   return success;
-}
-
-static gboolean
-enable_extension_gsettings (const char *uuid)
-{
-  g_autoptr(GSettings) settings = get_shell_settings ();
-
-  if (settings == NULL)
-    return FALSE;
-
-  return settings_list_add (settings, "enabled-extensions", uuid) &&
-         settings_list_remove (settings, "disabled-extensions", uuid);
 }
 
 static gboolean
