@@ -216,7 +216,7 @@ var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
         }
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        item = this.addSettingsAction(_("Region & Language Settings"), 'gnome-region-panel.desktop');
+        item = this.addSettingsAction(_('Keyboard Settings'), 'gnome-keyboard-panel.desktop');
         item.can_focus = false;
 
         actor.connectObject('notify::mapped', () => {
