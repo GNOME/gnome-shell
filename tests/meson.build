@@ -49,7 +49,7 @@ libgvc_path = fs.parent(libgvc.get_variable('libgvc').full_path())
 background_file = files(join_paths('data', 'background.png'))
 
 perf_testenv = testenv
-perf_testenv.set('G_DEBUG', 'fatal-criticals')
+perf_testenv.set('G_DEBUG', 'fatal-warnings')
 perf_testenv.set('G_MESSAGES_DEBUG', 'GNOME Shell')
 perf_testenv.set('GNOME_SHELL_DATADIR', data_builddir)
 perf_testenv.set('GNOME_SHELL_BUILDDIR', src_builddir)
