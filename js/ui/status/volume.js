@@ -83,6 +83,8 @@ const StreamSlider = GObject.registerClass({
             this._connectStream(this._stream);
             this._updateVolume();
         } else {
+            this._deviceSection.removeAll();
+            this._deviceItems.clear();
             this.emit('stream-updated');
         }
 
