@@ -45,6 +45,8 @@ def start_shell(wrap=None, perf_output=None):
         args += wrap.split(' ')
     args.append(os.path.join(self_dir, 'gnome-shell'))
 
+    args.append('--force-animations')
+
     if options.replace:
         args.append('--replace')
 
