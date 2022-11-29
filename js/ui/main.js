@@ -919,43 +919,62 @@ function showRestartMessage(message) {
 
 var AnimationsSettings = class {
     constructor() {
-        let backend = global.backend;
-        if (!backend.is_rendering_hardware_accelerated()) {
-            St.Settings.get().inhibit_animations();
-            return;
-        }
-
-        let isXvnc = Shell.util_has_x11_display_extension(
-            global.display, 'VNC-EXTENSION');
-        if (isXvnc) {
-            St.Settings.get().inhibit_animations();
-            return;
-        }
-
-        let remoteAccessController = backend.get_remote_access_controller();
-        if (!remoteAccessController)
-            return;
-
+        this._animationsEnabled = true;
         this._handles = new Set();
-        remoteAccessController.connect('new-handle',
-            (_, handle) => this._onNewRemoteAccessHandle(handle));
+
+        global.connect('notify::force-animations',
+            this._syncAnimationsEnabled.bind(this));
+        this._syncAnimationsEnabled();
+
+        const backend = global.backend;
+        const remoteAccessController = backend.get_remote_access_controller();
+        if (remoteAccessController) {
+            remoteAccessController.connect('new-handle',
+                (_, handle) => this._onNewRemoteAccessHandle(handle));
+        }
+    }
+
+    _shouldEnableAnimations() {
+        if (this._handles.size > 0)
+            return false;
+
+        if (global.force_animations)
+            return true;
+
+        const backend = global.backend;
+        if (!backend.is_rendering_hardware_accelerated())
+            return false;
+
+        if (Shell.util_has_x11_display_extension(
+            global.display, 'VNC-EXTENSION'))
+            return false;
+
+        return true;
+    }
+
+    _syncAnimationsEnabled() {
+        const shouldEnableAnimations = this._shouldEnableAnimations();
+        if (this._animationsEnabled === shouldEnableAnimations)
+            return;
+
+        const settings = St.Settings.get();
+        if (shouldEnableAnimations)
+            settings.uninhibit_animations();
+        else
+            settings.inhibit_animations();
     }
 
     _onRemoteAccessHandleStopped(handle) {
-        let settings = St.Settings.get();
-
-        settings.uninhibit_animations();
         this._handles.delete(handle);
+        this._syncAnimationsEnabled();
     }
 
     _onNewRemoteAccessHandle(handle) {
         if (!handle.get_disable_animations())
             return;
 
-        let settings = St.Settings.get();
-
-        settings.inhibit_animations();
         this._handles.add(handle);
+        this._syncAnimationsEnabled();
         handle.connect('stopped', this._onRemoteAccessHandleStopped.bind(this));
     }
 };
