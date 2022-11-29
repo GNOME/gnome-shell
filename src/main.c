@@ -39,6 +39,7 @@ extern GType gnome_shell_plugin_get_type (void);
 static gboolean is_gdm_mode = FALSE;
 static char *session_mode = NULL;
 static int caught_signal = 0;
+static gboolean force_animations = FALSE;
 
 #define DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER 1
 #define DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER 4
@@ -530,6 +531,12 @@ GOptionEntry gnome_shell_options[] = {
     N_("List possible modes"),
     NULL
   },
+  {
+    "force-animations", 0, G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE,
+    &force_animations,
+    N_("Force animations to be enabled"),
+    NULL
+  },
   { NULL }
 };
 
@@ -632,7 +639,9 @@ main (int argc, char **argv)
   if (session_mode == NULL)
     session_mode = is_gdm_mode ? (char *)"gdm" : (char *)"user";
 
-  _shell_global_init ("session-mode", session_mode, NULL);
+  _shell_global_init ("session-mode", session_mode,
+                      "force-animations", force_animations,
+                      NULL);
 
   dump_gjs_stack_on_signal (SIGABRT);
   dump_gjs_stack_on_signal (SIGFPE);

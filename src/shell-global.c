@@ -85,6 +85,8 @@ struct _ShellGlobal {
 
   GDBusProxy *switcheroo_control;
   GCancellable *switcheroo_cancellable;
+
+  gboolean force_animations;
 };
 
 enum {
@@ -109,6 +111,7 @@ enum {
   PROP_FRAME_TIMESTAMPS,
   PROP_FRAME_FINISH_TIMESTAMP,
   PROP_SWITCHEROO_CONTROL,
+  PROP_FORCE_ANIMATIONS,
 
   N_PROPS
 };
@@ -235,6 +238,9 @@ shell_global_set_property(GObject         *object,
           }
       }
       break;
+    case PROP_FORCE_ANIMATIONS:
+      global->force_animations = g_value_get_boolean (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -317,6 +323,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_SWITCHEROO_CONTROL:
       g_value_set_object (value, global->switcheroo_control);
+      break;
+    case PROP_FORCE_ANIMATIONS:
+      g_value_set_boolean (value, global->force_animations);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -648,6 +657,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                          "D-Bus Proxy for switcheroo-control daemon",
                          G_TYPE_DBUS_PROXY,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+
+  props[PROP_FORCE_ANIMATIONS] =
+    g_param_spec_boolean ("force-animations",
+                          "force-animations",
+                          "Force animations to be enabled",
+                          FALSE,
+                          G_PARAM_READWRITE  | G_PARAM_CONSTRUCT| G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
 }
