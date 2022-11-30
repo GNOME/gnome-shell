@@ -126,8 +126,12 @@ function _loadMode(file, info) {
     _modes[modeName]['isPrimary'] = true;
 }
 
+/**
+ * Loads external session modes from the system data directories.
+ */
 function _loadModes() {
-    FileUtils.collectFromDatadirs('modes', false, _loadMode);
+    for (const {dir, info} of FileUtils.collectFromDatadirs('modes', false))
+        _loadMode(dir, info);
 }
 
 function listModes() {

@@ -571,10 +571,10 @@ var ExtensionManager = class extends Signals.EventEmitter {
         if (!this.updatesSupported)
             return;
 
-        FileUtils.collectFromDatadirs('extension-updates', true, (dir, info) => {
+        for (const {dir, info} of FileUtils.collectFromDatadirs('extension-updates', true)) {
             let fileType = info.get_file_type();
             if (fileType !== Gio.FileType.DIRECTORY)
-                return;
+                continue;
             let uuid = info.get_name();
             let extensionDir = Gio.File.new_for_path(
                 GLib.build_filenamev([global.userdatadir, 'extensions', uuid]));
@@ -587,7 +587,7 @@ var ExtensionManager = class extends Signals.EventEmitter {
             } finally {
                 FileUtils.recursivelyDeleteDir(dir, true);
             }
-        });
+        }
     }
 
     _loadExtensions() {
@@ -609,15 +609,17 @@ var ExtensionManager = class extends Signals.EventEmitter {
         this._enabledExtensions = this._getEnabledExtensions();
 
         let perUserDir = Gio.File.new_for_path(global.userdatadir);
-        FileUtils.collectFromDatadirs('extensions', true, (dir, info) => {
+
+        const extensionFiles = [...FileUtils.collectFromDatadirs('extensions', true)];
+        const extensionObjects = extensionFiles.map(({dir, info}) => {
             let fileType = info.get_file_type();
-            if (fileType != Gio.FileType.DIRECTORY)
-                return;
+            if (fileType !== Gio.FileType.DIRECTORY)
+                return null;
             let uuid = info.get_name();
             let existing = this.lookup(uuid);
             if (existing) {
                 log(`Extension ${uuid} already installed in ${existing.path}. ${dir.get_path()} will not be loaded`);
-                return;
+                return null;
             }
 
             let extension;
@@ -626,12 +628,16 @@ var ExtensionManager = class extends Signals.EventEmitter {
                 : ExtensionType.SYSTEM;
             try {
                 extension = this.createExtensionObject(uuid, dir, type);
-            } catch (e) {
-                logError(e, `Could not load extension ${uuid}`);
-                return;
+            } catch (error) {
+                logError(error, `Could not load extension ${uuid}`);
+                return null;
             }
+
+            return extension;
+        }).filter(extension => extension !== null);
+
+        for (const extension of extensionObjects)
             this.loadExtension(extension);
-        });
     }
 
     _enableAllExtensions() {

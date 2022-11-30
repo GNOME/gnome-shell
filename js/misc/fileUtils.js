@@ -6,7 +6,20 @@ const { Gio, GLib } = imports.gi;
 
 var { loadInterfaceXML } = imports.misc.dbusUtils;
 
-function collectFromDatadirs(subdir, includeUserDir, processFile) {
+/**
+ * @typedef {object} SubdirInfo
+ * @property {Gio.File} dir the file object for the subdir
+ * @property {Gio.FileInfo} info the file descriptor for the subdir
+ */
+
+/**
+ * @param {string} subdir the subdirectory to search within the data directories
+ * @param {boolean} includeUserDir whether the user's data directory should also be searched in addition
+ *                                 to the system data directories
+ * @returns {Generator<SubdirInfo, void, void>} a generator which yields file info for subdirectories named
+ *                                              `subdir` within data directories
+ */
+function* collectFromDatadirs(subdir, includeUserDir) {
     let dataDirs = GLib.get_system_data_dirs();
     if (includeUserDir)
         dataDirs.unshift(GLib.get_user_data_dir());
@@ -18,14 +31,14 @@ function collectFromDatadirs(subdir, includeUserDir, processFile) {
         let fileEnum;
         try {
             fileEnum = dir.enumerate_children('standard::name,standard::type',
-                                              Gio.FileQueryInfoFlags.NONE, null);
+                Gio.FileQueryInfoFlags.NONE, null);
         } catch (e) {
             fileEnum = null;
         }
         if (fileEnum != null) {
             let info;
             while ((info = fileEnum.next_file(null)))
-                processFile(fileEnum.get_child(info), info);
+                yield {dir: fileEnum.get_child(info), info};
         }
     }
 }
