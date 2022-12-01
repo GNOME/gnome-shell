@@ -24,8 +24,8 @@ const CROSSFADE_TIME = 300;
 const FADE_OUT_TRANSLATION = 200;
 const FADE_OUT_SCALE = 0.3;
 
-const BLUR_BRIGHTNESS = 0.55;
-const BLUR_SIGMA = 60;
+const BLUR_BRIGHTNESS = 0.65;
+const BLUR_SIGMA = 45;
 
 const SUMMARY_ICON_SIZE = 32;
 
@@ -36,7 +36,6 @@ var NotificationsBox = GObject.registerClass({
         super._init({
             vertical: true,
             name: 'unlockDialogNotifications',
-            style_class: 'unlock-dialog-notifications-container',
         });
 
         this._scrollView = new St.ScrollView({ hscrollbar_policy: St.PolicyType.NEVER });
@@ -559,7 +558,7 @@ var UnlockDialog = GObject.registerClass({
 
         // Switch User button
         this._otherUserButton = new St.Button({
-            style_class: 'modal-dialog-button button switch-user-button',
+            style_class: 'login-dialog-button switch-user-button',
             accessible_name: _('Log in as another user'),
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             reactive: false,

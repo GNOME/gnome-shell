@@ -310,7 +310,7 @@ var SessionMenuButton = GObject.registerClass({
 }, class SessionMenuButton extends St.Bin {
     _init() {
         let button = new St.Button({
-            style_class: 'modal-dialog-button button login-dialog-session-list-button',
+            style_class: 'login-dialog-button login-dialog-session-list-button',
             icon_name: 'emblem-system-symbolic',
             reactive: true,
             track_hover: true,

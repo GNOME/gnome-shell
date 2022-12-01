@@ -140,7 +140,7 @@ var AuthPrompt = GObject.registerClass({
         this.add_child(this._mainBox);
 
         this.cancelButton = new St.Button({
-            style_class: 'modal-dialog-button button cancel-button',
+            style_class: 'login-dialog-button cancel-button',
             accessible_name: _('Cancel'),
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             reactive: this._hasCancelButton,
