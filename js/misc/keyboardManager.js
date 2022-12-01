@@ -60,15 +60,17 @@ class KeyboardManager {
     _applyLayoutGroup(group) {
         let options = this._buildOptionsString();
         let [layouts, variants] = this._buildGroupStrings(group);
+        let model = this._xkbModel;
 
         if (this._currentKeymap &&
             this._currentKeymap.layouts === layouts &&
             this._currentKeymap.variants === variants &&
-            this._currentKeymap.options === options)
+            this._currentKeymap.options === options &&
+            this._currentKeymap.model === model)
             return;
 
-        this._currentKeymap = {layouts, variants, options};
-        global.backend.set_keymap(layouts, variants, options);
+        this._currentKeymap = {layouts, variants, options, model};
+        global.backend.set_keymap(layouts, variants, options, model);
     }
 
     _applyLayoutGroupIndex(idx) {
@@ -156,6 +158,10 @@ class KeyboardManager {
 
     setKeyboardOptions(options) {
         this._xkbOptions = options;
+    }
+
+    setKeyboardModel(model) {
+        this._xkbModel = model;
     }
 
     _buildOptionsString() {

@@ -161,6 +161,10 @@ class InputSourceSettings extends Signals.EventEmitter {
         this.emit('keyboard-options-changed');
     }
 
+    _emitKeyboardModelChanged() {
+        this.emit('keyboard-model-changed');
+    }
+
     _emitPerWindowChanged() {
         this.emit('per-window-changed');
     }
@@ -198,6 +202,7 @@ class InputSourceSystemSettings extends InputSourceSettings {
         this._layouts = '';
         this._variants = '';
         this._options = '';
+        this._model = '';
 
         this._reload();
 
@@ -229,6 +234,7 @@ class InputSourceSystemSettings extends InputSourceSettings {
         const layouts = props['X11Layout'].unpack();
         const variants = props['X11Variant'].unpack();
         const options = props['X11Options'].unpack();
+        const model = props['X11Model'].unpack();
 
         if (layouts !== this._layouts ||
             variants !== this._variants) {
@@ -239,6 +245,10 @@ class InputSourceSystemSettings extends InputSourceSettings {
         if (options !== this._options) {
             this._options = options;
             this._emitKeyboardOptionsChanged();
+        }
+        if (model !== this._model) {
+            this._model = model;
+            this._emitKeyboardModelChanged();
         }
     }
 
@@ -259,6 +269,10 @@ class InputSourceSystemSettings extends InputSourceSettings {
     get keyboardOptions() {
         return this._options.split(',');
     }
+
+    get keyboardModel() {
+        return this._model;
+    }
 }
 
 class InputSourceSessionSettings extends InputSourceSettings {
@@ -269,11 +283,13 @@ class InputSourceSessionSettings extends InputSourceSettings {
         this._KEY_INPUT_SOURCES = 'sources';
         this._KEY_MRU_SOURCES = 'mru-sources';
         this._KEY_KEYBOARD_OPTIONS = 'xkb-options';
+        this._KEY_KEYBOARD_MODEL = 'xkb-model';
         this._KEY_PER_WINDOW = 'per-window';
 
         this._settings = new Gio.Settings({schema_id: this._DESKTOP_INPUT_SOURCES_SCHEMA});
         this._settings.connect(`changed::${this._KEY_INPUT_SOURCES}`, this._emitInputSourcesChanged.bind(this));
         this._settings.connect(`changed::${this._KEY_KEYBOARD_OPTIONS}`, this._emitKeyboardOptionsChanged.bind(this));
+        this._settings.connect(`changed::${this._KEY_KEYBOARD_MODEL}`, this._emitKeyboardModelChanged.bind(this));
         this._settings.connect(`changed::${this._KEY_PER_WINDOW}`, this._emitPerWindowChanged.bind(this));
     }
 
@@ -304,6 +320,10 @@ class InputSourceSessionSettings extends InputSourceSettings {
 
     get keyboardOptions() {
         return this._settings.get_strv(this._KEY_KEYBOARD_OPTIONS);
+    }
+
+    get keyboardModel() {
+        return this._settings.get_string(this._KEY_KEYBOARD_MODEL);
     }
 
     get perWindow() {
@@ -347,6 +367,7 @@ export class InputSourceManager extends Signals.EventEmitter {
             this._settings = new InputSourceSessionSettings();
         this._settings.connect('input-sources-changed', this._inputSourcesChanged.bind(this));
         this._settings.connect('keyboard-options-changed', this._keyboardOptionsChanged.bind(this));
+        this._settings.connect('keyboard-model-changed', this._keyboardModelChanged.bind(this));
 
         this._xkbInfo = KeyboardManager.getXkbInfo();
         this._keyboardManager = KeyboardManager.getKeyboardManager();
@@ -371,6 +392,7 @@ export class InputSourceManager extends Signals.EventEmitter {
     reload() {
         this._reloading = true;
         this._keyboardManager.setKeyboardOptions(this._settings.keyboardOptions);
+        this._keyboardManager.setKeyboardModel(this._settings.keyboardModel);
         this._inputSourcesChanged();
         this._reloading = false;
     }
@@ -432,6 +454,11 @@ export class InputSourceManager extends Signals.EventEmitter {
 
     _keyboardOptionsChanged() {
         this._keyboardManager.setKeyboardOptions(this._settings.keyboardOptions);
+        this._keyboardManager.reapply();
+    }
+
+    _keyboardModelChanged() {
+        this._keyboardManager.setKeyboardModel(this._settings.keyboardModel);
         this._keyboardManager.reapply();
     }
 
