@@ -745,7 +745,11 @@ var LayoutManager = GObject.registerClass({
             await this._updateBackgrounds();
         }
 
-        this.emit('startup-prepared');
+        // Hack: Work around grab issue when testing greeter UI in nested
+        if (GLib.getenv('GDM_GREETER_TEST') === '1')
+            setTimeout(() => this.emit('startup-prepared'), 200);
+        else
+            this.emit('startup-prepared');
 
         this._startupAnimation();
     }
