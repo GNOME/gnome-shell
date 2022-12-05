@@ -45,7 +45,7 @@ function* collectFromDatadirs(subdir, includeUserDir) {
 
 function recursivelyDeleteDir(dir, deleteParent) {
     let children = dir.enumerate_children('standard::name,standard::type',
-                                          Gio.FileQueryInfoFlags.NONE, null);
+        Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
 
     let info;
     while ((info = children.next_file(null)) != null) {
@@ -63,7 +63,7 @@ function recursivelyDeleteDir(dir, deleteParent) {
 
 function recursivelyMoveDir(srcDir, destDir) {
     let children = srcDir.enumerate_children('standard::name,standard::type',
-                                             Gio.FileQueryInfoFlags.NONE, null);
+        Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
 
     if (!destDir.query_exists(null))
         destDir.make_directory_with_parents(null);
