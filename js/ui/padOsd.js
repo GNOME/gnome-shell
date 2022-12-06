@@ -3,7 +3,7 @@
 
 const {
     Atk, Clutter, GDesktopEnums, Gio,
-    GLib, GObject, Gtk, Meta, Pango, Rsvg, St,
+    GLib, GObject, Meta, Pango, Rsvg, St,
 } = imports.gi;
 const Signals = imports.misc.signals;
 
@@ -104,10 +104,9 @@ var KeybindingEntry = GObject.registerClass({
         if (event.type() != Clutter.EventType.KEY_PRESS)
             return Clutter.EVENT_PROPAGATE;
 
-        let str = Gtk.accelerator_name_with_keycode(null,
-                                                    event.get_key_symbol(),
-                                                    event.get_key_code(),
-                                                    event.get_state());
+        const str = Meta.accelerator_name(
+            event.get_state(), event.get_key_symbol());
+
         this.set_text(str);
         this.emit('keybinding-edited', str);
         return Clutter.EVENT_STOP;
