@@ -1,3 +1,16 @@
+42.7
+====
+* Properly apply saved shortcuts inhibition permissions [Florian; !2548]
+* Don't let wayland popovers block overview [Florian; !2549]
+* Misc. bug fixes and cleanups [Alessandro, Florian, Jonas;
+  !2536, !2546, !2532, !1349]
+
+Contributors:
+  Alessandro Bono, Florian Müllner, Jonas Ådahl
+
+Translators:
+  Zurab Kargareteli [ka]
+
 42.6
 ====
 * Fix remembering inhibit-shortcut permission for multiple apps [Florian; !2504]
