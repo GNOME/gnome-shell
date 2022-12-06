@@ -1,3 +1,24 @@
+43.2
+====
+* Fix screencast UI being erroneously disabled [Florian; !2533]
+* Properly apply saved shortcuts inhibition permissions [Florian; !2548]
+* Fix IM candidate popup getting closed when switching pages [Carlos; !2497]
+* Fix unresponsive screen area when quick settings are opened [Carlos; !2535]
+* Ensure completions are disabled when hiding on-screen keyboard [Carlos; !2543]
+* Fix missing name in wired network quick settings button [Florian; !2529]
+* Don't let wayland popovers block overview [Florian; !2549]
+* Fix repeated entries in volume device menu [Florian; !2558]
+* Fix input source switching with focus on password entry [Carlos; !2534]
+* Misc. bug fixes and cleanups [Alessandro, Florian, Jonas; !2536, !2545, !2546,
+  !2547, !2532, !1349]
+
+Contributors:
+  Alessandro Bono, Carlos Garnacho, Florian Müllner, Jonas Ådahl
+
+Translators:
+  Aleksandr Melman [ru], Dušan Kazik [sk], Vasil Pupkin [be],
+  Sveinn í Felli [is], Nart Tlisha [ab]
+
 43.1
 ====
 * Fix default keyboard layout during initial setup [Carlos; !2487, !2495]
