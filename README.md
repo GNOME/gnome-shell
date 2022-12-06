@@ -17,8 +17,11 @@ Please refer to the [*Schedule* wiki page][schedule] to see the supported versio
 To contribute, open merge requests at https://gitlab.gnome.org/GNOME/gnome-shell.
 
 Commit messages should follow the [GNOME commit message
-guidelines](https://wiki.gnome.org/Git/CommitMessages). We require an URL
-to either an issue or a merge request in each commit.
+guidelines](https://wiki.gnome.org/Git/CommitMessages). If a merge request
+fixes an existing issue, it is good practice to append the full issue URL
+to each commit message. Try to always prefix commit subjects with a relevant
+topic, such as `panel:` or `status/network:`, and it's always better to write
+too much in the commit message body than too little.
 
 ## Default branch
 
