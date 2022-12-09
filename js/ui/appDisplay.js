@@ -43,8 +43,8 @@ const PAGE_PREVIEW_ANIMATION_TIME = 150;
 const PAGE_INDICATOR_FADE_TIME = 200;
 const PAGE_PREVIEW_RATIO = 0.20;
 
-const OVERSHOOT_THRESHOLD = 20;
-const OVERSHOOT_TIMEOUT = 1000;
+const DRAG_PAGE_SWITCH_IMMEDIATELY_THRESHOLD_PX = 20;
+const DRAG_PAGE_SWITCH_REPEAT_TIMEOUT = 1000;
 
 const DELAYED_MOVE_TIMEOUT = 200;
 
@@ -638,8 +638,7 @@ var BaseAppView = GObject.registerClass({
             () => this._redisplay(), this);
 
         // Drag n' Drop
-        this._lastOvershoot = -1;
-        this._lastOvershootTimeoutId = 0;
+        this._lastOvershootCoord = -1;
         this._delayedMoveData = null;
 
         this._dragBeginId = 0;
@@ -839,64 +838,72 @@ var BaseAppView = GObject.registerClass({
         this._delayedMoveData = null;
     }
 
-    _resetOvershoot() {
-        if (this._lastOvershootTimeoutId)
-            GLib.source_remove(this._lastOvershootTimeoutId);
-        this._lastOvershootTimeoutId = 0;
-        this._lastOvershoot = -1;
+    _resetDragPageSwitchRepeat() {
+        if (this._dragPageSwitchRepeatTimeoutId) {
+            GLib.source_remove(this._dragPageSwitchRepeatTimeoutId);
+            delete this._dragPageSwitchRepeatTimeoutId;
+        }
+
+        this._lastOvershootCoord = -1;
     }
 
-    _handleDragOvershoot(dragEvent) {
-        const [gridX, gridY] = this.get_transformed_position();
-        const [gridWidth, gridHeight] = this.get_transformed_size();
+    _setupDragPageSwitchRepeat(direction) {
+        if (this._dragPageSwitchRepeatTimeoutId)
+            GLib.source_remove(this._dragPageSwitchRepeatTimeoutId);
 
-        const vertical = this._orientation === Clutter.Orientation.VERTICAL;
-        const gridStart = vertical ?
-            ? gridY + DRAG_OVERSHOOT_THRESHOLD
-            : gridX + DRAG_OVERSHOOT_THRESHOLD;
-        const gridEnd = vertical
-            ? gridY + gridHeight - OVERSHOOT_THRESHOLD
-            : gridX + gridWidth - OVERSHOOT_THRESHOLD;
+        this._dragPageSwitchRepeatTimeoutId =
+            GLib.timeout_add(GLib.PRIORITY_DEFAULT, DRAG_PAGE_SWITCH_REPEAT_TIMEOUT, () => {
+                this.goToPage(this._grid.currentPage + direction);
 
+                return GLib.SOURCE_CONTINUE;
+            });
+        GLib.Source.set_name_by_id(this._dragPageSwitchRepeatTimeoutId,
+            '[gnome-shell] this._dragPageSwitchRepeatTimeoutId');
+    }
+
+    _dragMaybeSwitchPageImmediately(dragEvent) {
         // Already animating
         if (this._adjustment.get_transition('value') !== null)
             return;
 
-        // Within the grid boundaries
-        const dragPosition = vertical ? dragEvent.y : dragEvent.x;
-        if (dragPosition > gridStart && dragPosition < gridEnd) {
-            // Check whether we moved out the area of the last switch
-            if (Math.abs(this._lastOvershoot - dragPosition) > OVERSHOOT_THRESHOLD)
-                this._resetOvershoot();
+        const [gridX, gridY] = this.get_transformed_position();
+        const [gridWidth, gridHeight] = this.get_transformed_size();
+
+        const vertical = this._orientation === Clutter.Orientation.VERTICAL;
+        const gridStart = vertical
+            ? gridY + DRAG_PAGE_SWITCH_IMMEDIATELY_THRESHOLD_PX
+            : gridX + DRAG_PAGE_SWITCH_IMMEDIATELY_THRESHOLD_PX;
+        const gridEnd = vertical
+            ? gridY + gridHeight - DRAG_PAGE_SWITCH_IMMEDIATELY_THRESHOLD_PX
+            : gridX + gridWidth - DRAG_PAGE_SWITCH_IMMEDIATELY_THRESHOLD_PX;
+
+        const dragCoord = vertical ? dragEvent.y : dragEvent.x;
+        if (dragCoord > gridStart && dragCoord < gridEnd) {
+            const moveDelta = Math.abs(this._lastOvershootCoord - dragCoord);
+
+            // We moved back out of the overshoot region into the grid. If the
+            // move was sufficiently large, reset the overshoot so that it's
+            // possible to repeatedly bump against the edge and quickly switch
+            // pages.
+            if (this._lastOvershootCoord >= 0 &&
+                moveDelta > DRAG_PAGE_SWITCH_IMMEDIATELY_THRESHOLD_PX)
+                this._resetDragPageSwitchRepeat();
 
             return;
         }
 
-        // Still in the area of the previous page switch
-        if (this._lastOvershoot >= 0)
+        // Still in the area of the previous overshoot
+        if (this._lastOvershootCoord >= 0)
             return;
 
-        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
-        if (dragPosition <= gridStart)
-            this.goToPage(this._grid.currentPage + (rtl ? 1 : -1));
-        else if (dragPosition >= gridEnd)
-            this.goToPage(this._grid.currentPage + (rtl ? -1 : 1));
-        else
-            return; // don't go beyond first/last page
+        let direction = dragCoord <= gridStart ? -1 : 1;
+        if (this.get_text_direction() === Clutter.TextDirection.RTL)
+            direction *= -1;
 
-        this._lastOvershoot = dragPosition;
+        this.goToPage(this._grid.currentPage + direction);
+        this._setupDragPageSwitchRepeat(direction);
 
-        if (this._lastOvershootTimeoutId > 0)
-            GLib.source_remove(this._lastOvershootTimeoutId);
-
-        this._lastOvershootTimeoutId =
-            GLib.timeout_add(GLib.PRIORITY_DEFAULT, OVERSHOOT_TIMEOUT, () => {
-                this._resetOvershoot();
-                this._handleDragOvershoot(dragEvent);
-                return GLib.SOURCE_REMOVE;
-            });
-        GLib.Source.set_name_by_id(this._lastOvershootTimeoutId,
-            '[gnome-shell] this._lastOvershootTimeoutId');
+        this._lastOvershootCoord = dragCoord;
     }
 
     _onDragBegin() {
@@ -916,11 +923,8 @@ var BaseAppView = GObject.registerClass({
 
         const appIcon = dragEvent.source;
 
-        // Handle the drag overshoot. When dragging to above the
-        // icon grid, move to the page above; when dragging below,
-        // move to the page below.
         if (appIcon instanceof AppViewItem)
-            this._handleDragOvershoot(dragEvent);
+            this._dragMaybeSwitchPageImmediately(dragEvent);
 
         this._maybeMoveItem(dragEvent);
 
@@ -940,7 +944,8 @@ var BaseAppView = GObject.registerClass({
             this._dragMonitor = null;
         }
 
-        this._resetOvershoot();
+        this._resetDragPageSwitchRepeat();
+
         this._appGridLayout.hidePageIndicators();
         this._swipeTracker.enabled = true;
     }
