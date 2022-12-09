@@ -844,23 +844,6 @@ var BaseAppView = GObject.registerClass({
         this._overshootTimeoutId = 0;
     }
 
-    _dragWithinOvershootRegion(dragEvent) {
-        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
-        const {x, y, targetActor: indicator} = dragEvent;
-        const [indicatorX, indicatorY] = indicator.get_transformed_position();
-        const [indicatorWidth, indicatorHeight] = indicator.get_transformed_size();
-
-        let overshootX = indicatorX;
-        if (indicator === this._nextPageIndicator || rtl)
-            overshootX += indicatorWidth - OVERSHOOT_THRESHOLD;
-
-        const overshootBox = new Clutter.ActorBox();
-        overshootBox.set_origin(overshootX, indicatorY);
-        overshootBox.set_size(OVERSHOOT_THRESHOLD, indicatorHeight);
-
-        return overshootBox.contains(x, y);
-    }
-
     _handleDragOvershoot(dragEvent) {
         // Already animating
         if (this._adjustment.get_transition('value') !== null)
@@ -885,13 +868,6 @@ var BaseAppView = GObject.registerClass({
 
         if (targetPage < 0 || targetPage >= this._grid.nPages)
             return; // don't go beyond first/last page
-
-        // If dragging over the drag overshoot threshold region, immediately
-        // switch pages
-        if (this._dragWithinOvershootRegion(dragEvent)) {
-            this._resetOvershoot();
-            this.goToPage(targetPage);
-        }
 
         this._overshootTimeoutId =
             GLib.timeout_add(GLib.PRIORITY_DEFAULT, OVERSHOOT_TIMEOUT, () => {
