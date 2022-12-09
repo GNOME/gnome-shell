@@ -543,7 +543,7 @@ var BaseAppView = GObject.registerClass({
             style_class: 'page-navigation-hint next',
             opacity: 0,
             visible: false,
-            reactive: true,
+            reactive: false,
             x_expand: true,
             y_expand: true,
             x_align: Clutter.ActorAlign.FILL,
@@ -554,7 +554,7 @@ var BaseAppView = GObject.registerClass({
             style_class: 'page-navigation-hint previous',
             opacity: 0,
             visible: false,
-            reactive: true,
+            reactive: false,
             x_expand: true,
             y_expand: true,
             x_align: Clutter.ActorAlign.FILL,
@@ -638,6 +638,7 @@ var BaseAppView = GObject.registerClass({
             () => this._redisplay(), this);
 
         // Drag n' Drop
+        this._lastOvershoot = -1;
         this._lastOvershootTimeoutId = 0;
         this._delayedMoveData = null;
 
@@ -842,37 +843,54 @@ var BaseAppView = GObject.registerClass({
         if (this._lastOvershootTimeoutId)
             GLib.source_remove(this._lastOvershootTimeoutId);
         this._lastOvershootTimeoutId = 0;
+        this._lastOvershoot = -1;
     }
 
     _handleDragOvershoot(dragEvent) {
+        const [gridX, gridY] = this.get_transformed_position();
+        const [gridWidth, gridHeight] = this.get_transformed_size();
+
+        const vertical = this._orientation === Clutter.Orientation.VERTICAL;
+        const gridStart = vertical ? gridY : gridX;
+        const gridEnd = vertical
+            ? gridY + gridHeight - OVERSHOOT_THRESHOLD
+            : gridX + gridWidth - OVERSHOOT_THRESHOLD;
+
         // Already animating
         if (this._adjustment.get_transition('value') !== null)
             return;
 
-        const {targetActor} = dragEvent;
+        // Within the grid boundaries
+        const dragPosition = vertical ? dragEvent.y : dragEvent.x;
+        if (dragPosition > gridStart && dragPosition < gridEnd) {
+            // Check whether we moved out the area of the last switch
+            if (Math.abs(this._lastOvershoot - dragPosition) > OVERSHOOT_THRESHOLD)
+                this._resetOvershoot();
 
-        if (targetActor !== this._prevPageIndicator &&
-            targetActor !== this._nextPageIndicator) {
-            this._resetOvershoot();
             return;
         }
 
-        if (this._lastOvershootTimeoutId > 0)
+        // Still in the area of the previous page switch
+        if (this._lastOvershoot >= 0)
             return;
 
-        let targetPage;
-        if (dragEvent.targetActor === this._prevPageIndicator)
-            targetPage = this._grid.currentPage - 1;
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
+        if (dragPosition <= gridStart)
+            this.goToPage(this._grid.currentPage + (rtl ? 1 : -1));
+        else if (dragPosition >= gridEnd)
+            this.goToPage(this._grid.currentPage + (rtl ? -1 : 1));
         else
-            targetPage = this._grid.currentPage + 1;
-
-        if (targetPage < 0 || targetPage >= this._grid.nPages)
             return; // don't go beyond first/last page
+
+        this._lastOvershoot = dragPosition;
+
+        if (this._lastOvershootTimeoutId > 0)
+            GLib.source_remove(this._lastOvershootTimeoutId);
 
         this._lastOvershootTimeoutId =
             GLib.timeout_add(GLib.PRIORITY_DEFAULT, OVERSHOOT_TIMEOUT, () => {
                 this._resetOvershoot();
-                this.goToPage(targetPage);
+                this._handleDragOvershoot(dragEvent);
                 return GLib.SOURCE_REMOVE;
             });
         GLib.Source.set_name_by_id(this._lastOvershootTimeoutId,
