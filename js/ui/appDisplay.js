@@ -43,7 +43,9 @@ const PAGE_PREVIEW_ANIMATION_TIME = 150;
 const PAGE_INDICATOR_FADE_TIME = 200;
 const PAGE_PREVIEW_RATIO = 0.20;
 
+const DRAG_PAGE_SWITCH_INITIAL_TIMEOUT = 1000;
 const DRAG_PAGE_SWITCH_IMMEDIATELY_THRESHOLD_PX = 20;
+
 const DRAG_PAGE_SWITCH_REPEAT_TIMEOUT = 1000;
 
 const DELAYED_MOVE_TIMEOUT = 200;
@@ -838,7 +840,12 @@ var BaseAppView = GObject.registerClass({
         this._delayedMoveData = null;
     }
 
-    _resetDragPageSwitchRepeat() {
+    _resetDragPageSwitch() {
+        if (this._dragPageSwitchInitialTimeoutId) {
+            GLib.source_remove(this._dragPageSwitchInitialTimeoutId);
+            delete this._dragPageSwitchInitialTimeoutId;
+        }
+
         if (this._dragPageSwitchRepeatTimeoutId) {
             GLib.source_remove(this._dragPageSwitchRepeatTimeoutId);
             delete this._dragPageSwitchRepeatTimeoutId;
@@ -848,8 +855,7 @@ var BaseAppView = GObject.registerClass({
     }
 
     _setupDragPageSwitchRepeat(direction) {
-        if (this._dragPageSwitchRepeatTimeoutId)
-            GLib.source_remove(this._dragPageSwitchRepeatTimeoutId);
+        this._resetDragPageSwitch();
 
         this._dragPageSwitchRepeatTimeoutId =
             GLib.timeout_add(GLib.PRIORITY_DEFAULT, DRAG_PAGE_SWITCH_REPEAT_TIMEOUT, () => {
@@ -864,7 +870,7 @@ var BaseAppView = GObject.registerClass({
     _dragMaybeSwitchPageImmediately(dragEvent) {
         // Already animating
         if (this._adjustment.get_transition('value') !== null)
-            return;
+            return false;
 
         const [gridX, gridY] = this.get_transformed_position();
         const [gridWidth, gridHeight] = this.get_transformed_size();
@@ -887,14 +893,14 @@ var BaseAppView = GObject.registerClass({
             // pages.
             if (this._lastOvershootCoord >= 0 &&
                 moveDelta > DRAG_PAGE_SWITCH_IMMEDIATELY_THRESHOLD_PX)
-                this._resetDragPageSwitchRepeat();
+                this._resetDragPageSwitch();
 
-            return;
+            return false;
         }
 
         // Still in the area of the previous overshoot
         if (this._lastOvershootCoord >= 0)
-            return;
+            return false;
 
         let direction = dragCoord <= gridStart ? -1 : 1;
         if (this.get_text_direction() === Clutter.TextDirection.RTL)
@@ -904,6 +910,26 @@ var BaseAppView = GObject.registerClass({
         this._setupDragPageSwitchRepeat(direction);
 
         this._lastOvershootCoord = dragCoord;
+
+        return true;
+    }
+
+    _maybeSetupDragPageSwitchInitialTimeout(dragEvent) {
+        if (this._dragPageSwitchInitialTimeoutId || this._dragPageSwitchRepeatTimeoutId)
+            return;
+
+        const {targetActor} = dragEvent;
+
+        this._dragPageSwitchInitialTimeoutId =
+            GLib.timeout_add(GLib.PRIORITY_DEFAULT, DRAG_PAGE_SWITCH_INITIAL_TIMEOUT, () => {
+                const direction = targetActor === this._prevPageIndicator ? -1 : 1;
+
+                this.goToPage(this._grid.currentPage + direction);
+                this._setupDragPageSwitchRepeat(direction);
+
+                delete this._dragPageSwitchInitialTimeoutId;
+                return GLib.SOURCE_REMOVE;
+            });
     }
 
     _onDragBegin() {
@@ -923,8 +949,23 @@ var BaseAppView = GObject.registerClass({
 
         const appIcon = dragEvent.source;
 
-        if (appIcon instanceof AppViewItem)
-            this._dragMaybeSwitchPageImmediately(dragEvent);
+        if (appIcon instanceof AppViewItem) {
+            // Two ways of switching pages during DND:
+            // 1) When "bumping" the cursor against the monitor edge, we switch
+            //    page immediately.
+            // 2) When hovering over the next-page indicator for a certain time,
+            //    we also switch page.
+
+            if (!this._dragMaybeSwitchPageImmediately(dragEvent)) {
+                const {targetActor} = dragEvent;
+
+                if (targetActor === this._prevPageIndicator ||
+                    targetActor === this._nextPageIndicator)
+                    this._maybeSetupDragPageSwitchInitialTimeout(dragEvent);
+                else
+                    this._resetDragPageSwitch();
+            }
+        }
 
         this._maybeMoveItem(dragEvent);
 
@@ -944,7 +985,7 @@ var BaseAppView = GObject.registerClass({
             this._dragMonitor = null;
         }
 
-        this._resetDragPageSwitchRepeat();
+        this._resetDragPageSwitch();
 
         this._appGridLayout.hidePageIndicators();
         this._swipeTracker.enabled = true;
