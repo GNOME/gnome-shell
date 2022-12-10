@@ -10,6 +10,12 @@ Provide at least the following information:
 * Your OS and version
 * Affected GNOME Shell version (see https://wiki.gnome.org/Schedule for currently supported versions)
 * Does this issue appear in XOrg and/or Wayland
+* Does this issue happen without extensions (please follow instructions below)
+
+To properly disable extensions you can use gnome-extensions-app and then restart
+your session. Disabling extensions without a restart is not sufficient to rule
+out extensions as cause of a bug. If an issue can only be reproduced with a
+certain extension, please file a bug report against that extension first.
 -->
 
 ### Bug summary
