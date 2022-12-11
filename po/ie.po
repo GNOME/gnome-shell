@@ -1,0 +1,3045 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
+"POT-Creation-Date: 2022-12-12 06:33+0700\n"
+"PO-Revision-Date: 2022-12-12 06:49+0700\n"
+"Last-Translator: OIS <mistresssilvara@hotmail.com>\n"
+"Language-Team: IE\n"
+"Language: ie\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.12\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/50-gnome-shell-launchers.xml:6
+msgid "Launchers"
+msgstr "Lansatores"
+
+#: data/50-gnome-shell-launchers.xml:10
+#, fuzzy
+msgid "Activate favorite application 1"
+msgstr "Ear al carte %1"
+
+#: data/50-gnome-shell-launchers.xml:14
+#, fuzzy
+msgid "Activate favorite application 2"
+msgstr "Rapid-taste «%1» in li application «%2» por li action «%3»\n"
+
+#: data/50-gnome-shell-launchers.xml:18
+#, fuzzy
+msgid "Activate favorite application 3"
+msgstr "Rapid-taste «%1» in li application «%2» por li action «%3»\n"
+
+#: data/50-gnome-shell-launchers.xml:22
+#, fuzzy
+msgid "Activate favorite application 4"
+msgstr "Parametres del Calendare de Xfce 4 (Orage)"
+
+#: data/50-gnome-shell-launchers.xml:26
+#, fuzzy
+msgid "Activate favorite application 5"
+msgstr "Monstra icones de _applicationes in menú"
+
+#: data/50-gnome-shell-launchers.xml:30
+#, fuzzy
+msgid "Activate favorite application 6"
+msgstr "Monstra icones de _applicationes in menú"
+
+#: data/50-gnome-shell-launchers.xml:34
+#, fuzzy
+msgid "Activate favorite application 7"
+msgstr "Monstra icones de _applicationes in menú"
+
+#: data/50-gnome-shell-launchers.xml:38
+#, fuzzy
+msgid "Activate favorite application 8"
+msgstr "Monstra icones de _applicationes in menú"
+
+#: data/50-gnome-shell-launchers.xml:42
+#, fuzzy
+msgid "Activate favorite application 9"
+msgstr "Monstra icones de _applicationes in menú"
+
+#. Translators: name of the folder under ~/Pictures for screenshots.
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
+msgid "Screenshots"
+msgstr "Capturas de ecran"
+
+#: data/50-gnome-shell-screenshots.xml:9
+#: data/org.gnome.shell.gschema.xml.in:234
+#, fuzzy
+msgid "Take a screenshot interactively"
+msgstr "Capter li tot ecran"
+
+#: data/50-gnome-shell-screenshots.xml:12
+#: data/org.gnome.shell.gschema.xml.in:246
+msgid "Take a screenshot"
+msgstr "Capter li ecran"
+
+#: data/50-gnome-shell-screenshots.xml:15
+#: data/org.gnome.shell.gschema.xml.in:242
+msgid "Take a screenshot of a window"
+msgstr "Capter un fenestre"
+
+#: data/50-gnome-shell-screenshots.xml:18
+#: data/org.gnome.shell.gschema.xml.in:238
+#, fuzzy
+msgid "Record a screencast interactively"
+msgstr "Serchar por dominias e hostes"
+
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "Sistema"
+
+#: data/50-gnome-shell-system.xml:9
+#, fuzzy
+msgid "Show the notification list"
+msgstr "Monstrar un notification"
+
+#: data/50-gnome-shell-system.xml:12
+#, fuzzy
+msgid "Focus the active notification"
+msgstr "Monstrar li notification sur li activ monitor."
+
+#: data/50-gnome-shell-system.xml:15
+#, fuzzy
+msgid "Show the overview"
+msgstr "Compendie"
+
+#: data/50-gnome-shell-system.xml:18
+#, fuzzy
+msgid "Show all applications"
+msgstr "Monstrar omni applicationes"
+
+#: data/50-gnome-shell-system.xml:21
+#, fuzzy
+msgid "Open the application menu"
+msgstr "Aperter li menú de application"
+
+#: data/org.gnome.Shell.desktop.in.in:4
+msgid "GNOME Shell"
+msgstr "Shell GNOME"
+
+#: data/org.gnome.Shell.desktop.in.in:5
+#, fuzzy
+msgid "Window management and application launching"
+msgstr "Control de fenestres"
+
+#: data/org.gnome.shell.gschema.xml.in:6
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:9
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:16
+#, fuzzy
+msgid "UUIDs of extensions to enable"
+msgstr "_Extensiones:"
+
+#: data/org.gnome.shell.gschema.xml.in:17
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:26
+#, fuzzy
+msgid "UUIDs of extensions to force disabling"
+msgstr "Extensiones"
+
+#: data/org.gnome.shell.gschema.xml.in:27
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be disabled, even if loaded as part of the current mode. You can also "
+"manipulate this list with the EnableExtension and DisableExtension D-Bus "
+"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
+"extensions” setting."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:37
+#, fuzzy
+msgid "Disable user extensions"
+msgstr "Desactivar omni _extensiones"
+
+#: data/org.gnome.shell.gschema.xml.in:38
+msgid ""
+"Disable all extensions the user has enabled without affecting the “enabled-"
+"extension” setting."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:45
+msgid "Disables the validation of extension version compatibility"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:46
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:54
+msgid "List of desktop file IDs for favorite applications"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:55
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:62
+#, fuzzy
+msgid "History for command (Alt-F2) dialog"
+msgstr "_Gardar correspondenties in li diarium"
+
+#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#: data/org.gnome.shell.gschema.xml.in:67
+msgid "History for the looking glass dialog"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:71
+msgid "Always show the “Log out” menu item in the user menu."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:72
+msgid ""
+"This key overrides the automatic hiding of the “Log out” menu item in single-"
+"user, single-session situations."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:79
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:80
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"“Remember Password” checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:89
+msgid "The last selected non-default power profile"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:90
+msgid ""
+"Some systems support more than two power profiles. In order to still support "
+"toggling between two profiles, this key records the last selected non-"
+"default profile."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:98
+msgid "The last version the “Welcome to GNOME” dialog was shown for"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:99
+msgid ""
+"This key determines for which version the “Welcome to GNOME” dialog was last "
+"shown. An empty string represents the oldest possible version, and a huge "
+"number will represent versions that do not exist yet. This huge number can "
+"be used to effectively disable the dialog."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:132
+#, fuzzy
+msgid "Layout of the app picker"
+msgstr "_Arangeament"
+
+#: data/org.gnome.shell.gschema.xml.in:133
+msgid ""
+"Layout of the app picker. Each entry in the array is a page. Pages are "
+"stored in the order they appear in GNOME Shell. Each page contains an "
+"“application id” → 'data' pair. Currently, the following values are stored "
+"as 'data': • “position”: the position of the application icon in the page"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:148
+#, fuzzy
+msgid "Keybinding to open the application menu"
+msgstr "Aperter li menú"
+
+#: data/org.gnome.shell.gschema.xml.in:149
+#, fuzzy
+msgid "Keybinding to open the application menu."
+msgstr "Aperter li menú"
+
+#: data/org.gnome.shell.gschema.xml.in:155
+#: data/org.gnome.shell.gschema.xml.in:162
+#, fuzzy
+msgid "Keybinding to shift between overview states"
+msgstr "Aperter _per..."
+
+#: data/org.gnome.shell.gschema.xml.in:156
+msgid "Keybinding to shift between session, window picker and app grid"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:163
+msgid "Keybinding to shift between app grid, window picker and session"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:169
+#, fuzzy
+msgid "Keybinding to open the “Show Applications” view"
+msgstr "Monstra icones de _applicationes in menú"
+
+#: data/org.gnome.shell.gschema.xml.in:170
+#, fuzzy
+msgid ""
+"Keybinding to open the “Show Applications” view of the Activities Overview."
+msgstr "Monstra icones de _applicationes in menú"
+
+#: data/org.gnome.shell.gschema.xml.in:177
+#, fuzzy
+msgid "Keybinding to open the overview"
+msgstr "Compendie"
+
+#: data/org.gnome.shell.gschema.xml.in:178
+msgid "Keybinding to open the Activities Overview."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:184
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:185
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:191
+#, fuzzy
+msgid "Keybinding to focus the active notification"
+msgstr "Monstrar li notification sur li activ monitor."
+
+#: data/org.gnome.shell.gschema.xml.in:192
+#, fuzzy
+msgid "Keybinding to focus the active notification."
+msgstr "Monstrar li notification sur li activ monitor."
+
+#: data/org.gnome.shell.gschema.xml.in:198
+#, fuzzy
+#| msgid "Show Applications"
+msgid "Switch to application 1"
+msgstr "Cambiar un application"
+
+#: data/org.gnome.shell.gschema.xml.in:202
+#, fuzzy
+#| msgid "Show Applications"
+msgid "Switch to application 2"
+msgstr "Cambiar un application"
+
+#: data/org.gnome.shell.gschema.xml.in:206
+#, fuzzy
+#| msgid "Show Applications"
+msgid "Switch to application 3"
+msgstr "Ear al playlist 3"
+
+#: data/org.gnome.shell.gschema.xml.in:210
+#, fuzzy
+#| msgid "Show Applications"
+msgid "Switch to application 4"
+msgstr "Ear al playlist 4"
+
+#: data/org.gnome.shell.gschema.xml.in:214
+#, fuzzy
+#| msgid "Show Applications"
+msgid "Switch to application 5"
+msgstr "Cambiar un application"
+
+#: data/org.gnome.shell.gschema.xml.in:218
+#, fuzzy
+#| msgid "Show Applications"
+msgid "Switch to application 6"
+msgstr "Activar labor-spacie 6"
+
+#: data/org.gnome.shell.gschema.xml.in:222
+#, fuzzy
+#| msgid "Show Applications"
+msgid "Switch to application 7"
+msgstr "Activar labor-spacie 7"
+
+#: data/org.gnome.shell.gschema.xml.in:226
+#, fuzzy
+#| msgid "Show Applications"
+msgid "Switch to application 8"
+msgstr "Activar labor-spacie 8"
+
+#: data/org.gnome.shell.gschema.xml.in:230
+#, fuzzy
+#| msgid "Show Applications"
+msgid "Switch to application 9"
+msgstr "Activar labor-spacie 9"
+
+#: data/org.gnome.shell.gschema.xml.in:255
+#: data/org.gnome.shell.gschema.xml.in:282
+#, fuzzy
+msgid "Limit switcher to current workspace."
+msgstr "Monstra _nómines de labor-spacies"
+
+#: data/org.gnome.shell.gschema.xml.in:256
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:273
+#, fuzzy
+msgid "The application icon mode."
+msgstr "Null icone"
+
+#: data/org.gnome.shell.gschema.xml.in:274
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
+"only” (shows only the application icon) or “both”."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:283
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:293
+msgid "Locations"
+msgstr "Localisationes"
+
+#: data/org.gnome.shell.gschema.xml.in:294
+#, fuzzy
+msgid "The locations to show in world clocks"
+msgstr "Monstrar altri localisationes"
+
+#: data/org.gnome.shell.gschema.xml.in:304
+#, fuzzy
+msgid "Automatic location"
+msgstr "Ne automaticmen: "
+
+#: data/org.gnome.shell.gschema.xml.in:305
+#, fuzzy
+msgid "Whether to fetch the current location or not"
+msgstr "Si it es activ, li images va esser obtenet de un lontan localisation"
+
+#: data/org.gnome.shell.gschema.xml.in:312
+msgid "Location"
+msgstr "Localisation"
+
+#: data/org.gnome.shell.gschema.xml.in:313
+#, fuzzy
+msgid "The location for which to show a forecast"
+msgstr "Monstrar li localisation del apuntator pos un presse de taste"
+
+#: data/org.gnome.shell.gschema.xml.in:325
+#, fuzzy
+msgid "Attach modal dialog to the parent window"
+msgstr "Fenestre superior del dialog"
+
+#: data/org.gnome.shell.gschema.xml.in:326
+#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:343
+#: data/org.gnome.shell.gschema.xml.in:351
+#: data/org.gnome.shell.gschema.xml.in:359
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:334
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:342
+#, fuzzy
+msgid "Workspaces are managed dynamically"
+msgstr "Dina_mic titul:"
+
+#: data/org.gnome.shell.gschema.xml.in:350
+#, fuzzy
+msgid "Workspaces only on primary monitor"
+msgstr "Primari monitor"
+
+#: data/org.gnome.shell.gschema.xml.in:358
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr ""
+
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+#, fuzzy
+msgid "Network Login"
+msgstr "Inregistration"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:15
+#: subprojects/extensions-app/data/ui/extensions-window.ui:144
+#, fuzzy
+msgid "Something’s gone wrong"
+msgstr "Un errore evenit"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:23
+msgid ""
+"We’re very sorry, but there’s been a problem: the settings for this "
+"extension can’t be displayed. We recommend that you report the issue to the "
+"extension authors."
+msgstr ""
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:48
+msgid "Technical Details"
+msgstr "Detallies technic"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:90
+msgid "Homepage"
+msgstr "Hem-págine"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:91
+#, fuzzy
+msgid "Visit extension homepage"
+msgstr "Visitar li hem-págine del componente"
+
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
+#: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
+#: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
+#: subprojects/extensions-app/js/main.js:173
+msgid "Cancel"
+msgstr "Anullar"
+
+#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
+#: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
+#: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
+#: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
+#: js/ui/shellMountOperation.js:327
+msgid "Password"
+msgstr "Contrasigne"
+
+#: js/gdm/loginDialog.js:317
+#, fuzzy
+msgid "Choose Session"
+msgstr "Selecter un session"
+
+#: js/gdm/loginDialog.js:462
+msgid "Not listed?"
+msgstr "Ne es in li liste?"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: js/gdm/loginDialog.js:930
+#, javascript-format
+msgid "(e.g., user or %s)"
+msgstr "(p.ex. usator o %s)"
+
+#: js/gdm/loginDialog.js:935 js/ui/components/networkAgent.js:253
+#: js/ui/components/networkAgent.js:288 js/ui/components/networkAgent.js:322
+msgid "Username"
+msgstr "Nómine de usator"
+
+#: js/gdm/loginDialog.js:1258
+#, fuzzy
+msgid "Login Window"
+msgstr "Fenestre de inicie"
+
+#: js/gdm/util.js:431
+msgid "Authentication error"
+msgstr "Errore de autentication"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/util.js:603
+#, fuzzy
+msgid "(or swipe finger across reader)"
+msgstr "Trena un fingre trans li letor"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/util.js:608
+#, fuzzy
+msgid "(or place finger on reader)"
+msgstr "Posi un fingre sur li letor"
+
+#. Translators: The name of the power-off action in search
+#: js/misc/systemActions.js:84
+msgctxt "search-result"
+msgid "Power Off"
+msgstr "Extinter"
+
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#: js/misc/systemActions.js:87
+msgid "power off;shutdown;halt;stop"
+msgstr ""
+
+#. Translators: The name of the restart action in search
+#: js/misc/systemActions.js:92
+msgctxt "search-result"
+msgid "Restart"
+msgstr "Restartar"
+
+#. Translators: A list of keywords that match the restart action, separated by semicolons
+#: js/misc/systemActions.js:95
+#, fuzzy
+msgid "reboot;restart;"
+msgstr "_Reiniciar"
+
+#. Translators: The name of the lock screen action in search
+#: js/misc/systemActions.js:100
+msgctxt "search-result"
+msgid "Lock Screen"
+msgstr "Serrar li ecran"
+
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#: js/misc/systemActions.js:103
+#, fuzzy
+msgid "lock screen"
+msgstr "Serrar li ecran"
+
+#. Translators: The name of the logout action in search
+#: js/misc/systemActions.js:108
+msgctxt "search-result"
+msgid "Log Out"
+msgstr "Cluder li session"
+
+#. Translators: A list of keywords that match the logout action, separated by semicolons
+#: js/misc/systemActions.js:111
+#, fuzzy
+msgid "logout;log out;sign off"
+msgstr "Cluder li session sin monstrar li dialog de clusion"
+
+#. Translators: The name of the suspend action in search
+#: js/misc/systemActions.js:116
+msgctxt "search-result"
+msgid "Suspend"
+msgstr "Suspender"
+
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#: js/misc/systemActions.js:119
+#, fuzzy
+#| msgid "Suspend"
+msgid "suspend;sleep"
+msgstr "Suspender"
+
+#. Translators: The name of the switch user action in search
+#: js/misc/systemActions.js:124
+msgctxt "search-result"
+msgid "Switch User"
+msgstr "Cambiar li usator"
+
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#: js/misc/systemActions.js:127
+#, fuzzy
+#| msgid "Switch User"
+msgid "switch user"
+msgstr "Cambiar li usator"
+
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#: js/misc/systemActions.js:134
+msgid "lock orientation;unlock orientation;screen;rotation"
+msgstr ""
+
+#. Translators: The name of the screenshot UI action in search
+#: js/misc/systemActions.js:139
+#, fuzzy
+msgctxt "search-result"
+msgid "Take a Screenshot"
+msgstr "Capter li ecran"
+
+#. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
+#: js/misc/systemActions.js:142
+msgid "screenshot;screencast;snip;capture;record"
+msgstr ""
+
+#: js/misc/systemActions.js:242
+#, fuzzy
+msgctxt "search-result"
+msgid "Unlock Screen Rotation"
+msgstr "Rotation"
+
+#: js/misc/systemActions.js:243
+#, fuzzy
+msgctxt "search-result"
+msgid "Lock Screen Rotation"
+msgstr "Serrar li ecran"
+
+#: js/misc/util.js:129
+msgid "Command not found"
+msgstr "Comande ne esset trovat"
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: js/misc/util.js:166
+#, fuzzy
+msgid "Could not parse command:"
+msgstr "Ne successat analisar parametres de linea de comandes: %s\n"
+
+#: js/misc/util.js:174
+#, fuzzy, javascript-format
+msgid "Execution of “%s” failed:"
+msgstr "Execution de «%s» ne successat:"
+
+#: js/misc/util.js:191
+msgid "Just now"
+msgstr "Nu"
+
+#: js/misc/util.js:193
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "ante %d minute"
+msgstr[1] "ante %d minutes"
+
+#: js/misc/util.js:197
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "ante %d hor"
+msgstr[1] "ante %d hores"
+
+#: js/misc/util.js:201 js/ui/dateMenu.js:167
+msgid "Yesterday"
+msgstr "Yer"
+
+#: js/misc/util.js:203
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d die"
+msgstr[1] "%d dies"
+
+#: js/misc/util.js:207
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "ante %d semane"
+msgstr[1] "ante %d semanes"
+
+#: js/misc/util.js:211
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "ante %d mensu"
+msgstr[1] "ante %d mensus"
+
+#: js/misc/util.js:214
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "ante %d annu"
+msgstr[1] "ante %d annus"
+
+#. Translators: Time in 24h format
+#: js/misc/util.js:247
+msgid "%H∶%M"
+msgstr "%H:%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30"
+#: js/misc/util.js:253
+#, no-c-format
+msgid "Yesterday, %H∶%M"
+msgstr "Yer a %H:%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30"
+#: js/misc/util.js:259
+#, no-c-format
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30"
+#: js/misc/util.js:265
+#, fuzzy, no-c-format
+msgid "%B %-d, %H∶%M"
+msgstr "%e %b, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30"
+#: js/misc/util.js:271
+#, fuzzy, no-c-format
+msgid "%B %-d %Y, %H∶%M"
+msgstr "%d %b %y, %H:%M"
+
+#. Show only the time if date is on today
+#. eslint-disable-line no-lonely-if
+#. Translators: Time in 12h format
+#: js/misc/util.js:276
+#, fuzzy
+msgid "%l∶%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
+#: js/misc/util.js:282
+#, no-c-format
+msgid "Yesterday, %l∶%M %p"
+msgstr "Yer, %l:%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm"
+#: js/misc/util.js:288
+#, fuzzy, no-c-format
+msgid "%A, %l∶%M %p"
+msgstr "%x, %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm"
+#: js/misc/util.js:294
+#, fuzzy, no-c-format
+msgid "%B %-d, %l∶%M %p"
+msgstr "%e %b, %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"
+#: js/misc/util.js:300
+#, fuzzy, no-c-format
+msgid "%B %-d %Y, %l∶%M %p"
+msgstr "%-e %b %Y %l:%M %p"
+
+#: js/portalHelper/main.js:55
+#, fuzzy
+msgid "Hotspot Login"
+msgstr "Hotspot"
+
+#: js/portalHelper/main.js:108
+msgid ""
+"Your connection to this hotspot login is not secure. Passwords or other "
+"information you enter on this page can be viewed by people nearby."
+msgstr ""
+
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:350
+#, fuzzy
+msgid "Deny Access"
+msgstr "Refusar:"
+
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:355
+#, fuzzy
+msgid "Grant Access"
+msgstr "Sin accesse"
+
+#: js/ui/appDisplay.js:1728
+msgid "Unnamed Folder"
+msgstr "Fólder sin nómine"
+
+#: js/ui/appFavorites.js:166
+#, fuzzy, javascript-format
+msgid "%s has been pinned to the dash."
+msgstr "Li bux «%s» sta removet"
+
+#: js/ui/appFavorites.js:199
+#, fuzzy, javascript-format
+msgid "%s has been unpinned from the dash."
+msgstr "Li aparate «%s» ha esset securmen removet ex li sistema. "
+
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appMenu.js:46
+msgid "Open Windows"
+msgstr "Apertet fenestres"
+
+#: js/ui/appMenu.js:54
+msgid "New Window"
+msgstr "Nov fenestre"
+
+#: js/ui/appMenu.js:81
+msgid "Show Details"
+msgstr "Monstrar detallies"
+
+#: js/ui/appMenu.js:97
+msgid "Quit"
+msgstr "Salir"
+
+#: js/ui/appMenu.js:157 js/ui/dash.js:249
+msgid "Unpin"
+msgstr "Defixar"
+
+#: js/ui/appMenu.js:158
+#, fuzzy
+msgid "Pin to Dash"
+msgstr "PIN:"
+
+#: js/ui/appMenu.js:175
+#, fuzzy
+msgid "Launch using Integrated Graphics Card"
+msgstr "Lansar usante li separat grafic carte"
+
+#: js/ui/appMenu.js:176
+#, fuzzy
+msgid "Launch using Discrete Graphics Card"
+msgstr "Lansar usante li separat grafic carte"
+
+#: js/ui/audioDeviceSelection.js:41
+msgid "Select Audio Device"
+msgstr "Selecter un audioaparate"
+
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
+msgid "Sound Settings"
+msgstr "Parametres de son"
+
+#: js/ui/audioDeviceSelection.js:69
+msgid "Headphones"
+msgstr "Escutatores"
+
+#: js/ui/audioDeviceSelection.js:71
+#, fuzzy
+msgid "Headset"
+msgstr "Garnitura"
+
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
+msgid "Microphone"
+msgstr "Microfon"
+
+#: js/ui/backgroundMenu.js:14
+#, fuzzy
+msgid "Change Background…"
+msgstr "Alterar li _funde"
+
+#: js/ui/backgroundMenu.js:16
+msgid "Display Settings"
+msgstr "Parametres de monitor"
+
+#: js/ui/backgroundMenu.js:17
+#: subprojects/extensions-app/data/ui/extension-row.ui:122
+msgid "Settings"
+msgstr "Parametres"
+
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: js/ui/calendar.js:35
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: js/ui/calendar.js:61
+msgctxt "grid sunday"
+msgid "S"
+msgstr "So"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: js/ui/calendar.js:63
+msgctxt "grid monday"
+msgid "M"
+msgstr "Lu"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: js/ui/calendar.js:65
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "Ma"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: js/ui/calendar.js:67
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "Me"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: js/ui/calendar.js:69
+msgctxt "grid thursday"
+msgid "T"
+msgstr "Jo"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: js/ui/calendar.js:71
+msgctxt "grid friday"
+msgid "F"
+msgstr "Ve"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: js/ui/calendar.js:73
+msgctxt "grid saturday"
+msgid "S"
+msgstr "Sa"
+
+#. *
+#. * Translators: The header displaying just the month name
+#. * standalone, when this is a month of the current year.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not change it.
+#.
+#: js/ui/calendar.js:414
+msgid "%OB"
+msgstr "%OB"
+
+#. *
+#. * Translators: The header displaying the month name and the year
+#. * number, when this is a month of a different year.  You can
+#. * reorder the format specifiers or add other modifications
+#. * according to the requirements of your language.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not use the old "%B" here unless you
+#. * absolutely know what you are doing.
+#.
+#: js/ui/calendar.js:424
+msgid "%OB %Y"
+msgstr "%B %Y"
+
+#: js/ui/calendar.js:485
+msgid "Previous month"
+msgstr "Li precedent mensu"
+
+#: js/ui/calendar.js:503
+msgid "Next month"
+msgstr "Li sequent mensu"
+
+#: js/ui/calendar.js:654
+#, no-javascript-format
+msgctxt "date day number format"
+msgid "%d"
+msgstr "%d"
+
+#: js/ui/calendar.js:713
+msgid "Week %V"
+msgstr "Semane %V"
+
+#: js/ui/calendar.js:892
+msgid "No Notifications"
+msgstr "Null notificationes"
+
+#: js/ui/calendar.js:949
+msgid "Do Not Disturb"
+msgstr "Ne disturbar"
+
+#: js/ui/calendar.js:970
+msgid "Clear"
+msgstr "Vacuar"
+
+#. Translators: %s is an application name
+#: js/ui/closeDialog.js:40
+#, fuzzy, javascript-format
+msgid "“%s” is not responding."
+msgstr "<tt>%s</tt> ne responde."
+
+#: js/ui/closeDialog.js:41
+#, fuzzy
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Vu posse atender un moment por permisser it continuar, o terminar li "
+"application completmen."
+
+#: js/ui/closeDialog.js:69
+msgid "Force Quit"
+msgstr "Terminar"
+
+#: js/ui/closeDialog.js:74
+msgid "Wait"
+msgstr "Atender"
+
+#: js/ui/components/automountManager.js:84
+#, fuzzy
+msgid "External drive connected"
+msgstr "Conexet"
+
+#: js/ui/components/automountManager.js:96
+#, fuzzy
+msgid "External drive disconnected"
+msgstr "Extern"
+
+#: js/ui/components/automountManager.js:207
+#, fuzzy
+msgid "Unable to unlock volume"
+msgstr "Ne posset desmonter li volume"
+
+#: js/ui/components/automountManager.js:208
+msgid "The installed udisks version does not support the PIM setting"
+msgstr ""
+
+#: js/ui/components/autorunManager.js:316
+#, javascript-format
+msgid "Open with %s"
+msgstr "Aperter per %s"
+
+#: js/ui/components/networkAgent.js:91
+msgid ""
+"Alternatively you can connect by pushing the “WPS” button on your router."
+msgstr ""
+
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
+msgid "Connect"
+msgstr "Connexer"
+
+#: js/ui/components/networkAgent.js:218
+msgid "Key"
+msgstr "Clave"
+
+#: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:308
+msgid "Private key password"
+msgstr "Contrasigne del clave privat"
+
+#: js/ui/components/networkAgent.js:302
+msgid "Identity"
+msgstr "Identitá"
+
+#: js/ui/components/networkAgent.js:328
+msgid "Service"
+msgstr "Servicie"
+
+#: js/ui/components/networkAgent.js:366 js/ui/components/networkAgent.js:402
+#: js/ui/components/networkAgent.js:747 js/ui/components/networkAgent.js:768
+msgid "Authentication required"
+msgstr "Autentication es besonat"
+
+#: js/ui/components/networkAgent.js:367 js/ui/components/networkAgent.js:748
+#, javascript-format
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"“%s”."
+msgstr ""
+
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:752
+#, fuzzy
+msgid "Wired 802.1X authentication"
+msgstr "Autentication"
+
+#: js/ui/components/networkAgent.js:374
+msgid "Network name"
+msgstr "Nómine de rete"
+
+#: js/ui/components/networkAgent.js:382 js/ui/components/networkAgent.js:756
+msgid "DSL authentication"
+msgstr "Autentication DSL"
+
+#: js/ui/components/networkAgent.js:389 js/ui/components/networkAgent.js:761
+#, fuzzy
+msgid "PIN code required"
+msgstr "Intra un code PIN"
+
+#: js/ui/components/networkAgent.js:390 js/ui/components/networkAgent.js:762
+msgid "PIN code is needed for the mobile broadband device"
+msgstr ""
+
+#: js/ui/components/networkAgent.js:392
+msgid "PIN"
+msgstr "PIN"
+
+#: js/ui/components/networkAgent.js:403 js/ui/components/networkAgent.js:753
+#: js/ui/components/networkAgent.js:757 js/ui/components/networkAgent.js:769
+#: js/ui/components/networkAgent.js:773
+#, fuzzy, javascript-format
+msgid "A password is required to connect to “%s”."
+msgstr "Un nómine e contrasigne es besonat por li accesse a «%s»"
+
+#: js/ui/components/networkAgent.js:736
+msgid "Network Manager"
+msgstr "Gerente de rete"
+
+#: js/ui/components/networkAgent.js:772
+msgid "VPN password"
+msgstr "Contrasigne de VPN"
+
+#: js/ui/components/polkitAgent.js:41
+msgid "Authentication Required"
+msgstr "Autentication es postulat"
+
+#: js/ui/components/polkitAgent.js:81
+msgid "Administrator"
+msgstr "Administrator"
+
+#: js/ui/components/polkitAgent.js:146
+msgid "Authenticate"
+msgstr "Autenticar"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:403
+msgid "Sorry, that didn’t work. Please try again."
+msgstr ""
+
+#: js/ui/components/telepathyClient.js:828
+#, fuzzy, javascript-format
+msgid "%s is now known as %s"
+msgstr "%s %s es disponibil nu"
+
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
+msgid "Windows"
+msgstr "Fenestres"
+
+#: js/ui/dash.js:205 js/ui/dash.js:251
+msgid "Show Applications"
+msgstr "Monstrar applicationes"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: js/ui/dash.js:398
+#, fuzzy
+msgid "Dash"
+msgstr "Simbol en-dash --"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the top bar (e.g.,
+#. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
+#. * "February 17 2015".
+#.
+#: js/ui/dateMenu.js:83
+msgid "%B %-d %Y"
+msgstr "%d %B %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#.
+#: js/ui/dateMenu.js:90
+msgid "%A %B %e %Y"
+msgstr "%A, %-e %b %Y"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: js/ui/dateMenu.js:156
+msgctxt "calendar heading"
+msgid "%B %-d"
+msgstr "%e %b"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: js/ui/dateMenu.js:159
+msgctxt "calendar heading"
+msgid "%B %-d %Y"
+msgstr "%d %B %Y"
+
+#: js/ui/dateMenu.js:165
+msgid "Today"
+msgstr "Hodie"
+
+#: js/ui/dateMenu.js:169
+msgid "Tomorrow"
+msgstr "Deman"
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: js/ui/dateMenu.js:200
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Li tot die"
+
+#. Translators: Shown in calendar event list as the start/end of events
+#. * that only show day and month
+#.
+#: js/ui/dateMenu.js:222
+msgid "%m/%d"
+msgstr "%d.%m"
+
+#: js/ui/dateMenu.js:273
+msgid "No Events"
+msgstr "Null evenimentes"
+
+#: js/ui/dateMenu.js:396
+#, fuzzy
+msgid "Add world clocks…"
+msgstr "Horloges"
+
+#: js/ui/dateMenu.js:397
+#, fuzzy
+msgid "World Clocks"
+msgstr "Horloges"
+
+#: js/ui/dateMenu.js:681
+#, fuzzy
+#| msgid "Searching…"
+msgid "Loading…"
+msgstr "Cargante..."
+
+#: js/ui/dateMenu.js:691
+#, fuzzy
+msgid "Go online for weather information"
+msgstr "Te_mpe"
+
+#: js/ui/dateMenu.js:693
+#, fuzzy
+msgid "Weather information is currently unavailable"
+msgstr "Te_mpe"
+
+#: js/ui/dateMenu.js:703
+msgid "Weather"
+msgstr "Tempe"
+
+#: js/ui/dateMenu.js:705
+#, fuzzy
+msgid "Select weather location…"
+msgstr "Tempe"
+
+#: js/ui/endSessionDialog.js:41
+#, javascript-format
+msgctxt "title"
+msgid "Log Out %s"
+msgstr "Cluder li session de %s"
+
+#: js/ui/endSessionDialog.js:42
+msgctxt "title"
+msgid "Log Out"
+msgstr "Cluder li session"
+
+#: js/ui/endSessionDialog.js:45
+#, javascript-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/ui/endSessionDialog.js:51
+#, javascript-format
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/ui/endSessionDialog.js:58
+msgctxt "button"
+msgid "Log Out"
+msgstr "Cluder li session"
+
+#: js/ui/endSessionDialog.js:64 js/ui/status/system.js:167
+msgctxt "title"
+msgid "Power Off"
+msgstr "Extintion"
+
+#: js/ui/endSessionDialog.js:65
+#, fuzzy
+msgctxt "title"
+msgid "Install Updates & Power Off"
+msgstr "Installar actualisamentes"
+
+#: js/ui/endSessionDialog.js:68
+#, javascript-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/ui/endSessionDialog.js:72 js/ui/endSessionDialog.js:91
+#, fuzzy
+msgctxt "checkbox"
+msgid "Install pending software updates"
+msgstr "Installar actualisamentes"
+
+#: js/ui/endSessionDialog.js:76
+msgctxt "button"
+msgid "Power Off"
+msgstr "Extinter"
+
+#: js/ui/endSessionDialog.js:83
+msgctxt "title"
+msgid "Restart"
+msgstr "Restarta"
+
+#: js/ui/endSessionDialog.js:84
+#, fuzzy
+msgctxt "title"
+msgid "Install Updates & Restart"
+msgstr "Installar actualisamentes"
+
+#: js/ui/endSessionDialog.js:87
+#, javascript-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/ui/endSessionDialog.js:95
+msgctxt "button"
+msgid "Restart"
+msgstr "Restartar"
+
+#: js/ui/endSessionDialog.js:103
+#, fuzzy
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "Installar actualisamentes"
+
+#: js/ui/endSessionDialog.js:106
+#, javascript-format
+msgid "The system will automatically restart and install updates in %d second."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/ui/endSessionDialog.js:113 js/ui/endSessionDialog.js:134
+msgctxt "button"
+msgid "Restart &amp; Install"
+msgstr "Restartar e installar"
+
+#: js/ui/endSessionDialog.js:115
+#, fuzzy
+msgctxt "button"
+msgid "Install &amp; Power Off"
+msgstr "Restartar e installar"
+
+#: js/ui/endSessionDialog.js:116
+msgctxt "checkbox"
+msgid "Power off after updates are installed"
+msgstr ""
+
+#: js/ui/endSessionDialog.js:123
+#, fuzzy
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "Restartar e _installar"
+
+#. Translators: This is the text displayed for system upgrades in the
+#. shut down dialog. First %s gets replaced with the distro name and
+#. second %s with the distro version to upgrade to
+#: js/ui/endSessionDialog.js:128
+#, javascript-format
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
+msgstr ""
+
+#: js/ui/endSessionDialog.js:285
+msgid "Low battery power: please plug in before installing updates."
+msgstr ""
+
+#: js/ui/endSessionDialog.js:294
+msgid "Some applications are busy or have unsaved work"
+msgstr ""
+
+#: js/ui/endSessionDialog.js:299
+#, fuzzy
+msgid "Other users are logged in"
+msgstr ""
+"Altri usatores have sessiones apert, extintion nu va terminar anc ti "
+"sessiones."
+
+#: js/ui/endSessionDialog.js:470
+#, fuzzy
+msgctxt "button"
+msgid "Boot Options"
+msgstr "Inicialisation:"
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: js/ui/endSessionDialog.js:675
+#, javascript-format
+msgid "%s (remote)"
+msgstr "%s (lontan)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: js/ui/endSessionDialog.js:678
+#, javascript-format
+msgid "%s (console)"
+msgstr "%s (console)"
+
+#: js/ui/extensionDownloader.js:227
+msgid "Install"
+msgstr "Installar"
+
+#: js/ui/extensionDownloader.js:233
+msgid "Install Extension"
+msgstr "Installar un extension"
+
+#: js/ui/extensionDownloader.js:234
+#, javascript-format
+msgid "Download and install “%s” from extensions.gnome.org?"
+msgstr ""
+
+#: js/ui/extensionSystem.js:270
+#, fuzzy
+msgid "Extension Updates Available"
+msgstr "Actualisamentes es disponibil"
+
+#: js/ui/extensionSystem.js:271
+#, fuzzy
+msgid "Extension updates are ready to be installed."
+msgstr "Li bux «%s» ha esset installat e es pret a usa"
+
+#: js/ui/inhibitShortcutsDialog.js:75
+#, fuzzy
+msgid "Allow inhibiting shortcuts"
+msgstr "Rapid-tastes"
+
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:78
+#, javascript-format
+msgid "The application %s wants to inhibit shortcuts"
+msgstr ""
+
+#: js/ui/inhibitShortcutsDialog.js:79
+#, fuzzy
+msgid "An application wants to inhibit shortcuts"
+msgstr "Modificar parametres de tastatura a rapid-tastes de applicationes"
+
+#. Translators: %s is a keyboard shortcut like "Super+x"
+#: js/ui/inhibitShortcutsDialog.js:86
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s."
+msgstr ""
+
+#: js/ui/inhibitShortcutsDialog.js:97
+msgid "Deny"
+msgstr "Refusar"
+
+#: js/ui/inhibitShortcutsDialog.js:106
+msgid "Allow"
+msgstr "Permisser"
+
+#: js/ui/kbdA11yDialog.js:32
+#, fuzzy
+msgid "Slow Keys Turned On"
+msgstr "Avise de lent tastes"
+
+#: js/ui/kbdA11yDialog.js:33
+#, fuzzy
+msgid "Slow Keys Turned Off"
+msgstr "Bluetooth desactivat"
+
+#: js/ui/kbdA11yDialog.js:34
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+
+#: js/ui/kbdA11yDialog.js:40
+#, fuzzy
+msgid "Sticky Keys Turned On"
+msgstr "Avise de restant tastes"
+
+#: js/ui/kbdA11yDialog.js:41
+#, fuzzy
+msgid "Sticky Keys Turned Off"
+msgstr "Bluetooth desactivat"
+
+#: js/ui/kbdA11yDialog.js:43
+msgid ""
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+
+#: js/ui/kbdA11yDialog.js:45
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+
+#: js/ui/kbdA11yDialog.js:55
+#, fuzzy
+msgid "Leave On"
+msgstr "Lassar it"
+
+#: js/ui/kbdA11yDialog.js:55
+msgid "Turn On"
+msgstr "Activar"
+
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
+msgid "Turn Off"
+msgstr "Desactivar"
+
+#: js/ui/kbdA11yDialog.js:65
+#, fuzzy
+msgid "Leave Off"
+msgstr "Lassar it"
+
+#: js/ui/keyboard.js:219
+msgid "Region & Language Settings"
+msgstr "Parametres de lingue e region"
+
+#: js/ui/lookingGlass.js:713
+msgid "No extensions installed"
+msgstr "Null extensiones installat"
+
+#. Translators: argument is an extension UUID.
+#: js/ui/lookingGlass.js:774
+#, javascript-format
+msgid "%s has not emitted any errors."
+msgstr ""
+
+#: js/ui/lookingGlass.js:780
+msgid "Hide Errors"
+msgstr "Celar errores"
+
+#: js/ui/lookingGlass.js:784 js/ui/lookingGlass.js:857
+msgid "Show Errors"
+msgstr "Monstrar errores"
+
+#: js/ui/lookingGlass.js:793
+msgid "Enabled"
+msgstr "Permisset"
+
+#. translators:
+#. * The device has been disabled
+#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1900
+msgid "Disabled"
+msgstr "Despermisset"
+
+#: js/ui/lookingGlass.js:798
+msgid "Error"
+msgstr "Errore"
+
+#: js/ui/lookingGlass.js:800
+msgid "Out of date"
+msgstr "Obsolet"
+
+#: js/ui/lookingGlass.js:802
+msgid "Downloading"
+msgstr "Descarga"
+
+#: js/ui/lookingGlass.js:835
+msgid "View Source"
+msgstr "Vider li fonte"
+
+#: js/ui/lookingGlass.js:846
+msgid "Web Page"
+msgstr "Págine Web"
+
+#: js/ui/main.js:286
+#, fuzzy
+msgid "System was put in unsafe mode"
+msgstr "Mode de somnie del sistema:"
+
+#: js/ui/main.js:287
+msgid "Applications now have unrestricted access"
+msgstr ""
+
+#: js/ui/main.js:288 js/ui/overview.js:58
+msgid "Undo"
+msgstr "Defar"
+
+#: js/ui/main.js:334
+#, fuzzy
+msgid "Logged in as a privileged user"
+msgstr "Avise: %d usator have un session ancor apert."
+
+#: js/ui/main.js:335
+msgid ""
+"Running a session as a privileged user should be avoided for security "
+"reasons. If possible, you should log in as a normal user."
+msgstr ""
+
+#: js/ui/main.js:384
+#, fuzzy
+msgid "Screen Lock disabled"
+msgstr "Serrar li ecran"
+
+#: js/ui/main.js:385
+msgid "Screen Locking requires the GNOME display manager."
+msgstr ""
+
+#: js/ui/messageTray.js:1418
+msgid "System Information"
+msgstr "Information del sistema"
+
+#: js/ui/mpris.js:202
+msgid "Unknown artist"
+msgstr "Ínconosset artist"
+
+#: js/ui/mpris.js:212
+msgid "Unknown title"
+msgstr "Ínconosset titul"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overviewControls.js:327
+msgid "Type to search"
+msgstr "Tippa por serchar"
+
+#: js/ui/overviewControls.js:405
+msgid "Applications"
+msgstr "Applicationes"
+
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
+#: js/ui/overview.js:71
+msgid "Overview"
+msgstr "Compendie"
+
+#: js/ui/padOsd.js:100
+msgid "New shortcut…"
+msgstr "Nov rapid-taste…"
+
+#: js/ui/padOsd.js:154
+#, fuzzy
+#| msgid "Applications"
+msgid "Application defined"
+msgstr "Null marca-págines definit"
+
+#: js/ui/padOsd.js:155
+#, fuzzy
+msgid "Show on-screen help"
+msgstr "Monstrar un baniere de inicie"
+
+#: js/ui/padOsd.js:156
+msgid "Switch monitor"
+msgstr "Cambiar li monitor"
+
+#: js/ui/padOsd.js:157
+#, fuzzy
+msgid "Assign keystroke"
+msgstr "Assignar"
+
+#: js/ui/padOsd.js:226
+msgid "Done"
+msgstr "Finit"
+
+#: js/ui/padOsd.js:743
+msgid "Edit…"
+msgstr "Modificar…"
+
+#: js/ui/padOsd.js:785 js/ui/padOsd.js:902
+msgid "None"
+msgstr "Null"
+
+#: js/ui/padOsd.js:856
+#, fuzzy
+msgid "Press a button to configure"
+msgstr "Presse un buton de mus "
+
+#: js/ui/padOsd.js:857
+#, fuzzy
+msgid "Press Esc to exit"
+msgstr "Esc"
+
+#: js/ui/padOsd.js:860
+#, fuzzy
+msgid "Press any key to exit"
+msgstr "Li taste de captura del ecran:"
+
+#: js/ui/panel.js:244
+msgid "Activities"
+msgstr "Activitás"
+
+#: js/ui/panel.js:338
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "Sistema"
+
+#: js/ui/panel.js:457
+#, fuzzy
+msgid "Top Bar"
+msgstr "\\bar{}"
+
+#: js/ui/runDialog.js:58
+msgid "Run a Command"
+msgstr "Lansar un comande"
+
+#: js/ui/runDialog.js:73
+msgid "Press ESC to close"
+msgstr "Tippa Esc por cluder"
+
+#: js/ui/runDialog.js:238
+#, fuzzy
+msgid "Restart is not available on Wayland"
+msgstr "Wayland"
+
+#: js/ui/runDialog.js:243
+msgid "Restarting…"
+msgstr "Restartante..."
+
+#: js/ui/screenShield.js:235
+#, fuzzy
+msgid "GNOME needs to lock the screen"
+msgstr "Serrar li ecran _ante que somniar"
+
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell them to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
+#, fuzzy
+msgid "Unable to lock"
+msgstr "S_errar"
+
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
+#, fuzzy
+msgid "Lock was blocked by an application"
+msgstr "S_errar"
+
+#: js/ui/screenshot.js:1161
+msgid "Selection"
+msgstr "Selection"
+
+#: js/ui/screenshot.js:1171
+msgid "Area Selection"
+msgstr "Selection de un area"
+
+#: js/ui/screenshot.js:1176
+msgid "Screen"
+msgstr "Ecran"
+
+#: js/ui/screenshot.js:1186
+msgid "Screen Selection"
+msgstr "Selection de un ecran"
+
+#: js/ui/screenshot.js:1191
+msgid "Window"
+msgstr "Fenestre"
+
+#: js/ui/screenshot.js:1201
+msgid "Window Selection"
+msgstr "Selection de fenestres"
+
+#: js/ui/screenshot.js:1239
+#, fuzzy
+msgid "Screenshot / Screencast"
+msgstr "Captura del ecran"
+
+#: js/ui/screenshot.js:1275
+msgid "Show Pointer"
+msgstr "Monstrar li apuntator"
+
+#. Translators: this is the folder where recorded
+#. screencasts are stored.
+#: js/ui/screenshot.js:1866
+msgid "Screencasts"
+msgstr ""
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#: js/ui/screenshot.js:1871
+#, fuzzy, no-c-format
+msgid "Screencast from %d %t.webm"
+msgstr "Restituer %d elementes ex li Paper-corb"
+
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
+msgid "Screenshot"
+msgstr "Captura del ecran"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:1919
+#, fuzzy
+msgid "Screencast recorded"
+msgstr "Gardar li registrat canzone"
+
+#. Translators: notification body when a screencast was recorded.
+#: js/ui/screenshot.js:1921
+msgid "Click here to view the video."
+msgstr ""
+
+#. Translators: button on the screencast notification.
+#. Translators: button on the screenshot notification.
+#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
+msgid "Show in Files"
+msgstr "Monstrar in Files"
+
+#. Translators: this is the name of the file that the screenshot is
+#. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
+#: js/ui/screenshot.js:2085
+#, javascript-format
+msgid "Screenshot from %s"
+msgstr "Captura de %s"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2131
+#, fuzzy
+msgid "Screenshot captured"
+msgstr "Un rectangulari region esset capturat"
+
+#. Translators: notification body when a screenshot was captured.
+#: js/ui/screenshot.js:2133
+msgid "You can paste the image from the clipboard."
+msgstr ""
+
+#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
+msgid "Screenshot taken"
+msgstr "Ecran ha esset capturat"
+
+#: js/ui/search.js:804
+msgid "Searching…"
+msgstr "Serchante..."
+
+#: js/ui/search.js:806
+msgid "No results."
+msgstr "Null resultates."
+
+#: js/ui/search.js:937
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d plu"
+msgstr[1] "%d plu"
+
+#: js/ui/searchController.js:87
+msgid "Search"
+msgstr "Serchar"
+
+#: js/ui/shellEntry.js:20
+msgid "Copy"
+msgstr "Copiar"
+
+#: js/ui/shellEntry.js:25
+msgid "Paste"
+msgstr "Collar"
+
+#: js/ui/shellEntry.js:77
+msgid "Show Text"
+msgstr "Monstrar textu"
+
+#: js/ui/shellEntry.js:79
+msgid "Hide Text"
+msgstr "Celar textu"
+
+#: js/ui/shellEntry.js:166
+msgid "Caps lock is on."
+msgstr "Caps Lock es activ."
+
+#: js/ui/shellMountOperation.js:286
+msgid "Hidden Volume"
+msgstr "Celat volume"
+
+#: js/ui/shellMountOperation.js:289
+#, fuzzy
+msgid "Windows System Volume"
+msgstr "_Sistema Windows"
+
+#: js/ui/shellMountOperation.js:292
+#, fuzzy
+msgid "Uses Keyfiles"
+msgstr "_Clav-files"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:299
+#, javascript-format
+msgid ""
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
+msgstr ""
+
+#: js/ui/shellMountOperation.js:307
+#, fuzzy
+msgid "PIM Number"
+msgstr "Secun li _númere"
+
+#: js/ui/shellMountOperation.js:366
+msgid "Remember Password"
+msgstr "Memorar li contrasigne"
+
+#: js/ui/shellMountOperation.js:381
+msgid "Unlock"
+msgstr "Desserrar"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:392
+#, javascript-format
+msgid "Open %s"
+msgstr "Aperter %s"
+
+#: js/ui/shellMountOperation.js:424
+#, fuzzy
+msgid "The PIM must be a number or empty."
+msgstr "ID deve esser present e unic.\n"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:466
+#, javascript-format
+msgid "Unable to start %s"
+msgstr "Ne successat startar %s"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:468
+#, javascript-format
+msgid "Couldn’t find the %s application"
+msgstr ""
+
+#: js/ui/status/accessibility.js:34
+msgid "Accessibility"
+msgstr "Accessibilitá"
+
+#: js/ui/status/accessibility.js:44
+msgid "High Contrast"
+msgstr "Alt contraste"
+
+#: js/ui/status/accessibility.js:47
+msgid "Zoom"
+msgstr "Scalar"
+
+#: js/ui/status/accessibility.js:54
+msgid "Screen Reader"
+msgstr "Letor del ecran"
+
+#: js/ui/status/accessibility.js:58
+msgid "Screen Keyboard"
+msgstr "Tastatura visual"
+
+#: js/ui/status/accessibility.js:62
+#, fuzzy
+msgid "Visual Alerts"
+msgstr "Visual"
+
+#: js/ui/status/accessibility.js:65
+msgid "Sticky Keys"
+msgstr "Restant tastes"
+
+#: js/ui/status/accessibility.js:68
+msgid "Slow Keys"
+msgstr "Lent tastes"
+
+#: js/ui/status/accessibility.js:71
+msgid "Bounce Keys"
+msgstr "Restant tastes"
+
+#: js/ui/status/accessibility.js:74
+msgid "Mouse Keys"
+msgstr "Tastes del mus"
+
+#: js/ui/status/accessibility.js:131
+msgid "Large Text"
+msgstr "Grand textu"
+
+#: js/ui/status/autoRotate.js:14
+#, fuzzy
+msgid "Auto Rotate"
+msgstr "Autorotar e -centrar"
+
+#: js/ui/status/bluetooth.js:151
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: js/ui/status/brightness.js:34
+msgid "Brightness"
+msgstr "Luciditá"
+
+#: js/ui/status/darkMode.js:11
+msgid "Dark Mode"
+msgstr "Mode obscur"
+
+#: js/ui/status/dwellClick.js:12
+msgid "Single Click"
+msgstr "Singul clic"
+
+#: js/ui/status/dwellClick.js:17
+msgid "Double Click"
+msgstr "Duplic clic"
+
+#: js/ui/status/dwellClick.js:22
+msgid "Drag"
+msgstr "Tirar"
+
+#: js/ui/status/dwellClick.js:27
+#, fuzzy
+msgid "Secondary Click"
+msgstr "Secundari"
+
+#: js/ui/status/dwellClick.js:36
+#, fuzzy
+msgid "Dwell Click"
+msgstr "o clicca li icone "
+
+#: js/ui/status/keyboard.js:833
+msgid "Keyboard"
+msgstr "Tastatura"
+
+#: js/ui/status/keyboard.js:850
+msgid "Show Keyboard Layout"
+msgstr "Monstrar li arangeament del tastatura"
+
+#: js/ui/status/location.js:330
+#, fuzzy
+msgid "Allow location access"
+msgstr "Pe_rmisser lontan accesse"
+
+#. Translators: %s is an application name
+#: js/ui/status/location.js:332
+#, javascript-format
+msgid "The app %s wants to access your location"
+msgstr ""
+
+#: js/ui/status/location.js:342
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+
+#: js/ui/status/network.js:53
+msgid "<unknown>"
+msgstr "<ínconosset>"
+
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:356
+#, fuzzy, javascript-format
+msgid "Disconnect %s"
+msgstr "_Desconexer"
+
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:358
+#, fuzzy, javascript-format
+msgid "Connect to %s"
+msgstr "Ne successat conexer a %s"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1107
+#, fuzzy, javascript-format
+msgid "%s Hotspot"
+msgstr "Hotspot"
+
+#: js/ui/status/nightLight.js:20
+#, fuzzy
+msgid "Night Light"
+msgstr "Nocte"
+
+#: js/ui/status/powerProfiles.js:20
+msgctxt "Power profile"
+msgid "Performance"
+msgstr "Productivitá"
+
+#: js/ui/status/powerProfiles.js:25
+msgctxt "Power profile"
+msgid "Balanced"
+msgstr ""
+
+#: js/ui/status/powerProfiles.js:30
+#, fuzzy
+msgctxt "Power profile"
+msgid "Power Saver"
+msgstr "Garda-ecran"
+
+#: js/ui/status/powerProfiles.js:70
+#, fuzzy
+msgid "Power Profiles"
+msgstr "_Accender"
+
+#: js/ui/status/remoteAccess.js:74
+#, fuzzy
+msgid "Stop Screencast"
+msgstr "   --stop             Stoppar li reproduction\n"
+
+#: js/ui/status/remoteAccess.js:144
+#, fuzzy
+msgid "Stop Screen Sharing"
+msgstr "_Stoppar"
+
+#: js/ui/status/rfkill.js:96
+msgid "Airplane Mode"
+msgstr "Mode de avion"
+
+#: js/ui/status/system.js:90
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
+
+#. Translators: entry in the window right click menu.
+#: js/ui/status/system.js:105 js/ui/windowMenu.js:29
+msgid "Take Screenshot"
+msgstr "Capturar li ecran"
+
+#: js/ui/status/system.js:161
+msgid "Power Off Menu"
+msgstr "Menú de extintion"
+
+#: js/ui/status/system.js:169
+msgid "Suspend"
+msgstr "Suspender"
+
+#: js/ui/status/system.js:174
+msgid "Restart…"
+msgstr "Restartar…"
+
+#: js/ui/status/system.js:179
+msgid "Power Off…"
+msgstr "Extinter…"
+
+#: js/ui/status/system.js:186
+#: subprojects/extensions-app/data/ui/extensions-window.ui:190
+msgid "Log Out…"
+msgstr "Cluder li session…"
+
+#: js/ui/status/system.js:191
+msgid "Switch User…"
+msgstr "Cambiar li usator…"
+
+#: js/ui/status/system.js:235
+msgctxt "action"
+msgid "Lock Screen"
+msgstr "Serrar li ecran"
+
+#: js/ui/status/thunderbolt.js:256
+msgid "Thunderbolt"
+msgstr "Thunderbolt"
+
+#: js/ui/status/thunderbolt.js:317
+msgid "Unknown Thunderbolt device"
+msgstr "Ínconosset aparate Thunderbolt"
+
+#: js/ui/status/thunderbolt.js:318
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr ""
+
+#: js/ui/status/thunderbolt.js:321
+#, fuzzy
+msgid "Unauthorized Thunderbolt device"
+msgstr "aparate"
+
+#: js/ui/status/thunderbolt.js:322
+msgid ""
+"New device has been detected and needs to be authorized by an administrator."
+msgstr ""
+
+#: js/ui/status/thunderbolt.js:328
+#, fuzzy
+msgid "Thunderbolt authorization error"
+msgstr "Autorisation"
+
+#: js/ui/status/thunderbolt.js:329
+#, fuzzy, javascript-format
+msgid "Could not authorize the Thunderbolt device: %s"
+msgstr "Ne posset accessar li aparate «%s»"
+
+#: js/ui/status/volume.js:194
+#, fuzzy
+msgid "Volume changed"
+msgstr "Modificat:"
+
+#: js/ui/status/volume.js:256
+msgid "Volume"
+msgstr "Volúmine"
+
+#: js/ui/status/volume.js:272
+#, fuzzy
+#| msgid "Sound Settings"
+msgid "Sound Output"
+msgstr "Sele_cte un aparate por li exeada de son:"
+
+#: js/ui/status/volume.js:340
+#, fuzzy
+msgid "Sound Input"
+msgstr "Sele_cte un aparate por li intrada de son:"
+
+#. Translators: this is for display mirroring i.e. cloning.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:20
+msgid "Mirror"
+msgstr "Duplicar"
+
+#. Translators: this is for the desktop spanning displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:29
+#, fuzzy
+msgid "Join Displays"
+msgstr "Adherer"
+
+#. Translators: this is for using only an external display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:39
+msgid "External Only"
+msgstr "Solmen extern"
+
+#. Translators: this is for using only the laptop display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:47
+#, fuzzy
+msgid "Built-in Only"
+msgstr "Standard"
+
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/unlockDialog.js:364
+msgid "%A %B %-d"
+msgstr "%a, %d %b"
+
+#: js/ui/unlockDialog.js:370
+#, fuzzy
+msgid "Swipe up to unlock"
+msgstr "Trenar a levul"
+
+#: js/ui/unlockDialog.js:371
+#, fuzzy
+msgid "Click or press a key to unlock"
+msgstr "Li taste de captura del ecran:"
+
+#: js/ui/unlockDialog.js:554
+#, fuzzy
+msgid "Unlock Window"
+msgstr "D_esserrar"
+
+#: js/ui/unlockDialog.js:563
+#, fuzzy
+msgid "Log in as another user"
+msgstr "Cluder li session o cambiar li usator"
+
+#: js/ui/welcomeDialog.js:36
+#, javascript-format
+msgid "Welcome to GNOME %s"
+msgstr "Benevenit a GNOME %s"
+
+#: js/ui/welcomeDialog.js:37
+msgid "If you want to learn your way around, check out the tour."
+msgstr ""
+
+#: js/ui/welcomeDialog.js:46
+msgid "No Thanks"
+msgstr "Ne, mersí"
+
+#: js/ui/welcomeDialog.js:51
+#, fuzzy
+msgid "Take Tour"
+msgstr "Far un pause"
+
+#: js/ui/windowAttentionHandler.js:20
+#, fuzzy, javascript-format
+msgid "“%s” is ready"
+msgstr "Li bux «%s» ha esset installat e es pret a usa"
+
+#. Translators: This string should be shorter than 30 characters
+#: js/ui/windowManager.js:62
+#, fuzzy
+msgid "Keep these display settings?"
+msgstr "_Configurar parametres de monitor..."
+
+#: js/ui/windowManager.js:72
+msgid "Revert Settings"
+msgstr "Reverter"
+
+#: js/ui/windowManager.js:77
+msgid "Keep Changes"
+msgstr "Retener"
+
+#: js/ui/windowManager.js:97
+#, javascript-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
+#: js/ui/windowManager.js:544
+#, javascript-format
+msgid "%d × %d"
+msgstr "%d × %d"
+
+#: js/ui/windowMenu.js:41
+msgid "Hide"
+msgstr "Celar"
+
+#: js/ui/windowMenu.js:48
+msgid "Restore"
+msgstr "Restituer"
+
+#: js/ui/windowMenu.js:52
+msgid "Maximize"
+msgstr "Maximisar"
+
+#: js/ui/windowMenu.js:59
+msgid "Move"
+msgstr "Mover"
+
+#: js/ui/windowMenu.js:65
+msgid "Resize"
+msgstr "Redimensionar"
+
+#: js/ui/windowMenu.js:72
+#, fuzzy
+msgid "Move Titlebar Onscreen"
+msgstr "Tastatura sur ecran"
+
+#: js/ui/windowMenu.js:77
+msgid "Always on Top"
+msgstr "Sempre in avan"
+
+#: js/ui/windowMenu.js:96
+msgid "Always on Visible Workspace"
+msgstr "Sempre in li visibil labor-spacie"
+
+#: js/ui/windowMenu.js:110
+#, fuzzy
+msgid "Move to Workspace Left"
+msgstr "Mover al labor-spacie a _levul"
+
+#: js/ui/windowMenu.js:116
+#, fuzzy
+msgid "Move to Workspace Right"
+msgstr "Mover al labor-spacie a dextri"
+
+#: js/ui/windowMenu.js:122
+#, fuzzy
+msgid "Move to Workspace Up"
+msgstr "Mover al labor-spacie ad _up"
+
+#: js/ui/windowMenu.js:128
+#, fuzzy
+msgid "Move to Workspace Down"
+msgstr "Mover al labor-spacie a _bass"
+
+#: js/ui/windowMenu.js:146
+#, fuzzy
+msgid "Move to Monitor Up"
+msgstr "Mover al monitor "
+
+#: js/ui/windowMenu.js:155
+#, fuzzy
+msgid "Move to Monitor Down"
+msgstr "Mover un fenestre al monitor a-bass"
+
+#: js/ui/windowMenu.js:164
+#, fuzzy
+msgid "Move to Monitor Left"
+msgstr "Mover un fenestre al west (levul) monitor"
+
+#: js/ui/windowMenu.js:173
+#, fuzzy
+msgid "Move to Monitor Right"
+msgstr "Mover un fenestre al ost (dextri) monitor"
+
+#: js/ui/windowMenu.js:181
+msgid "Close"
+msgstr "Clúder"
+
+#: src/calendar-server/evolution-calendar.desktop.in:3
+#, fuzzy
+msgid "Evolution Calendar"
+msgstr "Un tache in un calendare de Evolution"
+
+#: src/main.c:435 subprojects/extensions-tool/src/main.c:321
+msgid "Print version"
+msgstr "Printar li version"
+
+#: src/main.c:441
+msgid "Mode used by GDM for login screen"
+msgstr ""
+
+#: src/main.c:447
+msgid "Use a specific mode, e.g. “gdm” for login screen"
+msgstr ""
+
+#: src/main.c:453
+#, fuzzy
+msgid "List possible modes"
+msgstr "Modes"
+
+#: src/shell-app.c:305
+msgctxt "program"
+msgid "Unknown"
+msgstr "Ínconosset"
+
+#: src/shell-app.c:556
+#, fuzzy, c-format
+msgid "Failed to launch “%s”"
+msgstr "Ne successat lansar «%s»"
+
+#: src/shell-keyring-prompt.c:764
+#, fuzzy
+msgid "Passwords do not match."
+msgstr "Contrasignes"
+
+#: src/shell-keyring-prompt.c:772
+#, fuzzy
+msgid "Password cannot be blank"
+msgstr "_Eraser"
+
+#: src/shell-polkit-authentication-agent.c:344
+#, fuzzy
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Dialog de autentication esset anullat per li usator"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/js/main.js:212
+#: subprojects/extensions-app/data/ui/extensions-window.ui:18
+#: subprojects/extensions-app/data/ui/extensions-window.ui:83
+msgid "Extensions"
+msgstr "Extensiones"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
+#, fuzzy
+msgid "Manage your GNOME Extensions"
+msgstr "Escutar e gerer vor musica"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:17
+#: subprojects/extensions-app/js/main.js:216
+msgid "The GNOME Project"
+msgstr "Li projecte GNOME"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:36
+msgid ""
+"GNOME Extensions handles updating extensions, configuring extension "
+"preferences and removing or disabling unwanted extensions."
+msgstr ""
+
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
+#, fuzzy
+msgid "Configure GNOME Shell Extensions"
+msgstr "Shell GNOME"
+
+#: subprojects/extensions-app/js/main.js:130
+#: subprojects/extensions-app/js/main.js:141
+msgid "No Matches"
+msgstr "Null corespondenties"
+
+#: subprojects/extensions-app/js/main.js:169
+#, javascript-format
+msgid "Remove “%s”?"
+msgstr "Remover «%s»?"
+
+#: subprojects/extensions-app/js/main.js:170
+msgid ""
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
+msgstr ""
+
+#: subprojects/extensions-app/js/main.js:174
+msgid "Remove"
+msgstr "Remover"
+
+#: subprojects/extensions-app/js/main.js:211
+msgid "translator-credits"
+msgstr "OIS <mistresssilvara@hotmail.com>, 2016-22"
+
+#: subprojects/extensions-app/js/main.js:339
+#, javascript-format
+msgid "%d extension will be updated on next login."
+msgid_plural "%d extensions will be updated on next login."
+msgstr[0] ""
+msgstr[1] ""
+
+#: subprojects/extensions-app/js/main.js:481
+msgid "The extension is incompatible with the current GNOME version"
+msgstr ""
+
+#: subprojects/extensions-app/js/main.js:484
+#: subprojects/extensions-app/data/ui/extension-row.ui:52
+#, fuzzy
+msgid "The extension had an error"
+msgstr "errore de EXTENSION"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:62
+#, fuzzy
+msgid "The extension can be updated"
+msgstr "Extension:"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:112
+msgid "Website"
+msgstr "Website"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:134
+msgid "Remove…"
+msgstr "Remover…"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:6
+msgid "Help"
+msgstr "Auxilie"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:10
+msgid "About Extensions"
+msgstr "Pri Extensiones"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:84
+msgid ""
+"Extensions can cause performance and stability issues. Disable extensions if "
+"you encounter problems with your system."
+msgstr ""
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:98
+#, fuzzy
+msgid "Manually Installed"
+msgstr "Continuar usar li driver installat manualmen"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:99
+#: subprojects/extensions-app/data/ui/extensions-window.ui:134
+msgid ""
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
+msgstr ""
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:112
+#, fuzzy
+msgid "Built-In"
+msgstr "Standard"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:133
+msgid "No Installed Extensions"
+msgstr "Null installat extensiones"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:145
+msgid ""
+"We’re very sorry, but it was not possible to get the list of installed "
+"extensions. Make sure you are logged into GNOME and try again."
+msgstr ""
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:175
+#, fuzzy
+msgid "Extension Updates Ready"
+msgstr "Extension:"
+
+#. Translators: a file path to an extension directory
+#: subprojects/extensions-tool/src/command-create.c:222
+#, fuzzy, c-format
+msgid "The new extension was successfully created in %s.\n"
+msgstr "«%s» har esset creat con success"
+
+#: subprojects/extensions-tool/src/command-create.c:296
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:302
+#: subprojects/extensions-tool/src/main.c:238
+msgid "Name"
+msgstr "Nómine"
+
+#: subprojects/extensions-tool/src/command-create.c:316
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:322
+#: subprojects/extensions-tool/src/main.c:241
+msgid "Description"
+msgstr "Descrition"
+
+#: subprojects/extensions-tool/src/command-create.c:336
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:363
+#, fuzzy
+msgid "Choose one of the available templates:\n"
+msgstr "Null claves disponibil. Crea ún!"
+
+#: subprojects/extensions-tool/src/command-create.c:377
+msgid "Template"
+msgstr "Modelle"
+
+#: subprojects/extensions-tool/src/command-create.c:432
+msgid "The unique identifier of the new extension"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:435
+msgid "NAME"
+msgstr "NÓMINE"
+
+#: subprojects/extensions-tool/src/command-create.c:436
+#, fuzzy
+msgid "The user-visible name of the new extension"
+msgstr "Li visibil nómine del renominator"
+
+#: subprojects/extensions-tool/src/command-create.c:438
+msgid "DESCRIPTION"
+msgstr "DESCRITION"
+
+#: subprojects/extensions-tool/src/command-create.c:440
+msgid "A short description of what the extension does"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:443
+msgid "TEMPLATE"
+msgstr "MODELLE"
+
+#: subprojects/extensions-tool/src/command-create.c:444
+#, fuzzy
+msgid "The template to use for the new extension"
+msgstr "Usar un modelle quam on composi nov missages"
+
+#: subprojects/extensions-tool/src/command-create.c:450
+#, fuzzy
+msgid "Enter extension information interactively"
+msgstr "Ples intrar li information pri vor equip"
+
+#: subprojects/extensions-tool/src/command-create.c:458
+#, fuzzy
+msgid "Create a new extension"
+msgstr "Crear un nov"
+
+#: subprojects/extensions-tool/src/command-create.c:476
+#: subprojects/extensions-tool/src/command-list.c:172
+#, fuzzy
+msgid "Unknown arguments"
+msgstr "[ARGUMENTES...]"
+
+#: subprojects/extensions-tool/src/command-create.c:501
+#, fuzzy
+msgid "UUID, name and description are required"
+msgstr "{description} ({name})"
+
+#: subprojects/extensions-tool/src/command-disable.c:46
+#: subprojects/extensions-tool/src/command-enable.c:46
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:146
+#, fuzzy
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "Shell GNOME"
+
+#: subprojects/extensions-tool/src/command-disable.c:53
+#: subprojects/extensions-tool/src/command-enable.c:53
+#, fuzzy, c-format
+msgid "Extension “%s” does not exist\n"
+msgstr "%s: %s existiert nicht, muss es jedoch."
+
+#: subprojects/extensions-tool/src/command-disable.c:101
+#, fuzzy
+msgid "Disable an extension"
+msgstr "Depermisser"
+
+#: subprojects/extensions-tool/src/command-disable.c:119
+#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-info.c:103
+#: subprojects/extensions-tool/src/command-prefs.c:105
+#: subprojects/extensions-tool/src/command-reset.c:76
+#: subprojects/extensions-tool/src/command-uninstall.c:104
+#, fuzzy
+msgid "No UUID given"
+msgstr ""
+"\n"
+"UUID: "
+
+#: subprojects/extensions-tool/src/command-disable.c:124
+#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-info.c:108
+#: subprojects/extensions-tool/src/command-prefs.c:110
+#: subprojects/extensions-tool/src/command-reset.c:81
+#: subprojects/extensions-tool/src/command-uninstall.c:109
+#, fuzzy
+msgid "More than one UUID given"
+msgstr "Plu quam ún file es providet"
+
+#: subprojects/extensions-tool/src/command-enable.c:101
+#, fuzzy
+msgid "Enable an extension"
+msgstr "Secun _extension"
+
+#: subprojects/extensions-tool/src/command-info.c:59
+#: subprojects/extensions-tool/src/main.c:155
+#, fuzzy, c-format
+msgid "Extension “%s” doesn't exist\n"
+msgstr "Li file ne existe o es vacui."
+
+#: subprojects/extensions-tool/src/command-info.c:85
+#, fuzzy
+msgid "Show extensions info"
+msgstr "Monstrar panel de information"
+
+#: subprojects/extensions-tool/src/command-install.c:173
+#, fuzzy
+msgid "Overwrite an existing extension"
+msgstr "Superscrir li existent data con zeros"
+
+#: subprojects/extensions-tool/src/command-install.c:175
+#, fuzzy
+msgid "EXTENSION_BUNDLE"
+msgstr "Null files de fonte o files traductibil in li bundle"
+
+#: subprojects/extensions-tool/src/command-install.c:184
+#, fuzzy
+msgid "Install an extension bundle"
+msgstr "Installar un extension"
+
+#: subprojects/extensions-tool/src/command-install.c:202
+#, fuzzy
+msgid "No extension bundle specified"
+msgstr "Ínspecificat"
+
+#: subprojects/extensions-tool/src/command-install.c:208
+msgid "More than one extension bundle specified"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-list.c:128
+#, fuzzy
+msgid "Show user-installed extensions"
+msgstr "Null extensiones installat"
+
+#: subprojects/extensions-tool/src/command-list.c:131
+#, fuzzy
+msgid "Show system-installed extensions"
+msgstr "Null extensiones installat"
+
+#: subprojects/extensions-tool/src/command-list.c:134
+#, fuzzy
+msgid "Show enabled extensions"
+msgstr "Permisset"
+
+#: subprojects/extensions-tool/src/command-list.c:137
+#, fuzzy
+msgid "Show disabled extensions"
+msgstr "Ínactiv"
+
+#: subprojects/extensions-tool/src/command-list.c:140
+#, fuzzy
+msgid "Show extensions with preferences"
+msgstr "Monstrar li dialog «Preferenties del panel»"
+
+#: subprojects/extensions-tool/src/command-list.c:143
+#, fuzzy
+msgid "Show extensions with updates"
+msgstr "Monstrar actualisamentes"
+
+#: subprojects/extensions-tool/src/command-list.c:146
+#, fuzzy
+msgid "Print extension details"
+msgstr "&Detallies"
+
+#: subprojects/extensions-tool/src/command-list.c:154
+#, fuzzy
+msgid "List installed extensions"
+msgstr "Null extensiones installat"
+
+#: subprojects/extensions-tool/src/command-pack.c:450
+msgid "FILE"
+msgstr "FILE"
+
+#: subprojects/extensions-tool/src/command-pack.c:451
+#, fuzzy
+msgid "Additional source to include in the bundle"
+msgstr "Null files de fonte o files traductibil in li bundle"
+
+#: subprojects/extensions-tool/src/command-pack.c:454
+msgid "SCHEMA"
+msgstr "SCHEMA"
+
+#: subprojects/extensions-tool/src/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:457
+#: subprojects/extensions-tool/src/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "DIRECTORIA"
+
+#: subprojects/extensions-tool/src/command-pack.c:459
+#, fuzzy
+msgid "The directory where translations are found"
+msgstr "Fólder ne esset trovat"
+
+#: subprojects/extensions-tool/src/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMINIA"
+
+#: subprojects/extensions-tool/src/command-pack.c:463
+#, fuzzy
+msgid "The gettext domain to use for translations"
+msgstr "Gettext retrodat un vacui liste de dominias."
+
+#: subprojects/extensions-tool/src/command-pack.c:466
+#, fuzzy
+msgid "Overwrite an existing pack"
+msgstr "superscrir existent files"
+
+#: subprojects/extensions-tool/src/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:472
+#, fuzzy
+msgid "SOURCE_DIRECTORY"
+msgstr "directoria"
+
+#: subprojects/extensions-tool/src/command-pack.c:481
+#, fuzzy
+msgid "Create an extension bundle"
+msgstr "Null files de fonte o files traductibil in li bundle"
+
+#: subprojects/extensions-tool/src/command-pack.c:501
+msgid "More than one source directory specified"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-prefs.c:47
+#, fuzzy, c-format
+msgid "Extension “%s” doesn't have preferences\n"
+msgstr "File %s ne have un extension .wav"
+
+#: subprojects/extensions-tool/src/command-prefs.c:62
+#, fuzzy, c-format
+msgid "Failed to open prefs for extension “%s”: %s\n"
+msgstr "Ne successat aperter li file «%s»"
+
+#: subprojects/extensions-tool/src/command-prefs.c:87
+#, fuzzy
+msgid "Opens extension preferences"
+msgstr "Preferenties…"
+
+#: subprojects/extensions-tool/src/command-reset.c:58
+#, fuzzy
+msgid "Reset an extension"
+msgstr "Extension:"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:49
+#, fuzzy
+msgid "Cannot uninstall system extensions\n"
+msgstr "T-ci es un applette de sistema. It es impossibil remover it."
+
+#: subprojects/extensions-tool/src/command-uninstall.c:64
+#, fuzzy, c-format
+msgid "Failed to uninstall “%s”\n"
+msgstr "_Desinstallar..."
+
+#: subprojects/extensions-tool/src/command-uninstall.c:86
+#, fuzzy
+msgid "Uninstall an extension"
+msgstr "_Desinstallar..."
+
+#: subprojects/extensions-tool/src/main.c:72
+#, fuzzy
+msgid "Do not print error messages"
+msgstr "Monstrar errores de auto-conexion"
+
+#: subprojects/extensions-tool/src/main.c:244
+msgid "Path"
+msgstr "Rute"
+
+#: subprojects/extensions-tool/src/main.c:247
+msgid "URL"
+msgstr "URL"
+
+#: subprojects/extensions-tool/src/main.c:250
+msgid "Original author"
+msgstr "Original autor"
+
+#: subprojects/extensions-tool/src/main.c:253
+msgid "Version"
+msgstr "Version"
+
+#: subprojects/extensions-tool/src/main.c:256
+msgid "State"
+msgstr "Statu"
+
+#: subprojects/extensions-tool/src/main.c:294
+#, fuzzy
+msgid "“version” takes no arguments"
+msgstr "[ARGUMENTES...]"
+
+#: subprojects/extensions-tool/src/main.c:296
+#: subprojects/extensions-tool/src/main.c:316
+msgid "Usage:"
+msgstr "Usage:"
+
+#: subprojects/extensions-tool/src/main.c:299
+#, fuzzy
+msgid "Print version information and exit."
+msgstr "Monstra li information del version, poy salir"
+
+#: subprojects/extensions-tool/src/main.c:314
+#: subprojects/extensions-tool/src/main.c:317
+msgid "COMMAND"
+msgstr "COMANDE"
+
+#: subprojects/extensions-tool/src/main.c:317
+msgid "[ARGS…]"
+msgstr ""
+
+#: subprojects/extensions-tool/src/main.c:319
+msgid "Commands:"
+msgstr "Comandes:"
+
+#: subprojects/extensions-tool/src/main.c:320
+#, fuzzy
+msgid "Print help"
+msgstr "  -h, --help        Monstra ti-ci textu e surtir\n"
+
+#: subprojects/extensions-tool/src/main.c:322
+#, fuzzy
+msgid "Enable extension"
+msgstr "Secun _extension"
+
+#: subprojects/extensions-tool/src/main.c:323
+#, fuzzy
+msgid "Disable extension"
+msgstr "Depermisser"
+
+#: subprojects/extensions-tool/src/main.c:324
+#, fuzzy
+msgid "Reset extension"
+msgstr "Extension:"
+
+#: subprojects/extensions-tool/src/main.c:325
+#, fuzzy
+msgid "Uninstall extension"
+msgstr "_Desinstallar..."
+
+#: subprojects/extensions-tool/src/main.c:326
+#, fuzzy
+msgid "List extensions"
+msgstr "_Extensiones:"
+
+#: subprojects/extensions-tool/src/main.c:327
+#: subprojects/extensions-tool/src/main.c:328
+#, fuzzy
+msgid "Show extension info"
+msgstr "Monstrar panel de information"
+
+#: subprojects/extensions-tool/src/main.c:329
+#, fuzzy
+msgid "Open extension preferences"
+msgstr "Aperter _preferenties del funde"
+
+#: subprojects/extensions-tool/src/main.c:330
+#, fuzzy
+msgid "Create extension"
+msgstr "Secun _extension"
+
+#: subprojects/extensions-tool/src/main.c:331
+#, fuzzy
+msgid "Package extension"
+msgstr "Paccage"
+
+#: subprojects/extensions-tool/src/main.c:332
+#, fuzzy
+msgid "Install extension bundle"
+msgstr "Installar un extension"
+
+#: subprojects/extensions-tool/src/main.c:334
+#, c-format
+msgid "Use “%s” to get detailed help.\n"
+msgstr ""
+
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
+msgid "Plain"
+msgstr "Simplic"
+
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
+#, fuzzy
+msgid "An empty extension"
+msgstr "Secun _extension"
+
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
+msgid "Indicator"
+msgstr "Indicator"
+
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
+#, fuzzy
+msgid "Add an icon to the top bar"
+msgstr "Adjunter un icone"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1907
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1917
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] ""
+msgstr[1] ""
+
+#: subprojects/gvc/gvc-mixer-control.c:2867
+msgid "System Sounds"
+msgstr "Sones de sistema"
