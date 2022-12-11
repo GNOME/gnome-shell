@@ -542,7 +542,7 @@ const QuickSettingsLayout = GObject.registerClass({
             ? this._overlay.get_preferred_height(-1)
             : [0, 0];
 
-        const availWidth = box.get_width() - (this.nColumns - 1) * this.row_spacing;
+        const availWidth = box.get_width() - (this.nColumns - 1) * this.column_spacing;
         const childWidth = availWidth / this.nColumns;
 
         this._overlay?.allocate_available_size(0, 0, box.get_width(), box.get_height());
