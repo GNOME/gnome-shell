@@ -525,6 +525,15 @@ on_wm_class_changed (MetaWindow  *window,
 }
 
 static void
+on_title_changed (MetaWindow  *window,
+                  GParamSpec  *pspec,
+                  gpointer     user_data)
+{
+  ShellWindowTracker *self = SHELL_WINDOW_TRACKER (user_data);
+  tracked_window_changed (self, window);
+}
+
+static void
 on_gtk_application_id_changed (MetaWindow  *window,
                                GParamSpec  *pspec,
                                gpointer     user_data)
@@ -554,6 +563,7 @@ track_window (ShellWindowTracker *self,
   g_hash_table_insert (self->window_to_app, window, app);
 
   g_signal_connect (window, "notify::wm-class", G_CALLBACK (on_wm_class_changed), self);
+  g_signal_connect (window, "notify::title", G_CALLBACK (on_title_changed), self);
   g_signal_connect (window, "notify::gtk-application-id", G_CALLBACK (on_gtk_application_id_changed), self);
   g_signal_connect (window, "unmanaged", G_CALLBACK (on_window_unmanaged), self);
 
@@ -586,6 +596,7 @@ disassociate_window (ShellWindowTracker   *self,
 
   _shell_app_remove_window (app, window);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK (on_wm_class_changed), self);
+  g_signal_handlers_disconnect_by_func (window, G_CALLBACK (on_title_changed), self);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK (on_gtk_application_id_changed), self);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK (on_window_unmanaged), self);
 
