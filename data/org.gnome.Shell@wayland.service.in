@@ -32,3 +32,6 @@ ExecStopPost=-/bin/sh -c 'test "$SERVICE_RESULT" != "exec-condition" && systemct
 Restart=no
 # Kill any stubborn child processes after this long
 TimeoutStopSec=5
+
+# Lower down gnome-shell's OOM score to avoid being killed by OOM-killer too early
+OOMScoreAdjust=-1000
