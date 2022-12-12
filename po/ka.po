@@ -1,22 +1,22 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Georgian translation for gnome-shell
+# Copyright (C) 2022, gnome-shell authors
+# This file is distributed under the same license as the gnome-shell package.
+# Ekaterine Papava <papava.e@gtu.ge>, 2022
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-20 09:42+0000\n"
-"PO-Revision-Date: 2022-10-06 23:21+0200\n"
-"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"POT-Creation-Date: 2022-11-19 16:31+0000\n"
+"PO-Revision-Date: 2022-12-12 16:30+0100\n"
+"Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -59,7 +59,7 @@ msgid "Activate favorite application 9"
 msgstr "#9 რჩეული აპლიკაციის აქტივაცია"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
 msgid "Screenshots"
 msgstr "ეკრანის ანაბეჭდები"
 
@@ -183,7 +183,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:62
 msgid "History for command (Alt-F2) dialog"
-msgstr ""
+msgstr "ისტორია ბრძანების (Alt-F2) ფანჯრისთვის"
 
 #. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:67
@@ -238,7 +238,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:132
 msgid "Layout of the app picker"
-msgstr ""
+msgstr "აპლიკაციის ამრჩევის განლაგება"
 
 #: data/org.gnome.shell.gschema.xml.in:133
 msgid ""
@@ -396,7 +396,7 @@ msgstr "მდებარეობა"
 
 #: data/org.gnome.shell.gschema.xml.in:313
 msgid "The location for which to show a forecast"
-msgstr ""
+msgstr "მდებარეობა ამინდის პროგნოზის საჩვენებლად"
 
 #: data/org.gnome.shell.gschema.xml.in:325
 msgid "Attach modal dialog to the parent window"
@@ -758,7 +758,7 @@ msgstr "უარი წვდომაზე"
 
 #: js/ui/appDisplay.js:1728
 msgid "Unnamed Folder"
-msgstr ""
+msgstr "უსახელო საქაღალდე"
 
 #: js/ui/appFavorites.js:166
 #, javascript-format
@@ -819,7 +819,7 @@ msgstr "ყურსაცვამები"
 msgid "Headset"
 msgstr "ყურსაცვამები & მიკროფონი"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
 msgid "Microphone"
 msgstr "მიკროფონი"
 
@@ -1353,31 +1353,31 @@ msgstr "ხელმისაწვდომია გაფართოებ�
 msgid "Extension updates are ready to be installed."
 msgstr "გაფართოების განახლება მზადაა დასაყენებლად."
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:75
 msgid "Allow inhibiting shortcuts"
 msgstr "მალსახმობების გათიშვის ნების დართვა"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:82
+#: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
 msgstr "აპლიკაცია %s-ს უნდა მალსახმობების გათიშვა"
 
-#: js/ui/inhibitShortcutsDialog.js:83
+#: js/ui/inhibitShortcutsDialog.js:79
 msgid "An application wants to inhibit shortcuts"
 msgstr "აპლიკაციას უნდა მალსახმობების გათიშვა"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:90
+#: js/ui/inhibitShortcutsDialog.js:86
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "მალსახმობების აღდგენა შეგიძლიათ %s-ზე დაწოლით."
 
-#: js/ui/inhibitShortcutsDialog.js:101
+#: js/ui/inhibitShortcutsDialog.js:97
 msgid "Deny"
 msgstr "უარყოფა"
 
-#: js/ui/inhibitShortcutsDialog.js:110
+#: js/ui/inhibitShortcutsDialog.js:106
 msgid "Allow"
 msgstr "დაშვება"
 
@@ -1515,11 +1515,11 @@ msgstr ""
 
 #: js/ui/main.js:384
 msgid "Screen Lock disabled"
-msgstr ""
+msgstr "ეკრანის ჩაკეტვა გათიშულია"
 
 #: js/ui/main.js:385
 msgid "Screen Locking requires the GNOME display manager."
-msgstr ""
+msgstr "ეკრანის ჩაკეტვას GNOME-ის ეკრანის მმართველი სჭირდება"
 
 #: js/ui/messageTray.js:1418
 msgid "System Information"
@@ -1643,91 +1643,91 @@ msgstr "ჩაკეტვის შეცდომა"
 msgid "Lock was blocked by an application"
 msgstr "ჩაკეტვა დაბლოკილია აპლიკაციის მიერ"
 
-#: js/ui/screenshot.js:1147
+#: js/ui/screenshot.js:1161
 msgid "Selection"
 msgstr "მონიშნული"
 
-#: js/ui/screenshot.js:1157
+#: js/ui/screenshot.js:1171
 msgid "Area Selection"
 msgstr "მონიშნული მონაკვეთი"
 
-#: js/ui/screenshot.js:1162
+#: js/ui/screenshot.js:1176
 msgid "Screen"
 msgstr "ეკრანი"
 
-#: js/ui/screenshot.js:1172
+#: js/ui/screenshot.js:1186
 msgid "Screen Selection"
 msgstr "ეკრანის არჩევანი"
 
-#: js/ui/screenshot.js:1177
+#: js/ui/screenshot.js:1191
 msgid "Window"
 msgstr "ფანჯარა"
 
-#: js/ui/screenshot.js:1187
+#: js/ui/screenshot.js:1201
 msgid "Window Selection"
 msgstr "ფანჯრის არჩევანი"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1239
 msgid "Screenshot / Screencast"
 msgstr "ეკრანის ანაბეჭდი / ჩანაწერი"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1275
 msgid "Show Pointer"
 msgstr "კურსორის ჩვენება"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1849
+#: js/ui/screenshot.js:1866
 msgid "Screencasts"
 msgstr "ეკრანის ვიდეოჩანაწერი"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1854
+#: js/ui/screenshot.js:1871
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "ეკრანის ვიდეოჩანაწერი %d %t-დან.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
+#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
 msgid "Screenshot"
 msgstr "ეკრანის ანაბეჭდი"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1926
+#: js/ui/screenshot.js:1919
 msgid "Screencast recorded"
 msgstr "ეკრანის ვიდეოჩანაწერი დასრულებულია"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1928
+#: js/ui/screenshot.js:1921
 msgid "Click here to view the video."
 msgstr "ვიდეოს სანახავად დააწკაპუნეთ აქ."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
+#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
 msgid "Show in Files"
 msgstr "ფაილებში ჩვენება"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2085
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "ეკრანის ანაბეჭდი %s-დან"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2138
+#: js/ui/screenshot.js:2131
 msgid "Screenshot captured"
 msgstr "ეკრანის ანაბეჭდი დათრეულია"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2140
+#: js/ui/screenshot.js:2133
 msgid "You can paste the image from the clipboard."
 msgstr "შეგიძლიათ მიმოცვლის ბაფერიდან ჩასვათ."
 
-#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
+#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
 msgid "Screenshot taken"
 msgstr "ეკრანის ანაბეჭდი აღებულია"
 
@@ -1869,7 +1869,7 @@ msgstr "დიდი ტექსტი"
 
 #: js/ui/status/autoRotate.js:14
 msgid "Auto Rotate"
-msgstr ""
+msgstr "ავტომატური მობრუნება"
 
 #: js/ui/status/bluetooth.js:151
 msgid "Bluetooth"
@@ -1903,11 +1903,11 @@ msgstr "დამატებით წკაპი"
 msgid "Dwell Click"
 msgstr "დიდხნიანია წკაპი"
 
-#: js/ui/status/keyboard.js:830
+#: js/ui/status/keyboard.js:833
 msgid "Keyboard"
 msgstr "კლავიატურა"
 
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:850
 msgid "Show Keyboard Layout"
 msgstr "კლავიატურის განლაგების ჩვენება"
 
@@ -1968,7 +1968,7 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "ელემენტის შენახვის რეჟიმი"
 
-#: js/ui/status/powerProfiles.js:68
+#: js/ui/status/powerProfiles.js:70
 msgid "Power Profiles"
 msgstr "კვების პროფილები"
 
@@ -2056,19 +2056,19 @@ msgstr "Thunderbolt მოწყობილობის ავტორიზ�
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Thunderbolt მოწყობილობასთან ავტორიზაციის შეცდომა: %s"
 
-#: js/ui/status/volume.js:191
+#: js/ui/status/volume.js:194
 msgid "Volume changed"
 msgstr "საცავი შეიცვალა"
 
-#: js/ui/status/volume.js:253
+#: js/ui/status/volume.js:256
 msgid "Volume"
 msgstr "ტომი"
 
-#: js/ui/status/volume.js:269
+#: js/ui/status/volume.js:272
 msgid "Sound Output"
 msgstr "ხმის გამოტანა"
 
-#: js/ui/status/volume.js:337
+#: js/ui/status/volume.js:340
 msgid "Sound Input"
 msgstr "ხმის შეყვანა"
 
@@ -2129,7 +2129,7 @@ msgstr "მოგესალმებათ GNOME %s"
 
 #: js/ui/welcomeDialog.js:37
 msgid "If you want to learn your way around, check out the tour."
-msgstr ""
+msgstr "თუ გნებავთ, ისწავლოთ, დაიწყეთ ჩვენი ტურით"
 
 #: js/ui/welcomeDialog.js:46
 msgid "No Thanks"
@@ -2379,8 +2379,8 @@ msgstr "ხელით დაყენებული"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:112
@@ -2478,7 +2478,7 @@ msgstr "ახალ გაფართოებებთან გამოს�
 
 #: subprojects/extensions-tool/src/command-create.c:450
 msgid "Enter extension information interactively"
-msgstr ""
+msgstr "გაფართოების ინფორმაციის ინტერაქტიურად შეყვანა"
 
 #: subprojects/extensions-tool/src/command-create.c:458
 msgid "Create a new extension"
@@ -2499,7 +2499,7 @@ msgstr "საჭიროა UUID, სახელი და აღწერა
 #: subprojects/extensions-tool/src/command-list.c:64
 #: subprojects/extensions-tool/src/main.c:146
 msgid "Failed to connect to GNOME Shell\n"
-msgstr ""
+msgstr "GNOME -ის გარსთან დაკავშირების შეცდომა\n"
 
 #: subprojects/extensions-tool/src/command-disable.c:53
 #: subprojects/extensions-tool/src/command-enable.c:53
@@ -2618,7 +2618,7 @@ msgstr "საქაღალდე"
 
 #: subprojects/extensions-tool/src/command-pack.c:459
 msgid "The directory where translations are found"
-msgstr ""
+msgstr "საქაღალდე, სადაც თარგმანები მოიპოვება"
 
 #: subprojects/extensions-tool/src/command-pack.c:461
 msgid "DOMAIN"
@@ -2626,15 +2626,15 @@ msgstr "დომენი"
 
 #: subprojects/extensions-tool/src/command-pack.c:463
 msgid "The gettext domain to use for translations"
-msgstr ""
+msgstr "Gettext-ის დომენი თარგმამენისთვის"
 
 #: subprojects/extensions-tool/src/command-pack.c:466
 msgid "Overwrite an existing pack"
-msgstr ""
+msgstr "არსებული პაკეტის თავზე გადაწერა"
 
 #: subprojects/extensions-tool/src/command-pack.c:470
 msgid "The directory where the pack should be created"
-msgstr ""
+msgstr "საქაღალდე, სადაც პაკეტი შეიქმნება"
 
 #: subprojects/extensions-tool/src/command-pack.c:472
 msgid "SOURCE_DIRECTORY"
@@ -2646,7 +2646,7 @@ msgstr "გაფართოების პაკეტის შექმნ�
 
 #: subprojects/extensions-tool/src/command-pack.c:501
 msgid "More than one source directory specified"
-msgstr ""
+msgstr "მითითებულია ერთზე მეტი საწყისი საქაღალდე"
 
 #: subprojects/extensions-tool/src/command-prefs.c:47
 #, c-format
@@ -2660,11 +2660,11 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-prefs.c:87
 msgid "Opens extension preferences"
-msgstr ""
+msgstr "გაფართოების მორგების ფანჯარა"
 
 #: subprojects/extensions-tool/src/command-reset.c:58
 msgid "Reset an extension"
-msgstr ""
+msgstr "გაფართოების საწყის მდგომარეობაში დაბრუნება"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
 msgid "Cannot uninstall system extensions\n"
@@ -2673,7 +2673,7 @@ msgstr "სისტემური გაფართოებების წ�
 #: subprojects/extensions-tool/src/command-uninstall.c:64
 #, c-format
 msgid "Failed to uninstall “%s”\n"
-msgstr ""
+msgstr "\"%s\"-ის წაშლის შეცდომა\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:86
 msgid "Uninstall an extension"
@@ -2714,7 +2714,7 @@ msgstr "გამოყენება:"
 
 #: subprojects/extensions-tool/src/main.c:299
 msgid "Print version information and exit."
-msgstr ""
+msgstr "ვერსიის ინფორმაციის გამოტანა და გასვლა."
 
 #: subprojects/extensions-tool/src/main.c:314
 #: subprojects/extensions-tool/src/main.c:317
