@@ -78,7 +78,7 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        this._detailsItem = this.addAction(_('Show Details'), async () => {
+        this._detailsItem = this.addAction(_('App Details'), async () => {
             const id = this._app.get_id();
             const args = GLib.Variant.new('(ss)', [id, '']);
             const bus = await Gio.DBus.get(Gio.BusType.SESSION, null);
