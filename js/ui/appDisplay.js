@@ -868,6 +868,11 @@ var BaseAppView = GObject.registerClass({
     }
 
     _dragMaybeSwitchPageImmediately(dragEvent) {
+        // When there's an adjacent monitor, this gesture conflicts with
+        // dragging to the adjacent monitor, so disable in multi-monitor setups
+        if (Main.layoutManager.monitors.length > 1)
+            return false;
+
         // Already animating
         if (this._adjustment.get_transition('value') !== null)
             return false;
