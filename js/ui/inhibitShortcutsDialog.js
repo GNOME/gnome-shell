@@ -75,8 +75,8 @@ var InhibitShortcutsDialog = GObject.registerClass({
             title: _('Allow inhibiting shortcuts'),
             description: name
                 /* Translators: %s is an application name like "Settings" */
-                ? _('The application %s wants to inhibit shortcuts').format(name)
-                : _('An application wants to inhibit shortcuts'),
+                ? _('The app %s wants to inhibit shortcuts').format(name)
+                : _('An app wants to inhibit shortcuts'),
         });
 
         let restoreAccel = this._getRestoreAccel();

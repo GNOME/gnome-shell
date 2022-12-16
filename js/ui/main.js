@@ -284,7 +284,7 @@ function _initializeUI() {
         messageTray.add(source);
         const notification = new MessageTray.Notification(source,
             _('System was put in unsafe mode'),
-            _('Applications now have unrestricted access'));
+            _('Apps now have unrestricted access'));
         notification.addAction(_('Undo'),
             () => (global.context.unsafe_mode = false));
         notification.setTransient(true);

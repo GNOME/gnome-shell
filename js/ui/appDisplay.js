@@ -1149,7 +1149,7 @@ var BaseAppView = GObject.registerClass({
         if (this._items.has(id))
             this._items.get(id).navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         else
-            log(`No such application ${id}`);
+            log(`No such app ${id}`);
     }
 
     selectApp(id) {

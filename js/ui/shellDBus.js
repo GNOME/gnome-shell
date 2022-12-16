@@ -160,7 +160,7 @@ var GnomeShell = class {
             invocation.return_error_literal(
                 Gio.DBusError,
                 Gio.DBusError.FILE_NOT_FOUND,
-                `No application with ID ${id}`);
+                `No app with ID ${id}`);
             return;
         }
 

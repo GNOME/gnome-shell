@@ -268,8 +268,9 @@ var ScreenShield = class extends Signals.EventEmitter {
             //
             // XXX: another option is to kick the user into the gdm login
             // screen, where we're not affected by grabs
-            Main.notifyError(_("Unable to lock"),
-                             _("Lock was blocked by an application"));
+            Main.notifyError(
+                _('Unable to lock'),
+                _('Lock was blocked by an app'));
             return;
         }
 
@@ -665,8 +666,9 @@ var ScreenShield = class extends Signals.EventEmitter {
 
         // Warn the user if we can't become modal
         if (!this._becomeModal()) {
-            Main.notifyError(_("Unable to lock"),
-                             _("Lock was blocked by an application"));
+            Main.notifyError(
+                _('Unable to lock'),
+                _('Lock was blocked by an app'));
             return;
         }
 

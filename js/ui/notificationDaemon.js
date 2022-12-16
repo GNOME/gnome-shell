@@ -597,7 +597,7 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
             const params = target ? [target] : [];
             app.ActivateActionAsync(actionId, params, getPlatformData());
         } catch (error) {
-            logError(error, 'Failed to activate application proxy');
+            logError(error, 'Failed to activate app proxy');
         }
         Main.overview.hide();
         Main.panel.closeCalendar();
@@ -608,7 +608,7 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
             const app = await this._createApp();
             app.ActivateAsync(getPlatformData());
         } catch (error) {
-            logError(error, 'Failed to open application proxy');
+            logError(error, 'Failed to open app proxy');
         }
         Main.overview.hide();
         Main.panel.closeCalendar();

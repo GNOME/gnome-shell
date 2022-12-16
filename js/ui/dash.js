@@ -202,7 +202,7 @@ class ShowAppsIcon extends DashItemContainer {
             toggle_mode: true,
         });
         this._iconActor = null;
-        this.icon = new IconGrid.BaseIcon(_('Show Applications'), {
+        this.icon = new IconGrid.BaseIcon(_('Show Apps'), {
             setSizeManually: true,
             showLabel: false,
             createIcon: this._createIcon.bind(this),
@@ -248,7 +248,7 @@ class ShowAppsIcon extends DashItemContainer {
         if (canRemove)
             this.setLabelText(_('Unpin'));
         else
-            this.setLabelText(_("Show Applications"));
+            this.setLabelText(_('Show Apps'));
     }
 
     handleDragOver(source, _actor, _x, _y, _time) {

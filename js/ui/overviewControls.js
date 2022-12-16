@@ -405,7 +405,7 @@ class ControlsManager extends St.Widget {
 
         Main.ctrlAltTabManager.addGroup(
             this.appDisplay,
-            _('Applications'),
+            _('Apps'),
             'view-app-grid-symbolic', {
                 proxy: this,
                 focusCallback: () => {

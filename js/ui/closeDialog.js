@@ -39,7 +39,7 @@ var CloseDialog = GObject.registerClass({
         /* Translators: %s is an application name */
         let title = _("“%s” is not responding.").format(windowApp.get_name());
         let description = _('You may choose to wait a short while for it to ' +
-                            'continue or force the application to quit entirely.');
+                            'continue or force the app to quit entirely.');
         return new Dialog.MessageDialogContent({ title, description });
     }
 

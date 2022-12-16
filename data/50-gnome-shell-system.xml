@@ -15,10 +15,10 @@
                       description="Show the overview"/>
 
 	<KeyListEntry name="toggle-application-view"
-                      description="Show all applications"/>
+                      description="Show all apps"/>
 
 	<KeyListEntry name="open-application-menu"
-                      description="Open the application menu"/>
+                      description="Open the app menu"/>
 
 </KeyListEntries>
 

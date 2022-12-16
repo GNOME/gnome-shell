@@ -150,10 +150,10 @@ var ActionComboBox = GObject.registerClass({
         this._editMenuManager.addMenu(this._editMenu);
 
         this._actionLabels = new Map();
-        this._actionLabels.set(GDesktopEnums.PadButtonAction.NONE, _("Application defined"));
-        this._actionLabels.set(GDesktopEnums.PadButtonAction.HELP, _("Show on-screen help"));
-        this._actionLabels.set(GDesktopEnums.PadButtonAction.SWITCH_MONITOR, _("Switch monitor"));
-        this._actionLabels.set(GDesktopEnums.PadButtonAction.KEYBINDING, _("Assign keystroke"));
+        this._actionLabels.set(GDesktopEnums.PadButtonAction.NONE, _('App defined'));
+        this._actionLabels.set(GDesktopEnums.PadButtonAction.HELP, _('Show on-screen help'));
+        this._actionLabels.set(GDesktopEnums.PadButtonAction.SWITCH_MONITOR, _('Switch monitor'));
+        this._actionLabels.set(GDesktopEnums.PadButtonAction.KEYBINDING, _('Assign keystroke'));
 
         this._buttonItems = [];
 

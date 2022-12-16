@@ -1,5 +1,5 @@
 # ![logo] GNOME Extensions
-GNOME Extensions is a small application for managing GNOME Shell
+GNOME Extensions is a small app for managing GNOME Shell
 extensions. It is usually built as part of gnome-shell, but can be
 used as a stand-alone project as well.
 
