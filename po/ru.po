@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-09-05 17:40+0000\n"
-"PO-Revision-Date: 2022-09-15 10:42+0300\n"
+"PO-Revision-Date: 2022-12-05 11:49+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -30,7 +30,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-DL-Team: ru\n"
 "X-DL-Module: gnome-shell\n"
 "X-DL-Branch: main\n"
@@ -1561,8 +1561,8 @@ msgid "Leave Off"
 msgstr "Оставить выключенными"
 
 #: js/ui/keyboard.js:219
-msgid "Region & Language Settings"
-msgstr "Настройки языка и региона"
+msgid "Keyboard Settings"
+msgstr "Настройки клавиатуры"
 
 #: js/ui/lookingGlass.js:713
 msgid "No extensions installed"
@@ -1952,7 +1952,7 @@ msgstr "Не удалось найти приложение %s"
 
 #: js/ui/status/accessibility.js:34
 msgid "Accessibility"
-msgstr "Доступность"
+msgstr "Специальные возможности"
 
 #: js/ui/status/accessibility.js:44
 msgid "High Contrast"
