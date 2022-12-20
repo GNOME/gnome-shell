@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-01 00:02+0000\n"
-"PO-Revision-Date: 2022-09-07 22:49+0300\n"
-"Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
+"POT-Creation-Date: 2022-11-13 22:34+0000\n"
+"PO-Revision-Date: 2022-12-09 18:53+1000\n"
+"Last-Translator: Ser82-png <asvmail.as@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -30,7 +30,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.0.1\n"
 
 # Запуск приложений, как другой вариант
 #: data/50-gnome-shell-launchers.xml:6
@@ -972,7 +972,7 @@ msgstr "Сб"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:402
+#: js/ui/calendar.js:414
 msgid "%OB"
 msgstr "%OB"
 
@@ -985,37 +985,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:412
+#: js/ui/calendar.js:424
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:472
+#: js/ui/calendar.js:484
 msgid "Previous month"
 msgstr "Предыдущий месяц"
 
-#: js/ui/calendar.js:490
+#: js/ui/calendar.js:502
 msgid "Next month"
 msgstr "Следующий месяц"
 
-#: js/ui/calendar.js:642
+#: js/ui/calendar.js:654
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:701
+#: js/ui/calendar.js:713
 msgid "Week %V"
 msgstr "%V неделя"
 
-#: js/ui/calendar.js:880
+#: js/ui/calendar.js:892
 msgid "No Notifications"
 msgstr "Уведомлений нет"
 
-#: js/ui/calendar.js:937
+#: js/ui/calendar.js:949
 msgid "Do Not Disturb"
 msgstr "Не беспокоить"
 
-#: js/ui/calendar.js:958
+#: js/ui/calendar.js:970
 msgid "Clear"
 msgstr "Очистить"
 
@@ -1167,7 +1167,7 @@ msgstr "Не удалось подтвердить подлинность. По�
 msgid "%s is now known as %s"
 msgstr "Контакт %s теперь известен как %s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:414
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
 msgid "Windows"
 msgstr "Окна"
 
@@ -1450,31 +1450,31 @@ msgstr "Доступны обновления расширений"
 msgid "Extension updates are ready to be installed."
 msgstr "Обновления расширений готовы к установке."
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:75
 msgid "Allow inhibiting shortcuts"
 msgstr "Разрешить замену комбинации клавиш"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:82
+#: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
 msgstr "Приложение %s пытается заменить комбинации клавиш"
 
-#: js/ui/inhibitShortcutsDialog.js:83
+#: js/ui/inhibitShortcutsDialog.js:79
 msgid "An application wants to inhibit shortcuts"
 msgstr "Приложение пытается заменить комбинации клавиш"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:90
+#: js/ui/inhibitShortcutsDialog.js:86
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Можете восстановить комбинации клавиш, нажав %s."
 
-#: js/ui/inhibitShortcutsDialog.js:101
+#: js/ui/inhibitShortcutsDialog.js:97
 msgid "Deny"
 msgstr "Отказать"
 
-#: js/ui/inhibitShortcutsDialog.js:110
+#: js/ui/inhibitShortcutsDialog.js:106
 msgid "Allow"
 msgstr "Разрешить"
 
@@ -1644,11 +1644,11 @@ msgstr "Неизвестное название"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:324
+#: js/ui/overviewControls.js:327
 msgid "Type to search"
 msgstr "Введите для поиска"
 
-#: js/ui/overviewControls.js:402
+#: js/ui/overviewControls.js:405
 msgid "Applications"
 msgstr "Приложения"
 
@@ -1935,7 +1935,7 @@ msgstr "Не удалось найти приложение %s"
 
 #: js/ui/status/accessibility.js:34
 msgid "Accessibility"
-msgstr "Доступность"
+msgstr "Специальные возможности"
 
 #: js/ui/status/accessibility.js:44
 msgid "High Contrast"
@@ -2026,11 +2026,11 @@ msgstr "Нажатие правой кнопки мыши"
 msgid "Dwell Click"
 msgstr "Нажатие левой кнопки мыши после задержки над кнопкой"
 
-#: js/ui/status/keyboard.js:827
+#: js/ui/status/keyboard.js:830
 msgid "Keyboard"
 msgstr "Клавиатура"
 
-#: js/ui/status/keyboard.js:844
+#: js/ui/status/keyboard.js:847
 msgid "Show Keyboard Layout"
 msgstr "Показать раскладку клавиатуры"
 
