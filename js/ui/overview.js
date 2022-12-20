@@ -572,7 +572,9 @@ var Overview = class {
         this._animationInProgress = false;
         this._coverPane.hide();
 
-        this._changeShownState(OverviewShownState.SHOWN);
+        if (this._shownState !== OverviewShownState.SHOWN)
+            this._changeShownState(OverviewShownState.SHOWN);
+
         // Handle any calls to hide* while we were showing
         if (!this._shown)
             this._animateNotVisible();
