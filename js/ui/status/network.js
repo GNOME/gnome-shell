@@ -1223,7 +1223,9 @@ const NMWirelessDeviceItem = GObject.registerClass({
             const {network: net} = item;
             item.visible =
                 (hasWindows || net.hasConnections() || net.canAutoconnect()) &&
-                nVisible++ < MAX_VISIBLE_NETWORKS;
+                nVisible < MAX_VISIBLE_NETWORKS;
+            if (item.visible)
+                nVisible++;
         }
     }
 
