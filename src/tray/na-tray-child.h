@@ -21,42 +21,18 @@
 #ifndef __NA_TRAY_CHILD_H__
 #define __NA_TRAY_CHILD_H__
 
-#include <gtk/gtk.h>
-#include <gtk/gtkx.h>
+#include "na-xembed.h"
+
+#include <meta/meta-x11-errors.h>
 
 G_BEGIN_DECLS
 
-#define NA_TYPE_TRAY_CHILD		(na_tray_child_get_type ())
-#define NA_TRAY_CHILD(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), NA_TYPE_TRAY_CHILD, NaTrayChild))
-#define NA_TRAY_CHILD_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), NA_TYPE_TRAY_CHILD, NaTrayChildClass))
-#define NA_IS_TRAY_CHILD(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), NA_TYPE_TRAY_CHILD))
-#define NA_IS_TRAY_CHILD_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), NA_TYPE_TRAY_CHILD))
-#define NA_TRAY_CHILD_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), NA_TYPE_TRAY_CHILD, NaTrayChildClass))
+#define NA_TYPE_TRAY_CHILD (na_tray_child_get_type ())
+G_DECLARE_FINAL_TYPE (NaTrayChild, na_tray_child, NA, TRAY_CHILD, NaXembed)
 
-typedef struct _NaTrayChild	  NaTrayChild;
-typedef struct _NaTrayChildClass  NaTrayChildClass;
-typedef struct _NaTrayChildChild  NaTrayChildChild;
-
-struct _NaTrayChild
-{
-  GtkSocket parent_instance;
-  Window icon_window;
-  guint has_alpha : 1;
-  guint parent_relative_bg : 1;
-};
-
-struct _NaTrayChildClass
-{
-  GtkSocketClass parent_class;
-};
-
-GType           na_tray_child_get_type        (void);
-
-GtkWidget      *na_tray_child_new            (GdkScreen    *screen,
-                                              Window        icon_window);
+NaTrayChild    *na_tray_child_new            (MetaX11Display *x11_display,
+                                              Window          icon_window);
 char           *na_tray_child_get_title      (NaTrayChild  *child);
-gboolean        na_tray_child_has_alpha      (NaTrayChild  *child);
-void            na_tray_child_force_redraw   (NaTrayChild  *child);
 void            na_tray_child_get_wm_class   (NaTrayChild  *child,
 					      char        **res_name,
 					      char        **res_class);

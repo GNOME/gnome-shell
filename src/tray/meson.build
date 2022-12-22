@@ -9,6 +9,6 @@ tray_sources = [
 
 libtray = static_library('tray', tray_sources,
   c_args: ['-DG_LOG_DOMAIN="notification_area"'],
-  dependencies: [mutter_dep, gtk_dep],
+  dependencies: [mutter_dep],
   include_directories: conf_inc
 )

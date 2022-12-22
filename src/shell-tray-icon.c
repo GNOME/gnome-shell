@@ -2,12 +2,13 @@
 
 #include "config.h"
 
-#include "shell-tray-icon.h"
-#include "shell-gtk-embed.h"
+#include "shell-global.h"
+#include "shell-tray-icon-private.h"
+#include "shell-util.h"
 #include "tray/na-tray-child.h"
-#include <gdk/gdkx.h>
-#include <X11/Xatom.h>
 #include "st.h"
+
+#include <X11/Xatom.h>
 
 enum {
    PROP_0,
@@ -21,76 +22,86 @@ typedef struct _ShellTrayIconPrivate ShellTrayIconPrivate;
 
 struct _ShellTrayIcon
 {
-    ShellGtkEmbed parent;
+  ClutterClone parent;
+  NaTrayChild *tray_child;
+  ClutterActor *window_actor;
 
-    ShellTrayIconPrivate *priv;
-};
-
-struct _ShellTrayIconPrivate
-{
-  NaTrayChild *socket;
-
+  gulong window_actor_destroyed_handler;
+  gulong window_created_handler;
   pid_t pid;
-  char *title, *wm_class;
+  char *title;
+  char *wm_class;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (ShellTrayIcon, shell_tray_icon, SHELL_TYPE_GTK_EMBED);
+G_DEFINE_TYPE (ShellTrayIcon, shell_tray_icon, CLUTTER_TYPE_CLONE);
 
 static void
 shell_tray_icon_finalize (GObject *object)
 {
   ShellTrayIcon *icon = SHELL_TRAY_ICON (object);
 
-  g_free (icon->priv->title);
-  g_free (icon->priv->wm_class);
+  g_free (icon->title);
+  g_free (icon->wm_class);
 
   G_OBJECT_CLASS (shell_tray_icon_parent_class)->finalize (object);
 }
 
 static void
-shell_tray_icon_constructed (GObject *object)
+shell_tray_icon_remove_window_actor (ShellTrayIcon *tray_icon)
 {
-  GdkWindow *icon_app_window;
-  ShellTrayIcon *icon = SHELL_TRAY_ICON (object);
-  ShellEmbeddedWindow *window;
-  GdkDisplay *display;
-  Window plug_xid;
-  Atom _NET_WM_PID, type;
-  int result, format;
-  gulong nitems, bytes_after, *val = NULL;
+  if (tray_icon->window_actor)
+    {
+      g_clear_signal_handler (&tray_icon->window_actor_destroyed_handler,
+                              tray_icon->window_actor);
+      g_clear_object (&tray_icon->window_actor);
+    }
 
-  /* We do all this now rather than computing it on the fly later,
-   * because the shell may want to see their values from a
-   * tray-icon-removed signal handler, at which point the plug has
-   * already been removed from the socket.
-   */
+  clutter_clone_set_source (CLUTTER_CLONE (tray_icon), NULL);
+}
 
-  g_object_get (object, "window", &window, NULL);
-  g_return_if_fail (window != NULL);
-  icon->priv->socket = NA_TRAY_CHILD (gtk_bin_get_child (GTK_BIN (window)));
-  g_object_unref (window);
+static void
+shell_tray_icon_window_created_cb (MetaDisplay   *display,
+                                   MetaWindow    *window,
+                                   ShellTrayIcon *tray_icon)
+{
+  Window xwindow = meta_window_get_xwindow (window);
 
-  icon->priv->title = na_tray_child_get_title (icon->priv->socket);
-  na_tray_child_get_wm_class (icon->priv->socket, NULL, &icon->priv->wm_class);
+  if (tray_icon->tray_child &&
+      xwindow == na_xembed_get_socket_window (NA_XEMBED (tray_icon->tray_child)))
+    {
+      ClutterActor *window_actor =
+        CLUTTER_ACTOR (meta_window_get_compositor_private (window));
 
-  icon_app_window = gtk_socket_get_plug_window (GTK_SOCKET (icon->priv->socket));
-  plug_xid = GDK_WINDOW_XID (icon_app_window);
+      clutter_clone_set_source (CLUTTER_CLONE (tray_icon), window_actor);
 
-  display = gtk_widget_get_display (GTK_WIDGET (icon->priv->socket));
-  gdk_x11_display_error_trap_push (display);
-  _NET_WM_PID = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_PID");
-  result = XGetWindowProperty (GDK_DISPLAY_XDISPLAY (display), plug_xid,
-                               _NET_WM_PID, 0, G_MAXLONG, False, XA_CARDINAL,
-                               &type, &format, &nitems,
-                               &bytes_after, (guchar **)&val);
-  if (!gdk_x11_display_error_trap_pop (display) &&
-      result == Success &&
-      type == XA_CARDINAL &&
-      nitems == 1)
-    icon->priv->pid = *val;
+      /* We want to explicitly clear the clone source when the window
+         actor is destroyed because otherwise we might end up keeping
+         it alive after it has been disposed. Otherwise this can cause
+         a crash if there is a paint after mutter notices that the top
+         level window has been destroyed, which causes it to dispose
+         the window, and before the tray manager notices that the
+         window is gone which would otherwise reset the window and
+         unref the clone */
+      tray_icon->window_actor = g_object_ref (window_actor);
+      tray_icon->window_actor_destroyed_handler =
+        g_signal_connect_swapped (window_actor,
+                                  "destroy",
+                                  G_CALLBACK (shell_tray_icon_remove_window_actor),
+                                  tray_icon);
 
-  if (val)
-    XFree (val);
+      /* Hide the original actor otherwise it will appear in the scene
+         as a normal window */
+      clutter_actor_set_opacity (window_actor, 0);
+
+      /* Also make sure it (or any of its children) doesn't block
+         events on wayland */
+      shell_util_set_hidden_from_pick (window_actor, TRUE);
+
+      /* Now that we've found the window we don't need to listen for
+         new windows anymore */
+      g_clear_signal_handler (&tray_icon->window_created_handler,
+                              display);
+    }
 }
 
 static void
@@ -104,15 +115,15 @@ shell_tray_icon_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_PID:
-      g_value_set_uint (value, icon->priv->pid);
+      g_value_set_uint (value, icon->pid);
       break;
 
     case PROP_TITLE:
-      g_value_set_string (value, icon->priv->title);
+      g_value_set_string (value, icon->title);
       break;
 
     case PROP_WM_CLASS:
-      g_value_set_string (value, icon->priv->wm_class);
+      g_value_set_string (value, icon->wm_class);
       break;
 
     default:
@@ -122,13 +133,77 @@ shell_tray_icon_get_property (GObject         *object,
 }
 
 static void
+shell_tray_icon_dispose (GObject *object)
+{
+  ShellTrayIcon *tray_icon = SHELL_TRAY_ICON (object);
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+
+  g_clear_signal_handler (&tray_icon->window_created_handler,
+                          display);
+  shell_tray_icon_remove_window_actor (tray_icon);
+
+  G_OBJECT_CLASS (shell_tray_icon_parent_class)->dispose (object);
+}
+
+static void
+shell_tray_icon_get_preferred_width (ClutterActor *actor,
+                                     float         for_height,
+                                     float        *min_width_p,
+                                     float        *natural_width_p)
+{
+  ShellTrayIcon *tray_icon = SHELL_TRAY_ICON (actor);
+  int width;
+
+  na_xembed_get_size (NA_XEMBED (tray_icon->tray_child), &width, NULL);
+
+  *min_width_p = width;
+  *natural_width_p = width;
+}
+
+static void
+shell_tray_icon_get_preferred_height (ClutterActor *actor,
+                                      float         for_width,
+                                      float        *min_height_p,
+                                      float        *natural_height_p)
+{
+  ShellTrayIcon *tray_icon = SHELL_TRAY_ICON (actor);
+  int height;
+
+  na_xembed_get_size (NA_XEMBED (tray_icon->tray_child), NULL, &height);
+
+  *min_height_p = height;
+  *natural_height_p = height;
+}
+
+static void
+shell_tray_icon_allocate (ClutterActor          *actor,
+                          const ClutterActorBox *box)
+{
+  ShellTrayIcon *tray_icon = SHELL_TRAY_ICON (actor);
+  float wx, wy;
+
+  CLUTTER_ACTOR_CLASS (shell_tray_icon_parent_class)->allocate (actor, box);
+
+  /* Find the actor's new coordinates in terms of the stage.
+   */
+  clutter_actor_get_transformed_position (actor, &wx, &wy);
+  na_xembed_set_root_position (NA_XEMBED (tray_icon->tray_child),
+                               (int)(0.5 + wx), (int)(0.5 + wy));
+}
+
+static void
 shell_tray_icon_class_init (ShellTrayIconClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   object_class->get_property = shell_tray_icon_get_property;
-  object_class->constructed  = shell_tray_icon_constructed;
-  object_class->finalize     = shell_tray_icon_finalize;
+  object_class->finalize = shell_tray_icon_finalize;
+  object_class->dispose = shell_tray_icon_dispose;
+
+  actor_class->get_preferred_width = shell_tray_icon_get_preferred_width;
+  actor_class->get_preferred_height = shell_tray_icon_get_preferred_height;
+  actor_class->allocate = shell_tray_icon_allocate;
 
   g_object_class_install_property (object_class,
                                    PROP_PID,
@@ -156,20 +231,77 @@ shell_tray_icon_class_init (ShellTrayIconClass *klass)
 static void
 shell_tray_icon_init (ShellTrayIcon *icon)
 {
-  icon->priv = shell_tray_icon_get_instance_private (icon);
+}
+
+static void
+shell_tray_icon_set_child (ShellTrayIcon *tray_icon,
+                           NaTrayChild   *tray_child)
+{
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+  MetaX11Display *x11_display;
+  Display *xdisplay;
+  Window plug_xid;
+  Atom type;
+  int result, format;
+  gulong nitems, bytes_after, *val = NULL;
+
+  g_return_if_fail (tray_icon != NULL);
+  g_return_if_fail (tray_child != NULL);
+
+  x11_display = meta_display_get_x11_display (display);
+
+  /* We do all this now rather than computing it on the fly later,
+   * because the shell may want to see their values from a
+   * tray-icon-removed signal handler, at which point the plug has
+   * already been removed from the socket.
+   */
+
+  tray_icon->tray_child = tray_child;
+
+  tray_icon->title = na_tray_child_get_title (tray_icon->tray_child);
+  na_tray_child_get_wm_class (tray_icon->tray_child,
+                              NULL, &tray_icon->wm_class);
+
+  plug_xid = na_xembed_get_plug_window (NA_XEMBED (tray_icon->tray_child));
+
+  xdisplay = meta_x11_display_get_xdisplay (x11_display);
+  meta_x11_error_trap_push (x11_display);
+  result = XGetWindowProperty (xdisplay, plug_xid,
+                               XInternAtom (xdisplay, "_NET_WM_PID", False),
+                               0, G_MAXLONG, False, XA_CARDINAL,
+                               &type, &format, &nitems,
+                               &bytes_after, (guchar **)&val);
+
+  if (!meta_x11_error_trap_pop_with_return (x11_display) &&
+      result == Success &&
+      type == XA_CARDINAL &&
+      nitems == 1)
+    tray_icon->pid = *val;
+
+  if (val)
+    XFree (val);
+
+  tray_icon->window_created_handler =
+    g_signal_connect (display,
+                      "window-created",
+                      G_CALLBACK (shell_tray_icon_window_created_cb),
+                      tray_icon);
 }
 
 /*
  * Public API
  */
 ClutterActor *
-shell_tray_icon_new (ShellEmbeddedWindow *window)
+shell_tray_icon_new (NaTrayChild *tray_child)
 {
-  g_return_val_if_fail (SHELL_IS_EMBEDDED_WINDOW (window), NULL);
+  ShellTrayIcon *tray_icon;
 
-  return g_object_new (SHELL_TYPE_TRAY_ICON,
-                       "window", window,
-                       NULL);
+  g_return_val_if_fail (NA_IS_TRAY_CHILD (tray_child), NULL);
+
+  tray_icon = g_object_new (SHELL_TYPE_TRAY_ICON, NULL);
+  shell_tray_icon_set_child (tray_icon, tray_child);
+
+  return CLUTTER_ACTOR (tray_icon);
 }
 
 /**
@@ -187,37 +319,37 @@ void
 shell_tray_icon_click (ShellTrayIcon *icon,
                        ClutterEvent  *event)
 {
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+  MetaX11Display *x11_display;
   XKeyEvent xkevent;
   XButtonEvent xbevent;
   XCrossingEvent xcevent;
-  GdkDisplay *display;
-  GdkWindow *remote_window;
-  GdkScreen *screen;
-  int x_root, y_root;
   Display *xdisplay;
   Window xwindow, xrootwindow;
   ClutterEventType event_type = clutter_event_type (event);
+  int width, height;
 
   g_return_if_fail (event_type == CLUTTER_BUTTON_RELEASE ||
                     event_type == CLUTTER_KEY_PRESS ||
                     event_type == CLUTTER_KEY_RELEASE);
 
-  remote_window = gtk_socket_get_plug_window (GTK_SOCKET (icon->priv->socket));
-  if (remote_window == NULL)
+  x11_display = meta_display_get_x11_display (display);
+  if (!x11_display)
+    return;
+
+  xwindow = na_xembed_get_plug_window (NA_XEMBED (icon->tray_child));
+  if (xwindow == None)
     {
       g_warning ("shell tray: plug window is gone");
       return;
     }
-  xdisplay = GDK_WINDOW_XDISPLAY (remote_window);
 
-  display = gdk_x11_lookup_xdisplay (xdisplay);
-  gdk_x11_display_error_trap_push (display);
+  na_xembed_get_size (NA_XEMBED (icon->tray_child), &width, &height);
 
-  xwindow = GDK_WINDOW_XID (remote_window);
-  screen = gdk_window_get_screen (remote_window);
-  xrootwindow = GDK_WINDOW_XID (gdk_screen_get_root_window (screen));
-  gdk_window_get_origin (remote_window, &x_root, &y_root);
+  meta_x11_error_trap_push (x11_display);
 
+  xdisplay = meta_x11_display_get_xdisplay (x11_display);
+  xrootwindow = XDefaultRootWindow (xdisplay);
 
   /* First make the icon believe the pointer is inside it */
   xcevent.type = EnterNotify;
@@ -225,10 +357,10 @@ shell_tray_icon_click (ShellTrayIcon *icon,
   xcevent.root = xrootwindow;
   xcevent.subwindow = None;
   xcevent.time = clutter_event_get_time (event);
-  xcevent.x = gdk_window_get_width (remote_window) / 2;
-  xcevent.y = gdk_window_get_height (remote_window) / 2;
-  xcevent.x_root = x_root + xcevent.x;
-  xcevent.y_root = y_root + xcevent.y;
+  xcevent.x = width / 2;
+  xcevent.y = height / 2;
+  xcevent.x_root = xcevent.x;
+  xcevent.y_root = xcevent.y;
   xcevent.mode = NotifyNormal;
   xcevent.detail = NotifyNonlinear;
   xcevent.same_screen = True;
@@ -290,5 +422,5 @@ shell_tray_icon_click (ShellTrayIcon *icon,
   xcevent.type = LeaveNotify;
   XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xcevent);
 
-  gdk_x11_display_error_trap_pop_ignored (display);
+  meta_x11_error_trap_pop (x11_display);
 }

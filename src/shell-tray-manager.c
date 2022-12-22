@@ -4,14 +4,12 @@
 
 #include <clutter/clutter.h>
 #include <girepository.h>
-#include <gtk/gtk.h>
 #include <meta/display.h>
 
 #include "shell-tray-manager.h"
 #include "na-tray-manager.h"
 
-#include "shell-tray-icon.h"
-#include "shell-embedded-window.h"
+#include "shell-tray-icon-private.h"
 #include "shell-global.h"
 
 typedef struct _ShellTrayManagerPrivate ShellTrayManagerPrivate;
@@ -33,8 +31,7 @@ struct _ShellTrayManagerPrivate {
 
 typedef struct {
   ShellTrayManager *manager;
-  GtkWidget *socket;
-  GtkWidget *window;
+  NaTrayChild *tray_child;
   ClutterActor *actor;
 } ShellTrayManagerChild;
 
@@ -60,15 +57,19 @@ static const ClutterColor default_color = { 0x00, 0x00, 0x00, 0xff };
 
 static void shell_tray_manager_release_resources (ShellTrayManager *manager);
 
-static void na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *child, gpointer manager);
-static void na_tray_icon_removed (NaTrayManager *na_manager, GtkWidget *child, gpointer manager);
+static void na_tray_icon_added (NaTrayManager *na_manager,
+                                NaTrayChild   *child,
+                                gpointer       manager);
+
+static void na_tray_icon_removed (NaTrayManager *na_manager,
+                                  NaTrayChild   *child,
+                                  gpointer       manager);
 
 static void
 free_tray_icon (gpointer data)
 {
   ShellTrayManagerChild *child = data;
 
-  gtk_widget_destroy (child->window);
   if (child->actor)
     {
       g_signal_handlers_disconnect_matched (child->actor, G_SIGNAL_MATCH_DATA,
@@ -188,13 +189,19 @@ shell_tray_manager_new (void)
 static void
 shell_tray_manager_ensure_resources (ShellTrayManager *manager)
 {
+  MetaDisplay *display;
+  MetaX11Display *x11_display;
+
   if (manager->priv->na_manager != NULL)
     return;
 
   manager->priv->icons = g_hash_table_new_full (NULL, NULL,
                                                 NULL, free_tray_icon);
 
-  manager->priv->na_manager = na_tray_manager_new ();
+  display = shell_global_get_display (shell_global_get ());
+  x11_display = meta_display_get_x11_display (display);
+
+  manager->priv->na_manager = na_tray_manager_new (x11_display);
 
   g_signal_connect (manager->priv->na_manager, "tray-icon-added",
                     G_CALLBACK (na_tray_icon_added), manager);
@@ -231,7 +238,7 @@ static void
 shell_tray_manager_manage_screen_internal (ShellTrayManager *manager)
 {
   shell_tray_manager_ensure_resources (manager);
-  na_tray_manager_manage_screen (manager->priv->na_manager);
+  na_tray_manager_manage (manager->priv->na_manager);
 }
 
 void
@@ -277,98 +284,63 @@ shell_tray_manager_unmanage_screen (ShellTrayManager *manager)
 }
 
 static void
-shell_tray_manager_child_on_realize (GtkWidget             *widget,
-                                     ShellTrayManagerChild *child)
-{
-  /* If the tray child is using an RGBA colormap (and so we have real
-   * transparency), we don't need to worry about the background. If
-   * not, we obey the bg-color property by creating a cairo pattern of
-   * that color and setting it as our background. Then "parent-relative"
-   * background on the socket and the plug within that will cause
-   * the icons contents to appear on top of our background color.
-   */
-  if (!na_tray_child_has_alpha (NA_TRAY_CHILD (child->socket)))
-    {
-      ClutterColor color = child->manager->priv->bg_color;
-      cairo_pattern_t *bg_pattern;
-
-      bg_pattern = cairo_pattern_create_rgb (color.red / 255.,
-                                             color.green / 255.,
-                                             color.blue / 255.);
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-      gdk_window_set_background_pattern (gtk_widget_get_window (widget),
-                                         bg_pattern);
-G_GNUC_END_IGNORE_DEPRECATIONS
-
-      cairo_pattern_destroy (bg_pattern);
-    }
-}
-
-static void
-on_plug_added (GtkSocket        *socket,
+on_plug_added (NaTrayChild      *tray_child,
                ShellTrayManager *manager)
 {
   ShellTrayManagerChild *child;
 
-  g_signal_handlers_disconnect_by_func (socket, on_plug_added, manager);
+  g_signal_handlers_disconnect_by_func (tray_child, on_plug_added, manager);
 
-  child = g_hash_table_lookup (manager->priv->icons, socket);
+  child = g_hash_table_lookup (manager->priv->icons, tray_child);
 
-  child->actor = shell_tray_icon_new (SHELL_EMBEDDED_WINDOW (child->window));
+  child->actor = shell_tray_icon_new (tray_child);
   g_object_ref_sink (child->actor);
+
+  na_xembed_set_background_color (NA_XEMBED (tray_child),
+                                  &manager->priv->bg_color);
 
   g_signal_emit (manager, shell_tray_manager_signals[TRAY_ICON_ADDED], 0,
                  child->actor);
 }
 
 static void
-na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
-                    gpointer user_data)
+na_tray_icon_added (NaTrayManager *na_manager,
+                    NaTrayChild   *tray_child,
+                    gpointer       user_data)
 {
   ShellTrayManager *manager = user_data;
-  GtkWidget *win;
   ShellTrayManagerChild *child;
-
-  win = shell_embedded_window_new ();
-  gtk_container_add (GTK_CONTAINER (win), socket);
-
-  /* The visual of the socket matches that of its contents; make
-   * the window we put it in match that as well */
-  gtk_widget_set_visual (win, gtk_widget_get_visual (socket));
 
   child = g_new0 (ShellTrayManagerChild, 1);
   child->manager = manager;
-  child->window = win;
-  child->socket = socket;
+  child->tray_child = tray_child;
 
-  g_signal_connect (win, "realize",
-                    G_CALLBACK (shell_tray_manager_child_on_realize), child);
+  g_hash_table_insert (manager->priv->icons, tray_child, child);
 
-  gtk_widget_show_all (win);
-
-  g_hash_table_insert (manager->priv->icons, socket, child);
-
-  g_signal_connect (socket, "plug-added", G_CALLBACK (on_plug_added), manager);
+  g_signal_connect (tray_child, "plug-added",
+                    G_CALLBACK (on_plug_added), manager);
 }
 
 static void
-na_tray_icon_removed (NaTrayManager *na_manager, GtkWidget *socket,
-                      gpointer user_data)
+na_tray_icon_removed (NaTrayManager *na_manager,
+                      NaTrayChild   *tray_child,
+                      gpointer       user_data)
 {
   ShellTrayManager *manager = user_data;
   ShellTrayManagerChild *child;
 
-  child = g_hash_table_lookup (manager->priv->icons, socket);
+  child = g_hash_table_lookup (manager->priv->icons, tray_child);
   g_return_if_fail (child != NULL);
 
   if (child->actor != NULL)
     {
       /* Only emit signal if a corresponding tray-icon-added signal was emitted,
-         that is, if embedding did not fail and we got a plug-added
-      */
+       * that is, if embedding did not fail and we got a plug-added
+       */
       g_signal_emit (manager,
                      shell_tray_manager_signals[TRAY_ICON_REMOVED], 0,
                      child->actor);
     }
-  g_hash_table_remove (manager->priv->icons, socket);
+
+  g_hash_table_remove (manager->priv->icons, tray_child);
 }

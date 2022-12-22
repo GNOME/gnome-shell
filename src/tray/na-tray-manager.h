@@ -22,84 +22,24 @@
 #ifndef __NA_TRAY_MANAGER_H__
 #define __NA_TRAY_MANAGER_H__
 
-#ifdef GDK_WINDOWING_X11
-#include <gdk/gdkx.h>
-#endif
-#include <gtk/gtk.h>
 #include <clutter/clutter.h>
 
 #include "na-tray-child.h"
 
 G_BEGIN_DECLS
 
-#define NA_TYPE_TRAY_MANAGER			(na_tray_manager_get_type ())
-#define NA_TRAY_MANAGER(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), NA_TYPE_TRAY_MANAGER, NaTrayManager))
-#define NA_TRAY_MANAGER_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), NA_TYPE_TRAY_MANAGER, NaTrayManagerClass))
-#define NA_IS_TRAY_MANAGER(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), NA_TYPE_TRAY_MANAGER))
-#define NA_IS_TRAY_MANAGER_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), NA_TYPE_TRAY_MANAGER))
-#define NA_TRAY_MANAGER_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), NA_TYPE_TRAY_MANAGER, NaTrayManagerClass))
-	
-typedef struct _NaTrayManager	    NaTrayManager;
-typedef struct _NaTrayManagerClass  NaTrayManagerClass;
+#define NA_TYPE_TRAY_MANAGER (na_tray_manager_get_type ())
+G_DECLARE_FINAL_TYPE (NaTrayManager, na_tray_manager, NA, TRAY_MANAGER, GObject)
 
-struct _NaTrayManager
-{
-  GObject parent_instance;
+NaTrayManager *na_tray_manager_new (MetaX11Display *x11_display);
 
-#ifdef GDK_WINDOWING_X11
-  GdkAtom selection_atom;
-  Atom    opcode_atom;
-  Atom    message_data_atom;
-#endif
-  
-  GtkWidget *invisible;
-  GdkScreen *screen;
-  GtkOrientation orientation;
-  ClutterColor fg;
-  ClutterColor error;
-  ClutterColor warning;
-  ClutterColor success;
+gboolean na_tray_manager_manage (NaTrayManager *manager);
 
-  GList *messages;
-  GHashTable *socket_table;
-};
-
-struct _NaTrayManagerClass
-{
-  GObjectClass parent_class;
-
-  void (* tray_icon_added)   (NaTrayManager      *manager,
-			      NaTrayChild        *child);
-  void (* tray_icon_removed) (NaTrayManager      *manager,
-			      NaTrayChild        *child);
-
-  void (* message_sent)      (NaTrayManager      *manager,
-			      NaTrayChild        *child,
-			      const gchar        *message,
-			      glong               id,
-			      glong               timeout);
-  
-  void (* message_cancelled) (NaTrayManager      *manager,
-			      NaTrayChild        *child,
-			      glong               id);
-
-  void (* lost_selection)    (NaTrayManager      *manager);
-};
-
-GType           na_tray_manager_get_type        (void);
-
-gboolean        na_tray_manager_check_running   (void);
-NaTrayManager  *na_tray_manager_new             (void);
-gboolean        na_tray_manager_manage_screen   (NaTrayManager      *manager);
-void            na_tray_manager_set_orientation (NaTrayManager      *manager,
-						 GtkOrientation      orientation);
-GtkOrientation  na_tray_manager_get_orientation (NaTrayManager      *manager);
-void            na_tray_manager_set_colors      (NaTrayManager      *manager,
-						 ClutterColor       *fg,
-						 ClutterColor       *error,
-						 ClutterColor       *warning,
-						 ClutterColor       *success);
-
+void na_tray_manager_set_colors (NaTrayManager *manager,
+                                 ClutterColor  *fg,
+                                 ClutterColor  *error,
+                                 ClutterColor  *warning,
+                                 ClutterColor  *success);
 
 G_END_DECLS
 
