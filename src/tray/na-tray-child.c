@@ -253,3 +253,110 @@ na_tray_child_get_pid (NaTrayChild *child)
 
   return pid;
 }
+
+void
+na_tray_child_emulate_event (NaTrayChild *tray_child,
+                             ClutterEvent *event)
+{
+  MetaX11Display *x11_display;
+  XKeyEvent xkevent;
+  XButtonEvent xbevent;
+  XCrossingEvent xcevent;
+  Display *xdisplay;
+  Window xwindow, xrootwindow;
+  ClutterEventType event_type = clutter_event_type (event);
+  int width, height;
+
+  g_return_if_fail (event_type == CLUTTER_BUTTON_RELEASE ||
+                    event_type == CLUTTER_KEY_PRESS ||
+                    event_type == CLUTTER_KEY_RELEASE);
+
+  x11_display = na_xembed_get_x11_display (NA_XEMBED (tray_child));
+
+  xwindow = na_xembed_get_plug_window (NA_XEMBED (tray_child));
+  if (xwindow == None)
+    {
+      g_warning ("shell tray: plug window is gone");
+      return;
+    }
+
+  na_xembed_get_size (NA_XEMBED (tray_child), &width, &height);
+
+  meta_x11_error_trap_push (x11_display);
+
+  xdisplay = meta_x11_display_get_xdisplay (x11_display);
+  xrootwindow = XDefaultRootWindow (xdisplay);
+
+  /* First make the icon believe the pointer is inside it */
+  xcevent.type = EnterNotify;
+  xcevent.window = xwindow;
+  xcevent.root = xrootwindow;
+  xcevent.subwindow = None;
+  xcevent.time = clutter_event_get_time (event);
+  xcevent.x = width / 2;
+  xcevent.y = height / 2;
+  xcevent.x_root = xcevent.x;
+  xcevent.y_root = xcevent.y;
+  xcevent.mode = NotifyNormal;
+  xcevent.detail = NotifyNonlinear;
+  xcevent.same_screen = True;
+  XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xcevent);
+
+  /* Now do the click */
+  if (event_type == CLUTTER_BUTTON_RELEASE)
+    {
+      xbevent.window = xwindow;
+      xbevent.root = xrootwindow;
+      xbevent.subwindow = None;
+      xbevent.time = xcevent.time;
+      xbevent.x = xcevent.x;
+      xbevent.y = xcevent.y;
+      xbevent.x_root = xcevent.x_root;
+      xbevent.y_root = xcevent.y_root;
+      xbevent.state = clutter_event_get_state (event);
+      xbevent.same_screen = True;
+      xbevent.type = ButtonPress;
+      xbevent.button = clutter_event_get_button (event);
+      XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xbevent);
+
+      xbevent.type = ButtonRelease;
+      XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xbevent);
+    }
+  else
+    {
+      xkevent.window = xwindow;
+      xkevent.root = xrootwindow;
+      xkevent.subwindow = None;
+      xkevent.time = xcevent.time;
+      xkevent.x = xcevent.x;
+      xkevent.y = xcevent.y;
+      xkevent.x_root = xcevent.x_root;
+      xkevent.y_root = xcevent.y_root;
+      xkevent.state = clutter_event_get_state (event);
+      xkevent.same_screen = True;
+      xkevent.keycode = clutter_event_get_key_code (event);
+
+      xkevent.type = KeyPress;
+      XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xkevent);
+
+      if (event_type == CLUTTER_KEY_RELEASE)
+        {
+          /* If the application takes a grab on KeyPress, we don't
+           * want to send it a KeyRelease. There's no good way of
+           * knowing whether a tray icon will take a grab, so just
+           * assume it does, and don't send the KeyRelease. That might
+           * make the tracking for key events messed up if it doesn't take
+           * a grab, but the tray icon won't get key focus in normal cases,
+           * so let's hope this isn't too damaging...
+           */
+          xkevent.type = KeyRelease;
+          XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xkevent);
+        }
+    }
+
+  /* And move the pointer back out */
+  xcevent.type = LeaveNotify;
+  XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xcevent);
+
+  meta_x11_error_trap_pop (x11_display);
+}

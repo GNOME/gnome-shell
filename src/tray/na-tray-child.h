@@ -39,6 +39,8 @@ void            na_tray_child_get_wm_class   (NaTrayChild  *child,
 
 pid_t na_tray_child_get_pid (NaTrayChild *child);
 
+void na_tray_child_emulate_event (NaTrayChild *tray_child,
+				  ClutterEvent *event);
 
 G_END_DECLS
 
