@@ -219,3 +219,37 @@ na_tray_child_get_wm_class (NaTrayChild  *child,
                 res_class,
                 res_name);
 }
+
+pid_t
+na_tray_child_get_pid (NaTrayChild *child)
+{
+  MetaX11Display *x11_display;
+  Display *xdisplay;
+  Atom type;
+  int result, format;
+  gulong nitems, bytes_after, *val = NULL;
+  pid_t pid = 0;
+
+  x11_display = na_xembed_get_x11_display (NA_XEMBED (child));
+  xdisplay = meta_x11_display_get_xdisplay (x11_display);
+
+  xdisplay = meta_x11_display_get_xdisplay (x11_display);
+  meta_x11_error_trap_push (x11_display);
+  result = XGetWindowProperty (xdisplay,
+                               na_xembed_get_plug_window (NA_XEMBED (child)),
+                               XInternAtom (xdisplay, "_NET_WM_PID", False),
+                               0, G_MAXLONG, False, XA_CARDINAL,
+                               &type, &format, &nitems,
+                               &bytes_after, (guchar **)&val);
+
+  if (!meta_x11_error_trap_pop_with_return (x11_display) &&
+      result == Success &&
+      type == XA_CARDINAL &&
+      nitems == 1)
+    pid = *val;
+
+  if (val)
+    XFree (val);
+
+  return pid;
+}

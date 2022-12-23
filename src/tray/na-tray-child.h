@@ -37,6 +37,9 @@ void            na_tray_child_get_wm_class   (NaTrayChild  *child,
 					      char        **res_name,
 					      char        **res_class);
 
+pid_t na_tray_child_get_pid (NaTrayChild *child);
+
+
 G_END_DECLS
 
 #endif /* __NA_TRAY_CHILD_H__ */

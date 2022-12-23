@@ -238,17 +238,9 @@ shell_tray_icon_set_child (ShellTrayIcon *tray_icon,
                            NaTrayChild   *tray_child)
 {
   MetaDisplay *display = shell_global_get_display (shell_global_get ());
-  MetaX11Display *x11_display;
-  Display *xdisplay;
-  Window plug_xid;
-  Atom type;
-  int result, format;
-  gulong nitems, bytes_after, *val = NULL;
 
   g_return_if_fail (tray_icon != NULL);
   g_return_if_fail (tray_child != NULL);
-
-  x11_display = meta_display_get_x11_display (display);
 
   /* We do all this now rather than computing it on the fly later,
    * because the shell may want to see their values from a
@@ -261,25 +253,7 @@ shell_tray_icon_set_child (ShellTrayIcon *tray_icon,
   tray_icon->title = na_tray_child_get_title (tray_icon->tray_child);
   na_tray_child_get_wm_class (tray_icon->tray_child,
                               NULL, &tray_icon->wm_class);
-
-  plug_xid = na_xembed_get_plug_window (NA_XEMBED (tray_icon->tray_child));
-
-  xdisplay = meta_x11_display_get_xdisplay (x11_display);
-  meta_x11_error_trap_push (x11_display);
-  result = XGetWindowProperty (xdisplay, plug_xid,
-                               XInternAtom (xdisplay, "_NET_WM_PID", False),
-                               0, G_MAXLONG, False, XA_CARDINAL,
-                               &type, &format, &nitems,
-                               &bytes_after, (guchar **)&val);
-
-  if (!meta_x11_error_trap_pop_with_return (x11_display) &&
-      result == Success &&
-      type == XA_CARDINAL &&
-      nitems == 1)
-    tray_icon->pid = *val;
-
-  if (val)
-    XFree (val);
+  tray_icon->pid = na_tray_child_get_pid (tray_icon->tray_child);
 
   tray_icon->window_created_handler =
     g_signal_connect (display,
