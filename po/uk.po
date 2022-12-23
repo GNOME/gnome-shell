@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-11-04 14:42+0000\n"
-"PO-Revision-Date: 2022-11-04 16:45+0200\n"
+"POT-Creation-Date: 2022-11-24 13:42+0000\n"
+"PO-Revision-Date: 2022-12-23 16:25+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
@@ -72,7 +72,7 @@ msgid "Activate favorite application 9"
 msgstr "Активувати улюблену програму 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2070
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
 msgid "Screenshots"
 msgstr "Знімки екрана"
 
@@ -455,36 +455,6 @@ msgstr "Місцевість"
 msgid "The location for which to show a forecast"
 msgstr "Місцевість для прогнозу погоди"
 
-#: data/org.gnome.shell.gschema.xml.in:325
-msgid "Attach modal dialog to the parent window"
-msgstr "Приєднати модальне вікно до батьківського вікна"
-
-#: data/org.gnome.shell.gschema.xml.in:326
-#: data/org.gnome.shell.gschema.xml.in:335
-#: data/org.gnome.shell.gschema.xml.in:343
-#: data/org.gnome.shell.gschema.xml.in:351
-#: data/org.gnome.shell.gschema.xml.in:359
-msgid ""
-"This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Цей ключ перевизначає ключ у org.gnome.mutter, коли запущено GNOME Shell."
-
-#: data/org.gnome.shell.gschema.xml.in:334
-msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "Увімкнути розбиття країв, коли кладуться вікна на краї екрана"
-
-#: data/org.gnome.shell.gschema.xml.in:342
-msgid "Workspaces are managed dynamically"
-msgstr "Робочі простори організовуються динамічно"
-
-#: data/org.gnome.shell.gschema.xml.in:350
-msgid "Workspaces only on primary monitor"
-msgstr "Робочий простір лише на основному моніторі"
-
-#: data/org.gnome.shell.gschema.xml.in:358
-msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr "Затримувати зміни фокусу миші, поки вказівник не перестане рухатись"
-
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
 msgstr "Мережевий вхід"
@@ -579,8 +549,10 @@ msgstr "Вимкнути"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:87
-msgid "power off;shutdown;halt;stop"
-msgstr "вимкнути;перезавантажити;зупинити;power off;shutdown;halt;stop"
+#| msgid "power off;shutdown;halt;stop"
+msgid "power off;poweroff;shutdown;halt;stop"
+msgstr ""
+"вимкнути;перезавантажити;зупинити;power off;poweroff;shutdown;halt;stop"
 
 #. Translators: The name of the restart action in search
 #: js/misc/systemActions.js:92
@@ -830,15 +802,15 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:350
-msgid "Deny Access"
-msgstr "Заборонити доступ"
+#: js/ui/accessDialog.js:39 js/ui/inhibitShortcutsDialog.js:97
+msgid "Deny"
+msgstr "Заборонити"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:355
-msgid "Grant Access"
-msgstr "Надати доступ"
+#: js/ui/accessDialog.js:40 js/ui/inhibitShortcutsDialog.js:106
+msgid "Allow"
+msgstr "Дозволити"
 
-#: js/ui/appDisplay.js:1728
+#: js/ui/appDisplay.js:1731
 msgid "Unnamed Folder"
 msgstr "Неназвана тека"
 
@@ -1478,14 +1450,6 @@ msgstr "Програма бажає успадкувати скорочення"
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Можна відновити скорочення, натиснувши %s."
 
-#: js/ui/inhibitShortcutsDialog.js:97
-msgid "Deny"
-msgstr "Заборонити"
-
-#: js/ui/inhibitShortcutsDialog.js:106
-msgid "Allow"
-msgstr "Дозволити"
-
 #: js/ui/kbdA11yDialog.js:32
 msgid "Slow Keys Turned On"
 msgstr "Повільні клавіші ввімкнено"
@@ -1544,8 +1508,9 @@ msgid "Leave Off"
 msgstr "Покинути"
 
 #: js/ui/keyboard.js:219
-msgid "Region & Language Settings"
-msgstr "Параметри регіону та мови"
+#| msgid "Network Settings"
+msgid "Keyboard Settings"
+msgstr "Параметри клавіатури"
 
 #: js/ui/lookingGlass.js:713
 msgid "No extensions installed"
@@ -1749,91 +1714,91 @@ msgstr "Неможливо заблокувати"
 msgid "Lock was blocked by an application"
 msgstr "Блокування заборонено програмою"
 
-#: js/ui/screenshot.js:1159
+#: js/ui/screenshot.js:1161
 msgid "Selection"
 msgstr "Вибір"
 
-#: js/ui/screenshot.js:1169
+#: js/ui/screenshot.js:1171
 msgid "Area Selection"
 msgstr "Вибір ділянки"
 
-#: js/ui/screenshot.js:1174
+#: js/ui/screenshot.js:1176
 msgid "Screen"
 msgstr "Екран"
 
-#: js/ui/screenshot.js:1184
+#: js/ui/screenshot.js:1186
 msgid "Screen Selection"
 msgstr "Вибір екрана"
 
-#: js/ui/screenshot.js:1189
+#: js/ui/screenshot.js:1191
 msgid "Window"
 msgstr "Вікно"
 
-#: js/ui/screenshot.js:1199
+#: js/ui/screenshot.js:1201
 msgid "Window Selection"
 msgstr "Вибір вікна"
 
-#: js/ui/screenshot.js:1237
+#: js/ui/screenshot.js:1239
 msgid "Screenshot / Screencast"
 msgstr "Знімок / Запис відео з екрана"
 
-#: js/ui/screenshot.js:1273
+#: js/ui/screenshot.js:1275
 msgid "Show Pointer"
 msgstr "Показувати вказівник"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1864
+#: js/ui/screenshot.js:1866
 msgid "Screencasts"
 msgstr "Трансляції з екрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1869
+#: js/ui/screenshot.js:1871
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Запис з %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1911 js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
 msgid "Screenshot"
 msgstr "Знімок екрана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1917
+#: js/ui/screenshot.js:1919
 msgid "Screencast recorded"
 msgstr "Записано відео з екрана"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1921
 msgid "Click here to view the video."
 msgstr "Натисніть тут, щоб переглянути відео."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1922 js/ui/screenshot.js:2137
+#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
 msgid "Show in Files"
 msgstr "Показувати у «Файлах»"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2083
+#: js/ui/screenshot.js:2085
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Знімок екрана з %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:2131
 msgid "Screenshot captured"
 msgstr "Знімок зроблено"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2133
 msgid "You can paste the image from the clipboard."
 msgstr "Ви можете вставити зображення з буфера обміну даними."
 
-#: js/ui/screenshot.js:2184 js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
 msgid "Screenshot taken"
 msgstr "Знімок зроблено"
 
@@ -1988,7 +1953,6 @@ msgid "Brightness"
 msgstr "Яскравість"
 
 #: js/ui/status/darkMode.js:11
-#| msgid "Dark Mode"
 msgid "Dark Style"
 msgstr "Темний стиль"
 
@@ -2036,6 +2000,14 @@ msgstr ""
 "Доступ до місця перебування можна змінити в будь-яку мить у параметрах "
 "конфіденційності."
 
+#: js/ui/status/location.js:350
+msgid "Deny Access"
+msgstr "Заборонити доступ"
+
+#: js/ui/status/location.js:355
+msgid "Grant Access"
+msgstr "Надати доступ"
+
 #: js/ui/status/network.js:53
 msgid "<unknown>"
 msgstr "<невідомо>"
@@ -2081,11 +2053,11 @@ msgstr "Заощадження"
 msgid "Power Profiles"
 msgstr "Профілі живлення"
 
-#: js/ui/status/remoteAccess.js:74
+#: js/ui/status/remoteAccess.js:72
 msgid "Stop Screencast"
 msgstr "Припинити трансляцію з екрана"
 
-#: js/ui/status/remoteAccess.js:144
+#: js/ui/status/remoteAccess.js:142
 msgid "Stop Screen Sharing"
 msgstr "Припинити спільне використання екрана"
 
@@ -2957,6 +2929,29 @@ msgstr[3] "%u вхід"
 msgid "System Sounds"
 msgstr "Системні звуки"
 
+#~ msgid "Attach modal dialog to the parent window"
+#~ msgstr "Приєднати модальне вікно до батьківського вікна"
+
+#~ msgid ""
+#~ "This key overrides the key in org.gnome.mutter when running GNOME Shell."
+#~ msgstr ""
+#~ "Цей ключ перевизначає ключ у org.gnome.mutter, коли запущено GNOME Shell."
+
+#~ msgid "Enable edge tiling when dropping windows on screen edges"
+#~ msgstr "Увімкнути розбиття країв, коли кладуться вікна на краї екрана"
+
+#~ msgid "Workspaces are managed dynamically"
+#~ msgstr "Робочі простори організовуються динамічно"
+
+#~ msgid "Workspaces only on primary monitor"
+#~ msgstr "Робочий простір лише на основному моніторі"
+
+#~ msgid "Delay focus changes in mouse mode until the pointer stops moving"
+#~ msgstr "Затримувати зміни фокусу миші, поки вказівник не перестане рухатись"
+
+#~ msgid "Region & Language Settings"
+#~ msgstr "Параметри регіону та мови"
+
 #~ msgid ""
 #~ "Whether the default Bluetooth adapter had set up devices associated to it"
 #~ msgstr "Чи типовий адаптер Bluetooth зв'язаний з якимось пристроєм"
@@ -3030,9 +3025,6 @@ msgstr "Системні звуки"
 
 #~ msgid "VPN Off"
 #~ msgstr "VPN вимкнено"
-
-#~ msgid "Network Settings"
-#~ msgstr "Налаштування мережі"
 
 #, javascript-format
 #~ msgid "%s Wi-Fi Connection"
