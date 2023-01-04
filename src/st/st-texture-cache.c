@@ -37,7 +37,6 @@
 struct _StTextureCachePrivate
 {
   GtkIconTheme *icon_theme;
-  GSettings *settings;
 
   /* Things that were loaded with a cache policy != NONE */
   GHashTable *keyed_cache; /* char * -> ClutterImage* */
@@ -220,7 +219,6 @@ st_texture_cache_dispose (GObject *object)
 
   g_cancellable_cancel (self->priv->cancellable);
 
-  g_clear_object (&self->priv->settings);
   g_clear_object (&self->priv->icon_theme);
   g_clear_object (&self->priv->cancellable);
 
