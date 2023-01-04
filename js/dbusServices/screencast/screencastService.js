@@ -296,7 +296,10 @@ var ScreencastService = class extends ServiceImplementation {
         if (GLib.path_is_absolute(filename))
             return filename;
 
-        let videoDir = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_VIDEOS);
+        const videoDir =
+            GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_VIDEOS) ||
+            GLib.get_home_dir();
+
         return GLib.build_filenamev([videoDir, filename]);
     }
 
