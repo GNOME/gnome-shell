@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-11-19 16:31+0000\n"
+"POT-Creation-Date: 2022-12-11 23:51+0000\n"
 "Last-Translator: Нанба Наала <naala-nanba@rambler.ru>\n"
 "Language-Team: Abkhazian <daniel.abzakh@gmail.com>\n"
 "Language: ab\n"
@@ -696,21 +696,21 @@ msgstr "%-d %B %Y, %H∶%M"
 #. Translators: Time in 12h format
 #: js/misc/util.js:276
 msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
+msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: js/misc/util.js:282
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
-msgstr "Иацы, %-l∶%M %p"
+msgstr "Иацы, %-l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/util.js:288
 #, no-c-format
 msgid "%A, %l∶%M %p"
-msgstr "%A, %-l∶%M %p"
+msgstr "%A, %-l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
@@ -748,7 +748,7 @@ msgstr ""
 msgid "Grant Access"
 msgstr ""
 
-#: js/ui/appDisplay.js:1728
+#: js/ui/appDisplay.js:1731
 msgid "Unnamed Folder"
 msgstr ""
 
@@ -811,7 +811,7 @@ msgstr ""
 msgid "Headset"
 msgstr ""
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:324
 msgid "Microphone"
 msgstr "Амикрофон"
 
@@ -1048,7 +1048,7 @@ msgstr ""
 
 #: js/ui/components/networkAgent.js:772
 msgid "VPN password"
-msgstr "VPN Ажәамаӡа "
+msgstr "VPN Ажәамаӡа"
 
 #: js/ui/components/polkitAgent.js:41
 msgid "Authentication Required"
@@ -1626,7 +1626,7 @@ msgstr ""
 
 #: js/ui/screenShield.js:276 js/ui/screenShield.js:653
 msgid "Lock was blocked by an application"
-msgstr "Аусура аанкылара иаԥырхагахеит аԥшьы  "
+msgstr "Аусура аанкылара иаԥырхагахеит аԥшьы"
 
 #: js/ui/screenshot.js:1161
 msgid "Selection"
@@ -1715,6 +1715,8 @@ msgstr ""
 #: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
 msgid "Screenshot taken"
 msgstr ""
+"Иаразнактәи аекран\n"
+"аҭыхра "
 
 #: js/ui/search.js:804
 msgid "Searching…"
@@ -1888,11 +1890,11 @@ msgstr ""
 msgid "Dwell Click"
 msgstr ""
 
-#: js/ui/status/keyboard.js:833
+#: js/ui/status/keyboard.js:842
 msgid "Keyboard"
 msgstr "Арыдыркыра"
 
-#: js/ui/status/keyboard.js:850
+#: js/ui/status/keyboard.js:859
 msgid "Show Keyboard Layout"
 msgstr ""
 
@@ -1955,11 +1957,11 @@ msgstr ""
 msgid "Power Profiles"
 msgstr ""
 
-#: js/ui/status/remoteAccess.js:74
+#: js/ui/status/remoteAccess.js:72
 msgid "Stop Screencast"
 msgstr ""
 
-#: js/ui/status/remoteAccess.js:144
+#: js/ui/status/remoteAccess.js:142
 msgid "Stop Screen Sharing"
 msgstr ""
 
@@ -2039,19 +2041,19 @@ msgstr ""
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr ""
 
-#: js/ui/status/volume.js:194
+#: js/ui/status/volume.js:196
 msgid "Volume changed"
 msgstr ""
 
-#: js/ui/status/volume.js:256
+#: js/ui/status/volume.js:258
 msgid "Volume"
 msgstr "Амҽхак"
 
-#: js/ui/status/volume.js:272
+#: js/ui/status/volume.js:274
 msgid "Sound Output"
 msgstr "%u ҭыҵрак"
 
-#: js/ui/status/volume.js:340
+#: js/ui/status/volume.js:342
 msgid "Sound Input"
 msgstr "%u аҭалара"
 
@@ -2116,7 +2118,7 @@ msgstr ""
 
 #: js/ui/welcomeDialog.js:46
 msgid "No Thanks"
-msgstr ""
+msgstr "Мап, иҭабуп"
 
 #: js/ui/welcomeDialog.js:51
 msgid "Take Tour"
@@ -2798,4 +2800,4 @@ msgstr[1] "%u аҭаларақәа"
 
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
-msgstr ""
+msgstr "Асистематә бжьқәа"
