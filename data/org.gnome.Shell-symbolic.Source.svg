@@ -7,15 +7,14 @@
    viewBox="0 0 64 64"
    id="svg2"
    version="1.1"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    sodipodi:docname="org.gnome.Shell-symbolic.Source.svg"
+   xml:space="preserve"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs4" />
-  <sodipodi:namedview
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs4" /><sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -47,22 +46,20 @@
      inkscape:pagecheckerboard="false"
      showborder="false"
      inkscape:snap-nodes="true"
-     inkscape:snap-others="false">
-    <inkscape:grid
+     inkscape:snap-others="false"
+     inkscape:showpageshadow="0"
+     inkscape:deskcolor="#d1d1d1"><inkscape:grid
        type="xygrid"
        id="grid4514"
        empspacing="4"
        color="#5e57ff"
        opacity="0.1254902"
        empcolor="#5e57ff"
-       empopacity="0.25098039" />
-  </sodipodi:namedview>
-  <g
+       empopacity="0.25098039" /></sodipodi:namedview><g
      inkscape:label="status"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-161.53331)">
-    <text
+     transform="translate(0,-161.53331)"><text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;fill:#241f31;fill-opacity:1;stroke:none"
        x="-4"
@@ -72,209 +69,155 @@
          id="tspan12173"
          x="-4"
          y="145.53331"
-         style="font-size:16px;fill:#241f31;fill-opacity:1">status</tspan></text>
-    <g
+         style="font-size:16px;fill:#241f31;fill-opacity:1">status</tspan></text><g
        id="g16183"
        transform="translate(-288,-312)"
-       inkscape:label="notifications alerts calendar events">
-      <title
-         id="title20651">no-notifications</title>
-      <path
+       inkscape:label="notifications alerts calendar events"><title
+         id="title20651">no-notifications</title><path
          id="path81"
          d="m 320,473.53331 c -3.3125,0 -6,2.6875 -6,6 0,0.30385 0.0228,0.60279 0.0664,0.89453 C 305.91768,482.95558 300,490.55273 300,499.53331 v 18 h -2 c -2.20312,0 -4,1.79688 -4,4 0,2.20312 1.79688,4 4,4 h 44 c 2.20312,0 4,-1.79688 4,-4 0,-2.20312 -1.79688,-4 -4,-4 h -2 v -18 c 0,-8.98058 -5.91768,-16.57773 -14.06641,-19.10547 0.0436,-0.29174 0.0664,-0.59068 0.0664,-0.89453 0,-3.3125 -2.6875,-6 -6,-6 z m -8,56 c 0,2.85938 1.53125,5.5 4,6.92188 2.46875,1.43749 5.53125,1.43749 8,0 2.46875,-1.42188 4,-4.0625 4,-6.92188 z"
-         style="fill:#241f31;fill-opacity:1" />
-      <rect
+         style="fill:#241f31;fill-opacity:1" /><rect
          transform="scale(-1,1)"
          y="473.53333"
          x="-352"
          height="64"
          width="64"
          id="rect15794"
-         style="fill:none" />
-    </g>
-    <g
+         style="fill:none" /></g><g
        id="g21075"
        transform="translate(0,-320)"
-       inkscape:label="notifications alerts calendar events">
-      <title
-         id="title36429">message-indicator</title>
-      <rect
+       inkscape:label="notifications alerts calendar events"><title
+         id="title36429">message-indicator</title><rect
          transform="scale(-1,1)"
          y="601.53333"
          x="-16"
          height="16"
          width="16"
          id="rect20973"
-         style="fill:none" />
-      <path
+         style="fill:none" /><path
          d="M 12,609.53332 A 3.9999999,3.9999999 0 0 1 8.0000002,613.53331 3.9999999,3.9999999 0 0 1 4.0000003,609.53332 3.9999999,3.9999999 0 0 1 8.0000002,605.53334 3.9999999,3.9999999 0 0 1 12,609.53332 Z"
          id="path4485"
-         style="fill:#241f31;fill-opacity:1;stroke-width:3.77953" />
-    </g>
-    <g
+         style="fill:#241f31;fill-opacity:1;stroke-width:3.77953" /></g><g
        id="g36685"
        inkscape:label="screen shield privacy active"
-       transform="translate(-40,-382)">
-      <title
-         id="title41631">screen-privacy</title>
-      <rect
+       transform="translate(-40,-382)"><title
+         id="title41631">screen-privacy</title><rect
          transform="scale(-1,1)"
          y="663.53333"
          x="-76"
          height="16"
          width="16"
          id="rect36558"
-         style="fill:none" />
-      <path
+         style="fill:none" /><path
          id="path113"
          style="fill:#241f31;fill-opacity:1"
-         d="m 64,664.53331 c -1.660156,0 -3,1.33984 -3,3 v 6 c 0,1.66016 1.339844,3 3,3 h 8 c 1.660156,0 3,-1.33984 3,-3 v -6 c 0,-1.66016 -1.339844,-3 -3,-3 z m 0,2 h 0.261719 L 63,667.79503 v -0.26172 c 0,-0.55469 0.445312,-1 1,-1 z m 2.738281,0 H 67.4375 L 63,670.97081 v -0.69922 z m 2.824219,0 h 1.230469 l -7.585938,7.58203 C 63.085938,673.95128 63,673.75597 63,673.53331 v -0.4375 z m 2.609375,0.0352 c 0.316406,0.0547 0.578125,0.24609 0.714844,0.52343 l -7.441407,7.44141 H 64.207031 Z M 73,667.68956 v 5.84375 c 0,0.55469 -0.445312,1 -1,1 h -5.84375 z m -5,9.84375 c -5,0 -5,1 -5,1 0,1 1,1 1,1 h 8 c 1,0 1,-1 1,-1 0,0 0,-1 -5,-1 z" />
-    </g>
-    <g
+         d="m 64,664.53331 c -1.660156,0 -3,1.33984 -3,3 v 6 c 0,1.66016 1.339844,3 3,3 h 8 c 1.660156,0 3,-1.33984 3,-3 v -6 c 0,-1.66016 -1.339844,-3 -3,-3 z m 0,2 h 0.261719 L 63,667.79503 v -0.26172 c 0,-0.55469 0.445312,-1 1,-1 z m 2.738281,0 H 67.4375 L 63,670.97081 v -0.69922 z m 2.824219,0 h 1.230469 l -7.585938,7.58203 C 63.085938,673.95128 63,673.75597 63,673.53331 v -0.4375 z m 2.609375,0.0352 c 0.316406,0.0547 0.578125,0.24609 0.714844,0.52343 l -7.441407,7.44141 H 64.207031 Z M 73,667.68956 v 5.84375 c 0,0.55469 -0.445312,1 -1,1 h -5.84375 z m -5,9.84375 c -5,0 -5,1 -5,1 0,1 1,1 1,1 h 8 c 1,0 1,-1 1,-1 0,0 0,-1 -5,-1 z" /></g><g
        id="g41416"
        inkscape:label="status"
-       transform="translate(-40,-382)">
-      <title
-         id="title41633">screen-privacy-disabled</title>
-      <rect
+       transform="translate(-40,-382)"><title
+         id="title41633">screen-privacy-disabled</title><rect
          transform="scale(-1,1)"
          y="663.53333"
          x="-96"
          height="16"
          width="16"
          id="rect36687"
-         style="fill:none" />
-      <path
+         style="fill:none" /><path
          d="m 81.53125,664.00213 -1.0625,1.0625 14,14 1.0625,-1.0625 -1.945312,-1.94531 C 94.433594,675.52947 95,674.6076 95,673.53338 v -6 c 0,-1.66016 -1.339844,-3 -3,-3 h -8 c -0.554688,0 -1.070312,0.16016 -1.515625,0.42188 z m 2.53125,2.53125 h 0.199219 l -0.09766,0.0977 z m 2.675781,0 H 87.4375 l -1.6875,1.6875 -0.351562,-0.35156 z m 2.824219,0 h 1.230469 l -3.367188,3.36328 -0.613281,-0.61328 z m 2.609375,0.0352 c 0.316406,0.0547 0.578125,0.24609 0.714844,0.52343 l -4.132813,4.13282 -0.617187,-0.61719 z M 81,667.59197 v 5.94141 c 0,1.66016 1.339844,3 3,3 h 5.941406 l -2,-2 H 86.15625 l 0.894531,-0.89453 -0.355469,-0.35547 -1.25,1.25 h -1.238281 l 1.867188,-1.86719 -0.707031,-0.70703 -2.160157,2.15625 C 83.085938,673.95135 83,673.75604 83,673.53338 v -0.4375 l 1.75,-1.75 -1.0625,-1.0625 -0.6875,0.6875 v -0.69922 l 0.339844,-0.33984 z m 12,0.0937 v 5.84766 c 0,0.53516 -0.417969,0.96094 -0.949219,0.98828 l -2.941406,-2.9414 z m -5,9.84766 c -5,0 -5,1 -5,1 0,1 1,1 1,1 h 8 c 0.328125,0 0.539062,-0.10937 0.6875,-0.25391 l -1.542969,-1.54687 C 90.414062,677.61927 89.425781,677.53333 88,677.53333 Z m 0,0"
          fill="#2e3436"
          fill-rule="evenodd"
          id="path113-6"
-         style="fill:#241f31;fill-opacity:1" />
-    </g>
-    <g
+         style="fill:#241f31;fill-opacity:1" /></g><g
        id="g53379"
        inkscape:label="notifications alerts calendar events"
-       transform="translate(0,-360)">
-      <title
-         id="title58232">no-events</title>
-      <rect
+       transform="translate(0,-360)"><title
+         id="title58232">no-events</title><rect
          transform="scale(-1,1)"
          y="521.53333"
          x="-144"
          height="64"
          width="64"
          id="rect53237"
-         style="fill:none" />
-      <path
+         style="fill:none" /><path
          d="m 92,525.53331 c -4.20948,0 -8,3.38032 -8,7.75 v 40.5 c 0,4.36968 3.79052,7.75 8,7.75 h 40 c 4.20948,0 8,-3.38032 8,-7.75 v -40.5 c 0,-4.36968 -3.79052,-7.75 -8,-7.75 z m -2,18 h 12 v 8 H 90 Z m 16.125,0 H 118 v 8 h -11.875 z m 15.875,0 h 12 v 8 h -12 z m -32,12 h 12 v 8 H 90 Z m 16.125,0 H 118 v 8 h -11.875 z m 15.875,0 h 12 v 8 h -12 z m -32,12 h 12 v 8 H 90 Z m 16.125,0 H 118 v 8 h -11.875 z m 15.875,0 h 12 v 8 h -12 z"
          id="path19157"
-         style="fill:#241f31;fill-opacity:0.35" />
-      <rect
+         style="fill:#241f31;fill-opacity:0.35" /><rect
          height="7.9999971"
          id="rect19159"
          width="11.999997"
          x="121.99993"
          y="555.53333"
-         style="fill:#241f31;fill-opacity:0.1" />
-    </g>
-    <g
+         style="fill:#241f31;fill-opacity:0.1" /></g><g
        id="g8970"
        transform="translate(-24,-194.46669)"
-       inkscape:label="on-screen keyboard keys">
-      <title
-         id="title14941">keyboard-shift</title>
-      <rect
+       inkscape:label="on-screen keyboard keys"><title
+         id="title14941">keyboard-shift</title><rect
          width="23.999996"
          height="23.999996"
          x="23.99999"
          y="443.99997"
          id="rect8636"
-         style="fill:none" />
-      <path
+         style="fill:none" /><path
          d="m 36,448 -7.5,8 H 33 v 7 h 6 v -7 h 4.5 z"
          id="path1150"
-         style="fill:#241f31;fill-opacity:1;stroke-width:0.666667" />
-    </g>
-    <g
+         style="fill:#241f31;fill-opacity:1;stroke-width:0.666667" /></g><g
        id="g8978"
        transform="translate(8,-194.46669)"
-       inkscape:label="on-screen keyboard keys">
-      <title
-         id="title14939">keyboard-caps-lock</title>
-      <rect
+       inkscape:label="on-screen keyboard keys"><title
+         id="title14939">keyboard-caps-lock</title><rect
          width="23.999996"
          height="23.999996"
          x="23.99999"
          y="443.99997"
          id="rect8972"
-         style="fill:none" />
-      <path
+         style="fill:none" /><path
          id="path8974"
          d="m 36,446 -7.5,8 H 33 v 5 h 6 v -5 h 4.5 z m -3,16 v 3 h 6 v -3 z"
-         style="fill:#241f31;fill-opacity:1" />
-    </g>
-    <g
+         style="fill:#241f31;fill-opacity:1" /></g><g
        id="g13560"
        inkscape:label="on-screen keyboard keys"
-       transform="translate(-40,-214.46669)">
-      <title
-         id="title14945">keyboard-layout</title>
-      <rect
+       transform="translate(-40,-214.46669)"><title
+         id="title14945">keyboard-layout</title><rect
          width="23.999996"
          height="23.999996"
          x="103.99999"
          y="463.99997"
          id="rect13441"
-         style="fill:none" />
-      <path
+         style="fill:none" /><path
          d="m 109,467 v 19 h 2 v -8 h 4.383 l 0.722,1.447 c 0.16942,0.33905 0.51597,0.55318 0.895,0.553 h 7 c 0.55228,0 1,-0.44772 1,-1 v -9 c 0,-0.55228 -0.44772,-1 -1,-1 h -5.383 l -0.722,-1.447 C 117.72558,467.21395 117.37903,466.99982 117,467 h -7 z"
          id="path1085"
-         style="fill:#241f31;fill-opacity:1" />
-    </g>
-    <g
+         style="fill:#241f31;fill-opacity:1" /></g><g
        id="g13678"
        inkscape:label="keyboard keys hide "
-       transform="translate(-40,-214.46669)">
-      <title
-         id="title14947">keyboard-hide</title>
-      <path
+       transform="translate(-40,-214.46669)"><title
+         id="title14947">keyboard-hide</title><path
          d="m 139.99985,472 a 1,1 0 0 0 -0.70703,0.29297 1,1 0 0 0 0,1.41406 l 8,8 a 1.0001,1.0001 0 0 0 1.41406,0 l 8,-8 a 1,1 0 0 0 0,-1.41406 1,1 0 0 0 -1.41406,0 l -7.29297,7.29297 -7.29297,-7.29297 A 1,1 0 0 0 139.99985,472 Z"
          id="path4931"
-         style="fill:#241f31;fill-opacity:1" />
-      <rect
+         style="fill:#241f31;fill-opacity:1" /><rect
          width="23.999996"
          height="23.999996"
          x="-487.99997"
          y="-159.99998"
          id="rect13562"
          transform="matrix(0,-1,-1,0,0,0)"
-         style="fill:none" />
-    </g>
-    <g
+         style="fill:none" /></g><g
        id="g13796"
        inkscape:label="on-screen keyboard keys"
-       transform="translate(-40,-214.46669)">
-      <title
-         id="title14943">keyboard-enter</title>
-      <rect
+       transform="translate(-40,-214.46669)"><title
+         id="title14943">keyboard-enter</title><rect
          width="23.999996"
          height="23.999996"
          x="-487.99997"
          y="-191.99998"
          id="rect13680"
          transform="matrix(0,-1,-1,0,0,0)"
-         style="fill:none" />
-      <path
+         style="fill:none" /><path
          id="path955"
          style="fill:#241f31;fill-opacity:1"
-         d="m 187,470 v 6.00391 c 0.006,0.996 -1,0.99609 -1,0.99609 h -11.58594 l 1.29297,-1.29297 a 1,1 0 0 0 0,-1.41406 A 1,1 0 0 0 175,474 a 1,1 0 0 0 -0.70703,0.29297 l -3,3 a 1.0001,1.0001 0 0 0 0,1.41406 l 3,3 a 1,1 0 0 0 1.41406,0 1,1 0 0 0 0,-1.41406 L 174.41602,479 H 186 c 3.006,0 3,-3 3,-3 v -6 z" />
-    </g>
-  </g>
-  <g
+         d="m 187,470 v 6.00391 c 0.006,0.996 -1,0.99609 -1,0.99609 h -11.58594 l 1.29297,-1.29297 a 1,1 0 0 0 0,-1.41406 A 1,1 0 0 0 175,474 a 1,1 0 0 0 -0.70703,0.29297 l -3,3 a 1.0001,1.0001 0 0 0 0,1.41406 l 3,3 a 1,1 0 0 0 1.41406,0 1,1 0 0 0 0,-1.41406 L 174.41602,479 H 186 c 3.006,0 3,-3 3,-3 v -6 z" /></g></g><g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="actions">
-    <text
+     inkscape:label="actions"><text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;fill:#241f31;fill-opacity:1;stroke:none"
        x="-4"
@@ -284,228 +227,168 @@
          id="tspan12713"
          x="-4"
          y="184"
-         style="font-size:16px;fill:#241f31;fill-opacity:1">actions</tspan></text>
-    <g
-       id="g13433"
-       inkscape:label="overview previous left backward"
-       transform="translate(-40,-240)">
-      <title
-         id="title15448">carousel-arrow-previous</title>
-      <path
-         d="m 53.169107,497.03665 a 1.5,1.5 0 0 0 -0.9375,0.66211 l -6,9.5 a 1.50015,1.50015 0 0 0 0,1.60156 l 6,9.5 a 1.5,1.5 0 0 0 2.068359,0.4668 1.5,1.5 0 0 0 0.466797,-2.06836 l -5.49414,-8.69922 5.49414,-8.69922 a 1.5,1.5 0 0 0 -0.466797,-2.06836 1.5,1.5 0 0 0 -1.130859,-0.19531 z"
-         id="path13468"
-         style="fill:#241f31;fill-opacity:1" />
-      <rect
-         width="23.999996"
-         height="23.999996"
-         x="39.999992"
-         y="495.99997"
-         id="rect12821"
-         style="fill:none" />
-    </g>
-    <g
+         style="font-size:16px;fill:#241f31;fill-opacity:1">actions</tspan></text><g
        id="g13439"
        transform="matrix(-1,0,0,1,95.99998,-240)"
-       inkscape:label="overview next right forward">
-      <title
-         id="title15446">carousel-arrow-next</title>
-      <rect
-         width="23.999996"
-         height="23.999996"
+       inkscape:label="overview next right forward"><title
+         id="title15446">carousel-arrow-next</title><rect
+         width="15.999988"
+         height="15.999966"
          x="39.999992"
-         y="495.99997"
+         y="504"
          id="rect13435"
-         style="fill:none" />
-      <path
-         d="m 53.169235,497.03711 c -0.387918,0.0877 -0.725132,0.32585 -0.9375,0.66211 l -6,9.5 c -0.34001,0.56012 -0.308809,1.11236 0,1.60156 l 6,9.5 c 0.442487,0.69974 1.368227,0.90867 2.068359,0.4668 0.69974,-0.44249 0.908665,-1.36823 0.466797,-2.06836 L 49.272751,508 l 5.49414,-8.69922 c 0.441868,-0.70013 0.232943,-1.62587 -0.466797,-2.06836 -0.336162,-0.21243 -0.742919,-0.28268 -1.130859,-0.19531 z"
-         id="path13468-5"
-         style="fill:#241f31;fill-opacity:1" />
-    </g>
-    <g
+         style="fill:none;stroke-width:0.999999" /><path
+         d="m 50.999976,505 v 1 c 0,0.29687 -0.125,0.55859 -0.328125,0.74219 L 45.414038,512 l 5.257813,5.26172 0.03516,0.0312 c 0.179688,0.18359 0.292969,0.43359 0.292969,0.70703 v 1 h -1 c -0.277344,0 -0.527344,-0.10938 -0.707031,-0.29297 l -0.03516,-0.0312 L 42.585911,512 49.257788,505.32812 C 49.441382,505.12891 49.707007,505 49.999976,505 Z m 0,0"
+         fill="#222222"
+         id="path2"
+         style="fill:#241f31;fill-opacity:1" /></g><g
        id="g29998"
        inkscape:label="mouse pointer dwell click"
-       transform="translate(28,-344)">
-      <title
-         id="title39373">pointer-secondary-click</title>
-      <path
+       transform="translate(28,-344)"><title
+         id="title39373">pointer-secondary-click</title><path
          d="m 16,640 v 19.77148 l -4.24414,-4.14258 c -0.612408,1.21538 -1.173049,2.46023 -1.819709,3.6561 -1.141947,1.47628 -3.975266,0.38901 -3.846009,-1.47361 0.09413,-0.82252 0.594755,-1.52142 0.899969,-2.2776 l 0.896608,-1.92051 H 2.617188 Z m -1.5,3.72656 -8.359375,8.38672 h 4.101563 c -0.885072,1.9032 -1.781799,3.80152 -2.659622,5.70774 -0.0349,0.56609 1.149057,0.98883 1.282093,0.29797 l 2.455699,-5.01348 3.179687,3.10351 z"
          id="path5851"
-         style="fill:#241f31;fill-opacity:1" />
-      <rect
+         style="fill:#241f31;fill-opacity:1" /><rect
          width="20"
          height="20"
          x="-7.6293945e-06"
          y="640"
          id="rect1156"
-         style="color:#bebebe;display:inline;overflow:visible;visibility:visible;fill:none;stroke:none;stroke-width:1.781;marker:none;enable-background:new" />
-    </g>
-    <g
+         style="color:#bebebe;display:inline;overflow:visible;visibility:visible;fill:none;stroke:none;stroke-width:1.781;marker:none;enable-background:new" /></g><g
        id="g29992"
        inkscape:label="mouse pointer dwell click"
-       transform="translate(-28,-344)">
-      <title
-         id="title39371">pointer-primary-click</title>
-      <rect
+       transform="translate(-28,-344)"><title
+         id="title39371">pointer-primary-click</title><rect
          width="20"
          height="20"
          x="27.999992"
          y="640"
          id="rect1244"
-         style="color:#bebebe;display:inline;overflow:visible;visibility:visible;fill:none;stroke:none;stroke-width:1.781;marker:none;enable-background:new" />
-      <path
+         style="color:#bebebe;display:inline;overflow:visible;visibility:visible;fill:none;stroke:none;stroke-width:1.781;marker:none;enable-background:new" /><path
          d="m 32,640 v 19.64648 l 4.24414,-4.14257 c 0.612408,1.21537 1.173049,2.46022 1.819709,3.65609 1.141947,1.47628 3.975266,0.38901 3.846009,-1.47361 -0.09413,-0.82252 -0.594755,-1.52142 -0.899969,-2.2776 l -0.896608,-1.92051 h 5.269531 z m 1.5,3.72656 8.359375,8.26172 h -4.101563 c 0.885072,1.9032 1.781799,3.80152 2.659622,5.70774 0.0349,0.56609 -1.149057,0.98883 -1.282093,0.29798 l -2.455699,-5.01349 -3.179687,3.10352 z"
          id="path5565"
-         style="fill:#241f31;fill-opacity:1" />
-    </g>
-    <g
+         style="fill:#241f31;fill-opacity:1" /></g><g
        id="g14643"
        inkscape:label="mouse pointer dwell click drag"
-       transform="translate(0,-344)">
-      <title
-         id="title39369">pointer-drag</title>
-      <rect
+       transform="translate(0,-344)"><title
+         id="title39369">pointer-drag</title><rect
          width="20"
          height="20"
          x="55.999992"
          y="640"
          id="rect9430"
-         style="color:#bebebe;display:inline;overflow:visible;visibility:visible;fill:none;stroke:none;stroke-width:1.781;marker:none;enable-background:new" />
-      <path
+         style="color:#bebebe;display:inline;overflow:visible;visibility:visible;fill:none;stroke:none;stroke-width:1.781;marker:none;enable-background:new" /><path
          d="m 66.92607,642.31969 c -0.836524,0.0747 -1.818151,-0.13657 -2.447266,0.57617 -0.179249,0.5031 -0.39107,0.72969 -0.945312,0.61718 -0.793816,-0.0511 -1.701912,0.0538 -2.1875,0.77344 -0.554908,0.83096 -0.313681,1.85623 -0.367187,2.79297 v 1.50195 c -0.509721,-0.31797 -1.13192,-0.13205 -1.699219,-0.18164 -0.442833,-0.0207 -0.881113,0.0252 -1.31836,0.0918 0.05693,2.68593 0.07373,5.37334 0.121094,8.05859 0.09369,1.3023 1.232044,2.40482 2.544922,2.42383 0.632949,0.0151 1.48233,0.007 2.224609,0.0117 3.221817,-0.0121 6.446114,0.0498 9.666016,-0.0566 1.162213,-0.12022 2.213268,-1.18845 2.070313,-2.39648 v -9.48047 c -0.706809,-0.94069 -1.815276,-1.78087 -3.058594,-1.57032 -0.299549,-0.45356 -0.486118,-1.47311 -1.226563,-1.79882 -0.354855,-0.29104 -0.839588,-0.10977 -1.259765,-0.16211 -0.297442,-0.0727 -0.8559,0.19254 -0.869141,-0.25196 -0.157351,-0.52152 -0.715235,-0.90856 -1.248047,-0.94921 z m -0.105469,1.5039 c 0.164522,0.27146 0.182773,0.75372 0.21875,1.125 0.0066,0.007 0.0198,0.006 0.02734,0.0117 -0.0091,-1.7e-4 -0.01824,1.7e-4 -0.02734,0 l 0.494141,5.90039 0.664062,-5.8418 1.345704,0.004 c 0.536079,0.38955 0.412986,1.14048 0.554687,1.72266 -0.01113,0.0675 0.0064,0.096 0.01563,0.13672 -6.5e-4,-10e-6 -0.0013,0 -0.002,0 l 0.01172,0.0859 0.482422,3.86524 0.664062,-3.91993 c 0.574035,-0.0371 1.157689,0.0385 1.558594,0.50196 0.40964,0.21686 0.215641,0.68897 0.259766,1.05859 v 8.3418 c -0.337059,0.96368 -1.599977,0.54827 -2.375,0.66016 -3.370517,0.0131 -6.742137,0.0338 -10.111329,-0.0137 -0.975625,-0.0283 -1.141898,-1.06997 -1.040974,-1.84179 -0.01164,-1.90706 -0.04474,-3.81393 -0.07813,-5.72071 0.326364,0.006 0.675958,-0.0127 0.988281,0.01 0.493884,0.91523 0.484615,2.00119 0.507813,3.01563 0.492636,-0.007 1.043381,0.0398 1.5,0 0.0091,-2.51961 -0.01844,-5.04003 0.01367,-7.5586 0.104898,-0.5199 0.730745,-0.30916 1.111329,-0.35352 h 0.675781 l 0.488281,5.84766 0.669922,-5.87695 h -0.0039 c 0.03095,-0.38284 -0.150626,-0.89584 0.24805,-1.11914 z"
          id="path5630"
-         style="fill:#241f31;fill-opacity:1" />
-    </g>
-    <g
+         style="fill:#241f31;fill-opacity:1" /></g><g
        id="g30454"
        inkscape:label="mouse pointer dwell click double"
-       transform="translate(0,-344)">
-      <title
-         id="title39367">pointer-double-click</title>
-      <rect
+       transform="translate(0,-344)"><title
+         id="title39367">pointer-double-click</title><rect
          width="20"
          height="20"
          x="83.999992"
          y="640"
          id="rect14651"
-         style="color:#bebebe;display:inline;overflow:visible;visibility:visible;fill:none;stroke:none;stroke-width:1.781;marker:none;enable-background:new" />
-      <path
+         style="color:#bebebe;display:inline;overflow:visible;visibility:visible;fill:none;stroke:none;stroke-width:1.781;marker:none;enable-background:new" /><path
          d="m 85,640 v 19.70898 l 4.24414,-4.14453 c 0.5882,1.18866 1.158389,2.38656 1.758464,3.56913 1.108631,1.64026 4.157538,0.46513 3.89799,-1.49586 0.01057,-0.47022 -0.405577,-0.90844 -0.434651,-1.31364 l 0.778203,-0.75963 c 0.5882,1.18866 1.158389,2.38656 1.758464,3.56913 1.108631,1.64026 4.15754,0.46513 3.89799,-1.49586 -0.19232,-0.9043 -0.71785,-1.69802 -1.068629,-2.54897 l -0.716725,-1.53797 h 4.830074 L 91,640 v 6.24414 z m 1.5,3.72656 6,6.24414 v -6.24414 l 7.92188,8.32422 h -3.662115 c 0.883468,1.90344 1.781983,3.80027 2.656081,5.70782 0.0065,0.62278 -1.227555,0.98057 -1.325116,0.20712 l -2.412991,-4.92076 -3.060547,2.98633 c 0.263642,0.60805 0.596803,1.19246 0.814693,1.81614 -0.182662,0.60103 -1.26833,0.8373 -1.365856,0.0679 l -2.388284,-4.87037 -3.177734,3.10156 z"
          id="path5565-5"
-         style="fill:#241f31;fill-opacity:1" />
-    </g>
-    <g
+         style="fill:#241f31;fill-opacity:1" /></g><g
        id="g1429"
        transform="translate(-132,-248)"
-       inkscape:label="screenshooter capture area ">
-      <title
-         id="title1423">screenshot-ui-area</title>
-      <rect
+       inkscape:label="screenshooter capture area "><title
+         id="title1423">screenshot-ui-area</title><rect
          width="31.999998"
          height="31.999998"
          x="-491.99994"
          y="-163.99998"
          id="rect1425"
          transform="matrix(0,-1,-1,0,0,0)"
-         style="fill:none;stroke-width:1" />
-      <path
+         style="fill:none;stroke-width:1" /><path
          d="m 135.5,462 a 3.515,3.515 0 0 0 -3.5,3.5 c 0,1.385 0.822,2.593 2,3.158 V 472 h 2 v -3.037 A 3.521,3.521 0 0 0 138.963,466 H 141 v -2 h -2.342 a 3.516,3.516 0 0 0 -3.158,-2 z m 25,0 a 3.516,3.516 0 0 0 -3.158,2 H 155 v 2 h 2.037 A 3.521,3.521 0 0 0 160,468.963 V 472 h 2 v -3.342 a 3.516,3.516 0 0 0 2,-3.158 c 0,-1.921 -1.579,-3.5 -3.5,-3.5 z m -25,2 c 0.84,0 1.5,0.66 1.5,1.5 0,0.84 -0.66,1.5 -1.5,1.5 -0.84,0 -1.5,-0.66 -1.5,-1.5 0,-0.84 0.66,-1.5 1.5,-1.5 z m 7.5,0 v 2 h 4 v -2 z m 6,0 v 2 h 4 v -2 z m 11.5,0 c 0.84,0 1.5,0.66 1.5,1.5 0,0.84 -0.66,1.5 -1.5,1.5 -0.84,0 -1.5,-0.66 -1.5,-1.5 0,-0.84 0.66,-1.5 1.5,-1.5 z M 134,474 v 4 h 2 v -4 z m 26,0 v 4 h 2 v -4 z m -26,6 v 3.342 a 3.516,3.516 0 0 0 -2,3.158 c 0,1.921 1.579,3.5 3.5,3.5 a 3.516,3.516 0 0 0 3.158,-2 H 141 v -2 h -2.037 A 3.521,3.521 0 0 0 136,483.037 V 480 Z m 26,0 v 3.037 A 3.521,3.521 0 0 0 157.037,486 H 155 v 2 h 2.342 a 3.516,3.516 0 0 0 3.158,2 c 1.921,0 3.5,-1.579 3.5,-3.5 a 3.516,3.516 0 0 0 -2,-3.158 V 480 Z m -24.5,5 c 0.84,0 1.5,0.66 1.5,1.5 0,0.84 -0.66,1.5 -1.5,1.5 -0.84,0 -1.5,-0.66 -1.5,-1.5 0,-0.84 0.66,-1.5 1.5,-1.5 z m 25,0 c 0.84,0 1.5,0.66 1.5,1.5 0,0.84 -0.66,1.5 -1.5,1.5 -0.84,0 -1.5,-0.66 -1.5,-1.5 0,-0.84 0.66,-1.5 1.5,-1.5 z m -17.5,1 v 2 h 4 v -2 z m 6,0 v 2 h 4 v -2 z"
          id="path2-3"
-         style="fill:#241f31;fill-opacity:1" />
-    </g>
-    <g
+         style="fill:#241f31;fill-opacity:1" /></g><g
        id="g4349"
        transform="translate(-92,-248)"
-       inkscape:label="screenshooter capture display screen ">
-      <title
-         id="title4343">screenshot-ui-display</title>
-      <rect
+       inkscape:label="screenshooter capture display screen "><title
+         id="title4343">screenshot-ui-display</title><rect
          width="31.999998"
          height="31.999998"
          x="-491.99994"
          y="-163.99998"
          id="rect4345"
          transform="matrix(0,-1,-1,0,0,0)"
-         style="fill:none;stroke-width:1" />
-      <path
+         style="fill:none;stroke-width:1" /><path
          id="path9443"
          d="m 136,464 c -1.662,0 -3,1.338 -3,3 v 14 c 0,1.662 1.338,3 3,3 h 10 v 2.99805 h -3.00195 c -1.0901,-7e-5 -1.99805,0.90995 -1.99805,2 H 142.99805 153 155 C 155,487.908 154.09,487.00007 153,487 h -2.99805 v -3 H 160 c 1.662,0 3,-1.338 3,-3 v -14 c 0,-1.662 -1.338,-3 -3,-3 z m 0,2 h 24 c 0.554,0 1,0.446 1,1 v 14 c 0,0.554 -0.446,1 -1,1 h -24 c -0.554,0 -1,-0.446 -1,-1 v -14 c 0,-0.554 0.446,-1 1,-1 z"
-         style="fill:#241f31;fill-opacity:1" />
-    </g>
-    <g
+         style="fill:#241f31;fill-opacity:1" /></g><g
        id="g4445"
        transform="translate(-52,-248)"
-       inkscape:label="screenshooter capture windows">
-      <title
-         id="title4439">screenshot-ui-window</title>
-      <path
+       inkscape:label="screenshooter capture windows"><title
+         id="title4439">screenshot-ui-window</title><path
          id="rect28516"
          d="m 135,463 c -1.6447,0 -3,1.3553 -3,3 v 14 c 0,1.6447 1.3553,3 3,3 h 3.99805 v 3 c 0,1.6447 1.3553,3 3,3 h 18.99804 c 1.6447,0 3,-1.3553 3,-3 v -14 c 0,-1.6447 -1.3553,-3 -3,-3 h -4 v -3 c 0,-1.6447 -1.3553,-3 -3,-3 z m 0,2 h 18.99609 c 0.5713,0 1,0.4287 1,1 v 3 h -12.99804 c -1.6447,0 -3,1.3553 -3,3 v 9 H 135 c -0.5713,0 -1,-0.4287 -1,-1 v -14 c 0,-0.5713 0.4287,-1 1,-1 z m 6.99805,6 h 18.99804 c 0.5713,0 1,0.4287 1,1 v 14 c 0,0.5713 -0.4287,1 -1,1 h -18.99804 c -0.5713,0 -1,-0.4287 -1,-1 v -14 c 0,-0.5713 0.4287,-1 1,-1 z"
-         style="fill:#241f31;fill-opacity:1" />
-      <rect
+         style="fill:#241f31;fill-opacity:1" /><rect
          width="31.999998"
          height="31.999998"
          x="-491.99994"
          y="-163.99998"
          id="rect4441"
          transform="matrix(0,-1,-1,0,0,0)"
-         style="fill:none;stroke-width:1" />
-    </g>
-    <g
+         style="fill:none;stroke-width:1" /></g><g
        id="g42319"
        transform="translate(-12,-248)"
-       inkscape:label="screenshooter capture windows">
-      <title
-         id="title42313">screenshot-ui-window</title>
-      <path
+       inkscape:label="screenshooter capture windows"><title
+         id="title42313">screenshot-ui-window</title><path
          id="path42315"
          d="m 135,463 c -1.6447,0 -3,1.3553 -3,3 v 14 c 0,1.6447 1.3553,3 3,3 h 3.99805 v 3 c 0,1.6447 1.3553,3 3,3 h 18.99804 c 1.6447,0 3,-1.3553 3,-3 v -14 c 0,-1.6447 -1.3553,-3 -3,-3 h -4 v -3 c 0,-1.6447 -1.3553,-3 -3,-3 z m 0,2 h 18.99609 c 0.5713,0 1,0.4287 1,1 v 3 h -12.99804 c -1.6447,0 -3,1.3553 -3,3 v 9 H 135 c -0.5713,0 -1,-0.4287 -1,-1 v -14 c 0,-0.5713 0.4287,-1 1,-1 z m 6.99805,6 h 18.99804 c 0.5713,0 1,0.4287 1,1 v 14 c 0,0.5713 -0.4287,1 -1,1 h -18.99804 c -0.5713,0 -1,-0.4287 -1,-1 v -14 c 0,-0.5713 0.4287,-1 1,-1 z"
-         style="fill:#241f31;fill-opacity:1" />
-      <rect
+         style="fill:#241f31;fill-opacity:1" /><rect
          width="31.999998"
          height="31.999998"
          x="-491.99994"
          y="-163.99998"
          id="rect42317"
          transform="matrix(0,-1,-1,0,0,0)"
-         style="fill:none;stroke-width:1" />
-    </g>
-    <g
+         style="fill:none;stroke-width:1" /></g><g
        id="g42429"
        inkscape:label="screenshooter capture display screen "
-       transform="translate(-80,-335.53331)">
-      <title
-         id="title42423">screenshot-ui-show-pointer</title>
-      <rect
+       transform="translate(-80,-335.53331)"><title
+         id="title42423">screenshot-ui-show-pointer</title><rect
          transform="scale(-1,1)"
          y="663.53333"
          x="-96"
          height="16"
          width="16"
          id="rect42425"
-         style="fill:none" />
-      <path
+         style="fill:none" /><path
          d="m 82.95312,664.60753 2.41797,13.21094 3.23828,-2.39844 2.05469,2.64844 c 1.03125,1.43359 3.14844,-0.21094 2.01172,-1.5625 l -2.01562,-2.59375 2.98437,-2.17579 z m 0,0"
          fill="#2e3436"
-         id="path2-35" />
-    </g>
-    <g
+         id="path2-35" /></g><g
        id="g14227"
        transform="translate(-71.999987,-207.99997)"
-       inkscape:label="overview window close">
-      <title
-         id="title15444">preview-close</title>
-      <rect
+       inkscape:label="overview window close"><title
+         id="title15444">preview-close</title><rect
          width="23.999996"
          height="23.999996"
          x="-487.99997"
          y="-159.99998"
          id="rect14223"
          transform="matrix(0,-1,-1,0,0,0)"
-         style="fill:none" />
-    </g>
-    <path
+         style="fill:none" /></g><path
        id="path986"
        d="M 71 262 A 1 1 0 0 0 70.292969 262.29297 A 1 1 0 0 0 70.292969 263.70703 L 74.585938 268 L 70.292969 272.29297 A 1 1 0 0 0 70.292969 273.70703 A 1 1 0 0 0 71.707031 273.70703 L 76 269.41406 L 80.292969 273.70703 A 1 1 0 0 0 81.707031 273.70703 A 1 1 0 0 0 81.707031 272.29297 L 77.414062 268 L 81.707031 263.70703 A 1 1 0 0 0 81.707031 262.29297 A 1 1 0 0 0 81 262 A 1 1 0 0 0 80.292969 262.29297 L 76 266.58594 L 71.707031 262.29297 A 1 1 0 0 0 71 262 z "
-       style="fill:#241f31;fill-opacity:1" />
-  </g>
-</svg>
+       style="fill:#241f31;fill-opacity:1" /><g
+       id="g691"
+       transform="translate(-19.999992,-240)"
+       inkscape:label="overview previous left backward"><title
+         id="title685">carousel-arrow-previous</title><rect
+         width="15.999988"
+         height="15.999966"
+         x="39.999992"
+         y="504"
+         id="rect687"
+         style="fill:none;stroke-width:0.999999" /><path
+         d="m 50.999976,505 v 1 c 0,0.29687 -0.125,0.55859 -0.328125,0.74219 L 45.414038,512 l 5.257813,5.26172 0.03516,0.0312 c 0.179688,0.18359 0.292969,0.43359 0.292969,0.70703 v 1 h -1 c -0.277344,0 -0.527344,-0.10938 -0.707031,-0.29297 l -0.03516,-0.0312 L 42.585911,512 49.257788,505.32812 C 49.441382,505.12891 49.707007,505 49.999976,505 Z m 0,0"
+         fill="#222222"
+         id="path689"
+         style="fill:#241f31;fill-opacity:1" /></g></g></svg>
