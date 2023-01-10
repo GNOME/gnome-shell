@@ -85,6 +85,7 @@ src/shell-global.c
 src/shell-keyring-prompt.c
 src/shell-polkit-authentication-agent.c
 src/shell-util.c
+src/st/st-icon-theme.c
 subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in
 subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in
 subprojects/extensions-app/js/main.js
