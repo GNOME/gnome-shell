@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-09-05 17:40+0000\n"
-"PO-Revision-Date: 2022-12-05 11:49+0300\n"
+"PO-Revision-Date: 2023-01-09 18:08+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -881,12 +881,12 @@ msgid "New Window"
 msgstr "Новое окно"
 
 #: js/ui/appMenu.js:81
-msgid "Show Details"
-msgstr "Показать подробности"
+msgid "App Details"
+msgstr "Подробнее о приложении"
 
 #: js/ui/appMenu.js:97
 msgid "Quit"
-msgstr "Завершить"
+msgstr "Закрыть"
 
 #: js/ui/appMenu.js:157 js/ui/dash.js:249
 msgid "Unpin"
@@ -1603,6 +1603,14 @@ msgstr "Устарело"
 #: js/ui/lookingGlass.js:802
 msgid "Downloading"
 msgstr "Загрузка"
+
+#: js/ui/lookingGlass.js:804
+msgid "Disabling"
+msgstr "Отключение"
+
+#: js/ui/lookingGlass.js:806
+msgid "Enabling"
+msgstr "Включение"
 
 #: js/ui/lookingGlass.js:835
 msgid "View Source"
@@ -2441,6 +2449,10 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Список возможных режимов"
 
+#: src/main.c:537
+msgid "Force animations to be enabled"
+msgstr "Принудительное включение анимации"
+
 #: src/shell-app.c:305
 msgctxt "program"
 msgid "Unknown"
@@ -2520,7 +2532,7 @@ msgstr ""
 "Stas Solovey <whats_up@tut.by>, 2011-2020\n"
 "Ivan Molodetskikh <yalterz@gmail.com>, 2020\n"
 "Alexey Rubtsov <rushills@gmail.com>, 2021\n"
-"Aleksandr Melman <alexmelman88@gmail.com>, 2022"
+"Aleksandr Melman <alexmelman88@gmail.com>, 2022-2023"
 
 #: subprojects/extensions-app/js/main.js:339
 #, javascript-format
@@ -3031,12 +3043,6 @@ msgstr "Системные звуки"
 
 #~ msgid "Airplane Mode is On"
 #~ msgstr "Включён авиарежим"
-
-#~ msgid "Wi-Fi is disabled when airplane mode is on."
-#~ msgstr "Когда включён режим авиаперелёта, адаптер Wi-Fi выключен."
-
-#~ msgid "Turn Off Airplane Mode"
-#~ msgstr "Выключить режим авиаперелёта"
 
 #~ msgid "Wi-Fi is Off"
 #~ msgstr "Wi-Fi выключен"
