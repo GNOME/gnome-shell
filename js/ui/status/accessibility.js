@@ -74,6 +74,10 @@ class ATIndicator extends PanelMenu.Button {
         let mouseKeys = this._buildItem(_("Mouse Keys"), A11Y_KEYBOARD_SCHEMA, KEY_MOUSE_KEYS_ENABLED);
         this.menu.addMenuItem(mouseKeys);
 
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.menu.addSettingsAction(_('Accessibility Settings'),
+            'gnome-universal-access-panel.desktop');
+
         this._syncMenuVisibility();
     }
 
