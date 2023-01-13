@@ -68,6 +68,8 @@ class PowerProfilesToggle extends QuickMenuToggle {
         this._profileSection = new PopupMenu.PopupMenuSection();
         this.menu.addMenuItem(this._profileSection);
         this.menu.setHeader('power-profile-balanced-symbolic', _('Power Profiles'));
+        this.menu.addSettingsAction(_('Power Settings'),
+            'gnome-power-panel.desktop');
 
         this._sync();
     }
