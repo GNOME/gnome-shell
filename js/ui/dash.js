@@ -830,10 +830,10 @@ var Dash = GObject.registerClass({
     _clearDragPlaceholder() {
         if (this._dragPlaceholder) {
             this._animatingPlaceholdersCount++;
-            this._dragPlaceholder.animateOutAndDestroy();
             this._dragPlaceholder.connect('destroy', () => {
                 this._animatingPlaceholdersCount--;
             });
+            this._dragPlaceholder.animateOutAndDestroy();
             this._dragPlaceholder = null;
         }
         this._dragPlaceholderPos = -1;
