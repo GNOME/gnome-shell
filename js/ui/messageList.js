@@ -481,47 +481,38 @@ export const Message = GObject.registerClass({
             this.setExpandedBody(this._expandedLabel);
         }
 
-        if (animate) {
-            this._bodyStack.ease_property('@layout.expansion', 1, {
-                progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                duration: MessageTray.ANIMATION_TIME,
-            });
+        const duration = animate ? MessageTray.ANIMATION_TIME : 0;
+        this._bodyStack.ease_property('@layout.expansion', 1, {
+            progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration,
+        });
 
-            this._actionBin.scale_y = 0;
-            this._actionBin.ease({
-                scale_y: 1,
-                duration: MessageTray.ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        } else {
-            this._bodyStack.layout_manager.expansion = 1;
-            this._actionBin.scale_y = 1;
-        }
+        this._actionBin.scale_y = 0;
+        this._actionBin.ease({
+            scale_y: 1,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
 
         this.emit('expanded');
     }
 
     unexpand(animate) {
-        if (animate) {
-            this._bodyStack.ease_property('@layout.expansion', 0, {
-                progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                duration: MessageTray.ANIMATION_TIME,
-            });
+        const duration = animate ? MessageTray.ANIMATION_TIME : 0;
+        this._bodyStack.ease_property('@layout.expansion', 0, {
+            progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration,
+        });
 
-            this._actionBin.ease({
-                scale_y: 0,
-                duration: MessageTray.ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    this._actionBin.hide();
-                    this.expanded = false;
-                },
-            });
-        } else {
-            this._bodyStack.layout_manager.expansion = 0;
-            this._actionBin.scale_y = 0;
-            this.expanded = false;
-        }
+        this._actionBin.ease({
+            scale_y: 0,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this._actionBin.hide();
+                this.expanded = false;
+            },
+        });
 
         this.emit('unexpanded');
     }
@@ -643,15 +634,14 @@ export const MessageListSection = GObject.registerClass({
 
         this._list.insert_child_at_index(listItem, index);
 
-        if (animate) {
-            listItem.set({scale_x: 0, scale_y: 0});
-            listItem.ease({
-                scale_x: 1,
-                scale_y: 1,
-                duration: MESSAGE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        }
+        const duration = animate ? MESSAGE_ANIMATION_TIME : 0;
+        listItem.set({scale_x: 0, scale_y: 0});
+        listItem.ease({
+            scale_x: 1,
+            scale_y: 1,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     moveMessage(message, index, animate) {
@@ -702,21 +692,17 @@ export const MessageListSection = GObject.registerClass({
                 this._list;
         }
 
-        if (animate) {
-            listItem.ease({
-                scale_x: 0,
-                scale_y: 0,
-                duration: MESSAGE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    listItem.destroy();
-                    nextMessage?.grab_key_focus();
-                },
-            });
-        } else {
-            listItem.destroy();
-            nextMessage?.grab_key_focus();
-        }
+        const duration = animate ? MESSAGE_ANIMATION_TIME : 0;
+        listItem.ease({
+            scale_x: 0,
+            scale_y: 0,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                listItem.destroy();
+                nextMessage?.grab_key_focus();
+            },
+        });
     }
 
     clear() {
