@@ -512,13 +512,13 @@ export const Dash = GObject.registerClass({
     }
 
     _createAppItem(app) {
+        let item = new DashItemContainer();
         let appIcon = new DashIcon(app);
 
         appIcon.connect('menu-state-changed', (o, opened) => {
             this._itemMenuStateChanged(item, opened);
         });
 
-        let item = new DashItemContainer();
         item.setChild(appIcon);
 
         // Override default AppIcon label_actor, now the
