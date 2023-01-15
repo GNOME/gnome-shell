@@ -406,7 +406,7 @@ export const Dash = GObject.registerClass({
             this._onWindowDragEnd.bind(this));
 
         // Translators: this is the name of the dock/favorites area on
-        // the left of the overview
+        // the bottom of the overview
         Main.ctrlAltTabManager.addGroup(this, _('Dash'), 'user-bookmarks-symbolic');
     }
 
