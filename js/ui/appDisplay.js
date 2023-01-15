@@ -1426,9 +1426,9 @@ class AppDisplay extends BaseAppView {
             global.settings.is_writable('app-picker-layout');
 
         this._placeholder = new AppIcon(app, { isDraggable });
-        this._placeholder.connect('notify::pressed', () => {
-            if (this._placeholder.pressed)
-                this.updateDragFocus(this._placeholder);
+        this._placeholder.connect('notify::pressed', icon => {
+            if (icon.pressed)
+                this.updateDragFocus(icon);
         });
         this._placeholder.scaleAndFade();
         this._redisplay();
