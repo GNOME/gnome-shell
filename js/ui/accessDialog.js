@@ -58,13 +58,15 @@ class AccessDialog extends ModalDialog.ModalDialog {
             this._choices.set(id, check);
         }
 
-        let bodyLabel = new St.Label({
-            text: body,
-            x_align: Clutter.ActorAlign.CENTER,
-        });
-        bodyLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        bodyLabel.clutter_text.line_wrap = true;
-        content.add_child(bodyLabel);
+        if (body) {
+            let bodyLabel = new St.Label({
+                text: body,
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+            bodyLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            bodyLabel.clutter_text.line_wrap = true;
+            content.add_child(bodyLabel);
+        }
 
         this.addButton({
             label: denyLabel,
