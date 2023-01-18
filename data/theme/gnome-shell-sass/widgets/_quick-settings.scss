@@ -56,12 +56,18 @@
 
   & .quick-toggle-arrow {
     padding: $base_padding $base_padding*1.75;
-    border: none;
+    border-width: 0;
 
     &:checked { @include button(default, $c:$selected_bg_color); }
 
-    &:ltr { border-radius: 0 99px 99px 0; }
-    &:rtl { border-radius: 99px 0 0 99px; }
+    &:ltr {
+      border-radius: 0 99px 99px 0;
+      border-left-width: 1px;
+    }
+    &:rtl {
+      border-radius: 99px 0 0 99px;
+      border-right-width: 1px;
+    }
   }
 }
 
