@@ -309,7 +309,7 @@ var AuthPrompt = GObject.registerClass({
         if (question === 'Password:' || question === 'Password: ')
             this.setQuestion(_('Password'));
         else
-            this.setQuestion(question.replace(/: *$/, '').trim());
+            this.setQuestion(question.replace(/[:：] *$/, '').trim());
 
         this.updateSensitivity(true);
         this.emit('prompted');
