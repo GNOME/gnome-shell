@@ -11,14 +11,14 @@
 # Muhammet Kara <muhammetk@gmail.com>, 2011-2017.
 # Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017, 2018.
 # Sabri Ünal <libreajans@gmail.com>, 2014, 2019, 2022, 2023.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2017-2022.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-01-04 12:39+0000\n"
-"PO-Revision-Date: 2023-01-11 18:01+0300\n"
+"POT-Creation-Date: 2023-01-18 23:49+0000\n"
+"PO-Revision-Date: 2023-01-22 14:35+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -1471,7 +1471,7 @@ msgstr "Kapat"
 msgid "Leave Off"
 msgstr "Kapalı Bırak"
 
-#: js/ui/keyboard.js:219
+#: js/ui/keyboard.js:219 js/ui/status/keyboard.js:860
 msgid "Keyboard Settings"
 msgstr "Klavye Ayarları"
 
@@ -2021,6 +2021,10 @@ msgstr "Güç Tutumu"
 msgid "Power Profiles"
 msgstr "Güç Profilleri"
 
+#: js/ui/status/powerProfiles.js:72
+msgid "Power Settings"
+msgstr "Güç Ayarları"
+
 #: js/ui/status/remoteAccess.js:72
 msgid "Stop Screencast"
 msgstr "Ekran Kaydını Durdur"
@@ -2153,23 +2157,23 @@ msgstr "Yalnızca İç"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:364
+#: js/ui/unlockDialog.js:363
 msgid "%A %B %-d"
 msgstr "%A %-d %B"
 
-#: js/ui/unlockDialog.js:370
+#: js/ui/unlockDialog.js:369
 msgid "Swipe up to unlock"
 msgstr "Kilidi açmak için yukarı kaydır"
 
-#: js/ui/unlockDialog.js:371
+#: js/ui/unlockDialog.js:370
 msgid "Click or press a key to unlock"
 msgstr "Kilidi açmak için tıklayın veya tuşa basın"
 
-#: js/ui/unlockDialog.js:554
+#: js/ui/unlockDialog.js:553
 msgid "Unlock Window"
 msgstr "Kilit Açma Penceresi"
 
-#: js/ui/unlockDialog.js:563
+#: js/ui/unlockDialog.js:562
 msgid "Log in as another user"
 msgstr "Başka kullanıcı olarak oturum aç"
 
