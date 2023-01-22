@@ -32,6 +32,30 @@ const PIPELINE_BLOCKLIST_FILENAME = 'gnome-shell-screencast-pipeline-blocklist';
 
 const PIPELINES = [
     {
+        id: 'swenc-dmabuf-h264-openh264',
+        fileExtension: 'mp4',
+        pipelineString:
+            'capsfilter caps=video/x-raw(memory:DMABuf),max-framerate=%F/1 ! \
+             glupload ! glcolorconvert ! gldownload ! \
+             queue ! \
+             openh264enc deblocking=off background-detection=false complexity=low adaptive-quantization=false qp-max=26 qp-min=26 multi-thread=%T slice-mode=auto ! \
+             queue ! \
+             h264parse ! \
+             mp4mux fragment-duration=500 fragment-mode=first-moov-then-finalise',
+    },
+    {
+        id: 'swenc-memfd-h264-openh264',
+        fileExtension: 'mp4',
+        pipelineString:
+            'capsfilter caps=video/x-raw,max-framerate=%F/1 ! \
+             videoconvert chroma-mode=none dither=none matrix-mode=output-only n-threads=%T ! \
+             queue ! \
+             openh264enc deblocking=off background-detection=false complexity=low adaptive-quantization=false qp-max=26 qp-min=26 multi-thread=%T slice-mode=auto ! \
+             queue ! \
+             h264parse ! \
+             mp4mux fragment-duration=500 fragment-mode=first-moov-then-finalise',
+    },
+    {
         id: 'swenc-dmabuf-vp8-vp8enc',
         fileExtension: 'webm',
         pipelineString:
