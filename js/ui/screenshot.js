@@ -1998,9 +1998,9 @@ export const ScreenshotUI = GObject.registerClass({
                     _('Screencasts'),
                     /* Translators: this is a filename used for screencast
                      * recording, where "%d" and "%t" date and time, e.g.
-                     * "Screencast from 07-17-2013 10:00:46 PM.webm" */
+                     * "Screencast from 07-17-2013 10:00:46 PM" */
                     /* xgettext:no-c-format */
-                    _('Screencast from %d %t.webm'),
+                    _('Screencast from %d %t'),
                 ]),
                 {'draw-cursor': new GLib.Variant('b', drawCursor)});
 

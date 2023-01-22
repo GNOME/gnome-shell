@@ -33,6 +33,7 @@ const PIPELINE_BLOCKLIST_FILENAME = 'gnome-shell-screencast-pipeline-blocklist';
 const PIPELINES = [
     {
         id: 'swenc-dmabuf-vp8-vp8enc',
+        fileExtension: 'webm',
         pipelineString:
             'capsfilter caps=video/x-raw(memory:DMABuf),max-framerate=%F/1 ! \
              glupload ! glcolorconvert ! gldownload ! \
@@ -43,6 +44,7 @@ const PIPELINES = [
     },
     {
         id: 'swenc-memfd-vp8-vp8enc',
+        fileExtension: 'webm',
         pipelineString:
             'capsfilter caps=video/x-raw,max-framerate=%F/1 ! \
              videoconvert chroma-mode=none dither=none matrix-mode=output-only n-threads=%T ! \
@@ -69,7 +71,7 @@ const SessionState = {
 };
 
 class Recorder extends Signals.EventEmitter {
-    constructor(sessionPath, x, y, width, height, filePath, options,
+    constructor(sessionPath, x, y, width, height, filePathStem, options,
         invocation) {
         super();
 
@@ -79,10 +81,10 @@ class Recorder extends Signals.EventEmitter {
         this._y = y;
         this._width = width;
         this._height = height;
-        this._filePath = filePath;
+        this._filePathStem = filePathStem;
 
         try {
-            const dir = Gio.File.new_for_path(filePath).get_parent();
+            const dir = Gio.File.new_for_path(filePathStem).get_parent();
             dir.make_directory_with_parents(null);
         } catch (e) {
             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
@@ -232,6 +234,11 @@ class Recorder extends Signals.EventEmitter {
     }
 
     _tryNextPipeline() {
+        if (this._filePath) {
+            GLib.unlink(this._filePath);
+            delete this._filePath;
+        }
+
         const {done, value: pipelineConfig} = this._pipelineConfigs.next();
         if (done) {
             this._handleFatalPipelineError('All pipelines failed to start',
@@ -348,7 +355,7 @@ class Recorder extends Signals.EventEmitter {
                 newState === Gst.State.PLAYING) {
                 this._pipelineState = PipelineState.PLAYING;
 
-                this._startRequest.resolve();
+                this._startRequest.resolve(this._filePath);
                 delete this._startRequest;
             }
 
@@ -442,8 +449,9 @@ class Recorder extends Signals.EventEmitter {
     }
 
     _createPipeline(nodeId, pipelineConfig, framerate) {
-        const {pipelineString} = pipelineConfig;
+        const {fileExtension, pipelineString} = pipelineConfig;
         const finalPipelineString = this._substituteVariables(pipelineString, framerate);
+        this._filePath = `${this._filePathStem}.${fileExtension}`;
 
         const fullPipeline = `
             pipewiresrc path=${nodeId}
@@ -544,6 +552,13 @@ export const ScreencastService = class extends ServiceImplementation {
         let filename = '';
         let escape = false;
 
+        // FIXME: temporarily detect and strip .webm prefix to avoid breaking
+        // external consumers of our API, remove this again
+        if (template.endsWith('.webm')) {
+            console.log("'file_template' for screencast includes '.webm' file-extension. Passing the file-extension as part of the filename has been deprecated, pass the 'file_template' without a file-extension instead.");
+            template = template.substring(0, template.length - '.webm'.length);
+        }
+
         [...template].forEach(c => {
             if (escape) {
                 switch (c) {
@@ -605,7 +620,7 @@ export const ScreencastService = class extends ServiceImplementation {
 
         const [fileTemplate, options] = params;
         const [screenWidth, screenHeight] = this._introspectProxy.ScreenSize;
-        const filePath = this._generateFilePath(fileTemplate);
+        const filePathStem = this._generateFilePath(fileTemplate);
 
         let recorder;
 
@@ -614,7 +629,7 @@ export const ScreencastService = class extends ServiceImplementation {
                 sessionPath,
                 0, 0,
                 screenWidth, screenHeight,
-                filePath,
+                filePathStem,
                 options,
                 invocation);
         } catch (error) {
@@ -629,8 +644,8 @@ export const ScreencastService = class extends ServiceImplementation {
         this._addRecorder(sender, recorder);
 
         try {
-            await recorder.startRecording();
-            invocation.return_value(GLib.Variant.new('(bs)', [true, filePath]));
+            const pathWithExtension = await recorder.startRecording();
+            invocation.return_value(GLib.Variant.new('(bs)', [true, pathWithExtension]));
         } catch (error) {
             log(`Failed to start recorder: ${error.message}`);
             this._removeRecorder(sender);
@@ -676,7 +691,7 @@ export const ScreencastService = class extends ServiceImplementation {
         const [sessionPath] = this._proxy.CreateSessionSync({});
 
         const [x, y, width, height, fileTemplate, options] = params;
-        const filePath = this._generateFilePath(fileTemplate);
+        const filePathStem = this._generateFilePath(fileTemplate);
 
         let recorder;
 
@@ -685,7 +700,7 @@ export const ScreencastService = class extends ServiceImplementation {
                 sessionPath,
                 x, y,
                 width, height,
-                filePath,
+                filePathStem,
                 options,
                 invocation);
         } catch (error) {
@@ -700,8 +715,8 @@ export const ScreencastService = class extends ServiceImplementation {
         this._addRecorder(sender, recorder);
 
         try {
-            await recorder.startRecording();
-            invocation.return_value(GLib.Variant.new('(bs)', [true, filePath]));
+            const pathWithExtension = await recorder.startRecording();
+            invocation.return_value(GLib.Variant.new('(bs)', [true, pathWithExtension]));
         } catch (error) {
             log(`Failed to start recorder: ${error.message}`);
             this._removeRecorder(sender);
