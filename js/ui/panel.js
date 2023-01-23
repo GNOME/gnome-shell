@@ -594,10 +594,6 @@ class Panel extends St.Widget {
         indicator.menu.close();
     }
 
-    toggleAppMenu() {
-        this._toggleMenu(this.statusArea.appMenu);
-    }
-
     toggleCalendar() {
         this._toggleMenu(this.statusArea.dateMenu);
     }

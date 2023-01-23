@@ -779,13 +779,6 @@ var WindowManager = class {
                                         Shell.ActionMode.OVERVIEW,
                                         this._startSwitcher.bind(this));
 
-        this.addKeybinding('open-application-menu',
-                           new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                           Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-                           Shell.ActionMode.NORMAL |
-                           Shell.ActionMode.POPUP,
-                           this._toggleAppMenu.bind(this));
-
         this.addKeybinding('toggle-message-tray',
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
@@ -1708,10 +1701,6 @@ var WindowManager = class {
             Main.overview.hide();
             app.activate();
         }
-    }
-
-    _toggleAppMenu() {
-        Main.panel.toggleAppMenu();
     }
 
     _toggleCalendar() {
