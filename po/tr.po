@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-01-18 23:49+0000\n"
-"PO-Revision-Date: 2023-01-22 14:35+0300\n"
-"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
+"POT-Creation-Date: 2023-01-24 22:39+0000\n"
+"PO-Revision-Date: 2023-01-25 02:33+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -489,7 +489,7 @@ msgstr "Ana Sayfa"
 msgid "Visit extension homepage"
 msgstr "Uzantı ana sayfasını ziyaret et"
 
-#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:142 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
@@ -497,7 +497,7 @@ msgstr "Uzantı ana sayfasını ziyaret et"
 msgid "Cancel"
 msgstr "İptal"
 
-#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:305 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -529,19 +529,19 @@ msgstr "Kullanıcı Adı"
 msgid "Login Window"
 msgstr "Oturum Açma Penceresi"
 
-#: js/gdm/util.js:431
+#: js/gdm/util.js:442
 msgid "Authentication error"
 msgstr "Kimlik doğrulama hatası"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:603
+#: js/gdm/util.js:623
 msgid "(or swipe finger across reader)"
 msgstr "(ya da parmağı okuyucuda kaydır)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:608
+#: js/gdm/util.js:628
 msgid "(or place finger on reader)"
 msgstr "(ya da parmağı okuyucuya yerleştir)"
 
@@ -1091,7 +1091,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "“%s”e bağlanmak için parola gerekli."
 
-#: js/ui/components/networkAgent.js:736
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1954
 msgid "Network Manager"
 msgstr "Ağ Yöneticisi"
 
@@ -1666,7 +1666,7 @@ msgstr "Wayland’de yeniden başlatma kullanılabilir değil"
 msgid "Restarting…"
 msgstr "Yeniden başlatılıyor…"
 
-#: js/ui/screenShield.js:235
+#: js/ui/screenShield.js:231
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME’un ekranı kilitlemesi gerekiyor"
 
@@ -1677,11 +1677,11 @@ msgstr "GNOME’un ekranı kilitlemesi gerekiyor"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
+#: js/ui/screenShield.js:271 js/ui/screenShield.js:668
 msgid "Unable to lock"
 msgstr "Kilitlenemedi"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
+#: js/ui/screenShield.js:272 js/ui/screenShield.js:669
 msgid "Lock was blocked by an application"
 msgstr "Kilitleme bir uygulamaca engellendi"
 
@@ -1997,6 +1997,54 @@ msgstr "Bağlan: %s"
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s Erişim Noktası"
+
+#: js/ui/status/network.js:1466 js/ui/status/network.js:1482
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1467
+msgid "VPN Settings"
+msgstr "VPN Ayarları"
+
+#: js/ui/status/network.js:1716
+msgid "Wi–Fi"
+msgstr "Kablosuz"
+
+#: js/ui/status/network.js:1718
+msgid "All Networks"
+msgstr "Tüm Ağlar"
+
+#: js/ui/status/network.js:1815
+msgid "Wired Connections"
+msgstr "Kablolu Bağlantılar"
+
+#: js/ui/status/network.js:1816
+msgid "Wired Settings"
+msgstr "Kablolu Ayarları"
+
+#: js/ui/status/network.js:1830
+msgid "Bluetooth Tethers"
+msgstr "Bluetooth İnternet"
+
+#: js/ui/status/network.js:1831
+msgid "Bluetooth Settings"
+msgstr "Bluetooth Ayarları"
+
+#: js/ui/status/network.js:1845
+msgid "Mobile Connections"
+msgstr "Mobil Bağlantılar"
+
+#: js/ui/status/network.js:1847
+msgid "Mobile Broadband Settings"
+msgstr "Mobil Geniş Bant Ayarları"
+
+#: js/ui/status/network.js:1959
+msgid "Connection failed"
+msgstr "Bağlantı başarısız"
+
+#: js/ui/status/network.js:1960
+msgid "Activation of network connection failed"
+msgstr "Ağ bağlantısının etkinleşimi başarısız"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
@@ -2447,11 +2495,11 @@ msgstr "Elle Kurulmuş"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
-"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a> adresine göz atın."
+"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a> adresine göz atın."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:112
 msgid "Built-In"
