@@ -123,10 +123,7 @@ typedef struct _SymbolicPixbufCache SymbolicPixbufCache;
 struct _SymbolicPixbufCache {
   GdkPixbuf *pixbuf;
   GdkPixbuf *proxy_pixbuf;
-  GdkRGBA fg;
-  GdkRGBA success_color;
-  GdkRGBA warning_color;
-  GdkRGBA error_color;
+  StIconColors *colors;
   SymbolicPixbufCache *next;
 };
 
@@ -1188,60 +1185,26 @@ remove_from_lru_cache (StIconTheme *icon_theme,
 
 static SymbolicPixbufCache *
 symbolic_pixbuf_cache_new (GdkPixbuf           *pixbuf,
-                           const GdkRGBA       *fg,
-                           const GdkRGBA       *success_color,
-                           const GdkRGBA       *warning_color,
-                           const GdkRGBA       *error_color,
+                           StIconColors        *colors,
                            SymbolicPixbufCache *next)
 {
   SymbolicPixbufCache *cache;
 
   cache = g_new0 (SymbolicPixbufCache, 1);
   cache->pixbuf = g_object_ref (pixbuf);
-  if (fg)
-    cache->fg = *fg;
-  if (success_color)
-    cache->success_color = *success_color;
-  if (warning_color)
-    cache->warning_color = *warning_color;
-  if (error_color)
-    cache->error_color = *error_color;
+  if (colors)
+    cache->colors = st_icon_colors_ref (colors);
   cache->next = next;
   return cache;
 }
 
-static gboolean
-rgba_matches (const GdkRGBA *a,
-              const GdkRGBA *b)
-{
-  GdkRGBA transparent = { 0 };
-
-  /* For matching we treat unset colors as transparent rather
-     than default, which works as well, because transparent
-     will never be used for real symbolic icon colors */
-  if (a == NULL)
-    a = &transparent;
-
-  return
-    fabs(a->red - b->red) < 0.0001 &&
-    fabs(a->green - b->green) < 0.0001 &&
-    fabs(a->blue - b->blue) < 0.0001 &&
-    fabs(a->alpha - b->alpha) < 0.0001;
-}
-
 static SymbolicPixbufCache *
 symbolic_pixbuf_cache_matches (SymbolicPixbufCache *cache,
-                               const GdkRGBA       *fg,
-                               const GdkRGBA       *success_color,
-                               const GdkRGBA       *warning_color,
-                               const GdkRGBA       *error_color)
+                               StIconColors        *colors)
 {
   while (cache != NULL)
     {
-      if (rgba_matches (fg, &cache->fg) &&
-          rgba_matches (success_color, &cache->success_color) &&
-          rgba_matches (warning_color, &cache->warning_color) &&
-          rgba_matches (error_color, &cache->error_color))
+      if (st_icon_colors_equal (colors, cache->colors))
         return cache;
 
       cache = cache->next;
@@ -1259,6 +1222,7 @@ symbolic_pixbuf_cache_free (SymbolicPixbufCache *cache)
     {
       next = cache->next;
       g_object_unref (cache->pixbuf);
+      g_clear_pointer (&cache->colors, st_icon_colors_unref);
       g_free (cache);
 
       cache = next;
@@ -3691,32 +3655,27 @@ symbolic_cache_get_proxy (SymbolicPixbufCache *symbolic_cache,
 }
 
 static char *
-rgba_to_string_noalpha (const GdkRGBA *rgba)
+color_to_string_noalpha (const ClutterColor *color)
 {
-  GdkRGBA color;
-
-  color = *rgba;
-  color.alpha = 1.0;
-
-  return gdk_rgba_to_string (&color);
+  return g_strdup_printf ("rgb(%d,%d,%d)",
+                          CLAMP (color->red, 0, 255),
+                          CLAMP (color->green, 0, 255),
+                          CLAMP (color->blue, 0, 255));
 }
 
 static void
-rgba_to_pixel(const GdkRGBA  *rgba,
-              uint8_t pixel[4])
+color_to_pixel(const ClutterColor *color,
+               uint8_t             pixel[4])
 {
-  pixel[0] = rgba->red * 255;
-  pixel[1] = rgba->green * 255;
-  pixel[2] = rgba->blue * 255;
+  pixel[0] = color->red;
+  pixel[1] = color->green;
+  pixel[2] = color->blue;
   pixel[3] = 255;
 }
 
 static GdkPixbuf *
-color_symbolic_pixbuf (GdkPixbuf     *symbolic,
-                       const GdkRGBA *fg_color,
-                       const GdkRGBA *success_color,
-                       const GdkRGBA *warning_color,
-                       const GdkRGBA *error_color)
+color_symbolic_pixbuf (GdkPixbuf    *symbolic,
+                       StIconColors *colors)
 {
   int width, height, x, y, src_stride, dst_stride;
   guchar *src_data, *dst_data;
@@ -3725,12 +3684,12 @@ color_symbolic_pixbuf (GdkPixbuf     *symbolic,
   GdkPixbuf *colored;
   uint8_t fg_pixel[4], success_pixel[4], warning_pixel[4], error_pixel[4];
 
-  alpha = fg_color->alpha * 255;
+  alpha = colors->foreground.alpha;
 
-  rgba_to_pixel (fg_color, fg_pixel);
-  rgba_to_pixel (success_color, success_pixel);
-  rgba_to_pixel (warning_color, warning_pixel);
-  rgba_to_pixel (error_color, error_pixel);
+  color_to_pixel (&colors->foreground, fg_pixel);
+  color_to_pixel (&colors->success, success_pixel);
+  color_to_pixel (&colors->warning, warning_pixel);
+  color_to_pixel (&colors->error, error_pixel);
 
   width = gdk_pixbuf_get_width (symbolic);
   height = gdk_pixbuf_get_height (symbolic);
@@ -3796,18 +3755,10 @@ color_symbolic_pixbuf (GdkPixbuf     *symbolic,
 }
 
 static GdkPixbuf *
-st_icon_info_load_symbolic_png (StIconInfo     *icon_info,
-                                const GdkRGBA  *fg,
-                                const GdkRGBA  *success_color,
-                                const GdkRGBA  *warning_color,
-                                const GdkRGBA  *error_color,
-                                GError        **error)
+st_icon_info_load_symbolic_png (StIconInfo    *icon_info,
+                                StIconColors  *colors,
+                                GError       **error)
 {
-  GdkRGBA fg_default = { 0.7450980392156863, 0.7450980392156863, 0.7450980392156863, 1.0};
-  GdkRGBA success_default = { 0.3046921492332342,0.6015716792553597, 0.023437857633325704, 1.0};
-  GdkRGBA warning_default = {0.9570458533607996, 0.47266346227206835, 0.2421911955443656, 1.0 };
-  GdkRGBA error_default = { 0.796887159533074, 0 ,0, 1.0 };
-
   if (!icon_info_ensure_scale_and_pixbuf (icon_info))
     {
       if (icon_info->load_error)
@@ -3826,20 +3777,13 @@ st_icon_info_load_symbolic_png (StIconInfo     *icon_info,
       return NULL;
     }
 
-  return color_symbolic_pixbuf (icon_info->pixbuf,
-                                fg ? fg : &fg_default,
-                                success_color ? success_color : &success_default,
-                                warning_color ? warning_color : &warning_default,
-                                error_color ? error_color : &error_default);
+  return color_symbolic_pixbuf (icon_info->pixbuf, colors);
 }
 
 static GdkPixbuf *
-st_icon_info_load_symbolic_svg (StIconInfo     *icon_info,
-                                const GdkRGBA  *fg,
-                                const GdkRGBA  *success_color,
-                                const GdkRGBA  *warning_color,
-                                const GdkRGBA  *error_color,
-                                GError        **error)
+st_icon_info_load_symbolic_svg (StIconInfo    *icon_info,
+                                StIconColors  *colors,
+                                GError       **error)
 {
   GInputStream *stream;
   GdkPixbuf *pixbuf;
@@ -3857,26 +3801,13 @@ st_icon_info_load_symbolic_svg (StIconInfo     *icon_info,
   double alpha;
   char alphastr[G_ASCII_DTOSTR_BUF_SIZE];
 
-  alpha = fg->alpha;
+  alpha = colors->foreground.alpha;
 
-  css_fg = rgba_to_string_noalpha (fg);
+  css_fg = color_to_string_noalpha (&colors->foreground);
 
-  css_success = css_warning = css_error = NULL;
-
-  if (warning_color)
-    css_warning = rgba_to_string_noalpha (warning_color);
-  else
-    css_warning = g_strdup ("rgb(245,121,62)");
-
-  if (error_color)
-    css_error = rgba_to_string_noalpha (error_color);
-  else
-    css_error = g_strdup ("rgb(204,0,0)");
-
-  if (success_color)
-    css_success = rgba_to_string_noalpha (success_color);
-  else
-    css_success = g_strdup ("rgb(78,154,6)");
+  css_warning = color_to_string_noalpha (&colors->warning);
+  css_error = color_to_string_noalpha (&colors->error);
+  css_success = color_to_string_noalpha (&colors->success);
 
   if (!g_file_load_contents (icon_info->icon_file, NULL, &file_data, &file_len, NULL, error))
     return NULL;
@@ -3961,12 +3892,9 @@ st_icon_info_load_symbolic_svg (StIconInfo     *icon_info,
 
 static GdkPixbuf *
 st_icon_info_load_symbolic_internal (StIconInfo     *icon_info,
-                                     const GdkRGBA  *fg,
-                                     const GdkRGBA  *success_color,
-                                     const GdkRGBA  *warning_color,
-                                     const GdkRGBA  *error_color,
-                                     gboolean        use_cache,
-                                     GError        **error)
+				     StIconColors  *colors,
+				     gboolean       use_cache,
+				     GError       **error)
 {
   GdkPixbuf *pixbuf;
   SymbolicPixbufCache *symbolic_cache;
@@ -3974,8 +3902,7 @@ st_icon_info_load_symbolic_internal (StIconInfo     *icon_info,
 
   if (use_cache)
     {
-      symbolic_cache = symbolic_pixbuf_cache_matches (icon_info->symbolic_pixbuf_cache,
-                                                      fg, success_color, warning_color, error_color);
+      symbolic_cache = symbolic_pixbuf_cache_matches (icon_info->symbolic_pixbuf_cache, colors);
       if (symbolic_cache)
         return symbolic_cache_get_proxy (symbolic_cache, icon_info);
     }
@@ -3983,13 +3910,13 @@ st_icon_info_load_symbolic_internal (StIconInfo     *icon_info,
   /* css_fg can't possibly have failed, otherwise
    * that would mean we have a broken style
    */
-  g_return_val_if_fail (fg != NULL, NULL);
+  g_return_val_if_fail (colors != NULL, NULL);
 
   icon_uri = g_file_get_uri (icon_info->icon_file);
   if (g_str_has_suffix (icon_uri, ".symbolic.png"))
-    pixbuf = st_icon_info_load_symbolic_png (icon_info, fg, success_color, warning_color, error_color, error);
+    pixbuf = st_icon_info_load_symbolic_png (icon_info, colors, error);
   else
-    pixbuf = st_icon_info_load_symbolic_svg (icon_info, fg, success_color, warning_color, error_color, error);
+    pixbuf = st_icon_info_load_symbolic_svg (icon_info, colors, error);
 
   if (pixbuf != NULL)
     {
@@ -4005,8 +3932,7 @@ st_icon_info_load_symbolic_internal (StIconInfo     *icon_info,
       if (use_cache)
         {
           icon_info->symbolic_pixbuf_cache =
-            symbolic_pixbuf_cache_new (pixbuf, fg, success_color, warning_color, error_color,
-                                       icon_info->symbolic_pixbuf_cache);
+            symbolic_pixbuf_cache_new (pixbuf, colors, icon_info->symbolic_pixbuf_cache);
           g_object_unref (pixbuf);
           return symbolic_cache_get_proxy (icon_info->symbolic_pixbuf_cache, icon_info);
         }
@@ -4020,13 +3946,7 @@ st_icon_info_load_symbolic_internal (StIconInfo     *icon_info,
 /**
  * st_icon_info_load_symbolic:
  * @icon_info: a #StIconInfo
- * @fg: a #GdkRGBA representing the foreground color of the icon
- * @success_color: (allow-none): a #GdkRGBA representing the warning color
- *     of the icon or %NULL to use the default color
- * @warning_color: (allow-none): a #GdkRGBA representing the warning color
- *     of the icon or %NULL to use the default color
- * @error_color: (allow-none): a #GdkRGBA representing the error color
- *     of the icon or %NULL to use the default color (allow-none)
+ * @colors: a #StIconColors representing the foreground, warning and error colors
  * @was_symbolic: (out) (allow-none): a #gboolean, returns whether the
  *     loaded icon was a symbolic one and whether the @fg color was
  *     applied to it.
@@ -4053,18 +3973,15 @@ st_icon_info_load_symbolic_internal (StIconInfo     *icon_info,
  * Returns: (transfer full): a #GdkPixbuf representing the loaded icon
  */
 GdkPixbuf *
-st_icon_info_load_symbolic (StIconInfo     *icon_info,
-                            const GdkRGBA  *fg,
-                            const GdkRGBA  *success_color,
-                            const GdkRGBA  *warning_color,
-                            const GdkRGBA  *error_color,
-                            gboolean       *was_symbolic,
-                            GError        **error)
+st_icon_info_load_symbolic (StIconInfo    *icon_info,
+                            StIconColors  *colors,
+                            gboolean      *was_symbolic,
+                            GError       **error)
 {
   gboolean is_symbolic;
 
   g_return_val_if_fail (icon_info != NULL, NULL);
-  g_return_val_if_fail (fg != NULL, NULL);
+  g_return_val_if_fail (colors != NULL, NULL);
 
   is_symbolic = st_icon_info_is_symbolic (icon_info);
 
@@ -4075,8 +3992,7 @@ st_icon_info_load_symbolic (StIconInfo     *icon_info,
     return st_icon_info_load_icon (icon_info, error);
 
   return st_icon_info_load_symbolic_internal (icon_info,
-                                              fg, success_color,
-                                              warning_color, error_color,
+                                              colors,
                                               TRUE,
                                               error);
 }
@@ -4084,14 +4000,7 @@ st_icon_info_load_symbolic (StIconInfo     *icon_info,
 typedef struct {
   gboolean is_symbolic;
   StIconInfo *dup;
-  GdkRGBA fg;
-  gboolean fg_set;
-  GdkRGBA success_color;
-  gboolean success_color_set;
-  GdkRGBA warning_color;
-  gboolean warning_color_set;
-  GdkRGBA error_color;
-  gboolean error_color_set;
+  StIconColors *colors;
 } AsyncSymbolicData;
 
 static void
@@ -4099,6 +4008,7 @@ async_symbolic_data_free (AsyncSymbolicData *data)
 {
   if (data->dup)
     g_object_unref (data->dup);
+  g_clear_pointer (&data->colors, st_icon_colors_unref);
   g_free (data);
 }
 
@@ -4132,10 +4042,7 @@ load_symbolic_icon_thread (GTask        *task,
 
   error = NULL;
   pixbuf = st_icon_info_load_symbolic_internal (data->dup,
-                                                data->fg_set ? &data->fg : NULL,
-                                                data->success_color_set ? &data->success_color : NULL,
-                                                data->warning_color_set ? &data->warning_color : NULL,
-                                                data->error_color_set ? &data->error_color : NULL,
+                                                data->colors,
                                                 FALSE,
                                                 &error);
   if (pixbuf == NULL)
@@ -4147,13 +4054,8 @@ load_symbolic_icon_thread (GTask        *task,
 /**
  * st_icon_info_load_symbolic_async:
  * @icon_info: a #StIconInfo from st_icon_theme_lookup_icon()
- * @fg: a #GdkRGBA representing the foreground color of the icon
- * @success_color: (allow-none): a #GdkRGBA representing the warning color
- *     of the icon or %NULL to use the default color
- * @warning_color: (allow-none): a #GdkRGBA representing the warning color
- *     of the icon or %NULL to use the default color
- * @error_color: (allow-none): a #GdkRGBA representing the error color
- *     of the icon or %NULL to use the default color (allow-none)
+ * @colors: an #StIconColors representing the foreground, error and
+ *     success colors of the icon
  * @cancellable: (allow-none): optional #GCancellable object,
  *     %NULL to ignore
  * @callback: (scope async): a #GAsyncReadyCallback to call when the
@@ -4168,10 +4070,7 @@ load_symbolic_icon_thread (GTask        *task,
  */
 void
 st_icon_info_load_symbolic_async (StIconInfo          *icon_info,
-                                  const GdkRGBA       *fg,
-                                  const GdkRGBA       *success_color,
-                                  const GdkRGBA       *warning_color,
-                                  const GdkRGBA       *error_color,
+                                  StIconColors        *colors,
                                   GCancellable        *cancellable,
                                   GAsyncReadyCallback  callback,
                                   gpointer             user_data)
@@ -4182,7 +4081,7 @@ st_icon_info_load_symbolic_async (StIconInfo          *icon_info,
   GdkPixbuf *pixbuf;
 
   g_return_if_fail (icon_info != NULL);
-  g_return_if_fail (fg != NULL);
+  g_return_if_fail (colors != NULL);
 
   task = g_task_new (icon_info, cancellable, callback, user_data);
 
@@ -4197,8 +4096,7 @@ st_icon_info_load_symbolic_async (StIconInfo          *icon_info,
     }
   else
     {
-      symbolic_cache = symbolic_pixbuf_cache_matches (icon_info->symbolic_pixbuf_cache,
-                                                      fg, success_color, warning_color, error_color);
+      symbolic_cache = symbolic_pixbuf_cache_matches (icon_info->symbolic_pixbuf_cache, colors);
       if (symbolic_cache)
         {
           pixbuf = symbolic_cache_get_proxy (symbolic_cache, icon_info);
@@ -4206,31 +4104,8 @@ st_icon_info_load_symbolic_async (StIconInfo          *icon_info,
         }
       else
         {
-          if (fg)
-            {
-              data->fg = *fg;
-              data->fg_set = TRUE;
-            }
-
-          if (success_color)
-            {
-              data->success_color = *success_color;
-              data->success_color_set = TRUE;
-            }
-
-          if (warning_color)
-            {
-              data->warning_color = *warning_color;
-              data->warning_color_set = TRUE;
-            }
-
-          if (error_color)
-            {
-              data->error_color = *error_color;
-              data->error_color_set = TRUE;
-            }
-
           data->dup = icon_info_dup (icon_info);
+          data->colors = st_icon_colors_ref (colors);
           g_task_run_in_thread (task, load_symbolic_icon_thread);
         }
     }
@@ -4275,19 +4150,13 @@ st_icon_info_load_symbolic_finish (StIconInfo    *icon_info,
       g_assert (pixbuf != NULL); /* we checked for !had_error above */
 
       symbolic_cache = symbolic_pixbuf_cache_matches (icon_info->symbolic_pixbuf_cache,
-                                                      data->fg_set ? &data->fg : NULL,
-                                                      data->success_color_set ? &data->success_color : NULL,
-                                                      data->warning_color_set ? &data->warning_color : NULL,
-                                                      data->error_color_set ? &data->error_color : NULL);
+                                                      data->colors);
 
       if (symbolic_cache == NULL)
         {
           symbolic_cache = icon_info->symbolic_pixbuf_cache =
             symbolic_pixbuf_cache_new (pixbuf,
-                                       data->fg_set ? &data->fg : NULL,
-                                       data->success_color_set ? &data->success_color : NULL,
-                                       data->warning_color_set ? &data->warning_color : NULL,
-                                       data->error_color_set ? &data->error_color : NULL,
+                                       data->colors,
                                        icon_info->symbolic_pixbuf_cache);
         }
 

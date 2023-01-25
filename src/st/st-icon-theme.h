@@ -22,7 +22,7 @@
 #pragma once
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <gdk/gdk.h>
+#include "st-icon-colors.h"
 
 G_BEGIN_DECLS
 
@@ -191,19 +191,13 @@ GdkPixbuf * st_icon_info_load_icon_finish (StIconInfo    *icon_info,
                                            GAsyncResult  *res,
                                            GError       **error);
 
-GdkPixbuf * st_icon_info_load_symbolic (StIconInfo     *icon_info,
-                                        const GdkRGBA  *fg,
-                                        const GdkRGBA  *success_color,
-                                        const GdkRGBA  *warning_color,
-                                        const GdkRGBA  *error_color,
-                                        gboolean       *was_symbolic,
-                                        GError        **error);
+GdkPixbuf * st_icon_info_load_symbolic (StIconInfo    *icon_info,
+                                        StIconColors  *colors,
+                                        gboolean      *was_symbolic,
+                                        GError       **error);
 
 void st_icon_info_load_symbolic_async (StIconInfo           *icon_info,
-                                       const GdkRGBA        *fg,
-                                       const GdkRGBA        *success_color,
-                                       const GdkRGBA        *warning_color,
-                                       const GdkRGBA        *error_color,
+                                       StIconColors         *colors,
                                        GCancellable         *cancellable,
                                        GAsyncReadyCallback   callback,
                                        gpointer              user_data);
