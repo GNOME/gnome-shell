@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-01-18 23:49+0000\n"
-"PO-Revision-Date: 2023-01-20 18:52+0300\n"
+"POT-Creation-Date: 2023-01-24 22:39+0000\n"
+"PO-Revision-Date: 2023-01-25 12:52+0300\n"
 "Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -467,7 +467,7 @@ msgstr "Хатняя старонка"
 msgid "Visit extension homepage"
 msgstr "Наведаць хатнюю старонку пашырэння"
 
-#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:142 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
@@ -475,7 +475,7 @@ msgstr "Наведаць хатнюю старонку пашырэння"
 msgid "Cancel"
 msgstr "Скасаваць"
 
-#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:305 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -507,19 +507,19 @@ msgstr "Імя карыстальніка"
 msgid "Login Window"
 msgstr "Акно ўваходу ў сістэму"
 
-#: js/gdm/util.js:431
+#: js/gdm/util.js:442
 msgid "Authentication error"
 msgstr "Памылка праверкі сапраўднасці"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:603
+#: js/gdm/util.js:623
 msgid "(or swipe finger across reader)"
 msgstr "(або правядзіце пальцам па чытальніку)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:608
+#: js/gdm/util.js:628
 msgid "(or place finger on reader)"
 msgstr "(або прыкладзіце палец да чытальніка)"
 
@@ -1078,7 +1078,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Каб злучыцца з «%s», патрабуецца пароль."
 
-#: js/ui/components/networkAgent.js:736
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1954
 msgid "Network Manager"
 msgstr "Менеджар сетак"
 
@@ -1668,7 +1668,7 @@ msgstr "Перазапуск недаступны на Wayland"
 msgid "Restarting…"
 msgstr "Перазапуск…"
 
-#: js/ui/screenShield.js:235
+#: js/ui/screenShield.js:231
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME патрабуе заблакіраваць экран"
 
@@ -1679,11 +1679,11 @@ msgstr "GNOME патрабуе заблакіраваць экран"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
+#: js/ui/screenShield.js:271 js/ui/screenShield.js:668
 msgid "Unable to lock"
 msgstr "Не ўдалося заблакіраваць"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
+#: js/ui/screenShield.js:272 js/ui/screenShield.js:669
 msgid "Lock was blocked by an application"
 msgstr "Блакіраванне спынена праграмай"
 
@@ -2002,6 +2002,56 @@ msgstr "Злучыцца з %s"
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Хот-спот %s"
+
+#: js/ui/status/network.js:1466 js/ui/status/network.js:1482
+#| msgid "PIN"
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1467
+msgid "VPN Settings"
+msgstr "Налады VPN"
+
+#: js/ui/status/network.js:1716
+msgid "Wi–Fi"
+msgstr "Wi–Fi"
+
+#: js/ui/status/network.js:1718
+msgid "All Networks"
+msgstr "Усе сеткі"
+
+#: js/ui/status/network.js:1815
+msgid "Wired Connections"
+msgstr "Правадныя злучэнні"
+
+#: js/ui/status/network.js:1816
+msgid "Wired Settings"
+msgstr "Налады праваднога злучэння"
+
+#: js/ui/status/network.js:1830
+#| msgid "Bluetooth"
+msgid "Bluetooth Tethers"
+msgstr "Bluetooth Tethers"
+
+#: js/ui/status/network.js:1831
+msgid "Bluetooth Settings"
+msgstr "Налады Bluetooth"
+
+#: js/ui/status/network.js:1845
+msgid "Mobile Connections"
+msgstr "Мабільныя злучэнні"
+
+#: js/ui/status/network.js:1847
+msgid "Mobile Broadband Settings"
+msgstr "Налады мабільнага злучэння"
+
+#: js/ui/status/network.js:1959
+msgid "Connection failed"
+msgstr "Не ўдалося злучыцца"
+
+#: js/ui/status/network.js:1960
+msgid "Activation of network connection failed"
+msgstr "Не ўдалося актываваць сеткавае злучэнне"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
