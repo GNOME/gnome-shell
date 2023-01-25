@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-01-18 23:49+0000\n"
-"PO-Revision-Date: 2023-01-20 17:46+0100\n"
+"POT-Creation-Date: 2023-01-24 22:39+0000\n"
+"PO-Revision-Date: 2023-01-25 07:56+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -432,7 +432,7 @@ msgstr "Homepage"
 msgid "Visit extension homepage"
 msgstr "გაფართოებების ვებგვერდის გახსნა"
 
-#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:142 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
@@ -440,7 +440,7 @@ msgstr "გაფართოებების ვებგვერდის �
 msgid "Cancel"
 msgstr "გაუქმება"
 
-#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:305 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -472,19 +472,19 @@ msgstr "მომხმარებლის სახელი"
 msgid "Login Window"
 msgstr "შესვლის ფანჯარა"
 
-#: js/gdm/util.js:431
+#: js/gdm/util.js:442
 msgid "Authentication error"
 msgstr "ავთენტიკაციის შეცდომა"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:603
+#: js/gdm/util.js:623
 msgid "(or swipe finger across reader)"
 msgstr "(ან გადაუსვით თითი წამკითხველს)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:608
+#: js/gdm/util.js:628
 msgid "(or place finger on reader)"
 msgstr "(ან მოათავსეთ თითი წამკითხველზე)"
 
@@ -1026,7 +1026,7 @@ msgstr "PIN კოდი"
 msgid "A password is required to connect to “%s”."
 msgstr "%s-თან დასაკავშირებლად საჭიროა პაროლი."
 
-#: js/ui/components/networkAgent.js:736
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1954
 msgid "Network Manager"
 msgstr "ქსელის მმართველი"
 
@@ -1600,7 +1600,7 @@ msgstr "Wayland-ში გადატვირთვა მიუწვდო�
 msgid "Restarting…"
 msgstr "გადატვირთვა…"
 
-#: js/ui/screenShield.js:235
+#: js/ui/screenShield.js:231
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME -ს სჭირდება თქვენი ეკრანის ჩაკეტვა"
 
@@ -1611,11 +1611,11 @@ msgstr "GNOME -ს სჭირდება თქვენი ეკრან�
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
+#: js/ui/screenShield.js:271 js/ui/screenShield.js:668
 msgid "Unable to lock"
 msgstr "ჩაკეტვის შეცდომა"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
+#: js/ui/screenShield.js:272 js/ui/screenShield.js:669
 msgid "Lock was blocked by an application"
 msgstr "ჩაკეტვა დაბლოკილია აპლიკაციის მიერ"
 
@@ -1932,6 +1932,54 @@ msgstr "%s-სთან დაკავშირება"
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s Hotspot-ი"
+
+#: js/ui/status/network.js:1466 js/ui/status/network.js:1482
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1467
+msgid "VPN Settings"
+msgstr "VPN-ის მორგება"
+
+#: js/ui/status/network.js:1716
+msgid "Wi–Fi"
+msgstr "Wi–Fi"
+
+#: js/ui/status/network.js:1718
+msgid "All Networks"
+msgstr "ყველა ქსელი"
+
+#: js/ui/status/network.js:1815
+msgid "Wired Connections"
+msgstr "მავთულიანი კავშირები"
+
+#: js/ui/status/network.js:1816
+msgid "Wired Settings"
+msgstr "მავთულით მიერთების მორგება"
+
+#: js/ui/status/network.js:1830
+msgid "Bluetooth Tethers"
+msgstr "ბლუთუზით მიბმა"
+
+#: js/ui/status/network.js:1831
+msgid "Bluetooth Settings"
+msgstr "Bluetooth-ის მორგება"
+
+#: js/ui/status/network.js:1845
+msgid "Mobile Connections"
+msgstr "მობილური კავშირები"
+
+#: js/ui/status/network.js:1847
+msgid "Mobile Broadband Settings"
+msgstr "მობილური კავშირის მორგება"
+
+#: js/ui/status/network.js:1959
+msgid "Connection failed"
+msgstr "დაკავშირება ვერ მოხერხდა"
+
+#: js/ui/status/network.js:1960
+msgid "Activation of network connection failed"
+msgstr "ქსელის კავშირის აქტივაციის შეცდომა"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
@@ -2835,9 +2883,6 @@ msgstr "სისტემური ხმები"
 #~ msgid "Log Out"
 #~ msgstr "გასვლა"
 
-#~ msgid "Bluetooth Settings"
-#~ msgstr "Bluetooth-ის მორგება"
-
 #, javascript-format
 #~ msgid "%d Connected"
 #~ msgid_plural "%d Connected"
@@ -2890,12 +2935,6 @@ msgstr "სისტემური ხმები"
 #~ msgid "%s Connection Failed"
 #~ msgstr "%s კავშირის შეცდომა"
 
-#~ msgid "Wired Settings"
-#~ msgstr "მავთულით მიერთების მორგება"
-
-#~ msgid "Mobile Broadband Settings"
-#~ msgstr "მობილური კავშირის მორგება"
-
 #, javascript-format
 #~ msgid "%s Hardware Disabled"
 #~ msgstr "%s აპარატურა გათიშულია"
@@ -2931,9 +2970,6 @@ msgstr "სისტემური ხმები"
 #~ msgid "Select a network"
 #~ msgstr "აირჩიეთ ქსელი"
 
-#~ msgid "No Networks"
-#~ msgstr "ქსელები ნაპოვნი არაა"
-
 #~ msgid "Use hardware switch to turn off"
 #~ msgstr "გამოსართავად გამოიყენეთ აპარატურული გადამრთველი"
 
@@ -2968,35 +3004,13 @@ msgstr "სისტემური ხმები"
 #~ msgid "connection failed"
 #~ msgstr "შეერთების შეცდომა"
 
-#~ msgid "VPN Settings"
-#~ msgstr "VPN-ის მორგება"
-
-#~ msgid "VPN"
-#~ msgstr "VPN"
-
 #~ msgid "VPN Off"
 #~ msgstr "VPN გამორთულია"
-
-#, javascript-format
-#~ msgid "%s Wired Connection"
-#~ msgid_plural "%s Wired Connections"
-#~ msgstr[0] "%s კავშირი მავთულით"
 
 #, javascript-format
 #~ msgid "%s Wi-Fi Connection"
 #~ msgid_plural "%s Wi-Fi Connections"
 #~ msgstr[0] "%s Wi-Fi კავშირი"
-
-#, javascript-format
-#~ msgid "%s Modem Connection"
-#~ msgid_plural "%s Modem Connections"
-#~ msgstr[0] "%s მოდემით კავშირი"
-
-#~ msgid "Connection failed"
-#~ msgstr "დაკავშირება ვერ მოხერხდა"
-
-#~ msgid "Activation of network connection failed"
-#~ msgstr "ქსელის კავშირის აქტივაციის შეცდომა"
 
 #~ msgid "Night Light Disabled"
 #~ msgstr "ღამის სინათლე გამორთულია"
