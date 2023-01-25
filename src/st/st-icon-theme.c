@@ -500,7 +500,7 @@ free_dir_mtime (IconThemeDirMtime *dir_mtime)
     _gtk_icon_cache_unref (dir_mtime->cache);
 
   g_free (dir_mtime->dir);
-  g_slice_free (IconThemeDirMtime, dir_mtime);
+  g_free (dir_mtime);
 }
 
 static gboolean
@@ -810,7 +810,7 @@ insert_theme (GtkIconTheme *icon_theme,
       path = g_build_filename (icon_theme->search_path[i],
                                theme_name,
                                NULL);
-      dir_mtime = g_slice_new (IconThemeDirMtime);
+      dir_mtime = g_new (IconThemeDirMtime, 1);
       dir_mtime->cache = NULL;
       dir_mtime->dir = path;
       if (g_stat (path, &stat_buf) == 0 && S_ISDIR (stat_buf.st_mode)) {
@@ -925,7 +925,7 @@ free_unthemed_icon (UnthemedIcon *unthemed_icon)
 {
   g_free (unthemed_icon->svg_filename);
   g_free (unthemed_icon->no_svg_filename);
-  g_slice_free (UnthemedIcon, unthemed_icon);
+  g_free (unthemed_icon);
 }
 
 static char *
@@ -995,7 +995,7 @@ add_unthemed_icon (GtkIconTheme *icon_theme,
     }
   else
     {
-      unthemed_icon = g_slice_new0 (UnthemedIcon);
+      unthemed_icon = g_new0 (UnthemedIcon, 1);
 
       unthemed_icon->is_resource = is_resource;
 
@@ -1041,7 +1041,7 @@ load_themes (GtkIconTheme *icon_theme)
     {
       dir = icon_theme->search_path[base];
 
-      dir_mtime = g_slice_new (IconThemeDirMtime);
+      dir_mtime = g_new (IconThemeDirMtime, 1);
       icon_theme->dir_mtimes = g_list_prepend (icon_theme->dir_mtimes, dir_mtime);
 
       dir_mtime->dir = g_strdup (dir);
@@ -4188,7 +4188,7 @@ async_symbolic_data_free (AsyncSymbolicData *data)
 {
   if (data->dup)
     g_object_unref (data->dup);
-  g_slice_free (AsyncSymbolicData, data);
+  g_free (data);
 }
 
 static void
@@ -4277,7 +4277,7 @@ gtk_icon_info_load_symbolic_async (GtkIconInfo          *icon_info,
 
   task = g_task_new (icon_info, cancellable, callback, user_data);
 
-  data = g_slice_new0 (AsyncSymbolicData);
+  data = g_new0 (AsyncSymbolicData, 1);
   g_task_set_task_data (task, data, (GDestroyNotify) async_symbolic_data_free);
 
   data->is_symbolic = gtk_icon_info_is_symbolic (icon_info);
