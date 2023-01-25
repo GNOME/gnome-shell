@@ -59,7 +59,7 @@ st_shadow_new (ClutterColor *color,
 {
   StShadow *shadow;
 
-  shadow = g_new (StShadow, 1);
+  shadow = g_atomic_rc_box_new (StShadow);
 
   shadow->color     = *color;
   shadow->xoffset   = xoffset;
@@ -67,7 +67,6 @@ st_shadow_new (ClutterColor *color,
   shadow->blur      = blur;
   shadow->spread    = spread;
   shadow->inset     = inset;
-  shadow->ref_count = 1;
 
   return shadow;
 }
@@ -84,10 +83,8 @@ StShadow *
 st_shadow_ref (StShadow *shadow)
 {
   g_return_val_if_fail (shadow != NULL, NULL);
-  g_return_val_if_fail (shadow->ref_count > 0, shadow);
 
-  g_atomic_int_inc (&shadow->ref_count);
-  return shadow;
+  return g_atomic_rc_box_acquire (shadow);
 }
 
 /**
@@ -102,10 +99,8 @@ void
 st_shadow_unref (StShadow *shadow)
 {
   g_return_if_fail (shadow != NULL);
-  g_return_if_fail (shadow->ref_count > 0);
 
-  if (g_atomic_int_dec_and_test (&shadow->ref_count))
-    g_free (shadow);
+  g_atomic_rc_box_release (shadow);
 }
 
 /**

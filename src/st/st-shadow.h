@@ -51,7 +51,6 @@ struct _StShadow {
     gdouble      blur;
     gdouble      spread;
     gboolean     inset;
-    volatile int ref_count;
 };
 
 GType     st_shadow_get_type (void) G_GNUC_CONST;

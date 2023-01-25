@@ -43,34 +43,29 @@
 
 
 struct _StIconCache {
-  int ref_count;
-
   GMappedFile *map;
   char *buffer;
 
   guint32 last_chain_offset;
 };
 
+static void
+clear_icon_cache (gpointer data)
+{
+  StIconCache *cache = data;
+  g_clear_pointer (&cache->map, g_mapped_file_unref);
+}
+
 StIconCache *
 st_icon_cache_ref (StIconCache *cache)
 {
-  cache->ref_count++;
-  return cache;
+  return g_atomic_rc_box_acquire (cache);
 }
 
 void
 st_icon_cache_unref (StIconCache *cache)
 {
-  cache->ref_count --;
-
-  if (cache->ref_count == 0)
-    {
-      g_debug ("unmapping icon cache");
-
-      if (cache->map)
-        g_mapped_file_unref (cache->map);
-      g_free (cache);
-    }
+  g_atomic_rc_box_release_full (cache, clear_icon_cache);
 }
 
 StIconCache *
@@ -115,8 +110,7 @@ st_icon_cache_new_for_path (const char *path)
 
   g_debug ("found icon cache for %s", path);
 
-  cache = g_new0 (StIconCache, 1);
-  cache->ref_count = 1;
+  cache = g_atomic_rc_box_new0 (StIconCache);
   cache->map = map;
   cache->buffer = g_mapped_file_get_contents (map);
 
@@ -133,9 +127,7 @@ st_icon_cache_new (const char *data)
 {
   StIconCache *cache;
 
-  cache = g_new0 (StIconCache, 1);
-  cache->ref_count = 1;
-  cache->map = NULL;
+  cache = g_atomic_rc_box_new0 (StIconCache);
   cache->buffer = (char *)data;
 
   return cache;

@@ -21,8 +21,6 @@ typedef struct _StIconColors StIconColors;
  * icon.
  */
 struct _StIconColors {
-  volatile guint ref_count;
-
   ClutterColor foreground;
   ClutterColor warning;
   ClutterColor error;
