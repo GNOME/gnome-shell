@@ -25,7 +25,7 @@
 #include "st-texture-cache.h"
 #include "st-private.h"
 #include "st-settings.h"
-#include <gtk/gtk.h>
+#include "st-icon-theme.h"
 #include <math.h>
 #include <string.h>
 #include <glib.h>
@@ -36,7 +36,7 @@
 
 struct _StTextureCachePrivate
 {
-  GtkIconTheme *icon_theme;
+  StIconTheme *icon_theme;
 
   /* Things that were loaded with a cache policy != NONE */
   GHashTable *keyed_cache; /* char * -> ClutterImage* */
@@ -152,26 +152,8 @@ st_texture_cache_evict_icons (StTextureCache *cache)
 }
 
 static void
-on_icon_theme_changed (StSettings     *settings,
-                       GParamSpec     *pspec,
-                       StTextureCache *cache)
-{
-  g_autofree gchar *theme = NULL;
-
-  g_cancellable_cancel (cache->priv->cancellable);
-  g_cancellable_reset (cache->priv->cancellable);
-
-  st_texture_cache_evict_icons (cache);
-
-  g_object_get (settings, "gtk-icon-theme", &theme, NULL);
-  gtk_icon_theme_set_custom_theme (cache->priv->icon_theme, theme);
-
-  g_signal_emit (cache, signals[ICON_THEME_CHANGED], 0);
-}
-
-static void
-on_gtk_icon_theme_changed (GtkIconTheme   *icon_theme,
-                           StTextureCache *self)
+on_icon_theme_changed (StIconTheme    *icon_theme,
+                       StTextureCache *self)
 {
   st_texture_cache_evict_icons (self);
   g_signal_emit (self, signals[ICON_THEME_CHANGED], 0);
@@ -180,18 +162,12 @@ on_gtk_icon_theme_changed (GtkIconTheme   *icon_theme,
 static void
 st_texture_cache_init (StTextureCache *self)
 {
-  StSettings *settings;
-
   self->priv = g_new0 (StTextureCachePrivate, 1);
 
-  self->priv->icon_theme = gtk_icon_theme_new ();
-  gtk_icon_theme_add_resource_path (self->priv->icon_theme,
-                                    "/org/gnome/shell/icons");
+  self->priv->icon_theme = st_icon_theme_new ();
+  st_icon_theme_add_resource_path (self->priv->icon_theme,
+                                   "/org/gnome/shell/icons");
   g_signal_connect (self->priv->icon_theme, "changed",
-                    G_CALLBACK (on_gtk_icon_theme_changed), self);
-
-  settings = st_settings_get ();
-  g_signal_connect (settings, "notify::gtk-icon-theme",
                     G_CALLBACK (on_icon_theme_changed), self);
 
   self->priv->keyed_cache = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -208,8 +184,6 @@ st_texture_cache_init (StTextureCache *self)
                                                      g_object_unref, g_object_unref);
 
   self->priv->cancellable = g_cancellable_new ();
-
-  on_icon_theme_changed (settings, NULL, self);
 }
 
 static void
@@ -295,16 +269,6 @@ compute_pixbuf_scale (gint      width,
     }
 }
 
-static void
-rgba_from_clutter (GdkRGBA      *rgba,
-                   ClutterColor *color)
-{
-  rgba->red = color->red / 255.;
-  rgba->green = color->green / 255.;
-  rgba->blue = color->blue / 255.;
-  rgba->alpha = color->alpha / 255.;
-}
-
 /* A private structure for keeping width, height and scale. */
 typedef struct {
   int width;
@@ -326,7 +290,7 @@ typedef struct {
   gfloat resource_scale;
   GSList *actors;
 
-  GtkIconInfo *icon_info;
+  StIconInfo *icon_info;
   StIconColors *colors;
   GFile *file;
 } AsyncTextureLoadData;
@@ -661,7 +625,7 @@ on_symbolic_icon_loaded (GObject      *source,
                          gpointer      user_data)
 {
   GdkPixbuf *pixbuf;
-  pixbuf = gtk_icon_info_load_symbolic_finish (GTK_ICON_INFO (source), result, NULL, NULL);
+  pixbuf = st_icon_info_load_symbolic_finish (ST_ICON_INFO (source), result, NULL, NULL);
   finish_texture_load (user_data, pixbuf);
   g_clear_object (&pixbuf);
 }
@@ -672,7 +636,7 @@ on_icon_loaded (GObject      *source,
                 gpointer      user_data)
 {
   GdkPixbuf *pixbuf;
-  pixbuf = gtk_icon_info_load_icon_finish (GTK_ICON_INFO (source), result, NULL);
+  pixbuf = st_icon_info_load_icon_finish (ST_ICON_INFO (source), result, NULL);
   finish_texture_load (user_data, pixbuf);
   g_clear_object (&pixbuf);
 }
@@ -704,27 +668,16 @@ load_texture_async (StTextureCache       *cache,
       StIconColors *colors = data->colors;
       if (colors)
         {
-          GdkRGBA foreground_color;
-          GdkRGBA success_color;
-          GdkRGBA warning_color;
-          GdkRGBA error_color;
-
-          rgba_from_clutter (&foreground_color, &colors->foreground);
-          rgba_from_clutter (&success_color, &colors->success);
-          rgba_from_clutter (&warning_color, &colors->warning);
-          rgba_from_clutter (&error_color, &colors->error);
-
-          gtk_icon_info_load_symbolic_async (data->icon_info,
-                                             &foreground_color, &success_color,
-                                             &warning_color, &error_color,
-                                             cache->priv->cancellable,
-                                             on_symbolic_icon_loaded, data);
+          st_icon_info_load_symbolic_async (data->icon_info,
+                                            data->colors,
+                                            cache->priv->cancellable,
+                                            on_symbolic_icon_loaded, data);
         }
       else
         {
-          gtk_icon_info_load_icon_async (data->icon_info,
-                                         cache->priv->cancellable,
-                                         on_icon_loaded, data);
+          st_icon_info_load_icon_async (data->icon_info,
+                                        cache->priv->cancellable,
+                                        on_icon_loaded, data);
         }
     }
   else
@@ -998,11 +951,11 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   char *gicon_string;
   g_autofree char *key = NULL;
   float actor_size;
-  GtkIconTheme *theme;
+  StIconTheme *theme;
   StTextureCachePolicy policy;
   StIconColors *colors = NULL;
   StIconStyle icon_style = ST_ICON_STYLE_REQUESTED;
-  GtkIconLookupFlags lookup_flags;
+  StIconLookupFlags lookup_flags;
 
   actor_size = size * paint_scale;
 
@@ -1034,17 +987,17 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   /* Do theme lookups in the main thread to avoid thread-unsafety */
   theme = cache->priv->icon_theme;
 
-  lookup_flags = GTK_ICON_LOOKUP_USE_BUILTIN;
+  lookup_flags = 0;
 
   if (icon_style == ST_ICON_STYLE_REGULAR)
-    lookup_flags |= GTK_ICON_LOOKUP_FORCE_REGULAR;
+    lookup_flags |= ST_ICON_LOOKUP_FORCE_REGULAR;
   else if (icon_style == ST_ICON_STYLE_SYMBOLIC)
-    lookup_flags |= GTK_ICON_LOOKUP_FORCE_SYMBOLIC;
+    lookup_flags |= ST_ICON_LOOKUP_FORCE_SYMBOLIC;
 
   if (clutter_get_default_text_direction () == CLUTTER_TEXT_DIRECTION_RTL)
-    lookup_flags |= GTK_ICON_LOOKUP_DIR_RTL;
+    lookup_flags |= ST_ICON_LOOKUP_DIR_RTL;
   else
-    lookup_flags |= GTK_ICON_LOOKUP_DIR_LTR;
+    lookup_flags |= ST_ICON_LOOKUP_DIR_LTR;
 
   scale = ceilf (paint_scale * resource_scale);
 
@@ -1078,11 +1031,11 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   if (!ensure_request (cache, key, policy, &request, actor))
     {
       /* Else, make a new request */
-      GtkIconInfo *info;
+      StIconInfo *info;
 
-      info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon,
-                                                       size, scale,
-                                                       lookup_flags);
+      info = st_icon_theme_lookup_by_gicon_for_scale (theme, icon,
+                                                      size, scale,
+                                                      lookup_flags);
       if (info == NULL)
         {
           g_hash_table_remove (cache->priv->outstanding_requests, key);
@@ -1682,5 +1635,5 @@ st_texture_cache_rescan_icon_theme (StTextureCache *cache)
 {
   StTextureCachePrivate *priv = cache->priv;
 
-  return gtk_icon_theme_rescan_if_needed (priv->icon_theme);
+  return st_icon_theme_rescan_if_needed (priv->icon_theme);
 }
