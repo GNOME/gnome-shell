@@ -1,4 +1,4 @@
-/* GtkIconTheme - a loader for icon themes
+/* StIconTheme - a loader for icon themes
  * gtk-icon-theme.c Copyright (C) 2002, 2003 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -34,11 +34,11 @@
 #define DEFAULT_ICON_THEME "Adwaita"
 
 /**
- * SECTION:gtkicontheme
+ * SECTION:sticontheme
  * @Short_description: Looking up icons by name
- * @Title: GtkIconTheme
+ * @Title: StIconTheme
  *
- * #GtkIconTheme provides a facility for looking up icons by name
+ * #StIconTheme provides a facility for looking up icons by name
  * and size. The main reason for using a name rather than simply
  * providing a filename is to allow different icons to be used
  * depending on what “icon theme” is selected
@@ -48,9 +48,9 @@
  * should install their icons, but additional icon themes can be installed
  * as operating system vendors and users choose.
  *
- * In many cases, named themes are used indirectly, via #GtkImage,
+ * In many cases, named themes are used indirectly, via #StIcon,
  * rather than directly, but looking up icons directly is also simple.
- * The #GtkIconTheme object acts as a database of all the icons in the
+ * The #StIconTheme object acts as a database of all the icons in the
  * current theme.
  */
 
@@ -82,7 +82,7 @@ typedef enum
 #define DEBUG_CACHE(args)
 #endif
 
-struct _GtkIconTheme
+struct _StIconTheme
 {
   GObject parent_instance;
 
@@ -115,7 +115,7 @@ typedef struct {
   char **icon_names;
   int size;
   int scale;
-  GtkIconLookupFlags flags;
+  StIconLookupFlags flags;
 } IconInfoKey;
 
 typedef struct _SymbolicPixbufCache SymbolicPixbufCache;
@@ -123,26 +123,21 @@ typedef struct _SymbolicPixbufCache SymbolicPixbufCache;
 struct _SymbolicPixbufCache {
   GdkPixbuf *pixbuf;
   GdkPixbuf *proxy_pixbuf;
-  GdkRGBA  fg;
-  GdkRGBA  success_color;
-  GdkRGBA  warning_color;
-  GdkRGBA  error_color;
+  GdkRGBA fg;
+  GdkRGBA success_color;
+  GdkRGBA warning_color;
+  GdkRGBA error_color;
   SymbolicPixbufCache *next;
 };
 
-struct _GtkIconInfoClass
-{
-  GObjectClass parent_class;
-};
-
-struct _GtkIconInfo
+struct _StIconInfo
 {
   GObject parent_instance;
 
   /* Information about the source
    */
   IconInfoKey key;
-  GtkIconTheme *in_cache;
+  StIconTheme *in_cache;
 
   char *filename;
   GFile *icon_file;
@@ -212,7 +207,7 @@ typedef struct
   char *subdir;
   int subdir_index;
 
-  GtkIconCache *cache;
+  StIconCache *cache;
 
   GHashTable *icons;
 } IconThemeDir;
@@ -228,46 +223,45 @@ typedef struct
 {
   char *dir;
   time_t mtime;
-  GtkIconCache *cache;
+  StIconCache *cache;
   gboolean exists;
 } IconThemeDirMtime;
 
-static void         gtk_icon_theme_finalize   (GObject          *object);
-static void         theme_dir_destroy         (IconThemeDir     *dir);
-static void         theme_destroy              (IconTheme       *theme);
-static GtkIconInfo *theme_lookup_icon         (IconTheme        *theme,
-                                               const char       *icon_name,
-                                               int               size,
-                                               int               scale,
-                                               gboolean          allow_svg,
-                                               gboolean          use_default_icons);
-static void         theme_list_icons          (IconTheme        *theme,
-                                               GHashTable       *icons,
-                                               GQuark            context);
-static gboolean     theme_has_icon            (IconTheme        *theme,
-                                               const char       *icon_name);
-static void         theme_list_contexts       (IconTheme        *theme,
-                                               GHashTable       *contexts);
-static void         theme_subdir_load         (GtkIconTheme     *icon_theme,
-                                               IconTheme        *theme,
-                                               GKeyFile         *theme_file,
-                                               char             *subdir);
-static void         do_theme_change           (GtkIconTheme     *icon_theme);
-static void         blow_themes               (GtkIconTheme     *icon_themes);
-static gboolean     rescan_themes             (GtkIconTheme     *icon_themes);
-static IconSuffix   theme_dir_get_icon_suffix (IconThemeDir     *dir,
-                                               const char       *icon_name,
-                                               gboolean         *has_icon_file);
-static GtkIconInfo *icon_info_new             (IconThemeDirType  type,
-                                               int               dir_size,
-                                               int               dir_scale);
-static GtkIconInfo *gtk_icon_info_new_for_file (GFile           *file,
-                                               int               dir_size,
-                                               int               dir_scale);
-static IconSuffix   suffix_from_name          (const char       *name);
-static void         remove_from_lru_cache     (GtkIconTheme     *icon_theme,
-                                               GtkIconInfo      *icon_info);
-static gboolean     icon_info_ensure_scale_and_pixbuf (GtkIconInfo* icon_info);
+static void st_icon_theme_finalize (GObject *object);
+static void theme_dir_destroy (IconThemeDir *dir);
+static void theme_destroy (IconTheme *theme);
+static StIconInfo * theme_lookup_icon (IconTheme  *theme,
+                                       const char *icon_name,
+                                       int         size,
+                                       int         scale,
+                                       gboolean    allow_svg);
+static void theme_list_icons (IconTheme  *theme,
+                              GHashTable *icons,
+                              GQuark      context);
+static gboolean theme_has_icon (IconTheme  *theme,
+                                const char *icon_name);
+static void theme_list_contexts (IconTheme  *theme,
+                                 GHashTable *contexts);
+static void theme_subdir_load (StIconTheme *icon_theme,
+                               IconTheme   *theme,
+                               GKeyFile    *theme_file,
+                               char        *subdir);
+static void do_theme_change (StIconTheme *icon_theme);
+static void blow_themes (StIconTheme *icon_themes);
+static gboolean rescan_themes (StIconTheme *icon_themes);
+static IconSuffix theme_dir_get_icon_suffix (IconThemeDir     *dir,
+                                             const char      *icon_name,
+                                             gboolean         *has_icon_file);
+static StIconInfo * icon_info_new (IconThemeDirType type,
+                                   int              dir_size,
+                                   int              dir_scale);
+static StIconInfo *st_icon_info_new_for_file (GFile *file,
+                                              int     dir_size,
+                                              int     dir_scale);
+static IconSuffix suffix_from_name (const char *name);
+static void remove_from_lru_cache (StIconTheme *icon_theme,
+                                   StIconInfo  *icon_info);
+static gboolean icon_info_ensure_scale_and_pixbuf (StIconInfo *icon_info);
 
 enum
 {
@@ -322,33 +316,31 @@ icon_info_key_equal (gconstpointer _a,
   return a->icon_names[i] == NULL && b->icon_names[i] == NULL;
 }
 
-G_DEFINE_TYPE (GtkIconTheme, gtk_icon_theme, G_TYPE_OBJECT)
+G_DEFINE_TYPE (StIconTheme, st_icon_theme, G_TYPE_OBJECT)
 
 /**
- * gtk_icon_theme_new:
+ * st_icon_theme_new:
  *
  * Creates a new icon theme object. Icon theme objects are used
  * to lookup up an icon by name in a particular icon theme.
  *
- * Returns: the newly created #GtkIconTheme object.
- *
- * Since: 2.4
+ * Returns: the newly created #StIconTheme object.
  */
-GtkIconTheme *
-gtk_icon_theme_new (void)
+StIconTheme *
+st_icon_theme_new (void)
 {
-  return g_object_new (GTK_TYPE_ICON_THEME, NULL);
+  return g_object_new (ST_TYPE_ICON_THEME, NULL);
 }
 
 static void
-gtk_icon_theme_class_init (GtkIconThemeClass *klass)
+st_icon_theme_class_init (StIconThemeClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->finalize = gtk_icon_theme_finalize;
+  gobject_class->finalize = st_icon_theme_finalize;
 
   /**
-   * GtkIconTheme::changed:
+   * StIconTheme::changed:
    * @icon_theme: the icon theme
    *
    * Emitted when the current icon theme is switched or GTK+ detects
@@ -366,7 +358,7 @@ gtk_icon_theme_class_init (GtkIconThemeClass *klass)
 
 
 static void
-update_current_theme (GtkIconTheme *icon_theme)
+update_current_theme (StIconTheme *icon_theme)
 {
 #define theme_changed(_old, _new) \
   ((_old && !_new) || (!_old && _new) || \
@@ -384,17 +376,17 @@ update_current_theme (GtkIconTheme *icon_theme)
       changed = TRUE;
     }
 
-  if (changed)
-    do_theme_change (icon_theme);
+    if (changed)
+      do_theme_change (icon_theme);
 #undef theme_changed
 }
 
 /* Callback when the icon theme StSetting changes
  */
 static void
-theme_changed (StSettings   *settings,
-               GParamSpec   *pspec,
-               GtkIconTheme *icon_theme)
+theme_changed (StSettings  *settings,
+               GParamSpec  *pspec,
+               StIconTheme *icon_theme)
 {
   update_current_theme (icon_theme);
 }
@@ -436,9 +428,9 @@ pixbuf_supports_svg (void)
 
 /* The icon info was removed from the icon_info_hash hash table */
 static void
-icon_info_uncached (GtkIconInfo *icon_info)
+icon_info_uncached (StIconInfo *icon_info)
 {
-  GtkIconTheme *icon_theme = icon_info->in_cache;
+  StIconTheme *icon_theme = icon_info->in_cache;
 
   DEBUG_CACHE (("removing %p (%s %d 0x%x) from cache (icon_them: %p)  (cache size %d)\n",
                 icon_info,
@@ -454,7 +446,7 @@ icon_info_uncached (GtkIconInfo *icon_info)
 }
 
 static void
-gtk_icon_theme_init (GtkIconTheme *icon_theme)
+st_icon_theme_init (StIconTheme *icon_theme)
 {
   StSettings *settings;
   const char * const *xdg_data_dirs;
@@ -497,7 +489,7 @@ static void
 free_dir_mtime (IconThemeDirMtime *dir_mtime)
 {
   if (dir_mtime->cache)
-    _gtk_icon_cache_unref (dir_mtime->cache);
+    st_icon_cache_unref (dir_mtime->cache);
 
   g_free (dir_mtime->dir);
   g_free (dir_mtime);
@@ -506,9 +498,9 @@ free_dir_mtime (IconThemeDirMtime *dir_mtime)
 static gboolean
 theme_changed_idle (gpointer user_data)
 {
-  GtkIconTheme *icon_theme;
+  StIconTheme *icon_theme;
 
-  icon_theme = GTK_ICON_THEME (user_data);
+  icon_theme = ST_ICON_THEME (user_data);
 
   g_signal_emit (icon_theme, signals[CHANGED], 0);
 
@@ -518,17 +510,17 @@ theme_changed_idle (gpointer user_data)
 }
 
 static void
-queue_theme_changed (GtkIconTheme *icon_theme)
+queue_theme_changed (StIconTheme *icon_theme)
 {
   if (!icon_theme->theme_changed_idle)
     {
       icon_theme->theme_changed_idle = g_idle_add (theme_changed_idle, icon_theme);
-      g_source_set_name_by_id (icon_theme->theme_changed_idle, "[gtk+] theme_changed_idle");
+      g_source_set_name_by_id (icon_theme->theme_changed_idle, "theme_changed_idle");
     }
 }
 
 static void
-do_theme_change (GtkIconTheme *icon_theme)
+do_theme_change (StIconTheme *icon_theme)
 {
   g_hash_table_remove_all (icon_theme->info_cache);
 
@@ -539,11 +531,10 @@ do_theme_change (GtkIconTheme *icon_theme)
   blow_themes (icon_theme);
 
   queue_theme_changed (icon_theme);
-
 }
 
 static void
-blow_themes (GtkIconTheme *icon_theme)
+blow_themes (StIconTheme *icon_theme)
 {
   if (icon_theme->themes_valid)
     {
@@ -558,12 +549,12 @@ blow_themes (GtkIconTheme *icon_theme)
 }
 
 static void
-gtk_icon_theme_finalize (GObject *object)
+st_icon_theme_finalize (GObject *object)
 {
-  GtkIconTheme *icon_theme;
+  StIconTheme *icon_theme;
   int i;
 
-  icon_theme = GTK_ICON_THEME (object);
+  icon_theme = ST_ICON_THEME (object);
 
   g_hash_table_destroy (icon_theme->info_cache);
   g_assert (icon_theme->info_cache_lru == NULL);
@@ -580,12 +571,12 @@ gtk_icon_theme_finalize (GObject *object)
 
   blow_themes (icon_theme);
 
-  G_OBJECT_CLASS (gtk_icon_theme_parent_class)->finalize (object);
+  G_OBJECT_CLASS (st_icon_theme_parent_class)->finalize (object);
 }
 
 /**
- * gtk_icon_theme_set_search_path:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_set_search_path:
+ * @icon_theme: a #StIconTheme
  * @path: (array length=n_elements) (element-type filename): array of
  *     directories that are searched for icon themes
  * @n_elements: number of elements in @path.
@@ -604,17 +595,15 @@ gtk_icon_theme_finalize (GObject *object)
  * (This is legacy feature, and new icons should be put
  * into the fallback icon theme, which is called hicolor,
  * rather than directly on the icon path.)
- *
- * Since: 2.4
  */
 void
-gtk_icon_theme_set_search_path (GtkIconTheme *icon_theme,
-                                const char   *path[],
-                                int           n_elements)
+st_icon_theme_set_search_path (StIconTheme *icon_theme,
+                               const char  *path[],
+                               int          n_elements)
 {
   int i;
 
-  g_return_if_fail (GTK_IS_ICON_THEME (icon_theme));
+  g_return_if_fail (ST_IS_ICON_THEME (icon_theme));
 
   for (i = 0; i < icon_theme->search_path_len; i++)
     g_free (icon_theme->search_path[i]);
@@ -631,25 +620,23 @@ gtk_icon_theme_set_search_path (GtkIconTheme *icon_theme,
 }
 
 /**
- * gtk_icon_theme_get_search_path:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_get_search_path:
+ * @icon_theme: a #StIconTheme
  * @path: (allow-none) (array length=n_elements) (element-type filename) (out):
  *     location to store a list of icon theme path directories or %NULL.
  *     The stored value should be freed with g_strfreev().
  * @n_elements: location to store number of elements in @path, or %NULL
  *
- * Gets the current search path. See gtk_icon_theme_set_search_path().
- *
- * Since: 2.4
+ * Gets the current search path. See st_icon_theme_set_search_path().
  */
 void
-gtk_icon_theme_get_search_path (GtkIconTheme  *icon_theme,
-                                char         **path[],
-                                int           *n_elements)
+st_icon_theme_get_search_path (StIconTheme   *icon_theme,
+                               char         **path[],
+                               int           *n_elements)
 {
   int i;
 
-  g_return_if_fail (GTK_IS_ICON_THEME (icon_theme));
+  g_return_if_fail (ST_IS_ICON_THEME (icon_theme));
 
   if (n_elements)
     *n_elements = icon_theme->search_path_len;
@@ -664,20 +651,18 @@ gtk_icon_theme_get_search_path (GtkIconTheme  *icon_theme,
 }
 
 /**
- * gtk_icon_theme_append_search_path:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_append_search_path:
+ * @icon_theme: a #StIconTheme
  * @path: (type filename): directory name to append to the icon path
  *
  * Appends a directory to the search path.
- * See gtk_icon_theme_set_search_path().
- *
- * Since: 2.4
+ * See st_icon_theme_set_search_path().
  */
 void
-gtk_icon_theme_append_search_path (GtkIconTheme *icon_theme,
-                                   const char   *path)
+st_icon_theme_append_search_path (StIconTheme *icon_theme,
+                                  const char  *path)
 {
-  g_return_if_fail (GTK_IS_ICON_THEME (icon_theme));
+  g_return_if_fail (ST_IS_ICON_THEME (icon_theme));
   g_return_if_fail (path != NULL);
 
   icon_theme->search_path_len++;
@@ -689,22 +674,20 @@ gtk_icon_theme_append_search_path (GtkIconTheme *icon_theme,
 }
 
 /**
- * gtk_icon_theme_prepend_search_path:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_prepend_search_path:
+ * @icon_theme: a #StIconTheme
  * @path: (type filename): directory name to prepend to the icon path
  *
  * Prepends a directory to the search path.
- * See gtk_icon_theme_set_search_path().
- *
- * Since: 2.4
+ * See st_icon_theme_set_search_path().
  */
 void
-gtk_icon_theme_prepend_search_path (GtkIconTheme *icon_theme,
-                                    const char   *path)
+st_icon_theme_prepend_search_path (StIconTheme *icon_theme,
+                                   const char  *path)
 {
   int i;
 
-  g_return_if_fail (GTK_IS_ICON_THEME (icon_theme));
+  g_return_if_fail (ST_IS_ICON_THEME (icon_theme));
   g_return_if_fail (path != NULL);
 
   icon_theme->search_path_len++;
@@ -719,8 +702,8 @@ gtk_icon_theme_prepend_search_path (GtkIconTheme *icon_theme,
 }
 
 /**
- * gtk_icon_theme_add_resource_path:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_add_resource_path:
+ * @icon_theme: a #StIconTheme
  * @path: a resource path
  *
  * Adds a resource path that will be looked at when looking
@@ -734,14 +717,12 @@ gtk_icon_theme_prepend_search_path (GtkIconTheme *icon_theme,
  * hicolor icon theme, such as `@path/16x16/actions/run.png`.
  * Icons that are directly placed in the resource path instead
  * of a subdirectory are also considered as ultimate fallback.
- *
- * Since: 3.14
  */
 void
-gtk_icon_theme_add_resource_path (GtkIconTheme *icon_theme,
-                                  const char   *path)
+st_icon_theme_add_resource_path (StIconTheme *icon_theme,
+                                 const char  *path)
 {
-  g_return_if_fail (GTK_IS_ICON_THEME (icon_theme));
+  g_return_if_fail (ST_IS_ICON_THEME (icon_theme));
   g_return_if_fail (path != NULL);
 
   icon_theme->resource_paths = g_list_append (icon_theme->resource_paths, g_strdup (path));
@@ -783,8 +764,8 @@ static const char builtin_hicolor_index[] =
 "Type=Threshold\n";
 
 static void
-insert_theme (GtkIconTheme *icon_theme,
-              const char   *theme_name)
+insert_theme (StIconTheme *icon_theme,
+              const char  *theme_name)
 {
   int i;
   GList *l;
@@ -945,10 +926,10 @@ strip_suffix (const char *filename)
 }
 
 static void
-add_unthemed_icon (GtkIconTheme *icon_theme,
-                   const char   *dir,
-                   const char   *file,
-                   gboolean      is_resource)
+add_unthemed_icon (StIconTheme *icon_theme,
+                   const char  *dir,
+                   const char  *file,
+                   gboolean     is_resource)
 {
   IconSuffix new_suffix, old_suffix;
   char *abs_file;
@@ -1010,7 +991,7 @@ add_unthemed_icon (GtkIconTheme *icon_theme,
 }
 
 static void
-load_themes (GtkIconTheme *icon_theme)
+load_themes (StIconTheme *icon_theme)
 {
   GDir *gdir;
   int base;
@@ -1054,7 +1035,7 @@ load_themes (GtkIconTheme *icon_theme)
       dir_mtime->mtime = stat_buf.st_mtime;
       dir_mtime->exists = TRUE;
 
-      dir_mtime->cache = _gtk_icon_cache_new_for_path (dir);
+      dir_mtime->cache = st_icon_cache_new_for_path (dir);
       if (dir_mtime->cache != NULL)
         continue;
 
@@ -1091,7 +1072,7 @@ load_themes (GtkIconTheme *icon_theme)
 }
 
 static void
-ensure_valid_themes (GtkIconTheme *icon_theme)
+ensure_valid_themes (StIconTheme *icon_theme)
 {
   gboolean was_valid = icon_theme->themes_valid;
 
@@ -1132,7 +1113,7 @@ ensure_valid_themes (GtkIconTheme *icon_theme)
  * pixmap is released we put it on the list.
  */
 static void
-ensure_lru_cache_space (GtkIconTheme *icon_theme)
+ensure_lru_cache_space (StIconTheme *icon_theme)
 {
   GList *l;
 
@@ -1140,7 +1121,7 @@ ensure_lru_cache_space (GtkIconTheme *icon_theme)
   l = g_list_nth (icon_theme->info_cache_lru, INFO_CACHE_LRU_SIZE - 1);
   if (l)
     {
-      GtkIconInfo *icon_info = l->data;
+      StIconInfo *icon_info = l->data;
 
       DEBUG_CACHE (("removing (due to out of space) %p (%s %d 0x%x) from LRU cache (cache size %d)\n",
                     icon_info,
@@ -1154,8 +1135,8 @@ ensure_lru_cache_space (GtkIconTheme *icon_theme)
 }
 
 static void
-add_to_lru_cache (GtkIconTheme *icon_theme,
-                  GtkIconInfo  *icon_info)
+add_to_lru_cache (StIconTheme *icon_theme,
+                  StIconInfo  *icon_info)
 {
   DEBUG_CACHE (("adding  %p (%s %d 0x%x) to LRU cache (cache size %d)\n",
                 icon_info,
@@ -1172,8 +1153,8 @@ add_to_lru_cache (GtkIconTheme *icon_theme,
 }
 
 static void
-ensure_in_lru_cache (GtkIconTheme *icon_theme,
-                     GtkIconInfo  *icon_info)
+ensure_in_lru_cache (StIconTheme *icon_theme,
+                     StIconInfo  *icon_info)
 {
   GList *l;
 
@@ -1189,8 +1170,8 @@ ensure_in_lru_cache (GtkIconTheme *icon_theme,
 }
 
 static void
-remove_from_lru_cache (GtkIconTheme *icon_theme,
-                       GtkIconInfo  *icon_info)
+remove_from_lru_cache (StIconTheme *icon_theme,
+                       StIconInfo  *icon_info)
 {
   if (g_list_find (icon_theme->info_cache_lru, icon_info))
     {
@@ -1301,16 +1282,16 @@ icon_uri_is_symbolic (const char *icon_name)
       || g_str_has_suffix (icon_name, ".symbolic.png");
 }
 
-static GtkIconInfo *
-real_choose_icon (GtkIconTheme       *icon_theme,
-                  const char         *icon_names[],
-                  int                 size,
-                  int                 scale,
-                  GtkIconLookupFlags  flags)
+static StIconInfo *
+real_choose_icon (StIconTheme       *icon_theme,
+                  const char        *icon_names[],
+                  int                size,
+                  int                scale,
+                  StIconLookupFlags  flags)
 {
   GList *l;
-  GtkIconInfo *icon_info = NULL;
-  GtkIconInfo *unscaled_icon_info;
+  StIconInfo *icon_info = NULL;
+  StIconInfo *unscaled_icon_info;
   UnthemedIcon *unthemed_icon = NULL;
   const char *icon_name = NULL;
   gboolean allow_svg;
@@ -1340,9 +1321,9 @@ real_choose_icon (GtkIconTheme       *icon_theme,
       return icon_info;
     }
 
-  if (flags & GTK_ICON_LOOKUP_NO_SVG)
+  if (flags & ST_ICON_LOOKUP_NO_SVG)
     allow_svg = FALSE;
-  else if (flags & GTK_ICON_LOOKUP_FORCE_SVG)
+  else if (flags & ST_ICON_LOOKUP_FORCE_SVG)
     allow_svg = TRUE;
   else
     allow_svg = icon_theme->pixbuf_supports_svg;
@@ -1434,7 +1415,7 @@ real_choose_icon (GtkIconTheme       *icon_theme,
     {
       icon_info->desired_size = size;
       icon_info->desired_scale = scale;
-      icon_info->forced_size = (flags & GTK_ICON_LOOKUP_FORCE_SIZE) != 0;
+      icon_info->forced_size = (flags & ST_ICON_LOOKUP_FORCE_SIZE) != 0;
 
       /* In case we're not scaling the icon we want to reuse the exact same
        * size as a scale==1 lookup would be, rather than not scaling at all
@@ -1498,31 +1479,31 @@ real_choose_icon (GtkIconTheme       *icon_theme,
 }
 
 static void
-icon_name_list_add_icon (GPtrArray   *icons,
-                         const char  *dir_suffix,
-                         char        *icon_name)
+icon_name_list_add_icon (GPtrArray  *icons,
+                         const char *dir_suffix,
+                         char       *icon_name)
 {
   if (dir_suffix)
     g_ptr_array_add (icons, g_strconcat (icon_name, dir_suffix, NULL));
   g_ptr_array_add (icons, icon_name);
 }
 
-static GtkIconInfo *
-choose_icon (GtkIconTheme       *icon_theme,
-             const char         *icon_names[],
-             int                 size,
-             int                 scale,
-             GtkIconLookupFlags  flags)
+static StIconInfo *
+choose_icon (StIconTheme       *icon_theme,
+             const char        *icon_names[],
+             int                size,
+             int                scale,
+             StIconLookupFlags  flags)
 {
   gboolean has_regular = FALSE, has_symbolic = FALSE;
-  GtkIconInfo *icon_info;
+  StIconInfo *icon_info;
   GPtrArray *new_names;
   const char *dir_suffix;
   guint i;
 
-  if (flags & GTK_ICON_LOOKUP_DIR_LTR)
+  if (flags & ST_ICON_LOOKUP_DIR_LTR)
     dir_suffix = "-ltr";
-  else if (flags & GTK_ICON_LOOKUP_DIR_RTL)
+  else if (flags & ST_ICON_LOOKUP_DIR_RTL)
     dir_suffix = "-rtl";
   else
     dir_suffix = NULL;
@@ -1535,7 +1516,7 @@ choose_icon (GtkIconTheme       *icon_theme,
         has_regular = TRUE;
     }
 
-  if ((flags & GTK_ICON_LOOKUP_FORCE_REGULAR) && has_symbolic)
+  if ((flags & ST_ICON_LOOKUP_FORCE_REGULAR) && has_symbolic)
     {
       new_names = g_ptr_array_new_with_free_func (g_free);
       for (i = 0; icon_names[i]; i++)
@@ -1556,11 +1537,11 @@ choose_icon (GtkIconTheme       *icon_theme,
                                     (const char **) new_names->pdata,
                                     size,
                                     scale,
-                                    flags & ~(GTK_ICON_LOOKUP_FORCE_REGULAR | GTK_ICON_LOOKUP_FORCE_SYMBOLIC));
+                                    flags & ~(ST_ICON_LOOKUP_FORCE_REGULAR | ST_ICON_LOOKUP_FORCE_SYMBOLIC));
 
       g_ptr_array_free (new_names, TRUE);
     }
-  else if ((flags & GTK_ICON_LOOKUP_FORCE_SYMBOLIC) && has_regular)
+  else if ((flags & ST_ICON_LOOKUP_FORCE_SYMBOLIC) && has_regular)
     {
       new_names = g_ptr_array_new_with_free_func (g_free);
       for (i = 0; icon_names[i]; i++)
@@ -1581,7 +1562,7 @@ choose_icon (GtkIconTheme       *icon_theme,
                                     (const char **) new_names->pdata,
                                     size,
                                     scale,
-                                    flags & ~(GTK_ICON_LOOKUP_FORCE_REGULAR | GTK_ICON_LOOKUP_FORCE_SYMBOLIC));
+                                    flags & ~(ST_ICON_LOOKUP_FORCE_REGULAR | ST_ICON_LOOKUP_FORCE_SYMBOLIC));
 
       g_ptr_array_free (new_names, TRUE);
     }
@@ -1598,7 +1579,7 @@ choose_icon (GtkIconTheme       *icon_theme,
                                     (const char **) new_names->pdata,
                                     size,
                                     scale,
-                                    flags & ~(GTK_ICON_LOOKUP_FORCE_REGULAR | GTK_ICON_LOOKUP_FORCE_SYMBOLIC));
+                                    flags & ~(ST_ICON_LOOKUP_FORCE_REGULAR | ST_ICON_LOOKUP_FORCE_SYMBOLIC));
 
       g_ptr_array_free (new_names, TRUE);
     }
@@ -1608,92 +1589,88 @@ choose_icon (GtkIconTheme       *icon_theme,
                                     icon_names,
                                     size,
                                     scale,
-                                    flags & ~(GTK_ICON_LOOKUP_FORCE_REGULAR | GTK_ICON_LOOKUP_FORCE_SYMBOLIC));
+                                    flags & ~(ST_ICON_LOOKUP_FORCE_REGULAR | ST_ICON_LOOKUP_FORCE_SYMBOLIC));
     }
 
   return icon_info;
 }
 
 /**
- * gtk_icon_theme_lookup_icon:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_lookup_icon:
+ * @icon_theme: a #StIconTheme
  * @icon_name: the name of the icon to lookup
  * @size: desired icon size
  * @flags: flags modifying the behavior of the icon lookup
  *
- * Looks up a named icon and returns a #GtkIconInfo containing
+ * Looks up a named icon and returns a #StIconInfo containing
  * information such as the filename of the icon. The icon
  * can then be rendered into a pixbuf using
- * gtk_icon_info_load_icon(). (gtk_icon_theme_load_icon()
+ * st_icon_info_load_icon(). (st_icon_theme_load_icon()
  * combines these two steps if all you need is the pixbuf.)
  *
  * When rendering on displays with high pixel densities you should not
  * use a @size multiplied by the scaling factor returned by functions
  * like gdk_window_get_scale_factor(). Instead, you should use
- * gtk_icon_theme_lookup_icon_for_scale(), as the assets loaded
+ * st_icon_theme_lookup_icon_for_scale(), as the assets loaded
  * for a given scaling factor may be different.
  *
- * Returns: (nullable) (transfer full): a #GtkIconInfo object
+ * Returns: (nullable) (transfer full): a #StIconInfo object
  *     containing information about the icon, or %NULL if the
  *     icon wasn’t found.
- *
- * Since: 2.4
  */
-GtkIconInfo *
-gtk_icon_theme_lookup_icon (GtkIconTheme       *icon_theme,
-                            const char         *icon_name,
-                            int                 size,
-                            GtkIconLookupFlags  flags)
+StIconInfo *
+st_icon_theme_lookup_icon (StIconTheme       *icon_theme,
+                           const char        *icon_name,
+                           int                size,
+                           StIconLookupFlags  flags)
 {
-  g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme), NULL);
+  g_return_val_if_fail (ST_IS_ICON_THEME (icon_theme), NULL);
   g_return_val_if_fail (icon_name != NULL, NULL);
-  g_return_val_if_fail ((flags & GTK_ICON_LOOKUP_NO_SVG) == 0 ||
-                        (flags & GTK_ICON_LOOKUP_FORCE_SVG) == 0, NULL);
+  g_return_val_if_fail ((flags & ST_ICON_LOOKUP_NO_SVG) == 0 ||
+                        (flags & ST_ICON_LOOKUP_FORCE_SVG) == 0, NULL);
 
   g_debug ("looking up icon %s", icon_name);
 
-  return gtk_icon_theme_lookup_icon_for_scale (icon_theme, icon_name,
+  return st_icon_theme_lookup_icon_for_scale (icon_theme, icon_name,
                                                size, 1, flags);
 }
 
 /**
- * gtk_icon_theme_lookup_icon_for_scale:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_lookup_icon_for_scale:
+ * @icon_theme: a #StIconTheme
  * @icon_name: the name of the icon to lookup
  * @size: desired icon size
  * @scale: the desired scale
  * @flags: flags modifying the behavior of the icon lookup
  *
  * Looks up a named icon for a particular window scale and returns a
- * #GtkIconInfo containing information such as the filename of the
+ * #StIconInfo containing information such as the filename of the
  * icon. The icon can then be rendered into a pixbuf using
- * gtk_icon_info_load_icon(). (gtk_icon_theme_load_icon() combines
+ * st_icon_info_load_icon(). (st_icon_theme_load_icon() combines
  * these two steps if all you need is the pixbuf.)
  *
- * Returns: (nullable) (transfer full): a #GtkIconInfo object
+ * Returns: (nullable) (transfer full): a #StIconInfo object
  *     containing information about the icon, or %NULL if the
  *     icon wasn’t found.
- *
- * Since: 3.10
  */
-GtkIconInfo *
-gtk_icon_theme_lookup_icon_for_scale (GtkIconTheme       *icon_theme,
-                                      const char         *icon_name,
-                                      int                 size,
-                                      int                 scale,
-                                      GtkIconLookupFlags  flags)
+StIconInfo *
+st_icon_theme_lookup_icon_for_scale (StIconTheme       *icon_theme,
+                                     const char        *icon_name,
+                                     int                size,
+                                     int                scale,
+                                     StIconLookupFlags  flags)
 {
-  GtkIconInfo *info;
+  StIconInfo *info;
 
-  g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme), NULL);
+  g_return_val_if_fail (ST_IS_ICON_THEME (icon_theme), NULL);
   g_return_val_if_fail (icon_name != NULL, NULL);
-  g_return_val_if_fail ((flags & GTK_ICON_LOOKUP_NO_SVG) == 0 ||
-                        (flags & GTK_ICON_LOOKUP_FORCE_SVG) == 0, NULL);
+  g_return_val_if_fail ((flags & ST_ICON_LOOKUP_NO_SVG) == 0 ||
+                        (flags & ST_ICON_LOOKUP_FORCE_SVG) == 0, NULL);
   g_return_val_if_fail (scale >= 1, NULL);
 
   g_debug ("looking up icon %s for scale %d", icon_name, scale);
 
-  if (flags & GTK_ICON_LOOKUP_GENERIC_FALLBACK)
+  if (flags & ST_ICON_LOOKUP_GENERIC_FALLBACK)
     {
       char **names, **nonsymbolic_names;
       int dashes, i;
@@ -1757,47 +1734,45 @@ gtk_icon_theme_lookup_icon_for_scale (GtkIconTheme       *icon_theme,
 }
 
 /**
- * gtk_icon_theme_choose_icon:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_choose_icon:
+ * @icon_theme: a #StIconTheme
  * @icon_names: (array zero-terminated=1): %NULL-terminated array of
  *     icon names to lookup
  * @size: desired icon size
  * @flags: flags modifying the behavior of the icon lookup
  *
- * Looks up a named icon and returns a #GtkIconInfo containing
+ * Looks up a named icon and returns a #StIconInfo containing
  * information such as the filename of the icon. The icon
  * can then be rendered into a pixbuf using
- * gtk_icon_info_load_icon(). (gtk_icon_theme_load_icon()
+ * st_icon_info_load_icon(). (st_icon_theme_load_icon()
  * combines these two steps if all you need is the pixbuf.)
  *
  * If @icon_names contains more than one name, this function
  * tries them all in the given order before falling back to
  * inherited icon themes.
  *
- * Returns: (nullable) (transfer full): a #GtkIconInfo object
+ * Returns: (nullable) (transfer full): a #StIconInfo object
  * containing information about the icon, or %NULL if the icon wasn’t
  * found.
- *
- * Since: 2.12
  */
-GtkIconInfo *
-gtk_icon_theme_choose_icon (GtkIconTheme       *icon_theme,
-                            const char         *icon_names[],
-                            int                 size,
-                            GtkIconLookupFlags  flags)
+StIconInfo *
+st_icon_theme_choose_icon (StIconTheme       *icon_theme,
+                           const char        *icon_names[],
+                           int                size,
+                           StIconLookupFlags  flags)
 {
-  g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme), NULL);
+  g_return_val_if_fail (ST_IS_ICON_THEME (icon_theme), NULL);
   g_return_val_if_fail (icon_names != NULL, NULL);
-  g_return_val_if_fail ((flags & GTK_ICON_LOOKUP_NO_SVG) == 0 ||
-                        (flags & GTK_ICON_LOOKUP_FORCE_SVG) == 0, NULL);
-  g_warn_if_fail ((flags & GTK_ICON_LOOKUP_GENERIC_FALLBACK) == 0);
+  g_return_val_if_fail ((flags & ST_ICON_LOOKUP_NO_SVG) == 0 ||
+                        (flags & ST_ICON_LOOKUP_FORCE_SVG) == 0, NULL);
+  g_warn_if_fail ((flags & ST_ICON_LOOKUP_GENERIC_FALLBACK) == 0);
 
   return choose_icon (icon_theme, icon_names, size, 1, flags);
 }
 
 /**
- * gtk_icon_theme_choose_icon_for_scale:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_choose_icon_for_scale:
+ * @icon_theme: a #StIconTheme
  * @icon_names: (array zero-terminated=1): %NULL-terminated
  *     array of icon names to lookup
  * @size: desired icon size
@@ -1805,34 +1780,32 @@ gtk_icon_theme_choose_icon (GtkIconTheme       *icon_theme,
  * @flags: flags modifying the behavior of the icon lookup
  *
  * Looks up a named icon for a particular window scale and returns
- * a #GtkIconInfo containing information such as the filename of the
+ * a #StIconInfo containing information such as the filename of the
  * icon. The icon can then be rendered into a pixbuf using
- * gtk_icon_info_load_icon(). (gtk_icon_theme_load_icon()
+ * st_icon_info_load_icon(). (st_icon_theme_load_icon()
  * combines these two steps if all you need is the pixbuf.)
  *
  * If @icon_names contains more than one name, this function
  * tries them all in the given order before falling back to
  * inherited icon themes.
  *
- * Returns: (nullable) (transfer full): a #GtkIconInfo object
+ * Returns: (nullable) (transfer full): a #StIconInfo object
  *     containing information about the icon, or %NULL if the
  *     icon wasn’t found.
- *
- * Since: 3.10
  */
-GtkIconInfo *
-gtk_icon_theme_choose_icon_for_scale (GtkIconTheme       *icon_theme,
-                                      const char         *icon_names[],
-                                      int                 size,
-                                      int                 scale,
-                                      GtkIconLookupFlags  flags)
+StIconInfo *
+st_icon_theme_choose_icon_for_scale (StIconTheme       *icon_theme,
+                                     const char        *icon_names[],
+                                     int                size,
+                                     int                scale,
+                                     StIconLookupFlags  flags)
 {
-  g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme), NULL);
+  g_return_val_if_fail (ST_IS_ICON_THEME (icon_theme), NULL);
   g_return_val_if_fail (icon_names != NULL, NULL);
-  g_return_val_if_fail ((flags & GTK_ICON_LOOKUP_NO_SVG) == 0 ||
-                        (flags & GTK_ICON_LOOKUP_FORCE_SVG) == 0, NULL);
+  g_return_val_if_fail ((flags & ST_ICON_LOOKUP_NO_SVG) == 0 ||
+                        (flags & ST_ICON_LOOKUP_FORCE_SVG) == 0, NULL);
   g_return_val_if_fail (scale >= 1, NULL);
-  g_warn_if_fail ((flags & GTK_ICON_LOOKUP_GENERIC_FALLBACK) == 0);
+  g_warn_if_fail ((flags & ST_ICON_LOOKUP_GENERIC_FALLBACK) == 0);
 
   return choose_icon (icon_theme, icon_names, size, scale, flags);
 }
@@ -1840,17 +1813,17 @@ gtk_icon_theme_choose_icon_for_scale (GtkIconTheme       *icon_theme,
 
 /* Error quark */
 GQuark
-gtk_icon_theme_error_quark (void)
+st_icon_theme_error_quark (void)
 {
   return g_quark_from_static_string ("gtk-icon-theme-error-quark");
 }
 
 /**
- * gtk_icon_theme_load_icon:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_load_icon:
+ * @icon_theme: a #StIconTheme
  * @icon_name: the name of the icon to lookup
  * @size: the desired icon size. The resulting icon may not be
- *     exactly this size; see gtk_icon_info_load_icon().
+ *     exactly this size; see st_icon_info_load_icon().
  * @flags: flags modifying the behavior of the icon lookup
  * @error: (allow-none): Location to store error information on failure,
  *     or %NULL.
@@ -1858,7 +1831,7 @@ gtk_icon_theme_error_quark (void)
  * Looks up an icon in an icon theme, scales it to the given size
  * and renders it into a pixbuf. This is a convenience function;
  * if more details about the icon are needed, use
- * gtk_icon_theme_lookup_icon() followed by gtk_icon_info_load_icon().
+ * st_icon_theme_lookup_icon() followed by st_icon_info_load_icon().
  *
  * Note that you probably want to listen for icon theme changes and
  * update the icon. This is usually done by connecting to the
@@ -1872,32 +1845,30 @@ gtk_icon_theme_error_quark (void)
  *     a newly created icon or a new reference to an internal icon, so
  *     you must not modify the icon. Use g_object_unref() to release
  *     your reference to the icon. %NULL if the icon isn’t found.
- *
- * Since: 2.4
  */
 GdkPixbuf *
-gtk_icon_theme_load_icon (GtkIconTheme         *icon_theme,
-                          const char           *icon_name,
-                          int                   size,
-                          GtkIconLookupFlags    flags,
-                          GError              **error)
+st_icon_theme_load_icon (StIconTheme       *icon_theme,
+                         const char        *icon_name,
+                         int                size,
+                         StIconLookupFlags  flags,
+                         GError            **error)
 {
-  g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme), NULL);
+  g_return_val_if_fail (ST_IS_ICON_THEME (icon_theme), NULL);
   g_return_val_if_fail (icon_name != NULL, NULL);
-  g_return_val_if_fail ((flags & GTK_ICON_LOOKUP_NO_SVG) == 0 ||
-                        (flags & GTK_ICON_LOOKUP_FORCE_SVG) == 0, NULL);
+  g_return_val_if_fail ((flags & ST_ICON_LOOKUP_NO_SVG) == 0 ||
+                        (flags & ST_ICON_LOOKUP_FORCE_SVG) == 0, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  return gtk_icon_theme_load_icon_for_scale (icon_theme, icon_name,
+  return st_icon_theme_load_icon_for_scale (icon_theme, icon_name,
                                              size, 1, flags, error);
 }
 
 /**
- * gtk_icon_theme_load_icon_for_scale:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_load_icon_for_scale:
+ * @icon_theme: a #StIconTheme
  * @icon_name: the name of the icon to lookup
  * @size: the desired icon size. The resulting icon may not be
- *     exactly this size; see gtk_icon_info_load_icon().
+ *     exactly this size; see st_icon_info_load_icon().
  * @scale: desired scale
  * @flags: flags modifying the behavior of the icon lookup
  * @error: (allow-none): Location to store error information on failure,
@@ -1906,8 +1877,8 @@ gtk_icon_theme_load_icon (GtkIconTheme         *icon_theme,
  * Looks up an icon in an icon theme for a particular window scale,
  * scales it to the given size and renders it into a pixbuf. This is a
  * convenience function; if more details about the icon are needed,
- * use gtk_icon_theme_lookup_icon() followed by
- * gtk_icon_info_load_icon().
+ * use st_icon_theme_lookup_icon() followed by
+ * st_icon_info_load_icon().
  *
  * Note that you probably want to listen for icon theme changes and
  * update the icon. This is usually done by connecting to the
@@ -1921,36 +1892,34 @@ gtk_icon_theme_load_icon (GtkIconTheme         *icon_theme,
  *     a newly created icon or a new reference to an internal icon, so
  *     you must not modify the icon. Use g_object_unref() to release
  *     your reference to the icon. %NULL if the icon isn’t found.
- *
- * Since: 3.10
  */
 GdkPixbuf *
-gtk_icon_theme_load_icon_for_scale (GtkIconTheme        *icon_theme,
-                                    const char          *icon_name,
-                                    int                  size,
-                                    int                  scale,
-                                    GtkIconLookupFlags   flags,
-                                    GError             **error)
+st_icon_theme_load_icon_for_scale (StIconTheme       *icon_theme,
+                                   const char        *icon_name,
+                                   int                size,
+                                   int                scale,
+                                   StIconLookupFlags  flags,
+                                   GError            **error)
 {
-  GtkIconInfo *icon_info;
+  StIconInfo *icon_info;
   GdkPixbuf *pixbuf = NULL;
 
-  g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme), NULL);
+  g_return_val_if_fail (ST_IS_ICON_THEME (icon_theme), NULL);
   g_return_val_if_fail (icon_name != NULL, NULL);
-  g_return_val_if_fail ((flags & GTK_ICON_LOOKUP_NO_SVG) == 0 ||
-                        (flags & GTK_ICON_LOOKUP_FORCE_SVG) == 0, NULL);
+  g_return_val_if_fail ((flags & ST_ICON_LOOKUP_NO_SVG) == 0 ||
+                        (flags & ST_ICON_LOOKUP_FORCE_SVG) == 0, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   g_return_val_if_fail (scale >= 1, NULL);
 
-  icon_info = gtk_icon_theme_lookup_icon_for_scale (icon_theme, icon_name, size, scale, flags);
+  icon_info = st_icon_theme_lookup_icon_for_scale (icon_theme, icon_name, size, scale, flags);
   if (!icon_info)
     {
-      g_set_error (error, GTK_ICON_THEME_ERROR,  GTK_ICON_THEME_NOT_FOUND,
+      g_set_error (error, ST_ICON_THEME_ERROR,  ST_ICON_THEME_NOT_FOUND,
                    _("Icon '%s' not present in theme %s"), icon_name, icon_theme->current_theme);
       return NULL;
     }
 
-  pixbuf = gtk_icon_info_load_icon (icon_info, error);
+  pixbuf = st_icon_info_load_icon (icon_info, error);
   g_prefix_error (error, "Failed to load %s: ", icon_info->filename);
   g_object_unref (icon_info);
 
@@ -1958,8 +1927,8 @@ gtk_icon_theme_load_icon_for_scale (GtkIconTheme        *icon_theme,
 }
 
 /**
- * gtk_icon_theme_has_icon:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_has_icon:
+ * @icon_theme: a #StIconTheme
  * @icon_name: the name of an icon
  *
  * Checks whether an icon theme includes an icon
@@ -1967,16 +1936,14 @@ gtk_icon_theme_load_icon_for_scale (GtkIconTheme        *icon_theme,
  *
  * Returns: %TRUE if @icon_theme includes an
  *  icon for @icon_name.
- *
- * Since: 2.4
  */
 gboolean
-gtk_icon_theme_has_icon (GtkIconTheme *icon_theme,
-                         const char   *icon_name)
+st_icon_theme_has_icon (StIconTheme *icon_theme,
+                        const char  *icon_name)
 {
   GList *l;
 
-  g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme), FALSE);
+  g_return_val_if_fail (ST_IS_ICON_THEME (icon_theme), FALSE);
   g_return_val_if_fail (icon_name != NULL, FALSE);
 
   ensure_valid_themes (icon_theme);
@@ -1984,9 +1951,9 @@ gtk_icon_theme_has_icon (GtkIconTheme *icon_theme,
   for (l = icon_theme->dir_mtimes; l; l = l->next)
     {
       IconThemeDirMtime *dir_mtime = l->data;
-      GtkIconCache *cache = dir_mtime->cache;
+      StIconCache *cache = dir_mtime->cache;
 
-      if (cache && _gtk_icon_cache_has_icon (cache, icon_name))
+      if (cache && st_icon_cache_has_icon (cache, icon_name))
         return TRUE;
     }
 
@@ -2012,8 +1979,8 @@ add_size (gpointer key,
 }
 
 /**
- * gtk_icon_theme_get_icon_sizes:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_get_icon_sizes:
+ * @icon_theme: a #StIconTheme
  * @icon_name: the name of an icon
  *
  * Returns an array of integers describing the sizes at which
@@ -2025,19 +1992,17 @@ add_size (gpointer key,
  * allocated array describing the sizes at which the icon is
  * available. The array should be freed with g_free() when it is no
  * longer needed.
- *
- * Since: 2.6
  */
 int *
-gtk_icon_theme_get_icon_sizes (GtkIconTheme *icon_theme,
-                               const char   *icon_name)
+st_icon_theme_get_icon_sizes (StIconTheme *icon_theme,
+                              const char  *icon_name)
 {
   GList *l, *d;
   GHashTable *sizes;
   int *result, *r;
   guint suffix;
 
-  g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme), NULL);
+  g_return_val_if_fail (ST_IS_ICON_THEME (icon_theme), NULL);
 
   ensure_valid_themes (icon_theme);
 
@@ -2093,8 +2058,8 @@ add_key_to_list (gpointer key,
 }
 
 /**
- * gtk_icon_theme_list_icons:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_list_icons:
+ * @icon_theme: a #StIconTheme
  * @context: (allow-none): a string identifying a particular type of
  *           icon, or %NULL to list all icons.
  *
@@ -2106,18 +2071,16 @@ add_key_to_list (gpointer key,
  * [Icon Theme Specification](http://www.freedesktop.org/wiki/Specifications/icon-theme-spec).
  * The standard contexts are listed in the
  * [Icon Naming Specification](http://www.freedesktop.org/wiki/Specifications/icon-naming-spec).
- * Also see gtk_icon_theme_list_contexts().
+ * Also see st_icon_theme_list_contexts().
  *
  * Returns: (element-type utf8) (transfer full): a #GList list
  *     holding the names of all the icons in the theme. You must
  *     first free each element in the list with g_free(), then
  *     free the list itself with g_list_free().
- *
- * Since: 2.4
  */
 GList *
-gtk_icon_theme_list_icons (GtkIconTheme *icon_theme,
-                           const char   *context)
+st_icon_theme_list_icons (StIconTheme *icon_theme,
+                          const char  *context)
 {
   GHashTable *icons;
   GList *list, *l;
@@ -2161,22 +2124,20 @@ gtk_icon_theme_list_icons (GtkIconTheme *icon_theme,
 }
 
 /**
- * gtk_icon_theme_list_contexts:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_list_contexts:
+ * @icon_theme: a #StIconTheme
  *
  * Gets the list of contexts available within the current
  * hierarchy of icon themes.
- * See gtk_icon_theme_list_icons() for details about contexts.
+ * See st_icon_theme_list_icons() for details about contexts.
  *
  * Returns: (element-type utf8) (transfer full): a #GList list
  *     holding the names of all the contexts in the theme. You must first
  *     free each element in the list with g_free(), then free the list
  *     itself with g_list_free().
- *
- * Since: 2.12
  */
 GList *
-gtk_icon_theme_list_contexts (GtkIconTheme *icon_theme)
+st_icon_theme_list_contexts (StIconTheme *icon_theme)
 {
   GHashTable *contexts;
   GList *list, *l;
@@ -2204,7 +2165,7 @@ gtk_icon_theme_list_contexts (GtkIconTheme *icon_theme)
 }
 
 static gboolean
-rescan_themes (GtkIconTheme *icon_theme)
+rescan_themes (StIconTheme *icon_theme)
 {
   IconThemeDirMtime *dir_mtime;
   GList *d;
@@ -2236,8 +2197,8 @@ rescan_themes (GtkIconTheme *icon_theme)
 }
 
 /**
- * gtk_icon_theme_rescan_if_needed:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_rescan_if_needed:
+ * @icon_theme: a #StIconTheme
  *
  * Checks to see if the icon theme has changed; if it has, any
  * currently cached information is discarded and will be reloaded
@@ -2245,15 +2206,13 @@ rescan_themes (GtkIconTheme *icon_theme)
  *
  * Returns: %TRUE if the icon theme has changed and needed
  *     to be reloaded.
- *
- * Since: 2.4
  */
 gboolean
-gtk_icon_theme_rescan_if_needed (GtkIconTheme *icon_theme)
+st_icon_theme_rescan_if_needed (StIconTheme *icon_theme)
 {
   gboolean retval;
 
-  g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme), FALSE);
+  g_return_val_if_fail (ST_IS_ICON_THEME (icon_theme), FALSE);
 
   retval = rescan_themes (icon_theme);
   if (retval)
@@ -2279,7 +2238,8 @@ static void
 theme_dir_destroy (IconThemeDir *dir)
 {
   if (dir->cache)
-    _gtk_icon_cache_unref (dir->cache);
+    st_icon_cache_unref (dir->cache);
+
   if (dir->icons)
     g_hash_table_destroy (dir->icons);
 
@@ -2392,17 +2352,17 @@ theme_dir_get_icon_suffix (IconThemeDir *dir,
 
   if (dir->cache)
     {
-      suffix = (IconSuffix)_gtk_icon_cache_get_icon_flags (dir->cache,
-                                                           icon_name,
-                                                           dir->subdir_index);
+      suffix = (IconSuffix)st_icon_cache_get_icon_flags (dir->cache,
+                                                         icon_name,
+                                                         dir->subdir_index);
 
       if (icon_name_is_symbolic (icon_name))
         {
           /* Look for foo-symbolic.symbolic.png, as the cache only stores the ".png" suffix */
           char *icon_name_with_prefix = g_strconcat (icon_name, ".symbolic", NULL);
-          symbolic_suffix = (IconSuffix)_gtk_icon_cache_get_icon_flags (dir->cache,
-                                                                        icon_name_with_prefix,
-                                                                        dir->subdir_index);
+          symbolic_suffix = (IconSuffix)st_icon_cache_get_icon_flags (dir->cache,
+                                                                      icon_name_with_prefix,
+                                                                      dir->subdir_index);
           g_free (icon_name_with_prefix);
 
           if (symbolic_suffix & ICON_SUFFIX_PNG)
@@ -2487,12 +2447,12 @@ compare_dir_matches (IconThemeDir *dir_a, int difference_a,
   return diff_a <= diff_b;
 }
 
-static GtkIconInfo *
-theme_lookup_icon (IconTheme   *theme,
-                   const char  *icon_name,
-                   int          size,
-                   int          scale,
-                   gboolean     allow_svg)
+static StIconInfo *
+theme_lookup_icon (IconTheme  *theme,
+                   const char *icon_name,
+                   int         size,
+                   int         scale,
+                   gboolean    allow_svg)
 {
   GList *dirs, *l;
   IconThemeDir *dir, *min_dir;
@@ -2530,7 +2490,7 @@ theme_lookup_icon (IconTheme   *theme,
 
   if (min_dir)
     {
-      GtkIconInfo *icon_info;
+      StIconInfo *icon_info;
       gboolean has_icon_file = FALSE;
 
       icon_info = icon_info_new (min_dir->type, min_dir->size, min_dir->scale);
@@ -2567,8 +2527,8 @@ theme_lookup_icon (IconTheme   *theme,
 
       if (min_dir->cache)
         {
-          icon_info->cache_pixbuf = _gtk_icon_cache_get_icon (min_dir->cache, icon_name,
-                                                              min_dir->subdir_index);
+          icon_info->cache_pixbuf = st_icon_cache_get_icon (min_dir->cache, icon_name,
+                                                            min_dir->subdir_index);
         }
 
       return icon_info;
@@ -2593,7 +2553,7 @@ theme_list_icons (IconTheme  *theme,
           context == 0)
         {
           if (dir->cache)
-            _gtk_icon_cache_add_icons (dir->cache, dir->subdir, icons);
+            st_icon_cache_add_icons (dir->cache, dir->subdir, icons);
           else
             g_hash_table_foreach (dir->icons, add_key_to_hash, icons);
         }
@@ -2602,8 +2562,8 @@ theme_list_icons (IconTheme  *theme,
 }
 
 static gboolean
-theme_has_icon (IconTheme   *theme,
-                const char  *icon_name)
+theme_has_icon (IconTheme  *theme,
+                const char *icon_name)
 {
   GList *l;
 
@@ -2613,7 +2573,7 @@ theme_has_icon (IconTheme   *theme,
 
       if (dir->cache)
         {
-          if (_gtk_icon_cache_has_icon (dir->cache, icon_name))
+          if (st_icon_cache_has_icon (dir->cache, icon_name))
             return TRUE;
         }
       else
@@ -2650,7 +2610,7 @@ theme_list_contexts (IconTheme  *theme,
 }
 
 static gboolean
-scan_directory (GtkIconTheme *icon_theme,
+scan_directory (StIconTheme  *icon_theme,
                 IconThemeDir *dir,
                 char         *full_dir)
 {
@@ -2688,7 +2648,7 @@ scan_directory (GtkIconTheme *icon_theme,
 }
 
 static gboolean
-scan_resources (GtkIconTheme *icon_theme,
+scan_resources (StIconTheme  *icon_theme,
                 IconThemeDir *dir,
                 char         *full_dir)
 {
@@ -2724,10 +2684,10 @@ scan_resources (GtkIconTheme *icon_theme,
 }
 
 static void
-theme_subdir_load (GtkIconTheme *icon_theme,
-                   IconTheme    *theme,
-                   GKeyFile     *theme_file,
-                   char         *subdir)
+theme_subdir_load (StIconTheme *icon_theme,
+                   IconTheme   *theme,
+                   GKeyFile    *theme_file,
+                   char        *subdir)
 {
   GList *d;
   g_autofree char *type_string = NULL;
@@ -2806,7 +2766,7 @@ theme_subdir_load (GtkIconTheme *icon_theme,
           if (dir_mtime->cache == NULL)
             {
               /* This will return NULL if the cache doesn't exist or is outdated */
-              dir_mtime->cache = _gtk_icon_cache_new_for_path (dir_mtime->dir);
+              dir_mtime->cache = st_icon_cache_new_for_path (dir_mtime->dir);
             }
 
           dir = g_new0 (IconThemeDir, 1);
@@ -2823,9 +2783,9 @@ theme_subdir_load (GtkIconTheme *icon_theme,
 
           if (dir_mtime->cache != NULL)
             {
-              dir->cache = _gtk_icon_cache_ref (dir_mtime->cache);
-              dir->subdir_index = _gtk_icon_cache_get_directory_index (dir->cache, dir->subdir);
-              has_icons = _gtk_icon_cache_has_icons (dir->cache, dir->subdir);
+              dir->cache = st_icon_cache_ref (dir_mtime->cache);
+              dir->subdir_index = st_icon_cache_get_directory_index (dir->cache, dir->subdir);
+              has_icons = st_icon_cache_has_icons (dir->cache, dir->subdir);
             }
           else
             {
@@ -2873,27 +2833,25 @@ theme_subdir_load (GtkIconTheme *icon_theme,
 }
 
 /*
- * GtkIconInfo
+ * StIconInfo
  */
 
-static void gtk_icon_info_class_init (GtkIconInfoClass *klass);
-
-G_DEFINE_TYPE (GtkIconInfo, gtk_icon_info, G_TYPE_OBJECT)
+G_DEFINE_TYPE (StIconInfo, st_icon_info, G_TYPE_OBJECT)
 
 static void
-gtk_icon_info_init (GtkIconInfo *icon_info)
+st_icon_info_init (StIconInfo *icon_info)
 {
   icon_info->scale = -1.;
 }
 
-static GtkIconInfo *
+static StIconInfo *
 icon_info_new (IconThemeDirType type,
                int              dir_size,
                int              dir_scale)
 {
-  GtkIconInfo *icon_info;
+  StIconInfo *icon_info;
 
-  icon_info = g_object_new (GTK_TYPE_ICON_INFO, NULL);
+  icon_info = g_object_new (ST_TYPE_ICON_INFO, NULL);
 
   icon_info->dir_type = type;
   icon_info->dir_size = dir_size;
@@ -2909,10 +2867,10 @@ icon_info_new (IconThemeDirType type,
  * so that we can do a load in a thread without affecting
  * the original IconInfo from the thread.
  */
-static GtkIconInfo *
-icon_info_dup (GtkIconInfo *icon_info)
+static StIconInfo *
+icon_info_dup (StIconInfo *icon_info)
 {
-  GtkIconInfo *dup;
+  StIconInfo *dup;
   GSList *l;
 
   dup = icon_info_new (icon_info->dir_type, icon_info->dir_size, icon_info->dir_scale);
@@ -2953,9 +2911,9 @@ icon_info_dup (GtkIconInfo *icon_info)
 }
 
 static void
-gtk_icon_info_finalize (GObject *object)
+st_icon_info_finalize (GObject *object)
 {
-  GtkIconInfo *icon_info = (GtkIconInfo *) object;
+  StIconInfo *icon_info = (StIconInfo *) object;
 
   if (icon_info->in_cache)
     g_hash_table_remove (icon_info->in_cache->info_cache, &icon_info->key);
@@ -2974,20 +2932,20 @@ gtk_icon_info_finalize (GObject *object)
 
   symbolic_pixbuf_cache_free (icon_info->symbolic_pixbuf_cache);
 
-  G_OBJECT_CLASS (gtk_icon_info_parent_class)->finalize (object);
+  G_OBJECT_CLASS (st_icon_info_parent_class)->finalize (object);
 }
 
 static void
-gtk_icon_info_class_init (GtkIconInfoClass *klass)
+st_icon_info_class_init (StIconInfoClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->finalize = gtk_icon_info_finalize;
+  gobject_class->finalize = st_icon_info_finalize;
 }
 
 /**
- * gtk_icon_info_get_base_size:
- * @icon_info: a #GtkIconInfo
+ * st_icon_info_get_base_size:
+ * @icon_info: a #StIconInfo
  *
  * Gets the base size for the icon. The base size
  * is a size for the icon that was specified by
@@ -3003,11 +2961,9 @@ gtk_icon_info_class_init (GtkIconInfoClass *klass)
  *
  * Returns: the base size, or 0, if no base
  *     size is known for the icon.
- *
- * Since: 2.4
  */
 int
-gtk_icon_info_get_base_size (GtkIconInfo *icon_info)
+st_icon_info_get_base_size (StIconInfo *icon_info)
 {
   g_return_val_if_fail (icon_info != NULL, 0);
 
@@ -3015,8 +2971,8 @@ gtk_icon_info_get_base_size (GtkIconInfo *icon_info)
 }
 
 /**
- * gtk_icon_info_get_base_scale:
- * @icon_info: a #GtkIconInfo
+ * st_icon_info_get_base_scale:
+ * @icon_info: a #StIconInfo
  *
  * Gets the base scale for the icon. The base scale is a scale
  * for the icon that was specified by the icon theme creator.
@@ -3025,11 +2981,9 @@ gtk_icon_info_get_base_size (GtkIconInfo *icon_info)
  * a base scale of 2.
  *
  * Returns: the base scale
- *
- * Since: 3.10
  */
 int
-gtk_icon_info_get_base_scale (GtkIconInfo *icon_info)
+st_icon_info_get_base_scale (StIconInfo *icon_info)
 {
   g_return_val_if_fail (icon_info != NULL, 0);
 
@@ -3037,18 +2991,17 @@ gtk_icon_info_get_base_scale (GtkIconInfo *icon_info)
 }
 
 /**
- * gtk_icon_info_get_filename:
- * @icon_info: a #GtkIconInfo
+ * st_icon_info_get_filename:
+ * @icon_info: a #StIconInfo
  *
  * Gets the filename for the icon.
- * Returns: (nullable) (type filename): the filename for the icon, or %NULL
+ *
+ * Returns: (nullable) (type filename): the filename for the icon, or %NULL.
  *     The return value is owned by GTK+ and should not be modified
  *     or freed.
- *
- * Since: 2.4
  */
 const char *
-gtk_icon_info_get_filename (GtkIconInfo *icon_info)
+st_icon_info_get_filename (StIconInfo *icon_info)
 {
   g_return_val_if_fail (icon_info != NULL, NULL);
 
@@ -3056,24 +3009,22 @@ gtk_icon_info_get_filename (GtkIconInfo *icon_info)
 }
 
 /**
- * gtk_icon_info_is_symbolic:
- * @icon_info: a #GtkIconInfo
+ * st_icon_info_is_symbolic:
+ * @icon_info: a #StIconInfo
  *
  * Checks if the icon is symbolic or not. This currently uses only
  * the file name and not the file contents for determining this.
  * This behaviour may change in the future.
  *
  * Returns: %TRUE if the icon is symbolic, %FALSE otherwise
- *
- * Since: 3.12
  */
 gboolean
-gtk_icon_info_is_symbolic (GtkIconInfo *icon_info)
+st_icon_info_is_symbolic (StIconInfo *icon_info)
 {
   g_autofree char *icon_uri = NULL;
   gboolean is_symbolic;
 
-  g_return_val_if_fail (GTK_IS_ICON_INFO (icon_info), FALSE);
+  g_return_val_if_fail (ST_IS_ICON_INFO (icon_info), FALSE);
 
   if (icon_info->icon_file)
     icon_uri = g_file_get_uri (icon_info->icon_file);
@@ -3196,8 +3147,8 @@ _gdk_pixbuf_new_from_resource_scaled (const char  *resource_path,
 }
 
 static GdkPixbuf *
-apply_emblems_to_pixbuf (GdkPixbuf   *pixbuf,
-                         GtkIconInfo *info)
+apply_emblems_to_pixbuf (GdkPixbuf  *pixbuf,
+                         StIconInfo *info)
 {
   GdkPixbuf *icon = NULL;
   int w, h, pos;
@@ -3211,7 +3162,7 @@ apply_emblems_to_pixbuf (GdkPixbuf   *pixbuf,
 
   for (l = info->emblem_infos, pos = 0; l; l = l->next, pos++)
     {
-      GtkIconInfo *emblem_info = l->data;
+      StIconInfo *emblem_info = l->data;
 
       if (icon_info_ensure_scale_and_pixbuf (emblem_info))
         {
@@ -3271,7 +3222,7 @@ apply_emblems_to_pixbuf (GdkPixbuf   *pixbuf,
  * size of the icon itself.
  */
 static void
-apply_emblems (GtkIconInfo *info)
+apply_emblems (StIconInfo *info)
 {
   GdkPixbuf *icon;
 
@@ -3292,7 +3243,7 @@ apply_emblems (GtkIconInfo *info)
  * without blocking
  */
 static gboolean
-icon_info_get_pixbuf_ready (GtkIconInfo *icon_info)
+icon_info_get_pixbuf_ready (StIconInfo *icon_info)
 {
   if (icon_info->pixbuf &&
       (icon_info->emblem_infos == NULL || icon_info->emblems_applied))
@@ -3309,7 +3260,7 @@ icon_info_get_pixbuf_ready (GtkIconInfo *icon_info)
  * that size.
  */
 static gboolean
-icon_info_ensure_scale_and_pixbuf (GtkIconInfo *icon_info)
+icon_info_ensure_scale_and_pixbuf (StIconInfo *icon_info)
 {
   int image_width, image_height, image_size;
   int scaled_desired_size;
@@ -3498,8 +3449,8 @@ icon_info_ensure_scale_and_pixbuf (GtkIconInfo *icon_info)
 static void
 proxy_pixbuf_destroy (guchar *pixels, gpointer data)
 {
-  GtkIconInfo *icon_info = data;
-  GtkIconTheme *icon_theme = icon_info->in_cache;
+  StIconInfo *icon_info = data;
+  StIconTheme *icon_theme = icon_info->in_cache;
 
   g_assert (icon_info->proxy_pixbuf != NULL);
   icon_info->proxy_pixbuf = NULL;
@@ -3512,33 +3463,31 @@ proxy_pixbuf_destroy (guchar *pixels, gpointer data)
 }
 
 /**
- * gtk_icon_info_load_icon:
- * @icon_info: a #GtkIconInfo from gtk_icon_theme_lookup_icon()
+ * st_icon_info_load_icon:
+ * @icon_info: a #StIconInfo from st_icon_theme_lookup_icon()
  * @error: (allow-none): location to store error information on failure,
  *     or %NULL.
  *
  * Renders an icon previously looked up in an icon theme using
- * gtk_icon_theme_lookup_icon(); the size will be based on the size
- * passed to gtk_icon_theme_lookup_icon(). Note that the resulting
+ * st_icon_theme_lookup_icon(); the size will be based on the size
+ * passed to st_icon_theme_lookup_icon(). Note that the resulting
  * pixbuf may not be exactly this size; an icon theme may have icons
  * that differ slightly from their nominal sizes, and in addition GTK+
  * will avoid scaling icons that it considers sufficiently close to the
  * requested size or for which the source image would have to be scaled
  * up too far. (This maintains sharpness.). This behaviour can be changed
- * by passing the %GTK_ICON_LOOKUP_FORCE_SIZE flag when obtaining
- * the #GtkIconInfo. If this flag has been specified, the pixbuf
+ * by passing the %ST_ICON_LOOKUP_FORCE_SIZE flag when obtaining
+ * the #StIconInfo. If this flag has been specified, the pixbuf
  * returned by this function will be scaled to the exact size.
  *
  * Returns: (transfer full): the rendered icon; this may be a newly
  *     created icon or a new reference to an internal icon, so you must
  *     not modify the icon. Use g_object_unref() to release your reference
  *     to the icon.
- *
- * Since: 2.4
  */
 GdkPixbuf *
-gtk_icon_info_load_icon (GtkIconInfo *icon_info,
-                         GError     **error)
+st_icon_info_load_icon (StIconInfo  *icon_info,
+                        GError     **error)
 {
   g_return_val_if_fail (icon_info != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
@@ -3553,8 +3502,8 @@ gtk_icon_info_load_icon (GtkIconInfo *icon_info,
       else
         {
           g_set_error_literal (error,
-                               GTK_ICON_THEME_ERROR,
-                               GTK_ICON_THEME_NOT_FOUND,
+                               ST_ICON_THEME_ERROR,
+                               ST_ICON_THEME_NOT_FOUND,
                                _("Failed to load icon"));
         }
 
@@ -3590,44 +3539,42 @@ load_icon_thread  (GTask        *task,
                    gpointer      task_data,
                    GCancellable *cancellable)
 {
-  GtkIconInfo *dup = task_data;
+  StIconInfo *dup = task_data;
 
   (void)icon_info_ensure_scale_and_pixbuf (dup);
   g_task_return_pointer (task, NULL, NULL);
 }
 
 /**
- * gtk_icon_info_load_icon_async:
- * @icon_info: a #GtkIconInfo from gtk_icon_theme_lookup_icon()
+ * st_icon_info_load_icon_async:
+ * @icon_info: a #StIconInfo from st_icon_theme_lookup_icon()
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
  * @callback: (scope async): a #GAsyncReadyCallback to call when the
  *     request is satisfied
  * @user_data: (closure): the data to pass to callback function
  *
  * Asynchronously load, render and scale an icon previously looked up
- * from the icon theme using gtk_icon_theme_lookup_icon().
+ * from the icon theme using st_icon_theme_lookup_icon().
  *
- * For more details, see gtk_icon_info_load_icon() which is the synchronous
+ * For more details, see st_icon_info_load_icon() which is the synchronous
  * version of this call.
- *
- * Since: 3.8
  */
 void
-gtk_icon_info_load_icon_async (GtkIconInfo         *icon_info,
-                               GCancellable        *cancellable,
-                               GAsyncReadyCallback  callback,
-                               gpointer             user_data)
+st_icon_info_load_icon_async (StIconInfo          *icon_info,
+                              GCancellable        *cancellable,
+                              GAsyncReadyCallback  callback,
+                              gpointer             user_data)
 {
   GTask *task;
   GdkPixbuf *pixbuf;
-  GtkIconInfo *dup;
+  StIconInfo *dup;
   GError *error = NULL;
 
   task = g_task_new (icon_info, cancellable, callback, user_data);
 
   if (icon_info_get_pixbuf_ready (icon_info))
     {
-      pixbuf = gtk_icon_info_load_icon (icon_info, &error);
+      pixbuf = st_icon_info_load_icon (icon_info, &error);
       if (pixbuf == NULL)
         g_task_return_error (task, error);
       else
@@ -3644,28 +3591,26 @@ gtk_icon_info_load_icon_async (GtkIconInfo         *icon_info,
 }
 
 /**
- * gtk_icon_info_load_icon_finish:
- * @icon_info: a #GtkIconInfo from gtk_icon_theme_lookup_icon()
+ * st_icon_info_load_icon_finish:
+ * @icon_info: a #StIconInfo from st_icon_theme_lookup_icon()
  * @res: a #GAsyncResult
  * @error: (allow-none): location to store error information on failure,
  *     or %NULL.
  *
- * Finishes an async icon load, see gtk_icon_info_load_icon_async().
+ * Finishes an async icon load, see st_icon_info_load_icon_async().
  *
  * Returns: (transfer full): the rendered icon; this may be a newly
  *     created icon or a new reference to an internal icon, so you must
  *     not modify the icon. Use g_object_unref() to release your reference
  *     to the icon.
- *
- * Since: 3.8
  */
 GdkPixbuf *
-gtk_icon_info_load_icon_finish (GtkIconInfo   *icon_info,
-                                GAsyncResult  *result,
-                                GError       **error)
+st_icon_info_load_icon_finish (StIconInfo    *icon_info,
+                               GAsyncResult  *result,
+                               GError       **error)
 {
   GTask *task = G_TASK (result);
-  GtkIconInfo *dup;
+  StIconInfo *dup;
 
   g_return_val_if_fail (g_task_is_valid (result, icon_info), NULL);
 
@@ -3692,15 +3637,15 @@ gtk_icon_info_load_icon_finish (GtkIconInfo   *icon_info,
   g_assert (icon_info_get_pixbuf_ready (icon_info));
 
   /* This is now guaranteed to not block */
-  return gtk_icon_info_load_icon (icon_info, error);
+  return st_icon_info_load_icon (icon_info, error);
 }
 
 static void
 proxy_symbolic_pixbuf_destroy (guchar   *pixels,
                                gpointer  data)
 {
-  GtkIconInfo *icon_info = data;
-  GtkIconTheme *icon_theme = icon_info->in_cache;
+  StIconInfo *icon_info = data;
+  StIconTheme *icon_theme = icon_info->in_cache;
   SymbolicPixbufCache *symbolic_cache;
 
   for (symbolic_cache = icon_info->symbolic_pixbuf_cache;
@@ -3726,7 +3671,7 @@ proxy_symbolic_pixbuf_destroy (guchar   *pixels,
 
 static GdkPixbuf *
 symbolic_cache_get_proxy (SymbolicPixbufCache *symbolic_cache,
-                          GtkIconInfo         *icon_info)
+                          StIconInfo          *icon_info)
 {
   if (symbolic_cache->proxy_pixbuf)
     return g_object_ref (symbolic_cache->proxy_pixbuf);
@@ -3851,12 +3796,12 @@ color_symbolic_pixbuf (GdkPixbuf     *symbolic,
 }
 
 static GdkPixbuf *
-gtk_icon_info_load_symbolic_png (GtkIconInfo    *icon_info,
-                                 const GdkRGBA  *fg,
-                                 const GdkRGBA  *success_color,
-                                 const GdkRGBA  *warning_color,
-                                 const GdkRGBA  *error_color,
-                                 GError        **error)
+st_icon_info_load_symbolic_png (StIconInfo     *icon_info,
+                                const GdkRGBA  *fg,
+                                const GdkRGBA  *success_color,
+                                const GdkRGBA  *warning_color,
+                                const GdkRGBA  *error_color,
+                                GError        **error)
 {
   GdkRGBA fg_default = { 0.7450980392156863, 0.7450980392156863, 0.7450980392156863, 1.0};
   GdkRGBA success_default = { 0.3046921492332342,0.6015716792553597, 0.023437857633325704, 1.0};
@@ -3873,8 +3818,8 @@ gtk_icon_info_load_symbolic_png (GtkIconInfo    *icon_info,
       else
         {
           g_set_error_literal (error,
-                               GTK_ICON_THEME_ERROR,
-                               GTK_ICON_THEME_NOT_FOUND,
+                               ST_ICON_THEME_ERROR,
+                               ST_ICON_THEME_NOT_FOUND,
                                _("Failed to load icon"));
         }
 
@@ -3889,12 +3834,12 @@ gtk_icon_info_load_symbolic_png (GtkIconInfo    *icon_info,
 }
 
 static GdkPixbuf *
-gtk_icon_info_load_symbolic_svg (GtkIconInfo    *icon_info,
-                                 const GdkRGBA  *fg,
-                                 const GdkRGBA  *success_color,
-                                 const GdkRGBA  *warning_color,
-                                 const GdkRGBA  *error_color,
-                                 GError        **error)
+st_icon_info_load_symbolic_svg (StIconInfo     *icon_info,
+                                const GdkRGBA  *fg,
+                                const GdkRGBA  *success_color,
+                                const GdkRGBA  *warning_color,
+                                const GdkRGBA  *error_color,
+                                GError        **error)
 {
   GInputStream *stream;
   GdkPixbuf *pixbuf;
@@ -3968,7 +3913,7 @@ gtk_icon_info_load_symbolic_svg (GtkIconInfo    *icon_info,
     g_debug ("Symbolic icon %s of size %d is in an icon theme directory of size %d",
              icon_info->key.icon_names ? icon_info->key.icon_names[0] : icon_info->filename,
              symbolic_size,
-             icon_info->dir_size * icon_info->dir_scale)
+             icon_info->dir_size * icon_info->dir_scale);
 
   width = g_strdup_printf ("%d", icon_info->symbolic_width);
   height = g_strdup_printf ("%d", icon_info->symbolic_height);
@@ -4015,13 +3960,13 @@ gtk_icon_info_load_symbolic_svg (GtkIconInfo    *icon_info,
 
 
 static GdkPixbuf *
-gtk_icon_info_load_symbolic_internal (GtkIconInfo    *icon_info,
-                                      const GdkRGBA  *fg,
-                                      const GdkRGBA  *success_color,
-                                      const GdkRGBA  *warning_color,
-                                      const GdkRGBA  *error_color,
-                                      gboolean        use_cache,
-                                      GError        **error)
+st_icon_info_load_symbolic_internal (StIconInfo     *icon_info,
+                                     const GdkRGBA  *fg,
+                                     const GdkRGBA  *success_color,
+                                     const GdkRGBA  *warning_color,
+                                     const GdkRGBA  *error_color,
+                                     gboolean        use_cache,
+                                     GError        **error)
 {
   GdkPixbuf *pixbuf;
   SymbolicPixbufCache *symbolic_cache;
@@ -4042,9 +3987,9 @@ gtk_icon_info_load_symbolic_internal (GtkIconInfo    *icon_info,
 
   icon_uri = g_file_get_uri (icon_info->icon_file);
   if (g_str_has_suffix (icon_uri, ".symbolic.png"))
-    pixbuf = gtk_icon_info_load_symbolic_png (icon_info, fg, success_color, warning_color, error_color, error);
+    pixbuf = st_icon_info_load_symbolic_png (icon_info, fg, success_color, warning_color, error_color, error);
   else
-    pixbuf = gtk_icon_info_load_symbolic_svg (icon_info, fg, success_color, warning_color, error_color, error);
+    pixbuf = st_icon_info_load_symbolic_svg (icon_info, fg, success_color, warning_color, error_color, error);
 
   if (pixbuf != NULL)
     {
@@ -4073,8 +4018,8 @@ gtk_icon_info_load_symbolic_internal (GtkIconInfo    *icon_info,
 }
 
 /**
- * gtk_icon_info_load_symbolic:
- * @icon_info: a #GtkIconInfo
+ * st_icon_info_load_symbolic:
+ * @icon_info: a #StIconInfo
  * @fg: a #GdkRGBA representing the foreground color of the icon
  * @success_color: (allow-none): a #GdkRGBA representing the warning color
  *     of the icon or %NULL to use the default color
@@ -4090,7 +4035,7 @@ gtk_icon_info_load_symbolic_internal (GtkIconInfo    *icon_info,
  *
  * Loads an icon, modifying it to match the system colours for the foreground,
  * success, warning and error colors provided. If the icon is not a symbolic
- * one, the function will return the result from gtk_icon_info_load_icon().
+ * one, the function will return the result from st_icon_info_load_icon().
  *
  * This allows loading symbolic icons that will match the system theme.
  *
@@ -4106,41 +4051,39 @@ gtk_icon_info_load_symbolic_internal (GtkIconInfo    *icon_info,
  * for more information about symbolic icons.
  *
  * Returns: (transfer full): a #GdkPixbuf representing the loaded icon
- *
- * Since: 3.0
  */
 GdkPixbuf *
-gtk_icon_info_load_symbolic (GtkIconInfo    *icon_info,
-                             const GdkRGBA  *fg,
-                             const GdkRGBA  *success_color,
-                             const GdkRGBA  *warning_color,
-                             const GdkRGBA  *error_color,
-                             gboolean       *was_symbolic,
-                             GError        **error)
+st_icon_info_load_symbolic (StIconInfo     *icon_info,
+                            const GdkRGBA  *fg,
+                            const GdkRGBA  *success_color,
+                            const GdkRGBA  *warning_color,
+                            const GdkRGBA  *error_color,
+                            gboolean       *was_symbolic,
+                            GError        **error)
 {
   gboolean is_symbolic;
 
   g_return_val_if_fail (icon_info != NULL, NULL);
   g_return_val_if_fail (fg != NULL, NULL);
 
-  is_symbolic = gtk_icon_info_is_symbolic (icon_info);
+  is_symbolic = st_icon_info_is_symbolic (icon_info);
 
   if (was_symbolic)
     *was_symbolic = is_symbolic;
 
   if (!is_symbolic)
-    return gtk_icon_info_load_icon (icon_info, error);
+    return st_icon_info_load_icon (icon_info, error);
 
-  return gtk_icon_info_load_symbolic_internal (icon_info,
-                                               fg, success_color,
-                                               warning_color, error_color,
-                                               TRUE,
-                                               error);
+  return st_icon_info_load_symbolic_internal (icon_info,
+                                              fg, success_color,
+                                              warning_color, error_color,
+                                              TRUE,
+                                              error);
 }
 
 typedef struct {
   gboolean is_symbolic;
-  GtkIconInfo *dup;
+  StIconInfo *dup;
   GdkRGBA fg;
   gboolean fg_set;
   GdkRGBA success_color;
@@ -4164,12 +4107,12 @@ async_load_no_symbolic_cb (GObject      *source_object,
                            GAsyncResult *res,
                            gpointer      user_data)
 {
-  GtkIconInfo *icon_info = GTK_ICON_INFO (source_object);
+  StIconInfo *icon_info = ST_ICON_INFO (source_object);
   GTask *task = user_data;
   GError *error = NULL;
   GdkPixbuf *pixbuf;
 
-  pixbuf = gtk_icon_info_load_icon_finish (icon_info, res, &error);
+  pixbuf = st_icon_info_load_icon_finish (icon_info, res, &error);
   if (pixbuf == NULL)
     g_task_return_error (task, error);
   else
@@ -4178,23 +4121,23 @@ async_load_no_symbolic_cb (GObject      *source_object,
 }
 
 static void
-load_symbolic_icon_thread  (GTask        *task,
-                            gpointer      source_object,
-                            gpointer      task_data,
-                            GCancellable *cancellable)
+load_symbolic_icon_thread (GTask        *task,
+                           gpointer      source_object,
+                           gpointer      task_data,
+                           GCancellable *cancellable)
 {
   AsyncSymbolicData *data = task_data;
   GError *error;
   GdkPixbuf *pixbuf;
 
   error = NULL;
-  pixbuf = gtk_icon_info_load_symbolic_internal (data->dup,
-                                                 data->fg_set ? &data->fg : NULL,
-                                                 data->success_color_set ? &data->success_color : NULL,
-                                                 data->warning_color_set ? &data->warning_color : NULL,
-                                                 data->error_color_set ? &data->error_color : NULL,
-                                                 FALSE,
-                                                 &error);
+  pixbuf = st_icon_info_load_symbolic_internal (data->dup,
+                                                data->fg_set ? &data->fg : NULL,
+                                                data->success_color_set ? &data->success_color : NULL,
+                                                data->warning_color_set ? &data->warning_color : NULL,
+                                                data->error_color_set ? &data->error_color : NULL,
+                                                FALSE,
+                                                &error);
   if (pixbuf == NULL)
     g_task_return_error (task, error);
   else
@@ -4202,8 +4145,8 @@ load_symbolic_icon_thread  (GTask        *task,
 }
 
 /**
- * gtk_icon_info_load_symbolic_async:
- * @icon_info: a #GtkIconInfo from gtk_icon_theme_lookup_icon()
+ * st_icon_info_load_symbolic_async:
+ * @icon_info: a #StIconInfo from st_icon_theme_lookup_icon()
  * @fg: a #GdkRGBA representing the foreground color of the icon
  * @success_color: (allow-none): a #GdkRGBA representing the warning color
  *     of the icon or %NULL to use the default color
@@ -4218,22 +4161,20 @@ load_symbolic_icon_thread  (GTask        *task,
  * @user_data: (closure): the data to pass to callback function
  *
  * Asynchronously load, render and scale a symbolic icon previously looked up
- * from the icon theme using gtk_icon_theme_lookup_icon().
+ * from the icon theme using st_icon_theme_lookup_icon().
  *
- * For more details, see gtk_icon_info_load_symbolic() which is the synchronous
+ * For more details, see st_icon_info_load_symbolic() which is the synchronous
  * version of this call.
- *
- * Since: 3.8
  */
 void
-gtk_icon_info_load_symbolic_async (GtkIconInfo          *icon_info,
-                                   const GdkRGBA        *fg,
-                                   const GdkRGBA        *success_color,
-                                   const GdkRGBA        *warning_color,
-                                   const GdkRGBA        *error_color,
-                                   GCancellable         *cancellable,
-                                   GAsyncReadyCallback   callback,
-                                   gpointer              user_data)
+st_icon_info_load_symbolic_async (StIconInfo          *icon_info,
+                                  const GdkRGBA       *fg,
+                                  const GdkRGBA       *success_color,
+                                  const GdkRGBA       *warning_color,
+                                  const GdkRGBA       *error_color,
+                                  GCancellable        *cancellable,
+                                  GAsyncReadyCallback  callback,
+                                  gpointer             user_data)
 {
   GTask *task;
   AsyncSymbolicData *data;
@@ -4248,11 +4189,11 @@ gtk_icon_info_load_symbolic_async (GtkIconInfo          *icon_info,
   data = g_new0 (AsyncSymbolicData, 1);
   g_task_set_task_data (task, data, (GDestroyNotify) async_symbolic_data_free);
 
-  data->is_symbolic = gtk_icon_info_is_symbolic (icon_info);
+  data->is_symbolic = st_icon_info_is_symbolic (icon_info);
 
   if (!data->is_symbolic)
     {
-      gtk_icon_info_load_icon_async (icon_info, cancellable, async_load_no_symbolic_cb, g_object_ref (task));
+      st_icon_info_load_icon_async (icon_info, cancellable, async_load_no_symbolic_cb, g_object_ref (task));
     }
   else
     {
@@ -4297,8 +4238,8 @@ gtk_icon_info_load_symbolic_async (GtkIconInfo          *icon_info,
 }
 
 /**
- * gtk_icon_info_load_symbolic_finish:
- * @icon_info: a #GtkIconInfo from gtk_icon_theme_lookup_icon()
+ * st_icon_info_load_symbolic_finish:
+ * @icon_info: a #StIconInfo from st_icon_theme_lookup_icon()
  * @res: a #GAsyncResult
  * @was_symbolic: (out) (allow-none): a #gboolean, returns whether the
  *     loaded icon was a symbolic one and whether the @fg color was
@@ -4306,20 +4247,18 @@ gtk_icon_info_load_symbolic_async (GtkIconInfo          *icon_info,
  * @error: (allow-none): location to store error information on failure,
  *     or %NULL.
  *
- * Finishes an async icon load, see gtk_icon_info_load_symbolic_async().
+ * Finishes an async icon load, see st_icon_info_load_symbolic_async().
  *
  * Returns: (transfer full): the rendered icon; this may be a newly
  *     created icon or a new reference to an internal icon, so you must
  *     not modify the icon. Use g_object_unref() to release your reference
  *     to the icon.
- *
- * Since: 3.8
  */
 GdkPixbuf *
-gtk_icon_info_load_symbolic_finish (GtkIconInfo   *icon_info,
-                                    GAsyncResult  *result,
-                                    gboolean      *was_symbolic,
-                                    GError       **error)
+st_icon_info_load_symbolic_finish (StIconInfo    *icon_info,
+                                   GAsyncResult  *result,
+                                   gboolean      *was_symbolic,
+                                   GError       **error)
 {
   GTask *task = G_TASK (result);
   AsyncSymbolicData *data = g_task_get_task_data (task);
@@ -4361,69 +4300,65 @@ gtk_icon_info_load_symbolic_finish (GtkIconInfo   *icon_info,
 }
 
 /**
- * gtk_icon_theme_lookup_by_gicon:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_lookup_by_gicon:
+ * @icon_theme: a #StIconTheme
  * @icon: the #GIcon to look up
  * @size: desired icon size
  * @flags: flags modifying the behavior of the icon lookup
  *
- * Looks up an icon and returns a #GtkIconInfo containing information
+ * Looks up an icon and returns a #StIconInfo containing information
  * such as the filename of the icon. The icon can then be rendered
- * into a pixbuf using gtk_icon_info_load_icon().
+ * into a pixbuf using st_icon_info_load_icon().
  *
  * When rendering on displays with high pixel densities you should not
  * use a @size multiplied by the scaling factor returned by functions
  * like gdk_window_get_scale_factor(). Instead, you should use
- * gtk_icon_theme_lookup_by_gicon_for_scale(), as the assets loaded
+ * st_icon_theme_lookup_by_gicon_for_scale(), as the assets loaded
  * for a given scaling factor may be different.
  *
- * Returns: (nullable) (transfer full): a #GtkIconInfo containing
+ * Returns: (nullable) (transfer full): a #StIconInfo containing
  *     information about the icon, or %NULL if the icon wasn’t
  *     found. Unref with g_object_unref()
- *
- * Since: 2.14
  */
-GtkIconInfo *
-gtk_icon_theme_lookup_by_gicon (GtkIconTheme       *icon_theme,
-                                GIcon              *icon,
-                                int                 size,
-                                GtkIconLookupFlags  flags)
+StIconInfo *
+st_icon_theme_lookup_by_gicon (StIconTheme       *icon_theme,
+                               GIcon             *icon,
+                               int                size,
+                               StIconLookupFlags  flags)
 {
-  return gtk_icon_theme_lookup_by_gicon_for_scale (icon_theme, icon,
+  return st_icon_theme_lookup_by_gicon_for_scale (icon_theme, icon,
                                                    size, 1, flags);
 }
 
 
 /**
- * gtk_icon_theme_lookup_by_gicon_for_scale:
- * @icon_theme: a #GtkIconTheme
+ * st_icon_theme_lookup_by_gicon_for_scale:
+ * @icon_theme: a #StIconTheme
  * @icon: the #GIcon to look up
  * @size: desired icon size
  * @scale: the desired scale
  * @flags: flags modifying the behavior of the icon lookup
  *
- * Looks up an icon and returns a #GtkIconInfo containing information
+ * Looks up an icon and returns a #StIconInfo containing information
  * such as the filename of the icon. The icon can then be rendered into
- * a pixbuf using gtk_icon_info_load_icon().
+ * a pixbuf using st_icon_info_load_icon().
  *
- * Returns: (nullable) (transfer full): a #GtkIconInfo containing
+ * Returns: (nullable) (transfer full): a #StIconInfo containing
  *     information about the icon, or %NULL if the icon wasn’t
  *     found. Unref with g_object_unref()
- *
- * Since: 3.10
  */
-GtkIconInfo *
-gtk_icon_theme_lookup_by_gicon_for_scale (GtkIconTheme       *icon_theme,
-                                          GIcon              *icon,
-                                          int                 size,
-                                          int                 scale,
-                                          GtkIconLookupFlags  flags)
+StIconInfo *
+st_icon_theme_lookup_by_gicon_for_scale (StIconTheme       *icon_theme,
+                                         GIcon             *icon,
+                                         int                size,
+                                         int                scale,
+                                         StIconLookupFlags  flags)
 {
-  GtkIconInfo *info;
+  StIconInfo *info;
 
-  g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme), NULL);
+  g_return_val_if_fail (ST_IS_ICON_THEME (icon_theme), NULL);
   g_return_val_if_fail (G_IS_ICON (icon), NULL);
-  g_warn_if_fail ((flags & GTK_ICON_LOOKUP_GENERIC_FALLBACK) == 0);
+  g_warn_if_fail ((flags & ST_ICON_LOOKUP_GENERIC_FALLBACK) == 0);
 
   if (GDK_IS_PIXBUF (icon))
     {
@@ -4431,7 +4366,7 @@ gtk_icon_theme_lookup_by_gicon_for_scale (GtkIconTheme       *icon_theme,
 
       pixbuf = GDK_PIXBUF (icon);
 
-      if ((flags & GTK_ICON_LOOKUP_FORCE_SIZE) != 0)
+      if ((flags & ST_ICON_LOOKUP_FORCE_SIZE) != 0)
         {
           int width, height, max;
           gdouble pixbuf_scale;
@@ -4447,13 +4382,13 @@ gtk_icon_theme_lookup_by_gicon_for_scale (GtkIconTheme       *icon_theme,
                                             0.5 + height * pixbuf_scale,
                                             GDK_INTERP_BILINEAR);
 
-          info = gtk_icon_info_new_for_pixbuf (icon_theme, scaled);
+          info = st_icon_info_new_for_pixbuf (icon_theme, scaled);
 
           g_object_unref (scaled);
         }
       else
         {
-          info = gtk_icon_info_new_for_pixbuf (icon_theme, pixbuf);
+          info = st_icon_info_new_for_pixbuf (icon_theme, pixbuf);
         }
 
       return info;
@@ -4462,8 +4397,8 @@ gtk_icon_theme_lookup_by_gicon_for_scale (GtkIconTheme       *icon_theme,
     {
       GFile *file = g_file_icon_get_file (G_FILE_ICON (icon));
 
-      info = gtk_icon_info_new_for_file (file, size, scale);
-      info->forced_size = (flags & GTK_ICON_LOOKUP_FORCE_SIZE) != 0;
+      info = st_icon_info_new_for_file (file, size, scale);
+      info->forced_size = (flags & ST_ICON_LOOKUP_FORCE_SIZE) != 0;
 
       return info;
     }
@@ -4474,7 +4409,7 @@ gtk_icon_theme_lookup_by_gicon_for_scale (GtkIconTheme       *icon_theme,
       info->is_svg = FALSE;
       info->desired_size = size;
       info->desired_scale = scale;
-      info->forced_size = (flags & GTK_ICON_LOOKUP_FORCE_SIZE) != 0;
+      info->forced_size = (flags & ST_ICON_LOOKUP_FORCE_SIZE) != 0;
 
       return info;
     }
@@ -4483,7 +4418,7 @@ gtk_icon_theme_lookup_by_gicon_for_scale (GtkIconTheme       *icon_theme,
       const char **names;
 
       names = (const char **)g_themed_icon_get_names (G_THEMED_ICON (icon));
-      info = gtk_icon_theme_choose_icon_for_scale (icon_theme, names, size, scale, flags);
+      info = st_icon_theme_choose_icon_for_scale (icon_theme, names, size, scale, flags);
 
       return info;
     }
@@ -4491,10 +4426,10 @@ gtk_icon_theme_lookup_by_gicon_for_scale (GtkIconTheme       *icon_theme,
     {
       GIcon *base, *emblem;
       GList *list, *l;
-      GtkIconInfo *base_info, *emblem_info;
+      StIconInfo *base_info, *emblem_info;
 
       base = g_emblemed_icon_get_icon (G_EMBLEMED_ICON (icon));
-      base_info = gtk_icon_theme_lookup_by_gicon_for_scale (icon_theme, base, size, scale, flags);
+      base_info = st_icon_theme_lookup_by_gicon_for_scale (icon_theme, base, size, scale, flags);
       if (base_info)
         {
           info = icon_info_dup (base_info);
@@ -4505,7 +4440,7 @@ gtk_icon_theme_lookup_by_gicon_for_scale (GtkIconTheme       *icon_theme,
             {
               emblem = g_emblem_get_icon (G_EMBLEM (l->data));
               /* always force size for emblems */
-              emblem_info = gtk_icon_theme_lookup_by_gicon_for_scale (icon_theme, emblem, size / 2, scale, flags | GTK_ICON_LOOKUP_FORCE_SIZE);
+              emblem_info = st_icon_theme_lookup_by_gicon_for_scale (icon_theme, emblem, size / 2, scale, flags | ST_ICON_LOOKUP_FORCE_SIZE);
               if (emblem_info)
                 info->emblem_infos = g_slist_prepend (info->emblem_infos, emblem_info);
             }
@@ -4520,23 +4455,21 @@ gtk_icon_theme_lookup_by_gicon_for_scale (GtkIconTheme       *icon_theme,
 }
 
 /**
- * gtk_icon_info_new_for_pixbuf:
- * @icon_theme: a #GtkIconTheme
- * @pixbuf: the pixbuf to wrap in a #GtkIconInfo
+ * st_icon_info_new_for_pixbuf:
+ * @icon_theme: a #StIconTheme
+ * @pixbuf: the pixbuf to wrap in a #StIconInfo
  *
- * Creates a #GtkIconInfo for a #GdkPixbuf.
+ * Creates a #StIconInfo for a #GdkPixbuf.
  *
- * Returns: (transfer full): a #GtkIconInfo
- *
- * Since: 2.14
+ * Returns: (transfer full): a #StIconInfo
  */
-GtkIconInfo *
-gtk_icon_info_new_for_pixbuf (GtkIconTheme *icon_theme,
-                              GdkPixbuf    *pixbuf)
+StIconInfo *
+st_icon_info_new_for_pixbuf (StIconTheme *icon_theme,
+                             GdkPixbuf   *pixbuf)
 {
-  GtkIconInfo *info;
+  StIconInfo *info;
 
-  g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme), NULL);
+  g_return_val_if_fail (ST_IS_ICON_THEME (icon_theme), NULL);
   g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
 
   info = icon_info_new (ICON_THEME_DIR_UNTHEMED, 0, 1);
@@ -4546,12 +4479,12 @@ gtk_icon_info_new_for_pixbuf (GtkIconTheme *icon_theme,
   return info;
 }
 
-static GtkIconInfo *
-gtk_icon_info_new_for_file (GFile *file,
-                            int    size,
-                            int    scale)
+static StIconInfo *
+st_icon_info_new_for_file (GFile *file,
+                           int    size,
+                           int    scale)
 {
-  GtkIconInfo *info;
+  StIconInfo *info;
 
   info = icon_info_new (ICON_THEME_DIR_UNTHEMED, size, 1);
   info->loadable = G_LOADABLE_ICON (g_file_icon_new (file));

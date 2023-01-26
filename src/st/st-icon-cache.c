@@ -42,7 +42,7 @@
 #define GET_UINT32(cache, offset) (GUINT32_FROM_BE (*(guint32 *)((cache) + (offset))))
 
 
-struct _GtkIconCache {
+struct _StIconCache {
   int ref_count;
 
   GMappedFile *map;
@@ -51,15 +51,15 @@ struct _GtkIconCache {
   guint32 last_chain_offset;
 };
 
-GtkIconCache *
-_gtk_icon_cache_ref (GtkIconCache *cache)
+StIconCache *
+st_icon_cache_ref (StIconCache *cache)
 {
   cache->ref_count++;
   return cache;
 }
 
 void
-_gtk_icon_cache_unref (GtkIconCache *cache)
+st_icon_cache_unref (StIconCache *cache)
 {
   cache->ref_count --;
 
@@ -73,10 +73,10 @@ _gtk_icon_cache_unref (GtkIconCache *cache)
     }
 }
 
-GtkIconCache *
-_gtk_icon_cache_new_for_path (const char *path)
+StIconCache *
+st_icon_cache_new_for_path (const char *path)
 {
-  GtkIconCache *cache = NULL;
+  StIconCache *cache = NULL;
   GMappedFile *map;
 
   char *cache_filename;
@@ -115,7 +115,7 @@ _gtk_icon_cache_new_for_path (const char *path)
 
   g_debug ("found icon cache for %s", path);
 
-  cache = g_new0 (GtkIconCache, 1);
+  cache = g_new0 (StIconCache, 1);
   cache->ref_count = 1;
   cache->map = map;
   cache->buffer = g_mapped_file_get_contents (map);
@@ -128,12 +128,12 @@ _gtk_icon_cache_new_for_path (const char *path)
   return cache;
 }
 
-GtkIconCache *
-_gtk_icon_cache_new (const char *data)
+StIconCache *
+st_icon_cache_new (const char *data)
 {
-  GtkIconCache *cache;
+  StIconCache *cache;
 
-  cache = g_new0 (GtkIconCache, 1);
+  cache = g_new0 (StIconCache, 1);
   cache->ref_count = 1;
   cache->map = NULL;
   cache->buffer = (char *)data;
@@ -142,8 +142,8 @@ _gtk_icon_cache_new (const char *data)
 }
 
 static int
-get_directory_index (GtkIconCache *cache,
-                     const char   *directory)
+get_directory_index (StIconCache *cache,
+                     const char  *directory)
 {
   guint32 dir_list_offset;
   int n_dirs;
@@ -165,8 +165,8 @@ get_directory_index (GtkIconCache *cache,
 }
 
 int
-_gtk_icon_cache_get_directory_index (GtkIconCache *cache,
-                                     const char   *directory)
+st_icon_cache_get_directory_index (StIconCache *cache,
+                                   const char *directory)
 {
   return get_directory_index (cache, directory);
 }
@@ -185,9 +185,9 @@ icon_name_hash (gconstpointer key)
 }
 
 static int
-find_image_offset (GtkIconCache *cache,
-                   const char   *icon_name,
-                   int           directory_index)
+find_image_offset (StIconCache *cache,
+                   const char  *icon_name,
+                   int          directory_index)
 {
   guint32 hash_offset;
   guint32 n_buckets;
@@ -247,9 +247,9 @@ find_dir:
 }
 
 int
-_gtk_icon_cache_get_icon_flags (GtkIconCache *cache,
-                                const char   *icon_name,
-                                int           directory_index)
+st_icon_cache_get_icon_flags (StIconCache *cache,
+                              const char  *icon_name,
+                              int          directory_index)
 {
   guint32 image_offset;
 
@@ -262,8 +262,8 @@ _gtk_icon_cache_get_icon_flags (GtkIconCache *cache,
 }
 
 gboolean
-_gtk_icon_cache_has_icons (GtkIconCache *cache,
-                           const char   *directory)
+st_icon_cache_has_icons (StIconCache *cache,
+                         const char  *directory)
 {
   int directory_index;
   guint32 hash_offset, n_buckets;
@@ -302,9 +302,9 @@ _gtk_icon_cache_has_icons (GtkIconCache *cache,
 }
 
 void
-_gtk_icon_cache_add_icons (GtkIconCache *cache,
-                           const char   *directory,
-                           GHashTable   *hash_table)
+st_icon_cache_add_icons (StIconCache *cache,
+                         const char  *directory,
+                         GHashTable   *hash_table)
 {
   int directory_index;
   guint32 hash_offset, n_buckets;
@@ -344,8 +344,8 @@ _gtk_icon_cache_add_icons (GtkIconCache *cache,
 }
 
 gboolean
-_gtk_icon_cache_has_icon (GtkIconCache *cache,
-                          const char   *icon_name)
+st_icon_cache_has_icon (StIconCache *cache,
+                        const char  *icon_name)
 {
   guint32 hash_offset;
   guint32 n_buckets;
@@ -373,9 +373,9 @@ _gtk_icon_cache_has_icon (GtkIconCache *cache,
 }
 
 gboolean
-_gtk_icon_cache_has_icon_in_directory (GtkIconCache *cache,
-                                       const char   *icon_name,
-                                       const char   *directory)
+st_icon_cache_has_icon_in_directory (StIconCache *cache,
+                                     const char  *icon_name,
+                                     const char  *directory)
 {
   guint32 hash_offset;
   guint32 n_buckets;
@@ -432,15 +432,15 @@ static void
 pixbuf_destroy_cb (guchar   *pixels,
                    gpointer  data)
 {
-  GtkIconCache *cache = data;
+  StIconCache *cache = data;
 
-  _gtk_icon_cache_unref (cache);
+  st_icon_cache_unref (cache);
 }
 
 GdkPixbuf *
-_gtk_icon_cache_get_icon (GtkIconCache *cache,
-                          const char   *icon_name,
-                          int           directory_index)
+st_icon_cache_get_icon (StIconCache *cache,
+                        const char  *icon_name,
+                        int          directory_index)
 {
   guint32 offset, image_data_offset, pixel_data_offset;
   guint32 length, type;
@@ -495,7 +495,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
       return NULL;
     }
 
-  _gtk_icon_cache_ref (cache);
+  st_icon_cache_ref (cache);
 
   return pixbuf;
 }

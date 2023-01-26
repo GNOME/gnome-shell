@@ -14,38 +14,36 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef __GTK_ICON_CACHE_H__
-#define __GTK_ICON_CACHE_H__
+#ifndef __ST_ICON_CACHE_H__
+#define __ST_ICON_CACHE_H__
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <gdk/gdk.h>
 
-typedef struct _GtkIconCache GtkIconCache;
+typedef struct _StIconCache StIconCache;
 
-GtkIconCache *_gtk_icon_cache_new            (const char  *data);
-GtkIconCache *_gtk_icon_cache_new_for_path   (const char  *path);
-int           _gtk_icon_cache_get_directory_index  (GtkIconCache *cache,
-                                                    const char   *directory);
-gboolean      _gtk_icon_cache_has_icon       (GtkIconCache *cache,
-                                              const char   *icon_name);
-gboolean      _gtk_icon_cache_has_icon_in_directory (GtkIconCache *cache,
-                                                     const char   *icon_name,
-                                                     const char   *directory);
-gboolean      _gtk_icon_cache_has_icons      (GtkIconCache *cache,
+StIconCache *st_icon_cache_new (const char  *data);
+StIconCache *st_icon_cache_new_for_path (const char  *path);
+int st_icon_cache_get_directory_index (StIconCache *cache,
+                                       const char  *directory);
+gboolean st_icon_cache_has_icon (StIconCache *cache,
+                                 const char  *icon_name);
+gboolean st_icon_cache_has_icon_in_directory (StIconCache *cache,
+                                              const char  *icon_name,
                                               const char  *directory);
-void              _gtk_icon_cache_add_icons      (GtkIconCache *cache,
-                                              const char  *directory,
-                                              GHashTable   *hash_table);
+gboolean st_icon_cache_has_icons (StIconCache *cache,
+                                  const char  *directory);
+void st_icon_cache_add_icons (StIconCache *cache,
+                              const char  *directory,
+                              GHashTable  *hash_table);
 
-int           _gtk_icon_cache_get_icon_flags (GtkIconCache *cache,
-                                              const char   *icon_name,
-                                              int           directory_index);
-GdkPixbuf    *_gtk_icon_cache_get_icon       (GtkIconCache *cache,
-                                              const char   *icon_name,
-                                              int           directory_index);
+int st_icon_cache_get_icon_flags (StIconCache *cache,
+                                  const char  *icon_name,
+                                  int          directory_index);
+GdkPixbuf * st_icon_cache_get_icon (StIconCache *cache,
+                                    const char  *icon_name,
+                                    int          directory_index);
 
-GtkIconCache *_gtk_icon_cache_ref            (GtkIconCache *cache);
-void          _gtk_icon_cache_unref          (GtkIconCache *cache);
+StIconCache *st_icon_cache_ref (StIconCache *cache);
+void st_icon_cache_unref (StIconCache *cache);
 
-
-#endif /* __GTK_ICON_CACHE_H__ */
+#endif /* __ST_ICON_CACHE_H__ */
