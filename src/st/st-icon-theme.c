@@ -19,24 +19,12 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
 #include <glib.h>
 #include <glib/gstdio.h>
-
-#ifdef G_OS_WIN32
-#ifndef S_ISDIR
-#define S_ISDIR(mode) ((mode)&_S_IFDIR)
-#endif
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <shellapi.h>
-#include "win32/gdkwin32.h"
-#endif /* G_OS_WIN32 */
 
 #include "st-icon-theme.h"
 #include "gtkcsspalettevalueprivate.h"
@@ -54,11 +42,6 @@
 #define GDK_DEPRECATED_FOR(f)
 
 #include "deprecated/gtkstyle.h"
-
-/* this is in case round() is not provided by the compiler, 
- * such as in the case of C89 compilers, like MSVC
- */
-#include "fallback-c89.c"
 
 #define DEFAULT_ICON_THEME "Adwaita"
 
@@ -1768,30 +1751,6 @@ real_choose_icon (GtkIconTheme       *icon_theme,
       if (unthemed_icon)
         break;
     }
-#ifdef G_OS_WIN32
-  /* Still not found an icon, check if reference to a Win32 resource */
-  if (!unthemed_icon)
-    {
-      char **resources;
-      HICON hIcon = NULL;
-      
-      resources = g_strsplit (icon_names[0], ",", 0);
-      if (resources[0])
-        {
-          wchar_t *wfile = g_utf8_to_utf16 (resources[0], -1, NULL, NULL, NULL);
-          ExtractIconExW (wfile, resources[1] ? atoi (resources[1]) : 0, &hIcon, NULL, 1);
-          g_free (wfile);
-        }
-      
-      if (hIcon)
-        {
-          icon_info = icon_info_new (ICON_THEME_DIR_UNTHEMED, size, 1);
-          icon_info->cache_pixbuf = gdk_win32_icon_to_pixbuf_libgtk_only (hIcon, NULL, NULL);
-          DestroyIcon (hIcon);
-        }
-      g_strfreev (resources);
-    }
-#endif
 
   if (unthemed_icon)
     {
