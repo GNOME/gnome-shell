@@ -139,6 +139,10 @@
       </description>
     </key>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
+    <child name="app-switcher" schema="org.gnome.shell.app-switcher"/>
+    <child name="window-switcher" schema="org.gnome.shell.window-switcher"/>
+    <child name="world-clocks" schema="org.gnome.shell.world-clocks"/>
+    <child name="weather" schema="org.gnome.shell.weather"/>
   </schema>
 
   <schema id="org.gnome.shell.keybindings" path="/org/gnome/shell/keybindings/"
