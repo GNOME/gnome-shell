@@ -31,6 +31,12 @@
   &:rtl > StBoxLayout { padding-right: $base_padding*2.5; }
 
   .quick-toggle-title { font-weight: bold; }
+
+  & StBoxLayout > .quick-toggle-subtitle {
+    font-weight: normal;
+    font-size: 12px;
+  }
+
   .quick-toggle-icon, .quick-toggle-arrow { icon-size: $base_icon_size; }
 }
 

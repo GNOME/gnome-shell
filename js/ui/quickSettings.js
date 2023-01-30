@@ -37,6 +37,9 @@ var QuickToggle = GObject.registerClass({
         'title': GObject.ParamSpec.string('title', '', '',
             GObject.ParamFlags.READWRITE,
             null),
+        'subtitle': GObject.ParamSpec.string('subtitle', '', '',
+            GObject.ParamFlags.READWRITE,
+            null),
         'icon-name': GObject.ParamSpec.override('icon-name', St.Button),
         'gicon': GObject.ParamSpec.object('gicon', '', '',
             GObject.ParamFlags.READWRITE,
@@ -85,13 +88,38 @@ var QuickToggle = GObject.registerClass({
             x_expand: true,
         });
         this.label_actor = this._title;
-        this._box.add_child(this._title);
+
+        this._subtitle = new St.Label({
+            style_class: 'quick-toggle-subtitle',
+            y_align: Clutter.ActorAlign.CENTER,
+            x_align: Clutter.ActorAlign.START,
+            x_expand: true,
+        });
+
+        const titleBox = new St.BoxLayout({
+            y_align: Clutter.ActorAlign.CENTER,
+            x_align: Clutter.ActorAlign.START,
+            x_expand: true,
+            vertical: true,
+        });
+        titleBox.add_child(this._title);
+        titleBox.add_child(this._subtitle);
+        this._box.add_child(titleBox);
 
         this._title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
 
         this.bind_property('title',
             this._title, 'text',
             GObject.BindingFlags.SYNC_CREATE);
+
+        this.bind_property('subtitle',
+            this._subtitle, 'text',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property_full('subtitle',
+            this._subtitle, 'visible',
+            GObject.BindingFlags.SYNC_CREATE,
+            (bind, source) => [true, source !== null],
+            null);
     }
 
     set label(label) {
