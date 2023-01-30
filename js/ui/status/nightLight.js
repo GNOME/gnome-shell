@@ -17,7 +17,7 @@ const NightLightToggle = GObject.registerClass(
 class NightLightToggle extends QuickToggle {
     _init() {
         super._init({
-            label: _('Night Light'),
+            title: _('Night Light'),
             iconName: 'night-light-symbolic',
             toggleMode: true,
         });

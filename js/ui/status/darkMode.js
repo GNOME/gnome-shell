@@ -8,7 +8,7 @@ const DarkModeToggle = GObject.registerClass(
 class DarkModeToggle extends QuickToggle {
     _init() {
         super._init({
-            label: _('Dark Style'),
+            title: _('Dark Style'),
             iconName: 'dark-mode-symbolic',
         });
 

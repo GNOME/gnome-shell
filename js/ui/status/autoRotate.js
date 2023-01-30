@@ -11,7 +11,7 @@ class RotationToggle extends QuickToggle {
         this._systemActions = new SystemActions.getDefault();
 
         super._init({
-            label: _('Auto Rotate'),
+            title: _('Auto Rotate'),
         });
 
         this._systemActions.bind_property('can-lock-orientation',

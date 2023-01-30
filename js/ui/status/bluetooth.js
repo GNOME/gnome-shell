@@ -148,7 +148,7 @@ const BtClient = GObject.registerClass({
 const BluetoothToggle = GObject.registerClass(
 class BluetoothToggle extends QuickToggle {
     _init(client) {
-        super._init({label: _('Bluetooth')});
+        super._init({title: _('Bluetooth')});
 
         this._client = client;
 

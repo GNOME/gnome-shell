@@ -34,7 +34,9 @@ var QuickSettingsItem = GObject.registerClass({
 
 var QuickToggle = GObject.registerClass({
     Properties: {
-        'label': GObject.ParamSpec.override('label', St.Button),
+        'title': GObject.ParamSpec.string('title', '', '',
+            GObject.ParamFlags.READWRITE,
+            null),
         'icon-name': GObject.ParamSpec.override('icon-name', St.Button),
         'gicon': GObject.ParamSpec.object('gicon', '', '',
             GObject.ParamFlags.READWRITE,
@@ -76,20 +78,25 @@ var QuickToggle = GObject.registerClass({
             GObject.BindingFlags.SYNC_CREATE |
             GObject.BindingFlags.BIDIRECTIONAL);
 
-        this._label = new St.Label({
-            style_class: 'quick-toggle-label',
+        this._title = new St.Label({
+            style_class: 'quick-toggle-title',
             y_align: Clutter.ActorAlign.CENTER,
             x_align: Clutter.ActorAlign.START,
             x_expand: true,
         });
-        this.label_actor = this._label;
-        this._box.add_child(this._label);
+        this.label_actor = this._title;
+        this._box.add_child(this._title);
 
-        this._label.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+        this._title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
 
-        this.bind_property('label',
-            this._label, 'text',
+        this.bind_property('title',
+            this._title, 'text',
             GObject.BindingFlags.SYNC_CREATE);
+    }
+
+    set label(label) {
+        console.warn('Trying to set label on QuickToggle. Use title instead.');
+        this.title = label;
     }
 });
 

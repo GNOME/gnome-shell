@@ -30,7 +30,7 @@
   &:ltr > StBoxLayout { padding-left: $base_padding*2.5; }
   &:rtl > StBoxLayout { padding-right: $base_padding*2.5; }
 
-  .quick-toggle-label { font-weight: bold; }
+  .quick-toggle-title { font-weight: bold; }
   .quick-toggle-icon, .quick-toggle-arrow { icon-size: $base_icon_size; }
 }
 

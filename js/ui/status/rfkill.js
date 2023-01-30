@@ -93,7 +93,7 @@ const RfkillToggle = GObject.registerClass(
 class RfkillToggle extends QuickToggle {
     _init() {
         super._init({
-            label: _('Airplane Mode'),
+            title: _('Airplane Mode'),
             iconName: 'airplane-mode-symbolic',
         });
 

@@ -87,7 +87,7 @@ const PowerToggle = GObject.registerClass({
         });
 
         this.set({
-            label: _('%d\u2009%%').format(this._proxy.Percentage),
+            title: _('%d\u2009%%').format(this._proxy.Percentage),
             fallback_icon_name: this._proxy.IconName,
             gicon,
         });

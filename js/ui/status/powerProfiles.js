@@ -17,17 +17,17 @@ const PowerProfilesProxy = Gio.DBusProxy.makeProxyWrapper(PowerProfilesIface);
 
 const PROFILE_PARAMS = {
     'performance': {
-        label: C_('Power profile', 'Performance'),
+        title: C_('Power profile', 'Performance'),
         iconName: 'power-profile-performance-symbolic',
     },
 
     'balanced': {
-        label: C_('Power profile', 'Balanced'),
+        title: C_('Power profile', 'Balanced'),
         iconName: 'power-profile-balanced-symbolic',
     },
 
     'power-saver': {
-        label: C_('Power profile', 'Power Saver'),
+        title: C_('Power profile', 'Power Saver'),
         iconName: 'power-profile-power-saver-symbolic',
     },
 };
@@ -83,11 +83,11 @@ class PowerProfilesToggle extends QuickMenuToggle {
             .map(p => p.Profile.unpack())
             .reverse();
         for (const profile of profiles) {
-            const {label, iconName} = PROFILE_PARAMS[profile];
-            if (!label)
+            const {title, iconName} = PROFILE_PARAMS[profile];
+            if (!title)
                 continue;
 
-            const item = new PopupMenu.PopupImageMenuItem(label, iconName);
+            const item = new PopupMenu.PopupImageMenuItem(title, iconName);
             item.connect('activate',
                 () => (this._proxy.ActiveProfile = profile));
             this._profileItems.set(profile, item);
