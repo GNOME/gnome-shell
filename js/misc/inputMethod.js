@@ -76,6 +76,7 @@ var InputMethod = GObject.registerClass({
 
         this._context.set_client_commit_preedit(true);
         this._context.connect('commit-text', this._onCommitText.bind(this));
+        this._context.connect('require-surrounding-text', this._onRequireSurroundingText.bind(this));
         this._context.connect('delete-surrounding-text', this._onDeleteSurroundingText.bind(this));
         this._context.connect('update-preedit-text-with-mode', this._onUpdatePreeditText.bind(this));
         this._context.connect('show-preedit-text', this._onShowPreeditText.bind(this));
@@ -112,6 +113,10 @@ var InputMethod = GObject.registerClass({
 
     _onCommitText(_context, text) {
         this.commit(text.get_text());
+    }
+
+    _onRequireSurroundingText(_context) {
+        this.request_surrounding();
     }
 
     _onDeleteSurroundingText(_context, offset, nchars) {
@@ -235,7 +240,7 @@ var InputMethod = GObject.registerClass({
         this._surroundingTextCursor = cursor;
         this.emit('surrounding-text-set');
 
-        if (!this._context || !text)
+        if (!this._context || (!text && text !== ''))
             return;
 
         let ibusText = IBus.Text.new_from_string(text);
