@@ -631,9 +631,7 @@ const QuickSettingsLayout = GObject.registerClass({
     vfunc_get_preferred_height(container, _forWidth) {
         const rows = this._getRows(container);
 
-        let [minHeight, natHeight] = this._overlay
-            ? this._overlay.get_preferred_height(-1)
-            : [0, 0];
+        let [minHeight, natHeight] = this._overlay.get_preferred_height(-1);
 
         const spacing = (rows.length - 1) * this.row_spacing;
         minHeight += spacing;
@@ -651,14 +649,12 @@ const QuickSettingsLayout = GObject.registerClass({
     vfunc_allocate(container, box) {
         const rows = this._getRows(container);
 
-        const [, overlayHeight] = this._overlay
-            ? this._overlay.get_preferred_height(-1)
-            : [0, 0];
+        const [, overlayHeight] = this._overlay.get_preferred_height(-1);
 
         const availWidth = box.get_width() - (this.nColumns - 1) * this.column_spacing;
         const childWidth = Math.floor(availWidth / this.nColumns);
 
-        this._overlay?.allocate_available_size(0, 0, box.get_width(), box.get_height());
+        this._overlay.allocate_available_size(0, 0, box.get_width(), box.get_height());
 
         const isRtl = container.text_direction === Clutter.TextDirection.RTL;
 
