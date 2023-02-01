@@ -25,11 +25,11 @@
 #include <math.h>
 #include <glib.h>
 #include <glib/gstdio.h>
+#include <glib/gi18n-lib.h>
 
 #include "st-icon-theme.h"
 #include "st-icon-cache.h"
 #include "st-settings.h"
-#include "gtkintl.h"
 
 #define DEFAULT_ICON_THEME "Adwaita"
 
@@ -346,7 +346,7 @@ gtk_icon_theme_class_init (GtkIconThemeClass *klass)
    * that a change has occurred in the contents of the current
    * icon theme.
    */
-  signal_changed = g_signal_new (I_("changed"),
+  signal_changed = g_signal_new ("changed",
                                  G_TYPE_FROM_CLASS (klass),
                                  G_SIGNAL_RUN_LAST,
                                  G_STRUCT_OFFSET (GtkIconThemeClass, changed),
