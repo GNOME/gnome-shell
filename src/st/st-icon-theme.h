@@ -104,10 +104,6 @@ struct _GtkIconThemeClass
  * @GTK_ICON_LOOKUP_FORCE_SVG: Get SVG icons, even if gdk-pixbuf
  *   doesn’t support them.
  *   Cannot be used together with %GTK_ICON_LOOKUP_NO_SVG.
- * @GTK_ICON_LOOKUP_USE_BUILTIN: When passed to
- *   gtk_icon_theme_lookup_icon() includes builtin icons
- *   as well as files. For a builtin icon, gtk_icon_info_get_filename()
- *   is %NULL and you need to call gtk_icon_info_get_builtin_pixbuf().
  * @GTK_ICON_LOOKUP_GENERIC_FALLBACK: Try to shorten icon name at '-'
  *   characters before looking at inherited themes. This flag is only
  *   supported in functions that take a single icon name. For more general
@@ -129,13 +125,12 @@ typedef enum
 {
   GTK_ICON_LOOKUP_NO_SVG           = 1 << 0,
   GTK_ICON_LOOKUP_FORCE_SVG        = 1 << 1,
-  GTK_ICON_LOOKUP_USE_BUILTIN      = 1 << 2,
-  GTK_ICON_LOOKUP_GENERIC_FALLBACK = 1 << 3,
-  GTK_ICON_LOOKUP_FORCE_SIZE       = 1 << 4,
-  GTK_ICON_LOOKUP_FORCE_REGULAR    = 1 << 5,
-  GTK_ICON_LOOKUP_FORCE_SYMBOLIC   = 1 << 6,
-  GTK_ICON_LOOKUP_DIR_LTR          = 1 << 7,
-  GTK_ICON_LOOKUP_DIR_RTL          = 1 << 8
+  GTK_ICON_LOOKUP_GENERIC_FALLBACK = 1 << 2,
+  GTK_ICON_LOOKUP_FORCE_SIZE       = 1 << 3,
+  GTK_ICON_LOOKUP_FORCE_REGULAR    = 1 << 4,
+  GTK_ICON_LOOKUP_FORCE_SYMBOLIC   = 1 << 5,
+  GTK_ICON_LOOKUP_DIR_LTR          = 1 << 6,
+  GTK_ICON_LOOKUP_DIR_RTL          = 1 << 7
 } GtkIconLookupFlags;
 
 /**
@@ -271,17 +266,8 @@ char *        gtk_icon_theme_get_example_icon_name (GtkIconTheme                
 GDK_AVAILABLE_IN_ALL
 gboolean      gtk_icon_theme_rescan_if_needed      (GtkIconTheme                *icon_theme);
 
-GDK_DEPRECATED_IN_3_14_FOR(gtk_icon_theme_add_resource_path)
-void          gtk_icon_theme_add_builtin_icon      (const char *icon_name,
-                                                    int         size,
-                                                    GdkPixbuf  *pixbuf);
-
 GDK_AVAILABLE_IN_ALL
 GType                 gtk_icon_info_get_type           (void) G_GNUC_CONST;
-GDK_DEPRECATED_IN_3_8_FOR(g_object_ref)
-GtkIconInfo *         gtk_icon_info_copy               (GtkIconInfo  *icon_info);
-GDK_DEPRECATED_IN_3_8_FOR(g_object_unref)
-void                  gtk_icon_info_free               (GtkIconInfo  *icon_info);
 
 GDK_AVAILABLE_IN_ALL
 GtkIconInfo *         gtk_icon_info_new_for_pixbuf     (GtkIconTheme  *icon_theme,
@@ -293,8 +279,6 @@ GDK_AVAILABLE_IN_3_10
 int                  gtk_icon_info_get_base_scale     (GtkIconInfo   *icon_info);
 GDK_AVAILABLE_IN_ALL
 const char *         gtk_icon_info_get_filename       (GtkIconInfo   *icon_info);
-GDK_DEPRECATED_IN_3_14
-GdkPixbuf *           gtk_icon_info_get_builtin_pixbuf (GtkIconInfo   *icon_info);
 GDK_AVAILABLE_IN_3_12
 gboolean              gtk_icon_info_is_symbolic        (GtkIconInfo   *icon_info);
 GDK_AVAILABLE_IN_ALL
@@ -351,25 +335,6 @@ GdkPixbuf *           gtk_icon_info_load_symbolic_for_context_finish (GtkIconInf
                                                                       GAsyncResult     *res,
                                                                       gboolean         *was_symbolic,
                                                                       GError          **error);
-GDK_DEPRECATED_IN_3_0_FOR(gtk_icon_info_load_symbol_for_context)
-GdkPixbuf *           gtk_icon_info_load_symbolic_for_style  (GtkIconInfo   *icon_info,
-                                                              GtkStyle      *style,
-                                                              GtkStateType   state,
-                                                              gboolean      *was_symbolic,
-                                                              GError       **error);
-GDK_DEPRECATED_IN_3_14
-void                  gtk_icon_info_set_raw_coordinates (GtkIconInfo  *icon_info,
-                                                         gboolean      raw_coordinates);
-
-GDK_DEPRECATED_IN_3_14
-gboolean              gtk_icon_info_get_embedded_rect (GtkIconInfo    *icon_info,
-                                                       GdkRectangle   *rectangle);
-GDK_DEPRECATED_IN_3_14
-gboolean              gtk_icon_info_get_attach_points (GtkIconInfo    *icon_info,
-                                                       GdkPoint      **points,
-                                                       int            *n_points);
-GDK_DEPRECATED_IN_3_14
-const char *         gtk_icon_info_get_display_name  (GtkIconInfo    *icon_info);
 
 G_END_DECLS
 

@@ -29,18 +29,9 @@
 #include "st-icon-theme.h"
 #include "gtkcsspalettevalueprivate.h"
 #include "gtkcssrgbavalueprivate.h"
-#include "deprecated/gtkiconfactory.h"
 #include "st-icon-cache.h"
 #include "gtkintl.h"
-#include "deprecated/gtknumerableiconprivate.h"
 #include "gtkstylecontextprivate.h"
-
-#undef GDK_DEPRECATED
-#undef GDK_DEPRECATED_FOR
-#define GDK_DEPRECATED
-#define GDK_DEPRECATED_FOR(f)
-
-#include "deprecated/gtkstyle.h"
 
 #define DEFAULT_ICON_THEME "Adwaita"
 
@@ -59,40 +50,11 @@
  * should install their icons, but additional icon themes can be installed
  * as operating system vendors and users choose.
  *
- * Named icons are similar to the deprecated [Stock Items][gtkstock],
- * and the distinction between the two may be a bit confusing.
- * A few things to keep in mind:
- *
- * - Stock images usually are used in conjunction with
- *   [Stock Items][gtkstock], such as %GTK_STOCK_OK or
- *   %GTK_STOCK_OPEN. Named icons are easier to set up and therefore
- *   are more useful for new icons that an application wants to
- *   add, such as application icons or window icons.
- *
- * - Stock images can only be loaded at the symbolic sizes defined
- *   by the #GtkIconSize enumeration, or by custom sizes defined
- *   by gtk_icon_size_register(), while named icons are more flexible
- *   and any pixel size can be specified.
- *
- * - Because stock images are closely tied to stock items, and thus
- *   to actions in the user interface, stock images may come in
- *   multiple variants for different widget states or writing
- *   directions.
- *
- * A good rule of thumb is that if there is a stock image for what
- * you want to use, use it, otherwise use a named icon. It turns
- * out that internally stock images are generally defined in
- * terms of one or more named icons. (An example of the
- * more than one case is icons that depend on writing direction;
- * %GTK_STOCK_GO_FORWARD uses the two themed icons
- * “gtk-stock-go-forward-ltr” and “gtk-stock-go-forward-rtl”.)
- *
- * In many cases, named themes are used indirectly, via #GtkImage
- * or stock items, rather than directly, but looking up icons
- * directly is also simple. The #GtkIconTheme object acts
- * as a database of all the icons in the current theme. You
- * can create new #GtkIconTheme objects, but it’s much more
- * efficient to use the standard icon theme for the #GdkScreen
+ * In many cases, named themes are used indirectly, via #GtkImage,
+ * rather than directly, but looking up icons directly is also simple.
+ * The #GtkIconTheme object acts as a database of all the icons in the
+ * current theme. You can create new #GtkIconTheme objects, but it’s
+ * much more efficient to use the standard icon theme for the #GdkScreen
  * so that the icon information is shared with other people
  * looking up icons.
  * |[<!-- language="C" -->
@@ -294,12 +256,6 @@ typedef struct
 
 typedef struct
 {
-  int size;
-  GdkPixbuf *pixbuf;
-} BuiltinIcon;
-
-typedef struct
-{
   char *dir;
   time_t mtime;
   GtkIconCache *cache;
@@ -338,19 +294,12 @@ static GtkIconInfo *icon_info_new             (IconThemeDirType  type,
 static GtkIconInfo *gtk_icon_info_new_for_file (GFile           *file,
                                                int               dir_size,
                                                int               dir_scale);
-static GtkIconInfo *icon_info_new_builtin     (BuiltinIcon      *icon);
 static IconSuffix   suffix_from_name          (const char       *name);
-static BuiltinIcon *find_builtin_icon         (const char       *icon_name,
-                                               int               size,
-                                               int               scale,
-                                               int              *min_difference_p);
 static void         remove_from_lru_cache     (GtkIconTheme     *icon_theme,
                                                GtkIconInfo      *icon_info);
 static gboolean     icon_info_ensure_scale_and_pixbuf (GtkIconInfo* icon_info);
 
 static guint signal_changed = 0;
-
-static GHashTable *icon_theme_builtin_icons;
 
 static guint
 icon_info_key_hash (gconstpointer _key)
@@ -1651,7 +1600,6 @@ real_choose_icon (GtkIconTheme       *icon_theme,
   UnthemedIcon *unthemed_icon = NULL;
   const char *icon_name = NULL;
   gboolean allow_svg;
-  gboolean use_builtin;
   IconTheme *theme = NULL;
   int i;
   IconInfoKey key;
@@ -1687,8 +1635,6 @@ real_choose_icon (GtkIconTheme       *icon_theme,
   else
     allow_svg = priv->pixbuf_supports_svg;
 
-  use_builtin = flags & GTK_ICON_LOOKUP_USE_BUILTIN;
-
   /* For symbolic icons, do a search in all registered themes first;
    * a theme that inherits them from a parent theme might provide
    * an alternative full-color version, but still expect the symbolic icon
@@ -1703,7 +1649,7 @@ real_choose_icon (GtkIconTheme       *icon_theme,
       for (i = 0; icon_names[i] && icon_name_is_symbolic (icon_names[i]); i++)
         {
           icon_name = icon_names[i];
-          icon_info = theme_lookup_icon (theme, icon_name, size, scale, allow_svg, use_builtin);
+          icon_info = theme_lookup_icon (theme, icon_name, size, scale, allow_svg);
           if (icon_info)
             goto out;
         }
@@ -1716,7 +1662,7 @@ real_choose_icon (GtkIconTheme       *icon_theme,
       for (i = 0; icon_names[i]; i++)
         {
           icon_name = icon_names[i];
-          icon_info = theme_lookup_icon (theme, icon_name, size, scale, allow_svg, use_builtin);
+          icon_info = theme_lookup_icon (theme, icon_name, size, scale, allow_svg);
           if (icon_info)
             goto out;
         }
@@ -1786,7 +1732,7 @@ real_choose_icon (GtkIconTheme       *icon_theme,
       icon_info->unscaled_scale = 1.0;
       if (scale != 1 && !icon_info->forced_size && theme != NULL)
         {
-          unscaled_icon_info = theme_lookup_icon (theme, icon_name, size, 1, allow_svg, use_builtin);
+          unscaled_icon_info = theme_lookup_icon (theme, icon_name, size, 1, allow_svg);
           if (unscaled_icon_info)
             {
               icon_info->unscaled_scale =
@@ -2286,8 +2232,7 @@ gtk_icon_theme_load_icon_for_scale (GtkIconTheme        *icon_theme,
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   g_return_val_if_fail (scale >= 1, NULL);
 
-  icon_info = gtk_icon_theme_lookup_icon_for_scale (icon_theme, icon_name, size, scale,
-                                                    flags | GTK_ICON_LOOKUP_USE_BUILTIN);
+  icon_info = gtk_icon_theme_lookup_icon_for_scale (icon_theme, icon_name, size, scale, flags);
   if (!icon_info)
     {
       g_set_error (error, GTK_ICON_THEME_ERROR,  GTK_ICON_THEME_NOT_FOUND,
@@ -2351,8 +2296,7 @@ gtk_icon_theme_load_surface (GtkIconTheme        *icon_theme,
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   g_return_val_if_fail (scale >= 1, NULL);
 
-  icon_info = gtk_icon_theme_lookup_icon_for_scale (icon_theme, icon_name, size, scale,
-                                                    flags | GTK_ICON_LOOKUP_USE_BUILTIN);
+  icon_info = gtk_icon_theme_lookup_icon_for_scale (icon_theme, icon_name, size, scale, flags);
   if (!icon_info)
     {
       g_set_error (error, GTK_ICON_THEME_ERROR,  GTK_ICON_THEME_NOT_FOUND,
@@ -2408,11 +2352,6 @@ gtk_icon_theme_has_icon (GtkIconTheme *icon_theme,
         return TRUE;
     }
 
-  if (icon_theme_builtin_icons &&
-      g_hash_table_lookup_extended (icon_theme_builtin_icons,
-                                    icon_name, NULL, NULL))
-    return TRUE;
-
   return FALSE;
 }
 
@@ -2449,7 +2388,7 @@ int *
 gtk_icon_theme_get_icon_sizes (GtkIconTheme *icon_theme,
                                const char   *icon_name)
 {
-  GList *l, *d, *icons;
+  GList *l, *d;
   GHashTable *sizes;
   int *result, *r;
   guint suffix;
@@ -2481,19 +2420,6 @@ gtk_icon_theme_get_icon_sizes (GtkIconTheme *icon_theme,
               else
                 g_hash_table_insert (sizes, GINT_TO_POINTER (dir->size), NULL);
             }
-        }
-    }
-
-  if (icon_theme_builtin_icons)
-    {
-      icons = g_hash_table_lookup (icon_theme_builtin_icons, icon_name);
-
-      while (icons)
-        {
-          BuiltinIcon *icon = icons->data;
-
-          g_hash_table_insert (sizes, GINT_TO_POINTER (icon->size), NULL);
-          icons = icons->next;
         }
     }
 
@@ -2976,31 +2902,16 @@ theme_lookup_icon (IconTheme   *theme,
                    const char  *icon_name,
                    int          size,
                    int          scale,
-                   gboolean     allow_svg,
-                   gboolean     use_builtin)
+                   gboolean     allow_svg)
 {
   GList *dirs, *l;
   IconThemeDir *dir, *min_dir;
   char *file;
   int min_difference, difference;
-  BuiltinIcon *closest_builtin = NULL;
   IconSuffix suffix;
 
   min_difference = G_MAXINT;
   min_dir = NULL;
-
-  /* Builtin icons are logically part of the default theme and
-   * are searched before other subdirectories of the default theme.
-   */
-  if (use_builtin && strcmp (theme->name, FALLBACK_ICON_THEME) == 0)
-    {
-      closest_builtin = find_builtin_icon (icon_name,
-                                           size, scale,
-                                           &min_difference);
-
-      if (min_difference == 0)
-        return icon_info_new_builtin (closest_builtin);
-    }
 
   dirs = theme->dirs;
 
@@ -3073,9 +2984,6 @@ theme_lookup_icon (IconTheme   *theme,
 
       return icon_info;
     }
-
-  if (closest_builtin)
-    return icon_info_new_builtin (closest_builtin);
 
   return NULL;
 }
@@ -3460,52 +3368,6 @@ icon_info_dup (GtkIconInfo *icon_info)
   return dup;
 }
 
-static GtkIconInfo *
-icon_info_new_builtin (BuiltinIcon *icon)
-{
-  GtkIconInfo *icon_info = icon_info_new (ICON_THEME_DIR_THRESHOLD, icon->size, 1);
-
-  icon_info->cache_pixbuf = g_object_ref (icon->pixbuf);
-
-  return icon_info;
-}
-
-/**
- * gtk_icon_info_copy: (skip)
- * @icon_info: a #GtkIconInfo
- *
- * Make a copy of a #GtkIconInfo.
- *
- * Returns: (transfer full): the new GtkIconInfo
- *
- * Since: 2.4
- *
- * Deprecated: 3.8: Use g_object_ref()
- */
-GtkIconInfo *
-gtk_icon_info_copy (GtkIconInfo *icon_info)
-{
-  g_return_val_if_fail (icon_info != NULL, NULL);
-  return g_object_ref (icon_info);
-}
-
-/**
- * gtk_icon_info_free: (skip)
- * @icon_info: a #GtkIconInfo
- *
- * Free a #GtkIconInfo and associated information
- *
- * Since: 2.4
- *
- * Deprecated: 3.8: Use g_object_unref()
- */
-void
-gtk_icon_info_free (GtkIconInfo *icon_info)
-{
-  g_return_if_fail (icon_info != NULL);
-  g_object_unref (icon_info);
-}
-
 static void
 gtk_icon_info_finalize (GObject *object)
 {
@@ -3594,13 +3456,8 @@ gtk_icon_info_get_base_scale (GtkIconInfo *icon_info)
  * gtk_icon_info_get_filename:
  * @icon_info: a #GtkIconInfo
  *
- * Gets the filename for the icon. If the %GTK_ICON_LOOKUP_USE_BUILTIN
- * flag was passed to gtk_icon_theme_lookup_icon(), there may be no
- * filename if a builtin icon is returned; in this case, you should
- * use gtk_icon_info_get_builtin_pixbuf().
- *
+ * Gets the filename for the icon.
  * Returns: (nullable) (type filename): the filename for the icon, or %NULL
- *     if gtk_icon_info_get_builtin_pixbuf() should be used instead.
  *     The return value is owned by GTK+ and should not be modified
  *     or freed.
  *
@@ -3612,35 +3469,6 @@ gtk_icon_info_get_filename (GtkIconInfo *icon_info)
   g_return_val_if_fail (icon_info != NULL, NULL);
 
   return icon_info->filename;
-}
-
-/**
- * gtk_icon_info_get_builtin_pixbuf:
- * @icon_info: a #GtkIconInfo
- *
- * Gets the built-in image for this icon, if any. To allow GTK+ to use
- * built in icon images, you must pass the %GTK_ICON_LOOKUP_USE_BUILTIN
- * to gtk_icon_theme_lookup_icon().
- *
- * Returns: (nullable) (transfer none): the built-in image pixbuf, or %NULL.
- *     No extra reference is added to the returned pixbuf, so if
- *     you want to keep it around, you must use g_object_ref().
- *     The returned image must not be modified.
- *
- * Since: 2.4
- *
- * Deprecated: 3.14: This function is deprecated, use
- *     gtk_icon_theme_add_resource_path() instead of builtin icons.
- */
-GdkPixbuf *
-gtk_icon_info_get_builtin_pixbuf (GtkIconInfo *icon_info)
-{
-  g_return_val_if_fail (icon_info != NULL, NULL);
-
-  if (icon_info->filename)
-    return NULL;
-
-  return icon_info->cache_pixbuf;
 }
 
 /**
@@ -5182,322 +5010,6 @@ gtk_icon_info_load_symbolic_for_context_finish (GtkIconInfo   *icon_info,
   return gtk_icon_info_load_symbolic_finish (icon_info, result, was_symbolic, error);
 }
 
-static GdkRGBA *
-color_to_rgba (GdkColor *color,
-               GdkRGBA  *rgba)
-{
-  rgba->red = color->red / 65535.0;
-  rgba->green = color->green / 65535.0;
-  rgba->blue = color->blue / 65535.0;
-  rgba->alpha = 1.0;
-  return rgba;
-}
-
-/**
- * gtk_icon_info_load_symbolic_for_style:
- * @icon_info: a #GtkIconInfo
- * @style: a #GtkStyle to take the colors from
- * @state: the widget state to use for colors
- * @was_symbolic: (out) (allow-none): a #gboolean, returns whether the
- *     loaded icon was a symbolic one and whether the @fg color was
- *     applied to it.
- * @error: (allow-none): location to store error information on failure,
- *     or %NULL.
- *
- * Loads an icon, modifying it to match the system colours for the foreground,
- * success, warning and error colors provided. If the icon is not a symbolic
- * one, the function will return the result from gtk_icon_info_load_icon().
- *
- * This allows loading symbolic icons that will match the system theme.
- *
- * See gtk_icon_info_load_symbolic() for more details.
- *
- * Returns: (transfer full): a #GdkPixbuf representing the loaded icon
- *
- * Since: 3.0
- *
- * Deprecated: 3.0: Use gtk_icon_info_load_symbolic_for_context() instead
- */
-GdkPixbuf *
-gtk_icon_info_load_symbolic_for_style (GtkIconInfo   *icon_info,
-                                       GtkStyle      *style,
-                                       GtkStateType   state,
-                                       gboolean      *was_symbolic,
-                                       GError       **error)
-{
-  GdkColor color;
-  GdkRGBA fg;
-  GdkRGBA success_color;
-  GdkRGBA *success_colorp;
-  GdkRGBA warning_color;
-  GdkRGBA *warning_colorp;
-  GdkRGBA error_color;
-  GdkRGBA *error_colorp;
-  gboolean is_symbolic;
-
-  g_return_val_if_fail (icon_info != NULL, NULL);
-  g_return_val_if_fail (style != NULL, NULL);
-
-  is_symbolic = gtk_icon_info_is_symbolic (icon_info);
-
-  if (was_symbolic)
-    *was_symbolic = is_symbolic;
-
-  if (!is_symbolic)
-    return gtk_icon_info_load_icon (icon_info, error);
-
-  color_to_rgba (&style->fg[state], &fg);
-
-  success_colorp = warning_colorp = error_colorp = NULL;
-
-  if (gtk_style_lookup_color (style, "success_color", &color))
-    success_colorp = color_to_rgba (&color, &success_color);
-
-  if (gtk_style_lookup_color (style, "warning_color", &color))
-    warning_colorp = color_to_rgba (&color, &warning_color);
-
-  if (gtk_style_lookup_color (style, "error_color", &color))
-    error_colorp = color_to_rgba (&color, &error_color);
-
-  return gtk_icon_info_load_symbolic_internal (icon_info,
-                                               &fg, success_colorp,
-                                               warning_colorp, error_colorp,
-                                               TRUE,
-                                               error);
-}
-
-/**
- * gtk_icon_info_set_raw_coordinates:
- * @icon_info: a #GtkIconInfo
- * @raw_coordinates: whether the coordinates of embedded rectangles
- *     and attached points should be returned in their original
- *     (unscaled) form.
- *
- * Sets whether the coordinates returned by gtk_icon_info_get_embedded_rect()
- * and gtk_icon_info_get_attach_points() should be returned in their
- * original form as specified in the icon theme, instead of scaled
- * appropriately for the pixbuf returned by gtk_icon_info_load_icon().
- *
- * Raw coordinates are somewhat strange; they are specified to be with
- * respect to the unscaled pixmap for PNG and XPM icons, but for SVG
- * icons, they are in a 1000x1000 coordinate space that is scaled
- * to the final size of the icon.  You can determine if the icon is an SVG
- * icon by using gtk_icon_info_get_filename(), and seeing if it is non-%NULL
- * and ends in “.svg”.
- *
- * This function is provided primarily to allow compatibility wrappers
- * for older API's, and is not expected to be useful for applications.
- *
- * Since: 2.4
- *
- * Deprecated: 3.14: Embedded rectangles and attachment points are deprecated
- */
-void
-gtk_icon_info_set_raw_coordinates (GtkIconInfo *icon_info,
-                                   gboolean     raw_coordinates)
-{
-}
-
-/**
- * gtk_icon_info_get_embedded_rect:
- * @icon_info: a #GtkIconInfo
- * @rectangle: (out): #GdkRectangle in which to store embedded
- *   rectangle coordinates; coordinates are only stored
- *   when this function returns %TRUE.
- *
- * This function is deprecated and always returns %FALSE.
- *
- * Returns: %FALSE
- *
- * Since: 2.4
- *
- * Deprecated: 3.14: Embedded rectangles are deprecated
- */
-gboolean
-gtk_icon_info_get_embedded_rect (GtkIconInfo  *icon_info,
-                                 GdkRectangle *rectangle)
-{
-  return FALSE;
-}
-
-/**
- * gtk_icon_info_get_attach_points:
- * @icon_info: a #GtkIconInfo
- * @points: (allow-none) (array length=n_points) (out): location to store pointer
- *     to an array of points, or %NULL free the array of points with g_free().
- * @n_points: (allow-none): location to store the number of points in @points,
- *     or %NULL
- *
- * This function is deprecated and always returns %FALSE.
- *
- * Returns: %FALSE
- *
- * Since: 2.4
- *
- * Deprecated: 3.14: Attachment points are deprecated
- */
-gboolean
-gtk_icon_info_get_attach_points (GtkIconInfo  *icon_info,
-                                 GdkPoint    **points,
-                                 int          *n_points)
-{
-  return FALSE;
-}
-
-/**
- * gtk_icon_info_get_display_name:
- * @icon_info: a #GtkIconInfo
- *
- * This function is deprecated and always returns %NULL.
- *
- * Returns: %NULL
- *
- * Since: 2.4
- *
- * Deprecated: 3.14: Display names are deprecated
- */
-const char *
-gtk_icon_info_get_display_name (GtkIconInfo *icon_info)
-{
-  return NULL;
-}
-
-/*
- * Builtin icons
- */
-
-
-/**
- * gtk_icon_theme_add_builtin_icon:
- * @icon_name: the name of the icon to register
- * @size: the size in pixels at which to register the icon (different
- *     images can be registered for the same icon name at different sizes.)
- * @pixbuf: #GdkPixbuf that contains the image to use for @icon_name
- *
- * Registers a built-in icon for icon theme lookups. The idea
- * of built-in icons is to allow an application or library
- * that uses themed icons to function requiring files to
- * be present in the file system. For instance, the default
- * images for all of GTK+’s stock icons are registered
- * as built-icons.
- *
- * In general, if you use gtk_icon_theme_add_builtin_icon()
- * you should also install the icon in the icon theme, so
- * that the icon is generally available.
- *
- * This function will generally be used with pixbufs loaded
- * via gdk_pixbuf_new_from_inline().
- *
- * Since: 2.4
- *
- * Deprecated: 3.14: Use gtk_icon_theme_add_resource_path()
- *     to add application-specific icons to the icon theme.
- */
-void
-gtk_icon_theme_add_builtin_icon (const char *icon_name,
-                                 int         size,
-                                 GdkPixbuf  *pixbuf)
-{
-  BuiltinIcon *default_icon;
-  GSList *icons;
-  gpointer key;
-
-  g_return_if_fail (icon_name != NULL);
-  g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
-
-  if (!icon_theme_builtin_icons)
-    icon_theme_builtin_icons = g_hash_table_new (g_str_hash, g_str_equal);
-
-  icons = g_hash_table_lookup (icon_theme_builtin_icons, icon_name);
-  if (!icons)
-    key = g_strdup (icon_name);
-  else
-    key = (gpointer)icon_name;  /* Won't get stored */
-
-  default_icon = g_new (BuiltinIcon, 1);
-  default_icon->size = size;
-  default_icon->pixbuf = g_object_ref (pixbuf);
-  icons = g_slist_prepend (icons, default_icon);
-
-  /* Replaces value, leaves key untouched
-   */
-  g_hash_table_insert (icon_theme_builtin_icons, key, icons);
-}
-
-/* Look up a builtin icon; the min_difference_p and
- * has_larger_p out parameters allow us to combine
- * this lookup with searching through the actual directories
- * of the “hicolor” icon theme. See theme_lookup_icon()
- * for how they are used.
- */
-static BuiltinIcon *
-find_builtin_icon (const char *icon_name,
-                   int         size,
-                   int         scale,
-                   int        *min_difference_p)
-{
-  GSList *icons = NULL;
-  int min_difference = G_MAXINT;
-  gboolean has_larger = FALSE;
-  BuiltinIcon *min_icon = NULL;
-
-  if (!icon_theme_builtin_icons)
-    return NULL;
-
-  size *= scale;
-
-  icons = g_hash_table_lookup (icon_theme_builtin_icons, icon_name);
-
-  while (icons)
-    {
-      BuiltinIcon *default_icon = icons->data;
-      int min, max, difference;
-      gboolean smaller;
-
-      min = default_icon->size - 2;
-      max = default_icon->size + 2;
-      smaller = size < min;
-      if (size < min)
-        difference = min - size;
-      else if (size > max)
-        difference = size - max;
-      else
-        difference = 0;
-
-      if (difference == 0)
-        {
-          min_difference = 0;
-          min_icon = default_icon;
-          break;
-        }
-
-      if (!has_larger)
-        {
-          if (difference < min_difference || smaller)
-            {
-              min_difference = difference;
-              min_icon = default_icon;
-              has_larger = smaller;
-            }
-        }
-      else
-        {
-          if (difference < min_difference && smaller)
-            {
-              min_difference = difference;
-              min_icon = default_icon;
-            }
-        }
-
-      icons = icons->next;
-    }
-
-  if (min_difference_p)
-    *min_difference_p = min_difference;
-
-  return min_icon;
-}
-
 /**
  * gtk_icon_theme_lookup_by_gicon:
  * @icon_theme: a #GtkIconTheme
@@ -5630,11 +5142,6 @@ gtk_icon_theme_lookup_by_gicon_for_scale (GtkIconTheme       *icon_theme,
       GIcon *base, *emblem;
       GList *list, *l;
       GtkIconInfo *base_info, *emblem_info;
-
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-      if (GTK_IS_NUMERABLE_ICON (icon))
-        _gtk_numerable_icon_set_background_icon_size (GTK_NUMERABLE_ICON (icon), size / 2);
-G_GNUC_END_IGNORE_DEPRECATIONS
 
       base = g_emblemed_icon_get_icon (G_EMBLEMED_ICON (icon));
       base_info = gtk_icon_theme_lookup_by_gicon_for_scale (icon_theme, base, size, scale, flags);
