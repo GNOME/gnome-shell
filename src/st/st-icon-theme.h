@@ -28,73 +28,10 @@
 G_BEGIN_DECLS
 
 #define GTK_TYPE_ICON_INFO              (gtk_icon_info_get_type ())
-#define GTK_ICON_INFO(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ICON_INFO, GtkIconInfo))
-#define GTK_ICON_INFO_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_ICON_INFO, GtkIconInfoClass))
-#define GTK_IS_ICON_INFO(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_ICON_INFO))
-#define GTK_IS_ICON_INFO_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_ICON_INFO))
-#define GTK_ICON_INFO_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_ICON_INFO, GtkIconInfoClass))
+G_DECLARE_FINAL_TYPE (GtkIconInfo, gtk_icon_info, GTK, ICON_INFO, GObject)
 
 #define GTK_TYPE_ICON_THEME             (gtk_icon_theme_get_type ())
-#define GTK_ICON_THEME(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ICON_THEME, GtkIconTheme))
-#define GTK_ICON_THEME_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_ICON_THEME, GtkIconThemeClass))
-#define GTK_IS_ICON_THEME(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_ICON_THEME))
-#define GTK_IS_ICON_THEME_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_ICON_THEME))
-#define GTK_ICON_THEME_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_ICON_THEME, GtkIconThemeClass))
-
-/**
- * GtkIconInfo:
- *
- * Contains information found when looking up an icon in
- * an icon theme.
- */
-typedef struct _GtkIconInfo         GtkIconInfo;
-typedef struct _GtkIconInfoClass    GtkIconInfoClass;
-typedef struct _GtkIconTheme        GtkIconTheme;
-typedef struct _GtkIconThemeClass   GtkIconThemeClass;
-typedef struct _GtkIconThemePrivate GtkIconThemePrivate;
-
-/**
- * GtkIconTheme:
- *
- * Acts as a database of information about an icon theme.
- * Normally, you retrieve the icon theme for a particular
- * screen using gtk_icon_theme_get_for_screen() and it
- * will contain information about current icon theme for
- * that screen, but you can also create a new #GtkIconTheme
- * object and set the icon theme name explicitly using
- * gtk_icon_theme_set_custom_theme().
- */
-struct _GtkIconTheme
-{
-  /*< private >*/
-  GObject parent_instance;
-
-  GtkIconThemePrivate *priv;
-};
-
-/**
- * GtkIconThemeClass:
- * @parent_class: The parent class.
- * @changed: Signal emitted when the current icon theme is switched or
- *    GTK+ detects that a change has occurred in the contents of the
- *    current icon theme.
- */
-struct _GtkIconThemeClass
-{
-  GObjectClass parent_class;
-
-  /*< public >*/
-
-  void (* changed)  (GtkIconTheme *icon_theme);
-
-  /*< private >*/
-
-  /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
-};
+G_DECLARE_FINAL_TYPE (GtkIconTheme, gtk_icon_theme, GTK, ICON_THEME, GOBject)
 
 /**
  * GtkIconLookupFlags:
@@ -153,9 +90,6 @@ typedef enum {
 
 GDK_AVAILABLE_IN_ALL
 GQuark gtk_icon_theme_error_quark (void);
-
-GDK_AVAILABLE_IN_ALL
-GType         gtk_icon_theme_get_type              (void) G_GNUC_CONST;
 
 GDK_AVAILABLE_IN_ALL
 GtkIconTheme *gtk_icon_theme_new                   (void);
@@ -243,9 +177,6 @@ GList *       gtk_icon_theme_list_contexts         (GtkIconTheme                
 
 GDK_AVAILABLE_IN_ALL
 gboolean      gtk_icon_theme_rescan_if_needed      (GtkIconTheme                *icon_theme);
-
-GDK_AVAILABLE_IN_ALL
-GType                 gtk_icon_info_get_type           (void) G_GNUC_CONST;
 
 GDK_AVAILABLE_IN_ALL
 GtkIconInfo *         gtk_icon_info_new_for_pixbuf     (GtkIconTheme  *icon_theme,
