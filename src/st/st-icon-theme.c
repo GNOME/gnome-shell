@@ -45,7 +45,6 @@
 #include "deprecated/gtkiconfactory.h"
 #include "st-icon-cache.h"
 #include "gtkintl.h"
-#include "gtkmain.h"
 #include "deprecated/gtknumerableiconprivate.h"
 #include "gtkstylecontextprivate.h"
 
@@ -195,7 +194,7 @@ struct _GtkIconThemePrivate
   glong last_stat_time;
   GList *dir_mtimes;
 
-  gulong theme_changed_idle;
+  guint theme_changed_idle;
 };
 
 typedef struct {
@@ -792,9 +791,7 @@ queue_theme_changed (GtkIconTheme *icon_theme)
 
   if (!priv->theme_changed_idle)
     {
-      priv->theme_changed_idle =
-        gdk_threads_add_idle_full (GTK_PRIORITY_RESIZE - 2,
-                                   theme_changed_idle, icon_theme, NULL);
+      priv->theme_changed_idle = g_idle_add (theme_changed_idle, icon_theme);
       g_source_set_name_by_id (priv->theme_changed_idle, "[gtk+] theme_changed_idle");
     }
 }
@@ -847,8 +844,7 @@ gtk_icon_theme_finalize (GObject *object)
   g_hash_table_destroy (priv->info_cache);
   g_assert (priv->info_cache_lru == NULL);
 
-  if (priv->theme_changed_idle)
-    g_source_remove (priv->theme_changed_idle);
+  g_clear_handle_id (&priv->theme_changed_idle, g_source_remove);
 
   unset_screen (icon_theme);
 
