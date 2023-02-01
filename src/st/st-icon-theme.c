@@ -49,7 +49,6 @@
 #include "deprecated/gtknumerableiconprivate.h"
 #include "gtksettingsprivate.h"
 #include "gtkstylecontextprivate.h"
-#include "gtkprivate.h"
 
 #undef GDK_DEPRECATED
 #undef GDK_DEPRECATED_FOR
