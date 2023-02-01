@@ -105,7 +105,7 @@ struct _GtkIconTheme
   GHashTable *unthemed_icons;
 
   /* time when we last stat:ed for theme changes */
-  glong last_stat_time;
+  int64_t last_stat_time;
   GList *dir_mtimes;
 
   guint theme_changed_idle;
@@ -1016,7 +1016,6 @@ load_themes (GtkIconTheme *icon_theme)
   int base;
   char *dir;
   const char *file;
-  GTimeVal tv;
   IconThemeDirMtime *dir_mtime;
   GStatBuf stat_buf;
   GList *d;
@@ -1088,14 +1087,12 @@ load_themes (GtkIconTheme *icon_theme)
 
   icon_theme->themes_valid = TRUE;
 
-  g_get_current_time (&tv);
-  icon_theme->last_stat_time = tv.tv_sec;
+  icon_theme->last_stat_time = g_get_monotonic_time ();
 }
 
 static void
 ensure_valid_themes (GtkIconTheme *icon_theme)
 {
-  GTimeVal tv;
   gboolean was_valid = icon_theme->themes_valid;
 
   if (icon_theme->loading_themes)
@@ -1104,9 +1101,9 @@ ensure_valid_themes (GtkIconTheme *icon_theme)
 
   if (icon_theme->themes_valid)
     {
-      g_get_current_time (&tv);
+      int64_t time = g_get_monotonic_time ();
 
-      if (ABS (tv.tv_sec - icon_theme->last_stat_time) > 5 &&
+      if (ABS (time - icon_theme->last_stat_time) > 5 * G_TIME_SPAN_SECOND &&
           rescan_themes (icon_theme))
         {
           g_hash_table_remove_all (icon_theme->info_cache);
@@ -2215,7 +2212,6 @@ rescan_themes (GtkIconTheme *icon_theme)
   GList *d;
   int stat_res;
   GStatBuf stat_buf;
-  GTimeVal tv;
 
   for (d = icon_theme->dir_mtimes; d != NULL; d = d->next)
     {
@@ -2236,8 +2232,7 @@ rescan_themes (GtkIconTheme *icon_theme)
       return TRUE;
     }
 
-  g_get_current_time (&tv);
-  icon_theme->last_stat_time = tv.tv_sec;
+  icon_theme->last_stat_time = g_get_monotonic_time ();
 
   return FALSE;
 }
