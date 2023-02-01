@@ -38,7 +38,7 @@
 #include "win32/gdkwin32.h"
 #endif /* G_OS_WIN32 */
 
-#include "st-icon-theme-private.h"
+#include "st-icon-theme.h"
 #include "gtkcsspalettevalueprivate.h"
 #include "gtkcssrgbavalueprivate.h"
 #include "gtkdebug.h"
@@ -354,6 +354,9 @@ static IconSuffix   theme_dir_get_icon_suffix (IconThemeDir     *dir,
 static GtkIconInfo *icon_info_new             (IconThemeDirType  type,
                                                gint              dir_size,
                                                gint              dir_scale);
+static GtkIconInfo *gtk_icon_info_new_for_file (GFile           *file,
+                                                gint             size,
+                                                gint             scale);
 static GtkIconInfo *icon_info_new_builtin     (BuiltinIcon      *icon);
 static IconSuffix   suffix_from_name          (const gchar      *name);
 static BuiltinIcon *find_builtin_icon         (const gchar      *icon_name,
@@ -4467,12 +4470,12 @@ rgba_to_pixel(const GdkRGBA  *rgba,
   pixel[3] = 255;
 }
 
-GdkPixbuf *
-gtk_icon_theme_color_symbolic_pixbuf (GdkPixbuf     *symbolic,
-                                      const GdkRGBA *fg_color,
-                                      const GdkRGBA *success_color,
-                                      const GdkRGBA *warning_color,
-                                      const GdkRGBA *error_color)
+static GdkPixbuf *
+color_symbolic_pixbuf (GdkPixbuf     *symbolic,
+                       const GdkRGBA *fg_color,
+                       const GdkRGBA *success_color,
+                       const GdkRGBA *warning_color,
+                       const GdkRGBA *error_color)
 {
   int width, height, x, y, src_stride, dst_stride;
   guchar *src_data, *dst_data;
@@ -4582,11 +4585,11 @@ gtk_icon_info_load_symbolic_png (GtkIconInfo    *icon_info,
       return NULL;
     }
 
-  return gtk_icon_theme_color_symbolic_pixbuf (icon_info->pixbuf,
-                                               fg ? fg : &fg_default,
-                                               success_color ? success_color : &success_default,
-                                               warning_color ? warning_color : &warning_default,
-                                               error_color ? error_color : &error_default);
+  return color_symbolic_pixbuf (icon_info->pixbuf,
+                                fg ? fg : &fg_default,
+                                success_color ? success_color : &success_default,
+                                warning_color ? warning_color : &warning_default,
+                                error_color ? error_color : &error_default);
 }
 
 static GdkPixbuf *
@@ -4862,7 +4865,7 @@ gtk_icon_info_load_symbolic (GtkIconInfo    *icon_info,
                                                error);
 }
 
-void
+static void
 gtk_icon_theme_lookup_symbolic_colors (GtkCssStyle *style,
                                        GdkRGBA     *color_out,
                                        GdkRGBA     *success_out,
@@ -5754,7 +5757,7 @@ gtk_icon_info_new_for_pixbuf (GtkIconTheme *icon_theme,
   return info;
 }
 
-GtkIconInfo *
+static GtkIconInfo *
 gtk_icon_info_new_for_file (GFile *file,
                             gint   size,
                             gint   scale)
