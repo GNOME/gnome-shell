@@ -47,7 +47,6 @@
 #include "gtkintl.h"
 #include "gtkmain.h"
 #include "deprecated/gtknumerableiconprivate.h"
-#include "gtksettingsprivate.h"
 #include "gtkstylecontextprivate.h"
 
 #undef GDK_DEPRECATED
@@ -61,6 +60,8 @@
  * such as in the case of C89 compilers, like MSVC
  */
 #include "fallback-c89.c"
+
+#define DEFAULT_ICON_THEME "Adwaita"
 
 /**
  * SECTION:gtkicontheme
