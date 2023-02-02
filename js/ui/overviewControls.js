@@ -50,6 +50,9 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         global.display.connectObject(
             'workareas-changed', () => this._updateWorkAreaBox(),
             this);
+        Main.layoutManager.connectObject(
+            'monitors-changed', () => this._updateWorkAreaBox(),
+            this);
         this._updateWorkAreaBox();
     }
 
