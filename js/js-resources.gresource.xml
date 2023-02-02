@@ -37,6 +37,7 @@
 
     <file>perf/basic.js</file>
     <file>perf/core.js</file>
+    <file>perf/headlessStart.js</file>
     <file>perf/hwtest.js</file>
 
     <file>ui/accessDialog.js</file>

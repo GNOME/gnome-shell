@@ -40,7 +40,13 @@ foreach test : tests
 endforeach
 
 perf_tests = [
-  'basic',
+  {
+    'name': 'basic',
+  },
+  {
+    'name': 'headlessStart',
+    'options': ['--hotplug'],
+  },
 ]
 
 gvc_typelib_path = fs.parent(libgvc.get_variable('libgvc_gir')[1].full_path())
@@ -58,11 +64,15 @@ perf_testenv.append('GI_TYPELIB_PATH', gvc_typelib_path, separator: ':')
 perf_testenv.append('LD_LIBRARY_PATH', libgvc_path, separator: ':')
 
 foreach perf_test : perf_tests
-  test('perf-' + perf_test, dbus_runner,
+  test_name = perf_test['name']
+  options = perf_test.get('options', [])
+
+  test('perf-' + test_name, dbus_runner,
     args: [
       perf_tool,
       '--headless',
-      '--perf=@0@'.format(perf_test),
+      '--perf=@0@'.format(test_name),
+      options,
     ],
     is_parallel: false,
     env: perf_testenv,
