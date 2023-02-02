@@ -354,7 +354,7 @@ shell_window_preview_layout_class_init (ShellWindowPreviewLayoutClass *klass)
  * to the container. If @window is already part of the preview, this
  * function will do nothing.
  *
- * Returns: (transfer none): The newly created actor drawing @window
+ * Returns: (nullable) (transfer none): The newly created actor drawing @window
  */
 ClutterActor *
 shell_window_preview_layout_add_window (ShellWindowPreviewLayout *self,
