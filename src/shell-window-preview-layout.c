@@ -366,6 +366,9 @@ shell_window_preview_layout_add_window (ShellWindowPreviewLayout *self,
   GHashTableIter iter;
   gpointer value;
 
+  g_return_val_if_fail (SHELL_IS_WINDOW_PREVIEW_LAYOUT (self), NULL);
+  g_return_val_if_fail (META_IS_WINDOW (window), NULL);
+
   priv = shell_window_preview_layout_get_instance_private (self);
 
   g_hash_table_iter_init (&iter, priv->windows);
@@ -425,6 +428,9 @@ shell_window_preview_layout_remove_window (ShellWindowPreviewLayout *self,
   GHashTableIter iter;
   gpointer key, value;
 
+  g_return_if_fail (SHELL_IS_WINDOW_PREVIEW_LAYOUT (self));
+  g_return_if_fail (META_IS_WINDOW (window));
+
   priv = shell_window_preview_layout_get_instance_private (self);
 
   g_hash_table_iter_init (&iter, priv->windows);
@@ -472,6 +478,8 @@ shell_window_preview_layout_get_windows (ShellWindowPreviewLayout *self)
   GList *windows = NULL;
   GHashTableIter iter;
   gpointer value;
+
+  g_return_val_if_fail (SHELL_IS_WINDOW_PREVIEW_LAYOUT (self), NULL);
 
   priv = shell_window_preview_layout_get_instance_private (self);
 
