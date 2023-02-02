@@ -236,6 +236,7 @@ var LayoutManager = GObject.registerClass({
                 global.stage.add_actor(adoptedActor);
             }
 
+            this._destroyHotCorners();
             this.uiGroup.destroy();
         });
 
@@ -415,13 +416,14 @@ var LayoutManager = GObject.registerClass({
         }
     }
 
+    _destroyHotCorners() {
+        this.hotCorners.forEach(corner => corner?.destroy());
+        this.hotCorners = [];
+    }
+
     _updateHotCorners() {
         // destroy old hot corners
-        this.hotCorners.forEach(corner => {
-            if (corner)
-                corner.destroy();
-        });
-        this.hotCorners = [];
+        this._destroyHotCorners();
 
         if (!this._interfaceSettings.get_boolean('enable-hot-corners')) {
             this.emit('hot-corners-changed');
