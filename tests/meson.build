@@ -64,6 +64,7 @@ foreach perf_test : perf_tests
       '--headless',
       '--perf=@0@'.format(perf_test),
     ],
+    is_parallel: false,
     env: perf_testenv,
   )
 endforeach
