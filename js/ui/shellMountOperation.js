@@ -294,10 +294,15 @@ var ShellMountPasswordDialog = GObject.registerClass({
             content.add_child(this._keyfilesCheckbox);
 
             this._keyfilesLabel = new St.Label({ visible: false });
-            this._keyfilesLabel.clutter_text.set_markup(
-                /* Translators: %s is the Disks application */
-                _('To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead.')
-               .format(disksApp.get_name()));
+            if (disksApp) {
+                this._keyfilesLabel.clutter_text.set_markup(
+                    /* Translators: %s is the Disks application */
+                    _('To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead.')
+                   .format(disksApp.get_name()));
+            } else {
+                this._keyfilesLabel.clutter_text.set_markup(
+                    _('You need an external utility like <i>Disks</i> to unlock a volume that uses keyfiles.'));
+            }
             this._keyfilesLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
             this._keyfilesLabel.clutter_text.line_wrap = true;
             content.add_child(this._keyfilesLabel);
@@ -387,12 +392,19 @@ var ShellMountPasswordDialog = GObject.registerClass({
             label: _("Cancel"),
             action: this._onCancelButton.bind(this),
             key: Clutter.KEY_Escape,
-        }, {
-            /* Translators: %s is the Disks application */
-            label: _("Open %s").format(disksApp.get_name()),
-            action: this._onOpenDisksButton.bind(this),
-            default: true,
         }];
+
+        if (disksApp) {
+            this._usesKeyfilesButtons.push({
+                /* Translators: %s is the Disks application */
+                label: _('Open %s').format(disksApp.get_name()),
+                action: () => {
+                    disksApp.activate();
+                    this._onCancelButton();
+                },
+                default: true,
+            });
+        }
 
         this.setButtons(this._defaultButtons);
     }
@@ -454,20 +466,6 @@ var ShellMountPasswordDialog = GObject.registerClass({
         this._rememberChoice.can_focus = !useKeyfiles;
         this._keyfilesLabel.visible = useKeyfiles;
         this.setButtons(useKeyfiles ? this._usesKeyfilesButtons : this._defaultButtons);
-    }
-
-    _onOpenDisksButton() {
-        let app = Shell.AppSystem.get_default().lookup_app('org.gnome.DiskUtility.desktop');
-        if (app) {
-            app.activate();
-        } else {
-            Main.notifyError(
-                /* Translators: %s is the Disks application */
-                _("Unable to start %s").format(app.get_name()),
-                /* Translators: %s is the Disks application */
-                _('Couldn’t find the %s application').format(app.get_name()));
-        }
-        this._onCancelButton();
     }
 });
 
