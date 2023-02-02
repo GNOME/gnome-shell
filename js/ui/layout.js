@@ -222,6 +222,9 @@ var LayoutManager = GObject.registerClass({
         global.stage.remove_actor(global.window_group);
         this.uiGroup.add_actor(global.window_group);
         global.connect('shutdown', () => {
+            const monitorManager = global.backend.get_monitor_manager();
+            monitorManager.disconnectObject(this);
+
             const adoptedUiGroupActors = [
                 global.window_group,
                 global.top_window_group,
@@ -330,8 +333,9 @@ var LayoutManager = GObject.registerClass({
                         this._updateFullscreen.bind(this));
 
         const monitorManager = global.backend.get_monitor_manager();
-        monitorManager.connect('monitors-changed',
-                               this._monitorsChanged.bind(this));
+        monitorManager.connectObject(
+            'monitors-changed', this._monitorsChanged.bind(this),
+            this);
         this._monitorsChanged();
 
         this.screenTransition = new ScreenTransition();
