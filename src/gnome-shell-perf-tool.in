@@ -56,8 +56,9 @@ def start_shell(wrap=None, perf_output=None):
             args.append('--nested')
         elif options.headless:
             args.append('--headless')
-            args.append('--virtual-monitor')
-            args.append('1280x720')
+            if not options.hotplug:
+                args.append('--virtual-monitor')
+                args.append('1280x720')
         else:
             args.append('--display-server')
         args.append('--wayland-display')
@@ -315,6 +316,8 @@ parser.add_argument("-x", "--x11", action="store_true",
                     help="Run as an X11 compositor")
 parser.add_argument("--headless", action="store_true",
                     help="Run as a headless Wayland compositor")
+parser.add_argument("--hotplug", action="store_true",
+                    help="Start without a virtual monitor attached")
 
 options = parser.parse_args()
 
