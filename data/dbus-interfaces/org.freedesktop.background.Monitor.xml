@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!--
+ Copyright (C) 2022 Endless OS Foundation, LLC
+
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later version.
+
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
+
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library. If not, see <http://www.gnu.org/licenses/>.
+
+ Author: Georges Basile Stavracas Neto <georges@endlessos.org>
+-->
+
+<node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
+  <!--
+    org.freedesktop.background.Monitor:
+    @short_description: Background applications monitor
+
+    This interface provides APIs related to applications
+    that are running in the background.
+
+    This documentation describes version 1 of this interface.
+  -->
+  <interface name="org.freedesktop.background.Monitor">
+
+    <!--
+      BackgroundApps:
+
+      The list of applications that are considered to be running in
+      background. The following keys are supported:
+
+      <variablelist>
+        <varlistentry>
+          <term>app_id s</term>
+          <listitem><para>
+            App id of the application.
+          </para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>instance s</term>
+          <listitem><para>
+            The Flatpak instance of the application.
+          </para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>message s</term>
+          <listitem><para>
+            Status message reported by the application. Optional.
+          </para></listitem>
+        </varlistentry>
+      </variablelist>
+    -->
+    <property name="BackgroundApps" type="aa{sv}" access="read"/>
+
+    <property name="version" type="u" access="read"/>
+  </interface>
+</node>
