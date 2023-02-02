@@ -314,6 +314,14 @@ function _initializeUI() {
         });
     }
 
+    let perfModule;
+    const perfModuleName = GLib.getenv('SHELL_PERF_MODULE');
+    if (perfModuleName) {
+        perfModule = eval(`imports.perf.${perfModuleName};`);
+        if (perfModule.init)
+            perfModule.init();
+    }
+
     layoutManager.connect('startup-complete', () => {
         if (actionMode == Shell.ActionMode.NONE)
             actionMode = Shell.ActionMode.NORMAL;
@@ -329,8 +337,7 @@ function _initializeUI() {
             });
         }
 
-        const perfModuleName = GLib.getenv('SHELL_PERF_MODULE');
-        if (!perfModuleName) {
+        if (!perfModule) {
             let credentials = new Gio.Credentials();
             if (credentials.get_unix_user() === 0) {
                 notify(
@@ -347,10 +354,9 @@ function _initializeUI() {
 
         LoginManager.registerSessionWithGDM();
 
-        if (perfModuleName) {
+        if (perfModule) {
             let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
-            let module = eval(`imports.perf.${perfModuleName};`);
-            Scripting.runPerfScript(module, perfOutput);
+            Scripting.runPerfScript(perfModule, perfOutput);
         }
     });
 }
