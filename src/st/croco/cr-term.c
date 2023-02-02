@@ -462,8 +462,7 @@ cr_term_to_string (CRTerm const * a_this)
         }
 
         if (str_buf) {
-                result =(guchar *) str_buf->str;
-                g_string_free (str_buf, FALSE);
+                result = (guchar *) g_string_free (str_buf, FALSE);
                 str_buf = NULL;
         }
 
@@ -657,8 +656,7 @@ cr_term_one_to_string (CRTerm const * a_this)
         }
 
         if (str_buf) {
-                result = (guchar *) str_buf->str;
-                g_string_free (str_buf, FALSE);
+                result = (guchar *) g_string_free (str_buf, FALSE);
                 str_buf = NULL;
         }
 
