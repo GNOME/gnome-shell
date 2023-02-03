@@ -3659,9 +3659,9 @@ static char *
 color_to_string_noalpha (const ClutterColor *color)
 {
   return g_strdup_printf ("rgb(%d,%d,%d)",
-                          CLAMP (color->red, 0, 255),
-                          CLAMP (color->green, 0, 255),
-                          CLAMP (color->blue, 0, 255));
+                          color->red,
+                          color->green,
+                          color->blue);
 }
 
 static void
