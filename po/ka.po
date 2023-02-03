@@ -1,5 +1,5 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Georgian translation for gnome-shell.
+# Copyright (C) 2023 gnome-shell authors.
 # This file is distributed under the same license as the PACKAGE package.
 # Ekaterine Papava <papava.e@gtu.ge>, 2023.
 #
@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-01-24 22:39+0000\n"
-"PO-Revision-Date: 2023-01-25 07:56+0100\n"
+"POT-Creation-Date: 2023-02-02 20:50+0000\n"
+"PO-Revision-Date: 2023-02-03 05:55+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -64,22 +64,22 @@ msgid "Screenshots"
 msgstr "ეკრანის ანაბეჭდები"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:234
+#: data/org.gnome.shell.gschema.xml.in:238
 msgid "Take a screenshot interactively"
 msgstr "ეკრანის ანაბეჭდის ინტერაქტიული გადაღება"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:246
+#: data/org.gnome.shell.gschema.xml.in:250
 msgid "Take a screenshot"
 msgstr "ეკრანის ანაბეჭდის გადაღება"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:242
+#: data/org.gnome.shell.gschema.xml.in:246
 msgid "Take a screenshot of a window"
 msgstr "ფანჯრის ანაბეჭდის გადაღება"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:238
+#: data/org.gnome.shell.gschema.xml.in:242
 msgid "Record a screencast interactively"
 msgstr "ეკრანიდან ვიდეოს ჩაწერა"
 
@@ -163,6 +163,8 @@ msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
 msgstr ""
+"მომხმარებლის მიერ ჩართული ყველა გაფართოების გამორთვა \"enabled-extensions\" "
+"პარამეტრის შეხების გარეშე."
 
 #: data/org.gnome.shell.gschema.xml.in:45
 msgid "Disables the validation of extension version compatibility"
@@ -183,7 +185,7 @@ msgstr "რჩეული აპლიკაციების სამუშ�
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
-msgstr ""
+msgstr "ამ იდენტიფიკატორების შესაბამისი აპლიკაციები რჩეულ სიაში გამოჩნდება."
 
 #: data/org.gnome.shell.gschema.xml.in:62
 msgid "History for command (Alt-F2) dialog"
@@ -252,118 +254,118 @@ msgid ""
 "as 'data': • “position”: the position of the application icon in the page"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:148
+#: data/org.gnome.shell.gschema.xml.in:152
 msgid "Keybinding to open the application menu"
 msgstr "კლავიატურის მალსახმობი აპლიკაციის მენიუს გასახსნელად"
 
-#: data/org.gnome.shell.gschema.xml.in:149
+#: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to open the application menu."
 msgstr "კლავიატურის მალსახმობი აპლიკაციის მენიუს გასახსნელად."
 
-#: data/org.gnome.shell.gschema.xml.in:155
-#: data/org.gnome.shell.gschema.xml.in:162
+#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to shift between overview states"
 msgstr "კლავიატურის მალსახმობი მდგომარეობებს შორის გადასართავად"
 
-#: data/org.gnome.shell.gschema.xml.in:156
+#: data/org.gnome.shell.gschema.xml.in:160
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "კლავიატურის მალსახმობი სესიებს, ფანჯრებსა და აპლიკაციის ბადეს შორის "
 "გადართავად"
 
-#: data/org.gnome.shell.gschema.xml.in:163
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "კლავიატურის მალსახმობი აპლიკაციის ბადეს, ფანჯრებსა და სესიებს შორის "
 "გადასართავად"
 
-#: data/org.gnome.shell.gschema.xml.in:169
+#: data/org.gnome.shell.gschema.xml.in:173
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "კლავიატურის მალსახმობი \"აპლიკაციების ჩვენების\" ხედის გასახსნელად"
 
-#: data/org.gnome.shell.gschema.xml.in:170
+#: data/org.gnome.shell.gschema.xml.in:174
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "კლავიატურის მალსახმობი \"აპლიკაციების ჩვენების\" ხედის გასახსნელად "
 "ქმედებების მიმოხილვით."
 
-#: data/org.gnome.shell.gschema.xml.in:177
+#: data/org.gnome.shell.gschema.xml.in:181
 msgid "Keybinding to open the overview"
 msgstr "კლავიატურის მალსახმობი მიმოხილვის გასახსნელად"
 
-#: data/org.gnome.shell.gschema.xml.in:178
+#: data/org.gnome.shell.gschema.xml.in:182
 msgid "Keybinding to open the Activities Overview."
 msgstr "კლავიატურის მალსახმობი ქმედებების გადასახედად."
 
-#: data/org.gnome.shell.gschema.xml.in:184
+#: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "კლავიატურის მალსახმობი გაფრთხილებების სიის ხილვადობის ჩართ/გამორთ"
 
-#: data/org.gnome.shell.gschema.xml.in:185
+#: data/org.gnome.shell.gschema.xml.in:189
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "კლავიატურის მალსახმობი გაფრთხილებების სიის ხილვადობის ჩართ/გამორთ."
 
-#: data/org.gnome.shell.gschema.xml.in:191
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Keybinding to focus the active notification"
 msgstr "კლავიატურის მალსახმობი აქტიურ გაფრთხილებაზე გადასართავად"
 
-#: data/org.gnome.shell.gschema.xml.in:192
+#: data/org.gnome.shell.gschema.xml.in:196
 msgid "Keybinding to focus the active notification."
 msgstr "კლავიატურის მალსახმობი აქტიურ გაფრთხილებაზე გადასართავად."
 
-#: data/org.gnome.shell.gschema.xml.in:198
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Switch to application 1"
 msgstr "#1 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:206
 msgid "Switch to application 2"
 msgstr "#2 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:206
+#: data/org.gnome.shell.gschema.xml.in:210
 msgid "Switch to application 3"
 msgstr "#3 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:210
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "Switch to application 4"
 msgstr "#4 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:214
+#: data/org.gnome.shell.gschema.xml.in:218
 msgid "Switch to application 5"
 msgstr "#5 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:218
+#: data/org.gnome.shell.gschema.xml.in:222
 msgid "Switch to application 6"
 msgstr "#6 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:222
+#: data/org.gnome.shell.gschema.xml.in:226
 msgid "Switch to application 7"
 msgstr "#7 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:226
+#: data/org.gnome.shell.gschema.xml.in:230
 msgid "Switch to application 8"
 msgstr "#8 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:230
+#: data/org.gnome.shell.gschema.xml.in:234
 msgid "Switch to application 9"
 msgstr "#9 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:255
-#: data/org.gnome.shell.gschema.xml.in:282
+#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:286
 msgid "Limit switcher to current workspace."
 msgstr "გადამრთველის მიმდინარე სამუშაო სივრცეზე შეზღუდვა."
 
-#: data/org.gnome.shell.gschema.xml.in:256
+#: data/org.gnome.shell.gschema.xml.in:260
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:273
+#: data/org.gnome.shell.gschema.xml.in:277
 msgid "The application icon mode."
 msgstr "აპლიკაციის ხატულების რეჟიმი."
 
-#: data/org.gnome.shell.gschema.xml.in:274
+#: data/org.gnome.shell.gschema.xml.in:278
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -372,33 +374,33 @@ msgstr ""
 "გადამრთველში ფანჯრების გარეგნობის მორგება. შესაძლო ვარიანტების \"მხოლოდ "
 "მინიატურები\", \"მხოლოდ აპლიკაციის ხატულები\" ან \"ორივე\"."
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:287
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:293
+#: data/org.gnome.shell.gschema.xml.in:297
 msgid "Locations"
 msgstr "მდებარეობები"
 
-#: data/org.gnome.shell.gschema.xml.in:294
+#: data/org.gnome.shell.gschema.xml.in:298
 msgid "The locations to show in world clocks"
 msgstr "საათის ჩვენების მდებარეობა"
 
-#: data/org.gnome.shell.gschema.xml.in:304
+#: data/org.gnome.shell.gschema.xml.in:308
 msgid "Automatic location"
 msgstr "ავტომატური მდებარეობა"
 
-#: data/org.gnome.shell.gschema.xml.in:305
+#: data/org.gnome.shell.gschema.xml.in:309
 msgid "Whether to fetch the current location or not"
 msgstr "გამოვითხოვო თუ არა მდებარეობა"
 
-#: data/org.gnome.shell.gschema.xml.in:312
+#: data/org.gnome.shell.gschema.xml.in:316
 msgid "Location"
 msgstr "მდებარეობა"
 
-#: data/org.gnome.shell.gschema.xml.in:313
+#: data/org.gnome.shell.gschema.xml.in:317
 msgid "The location for which to show a forecast"
 msgstr "მდებარეობა ამინდის პროგნოზის საჩვენებლად"
 
@@ -435,7 +437,7 @@ msgstr "გაფართოებების ვებგვერდის �
 #: js/gdm/authPrompt.js:142 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
-#: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
+#: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "გაუქმება"
@@ -444,7 +446,7 @@ msgstr "გაუქმება"
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
-#: js/ui/shellMountOperation.js:327
+#: js/ui/shellMountOperation.js:332
 msgid "Password"
 msgstr "პაროლი"
 
@@ -731,7 +733,7 @@ msgstr "უარყოფა"
 msgid "Allow"
 msgstr "დაშვება"
 
-#: js/ui/appDisplay.js:1778
+#: js/ui/appDisplay.js:1767
 msgid "Unnamed Folder"
 msgstr "უსახელო საქაღალდე"
 
@@ -794,7 +796,7 @@ msgstr "ყურსაცვამები"
 msgid "Headset"
 msgstr "ყურსაცვამები & მიკროფონი"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:324
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
 msgid "Microphone"
 msgstr "მიკროფონი"
 
@@ -1050,7 +1052,7 @@ msgstr "ავთენტიფიკაცია"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:403
+#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:415
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "უკაცრავად, არ იმუშავა. კიდევ სცადეთ."
 
@@ -1435,7 +1437,7 @@ msgstr "ჩაირთო"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "გამოირთო"
 
@@ -1758,46 +1760,40 @@ msgid "Uses Keyfiles"
 msgstr "მოხმარებლის გასაღების ფაილები"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:299
+#: js/ui/shellMountOperation.js:300
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
 "საცავების, რომლებიც იყენებენ გასაღებებს, განსაბლოკად გამოიყენეთ <i>%s</i>."
 
-#: js/ui/shellMountOperation.js:307
+#: js/ui/shellMountOperation.js:304
+msgid ""
+"You need an external utility like <i>Disks</i> to unlock a volume that uses "
+"keyfiles."
+msgstr ""
+
+#: js/ui/shellMountOperation.js:312
 msgid "PIM Number"
 msgstr "PIM-ის ნომერი"
 
-#: js/ui/shellMountOperation.js:366
+#: js/ui/shellMountOperation.js:371
 msgid "Remember Password"
 msgstr "პაროლის დამასოვრება"
 
-#: js/ui/shellMountOperation.js:381
+#: js/ui/shellMountOperation.js:386
 msgid "Unlock"
 msgstr "განბლოკვა"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:392
+#: js/ui/shellMountOperation.js:400
 #, javascript-format
 msgid "Open %s"
 msgstr "გახსენი %s"
 
-#: js/ui/shellMountOperation.js:424
+#: js/ui/shellMountOperation.js:436
 msgid "The PIM must be a number or empty."
 msgstr "PIM უნდა იყოს ან რიცხვი, ან არაფერი."
-
-#. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:466
-#, javascript-format
-msgid "Unable to start %s"
-msgstr "%s-ის გაშვების შეცდომა"
-
-#. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:468
-#, javascript-format
-msgid "Couldn’t find the %s application"
-msgstr "აპლიკაცია %s ვერ ვიპოვე"
 
 #: js/ui/status/accessibility.js:34
 msgid "Accessibility"
@@ -2082,6 +2078,7 @@ msgstr "უცნობი Thunderbolt მოწყობილობა"
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
+"აღმოჩენილია ახალი მოწყობილობა და ადმინისტრატორის მიერ ავტორიზებული უნდა იყოს."
 
 #: js/ui/status/thunderbolt.js:328
 msgid "Thunderbolt authorization error"
@@ -2092,19 +2089,19 @@ msgstr "Thunderbolt მოწყობილობის ავტორიზ�
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Thunderbolt მოწყობილობასთან ავტორიზაციის შეცდომა: %s"
 
-#: js/ui/status/volume.js:196
+#: js/ui/status/volume.js:194
 msgid "Volume changed"
 msgstr "საცავი შეიცვალა"
 
-#: js/ui/status/volume.js:258
+#: js/ui/status/volume.js:256
 msgid "Volume"
 msgstr "ტომი"
 
-#: js/ui/status/volume.js:274
+#: js/ui/status/volume.js:272
 msgid "Sound Output"
 msgstr "ხმის გამოტანა"
 
-#: js/ui/status/volume.js:342
+#: js/ui/status/volume.js:340
 msgid "Sound Input"
 msgstr "ხმის შეყვანა"
 
@@ -2201,7 +2198,7 @@ msgstr[0] "კონფიგურაცია დაბრუნდება %
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:548
+#: js/ui/windowManager.js:544
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2222,55 +2219,55 @@ msgstr "გადიდება"
 msgid "Move"
 msgstr "გადაადგილება"
 
-#: js/ui/windowMenu.js:65
+#: js/ui/windowMenu.js:78
 msgid "Resize"
 msgstr "ზომის შეცვლა"
 
-#: js/ui/windowMenu.js:72
+#: js/ui/windowMenu.js:98
 msgid "Move Titlebar Onscreen"
 msgstr "სათაურის ზოლის ეკრანზე გადატანა"
 
-#: js/ui/windowMenu.js:77
+#: js/ui/windowMenu.js:103
 msgid "Always on Top"
 msgstr "ყოველთვის ყველაზე ზემოთ"
 
-#: js/ui/windowMenu.js:96
+#: js/ui/windowMenu.js:122
 msgid "Always on Visible Workspace"
 msgstr "ყოველთვის ხილულ სამუშაო სივრცეში"
 
-#: js/ui/windowMenu.js:110
+#: js/ui/windowMenu.js:136
 msgid "Move to Workspace Left"
 msgstr "მარცხენა სამუშაო სივრცეში გადატანა"
 
-#: js/ui/windowMenu.js:116
+#: js/ui/windowMenu.js:142
 msgid "Move to Workspace Right"
 msgstr "მარჯვენა სამუშაო სივრცეში გადატანა"
 
-#: js/ui/windowMenu.js:122
+#: js/ui/windowMenu.js:148
 msgid "Move to Workspace Up"
 msgstr "ზედა სამუშაო სივრცეში გადატანა"
 
-#: js/ui/windowMenu.js:128
+#: js/ui/windowMenu.js:154
 msgid "Move to Workspace Down"
 msgstr "ქვედა სამუშაო სივრცეში გადატანა"
 
-#: js/ui/windowMenu.js:146
+#: js/ui/windowMenu.js:172
 msgid "Move to Monitor Up"
 msgstr "ეკრანის მაღლა ატანა"
 
-#: js/ui/windowMenu.js:155
+#: js/ui/windowMenu.js:181
 msgid "Move to Monitor Down"
 msgstr "ეკრანის დაბლა ჩამოტანა"
 
-#: js/ui/windowMenu.js:164
+#: js/ui/windowMenu.js:190
 msgid "Move to Monitor Left"
 msgstr "ეკრანის მარცხნივ გატანა"
 
-#: js/ui/windowMenu.js:173
+#: js/ui/windowMenu.js:199
 msgid "Move to Monitor Right"
 msgstr "ეკრანის მარჯვნივ გატანა"
 
-#: js/ui/windowMenu.js:181
+#: js/ui/windowMenu.js:207
 msgid "Close"
 msgstr "დახურვა"
 
@@ -2319,6 +2316,15 @@ msgstr "პაროლები ცარიელი ვერ იქნებ
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
 msgstr "ავთენტიკაციის ფანჯარა დახურულია მომხმარებლის მიერ"
+
+#: src/st/st-icon-theme.c:1882
+#, c-format
+msgid "Icon '%s' not present in theme %s"
+msgstr "ხატულა '%s' თემაში '%s' არ არსებობს"
+
+#: src/st/st-icon-theme.c:3471 src/st/st-icon-theme.c:3774
+msgid "Failed to load icon"
+msgstr "ხატულის ჩატვირთვის შეცდომა"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
@@ -2845,7 +2851,7 @@ msgstr "ზედა ზოლში ხატულის დამატებ
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1907
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2853,15 +2859,23 @@ msgstr[0] "%u გამოტანა"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1917
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u შეტანა"
 
-#: subprojects/gvc/gvc-mixer-control.c:2867
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "სისტემური ხმები"
+
+#, javascript-format
+#~ msgid "Unable to start %s"
+#~ msgstr "%s-ის გაშვების შეცდომა"
+
+#, javascript-format
+#~ msgid "Couldn’t find the %s application"
+#~ msgstr "აპლიკაცია %s ვერ ვიპოვე"
 
 #~ msgid "Attach modal dialog to the parent window"
 #~ msgstr "მოდალური ფანჯრის მშობელ ფანჯარაზე მიმაგრება"
