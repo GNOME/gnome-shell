@@ -16,7 +16,7 @@
   border-radius: 99px;
   min-width: 12em;
   max-width: 12em;
-  min-height: 40px;
+  min-height: 48px;
   border:none;
 
   &:checked { @include button(default, $c:$selected_bg_color); }
