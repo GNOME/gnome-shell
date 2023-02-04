@@ -1318,6 +1318,10 @@ const NMToggle = GObject.registerClass({
         this._itemBinding = new GObject.BindingGroup();
         this._itemBinding.bind('icon-name',
             this, 'icon-name', GObject.BindingFlags.DEFAULT);
+        this._itemBinding.bind_property_full('source',
+            this, 'title', GObject.BindingFlags.DEFAULT,
+            () => [true, this._getDefaultName()],
+            null);
         this._itemBinding.bind_full('name',
             this, 'subtitle', GObject.BindingFlags.DEFAULT,
             (bind, source) => [true, this._transformSubtitle(source)],
