@@ -1319,8 +1319,8 @@ const NMToggle = GObject.registerClass({
         this._itemBinding.bind('icon-name',
             this, 'icon-name', GObject.BindingFlags.DEFAULT);
         this._itemBinding.bind_full('name',
-            this, 'title', GObject.BindingFlags.DEFAULT,
-            (bind, source) => [true, this._transformTitle(source)],
+            this, 'subtitle', GObject.BindingFlags.DEFAULT,
+            (bind, source) => [true, this._transformSubtitle(source)],
             null);
 
         this.connect('clicked', () => this.activate());
@@ -1360,7 +1360,7 @@ const NMToggle = GObject.registerClass({
     // transform function for property binding:
     // Ignore the provided label if there are multiple active
     // items, and replace it with something like "VPN (2)"
-    _transformTitle(source) {
+    _transformSubtitle(source) {
         const nActive = this.checked
             ? [...this._getActiveItems()].length
             : 0;
