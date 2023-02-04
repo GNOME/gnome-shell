@@ -1860,6 +1860,11 @@ class NMModemToggle extends NMDeviceToggle {
             'gnome-network-panel.desktop');
     }
 
+    _getDefaultName() {
+        // Translators: "Mobile" from "Mobile Broadband"
+        return _('Mobile');
+    }
+
     _createDeviceMenuItem(device) {
         return new NMModemDeviceItem(this._client, device);
     }
