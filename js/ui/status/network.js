@@ -1836,6 +1836,11 @@ class NMBluetoothToggle extends NMDeviceToggle {
             'gnome-network-panel.desktop');
     }
 
+    _getDefaultName() {
+        // Translators: "Tether" from "Bluetooth Tether"
+        return _('Tether');
+    }
+
     _createDeviceMenuItem(device) {
         return new NMBluetoothDeviceItem(this._client, device);
     }
