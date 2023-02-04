@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-02 20:50+0000\n"
-"PO-Revision-Date: 2023-02-04 12:21+0700\n"
+"POT-Creation-Date: 2023-02-04 05:23+0000\n"
+"PO-Revision-Date: 2023-02-04 12:31+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -2381,10 +2381,8 @@ msgid "Icon '%s' not present in theme %s"
 msgstr "Ikon '%s' tidak ada pada tema %s"
 
 #: src/st/st-icon-theme.c:3471 src/st/st-icon-theme.c:3774
-#, fuzzy
-#| msgid "Unable to lock"
 msgid "Failed to load icon"
-msgstr "Tak bisa mengunci"
+msgstr "Gagal memuat ikon"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
@@ -2619,26 +2617,18 @@ msgstr "Argumen tak dikenal"
 msgid "UUID, name and description are required"
 msgstr "Diperlukan UUID, nama, dan deskripsi"
 
-#: subprojects/extensions-tool/src/command-disable.c:46
-#: subprojects/extensions-tool/src/command-enable.c:46
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
-#: subprojects/extensions-tool/src/main.c:150
-msgid "Failed to connect to GNOME Shell\n"
-msgstr "Gagal terhubung ke GNOME Shell\n"
-
-#: subprojects/extensions-tool/src/command-disable.c:53
-#: subprojects/extensions-tool/src/command-enable.c:53
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "Ekstensi \"%s\" tidak ada\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:101
+#: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
 msgstr "Nonaktifkan ekstensi"
 
-#: subprojects/extensions-tool/src/command-disable.c:119
-#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
 #: subprojects/extensions-tool/src/command-info.c:103
 #: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
@@ -2646,8 +2636,8 @@ msgstr "Nonaktifkan ekstensi"
 msgid "No UUID given"
 msgstr "Tidak ada UUID yang diberikan"
 
-#: subprojects/extensions-tool/src/command-disable.c:124
-#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
 #: subprojects/extensions-tool/src/command-info.c:108
 #: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
@@ -2655,9 +2645,15 @@ msgstr "Tidak ada UUID yang diberikan"
 msgid "More than one UUID given"
 msgstr "Lebih dari satu UUID diberikan"
 
-#: subprojects/extensions-tool/src/command-enable.c:101
+#: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
 msgstr "Aktifkan ekstensi"
+
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:150
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "Gagal terhubung ke GNOME Shell\n"
 
 #: subprojects/extensions-tool/src/command-info.c:59
 #: subprojects/extensions-tool/src/main.c:159
