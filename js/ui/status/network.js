@@ -1363,13 +1363,13 @@ const NMToggle = GObject.registerClass({
 
     // transform function for property binding:
     // Ignore the provided label if there are multiple active
-    // items, and replace it with something like "VPN (2)"
+    // items, and replace it with something like "2 connected"
     _transformSubtitle(source) {
         const nActive = this.checked
             ? [...this._getActiveItems()].length
             : 0;
         if (nActive > 1)
-            return `${this._getDefaultName()} (${nActive})`;
+            return ngettext('%d connected', '%d connected', nActive).format(nActive);
         return source;
     }
 
