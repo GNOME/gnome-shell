@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-15 11:58+0000\n"
-"PO-Revision-Date: 2022-09-15 21:19+0200\n"
+"POT-Creation-Date: 2022-09-15 19:48+0000\n"
+"PO-Revision-Date: 2022-09-17 11:40+0200\n"
 "Last-Translator: Tim Sabsch <tim@sabsch.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -2261,9 +2261,10 @@ msgstr "Nach oben wischen zum Entsperren"
 msgid "Click or press a key to unlock"
 msgstr "Durch Mausklick oder Tastendruck entsperren"
 
+# Beschreibung des Hauptbereichs im Entsperren-Dialog (über Strg-Alt-Tab erreichtbar) - ts
 #: js/ui/unlockDialog.js:554
 msgid "Unlock Window"
-msgstr "Fenster entsperren"
+msgstr "Entsperren-Fenster"
 
 #: js/ui/unlockDialog.js:563
 msgid "Log in as another user"
