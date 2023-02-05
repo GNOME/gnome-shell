@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-02 20:50+0000\n"
-"PO-Revision-Date: 2023-02-03 05:55+0100\n"
+"POT-Creation-Date: 2023-02-04 23:48+0000\n"
+"PO-Revision-Date: 2023-02-05 08:14+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -1028,7 +1028,7 @@ msgstr "PIN კოდი"
 msgid "A password is required to connect to “%s”."
 msgstr "%s-თან დასაკავშირებლად საჭიროა პაროლი."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1954
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1968
 msgid "Network Manager"
 msgstr "ქსელის მმართველი"
 
@@ -1490,6 +1490,8 @@ msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
 msgstr ""
+"სესიის პრივილეგირებული მომხმარებლით გაშვება უსაფრთხოების მიზნით თავიდან უნდა "
+"აირიდოთ. თუ ეს შესაძლებელია, ჩვეულებრივი მომხმარებლით შედით."
 
 #: js/ui/main.js:387
 msgid "Screen Lock disabled"
@@ -1929,51 +1931,67 @@ msgstr "%s-სთან დაკავშირება"
 msgid "%s Hotspot"
 msgstr "%s Hotspot-ი"
 
-#: js/ui/status/network.js:1466 js/ui/status/network.js:1482
+#: js/ui/status/network.js:1372
+#, javascript-format
+msgid "%d connected"
+msgid_plural "%d connected"
+msgstr[0] "%d მიერთებულია"
+
+#: js/ui/status/network.js:1470 js/ui/status/network.js:1486
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1467
+#: js/ui/status/network.js:1471
 msgid "VPN Settings"
 msgstr "VPN-ის მორგება"
 
-#: js/ui/status/network.js:1716
+#: js/ui/status/network.js:1720
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1718
+#: js/ui/status/network.js:1722
 msgid "All Networks"
 msgstr "ყველა ქსელი"
 
-#: js/ui/status/network.js:1815
+#: js/ui/status/network.js:1819
 msgid "Wired Connections"
 msgstr "მავთულიანი კავშირები"
 
-#: js/ui/status/network.js:1816
+#: js/ui/status/network.js:1820
 msgid "Wired Settings"
 msgstr "მავთულით მიერთების მორგება"
 
-#: js/ui/status/network.js:1830
+#: js/ui/status/network.js:1834
 msgid "Bluetooth Tethers"
 msgstr "ბლუთუზით მიბმა"
 
-#: js/ui/status/network.js:1831
+#: js/ui/status/network.js:1835
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-ის მორგება"
 
-#: js/ui/status/network.js:1845
+#. Translators: "Tether" from "Bluetooth Tether"
+#: js/ui/status/network.js:1841
+msgid "Tether"
+msgstr "მიბმა"
+
+#: js/ui/status/network.js:1854
 msgid "Mobile Connections"
 msgstr "მობილური კავშირები"
 
-#: js/ui/status/network.js:1847
+#: js/ui/status/network.js:1856
 msgid "Mobile Broadband Settings"
 msgstr "მობილური კავშირის მორგება"
 
-#: js/ui/status/network.js:1959
+#. Translators: "Mobile" from "Mobile Broadband"
+#: js/ui/status/network.js:1865
+msgid "Mobile"
+msgstr "მობილური"
+
+#: js/ui/status/network.js:1973
 msgid "Connection failed"
 msgstr "დაკავშირება ვერ მოხერხდა"
 
-#: js/ui/status/network.js:1960
+#: js/ui/status/network.js:1974
 msgid "Activation of network connection failed"
 msgstr "ქსელის კავშირის აქტივაციის შეცდომა"
 
@@ -1995,6 +2013,10 @@ msgstr "ბალანსირებული"
 msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "ელემენტის შენახვის რეჟიმი"
+
+#: js/ui/status/powerProfiles.js:40
+msgid "Power Mode"
+msgstr "კვების რეჟიმი"
 
 #: js/ui/status/powerProfiles.js:70
 msgid "Power Profiles"
@@ -2547,26 +2569,18 @@ msgstr "უცნობი არგუმენტები"
 msgid "UUID, name and description are required"
 msgstr "საჭიროა UUID, სახელი და აღწერა"
 
-#: subprojects/extensions-tool/src/command-disable.c:46
-#: subprojects/extensions-tool/src/command-enable.c:46
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
-#: subprojects/extensions-tool/src/main.c:150
-msgid "Failed to connect to GNOME Shell\n"
-msgstr "GNOME -ის გარსთან დაკავშირების შეცდომა\n"
-
-#: subprojects/extensions-tool/src/command-disable.c:53
-#: subprojects/extensions-tool/src/command-enable.c:53
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "გაფართოება %s არ არსებობს\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:101
+#: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
 msgstr "გაფართოების გამორთვა"
 
-#: subprojects/extensions-tool/src/command-disable.c:119
-#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
 #: subprojects/extensions-tool/src/command-info.c:103
 #: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
@@ -2574,8 +2588,8 @@ msgstr "გაფართოების გამორთვა"
 msgid "No UUID given"
 msgstr "შეიყვანეთ UUID"
 
-#: subprojects/extensions-tool/src/command-disable.c:124
-#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
 #: subprojects/extensions-tool/src/command-info.c:108
 #: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
@@ -2583,9 +2597,15 @@ msgstr "შეიყვანეთ UUID"
 msgid "More than one UUID given"
 msgstr "შეყვანილია ერთზე მეტი UUID"
 
-#: subprojects/extensions-tool/src/command-enable.c:101
+#: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
 msgstr "გაფართოების ჩართვა"
+
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:150
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "GNOME -ის გარსთან დაკავშირების შეცდომა\n"
 
 #: subprojects/extensions-tool/src/command-info.c:59
 #: subprojects/extensions-tool/src/main.c:159
@@ -2896,11 +2916,6 @@ msgstr "სისტემური ხმები"
 
 #~ msgid "Log Out"
 #~ msgstr "გასვლა"
-
-#, javascript-format
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d მიერთებული"
 
 #~ msgid "Bluetooth On"
 #~ msgstr "Bluetooth ჩართულია"
