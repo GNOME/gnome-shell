@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-04 05:23+0000\n"
-"PO-Revision-Date: 2023-02-04 12:31+0700\n"
+"POT-Creation-Date: 2023-02-04 23:48+0000\n"
+"PO-Revision-Date: 2023-02-05 16:08+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -1081,7 +1081,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Perlu suatu kata sandi untuk menyambung ke \"%s\"."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1954
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1968
 msgid "Network Manager"
 msgstr "Manajer Jaringan"
 
@@ -1985,51 +1985,67 @@ msgstr "Sambung ke %s"
 msgid "%s Hotspot"
 msgstr "%s Hotspot"
 
-#: js/ui/status/network.js:1466 js/ui/status/network.js:1482
+#: js/ui/status/network.js:1372
+#, javascript-format
+msgid "%d connected"
+msgid_plural "%d connected"
+msgstr[0] "%d tersambung"
+
+#: js/ui/status/network.js:1470 js/ui/status/network.js:1486
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1467
+#: js/ui/status/network.js:1471
 msgid "VPN Settings"
 msgstr "Pengaturan VPN"
 
-#: js/ui/status/network.js:1716
+#: js/ui/status/network.js:1720
 msgid "Wi–Fi"
 msgstr "Wi-Fi"
 
-#: js/ui/status/network.js:1718
+#: js/ui/status/network.js:1722
 msgid "All Networks"
 msgstr "Semua Jaringan"
 
-#: js/ui/status/network.js:1815
+#: js/ui/status/network.js:1819
 msgid "Wired Connections"
 msgstr "Koneksi Kabel"
 
-#: js/ui/status/network.js:1816
+#: js/ui/status/network.js:1820
 msgid "Wired Settings"
 msgstr "Pengaturan Kabel"
 
-#: js/ui/status/network.js:1830
+#: js/ui/status/network.js:1834
 msgid "Bluetooth Tethers"
 msgstr "Tether Bluetooth"
 
-#: js/ui/status/network.js:1831
+#: js/ui/status/network.js:1835
 msgid "Bluetooth Settings"
 msgstr "Pengaturan Bluetooth"
 
-#: js/ui/status/network.js:1845
+#. Translators: "Tether" from "Bluetooth Tether"
+#: js/ui/status/network.js:1841
+msgid "Tether"
+msgstr "Tambatkan"
+
+#: js/ui/status/network.js:1854
 msgid "Mobile Connections"
 msgstr "Koneksi Seluler"
 
-#: js/ui/status/network.js:1847
+#: js/ui/status/network.js:1856
 msgid "Mobile Broadband Settings"
 msgstr "Pengaturan Data Seluler"
 
-#: js/ui/status/network.js:1959
+#. Translators: "Mobile" from "Mobile Broadband"
+#: js/ui/status/network.js:1865
+msgid "Mobile"
+msgstr "Seluler"
+
+#: js/ui/status/network.js:1973
 msgid "Connection failed"
 msgstr "Koneksi gagal"
 
-#: js/ui/status/network.js:1960
+#: js/ui/status/network.js:1974
 msgid "Activation of network connection failed"
 msgstr "Aktivasi koneksi jaringan gagal"
 
@@ -2051,6 +2067,10 @@ msgstr "Seimbang"
 msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Penghemat Daya"
+
+#: js/ui/status/powerProfiles.js:40
+msgid "Power Mode"
+msgstr "Mode Daya"
 
 #: js/ui/status/powerProfiles.js:70
 msgid "Power Profiles"
@@ -2136,16 +2156,16 @@ msgstr "Perangkat Thunderbolt tak dikenal"
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
-"Perangkat baru telah terdeteksi dan perlu diautorisasi oleh administrator."
+"Perangkat baru telah terdeteksi dan perlu diotorisasi oleh administrator."
 
 #: js/ui/status/thunderbolt.js:328
 msgid "Thunderbolt authorization error"
-msgstr "Autorisasi Thunderbolt galat"
+msgstr "Otorisasi Thunderbolt galat"
 
 #: js/ui/status/thunderbolt.js:329
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
-msgstr "Tidak dapat mengautorisasi perangkat Thunderbolt: %s"
+msgstr "Tidak dapat mengotorisasi perangkat Thunderbolt: %s"
 
 #: js/ui/status/volume.js:194
 msgid "Volume changed"
@@ -3091,10 +3111,6 @@ msgstr "Suara Sistem"
 
 #~ msgid "Power Off / Log Out"
 #~ msgstr "Matikan / Log Keluar"
-
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d Tersambung"
 
 #~ msgid "Bluetooth On"
 #~ msgstr "Bluetooth Nyala"
