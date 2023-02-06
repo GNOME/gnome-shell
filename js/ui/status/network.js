@@ -1821,6 +1821,13 @@ class NMWiredToggle extends NMDeviceToggle {
             'gnome-network-panel.desktop');
     }
 
+    _transformSubtitle(source) {
+        const subtitle = super._transformSubtitle(source);
+        if (subtitle === this.title)
+            return null;
+        return subtitle;
+    }
+
     _createDeviceMenuItem(device) {
         return new NMWiredDeviceItem(this._client, device);
     }
