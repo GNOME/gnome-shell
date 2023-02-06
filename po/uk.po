@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-02 20:50+0000\n"
-"PO-Revision-Date: 2023-02-03 21:38+0200\n"
+"POT-Creation-Date: 2023-02-04 23:48+0000\n"
+"PO-Revision-Date: 2023-02-06 11:40+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
@@ -1106,7 +1106,7 @@ msgstr "Пін-код"
 msgid "A password is required to connect to “%s”."
 msgstr "Пароль потрібен для з'єднання з «%s»."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1954
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1968
 msgid "Network Manager"
 msgstr "Керування мережею"
 
@@ -1873,8 +1873,8 @@ msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
 msgstr ""
-"Вам знадобиться зовнішня допоміжна програма, подібна до програми <i>Диски</i"
-"> для розблоковування тому, де використано файли ключів."
+"Вам знадобиться зовнішня допоміжна програма, подібна до програми <i>Диски</"
+"i> для розблоковування тому, де використано файли ключів."
 
 #: js/ui/shellMountOperation.js:312
 msgid "PIM Number"
@@ -2032,51 +2032,73 @@ msgstr "З'єднатися з %s"
 msgid "%s Hotspot"
 msgstr "Точка доступу %s"
 
-#: js/ui/status/network.js:1466 js/ui/status/network.js:1482
+#: js/ui/status/network.js:1372
+#, javascript-format
+#| msgid "%d Connected"
+#| msgid_plural "%d Connected"
+msgid "%d connected"
+msgid_plural "%d connected"
+msgstr[0] "%d з'єднаний"
+msgstr[1] "%d з'єднаних"
+msgstr[2] "%d з'єднаних"
+msgstr[3] "%d з'єднаний"
+
+#: js/ui/status/network.js:1470 js/ui/status/network.js:1486
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1467
+#: js/ui/status/network.js:1471
 msgid "VPN Settings"
 msgstr "Параметри VPN"
 
-#: js/ui/status/network.js:1716
+#: js/ui/status/network.js:1720
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1718
+#: js/ui/status/network.js:1722
 msgid "All Networks"
 msgstr "Всі мережі"
 
-#: js/ui/status/network.js:1815
+#: js/ui/status/network.js:1819
 msgid "Wired Connections"
 msgstr "Дротові з'єднання"
 
-#: js/ui/status/network.js:1816
+#: js/ui/status/network.js:1820
 msgid "Wired Settings"
 msgstr "Параметри мережі"
 
-#: js/ui/status/network.js:1830
+#: js/ui/status/network.js:1834
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth-прив'язки"
 
-#: js/ui/status/network.js:1831
+#: js/ui/status/network.js:1835
 msgid "Bluetooth Settings"
 msgstr "Параметри Bluetooth"
 
-#: js/ui/status/network.js:1845
+#. Translators: "Tether" from "Bluetooth Tether"
+#: js/ui/status/network.js:1841
+#| msgid "Weather"
+msgid "Tether"
+msgstr "Пов'язування"
+
+#: js/ui/status/network.js:1854
 msgid "Mobile Connections"
 msgstr "Мобільні з'єднання"
 
-#: js/ui/status/network.js:1847
+#: js/ui/status/network.js:1856
 msgid "Mobile Broadband Settings"
 msgstr "параметри мобільної радіомережі"
 
-#: js/ui/status/network.js:1959
+#. Translators: "Mobile" from "Mobile Broadband"
+#: js/ui/status/network.js:1865
+msgid "Mobile"
+msgstr "Мобільний"
+
+#: js/ui/status/network.js:1973
 msgid "Connection failed"
 msgstr "Не вдалось з'єднатись"
 
-#: js/ui/status/network.js:1960
+#: js/ui/status/network.js:1974
 msgid "Activation of network connection failed"
 msgstr "Не вдалось увімкнути мережеве з'єднання"
 
@@ -2098,6 +2120,11 @@ msgstr "Баланс"
 msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Заощадження"
+
+#: js/ui/status/powerProfiles.js:40
+#| msgid "Power Profiles"
+msgid "Power Mode"
+msgstr "Режим живлення"
 
 #: js/ui/status/powerProfiles.js:70
 msgid "Power Profiles"
@@ -2431,7 +2458,6 @@ msgid "Icon '%s' not present in theme %s"
 msgstr "Піктограми «%s» немає у темі %s"
 
 #: src/st/st-icon-theme.c:3471 src/st/st-icon-theme.c:3774
-#| msgid "Unable to lock"
 msgid "Failed to load icon"
 msgstr "Не вдалось завантажити піктограму"
 
@@ -2669,26 +2695,18 @@ msgstr "Невідомі параметри"
 msgid "UUID, name and description are required"
 msgstr "UUID, назва і опис — обов'язкові"
 
-#: subprojects/extensions-tool/src/command-disable.c:46
-#: subprojects/extensions-tool/src/command-enable.c:46
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
-#: subprojects/extensions-tool/src/main.c:150
-msgid "Failed to connect to GNOME Shell\n"
-msgstr "Не вдалося з'єднатися із GNOME Shell\n"
-
-#: subprojects/extensions-tool/src/command-disable.c:53
-#: subprojects/extensions-tool/src/command-enable.c:53
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "Розширення «%s» не існує\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:101
+#: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
 msgstr "Вимкнути розширення"
 
-#: subprojects/extensions-tool/src/command-disable.c:119
-#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
 #: subprojects/extensions-tool/src/command-info.c:103
 #: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
@@ -2696,8 +2714,8 @@ msgstr "Вимкнути розширення"
 msgid "No UUID given"
 msgstr "Не надано UUID"
 
-#: subprojects/extensions-tool/src/command-disable.c:124
-#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
 #: subprojects/extensions-tool/src/command-info.c:108
 #: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
@@ -2705,9 +2723,15 @@ msgstr "Не надано UUID"
 msgid "More than one UUID given"
 msgstr "Надано понад один UUID"
 
-#: subprojects/extensions-tool/src/command-enable.c:101
+#: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
 msgstr "Увімкнути розширення"
+
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:150
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "Не вдалося з'єднатися із GNOME Shell\n"
 
 #: subprojects/extensions-tool/src/command-info.c:59
 #: subprojects/extensions-tool/src/main.c:159
@@ -3172,14 +3196,6 @@ msgstr "Системні звуки"
 
 #~ msgid "Power Off / Log Out"
 #~ msgstr "Вимкнути / Вийти"
-
-#, javascript-format
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d з'єднаний"
-#~ msgstr[1] "%d з'єднаних"
-#~ msgstr[2] "%d з'єднаних"
-#~ msgstr[3] "%d з'єднаний"
 
 #~ msgid "Bluetooth On"
 #~ msgstr "Bluetooth увімкнено"
