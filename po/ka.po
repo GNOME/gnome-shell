@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-04 23:48+0000\n"
-"PO-Revision-Date: 2023-02-05 08:14+0100\n"
+"POT-Creation-Date: 2023-02-07 15:07+0000\n"
+"PO-Revision-Date: 2023-02-08 08:41+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -23,40 +23,40 @@ msgid "Launchers"
 msgstr "გამშვებები"
 
 #: data/50-gnome-shell-launchers.xml:10
-msgid "Activate favorite application 1"
-msgstr "#1 რჩეული აპლიკაციის აქტივაცია"
+msgid "Activate favorite app 1"
+msgstr "1 რჩეული აპლიკაციის აქტივაცია"
 
 #: data/50-gnome-shell-launchers.xml:14
-msgid "Activate favorite application 2"
-msgstr "#2 რჩეული აპლიკაციის აქტივაცია"
+msgid "Activate favorite app 2"
+msgstr "რჩეული აპლიკაცია 2-ის აქტივაცია"
 
 #: data/50-gnome-shell-launchers.xml:18
-msgid "Activate favorite application 3"
-msgstr "#3 რჩეული აპლიკაციის აქტივაცია"
+msgid "Activate favorite app 3"
+msgstr "რჩეული აპლიკაცია 3-ის აქტივაცია"
 
 #: data/50-gnome-shell-launchers.xml:22
-msgid "Activate favorite application 4"
-msgstr "#4 რჩეული აპლიკაციის აქტივაცია"
+msgid "Activate favorite app 4"
+msgstr "რჩეული აპლიკაცია 4-ის აქტივაცია"
 
 #: data/50-gnome-shell-launchers.xml:26
-msgid "Activate favorite application 5"
-msgstr "#5 რჩეული აპლიკაციის აქტივაცია"
+msgid "Activate favorite app 5"
+msgstr "რჩეული აპლიკაცია 5-ის აქტივაცია"
 
 #: data/50-gnome-shell-launchers.xml:30
-msgid "Activate favorite application 6"
-msgstr "#6 რჩეული აპლიკაციის აქტივაცია"
+msgid "Activate favorite app 6"
+msgstr "რჩეული აპლიკაცია 6-ის აქტივაცია"
 
 #: data/50-gnome-shell-launchers.xml:34
-msgid "Activate favorite application 7"
-msgstr "#7 რჩეული აპლიკაციის აქტივაცია"
+msgid "Activate favorite app 7"
+msgstr "რჩეული აპლიკაცია 7-ის აქტივაცია"
 
 #: data/50-gnome-shell-launchers.xml:38
-msgid "Activate favorite application 8"
-msgstr "#8 რჩეული აპლიკაციის აქტივაცია"
+msgid "Activate favorite app 8"
+msgstr "რჩეული აპლიკაცია 8-ის აქტივაცია"
 
 #: data/50-gnome-shell-launchers.xml:42
-msgid "Activate favorite application 9"
-msgstr "#9 რჩეული აპლიკაციის აქტივაცია"
+msgid "Activate favorite app 9"
+msgstr "რჩეული აპლიკაცია 8-ის აქტივაცია"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
 #: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
@@ -100,12 +100,12 @@ msgid "Show the overview"
 msgstr "გადახედვის ჩვენება"
 
 #: data/50-gnome-shell-system.xml:18
-msgid "Show all applications"
-msgstr "ყველა აპლიკაციის ჩვენება"
+msgid "Show all apps"
+msgstr "ყველა აპის ჩვენება"
 
 #: data/50-gnome-shell-system.xml:21
-msgid "Open the application menu"
-msgstr "აპლიკაციების მენიუს გახსნა"
+msgid "Open the app menu"
+msgstr "აპის მენიუს გახსნა"
 
 #: data/org.gnome.Shell.desktop.in.in:4
 msgid "GNOME Shell"
@@ -320,7 +320,7 @@ msgstr "#1 აპლიკაციაზე გადართვა"
 
 #: data/org.gnome.shell.gschema.xml.in:206
 msgid "Switch to application 2"
-msgstr "#2 აპლიკაციაზე გადართვა"
+msgstr "აპლიკაცია 2-ზე გადართვა"
 
 #: data/org.gnome.shell.gschema.xml.in:210
 msgid "Switch to application 3"
@@ -926,8 +926,8 @@ msgstr "%s არ პასუხობს."
 
 #: js/ui/closeDialog.js:41
 msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
+"You may choose to wait a short while for it to continue or force the app to "
+"quit entirely."
 msgstr ""
 
 #: js/ui/closeDialog.js:69
@@ -1028,7 +1028,7 @@ msgstr "PIN კოდი"
 msgid "A password is required to connect to “%s”."
 msgstr "%s-თან დასაკავშირებლად საჭიროა პაროლი."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1968
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1975
 msgid "Network Manager"
 msgstr "ქსელის მმართველი"
 
@@ -1061,13 +1061,13 @@ msgstr "უკაცრავად, არ იმუშავა. კიდე�
 msgid "%s is now known as %s"
 msgstr "%s-ს ახლა ჰქვია %s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:420
 msgid "Windows"
 msgstr "ფანჯრები"
 
 #: js/ui/dash.js:205 js/ui/dash.js:251
-msgid "Show Applications"
-msgstr "აპლიკაციების ჩვენება"
+msgid "Show Apps"
+msgstr "აპების ჩვენება"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
@@ -1338,12 +1338,12 @@ msgstr "მალსახმობების გათიშვის ნე�
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
-msgid "The application %s wants to inhibit shortcuts"
-msgstr "აპლიკაცია %s-ს უნდა მალსახმობების გათიშვა"
+msgid "The app %s wants to inhibit shortcuts"
+msgstr "აპლიკაცია %s-ს მალსახმობების გათიშვას ითხოვს"
 
 #: js/ui/inhibitShortcutsDialog.js:79
-msgid "An application wants to inhibit shortcuts"
-msgstr "აპლიკაციას უნდა მალსახმობების გათიშვა"
+msgid "An app wants to inhibit shortcuts"
+msgstr "აპლიკაციას მალსახმობების გათიშვა უნდა"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:86
@@ -1474,18 +1474,18 @@ msgid "System was put in unsafe mode"
 msgstr "სისტემა უსაფრთხო რეჟიმზე გადაერთო"
 
 #: js/ui/main.js:287
-msgid "Applications now have unrestricted access"
-msgstr "ახლა აპლიკაციებს განუსაზღვრელი წვდომა აქვთ"
+msgid "Apps now have unrestricted access"
+msgstr "ახლა აპების წვდომა განუსაზღვრელია"
 
 #: js/ui/main.js:288 js/ui/overview.js:58
 msgid "Undo"
 msgstr "ბრძანების გაუქმება"
 
-#: js/ui/main.js:337
+#: js/ui/main.js:344
 msgid "Logged in as a privileged user"
 msgstr "შეხვედით, როგორც პრივილეგირებული მომხმარებელი"
 
-#: js/ui/main.js:338
+#: js/ui/main.js:345
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1493,11 +1493,11 @@ msgstr ""
 "სესიის პრივილეგირებული მომხმარებლით გაშვება უსაფრთხოების მიზნით თავიდან უნდა "
 "აირიდოთ. თუ ეს შესაძლებელია, ჩვეულებრივი მომხმარებლით შედით."
 
-#: js/ui/main.js:387
+#: js/ui/main.js:393
 msgid "Screen Lock disabled"
 msgstr "ეკრანის ჩაკეტვა გათიშულია"
 
-#: js/ui/main.js:388
+#: js/ui/main.js:394
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "ეკრანის ჩაკეტვას GNOME-ის ეკრანის მმართველი სჭირდება."
 
@@ -1517,13 +1517,13 @@ msgstr "უცნობი სათაური"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:327
+#: js/ui/overviewControls.js:330
 msgid "Type to search"
 msgstr "მოსაძებნად აკრიფეთ"
 
-#: js/ui/overviewControls.js:405
-msgid "Applications"
-msgstr "აპლიკაციები"
+#: js/ui/overviewControls.js:408
+msgid "Apps"
+msgstr "აპები"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
@@ -1536,8 +1536,8 @@ msgid "New shortcut…"
 msgstr "ახალი მალსახმობი…"
 
 #: js/ui/padOsd.js:153
-msgid "Application defined"
-msgstr "აპლიკაციის განსაზღვრულია"
+msgid "App defined"
+msgstr "აპის განსაზღვრული"
 
 #: js/ui/padOsd.js:154
 msgid "Show on-screen help"
@@ -1608,20 +1608,13 @@ msgstr "გადატვირთვა…"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME -ს სჭირდება თქვენი ეკრანის ჩაკეტვა"
 
-#. We could not become modal, so we can't activate the
-#. screenshield. The user is probably very upset at this
-#. point, but any application using global grabs is broken
-#. Just tell them to stop using this app
-#.
-#. XXX: another option is to kick the user into the gdm login
-#. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:271 js/ui/screenShield.js:668
+#: js/ui/screenShield.js:272 js/ui/screenShield.js:670
 msgid "Unable to lock"
 msgstr "ჩაკეტვის შეცდომა"
 
-#: js/ui/screenShield.js:272 js/ui/screenShield.js:669
-msgid "Lock was blocked by an application"
-msgstr "ჩაკეტვა დაბლოკილია აპლიკაციის მიერ"
+#: js/ui/screenShield.js:273 js/ui/screenShield.js:671
+msgid "Lock was blocked by an app"
+msgstr "ჩაკეტვა დაბლოკილია აპის მიერ"
 
 #: js/ui/screenshot.js:1161
 msgid "Selection"
@@ -1799,7 +1792,7 @@ msgstr "PIM უნდა იყოს ან რიცხვი, ან არ�
 
 #: js/ui/status/accessibility.js:34
 msgid "Accessibility"
-msgstr "_დამხმარე საშუალებები"
+msgstr "წვდომადობა"
 
 #: js/ui/status/accessibility.js:44
 msgid "High Contrast"
@@ -1837,7 +1830,11 @@ msgstr "მხტუნავი ღილაკები"
 msgid "Mouse Keys"
 msgstr "თაგუნას ღილაკები"
 
-#: js/ui/status/accessibility.js:131
+#: js/ui/status/accessibility.js:78
+msgid "Accessibility Settings"
+msgstr "წვდომადობის მორგება"
+
+#: js/ui/status/accessibility.js:135
 msgid "Large Text"
 msgstr "დიდი ტექსტი"
 
@@ -1961,37 +1958,37 @@ msgstr "მავთულიანი კავშირები"
 msgid "Wired Settings"
 msgstr "მავთულით მიერთების მორგება"
 
-#: js/ui/status/network.js:1834
+#: js/ui/status/network.js:1841
 msgid "Bluetooth Tethers"
 msgstr "ბლუთუზით მიბმა"
 
-#: js/ui/status/network.js:1835
+#: js/ui/status/network.js:1842
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-ის მორგება"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1841
+#: js/ui/status/network.js:1848
 msgid "Tether"
 msgstr "მიბმა"
 
-#: js/ui/status/network.js:1854
+#: js/ui/status/network.js:1861
 msgid "Mobile Connections"
 msgstr "მობილური კავშირები"
 
-#: js/ui/status/network.js:1856
+#: js/ui/status/network.js:1863
 msgid "Mobile Broadband Settings"
 msgstr "მობილური კავშირის მორგება"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1865
+#: js/ui/status/network.js:1872
 msgid "Mobile"
 msgstr "მობილური"
 
-#: js/ui/status/network.js:1973
+#: js/ui/status/network.js:1980
 msgid "Connection failed"
 msgstr "დაკავშირება ვერ მოხერხდა"
 
-#: js/ui/status/network.js:1974
+#: js/ui/status/network.js:1981
 msgid "Activation of network connection failed"
 msgstr "ქსელის კავშირის აქტივაციის შეცდომა"
 
@@ -2888,6 +2885,9 @@ msgstr[0] "%u შეტანა"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "სისტემური ხმები"
+
+#~ msgid "Applications"
+#~ msgstr "აპლიკაციები"
 
 #, javascript-format
 #~ msgid "Unable to start %s"
