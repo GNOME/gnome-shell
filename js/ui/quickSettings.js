@@ -222,10 +222,21 @@ var QuickSlider = GObject.registerClass({
         'gicon': GObject.ParamSpec.object('gicon', '', '',
             GObject.ParamFlags.READWRITE,
             Gio.Icon),
+        'icon-reactive': GObject.ParamSpec.boolean(
+            'icon-reactive', '', '',
+            GObject.ParamFlags.READWRITE,
+            false),
+        'icon-label': GObject.ParamSpec.string(
+            'icon-label', '', '',
+            GObject.ParamFlags.READWRITE,
+            ''),
         'menu-enabled': GObject.ParamSpec.boolean(
             'menu-enabled', '', '',
             GObject.ParamFlags.READWRITE,
             false),
+    },
+    Signals: {
+        'icon-clicked': {},
     },
 }, class QuickSlider extends QuickSettingsItem {
     _init(params) {
@@ -247,10 +258,28 @@ var QuickSlider = GObject.registerClass({
             iconProps['icon-name'] = this.iconName;
 
         this._icon = new St.Icon({
-            style_class: 'quick-toggle-icon',
             ...iconProps,
         });
-        box.add_child(this._icon);
+        this._iconButton = new St.Button({
+            child: this._icon,
+            style_class: 'icon-button flat',
+            can_focus: true,
+            x_expand: false,
+            y_expand: true,
+        });
+        this._iconButton.connect('clicked',
+            () => this.emit('icon-clicked'));
+        // Show as regular icon when non-interactive
+        this._iconButton.connect('notify::reactive',
+            () => this._iconButton.remove_style_pseudo_class('insensitive'));
+        box.add_child(this._iconButton);
+
+        this.bind_property('icon-reactive',
+            this._iconButton, 'reactive',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('icon-label',
+            this._iconButton, 'accessible-name',
+            GObject.BindingFlags.SYNC_CREATE);
 
         // bindings are in the "wrong" direction, so we
         // pick up StIcon's linking of the two properties

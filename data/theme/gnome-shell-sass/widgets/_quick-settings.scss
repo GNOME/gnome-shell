@@ -74,17 +74,13 @@
 .quick-slider {
   & > StBoxLayout { spacing: $base_padding; }
 
+  .icon-button { padding: $base_padding; }
+
   .slider-bin {
     &:focus {@include button(focus);}
     min-height: 16px; // slider size
     padding: $base_padding;
     border-radius: 99px;
-  }
-  .quick-toggle-icon {
-    icon-size: $base_icon_size;
-
-    &:ltr { margin-left: $base_padding; }
-    &:rtl { margin-right: $base_padding; }
   }
 }
 
