@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-04 23:48+0000\n"
-"PO-Revision-Date: 2023-02-05 22:04+0100\n"
+"POT-Creation-Date: 2023-02-07 15:07+0000\n"
+"PO-Revision-Date: 2023-02-08 19:51+0100\n"
 "Last-Translator: Fran Dieguez <fran.dieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -36,39 +36,39 @@ msgid "Launchers"
 msgstr "Iniciadores"
 
 #: data/50-gnome-shell-launchers.xml:10
-msgid "Activate favorite application 1"
+msgid "Activate favorite app 1"
 msgstr "Activar aplicación favorita 1"
 
 #: data/50-gnome-shell-launchers.xml:14
-msgid "Activate favorite application 2"
+msgid "Activate favorite app 2"
 msgstr "Activar aplicación favorita 2"
 
 #: data/50-gnome-shell-launchers.xml:18
-msgid "Activate favorite application 3"
+msgid "Activate favorite app 3"
 msgstr "Activar aplicación favorita 3"
 
 #: data/50-gnome-shell-launchers.xml:22
-msgid "Activate favorite application 4"
+msgid "Activate favorite app 4"
 msgstr "Activar aplicación favorita 4"
 
 #: data/50-gnome-shell-launchers.xml:26
-msgid "Activate favorite application 5"
+msgid "Activate favorite app 5"
 msgstr "Activar aplicación favorita 4"
 
 #: data/50-gnome-shell-launchers.xml:30
-msgid "Activate favorite application 6"
+msgid "Activate favorite app 6"
 msgstr "Activar aplicación favorita 6"
 
 #: data/50-gnome-shell-launchers.xml:34
-msgid "Activate favorite application 7"
+msgid "Activate favorite app 7"
 msgstr "Activar aplicación favorita 7"
 
 #: data/50-gnome-shell-launchers.xml:38
-msgid "Activate favorite application 8"
+msgid "Activate favorite app 8"
 msgstr "Activar aplicación favorita 8"
 
 #: data/50-gnome-shell-launchers.xml:42
-msgid "Activate favorite application 9"
+msgid "Activate favorite app 9"
 msgstr "Activar aplicación favorita 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
@@ -113,11 +113,11 @@ msgid "Show the overview"
 msgstr "Mostrar a vista xeral"
 
 #: data/50-gnome-shell-system.xml:18
-msgid "Show all applications"
+msgid "Show all apps"
 msgstr "Mostrar todas as aplicacións"
 
 #: data/50-gnome-shell-system.xml:21
-msgid "Open the application menu"
+msgid "Open the app menu"
 msgstr "Abrir o menú de aplicación"
 
 #: data/org.gnome.Shell.desktop.in.in:4
@@ -991,11 +991,11 @@ msgstr "«%s» non está respondendo."
 
 #: js/ui/closeDialog.js:41
 msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
+"You may choose to wait a short while for it to continue or force the app to "
+"quit entirely."
 msgstr ""
-"Debe escoller se quere agardar que continúe ou forzar que a aplicación peche "
-"por completo."
+"Debe escoller se quere agardar un anaco que continúe ou forzar que a "
+"aplicación peche por completo."
 
 #: js/ui/closeDialog.js:69
 msgid "Force Quit"
@@ -1097,7 +1097,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Requírese un contrasinal para conectarse a «%s»."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1968
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1975
 msgid "Network Manager"
 msgstr "Xestor da rede"
 
@@ -1130,12 +1130,12 @@ msgstr "Desculpe, iso non funcionou. Ténteo de novo."
 msgid "%s is now known as %s"
 msgstr "Agora %s chámase %s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:420
 msgid "Windows"
 msgstr "Xanelas"
 
 #: js/ui/dash.js:205 js/ui/dash.js:251
-msgid "Show Applications"
+msgid "Show Apps"
 msgstr "Mostrar aplicacións"
 
 #. Translators: this is the name of the dock/favorites area on
@@ -1416,11 +1416,11 @@ msgstr "Permitir atallos de inhibición"
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
-msgid "The application %s wants to inhibit shortcuts"
+msgid "The app %s wants to inhibit shortcuts"
 msgstr "A aplicación %s quere inhibir os atallos de teclado"
 
 #: js/ui/inhibitShortcutsDialog.js:79
-msgid "An application wants to inhibit shortcuts"
+msgid "An app wants to inhibit shortcuts"
 msgstr "A aplicación quere inhibir os atallos de teclado"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
@@ -1554,18 +1554,18 @@ msgid "System was put in unsafe mode"
 msgstr "O sistema púxose en modo non seguro"
 
 #: js/ui/main.js:287
-msgid "Applications now have unrestricted access"
+msgid "Apps now have unrestricted access"
 msgstr "As aplicacións agora teñen acceso sen restricións"
 
 #: js/ui/main.js:288 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Desfacer"
 
-#: js/ui/main.js:337
+#: js/ui/main.js:344
 msgid "Logged in as a privileged user"
 msgstr "Sesión iniciada como un usuario privilexiado"
 
-#: js/ui/main.js:338
+#: js/ui/main.js:345
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1573,11 +1573,11 @@ msgstr ""
 "Por razóns de seguranza debe evitar executar unha sesión como un usuario "
 "privilexiado. Se é posíbel, debería iniciar sesión como un usuario normal."
 
-#: js/ui/main.js:387
+#: js/ui/main.js:393
 msgid "Screen Lock disabled"
 msgstr "Bloqueo de pantalla desactivado"
 
-#: js/ui/main.js:388
+#: js/ui/main.js:394
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "O bloqueo de pantalla require o xestor de pantalla de GNOME."
 
@@ -1597,12 +1597,12 @@ msgstr "Título descoñecido"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:327
+#: js/ui/overviewControls.js:330
 msgid "Type to search"
 msgstr "Escriba para buscar"
 
-#: js/ui/overviewControls.js:405
-msgid "Applications"
+#: js/ui/overviewControls.js:408
+msgid "Apps"
 msgstr "Aplicacións"
 
 #. Translators: This is the main view to select
@@ -1616,7 +1616,7 @@ msgid "New shortcut…"
 msgstr "Novo atallo…"
 
 #: js/ui/padOsd.js:153
-msgid "Application defined"
+msgid "App defined"
 msgstr "Aplicación definida"
 
 #: js/ui/padOsd.js:154
@@ -1688,19 +1688,12 @@ msgstr "Reiniciando…"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME precisa bloquear a pantalla"
 
-#. We could not become modal, so we can't activate the
-#. screenshield. The user is probably very upset at this
-#. point, but any application using global grabs is broken
-#. Just tell them to stop using this app
-#.
-#. XXX: another option is to kick the user into the gdm login
-#. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:271 js/ui/screenShield.js:668
+#: js/ui/screenShield.js:272 js/ui/screenShield.js:670
 msgid "Unable to lock"
 msgstr "Non foi posíbel bloquear"
 
-#: js/ui/screenShield.js:272 js/ui/screenShield.js:669
-msgid "Lock was blocked by an application"
+#: js/ui/screenShield.js:273 js/ui/screenShield.js:671
+msgid "Lock was blocked by an app"
 msgstr "Unha aplicación impediu o bloqueo"
 
 #: js/ui/screenshot.js:1161
@@ -1921,7 +1914,11 @@ msgstr "Rexeite de teclas"
 msgid "Mouse Keys"
 msgstr "Teclas do rato"
 
-#: js/ui/status/accessibility.js:131
+#: js/ui/status/accessibility.js:78
+msgid "Accessibility Settings"
+msgstr "Preferencias de accesibilidade"
+
+#: js/ui/status/accessibility.js:135
 msgid "Large Text"
 msgstr "Texto grande"
 
@@ -2046,37 +2043,37 @@ msgstr "Conexións con fíos"
 msgid "Wired Settings"
 msgstr "Preferencias da rede con fíos"
 
-#: js/ui/status/network.js:1834
+#: js/ui/status/network.js:1841
 msgid "Bluetooth Tethers"
 msgstr "Comparticións de datos por Bluetooth"
 
-#: js/ui/status/network.js:1835
+#: js/ui/status/network.js:1842
 msgid "Bluetooth Settings"
 msgstr "Preferencias do Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1841
+#: js/ui/status/network.js:1848
 msgid "Tether"
 msgstr "Compartir datos"
 
-#: js/ui/status/network.js:1854
+#: js/ui/status/network.js:1861
 msgid "Mobile Connections"
 msgstr "Conexións de banda larga"
 
-#: js/ui/status/network.js:1856
+#: js/ui/status/network.js:1863
 msgid "Mobile Broadband Settings"
 msgstr "Preferencias da banda larga móbil"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1865
+#: js/ui/status/network.js:1872
 msgid "Mobile"
 msgstr "Móbil"
 
-#: js/ui/status/network.js:1973
+#: js/ui/status/network.js:1980
 msgid "Connection failed"
 msgstr "Produciuse un fallo na conexión"
 
-#: js/ui/status/network.js:1974
+#: js/ui/status/network.js:1981
 msgid "Activation of network connection failed"
 msgstr "Produciuse un fallo na activación da conexión de rede"
 
@@ -2988,6 +2985,9 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sons do sistema"
+
+#~ msgid "Applications"
+#~ msgstr "Aplicacións"
 
 #, javascript-format
 #~ msgid "Unable to start %s"
