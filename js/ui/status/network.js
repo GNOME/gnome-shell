@@ -305,11 +305,18 @@ class NMConnectionItem extends NMMenuItem {
         this.add_child(this._icon);
 
         this._label = new St.Label({
+            x_expand: true,
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
         });
         this.add_child(this._label);
-        this.label_actor = this._label;
+
+        this._subtitle = new St.Label({
+            style_class: 'device-subtitle',
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        this.add_child(this._subtitle);
 
         this.bind_property('icon-name',
             this._icon, 'icon-name',
@@ -350,7 +357,7 @@ class NMConnectionItem extends NMMenuItem {
             ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
     }
 
-    _getRegularLabel() {
+    _getAccessibleName() {
         return this.is_active
             // Translators: %s is a device name like "MyPhone"
             ? _('Disconnect %s').format(this.name)
@@ -358,12 +365,20 @@ class NMConnectionItem extends NMMenuItem {
             : _('Connect to %s').format(this.name);
     }
 
+    _getSubtitleLabel() {
+        return this.is_active ? _('Disconnect') : _('Connect');
+    }
+
     _sync() {
+        this._label.text = this.name;
+
         if (this.radioMode) {
-            this._label.text = this.name;
+            this._subtitle.text = null;
+            this.accessible_name = this.name;
             this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         } else {
-            this._label.text = this._getRegularLabel();
+            this.accessible_name = this._getAccessibleName();
+            this._subtitle.text = this._getSubtitleLabel();
             this.accessible_role = Atk.Role.MENU_ITEM;
         }
         this._updateOrnament();

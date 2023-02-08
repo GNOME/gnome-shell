@@ -122,3 +122,5 @@
 .nm-network-item {
   .wireless-secure-icon { icon-size: 0.5 * $base_icon_size; }
 }
+
+.device-subtitle { color: transparentize($fg_color, 0.5); }
