@@ -164,7 +164,27 @@ class BluetoothToggle extends QuickToggle {
             (bind, source) => [true, this._getIconNameFromState(source)],
             null);
 
+        this._client.connectObject(
+            'devices-changed', () => this._sync(),
+            this);
+
         this.connect('clicked', () => this._client.toggleActive());
+
+        this._sync();
+    }
+
+    _sync() {
+        const connectedDevices = [...this._client.getDevices()]
+            .filter(dev => dev.connected);
+        const nConnected = connectedDevices.length;
+
+        if (nConnected > 1)
+            /* Translators: This is the number of connected bluetooth devices */
+            this.subtitle = ngettext('%d Connected', '%d Connected', nConnected).format(nConnected);
+        else if (nConnected === 1)
+            this.subtitle = connectedDevices[0].alias;
+        else
+            this.subtitle = null;
     }
 
     _getIconNameFromState(state) {
