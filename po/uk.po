@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-04 23:48+0000\n"
-"PO-Revision-Date: 2023-02-06 11:40+0200\n"
+"POT-Creation-Date: 2023-02-07 15:07+0000\n"
+"PO-Revision-Date: 2023-02-08 20:15+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
@@ -36,39 +36,48 @@ msgid "Launchers"
 msgstr "Пускачі"
 
 #: data/50-gnome-shell-launchers.xml:10
-msgid "Activate favorite application 1"
+#| msgid "Activate favorite application 1"
+msgid "Activate favorite app 1"
 msgstr "Активувати улюблену програму 1"
 
 #: data/50-gnome-shell-launchers.xml:14
-msgid "Activate favorite application 2"
+#| msgid "Activate favorite application 2"
+msgid "Activate favorite app 2"
 msgstr "Активувати улюблену програму 2"
 
 #: data/50-gnome-shell-launchers.xml:18
-msgid "Activate favorite application 3"
+#| msgid "Activate favorite application 3"
+msgid "Activate favorite app 3"
 msgstr "Активувати улюблену програму 3"
 
 #: data/50-gnome-shell-launchers.xml:22
-msgid "Activate favorite application 4"
+#| msgid "Activate favorite application 4"
+msgid "Activate favorite app 4"
 msgstr "Активувати улюблену програму 4"
 
 #: data/50-gnome-shell-launchers.xml:26
-msgid "Activate favorite application 5"
+#| msgid "Activate favorite application 5"
+msgid "Activate favorite app 5"
 msgstr "Активувати улюблену програму 5"
 
 #: data/50-gnome-shell-launchers.xml:30
-msgid "Activate favorite application 6"
+#| msgid "Activate favorite application 6"
+msgid "Activate favorite app 6"
 msgstr "Активувати улюблену програму 6"
 
 #: data/50-gnome-shell-launchers.xml:34
-msgid "Activate favorite application 7"
+#| msgid "Activate favorite application 7"
+msgid "Activate favorite app 7"
 msgstr "Активувати улюблену програму 7"
 
 #: data/50-gnome-shell-launchers.xml:38
-msgid "Activate favorite application 8"
+#| msgid "Activate favorite application 8"
+msgid "Activate favorite app 8"
 msgstr "Активувати улюблену програму 8"
 
 #: data/50-gnome-shell-launchers.xml:42
-msgid "Activate favorite application 9"
+#| msgid "Activate favorite application 9"
+msgid "Activate favorite app 9"
 msgstr "Активувати улюблену програму 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
@@ -113,11 +122,13 @@ msgid "Show the overview"
 msgstr "Показати огляд"
 
 #: data/50-gnome-shell-system.xml:18
-msgid "Show all applications"
+#| msgid "Show all applications"
+msgid "Show all apps"
 msgstr "Показати всі програми"
 
 #: data/50-gnome-shell-system.xml:21
-msgid "Open the application menu"
+#| msgid "Open the application menu"
+msgid "Open the app menu"
 msgstr "Відкрити меню програм"
 
 #: data/org.gnome.Shell.desktop.in.in:4
@@ -1001,9 +1012,12 @@ msgid "“%s” is not responding."
 msgstr "«%s» не відповідає."
 
 #: js/ui/closeDialog.js:41
+#| msgid ""
+#| "You may choose to wait a short while for it to continue or force the "
+#| "application to quit entirely."
 msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
+"You may choose to wait a short while for it to continue or force the app to "
+"quit entirely."
 msgstr ""
 "Можете трошки зачекати відновлення активності або примусово закрити програму."
 
@@ -1106,7 +1120,7 @@ msgstr "Пін-код"
 msgid "A password is required to connect to “%s”."
 msgstr "Пароль потрібен для з'єднання з «%s»."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1968
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1975
 msgid "Network Manager"
 msgstr "Керування мережею"
 
@@ -1139,12 +1153,13 @@ msgstr "Вибачте, це не спрацювало. Спробуйте ще.
 msgid "%s is now known as %s"
 msgstr "%s тепер відомий як %s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:420
 msgid "Windows"
 msgstr "Вікна"
 
 #: js/ui/dash.js:205 js/ui/dash.js:251
-msgid "Show Applications"
+#| msgid "Show Applications"
+msgid "Show Apps"
 msgstr "Показати програми"
 
 #. Translators: this is the name of the dock/favorites area on
@@ -1436,11 +1451,13 @@ msgstr "Дозволити успадкування скорочень"
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
-msgid "The application %s wants to inhibit shortcuts"
+#| msgid "The application %s wants to inhibit shortcuts"
+msgid "The app %s wants to inhibit shortcuts"
 msgstr "Програма %s бажає успадкувати клавіатурні скорочення"
 
 #: js/ui/inhibitShortcutsDialog.js:79
-msgid "An application wants to inhibit shortcuts"
+#| msgid "An application wants to inhibit shortcuts"
+msgid "An app wants to inhibit shortcuts"
 msgstr "Програма бажає успадкувати скорочення"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
@@ -1571,18 +1588,19 @@ msgid "System was put in unsafe mode"
 msgstr "Систему переведено у небезпечний режим"
 
 #: js/ui/main.js:287
-msgid "Applications now have unrestricted access"
+#| msgid "Applications now have unrestricted access"
+msgid "Apps now have unrestricted access"
 msgstr "Тепер програми мають необмежений доступ до даних"
 
 #: js/ui/main.js:288 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Повернути"
 
-#: js/ui/main.js:337
+#: js/ui/main.js:344
 msgid "Logged in as a privileged user"
 msgstr "Увійшов як наділений користувач"
 
-#: js/ui/main.js:338
+#: js/ui/main.js:345
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1590,11 +1608,11 @@ msgstr ""
 "З міркувань безпеки слід уникати сеансів з наділеними правами. Користуйтесь "
 "звичайним сеансом."
 
-#: js/ui/main.js:387
+#: js/ui/main.js:393
 msgid "Screen Lock disabled"
 msgstr "Блокування екрана вимкнено"
 
-#: js/ui/main.js:388
+#: js/ui/main.js:394
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Блокування екрана потребує керування входом GNOME."
 
@@ -1614,12 +1632,12 @@ msgstr "Невідома назва"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:327
+#: js/ui/overviewControls.js:330
 msgid "Type to search"
 msgstr "Введіть текст для пошуку"
 
-#: js/ui/overviewControls.js:405
-msgid "Applications"
+#: js/ui/overviewControls.js:408
+msgid "Apps"
 msgstr "Програми"
 
 #. Translators: This is the main view to select
@@ -1633,7 +1651,8 @@ msgid "New shortcut…"
 msgstr "Нове скорочення…"
 
 #: js/ui/padOsd.js:153
-msgid "Application defined"
+#| msgid "Application defined"
+msgid "App defined"
 msgstr "Програму визначено"
 
 #: js/ui/padOsd.js:154
@@ -1705,19 +1724,13 @@ msgstr "Перезапускання…"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME потребує заблокувати екран"
 
-#. We could not become modal, so we can't activate the
-#. screenshield. The user is probably very upset at this
-#. point, but any application using global grabs is broken
-#. Just tell them to stop using this app
-#.
-#. XXX: another option is to kick the user into the gdm login
-#. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:271 js/ui/screenShield.js:668
+#: js/ui/screenShield.js:272 js/ui/screenShield.js:670
 msgid "Unable to lock"
 msgstr "Неможливо заблокувати"
 
-#: js/ui/screenShield.js:272 js/ui/screenShield.js:669
-msgid "Lock was blocked by an application"
+#: js/ui/screenShield.js:273 js/ui/screenShield.js:671
+#| msgid "Lock was blocked by an application"
+msgid "Lock was blocked by an app"
 msgstr "Блокування заборонено програмою"
 
 #: js/ui/screenshot.js:1161
@@ -1938,7 +1951,12 @@ msgstr "Пружні клавіші"
 msgid "Mouse Keys"
 msgstr "Клавіші миші"
 
-#: js/ui/status/accessibility.js:131
+#: js/ui/status/accessibility.js:78
+#| msgid "Accessibility"
+msgid "Accessibility Settings"
+msgstr "Параметри доступності"
+
+#: js/ui/status/accessibility.js:135
 msgid "Large Text"
 msgstr "Більший текст"
 
@@ -2034,8 +2052,6 @@ msgstr "Точка доступу %s"
 
 #: js/ui/status/network.js:1372
 #, javascript-format
-#| msgid "%d Connected"
-#| msgid_plural "%d Connected"
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d з'єднаний"
@@ -2067,38 +2083,37 @@ msgstr "Дротові з'єднання"
 msgid "Wired Settings"
 msgstr "Параметри мережі"
 
-#: js/ui/status/network.js:1834
+#: js/ui/status/network.js:1841
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth-прив'язки"
 
-#: js/ui/status/network.js:1835
+#: js/ui/status/network.js:1842
 msgid "Bluetooth Settings"
 msgstr "Параметри Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1841
-#| msgid "Weather"
+#: js/ui/status/network.js:1848
 msgid "Tether"
 msgstr "Пов'язування"
 
-#: js/ui/status/network.js:1854
+#: js/ui/status/network.js:1861
 msgid "Mobile Connections"
 msgstr "Мобільні з'єднання"
 
-#: js/ui/status/network.js:1856
+#: js/ui/status/network.js:1863
 msgid "Mobile Broadband Settings"
 msgstr "параметри мобільної радіомережі"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1865
+#: js/ui/status/network.js:1872
 msgid "Mobile"
 msgstr "Мобільний"
 
-#: js/ui/status/network.js:1973
+#: js/ui/status/network.js:1980
 msgid "Connection failed"
 msgstr "Не вдалось з'єднатись"
 
-#: js/ui/status/network.js:1974
+#: js/ui/status/network.js:1981
 msgid "Activation of network connection failed"
 msgstr "Не вдалось увімкнути мережеве з'єднання"
 
@@ -2122,7 +2137,6 @@ msgid "Power Saver"
 msgstr "Заощадження"
 
 #: js/ui/status/powerProfiles.js:40
-#| msgid "Power Profiles"
 msgid "Power Mode"
 msgstr "Режим живлення"
 
@@ -3020,6 +3034,9 @@ msgstr[3] "%u вхід"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Системні звуки"
+
+#~ msgid "Applications"
+#~ msgstr "Програми"
 
 #, javascript-format
 #~ msgid "Unable to start %s"
