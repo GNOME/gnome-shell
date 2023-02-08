@@ -17,16 +17,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-02 20:50+0000\n"
-"PO-Revision-Date: 2023-02-03 16:22+0300\n"
+"POT-Creation-Date: 2023-02-07 15:07+0000\n"
+"PO-Revision-Date: 2023-02-08 15:49+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.0.1\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 42.0\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: tr\n"
 "X-DL-Module: gnome-shell\n"
@@ -39,39 +39,39 @@ msgid "Launchers"
 msgstr "Başlatıcılar"
 
 #: data/50-gnome-shell-launchers.xml:10
-msgid "Activate favorite application 1"
+msgid "Activate favorite app 1"
 msgstr "Gözde uygulama 1ʼi aktifleştir"
 
 #: data/50-gnome-shell-launchers.xml:14
-msgid "Activate favorite application 2"
+msgid "Activate favorite app 2"
 msgstr "Gözde uygulama 2ʼyi aktifleştir"
 
 #: data/50-gnome-shell-launchers.xml:18
-msgid "Activate favorite application 3"
+msgid "Activate favorite app 3"
 msgstr "Gözde uygulama 3ʼü aktifleştir"
 
 #: data/50-gnome-shell-launchers.xml:22
-msgid "Activate favorite application 4"
+msgid "Activate favorite app 4"
 msgstr "Gözde uygulama 4ʼü aktifleştir"
 
 #: data/50-gnome-shell-launchers.xml:26
-msgid "Activate favorite application 5"
+msgid "Activate favorite app 5"
 msgstr "Gözde uygulama 5ʼi aktifleştir"
 
 #: data/50-gnome-shell-launchers.xml:30
-msgid "Activate favorite application 6"
+msgid "Activate favorite app 6"
 msgstr "Gözde uygulama 6ʼyı aktifleştir"
 
 #: data/50-gnome-shell-launchers.xml:34
-msgid "Activate favorite application 7"
+msgid "Activate favorite app 7"
 msgstr "Gözde uygulama 7ʼyi aktifleştir"
 
 #: data/50-gnome-shell-launchers.xml:38
-msgid "Activate favorite application 8"
+msgid "Activate favorite app 8"
 msgstr "Gözde uygulama 8ʼi aktifleştir"
 
 #: data/50-gnome-shell-launchers.xml:42
-msgid "Activate favorite application 9"
+msgid "Activate favorite app 9"
 msgstr "Gözde uygulama 9ʼu aktifleştir"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
@@ -116,11 +116,11 @@ msgid "Show the overview"
 msgstr "Genel görünümü göster"
 
 #: data/50-gnome-shell-system.xml:18
-msgid "Show all applications"
+msgid "Show all apps"
 msgstr "Tüm uygulamaları göster"
 
 #: data/50-gnome-shell-system.xml:21
-msgid "Open the application menu"
+msgid "Open the app menu"
 msgstr "Uygulama menüsünü aç"
 
 #: data/org.gnome.Shell.desktop.in.in:4
@@ -986,8 +986,8 @@ msgstr "“%s” yanıtlamıyor."
 
 #: js/ui/closeDialog.js:41
 msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
+"You may choose to wait a short while for it to continue or force the app to "
+"quit entirely."
 msgstr ""
 "Sürmesini bekleyebilir ya da uygulamayı tümüyle kapanmaya zorlayabilirsiniz."
 
@@ -1091,7 +1091,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "“%s”e bağlanmak için parola gerekli."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1954
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1975
 msgid "Network Manager"
 msgstr "Ağ Yöneticisi"
 
@@ -1124,12 +1124,12 @@ msgstr "Üzgünüm ama işe yaramadı. Lütfen yeniden deneyin."
 msgid "%s is now known as %s"
 msgstr "%s, şimdi %s olarak biliniyor"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:420
 msgid "Windows"
 msgstr "Pencereler"
 
 #: js/ui/dash.js:205 js/ui/dash.js:251
-msgid "Show Applications"
+msgid "Show Apps"
 msgstr "Uygulamaları Göster"
 
 #. Translators: this is the name of the dock/favorites area on
@@ -1401,11 +1401,11 @@ msgstr "Kısayolları baskılamaya izin ver"
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
-msgid "The application %s wants to inhibit shortcuts"
+msgid "The app %s wants to inhibit shortcuts"
 msgstr "%s uygulaması kısayolları baskılamak istiyor"
 
 #: js/ui/inhibitShortcutsDialog.js:79
-msgid "An application wants to inhibit shortcuts"
+msgid "An app wants to inhibit shortcuts"
 msgstr "Bir uygulama, kısayolları baskılamak istiyor"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
@@ -1536,18 +1536,18 @@ msgid "System was put in unsafe mode"
 msgstr "Sistem güvensiz kipe sokuldu"
 
 #: js/ui/main.js:287
-msgid "Applications now have unrestricted access"
-msgstr "Şimdi uygulamalar yetkisiz erişime sahip"
+msgid "Apps now have unrestricted access"
+msgstr "Şimdi uygulamalar sınırsız erişime sahip"
 
 #: js/ui/main.js:288 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Geri Al"
 
-#: js/ui/main.js:337
+#: js/ui/main.js:344
 msgid "Logged in as a privileged user"
 msgstr "Yetkili kullanıcı olarak oturum açılmış"
 
-#: js/ui/main.js:338
+#: js/ui/main.js:345
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1555,11 +1555,11 @@ msgstr ""
 "Oturumu öncelikli kullanıcı olarak çalıştırmaktan güvenlik nedeniyle "
 "kaçınılmalıdır. Eğer yapabiliyorsanız sıradan kullanıcı olarak girmelisiniz."
 
-#: js/ui/main.js:387
+#: js/ui/main.js:393
 msgid "Screen Lock disabled"
 msgstr "Ekran Kilidi devre dışı"
 
-#: js/ui/main.js:388
+#: js/ui/main.js:394
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Ekran Kilitleme, GNOME ekran yöneticisi gerektirir."
 
@@ -1579,12 +1579,12 @@ msgstr "Bilinmeyen başlık"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:327
+#: js/ui/overviewControls.js:330
 msgid "Type to search"
 msgstr "Yazarak ara"
 
-#: js/ui/overviewControls.js:405
-msgid "Applications"
+#: js/ui/overviewControls.js:408
+msgid "Apps"
 msgstr "Uygulamalar"
 
 #. Translators: This is the main view to select
@@ -1598,7 +1598,7 @@ msgid "New shortcut…"
 msgstr "Yeni kısayol…"
 
 #: js/ui/padOsd.js:153
-msgid "Application defined"
+msgid "App defined"
 msgstr "Uygulama tanımlı"
 
 #: js/ui/padOsd.js:154
@@ -1670,19 +1670,12 @@ msgstr "Yeniden başlatılıyor…"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME’un ekranı kilitlemesi gerekiyor"
 
-#. We could not become modal, so we can't activate the
-#. screenshield. The user is probably very upset at this
-#. point, but any application using global grabs is broken
-#. Just tell them to stop using this app
-#.
-#. XXX: another option is to kick the user into the gdm login
-#. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:271 js/ui/screenShield.js:668
+#: js/ui/screenShield.js:272 js/ui/screenShield.js:670
 msgid "Unable to lock"
 msgstr "Kilitlenemedi"
 
-#: js/ui/screenShield.js:272 js/ui/screenShield.js:669
-msgid "Lock was blocked by an application"
+#: js/ui/screenShield.js:273 js/ui/screenShield.js:671
+msgid "Lock was blocked by an app"
 msgstr "Kilitleme bir uygulamaca engellendi"
 
 #: js/ui/screenshot.js:1161
@@ -1902,7 +1895,11 @@ msgstr "Zıplayan Tuşlar"
 msgid "Mouse Keys"
 msgstr "Fare Tuşları"
 
-#: js/ui/status/accessibility.js:131
+#: js/ui/status/accessibility.js:78
+msgid "Accessibility Settings"
+msgstr "Erişilebilirlik Ayarları"
+
+#: js/ui/status/accessibility.js:135
 msgid "Large Text"
 msgstr "Büyük Yazı"
 
@@ -1994,51 +1991,67 @@ msgstr "Bağlan: %s"
 msgid "%s Hotspot"
 msgstr "%s Erişim Noktası"
 
-#: js/ui/status/network.js:1466 js/ui/status/network.js:1482
+#: js/ui/status/network.js:1372
+#, javascript-format
+msgid "%d connected"
+msgid_plural "%d connected"
+msgstr[0] "%d bağlı"
+
+#: js/ui/status/network.js:1470 js/ui/status/network.js:1486
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1467
+#: js/ui/status/network.js:1471
 msgid "VPN Settings"
 msgstr "VPN Ayarları"
 
-#: js/ui/status/network.js:1716
+#: js/ui/status/network.js:1720
 msgid "Wi–Fi"
 msgstr "Kablosuz"
 
-#: js/ui/status/network.js:1718
+#: js/ui/status/network.js:1722
 msgid "All Networks"
 msgstr "Tüm Ağlar"
 
-#: js/ui/status/network.js:1815
+#: js/ui/status/network.js:1819
 msgid "Wired Connections"
 msgstr "Kablolu Bağlantılar"
 
-#: js/ui/status/network.js:1816
+#: js/ui/status/network.js:1820
 msgid "Wired Settings"
 msgstr "Kablolu Ayarları"
 
-#: js/ui/status/network.js:1830
+#: js/ui/status/network.js:1841
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth İnternet"
 
-#: js/ui/status/network.js:1831
+#: js/ui/status/network.js:1842
 msgid "Bluetooth Settings"
 msgstr "Bluetooth Ayarları"
 
-#: js/ui/status/network.js:1845
+#. Translators: "Tether" from "Bluetooth Tether"
+#: js/ui/status/network.js:1848
+msgid "Tether"
+msgstr "İnternet Paylaşımı"
+
+#: js/ui/status/network.js:1861
 msgid "Mobile Connections"
 msgstr "Mobil Bağlantılar"
 
-#: js/ui/status/network.js:1847
+#: js/ui/status/network.js:1863
 msgid "Mobile Broadband Settings"
 msgstr "Mobil Geniş Bant Ayarları"
 
-#: js/ui/status/network.js:1959
+#. Translators: "Mobile" from "Mobile Broadband"
+#: js/ui/status/network.js:1872
+msgid "Mobile"
+msgstr "Mobil"
+
+#: js/ui/status/network.js:1980
 msgid "Connection failed"
 msgstr "Bağlantı başarısız"
 
-#: js/ui/status/network.js:1960
+#: js/ui/status/network.js:1981
 msgid "Activation of network connection failed"
 msgstr "Ağ bağlantısının etkinleşimi başarısız"
 
@@ -2060,6 +2073,10 @@ msgstr "Dengeli"
 msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Güç Tutumu"
+
+#: js/ui/status/powerProfiles.js:40
+msgid "Power Mode"
+msgstr "Güç Kipi"
 
 #: js/ui/status/powerProfiles.js:70
 msgid "Power Profiles"
@@ -2500,11 +2517,11 @@ msgstr "Elle Kurulmuş"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
-"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a> adresine göz atın."
+"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a> adresine göz atın."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:112
 msgid "Built-In"
@@ -2622,26 +2639,18 @@ msgstr "Bilinmeyen argüman"
 msgid "UUID, name and description are required"
 msgstr "UUID, ad ve açıklama gereklidir"
 
-#: subprojects/extensions-tool/src/command-disable.c:46
-#: subprojects/extensions-tool/src/command-enable.c:46
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
-#: subprojects/extensions-tool/src/main.c:150
-msgid "Failed to connect to GNOME Shell\n"
-msgstr "GNOME Kabuğu’na bağlanılamadı\n"
-
-#: subprojects/extensions-tool/src/command-disable.c:53
-#: subprojects/extensions-tool/src/command-enable.c:53
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "“%s” uzantısı yok\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:101
+#: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
 msgstr "Uzantı devre dışı bırak"
 
-#: subprojects/extensions-tool/src/command-disable.c:119
-#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
 #: subprojects/extensions-tool/src/command-info.c:103
 #: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
@@ -2649,8 +2658,8 @@ msgstr "Uzantı devre dışı bırak"
 msgid "No UUID given"
 msgstr "Verilen UUID yok"
 
-#: subprojects/extensions-tool/src/command-disable.c:124
-#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
 #: subprojects/extensions-tool/src/command-info.c:108
 #: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
@@ -2658,9 +2667,15 @@ msgstr "Verilen UUID yok"
 msgid "More than one UUID given"
 msgstr "Birden ÇOK UUID verildi"
 
-#: subprojects/extensions-tool/src/command-enable.c:101
+#: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
 msgstr "Uzantı etkinleştir"
+
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:150
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "GNOME Kabuğu’na bağlanılamadı\n"
 
 #: subprojects/extensions-tool/src/command-info.c:59
 #: subprojects/extensions-tool/src/main.c:159
@@ -2943,11 +2958,3 @@ msgstr[0] "%u Girdi"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
-
-#, javascript-format
-#~ msgid "Unable to start %s"
-#~ msgstr "%s başlatılamadı"
-
-#, javascript-format
-#~ msgid "Couldn’t find the %s application"
-#~ msgstr "%s uygulaması bulunamadı"
