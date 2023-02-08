@@ -493,6 +493,7 @@ finish_screenshot (ShellScreenshot        *screenshot,
 static void
 on_after_paint (ClutterStage     *stage,
                 ClutterStageView *view,
+                ClutterFrame     *frame,
                 GTask            *result)
 {
   ShellScreenshot *screenshot = g_task_get_task_data (result);
@@ -628,6 +629,7 @@ shell_screenshot_screenshot_finish (ShellScreenshot        *screenshot,
 static void
 screenshot_stage_to_content_on_after_paint (ClutterStage     *stage,
                                             ClutterStageView *view,
+                                            ClutterFrame     *frame,
                                             GTask            *result)
 {
   ShellScreenshot *screenshot = g_task_get_task_data (result);
