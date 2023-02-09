@@ -172,19 +172,19 @@ $_gdm_dialog_width: 23em;
   .unlock-dialog-clock-time {
     @extend %numeric;
     @include fontsize(72);
-    font-weight: 600;
+    font-weight: 200;
   }
 
   .unlock-dialog-clock-date {
     @extend %title_1;
-    font-weight: 600;
+    font-weight: 400;
   }
 
   .unlock-dialog-clock-hint {
     margin-top: 2em;
     padding: $base_padding $base_padding*3;
-    background-color: transparentize(black,0.9);
     border-radius: $base_border_radius*2;
+    font-weight: bold;
   }
 }
 

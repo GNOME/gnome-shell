@@ -21,7 +21,7 @@
 
   &:checked { @include button(default, $c:$selected_bg_color); }
 
-  & > StBoxLayout { spacing: $base_padding; }
+  & > StBoxLayout { spacing: $base_padding*1.5; }
 
   /* Move padding into the box; this is to allow menu arrows
      to extend to the border */
