@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2023-02-09 22:00+0000\n"
-"PO-Revision-Date: 2023-02-10 11:09+0100\n"
+"PO-Revision-Date: 2023-02-10 12:58+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -827,43 +827,43 @@ msgstr "06"
 #: js/ui/calendar.js:61
 msgctxt "grid sunday"
 msgid "S"
-msgstr "კ"
+msgstr "კვ"
 
 #. Translators: Calendar grid abbreviation for Monday
 #: js/ui/calendar.js:63
 msgctxt "grid monday"
 msgid "M"
-msgstr "მ"
+msgstr "ორ"
 
 #. Translators: Calendar grid abbreviation for Tuesday
 #: js/ui/calendar.js:65
 msgctxt "grid tuesday"
 msgid "T"
-msgstr "ტერა"
+msgstr "სა"
 
 #. Translators: Calendar grid abbreviation for Wednesday
 #: js/ui/calendar.js:67
 msgctxt "grid wednesday"
 msgid "W"
-msgstr "სიგ"
+msgstr "ოთხ"
 
 #. Translators: Calendar grid abbreviation for Thursday
 #: js/ui/calendar.js:69
 msgctxt "grid thursday"
 msgid "T"
-msgstr "ტერა"
+msgstr "ხუ"
 
 #. Translators: Calendar grid abbreviation for Friday
 #: js/ui/calendar.js:71
 msgctxt "grid friday"
 msgid "F"
-msgstr "პ"
+msgstr "პარ"
 
 #. Translators: Calendar grid abbreviation for Saturday
 #: js/ui/calendar.js:73
 msgctxt "grid saturday"
 msgid "S"
-msgstr "კ"
+msgstr "შა"
 
 #. *
 #. * Translators: The header displaying just the month name
