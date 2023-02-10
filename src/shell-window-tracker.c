@@ -530,7 +530,7 @@ on_title_changed (MetaWindow  *window,
                   gpointer     user_data)
 {
   ShellWindowTracker *self = SHELL_WINDOW_TRACKER (user_data);
-  tracked_window_changed (self, window);
+  g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0);
 }
 
 static void
