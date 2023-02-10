@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-09 22:00+0000\n"
-"PO-Revision-Date: 2023-02-10 08:49+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"POT-Creation-Date: 2023-02-10 16:34+0000\n"
+"PO-Revision-Date: 2023-02-11 00:56+0300\n"
+"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -844,7 +844,7 @@ msgstr "Ayrık Ekran Kartıyla Başlat"
 msgid "Select Audio Device"
 msgstr "Ses Aygıtı Seç"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
 msgid "Sound Settings"
 msgstr "Ses Ayarları"
 
@@ -856,7 +856,7 @@ msgstr "Kulaklıklar"
 msgid "Headset"
 msgstr "Kulaklıklı Mikrofon"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:331
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -2181,19 +2181,27 @@ msgstr "Thunderbolt yetkilendirme hatası"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Thunderbolt aygıtı yetkilendirilemedi: %s"
 
-#: js/ui/status/volume.js:194
+#: js/ui/status/volume.js:203
 msgid "Volume changed"
-msgstr "Bölüm değişti"
+msgstr "Ses değişti"
 
-#: js/ui/status/volume.js:261
+#: js/ui/status/volume.js:216
+msgid "Unmute"
+msgstr "Sesi aç"
+
+#: js/ui/status/volume.js:216
+msgid "Mute"
+msgstr "Sessiz"
+
+#: js/ui/status/volume.js:271
 msgid "Volume"
-msgstr "Bölüm"
+msgstr "Ses"
 
-#: js/ui/status/volume.js:277
+#: js/ui/status/volume.js:287
 msgid "Sound Output"
 msgstr "Ses Çıktısı"
 
-#: js/ui/status/volume.js:349
+#: js/ui/status/volume.js:359
 msgid "Sound Input"
 msgstr "Ses Girdisi"
 
@@ -2202,7 +2210,7 @@ msgstr "Ses Girdisi"
 #.
 #: js/ui/switchMonitor.js:20
 msgid "Mirror"
-msgstr "Yinele"
+msgstr "Aynala"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
@@ -2526,11 +2534,11 @@ msgstr "Elle Kurulmuş"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
-"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a> adresine göz atın."
+"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a> adresine göz atın."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:112
 msgid "Built-In"
