@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-07 15:07+0000\n"
-"PO-Revision-Date: 2023-02-08 11:04+0700\n"
+"POT-Creation-Date: 2023-02-09 22:00+0000\n"
+"PO-Revision-Date: 2023-02-10 08:29+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -844,7 +844,7 @@ msgstr "Headphone"
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:331
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1016,7 +1016,8 @@ msgstr ""
 "Sebagai alternatif Anda dapat terhubung dengan menekan tombol \"WPS\" pada "
 "router Anda."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:369
+#: js/ui/status/network.js:451
 msgid "Connect"
 msgstr "Sambung"
 
@@ -1081,7 +1082,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Perlu suatu kata sandi untuk menyambung ke \"%s\"."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1975
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1990
 msgid "Network Manager"
 msgstr "Manajer Jaringan"
 
@@ -1454,7 +1455,7 @@ msgstr "Biarkan Menyala"
 msgid "Turn On"
 msgstr "Nyalakan"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:462
 msgid "Turn Off"
 msgstr "Matikan"
 
@@ -1640,6 +1641,10 @@ msgstr "Sistem"
 #: js/ui/panel.js:457
 msgid "Top Bar"
 msgstr "Bar Atas"
+
+#: js/ui/quickSettings.js:176
+msgid "Open menu"
+msgstr "Buka menu"
 
 #: js/ui/runDialog.js:58
 msgid "Run a Command"
@@ -1965,84 +1970,88 @@ msgid "<unknown>"
 msgstr "<tak dikenal>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:356
+#: js/ui/status/network.js:363
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Memutus %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:358
+#: js/ui/status/network.js:365
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Sambung ke %s"
 
+#: js/ui/status/network.js:369
+msgid "Disconnect"
+msgstr "Putuskan"
+
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1107
+#: js/ui/status/network.js:1122
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s Hotspot"
 
-#: js/ui/status/network.js:1372
+#: js/ui/status/network.js:1387
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d tersambung"
 
-#: js/ui/status/network.js:1470 js/ui/status/network.js:1486
+#: js/ui/status/network.js:1485 js/ui/status/network.js:1501
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1471
+#: js/ui/status/network.js:1486
 msgid "VPN Settings"
 msgstr "Pengaturan VPN"
 
-#: js/ui/status/network.js:1720
+#: js/ui/status/network.js:1735
 msgid "Wi–Fi"
 msgstr "Wi-Fi"
 
-#: js/ui/status/network.js:1722
+#: js/ui/status/network.js:1737
 msgid "All Networks"
 msgstr "Semua Jaringan"
 
-#: js/ui/status/network.js:1819
+#: js/ui/status/network.js:1834
 msgid "Wired Connections"
 msgstr "Koneksi Kabel"
 
-#: js/ui/status/network.js:1820
+#: js/ui/status/network.js:1835
 msgid "Wired Settings"
 msgstr "Pengaturan Kabel"
 
-#: js/ui/status/network.js:1841
+#: js/ui/status/network.js:1856
 msgid "Bluetooth Tethers"
 msgstr "Tether Bluetooth"
 
-#: js/ui/status/network.js:1842
+#: js/ui/status/network.js:1857
 msgid "Bluetooth Settings"
 msgstr "Pengaturan Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1848
+#: js/ui/status/network.js:1863
 msgid "Tether"
 msgstr "Tambatkan"
 
-#: js/ui/status/network.js:1861
+#: js/ui/status/network.js:1876
 msgid "Mobile Connections"
 msgstr "Koneksi Seluler"
 
-#: js/ui/status/network.js:1863
+#: js/ui/status/network.js:1878
 msgid "Mobile Broadband Settings"
 msgstr "Pengaturan Data Seluler"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1872
+#: js/ui/status/network.js:1887
 msgid "Mobile"
 msgstr "Seluler"
 
-#: js/ui/status/network.js:1980
+#: js/ui/status/network.js:1995
 msgid "Connection failed"
 msgstr "Koneksi gagal"
 
-#: js/ui/status/network.js:1981
+#: js/ui/status/network.js:1996
 msgid "Activation of network connection failed"
 msgstr "Aktivasi koneksi jaringan gagal"
 
@@ -2168,15 +2177,15 @@ msgstr "Tidak dapat mengotorisasi perangkat Thunderbolt: %s"
 msgid "Volume changed"
 msgstr "Volume diubah"
 
-#: js/ui/status/volume.js:256
+#: js/ui/status/volume.js:261
 msgid "Volume"
 msgstr "Volume"
 
-#: js/ui/status/volume.js:272
+#: js/ui/status/volume.js:277
 msgid "Sound Output"
 msgstr "Keluaran Suara"
 
-#: js/ui/status/volume.js:340
+#: js/ui/status/volume.js:349
 msgid "Sound Input"
 msgstr "Masukan Suara"
 
