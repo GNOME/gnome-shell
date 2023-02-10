@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-07 15:07+0000\n"
-"PO-Revision-Date: 2023-02-08 08:41+0100\n"
+"POT-Creation-Date: 2023-02-09 22:00+0000\n"
+"PO-Revision-Date: 2023-02-10 11:09+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -796,7 +796,7 @@ msgstr "ყურსაცვამები"
 msgid "Headset"
 msgstr "ყურსაცვამები & მიკროფონი"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:331
 msgid "Microphone"
 msgstr "მიკროფონი"
 
@@ -964,7 +964,8 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "დაკავშირება ასევე შეგიძლიათ რაუტერზე \"WPS\" ღილაკზე დაწოლით."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:369
+#: js/ui/status/network.js:451
 msgid "Connect"
 msgstr "დაკავშირება"
 
@@ -1028,7 +1029,7 @@ msgstr "PIN კოდი"
 msgid "A password is required to connect to “%s”."
 msgstr "%s-თან დასაკავშირებლად საჭიროა პაროლი."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1975
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1990
 msgid "Network Manager"
 msgstr "ქსელის მმართველი"
 
@@ -1401,7 +1402,7 @@ msgstr "ჩართული დატოვება"
 msgid "Turn On"
 msgstr "ჩართვა"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:462
 msgid "Turn Off"
 msgstr "გამორთვა"
 
@@ -1587,6 +1588,10 @@ msgstr "სისტემა"
 #: js/ui/panel.js:457
 msgid "Top Bar"
 msgstr "ზედა ზოლი"
+
+#: js/ui/quickSettings.js:176
+msgid "Open menu"
+msgstr "მენიუს გახსნა"
 
 #: js/ui/runDialog.js:58
 msgid "Run a Command"
@@ -1911,84 +1916,88 @@ msgid "<unknown>"
 msgstr "<უცნობი>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:356
+#: js/ui/status/network.js:363
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "გათიშვა %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:358
+#: js/ui/status/network.js:365
 #, javascript-format
 msgid "Connect to %s"
 msgstr "%s-სთან დაკავშირება"
 
+#: js/ui/status/network.js:369
+msgid "Disconnect"
+msgstr "გათიშვა"
+
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1107
+#: js/ui/status/network.js:1122
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s Hotspot-ი"
 
-#: js/ui/status/network.js:1372
+#: js/ui/status/network.js:1387
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d მიერთებულია"
 
-#: js/ui/status/network.js:1470 js/ui/status/network.js:1486
+#: js/ui/status/network.js:1485 js/ui/status/network.js:1501
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1471
+#: js/ui/status/network.js:1486
 msgid "VPN Settings"
 msgstr "VPN-ის მორგება"
 
-#: js/ui/status/network.js:1720
+#: js/ui/status/network.js:1735
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1722
+#: js/ui/status/network.js:1737
 msgid "All Networks"
 msgstr "ყველა ქსელი"
 
-#: js/ui/status/network.js:1819
+#: js/ui/status/network.js:1834
 msgid "Wired Connections"
 msgstr "მავთულიანი კავშირები"
 
-#: js/ui/status/network.js:1820
+#: js/ui/status/network.js:1835
 msgid "Wired Settings"
 msgstr "მავთულით მიერთების მორგება"
 
-#: js/ui/status/network.js:1841
+#: js/ui/status/network.js:1856
 msgid "Bluetooth Tethers"
 msgstr "ბლუთუზით მიბმა"
 
-#: js/ui/status/network.js:1842
+#: js/ui/status/network.js:1857
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-ის მორგება"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1848
+#: js/ui/status/network.js:1863
 msgid "Tether"
 msgstr "მიბმა"
 
-#: js/ui/status/network.js:1861
+#: js/ui/status/network.js:1876
 msgid "Mobile Connections"
 msgstr "მობილური კავშირები"
 
-#: js/ui/status/network.js:1863
+#: js/ui/status/network.js:1878
 msgid "Mobile Broadband Settings"
 msgstr "მობილური კავშირის მორგება"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1872
+#: js/ui/status/network.js:1887
 msgid "Mobile"
 msgstr "მობილური"
 
-#: js/ui/status/network.js:1980
+#: js/ui/status/network.js:1995
 msgid "Connection failed"
 msgstr "დაკავშირება ვერ მოხერხდა"
 
-#: js/ui/status/network.js:1981
+#: js/ui/status/network.js:1996
 msgid "Activation of network connection failed"
 msgstr "ქსელის კავშირის აქტივაციის შეცდომა"
 
@@ -2112,15 +2121,15 @@ msgstr "Thunderbolt მოწყობილობასთან ავტო�
 msgid "Volume changed"
 msgstr "საცავი შეიცვალა"
 
-#: js/ui/status/volume.js:256
+#: js/ui/status/volume.js:261
 msgid "Volume"
 msgstr "ტომი"
 
-#: js/ui/status/volume.js:272
+#: js/ui/status/volume.js:277
 msgid "Sound Output"
 msgstr "ხმის გამოტანა"
 
-#: js/ui/status/volume.js:340
+#: js/ui/status/volume.js:349
 msgid "Sound Input"
 msgstr "ხმის შეყვანა"
 
@@ -2449,6 +2458,8 @@ msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
 msgstr ""
+"გაფართოებების საპოვნელად და დასამატებლად ეწვიეთ ვებგვერდს <a href=\"https://"
+"extensions.gnome.org\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:112
 msgid "Built-In"
