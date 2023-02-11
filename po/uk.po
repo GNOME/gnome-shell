@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-09 17:49+0000\n"
-"PO-Revision-Date: 2023-02-09 23:32+0200\n"
+"POT-Creation-Date: 2023-02-10 16:34+0000\n"
+"PO-Revision-Date: 2023-02-11 19:11+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
@@ -860,7 +860,7 @@ msgstr "Запустити через дискретну графічну пла
 msgid "Select Audio Device"
 msgstr "Вибрати звуковий пристрій"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
 msgid "Sound Settings"
 msgstr "Параметри звуку"
 
@@ -872,7 +872,7 @@ msgstr "Навушники"
 msgid "Headset"
 msgstr "Гарнітура"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
 msgid "Microphone"
 msgstr "Мікрофон"
 
@@ -1686,6 +1686,11 @@ msgstr "Система"
 msgid "Top Bar"
 msgstr "Верхня панель"
 
+#: js/ui/quickSettings.js:176
+#| msgid "Open the app menu"
+msgid "Open menu"
+msgstr "Відкрити меню"
+
 #: js/ui/runDialog.js:58
 msgid "Run a Command"
 msgstr "Виконати команду"
@@ -2025,7 +2030,6 @@ msgid "Connect to %s"
 msgstr "З'єднатися з %s"
 
 #: js/ui/status/network.js:369
-#| msgid "Disconnect %s"
 msgid "Disconnect"
 msgstr "Від'єднатися"
 
@@ -2219,19 +2223,27 @@ msgstr "Помилка завірення Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Неможливо завірити пристрій Thunderbolt: %s"
 
-#: js/ui/status/volume.js:194
+#: js/ui/status/volume.js:203
 msgid "Volume changed"
 msgstr "Гучність змінено"
 
-#: js/ui/status/volume.js:256
+#: js/ui/status/volume.js:216
+msgid "Unmute"
+msgstr "Увімкнути звук"
+
+#: js/ui/status/volume.js:216
+msgid "Mute"
+msgstr "Вимкнути звук"
+
+#: js/ui/status/volume.js:271
 msgid "Volume"
 msgstr "Гучність"
 
-#: js/ui/status/volume.js:272
+#: js/ui/status/volume.js:287
 msgid "Sound Output"
 msgstr "Виведення звуку"
 
-#: js/ui/status/volume.js:340
+#: js/ui/status/volume.js:359
 msgid "Sound Input"
 msgstr "Введення звуку"
 
