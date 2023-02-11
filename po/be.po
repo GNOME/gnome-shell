@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-10 16:34+0000\n"
-"PO-Revision-Date: 2023-02-11 18:06+0300\n"
+"POT-Creation-Date: 2023-02-11 20:50+0000\n"
+"PO-Revision-Date: 2023-02-12 01:05+0300\n"
 "Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -1013,8 +1013,8 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "Таксама можна злучыцца, націснуўшы кнопку «WPS» на маршрутызатары."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:369
-#: js/ui/status/network.js:451
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:217
+#: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "Злучыцца"
 
@@ -1917,9 +1917,34 @@ msgstr "Вялікі тэкст"
 msgid "Auto Rotate"
 msgstr "Аўтапаварот"
 
-#: js/ui/status/bluetooth.js:151
+#: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
+msgid "Disconnect"
+msgstr "Адлучыцца"
+
+#: js/ui/status/bluetooth.js:234 js/ui/status/bluetooth.js:236
 msgid "Bluetooth"
 msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+msgid "Bluetooth Settings"
+msgstr "Налады Bluetooth"
+
+#: js/ui/status/bluetooth.js:306
+msgid "No available or connected devices"
+msgstr "Няма даступных або падлучаных прылад"
+
+#: js/ui/status/bluetooth.js:307
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "Уключыце Bluetooth, каб падлучыцца да прылад"
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:361
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "Падлучана %d"
+msgstr[1] "Падлучана %d"
+msgstr[2] "Падлучана %d"
 
 #: js/ui/status/brightness.js:34
 msgid "Brightness"
@@ -1996,10 +2021,6 @@ msgstr "Адлучыцца ад %s"
 msgid "Connect to %s"
 msgstr "Злучыцца з %s"
 
-#: js/ui/status/network.js:369
-msgid "Disconnect"
-msgstr "Адлучыцца"
-
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1122
 #, javascript-format
@@ -2041,10 +2062,6 @@ msgstr "Налады праваднога злучэння"
 #: js/ui/status/network.js:1856
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth Tethers"
-
-#: js/ui/status/network.js:1857
-msgid "Bluetooth Settings"
-msgstr "Налады Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1863
