@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Mahyar Moghimi <mahyar.moqimi@gmail.com>, 2010.
 # Arash Mousavi <mousavi.arash@gmail.com>, 2010-2017.
-# Danial behzadi <dani.behzi@ubuntu.com>, 2018-2022.
+# Danial behzadi <dani.behzi@ubuntu.com>, 2018-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-10 16:34+0000\n"
-"PO-Revision-Date: 2023-02-11 04:23+0330\n"
+"POT-Creation-Date: 2023-02-11 01:00+0000\n"
+"PO-Revision-Date: 2023-02-11 20:41+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -2005,10 +2005,8 @@ msgid "Wired Settings"
 msgstr "تنظیمات اتّصال سیمی"
 
 #: js/ui/status/network.js:1856
-#, fuzzy
-#| msgid "Bluetooth Settings"
 msgid "Bluetooth Tethers"
-msgstr "تنظیمات بلوتوث"
+msgstr "چتر‌های بلوتوثی"
 
 #: js/ui/status/network.js:1857
 msgid "Bluetooth Settings"
@@ -2016,10 +2014,8 @@ msgstr "تنظیمات بلوتوث"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1863
-#, fuzzy
-#| msgid "Weather"
 msgid "Tether"
-msgstr "آب‌وهوا"
+msgstr "چتر"
 
 #: js/ui/status/network.js:1876
 msgid "Mobile Connections"
