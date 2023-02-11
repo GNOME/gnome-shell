@@ -206,6 +206,7 @@ var QuickMenuToggle = GObject.registerClass({
         this.bind_property('checked',
             this._menuButton, 'checked',
             GObject.BindingFlags.SYNC_CREATE);
+        contents.connect('clicked', (o, button) => this.emit('clicked', button));
         this._menuButton.connect('clicked', () => this.menu.open());
         this._menuButton.connect('popup-menu', () => this.emit('popup-menu'));
         contents.connect('popup-menu', () => this.emit('popup-menu'));
