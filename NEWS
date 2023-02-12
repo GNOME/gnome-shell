@@ -1,3 +1,60 @@
+44.beta
+=======
+* Fix screencast UI being erroneously disabled [Florian; !2533]
+* Fix unresponsive screen area when quick settings are opened [Carlos; !2535]
+* Ensure completions are disabled when hiding on-screen keyboard [Carlos; !2543]
+* Fix missing name in wired network quick settings button [Florian; !2529]
+* Properly apply saved shortcuts inhibition permissions [Florian; !2548]
+* Don't let wayland popovers block overview [Florian; !2549]
+* Improve high contrast styling [Sam; !2527]
+* Open correct Settings panel from on-screen keyboard menu [Roshan-R; !2554]
+* Test running gnome-shell in CI [Jonas Å.; !1349]
+* Do not use symbolic app icons for High Contrast [Jakub; !2555]
+* Prepare extension loading for ESM [Evan; !2364]
+* Fix input source switching with focus on password entry [Carlos; !2534]
+* Ensure quick settings toggles align with the pixel grid [Sebastian K.; !2577]
+* Lower OOM score of gnome-shell process [Jian-Hong; !2582]
+* Polish page switching behavior during DND in app grid [Jonas D.; !2581]
+* Tweak lock- and login screen styling [Sam; !2564]
+* Consistently link to Settings from menus
+  [sunflowerskater; !2600, !2559, !2615]
+* Make it easier for extensions to add a credential manager [Alessandro; !2399]
+* Fix mount operation dialog when Disks is not available [Balló; !2621]
+* Refine quick settings [Georges, two, Florian; !2619, !2627, !2553, !2631, !2505, !2632]
+* Mute/unmute volume when clicking slider icon [Florian; !2630]
+* Add device menu to Bluetooth quick settings [Florian; !2501]
+* Expose list of background apps in quick settings [Georges; !2624]
+* Compile extension GSettings after install [Andy; !2638]
+* Fixed crash [Florian; !2622]
+* Plugged memory leak [Sebastian K.; !2637]
+* Misc. bug fixes and cleanups [Alessandro, Cassidy, Colin, Florian, Jonas Å.,
+  Sam, Michel, Felipe, Sebastian K., sunflowerskater, Robert, Bilal, Jonas D.,
+  Jakub, Philip, Heiko, Carlos, Takao, Sebastian W., Kolja; !2528, !2499, !2523,
+  !2540, !2536, !2545, !2546, !2517, !2547, !2544, !2532, !2558, !2560, !2561,
+  !2562, !2572, !2578, !2579, !2584, !2576, !2571, !2585, !2557, !2588, !2575,
+  !2594, !2602, !2606, !2596, !2607, !2604, !2611, !2613, !2612, !2616, !2617,
+  !2526, !2618, !2348, !2496, !2620, !2625, !2552, !2626, !2623, !2614, !2628,
+  !2629, !2573, !2633, !2634, !2636, !2514, !2479]
+
+Contributors:
+  Cassidy James Blaede, Alessandro Bono, Felipe Borges, Jonas Dreßler,
+  Michel Dänzer, Bilal Elmoussaoui, Takao Fujiwara, Carlos Garnacho,
+  Balló György, Sam Hewitt, Andy Holmes, Heiko Hösch, Sebastian Keller,
+  Colin Kinloch, Kolja Lampe, Robert Mader, Florian Müllner,
+  Georges Basile Stavracas Neto, Jian-Hong Pan, Roshan-R, Olga Smirnova,
+  Jakub Steiner, Evan Welsh, Sebastian Wick, Philip Withnall, sunflowerskater,
+  two, Jonas Ådahl
+
+Translators:
+  Yuri Chornoivan [uk], Balázs Úr [hu], Aleksandr Melman [ru], Dušan Kazik [sk],
+  Vasil Pupkin [be], Sveinn í Felli [is], Olga Smirnova [ie], Sabri Ünal [tr],
+  Yosef Or Boczko [he], Bruce Cowan [en_GB], Fabio Tomat [fur],
+  Ekaterine Papava [ka], Emin Tufan Çetin [tr], Hugo Carvalho [pt],
+  Jordi Mas [ca], Quentin PAGÈS [oc], Kukuh Syafaat [id], Fran Dieguez [gl],
+  Tim Sabsch [de], Danial Behzadi [fa], Yaron Shahrabani [he],
+  Asier Sarasua Garmendia [eu], Aurimas Černius [lt], Anders Jonsson [sv],
+  Jiri Grönroos [fi], Kjartan Maraas [nb]
+
 43.1
 ====
 * Fix default keyboard layout during initial setup [Carlos; !2487, !2495]
