@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-10 16:34+0000\n"
-"PO-Revision-Date: 2023-02-11 19:11+0200\n"
+"POT-Creation-Date: 2023-02-12 16:24+0000\n"
+"PO-Revision-Date: 2023-02-12 20:23+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
@@ -1042,8 +1042,8 @@ msgid ""
 msgstr ""
 "Також можете під'єднатися, натиснувши кнопку «WPS» на вашому маршрутизаторі."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:369
-#: js/ui/status/network.js:451
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:217
+#: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "З'єднатись"
 
@@ -1682,12 +1682,11 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:457
+#: js/ui/panel.js:460
 msgid "Top Bar"
 msgstr "Верхня панель"
 
 #: js/ui/quickSettings.js:176
-#| msgid "Open the app menu"
 msgid "Open menu"
 msgstr "Відкрити меню"
 
@@ -1949,9 +1948,59 @@ msgstr "Більший текст"
 msgid "Auto Rotate"
 msgstr "Автоматичне обертання"
 
-#: js/ui/status/bluetooth.js:151
+#: js/ui/status/backgroundApps.js:135
+msgctxt "title"
+msgid "Background Apps"
+msgstr "Фонові програми"
+
+#: js/ui/status/backgroundApps.js:153
+#| msgid "Settings"
+msgid "App Settings"
+msgstr "Параметри програми"
+
+#: js/ui/status/backgroundApps.js:181
+msgid "No Background Apps"
+msgstr "Немає фонових програм"
+
+#: js/ui/status/backgroundApps.js:183
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%d фонова програма"
+msgstr[1] "%d фонові програми"
+msgstr[2] "%d фонових програм"
+msgstr[3] "%d фонова програма"
+
+#: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
+msgid "Disconnect"
+msgstr "Від'єднатися"
+
+#: js/ui/status/bluetooth.js:234 js/ui/status/bluetooth.js:236
 msgid "Bluetooth"
 msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+msgid "Bluetooth Settings"
+msgstr "Параметри Bluetooth"
+
+#: js/ui/status/bluetooth.js:306
+msgid "No available or connected devices"
+msgstr "Немає доступних або з'єднаних пристроїв"
+
+#: js/ui/status/bluetooth.js:307
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "Увімкнути Bluetooth для встановлення з'єднання з пристроями"
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:361
+#, javascript-format
+#| msgid "%s Connected"
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d з'єднаний"
+msgstr[1] "%d з'єднані"
+msgstr[2] "%d з'єднаних"
+msgstr[3] "%d з'єднаний"
 
 #: js/ui/status/brightness.js:34
 msgid "Brightness"
@@ -2029,10 +2078,6 @@ msgstr "Від'єднатися від %s"
 msgid "Connect to %s"
 msgstr "З'єднатися з %s"
 
-#: js/ui/status/network.js:369
-msgid "Disconnect"
-msgstr "Від'єднатися"
-
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1122
 #, javascript-format
@@ -2075,10 +2120,6 @@ msgstr "Параметри мережі"
 #: js/ui/status/network.js:1856
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth-прив'язки"
-
-#: js/ui/status/network.js:1857
-msgid "Bluetooth Settings"
-msgstr "Параметри Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1863
@@ -3143,10 +3184,6 @@ msgstr "Системні звуки"
 #, javascript-format
 #~ msgid "%s Off"
 #~ msgstr "%s вимкнено"
-
-#, javascript-format
-#~ msgid "%s Connected"
-#~ msgstr "%s під'єднано"
 
 #, javascript-format
 #~ msgid "%s Unmanaged"
