@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-11 20:50+0000\n"
-"PO-Revision-Date: 2023-02-12 09:38+0100\n"
+"POT-Creation-Date: 2023-02-12 20:28+0000\n"
+"PO-Revision-Date: 2023-02-12 22:30+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -434,7 +434,7 @@ msgstr "Homepage"
 msgid "Visit extension homepage"
 msgstr "გაფართოებების ვებგვერდის გახსნა"
 
-#: js/gdm/authPrompt.js:142 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
@@ -442,7 +442,7 @@ msgstr "გაფართოებების ვებგვერდის �
 msgid "Cancel"
 msgstr "გაუქმება"
 
-#: js/gdm/authPrompt.js:305 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:310 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -480,13 +480,13 @@ msgstr "ავთენტიკაციის შეცდომა"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:623
+#: js/gdm/util.js:624
 msgid "(or swipe finger across reader)"
 msgstr "(ან გადაუსვით თითი წამკითხველს)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:628
+#: js/gdm/util.js:629
 msgid "(or place finger on reader)"
 msgstr "(ან მოათავსეთ თითი წამკითხველზე)"
 
@@ -1132,31 +1132,31 @@ msgstr "%m/%d"
 msgid "No Events"
 msgstr "ღონისძიებების გარეშე"
 
-#: js/ui/dateMenu.js:396
+#: js/ui/dateMenu.js:395
 msgid "Add world clocks…"
 msgstr "მსოფლიო საათების დამატება…"
 
-#: js/ui/dateMenu.js:397
+#: js/ui/dateMenu.js:396
 msgid "World Clocks"
 msgstr "მსოფლიო საათები"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:680
 msgid "Loading…"
 msgstr "იტვირთება…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:690
 msgid "Go online for weather information"
 msgstr "ამინდის ინფორმაციისთვის საჭიროა ინტერნეტი"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:692
 msgid "Weather information is currently unavailable"
 msgstr "ამინდის ინფორმაცია ხელმიუწვდომელია"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:702
 msgid "Weather"
 msgstr "ამინდი"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:704
 msgid "Select weather location…"
 msgstr "აირჩიეთ ამინდის მდებარეობა…"
 
@@ -1585,7 +1585,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "სისტემა"
 
-#: js/ui/panel.js:457
+#: js/ui/panel.js:460
 msgid "Top Bar"
 msgstr "ზედა ზოლი"
 
@@ -1846,6 +1846,25 @@ msgstr "დიდი ტექსტი"
 #: js/ui/status/autoRotate.js:14
 msgid "Auto Rotate"
 msgstr "ავტომატური მობრუნება"
+
+#: js/ui/status/backgroundApps.js:135
+msgctxt "title"
+msgid "Background Apps"
+msgstr "ფონური აპები"
+
+#: js/ui/status/backgroundApps.js:153
+msgid "App Settings"
+msgstr "აპის მორგება"
+
+#: js/ui/status/backgroundApps.js:181
+msgid "No Background Apps"
+msgstr "ფონური აპების გარეშე"
+
+#: js/ui/status/backgroundApps.js:183
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%d ფონური აპი"
 
 #: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
 msgid "Disconnect"
@@ -2112,6 +2131,8 @@ msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
 msgstr ""
+"სანამ გასული ბრძანდებოდით, აღმოჩენილია ახალი მოწყობილობები. გამოსაყენებლად "
+"ჯერ გამოაერთეთ ისინი, შემდეგ კი თავიდან მიაერთეთ."
 
 #: js/ui/status/thunderbolt.js:321
 msgid "Unauthorized Thunderbolt device"
@@ -2321,10 +2342,6 @@ msgstr "ეკრანის მარჯვნივ გატანა"
 #: js/ui/windowMenu.js:207
 msgid "Close"
 msgstr "დახურვა"
-
-#: src/calendar-server/evolution-calendar.desktop.in:3
-msgid "Evolution Calendar"
-msgstr "Evolution-ის კალენდარი"
 
 #: src/main.c:513 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
@@ -2919,6 +2936,9 @@ msgstr[0] "%u შეტანა"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "სისტემური ხმები"
+
+#~ msgid "Evolution Calendar"
+#~ msgstr "Evolution-ის კალენდარი"
 
 #~ msgid "Applications"
 #~ msgstr "აპლიკაციები"
