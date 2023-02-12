@@ -101,8 +101,6 @@ const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 
-Gio._promisify(Gio.File.prototype, 'query_info_async');
-
 var DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 const BACKGROUND_SCHEMA = 'org.gnome.desktop.background';
