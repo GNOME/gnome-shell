@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-09 22:00+0000\n"
-"PO-Revision-Date: 2023-02-10 12:58+0100\n"
+"POT-Creation-Date: 2023-02-11 20:50+0000\n"
+"PO-Revision-Date: 2023-02-12 09:38+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -784,7 +784,7 @@ msgstr "დისკრეტული ვიდეობარათით გ�
 msgid "Select Audio Device"
 msgstr "აირჩიეთ აუდიომოწყობილობა"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
 msgid "Sound Settings"
 msgstr "ხმის მორგება"
 
@@ -796,7 +796,7 @@ msgstr "ყურსაცვამები"
 msgid "Headset"
 msgstr "ყურსაცვამები & მიკროფონი"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:331
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
 msgid "Microphone"
 msgstr "მიკროფონი"
 
@@ -964,8 +964,8 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "დაკავშირება ასევე შეგიძლიათ რაუტერზე \"WPS\" ღილაკზე დაწოლით."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:369
-#: js/ui/status/network.js:451
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:217
+#: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "დაკავშირება"
 
@@ -1847,9 +1847,32 @@ msgstr "დიდი ტექსტი"
 msgid "Auto Rotate"
 msgstr "ავტომატური მობრუნება"
 
-#: js/ui/status/bluetooth.js:151
+#: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
+msgid "Disconnect"
+msgstr "გათიშვა"
+
+#: js/ui/status/bluetooth.js:234 js/ui/status/bluetooth.js:236
 msgid "Bluetooth"
 msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+msgid "Bluetooth Settings"
+msgstr "Bluetooth-ის მორგება"
+
+#: js/ui/status/bluetooth.js:306
+msgid "No available or connected devices"
+msgstr "ხელმისაწვდომი ან მიერთებული მოწყობილობების გარეშე"
+
+#: js/ui/status/bluetooth.js:307
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "მოწყობილობებთან მისაერთებლად ჩართეთ ბლუთუზი"
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:361
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d მიერთებულია"
 
 #: js/ui/status/brightness.js:34
 msgid "Brightness"
@@ -1927,10 +1950,6 @@ msgstr "გათიშვა %s"
 msgid "Connect to %s"
 msgstr "%s-სთან დაკავშირება"
 
-#: js/ui/status/network.js:369
-msgid "Disconnect"
-msgstr "გათიშვა"
-
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1122
 #, javascript-format
@@ -1970,10 +1989,6 @@ msgstr "მავთულით მიერთების მორგებ�
 #: js/ui/status/network.js:1856
 msgid "Bluetooth Tethers"
 msgstr "ბლუთუზით მიბმა"
-
-#: js/ui/status/network.js:1857
-msgid "Bluetooth Settings"
-msgstr "Bluetooth-ის მორგება"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1863
@@ -2117,19 +2132,27 @@ msgstr "Thunderbolt მოწყობილობის ავტორიზ�
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Thunderbolt მოწყობილობასთან ავტორიზაციის შეცდომა: %s"
 
-#: js/ui/status/volume.js:194
+#: js/ui/status/volume.js:203
 msgid "Volume changed"
 msgstr "საცავი შეიცვალა"
 
-#: js/ui/status/volume.js:261
+#: js/ui/status/volume.js:216
+msgid "Unmute"
+msgstr "დადუმების გამორთვა"
+
+#: js/ui/status/volume.js:216
+msgid "Mute"
+msgstr "დადუმება"
+
+#: js/ui/status/volume.js:271
 msgid "Volume"
 msgstr "ტომი"
 
-#: js/ui/status/volume.js:277
+#: js/ui/status/volume.js:287
 msgid "Sound Output"
 msgstr "ხმის გამოტანა"
 
-#: js/ui/status/volume.js:349
+#: js/ui/status/volume.js:359
 msgid "Sound Input"
 msgstr "ხმის შეყვანა"
 
@@ -2946,10 +2969,6 @@ msgstr "სისტემური ხმები"
 #, javascript-format
 #~ msgid "%s Off"
 #~ msgstr "%s გამორთული"
-
-#, javascript-format
-#~ msgid "%s Connected"
-#~ msgstr "%s მიერთებული"
 
 #, javascript-format
 #~ msgid "%s Unmanaged"
