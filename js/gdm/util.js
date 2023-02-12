@@ -520,6 +520,7 @@ var ShellUserVerifier = class extends Signals.EventEmitter {
 
     _disconnectSignals() {
         this._userVerifier?.disconnectObject(this);
+        this._userVerifierChoiceList?.disconnectObject(this);
     }
 
     _getForegroundService() {
