@@ -122,6 +122,8 @@ var AuthPrompt = GObject.registerClass({
     }
 
     _onDestroy() {
+        this._inactiveEntry.destroy();
+        this._inactiveEntry = null;
         this._userVerifier.destroy();
         this._userVerifier = null;
     }
@@ -191,6 +193,7 @@ var AuthPrompt = GObject.registerClass({
         this._entry = this._passwordEntry;
         this._mainBox.add_child(this._entry);
         this._entry.grab_key_focus();
+        this._inactiveEntry = this._textEntry;
 
         this._timedLoginIndicator = new St.Bin({
             style_class: 'login-dialog-timed-login-indicator',
@@ -280,9 +283,11 @@ var AuthPrompt = GObject.registerClass({
         if (secret && this._entry !== this._passwordEntry) {
             this._mainBox.replace_child(this._entry, this._passwordEntry);
             this._entry = this._passwordEntry;
+            this._inactiveEntry = this._textEntry;
         } else if (!secret && this._entry !== this._textEntry) {
             this._mainBox.replace_child(this._entry, this._textEntry);
             this._entry = this._textEntry;
+            this._inactiveEntry = this._passwordEntry;
         }
         this._capsLockWarningLabel.visible = secret;
     }
