@@ -9,18 +9,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-09 22:00+0000\n"
-"PO-Revision-Date: 2023-02-10 14:17+0200\n"
-"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"POT-Creation-Date: 2023-02-11 20:50+0000\n"
+"PO-Revision-Date: 2023-02-12 08:05+0200\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
-"2 : 3)\n"
+"2 : 3);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Gtranslator 42.0\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -839,7 +839,7 @@ msgstr "הפעלה בשימוש כרטיס מסך נפרד"
 msgid "Select Audio Device"
 msgstr "בחירת התקן שמע"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
 msgid "Sound Settings"
 msgstr "הגדרות שמע"
 
@@ -851,7 +851,7 @@ msgstr "אזניות"
 msgid "Headset"
 msgstr "אזניות עם מיקרופון"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:331
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
 msgid "Microphone"
 msgstr "מיקרופון"
 
@@ -1019,8 +1019,8 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "לחלופין ניתן להתחבר על ידי לחיצה על כפתור ה־„WPS” בנתב שלך."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:369
-#: js/ui/status/network.js:451
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:217
+#: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "התחברות"
 
@@ -1916,9 +1916,36 @@ msgstr "טקסט גדול"
 msgid "Auto Rotate"
 msgstr "סיבוב אוטומטי"
 
-#: js/ui/status/bluetooth.js:151
+#: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
+msgid "Disconnect"
+msgstr "ניתוק"
+
+#: js/ui/status/bluetooth.js:234 js/ui/status/bluetooth.js:236
 msgid "Bluetooth"
 msgstr "בלוטות'"
+
+#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+msgid "Bluetooth Settings"
+msgstr "הגדרות בלוטות׳"
+
+#: js/ui/status/bluetooth.js:306
+msgid "No available or connected devices"
+msgstr "אין התקנים זמינים או מחוברים"
+
+#: js/ui/status/bluetooth.js:307
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "הפעלת Bluetooth כדי להתחבר להתקנים"
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:361
+#, fuzzy, javascript-format
+#| msgid "%s Connected"
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "‏%s מחובר"
+msgstr[1] "‏%s מחובר"
+msgstr[2] "‏%s מחובר"
+msgstr[3] "‏%s מחובר"
 
 #: js/ui/status/brightness.js:34
 msgid "Brightness"
@@ -1994,10 +2021,6 @@ msgstr "ניתוק %s"
 msgid "Connect to %s"
 msgstr "התחברות אל %s"
 
-#: js/ui/status/network.js:369
-msgid "Disconnect"
-msgstr "ניתוק"
-
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1122
 #, javascript-format
@@ -2041,10 +2064,6 @@ msgstr "הגדרות רשת קווית"
 #: js/ui/status/network.js:1856
 msgid "Bluetooth Tethers"
 msgstr "קישרת בלוטות׳"
-
-#: js/ui/status/network.js:1857
-msgid "Bluetooth Settings"
-msgstr "הגדרות בלוטות׳"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1863
@@ -2189,19 +2208,27 @@ msgstr "שיגאת אימות Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "לא ניתן לאמת את התקן ה־Thunderbolt: ‏%s"
 
-#: js/ui/status/volume.js:194
+#: js/ui/status/volume.js:203
 msgid "Volume changed"
 msgstr "עצמת השמע השתנתה"
 
-#: js/ui/status/volume.js:261
+#: js/ui/status/volume.js:216
+msgid "Unmute"
+msgstr "ביטול ההשתקה"
+
+#: js/ui/status/volume.js:216
+msgid "Mute"
+msgstr "השתקה"
+
+#: js/ui/status/volume.js:271
 msgid "Volume"
 msgstr "עצמה"
 
-#: js/ui/status/volume.js:277
+#: js/ui/status/volume.js:287
 msgid "Sound Output"
 msgstr "פלט שמע"
 
-#: js/ui/status/volume.js:349
+#: js/ui/status/volume.js:359
 msgid "Sound Input"
 msgstr "קלט שמע"
 
@@ -3122,10 +3149,6 @@ msgstr "צלילי מערכת"
 #~ msgstr "‏%s כבוי"
 
 #, javascript-format
-#~ msgid "%s Connected"
-#~ msgstr "‏%s מחובר"
-
-#, javascript-format
 #~ msgid "%s Unmanaged"
 #~ msgstr "‏%s לא מנוהל"
 
@@ -3611,12 +3634,6 @@ msgstr "צלילי מערכת"
 
 #~ msgid "Eject"
 #~ msgstr "שליפה"
-
-#~ msgid "Unmute"
-#~ msgstr "ביטול ההשתקה"
-
-#~ msgid "Mute"
-#~ msgstr "השתקה"
 
 #~ msgid "Open Calendar"
 #~ msgstr "פתיחת היומן"
