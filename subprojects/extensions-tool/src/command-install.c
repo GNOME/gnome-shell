@@ -95,6 +95,7 @@ install_extension (const char *bundle,
   g_autoptr (GFile) src = NULL;
   g_autoptr (GFile) dst = NULL;
   g_autoptr (GFile) dstdir = NULL;
+  g_autoptr (GFile) schemadir = NULL;
   g_autoptr (GError) error = NULL;
   g_autofree char *cwd = NULL;
   const char *uuid;
@@ -147,6 +148,22 @@ install_extension (const char *bundle,
 
   if (!g_file_move (tmpdir, dst, G_FILE_COPY_NONE, NULL, NULL, NULL, &error))
     goto err;
+
+  schemadir = g_file_get_child (dst, "schemas");
+
+  if (g_file_query_exists (schemadir, NULL))
+    {
+      g_autoptr (GSubprocess) proc = NULL;
+      g_autofree char *schemapath = NULL;
+
+      schemapath = g_file_get_path (schemadir);
+      proc = g_subprocess_new (G_SUBPROCESS_FLAGS_STDERR_SILENCE, &error,
+                               "glib-compile-schemas", "--strict", schemapath,
+                               NULL);
+
+      if (!g_subprocess_wait_check (proc, NULL, &error))
+        goto err;
+    }
 
   return 0;
 
