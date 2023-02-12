@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2023-02-11 20:50+0000\n"
-"PO-Revision-Date: 2023-02-12 08:05+0200\n"
+"PO-Revision-Date: 2023-02-12 08:07+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <>\n"
 "Language: he\n"
@@ -1938,14 +1938,13 @@ msgstr "הפעלת Bluetooth כדי להתחבר להתקנים"
 
 #. Translators: This is the number of connected bluetooth devices
 #: js/ui/status/bluetooth.js:361
-#, fuzzy, javascript-format
-#| msgid "%s Connected"
+#, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
-msgstr[0] "‏%s מחובר"
-msgstr[1] "‏%s מחובר"
-msgstr[2] "‏%s מחובר"
-msgstr[3] "‏%s מחובר"
+msgstr[0] "אחד מחובר"
+msgstr[1] "שניים מחוברים"
+msgstr[2] "%d מחוברים"
+msgstr[3] "%d מחוברים"
 
 #: js/ui/status/brightness.js:34
 msgid "Brightness"
