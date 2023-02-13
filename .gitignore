@@ -3,4 +3,5 @@ po/gnome-shell.pot
 *~
 *.patch
 *.sw?
+.buildconfig
 .vscode
