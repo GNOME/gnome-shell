@@ -1,3 +1,18 @@
+42.8
+====
+* Lower OOM score of gnome-shell process [Jian-Hong; !2582]
+* Fixed crash [Florian; !2622]
+* Plugged leak [Sebastian; !2637]
+* Misc. bug fixes and cleanups [Florian, Jonas, Alessandro, Sebastian; !2571,
+  !2594, !2606, !2604, !2399, !2625, !2552, !2514]
+
+Contributors:
+  Alessandro Bono, Jonas Dreßler, Sebastian Keller, Florian Müllner,
+  Jian-Hong Pan, Nart Tlisha
+
+Translators:
+  Sergej A [ru], Nart Tlisha [ab]
+
 42.7
 ====
 * Properly apply saved shortcuts inhibition permissions [Florian; !2548]
