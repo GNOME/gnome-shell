@@ -9,6 +9,7 @@ const PopupMenu = imports.ui.popupMenu;
 const {QuickSlider, SystemIndicator} = imports.ui.quickSettings;
 
 const ALLOW_AMPLIFIED_VOLUME_KEY = 'allow-volume-above-100-percent';
+const UNMUTE_DEFAULT_VOLUME = 0.25;
 
 // Each Gvc.MixerControl is a connection to PulseAudio,
 // so it's better to make it a singleton
@@ -60,7 +61,13 @@ const StreamSlider = GObject.registerClass({
             if (!this._stream)
                 return;
 
-            this._stream.change_is_muted(!this._stream.is_muted);
+            const {isMuted} = this._stream;
+            if (isMuted && this._stream.volume === 0) {
+                this._stream.volume =
+                    UNMUTE_DEFAULT_VOLUME * this._control.get_vol_max_norm();
+                this._stream.push_volume();
+            }
+            this._stream.change_is_muted(!isMuted);
         });
 
         this._deviceItems = new Map();
