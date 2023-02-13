@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-07 15:07+0000\n"
-"PO-Revision-Date: 2023-02-08 19:51+0100\n"
+"POT-Creation-Date: 2023-02-12 20:28+0000\n"
+"PO-Revision-Date: 2023-02-13 10:52+0100\n"
 "Last-Translator: Fran Dieguez <fran.dieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -490,7 +490,7 @@ msgstr "Sitio web"
 msgid "Visit extension homepage"
 msgstr "Visitar o sitio web da extensión"
 
-#: js/gdm/authPrompt.js:142 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
@@ -498,7 +498,7 @@ msgstr "Visitar o sitio web da extensión"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: js/gdm/authPrompt.js:305 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:310 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -536,13 +536,13 @@ msgstr "Erro de autenticación"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:623
+#: js/gdm/util.js:624
 msgid "(or swipe finger across reader)"
 msgstr "(ou pase o dedo sobre o lector)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:628
+#: js/gdm/util.js:629
 msgid "(or place finger on reader)"
 msgstr "(ou pouse o dedo sobre o lector)"
 
@@ -849,7 +849,7 @@ msgstr "Iniciar usando a Tarxeta Gráfica Dedicada"
 msgid "Select Audio Device"
 msgstr "Seleccionar dispositivo de son"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
 msgid "Sound Settings"
 msgstr "Preferencias de son"
 
@@ -861,7 +861,7 @@ msgstr "Cascos auriculares"
 msgid "Headset"
 msgstr "Auriculares"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
 msgid "Microphone"
 msgstr "Micrófono"
 
@@ -1032,7 +1032,8 @@ msgid ""
 msgstr ""
 "De forma alternativa pode conectarse premendo o botón «WPS» do seu enrutador."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:217
+#: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "Conectar"
 
@@ -1097,7 +1098,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Requírese un contrasinal para conectarse a «%s»."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1975
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1990
 msgid "Network Manager"
 msgstr "Xestor da rede"
 
@@ -1200,31 +1201,31 @@ msgstr "%d/%m"
 msgid "No Events"
 msgstr "Non hai eventos"
 
-#: js/ui/dateMenu.js:396
+#: js/ui/dateMenu.js:395
 msgid "Add world clocks…"
 msgstr "Engadir reloxos do mundo…"
 
-#: js/ui/dateMenu.js:397
+#: js/ui/dateMenu.js:396
 msgid "World Clocks"
 msgstr "Reloxos do mundo"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:680
 msgid "Loading…"
 msgstr "Cargando…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:690
 msgid "Go online for weather information"
 msgstr "Conectarse para var a información do tempo"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:692
 msgid "Weather information is currently unavailable"
 msgstr "A información do tempo non está dispoñíbel actualmente"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:702
 msgid "Weather"
 msgstr "Tempo"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:704
 msgid "Select weather location…"
 msgstr "Seleccione unha localización meteorolóxica…"
 
@@ -1481,7 +1482,7 @@ msgstr "Deixar activado"
 msgid "Turn On"
 msgstr "Activar"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:462
 msgid "Turn Off"
 msgstr "Apagar"
 
@@ -1664,9 +1665,13 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:457
+#: js/ui/panel.js:460
 msgid "Top Bar"
 msgstr "Barra superior"
+
+#: js/ui/quickSettings.js:176
+msgid "Open menu"
+msgstr "Abrir menú"
 
 #: js/ui/runDialog.js:58
 msgid "Run a Command"
@@ -1926,9 +1931,53 @@ msgstr "Texto grande"
 msgid "Auto Rotate"
 msgstr "Autorotar"
 
-#: js/ui/status/bluetooth.js:151
+#: js/ui/status/backgroundApps.js:135
+msgctxt "title"
+msgid "Background Apps"
+msgstr "Aplicacións en segundo plano"
+
+#: js/ui/status/backgroundApps.js:153
+msgid "App Settings"
+msgstr "Preferencias de aplicación"
+
+#: js/ui/status/backgroundApps.js:181
+msgid "No Background Apps"
+msgstr "Non hai aplicacións en segundo plano"
+
+#: js/ui/status/backgroundApps.js:183
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%d aplicación en segundo plano"
+msgstr[1] "%d aplicacións en segundo plano"
+
+#: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
+msgid "Disconnect"
+msgstr "Desconectar"
+
+#: js/ui/status/bluetooth.js:234 js/ui/status/bluetooth.js:236
 msgid "Bluetooth"
 msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+msgid "Bluetooth Settings"
+msgstr "Preferencias do Bluetooth"
+
+#: js/ui/status/bluetooth.js:306
+msgid "No available or connected devices"
+msgstr "Non hai dispositivos dispoñíbeis ou conectados"
+
+#: js/ui/status/bluetooth.js:307
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "Active o Bluetooth para conectar dispositivos"
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:361
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d conectado"
+msgstr[1] "%d conectados"
 
 #: js/ui/status/brightness.js:34
 msgid "Brightness"
@@ -1995,85 +2044,81 @@ msgid "<unknown>"
 msgstr "<descoñecido>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:356
+#: js/ui/status/network.js:363
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Desconectarse de %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:358
+#: js/ui/status/network.js:365
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Conectarse a %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1107
+#: js/ui/status/network.js:1122
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s punto wifi"
 
-#: js/ui/status/network.js:1372
+#: js/ui/status/network.js:1387
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d conectado"
 msgstr[1] "%d conectados"
 
-#: js/ui/status/network.js:1470 js/ui/status/network.js:1486
+#: js/ui/status/network.js:1485 js/ui/status/network.js:1501
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1471
+#: js/ui/status/network.js:1486
 msgid "VPN Settings"
 msgstr "Preferencias de VPN"
 
-#: js/ui/status/network.js:1720
+#: js/ui/status/network.js:1735
 msgid "Wi–Fi"
 msgstr "Wifi"
 
-#: js/ui/status/network.js:1722
+#: js/ui/status/network.js:1737
 msgid "All Networks"
 msgstr "Todas as redes"
 
-#: js/ui/status/network.js:1819
+#: js/ui/status/network.js:1834
 msgid "Wired Connections"
 msgstr "Conexións con fíos"
 
-#: js/ui/status/network.js:1820
+#: js/ui/status/network.js:1835
 msgid "Wired Settings"
 msgstr "Preferencias da rede con fíos"
 
-#: js/ui/status/network.js:1841
+#: js/ui/status/network.js:1856
 msgid "Bluetooth Tethers"
 msgstr "Comparticións de datos por Bluetooth"
 
-#: js/ui/status/network.js:1842
-msgid "Bluetooth Settings"
-msgstr "Preferencias do Bluetooth"
-
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1848
+#: js/ui/status/network.js:1863
 msgid "Tether"
 msgstr "Compartir datos"
 
-#: js/ui/status/network.js:1861
+#: js/ui/status/network.js:1876
 msgid "Mobile Connections"
 msgstr "Conexións de banda larga"
 
-#: js/ui/status/network.js:1863
+#: js/ui/status/network.js:1878
 msgid "Mobile Broadband Settings"
 msgstr "Preferencias da banda larga móbil"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1872
+#: js/ui/status/network.js:1887
 msgid "Mobile"
 msgstr "Móbil"
 
-#: js/ui/status/network.js:1980
+#: js/ui/status/network.js:1995
 msgid "Connection failed"
 msgstr "Produciuse un fallo na conexión"
 
-#: js/ui/status/network.js:1981
+#: js/ui/status/network.js:1996
 msgid "Activation of network connection failed"
 msgstr "Produciuse un fallo na activación da conexión de rede"
 
@@ -2195,19 +2240,27 @@ msgstr "Erro de autorización de Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Non foi posíbel autorizar o dispositivo Thunderbolt: %s"
 
-#: js/ui/status/volume.js:194
+#: js/ui/status/volume.js:203
 msgid "Volume changed"
 msgstr "Volume cambiado"
 
-#: js/ui/status/volume.js:256
+#: js/ui/status/volume.js:216
+msgid "Unmute"
+msgstr "Desilenciar"
+
+#: js/ui/status/volume.js:216
+msgid "Mute"
+msgstr "Silenciar"
+
+#: js/ui/status/volume.js:271
 msgid "Volume"
 msgstr "Volume"
 
-#: js/ui/status/volume.js:272
+#: js/ui/status/volume.js:287
 msgid "Sound Output"
 msgstr "Saída de son"
 
-#: js/ui/status/volume.js:340
+#: js/ui/status/volume.js:359
 msgid "Sound Input"
 msgstr "Entrada de son"
 
@@ -2377,10 +2430,6 @@ msgstr "Mover ao monitor da dereita"
 #: js/ui/windowMenu.js:207
 msgid "Close"
 msgstr "Pechar"
-
-#: src/calendar-server/evolution-calendar.desktop.in:3
-msgid "Evolution Calendar"
-msgstr "Calendario de Evolution"
 
 #: src/main.c:513 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
@@ -2986,6 +3035,9 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
+#~ msgid "Evolution Calendar"
+#~ msgstr "Calendario de Evolution"
+
 #~ msgid "Applications"
 #~ msgstr "Aplicacións"
 
@@ -3060,10 +3112,6 @@ msgstr "Sons do sistema"
 #, javascript-format
 #~ msgid "%s Off"
 #~ msgstr "%s apagado"
-
-#, javascript-format
-#~ msgid "%s Connected"
-#~ msgstr "%s conectado"
 
 #, javascript-format
 #~ msgid "%s Unmanaged"
