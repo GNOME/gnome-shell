@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-09 22:00+0000\n"
-"PO-Revision-Date: 2023-02-10 08:29+0700\n"
+"POT-Creation-Date: 2023-02-12 20:28+0000\n"
+"PO-Revision-Date: 2023-02-13 09:45+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -479,7 +479,7 @@ msgstr "Halaman Web"
 msgid "Visit extension homepage"
 msgstr "Kunjungi halaman web ekstensi"
 
-#: js/gdm/authPrompt.js:142 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
@@ -487,7 +487,7 @@ msgstr "Kunjungi halaman web ekstensi"
 msgid "Cancel"
 msgstr "Batal"
 
-#: js/gdm/authPrompt.js:305 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:310 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -525,13 +525,13 @@ msgstr "Galat autentikasi"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:623
+#: js/gdm/util.js:624
 msgid "(or swipe finger across reader)"
 msgstr "(atau usap jari melintasi pembaca)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:628
+#: js/gdm/util.js:629
 msgid "(or place finger on reader)"
 msgstr "(atau letakkan jari pada pembaca)"
 
@@ -832,7 +832,7 @@ msgstr "Luncurkan menggunakan Kartu Grafis Diskrit"
 msgid "Select Audio Device"
 msgstr "Pilih Perangkat Audio"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
 msgid "Sound Settings"
 msgstr "Pengaturan Suara"
 
@@ -844,7 +844,7 @@ msgstr "Headphone"
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:331
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1013,11 +1013,11 @@ msgstr "Buka dengan %s"
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
-"Sebagai alternatif Anda dapat terhubung dengan menekan tombol \"WPS\" pada "
+"Sebagai alternatif Anda dapat tersambung dengan menekan tombol \"WPS\" pada "
 "router Anda."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:369
-#: js/ui/status/network.js:451
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:217
+#: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "Sambung"
 
@@ -1185,31 +1185,31 @@ msgstr "%d/%m"
 msgid "No Events"
 msgstr "Tak Ada Acara"
 
-#: js/ui/dateMenu.js:396
+#: js/ui/dateMenu.js:395
 msgid "Add world clocks…"
 msgstr "Tambah jam dunia…"
 
-#: js/ui/dateMenu.js:397
+#: js/ui/dateMenu.js:396
 msgid "World Clocks"
 msgstr "Jam Dunia"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:680
 msgid "Loading…"
 msgstr "Memuat…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:690
 msgid "Go online for weather information"
 msgstr "Pergi daring untuk informasi cuaca"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:692
 msgid "Weather information is currently unavailable"
 msgstr "Informasi cuaca saat ini tidak tersedia"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:702
 msgid "Weather"
 msgstr "Cuaca"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:704
 msgid "Select weather location…"
 msgstr "Pilih lokasi cuaca…"
 
@@ -1638,7 +1638,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:457
+#: js/ui/panel.js:460
 msgid "Top Bar"
 msgstr "Bar Atas"
 
@@ -1903,9 +1903,51 @@ msgstr "Teks Besar"
 msgid "Auto Rotate"
 msgstr "Putar Otomatis"
 
-#: js/ui/status/bluetooth.js:151
+#: js/ui/status/backgroundApps.js:135
+msgctxt "title"
+msgid "Background Apps"
+msgstr "Aplikasi Latar Belakang"
+
+#: js/ui/status/backgroundApps.js:153
+msgid "App Settings"
+msgstr "Pengaturan Aplikasi"
+
+#: js/ui/status/backgroundApps.js:181
+msgid "No Background Apps"
+msgstr "Tidak Ada Aplikasi Latar Belakang"
+
+#: js/ui/status/backgroundApps.js:183
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%d Aplikasi Latar Belakang"
+
+#: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
+msgid "Disconnect"
+msgstr "Putuskan"
+
+#: js/ui/status/bluetooth.js:234 js/ui/status/bluetooth.js:236
 msgid "Bluetooth"
 msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+msgid "Bluetooth Settings"
+msgstr "Pengaturan Bluetooth"
+
+#: js/ui/status/bluetooth.js:306
+msgid "No available or connected devices"
+msgstr "Tidak ada perangkat yang tersedia atau tersambung"
+
+#: js/ui/status/bluetooth.js:307
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "Nyalakan Bluetooth untuk tersambung ke perangkat"
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:361
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d Tersambung"
 
 #: js/ui/status/brightness.js:34
 msgid "Brightness"
@@ -1981,10 +2023,6 @@ msgstr "Memutus %s"
 msgid "Connect to %s"
 msgstr "Sambung ke %s"
 
-#: js/ui/status/network.js:369
-msgid "Disconnect"
-msgstr "Putuskan"
-
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1122
 #, javascript-format
@@ -2024,10 +2062,6 @@ msgstr "Pengaturan Kabel"
 #: js/ui/status/network.js:1856
 msgid "Bluetooth Tethers"
 msgstr "Tether Bluetooth"
-
-#: js/ui/status/network.js:1857
-msgid "Bluetooth Settings"
-msgstr "Pengaturan Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1863
@@ -2173,19 +2207,27 @@ msgstr "Otorisasi Thunderbolt galat"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Tidak dapat mengotorisasi perangkat Thunderbolt: %s"
 
-#: js/ui/status/volume.js:194
+#: js/ui/status/volume.js:203
 msgid "Volume changed"
 msgstr "Volume diubah"
 
-#: js/ui/status/volume.js:261
+#: js/ui/status/volume.js:216
+msgid "Unmute"
+msgstr "Bunyikan"
+
+#: js/ui/status/volume.js:216
+msgid "Mute"
+msgstr "Senyapkan"
+
+#: js/ui/status/volume.js:271
 msgid "Volume"
 msgstr "Volume"
 
-#: js/ui/status/volume.js:277
+#: js/ui/status/volume.js:287
 msgid "Sound Output"
 msgstr "Keluaran Suara"
 
-#: js/ui/status/volume.js:349
+#: js/ui/status/volume.js:359
 msgid "Sound Input"
 msgstr "Masukan Suara"
 
@@ -2354,10 +2396,6 @@ msgstr "Pindahkan ke Monitor Kanan"
 #: js/ui/windowMenu.js:207
 msgid "Close"
 msgstr "Tutup"
-
-#: src/calendar-server/evolution-calendar.desktop.in:3
-msgid "Evolution Calendar"
-msgstr "Evolution Kalender"
 
 #: src/main.c:513 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
@@ -2679,7 +2717,7 @@ msgstr "Aktifkan ekstensi"
 #: subprojects/extensions-tool/src/command-list.c:64
 #: subprojects/extensions-tool/src/main.c:150
 msgid "Failed to connect to GNOME Shell\n"
-msgstr "Gagal terhubung ke GNOME Shell\n"
+msgstr "Gagal tersambung ke GNOME Shell\n"
 
 #: subprojects/extensions-tool/src/command-info.c:59
 #: subprojects/extensions-tool/src/main.c:159
@@ -2963,6 +3001,9 @@ msgstr[0] "%u Masukan"
 msgid "System Sounds"
 msgstr "Suara Sistem"
 
+#~ msgid "Evolution Calendar"
+#~ msgstr "Evolution Kalender"
+
 #~ msgid "Applications"
 #~ msgstr "Aplikasi"
 
@@ -3020,9 +3061,6 @@ msgstr "Suara Sistem"
 
 #~ msgid "%s Off"
 #~ msgstr "%s Mati"
-
-#~ msgid "%s Connected"
-#~ msgstr "%s Tersambung"
 
 #~ msgid "%s Unmanaged"
 #~ msgstr "%s Tak Dikelola"
