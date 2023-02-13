@@ -4,14 +4,14 @@
 # Žygimantas Beručka <zygis@gnome.org>, 2010, 2011, 2012.
 # Algimantas Margevičius <gymka@mail.ru>, 2011.
 # Mantas Kriaučiūnas <mantas@akl.lt>, 2012, 2013.
-# Aurimas Černius <aurisc4@gmail.com>, 2013-2022.
+# Aurimas Černius <aurisc4@gmail.com>, 2013-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-17 18:27+0000\n"
-"PO-Revision-Date: 2022-09-19 22:50+0300\n"
+"POT-Creation-Date: 2023-02-13 19:24+0000\n"
+"PO-Revision-Date: 2023-02-13 23:19+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "(n%100<10 || n%100>=20) ? 1 : 2)\n"
-"X-Generator: Gtranslator 40.0\n"
+"X-Generator: Gtranslator 42.0\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-launchers.xml:6
@@ -28,63 +28,63 @@ msgid "Launchers"
 msgstr "Paleidikliai"
 
 #: data/50-gnome-shell-launchers.xml:10
-msgid "Activate favorite application 1"
+msgid "Activate favorite app 1"
 msgstr "Paleisti mėgiamą programą 1"
 
 #: data/50-gnome-shell-launchers.xml:14
-msgid "Activate favorite application 2"
+msgid "Activate favorite app 2"
 msgstr "Paleisti mėgiamą programą 2"
 
 #: data/50-gnome-shell-launchers.xml:18
-msgid "Activate favorite application 3"
+msgid "Activate favorite app 3"
 msgstr "Paleisti mėgiamą programą 3"
 
 #: data/50-gnome-shell-launchers.xml:22
-msgid "Activate favorite application 4"
+msgid "Activate favorite app 4"
 msgstr "Paleisti mėgiamą programą 4"
 
 #: data/50-gnome-shell-launchers.xml:26
-msgid "Activate favorite application 5"
+msgid "Activate favorite app 5"
 msgstr "Paleisti mėgiamą programą 5"
 
 #: data/50-gnome-shell-launchers.xml:30
-msgid "Activate favorite application 6"
+msgid "Activate favorite app 6"
 msgstr "Paleisti mėgiamą programą 6"
 
 #: data/50-gnome-shell-launchers.xml:34
-msgid "Activate favorite application 7"
+msgid "Activate favorite app 7"
 msgstr "Paleisti mėgiamą programą 7"
 
 #: data/50-gnome-shell-launchers.xml:38
-msgid "Activate favorite application 8"
+msgid "Activate favorite app 8"
 msgstr "Paleisti mėgiamą programą 8"
 
 #: data/50-gnome-shell-launchers.xml:42
-msgid "Activate favorite application 9"
+msgid "Activate favorite app 9"
 msgstr "Paleisti mėgiamą programą 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
 msgid "Screenshots"
 msgstr "Ekrano nuotraukos"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:234
+#: data/org.gnome.shell.gschema.xml.in:238
 msgid "Take a screenshot interactively"
 msgstr "Padaryti ekrano nuotrauką interaktyviai"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:246
+#: data/org.gnome.shell.gschema.xml.in:250
 msgid "Take a screenshot"
 msgstr "Padaryti ekrano nuotrauką"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:242
+#: data/org.gnome.shell.gschema.xml.in:246
 msgid "Take a screenshot of a window"
 msgstr "Padaryti lango nuotrauką"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:238
+#: data/org.gnome.shell.gschema.xml.in:242
 msgid "Record a screencast interactively"
 msgstr "Interaktyviai įrašyti ekrano vaizdą"
 
@@ -105,11 +105,11 @@ msgid "Show the overview"
 msgstr "Rodyti apžvalgą"
 
 #: data/50-gnome-shell-system.xml:18
-msgid "Show all applications"
+msgid "Show all apps"
 msgstr "Rodyti visas programas"
 
 #: data/50-gnome-shell-system.xml:21
-msgid "Open the application menu"
+msgid "Open the app menu"
 msgstr "Atverti programų meniu"
 
 #: data/org.gnome.Shell.desktop.in.in:4
@@ -294,108 +294,108 @@ msgstr ""
 "vertės yra įrašomos kaip „duomenys“: • “position”: programos piktogramos "
 "padėtis puslapyje"
 
-#: data/org.gnome.shell.gschema.xml.in:148
+#: data/org.gnome.shell.gschema.xml.in:152
 msgid "Keybinding to open the application menu"
 msgstr "Klavišų susiejimas, kuriuo atveriamas programų meniu"
 
-#: data/org.gnome.shell.gschema.xml.in:149
+#: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to open the application menu."
 msgstr "Klavišų susiejimas, kuriuo atveriamas programų meniu."
 
-#: data/org.gnome.shell.gschema.xml.in:155
-#: data/org.gnome.shell.gschema.xml.in:162
+#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to shift between overview states"
 msgstr "Klavišų susiejimas apžvalgos būsenų keitimui"
 
-#: data/org.gnome.shell.gschema.xml.in:156
+#: data/org.gnome.shell.gschema.xml.in:160
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Klavišų susiejimas perėjimui tarp seanso, langų pasirinkimo ir programų "
 "tinklelio"
 
-#: data/org.gnome.shell.gschema.xml.in:163
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "Klavišų susiejimas perėjimui tarp programų tinklelio, langų pasirinkimo bei "
 "seanso."
 
-#: data/org.gnome.shell.gschema.xml.in:169
+#: data/org.gnome.shell.gschema.xml.in:173
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Klavišų susiejimas, kuriuo atveriamas rodinys „rodyti programas“"
 
-#: data/org.gnome.shell.gschema.xml.in:170
+#: data/org.gnome.shell.gschema.xml.in:174
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Klavišų susiejimas, kuriuo atveriamas rodinys „rodyti programas“ veiklų "
 "apžvalgoje."
 
-#: data/org.gnome.shell.gschema.xml.in:177
+#: data/org.gnome.shell.gschema.xml.in:181
 msgid "Keybinding to open the overview"
 msgstr "Klavišų susiejimas, kuriuo atveriama apžvalga"
 
-#: data/org.gnome.shell.gschema.xml.in:178
+#: data/org.gnome.shell.gschema.xml.in:182
 msgid "Keybinding to open the Activities Overview."
 msgstr "Klavišų susiejimas, kuriuo atveriama veiklų apžvalga."
 
-#: data/org.gnome.shell.gschema.xml.in:184
+#: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Klavišų susiejimas pranešimų juostos matomumui perjungti"
 
-#: data/org.gnome.shell.gschema.xml.in:185
+#: data/org.gnome.shell.gschema.xml.in:189
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Klavišų susiejimas pranešimų juostos matomumui perjungti."
 
-#: data/org.gnome.shell.gschema.xml.in:191
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Keybinding to focus the active notification"
 msgstr "Klavišų susiejimas, kuriuo fokusuojamas aktyvus pranešimas"
 
-#: data/org.gnome.shell.gschema.xml.in:192
+#: data/org.gnome.shell.gschema.xml.in:196
 msgid "Keybinding to focus the active notification."
 msgstr "Klavišų susiejimas, kuriuo fokusuojamas aktyvus pranešimas."
 
-#: data/org.gnome.shell.gschema.xml.in:198
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Switch to application 1"
 msgstr "Pereiti į programą 1"
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:206
 msgid "Switch to application 2"
 msgstr "Pereiti į programą 2"
 
-#: data/org.gnome.shell.gschema.xml.in:206
+#: data/org.gnome.shell.gschema.xml.in:210
 msgid "Switch to application 3"
 msgstr "Pereiti į programą 3"
 
-#: data/org.gnome.shell.gschema.xml.in:210
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "Switch to application 4"
 msgstr "Pereiti į programą 4"
 
-#: data/org.gnome.shell.gschema.xml.in:214
+#: data/org.gnome.shell.gschema.xml.in:218
 msgid "Switch to application 5"
 msgstr "Pereiti į programą 5"
 
-#: data/org.gnome.shell.gschema.xml.in:218
+#: data/org.gnome.shell.gschema.xml.in:222
 msgid "Switch to application 6"
 msgstr "Pereiti į programą 6"
 
-#: data/org.gnome.shell.gschema.xml.in:222
+#: data/org.gnome.shell.gschema.xml.in:226
 msgid "Switch to application 7"
 msgstr "Pereiti į programą 7"
 
-#: data/org.gnome.shell.gschema.xml.in:226
+#: data/org.gnome.shell.gschema.xml.in:230
 msgid "Switch to application 8"
 msgstr "Pereiti į programą 8"
 
-#: data/org.gnome.shell.gschema.xml.in:230
+#: data/org.gnome.shell.gschema.xml.in:234
 msgid "Switch to application 9"
 msgstr "Pereiti į programą 9"
 
-#: data/org.gnome.shell.gschema.xml.in:255
-#: data/org.gnome.shell.gschema.xml.in:282
+#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:286
 msgid "Limit switcher to current workspace."
 msgstr "Apriboti perjungėją dabartine darbo sritimi."
 
-#: data/org.gnome.shell.gschema.xml.in:256
+#: data/org.gnome.shell.gschema.xml.in:260
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -403,11 +403,11 @@ msgstr ""
 "Jei teigiama, perjungimo lange bus rodomos tik programos, turinčios langų "
 "dabartinėje darbo srityje. Priešingu atveju įtraukiamos visos programos."
 
-#: data/org.gnome.shell.gschema.xml.in:273
+#: data/org.gnome.shell.gschema.xml.in:277
 msgid "The application icon mode."
 msgstr "Programos piktogramos veiksena."
 
-#: data/org.gnome.shell.gschema.xml.in:274
+#: data/org.gnome.shell.gschema.xml.in:278
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -417,7 +417,7 @@ msgstr ""
 "„thumbnail-only“ (rodo lango miniatiūrą), „app-icon-only“ (rodo tik "
 "programos piktogramą) arba „both“ (abu)."
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:287
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -425,58 +425,29 @@ msgstr ""
 "Jei teigiama, perjungimo lange rodomi tik langai iš dabartinės darbo "
 "srities. Priešingu atveju įtraukiami visi langai."
 
-#: data/org.gnome.shell.gschema.xml.in:293
+#: data/org.gnome.shell.gschema.xml.in:297
 msgid "Locations"
 msgstr "Vietos"
 
-#: data/org.gnome.shell.gschema.xml.in:294
+#: data/org.gnome.shell.gschema.xml.in:298
 msgid "The locations to show in world clocks"
 msgstr "Vietos, kurias rodyti pasaulio laikrodžiuose"
 
-#: data/org.gnome.shell.gschema.xml.in:304
+#: data/org.gnome.shell.gschema.xml.in:308
 msgid "Automatic location"
 msgstr "Automatinė vieta"
 
-#: data/org.gnome.shell.gschema.xml.in:305
+#: data/org.gnome.shell.gschema.xml.in:309
 msgid "Whether to fetch the current location or not"
 msgstr "Ar gauti dabartinę vietą"
 
-#: data/org.gnome.shell.gschema.xml.in:312
+#: data/org.gnome.shell.gschema.xml.in:316
 msgid "Location"
 msgstr "Vieta"
 
-#: data/org.gnome.shell.gschema.xml.in:313
+#: data/org.gnome.shell.gschema.xml.in:317
 msgid "The location for which to show a forecast"
 msgstr "Vieta, kuriai rodyti prognozę"
-
-#: data/org.gnome.shell.gschema.xml.in:325
-msgid "Attach modal dialog to the parent window"
-msgstr "Prikabinti modalinį dialogą prie tėvinio lango"
-
-#: data/org.gnome.shell.gschema.xml.in:326
-#: data/org.gnome.shell.gschema.xml.in:335
-#: data/org.gnome.shell.gschema.xml.in:343
-#: data/org.gnome.shell.gschema.xml.in:351
-#: data/org.gnome.shell.gschema.xml.in:359
-msgid ""
-"This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr "Šis raktas perrašo org.gnome.mutter raktą, kai vykdoma GNOME Shell."
-
-#: data/org.gnome.shell.gschema.xml.in:334
-msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "Įjungti kraštų išplėtimą, kai langai numetami ekrano kraštuose"
-
-#: data/org.gnome.shell.gschema.xml.in:342
-msgid "Workspaces are managed dynamically"
-msgstr "Darbo sritys yra tvarkomos dinamiškai"
-
-#: data/org.gnome.shell.gschema.xml.in:350
-msgid "Workspaces only on primary monitor"
-msgstr "Darbo sritys tik pagrindiniame monitoriuje"
-
-#: data/org.gnome.shell.gschema.xml.in:358
-msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr "Atidėti fokuso pakeitimus pelei iki žymiklis nustos judėti"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
@@ -510,57 +481,57 @@ msgstr "Aplankyti plėtinio namų tinklalapį"
 
 #: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
-#: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
+#: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "Atsisakyti"
 
-#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:310 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
-#: js/ui/shellMountOperation.js:327
+#: js/ui/shellMountOperation.js:332
 msgid "Password"
 msgstr "Slaptažodis"
 
-#: js/gdm/loginDialog.js:317
+#: js/gdm/loginDialog.js:318
 msgid "Choose Session"
 msgstr "Pasirinkite seansą"
 
-#: js/gdm/loginDialog.js:462
+#: js/gdm/loginDialog.js:463
 msgid "Not listed?"
 msgstr "Nėra sąraše?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:930
+#: js/gdm/loginDialog.js:931
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(pvz., naudotojas arba %s)"
 
-#: js/gdm/loginDialog.js:935 js/ui/components/networkAgent.js:253
+#: js/gdm/loginDialog.js:936 js/ui/components/networkAgent.js:253
 #: js/ui/components/networkAgent.js:288 js/ui/components/networkAgent.js:322
 msgid "Username"
 msgstr "Naudotojo vardas"
 
-#: js/gdm/loginDialog.js:1258
+#: js/gdm/loginDialog.js:1259
 msgid "Login Window"
 msgstr "Prisijungimo langas"
 
-#: js/gdm/util.js:431
+#: js/gdm/util.js:442
 msgid "Authentication error"
 msgstr "Tapatybės patvirtinimo klaida"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:603
+#: js/gdm/util.js:624
 msgid "(or swipe finger across reader)"
 msgstr "(arba perbraukite pirštu per skaitytuvą)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:608
+#: js/gdm/util.js:629
 msgid "(or place finger on reader)"
 msgstr "(arba padėkite pirštą ant skaitytuvo)"
 
@@ -572,7 +543,7 @@ msgstr "Išjungti"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:87
-msgid "power off;shutdown;halt;stop"
+msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "išjungti;perleisti;perkrauti;sustabdyti"
 
 #. Translators: The name of the restart action in search
@@ -813,15 +784,15 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:350
-msgid "Deny Access"
-msgstr "Atmesti prieigą"
+#: js/ui/accessDialog.js:39 js/ui/inhibitShortcutsDialog.js:97
+msgid "Deny"
+msgstr "Neleisti"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:355
-msgid "Grant Access"
-msgstr "Suteikti prieigą"
+#: js/ui/accessDialog.js:40 js/ui/inhibitShortcutsDialog.js:106
+msgid "Allow"
+msgstr "Leisti"
 
-#: js/ui/appDisplay.js:1728
+#: js/ui/appDisplay.js:1767
 msgid "Unnamed Folder"
 msgstr "Nepavadintas aplankas"
 
@@ -845,8 +816,8 @@ msgid "New Window"
 msgstr "Naujas langas"
 
 #: js/ui/appMenu.js:81
-msgid "Show Details"
-msgstr "Rodyti detalią informaciją"
+msgid "App Details"
+msgstr "Programos detali informacija"
 
 #: js/ui/appMenu.js:97
 msgid "Quit"
@@ -872,7 +843,7 @@ msgstr "Paleisti naudojant konkrečią grafikos kortą"
 msgid "Select Audio Device"
 msgstr "Pasirinkite garso įrenginį"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
 msgid "Sound Settings"
 msgstr "Garso nustatymai"
 
@@ -884,7 +855,7 @@ msgstr "Ausinės"
 msgid "Headset"
 msgstr "Ausinės su mikrofonu"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
 msgid "Microphone"
 msgstr "Mikrofonas"
 
@@ -1014,8 +985,8 @@ msgstr "„%s“ neatsiliepia."
 
 #: js/ui/closeDialog.js:41
 msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
+"You may choose to wait a short while for it to continue or force the app to "
+"quit entirely."
 msgstr ""
 "Galite dar palaukti ir duoti programai laiko arba galite priverstinai "
 "išjungti programą."
@@ -1055,7 +1026,8 @@ msgid ""
 msgstr ""
 "Taip pat galite prisijungti paspausdami „WPS“ mygtuką savo maršrutizatoriuje."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:217
+#: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "Prisijungti"
 
@@ -1120,7 +1092,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Būtinas slaptažodis norint prisijungti prie „%s“."
 
-#: js/ui/components/networkAgent.js:736
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1990
 msgid "Network Manager"
 msgstr "Tinklo tvarkymas"
 
@@ -1144,7 +1116,7 @@ msgstr "Patvirtinti tapatybę"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:403
+#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:415
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Atsiprašome, tai nesuveikė. Bandykite dar kartą."
 
@@ -1153,17 +1125,17 @@ msgstr "Atsiprašome, tai nesuveikė. Bandykite dar kartą."
 msgid "%s is now known as %s"
 msgstr "%s nuo šiol vadinasi %s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:420
 msgid "Windows"
 msgstr "Langai"
 
 #: js/ui/dash.js:205 js/ui/dash.js:251
-msgid "Show Applications"
-msgstr "Paleisti programas"
+msgid "Show Apps"
+msgstr "Rodyti programas"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:398
+#: js/ui/dash.js:399
 msgid "Dash"
 msgstr "Paleidimo sritis"
 
@@ -1223,31 +1195,31 @@ msgstr "%m-%d"
 msgid "No Events"
 msgstr "Nėra įvykių"
 
-#: js/ui/dateMenu.js:396
+#: js/ui/dateMenu.js:395
 msgid "Add world clocks…"
 msgstr "Pridėti pasaulio laikrodžius…"
 
-#: js/ui/dateMenu.js:397
+#: js/ui/dateMenu.js:396
 msgid "World Clocks"
 msgstr "Pasaulio laikrodžiai"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:680
 msgid "Loading…"
 msgstr "Įkeliama…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:690
 msgid "Go online for weather information"
 msgstr "Prisijunkite prie tinklo orų informacijai gauti"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:692
 msgid "Weather information is currently unavailable"
 msgstr "Orų informacija šiuo metu yra neprieinama"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:702
 msgid "Weather"
 msgstr "Orai"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:704
 msgid "Select weather location…"
 msgstr "Pasirinkite orų vietą…"
 
@@ -1283,7 +1255,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "Atsijungti"
 
-#: js/ui/endSessionDialog.js:64 js/ui/status/system.js:167
+#: js/ui/endSessionDialog.js:64 js/ui/status/system.js:168
 msgctxt "title"
 msgid "Power Off"
 msgstr "Išjungti"
@@ -1415,54 +1387,46 @@ msgstr "%s (nutolęs)"
 msgid "%s (console)"
 msgstr "%s (komandų eilutė)"
 
-#: js/ui/extensionDownloader.js:227
+#: js/ui/extensionDownloader.js:245
 msgid "Install"
 msgstr "Įdiegti"
 
-#: js/ui/extensionDownloader.js:233
+#: js/ui/extensionDownloader.js:251
 msgid "Install Extension"
 msgstr "Išdiegti plėtinį"
 
-#: js/ui/extensionDownloader.js:234
+#: js/ui/extensionDownloader.js:252
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Parsiųsti ir įdiegti „%s“ iš extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:270
+#: js/ui/extensionSystem.js:282
 msgid "Extension Updates Available"
 msgstr "Yra plėtinių atnaujinimų"
 
-#: js/ui/extensionSystem.js:271
+#: js/ui/extensionSystem.js:283
 msgid "Extension updates are ready to be installed."
 msgstr "Plėtinių atnaujinimai paruošti diegimui."
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:75
 msgid "Allow inhibiting shortcuts"
 msgstr "Leisti talpinti trumpinius"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:82
+#: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
-msgid "The application %s wants to inhibit shortcuts"
+msgid "The app %s wants to inhibit shortcuts"
 msgstr "Programa %s nori talpinti trumpinius"
 
-#: js/ui/inhibitShortcutsDialog.js:83
-msgid "An application wants to inhibit shortcuts"
+#: js/ui/inhibitShortcutsDialog.js:79
+msgid "An app wants to inhibit shortcuts"
 msgstr "Programa nori talpinti trumpinius"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:90
+#: js/ui/inhibitShortcutsDialog.js:86
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Galite atstatyti trumpinius paspaudę %s"
-
-#: js/ui/inhibitShortcutsDialog.js:101
-msgid "Deny"
-msgstr "Neleisti"
-
-#: js/ui/inhibitShortcutsDialog.js:110
-msgid "Allow"
-msgstr "Leisti"
 
 #: js/ui/kbdA11yDialog.js:32
 msgid "Slow Keys Turned On"
@@ -1514,7 +1478,7 @@ msgstr "Palikti įjungtą"
 msgid "Turn On"
 msgstr "Įjungti"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:462
 msgid "Turn Off"
 msgstr "Išjungti"
 
@@ -1522,9 +1486,9 @@ msgstr "Išjungti"
 msgid "Leave Off"
 msgstr "Palikti išjungtą"
 
-#: js/ui/keyboard.js:219
-msgid "Region & Language Settings"
-msgstr "Regiono ir kalbos nustatymai"
+#: js/ui/keyboard.js:219 js/ui/status/keyboard.js:860
+msgid "Keyboard Settings"
+msgstr "Klaviatūros nustatymai"
 
 #: js/ui/lookingGlass.js:713
 msgid "No extensions installed"
@@ -1540,7 +1504,7 @@ msgstr "%s nepranešė apie jokias klaidas."
 msgid "Hide Errors"
 msgstr "Slėpti klaidas"
 
-#: js/ui/lookingGlass.js:784 js/ui/lookingGlass.js:857
+#: js/ui/lookingGlass.js:784 js/ui/lookingGlass.js:861
 msgid "Show Errors"
 msgstr "Rodyti klaidas"
 
@@ -1550,7 +1514,7 @@ msgstr "Įjungta"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Išjungta"
 
@@ -1566,11 +1530,19 @@ msgstr "Pasenęs"
 msgid "Downloading"
 msgstr "Atsiunčiama"
 
-#: js/ui/lookingGlass.js:835
+#: js/ui/lookingGlass.js:804
+msgid "Disabling"
+msgstr "Išjungiama"
+
+#: js/ui/lookingGlass.js:806
+msgid "Enabling"
+msgstr "Įjungiama"
+
+#: js/ui/lookingGlass.js:839
 msgid "View Source"
 msgstr "Žiūrėti šaltinį"
 
-#: js/ui/lookingGlass.js:846
+#: js/ui/lookingGlass.js:850
 msgid "Web Page"
 msgstr "Tinklalapis"
 
@@ -1579,18 +1551,18 @@ msgid "System was put in unsafe mode"
 msgstr "Sistema perjungta į nesaugią veikseną"
 
 #: js/ui/main.js:287
-msgid "Applications now have unrestricted access"
+msgid "Apps now have unrestricted access"
 msgstr "Programos dabar turi neribotą prieigą"
 
 #: js/ui/main.js:288 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Atšaukti"
 
-#: js/ui/main.js:334
+#: js/ui/main.js:344
 msgid "Logged in as a privileged user"
 msgstr "Prisijungta privilegijuotu naudotoju"
 
-#: js/ui/main.js:335
+#: js/ui/main.js:345
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1598,11 +1570,11 @@ msgstr ""
 "Saugumo sumetimais turėtų būti vengiama vykdyti seansus privilegijuotais "
 "naudotojais. Jei įmanoma, turėtumėt visada prisjungti normaliu naudotoju."
 
-#: js/ui/main.js:384
+#: js/ui/main.js:393
 msgid "Screen Lock disabled"
 msgstr "Ekrano užraktas išjungtas"
 
-#: js/ui/main.js:385
+#: js/ui/main.js:394
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Ekrano užrakinimas reikalaujas GNOME vaizduoklio valdyklės."
 
@@ -1622,12 +1594,12 @@ msgstr "Nežinomas pavadinimas"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:327
+#: js/ui/overviewControls.js:330
 msgid "Type to search"
 msgstr "Rašykite, ko ieškote"
 
-#: js/ui/overviewControls.js:405
-msgid "Applications"
+#: js/ui/overviewControls.js:408
+msgid "Apps"
 msgstr "Programos"
 
 #. Translators: This is the main view to select
@@ -1640,43 +1612,43 @@ msgstr "Apžvalga"
 msgid "New shortcut…"
 msgstr "Naujas trumpinys…"
 
-#: js/ui/padOsd.js:154
-msgid "Application defined"
+#: js/ui/padOsd.js:153
+msgid "App defined"
 msgstr "Programos nustatytas"
 
-#: js/ui/padOsd.js:155
+#: js/ui/padOsd.js:154
 msgid "Show on-screen help"
 msgstr "Rodyti pagalbą ekrane"
 
-#: js/ui/padOsd.js:156
+#: js/ui/padOsd.js:155
 msgid "Switch monitor"
 msgstr "Keisti monitorių"
 
-#: js/ui/padOsd.js:157
+#: js/ui/padOsd.js:156
 msgid "Assign keystroke"
 msgstr "Priskirti klavišų kombinaciją"
 
-#: js/ui/padOsd.js:226
+#: js/ui/padOsd.js:225
 msgid "Done"
 msgstr "Atlikta"
 
-#: js/ui/padOsd.js:743
+#: js/ui/padOsd.js:742
 msgid "Edit…"
 msgstr "Keisti…"
 
-#: js/ui/padOsd.js:785 js/ui/padOsd.js:902
+#: js/ui/padOsd.js:784 js/ui/padOsd.js:901
 msgid "None"
 msgstr "Nėra"
 
-#: js/ui/padOsd.js:856
+#: js/ui/padOsd.js:855
 msgid "Press a button to configure"
 msgstr "Spauskite mygtuką konfigūravimui"
 
-#: js/ui/padOsd.js:857
+#: js/ui/padOsd.js:856
 msgid "Press Esc to exit"
 msgstr "Spauskit Esc išėjimui"
 
-#: js/ui/padOsd.js:860
+#: js/ui/padOsd.js:859
 msgid "Press any key to exit"
 msgstr "Išėjimui spauskite bet kurį klavišą"
 
@@ -1689,9 +1661,13 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:457
+#: js/ui/panel.js:460
 msgid "Top Bar"
 msgstr "Viršutinė juosta"
+
+#: js/ui/quickSettings.js:176
+msgid "Open menu"
+msgstr "Atverti meniu"
 
 #: js/ui/runDialog.js:58
 msgid "Run a Command"
@@ -1709,122 +1685,115 @@ msgstr "Perleisti Wayland aplinkoje negalima"
 msgid "Restarting…"
 msgstr "Perleidžiama…"
 
-#: js/ui/screenShield.js:235
+#: js/ui/screenShield.js:231
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME aplinkai reikia užrakinti ekraną"
 
-#. We could not become modal, so we can't activate the
-#. screenshield. The user is probably very upset at this
-#. point, but any application using global grabs is broken
-#. Just tell them to stop using this app
-#.
-#. XXX: another option is to kick the user into the gdm login
-#. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
+#: js/ui/screenShield.js:272 js/ui/screenShield.js:670
 msgid "Unable to lock"
 msgstr "Nepavyksta užrakinti"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
-msgid "Lock was blocked by an application"
+#: js/ui/screenShield.js:273 js/ui/screenShield.js:671
+msgid "Lock was blocked by an app"
 msgstr "Programa užblokavo užrakinimą"
 
-#: js/ui/screenshot.js:1147
+#: js/ui/screenshot.js:1161
 msgid "Selection"
 msgstr "Žymėjimas"
 
-#: js/ui/screenshot.js:1157
+#: js/ui/screenshot.js:1171
 msgid "Area Selection"
 msgstr "Srities žymėjimas"
 
-#: js/ui/screenshot.js:1162
+#: js/ui/screenshot.js:1176
 msgid "Screen"
 msgstr "Ekranas"
 
-#: js/ui/screenshot.js:1172
+#: js/ui/screenshot.js:1186
 msgid "Screen Selection"
 msgstr "Ekrano žymėjimas"
 
-#: js/ui/screenshot.js:1177
+#: js/ui/screenshot.js:1191
 msgid "Window"
 msgstr "Langas"
 
-#: js/ui/screenshot.js:1187
+#: js/ui/screenshot.js:1201
 msgid "Window Selection"
 msgstr "Lango žymėjimas"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1239
 msgid "Screenshot / Screencast"
 msgstr "Ekrano nuotrauka / įrašas"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1275
 msgid "Show Pointer"
 msgstr "Rodyti žymeklį"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1849
+#: js/ui/screenshot.js:1866
 msgid "Screencasts"
 msgstr "Ekrano įrašai"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1854
+#: js/ui/screenshot.js:1871
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Ekrano įrašas iš %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
+#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
 msgid "Screenshot"
 msgstr "Ekrano nuotrauka"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1926
+#: js/ui/screenshot.js:1919
 msgid "Screencast recorded"
 msgstr "Ekrano įrašas įrašytas"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1928
+#: js/ui/screenshot.js:1921
 msgid "Click here to view the video."
 msgstr "Spauskite čia įrašui žiūrėti."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
+#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
 msgid "Show in Files"
 msgstr "Rodyti Failuose"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2085
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Ekrano nuotrauka iš %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2138
+#: js/ui/screenshot.js:2131
 msgid "Screenshot captured"
 msgstr "Ekrano nuotrauka padaryta"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2140
+#: js/ui/screenshot.js:2133
 msgid "You can paste the image from the clipboard."
 msgstr "Galite įdėti paveikslėlį iš iškarpinės."
 
-#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
+#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
 msgid "Screenshot taken"
 msgstr "Ekrano nuotrauka padaryta"
 
-#: js/ui/search.js:804
+#: js/ui/search.js:807
 msgid "Searching…"
 msgstr "Ieškoma…"
 
-#: js/ui/search.js:806
+#: js/ui/search.js:809
 msgid "No results."
 msgstr "Nerasta atitikmenų."
 
-#: js/ui/search.js:937
+#: js/ui/search.js:940
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1832,7 +1801,7 @@ msgstr[0] "dar %d"
 msgstr[1] "dar %d"
 msgstr[2] "dar %d"
 
-#: js/ui/searchController.js:87
+#: js/ui/searchController.js:88
 msgid "Search"
 msgstr "Ieškoti"
 
@@ -1869,7 +1838,7 @@ msgid "Uses Keyfiles"
 msgstr "Naudoja raktų failus"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:299
+#: js/ui/shellMountOperation.js:300
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -1877,39 +1846,35 @@ msgstr ""
 "Norint atrakinti tomą, kuris naudoja raktų failus, naudokite <i>%s</i> "
 "įrankį."
 
-#: js/ui/shellMountOperation.js:307
+#: js/ui/shellMountOperation.js:304
+msgid ""
+"You need an external utility like <i>Disks</i> to unlock a volume that uses "
+"keyfiles."
+msgstr ""
+"Reikia išorinio įrankio, tokio kaip <i>Diskai</i> raktų failus naudojančiam "
+"tomui atrakinti."
+
+#: js/ui/shellMountOperation.js:312
 msgid "PIM Number"
 msgstr "PIM numeris"
 
-#: js/ui/shellMountOperation.js:366
+#: js/ui/shellMountOperation.js:371
 msgid "Remember Password"
 msgstr "Atsiminti slaptažodį"
 
-#: js/ui/shellMountOperation.js:381
+#: js/ui/shellMountOperation.js:386
 msgid "Unlock"
 msgstr "Atrakinti"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:392
+#: js/ui/shellMountOperation.js:400
 #, javascript-format
 msgid "Open %s"
 msgstr "Atverti %s"
 
-#: js/ui/shellMountOperation.js:424
+#: js/ui/shellMountOperation.js:436
 msgid "The PIM must be a number or empty."
 msgstr "PIM turi būti numeris arba tuščias."
-
-#. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:466
-#, javascript-format
-msgid "Unable to start %s"
-msgstr "Nepavyksta paleisti %s"
-
-#. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:468
-#, javascript-format
-msgid "Couldn’t find the %s application"
-msgstr "Nepavyksta rasti programos %s"
 
 #: js/ui/status/accessibility.js:34
 msgid "Accessibility"
@@ -1951,7 +1916,11 @@ msgstr "Pasikartojantieji klavišai"
 msgid "Mouse Keys"
 msgstr "Pelės mygtukai"
 
-#: js/ui/status/accessibility.js:131
+#: js/ui/status/accessibility.js:78
+msgid "Accessibility Settings"
+msgstr "Prieigos nuostatos"
+
+#: js/ui/status/accessibility.js:135
 msgid "Large Text"
 msgstr "Didelis tekstas"
 
@@ -1959,17 +1928,63 @@ msgstr "Didelis tekstas"
 msgid "Auto Rotate"
 msgstr "Automatiškai pasukti"
 
-#: js/ui/status/bluetooth.js:151
+#: js/ui/status/backgroundApps.js:135
+msgctxt "title"
+msgid "Background Apps"
+msgstr "Fone veikiančios programos"
+
+#: js/ui/status/backgroundApps.js:153
+msgid "App Settings"
+msgstr "Programų nustatymai"
+
+#: js/ui/status/backgroundApps.js:181
+msgid "No Background Apps"
+msgstr "Nėra fone veikiančių programų"
+
+#: js/ui/status/backgroundApps.js:183
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%d programa fone"
+msgstr[1] "%d programos fone"
+msgstr[2] "%d programų fone"
+
+#: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
+msgid "Disconnect"
+msgstr "Atsijungti"
+
+#: js/ui/status/bluetooth.js:234 js/ui/status/bluetooth.js:236
 msgid "Bluetooth"
 msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+msgid "Bluetooth Settings"
+msgstr "Bluetooth nustatymai"
+
+#: js/ui/status/bluetooth.js:306
+msgid "No available or connected devices"
+msgstr "Nėra prieinamų ar prijungtų įrenginių"
+
+#: js/ui/status/bluetooth.js:307
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "Įjunkite Bluetooth prisijungimui prie įrenginių"
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:361
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d prijungtas"
+msgstr[1] "%d prijungti"
+msgstr[2] "%d prijungta"
 
 #: js/ui/status/brightness.js:34
 msgid "Brightness"
 msgstr "Ryškumas"
 
 #: js/ui/status/darkMode.js:11
-msgid "Dark Mode"
-msgstr "Tamsi veiksena"
+msgid "Dark Style"
+msgstr "Tamsus stilius"
 
 #: js/ui/status/dwellClick.js:12
 msgid "Single Click"
@@ -1991,11 +2006,11 @@ msgstr "Antrinis paspaudimas"
 msgid "Dwell Click"
 msgstr "Uždelstas paspaudimas"
 
-#: js/ui/status/keyboard.js:830
+#: js/ui/status/keyboard.js:842
 msgid "Keyboard"
 msgstr "Klaviatūra"
 
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:859
 msgid "Show Keyboard Layout"
 msgstr "Rodyti klaviatūros išdėstymą"
 
@@ -2013,27 +2028,97 @@ msgstr "Programa %s nori prieigos prie jūsų būvimo vietos"
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "Prieigą prie vietos bet kada galima pakeisti privatumo nustatymuose."
 
+#: js/ui/status/location.js:350
+msgid "Deny Access"
+msgstr "Atmesti prieigą"
+
+#: js/ui/status/location.js:355
+msgid "Grant Access"
+msgstr "Suteikti prieigą"
+
 #: js/ui/status/network.js:53
 msgid "<unknown>"
 msgstr "<nežinoma>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:356
+#: js/ui/status/network.js:363
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Atsijungti nuo %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:358
+#: js/ui/status/network.js:365
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Prisijungti prie %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1107
+#: js/ui/status/network.js:1122
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Prieigos taškas %s"
+
+#: js/ui/status/network.js:1387
+#, javascript-format
+msgid "%d connected"
+msgid_plural "%d connected"
+msgstr[0] "%d prijungtas"
+msgstr[1] "%d prijungti"
+msgstr[2] "%d prijungta"
+
+#: js/ui/status/network.js:1485 js/ui/status/network.js:1501
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1486
+msgid "VPN Settings"
+msgstr "VPN nustatymai"
+
+#: js/ui/status/network.js:1735
+msgid "Wi–Fi"
+msgstr "Wi–Fi"
+
+#: js/ui/status/network.js:1737
+msgid "All Networks"
+msgstr "Visi tinklai"
+
+#: js/ui/status/network.js:1834
+msgid "Wired Connections"
+msgstr "Laidiniai ryšiai"
+
+#: js/ui/status/network.js:1835
+msgid "Wired Settings"
+msgstr "Laidinio ryšio nustatymai"
+
+#: js/ui/status/network.js:1856
+msgid "Bluetooth Tethers"
+msgstr "Bluetooth ryšiai"
+
+#. Translators: "Tether" from "Bluetooth Tether"
+#: js/ui/status/network.js:1863
+msgid "Tether"
+msgstr "Ryšys"
+
+#: js/ui/status/network.js:1876
+msgid "Mobile Connections"
+msgstr "Mobilieji ryšiai"
+
+#: js/ui/status/network.js:1878
+msgid "Mobile Broadband Settings"
+msgstr "Mobiliojo plačiajuosčio tinklo nustatymai"
+
+#. Translators: "Mobile" from "Mobile Broadband"
+#: js/ui/status/network.js:1887
+msgid "Mobile"
+msgstr "Mobilusis"
+
+#: js/ui/status/network.js:1995
+msgid "Connection failed"
+msgstr "Nepavyko prisijungti"
+
+#: js/ui/status/network.js:1996
+msgid "Activation of network connection failed"
+msgstr "Tinklo ryšio nepavyko aktyvuoti"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
@@ -2054,15 +2139,23 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Taupantis energiją"
 
-#: js/ui/status/powerProfiles.js:68
+#: js/ui/status/powerProfiles.js:40
+msgid "Power Mode"
+msgstr "Energijos veiksena"
+
+#: js/ui/status/powerProfiles.js:70
 msgid "Power Profiles"
 msgstr "Energijos profiliai"
 
-#: js/ui/status/remoteAccess.js:74
+#: js/ui/status/powerProfiles.js:72
+msgid "Power Settings"
+msgstr "Energijos valdymo nustatymai"
+
+#: js/ui/status/remoteAccess.js:72
 msgid "Stop Screencast"
 msgstr "Stabdyti ekrano įrašą"
 
-#: js/ui/status/remoteAccess.js:144
+#: js/ui/status/remoteAccess.js:142
 msgid "Stop Screen Sharing"
 msgstr "Stabdyti dalinimąsi ekranu"
 
@@ -2080,33 +2173,32 @@ msgstr "%d %%"
 msgid "Take Screenshot"
 msgstr "Padaryti ekrano nuotrauką"
 
-#: js/ui/status/system.js:161
+#: js/ui/status/system.js:162
 msgid "Power Off Menu"
 msgstr "Išjungimo meniu"
 
-#: js/ui/status/system.js:169
+#: js/ui/status/system.js:170
 msgid "Suspend"
 msgstr "Pristabdyti"
 
-#: js/ui/status/system.js:174
+#: js/ui/status/system.js:175
 msgid "Restart…"
 msgstr "Perleisti…"
 
-#: js/ui/status/system.js:179
+#: js/ui/status/system.js:180
 msgid "Power Off…"
 msgstr "Išjungti…"
 
-#: js/ui/status/system.js:186
+#: js/ui/status/system.js:187
 #: subprojects/extensions-app/data/ui/extensions-window.ui:190
 msgid "Log Out…"
 msgstr "Atsijungti…"
 
-#: js/ui/status/system.js:191
+#: js/ui/status/system.js:192
 msgid "Switch User…"
 msgstr "Keisti naudotoją…"
 
-#: js/ui/status/system.js:235
-#| msgid "Lock Screen"
+#: js/ui/status/system.js:236
 msgctxt "action"
 msgid "Lock Screen"
 msgstr "Ekrano užraktas"
@@ -2145,19 +2237,27 @@ msgstr "Thunderbolt autorizacijos klaida"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nepavyko autorizuoti Thunderbolt įrenginio: %s"
 
-#: js/ui/status/volume.js:191
+#: js/ui/status/volume.js:203
 msgid "Volume changed"
 msgstr "Garsumas pakeistas"
 
-#: js/ui/status/volume.js:253
+#: js/ui/status/volume.js:216
+msgid "Unmute"
+msgstr "Įjungti garsą"
+
+#: js/ui/status/volume.js:216
+msgid "Mute"
+msgstr "Nutildyti"
+
+#: js/ui/status/volume.js:271
 msgid "Volume"
 msgstr "Garsumas"
 
-#: js/ui/status/volume.js:269
+#: js/ui/status/volume.js:287
 msgid "Sound Output"
 msgstr "Garso išvestis"
 
-#: js/ui/status/volume.js:337
+#: js/ui/status/volume.js:359
 msgid "Sound Input"
 msgstr "Garso įvestis"
 
@@ -2191,23 +2291,23 @@ msgstr "Tik vidinis"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:364
+#: js/ui/unlockDialog.js:363
 msgid "%A %B %-d"
 msgstr "%A %B %-d"
 
-#: js/ui/unlockDialog.js:370
+#: js/ui/unlockDialog.js:369
 msgid "Swipe up to unlock"
 msgstr "Atrakinkite perbraukdami"
 
-#: js/ui/unlockDialog.js:371
+#: js/ui/unlockDialog.js:370
 msgid "Click or press a key to unlock"
 msgstr "Atrakinkite mygtuko ar klavišo paspaudimu"
 
-#: js/ui/unlockDialog.js:554
+#: js/ui/unlockDialog.js:553
 msgid "Unlock Window"
 msgstr "Atrakinimo langas"
 
-#: js/ui/unlockDialog.js:563
+#: js/ui/unlockDialog.js:562
 msgid "Log in as another user"
 msgstr "Prisijungti kitu naudotoju"
 
@@ -2234,19 +2334,19 @@ msgid "“%s” is ready"
 msgstr "„%s“ yra pasirengusi"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:62
+#: js/ui/windowManager.js:63
 msgid "Keep these display settings?"
 msgstr "Ar norite įrašyti šiuos vaizduoklio nustatymus?"
 
-#: js/ui/windowManager.js:72
+#: js/ui/windowManager.js:73
 msgid "Revert Settings"
 msgstr "Grąžinti nustatymus"
 
-#: js/ui/windowManager.js:77
+#: js/ui/windowManager.js:78
 msgid "Keep Changes"
 msgstr "Įrašyti pakeitimus"
 
-#: js/ui/windowManager.js:97
+#: js/ui/windowManager.js:98
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2277,77 +2377,77 @@ msgstr "Išdidinti"
 msgid "Move"
 msgstr "Perkelti"
 
-#: js/ui/windowMenu.js:65
+#: js/ui/windowMenu.js:78
 msgid "Resize"
 msgstr "Keisti dydį"
 
-#: js/ui/windowMenu.js:72
+#: js/ui/windowMenu.js:98
 msgid "Move Titlebar Onscreen"
 msgstr "Perkelti pavadinimo juostą į ekraną"
 
-#: js/ui/windowMenu.js:77
+#: js/ui/windowMenu.js:103
 msgid "Always on Top"
 msgstr "Visada viršuje"
 
-#: js/ui/windowMenu.js:96
+#: js/ui/windowMenu.js:122
 msgid "Always on Visible Workspace"
 msgstr "Visada matomoje darbo srityje"
 
-#: js/ui/windowMenu.js:110
+#: js/ui/windowMenu.js:136
 msgid "Move to Workspace Left"
 msgstr "Perkelti į kairiau esančią darbo sritį"
 
-#: js/ui/windowMenu.js:116
+#: js/ui/windowMenu.js:142
 msgid "Move to Workspace Right"
 msgstr "Perkelti į dešiniau esančią darbo sritį"
 
-#: js/ui/windowMenu.js:122
+#: js/ui/windowMenu.js:148
 msgid "Move to Workspace Up"
 msgstr "Perkelti į aukščiau esančią darbo sritį"
 
-#: js/ui/windowMenu.js:128
+#: js/ui/windowMenu.js:154
 msgid "Move to Workspace Down"
 msgstr "Perkelti į žemiau esančią darbo sritį"
 
-#: js/ui/windowMenu.js:146
+#: js/ui/windowMenu.js:172
 msgid "Move to Monitor Up"
 msgstr "Perkelti į aukščiau esantį monitorių"
 
-#: js/ui/windowMenu.js:155
+#: js/ui/windowMenu.js:181
 msgid "Move to Monitor Down"
 msgstr "Perkelti į žemiau esantį monitorių"
 
-#: js/ui/windowMenu.js:164
+#: js/ui/windowMenu.js:190
 msgid "Move to Monitor Left"
 msgstr "Perkelti į kairiau esantį monitorių"
 
-#: js/ui/windowMenu.js:173
+#: js/ui/windowMenu.js:199
 msgid "Move to Monitor Right"
 msgstr "Perkelti į dešiniau esantį monitorių"
 
-#: js/ui/windowMenu.js:181
+#: js/ui/windowMenu.js:207
 msgid "Close"
 msgstr "Užverti"
 
-#: src/calendar-server/evolution-calendar.desktop.in:3
-msgid "Evolution Calendar"
-msgstr "Evolution kalendorius"
-
-#: src/main.c:435 subprojects/extensions-tool/src/main.c:321
+#: src/main.c:513 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Išvesti versijos numerį"
 
-#: src/main.c:441
+#: src/main.c:519
 msgid "Mode used by GDM for login screen"
 msgstr "Veiksena, naudojama GDM prisijungimo ekrane"
 
-#: src/main.c:447
+#: src/main.c:525
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Naudoti konkrečią veikseną, pvz., „gdm“ prisijungimo ekranui"
 
-#: src/main.c:453
+#: src/main.c:531
 msgid "List possible modes"
 msgstr "Išvardinti galimas veiksenas"
+
+#: src/main.c:537
+msgid "Force animations to be enabled"
+msgstr "Priverstinai įjungti animacijas"
 
 #: src/shell-app.c:305
 msgctxt "program"
@@ -2370,6 +2470,15 @@ msgstr "Slaptažodis negali būti tuščias"
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Naudotojas užvėrė tapatybės patvirtinimo dialogą"
+
+#: src/st/st-icon-theme.c:1882
+#, c-format
+msgid "Icon '%s' not present in theme %s"
+msgstr "Piktogramos „%s“ nėra temoje %s"
+
+#: src/st/st-icon-theme.c:3471 src/st/st-icon-theme.c:3774
+msgid "Failed to load icon"
+msgstr "Nepavyko įkelti piktogramos"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
@@ -2522,7 +2631,7 @@ msgstr ""
 "Pavyzdžiai: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:302
-#: subprojects/extensions-tool/src/main.c:238
+#: subprojects/extensions-tool/src/main.c:242
 msgid "Name"
 msgstr "Pavadinimas"
 
@@ -2536,7 +2645,7 @@ msgstr ""
 "Pavyzdžiai: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:322
-#: subprojects/extensions-tool/src/main.c:241
+#: subprojects/extensions-tool/src/main.c:245
 msgid "Description"
 msgstr "Aprašymas"
 
@@ -2602,26 +2711,18 @@ msgstr "Nežinomi argumentai"
 msgid "UUID, name and description are required"
 msgstr "UUID, pavadinimas ir aprašymas yra būtini"
 
-#: subprojects/extensions-tool/src/command-disable.c:46
-#: subprojects/extensions-tool/src/command-enable.c:46
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
-#: subprojects/extensions-tool/src/main.c:146
-msgid "Failed to connect to GNOME Shell\n"
-msgstr "Nepavyko prisijungti prie GNOME apvalkalo\n"
-
-#: subprojects/extensions-tool/src/command-disable.c:53
-#: subprojects/extensions-tool/src/command-enable.c:53
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "Plėtinio „%s“ nėra\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:101
+#: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
 msgstr "Išjungti plėtinį"
 
-#: subprojects/extensions-tool/src/command-disable.c:119
-#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
 #: subprojects/extensions-tool/src/command-info.c:103
 #: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
@@ -2629,8 +2730,8 @@ msgstr "Išjungti plėtinį"
 msgid "No UUID given"
 msgstr "Nenurodytas UUID"
 
-#: subprojects/extensions-tool/src/command-disable.c:124
-#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
 #: subprojects/extensions-tool/src/command-info.c:108
 #: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
@@ -2638,12 +2739,18 @@ msgstr "Nenurodytas UUID"
 msgid "More than one UUID given"
 msgstr "Pateiktas daugiau nei vienas UUID"
 
-#: subprojects/extensions-tool/src/command-enable.c:101
+#: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
 msgstr "Išjungti plėtinį"
 
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:150
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "Nepavyko prisijungti prie GNOME apvalkalo\n"
+
 #: subprojects/extensions-tool/src/command-info.c:59
-#: subprojects/extensions-tool/src/main.c:155
+#: subprojects/extensions-tool/src/main.c:159
 #, c-format
 msgid "Extension “%s” doesn't exist\n"
 msgstr "Plėtinio „%s“ nėra\n"
@@ -2652,23 +2759,23 @@ msgstr "Plėtinio „%s“ nėra\n"
 msgid "Show extensions info"
 msgstr "Rodyti plėtinio informaciją"
 
-#: subprojects/extensions-tool/src/command-install.c:173
+#: subprojects/extensions-tool/src/command-install.c:190
 msgid "Overwrite an existing extension"
 msgstr "Perrašyti esamą plėtinį"
 
-#: subprojects/extensions-tool/src/command-install.c:175
+#: subprojects/extensions-tool/src/command-install.c:192
 msgid "EXTENSION_BUNDLE"
 msgstr "PLĖTINIO_RYŠULYS"
 
-#: subprojects/extensions-tool/src/command-install.c:184
+#: subprojects/extensions-tool/src/command-install.c:201
 msgid "Install an extension bundle"
 msgstr "Įdiegti plėtinio ryšulį"
 
-#: subprojects/extensions-tool/src/command-install.c:202
+#: subprojects/extensions-tool/src/command-install.c:219
 msgid "No extension bundle specified"
 msgstr "Nenurodytas plėtinio ryšulys"
 
-#: subprojects/extensions-tool/src/command-install.c:208
+#: subprojects/extensions-tool/src/command-install.c:225
 msgid "More than one extension bundle specified"
 msgstr "Nurodytas daugiau nei vienas plėtinio ryšulys"
 
@@ -2788,102 +2895,102 @@ msgstr "Nepavyko pašalinti „%s“\n"
 msgid "Uninstall an extension"
 msgstr "Išdiegti plėtinį"
 
-#: subprojects/extensions-tool/src/main.c:72
+#: subprojects/extensions-tool/src/main.c:76
 msgid "Do not print error messages"
 msgstr "Nespausdinti klaidų pranešimų"
 
-#: subprojects/extensions-tool/src/main.c:244
+#: subprojects/extensions-tool/src/main.c:248
 msgid "Path"
 msgstr "Kelias"
 
-#: subprojects/extensions-tool/src/main.c:247
+#: subprojects/extensions-tool/src/main.c:251
 msgid "URL"
 msgstr "URL"
 
-#: subprojects/extensions-tool/src/main.c:250
+#: subprojects/extensions-tool/src/main.c:254
 msgid "Original author"
 msgstr "Pradinis autorius"
 
-#: subprojects/extensions-tool/src/main.c:253
+#: subprojects/extensions-tool/src/main.c:257
 msgid "Version"
 msgstr "Versija"
 
-#: subprojects/extensions-tool/src/main.c:256
+#: subprojects/extensions-tool/src/main.c:260
 msgid "State"
 msgstr "Būsena"
 
-#: subprojects/extensions-tool/src/main.c:294
+#: subprojects/extensions-tool/src/main.c:298
 msgid "“version” takes no arguments"
 msgstr "„version“ nepriima argumentų"
 
-#: subprojects/extensions-tool/src/main.c:296
-#: subprojects/extensions-tool/src/main.c:316
+#: subprojects/extensions-tool/src/main.c:300
+#: subprojects/extensions-tool/src/main.c:320
 msgid "Usage:"
 msgstr "Naudojimas:"
 
-#: subprojects/extensions-tool/src/main.c:299
+#: subprojects/extensions-tool/src/main.c:303
 msgid "Print version information and exit."
 msgstr "Atspausdinti versijos informaciją ir išeiti."
 
-#: subprojects/extensions-tool/src/main.c:314
-#: subprojects/extensions-tool/src/main.c:317
+#: subprojects/extensions-tool/src/main.c:318
+#: subprojects/extensions-tool/src/main.c:321
 msgid "COMMAND"
 msgstr "KOMANDA"
 
-#: subprojects/extensions-tool/src/main.c:317
+#: subprojects/extensions-tool/src/main.c:321
 msgid "[ARGS…]"
 msgstr "[ARG…]"
 
-#: subprojects/extensions-tool/src/main.c:319
+#: subprojects/extensions-tool/src/main.c:323
 msgid "Commands:"
 msgstr "Komandos:"
 
-#: subprojects/extensions-tool/src/main.c:320
+#: subprojects/extensions-tool/src/main.c:324
 msgid "Print help"
 msgstr "Atspausdinti žinyną"
 
-#: subprojects/extensions-tool/src/main.c:322
+#: subprojects/extensions-tool/src/main.c:326
 msgid "Enable extension"
 msgstr "Įjungti ]plėtinį"
 
-#: subprojects/extensions-tool/src/main.c:323
+#: subprojects/extensions-tool/src/main.c:327
 msgid "Disable extension"
 msgstr "Išjungti plėtinį"
 
-#: subprojects/extensions-tool/src/main.c:324
+#: subprojects/extensions-tool/src/main.c:328
 msgid "Reset extension"
 msgstr "Atstatyti plėtinį"
 
-#: subprojects/extensions-tool/src/main.c:325
+#: subprojects/extensions-tool/src/main.c:329
 msgid "Uninstall extension"
 msgstr "Išdiegti plėtinį"
 
-#: subprojects/extensions-tool/src/main.c:326
+#: subprojects/extensions-tool/src/main.c:330
 msgid "List extensions"
 msgstr "Išvardinti plėtinius"
 
-#: subprojects/extensions-tool/src/main.c:327
-#: subprojects/extensions-tool/src/main.c:328
+#: subprojects/extensions-tool/src/main.c:331
+#: subprojects/extensions-tool/src/main.c:332
 msgid "Show extension info"
 msgstr "Rodyti plėtinio informaciją"
 
-#: subprojects/extensions-tool/src/main.c:329
+#: subprojects/extensions-tool/src/main.c:333
 msgid "Open extension preferences"
 msgstr "Atverti plėtinio nuostatas"
 
-#: subprojects/extensions-tool/src/main.c:330
+#: subprojects/extensions-tool/src/main.c:334
 msgid "Create extension"
 msgstr "Sukurti plėtinį"
 
-#: subprojects/extensions-tool/src/main.c:331
+#: subprojects/extensions-tool/src/main.c:335
 msgid "Package extension"
 msgstr "Supakuoti plėtinį"
 
-#: subprojects/extensions-tool/src/main.c:332
+#: subprojects/extensions-tool/src/main.c:336
 msgid "Install extension bundle"
 msgstr "Įdiegti plėtinio ryšulį"
 
-#: subprojects/extensions-tool/src/main.c:334
+#: subprojects/extensions-tool/src/main.c:338
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Detalesnį žinyną gausite panaudoję „%s“.\n"
@@ -2906,7 +3013,7 @@ msgstr "Pridėti piktogramą prie viršutinės juostos"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1907
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2916,7 +3023,7 @@ msgstr[2] "%u išvesčių"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1917
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -2924,9 +3031,45 @@ msgstr[0] "%u įvestis"
 msgstr[1] "%u įvestys"
 msgstr[2] "%u įvesčių"
 
-#: subprojects/gvc/gvc-mixer-control.c:2867
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sistemos garsai"
+
+#~ msgid "Attach modal dialog to the parent window"
+#~ msgstr "Prikabinti modalinį dialogą prie tėvinio lango"
+
+#~ msgid ""
+#~ "This key overrides the key in org.gnome.mutter when running GNOME Shell."
+#~ msgstr "Šis raktas perrašo org.gnome.mutter raktą, kai vykdoma GNOME Shell."
+
+#~ msgid "Enable edge tiling when dropping windows on screen edges"
+#~ msgstr "Įjungti kraštų išplėtimą, kai langai numetami ekrano kraštuose"
+
+#~ msgid "Workspaces are managed dynamically"
+#~ msgstr "Darbo sritys yra tvarkomos dinamiškai"
+
+#~ msgid "Workspaces only on primary monitor"
+#~ msgstr "Darbo sritys tik pagrindiniame monitoriuje"
+
+#~ msgid "Delay focus changes in mouse mode until the pointer stops moving"
+#~ msgstr "Atidėti fokuso pakeitimus pelei iki žymiklis nustos judėti"
+
+#~ msgid "Region & Language Settings"
+#~ msgstr "Regiono ir kalbos nustatymai"
+
+#~ msgid "Applications"
+#~ msgstr "Programos"
+
+#, javascript-format
+#~ msgid "Unable to start %s"
+#~ msgstr "Nepavyksta paleisti %s"
+
+#, javascript-format
+#~ msgid "Couldn’t find the %s application"
+#~ msgstr "Nepavyksta rasti programos %s"
+
+#~ msgid "Evolution Calendar"
+#~ msgstr "Evolution kalendorius"
 
 #~ msgid ""
 #~ "Whether the default Bluetooth adapter had set up devices associated to it"
@@ -2945,27 +3088,11 @@ msgstr "Sistemos garsai"
 #~ "numatytuoju adapteriu. Tai bus atstatyta, jeigu kada nors bus pastebėta, "
 #~ "kad numatytasis adapteris neturi su juo susietų įrenginių."
 
-#~ msgid "Bluetooth Settings"
-#~ msgstr "Bluetooth nustatymai"
-
-#, javascript-format
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d prijungtas"
-#~ msgstr[1] "%d prijungti"
-#~ msgstr[2] "%d prijungta"
-
 #~ msgid "Bluetooth On"
 #~ msgstr "Bluetooth įjungtas"
 
 #~ msgid "Bluetooth Off"
 #~ msgstr "Bluetooth išjungtas"
-
-#~ msgid "Location Enabled"
-#~ msgstr "Vietos nustatymas įjungtas"
-
-#~ msgid "Disable"
-#~ msgstr "Išjungti"
 
 #~ msgid "Privacy Settings"
 #~ msgstr "Privatumo nustatymai"
@@ -2975,9 +3102,6 @@ msgstr "Sistemos garsai"
 
 #~ msgid "Location Disabled"
 #~ msgstr "Vietos nustatymas išjungtas"
-
-#~ msgid "Enable"
-#~ msgstr "Įjungti"
 
 #, javascript-format
 #~ msgid "%s Off"
@@ -3010,12 +3134,6 @@ msgstr "Sistemos garsai"
 #, javascript-format
 #~ msgid "%s Connection Failed"
 #~ msgstr "Nepavyko prisijungti prie %s"
-
-#~ msgid "Wired Settings"
-#~ msgstr "Laidinio ryšio nustatymai"
-
-#~ msgid "Mobile Broadband Settings"
-#~ msgstr "Mobiliojo plačiajuosčio tinklo nustatymai"
 
 #, javascript-format
 #~ msgid "%s Hardware Disabled"
@@ -3051,9 +3169,6 @@ msgstr "Sistemos garsai"
 
 #~ msgid "Select a network"
 #~ msgstr "Pasirinkite tinklą"
-
-#~ msgid "No Networks"
-#~ msgstr "Nėra tinklų"
 
 #~ msgid "Use hardware switch to turn off"
 #~ msgstr "Išjungimui naudoti aparatinį jungiklį"
@@ -3092,24 +3207,8 @@ msgstr "Sistemos garsai"
 #~ msgid "connection failed"
 #~ msgstr "nepavyko prisijungti"
 
-#~ msgid "VPN Settings"
-#~ msgstr "VPN nustatymai"
-
-#~ msgid "VPN"
-#~ msgstr "VPN"
-
 #~ msgid "VPN Off"
 #~ msgstr "VPN išjungtas"
-
-#~ msgid "Network Settings"
-#~ msgstr "Tinklo nustatymai"
-
-#, javascript-format
-#~ msgid "%s Wired Connection"
-#~ msgid_plural "%s Wired Connections"
-#~ msgstr[0] "%s laidinis ryšys"
-#~ msgstr[1] "%s laidiniai ryšiai"
-#~ msgstr[2] "%s laidinių ryšių"
 
 #, javascript-format
 #~ msgid "%s Wi-Fi Connection"
@@ -3117,19 +3216,6 @@ msgstr "Sistemos garsai"
 #~ msgstr[0] "%s belaidis ryšys"
 #~ msgstr[1] "%s belaidžiai ryšiai"
 #~ msgstr[2] "%s belaidžių ryšių"
-
-#, javascript-format
-#~ msgid "%s Modem Connection"
-#~ msgid_plural "%s Modem Connections"
-#~ msgstr[0] "%s modemo ryšys"
-#~ msgstr[1] "%s modemo ryšiai"
-#~ msgstr[2] "%s modemo ryšių"
-
-#~ msgid "Connection failed"
-#~ msgstr "Nepavyko prisijungti"
-
-#~ msgid "Activation of network connection failed"
-#~ msgstr "Tinklo ryšio nepavyko aktyvuoti"
 
 #~ msgid "Night Light Disabled"
 #~ msgstr "Naktinis apšvietimas išjungtas"
@@ -3139,9 +3225,6 @@ msgstr "Sistemos garsai"
 
 #~ msgid "Disable Until Tomorrow"
 #~ msgstr "Išjungti iki rytojaus"
-
-#~ msgid "Power Settings"
-#~ msgstr "Energijos valdymo nustatymai"
 
 #~ msgid "Fully Charged"
 #~ msgstr "Pilnai įkrauta"
@@ -3579,15 +3662,6 @@ msgstr "Sistemos garsai"
 
 #~ msgid "Eject"
 #~ msgstr "Išimti"
-
-#~ msgid "Unmute"
-#~ msgstr "Įjungti garsą"
-
-#~ msgid "Mute"
-#~ msgstr "Nutildyti"
-
-#~ msgid "Open Calendar"
-#~ msgstr "Atverti kalendorių"
 
 #~ msgid "Open"
 #~ msgstr "Atverti"
