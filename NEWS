@@ -1,3 +1,23 @@
+43.3
+====
+* Ensure quick settings toggles align with the pixel grid [Sebastian; !2577]
+* Lower OOM score of gnome-shell process [Jian-Hong; !2582]
+* Fix incomplete device list in volume menus [Florian; !2616]
+* Fixed crash [Florian; !2622]
+* Plugged leak [Sebastian; !2637]
+* Misc. bug fixes and cleanups [Jonas Å., Florian, Jonas D., Alessandro, Heiko,
+  Takao, Carlos, Sebastian; !2578, !2571, !2594, !2606, !2604, !2399, !2613,
+  !2496, !2625, !2552, !2634, !2514]
+
+Contributors:
+  Alessandro Bono, Jonas Dreßler, Takao Fujiwara, Carlos Garnacho, Balló György,
+  Heiko Hösch, Sebastian Keller, Florian Müllner, Jian-Hong Pan, Olga Smirnova,
+  Jonas Ådahl
+
+Translators:
+  Olga Smirnova [ie], Ekaterine Papava [ka], Aleksandr Melman [ru],
+  Nart Tlisha [ab], Bruce Cowan [en_GB], Hugo Carvalho [pt]
+
 43.2
 ====
 * Fix screencast UI being erroneously disabled [Florian; !2533]
