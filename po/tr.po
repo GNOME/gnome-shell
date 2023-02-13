@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-10 16:34+0000\n"
-"PO-Revision-Date: 2023-02-11 00:56+0300\n"
+"POT-Creation-Date: 2023-02-12 16:24+0000\n"
+"PO-Revision-Date: 2023-02-12 20:05+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -1027,8 +1027,8 @@ msgstr ""
 "Diğer seçenek olarak, yönlendiricinizde “WPS” düğmesini kullanarak "
 "bağlayabilirsiniz."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:369
-#: js/ui/status/network.js:451
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:217
+#: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "Bağlan"
 
@@ -1647,7 +1647,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:457
+#: js/ui/panel.js:460
 msgid "Top Bar"
 msgstr "Tepe Çubuğu"
 
@@ -1912,9 +1912,51 @@ msgstr "Büyük Yazı"
 msgid "Auto Rotate"
 msgstr "Kendiliğinden Döndür"
 
-#: js/ui/status/bluetooth.js:151
+#: js/ui/status/backgroundApps.js:135
+msgctxt "title"
+msgid "Background Apps"
+msgstr "Arka Plan Uygulamaları"
+
+#: js/ui/status/backgroundApps.js:153
+msgid "App Settings"
+msgstr "Uygulama Ayarları"
+
+#: js/ui/status/backgroundApps.js:181
+msgid "No Background Apps"
+msgstr "Arka Plan Uygulaması Yok"
+
+#: js/ui/status/backgroundApps.js:183
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%d Arka Plan Uygulamaları"
+
+#: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
+msgid "Disconnect"
+msgstr "Bağlantıyı Kes"
+
+#: js/ui/status/bluetooth.js:234 js/ui/status/bluetooth.js:236
 msgid "Bluetooth"
 msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+msgid "Bluetooth Settings"
+msgstr "Bluetooth Ayarları"
+
+#: js/ui/status/bluetooth.js:306
+msgid "No available or connected devices"
+msgstr "Kullanılabilir ya da bağlı aygıt yok"
+
+#: js/ui/status/bluetooth.js:307
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "Aygıtlara bağlanmak için Bluetooth’u aç"
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:361
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d Bağlı"
 
 #: js/ui/status/brightness.js:34
 msgid "Brightness"
@@ -1990,10 +2032,6 @@ msgstr "%s Bağlantısını Kes"
 msgid "Connect to %s"
 msgstr "Bağlan: %s"
 
-#: js/ui/status/network.js:369
-msgid "Disconnect"
-msgstr "Bağlantıyı Kes"
-
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1122
 #, javascript-format
@@ -2033,10 +2071,6 @@ msgstr "Kablolu Ayarları"
 #: js/ui/status/network.js:1856
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth İnternet"
-
-#: js/ui/status/network.js:1857
-msgid "Bluetooth Settings"
-msgstr "Bluetooth Ayarları"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1863
