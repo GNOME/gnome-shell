@@ -876,6 +876,7 @@ const WirelessNetwork = GObject.registerClass({
         if (!this._accessPoints.delete(ap))
             return false;
 
+        ap.disconnectObject(this);
         this._updateBestAp();
 
         if (wasActive !== this.is_active)
@@ -1084,6 +1085,11 @@ const NMWirelessDeviceItem = GObject.registerClass({
         this._activeConnectionChanged();
         this._availableConnectionsChanged();
         this._updateItemsVisibility();
+
+        this.connect('destroy', () => {
+            for (const net of this._networkItems.keys())
+                net.destroy();
+        });
     }
 
     get icon_name() {
