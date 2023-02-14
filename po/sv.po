@@ -1,10 +1,10 @@
 # Swedish translation for gnome-shell.
-# Copyright © 2009-2022 Free Software Foundation, Inc.
+# Copyright © 2009-2023 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 # Daniel Nylander <po@danielnylander.se>, 2009, 2010, 2011, 2012.
 # Marcus Lundblad <ml@update.uu.se>, 2014.
 # Åke Engelbrektson <eson57@gmail.com>, 2014.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
 # Sebastian Rasmussen <sebras@gmail.com>, 2015, 2016.
 # Luna Jernberg <droidbittin@gmail.com>, 2021, 2022.
 #
@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-17 18:27+0000\n"
-"PO-Revision-Date: 2022-09-19 23:00+0200\n"
+"POT-Creation-Date: 2023-02-14 00:30+0000\n"
+"PO-Revision-Date: 2023-02-14 06:13+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -64,7 +64,7 @@ msgid "Activate favorite application 9"
 msgstr "Aktivera favoritprogram 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
 msgid "Screenshots"
 msgstr "Skärmbilder"
 
@@ -503,7 +503,7 @@ msgstr "Webbsida"
 msgid "Visit extension homepage"
 msgstr "Besök webbsida för tillägg"
 
-#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:146 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
@@ -511,7 +511,7 @@ msgstr "Besök webbsida för tillägg"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:312 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -549,13 +549,13 @@ msgstr "Autentiseringsfel"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:603
+#: js/gdm/util.js:604
 msgid "(or swipe finger across reader)"
 msgstr "(eller dra fingret längs läsaren)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:608
+#: js/gdm/util.js:609
 msgid "(or place finger on reader)"
 msgstr "(eller placera fingret på läsaren)"
 
@@ -813,7 +813,7 @@ msgstr "Neka åtkomst"
 msgid "Grant Access"
 msgstr "Bevilja åtkomst"
 
-#: js/ui/appDisplay.js:1728
+#: js/ui/appDisplay.js:1731
 msgid "Unnamed Folder"
 msgstr "Namnlös mapp"
 
@@ -876,7 +876,7 @@ msgstr "Hörlurar"
 msgid "Headset"
 msgstr "Mikrofonlur"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1112,7 +1112,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Ett lösenord krävs för att ansluta till ”%s”."
 
-#: js/ui/components/networkAgent.js:736
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1954
 msgid "Network Manager"
 msgstr "Nätverkshanterare"
 
@@ -1423,31 +1423,31 @@ msgstr "Uppdateringar för tillägg finns tillgängliga"
 msgid "Extension updates are ready to be installed."
 msgstr "Uppdateringar för tillägg är redo att installeras."
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:75
 msgid "Allow inhibiting shortcuts"
 msgstr "Tillåt förhindrande av kortkommandon"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:82
+#: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
 msgstr "Programmet %s vill förhindra kortkommandon"
 
-#: js/ui/inhibitShortcutsDialog.js:83
+#: js/ui/inhibitShortcutsDialog.js:79
 msgid "An application wants to inhibit shortcuts"
 msgstr "Ett program vill förhindra kortkommandon"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:90
+#: js/ui/inhibitShortcutsDialog.js:86
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Du kan återställa kortkommandon genom att trycka %s."
 
-#: js/ui/inhibitShortcutsDialog.js:101
+#: js/ui/inhibitShortcutsDialog.js:97
 msgid "Deny"
 msgstr "Neka"
 
-#: js/ui/inhibitShortcutsDialog.js:110
+#: js/ui/inhibitShortcutsDialog.js:106
 msgid "Allow"
 msgstr "Tillåt"
 
@@ -1538,7 +1538,7 @@ msgstr "Aktiverad"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Inaktiverad"
 
@@ -1716,91 +1716,91 @@ msgstr "Kunde inte låsa"
 msgid "Lock was blocked by an application"
 msgstr "Låsning hindrades av ett program"
 
-#: js/ui/screenshot.js:1147
+#: js/ui/screenshot.js:1161
 msgid "Selection"
 msgstr "Markering"
 
-#: js/ui/screenshot.js:1157
+#: js/ui/screenshot.js:1171
 msgid "Area Selection"
 msgstr "Områdesmarkering"
 
-#: js/ui/screenshot.js:1162
+#: js/ui/screenshot.js:1176
 msgid "Screen"
 msgstr "Skärm"
 
-#: js/ui/screenshot.js:1172
+#: js/ui/screenshot.js:1186
 msgid "Screen Selection"
 msgstr "Skärmval"
 
-#: js/ui/screenshot.js:1177
+#: js/ui/screenshot.js:1191
 msgid "Window"
 msgstr "Fönster"
 
-#: js/ui/screenshot.js:1187
+#: js/ui/screenshot.js:1201
 msgid "Window Selection"
 msgstr "Fönsterval"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1239
 msgid "Screenshot / Screencast"
 msgstr "Skärmbild / skärminspelning"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1275
 msgid "Show Pointer"
 msgstr "Visa pekare"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1849
+#: js/ui/screenshot.js:1866
 msgid "Screencasts"
 msgstr "Skärminspelningar"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1854
+#: js/ui/screenshot.js:1871
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Skärminspelning från %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
+#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
 msgid "Screenshot"
 msgstr "Skärmbild"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1926
+#: js/ui/screenshot.js:1919
 msgid "Screencast recorded"
 msgstr "Skärminspelning inspelad"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1928
+#: js/ui/screenshot.js:1921
 msgid "Click here to view the video."
 msgstr "Klicka här för att se videon."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
+#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
 msgid "Show in Files"
 msgstr "Visa i Filer"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2085
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Skärmbild från %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2138
+#: js/ui/screenshot.js:2131
 msgid "Screenshot captured"
 msgstr "Skärmbild tagen"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2140
+#: js/ui/screenshot.js:2133
 msgid "You can paste the image from the clipboard."
 msgstr "Du kan klistra in bilden från urklipp."
 
-#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
+#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
 msgid "Screenshot taken"
 msgstr "Skärmbild tagen"
 
@@ -1978,11 +1978,11 @@ msgstr "Sekundärklick"
 msgid "Dwell Click"
 msgstr "Uppehållsklick"
 
-#: js/ui/status/keyboard.js:830
+#: js/ui/status/keyboard.js:842
 msgid "Keyboard"
 msgstr "Tangentbord"
 
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:859
 msgid "Show Keyboard Layout"
 msgstr "Visa tangentbordslayout"
 
@@ -2022,6 +2022,54 @@ msgstr "Anslut till %s"
 msgid "%s Hotspot"
 msgstr "Surfzon för %s"
 
+#: js/ui/status/network.js:1466 js/ui/status/network.js:1482
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1467
+msgid "VPN Settings"
+msgstr "VPN-inställningar"
+
+#: js/ui/status/network.js:1716
+msgid "Wi–Fi"
+msgstr "Wi–Fi"
+
+#: js/ui/status/network.js:1718
+msgid "All Networks"
+msgstr "Alla nätverk"
+
+#: js/ui/status/network.js:1815
+msgid "Wired Connections"
+msgstr "Trådbundna anslutningar"
+
+#: js/ui/status/network.js:1816
+msgid "Wired Settings"
+msgstr "Trådbundna inställningar"
+
+#: js/ui/status/network.js:1830
+msgid "Bluetooth Tethers"
+msgstr "Bluetooth-delningar"
+
+#: js/ui/status/network.js:1831
+msgid "Bluetooth Settings"
+msgstr "Inställningar för Bluetooth"
+
+#: js/ui/status/network.js:1845
+msgid "Mobile Connections"
+msgstr "Mobilanslutningar"
+
+#: js/ui/status/network.js:1847
+msgid "Mobile Broadband Settings"
+msgstr "Inställningar för mobilt bredband"
+
+#: js/ui/status/network.js:1959
+msgid "Connection failed"
+msgstr "Anslutningen misslyckades"
+
+#: js/ui/status/network.js:1960
+msgid "Activation of network connection failed"
+msgstr "Aktivering av nätverksanslutning misslyckades"
+
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
 msgstr "Nattbelysning"
@@ -2041,16 +2089,16 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Strömsparare"
 
-#: js/ui/status/powerProfiles.js:68
+#: js/ui/status/powerProfiles.js:70
 msgid "Power Profiles"
 msgstr "Strömprofiler"
 
 # https://gitlab.gnome.org/GNOME/gnome-shell/-/commit/6d0c2ae69772981537613ab5bd7bd706e0445855 This is specifically for stopping the screenshot UI screencasts for now.
-#: js/ui/status/remoteAccess.js:74
+#: js/ui/status/remoteAccess.js:72
 msgid "Stop Screencast"
 msgstr "Stoppa skärminspelning"
 
-#: js/ui/status/remoteAccess.js:144
+#: js/ui/status/remoteAccess.js:142
 msgid "Stop Screen Sharing"
 msgstr "Stoppa skärmdelning"
 
@@ -2134,19 +2182,19 @@ msgstr "Thunderbolt-auktoriseringsfel"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Kunde inte auktorisera Thunderbolt-enheten: %s"
 
-#: js/ui/status/volume.js:191
+#: js/ui/status/volume.js:194
 msgid "Volume changed"
 msgstr "Volymen ändrades"
 
-#: js/ui/status/volume.js:253
+#: js/ui/status/volume.js:256
 msgid "Volume"
 msgstr "Volym"
 
-#: js/ui/status/volume.js:269
+#: js/ui/status/volume.js:272
 msgid "Sound Output"
 msgstr "Ljudutgång"
 
-#: js/ui/status/volume.js:337
+#: js/ui/status/volume.js:340
 msgid "Sound Input"
 msgstr "Ljudingång"
 
@@ -2593,26 +2641,18 @@ msgstr "Okända argument"
 msgid "UUID, name and description are required"
 msgstr "UUID, namn och beskrivning krävs"
 
-#: subprojects/extensions-tool/src/command-disable.c:46
-#: subprojects/extensions-tool/src/command-enable.c:46
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
-#: subprojects/extensions-tool/src/main.c:146
-msgid "Failed to connect to GNOME Shell\n"
-msgstr "Misslyckades med att ansluta till GNOME-skalet\n"
-
-#: subprojects/extensions-tool/src/command-disable.c:53
-#: subprojects/extensions-tool/src/command-enable.c:53
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "Tillägget ”%s” finns inte\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:101
+#: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
 msgstr "Inaktivera ett tillägg"
 
-#: subprojects/extensions-tool/src/command-disable.c:119
-#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
 #: subprojects/extensions-tool/src/command-info.c:103
 #: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
@@ -2620,8 +2660,8 @@ msgstr "Inaktivera ett tillägg"
 msgid "No UUID given"
 msgstr "Inget UUID angivet"
 
-#: subprojects/extensions-tool/src/command-disable.c:124
-#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
 #: subprojects/extensions-tool/src/command-info.c:108
 #: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
@@ -2629,9 +2669,15 @@ msgstr "Inget UUID angivet"
 msgid "More than one UUID given"
 msgstr "Mer än ett UUID angivet"
 
-#: subprojects/extensions-tool/src/command-enable.c:101
+#: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
 msgstr "Aktivera ett tillägg"
+
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:146
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "Misslyckades med att ansluta till GNOME-skalet\n"
 
 #: subprojects/extensions-tool/src/command-info.c:59
 #: subprojects/extensions-tool/src/main.c:155
@@ -2897,7 +2943,7 @@ msgstr "Lägg till en ikon i systemraden"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1907
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2906,14 +2952,14 @@ msgstr[1] "%u utgångar"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1917
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u ingång"
 msgstr[1] "%u ingångar"
 
-#: subprojects/gvc/gvc-mixer-control.c:2867
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Systemljud"
 
@@ -2935,15 +2981,6 @@ msgstr "Systemljud"
 
 #~ msgid "Log Out"
 #~ msgstr "Logga ut"
-
-#~ msgid "Wired Settings"
-#~ msgstr "Trådbundna inställningar"
-
-#~ msgid "Mobile Broadband Settings"
-#~ msgstr "Inställningar för mobilt bredband"
-
-#~ msgid "Bluetooth Settings"
-#~ msgstr "Inställningar för Bluetooth"
 
 #~ msgid "Connect to Internet"
 #~ msgstr "Anslut till internet"
@@ -2973,9 +3010,6 @@ msgstr "Systemljud"
 #~ msgid "Select a network"
 #~ msgstr "Välj ett nätverk"
 
-#~ msgid "No Networks"
-#~ msgstr "Inga nätverk"
-
 #~ msgid "Use hardware switch to turn off"
 #~ msgstr "Använd hårdvarubrytare för att slå av"
 
@@ -2984,12 +3018,6 @@ msgstr "Systemljud"
 
 #~ msgid "Wi-Fi Settings"
 #~ msgstr "Inställningar för trådlösa nätverk"
-
-#~ msgid "VPN Settings"
-#~ msgstr "VPN-inställningar"
-
-#~ msgid "VPN"
-#~ msgstr "VPN"
 
 #~ msgid "VPN Off"
 #~ msgstr "VPN avslaget"
@@ -3002,24 +3030,6 @@ msgstr "Systemljud"
 #~ msgid_plural "%s Wi-Fi Connections"
 #~ msgstr[0] "%s trådlös anslutning"
 #~ msgstr[1] "%s trådlösa anslutningar"
-
-#, javascript-format
-#~ msgid "%s Wired Connection"
-#~ msgid_plural "%s Wired Connections"
-#~ msgstr[0] "%s trådbunden anslutning"
-#~ msgstr[1] "%s trådbundna anslutningar"
-
-#, javascript-format
-#~ msgid "%s Modem Connection"
-#~ msgid_plural "%s Modem Connections"
-#~ msgstr[0] "%s modemanslutning"
-#~ msgstr[1] "%s modemanslutningar"
-
-#~ msgid "Connection failed"
-#~ msgstr "Anslutningen misslyckades"
-
-#~ msgid "Activation of network connection failed"
-#~ msgstr "Aktivering av nätverksanslutning misslyckades"
 
 #, javascript-format
 #~ msgid "%s Off"
