@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-11 20:50+0000\n"
-"PO-Revision-Date: 2023-02-12 01:05+0300\n"
+"POT-Creation-Date: 2023-02-14 13:36+0000\n"
+"PO-Revision-Date: 2023-02-14 17:56+0300\n"
 "Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -467,15 +467,15 @@ msgstr "Хатняя старонка"
 msgid "Visit extension homepage"
 msgstr "Наведаць хатнюю старонку пашырэння"
 
-#: js/gdm/authPrompt.js:142 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "Скасаваць"
 
-#: js/gdm/authPrompt.js:305 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:310 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -513,13 +513,13 @@ msgstr "Памылка праверкі сапраўднасці"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:623
+#: js/gdm/util.js:624
 msgid "(or swipe finger across reader)"
 msgstr "(або правядзіце пальцам па чытальніку)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:628
+#: js/gdm/util.js:629
 msgid "(or place finger on reader)"
 msgstr "(або прыкладзіце палец да чытальніка)"
 
@@ -1182,31 +1182,31 @@ msgstr "%d/%m"
 msgid "No Events"
 msgstr "Няма падзей"
 
-#: js/ui/dateMenu.js:396
+#: js/ui/dateMenu.js:395
 msgid "Add world clocks…"
 msgstr "Дадаць сусветныя гадзіннікі…"
 
-#: js/ui/dateMenu.js:397
+#: js/ui/dateMenu.js:396
 msgid "World Clocks"
 msgstr "Сусветныя гадзіннікі"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:680
 msgid "Loading…"
 msgstr "Загрузка…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:690
 msgid "Go online for weather information"
 msgstr "Злучыцеся з інтэрнэтам, каб атрымаць інфармацыю пра надвор'е"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:692
 msgid "Weather information is currently unavailable"
 msgstr "Інфармацыя пра надвор'е зараз недаступна"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:702
 msgid "Weather"
 msgstr "Надвор'е"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:704
 msgid "Select weather location…"
 msgstr "Выбраць месцазнаходжанне…"
 
@@ -1374,15 +1374,15 @@ msgstr "%s (аддалены сеанс)"
 msgid "%s (console)"
 msgstr "%s (кансоль)"
 
-#: js/ui/extensionDownloader.js:227
+#: js/ui/extensionDownloader.js:245
 msgid "Install"
 msgstr "Усталяваць"
 
-#: js/ui/extensionDownloader.js:233
+#: js/ui/extensionDownloader.js:251
 msgid "Install Extension"
 msgstr "Усталяваць пашырэнне"
 
-#: js/ui/extensionDownloader.js:234
+#: js/ui/extensionDownloader.js:252
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Спампаваць і ўсталяваць «%s» з extensions.gnome.org?"
@@ -1649,7 +1649,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Сістэма"
 
-#: js/ui/panel.js:457
+#: js/ui/panel.js:460
 msgid "Top Bar"
 msgstr "Верхняя панэль"
 
@@ -1916,6 +1916,27 @@ msgstr "Вялікі тэкст"
 #: js/ui/status/autoRotate.js:14
 msgid "Auto Rotate"
 msgstr "Аўтапаварот"
+
+#: js/ui/status/backgroundApps.js:135
+msgctxt "title"
+msgid "Background Apps"
+msgstr "Праграмы ў фоне"
+
+#: js/ui/status/backgroundApps.js:153
+msgid "App Settings"
+msgstr "Налады праграм"
+
+#: js/ui/status/backgroundApps.js:181
+msgid "No Background Apps"
+msgstr "Няма праграм у фоне"
+
+#: js/ui/status/backgroundApps.js:183
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%d праграма ў фоне"
+msgstr[1] "%d праграмы ў фоне"
+msgstr[2] "%d праграм у фоне"
 
 #: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
 msgid "Disconnect"
@@ -2399,10 +2420,6 @@ msgstr "Перамясціць на манітор правей"
 msgid "Close"
 msgstr "Закрыць"
 
-#: src/calendar-server/evolution-calendar.desktop.in:3
-msgid "Evolution Calendar"
-msgstr "Каляндар Evolution"
-
 #: src/main.c:513 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Вывесці нумар версіі"
@@ -2735,23 +2752,23 @@ msgstr "Пашырэнне «%s» не існуе\n"
 msgid "Show extensions info"
 msgstr "Паказаць звесткі аб пашырэнні"
 
-#: subprojects/extensions-tool/src/command-install.c:173
+#: subprojects/extensions-tool/src/command-install.c:190
 msgid "Overwrite an existing extension"
 msgstr "Перазапісаць існуючае пашырэнне"
 
-#: subprojects/extensions-tool/src/command-install.c:175
+#: subprojects/extensions-tool/src/command-install.c:192
 msgid "EXTENSION_BUNDLE"
 msgstr "ПАКЕТ_ПАШЫРЭННЯ"
 
-#: subprojects/extensions-tool/src/command-install.c:184
+#: subprojects/extensions-tool/src/command-install.c:201
 msgid "Install an extension bundle"
 msgstr "Усталяваць пакет пашырэння"
 
-#: subprojects/extensions-tool/src/command-install.c:202
+#: subprojects/extensions-tool/src/command-install.c:219
 msgid "No extension bundle specified"
 msgstr "Не ўказаны пакет пашырэння"
 
-#: subprojects/extensions-tool/src/command-install.c:208
+#: subprojects/extensions-tool/src/command-install.c:225
 msgid "More than one extension bundle specified"
 msgstr "Указана больш за адзін пакет пашырэння"
 
@@ -3010,6 +3027,9 @@ msgstr[2] "%u аўдыяўваходаў"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Сістэмныя гукі"
+
+#~ msgid "Evolution Calendar"
+#~ msgstr "Каляндар Evolution"
 
 #~ msgid "Applications"
 #~ msgstr "Праграмы"
