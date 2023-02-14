@@ -1,23 +1,23 @@
-# gnome-shell's Portuguese translation.
-# Copyright © 2010, 2011, 2012, 2013, 2014 gnome-shell
+# Portuguese translation for gnome-shell.
+# Copyright © 2010-2023 gnome-shell.
 # This file is distributed under the same license as the gnome-shell package.
 # Duarte Loreto <happyguy_pt@hotmail.com>, 2010, 2011, 2012, 2013, 2014.
 # Rui Gouveia <rui.gouveia@gmail.com>, 2011.
 # António Lima <amrlima@gmail.com>, 2013.
-# Tiago Santos <tiagofsantos81@sapo.pt>, 2014 - 2016.
+# Tiago Santos <tiagofsantos81@sapo.pt>, 2014, 2015, 2016.
 # Bruno Ramalhete <bram.512@gmail.com>, 2015.
 # Pedro Albuquerque <palbuquerque73@gmail.com>, 2014, 2015.
 # Sérgio Cardeira <cardeira dot sergio at gmail dot com>, 2016.
 # Juliano de Souza Camargo <julianosc@protonmail.com>, 2020.
-# José Vieira <jvieira33@sapo.pt>, 2020-2021.
+# José Vieira <jvieira33@sapo.pt>, 2020, 2021.
 # Hugo Carvalho <hugokarvalho@hotmail.com>, 2020, 2021, 2022, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-11 20:50+0000\n"
-"PO-Revision-Date: 2023-02-11 22:35+0000\n"
+"POT-Creation-Date: 2023-02-14 07:18+0000\n"
+"PO-Revision-Date: 2023-02-14 11:50+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -487,15 +487,15 @@ msgstr "Sítio web"
 msgid "Visit extension homepage"
 msgstr "Visitar o sítio web da extensão"
 
-#: js/gdm/authPrompt.js:142 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: js/gdm/authPrompt.js:305 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:310 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -533,13 +533,13 @@ msgstr "Erro de autenticação"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:623
+#: js/gdm/util.js:624
 msgid "(or swipe finger across reader)"
 msgstr "(ou passe o dedo pelo leitor)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:628
+#: js/gdm/util.js:629
 msgid "(or place finger on reader)"
 msgstr "(ou coloque o dedo no leitor)"
 
@@ -1197,31 +1197,31 @@ msgstr "%m/%d"
 msgid "No Events"
 msgstr "Sem eventos"
 
-#: js/ui/dateMenu.js:396
+#: js/ui/dateMenu.js:395
 msgid "Add world clocks…"
 msgstr "Adicionar relógios do mundo…"
 
-#: js/ui/dateMenu.js:397
+#: js/ui/dateMenu.js:396
 msgid "World Clocks"
 msgstr "Relógios do mundo"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:680
 msgid "Loading…"
 msgstr "A carregar…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:690
 msgid "Go online for weather information"
 msgstr "Procurar informação meteorológica na rede"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:692
 msgid "Weather information is currently unavailable"
 msgstr "Presentemente a informação meteorológica está indisponível"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:702
 msgid "Weather"
 msgstr "Meteorologia"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:704
 msgid "Select weather location…"
 msgstr "Selecione uma localização meteorológica…"
 
@@ -1383,15 +1383,15 @@ msgstr "%s (remoto)"
 msgid "%s (console)"
 msgstr "%s (consola)"
 
-#: js/ui/extensionDownloader.js:227
+#: js/ui/extensionDownloader.js:245
 msgid "Install"
 msgstr "Instalar"
 
-#: js/ui/extensionDownloader.js:233
+#: js/ui/extensionDownloader.js:251
 msgid "Install Extension"
 msgstr "Instalar extensão"
 
-#: js/ui/extensionDownloader.js:234
+#: js/ui/extensionDownloader.js:252
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Transferir e instalar \"%s\" a partir de extensions.gnome.org?"
@@ -1658,7 +1658,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:457
+#: js/ui/panel.js:460
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1923,6 +1923,26 @@ msgstr "Texto grande"
 #: js/ui/status/autoRotate.js:14
 msgid "Auto Rotate"
 msgstr "Rotação automática"
+
+#: js/ui/status/backgroundApps.js:135
+msgctxt "title"
+msgid "Background Apps"
+msgstr "Aplicações em segundo plano"
+
+#: js/ui/status/backgroundApps.js:153
+msgid "App Settings"
+msgstr "Definições de aplicação"
+
+#: js/ui/status/backgroundApps.js:181
+msgid "No Background Apps"
+msgstr "Sem aplicações em segundo plano"
+
+#: js/ui/status/backgroundApps.js:183
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%d aplicação em segundo plano"
+msgstr[1] "%d aplicações em segundo plano"
 
 #: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
 msgid "Disconnect"
@@ -2405,10 +2425,6 @@ msgstr "Mover para o monitor à direita"
 msgid "Close"
 msgstr "Fechar"
 
-#: src/calendar-server/evolution-calendar.desktop.in:3
-msgid "Evolution Calendar"
-msgstr "Calendário do Evolution"
-
 #: src/main.c:513 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Mostrar versão"
@@ -2749,23 +2765,23 @@ msgstr "A extensão “%s” não existe\n"
 msgid "Show extensions info"
 msgstr "Mostrar a informação das extensões"
 
-#: subprojects/extensions-tool/src/command-install.c:173
+#: subprojects/extensions-tool/src/command-install.c:190
 msgid "Overwrite an existing extension"
 msgstr "Sobrescrever uma extensão existente"
 
-#: subprojects/extensions-tool/src/command-install.c:175
+#: subprojects/extensions-tool/src/command-install.c:192
 msgid "EXTENSION_BUNDLE"
 msgstr "PACOTE_DE_EXTENSÕES"
 
-#: subprojects/extensions-tool/src/command-install.c:184
+#: subprojects/extensions-tool/src/command-install.c:201
 msgid "Install an extension bundle"
 msgstr "Instalar um pacote de extensões"
 
-#: subprojects/extensions-tool/src/command-install.c:202
+#: subprojects/extensions-tool/src/command-install.c:219
 msgid "No extension bundle specified"
 msgstr "Nenhum pacote de extensões especificado"
 
-#: subprojects/extensions-tool/src/command-install.c:208
+#: subprojects/extensions-tool/src/command-install.c:225
 msgid "More than one extension bundle specified"
 msgstr "Especificado mais do que um pacote de extensões"
 
@@ -3024,6 +3040,9 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sons de sistema"
+
+#~ msgid "Evolution Calendar"
+#~ msgstr "Calendário do Evolution"
 
 #~ msgid "Applications"
 #~ msgstr "Aplicações"
