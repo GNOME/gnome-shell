@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-16 19:21+0000\n"
-"PO-Revision-Date: 2022-09-16 21:42+0200\n"
-"Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
+"POT-Creation-Date: 2023-02-14 05:16+0000\n"
+"PO-Revision-Date: 2023-02-15 23:29+0100\n"
+"Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
 "n%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -62,27 +62,27 @@ msgid "Activate favorite application 9"
 msgstr "Omogoči priljubljeni program 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
 msgid "Screenshots"
 msgstr "Zaslonske slike"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:234
 msgid "Take a screenshot interactively"
 msgstr "Zajemi zaslonsko sliko interaktivno"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:256
+#: data/org.gnome.shell.gschema.xml.in:246
 msgid "Take a screenshot"
 msgstr "Zajemi zaslonsko sliko"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:242
 msgid "Take a screenshot of a window"
 msgstr "Zajemi zaslonsko sliko"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:248
+#: data/org.gnome.shell.gschema.xml.in:238
 msgid "Record a screencast interactively"
 msgstr "Posnemi zaslonski posnetek interaktivno"
 
@@ -243,26 +243,10 @@ msgstr ""
 "možnost »Shrani geslo«. Ta možnost določa privzeto stanje izbirnega polja."
 
 #: data/org.gnome.shell.gschema.xml.in:89
-msgid ""
-"Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr "Ali ima privzeti prilagodilnik Bluetooth nastavljeno pripeto napravo"
-
-#: data/org.gnome.shell.gschema.xml.in:90
-msgid ""
-"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-"powered, or if there were devices set up associated with the default "
-"adapter. This will be reset if the default adapter is ever seen not to have "
-"devices associated to it."
-msgstr ""
-"Meni Bluetooth bo prikazan le, če je prilagodilnik pripet oziroma, če so "
-"priklopljene naprave pripravljene za delo. Možnost bo ponastavljena, če "
-"naprava nima dejavnih povezav."
-
-#: data/org.gnome.shell.gschema.xml.in:99
 msgid "The last selected non-default power profile"
 msgstr "Nazadnje izbran neprivzet profil varčevanja"
 
-#: data/org.gnome.shell.gschema.xml.in:100
+#: data/org.gnome.shell.gschema.xml.in:90
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
 "toggling between two profiles, this key records the last selected non-"
@@ -272,13 +256,13 @@ msgstr ""
 "preklapljanja med dvema profiloma, nastavitev beleži nazadnje izbran "
 "neprivzet profil."
 
-#: data/org.gnome.shell.gschema.xml.in:108
+#: data/org.gnome.shell.gschema.xml.in:98
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr ""
 "Zadnja različica namizja, ki za katero je bilo prikazano pogovorno okno "
 "»Dobrodošlice GNOME«"
 
-#: data/org.gnome.shell.gschema.xml.in:109
+#: data/org.gnome.shell.gschema.xml.in:99
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -290,11 +274,11 @@ msgstr ""
 "različico in velike številke različice, ki še ne obstajajo. S temi velikimi "
 "vrednostmi je mogoče preprečiti prikaz tega okna."
 
-#: data/org.gnome.shell.gschema.xml.in:142
+#: data/org.gnome.shell.gschema.xml.in:132
 msgid "Layout of the app picker"
 msgstr "Pogled izbirnika programov"
 
-#: data/org.gnome.shell.gschema.xml.in:143
+#: data/org.gnome.shell.gschema.xml.in:133
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -306,105 +290,105 @@ msgstr ""
 "»ID programa« → »podatki«. Trenutno so kot podatki shranjeni:: • »položaj«: "
 "položaj ikone programa na strani"
 
-#: data/org.gnome.shell.gschema.xml.in:158
+#: data/org.gnome.shell.gschema.xml.in:148
 msgid "Keybinding to open the application menu"
 msgstr "Tipkovna bližnjica, ki odpre meni programov"
 
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:149
 msgid "Keybinding to open the application menu."
 msgstr "Tipkovna bližnjica, ki odpre meni programov."
 
-#: data/org.gnome.shell.gschema.xml.in:165
-#: data/org.gnome.shell.gschema.xml.in:172
+#: data/org.gnome.shell.gschema.xml.in:155
+#: data/org.gnome.shell.gschema.xml.in:162
 msgid "Keybinding to shift between overview states"
 msgstr "Tipkovna bližnjica za preklop med stanji pregleda"
 
-#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:156
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Tipkovna bližnjica za preklop med sejo, izbirniki oken in programsko mrežo"
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:163
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "Tipkovna bližnjica za preklop med programsko mrežo, izbirniki oken in sejo"
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:169
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Tipkovna bližnjica, ki odpre pogled »Pokaži programe«"
 
-#: data/org.gnome.shell.gschema.xml.in:180
+#: data/org.gnome.shell.gschema.xml.in:170
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Tipkovna bližnjica, ki odpre pogled »Pokaži programe« v pregledu dejavnosti."
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:177
 msgid "Keybinding to open the overview"
 msgstr "Tipkovna bližnjica, ki odpre pogled pregleda"
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:178
 msgid "Keybinding to open the Activities Overview."
 msgstr "Tipkovna bližnjica, ki odpre pogled pregleda dejavnosti."
 
-#: data/org.gnome.shell.gschema.xml.in:194
+#: data/org.gnome.shell.gschema.xml.in:184
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Tipkovna bližnjica za preklop vidnosti seznama obvestil"
 
-#: data/org.gnome.shell.gschema.xml.in:195
+#: data/org.gnome.shell.gschema.xml.in:185
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Tipkovna bližnjica za preklop vidnosti seznama obvestil."
 
-#: data/org.gnome.shell.gschema.xml.in:201
+#: data/org.gnome.shell.gschema.xml.in:191
 msgid "Keybinding to focus the active notification"
 msgstr "Tipkovna bližnjica za prikaz dejavnega obvestila"
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:192
 msgid "Keybinding to focus the active notification."
 msgstr "Tipkovna bližnjica za prikaz dejavnega obvestila."
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:198
 msgid "Switch to application 1"
 msgstr "Preklopi na program 1"
 
-#: data/org.gnome.shell.gschema.xml.in:212
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Switch to application 2"
 msgstr "Preklopi na program 2"
 
-#: data/org.gnome.shell.gschema.xml.in:216
+#: data/org.gnome.shell.gschema.xml.in:206
 msgid "Switch to application 3"
 msgstr "Preklopi na program 3"
 
-#: data/org.gnome.shell.gschema.xml.in:220
+#: data/org.gnome.shell.gschema.xml.in:210
 msgid "Switch to application 4"
 msgstr "Preklopi na program 4"
 
-#: data/org.gnome.shell.gschema.xml.in:224
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "Switch to application 5"
 msgstr "Preklopi na program 5"
 
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:218
 msgid "Switch to application 6"
 msgstr "Preklopi na program 6"
 
-#: data/org.gnome.shell.gschema.xml.in:232
+#: data/org.gnome.shell.gschema.xml.in:222
 msgid "Switch to application 7"
 msgstr "Preklopi na program 7"
 
-#: data/org.gnome.shell.gschema.xml.in:236
+#: data/org.gnome.shell.gschema.xml.in:226
 msgid "Switch to application 8"
 msgstr "Preklopi na program 8"
 
-#: data/org.gnome.shell.gschema.xml.in:240
+#: data/org.gnome.shell.gschema.xml.in:230
 msgid "Switch to application 9"
 msgstr "Preklopi na program 9"
 
-#: data/org.gnome.shell.gschema.xml.in:265
-#: data/org.gnome.shell.gschema.xml.in:292
+#: data/org.gnome.shell.gschema.xml.in:255
+#: data/org.gnome.shell.gschema.xml.in:282
 msgid "Limit switcher to current workspace."
 msgstr "Omeji preklopnik na trenutno delovno površino."
 
-#: data/org.gnome.shell.gschema.xml.in:266
+#: data/org.gnome.shell.gschema.xml.in:256
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -413,11 +397,11 @@ msgstr ""
 "v izbrani delovni površini v preklopniku. V nasprotnem primeru so prikazana "
 "vsa okna."
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:273
 msgid "The application icon mode."
 msgstr "Ikonski način programa."
 
-#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:274
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -427,7 +411,7 @@ msgstr ""
 "sličice»« (pokaže le sličice oken), »le ikona« (pokaže ikono programa) in pa "
 "možnost »oboje«."
 
-#: data/org.gnome.shell.gschema.xml.in:293
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -435,57 +419,57 @@ msgstr ""
 "Izbrana možnost določa, da bodo v trenutnem pogledu prikazana le okna v "
 "preklopniku. V nasprotnem primeru so prikazana vsa okna."
 
-#: data/org.gnome.shell.gschema.xml.in:303
+#: data/org.gnome.shell.gschema.xml.in:293
 msgid "Locations"
 msgstr "Mesta"
 
-#: data/org.gnome.shell.gschema.xml.in:304
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "The locations to show in world clocks"
 msgstr "Mesta, za katere naj bodo prikazani svetovni časi"
 
-#: data/org.gnome.shell.gschema.xml.in:314
+#: data/org.gnome.shell.gschema.xml.in:304
 msgid "Automatic location"
 msgstr "Samodejno določanje mesta"
 
-#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:305
 msgid "Whether to fetch the current location or not"
 msgstr "Ali naj program pridobi trenutno mesto ali ne"
 
-#: data/org.gnome.shell.gschema.xml.in:322
+#: data/org.gnome.shell.gschema.xml.in:312
 msgid "Location"
 msgstr "Trenutno mesto"
 
-#: data/org.gnome.shell.gschema.xml.in:323
+#: data/org.gnome.shell.gschema.xml.in:313
 msgid "The location for which to show a forecast"
 msgstr "Mesto, za katero naj bo pokazana napoved"
 
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:325
 msgid "Attach modal dialog to the parent window"
 msgstr "Pripni modalno pogovorno okno na glavno okno"
 
-#: data/org.gnome.shell.gschema.xml.in:336
-#: data/org.gnome.shell.gschema.xml.in:345
-#: data/org.gnome.shell.gschema.xml.in:353
-#: data/org.gnome.shell.gschema.xml.in:361
-#: data/org.gnome.shell.gschema.xml.in:369
+#: data/org.gnome.shell.gschema.xml.in:326
+#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:343
+#: data/org.gnome.shell.gschema.xml.in:351
+#: data/org.gnome.shell.gschema.xml.in:359
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Ključ prepiše vrednost v org.gnome.mutter med zaganjanjem lupine GNOME."
 
-#: data/org.gnome.shell.gschema.xml.in:344
+#: data/org.gnome.shell.gschema.xml.in:334
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Omogoči utripanje črte med spuščanjem okna na robove zaslona"
 
-#: data/org.gnome.shell.gschema.xml.in:352
+#: data/org.gnome.shell.gschema.xml.in:342
 msgid "Workspaces are managed dynamically"
 msgstr "Delovne površine se obravnavajo dinamično"
 
-#: data/org.gnome.shell.gschema.xml.in:360
+#: data/org.gnome.shell.gschema.xml.in:350
 msgid "Workspaces only on primary monitor"
 msgstr "Delovne površine so le na osnovnem zaslonu"
 
-#: data/org.gnome.shell.gschema.xml.in:368
+#: data/org.gnome.shell.gschema.xml.in:358
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Zamik žarišča se v načinu miške spreminja, dokler se kazalnik ne neha "
@@ -521,7 +505,7 @@ msgstr "Spletna stran"
 msgid "Visit extension homepage"
 msgstr "Odpri spletno stran razširitev"
 
-#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:146 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
@@ -529,7 +513,7 @@ msgstr "Odpri spletno stran razširitev"
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:312 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -567,13 +551,13 @@ msgstr "Napaka overitve"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:603
+#: js/gdm/util.js:604
 msgid "(or swipe finger across reader)"
 msgstr "(ali pa povlecite prst prek bralnika)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:608
+#: js/gdm/util.js:609
 msgid "(or place finger on reader)"
 msgstr "(ali pa povlecite prst po bralniku)"
 
@@ -843,7 +827,7 @@ msgstr "Zavrni dostop"
 msgid "Grant Access"
 msgstr "Dovoli dostop"
 
-#: js/ui/appDisplay.js:1728
+#: js/ui/appDisplay.js:1731
 msgid "Unnamed Folder"
 msgstr "Neimenovana mapa"
 
@@ -906,7 +890,7 @@ msgstr "Slušalke"
 msgid "Headset"
 msgstr "Slušalka"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1141,7 +1125,7 @@ msgstr "Koda PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Za povezavo z omrežjem »%s« je zahtevano geslo."
 
-#: js/ui/components/networkAgent.js:736
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1954
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
@@ -1464,31 +1448,31 @@ msgstr "Na voljo so posodobitve razširitev"
 msgid "Extension updates are ready to be installed."
 msgstr "Posodobitve razširitev so pripravljene na namestitev."
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:75
 msgid "Allow inhibiting shortcuts"
 msgstr "Dovoli onemogočanje tipkovnih bližnjic"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:82
+#: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
 msgstr "Program %s poskuša onemogočiti tipkovne bližnjice"
 
-#: js/ui/inhibitShortcutsDialog.js:83
+#: js/ui/inhibitShortcutsDialog.js:79
 msgid "An application wants to inhibit shortcuts"
 msgstr "Program poskuša onemogočiti tipkovne bližnjice"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:90
+#: js/ui/inhibitShortcutsDialog.js:86
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Tipkovne bližnjice je mogoče obnoviti s pritiskom na gumb %s."
 
-#: js/ui/inhibitShortcutsDialog.js:101
+#: js/ui/inhibitShortcutsDialog.js:97
 msgid "Deny"
 msgstr "Zavrni"
 
-#: js/ui/inhibitShortcutsDialog.js:110
+#: js/ui/inhibitShortcutsDialog.js:106
 msgid "Allow"
 msgstr "Dovoli"
 
@@ -1578,7 +1562,7 @@ msgstr "Omogočeno"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Onemogočeno"
 
@@ -1757,91 +1741,91 @@ msgstr "Zaklep ni mogoč"
 msgid "Lock was blocked by an application"
 msgstr "Zaklep je preprečil program"
 
-#: js/ui/screenshot.js:1147
+#: js/ui/screenshot.js:1161
 msgid "Selection"
 msgstr "Izbor"
 
-#: js/ui/screenshot.js:1157
+#: js/ui/screenshot.js:1171
 msgid "Area Selection"
 msgstr "Izbor polja"
 
-#: js/ui/screenshot.js:1162
+#: js/ui/screenshot.js:1176
 msgid "Screen"
 msgstr "Zaslon"
 
-#: js/ui/screenshot.js:1172
+#: js/ui/screenshot.js:1186
 msgid "Screen Selection"
 msgstr "Izbor zaslona"
 
-#: js/ui/screenshot.js:1177
+#: js/ui/screenshot.js:1191
 msgid "Window"
 msgstr "Okno"
 
-#: js/ui/screenshot.js:1187
+#: js/ui/screenshot.js:1201
 msgid "Window Selection"
 msgstr "Izbor okna"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1239
 msgid "Screenshot / Screencast"
 msgstr "Zaslonski slika / posnetek"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1275
 msgid "Show Pointer"
 msgstr "Pokaži kazalnik"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1849
+#: js/ui/screenshot.js:1866
 msgid "Screencasts"
 msgstr "Zaslonski posnetek"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1854
+#: js/ui/screenshot.js:1871
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Zaslonski posnetek %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
+#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
 msgid "Screenshot"
 msgstr "Zaslonska slika"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1926
+#: js/ui/screenshot.js:1919
 msgid "Screencast recorded"
 msgstr "Zaslonski posnetek je zajet"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1928
+#: js/ui/screenshot.js:1921
 msgid "Click here to view the video."
 msgstr "Kliknite za ogled posnetka."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
+#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
 msgid "Show in Files"
 msgstr "Pokaži v mapi"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2085
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Zaslonska slika %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2138
+#: js/ui/screenshot.js:2131
 msgid "Screenshot captured"
 msgstr "Zaslonska slika je zajeta"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2140
+#: js/ui/screenshot.js:2133
 msgid "You can paste the image from the clipboard."
 msgstr "Prilepiti je mogoče sliko iz odložišča."
 
-#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
+#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
 msgid "Screenshot taken"
 msgstr "Zaslonska slika je zajeta"
 
@@ -1989,7 +1973,7 @@ msgstr "Veliko besedilo"
 msgid "Auto Rotate"
 msgstr "Samodejno zavrti"
 
-#: js/ui/status/bluetooth.js:171
+#: js/ui/status/bluetooth.js:151
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -2021,11 +2005,11 @@ msgstr "Drugotni klik"
 msgid "Dwell Click"
 msgstr "Zadržan klik"
 
-#: js/ui/status/keyboard.js:830
+#: js/ui/status/keyboard.js:842
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:859
 msgid "Show Keyboard Layout"
 msgstr "Pokaži razporeditev tipkovnice"
 
@@ -2067,6 +2051,54 @@ msgstr "Poveži z mestom %s"
 msgid "%s Hotspot"
 msgstr "Vroča točka %s"
 
+#: js/ui/status/network.js:1466 js/ui/status/network.js:1482
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1467
+msgid "VPN Settings"
+msgstr "Nastavitve VPN"
+
+#: js/ui/status/network.js:1716
+msgid "Wi–Fi"
+msgstr "Brezžična omrežja"
+
+#: js/ui/status/network.js:1718
+msgid "All Networks"
+msgstr "Vsa omrežja"
+
+#: js/ui/status/network.js:1815
+msgid "Wired Connections"
+msgstr "Žične povezave"
+
+#: js/ui/status/network.js:1816
+msgid "Wired Settings"
+msgstr "Nastavitve žičnega omrežja"
+
+#: js/ui/status/network.js:1830
+msgid "Bluetooth Tethers"
+msgstr "Povezave Bluetooth"
+
+#: js/ui/status/network.js:1831
+msgid "Bluetooth Settings"
+msgstr "Nastavitve za Bluetooth"
+
+#: js/ui/status/network.js:1845
+msgid "Mobile Connections"
+msgstr "Mobilne povezave"
+
+#: js/ui/status/network.js:1847
+msgid "Mobile Broadband Settings"
+msgstr "Nastavitve mobilnega širokopasovnega dostopa"
+
+#: js/ui/status/network.js:1959
+msgid "Connection failed"
+msgstr "Povezovanje je spodletelo"
+
+#: js/ui/status/network.js:1960
+msgid "Activation of network connection failed"
+msgstr "Omogočanje omrežne povezave je spodletelo."
+
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
 msgstr "Nočna osvetlitev"
@@ -2086,15 +2118,15 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Varčno"
 
-#: js/ui/status/powerProfiles.js:68
+#: js/ui/status/powerProfiles.js:70
 msgid "Power Profiles"
 msgstr "Profil varčevanja"
 
-#: js/ui/status/remoteAccess.js:74
+#: js/ui/status/remoteAccess.js:72
 msgid "Stop Screencast"
 msgstr "Zaustavi zaslonski posnetek"
 
-#: js/ui/status/remoteAccess.js:144
+#: js/ui/status/remoteAccess.js:142
 msgid "Stop Screen Sharing"
 msgstr "Prekini souporabo zaslona"
 
@@ -2176,19 +2208,19 @@ msgstr "Napaka overitve naprave Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Naprave Thunderbolt ni mogoče overiti: %s"
 
-#: js/ui/status/volume.js:191
+#: js/ui/status/volume.js:194
 msgid "Volume changed"
 msgstr "Glasnost je spremenjena"
 
-#: js/ui/status/volume.js:253
+#: js/ui/status/volume.js:256
 msgid "Volume"
 msgstr "Glasnost"
 
-#: js/ui/status/volume.js:269
+#: js/ui/status/volume.js:272
 msgid "Sound Output"
 msgstr "Odvod zvoka"
 
-#: js/ui/status/volume.js:337
+#: js/ui/status/volume.js:340
 msgid "Sound Input"
 msgstr "Dovod zvoka"
 
@@ -2634,26 +2666,18 @@ msgstr "Neznani argumenti"
 msgid "UUID, name and description are required"
 msgstr "Zahtevani so določilo UUID, ime in opis"
 
-#: subprojects/extensions-tool/src/command-disable.c:46
-#: subprojects/extensions-tool/src/command-enable.c:46
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
-#: subprojects/extensions-tool/src/main.c:146
-msgid "Failed to connect to GNOME Shell\n"
-msgstr "Povezava z Lupino GNOME je spodletela\n"
-
-#: subprojects/extensions-tool/src/command-disable.c:53
-#: subprojects/extensions-tool/src/command-enable.c:53
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "Razširitev »%s« ne obstaja.\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:101
+#: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
 msgstr "Onemogoči razširitev"
 
-#: subprojects/extensions-tool/src/command-disable.c:119
-#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
 #: subprojects/extensions-tool/src/command-info.c:103
 #: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
@@ -2661,8 +2685,8 @@ msgstr "Onemogoči razširitev"
 msgid "No UUID given"
 msgstr "Ni podanega UUID"
 
-#: subprojects/extensions-tool/src/command-disable.c:124
-#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
 #: subprojects/extensions-tool/src/command-info.c:108
 #: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
@@ -2670,9 +2694,15 @@ msgstr "Ni podanega UUID"
 msgid "More than one UUID given"
 msgstr "Podano je več kot eno določilo UUID"
 
-#: subprojects/extensions-tool/src/command-enable.c:101
+#: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
 msgstr "Onemogoči razširitev"
+
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:146
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "Povezava z Lupino GNOME je spodletela\n"
 
 #: subprojects/extensions-tool/src/command-info.c:59
 #: subprojects/extensions-tool/src/main.c:155
@@ -2938,7 +2968,7 @@ msgstr "Dodaj ikono v vrhnjo orodno vrstico"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1907
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2949,7 +2979,7 @@ msgstr[3] "%u odvodi naprave"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1917
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -2958,1215 +2988,6 @@ msgstr[1] "%u dovod naprave"
 msgstr[2] "%u dovoda naprave"
 msgstr[3] "%u dovodi naprave"
 
-#: subprojects/gvc/gvc-mixer-control.c:2867
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
-
-#~ msgid "Log Out"
-#~ msgstr "Odjavi"
-
-#~ msgid "Bluetooth Settings"
-#~ msgstr "Nastavitve za Bluetooth"
-
-#, javascript-format
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d povezano"
-#~ msgstr[1] "%d povezano"
-#~ msgstr[2] "%d povezano"
-#~ msgstr[3] "%d povezano"
-
-#~ msgid "Bluetooth On"
-#~ msgstr "Bluetooth je omogočen"
-
-#~ msgid "Bluetooth Off"
-#~ msgstr "Bluetooth je onemogočen"
-
-#~ msgid "Location Enabled"
-#~ msgstr "Določevanje mesta je omogočeno"
-
-#~ msgid "Disable"
-#~ msgstr "Onemogoči"
-
-#~ msgid "Privacy Settings"
-#~ msgstr "Nastavitve zasebnosti"
-
-#~ msgid "Location In Use"
-#~ msgstr "Določevanje mesta je v uporabi"
-
-#~ msgid "Location Disabled"
-#~ msgstr "Določevanje mesta je onemogočeno"
-
-#~ msgid "Enable"
-#~ msgstr "Omogoči"
-
-#, javascript-format
-#~ msgid "%s Off"
-#~ msgstr "%s izklopljeno"
-
-#, javascript-format
-#~ msgid "%s Connected"
-#~ msgstr "%s povezano"
-
-#, javascript-format
-#~ msgid "%s Unmanaged"
-#~ msgstr "%s neupravljano"
-
-#, javascript-format
-#~ msgid "%s Disconnecting"
-#~ msgstr "%s poteka prekinjanje povezave"
-
-#, javascript-format
-#~ msgid "%s Connecting"
-#~ msgstr "%s poteka vzpostavljanje povezave"
-
-#, javascript-format
-#~ msgid "%s Requires Authentication"
-#~ msgstr "%s zahteva overitev"
-
-#, javascript-format
-#~ msgid "Firmware Missing For %s"
-#~ msgstr "Manjka strojna programska oprema za %s"
-
-#, javascript-format
-#~ msgid "%s Unavailable"
-#~ msgstr "%s ni na voljo"
-
-#, javascript-format
-#~ msgid "%s Connection Failed"
-#~ msgstr "%s povezava je spodletela"
-
-#~ msgid "Wired Settings"
-#~ msgstr "Nastavitve žičnega omrežja"
-
-#~ msgid "Mobile Broadband Settings"
-#~ msgstr "Nastavitve mobilnega širokopasovnega dostopa"
-
-#, javascript-format
-#~ msgid "%s Hardware Disabled"
-#~ msgstr "%s strojno onemogočeno"
-
-#, javascript-format
-#~ msgid "%s Disabled"
-#~ msgstr "%s onemogočeno"
-
-#~ msgid "Connect to Internet"
-#~ msgstr "Poveži na internet"
-
-#~ msgid "Airplane Mode is On"
-#~ msgstr "Omogoči način letala"
-
-#~ msgid "Wi-Fi is disabled when airplane mode is on."
-#~ msgstr "Naprava Wi-Fi je v načinu letala onemogočena."
-
-#~ msgid "Turn Off Airplane Mode"
-#~ msgstr "Onemogoči način letala"
-
-#~ msgid "Wi-Fi is Off"
-#~ msgstr "Wi-Fi je onemogočen"
-
-#~ msgid "Wi-Fi needs to be turned on in order to connect to a network."
-#~ msgstr "Napravo Wi-Fi je treba pred povezovanjem najprej omogočiti."
-
-#~ msgid "Turn On Wi-Fi"
-#~ msgstr "Omogoči Wi-Fi"
-
-#~ msgid "Wi-Fi Networks"
-#~ msgstr "Omrežja Wi-Fi"
-
-#~ msgid "Select a network"
-#~ msgstr "Izbor omrežja"
-
-#~ msgid "No Networks"
-#~ msgstr "Ni zaznanih omrežij"
-
-#~ msgid "Use hardware switch to turn off"
-#~ msgstr "Uporabite strojni gumb za izklop"
-
-#~ msgid "Select Network"
-#~ msgstr "Izbor omrežja"
-
-#~ msgid "Wi-Fi Settings"
-#~ msgstr "Nastavitve Wi-Fi"
-
-#, javascript-format
-#~ msgid "%s Not Connected"
-#~ msgstr "%s brez povezave"
-
-#~ msgid "connecting…"
-#~ msgstr "vzpostavljanje povezave …"
-
-#~ msgid "authentication required"
-#~ msgstr "zahtevana je overitev"
-
-#~ msgid "connection failed"
-#~ msgstr "povezovanje je spodletelo"
-
-#~ msgid "VPN Settings"
-#~ msgstr "Nastavitve VPN"
-
-#~ msgid "VPN"
-#~ msgstr "VPN"
-
-#~ msgid "VPN Off"
-#~ msgstr "Onemogočen VPN"
-
-#~ msgid "Network Settings"
-#~ msgstr "Omrežne nastavitve"
-
-#, javascript-format
-#~ msgid "%s Wired Connection"
-#~ msgid_plural "%s Wired Connections"
-#~ msgstr[0] "%s žičnih povezav"
-#~ msgstr[1] "%s žična povezava"
-#~ msgstr[2] "%s žični povezavi"
-#~ msgstr[3] "%s žične povezave"
-
-#, javascript-format
-#~ msgid "%s Wi-Fi Connection"
-#~ msgid_plural "%s Wi-Fi Connections"
-#~ msgstr[0] "%s povezav Wi-Fi"
-#~ msgstr[1] "%s povezava Wi-Fi"
-#~ msgstr[2] "%s povezavi Wi-Fi"
-#~ msgstr[3] "%s povezave Wi-Fi"
-
-#, javascript-format
-#~ msgid "%s Modem Connection"
-#~ msgid_plural "%s Modem Connections"
-#~ msgstr[0] "%s modemskih povezav"
-#~ msgstr[1] "%s modemska povezava"
-#~ msgstr[2] "%s modemski povezavi"
-#~ msgstr[3] "%s modemske povezave"
-
-#~ msgid "Connection failed"
-#~ msgstr "Povezovanje je spodletelo"
-
-#~ msgid "Activation of network connection failed"
-#~ msgstr "Omogočanje omrežne povezave je spodletelo."
-
-#~ msgid "Night Light Disabled"
-#~ msgstr "Nočna osvetlitev je onemogočena"
-
-#~ msgid "Resume"
-#~ msgstr "Nadaljuj"
-
-#~ msgid "Disable Until Tomorrow"
-#~ msgstr "Onemogoči do jutri"
-
-#~ msgid "Power Settings"
-#~ msgstr "Upravljanje napajanja"
-
-#~ msgid "Fully Charged"
-#~ msgstr "Polno napolnjeno"
-
-#~ msgid "Not Charging"
-#~ msgstr "Naprava se ne polni"
-
-#~ msgid "Estimating…"
-#~ msgstr "Ocenjevanje …"
-
-#, javascript-format
-#~ msgid "%d∶%02d Remaining (%d %%)"
-#~ msgstr "Preostaja %d∶%02d (%d %%)"
-
-#, javascript-format
-#~ msgid "%d∶%02d Until Full (%d %%)"
-#~ msgstr "%d∶%02d do polnosti (%d %%)"
-
-#~ msgid "Screen is Being Shared"
-#~ msgstr "Zaslon je v načinu souporabe"
-
-#~ msgid "Turn off"
-#~ msgstr "Izklopi"
-
-#~ msgid "Airplane Mode On"
-#~ msgstr "Letalski način je omogočen"
-
-#~ msgid "Lock"
-#~ msgstr "Zakleni"
-
-#~ msgid "Power Off / Log Out"
-#~ msgstr "Izklopi / Odjavi"
-
-#~ msgid "Show screenshot UI"
-#~ msgstr "Pokaži vmesnik zajemalnika zaslona"
-
-#~ msgid "Screen Recording in Progress"
-#~ msgstr "V teku je zajemanje zaslona"
-
-#~ msgid "Stop"
-#~ msgstr "Zaustavi"
-
-#~ msgid "Author"
-#~ msgstr "Avtor"
-
-#~ msgid "Warning"
-#~ msgstr "Opozorilo"
-
-#~ msgid ""
-#~ "Extensions can cause system issues, including performance problems. If "
-#~ "you encounter problems with your system, it is recommended to disable all "
-#~ "extensions."
-#~ msgstr ""
-#~ "Razširitev lahko povzroča sistemske težave, vključno s hitrostjo "
-#~ "delovanja. Če se težave pojavijo, je priporočljivo vse razširitve "
-#~ "onemogočiti."
-
-#~ msgid "Remove from Favorites"
-#~ msgstr "Odstrani iz priljubljenih"
-
-#~ msgid "Add to Favorites"
-#~ msgstr "Dodaj med priljubljene"
-
-#~ msgid "Enable introspection API"
-#~ msgstr "Omogoči API nadzora"
-
-#~ msgid ""
-#~ "Enables a D-Bus API that allows to introspect the application state of "
-#~ "the shell."
-#~ msgstr "Omogoči API sistema D-Bus, ki mogoča nadzor stanja programa lupine."
-
-#~ msgid "Failed to connect to GNOME Shell"
-#~ msgstr "Povezava z Lupino GNOME je spodletela"
-
-#~ msgid "Minimize"
-#~ msgstr "Skrči"
-
-#~ msgid "Unmaximize"
-#~ msgstr "Pomanjšaj"
-
-#~ msgid "App Picker View"
-#~ msgstr "Pogled izbirnika programov"
-
-#~ msgid "Index of the currently selected view in the application picker."
-#~ msgstr "Kazalo trenutno izbranega pogleda v izbirniku programa."
-
-#~ msgid "Frequently used applications will appear here"
-#~ msgstr "Pogosto uporabljeni programi bodo prikazani tu"
-
-#~ msgid "Frequent"
-#~ msgstr "Pogosti"
-
-#~ msgid "All"
-#~ msgstr "Vsi"
-
-#~ msgctxt "calendar heading"
-#~ msgid "%A, %B %-d"
-#~ msgstr "%A, %d. %B"
-
-#~ msgctxt "calendar heading"
-#~ msgid "%A, %B %-d, %Y"
-#~ msgstr "%A, %d %B %Y"
-
-#~ msgid "Off"
-#~ msgstr "Nepovezano"
-
-#~ msgid "On"
-#~ msgstr "Povezano"
-
-#~ msgid "Copy Error"
-#~ msgstr "Kopiraj napako"
-
-#~ msgid "Browse in Software"
-#~ msgstr "Prebrskajte programsko opremo"
-
-#~ msgid "Next"
-#~ msgstr "Naslednji"
-
-#~ msgctxt "button"
-#~ msgid "Sign In"
-#~ msgstr "Prijava"
-
-#~ msgid "Rename"
-#~ msgstr "Preimenuj"
-
-#~ msgid "Password:"
-#~ msgstr "Geslo:"
-
-#~ msgid "Type again:"
-#~ msgstr "Ponovni vpis:"
-
-#~ msgid "Password: "
-#~ msgstr "Geslo: "
-
-#~ msgid "Authentication required by wireless network"
-#~ msgstr "Zahtevana overitev za brezžično omrežje"
-
-#~ msgid "Mobile broadband network password"
-#~ msgstr "Geslo mobilnega širokopasovnega dostopa"
-
-#~ msgid "%A, %B %d"
-#~ msgstr "%A, %d. %B"
-
-#~ msgid "%d new message"
-#~ msgid_plural "%d new messages"
-#~ msgstr[0] "%d novih sporočil"
-#~ msgstr[1] "%d novo sporočilo"
-#~ msgstr[2] "%d novi sporočili"
-#~ msgstr[3] "%d nova sporočila"
-
-#~ msgid "%d new notification"
-#~ msgid_plural "%d new notifications"
-#~ msgstr[0] "%d novih obvestil"
-#~ msgstr[1] "%d novo obvestilo"
-#~ msgstr[2] "%d novi obvestili"
-#~ msgstr[3] "%d nova obvestila"
-
-#~ msgid "Account Settings"
-#~ msgstr "Nastavitve računa"
-
-#~ msgid "Orientation Lock"
-#~ msgstr "Zaklep položaja"
-
-#~ msgid ""
-#~ "Keybinding that pauses and resumes all running tweens, for debugging "
-#~ "purposes"
-#~ msgstr ""
-#~ "Tipkovna bližnjica, ki omogoča ustavljanje in ponovni zagon vseh zagnanih "
-#~ "programov za razhroščevanje."
-
-#~ msgid "Which keyboard to use"
-#~ msgstr "Katera tipkovnica naj bo uporabljena"
-
-#~ msgid "The type of keyboard to use."
-#~ msgstr "Vrsta tipkovnice za uporabo."
-
-#~ msgid "network-workgroup"
-#~ msgstr "network-workgroup"
-
-#~ msgid "toggle-switch-us"
-#~ msgstr "toggle-switch-intl"
-
-#~ msgid "There was an error loading the preferences dialog for %s:"
-#~ msgstr ""
-#~ "Prišlo je do napake med nalaganjem pogovornega okna z možnostmi za %s:"
-
-#~ msgid "%s all day."
-#~ msgstr "%s – ves dan."
-
-#~ msgid "%s, then %s later."
-#~ msgstr "%s, sledi %s."
-
-#~ msgid "%s, then %s, followed by %s later."
-#~ msgstr "%s, sledi %s, kasneje tudi %s."
-
-#~ msgid "Feels like %s."
-#~ msgstr "Občuti se kot %s."
-
-#~ msgctxt "search-result"
-#~ msgid "Log out"
-#~ msgstr "Odjava"
-
-#~ msgctxt "search-result"
-#~ msgid "Switch user"
-#~ msgstr "Preklopi uporabnika"
-
-#~ msgid "Hide tray"
-#~ msgstr "Skrij sistemsko vrstico"
-
-#~ msgid "Status Icons"
-#~ msgstr "Ikone stanja"
-
-#~ msgid "Web Authentication Redirect"
-#~ msgstr "Preusmeritev spletnega overjanja"
-
-#~ msgid "Events"
-#~ msgstr "Dogodki"
-
-#~ msgid "Notifications"
-#~ msgstr "Obvestila"
-
-#~ msgid "Media"
-#~ msgstr "Nosilci"
-
-#~ msgid "Not In Use"
-#~ msgstr "Ni v uporabi"
-
-#~ msgid "connecting..."
-#~ msgstr "povezovanje ..."
-
-#~ msgid "%d x %d"
-#~ msgstr "%d x %d"
-
-#~ msgid "Show the week date in the calendar"
-#~ msgstr "Pokaži tedenski datum v koledarju"
-
-#~ msgid "If true, display the ISO week date in the calendar."
-#~ msgstr "Izbrana možnost določa prikaz ISO tedenski datum v koledarju."
-
-#~ msgid "Use as Internet connection"
-#~ msgstr "Uporabi kot internetno povezavo"
-
-#~ msgid "GNOME Shell (wayland compositor)"
-#~ msgstr "Lupina GNOME (wayland)"
-
-#~ msgid "%d∶%02d Remaining (%d%%)"
-#~ msgstr "%d∶%02d do konca (%d%%)"
-
-#~ msgid "%d∶%02d Until Full (%d%%)"
-#~ msgstr "%d∶%02d do polnosti (%d%%)"
-
-#~ msgid "%d Connected Device"
-#~ msgid_plural "%d Connected Devices"
-#~ msgstr[0] "%d povezanih naprav"
-#~ msgstr[1] "%d povezana naprava"
-#~ msgstr[2] "%d povezani napravi"
-#~ msgstr[3] "%d povezane naprave"
-
-#~ msgid "Not Connected"
-#~ msgstr "Ni vzpostavljene povezave"
-
-#~ msgid "In Use"
-#~ msgstr "V uporabi"
-
-#~ msgid "Connected"
-#~ msgstr "Povezano"
-
-#~ msgid "Unmanaged"
-#~ msgstr "Neupravljano"
-
-#~ msgid "Firmware missing"
-#~ msgstr "Manjka strojna programska oprema"
-
-#~ msgid "Unavailable"
-#~ msgstr "Nedostopno"
-
-#~ msgid "Hardware Disabled"
-#~ msgstr "Strojna oprema je onemogočena"
-
-#~ msgid "UPS"
-#~ msgstr "UPS"
-
-#~ msgid "Battery"
-#~ msgstr "Baterija"
-
-#~ msgid "Show the message tray"
-#~ msgstr "Pokaži sistemsko sporočilno vrstico"
-
-#~ msgctxt "event list time"
-#~ msgid "%H∶%M"
-#~ msgstr "%H∶%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l∶%M %p"
-#~ msgstr "%l∶%M %p"
-
-#~ msgctxt "list sunday"
-#~ msgid "Su"
-#~ msgstr "Ne"
-
-#~ msgctxt "list monday"
-#~ msgid "M"
-#~ msgstr "P"
-
-#~ msgctxt "list tuesday"
-#~ msgid "T"
-#~ msgstr "T"
-
-#~ msgctxt "list wednesday"
-#~ msgid "W"
-#~ msgstr "S"
-
-#~ msgctxt "list thursday"
-#~ msgid "Th"
-#~ msgstr "Če"
-
-#~ msgctxt "list friday"
-#~ msgid "F"
-#~ msgstr "Pe"
-
-#~ msgctxt "list saturday"
-#~ msgid "S"
-#~ msgstr "S"
-
-#~ msgid "Nothing Scheduled"
-#~ msgstr "Nič ni razporejeno"
-
-#~ msgid "This week"
-#~ msgstr "Ta teden"
-
-#~ msgid "Next week"
-#~ msgstr "Naslednji teden"
-
-#~ msgid "Removable Devices"
-#~ msgstr "Odstranljive naprave"
-
-#~ msgid "Eject"
-#~ msgstr "Izvrzi"
-
-#~ msgid "Invitation"
-#~ msgstr "Povabilo"
-
-#~ msgid "Call"
-#~ msgstr "Pokliči"
-
-#~ msgid "File Transfer"
-#~ msgstr "Prenos datotek"
-
-#~ msgid "Chat"
-#~ msgstr "Klepet"
-
-#~ msgid "Unmute"
-#~ msgstr "Povrni glasnost"
-
-#~ msgid "Mute"
-#~ msgstr "Utišaj"
-
-#~ msgid "Invitation to %s"
-#~ msgstr "Povabilo v %s"
-
-#~ msgid "%s is inviting you to join %s"
-#~ msgstr "%s vas vabi, da se pridružite v %s"
-
-#~ msgid "Decline"
-#~ msgstr "Zavrni"
-
-#~ msgid "Accept"
-#~ msgstr "Sprejmi"
-
-#~ msgid "Video call from %s"
-#~ msgstr "%s želi vzpostaviti video klic"
-
-#~ msgid "Call from %s"
-#~ msgstr "%s kliče"
-
-#~ msgid "Answer"
-#~ msgstr "Odgovori"
-
-#~ msgid "%s is sending you %s"
-#~ msgstr "%s pošilja %s"
-
-#~ msgid "%s would like permission to see when you are online"
-#~ msgstr "%s želi dovoljenje za pogled dosegljivosti"
-
-#~ msgid "Network error"
-#~ msgstr "Napaka omrežja"
-
-#~ msgid "Authentication failed"
-#~ msgstr "Overitev je spodletela"
-
-#~ msgid "Encryption error"
-#~ msgstr "Napaka šifriranja"
-
-#~ msgid "Certificate not provided"
-#~ msgstr "Potrdilo ni na voljo"
-
-#~ msgid "Certificate untrusted"
-#~ msgstr "Potrdilo ni zaupljivo"
-
-#~ msgid "Certificate expired"
-#~ msgstr "Potrdilo je preteklo"
-
-#~ msgid "Certificate not activated"
-#~ msgstr "Potrdilo ni potrjeno"
-
-#~ msgid "Certificate hostname mismatch"
-#~ msgstr "Neustrezno ime gostitelja potrdila"
-
-#~ msgid "Certificate fingerprint mismatch"
-#~ msgstr "Neustrezen prstni odtis potrdila"
-
-#~ msgid "Certificate self-signed"
-#~ msgstr "Potrdilo je samo-podpisano"
-
-#~ msgid "Status is set to offline"
-#~ msgstr "Stanje je nastavljeno na brez povezave"
-
-#~ msgid "Certificate is invalid"
-#~ msgstr "Potrdilo je neveljavno."
-
-#~ msgid "Connection has been refused"
-#~ msgstr "Povezava je zavrnjena."
-
-#~ msgid "Connection can't be established"
-#~ msgstr "Povezave ni mogoče vzpostaviti."
-
-#~ msgid "Connection has been lost"
-#~ msgstr "Povezava je prekinjena."
-
-#~ msgid "This account is already connected to the server"
-#~ msgstr "Račun je s strežnikom že povezan"
-
-#~ msgid ""
-#~ "Connection has been replaced by a new connection using the same resource"
-#~ msgstr "Povezava je zamenjana z novo povezavo, ki uporablja isti vir."
-
-#~ msgid "The account already exists on the server"
-#~ msgstr "Račun na strežniku že obstaja"
-
-#~ msgid "Server is currently too busy to handle the connection"
-#~ msgstr "Strežnik je trenutno preveč zaposlen za upravljanje s povezavo."
-
-#~ msgid "Certificate has been revoked"
-#~ msgstr "Potrdilo je preklicano"
-
-#~ msgid ""
-#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-#~ msgstr ""
-#~ "Potrdilo ne uporablja varnega algoritma ali pa uporablja šibko šifriranje."
-
-#~ msgid ""
-#~ "The length of the server certificate, or the depth of the server "
-#~ "certificate chain, exceed the limits imposed by the cryptography library"
-#~ msgstr ""
-#~ "Dolžina potrdila strežnika ali pa globina verige potrdila presega "
-#~ "omejitev, ki je določena s šifrirno knjižnico."
-
-#~ msgid "Internal error"
-#~ msgstr "Notranja napaka"
-
-#~ msgid "View account"
-#~ msgstr "Poglej račun"
-
-#~ msgid "Unknown reason"
-#~ msgstr "Neznan vzrok"
-
-#~ msgid "Open Calendar"
-#~ msgstr "Odpri koledar"
-
-#~ msgid "Date & Time Settings"
-#~ msgstr "Nastavitve časa in datuma"
-
-#~ msgid "Open"
-#~ msgstr "Odpri"
-
-#~ msgid "Clear Messages"
-#~ msgstr "Počisti sporočila"
-
-#~ msgid "Notification Settings"
-#~ msgstr "Nastavitve obvestil"
-
-#~ msgid "Tray Menu"
-#~ msgstr "Meni sistemske vrstice"
-
-#~ msgid "No Messages"
-#~ msgstr "Ni sporočil"
-
-#~ msgid "Message Tray"
-#~ msgstr "Sporočilna vrstica"
-
-#~ msgid "Captive Portal"
-#~ msgstr "Združen pogled"
-
-#~ msgid "The maximum accuracy level of location."
-#~ msgstr "Raven natančnosti določanja mesta."
-
-#~ msgid ""
-#~ "Configures the maximum level of location accuracy applications are "
-#~ "allowed to see. Valid options are 'off' (disable location tracking), "
-#~ "'country', 'city', 'neighborhood', 'street', and 'exact' (typically "
-#~ "requires GPS receiver). Please keep in mind that this only controls what "
-#~ "GeoClue will allow applications to see and they can find user's location "
-#~ "on their own using network resources (albeit with street-level accuracy "
-#~ "at best)."
-#~ msgstr ""
-#~ "Možnost določa raven natančnosti določanja položaja. Veljavne možnosti so "
-#~ "'onemogočeno' (sledenje ni zagnano), 'država', 'mesto', 'okraj', 'ulica' "
-#~ "in 'natančno' (zahteva sprejemnik GPS). Možnost določa le položaj, ki ga "
-#~ "programom javlja GeoClue. Programi lahko položaj uporabnika določijo tudi "
-#~ "sami z uporabo omrežnih virov (na ravni ulice)."
-
-#~ msgid "Arrangement of buttons on the titlebar"
-#~ msgstr "Razporeditev gumbov v nazivni vrstici"
-
-#~ msgid ""
-#~ "This key overrides the key in org.gnome.desktop.wm.preferences when "
-#~ "running GNOME Shell."
-#~ msgstr ""
-#~ "Ključ prepiše vrednost v org.gnome.desktop.wm.preferences med zaganjanjem "
-#~ "lupine GNOME."
-
-#~ msgid "Select an extension to configure using the combobox above."
-#~ msgstr ""
-#~ "Razširitev za nastavljanje je mogoče izbrati iz spustnega seznama zgoraj."
-
-#~ msgid "calendar:MY"
-#~ msgstr "koledar: osnovni"
-
-#~ msgid "unavailable"
-#~ msgstr "ni na voljo"
-
-#~ msgid "List of categories that should be displayed as folders"
-#~ msgstr "Seznam kategorij, ki naj bodo prikazane kot mape"
-
-#~ msgid ""
-#~ "Each category name in this list will be represented as folder in the "
-#~ "application view, rather than being displayed inline in the main view."
-#~ msgstr ""
-#~ "Vsako ime kategorije na tem seznamu je predstavljeno kot mapa v "
-#~ "programskem pogledu in ne medvrstično v glavnem pogledu."
-
-#~ msgid "<b>%A</b>, <b>%H:%M</b>"
-#~ msgstr "<b>%A</b>, <b>%H:%M</b>"
-
-#~ msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-#~ msgstr "<b>%d.</b> <b>%B</b>, <b>%H:%M</b>"
-
-#~ msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-#~ msgstr "<b>%d.</b> <b>%B</b> <b>%Y</b>, <b>%H:%M</b> "
-
-#~ msgctxt "event list time"
-#~ msgid "%H\\u2236%M"
-#~ msgstr "%H\\u2236%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l\\u2236%M\\u2009%p"
-#~ msgstr "%l\\u2236%M\\u2009%p"
-
-#~ msgid "Authorization request from %s"
-#~ msgstr "Zahteva za pooblastitev od %s"
-
-#~ msgid "Device %s wants to pair with this computer"
-#~ msgstr "Naprava %s se poskuša seznaniti s tem računalnikom"
-
-#~ msgid "Device %s wants access to the service '%s'"
-#~ msgstr "Naprava %s želi dostop do storitve '%s'."
-
-#~ msgid "Grant this time only"
-#~ msgstr "Odobri le tokrat"
-
-#~ msgid "Reject"
-#~ msgstr "Zavrni"
-
-#~ msgid "Pairing confirmation for %s"
-#~ msgstr "Potrditev razčlenjevanja za %s"
-
-#~ msgid ""
-#~ "Please confirm whether the Passkey '%06d' matches the one on the device."
-#~ msgstr "Potrdite, ali se PIN '%06d' ujema s tistim na napravi."
-
-#~ msgid "Does not match"
-#~ msgstr "Se ne ujema"
-
-#~ msgid "Pairing request for %s"
-#~ msgstr "Zahteva razčlenjevanja za %s"
-
-#~ msgid "Please enter the PIN mentioned on the device."
-#~ msgstr "Vnesite PIN, ki je naveden na napravi."
-
-#~ msgid "OK"
-#~ msgstr "V redu"
-
-#~ msgid ""
-#~ "Sorry, no wisdom for you today:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Za danes ni modrosti:\n"
-#~ "%s"
-
-#~ msgid "%s the Oracle says"
-#~ msgstr "Riba %s pravi"
-
-#~ msgid "Settings Menu"
-#~ msgstr "Meni nastavitev"
-
-#~ msgid ""
-#~ "Internally used to store the last IM presence explicitly set by the user. "
-#~ "The value here is from the TpConnectionPresenceType enumeration."
-#~ msgstr ""
-#~ "Uporabljeno za shranjevanje stanja prisotnosti na hipnem sporočanju na "
-#~ "zahtevo uporabnika. Vrednost določa števec predmeta "
-#~ "TpConnectionPresenceType."
-
-#~ msgid ""
-#~ "Internally used to store the last session presence status for the user. "
-#~ "The value here is from the GsmPresenceStatus enumeration."
-#~ msgstr ""
-#~ "Uporabljeno za shranjevanje stanja prisotnosti zadnje seje uporabnika. "
-#~ "Vrednost določa števec predmeta GsmPresenceStatus."
-
-#~ msgid "Click Log Out to quit these applications and log out of the system."
-#~ msgstr "Kliknite Odjava za končanje teh programov in odjavo iz sistema."
-
-#~ msgid "Logging out of the system."
-#~ msgstr "Odjavljanje iz sistema."
-
-#~ msgid "Click Power Off to quit these applications and power off the system."
-#~ msgstr ""
-#~ "Kliknite na gumb za izklop za končanje teh programov in izklop iz sistema."
-
-#~ msgid "Powering off the system."
-#~ msgstr "Izklapljanje sistema"
-
-#~ msgid "Click Restart to quit these applications and restart the system."
-#~ msgstr ""
-#~ "Kliknite Zaženi znova za končanje teh programov in ponoven zagon sistema. "
-
-#~ msgid "Restarting the system."
-#~ msgstr "Ponoven zagon sistema."
-
-#~ msgid "Shutting down might cause them to lose unsaved work."
-#~ msgstr "Z izklopom je njihovo delo lahko izgubljeno."
-
-#~ msgid "Keybinding to toggle the screen recorder"
-#~ msgstr "Tipkovna bližnjica za preklop snemalnika zaslona"
-
-#~ msgid "Keybinding to start/stop the builtin screen recorder."
-#~ msgstr ""
-#~ "Tipkovna bližnjica za začetek in ustavitev vgrajenega snemalnika zaslona"
-
-#~ msgid "Framerate used for recording screencasts."
-#~ msgstr "Hitrost sličic uporabljena za snemanje zaslonskega posnetka."
-
-#~ msgid ""
-#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
-#~ "screencast recorder in frames-per-second."
-#~ msgstr ""
-#~ "Hitrost sličic shranjenega končnega zaslonskega posnetka v sličicah na "
-#~ "sekundo."
-
-#~ msgid "The gstreamer pipeline used to encode the screencast"
-#~ msgstr "Uporabljen GStreamer cevovod za kodiranje zaslonskega posnetka."
-
-#~ msgid ""
-#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#~ "pad where the recorded video is recorded. It will normally have a "
-#~ "unconnected source pad; output from that pad will be written into the "
-#~ "output file. However the pipeline can also take care of its own output - "
-#~ "this might be used to send the output to an icecast server via shout2send "
-#~ "or similar. When unset or set to an empty value, the default pipeline "
-#~ "will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 "
-#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to "
-#~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
-#~ "optimal thread count on the system."
-#~ msgstr ""
-#~ "Nastavi cevovod programa GStreamer, ki se uporablja za kodiranje "
-#~ "posnetkov. Ta sledi skladnji, ki se uporablja za program gst-launch. "
-#~ "Cevovod mora imeti nepovezano korito, kamor se posnetek snema. Običajno "
-#~ "je za to namenjen nepovezan izvorni pomnilnik, katerega odvod se zapiše v "
-#~ "odvodno datoteko. Vendar pa lahko cevovod ta korak naredi v lastni odvod "
-#~ "- možnost se lahko uporabi pri pošiljanju odvoda na strežnik icecast "
-#~ "preko shout2send ali podobno. Nedoločena ali prazna možnost se odrazi kot "
-#~ "privzeti cevovod. Trenutno je to 'vp8enc min_quantizer=13 "
-#~ "max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! "
-#~ "webmmux' in omogoča snemanje v zapis WEBM z uporabo kodeka VP8. Vrednost "
-#~ "%T se uporablja kot ročnik za ugibanje najustreznejšega števila niti na "
-#~ "sistemu."
-
-#~ msgid "File extension used for storing the screencast"
-#~ msgstr "Pripona datoteke uporabljene za shranjevanje zaslonskih posnetkov"
-
-#~ msgid ""
-#~ "The filename for recorded screencasts will be a unique filename based on "
-#~ "the current date, and use this extension. It should be changed when "
-#~ "recording to a different container format."
-#~ msgstr ""
-#~ "Ime datoteke zaslonskega posnetka bo enoznačno ime, kateremu bo dodan "
-#~ "datum in določena pripona. Pripona mora ustrezati zapisu zabojnika."
-
-#~ msgid "Power"
-#~ msgstr "Napajanje"
-
-#~ msgid "Universal Access Settings"
-#~ msgstr "Splošne nastavitve dostopa"
-
-#~ msgid "Visibility"
-#~ msgstr "Vidnost"
-
-#~ msgid "Send Files to Device…"
-#~ msgstr "Pošilji datotek na napravo ..."
-
-#~ msgid "Set Up a New Device…"
-#~ msgstr "Nastavitev nove naprave ..."
-
-#~ msgid "Send Files…"
-#~ msgstr "Pošlji datoteke ..."
-
-#~ msgid "Keyboard Settings"
-#~ msgstr "Nastavitve tipkovnice"
-
-#~ msgid "Mouse Settings"
-#~ msgstr "Nastavitve miške"
-
-#~ msgid "Volume, network, battery"
-#~ msgstr "Nosilec, omrežje, baterija"
-
-#~ msgid "Wi-Fi"
-#~ msgstr "Wi-Fi"
-
-#~ msgid "disabled"
-#~ msgstr "onemogočeno"
-
-#~ msgid "cable unplugged"
-#~ msgstr "kabel ni priklopljen"
-
-#~ msgid "More…"
-#~ msgstr "Več ..."
-
-#~ msgid "Wired"
-#~ msgstr "Žično"
-
-#~ msgid "%d %s %d %s remaining"
-#~ msgstr "Preostaja še %d %s %d %s"
-
-#~ msgid "hour"
-#~ msgid_plural "hours"
-#~ msgstr[0] "ur"
-#~ msgstr[1] "ura"
-#~ msgstr[2] "uri"
-#~ msgstr[3] "ure"
-
-#~ msgid "minute"
-#~ msgid_plural "minutes"
-#~ msgstr[0] "minut"
-#~ msgstr[1] "minuta"
-#~ msgstr[2] "minuti"
-#~ msgstr[3] "minute"
-
-#~ msgctxt "percent of battery remaining"
-#~ msgid "%d%%"
-#~ msgstr "%d%%"
-
-#~ msgid "AC Adapter"
-#~ msgstr "Električni prilagodilnik"
-
-#~ msgid "Laptop Battery"
-#~ msgstr "Baterija prenosnika"
-
-#~ msgid "Monitor"
-#~ msgstr "Zaslon"
-
-#~ msgid "Mouse"
-#~ msgstr "Miška"
-
-#~ msgid "PDA"
-#~ msgstr "Dlančnik"
-
-#~ msgid "Cell Phone"
-#~ msgstr "Mobilni telefon"
-
-#~ msgid "Media Player"
-#~ msgstr "Predstavni predvajalnik"
-
-#~ msgid "Tablet"
-#~ msgstr "Tablični računalnik"
-
-#~ msgid "Computer"
-#~ msgstr "Računalnik"
-
-#~ msgctxt "device"
-#~ msgid "Unknown"
-#~ msgstr "Neznano"
-
-#~ msgid "Available"
-#~ msgstr "Na voljo"
-
-#~ msgid "Busy"
-#~ msgstr "Zaposleno"
-
-#~ msgid "Invisible"
-#~ msgstr "Nevidno"
-
-#~ msgid "Away"
-#~ msgstr "Odsotno"
-
-#~ msgid "Idle"
-#~ msgstr "Nedejavno"
-
-#~ msgid "Your chat status will be set to busy"
-#~ msgstr "Stanje vašega klepeta bo nastavljeno na zasedeno"
-
-#~ msgid ""
-#~ "Notifications are now disabled, including chat messages. Your online "
-#~ "status has been adjusted to let others know that you might not see their "
-#~ "messages."
-#~ msgstr ""
-#~ "Obveščanje je zdaj onemogočeno, vključno s sporočili klepeta. Vaše stanje "
-#~ "povezanosti se je prilagodilo, da bodo drugi vedeli, da njihovih sporočil "
-#~ "morda ne boste opazili."
-
-#~ msgid "Whether to collect stats about applications usage"
-#~ msgstr "Ali naj se beleži statistika uporabe programov"
-
-#~ msgid ""
-#~ "The shell normally monitors active applications in order to present the "
-#~ "most used ones (e.g. in launchers). While this data will be kept private, "
-#~ "you may want to disable this for privacy reasons. Please note that doing "
-#~ "so won't remove already saved data."
-#~ msgstr ""
-#~ "Lupina običajno nadzira dejavne programe zaradi možnosti prikazovanja "
-#~ "najpogosteje uporabljenih v zaganjalniku. Čeprav so podatki krajevni, jih "
-#~ "je dobro onemogočiti zaradi varovanja zasebnosti. Z onemogočenje ne bodo "
-#~ "odstranjeni že shranjeni podatki."
-
-#~ msgid "Auto Ethernet"
-#~ msgstr "Samodejni eternet"
-
-#~ msgid "Auto broadband"
-#~ msgstr "Samodejni širokopasovni dostop"
-
-#~ msgid "Auto dial-up"
-#~ msgstr "Samodejni klicni dostop"
-
-#~ msgid "Auto %s"
-#~ msgstr "Samodejna povezava z %s"
-
-#~ msgid "Auto bluetooth"
-#~ msgstr "Samodejna povezava z Bluetooth"
-
-#~ msgid "Auto wireless"
-#~ msgstr "Samodejni brezžični dostop"
-
-#~ msgctxt "title"
-#~ msgid "Sign In"
-#~ msgstr "Prijava"
-
-#~ msgid "tray"
-#~ msgstr "sistemska vrstica"
-
-#~ msgid "More..."
-#~ msgstr "Več ..."
-
-#~ msgctxt "event list time"
-#~ msgid "%H:%M"
-#~ msgstr "%H:%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l:%M %p"
-#~ msgstr "%l:%M %p"
-
-#~ msgid "United Kingdom"
-#~ msgstr "Velika Britanija"
-
-#~ msgid "Default"
-#~ msgstr "Privzeto"
-
-#~ msgid "Show full name in the user menu"
-#~ msgstr "Pokaži polno ime v meniju uporabnika"
-
-#~ msgid "Whether the users full name is shown in the user menu or not."
-#~ msgstr "Ali naj bo prikazano uporabnikovo polno ime v meniju uporabnika."
-
-#~ msgid "APPLICATIONS"
-#~ msgstr "Programi"
-
-#~ msgid "SETTINGS"
-#~ msgstr "NASTAVITVE"
-
-#~ msgid "Your favorite Easter Egg"
-#~ msgstr "Vaše priljubljeno velikonočno jajce"
-
-#~ msgid "Subscription request"
-#~ msgstr "Zahteva po naročilu"
-
-#~ msgid "Connection error"
-#~ msgstr "Napaka povezovanja"
-
-#~ msgid "Sent at <b>%X</b> on <b>%A</b>"
-#~ msgstr "Poslano <b>%A</b> ob <b>%X</b>"
-
-#~ msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-#~ msgstr "Poslano <b>%A</b>, <b>%d. %Ba</b>, %Y"
-
-#~ msgid "Connection to %s failed"
-#~ msgstr "Povezava z %s je spodletela"
-
-#~ msgid "Reconnect"
-#~ msgstr "Ponovno se poveži"
-
-#~ msgid "Browse Files..."
-#~ msgstr "Brskanje datotek ..."
-
-#~ msgid "Error browsing device"
-#~ msgstr "Napaka med brskanjem po napravi"
-
-#~ msgid "The requested device cannot be browsed, error is '%s'"
-#~ msgstr "Po zahtevani naprave ni mogoče brskati, napaka je '%s'"
-
-#~ msgid "Wireless"
-#~ msgstr "Brezžično"
-
-#~ msgid "VPN Connections"
-#~ msgstr "Povezave VPN"
-
-#~ msgid "System Settings"
-#~ msgstr "Sistemske nastavitve"
-
-#~ msgid "disabled OpenSearch providers"
-#~ msgstr "ponudniki OpenSearch so bili onemogočeni"
-
-#~ msgid "Failed to unmount '%s'"
-#~ msgstr "Ni mogoče odklopiti '%s'"
-
-#~ msgid "Retry"
-#~ msgstr "Poskusi znova"
-
-#~ msgid "PLACES & DEVICES"
-#~ msgstr "Mesta in naprave"
-
-#~ msgid "%1$s: %2$s"
-#~ msgstr "%1$s: %2$s"
-
-#~ msgid "Passphrase"
-#~ msgstr "Šifrirno geslo"
-
-#~ msgctxt "contact"
-#~ msgid "Unknown"
-#~ msgstr "Neznano"
-
-#~ msgid "CONTACTS"
-#~ msgstr "Stiki"
-
-#~ msgid "%s is online."
-#~ msgstr "%s je povezan."
-
-#~ msgid "%s is offline."
-#~ msgstr "%s ni povezan."
-
-#~ msgid "%s is away."
-#~ msgstr "%s je odsoten."
-
-#~ msgid "%s is busy."
-#~ msgstr "%s je zaposlen."
-
-#~ msgid "Show time with seconds"
-#~ msgstr "Pokaži čas s sekundami"
-
-#~ msgid "If true, display seconds in time."
-#~ msgstr "Izbrana možnost določi prikaz sekund v času."
-
-#~ msgid "Show date in clock"
-#~ msgstr "Pokaži datum v uri"
-
-#~ msgid "If true, display date in the clock, in addition to time."
-#~ msgstr "Izbrana možnost določi, da je ob času prikazan tudi datum."
-
-#~ msgid "%a %b %e, %R:%S"
-#~ msgstr "%a. %e. %b., %R:%S"
-
-#~ msgid "%a %b %e, %R"
-#~ msgstr "%a, %e. %b., %R"
-
-#~ msgid "%a %R:%S"
-#~ msgstr "%a. %R:%S"
-
-#~ msgid "%a %R"
-#~ msgstr "%a. %R"
-
-#~ msgid "%a %b %e, %l:%M:%S %p"
-#~ msgstr "%a %b %e, %l:%M:%S %p"
-
-#~ msgid "%a %l:%M:%S %p"
-#~ msgstr "%a %l:%M:%S %p"
-
-#~ msgid "Hidden"
-#~ msgstr "Skrito"
-
-#~ msgid "Wrong password, please try again"
-#~ msgstr "Napačno geslo; poskusite znova."
-
-#~ msgid "Power Off..."
-#~ msgstr "Izklop ..."
-
-#~ msgid "Online Accounts"
-#~ msgstr "Spletni računi"
-
-#~ msgid "Log Out..."
-#~ msgstr "Odjava ..."
-
-#~ msgid "RECENT ITEMS"
-#~ msgstr "Nedavni predmeti"
-
-#~ msgid "Show password"
-#~ msgstr "Pokaži geslo"
