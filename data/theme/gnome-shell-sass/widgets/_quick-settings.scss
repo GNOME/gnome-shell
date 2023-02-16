@@ -58,7 +58,10 @@
     padding: $base_padding $base_padding*1.75;
     border-width: 0;
 
-    &:checked { @include button(default, $c:$selected_bg_color); }
+    &:checked {
+      @include button(default, $c:$selected_bg_color);
+      border-color: $selected_borders_color;
+    }
 
     &:ltr {
       border-radius: 0 99px 99px 0;
