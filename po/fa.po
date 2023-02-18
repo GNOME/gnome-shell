@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-11 01:00+0000\n"
-"PO-Revision-Date: 2023-02-11 20:41+0330\n"
+"POT-Creation-Date: 2023-02-18 15:19+0000\n"
+"PO-Revision-Date: 2023-02-18 19:05+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -448,15 +448,15 @@ msgstr "صفحهٔ خانگی"
 msgid "Visit extension homepage"
 msgstr "مشاهدهٔ صفحهٔ خانگی افزونه"
 
-#: js/gdm/authPrompt.js:142 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "لغو"
 
-#: js/gdm/authPrompt.js:305 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:310 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -494,13 +494,13 @@ msgstr "خطا تأیید هویت"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:623
+#: js/gdm/util.js:624
 msgid "(or swipe finger across reader)"
 msgstr "(یا انگشتتان را روی خواننده بکشید)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:628
+#: js/gdm/util.js:629
 msgid "(or place finger on reader)"
 msgstr "(یا انگشتتان را روی خواننده بگذارید)"
 
@@ -817,7 +817,7 @@ msgstr "اجرا با کارت گرافیک جداگانه"
 msgid "Select Audio Device"
 msgstr "گزینش افزارهٔ صوتی"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:79
 msgid "Sound Settings"
 msgstr "تنظیمات صدا"
 
@@ -829,7 +829,7 @@ msgstr "هدفون‌ها"
 msgid "Headset"
 msgstr "هدست"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:348
 msgid "Microphone"
 msgstr "میکروفون"
 
@@ -997,8 +997,8 @@ msgstr "گشودن با %s"
 msgid "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "به عنوان جایگزین می‌توانید با فشردن دکمهٔ WPS روی مسیریابتان، وصل شوید."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:369
-#: js/ui/status/network.js:451
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:217
+#: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "اتّصال"
 
@@ -1163,31 +1163,31 @@ msgstr "%m/%d"
 msgid "No Events"
 msgstr "بدون رویداد"
 
-#: js/ui/dateMenu.js:396
+#: js/ui/dateMenu.js:395
 msgid "Add world clocks…"
 msgstr "افزودن ساعت‌های جهانی…"
 
-#: js/ui/dateMenu.js:397
+#: js/ui/dateMenu.js:396
 msgid "World Clocks"
 msgstr "ساعت‌های جهانی"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:680
 msgid "Loading…"
 msgstr "درحال بار کردن…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:690
 msgid "Go online for weather information"
 msgstr "برای اطّلاعات آب‌وهوا برخط شوید"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:692
 msgid "Weather information is currently unavailable"
 msgstr "اطّلاعات آب‌وهو درحال حاضر موجود نیست"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:702
 msgid "Weather"
 msgstr "آب‌وهوا"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:704
 msgid "Select weather location…"
 msgstr "گزینش مکان آب‌وهوا…"
 
@@ -1348,15 +1348,15 @@ msgstr "%s (دوردست)"
 msgid "%s (console)"
 msgstr "%s (پایانه)"
 
-#: js/ui/extensionDownloader.js:227
+#: js/ui/extensionDownloader.js:245
 msgid "Install"
 msgstr "نصب"
 
-#: js/ui/extensionDownloader.js:233
+#: js/ui/extensionDownloader.js:251
 msgid "Install Extension"
 msgstr "نصب افزونه"
 
-#: js/ui/extensionDownloader.js:234
+#: js/ui/extensionDownloader.js:252
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "بارگیری و نصب «%s» از extensions.gnome.org؟"
@@ -1620,7 +1620,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "سامانه"
 
-#: js/ui/panel.js:457
+#: js/ui/panel.js:460
 msgid "Top Bar"
 msgstr "نوار بالا"
 
@@ -1885,9 +1885,53 @@ msgstr "متن درشت"
 msgid "Auto Rotate"
 msgstr "چرخاندن خودکار"
 
-#: js/ui/status/bluetooth.js:151
+#: js/ui/status/backgroundApps.js:135
+msgctxt "title"
+msgid "Background Apps"
+msgstr "کاره‌های پس‌زمینه"
+
+#: js/ui/status/backgroundApps.js:153
+msgid "App Settings"
+msgstr "تنظیمات کاره"
+
+#: js/ui/status/backgroundApps.js:181
+msgid "No Background Apps"
+msgstr "بدون کارهٔ پس‌زمینه"
+
+#: js/ui/status/backgroundApps.js:183
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%Id کارهٔ پس‌زمینه"
+msgstr[1] "%Id کارهٔ پس‌زمینه"
+
+#: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
+msgid "Disconnect"
+msgstr "قطع ارتباط"
+
+#: js/ui/status/bluetooth.js:234 js/ui/status/bluetooth.js:236
 msgid "Bluetooth"
 msgstr "بلوتوث"
+
+#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+msgid "Bluetooth Settings"
+msgstr "تنظیمات بلوتوث"
+
+#: js/ui/status/bluetooth.js:306
+msgid "No available or connected devices"
+msgstr "بدون افزارهٔ وصل شده یا موجود"
+
+#: js/ui/status/bluetooth.js:307
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "برای وصل شدن به افزاره‌ها بلوتوث را روشنت "
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:361
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%Id وصل‌شده"
+msgstr[1] "%Id وصل‌شده"
 
 #: js/ui/status/brightness.js:34
 msgid "Brightness"
@@ -1963,10 +2007,6 @@ msgstr "قطع شدن از %s"
 msgid "Connect to %s"
 msgstr "وصل شدن به %s"
 
-#: js/ui/status/network.js:369
-msgid "Disconnect"
-msgstr "قطع ارتباط"
-
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1122
 #, javascript-format
@@ -2007,10 +2047,6 @@ msgstr "تنظیمات اتّصال سیمی"
 #: js/ui/status/network.js:1856
 msgid "Bluetooth Tethers"
 msgstr "چتر‌های بلوتوثی"
-
-#: js/ui/status/network.js:1857
-msgid "Bluetooth Settings"
-msgstr "تنظیمات بلوتوث"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1863
@@ -2155,27 +2191,27 @@ msgstr "خطای تأیید هویت تاندربولت"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "نمی‌توان افزارهٔ تاندربولت را تأیید هویت کرد: %s"
 
-#: js/ui/status/volume.js:203
+#: js/ui/status/volume.js:210
 msgid "Volume changed"
 msgstr "حجم صدا تغییر کرد"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Unmute"
 msgstr "باصدا"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Mute"
 msgstr "بی‌صدا"
 
-#: js/ui/status/volume.js:271
+#: js/ui/status/volume.js:278
 msgid "Volume"
 msgstr "حجم صدا"
 
-#: js/ui/status/volume.js:287
+#: js/ui/status/volume.js:294
 msgid "Sound Output"
 msgstr "خروجی صدا"
 
-#: js/ui/status/volume.js:359
+#: js/ui/status/volume.js:366
 msgid "Sound Input"
 msgstr "ورودی صدا"
 
@@ -2345,10 +2381,6 @@ msgstr "انتقال به نمایشگر راست"
 #: js/ui/windowMenu.js:207
 msgid "Close"
 msgstr "بستن"
-
-#: src/calendar-server/evolution-calendar.desktop.in:3
-msgid "Evolution Calendar"
-msgstr "تقویم اوولوشن"
 
 #: src/main.c:513 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
@@ -2676,23 +2708,23 @@ msgstr "افزونهٔ «%s» وجود ندارد\n"
 msgid "Show extensions info"
 msgstr "نمایش اطّلاعات افزونه"
 
-#: subprojects/extensions-tool/src/command-install.c:173
+#: subprojects/extensions-tool/src/command-install.c:190
 msgid "Overwrite an existing extension"
 msgstr "بازنویسی روی افزونهٔ موجود"
 
-#: subprojects/extensions-tool/src/command-install.c:175
+#: subprojects/extensions-tool/src/command-install.c:192
 msgid "EXTENSION_BUNDLE"
 msgstr "EXTENSION_BUNDLE"
 
-#: subprojects/extensions-tool/src/command-install.c:184
+#: subprojects/extensions-tool/src/command-install.c:201
 msgid "Install an extension bundle"
 msgstr "نصب یک دستهٔ افزونه"
 
-#: subprojects/extensions-tool/src/command-install.c:202
+#: subprojects/extensions-tool/src/command-install.c:219
 msgid "No extension bundle specified"
 msgstr "هیچ دستهٔ افزونه‌ای مشخّص نشده است"
 
-#: subprojects/extensions-tool/src/command-install.c:208
+#: subprojects/extensions-tool/src/command-install.c:225
 msgid "More than one extension bundle specified"
 msgstr "بیش از یک دسته افزونه مشخّص شده است"
 
@@ -2950,6 +2982,9 @@ msgstr[1] "%Iu ورودی"
 msgid "System Sounds"
 msgstr "صداهای سامانه"
 
+#~ msgid "Evolution Calendar"
+#~ msgstr "تقویم اوولوشن"
+
 #~ msgid "Attach modal dialog to the parent window"
 #~ msgstr "چسباندن محاورهٔ مقید به پنجره والد"
 
@@ -3055,10 +3090,6 @@ msgstr "صداهای سامانه"
 #, javascript-format
 #~ msgid "%s Off"
 #~ msgstr "%s خاموش است"
-
-#, javascript-format
-#~ msgid "%s Connected"
-#~ msgstr "%s وصل‌شده"
 
 #, javascript-format
 #~ msgid "%s Unmanaged"
