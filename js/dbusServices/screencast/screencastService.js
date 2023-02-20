@@ -244,7 +244,10 @@ var Recorder = class {
                     this._nodeId = nodeId;
 
                     this._pipelineState = PipelineState.STARTING;
-                    this._pipelineConfigs = PIPELINES.values();
+                    const fallbackSupported =
+                        Gst.Registry.get().check_feature_version('pipewiresrc', 0, 3, 67);
+                    this._pipelineConfigs = fallbackSupported
+                        ? PIPELINES.values() : [PIPELINES.at(-1)].values();
                     this._tryNextPipeline();
                 });
             this._sessionProxy.StartSync();
