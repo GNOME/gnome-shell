@@ -316,13 +316,9 @@ var Recorder = class {
 
     _ensurePipeline(nodeId) {
         const framerate = this._framerate;
-        const needsCopy =
-            Gst.Registry.get().check_feature_version('pipewiresrc', 0, 3, 57) &&
-            !Gst.Registry.get().check_feature_version('videoconvert', 1, 20, 4);
 
         let fullPipeline = `
             pipewiresrc path=${nodeId}
-                        always-copy=${needsCopy}
                         do-timestamp=true
                         keepalive-time=1000
                         resend-last=true !
