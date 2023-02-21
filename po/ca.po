@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-11 20:50+0000\n"
-"PO-Revision-Date: 2023-02-12 19:05+0000\n"
+"POT-Creation-Date: 2023-02-20 14:38+0000\n"
+"PO-Revision-Date: 2023-02-21 19:05+0000\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -493,15 +493,15 @@ msgstr "Pàgina d'inici"
 msgid "Visit extension homepage"
 msgstr "Visiteu la pàgina d'inici de l'extensió"
 
-#: js/gdm/authPrompt.js:142 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "Cancel·la"
 
-#: js/gdm/authPrompt.js:305 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:310 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -539,14 +539,14 @@ msgstr "Error d'autenticació"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:623
+#: js/gdm/util.js:624
 msgid "(or swipe finger across reader)"
 msgstr "(o llisca el dit a través del lector)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader
 #. instead
-#: js/gdm/util.js:628
+#: js/gdm/util.js:629
 msgid "(or place finger on reader)"
 msgstr "(o posa el dit al lector)"
 
@@ -861,7 +861,7 @@ msgstr "Inicia usant una targeta gràfica externa"
 msgid "Select Audio Device"
 msgstr "Seleccioneu dispositiu d'àudio"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:79
 msgid "Sound Settings"
 msgstr "Paràmetres del so"
 
@@ -873,7 +873,7 @@ msgstr "Auriculars"
 msgid "Headset"
 msgstr "Auriculars amb micròfon"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:348
 msgid "Microphone"
 msgstr "Micròfon"
 
@@ -1109,7 +1109,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Cal introduir una contrasenya per a connectar-vos a «%s»."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1990
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1996
 msgid "Network Manager"
 msgstr "Gestor de connexions de xarxa"
 
@@ -1210,31 +1210,31 @@ msgstr "%d/%m"
 msgid "No Events"
 msgstr "Cap cita"
 
-#: js/ui/dateMenu.js:396
+#: js/ui/dateMenu.js:395
 msgid "Add world clocks…"
 msgstr "Afegeix rellotges del món…"
 
-#: js/ui/dateMenu.js:397
+#: js/ui/dateMenu.js:396
 msgid "World Clocks"
 msgstr "Rellotges del món"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:680
 msgid "Loading…"
 msgstr "S'està carregant…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:690
 msgid "Go online for weather information"
 msgstr "Ves en línia per a informació sobre el temps"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:692
 msgid "Weather information is currently unavailable"
 msgstr "La informació sobre el temps no està disponible"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:702
 msgid "Weather"
 msgstr "El temps"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:704
 msgid "Select weather location…"
 msgstr "Trieu una ubicació pel temps…"
 
@@ -1401,22 +1401,22 @@ msgstr "%s (remot)"
 msgid "%s (console)"
 msgstr "%s (consola)"
 
-#: js/ui/extensionDownloader.js:227
+#: js/ui/extensionDownloader.js:245
 msgid "Install"
 msgstr "Instal·la"
 
-#: js/ui/extensionDownloader.js:233
+#: js/ui/extensionDownloader.js:251
 msgid "Install Extension"
 msgstr "Instal·la l'extensió"
 
-#: js/ui/extensionDownloader.js:234
+#: js/ui/extensionDownloader.js:252
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Voleu baixar i instal·lar «%s» d'extensions.gnome.org?"
 
 #: js/ui/extensionSystem.js:282
 msgid "Extension Updates Available"
-msgstr "No hi ha cap actualització d'extensions disponible"
+msgstr "Hi ha actualitzacions d'extensions disponibles"
 
 #: js/ui/extensionSystem.js:283
 msgid "Extension updates are ready to be installed."
@@ -1679,7 +1679,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:457
+#: js/ui/panel.js:460
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1944,6 +1944,27 @@ msgstr "Text gran"
 msgid "Auto Rotate"
 msgstr "Gira automàticament"
 
+#: js/ui/status/backgroundApps.js:135
+msgctxt "title"
+msgid "Background Apps"
+msgstr "Aplicacions en segon pla"
+
+#: js/ui/status/backgroundApps.js:153
+#| msgid "Settings"
+msgid "App Settings"
+msgstr "Paràmetres d'aplicació"
+
+#: js/ui/status/backgroundApps.js:181
+msgid "No Background Apps"
+msgstr "No hi ha cap aplicació en segon pla"
+
+#: js/ui/status/backgroundApps.js:183
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "Aplicació en segon pla"
+msgstr[1] "%d aplicacions en segon pla"
+
 #: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
 msgid "Disconnect"
 msgstr "Desconnecta"
@@ -1952,7 +1973,7 @@ msgstr "Desconnecta"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1863
 msgid "Bluetooth Settings"
 msgstr "Paràmetres del Bluetooth"
 
@@ -2049,69 +2070,69 @@ msgid "Connect to %s"
 msgstr "Connecta a %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1122
+#: js/ui/status/network.js:1128
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Punt d'accés %s"
 
-#: js/ui/status/network.js:1387
+#: js/ui/status/network.js:1393
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d connectat"
 msgstr[1] "%d connectats"
 
-#: js/ui/status/network.js:1485 js/ui/status/network.js:1501
+#: js/ui/status/network.js:1491 js/ui/status/network.js:1507
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1486
+#: js/ui/status/network.js:1492
 msgid "VPN Settings"
 msgstr "Paràmetres de la VPN"
 
-#: js/ui/status/network.js:1735
+#: js/ui/status/network.js:1741
 msgid "Wi–Fi"
 msgstr "Wi-Fi"
 
-#: js/ui/status/network.js:1737
+#: js/ui/status/network.js:1743
 msgid "All Networks"
 msgstr "Totes les xarxes"
 
-#: js/ui/status/network.js:1834
+#: js/ui/status/network.js:1840
 msgid "Wired Connections"
 msgstr "Connexions per cable"
 
-#: js/ui/status/network.js:1835
+#: js/ui/status/network.js:1841
 msgid "Wired Settings"
 msgstr "Paràmetres del cable"
 
-#: js/ui/status/network.js:1856
+#: js/ui/status/network.js:1862
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth Tethers"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1863
+#: js/ui/status/network.js:1869
 msgid "Tether"
 msgstr "Tether"
 
-#: js/ui/status/network.js:1876
+#: js/ui/status/network.js:1882
 msgid "Mobile Connections"
 msgstr "Connexions mòbils"
 
-#: js/ui/status/network.js:1878
+#: js/ui/status/network.js:1884
 msgid "Mobile Broadband Settings"
 msgstr "Paràmetres de la banda ampla mòbil"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1887
+#: js/ui/status/network.js:1893
 msgid "Mobile"
 msgstr "Mòbil"
 
-#: js/ui/status/network.js:1995
+#: js/ui/status/network.js:2001
 msgid "Connection failed"
 msgstr "Ha fallat la connexió"
 
-#: js/ui/status/network.js:1996
+#: js/ui/status/network.js:2002
 msgid "Activation of network connection failed"
 msgstr "Ha fallat l'activació de la connexió de xarxa"
 
@@ -2234,27 +2255,27 @@ msgstr "S'ha produït un error d'autorització a Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "No s'ha pogut autoritzar el dispositiu Thunderbolt: %s"
 
-#: js/ui/status/volume.js:203
+#: js/ui/status/volume.js:210
 msgid "Volume changed"
 msgstr "S'ha canviat el volum"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Unmute"
 msgstr "Deixa de silenciar"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Mute"
 msgstr "Silencia"
 
-#: js/ui/status/volume.js:271
+#: js/ui/status/volume.js:278
 msgid "Volume"
 msgstr "Volum"
 
-#: js/ui/status/volume.js:287
+#: js/ui/status/volume.js:294
 msgid "Sound Output"
 msgstr "Sortida del so"
 
-#: js/ui/status/volume.js:359
+#: js/ui/status/volume.js:366
 msgid "Sound Input"
 msgstr "Entrada del so"
 
@@ -2420,10 +2441,6 @@ msgstr "Mou a la pantalla de la dreta"
 #: js/ui/windowMenu.js:207
 msgid "Close"
 msgstr "Tanca"
-
-#: src/calendar-server/evolution-calendar.desktop.in:3
-msgid "Evolution Calendar"
-msgstr "Calendari de l'Evolution"
 
 #: src/main.c:513 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
@@ -2757,23 +2774,23 @@ msgstr "L'extensió «%s» no existeix\n"
 msgid "Show extensions info"
 msgstr "Mostra la informació de les extensions"
 
-#: subprojects/extensions-tool/src/command-install.c:173
+#: subprojects/extensions-tool/src/command-install.c:190
 msgid "Overwrite an existing extension"
 msgstr "Sobreescriu una extensió existent"
 
-#: subprojects/extensions-tool/src/command-install.c:175
+#: subprojects/extensions-tool/src/command-install.c:192
 msgid "EXTENSION_BUNDLE"
 msgstr "EXTENSION_BUNDLE"
 
-#: subprojects/extensions-tool/src/command-install.c:184
+#: subprojects/extensions-tool/src/command-install.c:201
 msgid "Install an extension bundle"
 msgstr "Instal·la un paquet d'extensió"
 
-#: subprojects/extensions-tool/src/command-install.c:202
+#: subprojects/extensions-tool/src/command-install.c:219
 msgid "No extension bundle specified"
 msgstr "No s'ha especificat cap paquet d'extensió"
 
-#: subprojects/extensions-tool/src/command-install.c:208
+#: subprojects/extensions-tool/src/command-install.c:225
 msgid "More than one extension bundle specified"
 msgstr "S'ha especificat més un paquet d'extensió"
 
