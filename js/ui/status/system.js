@@ -316,7 +316,7 @@ class Indicator extends SystemIndicator {
 
         const {powerToggle} = this._systemItem;
 
-        powerToggle.bind_property('label',
+        powerToggle.bind_property('title',
             this._percentageLabel, 'text',
             GObject.BindingFlags.SYNC_CREATE);
 
