@@ -3,7 +3,6 @@
 #define __SHELL_STACK_H__
 
 #include "st.h"
-#include <gtk/gtk.h>
 
 #define SHELL_TYPE_STACK (shell_stack_get_type ())
 G_DECLARE_FINAL_TYPE (ShellStack, shell_stack, SHELL, STACK, StWidget)

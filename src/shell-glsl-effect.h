@@ -3,7 +3,6 @@
 #define __SHELL_GLSL_EFFECT_H__
 
 #include "st.h"
-#include <gtk/gtk.h>
 
 /**
  * ShellSnippetHook:

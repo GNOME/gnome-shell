@@ -19,7 +19,6 @@
 #include "shell-app-cache-private.h"
 #include "shell-util.h"
 #include <glib/gi18n-lib.h>
-#include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <meta/display.h>
 #include <meta/meta-x11-display.h>

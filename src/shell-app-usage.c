@@ -7,8 +7,6 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
-#include <gdk/gdk.h>
-#include <gdk/gdkx.h>
 #include <glib.h>
 #include <gio/gio.h>
 #include <meta/display.h>

@@ -16,7 +16,6 @@
 #include <locale.h>
 
 #include <X11/extensions/Xfixes.h>
-#include <gdk/gdkx.h>
 #include <gio/gio.h>
 #include <girepository.h>
 #include <meta/meta-backend.h>
