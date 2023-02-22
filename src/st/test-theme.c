@@ -28,6 +28,8 @@
 #include <meta-test/meta-context-test.h>
 #include <meta/meta-backend.h>
 
+#include <gtk/gtk.h>
+
 static ClutterActor *stage;
 static StThemeNode *root;
 static StThemeNode *group1;

@@ -22,8 +22,6 @@
 #ifndef __ST_THEME_NODE_PRIVATE_H__
 #define __ST_THEME_NODE_PRIVATE_H__
 
-#include <gdk/gdk.h>
-
 #include "st-theme-node.h"
 #include "croco/libcroco.h"
 #include "st-types.h"

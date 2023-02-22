@@ -27,7 +27,6 @@
 #endif
 
 #include <gio/gio.h>
-#include <gtk/gtk.h>
 #include <clutter/clutter.h>
 
 #include <st/st-types.h>
