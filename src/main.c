@@ -10,7 +10,6 @@
 
 #include <cogl-pango/cogl-pango.h>
 #include <clutter/clutter.h>
-#include <gtk/gtk.h>
 #include <glib-unix.h>
 #include <glib/gi18n-lib.h>
 #include <girepository.h>
@@ -474,12 +473,8 @@ list_modes (const char  *option_name,
 
   /* Many of our imports require global to be set, so rather than
    * tayloring our imports carefully here to avoid that dependency,
-   * we just set it.
-   * ShellGlobal has some GTK+ dependencies, so initialize GTK+; we
-   * don't really care if it fails though (e.g. when running from a tty),
-   * so we mute all warnings */
+   * we just set it. */
   g_log_set_writer_func (shut_up, NULL, NULL);
-  gtk_init_check (NULL, NULL);
 
   _shell_global_init (NULL);
   global = shell_global_get ();

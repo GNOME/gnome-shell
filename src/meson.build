@@ -54,10 +54,9 @@ install_rpath = ':'.join([mutter_typelibdir, pkglibdir])
 gnome_shell_deps = [
   gio_unix_dep,
   libxml_dep,
-  gtk_dep,
   atk_bridge_dep,
+  gdk_pixbuf_dep,
   gjs_dep,
-  gdk_x11_dep,
   clutter_dep,
   cogl_pango_dep,
   startup_dep,
@@ -215,7 +214,8 @@ libshell_gir_includes = [
   'Clutter-@0@'.format(mutter_api_version),
   'Meta-@0@'.format(mutter_api_version),
   'Gcr-4',
-  'PolkitAgent-1.0'
+  'PolkitAgent-1.0',
+  'GdkPixbuf-2.0'
 ]
 
 if have_networkmanager

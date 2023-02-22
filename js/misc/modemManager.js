@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ModemBase, ModemGsm, ModemCdma, BroadbandModem  */
 
-const { Gio, GObject, NM, NMA } = imports.gi;
+const {Gio, GObject, NM, NMA4} = imports.gi;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -14,7 +14,7 @@ let _mpd;
 function _getMobileProvidersDatabase() {
     if (_mpd == null) {
         try {
-            _mpd = new NMA.MobileProvidersDatabase();
+            _mpd = new NMA4.MobileProvidersDatabase();
             _mpd.init(null);
         } catch (e) {
             log(e.message);

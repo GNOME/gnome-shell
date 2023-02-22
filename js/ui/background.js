@@ -94,7 +94,7 @@
 //     MetaBackgroundImage         MetaBackgroundImage
 //     MetaBackgroundImage         MetaBackgroundImage
 
-const { Clutter, GDesktopEnums, Gio, GLib, GObject, GnomeDesktop, Meta } = imports.gi;
+const {Clutter, GDesktopEnums, Gio, GLib, GObject, GnomeBG, GnomeDesktop, Meta} = imports.gi;
 const Signals = imports.misc.signals;
 
 const LoginManager = imports.misc.loginManager;
@@ -642,7 +642,7 @@ var BackgroundSource = class BackgroundSource {
 };
 
 var Animation = GObject.registerClass(
-class Animation extends GnomeDesktop.BGSlideShow {
+class Animation extends GnomeBG.BGSlideShow {
     _init(params) {
         super._init(params);
 
