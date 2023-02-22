@@ -21,6 +21,8 @@
 #include "st-image-content.h"
 #include "st-private.h"
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
 struct _StImageContent
 {
   /*< private >*/
