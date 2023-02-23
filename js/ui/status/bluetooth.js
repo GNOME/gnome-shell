@@ -134,6 +134,10 @@ const BtClient = GObject.registerClass({
     }
 
     *getDevices() {
+        // Ignore any lingering device references when turned off
+        if (!this.active)
+            return;
+
         const deviceStore = this._client.get_devices();
 
         for (let i = 0; i < deviceStore.get_n_items(); i++) {
