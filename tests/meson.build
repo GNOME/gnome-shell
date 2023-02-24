@@ -18,9 +18,6 @@ dbus_runner = configure_file(
   configuration: dbusrunnerconf,
 )
 
-testenv = environment()
-testenv.set('GSETTINGS_SCHEMA_DIR', join_paths(meson.project_build_root(), 'data'))
-
 tests = [
     'highlighter',
     'insertSorted',
@@ -35,7 +32,6 @@ tests = [
 foreach test : tests
   test(test, run_test,
     args: 'unit/@0@.js'.format(test),
-    env: testenv,
     workdir: meson.current_source_dir())
 endforeach
 
@@ -54,7 +50,7 @@ libgvc_path = fs.parent(libgvc.get_variable('libgvc').full_path())
 
 background_file = files(join_paths('data', 'background.png'))
 
-perf_testenv = testenv
+perf_testenv = environment()
 perf_testenv.set('G_DEBUG', 'fatal-warnings')
 perf_testenv.set('G_MESSAGES_DEBUG', 'GNOME Shell')
 perf_testenv.set('GNOME_SHELL_DATADIR', data_builddir)

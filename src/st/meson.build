@@ -206,7 +206,6 @@ if get_option('tests')
 
   test('CSS styling support', test_theme,
     workdir: meson.current_source_dir(),
-    env: ['GSETTINGS_BACKEND=memory']
   )
 endif
 
