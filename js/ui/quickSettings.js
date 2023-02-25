@@ -124,6 +124,11 @@ var QuickToggle = GObject.registerClass({
             null);
     }
 
+    get label() {
+        console.warn('Trying to get label from QuickToggle. Use title instead.');
+        return this.title;
+    }
+
     set label(label) {
         console.warn('Trying to set label on QuickToggle. Use title instead.');
         this.title = label;
