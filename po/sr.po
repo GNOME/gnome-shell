@@ -1,29 +1,30 @@
 # Serbian translation for gnome-shell.
-# Courtesy of Prevod.org team (http://prevod.org/) -- 2010—2021.
+# Courtesy of Prevod.org team (http://prevod.org/) -- 2010—2023.
 # Copyright © 2010 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 # Translators:
 # Милош Поповић <gpopac@gmail.com>, 2010—2011.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011–2021.
 # Борисав Живановић <borisavzivanovic@gmail.com>, 2017—2018.
 # Марко М. Костић <marko.m.kostic@gmail.com>, 2016-2020.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011–2023.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell master\n"
+"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-18 05:39+0000\n"
-"PO-Revision-Date: 2022-09-18 09:32+0200\n"
-"Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
-"Language-Team: Serbian <(nothing)>\n"
+"POT-Creation-Date: 2023-02-14 05:16+0000\n"
+"PO-Revision-Date: 2023-02-26 19:11+0100\n"
+"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
+"Language-Team: Serbian <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
-"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
+"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-Bookmarks: -1,167,-1,-1,-1,-1,-1,-1,-1,-1\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Gtranslator 41.0\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -66,7 +67,7 @@ msgid "Activate favorite application 9"
 msgstr "Покрени омиљени програм 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
 msgid "Screenshots"
 msgstr "Снимци екрана"
 
@@ -506,7 +507,7 @@ msgstr "Матична страна"
 msgid "Visit extension homepage"
 msgstr "Посети матичну страну проширењ"
 
-#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:146 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
@@ -514,7 +515,7 @@ msgstr "Посети матичну страну проширењ"
 msgid "Cancel"
 msgstr "Откажи"
 
-#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:312 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -552,13 +553,13 @@ msgstr "Грешка потврђивања идентитета"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:603
+#: js/gdm/util.js:604
 msgid "(or swipe finger across reader)"
 msgstr "(или превуците прст преко читача)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:608
+#: js/gdm/util.js:609
 msgid "(or place finger on reader)"
 msgstr "(или поставите прст на читач)"
 
@@ -837,7 +838,7 @@ msgstr "Забрани приступ"
 msgid "Grant Access"
 msgstr "Дозволи приступ"
 
-#: js/ui/appDisplay.js:1728
+#: js/ui/appDisplay.js:1731
 msgid "Unnamed Folder"
 msgstr "Неименована фасцикла"
 
@@ -900,7 +901,7 @@ msgstr "Слушалице"
 msgid "Headset"
 msgstr "Слушалице са микрофоном"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
 msgid "Microphone"
 msgstr "Микрофон"
 
@@ -1134,7 +1135,7 @@ msgstr "ПИН"
 msgid "A password is required to connect to “%s”."
 msgstr "Потребна је лозинка за повезивање на „%s“."
 
-#: js/ui/components/networkAgent.js:736
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1954
 msgid "Network Manager"
 msgstr "Управник мреже"
 
@@ -1456,31 +1457,31 @@ msgstr "Доступна су ажурирања проширења"
 msgid "Extension updates are ready to be installed."
 msgstr "Ажурирања проширења су доступна за инсталирање."
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:75
 msgid "Allow inhibiting shortcuts"
 msgstr "Дозволи спречавања пречица"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:82
+#: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
 msgstr "Програм „%s“ жели да спречи пречице"
 
-#: js/ui/inhibitShortcutsDialog.js:83
+#: js/ui/inhibitShortcutsDialog.js:79
 msgid "An application wants to inhibit shortcuts"
 msgstr "Програм жели да спречи пречице"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:90
+#: js/ui/inhibitShortcutsDialog.js:86
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Можете повратити пречице притиском на „%s“."
 
-#: js/ui/inhibitShortcutsDialog.js:101
+#: js/ui/inhibitShortcutsDialog.js:97
 msgid "Deny"
 msgstr "Забрани"
 
-#: js/ui/inhibitShortcutsDialog.js:110
+#: js/ui/inhibitShortcutsDialog.js:106
 msgid "Allow"
 msgstr "Дозволи"
 
@@ -1570,7 +1571,7 @@ msgstr "Укључено"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Искључено"
 
@@ -1748,91 +1749,91 @@ msgstr "Не могу да закључам"
 msgid "Lock was blocked by an application"
 msgstr "Неки програм је блокирао закључавање"
 
-#: js/ui/screenshot.js:1147
+#: js/ui/screenshot.js:1161
 msgid "Selection"
 msgstr "Избор"
 
-#: js/ui/screenshot.js:1157
+#: js/ui/screenshot.js:1171
 msgid "Area Selection"
 msgstr "Избор области"
 
-#: js/ui/screenshot.js:1162
+#: js/ui/screenshot.js:1176
 msgid "Screen"
 msgstr "Екран"
 
-#: js/ui/screenshot.js:1172
+#: js/ui/screenshot.js:1186
 msgid "Screen Selection"
 msgstr "Избор екрана"
 
-#: js/ui/screenshot.js:1177
+#: js/ui/screenshot.js:1191
 msgid "Window"
 msgstr "Прозор"
 
-#: js/ui/screenshot.js:1187
+#: js/ui/screenshot.js:1201
 msgid "Window Selection"
 msgstr "Избор прозора"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1239
 msgid "Screenshot / Screencast"
 msgstr "Снимак екрана / видео снимак"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1275
 msgid "Show Pointer"
 msgstr "Покажи показивач"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1849
+#: js/ui/screenshot.js:1866
 msgid "Screencasts"
 msgstr "Видео снимци"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1854
+#: js/ui/screenshot.js:1871
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Видео снимак направљен дана %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
+#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
 msgid "Screenshot"
 msgstr "Снимак екрана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1926
+#: js/ui/screenshot.js:1919
 msgid "Screencast recorded"
 msgstr "Видео снимак направљен"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1928
+#: js/ui/screenshot.js:1921
 msgid "Click here to view the video."
 msgstr "Кликните овде за преглед видеа."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
+#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
 msgid "Show in Files"
 msgstr "Прикажи у Датотекама"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2085
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Снимак екрана направљен дана %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2138
+#: js/ui/screenshot.js:2131
 msgid "Screenshot captured"
 msgstr "Снимак екрана направљен"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2140
+#: js/ui/screenshot.js:2133
 msgid "You can paste the image from the clipboard."
 msgstr "Можете убацити слику из оставе."
 
-#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
+#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
 msgid "Screenshot taken"
 msgstr "Направљен је снимак екрана"
 
@@ -1895,8 +1896,8 @@ msgstr "Користи кључ-датотеке"
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
-"Да бисте откључали волумен који користи кључ-датотеке, користите алатку <i>"
-"%s</i>."
+"Да бисте откључали волумен који користи кључ-датотеке, користите алатку "
+"<i>%s</i>."
 
 #: js/ui/shellMountOperation.js:307
 msgid "PIM Number"
@@ -2012,11 +2013,11 @@ msgstr "Секундарни клик"
 msgid "Dwell Click"
 msgstr "Дужи клик"
 
-#: js/ui/status/keyboard.js:830
+#: js/ui/status/keyboard.js:842
 msgid "Keyboard"
 msgstr "Тастатура"
 
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:859
 msgid "Show Keyboard Layout"
 msgstr "Покажи распоред тастатуре"
 
@@ -2058,6 +2059,60 @@ msgstr "Повежи %s"
 msgid "%s Hotspot"
 msgstr "%s хотспот"
 
+#: js/ui/status/network.js:1466 js/ui/status/network.js:1482
+msgid "VPN"
+msgstr "ВПН"
+
+#: js/ui/status/network.js:1467
+msgid "VPN Settings"
+msgstr "ВПН подешавања"
+
+#: js/ui/status/network.js:1716
+msgid "Wi–Fi"
+msgstr "Бежична"
+
+#: js/ui/status/network.js:1718
+#| msgid "No Networks"
+msgid "All Networks"
+msgstr "Све мреже"
+
+#: js/ui/status/network.js:1815
+#| msgid "%s Wired Connection"
+#| msgid_plural "%s Wired Connections"
+msgid "Wired Connections"
+msgstr "Жичане везе"
+
+#: js/ui/status/network.js:1816
+msgid "Wired Settings"
+msgstr "Подешавања жичане везе"
+
+#: js/ui/status/network.js:1830
+#| msgid "Bluetooth Settings"
+msgid "Bluetooth Tethers"
+msgstr "Досег Блутута"
+
+#: js/ui/status/network.js:1831
+msgid "Bluetooth Settings"
+msgstr "Подешавања Блутута"
+
+#: js/ui/status/network.js:1845
+#| msgid "%s Modem Connection"
+#| msgid_plural "%s Modem Connections"
+msgid "Mobile Connections"
+msgstr "Мобилне везе"
+
+#: js/ui/status/network.js:1847
+msgid "Mobile Broadband Settings"
+msgstr "Подешавања мобилне широкопојасне везе"
+
+#: js/ui/status/network.js:1959
+msgid "Connection failed"
+msgstr "Повезивање није успело"
+
+#: js/ui/status/network.js:1960
+msgid "Activation of network connection failed"
+msgstr "Активирање мрежне везе није успело"
+
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
 msgstr "Ноћно светло"
@@ -2077,15 +2132,15 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Чување батерије"
 
-#: js/ui/status/powerProfiles.js:68
+#: js/ui/status/powerProfiles.js:70
 msgid "Power Profiles"
 msgstr "Профили напајања"
 
-#: js/ui/status/remoteAccess.js:74
+#: js/ui/status/remoteAccess.js:72
 msgid "Stop Screencast"
 msgstr "Заустави снимање"
 
-#: js/ui/status/remoteAccess.js:144
+#: js/ui/status/remoteAccess.js:142
 msgid "Stop Screen Sharing"
 msgstr "Заустави дељење екрана"
 
@@ -2168,19 +2223,19 @@ msgstr "Грешка у овлашћивању Тандерболта"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Не могу да овластим Тандерболт уређај: %s"
 
-#: js/ui/status/volume.js:191
+#: js/ui/status/volume.js:194
 msgid "Volume changed"
 msgstr "Промена јачине звука"
 
-#: js/ui/status/volume.js:253
+#: js/ui/status/volume.js:256
 msgid "Volume"
 msgstr "Јачина звука"
 
-#: js/ui/status/volume.js:269
+#: js/ui/status/volume.js:272
 msgid "Sound Output"
 msgstr "Звучни излаз"
 
-#: js/ui/status/volume.js:337
+#: js/ui/status/volume.js:340
 msgid "Sound Input"
 msgstr "Звучни улаз"
 
@@ -2508,8 +2563,8 @@ msgstr "Ручно инсталирана"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "Да бисте пронашли и додали проширења, посетите страницу <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
@@ -2630,26 +2685,18 @@ msgstr "Непознати аргументи"
 msgid "UUID, name and description are required"
 msgstr "Ставке ЈУИБ, назив и опис су обавезне"
 
-#: subprojects/extensions-tool/src/command-disable.c:46
-#: subprojects/extensions-tool/src/command-enable.c:46
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
-#: subprojects/extensions-tool/src/main.c:146
-msgid "Failed to connect to GNOME Shell\n"
-msgstr "Нисам успео да се повежем на Гномову шкољку\n"
-
-#: subprojects/extensions-tool/src/command-disable.c:53
-#: subprojects/extensions-tool/src/command-enable.c:53
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "Проширење „%s“ не постоји\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:101
+#: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
 msgstr "Онемогући проширење"
 
-#: subprojects/extensions-tool/src/command-disable.c:119
-#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
 #: subprojects/extensions-tool/src/command-info.c:103
 #: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
@@ -2657,8 +2704,8 @@ msgstr "Онемогући проширење"
 msgid "No UUID given"
 msgstr "Ниједан ЈУИБ није наведен"
 
-#: subprojects/extensions-tool/src/command-disable.c:124
-#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
 #: subprojects/extensions-tool/src/command-info.c:108
 #: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
@@ -2666,9 +2713,15 @@ msgstr "Ниједан ЈУИБ није наведен"
 msgid "More than one UUID given"
 msgstr "Наведено је више од једног ЈУИБ-а"
 
-#: subprojects/extensions-tool/src/command-enable.c:101
+#: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
 msgstr "Омогући проширење"
+
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:146
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "Нисам успео да се повежем на Гномову шкољку\n"
 
 #: subprojects/extensions-tool/src/command-info.c:59
 #: subprojects/extensions-tool/src/main.c:155
@@ -2934,7 +2987,7 @@ msgstr "Додај иконицу у горњу траку"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1907
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2945,7 +2998,7 @@ msgstr[3] "%u излаз"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1917
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -2954,7 +3007,7 @@ msgstr[1] "%u улаза"
 msgstr[2] "%u улаза"
 msgstr[3] "%u улаз"
 
-#: subprojects/gvc/gvc-mixer-control.c:2867
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Системски звуци"
 
@@ -2975,9 +3028,6 @@ msgstr "Системски звуци"
 
 #~ msgid "Log Out"
 #~ msgstr "Одјави ме"
-
-#~ msgid "Bluetooth Settings"
-#~ msgstr "Подешавања Блутута"
 
 #, javascript-format
 #~ msgid "%d Connected"
@@ -3043,12 +3093,6 @@ msgstr "Системски звуци"
 #~ msgid "%s Connection Failed"
 #~ msgstr "%s повезивање неуспешно"
 
-#~ msgid "Wired Settings"
-#~ msgstr "Подешавања жичане везе"
-
-#~ msgid "Mobile Broadband Settings"
-#~ msgstr "Подешавања мобилне широкопојасне везе"
-
 #, javascript-format
 #~ msgid "%s Hardware Disabled"
 #~ msgstr "%s уређај искључен"
@@ -3084,9 +3128,6 @@ msgstr "Системски звуци"
 #~ msgid "Select a network"
 #~ msgstr "Изаберите мрежу"
 
-#~ msgid "No Networks"
-#~ msgstr "Нема мрежа"
-
 #~ msgid "Use hardware switch to turn off"
 #~ msgstr "Користи физички прекидач за искључивање"
 
@@ -3109,25 +3150,11 @@ msgstr "Системски звуци"
 #~ msgid "connection failed"
 #~ msgstr "повезивање није успело"
 
-#~ msgid "VPN Settings"
-#~ msgstr "ВПН подешавања"
-
-#~ msgid "VPN"
-#~ msgstr "ВПН"
-
 #~ msgid "VPN Off"
 #~ msgstr "Искључи ВПН"
 
 #~ msgid "Network Settings"
 #~ msgstr "Подешавања мреже"
-
-#, javascript-format
-#~ msgid "%s Wired Connection"
-#~ msgid_plural "%s Wired Connections"
-#~ msgstr[0] "%s жичана веза"
-#~ msgstr[1] "%s жичане везе"
-#~ msgstr[2] "%s жичаних веза"
-#~ msgstr[3] "%s жичана веза"
 
 #, javascript-format
 #~ msgid "%s Wi-Fi Connection"
@@ -3136,20 +3163,6 @@ msgstr "Системски звуци"
 #~ msgstr[1] "%s бежичне везе"
 #~ msgstr[2] "%s бежичних веза"
 #~ msgstr[3] "%s бежична веза"
-
-#, javascript-format
-#~ msgid "%s Modem Connection"
-#~ msgid_plural "%s Modem Connections"
-#~ msgstr[0] "%s модемска веза"
-#~ msgstr[1] "%s модемске везе"
-#~ msgstr[2] "%s модемских веза"
-#~ msgstr[3] "%s модемска веза"
-
-#~ msgid "Connection failed"
-#~ msgstr "Повезивање није успело"
-
-#~ msgid "Activation of network connection failed"
-#~ msgstr "Активирање мрежне везе није успело"
 
 #~ msgid "Night Light Disabled"
 #~ msgstr "Ноћно светло не ради"
