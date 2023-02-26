@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-11 20:50+0000\n"
-"PO-Revision-Date: 2023-02-12 12:15+0100\n"
+"POT-Creation-Date: 2023-02-20 14:38+0000\n"
+"PO-Revision-Date: 2023-02-26 12:15+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -421,15 +421,15 @@ msgstr "Webgune nagusia"
 msgid "Visit extension homepage"
 msgstr "Bisitatu hedapenaren webgunea"
 
-#: js/gdm/authPrompt.js:142 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "Utzi"
 
-#: js/gdm/authPrompt.js:305 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:310 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -467,13 +467,13 @@ msgstr "Autentifikazio-errorea"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:623
+#: js/gdm/util.js:624
 msgid "(or swipe finger across reader)"
 msgstr "(edo lerratu hatza irakurlean zehar)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:628
+#: js/gdm/util.js:629
 msgid "(or place finger on reader)"
 msgstr "(edo kokatu hatza irakurlean)"
 
@@ -777,7 +777,7 @@ msgstr "Abiarazi txartel grafiko diskretua erabiliz"
 msgid "Select Audio Device"
 msgstr "Hautatu audioaren gailua"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:79
 msgid "Sound Settings"
 msgstr "Soinu-ezarpenak"
 
@@ -789,7 +789,7 @@ msgstr "Entzungailua"
 msgid "Headset"
 msgstr "Entzungailua+mikrofonoa"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:348
 msgid "Microphone"
 msgstr "Mikrofonoa"
 
@@ -1021,7 +1021,7 @@ msgstr "PINa"
 msgid "A password is required to connect to “%s”."
 msgstr "Pasahitza behar da '%s'(e)ra konektatzeko."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1990
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1996
 msgid "Network Manager"
 msgstr "Sarearen kudeatzailea"
 
@@ -1124,31 +1124,31 @@ msgstr "%m/%d"
 msgid "No Events"
 msgstr "Gertaerarik ez"
 
-#: js/ui/dateMenu.js:396
+#: js/ui/dateMenu.js:395
 msgid "Add world clocks…"
 msgstr "Gehitu munduko erlojuak…"
 
-#: js/ui/dateMenu.js:397
+#: js/ui/dateMenu.js:396
 msgid "World Clocks"
 msgstr "Munduko erlojuak"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:680
 msgid "Loading…"
 msgstr "Kargatzen…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:690
 msgid "Go online for weather information"
 msgstr "Konektatu eguraldiaren informazioa lortzeko"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:692
 msgid "Weather information is currently unavailable"
 msgstr "Eguraldiaren informazioa unean ez dago eskuragarri"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:702
 msgid "Weather"
 msgstr "Eguraldia"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:704
 msgid "Select weather location…"
 msgstr "Hautatu eguraldiaren kokalekua…"
 
@@ -1303,15 +1303,15 @@ msgstr "%s (urrunekoa)"
 msgid "%s (console)"
 msgstr "%s (kontsola)"
 
-#: js/ui/extensionDownloader.js:227
+#: js/ui/extensionDownloader.js:245
 msgid "Install"
 msgstr "Instalatu"
 
-#: js/ui/extensionDownloader.js:233
+#: js/ui/extensionDownloader.js:251
 msgid "Install Extension"
 msgstr "Instalatu hedapena"
 
-#: js/ui/extensionDownloader.js:234
+#: js/ui/extensionDownloader.js:252
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Deskargatu eta instalatu “%s” extensions.gnome.org gunetik?"
@@ -1568,7 +1568,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:457
+#: js/ui/panel.js:460
 msgid "Top Bar"
 msgstr "Goiko barra"
 
@@ -1830,6 +1830,26 @@ msgstr "Testu handia"
 msgid "Auto Rotate"
 msgstr "Automatikoki biratu"
 
+#: js/ui/status/backgroundApps.js:135
+msgctxt "title"
+msgid "Background Apps"
+msgstr "Atzeko planoko aplikazioak"
+
+#: js/ui/status/backgroundApps.js:153
+msgid "App Settings"
+msgstr "Aplikazio-ezarpenak"
+
+#: js/ui/status/backgroundApps.js:181
+msgid "No Background Apps"
+msgstr "Ez dago atzeko planoko aplikaziorik"
+
+#: js/ui/status/backgroundApps.js:183
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "Atzeko planoko aplikazio %d"
+msgstr[1] "Atzeko planoko %d aplikazio"
+
 #: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
 msgid "Disconnect"
 msgstr "Deskonektatu"
@@ -1838,7 +1858,7 @@ msgstr "Deskonektatu"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1863
 msgid "Bluetooth Settings"
 msgstr "Bluetooth ezarpenak"
 
@@ -1933,69 +1953,69 @@ msgid "Connect to %s"
 msgstr "Konektatu honekin: %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1122
+#: js/ui/status/network.js:1128
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s wifigunea"
 
-#: js/ui/status/network.js:1387
+#: js/ui/status/network.js:1393
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d konektatuta"
 msgstr[1] "%d konektatuta"
 
-#: js/ui/status/network.js:1485 js/ui/status/network.js:1501
+#: js/ui/status/network.js:1491 js/ui/status/network.js:1507
 msgid "VPN"
 msgstr "VPNa"
 
-#: js/ui/status/network.js:1486
+#: js/ui/status/network.js:1492
 msgid "VPN Settings"
 msgstr "VPNaren ezarpenak"
 
-#: js/ui/status/network.js:1735
+#: js/ui/status/network.js:1741
 msgid "Wi–Fi"
 msgstr "Wifia"
 
-#: js/ui/status/network.js:1737
+#: js/ui/status/network.js:1743
 msgid "All Networks"
 msgstr "Sare guztiak"
 
-#: js/ui/status/network.js:1834
+#: js/ui/status/network.js:1840
 msgid "Wired Connections"
 msgstr "Haridun konexioak"
 
-#: js/ui/status/network.js:1835
+#: js/ui/status/network.js:1841
 msgid "Wired Settings"
 msgstr "Haridunaren ezarpenak"
 
-#: js/ui/status/network.js:1856
+#: js/ui/status/network.js:1862
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth aingurak"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1863
+#: js/ui/status/network.js:1869
 msgid "Tether"
 msgstr "Ainguratu"
 
-#: js/ui/status/network.js:1876
+#: js/ui/status/network.js:1882
 msgid "Mobile Connections"
 msgstr "Konexio mugikorrak"
 
-#: js/ui/status/network.js:1878
+#: js/ui/status/network.js:1884
 msgid "Mobile Broadband Settings"
 msgstr "Banda zabal mugikorraren ezarpenak"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1887
+#: js/ui/status/network.js:1893
 msgid "Mobile"
 msgstr "Mugikorra"
 
-#: js/ui/status/network.js:1995
+#: js/ui/status/network.js:2001
 msgid "Connection failed"
 msgstr "Konexioak huts egin du"
 
-#: js/ui/status/network.js:1996
+#: js/ui/status/network.js:2002
 msgid "Activation of network connection failed"
 msgstr "Sareko konexioa aktibatzeak huts egin du"
 
@@ -2114,27 +2134,27 @@ msgstr "Thunderbolt baimen-errorea"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Ezin izan da Thunderbolt gailua baimendu: %s"
 
-#: js/ui/status/volume.js:203
+#: js/ui/status/volume.js:210
 msgid "Volume changed"
 msgstr "Bolumena aldatuta"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Unmute"
 msgstr "Eten mututasuna"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Mute"
 msgstr "Mututu"
 
-#: js/ui/status/volume.js:271
+#: js/ui/status/volume.js:278
 msgid "Volume"
 msgstr "Bolumena"
 
-#: js/ui/status/volume.js:287
+#: js/ui/status/volume.js:294
 msgid "Sound Output"
 msgstr "Soinu-irteera"
 
-#: js/ui/status/volume.js:359
+#: js/ui/status/volume.js:366
 msgid "Sound Input"
 msgstr "Soinu-sarrera"
 
@@ -2305,10 +2325,6 @@ msgstr "Eraman eskuineko pantailara"
 msgid "Close"
 msgstr "Itxi"
 
-#: src/calendar-server/evolution-calendar.desktop.in:3
-msgid "Evolution Calendar"
-msgstr "Evolution egutegia"
-
 #: src/main.c:513 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Bistaratu bertsioa"
@@ -2460,8 +2476,8 @@ msgstr "Eskuz instalatua"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr "Hedapenak aurkitu eta gehitzeko, bisitatu <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:112
@@ -2623,23 +2639,23 @@ msgstr "Ez dago “%s” hedapenik.\n"
 msgid "Show extensions info"
 msgstr "Hedapenen informazioa erakusten du"
 
-#: subprojects/extensions-tool/src/command-install.c:173
+#: subprojects/extensions-tool/src/command-install.c:190
 msgid "Overwrite an existing extension"
 msgstr "Gainidatzi lehendik dagoen hedapena"
 
-#: subprojects/extensions-tool/src/command-install.c:175
+#: subprojects/extensions-tool/src/command-install.c:192
 msgid "EXTENSION_BUNDLE"
 msgstr "HEDAPEN_BILDUMA"
 
-#: subprojects/extensions-tool/src/command-install.c:184
+#: subprojects/extensions-tool/src/command-install.c:201
 msgid "Install an extension bundle"
 msgstr "Instalatu hedapen-bilduma"
 
-#: subprojects/extensions-tool/src/command-install.c:202
+#: subprojects/extensions-tool/src/command-install.c:219
 msgid "No extension bundle specified"
 msgstr "Ez da hedapen-bildumarik zehaztu"
 
-#: subprojects/extensions-tool/src/command-install.c:208
+#: subprojects/extensions-tool/src/command-install.c:225
 msgid "More than one extension bundle specified"
 msgstr "Hedapen-bilduma bat baino gehiago zehaztu da"
 
@@ -2896,6 +2912,9 @@ msgstr[1] "%u sarrera"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sistemaren soinuak"
+
+#~ msgid "Evolution Calendar"
+#~ msgstr "Evolution egutegia"
 
 #~ msgid ""
 #~ "Whether the default Bluetooth adapter had set up devices associated to it"
