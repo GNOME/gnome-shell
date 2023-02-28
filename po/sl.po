@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2023-02-26 07:20+0000\n"
-"PO-Revision-Date: 2023-02-26 10:21+0100\n"
+"PO-Revision-Date: 2023-02-28 21:18+0100\n"
 "Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -2109,17 +2109,14 @@ msgid "Wired Settings"
 msgstr "Nastavitve žičnega omrežja"
 
 #: js/ui/status/network.js:1862
-#, fuzzy
-#| msgid "Bluetooth Settings"
 msgid "Bluetooth Tethers"
-msgstr "Nastavitve za Bluetooth"
+msgstr "Internetna Bluetooth točka"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1869
-#, fuzzy
 #| msgid "Weather"
 msgid "Tether"
-msgstr "Vreme"
+msgstr "Bluetooth Internet"
 
 #: js/ui/status/network.js:1882
 msgid "Mobile Connections"
