@@ -1349,10 +1349,14 @@ var IconGrid = GObject.registerClass({
         if (!this.mapped)
             animate = false;
 
-        adjustment.ease(newValue, {
-            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
-            duration: animate ? PAGE_SWITCH_TIME : 0,
-        });
+        global.compositor.get_laters().add(
+            Meta.LaterType.BEFORE_REDRAW, () => {
+                adjustment.ease(newValue, {
+                    mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+                    duration: animate ? PAGE_SWITCH_TIME : 0,
+                });
+                return GLib.SOURCE_REMOVE;
+            });
     }
 
     /**
