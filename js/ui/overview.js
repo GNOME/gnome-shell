@@ -683,6 +683,12 @@ var Overview = class extends Signals.EventEmitter {
         this._changeShownState(OverviewShownState.SHOWING);
 
         this._overview.runStartupAnimation(() => {
+            // Overview got hidden during startup animation
+            if (this._shownState !== OverviewShownState.SHOWING) {
+                callback();
+                return;
+            }
+
             if (!this._syncGrab()) {
                 callback();
                 return;
