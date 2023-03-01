@@ -184,6 +184,7 @@ var InputMethod = GObject.registerClass({
     vfunc_focus_in(focus) {
         this._currentFocus = focus;
         if (this._context) {
+            this.update();
             this._context.focus_in();
             this._emitRequestSurrounding();
         }
@@ -367,7 +368,6 @@ var InputMethod = GObject.registerClass({
     _fullReset() {
         this._context.set_content_type(0, 0);
         this._context.set_cursor_location(0, 0, 0, 0);
-        this._context.set_capabilities(0);
         this._context.reset();
     }
 
