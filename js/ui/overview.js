@@ -691,6 +691,7 @@ var Overview = class extends Signals.EventEmitter {
 
             if (!this._syncGrab()) {
                 callback();
+                this.hide();
                 return;
             }
 
