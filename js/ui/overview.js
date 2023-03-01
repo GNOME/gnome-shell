@@ -690,6 +690,7 @@ var Overview = class {
 
             if (!this._syncGrab()) {
                 callback();
+                this.hide();
                 return;
             }
 
