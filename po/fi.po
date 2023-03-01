@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-14 07:18+0000\n"
-"PO-Revision-Date: 2023-02-28 22:55+0200\n"
+"POT-Creation-Date: 2023-02-28 20:56+0000\n"
+"PO-Revision-Date: 2023-03-01 22:53+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -842,7 +842,7 @@ msgstr "Käynnistä erillistä näytönohjainta käyttäen"
 msgid "Select Audio Device"
 msgstr "Valitse äänilaite"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:79
 msgid "Sound Settings"
 msgstr "Ääniasetukset"
 
@@ -854,7 +854,7 @@ msgstr "Kuulokkeet"
 msgid "Headset"
 msgstr "Headset-kuulokkeet"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:348
 msgid "Microphone"
 msgstr "Mikrofoni"
 
@@ -1025,7 +1025,7 @@ msgid ""
 msgstr ""
 "Vaihtoehtoisesti voit yhdistää painamalla reitittimesi “WPS”-painiketta."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:217
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:221
 #: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "Yhdistä"
@@ -1089,7 +1089,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Salasana vaaditaan kohteeseen \"%s\" yhdistämiseksi."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1990
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1996
 msgid "Network Manager"
 msgstr "Verkon hallinta"
 
@@ -1662,7 +1662,7 @@ msgstr "Järjestelmä"
 msgid "Top Bar"
 msgstr "Yläpalkki"
 
-#: js/ui/quickSettings.js:176
+#: js/ui/quickSettings.js:181
 msgid "Open menu"
 msgstr "Avaa valikko"
 
@@ -1942,28 +1942,28 @@ msgid_plural "%d Background Apps"
 msgstr[0] "%d taustasovellus"
 msgstr[1] "%d taustasovellusta"
 
-#: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
+#: js/ui/status/bluetooth.js:221 js/ui/status/network.js:369
 msgid "Disconnect"
 msgstr "Katkaise yhteys"
 
-#: js/ui/status/bluetooth.js:234 js/ui/status/bluetooth.js:236
+#: js/ui/status/bluetooth.js:238 js/ui/status/bluetooth.js:240
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+#: js/ui/status/bluetooth.js:263 js/ui/status/network.js:1863
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-asetukset"
 
-#: js/ui/status/bluetooth.js:306
+#: js/ui/status/bluetooth.js:310
 msgid "No available or connected devices"
 msgstr "Ei käytettävissä olevia tai yhdistettyjä laitteita"
 
-#: js/ui/status/bluetooth.js:307
+#: js/ui/status/bluetooth.js:311
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Kytke Bluetooth päälle yhdistääksesi laitteisiin"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:361
+#: js/ui/status/bluetooth.js:365
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2047,70 +2047,69 @@ msgid "Connect to %s"
 msgstr "Yhdistä kohteeseen %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1122
+#: js/ui/status/network.js:1128
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s - Yhteyspiste"
 
-#: js/ui/status/network.js:1387
+#: js/ui/status/network.js:1393
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d yhdistetty"
 msgstr[1] "%d yhdistetty"
 
-#: js/ui/status/network.js:1485 js/ui/status/network.js:1501
+#: js/ui/status/network.js:1491 js/ui/status/network.js:1507
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1486
+#: js/ui/status/network.js:1492
 msgid "VPN Settings"
 msgstr "VPN-asetukset"
 
-#: js/ui/status/network.js:1735
+#: js/ui/status/network.js:1741
 msgid "Wi–Fi"
-msgstr "Wifi"
+msgstr "Wi-Fi"
 
-#: js/ui/status/network.js:1737
+#: js/ui/status/network.js:1743
 msgid "All Networks"
 msgstr "Kaikki verkot"
 
-#: js/ui/status/network.js:1834
+#: js/ui/status/network.js:1840
 msgid "Wired Connections"
 msgstr "Kiinteät yhteydet"
 
-#: js/ui/status/network.js:1835
+#: js/ui/status/network.js:1841
 msgid "Wired Settings"
 msgstr "Kiinteän yhteyden asetukset"
 
-#: js/ui/status/network.js:1856
+#: js/ui/status/network.js:1862
 msgid "Bluetooth Tethers"
 msgstr "Bluetoothilla jaetut yhteydet"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1863
-#| msgid "Weather"
+#: js/ui/status/network.js:1869
 msgid "Tether"
 msgstr "Tether"
 
-#: js/ui/status/network.js:1876
+#: js/ui/status/network.js:1882
 msgid "Mobile Connections"
 msgstr "Mobiiliyhteydet"
 
-#: js/ui/status/network.js:1878
+#: js/ui/status/network.js:1884
 msgid "Mobile Broadband Settings"
 msgstr "Mobiililaajakaistan asetukset"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1887
+#: js/ui/status/network.js:1893
 msgid "Mobile"
 msgstr "Mobiili"
 
-#: js/ui/status/network.js:1995
+#: js/ui/status/network.js:2001
 msgid "Connection failed"
 msgstr "Yhteys epäonnistui"
 
-#: js/ui/status/network.js:1996
+#: js/ui/status/network.js:2002
 msgid "Activation of network connection failed"
 msgstr "Verkkoyhteyden aktivointi epäonnistui"
 
@@ -2231,27 +2230,27 @@ msgstr "Thunderbolt-valtuutusvirhe"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Thunderbolt-laitetta ei voitu valtuuttaa: %s"
 
-#: js/ui/status/volume.js:203
+#: js/ui/status/volume.js:210
 msgid "Volume changed"
 msgstr "Äänenvoimakkuutta muutettu"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Unmute"
 msgstr "Palauta ääni"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Mute"
 msgstr "Vaimenna"
 
-#: js/ui/status/volume.js:271
+#: js/ui/status/volume.js:278
 msgid "Volume"
 msgstr "Äänenvoimakkuus"
 
-#: js/ui/status/volume.js:287
+#: js/ui/status/volume.js:294
 msgid "Sound Output"
 msgstr "Äänen ulostulo"
 
-#: js/ui/status/volume.js:359
+#: js/ui/status/volume.js:366
 msgid "Sound Input"
 msgstr "Äänen sisääntulo"
 
