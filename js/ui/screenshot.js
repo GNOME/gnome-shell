@@ -1254,6 +1254,13 @@ var ScreenshotUI = GObject.registerClass({
         this._captureButton.set_child(new St.Widget({
             style_class: 'screenshot-ui-capture-button-circle',
         }));
+        this.add_child(new Tooltip(this._captureButton, {
+            /* Translators: since this string refers to an action,
+            it needs to be phrased as a verb. */
+            text: _('Capture'),
+            style_class: 'screenshot-ui-tooltip',
+            visible: false,
+        }));
         this._captureButton.connect('clicked',
             this._onCaptureButtonClicked.bind(this));
         this._bottomRowContainer.add_child(this._captureButton);
