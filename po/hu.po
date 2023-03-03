@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-26 18:17+0000\n"
-"PO-Revision-Date: 2023-03-02 02:28+0100\n"
+"POT-Creation-Date: 2023-03-02 23:22+0000\n"
+"PO-Revision-Date: 2023-03-03 01:27+0100\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -26,52 +26,43 @@ msgid "Launchers"
 msgstr "Indítók"
 
 #: data/50-gnome-shell-launchers.xml:10
-#| msgid "Activate favorite application 1"
 msgid "Activate favorite app 1"
 msgstr "1. kedvenc alkalmazás aktiválása"
 
 #: data/50-gnome-shell-launchers.xml:14
-#| msgid "Activate favorite application 2"
 msgid "Activate favorite app 2"
 msgstr "2. kedvenc alkalmazás aktiválása"
 
 #: data/50-gnome-shell-launchers.xml:18
-#| msgid "Activate favorite application 3"
 msgid "Activate favorite app 3"
 msgstr "3. kedvenc alkalmazás aktiválása"
 
 #: data/50-gnome-shell-launchers.xml:22
-#| msgid "Activate favorite application 4"
 msgid "Activate favorite app 4"
 msgstr "4. kedvenc alkalmazás aktiválása"
 
 #: data/50-gnome-shell-launchers.xml:26
-#| msgid "Activate favorite application 5"
 msgid "Activate favorite app 5"
 msgstr "5. kedvenc alkalmazás aktiválása"
 
 #: data/50-gnome-shell-launchers.xml:30
-#| msgid "Activate favorite application 6"
 msgid "Activate favorite app 6"
 msgstr "6. kedvenc alkalmazás aktiválása"
 
 #: data/50-gnome-shell-launchers.xml:34
-#| msgid "Activate favorite application 7"
 msgid "Activate favorite app 7"
 msgstr "7. kedvenc alkalmazás aktiválása"
 
 #: data/50-gnome-shell-launchers.xml:38
-#| msgid "Activate favorite application 8"
 msgid "Activate favorite app 8"
 msgstr "8. kedvenc alkalmazás aktiválása"
 
 #: data/50-gnome-shell-launchers.xml:42
-#| msgid "Activate favorite application 9"
 msgid "Activate favorite app 9"
 msgstr "9. kedvenc alkalmazás aktiválása"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2106
 msgid "Screenshots"
 msgstr "Képernyőképek"
 
@@ -112,12 +103,10 @@ msgid "Show the overview"
 msgstr "Áttekintés megjelenítése"
 
 #: data/50-gnome-shell-system.xml:18
-#| msgid "Show all applications"
 msgid "Show all apps"
 msgstr "Összes alkalmazás megjelenítése"
 
 #: data/50-gnome-shell-system.xml:21
-#| msgid "Open the application menu"
 msgid "Open the app menu"
 msgstr "Az alkalmazásmenü megnyitása"
 
@@ -822,7 +811,6 @@ msgid "New Window"
 msgstr "Új ablak"
 
 #: js/ui/appMenu.js:81
-#| msgid "Show Details"
 msgid "App Details"
 msgstr "Alkalmazás részletei"
 
@@ -991,9 +979,6 @@ msgid "“%s” is not responding."
 msgstr "„%s” nem válaszol."
 
 #: js/ui/closeDialog.js:41
-#| msgid ""
-#| "You may choose to wait a short while for it to continue or force the "
-#| "application to quit entirely."
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
 "quit entirely."
@@ -1139,7 +1124,6 @@ msgid "Windows"
 msgstr "Ablakok"
 
 #: js/ui/dash.js:205 js/ui/dash.js:251
-#| msgid "Show Applications"
 msgid "Show Apps"
 msgstr "Alkalmazások megjelenítése"
 
@@ -1423,12 +1407,10 @@ msgstr "Gyorsbillentyűk megakadályozásának engedélyezése"
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
-#| msgid "The application %s wants to inhibit shortcuts"
 msgid "The app %s wants to inhibit shortcuts"
 msgstr "A(z) %s alkalmazás meg akarja gátolni a gyorsbillentyűk használatát"
 
 #: js/ui/inhibitShortcutsDialog.js:79
-#| msgid "An application wants to inhibit shortcuts"
 msgid "An app wants to inhibit shortcuts"
 msgstr "Egy alkalmazás meg akarja gátolni a gyorsbillentyűk használatát"
 
@@ -1497,7 +1479,6 @@ msgid "Leave Off"
 msgstr "Kikapcsolva hagyás"
 
 #: js/ui/keyboard.js:219 js/ui/status/keyboard.js:860
-#| msgid "Sound Settings"
 msgid "Keyboard Settings"
 msgstr "Billentyűzetbeállítások"
 
@@ -1542,12 +1523,10 @@ msgid "Downloading"
 msgstr "Letöltés"
 
 #: js/ui/lookingGlass.js:804
-#| msgid "Disabled"
 msgid "Disabling"
 msgstr "Letiltás"
 
 #: js/ui/lookingGlass.js:806
-#| msgid "Enabled"
 msgid "Enabling"
 msgstr "Engedélyezés"
 
@@ -1564,7 +1543,6 @@ msgid "System was put in unsafe mode"
 msgstr "A rendszer nem biztonságos módba lett állítva"
 
 #: js/ui/main.js:287
-#| msgid "Applications now have unrestricted access"
 msgid "Apps now have unrestricted access"
 msgstr "Az alkalmazásoknak most már korlátlan hozzáférésük van"
 
@@ -1627,7 +1605,6 @@ msgid "New shortcut…"
 msgstr "Új gyorsbillentyű…"
 
 #: js/ui/padOsd.js:153
-#| msgid "Application defined"
 msgid "App defined"
 msgstr "Alkalmazás által meghatározott"
 
@@ -1681,7 +1658,6 @@ msgid "Top Bar"
 msgstr "Felső sáv"
 
 #: js/ui/quickSettings.js:181
-#| msgid "Open %s"
 msgid "Open menu"
 msgstr "Menü megnyitása"
 
@@ -1710,7 +1686,6 @@ msgid "Unable to lock"
 msgstr "Nem lehet zárolni"
 
 #: js/ui/screenShield.js:273 js/ui/screenShield.js:671
-#| msgid "Lock was blocked by an application"
 msgid "Lock was blocked by an app"
 msgstr "A zárolást egy alkalmazás blokkolta"
 
@@ -1742,63 +1717,69 @@ msgstr "Ablak kijelölése"
 msgid "Screenshot / Screencast"
 msgstr "Képernyőkép vagy képernyőfelvétel"
 
-#: js/ui/screenshot.js:1275
+#. Translators: since this string refers to an action,
+#. it needs to be phrased as a verb.
+#: js/ui/screenshot.js:1260
+msgid "Capture"
+msgstr "Rögzítés"
+
+#: js/ui/screenshot.js:1282
 msgid "Show Pointer"
 msgstr "Mutató megjelenítése"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1866
+#: js/ui/screenshot.js:1873
 msgid "Screencasts"
 msgstr "Képernyőfelvételek"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1871
+#: js/ui/screenshot.js:1878
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Képernyőfelvétel ekkor: %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2159
 msgid "Screenshot"
 msgstr "Képernyőkép"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1926
 msgid "Screencast recorded"
 msgstr "Képernyőfelvétel rögzítve"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1921
+#: js/ui/screenshot.js:1928
 msgid "Click here to view the video."
 msgstr "Kattintson ide a videó megtekintéséhez."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
+#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2173
 msgid "Show in Files"
 msgstr "Megjelenítés a fájlokban"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2085
+#: js/ui/screenshot.js:2119
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Képernyőkép ekkor: %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2165
 msgid "Screenshot captured"
 msgstr "Képernyőkép rögzítve"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2133
+#: js/ui/screenshot.js:2167
 msgid "You can paste the image from the clipboard."
 msgstr "Beillesztheti a képet a vágólapról."
 
-#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
+#: js/ui/screenshot.js:2220 js/ui/screenshot.js:2385
 msgid "Screenshot taken"
 msgstr "Képernyőkép elkészült"
 
@@ -1867,8 +1848,8 @@ msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
 msgstr ""
-"Külső segédprogramra, például a <i>Lemezekre</i> van szüksége egy"
-" kulcsfájlokat használó kötet feloldásához."
+"Külső segédprogramra, például a <i>Lemezekre</i> van szüksége egy "
+"kulcsfájlokat használó kötet feloldásához."
 
 #: js/ui/shellMountOperation.js:312
 msgid "PIM Number"
@@ -1933,7 +1914,6 @@ msgid "Mouse Keys"
 msgstr "Egérbillentyűk"
 
 #: js/ui/status/accessibility.js:78
-#| msgid "Accessibility"
 msgid "Accessibility Settings"
 msgstr "Akadálymentesítési beállítások"
 
@@ -1951,7 +1931,6 @@ msgid "Background Apps"
 msgstr "Háttéralkalmazások"
 
 #: js/ui/status/backgroundApps.js:153
-#| msgid "Settings"
 msgid "App Settings"
 msgstr "Alkalmazás beállításai"
 
@@ -1967,7 +1946,6 @@ msgstr[0] "%d háttéralkalmazás"
 msgstr[1] "%d háttéralkalmazás"
 
 #: js/ui/status/bluetooth.js:221 js/ui/status/network.js:369
-#| msgid "Disconnect %s"
 msgid "Disconnect"
 msgstr "Leválasztás"
 
@@ -1976,7 +1954,6 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: js/ui/status/bluetooth.js:263 js/ui/status/network.js:1863
-#| msgid "Bluetooth"
 msgid "Bluetooth Settings"
 msgstr "Bluetooth beállítások"
 
@@ -1991,7 +1968,6 @@ msgstr "Kapcsolja be a Bluetooth-t az eszközökhöz való kapcsolódáshoz"
 #. Translators: This is the number of connected bluetooth devices
 #: js/ui/status/bluetooth.js:365
 #, javascript-format
-#| msgid "Connect"
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d kapcsolódva"
@@ -2080,19 +2056,16 @@ msgstr "%s hotspot"
 
 #: js/ui/status/network.js:1393
 #, javascript-format
-#| msgid "Connect"
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d kapcsolódva"
 msgstr[1] "%d kapcsolódva"
 
 #: js/ui/status/network.js:1491 js/ui/status/network.js:1507
-#| msgid "PIN"
 msgid "VPN"
 msgstr "VPN"
 
 #: js/ui/status/network.js:1492
-#| msgid "Settings"
 msgid "VPN Settings"
 msgstr "VPN beállítások"
 
@@ -2105,23 +2078,19 @@ msgid "All Networks"
 msgstr "Összes hálózat"
 
 #: js/ui/status/network.js:1840
-#| msgid "Window Selection"
 msgid "Wired Connections"
 msgstr "Vezetékes kapcsolatok"
 
 #: js/ui/status/network.js:1841
-#| msgid "Settings"
 msgid "Wired Settings"
 msgstr "Vezetékes beállítások"
 
 #: js/ui/status/network.js:1862
-#| msgid "Bluetooth"
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth alapú internetmegosztók"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1869
-#| msgid "Weather"
 msgid "Tether"
 msgstr "Internetmegosztás"
 
@@ -2130,7 +2099,6 @@ msgid "Mobile Connections"
 msgstr "Mobil kapcsolatok"
 
 #: js/ui/status/network.js:1884
-#| msgid "Sound Settings"
 msgid "Mobile Broadband Settings"
 msgstr "Mobil széles sáv beállítások"
 
@@ -2140,7 +2108,6 @@ msgid "Mobile"
 msgstr "Mobil"
 
 #: js/ui/status/network.js:2001
-#| msgid "Connect to %s"
 msgid "Connection failed"
 msgstr "A kapcsolódás sikertelen"
 
@@ -2168,7 +2135,6 @@ msgid "Power Saver"
 msgstr "Energiatakarékos"
 
 #: js/ui/status/powerProfiles.js:40
-#| msgid "Power Profiles"
 msgid "Power Mode"
 msgstr "Energiagazdálkodási mód"
 
@@ -2177,7 +2143,6 @@ msgid "Power Profiles"
 msgstr "Energiagazdálkodási profilok"
 
 #: js/ui/status/powerProfiles.js:72
-#| msgid "Revert Settings"
 msgid "Power Settings"
 msgstr "Energiagazdálkodási beállítások"
 
@@ -2508,7 +2473,6 @@ msgid "Icon '%s' not present in theme %s"
 msgstr "A(z) „%s” ikon nincs benne a(z) %s témában"
 
 #: src/st/st-icon-theme.c:3471 src/st/st-icon-theme.c:3774
-#| msgid "Unable to lock"
 msgid "Failed to load icon"
 msgstr "Nem sikerült betölteni az ikont"
 
