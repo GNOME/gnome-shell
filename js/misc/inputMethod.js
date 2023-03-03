@@ -12,6 +12,8 @@ Gio._promisify(IBus.InputContext.prototype,
 
 var HIDE_PANEL_TIME = 50;
 
+const HAVE_REQUIRE_SURROUNDING_TEXT = GObject.signal_lookup('require-surrounding-text', IBus.InputContext);
+
 var InputMethod = GObject.registerClass({
     Signals: {
         'surrounding-text-set': {},
@@ -76,13 +78,15 @@ var InputMethod = GObject.registerClass({
 
         this._context.set_client_commit_preedit(true);
         this._context.connect('commit-text', this._onCommitText.bind(this));
-        this._context.connect('require-surrounding-text', this._onRequireSurroundingText.bind(this));
         this._context.connect('delete-surrounding-text', this._onDeleteSurroundingText.bind(this));
         this._context.connect('update-preedit-text-with-mode', this._onUpdatePreeditText.bind(this));
         this._context.connect('show-preedit-text', this._onShowPreeditText.bind(this));
         this._context.connect('hide-preedit-text', this._onHidePreeditText.bind(this));
         this._context.connect('forward-key-event', this._onForwardKeyEvent.bind(this));
         this._context.connect('destroy', this._clear.bind(this));
+
+        if (HAVE_REQUIRE_SURROUNDING_TEXT)
+            this._context.connect('require-surrounding-text', this._onRequireSurroundingText.bind(this));
 
         Main.keyboard.connectObject('visibility-changed', () => this._updateCapabilities());
 
