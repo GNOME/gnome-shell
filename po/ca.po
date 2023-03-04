@@ -1080,7 +1080,7 @@ msgstr ""
 
 #: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:752
 msgid "Wired 802.1X authentication"
-msgstr "Autenticació 802.1X amb fil"
+msgstr "Autenticació 802.1X per cable"
 
 #: js/ui/components/networkAgent.js:374
 msgid "Network name"
