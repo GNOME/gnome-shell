@@ -490,6 +490,8 @@ static void
 na_tray_manager_unmanage (NaTrayManager *manager)
 {
   Display *xdisplay;
+  NaTrayChild *child;
+  GHashTableIter iter;
 
   if (manager->window == None)
     return;
@@ -510,6 +512,17 @@ na_tray_manager_unmanage (NaTrayManager *manager)
 
   XDestroyWindow (xdisplay, manager->window);
   manager->window = None;
+
+  g_hash_table_iter_init (&iter, manager->children);
+
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &child))
+    {
+      g_signal_handlers_disconnect_by_func (child,
+                                            na_tray_manager_plug_removed,
+                                            manager);
+      g_hash_table_iter_remove (&iter);
+      g_object_unref (child);
+    }
 }
 
 static void
