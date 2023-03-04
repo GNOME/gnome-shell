@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-12 20:28+0000\n"
-"PO-Revision-Date: 2023-02-13 08:46+0200\n"
+"POT-Creation-Date: 2023-03-03 23:10+0000\n"
+"PO-Revision-Date: 2023-03-04 20:37+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: Hebrew <>\n"
 "Language: he\n"
@@ -63,7 +63,7 @@ msgid "Activate favorite app 9"
 msgstr "הפעלת יישום מועדף 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2106
 msgid "Screenshots"
 msgstr "צילומי מסך"
 
@@ -471,7 +471,7 @@ msgstr "לבקר באתר ההרחבה"
 
 #: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
@@ -839,7 +839,7 @@ msgstr "הפעלה בשימוש כרטיס מסך נפרד"
 msgid "Select Audio Device"
 msgstr "בחירת התקן שמע"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:79
 msgid "Sound Settings"
 msgstr "הגדרות שמע"
 
@@ -851,7 +851,7 @@ msgstr "אזניות"
 msgid "Headset"
 msgstr "אזניות עם מיקרופון"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:348
 msgid "Microphone"
 msgstr "מיקרופון"
 
@@ -1019,7 +1019,7 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "לחלופין ניתן להתחבר על ידי לחיצה על כפתור ה־„WPS” בנתב שלך."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:217
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:221
 #: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "התחברות"
@@ -1083,7 +1083,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "נדרשת ססמה כדי להתחבר אל „%s”."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1990
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1996
 msgid "Network Manager"
 msgstr "מנהל הרשתות"
 
@@ -1377,15 +1377,15 @@ msgstr "%s (מרוחק)"
 msgid "%s (console)"
 msgstr "%s (מסוף)"
 
-#: js/ui/extensionDownloader.js:227
+#: js/ui/extensionDownloader.js:245
 msgid "Install"
 msgstr "התקנה"
 
-#: js/ui/extensionDownloader.js:233
+#: js/ui/extensionDownloader.js:251
 msgid "Install Extension"
 msgstr "התקנת הרחבות"
 
-#: js/ui/extensionDownloader.js:234
+#: js/ui/extensionDownloader.js:252
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "הורדה והתקנה של „%s” מ־extensions.gnome.org?"
@@ -1654,7 +1654,7 @@ msgstr "מערכת"
 msgid "Top Bar"
 msgstr "הסרגל העליון"
 
-#: js/ui/quickSettings.js:176
+#: js/ui/quickSettings.js:181
 msgid "Open menu"
 msgstr "פתיחת תפריט"
 
@@ -1714,63 +1714,69 @@ msgstr "בחירת חלון"
 msgid "Screenshot / Screencast"
 msgstr "צילום / הקלטת מסך"
 
-#: js/ui/screenshot.js:1275
+#. Translators: since this string refers to an action,
+#. it needs to be phrased as a verb.
+#: js/ui/screenshot.js:1260
+msgid "Capture"
+msgstr "לכידה"
+
+#: js/ui/screenshot.js:1282
 msgid "Show Pointer"
 msgstr "הצגת הסמן"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1866
+#: js/ui/screenshot.js:1873
 msgid "Screencasts"
 msgstr "הקלטות מסך"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1871
+#: js/ui/screenshot.js:1878
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "הקלטת מסך מ־%d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2159
 msgid "Screenshot"
 msgstr "צילום מסך"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1926
 msgid "Screencast recorded"
 msgstr "המסך הוקלט"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1921
+#: js/ui/screenshot.js:1928
 msgid "Click here to view the video."
 msgstr "לחיצה כאן מנגנת את הווידאו."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
+#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2173
 msgid "Show in Files"
 msgstr "הצגה בקבצים"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2085
+#: js/ui/screenshot.js:2119
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "צילום מסך מ־%s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2165
 msgid "Screenshot captured"
 msgstr "המסך צולם"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2133
+#: js/ui/screenshot.js:2167
 msgid "You can paste the image from the clipboard."
 msgstr "אפשר להדביק את התמונה מלוח הגזירים."
 
-#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
+#: js/ui/screenshot.js:2220 js/ui/screenshot.js:2385
 msgid "Screenshot taken"
 msgstr "המסך צולם"
 
@@ -1921,15 +1927,19 @@ msgctxt "title"
 msgid "Background Apps"
 msgstr "יישומים פועלים ברקע"
 
-#: js/ui/status/backgroundApps.js:153
+#: js/ui/status/backgroundApps.js:150
+msgid "Apps known to be running without a window"
+msgstr "יישומים שפועלים ללא חלון"
+
+#: js/ui/status/backgroundApps.js:161
 msgid "App Settings"
 msgstr "הגדרות יישום"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:189
 msgid "No Background Apps"
 msgstr "אף יישום לא פועל ברקע"
 
-#: js/ui/status/backgroundApps.js:183
+#: js/ui/status/backgroundApps.js:191
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -1938,28 +1948,28 @@ msgstr[1] "שני יישומים פועלים ברקע"
 msgstr[2] "‏%d יישומים פועלים ברקע"
 msgstr[3] "‏%d יישומים פועלים ברקע"
 
-#: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
+#: js/ui/status/bluetooth.js:221 js/ui/status/network.js:369
 msgid "Disconnect"
 msgstr "ניתוק"
 
-#: js/ui/status/bluetooth.js:234 js/ui/status/bluetooth.js:236
+#: js/ui/status/bluetooth.js:238 js/ui/status/bluetooth.js:240
 msgid "Bluetooth"
 msgstr "בלוטות'"
 
-#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+#: js/ui/status/bluetooth.js:263 js/ui/status/network.js:1863
 msgid "Bluetooth Settings"
 msgstr "הגדרות בלוטות׳"
 
-#: js/ui/status/bluetooth.js:306
+#: js/ui/status/bluetooth.js:310
 msgid "No available or connected devices"
 msgstr "אין התקנים זמינים או מחוברים"
 
-#: js/ui/status/bluetooth.js:307
+#: js/ui/status/bluetooth.js:311
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "הפעלת Bluetooth כדי להתחבר להתקנים"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:361
+#: js/ui/status/bluetooth.js:365
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2043,13 +2053,13 @@ msgid "Connect to %s"
 msgstr "התחברות אל %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1122
+#: js/ui/status/network.js:1128
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "נקודה חמה %s"
 
 # msgid_plural "%d Connected"
-#: js/ui/status/network.js:1387
+#: js/ui/status/network.js:1393
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
@@ -2058,57 +2068,57 @@ msgstr[1] "‫שניים התחברו"
 msgstr[2] "‫%d התחברו"
 msgstr[3] "‫‫%d התחברו"
 
-#: js/ui/status/network.js:1485 js/ui/status/network.js:1501
+#: js/ui/status/network.js:1491 js/ui/status/network.js:1507
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1486
+#: js/ui/status/network.js:1492
 msgid "VPN Settings"
 msgstr "הגדרות VPN"
 
-#: js/ui/status/network.js:1735
+#: js/ui/status/network.js:1741
 msgid "Wi–Fi"
 msgstr "רשת אלחוטית"
 
-#: js/ui/status/network.js:1737
+#: js/ui/status/network.js:1743
 msgid "All Networks"
 msgstr "כל הרשתות"
 
-#: js/ui/status/network.js:1834
+#: js/ui/status/network.js:1840
 msgid "Wired Connections"
 msgstr "התחברויות קוויות"
 
-#: js/ui/status/network.js:1835
+#: js/ui/status/network.js:1841
 msgid "Wired Settings"
 msgstr "הגדרות רשת קווית"
 
-#: js/ui/status/network.js:1856
+#: js/ui/status/network.js:1862
 msgid "Bluetooth Tethers"
 msgstr "קישרת בלוטות׳"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1863
+#: js/ui/status/network.js:1869
 msgid "Tether"
 msgstr "קישרת"
 
-#: js/ui/status/network.js:1876
+#: js/ui/status/network.js:1882
 msgid "Mobile Connections"
 msgstr "התחברויות ניידות"
 
-#: js/ui/status/network.js:1878
+#: js/ui/status/network.js:1884
 msgid "Mobile Broadband Settings"
 msgstr "הגדרות פס־רחב נייד"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1887
+#: js/ui/status/network.js:1893
 msgid "Mobile"
 msgstr "נייד"
 
-#: js/ui/status/network.js:1995
+#: js/ui/status/network.js:2001
 msgid "Connection failed"
 msgstr "ההתחברות נכשלה"
 
-#: js/ui/status/network.js:1996
+#: js/ui/status/network.js:2002
 msgid "Activation of network connection failed"
 msgstr "הפעלת חיבור הרשת נכשלה"
 
@@ -2229,27 +2239,27 @@ msgstr "שיגאת אימות Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "לא ניתן לאמת את התקן ה־Thunderbolt: ‏%s"
 
-#: js/ui/status/volume.js:203
+#: js/ui/status/volume.js:210
 msgid "Volume changed"
 msgstr "עצמת השמע השתנתה"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Unmute"
 msgstr "ביטול ההשתקה"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Mute"
 msgstr "השתקה"
 
-#: js/ui/status/volume.js:271
+#: js/ui/status/volume.js:278
 msgid "Volume"
 msgstr "עצמה"
 
-#: js/ui/status/volume.js:287
+#: js/ui/status/volume.js:294
 msgid "Sound Output"
 msgstr "פלט שמע"
 
-#: js/ui/status/volume.js:359
+#: js/ui/status/volume.js:366
 msgid "Sound Input"
 msgstr "קלט שמע"
 
@@ -2423,23 +2433,23 @@ msgstr "הזזה לצג שמימין"
 msgid "Close"
 msgstr "סגירה"
 
-#: src/main.c:513 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Print version"
 
-#: src/main.c:519
+#: src/main.c:514
 msgid "Mode used by GDM for login screen"
 msgstr "המצב בו GDM יעשה שימוש לצורך מסך הכניסה"
 
-#: src/main.c:525
+#: src/main.c:520
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "שימוש במצב מסוים, לדוגמה: „gdm“ למסך הכניסה"
 
-#: src/main.c:531
+#: src/main.c:526
 msgid "List possible modes"
 msgstr "הצגת המצבים האפשריים"
 
-#: src/main.c:537
+#: src/main.c:532
 msgid "Force animations to be enabled"
 msgstr "לכפות הפעלת הנפשות"
 
@@ -2751,23 +2761,23 @@ msgstr "Extension “%s” doesn't exist\n"
 msgid "Show extensions info"
 msgstr "Show extensions info"
 
-#: subprojects/extensions-tool/src/command-install.c:173
+#: subprojects/extensions-tool/src/command-install.c:190
 msgid "Overwrite an existing extension"
 msgstr "Overwrite an existing extension"
 
-#: subprojects/extensions-tool/src/command-install.c:175
+#: subprojects/extensions-tool/src/command-install.c:192
 msgid "EXTENSION_BUNDLE"
 msgstr "EXTENSION_BUNDLE"
 
-#: subprojects/extensions-tool/src/command-install.c:184
+#: subprojects/extensions-tool/src/command-install.c:201
 msgid "Install an extension bundle"
 msgstr "Install an extension bundle"
 
-#: subprojects/extensions-tool/src/command-install.c:202
+#: subprojects/extensions-tool/src/command-install.c:219
 msgid "No extension bundle specified"
 msgstr "No extension bundle specified"
 
-#: subprojects/extensions-tool/src/command-install.c:208
+#: subprojects/extensions-tool/src/command-install.c:225
 msgid "More than one extension bundle specified"
 msgstr "More than one extension bundle specified"
 
