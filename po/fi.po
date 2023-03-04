@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-28 20:56+0000\n"
-"PO-Revision-Date: 2023-03-01 22:53+0200\n"
+"POT-Creation-Date: 2023-03-03 23:10+0000\n"
+"PO-Revision-Date: 2023-03-04 12:42+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -80,7 +80,7 @@ msgid "Activate favorite app 9"
 msgstr "Aktivoi suosikkisovellus 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2106
 msgid "Screenshots"
 msgstr "Kuvakaappaukset"
 
@@ -262,7 +262,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:89
 msgid "The last selected non-default power profile"
-msgstr ""
+msgstr "Viimeksi valittu muu kuin oletusarvoinen tehoprofiili"
 
 #: data/org.gnome.shell.gschema.xml.in:90
 msgid ""
@@ -1722,63 +1722,69 @@ msgstr "Ikkunan valinta"
 msgid "Screenshot / Screencast"
 msgstr "Kuvakaappaus / näyttötallennevideo"
 
-#: js/ui/screenshot.js:1275
+#. Translators: since this string refers to an action,
+#. it needs to be phrased as a verb.
+#: js/ui/screenshot.js:1260
+msgid "Capture"
+msgstr "Ota kuvakaappaus"
+
+#: js/ui/screenshot.js:1282
 msgid "Show Pointer"
 msgstr "Näytä osoitin"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1866
+#: js/ui/screenshot.js:1873
 msgid "Screencasts"
 msgstr "Näyttötallennevideot"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1871
+#: js/ui/screenshot.js:1878
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Näyttötallennevideo - %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2159
 msgid "Screenshot"
 msgstr "Kuvakaappaus"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1926
 msgid "Screencast recorded"
 msgstr "Näyttötallennevideo otettu"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1921
+#: js/ui/screenshot.js:1928
 msgid "Click here to view the video."
 msgstr "Napsauta tästä katsoaksesi videon."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
+#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2173
 msgid "Show in Files"
 msgstr "Näytä tiedostohallinnassa"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2085
+#: js/ui/screenshot.js:2119
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Kuvakaappaus - %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2165
 msgid "Screenshot captured"
 msgstr "Kuvakaappaus otettu"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2133
+#: js/ui/screenshot.js:2167
 msgid "You can paste the image from the clipboard."
 msgstr "Voit liittää kuvan leikepöydältä."
 
-#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
+#: js/ui/screenshot.js:2220 js/ui/screenshot.js:2385
 msgid "Screenshot taken"
 msgstr "Kuvakaappaus otettu"
 
@@ -1927,15 +1933,19 @@ msgctxt "title"
 msgid "Background Apps"
 msgstr "Taustasovellukset"
 
-#: js/ui/status/backgroundApps.js:153
+#: js/ui/status/backgroundApps.js:150
+msgid "Apps known to be running without a window"
+msgstr "Sovellukset, joiden tiedetään olevan käynnissä ilman ikkunaa"
+
+#: js/ui/status/backgroundApps.js:161
 msgid "App Settings"
 msgstr "Sovelluksen asetukset"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:189
 msgid "No Background Apps"
 msgstr "Ei taustasovelluksia"
 
-#: js/ui/status/backgroundApps.js:183
+#: js/ui/status/backgroundApps.js:191
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2421,23 +2431,23 @@ msgstr "Siirrä oikealla olevaan näyttöön"
 msgid "Close"
 msgstr "Sulje"
 
-#: src/main.c:513 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Tulosta versio"
 
-#: src/main.c:519
+#: src/main.c:514
 msgid "Mode used by GDM for login screen"
 msgstr "GDM:n kirjautumisruudussa käyttämä tila"
 
-#: src/main.c:525
+#: src/main.c:520
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Käytä tiettyä tilaa (esim. “gdm”) kirjautumisnäkymää varten"
 
-#: src/main.c:531
+#: src/main.c:526
 msgid "List possible modes"
 msgstr "Listaa mahdolliset tilat"
 
-#: src/main.c:537
+#: src/main.c:532
 msgid "Force animations to be enabled"
 msgstr "Pakota animaatiot käyttöön"
 
