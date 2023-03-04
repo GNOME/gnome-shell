@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-14 05:17+0000\n"
-"PO-Revision-Date: 2023-03-02 00:03+0900\n"
+"POT-Creation-Date: 2023-03-03 23:10+0000\n"
+"PO-Revision-Date: 2023-03-04 14:47+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -73,7 +73,7 @@ msgid "Activate favorite app 9"
 msgstr "즐겨 찾는 앱 9 활성화"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2106
 msgid "Screenshots"
 msgstr "스크린샷"
 
@@ -830,7 +830,7 @@ msgstr "외장 그래픽 카드를 사용해 시작"
 msgid "Select Audio Device"
 msgstr "오디오 장치 선택"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:79
 msgid "Sound Settings"
 msgstr "소리 설정"
 
@@ -842,7 +842,7 @@ msgstr "헤드폰"
 msgid "Headset"
 msgstr "헤드셋"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:348
 msgid "Microphone"
 msgstr "마이크"
 
@@ -1010,7 +1010,7 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "다른 방법으로 라우터의 “WPS” 단추를 눌러서 연결할 수 있습니다."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:217
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:221
 #: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "연결"
@@ -1074,7 +1074,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "“%s”에 연결하려면 암호가 필요합니다."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1990
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1996
 msgid "Network Manager"
 msgstr "네트워크 관리"
 
@@ -1631,7 +1631,7 @@ msgstr "시스템"
 msgid "Top Bar"
 msgstr "맨 위 표시줄"
 
-#: js/ui/quickSettings.js:176
+#: js/ui/quickSettings.js:181
 msgid "Open menu"
 msgstr "메뉴 열기"
 
@@ -1691,13 +1691,19 @@ msgstr "창 선택"
 msgid "Screenshot / Screencast"
 msgstr "스크린샷 / 스크린캐스트"
 
-#: js/ui/screenshot.js:1275
+#. Translators: since this string refers to an action,
+#. it needs to be phrased as a verb.
+#: js/ui/screenshot.js:1260
+msgid "Capture"
+msgstr "스크린샷 찍기"
+
+#: js/ui/screenshot.js:1282
 msgid "Show Pointer"
 msgstr "포인터 보이기"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1866
+#: js/ui/screenshot.js:1873
 msgid "Screencasts"
 msgstr "스크린캐스트"
 
@@ -1705,52 +1711,52 @@ msgstr "스크린캐스트"
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1871
+#: js/ui/screenshot.js:1878
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "스크린캐스트 %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2159
 msgid "Screenshot"
 msgstr "스크린샷"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1926
 msgid "Screencast recorded"
 msgstr "스크린캐스트 녹화함"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1921
+#: js/ui/screenshot.js:1928
 msgid "Click here to view the video."
 msgstr "여기를 눌러 비디오를 보십시오."
 
 # 주의: "Show ..." 형태지만 보이기로 번역하지 않는다
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
+#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2173
 msgid "Show in Files"
 msgstr "파일에서 보기"
 
 # 주의: 파일 이름
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2085
+#: js/ui/screenshot.js:2119
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "스크린샷 %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2165
 msgid "Screenshot captured"
 msgstr "스크린샷 찍음"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2133
+#: js/ui/screenshot.js:2167
 msgid "You can paste the image from the clipboard."
 msgstr "클립보드에서 이미지를 붙여넣을 수 있습니다."
 
-#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
+#: js/ui/screenshot.js:2220 js/ui/screenshot.js:2385
 msgid "Screenshot taken"
 msgstr "찍은 스크린샷"
 
@@ -1819,7 +1825,9 @@ msgstr ""
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
-msgstr "키파일을 사용하는 볼륨의 잠금을 해제하려면 <i>디스크</i>와 같은 외부 도구가 필요합니다."
+msgstr ""
+"키파일을 사용하는 볼륨의 잠금을 해제하려면 <i>디스크</i>와 같은 외부 도구가 "
+"필요합니다."
 
 #: js/ui/shellMountOperation.js:312
 msgid "PIM Number"
@@ -1900,42 +1908,46 @@ msgctxt "title"
 msgid "Background Apps"
 msgstr "백그라운드 앱"
 
-#: js/ui/status/backgroundApps.js:153
+#: js/ui/status/backgroundApps.js:150
+msgid "Apps known to be running without a window"
+msgstr "창 없이 실행한다고 알려진 앱"
+
+#: js/ui/status/backgroundApps.js:161
 msgid "App Settings"
 msgstr "앱 설정"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:189
 msgid "No Background Apps"
 msgstr "백그라운드 앱 없음"
 
-#: js/ui/status/backgroundApps.js:183
+#: js/ui/status/backgroundApps.js:191
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
 msgstr[0] "백그라운드 앱 %d개"
 
-#: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
+#: js/ui/status/bluetooth.js:221 js/ui/status/network.js:369
 msgid "Disconnect"
 msgstr "연결 해제"
 
-#: js/ui/status/bluetooth.js:234 js/ui/status/bluetooth.js:236
+#: js/ui/status/bluetooth.js:238 js/ui/status/bluetooth.js:240
 msgid "Bluetooth"
 msgstr "블루투스"
 
-#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+#: js/ui/status/bluetooth.js:263 js/ui/status/network.js:1863
 msgid "Bluetooth Settings"
 msgstr "블루투스 설정"
 
-#: js/ui/status/bluetooth.js:306
+#: js/ui/status/bluetooth.js:310
 msgid "No available or connected devices"
 msgstr "사용할 수 있거나 연결된 장치가 없습니다"
 
-#: js/ui/status/bluetooth.js:307
+#: js/ui/status/bluetooth.js:311
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "장치에 연결하려면 블루투스를 켜십시오"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:361
+#: js/ui/status/bluetooth.js:365
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2016,68 +2028,68 @@ msgid "Connect to %s"
 msgstr "%s 연결 해제"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1122
+#: js/ui/status/network.js:1128
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s 핫스팟"
 
-#: js/ui/status/network.js:1387
+#: js/ui/status/network.js:1393
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d개 연결"
 
-#: js/ui/status/network.js:1485 js/ui/status/network.js:1501
+#: js/ui/status/network.js:1491 js/ui/status/network.js:1507
 msgid "VPN"
 msgstr "가상사설망"
 
-#: js/ui/status/network.js:1486
+#: js/ui/status/network.js:1492
 msgid "VPN Settings"
 msgstr "가상사설망 설정"
 
-#: js/ui/status/network.js:1735
+#: js/ui/status/network.js:1741
 msgid "Wi–Fi"
 msgstr "와이파이"
 
-#: js/ui/status/network.js:1737
+#: js/ui/status/network.js:1743
 msgid "All Networks"
 msgstr "모든 네트워크"
 
-#: js/ui/status/network.js:1834
+#: js/ui/status/network.js:1840
 msgid "Wired Connections"
 msgstr "유선 연결"
 
-#: js/ui/status/network.js:1835
+#: js/ui/status/network.js:1841
 msgid "Wired Settings"
 msgstr "유선 네트워크 설정"
 
-#: js/ui/status/network.js:1856
+#: js/ui/status/network.js:1862
 msgid "Bluetooth Tethers"
 msgstr "블루투스 테더링"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1863
+#: js/ui/status/network.js:1869
 msgid "Tether"
 msgstr "테더링"
 
-#: js/ui/status/network.js:1876
+#: js/ui/status/network.js:1882
 msgid "Mobile Connections"
 msgstr "모뎀 연결"
 
-#: js/ui/status/network.js:1878
+#: js/ui/status/network.js:1884
 msgid "Mobile Broadband Settings"
 msgstr "휴대전화 네트워크 설정"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1887
+#: js/ui/status/network.js:1893
 msgid "Mobile"
 msgstr "휴대전화"
 
-#: js/ui/status/network.js:1995
+#: js/ui/status/network.js:2001
 msgid "Connection failed"
 msgstr "연결이 실패했습니다"
 
-#: js/ui/status/network.js:1996
+#: js/ui/status/network.js:2002
 msgid "Activation of network connection failed"
 msgstr "네트워크 연결이 실패했습니다"
 
@@ -2199,28 +2211,28 @@ msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "썬더볼트 장치에 권한을 부여할 수 없습니다: %s"
 
 # 오디오 볼륨
-#: js/ui/status/volume.js:203
+#: js/ui/status/volume.js:210
 msgid "Volume changed"
 msgstr "볼륨 바꿈"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Unmute"
 msgstr "음 소거 해제"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Mute"
 msgstr "음 소거"
 
 # 오디오 볼륨
-#: js/ui/status/volume.js:271
+#: js/ui/status/volume.js:278
 msgid "Volume"
 msgstr "볼륨"
 
-#: js/ui/status/volume.js:287
+#: js/ui/status/volume.js:294
 msgid "Sound Output"
 msgstr "소리 출력"
 
-#: js/ui/status/volume.js:359
+#: js/ui/status/volume.js:366
 msgid "Sound Input"
 msgstr "소리 입력"
 
@@ -2391,23 +2403,23 @@ msgid "Close"
 msgstr "닫기"
 
 # 커맨드라인 옵션 설명
-#: src/main.c:513 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "버전을 표시합니다"
 
-#: src/main.c:519
+#: src/main.c:514
 msgid "Mode used by GDM for login screen"
 msgstr "GDM에서 로그인 화면에 사용할 모드"
 
-#: src/main.c:525
+#: src/main.c:520
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "특정 모드 사용. 예를 들어 로그인 화면에 대해 “gdm”"
 
-#: src/main.c:531
+#: src/main.c:526
 msgid "List possible modes"
 msgstr "가능한 모드 목록 표시"
 
-#: src/main.c:537
+#: src/main.c:532
 msgid "Force animations to be enabled"
 msgstr "애니메이션 사용 강제 설정"
 
@@ -2548,8 +2560,8 @@ msgstr "수동 설치"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "확장을 찾고 추가하려면, <a href=\"https://extensions.gnome.org\">extensions."
 "gnome.org</a> 사이트를 방문하십시오."
