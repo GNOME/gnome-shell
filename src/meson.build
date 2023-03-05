@@ -196,7 +196,7 @@ dbus_generated += gnome.gdbus_codegen('switcheroo-control',
 
 libshell_no_gir_sources += dbus_generated
 
-libshell = library('gnome-shell',
+libshell = library('shell-' + mutter_api_version,
   sources: libshell_gir_sources + libshell_no_gir_sources,
   dependencies: gnome_shell_deps + [libshell_menu_dep, libst_dep, mutter_dep, gnome_desktop_dep, m_dep],
   include_directories: [conf_inc, st_inc, include_directories('tray')],
@@ -229,7 +229,7 @@ libshell_gir_includes += [
 
 gnome.generate_gir(libshell,
   sources: libshell_gir_sources,
-  nsversion: '0.1',
+  nsversion: mutter_api_version,
   namespace: 'Shell',
   includes: libshell_gir_includes,
   extra_args: ['--quiet'],
