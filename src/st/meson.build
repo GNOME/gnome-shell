@@ -180,7 +180,7 @@ st_cflags = [
 ]
 
 # Currently meson requires a shared library for building girs
-libst = shared_library('st-1.0',
+libst = shared_library('st-' + mutter_api_version,
   sources: st_gir_sources + st_nogir_sources + croco_sources,
   c_args: st_cflags,
   dependencies: [clutter_dep, mutter_dep, libxml_dep, gdk_pixbuf_dep, m_dep],
@@ -212,7 +212,7 @@ endif
 
 libst_gir = gnome.generate_gir(libst,
   sources: st_gir_sources,
-  nsversion: '1.0',
+  nsversion: mutter_api_version,
   namespace: 'St',
   includes: [
     'Clutter-' + mutter_api_version,
