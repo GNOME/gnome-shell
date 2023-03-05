@@ -480,6 +480,7 @@ st_icon_theme_init (StIconTheme *icon_theme)
   settings = st_settings_get ();
   g_signal_connect (settings, "notify::gtk-icon-theme",
                     G_CALLBACK (theme_changed), icon_theme);
+  update_current_theme (icon_theme);
 }
 
 static void
