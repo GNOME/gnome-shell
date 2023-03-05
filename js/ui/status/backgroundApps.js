@@ -146,14 +146,6 @@ class BackgroundAppsToggle extends QuickToggle {
             null,
             Gio.DBusProxyFlags.DO_NOT_AUTO_START);
 
-        this._listTitle = new PopupMenu.PopupMenuItem(
-            _('Apps known to be running without a window'),
-            {reactive: false});
-        this._listTitle.label.clutter_text.set({
-            line_wrap: true,
-        });
-        this.menu.addMenuItem(this._listTitle);
-
         this._appsSection = new PopupMenu.PopupMenuSection();
         this.menu.addMenuItem(this._appsSection);
 
@@ -191,7 +183,6 @@ class BackgroundAppsToggle extends QuickToggle {
                 '%d Background App',
                 '%d Background Apps',
                 nBackgroundApps).format(nBackgroundApps);
-        this._listTitle.visible = nBackgroundApps > 0;
 
         this._appsSection.removeAll();
 
