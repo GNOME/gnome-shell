@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-25 20:31+0000\n"
-"PO-Revision-Date: 2023-02-28 14:00+0300\n"
+"POT-Creation-Date: 2023-03-03 23:10+0000\n"
+"PO-Revision-Date: 2023-03-04 21:38+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -75,7 +75,7 @@ msgid "Activate favorite app 9"
 msgstr "Gözde uygulama 9ʼu etkinleştir"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2106
 msgid "Screenshots"
 msgstr "Ekran Görüntüleri"
 
@@ -1711,63 +1711,69 @@ msgstr "Pencere Seçimi"
 msgid "Screenshot / Screencast"
 msgstr "Ekran Görüntüsü / Ekran Kaydı"
 
-#: js/ui/screenshot.js:1275
+#. Translators: since this string refers to an action,
+#. it needs to be phrased as a verb.
+#: js/ui/screenshot.js:1260
+msgid "Capture"
+msgstr "Yakala"
+
+#: js/ui/screenshot.js:1282
 msgid "Show Pointer"
 msgstr "İmleci Göster"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1866
+#: js/ui/screenshot.js:1873
 msgid "Screencasts"
 msgstr "Ekran Kaydı"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1871
+#: js/ui/screenshot.js:1878
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Ekran Kaydı - %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2159
 msgid "Screenshot"
 msgstr "Ekran Görüntüsü"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1926
 msgid "Screencast recorded"
 msgstr "Ekran kaydı yakalandı"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1921
+#: js/ui/screenshot.js:1928
 msgid "Click here to view the video."
 msgstr "Videoyu görmek için buraya tıkla."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
+#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2173
 msgid "Show in Files"
 msgstr "Dosyalar’da Göster"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2085
+#: js/ui/screenshot.js:2119
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Ekran Görüntüsü - %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2165
 msgid "Screenshot captured"
 msgstr "Ekran görüntüsü yakalandı"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2133
+#: js/ui/screenshot.js:2167
 msgid "You can paste the image from the clipboard."
 msgstr "Resmi panodan yapıştırabilirsiniz."
 
-#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
+#: js/ui/screenshot.js:2220 js/ui/screenshot.js:2385
 msgid "Screenshot taken"
 msgstr "Ekran görüntüsü alındı"
 
@@ -1917,15 +1923,19 @@ msgctxt "title"
 msgid "Background Apps"
 msgstr "Arka Plan Uygulamaları"
 
-#: js/ui/status/backgroundApps.js:153
+#: js/ui/status/backgroundApps.js:150
+msgid "Apps known to be running without a window"
+msgstr "Penceresiz çalıştığı bilinen uygulamalar"
+
+#: js/ui/status/backgroundApps.js:161
 msgid "App Settings"
 msgstr "Uygulama Ayarları"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:189
 msgid "No Background Apps"
 msgstr "Arka Plan Uygulaması Yok"
 
-#: js/ui/status/backgroundApps.js:183
+#: js/ui/status/backgroundApps.js:191
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2405,23 +2415,23 @@ msgstr "Sağdaki Monitöre Taşı"
 msgid "Close"
 msgstr "Kapat"
 
-#: src/main.c:513 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Sürümü yazdır"
 
-#: src/main.c:519
+#: src/main.c:514
 msgid "Mode used by GDM for login screen"
 msgstr "Oturum açma ekranında GDM tarafından kullanılan kip"
 
-#: src/main.c:525
+#: src/main.c:520
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Oturum açma ekranı için -“gdm” gibi- özel kip kullan"
 
-#: src/main.c:531
+#: src/main.c:526
 msgid "List possible modes"
 msgstr "Olası kipleri listele"
 
-#: src/main.c:537
+#: src/main.c:532
 msgid "Force animations to be enabled"
 msgstr "Canlandırmaları etkinleştirilmeye zorla"
 
