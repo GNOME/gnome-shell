@@ -1611,6 +1611,13 @@ class NMDeviceToggle extends NMToggle {
         return name;
     }
 
+    _transformSubtitle(source) {
+        const subtitle = super._transformSubtitle(source);
+        if (subtitle === this.title)
+            return null;
+        return subtitle;
+    }
+
     _loadInitialItems() {
         const devices = this._client.get_devices();
         for (const  dev of devices)
@@ -1840,13 +1847,6 @@ class NMWiredToggle extends NMDeviceToggle {
         this.menu.setHeader('network-wired-symbolic', _('Wired Connections'));
         this.menu.addSettingsAction(_('Wired Settings'),
             'gnome-network-panel.desktop');
-    }
-
-    _transformSubtitle(source) {
-        const subtitle = super._transformSubtitle(source);
-        if (subtitle === this.title)
-            return null;
-        return subtitle;
     }
 
     _createDeviceMenuItem(device) {
