@@ -1,3 +1,29 @@
+44.rc
+=====
+* Unmute to default volume when slider was at 0 [Florian; !2644]
+* Fix missing battery percentage in the top bar [DaPigGuy; !2657]
+* Fix unexpected focus order after activating apps [Florian; !2659]
+* Stop using GTK for systray support [Carlos; !2590]
+* Expose GtkIconTheme replacement to extensions [Florian; !2671]
+* Disallow using (most of) GTK in the compositor process [Florian; !2680]
+* Plugged leak [Sebastian; !2652]
+* Misc. bug fixes and cleanups [Jonas, Florian, Andy, Carlos, Sebastian, Sam,
+  Automeris, Ray; !2318, !2658, !2663, !2642, !2656, !2664, !2667, !2648,
+  !2654, !2655, !2670, !2669, !2673, !2675, !2674, !2677, !2676]
+
+Contributors:
+  DaPigGuy, Jonas Dreßler, Carlos Garnacho, Sam Hewitt, Andy Holmes,
+  Sebastian Keller, Florian Müllner, Ray Strode, Automeris naranja
+
+Translators:
+  Daniel Mustieles [es], Jürgen Benvenuti [de], Piotr Drąg [pl],
+  Danial Behzadi [fa], Fabio Tomat [fur], Jordi Mas [ca], Hemish [hi],
+  Asier Sarasua Garmendia [eu], Matej Urbančič [sl], Alan Mortensen [da],
+  Мирослав Николић [sr], Jean-Marc Tissières [fr], Jiri Grönroos [fi],
+  Sabri Ünal [tr], Balázs Úr [hu], Yuri Chornoivan [uk], Changwoo Ryu [ko],
+  Aleksandr Melman [ru], Yosef Or Boczko [he], Aurimas Černius [lt],
+  Alexander Shopov [bg], Hugo Carvalho [pt]
+
 44.beta
 =======
 * Fix screencast UI being erroneously disabled [Florian; !2533]
