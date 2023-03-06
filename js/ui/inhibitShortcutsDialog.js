@@ -1,11 +1,9 @@
 /* exported InhibitShortcutsDialog */
-const {Clutter, Gio, GObject, Gtk, Meta, Pango, Shell, St} = imports.gi;
+const {Clutter, GObject, Meta, Pango, Shell, St} = imports.gi;
 
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
 const PermissionStore = imports.misc.permissionStore;
-
-const WAYLAND_KEYBINDINGS_SCHEMA = 'org.gnome.mutter.wayland.keybindings';
 
 const APP_ALLOWLIST = ['org.gnome.Settings.desktop'];
 const APP_PERMISSIONS_TABLE = 'gnome';
@@ -42,13 +40,6 @@ var InhibitShortcutsDialog = GObject.registerClass({
         return windowTracker.get_window_app(this._window);
     }
 
-    _getRestoreAccel() {
-        let settings = new Gio.Settings({ schema_id: WAYLAND_KEYBINDINGS_SCHEMA });
-        let accel = settings.get_strv('restore-shortcuts')[0] || '';
-        return Gtk.accelerator_get_label.apply(null,
-                                               Gtk.accelerator_parse(accel));
-    }
-
     _shouldUsePermStore() {
         return this._app && !this._app.is_window_backed();
     }
@@ -79,7 +70,7 @@ var InhibitShortcutsDialog = GObject.registerClass({
                 : _('An app wants to inhibit shortcuts'),
         });
 
-        let restoreAccel = this._getRestoreAccel();
+        const restoreAccel = Meta.prefs_get_keybinding_label('restore-shortcuts');
         if (restoreAccel) {
             let restoreLabel = new St.Label({
                 /* Translators: %s is a keyboard shortcut like "Super+x" */
