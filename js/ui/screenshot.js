@@ -1226,6 +1226,12 @@ var ScreenshotUI = GObject.registerClass({
             this._onShotButtonToggled.bind(this));
         this._shotCastContainer.add_child(this._shotButton);
 
+        this.add_child(new Tooltip(this._shotButton, {
+            text: _('Take Screenshot'),
+            style_class: 'screenshot-ui-tooltip',
+            visible: false,
+        }));
+
         this._castButton = new St.Button({
             style_class: 'screenshot-ui-shot-cast-button',
             icon_name: 'camera-web-symbolic',
@@ -1236,23 +1242,14 @@ var ScreenshotUI = GObject.registerClass({
             this._onCastButtonToggled.bind(this));
         this._shotCastContainer.add_child(this._castButton);
 
-        this._shotButton.bind_property('checked', this._castButton, 'checked',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.INVERT_BOOLEAN);
-
-        this._shotCastTooltip = new Tooltip(this._shotCastContainer, {
-            text: _('Screenshot / Screencast'),
+        this.add_child(new Tooltip(this._castButton, {
+            text: _('Record Screen'),
             style_class: 'screenshot-ui-tooltip',
             visible: false,
-        });
-        const shotCastCallback = () => {
-            if (this._shotButton.hover || this._castButton.hover)
-                this._shotCastTooltip.open();
-            else
-                this._shotCastTooltip.close();
-        };
-        this._shotButton.connect('notify::hover', shotCastCallback);
-        this._castButton.connect('notify::hover', shotCastCallback);
-        this.add_child(this._shotCastTooltip);
+        }));
+
+        this._shotButton.bind_property('checked', this._castButton, 'checked',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.INVERT_BOOLEAN);
 
         this._captureButton = new St.Button({ style_class: 'screenshot-ui-capture-button' });
         this._captureButton.set_child(new St.Widget({
