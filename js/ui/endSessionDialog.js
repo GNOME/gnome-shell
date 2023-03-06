@@ -447,11 +447,11 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             let label = dialogContent.confirmButtons[i].label;
             let button = this.addButton({
                 action: () => {
-                    this.close(true);
                     let signalId = this.connect('closed', () => {
                         this.disconnect(signalId);
                         this._confirm(signal);
                     });
+                    this.close(true);
                 },
                 label,
             });
