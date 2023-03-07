@@ -252,6 +252,7 @@ class BluetoothToggle extends QuickMenuToggle {
             ellipsize: Pango.EllipsizeMode.NONE,
             line_wrap: true,
         });
+        this._placeholderItem.setOrnament(PopupMenu.Ornament.HIDDEN);
         this.menu.addMenuItem(this._placeholderItem);
 
         this._deviceSection.actor.bind_property('visible',

@@ -144,7 +144,7 @@
   .popup-menu-icon { -st-icon-style: symbolic; }
 }
 
-.bt-menu-placeholder {
+.bt-menu-placeholder.popup-menu-item {
   @extend %title_4;
   text-align: center;
 
