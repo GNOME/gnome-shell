@@ -393,7 +393,7 @@ na_xembed_add_window (NaXembed  *xembed,
       priv->socket_window =
         XCreateWindow (xdisplay,
                        meta_x11_display_get_xroot (priv->x11_display),
-                       -100, -100, 1, 1, 0,
+                       -1, -1, 1, 1, 0,
                        priv->xvisual_info->depth,
                        InputOutput,
                        plug_attrs.visual,
