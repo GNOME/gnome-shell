@@ -108,6 +108,9 @@ var Button = GObject.registerClass({
             this.menu = new PopupMenu.PopupDummyMenu(this);
         else
             this.setMenu(new PopupMenu.PopupMenu(this, menuAlignment, St.Side.TOP, 0));
+
+        this.connect('key-press-event',
+            (o, ev) => global.focus_manager.navigate_from_event(ev));
     }
 
     setSensitive(sensitive) {
