@@ -116,7 +116,6 @@ class PortalWindow extends Gtk.ApplicationWindow {
     _init(application, url, timestamp, doneCallback) {
         super._init({ application });
 
-        this.connect('delete-event', this.destroyWindow.bind(this));
         this._headerBar = new PortalHeaderBar();
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.NOT_YET_DETERMINED);
         this.set_titlebar(this._headerBar);
@@ -159,10 +158,6 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this.present_with_time(timestamp);
 
         this.application.set_accels_for_action('app.quit', ['<Primary>q', '<Primary>w']);
-    }
-
-    destroyWindow() {
-        this.destroy();
     }
 
     _syncUri() {
@@ -293,7 +288,7 @@ class WebPortalHelper extends Gtk.Application {
         this._queue = [];
 
         let action = new Gio.SimpleAction({ name: 'quit' });
-        action.connect('activate', () => this.active_window.destroyWindow());
+        action.connect('activate', () => this.active_window.destroy());
         this.add_action(action);
     }
 
@@ -326,7 +321,7 @@ class WebPortalHelper extends Gtk.Application {
 
             if (obj.connection == connection) {
                 if (obj.window)
-                    obj.window.destroyWindow();
+                    obj.window.destroy();
                 this._queue.splice(i, 1);
                 break;
             }
