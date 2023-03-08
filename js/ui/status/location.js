@@ -160,7 +160,7 @@ var GeoclueAgent = GObject.registerClass({
     }
 
     _onGeoclueVanished() {
-        this._managerProxy.disconnectObject(this);
+        this._managerProxy?.disconnectObject(this);
         this._managerProxy = null;
 
         this.notify('in-use');
