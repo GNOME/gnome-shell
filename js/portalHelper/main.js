@@ -1,9 +1,10 @@
 /* exported main */
+imports.gi.versions.Adw = '1';
 imports.gi.versions.Gtk = '4.0';
 imports.gi.versions.WebKit = '6.0';
 
 const Gettext = imports.gettext;
-const {Gio, GLib, GObject, Gtk, WebKit} = imports.gi;
+const {Adw, Gio, GLib, GObject, Gtk, WebKit} = imports.gi;
 
 const _ = Gettext.gettext;
 
@@ -279,7 +280,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
 });
 
 var WebPortalHelper = GObject.registerClass(
-class WebPortalHelper extends Gtk.Application {
+class WebPortalHelper extends Adw.Application {
     _init() {
         super._init({
             application_id: 'org.gnome.Shell.PortalHelper',
