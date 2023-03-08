@@ -207,8 +207,13 @@ class PortalWindow extends Gtk.ApplicationWindow {
     }
 
     _onDecidePolicy(view, decision, type) {
+        if (type === WebKit.PolicyDecisionType.RESPONSE)
+            return false;
+
+        const navigationAction = decision.get_navigation_action();
+        const request = navigationAction.get_request();
+
         if (type === WebKit.PolicyDecisionType.NEW_WINDOW_ACTION) {
-            let navigationAction = decision.get_navigation_action();
             if (navigationAction.is_user_gesture()) {
                 // Even though the portal asks for a new window,
                 // perform the navigation in the current one. Some
@@ -217,17 +222,13 @@ class PortalWindow extends Gtk.ApplicationWindow {
                 // user go through. We don't risk popups taking over
                 // the page because we check that the navigation is
                 // user initiated.
-                this._webView.load_request(navigationAction.get_request());
+                this._webView.load_request(request);
             }
 
             decision.ignore();
             return true;
         }
 
-        if (type !== WebKit.PolicyDecisionType.NAVIGATION_ACTION)
-            return false;
-
-        let request = decision.get_request();
         const uri = GLib.Uri.parse(request.get_uri(), HTTP_URI_FLAGS);
 
         if (uri.get_host() !== this._uri.get_host() && this._originalUrlWasGnome) {
