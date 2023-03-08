@@ -1,10 +1,9 @@
 /* exported main */
-imports.gi.versions.Pango = '1.0';
 imports.gi.versions.Gtk = '4.0';
 imports.gi.versions.WebKit = '6.0';
 
 const Gettext = imports.gettext;
-const {Gio, GLib, GObject, Gtk, Pango, WebKit} = imports.gi;
+const {Gio, GLib, GObject, Gtk, WebKit} = imports.gi;
 
 const _ = Gettext.gettext;
 
@@ -37,72 +36,69 @@ const CONNECTIVITY_RECHECK_RATELIMIT_TIMEOUT = 30 * GLib.USEC_PER_SEC;
 
 const HelperDBusInterface = loadInterfaceXML('org.gnome.Shell.PortalHelper');
 
-var PortalHeaderBar = GObject.registerClass(
-class PortalHeaderBar extends Gtk.HeaderBar {
+var PortalSecurityButton = GObject.registerClass(
+class PortalSecurityButton extends Gtk.MenuButton {
     _init() {
-        super._init();
+        const popover = new Gtk.Popover();
 
-        // See ephy-title-box.c in epiphany for the layout
+        super._init({
+            popover,
+            visible: false,
+        });
+
         const vbox = new Gtk.Box({
             orientation: Gtk.Orientation.VERTICAL,
-            valign: Gtk.Align.CENTER,
-            spacing: 0,
+            margin_top: 6,
+            margin_bottom: 6,
+            margin_start: 6,
+            margin_end: 6,
+            spacing: 6,
         });
-        this.set_title_widget(vbox);
-
-        /* TRANSLATORS: this is the title of the wifi captive portal login window */
-        const titleLabel = new Gtk.Label({
-            label: _('Hotspot Login'),
-            wrap: false,
-            single_line_mode: true,
-            ellipsize: Pango.EllipsizeMode.END,
-        });
-        titleLabel.add_css_class('title');
-        vbox.append(titleLabel);
+        popover.set_child(vbox);
 
         const hbox = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL,
-            spacing: 4,
             halign: Gtk.Align.CENTER,
-            valign: Gtk.Align.BASELINE,
         });
-        hbox.add_css_class('subtitle');
         vbox.append(hbox);
 
-        this._lockImage = new Gtk.Image({
-            valign: Gtk.Align.BASELINE,
-        });
-        hbox.append(this._lockImage);
+        this._secureIcon = new Gtk.Image();
+        hbox.append(this._secureIcon);
 
-        this.subtitleLabel = new Gtk.Label({
-            wrap: false,
-            single_line_mode: true,
-            ellipsize: Pango.EllipsizeMode.END,
-            valign: Gtk.Align.BASELINE,
-            selectable: true,
+        this._secureIcon.bind_property('icon-name',
+            this, 'icon-name',
+            GObject.BindingFlags.DEFAULT);
+
+        this._titleLabel = new Gtk.Label();
+        this._titleLabel.add_css_class('title');
+        hbox.append(this._titleLabel);
+
+        this._descriptionLabel = new Gtk.Label({
+            wrap: true,
+            max_width_chars: 32,
         });
-        this.subtitleLabel.add_css_class('subtitle');
-        hbox.append(this.subtitleLabel);
+        vbox.append(this._descriptionLabel);
     }
 
-    setSubtitle(label) {
-        this.subtitleLabel.set_text(label);
+    setPopoverTitle(label) {
+        this._titleLabel.set_text(label);
     }
 
     setSecurityIcon(securityLevel) {
         switch (securityLevel) {
         case PortalHelperSecurityLevel.NOT_YET_DETERMINED:
-            this._lockImage.hide();
+            this.hide();
             break;
         case PortalHelperSecurityLevel.SECURE:
-            this._lockImage.show();
-            this._lockImage.set_from_icon_name('channel-secure-symbolic');
-            this._lockImage.set_tooltip_text(null);
+            this.show();
+            this._secureIcon.icon_name = 'channel-secure-symbolic';
+            this._descriptionLabel.label = _('Your connection seems to be secure');
             break;
         case PortalHelperSecurityLevel.INSECURE:
-            this._lockImage.show();
-            this._lockImage.set_from_icon_name('channel-insecure-symbolic');
-            this._lockImage.set_tooltip_text(_('Your connection to this hotspot login is not secure. Passwords or other information you enter on this page can be viewed by people nearby.'));
+            this.show();
+            this._secureIcon.icon_name = 'channel-insecure-symbolic';
+            this._descriptionLabel.label =
+                _('Your connection to this hotspot login is not secure. Passwords or other information you enter on this page can be viewed by people nearby.');
             break;
         }
     }
@@ -111,11 +107,16 @@ class PortalHeaderBar extends Gtk.HeaderBar {
 var PortalWindow = GObject.registerClass(
 class PortalWindow extends Gtk.ApplicationWindow {
     _init(application, url, timestamp, doneCallback) {
-        super._init({application});
+        super._init({
+            application,
+            title: _('Hotspot Login'),
+        });
 
-        this._headerBar = new PortalHeaderBar();
-        this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.NOT_YET_DETERMINED);
-        this.set_titlebar(this._headerBar);
+        const headerbar = new Gtk.HeaderBar();
+        this._secureMenu = new PortalSecurityButton();
+        headerbar.pack_start(this._secureMenu);
+
+        this.set_titlebar(headerbar);
 
         if (!url) {
             url = CONNECTIVITY_CHECK_URI;
@@ -157,11 +158,16 @@ class PortalWindow extends Gtk.ApplicationWindow {
     }
 
     _syncUri() {
-        let uri = this._webView.uri;
-        if (uri)
-            this._headerBar.setSubtitle(GLib.uri_unescape_string(uri, null));
-        else
-            this._headerBar.setSubtitle('');
+        const {uri} = this._webView;
+
+        try {
+            const [, , host] = GLib.Uri.split_network(uri, HTTP_URI_FLAGS);
+            this._secureMenu.setPopoverTitle(host);
+        } catch (e) {
+            if (uri != null)
+                console.error(`Failed to parse Uri ${uri}: ${e.message}`);
+            this._secureMenu.setPopoverTitle('');
+        }
     }
 
     refresh() {
@@ -179,24 +185,24 @@ class PortalWindow extends Gtk.ApplicationWindow {
 
     _onLoadChanged(view, loadEvent) {
         if (loadEvent === WebKit.LoadEvent.STARTED) {
-            this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.NOT_YET_DETERMINED);
+            this._secureMenu.setSecurityIcon(PortalHelperSecurityLevel.NOT_YET_DETERMINED);
         } else if (loadEvent === WebKit.LoadEvent.COMMITTED) {
             let tlsInfo = this._webView.get_tls_info();
             let ret = tlsInfo[0];
             let flags = tlsInfo[2];
             if (ret && flags === 0)
-                this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.SECURE);
+                this._secureMenu.setSecurityIcon(PortalHelperSecurityLevel.SECURE);
             else
-                this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
+                this._secureMenu.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
         }
     }
 
     _onInsecureContentDetected() {
-        this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
+        this._secureMenu.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
     }
 
     _onLoadFailedWithTlsErrors(view, failingURI, certificate, _errors) {
-        this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
+        this._secureMenu.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
         let uri = GLib.Uri.parse(failingURI, HTTP_URI_FLAGS);
         this._webContext.allow_tls_certificate_for_host(certificate, uri.get_host());
         this._webView.load_uri(failingURI);
