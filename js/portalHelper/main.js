@@ -3,7 +3,6 @@ imports.gi.versions.Pango = '1.0';
 imports.gi.versions.Gtk = '3.0';
 imports.gi.versions.WebKit2 = '4.1';
 
-const Format = imports.format;
 const Gettext = imports.gettext;
 const { Gio, GLib, GObject, Gtk, Pango, WebKit2: WebKit } = imports.gi;
 
@@ -356,13 +355,7 @@ class WebPortalHelper extends Gtk.Application {
     }
 });
 
-function initEnvironment() {
-    String.prototype.format = Format.format;
-}
-
 function main(argv) {
-    initEnvironment();
-
     if (!WebKit.WebContext.new_ephemeral) {
         log('WebKitGTK 2.16 is required for the portal-helper, see https://bugzilla.gnome.org/show_bug.cgi?id=780453');
         return 1;
