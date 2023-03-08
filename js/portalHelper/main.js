@@ -4,12 +4,12 @@ imports.gi.versions.Gtk = '3.0';
 imports.gi.versions.WebKit2 = '4.1';
 
 const Gettext = imports.gettext;
-const { Gio, GLib, GObject, Gtk, Pango, WebKit2: WebKit } = imports.gi;
+const {Gio, GLib, GObject, Gtk, Pango, WebKit2: WebKit} = imports.gi;
 
 const _ = Gettext.gettext;
 
 const Config = imports.misc.config;
-const { loadInterfaceXML } = imports.misc.fileUtils;
+const {loadInterfaceXML} = imports.misc.fileUtils;
 
 const PortalHelperResult = {
     CANCELLED: 0,
@@ -40,7 +40,7 @@ const HelperDBusInterface = loadInterfaceXML('org.gnome.Shell.PortalHelper');
 var PortalHeaderBar = GObject.registerClass(
 class PortalHeaderBar extends Gtk.HeaderBar {
     _init() {
-        super._init({ show_close_button: true });
+        super._init({show_close_button: true});
 
         // See ephy-title-box.c in epiphany for the layout
         const vbox = new Gtk.Box({
@@ -98,12 +98,12 @@ class PortalHeaderBar extends Gtk.HeaderBar {
             break;
         case PortalHelperSecurityLevel.SECURE:
             this._lockImage.show();
-            this._lockImage.set_from_icon_name("channel-secure-symbolic", Gtk.IconSize.MENU);
+            this._lockImage.set_from_icon_name('channel-secure-symbolic', Gtk.IconSize.MENU);
             this._lockImage.set_tooltip_text(null);
             break;
         case PortalHelperSecurityLevel.INSECURE:
             this._lockImage.show();
-            this._lockImage.set_from_icon_name("channel-insecure-symbolic", Gtk.IconSize.MENU);
+            this._lockImage.set_from_icon_name('channel-insecure-symbolic', Gtk.IconSize.MENU);
             this._lockImage.set_tooltip_text(_('Your connection to this hotspot login is not secure. Passwords or other information you enter on this page can be viewed by people nearby.'));
             break;
         }
@@ -113,7 +113,7 @@ class PortalHeaderBar extends Gtk.HeaderBar {
 var PortalWindow = GObject.registerClass(
 class PortalWindow extends Gtk.ApplicationWindow {
     _init(application, url, timestamp, doneCallback) {
-        super._init({ application });
+        super._init({application});
 
         this._headerBar = new PortalHeaderBar();
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.NOT_YET_DETERMINED);
@@ -181,13 +181,13 @@ class PortalWindow extends Gtk.ApplicationWindow {
     }
 
     _onLoadChanged(view, loadEvent) {
-        if (loadEvent == WebKit.LoadEvent.STARTED) {
+        if (loadEvent === WebKit.LoadEvent.STARTED) {
             this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.NOT_YET_DETERMINED);
-        } else if (loadEvent == WebKit.LoadEvent.COMMITTED) {
+        } else if (loadEvent === WebKit.LoadEvent.COMMITTED) {
             let tlsInfo = this._webView.get_tls_info();
             let ret = tlsInfo[0];
             let flags = tlsInfo[2];
-            if (ret && flags == 0)
+            if (ret && flags === 0)
                 this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.SECURE);
             else
                 this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
@@ -207,7 +207,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
     }
 
     _onDecidePolicy(view, decision, type) {
-        if (type == WebKit.PolicyDecisionType.NEW_WINDOW_ACTION) {
+        if (type === WebKit.PolicyDecisionType.NEW_WINDOW_ACTION) {
             let navigationAction = decision.get_navigation_action();
             if (navigationAction.is_user_gesture()) {
                 // Even though the portal asks for a new window,
@@ -224,19 +224,19 @@ class PortalWindow extends Gtk.ApplicationWindow {
             return true;
         }
 
-        if (type != WebKit.PolicyDecisionType.NAVIGATION_ACTION)
+        if (type !== WebKit.PolicyDecisionType.NAVIGATION_ACTION)
             return false;
 
         let request = decision.get_request();
         const uri = GLib.Uri.parse(request.get_uri(), HTTP_URI_FLAGS);
 
         if (uri.get_host() !== this._uri.get_host() && this._originalUrlWasGnome) {
-            if (uri.get_host() == CONNECTIVITY_CHECK_HOST && this._everSeenRedirect) {
+            if (uri.get_host() === CONNECTIVITY_CHECK_HOST && this._everSeenRedirect) {
                 // Yay, we got to gnome!
                 decision.ignore();
                 this._doneCallback(PortalHelperResult.COMPLETED);
                 return true;
-            } else if (uri.get_host() != CONNECTIVITY_CHECK_HOST) {
+            } else if (uri.get_host() !== CONNECTIVITY_CHECK_HOST) {
                 this._everSeenRedirect = true;
             }
         }
@@ -286,7 +286,7 @@ class WebPortalHelper extends Gtk.Application {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(HelperDBusInterface, this);
         this._queue = [];
 
-        let action = new Gio.SimpleAction({ name: 'quit' });
+        let action = new Gio.SimpleAction({name: 'quit'});
         action.connect('activate', () => this.active_window.destroy());
         this.add_action(action);
     }
@@ -309,7 +309,7 @@ class WebPortalHelper extends Gtk.Application {
     }
 
     Authenticate(connection, url, timestamp) {
-        this._queue.push({ connection, url, timestamp });
+        this._queue.push({connection, url, timestamp});
 
         this._processQueue();
     }
@@ -318,7 +318,7 @@ class WebPortalHelper extends Gtk.Application {
         for (let i = 0; i < this._queue.length; i++) {
             let obj = this._queue[i];
 
-            if (obj.connection == connection) {
+            if (obj.connection === connection) {
                 if (obj.window)
                     obj.window.destroy();
                 this._queue.splice(i, 1);
@@ -333,7 +333,7 @@ class WebPortalHelper extends Gtk.Application {
         for (let i = 0; i < this._queue.length; i++) {
             let obj = this._queue[i];
 
-            if (obj.connection == connection) {
+            if (obj.connection === connection) {
                 if (obj.window)
                     obj.window.refresh();
                 break;
@@ -342,7 +342,7 @@ class WebPortalHelper extends Gtk.Application {
     }
 
     _processQueue() {
-        if (this._queue.length == 0)
+        if (this._queue.length === 0)
             return;
 
         let top = this._queue[0];
@@ -355,6 +355,9 @@ class WebPortalHelper extends Gtk.Application {
     }
 });
 
+/**
+ * @param {string[]} argv - command line arguments
+ */
 function main(argv) {
     if (!WebKit.WebContext.new_ephemeral) {
         log('WebKitGTK 2.16 is required for the portal-helper, see https://bugzilla.gnome.org/show_bug.cgi?id=780453');
