@@ -1,8 +1,7 @@
 #!/usr/bin/env gjs
 
-imports.gi.versions.Gtk = '3.0';
-
-const { GLib, Gtk } = imports.gi;
+imports.gi.versions.Gtk = '4.0';
+const {Gtk} = imports.gi;
 
 function nextTitle() {
     let length = Math.random() * 20;
@@ -16,22 +15,14 @@ function nextTitle() {
     return str;
 }
 
-function main() {
-    Gtk.init(null);
-
-    let win = new Gtk.Window({ title: nextTitle() });
-    win.connect('destroy', () => {
-        Gtk.main_quit();
+const application = new Gtk.Application({application_id: 'org.gnome.TestTitle'});
+application.connect('activate', () => {
+    const win = new Gtk.Window({
+        application,
+        title: nextTitle(),
     });
     win.present();
 
-    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 5000, function() {
-        win.title = nextTitle();
-        return true;
-    });
-
-    Gtk.main();
-}
-
-main();
-
+    setInterval(() => (win.title = nextTitle()), 5000);
+});
+application.run(null);
