@@ -1,10 +1,10 @@
 /* exported main */
 imports.gi.versions.Pango = '1.0';
-imports.gi.versions.Gtk = '3.0';
-imports.gi.versions.WebKit2 = '4.1';
+imports.gi.versions.Gtk = '4.0';
+imports.gi.versions.WebKit = '6.0';
 
 const Gettext = imports.gettext;
-const {Gio, GLib, GObject, Gtk, Pango, WebKit2: WebKit} = imports.gi;
+const {Gio, GLib, GObject, Gtk, Pango, WebKit} = imports.gi;
 
 const _ = Gettext.gettext;
 
@@ -40,14 +40,15 @@ const HelperDBusInterface = loadInterfaceXML('org.gnome.Shell.PortalHelper');
 var PortalHeaderBar = GObject.registerClass(
 class PortalHeaderBar extends Gtk.HeaderBar {
     _init() {
-        super._init({show_close_button: true});
+        super._init();
 
         // See ephy-title-box.c in epiphany for the layout
         const vbox = new Gtk.Box({
             orientation: Gtk.Orientation.VERTICAL,
+            valign: Gtk.Align.CENTER,
             spacing: 0,
         });
-        this.set_custom_title(vbox);
+        this.set_title_widget(vbox);
 
         /* TRANSLATORS: this is the title of the wifi captive portal login window */
         const titleLabel = new Gtk.Label({
@@ -56,8 +57,8 @@ class PortalHeaderBar extends Gtk.HeaderBar {
             single_line_mode: true,
             ellipsize: Pango.EllipsizeMode.END,
         });
-        titleLabel.get_style_context().add_class('title');
-        vbox.add(titleLabel);
+        titleLabel.add_css_class('title');
+        vbox.append(titleLabel);
 
         const hbox = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL,
@@ -65,14 +66,13 @@ class PortalHeaderBar extends Gtk.HeaderBar {
             halign: Gtk.Align.CENTER,
             valign: Gtk.Align.BASELINE,
         });
-        hbox.get_style_context().add_class('subtitle');
-        vbox.add(hbox);
+        hbox.add_css_class('subtitle');
+        vbox.append(hbox);
 
         this._lockImage = new Gtk.Image({
-            icon_size: Gtk.IconSize.MENU,
             valign: Gtk.Align.BASELINE,
         });
-        hbox.add(this._lockImage);
+        hbox.append(this._lockImage);
 
         this.subtitleLabel = new Gtk.Label({
             wrap: false,
@@ -81,10 +81,8 @@ class PortalHeaderBar extends Gtk.HeaderBar {
             valign: Gtk.Align.BASELINE,
             selectable: true,
         });
-        this.subtitleLabel.get_style_context().add_class('subtitle');
-        hbox.add(this.subtitleLabel);
-
-        vbox.show_all();
+        this.subtitleLabel.add_css_class('subtitle');
+        hbox.append(this.subtitleLabel);
     }
 
     setSubtitle(label) {
@@ -98,12 +96,12 @@ class PortalHeaderBar extends Gtk.HeaderBar {
             break;
         case PortalHelperSecurityLevel.SECURE:
             this._lockImage.show();
-            this._lockImage.set_from_icon_name('channel-secure-symbolic', Gtk.IconSize.MENU);
+            this._lockImage.set_from_icon_name('channel-secure-symbolic');
             this._lockImage.set_tooltip_text(null);
             break;
         case PortalHelperSecurityLevel.INSECURE:
             this._lockImage.show();
-            this._lockImage.set_from_icon_name('channel-insecure-symbolic', Gtk.IconSize.MENU);
+            this._lockImage.set_from_icon_name('channel-insecure-symbolic');
             this._lockImage.set_tooltip_text(_('Your connection to this hotspot login is not secure. Passwords or other information you enter on this page can be viewed by people nearby.'));
             break;
         }
@@ -118,7 +116,6 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this._headerBar = new PortalHeaderBar();
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.NOT_YET_DETERMINED);
         this.set_titlebar(this._headerBar);
-        this._headerBar.show();
 
         if (!url) {
             url = CONNECTIVITY_CHECK_URI;
@@ -133,15 +130,16 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this._lastRecheck = 0;
         this._recheckAtExit = false;
 
-        this._webContext = WebKit.WebContext.new_ephemeral();
-        this._webContext.set_cache_model(WebKit.CacheModel.DOCUMENT_VIEWER);
-        this._webContext.set_network_proxy_settings(WebKit.NetworkProxyMode.NO_PROXY, null);
-        if (this._webContext.set_sandbox_enabled) {
-            // We have WebKitGTK 2.26 or newer.
-            this._webContext.set_sandbox_enabled(true);
-        }
+        this._networkSession = WebKit.NetworkSession.new_ephemeral();
+        this._networkSession.set_proxy_settings(WebKit.NetworkProxyMode.NO_PROXY, null);
 
-        this._webView = WebKit.WebView.new_with_context(this._webContext);
+        this._webContext = new WebKit.WebContext();
+        this._webContext.set_cache_model(WebKit.CacheModel.DOCUMENT_VIEWER);
+
+        this._webView = new WebKit.WebView({
+            networkSession: this._networkSession,
+            webContext: this._webContext,
+        });
         this._webView.connect('decide-policy', this._onDecidePolicy.bind(this));
         this._webView.connect('load-changed', this._onLoadChanged.bind(this));
         this._webView.connect('insecure-content-detected', this._onInsecureContentDetected.bind(this));
@@ -150,8 +148,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this._webView.connect('notify::uri', this._syncUri.bind(this));
         this._syncUri();
 
-        this.add(this._webView);
-        this._webView.show();
+        this.set_child(this._webView);
         this.set_size_request(600, 450);
         this.maximize();
         this.present_with_time(timestamp);
@@ -172,7 +169,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this._webView.load_uri(this._originalUrl);
     }
 
-    vfunc_delete_event(_event) {
+    vfunc_close_request() {
         if (this._recheckAtExit)
             this._doneCallback(PortalHelperResult.RECHECK);
         else
@@ -360,11 +357,6 @@ class WebPortalHelper extends Gtk.Application {
  * @param {string[]} argv - command line arguments
  */
 function main(argv) {
-    if (!WebKit.WebContext.new_ephemeral) {
-        log('WebKitGTK 2.16 is required for the portal-helper, see https://bugzilla.gnome.org/show_bug.cgi?id=780453');
-        return 1;
-    }
-
     Gettext.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
     Gettext.textdomain(Config.GETTEXT_PACKAGE);
 
