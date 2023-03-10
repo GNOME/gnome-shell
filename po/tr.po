@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-03 23:10+0000\n"
-"PO-Revision-Date: 2023-03-04 21:38+0300\n"
+"POT-Creation-Date: 2023-03-08 16:48+0000\n"
+"PO-Revision-Date: 2023-03-10 00:09+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -785,11 +785,11 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/inhibitShortcutsDialog.js:97
+#: js/ui/accessDialog.js:39 js/ui/inhibitShortcutsDialog.js:88
 msgid "Deny"
 msgstr "Reddet"
 
-#: js/ui/accessDialog.js:40 js/ui/inhibitShortcutsDialog.js:106
+#: js/ui/accessDialog.js:40 js/ui/inhibitShortcutsDialog.js:97
 msgid "Allow"
 msgstr "İzin Ver"
 
@@ -1395,22 +1395,22 @@ msgstr "Uzantı Güncellemeleri Var"
 msgid "Extension updates are ready to be installed."
 msgstr "Uzantı güncellemeleri kuruluma hazır."
 
-#: js/ui/inhibitShortcutsDialog.js:75
+#: js/ui/inhibitShortcutsDialog.js:66
 msgid "Allow inhibiting shortcuts"
 msgstr "Kısayolları baskılamaya izin ver"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:78
+#: js/ui/inhibitShortcutsDialog.js:69
 #, javascript-format
 msgid "The app %s wants to inhibit shortcuts"
 msgstr "%s uygulaması kısayolları baskılamak istiyor"
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:70
 msgid "An app wants to inhibit shortcuts"
 msgstr "Bir uygulama, kısayolları baskılamak istiyor"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:86
+#: js/ui/inhibitShortcutsDialog.js:77
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "%s kısayoluyla, kısayolları geri yükleyebilirsiniz."
@@ -1923,19 +1923,15 @@ msgctxt "title"
 msgid "Background Apps"
 msgstr "Arka Plan Uygulamaları"
 
-#: js/ui/status/backgroundApps.js:150
-msgid "Apps known to be running without a window"
-msgstr "Penceresiz çalıştığı bilinen uygulamalar"
-
-#: js/ui/status/backgroundApps.js:161
+#: js/ui/status/backgroundApps.js:153
 msgid "App Settings"
 msgstr "Uygulama Ayarları"
 
-#: js/ui/status/backgroundApps.js:189
+#: js/ui/status/backgroundApps.js:181
 msgid "No Background Apps"
 msgstr "Arka Plan Uygulaması Yok"
 
-#: js/ui/status/backgroundApps.js:191
+#: js/ui/status/backgroundApps.js:183
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2357,7 +2353,7 @@ msgstr "Geri Yükle"
 
 #: js/ui/windowMenu.js:52
 msgid "Maximize"
-msgstr "En üst düzeye çıkar"
+msgstr "Ekranı Kapla"
 
 #: js/ui/windowMenu.js:59
 msgid "Move"
@@ -2457,12 +2453,12 @@ msgstr "Parola boş bırakılamaz"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Kimlik doğrulama penceresi kullanıcıca kapatıldı"
 
-#: src/st/st-icon-theme.c:1882
+#: src/st/st-icon-theme.c:1883
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "%2$s gövdesinde '%1$s' simgesi yok"
 
-#: src/st/st-icon-theme.c:3471 src/st/st-icon-theme.c:3774
+#: src/st/st-icon-theme.c:3472 src/st/st-icon-theme.c:3775
 msgid "Failed to load icon"
 msgstr "Simge yüklenemedi"
 
@@ -3015,6 +3011,9 @@ msgstr[0] "%u Girdi"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
+
+#~ msgid "Apps known to be running without a window"
+#~ msgstr "Penceresiz çalıştığı bilinen uygulamalar"
 
 #~ msgid "Evolution Calendar"
 #~ msgstr "Evolution Takvim"
