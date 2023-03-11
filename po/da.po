@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-02-14 05:17+0000\n"
-"PO-Revision-Date: 2023-02-20 18:08+0100\n"
+"POT-Creation-Date: 2023-03-08 16:48+0000\n"
+"PO-Revision-Date: 2023-03-11 11:44+0100\n"
 "Last-Translator: Alan Mortensen <alanmortensen.am@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -69,7 +69,7 @@ msgid "Activate favorite app 9"
 msgstr "Aktivér favoritprogram 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2106
 msgid "Screenshots"
 msgstr "Skærmbilleder"
 
@@ -779,11 +779,11 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/inhibitShortcutsDialog.js:97
+#: js/ui/accessDialog.js:39 js/ui/inhibitShortcutsDialog.js:88
 msgid "Deny"
 msgstr "Nægt"
 
-#: js/ui/accessDialog.js:40 js/ui/inhibitShortcutsDialog.js:106
+#: js/ui/accessDialog.js:40 js/ui/inhibitShortcutsDialog.js:97
 msgid "Allow"
 msgstr "Tillad"
 
@@ -838,7 +838,7 @@ msgstr "Start med særskilt grafikkort"
 msgid "Select Audio Device"
 msgstr "Vælg lydenhed"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:72
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:79
 msgid "Sound Settings"
 msgstr "Indstillinger for lyd"
 
@@ -850,7 +850,7 @@ msgstr "Hovedtelefoner"
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:341
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:348
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1021,7 +1021,7 @@ msgid ""
 msgstr ""
 "Du kan også oprette forbindelse ved at trykke på “WPS”-knappen på din router."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:217
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:221
 #: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "Forbind"
@@ -1087,7 +1087,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Der kræves en adgangskode for at forbinde til “%s”."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1990
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1996
 msgid "Network Manager"
 msgstr "Netværkshåndtering"
 
@@ -1396,22 +1396,22 @@ msgstr "Der er opdateringer til udvidelser"
 msgid "Extension updates are ready to be installed."
 msgstr "Opdateringer til udvidelser er klar til at blive installeret."
 
-#: js/ui/inhibitShortcutsDialog.js:75
+#: js/ui/inhibitShortcutsDialog.js:66
 msgid "Allow inhibiting shortcuts"
 msgstr "Tillad at genveje hindres"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:78
+#: js/ui/inhibitShortcutsDialog.js:69
 #, javascript-format
 msgid "The app %s wants to inhibit shortcuts"
 msgstr "Programmet %s vil forhindre genveje"
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:70
 msgid "An app wants to inhibit shortcuts"
 msgstr "Et program vil forhindre genveje"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:86
+#: js/ui/inhibitShortcutsDialog.js:77
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Du kan gendanne genveje ved at trykke %s."
@@ -1653,7 +1653,7 @@ msgstr "System"
 msgid "Top Bar"
 msgstr "Toppanel"
 
-#: js/ui/quickSettings.js:176
+#: js/ui/quickSettings.js:181
 msgid "Open menu"
 msgstr "Åbn menu"
 
@@ -1713,63 +1713,69 @@ msgstr "Vinduesmarkering"
 msgid "Screenshot / Screencast"
 msgstr "Skærmbillede/-optagelse"
 
-#: js/ui/screenshot.js:1275
+#. Translators: since this string refers to an action,
+#. it needs to be phrased as a verb.
+#: js/ui/screenshot.js:1260
+msgid "Capture"
+msgstr "Optag"
+
+#: js/ui/screenshot.js:1282
 msgid "Show Pointer"
 msgstr "Vis markør"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1866
+#: js/ui/screenshot.js:1873
 msgid "Screencasts"
 msgstr "Skærmoptagelser"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1871
+#: js/ui/screenshot.js:1878
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Skærmoptagelse fra %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2159
 msgid "Screenshot"
 msgstr "Skærmbillede"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1926
 msgid "Screencast recorded"
 msgstr "Skærmoptagelse optaget"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1921
+#: js/ui/screenshot.js:1928
 msgid "Click here to view the video."
 msgstr "Klik her for at se videoen."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
+#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2173
 msgid "Show in Files"
 msgstr "Vis i Filer"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2085
+#: js/ui/screenshot.js:2119
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Skærmbillede fra %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2165
 msgid "Screenshot captured"
 msgstr "Skærmbillede taget"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2133
+#: js/ui/screenshot.js:2167
 msgid "You can paste the image from the clipboard."
 msgstr "Du kan indsætte billedet fra udklipsholderen."
 
-#: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
+#: js/ui/screenshot.js:2220 js/ui/screenshot.js:2385
 msgid "Screenshot taken"
 msgstr "Skærmbillede blev taget"
 
@@ -1935,28 +1941,28 @@ msgid_plural "%d Background Apps"
 msgstr[0] "%d baggrundsprogram"
 msgstr[1] "%d baggrundsprogrammer"
 
-#: js/ui/status/bluetooth.js:217 js/ui/status/network.js:369
+#: js/ui/status/bluetooth.js:221 js/ui/status/network.js:369
 msgid "Disconnect"
 msgstr "Afbryd"
 
-#: js/ui/status/bluetooth.js:234 js/ui/status/bluetooth.js:236
+#: js/ui/status/bluetooth.js:238 js/ui/status/bluetooth.js:240
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:259 js/ui/status/network.js:1857
+#: js/ui/status/bluetooth.js:263 js/ui/status/network.js:1863
 msgid "Bluetooth Settings"
 msgstr "Indstillinger for Bluetooth"
 
-#: js/ui/status/bluetooth.js:306
+#: js/ui/status/bluetooth.js:310
 msgid "No available or connected devices"
 msgstr "Ingen tilgængelige eller tilsluttede enheder"
 
-#: js/ui/status/bluetooth.js:307
+#: js/ui/status/bluetooth.js:311
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Slå Bluetooth til for at tilslutte til enheder"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:361
+#: js/ui/status/bluetooth.js:365
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2039,69 +2045,69 @@ msgid "Connect to %s"
 msgstr "Forbind til %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1122
+#: js/ui/status/network.js:1128
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s-hotspot"
 
-#: js/ui/status/network.js:1387
+#: js/ui/status/network.js:1393
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d forbundet"
 msgstr[1] "%d forbundet"
 
-#: js/ui/status/network.js:1485 js/ui/status/network.js:1501
+#: js/ui/status/network.js:1491 js/ui/status/network.js:1507
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1486
+#: js/ui/status/network.js:1492
 msgid "VPN Settings"
 msgstr "Indstillinger for VPN"
 
-#: js/ui/status/network.js:1735
+#: js/ui/status/network.js:1741
 msgid "Wi–Fi"
 msgstr "Wi-fi"
 
-#: js/ui/status/network.js:1737
+#: js/ui/status/network.js:1743
 msgid "All Networks"
 msgstr "Alle netværk"
 
-#: js/ui/status/network.js:1834
+#: js/ui/status/network.js:1840
 msgid "Wired Connections"
 msgstr "Kablede forbindelser"
 
-#: js/ui/status/network.js:1835
+#: js/ui/status/network.js:1841
 msgid "Wired Settings"
 msgstr "Indstillinger for trådet netværk"
 
-#: js/ui/status/network.js:1856
+#: js/ui/status/network.js:1862
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth-internetdelinger"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1863
+#: js/ui/status/network.js:1869
 msgid "Tether"
 msgstr "Internetdeling"
 
-#: js/ui/status/network.js:1876
+#: js/ui/status/network.js:1882
 msgid "Mobile Connections"
 msgstr "Mobile forbindelser"
 
-#: js/ui/status/network.js:1878
+#: js/ui/status/network.js:1884
 msgid "Mobile Broadband Settings"
 msgstr "Indstillinger for mobilbredbånd"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1887
+#: js/ui/status/network.js:1893
 msgid "Mobile"
 msgstr "Mobil"
 
-#: js/ui/status/network.js:1995
+#: js/ui/status/network.js:2001
 msgid "Connection failed"
 msgstr "Forbindelse mislykkedes"
 
-#: js/ui/status/network.js:1996
+#: js/ui/status/network.js:2002
 msgid "Activation of network connection failed"
 msgstr "Aktivering af netværksforbindelse mislykkedes"
 
@@ -2222,27 +2228,27 @@ msgstr "Thunderbolt-godkendelsesfejl"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Kunne ikke godkende Thunderbolt-enheden: %s"
 
-#: js/ui/status/volume.js:203
+#: js/ui/status/volume.js:210
 msgid "Volume changed"
 msgstr "Lydstyrke ændret"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Unmute"
 msgstr "Slå lyd til"
 
-#: js/ui/status/volume.js:216
+#: js/ui/status/volume.js:223
 msgid "Mute"
 msgstr "Slå lyd fra"
 
-#: js/ui/status/volume.js:271
+#: js/ui/status/volume.js:278
 msgid "Volume"
 msgstr "Lydstyrke"
 
-#: js/ui/status/volume.js:287
+#: js/ui/status/volume.js:294
 msgid "Sound Output"
 msgstr "Lydoutput"
 
-#: js/ui/status/volume.js:359
+#: js/ui/status/volume.js:366
 msgid "Sound Input"
 msgstr "Lydinput"
 
@@ -2417,23 +2423,23 @@ msgstr "Flyt til højre skærm"
 msgid "Close"
 msgstr "Luk"
 
-#: src/main.c:513 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Udskriv version"
 
-#: src/main.c:519
+#: src/main.c:514
 msgid "Mode used by GDM for login screen"
 msgstr "Tilstand brugt af GDM til indlogningsskærm"
 
-#: src/main.c:525
+#: src/main.c:520
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Brug en specifik tilstand, f.eks. “gdm” til indlogningsskærm"
 
-#: src/main.c:531
+#: src/main.c:526
 msgid "List possible modes"
 msgstr "Vis mulige tilstande"
 
-#: src/main.c:537
+#: src/main.c:532
 msgid "Force animations to be enabled"
 msgstr "Tving animationer til at være aktiverede"
 
@@ -2459,12 +2465,12 @@ msgstr "Adgangskode må ikke være tom"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Godkendelsesdialogen blev afvist af brugeren"
 
-#: src/st/st-icon-theme.c:1882
+#: src/st/st-icon-theme.c:1883
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "Ikonet “%s” er ikke tilgængeligt i temaet %s"
 
-#: src/st/st-icon-theme.c:3471 src/st/st-icon-theme.c:3774
+#: src/st/st-icon-theme.c:3472 src/st/st-icon-theme.c:3775
 msgid "Failed to load icon"
 msgstr "Kunne ikke indlæse ikon"
 
