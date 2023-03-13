@@ -2076,7 +2076,7 @@ function _storeScreenshot(bytes, pixbuf) {
         const recentFile =
             GLib.build_filenamev([GLib.get_user_data_dir(), 'recently-used.xbel']);
         const uri = screenshotFile.get_uri();
-        const bookmarks = new GLib.BookmarksFile();
+        const bookmarks = new GLib.BookmarkFile();
         try {
             bookmarks.load_from_file(recentFile);
         } catch (e) {
