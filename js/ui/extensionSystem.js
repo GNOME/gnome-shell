@@ -432,7 +432,7 @@ var ExtensionManager = class extends Signals.EventEmitter {
         let { uuid, dir, type } = oldExtension;
 
         // Then unload the old extension.
-        this.unloadExtension(oldExtension);
+        await this.unloadExtension(oldExtension);
 
         // Now, recreate the extension and load it.
         let newExtension;
