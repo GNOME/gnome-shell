@@ -48,11 +48,11 @@ workflow:
 
 .gnome-shell.fedora:
   variables:
-    FDO_DISTRIBUTION_VERSION: 35
-    FDO_DISTRIBUTION_TAG: '2022-01-18.0'
+    FDO_DISTRIBUTION_VERSION: 38
+    FDO_DISTRIBUTION_TAG: '2023-04-20.0'
     FDO_DISTRIBUTION_PACKAGES:
       findutils
-      mozjs91-devel
+      mozjs102-devel
       nodejs
       npm
       meson
@@ -128,7 +128,7 @@ js_check:
       - .gnome-shell.fedora
   stage: review
   script:
-      - find js -name '*.js' $(printf "! -wholename %s " $(cat .jscheckignore)) -exec js91 -c '{}' ';' 2>&1 | tee $JS_LOG
+      - find js -name '*.js' $(printf "! -wholename %s " $(cat .jscheckignore)) -exec js102 -c '{}' ';' 2>&1 | tee $JS_LOG
       - (! grep -q . $JS_LOG)
   artifacts:
       paths:
@@ -179,7 +179,7 @@ potfile_js_check:
     - .gnome-shell.fedora
   stage: review
   script:
-    - js91 -m .gitlab-ci/check-potfiles.js
+    - js102 -m .gitlab-ci/check-potfiles.js
 
 build:
   stage: build
