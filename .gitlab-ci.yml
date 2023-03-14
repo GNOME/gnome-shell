@@ -46,7 +46,7 @@ workflow:
     - if: '$CI_COMMIT_BRANCH =~ /^gnome-[0-9-]+$/'
     - when: 'manual'
 
-.gnome-shell.fedora:35:
+.gnome-shell.fedora:
   variables:
     FDO_DISTRIBUTION_VERSION: 35
     FDO_DISTRIBUTION_TAG: '2022-01-18.0'
@@ -119,13 +119,13 @@ check-merge-request:
 build-fedora-container:
   extends:
     - .fdo.container-build@fedora@x86_64
-    - .gnome-shell.fedora:35
+    - .gnome-shell.fedora
   stage: prep
 
 js_check:
   extends:
       - .fdo.distribution-image@fedora
-      - .gnome-shell.fedora:35
+      - .gnome-shell.fedora
   stage: review
   script:
       - find js -name '*.js' $(printf "! -wholename %s " $(cat .jscheckignore)) -exec js91 -c '{}' ';' 2>&1 | tee $JS_LOG
@@ -138,7 +138,7 @@ js_check:
 eslint:
   extends:
     - .fdo.distribution-image@fedora
-    - .gnome-shell.fedora:35
+    - .gnome-shell.fedora
   stage: review
   script:
     - export NODE_PATH=$(npm root -g)
@@ -151,7 +151,7 @@ eslint:
 eslint_mr:
   extends:
     - .fdo.distribution-image@fedora
-    - .gnome-shell.fedora:35
+    - .gnome-shell.fedora
   stage: review
   script:
     - export NODE_PATH=$(npm root -g)
@@ -168,7 +168,7 @@ eslint_mr:
 potfile_c_check:
   extends:
     - .fdo.distribution-image@fedora
-    - .gnome-shell.fedora:35
+    - .gnome-shell.fedora
   stage: review
   script:
     - ./.gitlab-ci/check-potfiles.sh
@@ -176,7 +176,7 @@ potfile_c_check:
 potfile_js_check:
   extends:
     - .fdo.distribution-image@fedora
-    - .gnome-shell.fedora:35
+    - .gnome-shell.fedora
   stage: review
   script:
     - js91 -m .gitlab-ci/check-potfiles.js
