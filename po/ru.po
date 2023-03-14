@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-03 23:10+0000\n"
-"PO-Revision-Date: 2023-03-04 12:51+0300\n"
+"POT-Creation-Date: 2023-03-09 20:10+0000\n"
+"PO-Revision-Date: 2023-03-10 19:16+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -795,17 +795,17 @@ msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
 msgstr ""
-"Соединение с этой точкой доступа не безопасно. Пароли или другая информация, "
+"Подключение к этой точке доступа не безопасно. Пароли или другая информация, "
 "которую вы вводите на этой странице, могут просматриваться пользователями, "
 "находящимися рядом."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/inhibitShortcutsDialog.js:97
+#: js/ui/accessDialog.js:39 js/ui/inhibitShortcutsDialog.js:88
 msgid "Deny"
 msgstr "Отказать"
 
-#: js/ui/accessDialog.js:40 js/ui/inhibitShortcutsDialog.js:106
+#: js/ui/accessDialog.js:40 js/ui/inhibitShortcutsDialog.js:97
 msgid "Allow"
 msgstr "Разрешить"
 
@@ -1047,7 +1047,7 @@ msgstr ""
 #: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:221
 #: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
-msgstr "Подключиться"
+msgstr "Подключить"
 
 #: js/ui/components/networkAgent.js:218
 msgid "Key"
@@ -1425,22 +1425,22 @@ msgstr "Доступны обновления расширений"
 msgid "Extension updates are ready to be installed."
 msgstr "Обновления расширений готовы к установке."
 
-#: js/ui/inhibitShortcutsDialog.js:75
+#: js/ui/inhibitShortcutsDialog.js:66
 msgid "Allow inhibiting shortcuts"
 msgstr "Разрешить замену комбинации клавиш"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:78
+#: js/ui/inhibitShortcutsDialog.js:69
 #, javascript-format
 msgid "The app %s wants to inhibit shortcuts"
 msgstr "Приложение %s хочет запретить комбинации клавиш"
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:70
 msgid "An app wants to inhibit shortcuts"
 msgstr "Приложение хочет запретить комбинации клавиш"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:86
+#: js/ui/inhibitShortcutsDialog.js:77
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Можете восстановить комбинации клавиш, нажав %s."
@@ -1959,19 +1959,15 @@ msgctxt "title"
 msgid "Background Apps"
 msgstr "Фоновые приложения"
 
-#: js/ui/status/backgroundApps.js:150
-msgid "Apps known to be running without a window"
-msgstr "Известные приложения, работающие без окна"
-
-#: js/ui/status/backgroundApps.js:161
+#: js/ui/status/backgroundApps.js:153
 msgid "App Settings"
 msgstr "Настройки приложений"
 
-#: js/ui/status/backgroundApps.js:189
+#: js/ui/status/backgroundApps.js:181
 msgid "No Background Apps"
 msgstr "Нет фоновых приложений"
 
-#: js/ui/status/backgroundApps.js:191
+#: js/ui/status/backgroundApps.js:183
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2076,7 +2072,7 @@ msgstr "<неизвестно>"
 #: js/ui/status/network.js:363
 #, javascript-format
 msgid "Disconnect %s"
-msgstr "Отключить \"%s\""
+msgstr "Отключиться от \"%s\""
 
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/network.js:365
@@ -2116,24 +2112,24 @@ msgstr "Все сети"
 
 #: js/ui/status/network.js:1840
 msgid "Wired Connections"
-msgstr "Проводные соединения"
+msgstr "Проводные подключения"
 
 #: js/ui/status/network.js:1841
 msgid "Wired Settings"
-msgstr "Настройки соединения"
+msgstr "Настройки подключения"
 
 #: js/ui/status/network.js:1862
 msgid "Bluetooth Tethers"
-msgstr "Bluetooth соединения"
+msgstr "Bluetooth модемы"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1869
 msgid "Tether"
-msgstr "Связь"
+msgstr "Модем"
 
 #: js/ui/status/network.js:1882
 msgid "Mobile Connections"
-msgstr "Мобильные соединения"
+msgstr "Мобильные подключения"
 
 #: js/ui/status/network.js:1884
 msgid "Mobile Broadband Settings"
@@ -2507,12 +2503,12 @@ msgstr "Пароль не может быть пустым"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Аутентификация отклонена пользователем"
 
-#: src/st/st-icon-theme.c:1882
+#: src/st/st-icon-theme.c:1883
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "Значок \"%s\" не присутствует в теме \"%s\""
 
-#: src/st/st-icon-theme.c:3471 src/st/st-icon-theme.c:3774
+#: src/st/st-icon-theme.c:3472 src/st/st-icon-theme.c:3775
 msgid "Failed to load icon"
 msgstr "Не удалось загрузить значок"
 
@@ -3074,6 +3070,9 @@ msgstr[2] "%u входов"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Системные звуки"
+
+#~ msgid "Apps known to be running without a window"
+#~ msgstr "Известные приложения, работающие без окна"
 
 #~ msgid "Evolution Calendar"
 #~ msgstr "Календарь Evolution"
