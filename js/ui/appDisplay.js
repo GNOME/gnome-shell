@@ -1201,7 +1201,8 @@ var BaseAppView = GObject.registerClass({
     }
 
     vfunc_unmap() {
-        this._swipeTracker.enabled = false;
+        if (this._swipeTracker)
+            this._swipeTracker.enabled = false;
         this._disconnectDnD();
         super.vfunc_unmap();
     }
