@@ -235,7 +235,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         this._loginManager = LoginManager.getLoginManager();
         this._canRebootToBootLoaderMenu = false;
-        this._getCanRebootToBootLoaderMenu();
+        this._getCanRebootToBootLoaderMenu().catch(logError);
 
         this._userManager = AccountsService.UserManager.get_default();
         this._user = this._userManager.get_user(GLib.get_user_name());
@@ -449,7 +449,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                 action: () => {
                     let signalId = this.connect('closed', () => {
                         this.disconnect(signalId);
-                        this._confirm(signal);
+                        this._confirm(signal).catch(logError);
                     });
                     this.close(true);
                 },
@@ -501,7 +501,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
     _confirmRebootToBootLoaderMenu() {
         this._loginManager.setRebootToBootLoaderMenu();
-        this._confirm('ConfirmedReboot');
+        this._confirm('ConfirmedReboot').catch(logError);
     }
 
     async _confirm(signal) {
@@ -589,7 +589,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
             let dialogContent = DialogContent[this._type];
             let button = dialogContent.confirmButtons[dialogContent.confirmButtons.length - 1];
-            this._confirm(button.signal);
+            this._confirm(button.signal).catch(logError);
             this._timerId = 0;
 
             return GLib.SOURCE_REMOVE;
@@ -759,7 +759,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         }
 
         if (dialogContent.showOtherSessions)
-            this._loadSessions();
+            this._loadSessions().catch(logError);
 
         let updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
 
