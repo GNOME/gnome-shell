@@ -13,7 +13,7 @@ stages:
   - deploy
 
 default:
-  image: registry.gitlab.gnome.org/gnome/mutter/fedora/37:x86_64-2023-02-22.0
+  image: $MUTTER_CI_IMAGE
   # Cancel jobs if newer commits are pushed to the branch
   interruptible: true
   # Auto-retry jobs in case of infra failures
@@ -26,6 +26,7 @@ default:
       - 'api_failure'
 
 variables:
+  MUTTER_CI_IMAGE: registry.gitlab.gnome.org/gnome/mutter/fedora/37:x86_64-2023-02-22.0
   FDO_UPSTREAM_REPO: GNOME/gnome-shell
   BUNDLE: "extensions-git.flatpak"
   JS_LOG: "js-report.txt"
@@ -288,3 +289,13 @@ dist-tarball:
       - build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz
   rules:
     - if: '$CI_COMMIT_TAG'
+
+build-toolbox:
+  image: quay.io/freedesktop.org/ci-templates:container-build-base-2021-07-29.0
+  stage: deploy
+  needs: []
+  script:
+    - .gitlab-ci/build-toolbox-image.sh $MUTTER_CI_IMAGE
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH =~ /^gnome-[0-9-]+$/'
