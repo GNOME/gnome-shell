@@ -18,6 +18,7 @@ usage() {
 	  -v, --version=VERSION   Create container for stable version VERSION
 	                          (like 44) instead of the main branch
 	  -r, --replace           Replace an existing container
+	  -b, --builder           Set up GNOME Builder configuration
 	  --skip-mutter           Do not build mutter
 	  -h, --help              Display this help
 
@@ -33,12 +34,33 @@ toolbox_run() {
   toolbox run --container $NAME "$@"
 }
 
+create_builder_config() {
+  local container_id=$(podman container inspect --format='{{.Id}}' $NAME)
+  local top_srcdir=$(realpath $(dirname $0)/../..)
+  local wayland_display=builder-wayland-0
+
+  cat >> $top_srcdir/.buildconfig <<-EOF
+
+	[toolbox-$NAME]
+	name=$NAME Toolbox
+	runtime=podman:$container_id
+	prefix=/usr
+	run-command=dbus-run-session gnome-shell --nested --wayland-display=$wayland_display
+
+	[toolbox-$NAME.runtime_environment]
+	WAYLAND_DISPLAY=$wayland_display
+	G_MESSAGES_DEBUG=GNOME Shell
+	XDG_DATA_DIRS=${XDG_DATA_DIRS:-/usr/local/share:/usr/share}
+	EOF
+}
+
 TEMP=$(getopt \
   --name $(basename $0) \
-  --options 'n:v:rh' \
+  --options 'n:v:rbh' \
   --longoptions 'name:' \
   --longoptions 'version:' \
   --longoptions 'replace' \
+  --longoptions 'builder' \
   --longoptions 'skip-mutter' \
   --longoptions 'help' \
   -- "$@")
@@ -62,6 +84,11 @@ while true; do
 
     -r|--replace)
       REPLACE=1
+      shift
+    ;;
+
+    -b|--builder)
+      SETUP_BUILDER=1
       shift
     ;;
 
@@ -94,3 +121,5 @@ podman pull $TOOLBOX_IMAGE:$TAG
 
 toolbox create --image $TOOLBOX_IMAGE:$TAG $NAME
 [[ $SKIP_MUTTER ]] || toolbox_run update-mutter
+
+[[ $SETUP_BUILDER ]] && create_builder_config
