@@ -963,6 +963,7 @@ var AnimationsSettings = class {
         const shouldEnableAnimations = this._shouldEnableAnimations();
         if (this._animationsEnabled === shouldEnableAnimations)
             return;
+        this._animationsEnabled = shouldEnableAnimations;
 
         const settings = St.Settings.get();
         if (shouldEnableAnimations)
