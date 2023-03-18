@@ -14,13 +14,14 @@ Options:
                           default \"$NAME\"
   -v, --version           Create container for stable version VERSION
                           (like 44) instead of the main branch
+  --skip-mutter           Do not build mutter
   -h, --help              Display this help
 "
 
 TEMP=$(getopt \
   --name $(basename $0) \
   --options 'n:v:h' \
-  --longoptions 'name:,version:,help' -- "$@") || exit 1
+  --longoptions 'name:,version:,skip-mutter,help' -- "$@") || exit 1
 
 eval set -- "$TEMP"
 unset TEMP
@@ -36,6 +37,12 @@ while true; do
     '-v'|'--version')
       VERSION="$2"
       shift 2
+      continue
+    ;;
+
+    '--skip-mutter')
+      SKIP_MUTTER=1
+      shift
       continue
     ;;
 
@@ -56,4 +63,7 @@ TAG=${VERSION:-main}
 podman pull $TOOLBOX_IMAGE:$TAG
 
 toolbox create --image $TOOLBOX_IMAGE:$TAG $NAME
-toolbox run --container $NAME update-mutter
+
+if [ ! $SKIP_MUTTER ]; then
+  toolbox run --container $NAME update-mutter
+fi
