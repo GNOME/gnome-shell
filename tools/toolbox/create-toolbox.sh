@@ -18,6 +18,7 @@ usage() {
 	  -v, --version=VERSION   Create container for stable version VERSION
 	                          (like 44) instead of the main branch
 	  -r, --replace           Replace an existing container
+	  --skip-mutter           Do not build mutter
 	  -h, --help              Display this help
 
 	EOF
@@ -38,6 +39,7 @@ TEMP=$(getopt \
   --longoptions 'name:' \
   --longoptions 'version:' \
   --longoptions 'replace' \
+  --longoptions 'skip-mutter' \
   --longoptions 'help' \
   -- "$@")
 
@@ -60,6 +62,11 @@ while true; do
 
     -r|--replace)
       REPLACE=1
+      shift
+    ;;
+
+    --skip-mutter)
+      SKIP_MUTTER=1
       shift
     ;;
 
@@ -86,4 +93,4 @@ fi
 podman pull $TOOLBOX_IMAGE:$TAG
 
 toolbox create --image $TOOLBOX_IMAGE:$TAG $NAME
-toolbox_run update-mutter
+[[ $SKIP_MUTTER ]] || toolbox_run update-mutter
