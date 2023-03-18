@@ -118,7 +118,6 @@ class WorkspacesView extends WorkspacesViewBase {
 
         global.window_manager.connectObject('switch-workspace',
             this._activeWorkspaceChanged.bind(this), this);
-        this._updateVisibility();
     }
 
     _getFirstFitAllWorkspaceBox(box, spacing, vertical) {
@@ -465,6 +464,7 @@ class WorkspacesView extends WorkspacesViewBase {
         }
 
         this._updateWorkspacesState();
+        this._updateVisibility();
     }
 
     _activeWorkspaceChanged(_wm, _from, _to, _direction) {
