@@ -1,3 +1,14 @@
+44.0
+====
+ * Bump version
+
+Translators:
+  Piotr Drąg [pl], Martin [sl], Fran Dieguez [gl], Chao-Hsiung Liao [zh_TW],
+  Vasil Pupkin [be], Alexandre Franke [fr], Kukuh Syafaat [id],
+  Fabio Tomat [fur], Sabri Ünal [tr], Anders Jonsson [sv], Boyuan Yang [zh_CN],
+  Marek Černocký [cs], Alan Mortensen [da], Asier Sarasua Garmendia [eu],
+  Daniel [es], Aleksandr Melman [ru], MohammadSaleh Kamyab [fa]
+
 44.rc
 =====
 * Unmute to default volume when slider was at 0 [Florian; !2644]
