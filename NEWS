@@ -1,3 +1,17 @@
+43.4
+====
+* Plugged leak [Sebastian; !2652]
+* Misc. bug fixes and cleanups [Jonas, Sebastian; !2318, !2667]
+
+Contributors:
+  Jonas Dreßler, Sebastian Keller
+
+Translators:
+  Anders Jonsson [sv], Sabri Ünal [tr], Jiri Grönroos [fi],
+  Ekaterine Papava [ka], Hugo Carvalho [pt], Yuri Chornoivan [uk],
+  Kukuh Syafaat [id], Martin [sl], Tim Sabsch [de], Piotr Drąg [pl],
+  Aurimas Černius [lt], Мирослав Николић [sr], Balázs Úr [hu], Alan Paris [fr]
+
 43.3
 ====
 * Ensure quick settings toggles align with the pixel grid [Sebastian; !2577]
