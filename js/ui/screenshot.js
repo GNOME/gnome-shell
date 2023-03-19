@@ -917,6 +917,10 @@ class UIWindowSelectorWindow extends St.Button {
         this.insert_child_below(this._cursor, this._border);
     }
 
+    getCursorTexture() {
+        return this._cursor?.content;
+    }
+
     setCursorVisible(visible) {
         if (!this._cursor)
             return;
@@ -1812,7 +1816,7 @@ var ScreenshotUI = GObject.registerClass({
 
             const texture = content.get_texture();
 
-            let cursorTexture = this._cursor.content?.get_texture();
+            let cursorTexture = window.getCursorTexture()?.get_texture();
             if (!this._cursor.visible)
                 cursorTexture = null;
 
