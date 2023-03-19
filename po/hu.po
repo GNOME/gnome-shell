@@ -10,10 +10,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-02 23:22+0000\n"
-"PO-Revision-Date: 2023-03-03 01:27+0100\n"
+"POT-Creation-Date: 2023-03-19 16:14+0000\n"
+"PO-Revision-Date: 2023-03-19 23:21+0100\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
-"Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
+"Language-Team: Hungarian <openscope at fsf dot hu>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -779,15 +779,15 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/inhibitShortcutsDialog.js:97
+#: js/ui/accessDialog.js:39 js/ui/inhibitShortcutsDialog.js:88
 msgid "Deny"
 msgstr "Tiltás"
 
-#: js/ui/accessDialog.js:40 js/ui/inhibitShortcutsDialog.js:106
+#: js/ui/accessDialog.js:40 js/ui/inhibitShortcutsDialog.js:97
 msgid "Allow"
 msgstr "Engedélyezés"
 
-#: js/ui/appDisplay.js:1767
+#: js/ui/appDisplay.js:1768
 msgid "Unnamed Folder"
 msgstr "Névtelen mappa"
 
@@ -1400,22 +1400,22 @@ msgstr "Kiterjesztés-frissítések érhetők el"
 msgid "Extension updates are ready to be installed."
 msgstr "A kiterjesztés-frissítések telepítésre készek."
 
-#: js/ui/inhibitShortcutsDialog.js:75
+#: js/ui/inhibitShortcutsDialog.js:66
 msgid "Allow inhibiting shortcuts"
 msgstr "Gyorsbillentyűk megakadályozásának engedélyezése"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:78
+#: js/ui/inhibitShortcutsDialog.js:69
 #, javascript-format
 msgid "The app %s wants to inhibit shortcuts"
 msgstr "A(z) %s alkalmazás meg akarja gátolni a gyorsbillentyűk használatát"
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:70
 msgid "An app wants to inhibit shortcuts"
 msgstr "Egy alkalmazás meg akarja gátolni a gyorsbillentyűk használatát"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:86
+#: js/ui/inhibitShortcutsDialog.js:77
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "A(z) %s megnyomásával visszaállíthatja a gyorsbillentyűket."
@@ -1930,15 +1930,19 @@ msgctxt "title"
 msgid "Background Apps"
 msgstr "Háttéralkalmazások"
 
-#: js/ui/status/backgroundApps.js:153
+#: js/ui/status/backgroundApps.js:150
+msgid "Apps known to be running without a window"
+msgstr "Köztudottan ablak nélkül futó alkalmazások"
+
+#: js/ui/status/backgroundApps.js:161
 msgid "App Settings"
 msgstr "Alkalmazás beállításai"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:189
 msgid "No Background Apps"
 msgstr "Nincsenek háttéralkalmazások"
 
-#: js/ui/status/backgroundApps.js:183
+#: js/ui/status/backgroundApps.js:191
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -1953,20 +1957,20 @@ msgstr "Leválasztás"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:263 js/ui/status/network.js:1863
+#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1863
 msgid "Bluetooth Settings"
 msgstr "Bluetooth beállítások"
 
-#: js/ui/status/bluetooth.js:310
+#: js/ui/status/bluetooth.js:311
 msgid "No available or connected devices"
 msgstr "Nincsenek elérhető vagy csatlakoztatott eszközök"
 
-#: js/ui/status/bluetooth.js:311
+#: js/ui/status/bluetooth.js:312
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Kapcsolja be a Bluetooth-t az eszközökhöz való kapcsolódáshoz"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:365
+#: js/ui/status/bluetooth.js:366
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2424,24 +2428,24 @@ msgstr "Áthelyezés a jobb oldali kijelzőre"
 msgid "Close"
 msgstr "Bezárás"
 
-#: src/main.c:513 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Verzió kiírása"
 
-#: src/main.c:519
+#: src/main.c:514
 msgid "Mode used by GDM for login screen"
 msgstr "A GDM által a bejelentkezési képernyőhöz használt mód"
 
-#: src/main.c:525
+#: src/main.c:520
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Használjon egy adott módot, például a „gdm”-et a bejelentkező képernyőn"
 
-#: src/main.c:531
+#: src/main.c:526
 msgid "List possible modes"
 msgstr "Lehetséges módok listázása"
 
-#: src/main.c:537
+#: src/main.c:532
 msgid "Force animations to be enabled"
 msgstr "Animációk engedélyezésének kényszerítése"
 
@@ -2467,12 +2471,12 @@ msgstr "A jelszó nem lehet üres"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "A hitelesítési ablakot a felhasználó bezárta"
 
-#: src/st/st-icon-theme.c:1882
+#: src/st/st-icon-theme.c:1883
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "A(z) „%s” ikon nincs benne a(z) %s témában"
 
-#: src/st/st-icon-theme.c:3471 src/st/st-icon-theme.c:3774
+#: src/st/st-icon-theme.c:3472 src/st/st-icon-theme.c:3775
 msgid "Failed to load icon"
 msgstr "Nem sikerült betölteni az ikont"
 
