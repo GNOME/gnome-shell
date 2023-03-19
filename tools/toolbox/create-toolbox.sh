@@ -18,6 +18,7 @@ usage() {
 	  -v, --version=VERSION   Create container for stable version VERSION
 	                          (like 44) instead of the main branch
 	  -r, --replace           Replace an existing container
+	  -c, --classic           Set up support for GNOME Classic
 	  -b, --builder           Set up GNOME Builder configuration
 	  --locales=LOCALES       Enable support for additional locales LOCALES
 	  --skip-mutter           Do not build mutter
@@ -39,6 +40,7 @@ install_extra_packages() {
   local -a pkgs
 
   pkgs+=( ${LOCALES[@]/#/glibc-langpack-} )
+  [[ $SETUP_CLASSIC ]] && pkgs+=( gnome-menus )
 
   [[ ${#pkgs[@]} > 0 ]] &&
     toolbox_run su -c "dnf install -y ${pkgs[*]}"
@@ -65,12 +67,22 @@ create_builder_config() {
 	EOF
 }
 
+setup_classic() {
+  local branch=${VERSION:+gnome-}${VERSION:-main}
+
+  toolbox_run /usr/libexec/install-meson-project.sh \
+    --prepare "git submodule update --init" \
+    -Dclassic_mode=true \
+    https://gitlab.gnome.org/GNOME/gnome-shell-extensions.git $branch
+}
+
 TEMP=$(getopt \
   --name $(basename $0) \
-  --options 'n:v:rbh' \
+  --options 'n:v:rcbh' \
   --longoptions 'name:' \
   --longoptions 'version:' \
   --longoptions 'replace' \
+  --longoptions 'classic' \
   --longoptions 'builder' \
   --longoptions 'locales:' \
   --longoptions 'skip-mutter' \
@@ -97,6 +109,11 @@ while true; do
 
     -r|--replace)
       REPLACE=1
+      shift
+    ;;
+
+    -c|--classic)
+      SETUP_CLASSIC=1
       shift
     ;;
 
@@ -142,4 +159,5 @@ install_extra_packages
 
 [[ $SKIP_MUTTER ]] || toolbox_run update-mutter
 
+[[ $SETUP_CLASSIC ]] && setup_classic
 [[ $SETUP_BUILDER ]] && create_builder_config
