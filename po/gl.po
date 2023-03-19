@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-06 17:41+0000\n"
-"PO-Revision-Date: 2023-03-06 22:27+0100\n"
+"POT-Creation-Date: 2023-03-19 12:12+0000\n"
+"PO-Revision-Date: 2023-03-19 17:13+0100\n"
 "Last-Translator: Fran Dieguez <fran.dieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -1942,15 +1942,19 @@ msgctxt "title"
 msgid "Background Apps"
 msgstr "Aplicacións en segundo plano"
 
-#: js/ui/status/backgroundApps.js:153
+#: js/ui/status/backgroundApps.js:150
+msgid "Apps known to be running without a window"
+msgstr "Aplicacións coñecidas por executarse sen unha xanela"
+
+#: js/ui/status/backgroundApps.js:161
 msgid "App Settings"
 msgstr "Preferencias de aplicación"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:189
 msgid "No Background Apps"
 msgstr "Non hai aplicacións en segundo plano"
 
-#: js/ui/status/backgroundApps.js:183
+#: js/ui/status/backgroundApps.js:191
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
