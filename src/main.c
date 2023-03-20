@@ -90,7 +90,7 @@ shell_dbus_init (gboolean replace)
   session = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
 
   if (error) {
-    g_printerr ("Failed to connect to session bus: %s", error->message);
+    g_printerr ("Failed to connect to session bus: %s\n", error->message);
     exit (1);
   }
 
@@ -105,7 +105,7 @@ shell_dbus_init (gboolean replace)
 
   if (!bus)
     {
-      g_printerr ("Failed to get a session bus proxy: %s", error->message);
+      g_printerr ("Failed to get a session bus proxy: %s\n", error->message);
       exit (1);
     }
 
@@ -598,7 +598,7 @@ main (int argc, char **argv)
 
   if (!meta_context_configure (context, &argc, &argv, &error))
     {
-      g_printerr ("Failed to configure: %s", error->message);
+      g_printerr ("Failed to configure: %s\n", error->message);
       return EXIT_FAILURE;
     }
 
@@ -610,7 +610,7 @@ main (int argc, char **argv)
 
   if (!meta_context_setup (context, &error))
     {
-      g_printerr ("Failed to setup: %s", error->message);
+      g_printerr ("Failed to setup: %s\n", error->message);
       return EXIT_FAILURE;
     }
 
@@ -656,13 +656,13 @@ main (int argc, char **argv)
 
   if (!meta_context_start (context, &error))
     {
-      g_printerr ("GNOME Shell failed to start: %s", error->message);
+      g_printerr ("GNOME Shell failed to start: %s\n", error->message);
       return EXIT_FAILURE;
     }
 
   if (!meta_context_run_main_loop (context, &error))
     {
-      g_printerr ("GNOME Shell terminated with an error: %s", error->message);
+      g_printerr ("GNOME Shell terminated with an error: %s\n", error->message);
       ecode = EXIT_FAILURE;
     }
 
