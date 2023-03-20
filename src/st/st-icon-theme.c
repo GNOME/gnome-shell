@@ -478,8 +478,8 @@ st_icon_theme_init (StIconTheme *icon_theme)
   icon_theme->pixbuf_supports_svg = pixbuf_supports_svg ();
 
   settings = st_settings_get ();
-  g_signal_connect (settings, "notify::gtk-icon-theme",
-                    G_CALLBACK (theme_changed), icon_theme);
+  g_signal_connect_object (settings, "notify::gtk-icon-theme",
+                           G_CALLBACK (theme_changed), icon_theme, 0);
   update_current_theme (icon_theme);
 }
 
