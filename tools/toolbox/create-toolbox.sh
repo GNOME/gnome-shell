@@ -17,6 +17,7 @@ usage() {
 	                          default "$DEFAULT_NAME"
 	  -v, --version=VERSION   Create container for stable version VERSION
 	                          (like 44) instead of the main branch
+	  -r, --replace           Replace an existing container
 	  -h, --help              Display this help
 
 	EOF
@@ -33,9 +34,10 @@ toolbox_run() {
 
 TEMP=$(getopt \
   --name $(basename $0) \
-  --options 'n:v:h' \
+  --options 'n:v:rh' \
   --longoptions 'name:' \
   --longoptions 'version:' \
+  --longoptions 'replace' \
   --longoptions 'help' \
   -- "$@")
 
@@ -56,6 +58,11 @@ while true; do
       shift 2
     ;;
 
+    -r|--replace)
+      REPLACE=1
+      shift
+    ;;
+
     -h|--help)
       usage
       exit 0
@@ -71,7 +78,9 @@ done
 TAG=${VERSION:-main}
 
 if podman container exists $NAME; then
-  die "Container $NAME" already exists
+  [[ $REPLACE ]] ||
+    die "Container $NAME already exists and --replace was not specified"
+  toolbox rm --force $NAME
 fi
 
 podman pull $TOOLBOX_IMAGE:$TAG
