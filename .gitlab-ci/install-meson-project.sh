@@ -14,11 +14,28 @@ usage() {
 	EOF
 }
 
+TEMP=$(getopt \
+  --name=$(basename $0) \
+  --options=D \
+  -- "$@")
+
+eval set -- "$TEMP"
+unset TEMP
+
 MESON_OPTIONS=()
 
-while [[ $1 =~ ^-D ]]; do
-  MESON_OPTIONS+=( "$1" )
-  shift
+while true; do
+  case "$1" in
+    -D)
+      MESON_OPTIONS+=( -D$2 )
+      shift 2
+    ;;
+
+    --)
+      shift
+      break
+    ;;
+  esac
 done
 
 if [[ $# -lt 4 ]]; then
