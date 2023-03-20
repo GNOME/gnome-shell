@@ -11,12 +11,15 @@ usage() {
 	Options:
 	  -Dkey=val      Option to pass on to meson
 
+	  -h, --help     Display this help
+
 	EOF
 }
 
 TEMP=$(getopt \
   --name=$(basename $0) \
-  --options=D \
+  --options='D:h' \
+  --longoptions='help' \
   -- "$@")
 
 eval set -- "$TEMP"
@@ -29,6 +32,11 @@ while true; do
     -D)
       MESON_OPTIONS+=( -D$2 )
       shift 2
+    ;;
+
+    -h|--help)
+      usage
+      exit 0
     ;;
 
     --)
