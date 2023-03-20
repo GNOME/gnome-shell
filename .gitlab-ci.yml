@@ -68,11 +68,11 @@ workflow:
                  'C Development Tools and Libraries' &&
 
       ./.gitlab-ci/install-meson-project.sh \
+        --subdir subprojects/extensions-tool/ \
+        --prepare ./generate-translations.sh \
         -Dman=false \
         https://gitlab.gnome.org/GNOME/gnome-shell.git \
-        main \
-        subprojects/extensions-tool/ \
-        ./generate-translations.sh &&
+        main &&
 
       dnf clean all
 
