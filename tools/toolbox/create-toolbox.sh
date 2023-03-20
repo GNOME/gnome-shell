@@ -19,6 +19,7 @@ usage() {
 	                          (like 44) instead of the main branch
 	  -r, --replace           Replace an existing container
 	  -b, --builder           Set up GNOME Builder configuration
+	  --locales=LOCALES       Enable support for additional locales LOCALES
 	  --skip-mutter           Do not build mutter
 	  -h, --help              Display this help
 
@@ -32,6 +33,16 @@ die() {
 
 toolbox_run() {
   toolbox run --container $NAME "$@"
+}
+
+install_extra_packages() {
+  local -a pkgs
+
+  pkgs+=( ${LOCALES[@]/#/glibc-langpack-} )
+
+  [[ ${#pkgs[@]} > 0 ]] &&
+    toolbox_run su -c "dnf install -y ${pkgs[*]}"
+  true
 }
 
 create_builder_config() {
@@ -61,6 +72,7 @@ TEMP=$(getopt \
   --longoptions 'version:' \
   --longoptions 'replace' \
   --longoptions 'builder' \
+  --longoptions 'locales:' \
   --longoptions 'skip-mutter' \
   --longoptions 'help' \
   -- "$@")
@@ -69,6 +81,7 @@ eval set -- "$TEMP"
 unset TEMP
 
 NAME=$DEFAULT_NAME
+LOCALES=()
 
 while true; do
   case "$1" in
@@ -97,6 +110,11 @@ while true; do
       shift
     ;;
 
+    --locales)
+      IFS=" ," LOCALES+=($2)
+      shift 2
+    ;;
+
     -h|--help)
       usage
       exit 0
@@ -120,6 +138,8 @@ fi
 podman pull $TOOLBOX_IMAGE:$TAG
 
 toolbox create --image $TOOLBOX_IMAGE:$TAG $NAME
+install_extra_packages
+
 [[ $SKIP_MUTTER ]] || toolbox_run update-mutter
 
 [[ $SETUP_BUILDER ]] && create_builder_config
