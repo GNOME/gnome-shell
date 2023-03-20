@@ -2,12 +2,17 @@
 
 set -e
 
-if [[ $# -lt 4 ]]; then
-  echo Usage: $0 [options] [repo-url] [commit] [subdir]
-  echo  Options:
-  echo    -Dkey=val
-  exit 1
-fi
+usage() {
+  cat <<-EOF
+	Usage: $(basename $0) [OPTION…] REPO_URL COMMIT SUBDIR PREPARE
+
+	Check out and install a meson project
+
+	Options:
+	  -Dkey=val      Option to pass on to meson
+
+	EOF
+}
 
 MESON_OPTIONS=()
 
@@ -15,6 +20,11 @@ while [[ $1 =~ ^-D ]]; do
   MESON_OPTIONS+=( "$1" )
   shift
 done
+
+if [[ $# -lt 4 ]]; then
+  usage
+  exit 1
+fi
 
 REPO_URL="$1"
 COMMIT="$2"
