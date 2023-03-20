@@ -27,7 +27,7 @@ git clone --depth 1 "$REPO_URL" -b "$COMMIT"
 pushd "$REPO_DIR"
 pushd "$SUBDIR"
 sh -c "$PREPARE"
-meson --prefix=/usr _build "${MESON_OPTIONS[@]}"
+meson setup --prefix=/usr _build "${MESON_OPTIONS[@]}"
 meson install -C _build
 popd
 popd
