@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-06 17:41+0000\n"
+"POT-Creation-Date: 2023-03-19 22:23+0000\n"
 "PO-Revision-Date: 2023-03-10 21:02+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -783,7 +783,7 @@ msgstr "Neka"
 msgid "Allow"
 msgstr "Tillåt"
 
-#: js/ui/appDisplay.js:1767
+#: js/ui/appDisplay.js:1768
 msgid "Unnamed Folder"
 msgstr "Namnlös mapp"
 
@@ -1925,15 +1925,19 @@ msgctxt "title"
 msgid "Background Apps"
 msgstr "Bakgrundsprogram"
 
-#: js/ui/status/backgroundApps.js:153
+#: js/ui/status/backgroundApps.js:150
+msgid "Apps known to be running without a window"
+msgstr "Program kända att köras utan ett fönster"
+
+#: js/ui/status/backgroundApps.js:161
 msgid "App Settings"
 msgstr "Programinställningar"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:189
 msgid "No Background Apps"
 msgstr "Inga program i bakgrunden"
 
-#: js/ui/status/backgroundApps.js:183
+#: js/ui/status/backgroundApps.js:191
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -1948,20 +1952,20 @@ msgstr "Koppla från"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:263 js/ui/status/network.js:1863
+#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1863
 msgid "Bluetooth Settings"
 msgstr "Inställningar för Bluetooth"
 
-#: js/ui/status/bluetooth.js:310
+#: js/ui/status/bluetooth.js:311
 msgid "No available or connected devices"
 msgstr "Inga tillgängliga eller anslutna enheter"
 
-#: js/ui/status/bluetooth.js:311
+#: js/ui/status/bluetooth.js:312
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Slå på Bluetooth för att ansluta till enheter"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:365
+#: js/ui/status/bluetooth.js:366
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2809,56 +2813,56 @@ msgstr "Skriv ut detaljer för tillägg"
 msgid "List installed extensions"
 msgstr "Lista installerade tillägg"
 
-#: subprojects/extensions-tool/src/command-pack.c:450
+#: subprojects/extensions-tool/src/command-pack.c:454
 msgid "FILE"
 msgstr "FIL"
 
-#: subprojects/extensions-tool/src/command-pack.c:451
+#: subprojects/extensions-tool/src/command-pack.c:455
 msgid "Additional source to include in the bundle"
 msgstr "Ytterligare källa att inkludera i bunten"
 
-#: subprojects/extensions-tool/src/command-pack.c:454
+#: subprojects/extensions-tool/src/command-pack.c:458
 msgid "SCHEMA"
 msgstr "SCHEMA"
 
-#: subprojects/extensions-tool/src/command-pack.c:455
+#: subprojects/extensions-tool/src/command-pack.c:459
 msgid "A GSettings schema that should be included"
 msgstr "Ett GSettings-schema som ska inkluderas"
 
-#: subprojects/extensions-tool/src/command-pack.c:457
-#: subprojects/extensions-tool/src/command-pack.c:468
+#: subprojects/extensions-tool/src/command-pack.c:461
+#: subprojects/extensions-tool/src/command-pack.c:472
 msgid "DIRECTORY"
 msgstr "KATALOG"
 
-#: subprojects/extensions-tool/src/command-pack.c:459
+#: subprojects/extensions-tool/src/command-pack.c:463
 msgid "The directory where translations are found"
 msgstr "Katalogen där översättningar hittas"
 
-#: subprojects/extensions-tool/src/command-pack.c:461
+#: subprojects/extensions-tool/src/command-pack.c:465
 msgid "DOMAIN"
 msgstr "DOMÄN"
 
-#: subprojects/extensions-tool/src/command-pack.c:463
+#: subprojects/extensions-tool/src/command-pack.c:467
 msgid "The gettext domain to use for translations"
 msgstr "Gettext-domänen att använda för översättningar"
 
-#: subprojects/extensions-tool/src/command-pack.c:466
+#: subprojects/extensions-tool/src/command-pack.c:470
 msgid "Overwrite an existing pack"
 msgstr "Skriv över ett befintligt paket"
 
-#: subprojects/extensions-tool/src/command-pack.c:470
+#: subprojects/extensions-tool/src/command-pack.c:474
 msgid "The directory where the pack should be created"
 msgstr "Katalogen där paketet ska skapas"
 
-#: subprojects/extensions-tool/src/command-pack.c:472
+#: subprojects/extensions-tool/src/command-pack.c:476
 msgid "SOURCE_DIRECTORY"
 msgstr "KÄLLKATALOG"
 
-#: subprojects/extensions-tool/src/command-pack.c:481
+#: subprojects/extensions-tool/src/command-pack.c:485
 msgid "Create an extension bundle"
 msgstr "Skapa en tilläggsbunt"
 
-#: subprojects/extensions-tool/src/command-pack.c:501
+#: subprojects/extensions-tool/src/command-pack.c:505
 msgid "More than one source directory specified"
 msgstr "Mer än en källkatalog angiven"
 
@@ -3030,9 +3034,6 @@ msgstr[1] "%u ingångar"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Systemljud"
-
-#~ msgid "Apps known to be running without a window"
-#~ msgstr "Program kända att köras utan ett fönster"
 
 #~ msgid "Evolution Calendar"
 #~ msgstr "Evolution-kalender"
