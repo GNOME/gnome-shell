@@ -787,7 +787,7 @@ class UIWindowSelectorWindow extends St.Button {
 
         this._cursor = null;
         this._cursorPoint = { x: 0, y: 0 };
-        this._shouldShowCursor = actor.get_children().some(c => c.has_pointer);
+        this._shouldShowCursor = window.has_pointer && window.has_pointer();
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
