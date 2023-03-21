@@ -45,18 +45,22 @@ G_DECLARE_FINAL_TYPE (StThemeContext, st_theme_context,
 StThemeContext *st_theme_context_new           (void);
 StThemeContext *st_theme_context_get_for_stage (ClutterStage *stage);
 
-void                        st_theme_context_set_theme      (StThemeContext             *context,
-                                                             StTheme                    *theme);
-StTheme *                   st_theme_context_get_theme      (StThemeContext             *context);
+void                        st_theme_context_set_theme        (StThemeContext             *context,
+                                                               StTheme                    *theme);
+StTheme *                   st_theme_context_get_theme        (StThemeContext             *context);
 
-void                        st_theme_context_set_font       (StThemeContext             *context,
-                                                             const PangoFontDescription *font);
-const PangoFontDescription *st_theme_context_get_font       (StThemeContext             *context);
+void                        st_theme_context_set_font         (StThemeContext             *context,
+                                                               const PangoFontDescription *font);
+const PangoFontDescription *st_theme_context_get_font         (StThemeContext             *context);
 
-StThemeNode *               st_theme_context_get_root_node  (StThemeContext             *context);
+void                        st_theme_context_get_accent_color (StThemeContext             *context,
+                                                               CoglColor                  *color,
+                                                               CoglColor                  *fg_color);
 
-StThemeNode *               st_theme_context_intern_node    (StThemeContext             *context,
-                                                             StThemeNode                *node);
+StThemeNode *               st_theme_context_get_root_node    (StThemeContext             *context);
+
+StThemeNode *               st_theme_context_intern_node      (StThemeContext             *context,
+                                                               StThemeNode                *node);
 
 int st_theme_context_get_scale_factor (StThemeContext *context);
 
