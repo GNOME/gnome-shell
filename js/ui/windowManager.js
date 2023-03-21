@@ -812,6 +812,13 @@ var WindowManager = class {
             Shell.ActionMode.POPUP,
             this._toggleCalendar.bind(this));
 
+        this.addKeybinding('toggle-quick-settings',
+            new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW |
+            Shell.ActionMode.POPUP,
+            this._toggleQuickSettings.bind(this));
+
         this.addKeybinding('switch-to-application-1',
             new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
@@ -1721,6 +1728,10 @@ var WindowManager = class {
 
     _toggleCalendar() {
         Main.panel.toggleCalendar();
+    }
+
+    _toggleQuickSettings() {
+        Main.panel.toggleQuickSettings();
     }
 
     _showWorkspaceSwitcher(display, window, binding) {

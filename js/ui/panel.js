@@ -640,6 +640,10 @@ class Panel extends St.Widget {
         this._toggleMenu(this.statusArea.dateMenu);
     }
 
+    toggleQuickSettings() {
+        this._toggleMenu(this.statusArea.quickSettings);
+    }
+
     closeCalendar() {
         this._closeMenu(this.statusArea.dateMenu);
     }

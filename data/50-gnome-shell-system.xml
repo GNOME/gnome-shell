@@ -8,6 +8,9 @@
 	<KeyListEntry name="toggle-message-tray"
                       description="Show the notification list"/>
 
+	<KeyListEntry name="toggle-quick-settings"
+                      description="Open the quick settings menu"/>
+
 	<KeyListEntry name="focus-active-notification"
                       description="Focus the active notification"/>
 

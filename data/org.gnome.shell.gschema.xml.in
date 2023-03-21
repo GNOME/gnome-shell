@@ -183,6 +183,13 @@
         Keybinding to toggle the visibility of the notification list.
       </description>
     </key>
+    <key name="toggle-quick-settings" type="as">
+      <default>["&lt;Super&gt;s"]</default>
+      <summary>Keybinding to toggle the quick settings menu</summary>
+      <description>
+        Keybinding to toggle the quick settings menu.
+      </description>
+    </key>
     <key name="focus-active-notification" type="as">
       <default>["&lt;Super&gt;n"]</default>
       <summary>Keybinding to focus the active notification</summary>
