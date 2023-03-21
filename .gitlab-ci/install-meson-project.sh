@@ -31,14 +31,13 @@ COMMIT="$2"
 SUBDIR="$3"
 PREPARE="$4"
 
-REPO_DIR="$(basename ${REPO_URL%.git})"
+CHECKOUT_DIR=$(mktemp --directory)
+trap "rm -rf $CHECKOUT_DIR" EXIT
 
-git clone --depth 1 "$REPO_URL" -b "$COMMIT"
-pushd "$REPO_DIR"
-pushd "$SUBDIR"
+git clone --depth 1 "$REPO_URL" -b "$COMMIT" "$CHECKOUT_DIR"
+
+pushd "$CHECKOUT_DIR/$SUBDIR"
 sh -c "$PREPARE"
 meson setup --prefix=/usr _build "${MESON_OPTIONS[@]}"
 meson install -C _build
 popd
-popd
-rm -rf "$REPO_DIR"
