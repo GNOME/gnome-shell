@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-08 16:48+0000\n"
-"PO-Revision-Date: 2023-03-16 10:10+0330\n"
-"Last-Translator: MohammadSaleh Kamyab <mskf1383@envs.net>\n"
+"POT-Creation-Date: 2023-03-19 22:23+0000\n"
+"PO-Revision-Date: 2023-03-21 13:40+0330\n"
+"Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
@@ -766,7 +766,7 @@ msgstr "رد کردن"
 msgid "Allow"
 msgstr "اجازه دادن"
 
-#: js/ui/appDisplay.js:1767
+#: js/ui/appDisplay.js:1768
 msgid "Unnamed Folder"
 msgstr "پوشهٔ بی‌نام"
 
@@ -1896,15 +1896,19 @@ msgctxt "title"
 msgid "Background Apps"
 msgstr "کاره‌های پس‌زمینه"
 
-#: js/ui/status/backgroundApps.js:153
+#: js/ui/status/backgroundApps.js:150
+msgid "Apps known to be running without a window"
+msgstr "کاره‌های شناخته برای اجرای بدون پنجره"
+
+#: js/ui/status/backgroundApps.js:161
 msgid "App Settings"
 msgstr "تنظیمات کاره"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:189
 msgid "No Background Apps"
 msgstr "بدون کارهٔ پس‌زمینه"
 
-#: js/ui/status/backgroundApps.js:183
+#: js/ui/status/backgroundApps.js:191
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -1919,20 +1923,20 @@ msgstr "قطع ارتباط"
 msgid "Bluetooth"
 msgstr "بلوتوث"
 
-#: js/ui/status/bluetooth.js:263 js/ui/status/network.js:1863
+#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1863
 msgid "Bluetooth Settings"
 msgstr "تنظیمات بلوتوث"
 
-#: js/ui/status/bluetooth.js:310
+#: js/ui/status/bluetooth.js:311
 msgid "No available or connected devices"
 msgstr "بدون افزارهٔ وصل شده یا موجود"
 
-#: js/ui/status/bluetooth.js:311
+#: js/ui/status/bluetooth.js:312
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "برای وصل شدن به افزاره‌ها بلوتوث را روشن کنید"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:365
+#: js/ui/status/bluetooth.js:366
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2766,56 +2770,56 @@ msgstr "چاپ جزییات افزونه"
 msgid "List installed extensions"
 msgstr "فهرست افزونه‌های نصب‌شده"
 
-#: subprojects/extensions-tool/src/command-pack.c:450
+#: subprojects/extensions-tool/src/command-pack.c:454
 msgid "FILE"
 msgstr "FILE"
 
-#: subprojects/extensions-tool/src/command-pack.c:451
+#: subprojects/extensions-tool/src/command-pack.c:455
 msgid "Additional source to include in the bundle"
 msgstr "منبع اضافی برای قرار گرفتن در دسته"
 
-#: subprojects/extensions-tool/src/command-pack.c:454
+#: subprojects/extensions-tool/src/command-pack.c:458
 msgid "SCHEMA"
 msgstr "SCHEMA"
 
-#: subprojects/extensions-tool/src/command-pack.c:455
+#: subprojects/extensions-tool/src/command-pack.c:459
 msgid "A GSettings schema that should be included"
 msgstr "یک شمای Gsettings که باید شامل شود"
 
-#: subprojects/extensions-tool/src/command-pack.c:457
-#: subprojects/extensions-tool/src/command-pack.c:468
+#: subprojects/extensions-tool/src/command-pack.c:461
+#: subprojects/extensions-tool/src/command-pack.c:472
 msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
-#: subprojects/extensions-tool/src/command-pack.c:459
+#: subprojects/extensions-tool/src/command-pack.c:463
 msgid "The directory where translations are found"
 msgstr "شاخه‌ای که ترجمه‌ها پیدا می‌شوند"
 
-#: subprojects/extensions-tool/src/command-pack.c:461
+#: subprojects/extensions-tool/src/command-pack.c:465
 msgid "DOMAIN"
 msgstr "DOMAIN"
 
-#: subprojects/extensions-tool/src/command-pack.c:463
+#: subprojects/extensions-tool/src/command-pack.c:467
 msgid "The gettext domain to use for translations"
 msgstr "دامنهٔ gettext برای استفاده توسّط ترجمه‌ها"
 
-#: subprojects/extensions-tool/src/command-pack.c:466
+#: subprojects/extensions-tool/src/command-pack.c:470
 msgid "Overwrite an existing pack"
 msgstr "بازنویسی روی یک بستهٔ موجود"
 
-#: subprojects/extensions-tool/src/command-pack.c:470
+#: subprojects/extensions-tool/src/command-pack.c:474
 msgid "The directory where the pack should be created"
 msgstr "شاخه‌ای که بسته باید ایجاد شود"
 
-#: subprojects/extensions-tool/src/command-pack.c:472
+#: subprojects/extensions-tool/src/command-pack.c:476
 msgid "SOURCE_DIRECTORY"
 msgstr "SOURCE_DIRECTORY"
 
-#: subprojects/extensions-tool/src/command-pack.c:481
+#: subprojects/extensions-tool/src/command-pack.c:485
 msgid "Create an extension bundle"
 msgstr "ایجاد یک دستهٔ افزونه"
 
-#: subprojects/extensions-tool/src/command-pack.c:501
+#: subprojects/extensions-tool/src/command-pack.c:505
 msgid "More than one source directory specified"
 msgstr "بیش از یک شاخهٔ منبع مشخّص شده است"
 
