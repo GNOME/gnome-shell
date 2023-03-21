@@ -502,6 +502,20 @@ term_is_transparent (CRTerm *term)
           strcmp (term->content.str->stryng->str, "transparent") == 0);
 }
 
+static gboolean
+term_is_accent_color (CRTerm *term)
+{
+  return (term->type == TERM_IDENT &&
+          strcmp (term->content.str->stryng->str, "-st-accent-color") == 0);
+}
+
+static gboolean
+term_is_accent_fg_color (CRTerm *term)
+{
+  return (term->type == TERM_IDENT &&
+          strcmp (term->content.str->stryng->str, "-st-accent-fg-color") == 0);
+}
+
 static int
 color_component_from_double (double component)
 {
@@ -594,6 +608,180 @@ get_color_from_rgba_term (CRTerm    *term,
   return VALUE_FOUND;
 }
 
+static GetFromTermResult get_color_from_term (StThemeNode *node,
+                                              CRTerm      *term,
+                                              CoglColor   *color);
+
+static GetFromTermResult
+get_color_from_transparentize_term (StThemeNode *node,
+                                    CRTerm      *term,
+                                    CoglColor   *color)
+{
+  CRTerm *color_arg = term->ext_content.func_param;
+  CRTerm *amount_arg = color_arg->next;
+  CoglColor base_color;
+  CRNum *amount_num;
+  double amount;
+
+  if (!color_arg || !amount_arg)
+    return VALUE_NOT_FOUND;
+
+  if (get_color_from_term (node, color_arg, &base_color) != VALUE_FOUND)
+    return VALUE_NOT_FOUND;
+
+  if (amount_arg->type != TERM_NUMBER)
+    return VALUE_NOT_FOUND;
+
+  amount_num = amount_arg->content.num;
+
+  if (amount_num->type == NUM_PERCENTAGE)
+    amount = amount_num->val / 100;
+  else if (amount_num->type == NUM_GENERIC)
+    amount = amount_num->val;
+  else
+    return VALUE_NOT_FOUND;
+
+  color->red = base_color.red;
+  color->green = base_color.green;
+  color->blue = base_color.blue;
+  color->alpha = CLAMP (base_color.alpha - amount * 255, 0, 255);
+
+  return VALUE_FOUND;
+}
+
+#define LERP(a, b, t) (a + (b - a) * t)
+
+static GetFromTermResult
+get_color_from_mix_term (StThemeNode *node,
+                         CRTerm      *term,
+                         CoglColor   *color)
+{
+  CRTerm *color1_arg = term->ext_content.func_param;
+  CRTerm *color2_arg = color1_arg->next;
+  CRTerm *factor_arg = color2_arg->next;
+  CoglColor color1, color2;
+  CRNum *factor_num;
+  double factor;
+
+  if (!color1_arg || !color2_arg || !factor_arg)
+    return VALUE_NOT_FOUND;
+
+  if (get_color_from_term (node, color1_arg, &color1) != VALUE_FOUND ||
+      get_color_from_term (node, color2_arg, &color2) != VALUE_FOUND)
+    return VALUE_NOT_FOUND;
+
+  if (factor_arg->type != TERM_NUMBER)
+    return VALUE_NOT_FOUND;
+
+  factor_num = factor_arg->content.num;
+
+  if (factor_num->type == NUM_PERCENTAGE)
+    factor = factor_num->val / 100;
+  else if (factor_num->type == NUM_GENERIC)
+    factor = factor_num->val;
+  else
+    return VALUE_NOT_FOUND;
+
+  /* SCSS mix() inverts the factor for some reason */
+  factor = 1 - factor;
+
+  color->alpha = CLAMP (LERP (color1.alpha, color2.alpha, factor), 0, 255);
+
+  if (color->alpha == 0)
+    {
+      color->red = color->green = color->blue = 0;
+    }
+  else
+    {
+      color->red   = CLAMP (LERP (color1.red   * color1.alpha, color2.red   * color2.alpha, factor) / color->alpha, 0, 255);
+      color->green = CLAMP (LERP (color1.green * color1.alpha, color2.green * color2.alpha, factor) / color->alpha, 0, 255);
+      color->blue  = CLAMP (LERP (color1.blue  * color1.alpha, color2.blue  * color2.alpha, factor) / color->alpha, 0, 255);
+    }
+
+  return VALUE_FOUND;
+}
+
+static GetFromTermResult
+get_color_from_lighten_term (StThemeNode *node,
+                             CRTerm      *term,
+                             CoglColor   *color)
+{
+  CRTerm *color_arg = term->ext_content.func_param;
+  CRTerm *factor_arg = color_arg->next;
+  CoglColor base_color;
+  CRNum *factor_num;
+  double factor;
+  float hue, luminance, saturation;
+
+  if (!color_arg || !factor_arg)
+    return VALUE_NOT_FOUND;
+
+  if (get_color_from_term (node, color_arg, &base_color) != VALUE_FOUND)
+    return VALUE_NOT_FOUND;
+
+  if (factor_arg->type != TERM_NUMBER)
+    return VALUE_NOT_FOUND;
+
+  factor_num = factor_arg->content.num;
+
+  if (factor_num->type == NUM_PERCENTAGE)
+    factor = factor_num->val / 100;
+  else if (factor_num->type == NUM_GENERIC)
+    factor = factor_num->val;
+  else
+    return VALUE_NOT_FOUND;
+
+  cogl_color_to_hsl (&base_color, &hue, &saturation, &luminance);
+
+  luminance = CLAMP (luminance + factor, 0, 1);
+
+  cogl_color_init_from_hsl (color, hue, saturation, luminance);
+  color->alpha = base_color.alpha;
+
+  return VALUE_FOUND;
+}
+
+static GetFromTermResult
+get_color_from_darken_term (StThemeNode *node,
+                            CRTerm      *term,
+                            CoglColor   *color)
+{
+  CRTerm *color_arg = term->ext_content.func_param;
+  CRTerm *factor_arg = color_arg->next;
+  CoglColor base_color;
+  CRNum *factor_num;
+  double factor;
+  float hue, luminance, saturation;
+
+  if (!color_arg || !factor_arg)
+    return VALUE_NOT_FOUND;
+
+  if (get_color_from_term (node, color_arg, &base_color) != VALUE_FOUND)
+    return VALUE_NOT_FOUND;
+
+  if (factor_arg->type != TERM_NUMBER)
+    return VALUE_NOT_FOUND;
+
+  factor_num = factor_arg->content.num;
+
+  if (factor_num->type == NUM_PERCENTAGE)
+    factor = factor_num->val / 100;
+  else if (factor_num->type == NUM_GENERIC)
+    factor = factor_num->val;
+  else
+    return VALUE_NOT_FOUND;
+
+  cogl_color_to_hsl (&base_color, &hue, &saturation, &luminance);
+  color->alpha = base_color.alpha;
+
+  luminance = CLAMP (luminance - factor, 0, 1);
+
+  cogl_color_init_from_hsl (color, hue, saturation, luminance);
+  color->alpha = base_color.alpha;
+
+  return VALUE_FOUND;
+}
+
 static GetFromTermResult
 get_color_from_term (StThemeNode  *node,
                      CRTerm       *term,
@@ -614,6 +802,18 @@ get_color_from_term (StThemeNode  *node,
       *color = TRANSPARENT_COLOR;
       return VALUE_FOUND;
     }
+  /* St-specific extension: -st-accent-color */
+  else if (term_is_accent_color (term))
+    {
+      st_theme_context_get_accent_color (node->context, color, NULL);
+      return VALUE_FOUND;
+    }
+  /* St-specific extension: -st-accent-fg-color */
+  else if (term_is_accent_fg_color (term))
+    {
+      st_theme_context_get_accent_color (node->context, NULL, color);
+      return VALUE_FOUND;
+    }
   /* rgba () colors - a CSS3 addition, are not supported by libcroco,
    * but they are parsed as a "function", so we can emulate the
    * functionality.
@@ -625,6 +825,42 @@ get_color_from_term (StThemeNode  *node,
            strcmp (term->content.str->stryng->str, "rgba") == 0)
     {
       return get_color_from_rgba_term (term, color);
+    }
+  /* St-specific extension: st-transparentize() */
+  else if (term->type == TERM_FUNCTION &&
+           term->content.str &&
+           term->content.str->stryng &&
+           term->content.str->stryng->str &&
+           strcmp (term->content.str->stryng->str, "st-transparentize") == 0)
+    {
+      return get_color_from_transparentize_term (node, term, color);
+    }
+  /* St-specific extension: st-mix() */
+  else if (term->type == TERM_FUNCTION &&
+           term->content.str &&
+           term->content.str->stryng &&
+           term->content.str->stryng->str &&
+           strcmp (term->content.str->stryng->str, "st-mix") == 0)
+    {
+      return get_color_from_mix_term (node, term, color);
+    }
+  /* St-specific extension: st-lighten() */
+  else if (term->type == TERM_FUNCTION &&
+           term->content.str &&
+           term->content.str->stryng &&
+           term->content.str->stryng->str &&
+           strcmp (term->content.str->stryng->str, "st-lighten") == 0)
+    {
+      return get_color_from_lighten_term (node, term, color);
+    }
+  /* St-specific extension: st-darken() */
+  else if (term->type == TERM_FUNCTION &&
+           term->content.str &&
+           term->content.str->stryng &&
+           term->content.str->stryng->str &&
+           strcmp (term->content.str->stryng->str, "st-darken") == 0)
+    {
+      return get_color_from_darken_term (node, term, color);
     }
 
   status = cr_rgb_set_from_term (&rgb, term);
