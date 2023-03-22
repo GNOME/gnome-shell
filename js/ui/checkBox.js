@@ -23,6 +23,11 @@ class CheckBox extends St.Button {
         this._box = new St.Bin({y_align: Clutter.ActorAlign.START});
         container.add_child(this._box);
 
+        this._check = new St.Icon({
+            icon_name: 'check-symbolic',
+        });
+        this._box.set_child(this._check);
+
         this._label = new St.Label({y_align: Clutter.ActorAlign.CENTER});
         this._label.clutter_text.set_line_wrap(true);
         this._label.clutter_text.set_ellipsize(Pango.EllipsizeMode.NONE);
