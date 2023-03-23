@@ -91,6 +91,25 @@ static void shell_app_system_class_init(ShellAppSystemClass *klass)
 		  G_TYPE_NONE, 0);
 }
 
+/*
+ * Check whether @wm_class matches @id exactly when ignoring the .desktop suffix
+ */
+static gboolean
+startup_wm_class_is_exact_match (const char *id,
+                                 const char *wm_class)
+{
+  size_t wm_class_len;
+
+  if (!g_str_has_prefix (id, wm_class))
+    return FALSE;
+
+  wm_class_len = strlen (wm_class);
+  if (id[wm_class_len] == '\0')
+    return TRUE;
+
+  return g_str_equal (id + wm_class_len, ".desktop");
+}
+
 static void
 scan_startup_wm_class_to_id (ShellAppSystem *self)
 {
@@ -116,7 +135,8 @@ scan_startup_wm_class_to_id (ShellAppSystem *self)
       /* In case multiple .desktop files set the same StartupWMClass, prefer
        * the one where ID and StartupWMClass match */
       old_id = g_hash_table_lookup (priv->startup_wm_class_to_id, startup_wm_class);
-      if (old_id == NULL || strcmp (id, startup_wm_class) == 0)
+      if (old_id == NULL ||
+          startup_wm_class_is_exact_match (id, startup_wm_class))
         g_hash_table_insert (priv->startup_wm_class_to_id,
                              g_strdup (startup_wm_class), g_strdup (id));
     }
