@@ -1274,6 +1274,7 @@ const NMVpnConnectionItem = GObject.registerClass({
         this._label.x_expand = true;
         this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         this._icon.hide();
+        this.label_actor = this._label;
 
         this._switch = new PopupMenu.Switch(this.is_active);
         this.add_child(this._switch);
