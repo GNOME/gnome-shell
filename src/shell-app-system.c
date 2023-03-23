@@ -114,17 +114,20 @@ static void
 scan_startup_wm_class_to_id (ShellAppSystem *self)
 {
   ShellAppSystemPrivate *priv = self->priv;
+  g_autoptr(GPtrArray) no_show_ids = NULL;
   const GList *l;
   GList *all;
 
   g_hash_table_remove_all (priv->startup_wm_class_to_id);
 
   all = shell_app_cache_get_all (shell_app_cache_get_default ());
+  no_show_ids = g_ptr_array_new ();
 
   for (l = all; l != NULL; l = l->next)
     {
       GAppInfo *info = l->data;
       const char *startup_wm_class, *id, *old_id;
+      gboolean should_show;
 
       id = g_app_info_get_id (info);
       startup_wm_class = g_desktop_app_info_get_startup_wm_class (G_DESKTOP_APP_INFO (info));
@@ -132,11 +135,23 @@ scan_startup_wm_class_to_id (ShellAppSystem *self)
       if (startup_wm_class == NULL)
         continue;
 
+      should_show = g_app_info_should_show (info);
+      if (!should_show)
+        g_ptr_array_add (no_show_ids, (char *) id);
+
       /* In case multiple .desktop files set the same StartupWMClass, prefer
        * the one where ID and StartupWMClass match */
       old_id = g_hash_table_lookup (priv->startup_wm_class_to_id, startup_wm_class);
-      if (old_id == NULL ||
-          startup_wm_class_is_exact_match (id, startup_wm_class))
+
+      if (old_id && startup_wm_class_is_exact_match (id, startup_wm_class))
+        old_id = NULL;
+
+      /* Give priority to the desktop files that should be shown */
+      if (old_id && should_show &&
+          g_ptr_array_find_with_equal_func (no_show_ids, old_id, g_str_equal, NULL))
+        old_id = NULL;
+
+      if (!old_id)
         g_hash_table_insert (priv->startup_wm_class_to_id,
                              g_strdup (startup_wm_class), g_strdup (id));
     }
