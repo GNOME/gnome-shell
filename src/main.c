@@ -1,5 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+#define _GNU_SOURCE
+
 #include "config.h"
 
 #if defined (HAVE_MALLINFO) || defined (HAVE_MALLINFO2)
@@ -20,6 +22,7 @@
 #include <link.h>
 
 #ifdef HAVE_EXE_INTROSPECTION
+#include <dlfcn.h>
 #include <elf.h>
 #endif
 
@@ -140,6 +143,8 @@ maybe_add_rpath_introspection_paths (void)
   g_auto (GStrv) paths = NULL;
   g_autofree char *exe_dir = NULL;
   GStrv str;
+  Dl_info dl_info;
+  struct link_map *link_map = NULL;
 
   for (dyn = _DYNAMIC; dyn->d_tag != DT_NULL; dyn++)
     {
@@ -153,6 +158,21 @@ maybe_add_rpath_introspection_paths (void)
 
   if ((!rpath && !runpath) || !strtab)
     return;
+
+  if (dladdr1 (_DYNAMIC, &dl_info, (void **) &link_map, RTLD_DL_LINKMAP))
+    {
+      /* Sanity check */
+      g_return_if_fail ((void *) _DYNAMIC == (void *) link_map->l_ld);
+
+      /* strtab should be at an offset above our load address. If it's not
+       * then this is a special architecture (riscv, mips) that has a
+       * readonly _DYNAMIC section that's not relocated. So in that case
+       * strtab is currently an offset rather than an address. Let's make it
+       * an address...
+       */
+      if (strtab < (const char *) link_map->l_addr)
+        strtab += link_map->l_addr;
+    }
 
   if (rpath)
     paths = g_strsplit (strtab + rpath->d_un.d_val, ":", -1);
