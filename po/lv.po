@@ -5,14 +5,14 @@
 # Rudolfs <rudolfs.mazurs@gmail.com>, 2011.
 # Rūdofls Mazurs <rudolfs.mazurs@gmail.com>, 2011, 2012, 2013, 2014.
 # Pēteris Krišjānis <pecisk@gmail.com>, 2011.
-# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022.
+# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
 # Vika Leimane <vika.leimane@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-12 03:40+0000\n"
-"PO-Revision-Date: 2022-09-03 12:21+0300\n"
+"POT-Creation-Date: 2023-03-19 22:23+0000\n"
+"PO-Revision-Date: 2023-03-24 22:13+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -21,70 +21,79 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 :"
 " 2);\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
 msgstr "Palaidēji"
 
 #: data/50-gnome-shell-launchers.xml:10
-msgid "Activate favorite application 1"
+#| msgid "Activate favorite application 1"
+msgid "Activate favorite app 1"
 msgstr "Aktivizēt iecienīto lietotni 1"
 
 #: data/50-gnome-shell-launchers.xml:14
-msgid "Activate favorite application 2"
+#| msgid "Activate favorite application 2"
+msgid "Activate favorite app 2"
 msgstr "Aktivizēt iecienīto lietotni 2"
 
 #: data/50-gnome-shell-launchers.xml:18
-msgid "Activate favorite application 3"
+#| msgid "Activate favorite application 3"
+msgid "Activate favorite app 3"
 msgstr "Aktivizēt iecienīto lietotni 3"
 
 #: data/50-gnome-shell-launchers.xml:22
-msgid "Activate favorite application 4"
+#| msgid "Activate favorite application 4"
+msgid "Activate favorite app 4"
 msgstr "Aktivizēt iecienīto lietotni 4"
 
 #: data/50-gnome-shell-launchers.xml:26
-msgid "Activate favorite application 5"
+#| msgid "Activate favorite application 5"
+msgid "Activate favorite app 5"
 msgstr "Aktivizēt iecienīto lietotni 5"
 
 #: data/50-gnome-shell-launchers.xml:30
-msgid "Activate favorite application 6"
+#| msgid "Activate favorite application 6"
+msgid "Activate favorite app 6"
 msgstr "Aktivizēt iecienīto lietotni 6"
 
 #: data/50-gnome-shell-launchers.xml:34
-msgid "Activate favorite application 7"
+#| msgid "Activate favorite application 7"
+msgid "Activate favorite app 7"
 msgstr "Aktivizēt iecienīto lietotni 7"
 
 #: data/50-gnome-shell-launchers.xml:38
-msgid "Activate favorite application 8"
+#| msgid "Activate favorite application 8"
+msgid "Activate favorite app 8"
 msgstr "Aktivizēt iecienīto lietotni 8"
 
 #: data/50-gnome-shell-launchers.xml:42
-msgid "Activate favorite application 9"
+#| msgid "Activate favorite application 9"
+msgid "Activate favorite app 9"
 msgstr "Aktivizēt iecienīto lietotni 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2070
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2106
 msgid "Screenshots"
 msgstr "Ekrānattēli"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:238
 msgid "Take a screenshot interactively"
 msgstr "Interaktīvi uzņemt ekrānattēlu"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:256
+#: data/org.gnome.shell.gschema.xml.in:250
 msgid "Take a screenshot"
 msgstr "Uzņemt ekrānattēlu"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:246
 msgid "Take a screenshot of a window"
 msgstr "Uzņemt loga ekrānattēlu"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:248
+#: data/org.gnome.shell.gschema.xml.in:242
 msgid "Record a screencast interactively"
 msgstr "Interaktīvi ierakstīt ekrānierakstu"
 
@@ -105,11 +114,13 @@ msgid "Show the overview"
 msgstr "Rādīt pārskatu"
 
 #: data/50-gnome-shell-system.xml:18
-msgid "Show all applications"
+#| msgid "Show all applications"
+msgid "Show all apps"
 msgstr "Rādīt visas lietotnes"
 
 #: data/50-gnome-shell-system.xml:21
-msgid "Open the application menu"
+#| msgid "Open the application menu"
+msgid "Open the app menu"
 msgstr "Atvērt lietotnes izvēlni"
 
 #: data/org.gnome.Shell.desktop.in.in:4
@@ -244,43 +255,25 @@ msgstr ""
 "noklusējuma stāvokli."
 
 #: data/org.gnome.shell.gschema.xml.in:89
-msgid ""
-"Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
-"Vai noklusējuma Bluetooth adapterim ir iestatītas ar to asociētās ierīces"
-
-#: data/org.gnome.shell.gschema.xml.in:90
-msgid ""
-"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-"powered, or if there were devices set up associated with the default "
-"adapter. This will be reset if the default adapter is ever seen not to have "
-"devices associated to it."
-msgstr ""
-"Čaula rādīs Bluetooth izvēlnes vienumu tikai tad, ja Bluetooth adapteris ir "
-"ieslēgts vai ja ir iestatītas ierīces, kas ir saistītas ar noklusējuma "
-"adapteri. Tas tiks atiestatīts, ja noklusējuma adapteris jebkad tiks redzēts "
-"bez saistītajām ierīcēm."
-
-#: data/org.gnome.shell.gschema.xml.in:99
 msgid "The last selected non-default power profile"
 msgstr "Pēdējais izvēlētais ne-noklusējuma jaudas profils"
 
-#: data/org.gnome.shell.gschema.xml.in:100
+#: data/org.gnome.shell.gschema.xml.in:90
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
 "toggling between two profiles, this key records the last selected non-"
 "default profile."
 msgstr ""
-"Dažas sistēmas atbalsta vairāk kā divus jaudas profilus. Lai atbalstītu"
-" pārslēgšanos starp diviem profiliem, šī atslēga ieraksta pēdējo izvēlēto"
-" ne-noklusējuma profilu."
+"Dažas sistēmas atbalsta vairāk kā divus jaudas profilus. Lai atbalstītu "
+"pārslēgšanos starp diviem profiliem, šī atslēga ieraksta pēdējo izvēlēto ne-"
+"noklusējuma profilu."
 
-#: data/org.gnome.shell.gschema.xml.in:108
+#: data/org.gnome.shell.gschema.xml.in:98
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr ""
 "Pēdējā versija dialoglodziņam “Laipni lūgti GNOME” tika rādīts versijai"
 
-#: data/org.gnome.shell.gschema.xml.in:109
+#: data/org.gnome.shell.gschema.xml.in:99
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -292,11 +285,11 @@ msgstr ""
 "apzīmē versiju, kas vēl neeksistē. Milzīgo skaitli var izmantot, lai "
 "praktiski izslēgtu šo dialoglodziņu."
 
-#: data/org.gnome.shell.gschema.xml.in:142
+#: data/org.gnome.shell.gschema.xml.in:132
 msgid "Layout of the app picker"
 msgstr "Lietotņu izvēlētāja izkārtojums"
 
-#: data/org.gnome.shell.gschema.xml.in:143
+#: data/org.gnome.shell.gschema.xml.in:133
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -308,107 +301,107 @@ msgstr ""
 "“lietotnes id” → “dati” pāri. Šobrīd lietotņu ikonu vieta lapā tiek "
 "saglabāta kā “dati”: • “pozīcija”"
 
-#: data/org.gnome.shell.gschema.xml.in:158
+#: data/org.gnome.shell.gschema.xml.in:152
 msgid "Keybinding to open the application menu"
 msgstr "Taustiņu sasaiste, kas atver lietotnes izvēlni"
 
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to open the application menu."
 msgstr "Taustiņu sasaiste, kas atver lietotnes izvēlni."
 
-#: data/org.gnome.shell.gschema.xml.in:165
-#: data/org.gnome.shell.gschema.xml.in:172
+#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to shift between overview states"
 msgstr "Taustiņu sasaiste, lai pārslēgtos starp pārskata stāvokļiem"
 
-#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:160
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Taustiņu sasaiste, lai pārslēgtos starp sesiju, logu izvēlētāju un lietotņu "
 "režģi"
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "Taustiņu sasaiste, lai pārslēgtos starp lietotņu režģi, logu izvēlētāju un "
 "sesiju"
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:173
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Taustiņu sasaiste, kas atver “Rādīt lietotnes” skatu"
 
-#: data/org.gnome.shell.gschema.xml.in:180
+#: data/org.gnome.shell.gschema.xml.in:174
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Taustiņu sasaiste, kas atver “Rādīt lietotnes” aktivitāšu pārskata skatu."
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:181
 msgid "Keybinding to open the overview"
 msgstr "Taustiņu sasaiste, kas atver pārskatu"
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:182
 msgid "Keybinding to open the Activities Overview."
 msgstr "Taustiņu sasaiste, kas atver aktivitāšu pārskatu."
 
-#: data/org.gnome.shell.gschema.xml.in:194
+#: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Taustiņu sasaiste, kas pārslēdz paziņojumu saraksta redzamību"
 
-#: data/org.gnome.shell.gschema.xml.in:195
+#: data/org.gnome.shell.gschema.xml.in:189
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Taustiņu sasaiste, kas pārslēdz paziņojumu saraksta redzamību."
 
-#: data/org.gnome.shell.gschema.xml.in:201
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Keybinding to focus the active notification"
 msgstr "Taustiņu sasaiste, kas fokusē aktīvo paziņojumu"
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:196
 msgid "Keybinding to focus the active notification."
 msgstr "Taustiņu sasaiste, kas fokusē aktīvo paziņojumu."
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Switch to application 1"
 msgstr "Pārslēgties uz lietotni 1"
 
-#: data/org.gnome.shell.gschema.xml.in:212
+#: data/org.gnome.shell.gschema.xml.in:206
 msgid "Switch to application 2"
 msgstr "Pārslēgties uz lietotni 2"
 
-#: data/org.gnome.shell.gschema.xml.in:216
+#: data/org.gnome.shell.gschema.xml.in:210
 msgid "Switch to application 3"
 msgstr "Pārslēgties uz lietotni 3"
 
-#: data/org.gnome.shell.gschema.xml.in:220
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "Switch to application 4"
 msgstr "Pārslēgties uz lietotni 4"
 
-#: data/org.gnome.shell.gschema.xml.in:224
+#: data/org.gnome.shell.gschema.xml.in:218
 msgid "Switch to application 5"
 msgstr "Pārslēgties uz lietotni 5"
 
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:222
 msgid "Switch to application 6"
 msgstr "Pārslēgties uz lietotni 6"
 
-#: data/org.gnome.shell.gschema.xml.in:232
+#: data/org.gnome.shell.gschema.xml.in:226
 msgid "Switch to application 7"
 msgstr "Pārslēgties uz lietotni 7"
 
-#: data/org.gnome.shell.gschema.xml.in:236
+#: data/org.gnome.shell.gschema.xml.in:230
 msgid "Switch to application 8"
 msgstr "Pārslēgties uz lietotni 8"
 
-#: data/org.gnome.shell.gschema.xml.in:240
+#: data/org.gnome.shell.gschema.xml.in:234
 msgid "Switch to application 9"
 msgstr "Pārslēgties uz lietotni 9"
 
-#: data/org.gnome.shell.gschema.xml.in:265
-#: data/org.gnome.shell.gschema.xml.in:292
+#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:286
 msgid "Limit switcher to current workspace."
 msgstr "Ierobežot pārslēdzēju uz pašreizējo darbvietu."
 
-#: data/org.gnome.shell.gschema.xml.in:266
+#: data/org.gnome.shell.gschema.xml.in:260
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -416,11 +409,11 @@ msgstr ""
 "Ja patiess, pārslēdzējā tiek rādītas tikai lietotnes, kas ir pašreizējā "
 "darbvietā. Citādi tiek iekļautas visas lietotnes."
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:277
 msgid "The application icon mode."
 msgstr "Lietotnes ikonas režīms."
 
-#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:278
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -430,7 +423,7 @@ msgstr ""
 "only” (rāda loga sīktēlu), “app-icon-only” (rāda tikai lietotnes ikonu) vai "
 "“both” (abi)."
 
-#: data/org.gnome.shell.gschema.xml.in:293
+#: data/org.gnome.shell.gschema.xml.in:287
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -438,58 +431,29 @@ msgstr ""
 "Ja patiess, pārslēdzējā tiek rādītas tikai lietotnes no pašreizējās "
 "darbvietas. Citādi tiek iekļautas visas lietotnes."
 
-#: data/org.gnome.shell.gschema.xml.in:303
+#: data/org.gnome.shell.gschema.xml.in:297
 msgid "Locations"
 msgstr "Vietas"
 
-#: data/org.gnome.shell.gschema.xml.in:304
+#: data/org.gnome.shell.gschema.xml.in:298
 msgid "The locations to show in world clocks"
 msgstr "Vietas, kuras rādīt pasaules pulksteņos"
 
-#: data/org.gnome.shell.gschema.xml.in:314
+#: data/org.gnome.shell.gschema.xml.in:308
 msgid "Automatic location"
 msgstr "Automātiska atrašanās vieta"
 
-#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:309
 msgid "Whether to fetch the current location or not"
 msgstr "Vai noteikt pašreizējo atrašanās vietu"
 
-#: data/org.gnome.shell.gschema.xml.in:322
+#: data/org.gnome.shell.gschema.xml.in:316
 msgid "Location"
 msgstr "Vieta"
 
-#: data/org.gnome.shell.gschema.xml.in:323
+#: data/org.gnome.shell.gschema.xml.in:317
 msgid "The location for which to show a forecast"
 msgstr "Vieta, kurai rādīt laika prognozi"
-
-#: data/org.gnome.shell.gschema.xml.in:335
-msgid "Attach modal dialog to the parent window"
-msgstr "Pievienot modālo dialoglodziņu vecāka logam"
-
-#: data/org.gnome.shell.gschema.xml.in:336
-#: data/org.gnome.shell.gschema.xml.in:345
-#: data/org.gnome.shell.gschema.xml.in:353
-#: data/org.gnome.shell.gschema.xml.in:361
-#: data/org.gnome.shell.gschema.xml.in:369
-msgid ""
-"This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr "Šī atslēga pārraksta org.gnome.mutter atslēgu, darbinot GNOME čaulu."
-
-#: data/org.gnome.shell.gschema.xml.in:344
-msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "Aktivēt logu sānisko izklāšanu, kad to nomet uz ekrāna malas"
-
-#: data/org.gnome.shell.gschema.xml.in:352
-msgid "Workspaces are managed dynamically"
-msgstr "Darbvietas tiek pārvaldītas dinamiski"
-
-#: data/org.gnome.shell.gschema.xml.in:360
-msgid "Workspaces only on primary monitor"
-msgstr "Darbvietas tikai uz galvenā monitora"
-
-#: data/org.gnome.shell.gschema.xml.in:368
-msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr "Peles režīmā aizkavēt fokusa izmaiņas, līdz rādītājs pārstāj kustēties"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
@@ -523,57 +487,57 @@ msgstr "Apmeklēt paplašinājum mājaslapu"
 
 #: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
-#: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
+#: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "Atcelt"
 
-#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:310 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
-#: js/ui/shellMountOperation.js:327
+#: js/ui/shellMountOperation.js:332
 msgid "Password"
 msgstr "Parole"
 
-#: js/gdm/loginDialog.js:317
+#: js/gdm/loginDialog.js:318
 msgid "Choose Session"
 msgstr "Izvēlieties sesiju"
 
-#: js/gdm/loginDialog.js:462
+#: js/gdm/loginDialog.js:463
 msgid "Not listed?"
 msgstr "Nav sarakstā?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:930
+#: js/gdm/loginDialog.js:931
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(piemēram, lietotājs vai %s)"
 
-#: js/gdm/loginDialog.js:935 js/ui/components/networkAgent.js:253
+#: js/gdm/loginDialog.js:936 js/ui/components/networkAgent.js:253
 #: js/ui/components/networkAgent.js:288 js/ui/components/networkAgent.js:322
 msgid "Username"
 msgstr "Lietotājvārds"
 
-#: js/gdm/loginDialog.js:1258
+#: js/gdm/loginDialog.js:1259
 msgid "Login Window"
 msgstr "Ierakstīšanās logs"
 
-#: js/gdm/util.js:431
+#: js/gdm/util.js:442
 msgid "Authentication error"
 msgstr "Autentifikācijas kļūda"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:603
+#: js/gdm/util.js:624
 msgid "(or swipe finger across reader)"
 msgstr "(vai velciet pirkstu pāri lasītājam)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:608
+#: js/gdm/util.js:629
 msgid "(or place finger on reader)"
 msgstr "(vai novietojiet pirkstu uz lasītāja)"
 
@@ -585,7 +549,8 @@ msgstr "Izslēgt"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:87
-msgid "power off;shutdown;halt;stop"
+#| msgid "power off;shutdown;halt;stop"
+msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "izslēgt;beidzēt;apturēt"
 
 #. Translators: The name of the restart action in search
@@ -826,15 +791,15 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:350
-msgid "Deny Access"
-msgstr "Liegt pieeju"
+#: js/ui/accessDialog.js:39 js/ui/inhibitShortcutsDialog.js:88
+msgid "Deny"
+msgstr "Liegt"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:355
-msgid "Grant Access"
-msgstr "Piešķirt pieeju"
+#: js/ui/accessDialog.js:40 js/ui/inhibitShortcutsDialog.js:97
+msgid "Allow"
+msgstr "Atļaut"
 
-#: js/ui/appDisplay.js:1728
+#: js/ui/appDisplay.js:1768
 msgid "Unnamed Folder"
 msgstr "Nenosaukta mape"
 
@@ -858,8 +823,9 @@ msgid "New Window"
 msgstr "Jauns logs"
 
 #: js/ui/appMenu.js:81
-msgid "Show Details"
-msgstr "Rādīt sīkāku informāciju"
+#| msgid "Show Details"
+msgid "App Details"
+msgstr "Informācija par lietotni"
 
 #: js/ui/appMenu.js:97
 msgid "Quit"
@@ -885,7 +851,7 @@ msgstr "Palaist, izmantojot diskrēto grafikas karti"
 msgid "Select Audio Device"
 msgstr "Izvēlieties audio ierīci"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:79
 msgid "Sound Settings"
 msgstr "Skaņas Iestatījumi"
 
@@ -897,7 +863,7 @@ msgstr "Austiņas"
 msgid "Headset"
 msgstr "Austiņas ar mikrofonu"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:348
 msgid "Microphone"
 msgstr "Mikrofons"
 
@@ -972,7 +938,7 @@ msgstr "Se"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:402
+#: js/ui/calendar.js:414
 msgid "%OB"
 msgstr "%OB"
 
@@ -985,37 +951,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:412
+#: js/ui/calendar.js:424
 msgid "%OB %Y"
 msgstr "%OB %Y."
 
-#: js/ui/calendar.js:473
+#: js/ui/calendar.js:485
 msgid "Previous month"
 msgstr "Iepriekšējais mēnesis"
 
-#: js/ui/calendar.js:491
+#: js/ui/calendar.js:503
 msgid "Next month"
 msgstr "Nākamais mēnesis"
 
-#: js/ui/calendar.js:642
+#: js/ui/calendar.js:654
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:701
+#: js/ui/calendar.js:713
 msgid "Week %V"
 msgstr "Nedēļa %V"
 
-#: js/ui/calendar.js:880
+#: js/ui/calendar.js:892
 msgid "No Notifications"
 msgstr "Nav paziņojumu"
 
-#: js/ui/calendar.js:937
+#: js/ui/calendar.js:949
 msgid "Do Not Disturb"
 msgstr "Netraucēt"
 
-#: js/ui/calendar.js:958
+#: js/ui/calendar.js:970
 msgid "Clear"
 msgstr "Attīrīt"
 
@@ -1026,9 +992,12 @@ msgid "“%s” is not responding."
 msgstr "“%s” nereaģē."
 
 #: js/ui/closeDialog.js:41
+#| msgid ""
+#| "You may choose to wait a short while for it to continue or force the "
+#| "application to quit entirely."
 msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
+"You may choose to wait a short while for it to continue or force the app to "
+"quit entirely."
 msgstr ""
 "Var uzgaidīt neilgu brīdi, līdz lietotne atgūstas, vai arī aizvērt to "
 "piespiedu kārtā."
@@ -1067,7 +1036,8 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "Varat arī savienoties, uz sava maršrutētāja spiežot pogu “WPS”."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
+#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:221
+#: js/ui/status/network.js:369 js/ui/status/network.js:451
 msgid "Connect"
 msgstr "Savienot"
 
@@ -1132,7 +1102,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Lai savienotos ar “%s”, ir nepieciešama parole."
 
-#: js/ui/components/networkAgent.js:736
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1996
 msgid "Network Manager"
 msgstr "Tīkla pārvaldnieks"
 
@@ -1156,7 +1126,7 @@ msgstr "Autentificēt"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:403
+#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:415
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Diemžēl tas nenostrādāja. Lūdzu, mēģiniet vēlreiz."
 
@@ -1165,17 +1135,18 @@ msgstr "Diemžēl tas nenostrādāja. Lūdzu, mēģiniet vēlreiz."
 msgid "%s is now known as %s"
 msgstr "%s tagad zināms kā %s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:414
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:420
 msgid "Windows"
 msgstr "Logi"
 
 #: js/ui/dash.js:205 js/ui/dash.js:251
-msgid "Show Applications"
+#| msgid "Show Applications"
+msgid "Show Apps"
 msgstr "Rādīt lietotnes"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:398
+#: js/ui/dash.js:399
 msgid "Dash"
 msgstr "Panelis"
 
@@ -1235,31 +1206,31 @@ msgstr "%d.%m."
 msgid "No Events"
 msgstr "Nav notikumu"
 
-#: js/ui/dateMenu.js:396
+#: js/ui/dateMenu.js:395
 msgid "Add world clocks…"
 msgstr "Pievienot pasaules pulksteņus…"
 
-#: js/ui/dateMenu.js:397
+#: js/ui/dateMenu.js:396
 msgid "World Clocks"
 msgstr "Pasaules pulksteņi"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:680
 msgid "Loading…"
 msgstr "Ielādē…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:690
 msgid "Go online for weather information"
 msgstr "Laika ziņas skatīt tiešsaistē"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:692
 msgid "Weather information is currently unavailable"
 msgstr "Laika ziņas pašlaik nav pieejamas"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:702
 msgid "Weather"
 msgstr "Laikapstākļi"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:704
 msgid "Select weather location…"
 msgstr "Izvēlieties laikapstākļu vietu…"
 
@@ -1295,7 +1266,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "Izrakstīties"
 
-#: js/ui/endSessionDialog.js:64
+#: js/ui/endSessionDialog.js:64 js/ui/status/system.js:168
 msgctxt "title"
 msgid "Power Off"
 msgstr "Izslēgt"
@@ -1430,54 +1401,48 @@ msgstr "%s (attālināts)"
 msgid "%s (console)"
 msgstr "%s (konsole)"
 
-#: js/ui/extensionDownloader.js:227
+#: js/ui/extensionDownloader.js:245
 msgid "Install"
 msgstr "Instalēt"
 
-#: js/ui/extensionDownloader.js:233
+#: js/ui/extensionDownloader.js:251
 msgid "Install Extension"
 msgstr "Instalēt paplašinājumu"
 
-#: js/ui/extensionDownloader.js:234
+#: js/ui/extensionDownloader.js:252
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Lejupielādēt un instalēt “%s” no extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:270
+#: js/ui/extensionSystem.js:282
 msgid "Extension Updates Available"
 msgstr "Ir pieejami atjauninājumi paplašinājumiem"
 
-#: js/ui/extensionSystem.js:271
+#: js/ui/extensionSystem.js:283
 msgid "Extension updates are ready to be installed."
 msgstr "Paplašinājumu atjauninājumi ir gatavi instalēšanai."
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:66
 msgid "Allow inhibiting shortcuts"
 msgstr "Atļaut nomācošās saīsnes"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:82
+#: js/ui/inhibitShortcutsDialog.js:69
 #, javascript-format
-msgid "The application %s wants to inhibit shortcuts"
+#| msgid "The application %s wants to inhibit shortcuts"
+msgid "The app %s wants to inhibit shortcuts"
 msgstr "Lietotne %s vēlas nomākt saīsnes"
 
-#: js/ui/inhibitShortcutsDialog.js:83
-msgid "An application wants to inhibit shortcuts"
+#: js/ui/inhibitShortcutsDialog.js:70
+#| msgid "An application wants to inhibit shortcuts"
+msgid "An app wants to inhibit shortcuts"
 msgstr "Lietotne vēlas nomākt saīsnes"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:90
+#: js/ui/inhibitShortcutsDialog.js:77
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Varat atjaunot saīsnes, nospiežot %s."
-
-#: js/ui/inhibitShortcutsDialog.js:101
-msgid "Deny"
-msgstr "Liegt"
-
-#: js/ui/inhibitShortcutsDialog.js:110
-msgid "Allow"
-msgstr "Atļaut"
 
 #: js/ui/kbdA11yDialog.js:32
 msgid "Slow Keys Turned On"
@@ -1530,7 +1495,7 @@ msgstr "Atstāt ieslēgtu"
 msgid "Turn On"
 msgstr "Ieslēgt"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:462
 msgid "Turn Off"
 msgstr "Izslēgt"
 
@@ -1538,9 +1503,10 @@ msgstr "Izslēgt"
 msgid "Leave Off"
 msgstr "Atstāt izslēgtu"
 
-#: js/ui/keyboard.js:219
-msgid "Region & Language Settings"
-msgstr "Vietas un valodas iestatījumi"
+#: js/ui/keyboard.js:219 js/ui/status/keyboard.js:860
+#| msgid "Network Settings"
+msgid "Keyboard Settings"
+msgstr "Tastatūras iestatījumi"
 
 #: js/ui/lookingGlass.js:713
 msgid "No extensions installed"
@@ -1556,7 +1522,7 @@ msgstr "%s nav izdevis nevienu kļūdu."
 msgid "Hide Errors"
 msgstr "Slēpt kļūdas"
 
-#: js/ui/lookingGlass.js:784 js/ui/lookingGlass.js:857
+#: js/ui/lookingGlass.js:784 js/ui/lookingGlass.js:861
 msgid "Show Errors"
 msgstr "Rādīt kļūdas"
 
@@ -1566,7 +1532,7 @@ msgstr "Aktivēta"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Deaktivēta"
 
@@ -1582,11 +1548,21 @@ msgstr "Nav aktuāls"
 msgid "Downloading"
 msgstr "Lejupielādē"
 
-#: js/ui/lookingGlass.js:835
+#: js/ui/lookingGlass.js:804
+#| msgid "Disable"
+msgid "Disabling"
+msgstr "Izslēdz"
+
+#: js/ui/lookingGlass.js:806
+#| msgid "Enable"
+msgid "Enabling"
+msgstr "Ieslēdz"
+
+#: js/ui/lookingGlass.js:839
 msgid "View Source"
 msgstr "Skatīt avotu"
 
-#: js/ui/lookingGlass.js:846
+#: js/ui/lookingGlass.js:850
 msgid "Web Page"
 msgstr "Tīmekļa lapa"
 
@@ -1595,18 +1571,19 @@ msgid "System was put in unsafe mode"
 msgstr "Sistēma ir ielikta nedrošajā režīmā"
 
 #: js/ui/main.js:287
-msgid "Applications now have unrestricted access"
+#| msgid "Applications now have unrestricted access"
+msgid "Apps now have unrestricted access"
 msgstr "Lietotnēm tagad ir neierobežota piekļuve"
 
 #: js/ui/main.js:288 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Atsaukt"
 
-#: js/ui/main.js:334
+#: js/ui/main.js:344
 msgid "Logged in as a privileged user"
 msgstr "Ierakstījies kā priviliģēts lietotājs"
 
-#: js/ui/main.js:335
+#: js/ui/main.js:345
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1614,11 +1591,11 @@ msgstr ""
 "Drošības apsvērumu dēļ nav ieteicams darbināt sesiju ar priviliģētu "
 "lietotāju. Ja iespējams, jums vajadzētu ierakstīties kā parastam lietotājam."
 
-#: js/ui/main.js:384
+#: js/ui/main.js:393
 msgid "Screen Lock disabled"
 msgstr "Ekrāna bloķēšana ir izslēgta"
 
-#: js/ui/main.js:385
+#: js/ui/main.js:394
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Ekrāna bloķēšanai vajag GNOME darbvirsmas pārvaldnieku."
 
@@ -1638,12 +1615,12 @@ msgstr "Nezināms nosaukums"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:324
+#: js/ui/overviewControls.js:330
 msgid "Type to search"
 msgstr "Rakstiet, lai meklētu"
 
-#: js/ui/overviewControls.js:402
-msgid "Applications"
+#: js/ui/overviewControls.js:408
+msgid "Apps"
 msgstr "Lietotnes"
 
 #. Translators: This is the main view to select
@@ -1656,43 +1633,44 @@ msgstr "Pārskats"
 msgid "New shortcut…"
 msgstr "Jauna saīsne…"
 
-#: js/ui/padOsd.js:154
-msgid "Application defined"
+#: js/ui/padOsd.js:153
+#| msgid "Application defined"
+msgid "App defined"
 msgstr "Definētā lietotne"
 
-#: js/ui/padOsd.js:155
+#: js/ui/padOsd.js:154
 msgid "Show on-screen help"
 msgstr "Rādīt palīdzību uz ekrāna"
 
-#: js/ui/padOsd.js:156
+#: js/ui/padOsd.js:155
 msgid "Switch monitor"
 msgstr "Pārslēgt monitoru"
 
-#: js/ui/padOsd.js:157
+#: js/ui/padOsd.js:156
 msgid "Assign keystroke"
 msgstr "Piešķirt taustiņsitienu"
 
-#: js/ui/padOsd.js:226
+#: js/ui/padOsd.js:225
 msgid "Done"
 msgstr "Gatavs"
 
-#: js/ui/padOsd.js:743
+#: js/ui/padOsd.js:742
 msgid "Edit…"
 msgstr "Rediģēt…"
 
-#: js/ui/padOsd.js:785 js/ui/padOsd.js:902
+#: js/ui/padOsd.js:784 js/ui/padOsd.js:901
 msgid "None"
 msgstr "Nekas"
 
-#: js/ui/padOsd.js:856
+#: js/ui/padOsd.js:855
 msgid "Press a button to configure"
 msgstr "Spiediet pogu, lai konfigurētu"
 
-#: js/ui/padOsd.js:857
+#: js/ui/padOsd.js:856
 msgid "Press Esc to exit"
 msgstr "Spiediet ESC, lai izietu"
 
-#: js/ui/padOsd.js:860
+#: js/ui/padOsd.js:859
 msgid "Press any key to exit"
 msgstr "Spiediet jebkuru taustiņu, lai izietu"
 
@@ -1705,9 +1683,14 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistēma"
 
-#: js/ui/panel.js:457
+#: js/ui/panel.js:460
 msgid "Top Bar"
 msgstr "Augšējā josla"
+
+#: js/ui/quickSettings.js:181
+#| msgid "Open %s"
+msgid "Open menu"
+msgstr "Atvērt izvēlni"
 
 #: js/ui/runDialog.js:58
 msgid "Run a Command"
@@ -1725,122 +1708,122 @@ msgstr "Uz Wayland pārstartēšana nav pieejama"
 msgid "Restarting…"
 msgstr "Pārstartē…"
 
-#: js/ui/screenShield.js:235
+#: js/ui/screenShield.js:231
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME vajag bloķēt ekrānu"
 
-#. We could not become modal, so we can't activate the
-#. screenshield. The user is probably very upset at this
-#. point, but any application using global grabs is broken
-#. Just tell them to stop using this app
-#.
-#. XXX: another option is to kick the user into the gdm login
-#. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
+#: js/ui/screenShield.js:272 js/ui/screenShield.js:670
 msgid "Unable to lock"
 msgstr "Nevar bloķēt"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
-msgid "Lock was blocked by an application"
+#: js/ui/screenShield.js:273 js/ui/screenShield.js:671
+#| msgid "Lock was blocked by an application"
+msgid "Lock was blocked by an app"
 msgstr "Lietotne neļāva bloķēt"
 
-#: js/ui/screenshot.js:1149
+#: js/ui/screenshot.js:1161
 msgid "Selection"
 msgstr "Atlase"
 
-#: js/ui/screenshot.js:1159
+#: js/ui/screenshot.js:1171
 msgid "Area Selection"
 msgstr "Laukuma atlase"
 
-#: js/ui/screenshot.js:1164
+#: js/ui/screenshot.js:1176
 msgid "Screen"
 msgstr "Ekrāns"
 
-#: js/ui/screenshot.js:1174
+#: js/ui/screenshot.js:1186
 msgid "Screen Selection"
 msgstr "Ekrāna atlase"
 
-#: js/ui/screenshot.js:1179
+#: js/ui/screenshot.js:1191
 msgid "Window"
 msgstr "Logs"
 
-#: js/ui/screenshot.js:1189
+#: js/ui/screenshot.js:1201
 msgid "Window Selection"
 msgstr "Loga atlase"
 
-#: js/ui/screenshot.js:1227
+#: js/ui/screenshot.js:1239
 msgid "Screenshot / Screencast"
 msgstr "Ekrānattēls / ekrānieraksts"
 
-#: js/ui/screenshot.js:1263
+#. Translators: since this string refers to an action,
+#. it needs to be phrased as a verb.
+#: js/ui/screenshot.js:1260
+msgid "Capture"
+msgstr "Uzņemt"
+
+#: js/ui/screenshot.js:1282
 msgid "Show Pointer"
 msgstr "Rādīt rādītāju"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1840
+#: js/ui/screenshot.js:1873
 msgid "Screencasts"
 msgstr "Ekrānieraksti"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1845
+#: js/ui/screenshot.js:1878
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Ekrānieraksts %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1911 js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2159
 msgid "Screenshot"
 msgstr "Ekrānattēls"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1917
+#: js/ui/screenshot.js:1926
 msgid "Screencast recorded"
 msgstr "Ekrānieraksts pabeigs"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1928
 msgid "Click here to view the video."
 msgstr "Spiediet šeit, lai skatītu video."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1922 js/ui/screenshot.js:2137
+#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2173
 msgid "Show in Files"
 msgstr "Rādīt Datņu lietotnē"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2083
+#: js/ui/screenshot.js:2119
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Ekrānattēls no %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:2165
 msgid "Screenshot captured"
 msgstr "Ekrānattēls uzņemts"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2167
 msgid "You can paste the image from the clipboard."
 msgstr "Jūs varat ielīmēt attēlu no starpliktuves."
 
-#: js/ui/screenshot.js:2184 js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2220 js/ui/screenshot.js:2385
 msgid "Screenshot taken"
 msgstr "Ekrānattēls uzņemts"
 
-#: js/ui/search.js:804
+#: js/ui/search.js:807
 msgid "Searching…"
 msgstr "Meklē…"
 
-#: js/ui/search.js:806
+#: js/ui/search.js:809
 msgid "No results."
 msgstr "Nav rezultātu."
 
-#: js/ui/search.js:937
+#: js/ui/search.js:940
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1848,7 +1831,7 @@ msgstr[0] "%d vairāk"
 msgstr[1] "%d vairāk"
 msgstr[2] "%d vairāk"
 
-#: js/ui/searchController.js:87
+#: js/ui/searchController.js:88
 msgid "Search"
 msgstr "Meklēt"
 
@@ -1885,7 +1868,7 @@ msgid "Uses Keyfiles"
 msgstr "Izmanto atslēgdatnes"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:299
+#: js/ui/shellMountOperation.js:300
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -1893,39 +1876,35 @@ msgstr ""
 "Lai atbloķētu sējumu, kas izmanto atslēgdatnes, izmantojiet <i>%s</i> "
 "utilītprogrammu."
 
-#: js/ui/shellMountOperation.js:307
+#: js/ui/shellMountOperation.js:304
+msgid ""
+"You need an external utility like <i>Disks</i> to unlock a volume that uses "
+"keyfiles."
+msgstr ""
+"Lai atbloķētu sējumu, kas izmanto atslēgdatnes, izmantojiet ārējo rīku,"
+" piemēram, <i>Diski</i>."
+
+#: js/ui/shellMountOperation.js:312
 msgid "PIM Number"
 msgstr "PIM numurs"
 
-#: js/ui/shellMountOperation.js:366
+#: js/ui/shellMountOperation.js:371
 msgid "Remember Password"
 msgstr "Atcerēties paroli"
 
-#: js/ui/shellMountOperation.js:381
+#: js/ui/shellMountOperation.js:386
 msgid "Unlock"
 msgstr "Atbloķēt"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:392
+#: js/ui/shellMountOperation.js:400
 #, javascript-format
 msgid "Open %s"
 msgstr "Atvērt %s"
 
-#: js/ui/shellMountOperation.js:424
+#: js/ui/shellMountOperation.js:436
 msgid "The PIM must be a number or empty."
 msgstr "PIM ir jābūt skaitlim vai ari tukšam laukam."
-
-#. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:466
-#, javascript-format
-msgid "Unable to start %s"
-msgstr "Nevar palaist %s"
-
-#. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:468
-#, javascript-format
-msgid "Couldn’t find the %s application"
-msgstr "Nevarēja atrast %s lietotni"
 
 #: js/ui/status/accessibility.js:34
 msgid "Accessibility"
@@ -1967,7 +1946,12 @@ msgstr "Atlecošie taustiņi"
 msgid "Mouse Keys"
 msgstr "Peles taustiņi"
 
-#: js/ui/status/accessibility.js:131
+#: js/ui/status/accessibility.js:78
+#| msgid "Accessibility"
+msgid "Accessibility Settings"
+msgstr "Pieejamības iestatījumi"
+
+#: js/ui/status/accessibility.js:135
 msgid "Large Text"
 msgstr "Liels teksts"
 
@@ -1975,17 +1959,70 @@ msgstr "Liels teksts"
 msgid "Auto Rotate"
 msgstr "Automātiskā pagriešana"
 
-#: js/ui/status/bluetooth.js:160
+#: js/ui/status/backgroundApps.js:135
+msgctxt "title"
+msgid "Background Apps"
+msgstr "Fona lietotnes"
+
+#: js/ui/status/backgroundApps.js:150
+msgid "Apps known to be running without a window"
+msgstr "Lietotnes, kuras darbojas bez loga"
+
+#: js/ui/status/backgroundApps.js:161
+#| msgid "Settings"
+msgid "App Settings"
+msgstr "Lietotnes iestatījumi"
+
+#: js/ui/status/backgroundApps.js:189
+msgid "No Background Apps"
+msgstr "Nav fona lietotņu"
+
+#: js/ui/status/backgroundApps.js:191
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%d fona lietotne"
+msgstr[1] "%d fona lietotnes"
+msgstr[2] "%d fona lietotņu"
+
+#: js/ui/status/bluetooth.js:221 js/ui/status/network.js:369
+#| msgid "Disconnect %s"
+msgid "Disconnect"
+msgstr "Atvienot"
+
+#: js/ui/status/bluetooth.js:238 js/ui/status/bluetooth.js:240
 msgid "Bluetooth"
 msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1863
+msgid "Bluetooth Settings"
+msgstr "Bluetooth iestatījumi"
+
+#: js/ui/status/bluetooth.js:311
+msgid "No available or connected devices"
+msgstr "Nav pieejamu vai savienotu ierīču"
+
+#: js/ui/status/bluetooth.js:312
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "Ieslēgt Bluetooth, lai savienotos ar ierīcēm"
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:366
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d savienots"
+msgstr[1] "%d savienoti"
+msgstr[2] "%d savienotu"
 
 #: js/ui/status/brightness.js:34
 msgid "Brightness"
 msgstr "Gaišums"
 
 #: js/ui/status/darkMode.js:11
-msgid "Dark Mode"
-msgstr "Tumšais režīms"
+#| msgid "Dark Mode"
+msgid "Dark Style"
+msgstr "Tumšais stils"
 
 #: js/ui/status/dwellClick.js:12
 msgid "Single Click"
@@ -2007,11 +2044,11 @@ msgstr "Sekundārais klikšķis"
 msgid "Dwell Click"
 msgstr "Apstājas klikšķis"
 
-#: js/ui/status/keyboard.js:830
+#: js/ui/status/keyboard.js:842
 msgid "Keyboard"
 msgstr "Tastatūra"
 
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:859
 msgid "Show Keyboard Layout"
 msgstr "Rādīt tastatūras izkārtojumu"
 
@@ -2030,33 +2067,108 @@ msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Pieeju atrašanās vietai var mainīt jebkurā brīdī privātuma iestatījumos."
 
+#: js/ui/status/location.js:350
+msgid "Deny Access"
+msgstr "Liegt pieeju"
+
+#: js/ui/status/location.js:355
+msgid "Grant Access"
+msgstr "Piešķirt pieeju"
+
 #: js/ui/status/network.js:53
 msgid "<unknown>"
 msgstr "<nezināms>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:356
+#: js/ui/status/network.js:363
 #, javascript-format
-#| msgid "%s Disconnecting"
 msgid "Disconnect %s"
 msgstr "Atvienot %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:358
+#: js/ui/status/network.js:365
 #, javascript-format
-#| msgid "Connect"
 msgid "Connect to %s"
 msgstr "Savienoties ar %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1107
+#: js/ui/status/network.js:1128
 #, javascript-format
-#| msgid "%s Hotspot Active"
 msgid "%s Hotspot"
 msgstr "%s tīklājs"
 
+#: js/ui/status/network.js:1393
+#, javascript-format
+#| msgid "%d Connected"
+#| msgid_plural "%d Connected"
+msgid "%d connected"
+msgid_plural "%d connected"
+msgstr[0] "%d savienots"
+msgstr[1] "%d savienoti"
+msgstr[2] "%d savienotu"
+
+#: js/ui/status/network.js:1491 js/ui/status/network.js:1507
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1492
+msgid "VPN Settings"
+msgstr "VPN iestatījumi"
+
+#: js/ui/status/network.js:1741
+msgid "Wi–Fi"
+msgstr "Wi–Fi"
+
+#: js/ui/status/network.js:1743
+#| msgid "No Networks"
+msgid "All Networks"
+msgstr "Visi tīkli"
+
+#: js/ui/status/network.js:1840
+#| msgid "%s Wired Connection"
+#| msgid_plural "%s Wired Connections"
+msgid "Wired Connections"
+msgstr "Vadu savienojumi"
+
+#: js/ui/status/network.js:1841
+msgid "Wired Settings"
+msgstr "Vadu tīkla iestatījumi"
+
+#: js/ui/status/network.js:1862
+#| msgid "Bluetooth Settings"
+msgid "Bluetooth Tethers"
+msgstr "Bluetooth saites"
+
+#. Translators: "Tether" from "Bluetooth Tether"
+#: js/ui/status/network.js:1869
+#| msgid "Weather"
+msgid "Tether"
+msgstr "Saite"
+
+#: js/ui/status/network.js:1882
+#| msgid "%s Modem Connection"
+#| msgid_plural "%s Modem Connections"
+msgid "Mobile Connections"
+msgstr "Mobilie savienojumi"
+
+#: js/ui/status/network.js:1884
+msgid "Mobile Broadband Settings"
+msgstr "Mobilās platjoslas iestatījumi"
+
+#. Translators: "Mobile" from "Mobile Broadband"
+#: js/ui/status/network.js:1893
+msgid "Mobile"
+msgstr "Mobilais"
+
+#: js/ui/status/network.js:2001
+msgid "Connection failed"
+msgstr "Neizdevās savienoties"
+
+#: js/ui/status/network.js:2002
+msgid "Activation of network connection failed"
+msgstr "Neizdevās tīkla savienojuma aktivēšana"
+
 #: js/ui/status/nightLight.js:20
-#| msgid "Night Light On"
 msgid "Night Light"
 msgstr "Nakts gaisma"
 
@@ -2075,60 +2187,69 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Taupīga"
 
-#: js/ui/status/powerProfiles.js:68
-#| msgctxt "search-result"
-#| msgid "Power Off"
+#: js/ui/status/powerProfiles.js:40
+#| msgid "Power Profiles"
+msgid "Power Mode"
+msgstr "Jaudas režīms"
+
+#: js/ui/status/powerProfiles.js:70
 msgid "Power Profiles"
 msgstr "Jaudas profili"
 
-#: js/ui/status/remoteAccess.js:74
+#: js/ui/status/powerProfiles.js:72
+msgid "Power Settings"
+msgstr "Barošanas iestatījumi"
+
+#: js/ui/status/remoteAccess.js:72
 msgid "Stop Screencast"
 msgstr "Apturēt ekrānierakstu"
 
-#: js/ui/status/remoteAccess.js:144
-#| msgid "Stop Screencast"
+#: js/ui/status/remoteAccess.js:142
 msgid "Stop Screen Sharing"
 msgstr "Apturēt ekrāna koplietošanu"
 
 #: js/ui/status/rfkill.js:96
-#| msgid "Airplane Mode On"
 msgid "Airplane Mode"
 msgstr "Lidmašīnas režīms"
 
-#: js/ui/status/system.js:89
+#: js/ui/status/system.js:90
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
 
-#: js/ui/status/system.js:140
-#| msgctxt "search-result"
-#| msgid "Power Off"
+#. Translators: entry in the window right click menu.
+#: js/ui/status/system.js:105 js/ui/windowMenu.js:29
+msgid "Take Screenshot"
+msgstr "Uzņemt ekrānattēlu"
+
+#: js/ui/status/system.js:162
 msgid "Power Off Menu"
 msgstr "Izslēgšana izvēlne"
 
-#: js/ui/status/system.js:148
+#: js/ui/status/system.js:170
 msgid "Suspend"
 msgstr "Iesnaudināt"
 
-#: js/ui/status/system.js:153
+#: js/ui/status/system.js:175
 msgid "Restart…"
 msgstr "Pārstartēt…"
 
-#: js/ui/status/system.js:158
+#: js/ui/status/system.js:180
 msgid "Power Off…"
 msgstr "Izslēgt…"
 
-#: js/ui/status/system.js:165
-msgid "Log Out"
-msgstr "Izrakstīties"
+#: js/ui/status/system.js:187
+#: subprojects/extensions-app/data/ui/extensions-window.ui:190
+msgid "Log Out…"
+msgstr "Izrakstīties…"
 
-#: js/ui/status/system.js:170
+#: js/ui/status/system.js:192
 msgid "Switch User…"
 msgstr "Mainīt lietotāju…"
 
-#: js/ui/status/system.js:216
-#| msgctxt "search-result"
+#: js/ui/status/system.js:236
 #| msgid "Lock Screen"
+msgctxt "action"
 msgid "Lock Screen"
 msgstr "Bloķēt ekrānu"
 
@@ -2166,23 +2287,27 @@ msgstr "Thunderbolt pilnvarošanas kļūda"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nevarēja autorizēt Thunderbolt ierīci: %s"
 
-#: js/ui/status/volume.js:191
+#: js/ui/status/volume.js:210
 msgid "Volume changed"
 msgstr "Skaļums ir mainīts"
 
-#: js/ui/status/volume.js:253
+#: js/ui/status/volume.js:223
+msgid "Unmute"
+msgstr "Atjaunot skaņu"
+
+#: js/ui/status/volume.js:223
+msgid "Mute"
+msgstr "Apklusināt"
+
+#: js/ui/status/volume.js:278
 msgid "Volume"
 msgstr "Skaļums"
 
-#: js/ui/status/volume.js:269
-#| msgid "%u Output"
-#| msgid_plural "%u Outputs"
+#: js/ui/status/volume.js:294
 msgid "Sound Output"
 msgstr "Skaņas izvade"
 
-#: js/ui/status/volume.js:337
-#| msgid "%u Input"
-#| msgid_plural "%u Inputs"
+#: js/ui/status/volume.js:366
 msgid "Sound Input"
 msgstr "Skaņas ievade"
 
@@ -2216,23 +2341,23 @@ msgstr "Tikai iebūvētais"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:364
+#: js/ui/unlockDialog.js:363
 msgid "%A %B %-d"
 msgstr "%A, %-d. %B"
 
-#: js/ui/unlockDialog.js:370
+#: js/ui/unlockDialog.js:369
 msgid "Swipe up to unlock"
 msgstr "Velciet augšup, lai atbloķētu"
 
-#: js/ui/unlockDialog.js:371
+#: js/ui/unlockDialog.js:370
 msgid "Click or press a key to unlock"
 msgstr "Klikšķiniet vai nospiediet kādu taustiņu, lai atbloķētu"
 
-#: js/ui/unlockDialog.js:554
+#: js/ui/unlockDialog.js:553
 msgid "Unlock Window"
 msgstr "Atbloķēšanas logs"
 
-#: js/ui/unlockDialog.js:563
+#: js/ui/unlockDialog.js:562
 msgid "Log in as another user"
 msgstr "Ierakstīties kā citam lietotājam"
 
@@ -2259,19 +2384,19 @@ msgid "“%s” is ready"
 msgstr "“%s” ir gatavs"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:62
+#: js/ui/windowManager.js:63
 msgid "Keep these display settings?"
 msgstr "Paturēt šos displeja iestatījumus?"
 
-#: js/ui/windowManager.js:72
+#: js/ui/windowManager.js:73
 msgid "Revert Settings"
 msgstr "Atjaunot iestatījumus"
 
-#: js/ui/windowManager.js:77
+#: js/ui/windowManager.js:78
 msgid "Keep Changes"
 msgstr "Paturēt izmaiņas"
 
-#: js/ui/windowManager.js:97
+#: js/ui/windowManager.js:98
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2285,11 +2410,6 @@ msgstr[2] "Izmaiņas tiks atgrieztas pēc %d sekundēm"
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
-
-#. Translators: entry in the window right click menu.
-#: js/ui/windowMenu.js:29
-msgid "Take Screenshot"
-msgstr "Uzņemt ekrānattēlu"
 
 #: js/ui/windowMenu.js:41
 msgid "Hide"
@@ -2307,77 +2427,78 @@ msgstr "Maksimizēt"
 msgid "Move"
 msgstr "Pārvietot"
 
-#: js/ui/windowMenu.js:65
+#: js/ui/windowMenu.js:78
 msgid "Resize"
 msgstr "Mainīt izmēru"
 
-#: js/ui/windowMenu.js:72
+#: js/ui/windowMenu.js:98
 msgid "Move Titlebar Onscreen"
 msgstr "Pārvietot virsraksta joslu uz ekrāna"
 
-#: js/ui/windowMenu.js:77
+#: js/ui/windowMenu.js:103
 msgid "Always on Top"
 msgstr "Vienmēr virspusē"
 
-#: js/ui/windowMenu.js:96
+#: js/ui/windowMenu.js:122
 msgid "Always on Visible Workspace"
 msgstr "Vienmēr redzamajā darbvietā"
 
-#: js/ui/windowMenu.js:110
+#: js/ui/windowMenu.js:136
 msgid "Move to Workspace Left"
 msgstr "Pārvietot uz darbvietu pa kreisi"
 
-#: js/ui/windowMenu.js:116
+#: js/ui/windowMenu.js:142
 msgid "Move to Workspace Right"
 msgstr "Pārvietot uz darbvietu pa labi"
 
-#: js/ui/windowMenu.js:122
+#: js/ui/windowMenu.js:148
 msgid "Move to Workspace Up"
 msgstr "Pārvietot uz augstāku darbvietu"
 
-#: js/ui/windowMenu.js:128
+#: js/ui/windowMenu.js:154
 msgid "Move to Workspace Down"
 msgstr "Pārvietot uz zemāku darbvietu"
 
-#: js/ui/windowMenu.js:146
+#: js/ui/windowMenu.js:172
 msgid "Move to Monitor Up"
 msgstr "Pārvietot uz augstāku monitoru"
 
-#: js/ui/windowMenu.js:155
+#: js/ui/windowMenu.js:181
 msgid "Move to Monitor Down"
 msgstr "Pārvietot uz zemāku monitoru"
 
-#: js/ui/windowMenu.js:164
+#: js/ui/windowMenu.js:190
 msgid "Move to Monitor Left"
 msgstr "Pārvietot uz monitoru pa kreisi"
 
-#: js/ui/windowMenu.js:173
+#: js/ui/windowMenu.js:199
 msgid "Move to Monitor Right"
 msgstr "Pārvietot uz monitoru pa labi"
 
-#: js/ui/windowMenu.js:181
+#: js/ui/windowMenu.js:207
 msgid "Close"
 msgstr "Aizvērt"
 
-#: src/calendar-server/evolution-calendar.desktop.in:3
-msgid "Evolution Calendar"
-msgstr "Evolution kalendārs"
-
-#: src/main.c:435 subprojects/extensions-tool/src/main.c:321
+#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Drukāt versiju"
 
-#: src/main.c:441
+#: src/main.c:514
 msgid "Mode used by GDM for login screen"
 msgstr "Režīms, ko izmantot GDM ierakstīšanās ekrānam"
 
-#: src/main.c:447
+#: src/main.c:520
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Izmantot specifisku metodi, piemēram, “gdm” ierakstīšanās ekrānam"
 
-#: src/main.c:453
+#: src/main.c:526
 msgid "List possible modes"
 msgstr "Uzskaitīt iespējamos režīmus"
+
+#: src/main.c:532
+#| msgid "Location Enabled"
+msgid "Force animations to be enabled"
+msgstr "Piespiest ieslēgt animācijas"
 
 #: src/shell-app.c:305
 msgctxt "program"
@@ -2400,6 +2521,16 @@ msgstr "Parole nevar būt tukša"
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Lietotājs noraidīja autentifikācijas dialoglodziņu"
+
+#: src/st/st-icon-theme.c:1883
+#, c-format
+msgid "Icon '%s' not present in theme %s"
+msgstr "Ikona “%s” nav atrast motīvā %s"
+
+#: src/st/st-icon-theme.c:3472 src/st/st-icon-theme.c:3775
+#| msgid "Unable to lock"
+msgid "Failed to load icon"
+msgstr "Neizdevās ielādēt ikonu"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
@@ -2509,8 +2640,8 @@ msgstr "Pašrocīgi instalētie"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "Lai atrastu un pievienotu paplašinājumus, apmeklējiet <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
@@ -2535,10 +2666,6 @@ msgstr ""
 msgid "Extension Updates Ready"
 msgstr "Paplašinājumu atjauninājumi ir gatavi"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:190
-msgid "Log Out…"
-msgstr "Izrakstīties…"
-
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:222
 #, c-format
@@ -2555,7 +2682,7 @@ msgstr ""
 "Piemēri: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:302
-#: subprojects/extensions-tool/src/main.c:238
+#: subprojects/extensions-tool/src/main.c:242
 msgid "Name"
 msgstr "Nosaukums"
 
@@ -2570,7 +2697,7 @@ msgstr ""
 "Piemēri: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:322
-#: subprojects/extensions-tool/src/main.c:241
+#: subprojects/extensions-tool/src/main.c:245
 msgid "Description"
 msgstr "Apraksts"
 
@@ -2636,26 +2763,18 @@ msgstr "Nezināmi argumenti"
 msgid "UUID, name and description are required"
 msgstr "Nepieciešams UUID, nosaukums un apraksts"
 
-#: subprojects/extensions-tool/src/command-disable.c:46
-#: subprojects/extensions-tool/src/command-enable.c:46
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
-#: subprojects/extensions-tool/src/main.c:146
-msgid "Failed to connect to GNOME Shell\n"
-msgstr "Neizdevās savienoties ar GNOME čaulu\n"
-
-#: subprojects/extensions-tool/src/command-disable.c:53
-#: subprojects/extensions-tool/src/command-enable.c:53
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "Paplašinājums \"%s\" neeksistē\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:101
+#: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
 msgstr "Izslēgt paplašinājumu"
 
-#: subprojects/extensions-tool/src/command-disable.c:119
-#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
 #: subprojects/extensions-tool/src/command-info.c:103
 #: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
@@ -2663,8 +2782,8 @@ msgstr "Izslēgt paplašinājumu"
 msgid "No UUID given"
 msgstr "Nav norādīts UUID"
 
-#: subprojects/extensions-tool/src/command-disable.c:124
-#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
 #: subprojects/extensions-tool/src/command-info.c:108
 #: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
@@ -2672,12 +2791,18 @@ msgstr "Nav norādīts UUID"
 msgid "More than one UUID given"
 msgstr "Ir norādīts vairāk kā viens UUID"
 
-#: subprojects/extensions-tool/src/command-enable.c:101
+#: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
 msgstr "Ieslēgt paplašinājumu"
 
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:150
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "Neizdevās savienoties ar GNOME čaulu\n"
+
 #: subprojects/extensions-tool/src/command-info.c:59
-#: subprojects/extensions-tool/src/main.c:155
+#: subprojects/extensions-tool/src/main.c:159
 #, c-format
 msgid "Extension “%s” doesn't exist\n"
 msgstr "Paplašinājums \"%s\" neeksistē\n"
@@ -2686,23 +2811,23 @@ msgstr "Paplašinājums \"%s\" neeksistē\n"
 msgid "Show extensions info"
 msgstr "Rādīt informāciju par paplašinājumu"
 
-#: subprojects/extensions-tool/src/command-install.c:173
+#: subprojects/extensions-tool/src/command-install.c:190
 msgid "Overwrite an existing extension"
 msgstr "Pārrakstīt esošo paplašinājumu"
 
-#: subprojects/extensions-tool/src/command-install.c:175
+#: subprojects/extensions-tool/src/command-install.c:192
 msgid "EXTENSION_BUNDLE"
 msgstr "PAPLAŠINĀJUMA_SAINIS"
 
-#: subprojects/extensions-tool/src/command-install.c:184
+#: subprojects/extensions-tool/src/command-install.c:201
 msgid "Install an extension bundle"
 msgstr "Instalēt paplašinājuma saini"
 
-#: subprojects/extensions-tool/src/command-install.c:202
+#: subprojects/extensions-tool/src/command-install.c:219
 msgid "No extension bundle specified"
 msgstr "Nav norādīt paplašinājuma sainis"
 
-#: subprojects/extensions-tool/src/command-install.c:208
+#: subprojects/extensions-tool/src/command-install.c:225
 msgid "More than one extension bundle specified"
 msgstr "Ir norādīts vairāk kā viens paplašinājuma sainis"
 
@@ -2738,56 +2863,56 @@ msgstr "Izdrukāt informāciju par paplašinājumu"
 msgid "List installed extensions"
 msgstr "Rādīt instalētos paplašinājumus"
 
-#: subprojects/extensions-tool/src/command-pack.c:450
+#: subprojects/extensions-tool/src/command-pack.c:454
 msgid "FILE"
 msgstr "DATNE"
 
-#: subprojects/extensions-tool/src/command-pack.c:451
+#: subprojects/extensions-tool/src/command-pack.c:455
 msgid "Additional source to include in the bundle"
 msgstr "Papildu avots, ko iekļaut šajā sainī"
 
-#: subprojects/extensions-tool/src/command-pack.c:454
+#: subprojects/extensions-tool/src/command-pack.c:458
 msgid "SCHEMA"
 msgstr "SHĒMA"
 
-#: subprojects/extensions-tool/src/command-pack.c:455
+#: subprojects/extensions-tool/src/command-pack.c:459
 msgid "A GSettings schema that should be included"
 msgstr "GSettings shēma, kas ir jāiekļauj"
 
-#: subprojects/extensions-tool/src/command-pack.c:457
-#: subprojects/extensions-tool/src/command-pack.c:468
+#: subprojects/extensions-tool/src/command-pack.c:461
+#: subprojects/extensions-tool/src/command-pack.c:472
 msgid "DIRECTORY"
 msgstr "DIREKTORIJA"
 
-#: subprojects/extensions-tool/src/command-pack.c:459
+#: subprojects/extensions-tool/src/command-pack.c:463
 msgid "The directory where translations are found"
 msgstr "Direktorija, kurā ir tulkojumi"
 
-#: subprojects/extensions-tool/src/command-pack.c:461
+#: subprojects/extensions-tool/src/command-pack.c:465
 msgid "DOMAIN"
 msgstr "DOMĒNS"
 
-#: subprojects/extensions-tool/src/command-pack.c:463
+#: subprojects/extensions-tool/src/command-pack.c:467
 msgid "The gettext domain to use for translations"
 msgstr "Tulkošanai izmantojamais gettext domēns"
 
-#: subprojects/extensions-tool/src/command-pack.c:466
+#: subprojects/extensions-tool/src/command-pack.c:470
 msgid "Overwrite an existing pack"
 msgstr "Pārrakstīt esošo paku"
 
-#: subprojects/extensions-tool/src/command-pack.c:470
+#: subprojects/extensions-tool/src/command-pack.c:474
 msgid "The directory where the pack should be created"
 msgstr "Direktorija, kurā jāizveido paka"
 
-#: subprojects/extensions-tool/src/command-pack.c:472
+#: subprojects/extensions-tool/src/command-pack.c:476
 msgid "SOURCE_DIRECTORY"
 msgstr "AVOTA_DIREKTORIJA"
 
-#: subprojects/extensions-tool/src/command-pack.c:481
+#: subprojects/extensions-tool/src/command-pack.c:485
 msgid "Create an extension bundle"
 msgstr "Izveidot paplašinājuma saini"
 
-#: subprojects/extensions-tool/src/command-pack.c:501
+#: subprojects/extensions-tool/src/command-pack.c:505
 msgid "More than one source directory specified"
 msgstr "Ir norādīta vairāk kā viena avota direktorija"
 
@@ -2822,102 +2947,102 @@ msgstr "Neizdevās atinstalēt “%s”\n"
 msgid "Uninstall an extension"
 msgstr "Atinstalēt paplašinājumu"
 
-#: subprojects/extensions-tool/src/main.c:72
+#: subprojects/extensions-tool/src/main.c:76
 msgid "Do not print error messages"
 msgstr "Nedrukāt kļūdu paziņojumus"
 
-#: subprojects/extensions-tool/src/main.c:244
+#: subprojects/extensions-tool/src/main.c:248
 msgid "Path"
 msgstr "Ceļš"
 
-#: subprojects/extensions-tool/src/main.c:247
+#: subprojects/extensions-tool/src/main.c:251
 msgid "URL"
 msgstr "URL"
 
-#: subprojects/extensions-tool/src/main.c:250
+#: subprojects/extensions-tool/src/main.c:254
 msgid "Original author"
 msgstr "Sākotnējais autors"
 
-#: subprojects/extensions-tool/src/main.c:253
+#: subprojects/extensions-tool/src/main.c:257
 msgid "Version"
 msgstr "Versija"
 
-#: subprojects/extensions-tool/src/main.c:256
+#: subprojects/extensions-tool/src/main.c:260
 msgid "State"
 msgstr "Stāvoklis"
 
-#: subprojects/extensions-tool/src/main.c:294
+#: subprojects/extensions-tool/src/main.c:298
 msgid "“version” takes no arguments"
 msgstr "“version” nepieņem argumentus"
 
-#: subprojects/extensions-tool/src/main.c:296
-#: subprojects/extensions-tool/src/main.c:316
+#: subprojects/extensions-tool/src/main.c:300
+#: subprojects/extensions-tool/src/main.c:320
 msgid "Usage:"
 msgstr "Lietošana:"
 
-#: subprojects/extensions-tool/src/main.c:299
+#: subprojects/extensions-tool/src/main.c:303
 msgid "Print version information and exit."
 msgstr "Parādīt informāciju par versiju un iziet."
 
-#: subprojects/extensions-tool/src/main.c:314
-#: subprojects/extensions-tool/src/main.c:317
+#: subprojects/extensions-tool/src/main.c:318
+#: subprojects/extensions-tool/src/main.c:321
 msgid "COMMAND"
 msgstr "KOMANDA"
 
-#: subprojects/extensions-tool/src/main.c:317
+#: subprojects/extensions-tool/src/main.c:321
 msgid "[ARGS…]"
 msgstr "[ARG…]"
 
-#: subprojects/extensions-tool/src/main.c:319
+#: subprojects/extensions-tool/src/main.c:323
 msgid "Commands:"
 msgstr "Komandas:"
 
-#: subprojects/extensions-tool/src/main.c:320
+#: subprojects/extensions-tool/src/main.c:324
 msgid "Print help"
 msgstr "Drukāt palīdzību"
 
-#: subprojects/extensions-tool/src/main.c:322
+#: subprojects/extensions-tool/src/main.c:326
 msgid "Enable extension"
 msgstr "Ieslēgt paplašinājumu"
 
-#: subprojects/extensions-tool/src/main.c:323
+#: subprojects/extensions-tool/src/main.c:327
 msgid "Disable extension"
 msgstr "Izslēgt paplašinājumu"
 
-#: subprojects/extensions-tool/src/main.c:324
+#: subprojects/extensions-tool/src/main.c:328
 msgid "Reset extension"
 msgstr "Pārstatīt paplašinājumu"
 
-#: subprojects/extensions-tool/src/main.c:325
+#: subprojects/extensions-tool/src/main.c:329
 msgid "Uninstall extension"
 msgstr "Atinstalēt paplašinājumu"
 
-#: subprojects/extensions-tool/src/main.c:326
+#: subprojects/extensions-tool/src/main.c:330
 msgid "List extensions"
 msgstr "Uzskaitīt paplašinājumus"
 
-#: subprojects/extensions-tool/src/main.c:327
-#: subprojects/extensions-tool/src/main.c:328
+#: subprojects/extensions-tool/src/main.c:331
+#: subprojects/extensions-tool/src/main.c:332
 msgid "Show extension info"
 msgstr "Rādīt informāciju par paplašinājumu"
 
-#: subprojects/extensions-tool/src/main.c:329
+#: subprojects/extensions-tool/src/main.c:333
 msgid "Open extension preferences"
 msgstr "Atvērt paplašinājuma iestatījumus"
 
-#: subprojects/extensions-tool/src/main.c:330
+#: subprojects/extensions-tool/src/main.c:334
 msgid "Create extension"
 msgstr "Izveidot paplašinājumu"
 
-#: subprojects/extensions-tool/src/main.c:331
+#: subprojects/extensions-tool/src/main.c:335
 msgid "Package extension"
 msgstr "Pakot paplašinājumu"
 
-#: subprojects/extensions-tool/src/main.c:332
+#: subprojects/extensions-tool/src/main.c:336
 msgid "Install extension bundle"
 msgstr "Instalēt paplašinājuma saini"
 
-#: subprojects/extensions-tool/src/main.c:334
+#: subprojects/extensions-tool/src/main.c:338
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Lietojiet “%s”, lai iegūtu detalizētu palīdzību.\n"
@@ -2940,7 +3065,7 @@ msgstr "Pievienot ikonu augšējā joslā"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1907
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2950,7 +3075,7 @@ msgstr[2] "%u izvadkanāli"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1917
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -2958,31 +3083,72 @@ msgstr[0] "%u ievadkanāls"
 msgstr[1] "%u ievadkanāli"
 msgstr[2] "%u ievadkanāli"
 
-#: subprojects/gvc/gvc-mixer-control.c:2867
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sistēmas skaņas"
 
-#~ msgid "Bluetooth Settings"
-#~ msgstr "Bluetooth iestatījumi"
+#~ msgid ""
+#~ "Whether the default Bluetooth adapter had set up devices associated to it"
+#~ msgstr ""
+#~ "Vai noklusējuma Bluetooth adapterim ir iestatītas ar to asociētās ierīces"
+
+#~ msgid ""
+#~ "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+#~ "powered, or if there were devices set up associated with the default "
+#~ "adapter. This will be reset if the default adapter is ever seen not to "
+#~ "have devices associated to it."
+#~ msgstr ""
+#~ "Čaula rādīs Bluetooth izvēlnes vienumu tikai tad, ja Bluetooth adapteris "
+#~ "ir ieslēgts vai ja ir iestatītas ierīces, kas ir saistītas ar noklusējuma "
+#~ "adapteri. Tas tiks atiestatīts, ja noklusējuma adapteris jebkad tiks "
+#~ "redzēts bez saistītajām ierīcēm."
+
+#~ msgid "Attach modal dialog to the parent window"
+#~ msgstr "Pievienot modālo dialoglodziņu vecāka logam"
+
+#~ msgid ""
+#~ "This key overrides the key in org.gnome.mutter when running GNOME Shell."
+#~ msgstr ""
+#~ "Šī atslēga pārraksta org.gnome.mutter atslēgu, darbinot GNOME čaulu."
+
+#~ msgid "Enable edge tiling when dropping windows on screen edges"
+#~ msgstr "Aktivēt logu sānisko izklāšanu, kad to nomet uz ekrāna malas"
+
+#~ msgid "Workspaces are managed dynamically"
+#~ msgstr "Darbvietas tiek pārvaldītas dinamiski"
+
+#~ msgid "Workspaces only on primary monitor"
+#~ msgstr "Darbvietas tikai uz galvenā monitora"
+
+#~ msgid "Delay focus changes in mouse mode until the pointer stops moving"
+#~ msgstr ""
+#~ "Peles režīmā aizkavēt fokusa izmaiņas, līdz rādītājs pārstāj kustēties"
+
+#~ msgid "Region & Language Settings"
+#~ msgstr "Vietas un valodas iestatījumi"
+
+#~ msgid "Applications"
+#~ msgstr "Lietotnes"
 
 #, javascript-format
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d savienots"
-#~ msgstr[1] "%d savienoti"
-#~ msgstr[2] "%d savienotu"
+#~ msgid "Unable to start %s"
+#~ msgstr "Nevar palaist %s"
+
+#, javascript-format
+#~ msgid "Couldn’t find the %s application"
+#~ msgstr "Nevarēja atrast %s lietotni"
+
+#~ msgid "Log Out"
+#~ msgstr "Izrakstīties"
+
+#~ msgid "Evolution Calendar"
+#~ msgstr "Evolution kalendārs"
 
 #~ msgid "Bluetooth On"
 #~ msgstr "Bluetooth ieslēgts"
 
 #~ msgid "Bluetooth Off"
 #~ msgstr "Bluetooth izslēgts"
-
-#~ msgid "Location Enabled"
-#~ msgstr "Atrašanās vieta ieslēgta"
-
-#~ msgid "Disable"
-#~ msgstr "Izslēgt"
 
 #~ msgid "Privacy Settings"
 #~ msgstr "Privātuma iestatījumi"
@@ -2992,9 +3158,6 @@ msgstr "Sistēmas skaņas"
 
 #~ msgid "Location Disabled"
 #~ msgstr "Atrašanās vieta ir izslēgta"
-
-#~ msgid "Enable"
-#~ msgstr "Ieslēgt"
 
 #, javascript-format
 #~ msgid "%s Off"
@@ -3027,12 +3190,6 @@ msgstr "Sistēmas skaņas"
 #, javascript-format
 #~ msgid "%s Connection Failed"
 #~ msgstr "%s neizdevās savienoties"
-
-#~ msgid "Wired Settings"
-#~ msgstr "Vadu tīkla iestatījumi"
-
-#~ msgid "Mobile Broadband Settings"
-#~ msgstr "Mobilās platjoslas iestatījumi"
 
 #, javascript-format
 #~ msgid "%s Hardware Disabled"
@@ -3069,9 +3226,6 @@ msgstr "Sistēmas skaņas"
 #~ msgid "Select a network"
 #~ msgstr "Izvēlieties tīklu"
 
-#~ msgid "No Networks"
-#~ msgstr "Nav tīklu"
-
 #~ msgid "Use hardware switch to turn off"
 #~ msgstr "Lai izslēgtu, izmantot aparatūras slēdzi"
 
@@ -3094,24 +3248,8 @@ msgstr "Sistēmas skaņas"
 #~ msgid "connection failed"
 #~ msgstr "savienojums neizdevās"
 
-#~ msgid "VPN Settings"
-#~ msgstr "VPN iestatījumi"
-
-#~ msgid "VPN"
-#~ msgstr "VPN"
-
 #~ msgid "VPN Off"
 #~ msgstr "VPN ir izslēgts"
-
-#~ msgid "Network Settings"
-#~ msgstr "Tīkla iestatījumi"
-
-#, javascript-format
-#~ msgid "%s Wired Connection"
-#~ msgid_plural "%s Wired Connections"
-#~ msgstr[0] "%s vadu savienojums"
-#~ msgstr[1] "%s vadu savienojumi"
-#~ msgstr[2] "%s vadu savienojumu"
 
 #, javascript-format
 #~ msgid "%s Wi-Fi Connection"
@@ -3119,19 +3257,6 @@ msgstr "Sistēmas skaņas"
 #~ msgstr[0] "%s Wi-Fi savienojums"
 #~ msgstr[1] "%s Wi-Fi savienojumi"
 #~ msgstr[2] "%s Wi-Fi savienojumu"
-
-#, javascript-format
-#~ msgid "%s Modem Connection"
-#~ msgid_plural "%s Modem Connections"
-#~ msgstr[0] "%s modema savienojums"
-#~ msgstr[1] "%s modema savienojumi"
-#~ msgstr[2] "%s modema savienojumu"
-
-#~ msgid "Connection failed"
-#~ msgstr "Neizdevās savienoties"
-
-#~ msgid "Activation of network connection failed"
-#~ msgstr "Neizdevās tīkla savienojuma aktivēšana"
 
 #~ msgid "Night Light Disabled"
 #~ msgstr "Nakts gaisma ir izslēgta"
@@ -3141,9 +3266,6 @@ msgstr "Sistēmas skaņas"
 
 #~ msgid "Disable Until Tomorrow"
 #~ msgstr "Izslēgt līdz rītdienai"
-
-#~ msgid "Power Settings"
-#~ msgstr "Barošanas iestatījumi"
 
 #~ msgid "Fully Charged"
 #~ msgstr "Pilnībā uzlādēta"
