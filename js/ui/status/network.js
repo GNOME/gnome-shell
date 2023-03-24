@@ -757,6 +757,10 @@ const WirelessNetwork = GObject.registerClass({
             'is-active', '', '',
             GObject.ParamFlags.READABLE,
             false),
+        'signal-strength': GObject.ParamSpec.uint(
+            'signal-strength', '', '',
+            GObject.ParamFlags.READABLE,
+            0),
     },
     Signals: {
         'destroy': {},
@@ -783,7 +787,7 @@ const WirelessNetwork = GObject.registerClass({
         this._securityType = NM.UtilsSecurityType.NONE;
     }
 
-    get _strength() {
+    get signal_strength() {
         return this._bestAp?.strength ?? 0;
     }
 
@@ -857,6 +861,7 @@ const WirelessNetwork = GObject.registerClass({
         ap.connectObject(
             'notify::strength', () => {
                 this.notify('icon-name');
+                this.notify('signal-strength');
                 this._updateBestAp();
             }, this);
         this._updateBestAp();
@@ -900,7 +905,7 @@ const WirelessNetwork = GObject.registerClass({
             return cmpAps;
 
         // place stronger connections first
-        const cmpStrength = other._strength - this._strength;
+        const cmpStrength = other.signal_strength - this.signal_strength;
         if (cmpStrength !== 0)
             return cmpStrength;
 
@@ -997,7 +1002,6 @@ class NMWirelessNetworkItem extends PopupMenu.PopupBaseMenuItem {
         icons.add_actor(this._secureIcon);
 
         this._label = new St.Label();
-        this.label_actor = this._label;
         this.add_child(this._label);
 
         this._selectedIcon = new St.Icon({
@@ -1020,10 +1024,29 @@ class NMWirelessNetworkItem extends PopupMenu.PopupBaseMenuItem {
             GObject.BindingFlags.SYNC_CREATE,
             (bind, source) => [true, source ? 'network-wireless-encrypted-symbolic' : ''],
             null);
+        this._network.connectObject(
+            'notify::is-active', () => this._isActiveChanged(),
+            'notify::secure', () => this._updateAccessibleName(),
+            'notify::signal-strength', () => this._updateAccessibleName(),
+            this);
     }
 
     get network() {
         return this._network;
+    }
+
+    _isActiveChanged() {
+        if (this._network.is_active)
+            this.add_accessible_state(Atk.StateType.CHECKED);
+        else
+            this.remove_accessible_state(Atk.StateType.CHECKED);
+    }
+
+    _updateAccessibleName() {
+        const secureString = this._network.secure ? _('Secure') : _('Not secure');
+        let signalStrengthString = _('Signal strength %s%%').format(this._network.signal_strength);
+        // translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
+        this.accessible_name = _('%s, %s, %s').format(this._label.text, secureString, signalStrengthString);
     }
 });
 
