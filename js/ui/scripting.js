@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported sleep, waitLeisure, createTestWindow, waitTestWindows,
             destroyTestWindows, defineScriptEvent, scriptEvent,
-            collectStatistics, runPerfScript */
+            collectStatistics, runPerfScript, disableHelperAutoExit */
 
 const { Gio, GLib, Meta, Shell } = imports.gi;
 
@@ -70,8 +70,10 @@ function PerfHelper() {
 
 let _perfHelper = null;
 function _getPerfHelper() {
-    if (_perfHelper == null)
+    if (_perfHelper == null) {
         _perfHelper = new PerfHelper();
+        _perfHelper._autoExit = true;
+    }
 
     return _perfHelper;
 }
@@ -138,6 +140,17 @@ function waitTestWindows() {
 function destroyTestWindows() {
     let perfHelper = _getPerfHelper();
     perfHelper.DestroyWindowsAsync().catch(logError);
+}
+
+/**
+ * disableHelperAutoExit:
+ *
+ * Don't exixt the perf helper after running the script. Instead it will remain
+ * running until something else makes it exit, e.g. the Wayland socket closing.
+ */
+function disableHelperAutoExit() {
+    let perfHelper = _getPerfHelper();
+    perfHelper._autoExit = false;
 }
 
 /**
@@ -287,7 +300,8 @@ async function _runPerfScript(scriptModule, outputFile) {
 
     try {
         const perfHelper = _getPerfHelper();
-        perfHelper.ExitSync();
+        if (perfHelper._autoExit)
+            perfHelper.ExitSync();
     } catch (err) {
         log(`Failed to exit helper: ${err}\n${err.stack}`);
         Meta.exit(Meta.ExitCode.ERROR);
