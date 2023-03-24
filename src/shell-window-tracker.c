@@ -824,10 +824,5 @@ shell_startup_sequence_get_app (MetaStartupSequence *sequence)
 ShellWindowTracker *
 shell_window_tracker_get_default (void)
 {
-  static ShellWindowTracker *instance;
-
-  if (instance == NULL)
-    instance = g_object_new (SHELL_TYPE_WINDOW_TRACKER, NULL);
-
-  return instance;
+  return shell_global_get_window_tracker (shell_global_get ());
 }

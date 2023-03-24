@@ -39,6 +39,8 @@
 #include "shell-global-private.h"
 #include "shell-perf-log.h"
 #include "shell-window-tracker.h"
+#include "shell-app-usage.h"
+#include "shell-app-cache-private.h"
 #include "shell-wm.h"
 #include "shell-util.h"
 #include "st.h"
@@ -71,6 +73,11 @@ struct _ShellGlobal {
   char *userdatadir;
   GFile *userdatadir_path;
   GFile *runtime_state_path;
+
+  ShellWindowTracker *window_tracker;
+  ShellAppSystem *app_system;
+  ShellAppCache *app_cache;
+  ShellAppUsage *app_usage;
 
   StFocusManager *focus_manager;
 
@@ -479,6 +486,11 @@ shell_global_finalize (GObject *object)
   g_clear_object (&global->js_context);
   g_object_unref (global->settings);
 
+  g_clear_object (&global->window_tracker);
+  g_clear_object (&global->app_system);
+  g_clear_object (&global->app_cache);
+  g_clear_object (&global->app_usage);
+
   the_object = NULL;
 
   g_cancellable_cancel (global->switcheroo_cancellable);
@@ -720,6 +732,7 @@ _shell_global_init (const char *first_property_name,
 ShellGlobal *
 shell_global_get (void)
 {
+  g_return_val_if_fail (the_object, NULL);
   return the_object;
 }
 
@@ -1914,4 +1927,64 @@ void
 _shell_global_notify_shutdown (ShellGlobal *global)
 {
   g_signal_emit (global, shell_global_signals[SHUTDOWN], 0);
+}
+
+/**
+ * shell_global_get_window_tracker:
+ *
+ * Gets window tracker.
+ *
+ * Return value: (transfer none): the window tracker
+ */
+ShellWindowTracker *
+shell_global_get_window_tracker (ShellGlobal *global)
+{
+  if (!global->window_tracker)
+    global->window_tracker = g_object_new (SHELL_TYPE_WINDOW_TRACKER, NULL);
+  return global->window_tracker;
+}
+
+/**
+ * shell_global_get_app_system:
+ *
+ * Gets app system.
+ *
+ * Return value: (transfer none): the app system
+ */
+ShellAppSystem *
+shell_global_get_app_system (ShellGlobal *global)
+{
+  if (!global->app_system)
+    global->app_system = g_object_new (SHELL_TYPE_APP_SYSTEM, NULL);
+  return global->app_system;
+}
+
+/**
+ * shell_global_get_app_cache:
+ *
+ * Gets app cache.
+ *
+ * Return value: (transfer none): the app cache
+ */
+ShellAppCache *
+shell_global_get_app_cache (ShellGlobal *global)
+{
+  if (!global->app_cache)
+    global->app_cache = g_object_new (SHELL_TYPE_APP_CACHE, NULL);
+  return global->app_cache;
+}
+
+/**
+ * shell_global_get_app_usage:
+ *
+ * Gets app usage.
+ *
+ * Return value: (transfer none): the app usage
+ */
+ShellAppUsage *
+shell_global_get_app_usage (ShellGlobal *global)
+{
+  if (!global->app_usage)
+    global->app_usage = g_object_new (SHELL_TYPE_APP_USAGE, NULL);
+  return global->app_usage;
 }

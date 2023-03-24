@@ -308,12 +308,7 @@ shell_app_system_finalize (GObject *object)
 ShellAppSystem *
 shell_app_system_get_default (void)
 {
-  static ShellAppSystem *instance = NULL;
-
-  if (instance == NULL)
-    instance = g_object_new (SHELL_TYPE_APP_SYSTEM, NULL);
-
-  return instance;
+  return shell_global_get_app_system (shell_global_get ());
 }
 
 /**

@@ -9,6 +9,10 @@
 
 G_BEGIN_DECLS
 
+#include "shell-window-tracker.h"
+#include "shell-app-system.h"
+#include "shell-app-usage.h"
+
 #define SHELL_TYPE_GLOBAL (shell_global_get_type ())
 G_DECLARE_FINAL_TYPE (ShellGlobal, shell_global, SHELL, GLOBAL, GObject)
 
@@ -88,6 +92,12 @@ void     shell_global_set_persistent_state      (ShellGlobal  *global,
 GVariant * shell_global_get_persistent_state    (ShellGlobal  *global,
                                                  const char   *property_type,
                                                  const char   *property_name);
+
+ShellWindowTracker * shell_global_get_window_tracker (ShellGlobal *global);
+
+ShellAppSystem *     shell_global_get_app_system     (ShellGlobal *global);
+
+ShellAppUsage *      shell_global_get_app_usage      (ShellGlobal *global);
 
 G_END_DECLS
 

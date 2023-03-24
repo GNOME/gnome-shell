@@ -763,10 +763,5 @@ on_enable_monitoring_key_changed (GSettings     *settings,
 ShellAppUsage *
 shell_app_usage_get_default (void)
 {
-  static ShellAppUsage *instance;
-
-  if (instance == NULL)
-    instance = g_object_new (SHELL_TYPE_APP_USAGE, NULL);
-
-  return instance;
+  return shell_global_get_app_usage (shell_global_get ());
 }
