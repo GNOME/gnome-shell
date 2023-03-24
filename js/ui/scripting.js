@@ -107,12 +107,14 @@ function createTestWindow(params) {
         alpha: false,
         maximized: false,
         redraws: false,
+        textInput: false,
     });
 
     let perfHelper = _getPerfHelper();
     perfHelper.CreateWindowAsync(
         params.width, params.height,
-        params.alpha, params.maximized, params.redraws).catch(logError);
+        params.alpha, params.maximized,
+        params.redraws, params.textInput).catch(logError);
 }
 
 /**

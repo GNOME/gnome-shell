@@ -29,6 +29,7 @@ static const gchar introspection_xml[] =
 	  "      <arg type='b' name='alpha' direction='in'/>"
 	  "      <arg type='b' name='maximized' direction='in'/>"
 	  "      <arg type='b' name='redraws' direction='in'/>"
+	  "      <arg type='b' name='text_input' direction='in'/>"
 	  "    </method>"
 	  "    <method name='WaitWindows'/>"
 	  "    <method name='DestroyWindows'/>"
@@ -112,6 +113,22 @@ on_window_map_event (GtkWidget   *window,
 }
 
 static gboolean
+on_window_draw (GtkWidget  *window,
+                cairo_t    *cr,
+                WindowInfo *info)
+{
+  info->exposed = TRUE;
+
+  if (info->exposed && info->mapped && info->pending)
+    {
+      info->pending = FALSE;
+      check_finish_wait_windows ();
+    }
+
+  return FALSE;
+}
+
+static gboolean
 on_child_draw (GtkWidget  *window,
                cairo_t    *cr,
                WindowInfo *info)
@@ -160,14 +177,6 @@ on_child_draw (GtkWidget  *window,
   cairo_line_to (cr, allocation.width - 40 + x_offset, allocation.height);
   cairo_stroke (cr);
 
-  info->exposed = TRUE;
-
-  if (info->exposed && info->mapped && info->pending)
-    {
-      info->pending = FALSE;
-      check_finish_wait_windows ();
-    }
-
   return FALSE;
 }
 
@@ -193,7 +202,8 @@ create_window (int      width,
 	       int      height,
                gboolean alpha,
                gboolean maximized,
-               gboolean redraws)
+               gboolean redraws,
+               gboolean text_input)
 {
   WindowInfo *info;
   GtkWidget *child;
@@ -212,13 +222,24 @@ create_window (int      width,
   info->pending = TRUE;
   info->start_time = -1;
 
-  child = g_object_new (GTK_TYPE_BOX, "visible", TRUE, "app-paintable", TRUE, NULL);
+  if (text_input)
+    {
+      child = gtk_entry_new ();
+      gtk_widget_show (child);
+    }
+  else
+    {
+      child = g_object_new (GTK_TYPE_BOX, "visible", TRUE, "app-paintable", TRUE, NULL);
+      gtk_widget_set_app_paintable (info->window, TRUE);
+      g_signal_connect (child, "draw", G_CALLBACK (on_child_draw), info);
+    }
+
   gtk_container_add (GTK_CONTAINER (info->window), child);
 
-  gtk_widget_set_size_request (info->window, width, height);
-  gtk_widget_set_app_paintable (info->window, TRUE);
+  g_signal_connect (info->window, "draw", G_CALLBACK (on_window_draw), info);
   g_signal_connect (info->window, "map-event", G_CALLBACK (on_window_map_event), info);
-  g_signal_connect (child, "draw", G_CALLBACK (on_child_draw), info);
+
+  gtk_widget_set_size_request (info->window, width, height);
   gtk_widget_show (info->window);
 
   if (info->redraws)
@@ -282,11 +303,13 @@ handle_method_call (GDBusConnection       *connection,
   else if (g_strcmp0 (method_name, "CreateWindow") == 0)
     {
       int width, height;
-      gboolean alpha, maximized, redraws;
+      gboolean alpha, maximized, redraws, text_input;
 
-      g_variant_get (parameters, "(iibbb)", &width, &height, &alpha, &maximized, &redraws);
+      g_variant_get (parameters, "(iibbbb)",
+                     &width, &height,
+                     &alpha, &maximized, &redraws, &text_input);
 
-      create_window (width, height, alpha, maximized, redraws);
+      create_window (width, height, alpha, maximized, redraws, text_input);
       g_dbus_method_invocation_return_value (invocation, NULL);
     }
   else if (g_strcmp0 (method_name, "WaitWindows") == 0)
