@@ -622,10 +622,12 @@ init_window_tracking (ShellWindowTracker *self)
 {
   MetaDisplay *display = shell_global_get_display (shell_global_get ());
 
-  g_signal_connect (display, "notify::focus-window",
-                    G_CALLBACK (on_focus_window_changed), self);
-  g_signal_connect(display, "window-created",
-                   G_CALLBACK (on_window_created), self);
+  g_signal_connect_object (display, "notify::focus-window",
+                           G_CALLBACK (on_focus_window_changed), self,
+                           G_CONNECT_DEFAULT);
+  g_signal_connect_object (display, "window-created",
+                           G_CALLBACK (on_window_created), self,
+                           G_CONNECT_DEFAULT);
 }
 
 static void
