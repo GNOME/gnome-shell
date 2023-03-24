@@ -40,6 +40,9 @@ perf_tests = [
     'name': 'basic',
   },
   {
+    'name': 'closeWithActiveWindows',
+  },
+  {
     'name': 'headlessStart',
     'options': ['--hotplug'],
   },
