@@ -199,11 +199,11 @@ var QuickMenuToggle = GObject.registerClass({
         this.bind_property('subtitle',
             contents, 'subtitle',
             GObject.BindingFlags.SYNC_CREATE);
-        this.bind_property('icon-name',
-            contents, 'icon-name',
-            GObject.BindingFlags.SYNC_CREATE);
         this.bind_property('gicon',
             contents, 'gicon',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('icon-name',
+            contents, 'icon-name',
             GObject.BindingFlags.SYNC_CREATE);
 
         this.bind_property('menu-enabled',
