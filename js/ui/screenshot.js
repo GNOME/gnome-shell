@@ -2084,7 +2084,7 @@ function _storeScreenshot(bytes, pixbuf) {
         try {
             bookmarks.load_from_file(recentFile);
         } catch (e) {
-            if (!e.matches(GLib.BookmarkFileError.FILE_NOT_FOUND)) {
+            if (!e.matches(GLib.BookmarkFileError, GLib.BookmarkFileError.FILE_NOT_FOUND)) {
                 log(`Could not open recent file ${uri}: ${e.message}`);
                 return;
             }
