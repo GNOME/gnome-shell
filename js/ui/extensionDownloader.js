@@ -115,21 +115,30 @@ async function extractExtensionArchive(bytes, dir) {
     await unzip.wait_check_async(null);
 
     const schemasPath = dir.get_child('schemas');
-    const info = await schemasPath.query_info_async(
-        Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
-        Gio.FileQueryInfoFlags.NONE,
-        GLib.PRIORITY_DEFAULT,
-        null);
 
-    if (info.get_file_type() === Gio.FileType.DIRECTORY) {
-        const compileSchema = Gio.Subprocess.new(
-            ['glib-compile-schemas', '--strict', schemasPath.get_path()],
-            Gio.SubprocessFlags.NONE);
-        try {
-            await compileSchema.wait_check_async(null);
-        } catch (e) {
-            log(`Error while compiling schema for extension ${dir.get_basename()}: (${e.message})`);
-        }
+    try {
+        const info = await schemasPath.query_info_async(
+            Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
+            Gio.FileQueryInfoFlags.NONE,
+            GLib.PRIORITY_DEFAULT,
+            null);
+
+        if (info.get_file_type() !== Gio.FileType.DIRECTORY)
+            throw new Error('schemas is not a directory');
+    } catch (e) {
+        if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+            console.warn(`Error while looking for schema for extension ${dir.get_basename()}: ${e.message}`);
+        return;
+    }
+
+    const compileSchema = Gio.Subprocess.new(
+        ['glib-compile-schemas', '--strict', schemasPath.get_path()],
+        Gio.SubprocessFlags.NONE);
+
+    try {
+        await compileSchema.wait_check_async(null);
+    } catch (e) {
+        log(`Error while compiling schema for extension ${dir.get_basename()}: (${e.message})`);
     }
 }
 
