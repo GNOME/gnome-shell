@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-08 16:48+0000\n"
-"PO-Revision-Date: 2023-03-10 00:09+0300\n"
+"POT-Creation-Date: 2023-03-14 08:53+0000\n"
+"PO-Revision-Date: 2023-03-14 19:38+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -2277,7 +2277,7 @@ msgstr "Yalnızca İç"
 #. long format
 #: js/ui/unlockDialog.js:363
 msgid "%A %B %-d"
-msgstr "%A %-d %B"
+msgstr "%A, %-d %B"
 
 #: js/ui/unlockDialog.js:369
 msgid "Swipe up to unlock"
@@ -2285,7 +2285,7 @@ msgstr "Kilidi açmak için yukarı kaydır"
 
 #: js/ui/unlockDialog.js:370
 msgid "Click or press a key to unlock"
-msgstr "Kilidi açmak için tıklayın veya tuşa basın"
+msgstr "Kilidi açmak için tıklayın ya da bir tuşa basın"
 
 #: js/ui/unlockDialog.js:553
 msgid "Unlock Window"
