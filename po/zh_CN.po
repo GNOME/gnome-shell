@@ -20,21 +20,22 @@
 # Dingzhong Chen <wsxy162@gmail.com>, 2018-2021.
 # Liu Tao <lyuutau@outlook.com>, 2021.
 # lumingzh <lumingzh@qq.com>, 2022.
+# Nanling <neithern@outlook.com>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-06 17:41+0000\n"
-"PO-Revision-Date: 2023-03-10 14:27+0800\n"
-"Last-Translator: lumingzh <lumingzh@qq.com>\n"
+"POT-Creation-Date: 2023-03-26 16:27+0000\n"
+"PO-Revision-Date: 2023-03-26 11:48+0800\n"
+"Last-Translator: Nanling <neithern@outlook.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.2.2\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 42.0\n"
 "X-DL-Team: zh_CN\n"
 "X-DL-Module: gnome-shell\n"
 "X-DL-Branch: main\n"
@@ -82,7 +83,7 @@ msgid "Activate favorite app 9"
 msgstr "激活收藏夹应用 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2106
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2110
 msgid "Screenshots"
 msgstr "截图"
 
@@ -767,16 +768,16 @@ msgstr "拒绝"
 msgid "Allow"
 msgstr "允许"
 
-#: js/ui/appDisplay.js:1767
+#: js/ui/appDisplay.js:1768
 msgid "Unnamed Folder"
 msgstr "未命名文件夹"
 
-#: js/ui/appFavorites.js:166
+#: js/ui/appFavorites.js:167
 #, javascript-format
 msgid "%s has been pinned to the dash."
 msgstr "%s 已固定到快捷栏。"
 
-#: js/ui/appFavorites.js:199
+#: js/ui/appFavorites.js:200
 #, javascript-format
 msgid "%s has been unpinned from the dash."
 msgstr "%s 已从快捷栏移除。"
@@ -1650,97 +1651,97 @@ msgstr "无法锁定"
 msgid "Lock was blocked by an app"
 msgstr "一个应用阻止了锁定"
 
-#: js/ui/screenshot.js:1161
+#: js/ui/screenshot.js:1165
 msgid "Selection"
 msgstr "选区"
 
-#: js/ui/screenshot.js:1171
+#: js/ui/screenshot.js:1175
 msgid "Area Selection"
 msgstr "选择区域"
 
-#: js/ui/screenshot.js:1176
+#: js/ui/screenshot.js:1180
 msgid "Screen"
 msgstr "屏幕"
 
-#: js/ui/screenshot.js:1186
+#: js/ui/screenshot.js:1190
 msgid "Screen Selection"
 msgstr "选择屏幕"
 
-#: js/ui/screenshot.js:1191
+#: js/ui/screenshot.js:1195
 msgid "Window"
 msgstr "窗口"
 
-#: js/ui/screenshot.js:1201
+#: js/ui/screenshot.js:1205
 msgid "Window Selection"
 msgstr "选择窗口"
 
-#: js/ui/screenshot.js:1239
+#: js/ui/screenshot.js:1243
 msgid "Screenshot / Screencast"
 msgstr "截图/录屏"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1260
+#: js/ui/screenshot.js:1264
 msgid "Capture"
 msgstr "捕获"
 
-#: js/ui/screenshot.js:1282
+#: js/ui/screenshot.js:1286
 msgid "Show Pointer"
 msgstr "显示指针"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1873
+#: js/ui/screenshot.js:1877
 msgid "Screencasts"
 msgstr "录屏"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1878
+#: js/ui/screenshot.js:1882
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "录屏 %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2159
+#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2163
 msgid "Screenshot"
 msgstr "截图"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1926
+#: js/ui/screenshot.js:1930
 msgid "Screencast recorded"
 msgstr "屏幕已录制"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1928
+#: js/ui/screenshot.js:1932
 msgid "Click here to view the video."
 msgstr "单击这里查看该视频。"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2173
+#: js/ui/screenshot.js:1935 js/ui/screenshot.js:2177
 msgid "Show in Files"
 msgstr "显示文件"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2119
+#: js/ui/screenshot.js:2123
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "截图 %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2165
+#: js/ui/screenshot.js:2169
 msgid "Screenshot captured"
 msgstr "已获取截图"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2167
+#: js/ui/screenshot.js:2171
 msgid "You can paste the image from the clipboard."
 msgstr "您可以从剪贴板粘贴该图像。"
 
-#: js/ui/screenshot.js:2220 js/ui/screenshot.js:2385
+#: js/ui/screenshot.js:2224 js/ui/screenshot.js:2389
 msgid "Screenshot taken"
 msgstr "已获取屏幕截图"
 
@@ -1887,15 +1888,19 @@ msgctxt "title"
 msgid "Background Apps"
 msgstr "后台应用"
 
-#: js/ui/status/backgroundApps.js:153
+#: js/ui/status/backgroundApps.js:150
+msgid "Apps known to be running without a window"
+msgstr "已知的无窗口运行的应用"
+
+#: js/ui/status/backgroundApps.js:161
 msgid "App Settings"
 msgstr "应用设置"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:189
 msgid "No Background Apps"
 msgstr "没有后台应用"
 
-#: js/ui/status/backgroundApps.js:183
+#: js/ui/status/backgroundApps.js:191
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -1909,20 +1914,20 @@ msgstr "断开连接"
 msgid "Bluetooth"
 msgstr "蓝牙"
 
-#: js/ui/status/bluetooth.js:263 js/ui/status/network.js:1863
+#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1863
 msgid "Bluetooth Settings"
 msgstr "蓝牙设置"
 
-#: js/ui/status/bluetooth.js:310
+#: js/ui/status/bluetooth.js:311
 msgid "No available or connected devices"
 msgstr "没有可连接或已连接的设备"
 
-#: js/ui/status/bluetooth.js:311
+#: js/ui/status/bluetooth.js:312
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "打开蓝牙以连接到设备"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:365
+#: js/ui/status/bluetooth.js:366
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2022,19 +2027,19 @@ msgstr "VPN"
 msgid "VPN Settings"
 msgstr "VPN 设置"
 
-#: js/ui/status/network.js:1741
+#: js/ui/status/network.js:1748
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1743
+#: js/ui/status/network.js:1750
 msgid "All Networks"
 msgstr "所有网络"
 
-#: js/ui/status/network.js:1840
+#: js/ui/status/network.js:1847
 msgid "Wired Connections"
 msgstr "有线连接"
 
-#: js/ui/status/network.js:1841
+#: js/ui/status/network.js:1848
 msgid "Wired Settings"
 msgstr "有线设置"
 
@@ -2760,56 +2765,56 @@ msgstr "打印扩展详情"
 msgid "List installed extensions"
 msgstr "列出已安装的扩展"
 
-#: subprojects/extensions-tool/src/command-pack.c:450
+#: subprojects/extensions-tool/src/command-pack.c:454
 msgid "FILE"
 msgstr "文件"
 
-#: subprojects/extensions-tool/src/command-pack.c:451
+#: subprojects/extensions-tool/src/command-pack.c:455
 msgid "Additional source to include in the bundle"
 msgstr "扩展包要包含的额外文件源"
 
-#: subprojects/extensions-tool/src/command-pack.c:454
+#: subprojects/extensions-tool/src/command-pack.c:458
 msgid "SCHEMA"
 msgstr "架构"
 
-#: subprojects/extensions-tool/src/command-pack.c:455
+#: subprojects/extensions-tool/src/command-pack.c:459
 msgid "A GSettings schema that should be included"
 msgstr "应该包含的 GSettings 架构"
 
-#: subprojects/extensions-tool/src/command-pack.c:457
-#: subprojects/extensions-tool/src/command-pack.c:468
+#: subprojects/extensions-tool/src/command-pack.c:461
+#: subprojects/extensions-tool/src/command-pack.c:472
 msgid "DIRECTORY"
 msgstr "目录"
 
-#: subprojects/extensions-tool/src/command-pack.c:459
+#: subprojects/extensions-tool/src/command-pack.c:463
 msgid "The directory where translations are found"
 msgstr "查找翻译的目录"
 
-#: subprojects/extensions-tool/src/command-pack.c:461
+#: subprojects/extensions-tool/src/command-pack.c:465
 msgid "DOMAIN"
 msgstr "域"
 
-#: subprojects/extensions-tool/src/command-pack.c:463
+#: subprojects/extensions-tool/src/command-pack.c:467
 msgid "The gettext domain to use for translations"
 msgstr "翻译使用的 gettext 域"
 
-#: subprojects/extensions-tool/src/command-pack.c:466
+#: subprojects/extensions-tool/src/command-pack.c:470
 msgid "Overwrite an existing pack"
 msgstr "覆盖已有的打包"
 
-#: subprojects/extensions-tool/src/command-pack.c:470
+#: subprojects/extensions-tool/src/command-pack.c:474
 msgid "The directory where the pack should be created"
 msgstr "包应该被创建到的目录"
 
-#: subprojects/extensions-tool/src/command-pack.c:472
+#: subprojects/extensions-tool/src/command-pack.c:476
 msgid "SOURCE_DIRECTORY"
 msgstr "源目录"
 
-#: subprojects/extensions-tool/src/command-pack.c:481
+#: subprojects/extensions-tool/src/command-pack.c:485
 msgid "Create an extension bundle"
 msgstr "创建扩展包"
 
-#: subprojects/extensions-tool/src/command-pack.c:501
+#: subprojects/extensions-tool/src/command-pack.c:505
 msgid "More than one source directory specified"
 msgstr "指定了超过一个的源目录"
 
