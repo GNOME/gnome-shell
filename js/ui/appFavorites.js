@@ -59,7 +59,7 @@ const RENAMED_DESKTOP_IDS = {
     'polari.desktop': 'org.gnome.Polari.desktop',
     'seahorse.desktop': 'org.gnome.seahorse.Application.desktop',
     'shotwell.desktop': 'org.gnome.Shotwell.desktop',
-    'simple-scan.desktop': 'org.gnome.SimpleScan',
+    'simple-scan.desktop': 'org.gnome.SimpleScan.desktop',
     'tali.desktop': 'org.gnome.Tali.desktop',
     'totem.desktop': 'org.gnome.Totem.desktop',
     'evince.desktop': 'org.gnome.Evince.desktop',
