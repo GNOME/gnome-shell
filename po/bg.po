@@ -2498,7 +2498,7 @@ msgstr "Управление на разширенията на GNOME"
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:17
 #: subprojects/extensions-app/js/main.js:216
 msgid "The GNOME Project"
-msgstr "Проект GNOME"
+msgstr "Проектът GNOME"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:36
 msgid ""
