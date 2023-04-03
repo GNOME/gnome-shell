@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-19 22:23+0000\n"
-"PO-Revision-Date: 2023-03-21 13:40+0330\n"
-"Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
+"POT-Creation-Date: 2023-03-21 10:13+0000\n"
+"PO-Revision-Date: 2023-03-28 15:04+0330\n"
+"Last-Translator: MohammadSaleh Kamyab <mskf1383@envs.net>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
@@ -831,7 +831,7 @@ msgstr "هدست"
 
 #: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:348
 msgid "Microphone"
-msgstr "میکروفون"
+msgstr "صدابَر"
 
 #: js/ui/backgroundMenu.js:14
 msgid "Change Background…"
