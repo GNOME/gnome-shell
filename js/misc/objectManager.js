@@ -130,7 +130,7 @@ var ObjectManager = class extends Signals.EventEmitter {
 
         this.emit('interface-removed', interfaceName, proxy);
 
-        this._objects[objectPath][interfaceName] = null;
+        delete this._objects[objectPath][interfaceName];
 
         if (Object.keys(this._objects[objectPath]).length === 0) {
             delete this._objects[objectPath];
