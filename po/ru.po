@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-09 20:10+0000\n"
-"PO-Revision-Date: 2023-03-10 19:16+0300\n"
+"POT-Creation-Date: 2023-03-19 22:23+0000\n"
+"PO-Revision-Date: 2023-03-21 00:16+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -809,7 +809,7 @@ msgstr "Отказать"
 msgid "Allow"
 msgstr "Разрешить"
 
-#: js/ui/appDisplay.js:1767
+#: js/ui/appDisplay.js:1768
 msgid "Unnamed Folder"
 msgstr "Безымянная папка"
 
@@ -1959,15 +1959,19 @@ msgctxt "title"
 msgid "Background Apps"
 msgstr "Фоновые приложения"
 
-#: js/ui/status/backgroundApps.js:153
+#: js/ui/status/backgroundApps.js:150
+msgid "Apps known to be running without a window"
+msgstr "Известные приложения, работающие без окна"
+
+#: js/ui/status/backgroundApps.js:161
 msgid "App Settings"
 msgstr "Настройки приложений"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:189
 msgid "No Background Apps"
 msgstr "Нет фоновых приложений"
 
-#: js/ui/status/backgroundApps.js:183
+#: js/ui/status/backgroundApps.js:191
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -1983,20 +1987,20 @@ msgstr "Отключить"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:263 js/ui/status/network.js:1863
+#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1863
 msgid "Bluetooth Settings"
 msgstr "Настройки Bluetooth"
 
-#: js/ui/status/bluetooth.js:310
+#: js/ui/status/bluetooth.js:311
 msgid "No available or connected devices"
 msgstr "Нет доступных или подключенных устройств"
 
-#: js/ui/status/bluetooth.js:311
+#: js/ui/status/bluetooth.js:312
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Включите Bluetooth для подключения к устройствам"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:365
+#: js/ui/status/bluetooth.js:366
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2847,56 +2851,56 @@ msgstr "Вывести сведения о расширении"
 msgid "List installed extensions"
 msgstr "Показать установленные расширения"
 
-#: subprojects/extensions-tool/src/command-pack.c:450
+#: subprojects/extensions-tool/src/command-pack.c:454
 msgid "FILE"
 msgstr "ФАЙЛ"
 
-#: subprojects/extensions-tool/src/command-pack.c:451
+#: subprojects/extensions-tool/src/command-pack.c:455
 msgid "Additional source to include in the bundle"
 msgstr "Дополнительный исходный файл для включения в пакет"
 
-#: subprojects/extensions-tool/src/command-pack.c:454
+#: subprojects/extensions-tool/src/command-pack.c:458
 msgid "SCHEMA"
 msgstr "СХЕМА"
 
-#: subprojects/extensions-tool/src/command-pack.c:455
+#: subprojects/extensions-tool/src/command-pack.c:459
 msgid "A GSettings schema that should be included"
 msgstr "Схема GSettings для включения в пакет"
 
-#: subprojects/extensions-tool/src/command-pack.c:457
-#: subprojects/extensions-tool/src/command-pack.c:468
+#: subprojects/extensions-tool/src/command-pack.c:461
+#: subprojects/extensions-tool/src/command-pack.c:472
 msgid "DIRECTORY"
 msgstr "КАТАЛОГ"
 
-#: subprojects/extensions-tool/src/command-pack.c:459
+#: subprojects/extensions-tool/src/command-pack.c:463
 msgid "The directory where translations are found"
 msgstr "Директория с переводами"
 
-#: subprojects/extensions-tool/src/command-pack.c:461
+#: subprojects/extensions-tool/src/command-pack.c:465
 msgid "DOMAIN"
 msgstr "ДОМЕН"
 
-#: subprojects/extensions-tool/src/command-pack.c:463
+#: subprojects/extensions-tool/src/command-pack.c:467
 msgid "The gettext domain to use for translations"
 msgstr "Домен gettext для переводов"
 
-#: subprojects/extensions-tool/src/command-pack.c:466
+#: subprojects/extensions-tool/src/command-pack.c:470
 msgid "Overwrite an existing pack"
 msgstr "Переписать существующий пакет"
 
-#: subprojects/extensions-tool/src/command-pack.c:470
+#: subprojects/extensions-tool/src/command-pack.c:474
 msgid "The directory where the pack should be created"
 msgstr "Директория, где должен быть создан пакет"
 
-#: subprojects/extensions-tool/src/command-pack.c:472
+#: subprojects/extensions-tool/src/command-pack.c:476
 msgid "SOURCE_DIRECTORY"
 msgstr "ИСХОДНЫЙ_КАТАЛОГ"
 
-#: subprojects/extensions-tool/src/command-pack.c:481
+#: subprojects/extensions-tool/src/command-pack.c:485
 msgid "Create an extension bundle"
 msgstr "Создать пакет расширения"
 
-#: subprojects/extensions-tool/src/command-pack.c:501
+#: subprojects/extensions-tool/src/command-pack.c:505
 msgid "More than one source directory specified"
 msgstr "Указано больше одной исходной директории"
 
@@ -3070,9 +3074,6 @@ msgstr[2] "%u входов"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Системные звуки"
-
-#~ msgid "Apps known to be running without a window"
-#~ msgstr "Известные приложения, работающие без окна"
 
 #~ msgid "Evolution Calendar"
 #~ msgstr "Календарь Evolution"
