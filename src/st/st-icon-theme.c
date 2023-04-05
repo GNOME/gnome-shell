@@ -3802,7 +3802,7 @@ st_icon_info_load_symbolic_svg (StIconInfo    *icon_info,
   double alpha;
   char alphastr[G_ASCII_DTOSTR_BUF_SIZE];
 
-  alpha = colors->foreground.alpha;
+  alpha = colors->foreground.alpha / 255.;
 
   css_fg = color_to_string_noalpha (&colors->foreground);
 
