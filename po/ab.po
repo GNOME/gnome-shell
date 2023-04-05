@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-12-11 23:51+0000\n"
+"POT-Creation-Date: 2023-03-19 21:02+0000\n"
 "Last-Translator: Нанба Наала <naala-nanba@rambler.ru>\n"
 "Language-Team: Abkhazian <daniel.abzakh@gmail.com>\n"
 "Language: ab\n"
@@ -9,7 +9,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-DamnedLies-Scope: partial\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -17,44 +16,44 @@ msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:10
 msgid "Activate favorite application 1"
-msgstr ""
+msgstr "Иалкаау аҧшьы ахь аиасра 1"
 
 #: data/50-gnome-shell-launchers.xml:14
 msgid "Activate favorite application 2"
-msgstr ""
+msgstr "Иалкаау аҧшьы ахь аиасра 2"
 
 #: data/50-gnome-shell-launchers.xml:18
 msgid "Activate favorite application 3"
-msgstr ""
+msgstr "Иалкаау аҧшьы ахь аиасра 3"
 
 #: data/50-gnome-shell-launchers.xml:22
 msgid "Activate favorite application 4"
-msgstr ""
+msgstr "Иалкаау аҧшьы ахь аиасра 4"
 
 #: data/50-gnome-shell-launchers.xml:26
 msgid "Activate favorite application 5"
-msgstr ""
+msgstr "Иалкаау аҧшьы ахь аиасра 5"
 
 #: data/50-gnome-shell-launchers.xml:30
 msgid "Activate favorite application 6"
-msgstr ""
+msgstr "Иалкаау аҧшьы ахь аиасра 6"
 
 #: data/50-gnome-shell-launchers.xml:34
 msgid "Activate favorite application 7"
-msgstr ""
+msgstr "Иалкаау аҧшьы ахь аиасра 7"
 
 #: data/50-gnome-shell-launchers.xml:38
 msgid "Activate favorite application 8"
-msgstr ""
+msgstr "Иалкаау аҧшьы ахь аиасра 8"
 
 #: data/50-gnome-shell-launchers.xml:42
 msgid "Activate favorite application 9"
-msgstr ""
+msgstr "Иалкаау аҧшьы ахь аиасра 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
 #: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2072
 msgid "Screenshots"
-msgstr ""
+msgstr "Аекран ақәҭыхра"
 
 #: data/50-gnome-shell-screenshots.xml:9
 #: data/org.gnome.shell.gschema.xml.in:234
@@ -78,7 +77,7 @@ msgstr ""
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
-msgstr ""
+msgstr "Асистема"
 
 #: data/50-gnome-shell-system.xml:9
 msgid "Show the notification list"
@@ -437,13 +436,13 @@ msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:90
 msgid "Homepage"
-msgstr ""
+msgstr "Аҩныҟатәи адаҟьа"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:91
 msgid "Visit extension homepage"
 msgstr ""
 
-#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:146 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
@@ -451,7 +450,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "Аԥыхры"
 
-#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:312 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -489,13 +488,13 @@ msgstr ""
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:603
+#: js/gdm/util.js:604
 msgid "(or swipe finger across reader)"
 msgstr ""
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:608
+#: js/gdm/util.js:609
 msgid "(or place finger on reader)"
 msgstr ""
 
@@ -608,7 +607,7 @@ msgstr ""
 
 #: js/misc/util.js:191
 msgid "Just now"
-msgstr ""
+msgstr "Уажәыцәҟьа"
 
 #: js/misc/util.js:193
 #, javascript-format
@@ -805,13 +804,13 @@ msgstr ""
 
 #: js/ui/audioDeviceSelection.js:69
 msgid "Headphones"
-msgstr ""
+msgstr "Алымҳахаҵа"
 
 #: js/ui/audioDeviceSelection.js:71
 msgid "Headset"
-msgstr ""
+msgstr "Аицраҳәа"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:324
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
 msgid "Microphone"
 msgstr "Амикрофон"
 
@@ -972,7 +971,7 @@ msgstr ""
 #: js/ui/components/autorunManager.js:316
 #, javascript-format
 msgid "Open with %s"
-msgstr ""
+msgstr "%s ацхыраарала аартра"
 
 #: js/ui/components/networkAgent.js:91
 msgid ""
@@ -981,7 +980,7 @@ msgstr ""
 
 #: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
 msgid "Connect"
-msgstr ""
+msgstr "Аҽаҿакра"
 
 #: js/ui/components/networkAgent.js:218
 msgid "Key"
@@ -993,11 +992,11 @@ msgstr ""
 
 #: js/ui/components/networkAgent.js:302
 msgid "Identity"
-msgstr ""
+msgstr "Аиԥшрагәаҭара"
 
 #: js/ui/components/networkAgent.js:328
 msgid "Service"
-msgstr ""
+msgstr "Амаҵуратә"
 
 #: js/ui/components/networkAgent.js:366 js/ui/components/networkAgent.js:402
 #: js/ui/components/networkAgent.js:747 js/ui/components/networkAgent.js:768
@@ -1042,7 +1041,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr ""
 
-#: js/ui/components/networkAgent.js:736
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1960
 msgid "Network Manager"
 msgstr ""
 
@@ -1326,7 +1325,7 @@ msgstr ""
 
 #: js/ui/extensionDownloader.js:227
 msgid "Install"
-msgstr ""
+msgstr "Ашьақәыргылара"
 
 #: js/ui/extensionDownloader.js:233
 msgid "Install Extension"
@@ -1410,7 +1409,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
-msgstr ""
+msgstr "Иаҿакны ааныжьра"
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Turn On"
@@ -1418,33 +1417,33 @@ msgstr "Аҿакра"
 
 #: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
 msgid "Turn Off"
-msgstr ""
+msgstr "Аҿакра"
 
 #: js/ui/kbdA11yDialog.js:65
 msgid "Leave Off"
-msgstr ""
+msgstr "Иаҿыхны ааныжьра"
 
 #: js/ui/keyboard.js:219
 msgid "Region & Language Settings"
-msgstr ""
+msgstr "Арегиони абызшәеи рырхиарақәа"
 
 #: js/ui/lookingGlass.js:713
 msgid "No extensions installed"
-msgstr ""
+msgstr "Аҭбаарақәа шьақәыргылаӡам"
 
 #. Translators: argument is an extension UUID.
 #: js/ui/lookingGlass.js:774
 #, javascript-format
 msgid "%s has not emitted any errors."
-msgstr ""
+msgstr "%s агхақәа ирызку ардырра ҟаимҵаӡеит ."
 
 #: js/ui/lookingGlass.js:780
 msgid "Hide Errors"
-msgstr ""
+msgstr "Агхақәа рҵәахра"
 
 #: js/ui/lookingGlass.js:784 js/ui/lookingGlass.js:857
 msgid "Show Errors"
-msgstr ""
+msgstr "Агхақәа  рырбара"
 
 #: js/ui/lookingGlass.js:793
 msgid "Enabled"
@@ -1452,7 +1451,7 @@ msgstr "Иаҿакуп"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr ""
 
@@ -1462,7 +1461,7 @@ msgstr ""
 
 #: js/ui/lookingGlass.js:800
 msgid "Out of date"
-msgstr ""
+msgstr "Иажәит"
 
 #: js/ui/lookingGlass.js:802
 msgid "Downloading"
@@ -1470,7 +1469,7 @@ msgstr ""
 
 #: js/ui/lookingGlass.js:835
 msgid "View Source"
-msgstr ""
+msgstr "Акод арбара"
 
 #: js/ui/lookingGlass.js:846
 msgid "Web Page"
@@ -1478,11 +1477,11 @@ msgstr "Веб-адаҟьа"
 
 #: js/ui/main.js:286
 msgid "System was put in unsafe mode"
-msgstr ""
+msgstr "Асистема ишәарҭоу арежим ахь ииаган"
 
 #: js/ui/main.js:287
 msgid "Applications now have unrestricted access"
-msgstr ""
+msgstr "Аҧшьқәа шьҭа ирымоуп   иҳәаақәҵам  анеирҭа"
 
 #: js/ui/main.js:288 js/ui/overview.js:58
 msgid "Undo"
@@ -1508,15 +1507,15 @@ msgstr ""
 
 #: js/ui/messageTray.js:1418
 msgid "System Information"
-msgstr ""
+msgstr "Асистематә информациа"
 
 #: js/ui/mpris.js:202
 msgid "Unknown artist"
-msgstr ""
+msgstr "Еилкаам анагӡаҩ"
 
 #: js/ui/mpris.js:212
 msgid "Unknown title"
-msgstr ""
+msgstr "Еилкаам ахьӡ"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1546,15 +1545,15 @@ msgstr ""
 
 #: js/ui/padOsd.js:155
 msgid "Show on-screen help"
-msgstr ""
+msgstr "Аекрантә еилыркаа арбара"
 
 #: js/ui/padOsd.js:156
 msgid "Switch monitor"
-msgstr ""
+msgstr "Амонитор аиагара"
 
 #: js/ui/padOsd.js:157
 msgid "Assign keystroke"
-msgstr ""
+msgstr "Арыдқәа рызкызаара"
 
 #: js/ui/padOsd.js:226
 msgid "Done"
@@ -1570,15 +1569,15 @@ msgstr "Мап"
 
 #: js/ui/padOsd.js:856
 msgid "Press a button to configure"
-msgstr ""
+msgstr "Архиаразы апытҟәыр шәақәыӷәӷәа"
 
 #: js/ui/padOsd.js:857
 msgid "Press Esc to exit"
-msgstr ""
+msgstr "Аҭаларазы шәақәыӷәӷәа Esc"
 
 #: js/ui/padOsd.js:860
 msgid "Press any key to exit"
-msgstr ""
+msgstr "Аҭаларазы иарбанзаалак арыд  шәақәыӷәӷәа"
 
 #: js/ui/panel.js:244
 msgid "Activities"
@@ -1595,23 +1594,23 @@ msgstr "Хыхьтәи апанель"
 
 #: js/ui/runDialog.js:58
 msgid "Run a Command"
-msgstr ""
+msgstr "Адҵа анагӡара"
 
 #: js/ui/runDialog.js:73
 msgid "Press ESC to close"
-msgstr ""
+msgstr "Аркразы шәақәыӷәӷәа Esc"
 
 #: js/ui/runDialog.js:238
 msgid "Restart is not available on Wayland"
-msgstr ""
+msgstr "Wayland ахархәараан аиҭаҿакра ауам"
 
 #: js/ui/runDialog.js:243
 msgid "Restarting…"
-msgstr ""
+msgstr "Аиҭаҿакра …"
 
 #: js/ui/screenShield.js:235
 msgid "GNOME needs to lock the screen"
-msgstr ""
+msgstr "GNOME иаҭахуп  аекран ааннакылар"
 
 #. We could not become modal, so we can't activate the
 #. screenshield. The user is probably very upset at this
@@ -1622,7 +1621,7 @@ msgstr ""
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:275 js/ui/screenShield.js:652
 msgid "Unable to lock"
-msgstr ""
+msgstr "Аанкылара залымшеит"
 
 #: js/ui/screenShield.js:276 js/ui/screenShield.js:653
 msgid "Lock was blocked by an application"
@@ -1634,7 +1633,7 @@ msgstr "_Алкаара"
 
 #: js/ui/screenshot.js:1171
 msgid "Area Selection"
-msgstr ""
+msgstr "Аҵакыра алхра"
 
 #: js/ui/screenshot.js:1176
 msgid "Screen"
@@ -1642,29 +1641,29 @@ msgstr ""
 
 #: js/ui/screenshot.js:1186
 msgid "Screen Selection"
-msgstr ""
+msgstr "Аекран алхра"
 
 #: js/ui/screenshot.js:1191
 msgid "Window"
-msgstr ""
+msgstr "Аԥенџьыр"
 
 #: js/ui/screenshot.js:1201
 msgid "Window Selection"
-msgstr ""
+msgstr "Аҧенџьыр алхра"
 
 #: js/ui/screenshot.js:1239
 msgid "Screenshot / Screencast"
-msgstr ""
+msgstr "Аекран ақәҭыхра  /Аекран анҵара"
 
 #: js/ui/screenshot.js:1275
 msgid "Show Pointer"
-msgstr ""
+msgstr "Аҳәынаҧ ахырхага арбара"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
 #: js/ui/screenshot.js:1866
 msgid "Screencasts"
-msgstr ""
+msgstr "Аекран анҵамҭақәа"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
@@ -1672,7 +1671,7 @@ msgstr ""
 #: js/ui/screenshot.js:1871
 #, no-c-format
 msgid "Screencast from %d %t.webm"
-msgstr ""
+msgstr "Аекран анҵара  %d %t.webm аҟынтә"
 
 #. Translators: notification source name.
 #: js/ui/screenshot.js:1913 js/ui/screenshot.js:2125
@@ -1682,49 +1681,47 @@ msgstr "Аскриншот"
 #. Translators: notification title.
 #: js/ui/screenshot.js:1919
 msgid "Screencast recorded"
-msgstr ""
+msgstr "Аекран анҵоуп"
 
 #. Translators: notification body when a screencast was recorded.
 #: js/ui/screenshot.js:1921
 msgid "Click here to view the video."
-msgstr ""
+msgstr "Авидео ахәаҧшразы абра шәақәыӷәӷәа."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
 #: js/ui/screenshot.js:1924 js/ui/screenshot.js:2139
 msgid "Show in Files"
-msgstr ""
+msgstr "Афаилқәа рҟны арбара"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
 #: js/ui/screenshot.js:2085
 #, javascript-format
 msgid "Screenshot from %s"
-msgstr ""
+msgstr "%s аҟынтә аекран аҭыхра"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2131
 msgid "Screenshot captured"
-msgstr ""
+msgstr "Аекран ақәҭыхра ҟаҵоуп"
 
 #. Translators: notification body when a screenshot was captured.
 #: js/ui/screenshot.js:2133
 msgid "You can paste the image from the clipboard."
-msgstr ""
+msgstr "Шәара ишәылшоит  аҧсахра абуфер аҟынтә асахьа бжьашәыргылар."
 
 #: js/ui/screenshot.js:2186 js/ui/screenshot.js:2351
 msgid "Screenshot taken"
-msgstr ""
-"Иаразнактәи аекран\n"
-"аҭыхра "
+msgstr "Иаразнактәи аекран аҭыхра "
 
 #: js/ui/search.js:804
 msgid "Searching…"
-msgstr ""
+msgstr "Аҧшаара…"
 
 #: js/ui/search.js:806
 msgid "No results."
-msgstr ""
+msgstr "Акгьы ҧшааӡам."
 
 #: js/ui/search.js:937
 #, javascript-format
@@ -1747,11 +1744,11 @@ msgstr "Абжьаргылара"
 
 #: js/ui/shellEntry.js:77
 msgid "Show Text"
-msgstr ""
+msgstr "Атекст арбара"
 
 #: js/ui/shellEntry.js:79
 msgid "Hide Text"
-msgstr ""
+msgstr "Атекст  аҵәахра"
 
 #: js/ui/shellEntry.js:166
 msgid "Caps lock is on."
@@ -1759,15 +1756,15 @@ msgstr "Caps Lock аҿакуп."
 
 #: js/ui/shellMountOperation.js:286
 msgid "Hidden Volume"
-msgstr ""
+msgstr "Иҵәаху атом"
 
 #: js/ui/shellMountOperation.js:289
 msgid "Windows System Volume"
-msgstr ""
+msgstr "Асистематә том Windows"
 
 #: js/ui/shellMountOperation.js:292
 msgid "Uses Keyfiles"
-msgstr ""
+msgstr "Ахархәара рынаҭоит афаил-ацаҧхақә"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:299
@@ -1775,14 +1772,16 @@ msgstr ""
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
+"Афаил-ацаҧхақәа зхы иазырхәо атом аушьҭразы  шәхы иашәырхәа уи ацымхәрас "
+"аутилита  <i>%s</i>."
 
 #: js/ui/shellMountOperation.js:307
 msgid "PIM Number"
-msgstr ""
+msgstr "Аномер PIM"
 
 #: js/ui/shellMountOperation.js:366
 msgid "Remember Password"
-msgstr ""
+msgstr "Ажәамаӡа агәынкылара"
 
 #: js/ui/shellMountOperation.js:381
 msgid "Unlock"
@@ -1792,7 +1791,7 @@ msgstr ""
 #: js/ui/shellMountOperation.js:392
 #, javascript-format
 msgid "Open %s"
-msgstr ""
+msgstr "Аартра%s"
 
 #: js/ui/shellMountOperation.js:424
 msgid "The PIM must be a number or empty."
@@ -1802,13 +1801,13 @@ msgstr "PIM иамазароуп адаҟьақәа мамзар иҭацәыз�
 #: js/ui/shellMountOperation.js:466
 #, javascript-format
 msgid "Unable to start %s"
-msgstr ""
+msgstr "Аус арура залымшеит %s"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:468
 #, javascript-format
 msgid "Couldn’t find the %s application"
-msgstr ""
+msgstr "Аҧшьы аҧшаара ауам  %s"
 
 #: js/ui/status/accessibility.js:34
 msgid "Accessibility"
@@ -1824,31 +1823,31 @@ msgstr "Zoom"
 
 #: js/ui/status/accessibility.js:54
 msgid "Screen Reader"
-msgstr ""
+msgstr "Аекрантә диктор"
 
 #: js/ui/status/accessibility.js:58
 msgid "Screen Keyboard"
-msgstr ""
+msgstr "Аекрантә рыдыркыра"
 
 #: js/ui/status/accessibility.js:62
 msgid "Visual Alerts"
-msgstr ""
+msgstr "Лаҧшылатәи ардыррақәа"
 
 #: js/ui/status/accessibility.js:65
 msgid "Sticky Keys"
-msgstr ""
+msgstr "Иҷабуа арыдқәа"
 
 #: js/ui/status/accessibility.js:68
 msgid "Slow Keys"
-msgstr ""
+msgstr "Имыццакуа арыдқәа"
 
 #: js/ui/status/accessibility.js:71
 msgid "Bounce Keys"
-msgstr ""
+msgstr "Иадҧо арыдқәа"
 
 #: js/ui/status/accessibility.js:74
 msgid "Mouse Keys"
-msgstr ""
+msgstr "Аҳәынаҧ арыдқәа"
 
 #: js/ui/status/accessibility.js:131
 msgid "Large Text"
@@ -1929,10 +1928,66 @@ msgid "Connect to %s"
 msgstr ""
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1107
+#: js/ui/status/network.js:1113
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Анеирҭа аҭыԥ %s аҿакуп"
+
+#: js/ui/status/network.js:1472 js/ui/status/network.js:1488
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1473
+#, fuzzy
+#| msgid "Settings"
+msgid "VPN Settings"
+msgstr "Архиарақәа"
+
+#: js/ui/status/network.js:1722
+msgid "Wi–Fi"
+msgstr ""
+
+#: js/ui/status/network.js:1724
+msgid "All Networks"
+msgstr ""
+
+#: js/ui/status/network.js:1821
+msgid "Wired Connections"
+msgstr ""
+
+#: js/ui/status/network.js:1822
+#, fuzzy
+#| msgid "Settings"
+msgid "Wired Settings"
+msgstr "Архиарақәа"
+
+#: js/ui/status/network.js:1836
+#, fuzzy
+#| msgid "Bluetooth"
+msgid "Bluetooth Tethers"
+msgstr "Bluetooth"
+
+#: js/ui/status/network.js:1837
+#, fuzzy
+#| msgid "Bluetooth"
+msgid "Bluetooth Settings"
+msgstr "Bluetooth"
+
+#: js/ui/status/network.js:1851
+msgid "Mobile Connections"
+msgstr ""
+
+#: js/ui/status/network.js:1853
+msgid "Mobile Broadband Settings"
+msgstr ""
+
+#: js/ui/status/network.js:1965
+msgid "Connection failed"
+msgstr ""
+
+#: js/ui/status/network.js:1966
+msgid "Activation of network connection failed"
+msgstr ""
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
@@ -2041,19 +2096,19 @@ msgstr ""
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr ""
 
-#: js/ui/status/volume.js:196
+#: js/ui/status/volume.js:194
 msgid "Volume changed"
 msgstr ""
 
-#: js/ui/status/volume.js:258
+#: js/ui/status/volume.js:256
 msgid "Volume"
 msgstr "Амҽхак"
 
-#: js/ui/status/volume.js:274
+#: js/ui/status/volume.js:272
 msgid "Sound Output"
 msgstr "%u ҭыҵрак"
 
-#: js/ui/status/volume.js:342
+#: js/ui/status/volume.js:340
 msgid "Sound Input"
 msgstr "%u аҭалара"
 
@@ -2272,7 +2327,7 @@ msgstr "Ахаҭареилкаара ахархәаҩ ила мап ацәкын
 #: subprojects/extensions-app/data/ui/extensions-window.ui:18
 #: subprojects/extensions-app/data/ui/extensions-window.ui:83
 msgid "Extensions"
-msgstr ""
+msgstr "Арҭбаарақәа"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 msgid "Manage your GNOME Extensions"
@@ -2478,26 +2533,18 @@ msgstr ""
 msgid "UUID, name and description are required"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-disable.c:46
-#: subprojects/extensions-tool/src/command-enable.c:46
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
-#: subprojects/extensions-tool/src/main.c:146
-msgid "Failed to connect to GNOME Shell\n"
-msgstr ""
-
-#: subprojects/extensions-tool/src/command-disable.c:53
-#: subprojects/extensions-tool/src/command-enable.c:53
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-disable.c:101
+#: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-disable.c:119
-#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
 #: subprojects/extensions-tool/src/command-info.c:103
 #: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
@@ -2505,8 +2552,8 @@ msgstr ""
 msgid "No UUID given"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-disable.c:124
-#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
 #: subprojects/extensions-tool/src/command-info.c:108
 #: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
@@ -2514,8 +2561,14 @@ msgstr ""
 msgid "More than one UUID given"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-enable.c:101
+#: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:146
+msgid "Failed to connect to GNOME Shell\n"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-info.c:59
@@ -2782,7 +2835,7 @@ msgstr ""
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1907
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2791,13 +2844,4109 @@ msgstr[1] "%u ҭыҵрак"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1917
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u аҭалара"
 msgstr[1] "%u аҭаларақәа"
 
-#: subprojects/gvc/gvc-mixer-control.c:2867
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Асистематә бжьқәа"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
