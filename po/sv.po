@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-19 22:23+0000\n"
-"PO-Revision-Date: 2023-03-10 21:02+0100\n"
+"POT-Creation-Date: 2023-04-04 17:39+0000\n"
+"PO-Revision-Date: 2023-04-04 20:08+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -64,7 +64,7 @@ msgid "Activate favorite app 9"
 msgstr "Aktivera favoritprogram 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2106
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2110
 msgid "Screenshots"
 msgstr "Skärmbilder"
 
@@ -475,7 +475,7 @@ msgstr "Besök webbsida för tillägg"
 
 #: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:250
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
@@ -787,12 +787,12 @@ msgstr "Tillåt"
 msgid "Unnamed Folder"
 msgstr "Namnlös mapp"
 
-#: js/ui/appFavorites.js:166
+#: js/ui/appFavorites.js:167
 #, javascript-format
 msgid "%s has been pinned to the dash."
 msgstr "%s har fästs på snabbstartspanelen."
 
-#: js/ui/appFavorites.js:199
+#: js/ui/appFavorites.js:200
 #, javascript-format
 msgid "%s has been unpinned from the dash."
 msgstr "%s har lösgjorts från snabbstartspanelen."
@@ -1083,7 +1083,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Ett lösenord krävs för att ansluta till ”%s”."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1996
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:2020
 msgid "Network Manager"
 msgstr "Nätverkshanterare"
 
@@ -1373,15 +1373,15 @@ msgstr "%s (fjärransluten)"
 msgid "%s (console)"
 msgstr "%s (konsol)"
 
-#: js/ui/extensionDownloader.js:245
+#: js/ui/extensionDownloader.js:254
 msgid "Install"
 msgstr "Installera"
 
-#: js/ui/extensionDownloader.js:251
+#: js/ui/extensionDownloader.js:260
 msgid "Install Extension"
 msgstr "Installera tillägg"
 
-#: js/ui/extensionDownloader.js:252
+#: js/ui/extensionDownloader.js:261
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Hämta och installera ”%s” från extensions.gnome.org?"
@@ -1684,97 +1684,97 @@ msgstr "Kunde inte låsa"
 msgid "Lock was blocked by an app"
 msgstr "Låsning hindrades av ett program"
 
-#: js/ui/screenshot.js:1161
+#: js/ui/screenshot.js:1165
 msgid "Selection"
 msgstr "Markering"
 
-#: js/ui/screenshot.js:1171
+#: js/ui/screenshot.js:1175
 msgid "Area Selection"
 msgstr "Områdesmarkering"
 
-#: js/ui/screenshot.js:1176
+#: js/ui/screenshot.js:1180
 msgid "Screen"
 msgstr "Skärm"
 
-#: js/ui/screenshot.js:1186
+#: js/ui/screenshot.js:1190
 msgid "Screen Selection"
 msgstr "Skärmval"
 
-#: js/ui/screenshot.js:1191
+#: js/ui/screenshot.js:1195
 msgid "Window"
 msgstr "Fönster"
 
-#: js/ui/screenshot.js:1201
+#: js/ui/screenshot.js:1205
 msgid "Window Selection"
 msgstr "Fönsterval"
 
-#: js/ui/screenshot.js:1239
+#: js/ui/screenshot.js:1243
 msgid "Screenshot / Screencast"
 msgstr "Skärmbild / skärminspelning"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1260
+#: js/ui/screenshot.js:1264
 msgid "Capture"
 msgstr "Fånga"
 
-#: js/ui/screenshot.js:1282
+#: js/ui/screenshot.js:1286
 msgid "Show Pointer"
 msgstr "Visa pekare"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1873
+#: js/ui/screenshot.js:1877
 msgid "Screencasts"
 msgstr "Skärminspelningar"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1878
+#: js/ui/screenshot.js:1882
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Skärminspelning från %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2159
+#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2163
 msgid "Screenshot"
 msgstr "Skärmbild"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1926
+#: js/ui/screenshot.js:1930
 msgid "Screencast recorded"
 msgstr "Skärminspelning inspelad"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1928
+#: js/ui/screenshot.js:1932
 msgid "Click here to view the video."
 msgstr "Klicka här för att se videon."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2173
+#: js/ui/screenshot.js:1935 js/ui/screenshot.js:2177
 msgid "Show in Files"
 msgstr "Visa i Filer"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2119
+#: js/ui/screenshot.js:2123
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Skärmbild från %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2165
+#: js/ui/screenshot.js:2169
 msgid "Screenshot captured"
 msgstr "Skärmbild tagen"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2167
+#: js/ui/screenshot.js:2171
 msgid "You can paste the image from the clipboard."
 msgstr "Du kan klistra in bilden från urklipp."
 
-#: js/ui/screenshot.js:2220 js/ui/screenshot.js:2385
+#: js/ui/screenshot.js:2224 js/ui/screenshot.js:2389
 msgid "Screenshot taken"
 msgstr "Skärmbild tagen"
 
@@ -1952,7 +1952,7 @@ msgstr "Koppla från"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1863
+#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1887
 msgid "Bluetooth Settings"
 msgstr "Inställningar för Bluetooth"
 
@@ -2046,70 +2046,89 @@ msgstr "Koppla från %s"
 msgid "Connect to %s"
 msgstr "Anslut till %s"
 
+#: js/ui/status/network.js:1046
+msgid "Secure"
+msgstr "säker"
+
+#: js/ui/status/network.js:1046
+msgid "Not secure"
+msgstr "osäker"
+
+#: js/ui/status/network.js:1047
+#, javascript-format
+msgid "Signal strength %s%%"
+msgstr "signalstyrka %s%%"
+
+#. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
+#: js/ui/status/network.js:1049
+#, javascript-format
+msgid "%s, %s, %s"
+msgstr "%s, %s, %s"
+
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1128
+#: js/ui/status/network.js:1151
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Surfzon för %s"
 
-#: js/ui/status/network.js:1393
+#: js/ui/status/network.js:1417
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d ansluten"
 msgstr[1] "%d anslutna"
 
-#: js/ui/status/network.js:1491 js/ui/status/network.js:1507
+#: js/ui/status/network.js:1515 js/ui/status/network.js:1531
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1492
+#: js/ui/status/network.js:1516
 msgid "VPN Settings"
 msgstr "VPN-inställningar"
 
-#: js/ui/status/network.js:1741
+#: js/ui/status/network.js:1772
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1743
+#: js/ui/status/network.js:1774
 msgid "All Networks"
 msgstr "Alla nätverk"
 
-#: js/ui/status/network.js:1840
+#: js/ui/status/network.js:1871
 msgid "Wired Connections"
 msgstr "Trådbundna anslutningar"
 
-#: js/ui/status/network.js:1841
+#: js/ui/status/network.js:1872
 msgid "Wired Settings"
 msgstr "Trådbundna inställningar"
 
-#: js/ui/status/network.js:1862
+#: js/ui/status/network.js:1886
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth-delningar"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1869
+#: js/ui/status/network.js:1893
 msgid "Tether"
 msgstr "Delning"
 
-#: js/ui/status/network.js:1882
+#: js/ui/status/network.js:1906
 msgid "Mobile Connections"
 msgstr "Mobilanslutningar"
 
-#: js/ui/status/network.js:1884
+#: js/ui/status/network.js:1908
 msgid "Mobile Broadband Settings"
 msgstr "Inställningar för mobilt bredband"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1893
+#: js/ui/status/network.js:1917
 msgid "Mobile"
 msgstr "Mobil"
 
-#: js/ui/status/network.js:2001
+#: js/ui/status/network.js:2025
 msgid "Connection failed"
 msgstr "Anslutningen misslyckades"
 
-#: js/ui/status/network.js:2002
+#: js/ui/status/network.js:2026
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nätverksanslutning misslyckades"
 
@@ -3450,9 +3469,6 @@ msgstr "Systemljud"
 
 #~ msgid "Web Authentication Redirect"
 #~ msgstr "Omdirigering för webbautentisering"
-
-#~ msgid "Not In Use"
-#~ msgstr "Används inte"
 
 #~ msgid "Show the week date in the calendar"
 #~ msgstr "Visa veckonummer i kalendern"
