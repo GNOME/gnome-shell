@@ -26,16 +26,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-26 16:27+0000\n"
-"PO-Revision-Date: 2023-03-26 11:48+0800\n"
-"Last-Translator: Nanling <neithern@outlook.com>\n"
+"POT-Creation-Date: 2023-04-05 09:42+0000\n"
+"PO-Revision-Date: 2023-04-10 15:42-0400\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Gtranslator 42.0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-DL-Team: zh_CN\n"
 "X-DL-Module: gnome-shell\n"
 "X-DL-Branch: main\n"
@@ -469,7 +469,7 @@ msgstr "访问扩展主页"
 
 #: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:250
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
@@ -1063,7 +1063,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "连接到“%s”需要密码。"
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1996
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:2020
 msgid "Network Manager"
 msgstr "网络管理器"
 
@@ -1343,15 +1343,15 @@ msgstr "%s（远程）"
 msgid "%s (console)"
 msgstr "%s（控制台）"
 
-#: js/ui/extensionDownloader.js:245
+#: js/ui/extensionDownloader.js:254
 msgid "Install"
 msgstr "安装"
 
-#: js/ui/extensionDownloader.js:251
+#: js/ui/extensionDownloader.js:260
 msgid "Install Extension"
 msgstr "安装扩展"
 
-#: js/ui/extensionDownloader.js:252
+#: js/ui/extensionDownloader.js:261
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "从 extensions.gnome.org 下载并安装“%s”？"
@@ -1914,7 +1914,7 @@ msgstr "断开连接"
 msgid "Bluetooth"
 msgstr "蓝牙"
 
-#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1863
+#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1887
 msgid "Bluetooth Settings"
 msgstr "蓝牙设置"
 
@@ -2007,69 +2007,88 @@ msgstr "断开与 %s 的连接"
 msgid "Connect to %s"
 msgstr "连接至 %s"
 
+#: js/ui/status/network.js:1046
+msgid "Secure"
+msgstr "安全"
+
+#: js/ui/status/network.js:1046
+msgid "Not secure"
+msgstr "不安全"
+
+#: js/ui/status/network.js:1047
+#, javascript-format
+msgid "Signal strength %s%%"
+msgstr "信号强度 %s%%"
+
+#. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
+#: js/ui/status/network.js:1049
+#, javascript-format
+msgid "%s, %s, %s"
+msgstr "%s, %s, %s"
+
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1128
+#: js/ui/status/network.js:1151
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s 热点"
 
-#: js/ui/status/network.js:1393
+#: js/ui/status/network.js:1417
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d 台设备已连接"
 
-#: js/ui/status/network.js:1491 js/ui/status/network.js:1507
+#: js/ui/status/network.js:1515 js/ui/status/network.js:1531
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1492
+#: js/ui/status/network.js:1516
 msgid "VPN Settings"
 msgstr "VPN 设置"
 
-#: js/ui/status/network.js:1748
+#: js/ui/status/network.js:1772
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1750
+#: js/ui/status/network.js:1774
 msgid "All Networks"
 msgstr "所有网络"
 
-#: js/ui/status/network.js:1847
+#: js/ui/status/network.js:1871
 msgid "Wired Connections"
 msgstr "有线连接"
 
-#: js/ui/status/network.js:1848
+#: js/ui/status/network.js:1872
 msgid "Wired Settings"
 msgstr "有线设置"
 
-#: js/ui/status/network.js:1862
+#: js/ui/status/network.js:1886
 msgid "Bluetooth Tethers"
 msgstr "蓝牙网络共享"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1869
+#: js/ui/status/network.js:1893
 msgid "Tether"
 msgstr "网络共享"
 
-#: js/ui/status/network.js:1882
+#: js/ui/status/network.js:1906
 msgid "Mobile Connections"
 msgstr "移动设备连接"
 
-#: js/ui/status/network.js:1884
+#: js/ui/status/network.js:1908
 msgid "Mobile Broadband Settings"
 msgstr "移动宽带设置"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1893
+#: js/ui/status/network.js:1917
 msgid "Mobile"
 msgstr "移动设备"
 
-#: js/ui/status/network.js:2001
+#: js/ui/status/network.js:2025
 msgid "Connection failed"
 msgstr "连接失败"
 
-#: js/ui/status/network.js:2002
+#: js/ui/status/network.js:2026
 msgid "Activation of network connection failed"
 msgstr "网络连接激活失败"
 
@@ -2092,13 +2111,9 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "节电"
 
-#: js/ui/status/powerProfiles.js:40
+#: js/ui/status/powerProfiles.js:40 js/ui/status/powerProfiles.js:70
 msgid "Power Mode"
 msgstr "性能模式"
-
-#: js/ui/status/powerProfiles.js:70
-msgid "Power Profiles"
-msgstr "性能配置文件"
 
 #: js/ui/status/powerProfiles.js:72
 msgid "Power Settings"
@@ -2985,6 +3000,9 @@ msgstr[0] "%u 个输入"
 msgid "System Sounds"
 msgstr "系统声音"
 
+#~ msgid "Power Profiles"
+#~ msgstr "性能配置文件"
+
 #~ msgid ""
 #~ "Whether the default Bluetooth adapter had set up devices associated to it"
 #~ msgstr "默认的蓝牙适配器是否有已配对的设备"
@@ -3387,9 +3405,6 @@ msgstr "系统声音"
 
 #~ msgid "Media"
 #~ msgstr "媒体"
-
-#~ msgid "Not In Use"
-#~ msgstr "未在使用"
 
 #~ msgid "%d x %d"
 #~ msgstr "%d x %d"
