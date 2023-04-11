@@ -5,11 +5,14 @@ const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
 
+const {Spinner} = imports.ui.animation;
 const {QuickToggle, SystemIndicator} = imports.ui.quickSettings;
 const {loadInterfaceXML} = imports.misc.dbusUtils;
 
 const DBUS_NAME = 'org.freedesktop.background.Monitor';
 const DBUS_OBJECT_PATH = '/org/freedesktop/background/monitor';
+
+const SPINNER_TIMEOUT = 5; // seconds
 
 const BackgroundMonitorIface = loadInterfaceXML('org.freedesktop.background.Monitor');
 const BackgroundMonitorProxy = Gio.DBusProxy.makeProxyWrapper(BackgroundMonitorIface);
@@ -76,6 +79,10 @@ var BackgroundAppMenuItem = GObject.registerClass({
 
         this.set_child_above_sibling(this._ornamentLabel, null);
 
+        this._spinner = new Spinner(16, {hideOnStop: true});
+        this._spinner.add_style_class_name('spinner');
+        this.add_child(this._spinner);
+
         const closeButton = new St.Button({
             iconName: 'window-close-symbolic',
             styleClass: 'close-button',
@@ -86,11 +93,33 @@ var BackgroundAppMenuItem = GObject.registerClass({
         });
         this.add_child(closeButton);
 
+        this._spinner.bind_property('visible',
+            closeButton, 'visible',
+            GObject.BindingFlags.INVERT_BOOLEAN);
+
         closeButton.connect('clicked', () => this._quitApp().catch(logError));
+
+        this.connect('destroy', () => this._onDestroy());
+    }
+
+    _onDestroy() {
+        if (this._spinnerTimeoutId)
+            GLib.source_remove(this._spinnerTimeoutId);
+        delete this._spinnerTimeoutId;
     }
 
     async _quitApp() {
         const appId = this.app.get_id().replace(/\.desktop$/, '');
+
+        this._spinner.play();
+        this._spinnerTimeoutId =
+            GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, SPINNER_TIMEOUT,
+                () => {
+                    // Assume the quit request has failed, stop the spinner
+                    this._spinner.stop();
+                    delete this._spinnerTimeoutId;
+                    return GLib.SOURCE_REMOVE;
+                });
 
         try {
             await Gio.DBus.session.call(

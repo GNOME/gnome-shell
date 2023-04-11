@@ -183,6 +183,9 @@
     @extend .icon-button;
     padding: $base_padding;
   }
+  & .spinner {
+    padding: $base_padding;
+  }
 
   &.popup-inactive-menu-item { color: $fg_color; }
 }
