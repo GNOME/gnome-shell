@@ -199,7 +199,7 @@ if get_option('tests')
   test_theme = executable('test-theme',
     sources: 'test-theme.c',
     c_args: st_cflags,
-    dependencies: [mutter_test_dep, gtk_dep, libxml_dep],
+    dependencies: [mutter_test_dep, libxml_dep],
     build_rpath: mutter_typelibdir,
     link_with: libst
   )
