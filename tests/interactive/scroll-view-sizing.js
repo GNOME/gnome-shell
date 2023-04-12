@@ -2,7 +2,7 @@
 
 const UI = imports.testcommon.ui;
 
-const { Clutter, GObject, Gtk, Shell, St } = imports.gi;
+const {Clutter, GObject, Shell, St} = imports.gi;
 
 // This is an interactive test of the sizing behavior of StScrollView. It
 // may be interesting in the future to split out the two classes at the
@@ -299,7 +299,7 @@ function test() {
 	    button.label = 'AUTOMATIC';
 	    break;
         }
-        scrollView.set_policy(Gtk.PolicyType[hpolicy.label], Gtk.PolicyType[vpolicy.label]);
+        scrollView.set_policy(St.PolicyType[hpolicy.label], St.PolicyType[vpolicy.label]);
     }
 
     hpolicy.connect('clicked', () => { togglePolicy(hpolicy); });

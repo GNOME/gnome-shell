@@ -2,7 +2,7 @@
 
 const Config = imports.misc.config;
 
-imports.gi.versions = { Clutter: Config.LIBMUTTER_API_VERSION, Gtk: '3.0' };
+imports.gi.versions = {Clutter: Config.LIBMUTTER_API_VERSION};
 
 const { Clutter, Gio, GLib, St } = imports.gi;
 

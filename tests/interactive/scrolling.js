@@ -2,7 +2,7 @@
 
 const UI = imports.testcommon.ui;
 
-const { Clutter, Gtk, St } = imports.gi;
+const {Clutter, St} = imports.gi;
 
 function test() {
     let stage = new Clutter.Stage();
@@ -22,9 +22,9 @@ function test() {
     vbox.add(v, { expand: true });
 
     toggle.connect('notify::checked', () => {
-        v.set_policy(toggle.checked ? Gtk.PolicyType.AUTOMATIC
-                     : Gtk.PolicyType.NEVER,
-                     Gtk.PolicyType.AUTOMATIC);
+        v.set_policy(toggle.checked ? St.PolicyType.AUTOMATIC
+                     : St.PolicyType.NEVER,
+                     St.PolicyType.AUTOMATIC);
     });
 
     let b = new St.BoxLayout({ vertical: true,
