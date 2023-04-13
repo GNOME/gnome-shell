@@ -38,11 +38,8 @@ static const gchar introspection_xml[] =
 
 typedef struct {
   GtkWidget *window;
-  int width;
-  int height;
 
   guint alpha : 1;
-  guint maximized : 1;
   guint redraws : 1;
   guint mapped : 1;
   guint exposed : 1;
@@ -209,10 +206,7 @@ create_window (int      width,
   GtkWidget *child;
 
   info = g_new0 (WindowInfo, 1);
-  info->width = width;
-  info->height = height;
   info->alpha = alpha;
-  info->maximized = maximized;
   info->redraws = redraws;
   info->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   if (alpha)
