@@ -24,7 +24,7 @@ gcr_req = '>= 3.90.0'
 gio_req = '>= 2.56.0'
 gi_req = '>= 1.49.1'
 gjs_req = '>= 1.73.1'
-gtk_req = '>= 3.15.0'
+gtk_req = '>= 4.0'
 mutter_req = '>= 44.0'
 polkit_req = '>= 0.100'
 schemas_req = '>= 42.beta'
@@ -78,7 +78,7 @@ gi_dep = dependency('gobject-introspection-1.0', version: gi_req)
 gio_dep = dependency('gio-2.0', version: gio_req)
 gio_unix_dep = dependency('gio-unix-2.0', version: gio_req)
 gjs_dep = dependency('gjs-1.0', version: gjs_req)
-gtk_dep = dependency('gtk+-3.0', version: gtk_req)
+gtk_dep = dependency('gtk4', version: gtk_req)
 libxml_dep = dependency('libxml-2.0')
 clutter_dep = dependency(clutter_pc, version: mutter_req)
 cogl_dep = dependency(cogl_pc, version: mutter_req)

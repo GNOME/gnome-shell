@@ -71,10 +71,10 @@ struct _PerfHelperWindow {
 G_DEFINE_TYPE (PerfHelperWindow, perf_helper_window, GTK_TYPE_APPLICATION_WINDOW);
 
 #define PERF_HELPER_TYPE_WINDOW_CONTENT (perf_helper_window_content_get_type ())
-G_DECLARE_FINAL_TYPE (PerfHelperWindowContent, perf_helper_window_content, PERF_HELPER, WINDOW_CONTENT, GtkBox)
+G_DECLARE_FINAL_TYPE (PerfHelperWindowContent, perf_helper_window_content, PERF_HELPER, WINDOW_CONTENT, GtkWidget)
 
 struct _PerfHelperWindowContent {
-  GtkBox parent;
+  GtkWidget parent;
 
   guint redraws : 1;
 
@@ -82,7 +82,7 @@ struct _PerfHelperWindowContent {
   gint64 time;
 };
 
-G_DEFINE_TYPE (PerfHelperWindowContent, perf_helper_window_content, GTK_TYPE_BOX);
+G_DEFINE_TYPE (PerfHelperWindowContent, perf_helper_window_content, GTK_TYPE_WIDGET);
 
 static void destroy_windows           (PerfHelperApp *app);
 static void finish_wait_windows       (PerfHelperApp *app);
@@ -116,41 +116,41 @@ destroy_windows (PerfHelperApp *app)
   GtkWindow *window;
 
   while ((window = gtk_application_get_active_window (gtk_app)))
-    gtk_widget_destroy (GTK_WIDGET (window));
+    gtk_window_destroy (window);
 
   check_finish_wait_windows (app);
 }
 
-static gboolean
-on_window_map_event (GtkWidget        *toplevel,
-                     GdkEventAny      *event,
-                     PerfHelperWindow *window)
+static void
+on_surface_mapped (GObject    *object,
+                   GParamSpec *pspec,
+                   gpointer    user_data)
 {
-  window->mapped = TRUE;
+  PerfHelperWindow *window = user_data;
 
-  return FALSE;
+  window->mapped = TRUE;
 }
 
 static void
 perf_helper_window_realize (GtkWidget *widget)
 {
-  GtkWidget *toplevel;
+  GdkSurface *surface;
 
   GTK_WIDGET_CLASS (perf_helper_window_parent_class)->realize (widget);
 
-  toplevel = gtk_widget_get_toplevel (widget);
-  g_signal_connect_object (toplevel,
-                           "map-event", G_CALLBACK (on_window_map_event),
+  surface = gtk_native_get_surface (gtk_widget_get_native (widget));
+  g_signal_connect_object (surface,
+                           "notify::mapped", G_CALLBACK (on_surface_mapped),
                            widget, G_CONNECT_DEFAULT);
 }
 
-static gboolean
-perf_helper_window_draw (GtkWidget  *widget,
-                         cairo_t    *cr)
+static void
+perf_helper_window_snapshot (GtkWidget   *widget,
+                             GtkSnapshot *snapshot)
 {
   PerfHelperWindow *window = PERF_HELPER_WINDOW (widget);
 
-  GTK_WIDGET_CLASS (perf_helper_window_parent_class)->draw (widget, cr);
+  GTK_WIDGET_CLASS (perf_helper_window_parent_class)->snapshot (widget, snapshot);
 
   window->exposed = TRUE;
 
@@ -159,20 +159,26 @@ perf_helper_window_draw (GtkWidget  *widget,
       window->pending = FALSE;
       check_finish_wait_windows (PERF_HELPER_APP (g_application_get_default ()));
     }
-
-  return FALSE;
 }
 
-static gboolean
-perf_helper_window_content_draw (GtkWidget  *widget,
-                                 cairo_t    *cr)
+#define LINE_WIDTH 10
+#define MARGIN 40
+
+static void
+perf_helper_window_content_snapshot (GtkWidget   *widget,
+                                     GtkSnapshot *snapshot)
 {
   PerfHelperWindowContent *content = PERF_HELPER_WINDOW_CONTENT (widget);
-  GtkWindow *window = GTK_WINDOW (gtk_widget_get_toplevel (widget));
-  cairo_rectangle_int_t allocation;
+  GdkRGBA line_color;
+  graphene_rect_t bounds;
+  int width, height;
   double x_offset, y_offset;
 
-  gtk_widget_get_allocation (widget, &allocation);
+  GTK_WIDGET_CLASS (perf_helper_window_content_parent_class)->snapshot (widget, snapshot);
+
+  gdk_rgba_parse (&line_color, "red");
+  width = gtk_widget_get_width (widget);
+  height = gtk_widget_get_height (widget);
 
   /* We draw an arbitrary pattern of red lines near the border of the
    * window to make it more clear than empty windows if something
@@ -190,19 +196,17 @@ perf_helper_window_content_draw (GtkWidget  *widget,
       x_offset = y_offset = 0;
     }
 
-  cairo_set_source_rgb (cr, 1, 0, 0);
-  cairo_set_line_width (cr, 10);
-  cairo_move_to (cr, 0, 40 + y_offset);
-  cairo_line_to (cr, allocation.width, 40 + y_offset);
-  cairo_move_to (cr, 0, allocation.height - 40 + y_offset);
-  cairo_line_to (cr, allocation.width, allocation.height - 40 + y_offset);
-  cairo_move_to (cr, 40 + x_offset, 0);
-  cairo_line_to (cr, 40 + x_offset, allocation.height);
-  cairo_move_to (cr, allocation.width - 40 + x_offset, 0);
-  cairo_line_to (cr, allocation.width - 40 + x_offset, allocation.height);
-  cairo_stroke (cr);
+  graphene_rect_init (&bounds, MARGIN + x_offset, 0, LINE_WIDTH, height);
+  gtk_snapshot_append_color (snapshot, &line_color, &bounds);
 
-  return FALSE;
+  graphene_rect_init (&bounds, width - MARGIN - LINE_WIDTH + x_offset, 0, LINE_WIDTH, height);
+  gtk_snapshot_append_color (snapshot, &line_color, &bounds);
+
+  graphene_rect_init (&bounds, 0, MARGIN + y_offset, width, LINE_WIDTH);
+  gtk_snapshot_append_color (snapshot, &line_color, &bounds);
+
+  graphene_rect_init (&bounds, 0, height - MARGIN - LINE_WIDTH + y_offset, width, LINE_WIDTH);
+  gtk_snapshot_append_color (snapshot, &line_color, &bounds);
 }
 
 static gboolean
@@ -227,9 +231,7 @@ perf_helper_window_content_new (gboolean redraws) {
   PerfHelperWindowContent *content;
   GtkWidget *widget;
 
-  content = g_object_new (PERF_HELPER_TYPE_WINDOW_CONTENT,
-                          "visible", TRUE,
-                          NULL);
+  content = g_object_new (PERF_HELPER_TYPE_WINDOW_CONTENT, NULL);
 
   content->redraws = redraws;
 
@@ -257,27 +259,23 @@ create_window (PerfHelperApp *app,
                          "application", app,
                          NULL);
 
-  if (alpha)
-    gtk_widget_set_visual (GTK_WIDGET (window), gdk_screen_get_rgba_visual (gdk_screen_get_default ()));
   if (maximized)
     gtk_window_maximize (GTK_WINDOW (window));
 
   if (text_input)
     {
       child = gtk_entry_new ();
-      gtk_widget_show (child);
     }
   else
     {
-      gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (window)),
-                                   alpha ? "alpha" : "solid");
+      gtk_widget_add_css_class(GTK_WIDGET (window), alpha ? "alpha" : "solid");
       child = perf_helper_window_content_new (redraws);
     }
 
-  gtk_container_add (GTK_CONTAINER (window), child);
+  gtk_window_set_child (GTK_WINDOW (window), child);
 
   gtk_widget_set_size_request (GTK_WIDGET (window), width, height);
-  gtk_widget_show (GTK_WIDGET (window));
+  gtk_window_present (GTK_WINDOW (window));
 }
 
 static void
@@ -368,7 +366,6 @@ perf_helper_app_activate (GApplication *app)
 {
 }
 
-
 static void
 perf_helper_app_startup (GApplication *app)
 {
@@ -377,11 +374,15 @@ perf_helper_app_startup (GApplication *app)
   G_APPLICATION_CLASS (perf_helper_app_parent_class)->startup (app);
 
   css_provider = gtk_css_provider_new ();
-  gtk_css_provider_load_from_data (css_provider, application_css, -1, NULL);
+#if GTK_CHECK_VERSION (4,11,3)
+  gtk_css_provider_load_from_string (css_provider, application_css);
+#else
+  gtk_css_provider_load_from_data (css_provider, application_css, -1);
+#endif
 
-  gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
-                                             GTK_STYLE_PROVIDER (css_provider),
-                                             GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  gtk_style_context_add_provider_for_display (gdk_display_get_default (),
+                                              GTK_STYLE_PROVIDER (css_provider),
+                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
 static gboolean
@@ -427,7 +428,7 @@ static void
 perf_helper_window_content_class_init (PerfHelperWindowContentClass *klass) {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  widget_class->draw = perf_helper_window_content_draw;
+  widget_class->snapshot = perf_helper_window_content_snapshot;
 }
 
 static PerfHelperApp *
@@ -454,7 +455,7 @@ perf_helper_window_class_init (PerfHelperWindowClass *klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   widget_class->realize = perf_helper_window_realize;
-  widget_class->draw = perf_helper_window_draw;
+  widget_class->snapshot = perf_helper_window_snapshot;
 }
 
 int
