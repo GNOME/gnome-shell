@@ -47,7 +47,6 @@ struct _PerfHelperApp {
   GtkApplication parent;
 
   guint timeout_id;
-  GList *our_windows;
   GList *wait_windows_invocations;
 };
 
@@ -99,12 +98,11 @@ establish_timeout (PerfHelperApp *app)
 static void
 destroy_windows (PerfHelperApp *app)
 {
-  GList *l;
+  GtkApplication *gtk_app = GTK_APPLICATION (app);
+  GtkWindow *window;
 
-  for (l = app->our_windows; l; l = l->next)
-    gtk_widget_destroy (GTK_WIDGET (l->data));
-
-  g_clear_list (&app->our_windows, NULL);
+  while ((window = gtk_application_get_active_window (gtk_app)))
+    gtk_widget_destroy (GTK_WIDGET (window));
 
   check_finish_wait_windows (app);
 }
@@ -266,8 +264,6 @@ create_window (PerfHelperApp *app,
 
   if (redraws)
     gtk_widget_add_tick_callback (GTK_WIDGET (window), tick_callback, NULL, NULL);
-
-  app->our_windows = g_list_prepend (app->our_windows, window);
 }
 
 static void
@@ -287,7 +283,7 @@ check_finish_wait_windows (PerfHelperApp *app)
   GList *l;
   gboolean have_pending = FALSE;
 
-  for (l = app->our_windows; l; l = l->next)
+  for (l = gtk_application_get_windows (GTK_APPLICATION (app)); l; l = l->next)
     {
       PerfHelperWindow *window = l->data;
       if (window->pending)
