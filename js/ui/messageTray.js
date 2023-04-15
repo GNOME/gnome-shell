@@ -1006,9 +1006,8 @@ var MessageTray = GObject.registerClass({
     }
 
     _onNotificationDestroy(notification) {
-        this._notificationRemoved = this._notification === notification;
-
-        if (this._notificationRemoved) {
+        if (this._notification === notification) {
+            this._notificationRemoved = true;
             if (this._notificationState === State.SHOWN ||
                 this._notificationState === State.SHOWING) {
                 this._updateNotificationTimeout(0);
