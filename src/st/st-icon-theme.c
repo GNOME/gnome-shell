@@ -1413,7 +1413,6 @@ real_choose_icon (StIconTheme       *icon_theme,
   else
     {
       static gboolean check_for_default_theme = TRUE;
-      g_autofree char *default_theme_path = NULL;
       gboolean found = FALSE;
 
       if (check_for_default_theme)
@@ -1422,6 +1421,8 @@ real_choose_icon (StIconTheme       *icon_theme,
 
           for (i = 0; !found && i < icon_theme->search_path_len; i++)
             {
+              g_autofree char *default_theme_path = NULL;
+
               default_theme_path = g_build_filename (icon_theme->search_path[i],
                                                      FALLBACK_ICON_THEME,
                                                      "index.theme",
