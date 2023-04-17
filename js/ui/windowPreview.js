@@ -525,6 +525,7 @@ var WindowPreview = GObject.registerClass({
     _onDestroy() {
         this.metaWindow._delegate = null;
         this._delegate = null;
+        this._destroyed = true;
 
         if (this._longPressLater) {
             const laters = global.compositor.get_laters();
@@ -554,6 +555,9 @@ var WindowPreview = GObject.registerClass({
     }
 
     vfunc_leave_event(crossingEvent) {
+        if (this._destroyed)
+            return super.vfunc_leave_event(crossingEvent);
+
         if ((crossingEvent.flags & Clutter.EventFlags.FLAG_GRAB_NOTIFY) !== 0 &&
             global.stage.get_grab_actor() === this._closeButton)
             return super.vfunc_leave_event(crossingEvent);
