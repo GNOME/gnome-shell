@@ -71,6 +71,7 @@ class DashItemContainer extends St.Widget {
         this.label = new St.Label({ style_class: 'dash-label' });
         this.label.hide();
         Main.layoutManager.addChrome(this.label);
+        this.label.connectObject('destroy', () => (this.label = null), this);
         this.label_actor = this.label;
 
         this.child = null;
@@ -82,7 +83,7 @@ class DashItemContainer extends St.Widget {
         this.connect('destroy', () => {
             if (this.child != null)
                 this.child.destroy();
-            this.label.destroy();
+            this.label?.destroy();
         });
     }
 
