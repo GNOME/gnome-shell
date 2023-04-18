@@ -32,19 +32,6 @@ static const gchar introspection_xml[] =
 	  "  </interface>"
 	"</node>";
 
-typedef struct {
-  GtkWidget *window;
-
-  guint alpha : 1;
-  guint redraws : 1;
-  guint mapped : 1;
-  guint exposed : 1;
-  guint pending : 1;
-
-  gint64 start_time;
-  gint64 time;
-} WindowInfo;
-
 static int opt_idle_timeout = 30;
 
 static GOptionEntry opt_entries[] =
@@ -65,6 +52,24 @@ struct _PerfHelperApp {
 };
 
 G_DEFINE_TYPE (PerfHelperApp, perf_helper_app, GTK_TYPE_APPLICATION);
+
+#define PERF_HELPER_TYPE_WINDOW (perf_helper_window_get_type ())
+G_DECLARE_FINAL_TYPE (PerfHelperWindow, perf_helper_window, PERF_HELPER, WINDOW, GtkApplicationWindow)
+
+struct _PerfHelperWindow {
+  GtkApplicationWindow parent;
+
+  guint alpha : 1;
+  guint redraws : 1;
+  guint mapped : 1;
+  guint exposed : 1;
+  guint pending : 1;
+
+  gint64 start_time;
+  gint64 time;
+};
+
+G_DEFINE_TYPE (PerfHelperWindow, perf_helper_window, GTK_TYPE_APPLICATION_WINDOW);
 
 static void destroy_windows           (PerfHelperApp *app);
 static void finish_wait_windows       (PerfHelperApp *app);
@@ -97,11 +102,7 @@ destroy_windows (PerfHelperApp *app)
   GList *l;
 
   for (l = app->our_windows; l; l = l->next)
-    {
-      WindowInfo *info = l->data;
-      gtk_widget_destroy (info->window);
-      g_free (info);
-    }
+    gtk_widget_destroy (GTK_WIDGET (l->data));
 
   g_clear_list (&app->our_windows, NULL);
 
@@ -109,25 +110,41 @@ destroy_windows (PerfHelperApp *app)
 }
 
 static gboolean
-on_window_map_event (GtkWidget   *window,
-                     GdkEventAny *event,
-                     WindowInfo  *info)
+on_window_map_event (GtkWidget        *toplevel,
+                     GdkEventAny      *event,
+                     PerfHelperWindow *window)
 {
-  info->mapped = TRUE;
+  window->mapped = TRUE;
 
   return FALSE;
 }
 
-static gboolean
-on_window_draw (GtkWidget  *window,
-                cairo_t    *cr,
-                WindowInfo *info)
+static void
+perf_helper_window_realize (GtkWidget *widget)
 {
-  info->exposed = TRUE;
+  GtkWidget *toplevel;
 
-  if (info->exposed && info->mapped && info->pending)
+  GTK_WIDGET_CLASS (perf_helper_window_parent_class)->realize (widget);
+
+  toplevel = gtk_widget_get_toplevel (widget);
+  g_signal_connect_object (toplevel,
+                           "map-event", G_CALLBACK (on_window_map_event),
+                           widget, G_CONNECT_DEFAULT);
+}
+
+static gboolean
+perf_helper_window_draw (GtkWidget  *widget,
+                         cairo_t    *cr)
+{
+  PerfHelperWindow *window = PERF_HELPER_WINDOW (widget);
+
+  GTK_WIDGET_CLASS (perf_helper_window_parent_class)->draw (widget, cr);
+
+  window->exposed = TRUE;
+
+  if (window->exposed && window->mapped && window->pending)
     {
-      info->pending = FALSE;
+      window->pending = FALSE;
       check_finish_wait_windows (PERF_HELPER_APP (g_application_get_default ()));
     }
 
@@ -135,14 +152,17 @@ on_window_draw (GtkWidget  *window,
 }
 
 static gboolean
-on_child_draw (GtkWidget  *window,
+on_child_draw (GtkWidget  *widget,
                cairo_t    *cr,
-               WindowInfo *info)
+               gpointer    user_data)
 {
+  PerfHelperWindow *window;
   cairo_rectangle_int_t allocation;
   double x_offset, y_offset;
 
-  gtk_widget_get_allocation (window, &allocation);
+  window = PERF_HELPER_WINDOW (gtk_widget_get_toplevel (widget));
+
+  gtk_widget_get_allocation (widget, &allocation);
 
   /* We draw an arbitrary pattern of red lines near the border of the
    * window to make it more clear than empty windows if something
@@ -152,7 +172,7 @@ on_child_draw (GtkWidget  *window,
   cairo_save (cr);
   cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 
-  if (info->alpha)
+  if (window->alpha)
     cairo_set_source_rgba (cr, 1, 1, 1, 0.5);
   else
     cairo_set_source_rgb (cr, 1, 1, 1);
@@ -160,9 +180,9 @@ on_child_draw (GtkWidget  *window,
   cairo_paint (cr);
   cairo_restore (cr);
 
-  if (info->redraws)
+  if (window->redraws)
     {
-      double position = (info->time - info->start_time) / 1000000.;
+      double position = (window->time - window->start_time) / 1000000.;
       x_offset = 20 * cos (2 * M_PI * position);
       y_offset = 20 * sin (2 * M_PI * position);
     }
@@ -191,12 +211,12 @@ tick_callback (GtkWidget     *widget,
                GdkFrameClock *frame_clock,
                gpointer       user_data)
 {
-  WindowInfo *info = user_data;
+  PerfHelperWindow *window = PERF_HELPER_WINDOW (widget);
 
-  if (info->start_time < 0)
-    info->start_time = info->time = gdk_frame_clock_get_frame_time (frame_clock);
+  if (window->start_time < 0)
+    window->start_time = window->time = gdk_frame_clock_get_frame_time (frame_clock);
   else
-    info->time = gdk_frame_clock_get_frame_time (frame_clock);
+    window->time = gdk_frame_clock_get_frame_time (frame_clock);
 
   gtk_widget_queue_draw (widget);
 
@@ -212,19 +232,19 @@ create_window (PerfHelperApp *app,
                gboolean       redraws,
                gboolean       text_input)
 {
-  WindowInfo *info;
+  PerfHelperWindow *window;
   GtkWidget *child;
 
-  info = g_new0 (WindowInfo, 1);
-  info->alpha = alpha;
-  info->redraws = redraws;
-  info->window = gtk_application_window_new (GTK_APPLICATION (app));
+  window = g_object_new (PERF_HELPER_TYPE_WINDOW,
+                         "application", app,
+                         NULL);
+
+  window->alpha = alpha;
+  window->redraws = redraws;
   if (alpha)
-    gtk_widget_set_visual (info->window, gdk_screen_get_rgba_visual (gdk_screen_get_default ()));
+    gtk_widget_set_visual (GTK_WIDGET (window), gdk_screen_get_rgba_visual (gdk_screen_get_default ()));
   if (maximized)
-    gtk_window_maximize (GTK_WINDOW (info->window));
-  info->pending = TRUE;
-  info->start_time = -1;
+    gtk_window_maximize (GTK_WINDOW (window));
 
   if (text_input)
     {
@@ -234,23 +254,20 @@ create_window (PerfHelperApp *app,
   else
     {
       child = g_object_new (GTK_TYPE_BOX, "visible", TRUE, "app-paintable", TRUE, NULL);
-      gtk_widget_set_app_paintable (info->window, TRUE);
-      g_signal_connect (child, "draw", G_CALLBACK (on_child_draw), info);
+
+      gtk_widget_set_app_paintable (GTK_WIDGET (window), TRUE);
+      g_signal_connect (child, "draw", G_CALLBACK (on_child_draw), NULL);
     }
 
-  gtk_container_add (GTK_CONTAINER (info->window), child);
+  gtk_container_add (GTK_CONTAINER (window), child);
 
-  g_signal_connect (info->window, "draw", G_CALLBACK (on_window_draw), info);
-  g_signal_connect (info->window, "map-event", G_CALLBACK (on_window_map_event), info);
+  gtk_widget_set_size_request (GTK_WIDGET (window), width, height);
+  gtk_widget_show (GTK_WIDGET (window));
 
-  gtk_widget_set_size_request (info->window, width, height);
-  gtk_widget_show (info->window);
+  if (redraws)
+    gtk_widget_add_tick_callback (GTK_WIDGET (window), tick_callback, NULL, NULL);
 
-  if (info->redraws)
-    gtk_widget_add_tick_callback (info->window, tick_callback,
-                                  info, NULL);
-
-  app->our_windows = g_list_prepend (app->our_windows, info);
+  app->our_windows = g_list_prepend (app->our_windows, window);
 }
 
 static void
@@ -272,8 +289,8 @@ check_finish_wait_windows (PerfHelperApp *app)
 
   for (l = app->our_windows; l; l = l->next)
     {
-      WindowInfo *info = l->data;
-      if (info->pending)
+      PerfHelperWindow *window = l->data;
+      if (window->pending)
         have_pending = TRUE;
     }
 
@@ -383,6 +400,22 @@ perf_helper_app_new (void) {
                        "application-id", "org.gnome.Shell.PerfHelper",
                        "flags", flags,
                        NULL);
+}
+
+static void
+perf_helper_window_init (PerfHelperWindow *window)
+{
+  window->pending = TRUE;
+  window->start_time = -1;
+}
+
+static void
+perf_helper_window_class_init (PerfHelperWindowClass *klass)
+{
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
+  widget_class->realize = perf_helper_window_realize;
+  widget_class->draw = perf_helper_window_draw;
 }
 
 int
