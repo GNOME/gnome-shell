@@ -32,6 +32,11 @@ static const gchar introspection_xml[] =
 	  "  </interface>"
 	"</node>";
 
+static const char application_css[] =
+  ".solid { background: rgb(255,255,255); }"
+  ".alpha { background: rgba(255,255,255,0.5); }"
+  "";
+
 static int opt_idle_timeout = 30;
 
 static GOptionEntry opt_entries[] =
@@ -58,7 +63,6 @@ G_DECLARE_FINAL_TYPE (PerfHelperWindow, perf_helper_window, PERF_HELPER, WINDOW,
 struct _PerfHelperWindow {
   GtkApplicationWindow parent;
 
-  guint alpha : 1;
   guint redraws : 1;
   guint mapped : 1;
   guint exposed : 1;
@@ -167,17 +171,6 @@ on_child_draw (GtkWidget  *widget,
    * is drastrically wrong.
    */
 
-  cairo_save (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-
-  if (window->alpha)
-    cairo_set_source_rgba (cr, 1, 1, 1, 0.5);
-  else
-    cairo_set_source_rgb (cr, 1, 1, 1);
-
-  cairo_paint (cr);
-  cairo_restore (cr);
-
   if (window->redraws)
     {
       double position = (window->time - window->start_time) / 1000000.;
@@ -237,7 +230,6 @@ create_window (PerfHelperApp *app,
                          "application", app,
                          NULL);
 
-  window->alpha = alpha;
   window->redraws = redraws;
   if (alpha)
     gtk_widget_set_visual (GTK_WIDGET (window), gdk_screen_get_rgba_visual (gdk_screen_get_default ()));
@@ -251,9 +243,10 @@ create_window (PerfHelperApp *app,
     }
   else
     {
-      child = g_object_new (GTK_TYPE_BOX, "visible", TRUE, "app-paintable", TRUE, NULL);
+      gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (window)),
+                                   alpha ? "alpha" : "solid");
+      child = g_object_new (GTK_TYPE_BOX, "visible", TRUE, NULL);
 
-      gtk_widget_set_app_paintable (GTK_WIDGET (window), TRUE);
       g_signal_connect (child, "draw", G_CALLBACK (on_child_draw), NULL);
     }
 
@@ -354,6 +347,22 @@ perf_helper_app_activate (GApplication *app)
 {
 }
 
+
+static void
+perf_helper_app_startup (GApplication *app)
+{
+  GtkCssProvider *css_provider;
+
+  G_APPLICATION_CLASS (perf_helper_app_parent_class)->startup (app);
+
+  css_provider = gtk_css_provider_new ();
+  gtk_css_provider_load_from_data (css_provider, application_css, -1, NULL);
+
+  gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
+                                             GTK_STYLE_PROVIDER (css_provider),
+                                             GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+}
+
 static gboolean
 perf_helper_app_dbus_register (GApplication     *app,
                                GDBusConnection  *connection,
@@ -383,6 +392,7 @@ perf_helper_app_class_init (PerfHelperAppClass *klass)
   GApplicationClass *gapp_class = G_APPLICATION_CLASS (klass);
 
   gapp_class->activate = perf_helper_app_activate;
+  gapp_class->startup = perf_helper_app_startup;
   gapp_class->dbus_register = perf_helper_app_dbus_register;
 }
 
