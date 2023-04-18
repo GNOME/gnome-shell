@@ -126,7 +126,7 @@ function createTestWindow(params) {
  */
 function waitTestWindows() {
     let perfHelper = _getPerfHelper();
-    perfHelper.WaitWindowsAsync().catch(logError);
+    return perfHelper.WaitWindowsAsync().catch(logError);
 }
 
 /**
@@ -141,7 +141,7 @@ function waitTestWindows() {
  */
 function destroyTestWindows() {
     let perfHelper = _getPerfHelper();
-    perfHelper.DestroyWindowsAsync().catch(logError);
+    return perfHelper.DestroyWindowsAsync().catch(logError);
 }
 
 /**
