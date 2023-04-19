@@ -138,6 +138,11 @@ var PopupBaseMenuItem = GObject.registerClass({
             return Clutter.EVENT_PROPAGATE;
 
         this.remove_style_pseudo_class('active');
+
+        // Pointer left the item during the grab
+        if (!this.hover)
+            return Clutter.EVENT_PROPAGATE;
+
         this.activate(Clutter.get_current_event());
         return Clutter.EVENT_STOP;
     }
