@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-19 22:23+0000\n"
-"PO-Revision-Date: 2023-03-26 12:15+0100\n"
+"POT-Creation-Date: 2023-04-10 19:43+0000\n"
+"PO-Revision-Date: 2023-04-19 12:15+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -62,7 +62,7 @@ msgid "Activate favorite app 9"
 msgstr "Aktibatu gogoko 9 aplikazioa"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2106
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2110
 msgid "Screenshots"
 msgstr "Pantaila-argazkiak"
 
@@ -423,7 +423,7 @@ msgstr "Bisitatu hedapenaren webgunea"
 
 #: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:250
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
@@ -730,12 +730,12 @@ msgstr "Baimendu"
 msgid "Unnamed Folder"
 msgstr "Izenik gabeko karpeta"
 
-#: js/ui/appFavorites.js:166
+#: js/ui/appFavorites.js:167
 #, javascript-format
 msgid "%s has been pinned to the dash."
 msgstr "%s panelean ainguratu da."
 
-#: js/ui/appFavorites.js:199
+#: js/ui/appFavorites.js:200
 #, javascript-format
 msgid "%s has been unpinned from the dash."
 msgstr "%s paneletik askatu da."
@@ -1021,7 +1021,7 @@ msgstr "PINa"
 msgid "A password is required to connect to “%s”."
 msgstr "Pasahitza behar da '%s'(e)ra konektatzeko."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1996
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:2020
 msgid "Network Manager"
 msgstr "Sarearen kudeatzailea"
 
@@ -1303,15 +1303,15 @@ msgstr "%s (urrunekoa)"
 msgid "%s (console)"
 msgstr "%s (kontsola)"
 
-#: js/ui/extensionDownloader.js:245
+#: js/ui/extensionDownloader.js:254
 msgid "Install"
 msgstr "Instalatu"
 
-#: js/ui/extensionDownloader.js:251
+#: js/ui/extensionDownloader.js:260
 msgid "Install Extension"
 msgstr "Instalatu hedapena"
 
-#: js/ui/extensionDownloader.js:252
+#: js/ui/extensionDownloader.js:261
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Deskargatu eta instalatu “%s” extensions.gnome.org gunetik?"
@@ -1604,97 +1604,97 @@ msgstr "Ezin da blokeatu"
 msgid "Lock was blocked by an app"
 msgstr "Aplikazio batek blokeatu du"
 
-#: js/ui/screenshot.js:1161
+#: js/ui/screenshot.js:1165
 msgid "Selection"
 msgstr "Hautapena"
 
-#: js/ui/screenshot.js:1171
+#: js/ui/screenshot.js:1175
 msgid "Area Selection"
 msgstr "Area-hautapena"
 
-#: js/ui/screenshot.js:1176
+#: js/ui/screenshot.js:1180
 msgid "Screen"
 msgstr "Pantaila"
 
-#: js/ui/screenshot.js:1186
+#: js/ui/screenshot.js:1190
 msgid "Screen Selection"
 msgstr "Pantaila-hautapena"
 
-#: js/ui/screenshot.js:1191
+#: js/ui/screenshot.js:1195
 msgid "Window"
 msgstr "Leihoa"
 
-#: js/ui/screenshot.js:1201
+#: js/ui/screenshot.js:1205
 msgid "Window Selection"
 msgstr "Leiho-hautapena"
 
-#: js/ui/screenshot.js:1239
+#: js/ui/screenshot.js:1243
 msgid "Screenshot / Screencast"
 msgstr "Pantaila-argazkia/bideoa"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1260
+#: js/ui/screenshot.js:1264
 msgid "Capture"
 msgstr "Kapturatu"
 
-#: js/ui/screenshot.js:1282
+#: js/ui/screenshot.js:1286
 msgid "Show Pointer"
 msgstr "Erakutsi erakuslea"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1873
+#: js/ui/screenshot.js:1877
 msgid "Screencasts"
 msgstr "Pantaila-bideoak"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1878
+#: js/ui/screenshot.js:1882
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "%d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2159
+#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2163
 msgid "Screenshot"
 msgstr "Pantaila-argazkia"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1926
+#: js/ui/screenshot.js:1930
 msgid "Screencast recorded"
 msgstr "Pantaila-bideoa grabatu da"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1928
+#: js/ui/screenshot.js:1932
 msgid "Click here to view the video."
 msgstr "Klik hemen bideoa ikusteko."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2173
+#: js/ui/screenshot.js:1935 js/ui/screenshot.js:2177
 msgid "Show in Files"
 msgstr "Erakutsi Fitxategiak aplikazioan"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2119
+#: js/ui/screenshot.js:2123
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "%s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2165
+#: js/ui/screenshot.js:2169
 msgid "Screenshot captured"
 msgstr "Pantaila-argazkia hartu da"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2167
+#: js/ui/screenshot.js:2171
 msgid "You can paste the image from the clipboard."
 msgstr "Irudia arbeletik itsatsi daiteke."
 
-#: js/ui/screenshot.js:2220 js/ui/screenshot.js:2385
+#: js/ui/screenshot.js:2224 js/ui/screenshot.js:2389
 msgid "Screenshot taken"
 msgstr "Pantaila-argazkia hartu da"
 
@@ -1868,7 +1868,7 @@ msgstr "Deskonektatu"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1863
+#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1887
 msgid "Bluetooth Settings"
 msgstr "Bluetooth ezarpenak"
 
@@ -1962,70 +1962,89 @@ msgstr "Deskonektatu %s"
 msgid "Connect to %s"
 msgstr "Konektatu honekin: %s"
 
+#: js/ui/status/network.js:1046
+msgid "Secure"
+msgstr "Segurua"
+
+#: js/ui/status/network.js:1046
+msgid "Not secure"
+msgstr "Ez segurua"
+
+#: js/ui/status/network.js:1047
+#, javascript-format
+msgid "Signal strength %s%%"
+msgstr "Seinalearen sendotasuna: %%%s"
+
+#. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
+#: js/ui/status/network.js:1049
+#, javascript-format
+msgid "%s, %s, %s"
+msgstr "%s, %s, %s"
+
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1128
+#: js/ui/status/network.js:1151
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s wifigunea"
 
-#: js/ui/status/network.js:1393
+#: js/ui/status/network.js:1417
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d konektatuta"
 msgstr[1] "%d konektatuta"
 
-#: js/ui/status/network.js:1491 js/ui/status/network.js:1507
+#: js/ui/status/network.js:1515 js/ui/status/network.js:1531
 msgid "VPN"
 msgstr "VPNa"
 
-#: js/ui/status/network.js:1492
+#: js/ui/status/network.js:1516
 msgid "VPN Settings"
 msgstr "VPNaren ezarpenak"
 
-#: js/ui/status/network.js:1741
+#: js/ui/status/network.js:1772
 msgid "Wi–Fi"
 msgstr "Wifia"
 
-#: js/ui/status/network.js:1743
+#: js/ui/status/network.js:1774
 msgid "All Networks"
 msgstr "Sare guztiak"
 
-#: js/ui/status/network.js:1840
+#: js/ui/status/network.js:1871
 msgid "Wired Connections"
 msgstr "Haridun konexioak"
 
-#: js/ui/status/network.js:1841
+#: js/ui/status/network.js:1872
 msgid "Wired Settings"
 msgstr "Haridunaren ezarpenak"
 
-#: js/ui/status/network.js:1862
+#: js/ui/status/network.js:1886
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth aingurak"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1869
+#: js/ui/status/network.js:1893
 msgid "Tether"
 msgstr "Ainguratu"
 
-#: js/ui/status/network.js:1882
+#: js/ui/status/network.js:1906
 msgid "Mobile Connections"
 msgstr "Konexio mugikorrak"
 
-#: js/ui/status/network.js:1884
+#: js/ui/status/network.js:1908
 msgid "Mobile Broadband Settings"
 msgstr "Banda zabal mugikorraren ezarpenak"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1893
+#: js/ui/status/network.js:1917
 msgid "Mobile"
 msgstr "Mugikorra"
 
-#: js/ui/status/network.js:2001
+#: js/ui/status/network.js:2025
 msgid "Connection failed"
 msgstr "Konexioak huts egin du"
 
-#: js/ui/status/network.js:2002
+#: js/ui/status/network.js:2026
 msgid "Activation of network connection failed"
 msgstr "Sareko konexioa aktibatzeak huts egin du"
 
@@ -2048,13 +2067,9 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Energiaren aurrezpena"
 
-#: js/ui/status/powerProfiles.js:40
+#: js/ui/status/powerProfiles.js:40 js/ui/status/powerProfiles.js:70
 msgid "Power Mode"
 msgstr "Energiaren modua"
-
-#: js/ui/status/powerProfiles.js:70
-msgid "Power Profiles"
-msgstr "Energia-profilak"
 
 #: js/ui/status/powerProfiles.js:72
 msgid "Power Settings"
@@ -2922,6 +2937,9 @@ msgstr[1] "%u sarrera"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sistemaren soinuak"
+
+#~ msgid "Power Profiles"
+#~ msgstr "Energia-profilak"
 
 #~ msgid "Evolution Calendar"
 #~ msgstr "Evolution egutegia"
