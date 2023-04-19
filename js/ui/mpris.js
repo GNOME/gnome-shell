@@ -120,6 +120,10 @@ var MprisPlayer = class MprisPlayer extends Signals.EventEmitter {
         return this._trackCoverUrl;
     }
 
+    get app() {
+        return this._app;
+    }
+
     playPause() {
         this._playerProxy.PlayPauseAsync().catch(logError);
     }
@@ -143,14 +147,8 @@ var MprisPlayer = class MprisPlayer extends Signals.EventEmitter {
     raise() {
         // The remote Raise() method may run into focus stealing prevention,
         // so prefer activating the app via .desktop file if possible
-        let app = null;
-        if (this._mprisProxy.DesktopEntry) {
-            let desktopId = `${this._mprisProxy.DesktopEntry}.desktop`;
-            app = Shell.AppSystem.get_default().lookup_app(desktopId);
-        }
-
-        if (app)
-            app.activate();
+        if (this._app)
+            this._app.activate();
         else if (this._mprisProxy.CanRaise)
             this._mprisProxy.RaiseAsync().catch(logError);
     }
@@ -220,6 +218,13 @@ var MprisPlayer = class MprisPlayer extends Signals.EventEmitter {
                     this._trackCoverUrl} (${typeof this._trackCoverUrl})`);
             }
             this._trackCoverUrl = '';
+        }
+
+        if (this._mprisProxy.DesktopEntry) {
+            const desktopId = `${this._mprisProxy.DesktopEntry}.desktop`;
+            this._app = Shell.AppSystem.get_default().lookup_app(desktopId);
+        } else {
+            this._app = null;
         }
 
         this.emit('changed');
