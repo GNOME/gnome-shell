@@ -97,6 +97,19 @@ var PopupBaseMenuItem = GObject.registerClass({
         this._activatable = params.reactive && params.activate;
         this._sensitive = true;
 
+        this._clickAction = new Clutter.ClickAction({
+            enabled: this._activatable,
+        });
+        this._clickAction.connect('clicked',
+            () => this.activate(Clutter.get_current_event()));
+        this._clickAction.connect('notify::pressed', () => {
+            if (this._clickAction.pressed)
+                this.add_style_pseudo_class('active');
+            else
+                this.remove_style_pseudo_class('active');
+        });
+        this.add_action(this._clickAction);
+
         if (!this._activatable)
             this.add_style_class_name('popup-inactive-menu-item');
 
@@ -122,44 +135,6 @@ var PopupBaseMenuItem = GObject.registerClass({
 
     _setParent(parent) {
         this._parent = parent;
-    }
-
-    vfunc_button_press_event() {
-        if (!this._activatable)
-            return Clutter.EVENT_PROPAGATE;
-
-        // This is the CSS active state
-        this.add_style_pseudo_class('active');
-        return Clutter.EVENT_PROPAGATE;
-    }
-
-    vfunc_button_release_event() {
-        if (!this._activatable)
-            return Clutter.EVENT_PROPAGATE;
-
-        this.remove_style_pseudo_class('active');
-
-        // Pointer left the item during the grab
-        if (!this.hover)
-            return Clutter.EVENT_PROPAGATE;
-
-        this.activate(Clutter.get_current_event());
-        return Clutter.EVENT_STOP;
-    }
-
-    vfunc_touch_event(touchEvent) {
-        if (!this._activatable)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (touchEvent.type == Clutter.EventType.TOUCH_END) {
-            this.remove_style_pseudo_class('active');
-            this.activate(Clutter.get_current_event());
-            return Clutter.EVENT_STOP;
-        } else if (touchEvent.type == Clutter.EventType.TOUCH_BEGIN) {
-            // This is the CSS active state
-            this.add_style_pseudo_class('active');
-        }
-        return Clutter.EVENT_PROPAGATE;
     }
 
     vfunc_key_press_event(keyEvent) {
@@ -1267,25 +1242,7 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
     }
 
     activate(_event) {
-        this._setOpenState(true);
-    }
-
-    vfunc_button_release_event() {
-        // Since we override the parent, we need to manage what the parent does
-        // with the active style class
-        this.remove_style_pseudo_class('active');
         this._setOpenState(!this._getOpenState());
-        return Clutter.EVENT_PROPAGATE;
-    }
-
-    vfunc_touch_event(touchEvent) {
-        if (touchEvent.type == Clutter.EventType.TOUCH_END) {
-            // Since we override the parent, we need to manage what the parent does
-            // with the active style class
-            this.remove_style_pseudo_class('active');
-            this._setOpenState(!this._getOpenState());
-        }
-        return Clutter.EVENT_PROPAGATE;
     }
 });
 
