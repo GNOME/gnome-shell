@@ -274,15 +274,6 @@ class ActivitiesButton extends PanelMenu.Button {
         return DND.DragMotionResult.CONTINUE;
     }
 
-    vfunc_captured_event(event) {
-        if (event.type() == Clutter.EventType.BUTTON_PRESS ||
-            event.type() == Clutter.EventType.TOUCH_BEGIN) {
-            if (!Main.overview.shouldToggleByCornerOrButton())
-                return Clutter.EVENT_STOP;
-        }
-        return Clutter.EVENT_PROPAGATE;
-    }
-
     vfunc_event(event) {
         if (event.type() == Clutter.EventType.TOUCH_END ||
             event.type() == Clutter.EventType.BUTTON_RELEASE) {
