@@ -537,7 +537,12 @@ var SearchResultsView = GObject.registerClass({
     Signals: { 'terms-changed': {} },
 }, class SearchResultsView extends St.BoxLayout {
     _init() {
-        super._init({ name: 'searchResults', vertical: true });
+        super._init({
+            name: 'searchResults',
+            vertical: true,
+            x_expand: true,
+            y_expand: true,
+        });
 
         this._parentalControlsManager = ParentalControlsManager.getDefault();
         this._parentalControlsManager.connect('app-filter-changed', this._reloadRemoteProviders.bind(this));
