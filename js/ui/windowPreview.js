@@ -98,15 +98,10 @@ var WindowPreview = GObject.registerClass({
 
         this._updateAttachedDialogs();
 
-        let clickAction = new Clutter.ClickAction();
-        clickAction.connect('clicked', () => this._activate());
-        clickAction.connect('long-press', this._onLongPress.bind(this));
-        this.add_action(clickAction);
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._draggable = DND.makeDraggable(this, {
             restoreOnSuccess: true,
-            manualMode: true,
             dragActorMaxSize: WINDOW_DND_SIZE,
             dragActorOpacity: DRAGGING_WINDOW_OPACITY,
         });
@@ -115,7 +110,16 @@ var WindowPreview = GObject.registerClass({
         this._draggable.connect('drag-end', this._onDragEnd.bind(this));
         this.inDrag = false;
 
-        this._selected = false;
+        let clickAction = new Clutter.ClickAction();
+        clickAction.connect('clicked', () => this._activate());
+        clickAction.connect('long-press', (action, actor, state) => {
+            if (state === Clutter.LongPressState.ACTIVATE)
+                this.showOverlay(true);
+            return true;
+        });
+
+        this._draggable.addClickAction(clickAction);
+
         this._overlayEnabled = true;
         this._overlayShown = false;
         this._closeRequested = false;
@@ -545,7 +549,6 @@ var WindowPreview = GObject.registerClass({
     }
 
     _activate() {
-        this._selected = true;
         this.emit('selected', global.get_current_time());
     }
 
@@ -605,36 +608,6 @@ var WindowPreview = GObject.registerClass({
         }
 
         return super.vfunc_key_press_event(keyEvent);
-    }
-
-    _onLongPress(action, actor, state) {
-        // Take advantage of the Clutter policy to consider
-        // a long-press canceled when the pointer movement
-        // exceeds dnd-drag-threshold to manually start the drag
-        if (state == Clutter.LongPressState.CANCEL) {
-            let event = Clutter.get_current_event();
-            this._dragTouchSequence = event.get_event_sequence();
-
-            if (this._longPressLater)
-                return true;
-
-            // A click cancels a long-press before any click handler is
-            // run - make sure to not start a drag in that case
-            const laters = global.compositor.get_laters();
-            this._longPressLater = laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
-                delete this._longPressLater;
-                if (this._selected) {
-                    this._selected = false;
-                    return;
-                }
-                let [x, y] = action.get_coords();
-                action.release();
-                this._draggable.startDrag(x, y, global.get_current_time(), this._dragTouchSequence, event.get_device());
-            });
-        } else {
-            this.showOverlay(true);
-        }
-        return true;
     }
 
     _restack() {

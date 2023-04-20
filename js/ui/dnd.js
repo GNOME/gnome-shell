@@ -119,6 +119,50 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
         this._dragCancellable = true;
     }
 
+    /**
+     * addClickAction:
+     *
+     * @param {Clutter.ClickAction} action - click action to add to draggable actor
+     *
+     * Add @action to the draggable's actor, and set it up so that it does not
+     * impede drag operations.
+     */
+    addClickAction(action) {
+        action.connect('clicked', () => (this._actionClicked = true));
+        action.connect('long-press', (a, actor, state) => {
+            if (state !== Clutter.LongPressState.CANCEL)
+                return true;
+
+            const event = Clutter.get_current_event();
+            this._dragTouchSequence = event.get_event_sequence();
+
+            if (this._longPressLater)
+                return true;
+
+            // A click cancels a long-press before any click handler is
+            // run - make sure to not start a drag in that case
+            const laters = global.compositor.get_laters();
+            this._longPressLater = laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
+                delete this._longPressLater;
+                if (this._actionClicked) {
+                    delete this._actionClicked;
+                    return GLib.SOURCE_REMOVE;
+                }
+                action.release();
+                this.startDrag(
+                    ...action.get_coords(),
+                    event.get_time(),
+                    this._dragTouchSequence,
+                    event.get_device());
+
+                return GLib.SOURCE_REMOVE;
+            });
+            return true;
+        });
+
+        this.actor.add_action(action);
+    }
+
     _onButtonPress(actor, event) {
         if (event.get_button() != 1)
             return Clutter.EVENT_PROPAGATE;
