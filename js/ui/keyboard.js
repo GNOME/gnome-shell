@@ -1650,24 +1650,35 @@ export const Keyboard = GObject.registerClass({
         }
 
         if (enabled) {
-            let func = (text, cursor) => {
-                if (cursor === 0)
+            let func = (text, cursor, anchor) => {
+                if (cursor === 0 && anchor === 0)
                     return;
 
-                const anchor = this._timesDeleted < BACKSPACE_WORD_DELETE_THRESHOLD
-                    ? cursor - 1
-                    : this._previousWordPosition(text, cursor);
-                const offset = anchor - cursor;
+                let offset, len;
+                if (cursor > anchor) {
+                    offset = anchor - cursor;
+                    len = -offset;
+                } else if (cursor < anchor) {
+                    offset = 0;
+                    len = anchor - cursor;
+                } else if (this._timesDeleted < BACKSPACE_WORD_DELETE_THRESHOLD) {
+                    offset = -1;
+                    len = 1;
+                } else {
+                    const wordLength = cursor - this._previousWordPosition(text, cursor);
+                    offset = -wordLength;
+                    len = wordLength;
+                }
 
                 this._timesDeleted++;
-                Main.inputMethod.delete_surrounding(offset, Math.abs(offset));
+                Main.inputMethod.delete_surrounding(offset, len);
             };
 
             this._surroundingUpdateId = Main.inputMethod.connect(
                 'surrounding-text-set', () => {
-                    let [text, cursor] = Main.inputMethod.getSurroundingText();
+                    let [text, cursor, anchor] = Main.inputMethod.getSurroundingText();
                     if (this._timesDeleted === 0) {
-                        func(text, cursor);
+                        func(text, cursor, anchor);
                     } else {
                         if (this._surroundingUpdateTimeoutId > 0) {
                             GLib.source_remove(this._surroundingUpdateTimeoutId);
@@ -1675,16 +1686,16 @@ export const Keyboard = GObject.registerClass({
                         }
                         this._surroundingUpdateTimeoutId =
                             GLib.timeout_add(GLib.PRIORITY_DEFAULT, KEY_RELEASE_TIMEOUT, () => {
-                                func(text, cursor);
+                                func(text, cursor, cursor);
                                 this._surroundingUpdateTimeoutId = 0;
                                 return GLib.SOURCE_REMOVE;
                             });
                     }
                 });
 
-            let [text, cursor] = Main.inputMethod.getSurroundingText();
+            let [text, cursor, anchor] = Main.inputMethod.getSurroundingText();
             if (text)
-                func(text, cursor);
+                func(text, cursor, anchor);
             else
                 Main.inputMethod.request_surrounding();
         } else {

@@ -227,6 +227,7 @@ export const InputMethod = GObject.registerClass({
 
         this._surroundingText = null;
         this._surroundingTextCursor = null;
+        this._surroundingTextAnchor = null;
         this._preeditStr = null;
         this._setTerminalMode(false);
     }
@@ -247,6 +248,7 @@ export const InputMethod = GObject.registerClass({
     vfunc_set_surrounding(text, cursor, anchor) {
         this._surroundingText = text;
         this._surroundingTextCursor = cursor;
+        this._surroundingTextAnchor = anchor;
         this.emit('surrounding-text-set');
 
         if (!this._context || (!text && text !== ''))
@@ -348,7 +350,11 @@ export const InputMethod = GObject.registerClass({
     }
 
     getSurroundingText() {
-        return [this._surroundingText, this._surroundingTextCursor];
+        return [
+            this._surroundingText,
+            this._surroundingTextCursor,
+            this._surroundingTextAnchor,
+        ];
     }
 
     hasPreedit() {
