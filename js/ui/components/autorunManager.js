@@ -102,7 +102,7 @@ var ContentTypeDiscoverer = class {
             if (contentTypes.length === 0) {
                 const root = mount.get_root();
                 const hotplugSniffer = new HotplugSniffer();
-                [contentTypes] = hotplugSniffer.SniffURIAsync(root.get_uri());
+                [contentTypes] = await hotplugSniffer.SniffURIAsync(root.get_uri());
             }
         }
 
