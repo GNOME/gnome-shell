@@ -1,3 +1,50 @@
+44.1
+====
+* Add section title in background apps menu [Florian; !2681]
+* Fix visibility of xembed icons [Marco; !2684]
+* Fix placeholder alignment in bluetooth menu [Sebastian; !2687]
+* Fix recording screenshots in recent items [Carlos, Adam; !2692, !2725]
+* Fix reloading extensions on version-validation changes [Florian; !2694]
+* Fix force-enabling animations at runtime [Florian; !2698]
+* Fix stuck session after logout dialog timeout [Florian; !2696]
+* Fix window screenshots with pointer [Ivan; !2710, !2702]
+* Only show network subtitles if they don't match the title [Georges; !2682]
+* Fix constructing QuickMenuToggles with icon-name [Florian; !2726]
+* Fix accessible names in VPN menu [Lukáš; !2720]
+* Don't fail extracting extensions without schemas [Andy; !2727]
+* Fixes and improvements to the light theme variant [Sam; !2515]
+* Improve accessible name of wireless menu items [Lukáš; !2724]
+* Use consistent naming for "Power Mode" toggle [Automeris; !2697]
+* Fix support for transparent colors in symbolic SVGs [Florian; !2731]
+* Fix notifications getting stuck indefinitely [msizanoen1; !2736]
+* Fix keynav of menu-less buttons [Florian; !2734]
+* Fix corner cases when matching apps on StartupWmClass [Marco; !2721]
+* Fix occasional misalignment of search results [Sebastian; !2744]
+* Fix regression in content-type sniffing on autorun [Balló; !2745]
+* Fix building API documentation [Bobby; !2749]
+* Fixed crash [Jonas Å.; !2722]
+* Plugged leak [Sebastian; !2737]
+* Misc. bug fixes and cleanups [Florian, Will, Daniel, Marco, Sebastian,
+  Jordan, Jonas D.; !2679, !2689, !2693, !2639, !2661, !2685, !2709, !2699,
+  !2711, !2723, !2728, !2730, !2739, !2738, !2740, !2712, !2695, !2193]
+
+Contributors:
+  Jonas Ådahl, Jonas Dreßler, Carlos Garnacho, Balló György, Sam Hewitt,
+  Andy Holmes, Sebastian Keller, Ivan Molodetskikh, msizanoen1, Florian Müllner,
+  Automeris naranja, Georges Basile Stavracas Neto, Jordan Petridis, Bobby Rong,
+  Will Thompson, Marco Trevisan (Treviño), Lukáš Tyrychtr, Daniel van Vugt,
+  Adam Williamson
+
+Translators:
+  Fran Dieguez [gl], Balázs Úr [hu], Andika Triwidada [id], Anders Jonsson [sv],
+  Martin [sl], Danial Behzadi [fa], Bruce Cowan [en_GB], Rūdolfs Mazurs [lv],
+  Asier Sarasua Garmendia [eu], Nathan Follens [nl], Sabri Ünal [tr],
+  Boyuan Yang [zh_CN], Guillaume Bernard [fr], Alexander Shopov [bg],
+  Aleksandr Melman [ru], MohammadSaleh Kamyab [fa], Yuri Chornoivan [uk],
+  Hugo Carvalho [pt], Fabio Tomat [fur], Kukuh Syafaat [id], Piotr Drąg [pl],
+  Марко Костић [sr], Aurimas Černius [lt], Yaron Shahrabani [he],
+  Philipp Kiemle [de]
+
 44.0
 ====
  * Bump version

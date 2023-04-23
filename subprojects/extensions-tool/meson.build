@@ -1,5 +1,5 @@
 project('gnome-extensions-tool', 'c',
-  version: '44.0',
+  version: '44.1',
   meson_version: '>= 0.58.0',
   license: 'GPLv2+'
 )
