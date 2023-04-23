@@ -212,7 +212,7 @@ class BluetoothDeviceItem extends PopupMenu.PopupBaseMenuItem {
         this._device.bind_property('icon',
             this._icon, 'icon-name',
             GObject.BindingFlags.SYNC_CREATE);
-        this._device.bind_property('name',
+        this._device.bind_property('alias',
             this._label, 'text',
             GObject.BindingFlags.SYNC_CREATE);
         this._device.bind_property_full('connected',
