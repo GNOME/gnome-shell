@@ -31,8 +31,6 @@
   </chapter>
   <chapter>
     <title>Tray Icons</title>
-    <xi:include href="xml/shell-embedded-window.xml"/>
-    <xi:include href="xml/shell-gtk-embed.xml"/>
     <xi:include href="xml/shell-tray-icon.xml"/>
     <xi:include href="xml/shell-tray-manager.xml"/>
   </chapter>
