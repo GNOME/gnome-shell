@@ -1037,6 +1037,9 @@ var ScreenshotUI = GObject.registerClass({
                 this._castButton.visible = this._screencastSupported;
             });
 
+        this._screencastProxy.connectSignal('Error',
+            () => this._screencastFailed());
+
         this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
 
         // The full-screen screenshot has a separate container so that we can
@@ -1913,6 +1916,18 @@ var ScreenshotUI = GObject.registerClass({
             return;
         }
 
+        // Translators: notification title.
+        this._showNotification(_('Screencast recorded'));
+    }
+
+    _screencastFailed() {
+        this._setScreencastInProgress(false);
+
+        // Translators: notification title.
+        this._showNotification(_('Screencast ended unexpectedly'));
+    }
+
+    _showNotification(title) {
         // Show a notification.
         const file = Gio.file_new_for_path(this._screencastPath);
 
@@ -1923,8 +1938,7 @@ var ScreenshotUI = GObject.registerClass({
         );
         const notification = new MessageTray.Notification(
             source,
-            // Translators: notification title.
-            _('Screencast recorded'),
+            title,
             // Translators: notification body when a screencast was recorded.
             _('Click here to view the video.')
         );
