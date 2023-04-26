@@ -92,5 +92,9 @@
       <arg type="b" direction="out" name="success"/>
     </method>
 
+    <signal name="Error">
+      <arg type="s" name="message"/>
+    </signal>
+
   </interface>
 </node>
