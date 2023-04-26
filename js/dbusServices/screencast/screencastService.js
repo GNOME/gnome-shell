@@ -7,6 +7,7 @@ imports.gi.versions.Gtk = '4.0';
 const { Gio, GLib, Gst, Gtk } = imports.gi;
 
 const { loadInterfaceXML, loadSubInterfaceXML } = imports.misc.dbusUtils;
+const Signals = imports.misc.signals;
 const { ServiceImplementation } = imports.dbusService;
 
 const ScreencastIface = loadInterfaceXML('org.gnome.Shell.Screencast');
@@ -54,13 +55,13 @@ const SessionState = {
     STOPPED: 'STOPPED',
 };
 
-var Recorder = class {
+var Recorder = class extends Signals.EventEmitter {
     constructor(sessionPath, x, y, width, height, filePath, options,
-        invocation,
-        onErrorCallback) {
+        invocation) {
+        super();
+
         this._startInvocation = invocation;
         this._dbusConnection = invocation.get_connection();
-        this._onErrorCallback = onErrorCallback;
         this._stopInvocation = null;
 
         this._x = x;
@@ -147,11 +148,6 @@ var Recorder = class {
 
         log(`Recorder error: ${error.message}`);
 
-        if (this._onErrorCallback) {
-            this._onErrorCallback();
-            delete this._onErrorCallback;
-        }
-
         if (this._startRequest) {
             this._startRequest.reject(error);
             delete this._startRequest;
@@ -161,6 +157,8 @@ var Recorder = class {
             this._stopRequest.reject(error);
             delete this._stopRequest;
         }
+
+        this.emit('error', error);
     }
 
     _handleFatalPipelineError(message) {
@@ -529,8 +527,7 @@ var ScreencastService = class extends ServiceImplementation {
                 screenWidth, screenHeight,
                 filePath,
                 options,
-                invocation,
-                () => this._removeRecorder(sender));
+                invocation);
         } catch (error) {
             log(`Failed to create recorder: ${error.message}`);
             invocation.return_value(GLib.Variant.new('(bs)', returnValue));
@@ -548,6 +545,12 @@ var ScreencastService = class extends ServiceImplementation {
         } finally {
             invocation.return_value(GLib.Variant.new('(bs)', returnValue));
         }
+
+        recorder.connect('error', (r, error) => {
+            this._removeRecorder(sender);
+            this._dbusImpl.emit_signal('Error',
+                new GLib.Variant('(s)', [error.message]));
+        });
     }
 
     async ScreencastAreaAsync(params, invocation) {
@@ -579,8 +582,7 @@ var ScreencastService = class extends ServiceImplementation {
                 width, height,
                 filePath,
                 options,
-                invocation,
-                () => this._removeRecorder(sender));
+                invocation);
         } catch (error) {
             log(`Failed to create recorder: ${error.message}`);
             invocation.return_value(GLib.Variant.new('(bs)', returnValue));
@@ -598,6 +600,12 @@ var ScreencastService = class extends ServiceImplementation {
         } finally {
             invocation.return_value(GLib.Variant.new('(bs)', returnValue));
         }
+
+        recorder.connect('error', (r, error) => {
+            this._removeRecorder(sender);
+            this._dbusImpl.emit_signal('Error',
+                new GLib.Variant('(s)', [error.message]));
+        });
     }
 
     async StopScreencastAsync(params, invocation) {
