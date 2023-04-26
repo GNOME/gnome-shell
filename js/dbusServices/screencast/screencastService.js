@@ -197,9 +197,15 @@ var Recorder = class extends Signals.EventEmitter {
     _tryNextPipeline() {
         const {done, value: pipelineConfig} = this._pipelineConfigs.next();
         if (done) {
-            this._teardownPipeline();
             this._handleFatalPipelineError('All pipelines failed to start');
             return;
+        }
+
+        if (this._pipeline) {
+            if (this._pipeline.set_state(Gst.State.NULL) !== Gst.StateChangeReturn.SUCCESS)
+                log('Failed to set pipeline state to NULL');
+
+            this._pipeline = null;
         }
 
         try {
@@ -224,7 +230,6 @@ var Recorder = class extends Signals.EventEmitter {
             retval === Gst.StateChangeReturn.ASYNC) {
             // We'll wait for the state change message to PLAYING on the bus
         } else {
-            this._teardownPipeline();
             this._tryNextPipeline();
         }
     }
