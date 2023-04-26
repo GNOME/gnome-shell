@@ -1983,9 +1983,6 @@ var ScreenshotUI = GObject.registerClass({
     }
 
     get screencast_in_progress() {
-        if (!('_screencastInProgress' in this))
-            return false;
-
         return this._screencastInProgress;
     }
 
