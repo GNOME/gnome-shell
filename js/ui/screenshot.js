@@ -1040,6 +1040,16 @@ var ScreenshotUI = GObject.registerClass({
         this._screencastProxy.connectSignal('Error',
             () => this._screencastFailed());
 
+        this._screencastProxy.connect('notify::g-name-owner', () => {
+            if (this._screencastProxy.g_name_owner)
+                return;
+
+            if (!this._screencastInProgress)
+                return;
+
+            this._screencastFailed();
+        });
+
         this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
 
         // The full-screen screenshot has a separate container so that we can
