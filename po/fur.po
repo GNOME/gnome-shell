@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-04-05 09:42+0000\n"
-"PO-Revision-Date: 2023-04-05 17:21+0200\n"
+"POT-Creation-Date: 2023-04-26 12:47+0000\n"
+"PO-Revision-Date: 2023-04-28 09:52+0200\n"
 "Last-Translator: Fabio T. <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <f.t.public@gmail.com>\n"
 "Language: fur\n"
@@ -60,27 +60,27 @@ msgid "Activate favorite app 9"
 msgstr "Ative aplicazion preferide 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2110
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2131
 msgid "Screenshots"
 msgstr "Videadis"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:238
+#: data/org.gnome.shell.gschema.xml.in:231
 msgid "Take a screenshot interactively"
 msgstr "Cature une videade in maniere interative"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:250
+#: data/org.gnome.shell.gschema.xml.in:243
 msgid "Take a screenshot"
 msgstr "Cature une videade"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:246
+#: data/org.gnome.shell.gschema.xml.in:239
 msgid "Take a screenshot of a window"
 msgstr "Cature une videade di un barcon"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:242
+#: data/org.gnome.shell.gschema.xml.in:235
 msgid "Record a screencast interactively"
 msgstr "Regjistre un filmât dal schermi in maniere interative"
 
@@ -103,10 +103,6 @@ msgstr "Mostre la panoramiche"
 #: data/50-gnome-shell-system.xml:18
 msgid "Show all apps"
 msgstr "Mostre dutis lis aplicazions"
-
-#: data/50-gnome-shell-system.xml:21
-msgid "Open the app menu"
-msgstr "Vierç il menù aplicazions"
 
 #: data/org.gnome.Shell.desktop.in.in:4
 msgid "GNOME Shell"
@@ -291,107 +287,99 @@ msgstr ""
 "posizion de icone de aplicazion inte pagjine"
 
 #: data/org.gnome.shell.gschema.xml.in:152
-msgid "Keybinding to open the application menu"
-msgstr "Tast rapit associât par vierzi il menù des aplicazions"
-
-#: data/org.gnome.shell.gschema.xml.in:153
-msgid "Keybinding to open the application menu."
-msgstr "Tast rapit associât par vierzi il menù des aplicazions."
-
 #: data/org.gnome.shell.gschema.xml.in:159
-#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to shift between overview states"
 msgstr "La associazion i tascj par passâ tra i stâts de panoramiche"
 
-#: data/org.gnome.shell.gschema.xml.in:160
+#: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "La associazion di tascj par passâ tra lis sessions, il seletôr di barcons e "
 "la gridele des aplicazions"
 
-#: data/org.gnome.shell.gschema.xml.in:167
+#: data/org.gnome.shell.gschema.xml.in:160
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "La associazion di tascj par passâ tra la gridele des aplicazions, il seletôr "
 "dai barcons e lis sessions"
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Cumbinazion di tascj par vierzi la visuâl “Mostre Aplicazions”"
 
-#: data/org.gnome.shell.gschema.xml.in:174
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Cumbinazion di tascj par vierzi la visuâl “Mostre Aplicazions” inte "
 "Panoramiche Ativitâts."
 
-#: data/org.gnome.shell.gschema.xml.in:181
+#: data/org.gnome.shell.gschema.xml.in:174
 msgid "Keybinding to open the overview"
 msgstr "Tast rapit associât par vierzi la panoramiche"
 
-#: data/org.gnome.shell.gschema.xml.in:182
+#: data/org.gnome.shell.gschema.xml.in:175
 msgid "Keybinding to open the Activities Overview."
 msgstr "Tast rapit associât par vierzi la visuâl Panoramiche Ativitâts."
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:181
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Associazion tascj par cambiâ la visibilitât de liste des notifichis"
 
-#: data/org.gnome.shell.gschema.xml.in:189
+#: data/org.gnome.shell.gschema.xml.in:182
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Associazion tascj par cambiâ la visibilitât de liste des notifichis."
 
-#: data/org.gnome.shell.gschema.xml.in:195
+#: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to focus the active notification"
 msgstr "Tast rapit associât par meti a fûc la notifiche ative"
 
-#: data/org.gnome.shell.gschema.xml.in:196
+#: data/org.gnome.shell.gschema.xml.in:189
 msgid "Keybinding to focus the active notification."
 msgstr "Tast rapit associât par meti a fûc la notifiche ative."
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Switch to application 1"
 msgstr "Passe ae aplicazion 1"
 
-#: data/org.gnome.shell.gschema.xml.in:206
+#: data/org.gnome.shell.gschema.xml.in:199
 msgid "Switch to application 2"
 msgstr "Passe ae aplicazion 2"
 
-#: data/org.gnome.shell.gschema.xml.in:210
+#: data/org.gnome.shell.gschema.xml.in:203
 msgid "Switch to application 3"
 msgstr "Passe ae aplicazion 3"
 
-#: data/org.gnome.shell.gschema.xml.in:214
+#: data/org.gnome.shell.gschema.xml.in:207
 msgid "Switch to application 4"
 msgstr "Passe ae aplicazion 4"
 
-#: data/org.gnome.shell.gschema.xml.in:218
+#: data/org.gnome.shell.gschema.xml.in:211
 msgid "Switch to application 5"
 msgstr "Passe ae aplicazion 5"
 
-#: data/org.gnome.shell.gschema.xml.in:222
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid "Switch to application 6"
 msgstr "Passe ae aplicazion 6"
 
-#: data/org.gnome.shell.gschema.xml.in:226
+#: data/org.gnome.shell.gschema.xml.in:219
 msgid "Switch to application 7"
 msgstr "Passe ae aplicazion 7"
 
-#: data/org.gnome.shell.gschema.xml.in:230
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Switch to application 8"
 msgstr "Passe ae aplicazion 8"
 
-#: data/org.gnome.shell.gschema.xml.in:234
+#: data/org.gnome.shell.gschema.xml.in:227
 msgid "Switch to application 9"
 msgstr "Passe ae aplicazion 9"
 
-#: data/org.gnome.shell.gschema.xml.in:259
-#: data/org.gnome.shell.gschema.xml.in:286
+#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:279
 msgid "Limit switcher to current workspace."
 msgstr "Limite il seletôr al spazi di lavôr in ûs."
 
-#: data/org.gnome.shell.gschema.xml.in:260
+#: data/org.gnome.shell.gschema.xml.in:253
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -399,11 +387,11 @@ msgstr ""
 "Se vêr, nome lis aplicazions che a àn barcons tal spazi di lavôr curint a "
 "son mostrâts tal seletôr. Se no, dutis lis aplicazions a vegnin includudis."
 
-#: data/org.gnome.shell.gschema.xml.in:277
+#: data/org.gnome.shell.gschema.xml.in:270
 msgid "The application icon mode."
 msgstr "La modalitât de icone de aplicazion."
 
-#: data/org.gnome.shell.gschema.xml.in:278
+#: data/org.gnome.shell.gschema.xml.in:271
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -414,7 +402,7 @@ msgstr ""
 "barcon), “app-icon-only” (al mostre nome la icone de aplicazion) o "
 "“both” (al mostre ducj e doi)."
 
-#: data/org.gnome.shell.gschema.xml.in:287
+#: data/org.gnome.shell.gschema.xml.in:280
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -422,27 +410,27 @@ msgstr ""
 "Se vêr, nome i barcons dal spazi di lavôr curint a vegnin mostrâts intal "
 "seletôr. Se no, ducj i barcons a vegnin includûts."
 
-#: data/org.gnome.shell.gschema.xml.in:297
+#: data/org.gnome.shell.gschema.xml.in:290
 msgid "Locations"
 msgstr "Posizions"
 
-#: data/org.gnome.shell.gschema.xml.in:298
+#: data/org.gnome.shell.gschema.xml.in:291
 msgid "The locations to show in world clocks"
 msgstr "I lûcs di mostrâ tai orlois mondiâi"
 
-#: data/org.gnome.shell.gschema.xml.in:308
+#: data/org.gnome.shell.gschema.xml.in:301
 msgid "Automatic location"
 msgstr "Ubicazion automatiche"
 
-#: data/org.gnome.shell.gschema.xml.in:309
+#: data/org.gnome.shell.gschema.xml.in:302
 msgid "Whether to fetch the current location or not"
 msgstr "Indiche se recuperâ la posizion atuâl o mancul"
 
-#: data/org.gnome.shell.gschema.xml.in:316
+#: data/org.gnome.shell.gschema.xml.in:309
 msgid "Location"
 msgstr "Posizion"
 
-#: data/org.gnome.shell.gschema.xml.in:317
+#: data/org.gnome.shell.gschema.xml.in:310
 msgid "The location for which to show a forecast"
 msgstr "Il lûc che di chel mostrâ lis previsions"
 
@@ -762,11 +750,11 @@ msgstr "%-d di %B, %I∶%M %p"
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d di %B dal %Y, %I∶%M %p"
 
-#: js/portalHelper/main.js:55
-msgid "Hotspot Login"
-msgstr "Acès Hotspot"
+#: js/portalHelper/main.js:96
+msgid "Your connection seems to be secure"
+msgstr "La tô conession e somee jessi sigure"
 
-#: js/portalHelper/main.js:108
+#: js/portalHelper/main.js:102
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -774,6 +762,10 @@ msgstr ""
 "La tô conession a chest acès hotspot no je sigure. Lis password o altris "
 "informazions che tu inserirâs su cheste pagjine e podaran jessi viodudis des "
 "personis chi ator."
+
+#: js/portalHelper/main.js:113
+msgid "Hotspot Login"
+msgstr "Acès Hotspot"
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -816,7 +808,7 @@ msgstr "Detais de aplicazion"
 msgid "Quit"
 msgstr "Jes"
 
-#: js/ui/appMenu.js:157 js/ui/dash.js:249
+#: js/ui/appMenu.js:157 js/ui/dash.js:250
 msgid "Unpin"
 msgstr "Mole"
 
@@ -1122,13 +1114,13 @@ msgstr "L'utent %s al è cognossût cumò come %s"
 msgid "Windows"
 msgstr "Barcons"
 
-#: js/ui/dash.js:205 js/ui/dash.js:251
+#: js/ui/dash.js:206 js/ui/dash.js:252
 msgid "Show Apps"
 msgstr "Mostre Aplicazions"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:399
+#: js/ui/dash.js:400
 msgid "Dash"
 msgstr "Slanç"
 
@@ -1536,23 +1528,23 @@ msgstr "Viôt sorzint"
 msgid "Web Page"
 msgstr "Pagjine Web"
 
-#: js/ui/main.js:286
+#: js/ui/main.js:288
 msgid "System was put in unsafe mode"
 msgstr "Il sisteme al è stât metût in modalitât no sigure"
 
-#: js/ui/main.js:287
+#: js/ui/main.js:289
 msgid "Apps now have unrestricted access"
 msgstr "Cumò lis aplicazions a àn acès ilimitât"
 
-#: js/ui/main.js:288 js/ui/overview.js:58
+#: js/ui/main.js:290 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Anule"
 
-#: js/ui/main.js:344
+#: js/ui/main.js:346
 msgid "Logged in as a privileged user"
 msgstr "Jentre come utent privilegjât"
 
-#: js/ui/main.js:345
+#: js/ui/main.js:347
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1560,15 +1552,15 @@ msgstr ""
 "Si varès di evitâ di eseguî une session come utent privilegjât par resons di "
 "sigurece. Se pussibil, tu varessis di jentrâ come utent normâl."
 
-#: js/ui/main.js:393
+#: js/ui/main.js:395
 msgid "Screen Lock disabled"
 msgstr "Bloc dal schermi disabilitât"
 
-#: js/ui/main.js:394
+#: js/ui/main.js:396
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Il bloc dal schermi al à bisugne dal gjestôr dai visôrs di GNOME."
 
-#: js/ui/messageTray.js:1418
+#: js/ui/messageTray.js:1417
 msgid "System Information"
 msgstr "Informazion di sisteme"
 
@@ -1647,12 +1639,12 @@ msgstr "Frache un tast par jessî"
 msgid "Activities"
 msgstr "Ativitâts"
 
-#: js/ui/panel.js:338
+#: js/ui/panel.js:329
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sisteme"
 
-#: js/ui/panel.js:460
+#: js/ui/panel.js:451
 msgid "Top Bar"
 msgstr "Sbare parsore"
 
@@ -1689,110 +1681,120 @@ msgstr "Impussibil blocâ"
 msgid "Lock was blocked by an app"
 msgstr "Il bloc al è stât dineât di une aplicazion"
 
-#: js/ui/screenshot.js:1165
+#: js/ui/screenshot.js:1178
 msgid "Selection"
 msgstr "Selezion"
 
-#: js/ui/screenshot.js:1175
+#: js/ui/screenshot.js:1188
 msgid "Area Selection"
 msgstr "Selezion de aree"
 
-#: js/ui/screenshot.js:1180
+#: js/ui/screenshot.js:1193
 msgid "Screen"
 msgstr "Schermi"
 
-#: js/ui/screenshot.js:1190
+#: js/ui/screenshot.js:1203
 msgid "Screen Selection"
 msgstr "Selezion dal schermi"
 
-#: js/ui/screenshot.js:1195
+#: js/ui/screenshot.js:1208
 msgid "Window"
 msgstr "Barcon"
 
-#: js/ui/screenshot.js:1205
+#: js/ui/screenshot.js:1218
 msgid "Window Selection"
 msgstr "Selezion dal barcon"
 
-#: js/ui/screenshot.js:1243
-msgid "Screenshot / Screencast"
-msgstr "Videade / Filmât"
+#. Translators: entry in the window right click menu.
+#: js/ui/screenshot.js:1243 js/ui/status/system.js:105 js/ui/windowMenu.js:29
+msgid "Take Screenshot"
+msgstr "Cature Videade"
+
+#: js/ui/screenshot.js:1259
+msgid "Record Screen"
+msgstr "Regjistre il schermi"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1264
+#: js/ui/screenshot.js:1274
 msgid "Capture"
 msgstr "Acuisìs"
 
-#: js/ui/screenshot.js:1286
+#: js/ui/screenshot.js:1296
 msgid "Show Pointer"
 msgstr "Mostre pontadôr"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1877
+#: js/ui/screenshot.js:1887
 msgid "Screencasts"
 msgstr "Filmâts di schermi"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1882
+#: js/ui/screenshot.js:1892
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Filmât di %d %t.webm"
-
-#. Translators: notification source name.
-#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2163
-msgid "Screenshot"
-msgstr "Videade"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:1930
 msgid "Screencast recorded"
 msgstr "Filmât dal schermi regjistrât"
 
+#. Translators: notification title.
+#: js/ui/screenshot.js:1937
+msgid "Screencast ended unexpectedly"
+msgstr "Filmât dal schermi terminât in maniere inspietade"
+
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1946 js/ui/screenshot.js:2184
+msgid "Screenshot"
+msgstr "Videade"
+
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1932
+#: js/ui/screenshot.js:1953
 msgid "Click here to view the video."
 msgstr "Fâs clic achì par viodi il video."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1935 js/ui/screenshot.js:2177
+#: js/ui/screenshot.js:1956 js/ui/screenshot.js:2198
 msgid "Show in Files"
 msgstr "Mostre in Files"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:2144
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Videade di %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2169
+#: js/ui/screenshot.js:2190
 msgid "Screenshot captured"
 msgstr "Videade caturade"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2171
+#: js/ui/screenshot.js:2192
 msgid "You can paste the image from the clipboard."
 msgstr "Tu puedis tacâ la imagjin da lis notis."
 
-#: js/ui/screenshot.js:2224 js/ui/screenshot.js:2389
+#: js/ui/screenshot.js:2245 js/ui/screenshot.js:2410
 msgid "Screenshot taken"
 msgstr "Videade caturade"
 
-#: js/ui/search.js:807
+#: js/ui/search.js:812
 msgid "Searching…"
 msgstr "Daûr a cirî…"
 
-#: js/ui/search.js:809
+#: js/ui/search.js:814
 msgid "No results."
 msgstr "Nissun risultât."
 
 # o ancjemò %d
-#: js/ui/search.js:940
+#: js/ui/search.js:945
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1926,24 +1928,24 @@ msgstr "Test Larc"
 msgid "Auto Rotate"
 msgstr "Ribalte in automatic"
 
-#: js/ui/status/backgroundApps.js:135
+#: js/ui/status/backgroundApps.js:164
 msgctxt "title"
 msgid "Background Apps"
 msgstr "Aplicazions in sotfont"
 
-#: js/ui/status/backgroundApps.js:150
+#: js/ui/status/backgroundApps.js:179
 msgid "Apps known to be running without a window"
 msgstr "Aplicazions cognossudis che a zirin cence un barcon"
 
-#: js/ui/status/backgroundApps.js:161
+#: js/ui/status/backgroundApps.js:190
 msgid "App Settings"
 msgstr "Impostazions aplicazion"
 
-#: js/ui/status/backgroundApps.js:189
+#: js/ui/status/backgroundApps.js:218
 msgid "No Background Apps"
 msgstr "Nissune aplicazion in sotfont"
 
-#: js/ui/status/backgroundApps.js:191
+#: js/ui/status/backgroundApps.js:220
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2116,7 +2118,6 @@ msgstr "Tethers Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1893
-#| msgid "Weather"
 msgid "Tether"
 msgstr "Tether"
 
@@ -2184,11 +2185,6 @@ msgstr "Modalitât avion"
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
-
-#. Translators: entry in the window right click menu.
-#: js/ui/status/system.js:105 js/ui/windowMenu.js:29
-msgid "Take Screenshot"
-msgstr "Cature Videade"
 
 #: js/ui/status/system.js:162
 msgid "Power Off Menu"
@@ -2491,12 +2487,12 @@ msgstr "La password no pues jessi vueide"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialic di autenticazion anulât dal utent"
 
-#: src/st/st-icon-theme.c:1883
+#: src/st/st-icon-theme.c:1884
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "La icone '%s' no je presinte tal teme %s"
 
-#: src/st/st-icon-theme.c:3472 src/st/st-icon-theme.c:3775
+#: src/st/st-icon-theme.c:3473 src/st/st-icon-theme.c:3776
 msgid "Failed to load icon"
 msgstr "Nol è stât pussibil cjariâ la icone"
 
@@ -3052,6 +3048,18 @@ msgstr[1] "%u jentradis"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Suns di sisteme"
+
+#~ msgid "Open the app menu"
+#~ msgstr "Vierç il menù aplicazions"
+
+#~ msgid "Keybinding to open the application menu"
+#~ msgstr "Tast rapit associât par vierzi il menù des aplicazions"
+
+#~ msgid "Keybinding to open the application menu."
+#~ msgstr "Tast rapit associât par vierzi il menù des aplicazions."
+
+#~ msgid "Screenshot / Screencast"
+#~ msgstr "Videade / Filmât"
 
 #~ msgid "Power Profiles"
 #~ msgstr "Profîi energjetics"
