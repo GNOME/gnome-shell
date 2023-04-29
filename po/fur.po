@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-04-26 12:47+0000\n"
-"PO-Revision-Date: 2023-04-28 09:52+0200\n"
+"POT-Creation-Date: 2023-04-28 07:53+0000\n"
+"PO-Revision-Date: 2023-04-29 10:28+0200\n"
 "Last-Translator: Fabio T. <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <f.t.public@gmail.com>\n"
 "Language: fur\n"
@@ -60,7 +60,7 @@ msgid "Activate favorite app 9"
 msgstr "Ative aplicazion preferide 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2131
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2128
 msgid "Screenshots"
 msgstr "Videadis"
 
@@ -1749,7 +1749,7 @@ msgid "Screencast ended unexpectedly"
 msgstr "Filmât dal schermi terminât in maniere inspietade"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1946 js/ui/screenshot.js:2184
+#: js/ui/screenshot.js:1946 js/ui/screenshot.js:2181
 msgid "Screenshot"
 msgstr "Videade"
 
@@ -1760,28 +1760,28 @@ msgstr "Fâs clic achì par viodi il video."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1956 js/ui/screenshot.js:2198
+#: js/ui/screenshot.js:1956 js/ui/screenshot.js:2195
 msgid "Show in Files"
 msgstr "Mostre in Files"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2144
+#: js/ui/screenshot.js:2141
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Videade di %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2190
+#: js/ui/screenshot.js:2187
 msgid "Screenshot captured"
 msgstr "Videade caturade"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2192
+#: js/ui/screenshot.js:2189
 msgid "You can paste the image from the clipboard."
 msgstr "Tu puedis tacâ la imagjin da lis notis."
 
-#: js/ui/screenshot.js:2245 js/ui/screenshot.js:2410
+#: js/ui/screenshot.js:2242 js/ui/screenshot.js:2407
 msgid "Screenshot taken"
 msgstr "Videade caturade"
 
@@ -1878,7 +1878,7 @@ msgstr "Il PIM al scugne jessi un numar o vueit."
 
 #: js/ui/status/accessibility.js:34
 msgid "Accessibility"
-msgstr "Acessibilitât"
+msgstr "Acès facilitât"
 
 #: js/ui/status/accessibility.js:44
 msgid "High Contrast"
@@ -1918,7 +1918,7 @@ msgstr "Mouse di tastiere"
 
 #: js/ui/status/accessibility.js:78
 msgid "Accessibility Settings"
-msgstr "Impostazions di acessibilitât"
+msgstr "Impostazions di acès facilitât"
 
 #: js/ui/status/accessibility.js:135
 msgid "Large Text"
