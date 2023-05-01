@@ -394,8 +394,8 @@ shell_window_preview_layout_add_window (ShellWindowPreviewLayout *self,
     g_signal_connect (window, "position-changed",
                       G_CALLBACK (on_window_size_position_changed), self);
   window_info->window_actor_destroy_id =
-    g_signal_connect (window_actor, "destroy",
-                      G_CALLBACK (on_window_destroyed), actor);
+    g_signal_connect_swapped (window_actor, "destroy",
+                              G_CALLBACK (on_window_destroyed), actor);
   window_info->destroy_id =
     g_signal_connect (actor, "destroy",
                       G_CALLBACK (on_actor_destroyed), self);
