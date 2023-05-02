@@ -195,10 +195,7 @@ $screenshot_ui_button_red: $error_color;
 }
 
 .screenshot-ui-tooltip {
-  color: $osd_fg_color;
-  background-color: $osd_bg_color;
-  border-radius: 99px;
-  padding: $base_padding $base_padding * 2;
+  @extend %tooltip;
   text-align: center;
   -y-offset: 24px;
 }

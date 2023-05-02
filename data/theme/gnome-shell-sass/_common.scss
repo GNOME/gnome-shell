@@ -167,6 +167,7 @@ stage {
 // tooltip
 %tooltip {
   background-color: transparentize(black, 0.1);
+  border: 1px solid transparentize($light_1, 0.9);
   color: $light_1;
 
   border-radius: 99px;
@@ -174,6 +175,7 @@ stage {
   text-align: center;
 
   @if $is_highcontrast {
+    background-color: black;
     border-color: $hc_inset_color;
   }
 }
