@@ -94,7 +94,7 @@
     &.calendar-day-heading {
       color: $insensitive_fg_color;
       padding-top: $base_padding;
-      height: 16px !important; // force heading to be smaller height
+      height: 1.1em !important; // force heading to be smaller height
       font-weight: 600;
       @extend %smaller;
     }
