@@ -391,7 +391,6 @@ var AuthenticationDialog = GObject.registerClass({
     }
 
     cancel() {
-        this.close(global.get_current_time());
         this._emitDone(true);
     }
 
