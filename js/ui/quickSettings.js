@@ -193,7 +193,10 @@ var QuickSlider = GObject.registerClass({
         });
         box.add_child(sliderBin);
 
-        sliderBin.set_accessible(this.slider.get_accessible());
+        // Make the slider bin transparent for a11y
+        const sliderAccessible = this.slider.get_accessible();
+        sliderAccessible.set_parent(sliderBin.get_parent().get_accessible());
+        sliderBin.set_accessible(sliderAccessible);
         sliderBin.connect('event', (bin, event) => this.slider.event(event, false));
 
         this._menuButton = new St.Button({
