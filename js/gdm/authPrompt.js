@@ -345,7 +345,8 @@ var AuthPrompt = GObject.registerClass({
         //                     2) Don't reset if we've already succeeded at verification and
         //                        the user is getting logged in.
         if (this._userVerifier.serviceIsDefault(GdmUtil.SMARTCARD_SERVICE_NAME) &&
-            this.verificationStatus == AuthPromptStatus.VERIFYING &&
+            (this.verificationStatus === AuthPromptStatus.VERIFYING ||
+             this.verificationStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS) &&
             this.smartcardDetected)
             return;
 
