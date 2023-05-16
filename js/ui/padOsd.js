@@ -313,7 +313,6 @@ const PadDiagram = GObject.registerClass({
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/pad-osd.css');
         let [success_, css] = file.load_contents(null);
         this._curEdited = null;
-        this._prevEdited = null;
         this._css = new TextDecoder().decode(css);
         this._labels = [];
         this._activeButtons = [];
@@ -589,20 +588,12 @@ const PadDiagram = GObject.registerClass({
         label.show();
     }
 
-    stopEdition(continues, str) {
+    stopEdition(str) {
         this._editorActor.hide();
-
-        if (this._prevEdited) {
-            const { label, action, idx, dir } = this._prevEdited;
-            this._applyLabel(label, action, idx, dir, str);
-            this._prevEdited = null;
-        }
 
         if (this._curEdited) {
             const { label, action, idx, dir } = this._curEdited;
             this._applyLabel(label, action, idx, dir, str);
-            if (continues)
-                this._prevEdited = this._curEdited;
             this._curEdited = null;
         }
 
@@ -874,35 +865,27 @@ export const PadOsd = GObject.registerClass({
                 this._editedAction.dir == dir;
     }
 
-    _followUpActionEdition(str) {
-        let { type, dir, number, mode } = this._editedAction;
-        const hasNextAction =
-            type === Meta.PadFeatureType.RING && dir === Meta.PadDirection.CCW
-            || type === Meta.PadFeatureType.STRIP && dir === Meta.PadDirection.UP;
-        if (!hasNextAction)
-            return false;
-
-        this._padDiagram.stopEdition(true, str);
-        this._editedAction = null;
-        if (type === Meta.PadFeatureType.RING)
-            this._startRingActionEdition(number, Meta.PadDirection.CW, mode);
-        else
-            this._startStripActionEdition(number, Meta.PadDirection.DOWN, mode);
-
-        return true;
-    }
-
     _endActionEdition() {
         this._actionEditor.close();
 
         if (this._editedAction != null) {
-            const { type, number, dir, mode } = this._editedAction;
+            const {type, number, dir, mode} = this._editedAction;
             const str = this._getActionText(type, number, dir);
-            if (this._followUpActionEdition(str))
-                return;
 
-            this._padDiagram.stopEdition(false, str);
+            const hasNextAction =
+                type === Meta.PadFeatureType.RING && dir === Meta.PadDirection.CCW ||
+                type === Meta.PadFeatureType.STRIP && dir === Meta.PadDirection.UP;
+
+            this._padDiagram.stopEdition(str);
             this._editedAction = null;
+
+            // Maybe follow up on next ring/strip direction
+            if (hasNextAction) {
+                if (type === Meta.PadFeatureType.RING)
+                    this._startRingActionEdition(number, Meta.PadDirection.CW, mode);
+                else
+                    this._startStripActionEdition(number, Meta.PadDirection.DOWN, mode);
+            }
         }
 
         this._editedActionSettings = null;
