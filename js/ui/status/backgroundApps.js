@@ -77,7 +77,7 @@ var BackgroundAppMenuItem = GObject.registerClass({
             (bind, source) => [true, source !== null],
             null);
 
-        this.set_child_above_sibling(this._ornamentLabel, null);
+        this.set_child_above_sibling(this._ornamentIcon, null);
 
         this._spinner = new Spinner(16, {hideOnStop: true});
         this._spinner.add_style_class_name('spinner');

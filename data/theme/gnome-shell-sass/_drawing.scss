@@ -344,9 +344,6 @@
   transition-duration: 100ms;
   padding: $base_padding*1.5 $base_padding*2;
 
-  &:ltr {padding-left: $base_padding;}
-  &:rtl {padding-right: $base_padding;}
-
   @if $flat {
     @include button(undecorated);
     box-shadow: none !important;
