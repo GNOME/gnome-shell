@@ -24,12 +24,6 @@ const ACTIVE_COLOR = "#729fcf";
 const LTR = 0;
 const RTL = 1;
 
-const CW = 0;
-const CCW = 1;
-
-const UP = 0;
-const DOWN = 1;
-
 const PadChooser = GObject.registerClass({
     Signals: { 'pad-selected': { param_types: [Clutter.InputDevice.$gtype] } },
 }, class PadChooser extends St.Button {
@@ -254,7 +248,7 @@ const ActionEditor = GObject.registerClass({
         this._actionComboBox.setAction(this._currentAction);
         this._updateKeybindingEntryState();
 
-        let isButton = action == Meta.PadActionType.BUTTON;
+        let isButton = action === null;
         this._actionComboBox.setButtonActionsActive(isButton);
     }
 
@@ -354,19 +348,19 @@ const PadDiagram = GObject.registerClass({
     _initLabels() {
         let i = 0;
         for (i = 0; ; i++) {
-            if (!this._addLabel(Meta.PadActionType.BUTTON, i))
+            if (!this._addLabel(null, i))
                 break;
         }
 
         for (i = 0; ; i++) {
-            if (!this._addLabel(Meta.PadActionType.RING, i, CW) ||
-                !this._addLabel(Meta.PadActionType.RING, i, CCW))
+            if (!this._addLabel(Meta.PadFeatureType.RING, i, Meta.PadDirection.CW) ||
+                !this._addLabel(Meta.PadFeatureType.RING, i, Meta.PadDirection.CCW))
                 break;
         }
 
         for (i = 0; ; i++) {
-            if (!this._addLabel(Meta.PadActionType.STRIP, i, UP) ||
-                !this._addLabel(Meta.PadActionType.STRIP, i, DOWN))
+            if (!this._addLabel(Meta.PadFeatureType.STRIP, i, Meta.PadDirection.UP) ||
+                !this._addLabel(Meta.PadFeatureType.STRIP, i, Meta.PadDirection.DOWN))
                 break;
         }
     }
@@ -525,7 +519,7 @@ const PadDiagram = GObject.registerClass({
 
     _getRingLabels(number, dir) {
         let numStr = number > 0 ? (number + 1).toString() : '';
-        let dirStr = dir == CW ? 'CW' : 'CCW';
+        let dirStr = dir === Meta.PadDirection.CW ? 'CW' : 'CCW';
         const labelName = `LabelRing${numStr}${dirStr}`;
         const leaderName = `LeaderRing${numStr}${dirStr}`;
         return [labelName, leaderName];
@@ -533,21 +527,19 @@ const PadDiagram = GObject.registerClass({
 
     _getStripLabels(number, dir) {
         let numStr = number > 0 ? (number + 1).toString() : '';
-        let dirStr = dir == UP ? 'Up' : 'Down';
+        let dirStr = dir === Meta.PadDirection.UP ? 'Up' : 'Down';
         const labelName = `LabelStrip${numStr}${dirStr}`;
         const leaderName = `LeaderStrip${numStr}${dirStr}`;
         return [labelName, leaderName];
     }
 
     _getLabelCoords(action, idx, dir) {
-        if (action == Meta.PadActionType.BUTTON)
-            return this._getItemLabelCoords(...this._getButtonLabels(idx));
-        else if (action == Meta.PadActionType.RING)
+        if (action === Meta.PadFeatureType.RING)
             return this._getItemLabelCoords(...this._getRingLabels(idx, dir));
-        else if (action == Meta.PadActionType.STRIP)
+        else if (action === Meta.PadFeatureType.STRIP)
             return this._getItemLabelCoords(...this._getStripLabels(idx, dir));
-
-        return [false];
+        else
+            return this._getItemLabelCoords(...this._getButtonLabels(idx));
     }
 
     _invalidateSvg() {
@@ -785,8 +777,13 @@ export const PadOsd = GObject.registerClass({
         global.display.request_pad_osd(pad, editionMode);
     }
 
-    _getActionText(type, number) {
-        let str = global.display.get_pad_action_label(this.padDevice, type, number);
+    _getActionText(type, number, dir) {
+        let str;
+        if (type === Meta.PadFeatureType.RING || type === Meta.PadFeatureType.STRIP)
+            str = global.display.get_pad_feature_label(this.padDevice, type, dir, number);
+        else
+            str = global.display.get_pad_button_label(this.padDevice, number);
+
         return str ?? _('None');
     }
 
@@ -828,13 +825,13 @@ export const PadOsd = GObject.registerClass({
                    event.type() == Clutter.EventType.PAD_STRIP) {
             if (this._editionMode) {
                 let [retval_, number, mode] = event.get_pad_event_details();
-                this._startStripActionEdition(number, UP, mode);
+                this._startStripActionEdition(number, Meta.PadDirection.UP, mode);
             }
         } else if (event.get_source_device() == this.padDevice &&
                    event.type() == Clutter.EventType.PAD_RING) {
             if (this._editionMode) {
                 let [retval_, number, mode] = event.get_pad_event_details();
-                this._startRingActionEdition(number, CCW, mode);
+                this._startRingActionEdition(number, Meta.PadDirection.CCW, mode);
             }
         }
 
@@ -879,17 +876,18 @@ export const PadOsd = GObject.registerClass({
 
     _followUpActionEdition(str) {
         let { type, dir, number, mode } = this._editedAction;
-        let hasNextAction = type == Meta.PadActionType.RING && dir == CCW ||
-                             type == Meta.PadActionType.STRIP && dir == UP;
+        const hasNextAction =
+            type === Meta.PadFeatureType.RING && dir === Meta.PadDirection.CCW
+            || type === Meta.PadFeatureType.STRIP && dir === Meta.PadDirection.UP;
         if (!hasNextAction)
             return false;
 
         this._padDiagram.stopEdition(true, str);
         this._editedAction = null;
-        if (type == Meta.PadActionType.RING)
-            this._startRingActionEdition(number, CW, mode);
+        if (type === Meta.PadFeatureType.RING)
+            this._startRingActionEdition(number, Meta.PadDirection.CW, mode);
         else
-            this._startStripActionEdition(number, DOWN, mode);
+            this._startStripActionEdition(number, Meta.PadDirection.DOWN, mode);
 
         return true;
     }
@@ -898,13 +896,12 @@ export const PadOsd = GObject.registerClass({
         this._actionEditor.close();
 
         if (this._editedAction != null) {
-            let str = global.display.get_pad_action_label(this.padDevice,
-                                                          this._editedAction.type,
-                                                          this._editedAction.number);
+            const { type, number, dir, mode } = this._editedAction;
+            const str = this._getActionText(type, number, dir);
             if (this._followUpActionEdition(str))
                 return;
 
-            this._padDiagram.stopEdition(false, str ?? _('None'));
+            this._padDiagram.stopEdition(false, str);
             this._editedAction = null;
         }
 
@@ -928,19 +925,19 @@ export const PadOsd = GObject.registerClass({
     _startButtonActionEdition(button) {
         let ch = String.fromCharCode('A'.charCodeAt() + button);
         let key = `button${ch}`;
-        this._startActionEdition(key, Meta.PadActionType.BUTTON, button);
+        this._startActionEdition(key, null, button);
     }
 
     _startRingActionEdition(ring, dir, mode) {
         let ch = String.fromCharCode('A'.charCodeAt() + ring);
-        const key = `ring${ch}-${dir === CCW ? 'ccw' : 'cw'}-mode-${mode}`;
-        this._startActionEdition(key, Meta.PadActionType.RING, ring, dir, mode);
+        const key = `ring${ch}-${dir === Meta.PadDirection.CCW ? 'ccw' : 'cw'}-mode-${mode}`;
+        this._startActionEdition(key, Meta.PadFeatureType.RING, ring, dir, mode);
     }
 
     _startStripActionEdition(strip, dir, mode) {
         let ch = String.fromCharCode('A'.charCodeAt() + strip);
-        const key = `strip${ch}-${dir === UP ? 'up' : 'down'}-mode-${mode}`;
-        this._startActionEdition(key, Meta.PadActionType.STRIP, strip, dir, mode);
+        const key = `strip${ch}-${dir === Meta.PadDirection.UP ? 'up' : 'down'}-mode-${mode}`;
+        this._startActionEdition(key, Meta.PadFeatureType.STRIP, strip, dir, mode);
     }
 
     setEditionMode(editionMode) {
