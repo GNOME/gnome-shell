@@ -53,6 +53,10 @@ $submenu_bg_color: lighten($menu_bg_color, 7%);
   }
 }
 
+.popup-ornamented-menu-item {
+  &:ltr {padding-left: $base_padding;}
+  &:rtl {padding-right: $base_padding;}
+}
 
 // all other graphical elements (sliders)
 .popup-inactive-menu-item {
