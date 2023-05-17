@@ -90,6 +90,7 @@ stage {
   &:selected,
   &:active { @include button(active);}
   &:checked { @include button(checked);}
+  &.default { @include button(default);}
 
   &.flat {
     @include button(normal, $flat:true);
@@ -99,6 +100,7 @@ stage {
     &:selected,
     &:active { @include button(active, $flat:true);}
     &:checked { @include button(checked, $flat:true);}
+    &.default { @include button(default, $flat:false);}
   }
 }
 
