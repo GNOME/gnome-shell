@@ -551,6 +551,7 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
                 let result = motionFunc(dragEvent);
                 if (result != DragMotionResult.CONTINUE) {
                     global.display.set_cursor(DRAG_CURSOR_MAP[result]);
+                    dragEvent.targetActor.disconnect(targetActorDestroyHandlerId);
                     return GLib.SOURCE_REMOVE;
                 }
             }
