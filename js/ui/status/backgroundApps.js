@@ -34,8 +34,6 @@ var BackgroundAppMenuItem = GObject.registerClass({
         delete params.message;
 
         super._init(app.get_name(), app.get_icon(), {
-            activate: false,
-            reactive: false,
             ...params,
         });
 
@@ -92,6 +90,8 @@ var BackgroundAppMenuItem = GObject.registerClass({
             GObject.BindingFlags.INVERT_BOOLEAN);
 
         closeButton.connect('clicked', () => this._quitApp().catch(logError));
+
+        this.connect('activate', () => this.app.activate());
 
         this.connect('destroy', () => this._onDestroy());
     }
