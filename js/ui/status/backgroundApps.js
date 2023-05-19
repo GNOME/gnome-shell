@@ -24,9 +24,6 @@ var BackgroundAppMenuItem = GObject.registerClass({
         'app': GObject.ParamSpec.object('app', '', '',
             GObject.ParamFlags.READWRITE,
             Shell.App),
-        'instance': GObject.ParamSpec.int64('instance', '', '',
-            GObject.ParamFlags.READWRITE,
-            -1, GLib.MAXINT64_BIGINT, -1),
         'message': GObject.ParamSpec.string('message', '', '',
             GObject.ParamFlags.READWRITE,
             null),
@@ -36,16 +33,13 @@ var BackgroundAppMenuItem = GObject.registerClass({
         const message = params.message;
         delete params.message;
 
-        const instance = params.instance;
-        delete params.instance;
-
         super._init(app.get_name(), app.get_icon(), {
             activate: false,
             reactive: false,
             ...params,
         });
 
-        this.set({message, instance});
+        this.set({message});
 
         this.add_style_class_name('background-app-item');
         this.label.add_style_class_name('title');
@@ -134,7 +128,7 @@ var BackgroundAppMenuItem = GObject.registerClass({
                 null);
         } catch (_error) {
             try {
-                Util.trySpawn(['flatpak', 'kill', this.instance]);
+                Util.trySpawn(['flatpak', 'kill', appId]);
             } catch (pidError) {
                 logError(pidError, 'Failed to kill application');
             }
@@ -213,7 +207,35 @@ class BackgroundAppsToggle extends QuickToggle {
 
         const {BackgroundApps: backgroundApps} = this._proxy;
 
-        const nBackgroundApps = backgroundApps?.length ?? 0;
+        this._appsSection.removeAll();
+
+        const items = new Map();
+        (backgroundApps ?? [])
+            .map(backgroundApp => {
+                const appId = backgroundApp.app_id.deepUnpack();
+                const app = this._appSystem.lookup_app(`${appId}.desktop`);
+                const message = backgroundApp.message?.deepUnpack();
+
+                return {app, message};
+            })
+            .sort((a, b) => {
+                return a.app.get_name().localeCompare(b.app.get_name());
+            })
+            .forEach(backgroundApp => {
+                const {app, message} = backgroundApp;
+
+                let item = items.get(app);
+                if (!item) {
+                    item = new BackgroundAppMenuItem(app);
+                    items.set(app, item);
+                    this._appsSection.addMenuItem(item);
+                }
+
+                if (message)
+                    item.set({message});
+            });
+
+        const nBackgroundApps = items.size;
         this.title = nBackgroundApps === 0
             ? _('No Background Apps')
             : ngettext(
@@ -221,31 +243,6 @@ class BackgroundAppsToggle extends QuickToggle {
                 '%d Background Apps',
                 nBackgroundApps).format(nBackgroundApps);
         this._listTitle.visible = nBackgroundApps > 0;
-
-        this._appsSection.removeAll();
-
-        if (!backgroundApps)
-            return;
-
-        backgroundApps
-            .map(backgroundApp => {
-                const appId = backgroundApp.app_id.deepUnpack();
-                const app = this._appSystem.lookup_app(`${appId}.desktop`);
-                const message = backgroundApp.message?.deepUnpack();
-                const instance = backgroundApp.instance.deepUnpack();
-
-                return {app, message, instance};
-            })
-            .sort((a, b) => {
-                return a.app.get_name().localeCompare(b.app.get_name());
-            })
-            .forEach(backgroundApp => {
-                const {app, message, instance} = backgroundApp;
-
-                const item = new BackgroundAppMenuItem(app,
-                    {instance, message});
-                this._appsSection.addMenuItem(item);
-            });
     }
 
     vfunc_clicked() {
