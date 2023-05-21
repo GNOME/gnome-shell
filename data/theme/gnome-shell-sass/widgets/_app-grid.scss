@@ -121,6 +121,7 @@ $app_icon_size: 96px;
     height: 10px;
     border-radius: 10px; // the same as height&width
     background-color: white;
+    transition-duration: 400ms;
   }
 }
 
@@ -167,6 +168,7 @@ $app_icon_size: 96px;
   width: 24px;
   height: 24px;
   border-radius: 99px;
+  transition-duration: 100ms;
 
   > StIcon { color: $system_fg_color;}
 
