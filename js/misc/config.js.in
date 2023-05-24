@@ -7,8 +7,6 @@ var PACKAGE_NAME = '@PACKAGE_NAME@';
 var PACKAGE_VERSION = '@PACKAGE_VERSION@';
 /* 1 if networkmanager is available, 0 otherwise */
 var HAVE_NETWORKMANAGER = @HAVE_NETWORKMANAGER@;
-/* 1 if soup2 should be used instead of soup3, 0 otherwise */
-var HAVE_SOUP2 = @HAVE_SOUP2@;
 /* gettext package */
 var GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
 /* locale dir */

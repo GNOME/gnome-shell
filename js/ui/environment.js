@@ -33,16 +33,6 @@ imports.gi.versions.TelepathyGLib = '0.12';
 imports.gi.versions.TelepathyLogger = '0.2';
 imports.gi.versions.UPowerGlib = '1.0';
 
-try {
-    if (Config.HAVE_SOUP2)
-        throw new Error('Soup3 support not enabled');
-    const Soup_ = imports.gi.Soup;
-} catch (e) {
-    imports.gi.versions.Soup = '2.4';
-    const { Soup } = imports.gi;
-    _injectSoup3Compat(Soup);
-}
-
 const {Clutter, Gdk, Gio, GLib, GObject, Meta, Polkit, Shell, St} = imports.gi;
 const Gettext = imports.gettext;
 const System = imports.system;
@@ -99,42 +89,6 @@ function _patchLayoutClass(layoutClass, styleProps) {
             });
         };
     }
-}
-
-/**
- * Mimick the Soup 3 APIs we use when falling back to Soup 2.4
- *
- * @param {object} Soup 2.4 namespace
- * @returns {void}
- */
-function _injectSoup3Compat(Soup) {
-    Soup.StatusCode = Soup.KnownStatusCode;
-
-    Soup.Message.new_from_encoded_form =
-        function (method, uri, form) {
-            const soupUri = new Soup.URI(uri);
-            soupUri.set_query(form);
-            return Soup.Message.new_from_uri(method, soupUri);
-        };
-    Soup.Message.prototype.set_request_body_from_bytes =
-        function (contentType, bytes) {
-            this.set_request(
-                contentType,
-                Soup.MemoryUse.COPY,
-                new TextDecoder().decode(bytes.get_data()));
-        };
-
-    Soup.Session.prototype.send_and_read_async =
-        function (message, prio, cancellable, callback) {
-            this.queue_message(message, () => callback(this, message));
-        };
-    Soup.Session.prototype.send_and_read_finish =
-        function (message) {
-            if (message.status_code !== Soup.KnownStatusCode.OK)
-                return null;
-
-            return message.response_body.flatten().get_as_bytes();
-        };
 }
 
 function _makeEaseCallback(params, cleanup) {
