@@ -50,7 +50,7 @@
     }
 
     .pager-button {
-      @extend .button.flat;
+      @extend .button, .flat;
       padding: 0 !important;
       height: 32px;
       width: 32px;
@@ -64,7 +64,7 @@
   .calendar-day {
     @extend %numeric;
     @extend %smaller;
-    @extend .button.flat;
+    @extend .button, .flat;
 
     border-radius: 99px;
     height: 3em !important;
@@ -97,7 +97,7 @@
     }
 
     &.calendar-today {
-      @extend .button.default;
+      @extend .button, .default;
     }
 
     &.calendar-day-with-events {
