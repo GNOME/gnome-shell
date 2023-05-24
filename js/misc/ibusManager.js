@@ -3,6 +3,7 @@
 
 const { Gio, GLib, IBus, Meta, Shell } = imports.gi;
 const Signals = imports.misc.signals;
+const BoxPointer = imports.ui.boxpointer;
 
 const IBusCandidatePopup = imports.ui.ibusCandidatePopup;
 
@@ -253,6 +254,7 @@ var IBusManager = class extends Signals.EventEmitter {
             return;
 
         this._currentEngineName = engineName;
+        this._candidatePopup.close(BoxPointer.PopupAnimation.NONE);
 
         if (this._registerPropertiesId != 0)
             return;
