@@ -5,6 +5,7 @@ overrides:
   - files:
       - js/ui/init.js
       - js/dbusServices/**
+      - js/portalHelper/**
       - subprojects/extensions-app/**
     parserOptions:
       sourceType: module

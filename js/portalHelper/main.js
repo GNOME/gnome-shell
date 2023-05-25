@@ -1,10 +1,12 @@
-/* exported main */
-imports.gi.versions.Adw = '1';
-imports.gi.versions.Gtk = '4.0';
-imports.gi.versions.WebKit = '6.0';
+import Adw from 'gi://Adw?version=1';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk?version=4.0';
+import WebKit from 'gi://WebKit?version=6.0';
 
-const Gettext = imports.gettext;
-const {Adw, Gio, GLib, GObject, Gtk, WebKit} = imports.gi;
+import * as Gettext from 'gettext';
+import {programInvocationName, programArgs} from 'system';
 
 const _ = Gettext.gettext;
 
@@ -360,13 +362,8 @@ class WebPortalHelper extends Adw.Application {
     }
 });
 
-/**
- * @param {string[]} argv - command line arguments
- */
-function main(argv) {
-    Gettext.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
-    Gettext.textdomain(Config.GETTEXT_PACKAGE);
+Gettext.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
+Gettext.textdomain(Config.GETTEXT_PACKAGE);
 
-    let app = new WebPortalHelper();
-    return app.run(argv);
-}
+const app = new WebPortalHelper();
+await app.runAsync([programInvocationName, ...programArgs]);
