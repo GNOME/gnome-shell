@@ -1,10 +1,12 @@
-/* exported main */
-imports.gi.versions.Adw = '1';
-imports.gi.versions.Gtk = '4.0';
+import Adw from 'gi://Adw?version=1';
+import GLib from 'gi://GLib';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk?version=4.0';
+import Shew from 'gi://Shew';
 
-const Gettext = imports.gettext;
+import * as Gettext from 'gettext';
 const Package = imports.package;
-const { Adw, GLib, Gio, GObject, Gtk, Shew } = imports.gi;
 
 Package.initFormat();
 
@@ -540,9 +542,13 @@ function initEnvironment() {
     };
 }
 
-function main(argv) {
+/**
+ * @param {string[]} argv - command line arguments
+ * @returns {void}
+ */
+export async function main(argv) {
     initEnvironment();
     Package.initGettext();
 
-    new Application().run(argv);
+    await new Application().runAsync(argv);
 }
