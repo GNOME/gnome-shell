@@ -1,5 +1,9 @@
-imports.package.start({
+import {programInvocationName, programArgs} from 'system';
+
+imports.package.init({
     name: '@PACKAGE_NAME@',
     prefix: '@prefix@',
     libdir: '@libdir@',
 });
+const {main} = await import(`${imports.package.moduledir}/main.js`);
+await main([programInvocationName, ...programArgs]);

@@ -1,11 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ExtensionPrefsDialog */
 
-const { Adw, Gdk, Gio, GLib, GObject, Gtk } = imports.gi;
+import Adw from 'gi://Adw?version=1';
+import Gdk from 'gi://Gdk?version=4.0';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk?version=4.0';
 
 const ExtensionUtils = imports.misc.extensionUtils;
 
-var ExtensionPrefsDialog = GObject.registerClass({
+export const ExtensionPrefsDialog = GObject.registerClass({
     GTypeName: 'ExtensionPrefsDialog',
 }, class ExtensionPrefsDialog extends Adw.PreferencesWindow {
     _init(extension) {

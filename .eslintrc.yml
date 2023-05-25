@@ -4,5 +4,6 @@ extends:
 overrides:
   - files:
       - js/ui/init.js
+      - js/dbusServices/**
     parserOptions:
       sourceType: module

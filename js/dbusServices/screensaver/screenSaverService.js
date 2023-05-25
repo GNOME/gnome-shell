@@ -1,15 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ScreenSaverService */
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
-const { Gio, GLib } = imports.gi;
+import {ServiceImplementation} from './dbusService.js';
 
-const { loadInterfaceXML } = imports.misc.dbusUtils;
-const { ServiceImplementation } = imports.dbusService;
+const {loadInterfaceXML} = imports.misc.dbusUtils;
 
 const ScreenSaverIface = loadInterfaceXML('org.gnome.ScreenSaver');
 const ScreenSaverProxy = Gio.DBusProxy.makeProxyWrapper(ScreenSaverIface);
 
-var ScreenSaverService = class extends ServiceImplementation {
+export const ScreenSaverService = class extends ServiceImplementation {
     constructor() {
         super(ScreenSaverIface, '/org/gnome/ScreenSaver');
 

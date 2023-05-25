@@ -1,14 +1,13 @@
-/* exported main */
+import {DBusService} from './dbusService.js';
+import {ScreencastService} from './screencastService.js';
 
-const {DBusService} = imports.dbusService;
-
-function main() {
-    const {ScreencastService} = imports.screencastService;
+/** @returns {void} */
+export async function main() {
     if (!ScreencastService.canScreencast())
         return;
 
     const service = new DBusService(
         'org.gnome.Shell.Screencast',
         new ScreencastService());
-    service.run();
+    await service.runAsync();
 }

@@ -1,17 +1,17 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported NotificationDaemon */
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
-const { Gio, GLib } = imports.gi;
+import {ServiceImplementation} from './dbusService.js';
 
-const { loadInterfaceXML } = imports.misc.dbusUtils;
-const { ServiceImplementation } = imports.dbusService;
+const {loadInterfaceXML} = imports.misc.dbusUtils;
 
 const NotificationsIface = loadInterfaceXML('org.freedesktop.Notifications');
 const NotificationsProxy = Gio.DBusProxy.makeProxyWrapper(NotificationsIface);
 
 Gio._promisify(Gio.DBusConnection.prototype, 'call');
 
-var NotificationDaemon = class extends ServiceImplementation {
+export const NotificationDaemon = class extends ServiceImplementation {
     constructor() {
         super(NotificationsIface, '/org/freedesktop/Notifications');
 

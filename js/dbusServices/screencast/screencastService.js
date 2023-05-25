@@ -1,14 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ScreencastService */
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Gst from 'gi://Gst?version=1.0';
+import Gtk from 'gi://Gtk?version=4.0';
 
-imports.gi.versions.Gst = '1.0';
-imports.gi.versions.Gtk = '4.0';
+import {ServiceImplementation} from './dbusService.js';
 
-const { Gio, GLib, Gst, Gtk } = imports.gi;
-
-const { loadInterfaceXML, loadSubInterfaceXML } = imports.misc.dbusUtils;
+const {loadInterfaceXML, loadSubInterfaceXML} = imports.misc.dbusUtils;
 const Signals = imports.misc.signals;
-const { ServiceImplementation } = imports.dbusService;
 
 const ScreencastIface = loadInterfaceXML('org.gnome.Shell.Screencast');
 
@@ -400,7 +399,7 @@ var Recorder = class extends Signals.EventEmitter {
     }
 };
 
-var ScreencastService = class extends ServiceImplementation {
+export const ScreencastService = class extends ServiceImplementation {
     static canScreencast() {
         if (!Gst.init_check(null))
             return false;

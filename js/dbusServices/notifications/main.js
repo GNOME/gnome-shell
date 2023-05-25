@@ -1,11 +1,10 @@
-/* exported main */
+import {DBusService} from './dbusService.js';
+import {NotificationDaemon} from './notificationDaemon.js';
 
-const { DBusService } = imports.dbusService;
-const { NotificationDaemon } = imports.notificationDaemon;
-
-function main() {
+/** @returns {void} */
+export async function main() {
     const service = new DBusService(
         'org.gnome.Shell.Notifications',
         new NotificationDaemon());
-    service.run();
+    await service.runAsync();
 }

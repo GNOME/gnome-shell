@@ -1,14 +1,13 @@
-/* exported DBusService, ServiceImplementation */
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
-const { Gio, GLib } = imports.gi;
+import {programArgs} from 'system';
 
 const Signals = imports.signals;
 
 const IDLE_SHUTDOWN_TIME = 2; // s
 
-const { programArgs } = imports.system;
-
-var ServiceImplementation = class {
+export class ServiceImplementation {
     constructor(info, objectPath) {
         this._objectPath = objectPath;
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(info, this);
@@ -150,10 +149,10 @@ var ServiceImplementation = class {
             that._queueShutdownCheck();
         };
     }
-};
+}
 Signals.addSignalMethods(ServiceImplementation.prototype);
 
-var DBusService = class {
+export class DBusService {
     constructor(name, service) {
         this._name = name;
         this._service = service;
@@ -162,7 +161,7 @@ var DBusService = class {
         this._service.connect('shutdown', () => this._loop.quit());
     }
 
-    run() {
+    async runAsync() {
         // Bail out when not running under gnome-shell
         Gio.DBus.watch_name(Gio.BusType.SESSION,
             'org.gnome.Shell',
@@ -183,6 +182,6 @@ var DBusService = class {
             null,
             () => this._loop.quit());
 
-        this._loop.run();
+        await this._loop.runAsync();
     }
-};
+}

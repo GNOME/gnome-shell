@@ -1,16 +1,12 @@
-/* exported main */
-
-imports.gi.versions.Adw = '1';
-imports.gi.versions.Gdk = '4.0';
-imports.gi.versions.Gtk = '4.0';
-
-const { Adw, GObject } = imports.gi;
+import Adw from 'gi://Adw?version=1';
+import GObject from 'gi://GObject';
 const pkg = imports.package;
 
-const { DBusService } = imports.dbusService;
-const { ExtensionsService } = imports.extensionsService;
+import {DBusService} from './dbusService.js';
+import {ExtensionsService} from './extensionsService.js';
 
-function main() {
+/** @returns {void} */
+export async function main() {
     Adw.init();
     pkg.initFormat();
 
@@ -19,5 +15,5 @@ function main() {
     const service = new DBusService(
         'org.gnome.Shell.Extensions',
         new ExtensionsService());
-    service.run();
+    await service.runAsync();
 }
