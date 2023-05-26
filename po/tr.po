@@ -17,10 +17,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-04-26 17:55+0000\n"
+"POT-Creation-Date: 2023-05-19 15:22+0000\n"
 "PO-Revision-Date: 2023-04-26 00:36+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
-"Language-Team: Turkish <gnome-turk@gnome.org>\n"
+"Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1115,7 +1115,7 @@ msgstr "Üzgünüm ama işe yaramadı. Lütfen yeniden deneyin."
 #: js/ui/components/telepathyClient.js:828
 #, javascript-format
 msgid "%s is now known as %s"
-msgstr "%s, şimdi %s olarak biliniyor"
+msgstr "%s, şimdi %s olarak biliniyor"
 
 #: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:420
 msgid "Windows"
@@ -1560,11 +1560,11 @@ msgstr "Ekran Kilitleme, GNOME ekran yöneticisi gerektirir."
 msgid "System Information"
 msgstr "Sistem Bilgisi"
 
-#: js/ui/mpris.js:202
+#: js/ui/mpris.js:203
 msgid "Unknown artist"
 msgstr "Bilinmeyen sanatçı"
 
-#: js/ui/mpris.js:212
+#: js/ui/mpris.js:213
 msgid "Unknown title"
 msgstr "Bilinmeyen başlık"
 
@@ -1584,7 +1584,7 @@ msgstr "Uygulamalar"
 #. activities. See also note for "Activities" string.
 #: js/ui/overview.js:71
 msgid "Overview"
-msgstr "Genel Görünüm"
+msgstr "Genel Görünüm"
 
 #: js/ui/padOsd.js:100
 msgid "New shortcut…"
@@ -1657,7 +1657,7 @@ msgstr "Çıkmak için ESC’ye bas"
 
 #: js/ui/runDialog.js:238
 msgid "Restart is not available on Wayland"
-msgstr "Wayland’de yeniden başlatma kullanılabilir değil"
+msgstr "Wayland’de yeniden başlatma kullanılabilir değil"
 
 #: js/ui/runDialog.js:243
 msgid "Restarting…"
@@ -3027,21 +3027,3 @@ msgstr[0] "%u Girdi"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
-
-#~ msgid "Open the app menu"
-#~ msgstr "Uygulama menüsünü aç"
-
-#~ msgid "Keybinding to open the application menu"
-#~ msgstr "Uygulama menüsünü açmak için klavye kısayolu"
-
-#~ msgid "Keybinding to open the application menu."
-#~ msgstr "Uygulama menüsünü açmak için klavye kısayolu."
-
-#~ msgid "Screenshot / Screencast"
-#~ msgstr "Ekran Görüntüsü / Ekran Kaydı"
-
-#~ msgid "Power Profiles"
-#~ msgstr "Güç Profilleri"
-
-#~ msgid "Evolution Calendar"
-#~ msgstr "Evolution Takvim"
