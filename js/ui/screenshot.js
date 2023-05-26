@@ -2013,6 +2013,7 @@ export const ScreenshotUI = GObject.registerClass({
     vfunc_key_press_event(event) {
         const symbol = event.get_key_symbol();
         if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_space ||
+            symbol === Clutter.KEY_KP_Enter || symbol === Clutter.KEY_ISO_Enter ||
             ((event.get_state() & Clutter.ModifierType.CONTROL_MASK) &&
              (symbol === Clutter.KEY_c || symbol === Clutter.KEY_C))) {
             this._onCaptureButtonClicked();
