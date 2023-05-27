@@ -12,7 +12,7 @@ async function run() {
     /* eslint-disable no-await-in-loop */
 
     /* Make created windows remain visible during exit. */
-    Scripting.disableHelperAutoExit();
+    await Scripting.disableHelperAutoExit();
 
     const seat = Clutter.get_default_backend().get_default_seat();
     const virtualDevice_ =
