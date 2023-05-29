@@ -103,12 +103,15 @@ var Magnifier = class Magnifier extends Signals.EventEmitter {
         this._mouseSprite = new Clutter.Actor({ request_mode: Clutter.RequestMode.CONTENT_SIZE });
         this._mouseSprite.content = new MouseSpriteContent();
 
+        this._cursorRoot = new Clutter.Actor();
+        this._cursorRoot.add_actor(this._mouseSprite);
+
         // Create the first ZoomRegion and initialize it according to the
         // magnification settings.
 
         [this.xMouse, this.yMouse] = global.get_pointer();
 
-        let aZoomRegion = new ZoomRegion(this, this._mouseSprite);
+        let aZoomRegion = new ZoomRegion(this, this._cursorRoot);
         this._zoomRegions.push(aZoomRegion);
         this._settingsInit(aZoomRegion);
         aZoomRegion.scrollContentsTo(this.xMouse, this.yMouse);
@@ -283,7 +286,7 @@ var Magnifier = class Magnifier extends Signals.EventEmitter {
      * @returns {ZoomRegion} the newly created ZoomRegion.
      */
     createZoomRegion(xMagFactor, yMagFactor, roi, viewPort) {
-        let zoomRegion = new ZoomRegion(this, this._mouseSprite);
+        let zoomRegion = new ZoomRegion(this, this._cursorRoot);
         zoomRegion.setViewPort(viewPort);
 
         // We ignore the redundant width/height on the ROI
