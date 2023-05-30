@@ -18,23 +18,16 @@ main (int argc, char *argv[])
   textdomain (GETTEXT_PACKAGE);
 
   context = g_object_new (GJS_TYPE_CONTEXT,
+                          "program-name", *argv,
                           "search-path", search_path,
                           NULL);
 
-  if (!gjs_context_define_string_array(context, "ARGV",
-                                       argc, (const char**)argv,
-                                       &error))
-    {
-      g_message("Failed to define ARGV: %s", error->message);
-      g_error_free (error);
-      g_object_unref (context);
-
-      return 1;
-    }
-
+  gjs_context_set_argv(context, argc - 1, (const char**)argv + 1);
 
   if (!gjs_context_eval (context,
-                         "const Main = imports.portalHelper.main; Main.main(ARGV);",
+                         "const Main = imports.portalHelper.main;"
+                         "const {programInvocationName, programArgs} = imports.system;"
+                         "Main.main([programInvocationName, ...programArgs]);",
                          -1,
                          "<main>",
                          &status,
