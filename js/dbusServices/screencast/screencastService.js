@@ -87,6 +87,7 @@ var Recorder = class extends Signals.EventEmitter {
                 throw e;
         }
 
+        this._pipelineString = null;
         this._framerate = DEFAULT_FRAMERATE;
         this._drawCursor = DEFAULT_DRAW_CURSOR;
 
@@ -234,6 +235,23 @@ var Recorder = class extends Signals.EventEmitter {
         }
     }
 
+    *_getPipelineConfigs() {
+        if (this._pipelineString) {
+            yield {
+                pipelineString:
+                    `capsfilter caps=video/x-raw,max-framerate=%F/1 ! ${this._pipelineString}`,
+            };
+            return;
+        }
+
+        const fallbackSupported =
+                Gst.Registry.get().check_feature_version('pipewiresrc', 0, 3, 67);
+        if (fallbackSupported)
+            yield* PIPELINES;
+        else
+            yield PIPELINES.at(-1);
+    }
+
     startRecording() {
         return new Promise((resolve, reject) => {
             this._startRequest = {resolve, reject};
@@ -256,10 +274,7 @@ var Recorder = class extends Signals.EventEmitter {
                     this._nodeId = nodeId;
 
                     this._pipelineState = PipelineState.STARTING;
-                    const fallbackSupported =
-                        Gst.Registry.get().check_feature_version('pipewiresrc', 0, 3, 67);
-                    this._pipelineConfigs = fallbackSupported
-                        ? PIPELINES.values() : [PIPELINES.at(-1)].values();
+                    this._pipelineConfigs = this._getPipelineConfigs();
                     this._tryNextPipeline();
                 });
             this._sessionProxy.StartSync();
