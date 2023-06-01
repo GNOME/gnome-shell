@@ -102,6 +102,10 @@ class OverviewActor extends St.BoxLayout {
         return this._controls.dash;
     }
 
+    get searchController() {
+        return this._controls.searchController;
+    }
+
     get searchEntry() {
         return this._controls.searchEntry;
     }
@@ -706,6 +710,10 @@ var Overview = class extends Signals.EventEmitter {
             'use \'dash.showAppsButton\' property instead'));
 
         return this.dash.showAppsButton;
+    }
+
+    get searchController() {
+        return this._overview.searchController;
     }
 
     get searchEntry() {

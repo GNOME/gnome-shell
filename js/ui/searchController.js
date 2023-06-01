@@ -320,6 +320,26 @@ var SearchController = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
+    /**
+     * addProvider:
+     * @param {object} provider - a search provider implementation
+     *
+     * Add a search provider to the controller.
+     */
+    addProvider(provider) {
+        this._searchResults._registerProvider(provider);
+    }
+
+    /**
+     * removeProvider:
+     * @param {object} provider - a search provider implementation
+     *
+     * Remove a search provider from the controller.
+     */
+    removeProvider(provider) {
+        this._searchResults._unregisterProvider(provider);
+    }
+
     get searchActive() {
         return this._searchActive;
     }

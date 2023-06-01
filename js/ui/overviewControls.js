@@ -871,6 +871,10 @@ class ControlsManager extends St.Widget {
         });
     }
 
+    get searchController() {
+        return this._searchController;
+    }
+
     get searchEntry() {
         return this._searchEntry;
     }
