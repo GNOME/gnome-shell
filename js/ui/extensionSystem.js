@@ -512,36 +512,25 @@ var ExtensionManager = class extends Signals.EventEmitter {
         let extensionModule;
         let extensionState = null;
 
-        // TODO: This function does not have an async operation but when ESM is
-        // merged there will be a dynamic import here instead of `installImporter`.
-        await 0;
-
-        ExtensionUtils.installImporter(extension);
-
-        // Extensions can only be imported once, so add a property to avoid
-        // attempting to re-import an extension.
-        extension.isImported = true;
-
         try {
-            extensionModule = extension.imports.extension;
+            extensionModule = await import(extensionJs.get_uri());
+
+            // Extensions can only be imported once, so add a property to avoid
+            // attempting to re-import an extension.
+            extension.isImported = true;
         } catch (e) {
             this.logExtensionError(uuid, e);
             return false;
         }
 
-        if (extensionModule.init) {
-            try {
-                extensionState = await extensionModule.init(extension);
-            } catch (e) {
-                this.logExtensionError(uuid, e);
-                return false;
-            }
+        try {
+            extensionState = new extensionModule.default(extension.metadata);
+        } catch (e) {
+            this.logExtensionError(uuid, e);
+            return false;
         }
 
-        if (!extensionState)
-            extensionState = extensionModule;
         extension.stateObj = extensionState;
-
         extension.state = ExtensionState.DISABLED;
         this.emit('extension-loaded', uuid);
         return true;
