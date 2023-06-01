@@ -7,5 +7,6 @@ overrides:
       - js/dbusServices/**
       - js/portalHelper/**
       - subprojects/extensions-app/**
+      - subprojects/extensions-tool/**
     parserOptions:
       sourceType: module

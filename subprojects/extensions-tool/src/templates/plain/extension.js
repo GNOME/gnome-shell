@@ -16,9 +16,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* exported init */
-
-class Extension {
+export default class Extension {
     constructor() {
     }
 
@@ -27,8 +25,4 @@ class Extension {
 
     disable() {
     }
-}
-
-function init() {
-    return new Extension();
 }

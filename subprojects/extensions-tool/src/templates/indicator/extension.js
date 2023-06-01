@@ -16,12 +16,10 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* exported init */
-
 const GETTEXT_DOMAIN = 'my-indicator-extension';
 
-const GObject = imports.gi.GObject;
-const St = imports.gi.St;
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;
@@ -48,9 +46,9 @@ class Indicator extends PanelMenu.Button {
     }
 });
 
-class Extension {
-    constructor(uuid) {
-        this._uuid = uuid;
+export default class Extension {
+    constructor(metadata) {
+        this._uuid = metadata.uuid;
 
         ExtensionUtils.initTranslations(GETTEXT_DOMAIN);
     }
@@ -64,8 +62,4 @@ class Extension {
         this._indicator.destroy();
         this._indicator = null;
     }
-}
-
-function init(meta) {
-    return new Extension(meta.uuid);
 }
