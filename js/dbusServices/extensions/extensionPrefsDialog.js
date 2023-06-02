@@ -18,29 +18,24 @@ export const ExtensionPrefsDialog = GObject.registerClass({
             search_enabled: false,
         });
 
-        try {
-            ExtensionUtils.installImporter(extension);
-
-            // give extension prefs access to their own extension object
-            ExtensionUtils.setCurrentExtension(extension);
-
-            const prefsModule = extension.imports.prefs;
-            prefsModule.init(extension.metadata);
-
-            if (prefsModule.fillPreferencesWindow) {
-                prefsModule.fillPreferencesWindow(this);
-
-                if (!this.visible_page)
-                    throw new Error('Extension did not provide any UI');
-            } else {
-                const widget = prefsModule.buildPrefsWidget();
-                const page = this._wrapWidget(widget);
-                this.add(page);
-            }
-        } catch (e) {
+        this._loadPrefs(extension).catch(e => {
             this._showErrorPage(e);
             logError(e, 'Failed to open preferences');
-        }
+        });
+    }
+
+    async _loadPrefs(extension) {
+        // give extension prefs access to their own extension object
+        ExtensionUtils.setCurrentExtension(extension);
+
+        const prefsJs = extension.dir.get_child('prefs.js');
+        const prefsModule = await import(prefsJs.get_uri());
+
+        const prefsObj = new prefsModule.default(extension.metadata);
+        prefsObj.fillPreferencesWindow(this);
+
+        if (!this.visible_page)
+            throw new Error('Extension did not provide any UI');
     }
 
     set titlebar(w) {
@@ -63,23 +58,6 @@ export const ExtensionPrefsDialog = GObject.registerClass({
 
         const extension = ExtensionUtils.getCurrentExtension();
         this.add(new ExtensionPrefsErrorPage(extension, e));
-    }
-
-    _wrapWidget(widget) {
-        if (widget instanceof Adw.PreferencesPage)
-            return widget;
-
-        const page = new Adw.PreferencesPage();
-        if (widget instanceof Adw.PreferencesGroup) {
-            page.add(widget);
-            return page;
-        }
-
-        const group = new Adw.PreferencesGroup();
-        group.add(widget);
-        page.add(group);
-
-        return page;
     }
 });
 
