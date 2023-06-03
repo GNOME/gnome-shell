@@ -1,3 +1,23 @@
+44.2
+====
+* Improve built-in screen recorder [Jonas, Robert; !2197]
+* Use user-defined names in bluetooth menu [Florian; !2751]
+* Fix stuck authentication dialog in remote sessions [Joan; !2761]
+* Fix glitches in calendar when using large-text option [Sebastian; !2759]
+* Fix IM popup getting stuck on engine changes [Daniel D.; !2774]
+* Fixed crash [Carlos; !2756]
+* Misc. bug fixes and cleanups [Florian, Daniel v. V., Zacharie;
+  !2741, !2650, !2770]
+
+Contributors:
+  Daniel Drake, Jonas Dreßler, Zacharie DUBRULLE, Carlos Garnacho,
+  Sebastian Keller, Florian Müllner, robert.mader@collabora.com, Joan Torres,
+  Daniel van Vugt
+
+Translators:
+  Jiri Grönroos [fi], Gianvito Cavasoli [it], Guillaume Bernard [fr],
+  Jordi Mas [ca], Daniel Rusek [cs], Rafael Fontenelle [pt_BR]
+
 44.1
 ====
 * Add section title in background apps menu [Florian; !2681]
