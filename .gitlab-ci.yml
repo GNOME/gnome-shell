@@ -49,7 +49,7 @@ workflow:
 .gnome-shell.fedora:
   variables:
     FDO_DISTRIBUTION_VERSION: 38
-    FDO_DISTRIBUTION_TAG: '2023-04-21.1'
+    FDO_DISTRIBUTION_TAG: '2023-06-07.1'
     FDO_DISTRIBUTION_PACKAGES:
       gjs
       nodejs
@@ -62,7 +62,7 @@ workflow:
       pkgconfig(json-glib-1.0)
     FDO_DISTRIBUTION_EXEC: |
       # For static analysis with eslint
-      npm install -g eslint eslint-plugin-jsdoc &&
+      npm install -g eslint@^8.0.0 eslint-plugin-jsdoc@^46.0.0 &&
 
       dnf group install -y 'Development Tools' \
                  'C Development Tools and Libraries' &&

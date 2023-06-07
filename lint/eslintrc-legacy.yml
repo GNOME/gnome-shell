@@ -12,7 +12,7 @@ rules:
   jsdoc/check-tag-names: off
   jsdoc/check-types: off
   jsdoc/implements-on-classes: off
-  jsdoc/newline-after-description: off
+  jsdoc/tag-lines: off
   jsdoc/require-jsdoc: off
   jsdoc/require-param: off
   jsdoc/require-param-description: off

@@ -68,7 +68,10 @@ rules:
   jsdoc/check-tag-names: error
   jsdoc/check-types: error
   jsdoc/implements-on-classes: error
-  jsdoc/newline-after-description: error
+  jsdoc/tag-lines: 
+    - error
+    - any
+    - startLines: 1
   jsdoc/require-jsdoc: error
   jsdoc/require-param: error
   jsdoc/require-param-description: error
