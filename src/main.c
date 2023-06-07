@@ -608,35 +608,14 @@ main (int argc, char **argv)
   init_signal_handlers (context);
   change_to_home_directory ();
 
-  if (!meta_context_setup (context, &error))
-    {
-      g_printerr ("Failed to setup: %s\n", error->message);
-      return EXIT_FAILURE;
-    }
+  if (session_mode == NULL)
+    session_mode = is_gdm_mode ? (char *)"gdm" : (char *)"user";
 
   /* FIXME: Add gjs API to set this stuff and don't depend on the
    * environment.  These propagate to child processes.
    */
   g_setenv ("GJS_DEBUG_OUTPUT", "stderr", TRUE);
   g_setenv ("GJS_DEBUG_TOPICS", "JS ERROR;JS LOG", TRUE);
-
-  shell_init_debug (g_getenv ("SHELL_DEBUG"));
-
-  shell_dbus_init (meta_context_is_replacing (context));
-  shell_a11y_init ();
-  shell_perf_log_init ();
-  shell_introspection_init ();
-  shell_fonts_init ();
-
-  g_log_set_writer_func (default_log_writer, NULL, NULL);
-
-  /* Initialize the global object */
-  if (session_mode == NULL)
-    session_mode = is_gdm_mode ? (char *)"gdm" : (char *)"user";
-
-  _shell_global_init ("session-mode", session_mode,
-                      "force-animations", force_animations,
-                      NULL);
 
   dump_gjs_stack_on_signal (SIGABRT);
   dump_gjs_stack_on_signal (SIGFPE);
@@ -649,6 +628,33 @@ main (int argc, char **argv)
       dump_gjs_stack_on_signal (SIGSEGV);
     }
 
+  /* Initialize the Shell global, including GjsContext
+   * GjsContext will iterate the default main loop to
+   * resolve internal modules.
+   */
+  _shell_global_init ("session-mode", session_mode,
+                      "force-animations", force_animations,
+                      NULL);
+
+  /* Setup Meta _after_ the Shell global to avoid GjsContext
+   * iterating on the main loop once Meta starts adding events
+   */
+  if (!meta_context_setup (context, &error))
+    {
+      g_printerr ("Failed to setup: %s\n", error->message);
+      return EXIT_FAILURE;
+    }
+
+  shell_init_debug (g_getenv ("SHELL_DEBUG"));
+
+  shell_dbus_init (meta_context_is_replacing (context));
+  shell_a11y_init ();
+  shell_perf_log_init ();
+  shell_introspection_init ();
+  shell_fonts_init ();
+
+  g_log_set_writer_func (default_log_writer, NULL, NULL);
+
   shell_profiler_init ();
 
   if (meta_context_get_compositor_type (context) == META_COMPOSITOR_TYPE_WAYLAND)
@@ -660,10 +666,31 @@ main (int argc, char **argv)
       return EXIT_FAILURE;
     }
 
-  if (!meta_context_run_main_loop (context, &error))
+  /* init.js calls meta_context_start_main_loop(), gjs_context_eval_module_file()
+   * will not return until Mutter is exited.
+   */
+  GjsContext *gjs_context = _shell_global_get_gjs_context (shell_global_get());
+  uint8_t status;
+  if (!gjs_context_eval_module_file (gjs_context,
+                                     "resource:///org/gnome/shell/ui/init.js",
+                                     &status,
+                                     &error))
     {
-      g_printerr ("GNOME Shell terminated with an error: %s\n", error->message);
-      ecode = EXIT_FAILURE;
+      g_message ("Execution of main.js threw exception: %s", error->message);
+      g_error_free (error);
+      /* We just exit() here, since in a development environment you'll get the
+       * error in your shell output, and it's way better than a busted WM,
+       * which typically manifests as a white screen.
+       *
+       * In production, we shouldn't crash =)  But if we do, we should get
+       * restarted by the session infrastructure, which is likely going
+       * to be better than some undefined state.
+       *
+       * If there was a generic "hook into bug-buddy for non-C crashes"
+       * infrastructure, here would be the place to put it.
+       */
+      g_object_unref (gjs_context);
+      exit (1);
     }
 
   g_message ("Shutting down GNOME Shell");

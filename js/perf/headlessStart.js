@@ -23,15 +23,12 @@ function init() {
     global.connect('shutdown', () => {
         _testMonitor?.destroy();
     });
-    global.context.connect('started',
+    GLib.timeout_add_seconds(
+        GLib.PRIORITY_LOW, 2,
         () => {
-            GLib.timeout_add_seconds(
-                GLib.PRIORITY_LOW, 2,
-                () => {
-                    log('Connecting 1280x720 test monitor');
-                    _testMonitor = MetaTest.TestMonitor.new(
-                        global.context, 1280, 720, 60.0);
-                });
+            log('Connecting 1280x720 test monitor');
+            _testMonitor = MetaTest.TestMonitor.new(
+                global.context, 1280, 720, 60.0);
         });
     Scripting.defineScriptEvent('monitorsChanged', 'Monitors changed');
 
