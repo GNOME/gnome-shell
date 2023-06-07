@@ -3,34 +3,34 @@
 #
 #
 #
+#
 # Andrey Korzinev <fellrond@gmail.com>, 2009.
 # Sergey V. Kovylov <serejka@gmail.com>, 2009.
 # Marina Zhurakhinskaya <marinaz@redhat.com>, 2009, 2010.
 # Sergey Davidoff <shnatsel@gmail.com>, 2010.
 # Yuri Kozlov <yuray@komyakino.ru>, 2011, 2012.
-# JDronova <juliette.tux@gmail.com>, 2013.
+# JDronova <juliette.tux@gmail.com>, 2013, 2023.
 # Valery Kirichenko <valera5505@gmail.com>, 2014.
 # Yuri Myasoedov <ymyasoedov@yandex.ru>, 2012, 2013, 2014.
 # Ivan Komaritsyn <vantu5z@mail.ru>, 2015.
 # Stas Solovey <whats_up@tut.by>, 2011, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
 # Konstantin Nezhbert <zhbert@yandex.ru>, 2021.
 # Ivan Molodetskikh <yalterz@gmail.com>, 2020-2022.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-04-04 17:39+0000\n"
-"PO-Revision-Date: 2023-04-04 21:22+0300\n"
-"Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
-"Language-Team: Russian <gnome-cyr@gnome.org>\n"
+"POT-Creation-Date: 2023-05-15 13:28+0000\n"
+"PO-Revision-Date: 2023-06-07 18:58+0300\n"
+"Last-Translator: Дронова Юлия <juliette.tux@gmail.com>\n"
+"Language-Team: RU\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.2.2\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 23.04.0\n"
 "X-DL-Team: ru\n"
 "X-DL-Module: gnome-shell\n"
 "X-DL-Branch: main\n"
@@ -79,27 +79,27 @@ msgid "Activate favorite app 9"
 msgstr "Переключиться на избранное приложение 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2110
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2128
 msgid "Screenshots"
 msgstr "Снимки экрана"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:238
+#: data/org.gnome.shell.gschema.xml.in:231
 msgid "Take a screenshot interactively"
 msgstr "Сделать снимок экрана интерактивно"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:250
+#: data/org.gnome.shell.gschema.xml.in:243
 msgid "Take a screenshot"
 msgstr "Сделать снимок экрана"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:246
+#: data/org.gnome.shell.gschema.xml.in:239
 msgid "Take a screenshot of a window"
 msgstr "Сделать снимок окна"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:242
+#: data/org.gnome.shell.gschema.xml.in:235
 msgid "Record a screencast interactively"
 msgstr "Сделать запись экрана интерактивно"
 
@@ -122,10 +122,6 @@ msgstr "Показать обзор"
 #: data/50-gnome-shell-system.xml:18
 msgid "Show all apps"
 msgstr "Показать все приложения"
-
-#: data/50-gnome-shell-system.xml:21
-msgid "Open the app menu"
-msgstr "Открыть меню приложений"
 
 #: data/org.gnome.Shell.desktop.in.in:4
 msgid "GNOME Shell"
@@ -309,106 +305,98 @@ msgstr ""
 "\"position\" - положение значка приложения на странице"
 
 #: data/org.gnome.shell.gschema.xml.in:152
-msgid "Keybinding to open the application menu"
-msgstr "Комбинация клавиш для открытия меню приложения"
-
-#: data/org.gnome.shell.gschema.xml.in:153
-msgid "Keybinding to open the application menu."
-msgstr "Комбинация клавиш для открытия меню приложения."
-
 #: data/org.gnome.shell.gschema.xml.in:159
-#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to shift between overview states"
 msgstr "Сочетание клавиш для переключения между состояниями обзора"
 
-#: data/org.gnome.shell.gschema.xml.in:160
+#: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Сочетание клавиш для переключения между сеансом, меню выбора окон и сеткой "
 "приложений"
 
-#: data/org.gnome.shell.gschema.xml.in:167
+#: data/org.gnome.shell.gschema.xml.in:160
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "Сочетание клавиш для переключения между сеткой приложений, меню выбора окон "
 "и сеансом"
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Комбинация клавиш для перехода в режим просмотра приложений"
 
-#: data/org.gnome.shell.gschema.xml.in:174
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Комбинация клавиш для перехода в режим просмотра приложений в меню \"Обзор\"."
 
-#: data/org.gnome.shell.gschema.xml.in:181
+#: data/org.gnome.shell.gschema.xml.in:174
 msgid "Keybinding to open the overview"
 msgstr "Комбинация клавиш для перехода в режим обзора"
 
-#: data/org.gnome.shell.gschema.xml.in:182
+#: data/org.gnome.shell.gschema.xml.in:175
 msgid "Keybinding to open the Activities Overview."
 msgstr "Комбинация клавиш для перехода в режим обзора."
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:181
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Комбинация клавиш для отображения или скрытия списка уведомлений"
 
-#: data/org.gnome.shell.gschema.xml.in:189
+#: data/org.gnome.shell.gschema.xml.in:182
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Комбинация клавиш для отображения или скрытия списка уведомлений."
 
-#: data/org.gnome.shell.gschema.xml.in:195
+#: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to focus the active notification"
 msgstr "Комбинация клавиш для перевода фокуса на текущее уведомление"
 
-#: data/org.gnome.shell.gschema.xml.in:196
+#: data/org.gnome.shell.gschema.xml.in:189
 msgid "Keybinding to focus the active notification."
 msgstr "Комбинация клавиш для перевода фокуса на текущее уведомление."
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Switch to application 1"
 msgstr "Переключиться на приложение 1"
 
-#: data/org.gnome.shell.gschema.xml.in:206
+#: data/org.gnome.shell.gschema.xml.in:199
 msgid "Switch to application 2"
 msgstr "Переключиться на приложение 2"
 
-#: data/org.gnome.shell.gschema.xml.in:210
+#: data/org.gnome.shell.gschema.xml.in:203
 msgid "Switch to application 3"
 msgstr "Переключиться на приложение 3"
 
-#: data/org.gnome.shell.gschema.xml.in:214
+#: data/org.gnome.shell.gschema.xml.in:207
 msgid "Switch to application 4"
 msgstr "Переключиться на приложение 4"
 
-#: data/org.gnome.shell.gschema.xml.in:218
+#: data/org.gnome.shell.gschema.xml.in:211
 msgid "Switch to application 5"
 msgstr "Переключиться на приложение 5"
 
-#: data/org.gnome.shell.gschema.xml.in:222
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid "Switch to application 6"
 msgstr "Переключиться на приложение 6"
 
-#: data/org.gnome.shell.gschema.xml.in:226
+#: data/org.gnome.shell.gschema.xml.in:219
 msgid "Switch to application 7"
 msgstr "Переключиться на приложение 7"
 
-#: data/org.gnome.shell.gschema.xml.in:230
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Switch to application 8"
 msgstr "Переключиться на приложение 8"
 
-#: data/org.gnome.shell.gschema.xml.in:234
+#: data/org.gnome.shell.gschema.xml.in:227
 msgid "Switch to application 9"
 msgstr "Переключиться на приложение 9"
 
-#: data/org.gnome.shell.gschema.xml.in:259
-#: data/org.gnome.shell.gschema.xml.in:286
+#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:279
 msgid "Limit switcher to current workspace."
 msgstr "Ограничить переключатель текущим рабочим столом."
 
-#: data/org.gnome.shell.gschema.xml.in:260
+#: data/org.gnome.shell.gschema.xml.in:253
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -417,11 +405,11 @@ msgstr ""
 "чьи окна находятся на текущем рабочем столе. Иначе все приложения будут "
 "включены."
 
-#: data/org.gnome.shell.gschema.xml.in:277
+#: data/org.gnome.shell.gschema.xml.in:270
 msgid "The application icon mode."
 msgstr "Режим значка приложения."
 
-#: data/org.gnome.shell.gschema.xml.in:278
+#: data/org.gnome.shell.gschema.xml.in:271
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -432,7 +420,7 @@ msgstr ""
 "only\" (показывать только значок приложения), \"both\" (показывать миниатюру "
 "и значок)."
 
-#: data/org.gnome.shell.gschema.xml.in:287
+#: data/org.gnome.shell.gschema.xml.in:280
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -440,27 +428,27 @@ msgstr ""
 "Если выбрано, то в переключателе будут показываться только окна из текущего "
 "рабочего стола. Иначе все окна будут включены."
 
-#: data/org.gnome.shell.gschema.xml.in:297
+#: data/org.gnome.shell.gschema.xml.in:290
 msgid "Locations"
 msgstr "Местоположения"
 
-#: data/org.gnome.shell.gschema.xml.in:298
+#: data/org.gnome.shell.gschema.xml.in:291
 msgid "The locations to show in world clocks"
 msgstr "Местоположения для отображения в мировых часах"
 
-#: data/org.gnome.shell.gschema.xml.in:308
+#: data/org.gnome.shell.gschema.xml.in:301
 msgid "Automatic location"
 msgstr "Автоматическое местоположение"
 
-#: data/org.gnome.shell.gschema.xml.in:309
+#: data/org.gnome.shell.gschema.xml.in:302
 msgid "Whether to fetch the current location or not"
 msgstr "Определяет получать местоположение или нет"
 
-#: data/org.gnome.shell.gschema.xml.in:316
+#: data/org.gnome.shell.gschema.xml.in:309
 msgid "Location"
 msgstr "Местоположение"
 
-#: data/org.gnome.shell.gschema.xml.in:317
+#: data/org.gnome.shell.gschema.xml.in:310
 msgid "The location for which to show a forecast"
 msgstr "Местоположение для которого отображается прогноз погоды"
 
@@ -786,11 +774,11 @@ msgstr "%-d %B, %l∶%M %p"
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d %B %Y, %l∶%M %p"
 
-#: js/portalHelper/main.js:55
-msgid "Hotspot Login"
-msgstr "Авторизация в точке доступа"
+#: js/portalHelper/main.js:96
+msgid "Your connection seems to be secure"
+msgstr "Похоже, что подключение защищено."
 
-#: js/portalHelper/main.js:108
+#: js/portalHelper/main.js:102
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -798,6 +786,10 @@ msgstr ""
 "Подключение к этой точке доступа не безопасно. Пароли или другая информация, "
 "которую вы вводите на этой странице, могут просматриваться пользователями, "
 "находящимися рядом."
+
+#: js/portalHelper/main.js:113
+msgid "Hotspot Login"
+msgstr "Авторизация в точке доступа"
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -840,7 +832,7 @@ msgstr "Подробнее о приложении"
 msgid "Quit"
 msgstr "Закрыть"
 
-#: js/ui/appMenu.js:157 js/ui/dash.js:249
+#: js/ui/appMenu.js:157 js/ui/dash.js:250
 msgid "Unpin"
 msgstr "Открепить"
 
@@ -1146,13 +1138,13 @@ msgstr "Контакт %s теперь известен как %s"
 msgid "Windows"
 msgstr "Окна"
 
-#: js/ui/dash.js:205 js/ui/dash.js:251
+#: js/ui/dash.js:206 js/ui/dash.js:252
 msgid "Show Apps"
 msgstr "Показать приложения"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:399
+#: js/ui/dash.js:400
 msgid "Dash"
 msgstr "Панель приложений"
 
@@ -1565,23 +1557,23 @@ msgstr "Показать код"
 msgid "Web Page"
 msgstr "Веб-страница"
 
-#: js/ui/main.js:286
+#: js/ui/main.js:288
 msgid "System was put in unsafe mode"
 msgstr "Система была переведена в небезопасный режим"
 
-#: js/ui/main.js:287
+#: js/ui/main.js:289
 msgid "Apps now have unrestricted access"
 msgstr "Приложения теперь имеют неограниченный доступ"
 
-#: js/ui/main.js:288 js/ui/overview.js:58
+#: js/ui/main.js:290 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Отменить"
 
-#: js/ui/main.js:344
+#: js/ui/main.js:346
 msgid "Logged in as a privileged user"
 msgstr "Авторизован как привилегированный пользователь"
 
-#: js/ui/main.js:345
+#: js/ui/main.js:347
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1590,15 +1582,15 @@ msgstr ""
 "привилегированного пользователя. Если это возможно, вам следует войти от "
 "имени обычного пользователя."
 
-#: js/ui/main.js:393
+#: js/ui/main.js:395
 msgid "Screen Lock disabled"
 msgstr "Блокировка экрана отключена"
 
-#: js/ui/main.js:394
+#: js/ui/main.js:396
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Для блокировки экрана требуется менеджер дисплеев GNOME."
 
-#: js/ui/messageTray.js:1418
+#: js/ui/messageTray.js:1417
 msgid "System Information"
 msgstr "Системная информация"
 
@@ -1676,12 +1668,12 @@ msgstr "Нажмите любую клавишу для выхода"
 msgid "Activities"
 msgstr "Обзор"
 
-#: js/ui/panel.js:338
+#: js/ui/panel.js:329
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:460
+#: js/ui/panel.js:451
 msgid "Top Bar"
 msgstr "Верхняя панель"
 
@@ -1717,109 +1709,124 @@ msgstr "Не удалось заблокировать"
 msgid "Lock was blocked by an app"
 msgstr "Блокировке помешало приложение"
 
-#: js/ui/screenshot.js:1165
+#: js/ui/screenshot.js:1178
 msgid "Selection"
 msgstr "Область"
 
-#: js/ui/screenshot.js:1175
+#: js/ui/screenshot.js:1188
 msgid "Area Selection"
 msgstr "Выбор области"
 
-#: js/ui/screenshot.js:1180
+#: js/ui/screenshot.js:1193
 msgid "Screen"
 msgstr "Экран"
 
-#: js/ui/screenshot.js:1190
+#: js/ui/screenshot.js:1203
 msgid "Screen Selection"
 msgstr "Выбор экрана"
 
-#: js/ui/screenshot.js:1195
+#: js/ui/screenshot.js:1208
 msgid "Window"
 msgstr "Окно"
 
-#: js/ui/screenshot.js:1205
+#: js/ui/screenshot.js:1218
 msgid "Window Selection"
 msgstr "Выбор окна"
 
-#: js/ui/screenshot.js:1243
-msgid "Screenshot / Screencast"
-msgstr "Снимок экрана / Запись экрана"
+#. Translators: entry in the window right click menu.
+#: js/ui/screenshot.js:1243 js/ui/status/system.js:105 js/ui/windowMenu.js:29
+msgid "Take Screenshot"
+msgstr "Сделать снимок экрана"
+
+#: js/ui/screenshot.js:1259
+#, fuzzy
+#| msgctxt "search-result"
+#| msgid "Lock Screen"
+msgid "Record Screen"
+msgstr "Заблокировать экран"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1264
+#: js/ui/screenshot.js:1274
 msgid "Capture"
 msgstr "Снять"
 
-#: js/ui/screenshot.js:1286
+#: js/ui/screenshot.js:1296
 msgid "Show Pointer"
 msgstr "Показать курсор мыши"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1877
+#: js/ui/screenshot.js:1887
 msgid "Screencasts"
 msgstr "Записи экрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1882
+#: js/ui/screenshot.js:1892
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Запись экрана от %d %t.webm"
-
-#. Translators: notification source name.
-#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2163
-msgid "Screenshot"
-msgstr "Снимок экрана"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:1930
 msgid "Screencast recorded"
 msgstr "Запись экрана сделана"
 
+#. Translators: notification title.
+#: js/ui/screenshot.js:1937
+#, fuzzy
+#| msgid "Screencast recorded"
+msgid "Screencast ended unexpectedly"
+msgstr "Запись экрана сделана"
+
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1946 js/ui/screenshot.js:2181
+msgid "Screenshot"
+msgstr "Снимок экрана"
+
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1932
+#: js/ui/screenshot.js:1953
 msgid "Click here to view the video."
 msgstr "Нажмите здесь, чтобы посмотреть видео."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1935 js/ui/screenshot.js:2177
+#: js/ui/screenshot.js:1956 js/ui/screenshot.js:2195
 msgid "Show in Files"
 msgstr "Показать в Файлах"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:2141
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Снимок экрана от %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2169
+#: js/ui/screenshot.js:2187
 msgid "Screenshot captured"
 msgstr "Снимок экрана сделан"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2171
+#: js/ui/screenshot.js:2189
 msgid "You can paste the image from the clipboard."
 msgstr "Вы можете вставить изображение из буфера обмена."
 
-#: js/ui/screenshot.js:2224 js/ui/screenshot.js:2389
+#: js/ui/screenshot.js:2242 js/ui/screenshot.js:2407
 msgid "Screenshot taken"
 msgstr "Сделан снимок экрана"
 
-#: js/ui/search.js:807
+#: js/ui/search.js:812
 msgid "Searching…"
 msgstr "Поиск…"
 
-#: js/ui/search.js:809
+#: js/ui/search.js:814
 msgid "No results."
 msgstr "Ничего не найдено."
 
-#: js/ui/search.js:940
+#: js/ui/search.js:945
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1954,24 +1961,24 @@ msgstr "Крупный текст"
 msgid "Auto Rotate"
 msgstr "Автоповорот"
 
-#: js/ui/status/backgroundApps.js:135
+#: js/ui/status/backgroundApps.js:164
 msgctxt "title"
 msgid "Background Apps"
 msgstr "Фоновые приложения"
 
-#: js/ui/status/backgroundApps.js:150
+#: js/ui/status/backgroundApps.js:179
 msgid "Apps known to be running without a window"
 msgstr "Известные приложения, работающие без окна"
 
-#: js/ui/status/backgroundApps.js:161
+#: js/ui/status/backgroundApps.js:190
 msgid "App Settings"
 msgstr "Настройки приложений"
 
-#: js/ui/status/backgroundApps.js:189
+#: js/ui/status/backgroundApps.js:218
 msgid "No Background Apps"
 msgstr "Нет фоновых приложений"
 
-#: js/ui/status/backgroundApps.js:191
+#: js/ui/status/backgroundApps.js:220
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2190,13 +2197,9 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Энергосберегающий"
 
-#: js/ui/status/powerProfiles.js:40
+#: js/ui/status/powerProfiles.js:40 js/ui/status/powerProfiles.js:70
 msgid "Power Mode"
 msgstr "Режим питания"
-
-#: js/ui/status/powerProfiles.js:70
-msgid "Power Profiles"
-msgstr "Профили питания"
 
 #: js/ui/status/powerProfiles.js:72
 msgid "Power Settings"
@@ -2219,11 +2222,6 @@ msgstr "Авиарежим"
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
-
-#. Translators: entry in the window right click menu.
-#: js/ui/status/system.js:105 js/ui/windowMenu.js:29
-msgid "Take Screenshot"
-msgstr "Сделать снимок экрана"
 
 #: js/ui/status/system.js:162
 msgid "Power Off Menu"
@@ -2526,12 +2524,12 @@ msgstr "Пароль не может быть пустым"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Аутентификация отклонена пользователем"
 
-#: src/st/st-icon-theme.c:1883
+#: src/st/st-icon-theme.c:1884
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "Значок \"%s\" не присутствует в теме \"%s\""
 
-#: src/st/st-icon-theme.c:3472 src/st/st-icon-theme.c:3775
+#: src/st/st-icon-theme.c:3473 src/st/st-icon-theme.c:3776
 msgid "Failed to load icon"
 msgstr "Не удалось загрузить значок"
 
@@ -3093,6 +3091,21 @@ msgstr[2] "%u входов"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Системные звуки"
+
+#~ msgid "Open the app menu"
+#~ msgstr "Открыть меню приложений"
+
+#~ msgid "Keybinding to open the application menu"
+#~ msgstr "Комбинация клавиш для открытия меню приложения"
+
+#~ msgid "Keybinding to open the application menu."
+#~ msgstr "Комбинация клавиш для открытия меню приложения."
+
+#~ msgid "Screenshot / Screencast"
+#~ msgstr "Снимок экрана / Запись экрана"
+
+#~ msgid "Power Profiles"
+#~ msgstr "Профили питания"
 
 #~ msgid "Evolution Calendar"
 #~ msgstr "Календарь Evolution"
