@@ -14,6 +14,25 @@ const PanelMenu = imports.ui.panelMenu;
 const {QuickSettingsMenu, SystemIndicator} = imports.ui.quickSettings;
 const Main = imports.ui.main;
 
+const RemoteAccessStatus = imports.ui.status.remoteAccess;
+const PowerProfileStatus = imports.ui.status.powerProfiles;
+const RFKillStatus = imports.ui.status.rfkill;
+const VolumeStatus = imports.ui.status.volume;
+const BrightnessStatus = imports.ui.status.brightness;
+const SystemStatus = imports.ui.status.system;
+const LocationStatus = imports.ui.status.location;
+const NightLightStatus = imports.ui.status.nightLight;
+const DarkModeStatus = imports.ui.status.darkMode;
+const ThunderboltStatus = imports.ui.status.thunderbolt;
+const AutoRotateStatus = imports.ui.status.autoRotate;
+const BackgroundAppsStatus = imports.ui.status.backgroundApps;
+
+const {DateMenuButton} = imports.ui.dateMenu;
+const {ATIndicator} = imports.ui.status.accessibility;
+const {InputSourceIndicator} = imports.ui.status.keyboard;
+const {DwellClickIndicator} = imports.ui.status.dwellClick;
+const {ScreenRecordingIndicator, ScreenSharingIndicator} = imports.ui.status.remoteAccess;
+
 var PANEL_ICON_SIZE = 16;
 var APP_MENU_ICON_MARGIN = 0;
 
@@ -325,8 +344,8 @@ class UnsafeModeIndicator extends SystemIndicator {
 
 var QuickSettings = GObject.registerClass(
 class QuickSettings extends PanelMenu.Button {
-    _init() {
-        super._init(0.0, C_('System menu in the top bar', 'System'), true);
+    constructor() {
+        super(0.0, C_('System menu in the top bar', 'System'), true);
 
         this._indicators = new St.BoxLayout({
             style_class: 'panel-status-indicators-box',
@@ -335,29 +354,46 @@ class QuickSettings extends PanelMenu.Button {
 
         this.setMenu(new QuickSettingsMenu(this, N_QUICK_SETTINGS_COLUMNS));
 
-        if (Config.HAVE_NETWORKMANAGER)
-            this._network = new imports.ui.status.network.Indicator();
-        else
+        this._setupIndicators().catch(error =>
+            logError(error, 'Failed to setup quick settings'));
+    }
+
+    async _setupIndicators() {
+        if (Config.HAVE_NETWORKMANAGER) {
+            // TODO: This will be an asynchronous import once this migrates
+            // to modules. Add a no-op await now to enforce this being an async
+            // function.
+            const NetworkStatus = await imports.ui.status.network;
+
+            this._network = new NetworkStatus.Indicator();
+        } else {
             this._network = null;
+        }
 
-        if (Config.HAVE_BLUETOOTH)
-            this._bluetooth = new imports.ui.status.bluetooth.Indicator();
-        else
+        if (Config.HAVE_BLUETOOTH) {
+            // TODO: This will be an asynchronous import once this migrates
+            // to modules. Add a no-op await now to enforce this being an async
+            // function.
+            const BluetoothStatus = await imports.ui.status.bluetooth;
+
+            this._bluetooth = new BluetoothStatus.Indicator();
+        } else {
             this._bluetooth = null;
+        }
 
-        this._system = new imports.ui.status.system.Indicator();
-        this._volume = new imports.ui.status.volume.Indicator();
-        this._brightness = new imports.ui.status.brightness.Indicator();
-        this._remoteAccess = new imports.ui.status.remoteAccess.RemoteAccessApplet();
-        this._location = new imports.ui.status.location.Indicator();
-        this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
-        this._nightLight = new imports.ui.status.nightLight.Indicator();
-        this._darkMode = new imports.ui.status.darkMode.Indicator();
-        this._powerProfiles = new imports.ui.status.powerProfiles.Indicator();
-        this._rfkill = new imports.ui.status.rfkill.Indicator();
-        this._autoRotate = new imports.ui.status.autoRotate.Indicator();
+        this._system = new SystemStatus.Indicator();
+        this._volume = new VolumeStatus.Indicator();
+        this._brightness = new BrightnessStatus.Indicator();
+        this._remoteAccess = new RemoteAccessStatus.RemoteAccessApplet();
+        this._location = new LocationStatus.Indicator();
+        this._thunderbolt = new ThunderboltStatus.Indicator();
+        this._nightLight = new NightLightStatus.Indicator();
+        this._darkMode = new DarkModeStatus.Indicator();
+        this._powerProfiles = new PowerProfileStatus.Indicator();
+        this._rfkill = new RFKillStatus.Indicator();
+        this._autoRotate = new AutoRotateStatus.Indicator();
         this._unsafeMode = new UnsafeModeIndicator();
-        this._backgroundApps = new imports.ui.status.backgroundApps.Indicator();
+        this._backgroundApps = new BackgroundAppsStatus.Indicator();
 
         this._indicators.add_child(this._brightness);
         this._indicators.add_child(this._remoteAccess);
@@ -406,12 +442,12 @@ const PANEL_ITEM_IMPLEMENTATIONS = {
     'activities': ActivitiesButton,
     'appMenu': AppMenuButton,
     'quickSettings': QuickSettings,
-    'dateMenu': imports.ui.dateMenu.DateMenuButton,
-    'a11y': imports.ui.status.accessibility.ATIndicator,
-    'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
-    'dwellClick': imports.ui.status.dwellClick.DwellClickIndicator,
-    'screenRecording': imports.ui.status.remoteAccess.ScreenRecordingIndicator,
-    'screenSharing': imports.ui.status.remoteAccess.ScreenSharingIndicator,
+    'dateMenu': DateMenuButton,
+    'a11y': ATIndicator,
+    'keyboard': InputSourceIndicator,
+    'dwellClick': DwellClickIndicator,
+    'screenRecording': ScreenRecordingIndicator,
+    'screenSharing': ScreenSharingIndicator,
 };
 
 var Panel = GObject.registerClass(
