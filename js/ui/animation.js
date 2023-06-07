@@ -36,6 +36,10 @@ class Animation extends St.Bin {
         this._frame = 0;
 
         this._loadFile(file, width, height);
+
+        // If the parent changes, we need to re-sync the animation
+        // size
+        this.connect('parent-set', () => this._syncAnimationSize());
     }
 
     play() {
@@ -72,8 +76,8 @@ class Animation extends St.Bin {
         let textureCache = St.TextureCache.get_default();
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         this._animations = textureCache.load_sliced_image(file, width, height,
-                                                          scaleFactor, resourceScale,
-                                                          this._animationsLoaded.bind(this));
+            scaleFactor, resourceScale,
+            () => this._syncAnimationSize());
         this._animations.set({
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
@@ -102,19 +106,16 @@ class Animation extends St.Bin {
     }
 
     _syncAnimationSize() {
-        if (!this._isLoaded)
+        this._isLoaded = this._animations.get_n_children() > 0;
+
+        // this.get_size() can't be called without a parent
+        if (!this._isLoaded || !this.get_parent())
             return;
 
         let [width, height] = this.get_size();
 
         for (let i = 0; i < this._animations.get_n_children(); ++i)
             this._animations.get_child_at_index(i).set_size(width, height);
-    }
-
-    _animationsLoaded() {
-        this._isLoaded = this._animations.get_n_children() > 0;
-
-        this._syncAnimationSize();
 
         if (this._isPlaying)
             this.play();
