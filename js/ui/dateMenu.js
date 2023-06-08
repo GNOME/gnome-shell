@@ -1,10 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported DateMenuButton */
 
-const {
-    Clutter, Gio, GLib, GnomeDesktop,
-    GObject, GWeather, Pango, Shell, St,
-} = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GnomeDesktop = imports.gi.GnomeDesktop;
+const GObject = imports.gi.GObject;
+const GWeather = imports.gi.GWeather;
+const Pango = imports.gi.Pango;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const Util = imports.misc.util;
 const Main = imports.ui.main;

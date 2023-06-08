@@ -1,7 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const {Gio, GLib, GObject} = imports.gi;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 
 const {QuickToggle, SystemIndicator} = imports.ui.quickSettings;
 

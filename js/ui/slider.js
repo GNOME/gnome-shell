@@ -1,7 +1,9 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 /* exported Slider */
 
-const { Atk, Clutter, GObject } = imports.gi;
+const Atk = imports.gi.Atk;
+const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
 
 const BarLevel = imports.ui.barLevel;
 

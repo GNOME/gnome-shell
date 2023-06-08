@@ -1,5 +1,10 @@
 /* exported InhibitShortcutsDialog */
-const {Clutter, GObject, Meta, Pango, Shell, St} = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
+const Meta = imports.gi.Meta;
+const Pango = imports.gi.Pango;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;

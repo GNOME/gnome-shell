@@ -17,7 +17,10 @@
  */
 /* exported AuthList */
 
-const { Clutter, GObject, Meta, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
+const Meta = imports.gi.Meta;
+const St = imports.gi.St;
 
 const SCROLL_ANIMATION_TIME = 500;
 

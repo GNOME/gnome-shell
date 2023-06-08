@@ -1,9 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported LookingGlass */
 
-const {
-    Clutter, Cogl, Gio, GLib, GObject, Graphene, Meta, Pango, Shell, St,
-} = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Cogl = imports.gi.Cogl;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Graphene = imports.gi.Graphene;
+const Meta = imports.gi.Meta;
+const Pango = imports.gi.Pango;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 const Signals = imports.misc.signals;
 const System = imports.system;
 

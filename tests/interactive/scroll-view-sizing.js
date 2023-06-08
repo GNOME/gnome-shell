@@ -2,7 +2,10 @@
 
 const UI = imports.testcommon.ui;
 
-const {Clutter, GObject, Shell, St} = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 // This is an interactive test of the sizing behavior of StScrollView. It
 // may be interesting in the future to split out the two classes at the

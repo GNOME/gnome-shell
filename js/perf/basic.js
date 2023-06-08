@@ -5,7 +5,7 @@
 */
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_"] }] */
 
-const { St } = imports.gi;
+const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;

@@ -1,7 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported NotificationDaemon */
 
-const { GdkPixbuf, Gio, GLib, GObject, Shell, St } = imports.gi;
+const GdkPixbuf = imports.gi.GdkPixbuf;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const Config = imports.misc.config;
 const Main = imports.ui.main;

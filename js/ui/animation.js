@@ -1,7 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Animation, AnimatedIcon, Spinner */
 
-const { Clutter, GLib, GObject, Gio, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Gio = imports.gi.Gio;
+const St = imports.gi.St;
 
 const Params = imports.misc.params;
 

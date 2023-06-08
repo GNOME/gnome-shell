@@ -1,7 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported SearchController */
 
-const { Clutter, GObject, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
+const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const Search = imports.ui.search;

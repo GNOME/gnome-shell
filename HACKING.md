@@ -79,7 +79,9 @@ e.g. `imports.ui.popupMenu`.
 Each import block should be sorted alphabetically. Don't import modules you
 don't use.
 ```javascript
-    const { GLib, Gio, St } = imports.gi;
+    const GLib = imports.gi.GLib;
+    const Gio = imports.gi.Gio;
+    const St = imports.gi.St;
 
     const Main = imports.ui.main;
     const Params = imports.misc.params;

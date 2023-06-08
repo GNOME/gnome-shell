@@ -1,7 +1,7 @@
 #!/usr/bin/env gjs
 
 imports.gi.versions.Gtk = '4.0';
-const {Gtk} = imports.gi;
+const Gtk = imports.gi.Gtk;
 
 function nextTitle() {
     let length = Math.random() * 20;

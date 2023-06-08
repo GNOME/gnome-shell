@@ -1,7 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WeatherClient */
 
-const { Geoclue, Gio, GLib, GWeather, Shell } = imports.gi;
+const Geoclue = imports.gi.Geoclue;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GWeather = imports.gi.GWeather;
+const Shell = imports.gi.Shell;
 const Signals = imports.misc.signals;
 
 const PermissionStore = imports.misc.permissionStore;

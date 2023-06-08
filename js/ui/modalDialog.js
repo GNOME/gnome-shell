@@ -1,7 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ModalDialog */
 
-const { Atk, Clutter, GObject, Shell, St } = imports.gi;
+const Atk = imports.gi.Atk;
+const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const Dialog = imports.ui.dialog;
 const Layout = imports.ui.layout;

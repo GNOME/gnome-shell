@@ -45,7 +45,7 @@
  */
 /* exported ConcurrentBatch, ConsecutiveBatch */
 
-const { GObject } = imports.gi;
+const GObject = imports.gi.GObject;
 const Signals = imports.misc.signals;
 
 var Task = class extends Signals.EventEmitter {

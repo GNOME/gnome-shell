@@ -1,7 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported CandidatePopup */
 
-const { Clutter, GObject, IBus, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
+const IBus = imports.gi.IBus;
+const St = imports.gi.St;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;

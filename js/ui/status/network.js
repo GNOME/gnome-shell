@@ -1,6 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
-const {Atk, Clutter, Gio, GLib, GObject, NM, Polkit, St} = imports.gi;
+const Atk = imports.gi.Atk;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const NM = imports.gi.NM;
+const Polkit = imports.gi.Polkit;
+const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;

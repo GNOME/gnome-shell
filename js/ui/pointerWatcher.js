@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported getPointerWatcher */
 
-const { GLib } = imports.gi;
+const GLib = imports.gi.GLib;
 
 // We stop polling if the user is idle for more than this amount of time
 var IDLE_TIME = 1000;

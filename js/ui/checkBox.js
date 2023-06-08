@@ -1,5 +1,9 @@
 /* exported CheckBox */
-const { Atk, Clutter, GObject, Pango, St } = imports.gi;
+const Atk = imports.gi.Atk;
+const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
+const Pango = imports.gi.Pango;
+const St = imports.gi.St;
 
 var CheckBox = GObject.registerClass(
 class CheckBox extends St.Button {

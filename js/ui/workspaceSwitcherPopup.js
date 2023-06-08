@@ -1,7 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WorkspaceSwitcherPopup */
 
-const { Clutter, GLib, GObject, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const St = imports.gi.St;
 
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;

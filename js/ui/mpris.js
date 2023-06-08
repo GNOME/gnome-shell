@@ -1,5 +1,8 @@
 /* exported MediaSection */
-const { Gio, GObject, Shell, St } = imports.gi;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 const Signals = imports.misc.signals;
 
 const Main = imports.ui.main;

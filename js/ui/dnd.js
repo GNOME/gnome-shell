@@ -1,7 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported addDragMonitor, removeDragMonitor, makeDraggable */
 
-const { Clutter, GLib, Meta, Shell, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
+const Meta = imports.gi.Meta;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 const Signals = imports.misc.signals;
 
 const Main = imports.ui.main;

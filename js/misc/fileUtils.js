@@ -2,7 +2,8 @@
 /* exported collectFromDatadirs, recursivelyDeleteDir,
             recursivelyMoveDir, loadInterfaceXML, loadSubInterfaceXML */
 
-const { Gio, GLib } = imports.gi;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 
 var { loadInterfaceXML } = imports.misc.dbusUtils;
 

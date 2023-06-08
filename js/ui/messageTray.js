@@ -3,7 +3,13 @@
    NotificationApplicationPolicy, Source, SourceActor,
    SystemNotificationSource, MessageTray */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Meta = imports.gi.Meta;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const Calendar = imports.ui.calendar;
 const GnomeSession = imports.misc.gnomeSession;

@@ -1,5 +1,8 @@
 /* exported KbdA11yDialog */
-const { Clutter, Gio, GObject, Meta } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const Meta = imports.gi.Meta;
 
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;

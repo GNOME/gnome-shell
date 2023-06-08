@@ -1,9 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WindowPreview */
 
-const {
-    Atk, Clutter, GLib, GObject, Graphene, Meta, Pango, Shell, St,
-} = imports.gi;
+const Atk = imports.gi.Atk;
+const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Graphene = imports.gi.Graphene;
+const Meta = imports.gi.Meta;
+const Pango = imports.gi.Pango;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const DND = imports.ui.dnd;
 const OverviewControls = imports.ui.overviewControls;

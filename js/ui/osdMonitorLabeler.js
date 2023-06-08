@@ -1,7 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported OsdMonitorLabeler */
 
-const { Clutter, Gio, GObject, Meta, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const Meta = imports.gi.Meta;
+const St = imports.gi.St;
 
 const Main = imports.ui.main;
 

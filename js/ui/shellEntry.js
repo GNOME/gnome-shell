@@ -1,7 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported addContextMenu CapsLockWarning */
 
-const { Clutter, GObject, Pango, Shell, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
+const Pango = imports.gi.Pango;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;

@@ -1,7 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported getIBusManager */
 
-const { Gio, GLib, IBus, Meta, Shell } = imports.gi;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const IBus = imports.gi.IBus;
+const Meta = imports.gi.Meta;
+const Shell = imports.gi.Shell;
 const Signals = imports.misc.signals;
 const BoxPointer = imports.ui.boxpointer;
 

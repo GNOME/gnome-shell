@@ -1,7 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ScreenshotService, ScreenshotUI, showScreenshotUI, captureScreenshot */
 
-const {Clutter, Cogl, Gio, GObject, GLib, Graphene, Meta, Shell, St} = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Cogl = imports.gi.Cogl;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const GLib = imports.gi.GLib;
+const Graphene = imports.gi.Graphene;
+const Meta = imports.gi.Meta;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const GrabHelper = imports.ui.grabHelper;
 const Layout = imports.ui.layout;

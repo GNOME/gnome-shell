@@ -23,7 +23,9 @@
 
 /* exported getDefault */
 
-const { Gio, GObject, Shell } = imports.gi;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const Shell = imports.gi.Shell;
 
 // We require libmalcontent ≥ 0.6.0
 const HAVE_MALCONTENT = imports.package.checkSymbol(

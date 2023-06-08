@@ -3,7 +3,10 @@
 // A widget showing the user avatar and name
 /* exported UserWidget */
 
-const { Clutter, GLib, GObject, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const St = imports.gi.St;
 
 const Params = imports.misc.params;
 

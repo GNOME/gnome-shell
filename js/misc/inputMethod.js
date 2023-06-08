@@ -1,6 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported InputMethod */
-const { Clutter, GLib, Gio, GObject, IBus } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const IBus = imports.gi.IBus;
 
 const Keyboard = imports.ui.status.keyboard;
 const Main = imports.ui.main;

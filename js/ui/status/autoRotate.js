@@ -1,5 +1,7 @@
 /* exported Indicator */
-const {Gio, GObject} = imports.gi;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+
 
 const SystemActions = imports.misc.systemActions;
 

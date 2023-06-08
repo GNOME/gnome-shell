@@ -1,7 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const {Gio, GLib, GnomeBluetooth, GObject, Pango, St} = imports.gi;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GnomeBluetooth = imports.gi.GnomeBluetooth;
+const GObject = imports.gi.GObject;
+const Pango = imports.gi.Pango;
+const St = imports.gi.St;
 
 const {Spinner} = imports.ui.animation;
 const PopupMenu = imports.ui.popupMenu;

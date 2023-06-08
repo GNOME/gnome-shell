@@ -1,9 +1,14 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported AppDisplay, AppSearchProvider */
 
-const {
-    Clutter, Gio, GLib, GObject, Graphene, Pango, Shell, St,
-} = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Graphene = imports.gi.Graphene;
+const Pango = imports.gi.Pango;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const AppFavorites = imports.ui.appFavorites;
 const { AppMenu } = imports.ui.appMenu;

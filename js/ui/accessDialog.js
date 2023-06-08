@@ -1,5 +1,11 @@
 /* exported AccessDialogDBus */
-const { Clutter, Gio, GLib, GObject, Pango, Shell, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Pango = imports.gi.Pango;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const CheckBox = imports.ui.checkBox;
 const Dialog = imports.ui.dialog;

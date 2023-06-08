@@ -1,10 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Component */
 
-const {
-    AccountsService, Clutter, GLib, GObject,
-    Pango, PolkitAgent, Polkit, Shell, St,
-} = imports.gi;
+const AccountsService = imports.gi.AccountsService;
+const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Pango = imports.gi.Pango;
+const PolkitAgent = imports.gi.PolkitAgent;
+const Polkit = imports.gi.Polkit;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;

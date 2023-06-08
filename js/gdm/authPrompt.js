@@ -1,7 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported AuthPrompt */
 
-const { Clutter, GLib, GObject, Pango, Shell, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Pango = imports.gi.Pango;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const Animation = imports.ui.animation;
 const AuthList = imports.gdm.authList;

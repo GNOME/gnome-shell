@@ -1,5 +1,5 @@
 /* exported TransientSignalHolder, connectObject, disconnectObject */
-const { GObject } = imports.gi;
+const GObject = imports.gi.GObject;
 
 const destroyableTypes = [];
 

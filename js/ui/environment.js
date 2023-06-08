@@ -33,7 +33,15 @@ imports.gi.versions.TelepathyGLib = '0.12';
 imports.gi.versions.TelepathyLogger = '0.2';
 imports.gi.versions.UPowerGlib = '1.0';
 
-const {Clutter, Gdk, Gio, GLib, GObject, Meta, Polkit, Shell, St} = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Gdk = imports.gi.Gdk;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Meta = imports.gi.Meta;
+const Polkit = imports.gi.Polkit;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 const Gettext = imports.gettext;
 const System = imports.system;
 const SignalTracker = imports.misc.signalTracker;

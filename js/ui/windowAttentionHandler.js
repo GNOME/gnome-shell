@@ -1,7 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WindowAttentionHandler */
 
-const { GObject, Shell } = imports.gi;
+const GObject = imports.gi.GObject;
+const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;

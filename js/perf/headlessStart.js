@@ -4,7 +4,9 @@
 */
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_"] }] */
 
-const {GLib, MetaTest, Shell} = imports.gi;
+const GLib = imports.gi.GLib;
+const MetaTest = imports.gi.MetaTest;
+const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
 const Scripting = imports.ui.scripting;

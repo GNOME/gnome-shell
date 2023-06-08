@@ -1,7 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported GrabHelper */
 
-const { Clutter, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const Params = imports.misc.params;

@@ -1,7 +1,14 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Component */
 
-const { Clutter, Gio, GLib, GObject, NM, Pango, Shell, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const NM = imports.gi.NM;
+const Pango = imports.gi.Pango;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 const Signals = imports.misc.signals;
 
 const Dialog = imports.ui.dialog;

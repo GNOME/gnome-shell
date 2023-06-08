@@ -7,7 +7,8 @@
 // Common utils for the extension system and the extension
 // preferences tool
 
-const { Gio, GLib } = imports.gi;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 
 const Gettext = imports.gettext;
 

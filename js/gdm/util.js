@@ -3,7 +3,10 @@
             DISABLE_USER_LIST_KEY, fadeInActor, fadeOutActor, cloneAndFadeOutActor,
             ShellUserVerifier */
 
-const { Clutter, Gdm, Gio, GLib } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Gdm = imports.gi.Gdm;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Signals = imports.misc.signals;
 
 const Batch = imports.gdm.batch;

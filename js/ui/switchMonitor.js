@@ -1,7 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported SwitchMonitorPopup */
 
-const { Clutter, GObject, Meta, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
+const Meta = imports.gi.Meta;
+const St = imports.gi.St;
 
 const SwitcherPopup = imports.ui.switcherPopup;
 

@@ -1,7 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported SwipeTracker */
 
-const { Clutter, Gio, GObject, Meta } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const Meta = imports.gi.Meta;
 
 const Main = imports.ui.main;
 const Params = imports.misc.params;

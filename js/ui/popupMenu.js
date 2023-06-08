@@ -3,7 +3,13 @@
             PopupImageMenuItem, PopupMenu, PopupDummyMenu, PopupSubMenu,
             PopupMenuSection, PopupSubMenuMenuItem, PopupMenuManager */
 
-const { Atk, Clutter, Gio, GObject, Graphene, Shell, St } = imports.gi;
+const Atk = imports.gi.Atk;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const Graphene = imports.gi.Graphene;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 const Signals = imports.misc.signals;
 
 const BoxPointer = imports.ui.boxpointer;

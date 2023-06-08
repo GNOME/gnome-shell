@@ -1,6 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported AppMenu */
-const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const Meta = imports.gi.Meta;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const AppFavorites = imports.ui.appFavorites;
 const Main = imports.ui.main;

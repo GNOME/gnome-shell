@@ -1,7 +1,10 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 /* exported BarLevel */
 
-const { Atk, Clutter, GObject, St } = imports.gi;
+const Atk = imports.gi.Atk;
+const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
+const St = imports.gi.St;
 
 var BarLevel = GObject.registerClass({
     Properties: {

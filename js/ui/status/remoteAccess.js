@@ -1,7 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported RemoteAccessApplet, ScreenRecordingIndicator, ScreenSharingIndicator */
 
-const { Atk, Clutter, GLib, GObject, Meta, St } = imports.gi;
+const Atk = imports.gi.Atk;
+const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Meta = imports.gi.Meta;
+const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;

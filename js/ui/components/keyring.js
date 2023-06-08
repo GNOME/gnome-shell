@@ -1,7 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Component */
 
-const { Clutter, Gcr, Gio, GObject, Pango, Shell, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Gcr = imports.gi.Gcr;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const Pango = imports.gi.Pango;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;

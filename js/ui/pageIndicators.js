@@ -1,7 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported PageIndicators */
 
-const { Clutter, Graphene, GObject, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Graphene = imports.gi.Graphene;
+const GObject = imports.gi.GObject;
+const St = imports.gi.St;
 
 const INDICATOR_INACTIVE_OPACITY = 128;
 const INDICATOR_INACTIVE_OPACITY_HOVER = 255;

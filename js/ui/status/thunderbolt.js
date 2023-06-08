@@ -3,7 +3,11 @@
 
 // the following is a modified version of bolt/contrib/js/client.js
 
-const { Gio, GLib, GObject, Polkit, Shell } = imports.gi;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Polkit = imports.gi.Polkit;
+const Shell = imports.gi.Shell;
 const Signals = imports.misc.signals;
 
 const Main = imports.ui.main;

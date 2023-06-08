@@ -1,5 +1,9 @@
 /* exported IntrospectService */
-const { Gio, GLib, Meta, Shell, St } = imports.gi;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const Meta = imports.gi.Meta;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const APP_ALLOWLIST = [
     'org.freedesktop.impl.portal.desktop.gtk',

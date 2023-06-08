@@ -1,7 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ModemBase, ModemGsm, ModemCdma, BroadbandModem  */
 
-const {Gio, GObject, NM, NMA4} = imports.gi;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const NM = imports.gi.NM;
+const NMA4 = imports.gi.NMA4;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 

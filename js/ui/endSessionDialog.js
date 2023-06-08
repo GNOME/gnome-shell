@@ -17,10 +17,16 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-const {
-    AccountsService, Clutter, Gio, GLib, GObject,
-    Pango, Polkit, Shell, St, UPowerGlib: UPower,
-} = imports.gi;
+const AccountsService = imports.gi.AccountsService;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Pango = imports.gi.Pango;
+const Polkit = imports.gi.Polkit;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
+const UPower = imports.gi.UPowerGlib;
 
 const CheckBox = imports.ui.checkBox;
 const Dialog = imports.ui.dialog;

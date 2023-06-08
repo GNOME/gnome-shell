@@ -2,7 +2,9 @@
 
 const UI = imports.testcommon.ui;
 
-const {Clutter, St} = imports.gi;
+const Clutter = imports.gi.Clutter;
+const St = imports.gi.St;
+
 
 function test() {
     let stage = new Clutter.Stage();

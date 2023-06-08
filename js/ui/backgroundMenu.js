@@ -1,7 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported addBackgroundMenu */
 
-const { Clutter, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const St = imports.gi.St;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;

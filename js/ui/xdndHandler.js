@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported XdndHandler */
 
-const { Clutter } = imports.gi;
+const Clutter = imports.gi.Clutter;
 const Signals = imports.misc.signals;
 
 const DND = imports.ui.dnd;

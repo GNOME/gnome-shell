@@ -20,7 +20,8 @@
 
 const GETTEXT_DOMAIN = 'my-indicator-extension';
 
-const { GObject, St } = imports.gi;
+const GObject = imports.gi.GObject;
+const St = imports.gi.St;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;

@@ -1,7 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Component */
 
-const { Gio, GLib } = imports.gi;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Params = imports.misc.params;
 
 const GnomeSession = imports.misc.gnomeSession;

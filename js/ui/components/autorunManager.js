@@ -1,7 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Component */
 
-const { Clutter, Gio, GObject, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const St = imports.gi.St;
 
 const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;

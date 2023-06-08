@@ -1,7 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Dialog, MessageDialogContent, ListSection, ListSectionItem */
 
-const { Clutter, GLib, GObject, Meta, Pango, St } = imports.gi;
+const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Meta = imports.gi.Meta;
+const Pango = imports.gi.Pango;
+const St = imports.gi.St;
 
 function _setLabel(label, value) {
     label.set({

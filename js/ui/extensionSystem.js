@@ -1,7 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported init connect disconnect ExtensionManager */
 
-const { GLib, Gio, GObject, Shell, St } = imports.gi;
+const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 const Signals = imports.misc.signals;
 
 const ExtensionDownloader = imports.ui.extensionDownloader;
