@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ExtensionState, ExtensionType, getCurrentExtension,
    getSettings, initTranslations, gettext, ngettext, pgettext,
-   openPrefs, isOutOfDate, installImporter, serializeExtension,
+   openPrefs, isOutOfDate, serializeExtension,
    deserializeExtension, setCurrentExtension */
 
 // Common utils for the extension system and the extension
@@ -309,13 +309,4 @@ function deserializeExtension(variant) {
     res.uuid = res.metadata.uuid;
     res.dir = Gio.File.new_for_path(res.path);
     return res;
-}
-
-function installImporter(extension) {
-    let oldSearchPath = imports.searchPath.slice();  // make a copy
-    imports.searchPath = [extension.dir.get_parent().get_path()];
-    // importing a "subdir" creates a new importer object that doesn't affect
-    // the global one
-    extension.imports = imports[extension.uuid];
-    imports.searchPath = oldSearchPath;
 }
