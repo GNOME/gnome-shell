@@ -104,7 +104,7 @@ var KeybindingEntry = GObject.registerClass({
     Signals: { 'keybinding-edited': { param_types: [GObject.TYPE_STRING] } },
 }, class KeybindingEntry extends St.Entry {
     _init() {
-        super._init({ hint_text: _("New shortcut…"), style: 'width: 10em' });
+        super._init({hint_text: _('New shortcut…'), style: 'width: 10em'});
     }
 
     vfunc_captured_event(event) {

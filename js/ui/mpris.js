@@ -71,7 +71,7 @@ class MediaMessage extends MessageList.Message {
 
         if (this._player.trackCoverUrl) {
             let file = Gio.File.new_for_uri(this._player.trackCoverUrl);
-            this._icon.gicon = new Gio.FileIcon({ file });
+            this._icon.gicon = new Gio.FileIcon({file});
             this._icon.remove_style_class_name('fallback');
         } else if (this._player.app) {
             this._icon.gicon = this._player.app.icon;

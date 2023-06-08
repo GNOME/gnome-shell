@@ -148,9 +148,9 @@ const SystemActions = GObject.registerClass({
             available: true,
         });
 
-        this._loginScreenSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
-        this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
-        this._orientationSettings = new Gio.Settings({ schema_id: 'org.gnome.settings-daemon.peripherals.touchscreen' });
+        this._loginScreenSettings = new Gio.Settings({schema_id: LOGIN_SCREEN_SCHEMA});
+        this._lockdownSettings = new Gio.Settings({schema_id: LOCKDOWN_SCHEMA});
+        this._orientationSettings = new Gio.Settings({schema_id: 'org.gnome.settings-daemon.peripherals.touchscreen'});
 
         this._session = new GnomeSession.SessionManager();
         this._loginManager = LoginManager.getLoginManager();

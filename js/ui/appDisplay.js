@@ -2153,7 +2153,7 @@ class FolderView extends BaseAppView {
         if (appIndex === -1)
             return [-1, -1];
 
-        const { itemsPerPage } = this._grid;
+        const {itemsPerPage} = this._grid;
         return [Math.floor(appIndex / itemsPerPage), appIndex % itemsPerPage];
     }
 

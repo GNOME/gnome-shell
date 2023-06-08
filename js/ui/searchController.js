@@ -324,9 +324,10 @@ var SearchController = GObject.registerClass({
 
     /**
      * addProvider:
-     * @param {object} provider - a search provider implementation
      *
      * Add a search provider to the controller.
+     *
+     * @param {object} provider - a search provider implementation
      */
     addProvider(provider) {
         this._searchResults._registerProvider(provider);
@@ -334,9 +335,10 @@ var SearchController = GObject.registerClass({
 
     /**
      * removeProvider:
-     * @param {object} provider - a search provider implementation
      *
      * Remove a search provider from the controller.
+     *
+     * @param {object} provider - a search provider implementation
      */
     removeProvider(provider) {
         this._searchResults._unregisterProvider(provider);

@@ -335,9 +335,9 @@ var LayoutManager = GObject.registerClass({
 
         let display = global.display;
         display.connect('restacked',
-                        this._windowsRestacked.bind(this));
+            this._windowsRestacked.bind(this));
         display.connect('in-fullscreen-changed',
-                        this._updateFullscreen.bind(this));
+            this._updateFullscreen.bind(this));
 
         const monitorManager = global.backend.get_monitor_manager();
         monitorManager.connectObject(

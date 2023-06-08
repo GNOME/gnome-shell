@@ -506,7 +506,7 @@ class ControlsManager extends St.Widget {
             () => this._shiftState(Meta.MotionDirection.UP));
 
         Main.wm.addKeybinding('shift-overview-down',
-            new Gio.Settings({ schema_id: WindowManager.SHELL_KEYBINDINGS_SCHEMA }),
+            new Gio.Settings({schema_id: WindowManager.SHELL_KEYBINDINGS_SCHEMA}),
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
             () => this._shiftState(Meta.MotionDirection.DOWN));

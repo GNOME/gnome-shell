@@ -188,10 +188,10 @@ var AuthPrompt = GObject.registerClass({
         this._entry = null;
 
         this._textEntry = new St.Entry(entryParams);
-        ShellEntry.addContextMenu(this._textEntry, { actionMode: Shell.ActionMode.NONE });
+        ShellEntry.addContextMenu(this._textEntry, {actionMode: Shell.ActionMode.NONE});
 
         this._passwordEntry = new St.PasswordEntry(entryParams);
-        ShellEntry.addContextMenu(this._passwordEntry, { actionMode: Shell.ActionMode.NONE });
+        ShellEntry.addContextMenu(this._passwordEntry, {actionMode: Shell.ActionMode.NONE});
 
         this._entry = this._passwordEntry;
         this._mainBox.add_child(this._entry);

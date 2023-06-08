@@ -329,7 +329,7 @@ var WorkspaceTracker = class {
     _windowEnteredMonitor(metaDisplay, monitorIndex, _metaWin) {
         // If the window entered the primary monitor, that
         // might make that workspace non-empty
-        if (monitorIndex == Main.layoutManager.primaryIndex)
+        if (monitorIndex === Main.layoutManager.primaryIndex)
             this._queueCheckWorkspaces();
     }
 

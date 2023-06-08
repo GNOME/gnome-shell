@@ -74,7 +74,7 @@ class ATIndicator extends PanelMenu.Button {
         let bounceKeys = this._buildItem(_("Bounce Keys"), A11Y_KEYBOARD_SCHEMA, KEY_BOUNCE_KEYS_ENABLED);
         this.menu.addMenuItem(bounceKeys);
 
-        let mouseKeys = this._buildItem(_("Mouse Keys"), A11Y_KEYBOARD_SCHEMA, KEY_MOUSE_KEYS_ENABLED);
+        let mouseKeys = this._buildItem(_('Mouse Keys'), A11Y_KEYBOARD_SCHEMA, KEY_MOUSE_KEYS_ENABLED);
         this.menu.addMenuItem(mouseKeys);
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());

@@ -534,7 +534,7 @@ var ShellUserVerifier = class extends Signals.EventEmitter {
     }
 
     serviceIsForeground(serviceName) {
-        return serviceName == this._getForegroundService();
+        return serviceName === this._getForegroundService();
     }
 
     foregroundServiceDeterminesUsername() {

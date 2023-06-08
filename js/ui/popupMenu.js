@@ -239,7 +239,7 @@ var PopupBaseMenuItem = GObject.registerClass({
     }
 
     setOrnament(ornament) {
-        if (ornament == this._ornament)
+        if (ornament === this._ornament)
             return;
 
         this._ornament = ornament;

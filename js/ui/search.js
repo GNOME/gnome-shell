@@ -540,7 +540,7 @@ class GridSearchResults extends SearchResultsBase {
 });
 
 var SearchResultsView = GObject.registerClass({
-    Signals: { 'terms-changed': {} },
+    Signals: {'terms-changed': {}},
 }, class SearchResultsView extends St.BoxLayout {
     _init() {
         super._init({

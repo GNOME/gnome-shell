@@ -58,7 +58,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
 
             let check = new CheckBox.CheckBox();
             check.getLabelActor().text = name;
-            check.checked = selected == "true";
+            check.checked = selected === 'true';
             content.add_child(check);
 
             this._choices.set(id, check);

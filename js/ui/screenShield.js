@@ -94,10 +94,10 @@ var ScreenShield = class extends Signals.EventEmitter {
 
         this._smartcardManager = SmartcardManager.getSmartcardManager();
         this._smartcardManager.connect('smartcard-inserted',
-                                       (manager, token) => {
-                                           if (this._isLocked && token.UsedToLogin)
-                                               this._activateDialog();
-                                       });
+            (manager, token) => {
+                if (this._isLocked && token.UsedToLogin)
+                    this._activateDialog();
+            });
 
         this._credentialManagers = {};
         this.addCredentialManager(OVirt.SERVICE_NAME, OVirt.getOVirtCredentialsManager());

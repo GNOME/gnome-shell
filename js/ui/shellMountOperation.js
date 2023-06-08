@@ -289,17 +289,17 @@ var ShellMountPasswordDialog = GObject.registerClass({
         let curGridRow = 0;
 
         if (flags & Gio.AskPasswordFlags.TCRYPT) {
-            this._hiddenVolume = new CheckBox.CheckBox(_("Hidden Volume"));
+            this._hiddenVolume = new CheckBox.CheckBox(_('Hidden Volume'));
             content.add_child(this._hiddenVolume);
 
-            this._systemVolume = new CheckBox.CheckBox(_("Windows System Volume"));
+            this._systemVolume = new CheckBox.CheckBox(_('Windows System Volume'));
             content.add_child(this._systemVolume);
 
-            this._keyfilesCheckbox = new CheckBox.CheckBox(_("Uses Keyfiles"));
-            this._keyfilesCheckbox.connect("clicked", this._onKeyfilesCheckboxClicked.bind(this));
+            this._keyfilesCheckbox = new CheckBox.CheckBox(_('Uses Keyfiles'));
+            this._keyfilesCheckbox.connect('clicked', this._onKeyfilesCheckboxClicked.bind(this));
             content.add_child(this._keyfilesCheckbox);
 
-            this._keyfilesLabel = new St.Label({ visible: false });
+            this._keyfilesLabel = new St.Label({visible: false});
             if (disksApp) {
                 this._keyfilesLabel.clutter_text.set_markup(
                     /* Translators: %s is the Disks application */
@@ -374,7 +374,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
         content.add_child(passwordGrid);
 
         if (flags & Gio.AskPasswordFlags.SAVING_SUPPORTED) {
-            this._rememberChoice = new CheckBox.CheckBox(_("Remember Password"));
+            this._rememberChoice = new CheckBox.CheckBox(_('Remember Password'));
             this._rememberChoice.checked =
                 global.settings.get_boolean(REMEMBER_MOUNT_PASSWORD_KEY);
             content.add_child(this._rememberChoice);
@@ -385,17 +385,17 @@ var ShellMountPasswordDialog = GObject.registerClass({
         this.contentLayout.add_child(content);
 
         this._defaultButtons = [{
-            label: _("Cancel"),
+            label: _('Cancel'),
             action: this._onCancelButton.bind(this),
             key: Clutter.KEY_Escape,
         }, {
-            label: _("Unlock"),
+            label: _('Unlock'),
             action: this._onUnlockButton.bind(this),
             default: true,
         }];
 
         this._usesKeyfilesButtons = [{
-            label: _("Cancel"),
+            label: _('Cancel'),
             action: this._onCancelButton.bind(this),
             key: Clutter.KEY_Escape,
         }];

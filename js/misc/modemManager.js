@@ -8,12 +8,16 @@ const NMA4 = imports.gi.NMA4;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
-// _getMobileProvidersDatabase:
-//
-// Gets the database of mobile providers, with references between MCCMNC/SID and
-// operator name
-//
 let _mpd;
+
+/**
+ * _getMobileProvidersDatabase:
+ *
+ * Gets the database of mobile providers, with references between MCCMNC/SID and
+ * operator name
+ *
+ * @returns {NMA4.MobileProvidersDatabase | null}
+ */
 function _getMobileProvidersDatabase() {
     if (_mpd == null) {
         try {
