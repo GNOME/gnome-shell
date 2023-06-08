@@ -489,8 +489,7 @@ list_modes (const char  *option_name,
 {
   ShellGlobal *global;
   GjsContext *context;
-  const char *script;
-  int status;
+  uint8_t status;
 
   /* Many of our imports require global to be set, so rather than
    * tayloring our imports carefully here to avoid that dependency,
@@ -503,9 +502,10 @@ list_modes (const char  *option_name,
 
   shell_introspection_init ();
 
-  script = "imports.ui.environment.init();"
-           "imports.ui.sessionMode.listModes();";
-  if (!gjs_context_eval (context, script, -1, "<main>", &status, NULL))
+  if (!gjs_context_eval_module_file (context,
+                                     "resource:///org/gnome/shell/ui/listModes.js",
+                                     &status,
+                                     NULL))
       g_message ("Retrieving list of available modes failed.");
 
   g_object_unref (context);
