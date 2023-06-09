@@ -74,18 +74,10 @@ var ParentalControlsManager = GObject.registerClass({
         try {
             const connection = await Gio.DBus.get(Gio.BusType.SYSTEM, null);
             this._manager = new Malcontent.Manager({ connection });
-            this._appFilter = await this._manager.get_app_filter_async(
-                Shell.util_get_uid(),
-                Malcontent.ManagerGetValueFlags.NONE,
-                null);
+            this._appFilter = await this._getAppFilter();
         } catch (e) {
-            if (e.matches(Malcontent.ManagerError, Malcontent.ManagerError.DISABLED)) {
-                console.debug('Parental controls globally disabled');
-                this._disabled = true;
-            } else {
-                logError(e, 'Failed to get parental controls settings');
-                return;
-            }
+            logError(e, 'Failed to get parental controls settings');
+            return;
         }
 
         this._manager.connect('app-filter-changed', this._onAppFilterChanged.bind(this));
@@ -95,6 +87,25 @@ var ParentalControlsManager = GObject.registerClass({
         this.emit('app-filter-changed');
     }
 
+    async _getAppFilter() {
+        let appFilter = null;
+
+        try {
+            appFilter = await this._manager.get_app_filter_async(
+                Shell.util_get_uid(),
+                Malcontent.ManagerGetValueFlags.NONE,
+                null);
+        } catch (e) {
+            if (!e.matches(Malcontent.ManagerError, Malcontent.ManagerError.DISABLED))
+                throw e;
+
+            console.debug('Parental controls globally disabled');
+            this._disabled = true;
+        }
+
+        return appFilter;
+    }
+
     async _onAppFilterChanged(manager, uid) {
         // Emit 'changed' signal only if app-filter is changed for currently logged-in user.
         let currentUid = Shell.util_get_uid();
@@ -102,10 +113,7 @@ var ParentalControlsManager = GObject.registerClass({
             return;
 
         try {
-            this._appFilter = await this._manager.get_app_filter_async(
-                currentUid,
-                Malcontent.ManagerGetValueFlags.NONE,
-                null);
+            this._appFilter = await this._getAppFilter();
             this.emit('app-filter-changed');
         } catch (e) {
             // Log an error and keep the old app filter.
