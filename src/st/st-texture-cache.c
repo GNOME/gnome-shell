@@ -1321,6 +1321,12 @@ on_sliced_image_loaded (GObject *source_object,
   if (g_task_had_error (task) || g_cancellable_is_cancelled (data->cancellable))
     return;
 
+  clutter_actor_set_layout_manager (data->actor,
+                                    g_object_new (CLUTTER_TYPE_BIN_LAYOUT, NULL));
+  /* stop propagation of child expand flags */
+  clutter_actor_set_x_expand (data->actor, FALSE);
+  clutter_actor_set_y_expand (data->actor, FALSE);
+
   pixbufs = g_task_propagate_pointer (task, NULL);
 
   for (list = pixbufs; list; list = list->next)
@@ -1328,6 +1334,10 @@ on_sliced_image_loaded (GObject *source_object,
       ClutterActor *actor = load_from_pixbuf (GDK_PIXBUF (list->data),
                                               data->paint_scale,
                                               data->resource_scale);
+      clutter_actor_set_x_expand (actor, TRUE);
+      clutter_actor_set_y_expand (actor, TRUE);
+      clutter_actor_set_x_align (actor, CLUTTER_ACTOR_ALIGN_FILL);
+      clutter_actor_set_y_align (actor, CLUTTER_ACTOR_ALIGN_FILL);
       clutter_actor_hide (actor);
       clutter_actor_add_child (data->actor, actor);
     }
