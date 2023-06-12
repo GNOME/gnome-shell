@@ -57,7 +57,12 @@ var ExtensionManager = class extends Signals.EventEmitter {
             log(`Failed to create file ${disableFilename}: ${e.message}`);
         }
 
+        const shutdownId = global.connect('shutdown',
+            () => disableFile.delete(null));
+
         GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
+            global.context.disconnect(shutdownId);
+
             disableFile.delete(null);
             return GLib.SOURCE_REMOVE;
         });
