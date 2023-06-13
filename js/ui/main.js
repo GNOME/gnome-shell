@@ -326,9 +326,9 @@ async function _initializeUI() {
     }
 
     let perfModule;
-    const perfModuleName = GLib.getenv('SHELL_PERF_MODULE');
-    if (perfModuleName) {
-        perfModule = await import(`../perf/${perfModuleName}.js`);
+    const {automationScript} = global;
+    if (automationScript) {
+        perfModule = await import(automationScript.get_uri());
         if (perfModule.init)
             perfModule.init();
     }

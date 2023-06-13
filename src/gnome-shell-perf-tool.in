@@ -27,7 +27,6 @@ def show_version(option, opt_str, value, parser):
 def start_shell(wrap=None, perf_output=None):
     # Set up environment
     env = dict(os.environ)
-    env['SHELL_PERF_MODULE'] = options.perf
 
     filters = ['Gnome-shell-perf-helper'] + options.extra_filter
     env['MUTTER_WM_CLASS_FILTER'] = ','.join(filters)
@@ -44,6 +43,9 @@ def start_shell(wrap=None, perf_output=None):
     if wrap:
         args += wrap.split(' ')
     args.append(os.path.join(self_dir, 'gnome-shell'))
+
+    args.append('--automation-script')
+    args.append(options.script)
 
     args.append('--force-animations')
 
@@ -173,7 +175,7 @@ def gnome_hwtest_log(*args):
     subprocess.check_call(command)
 
 def run_performance_test(wrap=None):
-    iters = options.perf_iters
+    iters = options.test_iters
     if options.perf_warmup:
         iters += 1
 
@@ -286,10 +288,10 @@ def run_performance_test(wrap=None):
 # Main program
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--perf",
-                    help="Specify the name of a performance module to run")
-parser.add_argument("--perf-iters", type=int, metavar="ITERS",
-                    help="Numbers of iterations of performance module to run",
+parser.add_argument("--script",
+                    help="Specify the path to the automation script to run")
+parser.add_argument("--test-iters", type=int, metavar="ITERS",
+                    help="Numbers of iterations of the test to run",
                     default=1)
 parser.add_argument("--perf-warmup", action="store_true",
                     help="Run a dry run before performance tests")
@@ -321,16 +323,16 @@ parser.add_argument("--hotplug", action="store_true",
 
 options = parser.parse_args()
 
-if options.perf == None:
+if options.script == None:
     if options.hwtest:
-        options.perf = 'hwtest'
+        options.script = 'resource:///org/gnome/shell/perf/hwtest.js'
     else:
-        options.perf = 'core'
+        options.script = 'resource:///org/gnome/shell/perf/core.js'
 
 if options.extra_filter is None:
     options.extra_filter = []
 
-if options.perf == 'hwtest':
+if options.script == 'hwtest':
     options.extra_filter.append('Gedit')
 
 normal_exit = run_performance_test(wrap=options.wrap)

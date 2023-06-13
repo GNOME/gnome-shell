@@ -73,6 +73,7 @@ struct _ShellGlobal {
   char *userdatadir;
   GFile *userdatadir_path;
   GFile *runtime_state_path;
+  GFile *automation_script;
 
   ShellWindowTracker *window_tracker;
   ShellAppSystem *app_system;
@@ -120,6 +121,7 @@ enum {
   PROP_FRAME_FINISH_TIMESTAMP,
   PROP_SWITCHEROO_CONTROL,
   PROP_FORCE_ANIMATIONS,
+  PROP_AUTOMATION_SCRIPT,
 
   N_PROPS
 };
@@ -249,6 +251,9 @@ shell_global_set_property(GObject         *object,
     case PROP_FORCE_ANIMATIONS:
       global->force_animations = g_value_get_boolean (value);
       break;
+    case PROP_AUTOMATION_SCRIPT:
+      g_set_object (&global->automation_script, g_value_get_object (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -337,6 +342,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_FORCE_ANIMATIONS:
       g_value_set_boolean (value, global->force_animations);
+      break;
+    case PROP_AUTOMATION_SCRIPT:
+      g_value_set_object (value, global->automation_script);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -687,6 +695,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                           "Force animations to be enabled",
                           FALSE,
                           G_PARAM_READWRITE  | G_PARAM_CONSTRUCT| G_PARAM_STATIC_STRINGS);
+
+  props[PROP_AUTOMATION_SCRIPT] =
+    g_param_spec_object ("automation-script",
+                         "automation-script",
+                         "Automation script to run after startup",
+                         G_TYPE_FILE,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
 }

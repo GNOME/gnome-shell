@@ -39,6 +39,7 @@ static gboolean is_gdm_mode = FALSE;
 static char *session_mode = NULL;
 static int caught_signal = 0;
 static gboolean force_animations = FALSE;
+static char *script_path = NULL;
 
 #define DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER 1
 #define DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER 4
@@ -532,6 +533,12 @@ GOptionEntry gnome_shell_options[] = {
     N_("Force animations to be enabled"),
     NULL
   },
+  {
+    "automation-script", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_FILENAME,
+    &script_path,
+    N_(""),
+    NULL
+  },
   { NULL }
 };
 
@@ -582,6 +589,8 @@ int
 main (int argc, char **argv)
 {
   g_autoptr (MetaContext) context = NULL;
+  g_autoptr (GFile) automation_script = NULL;
+  g_autofree char *cwd = NULL;
   GError *error = NULL;
   int ecode = EXIT_SUCCESS;
 
@@ -606,6 +615,7 @@ main (int argc, char **argv)
   meta_context_set_gnome_wm_keybindings (context, GNOME_WM_KEYBINDINGS);
 
   init_signal_handlers (context);
+  cwd = g_get_current_dir ();
   change_to_home_directory ();
 
   if (session_mode == NULL)
@@ -628,12 +638,16 @@ main (int argc, char **argv)
       dump_gjs_stack_on_signal (SIGSEGV);
     }
 
+  if (script_path)
+    automation_script = g_file_new_for_commandline_arg_and_cwd (script_path, cwd);
+
   /* Initialize the Shell global, including GjsContext
    * GjsContext will iterate the default main loop to
    * resolve internal modules.
    */
   _shell_global_init ("session-mode", session_mode,
                       "force-animations", force_animations,
+                      "automation-script", automation_script,
                       NULL);
 
   /* Setup Meta _after_ the Shell global to avoid GjsContext

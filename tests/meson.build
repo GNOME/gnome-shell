@@ -71,7 +71,7 @@ foreach perf_test : perf_tests
     args: [
       perf_tool,
       '--headless',
-      '--perf=@0@'.format(test_name),
+      '--script=@0@/js/perf/@1@.js'.format(meson.project_source_root(), test_name),
       options,
     ],
     is_parallel: false,
