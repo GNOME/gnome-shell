@@ -22,6 +22,17 @@ To do that, simply run the included script:
 $ ./generate-translations.sh
 ```
 
+You can then build and install the project:
+
+```
+$ meson setup --prefix=/usr _build
+$ meson compile -C _build
+$ meson install -C _build
+$ /usr/bin/gnome-extensions-app
+```
+
+For development you can also install the project to a temporary directory (e.g. replace `/usr` with `/tmp/install` above).
+
 ## License
 gnome-extensions-app is distributed under the terms of the GNU General Public
 License, version 2 or later. See the [COPYING][license] file for details.
