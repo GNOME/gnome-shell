@@ -1,8 +1,4 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported run, finish, script_topBarNavDone, script_notificationShowDone,
-   script_notificationCloseDone, script_overviewShowDone,
-   script_applicationsShowStart, script_applicationsShowDone, METRICS,
-*/
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_"] }] */
 
 const St = imports.gi.St;
@@ -13,9 +9,9 @@ const Scripting = imports.ui.scripting;
 
 // This script tests the most important (basic) functionality of the shell.
 
-var METRICS = {};
+export var METRICS = {};
 
-async function run() {
+export async function run() {
     console.debug('Running basic perf test');
 
     /* eslint-disable no-await-in-loop */
@@ -122,27 +118,27 @@ let notificationClosed = false;
 let windowPickerShown = false;
 let appPickerShown = false;
 
-function script_topBarNavDone() {
+export function script_topBarNavDone() {
     topBarNav = true;
 }
 
-function script_notificationShowDone() {
+export function script_notificationShowDone() {
     notificationShown = true;
 }
 
-function script_notificationCloseDone() {
+export function script_notificationCloseDone() {
     notificationClosed = true;
 }
 
-function script_overviewShowDone() {
+export function script_overviewShowDone() {
     windowPickerShown = true;
 }
 
-function script_applicationsShowDone() {
+export function script_applicationsShowDone() {
     appPickerShown = true;
 }
 
-function finish() {
+export function finish() {
     if (!topBarNav)
         throw new Error('Failed to navigate top bar');
 

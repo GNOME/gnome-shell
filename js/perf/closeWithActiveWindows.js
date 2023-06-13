@@ -1,5 +1,4 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported run */
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_", "^malloc", "^glx", "^clutter"] }] */
 
 const Clutter = imports.gi.Clutter;
@@ -8,7 +7,7 @@ const Main = imports.ui.main;
 const Scripting = imports.ui.scripting;
 
 /** Run test. */
-async function run() {
+export async function run() {
     /* eslint-disable no-await-in-loop */
 
     /* Make created windows remain visible during exit. */

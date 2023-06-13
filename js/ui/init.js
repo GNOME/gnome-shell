@@ -1,6 +1,6 @@
 import {setConsoleLogDomain} from 'console';
 import GLib from 'gi://GLib';
-import {exit} from 'system';
+import Gio from 'gi://Gio';
 
 setConsoleLogDomain('GNOME Shell');
 
@@ -11,12 +11,12 @@ imports.ui.environment.init();
 imports._promiseNative.setMainLoopHook(() => {
     // Queue starting the shell
     GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-        try {
-            imports.ui.main.start();
-        } catch (e) {
-            logError(e);
-            exit(1);
-        }
+        imports.ui.main.start().catch(e => {
+            const error = new GLib.Error(
+                Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED,
+                e.message);
+            global.context.terminate_with_error(error);
+        });
         return GLib.SOURCE_REMOVE;
     });
 

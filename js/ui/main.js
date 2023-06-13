@@ -165,7 +165,8 @@ function _loggingFunc(...args) {
     GLib.log_structured(domain, GLib.LogLevelFlags.LEVEL_MESSAGE, fields);
 }
 
-function start() {
+/** @returns {void} */
+async function start() {
     globalThis.log = _loggingFunc;
 
     // These are here so we don't break compatibility.
@@ -190,7 +191,7 @@ function start() {
     // Initialize ParentalControlsManager before the UI
     ParentalControlsManager.getDefault();
 
-    _initializeUI();
+    await _initializeUI();
 
     shellAccessDialogDBusService = new AccessDialog.AccessDialogDBus();
     shellAudioSelectionDBusService = new AudioDeviceSelection.AudioDeviceSelectionDBus();
@@ -205,7 +206,8 @@ function start() {
     _sessionUpdated();
 }
 
-function _initializeUI() {
+/** @private */
+async function _initializeUI() {
     // Ensure ShellWindowTracker and ShellAppUsage are initialized; this will
     // also initialize ShellAppSystem first. ShellAppSystem
     // needs to load all the .desktop files, and ShellWindowTracker
@@ -326,7 +328,7 @@ function _initializeUI() {
     let perfModule;
     const perfModuleName = GLib.getenv('SHELL_PERF_MODULE');
     if (perfModuleName) {
-        perfModule = eval(`imports.perf.${perfModuleName};`);
+        perfModule = await import(`../perf/${perfModuleName}.js`);
         if (perfModule.init)
             perfModule.init();
     }

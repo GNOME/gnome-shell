@@ -1,11 +1,3 @@
-/* exported run, script_desktopShown, script_overviewShowStart,
-            script_overviewShowDone, script_applicationsShowStart,
-            script_applicationsShowDone, script_mainViewDrawStart,
-            script_mainViewDrawDone, script_overviewDrawStart,
-            script_overviewDrawDone, script_redrawTestStart,
-            script_redrawTestDone, script_collectTimings,
-            script_geditLaunch, script_geditFirstFrame,
-            clutter_stagePaintStart, clutter_paintCompletedTimestamp */
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_", "^clutter"] }] */
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
@@ -13,7 +5,7 @@ const Shell = imports.gi.Shell;
 const Main = imports.ui.main;
 const Scripting = imports.ui.scripting;
 
-var METRICS = {
+export var METRICS = {
     timeToDesktop: {
         description: 'Time from starting graphical.target to desktop showing',
         units: 'us',
@@ -104,7 +96,7 @@ function extractBootTimestamp() {
     return result;
 }
 
-async function run() {
+export async function run() {
     /* eslint-disable no-await-in-loop */
     Scripting.defineScriptEvent("desktopShown", "Finished initial animation");
     Scripting.defineScriptEvent("overviewShowStart", "Starting to show the overview");
@@ -235,52 +227,52 @@ let redrawTiming;
 let redrawTimes = {};
 let geditLaunchTime;
 
-function script_desktopShown(time) {
+export function script_desktopShown(time) {
     let bootTimestamp = extractBootTimestamp();
     METRICS.timeToDesktop.value = time - bootTimestamp;
 }
 
-function script_overviewShowStart(time) {
+export function script_overviewShowStart(time) {
     overviewShowStart = time;
 }
 
-function script_overviewShowDone(time) {
+export function script_overviewShowDone(time) {
     METRICS.overviewShowTime.value = time - overviewShowStart;
 }
 
-function script_applicationsShowStart(time) {
+export function script_applicationsShowStart(time) {
     applicationsShowStart = time;
 }
 
-function script_applicationsShowDone(time) {
+export function script_applicationsShowDone(time) {
     METRICS.applicationsShowTime.value = time - applicationsShowStart;
 }
 
-function script_mainViewDrawStart(_time) {
+export function script_mainViewDrawStart(_time) {
     redrawTiming = 'mainView';
 }
 
-function script_mainViewDrawDone(_time) {
+export function script_mainViewDrawDone(_time) {
     redrawTiming = null;
 }
 
-function script_overviewDrawStart(_time) {
+export function script_overviewDrawStart(_time) {
     redrawTiming = 'overview';
 }
 
-function script_overviewDrawDone(_time) {
+export function script_overviewDrawDone(_time) {
     redrawTiming = null;
 }
 
-function script_redrawTestStart(_time) {
+export function script_redrawTestStart(_time) {
     redrawTiming = 'application';
 }
 
-function script_redrawTestDone(_time) {
+export function script_redrawTestDone(_time) {
     redrawTiming = null;
 }
 
-function script_collectTimings(_time) {
+export function script_collectTimings(_time) {
     for (let timing in redrawTimes) {
         let times = redrawTimes[timing];
         times.sort((a, b) => a - b);
@@ -299,19 +291,19 @@ function script_collectTimings(_time) {
     }
 }
 
-function script_geditLaunch(time) {
+export function script_geditLaunch(time) {
     geditLaunchTime = time;
 }
 
-function script_geditFirstFrame(time) {
+export function script_geditFirstFrame(time) {
     METRICS.geditStartTime.value = time - geditLaunchTime;
 }
 
-function clutter_stagePaintStart(time) {
+export function clutter_stagePaintStart(time) {
     stagePaintStart = time;
 }
 
-function clutter_paintCompletedTimestamp(time) {
+export function clutter_paintCompletedTimestamp(time) {
     if (redrawTiming != null && stagePaintStart != null) {
         if (!(redrawTiming in redrawTimes))
             redrawTimes[redrawTiming] = [];

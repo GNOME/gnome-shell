@@ -1,7 +1,4 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported init, run, finish, script_monitorsChanged, script_overviewHideDone,
-   script_overviewShowDone, METRICS,
-*/
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_"] }] */
 
 const GLib = imports.gi.GLib;
@@ -14,14 +11,14 @@ const Scripting = imports.ui.scripting;
 // This script tests that the shell handles connecting monitors after startup
 // is properly handled.
 
-var METRICS = {};
+export var METRICS = {};
 
 let _testMonitor = null;
 
 /**
  * init:
  */
-function init() {
+export function init() {
     global.connect('shutdown', () => {
         _testMonitor?.destroy();
     });
@@ -51,7 +48,7 @@ function init() {
 /**
  * run:
  */
-async function run() {
+export async function run() {
     /* eslint-disable no-await-in-loop */
     Scripting.defineScriptEvent('overviewShowDone', 'Overview finished showing');
     Scripting.defineScriptEvent('overviewHideDone', 'Overview finished hiding');
@@ -77,28 +74,28 @@ let overviewShown = false;
 /**
  * script_monitorsChanged:
  */
-function script_monitorsChanged() {
+export function script_monitorsChanged() {
     monitorsChanged = true;
 }
 
 /**
  * script_overviewHideDone:
  */
-function script_overviewHideDone() {
+export function script_overviewHideDone() {
     overviewHidden = true;
 }
 
 /**
  * script_overviewShowDone:
  */
-function script_overviewShowDone() {
+export function script_overviewShowDone() {
     overviewShown = true;
 }
 
 /**
  * finish:
  */
-function finish() {
+export function finish() {
     if (!monitorsChanged)
         throw new Error('Monitors never changed');
 

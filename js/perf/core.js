@@ -1,8 +1,4 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported run, script_overviewShowStart, script_overviewShowDone,
-            script_applicationsShowStart, script_applicationsShowDone,
-            script_afterShowHide, malloc_usedSize, glx_swapComplete,
-            clutter_stagePaintDone */
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_", "^malloc", "^glx", "^clutter"] }] */
 
 const System = imports.system;
@@ -15,7 +11,7 @@ const Scripting = imports.ui.scripting;
 // someone should be able to get an idea of how well the shell is performing
 // on a particular system.
 
-var METRICS = {
+export var METRICS = {
     overviewLatencyFirst: {
         description: 'Time to first frame after triggering overview, first time',
         units: 'us',
@@ -97,7 +93,7 @@ const WINDOW_CONFIGS = [{
     alpha: true,  maximized: false, count: 10, metric: 'overviewFps10Alpha',
 }];
 
-async function run() {
+export async function run() {
     /* eslint-disable no-await-in-loop */
     Scripting.defineScriptEvent("overviewShowStart", "Starting to show the overview");
     Scripting.defineScriptEvent("overviewShowDone", "Overview finished showing");
@@ -179,25 +175,25 @@ let haveSwapComplete = false;
 let applicationsShowStart;
 let applicationsShowCount = 0;
 
-function script_overviewShowStart(time) {
+export function script_overviewShowStart(time) {
     showingOverview = true;
     finishedShowingOverview = false;
     overviewShowStart = time;
     overviewFrames = 0;
 }
 
-function script_overviewShowDone(_time) {
+export function script_overviewShowDone(_time) {
     // We've set up the state at the end of the zoom out, but we
     // need to wait for one more frame to paint before we count
     // ourselves as done.
     finishedShowingOverview = true;
 }
 
-function script_applicationsShowStart(time) {
+export function script_applicationsShowStart(time) {
     applicationsShowStart = time;
 }
 
-function script_applicationsShowDone(time) {
+export function script_applicationsShowDone(time) {
     applicationsShowCount++;
     if (applicationsShowCount == 1)
         METRICS.applicationsShowTimeFirst.value = time - applicationsShowStart;
@@ -205,14 +201,14 @@ function script_applicationsShowDone(time) {
         METRICS.applicationsShowTimeSubsequent.value = time - applicationsShowStart;
 }
 
-function script_afterShowHide(_time) {
+export function script_afterShowHide(_time) {
     if (overviewShowCount == 1)
         METRICS.usedAfterOverview.value = mallocUsedSize;
     else
         METRICS.leakedAfterOverview.value = mallocUsedSize - METRICS.usedAfterOverview.value;
 }
 
-function malloc_usedSize(time, bytes) {
+export function malloc_usedSize(time, bytes) {
     mallocUsedSize = bytes;
 }
 
@@ -251,13 +247,13 @@ function _frameDone(time) {
     }
 }
 
-function glx_swapComplete(time, swapTime) {
+export function glx_swapComplete(time, swapTime) {
     haveSwapComplete = true;
 
     _frameDone(swapTime);
 }
 
-function clutter_stagePaintDone(time) {
+export function clutter_stagePaintDone(time) {
     // If we aren't receiving GLXBufferSwapComplete events, then we approximate
     // the time the user sees a frame with the time we finished doing drawing
     // commands for the frame. This doesn't take into account the time for
