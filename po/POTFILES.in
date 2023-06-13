@@ -60,6 +60,7 @@ js/ui/shellMountOperation.js
 js/ui/status/accessibility.js
 js/ui/status/autoRotate.js
 js/ui/status/backgroundApps.js
+js/ui/status/backlight.js
 js/ui/status/bluetooth.js
 js/ui/status/brightness.js
 js/ui/status/darkMode.js

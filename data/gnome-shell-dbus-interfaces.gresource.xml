@@ -37,6 +37,7 @@
     <file preprocess="xml-stripblanks">org.gnome.SessionManager.Presence.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.SessionManager.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.SettingsDaemon.Color.xml</file>
+    <file preprocess="xml-stripblanks">org.gnome.SettingsDaemon.Power.Keyboard.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.SettingsDaemon.Power.Screen.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.SettingsDaemon.Rfkill.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.SettingsDaemon.Wacom.xml</file>

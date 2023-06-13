@@ -163,6 +163,16 @@
 
 .device-subtitle { color: transparentize($fg_color, 0.5); }
 
+.keyboard-brightness-item .slider {
+  min-height: 16px;
+}
+
+.keyboard-brightness-level {
+  spacing: $base_padding;
+
+  .button:checked { @include button(default, $c:$selected_bg_color); }
+}
+
 // background apps
 
 .background-apps-quick-toggle {

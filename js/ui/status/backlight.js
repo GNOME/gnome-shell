@@ -1,0 +1,205 @@
+// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Indicator */
+
+const {Clutter, Gio, GObject, St} = imports.gi;
+
+const {QuickMenuToggle, SystemIndicator} = imports.ui.quickSettings;
+
+const PopupMenu = imports.ui.popupMenu;
+const {Slider} = imports.ui.slider;
+
+const {loadInterfaceXML} = imports.misc.fileUtils;
+
+const BUS_NAME = 'org.gnome.SettingsDaemon.Power';
+const OBJECT_PATH = '/org/gnome/SettingsDaemon/Power';
+
+const BrightnessInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Power.Keyboard');
+const BrightnessProxy = Gio.DBusProxy.makeProxyWrapper(BrightnessInterface);
+
+const SliderItem = GObject.registerClass({
+    Properties: {
+        'value': GObject.ParamSpec.int(
+            'value', '', '',
+            GObject.ParamFlags.READWRITE,
+            0, 100, 0),
+    },
+}, class SliderItem extends PopupMenu.PopupBaseMenuItem {
+    constructor() {
+        super({
+            activate: false,
+            style_class: 'keyboard-brightness-item',
+        });
+
+        this._slider = new Slider(0);
+
+        this._sliderChangedId = this._slider.connect('notify::value',
+            () => this.notify('value'));
+        this._slider.accessible_name = _('Keyboard Brightness');
+
+        this.add_child(this._slider);
+    }
+
+    get value() {
+        return this._slider.value * 100;
+    }
+
+    set value(value) {
+        this._slider.block_signal_handler(this._sliderChangedId);
+        this._slider.value = value / 100;
+        this._slider.unblock_signal_handler(this._sliderChangedId);
+    }
+});
+
+const DiscreteItem = GObject.registerClass({
+    Properties: {
+        'value': GObject.ParamSpec.int(
+            'value', '', '',
+            GObject.ParamFlags.READWRITE,
+            0, 100, 0),
+        'n-levels': GObject.ParamSpec.int(
+            'n-levels', '', '',
+            GObject.ParamFlags.READWRITE,
+            1, 3, 1),
+    },
+}, class DiscreteItem extends St.BoxLayout {
+    constructor() {
+        super({
+            style_class: 'popup-menu-item',
+            reactive: true,
+        });
+
+        this._levelButtons = new Map();
+        this._addLevelButton('off', _('Off'), 'keyboard-brightness-low-symbolic');
+        this._addLevelButton('low', _('Low'), 'keyboard-brightness-medium-symbolic');
+        this._addLevelButton('high', _('High'), 'keyboard-brightness-high-symbolic');
+
+        this.connect('notify::n-levels', () => this._syncLevels());
+        this.connect('notify::value', () => this._syncChecked());
+        this._syncLevels();
+    }
+
+    _valueToLevel(value) {
+        const checkedIndex = Math.round(value * (this.nLevels - 1) / 100);
+        if (checkedIndex === this.nLevels - 1)
+            return 'high';
+
+        return [...this._levelButtons.keys()].at(checkedIndex);
+    }
+
+    _levelToValue(level) {
+        const keyIndex = [...this._levelButtons.keys()].indexOf(level);
+        return 100 * Math.min(keyIndex, this.nLevels - 1) / (this.nLevels - 1);
+    }
+
+    _addLevelButton(key, label, iconName) {
+        const box = new St.BoxLayout({
+            style_class: 'keyboard-brightness-level',
+            vertical: true,
+            x_expand: true,
+        });
+
+        box.button = new St.Button({
+            styleClass: 'icon-button',
+            canFocus: true,
+            iconName,
+        });
+        box.add_child(box.button);
+
+        box.button.connect('clicked', () => {
+            this.value = this._levelToValue(key);
+        });
+
+        box.add_child(new St.Label({
+            text: label,
+            x_align: Clutter.ActorAlign.CENTER,
+        }));
+
+        this.add_child(box);
+        this._levelButtons.set(key, box);
+    }
+
+    _syncLevels() {
+        this._levelButtons.get('off').visible = this.nLevels > 0;
+        this._levelButtons.get('high').visible = this.nLevels > 1;
+        this._levelButtons.get('low').visible = this.nLevels > 2;
+    }
+
+    _syncChecked() {
+        const checkedKey = this._valueToLevel(this.value);
+        this._levelButtons.forEach((b, k) => {
+            b.button.checked = k === checkedKey;
+        });
+    }
+});
+
+const KeyboardBrightnessToggle = GObject.registerClass(
+class KeyboardBrightnessToggle extends QuickMenuToggle {
+    _init() {
+        super._init({
+            title: _('Keyboard'),
+            iconName: 'display-brightness-symbolic',
+        });
+
+        this._proxy = new BrightnessProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
+            (proxy, error) => {
+                if (error)
+                    console.error(error.message);
+                else
+                    this._proxy.connect('g-properties-changed', () => this._sync());
+                this._sync();
+            });
+
+        this.connect('clicked', () => {
+            this._proxy.Brightness = this.checked ? 0 : 100;
+        });
+
+        this._sliderItem = new SliderItem();
+        this.menu.box.add_child(this._sliderItem);
+
+        this._discreteItem = new DiscreteItem();
+        this.menu.box.add_child(this._discreteItem);
+
+        this._sliderItem.bind_property('visible',
+            this._discreteItem, 'visible',
+            GObject.BindingFlags.INVERT_BOOLEAN |
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this._sliderItem.bind_property('value',
+            this._discreteItem, 'value',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this._sliderItem.connect('notify::value',
+            () => (this._proxy.Brightness = this._sliderItem.value));
+
+        this._discreteItem.connect('notify::value',
+            () => (this._proxy.Brightness = this._discreteItem.value));
+    }
+
+    _sync() {
+        const brightness = this._proxy.Brightness;
+        const visible = Number.isInteger(brightness) && brightness >= 0;
+        this.visible = visible;
+        if (!visible)
+            return;
+
+        this.checked = brightness > 0;
+        const useSlider = this._proxy.Steps >= 4;
+
+        this._sliderItem.set({
+            visible: useSlider,
+            value: brightness,
+        });
+
+        if (!useSlider)
+            this._discreteItem.nLevels = this._proxy.Steps;
+    }
+});
+
+var Indicator = GObject.registerClass(
+class Indicator extends SystemIndicator {
+    _init() {
+        super._init();
+
+        this.quickSettingsItems.push(new KeyboardBrightnessToggle());
+    }
+});
