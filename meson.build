@@ -29,6 +29,7 @@ mutter_req = '>= 44.0'
 polkit_req = '>= 0.100'
 schemas_req = '>= 42.beta'
 startup_req = '>= 0.11'
+systemd_req = '>= 246'
 ibus_req = '>= 1.5.19'
 gnome_desktop_req = '>= 40'
 
@@ -102,8 +103,8 @@ else
 endif
 
 if get_option('systemd')
-  libsystemd_dep = dependency('libsystemd')
-  systemd_dep = dependency('systemd')
+  libsystemd_dep = dependency('libsystemd', version: systemd_req)
+  systemd_dep = dependency('systemd', version: systemd_req)
   systemduserunitdir = systemd_dep.get_variable('systemduserunitdir',
     pkgconfig_define: ['prefix', prefix])
   have_systemd = true

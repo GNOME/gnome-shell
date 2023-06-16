@@ -13,7 +13,6 @@ Requisite=gnome-session-initialized.target
 PartOf=gnome-session-initialized.target
 Before=gnome-session-initialized.target
 
-#NOTE: ConditionEnvironment works with systemd >= 246
 ConditionEnvironment=XDG_SESSION_TYPE=%I
 
 # Limit startup frequency more than the default
