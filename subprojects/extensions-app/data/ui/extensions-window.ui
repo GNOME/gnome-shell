@@ -17,9 +17,8 @@
     <property name="default-height">500</property>
     <property name="title" translatable="yes">Extensions</property>
     <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <child>
+      <object class="AdwToolbarView">
+        <child type="top">
           <object class="GtkHeaderBar">
             <child type="end">
               <object class="GtkMenuButton" id="menuButton">
@@ -53,7 +52,7 @@
             </child>
           </object>
         </child>
-        <child>
+        <child type="top">
           <object class="GtkSearchBar" id="searchBar">
             <property name="key-capture-widget">ExtensionsWindow</property>
             <property name="search-mode-enabled"
@@ -67,7 +66,7 @@
             </child>
           </object>
         </child>
-        <child>
+        <property name="content">
           <object class="GtkStack" id="mainStack">
             <property name="transition-type">crossfade</property>
             <property name="vexpand">True</property>
@@ -148,8 +147,8 @@
               </object>
             </child>
           </object>
-        </child>
-        <child>
+        </property>
+        <child type="bottom">
           <object class="GtkActionBar" id="updatesBar">
             <property name="revealed">False</property>
             <child>
