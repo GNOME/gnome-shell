@@ -83,7 +83,7 @@ var ScreenRecordingIndicator = GObject.registerClass({
         });
         this._box.add_child(this._label);
 
-        this._icon = new St.Icon({ icon_name: 'stop-symbolic' });
+        this._icon = new St.Icon({icon_name: 'screencast-stop-symbolic'});
         this._box.add_child(this._icon);
 
         this.hide();
@@ -150,7 +150,7 @@ var ScreenSharingIndicator = GObject.registerClass({
         let icon = new St.Icon({icon_name: 'screen-shared-symbolic'});
         this._box.add_child(icon);
 
-        icon = new St.Icon({icon_name: 'window-close-symbolic'});
+        icon = new St.Icon({icon_name: 'screencast-stop-symbolic'});
         this._box.add_child(icon);
 
         this._controller = global.backend.get_remote_access_controller();
