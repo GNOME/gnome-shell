@@ -12,47 +12,47 @@
       </item>
     </section>
   </menu>
-  <template class="ExtensionsWindow" parent="GtkApplicationWindow">
+  <template class="ExtensionsWindow" parent="AdwApplicationWindow">
     <property name="default-width">800</property>
     <property name="default-height">500</property>
     <property name="title" translatable="yes">Extensions</property>
-    <child type="titlebar">
-      <object class="GtkHeaderBar">
-        <child type="end">
-          <object class="GtkMenuButton" id="menuButton">
-            <property name="receives-default">True</property>
-            <property name="menu-model">primary-menu</property>
-            <property name="icon-name">open-menu-symbolic</property>
-          </object>
-        </child>
-        <child type="end">
-          <object class="GtkToggleButton" id="searchButton">
-            <property name="receives-default">True</property>
-            <property name="icon-name">edit-find-symbolic</property>
-            <child>
-              <object class="GtkShortcutController">
-                <property name='scope'>global</property>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkHeaderBar">
+            <child type="end">
+              <object class="GtkMenuButton" id="menuButton">
+                <property name="receives-default">True</property>
+                <property name="menu-model">primary-menu</property>
+                <property name="icon-name">open-menu-symbolic</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkToggleButton" id="searchButton">
+                <property name="receives-default">True</property>
+                <property name="icon-name">edit-find-symbolic</property>
                 <child>
-                  <object class='GtkShortcut'>
-                    <property name='trigger'>&lt;Control&gt;f</property>
-                    <property name='action'>activate</property>
-                  </object>
-                </child>
-                <child>
-                  <object class='GtkShortcut'>
-                    <property name='trigger'>&lt;Control&gt;s</property>
-                    <property name='action'>activate</property>
+                  <object class="GtkShortcutController">
+                    <property name='scope'>global</property>
+                    <child>
+                      <object class='GtkShortcut'>
+                        <property name='trigger'>&lt;Control&gt;f</property>
+                        <property name='action'>activate</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class='GtkShortcut'>
+                        <property name='trigger'>&lt;Control&gt;s</property>
+                        <property name='action'>activate</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
             </child>
           </object>
         </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkSearchBar" id="searchBar">
             <property name="key-capture-widget">ExtensionsWindow</property>

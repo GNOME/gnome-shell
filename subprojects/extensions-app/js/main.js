@@ -88,7 +88,7 @@ var ExtensionsWindow = GObject.registerClass({
         'updatesBar',
         'updatesLabel',
     ],
-}, class ExtensionsWindow extends Gtk.ApplicationWindow {
+}, class ExtensionsWindow extends Adw.ApplicationWindow {
     _init(params) {
         super._init(params);
 
