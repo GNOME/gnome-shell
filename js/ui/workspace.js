@@ -981,6 +981,11 @@ class WorkspaceBackground extends Shell.WorkspaceBackground {
             useContentSize: false,
         });
 
+        this._bgManager.connect('changed', () => {
+            this._updateRoundedClipBounds();
+            this._updateBorderRadius();
+        });
+
         global.display.connectObject('workareas-changed', () => {
             this._workarea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
             this._updateRoundedClipBounds();
