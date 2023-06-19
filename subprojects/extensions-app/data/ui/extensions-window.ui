@@ -27,7 +27,7 @@
                 <property name="icon-name">open-menu-symbolic</property>
               </object>
             </child>
-            <child type="end">
+            <child type="start">
               <object class="GtkToggleButton" id="searchButton">
                 <property name="receives-default">True</property>
                 <property name="icon-name">edit-find-symbolic</property>
