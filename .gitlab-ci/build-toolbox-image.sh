@@ -15,6 +15,10 @@ check_image_base() {
   [[ "$base" == "$MUTTER_CI_IMAGE" ]]
 }
 
+buildah_run() {
+  buildah run $build_cntr sudo "$@"
+}
+
 build_container() {
   echo Building $TOOLBOX_IMAGE from $MUTTER_CI_IMAGE
 
@@ -35,10 +39,10 @@ build_container() {
     abattis-cantarell-fonts # system font
     gnome-backgrounds # no blank background!
   )
-  buildah run $build_cntr dnf config-manager --set-disabled '*-modular,*-openh264'
-  buildah run $build_cntr dnf install -y "${extra_packages[@]}"
-  buildah run $build_cntr dnf clean all
-  buildah run $build_cntr rm -rf /var/lib/cache/dnf
+  buildah_run dnf config-manager --set-disabled '*-modular,*-openh264'
+  buildah_run dnf install -y "${extra_packages[@]}"
+  buildah_run dnf clean all
+  buildah_run rm -rf /var/lib/cache/dnf
 
   # work around non-working pkexec
   local fake_pkexec=$(mktemp)
@@ -52,7 +56,7 @@ build_container() {
   # it either asks for unlocking the login keyring on startup, or it detects
   # the running host daemon and doesn't export the object on the bus, which
   # blocks the activating service until it hits the timeout
-  buildah run $build_cntr rm /usr/share/dbus-1/services/org.freedesktop.secrets.service
+  buildah_run rm /usr/share/dbus-1/services/org.freedesktop.secrets.service
 
   local srcdir=$(realpath $(dirname $0))
   buildah copy --chmod 755 $build_cntr $srcdir/install-meson-project.sh /usr/libexec
