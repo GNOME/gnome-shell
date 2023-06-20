@@ -69,6 +69,7 @@ build_container() {
 	EOF
   buildah copy --chmod 755 $build_cntr $update_mutter /usr/bin/update-mutter
 
+  buildah config --user "" --workingdir / $build_cntr
   buildah config --env HOME- \
     --label com.github.containers.toolbox=true \
     --label org.opencontainers.image.base.name=$MUTTER_CI_IMAGE \
