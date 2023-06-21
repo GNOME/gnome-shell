@@ -138,8 +138,24 @@ class Spinner extends AnimatedIcon {
             animate: false,
             hideOnStop: false,
         });
-        let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
-        super._init(file, size);
+        this._fileDark = Gio.File.new_for_uri(
+            'resource:///org/gnome/shell/theme/process-working-dark.svg');
+        this._fileLight = Gio.File.new_for_uri(
+            'resource:///org/gnome/shell/theme/process-working-light.svg');
+        super._init(this._fileDark, size);
+
+        this.connect('style-changed', () => {
+            const themeNode = this.get_theme_node();
+            const textColor = themeNode.get_foreground_color();
+            const [, luminance] = textColor.to_hls();
+            const file = luminance > 0.5
+                ? this._fileDark
+                : this._fileLight;
+            if (file !== this._file) {
+                this._file = file;
+                this._loadFile();
+            }
+        });
 
         this.opacity = 0;
         this._animate = params.animate;
