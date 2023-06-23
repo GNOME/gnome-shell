@@ -20,6 +20,7 @@ dbus_runner = configure_file(
 
 unit_tests = [
     'highlighter',
+    'injectionManager',
     'insertSorted',
     'jsParse',
     'markup',
