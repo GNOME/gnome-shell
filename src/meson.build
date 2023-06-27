@@ -18,9 +18,9 @@ script_data.set('pkglibdir', pkglibdir)
 script_data.set('PYTHON', python.full_path())
 script_data.set('VERSION', meson.project_version())
 
-perf_tool = configure_file(
-  input: 'gnome-shell-perf-tool.in',
-  output: 'gnome-shell-perf-tool',
+test_tool = configure_file(
+  input: 'gnome-shell-test-tool.in',
+  output: 'gnome-shell-test-tool',
   configuration: script_data,
   install_dir: bindir
 )
