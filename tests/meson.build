@@ -72,7 +72,7 @@ foreach shell_test : shell_tests
       test_tool,
       '--headless',
       options,
-      '@0@/js/perf/@1@.js'.format(meson.project_source_root(), test_name),
+      '@0@/shell/@1@.js'.format(meson.current_source_dir(), test_name),
     ],
     is_parallel: false,
     env: shell_testenv,
