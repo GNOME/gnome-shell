@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-21 20:56+0000\n"
-"PO-Revision-Date: 2023-03-22 15:35+0000\n"
+"POT-Creation-Date: 2023-05-22 13:12+0000\n"
+"PO-Revision-Date: 2023-06-30 20:19+0100\n"
 "Last-Translator: Bruce Cowan <bruce@bcowan.me.uk>\n"
 "Language-Team: English - United Kingdom <en@li.org>\n"
 "Language: en_GB\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 42.0\n"
+"X-Generator: Poedit 3.3.1\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: en_GB\n"
 "X-DL-Module: gnome-shell\n"
@@ -476,7 +476,7 @@ msgstr "Visit extension homepage"
 
 #: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:250
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
@@ -785,12 +785,12 @@ msgstr "Allow"
 msgid "Unnamed Folder"
 msgstr "Unnamed Folder"
 
-#: js/ui/appFavorites.js:166
+#: js/ui/appFavorites.js:167
 #, javascript-format
 msgid "%s has been pinned to the dash."
 msgstr "%s has been pinned to the dash."
 
-#: js/ui/appFavorites.js:199
+#: js/ui/appFavorites.js:200
 #, javascript-format
 msgid "%s has been unpinned from the dash."
 msgstr "%s has been unpinned from the dash."
@@ -812,7 +812,7 @@ msgstr "App Details"
 msgid "Quit"
 msgstr "Quit"
 
-#: js/ui/appMenu.js:157 js/ui/dash.js:249
+#: js/ui/appMenu.js:157 js/ui/dash.js:250
 msgid "Unpin"
 msgstr "Unpin"
 
@@ -1081,7 +1081,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "A password is required to connect to “%s”."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1996
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:2020
 msgid "Network Manager"
 msgstr "Network Manager"
 
@@ -1118,13 +1118,13 @@ msgstr "%s is now known as %s"
 msgid "Windows"
 msgstr "Windows"
 
-#: js/ui/dash.js:205 js/ui/dash.js:251
+#: js/ui/dash.js:206 js/ui/dash.js:252
 msgid "Show Apps"
 msgstr "Show Apps"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:399
+#: js/ui/dash.js:400
 msgid "Dash"
 msgstr "Dash"
 
@@ -1367,15 +1367,15 @@ msgstr "%s (remote)"
 msgid "%s (console)"
 msgstr "%s (console)"
 
-#: js/ui/extensionDownloader.js:245
+#: js/ui/extensionDownloader.js:254
 msgid "Install"
 msgstr "Install"
 
-#: js/ui/extensionDownloader.js:251
+#: js/ui/extensionDownloader.js:260
 msgid "Install Extension"
 msgstr "Install Extension"
 
-#: js/ui/extensionDownloader.js:252
+#: js/ui/extensionDownloader.js:261
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Download and install “%s” from extensions.gnome.org?"
@@ -1526,23 +1526,23 @@ msgstr "View Source"
 msgid "Web Page"
 msgstr "Web Page"
 
-#: js/ui/main.js:286
+#: js/ui/main.js:288
 msgid "System was put in unsafe mode"
 msgstr "System was put in unsafe mode"
 
-#: js/ui/main.js:287
+#: js/ui/main.js:289
 msgid "Apps now have unrestricted access"
 msgstr "Apps now have unrestricted access"
 
-#: js/ui/main.js:288 js/ui/overview.js:58
+#: js/ui/main.js:290 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Undo"
 
-#: js/ui/main.js:344
+#: js/ui/main.js:346
 msgid "Logged in as a privileged user"
 msgstr "Logged in as a privileged user"
 
-#: js/ui/main.js:345
+#: js/ui/main.js:347
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1550,15 +1550,15 @@ msgstr ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
 
-#: js/ui/main.js:393
+#: js/ui/main.js:395
 msgid "Screen Lock disabled"
 msgstr "Screen Lock disabled"
 
-#: js/ui/main.js:394
+#: js/ui/main.js:396
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Screen Locking requires the GNOME display manager."
 
-#: js/ui/messageTray.js:1418
+#: js/ui/messageTray.js:1417
 msgid "System Information"
 msgstr "System Information"
 
@@ -1636,12 +1636,12 @@ msgstr "Press any key to exit"
 msgid "Activities"
 msgstr "Activities"
 
-#: js/ui/panel.js:338
+#: js/ui/panel.js:329
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "System"
 
-#: js/ui/panel.js:460
+#: js/ui/panel.js:451
 msgid "Top Bar"
 msgstr "Top Bar"
 
@@ -1771,15 +1771,15 @@ msgstr "You can paste the image from the clipboard."
 msgid "Screenshot taken"
 msgstr "Screenshot taken"
 
-#: js/ui/search.js:807
+#: js/ui/search.js:812
 msgid "Searching…"
 msgstr "Searching…"
 
-#: js/ui/search.js:809
+#: js/ui/search.js:814
 msgid "No results."
 msgstr "No results."
 
-#: js/ui/search.js:940
+#: js/ui/search.js:945
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1944,7 +1944,7 @@ msgstr "Disconnect"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1863
+#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1887
 msgid "Bluetooth Settings"
 msgstr "Bluetooth Settings"
 
@@ -2038,70 +2038,90 @@ msgstr "Disconnect %s"
 msgid "Connect to %s"
 msgstr "Connect to %s"
 
+#: js/ui/status/network.js:1046
+msgid "Secure"
+msgstr "Secure"
+
+#: js/ui/status/network.js:1046
+#| msgid "Not In Use"
+msgid "Not secure"
+msgstr "Not secure"
+
+#: js/ui/status/network.js:1047
+#, javascript-format
+msgid "Signal strength %s%%"
+msgstr "Signal strength %s%%"
+
+#. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
+#: js/ui/status/network.js:1049
+#, javascript-format
+msgid "%s, %s, %s"
+msgstr "%s, %s, %s"
+
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1128
+#: js/ui/status/network.js:1151
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s Hotspot"
 
-#: js/ui/status/network.js:1393
+#: js/ui/status/network.js:1417
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d connected"
 msgstr[1] "%d connected"
 
-#: js/ui/status/network.js:1491 js/ui/status/network.js:1507
+#: js/ui/status/network.js:1515 js/ui/status/network.js:1531
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1492
+#: js/ui/status/network.js:1516
 msgid "VPN Settings"
 msgstr "VPN Settings"
 
-#: js/ui/status/network.js:1748
+#: js/ui/status/network.js:1772
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1750
+#: js/ui/status/network.js:1774
 msgid "All Networks"
 msgstr "All Networks"
 
-#: js/ui/status/network.js:1847
+#: js/ui/status/network.js:1871
 msgid "Wired Connections"
 msgstr "Wired Connections"
 
-#: js/ui/status/network.js:1848
+#: js/ui/status/network.js:1872
 msgid "Wired Settings"
 msgstr "Wired Settings"
 
-#: js/ui/status/network.js:1862
+#: js/ui/status/network.js:1886
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth Tethers"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1869
+#: js/ui/status/network.js:1893
 msgid "Tether"
 msgstr "Tether"
 
-#: js/ui/status/network.js:1882
+#: js/ui/status/network.js:1906
 msgid "Mobile Connections"
 msgstr "Mobile Connections"
 
-#: js/ui/status/network.js:1884
+#: js/ui/status/network.js:1908
 msgid "Mobile Broadband Settings"
 msgstr "Mobile Broadband Settings"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1893
+#: js/ui/status/network.js:1917
 msgid "Mobile"
 msgstr "Mobile"
 
-#: js/ui/status/network.js:2001
+#: js/ui/status/network.js:2025
 msgid "Connection failed"
 msgstr "Connection failed"
 
-#: js/ui/status/network.js:2002
+#: js/ui/status/network.js:2026
 msgid "Activation of network connection failed"
 msgstr "Activation of network connection failed"
 
@@ -2124,13 +2144,9 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Power Saver"
 
-#: js/ui/status/powerProfiles.js:40
+#: js/ui/status/powerProfiles.js:40 js/ui/status/powerProfiles.js:70
 msgid "Power Mode"
 msgstr "Power Mode"
-
-#: js/ui/status/powerProfiles.js:70
-msgid "Power Profiles"
-msgstr "Power Profiles"
 
 #: js/ui/status/powerProfiles.js:72
 msgid "Power Settings"
@@ -2456,12 +2472,12 @@ msgstr "Password cannot be blank"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Authentication dialogue was dismissed by the user"
 
-#: src/st/st-icon-theme.c:1883
+#: src/st/st-icon-theme.c:1884
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "Icon '%s' not present in theme %s"
 
-#: src/st/st-icon-theme.c:3472 src/st/st-icon-theme.c:3775
+#: src/st/st-icon-theme.c:3473 src/st/st-icon-theme.c:3776
 msgid "Failed to load icon"
 msgstr "Failed to load icon"
 
@@ -2576,11 +2592,11 @@ msgstr "Manually Installed"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:112
 msgid "Built-In"
@@ -3021,6 +3037,9 @@ msgstr[1] "%u Inputs"
 msgid "System Sounds"
 msgstr "System Sounds"
 
+#~ msgid "Power Profiles"
+#~ msgstr "Power Profiles"
+
 #~ msgid "Attach modal dialog to the parent window"
 #~ msgstr "Attach modal dialogue to the parent window"
 
@@ -3413,9 +3432,6 @@ msgstr "System Sounds"
 
 #~ msgid "Media"
 #~ msgstr "Media"
-
-#~ msgid "Not In Use"
-#~ msgstr "Not In Use"
 
 #~ msgid "%d x %d"
 #~ msgstr "%d x %d"
