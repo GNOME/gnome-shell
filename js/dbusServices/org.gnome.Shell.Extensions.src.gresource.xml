@@ -6,6 +6,8 @@
     <file>extensionPrefsDialog.js</file>
     <file>dbusService.js</file>
 
+    <file>extensions/sharedInternals.js</file>
+
     <file>misc/config.js</file>
     <file>misc/extensionUtils.js</file>
     <file>misc/dbusUtils.js</file>

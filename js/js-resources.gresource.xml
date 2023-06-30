@@ -11,6 +11,8 @@
     <file>gdm/realmd.js</file>
     <file>gdm/util.js</file>
 
+    <file>extensions/sharedInternals.js</file>
+
     <file>misc/animationUtils.js</file>
     <file>misc/config.js</file>
     <file>misc/extensionUtils.js</file>

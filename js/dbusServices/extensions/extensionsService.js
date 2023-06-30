@@ -7,7 +7,7 @@ import {ExtensionPrefsDialog} from './extensionPrefsDialog.js';
 import {ServiceImplementation} from './dbusService.js';
 
 const {deserializeExtension} = imports.misc.extensionUtils;
-const {setExtensionManager} = imports.misc.extensionUtils;
+const {setExtensionManager} = imports.extensions.sharedInternals;
 const {loadInterfaceXML} = imports.misc.dbusUtils;
 
 const ExtensionsIface = loadInterfaceXML('org.gnome.Shell.Extensions');

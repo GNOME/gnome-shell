@@ -21,7 +21,7 @@ overrides:
       - tests/shell/**
     excludedFiles:
       - js/portalHelper/*
-      - js/misc/extensionUtils.js
+      - js/extensions/*
     globals:
       global: readonly
       _: readonly
