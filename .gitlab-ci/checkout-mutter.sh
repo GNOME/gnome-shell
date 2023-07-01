@@ -41,8 +41,9 @@ if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
 fi
 
 if [ -z "$mutter_target" ]; then
+  ref_remote=${CI_PROJECT_URL//gnome-shell/mutter}
   echo -n Looking for $CI_COMMIT_REF_NAME on remote ...
-  if fetch origin $CI_COMMIT_REF_NAME; then
+  if fetch $ref_remote $CI_COMMIT_REF_NAME; then
     echo \ found
     mutter_target=FETCH_HEAD
   else
