@@ -1,7 +1,7 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
-import * as Gettext from 'gettext';
+import {bindtextdomain} from 'gettext';
 
 const Config = imports.misc.config;
 
@@ -17,13 +17,154 @@ export function setExtensionManager(extensionManager) {
     _extensionManager = extensionManager;
 }
 
+export class ExtensionBase {
+    #gettextDomain;
+
+    /**
+     * @param {object} metadata - metadata passed in when loading the extension
+     */
+    constructor(metadata) {
+        if (this.constructor === ExtensionBase)
+            throw new Error('ExtensionBase cannot be used directly.');
+
+        if (!metadata)
+            throw new Error(`${this.constructor.name} did not pass metadata to parent`);
+
+        this.metadata = metadata;
+    }
+
+    /**
+     * @type {string}
+     */
+    get uuid() {
+        return this.metadata['uuid'];
+    }
+
+    /**
+     * @type {Gio.File}
+     */
+    get dir() {
+        return this.metadata['dir'];
+    }
+
+    /**
+     * @type {string}
+     */
+    get path() {
+        return this.metadata['path'];
+    }
+
+    /**
+     * Get a GSettings object for schema, using schema files in
+     * extensionsdir/schemas. If schema is omitted, it is taken
+     * from metadata['settings-schema'].
+     *
+     * @param {string=} schema - the GSettings schema id
+     *
+     * @returns {Gio.Settings}
+     */
+    getSettings(schema) {
+        schema ||= this.metadata['settings-schema'];
+
+        // Expect USER extensions to have a schemas/ subfolder, otherwise assume a
+        // SYSTEM extension that has been installed in the same prefix as the shell
+        const schemaDir = this.dir.get_child('schemas');
+        const defaultSource = Gio.SettingsSchemaSource.get_default();
+        let schemaSource;
+        if (schemaDir.query_exists(null)) {
+            schemaSource = Gio.SettingsSchemaSource.new_from_directory(
+                schemaDir.get_path(), defaultSource, false);
+        } else {
+            schemaSource = defaultSource;
+        }
+
+        const schemaObj = schemaSource.lookup(schema, true);
+        if (!schemaObj)
+            throw new Error(`Schema ${schema} could not be found for extension ${this.uuid}. Please check your installation`);
+
+        return new Gio.Settings({settings_schema: schemaObj});
+    }
+
+    /**
+     * Initialize Gettext to load translations from extensionsdir/locale. If
+     * domain is not provided, it will be taken from metadata['gettext-domain']
+     *
+     * @param {string=} domain - the gettext domain to use
+     */
+    initTranslations(domain) {
+        domain ||= this.metadata['gettext-domain'];
+
+        if (!domain)
+            throw new Error('initTranslations() was called without providing a valid domain');
+
+        // Expect USER extensions to have a locale/ subfolder, otherwise assume a
+        // SYSTEM extension that has been installed in the same prefix as the shell
+        const localeDir = this.dir.get_child('locale');
+        if (localeDir.query_exists(null))
+            bindtextdomain(domain, localeDir.get_path());
+        else
+            bindtextdomain(domain, Config.LOCALEDIR);
+
+        this.#gettextDomain = domain;
+    }
+
+    /**
+     * Translate `str` using the extension's gettext domain
+     *
+     * @param {string} str - the string to translate
+     *
+     * @returns {string} the translated string
+     */
+    gettext(str) {
+        this.#checkGettextDomain('gettext');
+        return GLib.dgettext(this.#gettextDomain, str);
+    }
+
+    /**
+     * Translate `str` and choose plural form using the extension's
+     * gettext domain
+     *
+     * @param {string} str - the string to translate
+     * @param {string} strPlural - the plural form of the string
+     * @param {number} n - the quantity for which translation is needed
+     *
+     * @returns {string} the translated string
+     */
+    ngettext(str, strPlural, n) {
+        this.#checkGettextDomain('ngettext');
+        return GLib.dngettext(this.#gettextDomain, str, strPlural, n);
+    }
+
+    /**
+     * Translate `str` in the context of `context` using the extension's
+     * gettext domain
+     *
+     * @param {string} context - context to disambiguate `str`
+     * @param {string} str - the string to translate
+     *
+     * @returns {string} the translated string
+     */
+    pgettext(context, str) {
+        this.#checkGettextDomain('pgettext');
+        return GLib.dpgettext2(this.#gettextDomain, context, str);
+    }
+
+    /**
+     * @param {string} func
+     */
+    #checkGettextDomain(func) {
+        if (!this.#gettextDomain)
+            throw new Error(`${func}() is used without calling initTranslations() first`);
+    }
+}
+
 /**
- * getCurrentExtension:
+ * @private
  *
  * @returns {?object} - The current extension, or null if not called from
  * an extension.
  */
-export function getCurrentExtension() {
+function getCurrentExtension() {
     const basePath = '/gnome-shell/extensions/';
 
     // Search for an occurrence of an extension stack frame
@@ -51,35 +192,10 @@ export function getCurrentExtension() {
         const dirName = GLib.path_get_basename(path);
         const extension = _extensionManager.lookup(dirName);
         if (extension !== undefined)
-            return extension;
+            return extension.stateObj;
     } while (path !== '/');
 
     return null;
-}
-
-/**
- * Initialize Gettext to load translations from extensionsdir/locale.
- * If @domain is not provided, it will be taken from metadata['gettext-domain']
- *
- * @param {string=} domain - the gettext domain to use
- */
-export function initTranslations(domain) {
-    let extension = getCurrentExtension();
-
-    if (!extension)
-        throw new Error('initTranslations() can only be called from extensions');
-
-    domain ||= extension.metadata['gettext-domain'];
-
-    // Expect USER extensions to have a locale/ subfolder, otherwise assume a
-    // SYSTEM extension that has been installed in the same prefix as the shell
-    let localeDir = extension.dir.get_child('locale');
-    if (localeDir.query_exists(null))
-        Gettext.bindtextdomain(domain, localeDir.get_path());
-    else
-        Gettext.bindtextdomain(domain, Config.LOCALEDIR);
-
-    Object.assign(extension, Gettext.domain(domain));
 }
 
 /**
@@ -131,44 +247,5 @@ function callExtensionGettextFunc(func, ...args) {
     if (!extension)
         throw new Error(`${func}() can only be called from extensions`);
 
-    if (!extension[func])
-        throw new Error(`${func}() is used without calling initTranslations() first`);
-
     return extension[func](...args);
-}
-
-/**
- * Builds and returns a GSettings schema for @schema, using schema files
- * in extensionsdir/schemas. If @schema is omitted, it is taken from
- * metadata['settings-schema'].
- *
- * @param {string=} schema - the GSettings schema id
- * @returns {Gio.Settings} - a new settings object for @schema
- */
-export function getSettings(schema) {
-    let extension = getCurrentExtension();
-
-    if (!extension)
-        throw new Error('getSettings() can only be called from extensions');
-
-    schema ||= extension.metadata['settings-schema'];
-
-    const GioSSS = Gio.SettingsSchemaSource;
-
-    // Expect USER extensions to have a schemas/ subfolder, otherwise assume a
-    // SYSTEM extension that has been installed in the same prefix as the shell
-    let schemaDir = extension.dir.get_child('schemas');
-    let schemaSource;
-    if (schemaDir.query_exists(null)) {
-        schemaSource = GioSSS.new_from_directory(
-            schemaDir.get_path(), GioSSS.get_default(), false);
-    } else {
-        schemaSource = GioSSS.get_default();
-    }
-
-    let schemaObj = schemaSource.lookup(schema, true);
-    if (!schemaObj)
-        throw new Error(`Schema ${schema} could not be found for extension ${extension.metadata.uuid}. Please check your installation`);
-
-    return new Gio.Settings({settings_schema: schemaObj});
 }
