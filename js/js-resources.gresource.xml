@@ -12,6 +12,7 @@
     <file>gdm/util.js</file>
 
     <file>extensions/sharedInternals.js</file>
+    <file>extensions/extension.js</file>
 
     <file>misc/animationUtils.js</file>
     <file>misc/config.js</file>

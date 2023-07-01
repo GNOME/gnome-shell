@@ -7,6 +7,7 @@
     <file>dbusService.js</file>
 
     <file>extensions/sharedInternals.js</file>
+    <file>extensions/prefs.js</file>
 
     <file>misc/config.js</file>
     <file>misc/extensionUtils.js</file>
