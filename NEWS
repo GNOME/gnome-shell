@@ -1,3 +1,44 @@
+45.alpha
+========
+* Improve background apps menu [Florian; !2732, !2790]
+* Complete GTK4 port [Florian; !2690, !2733]
+* Use user-defined names in bluetooth menu [Florian; !2751]
+* Improve the built-in screen recorder
+  [Jonas, Robert; !2197, !2609, !2752, !2597, !2754, !2782]
+* Remove the app menu [Jonas; !2610]
+* Fix stuck authentication dialog in remote sessions [Joan; !2761]
+* Provide generated toolbox images for development [Florian; !2713]
+* Fix glitches in calendar when using large-text option [Sebastian; !2759]
+* Use icons for ornaments in popup menus [maniacx; !2767]
+* Improve calendar styling [Sam; !2769]
+* Fix IM popup getting stuck on engine changes [Daniel D.; !2774]
+* Support color-scheme setting for default stylesheet [Florian; !2324]
+* Remove Soup2 support [Florian; !2776]
+* Expose public functions for search provider registration [Andy; !2783]
+* Fix cursor offset when using magnifier [Андрей; !2780]
+* Modernize Extensions app UI [Christopher; !2802]
+* Fix missing workspace borders after wallpaper changes [Florian; !2801]
+* Port auxiliary services and apps to ESM [Florian; !2786]
+* Add shortcut for toggling quick settings [Florian; !2716]
+* Fixed crashes [Carlos, Evan; !2756, !2781]
+* Misc. bug fixes and cleanups [Florian, Automeris, Daniel v. V., Jonas, Sam,
+  Zacharie, Joan, Evan, Martin; !2741, !2742, !2743, !2683, !2650, !2753, !2757,
+  !2755, !2768, !2772, !2770, !2665, !2775, !2791, !2792, !2563, !2796, !2799,
+  !2778, !2805, !2806, !2804, !2794, !2813, !2811, !2800, !2816, !2798, !2821]
+
+Contributors:
+  Christopher Davis, Daniel Drake, Jonas Dreßler, Zacharie DUBRULLE,
+  Carlos Garnacho, Sam Hewitt, Andy Holmes, Sebastian Keller, maniacx,
+  Florian Müllner, Automeris naranja, robert.mader@collabora.com, Joan Torres,
+  Daniel van Vugt, Evan Welsh, Martin Zurowietz, Андрей Гриценко
+
+Translators:
+  Fabio Tomat [fur], Jiri Grönroos [fi], Sabri Ünal [tr],
+  Gianvito Cavasoli [it], Guillaume Bernard [fr], Jordi Mas [ca],
+  Yosef Or Boczko [he], Daniel Rusek [cs], Rafael Fontenelle [pt_BR],
+  Jordi Mas i Hernandez [ca], Hugo Carvalho [pt], Julia Dronova [ru],
+  Dušan Kazik [sk], Bruce Cowan [en_GB]
+
 44.1
 ====
 * Add section title in background apps menu [Florian; !2681]
