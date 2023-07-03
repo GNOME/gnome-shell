@@ -1099,6 +1099,6 @@ class InputSourceIndicator extends PanelMenu.Button {
         if (xkbVariant.length > 0)
             description = `${description}\t${xkbVariant}`;
 
-        Util.spawn(['gkbd-keyboard-display', '-l', description]);
+        Util.spawn(['tecla', description]);
     }
 });
