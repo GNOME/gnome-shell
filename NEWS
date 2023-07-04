@@ -1,3 +1,16 @@
+44.3
+====
+* Fix cursor offset when using magnifier [Андрей; !2780]
+* Fix missing workspace borders after wallpaper changes [Florian; !2801]
+* Revert screencast optimization that results in bogus windows [Florian; #6763]
+* Misc. bug fixes and cleanups [Florian; !2796]
+
+Contributors:
+  Florian Müllner, Андрей Гриценко
+
+Translators:
+  Dušan Kazik [sk], Bruce Cowan [en_GB]
+
 44.2
 ====
 * Improve built-in screen recorder [Jonas, Robert; !2197]
