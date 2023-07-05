@@ -1301,25 +1301,28 @@ real_choose_icon (StIconTheme       *icon_theme,
    * In other words: We prefer symbolic icons in inherited themes over
    * generic icons in the theme.
    */
-  for (l = icon_theme->themes; l; l = l->next)
+  for (i = 0; icon_names[i] && icon_name_is_symbolic (icon_names[i]); i++)
     {
-      theme = l->data;
-      for (i = 0; icon_names[i] && icon_name_is_symbolic (icon_names[i]); i++)
+      icon_name = icon_names[i];
+
+      for (l = icon_theme->themes; l; l = l->next)
         {
-          icon_name = icon_names[i];
+          theme = l->data;
+
           icon_info = theme_lookup_icon (theme, icon_name, size, scale, allow_svg);
           if (icon_info)
             goto out;
         }
     }
 
-  for (l = icon_theme->themes; l; l = l->next)
+  for (i = 0; icon_names[i]; i++)
     {
-      theme = l->data;
+      icon_name = icon_names[i];
 
-      for (i = 0; icon_names[i]; i++)
+      for (l = icon_theme->themes; l; l = l->next)
         {
-          icon_name = icon_names[i];
+          theme = l->data;
+
           icon_info = theme_lookup_icon (theme, icon_name, size, scale, allow_svg);
           if (icon_info)
             goto out;
