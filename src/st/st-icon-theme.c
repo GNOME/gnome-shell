@@ -1293,28 +1293,6 @@ real_choose_icon (StIconTheme       *icon_theme,
   else
     allow_svg = icon_theme->pixbuf_supports_svg;
 
-  /* For symbolic icons, do a search in all registered themes first;
-   * a theme that inherits them from a parent theme might provide
-   * an alternative full-color version, but still expect the symbolic icon
-   * to show up instead.
-   *
-   * In other words: We prefer symbolic icons in inherited themes over
-   * generic icons in the theme.
-   */
-  for (i = 0; icon_names[i] && icon_name_is_symbolic (icon_names[i]); i++)
-    {
-      icon_name = icon_names[i];
-
-      for (l = icon_theme->themes; l; l = l->next)
-        {
-          theme = l->data;
-
-          icon_info = theme_lookup_icon (theme, icon_name, size, scale, allow_svg);
-          if (icon_info)
-            goto out;
-        }
-    }
-
   for (i = 0; icon_names[i]; i++)
     {
       icon_name = icon_names[i];
