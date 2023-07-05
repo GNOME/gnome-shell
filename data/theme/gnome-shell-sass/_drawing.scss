@@ -210,8 +210,8 @@
 
   // insensitive button
   @else if $t==insensitive {
-    color: transparentize($tc, 0.5);
-    background-color: transparentize($tc, .95);
+    background-color: if($variant == 'light', transparentize($tc, .9), transparentize($tc, .95));
+    color: if($variant == 'light', transparentize($tc, .6), transparentize($tc, .5));
   }
 
   // default/suggested button
@@ -245,7 +245,6 @@
     &:insensitive {
       @include button(insensitive);
       background-color: transparent;
-      color: transparentize($selected_fg_color, .5);
     }
   }
 }
