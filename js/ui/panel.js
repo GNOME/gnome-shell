@@ -276,11 +276,11 @@ class ActivitiesButton extends PanelMenu.Button {
         this.label_actor = this._label;
 
         Main.overview.connect('showing', () => {
-            this.add_style_pseudo_class('overview');
+            this.add_style_pseudo_class('checked');
             this.add_accessible_state(Atk.StateType.CHECKED);
         });
         Main.overview.connect('hiding', () => {
-            this.remove_style_pseudo_class('overview');
+            this.remove_style_pseudo_class('checked');
             this.remove_accessible_state(Atk.StateType.CHECKED);
         });
 

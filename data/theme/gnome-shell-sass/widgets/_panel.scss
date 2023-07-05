@@ -19,18 +19,6 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
   transition-duration: $panel_transition_duration;
   box-shadow: inset 0 -1px 0 0  $panel_border_color;
 
-  // transparent panel on lock & login screens
-  &.unlock-screen,
-  &.login-screen,
-  &:overview {
-    background-color: transparent;
-    box-shadow: none;
-
-    .panel-button {
-      @include panel_button($panel_system_fg_color);
-    }
-  }
-
   // panel menus
   .panel-button {
     @include panel_button($panel_fg_color);
@@ -88,6 +76,23 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
 
       .clock {
         // the highlighted child
+      }
+    }
+  }
+
+  // transparent panel on lock & login screens
+  &.unlock-screen,
+  &.login-screen,
+  &:overview {
+    background-color: transparent;
+    box-shadow: none;
+
+    .panel-button {
+      @include panel_button($panel_system_fg_color, $fg:$panel_system_fg_color);
+
+      // clock
+      &.clock-display {
+        @include panel_button($panel_system_fg_color, $fg:$panel_system_fg_color, $highlighted_child: true, $child_class:".clock");
       }
     }
   }
