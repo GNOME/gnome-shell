@@ -249,9 +249,9 @@ stage {
 %osd_entry {
   @extend %entry_common;
   @include entry(normal, $c:$osd_fg_color,);
-  &:hover { @include entry(hover, $c:$osd_fg_color,);}
-  &:focus { @include entry(focus, $c:$osd_fg_color,);}
-  &:insensitive { @include entry(insensitive, $c:$osd_fg_color,);}
+  &:hover { @include entry(hover, $c:$osd_fg_color);}
+  &:focus { @include entry(focus, $c:$osd_fg_color);}
+  &:insensitive { @include entry(insensitive, $c:$osd_fg_color);}
 
   StLabel.hint-text {color: transparentize($osd_fg_color, 0.3); }
 }
@@ -279,12 +279,13 @@ stage {
 %system_entry {
   @extend %entry_common;
   @include entry(normal, $c:$system_fg_color,);
-  &:hover { @include entry(hover, $c:$system_fg_color,);}
-  &:focus { @include entry(focus, $c:$system_fg_color,);}
-  &:insensitive { @include entry(insensitive, $c:$system_fg_color,);}
+  &:hover { @include entry(hover, $c:$system_fg_color);}
+  &:focus { @include entry(focus, $c:$system_fg_color, $fc:transparentize($system_fg_color, 0.5));}
+  &:insensitive { @include entry(insensitive, $c:$system_fg_color);}
 
   StLabel.hint-text { color: transparentize($system_fg_color, 0.3);}
 }
+
 
 // buttons
 %system_button {

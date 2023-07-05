@@ -25,7 +25,7 @@
 
 
 // Text entries
-@mixin entry($t, $c) {
+@mixin entry($t, $c, $fc:$selected_bg_color) {
 //
 // Entries drawing function
 //
@@ -46,8 +46,8 @@
   }
 
   @if $t==focus {
-    background-color: mix(transparentize($c, 0.75), $selected_bg_color, 95%);
-    box-shadow: inset 0 0 0 2px transparentize($selected_bg_color, 0.3);
+    background-color: mix(transparentize($c, 0.75), $fc, 95%);
+    box-shadow: inset 0 0 0 2px transparentize($fc, 0.3);
     color: $c;
     &:hover {}
   }
