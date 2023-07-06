@@ -684,7 +684,7 @@ var LayoutManager = GObject.registerClass({
                 if (this.primaryMonitor) {
                     this._systemBackground.show();
                     global.stage.show();
-                    this._prepareStartupAnimation();
+                    this._prepareStartupAnimation().catch(logError);
                     return GLib.SOURCE_REMOVE;
                 } else {
                     return GLib.SOURCE_CONTINUE;
