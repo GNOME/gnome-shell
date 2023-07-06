@@ -4,7 +4,7 @@
 import System from 'system';
 
 const Main = imports.ui.main;
-const Scripting = imports.ui.scripting;
+import * as Scripting from 'resource://org/gnome/shell/ui/scripting.js';
 
 // This performance script measure the most important (core) performance
 // metrics for the shell. By looking at the output metrics of this script

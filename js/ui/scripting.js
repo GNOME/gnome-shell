@@ -1,12 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported sleep, waitLeisure, createTestWindow, waitTestWindows,
-            destroyTestWindows, defineScriptEvent, scriptEvent,
-            collectStatistics, runPerfScript, disableHelperAutoExit */
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
 
 const Config = imports.misc.config;
 const Main = imports.ui.main;
@@ -41,7 +38,7 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
  * current script for the specified amount of time. Use as
  * 'yield Scripting.sleep(500);'
  */
-function sleep(milliseconds) {
+export function sleep(milliseconds) {
     return new Promise(resolve => {
         let id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, milliseconds, () => {
             resolve();
@@ -59,18 +56,19 @@ function sleep(milliseconds) {
  * current script until the shell is completely idle. Use as
  * 'yield Scripting.waitLeisure();'
  */
-function waitLeisure() {
+export function waitLeisure() {
     return new Promise(resolve => {
         global.run_at_leisure(resolve);
     });
 }
 
 const PerfHelperIface = loadInterfaceXML('org.gnome.Shell.PerfHelper');
-var PerfHelperProxy = Gio.DBusProxy.makeProxyWrapper(PerfHelperIface);
+export const PerfHelperProxy = Gio.DBusProxy.makeProxyWrapper(PerfHelperIface);
 
 let _perfHelper = null;
-/** private */
-async function _getPerfHelper() {
+
+/** @private */
+export async function _getPerfHelper() {
     if (_perfHelper == null) {
         _perfHelper = await PerfHelperProxy.newAsync(
             Gio.DBus.session, 'org.gnome.Shell.PerfHelper', '/org/gnome/Shell/PerfHelper');
@@ -80,7 +78,8 @@ async function _getPerfHelper() {
     return _perfHelper;
 }
 
-function _spawnPerfHelper() {
+/** @private */
+export function _spawnPerfHelper() {
     let path = GLib.getenv('GNOME_SHELL_BUILDDIR') || Config.LIBEXECDIR;
     let command = `${path}/gnome-shell-perf-helper`;
     Util.trySpawnCommandLine(command);
@@ -102,7 +101,7 @@ function _spawnPerfHelper() {
  * because of the normal X asynchronous mapping process, to actually wait
  * until the window has been mapped and exposed, use waitTestWindows().
  */
-async function createTestWindow(params) {
+export async function createTestWindow(params) {
     params = Params.parse(params, {
         width: 640,
         height: 480,
@@ -121,12 +120,13 @@ async function createTestWindow(params) {
 
 /**
  * waitTestWindows:
+ *
  * @returns {Promise}
  *
  * Used within an automation script to pause until all windows previously
  * created with createTestWindow have been mapped and exposed.
  */
-async function waitTestWindows() {
+export async function waitTestWindows() {
     let perfHelper = await _getPerfHelper();
     return perfHelper.WaitWindowsAsync().catch(logError);
 }
@@ -141,7 +141,7 @@ async function waitTestWindows() {
  * this doesn't guarantee that Mutter has actually finished the destroy
  * process because of normal X asynchronicity.
  */
-async function destroyTestWindows() {
+export async function destroyTestWindows() {
     let perfHelper = await _getPerfHelper();
     return perfHelper.DestroyWindowsAsync().catch(logError);
 }
@@ -152,7 +152,7 @@ async function destroyTestWindows() {
  * Don't exixt the perf helper after running the script. Instead it will remain
  * running until something else makes it exit, e.g. the Wayland socket closing.
  */
-async function disableHelperAutoExit() {
+export async function disableHelperAutoExit() {
     let perfHelper = await _getPerfHelper();
     perfHelper._autoExit = false;
 }
@@ -166,7 +166,7 @@ async function disableHelperAutoExit() {
  * within the 'script' namespace that is reserved for events defined locally
  * within a performance automation script
  */
-function defineScriptEvent(name, description) {
+export function defineScriptEvent(name, description) {
     Shell.PerfLog.get_default().define_event(`script.${name}`,
                                              description,
                                              "");
@@ -174,12 +174,13 @@ function defineScriptEvent(name, description) {
 
 /**
  * scriptEvent
- * @param {string} name: Name registered with defineScriptEvent()
+ *
+ * @param {string} name Name registered with defineScriptEvent()
  *
  * Convenience function to record a script-local performance event
  * previously defined with defineScriptEvent
  */
-function scriptEvent(name) {
+export function scriptEvent(name) {
     Shell.PerfLog.get_default().event(`script.${name}`);
 }
 
@@ -188,7 +189,7 @@ function scriptEvent(name) {
  *
  * Convenience function to trigger statistics collection
  */
-function collectStatistics() {
+export function collectStatistics() {
     Shell.PerfLog.get_default().collect_statistics();
 }
 
@@ -354,8 +355,8 @@ async function _runPerfScript(scriptModule, outputFile) {
  *
  * After running the script and collecting statistics from the
  * event log, GNOME Shell will exit.
- **/
-function runPerfScript(scriptModule, outputFile) {
+ */
+export function runPerfScript(scriptModule, outputFile) {
     Shell.PerfLog.get_default().set_enabled(true);
     _spawnPerfHelper();
 

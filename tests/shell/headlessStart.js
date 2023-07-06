@@ -6,7 +6,7 @@ import MetaTest from 'gi://MetaTest';
 import Shell from 'gi://Shell';
 
 const Main = imports.ui.main;
-const Scripting = imports.ui.scripting;
+import * as Scripting from 'resource://org/gnome/shell/ui/scripting.js';
 
 // This script tests that the shell handles connecting monitors after startup
 // is properly handled.

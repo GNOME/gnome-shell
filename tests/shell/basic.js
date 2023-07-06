@@ -5,7 +5,7 @@ import St from 'gi://St';
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
-const Scripting = imports.ui.scripting;
+import * as Scripting from 'resource://org/gnome/shell/ui/scripting.js';
 
 // This script tests the most important (basic) functionality of the shell.
 

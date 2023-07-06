@@ -44,7 +44,6 @@ const NotificationDaemon = imports.ui.notificationDaemon;
 const WindowAttentionHandler = imports.ui.windowAttentionHandler;
 const Screenshot = imports.ui.screenshot;
 const ScreenShield = imports.ui.screenShield;
-const Scripting = imports.ui.scripting;
 const SessionMode = imports.ui.sessionMode;
 const ShellDBus = imports.ui.shellDBus;
 const ShellMountOperation = imports.ui.shellMountOperation;
@@ -303,9 +302,11 @@ async function _initializeUI() {
         });
     }
 
+    let Scripting;
     let perfModule;
     const {automationScript} = global;
     if (automationScript) {
+        Scripting = await import('./scripting.js');
         perfModule = await import(automationScript.get_uri());
         if (perfModule.init)
             perfModule.init();

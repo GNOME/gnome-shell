@@ -4,7 +4,7 @@
 import Clutter from 'gi://Clutter';
 
 const Main = imports.ui.main;
-const Scripting = imports.ui.scripting;
+import * as Scripting from 'resource://org/gnome/shell/ui/scripting.js';
 
 /** Run test. */
 export async function run() {
