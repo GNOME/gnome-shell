@@ -506,7 +506,7 @@ st_viewport_get_paint_volume (ClutterActor       *actor,
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
-  double x, y, lower, upper;
+  double x, y;
 
   /* Setting the paint volume does not make sense when we don't have any allocation */
   if (!clutter_actor_has_allocation (actor))
@@ -524,31 +524,8 @@ st_viewport_get_paint_volume (ClutterActor       *actor,
       clutter_actor_get_allocation_box (actor, &allocation_box);
       st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
 
-      if (priv->hadjustment)
-        {
-          g_object_get (priv->hadjustment,
-                        "lower", &lower,
-                        "upper", &upper,
-                        NULL);
-          width = upper - lower;
-        }
-      else
-        {
-          width = content_box.x2 - content_box.x1;
-        }
-
-      if (priv->vadjustment)
-        {
-          g_object_get (priv->vadjustment,
-                        "lower", &lower,
-                        "upper", &upper,
-                        NULL);
-          height = upper - lower;
-        }
-      else
-        {
-          height = content_box.y2 - content_box.y1;
-        }
+      width = content_box.x2 - content_box.x1;
+      height = content_box.y2 - content_box.y1;
 
       clutter_paint_volume_set_width (volume, width);
       clutter_paint_volume_set_height (volume, height);
