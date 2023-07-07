@@ -506,7 +506,6 @@ st_viewport_get_paint_volume (ClutterActor       *actor,
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
-  graphene_point3d_t origin;
   double x, y, lower, upper;
 
   /* Setting the paint volume does not make sense when we don't have any allocation */
@@ -524,9 +523,6 @@ st_viewport_get_paint_volume (ClutterActor       *actor,
 
       clutter_actor_get_allocation_box (actor, &allocation_box);
       st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
-      origin.x = content_box.x1 - allocation_box.x1;
-      origin.y = content_box.y1 - allocation_box.y2;
-      origin.z = 0.f;
 
       if (priv->hadjustment)
         {
@@ -570,6 +566,8 @@ st_viewport_get_paint_volume (ClutterActor       *actor,
   get_border_paint_offsets (viewport, &x, &y);
   if (x != 0 || y != 0)
     {
+      graphene_point3d_t origin;
+
       clutter_paint_volume_get_origin (volume, &origin);
       origin.x += x;
       origin.y += y;
