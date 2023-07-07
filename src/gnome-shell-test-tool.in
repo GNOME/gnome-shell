@@ -288,8 +288,9 @@ def run_performance_test(wrap=None):
 # Main program
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--script",
-                    help="Specify the path to the automation script to run")
+parser.add_argument("script",
+                    metavar="AUTOMATION_SCRIPT",
+                    help="Automation script to run")
 parser.add_argument("--test-iters", type=int, metavar="ITERS",
                     help="Numbers of iterations of the test to run",
                     default=1)
@@ -322,12 +323,6 @@ parser.add_argument("--hotplug", action="store_true",
                     help="Start without a virtual monitor attached")
 
 options = parser.parse_args()
-
-if options.script == None:
-    if options.hwtest:
-        options.script = 'resource:///org/gnome/shell/perf/hwtest.js'
-    else:
-        options.script = 'resource:///org/gnome/shell/perf/core.js'
 
 if options.extra_filter is None:
     options.extra_filter = []

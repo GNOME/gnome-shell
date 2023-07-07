@@ -71,8 +71,8 @@ foreach shell_test : shell_tests
     args: [
       test_tool,
       '--headless',
-      '--script=@0@/js/perf/@1@.js'.format(meson.project_source_root(), test_name),
       options,
+      '@0@/js/perf/@1@.js'.format(meson.project_source_root(), test_name),
     ],
     is_parallel: false,
     env: shell_testenv,
