@@ -142,7 +142,7 @@ eslint:
   stage: review
   script:
     - export NODE_PATH=$(npm root -g)
-    - ./.gitlab-ci/run-eslint --output-file ${LINT_LOG} --format junit
+    - ./.gitlab-ci/run-eslint --output-file ${LINT_LOG} --format junit --stdout
   artifacts:
     reports:
       junit: ${LINT_LOG}
@@ -155,7 +155,7 @@ eslint_mr:
   stage: review
   script:
     - export NODE_PATH=$(npm root -g)
-    - ./.gitlab-ci/run-eslint --output-file ${LINT_MR_LOG} --format junit
+    - ./.gitlab-ci/run-eslint --output-file ${LINT_MR_LOG} --format junit --stdout
       --remote ${CI_MERGE_REQUEST_PROJECT_URL}.git
       --branch ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
   only:

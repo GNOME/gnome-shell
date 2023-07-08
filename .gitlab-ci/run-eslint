@@ -81,6 +81,10 @@ async function getMergeRequestChanges(remote, branch) {
     return report;
 }
 
+function hasOption(...names) {
+    return process.argv.some(arg => names.includes(arg));
+}
+
 function getOption(...names) {
     const optIndex =
         process.argv.findIndex(arg => names.includes(arg)) + 1;
@@ -120,6 +124,11 @@ function getOption(...names) {
     if (outputPath) {
         fs.mkdirSync(path.dirname(outputPath), { recursive: true });
         fs.writeFileSync(outputPath, resultText);
+
+        if (hasOption('--stdout')) {
+            const consoleFormatter = await regular.loadFormatter();
+            console.log(consoleFormatter.format(commonResults));
+        }
     } else {
         console.log(resultText);
     }
