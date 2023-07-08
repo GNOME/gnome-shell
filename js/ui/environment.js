@@ -43,7 +43,6 @@ const Polkit = imports.gi.Polkit;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Gettext = imports.gettext;
-const System = imports.system;
 const SignalTracker = imports.misc.signalTracker;
 
 Gio._promisify(Gio.DataInputStream.prototype, 'fill_async');
@@ -55,8 +54,6 @@ Gio._promisify(Gio.DBusProxy.prototype, 'init_async');
 Gio._promisify(Gio.DBusProxy.prototype, 'call_with_unix_fd_list');
 Gio._promisify(Gio.File.prototype, 'query_info_async');
 Gio._promisify(Polkit.Permission, 'new');
-
-let _localTimeZone = null;
 
 // We can't import shell JS modules yet, because they may have
 // variable initializations, etc, that depend on init() already having
@@ -371,28 +368,6 @@ function init() {
         } catch (e) {
             return base;
         }
-    };
-
-    // Override to clear our own timezone cache as well
-    const origClearDateCaches = System.clearDateCaches;
-    System.clearDateCaches = function () {
-        _localTimeZone = null;
-        origClearDateCaches();
-    };
-
-    // Work around https://bugzilla.mozilla.org/show_bug.cgi?id=508783
-    Date.prototype.toLocaleFormat = function (format) {
-        if (_localTimeZone === null)
-            _localTimeZone = GLib.TimeZone.new_local();
-
-        let dt = GLib.DateTime.new(_localTimeZone,
-            this.getFullYear(),
-            this.getMonth() + 1,
-            this.getDate(),
-            this.getHours(),
-            this.getMinutes(),
-            this.getSeconds());
-        return dt?.format(format) ?? '';
     };
 
     let slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');

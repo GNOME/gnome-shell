@@ -12,6 +12,7 @@ js/gdm/loginDialog.js
 js/gdm/util.js
 js/misc/systemActions.js
 js/misc/util.js
+js/misc/dateUtils.js
 js/portalHelper/main.js
 js/ui/accessDialog.js
 js/ui/appDisplay.js

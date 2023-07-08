@@ -17,7 +17,7 @@ const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const SwipeTracker = imports.ui.swipeTracker;
-
+const {formatDateWithCFormatString} = imports.misc.dateUtils;
 const AuthPrompt = imports.gdm.authPrompt;
 
 // The timeout before going back automatically to the lock screen (in seconds)
@@ -367,7 +367,7 @@ class UnlockDialogClock extends St.BoxLayout {
         /* Translators: This is a time format for a date in
            long format */
         let dateFormat = Shell.util_translate_time_string(N_('%A %B %-d'));
-        this._date.text = date.toLocaleFormat(dateFormat);
+        this._date.text = formatDateWithCFormatString(date, dateFormat);
     }
 
     _updateHint() {

@@ -15,7 +15,8 @@ const Mpris = imports.ui.mpris;
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+const {formatDateWithCFormatString, formatTimeSpan} = imports.misc.dateUtils;
+const {loadInterfaceXML} = imports.misc.fileUtils;
 
 var SHOW_WEEKDATE_KEY = 'show-weekdate';
 
@@ -520,7 +521,7 @@ var Calendar = GObject.registerClass({
         iter.setSeconds(0); // Leap second protection. Hah!
         iter.setHours(12);
         for (let i = 0; i < 7; i++) {
-            // Could use iter.toLocaleFormat('%a') but that normally gives three characters
+            // Could use formatDateWithCFormatString(iter, '%a') but that normally gives three characters
             // and we want, ideally, a single character for e.g. S M T W T F S
             let customDayAbbrev = _getCalendarDayAbbreviation(iter.getDay());
             let label = new St.Label({
@@ -528,7 +529,7 @@ var Calendar = GObject.registerClass({
                 text: customDayAbbrev,
                 can_focus: true,
             });
-            label.accessible_name = iter.toLocaleFormat('%A');
+            label.accessible_name = formatDateWithCFormatString(iter, '%A');
             let col;
             if (this.get_text_direction() == Clutter.TextDirection.RTL)
                 col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
@@ -656,7 +657,7 @@ var Calendar = GObject.registerClass({
         while (row < nRows) {
             let button = new St.Button({
                 // xgettext:no-javascript-format
-                label: iter.toLocaleFormat(C_('date day number format', '%d')),
+                label: formatDateWithCFormatString(iter, C_('date day number format', '%d')),
                 can_focus: true,
             });
             let rtl = button.get_text_direction() == Clutter.TextDirection.RTL;
@@ -711,13 +712,13 @@ var Calendar = GObject.registerClass({
 
             if (this._useWeekdate && iter.getDay() == 4) {
                 const label = new St.Label({
-                    text: iter.toLocaleFormat('%V'),
+                    text: formatDateWithCFormatString(iter, '%V'),
                     style_class: 'calendar-week-number',
                     can_focus: true,
                 });
                 let weekFormat = Shell.util_translate_time_string(N_("Week %V"));
                 label.clutter_text.y_align = Clutter.ActorAlign.CENTER;
-                label.accessible_name = iter.toLocaleFormat(weekFormat);
+                label.accessible_name = formatDateWithCFormatString(iter, weekFormat);
                 layout.attach(label, rtl ? 7 : 0, row, 1, 1);
             }
 
@@ -736,9 +737,9 @@ var Calendar = GObject.registerClass({
         let now = new Date();
 
         if (sameYear(this._selectedDate, now))
-            this._monthLabel.text = this._selectedDate.toLocaleFormat(this._headerFormatWithoutYear);
+            this._monthLabel.text = formatDateWithCFormatString(this._selectedDate, this._headerFormatWithoutYear);
         else
-            this._monthLabel.text = this._selectedDate.toLocaleFormat(this._headerFormat);
+            this._monthLabel.text = formatDateWithCFormatString(this._selectedDate, this._headerFormat);
 
         if (!this._calendarBegin || !sameMonth(this._selectedDate, this._calendarBegin) || !sameDay(now, this._markedAsToday))
             this._rebuildCalendar();
@@ -818,7 +819,7 @@ class NotificationTimeLabel extends St.Label {
     }
 
     vfunc_map() {
-        this.text = Util.formatTimeSpan(this._datetime);
+        this.text = formatTimeSpan(this._datetime);
         super.vfunc_map();
     }
 });
