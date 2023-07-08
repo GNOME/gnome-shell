@@ -10,23 +10,53 @@ const Params = imports.misc.params;
 let _desktopSettings = null;
 let _localTimeZone = null;
 
-function formatDateWithCFormatString(date, format) {
+/**
+ * @private
+ *
+ * @param {Date} date a Date object
+ * @returns {GLib.DateTime | null}
+ */
+function _convertJSDateToGLibDateTime(date) {
     if (_localTimeZone === null)
         _localTimeZone = GLib.TimeZone.new_local();
 
-    let dt = GLib.DateTime.new(_localTimeZone,
+    const dt = GLib.DateTime.new(_localTimeZone,
         date.getFullYear(),
         date.getMonth() + 1,
         date.getDate(),
         date.getHours(),
         date.getMinutes(),
         date.getSeconds());
+
+    return dt;
+}
+
+/**
+ * Formats a Date object according to a C sprintf-style string using
+ * the cached local timezone.
+ *
+ * @param {Date} date a Date object
+ * @param {string} format a format String for the date
+ * @returns {string}
+ */
+function formatDateWithCFormatString(date, format) {
+    const dt = _convertJSDateToGLibDateTime(date);
+
     return dt?.format(format) ?? '';
 }
 
+/**
+ * Formats a time span string representing the
+ * date passed in to the current time.
+ *
+ * @param {Date} date the start of the time span
+ * @returns {string}
+ */
 function formatTimeSpan(date) {
-    let now = GLib.DateTime.new_now_local();
+    if (_localTimeZone === null)
+        _localTimeZone = GLib.TimeZone.new_local();
 
+    const now = GLib.DateTime.new_now(_localTimeZone);
     const timespan = now.difference(date);
 
     const minutesAgo = timespan / GLib.TIME_SPAN_MINUTE;
@@ -82,18 +112,30 @@ function formatTimeSpan(date) {
     ).format(yearsAgo);
 }
 
+/**
+ * Formats a date time string based on style parameters
+ *
+ * @param {GLib.DateTime | Date} time a Date object
+ * @param {object} [params] style parameters for the output string
+ * @param {boolean=} params.timeOnly whether the string should only contain the time (no date)
+ * @param {boolean=} params.ampm whether to include the "am" or "pm" in the string
+ * @returns {string}
+ */
 function formatTime(time, params) {
     let date;
     // HACK: The built-in Date type sucks at timezones, which we need for the
     //       world clock; it's often more convenient though, so allow either
     //       Date or GLib.DateTime as parameter
     if (time instanceof Date)
-        date = GLib.DateTime.new_from_unix_local(time.getTime() / 1000);
+        date = _convertJSDateToGLibDateTime(time);
     else
         date = time;
 
-    const now = GLib.DateTime.new_now_local();
+    if (!date)
+        return '';
 
+    // _localTimeZone is defined in _convertJSDateToGLibDateTime
+    const now = GLib.DateTime.new_now(_localTimeZone);
     const daysAgo = now.difference(date) / (24 * 60 * 60 * 1000 * 1000);
 
     let format;
