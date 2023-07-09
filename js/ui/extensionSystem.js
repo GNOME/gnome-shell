@@ -61,7 +61,7 @@ var ExtensionManager = class extends Signals.EventEmitter {
             () => disableFile.delete(null));
 
         GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
-            global.context.disconnect(shutdownId);
+            global.disconnect(shutdownId);
 
             disableFile.delete(null);
             return GLib.SOURCE_REMOVE;
