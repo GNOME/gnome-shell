@@ -6,11 +6,27 @@ import Shew from 'gi://Shew';
 import {ExtensionPrefsDialog} from './extensionPrefsDialog.js';
 import {ServiceImplementation} from './dbusService.js';
 
-const ExtensionUtils = imports.misc.extensionUtils;
+const {deserializeExtension} = imports.misc.extensionUtils;
 const {loadInterfaceXML} = imports.misc.dbusUtils;
 
 const ExtensionsIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 const ExtensionsProxy = Gio.DBusProxy.makeProxyWrapper(ExtensionsIface);
+
+class ExtensionManager {
+    #extensions = new Map();
+
+    createExtensionObject(serialized) {
+        const extension = deserializeExtension(serialized);
+        this.#extensions.set(extension.uuid, extension);
+        return extension;
+    }
+
+    lookup(uuid) {
+        return this.#extensions.get(uuid);
+    }
+}
+
+const extensionManager = new ExtensionManager();
 
 export const ExtensionsService = class extends ServiceImplementation {
     constructor() {
@@ -118,7 +134,7 @@ export const ExtensionsService = class extends ServiceImplementation {
                 throw new Error('Already showing a prefs dialog');
 
             const [serialized] = await this._proxy.GetExtensionInfoAsync(uuid);
-            const extension = ExtensionUtils.deserializeExtension(serialized);
+            const extension = extensionManager.createExtensionObject(serialized);
 
             this._prefsDialog = new ExtensionPrefsDialog(extension);
             this._prefsDialog.connect('realize', () => {
