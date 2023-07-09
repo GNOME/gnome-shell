@@ -63,7 +63,8 @@ gnome_shell_deps = [
   gi_dep,
   polkit_dep,
   gcr_dep,
-  libsystemd_dep
+  libsystemd_dep,
+  libpipewire_dep,
 ]
 
 gnome_shell_deps += nm_deps
@@ -97,6 +98,7 @@ libshell_public_headers = [
   'shell-app-system.h',
   'shell-app-usage.h',
   'shell-blur-effect.h',
+  'shell-camera-monitor.h',
   'shell-glsl-effect.h',
   'shell-global.h',
   'shell-invert-lightness-effect.h',
@@ -136,6 +138,7 @@ libshell_sources = [
   'shell-app-system.c',
   'shell-app-usage.c',
   'shell-blur-effect.c',
+  'shell-camera-monitor.c',
   'shell-global.c',
   'shell-glsl-effect.c',
   'shell-invert-lightness-effect.c',

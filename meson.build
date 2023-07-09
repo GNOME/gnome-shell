@@ -32,6 +32,7 @@ startup_req = '>= 0.11'
 systemd_req = '>= 246'
 ibus_req = '>= 1.5.19'
 gnome_desktop_req = '>= 40'
+pipewire_req = '>= 0.3.49'
 
 nm_req = '>= 1.10.4'
 secret_req = '>= 0.18'
@@ -102,6 +103,14 @@ else
   have_networkmanager = false
 endif
 
+if get_option('camera_monitor')
+  libpipewire_dep = dependency('libpipewire-0.3', version: pipewire_req)
+  have_pipewire = true
+else
+  libpipewire_dep = []
+  have_pipewire = false
+endif
+
 if get_option('systemd')
   libsystemd_dep = dependency('libsystemd', version: systemd_req)
   systemd_dep = dependency('systemd', version: systemd_req)
@@ -136,6 +145,7 @@ cdata.set_quoted('VERSION', meson.project_version())
 cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
 
 cdata.set('HAVE_NETWORKMANAGER', have_networkmanager)
+cdata.set('HAVE_PIPEWIRE', have_pipewire)
 cdata.set('HAVE_SYSTEMD', have_systemd)
 
 # New API added in glib-2.57.2
@@ -311,6 +321,7 @@ meson.add_dist_script('meson/generate-stylesheets.py')
 meson.add_dist_script('meson/check-version.py', meson.project_version(), 'NEWS')
 
 summary_options = {
+  'camera_monitor': get_option('camera_monitor'),
   'networkmanager': get_option('networkmanager'),
   'systemd': get_option('systemd'),
   'extensions_app': get_option('extensions_app'),

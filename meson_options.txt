@@ -1,3 +1,9 @@
+option('camera_monitor',
+  type: 'boolean',
+  value: true,
+  description: 'Enable the camera monitor'
+)
+
 option('extensions_tool',
   type: 'boolean',
   value: true,
