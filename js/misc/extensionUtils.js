@@ -98,17 +98,18 @@ function getCurrentExtension() {
     //
     // We don't have to care about the exact composition, all we need
     // is a string that can be traversed as path and contains the UUID
-    const path = extensionLine.slice(extensionLine.indexOf(basePath));
-    let file = Gio.File.new_for_path(path);
+    let path = extensionLine.slice(extensionLine.indexOf(basePath));
 
     // Walk up the directory tree, looking for an extension with
     // the same UUID as a directory name.
-    while (file != null) {
-        let extension = extensionManager.lookup(file.get_basename());
+    do {
+        path = GLib.path_get_dirname(path);
+
+        const dirName = GLib.path_get_basename(path);
+        const extension = extensionManager.lookup(dirName);
         if (extension !== undefined)
             return extension;
-        file = file.get_parent();
-    }
+    } while (path !== '/');
 
     return null;
 }
