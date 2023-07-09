@@ -1,4 +1,4 @@
-import {getCurrentExtension} from './sharedInternals.js';
+import {getCurrentExtension, setExtensionManager} from './sharedInternals.js';
 
 export {
     getSettings,
@@ -9,6 +9,7 @@ export {
 } from './sharedInternals.js';
 
 const {extensionManager} = imports.ui.main;
+setExtensionManager(extensionManager);
 
 /**
  * Open the preference dialog of the current extension

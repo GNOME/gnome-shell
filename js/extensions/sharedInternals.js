@@ -35,11 +35,6 @@ export function getCurrentExtension() {
     if (!extensionLine)
         return null;
 
-    // local import, as the module is used from outside the gnome-shell process
-    // as well
-    if (!_extensionManager)
-        setExtensionManager(imports.ui.main.extensionManager);
-
     // The exact stack line differs depending on where the function
     // was called (function or module scope), and whether it's called
     // from a module or legacy import (file:// URI vs. plain path).

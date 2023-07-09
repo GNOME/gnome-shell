@@ -5,7 +5,6 @@ import Shew from 'gi://Shew';
 
 import {ExtensionPrefsDialog} from './extensionPrefsDialog.js';
 import {ServiceImplementation} from './dbusService.js';
-import {setExtensionManager} from './extensions/sharedInternals.js';
 
 const {deserializeExtension} = imports.misc.extensionUtils;
 const {loadInterfaceXML} = imports.misc.dbusUtils;
@@ -27,8 +26,7 @@ class ExtensionManager {
     }
 }
 
-const extensionManager = new ExtensionManager();
-setExtensionManager(extensionManager);
+export const extensionManager = new ExtensionManager();
 
 export const ExtensionsService = class extends ServiceImplementation {
     constructor() {
