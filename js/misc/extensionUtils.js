@@ -2,7 +2,7 @@
 /* exported ExtensionState, ExtensionType, getCurrentExtension,
    getSettings, initTranslations, gettext, ngettext, pgettext,
    openPrefs, isOutOfDate, serializeExtension,
-   deserializeExtension, setCurrentExtension */
+   deserializeExtension, setExtensionManager */
 
 // Common utils for the extension system and the extension
 // preferences tool
@@ -14,18 +14,7 @@ const Gettext = imports.gettext;
 
 const Config = imports.misc.config;
 
-let Main = null;
-
-try {
-    Main = imports.ui.main;
-} catch (error) {
-    // Only log the error if it is not due to the
-    // missing import.
-    if (error?.name !== 'ImportError')
-        console.error(error);
-}
-
-let _extension = null;
+let _extensionManager = null;
 
 var ExtensionType = {
     SYSTEM: 1,
@@ -58,13 +47,13 @@ const SERIALIZED_PROPERTIES = [
 ];
 
 /**
- * @param {object} extension the extension object to use in utilities like `initTranslations()`
+ * @param {object} extensionManager to use in utilities like `initTranslations()`
  */
-function setCurrentExtension(extension) {
-    if (Main)
-        throw new Error('setCurrentExtension() can only be called from outside the shell');
+function setExtensionManager(extensionManager) {
+    if (_extensionManager)
+        throw new Error('Trying to override existing extension manager');
 
-    _extension = extension;
+    _extensionManager = extensionManager;
 }
 
 /**
@@ -74,9 +63,6 @@ function setCurrentExtension(extension) {
  * an extension.
  */
 function getCurrentExtension() {
-    if (_extension)
-        return _extension;
-
     const basePath = '/gnome-shell/extensions/';
 
     // Search for an occurrence of an extension stack frame
@@ -89,8 +75,9 @@ function getCurrentExtension() {
         return null;
 
     // local import, as the module is used from outside the gnome-shell process
-    // as well (not this function though)
-    let extensionManager = imports.ui.main.extensionManager;
+    // as well
+    if (!_extensionManager)
+        setExtensionManager(imports.ui.main.extensionManager);
 
     // The exact stack line differs depending on where the function
     // was called (function or module scope), and whether it's called
@@ -106,7 +93,7 @@ function getCurrentExtension() {
         path = GLib.path_get_dirname(path);
 
         const dirName = GLib.path_get_basename(path);
-        const extension = extensionManager.lookup(dirName);
+        const extension = _extensionManager.lookup(dirName);
         if (extension !== undefined)
             return extension;
     } while (path !== '/');

@@ -7,8 +7,6 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk?version=4.0';
 
-const ExtensionUtils = imports.misc.extensionUtils;
-
 export const ExtensionPrefsDialog = GObject.registerClass({
     GTypeName: 'ExtensionPrefsDialog',
 }, class ExtensionPrefsDialog extends Adw.PreferencesWindow {
@@ -27,9 +25,6 @@ export const ExtensionPrefsDialog = GObject.registerClass({
     }
 
     async _loadPrefs() {
-        // give extension prefs access to their own extension object
-        ExtensionUtils.setCurrentExtension(this._extension);
-
         const {dir, metadata} = this._extension;
 
         const prefsJs = dir.get_child('prefs.js');
