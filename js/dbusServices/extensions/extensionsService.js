@@ -114,11 +114,10 @@ export const ExtensionsService = class extends ServiceImplementation {
         const [uuid, parentWindow, options] = params;
 
         try {
-            const [serialized] = await this._proxy.GetExtensionInfoAsync(uuid);
-
             if (this._prefsDialog)
                 throw new Error('Already showing a prefs dialog');
 
+            const [serialized] = await this._proxy.GetExtensionInfoAsync(uuid);
             const extension = ExtensionUtils.deserializeExtension(serialized);
 
             this._prefsDialog = new ExtensionPrefsDialog(extension);
