@@ -8,6 +8,7 @@ overrides:
       - js/ui/scripting.js
       - js/misc/dependencies.js
       - js/dbusServices/**
+      - js/extensions/**
       - js/portalHelper/**
       - subprojects/extensions-app/**
       - subprojects/extensions-tool/**

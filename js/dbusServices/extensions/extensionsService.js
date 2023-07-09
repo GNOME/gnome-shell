@@ -5,9 +5,9 @@ import Shew from 'gi://Shew';
 
 import {ExtensionPrefsDialog} from './extensionPrefsDialog.js';
 import {ServiceImplementation} from './dbusService.js';
+import {setExtensionManager} from './extensions/sharedInternals.js';
 
 const {deserializeExtension} = imports.misc.extensionUtils;
-const {setExtensionManager} = imports.extensions.sharedInternals;
 const {loadInterfaceXML} = imports.misc.dbusUtils;
 
 const ExtensionsIface = loadInterfaceXML('org.gnome.Shell.Extensions');

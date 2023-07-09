@@ -1,10 +1,7 @@
-/* exported getCurrentExtension, setExtensionManager, getSettings,
-   initTranslations, gettext, ngettext, pgettext, openPrefs */
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-
-const Gettext = imports.gettext;
+import * as Gettext from 'gettext';
 
 const Config = imports.misc.config;
 
@@ -13,7 +10,7 @@ let _extensionManager = null;
 /**
  * @param {object} extensionManager to use in utilities like `initTranslations()`
  */
-function setExtensionManager(extensionManager) {
+export function setExtensionManager(extensionManager) {
     if (_extensionManager)
         throw new Error('Trying to override existing extension manager');
 
@@ -26,7 +23,7 @@ function setExtensionManager(extensionManager) {
  * @returns {?object} - The current extension, or null if not called from
  * an extension.
  */
-function getCurrentExtension() {
+export function getCurrentExtension() {
     const basePath = '/gnome-shell/extensions/';
 
     // Search for an occurrence of an extension stack frame
@@ -71,7 +68,7 @@ function getCurrentExtension() {
  *
  * @param {string=} domain - the gettext domain to use
  */
-function initTranslations(domain) {
+export function initTranslations(domain) {
     let extension = getCurrentExtension();
 
     if (!extension)
@@ -97,7 +94,7 @@ function initTranslations(domain) {
  *
  * @returns {string} - the translated string
  */
-function gettext(str) {
+export function gettext(str) {
     return callExtensionGettextFunc('gettext', str);
 }
 
@@ -111,7 +108,7 @@ function gettext(str) {
  *
  * @returns {string} - the translated string
  */
-function ngettext(str, strPlural, n) {
+export function ngettext(str, strPlural, n) {
     return callExtensionGettextFunc('ngettext', str, strPlural, n);
 }
 
@@ -124,7 +121,7 @@ function ngettext(str, strPlural, n) {
  *
  * @returns {string} - the translated string
  */
-function pgettext(context, str) {
+export function pgettext(context, str) {
     return callExtensionGettextFunc('pgettext', context, str);
 }
 
@@ -153,7 +150,7 @@ function callExtensionGettextFunc(func, ...args) {
  * @param {string=} schema - the GSettings schema id
  * @returns {Gio.Settings} - a new settings object for @schema
  */
-function getSettings(schema) {
+export function getSettings(schema) {
     let extension = getCurrentExtension();
 
     if (!extension)
@@ -184,7 +181,7 @@ function getSettings(schema) {
 /**
  * Open the preference dialog of the current extension
  */
-function openPrefs() {
+export function openPrefs() {
     const extension = getCurrentExtension();
 
     if (!extension)
