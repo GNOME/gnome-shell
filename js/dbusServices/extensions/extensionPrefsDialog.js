@@ -18,20 +18,24 @@ export const ExtensionPrefsDialog = GObject.registerClass({
             search_enabled: false,
         });
 
-        this._loadPrefs(extension).catch(e => {
+        this._extension = extension;
+
+        this._loadPrefs().catch(e => {
             this._showErrorPage(e);
             logError(e, 'Failed to open preferences');
         });
     }
 
-    async _loadPrefs(extension) {
+    async _loadPrefs() {
         // give extension prefs access to their own extension object
-        ExtensionUtils.setCurrentExtension(extension);
+        ExtensionUtils.setCurrentExtension(this._extension);
 
-        const prefsJs = extension.dir.get_child('prefs.js');
+        const {dir, metadata} = this._extension;
+
+        const prefsJs = dir.get_child('prefs.js');
         const prefsModule = await import(prefsJs.get_uri());
 
-        const prefsObj = new prefsModule.default(extension.metadata);
+        const prefsObj = new prefsModule.default(metadata);
         prefsObj.fillPreferencesWindow(this);
 
         if (!this.visible_page)
@@ -56,8 +60,7 @@ export const ExtensionPrefsDialog = GObject.registerClass({
         while (this.visible_page)
             this.remove(this.visible_page);
 
-        const extension = ExtensionUtils.getCurrentExtension();
-        this.add(new ExtensionPrefsErrorPage(extension, e));
+        this.add(new ExtensionPrefsErrorPage(this._extension, e));
     }
 });
 
