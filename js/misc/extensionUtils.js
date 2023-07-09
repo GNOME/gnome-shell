@@ -77,35 +77,28 @@ function getCurrentExtension() {
     if (_extension)
         return _extension;
 
-    let stack = new Error().stack.split('\n');
-    let extensionStackLine;
+    const basePath = '/gnome-shell/extensions/';
 
     // Search for an occurrence of an extension stack frame
     // Start at 1 because 0 is the stack frame of this function
-    for (let i = 1; i < stack.length; i++) {
-        if (stack[i].includes('/gnome-shell/extensions/')) {
-            extensionStackLine = stack[i];
-            break;
-        }
-    }
-    if (!extensionStackLine)
-        return null;
+    const [, ...stack] = new Error().stack.split('\n');
+    const extensionLine = stack.find(
+        line => line.includes(basePath));
 
-    // The stack line is like:
-    //   init([object Object])@/home/user/data/gnome-shell/extensions/u@u.id/prefs.js:8
-    //
-    // In the case that we're importing from
-    // module scope, the first field is blank:
-    //   @/home/user/data/gnome-shell/extensions/u@u.id/prefs.js:8
-    let match = new RegExp('@(.+):\\d+').exec(extensionStackLine);
-    if (!match)
+    if (!extensionLine)
         return null;
 
     // local import, as the module is used from outside the gnome-shell process
     // as well (not this function though)
     let extensionManager = imports.ui.main.extensionManager;
 
-    let path = match[1];
+    // The exact stack line differs depending on where the function
+    // was called (function or module scope), and whether it's called
+    // from a module or legacy import (file:// URI vs. plain path).
+    //
+    // We don't have to care about the exact composition, all we need
+    // is a string that can be traversed as path and contains the UUID
+    const path = extensionLine.slice(extensionLine.indexOf(basePath));
     let file = Gio.File.new_for_path(path);
 
     // Walk up the directory tree, looking for an extension with
