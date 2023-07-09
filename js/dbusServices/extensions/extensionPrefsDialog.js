@@ -36,6 +36,8 @@ export const ExtensionPrefsDialog = GObject.registerClass({
         const prefsModule = await import(prefsJs.get_uri());
 
         const prefsObj = new prefsModule.default(metadata);
+        this._extension.stateObj = prefsObj;
+
         prefsObj.fillPreferencesWindow(this);
 
         if (!this.visible_page)
