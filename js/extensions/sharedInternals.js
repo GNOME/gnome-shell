@@ -6,18 +6,6 @@ import {bindtextdomain} from 'gettext';
 
 const Config = imports.misc.config;
 
-let _extensionManager = null;
-
-/**
- * @param {object} extensionManager to use in utilities like `initTranslations()`
- */
-export function setExtensionManager(extensionManager) {
-    if (_extensionManager)
-        throw new Error('Trying to override existing extension manager');
-
-    _extensionManager = extensionManager;
-}
-
 export class ExtensionBase {
     #gettextDomain;
 

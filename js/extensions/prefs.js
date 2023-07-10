@@ -1,9 +1,7 @@
 import GObject from 'gi://GObject';
 
-import {ExtensionBase, GettextWrapper, setExtensionManager} from './sharedInternals.js';
+import {ExtensionBase, GettextWrapper} from './sharedInternals.js';
 import {extensionManager} from '../extensionsService.js';
-
-setExtensionManager(extensionManager);
 
 export class ExtensionPreferences extends ExtensionBase {
     static lookupByUUID(uuid) {

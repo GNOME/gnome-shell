@@ -1,7 +1,6 @@
-import {ExtensionBase, GettextWrapper, setExtensionManager} from './sharedInternals.js';
+import {ExtensionBase, GettextWrapper} from './sharedInternals.js';
 
 const {extensionManager} = imports.ui.main;
-setExtensionManager(extensionManager);
 
 export class Extension extends ExtensionBase {
     static lookupByUUID(uuid) {
