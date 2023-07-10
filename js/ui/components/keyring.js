@@ -1,21 +1,20 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Component */
 
-const Clutter = imports.gi.Clutter;
-const Gcr = imports.gi.Gcr;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Gcr from 'gi://Gcr';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Dialog = imports.ui.dialog;
-const ModalDialog = imports.ui.modalDialog;
-const ShellEntry = imports.ui.shellEntry;
-const CheckBox = imports.ui.checkBox;
-const {wiggle} = imports.misc.animationUtils;
+import * as Dialog from '../dialog.js';
+import * as ModalDialog from '../modalDialog.js';
+import * as ShellEntry from '../shellEntry.js';
+import * as CheckBox from '../checkBox.js';
+import {wiggle} from '../misc/animationUtils.js';
 
-var KeyringDialog = GObject.registerClass(
+const KeyringDialog = GObject.registerClass(
 class KeyringDialog extends ModalDialog.ModalDialog {
     _init() {
         super._init({ styleClass: 'prompt-dialog' });
@@ -184,7 +183,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
     }
 });
 
-var KeyringDummyDialog = class {
+class KeyringDummyDialog {
     constructor() {
         this.prompt = new Shell.KeyringPrompt();
         this.prompt.connect('show-password', this._cancelPrompt.bind(this));
@@ -194,9 +193,9 @@ var KeyringDummyDialog = class {
     _cancelPrompt() {
         this.prompt.cancel();
     }
-};
+}
 
-var KeyringPrompter = GObject.registerClass(
+const KeyringPrompter = GObject.registerClass(
 class KeyringPrompter extends Gcr.SystemPrompter {
     _init() {
         super._init();
@@ -232,4 +231,4 @@ class KeyringPrompter extends Gcr.SystemPrompter {
     }
 });
 
-var Component = KeyringPrompter;
+export {KeyringPrompter as Component};

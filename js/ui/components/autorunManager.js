@@ -1,18 +1,17 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Component */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const GnomeSession = imports.misc.gnomeSession;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
+import * as GnomeSession from '../../misc/gnomeSession.js';
+import * as Main from '../main.js';
+import * as MessageTray from '../messageTray.js';
 
 Gio._promisify(Gio.Mount.prototype, 'guess_content_type');
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import {loadInterfaceXML} from '../../misc/fileUtils.js';
 
 // GSettings keys
 const SETTINGS_SCHEMA = 'org.gnome.desktop.media-handling';
@@ -22,7 +21,7 @@ const SETTING_IGNORE = 'autorun-x-content-ignore';
 const SETTING_OPEN_FOLDER = 'autorun-x-content-open-folder';
 
 /** @enum {number} */
-var AutorunSetting = {
+const AutorunSetting = {
     RUN: 0,
     IGNORE: 1,
     FILES: 2,
@@ -86,7 +85,7 @@ function HotplugSniffer() {
                                    '/org/gnome/Shell/HotplugSniffer');
 }
 
-var ContentTypeDiscoverer = class {
+class ContentTypeDiscoverer {
     constructor() {
         this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
     }
@@ -127,9 +126,9 @@ var ContentTypeDiscoverer = class {
 
         return [apps, contentTypes];
     }
-};
+}
 
-var AutorunManager = class {
+class AutorunManager {
     constructor() {
         this._session = new GnomeSession.SessionManager();
         this._volumeMonitor = Gio.VolumeMonitor.get();
@@ -161,9 +160,9 @@ var AutorunManager = class {
     _onMountRemoved(monitor, mount) {
         this._dispatcher.removeMount(mount);
     }
-};
+}
 
-var AutorunDispatcher = class {
+class AutorunDispatcher {
     constructor(manager) {
         this._manager = manager;
         this._sources = [];
@@ -255,9 +254,9 @@ var AutorunDispatcher = class {
         // destroy the notification source
         source.destroy();
     }
-};
+}
 
-var AutorunSource = GObject.registerClass(
+const AutorunSource = GObject.registerClass(
 class AutorunSource extends MessageTray.Source {
     _init(manager, mount, apps) {
         super._init(mount.get_name());
@@ -282,7 +281,7 @@ class AutorunSource extends MessageTray.Source {
     }
 });
 
-var AutorunNotification = GObject.registerClass(
+const AutorunNotification = GObject.registerClass(
 class AutorunNotification extends MessageTray.Notification {
     _init(manager, source) {
         super._init(source, source.title);
@@ -346,4 +345,4 @@ class AutorunNotification extends MessageTray.Notification {
     }
 });
 
-var Component = AutorunManager;
+export {AutorunManager as Component};

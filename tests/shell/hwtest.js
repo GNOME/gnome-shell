@@ -2,8 +2,9 @@
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import Shell from 'gi://Shell';
-const Main = imports.ui.main;
-import * as Scripting from 'resource://org/gnome/shell/ui/scripting.js';
+
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as Scripting from 'resource:///org/gnome/shell/ui/scripting.js';
 
 export var METRICS = {
     timeToDesktop: {

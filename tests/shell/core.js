@@ -1,10 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_", "^malloc", "^glx", "^clutter"] }] */
 
-import System from 'system';
+import * as System from 'system';
 
-const Main = imports.ui.main;
-import * as Scripting from 'resource://org/gnome/shell/ui/scripting.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as Scripting from 'resource:///org/gnome/shell/ui/scripting.js';
 
 // This performance script measure the most important (core) performance
 // metrics for the shell. By looking at the output metrics of this script

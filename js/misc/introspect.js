@@ -1,9 +1,8 @@
-/* exported IntrospectService */
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
 const APP_ALLOWLIST = [
     'org.freedesktop.impl.portal.desktop.gtk',
@@ -12,12 +11,12 @@ const APP_ALLOWLIST = [
 
 const INTROSPECT_DBUS_API_VERSION = 3;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
-const { DBusSenderChecker } = imports.misc.util;
+import {loadInterfaceXML} from './fileUtils.js';
+import {DBusSenderChecker} from './util.js';
 
 const IntrospectDBusIface = loadInterfaceXML('org.gnome.Shell.Introspect');
 
-var IntrospectService = class {
+export class IntrospectService {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(IntrospectDBusIface,
                                                              this);
@@ -218,4 +217,4 @@ var IntrospectService = class {
     get version() {
         return INTROSPECT_DBUS_API_VERSION;
     }
-};
+}

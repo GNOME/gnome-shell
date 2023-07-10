@@ -1,19 +1,18 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Animation, AnimatedIcon, Spinner */
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gio = imports.gi.Gio;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gio from 'gi://Gio';
+import St from 'gi://St';
 
-const Params = imports.misc.params;
+import * as Params from '../misc/params.js';
 
-var ANIMATED_ICON_UPDATE_TIMEOUT = 16;
-var SPINNER_ANIMATION_TIME = 300;
-var SPINNER_ANIMATION_DELAY = 1000;
+const ANIMATED_ICON_UPDATE_TIMEOUT = 16;
+const SPINNER_ANIMATION_TIME = 300;
+const SPINNER_ANIMATION_DELAY = 1000;
 
-var Animation = GObject.registerClass(
+export const Animation = GObject.registerClass(
 class Animation extends St.Bin {
     _init(file, width, height, speed) {
         const themeContext = St.ThemeContext.get_for_stage(global.stage);
@@ -118,14 +117,14 @@ class Animation extends St.Bin {
     }
 });
 
-var AnimatedIcon = GObject.registerClass(
+export const AnimatedIcon = GObject.registerClass(
 class AnimatedIcon extends Animation {
     _init(file, size) {
         super._init(file, size, size, ANIMATED_ICON_UPDATE_TIMEOUT);
     }
 });
 
-var Spinner = GObject.registerClass(
+export const Spinner = GObject.registerClass(
 class Spinner extends AnimatedIcon {
     _init(size, params) {
         params = Params.parse(params, {

@@ -1,20 +1,19 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported RunDialog */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
-const ModalDialog = imports.ui.modalDialog;
-const ShellEntry = imports.ui.shellEntry;
-const Util = imports.misc.util;
-const History = imports.misc.history;
+import * as Dialog from './dialog.js';
+import * as Main from './main.js';
+import * as ModalDialog from './modalDialog.js';
+import * as ShellEntry from './shellEntry.js';
+import * as Util from '../misc/util.js';
+import * as History from '../misc/history.js';
 
 const HISTORY_KEY = 'command-history';
 
@@ -25,7 +24,7 @@ const TERMINAL_SCHEMA = 'org.gnome.desktop.default-applications.terminal';
 const EXEC_KEY = 'exec';
 const EXEC_ARG_KEY = 'exec-arg';
 
-var RunDialog = GObject.registerClass(
+export const RunDialog = GObject.registerClass(
 class RunDialog extends ModalDialog.ModalDialog {
     _init() {
         super._init({

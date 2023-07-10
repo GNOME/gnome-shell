@@ -1,14 +1,13 @@
-/* exported PointerA11yTimeout */
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const St = imports.gi.St;
-const Main = imports.ui.main;
-const Cairo = imports.cairo;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
+import * as Main from './main.js';
+import Cairo from 'gi://cairo';
 
 const SUCCESS_ZOOM_OUT_DURATION = 150;
 
-var PieTimer = GObject.registerClass({
+const PieTimer = GObject.registerClass({
     Properties: {
         'angle': GObject.ParamSpec.double(
             'angle', 'angle', 'angle',
@@ -109,7 +108,7 @@ var PieTimer = GObject.registerClass({
     }
 });
 
-var PointerA11yTimeout = class PointerA11yTimeout {
+export class PointerA11yTimeout {
     constructor() {
         let seat = Clutter.get_default_backend().get_default_seat();
 
@@ -134,4 +133,4 @@ var PointerA11yTimeout = class PointerA11yTimeout {
                 global.display.set_cursor(Meta.Cursor.DEFAULT);
         });
     }
-};
+}

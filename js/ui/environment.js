@@ -14,8 +14,8 @@ import Polkit from 'gi://Polkit';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
-const SignalTracker = imports.misc.signalTracker;
-const {adjustAnimationTime} = imports.misc.animationUtils;
+import * as SignalTracker from '../misc/signalTracker.js';
+import {adjustAnimationTime} from '../misc/animationUtils.js';
 
 setConsoleLogDomain('GNOME Shell');
 

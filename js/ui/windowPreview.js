@@ -1,35 +1,34 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported WindowPreview */
 
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Graphene = imports.gi.Graphene;
-const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
+import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const DND = imports.ui.dnd;
-const OverviewControls = imports.ui.overviewControls;
+import * as DND from './dnd.js';
+import * as OverviewControls from './overviewControls.js';
 
-var WINDOW_DND_SIZE = 256;
+const WINDOW_DND_SIZE = 256;
 
-var WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT = 750;
-var WINDOW_OVERLAY_FADE_TIME = 200;
+const WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT = 750;
+const WINDOW_OVERLAY_FADE_TIME = 200;
 
-var WINDOW_SCALE_TIME = 200;
-var WINDOW_ACTIVE_SIZE_INC = 5; // in each direction
+const WINDOW_SCALE_TIME = 200;
+const WINDOW_ACTIVE_SIZE_INC = 5; // in each direction
 
-var DRAGGING_WINDOW_OPACITY = 100;
+const DRAGGING_WINDOW_OPACITY = 100;
 
 const ICON_SIZE = 64;
 const ICON_OVERLAP = 0.7;
 
 const ICON_TITLE_SPACING = 6;
 
-var WindowPreview = GObject.registerClass({
+export const WindowPreview = GObject.registerClass({
     Properties: {
         'overlay-enabled': GObject.ParamSpec.boolean(
             'overlay-enabled', 'overlay-enabled', 'overlay-enabled',

@@ -1,18 +1,18 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported AppMenu */
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
 
-const AppFavorites = imports.ui.appFavorites;
-const Main = imports.ui.main;
-const ParentalControlsManager = imports.misc.parentalControlsManager;
-const PopupMenu = imports.ui.popupMenu;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
+import * as AppFavorites from './appFavorites.js';
+import * as Main from './main.js';
+import * as ParentalControlsManager from '../misc/parentalControlsManager.js';
+import * as PopupMenu from './popupMenu.js';
+
+export class AppMenu extends PopupMenu.PopupMenu {
     /**
      * @param {Clutter.Actor} sourceActor - actor the menu is attached to
      * @param {St.Side} side - arrow side
@@ -292,4 +292,4 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
             }, item);
         });
     }
-};
+}

@@ -1,13 +1,10 @@
-/* exported ExtensionState, ExtensionType,
- * serializeExtension, deserializeExtension */
-
 // Common utils for the extension system, the extensions D-Bus service
 // and the Extensions app
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
-var ExtensionType = {
+export const ExtensionType = {
     SYSTEM: 1,
     PER_USER: 2,
 };
@@ -15,7 +12,7 @@ var ExtensionType = {
 /**
  * @enum {number}
  */
-var ExtensionState = {
+export const ExtensionState = {
     ENABLED: 1,
     DISABLED: 2,
     ERROR: 3,
@@ -47,7 +44,7 @@ const SERIALIZED_PROPERTIES = [
  * @param {object} extension - an extension object
  * @returns {object}
  */
-function serializeExtension(extension) {
+export function serializeExtension(extension) {
     let obj = {...extension.metadata};
 
     SERIALIZED_PROPERTIES.forEach(prop => {
@@ -83,7 +80,7 @@ function serializeExtension(extension) {
  * @param {object} variant - an unpacked {GLib.Variant}
  * @returns {object}
  */
-function deserializeExtension(variant) {
+export function deserializeExtension(variant) {
     let res = {metadata: {}};
     for (let prop in variant) {
         let val = variant[prop].unpack();

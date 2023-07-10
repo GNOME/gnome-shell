@@ -1,23 +1,22 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ModalDialog */
 
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Dialog = imports.ui.dialog;
-const Layout = imports.ui.layout;
-const Lightbox = imports.ui.lightbox;
-const Main = imports.ui.main;
-const Params = imports.misc.params;
+import * as Dialog from './dialog.js';
+import * as Layout from './layout.js';
+import * as Lightbox from './lightbox.js';
+import * as Main from './main.js';
+import * as Params from '../misc/params.js';
 
-var OPEN_AND_CLOSE_TIME = 100;
-var FADE_OUT_DIALOG_TIME = 1000;
+const OPEN_AND_CLOSE_TIME = 100;
+const FADE_OUT_DIALOG_TIME = 1000;
 
 /** @enum {number} */
-var State = {
+export const State = {
     OPENED: 0,
     CLOSED: 1,
     OPENING: 2,
@@ -25,7 +24,7 @@ var State = {
     FADED_OUT: 4,
 };
 
-var ModalDialog = GObject.registerClass({
+export const ModalDialog = GObject.registerClass({
     Properties: {
         'state': GObject.ParamSpec.int('state', 'Dialog state', 'state',
                                        GObject.ParamFlags.READABLE,

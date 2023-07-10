@@ -1,25 +1,25 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Indicator */
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const NM = imports.gi.NM;
-const Polkit = imports.gi.Polkit;
-const St = imports.gi.St;
 
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const MessageTray = imports.ui.messageTray;
-const ModemManager = imports.misc.modemManager;
-const Util = imports.misc.util;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import NM from 'gi://NM';
+import Polkit from 'gi://Polkit';
+import St from 'gi://St';
 
-const {Spinner} = imports.ui.animation;
-const {QuickMenuToggle, SystemIndicator} = imports.ui.quickSettings;
+import * as Main from '../main.js';
+import * as PopupMenu from '../popupMenu.js';
+import * as MessageTray from '../messageTray.js';
+import * as ModemManager from '../../misc/modemManager.js';
+import * as Util from '../../misc/util.js';
 
-const {loadInterfaceXML} = imports.misc.fileUtils;
-const {registerDestroyableType} = imports.misc.signalTracker;
+import {Spinner} from '../animation.js';
+import {QuickMenuToggle, SystemIndicator} from '../quickSettings.js';
+
+import {loadInterfaceXML} from '../../misc/fileUtils.js';
+import {registerDestroyableType} from '../../misc/signalTracker.js';
 
 Gio._promisify(Gio.DBusConnection.prototype, 'call');
 Gio._promisify(NM.Client, 'new_async');
@@ -33,7 +33,7 @@ const MAX_VISIBLE_NETWORKS = 8;
 const NM80211Mode = NM['80211Mode'];
 
 /** @enum {number} */
-var PortalHelperResult = {
+const PortalHelperResult = {
     CANCELLED: 0,
     COMPLETED: 1,
     RECHECK: 2,
@@ -1935,7 +1935,7 @@ class NMModemToggle extends NMDeviceToggle {
     }
 });
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends SystemIndicator {
     _init() {
         super._init();

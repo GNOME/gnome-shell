@@ -1,5 +1,4 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported parse */
 
 /**
  * parse:
@@ -18,7 +17,7 @@
  * @returns a new object, containing the merged parameters from
  * `params` and `defaults`
  */
-function parse(params = {}, defaults, allowExtras) {
+export function parse(params = {}, defaults, allowExtras) {
     if (!allowExtras) {
         for (let prop in params) {
             if (!(prop in defaults))

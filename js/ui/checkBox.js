@@ -1,11 +1,10 @@
-/* exported CheckBox */
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const Pango = imports.gi.Pango;
-const St = imports.gi.St;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Pango from 'gi://Pango';
+import St from 'gi://St';
 
-var CheckBox = GObject.registerClass(
+export const CheckBox = GObject.registerClass(
 class CheckBox extends St.Button {
     _init(label) {
         let container = new St.BoxLayout({

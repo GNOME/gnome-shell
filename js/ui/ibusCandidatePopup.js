@@ -1,22 +1,21 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported CandidatePopup */
 
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const IBus = imports.gi.IBus;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import IBus from 'gi://IBus';
+import St from 'gi://St';
 
-const BoxPointer = imports.ui.boxpointer;
-const Main = imports.ui.main;
+import * as BoxPointer from './boxpointer.js';
+import * as Main from './main.js';
 
-var MAX_CANDIDATES_PER_PAGE = 16;
+const MAX_CANDIDATES_PER_PAGE = 16;
 
-var DEFAULT_INDEX_LABELS = [
+const DEFAULT_INDEX_LABELS = [
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
     'a', 'b', 'c', 'd', 'e', 'f',
 ];
 
-var CandidateArea = GObject.registerClass({
+const CandidateArea = GObject.registerClass({
     Signals: {
         'candidate-clicked': {
             param_types: [
@@ -146,7 +145,7 @@ var CandidateArea = GObject.registerClass({
     }
 });
 
-var CandidatePopup = GObject.registerClass(
+export const CandidatePopup = GObject.registerClass(
 class IbusCandidatePopup extends BoxPointer.BoxPointer {
     _init() {
         super._init(St.Side.TOP);

@@ -1,22 +1,22 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported InputMethod */
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const IBus = imports.gi.IBus;
 
-const Keyboard = imports.ui.status.keyboard;
-const Main = imports.ui.main;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import IBus from 'gi://IBus';
+
+import * as Keyboard from '../ui/status/keyboard.js';
+import * as Main from '../ui/main.js';
 
 Gio._promisify(IBus.Bus.prototype,
     'create_input_context_async', 'create_input_context_async_finish');
 Gio._promisify(IBus.InputContext.prototype,
     'process_key_event_async', 'process_key_event_async_finish');
 
-var HIDE_PANEL_TIME = 50;
+const HIDE_PANEL_TIME = 50;
 
-var InputMethod = GObject.registerClass({
+export const InputMethod = GObject.registerClass({
     Signals: {
         'surrounding-text-set': {},
         'terminal-mode-changed': {},

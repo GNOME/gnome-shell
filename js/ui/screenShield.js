@@ -1,28 +1,27 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ScreenShield */
 
-const AccountsService = imports.gi.AccountsService;
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Graphene = imports.gi.Graphene;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import AccountsService from 'gi://AccountsService';
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Graphene from 'gi://Graphene';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Signals = imports.misc.signals;
+import * as Signals from '../misc/signals.js';
 
-const GnomeSession = imports.misc.gnomeSession;
-const OVirt = imports.gdm.oVirt;
-const LoginManager = imports.misc.loginManager;
-const Lightbox = imports.ui.lightbox;
-const Main = imports.ui.main;
-const Overview = imports.ui.overview;
-const MessageTray = imports.ui.messageTray;
-const ShellDBus = imports.ui.shellDBus;
-const SmartcardManager = imports.misc.smartcardManager;
+import * as GnomeSession from '../misc/gnomeSession.js';
+import * as OVirt from '../gdm/oVirt.js';
+import * as LoginManager from '../misc/loginManager.js';
+import * as Lightbox from './lightbox.js';
+import * as Main from './main.js';
+import * as Overview from './overview.js';
+import * as MessageTray from './messageTray.js';
+import * as ShellDBus from './shellDBus.js';
+import * as SmartcardManager from '../misc/smartcardManager.js';
 
-const {adjustAnimationTime} = imports.misc.animationUtils;
+import {adjustAnimationTime} from '../misc/animationUtils.js';
 
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOCK_ENABLED_KEY = 'lock-enabled';
@@ -38,9 +37,9 @@ const LOCKED_STATE_STR = 'screenShield.locked';
 // - MANUAL_FADE_TIME is used for lowering the shield when asked by the user,
 //   or when cancelling the dialog
 // - CURTAIN_SLIDE_TIME is used when raising the shield before unlocking
-var STANDARD_FADE_TIME = 10000;
-var MANUAL_FADE_TIME = 300;
-var CURTAIN_SLIDE_TIME = 300;
+const STANDARD_FADE_TIME = 10000;
+const MANUAL_FADE_TIME = 300;
+const CURTAIN_SLIDE_TIME = 300;
 
 /**
  * If you are setting org.gnome.desktop.session.idle-delay directly in dconf,
@@ -50,7 +49,7 @@ var CURTAIN_SLIDE_TIME = 300;
  * This will ensure that the screen blanks at the right time when it fades out.
  * https://bugzilla.gnome.org/show_bug.cgi?id=668703 explains the dependency.
  */
-var ScreenShield = class extends Signals.EventEmitter {
+export class ScreenShield extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -707,4 +706,4 @@ var ScreenShield = class extends Signals.EventEmitter {
             return GLib.SOURCE_REMOVE;
         });
     }
-};
+}

@@ -1,27 +1,26 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported SwitcherPopup, SwitcherList */
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
+import * as Main from './main.js';
 
-var POPUP_DELAY_TIMEOUT = 150; // milliseconds
+const POPUP_DELAY_TIMEOUT = 150; // milliseconds
 
-var POPUP_SCROLL_TIME = 100; // milliseconds
-var POPUP_FADE_OUT_TIME = 100; // milliseconds
+const POPUP_SCROLL_TIME = 100; // milliseconds
+const POPUP_FADE_OUT_TIME = 100; // milliseconds
 
-var DISABLE_HOVER_TIMEOUT = 500; // milliseconds
-var NO_MODS_TIMEOUT = 1500; // milliseconds
+const DISABLE_HOVER_TIMEOUT = 500; // milliseconds
+const NO_MODS_TIMEOUT = 1500; // milliseconds
 
 /**
  * @param {number} a
  * @param {number} b
  * @returns {number}
  */
-function mod(a, b) {
+export function mod(a, b) {
     return (a + b) % b;
 }
 
@@ -37,7 +36,7 @@ function primaryModifier(mask) {
     return primary;
 }
 
-var SwitcherPopup = GObject.registerClass({
+export const SwitcherPopup = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class SwitcherPopup extends St.Widget {
     _init(items) {
@@ -364,7 +363,7 @@ var SwitcherPopup = GObject.registerClass({
     }
 });
 
-var SwitcherButton = GObject.registerClass(
+const SwitcherButton = GObject.registerClass(
 class SwitcherButton extends St.Button {
     _init(square) {
         super._init({
@@ -383,7 +382,7 @@ class SwitcherButton extends St.Button {
     }
 });
 
-var SwitcherList = GObject.registerClass({
+export const SwitcherList = GObject.registerClass({
     Signals: {
         'item-activated': { param_types: [GObject.TYPE_INT] },
         'item-entered': { param_types: [GObject.TYPE_INT] },
@@ -654,7 +653,7 @@ var SwitcherList = GObject.registerClass({
  * @param {St.DrawingArrow} area
  * @param {St.Side} side
  */
-function drawArrow(area, side) {
+export function drawArrow(area, side) {
     let themeNode = area.get_theme_node();
     let borderColor = themeNode.get_border_color(side);
     let bodyColor = themeNode.get_foreground_color();

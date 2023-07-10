@@ -6,9 +6,9 @@ const JsUnit = imports.jsUnit;
 import Pango from 'gi://Pango';
 
 import '../../js/ui/environment.js';
+import '../../js/ui/main.js';
 
-imports.ui.main; // eslint-disable-line no-unused-expressions
-const MessageList = imports.ui.messageList;
+import * as MessageList from '../../js/ui/messageList.js';
 
 /**
  * Assert that `input`, assumed to be markup, gets "fixed" to `output`,

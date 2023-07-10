@@ -1,24 +1,23 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported PadOsd, PadOsdService */
 
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const GDesktopEnums = imports.gi.GDesktopEnums;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
-const Rsvg = imports.gi.Rsvg;
-const St = imports.gi.St;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GDesktopEnums from 'gi://GDesktopEnums';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
+import Rsvg from 'gi://Rsvg';
+import St from 'gi://St';
 
-const Signals = imports.misc.signals;
+import * as Signals from '../misc/signals.js';
 
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const Layout = imports.ui.layout;
+import * as Main from './main.js';
+import * as PopupMenu from './popupMenu.js';
+import * as Layout from './layout.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import {loadInterfaceXML} from '../misc/fileUtils.js';
 
 const ACTIVE_COLOR = "#729fcf";
 
@@ -31,7 +30,7 @@ const CCW = 1;
 const UP = 0;
 const DOWN = 1;
 
-var PadChooser = GObject.registerClass({
+const PadChooser = GObject.registerClass({
     Signals: { 'pad-selected': { param_types: [Clutter.InputDevice.$gtype] } },
 }, class PadChooser extends St.Button {
     _init(device, groupDevices) {
@@ -100,7 +99,7 @@ var PadChooser = GObject.registerClass({
     }
 });
 
-var KeybindingEntry = GObject.registerClass({
+const KeybindingEntry = GObject.registerClass({
     Signals: { 'keybinding-edited': { param_types: [GObject.TYPE_STRING] } },
 }, class KeybindingEntry extends St.Entry {
     _init() {
@@ -120,7 +119,7 @@ var KeybindingEntry = GObject.registerClass({
     }
 });
 
-var ActionComboBox = GObject.registerClass({
+const ActionComboBox = GObject.registerClass({
     Signals: { 'action-selected': { param_types: [GObject.TYPE_INT] } },
 }, class ActionComboBox extends St.Button {
     _init() {
@@ -209,7 +208,7 @@ var ActionComboBox = GObject.registerClass({
     }
 });
 
-var ActionEditor = GObject.registerClass({
+const ActionEditor = GObject.registerClass({
     Signals: { 'done': {} },
 }, class ActionEditor extends St.Widget {
     _init() {
@@ -297,7 +296,7 @@ var ActionEditor = GObject.registerClass({
     }
 });
 
-var PadDiagram = GObject.registerClass({
+const PadDiagram = GObject.registerClass({
     Properties: {
         'left-handed': GObject.ParamSpec.boolean('left-handed',
                                                  'left-handed', 'Left handed',
@@ -641,7 +640,7 @@ var PadDiagram = GObject.registerClass({
     }
 });
 
-var PadOsd = GObject.registerClass({
+export const PadOsd = GObject.registerClass({
     Signals: {
         'pad-selected': { param_types: [Clutter.InputDevice.$gtype] },
         'closed': {},
@@ -963,7 +962,7 @@ var PadOsd = GObject.registerClass({
 
 const PadOsdIface = loadInterfaceXML('org.gnome.Shell.Wacom.PadOsd');
 
-var PadOsdService = class extends Signals.EventEmitter {
+export class PadOsdService extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -994,4 +993,4 @@ var PadOsdService = class extends Signals.EventEmitter {
         global.display.request_pad_osd(padDevice, editionMode);
         invocation.return_value(null);
     }
-};
+}

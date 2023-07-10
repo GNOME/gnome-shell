@@ -1,10 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported getSmartcardManager */
 
-const Gio = imports.gi.Gio;
-const Signals = imports.misc.signals;
+import Gio from 'gi://Gio';
+import * as Signals from './signals.js';
 
-const ObjectManager = imports.misc.objectManager;
+import * as ObjectManager from './objectManager.js';
 
 const SmartcardTokenIface = `
 <node>
@@ -21,14 +20,14 @@ let _smartcardManager = null;
 /**
  * @returns {SmartcardManager}
  */
-function getSmartcardManager() {
+export function getSmartcardManager() {
     if (_smartcardManager == null)
         _smartcardManager = new SmartcardManager();
 
     return _smartcardManager;
 }
 
-var SmartcardManager = class extends Signals.EventEmitter {
+class SmartcardManager extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -119,4 +118,4 @@ var SmartcardManager = class extends Signals.EventEmitter {
 
         return true;
     }
-};
+}

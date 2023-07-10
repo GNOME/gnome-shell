@@ -1,22 +1,19 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported init connect disconnect ExtensionManager */
 
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Signals = imports.misc.signals;
+import GLib from 'gi://GLib';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
+import Shell from 'gi://Shell';
+import * as Signals from '../misc/signals.js';
 
-const ExtensionDownloader = imports.ui.extensionDownloader;
-const ExtensionUtils = imports.misc.extensionUtils;
-const FileUtils = imports.misc.fileUtils;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
+import * as ExtensionDownloader from './extensionDownloader.js';
+import {ExtensionState, ExtensionType} from '../misc/extensionUtils.js';
+import * as FileUtils from '../misc/fileUtils.js';
+import * as Main from './main.js';
+import * as MessageTray from './messageTray.js';
 
 const Config = imports.misc.config;
-
-const { ExtensionState, ExtensionType } = ExtensionUtils;
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
 const DISABLED_EXTENSIONS_KEY = 'disabled-extensions';
@@ -25,7 +22,7 @@ const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validatio
 
 const UPDATE_CHECK_TIMEOUT = 24 * 60 * 60; // 1 day in seconds
 
-var ExtensionManager = class extends Signals.EventEmitter {
+export class ExtensionManager extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -768,7 +765,7 @@ var ExtensionManager = class extends Signals.EventEmitter {
         await this._onEnabledExtensionsChanged();
         await this._enableAllExtensions();
     }
-};
+}
 
 const ExtensionUpdateSource = GObject.registerClass(
 class ExtensionUpdateSource extends MessageTray.Source {

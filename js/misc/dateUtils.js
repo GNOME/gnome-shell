@@ -1,11 +1,10 @@
-/* exported formatDateWithCFormatString, formatTime, formatTimeSpan, clearCachedLocalTimeZone */
+import * as System from 'system';
+import * as Gettext from 'gettext';
+import GLib from 'gi://GLib';
+import Gio from 'gi://Gio';
+import Shell from 'gi://Shell';
 
-const System = imports.system;
-const Gettext = imports.gettext;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
-const Shell = imports.gi.Shell;
-const Params = imports.misc.params;
+import * as Params from './params.js';
 
 let _desktopSettings = null;
 let _localTimeZone = null;
@@ -39,7 +38,7 @@ function _convertJSDateToGLibDateTime(date) {
  * @param {string} format a format String for the date
  * @returns {string}
  */
-function formatDateWithCFormatString(date, format) {
+export function formatDateWithCFormatString(date, format) {
     const dt = _convertJSDateToGLibDateTime(date);
 
     return dt?.format(format) ?? '';
@@ -52,7 +51,7 @@ function formatDateWithCFormatString(date, format) {
  * @param {Date} date the start of the time span
  * @returns {string}
  */
-function formatTimeSpan(date) {
+export function formatTimeSpan(date) {
     if (_localTimeZone === null)
         _localTimeZone = GLib.TimeZone.new_local();
 
@@ -121,7 +120,7 @@ function formatTimeSpan(date) {
  * @param {boolean=} params.ampm whether to include the "am" or "pm" in the string
  * @returns {string}
  */
-function formatTime(time, params) {
+export function formatTime(time, params) {
     let date;
     // HACK: The built-in Date type sucks at timezones, which we need for the
     //       world clock; it's often more convenient though, so allow either
@@ -223,7 +222,7 @@ function formatTime(time, params) {
  * Update the timezone used by JavaScript Date objects and other
  * date utilities
  */
-function clearCachedLocalTimeZone() {
+export function clearCachedLocalTimeZone() {
     // SpiderMonkey caches the time zone so we must explicitly clear it
     // before we can update the calendar, see
     // https://bugzilla.gnome.org/show_bug.cgi?id=678507

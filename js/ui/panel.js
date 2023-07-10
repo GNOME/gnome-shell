@@ -1,50 +1,49 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Panel */
 
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Animation = imports.ui.animation;
-const { AppMenu } = imports.ui.appMenu;
+import * as Animation from './animation.js';
+import {AppMenu} from './appMenu.js';
 const Config = imports.misc.config;
-const CtrlAltTab = imports.ui.ctrlAltTab;
-const DND = imports.ui.dnd;
-const Overview = imports.ui.overview;
-const PopupMenu = imports.ui.popupMenu;
-const PanelMenu = imports.ui.panelMenu;
-const {QuickSettingsMenu, SystemIndicator} = imports.ui.quickSettings;
-const Main = imports.ui.main;
+import * as CtrlAltTab from './ctrlAltTab.js';
+import * as DND from './dnd.js';
+import * as Overview from './overview.js';
+import * as PopupMenu from './popupMenu.js';
+import * as PanelMenu from './panelMenu.js';
+import {QuickSettingsMenu, SystemIndicator} from './quickSettings.js';
+import * as Main from './main.js';
 
-const RemoteAccessStatus = imports.ui.status.remoteAccess;
-const PowerProfileStatus = imports.ui.status.powerProfiles;
-const RFKillStatus = imports.ui.status.rfkill;
-const CameraStatus = imports.ui.status.camera;
-const VolumeStatus = imports.ui.status.volume;
-const BrightnessStatus = imports.ui.status.brightness;
-const SystemStatus = imports.ui.status.system;
-const LocationStatus = imports.ui.status.location;
-const NightLightStatus = imports.ui.status.nightLight;
-const DarkModeStatus = imports.ui.status.darkMode;
-const BacklightStatus = imports.ui.status.backlight;
-const ThunderboltStatus = imports.ui.status.thunderbolt;
-const AutoRotateStatus = imports.ui.status.autoRotate;
-const BackgroundAppsStatus = imports.ui.status.backgroundApps;
+import * as RemoteAccessStatus from './status/remoteAccess.js';
+import * as PowerProfileStatus from './status/powerProfiles.js';
+import * as RFKillStatus from './status/rfkill.js';
+import * as CameraStatus from './status/camera.js';
+import * as VolumeStatus from './status/volume.js';
+import * as BrightnessStatus from './status/brightness.js';
+import * as SystemStatus from './status/system.js';
+import * as LocationStatus from './status/location.js';
+import * as NightLightStatus from './status/nightLight.js';
+import * as DarkModeStatus from './status/darkMode.js';
+import * as BacklightStatus from './status/backlight.js';
+import * as ThunderboltStatus from './status/thunderbolt.js';
+import * as AutoRotateStatus from './status/autoRotate.js';
+import * as BackgroundAppsStatus from './status/backgroundApps.js';
 
-const {DateMenuButton} = imports.ui.dateMenu;
-const {ATIndicator} = imports.ui.status.accessibility;
-const {InputSourceIndicator} = imports.ui.status.keyboard;
-const {DwellClickIndicator} = imports.ui.status.dwellClick;
-const {ScreenRecordingIndicator, ScreenSharingIndicator} = imports.ui.status.remoteAccess;
+import {DateMenuButton} from './dateMenu.js';
+import {ATIndicator} from './status/accessibility.js';
+import {InputSourceIndicator} from './status/keyboard.js';
+import {DwellClickIndicator} from './status/dwellClick.js';
+import {ScreenRecordingIndicator, ScreenSharingIndicator} from './status/remoteAccess.js';
 
-var PANEL_ICON_SIZE = 16;
-var APP_MENU_ICON_MARGIN = 0;
+const PANEL_ICON_SIZE = 16;
+const APP_MENU_ICON_MARGIN = 0;
 
-var BUTTON_DND_ACTIVATION_TIMEOUT = 250;
+const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
 
 const N_QUICK_SETTINGS_COLUMNS = 2;
 
@@ -56,8 +55,8 @@ const N_QUICK_SETTINGS_COLUMNS = 2;
  * this menu also handles startup notification for it.  So when we
  * have an active startup notification, we switch modes to display that.
  */
-var AppMenuButton = GObject.registerClass({
-    Signals: { 'changed': {} },
+const AppMenuButton = GObject.registerClass({
+    Signals: {'changed': {}},
 }, class AppMenuButton extends PanelMenu.Button {
     _init(panel) {
         super._init(0.0, null, true);
@@ -257,7 +256,7 @@ var AppMenuButton = GObject.registerClass({
     }
 });
 
-var ActivitiesButton = GObject.registerClass(
+const ActivitiesButton = GObject.registerClass(
 class ActivitiesButton extends PanelMenu.Button {
     _init() {
         super._init(0.0, null, true);
@@ -350,7 +349,7 @@ class UnsafeModeIndicator extends SystemIndicator {
     }
 });
 
-var QuickSettings = GObject.registerClass(
+const QuickSettings = GObject.registerClass(
 class QuickSettings extends PanelMenu.Button {
     constructor() {
         super(0.0, C_('System menu in the top bar', 'System'), true);
@@ -368,10 +367,8 @@ class QuickSettings extends PanelMenu.Button {
 
     async _setupIndicators() {
         if (Config.HAVE_NETWORKMANAGER) {
-            // TODO: This will be an asynchronous import once this migrates
-            // to modules. Add a no-op await now to enforce this being an async
-            // function.
-            const NetworkStatus = await imports.ui.status.network;
+            /** @type {import('./status/network.js')} */
+            const NetworkStatus = await import('./status/network.js');
 
             this._network = new NetworkStatus.Indicator();
         } else {
@@ -379,10 +376,8 @@ class QuickSettings extends PanelMenu.Button {
         }
 
         if (Config.HAVE_BLUETOOTH) {
-            // TODO: This will be an asynchronous import once this migrates
-            // to modules. Add a no-op await now to enforce this being an async
-            // function.
-            const BluetoothStatus = await imports.ui.status.bluetooth;
+            /** @type {import('./status/bluetooth.js')} */
+            const BluetoothStatus = await import('./status/bluetooth.js');
 
             this._bluetooth = new BluetoothStatus.Indicator();
         } else {
@@ -467,7 +462,7 @@ const PANEL_ITEM_IMPLEMENTATIONS = {
     'screenSharing': ScreenSharingIndicator,
 };
 
-var Panel = GObject.registerClass(
+export const Panel = GObject.registerClass(
 class Panel extends St.Widget {
     _init() {
         super._init({

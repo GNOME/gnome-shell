@@ -1,18 +1,17 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported addContextMenu CapsLockWarning */
 
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const BoxPointer = imports.ui.boxpointer;
-const Main = imports.ui.main;
-const Params = imports.misc.params;
-const PopupMenu = imports.ui.popupMenu;
+import * as BoxPointer from './boxpointer.js';
+import * as Main from './main.js';
+import * as Params from '../misc/params.js';
+import * as PopupMenu from './popupMenu.js';
 
-var EntryMenu = class extends PopupMenu.PopupMenu {
+export class EntryMenu extends PopupMenu.PopupMenu {
     constructor(entry) {
         super(entry, 0, St.Side.TOP);
 
@@ -102,7 +101,7 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
     _onPasswordActivated() {
         this._entry.password_visible  = !this._entry.password_visible;
     }
-};
+}
 
 function _setMenuAlignment(entry, stageX) {
     let [success, entryX] = entry.transform_stage_point(stageX, 0);
@@ -135,7 +134,7 @@ function _onPopup(actor, entry) {
  * @param {St.Entry} entry
  * @param {*} params
  */
-function addContextMenu(entry, params) {
+export function addContextMenu(entry, params) {
     if (entry.menu)
         return;
 
@@ -165,7 +164,7 @@ function addContextMenu(entry, params) {
     });
 }
 
-var CapsLockWarning = GObject.registerClass(
+export const CapsLockWarning = GObject.registerClass(
 class CapsLockWarning extends St.Label {
     _init(params) {
         let defaultParams = { style_class: 'caps-lock-warning-label' };

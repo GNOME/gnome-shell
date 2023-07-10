@@ -1,16 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Button, SystemIndicator */
 
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const St = imports.gi.St;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
-const Params = imports.misc.params;
-const PopupMenu = imports.ui.popupMenu;
+import * as Main from './main.js';
+import * as Params from '../misc/params.js';
+import * as PopupMenu from './popupMenu.js';
 
-var ButtonBox = GObject.registerClass(
+export const ButtonBox = GObject.registerClass(
 class ButtonBox extends St.Widget {
     _init(params) {
         params = Params.parse(params, {
@@ -95,7 +94,7 @@ class ButtonBox extends St.Widget {
     }
 });
 
-var Button = GObject.registerClass({
+export const Button = GObject.registerClass({
     Signals: { 'menu-set': {} },
 }, class PanelMenuButton extends ButtonBox {
     _init(menuAlignment, nameText, dontCreateMenu) {
@@ -204,7 +203,7 @@ var Button = GObject.registerClass({
  * of an icon and a menu section, which will be composed into the
  * aggregate menu.
  */
-var SystemIndicator = GObject.registerClass(
+export const SystemIndicator = GObject.registerClass(
 class SystemIndicator extends St.BoxLayout {
     _init() {
         super._init({

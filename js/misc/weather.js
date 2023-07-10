@@ -1,16 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported WeatherClient */
 
-const Geoclue = imports.gi.Geoclue;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GWeather = imports.gi.GWeather;
-const Shell = imports.gi.Shell;
-const Signals = imports.misc.signals;
+import Geoclue from 'gi://Geoclue';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GWeather from 'gi://GWeather';
+import Shell from 'gi://Shell';
+import * as Signals from './signals.js';
 
-const PermissionStore = imports.misc.permissionStore;
+import * as PermissionStore from './permissionStore.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import {loadInterfaceXML} from './fileUtils.js';
 
 Gio._promisify(Geoclue.Simple, 'new');
 
@@ -23,9 +22,9 @@ const WEATHER_INTEGRATION_IFACE = 'org.gnome.Shell.WeatherIntegration';
 const WEATHER_APP_ID = 'org.gnome.Weather.desktop';
 
 // Minimum time between updates to show loading indication
-var UPDATE_THRESHOLD = 10 * GLib.TIME_SPAN_MINUTE;
+const UPDATE_THRESHOLD = 10 * GLib.TIME_SPAN_MINUTE;
 
-var WeatherClient = class extends Signals.EventEmitter {
+export class WeatherClient extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -326,4 +325,4 @@ var WeatherClient = class extends Signals.EventEmitter {
 
         this._updateAutoLocation();
     }
-};
+}

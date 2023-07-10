@@ -1,7 +1,6 @@
-/* exported ComponentManager */
-const Main = imports.ui.main;
+import * as Main from './main.js';
 
-var ComponentManager = class {
+export class ComponentManager {
     constructor() {
         this._allComponents = {};
         this._enabledComponents = [];
@@ -28,8 +27,7 @@ var ComponentManager = class {
     }
 
     async _importComponent(name) {
-        // TODO: Import as module
-        let module = await imports.ui.components[name];
+        let module = await import(`./components/${name}.js`);
         return module.Component;
     }
 
@@ -59,4 +57,4 @@ var ComponentManager = class {
             return;
         component.disable();
     }
-};
+}

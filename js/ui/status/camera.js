@@ -1,12 +1,9 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Indicator */
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
 
-const GObject = imports.gi.GObject;
-const Shell = imports.gi.Shell;
+import {SystemIndicator} from '../quickSettings.js';
 
-const {SystemIndicator} = imports.ui.quickSettings;
-
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends SystemIndicator {
     constructor() {
         super();

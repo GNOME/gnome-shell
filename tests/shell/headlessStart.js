@@ -5,8 +5,8 @@ import GLib from 'gi://GLib';
 import MetaTest from 'gi://MetaTest';
 import Shell from 'gi://Shell';
 
-const Main = imports.ui.main;
-import * as Scripting from 'resource://org/gnome/shell/ui/scripting.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as Scripting from 'resource:///org/gnome/shell/ui/scripting.js';
 
 // This script tests that the shell handles connecting monitors after startup
 // is properly handled.
@@ -57,7 +57,6 @@ export async function run() {
         () => Scripting.scriptEvent('overviewShowDone'));
     Main.overview.connect('hidden',
         () => Scripting.scriptEvent('overviewHideDone'));
-
     Main.overview.hide();
     await Scripting.waitLeisure();
 

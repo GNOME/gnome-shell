@@ -1,11 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Ripples */
 
-const Clutter = imports.gi.Clutter;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import St from 'gi://St';
 
 // Shamelessly copied from the layout "hotcorner" ripples implementation
-var Ripples = class Ripples {
+export class Ripples {
     constructor(px, py, styleClass) {
         this._x = 0;
         this._y = 0;
@@ -108,4 +107,4 @@ var Ripples = class Ripples {
         this._animRipple(this._ripple2,  50,   1000,   0.0,   0.7,     1.25);
         this._animRipple(this._ripple3, 350,   1000,   0.0,   0.3,     1);
     }
-};
+}

@@ -1,46 +1,46 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported AppDisplay, AppSearchProvider */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Graphene = imports.gi.Graphene;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gio from 'gi://Gio';
+import Graphene from 'gi://Graphene';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const AppFavorites = imports.ui.appFavorites;
-const { AppMenu } = imports.ui.appMenu;
-const BoxPointer = imports.ui.boxpointer;
-const DND = imports.ui.dnd;
-const GrabHelper = imports.ui.grabHelper;
-const IconGrid = imports.ui.iconGrid;
-const Layout = imports.ui.layout;
-const Main = imports.ui.main;
-const PageIndicators = imports.ui.pageIndicators;
-const ParentalControlsManager = imports.misc.parentalControlsManager;
-const PopupMenu = imports.ui.popupMenu;
-const Search = imports.ui.search;
-const SwipeTracker = imports.ui.swipeTracker;
-const Params = imports.misc.params;
-const SystemActions = imports.misc.systemActions;
+import * as AppFavorites from './appFavorites.js';
+import {AppMenu} from './appMenu.js';
+import * as BoxPointer from './boxpointer.js';
+import * as DND from './dnd.js';
+import * as GrabHelper from './grabHelper.js';
+import * as IconGrid from './iconGrid.js';
+import * as Layout from './layout.js';
+import * as PageIndicators from './pageIndicators.js';
+import * as ParentalControlsManager from '../misc/parentalControlsManager.js';
+import * as PopupMenu from './popupMenu.js';
+import * as Search from './search.js';
+import * as SwipeTracker from './swipeTracker.js';
+import * as Params from '../misc/params.js';
+import * as SystemActions from '../misc/systemActions.js';
 
-var MENU_POPUP_TIMEOUT = 600;
-var POPDOWN_DIALOG_TIMEOUT = 500;
+import * as Main from './main.js';
 
-var FOLDER_SUBICON_FRACTION = .4;
+const MENU_POPUP_TIMEOUT = 600;
+const POPDOWN_DIALOG_TIMEOUT = 500;
 
-var VIEWS_SWITCH_TIME = 400;
-var VIEWS_SWITCH_ANIMATION_DELAY = 100;
+const FOLDER_SUBICON_FRACTION = .4;
 
-var SCROLL_TIMEOUT_TIME = 150;
+const VIEWS_SWITCH_TIME = 400;
+const VIEWS_SWITCH_ANIMATION_DELAY = 100;
 
-var APP_ICON_SCALE_IN_TIME = 500;
-var APP_ICON_SCALE_IN_DELAY = 700;
+const SCROLL_TIMEOUT_TIME = 150;
 
-var APP_ICON_TITLE_EXPAND_TIME = 200;
-var APP_ICON_TITLE_COLLAPSE_TIME = 100;
+const APP_ICON_SCALE_IN_TIME = 500;
+const APP_ICON_SCALE_IN_DELAY = 700;
+
+const APP_ICON_TITLE_EXPAND_TIME = 200;
+const APP_ICON_TITLE_COLLAPSE_TIME = 100;
 
 const FOLDER_DIALOG_ANIMATION_TIME = 200;
 
@@ -154,7 +154,7 @@ function _findBestFolderName(apps) {
     return null;
 }
 
-const AppGrid = GObject.registerClass({
+export const AppGrid = GObject.registerClass({
     Properties: {
         'indicators-padding': GObject.ParamSpec.boxed('indicators-padding',
             'Indicators padding', 'Indicators padding',
@@ -1284,7 +1284,7 @@ var BaseAppView = GObject.registerClass({
     }
 });
 
-var PageManager = GObject.registerClass({
+const PageManager = GObject.registerClass({
     Signals: { 'layout-changed': {} },
 }, class PageManager extends GObject.Object {
     _init() {
@@ -1345,7 +1345,7 @@ var PageManager = GObject.registerClass({
     }
 });
 
-var AppDisplay = GObject.registerClass(
+export const AppDisplay = GObject.registerClass(
 class AppDisplay extends BaseAppView {
     _init() {
         super._init({
@@ -1788,7 +1788,7 @@ class AppDisplay extends BaseAppView {
     }
 });
 
-var AppSearchProvider = class AppSearchProvider {
+export class AppSearchProvider {
     constructor() {
         this._appSys = Shell.AppSystem.get_default();
         this.id = 'applications';
@@ -1879,9 +1879,9 @@ var AppSearchProvider = class AppSearchProvider {
             return new SystemActionIcon(this, resultMeta);
         }
     }
-};
+}
 
-var AppViewItem = GObject.registerClass(
+export const AppViewItem = GObject.registerClass(
 class AppViewItem extends St.Button {
     _init(params = {}, isDraggable = true, expandTitleOnHover = true) {
         super._init({
@@ -2098,7 +2098,7 @@ class AppViewItem extends St.Button {
     }
 });
 
-var FolderGrid = GObject.registerClass(
+const FolderGrid = GObject.registerClass(
 class FolderGrid extends AppGrid {
     _init() {
         super._init({
@@ -2118,7 +2118,7 @@ class FolderGrid extends AppGrid {
     }
 });
 
-var FolderView = GObject.registerClass(
+export const FolderView = GObject.registerClass(
 class FolderView extends BaseAppView {
     _init(folder, id, parentView) {
         super._init({
@@ -2313,7 +2313,7 @@ class FolderView extends BaseAppView {
     }
 });
 
-var FolderIcon = GObject.registerClass({
+export const FolderIcon = GObject.registerClass({
     Signals: {
         'apps-changed': {},
     },
@@ -2489,7 +2489,7 @@ var FolderIcon = GObject.registerClass({
     }
 });
 
-var AppFolderDialog = GObject.registerClass({
+export const AppFolderDialog = GObject.registerClass({
     Signals: {
         'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
     },
@@ -2974,7 +2974,7 @@ var AppFolderDialog = GObject.registerClass({
     }
 });
 
-var AppIcon = GObject.registerClass({
+export const AppIcon = GObject.registerClass({
     Signals: {
         'menu-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
         'sync-tooltip': {},
@@ -3279,7 +3279,7 @@ var AppIcon = GObject.registerClass({
     }
 });
 
-var SystemActionIcon = GObject.registerClass(
+const SystemActionIcon = GObject.registerClass(
 class SystemActionIcon extends Search.GridSearchResult {
     activate() {
         SystemActions.getDefault().activateAction(this.metaInfo['id']);

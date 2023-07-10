@@ -1,25 +1,24 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Dash */
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Graphene = imports.gi.Graphene;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const AppDisplay = imports.ui.appDisplay;
-const AppFavorites = imports.ui.appFavorites;
-const DND = imports.ui.dnd;
-const IconGrid = imports.ui.iconGrid;
-const Main = imports.ui.main;
-const Overview = imports.ui.overview;
+import * as AppDisplay from './appDisplay.js';
+import * as AppFavorites from './appFavorites.js';
+import * as DND from './dnd.js';
+import * as IconGrid from './iconGrid.js';
+import * as Main from './main.js';
+import * as Overview from './overview.js';
 
-var DASH_ANIMATION_TIME = 200;
-var DASH_ITEM_LABEL_SHOW_TIME = 150;
-var DASH_ITEM_LABEL_HIDE_TIME = 100;
-var DASH_ITEM_HOVER_TIMEOUT = 300;
+const DASH_ANIMATION_TIME = 200;
+const DASH_ITEM_LABEL_SHOW_TIME = 150;
+const DASH_ITEM_LABEL_HIDE_TIME = 100;
+const DASH_ITEM_HOVER_TIMEOUT = 300;
 
 /**
  * @param {AppDisplay.AppIcon} source
@@ -31,7 +30,7 @@ function getAppFromSource(source) {
         return null;
 }
 
-var DashIcon = GObject.registerClass(
+export const DashIcon = GObject.registerClass(
 class DashIcon extends AppDisplay.AppIcon {
     _init(app) {
         super._init(app, {
@@ -62,7 +61,7 @@ class DashIcon extends AppDisplay.AppIcon {
 
 // A container like StBin, but taking the child's scale into account
 // when requesting a size
-var DashItemContainer = GObject.registerClass(
+export const DashItemContainer = GObject.registerClass(
 class DashItemContainer extends St.Widget {
     _init() {
         super._init({
@@ -200,7 +199,7 @@ class DashItemContainer extends St.Widget {
     }
 });
 
-var ShowAppsIcon = GObject.registerClass(
+export const ShowAppsIcon = GObject.registerClass(
 class ShowAppsIcon extends DashItemContainer {
     _init() {
         super._init();
@@ -285,7 +284,7 @@ class ShowAppsIcon extends DashItemContainer {
     }
 });
 
-var DragPlaceholderItem = GObject.registerClass(
+const DragPlaceholderItem = GObject.registerClass(
 class DragPlaceholderItem extends DashItemContainer {
     _init() {
         super._init();
@@ -293,7 +292,7 @@ class DragPlaceholderItem extends DashItemContainer {
     }
 });
 
-var EmptyDropTargetItem = GObject.registerClass(
+const EmptyDropTargetItem = GObject.registerClass(
 class EmptyDropTargetItem extends DashItemContainer {
     _init() {
         super._init();
@@ -317,7 +316,7 @@ class DashIconsLayout extends Clutter.BoxLayout {
 
 const baseIconSizes = [16, 22, 24, 32, 48, 64];
 
-var Dash = GObject.registerClass({
+export const Dash = GObject.registerClass({
     Signals: { 'icon-size-changed': {} },
 }, class Dash extends St.Widget {
     _init() {

@@ -1,11 +1,9 @@
-/* exported adjustAnimationTime, ensureActorVisibleInScrollView, wiggle */
+import St from 'gi://St';
+import Clutter from 'gi://Clutter';
 
-const St = imports.gi.St;
-const Clutter = imports.gi.Clutter;
+import * as Params from './params.js';
 
-const Params = imports.misc.params;
-
-var SCROLL_TIME = 100;
+const SCROLL_TIME = 100;
 
 const WIGGLE_OFFSET = 6;
 const WIGGLE_DURATION = 65;
@@ -19,7 +17,7 @@ const N_WIGGLES = 3;
  * Adjust `msecs` to account for St's enable-animations
  * and slow-down-factor settings
  */
-function adjustAnimationTime(msecs) {
+export function adjustAnimationTime(msecs) {
     const settings = St.Settings.get();
 
     if (!settings.enable_animations)
@@ -33,7 +31,7 @@ function adjustAnimationTime(msecs) {
  * @param {St.ScrollView} scrollView - the scroll view the actor is in
  * @param {Clutter.Actor} actor - the actor
  */
-function ensureActorVisibleInScrollView(scrollView, actor) {
+export function ensureActorVisibleInScrollView(scrollView, actor) {
     const {adjustment} = scrollView.vscroll;
     let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
 
@@ -79,7 +77,7 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
  * @param {number} params.duration - the amount of time to move the actor per-wiggle
  * @param {number} params.wiggleCount - the number of times to wiggle the actor
  */
-function wiggle(actor, params) {
+export function wiggle(actor, params) {
     if (!St.Settings.get().enable_animations)
         return;
 

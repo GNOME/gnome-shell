@@ -43,12 +43,11 @@
  * are not used elsewhere. These APIs may ultimately get dropped entirely and
  * replaced by something else.
  */
-/* exported ConcurrentBatch, ConsecutiveBatch */
 
-const GObject = imports.gi.GObject;
-const Signals = imports.misc.signals;
+import GObject from 'gi://GObject';
+import * as Signals from '../misc/signals.js';
 
-var Task = class extends Signals.EventEmitter {
+export class Task extends Signals.EventEmitter {
     constructor(scope, handler) {
         super();
 
@@ -66,9 +65,9 @@ var Task = class extends Signals.EventEmitter {
 
         return null;
     }
-};
+}
 
-var Hold = class extends Task {
+export class Hold extends Task {
     constructor() {
         super(null, () => this);
 
@@ -102,9 +101,9 @@ var Hold = class extends Task {
     isAcquired() {
         return this._acquisitions > 0;
     }
-};
+}
 
-var Batch = class extends Task {
+export class Batch extends Task {
     constructor(scope, tasks) {
         super();
 
@@ -171,9 +170,9 @@ var Batch = class extends Task {
     cancel() {
         this.tasks = this.tasks.splice(0, this._currentTaskIndex + 1);
     }
-};
+}
 
-var ConcurrentBatch = class extends Batch {
+export class ConcurrentBatch extends Batch {
     process() {
         let hold = this.runTask();
 
@@ -185,9 +184,9 @@ var ConcurrentBatch = class extends Batch {
         // concurrently.
         this.nextTask();
     }
-};
+}
 
-var ConsecutiveBatch = class extends Batch {
+export class ConsecutiveBatch extends Batch {
     process() {
         let hold = this.runTask();
 
@@ -203,4 +202,4 @@ var ConsecutiveBatch = class extends Batch {
             this.nextTask();
         }
     }
-};
+}

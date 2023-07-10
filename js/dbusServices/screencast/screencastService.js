@@ -7,7 +7,7 @@ import Gtk from 'gi://Gtk?version=4.0';
 import {ServiceImplementation} from './dbusService.js';
 
 const {loadInterfaceXML, loadSubInterfaceXML} = imports.misc.dbusUtils;
-const Signals = imports.misc.signals;
+import * as Signals from './misc/signals.js';
 
 const ScreencastIface = loadInterfaceXML('org.gnome.Shell.Screencast');
 
@@ -63,7 +63,7 @@ const SessionState = {
     STOPPED: 'STOPPED',
 };
 
-var Recorder = class extends Signals.EventEmitter {
+class Recorder extends Signals.EventEmitter {
     constructor(sessionPath, x, y, width, height, filePath, options,
         invocation) {
         super();
@@ -397,7 +397,7 @@ var Recorder = class extends Signals.EventEmitter {
         return Gst.parse_launch_full(fullPipeline, null,
             Gst.ParseFlags.FATAL_ERRORS);
     }
-};
+}
 
 export const ScreencastService = class extends ServiceImplementation {
     static canScreencast() {

@@ -1,16 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Lightbox */
 
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Params = imports.misc.params;
+import * as Params from '../misc/params.js';
 
-var DEFAULT_FADE_FACTOR = 0.4;
-var VIGNETTE_BRIGHTNESS = 0.5;
-var VIGNETTE_SHARPNESS = 0.7;
+export const DEFAULT_FADE_FACTOR = 0.4;
+export const VIGNETTE_BRIGHTNESS = 0.5;
+export const VIGNETTE_SHARPNESS = 0.7;
 
 const VIGNETTE_DECLARATIONS = '                                              \
 uniform float brightness;                                                  \n\
@@ -29,7 +28,7 @@ cogl_color_out.a *= 1.0 - pixel_brightness * brightness;                   \n\
 cogl_color_out.a += (rand(position) - 0.5) / 100.0;                        \n';
 
 
-var RadialShaderEffect = GObject.registerClass({
+const RadialShaderEffect = GObject.registerClass({
     Properties: {
         'brightness': GObject.ParamSpec.float(
             'brightness', 'brightness', 'brightness',
@@ -89,7 +88,7 @@ var RadialShaderEffect = GObject.registerClass({
 /**
  * Lightbox:
  */
-var Lightbox = GObject.registerClass({
+export const Lightbox = GObject.registerClass({
     Properties: {
         'active': GObject.ParamSpec.boolean(
             'active', 'active', 'active', GObject.ParamFlags.READABLE, false),

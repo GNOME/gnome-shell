@@ -8,7 +8,7 @@ import '../../js/ui/environment.js';
 
 import * as Assertions from '../common/assertions.js';
 
-const Util = imports.misc.util;
+import * as Util from '../../js/misc/util.js';
 
 let arrayInt = [1, 2, 3, 5, 6];
 Util.insertSorted(arrayInt, 4, (one, two) => one - two);

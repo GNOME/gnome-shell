@@ -1,13 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Indicator */
 
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
 
+import {QuickSlider, SystemIndicator} from '../quickSettings.js';
 
-const {QuickSlider, SystemIndicator} = imports.ui.quickSettings;
-
-const {loadInterfaceXML} = imports.misc.fileUtils;
+import {loadInterfaceXML} from '../../misc/fileUtils.js';
 
 const BUS_NAME = 'org.gnome.SettingsDaemon.Power';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Power';
@@ -56,7 +54,7 @@ class BrightnessItem extends QuickSlider {
     }
 });
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends SystemIndicator {
     _init() {
         super._init();

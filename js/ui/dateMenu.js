@@ -1,24 +1,22 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported DateMenuButton */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GnomeDesktop = imports.gi.GnomeDesktop;
-const GObject = imports.gi.GObject;
-const GWeather = imports.gi.GWeather;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GnomeDesktop from 'gi://GnomeDesktop';
+import GObject from 'gi://GObject';
+import GWeather from 'gi://GWeather';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const Calendar = imports.ui.calendar;
-const Weather = imports.misc.weather;
-const DateUtils = imports.misc.dateUtils;
+import * as Main from './main.js';
+import * as PanelMenu from './panelMenu.js';
+import * as Calendar from './calendar.js';
+import * as Weather from '../misc/weather.js';
 
-const {formatDateWithCFormatString, formatTime} = imports.misc.dateUtils;
-const {loadInterfaceXML} = imports.misc.fileUtils;
+import {formatDateWithCFormatString, formatTime, clearCachedLocalTimeZone} from '../misc/dateUtils.js';
+import {loadInterfaceXML} from '../misc/fileUtils.js';
 
 const NC_ = (context, str) => `${context}\u0004${str}`;
 const T_ = Shell.util_translate_time_string;
@@ -52,7 +50,7 @@ function _gDateTimeToDate(datetime) {
     return new Date(datetime.to_unix() * 1000 + datetime.get_microsecond() / 1000);
 }
 
-var TodayButton = GObject.registerClass(
+const TodayButton = GObject.registerClass(
 class TodayButton extends St.Button {
     _init(calendar) {
         // Having the ability to go to the current date if the user is already
@@ -109,7 +107,7 @@ class TodayButton extends St.Button {
     }
 });
 
-var EventsSection = GObject.registerClass(
+const EventsSection = GObject.registerClass(
 class EventsSection extends St.Button {
     _init() {
         super._init({
@@ -328,7 +326,7 @@ class EventsSection extends St.Button {
     }
 });
 
-var WorldClocksSection = GObject.registerClass(
+const WorldClocksSection = GObject.registerClass(
 class WorldClocksSection extends St.Button {
     _init() {
         super._init({
@@ -534,7 +532,7 @@ class WorldClocksSection extends St.Button {
     }
 });
 
-var WeatherSection = GObject.registerClass(
+const WeatherSection = GObject.registerClass(
 class WeatherSection extends St.Button {
     _init() {
         super._init({
@@ -727,7 +725,7 @@ class WeatherSection extends St.Button {
     }
 });
 
-var MessagesIndicator = GObject.registerClass(
+const MessagesIndicator = GObject.registerClass(
 class MessagesIndicator extends St.Icon {
     _init() {
         super._init({
@@ -788,7 +786,7 @@ class MessagesIndicator extends St.Icon {
     }
 });
 
-var FreezableBinLayout = GObject.registerClass(
+const FreezableBinLayout = GObject.registerClass(
 class FreezableBinLayout extends Clutter.BinLayout {
     _init() {
         super._init();
@@ -828,7 +826,7 @@ class FreezableBinLayout extends Clutter.BinLayout {
     }
 });
 
-var CalendarColumnLayout = GObject.registerClass(
+const CalendarColumnLayout = GObject.registerClass(
 class CalendarColumnLayout extends Clutter.BoxLayout {
     _init(actors) {
         super._init({orientation: Clutter.Orientation.VERTICAL});
@@ -847,7 +845,7 @@ class CalendarColumnLayout extends Clutter.BoxLayout {
     }
 });
 
-var DateMenuButton = GObject.registerClass(
+export const DateMenuButton = GObject.registerClass(
 class DateMenuButton extends PanelMenu.Button {
     _init() {
         let hbox;
@@ -970,7 +968,7 @@ class DateMenuButton extends PanelMenu.Button {
     }
 
     _updateTimeZone() {
-        DateUtils.clearCachedLocalTimeZone();
+        clearCachedLocalTimeZone();
 
         this._calendar.updateTimeZone();
     }

@@ -1,19 +1,18 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported WorkspaceSwitcherPopup */
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const Layout = imports.ui.layout;
-const Main = imports.ui.main;
+import * as Layout from './layout.js';
+import * as Main from './main.js';
 
-var ANIMATION_TIME = 100;
-var DISPLAY_TIMEOUT = 600;
+const ANIMATION_TIME = 100;
+const DISPLAY_TIMEOUT = 600;
 
 
-var WorkspaceSwitcherPopup = GObject.registerClass(
+export const WorkspaceSwitcherPopup = GObject.registerClass(
 class WorkspaceSwitcherPopup extends Clutter.Actor {
     _init() {
         super._init({

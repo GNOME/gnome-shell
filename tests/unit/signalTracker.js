@@ -6,9 +6,9 @@ import '../../js/ui/environment.js';
 import GObject from 'gi://GObject';
 
 const JsUnit = imports.jsUnit;
-const Signals = imports.misc.signals;
+import * as Signals from '../../js/misc/signals.js';
 
-const {TransientSignalHolder, registerDestroyableType} = imports.misc.signalTracker;
+import {TransientSignalHolder, registerDestroyableType} from '../../js/misc/signalTracker.js';
 
 const Destroyable = GObject.registerClass({
     Signals: {'destroy': {}},

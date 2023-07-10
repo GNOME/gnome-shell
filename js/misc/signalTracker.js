@@ -1,5 +1,4 @@
-/* exported TransientSignalHolder, connectObject, disconnectObject */
-const GObject = imports.gi.GObject;
+import GObject from 'gi://GObject';
 
 const destroyableTypes = [];
 
@@ -12,7 +11,7 @@ function _hasDestroySignal(obj) {
     return destroyableTypes.some(type => obj instanceof type);
 }
 
-var TransientSignalHolder = GObject.registerClass(
+export const TransientSignalHolder = GObject.registerClass(
 class TransientSignalHolder extends GObject.Object {
     static [GObject.signals] = {
         'destroy': {},
@@ -207,7 +206,7 @@ class SignalTracker {
  * with an optional flags value, followed by an object to track
  * @returns {void}
  */
-function connectObject(thisObj, ...args) {
+export function connectObject(thisObj, ...args) {
     const getParams = argArray => {
         const [signalName, handler, arg, ...rest] = argArray;
         if (typeof arg !== 'number')
@@ -254,7 +253,7 @@ function connectObject(thisObj, ...args) {
  * @param {Object} obj - the tracked object
  * @returns {void}
  */
-function disconnectObject(thisObj, obj) {
+export function disconnectObject(thisObj, obj) {
     SignalManager.getDefault().maybeGetSignalTracker(thisObj)?.untrack(obj);
 }
 
@@ -264,7 +263,7 @@ function disconnectObject(thisObj, obj) {
  *
  * @param {GObject.Type} gtype - a GObject type
  */
-function registerDestroyableType(gtype) {
+export function registerDestroyableType(gtype) {
     if (!GObject.type_is_a(gtype, GObject.Object))
         throw new Error(`${gtype} is not a GObject subclass`);
 

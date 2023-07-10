@@ -11,7 +11,7 @@ import {programInvocationName, programArgs} from 'system';
 const _ = Gettext.gettext;
 
 const Config = imports.misc.config;
-const {loadInterfaceXML} = imports.misc.fileUtils;
+import {loadInterfaceXML} from './fileUtils.js';
 
 const PortalHelperResult = {
     CANCELLED: 0,
@@ -39,7 +39,7 @@ const CONNECTIVITY_RECHECK_RATELIMIT_TIMEOUT = 30 * GLib.USEC_PER_SEC;
 
 const HelperDBusInterface = loadInterfaceXML('org.gnome.Shell.PortalHelper');
 
-var PortalSecurityButton = GObject.registerClass(
+const PortalSecurityButton = GObject.registerClass(
 class PortalSecurityButton extends Gtk.MenuButton {
     _init() {
         const popover = new Gtk.Popover();
@@ -107,7 +107,7 @@ class PortalSecurityButton extends Gtk.MenuButton {
     }
 });
 
-var PortalWindow = GObject.registerClass(
+const PortalWindow = GObject.registerClass(
 class PortalWindow extends Gtk.ApplicationWindow {
     _init(application, url, timestamp, doneCallback) {
         super._init({
@@ -281,7 +281,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
     }
 });
 
-var WebPortalHelper = GObject.registerClass(
+const WebPortalHelper = GObject.registerClass(
 class WebPortalHelper extends Adw.Application {
     _init() {
         super._init({

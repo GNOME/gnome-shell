@@ -1,40 +1,39 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ControlsManager */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import GLib from 'gi://GLib';
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const AppDisplay = imports.ui.appDisplay;
-const Dash = imports.ui.dash;
-const Layout = imports.ui.layout;
-const Main = imports.ui.main;
-const Overview = imports.ui.overview;
-const SearchController = imports.ui.searchController;
-const Util = imports.misc.util;
-const WindowManager = imports.ui.windowManager;
-const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
-const WorkspacesView = imports.ui.workspacesView;
+import * as AppDisplay from './appDisplay.js';
+import * as Dash from './dash.js';
+import * as Layout from './layout.js';
+import * as Main from './main.js';
+import * as Overview from './overview.js';
+import * as SearchController from './searchController.js';
+import * as Util from '../misc/util.js';
+import * as WindowManager from './windowManager.js';
+import * as WorkspaceThumbnail from './workspaceThumbnail.js';
+import * as WorkspacesView from './workspacesView.js';
 
 const SMALL_WORKSPACE_RATIO = 0.15;
 const DASH_MAX_HEIGHT_RATIO = 0.15;
 
 const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
 
-var SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME;
+export const SIDE_CONTROLS_ANIMATION_TIME = 250;
 
 /** @enum {number} */
-var ControlsState = {
+export const ControlsState = {
     HIDDEN: 0,
     WINDOW_PICKER: 1,
     APP_GRID: 2,
 };
 
-var ControlsManagerLayout = GObject.registerClass(
+const ControlsManagerLayout = GObject.registerClass(
 class ControlsManagerLayout extends Clutter.BoxLayout {
     _init(searchEntry, appDisplay, workspacesDisplay, workspacesThumbnails,
         searchController, dash, stateAdjustment) {
@@ -265,7 +264,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
     }
 });
 
-var OverviewAdjustment = GObject.registerClass({
+export const OverviewAdjustment = GObject.registerClass({
     Properties: {
         'gesture-in-progress': GObject.ParamSpec.boolean(
             'gesture-in-progress', 'Gesture in progress', 'Gesture in progress',
@@ -316,7 +315,7 @@ var OverviewAdjustment = GObject.registerClass({
     }
 });
 
-var ControlsManager = GObject.registerClass(
+export const ControlsManager = GObject.registerClass(
 class ControlsManager extends St.Widget {
     _init() {
         super._init({

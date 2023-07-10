@@ -1,15 +1,14 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
-/* exported Slider */
 
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
 
-const BarLevel = imports.ui.barLevel;
+import * as BarLevel from './barLevel.js';
 
-var SLIDER_SCROLL_STEP = 0.02; /* Slider scrolling step in % */
+const SLIDER_SCROLL_STEP = 0.02; /* Slider scrolling step in % */
 
-var Slider = GObject.registerClass({
+export const Slider = GObject.registerClass({
     Signals: {
         'drag-begin': {},
         'drag-end': {},

@@ -1,34 +1,33 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Overview, ANIMATION_TIME */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../misc/signals.js';
 
 // Time for initial animation going into Overview mode;
 // this is defined here to make it available in imports.
-var ANIMATION_TIME = 250;
+export const ANIMATION_TIME = 250;
 
-const DND = imports.ui.dnd;
-const LayoutManager = imports.ui.layout;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
-const OverviewControls = imports.ui.overviewControls;
-const Params = imports.misc.params;
-const SwipeTracker = imports.ui.swipeTracker;
-const WindowManager = imports.ui.windowManager;
-const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
+import * as DND from './dnd.js';
+import * as LayoutManager from './layout.js';
+import * as Main from './main.js';
+import * as MessageTray from './messageTray.js';
+import * as OverviewControls from './overviewControls.js';
+import * as Params from '../misc/params.js';
+import * as SwipeTracker from './swipeTracker.js';
+import * as WindowManager from './windowManager.js';
+import * as WorkspaceThumbnail from './workspaceThumbnail.js';
 
-var DND_WINDOW_SWITCH_TIMEOUT = 750;
+const DND_WINDOW_SWITCH_TIMEOUT = 750;
 
-var OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
+const OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
 
-var ShellInfo = class {
+class ShellInfo {
     constructor() {
         this._source = null;
     }
@@ -65,9 +64,9 @@ var ShellInfo = class {
 
         this._source.showNotification(notification);
     }
-};
+}
 
-var OverviewActor = GObject.registerClass(
+const OverviewActor = GObject.registerClass(
 class OverviewActor extends St.BoxLayout {
     _init() {
         super._init({
@@ -149,7 +148,7 @@ const OVERVIEW_SHOWN_TRANSITIONS = {
     },
 };
 
-var Overview = class extends Signals.EventEmitter {
+export class Overview extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -725,4 +724,4 @@ var Overview = class extends Signals.EventEmitter {
     get searchEntry() {
         return this._overview.searchEntry;
     }
-};
+}

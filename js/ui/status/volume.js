@@ -1,16 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported OutputIndicator InputIndicator */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gvc = imports.gi.Gvc;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gvc from 'gi://Gvc';
 
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
+import * as Main from '../main.js';
+import * as PopupMenu from '../popupMenu.js';
 
-const {QuickSlider, SystemIndicator} = imports.ui.quickSettings;
+import {QuickSlider, SystemIndicator} from '../quickSettings.js';
 
 const ALLOW_AMPLIFIED_VOLUME_KEY = 'allow-volume-above-100-percent';
 const UNMUTE_DEFAULT_VOLUME = 0.25;
@@ -18,10 +17,11 @@ const UNMUTE_DEFAULT_VOLUME = 0.25;
 // Each Gvc.MixerControl is a connection to PulseAudio,
 // so it's better to make it a singleton
 let _mixerControl;
+
 /**
  * @returns {Gvc.MixerControl} - the mixer control singleton
  */
-function getMixerControl() {
+export function getMixerControl() {
     if (_mixerControl)
         return _mixerControl;
 
@@ -429,7 +429,7 @@ class VolumeIndicator extends SystemIndicator {
     }
 });
 
-var OutputIndicator = GObject.registerClass(
+export const OutputIndicator = GObject.registerClass(
 class OutputIndicator extends VolumeIndicator {
     constructor() {
         super();
@@ -469,7 +469,7 @@ class OutputIndicator extends VolumeIndicator {
     }
 });
 
-var InputIndicator = GObject.registerClass(
+export const InputIndicator = GObject.registerClass(
 class InputIndicator extends VolumeIndicator {
     constructor() {
         super();

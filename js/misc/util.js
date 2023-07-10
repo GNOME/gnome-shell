@@ -1,16 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported findUrls, spawn, spawnCommandLine, spawnApp, trySpawnCommandLine,
-            createTimeLabel, insertSorted, lerp, GNOMEversionCompare,
-            DBusSenderChecker, Highlighter */
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const GnomeDesktop = imports.gi.GnomeDesktop;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import GnomeDesktop from 'gi://GnomeDesktop';
 
-const Main = imports.ui.main;
-const {formatTime} = imports.misc.dateUtils;
+import * as Main from '../ui/main.js';
+import {formatTime} from './dateUtils.js';
 
 // http://daringfireball.net/2010/07/improved_regex_for_matching_urls
 const _balancedParens = '\\([^\\s()<>]+\\)';
@@ -52,7 +49,7 @@ let _desktopSettings = null;
  *
  * @returns {{url: string, pos: number}[]} the list of match objects, as described above
  */
-function findUrls(str) {
+export function findUrls(str) {
     let res = [], match;
     while ((match = _urlRegexp.exec(str)))
         res.push({ url: match[2], pos: match.index + match[1].length });
@@ -67,7 +64,7 @@ function findUrls(str) {
  *
  * @param {readonly string[]} argv an argv array
  */
-function spawn(argv) {
+export function spawn(argv) {
     try {
         trySpawn(argv);
     } catch (err) {
@@ -83,7 +80,7 @@ function spawn(argv) {
  * Runs commandLine in the background, handling any errors that
  * occur when trying to parse or start the program.
  */
-function spawnCommandLine(commandLine) {
+export function spawnCommandLine(commandLine) {
     try {
         let [success_, argv] = GLib.shell_parse_argv(commandLine);
         trySpawn(argv);
@@ -99,7 +96,7 @@ function spawnCommandLine(commandLine) {
  *
  * Runs argv as if it was an application, handling startup notification
  */
-function spawnApp(argv) {
+export function spawnApp(argv) {
     try {
         let app = Gio.AppInfo.create_from_commandline(argv.join(' '), null,
                                                       Gio.AppInfoCreateFlags.SUPPORTS_STARTUP_NOTIFICATION);
@@ -169,7 +166,7 @@ function trySpawn(argv) {
  * Runs commandLine in the background. If launching commandLine
  * fails, this will throw an error.
  */
-function trySpawnCommandLine(commandLine) {
+export function trySpawnCommandLine(commandLine) {
     let success_, argv;
 
     try {
@@ -197,7 +194,7 @@ function _handleSpawnError(command, err) {
  * @param {object} params params for {@link formatTime}
  * @returns {St.Label}
  */
-function createTimeLabel(date, params) {
+export function createTimeLabel(date, params) {
     if (_desktopSettings == null)
         _desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
 
@@ -264,7 +261,7 @@ function lowerBound(array, val, cmp) {
  *
  * Returns the position at which it was inserted
  */
-function insertSorted(array, val, cmp) {
+export function insertSorted(array, val, cmp) {
     let pos = lowerBound(array, val, cmp);
     array.splice(pos, 0, val);
 
@@ -277,7 +274,7 @@ function insertSorted(array, val, cmp) {
  * @param {number} progress
  * @returns {number}
  */
-function lerp(start, end, progress) {
+export function lerp(start, end, progress) {
     return start + progress * (end - start);
 }
 
@@ -311,7 +308,7 @@ function _GNOMEversionToNumber(version) {
  * Returns an integer less than, equal to, or greater than
  * zero, if `version1` is older, equal or newer than `version2`
  */
-function GNOMEversionCompare(version1, version2) {
+export function GNOMEversionCompare(version1, version2) {
     const v1Array = version1.split('.');
     const v2Array = version2.split('.');
 
@@ -327,7 +324,7 @@ function GNOMEversionCompare(version1, version2) {
     return 0;
 }
 
-var DBusSenderChecker = class {
+export class DBusSenderChecker {
     /**
      * @param {string[]} allowList - list of allowed well-known names
      */
@@ -402,10 +399,10 @@ var DBusSenderChecker = class {
             Gio.DBus.unwatch_name(id);
         this._watchList = [];
     }
-};
+}
 
 /* @class Highlighter Highlight given terms in text using markup. */
-var Highlighter = class {
+export class Highlighter {
     /**
      * @param {?string[]} terms - list of terms to highlight
      */
@@ -454,4 +451,4 @@ var Highlighter = class {
 
         return escaped.join('');
     }
-};
+}

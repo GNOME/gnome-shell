@@ -1,23 +1,22 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 //
 // A widget showing the user avatar and name
-/* exported UserWidget */
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const Params = imports.misc.params;
+import * as Params from '../misc/params.js';
 
-var AVATAR_ICON_SIZE = 64;
+const AVATAR_ICON_SIZE = 64;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
 //
 // Copyright (C) 2004-2005 James M. Cape <jcape@ignore-your.tv>.
 // Copyright (C) 2008,2009 Red Hat, Inc.
 
-var Avatar = GObject.registerClass(
+export const Avatar = GObject.registerClass(
 class Avatar extends St.Bin {
     _init(user, params) {
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
@@ -96,7 +95,7 @@ class Avatar extends St.Bin {
     }
 });
 
-var UserWidgetLabel = GObject.registerClass(
+export const UserWidgetLabel = GObject.registerClass(
 class UserWidgetLabel extends St.Widget {
     _init(user) {
         super._init({ layout_manager: new Clutter.BinLayout() });
@@ -165,7 +164,7 @@ class UserWidgetLabel extends St.Widget {
     }
 });
 
-var UserWidget = GObject.registerClass(
+export const UserWidget = GObject.registerClass(
 class UserWidget extends St.BoxLayout {
     _init(user, orientation = Clutter.Orientation.HORIZONTAL) {
         // If user is null, that implies a username-based login authorization.

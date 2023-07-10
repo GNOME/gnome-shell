@@ -1,23 +1,22 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Component */
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Params = imports.misc.params;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import * as Params from '../../misc/params.js';
 
-const GnomeSession = imports.misc.gnomeSession;
-const Main = imports.ui.main;
-const ShellMountOperation = imports.ui.shellMountOperation;
+import * as GnomeSession from '../../misc/gnomeSession.js';
+import * as Main from '../main.js';
+import * as ShellMountOperation from '../shellMountOperation.js';
 
-var GNOME_SESSION_AUTOMOUNT_INHIBIT = 16;
+const GNOME_SESSION_AUTOMOUNT_INHIBIT = 16;
 
 // GSettings keys
 const SETTINGS_SCHEMA = 'org.gnome.desktop.media-handling';
 const SETTING_ENABLE_AUTOMOUNT = 'automount';
 
-var AUTORUN_EXPIRE_TIMEOUT_SECS = 10;
+const AUTORUN_EXPIRE_TIMEOUT_SECS = 10;
 
-var AutomountManager = class {
+class AutomountManager {
     constructor() {
         this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
         this._activeOperations = new Map();
@@ -253,5 +252,6 @@ var AutomountManager = class {
         volume._allowAutorunExpireId = id;
         GLib.Source.set_name_by_id(id, '[gnome-shell] volume.allowAutorun');
     }
-};
-var Component = AutomountManager;
+}
+
+export {AutomountManager as Component};

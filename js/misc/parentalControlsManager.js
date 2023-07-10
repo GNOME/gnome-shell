@@ -21,19 +21,17 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-/* exported getDefault */
-
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Shell = imports.gi.Shell;
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
 
 // We require libmalcontent ≥ 0.6.0
 const HAVE_MALCONTENT = imports.package.checkSymbol(
     'Malcontent', '0', 'ManagerGetValueFlags');
 
-var Malcontent = null;
+let Malcontent = null;
 if (HAVE_MALCONTENT) {
-    Malcontent = imports.gi.Malcontent;
+    ({default: Malcontent} = await import('gi://Malcontent?version=0'));
     Gio._promisify(Malcontent.Manager.prototype, 'get_app_filter_async');
 }
 
@@ -42,7 +40,7 @@ let _singleton = null;
 /**
  * @returns {ParentalControlsManager}
  */
-function getDefault() {
+export function getDefault() {
     if (_singleton === null)
         _singleton = new ParentalControlsManager();
 
@@ -53,7 +51,7 @@ function getDefault() {
 // parental controls settings. It’s possible for the user’s parental controls
 // to change at runtime if the Parental Controls application is used by an
 // administrator from within the user’s session.
-var ParentalControlsManager = GObject.registerClass({
+const ParentalControlsManager = GObject.registerClass({
     Signals: {
         'app-filter-changed': {},
     },

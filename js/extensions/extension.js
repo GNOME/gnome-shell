@@ -2,7 +2,7 @@ const Gi = imports._gi;
 
 import {ExtensionBase, GettextWrapper} from './sharedInternals.js';
 
-const {extensionManager} = imports.ui.main;
+import {extensionManager} from '../ui/main.js';
 
 export class Extension extends ExtensionBase {
     static lookupByUUID(uuid) {

@@ -1,36 +1,35 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported AuthPrompt */
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Animation = imports.ui.animation;
-const AuthList = imports.gdm.authList;
-const Batch = imports.gdm.batch;
-const GdmUtil = imports.gdm.util;
-const Params = imports.misc.params;
-const ShellEntry = imports.ui.shellEntry;
-const UserWidget = imports.ui.userWidget;
-const {wiggle} = imports.misc.animationUtils;
+import * as Animation from '../ui/animation.js';
+import * as AuthList from './authList.js';
+import * as Batch from './batch.js';
+import * as GdmUtil from './util.js';
+import * as Params from '../misc/params.js';
+import * as ShellEntry from '../ui/shellEntry.js';
+import * as UserWidget from '../ui/userWidget.js';
+import {wiggle} from '../misc/animationUtils.js';
 
-var DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
-var DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
-var DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
+const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
+const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
+const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 
-var MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
+const MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
 
 /** @enum {number} */
-var AuthPromptMode = {
+export const AuthPromptMode = {
     UNLOCK_ONLY: 0,
     UNLOCK_OR_LOG_IN: 1,
 };
 
 /** @enum {number} */
-var AuthPromptStatus = {
+export const AuthPromptStatus = {
     NOT_VERIFYING: 0,
     VERIFYING: 1,
     VERIFICATION_FAILED: 2,
@@ -40,13 +39,13 @@ var AuthPromptStatus = {
 };
 
 /** @enum {number} */
-var BeginRequestType = {
+export const BeginRequestType = {
     PROVIDE_USERNAME: 0,
     DONT_PROVIDE_USERNAME: 1,
     REUSE_USERNAME: 2,
 };
 
-var AuthPrompt = GObject.registerClass({
+export const AuthPrompt = GObject.registerClass({
     Signals: {
         'cancelled': {},
         'failed': {},

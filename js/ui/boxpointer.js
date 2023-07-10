@@ -1,26 +1,23 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported BoxPointer */
 
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
+import * as Main from './main.js';
 
-var PopupAnimation = {
+export const PopupAnimation = {
     NONE:  0,
     SLIDE: 1 << 0,
     FADE:  1 << 1,
     FULL:  ~0,
 };
 
-var POPUP_ANIMATION_TIME = 150;
+const POPUP_ANIMATION_TIME = 150;
 
 /**
  * BoxPointer:
- * @side: side to draw the arrow on
- * @binProperties: Properties to set on contained bin
  *
  * An actor which displays a triangle "arrow" pointing to a given
  * side.  The .bin property is a container in which content can be
@@ -30,7 +27,7 @@ var POPUP_ANIMATION_TIME = 150;
  * totally inside the monitor workarea if possible.
  *
  */
-var BoxPointer = GObject.registerClass({
+export const BoxPointer = GObject.registerClass({
     Signals: { 'arrow-side-changed': {} },
 }, class BoxPointer extends St.Widget {
     /**

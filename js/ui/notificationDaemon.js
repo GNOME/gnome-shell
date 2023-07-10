@@ -1,24 +1,23 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported NotificationDaemon */
 
-const GdkPixbuf = imports.gi.GdkPixbuf;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import GdkPixbuf from 'gi://GdkPixbuf';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
 const Config = imports.misc.config;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
-const Params = imports.misc.params;
+import * as Main from './main.js';
+import * as MessageTray from './messageTray.js';
+import * as Params from '../misc/params.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import {loadInterfaceXML} from '../misc/fileUtils.js';
 
 const FdoNotificationsIface = loadInterfaceXML('org.freedesktop.Notifications');
 
 /** @enum {number} */
-var NotificationClosedReason = {
+const NotificationClosedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
     APP_CLOSED: 3,
@@ -26,13 +25,13 @@ var NotificationClosedReason = {
 };
 
 /** @enum {number} */
-var Urgency = {
+const Urgency = {
     LOW: 0,
     NORMAL: 1,
     CRITICAL: 2,
 };
 
-var FdoNotificationDaemon = class FdoNotificationDaemon {
+class FdoNotificationDaemon {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(FdoNotificationsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/freedesktop/Notifications');
@@ -337,9 +336,9 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
         this._dbusImpl.emit_signal('ActionInvoked',
                                    GLib.Variant.new('(us)', [id, action]));
     }
-};
+}
 
-var FdoNotificationDaemonSource = GObject.registerClass(
+const FdoNotificationDaemonSource = GObject.registerClass(
 class FdoNotificationDaemonSource extends MessageTray.Source {
     _init(title, pid, sender, appId) {
         this.pid = pid;
@@ -465,7 +464,7 @@ const PRIORITY_URGENCY_MAP = {
     urgent: MessageTray.Urgency.CRITICAL,
 };
 
-var GtkNotificationDaemonNotification = GObject.registerClass(
+const GtkNotificationDaemonNotification = GObject.registerClass(
 class GtkNotificationDaemonNotification extends MessageTray.Notification {
     _init(source, notification) {
         super._init(source);
@@ -556,7 +555,7 @@ function getPlatformData() {
 
 function InvalidAppError() {}
 
-var GtkNotificationDaemonAppSource = GObject.registerClass(
+const GtkNotificationDaemonAppSource = GObject.registerClass(
 class GtkNotificationDaemonAppSource extends MessageTray.Source {
     _init(appId) {
         let objectPath = objectPathFromAppId(appId);
@@ -667,7 +666,7 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
 
 const GtkNotificationsIface = loadInterfaceXML('org.gtk.Notifications');
 
-var GtkNotificationDaemon = class GtkNotificationDaemon {
+class GtkNotificationDaemon {
     constructor() {
         this._sources = {};
 
@@ -771,11 +770,11 @@ var GtkNotificationDaemon = class GtkNotificationDaemon {
 
         invocation.return_value(null);
     }
-};
+}
 
-var NotificationDaemon = class NotificationDaemon {
+export class NotificationDaemon {
     constructor() {
         this._fdoNotificationDaemon = new FdoNotificationDaemon();
         this._gtkNotificationDaemon = new GtkNotificationDaemon();
     }
-};
+}

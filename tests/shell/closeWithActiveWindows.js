@@ -3,8 +3,8 @@
 
 import Clutter from 'gi://Clutter';
 
-const Main = imports.ui.main;
-import * as Scripting from 'resource://org/gnome/shell/ui/scripting.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as Scripting from 'resource:///org/gnome/shell/ui/scripting.js';
 
 /** Run test. */
 export async function run() {

@@ -1,41 +1,40 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported WorkspaceThumbnail, ThumbnailsBox */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Graphene = imports.gi.Graphene;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import Graphene from 'gi://Graphene';
 
-const DND = imports.ui.dnd;
-const Main = imports.ui.main;
-const { TransientSignalHolder } = imports.misc.signalTracker;
-const Util = imports.misc.util;
-const Workspace = imports.ui.workspace;
+import * as DND from './dnd.js';
+import * as Main from './main.js';
+import {TransientSignalHolder} from '../misc/signalTracker.js';
+import * as Util from '../misc/util.js';
+import * as Workspace from './workspace.js';
 
 const NUM_WORKSPACES_THRESHOLD = 2;
 
 // The maximum size of a thumbnail is 5% the width and height of the screen
-var MAX_THUMBNAIL_SCALE = 0.05;
+export const MAX_THUMBNAIL_SCALE = 0.05;
 
-var RESCALE_ANIMATION_TIME = 200;
-var SLIDE_ANIMATION_TIME = 200;
+const RESCALE_ANIMATION_TIME = 200;
+const SLIDE_ANIMATION_TIME = 200;
 
 // When we create workspaces by dragging, we add a "cut" into the top and
 // bottom of each workspace so that the user doesn't have to hit the
 // placeholder exactly.
-var WORKSPACE_CUT_SIZE = 10;
+const WORKSPACE_CUT_SIZE = 10;
 
-var WORKSPACE_KEEP_ALIVE_TIME = 100;
+const WORKSPACE_KEEP_ALIVE_TIME = 100;
 
-var MUTTER_SCHEMA = 'org.gnome.mutter';
+const MUTTER_SCHEMA = 'org.gnome.mutter';
 
 /* A layout manager that requests size only for primary_actor, but then allocates
    all using a fixed layout */
-var PrimaryActorLayout = GObject.registerClass(
+const PrimaryActorLayout = GObject.registerClass(
 class PrimaryActorLayout extends Clutter.FixedLayout {
     _init(primaryActor) {
         super._init();
@@ -52,7 +51,7 @@ class PrimaryActorLayout extends Clutter.FixedLayout {
     }
 });
 
-var WindowClone = GObject.registerClass({
+export const WindowClone = GObject.registerClass({
     Signals: {
         'drag-begin': {},
         'drag-cancelled': {},
@@ -211,7 +210,7 @@ var WindowClone = GObject.registerClass({
 });
 
 
-var ThumbnailState = {
+const ThumbnailState = {
     NEW:            0,
     EXPANDING:      1,
     EXPANDED:       2,
@@ -227,7 +226,7 @@ var ThumbnailState = {
 /**
  * @metaWorkspace: a #Meta.Workspace
  */
-var WorkspaceThumbnail = GObject.registerClass({
+export const WorkspaceThumbnail = GObject.registerClass({
     Properties: {
         'collapse-fraction': GObject.ParamSpec.double(
             'collapse-fraction', 'collapse-fraction', 'collapse-fraction',
@@ -573,7 +572,7 @@ var WorkspaceThumbnail = GObject.registerClass({
 });
 
 
-var ThumbnailsBox = GObject.registerClass({
+export const ThumbnailsBox = GObject.registerClass({
     Properties: {
         'expand-fraction': GObject.ParamSpec.double(
             'expand-fraction', 'expand-fraction', 'expand-fraction',

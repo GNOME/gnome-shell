@@ -1,11 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported collectFromDatadirs, recursivelyDeleteDir,
-            recursivelyMoveDir, loadInterfaceXML, loadSubInterfaceXML */
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
+import GLib from 'gi://GLib';
+import Gio from 'gi://Gio';
 
-var { loadInterfaceXML } = imports.misc.dbusUtils;
+export const {loadInterfaceXML} = imports.misc.dbusUtils;
 
 /**
  * @typedef {object} SubdirInfo
@@ -20,7 +18,7 @@ var { loadInterfaceXML } = imports.misc.dbusUtils;
  * @returns {Generator<SubdirInfo, void, void>} a generator which yields file info for subdirectories named
  *                                              `subdir` within data directories
  */
-function* collectFromDatadirs(subdir, includeUserDir) {
+export function* collectFromDatadirs(subdir, includeUserDir) {
     let dataDirs = GLib.get_system_data_dirs();
     if (includeUserDir)
         dataDirs.unshift(GLib.get_user_data_dir());
@@ -48,7 +46,7 @@ function* collectFromDatadirs(subdir, includeUserDir) {
  * @param {Gio.File} dir
  * @param {boolean} deleteParent
  */
-function recursivelyDeleteDir(dir, deleteParent) {
+export function recursivelyDeleteDir(dir, deleteParent) {
     let children = dir.enumerate_children('standard::name,standard::type',
         Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
 
@@ -70,7 +68,7 @@ function recursivelyDeleteDir(dir, deleteParent) {
  * @param {Gio.File} srcDir
  * @param {Gio.File} destDir
  */
-function recursivelyMoveDir(srcDir, destDir) {
+export function recursivelyMoveDir(srcDir, destDir) {
     let children = srcDir.enumerate_children('standard::name,standard::type',
         Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
 

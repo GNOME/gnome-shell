@@ -1,33 +1,31 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported AppSwitcherPopup, GroupCyclerPopup, WindowSwitcherPopup,
-            WindowCyclerPopup */
 
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
+import Shell from 'gi://Shell';
 
-const Main = imports.ui.main;
-const SwitcherPopup = imports.ui.switcherPopup;
+import * as Main from './main.js';
+import * as SwitcherPopup from './switcherPopup.js';
 
-var APP_ICON_HOVER_TIMEOUT = 200; // milliseconds
+const APP_ICON_HOVER_TIMEOUT = 200; // milliseconds
 
-var THUMBNAIL_DEFAULT_SIZE = 256;
-var THUMBNAIL_POPUP_TIME = 500; // milliseconds
-var THUMBNAIL_FADE_TIME = 100; // milliseconds
+const THUMBNAIL_DEFAULT_SIZE = 256;
+const THUMBNAIL_POPUP_TIME = 500; // milliseconds
+const THUMBNAIL_FADE_TIME = 100; // milliseconds
 
-var WINDOW_PREVIEW_SIZE = 128;
-var APP_ICON_SIZE = 96;
-var APP_ICON_SIZE_SMALL = 48;
+const WINDOW_PREVIEW_SIZE = 128;
+const APP_ICON_SIZE = 96;
+const APP_ICON_SIZE_SMALL = 48;
 
 const baseIconSizes = [96, 64, 48, 32, 22];
 
 /** @enum {number} */
-var AppIconMode = {
+const AppIconMode = {
     THUMBNAIL_ONLY: 1,
     APP_ICON_ONLY: 2,
     BOTH: 3,
@@ -48,20 +46,23 @@ function _createWindowClone(window, size) {
     });
 }
 
+/**
+ * @param {Meta.Workspace} workspace
+ * @returns {Meta.Window}
+ */
 function getWindows(workspace) {
     // We ignore skip-taskbar windows in switchers, but if they are attached
     // to their parent, their position in the MRU list may be more appropriate
     // than the parent; so start with the complete list ...
-    let windows = global.display.get_tab_list(Meta.TabList.NORMAL_ALL,
-                                              workspace);
+    let windows = global.display.get_tab_list(Meta.TabList.NORMAL_ALL, workspace);
     // ... map windows to their parent where appropriate ...
     return windows.map(w => {
         return w.is_attached_dialog() ? w.get_transient_for() : w;
     // ... and filter out skip-taskbar windows and duplicates
-    }).filter((w, i, a) => !w.skip_taskbar && a.indexOf(w) == i);
+    }).filter((w, i, a) => !w.skip_taskbar && a.indexOf(w) === i);
 }
 
-var AppSwitcherPopup = GObject.registerClass(
+export const AppSwitcherPopup = GObject.registerClass(
 class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
         super._init();
@@ -404,7 +405,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 });
 
-var CyclerHighlight = GObject.registerClass(
+const CyclerHighlight = GObject.registerClass(
 class CyclerHighlight extends St.Widget {
     _init() {
         super._init({ layout_manager: new Clutter.BinLayout() });
@@ -470,7 +471,7 @@ class CyclerHighlight extends St.Widget {
 
 // We don't show an actual popup, so just provide what SwitcherPopup
 // expects instead of inheriting from SwitcherList
-var CyclerList = GObject.registerClass({
+const CyclerList = GObject.registerClass({
     Signals: {
         'item-activated': { param_types: [GObject.TYPE_INT] },
         'item-entered': { param_types: [GObject.TYPE_INT] },
@@ -483,7 +484,7 @@ var CyclerList = GObject.registerClass({
     }
 });
 
-var CyclerPopup = GObject.registerClass({
+const CyclerPopup = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class CyclerPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
@@ -539,7 +540,7 @@ var CyclerPopup = GObject.registerClass({
 });
 
 
-var GroupCyclerPopup = GObject.registerClass(
+export const GroupCyclerPopup = GObject.registerClass(
 class GroupCyclerPopup extends CyclerPopup {
     _init() {
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.app-switcher' });
@@ -572,7 +573,7 @@ class GroupCyclerPopup extends CyclerPopup {
     }
 });
 
-var WindowSwitcherPopup = GObject.registerClass(
+export const WindowSwitcherPopup = GObject.registerClass(
 class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
         super._init();
@@ -630,7 +631,7 @@ class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 });
 
-var WindowCyclerPopup = GObject.registerClass(
+export const WindowCyclerPopup = GObject.registerClass(
 class WindowCyclerPopup extends CyclerPopup {
     _init() {
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
@@ -661,7 +662,7 @@ class WindowCyclerPopup extends CyclerPopup {
     }
 });
 
-var AppIcon = GObject.registerClass(
+export const AppIcon = GObject.registerClass(
 class AppIcon extends St.BoxLayout {
     _init(app) {
         super._init({
@@ -688,7 +689,7 @@ class AppIcon extends St.BoxLayout {
     }
 });
 
-var AppSwitcher = GObject.registerClass(
+const AppSwitcher = GObject.registerClass(
 class AppSwitcher extends SwitcherPopup.SwitcherList {
     _init(apps, altTabPopup) {
         super._init(true);
@@ -905,7 +906,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
     }
 });
 
-var ThumbnailSwitcher = GObject.registerClass(
+const ThumbnailSwitcher = GObject.registerClass(
 class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
     _init(windows) {
         super._init(false);
@@ -995,7 +996,7 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
     }
 });
 
-var WindowIcon = GObject.registerClass(
+export const WindowIcon = GObject.registerClass(
 class WindowIcon extends St.BoxLayout {
     _init(window, mode) {
         super._init({
@@ -1055,7 +1056,7 @@ class WindowIcon extends St.BoxLayout {
     }
 });
 
-var WindowSwitcher = GObject.registerClass(
+const WindowSwitcher = GObject.registerClass(
 class WindowSwitcher extends SwitcherPopup.SwitcherList {
     _init(windows, mode) {
         super._init(true);

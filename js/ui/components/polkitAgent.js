@@ -1,22 +1,21 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Component */
 
-const AccountsService = imports.gi.AccountsService;
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Pango = imports.gi.Pango;
-const PolkitAgent = imports.gi.PolkitAgent;
-const Polkit = imports.gi.Polkit;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import AccountsService from 'gi://AccountsService';
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Pango from 'gi://Pango';
+import PolkitAgent from 'gi://PolkitAgent';
+import Polkit from 'gi://Polkit';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
-const ModalDialog = imports.ui.modalDialog;
-const ShellEntry = imports.ui.shellEntry;
-const UserWidget = imports.ui.userWidget;
-const {wiggle} = imports.misc.animationUtils;
+import * as Dialog from '../dialog.js';
+import * as Main from '../main.js';
+import * as ModalDialog from '../modalDialog.js';
+import * as ShellEntry from '../shellEntry.js';
+import * as UserWidget from '../userWidget.js';
+import {wiggle} from '../misc/animationUtils.js';
 
 /** @enum {number} */
 const DialogMode = {
@@ -28,7 +27,7 @@ const DIALOG_ICON_SIZE = 64;
 
 const DELAYED_RESET_TIMEOUT = 200;
 
-var AuthenticationDialog = GObject.registerClass({
+const AuthenticationDialog = GObject.registerClass({
     Signals: { 'done': { param_types: [GObject.TYPE_BOOLEAN] } },
 }, class AuthenticationDialog extends ModalDialog.ModalDialog {
     _init(actionId, description, cookie, userNames) {
@@ -414,7 +413,7 @@ var AuthenticationDialog = GObject.registerClass({
     }
 });
 
-var AuthenticationAgent = GObject.registerClass(
+const AuthenticationAgent = GObject.registerClass(
 class AuthenticationAgent extends Shell.PolkitAuthenticationAgent {
     _init() {
         super._init();
@@ -474,4 +473,4 @@ class AuthenticationAgent extends Shell.PolkitAuthenticationAgent {
     }
 });
 
-var Component = AuthenticationAgent;
+export {AuthenticationAgent as Component};

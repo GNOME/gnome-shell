@@ -1,5 +1,5 @@
 const JsUnit = imports.jsUnit;
-const Params = imports.misc.params;
+import * as Params from '../../js/misc/params.js';
 
 /**
  * Asserts that two "param" objects have the same properties

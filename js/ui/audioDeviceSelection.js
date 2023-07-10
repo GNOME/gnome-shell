@@ -1,19 +1,18 @@
-/* exported AudioDeviceSelectionDBus */
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
-const ModalDialog = imports.ui.modalDialog;
+import * as Dialog from './dialog.js';
+import * as ModalDialog from './modalDialog.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import * as Main from './main.js';
+import {loadInterfaceXML} from '../misc/fileUtils.js';
 
-var AudioDevice = {
+const AudioDevice = {
     HEADPHONES: 1 << 0,
     HEADSET:    1 << 1,
     MICROPHONE: 1 << 2,
@@ -21,7 +20,7 @@ var AudioDevice = {
 
 const AudioDeviceSelectionIface = loadInterfaceXML('org.gnome.Shell.AudioDeviceSelection');
 
-var AudioDeviceSelectionDialog = GObject.registerClass({
+const AudioDeviceSelectionDialog = GObject.registerClass({
     Signals: { 'device-selected': { param_types: [GObject.TYPE_UINT] } },
 }, class AudioDeviceSelectionDialog extends ModalDialog.ModalDialog {
     _init(devices) {
@@ -150,7 +149,7 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
     }
 });
 
-var AudioDeviceSelectionDBus = class AudioDeviceSelectionDBus {
+export class AudioDeviceSelectionDBus {
     constructor() {
         this._audioSelectionDialog = null;
 
@@ -211,4 +210,4 @@ var AudioDeviceSelectionDBus = class AudioDeviceSelectionDBus {
 
         invocation.return_value(null);
     }
-};
+}

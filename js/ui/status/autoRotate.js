@@ -1,11 +1,9 @@
-/* exported Indicator */
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
 
+import * as SystemActions from '../../misc/systemActions.js';
 
-const SystemActions = imports.misc.systemActions;
-
-const {QuickToggle, SystemIndicator} = imports.ui.quickSettings;
+import {QuickToggle, SystemIndicator} from '../quickSettings.js';
 
 const RotationToggle = GObject.registerClass(
 class RotationToggle extends QuickToggle {
@@ -37,7 +35,7 @@ class RotationToggle extends QuickToggle {
     }
 });
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends SystemIndicator {
     _init() {
         super._init();

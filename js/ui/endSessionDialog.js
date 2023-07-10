@@ -1,5 +1,4 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported init, EndSessionDialog */
 /*
  * Copyright 2010-2016 Red Hat, Inc
  *
@@ -17,25 +16,25 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-const AccountsService = imports.gi.AccountsService;
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Pango = imports.gi.Pango;
-const Polkit = imports.gi.Polkit;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const UPower = imports.gi.UPowerGlib;
+import AccountsService from 'gi://AccountsService';
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Pango from 'gi://Pango';
+import Polkit from 'gi://Polkit';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import UPower from 'gi://UPowerGlib';
 
-const CheckBox = imports.ui.checkBox;
-const Dialog = imports.ui.dialog;
-const GnomeSession = imports.misc.gnomeSession;
-const LoginManager = imports.misc.loginManager;
-const ModalDialog = imports.ui.modalDialog;
-const UserWidget = imports.ui.userWidget;
+import * as CheckBox from './checkBox.js';
+import * as Dialog from './dialog.js';
+import * as GnomeSession from '../misc/gnomeSession.js';
+import * as LoginManager from '../misc/loginManager.js';
+import * as ModalDialog from './modalDialog.js';
+import * as UserWidget from './userWidget.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import {loadInterfaceXML} from '../misc/fileUtils.js';
 
 const _ITEM_ICON_SIZE = 64;
 
@@ -159,7 +158,7 @@ const DialogContent = {
     4 /* DialogType.UPGRADE_RESTART */: restartUpgradeDialogContent,
 };
 
-var MAX_USERS_IN_SESSION_DIALOG = 5;
+const MAX_USERS_IN_SESSION_DIALOG = 5;
 
 const LogindSessionIface = loadInterfaceXML('org.freedesktop.login1.Session');
 const LogindSession = Gio.DBusProxy.makeProxyWrapper(LogindSessionIface);
@@ -224,14 +223,14 @@ function _setCheckBoxLabel(checkBox, text) {
     }
 }
 
-function init() {
+export function init() {
     // This always returns the same singleton object
     // By instantiating it initially, we register the
     // bus object, etc.
     new EndSessionDialog();
 }
 
-var EndSessionDialog = GObject.registerClass(
+const EndSessionDialog = GObject.registerClass(
 class EndSessionDialog extends ModalDialog.ModalDialog {
     _init() {
         super._init({

@@ -1,15 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported getIBusManager */
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const IBus = imports.gi.IBus;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const Signals = imports.misc.signals;
-const BoxPointer = imports.ui.boxpointer;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import IBus from 'gi://IBus';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
 
-const IBusCandidatePopup = imports.ui.ibusCandidatePopup;
+import * as Signals from './signals.js';
+import * as BoxPointer from '../ui/boxpointer.js';
+
+import * as IBusCandidatePopup from '../ui/ibusCandidatePopup.js';
 
 Gio._promisify(IBus.Bus.prototype,
     'list_engines_async', 'list_engines_async_finish');
@@ -49,13 +49,13 @@ function _checkIBusVersion(requiredMajor, requiredMinor, requiredMicro) {
 /**
  * @returns {IBusManager}
  */
-function getIBusManager() {
+export function getIBusManager() {
     if (_ibusManager == null)
         _ibusManager = new IBusManager();
     return _ibusManager;
 }
 
-var IBusManager = class extends Signals.EventEmitter {
+class IBusManager extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -410,4 +410,4 @@ var IBusManager = class extends Signals.EventEmitter {
         }
         return true;
     }
-};
+}

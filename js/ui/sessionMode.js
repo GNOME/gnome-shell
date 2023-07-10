@@ -1,11 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported SessionMode, listModes */
 
-const GLib = imports.gi.GLib;
-const Signals = imports.misc.signals;
+import GLib from 'gi://GLib';
+import * as Signals from '../misc/signals.js';
 
-const FileUtils = imports.misc.fileUtils;
-const Params = imports.misc.params;
+import * as FileUtils from '../misc/fileUtils.js';
+import * as Params from '../misc/params.js';
+
+import {LoginDialog}  from '../gdm/loginDialog.js';
+import {UnlockDialog} from '../ui/unlockDialog.js';
 
 const Config = imports.misc.config;
 
@@ -53,7 +55,7 @@ const _modes = {
         hasNotifications: true,
         isGreeter: true,
         isPrimary: true,
-        unlockDialog: imports.gdm.loginDialog.LoginDialog,
+        unlockDialog: LoginDialog,
         components: Config.HAVE_NETWORKMANAGER
             ? ['networkAgent', 'polkitAgent']
             : ['polkitAgent'],
@@ -90,7 +92,7 @@ const _modes = {
         hasNotifications: true,
         isLocked: false,
         isPrimary: true,
-        unlockDialog: imports.ui.unlockDialog.UnlockDialog,
+        unlockDialog: UnlockDialog,
         components: USER_SESSION_COMPONENTS,
         panel: {
             left: ['activities'],
@@ -135,7 +137,7 @@ function _loadModes() {
         _loadMode(dir, info);
 }
 
-function listModes() {
+export function listModes() {
     _loadModes();
     let loop = new GLib.MainLoop(null, false);
     let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
@@ -150,7 +152,7 @@ function listModes() {
     loop.run();
 }
 
-var SessionMode = class extends Signals.EventEmitter {
+export class SessionMode extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -208,4 +210,4 @@ var SessionMode = class extends Signals.EventEmitter {
 
         this.emit('updated');
     }
-};
+}

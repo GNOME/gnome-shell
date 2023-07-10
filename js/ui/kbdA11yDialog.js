@@ -1,17 +1,16 @@
-/* exported KbdA11yDialog */
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
 
-const Dialog = imports.ui.dialog;
-const ModalDialog = imports.ui.modalDialog;
+import * as Dialog from './dialog.js';
+import * as ModalDialog from './modalDialog.js';
 
 const KEYBOARD_A11Y_SCHEMA    = 'org.gnome.desktop.a11y.keyboard';
 const KEY_STICKY_KEYS_ENABLED = 'stickykeys-enable';
 const KEY_SLOW_KEYS_ENABLED   = 'slowkeys-enable';
 
-var KbdA11yDialog = GObject.registerClass(
+export const KbdA11yDialog = GObject.registerClass(
 class KbdA11yDialog extends GObject.Object {
     _init() {
         super._init();

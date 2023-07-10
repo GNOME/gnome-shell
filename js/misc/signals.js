@@ -1,7 +1,8 @@
-const Signals = imports.signals;
-const SignalTracker = imports.misc.signalTracker;
+import * as SignalTracker from './signalTracker.js';
 
-var EventEmitter = class EventEmitter {
+const Signals = imports.signals;
+
+export class EventEmitter {
     connectObject(...args) {
         return SignalTracker.connectObject(this, ...args);
     }
@@ -17,6 +18,6 @@ var EventEmitter = class EventEmitter {
     disconnect_object(...args) {
         return this.disconnectObject(...args);
     }
-};
+}
 
 Signals.addSignalMethods(EventEmitter.prototype);

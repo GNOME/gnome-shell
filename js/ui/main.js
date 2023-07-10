@@ -1,61 +1,52 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported componentManager, notificationDaemon, windowAttentionHandler,
-            ctrlAltTabManager, padOsdService, osdWindowManager,
-            osdMonitorLabeler, shellMountOpDBusService, shellDBusService,
-            shellAccessDialogDBusService, shellAudioSelectionDBusService,
-            screenSaverDBus, uiGroup, magnifier, xdndHandler, keyboard,
-            kbdA11yDialog, introspectService, start, pushModal, popModal,
-            activateWindow, moveWindowToMonitorAndWorkspace,
-            createLookingGlass, initializeDeferredWork,
-            getStyleVariant, getThemeStylesheet, setThemeStylesheet, screenshotUI */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const AccessDialog = imports.ui.accessDialog;
-const AudioDeviceSelection = imports.ui.audioDeviceSelection;
-const Components = imports.ui.components;
-const CtrlAltTab = imports.ui.ctrlAltTab;
-const EndSessionDialog = imports.ui.endSessionDialog;
-const ExtensionSystem = imports.ui.extensionSystem;
-const ExtensionDownloader = imports.ui.extensionDownloader;
-const InputMethod = imports.misc.inputMethod;
-const Introspect = imports.misc.introspect;
-const Keyboard = imports.ui.keyboard;
-const MessageTray = imports.ui.messageTray;
-const ModalDialog = imports.ui.modalDialog;
-const OsdWindow = imports.ui.osdWindow;
-const OsdMonitorLabeler = imports.ui.osdMonitorLabeler;
-const Overview = imports.ui.overview;
-const PadOsd = imports.ui.padOsd;
-const Panel = imports.ui.panel;
-const Params = imports.misc.params;
-const RunDialog = imports.ui.runDialog;
-const WelcomeDialog = imports.ui.welcomeDialog;
-const Layout = imports.ui.layout;
-const LoginManager = imports.misc.loginManager;
-const LookingGlass = imports.ui.lookingGlass;
-const NotificationDaemon = imports.ui.notificationDaemon;
-const WindowAttentionHandler = imports.ui.windowAttentionHandler;
-const Screenshot = imports.ui.screenshot;
-const ScreenShield = imports.ui.screenShield;
-const SessionMode = imports.ui.sessionMode;
-const ShellDBus = imports.ui.shellDBus;
-const ShellMountOperation = imports.ui.shellMountOperation;
-const WindowManager = imports.ui.windowManager;
-const Magnifier = imports.ui.magnifier;
-const XdndHandler = imports.ui.xdndHandler;
-const KbdA11yDialog = imports.ui.kbdA11yDialog;
-const LocatePointer = imports.ui.locatePointer;
-const PointerA11yTimeout = imports.ui.pointerA11yTimeout;
-const ParentalControlsManager = imports.misc.parentalControlsManager;
+import * as AccessDialog from './accessDialog.js';
+import * as AudioDeviceSelection from './audioDeviceSelection.js';
+import * as Components from './components.js';
+import * as CtrlAltTab from './ctrlAltTab.js';
+import * as EndSessionDialog from './endSessionDialog.js';
+import * as ExtensionSystem from './extensionSystem.js';
+import * as ExtensionDownloader from './extensionDownloader.js';
+import * as InputMethod from '../misc/inputMethod.js';
+import * as Introspect from '../misc/introspect.js';
+import * as Keyboard from './keyboard.js';
+import * as MessageTray from './messageTray.js';
+import * as ModalDialog from './modalDialog.js';
+import * as OsdWindow from './osdWindow.js';
+import * as OsdMonitorLabeler from './osdMonitorLabeler.js';
+import * as Overview from './overview.js';
+import * as PadOsd from './padOsd.js';
+import * as Panel from './panel.js';
+import * as Params from '../misc/params.js';
+import * as RunDialog from './runDialog.js';
+import * as WelcomeDialog from './welcomeDialog.js';
+import * as Layout from './layout.js';
+import * as LoginManager from '../misc/loginManager.js';
+import * as LookingGlass from './lookingGlass.js';
+import * as NotificationDaemon from './notificationDaemon.js';
+import * as WindowAttentionHandler from './windowAttentionHandler.js';
+import * as Screenshot from './screenshot.js';
+import * as ScreenShield from './screenShield.js';
+import * as SessionMode from './sessionMode.js';
+import * as ShellDBus from './shellDBus.js';
+import * as ShellMountOperation from './shellMountOperation.js';
+import * as WindowManager from './windowManager.js';
+import * as Magnifier from './magnifier.js';
+import * as XdndHandler from './xdndHandler.js';
+import * as KbdA11yDialog from './kbdA11yDialog.js';
+import * as LocatePointer from './locatePointer.js';
+import * as PointerA11yTimeout from './pointerA11yTimeout.js';
+import * as ParentalControlsManager from '../misc/parentalControlsManager.js';
 const Config = imports.misc.config;
-const Util = imports.misc.util;
+import * as Util from '../misc/util.js';
 
 const WELCOME_DIALOG_LAST_SHOWN_VERSION = 'welcome-dialog-last-shown-version';
 // Make sure to mention the point release, otherwise it will show every time
@@ -64,41 +55,42 @@ const WELCOME_DIALOG_LAST_TOUR_CHANGE = '40.beta';
 const LOG_DOMAIN = 'GNOME Shell';
 const GNOMESHELL_STARTED_MESSAGE_ID = 'f3ea493c22934e26811cd62abe8e203a';
 
-var componentManager = null;
-var extensionManager = null;
-var panel = null;
-var overview = null;
-var runDialog = null;
-var lookingGlass = null;
-var welcomeDialog = null;
-var wm = null;
-var messageTray = null;
-var screenShield = null;
-var notificationDaemon = null;
-var windowAttentionHandler = null;
-var ctrlAltTabManager = null;
-var padOsdService = null;
-var osdWindowManager = null;
-var osdMonitorLabeler = null;
-var sessionMode = null;
-var screenshotUI = null;
-var shellAccessDialogDBusService = null;
-var shellAudioSelectionDBusService = null;
-var shellDBusService = null;
-var shellMountOpDBusService = null;
-var screenSaverDBus = null;
-var modalCount = 0;
-var actionMode = Shell.ActionMode.NONE;
-var modalActorFocusStack = [];
-var uiGroup = null;
-var magnifier = null;
-var xdndHandler = null;
-var keyboard = null;
-var layoutManager = null;
-var kbdA11yDialog = null;
-var inputMethod = null;
-var introspectService = null;
-var locatePointer = null;
+export let componentManager = null;
+export let extensionManager = null;
+export let panel = null;
+export let overview = null;
+export let runDialog = null;
+export let lookingGlass = null;
+export let welcomeDialog = null;
+export let wm = null;
+export let messageTray = null;
+export let screenShield = null;
+export let notificationDaemon = null;
+export let windowAttentionHandler = null;
+export let ctrlAltTabManager = null;
+export let padOsdService = null;
+export let osdWindowManager = null;
+export let osdMonitorLabeler = null;
+export let sessionMode = null;
+export let screenshotUI = null;
+export let shellAccessDialogDBusService = null;
+export let shellAudioSelectionDBusService = null;
+export let shellDBusService = null;
+export let shellMountOpDBusService = null;
+export let screenSaverDBus = null;
+export let modalCount = 0;
+export let actionMode = Shell.ActionMode.NONE;
+export let modalActorFocusStack = [];
+export let uiGroup = null;
+export let magnifier = null;
+export let xdndHandler = null;
+export let keyboard = null;
+export let layoutManager = null;
+export let kbdA11yDialog = null;
+export let inputMethod = null;
+export let introspectService = null;
+export let locatePointer = null;
+
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
@@ -147,7 +139,7 @@ function _sessionUpdated() {
 }
 
 /** @returns {void} */
-async function start() {
+export async function start() {
     globalThis.log = console.log;
 
     // Chain up async errors reported from C
@@ -408,7 +400,7 @@ function _getStylesheet(name) {
 }
 
 /** @returns {string} */
-function getStyleVariant() {
+export function getStyleVariant() {
     const {colorScheme} = St.Settings.get();
     switch (sessionMode.colorScheme) {
     case 'force-dark':
@@ -460,7 +452,7 @@ function _loadDefaultStylesheet() {
  * @returns {?Gio.File}: A #GFile that contains the theme CSS,
  *          null if using the default
  */
-function getThemeStylesheet() {
+export function getThemeStylesheet() {
     return _cssStylesheet;
 }
 
@@ -471,11 +463,11 @@ function getThemeStylesheet() {
  *
  * Set the theme CSS file that the shell will load
  */
-function setThemeStylesheet(cssStylesheet) {
+export function setThemeStylesheet(cssStylesheet) {
     _cssStylesheet = cssStylesheet ? Gio.File.new_for_path(cssStylesheet) : null;
 }
 
-function reloadThemeResource() {
+export function reloadThemeResource() {
     if (_themeResource)
         _themeResource._unregister();
 
@@ -500,7 +492,7 @@ function _loadOskLayouts() {
  *
  * Reloads the theme CSS file
  */
-function loadTheme() {
+export function loadTheme() {
     let themeContext = St.ThemeContext.get_for_stage(global.stage);
     let previousTheme = themeContext.get_theme();
 
@@ -528,7 +520,7 @@ function loadTheme() {
  * @param {string} msg A message
  * @param {string} details Additional information
  */
-function notify(msg, details) {
+export function notify(msg, details) {
     let source = new MessageTray.SystemNotificationSource();
     messageTray.add(source);
     let notification = new MessageTray.Notification(source, msg, details);
@@ -543,7 +535,7 @@ function notify(msg, details) {
  *
  * See shell_global_notify_problem().
  */
-function notifyError(msg, details) {
+export function notifyError(msg, details) {
     // Also print to stderr so it's logged somewhere
     if (details)
         console.warn(`error: ${msg}: ${details}`);
@@ -597,7 +589,7 @@ function _findModal(grab) {
  *
  * @returns {Clutter.Grab}: the grab handle created
  */
-function pushModal(actor, params) {
+export function pushModal(actor, params) {
     params = Params.parse(params, {
         timestamp: global.get_current_time(),
         options: 0,
@@ -654,7 +646,7 @@ function pushModal(actor, params) {
  * initiated event. If not provided then the value of
  * global.get_current_time() is assumed.
  */
-function popModal(grab, timestamp) {
+export function popModal(grab, timestamp) {
     if (timestamp == undefined)
         timestamp = global.get_current_time();
 
@@ -719,7 +711,7 @@ function popModal(grab, timestamp) {
  *
  * @returns {LookingGlass.LookingGlass}
  */
-function createLookingGlass() {
+export function createLookingGlass() {
     if (lookingGlass == null)
         lookingGlass = new LookingGlass.LookingGlass();
 
@@ -729,14 +721,14 @@ function createLookingGlass() {
 /**
  * Opens the run dialog
  */
-function openRunDialog() {
+export function openRunDialog() {
     if (runDialog == null)
         runDialog = new RunDialog.RunDialog();
 
     runDialog.open();
 }
 
-function openWelcomeDialog() {
+export function openWelcomeDialog() {
     if (welcomeDialog === null)
         welcomeDialog = new WelcomeDialog.WelcomeDialog();
 
@@ -753,7 +745,7 @@ function openWelcomeDialog() {
  * Activates @window, switching to its workspace first if necessary,
  * and switching out of the overview if it's currently active
  */
-function activateWindow(window, time, workspaceNum) {
+export function activateWindow(window, time, workspaceNum) {
     let workspaceManager = global.workspace_manager;
     let activeWorkspaceNum = workspaceManager.get_active_workspace_index();
     let windowWorkspaceNum = workspaceNum !== undefined ? workspaceNum : window.get_workspace().index();
@@ -780,7 +772,7 @@ function activateWindow(window, time, workspaceNum) {
  * @param {number} workspaceIndex - the requested workspace
  * @param {bool} append - create workspace if it doesn't exist
  */
-function moveWindowToMonitorAndWorkspace(window, monitorIndex, workspaceIndex, append = false) {
+export function moveWindowToMonitorAndWorkspace(window, monitorIndex, workspaceIndex, append = false) {
     // We need to move the window before changing the workspace, because
     // the move itself could cause a workspace change if the window enters
     // the primary monitor
@@ -801,15 +793,15 @@ function moveWindowToMonitorAndWorkspace(window, monitorIndex, workspaceIndex, a
 
 // TODO - replace this timeout with some system to guess when the user might
 // be e.g. just reading the screen and not likely to interact.
-var DEFERRED_TIMEOUT_SECONDS = 20;
-var _deferredWorkData = {};
+const DEFERRED_TIMEOUT_SECONDS = 20;
+let _deferredWorkData = {};
 // Work scheduled for some point in the future
-var _deferredWorkQueue = [];
+let _deferredWorkQueue = [];
 // Work we need to process before the next redraw
-var _beforeRedrawQueue = [];
+let _beforeRedrawQueue = [];
 // Counter to assign work ids
-var _deferredWorkSequence = 0;
-var _deferredTimeoutId = 0;
+let _deferredWorkSequence = 0;
+let _deferredTimeoutId = 0;
 
 function _runDeferredWork(workId) {
     if (!_deferredWorkData[workId])
@@ -868,7 +860,7 @@ function _queueBeforeRedraw(workId) {
  *
  * @returns {string}: A string work identifier
  */
-function initializeDeferredWork(actor, callback) {
+export function initializeDeferredWork(actor, callback) {
     // Turn into a string so we can use as an object property
     let workId = `${++_deferredWorkSequence}`;
     _deferredWorkData[workId] = {
@@ -900,7 +892,7 @@ function initializeDeferredWork(actor, callback) {
  * for example when data being displayed by the actor has
  * changed.
  */
-function queueDeferredWork(workId) {
+export function queueDeferredWork(workId) {
     let data = _deferredWorkData[workId];
     if (!data) {
         let message = `Invalid work id ${workId}`;
@@ -921,7 +913,7 @@ function queueDeferredWork(workId) {
     }
 }
 
-var RestartMessage = GObject.registerClass(
+const RestartMessage = GObject.registerClass(
 class RestartMessage extends ModalDialog.ModalDialog {
     _init(message) {
         super._init({
@@ -947,7 +939,7 @@ function showRestartMessage(message) {
     restartMessage.open();
 }
 
-var AnimationsSettings = class {
+class AnimationsSettings {
     constructor() {
         this._animationsEnabled = true;
         this._handles = new Set();
@@ -1008,4 +1000,4 @@ var AnimationsSettings = class {
         this._syncAnimationsEnabled();
         handle.connect('stopped', this._onRemoteAccessHandleStopped.bind(this));
     }
-};
+}

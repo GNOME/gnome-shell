@@ -1,13 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported loadRemoteSearchProviders */
 
-const GdkPixbuf = imports.gi.GdkPixbuf;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import GdkPixbuf from 'gi://GdkPixbuf';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const FileUtils = imports.misc.fileUtils;
+import * as FileUtils from '../misc/fileUtils.js';
 
 const KEY_FILE_GROUP = 'Shell Search Provider';
 
@@ -61,8 +60,8 @@ const SearchProvider2Iface = `
 </interface>
 </node>`;
 
-var SearchProviderProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProviderIface);
-var SearchProvider2ProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProvider2Iface);
+const SearchProviderProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProviderIface);
+const SearchProvider2ProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProvider2Iface);
 
 /**
  * loadRemoteSearchProviders:
@@ -70,7 +69,7 @@ var SearchProvider2ProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProvider2
  * @param {Gio.Settings} searchSettings - search settings
  * @returns {RemoteSearchProvider[]} - the list of remote providers
  */
-function loadRemoteSearchProviders(searchSettings) {
+export function loadRemoteSearchProviders(searchSettings) {
     let objectPaths = {};
     let loadedProviders = [];
 
@@ -193,7 +192,7 @@ function loadRemoteSearchProviders(searchSettings) {
     return loadedProviders;
 }
 
-var RemoteSearchProvider = class {
+class RemoteSearchProvider {
     constructor(appInfo, dbusName, dbusPath, autoStart, proxyInfo) {
         if (!proxyInfo)
             proxyInfo = SearchProviderProxyInfo;
@@ -313,9 +312,9 @@ var RemoteSearchProvider = class {
         log(`Search provider ${this.appInfo.get_id()} does not implement LaunchSearch`);
         this.appInfo.launch([], global.create_app_launch_context(0, -1));
     }
-};
+}
 
-var RemoteSearchProvider2 = class extends RemoteSearchProvider {
+class RemoteSearchProvider2 extends RemoteSearchProvider {
     constructor(appInfo, dbusName, dbusPath, autoStart) {
         super(appInfo, dbusName, dbusPath, autoStart, SearchProvider2ProxyInfo);
 
@@ -331,4 +330,4 @@ var RemoteSearchProvider2 = class extends RemoteSearchProvider {
         this.proxy.LaunchSearchAsync(
             terms, global.get_current_time()).catch(logError);
     }
-};
+}

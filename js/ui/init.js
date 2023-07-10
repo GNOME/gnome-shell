@@ -8,7 +8,7 @@ import './environment.js';
 imports._promiseNative.setMainLoopHook(() => {
     // Queue starting the shell
     GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-        imports.ui.main.start().catch(e => {
+        import('./main.js').then(main => main.start()).catch(e => {
             const error = new GLib.Error(
                 Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED,
                 e.message);

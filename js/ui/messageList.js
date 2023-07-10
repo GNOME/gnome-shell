@@ -1,28 +1,28 @@
-/* exported MessageListSection */
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Graphene = imports.gi.Graphene;
-const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
-const St = imports.gi.St;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
+import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
+import St from 'gi://St';
 
-const Util = imports.misc.util;
+import * as Main from './main.js';
+import * as MessageTray from './messageTray.js';
 
-var MESSAGE_ANIMATION_TIME = 100;
+import * as Util from '../misc/util.js';
 
-var DEFAULT_EXPAND_LINES = 6;
+const MESSAGE_ANIMATION_TIME = 100;
+
+const DEFAULT_EXPAND_LINES = 6;
 
 /**
  * @param {string} text
  * @param {boolean} allowMarkup
  * @returns {string}
  */
-function _fixMarkup(text, allowMarkup) {
+export function _fixMarkup(text, allowMarkup) {
     if (allowMarkup) {
         // Support &amp;, &quot;, &apos;, &lt; and &gt;, escape all other
         // occurrences of '&'.
@@ -43,7 +43,7 @@ function _fixMarkup(text, allowMarkup) {
     return GLib.markup_escape_text(text, -1);
 }
 
-var URLHighlighter = GObject.registerClass(
+export const URLHighlighter = GObject.registerClass(
 class URLHighlighter extends St.Label {
     _init(text = '', lineWrap, allowMarkup) {
         super._init({
@@ -171,7 +171,7 @@ class URLHighlighter extends St.Label {
     }
 });
 
-var ScaleLayout = GObject.registerClass(
+const ScaleLayout = GObject.registerClass(
 class ScaleLayout extends Clutter.BinLayout {
     _init(params) {
         this._container = null;
@@ -214,7 +214,7 @@ class ScaleLayout extends Clutter.BinLayout {
     }
 });
 
-var LabelExpanderLayout = GObject.registerClass({
+const LabelExpanderLayout = GObject.registerClass({
     Properties: {
         'expansion': GObject.ParamSpec.double('expansion',
                                               'Expansion',
@@ -308,7 +308,7 @@ var LabelExpanderLayout = GObject.registerClass({
 });
 
 
-var Message = GObject.registerClass({
+export const Message = GObject.registerClass({
     Signals: {
         'close': {},
         'expanded': {},
@@ -555,7 +555,7 @@ var Message = GObject.registerClass({
     }
 });
 
-var MessageListSection = GObject.registerClass({
+export const MessageListSection = GObject.registerClass({
     Properties: {
         'can-clear': GObject.ParamSpec.boolean(
             'can-clear', 'can-clear', 'can-clear',

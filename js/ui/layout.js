@@ -1,28 +1,27 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported MonitorConstraint, LayoutManager */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../misc/signals.js';
 
-const Background = imports.ui.background;
-const BackgroundMenu = imports.ui.backgroundMenu;
+import * as Background from './background.js';
+import * as BackgroundMenu from './backgroundMenu.js';
 
-const DND = imports.ui.dnd;
-const Main = imports.ui.main;
-const Params = imports.misc.params;
-const Ripples = imports.ui.ripples;
+import * as DND from './dnd.js';
+import * as Main from './main.js';
+import * as Params from '../misc/params.js';
+import * as Ripples from './ripples.js';
 
-var STARTUP_ANIMATION_TIME = 500;
-var BACKGROUND_FADE_ANIMATION_TIME = 1000;
+const STARTUP_ANIMATION_TIME = 500;
+const BACKGROUND_FADE_ANIMATION_TIME = 1000;
 
-var HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
-var HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
+const HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
+const HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
 
 const SCREEN_TRANSITION_DELAY = 250; // ms
 const SCREEN_TRANSITION_DURATION = 500; // ms
@@ -38,7 +37,7 @@ function isPopupMetaWindow(actor) {
     }
 }
 
-var MonitorConstraint = GObject.registerClass({
+export const MonitorConstraint = GObject.registerClass({
     Properties: {
         'primary': GObject.ParamSpec.boolean('primary',
                                              'Primary', 'Track primary monitor',
@@ -155,7 +154,7 @@ var MonitorConstraint = GObject.registerClass({
     }
 });
 
-var Monitor = class Monitor {
+class Monitor {
     constructor(index, geometry, geometryScale) {
         this.index = index;
         this.x = geometry.x;
@@ -168,7 +167,7 @@ var Monitor = class Monitor {
     get inFullscreen() {
         return global.display.get_monitor_in_fullscreen(this.index);
     }
-};
+}
 
 const UiActor = GObject.registerClass(
 class UiActor extends St.Widget {
@@ -189,7 +188,7 @@ const defaultParams = {
     affectsInputRegion: true,
 };
 
-var LayoutManager = GObject.registerClass({
+export const LayoutManager = GObject.registerClass({
     Signals: {
         'hot-corners-changed': {},
         'startup-complete': {},
@@ -1131,7 +1130,7 @@ var LayoutManager = GObject.registerClass({
 //
 // This class manages a "hot corner" that can toggle switching to
 // overview.
-var HotCorner = GObject.registerClass(
+export const HotCorner = GObject.registerClass(
 class HotCorner extends Clutter.Actor {
     _init(layoutManager, monitor, x, y) {
         super._init();
@@ -1299,7 +1298,7 @@ class HotCorner extends Clutter.Actor {
     }
 });
 
-var PressureBarrier = class PressureBarrier extends Signals.EventEmitter {
+class PressureBarrier extends Signals.EventEmitter {
     constructor(threshold, timeout, actionMode) {
         super();
 
@@ -1441,9 +1440,9 @@ var PressureBarrier = class PressureBarrier extends Signals.EventEmitter {
         if (this._currentPressure >= this._threshold)
             this._trigger();
     }
-};
+}
 
-var ScreenTransition = GObject.registerClass(
+const ScreenTransition = GObject.registerClass(
 class ScreenTransition extends Clutter.Actor {
     _init() {
         super._init({ visible: false });

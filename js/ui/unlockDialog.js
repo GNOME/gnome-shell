@@ -1,24 +1,23 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported UnlockDialog */
 
-const AccountsService = imports.gi.AccountsService;
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const Gdm = imports.gi.Gdm;
-const Gio = imports.gi.Gio;
-const GnomeDesktop = imports.gi.GnomeDesktop;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import AccountsService from 'gi://AccountsService';
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import Gdm from 'gi://Gdm';
+import Gio from 'gi://Gio';
+import GnomeDesktop from 'gi://GnomeDesktop';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Background = imports.ui.background;
-const Layout = imports.ui.layout;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
-const SwipeTracker = imports.ui.swipeTracker;
-const {formatDateWithCFormatString} = imports.misc.dateUtils;
-const AuthPrompt = imports.gdm.authPrompt;
+import * as Background from './background.js';
+import * as Layout from './layout.js';
+import * as Main from './main.js';
+import * as MessageTray from './messageTray.js';
+import * as SwipeTracker from './swipeTracker.js';
+import {formatDateWithCFormatString} from '../misc/dateUtils.js';
+import * as AuthPrompt from '../gdm/authPrompt.js';
 
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
@@ -35,7 +34,7 @@ const BLUR_SIGMA = 45;
 
 const SUMMARY_ICON_SIZE = 32;
 
-var NotificationsBox = GObject.registerClass({
+const NotificationsBox = GObject.registerClass({
     Signals: { 'wake-up-screen': {} },
 }, class NotificationsBox extends St.BoxLayout {
     _init() {
@@ -312,7 +311,7 @@ var NotificationsBox = GObject.registerClass({
     }
 });
 
-var Clock = GObject.registerClass(
+const Clock = GObject.registerClass(
 class UnlockDialogClock extends St.BoxLayout {
     _init() {
         super._init({ style_class: 'unlock-dialog-clock', vertical: true });
@@ -383,7 +382,7 @@ class UnlockDialogClock extends St.BoxLayout {
     }
 });
 
-var UnlockDialogLayout = GObject.registerClass(
+const UnlockDialogLayout = GObject.registerClass(
 class UnlockDialogLayout extends Clutter.LayoutManager {
     _init(stack, notifications, switchUserButton) {
         super._init();
@@ -462,7 +461,7 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
     }
 });
 
-var UnlockDialog = GObject.registerClass({
+export const UnlockDialog = GObject.registerClass({
     Signals: {
         'failed': {},
         'wake-up-screen': {},

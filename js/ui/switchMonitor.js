@@ -1,16 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported SwitchMonitorPopup */
 
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
 
-const SwitcherPopup = imports.ui.switcherPopup;
+import * as SwitcherPopup from './switcherPopup.js';
 
-var APP_ICON_SIZE = 96;
+const APP_ICON_SIZE = 96;
 
-var SwitchMonitorPopup = GObject.registerClass(
+export const SwitchMonitorPopup = GObject.registerClass(
 class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
         let items = [];
@@ -93,7 +92,7 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
     }
 });
 
-var SwitchMonitorSwitcher = GObject.registerClass(
+const SwitchMonitorSwitcher = GObject.registerClass(
 class SwitchMonitorSwitcher extends SwitcherPopup.SwitcherList {
     _init(items) {
         super._init(true);

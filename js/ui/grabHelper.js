@@ -1,11 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported GrabHelper */
 
-const Clutter = imports.gi.Clutter;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
-const Params = imports.misc.params;
+import * as Main from './main.js';
+import * as Params from '../misc/params.js';
 
 /**
  * GrabHelper:
@@ -18,7 +17,7 @@ const Params = imports.misc.params;
  * after you call ungrab(), but instead pass an 'onUngrab' callback when you
  * call grab().
  */
-class GrabHelper {
+export class GrabHelper {
     /**
      * @param {Clutter.Actor} owner the actor that owns the GrabHelper
      * @param {*} params optional parameters to pass to Main.pushModal()
@@ -293,4 +292,4 @@ class GrabHelper {
 
         return Clutter.EVENT_STOP;
     }
-};
+}

@@ -1,18 +1,18 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Indicator */
+import 'gi://GnomeBluetooth?version=3.0';
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GnomeBluetooth = imports.gi.GnomeBluetooth;
-const GObject = imports.gi.GObject;
-const Pango = imports.gi.Pango;
-const St = imports.gi.St;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GnomeBluetooth from 'gi://GnomeBluetooth';
+import GObject from 'gi://GObject';
+import Pango from 'gi://Pango';
+import St from 'gi://St';
 
-const {Spinner} = imports.ui.animation;
-const PopupMenu = imports.ui.popupMenu;
-const {QuickMenuToggle, SystemIndicator} = imports.ui.quickSettings;
+import {Spinner} from '../animation.js';
+import * as PopupMenu from '../popupMenu.js';
+import {QuickMenuToggle, SystemIndicator} from '../quickSettings.js';
 
-const {loadInterfaceXML} = imports.misc.fileUtils;
+import {loadInterfaceXML} from '../../misc/fileUtils.js';
 
 const {AdapterState} = GnomeBluetooth;
 
@@ -394,7 +394,7 @@ class BluetoothToggle extends QuickMenuToggle {
     }
 });
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends SystemIndicator {
     _init() {
         super._init();

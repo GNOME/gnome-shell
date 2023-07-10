@@ -1,29 +1,28 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported InputSourceIndicator */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const IBus = imports.gi.IBus;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Gettext = imports.gettext;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import IBus from 'gi://IBus';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Gettext from 'gettext';
+import * as Signals from '../../misc/signals.js';
 
-const IBusManager = imports.misc.ibusManager;
-const KeyboardManager = imports.misc.keyboardManager;
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const PanelMenu = imports.ui.panelMenu;
-const SwitcherPopup = imports.ui.switcherPopup;
-const Util = imports.misc.util;
+import * as IBusManager from '../../misc/ibusManager.js';
+import * as KeyboardManager from '../../misc/keyboardManager.js';
+import * as Main from '../main.js';
+import * as PopupMenu from '../popupMenu.js';
+import * as PanelMenu from '../panelMenu.js';
+import * as SwitcherPopup from '../switcherPopup.js';
+import * as Util from '../../misc/util.js';
 
-var INPUT_SOURCE_TYPE_XKB = 'xkb';
-var INPUT_SOURCE_TYPE_IBUS = 'ibus';
+export const INPUT_SOURCE_TYPE_XKB = 'xkb';
+export const INPUT_SOURCE_TYPE_IBUS = 'ibus';
 
-var LayoutMenuItem = GObject.registerClass(
+export const LayoutMenuItem = GObject.registerClass(
 class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
     _init(displayName, shortName) {
         super._init();
@@ -41,7 +40,7 @@ class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
     }
 });
 
-var InputSource = class extends Signals.EventEmitter {
+export class InputSource extends Signals.EventEmitter {
     constructor(type, id, displayName, shortName, index) {
         super();
 
@@ -79,9 +78,9 @@ var InputSource = class extends Signals.EventEmitter {
         else
             return engineDesc.layout;
     }
-};
+}
 
-var InputSourcePopup = GObject.registerClass(
+export const InputSourcePopup = GObject.registerClass(
 class InputSourcePopup extends SwitcherPopup.SwitcherPopup {
     _init(items, action, actionBackward) {
         super._init(items);
@@ -114,7 +113,7 @@ class InputSourcePopup extends SwitcherPopup.SwitcherPopup {
     }
 });
 
-var InputSourceSwitcher = GObject.registerClass(
+const InputSourceSwitcher = GObject.registerClass(
 class InputSourceSwitcher extends SwitcherPopup.SwitcherList {
     _init(items) {
         super._init(true);
@@ -145,7 +144,7 @@ class InputSourceSwitcher extends SwitcherPopup.SwitcherList {
     }
 });
 
-var InputSourceSettings = class extends Signals.EventEmitter {
+class InputSourceSettings extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -184,9 +183,9 @@ var InputSourceSettings = class extends Signals.EventEmitter {
     get perWindow() {
         return false;
     }
-};
+}
 
-var InputSourceSystemSettings = class extends InputSourceSettings {
+class InputSourceSystemSettings extends InputSourceSettings {
     constructor() {
         super();
 
@@ -259,9 +258,9 @@ var InputSourceSystemSettings = class extends InputSourceSettings {
     get keyboardOptions() {
         return this._options.split(',');
     }
-};
+}
 
-var InputSourceSessionSettings = class extends InputSourceSettings {
+class InputSourceSessionSettings extends InputSourceSettings {
     constructor() {
         super();
 
@@ -309,9 +308,9 @@ var InputSourceSessionSettings = class extends InputSourceSettings {
     get perWindow() {
         return this._settings.get_boolean(this._KEY_PER_WINDOW);
     }
-};
+}
 
-var InputSourceManager = class extends Signals.EventEmitter {
+export class InputSourceManager extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -795,20 +794,20 @@ var InputSourceManager = class extends Signals.EventEmitter {
     get keyboardManager() {
         return this._keyboardManager;
     }
-};
+}
 
 let _inputSourceManager = null;
 
 /**
  * @returns {InputSourceManager}
  */
-function getInputSourceManager() {
+export function getInputSourceManager() {
     if (_inputSourceManager == null)
         _inputSourceManager = new InputSourceManager();
     return _inputSourceManager;
 }
 
-var InputSourceIndicatorContainer = GObject.registerClass(
+const InputSourceIndicatorContainer = GObject.registerClass(
 class InputSourceIndicatorContainer extends St.Widget {
     vfunc_get_preferred_width(forHeight) {
         // Here, and in vfunc_get_preferred_height, we need to query
@@ -848,7 +847,7 @@ class InputSourceIndicatorContainer extends St.Widget {
     }
 });
 
-var InputSourceIndicator = GObject.registerClass(
+export const InputSourceIndicator = GObject.registerClass(
 class InputSourceIndicator extends PanelMenu.Button {
     _init() {
         super._init(0.5, _("Keyboard"));

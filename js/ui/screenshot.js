@@ -1,22 +1,21 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ScreenshotService, ScreenshotUI, showScreenshotUI, captureScreenshot */
 
-const Clutter = imports.gi.Clutter;
-const Cogl = imports.gi.Cogl;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const GLib = imports.gi.GLib;
-const Graphene = imports.gi.Graphene;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Cogl from 'gi://Cogl';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import GLib from 'gi://GLib';
+import Graphene from 'gi://Graphene';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const GrabHelper = imports.ui.grabHelper;
-const Layout = imports.ui.layout;
-const Lightbox = imports.ui.lightbox;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
-const Workspace = imports.ui.workspace;
+import * as GrabHelper from './grabHelper.js';
+import * as Layout from './layout.js';
+import * as Lightbox from './lightbox.js';
+import * as Main from './main.js';
+import * as MessageTray from './messageTray.js';
+import * as Workspace from './workspace.js';
 
 Gio._promisify(Shell.Screenshot.prototype, 'pick_color');
 Gio._promisify(Shell.Screenshot.prototype, 'screenshot');
@@ -25,15 +24,15 @@ Gio._promisify(Shell.Screenshot.prototype, 'screenshot_area');
 Gio._promisify(Shell.Screenshot.prototype, 'screenshot_stage_to_content');
 Gio._promisify(Shell.Screenshot, 'composite_to_stream');
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
-const { DBusSenderChecker } = imports.misc.util;
+import {loadInterfaceXML} from '../misc/fileUtils.js';
+import {DBusSenderChecker} from '../misc/util.js';
 
 const ScreenshotIface = loadInterfaceXML('org.gnome.Shell.Screenshot');
 
 const ScreencastIface = loadInterfaceXML('org.gnome.Shell.Screencast');
 const ScreencastProxy = Gio.DBusProxy.makeProxyWrapper(ScreencastIface);
 
-var IconLabelButton = GObject.registerClass(
+const IconLabelButton = GObject.registerClass(
 class IconLabelButton extends St.Button {
     _init(iconName, label, params) {
         super._init(params);
@@ -44,7 +43,7 @@ class IconLabelButton extends St.Button {
         });
         this.set_child(this._container);
 
-        this._container.add_child(new St.Icon({ icon_name: iconName }));
+        this._container.add_child(new St.Icon({icon_name: iconName}));
         this._container.add_child(new St.Label({
             text: label,
             x_align: Clutter.ActorAlign.CENTER,
@@ -52,7 +51,7 @@ class IconLabelButton extends St.Button {
     }
 });
 
-var Tooltip = GObject.registerClass(
+export const Tooltip = GObject.registerClass(
 class Tooltip extends St.Label {
     _init(widget, params) {
         super._init(params);
@@ -120,7 +119,7 @@ class Tooltip extends St.Label {
     }
 });
 
-var UIAreaIndicator = GObject.registerClass(
+const UIAreaIndicator = GObject.registerClass(
 class UIAreaIndicator extends St.Widget {
     _init(params) {
         super._init(params);
@@ -229,7 +228,7 @@ class UIAreaIndicator extends St.Widget {
     }
 });
 
-var UIAreaSelector = GObject.registerClass({
+const UIAreaSelector = GObject.registerClass({
     Signals: { 'drag-started': {}, 'drag-ended': {} },
 }, class UIAreaSelector extends St.Widget {
     _init(params) {
@@ -700,7 +699,7 @@ var UIAreaSelector = GObject.registerClass({
     }
 });
 
-var UIWindowSelectorLayout = GObject.registerClass(
+const UIWindowSelectorLayout = GObject.registerClass(
 class UIWindowSelectorLayout extends Workspace.WorkspaceLayout {
     _init(monitorIndex) {
         super._init(null, monitorIndex, null);
@@ -765,7 +764,7 @@ class UIWindowSelectorLayout extends Workspace.WorkspaceLayout {
     }
 });
 
-var UIWindowSelectorWindow = GObject.registerClass(
+const UIWindowSelectorWindow = GObject.registerClass(
 class UIWindowSelectorWindow extends St.Button {
     _init(actor, params) {
         super._init(params);
@@ -937,7 +936,7 @@ class UIWindowSelectorWindow extends St.Button {
     }
 });
 
-var UIWindowSelector = GObject.registerClass(
+const UIWindowSelector = GObject.registerClass(
 class UIWindowSelector extends St.Widget {
     _init(monitorIndex, params) {
         super._init(params);
@@ -1005,7 +1004,7 @@ const UIMode = {
     SCREENCAST: 1,
 };
 
-var ScreenshotUI = GObject.registerClass({
+export const ScreenshotUI = GObject.registerClass({
     Properties: {
         'screencast-in-progress': GObject.ParamSpec.boolean(
             'screencast-in-progress',
@@ -2279,7 +2278,7 @@ function showScreenRecordingUI() {
     });
 }
 
-var ScreenshotService = class {
+export class ScreenshotService {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreenshotIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell/Screenshot');
@@ -2595,9 +2594,9 @@ var ScreenshotService = class {
             this._removeShooterForSender(invocation.get_sender());
         }
     }
-};
+}
 
-var SelectArea = GObject.registerClass(
+export const SelectArea = GObject.registerClass(
 class SelectArea extends St.Widget {
     _init() {
         this._startX = -1;
@@ -2700,7 +2699,7 @@ class SelectArea extends St.Widget {
     }
 });
 
-var RecolorEffect = GObject.registerClass({
+const RecolorEffect = GObject.registerClass({
     Properties: {
         color: GObject.ParamSpec.boxed(
             'color', 'color', 'replacement color',
@@ -2829,7 +2828,7 @@ var RecolorEffect = GObject.registerClass({
     }
 });
 
-var PickPixel = GObject.registerClass(
+export const PickPixel = GObject.registerClass(
 class PickPixel extends St.Widget {
     _init(screenshot) {
         super._init({ visible: false, reactive: true });
@@ -2921,9 +2920,9 @@ class PickPixel extends St.Widget {
     }
 });
 
-var FLASHSPOT_ANIMATION_OUT_TIME = 500; // milliseconds
+const FLASHSPOT_ANIMATION_OUT_TIME = 500; // milliseconds
 
-var Flashspot = GObject.registerClass(
+export const Flashspot = GObject.registerClass(
 class Flashspot extends Lightbox.Lightbox {
     _init(area) {
         super._init(Main.uiGroup, {

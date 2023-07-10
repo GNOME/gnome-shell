@@ -1,16 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Component */
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const St = imports.gi.St;
-
-var Tpl = null;
-var Tp = null;
+let Tpl = null;
+let Tp = null;
 try {
-    ({ TelepathyGLib: Tp, TelepathyLogger: Tpl } = imports.gi);
+    ({default: Tp} = await import('gi://TelepathyGlib'));
+    ({default: Tpl} = await import('gi://TelepathyLogger'));
 
     Gio._promisify(Tp.Channel.prototype, 'close_async');
     Gio._promisify(Tp.TextChannel.prototype, 'send_message_async');
@@ -20,30 +19,30 @@ try {
     console.debug('Skipping chat support, telepathy not found');
 }
 
-const History = imports.misc.history;
-const Main = imports.ui.main;
-const MessageList = imports.ui.messageList;
-const MessageTray = imports.ui.messageTray;
-const Params = imports.misc.params;
-const Util = imports.misc.util;
+import * as History from '../../misc/history.js';
+import * as Main from '../main.js';
+import * as MessageList from '../messageList.js';
+import * as MessageTray from '../messageTray.js';
+import * as Params from '../../misc/params.js';
+import * as Util from '../../misc/util.js';
 
 const HAVE_TP = Tp != null && Tpl != null;
 
 // See Notification.appendMessage
-var SCROLLBACK_IMMEDIATE_TIME = 3 * 60; // 3 minutes
-var SCROLLBACK_RECENT_TIME = 15 * 60; // 15 minutes
-var SCROLLBACK_RECENT_LENGTH = 20;
-var SCROLLBACK_IDLE_LENGTH = 5;
+const SCROLLBACK_IMMEDIATE_TIME = 3 * 60; // 3 minutes
+const SCROLLBACK_RECENT_TIME = 15 * 60; // 15 minutes
+const SCROLLBACK_RECENT_LENGTH = 20;
+const SCROLLBACK_IDLE_LENGTH = 5;
 
 // See Source._displayPendingMessages
-var SCROLLBACK_HISTORY_LINES = 10;
+const SCROLLBACK_HISTORY_LINES = 10;
 
 // See Notification._onEntryChanged
-var COMPOSING_STOP_TIMEOUT = 5;
+const COMPOSING_STOP_TIMEOUT = 5;
 
-var CHAT_EXPAND_LINES = 12;
+const CHAT_EXPAND_LINES = 12;
 
-var NotificationDirection = {
+const NotificationDirection = {
     SENT: 'chat-sent',
     RECEIVED: 'chat-received',
 };
@@ -101,7 +100,7 @@ const ChatMessage = HAVE_TP ? GObject.registerClass({
 }) : null;
 
 
-var TelepathyComponent = class {
+class TelepathyComponent {
     constructor() {
         this._client = null;
 
@@ -131,9 +130,9 @@ var TelepathyComponent = class {
 
         this._client.unregister();
     }
-};
+}
 
-var TelepathyClient = HAVE_TP ? GObject.registerClass(
+const TelepathyClient = HAVE_TP ? GObject.registerClass(
 class TelepathyClient extends Tp.BaseClient {
     _init() {
         // channel path -> ChatSource
@@ -306,7 +305,7 @@ class TelepathyClient extends Tp.BaseClient {
     }
 }) : null;
 
-var ChatSource = HAVE_TP ? GObject.registerClass(
+const ChatSource = HAVE_TP ? GObject.registerClass(
 class ChatSource extends MessageTray.Source {
     _init(account, conn, channel, contact, client) {
         this._account = account;
@@ -666,7 +665,7 @@ class ChatNotificationMessage extends GObject.Object {
     }
 }) : null;
 
-var ChatNotification = HAVE_TP ? GObject.registerClass({
+const ChatNotification = HAVE_TP ? GObject.registerClass({
     Signals: {
         'message-removed': { param_types: [ChatNotificationMessage.$gtype] },
         'message-added': { param_types: [ChatNotificationMessage.$gtype] },
@@ -841,7 +840,7 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
     }
 }) : null;
 
-var ChatLineBox = GObject.registerClass(
+const ChatLineBox = GObject.registerClass(
 class ChatLineBox extends St.BoxLayout {
     vfunc_get_preferred_height(forWidth) {
         let [, natHeight] = super.vfunc_get_preferred_height(forWidth);
@@ -849,7 +848,7 @@ class ChatLineBox extends St.BoxLayout {
     }
 });
 
-var ChatNotificationBanner = GObject.registerClass(
+const ChatNotificationBanner = GObject.registerClass(
 class ChatNotificationBanner extends MessageTray.NotificationBanner {
     _init(notification) {
         super._init(notification);
@@ -1020,4 +1019,4 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
     }
 });
 
-var Component = TelepathyComponent;
+export const Component = TelepathyComponent;

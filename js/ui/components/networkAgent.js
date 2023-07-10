@@ -1,28 +1,27 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Component */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const NM = imports.gi.NM;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import NM from 'gi://NM';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../../misc/signals.js';
 
-const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
-const ModalDialog = imports.ui.modalDialog;
-const ShellEntry = imports.ui.shellEntry;
+import * as Dialog from '../dialog.js';
+import * as Main from '../main.js';
+import * as MessageTray from '../messageTray.js';
+import * as ModalDialog from '../modalDialog.js';
+import * as ShellEntry from '../shellEntry.js';
 
 Gio._promisify(Shell.NetworkAgent.prototype, 'init_async');
 Gio._promisify(Shell.NetworkAgent.prototype, 'search_vpn_plugin');
 
 const VPN_UI_GROUP = 'VPN Plugin UI';
 
-var NetworkSecretDialog = GObject.registerClass(
+const NetworkSecretDialog = GObject.registerClass(
 class NetworkSecretDialog extends ModalDialog.ModalDialog {
     _init(agent, requestId, connection, settingName, hints, flags, contentOverride) {
         super._init({ styleClass: 'prompt-dialog' });
@@ -418,7 +417,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
     }
 });
 
-var VPNRequestHandler = class extends Signals.EventEmitter {
+class VPNRequestHandler extends Signals.EventEmitter {
     constructor(agent, requestId, authHelper, serviceType, connection, hints, flags) {
         super();
 
@@ -676,9 +675,9 @@ var VPNRequestHandler = class extends Signals.EventEmitter {
             this.destroy();
         }
     }
-};
+}
 
-var NetworkAgent = class {
+class NetworkAgent {
     constructor() {
         this._native = new Shell.NetworkAgent({
             identifier: 'org.gnome.Shell.NetworkAgent',
@@ -880,5 +879,6 @@ var NetworkAgent = class {
             externalUIMode: ['true', 'yes', 'on', '1'].includes(trimmedProp),
         };
     }
-};
-var Component = NetworkAgent;
+}
+
+export {NetworkAgent as Component};

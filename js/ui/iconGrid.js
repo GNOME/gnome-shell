@@ -1,22 +1,21 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported BaseIcon, IconGrid, IconGridLayout */
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Params = imports.misc.params;
-const Main = imports.ui.main;
+import * as Params from '../misc/params.js';
+import * as Main from './main.js';
 
-var ICON_SIZE = 96;
+const ICON_SIZE = 96;
 
-var PAGE_SWITCH_TIME = 300;
+const PAGE_SWITCH_TIME = 300;
 
 /** @enum {number} */
-var IconSize = {
+const IconSize = {
     LARGE: 96,
     MEDIUM: 64,
     MEDIUM_SMALL: 48,
@@ -25,8 +24,8 @@ var IconSize = {
     TINY: 16,
 };
 
-var APPICON_ANIMATION_OUT_SCALE = 3;
-var APPICON_ANIMATION_OUT_TIME = 250;
+const APPICON_ANIMATION_OUT_SCALE = 3;
+const APPICON_ANIMATION_OUT_TIME = 250;
 
 const ICON_POSITION_DELAY = 10;
 
@@ -49,11 +48,11 @@ const defaultGridModes = [
     },
 ];
 
-var LEFT_DIVIDER_LEEWAY = 20;
-var RIGHT_DIVIDER_LEEWAY = 20;
+const LEFT_DIVIDER_LEEWAY = 20;
+const RIGHT_DIVIDER_LEEWAY = 20;
 
 /** @enum {number} */
-var DragLocation = {
+export const DragLocation = {
     INVALID: 0,
     START_EDGE: 1,
     ON_ICON: 2,
@@ -61,7 +60,7 @@ var DragLocation = {
     EMPTY_SPACE: 4,
 };
 
-var BaseIcon = GObject.registerClass(
+export const BaseIcon = GObject.registerClass(
 class BaseIcon extends Shell.SquareBin {
     _init(label, params) {
         params = Params.parse(params, {
@@ -243,7 +242,7 @@ function swap(value, length) {
     return length - value - 1;
 }
 
-var IconGridLayout = GObject.registerClass({
+export const IconGridLayout = GObject.registerClass({
     Properties: {
         'allow-incomplete-pages': GObject.ParamSpec.boolean('allow-incomplete-pages',
             'Allow incomplete pages', 'Allow incomplete pages',
@@ -1160,7 +1159,7 @@ var IconGridLayout = GObject.registerClass({
     }
 });
 
-var IconGrid = GObject.registerClass({
+export const IconGrid = GObject.registerClass({
     Signals: {
         'pages-changed': {},
     },

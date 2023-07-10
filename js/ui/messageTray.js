@@ -1,42 +1,40 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported NotificationPolicy, NotificationGenericPolicy,
-   NotificationApplicationPolicy, Source, SourceActor,
-   SystemNotificationSource, MessageTray */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Calendar = imports.ui.calendar;
-const GnomeSession = imports.misc.gnomeSession;
-const Layout = imports.ui.layout;
-const Main = imports.ui.main;
-const Params = imports.misc.params;
-const SignalTracker = imports.misc.signalTracker;
+import * as Calendar from './calendar.js';
+import * as GnomeSession from '../misc/gnomeSession.js';
+import * as Layout from './layout.js';
+import * as Main from './main.js';
+import * as Params from '../misc/params.js';
+import * as SignalTracker from '../misc/signalTracker.js';
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 
-var ANIMATION_TIME = 200;
-var NOTIFICATION_TIMEOUT = 4000;
+export const ANIMATION_TIME = 200;
 
-var HIDE_TIMEOUT = 200;
-var LONGER_HIDE_TIMEOUT = 600;
+const NOTIFICATION_TIMEOUT = 4000;
 
-var MAX_NOTIFICATIONS_IN_QUEUE = 3;
-var MAX_NOTIFICATIONS_PER_SOURCE = 3;
-var MAX_NOTIFICATION_BUTTONS = 3;
+const HIDE_TIMEOUT = 200;
+const LONGER_HIDE_TIMEOUT = 600;
+
+const MAX_NOTIFICATIONS_IN_QUEUE = 3;
+const MAX_NOTIFICATIONS_PER_SOURCE = 3;
+const MAX_NOTIFICATION_BUTTONS = 3;
 
 // We delay hiding of the tray if the mouse is within MOUSE_LEFT_ACTOR_THRESHOLD
 // range from the point where it left the tray.
-var MOUSE_LEFT_ACTOR_THRESHOLD = 20;
+const MOUSE_LEFT_ACTOR_THRESHOLD = 20;
 
-var IDLE_TIME = 1000;
+const IDLE_TIME = 1000;
 
-var State = {
+export const State = {
     HIDDEN:  0,
     SHOWING: 1,
     SHOWN:   2,
@@ -51,7 +49,7 @@ var State = {
 // and REPLACED for notifications that were destroyed as a consequence of a
 // newer version having replaced them.
 /** @enum {number} */
-var NotificationDestroyedReason = {
+export const NotificationDestroyedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
     SOURCE_CLOSED: 3,
@@ -63,7 +61,7 @@ var NotificationDestroyedReason = {
 // through the notification daemon. HIGH urgency value is used for chats received
 // through the Telepathy client.
 /** @enum {number} */
-var Urgency = {
+export const Urgency = {
     LOW: 0,
     NORMAL: 1,
     HIGH: 2,
@@ -77,12 +75,12 @@ var Urgency = {
 // status) and hence the same for every user. This affects whether the content
 // of a notification is shown on the lock screen.
 /** @enum {number} */
-var PrivacyScope = {
+export const PrivacyScope = {
     USER: 0,
     SYSTEM: 1,
 };
 
-var FocusGrabber = class FocusGrabber {
+class FocusGrabber {
     constructor(actor) {
         this._actor = actor;
         this._prevKeyFocusActor = null;
@@ -133,14 +131,14 @@ var FocusGrabber = class FocusGrabber {
                 global.stage.set_key_focus(null);
         }
     }
-};
+}
 
 // NotificationPolicy:
 // An object that holds all bits of configurable policy related to a notification
 // source, such as whether to play sound or honour the critical bit.
 //
 // A notification without a policy object will inherit the default one.
-var NotificationPolicy = GObject.registerClass({
+export const NotificationPolicy = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
         'enable': GObject.ParamSpec.boolean(
@@ -195,7 +193,7 @@ var NotificationPolicy = GObject.registerClass({
     }
 });
 
-var NotificationGenericPolicy = GObject.registerClass({
+export const NotificationGenericPolicy = GObject.registerClass({
 }, class NotificationGenericPolicy extends NotificationPolicy {
     _init() {
         super._init();
@@ -225,7 +223,7 @@ var NotificationGenericPolicy = GObject.registerClass({
     }
 });
 
-var NotificationApplicationPolicy = GObject.registerClass({
+export const NotificationApplicationPolicy = GObject.registerClass({
 }, class NotificationApplicationPolicy extends NotificationPolicy {
     _init(id) {
         super._init();
@@ -353,7 +351,7 @@ var NotificationApplicationPolicy = GObject.registerClass({
 // @source allows playing sounds).
 //
 // [1] https://developer.gnome.org/notification-spec/#markup
-var Notification = GObject.registerClass({
+export const Notification = GObject.registerClass({
     Properties: {
         'acknowledged': GObject.ParamSpec.boolean(
             'acknowledged', 'acknowledged', 'acknowledged',
@@ -505,7 +503,7 @@ var Notification = GObject.registerClass({
 });
 SignalTracker.registerDestroyableType(Notification);
 
-var NotificationBanner = GObject.registerClass({
+export const NotificationBanner = GObject.registerClass({
     Signals: {
         'done-displaying': {},
         'unfocused': {},
@@ -602,7 +600,7 @@ var NotificationBanner = GObject.registerClass({
     }
 });
 
-var SourceActor = GObject.registerClass(
+export const SourceActor = GObject.registerClass(
 class SourceActor extends St.Widget {
     _init(source, size) {
         super._init();
@@ -642,7 +640,7 @@ class SourceActor extends St.Widget {
     }
 });
 
-var Source = GObject.registerClass({
+export const Source = GObject.registerClass({
     Properties: {
         'count': GObject.ParamSpec.int(
             'count', 'count', 'count',
@@ -808,7 +806,7 @@ var Source = GObject.registerClass({
 });
 SignalTracker.registerDestroyableType(Source);
 
-var MessageTray = GObject.registerClass({
+export const MessageTray = GObject.registerClass({
     Signals: {
         'queue-changed': {},
         'source-added': { param_types: [Source.$gtype] },
@@ -1420,7 +1418,7 @@ var MessageTray = GObject.registerClass({
     }
 });
 
-var SystemNotificationSource = GObject.registerClass(
+export const SystemNotificationSource = GObject.registerClass(
 class SystemNotificationSource extends Source {
     _init() {
         super._init(_("System Information"), 'dialog-information-symbolic');

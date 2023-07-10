@@ -1,48 +1,48 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported WindowManager */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const AltTab = imports.ui.altTab;
-const AppFavorites = imports.ui.appFavorites;
-const Dialog = imports.ui.dialog;
-const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
-const InhibitShortcutsDialog = imports.ui.inhibitShortcutsDialog;
-const Main = imports.ui.main;
-const ModalDialog = imports.ui.modalDialog;
-const WindowMenu = imports.ui.windowMenu;
-const PadOsd = imports.ui.padOsd;
-const EdgeDragAction = imports.ui.edgeDragAction;
-const CloseDialog = imports.ui.closeDialog;
-const SwitchMonitor = imports.ui.switchMonitor;
-const IBusManager = imports.misc.ibusManager;
-const WorkspaceAnimation = imports.ui.workspaceAnimation;
+import * as AltTab from './altTab.js';
+import * as AppFavorites from './appFavorites.js';
+import * as Dialog from './dialog.js';
+import * as WorkspaceSwitcherPopup from './workspaceSwitcherPopup.js';
+import * as InhibitShortcutsDialog from './inhibitShortcutsDialog.js';
+import * as ModalDialog from './modalDialog.js';
+import * as WindowMenu from './windowMenu.js';
+import * as PadOsd from './padOsd.js';
+import * as EdgeDragAction from './edgeDragAction.js';
+import * as CloseDialog from './closeDialog.js';
+import * as SwitchMonitor from './switchMonitor.js';
+import * as IBusManager from '../misc/ibusManager.js';
+import * as WorkspaceAnimation from './workspaceAnimation.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import {loadInterfaceXML} from '../misc/fileUtils.js';
+import * as Main from './main.js';
 
-var SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
-var MINIMIZE_WINDOW_ANIMATION_TIME = 400;
-var MINIMIZE_WINDOW_ANIMATION_MODE = Clutter.AnimationMode.EASE_OUT_EXPO;
-var SHOW_WINDOW_ANIMATION_TIME = 150;
-var DIALOG_SHOW_WINDOW_ANIMATION_TIME = 100;
-var DESTROY_WINDOW_ANIMATION_TIME = 150;
-var DIALOG_DESTROY_WINDOW_ANIMATION_TIME = 100;
-var WINDOW_ANIMATION_TIME = 250;
-var SCROLL_TIMEOUT_TIME = 150;
-var DIM_BRIGHTNESS = -0.3;
-var DIM_TIME = 500;
-var UNDIM_TIME = 250;
-var APP_MOTION_THRESHOLD = 30;
+export const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 
-var ONE_SECOND = 1000; // in ms
+const MINIMIZE_WINDOW_ANIMATION_TIME = 400;
+const MINIMIZE_WINDOW_ANIMATION_MODE = Clutter.AnimationMode.EASE_OUT_EXPO;
+const SHOW_WINDOW_ANIMATION_TIME = 150;
+const DIALOG_SHOW_WINDOW_ANIMATION_TIME = 100;
+const DESTROY_WINDOW_ANIMATION_TIME = 150;
+const DIALOG_DESTROY_WINDOW_ANIMATION_TIME = 100;
+const WINDOW_ANIMATION_TIME = 250;
+const SCROLL_TIMEOUT_TIME = 150;
+const DIM_BRIGHTNESS = -0.3;
+const DIM_TIME = 500;
+const UNDIM_TIME = 250;
+const APP_MOTION_THRESHOLD = 30;
 
-var MIN_NUM_WORKSPACES = 2;
+const ONE_SECOND = 1000; // in ms
+
+const MIN_NUM_WORKSPACES = 2;
 
 const GSD_WACOM_BUS_NAME = 'org.gnome.SettingsDaemon.Wacom';
 const GSD_WACOM_OBJECT_PATH = '/org/gnome/SettingsDaemon/Wacom';
@@ -55,7 +55,7 @@ const WINDOW_DIMMER_EFFECT_NAME = "gnome-shell-window-dimmer";
 Gio._promisify(Shell, 'util_start_systemd_unit');
 Gio._promisify(Shell, 'util_stop_systemd_unit');
 
-var DisplayChangeDialog = GObject.registerClass(
+const DisplayChangeDialog = GObject.registerClass(
 class DisplayChangeDialog extends ModalDialog.ModalDialog {
     _init(wm) {
         super._init();
@@ -132,7 +132,7 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
     }
 });
 
-var WindowDimmer = GObject.registerClass(
+export const WindowDimmer = GObject.registerClass(
 class WindowDimmer extends Clutter.BrightnessContrastEffect {
     _init() {
         super._init({
@@ -180,9 +180,9 @@ function getWindowDimmer(actor) {
  * the main window of an application, and give the app a grace period
  * where it can map another window before we remove the workspace.
  */
-var LAST_WINDOW_GRACE_TIME = 1000;
+const LAST_WINDOW_GRACE_TIME = 1000;
 
-var WorkspaceTracker = class {
+class WorkspaceTracker {
     constructor(wm) {
         this._wm = wm;
 
@@ -385,9 +385,9 @@ var WorkspaceTracker = class {
 
         return false;
     }
-};
+}
 
-var TilePreview = GObject.registerClass(
+export const TilePreview = GObject.registerClass(
 class TilePreview extends St.Widget {
     _init() {
         super._init();
@@ -475,7 +475,7 @@ class TilePreview extends St.Widget {
     }
 });
 
-var AppSwitchAction = GObject.registerClass({
+const AppSwitchAction = GObject.registerClass({
     Signals: { 'activated': {} },
 }, class AppSwitchAction extends Clutter.GestureAction {
     _init() {
@@ -532,7 +532,7 @@ var AppSwitchAction = GObject.registerClass({
     }
 });
 
-var ResizePopup = GObject.registerClass(
+const ResizePopup = GObject.registerClass(
 class ResizePopup extends St.Widget {
     _init() {
         super._init({ layout_manager: new Clutter.BinLayout() });
@@ -558,7 +558,7 @@ class ResizePopup extends St.Widget {
     }
 });
 
-var WindowManager = class {
+export class WindowManager {
     constructor() {
         this._shellwm =  global.window_manager;
 
@@ -1943,4 +1943,4 @@ var WindowManager = class {
             this._resizePopup = null;
         }
     }
-};
+}

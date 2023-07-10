@@ -1,12 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Dialog, MessageDialogContent, ListSection, ListSectionItem */
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
+import St from 'gi://St';
 
 function _setLabel(label, value) {
     label.set({
@@ -15,7 +14,7 @@ function _setLabel(label, value) {
     });
 }
 
-var Dialog = GObject.registerClass(
+export const Dialog = GObject.registerClass(
 class Dialog extends St.Widget {
     _init(parentActor, styleClass) {
         super._init({
@@ -156,7 +155,7 @@ class Dialog extends St.Widget {
     }
 });
 
-var MessageDialogContent = GObject.registerClass({
+export const MessageDialogContent = GObject.registerClass({
     Properties: {
         'title': GObject.ParamSpec.string(
             'title', 'title', 'title',
@@ -248,7 +247,7 @@ var MessageDialogContent = GObject.registerClass({
     }
 });
 
-var ListSection = GObject.registerClass({
+export const ListSection = GObject.registerClass({
     Properties: {
         'title': GObject.ParamSpec.string(
             'title', 'title', 'title',
@@ -293,7 +292,7 @@ var ListSection = GObject.registerClass({
     }
 });
 
-var ListSectionItem = GObject.registerClass({
+export const ListSectionItem = GObject.registerClass({
     Properties: {
         'icon-actor':  GObject.ParamSpec.object(
             'icon-actor', 'icon-actor', 'Icon actor',

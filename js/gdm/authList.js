@@ -15,12 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
-/* exported AuthList */
 
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
 
 const SCROLL_ANIMATION_TIME = 500;
 
@@ -68,7 +67,7 @@ const AuthListItem = GObject.registerClass({
     }
 });
 
-var AuthList = GObject.registerClass({
+export const AuthList = GObject.registerClass({
     Signals: {
         'activate': { param_types: [GObject.TYPE_STRING] },
         'item-added': { param_types: [AuthListItem.$gtype] },

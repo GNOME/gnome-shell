@@ -1,20 +1,19 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Indicator */
 
 // the following is a modified version of bolt/contrib/js/client.js
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Polkit = imports.gi.Polkit;
-const Shell = imports.gi.Shell;
-const Signals = imports.misc.signals;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Polkit from 'gi://Polkit';
+import Shell from 'gi://Shell';
+import * as Signals from '../../misc/signals.js';
 
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
-const {SystemIndicator} = imports.ui.quickSettings;
+import * as Main from '../main.js';
+import * as MessageTray from '../messageTray.js';
+import {SystemIndicator} from '../quickSettings.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import {loadInterfaceXML} from '../../misc/fileUtils.js';
 
 /* Keep in sync with data/org.freedesktop.bolt.xml */
 
@@ -24,7 +23,7 @@ const BoltDeviceInterface = loadInterfaceXML('org.freedesktop.bolt1.Device');
 const BoltDeviceProxy = Gio.DBusProxy.makeProxyWrapper(BoltDeviceInterface);
 
 /** @enum {string} */
-var Status = {
+const Status = {
     DISCONNECTED: 'disconnected',
     CONNECTING: 'connecting',
     CONNECTED: 'connected',
@@ -34,19 +33,19 @@ var Status = {
 };
 
 /** @enum {string} */
-var Policy = {
+const Policy = {
     DEFAULT: 'default',
     MANUAL: 'manual',
     AUTO: 'auto',
 };
 
 /** @enum {string} */
-var AuthCtrl = {
+const AuthCtrl = {
     NONE: 'none',
 };
 
 /** @enum {string} */
-var AuthMode = {
+const AuthMode = {
     DISABLED: 'disabled',
     ENABLED: 'enabled',
 };
@@ -55,7 +54,7 @@ const BOLT_DBUS_CLIENT_IFACE = 'org.freedesktop.bolt1.Manager';
 const BOLT_DBUS_NAME = 'org.freedesktop.bolt';
 const BOLT_DBUS_PATH = '/org/freedesktop/bolt';
 
-var Client = class extends Signals.EventEmitter {
+class Client extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -128,10 +127,10 @@ var Client = class extends Signals.EventEmitter {
     get authMode() {
         return this._proxy.AuthMode;
     }
-};
+}
 
 /* helper class to automatically authorize new devices */
-var AuthRobot = class extends Signals.EventEmitter {
+class AuthRobot extends Signals.EventEmitter {
     constructor(client) {
         super();
 
@@ -216,11 +215,11 @@ var AuthRobot = class extends Signals.EventEmitter {
         }
         return GLib.SOURCE_REMOVE;
     }
-};
+}
 
 /* eof client.js  */
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends SystemIndicator {
     _init() {
         super._init();

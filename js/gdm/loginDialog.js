@@ -1,5 +1,4 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported LoginDialog */
 /*
  * Copyright 2011 Red Hat, Inc
  *
@@ -17,35 +16,35 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-const AccountsService = imports.gi.AccountsService;
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const Gdm = imports.gi.Gdm;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import AccountsService from 'gi://AccountsService';
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import Gdm from 'gi://Gdm';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const AuthPrompt = imports.gdm.authPrompt;
-const Batch = imports.gdm.batch;
-const BoxPointer = imports.ui.boxpointer;
-const CtrlAltTab = imports.ui.ctrlAltTab;
-const GdmUtil = imports.gdm.util;
-const Layout = imports.ui.layout;
-const LoginManager = imports.misc.loginManager;
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const Realmd = imports.gdm.realmd;
-const UserWidget = imports.ui.userWidget;
+import * as AuthPrompt from './authPrompt.js';
+import * as Batch from './batch.js';
+import * as BoxPointer from '../ui/boxpointer.js';
+import * as CtrlAltTab from '../ui/ctrlAltTab.js';
+import * as GdmUtil from './util.js';
+import * as Layout from '../ui/layout.js';
+import * as LoginManager from '../misc/loginManager.js';
+import * as Main from '../ui/main.js';
+import * as PopupMenu from '../ui/popupMenu.js';
+import * as Realmd from './realmd.js';
+import * as UserWidget from '../ui/userWidget.js';
 
 const _FADE_ANIMATION_TIME = 250;
 const _SCROLL_ANIMATION_TIME = 500;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 
-var UserListItem = GObject.registerClass({
+export const UserListItem = GObject.registerClass({
     Signals: { 'activate': {} },
 }, class UserListItem extends St.Button {
     _init(user) {
@@ -157,7 +156,7 @@ var UserListItem = GObject.registerClass({
     }
 });
 
-var UserList = GObject.registerClass({
+const UserList = GObject.registerClass({
     Signals: {
         'activate': { param_types: [UserListItem.$gtype] },
         'item-added': { param_types: [UserListItem.$gtype] },
@@ -312,7 +311,7 @@ var UserList = GObject.registerClass({
     }
 });
 
-var SessionMenuButton = GObject.registerClass({
+const SessionMenuButton = GObject.registerClass({
     Signals: { 'session-activated': { param_types: [GObject.TYPE_STRING] } },
 }, class SessionMenuButton extends St.Bin {
     _init() {
@@ -407,7 +406,7 @@ var SessionMenuButton = GObject.registerClass({
     }
 });
 
-var LoginDialog = GObject.registerClass({
+export const LoginDialog = GObject.registerClass({
     Signals: {
         'failed': {},
         'wake-up-screen': {},

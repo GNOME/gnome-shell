@@ -1,28 +1,27 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ShellMountOperation, GnomeShellMountOpHandler */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Animation = imports.ui.animation;
-const CheckBox = imports.ui.checkBox;
-const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
-const ModalDialog = imports.ui.modalDialog;
-const Params = imports.misc.params;
-const ShellEntry = imports.ui.shellEntry;
+import * as Animation from './animation.js';
+import * as CheckBox from './checkBox.js';
+import * as Dialog from './dialog.js';
+import * as Main from './main.js';
+import * as MessageTray from './messageTray.js';
+import * as ModalDialog from './modalDialog.js';
+import * as Params from '../misc/params.js';
+import * as ShellEntry from './shellEntry.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
-const {wiggle} = imports.misc.animationUtils;
+import {loadInterfaceXML} from '../misc/fileUtils.js';
+import {wiggle} from '../misc/animationUtils.js';
 
-var LIST_ITEM_ICON_SIZE = 48;
-var WORK_SPINNER_ICON_SIZE = 16;
+const LIST_ITEM_ICON_SIZE = 48;
+const WORK_SPINNER_ICON_SIZE = 16;
 
 const REMEMBER_MOUNT_PASSWORD_KEY = 'remember-mount-password';
 
@@ -55,7 +54,7 @@ function _setLabelsForMessage(content, message) {
 
 /* -------------------------------------------------------- */
 
-var ShellMountOperation = class {
+export class ShellMountOperation {
     constructor(source, params) {
         params = Params.parse(params, { existingDialog: null });
 
@@ -186,9 +185,9 @@ var ShellMountOperation = class {
         this._dialog?.disconnectObject(this);
         return this._dialog;
     }
-};
+}
 
-var ShellUnmountNotifier = GObject.registerClass(
+const ShellUnmountNotifier = GObject.registerClass(
 class ShellUnmountNotifier extends MessageTray.Source {
     _init() {
         super._init('', 'media-removable');
@@ -226,7 +225,7 @@ class ShellUnmountNotifier extends MessageTray.Source {
     }
 });
 
-var ShellMountQuestionDialog = GObject.registerClass({
+const ShellMountQuestionDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
 }, class ShellMountQuestionDialog extends ModalDialog.ModalDialog {
     _init() {
@@ -254,7 +253,7 @@ var ShellMountQuestionDialog = GObject.registerClass({
     }
 });
 
-var ShellMountPasswordDialog = GObject.registerClass({
+const ShellMountPasswordDialog = GObject.registerClass({
     Signals: {
         'response': {
             param_types: [
@@ -475,7 +474,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
     }
 });
 
-var ShellProcessesDialog = GObject.registerClass({
+const ShellProcessesDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
 }, class ShellProcessesDialog extends ModalDialog.ModalDialog {
     _init() {
@@ -533,14 +532,14 @@ var ShellProcessesDialog = GObject.registerClass({
 const GnomeShellMountOpIface = loadInterfaceXML('org.Gtk.MountOperationHandler');
 
 /** @enum {number} */
-var ShellMountOperationType = {
+const ShellMountOperationType = {
     NONE: 0,
     ASK_PASSWORD: 1,
     ASK_QUESTION: 2,
     SHOW_PROCESSES: 3,
 };
 
-var GnomeShellMountOpHandler = class {
+export class GnomeShellMountOpHandler {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellMountOpIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gtk/MountOperationHandler');
@@ -754,4 +753,4 @@ var GnomeShellMountOpHandler = class {
         this._clearCurrentRequest(Gio.MountOperationResult.UNHANDLED, {});
         this._closeDialog();
     }
-};
+}

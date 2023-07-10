@@ -1,5 +1,4 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
-/* exported getCompletions, getCommonPrefix, getDeclaredConstants */
 
 const AsyncFunction = async function () {}.constructor;
 
@@ -15,7 +14,7 @@ const AsyncFunction = async function () {}.constructor;
  * @param {string} commandHeader
  * @param {readonly string[]} [globalCompletionList]
  */
-async function getCompletions(text, commandHeader, globalCompletionList) {
+export async function getCompletions(text, commandHeader, globalCompletionList) {
     let methods = [];
     let expr_, base;
     let attrHead = '';
@@ -70,7 +69,7 @@ function isStopChar(c) {
  * @param {string} expr
  * @param {number} offset
  */
-function findMatchingQuote(expr, offset) {
+export function findMatchingQuote(expr, offset) {
     let quoteChar = expr.charAt(offset);
     for (let i = offset - 1; i >= 0; --i) {
         if (expr.charAt(i) == quoteChar && expr.charAt(i - 1) != '\\')
@@ -85,7 +84,7 @@ function findMatchingQuote(expr, offset) {
  * @param {string} expr
  * @param {number} offset
  */
-function findMatchingSlash(expr, offset) {
+export function findMatchingSlash(expr, offset) {
     for (let i = offset - 1; i >= 0; --i) {
         if (expr.charAt(i) == '/' && expr.charAt(i - 1) != '\\')
             return i;
@@ -102,7 +101,7 @@ function findMatchingSlash(expr, offset) {
  * @param {string} expr
  * @param {number} offset
  */
-function findMatchingBrace(expr, offset) {
+export function findMatchingBrace(expr, offset) {
     let closeBrace = expr.charAt(offset);
     let openBrace = { ')': '(', ']': '[' }[closeBrace];
 
@@ -115,7 +114,7 @@ function findMatchingBrace(expr, offset) {
  * @param  {...any} braces
  * @returns {number}
  */
-function findTheBrace(expr, offset, ...braces) {
+export function findTheBrace(expr, offset, ...braces) {
     let [openBrace, closeBrace] = braces;
 
     if (offset < 0)
@@ -146,7 +145,7 @@ function findTheBrace(expr, offset, ...braces) {
  * @param {string} expr
  * @param {number} offset
  */
-function getExpressionOffset(expr, offset) {
+export function getExpressionOffset(expr, offset) {
     while (offset >= 0) {
         let currChar = expr.charAt(offset);
 
@@ -178,7 +177,7 @@ function isValidPropertyName(w) {
  *
  * @param {object} obj
  */
-function getAllProps(obj) {
+export function getAllProps(obj) {
     if (obj === null || obj === undefined)
         return [];
 
@@ -195,7 +194,7 @@ function getAllProps(obj) {
  * @param {string} expr
  * @param {string=} commandHeader
  */
-async function getPropertyNamesFromExpression(expr, commandHeader = '') {
+export async function getPropertyNamesFromExpression(expr, commandHeader = '') {
     let obj = {};
     if (!isUnsafeExpression(expr)) {
         try {
@@ -227,7 +226,7 @@ async function getPropertyNamesFromExpression(expr, commandHeader = '') {
  *
  * @param {readonly string[]} words
  */
-function getCommonPrefix(words) {
+export function getCommonPrefix(words) {
     let word = words[0];
     for (let i = 0; i < word.length; i++) {
         for (let w = 1; w < words.length; w++) {
@@ -243,7 +242,7 @@ function getCommonPrefix(words) {
  *
  * @param {string} str
  */
-function removeLiterals(str) {
+export function removeLiterals(str) {
     if (str.length == 0)
         return '';
 
@@ -265,7 +264,7 @@ function removeLiterals(str) {
  *
  * @param {string} str
  */
-function isUnsafeExpression(str) {
+export function isUnsafeExpression(str) {
     // Check for any sort of assignment
     // The strategy used is dumb: remove any quotes
     // or regexs and comparison operators and see if there is an '=' character.
@@ -290,7 +289,7 @@ function isUnsafeExpression(str) {
  *
  * @param {string} str
  */
-function getDeclaredConstants(str) {
+export function getDeclaredConstants(str) {
     let ret = [];
     str.split(';').forEach(s => {
         let base_, keyword;

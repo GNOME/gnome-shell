@@ -1,5 +1,4 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported SystemBackground, BackgroundManager */
 
 // READ THIS FIRST
 // Background handling is a maze of objects, both objects in this file, and
@@ -94,21 +93,21 @@
 //     MetaBackgroundImage         MetaBackgroundImage
 //     MetaBackgroundImage         MetaBackgroundImage
 
-const Clutter = imports.gi.Clutter;
-const GDesktopEnums = imports.gi.GDesktopEnums;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const GnomeBG = imports.gi.GnomeBG;
-const GnomeDesktop = imports.gi.GnomeDesktop;
-const Meta = imports.gi.Meta;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import GDesktopEnums from 'gi://GDesktopEnums';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import GnomeBG from 'gi://GnomeBG';
+import GnomeDesktop from 'gi://GnomeDesktop';
+import Meta from 'gi://Meta';
+import * as Signals from '../misc/signals.js';
 
-const LoginManager = imports.misc.loginManager;
-const Main = imports.ui.main;
-const Params = imports.misc.params;
+import * as LoginManager from '../misc/loginManager.js';
+import * as Main from './main.js';
+import * as Params from '../misc/params.js';
 
-var DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
+const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 const BACKGROUND_SCHEMA = 'org.gnome.desktop.background';
 const PRIMARY_COLOR_KEY = 'primary-color';
@@ -121,14 +120,14 @@ const PICTURE_URI_DARK_KEY = 'picture-uri-dark';
 const INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 const COLOR_SCHEME_KEY = 'color-scheme';
 
-var FADE_ANIMATION_TIME = 1000;
+const FADE_ANIMATION_TIME = 1000;
 
 // These parameters affect how often we redraw.
 // The first is how different (percent crossfaded) the slide show
 // has to look before redrawing and the second is the minimum
 // frequency (in seconds) we're willing to wake up
-var ANIMATION_OPACITY_STEP_INCREMENT = 4.0;
-var ANIMATION_MIN_WAKEUP_INTERVAL = 1.0;
+const ANIMATION_OPACITY_STEP_INCREMENT = 4.0;
+const ANIMATION_MIN_WAKEUP_INTERVAL = 1.0;
 
 let _backgroundCache = null;
 
@@ -142,7 +141,7 @@ function _fileEqual0(file1, file2) {
     return file1.equal(file2);
 }
 
-var BackgroundCache = class BackgroundCache extends Signals.EventEmitter {
+class BackgroundCache extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -227,7 +226,7 @@ var BackgroundCache = class BackgroundCache extends Signals.EventEmitter {
             }
         }
     }
-};
+}
 
 /**
  * @returns {BackgroundCache}
@@ -238,7 +237,7 @@ function getBackgroundCache() {
     return _backgroundCache;
 }
 
-var Background = GObject.registerClass({
+const Background = GObject.registerClass({
     Signals: { 'loaded': {}, 'bg-changed': {} },
 }, class Background extends Meta.Background {
     _init(params) {
@@ -532,7 +531,7 @@ var Background = GObject.registerClass({
 
 let _systemBackground;
 
-var SystemBackground = GObject.registerClass({
+export const SystemBackground = GObject.registerClass({
     Signals: { 'loaded': {} },
 }, class SystemBackground extends Meta.BackgroundActor {
     _init() {
@@ -555,7 +554,7 @@ var SystemBackground = GObject.registerClass({
     }
 });
 
-var BackgroundSource = class BackgroundSource {
+class BackgroundSource {
     constructor(layoutManager, settingsSchema) {
         // Allow override the background image setting for performance testing
         this._layoutManager = layoutManager;
@@ -649,9 +648,9 @@ var BackgroundSource = class BackgroundSource {
 
         this._backgrounds = null;
     }
-};
+}
 
-var Animation = GObject.registerClass(
+const Animation = GObject.registerClass(
 class Animation extends GnomeBG.BGSlideShow {
     _init(params) {
         super._init(params);
@@ -691,7 +690,7 @@ class Animation extends GnomeBG.BGSlideShow {
     }
 });
 
-var BackgroundManager = class BackgroundManager extends Signals.EventEmitter {
+export class BackgroundManager extends Signals.EventEmitter {
     constructor(params) {
         super();
         params = Params.parse(params, {
@@ -847,4 +846,4 @@ var BackgroundManager = class BackgroundManager extends Signals.EventEmitter {
 
         return backgroundActor;
     }
-};
+}

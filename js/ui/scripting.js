@@ -6,11 +6,11 @@ import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
 
 const Config = imports.misc.config;
-const Main = imports.ui.main;
-const Params = imports.misc.params;
-const Util = imports.misc.util;
+import * as Main from './main.js';
+import * as Params from '../misc/params.js';
+import * as Util from '../misc/util.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import {loadInterfaceXML} from '../misc/fileUtils.js';
 
 // This module provides functionality for driving the shell user interface
 // in an automated fashion. The primary current use case for this is

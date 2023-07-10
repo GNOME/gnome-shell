@@ -1,15 +1,14 @@
-/* exported getDefault */
-const AccountsService = imports.gi.AccountsService;
-const Clutter = imports.gi.Clutter;
-const Gdm = imports.gi.Gdm;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
+import AccountsService from 'gi://AccountsService';
+import Clutter from 'gi://Clutter';
+import Gdm from 'gi://Gdm';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
 
-const GnomeSession = imports.misc.gnomeSession;
-const LoginManager = imports.misc.loginManager;
-const Main = imports.ui.main;
-const Screenshot = imports.ui.screenshot;
+import * as GnomeSession from './gnomeSession.js';
+import * as LoginManager from './loginManager.js';
+import * as Main from '../ui/main.js';
+import * as Screenshot from '../ui/screenshot.js';
 
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
@@ -33,7 +32,7 @@ let _singleton = null;
 /**
  * @returns {SystemActions}
  */
-function getDefault() {
+export function getDefault() {
     if (_singleton == null)
         _singleton = new SystemActions();
 

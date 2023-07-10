@@ -1,25 +1,24 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported CtrlAltTabManager */
 
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
-const SwitcherPopup = imports.ui.switcherPopup;
-const Params = imports.misc.params;
+import * as Main from './main.js';
+import * as SwitcherPopup from './switcherPopup.js';
+import * as Params from '../misc/params.js';
 
-var POPUP_APPICON_SIZE = 96;
+const POPUP_APPICON_SIZE = 96;
 
-var SortGroup = {
+export const SortGroup = {
     TOP:    0,
     MIDDLE: 1,
     BOTTOM: 2,
 };
 
-var CtrlAltTabManager = class CtrlAltTabManager {
+export class CtrlAltTabManager {
     constructor() {
         this._items = [];
         this.addGroup(global.window_group,
@@ -141,9 +140,9 @@ var CtrlAltTabManager = class CtrlAltTabManager {
     _focusWindows(timestamp) {
         global.display.focus_default_window(timestamp);
     }
-};
+}
 
-var CtrlAltTabPopup = GObject.registerClass(
+const CtrlAltTabPopup = GObject.registerClass(
 class CtrlAltTabPopup extends SwitcherPopup.SwitcherPopup {
     _init(items) {
         super._init(items);
@@ -172,7 +171,7 @@ class CtrlAltTabPopup extends SwitcherPopup.SwitcherPopup {
     }
 });
 
-var CtrlAltTabSwitcher = GObject.registerClass(
+const CtrlAltTabSwitcher = GObject.registerClass(
 class CtrlAltTabSwitcher extends SwitcherPopup.SwitcherList {
     _init(items) {
         super._init(true);

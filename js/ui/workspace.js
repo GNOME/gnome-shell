@@ -1,33 +1,33 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Workspace */
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Graphene = imports.gi.Graphene;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Background = imports.ui.background;
-const DND = imports.ui.dnd;
-const Main = imports.ui.main;
-const OverviewControls = imports.ui.overviewControls;
-const Params = imports.misc.params;
-const Util = imports.misc.util;
-const { WindowPreview } = imports.ui.windowPreview;
+import * as Background from './background.js';
+import * as DND from './dnd.js';
+import * as Main from './main.js';
+import * as OverviewControls from './overviewControls.js';
+import * as Params from '../misc/params.js';
 
-var WINDOW_PREVIEW_MAXIMUM_SCALE = 0.95;
+import * as Util from '../misc/util.js';
+import {WindowPreview} from './windowPreview.js';
 
-var WINDOW_REPOSITIONING_DELAY = 750;
+const WINDOW_PREVIEW_MAXIMUM_SCALE = 0.95;
+
+const WINDOW_REPOSITIONING_DELAY = 750;
 
 // When calculating a layout, we calculate the scale of windows and the percent
 // of the available area the new layout uses. If the values for the new layout,
 // when weighted with the values as below, are worse than the previous layout's,
 // we stop looking for a new layout and use the previous layout.
 // Otherwise, we keep looking for a new layout.
-var LAYOUT_SCALE_WEIGHT = 1;
-var LAYOUT_SPACE_WEIGHT = 0.1;
+const LAYOUT_SCALE_WEIGHT = 1;
+const LAYOUT_SPACE_WEIGHT = 0.1;
 
 const BACKGROUND_CORNER_RADIUS_PIXELS = 30;
 
@@ -101,7 +101,7 @@ const BACKGROUND_CORNER_RADIUS_PIXELS = 30;
 // each window's "cell" area to be the same, but we shrink the thumbnail
 // and center it horizontally, and align it to the bottom vertically.
 
-var LayoutStrategy = class {
+export class LayoutStrategy {
     constructor(params) {
         params = Params.parse(params, {
             monitor: null,
@@ -142,9 +142,9 @@ var LayoutStrategy = class {
     computeWindowSlots(_layout, _area) {
         throw new GObject.NotImplementedError(`computeWindowSlots in ${this.constructor.name}`);
     }
-};
+}
 
-var UnalignedLayoutStrategy = class extends LayoutStrategy {
+class UnalignedLayoutStrategy extends LayoutStrategy {
     _newRow() {
         // Row properties:
         //
@@ -386,7 +386,7 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
         }
         return slots;
     }
-};
+}
 
 function animateAllocation(actor, box) {
     actor.save_easing_state();
@@ -400,7 +400,7 @@ function animateAllocation(actor, box) {
     return actor.get_transition('allocation');
 }
 
-var WorkspaceLayout = GObject.registerClass({
+export const WorkspaceLayout = GObject.registerClass({
     Properties: {
         'spacing': GObject.ParamSpec.double(
             'spacing', 'Spacing', 'Spacing',
@@ -944,7 +944,7 @@ var WorkspaceLayout = GObject.registerClass({
     }
 });
 
-var WorkspaceBackground = GObject.registerClass(
+export const WorkspaceBackground = GObject.registerClass(
 class WorkspaceBackground extends Shell.WorkspaceBackground {
     _init(monitorIndex, stateAdjustment) {
         super._init({
@@ -1036,7 +1036,7 @@ class WorkspaceBackground extends Shell.WorkspaceBackground {
 /**
  * @metaWorkspace: a #Meta.Workspace, or null
  */
-var Workspace = GObject.registerClass(
+export const Workspace = GObject.registerClass(
 class Workspace extends St.Widget {
     _init(metaWorkspace, monitorIndex, overviewAdjustment) {
         super._init({

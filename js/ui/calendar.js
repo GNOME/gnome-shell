@@ -1,28 +1,27 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Calendar, CalendarMessageList, DBusEventSource */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
-const MessageList = imports.ui.messageList;
-const MessageTray = imports.ui.messageTray;
-const Mpris = imports.ui.mpris;
-const PopupMenu = imports.ui.popupMenu;
-const {ensureActorVisibleInScrollView} = imports.misc.animationUtils;
+import * as Main from './main.js';
+import * as MessageList from './messageList.js';
+import * as MessageTray from './messageTray.js';
+import * as Mpris from './mpris.js';
+import * as PopupMenu from './popupMenu.js';
+import {ensureActorVisibleInScrollView} from '../misc/animationUtils.js';
 
-const {formatDateWithCFormatString, formatTimeSpan} = imports.misc.dateUtils;
-const {loadInterfaceXML} = imports.misc.fileUtils;
+import {formatDateWithCFormatString, formatTimeSpan} from '../misc/dateUtils.js';
+import {loadInterfaceXML} from '../misc/fileUtils.js';
 
-var SHOW_WEEKDATE_KEY = 'show-weekdate';
+const SHOW_WEEKDATE_KEY = 'show-weekdate';
 
-var MESSAGE_ICON_SIZE = -1; // pick up from CSS
+const MESSAGE_ICON_SIZE = -1; // pick up from CSS
 
-var NC_ = (context, str) => `${context}\u0004${str}`;
+const NC_ = (context, str) => `${context}\u0004${str}`;
 
 function sameYear(dateA, dateB) {
     return dateA.getYear() == dateB.getYear();
@@ -83,19 +82,19 @@ function _getCalendarDayAbbreviation(dayNumber) {
 
 // Abstraction for an appointment/event in a calendar
 
-var CalendarEvent = class CalendarEvent {
+class CalendarEvent {
     constructor(id, date, end, summary) {
         this.id = id;
         this.date = date;
         this.end = end;
         this.summary = summary;
     }
-};
+}
 
 // Interface for appointments/events - e.g. the contents of a calendar
 //
 
-var EventSourceBase = GObject.registerClass({
+export const EventSourceBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
         'has-calendars': GObject.ParamSpec.boolean(
@@ -143,7 +142,7 @@ var EventSourceBase = GObject.registerClass({
     }
 });
 
-var EmptyEventSource = GObject.registerClass(
+export const EmptyEventSource = GObject.registerClass(
 class EmptyEventSource extends EventSourceBase {
     get isLoading() {
         return false;
@@ -211,7 +210,7 @@ function _eventOverlapsInterval(e0, e1, i0, i1) {
 }
 
 // an implementation that reads data from a session bus service
-var DBusEventSource = GObject.registerClass(
+export const DBusEventSource = GObject.registerClass(
 class DBusEventSource extends EventSourceBase {
     _init() {
         super._init();
@@ -411,7 +410,7 @@ class DBusEventSource extends EventSourceBase {
     }
 });
 
-var Calendar = GObject.registerClass({
+export const Calendar = GObject.registerClass({
     Signals: { 'selected-date-changed': { param_types: [GLib.DateTime.$gtype] } },
 }, class Calendar extends St.Widget {
     _init() {
@@ -766,7 +765,7 @@ var Calendar = GObject.registerClass({
     }
 });
 
-var NotificationMessage = GObject.registerClass(
+export const NotificationMessage = GObject.registerClass(
 class NotificationMessage extends MessageList.Message {
     _init(notification) {
         super._init(notification.title, notification.bannerBodyText);
@@ -817,7 +816,7 @@ class NotificationMessage extends MessageList.Message {
     }
 });
 
-var TimeLabel = GObject.registerClass(
+const TimeLabel = GObject.registerClass(
 class NotificationTimeLabel extends St.Label {
     _init(datetime) {
         super._init({
@@ -834,7 +833,7 @@ class NotificationTimeLabel extends St.Label {
     }
 });
 
-var NotificationSection = GObject.registerClass(
+const NotificationSection = GObject.registerClass(
 class NotificationSection extends MessageList.MessageListSection {
     _init() {
         super._init();
@@ -896,7 +895,7 @@ class NotificationSection extends MessageList.MessageListSection {
     }
 });
 
-var Placeholder = GObject.registerClass(
+const Placeholder = GObject.registerClass(
 class Placeholder extends St.BoxLayout {
     _init() {
         super._init({ style_class: 'message-list-placeholder', vertical: true });
@@ -930,7 +929,7 @@ class DoNotDisturbSwitch extends PopupMenu.Switch {
     }
 });
 
-var CalendarMessageList = GObject.registerClass(
+export const CalendarMessageList = GObject.registerClass(
 class CalendarMessageList extends St.Widget {
     _init() {
         super._init({

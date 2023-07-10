@@ -1,28 +1,27 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported PresenceStatus, Presence, Inhibitor, SessionManager, InhibitFlags */
 
-const Gio = imports.gi.Gio;
+import Gio from 'gi://Gio';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import {loadInterfaceXML} from './fileUtils.js';
 
 const PresenceIface = loadInterfaceXML('org.gnome.SessionManager.Presence');
 
 /** @enum {number} */
-var PresenceStatus = {
+export const PresenceStatus = {
     AVAILABLE: 0,
     INVISIBLE: 1,
     BUSY: 2,
     IDLE: 3,
 };
 
-var PresenceProxy = Gio.DBusProxy.makeProxyWrapper(PresenceIface);
+const PresenceProxy = Gio.DBusProxy.makeProxyWrapper(PresenceIface);
 
 /**
  * @param {Function} initCallback
  * @param {Gio.Cancellable} cancellable
  * @returns {Gio.DBusProxy}
  */
-function Presence(initCallback, cancellable) {
+export function Presence(initCallback, cancellable) {
     return new PresenceProxy(Gio.DBus.session, 'org.gnome.SessionManager',
                              '/org/gnome/SessionManager/Presence', initCallback, cancellable);
 }
@@ -31,7 +30,7 @@ function Presence(initCallback, cancellable) {
 // change at runtime (changes always come in the form
 // of new inhibitors)
 const InhibitorIface = loadInterfaceXML('org.gnome.SessionManager.Inhibitor');
-var InhibitorProxy = Gio.DBusProxy.makeProxyWrapper(InhibitorIface);
+const InhibitorProxy = Gio.DBusProxy.makeProxyWrapper(InhibitorIface);
 
 /**
  * @param {string} objectPath
@@ -39,24 +38,24 @@ var InhibitorProxy = Gio.DBusProxy.makeProxyWrapper(InhibitorIface);
  * @param {Gio.Cancellable} cancellable
  * @returns {Gio.DBusProxy}
  */
-function Inhibitor(objectPath, initCallback, cancellable) {
+export function Inhibitor(objectPath, initCallback, cancellable) {
     return new InhibitorProxy(Gio.DBus.session, 'org.gnome.SessionManager', objectPath, initCallback, cancellable);
 }
 
 // Not the full interface, only the methods we use
 const SessionManagerIface = loadInterfaceXML('org.gnome.SessionManager');
-var SessionManagerProxy = Gio.DBusProxy.makeProxyWrapper(SessionManagerIface);
+const SessionManagerProxy = Gio.DBusProxy.makeProxyWrapper(SessionManagerIface);
 
 /**
  * @param {Function} initCallback
  * @param {Gio.Cancellable} cancellable
  * @returns {Gio.DBusProxy}
  */
-function SessionManager(initCallback, cancellable) {
+export function SessionManager(initCallback, cancellable) {
     return new SessionManagerProxy(Gio.DBus.session, 'org.gnome.SessionManager', '/org/gnome/SessionManager', initCallback, cancellable);
 }
 
-var InhibitFlags = {
+export const InhibitFlags = {
     LOGOUT: 1 << 0,
     SWITCH: 1 << 1,
     SUSPEND: 1 << 2,

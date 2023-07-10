@@ -1,23 +1,22 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported WelcomeDialog */
 
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
 const Config = imports.misc.config;
-const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
-const ModalDialog = imports.ui.modalDialog;
+import * as Main from './main.js';
+import * as Dialog from './dialog.js';
+import * as ModalDialog from './modalDialog.js';
 
 /** @enum {number} */
-var DialogResponse = {
+const DialogResponse = {
     NO_THANKS: 0,
     TAKE_TOUR: 1,
 };
 
-var WelcomeDialog = GObject.registerClass(
+export const WelcomeDialog = GObject.registerClass(
 class WelcomeDialog extends ModalDialog.ModalDialog {
     _init() {
         super._init({ styleClass: 'welcome-dialog' });

@@ -1,27 +1,26 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Magnifier */
 
-const Atspi = imports.gi.Atspi;
-const Clutter = imports.gi.Clutter;
-const GDesktopEnums = imports.gi.GDesktopEnums;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Signals = imports.misc.signals;
+import Atspi from 'gi://Atspi';
+import Clutter from 'gi://Clutter';
+import GDesktopEnums from 'gi://GDesktopEnums';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../misc/signals.js';
 
-const Background = imports.ui.background;
-const FocusCaretTracker = imports.ui.focusCaretTracker;
-const Main = imports.ui.main;
-const Params = imports.misc.params;
-const PointerWatcher = imports.ui.pointerWatcher;
+import * as Background from './background.js';
+import * as FocusCaretTracker from './focusCaretTracker.js';
+import * as Main from './main.js';
+import * as Params from '../misc/params.js';
+import * as PointerWatcher from './pointerWatcher.js';
 
-var CROSSHAIRS_CLIP_SIZE = [100, 100];
-var NO_CHANGE = 0.0;
+const CROSSHAIRS_CLIP_SIZE = [100, 100];
+const NO_CHANGE = 0.0;
 
-var POINTER_REST_TIME = 1000; // milliseconds
+const POINTER_REST_TIME = 1000; // milliseconds
 
 // Settings
 const MAGNIFIER_SCHEMA          = 'org.gnome.desktop.a11y.magnifier';
@@ -47,7 +46,7 @@ const CROSS_HAIRS_OPACITY_KEY   = 'cross-hairs-opacity';
 const CROSS_HAIRS_LENGTH_KEY    = 'cross-hairs-length';
 const CROSS_HAIRS_CLIP_KEY      = 'cross-hairs-clip';
 
-var MouseSpriteContent = GObject.registerClass({
+const MouseSpriteContent = GObject.registerClass({
     Implements: [Clutter.Content],
 }, class MouseSpriteContent extends GObject.Object {
     _init() {
@@ -95,7 +94,7 @@ var MouseSpriteContent = GObject.registerClass({
     }
 });
 
-var Magnifier = class Magnifier extends Signals.EventEmitter {
+export class Magnifier extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -758,9 +757,9 @@ var Magnifier = class Magnifier extends Signals.EventEmitter {
             this._zoomRegions[0].setContrast(contrast);
         }
     }
-};
+}
 
-var ZoomRegion = class ZoomRegion {
+class ZoomRegion {
     constructor(magnifier, mouseSourceActor) {
         this._magnifier = magnifier;
         this._focusCaretTracker = new FocusCaretTracker.FocusCaretTracker();
@@ -1822,7 +1821,7 @@ var ZoomRegion = class ZoomRegion {
     }
 }
 
-var Crosshairs = GObject.registerClass(
+const Crosshairs = GObject.registerClass(
 class Crosshairs extends Clutter.Actor {
     _init() {
         // Set the group containing the crosshairs to three times the desktop

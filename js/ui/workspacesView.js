@@ -1,22 +1,22 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported WorkspacesView, WorkspacesDisplay */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Layout = imports.ui.layout;
-const Main = imports.ui.main;
-const OverviewControls = imports.ui.overviewControls;
-const SwipeTracker = imports.ui.swipeTracker;
-const Util = imports.misc.util;
-const Workspace = imports.ui.workspace;
-const { ThumbnailsBox, MAX_THUMBNAIL_SCALE } = imports.ui.workspaceThumbnail;
+import * as Layout from './layout.js';
 
-var WORKSPACE_SWITCH_TIME = 250;
+import * as Main from './main.js';
+import * as OverviewControls from './overviewControls.js';
+import * as SwipeTracker from './swipeTracker.js';
+import * as Util from '../misc/util.js';
+import * as Workspace from './workspace.js';
+import {ThumbnailsBox, MAX_THUMBNAIL_SCALE} from './workspaceThumbnail.js';
+
+const WORKSPACE_SWITCH_TIME = 250;
 
 const MUTTER_SCHEMA = 'org.gnome.mutter';
 
@@ -27,7 +27,7 @@ const WORKSPACE_INACTIVE_SCALE = 0.94;
 
 const SECONDARY_WORKSPACE_SCALE = 0.80;
 
-var WorkspacesViewBase = GObject.registerClass({
+const WorkspacesViewBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class WorkspacesViewBase extends St.Widget {
     _init(monitorIndex, overviewAdjustment) {
@@ -83,12 +83,12 @@ var WorkspacesViewBase = GObject.registerClass({
 });
 
 /** @enum {number} */
-var FitMode = {
+export const FitMode = {
     SINGLE: 0,
     ALL: 1,
 };
 
-var WorkspacesView = GObject.registerClass(
+export const WorkspacesView = GObject.registerClass(
 class WorkspacesView extends WorkspacesViewBase {
     _init(monitorIndex, controls, scrollAdjustment, fitModeAdjustment, overviewAdjustment) {
         let workspaceManager = global.workspace_manager;
@@ -530,7 +530,7 @@ class WorkspacesView extends WorkspacesViewBase {
     }
 });
 
-var ExtraWorkspaceView = GObject.registerClass(
+export const ExtraWorkspaceView = GObject.registerClass(
 class ExtraWorkspaceView extends WorkspacesViewBase {
     _init(monitorIndex, overviewAdjustment) {
         super._init(monitorIndex, overviewAdjustment);
@@ -580,7 +580,7 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
     }
 });
 
-const SecondaryMonitorDisplay = GObject.registerClass(
+export const SecondaryMonitorDisplay = GObject.registerClass(
 class SecondaryMonitorDisplay extends St.Widget {
     _init(monitorIndex, controls, scrollAdjustment, fitModeAdjustment, overviewAdjustment) {
         this._monitorIndex = monitorIndex;
@@ -807,7 +807,7 @@ class SecondaryMonitorDisplay extends St.Widget {
     }
 });
 
-var WorkspacesDisplay = GObject.registerClass(
+export const WorkspacesDisplay = GObject.registerClass(
 class WorkspacesDisplay extends St.Widget {
     _init(controls, scrollAdjustment, overviewAdjustment) {
         super._init({

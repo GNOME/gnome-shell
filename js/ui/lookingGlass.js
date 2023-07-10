@@ -1,34 +1,31 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported LookingGlass */
 
-const Clutter = imports.gi.Clutter;
-const Cogl = imports.gi.Cogl;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Graphene = imports.gi.Graphene;
-const Meta = imports.gi.Meta;
-const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Signals = imports.misc.signals;
-const System = imports.system;
+import Clutter from 'gi://Clutter';
+import Cogl from 'gi://Cogl';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
+import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../misc/signals.js';
+import System from 'system';
 
-const History = imports.misc.history;
-const ExtensionUtils = imports.misc.extensionUtils;
-const PopupMenu = imports.ui.popupMenu;
-const ShellEntry = imports.ui.shellEntry;
-const Main = imports.ui.main;
-const JsParse = imports.misc.jsParse;
-
-const { ExtensionState } = ExtensionUtils;
+import * as History from '../misc/history.js';
+import {ExtensionState} from '../misc/extensionUtils.js';
+import * as PopupMenu from './popupMenu.js';
+import * as ShellEntry from './shellEntry.js';
+import * as Main from './main.js';
+import * as JsParse from '../misc/jsParse.js';
 
 const CHEVRON = '>>> ';
 
 /* Imports...feel free to add here as needed */
 const commandHeader = `
     const {Clutter, Gio, GLib, GObject, Meta, Shell, St} = imports.gi;
-    const Main = await imports.ui.main;
+    const Main = await import('resource:///org/gnome/shell/ui/main.js');
 
     /* Utility functions...we should probably be able to use these
      * in the shell core code too. */
@@ -43,9 +40,10 @@ const AsyncFunction = async function () {}.constructor;
 
 const HISTORY_KEY = 'looking-glass-history';
 // Time between tabs for them to count as a double-tab event
-var AUTO_COMPLETE_DOUBLE_TAB_DELAY = 500;
-var AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION = 200;
-var AUTO_COMPLETE_GLOBAL_KEYWORDS = _getAutoCompleteGlobalKeywords();
+
+const AUTO_COMPLETE_DOUBLE_TAB_DELAY = 500;
+const AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION = 200;
+const AUTO_COMPLETE_GLOBAL_KEYWORDS = _getAutoCompleteGlobalKeywords();
 
 const LG_ANIMATION_TIME = 500;
 
@@ -68,7 +66,7 @@ function _getAutoCompleteGlobalKeywords() {
     return keywords.concat(windowProperties).concat(headerProperties);
 }
 
-var AutoComplete = class AutoComplete extends Signals.EventEmitter {
+class AutoComplete extends Signals.EventEmitter {
     constructor(entry) {
         super();
 
@@ -133,10 +131,9 @@ var AutoComplete = class AutoComplete extends Signals.EventEmitter {
 
         this._entry.clutter_text.insert_text(additionalCompletionText, cursorPos);
     }
-};
+}
 
-
-var Notebook = GObject.registerClass({
+const Notebook = GObject.registerClass({
     Signals: { 'selection': { param_types: [Clutter.Actor.$gtype] } },
 }, class Notebook extends St.BoxLayout {
     _init() {
@@ -282,7 +279,7 @@ function objectToString(o) {
     }
 }
 
-var ObjLink = GObject.registerClass(
+const ObjLink = GObject.registerClass(
 class ObjLink extends St.Button {
     _init(lookingGlass, o, title) {
         let text;
@@ -310,7 +307,7 @@ class ObjLink extends St.Button {
     }
 });
 
-var Result = GObject.registerClass(
+const Result = GObject.registerClass(
 class Result extends St.BoxLayout {
     _init(lookingGlass, command, o, index) {
         super._init({ vertical: true });
@@ -333,7 +330,7 @@ class Result extends St.BoxLayout {
     }
 });
 
-var WindowList = GObject.registerClass({
+const WindowList = GObject.registerClass({
 }, class WindowList extends St.BoxLayout {
     _init(lookingGlass) {
         super._init({ name: 'Windows', vertical: true, style: 'spacing: 8px' });
@@ -386,7 +383,7 @@ var WindowList = GObject.registerClass({
     }
 });
 
-var ObjInspector = GObject.registerClass(
+const ObjInspector = GObject.registerClass(
 class ObjInspector extends St.ScrollView {
     _init(lookingGlass) {
         super._init({
@@ -525,7 +522,7 @@ class ObjInspector extends St.ScrollView {
     }
 });
 
-var RedBorderEffect = GObject.registerClass(
+const RedBorderEffect = GObject.registerClass(
 class RedBorderEffect extends Clutter.Effect {
     _init() {
         super._init();
@@ -577,7 +574,7 @@ class RedBorderEffect extends Clutter.Effect {
     }
 });
 
-var Inspector = GObject.registerClass({
+const Inspector = GObject.registerClass({
     Signals: {
         'closed': {},
         'target': { param_types: [Clutter.Actor.$gtype, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
@@ -718,7 +715,7 @@ var Inspector = GObject.registerClass({
     }
 });
 
-var Extensions = GObject.registerClass({
+const Extensions = GObject.registerClass({
 }, class Extensions extends St.BoxLayout {
     _init(lookingGlass) {
         super._init({ vertical: true, name: 'lookingGlassExtensions' });
@@ -887,7 +884,7 @@ var Extensions = GObject.registerClass({
 });
 
 
-var ActorLink = GObject.registerClass({
+const ActorLink = GObject.registerClass({
     Signals: {
         'inspect-actor': {},
     },
@@ -940,7 +937,7 @@ var ActorLink = GObject.registerClass({
     }
 });
 
-var ActorTreeViewer = GObject.registerClass(
+const ActorTreeViewer = GObject.registerClass(
 class ActorTreeViewer extends St.BoxLayout {
     _init(lookingGlass) {
         super._init();
@@ -1067,7 +1064,7 @@ class ActorTreeViewer extends St.BoxLayout {
     }
 });
 
-var DebugFlag = GObject.registerClass({
+const DebugFlag = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class DebugFlag extends St.Button {
     _init(label) {
@@ -1132,7 +1129,7 @@ var DebugFlag = GObject.registerClass({
 });
 
 
-var ClutterDebugFlag = GObject.registerClass(
+const ClutterDebugFlag = GObject.registerClass(
 class ClutterDebugFlag extends DebugFlag {
     _init(categoryName, flagName) {
         super._init(flagName);
@@ -1161,7 +1158,7 @@ class ClutterDebugFlag extends DebugFlag {
     }
 });
 
-var MutterPaintDebugFlag = GObject.registerClass(
+const MutterPaintDebugFlag = GObject.registerClass(
 class MutterPaintDebugFlag extends DebugFlag {
     _init(flagName) {
         super._init(flagName);
@@ -1182,7 +1179,7 @@ class MutterPaintDebugFlag extends DebugFlag {
     }
 });
 
-var MutterTopicDebugFlag = GObject.registerClass(
+const MutterTopicDebugFlag = GObject.registerClass(
 class MutterTopicDebugFlag extends DebugFlag {
     _init(flagName) {
         super._init(flagName);
@@ -1203,7 +1200,7 @@ class MutterTopicDebugFlag extends DebugFlag {
     }
 });
 
-var UnsafeModeDebugFlag = GObject.registerClass(
+const UnsafeModeDebugFlag = GObject.registerClass(
 class UnsafeModeDebugFlag extends DebugFlag {
     _init() {
         super._init('unsafe-mode');
@@ -1222,7 +1219,7 @@ class UnsafeModeDebugFlag extends DebugFlag {
     }
 });
 
-var DebugFlags = GObject.registerClass(
+const DebugFlags = GObject.registerClass(
 class DebugFlags extends St.BoxLayout {
     _init() {
         super._init({
@@ -1279,7 +1276,7 @@ class DebugFlags extends St.BoxLayout {
 });
 
 
-var LookingGlass = GObject.registerClass(
+export const LookingGlass = GObject.registerClass(
 class LookingGlass extends St.BoxLayout {
     _init() {
         super._init({

@@ -1,29 +1,27 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported KeyboardManager */
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Graphene from 'gi://Graphene';
+import IBus from 'gi://IBus';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../misc/signals.js';
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Graphene = imports.gi.Graphene;
-const IBus = imports.gi.IBus;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Signals = imports.misc.signals;
+import * as EdgeDragAction from './edgeDragAction.js';
+import * as InputSourceManager from './status/keyboard.js';
+import * as IBusManager from '../misc/ibusManager.js';
+import * as BoxPointer from './boxpointer.js';
+import * as Main from './main.js';
+import * as PageIndicators from './pageIndicators.js';
+import * as PopupMenu from './popupMenu.js';
+import * as SwipeTracker from './swipeTracker.js';
 
-const EdgeDragAction = imports.ui.edgeDragAction;
-const InputSourceManager = imports.ui.status.keyboard;
-const IBusManager = imports.misc.ibusManager;
-const BoxPointer = imports.ui.boxpointer;
-const Main = imports.ui.main;
-const PageIndicators = imports.ui.pageIndicators;
-const PopupMenu = imports.ui.popupMenu;
-const SwipeTracker = imports.ui.swipeTracker;
-
-var KEYBOARD_ANIMATION_TIME = 150;
-var KEYBOARD_REST_TIME = KEYBOARD_ANIMATION_TIME * 2;
-var KEY_LONG_PRESS_TIME = 250;
+const KEYBOARD_ANIMATION_TIME = 150;
+const KEYBOARD_REST_TIME = KEYBOARD_ANIMATION_TIME * 2;
+const KEY_LONG_PRESS_TIME = 250;
 
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
@@ -35,7 +33,7 @@ const KEY_SIZE = 2;
 const KEY_RELEASE_TIMEOUT = 50;
 const BACKSPACE_WORD_DELETE_THRESHOLD = 50;
 
-var AspectContainer = GObject.registerClass(
+const AspectContainer = GObject.registerClass(
 class AspectContainer extends St.Widget {
     _init(params) {
         super._init(params);
@@ -82,7 +80,7 @@ class AspectContainer extends St.Widget {
     }
 });
 
-var KeyContainer = GObject.registerClass(
+const KeyContainer = GObject.registerClass(
 class KeyContainer extends St.Widget {
     _init() {
         const gridLayout = new Clutter.GridLayout({
@@ -166,7 +164,7 @@ class KeyContainer extends St.Widget {
     }
 });
 
-var Suggestions = GObject.registerClass(
+const Suggestions = GObject.registerClass(
 class Suggestions extends St.BoxLayout {
     _init() {
         super._init({
@@ -203,7 +201,7 @@ class Suggestions extends St.BoxLayout {
     }
 });
 
-var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
+class LanguageSelectionPopup extends PopupMenu.PopupMenu {
     constructor(actor) {
         super(actor, 0.5, St.Side.BOTTOM);
 
@@ -262,9 +260,9 @@ var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
         this.sourceActor.disconnectObject(this);
         super.destroy();
     }
-};
+}
 
-var Key = GObject.registerClass({
+const Key = GObject.registerClass({
     Signals: {
         'long-press': {},
         'pressed': {},
@@ -520,7 +518,7 @@ var Key = GObject.registerClass({
     }
 });
 
-var KeyboardModel = class {
+class KeyboardModel {
     constructor(groupName) {
         let names = [groupName];
         if (groupName.includes('+'))
@@ -552,9 +550,9 @@ var KeyboardModel = class {
     getKeysForLevel(levelName) {
         return this._model.levels.find(level => level == levelName);
     }
-};
+}
 
-var FocusTracker = class extends Signals.EventEmitter {
+class FocusTracker extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -651,9 +649,9 @@ var FocusTracker = class extends Signals.EventEmitter {
 
         return rect;
     }
-};
+}
 
-var EmojiPager = GObject.registerClass({
+const EmojiPager = GObject.registerClass({
     Properties: {
         'delta': GObject.ParamSpec.int(
             'delta', 'delta', 'delta',
@@ -936,7 +934,7 @@ var EmojiPager = GObject.registerClass({
     }
 });
 
-var EmojiSelection = GObject.registerClass({
+const EmojiSelection = GObject.registerClass({
     Signals: {
         'emoji-selected': { param_types: [GObject.TYPE_STRING] },
         'close-request': {},
@@ -1121,7 +1119,7 @@ var EmojiSelection = GObject.registerClass({
     }
 });
 
-var Keypad = GObject.registerClass({
+const Keypad = GObject.registerClass({
     Signals: {
         'keyval': { param_types: [GObject.TYPE_UINT] },
     },
@@ -1178,7 +1176,7 @@ var Keypad = GObject.registerClass({
     }
 });
 
-var KeyboardManager = class extends Signals.EventEmitter {
+export class KeyboardManager extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -1297,9 +1295,9 @@ var KeyboardManager = class extends Signals.EventEmitter {
 
         return false;
     }
-};
+}
 
-var Keyboard = GObject.registerClass({
+export const Keyboard = GObject.registerClass({
     Signals: {
         'visibility-changed': {},
     },
@@ -2170,7 +2168,7 @@ var Keyboard = GObject.registerClass({
     }
 });
 
-var KeyboardController = class extends Signals.EventEmitter {
+class KeyboardController extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -2279,4 +2277,4 @@ var KeyboardController = class extends Signals.EventEmitter {
         this._virtualDevice.notify_keyval(Clutter.get_current_event_time() * 1000,
                                           keyval, Clutter.KeyState.RELEASED);
     }
-};
+}

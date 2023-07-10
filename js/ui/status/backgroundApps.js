@@ -1,17 +1,16 @@
-/* exported Indicator */
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const Util = imports.misc.util;
+import * as Main from '../main.js';
+import * as PopupMenu from '../popupMenu.js';
+import * as Util from '../../misc/util.js';
 
-const {Spinner} = imports.ui.animation;
-const {QuickToggle, SystemIndicator} = imports.ui.quickSettings;
+import {Spinner} from '../animation.js';
+import {QuickToggle, SystemIndicator} from '../quickSettings.js';
 const {loadInterfaceXML} = imports.misc.dbusUtils;
 
 const DBUS_NAME = 'org.freedesktop.background.Monitor';
@@ -24,7 +23,7 @@ const BackgroundMonitorProxy = Gio.DBusProxy.makeProxyWrapper(BackgroundMonitorI
 
 Gio._promisify(Gio.DBusConnection.prototype, 'call');
 
-var BackgroundAppMenuItem = GObject.registerClass({
+const BackgroundAppMenuItem = GObject.registerClass({
     Properties: {
         'app': GObject.ParamSpec.object('app', '', '',
             GObject.ParamFlags.READWRITE,
@@ -255,7 +254,7 @@ class BackgroundAppsToggle extends QuickToggle {
     }
 });
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends SystemIndicator {
     _init() {
         super._init();

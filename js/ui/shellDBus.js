@@ -1,25 +1,24 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported GnomeShell, ScreenSaverDBus */
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
 
 const Config = imports.misc.config;
-const ExtensionDownloader = imports.ui.extensionDownloader;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Main = imports.ui.main;
-const Screenshot = imports.ui.screenshot;
+import * as ExtensionDownloader from './extensionDownloader.js';
+import * as ExtensionUtils from '../misc/extensionUtils.js';
+import * as Main from './main.js';
+import * as Screenshot from './screenshot.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
-const { DBusSenderChecker } = imports.misc.util;
-const { ControlsState } = imports.ui.overviewControls;
+import {loadInterfaceXML} from '../misc/fileUtils.js';
+import {DBusSenderChecker} from '../misc/util.js';
+import {ControlsState} from './overviewControls.js';
 
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell');
 const ScreenSaverIface = loadInterfaceXML('org.gnome.ScreenSaver');
 
-var GnomeShell = class {
+export class GnomeShell {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
@@ -390,11 +389,11 @@ var GnomeShell = class {
     get ShellVersion() {
         return Config.PACKAGE_VERSION;
     }
-};
+}
 
 const GnomeShellExtensionsIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 
-var GnomeShellExtensions = class {
+class GnomeShellExtensions {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellExtensionsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
@@ -493,9 +492,9 @@ var GnomeShellExtensions = class {
         this._dbusImpl.emit_signal('ExtensionStatusChanged',
                                    GLib.Variant.new('(sis)', [newState.uuid, newState.state, newState.error]));
     }
-};
+}
 
-var ScreenSaverDBus = class {
+export class ScreenSaverDBus {
     constructor(screenShield) {
         this._screenShield = screenShield;
         screenShield.connect('active-changed', shield => {
@@ -540,4 +539,4 @@ var ScreenSaverDBus = class {
         else
             return 0;
     }
-};
+}

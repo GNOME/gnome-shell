@@ -1,13 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported XdndHandler */
 
-const Clutter = imports.gi.Clutter;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import * as Signals from '../misc/signals.js';
 
-const DND = imports.ui.dnd;
-const Main = imports.ui.main;
+import * as DND from './dnd.js';
+import * as Main from './main.js';
 
-var XdndHandler = class extends Signals.EventEmitter {
+export class XdndHandler extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -113,4 +112,4 @@ var XdndHandler = class extends Signals.EventEmitter {
             pickedActor = pickedActor.get_parent();
         }
     }
-};
+}

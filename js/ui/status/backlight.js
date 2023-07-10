@@ -1,14 +1,17 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const {Clutter, Gio, GObject, St} = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const {QuickMenuToggle, SystemIndicator} = imports.ui.quickSettings;
+import {QuickMenuToggle, SystemIndicator} from '../quickSettings.js';
 
-const PopupMenu = imports.ui.popupMenu;
-const {Slider} = imports.ui.slider;
+import * as PopupMenu from '../popupMenu.js';
+import {Slider} from '../slider.js';
 
-const {loadInterfaceXML} = imports.misc.fileUtils;
+import {loadInterfaceXML} from '../../misc/fileUtils.js';
 
 const BUS_NAME = 'org.gnome.SettingsDaemon.Power';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Power';
@@ -201,7 +204,7 @@ class KeyboardBrightnessToggle extends QuickMenuToggle {
     }
 });
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends SystemIndicator {
     _init() {
         super._init();

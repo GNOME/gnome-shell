@@ -1,17 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported EdgeDragAction */
 
-const Clutter = imports.gi.Clutter;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
+import * as Main from './main.js';
 
-var EDGE_THRESHOLD = 20;
-var DRAG_DISTANCE = 80;
+const EDGE_THRESHOLD = 20;
+const DRAG_DISTANCE = 80;
 
-var EdgeDragAction = GObject.registerClass({
+export const EdgeDragAction = GObject.registerClass({
     Signals: {
         'activated': {},
         'progress': { param_types: [GObject.TYPE_DOUBLE] },

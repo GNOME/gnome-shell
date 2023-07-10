@@ -1,11 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported getAppFavorites */
 
-const Shell = imports.gi.Shell;
-const ParentalControlsManager = imports.misc.parentalControlsManager;
-const Signals = imports.misc.signals;
+import Shell from 'gi://Shell';
+import * as ParentalControlsManager from '../misc/parentalControlsManager.js';
+import * as Signals from '../misc/signals.js';
 
-const Main = imports.ui.main;
+import * as Main from './main.js';
 
 // In alphabetical order
 const RENAMED_DESKTOP_IDS = {
@@ -210,7 +209,7 @@ var appFavoritesInstance = null;
 /**
  * @returns {AppFavorites}
  */
-function getAppFavorites() {
+export function getAppFavorites() {
     if (appFavoritesInstance == null)
         appFavoritesInstance = new AppFavorites();
     return appFavoritesInstance;

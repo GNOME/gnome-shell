@@ -6,7 +6,7 @@ const JsUnit = imports.jsUnit;
 import Pango from 'gi://Pango';
 
 import '../../js/ui/environment.js';
-const Util = imports.misc.util;
+import * as Util from '../../js/misc/util.js';
 
 const tests = [
     {

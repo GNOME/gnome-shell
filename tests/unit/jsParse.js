@@ -8,7 +8,7 @@ import '../../js/ui/environment.js';
 
 import * as Assertions from '../common/assertions.js';
 
-const JsParse = imports.misc.jsParse;
+import * as JsParse from '../../js/misc/jsParse.js';
 
 const HARNESS_COMMAND_HEADER = 'let imports = obj;' +
                                'let global = obj;' +

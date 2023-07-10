@@ -1,21 +1,20 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported CloseDialog */
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
+import * as Dialog from './dialog.js';
+import * as Main from './main.js';
 
-var FROZEN_WINDOW_BRIGHTNESS = -0.3;
-var DIALOG_TRANSITION_TIME = 150;
-var ALIVE_TIMEOUT = 5000;
+const FROZEN_WINDOW_BRIGHTNESS = -0.3;
+const DIALOG_TRANSITION_TIME = 150;
+const ALIVE_TIMEOUT = 5000;
 
-var CloseDialog = GObject.registerClass({
+export const CloseDialog = GObject.registerClass({
     Implements: [Meta.CloseDialog],
     Properties: {
         'window': GObject.ParamSpec.override('window', Meta.CloseDialog),

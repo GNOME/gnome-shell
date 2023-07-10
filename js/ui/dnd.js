@@ -1,25 +1,24 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported addDragMonitor, removeDragMonitor, makeDraggable */
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../misc/signals.js';
 
-const Main = imports.ui.main;
-const Params = imports.misc.params;
+import * as Main from './main.js';
+import * as Params from '../misc/params.js';
 
 // Time to scale down to maxDragActorSize
-var SCALE_ANIMATION_TIME = 250;
+const SCALE_ANIMATION_TIME = 250;
 // Time to animate to original position on cancel
-var SNAP_BACK_ANIMATION_TIME = 250;
+const SNAP_BACK_ANIMATION_TIME = 250;
 // Time to animate to original position on success
-var REVERT_ANIMATION_TIME = 750;
+const REVERT_ANIMATION_TIME = 750;
 
 /** @enum {number} */
-varragMotionResult = {
+export const DragMotionResult = {
     NO_DROP:   0,
     COPY_DROP: 1,
     MOVE_DROP: 2,
@@ -27,24 +26,24 @@ varragMotionResult = {
 };
 
 /** @enum {number} */
-varragState = {
+const DragState = {
     INIT:      0,
     DRAGGING:  1,
     CANCELLED: 2,
 };
 
-var DRAG_CURSOR_MAP = {
+const DRAG_CURSOR_MAP = {
     0: Meta.Cursor.DND_UNSUPPORTED_TARGET,
     1: Meta.Cursor.DND_COPY,
     2: Meta.Cursor.DND_MOVE,
 };
 
-var DragDropResult = {
+export const DragDropResult = {
     FAILURE:  0,
     SUCCESS:  1,
     CONTINUE: 2,
 };
-var dragMonitors = [];
+export const dragMonitors = [];
 
 let eventHandlerActor = null;
 let currentDraggable = null;
@@ -79,23 +78,23 @@ function _getRealActorScale(actor) {
 /**
  * @param {DragMonitor} monitor
  */
-function addDragMonitor(monitor) {
+export function addDragMonitor(monitor) {
     dragMonitors.push(monitor);
 }
 
 /**
  * @param {DragMonitor} monitor
  */
-function removeDragMonitor(monitor) {
+export function removeDragMonitor(monitor) {
     for (let i = 0; i < dragMonitors.length; i++) {
-        if (dragMonitors[i] == monitor) {
+        if (dragMonitors[i] === monitor) {
             dragMonitors.splice(i, 1);
             return;
         }
     }
 }
 
-var _Draggable = class _Draggable extends Signals.EventEmitter {
+class _Draggable extends Signals.EventEmitter {
     constructor(actor, params) {
         super();
 
@@ -112,9 +111,9 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
 
         if (!params.manualMode) {
             this.actor.connect('button-press-event',
-                               this._onButtonPress.bind(this));
+                this._onButtonPress.bind(this));
             this.actor.connect('touch-event',
-                               this._onTouchEvent.bind(this));
+                this._onTouchEvent.bind(this));
         }
 
         this.actor.connect('destroy', () => {
@@ -866,7 +865,7 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
         this._dragState = DragState.INIT;
         currentDraggable = null;
     }
-};
+}
 
 /**
  * makeDraggable:
@@ -890,6 +889,6 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
  * target wants to reuse the actor, it's up to the drop target to
  * reset these values.
  */
-function makeDraggable(actor, params) {
+export function makeDraggable(actor, params) {
     return new _Draggable(actor, params);
 }

@@ -1,16 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*
-/* exported WindowMenuManager */
 
-const Clutter = imports.gi.Clutter;
-const Meta = imports.gi.Meta;
-const St = imports.gi.St;
+import Clutter from 'gi://Clutter';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
 
-const BoxPointer = imports.ui.boxpointer;
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const Screenshot = imports.ui.screenshot;
+import * as BoxPointer from './boxpointer.js';
+import * as Main from './main.js';
+import * as PopupMenu from './popupMenu.js';
+import * as Screenshot from './screenshot.js';
 
-var WindowMenu = class extends PopupMenu.PopupMenu {
+export class WindowMenu extends PopupMenu.PopupMenu {
     constructor(window, sourceActor) {
         super(sourceActor, 0, St.Side.TOP);
 
@@ -212,9 +211,9 @@ var WindowMenu = class extends PopupMenu.PopupMenu {
         if (!window.can_close())
             item.setSensitive(false);
     }
-};
+}
 
-var WindowMenuManager = class {
+export class WindowMenuManager {
     constructor() {
         this._manager = new PopupMenu.PopupMenuManager(Main.layoutManager.dummyCursor);
 
@@ -257,4 +256,4 @@ var WindowMenuManager = class {
             window.disconnect(destroyId);
         });
     }
-};
+}

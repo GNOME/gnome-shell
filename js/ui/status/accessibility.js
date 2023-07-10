@@ -1,13 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ATIndicator */
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const St = imports.gi.St;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
+import * as PanelMenu from '../panelMenu.js';
+import * as PopupMenu from '../popupMenu.js';
 
 const A11Y_SCHEMA                   = 'org.gnome.desktop.a11y';
 const KEY_ALWAYS_SHOW               = 'always-show-universal-access-status';
@@ -20,7 +19,7 @@ const KEY_MOUSE_KEYS_ENABLED        = 'mousekeys-enable';
 
 const APPLICATIONS_SCHEMA           = 'org.gnome.desktop.a11y.applications';
 
-var DPI_FACTOR_LARGE              = 1.25;
+const DPI_FACTOR_LARGE              = 1.25;
 
 const WM_SCHEMA                     = 'org.gnome.desktop.wm.preferences';
 const KEY_VISUAL_BELL               = 'visual-bell';
@@ -31,7 +30,7 @@ const KEY_TEXT_SCALING_FACTOR       = 'text-scaling-factor';
 const A11Y_INTERFACE_SCHEMA         = 'org.gnome.desktop.a11y.interface';
 const KEY_HIGH_CONTRAST             = 'high-contrast';
 
-var ATIndicator = GObject.registerClass(
+export const ATIndicator = GObject.registerClass(
 class ATIndicator extends PanelMenu.Button {
     _init() {
         super._init(0.5, _("Accessibility"));

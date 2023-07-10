@@ -1,23 +1,22 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Indicator */
 
-const Atk = imports.gi.Atk;
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const UPower = imports.gi.UPowerGlib;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import UPower from 'gi://UPowerGlib';
 
-const SystemActions = imports.misc.systemActions;
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const {PopupAnimation} = imports.ui.boxpointer;
+import * as SystemActions from '../../misc/systemActions.js';
+import * as Main from '../main.js';
+import * as PopupMenu from '../popupMenu.js';
+import {PopupAnimation} from '../boxpointer.js';
 
-const {QuickSettingsItem, QuickToggle, SystemIndicator} = imports.ui.quickSettings;
-const {loadInterfaceXML} = imports.misc.fileUtils;
+import {QuickSettingsItem, QuickToggle, SystemIndicator} from '../quickSettings.js';
+import {loadInterfaceXML} from '../../misc/fileUtils.js';
 
 const BUS_NAME = 'org.freedesktop.UPower';
 const OBJECT_PATH = '/org/freedesktop/UPower/devices/DisplayDevice';
@@ -301,7 +300,7 @@ class SystemItem extends QuickSettingsItem {
     }
 });
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends SystemIndicator {
     _init() {
         super._init();

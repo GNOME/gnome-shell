@@ -1,13 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported SwipeTracker */
 
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
 
-const Main = imports.ui.main;
-const Params = imports.misc.params;
+import * as Main from './main.js';
+import * as Params from '../misc/params.js';
 
 // FIXME: ideally these values matches physical touchpad size. We can get the
 // correct values for gnome-shell specifically, since mutter uses libinput
@@ -430,7 +429,7 @@ const ScrollGesture = GObject.registerClass({
 //   instantly.
 
 /** A class for handling swipe gestures */
-var SwipeTracker = GObject.registerClass({
+export const SwipeTracker = GObject.registerClass({
     Properties: {
         'enabled': GObject.ParamSpec.boolean(
             'enabled', 'enabled', 'enabled',
