@@ -16,17 +16,14 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-const GETTEXT_DOMAIN = 'my-indicator-extension';
-
 import GObject from 'gi://GObject';
 import St from 'gi://St';
 
-const ExtensionUtils = imports.misc.extensionUtils;
+import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
+
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
-
-const _ = ExtensionUtils.gettext;
 
 const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.Button {
@@ -46,16 +43,10 @@ class Indicator extends PanelMenu.Button {
     }
 });
 
-export default class Extension {
-    constructor(metadata) {
-        this._uuid = metadata.uuid;
-
-        ExtensionUtils.initTranslations(GETTEXT_DOMAIN);
-    }
-
+export default class IndicatorExampleExtension extends Extension {
     enable() {
         this._indicator = new Indicator();
-        Main.panel.addToStatusArea(this._uuid, this._indicator);
+        Main.panel.addToStatusArea(this.uuid, this._indicator);
     }
 
     disable() {
