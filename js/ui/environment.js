@@ -1,37 +1,8 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported init */
 
-const Config = imports.misc.config;
+// Load all required dependencies with the correct versions
+imports.misc.dependencies; // eslint-disable-line no-unused-expressions
 
-imports.gi.versions.AccountsService = '1.0';
-imports.gi.versions.Atk = '1.0';
-imports.gi.versions.Atspi = '2.0';
-imports.gi.versions.Clutter = Config.LIBMUTTER_API_VERSION;
-imports.gi.versions.Cogl = Config.LIBMUTTER_API_VERSION;
-imports.gi.versions.Gcr = '4';
-imports.gi.versions.Gdk = '4.0';
-imports.gi.versions.Gdm = '1.0';
-imports.gi.versions.Geoclue = '2.0';
-imports.gi.versions.Gio = '2.0';
-imports.gi.versions.GDesktopEnums = '3.0';
-imports.gi.versions.GdkPixbuf = '2.0';
-imports.gi.versions.GnomeBluetooth = '3.0';
-imports.gi.versions.GnomeBG = '4.0';
-imports.gi.versions.GnomeDesktop = '4.0';
-imports.gi.versions.Graphene = '1.0';
-imports.gi.versions.GWeather = '4.0';
-imports.gi.versions.IBus = '1.0';
-imports.gi.versions.Malcontent = '0';
-imports.gi.versions.NM = '1.0';
-imports.gi.versions.NMA4 = '1.0';
-imports.gi.versions.Pango = '1.0';
-imports.gi.versions.Polkit = '1.0';
-imports.gi.versions.PolkitAgent = '1.0';
-imports.gi.versions.Rsvg = '2.0';
-imports.gi.versions.Soup = '3.0';
-imports.gi.versions.TelepathyGLib = '0.12';
-imports.gi.versions.TelepathyLogger = '0.2';
-imports.gi.versions.UPowerGlib = '1.0';
 
 const Clutter = imports.gi.Clutter;
 const Gdk = imports.gi.Gdk;
