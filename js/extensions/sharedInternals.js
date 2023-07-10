@@ -55,6 +55,10 @@ export class ExtensionBase {
             throw new Error(`${this.constructor.name} did not pass metadata to parent`);
 
         this.metadata = metadata;
+
+        const domain = this.metadata['gettext-domain'];
+        if (domain)
+            this.initTranslations(domain);
     }
 
     /**
