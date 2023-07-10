@@ -21,6 +21,32 @@ export class ExtensionBase {
     #gettextDomain;
 
     /**
+     * Look up an extension by URL (usually 'import.meta.url')
+     *
+     * @param {string} url - a file:// URL
+     */
+    static lookupByURL(url) {
+        if (!url.startsWith('file://'))
+            return null;
+
+        // Keep the last '/' from 'file://' to force an absolute path
+        let path = url.slice(6);
+
+        // Walk up the directory tree, looking for an extension with
+        // the same UUID as a directory name.
+        do {
+            path = GLib.path_get_dirname(path);
+
+            const dirName = GLib.path_get_basename(path);
+            const extension = _extensionManager.lookup(dirName);
+            if (extension !== undefined)
+                return extension.stateObj;
+        } while (path !== '/');
+
+        return null;
+    }
+
+    /**
      * @param {object} metadata - metadata passed in when loading the extension
      */
     constructor(metadata) {
