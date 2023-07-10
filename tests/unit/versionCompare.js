@@ -4,8 +4,7 @@
 
 const JsUnit = imports.jsUnit;
 
-const Environment = imports.ui.environment;
-Environment.init();
+import '../../js/ui/environment.js';
 
 const Util = imports.misc.util;
 

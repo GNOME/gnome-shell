@@ -1,21 +1,23 @@
-/* exported init */
-
 // Load all required dependencies with the correct versions
-imports.misc.dependencies; // eslint-disable-line no-unused-expressions
+import '../misc/dependencies.js';
 
+import {setConsoleLogDomain} from 'console';
+import * as Gettext from 'gettext';
 
-const Clutter = imports.gi.Clutter;
-const Gdk = imports.gi.Gdk;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Meta = imports.gi.Meta;
-const Polkit = imports.gi.Polkit;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Gettext = imports.gettext;
+import Clutter from 'gi://Clutter';
+import Gdk from 'gi://Gdk';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Polkit from 'gi://Polkit';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+
 const SignalTracker = imports.misc.signalTracker;
 const {adjustAnimationTime} = imports.misc.animationUtils;
+
+setConsoleLogDomain('GNOME Shell');
 
 Gio._promisify(Gio.DataInputStream.prototype, 'fill_async');
 Gio._promisify(Gio.DataInputStream.prototype, 'read_line_async');
@@ -28,9 +30,8 @@ Gio._promisify(Gio.File.prototype, 'query_info_async');
 Gio._promisify(Polkit.Permission, 'new');
 
 // We can't import shell JS modules yet, because they may have
-// variable initializations, etc, that depend on init() already having
-// been run.
-
+// variable initializations, etc, that depend on this file's
+// changes
 
 // "monkey patch" in some varargs ClutterContainer methods; we need
 // to do this per-container class since there is no representation
@@ -248,116 +249,114 @@ function _easeActorProperty(actor, propName, target, params) {
     transition.connect('stopped', (t, finished) => callback(finished));
 }
 
-function init() {
-    // Add some bindings to the global JS namespace
-    globalThis.global = Shell.Global.get();
+// Add some bindings to the global JS namespace
+globalThis.global = Shell.Global.get();
 
-    globalThis._ = Gettext.gettext;
-    globalThis.C_ = Gettext.pgettext;
-    globalThis.ngettext = Gettext.ngettext;
-    globalThis.N_ = s => s;
+globalThis._ = Gettext.gettext;
+globalThis.C_ = Gettext.pgettext;
+globalThis.ngettext = Gettext.ngettext;
+globalThis.N_ = s => s;
 
-    GObject.gtypeNameBasedOnJSPath = true;
+GObject.gtypeNameBasedOnJSPath = true;
 
-    GObject.Object.prototype.connectObject = function (...args) {
-        SignalTracker.connectObject(this, ...args);
-    };
-    GObject.Object.prototype.connect_object = function (...args) {
-        SignalTracker.connectObject(this, ...args);
-    };
-    GObject.Object.prototype.disconnectObject = function (...args) {
-        SignalTracker.disconnectObject(this, ...args);
-    };
-    GObject.Object.prototype.disconnect_object = function (...args) {
-        SignalTracker.disconnectObject(this, ...args);
-    };
+GObject.Object.prototype.connectObject = function (...args) {
+    SignalTracker.connectObject(this, ...args);
+};
+GObject.Object.prototype.connect_object = function (...args) {
+    SignalTracker.connectObject(this, ...args);
+};
+GObject.Object.prototype.disconnectObject = function (...args) {
+    SignalTracker.disconnectObject(this, ...args);
+};
+GObject.Object.prototype.disconnect_object = function (...args) {
+    SignalTracker.disconnectObject(this, ...args);
+};
 
-    SignalTracker.registerDestroyableType(Clutter.Actor);
+SignalTracker.registerDestroyableType(Clutter.Actor);
 
-    // Miscellaneous monkeypatching
-    _patchContainerClass(St.BoxLayout);
+// Miscellaneous monkeypatching
+_patchContainerClass(St.BoxLayout);
 
-    _patchLayoutClass(Clutter.GridLayout, {
-        row_spacing: 'spacing-rows',
-        column_spacing: 'spacing-columns',
-    });
-    _patchLayoutClass(Clutter.BoxLayout, { spacing: 'spacing' });
+_patchLayoutClass(Clutter.GridLayout, {
+    row_spacing: 'spacing-rows',
+    column_spacing: 'spacing-columns',
+});
+_patchLayoutClass(Clutter.BoxLayout, {spacing: 'spacing'});
 
-    let origSetEasingDuration = Clutter.Actor.prototype.set_easing_duration;
-    Clutter.Actor.prototype.set_easing_duration = function (msecs) {
-        origSetEasingDuration.call(this, adjustAnimationTime(msecs));
-    };
-    let origSetEasingDelay = Clutter.Actor.prototype.set_easing_delay;
-    Clutter.Actor.prototype.set_easing_delay = function (msecs) {
-        origSetEasingDelay.call(this, adjustAnimationTime(msecs));
-    };
+const origSetEasingDuration = Clutter.Actor.prototype.set_easing_duration;
+Clutter.Actor.prototype.set_easing_duration = function (msecs) {
+    origSetEasingDuration.call(this, adjustAnimationTime(msecs));
+};
+const origSetEasingDelay = Clutter.Actor.prototype.set_easing_delay;
+Clutter.Actor.prototype.set_easing_delay = function (msecs) {
+    origSetEasingDelay.call(this, adjustAnimationTime(msecs));
+};
 
-    Clutter.Actor.prototype.ease = function (props) {
-        _easeActor(this, props);
-    };
-    Clutter.Actor.prototype.ease_property = function (propName, target, params) {
-        _easeActorProperty(this, propName, target, params);
-    };
-    St.Adjustment.prototype.ease = function (target, params) {
-        // we're not an actor of course, but we implement the same
-        // transition API as Clutter.Actor, so this works anyway
-        _easeActorProperty(this, 'value', target, params);
-    };
+Clutter.Actor.prototype.ease = function (props) {
+    _easeActor(this, props);
+};
+Clutter.Actor.prototype.ease_property = function (propName, target, params) {
+    _easeActorProperty(this, propName, target, params);
+};
+St.Adjustment.prototype.ease = function (target, params) {
+    // we're not an actor of course, but we implement the same
+    // transition API as Clutter.Actor, so this works anyway
+    _easeActorProperty(this, 'value', target, params);
+};
 
-    Clutter.Actor.prototype[Symbol.iterator] = function* () {
-        for (let c = this.get_first_child(); c; c = c.get_next_sibling())
-            yield c;
-    };
+Clutter.Actor.prototype[Symbol.iterator] = function* () {
+    for (let c = this.get_first_child(); c; c = c.get_next_sibling())
+        yield c;
+};
 
-    Clutter.Actor.prototype.toString = function () {
-        return St.describe_actor(this);
-    };
-    // Deprecation warning for former JS classes turned into an actor subclass
-    Object.defineProperty(Clutter.Actor.prototype, 'actor', {
-        get() {
-            let klass = this.constructor.name;
-            let { stack } = new Error();
-            log(`Usage of object.actor is deprecated for ${klass}\n${stack}`);
-            return this;
-        },
-    });
+Clutter.Actor.prototype.toString = function () {
+    return St.describe_actor(this);
+};
+// Deprecation warning for former JS classes turned into an actor subclass
+Object.defineProperty(Clutter.Actor.prototype, 'actor', {
+    get() {
+        let klass = this.constructor.name;
+        let {stack} = new Error();
+        log(`Usage of object.actor is deprecated for ${klass}\n${stack}`);
+        return this;
+    },
+});
 
-    Gio.File.prototype.touch_async = function (callback) {
-        Shell.util_touch_file_async(this, callback);
-    };
-    Gio.File.prototype.touch_finish = function (result) {
-        return Shell.util_touch_file_finish(this, result);
-    };
+Gio.File.prototype.touch_async = function (callback) {
+    Shell.util_touch_file_async(this, callback);
+};
+Gio.File.prototype.touch_finish = function (result) {
+    return Shell.util_touch_file_finish(this, result);
+};
 
-    let origToString = Object.prototype.toString;
-    Object.prototype.toString = function () {
-        let base = origToString.call(this);
-        try {
-            if ('actor' in this && this.actor instanceof Clutter.Actor)
-                return base.replace(/\]$/, ` delegate for ${this.actor.toString().substring(1)}`);
-            else
-                return base;
-        } catch (e) {
+const origToString = Object.prototype.toString;
+Object.prototype.toString = function () {
+    let base = origToString.call(this);
+    try {
+        if ('actor' in this && this.actor instanceof Clutter.Actor)
+            return base.replace(/\]$/, ` delegate for ${this.actor.toString().substring(1)}`);
+        else
             return base;
-        }
-    };
-
-    let slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
-    if (slowdownEnv) {
-        let factor = parseFloat(slowdownEnv);
-        if (!isNaN(factor) && factor > 0.0)
-            St.Settings.get().slow_down_factor = factor;
+    } catch (e) {
+        return base;
     }
+};
 
-    // OK, now things are initialized enough that we can import shell JS
-    const Format = imports.format;
-
-    String.prototype.format = Format.format;
-
-    Math.clamp = function (x, lower, upper) {
-        return Math.min(Math.max(x, lower), upper);
-    };
-
-    // Prevent extensions from opening a display connection to ourselves
-    Gdk.set_allowed_backends('');
+const slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
+if (slowdownEnv) {
+    let factor = parseFloat(slowdownEnv);
+    if (!isNaN(factor) && factor > 0.0)
+        St.Settings.get().slow_down_factor = factor;
 }
+
+// OK, now things are initialized enough that we can import shell JS
+const Format = imports.format;
+
+String.prototype.format = Format.format;
+
+Math.clamp = function (x, lower, upper) {
+    return Math.min(Math.max(x, lower), upper);
+};
+
+// Prevent extensions from opening a display connection to ourselves
+Gdk.set_allowed_backends('');

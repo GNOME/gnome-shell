@@ -2,15 +2,13 @@
 
 // Test cases for version comparison
 
+import '../../js/ui/environment.js';
 import GObject from 'gi://GObject';
 
 const JsUnit = imports.jsUnit;
 const Signals = imports.misc.signals;
 
-const Environment = imports.ui.environment;
 const {TransientSignalHolder, registerDestroyableType} = imports.misc.signalTracker;
-
-Environment.init();
 
 const Destroyable = GObject.registerClass({
     Signals: {'destroy': {}},

@@ -1,12 +1,13 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 // Test cases for Util.insertSorted
-import * as Assertions from '../common/assertions.js';
 
 // Needed so that Util can bring some UI stuff
 // we don't actually use
-const Environment = imports.ui.environment;
-Environment.init();
+import '../../js/ui/environment.js';
+
+import * as Assertions from '../common/assertions.js';
+
 const Util = imports.misc.util;
 
 let arrayInt = [1, 2, 3, 5, 6];

@@ -4,9 +4,9 @@
 
 const JsUnit = imports.jsUnit;
 
+import '../../js/ui/environment.js';
+
 import * as Assertions from '../common/assertions.js';
-const Environment = imports.ui.environment;
-Environment.init();
 
 const JsParse = imports.misc.jsParse;
 

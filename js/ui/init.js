@@ -1,10 +1,7 @@
-import {setConsoleLogDomain} from 'console';
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 
-setConsoleLogDomain('GNOME Shell');
-
-imports.ui.environment.init();
+import './environment.js';
 
 // Run the Mutter main loop after
 // GJS finishes resolving this module.

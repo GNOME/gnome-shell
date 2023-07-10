@@ -4,6 +4,7 @@ extends:
 overrides:
   - files:
       - js/ui/init.js
+      - js/ui/environment.js
       - js/dbusServices/**
       - js/portalHelper/**
       - subprojects/extensions-app/**

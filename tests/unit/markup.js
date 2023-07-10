@@ -5,8 +5,7 @@
 const JsUnit = imports.jsUnit;
 import Pango from 'gi://Pango';
 
-const Environment = imports.ui.environment;
-Environment.init();
+import '../../js/ui/environment.js';
 
 imports.ui.main; // eslint-disable-line no-unused-expressions
 const MessageList = imports.ui.messageList;
