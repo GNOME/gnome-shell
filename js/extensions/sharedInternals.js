@@ -184,6 +184,99 @@ export class ExtensionBase {
     }
 }
 
+export class GettextWrapper {
+    #url;
+    #extensionClass;
+
+    constructor(extensionClass, url) {
+        this.#url = url;
+        this.#extensionClass = extensionClass;
+    }
+
+    #detectUrl() {
+        const basePath = '/gnome-shell/extensions/';
+
+        // Search for an occurrence of an extension stack frame
+        // Start at 1 because 0 is the stack frame of this function
+        const [, ...stack] = new Error().stack.split('\n');
+        const extensionLine = stack.find(
+            line => line.includes(basePath));
+
+        if (!extensionLine)
+            return null;
+
+        // The exact stack line differs depending on where the function
+        // was called (function or module scope), and whether it's called
+        // from a module or legacy import (file:// URI vs. plain path).
+        //
+        // We don't have to care about the exact composition, all we need
+        // is a string that can be traversed as path and contains the UUID
+        const path = extensionLine.slice(extensionLine.indexOf(basePath));
+        return `file://${path}`;
+    }
+
+    #lookupExtension(funcName) {
+        if (!this.#url)
+            this.#url = this.#detectUrl();
+
+        const extension = this.#extensionClass.lookupByURL(this.#url);
+        if (!extension)
+            throw new Error(`${funcName} can only be called from extensions`);
+        return extension;
+    }
+
+    #gettext(str) {
+        const extension = this.#lookupExtension('gettext');
+        return extension.gettext(str);
+    }
+
+    #ngettext(str, strPlural, n) {
+        const extension = this.#lookupExtension('ngettext');
+        return extension.gettext(str, strPlural, n);
+    }
+
+    #pgettext(context, str) {
+        const extension = this.#lookupExtension('pgettext');
+        return extension.pgettext(context, str);
+    }
+
+    defineTranslationFunctions() {
+        return {
+            /**
+             * Translate `str` using the extension's gettext domain
+             *
+             * @param {string} str - the string to translate
+             *
+             * @returns {string} the translated string
+             */
+            gettext: this.#gettext.bind(this),
+
+            /**
+             * Translate `str` and choose plural form using the extension's
+             * gettext domain
+             *
+             * @param {string} str - the string to translate
+             * @param {string} strPlural - the plural form of the string
+             * @param {number} n - the quantity for which translation is needed
+             *
+             * @returns {string} the translated string
+             */
+            ngettext: this.#ngettext.bind(this),
+
+            /**
+             * Translate `str` in the context of `context` using the extension's
+             * gettext domain
+             *
+             * @param {string} context - context to disambiguate `str`
+             * @param {string} str - the string to translate
+             *
+             * @returns {string} the translated string
+             */
+            pgettext: this.#pgettext.bind(this),
+        };
+    }
+}
+
 /**
  * @private
  *

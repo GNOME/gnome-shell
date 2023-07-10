@@ -1,6 +1,6 @@
 import GObject from 'gi://GObject';
 
-import {ExtensionBase, setExtensionManager} from './sharedInternals.js';
+import {ExtensionBase, GettextWrapper, setExtensionManager} from './sharedInternals.js';
 import {extensionManager} from '../extensionsService.js';
 
 setExtensionManager(extensionManager);
@@ -8,6 +8,11 @@ setExtensionManager(extensionManager);
 export {gettext, ngettext, pgettext} from './sharedInternals.js';
 
 export class ExtensionPreferences extends ExtensionBase {
+    static defineTranslationFunctions(url) {
+        const wrapper = new GettextWrapper(this, url);
+        return wrapper.defineTranslationFunctions();
+    }
+
     /**
      * Fill the preferences window with preferences.
      *
