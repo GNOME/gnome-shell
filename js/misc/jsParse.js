@@ -1,12 +1,18 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 /* exported getCompletions, getCommonPrefix, getDeclaredConstants */
 
-// Returns a list of potential completions for text. Completions either
-// follow a dot (e.g. foo.ba -> bar) or they are picked from globalCompletionList (e.g. fo -> foo)
-// commandHeader is prefixed on any expression before it is eval'ed.  It will most likely
-// consist of global constants that might not carry over from the calling environment.
-//
-// This function is likely the one you want to call from external modules
+/**
+ * Returns a list of potential completions for text. Completions either
+ * follow a dot (e.g. foo.ba -> bar) or they are picked from globalCompletionList (e.g. fo -> foo)
+ * commandHeader is prefixed on any expression before it is eval'ed.  It will most likely
+ * consist of global constants that might not carry over from the calling environment.
+ *
+ * This function is likely the one you want to call from external modules
+ *
+ * @param {string} text
+ * @param {string} commandHeader
+ * @param {readonly string[]} [globalCompletionList]
+ */
 function getCompletions(text, commandHeader, globalCompletionList) {
     let methods = [];
     let expr_, base;
@@ -41,18 +47,27 @@ function getCompletions(text, commandHeader, globalCompletionList) {
 }
 
 
-//
-// A few functions for parsing strings of javascript code.
-//
+/**
+ * A few functions for parsing strings of javascript code.
+ */
 
-// Identify characters that delimit an expression.  That is,
-// if we encounter anything that isn't a letter, '.', ')', or ']',
-// we should stop parsing.
+/**
+ * Identify characters that delimit an expression.  That is,
+ * if we encounter anything that isn't a letter, '.', ')', or ']',
+ * we should stop parsing.
+ *
+ * @param {string} c
+ */
 function isStopChar(c) {
     return !c.match(/[\w.)\]]/);
 }
 
-// Given the ending position of a quoted string, find where it starts
+/**
+ * Given the ending position of a quoted string, find where it starts
+ *
+ * @param {string} expr
+ * @param {number} offset
+ */
 function findMatchingQuote(expr, offset) {
     let quoteChar = expr.charAt(offset);
     for (let i = offset - 1; i >= 0; --i) {
@@ -62,7 +77,12 @@ function findMatchingQuote(expr, offset) {
     return -1;
 }
 
-// Given the ending position of a regex, find where it starts
+/**
+ * Given the ending position of a regex, find where it starts
+ *
+ * @param {string} expr
+ * @param {number} offset
+ */
 function findMatchingSlash(expr, offset) {
     for (let i = offset - 1; i >= 0; --i) {
         if (expr.charAt(i) == '/' && expr.charAt(i - 1) != '\\')
@@ -71,10 +91,15 @@ function findMatchingSlash(expr, offset) {
     return -1;
 }
 
-// If expr.charAt(offset) is ')' or ']',
-// return the position of the corresponding '(' or '[' bracket.
-// This function does not check for syntactic correctness.  e.g.,
-// findMatchingBrace("[(])", 3) returns 1.
+/**
+ * If expr.charAt(offset) is ')' or ']',
+ * return the position of the corresponding '(' or '[' bracket.
+ * This function does not check for syntactic correctness.  e.g.,
+ * findMatchingBrace("[(])", 3) returns 1.
+ *
+ * @param {string} expr
+ * @param {number} offset
+ */
 function findMatchingBrace(expr, offset) {
     let closeBrace = expr.charAt(offset);
     let openBrace = { ')': '(', ']': '[' }[closeBrace];
@@ -82,6 +107,12 @@ function findMatchingBrace(expr, offset) {
     return findTheBrace(expr, offset - 1, openBrace, closeBrace);
 }
 
+/**
+ * @param {*} expr
+ * @param {*} offset
+ * @param  {...any} braces
+ * @returns {number}
+ */
 function findTheBrace(expr, offset, ...braces) {
     let [openBrace, closeBrace] = braces;
 
@@ -103,11 +134,16 @@ function findTheBrace(expr, offset, ...braces) {
     return findTheBrace(expr, offset - 1, ...braces);
 }
 
-// Walk expr backwards from offset looking for the beginning of an
-// expression suitable for passing to eval.
-// There is no guarantee of correct javascript syntax between the return
-// value and offset.  This function is meant to take a string like
-// "foo(Obj.We.Are.Completing" and allow you to extract "Obj.We.Are.Completing"
+/**
+ * Walk expr backwards from offset looking for the beginning of an
+ * expression suitable for passing to eval.
+ * There is no guarantee of correct javascript syntax between the return
+ * value and offset.  This function is meant to take a string like
+ * "foo(Obj.We.Are.Completing" and allow you to extract "Obj.We.Are.Completing"
+ *
+ * @param {string} expr
+ * @param {number} offset
+ */
 function getExpressionOffset(expr, offset) {
     while (offset >= 0) {
         let currChar = expr.charAt(offset);
@@ -124,14 +160,22 @@ function getExpressionOffset(expr, offset) {
     return offset + 1;
 }
 
-// Things with non-word characters or that start with a number
-// are not accessible via .foo notation and so aren't returned
+/**
+ * Things with non-word characters or that start with a number
+ * are not accessible via .foo notation and so aren't returned
+ *
+ * @param {string} w
+ */
 function isValidPropertyName(w) {
     return !(w.match(/\W/) || w.match(/^\d/));
 }
 
-// To get all properties (enumerable and not), we need to walk
-// the prototype chain ourselves
+/**
+ * To get all properties (enumerable and not), we need to walk
+ * the prototype chain ourselves
+ *
+ * @param {object} obj
+ */
 function getAllProps(obj) {
     if (obj === null || obj === undefined)
         return [];
@@ -139,11 +183,16 @@ function getAllProps(obj) {
     return Object.getOwnPropertyNames(obj).concat(getAllProps(Object.getPrototypeOf(obj)));
 }
 
-// Given a string _expr_, returns all methods
-// that can be accessed via '.' notation.
-// e.g., expr="({ foo: null, bar: null, 4: null })" will
-// return ["foo", "bar", ...] but the list will not include "4",
-// since methods accessed with '.' notation must star with a letter or _.
+/**
+ * Given a string _expr_, returns all methods
+ * that can be accessed via '.' notation.
+ * e.g., expr="({ foo: null, bar: null, 4: null })" will
+ * return ["foo", "bar", ...] but the list will not include "4",
+ * since methods accessed with '.' notation must star with a letter or _.
+ *
+ * @param {string} expr
+ * @param {string=} commandHeader
+ */
 function getPropertyNamesFromExpression(expr, commandHeader = '') {
     let obj = {};
     if (!isUnsafeExpression(expr)) {
@@ -169,7 +218,11 @@ function getPropertyNamesFromExpression(expr, commandHeader = '') {
     return Object.keys(propsUnique).sort();
 }
 
-// Given a list of words, returns the longest prefix they all have in common
+/**
+ * Given a list of words, returns the longest prefix they all have in common
+ *
+ * @param {readonly string[]} words
+ */
 function getCommonPrefix(words) {
     let word = words[0];
     for (let i = 0; i < word.length; i++) {
@@ -181,7 +234,11 @@ function getCommonPrefix(words) {
     return word;
 }
 
-// Remove any blocks that are quoted or are in a regex
+/**
+ * Remove any blocks that are quoted or are in a regex
+ *
+ * @param {string} str
+ */
 function removeLiterals(str) {
     if (str.length == 0)
         return '';
@@ -198,8 +255,12 @@ function removeLiterals(str) {
     return removeLiterals(str.slice(0, str.length - 1)) + currChar;
 }
 
-// Returns true if there is reason to think that eval(str)
-// will modify the global scope
+/**
+ * Returns true if there is reason to think that eval(str)
+ * will modify the global scope
+ *
+ * @param {string} str
+ */
 function isUnsafeExpression(str) {
     // Check for any sort of assignment
     // The strategy used is dumb: remove any quotes
@@ -220,7 +281,11 @@ function isUnsafeExpression(str) {
     return false;
 }
 
-// Returns a list of global keywords derived from str
+/**
+ * Returns a list of global keywords derived from str
+ *
+ * @param {string} str
+ */
 function getDeclaredConstants(str) {
     let ret = [];
     str.split(';').forEach(s => {
