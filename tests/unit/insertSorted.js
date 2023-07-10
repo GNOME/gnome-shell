@@ -10,12 +10,8 @@ const Environment = imports.ui.environment;
 Environment.init();
 const Util = imports.misc.util;
 
-function cmp(one, two) {
-    return one-two;
-}
-
 let arrayInt = [1, 2, 3, 5, 6];
-Util.insertSorted(arrayInt, 4, cmp);
+Util.insertSorted(arrayInt, 4, (one, two) => one - two);
 
 Assertions.assertArrayEquals('first test', [1, 2, 3, 4, 5, 6], arrayInt);
 
@@ -29,25 +25,20 @@ let obj2 = { a: 2, b: 0 };
 let obj3 = { a: 2, b: 1 };
 let obj4 = { a: 3 };
 
-function objCmp(one, two) {
-    return one.a - two.a;
-}
-
 let arrayObj = [obj1, obj3, obj4];
 
 // obj2 compares equivalent to obj3, should be
 // inserted before
-Util.insertSorted(arrayObj, obj2, objCmp);
+Util.insertSorted(arrayObj, obj2, (one, two) => one.a - two.a);
 
 Assertions.assertArrayEquals('object test', [obj1, obj2, obj3, obj4], arrayObj);
 
-function checkedCmp(one, two) {
-    if (typeof one != 'number' ||
-        typeof two != 'number')
+const checkedCmp = (one, two) => {
+    if (typeof one != 'number' || typeof two != 'number')
         throw new TypeError('Invalid type passed to checkedCmp');
 
-    return one-two;
-}
+    return one - two;
+};
 
 let arrayEmpty = [];
 
