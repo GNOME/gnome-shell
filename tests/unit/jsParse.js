@@ -4,6 +4,7 @@
 
 const JsUnit = imports.jsUnit;
 
+const Assertions = imports.common.assertions;
 const Environment = imports.ui.environment;
 Environment.init();
 
@@ -95,18 +96,6 @@ const testsModifyScope = [
     "Main[Main.foo+=-1]."
 ];
 
-
-
-// Utility function for comparing arrays
-function assertArrayEquals(errorMessage, array1, array2) {
-    JsUnit.assertEquals(errorMessage + ' length',
-                        array1.length, array2.length);
-    for (let j = 0; j < array1.length; j++) {
-        JsUnit.assertEquals(errorMessage + ' item ' + j,
-                            array1[j], array2[j]);
-    }
-}
-
 //
 // Test javascript parsing
 //
@@ -147,7 +136,7 @@ for (let i = 0; i < testsGetDeclaredConstants.length; i++) {
     let text = testsGetDeclaredConstants[i].input;
     let match = JsParse.getDeclaredConstants(text);
 
-    assertArrayEquals('Test testsGetDeclaredConstants ' + i,
+    Assertions.assertArrayEquals('Test testsGetDeclaredConstants ' + i,
 		      match, testsGetDeclaredConstants[i].output);
 }
 

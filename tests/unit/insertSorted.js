@@ -2,22 +2,13 @@
 
 // Test cases for Util.insertSorted
 
-const JsUnit = imports.jsUnit;
+const Assertions = imports.common.assertions;
 
 // Needed so that Util can bring some UI stuff
 // we don't actually use
 const Environment = imports.ui.environment;
 Environment.init();
 const Util = imports.misc.util;
-
-function assertArrayEquals(errorMessage, array1, array2) {
-    JsUnit.assertEquals(errorMessage + ' length',
-                        array1.length, array2.length);
-    for (let j = 0; j < array1.length; j++) {
-        JsUnit.assertEquals(errorMessage + ' item ' + j,
-                            array1[j], array2[j]);
-    }
-}
 
 function cmp(one, two) {
     return one-two;
@@ -26,12 +17,12 @@ function cmp(one, two) {
 let arrayInt = [1, 2, 3, 5, 6];
 Util.insertSorted(arrayInt, 4, cmp);
 
-assertArrayEquals('first test', [1,2,3,4,5,6], arrayInt);
+Assertions.assertArrayEquals('first test', [1, 2, 3, 4, 5, 6], arrayInt);
 
 // no comparator, integer sorting is implied
 Util.insertSorted(arrayInt, 3);
 
-assertArrayEquals('second test', [1,2,3,3,4,5,6], arrayInt);
+Assertions.assertArrayEquals('second test', [1, 2, 3, 3, 4, 5, 6], arrayInt);
 
 let obj1 = { a: 1 };
 let obj2 = { a: 2, b: 0 };
@@ -48,7 +39,7 @@ let arrayObj = [obj1, obj3, obj4];
 // inserted before
 Util.insertSorted(arrayObj, obj2, objCmp);
 
-assertArrayEquals('object test', [obj1, obj2, obj3, obj4], arrayObj);
+Assertions.assertArrayEquals('object test', [obj1, obj2, obj3, obj4], arrayObj);
 
 function checkedCmp(one, two) {
     if (typeof one != 'number' ||
@@ -73,4 +64,4 @@ Util.insertSorted(arrayEmpty, 5, checkedCmp);
 Util.insertSorted(arrayEmpty, 2, checkedCmp);
 Util.insertSorted(arrayEmpty, 1, checkedCmp);
 
-assertArrayEquals('checkedCmp test', [1, 2, 3, 4, 5], arrayEmpty);
+Assertions.assertArrayEquals('checkedCmp test', [1, 2, 3, 4, 5], arrayEmpty);
