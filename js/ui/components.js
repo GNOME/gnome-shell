@@ -6,16 +6,19 @@ var ComponentManager = class {
         this._allComponents = {};
         this._enabledComponents = [];
 
-        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
-        this._sessionUpdated();
+        Main.sessionMode.connect('updated', () => {
+            this._sessionModeUpdated().catch(logError);
+        });
+
+        this._sessionModeUpdated().catch(logError);
     }
 
-    _sessionUpdated() {
+    async _sessionModeUpdated() {
         let newEnabledComponents = Main.sessionMode.components;
 
-        newEnabledComponents
+        await Promise.allSettled([...newEnabledComponents
             .filter(name => !this._enabledComponents.includes(name))
-            .forEach(name => this._enableComponent(name));
+            .map(name => this._enableComponent(name))]);
 
         this._enabledComponents
             .filter(name => !newEnabledComponents.includes(name))
@@ -24,12 +27,13 @@ var ComponentManager = class {
         this._enabledComponents = newEnabledComponents;
     }
 
-    _importComponent(name) {
-        let module = imports.ui.components[name];
+    async _importComponent(name) {
+        // TODO: Import as module
+        let module = await imports.ui.components[name];
         return module.Component;
     }
 
-    _ensureComponent(name) {
+    async _ensureComponent(name) {
         let component = this._allComponents[name];
         if (component)
             return component;
@@ -37,14 +41,14 @@ var ComponentManager = class {
         if (Main.sessionMode.isLocked)
             return null;
 
-        let constructor = this._importComponent(name);
+        let constructor = await this._importComponent(name);
         component = new constructor();
         this._allComponents[name] = component;
         return component;
     }
 
-    _enableComponent(name) {
-        let component = this._ensureComponent(name);
+    async _enableComponent(name) {
+        let component = await this._ensureComponent(name);
         if (component)
             component.enable();
     }

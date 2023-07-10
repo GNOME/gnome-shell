@@ -127,7 +127,7 @@
     <file>ui/workspacesView.js</file>
     <file>ui/xdndHandler.js</file>
 
-    <file>ui/components/__init__.js</file>
+    <file>ui/components.js</file>
     <file>ui/components/autorunManager.js</file>
     <file>ui/components/automountManager.js</file>
     <file>ui/components/networkAgent.js</file>
