@@ -101,11 +101,10 @@ function getCurrentExtension() {
 }
 
 /**
- * initTranslations:
- * @param {string=} domain - the gettext domain to use
- *
  * Initialize Gettext to load translations from extensionsdir/locale.
  * If @domain is not provided, it will be taken from metadata['gettext-domain']
+ *
+ * @param {string=} domain - the gettext domain to use
  */
 function initTranslations(domain) {
     let extension = getCurrentExtension();
@@ -127,49 +126,48 @@ function initTranslations(domain) {
 }
 
 /**
- * gettext:
- * @param {string} str - the string to translate
- *
  * Translate @str using the extension's gettext domain
  *
- * @returns {string} - the translated string
+ * @param {string} str - the string to translate
  *
+ * @returns {string} - the translated string
  */
 function gettext(str) {
     return callExtensionGettextFunc('gettext', str);
 }
 
 /**
- * ngettext:
+ * Translate @str and choose plural form using the extension's
+ * gettext domain
+ *
  * @param {string} str - the string to translate
  * @param {string} strPlural - the plural form of the string
  * @param {number} n - the quantity for which translation is needed
  *
- * Translate @str and choose plural form using the extension's
- * gettext domain
- *
  * @returns {string} - the translated string
- *
  */
 function ngettext(str, strPlural, n) {
     return callExtensionGettextFunc('ngettext', str, strPlural, n);
 }
 
 /**
- * pgettext:
- * @param {string} context - context to disambiguate @str
- * @param {string} str - the string to translate
- *
  * Translate @str in the context of @context using the extension's
  * gettext domain
  *
- * @returns {string} - the translated string
+ * @param {string} context - context to disambiguate @str
+ * @param {string} str - the string to translate
  *
+ * @returns {string} - the translated string
  */
 function pgettext(context, str) {
     return callExtensionGettextFunc('pgettext', context, str);
 }
 
+/**
+ * @private
+ * @param {string} func - function name
+ * @param {*[]} args - function arguments
+ */
 function callExtensionGettextFunc(func, ...args) {
     const extension = getCurrentExtension();
 
@@ -183,13 +181,12 @@ function callExtensionGettextFunc(func, ...args) {
 }
 
 /**
- * getSettings:
- * @param {string=} schema - the GSettings schema id
- * @returns {Gio.Settings} - a new settings object for @schema
- *
  * Builds and returns a GSettings schema for @schema, using schema files
  * in extensionsdir/schemas. If @schema is omitted, it is taken from
  * metadata['settings-schema'].
+ *
+ * @param {string=} schema - the GSettings schema id
+ * @returns {Gio.Settings} - a new settings object for @schema
  */
 function getSettings(schema) {
     let extension = getCurrentExtension();
@@ -206,9 +203,8 @@ function getSettings(schema) {
     let schemaDir = extension.dir.get_child('schemas');
     let schemaSource;
     if (schemaDir.query_exists(null)) {
-        schemaSource = GioSSS.new_from_directory(schemaDir.get_path(),
-                                                 GioSSS.get_default(),
-                                                 false);
+        schemaSource = GioSSS.new_from_directory(
+            schemaDir.get_path(), GioSSS.get_default(), false);
     } else {
         schemaSource = GioSSS.get_default();
     }
@@ -217,12 +213,10 @@ function getSettings(schema) {
     if (!schemaObj)
         throw new Error(`Schema ${schema} could not be found for extension ${extension.metadata.uuid}. Please check your installation`);
 
-    return new Gio.Settings({ settings_schema: schemaObj });
+    return new Gio.Settings({settings_schema: schemaObj});
 }
 
 /**
- * openPrefs:
- *
  * Open the preference dialog of the current extension
  */
 function openPrefs() {
@@ -241,8 +235,15 @@ function openPrefs() {
     }
 }
 
+/**
+ * Serialize extension into an object that can be used
+ * in a vardict {GLib.Variant}
+ *
+ * @param {object} extension - an extension object
+ * @returns {object}
+ */
 function serializeExtension(extension) {
-    let obj = { ...extension.metadata };
+    let obj = {...extension.metadata};
 
     SERIALIZED_PROPERTIES.forEach(prop => {
         obj[prop] = extension[prop];
@@ -271,8 +272,14 @@ function serializeExtension(extension) {
     return res;
 }
 
+/**
+ * Deserialize an unpacked variant into an extension object
+ *
+ * @param {object} variant - an unpacked {GLib.Variant}
+ * @returns {object}
+ */
 function deserializeExtension(variant) {
-    let res = { metadata: {} };
+    let res = {metadata: {}};
     for (let prop in variant) {
         let val = variant[prop].unpack();
         if (SERIALIZED_PROPERTIES.includes(prop))
