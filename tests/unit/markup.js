@@ -8,12 +8,17 @@ const Pango = imports.gi.Pango;
 const Environment = imports.ui.environment;
 Environment.init();
 
-const Main = imports.ui.main; // unused, but needed to break dependency loop
+imports.ui.main; // eslint-disable-line no-unused-expressions
 const MessageList = imports.ui.messageList;
 
-// Assert that @input, assumed to be markup, gets "fixed" to @output,
-// which is valid markup. If @output is null, @input is expected to
-// convert to itself
+/**
+ * Assert that `input`, assumed to be markup, gets "fixed" to `output`,
+ * which is valid markup. If `output` is null, `input` is expected to
+ * convert to itself
+ *
+ * @param {string} input the input
+ * @param {string} output the output
+ */
 function assertConverts(input, output) {
     if (!output)
         output = input;
@@ -28,8 +33,14 @@ function assertConverts(input, output) {
     JsUnit.assertEquals(true, parsed);
 }
 
-// Assert that @input, assumed to be plain text, gets escaped to @output,
-// which is valid markup.
+
+/**
+ * Assert that `input`, assumed to be plain text, gets escaped to `output`,
+ * which is valid markup.
+ *
+ * @param {string} input the input
+ * @param {string} output the output
+ */
 function assertEscapes(input, output) {
     let fixed = MessageList._fixMarkup(input, false);
     JsUnit.assertEquals(output, fixed);

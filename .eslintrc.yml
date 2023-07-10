@@ -8,6 +8,6 @@ overrides:
       - js/portalHelper/**
       - subprojects/extensions-app/**
       - subprojects/extensions-tool/**
-      - tests/shell/**
+      - tests/**
     parserOptions:
       sourceType: module

@@ -8,17 +8,17 @@ const JsUnit = imports.jsUnit;
 const Signals = imports.misc.signals;
 
 const Environment = imports.ui.environment;
-const { TransientSignalHolder, registerDestroyableType } = imports.misc.signalTracker;
+const {TransientSignalHolder, registerDestroyableType} = imports.misc.signalTracker;
 
 Environment.init();
 
 const Destroyable = GObject.registerClass({
-    Signals: { 'destroy': {} },
+    Signals: {'destroy': {}},
 }, class Destroyable extends GObject.Object {});
 registerDestroyableType(Destroyable);
 
 const GObjectEmitter = GObject.registerClass({
-    Signals: { 'signal': {} },
+    Signals: {'signal': {}},
 }, class GObjectEmitter extends Destroyable {});
 
 const emitter1 = new Signals.EventEmitter();
@@ -27,6 +27,7 @@ const emitter2 = new GObjectEmitter();
 const tracked1 = new Destroyable();
 const tracked2 = {};
 
+let transientHolder;
 let count = 0;
 const handler = () => count++;
 

@@ -20,10 +20,10 @@ Util.insertSorted(arrayInt, 3);
 
 Assertions.assertArrayEquals('second test', [1, 2, 3, 3, 4, 5, 6], arrayInt);
 
-let obj1 = { a: 1 };
-let obj2 = { a: 2, b: 0 };
-let obj3 = { a: 2, b: 1 };
-let obj4 = { a: 3 };
+let obj1 = {a: 1};
+let obj2 = {a: 2, b: 0};
+let obj3 = {a: 2, b: 1};
+let obj4 = {a: 3};
 
 let arrayObj = [obj1, obj3, obj4];
 
