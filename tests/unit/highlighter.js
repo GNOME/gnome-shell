@@ -3,7 +3,7 @@
 // Test cases for SearchResult description match highlighter
 
 const JsUnit = imports.jsUnit;
-const Pango = imports.gi.Pango;
+import Pango from 'gi://Pango';
 
 const Environment = imports.ui.environment;
 Environment.init();

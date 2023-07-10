@@ -4,7 +4,7 @@
 
 const JsUnit = imports.jsUnit;
 
-const Assertions = imports.common.assertions;
+import * as Assertions from '../common/assertions.js';
 const Environment = imports.ui.environment;
 Environment.init();
 

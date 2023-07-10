@@ -45,7 +45,7 @@ main(int argc, char **argv)
   GjsContext *js_context;
   const char *filename;
   char *title;
-  int code;
+  uint8_t code;
 
   context = g_option_context_new (NULL);
 
@@ -82,7 +82,7 @@ main(int argc, char **argv)
   error = NULL;
 
   /* evaluate the script */
-  bool success = gjs_context_eval_file(js_context, filename, &code, &error);
+  bool success = gjs_context_eval_module_file(js_context, filename, &code, &error);
   if (!success) {
     g_printerr ("%s\n", error->message);
     exit (1);

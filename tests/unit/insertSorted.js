@@ -1,8 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 // Test cases for Util.insertSorted
-
-const Assertions = imports.common.assertions;
+import * as Assertions from '../common/assertions.js';
 
 // Needed so that Util can bring some UI stuff
 // we don't actually use

@@ -3,7 +3,7 @@
 // Test cases for MessageList markup parsing
 
 const JsUnit = imports.jsUnit;
-const Pango = imports.gi.Pango;
+import Pango from 'gi://Pango';
 
 const Environment = imports.ui.environment;
 Environment.init();

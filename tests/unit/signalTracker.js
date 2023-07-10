@@ -2,7 +2,7 @@
 
 // Test cases for version comparison
 
-const GObject = imports.gi.GObject;
+import GObject from 'gi://GObject';
 
 const JsUnit = imports.jsUnit;
 const Signals = imports.misc.signals;
