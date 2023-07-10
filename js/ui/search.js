@@ -14,7 +14,7 @@ const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const ParentalControlsManager = imports.misc.parentalControlsManager;
 const RemoteSearch = imports.ui.remoteSearch;
-const Util = imports.misc.util;
+const {ensureActorVisibleInScrollView} = imports.misc.animationUtils;
 
 const { Highlighter } = imports.misc.util;
 
@@ -746,7 +746,7 @@ var SearchResultsView = GObject.registerClass({
     }
 
     _focusChildChanged(provider) {
-        Util.ensureActorVisibleInScrollView(this._scrollView, provider.focusChild);
+        ensureActorVisibleInScrollView(this._scrollView, provider.focusChild);
     }
 
     _ensureProviderDisplay(provider) {
@@ -877,7 +877,7 @@ var SearchResultsView = GObject.registerClass({
 
         if (selected) {
             result.add_style_pseudo_class('selected');
-            Util.ensureActorVisibleInScrollView(this._scrollView, result);
+            ensureActorVisibleInScrollView(this._scrollView, result);
         } else {
             result.remove_style_pseudo_class('selected');
         }

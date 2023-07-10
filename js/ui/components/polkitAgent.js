@@ -16,7 +16,7 @@ const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
-const Util = imports.misc.util;
+const {wiggle} = imports.misc.animationUtils;
 
 const DialogMode = {
     AUTH: 0,
@@ -267,7 +267,7 @@ var AuthenticationDialog = GObject.registerClass({
                 this._infoMessageLabel.hide();
                 this._nullMessageLabel.hide();
 
-                Util.wiggle(this._passwordEntry);
+                wiggle(this._passwordEntry);
             }
 
             /* Try and authenticate again */

@@ -13,7 +13,7 @@ const MessageList = imports.ui.messageList;
 const MessageTray = imports.ui.messageTray;
 const Mpris = imports.ui.mpris;
 const PopupMenu = imports.ui.popupMenu;
-const Util = imports.misc.util;
+const {ensureActorVisibleInScrollView} = imports.misc.animationUtils;
 
 const {formatDateWithCFormatString, formatTimeSpan} = imports.misc.dateUtils;
 const {loadInterfaceXML} = imports.misc.fileUtils;
@@ -1016,7 +1016,7 @@ class CalendarMessageList extends St.Widget {
             'notify::can-clear', this._sync.bind(this),
             'destroy', () => this._sectionList.remove_actor(section),
             'message-focused', (_s, messageActor) => {
-                Util.ensureActorVisibleInScrollView(this._scrollView, messageActor);
+                ensureActorVisibleInScrollView(this._scrollView, messageActor);
             }, this);
         this._sectionList.add_actor(section);
     }

@@ -15,7 +15,7 @@ const GdmUtil = imports.gdm.util;
 const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
-const Util = imports.misc.util;
+const {wiggle} = imports.misc.animationUtils;
 
 var DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
 var DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
@@ -391,7 +391,7 @@ var AuthPrompt = GObject.registerClass({
             this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
 
         if (wasQueryingService)
-            Util.wiggle(this._entry);
+            wiggle(this._entry);
     }
 
     _onVerificationComplete() {
@@ -566,7 +566,7 @@ var AuthPrompt = GObject.registerClass({
             this._message.opacity = 0;
         }
 
-        Util.wiggle(this._message, wiggleParameters);
+        wiggle(this._message, wiggleParameters);
     }
 
     updateSensitivity(sensitive) {

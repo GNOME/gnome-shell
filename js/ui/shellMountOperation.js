@@ -19,7 +19,7 @@ const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
-const Util = imports.misc.util;
+const {wiggle} = imports.misc.animationUtils;
 
 var LIST_ITEM_ICON_SIZE = 48;
 var WORK_SPINNER_ICON_SIZE = 16;
@@ -421,7 +421,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
         this._errorMessageLabel.text = _('Sorry, that didn’t work. Please try again.');
         this._errorMessageLabel.opacity = 255;
 
-        Util.wiggle(this._passwordEntry);
+        wiggle(this._passwordEntry);
     }
 
     _onCancelButton() {

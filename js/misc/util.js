@@ -1,9 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported findUrls, spawn, spawnCommandLine, spawnApp, trySpawnCommandLine,
-            createTimeLabel, insertSorted, ensureActorVisibleInScrollView,
-            wiggle, lerp, GNOMEversionCompare, DBusSenderChecker, Highlighter */
+            createTimeLabel, insertSorted, lerp, GNOMEversionCompare,
+            DBusSenderChecker, Highlighter */
 
-const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Shell = imports.gi.Shell;
@@ -11,14 +10,7 @@ const St = imports.gi.St;
 const GnomeDesktop = imports.gi.GnomeDesktop;
 
 const Main = imports.ui.main;
-const Params = imports.misc.params;
 const {formatTime} = imports.misc.dateUtils;
-
-var SCROLL_TIME = 100;
-
-const WIGGLE_OFFSET = 6;
-const WIGGLE_DURATION = 65;
-const N_WIGGLES = 3;
 
 // http://daringfireball.net/2010/07/improved_regex_for_matching_urls
 const _balancedParens = '\\([^\\s()<>]+\\)';
@@ -239,79 +231,6 @@ function insertSorted(array, val, cmp) {
     array.splice(pos, 0, val);
 
     return pos;
-}
-
-function ensureActorVisibleInScrollView(scrollView, actor) {
-    let adjustment = scrollView.vscroll.adjustment;
-    let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
-
-    let offset = 0;
-    let vfade = scrollView.get_effect("fade");
-    if (vfade)
-        offset = vfade.fade_margins.top;
-
-    let box = actor.get_allocation_box();
-    let y1 = box.y1, y2 = box.y2;
-
-    let parent = actor.get_parent();
-    while (parent != scrollView) {
-        if (!parent)
-            throw new Error("actor not in scroll view");
-
-        box = parent.get_allocation_box();
-        y1 += box.y1;
-        y2 += box.y1;
-        parent = parent.get_parent();
-    }
-
-    if (y1 < value + offset)
-        value = Math.max(0, y1 - offset);
-    else if (y2 > value + pageSize - offset)
-        value = Math.min(upper, y2 + offset - pageSize);
-    else
-        return;
-
-    adjustment.ease(value, {
-        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        duration: SCROLL_TIME,
-    });
-}
-
-function wiggle(actor, params) {
-    if (!St.Settings.get().enable_animations)
-        return;
-
-    params = Params.parse(params, {
-        offset: WIGGLE_OFFSET,
-        duration: WIGGLE_DURATION,
-        wiggleCount: N_WIGGLES,
-    });
-    actor.translation_x = 0;
-
-    // Accelerate before wiggling
-    actor.ease({
-        translation_x: -params.offset,
-        duration: params.duration,
-        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        onComplete: () => {
-            // Wiggle
-            actor.ease({
-                translation_x: params.offset,
-                duration: params.duration,
-                mode: Clutter.AnimationMode.LINEAR,
-                repeatCount: params.wiggleCount,
-                autoReverse: true,
-                onComplete: () => {
-                    // Decelerate and return to the original position
-                    actor.ease({
-                        translation_x: 0,
-                        duration: params.duration,
-                        mode: Clutter.AnimationMode.EASE_IN_QUAD,
-                    });
-                },
-            });
-        },
-    });
 }
 
 function lerp(start, end, progress) {

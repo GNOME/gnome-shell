@@ -22,7 +22,7 @@ const MessageTray = imports.ui.messageTray;
 const ShellDBus = imports.ui.shellDBus;
 const SmartcardManager = imports.misc.smartcardManager;
 
-const { adjustAnimationTime } = imports.ui.environment;
+const {adjustAnimationTime} = imports.misc.animationUtils;
 
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOCK_ENABLED_KEY = 'lock-enabled';

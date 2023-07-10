@@ -13,7 +13,7 @@ const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const CheckBox = imports.ui.checkBox;
-const Util = imports.misc.util;
+const {wiggle} = imports.misc.animationUtils;
 
 var KeyringDialog = GObject.registerClass(
 class KeyringDialog extends ModalDialog.ModalDialog {
@@ -83,7 +83,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         });
         this.prompt.connect('notify::warning', () => {
             if (this._passwordEntry && this.prompt.warning !== '')
-                Util.wiggle(this._passwordEntry);
+                wiggle(this._passwordEntry);
         });
         warningBox.add_child(warning);
 

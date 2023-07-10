@@ -44,6 +44,7 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Gettext = imports.gettext;
 const SignalTracker = imports.misc.signalTracker;
+const {adjustAnimationTime} = imports.misc.animationUtils;
 
 Gio._promisify(Gio.DataInputStream.prototype, 'fill_async');
 Gio._promisify(Gio.DataInputStream.prototype, 'read_line_async');
@@ -389,17 +390,3 @@ function init() {
     // Prevent extensions from opening a display connection to ourselves
     Gdk.set_allowed_backends('');
 }
-
-// adjustAnimationTime:
-// @msecs: time in milliseconds
-//
-// Adjust @msecs to account for St's enable-animations
-// and slow-down-factor settings
-function adjustAnimationTime(msecs) {
-    let settings = St.Settings.get();
-
-    if (!settings.enable_animations)
-        return 0;
-    return settings.slow_down_factor * msecs;
-}
-
