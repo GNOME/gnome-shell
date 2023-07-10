@@ -1,5 +1,6 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
 
 import {bindtextdomain} from 'gettext';
 
@@ -38,12 +39,21 @@ export class ExtensionBase {
             path = GLib.path_get_dirname(path);
 
             const dirName = GLib.path_get_basename(path);
-            const extension = _extensionManager.lookup(dirName);
+            const extension = this.lookupByUUID(dirName);
             if (extension !== undefined)
-                return extension.stateObj;
+                return extension;
         } while (path !== '/');
 
         return null;
+    }
+
+    /**
+     * Look up an extension by UUID
+     *
+     * @param {string} _uuid
+     */
+    static lookupByUUID(_uuid) {
+        throw new GObject.NotImplementedError();
     }
 
     /**

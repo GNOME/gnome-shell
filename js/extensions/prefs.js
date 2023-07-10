@@ -6,6 +6,10 @@ import {extensionManager} from '../extensionsService.js';
 setExtensionManager(extensionManager);
 
 export class ExtensionPreferences extends ExtensionBase {
+    static lookupByUUID(uuid) {
+        return extensionManager.lookup(uuid)?.stateObj ?? null;
+    }
+
     static defineTranslationFunctions(url) {
         const wrapper = new GettextWrapper(this, url);
         return wrapper.defineTranslationFunctions();

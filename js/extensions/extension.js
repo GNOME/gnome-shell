@@ -4,6 +4,10 @@ const {extensionManager} = imports.ui.main;
 setExtensionManager(extensionManager);
 
 export class Extension extends ExtensionBase {
+    static lookupByUUID(uuid) {
+        return extensionManager.lookup(uuid)?.stateObj ?? null;
+    }
+
     static defineTranslationFunctions(url) {
         const wrapper = new GettextWrapper(this, url);
         return wrapper.defineTranslationFunctions();
