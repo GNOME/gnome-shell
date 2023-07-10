@@ -6,6 +6,7 @@ overrides:
       - js/ui/init.js
       - js/ui/environment.js
       - js/ui/scripting.js
+      - js/misc/dependencies.js
       - js/dbusServices/**
       - js/portalHelper/**
       - subprojects/extensions-app/**

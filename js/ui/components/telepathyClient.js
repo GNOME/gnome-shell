@@ -16,8 +16,8 @@ try {
     Gio._promisify(Tp.TextChannel.prototype, 'send_message_async');
     Gio._promisify(Tp.ChannelDispatchOperation.prototype, 'claim_with_async');
     Gio._promisify(Tpl.LogManager.prototype, 'get_filtered_events_async');
-} catch (e) {
-    log('Telepathy is not available, chat integration will be disabled.');
+} catch {
+    console.debug('Skipping chat support, telepathy not found');
 }
 
 const History = imports.misc.history;
