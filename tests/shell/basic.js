@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_"] }] */
 
-const St = imports.gi.St;
+import St from 'gi://St';
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;

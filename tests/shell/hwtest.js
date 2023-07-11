@@ -1,7 +1,7 @@
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_", "^clutter"] }] */
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const Shell = imports.gi.Shell;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import Shell from 'gi://Shell';
 const Main = imports.ui.main;
 const Scripting = imports.ui.scripting;
 

@@ -1,9 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_"] }] */
 
-const GLib = imports.gi.GLib;
-const MetaTest = imports.gi.MetaTest;
-const Shell = imports.gi.Shell;
+import GLib from 'gi://GLib';
+import MetaTest from 'gi://MetaTest';
+import Shell from 'gi://Shell';
 
 const Main = imports.ui.main;
 const Scripting = imports.ui.scripting;

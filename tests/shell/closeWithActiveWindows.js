@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_", "^malloc", "^glx", "^clutter"] }] */
 
-const Clutter = imports.gi.Clutter;
+import Clutter from 'gi://Clutter';
 
 const Main = imports.ui.main;
 const Scripting = imports.ui.scripting;
