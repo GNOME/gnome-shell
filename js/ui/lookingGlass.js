@@ -26,15 +26,19 @@ const { ExtensionState } = ExtensionUtils;
 const CHEVRON = '>>> ';
 
 /* Imports...feel free to add here as needed */
-var commandHeader = 'const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi; ' +
-                    'const Main = imports.ui.main; ' +
-                    /* Utility functions...we should probably be able to use these
-                     * in the shell core code too. */
-                    'const stage = global.stage; ' +
-                    /* Special lookingGlass functions */
-                    'const inspect = Main.lookingGlass.inspect.bind(Main.lookingGlass); ' +
-                    'const it = Main.lookingGlass.getIt(); ' +
-                    'const r = Main.lookingGlass.getResult.bind(Main.lookingGlass); ';
+const commandHeader = `
+    const {Clutter, Gio, GLib, GObject, Meta, Shell, St} = imports.gi;
+    const Main = imports.ui.main;
+
+    /* Utility functions...we should probably be able to use these
+     * in the shell core code too. */
+    const stage = global.stage;
+
+    /* Special lookingGlass functions */
+    const inspect = Main.lookingGlass.inspect.bind(Main.lookingGlass);
+    const it = Main.lookingGlass.getIt();
+    const r = Main.lookingGlass.getResult.bind(Main.lookingGlass);
+    `;
 
 const HISTORY_KEY = 'looking-glass-history';
 // Time between tabs for them to count as a double-tab event
