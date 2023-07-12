@@ -94,30 +94,29 @@ var AutoComplete = class AutoComplete extends Signals.EventEmitter {
         }
     }
 
+    async _handleCompletions(text, time) {
+        const [completions, attrHead] =
+            await JsParse.getCompletions(text, commandHeader, AUTO_COMPLETE_GLOBAL_KEYWORDS);
+
+        const tabType = (time - this._lastTabTime) < AUTO_COMPLETE_DOUBLE_TAB_DELAY
+            ? 'double' : 'single';
+
+        this._processCompletionRequest({
+            tabType,
+            completions,
+            attrHead,
+        });
+        this._lastTabTime = time;
+    }
+
     _entryKeyPressEvent(actor, event) {
         let cursorPos = this._entry.clutter_text.get_cursor_position();
         let text = this._entry.get_text();
         if (cursorPos != -1)
             text = text.slice(0, cursorPos);
 
-        if (event.get_key_symbol() == Clutter.KEY_Tab) {
-            let [completions, attrHead] = JsParse.getCompletions(text, commandHeader, AUTO_COMPLETE_GLOBAL_KEYWORDS);
-            let currTime = global.get_current_time();
-            if ((currTime - this._lastTabTime) < AUTO_COMPLETE_DOUBLE_TAB_DELAY) {
-                this._processCompletionRequest({
-                    tabType: 'double',
-                    completions,
-                    attrHead,
-                });
-            } else {
-                this._processCompletionRequest({
-                    tabType: 'single',
-                    completions,
-                    attrHead,
-                });
-            }
-            this._lastTabTime = currTime;
-        }
+        if (event.get_key_symbol() === Clutter.KEY_Tab)
+            this._handleCompletions(text, event.get_time()).catch(logError);
         return Clutter.EVENT_PROPAGATE;
     }
 
