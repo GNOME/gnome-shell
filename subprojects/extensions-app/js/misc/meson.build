@@ -3,5 +3,6 @@ config_js = configure_file(
   output: '@BASENAME@',
   configuration: {
     'GETTEXT_VERSION': meson.project_version(),
+    'PROFILE': get_option('profile'),
   }
 )

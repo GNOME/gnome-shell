@@ -10,6 +10,7 @@ const Package = imports.package;
 
 Package.initFormat();
 
+const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
 
 const { ExtensionState, ExtensionType } = ExtensionUtils;
@@ -93,6 +94,9 @@ var ExtensionsWindow = GObject.registerClass({
 }, class ExtensionsWindow extends Adw.ApplicationWindow {
     _init(params) {
         super._init(params);
+
+        if (Config.PROFILE === 'development')
+            this.add_css_class('devel');
 
         this._updatesCheckId = 0;
 
