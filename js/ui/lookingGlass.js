@@ -28,7 +28,7 @@ const CHEVRON = '>>> ';
 /* Imports...feel free to add here as needed */
 const commandHeader = `
     const {Clutter, Gio, GLib, GObject, Meta, Shell, St} = imports.gi;
-    const Main = imports.ui.main;
+    const Main = await imports.ui.main;
 
     /* Utility functions...we should probably be able to use these
      * in the shell core code too. */
@@ -39,6 +39,7 @@ const commandHeader = `
     const it = Main.lookingGlass.getIt();
     const r = Main.lookingGlass.getResult.bind(Main.lookingGlass);
     `;
+const AsyncFunction = async function () {}.constructor;
 
 const HISTORY_KEY = 'looking-glass-history';
 // Time between tabs for them to count as a double-tab event
@@ -1412,7 +1413,7 @@ class LookingGlass extends St.BoxLayout {
             // Ensure we don't get newlines in the command; the history file is
             // newline-separated.
             text = text.replace('\n', ' ');
-            this._evaluate(text);
+            this._evaluate(text).catch(logError);
             return true;
         });
 
@@ -1528,7 +1529,7 @@ class LookingGlass extends St.BoxLayout {
         }
     }
 
-    _evaluate(command) {
+    async _evaluate(command) {
         command = this._history.addItem(command); // trims command
         if (!command)
             return;
@@ -1540,7 +1541,7 @@ class LookingGlass extends St.BoxLayout {
 
         let resultObj;
         try {
-            resultObj = Function(fullCmd)();
+            resultObj = await AsyncFunction(fullCmd)();
         } catch (e) {
             resultObj = `<exception ${e}>`;
         }
