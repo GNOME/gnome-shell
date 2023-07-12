@@ -197,7 +197,9 @@ function getPropertyNamesFromExpression(expr, commandHeader = '') {
     let obj = {};
     if (!isUnsafeExpression(expr)) {
         try {
-            obj = eval(commandHeader + expr);
+            const lines = expr.split(';');
+            lines.push(`return ${lines.pop()}`);
+            obj = Function(commandHeader + lines.join(';'))();
         } catch (e) {
             return [];
         }
