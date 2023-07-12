@@ -1,6 +1,8 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 /* exported getCompletions, getCommonPrefix, getDeclaredConstants */
 
+const AsyncFunction = async function () {}.constructor;
+
 /**
  * Returns a list of potential completions for text. Completions either
  * follow a dot (e.g. foo.ba -> bar) or they are picked from globalCompletionList (e.g. fo -> foo)
@@ -13,7 +15,7 @@
  * @param {string} commandHeader
  * @param {readonly string[]} [globalCompletionList]
  */
-function getCompletions(text, commandHeader, globalCompletionList) {
+async function getCompletions(text, commandHeader, globalCompletionList) {
     let methods = [];
     let expr_, base;
     let attrHead = '';
@@ -29,7 +31,7 @@ function getCompletions(text, commandHeader, globalCompletionList) {
         if (matches) {
             [expr_, base, attrHead] = matches;
 
-            methods = getPropertyNamesFromExpression(base, commandHeader).filter(
+            methods = (await getPropertyNamesFromExpression(base, commandHeader)).filter(
                 attr => attr.slice(0, attrHead.length) === attrHead);
         }
 
@@ -193,13 +195,13 @@ function getAllProps(obj) {
  * @param {string} expr
  * @param {string=} commandHeader
  */
-function getPropertyNamesFromExpression(expr, commandHeader = '') {
+async function getPropertyNamesFromExpression(expr, commandHeader = '') {
     let obj = {};
     if (!isUnsafeExpression(expr)) {
         try {
-            const lines = expr.split(';');
+            const lines = expr.split('\n');
             lines.push(`return ${lines.pop()}`);
-            obj = Function(commandHeader + lines.join(';'))();
+            obj = await AsyncFunction(commandHeader + lines.join(';'))();
         } catch (e) {
             return [];
         }
