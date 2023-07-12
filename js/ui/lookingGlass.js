@@ -268,6 +268,11 @@ function objectToString(o) {
     if (typeof o == typeof objectToString) {
         // special case this since the default is way, way too verbose
         return '<js function>';
+    } else if (o && o.toString === undefined) {
+        // eeks, something unprintable. we'll have to guess, probably a module
+        return typeof o === 'object' && !(o instanceof Object)
+            ? '<module>'
+            : '<unknown>';
     } else {
         return `${o}`;
     }
