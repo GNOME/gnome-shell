@@ -42,10 +42,14 @@ export var METRICS = {
     },
 };
 
+/**
+ * @param {number} milliseconds - time to wait
+ * @returns {callback}
+ */
 function waitAndDraw(milliseconds) {
     let cb;
 
-    let timeline = new Clutter.Timeline({ duration: milliseconds });
+    let timeline = new Clutter.Timeline({duration: milliseconds});
     timeline.start();
 
     timeline.connect('new-frame', (_timeline, _frame) => {
@@ -61,6 +65,11 @@ function waitAndDraw(milliseconds) {
     return callback => (cb = callback);
 }
 
+/**
+ * @param {object} object - emitter object
+ * @param {string} signal - signal name
+ * @returns {callback}
+ */
 function waitSignal(object, signal) {
     let cb;
 
@@ -73,6 +82,9 @@ function waitSignal(object, signal) {
     return callback => (cb = callback);
 }
 
+/**
+ * @returns {number}
+ */
 function extractBootTimestamp() {
     const sp = Gio.Subprocess.new([
         'journalctl', '-b',
@@ -96,22 +108,23 @@ function extractBootTimestamp() {
     return result;
 }
 
+/** @returns {void} */
 export async function run() {
     /* eslint-disable no-await-in-loop */
-    Scripting.defineScriptEvent("desktopShown", "Finished initial animation");
-    Scripting.defineScriptEvent("overviewShowStart", "Starting to show the overview");
-    Scripting.defineScriptEvent("overviewShowDone", "Overview finished showing");
-    Scripting.defineScriptEvent("applicationsShowStart", "Starting to switch to applications view");
-    Scripting.defineScriptEvent("applicationsShowDone", "Done switching to applications view");
-    Scripting.defineScriptEvent("mainViewDrawStart", "Drawing main view");
-    Scripting.defineScriptEvent("mainViewDrawDone", "Ending timing main view drawing");
-    Scripting.defineScriptEvent("overviewDrawStart", "Drawing overview");
-    Scripting.defineScriptEvent("overviewDrawDone", "Ending timing overview drawing");
-    Scripting.defineScriptEvent("redrawTestStart", "Drawing application window");
-    Scripting.defineScriptEvent("redrawTestDone", "Ending timing application window drawing");
-    Scripting.defineScriptEvent("collectTimings", "Accumulate frame timings from redraw tests");
-    Scripting.defineScriptEvent("geditLaunch", "gedit application launch");
-    Scripting.defineScriptEvent("geditFirstFrame", "first frame of gedit window drawn");
+    Scripting.defineScriptEvent('desktopShown', 'Finished initial animation');
+    Scripting.defineScriptEvent('overviewShowStart', 'Starting to show the overview');
+    Scripting.defineScriptEvent('overviewShowDone', 'Overview finished showing');
+    Scripting.defineScriptEvent('applicationsShowStart', 'Starting to switch to applications view');
+    Scripting.defineScriptEvent('applicationsShowDone', 'Done switching to applications view');
+    Scripting.defineScriptEvent('mainViewDrawStart', 'Drawing main view');
+    Scripting.defineScriptEvent('mainViewDrawDone', 'Ending timing main view drawing');
+    Scripting.defineScriptEvent('overviewDrawStart', 'Drawing overview');
+    Scripting.defineScriptEvent('overviewDrawDone', 'Ending timing overview drawing');
+    Scripting.defineScriptEvent('redrawTestStart', 'Drawing application window');
+    Scripting.defineScriptEvent('redrawTestDone', 'Ending timing application window drawing');
+    Scripting.defineScriptEvent('collectTimings', 'Accumulate frame timings from redraw tests');
+    Scripting.defineScriptEvent('geditLaunch', 'gedit application launch');
+    Scripting.defineScriptEvent('geditFirstFrame', 'first frame of gedit window drawn');
 
     await Scripting.waitLeisure();
     Scripting.scriptEvent('desktopShown');
@@ -148,7 +161,7 @@ export async function run() {
     global.frame_finish_timestamp = true;
 
     for (let k = 0; k < 5; k++)
-        await Scripting.createTestWindow({ maximized: true });
+        await Scripting.createTestWindow({maximized: true});
     await Scripting.waitTestWindows();
 
     await Scripting.sleep(1000);
@@ -201,7 +214,7 @@ export async function run() {
     if (windows.length > 0)
         throw new Error('gedit was already running');
 
-    while (windows.length == 0) {
+    while (windows.length === 0) {
         await waitSignal(global.display, 'window-created');
         windows = app.get_windows();
     }
@@ -227,51 +240,99 @@ let redrawTiming;
 let redrawTimes = {};
 let geditLaunchTime;
 
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 export function script_desktopShown(time) {
     let bootTimestamp = extractBootTimestamp();
     METRICS.timeToDesktop.value = time - bootTimestamp;
 }
 
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 export function script_overviewShowStart(time) {
     overviewShowStart = time;
 }
 
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 export function script_overviewShowDone(time) {
     METRICS.overviewShowTime.value = time - overviewShowStart;
 }
 
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 export function script_applicationsShowStart(time) {
     applicationsShowStart = time;
 }
 
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 export function script_applicationsShowDone(time) {
     METRICS.applicationsShowTime.value = time - applicationsShowStart;
 }
 
+/**
+ * @param {number} _time - event timestamp
+ * @returns {void}
+ */
 export function script_mainViewDrawStart(_time) {
     redrawTiming = 'mainView';
 }
 
+/**
+ * @param {number} _time - event timestamp
+ * @returns {void}
+ */
 export function script_mainViewDrawDone(_time) {
     redrawTiming = null;
 }
 
+/**
+ * @param {number} _time - event timestamp
+ * @returns {void}
+ */
 export function script_overviewDrawStart(_time) {
     redrawTiming = 'overview';
 }
 
+/**
+ * @param {number} _time - event timestamp
+ * @returns {void}
+ */
 export function script_overviewDrawDone(_time) {
     redrawTiming = null;
 }
 
+/**
+ * @param {number} _time - event timestamp
+ * @returns {void}
+ */
 export function script_redrawTestStart(_time) {
     redrawTiming = 'application';
 }
 
+/**
+ * @param {number} _time - event timestamp
+ * @returns {void}
+ */
 export function script_redrawTestDone(_time) {
     redrawTiming = null;
 }
 
+/**
+ * @param {number} _time - event timestamp
+ * @returns {void}
+ */
 export function script_collectTimings(_time) {
     for (let timing in redrawTimes) {
         let times = redrawTimes[timing];
@@ -280,9 +341,9 @@ export function script_collectTimings(_time) {
         let len = times.length;
         let median;
 
-        if (len == 0)
+        if (len === 0)
             median = -1;
-        else if (len % 2 == 1)
+        else if (len % 2 === 1)
             median = times[(len - 1) / 2];
         else
             median = Math.round((times[len / 2 - 1] + times[len / 2]) / 2);
@@ -291,18 +352,34 @@ export function script_collectTimings(_time) {
     }
 }
 
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 export function script_geditLaunch(time) {
     geditLaunchTime = time;
 }
 
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 export function script_geditFirstFrame(time) {
     METRICS.geditStartTime.value = time - geditLaunchTime;
 }
 
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 export function clutter_stagePaintStart(time) {
     stagePaintStart = time;
 }
 
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 export function clutter_paintCompletedTimestamp(time) {
     if (redrawTiming != null && stagePaintStart != null) {
         if (!(redrawTiming in redrawTimes))

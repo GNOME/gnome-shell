@@ -16,7 +16,9 @@ rules:
   jsdoc/require-param-description: off
 
 overrides:
-  - files: js/**
+  - files:
+      - js/**
+      - tests/shell/**
     excludedFiles:
       - js/portalHelper/*
       - js/misc/extensionUtils.js

@@ -11,6 +11,7 @@ const Scripting = imports.ui.scripting;
 
 export var METRICS = {};
 
+/** @returns {void} */
 export async function run() {
     console.debug('Running basic perf test');
 
@@ -38,7 +39,7 @@ export async function run() {
     Main.panel.statusArea.quickSettings.menu.open();
     await Scripting.sleep(400);
 
-    const { menuManager } = Main.panel;
+    const {menuManager} = Main.panel;
     while (menuManager.activeMenu &&
         Main.panel.navigate_focus(menuManager.activeMenu.sourceActor,
             St.DirectionType.TAB_BACKWARD, false))
@@ -118,26 +119,32 @@ let notificationClosed = false;
 let windowPickerShown = false;
 let appPickerShown = false;
 
+/** @returns {void} */
 export function script_topBarNavDone() {
     topBarNav = true;
 }
 
+/** @returns {void} */
 export function script_notificationShowDone() {
     notificationShown = true;
 }
 
+/** @returns {void} */
 export function script_notificationCloseDone() {
     notificationClosed = true;
 }
 
+/** @returns {void} */
 export function script_overviewShowDone() {
     windowPickerShown = true;
 }
 
+/** @returns {void} */
 export function script_applicationsShowDone() {
     appPickerShown = true;
 }
 
+/** @returns {void} */
 export function finish() {
     if (!topBarNav)
         throw new Error('Failed to navigate top bar');

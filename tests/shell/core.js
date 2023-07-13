@@ -93,13 +93,14 @@ const WINDOW_CONFIGS = [{
     alpha: true,  maximized: false, count: 10, metric: 'overviewFps10Alpha',
 }];
 
+/** @returns {void} */
 export async function run() {
     /* eslint-disable no-await-in-loop */
-    Scripting.defineScriptEvent("overviewShowStart", "Starting to show the overview");
-    Scripting.defineScriptEvent("overviewShowDone", "Overview finished showing");
-    Scripting.defineScriptEvent("afterShowHide", "After a show/hide cycle for the overview");
-    Scripting.defineScriptEvent("applicationsShowStart", "Starting to switch to applications view");
-    Scripting.defineScriptEvent("applicationsShowDone", "Done switching to applications view");
+    Scripting.defineScriptEvent('overviewShowStart', 'Starting to show the overview');
+    Scripting.defineScriptEvent('overviewShowDone', 'Overview finished showing');
+    Scripting.defineScriptEvent('afterShowHide', 'After a show/hide cycle for the overview');
+    Scripting.defineScriptEvent('applicationsShowStart', 'Starting to switch to applications view');
+    Scripting.defineScriptEvent('applicationsShowDone', 'Done switching to applications view');
 
     // Enable recording of timestamps for different points in the frame cycle
     global.frame_timestamps = true;
@@ -114,7 +115,7 @@ export async function run() {
         // We go to the overview twice for each configuration; the first time
         // to calculate the mipmaps for the windows, the second time to get
         // a clean set of numbers.
-        if ((i % 2) == 0) {
+        if ((i % 2) === 0) {
             let config = WINDOW_CONFIGS[i / 2];
             await Scripting.destroyTestWindows();
 
@@ -175,6 +176,10 @@ let haveSwapComplete = false;
 let applicationsShowStart;
 let applicationsShowCount = 0;
 
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 export function script_overviewShowStart(time) {
     showingOverview = true;
     finishedShowingOverview = false;
@@ -182,6 +187,10 @@ export function script_overviewShowStart(time) {
     overviewFrames = 0;
 }
 
+/**
+ * @param {number} _time - event timestamp
+ * @returns {void}
+ */
 export function script_overviewShowDone(_time) {
     // We've set up the state at the end of the zoom out, but we
     // need to wait for one more frame to paint before we count
@@ -189,32 +198,55 @@ export function script_overviewShowDone(_time) {
     finishedShowingOverview = true;
 }
 
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 export function script_applicationsShowStart(time) {
     applicationsShowStart = time;
 }
 
+/** @returns {void} */
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 export function script_applicationsShowDone(time) {
     applicationsShowCount++;
-    if (applicationsShowCount == 1)
+    if (applicationsShowCount === 1)
         METRICS.applicationsShowTimeFirst.value = time - applicationsShowStart;
     else
         METRICS.applicationsShowTimeSubsequent.value = time - applicationsShowStart;
 }
 
+/** @returns {void} */
+/**
+ * @param {number} _time - event timestamp
+ * @returns {void}
+ */
 export function script_afterShowHide(_time) {
-    if (overviewShowCount == 1)
+    if (overviewShowCount === 1)
         METRICS.usedAfterOverview.value = mallocUsedSize;
     else
         METRICS.leakedAfterOverview.value = mallocUsedSize - METRICS.usedAfterOverview.value;
 }
 
+/**
+ * @param {number} time - event timestamp
+ * @param {number} bytes - event data
+ * @returns {void}
+ */
 export function malloc_usedSize(time, bytes) {
     mallocUsedSize = bytes;
 }
 
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 function _frameDone(time) {
     if (showingOverview) {
-        if (overviewFrames == 0)
+        if (overviewFrames === 0)
             overviewLatency = time - overviewShowStart;
 
         overviewFrames++;
@@ -231,28 +263,37 @@ function _frameDone(time) {
         // be 1 frame for a FPS computation, hence the '- 1'
         let fps = (overviewFrames - 1) / dt;
 
-        if (overviewShowCount == 1) {
+        if (overviewShowCount === 1) {
             METRICS.overviewLatencyFirst.value = overviewLatency;
             METRICS.overviewFpsFirst.value = fps;
-        } else if (overviewShowCount == 2) {
+        } else if (overviewShowCount === 2) {
             METRICS.overviewLatencySubsequent.value = overviewLatency;
         }
 
         // Other than overviewFpsFirst, we collect FPS metrics the second
         // we show each window configuration. overviewShowCount is 1,2,3...
-        if (overviewShowCount % 2 == 0) {
+        if (overviewShowCount % 2 === 0) {
             let config = WINDOW_CONFIGS[(overviewShowCount / 2) - 1];
             METRICS[config.metric].value = fps;
         }
     }
 }
 
+/**
+ * @param {number} time - event timestamp
+ * @param {number} swapTime - event data
+ * @returns {void}
+ */
 export function glx_swapComplete(time, swapTime) {
     haveSwapComplete = true;
 
     _frameDone(swapTime);
 }
 
+/**
+ * @param {number} time - event timestamp
+ * @returns {void}
+ */
 export function clutter_stagePaintDone(time) {
     // If we aren't receiving GLXBufferSwapComplete events, then we approximate
     // the time the user sees a frame with the time we finished doing drawing
