@@ -18,7 +18,7 @@ dbus_runner = configure_file(
   configuration: dbusrunnerconf,
 )
 
-tests = [
+unit_tests = [
     'highlighter',
     'insertSorted',
     'jsParse',
@@ -29,9 +29,10 @@ tests = [
     'versionCompare',
 ]
 
-foreach test : tests
+foreach test : unit_tests
   test(test, run_test,
     args: 'unit/@0@.js'.format(test),
+    suite: 'unit',
     workdir: meson.current_source_dir())
 endforeach
 
@@ -67,7 +68,8 @@ foreach shell_test : shell_tests
   test_name = shell_test['name']
   options = shell_test.get('options', [])
 
-  test('shell-' + test_name, dbus_runner,
+  test(test_name, dbus_runner,
+    suite: 'shell',
     args: [
       test_tool,
       '--headless',
