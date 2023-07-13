@@ -13,6 +13,7 @@ rules:
       beforeColon: false
       afterColon: true
   prefer-arrow-callback: error
+  jsdoc/require-param-description: off
 
 overrides:
   - files: js/**
