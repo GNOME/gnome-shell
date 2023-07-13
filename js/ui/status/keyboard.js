@@ -28,6 +28,8 @@ class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
     _init(displayName, shortName) {
         super._init();
 
+        this.setOrnament(PopupMenu.Ornament.NONE);
+
         this.label = new St.Label({
             text: displayName,
             x_expand: true,
