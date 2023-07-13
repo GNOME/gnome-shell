@@ -23,6 +23,7 @@ const Main = imports.ui.main;
 const RemoteAccessStatus = imports.ui.status.remoteAccess;
 const PowerProfileStatus = imports.ui.status.powerProfiles;
 const RFKillStatus = imports.ui.status.rfkill;
+const CameraStatus = imports.ui.status.camera;
 const VolumeStatus = imports.ui.status.volume;
 const BrightnessStatus = imports.ui.status.brightness;
 const SystemStatus = imports.ui.status.system;
@@ -388,6 +389,7 @@ class QuickSettings extends PanelMenu.Button {
         }
 
         this._system = new SystemStatus.Indicator();
+        this._camera = new CameraStatus.Indicator();
         this._volumeOutput = new VolumeStatus.OutputIndicator();
         this._volumeInput = new VolumeStatus.InputIndicator();
         this._brightness = new BrightnessStatus.Indicator();
@@ -403,6 +405,7 @@ class QuickSettings extends PanelMenu.Button {
         this._backgroundApps = new BackgroundAppsStatus.Indicator();
 
         this._indicators.add_child(this._remoteAccess);
+        this._indicators.add_child(this._camera);
         this._indicators.add_child(this._volumeInput);
         this._indicators.add_child(this._location);
         this._indicators.add_child(this._brightness);
@@ -421,6 +424,7 @@ class QuickSettings extends PanelMenu.Button {
         this._indicators.add_child(this._system);
 
         this._addItems(this._system.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
+        this._addItems(this._camera.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
         this._addItems(this._volumeOutput.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
         this._addItems(this._volumeInput.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
         this._addItems(this._brightness.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
