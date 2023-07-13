@@ -194,7 +194,7 @@ build:
     - meson mutter mutter/build --prefix=/usr
     - meson install -C mutter/build
   script:
-    - meson . build -Dbuildtype=debugoptimized -Dman=false --werror
+    - meson setup . build -Dbuildtype=debugoptimized -Dman=false --werror --fatal-meson-warnings
     - meson compile -C build
     - meson install -C build
   artifacts:
