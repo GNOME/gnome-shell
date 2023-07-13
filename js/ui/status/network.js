@@ -244,7 +244,6 @@ const NMSectionItem = GObject.registerClass({
 
         // Turn into an empty container with no padding
         this.styleClass = '';
-        this.setOrnament(PopupMenu.Ornament.HIDDEN);
 
         // Add intermediate section; we need this for submenu support
         this._mainSection = new PopupMenu.PopupMenuSection();

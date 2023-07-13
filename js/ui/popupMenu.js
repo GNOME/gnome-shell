@@ -96,7 +96,7 @@ var PopupBaseMenuItem = GObject.registerClass({
 
         this._ornamentIcon = new St.Icon({style_class: 'popup-menu-ornament'});
         this.add(this._ornamentIcon);
-        this.setOrnament(Ornament.NONE);
+        this.setOrnament(Ornament.HIDDEN);
 
         this._parent = null;
         this._active = false;
