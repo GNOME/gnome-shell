@@ -31,3 +31,5 @@ const Config = imports.misc.config;
 imports.gi.versions.Meta = Config.LIBMUTTER_API_VERSION;
 imports.gi.versions.Clutter = Config.LIBMUTTER_API_VERSION;
 imports.gi.versions.Cogl = Config.LIBMUTTER_API_VERSION;
+imports.gi.versions.Shell = Config.LIBMUTTER_API_VERSION;
+imports.gi.versions.St = Config.LIBMUTTER_API_VERSION;
