@@ -1,8 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ExtensionState, ExtensionType, getCurrentExtension,
    getSettings, initTranslations, gettext, ngettext, pgettext,
-   openPrefs, isOutOfDate, serializeExtension,
-   deserializeExtension, setExtensionManager */
+   openPrefs, serializeExtension, deserializeExtension, setExtensionManager */
 
 // Common utils for the extension system and the extension
 // preferences tool
@@ -240,11 +239,6 @@ function openPrefs() {
             throw new Error('openPrefs() cannot be called from preferences');
         logError(e, 'Failed to open extension preferences');
     }
-}
-
-function isOutOfDate(extension) {
-    const [major] = Config.PACKAGE_VERSION.split('.');
-    return !extension.metadata['shell-version'].some(v => v.startsWith(major));
 }
 
 function serializeExtension(extension) {

@@ -14,6 +14,8 @@ const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 
+const Config = imports.misc.config;
+
 const { ExtensionState, ExtensionType } = ExtensionUtils;
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
@@ -431,11 +433,16 @@ var ExtensionManager = class extends Signals.EventEmitter {
         return extension.metadata.version === version;
     }
 
+    _isOutOfDate(extension) {
+        const [major] = Config.PACKAGE_VERSION.split('.');
+        return !extension.metadata['shell-version'].some(v => v.startsWith(major));
+    }
+
     async loadExtension(extension) {
         // Default to error, we set success as the last step
         extension.state = ExtensionState.ERROR;
 
-        if (this._checkVersion && ExtensionUtils.isOutOfDate(extension)) {
+        if (this._checkVersion && this._isOutOfDate(extension)) {
             extension.state = ExtensionState.OUT_OF_DATE;
         } else if (!this._canLoad(extension)) {
             this.logExtensionError(extension.uuid, new Error(
