@@ -26,7 +26,7 @@ default:
       - 'api_failure'
 
 variables:
-  MUTTER_CI_IMAGE: registry.gitlab.gnome.org/gnome/mutter/fedora/38:x86_64-2023-06-27.0-libei
+  MUTTER_CI_IMAGE: registry.gitlab.gnome.org/gnome/mutter/fedora/38:x86_64-2023-06-20.2
   FDO_UPSTREAM_REPO: GNOME/gnome-shell
   BUNDLE: "extensions-git.flatpak"
   LINT_LOG: "eslint-report.xml"
