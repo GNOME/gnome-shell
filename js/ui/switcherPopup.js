@@ -8,7 +8,7 @@ const St = imports.gi.St;
 
 const Main = imports.ui.main;
 
-var POPUP_DELAY_TIMEOUT = 150; // milliseconds
+var POPUP_DELAY_TIMEOUT = 0; // milliseconds
 
 var POPUP_SCROLL_TIME = 100; // milliseconds
 var POPUP_FADE_OUT_TIME = 100; // milliseconds
