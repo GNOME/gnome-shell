@@ -25,12 +25,12 @@ export const ExtensionPrefsDialog = GObject.registerClass({
     }
 
     async _loadPrefs() {
-        const {dir, metadata} = this._extension;
+        const {dir, path, metadata} = this._extension;
 
         const prefsJs = dir.get_child('prefs.js');
         const prefsModule = await import(prefsJs.get_uri());
 
-        const prefsObj = new prefsModule.default(metadata);
+        const prefsObj = new prefsModule.default({...metadata, dir, path});
         this._extension.stateObj = prefsObj;
 
         prefsObj.fillPreferencesWindow(this);
