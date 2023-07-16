@@ -536,7 +536,9 @@ var ExtensionManager = class extends Signals.EventEmitter {
         }
 
         try {
-            extensionState = new extensionModule.default(extension.metadata);
+            const {metadata, path} = extension;
+            extensionState =
+                new extensionModule.default({...metadata, dir, path});
         } catch (e) {
             this.logExtensionError(uuid, e);
             return false;
