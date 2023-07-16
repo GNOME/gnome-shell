@@ -1,7 +1,5 @@
 import {ExtensionBase, GettextWrapper, setExtensionManager} from './sharedInternals.js';
 
-export {gettext, ngettext, pgettext} from './sharedInternals.js';
-
 const {extensionManager} = imports.ui.main;
 setExtensionManager(extensionManager);
 
@@ -24,3 +22,7 @@ export class Extension extends ExtensionBase {
         extensionManager.openExtensionPrefs(this.uuid, '', {});
     }
 }
+
+export const {
+    gettext, ngettext, pgettext,
+} = Extension.defineTranslationFunctions();

@@ -5,8 +5,6 @@ import {extensionManager} from '../extensionsService.js';
 
 setExtensionManager(extensionManager);
 
-export {gettext, ngettext, pgettext} from './sharedInternals.js';
-
 export class ExtensionPreferences extends ExtensionBase {
     static defineTranslationFunctions(url) {
         const wrapper = new GettextWrapper(this, url);
@@ -22,3 +20,7 @@ export class ExtensionPreferences extends ExtensionBase {
         throw new GObject.NotImplementedError();
     }
 }
+
+export const {
+    gettext, ngettext, pgettext,
+} = ExtensionPreferences.defineTranslationFunctions();
