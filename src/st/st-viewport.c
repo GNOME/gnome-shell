@@ -370,10 +370,10 @@ st_viewport_apply_transform (ClutterActor      *actor,
   graphene_point3d_t p = GRAPHENE_POINT3D_INIT_ZERO;
 
   if (priv->hadjustment)
-    p.x = -get_hadjustment_value (viewport);
+    p.x = -(int)get_hadjustment_value (viewport);
 
   if (priv->vadjustment)
-    p.y = -st_adjustment_get_value (priv->vadjustment);
+    p.y = -(int)st_adjustment_get_value (priv->vadjustment);
 
   graphene_matrix_translate (matrix, &p);
 
@@ -384,8 +384,8 @@ st_viewport_apply_transform (ClutterActor      *actor,
  * up or the background and borders will be drawn in the wrong place */
 static void
 get_border_paint_offsets (StViewport *viewport,
-                          double     *x,
-                          double     *y)
+                          int        *x,
+                          int        *y)
 {
   StViewportPrivate *priv = st_viewport_get_instance_private (viewport);
 
@@ -408,7 +408,7 @@ st_viewport_paint (ClutterActor        *actor,
   StViewport *viewport = ST_VIEWPORT (actor);
   StViewportPrivate *priv = st_viewport_get_instance_private (viewport);
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-  double x, y;
+  int x, y;
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
   ClutterActor *child;
@@ -418,7 +418,7 @@ st_viewport_paint (ClutterActor        *actor,
   if (x != 0 || y != 0)
     {
       cogl_framebuffer_push_matrix (fb);
-      cogl_framebuffer_translate (fb, (int)x, (int)y, 0);
+      cogl_framebuffer_translate (fb, x, y, 0);
     }
 
   st_widget_paint_background (ST_WIDGET (actor), paint_context);
@@ -465,7 +465,7 @@ st_viewport_pick (ClutterActor       *actor,
   StViewport *viewport = ST_VIEWPORT (actor);
   StViewportPrivate *priv = st_viewport_get_instance_private (viewport);
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-  double x, y;
+  int x, y;
   g_autoptr (ClutterActorBox) allocation_box = NULL;
   ClutterActorBox content_box;
   ClutterActor *child;
@@ -506,7 +506,7 @@ st_viewport_get_paint_volume (ClutterActor       *actor,
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
-  double x, y;
+  int x, y;
 
   /* Setting the paint volume does not make sense when we don't have any allocation */
   if (!clutter_actor_has_allocation (actor))
