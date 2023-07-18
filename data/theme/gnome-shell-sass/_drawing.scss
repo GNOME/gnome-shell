@@ -143,10 +143,14 @@
 //
 // since buttons are all flat an borderless now the mixin is simpler
 
-@mixin button($t, $tc:$fg_color, $c:$bg_color, $flat: false) {
+@mixin button($t, $tc:$fg_color, $c:$bg_color, $flat: false, $osd: false) {
 
   $button_bg_color: mix($tc, $c, $button_mix_factor);
   transition-duration: 100ms;
+
+  @if $osd {
+    $button_bg_color: transparentize($tc, 0.9);
+  }
 
   // normal button
   @if $t==normal {
@@ -210,8 +214,8 @@
 
   // insensitive button
   @else if $t==insensitive {
+    color: if($variant == 'light', transparentize($tc, .6), transparentize($tc, .5)) !important;
     background-color: if($variant == 'light', transparentize($tc, .9), transparentize($tc, .95));
-    color: if($variant == 'light', transparentize($tc, .6), transparentize($tc, .5));
   }
 
   // default/suggested button
@@ -243,7 +247,6 @@
     background-color: none;
     box-shadow: none;
     &:insensitive {
-      @include button(insensitive);
       background-color: transparent;
     }
   }

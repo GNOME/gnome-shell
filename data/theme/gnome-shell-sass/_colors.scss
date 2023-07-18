@@ -28,8 +28,8 @@ $success_color: if($variant == 'light', $green_4, $green_5);
 $destructive_color: $error_color;
 
 // color definitions for OSD elements
-$osd_fg_color: if($variant == 'light', $_dark_base_color, $light_1);
-$osd_bg_color: if($variant == 'light', $light_3, lighten($_dark_base_color, 5%));
+$osd_fg_color: $light_1;
+$osd_bg_color: lighten($_dark_base_color, 5%);
 
 // derived osd colors
 $osd_insensitive_bg_color: transparentize(mix($osd_fg_color, opacify($osd_bg_color, 1), 10%), 0.5);
