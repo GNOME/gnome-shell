@@ -422,13 +422,13 @@ export const BoxPointer = GObject.registerClass({
         const [hasColor, bgColor] =
             themeNode.lookup_color('-arrow-background-color', false);
         if (hasColor) {
-            Clutter.cairo_set_source_color(cr, bgColor);
+            cr.setSourceColor(bgColor);
             cr.fillPreserve();
         }
 
         if (borderWidth > 0) {
             let borderColor = themeNode.get_color('-arrow-border-color');
-            Clutter.cairo_set_source_color(cr, borderColor);
+            cr.setSourceColor(borderColor);
             cr.setLineWidth(borderWidth);
             cr.stroke();
         }
