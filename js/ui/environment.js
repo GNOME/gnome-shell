@@ -4,6 +4,7 @@ import '../misc/dependencies.js';
 import {setConsoleLogDomain} from 'console';
 import * as Gettext from 'gettext';
 
+import Cairo from 'cairo';
 import Clutter from 'gi://Clutter';
 import Gdk from 'gi://Gdk';
 import Gio from 'gi://Gio';
@@ -274,6 +275,16 @@ GObject.Object.prototype.disconnect_object = function (...args) {
 };
 
 SignalTracker.registerDestroyableType(Clutter.Actor);
+
+Cairo.Context.prototype.setSourceColor = function (color) {
+    const {red, green, blue, alpha} = color;
+    const rgb = [red, green, blue].map(v => v / 255.0);
+
+    if (alpha !== 0xff)
+        this.setSourceRGBA(...rgb, alpha / 255.0);
+    else
+        this.setSourceRGB(...rgb);
+};
 
 // Miscellaneous monkeypatching
 _patchContainerClass(St.BoxLayout);
