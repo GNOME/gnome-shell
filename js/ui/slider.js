@@ -54,11 +54,11 @@ export const Slider = GObject.registerClass({
             handleX = width - handleX;
 
         let color = themeNode.get_foreground_color();
-        Clutter.cairo_set_source_color(cr, color);
+        cr.setSourceColor(color);
         cr.arc(handleX, handleY, handleRadius, 0, 2 * Math.PI);
         cr.fillPreserve();
         if (hasHandleColor && handleBorderWidth) {
-            Clutter.cairo_set_source_color(cr, handleBorderColor);
+            cr.setSourceColor(handleBorderColor);
             cr.setLineWidth(handleBorderWidth);
             cr.stroke();
         }

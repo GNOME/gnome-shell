@@ -66,7 +66,12 @@ draw_content (ClutterCanvas *canvas,
   priv->context = cr;
   priv->in_repaint = TRUE;
 
-  clutter_cairo_clear (cr);
+  cairo_save (cr);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+
+  cairo_restore (cr);
   g_signal_emit (area, st_drawing_area_signals[REPAINT], 0);
 
   priv->context = NULL;

@@ -662,7 +662,7 @@ export function drawArrow(area, side) {
     let cr = area.get_context();
 
     cr.setLineWidth(1.0);
-    Clutter.cairo_set_source_color(cr, borderColor);
+    cr.setSourceColor(borderColor);
 
     switch (side) {
     case St.Side.TOP:
@@ -692,7 +692,7 @@ export function drawArrow(area, side) {
 
     cr.strokePreserve();
 
-    Clutter.cairo_set_source_color(cr, bodyColor);
+    cr.setSourceColor(bodyColor);
     cr.fill();
     cr.$dispose();
 }
