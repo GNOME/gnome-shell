@@ -59,6 +59,7 @@
   & .quick-toggle-arrow {
     padding: $base_padding $base_padding*1.75;
     border-width: 0;
+    border-color: transparentize($fg_color, .75);
 
     &:checked {
       @include button(default, $c:$selected_bg_color);
