@@ -214,7 +214,7 @@
 
   // insensitive button
   @else if $t==insensitive {
-    color: if($variant == 'light', transparentize($tc, .6), transparentize($tc, .5)) !important;
+    color: if($variant == 'light', transparentize($tc, .6), transparentize($tc, .5));
     background-color: if($variant == 'light', transparentize($tc, .9), transparentize($tc, .95));
   }
 
