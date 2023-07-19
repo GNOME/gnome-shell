@@ -26,7 +26,7 @@ default:
       - 'api_failure'
 
 variables:
-  MUTTER_CI_IMAGE: registry.gitlab.gnome.org/gnome/mutter/fedora/38:x86_64-2023-06-27.0-libei
+  MUTTER_CI_IMAGE: registry.gitlab.gnome.org/gnome/mutter/fedora/38:x86_64-2023-07-19.0
   FDO_UPSTREAM_REPO: GNOME/gnome-shell
   BUNDLE: "extensions-git.flatpak"
   LINT_LOG: "eslint-report.xml"
@@ -301,3 +301,12 @@ build-toolbox:
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PROJECT_NAMESPACE == "GNOME"'
     - if: '$CI_COMMIT_BRANCH =~ /^gnome-[0-9-]+$/ && $CI_PROJECT_NAMESPACE == "GNOME"'
+
+build-toolbox-test:
+  image: quay.io/freedesktop.org/ci-templates:container-build-base-2021-07-29.0
+  stage: deploy
+  needs: []
+  script:
+    - .gitlab-ci/build-toolbox-image.sh $MUTTER_CI_IMAGE main
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "update-toolbox" && $CI_PROJECT_NAMESPACE == "GNOME"'
