@@ -40,14 +40,6 @@ build_container() {
   buildah run $build_cntr dnf clean all
   buildah run $build_cntr rm -rf /var/lib/cache/dnf
 
-  # work around non-working pkexec
-  local fake_pkexec=$(mktemp)
-  cat > $fake_pkexec <<-'EOF'
-	#!/bin/sh
-	exec su -c "$*"
-	EOF
-  buildah copy --chmod 755 $build_cntr $fake_pkexec /usr/bin/pkexec
-
   # disable gnome-keyring activation:
   # it either asks for unlocking the login keyring on startup, or it detects
   # the running host daemon and doesn't export the object on the bus, which
