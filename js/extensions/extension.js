@@ -1,3 +1,5 @@
+const Gi = imports._gi;
+
 import {ExtensionBase, GettextWrapper} from './sharedInternals.js';
 
 const {extensionManager} = imports.ui.main;
@@ -48,7 +50,7 @@ export class InjectionManager {
      */
     overrideMethod(prototype, methodName, createOverrideFunc) {
         const originalMethod = this._saveMethod(prototype, methodName);
-        prototype[methodName] = createOverrideFunc(originalMethod);
+        this._installMethod(prototype, methodName, createOverrideFunc(originalMethod));
     }
 
     /**
@@ -66,7 +68,7 @@ export class InjectionManager {
         if (originalMethod === undefined)
             delete prototype[methodName];
         else
-            prototype[methodName] = originalMethod;
+            this._installMethod(prototype, methodName, originalMethod);
 
         savedProtoMethods.delete(methodName);
         if (savedProtoMethods.size === 0)
@@ -95,5 +97,14 @@ export class InjectionManager {
         const originalMethod = prototype[methodName];
         savedProtoMethods.set(methodName, originalMethod);
         return originalMethod;
+    }
+
+    _installMethod(prototype, methodName, method) {
+        if (methodName.startsWith('vfunc_')) {
+            const giPrototype = prototype[Gi.gobject_prototype_symbol];
+            giPrototype[Gi.hook_up_vfunc_symbol](methodName.slice(6), method);
+        } else {
+            prototype[methodName] = method;
+        }
     }
 }
