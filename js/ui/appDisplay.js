@@ -2934,9 +2934,11 @@ export const AppIcon = GObject.registerClass({
     },
 }, class AppIcon extends AppViewItem {
     _init(app, iconParams = {}) {
-        // Get the isDraggable property without passing it on to the BaseIcon:
+        // Get properties without passing them on to the BaseIcon:
         const isDraggable = iconParams['isDraggable'] ?? true;
         delete iconParams['isDraggable'];
+        const popupMenuSide = iconParams['popupMenuSide'] ?? St.Side.LEFT;
+        delete iconParams['popupMenuSide'];
         const expandTitleOnHover = iconParams['expandTitleOnHover'];
         delete iconParams['expandTitleOnHover'];
 
@@ -2945,6 +2947,7 @@ export const AppIcon = GObject.registerClass({
         this.app = app;
         this._id = app.get_id();
         this._name = app.get_name();
+        this._popupMenuSide = popupMenuSide;
 
         this._iconContainer = new St.Widget({
             layout_manager: new Clutter.BinLayout(),
@@ -3078,13 +3081,13 @@ export const AppIcon = GObject.registerClass({
         return this.app.get_id();
     }
 
-    popupMenu(side = St.Side.LEFT) {
+    popupMenu() {
         this.setForcedHighlight(true);
         this._removeMenuTimeout();
         this.fake_release();
 
         if (!this._menu) {
-            this._menu = new AppMenu(this, side, {
+            this._menu = new AppMenu(this, this._popupMenuSide, {
                 favoritesSection: true,
                 showSingleWindows: true,
             });
