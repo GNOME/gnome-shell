@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Indicator */
+/* exported OutputIndicator InputIndicator */
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
@@ -407,71 +407,13 @@ class InputStreamSlider extends StreamSlider {
     }
 });
 
-var Indicator = GObject.registerClass(
-class Indicator extends SystemIndicator {
-    _init() {
-        super._init();
+let VolumeIndicator = GObject.registerClass(
+class VolumeIndicator extends SystemIndicator {
+    constructor() {
+        super();
 
-        this._primaryIndicator = this._addIndicator();
-        this._inputIndicator = this._addIndicator();
-
-        this._primaryIndicator.reactive = true;
-        this._inputIndicator.reactive = true;
-
-        this._primaryIndicator.connect('scroll-event',
-            (actor, event) => this._handleScrollEvent(this._output, event));
-        this._inputIndicator.connect('scroll-event',
-            (actor, event) => this._handleScrollEvent(this._input, event));
-
-        this._control = getMixerControl();
-        this._control.connectObject(
-            'state-changed', () => this._onControlStateChanged(),
-            'default-sink-changed', () => this._readOutput(),
-            'default-source-changed', () => this._readInput(),
-            this);
-
-        this._output = new OutputStreamSlider(this._control);
-        this._output.connect('stream-updated', () => {
-            const icon = this._output.getIcon();
-
-            if (icon)
-                this._primaryIndicator.icon_name = icon;
-            this._primaryIndicator.visible = icon !== null;
-        });
-
-        this._input = new InputStreamSlider(this._control);
-        this._input.connect('stream-updated', () => {
-            const icon = this._input.getIcon();
-
-            if (icon)
-                this._inputIndicator.icon_name = icon;
-        });
-
-        this._input.bind_property('visible',
-            this._inputIndicator, 'visible',
-            GObject.BindingFlags.SYNC_CREATE);
-
-        this.quickSettingsItems.push(this._output);
-        this.quickSettingsItems.push(this._input);
-
-        this._onControlStateChanged();
-    }
-
-    _onControlStateChanged() {
-        if (this._control.get_state() === Gvc.MixerControlState.READY) {
-            this._readInput();
-            this._readOutput();
-        } else {
-            this._primaryIndicator.hide();
-        }
-    }
-
-    _readOutput() {
-        this._output.stream = this._control.get_default_sink();
-    }
-
-    _readInput() {
-        this._input.stream = this._control.get_default_source();
+        this._indicator = this._addIndicator();
+        this._indicator.reactive = true;
     }
 
     _handleScrollEvent(item, event) {
@@ -484,5 +426,88 @@ class Indicator extends SystemIndicator {
         const maxLevel = item.getMaxLevel();
         Main.osdWindowManager.show(-1, gicon, null, level, maxLevel);
         return result;
+    }
+});
+
+var OutputIndicator = GObject.registerClass(
+class OutputIndicator extends VolumeIndicator {
+    constructor() {
+        super();
+
+        this._indicator.connect('scroll-event',
+            (actor, event) => this._handleScrollEvent(this._output, event));
+
+        this._control = getMixerControl();
+        this._control.connectObject(
+            'state-changed', () => this._onControlStateChanged(),
+            'default-sink-changed', () => this._readOutput(),
+            this);
+
+        this._output = new OutputStreamSlider(this._control);
+        this._output.connect('stream-updated', () => {
+            const icon = this._output.getIcon();
+
+            if (icon)
+                this._indicator.icon_name = icon;
+            this._indicator.visible = icon !== null;
+        });
+
+        this.quickSettingsItems.push(this._output);
+
+        this._onControlStateChanged();
+    }
+
+    _onControlStateChanged() {
+        if (this._control.get_state() === Gvc.MixerControlState.READY)
+            this._readOutput();
+        else
+            this._indicator.hide();
+    }
+
+    _readOutput() {
+        this._output.stream = this._control.get_default_sink();
+    }
+});
+
+var InputIndicator = GObject.registerClass(
+class InputIndicator extends VolumeIndicator {
+    constructor() {
+        super();
+
+        this._indicator.add_style_class_name('privacy-indicator');
+
+        this._indicator.connect('scroll-event',
+            (actor, event) => this._handleScrollEvent(this._input, event));
+
+        this._control = getMixerControl();
+        this._control.connectObject(
+            'state-changed', () => this._onControlStateChanged(),
+            'default-source-changed', () => this._readInput(),
+            this);
+
+        this._input = new InputStreamSlider(this._control);
+        this._input.connect('stream-updated', () => {
+            const icon = this._input.getIcon();
+
+            if (icon)
+                this._indicator.icon_name = icon;
+        });
+
+        this._input.bind_property('visible',
+            this._indicator, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this.quickSettingsItems.push(this._input);
+
+        this._onControlStateChanged();
+    }
+
+    _onControlStateChanged() {
+        if (this._control.get_state() === Gvc.MixerControlState.READY)
+            this._readInput();
+    }
+
+    _readInput() {
+        this._input.stream = this._control.get_default_source();
     }
 });
