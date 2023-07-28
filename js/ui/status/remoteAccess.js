@@ -29,7 +29,7 @@ class RemoteAccessApplet extends SystemIndicator {
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'media-record-symbolic';
-        this._indicator.add_style_class_name('screencast-indicator');
+        this._indicator.add_style_class_name('privacy-indicator');
 
         controller.connect('new-handle', (o, handle) => {
             this._onNewHandle(handle);

@@ -100,9 +100,8 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
     spacing: 0;
   }
 
-  // indicator for active
-  .screencast-indicator,
-  .remote-access-indicator { color: $warning_color; }
+  // important privacy related indicators
+  .privacy-indicator { color: $warning_color; }
 }
 
 // App Menu
