@@ -1,6 +1,8 @@
 /* Top Bar */
 // a.k.a. the panel
 
+$privacy_indicator_color: $orange_3;
+
 $panel_bg_color: if($variant == 'light', $light_3, $dark_5);
 $panel_fg_color: if($variant == 'light', $fg_color, darken($fg_color, 5%));
 $panel_border_color: if($variant == 'light', darken($panel_bg_color, 2%), $panel_bg_color);
@@ -74,7 +76,7 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
     }
 
     &.screen-sharing-indicator {
-      @include panel_button($warning_color, transparentize(black, 0.2), $flat: false);
+      @include panel_button($privacy_indicator_color, $flat: false);
     }
 
     // clock
@@ -101,7 +103,7 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
   }
 
   // important privacy related indicators
-  .privacy-indicator { color: $warning_color; }
+  .privacy-indicator { color: $privacy_indicator_color; }
 }
 
 // App Menu
