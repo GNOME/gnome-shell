@@ -29,6 +29,7 @@
 #endif
 
 #define RECONNECT_DELAY_MS 5000
+#define DISABLE_DELAY_MS 500
 
 enum {
   PROP_0,
@@ -46,6 +47,7 @@ struct _ShellCameraMonitor {
 #ifdef HAVE_PIPEWIRE
   GPtrArray *node_list;
   guint reconnect_id;
+  guint delayed_disable_id;
 
   GSource *pipewire_source;
   struct pw_context *context;
@@ -77,6 +79,16 @@ static gboolean shell_camera_monitor_connect_core (ShellCameraMonitor *monitor);
 static void shell_camera_monitor_disconnect_core (ShellCameraMonitor *monitor);
 
 static void
+delayed_disable_state (gpointer data)
+{
+  ShellCameraMonitor *monitor = SHELL_CAMERA_MONITOR (data);
+
+  monitor->cameras_in_use = FALSE;
+  g_object_notify_by_pspec (G_OBJECT (monitor),
+                            obj_props[PROP_CAMERAS_IN_USE]);
+}
+
+static void
 shell_camera_monitor_update_state (ShellCameraMonitor *monitor)
 {
   gboolean new_cameras_in_use = FALSE;
@@ -97,11 +109,20 @@ shell_camera_monitor_update_state (ShellCameraMonitor *monitor)
         }
     }
 
-  if (new_cameras_in_use != monitor->cameras_in_use)
+  if (new_cameras_in_use)
+    g_clear_handle_id (&monitor->delayed_disable_id, g_source_remove);
+
+  if (new_cameras_in_use && !monitor->cameras_in_use)
     {
       monitor->cameras_in_use = new_cameras_in_use;
       g_object_notify_by_pspec (G_OBJECT (monitor),
                                 obj_props[PROP_CAMERAS_IN_USE]);
+    }
+  else if (!new_cameras_in_use && monitor->cameras_in_use &&
+           monitor->delayed_disable_id == 0)
+    {
+      monitor->delayed_disable_id =
+        g_timeout_add_once (DISABLE_DELAY_MS, delayed_disable_state, monitor);
     }
 }
 
@@ -125,8 +146,7 @@ node_event_info (void                      *data,
 {
   Node *node = data;
 
-  node->running = (info->state == PW_NODE_STATE_RUNNING ||
-                   info->state == PW_NODE_STATE_IDLE);
+  node->running = (info->state == PW_NODE_STATE_RUNNING);
 
   shell_camera_monitor_update_state (node->monitor);
 }
@@ -275,6 +295,7 @@ static void
 shell_camera_monitor_disconnect_core (ShellCameraMonitor *monitor)
 {
   g_ptr_array_set_size (monitor->node_list, 0);
+  g_clear_handle_id (&monitor->delayed_disable_id, g_source_remove);
 
   g_clear_pointer ((struct pw_proxy**) &monitor->registry, pw_proxy_destroy);
   spa_hook_remove (&monitor->registry_listener);
