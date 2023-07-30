@@ -11,9 +11,9 @@ const Package = imports.package;
 Package.initFormat();
 
 const Config = imports.misc.config;
-const ExtensionUtils = imports.misc.extensionUtils;
+import * as ExtensionUtils from './misc/extensionUtils.js';
 
-const { ExtensionState, ExtensionType } = ExtensionUtils;
+import {ExtensionState, ExtensionType}  from './misc/extensionUtils.js';
 
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 const GnomeShellProxy = Gio.DBusProxy.makeProxyWrapper(GnomeShellIface);
