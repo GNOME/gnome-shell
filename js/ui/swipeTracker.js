@@ -37,6 +37,7 @@ const EPSILON = 0.005;
 
 const GESTURE_FINGER_COUNT = 3;
 
+/** @enum {number} */
 const State = {
     NONE: 0,
     SCROLLING: 1,
@@ -523,11 +524,11 @@ var SwipeTracker = GObject.registerClass({
 
     /**
      * canHandleScrollEvent:
-     * @param {Clutter.Event} scrollEvent: an event to check
-     * @returns {bool} whether the event can be handled by the tracker
-     *
      * This function can be used to combine swipe gesture and mouse
      * scrolling.
+     *
+     * @param {Clutter.Event} scrollEvent an event to check
+     * @returns {boolean} whether the event can be handled by the tracker
      */
     canHandleScrollEvent(scrollEvent) {
         if (!this.enabled || this._scrollGesture === null)

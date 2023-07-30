@@ -49,7 +49,7 @@ var GnomeShell = class {
 
     /**
      * Eval:
-     * @param {string} code: A string containing JavaScript code
+     * @param {string} code A string containing JavaScript code
      * @returns {Array}
      *
      * This function executes arbitrary code in the main

@@ -12,6 +12,9 @@ var ExtensionType = {
     PER_USER: 2,
 };
 
+/**
+ * @enum {number}
+ */
 var ExtensionState = {
     ENABLED: 1,
     DISABLED: 2,

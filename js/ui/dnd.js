@@ -18,14 +18,16 @@ var SNAP_BACK_ANIMATION_TIME = 250;
 // Time to animate to original position on success
 var REVERT_ANIMATION_TIME = 750;
 
-var DragMotionResult = {
+/** @enum {number} */
+varragMotionResult = {
     NO_DROP:   0,
     COPY_DROP: 1,
     MOVE_DROP: 2,
     CONTINUE:  3,
 };
 
-var DragState = {
+/** @enum {number} */
+varragState = {
     INIT:      0,
     DRAGGING:  1,
     CANCELLED: 2,
@@ -69,10 +71,21 @@ function _getRealActorScale(actor) {
     return scale;
 }
 
+/**
+ * @typedef {object} DragMonitor
+ * @property {Function} dragMotion
+ */
+
+/**
+ * @param {DragMonitor} monitor
+ */
 function addDragMonitor(monitor) {
     dragMonitors.push(monitor);
 }
 
+/**
+ * @param {DragMonitor} monitor
+ */
 function removeDragMonitor(monitor) {
     for (let i = 0; i < dragMonitors.length; i++) {
         if (dragMonitors[i] == monitor) {
@@ -857,9 +870,9 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
 
 /**
  * makeDraggable:
- * @param {Clutter.Actor} actor: Source actor
- * @param {Object=} params: Additional parameters
- * @returns {Object} a new Draggable
+ * @param {Clutter.Actor} actor Source actor
+ * @param {object} [params] Additional parameters
+ * @returns {_Draggable} a new Draggable
  *
  * Create an object which controls drag and drop for the given actor.
  *

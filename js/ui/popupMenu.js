@@ -16,6 +16,7 @@ const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 
+/** @enum {number} */
 var Ornament = {
     NONE: 0,
     DOT: 1,

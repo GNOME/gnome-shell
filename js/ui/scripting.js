@@ -67,7 +67,9 @@ export const PerfHelperProxy = Gio.DBusProxy.makeProxyWrapper(PerfHelperIface);
 
 let _perfHelper = null;
 
-/** @private */
+/**
+ * @returns {PerfHelper}
+ */
 export async function _getPerfHelper() {
     if (_perfHelper == null) {
         _perfHelper = await PerfHelperProxy.newAsync(
@@ -87,12 +89,13 @@ export function _spawnPerfHelper() {
 
 /**
  * createTestWindow:
- * @param {Object} params: options for window creation.
- *   {number} [params.width=640] - width of window, in pixels
- *   {number} [params.height=480] - height of window, in pixels
- *   {bool} [params.alpha=false] - whether the window should have an alpha channel
- *   {bool} [params.maximized=false] - whether the window should be created maximized
- *   {bool} [params.redraws=false] - whether the window should continually redraw itself
+ *
+ * @param {object} params options for window creation.
+ * @param {number} [params.width=640] - width of window, in pixels
+ * @param {number} [params.height=480] - height of window, in pixels
+ * @param {boolean} [params.alpha=false] - whether the window should have an alpha channel
+ * @param {boolean} [params.maximized=false] - whether the window should be created maximized
+ * @param {boolean} [params.redraws=false] - whether the window should continually redraw itself
  * @returns {Promise}
  *
  * Creates a window using gnome-shell-perf-helper for testing purposes.
@@ -133,6 +136,7 @@ export async function waitTestWindows() {
 
 /**
  * destroyTestWindows:
+ *
  * @returns {Promise}
  *
  * Destroys all windows previously created with createTestWindow().
@@ -158,9 +162,10 @@ export async function disableHelperAutoExit() {
 }
 
 /**
- * defineScriptEvent
- * @param {string} name: The event will be called script.<name>
- * @param {string} description: Short human-readable description of the event
+ * defineScriptEvent:
+ *
+ * @param {string} name The event will be called script.<name>
+ * @param {string} description Short human-readable description of the event
  *
  * Convenience function to define a zero-argument performance event
  * within the 'script' namespace that is reserved for events defined locally
@@ -317,9 +322,6 @@ async function _runPerfScript(scriptModule, outputFile) {
 
 /**
  * runPerfScript
- * @param {Object} scriptModule: module object with run and finish
- *    functions and event handlers
- * @param {string} outputFile: path to write output to
  *
  * Runs a script for automated collection of performance data. The
  * script is defined as a Javascript module with specified contents.
@@ -350,11 +352,15 @@ async function _runPerfScript(scriptModule, outputFile) {
  *   '/ s', 'frames', 'frames / s', 'MiB / s / frame'
  *  value: computed value of the metric
  *
- * The resulting metrics will be written to @outputFile as JSON, or,
- * if @outputFile is not provided, logged.
+ * The resulting metrics will be written to `outputFile` as JSON, or,
+ * if `outputFile` is not provided, logged.
  *
  * After running the script and collecting statistics from the
  * event log, GNOME Shell will exit.
+ *
+ * @param {object} scriptModule module object with run and finish
+ *   functions and event handlers
+ * @param {string} outputFile path to write output to
  */
 export function runPerfScript(scriptModule, outputFile) {
     Shell.PerfLog.get_default().set_enabled(true);

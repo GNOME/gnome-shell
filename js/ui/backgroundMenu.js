@@ -24,6 +24,10 @@ var BackgroundMenu = class BackgroundMenu extends PopupMenu.PopupMenu {
     }
 };
 
+/**
+ * @param {Meta.BackgroundActor} actor
+ * @param {import('./layout.js').LayoutManager} layoutManager
+ */
 function addBackgroundMenu(actor, layoutManager) {
     actor.reactive = true;
     actor._backgroundMenu = new BackgroundMenu(layoutManager);

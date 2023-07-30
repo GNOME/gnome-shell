@@ -39,6 +39,9 @@ if (HAVE_MALCONTENT) {
 
 let _singleton = null;
 
+/**
+ * @returns {ParentalControlsManager}
+ */
 function getDefault() {
     if (_singleton === null)
         _singleton = new ParentalControlsManager();

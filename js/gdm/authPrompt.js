@@ -23,11 +23,13 @@ var DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 
 var MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
 
+/** @enum {number} */
 var AuthPromptMode = {
     UNLOCK_ONLY: 0,
     UNLOCK_OR_LOG_IN: 1,
 };
 
+/** @enum {number} */
 var AuthPromptStatus = {
     NOT_VERIFYING: 0,
     VERIFYING: 1,
@@ -37,6 +39,7 @@ var AuthPromptStatus = {
     VERIFICATION_IN_PROGRESS: 5,
 };
 
+/** @enum {number} */
 var BeginRequestType = {
     PROVIDE_USERNAME: 0,
     DONT_PROVIDE_USERNAME: 1,

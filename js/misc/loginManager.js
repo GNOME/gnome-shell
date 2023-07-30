@@ -33,6 +33,9 @@ function versionCompare(required, reference) {
     return true;
 }
 
+/**
+ * @returns {boolean}
+ */
 function canLock() {
     try {
         let params = GLib.Variant.new('(ss)', ['org.gnome.DisplayManager.Manager', 'Version']);
@@ -74,8 +77,7 @@ let _loginManager = null;
 /**
  * getLoginManager:
  * An abstraction over systemd/logind and ConsoleKit.
- * @returns {object} - the LoginManager singleton
- *
+ * @returns {LoginManagerSystemd | LoginManagerDummy} - the LoginManager singleton
  */
 function getLoginManager() {
     if (_loginManager == null) {

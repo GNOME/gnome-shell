@@ -18,6 +18,7 @@ const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
 const {wiggle} = imports.misc.animationUtils;
 
+/** @enum {number} */
 const DialogMode = {
     AUTH: 0,
     CONFIRM: 1,

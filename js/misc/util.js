@@ -41,14 +41,17 @@ const _urlRegexp = new RegExp(
 
 let _desktopSettings = null;
 
-// findUrls:
-// @str: string to find URLs in
-//
-// Searches @str for URLs and returns an array of objects with %url
-// properties showing the matched URL string, and %pos properties indicating
-// the position within @str where the URL was found.
-//
-// Return value: the list of match objects, as described above
+/**
+ * findUrls:
+ *
+ * @param {string} str string to find URLs in
+ *
+ * Searches `str` for URLs and returns an array of objects with %url
+ * properties showing the matched URL string, and %pos properties indicating
+ * the position within `str` where the URL was found.
+ *
+ * @returns {{url: string, pos: number}[]} the list of match objects, as described above
+ */
 function findUrls(str) {
     let res = [], match;
     while ((match = _urlRegexp.exec(str)))
@@ -56,11 +59,14 @@ function findUrls(str) {
     return res;
 }
 
-// spawn:
-// @argv: an argv array
-//
-// Runs @argv in the background, handling any errors that occur
-// when trying to start the program.
+/**
+ * spawn:
+ *
+ * Runs `argv` in the background, handling any errors that occur
+ * when trying to start the program.
+ *
+ * @param {readonly string[]} argv an argv array
+ */
 function spawn(argv) {
     try {
         trySpawn(argv);
@@ -69,11 +75,14 @@ function spawn(argv) {
     }
 }
 
-// spawnCommandLine:
-// @commandLine: a command line
-//
-// Runs @commandLine in the background, handling any errors that
-// occur when trying to parse or start the program.
+/**
+ * spawnCommandLine:
+ *
+ * @param {readonly string[]} commandLine a command line
+ *
+ * Runs commandLine in the background, handling any errors that
+ * occur when trying to parse or start the program.
+ */
 function spawnCommandLine(commandLine) {
     try {
         let [success_, argv] = GLib.shell_parse_argv(commandLine);
@@ -83,10 +92,13 @@ function spawnCommandLine(commandLine) {
     }
 }
 
-// spawnApp:
-// @argv: an argv array
-//
-// Runs @argv as if it was an application, handling startup notification
+/**
+ * spawnApp:
+ *
+ * @param {readonly string[]} argv an argv array
+ *
+ * Runs argv as if it was an application, handling startup notification
+ */
 function spawnApp(argv) {
     try {
         let app = Gio.AppInfo.create_from_commandline(argv.join(' '), null,
@@ -99,13 +111,16 @@ function spawnApp(argv) {
     }
 }
 
-// trySpawn:
-// @argv: an argv array
-//
-// Runs @argv in the background. If launching @argv fails,
-// this will throw an error.
+/**
+ * trySpawn:
+ *
+ * @param {readonly string[]} argv an argv array
+ *
+ * Runs argv in the background. If launching argv fails,
+ * this will throw an error.
+ */
 function trySpawn(argv) {
-    var success_, pid;
+    let success_, pid;
     try {
         [success_, pid] = GLib.spawn_async(
             null, argv, null,
@@ -146,11 +161,14 @@ function trySpawn(argv) {
     GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, () => {});
 }
 
-// trySpawnCommandLine:
-// @commandLine: a command line
-//
-// Runs @commandLine in the background. If launching @commandLine
-// fails, this will throw an error.
+/**
+ * trySpawnCommandLine:
+ *
+ * @param {readonly string[]} commandLine a command line
+ *
+ * Runs commandLine in the background. If launching commandLine
+ * fails, this will throw an error.
+ */
 function trySpawnCommandLine(commandLine) {
     let success_, argv;
 
@@ -171,6 +189,14 @@ function _handleSpawnError(command, err) {
     Main.notifyError(title, err.message);
 }
 
+/**
+ * Returns an {@link St.Label} with the date passed formatted
+ * using {@link formatTime}
+ *
+ * @param {Date} date the date to format for the label
+ * @param {object} params params for {@link formatTime}
+ * @returns {St.Label}
+ */
 function createTimeLabel(date, params) {
     if (_desktopSettings == null)
         _desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
@@ -182,20 +208,26 @@ function createTimeLabel(date, params) {
     return label;
 }
 
-// lowerBound:
-// @array: an array or array-like object, already sorted
-//         according to @cmp
-// @val: the value to add
-// @cmp: a comparator (or undefined to compare as numbers)
-//
-// Returns the position of the first element that is not
-// lower than @val, according to @cmp.
-// That is, returns the first position at which it
-// is possible to insert @val without violating the
-// order.
-// This is quite like an ordinary binary search, except
-// that it doesn't stop at first element comparing equal.
 
+/**
+ * lowerBound:
+ *
+ * @template T, [K=T]
+ * @param {readonly T[]} array an array or array-like object, already sorted
+ *         according to `cmp`
+ * @param {K} val the value to add
+ * @param {(a: T, val: K) => number} cmp a comparator (or undefined to compare as numbers)
+ * @returns {number}
+ *
+ * Returns the position of the first element that is not
+ * lower than `val`, according to `cmp`.
+ * That is, returns the first position at which it
+ * is possible to insert val without violating the
+ * order.
+ *
+ * This is quite like an ordinary binary search, except
+ * that it doesn't stop at first element comparing equal.
+ */
 function lowerBound(array, val, cmp) {
     let min, max, mid, v;
     cmp ||= (a, b) => a - b;
@@ -218,14 +250,20 @@ function lowerBound(array, val, cmp) {
     return min == max || cmp(array[min], val) < 0 ? max : min;
 }
 
-// insertSorted:
-// @array: an array sorted according to @cmp
-// @val: a value to insert
-// @cmp: the sorting function
-//
-// Inserts @val into @array, preserving the
-// sorting invariants.
-// Returns the position at which it was inserted
+/**
+ * insertSorted:
+ *
+ * @template T, [K=T]
+ * @param {T[]} array an array sorted according to `cmp`
+ * @param {K} val a value to insert
+ * @param {(a: T, val: K) => number} cmp the sorting function
+ * @returns {number}
+ *
+ * Inserts `val` into `array`, preserving the
+ * sorting invariants.
+ *
+ * Returns the position at which it was inserted
+ */
 function insertSorted(array, val, cmp) {
     let pos = lowerBound(array, val, cmp);
     array.splice(pos, 0, val);
@@ -233,15 +271,25 @@ function insertSorted(array, val, cmp) {
     return pos;
 }
 
+/**
+ * @param {number} start
+ * @param {number} end
+ * @param {number} progress
+ * @returns {number}
+ */
 function lerp(start, end, progress) {
     return start + progress * (end - start);
 }
 
-// _GNOMEversionToNumber:
-// @version: a GNOME version element
-//
-// Like Number() but returns sortable values for special-cases
-// 'alpha' and 'beta'. Returns NaN for unhandled 'versions'.
+/**
+ * _GNOMEversionToNumber:
+ *
+ * @param {string} version a GNOME version element
+ * @returns {number}
+ *
+ * Like Number() but returns sortable values for special-cases
+ * 'alpha' and 'beta'. Returns NaN for unhandled 'versions'.
+ */
 function _GNOMEversionToNumber(version) {
     let ret = Number(version);
     if (!isNaN(ret))
@@ -253,12 +301,16 @@ function _GNOMEversionToNumber(version) {
     return ret;
 }
 
-// GNOMEversionCompare:
-// @version1: a string containing a GNOME version
-// @version2: a string containing another GNOME version
-//
-// Returns an integer less than, equal to, or greater than
-// zero, if version1 is older, equal or newer than version2
+/**
+ * GNOMEversionCompare:
+ *
+ * @param {string} version1 a string containing a GNOME version
+ * @param {string} version2 a string containing another GNOME version
+ * @returns {number}
+ *
+ * Returns an integer less than, equal to, or greater than
+ * zero, if `version1` is older, equal or newer than `version2`
+ */
 function GNOMEversionCompare(version1, version2) {
     const v1Array = version1.split('.');
     const v2Array = version2.split('.');

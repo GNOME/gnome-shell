@@ -17,6 +17,7 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 
 const FdoNotificationsIface = loadInterfaceXML('org.freedesktop.Notifications');
 
+/** @enum {number} */
 var NotificationClosedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
@@ -24,6 +25,7 @@ var NotificationClosedReason = {
     UNDEFINED: 4,
 };
 
+/** @enum {number} */
 var Urgency = {
     LOW: 0,
     NORMAL: 1,
@@ -544,9 +546,12 @@ function objectPathFromAppId(appId) {
     return `/${appId.replace(/\./g, '/').replace(/-/g, '_')}`;
 }
 
+/**
+ * @returns {{ 'desktop-startup-id': string }}
+ */
 function getPlatformData() {
     let startupId = GLib.Variant.new('s', `_TIME${global.get_current_time()}`);
-    return { "desktop-startup-id": startupId };
+    return {'desktop-startup-id': startupId};
 }
 
 function InvalidAppError() {}

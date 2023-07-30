@@ -88,27 +88,6 @@ var RadialShaderEffect = GObject.registerClass({
 
 /**
  * Lightbox:
- * @container: parent Clutter.Container
- * @params: (optional) additional parameters:
- *           - inhibitEvents: whether to inhibit events for @container
- *           - width: shade actor width
- *           - height: shade actor height
- *           - fadeFactor: fading opacity factor
- *           - radialEffect: whether to enable the GLSL radial effect
- *
- * Lightbox creates a dark translucent "shade" actor to hide the
- * contents of @container, and allows you to specify particular actors
- * in @container to highlight by bringing them above the shade. It
- * tracks added and removed actors in @container while the lightboxing
- * is active, and ensures that all actors are returned to their
- * original stacking order when the lightboxing is removed. (However,
- * if actors are restacked by outside code while the lightboxing is
- * active, the lightbox may later revert them back to their original
- * order.)
- *
- * By default, the shade window will have the height and width of
- * @container and will track any changes in its size. You can override
- * this by passing an explicit width and height in @params.
  */
 var Lightbox = GObject.registerClass({
     Properties: {
@@ -116,6 +95,29 @@ var Lightbox = GObject.registerClass({
             'active', 'active', 'active', GObject.ParamFlags.READABLE, false),
     },
 }, class Lightbox extends St.Bin {
+    /**
+     * Lightbox creates a dark translucent "shade" actor to hide the
+     * contents of `container`, and allows you to specify particular actors
+     * in `container` to highlight by bringing them above the shade. It
+     * tracks added and removed actors in `container` while the lightboxing
+     * is active, and ensures that all actors are returned to their
+     * original stacking order when the lightboxing is removed. (However,
+     * if actors are restacked by outside code while the lightboxing is
+     * active, the lightbox may later revert them back to their original
+     * order.)
+     *
+     * By default, the shade window will have the height and width of
+     * `container` and will track any changes in its size. You can override
+     * this by passing an explicit width and height in `params`.
+     *
+     * @param {Clutter.Container} container parent Clutter.Container
+     * @param {object} [params] additional parameters:
+     * @param {boolean=} params.inhibitEvents: whether to inhibit events for `container`
+     * @param {number=} params.width: shade actor width
+     * @param {number=} params.height: shade actor height
+     * @param {number=} params.fadeFactor: fading opacity factor
+     * @param {boolean=} params.radialEffect: whether to enable the GLSL radial effect
+     */
     _init(container, params) {
         params = Params.parse(params, {
             inhibitEvents: false,
@@ -251,11 +253,12 @@ var Lightbox = GObject.registerClass({
 
     /**
      * highlight:
-     * @param {Clutter.Actor=} window: actor to highlight
      *
      * Highlights the indicated actor and unhighlights any other
      * currently-highlighted actor. With no arguments or a false/null
      * argument, all actors will be unhighlighted.
+     *
+     * @param {Clutter.Actor=} window actor to highlight
      */
     highlight(window) {
         if (this._highlighted == window)

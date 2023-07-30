@@ -109,10 +109,16 @@ var EventSourceBase = GObject.registerClass({
     },
     Signals: { 'changed': {} },
 }, class EventSourceBase extends GObject.Object {
+    /**
+     * @returns {boolean}
+     */
     get isLoading() {
         throw new GObject.NotImplementedError(`isLoading in ${this.constructor.name}`);
     }
 
+    /**
+     * @returns {boolean}
+     */
     get hasCalendars() {
         throw new GObject.NotImplementedError(`hasCalendars in ${this.constructor.name}`);
     }
@@ -128,6 +134,10 @@ var EventSourceBase = GObject.registerClass({
         throw new GObject.NotImplementedError(`getEvents in ${this.constructor.name}`);
     }
 
+    /**
+     * @param {Date} _day
+     * @returns {boolean}
+     */
     hasEvents(_day) {
         throw new GObject.NotImplementedError(`hasEvents in ${this.constructor.name}`);
     }

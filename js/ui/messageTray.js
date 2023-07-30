@@ -50,6 +50,7 @@ var State = {
 // notifications that were requested to be destroyed by the associated source,
 // and REPLACED for notifications that were destroyed as a consequence of a
 // newer version having replaced them.
+/** @enum {number} */
 var NotificationDestroyedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
@@ -61,6 +62,7 @@ var NotificationDestroyedReason = {
 // urgency values map to the corresponding values for the notifications received
 // through the notification daemon. HIGH urgency value is used for chats received
 // through the Telepathy client.
+/** @enum {number} */
 var Urgency = {
     LOW: 0,
     NORMAL: 1,
@@ -74,6 +76,7 @@ var Urgency = {
 // contain information private to the physical system (for example, battery
 // status) and hence the same for every user. This affects whether the content
 // of a notification is shown on the lock screen.
+/** @enum {number} */
 var PrivacyScope = {
     USER: 0,
     SYSTEM: 1,

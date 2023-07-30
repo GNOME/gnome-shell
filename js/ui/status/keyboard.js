@@ -799,6 +799,9 @@ var InputSourceManager = class extends Signals.EventEmitter {
 
 let _inputSourceManager = null;
 
+/**
+ * @returns {InputSourceManager}
+ */
 function getInputSourceManager() {
     if (_inputSourceManager == null)
         _inputSourceManager = new InputSourceManager();

@@ -46,6 +46,9 @@ var VmwareCredentialsManager = class VmwareCredentialsManager extends Credential
     }
 };
 
+/**
+ * @returns {VmwareCredentialsManager}
+ */
 function getVmwareCredentialsManager() {
     if (!_vmwareCredentialsManager)
         _vmwareCredentialsManager = new VmwareCredentialsManager();

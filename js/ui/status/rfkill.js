@@ -82,7 +82,11 @@ const RfkillManager = GObject.registerClass({
     }
 });
 
-var _manager;
+let _manager;
+
+/**
+ * @returns {RfkillManager}
+ */
 function getRfkillManager() {
     if (_manager != null)
         return _manager;

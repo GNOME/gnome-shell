@@ -23,8 +23,7 @@ const BoltDeviceInterface = loadInterfaceXML('org.freedesktop.bolt1.Device');
 
 const BoltDeviceProxy = Gio.DBusProxy.makeProxyWrapper(BoltDeviceInterface);
 
-/*  */
-
+/** @enum {string} */
 var Status = {
     DISCONNECTED: 'disconnected',
     CONNECTING: 'connecting',
@@ -34,16 +33,19 @@ var Status = {
     AUTHORIZED: 'authorized',
 };
 
+/** @enum {string} */
 var Policy = {
     DEFAULT: 'default',
     MANUAL: 'manual',
     AUTO: 'auto',
 };
 
+/** @enum {string} */
 var AuthCtrl = {
     NONE: 'none',
 };
 
+/** @enum {string} */
 var AuthMode = {
     DISABLED: 'disabled',
     ENABLED: 'enabled',

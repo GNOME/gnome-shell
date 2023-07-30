@@ -16,6 +16,11 @@ var POPUP_FADE_OUT_TIME = 100; // milliseconds
 var DISABLE_HOVER_TIMEOUT = 500; // milliseconds
 var NO_MODS_TIMEOUT = 1500; // milliseconds
 
+/**
+ * @param {number} a
+ * @param {number} b
+ * @returns {number}
+ */
 function mod(a, b) {
     return (a + b) % b;
 }
@@ -645,6 +650,10 @@ var SwitcherList = GObject.registerClass({
     }
 });
 
+/**
+ * @param {St.DrawingArrow} area
+ * @param {St.Side} side
+ */
 function drawArrow(area, side) {
     let themeNode = area.get_theme_node();
     let borderColor = themeNode.get_border_color(side);

@@ -15,7 +15,7 @@ var LOCALEDIR = '@datadir@/locale';
 var LIBEXECDIR = '@libexecdir@';
 var PKGDATADIR = '@datadir@/@PACKAGE_NAME@';
 /* g-i package versions */
-var LIBMUTTER_API_VERSION = '@LIBMUTTER_API_VERSION@'
+var LIBMUTTER_API_VERSION = '@LIBMUTTER_API_VERSION@';
 
 var HAVE_BLUETOOTH = pkg.checkSymbol('GnomeBluetooth', '3.0',
     'Client.default_adapter_state')

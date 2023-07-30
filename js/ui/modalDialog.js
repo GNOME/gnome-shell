@@ -16,6 +16,7 @@ const Params = imports.misc.params;
 var OPEN_AND_CLOSE_TIME = 100;
 var FADE_OUT_DIALOG_TIME = 1000;
 
+/** @enum {number} */
 var State = {
     OPENED: 0,
     CLOSED: 1,

@@ -8,6 +8,11 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 const PermissionStoreIface = loadInterfaceXML('org.freedesktop.impl.portal.PermissionStore');
 const PermissionStoreProxy = Gio.DBusProxy.makeProxyWrapper(PermissionStoreIface);
 
+/**
+ * @param {Function} initCallback
+ * @param {Gio.Cancellable} cancellable
+ * @returns {Gio.DBusProxy}
+ */
 function PermissionStore(initCallback, cancellable) {
     return new PermissionStoreProxy(Gio.DBus.session,
                                     'org.freedesktop.impl.portal.PermissionStore',

@@ -44,6 +44,10 @@ function* collectFromDatadirs(subdir, includeUserDir) {
     }
 }
 
+/**
+ * @param {Gio.File} dir
+ * @param {boolean} deleteParent
+ */
 function recursivelyDeleteDir(dir, deleteParent) {
     let children = dir.enumerate_children('standard::name,standard::type',
         Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
@@ -62,6 +66,10 @@ function recursivelyDeleteDir(dir, deleteParent) {
         dir.delete(null);
 }
 
+/**
+ * @param {Gio.File} srcDir
+ * @param {Gio.File} destDir
+ */
 function recursivelyMoveDir(srcDir, destDir) {
     let children = srcDir.enumerate_children('standard::name,standard::type',
         Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);

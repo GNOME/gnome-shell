@@ -131,6 +131,10 @@ function _onPopup(actor, entry) {
     entry.menu.open(BoxPointer.PopupAnimation.FULL);
 }
 
+/**
+ * @param {St.Entry} entry
+ * @param {*} params
+ */
 function addContextMenu(entry, params) {
     if (entry.menu)
         return;

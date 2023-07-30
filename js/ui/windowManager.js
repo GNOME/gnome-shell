@@ -161,6 +161,9 @@ class WindowDimmer extends Clutter.BrightnessContrastEffect {
     }
 });
 
+/**
+ * @param {Meta.WindowActor} actor
+ */
 function getWindowDimmer(actor) {
     let effect = actor.get_effect(WINDOW_DIMMER_EFFECT_NAME);
 

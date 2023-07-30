@@ -547,6 +547,8 @@ function initEnvironment() {
 }
 
 /**
+ * Main entrypoint for the app
+ *
  * @param {string[]} argv - command line arguments
  * @returns {void}
  */

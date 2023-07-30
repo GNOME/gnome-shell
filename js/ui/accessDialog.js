@@ -16,6 +16,7 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 const RequestIface = loadInterfaceXML('org.freedesktop.impl.portal.Request');
 const AccessIface = loadInterfaceXML('org.freedesktop.impl.portal.Access');
 
+/** @enum {number} */
 var DialogResponse = {
     OK: 0,
     CANCEL: 1,

@@ -21,6 +21,9 @@ var DASH_ITEM_LABEL_SHOW_TIME = 150;
 var DASH_ITEM_LABEL_HIDE_TIME = 100;
 var DASH_ITEM_HOVER_TIMEOUT = 300;
 
+/**
+ * @param {AppDisplay.AppIcon} source
+ */
 function getAppFromSource(source) {
     if (source instanceof AppDisplay.AppIcon)
         return source.app;

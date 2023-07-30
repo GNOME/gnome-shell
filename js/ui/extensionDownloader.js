@@ -60,6 +60,9 @@ async function installExtension(uuid, invocation) {
     dialog.open(global.get_current_time());
 }
 
+/**
+ * @param {string} uuid
+ */
 function uninstallExtension(uuid) {
     let extension = Main.extensionManager.lookup(uuid);
     if (!extension)

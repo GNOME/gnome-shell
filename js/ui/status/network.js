@@ -32,6 +32,7 @@ const MAX_VISIBLE_NETWORKS = 8;
 // small optimization, to avoid using [] all the time
 const NM80211Mode = NM['80211Mode'];
 
+/** @enum {number} */
 var PortalHelperResult = {
     CANCELLED: 0,
     COMPLETED: 1,

@@ -30,6 +30,9 @@ const SCREENSHOT_UI_ACTION_ID    = 'open-screenshot-ui';
 
 let _singleton = null;
 
+/**
+ * @returns {SystemActions}
+ */
 function getDefault() {
     if (_singleton == null)
         _singleton = new SystemActions();

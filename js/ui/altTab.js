@@ -26,6 +26,7 @@ var APP_ICON_SIZE_SMALL = 48;
 
 const baseIconSizes = [96, 64, 48, 32, 22];
 
+/** @enum {number} */
 var AppIconMode = {
     THUMBNAIL_ONLY: 1,
     APP_ICON_ONLY: 2,
@@ -294,27 +295,28 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
     /**
      * _select:
-     * @param {number} app: index of the app to select
-     * @param {number=} window: index of which of @app's windows to select
-     * @param {bool} forceAppFocus: optional flag, see below
      *
-     * Selects the indicated @app, and optional @window, and sets
+     * @param {number} app index of the app to select
+     * @param {number} [window] index of which of `app`'s windows to select
+     * @param {boolean} [forceAppFocus] optional flag, see below
+     *
+     * Selects the indicated `app`, and optional `window`, and sets
      * this._thumbnailsFocused appropriately to indicate whether the
      * arrow keys should act on the app list or the thumbnail list.
      *
-     * If @app is specified and @window is unspecified or %null, then
+     * If `app` is specified and `window` is unspecified or %null, then
      * the app is highlighted (ie, given a light background), and the
-     * current thumbnail list, if any, is destroyed. If @app has
-     * multiple windows, and @forceAppFocus is not %true, then a
+     * current thumbnail list, if any, is destroyed. If `app` has
+     * multiple windows, and `forceAppFocus` is not %true, then a
      * timeout is started to open a thumbnail list.
      *
-     * If @app and @window are specified (and @forceAppFocus is not),
-     * then @app will be outlined, a thumbnail list will be created
-     * and focused (if it hasn't been already), and the @window'th
+     * If `app` and `window` are specified (and `forceAppFocus` is not),
+     * then `app` will be outlined, a thumbnail list will be created
+     * and focused (if it hasn't been already), and the `window`'th
      * window in it will be highlighted.
      *
-     * If @app and @window are specified and @forceAppFocus is %true,
-     * then @app will be highlighted, and @window outlined, and the
+     * If `app` and `window` are specified and `forceAppFocus` is %true,
+     * then `app` will be highlighted, and `window` outlined, and the
      * app list will have the keyboard focus.
      */
     _select(app, window, forceAppFocus) {

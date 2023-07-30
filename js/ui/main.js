@@ -524,8 +524,9 @@ function loadTheme() {
 
 /**
  * notify:
- * @param {string} msg: A message
- * @param {string} details: Additional information
+ *
+ * @param {string} msg A message
+ * @param {string} details Additional information
  */
 function notify(msg, details) {
     let source = new MessageTray.SystemNotificationSource();
@@ -713,6 +714,11 @@ function popModal(grab, timestamp) {
     actionMode = Shell.ActionMode.NORMAL;
 }
 
+/**
+ * Creates the looking glass panel
+ *
+ * @returns {LookingGlass.LookingGlass}
+ */
 function createLookingGlass() {
     if (lookingGlass == null)
         lookingGlass = new LookingGlass.LookingGlass();
@@ -720,6 +726,9 @@ function createLookingGlass() {
     return lookingGlass;
 }
 
+/**
+ * Opens the run dialog
+ */
 function openRunDialog() {
     if (runDialog == null)
         runDialog = new RunDialog.RunDialog();
@@ -736,9 +745,10 @@ function openWelcomeDialog() {
 
 /**
  * activateWindow:
- * @param {Meta.Window} window: the window to activate
- * @param {number=} time: current event time
- * @param {number=} workspaceNum:  window's workspace number
+ *
+ * @param {Meta.Window} window the window to activate
+ * @param {number=} time current event time
+ * @param {number=} workspaceNum  window's workspace number
  *
  * Activates @window, switching to its workspace first if necessary,
  * and switching out of the overview if it's currently active
@@ -882,7 +892,8 @@ function initializeDeferredWork(actor, callback) {
 
 /**
  * queueDeferredWork:
- * @param {string} workId: work identifier
+ *
+ * @param {string} workId work identifier
  *
  * Ensure that the work identified by @workId will be
  * run on map or timeout. You should call this function

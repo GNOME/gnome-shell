@@ -33,6 +33,10 @@ var POPUP_ANIMATION_TIME = 150;
 var BoxPointer = GObject.registerClass({
     Signals: { 'arrow-side-changed': {} },
 }, class BoxPointer extends St.Widget {
+    /**
+     * @param {*} arrowSide side to draw the arrow on
+     * @param {*} binProperties Properties to set on contained bin
+     */
     _init(arrowSide, binProperties) {
         super._init();
 

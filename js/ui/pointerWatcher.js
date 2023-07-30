@@ -11,6 +11,10 @@ var IDLE_TIME = 1000;
 // but we turn off the polling when the user is idle.
 
 let _pointerWatcher = null;
+
+/**
+ * @returns {PointerWatcher}
+ */
 function getPointerWatcher() {
     if (_pointerWatcher == null)
         _pointerWatcher = new PointerWatcher();

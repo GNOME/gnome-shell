@@ -229,6 +229,9 @@ var BackgroundCache = class BackgroundCache extends Signals.EventEmitter {
     }
 };
 
+/**
+ * @returns {BackgroundCache}
+ */
 function getBackgroundCache() {
     if (!_backgroundCache)
         _backgroundCache = new BackgroundCache();

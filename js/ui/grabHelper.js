@@ -7,18 +7,22 @@ const St = imports.gi.St;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 
-// GrabHelper:
-// @owner: the actor that owns the GrabHelper
-// @params: optional parameters to pass to Main.pushModal()
-//
-// Creates a new GrabHelper object, for dealing with keyboard and pointer grabs
-// associated with a set of actors.
-//
-// Note that the grab can be automatically dropped at any time by the user, and
-// your code just needs to deal with it; you shouldn't adjust behavior directly
-// after you call ungrab(), but instead pass an 'onUngrab' callback when you
-// call grab().
-var GrabHelper = class GrabHelper {
+/**
+ * GrabHelper:
+ *
+ * Creates a new GrabHelper object, for dealing with keyboard and pointer grabs
+ * associated with a set of actors.
+ *
+ * Note that the grab can be automatically dropped at any time by the user, and
+ * your code just needs to deal with it; you shouldn't adjust behavior directly
+ * after you call ungrab(), but instead pass an 'onUngrab' callback when you
+ * call grab().
+ */
+class GrabHelper {
+    /**
+     * @param {Clutter.Actor} owner the actor that owns the GrabHelper
+     * @param {*} params optional parameters to pass to Main.pushModal()
+     */
     constructor(owner, params) {
         if (!(owner instanceof Clutter.Actor))
             throw new Error('GrabHelper owner must be a Clutter.Actor');

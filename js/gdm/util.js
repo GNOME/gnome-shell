@@ -49,8 +49,12 @@ var DISABLE_USER_LIST_KEY = 'disable-user-list';
 var USER_READ_TIME = 48;
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 
+/**
+ * Keep messages in order by priority
+ *
+ * @enum {number}
+ */
 var MessageType = {
-    // Keep messages in order by priority
     NONE: 0,
     HINT: 1,
     INFO: 2,
@@ -109,6 +113,9 @@ function fadeOutActor(actor) {
     return hold;
 }
 
+/**
+ * @param {Clutter.Actor} actor
+ */
 function cloneAndFadeOutActor(actor) {
     // Immediately hide actor so its sibling can have its space
     // and position, but leave a non-reactive clone on-screen,

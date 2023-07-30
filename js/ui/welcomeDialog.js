@@ -11,6 +11,7 @@ const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 
+/** @enum {number} */
 var DialogResponse = {
     NO_THANKS: 0,
     TAKE_TOUR: 1,

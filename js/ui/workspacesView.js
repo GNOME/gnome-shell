@@ -82,6 +82,7 @@ var WorkspacesViewBase = GObject.registerClass({
     }
 });
 
+/** @enum {number} */
 var FitMode = {
     SINGLE: 0,
     ALL: 1,

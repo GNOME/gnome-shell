@@ -43,6 +43,9 @@ var OVirtCredentialsManager = class OVirtCredentialsManager extends Credential.C
     }
 };
 
+/**
+ * @returns {OVirtCredentialsManager}
+ */
 function getOVirtCredentialsManager() {
     if (!_oVirtCredentialsManager)
         _oVirtCredentialsManager = new OVirtCredentialsManager();

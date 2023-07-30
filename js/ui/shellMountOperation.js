@@ -532,6 +532,7 @@ var ShellProcessesDialog = GObject.registerClass({
 
 const GnomeShellMountOpIface = loadInterfaceXML('org.Gtk.MountOperationHandler');
 
+/** @enum {number} */
 var ShellMountOperationType = {
     NONE: 0,
     ASK_PASSWORD: 1,

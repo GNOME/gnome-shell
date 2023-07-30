@@ -46,6 +46,9 @@ function _checkIBusVersion(requiredMajor, requiredMinor, requiredMicro) {
         `but required is ${requiredMajor}.${requiredMinor}.${requiredMicro}`);
 }
 
+/**
+ * @returns {IBusManager}
+ */
 function getIBusManager() {
     if (_ibusManager == null)
         _ibusManager = new IBusManager();

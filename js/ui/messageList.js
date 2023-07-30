@@ -17,6 +17,11 @@ var MESSAGE_ANIMATION_TIME = 100;
 
 var DEFAULT_EXPAND_LINES = 6;
 
+/**
+ * @param {string} text
+ * @param {boolean} allowMarkup
+ * @returns {string}
+ */
 function _fixMarkup(text, allowMarkup) {
     if (allowMarkup) {
         // Support &amp;, &quot;, &apos;, &lt; and &gt;, escape all other

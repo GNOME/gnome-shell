@@ -18,6 +18,9 @@ const SmartcardTokenIface = `
 
 let _smartcardManager = null;
 
+/**
+ * @returns {SmartcardManager}
+ */
 function getSmartcardManager() {
     if (_smartcardManager == null)
         _smartcardManager = new SmartcardManager();

@@ -206,6 +206,10 @@ class AppFavorites extends Signals.EventEmitter {
 }
 
 var appFavoritesInstance = null;
+
+/**
+ * @returns {AppFavorites}
+ */
 function getAppFavorites() {
     if (appFavoritesInstance == null)
         appFavoritesInstance = new AppFavorites();

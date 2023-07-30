@@ -12,6 +12,9 @@ var DEFAULT_VARIANT = '';
 
 let _xkbInfo = null;
 
+/**
+ * @returns {GnomeDesktop.XkbInfo}
+ */
 function getXkbInfo() {
     if (_xkbInfo == null)
         _xkbInfo = new GnomeDesktop.XkbInfo();
@@ -20,6 +23,9 @@ function getXkbInfo() {
 
 let _keyboardManager = null;
 
+/**
+ * @returns {KeyboardManager}
+ */
 function getKeyboardManager() {
     if (_keyboardManager == null)
         _keyboardManager = new KeyboardManager();

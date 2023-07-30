@@ -22,6 +22,7 @@ const ENABLED = 'enabled';
 const APP_PERMISSIONS_TABLE = 'location';
 const APP_PERMISSIONS_ID = 'location';
 
+/** @enum {number} */
 var GeoclueAccuracyLevel = {
     NONE: 0,
     COUNTRY: 1,

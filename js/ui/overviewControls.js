@@ -27,6 +27,7 @@ const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
 
 var SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME;
 
+/** @enum {number} */
 var ControlsState = {
     HIDDEN: 0,
     WINDOW_PICKER: 1,
