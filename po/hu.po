@@ -2,6 +2,7 @@
 # Copyright 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 #
+#: src/main.c:539
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
 # Lukács Bence <lukacs.bence1 at gmail dot com>, 2012.
 # Balázs Meskó <mesko.balazs at fsf dot hu>, 2014, 2019, 2020, 2021.
@@ -10,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-07-06 18:50+0000\n"
-"PO-Revision-Date: 2023-07-28 01:52+0200\n"
+"POT-Creation-Date: 2023-07-30 11:17+0000\n"
+"PO-Revision-Date: 2023-07-30 22:53+0200\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <openscope at fsf dot hu>\n"
 "Language: hu\n"
@@ -95,7 +96,6 @@ msgid "Show the notification list"
 msgstr "Az értesítési lista megjelenítése"
 
 #: data/50-gnome-shell-system.xml:12
-#| msgid "Open the app menu"
 msgid "Open the quick settings menu"
 msgstr "A gyors beállítások menü megnyitása"
 
@@ -341,12 +341,10 @@ msgstr ""
 "Billentyűtársítás az értesítési lista láthatóságának be- és kikapcsolásához."
 
 #: data/org.gnome.shell.gschema.xml.in:188
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to toggle the quick settings menu"
 msgstr "Billentyűtársítás a gyors beállítások menü be- és kikapcsolásához"
 
 #: data/org.gnome.shell.gschema.xml.in:189
-#| msgid "Keybinding to open the application menu."
 msgid "Keybinding to toggle the quick settings menu."
 msgstr "Billentyűtársítás a gyors beállítások menü be- és kikapcsolásához."
 
@@ -488,7 +486,7 @@ msgstr "A kiterjesztés honlapjának megtekintése"
 #: js/ui/components/networkAgent.js:116 js/ui/components/polkitAgent.js:146
 #: js/ui/endSessionDialog.js:446 js/ui/extensionDownloader.js:254
 #: js/ui/shellMountOperation.js:388 js/ui/shellMountOperation.js:398
-#: subprojects/extensions-app/js/main.js:175
+#: subprojects/extensions-app/js/main.js:179
 msgid "Cancel"
 msgstr "Mégse"
 
@@ -632,65 +630,65 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Képernyőforgatás zárolása"
 
-#: js/misc/util.js:134
+#: js/misc/util.js:125
 msgid "Command not found"
 msgstr "A parancs nem található"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:171
+#: js/misc/util.js:162
 msgid "Could not parse command:"
 msgstr "A parancs nem dolgozható fel:"
 
-#: js/misc/util.js:179
+#: js/misc/util.js:170
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "„%s” végrehajtása meghiúsult:"
 
-#: js/misc/util.js:196
+#: js/misc/dateUtils.js:70
 msgid "Just now"
 msgstr "Épp most"
 
-#: js/misc/util.js:198
+#: js/misc/dateUtils.js:73
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d perce"
 msgstr[1] "%d perce"
 
-#: js/misc/util.js:202
+#: js/misc/dateUtils.js:80
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d órája"
 msgstr[1] "%d órája"
 
-#: js/misc/util.js:206 js/ui/dateMenu.js:172
+#: js/misc/dateUtils.js:86 js/ui/dateMenu.js:184
 msgid "Yesterday"
 msgstr "Tegnap"
 
-#: js/misc/util.js:208
+#: js/misc/dateUtils.js:89
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d napja"
 msgstr[1] "%d napja"
 
-#: js/misc/util.js:212
+#: js/misc/dateUtils.js:96
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d hete"
 msgstr[1] "%d hete"
 
-#: js/misc/util.js:216
+#: js/misc/dateUtils.js:103
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
 msgstr[0] "%d hónapja"
 msgstr[1] "%d hónapja"
 
-#: js/misc/util.js:219
+#: js/misc/dateUtils.js:109
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -698,20 +696,20 @@ msgstr[0] "%d éve"
 msgstr[1] "%d éve"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:252
+#: js/misc/dateUtils.js:156
 msgid "%H∶%M"
 msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:258
+#: js/misc/dateUtils.js:162
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Tegnap %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:264
+#: js/misc/dateUtils.js:168
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A %H∶%M"
@@ -719,7 +717,7 @@ msgstr "%A %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:270
+#: js/misc/dateUtils.js:174
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%B %-d. %H:%M"
@@ -727,7 +725,7 @@ msgstr "%B %-d. %H:%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:276
+#: js/misc/dateUtils.js:180
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%Y. %B %-d. %H:%M"
@@ -735,20 +733,20 @@ msgstr "%Y. %B %-d. %H:%M"
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
-#: js/misc/util.js:281
+#: js/misc/dateUtils.js:185
 msgid "%l∶%M %p"
 msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:287
+#: js/misc/dateUtils.js:191
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Tegnap %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:293
+#: js/misc/dateUtils.js:197
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A %H:%M"
@@ -756,7 +754,7 @@ msgstr "%A %H:%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:299
+#: js/misc/dateUtils.js:203
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%B %-d. %H:%M"
@@ -764,7 +762,7 @@ msgstr "%B %-d. %H:%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:305
+#: js/misc/dateUtils.js:209
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%Y. %B %-d. %H:%M"
@@ -877,7 +875,7 @@ msgid "Settings"
 msgstr "Beállítások"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:40
+#: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -887,43 +885,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:66
+#: js/ui/calendar.js:67
 msgctxt "grid sunday"
 msgid "S"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:68
+#: js/ui/calendar.js:69
 msgctxt "grid monday"
 msgid "M"
 msgstr "H"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:71
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "K"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:72
+#: js/ui/calendar.js:73
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Sz"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:74
+#: js/ui/calendar.js:75
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Cs"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:77
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:78
+#: js/ui/calendar.js:79
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Sz"
@@ -934,7 +932,7 @@ msgstr "Sz"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:419
+#: js/ui/calendar.js:420
 msgid "%OB"
 msgstr "%OB"
 
@@ -947,37 +945,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:429
+#: js/ui/calendar.js:430
 msgid "%OB %Y"
 msgstr "%Y. %OB"
 
-#: js/ui/calendar.js:490
+#: js/ui/calendar.js:491
 msgid "Previous month"
 msgstr "Előző hónap"
 
-#: js/ui/calendar.js:508
+#: js/ui/calendar.js:509
 msgid "Next month"
 msgstr "Következő hónap"
 
-#: js/ui/calendar.js:659
+#: js/ui/calendar.js:660
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:718
+#: js/ui/calendar.js:719
 msgid "Week %V"
 msgstr "%V. hét"
 
-#: js/ui/calendar.js:897
+#: js/ui/calendar.js:898
 msgid "No Notifications"
 msgstr "Nincsenek értesítések"
 
-#: js/ui/calendar.js:954
+#: js/ui/calendar.js:955
 msgid "Do Not Disturb"
 msgstr "Ne zavarjanak"
 
-#: js/ui/calendar.js:975
+#: js/ui/calendar.js:976
 msgid "Clear"
 msgstr "Törlés"
 
@@ -1148,7 +1146,7 @@ msgstr "Dash"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:88
+#: js/ui/dateMenu.js:100
 msgid "%B %-d %Y"
 msgstr "%Y. %B %-d."
 
@@ -1156,34 +1154,34 @@ msgstr "%Y. %B %-d."
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:95
+#: js/ui/dateMenu.js:107
 msgid "%A %B %e %Y"
 msgstr "%Y. %B %-e. %A"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:173
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%B %-d."
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:164
+#: js/ui/dateMenu.js:176
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%Y. %B %-d."
 
-#: js/ui/dateMenu.js:170
+#: js/ui/dateMenu.js:182
 msgid "Today"
 msgstr "Ma"
 
-#: js/ui/dateMenu.js:174
+#: js/ui/dateMenu.js:186
 msgid "Tomorrow"
 msgstr "Holnap"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:205
+#: js/ui/dateMenu.js:217
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Egész nap"
@@ -1191,39 +1189,39 @@ msgstr "Egész nap"
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
 #.
-#: js/ui/dateMenu.js:227
+#: js/ui/dateMenu.js:239
 msgid "%m/%d"
 msgstr "%m. %d."
 
-#: js/ui/dateMenu.js:278
+#: js/ui/dateMenu.js:290
 msgid "No Events"
 msgstr "Nincsenek események"
 
-#: js/ui/dateMenu.js:400
+#: js/ui/dateMenu.js:412
 msgid "Add world clocks…"
 msgstr "Világórák hozzáadása…"
 
-#: js/ui/dateMenu.js:401
+#: js/ui/dateMenu.js:413
 msgid "World Clocks"
 msgstr "Világórák"
 
-#: js/ui/dateMenu.js:685
+#: js/ui/dateMenu.js:697
 msgid "Loading…"
 msgstr "Betöltés…"
 
-#: js/ui/dateMenu.js:695
+#: js/ui/dateMenu.js:707
 msgid "Go online for weather information"
 msgstr "Időjárás-információkért kapcsolódjon az internetre"
 
-#: js/ui/dateMenu.js:697
+#: js/ui/dateMenu.js:709
 msgid "Weather information is currently unavailable"
 msgstr "Az időjárás-információk jelenleg nem érhetőek el"
 
-#: js/ui/dateMenu.js:707
+#: js/ui/dateMenu.js:719
 msgid "Weather"
 msgstr "Időjárás"
 
-#: js/ui/dateMenu.js:709
+#: js/ui/dateMenu.js:721
 msgid "Select weather location…"
 msgstr "Válasszon időjárási helyet…"
 
@@ -1401,11 +1399,11 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr ""
 "Letölti és telepíti a következőt az extensions.gnome.org webhelyről: „%s”?"
 
-#: js/ui/extensionSystem.js:330
+#: js/ui/extensionSystem.js:337
 msgid "Extension Updates Available"
 msgstr "Kiterjesztés-frissítések érhetők el"
 
-#: js/ui/extensionSystem.js:331
+#: js/ui/extensionSystem.js:338
 msgid "Extension updates are ready to be installed."
 msgstr "A kiterjesztés-frissítések telepítésre készek."
 
@@ -1491,79 +1489,79 @@ msgstr "Kikapcsolva hagyás"
 msgid "Keyboard Settings"
 msgstr "Billentyűzetbeállítások"
 
-#: js/ui/lookingGlass.js:720
+#: js/ui/lookingGlass.js:729
 msgid "No extensions installed"
 msgstr "Nincsenek kiterjesztések telepítve"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:781
+#: js/ui/lookingGlass.js:790
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s nem adott hibát."
 
-#: js/ui/lookingGlass.js:787
+#: js/ui/lookingGlass.js:796
 msgid "Hide Errors"
 msgstr "Hibák elrejtése"
 
-#: js/ui/lookingGlass.js:791 js/ui/lookingGlass.js:868
+#: js/ui/lookingGlass.js:800 js/ui/lookingGlass.js:877
 msgid "Show Errors"
 msgstr "Hibák megjelenítése"
 
-#: js/ui/lookingGlass.js:800
+#: js/ui/lookingGlass.js:809
 msgid "Enabled"
 msgstr "Engedélyezve"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:803 subprojects/gvc/gvc-mixer-control.c:1908
+#: js/ui/lookingGlass.js:812 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Tiltva"
 
-#: js/ui/lookingGlass.js:805
+#: js/ui/lookingGlass.js:814
 msgid "Error"
 msgstr "Hiba"
 
-#: js/ui/lookingGlass.js:807
+#: js/ui/lookingGlass.js:816
 msgid "Out of date"
 msgstr "Elavult"
 
-#: js/ui/lookingGlass.js:809
+#: js/ui/lookingGlass.js:818
 msgid "Downloading"
 msgstr "Letöltés"
 
-#: js/ui/lookingGlass.js:811
+#: js/ui/lookingGlass.js:820
 msgid "Disabling"
 msgstr "Letiltás"
 
-#: js/ui/lookingGlass.js:813
+#: js/ui/lookingGlass.js:822
 msgid "Enabling"
 msgstr "Engedélyezés"
 
-#: js/ui/lookingGlass.js:846
+#: js/ui/lookingGlass.js:855
 msgid "View Source"
 msgstr "Forrás megtekintése"
 
-#: js/ui/lookingGlass.js:857
+#: js/ui/lookingGlass.js:866
 msgid "Web Page"
 msgstr "Weblap"
 
-#: js/ui/main.js:295
+#: js/ui/main.js:274
 msgid "System was put in unsafe mode"
 msgstr "A rendszer nem biztonságos módba lett állítva"
 
-#: js/ui/main.js:296
+#: js/ui/main.js:275
 msgid "Apps now have unrestricted access"
 msgstr "Az alkalmazásoknak most már korlátlan hozzáférésük van"
 
-#: js/ui/main.js:297 js/ui/overview.js:64
+#: js/ui/main.js:276 js/ui/overview.js:64
 msgid "Undo"
 msgstr "Visszavonás"
 
-#: js/ui/main.js:353
+#: js/ui/main.js:334
 msgid "Logged in as a privileged user"
 msgstr "Bejelentkezés privilegizált felhasználóként"
 
-#: js/ui/main.js:354
+#: js/ui/main.js:335
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1571,11 +1569,11 @@ msgstr ""
 "A privilegizált felhasználóként futtatott munkameneteket biztonsági okokból "
 "érdemes kerülni. Ha lehetséges, jelentkezzen be normál felhasználóként."
 
-#: js/ui/main.js:402
+#: js/ui/main.js:383
 msgid "Screen Lock disabled"
 msgstr "Képernyőzárolás letiltva"
 
-#: js/ui/main.js:403
+#: js/ui/main.js:384
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "A képernyőzároláshoz a GNOME kijelzőkezelő szükséges."
 
@@ -1653,16 +1651,16 @@ msgstr "Nyomja meg az Esc gombot a kilépéshez"
 msgid "Press any key to exit"
 msgstr "Nyomjon meg egy gombot a kilépéshez"
 
-#: js/ui/panel.js:269
+#: js/ui/panel.js:271
 msgid "Activities"
 msgstr "Tevékenységek"
 
-#: js/ui/panel.js:354
+#: js/ui/panel.js:356
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Rendszer"
 
-#: js/ui/panel.js:493
+#: js/ui/panel.js:504
 msgid "Top Bar"
 msgstr "Felső sáv"
 
@@ -1728,8 +1726,6 @@ msgid "Take Screenshot"
 msgstr "Képernyőkép készítése"
 
 #: js/ui/screenshot.js:1267
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
 msgid "Record Screen"
 msgstr "Képernyő rögzítése"
 
@@ -1764,7 +1760,6 @@ msgstr "Képernyőfelvétel rögzítve"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:1945
-#| msgid "Screencast recorded"
 msgid "Screencast ended unexpectedly"
 msgstr "A képernyőfelvétel váratlanul véget ért"
 
@@ -1971,6 +1966,27 @@ msgid_plural "%d Background Apps"
 msgstr[0] "%d háttéralkalmazás"
 msgstr[1] "%d háttéralkalmazás"
 
+#: js/ui/status/backlight.js:37
+#| msgid "Brightness"
+msgid "Keyboard Brightness"
+msgstr "Billentyűzet fényereje"
+
+#: js/ui/status/backlight.js:72
+msgid "Off"
+msgstr "Ki"
+
+#: js/ui/status/backlight.js:73
+msgid "Low"
+msgstr "Alacsony"
+
+#: js/ui/status/backlight.js:74
+msgid "High"
+msgstr "Magas"
+
+#: js/ui/status/backlight.js:139 js/ui/status/keyboard.js:849
+msgid "Keyboard"
+msgstr "Billentyűzet"
+
 #: js/ui/status/bluetooth.js:226 js/ui/status/network.js:376
 msgid "Disconnect"
 msgstr "Leválasztás"
@@ -2026,10 +2042,6 @@ msgstr "Másodlagos kattintás"
 #: js/ui/status/dwellClick.js:40
 msgid "Dwell Click"
 msgstr "Rámutatási kattintás"
-
-#: js/ui/status/keyboard.js:849
-msgid "Keyboard"
-msgstr "Billentyűzet"
 
 #: js/ui/status/keyboard.js:866
 msgid "Show Keyboard Layout"
@@ -2460,24 +2472,24 @@ msgstr "Áthelyezés a jobb oldali kijelzőre"
 msgid "Close"
 msgstr "Bezárás"
 
-#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:509 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Verzió kiírása"
 
-#: src/main.c:514
+#: src/main.c:515
 msgid "Mode used by GDM for login screen"
 msgstr "A GDM által a bejelentkezési képernyőhöz használt mód"
 
-#: src/main.c:520
+#: src/main.c:521
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Használjon egy adott módot, például a „gdm”-et a bejelentkező képernyőn"
 
-#: src/main.c:526
+#: src/main.c:527
 msgid "List possible modes"
 msgstr "Lehetséges módok listázása"
 
-#: src/main.c:532
+#: src/main.c:533
 msgid "Force animations to be enabled"
 msgstr "Animációk engedélyezésének kényszerítése"
 
@@ -2503,18 +2515,18 @@ msgstr "A jelszó nem lehet üres"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "A hitelesítési ablakot a felhasználó bezárta"
 
-#: src/st/st-icon-theme.c:1884
+#: src/st/st-icon-theme.c:1865
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "A(z) „%s” ikon nincs benne a(z) %s témában"
 
-#: src/st/st-icon-theme.c:3473 src/st/st-icon-theme.c:3776
+#: src/st/st-icon-theme.c:3454 src/st/st-icon-theme.c:3757
 msgid "Failed to load icon"
 msgstr "Nem sikerült betölteni az ikont"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:214
+#: subprojects/extensions-app/js/main.js:218
 #: subprojects/extensions-app/data/ui/extensions-window.ui:18
 #: subprojects/extensions-app/data/ui/extensions-window.ui:82
 msgid "Extensions"
@@ -2525,7 +2537,7 @@ msgid "Manage your GNOME Extensions"
 msgstr "Saját GNOME kiterjesztések kezelése"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:17
-#: subprojects/extensions-app/js/main.js:218
+#: subprojects/extensions-app/js/main.js:222
 msgid "The GNOME Project"
 msgstr "A GNOME projekt"
 
@@ -2542,17 +2554,17 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "GNOME Shell kiterjesztések beállítása"
 
-#: subprojects/extensions-app/js/main.js:132
-#: subprojects/extensions-app/js/main.js:143
+#: subprojects/extensions-app/js/main.js:136
+#: subprojects/extensions-app/js/main.js:147
 msgid "No Matches"
 msgstr "Nincs találat"
 
-#: subprojects/extensions-app/js/main.js:171
+#: subprojects/extensions-app/js/main.js:175
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Eltávolítja ezt: „%s”?"
 
-#: subprojects/extensions-app/js/main.js:172
+#: subprojects/extensions-app/js/main.js:176
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2560,28 +2572,28 @@ msgstr ""
 "Ha eltávolítja a kiterjesztést, akkor vissza kell térnie a letöltéshez, ha "
 "újra engedélyezni akarja."
 
-#: subprojects/extensions-app/js/main.js:176
+#: subprojects/extensions-app/js/main.js:180
 msgid "Remove"
 msgstr "Eltávolítás"
 
-#: subprojects/extensions-app/js/main.js:213
+#: subprojects/extensions-app/js/main.js:217
 msgid "translator-credits"
 msgstr ""
 "Meskó Balázs <mesko dot balazs at fsf dot hu>\n"
 "Úr Balázs <ur dot balazs at fsf dot hu>"
 
-#: subprojects/extensions-app/js/main.js:341
+#: subprojects/extensions-app/js/main.js:345
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d kiterjesztés lesz frissítve a következő bejelentkezéskor."
 msgstr[1] "%d kiterjesztés lesz frissítve a következő bejelentkezéskor."
 
-#: subprojects/extensions-app/js/main.js:483
+#: subprojects/extensions-app/js/main.js:487
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "A kiterjesztés nem kompatibilis a jelenlegi GNOME verzióval"
 
-#: subprojects/extensions-app/js/main.js:486
+#: subprojects/extensions-app/js/main.js:490
 #: subprojects/extensions-app/data/ui/extension-row.ui:52
 msgid "The extension had an error"
 msgstr "A kiterjesztésnek hibája volt"
