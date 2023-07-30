@@ -4,6 +4,7 @@
 #
 #
 #
+#: src/main.c:539
 # Maxim V. Dziumanenko <dziumanenko@gmail.com>, 2010.
 # Daniel Korostil <ted.korostiled@gmail.com>, 2013, 2014, 2015, 2016, 2017.
 # Danylo Korostil <ted.korostiled@gmail.com>, 2020.
@@ -13,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-07-06 18:50+0000\n"
-"PO-Revision-Date: 2023-07-28 20:45+0300\n"
+"POT-Creation-Date: 2023-07-30 11:17+0000\n"
+"PO-Revision-Date: 2023-07-30 20:31+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
@@ -105,7 +106,6 @@ msgid "Show the notification list"
 msgstr "Показувати перелік сповіщень"
 
 #: data/50-gnome-shell-system.xml:12
-#| msgid "Open the app menu"
 msgid "Open the quick settings menu"
 msgstr "Відкрити меню швидких параметрів"
 
@@ -346,12 +346,10 @@ msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Комбінація клавіш, щоб змінювати видимість переліку сповіщень."
 
 #: data/org.gnome.shell.gschema.xml.in:188
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to toggle the quick settings menu"
 msgstr "Комбінація клавіш для вмикання або вимикання меню параметрів"
 
 #: data/org.gnome.shell.gschema.xml.in:189
-#| msgid "Keybinding to open the application menu."
 msgid "Keybinding to toggle the quick settings menu."
 msgstr "Комбінація клавіш для вмикання або вимикання меню параметрів."
 
@@ -492,7 +490,7 @@ msgstr "Відвідати сторінку розширення"
 #: js/ui/components/networkAgent.js:116 js/ui/components/polkitAgent.js:146
 #: js/ui/endSessionDialog.js:446 js/ui/extensionDownloader.js:254
 #: js/ui/shellMountOperation.js:388 js/ui/shellMountOperation.js:398
-#: subprojects/extensions-app/js/main.js:175
+#: subprojects/extensions-app/js/main.js:179
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -641,26 +639,26 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Заблокувати обертання екрана"
 
-#: js/misc/util.js:134
+#: js/misc/util.js:125
 msgid "Command not found"
 msgstr "Команди не знайдено"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:171
+#: js/misc/util.js:162
 msgid "Could not parse command:"
 msgstr "Неможливо розібрати команду:"
 
-#: js/misc/util.js:179
+#: js/misc/util.js:170
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Не вдалось виконати «%s»:"
 
-#: js/misc/util.js:196
+#: js/misc/dateUtils.js:70
 msgid "Just now"
 msgstr "Щойно"
 
-#: js/misc/util.js:198
+#: js/misc/dateUtils.js:73
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -669,7 +667,7 @@ msgstr[1] "%d хвилини тому"
 msgstr[2] "%d хвилин тому"
 msgstr[3] "%d хвилина тому"
 
-#: js/misc/util.js:202
+#: js/misc/dateUtils.js:80
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -678,11 +676,11 @@ msgstr[1] "%d години тому"
 msgstr[2] "%d годин тому"
 msgstr[3] "%d година тому"
 
-#: js/misc/util.js:206 js/ui/dateMenu.js:172
+#: js/misc/dateUtils.js:86 js/ui/dateMenu.js:184
 msgid "Yesterday"
 msgstr "Учора"
 
-#: js/misc/util.js:208
+#: js/misc/dateUtils.js:89
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -691,7 +689,7 @@ msgstr[1] "%d дні тому"
 msgstr[2] "%d днів тому"
 msgstr[3] "%d день тому"
 
-#: js/misc/util.js:212
+#: js/misc/dateUtils.js:96
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -700,7 +698,7 @@ msgstr[1] "%d тижні тому"
 msgstr[2] "%d тижнів тому"
 msgstr[3] "%d тиждень тому"
 
-#: js/misc/util.js:216
+#: js/misc/dateUtils.js:103
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
@@ -709,7 +707,7 @@ msgstr[1] "%d місяці тому"
 msgstr[2] "%d місяців тому"
 msgstr[3] "%d місяць тому"
 
-#: js/misc/util.js:219
+#: js/misc/dateUtils.js:109
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -719,20 +717,20 @@ msgstr[2] "%d років тому"
 msgstr[3] "%d рік тому"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:252
+#: js/misc/dateUtils.js:156
 msgid "%H∶%M"
 msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:258
+#: js/misc/dateUtils.js:162
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Учора, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:264
+#: js/misc/dateUtils.js:168
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -740,7 +738,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:270
+#: js/misc/dateUtils.js:174
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%-d %B, %H∶%M"
@@ -748,7 +746,7 @@ msgstr "%-d %B, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:276
+#: js/misc/dateUtils.js:180
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%-d %B %Y, %H∶%M"
@@ -756,20 +754,20 @@ msgstr "%-d %B %Y, %H∶%M"
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
-#: js/misc/util.js:281
+#: js/misc/dateUtils.js:185
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:287
+#: js/misc/dateUtils.js:191
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Учора, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:293
+#: js/misc/dateUtils.js:197
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -777,7 +775,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:299
+#: js/misc/dateUtils.js:203
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%-d %B, %l∶%M %p"
@@ -785,7 +783,7 @@ msgstr "%-d %B, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:305
+#: js/misc/dateUtils.js:209
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d %B %Y, %l∶%M %p"
@@ -897,7 +895,7 @@ msgid "Settings"
 msgstr "Параметри"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:40
+#: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -907,43 +905,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:66
+#: js/ui/calendar.js:67
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Н"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:68
+#: js/ui/calendar.js:69
 msgctxt "grid monday"
 msgid "M"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:71
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "В"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:72
+#: js/ui/calendar.js:73
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "С"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:74
+#: js/ui/calendar.js:75
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Ч"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:77
 msgctxt "grid friday"
 msgid "F"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:78
+#: js/ui/calendar.js:79
 msgctxt "grid saturday"
 msgid "S"
 msgstr "С"
@@ -954,7 +952,7 @@ msgstr "С"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:419
+#: js/ui/calendar.js:420
 msgid "%OB"
 msgstr "%OB"
 
@@ -967,37 +965,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:429
+#: js/ui/calendar.js:430
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:490
+#: js/ui/calendar.js:491
 msgid "Previous month"
 msgstr "Попередній місяць"
 
-#: js/ui/calendar.js:508
+#: js/ui/calendar.js:509
 msgid "Next month"
 msgstr "Наступний місяць"
 
-#: js/ui/calendar.js:659
+#: js/ui/calendar.js:660
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:718
+#: js/ui/calendar.js:719
 msgid "Week %V"
 msgstr "Тиждень %V"
 
-#: js/ui/calendar.js:897
+#: js/ui/calendar.js:898
 msgid "No Notifications"
 msgstr "Немає сповіщень"
 
-#: js/ui/calendar.js:954
+#: js/ui/calendar.js:955
 msgid "Do Not Disturb"
 msgstr "Не турбувати"
 
-#: js/ui/calendar.js:975
+#: js/ui/calendar.js:976
 msgid "Clear"
 msgstr "Очистити"
 
@@ -1166,7 +1164,7 @@ msgstr "Панель приладів"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:88
+#: js/ui/dateMenu.js:100
 msgid "%B %-d %Y"
 msgstr "%-d %B %Y"
 
@@ -1174,34 +1172,34 @@ msgstr "%-d %B %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:95
+#: js/ui/dateMenu.js:107
 msgid "%A %B %e %Y"
 msgstr "%A %-d %B %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:173
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:164
+#: js/ui/dateMenu.js:176
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%-d %B %Y"
 
-#: js/ui/dateMenu.js:170
+#: js/ui/dateMenu.js:182
 msgid "Today"
 msgstr "Сьогодні"
 
-#: js/ui/dateMenu.js:174
+#: js/ui/dateMenu.js:186
 msgid "Tomorrow"
 msgstr "Завтра"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:205
+#: js/ui/dateMenu.js:217
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Увесь день"
@@ -1209,39 +1207,39 @@ msgstr "Увесь день"
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
 #.
-#: js/ui/dateMenu.js:227
+#: js/ui/dateMenu.js:239
 msgid "%m/%d"
 msgstr "%d.%m"
 
-#: js/ui/dateMenu.js:278
+#: js/ui/dateMenu.js:290
 msgid "No Events"
 msgstr "Немає подій"
 
-#: js/ui/dateMenu.js:400
+#: js/ui/dateMenu.js:412
 msgid "Add world clocks…"
 msgstr "Додати світові годинники…"
 
-#: js/ui/dateMenu.js:401
+#: js/ui/dateMenu.js:413
 msgid "World Clocks"
 msgstr "Світові годинники"
 
-#: js/ui/dateMenu.js:685
+#: js/ui/dateMenu.js:697
 msgid "Loading…"
 msgstr "Завантаження…"
 
-#: js/ui/dateMenu.js:695
+#: js/ui/dateMenu.js:707
 msgid "Go online for weather information"
 msgstr "Увійти в мережу за прогнозом погоди"
 
-#: js/ui/dateMenu.js:697
+#: js/ui/dateMenu.js:709
 msgid "Weather information is currently unavailable"
 msgstr "Наразі інформації про погоду недоступна"
 
-#: js/ui/dateMenu.js:707
+#: js/ui/dateMenu.js:719
 msgid "Weather"
 msgstr "Погода"
 
-#: js/ui/dateMenu.js:709
+#: js/ui/dateMenu.js:721
 msgid "Select weather location…"
 msgstr "Виберіть місцевість для погоди…"
 
@@ -1429,11 +1427,11 @@ msgstr "Встановити розширення"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Звантажити і встановити «%s» з extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:330
+#: js/ui/extensionSystem.js:337
 msgid "Extension Updates Available"
 msgstr "Випущено оновлення розширень"
 
-#: js/ui/extensionSystem.js:331
+#: js/ui/extensionSystem.js:338
 msgid "Extension updates are ready to be installed."
 msgstr "Приготовано до встановлення оновлення розширень."
 
@@ -1518,79 +1516,79 @@ msgstr "Покинути"
 msgid "Keyboard Settings"
 msgstr "Параметри клавіатури"
 
-#: js/ui/lookingGlass.js:720
+#: js/ui/lookingGlass.js:729
 msgid "No extensions installed"
 msgstr "Не встановлено розширення"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:781
+#: js/ui/lookingGlass.js:790
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s не випустила жодної помилки. "
 
-#: js/ui/lookingGlass.js:787
+#: js/ui/lookingGlass.js:796
 msgid "Hide Errors"
 msgstr "Сховати помилки"
 
-#: js/ui/lookingGlass.js:791 js/ui/lookingGlass.js:868
+#: js/ui/lookingGlass.js:800 js/ui/lookingGlass.js:877
 msgid "Show Errors"
 msgstr "Показати помилки"
 
-#: js/ui/lookingGlass.js:800
+#: js/ui/lookingGlass.js:809
 msgid "Enabled"
 msgstr "Увімкнено"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:803 subprojects/gvc/gvc-mixer-control.c:1908
+#: js/ui/lookingGlass.js:812 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Вимкнено"
 
-#: js/ui/lookingGlass.js:805
+#: js/ui/lookingGlass.js:814
 msgid "Error"
 msgstr "Помилка"
 
-#: js/ui/lookingGlass.js:807
+#: js/ui/lookingGlass.js:816
 msgid "Out of date"
 msgstr "Застаріло"
 
-#: js/ui/lookingGlass.js:809
+#: js/ui/lookingGlass.js:818
 msgid "Downloading"
 msgstr "Звантаження"
 
-#: js/ui/lookingGlass.js:811
+#: js/ui/lookingGlass.js:820
 msgid "Disabling"
 msgstr "Вимикання"
 
-#: js/ui/lookingGlass.js:813
+#: js/ui/lookingGlass.js:822
 msgid "Enabling"
 msgstr "Вмикання"
 
-#: js/ui/lookingGlass.js:846
+#: js/ui/lookingGlass.js:855
 msgid "View Source"
 msgstr "Переглянути джерело"
 
-#: js/ui/lookingGlass.js:857
+#: js/ui/lookingGlass.js:866
 msgid "Web Page"
 msgstr "Веб-сторінка"
 
-#: js/ui/main.js:295
+#: js/ui/main.js:274
 msgid "System was put in unsafe mode"
 msgstr "Систему переведено у небезпечний режим"
 
-#: js/ui/main.js:296
+#: js/ui/main.js:275
 msgid "Apps now have unrestricted access"
 msgstr "Тепер програми мають необмежений доступ до даних"
 
-#: js/ui/main.js:297 js/ui/overview.js:64
+#: js/ui/main.js:276 js/ui/overview.js:64
 msgid "Undo"
 msgstr "Повернути"
 
-#: js/ui/main.js:353
+#: js/ui/main.js:334
 msgid "Logged in as a privileged user"
 msgstr "Увійшов як наділений користувач"
 
-#: js/ui/main.js:354
+#: js/ui/main.js:335
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1598,11 +1596,11 @@ msgstr ""
 "З міркувань безпеки слід уникати сеансів з наділеними правами. Користуйтесь "
 "звичайним сеансом."
 
-#: js/ui/main.js:402
+#: js/ui/main.js:383
 msgid "Screen Lock disabled"
 msgstr "Блокування екрана вимкнено"
 
-#: js/ui/main.js:403
+#: js/ui/main.js:384
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Блокування екрана потребує керування входом GNOME."
 
@@ -1680,16 +1678,16 @@ msgstr "Натисніть клавішу «Esc», щоб вийти"
 msgid "Press any key to exit"
 msgstr "Натисніть будь-яку клавішу, щоб вийти"
 
-#: js/ui/panel.js:269
+#: js/ui/panel.js:271
 msgid "Activities"
 msgstr "Діяльність"
 
-#: js/ui/panel.js:354
+#: js/ui/panel.js:356
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:493
+#: js/ui/panel.js:504
 msgid "Top Bar"
 msgstr "Верхня панель"
 
@@ -1755,8 +1753,6 @@ msgid "Take Screenshot"
 msgstr "Зробити знімок"
 
 #: js/ui/screenshot.js:1267
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
 msgid "Record Screen"
 msgstr "Записати відео з екрана"
 
@@ -1791,7 +1787,6 @@ msgstr "Записано відео з екрана"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:1945
-#| msgid "Screencast recorded"
 msgid "Screencast ended unexpectedly"
 msgstr "Запис з екрана неочікувано завершився"
 
@@ -2000,6 +1995,28 @@ msgstr[1] "%d фонові програми"
 msgstr[2] "%d фонових програм"
 msgstr[3] "%d фонова програма"
 
+#: js/ui/status/backlight.js:37
+#| msgid "Brightness"
+msgid "Keyboard Brightness"
+msgstr "Яскравість підсвічування клавіатури"
+
+#: js/ui/status/backlight.js:72
+#| msgid "%s Off"
+msgid "Off"
+msgstr "Вимкнено"
+
+#: js/ui/status/backlight.js:73
+msgid "Low"
+msgstr "Низька"
+
+#: js/ui/status/backlight.js:74
+msgid "High"
+msgstr "Висока"
+
+#: js/ui/status/backlight.js:139 js/ui/status/keyboard.js:849
+msgid "Keyboard"
+msgstr "Клавіатура"
+
 #: js/ui/status/bluetooth.js:226 js/ui/status/network.js:376
 msgid "Disconnect"
 msgstr "Від'єднатися"
@@ -2057,10 +2074,6 @@ msgstr "Правий клац"
 #: js/ui/status/dwellClick.js:40
 msgid "Dwell Click"
 msgstr "Затриманий клац"
-
-#: js/ui/status/keyboard.js:849
-msgid "Keyboard"
-msgstr "Клавіатура"
 
 #: js/ui/status/keyboard.js:866
 msgid "Show Keyboard Layout"
@@ -2496,23 +2509,23 @@ msgstr "Перемістити до монітору праворуч"
 msgid "Close"
 msgstr "Закрити"
 
-#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:509 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Показати версію"
 
-#: src/main.c:514
+#: src/main.c:515
 msgid "Mode used by GDM for login screen"
 msgstr "Використовуваний режим GDM для екрану входу"
 
-#: src/main.c:520
+#: src/main.c:521
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Використовувати вказаний режим, приклад, «gdm» для вікна входу"
 
-#: src/main.c:526
+#: src/main.c:527
 msgid "List possible modes"
 msgstr "Перелік можливих режимів"
 
-#: src/main.c:532
+#: src/main.c:533
 msgid "Force animations to be enabled"
 msgstr "Примусове вмикання анімацій"
 
@@ -2538,18 +2551,18 @@ msgstr "Пароль не може бути порожнім"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Вікно автентифікації відхилено користувачем"
 
-#: src/st/st-icon-theme.c:1884
+#: src/st/st-icon-theme.c:1865
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "Піктограми «%s» немає у темі %s"
 
-#: src/st/st-icon-theme.c:3473 src/st/st-icon-theme.c:3776
+#: src/st/st-icon-theme.c:3454 src/st/st-icon-theme.c:3757
 msgid "Failed to load icon"
 msgstr "Не вдалось завантажити піктограму"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:214
+#: subprojects/extensions-app/js/main.js:218
 #: subprojects/extensions-app/data/ui/extensions-window.ui:18
 #: subprojects/extensions-app/data/ui/extensions-window.ui:82
 msgid "Extensions"
@@ -2560,7 +2573,7 @@ msgid "Manage your GNOME Extensions"
 msgstr "Керуйте вашими розширеннями GNOME"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:17
-#: subprojects/extensions-app/js/main.js:218
+#: subprojects/extensions-app/js/main.js:222
 msgid "The GNOME Project"
 msgstr "Проєкт GNOME"
 
@@ -2576,17 +2589,17 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "Налаштувати розширення GNOME Shell"
 
-#: subprojects/extensions-app/js/main.js:132
-#: subprojects/extensions-app/js/main.js:143
+#: subprojects/extensions-app/js/main.js:136
+#: subprojects/extensions-app/js/main.js:147
 msgid "No Matches"
 msgstr "Немає відповідників"
 
-#: subprojects/extensions-app/js/main.js:171
+#: subprojects/extensions-app/js/main.js:175
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Вилучити «%s»?"
 
-#: subprojects/extensions-app/js/main.js:172
+#: subprojects/extensions-app/js/main.js:176
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2594,18 +2607,18 @@ msgstr ""
 "Якщо ви вилучите розширення, вам доведеться отримати його код знову, якщо ви "
 "захочете його знову увімкнути"
 
-#: subprojects/extensions-app/js/main.js:176
+#: subprojects/extensions-app/js/main.js:180
 msgid "Remove"
 msgstr "Вилучити"
 
-#: subprojects/extensions-app/js/main.js:213
+#: subprojects/extensions-app/js/main.js:217
 msgid "translator-credits"
 msgstr ""
 "Максим Дзюманенко <dziumanenko@gmail.com>\n"
 "Данило Коростіль <ted.korostiled@gmail.com>\n"
 "Юрій Чорноіван <yurchor@ukr.net>"
 
-#: subprojects/extensions-app/js/main.js:341
+#: subprojects/extensions-app/js/main.js:345
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -2614,11 +2627,11 @@ msgstr[1] "Під час наступного входу до системи б�
 msgstr[2] "Під час наступного входу до системи буде оновлено %d розширень."
 msgstr[3] "Під час наступного входу до системи буде оновлено одне розширення."
 
-#: subprojects/extensions-app/js/main.js:483
+#: subprojects/extensions-app/js/main.js:487
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "Розширення є несумісним із поточною версією GNOME"
 
-#: subprojects/extensions-app/js/main.js:486
+#: subprojects/extensions-app/js/main.js:490
 #: subprojects/extensions-app/data/ui/extension-row.ui:52
 msgid "The extension had an error"
 msgstr "У розширенні сталася помилка"
@@ -3223,10 +3236,6 @@ msgstr "Системні звуки"
 #~ msgstr[1] "%s з'єднання Bluetooth"
 #~ msgstr[2] "%s з'єднань Bluetooth"
 #~ msgstr[3] "%s з'єднання Bluetooth"
-
-#, javascript-format
-#~ msgid "%s Off"
-#~ msgstr "%s вимкнено"
 
 #, javascript-format
 #~ msgid "%s Unmanaged"
