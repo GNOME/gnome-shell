@@ -14,6 +14,11 @@ rules:
       afterColon: true
   prefer-arrow-callback: error
   jsdoc/require-param-description: off
+  jsdoc/require-jsdoc:
+    - error
+    - exemptEmptyFunctions: true
+      publicOnly:
+        esm: true
 
 overrides:
   - files:
