@@ -94,6 +94,15 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
       &.clock-display {
         @include panel_button($panel_system_fg_color, $fg:$panel_system_fg_color, $highlighted_child: true, $child_class:".clock");
       }
+
+      // unfortunate duplication so these indicators have styles
+      &.screen-recording-indicator {
+        @include panel_button($screenshot_ui_button_red, $flat: false);
+      }
+
+      &.screen-sharing-indicator {
+        @include panel_button($warning_color, transparentize(black, 0.2), $flat: false);
+      }
     }
   }
 
