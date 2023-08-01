@@ -474,6 +474,11 @@ class PopupImageMenuItem extends PopupBaseMenuItem {
         else
             this._icon.icon_name = icon;
     }
+
+    _updateOrnamentStyle() {
+        // we move the ornament after the label, so we don't need
+        // additional padding regardless of ornament visibility
+    }
 });
 
 var PopupMenuBase = class extends Signals.EventEmitter {
