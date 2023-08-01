@@ -272,39 +272,6 @@ st_scroll_view_dispose (GObject *object)
   G_OBJECT_CLASS (st_scroll_view_parent_class)->dispose (object);
 }
 
-static void
-st_scroll_view_paint (ClutterActor        *actor,
-                      ClutterPaintContext *paint_context)
-{
-  StScrollViewPrivate *priv = ST_SCROLL_VIEW (actor)->priv;
-
-  st_widget_paint_background (ST_WIDGET (actor), paint_context);
-
-  if (priv->child)
-    clutter_actor_paint (priv->child, paint_context);
-  if (priv->hscrollbar_visible)
-    clutter_actor_paint (priv->hscroll, paint_context);
-  if (priv->vscrollbar_visible)
-    clutter_actor_paint (priv->vscroll, paint_context);
-}
-
-static void
-st_scroll_view_pick (ClutterActor       *actor,
-                     ClutterPickContext *pick_context)
-{
-  StScrollViewPrivate *priv = ST_SCROLL_VIEW (actor)->priv;
-
-  /* Chain up so we get a bounding box pained (if we are reactive) */
-  CLUTTER_ACTOR_CLASS (st_scroll_view_parent_class)->pick (actor, pick_context);
-
-  if (priv->child)
-    clutter_actor_pick (priv->child, pick_context);
-  if (priv->hscrollbar_visible)
-    clutter_actor_pick (priv->hscroll, pick_context);
-  if (priv->vscrollbar_visible)
-    clutter_actor_pick (priv->vscroll, pick_context);
-}
-
 static gboolean
 st_scroll_view_get_paint_volume (ClutterActor       *actor,
                                  ClutterPaintVolume *volume)
@@ -624,36 +591,52 @@ st_scroll_view_allocate (ClutterActor          *actor,
    */
 
   /* Vertical scrollbar */
-  if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
+  if (vscrollbar_visible)
     {
-      child_box.x1 = content_box.x1;
-      child_box.x2 = content_box.x1 + sb_width;
+      if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
+        {
+          child_box.x1 = content_box.x1;
+          child_box.x2 = content_box.x1 + sb_width;
+        }
+      else
+        {
+          child_box.x1 = content_box.x2 - sb_width;
+          child_box.x2 = content_box.x2;
+        }
+      child_box.y1 = content_box.y1;
+      child_box.y2 = content_box.y2 - (hscrollbar_visible ? sb_height : 0);
+
+      clutter_actor_allocate (priv->vscroll, &child_box);
     }
   else
     {
-      child_box.x1 = content_box.x2 - sb_width;
-      child_box.x2 = content_box.x2;
+      ClutterActorBox empty_box = { 0, };
+      clutter_actor_allocate (priv->vscroll, &empty_box);
     }
-  child_box.y1 = content_box.y1;
-  child_box.y2 = content_box.y2 - (hscrollbar_visible ? sb_height : 0);
-
-  clutter_actor_allocate (priv->vscroll, &child_box);
 
   /* Horizontal scrollbar */
-  if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
+  if (hscrollbar_visible)
     {
-      child_box.x1 = content_box.x1 + (vscrollbar_visible ? sb_width : 0);
-      child_box.x2 = content_box.x2;
+      if (clutter_actor_get_text_direction (actor) == CLUTTER_TEXT_DIRECTION_RTL)
+        {
+          child_box.x1 = content_box.x1 + (vscrollbar_visible ? sb_width : 0);
+          child_box.x2 = content_box.x2;
+        }
+      else
+        {
+          child_box.x1 = content_box.x1;
+          child_box.x2 = content_box.x2 - (vscrollbar_visible ? sb_width : 0);
+        }
+      child_box.y1 = content_box.y2 - sb_height;
+      child_box.y2 = content_box.y2;
+
+      clutter_actor_allocate (priv->hscroll, &child_box);
     }
   else
     {
-      child_box.x1 = content_box.x1;
-      child_box.x2 = content_box.x2 - (vscrollbar_visible ? sb_width : 0);
+      ClutterActorBox empty_box = { 0, };
+      clutter_actor_allocate (priv->hscroll, &empty_box);
     }
-  child_box.y1 = content_box.y2 - sb_height;
-  child_box.y2 = content_box.y2;
-
-  clutter_actor_allocate (priv->hscroll, &child_box);
 
   /* In case the scrollbar policy is NEVER or EXTERNAL or scrollbars
    * should be overlaid, we don't trim the content box allocation by
@@ -826,8 +809,6 @@ st_scroll_view_class_init (StScrollViewClass *klass)
   object_class->set_property = st_scroll_view_set_property;
   object_class->dispose = st_scroll_view_dispose;
 
-  actor_class->paint = st_scroll_view_paint;
-  actor_class->pick = st_scroll_view_pick;
   actor_class->get_paint_volume = st_scroll_view_get_paint_volume;
   actor_class->get_preferred_width = st_scroll_view_get_preferred_width;
   actor_class->get_preferred_height = st_scroll_view_get_preferred_height;
