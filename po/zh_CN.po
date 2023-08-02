@@ -22,13 +22,12 @@
 # lumingzh <lumingzh@qq.com>, 2022.
 # Nanling <neithern@outlook.com>, 2023.
 #
-#: src/main.c:539
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-08-01 17:39+0000\n"
-"PO-Revision-Date: 2023-04-13 15:57+0800\n"
+"POT-Creation-Date: 2023-08-02 20:11+0000\n"
+"PO-Revision-Date: 2023-08-02 16:12-0400\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -117,10 +116,8 @@ msgid "Show the notification list"
 msgstr "显示通知列表"
 
 #: data/50-gnome-shell-system.xml:12
-#, fuzzy
-#| msgid "Open the app menu"
 msgid "Open the quick settings menu"
-msgstr "打开应用菜单"
+msgstr "打开快速设置菜单"
 
 #: data/50-gnome-shell-system.xml:15
 msgid "Focus the active notification"
@@ -335,16 +332,12 @@ msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "用来切换通知列表是否可见的快捷键。"
 
 #: data/org.gnome.shell.gschema.xml.in:188
-#, fuzzy
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to toggle the quick settings menu"
-msgstr "用于打开应用程序菜单的快捷键"
+msgstr "用于打开快速设置菜单的快捷键"
 
 #: data/org.gnome.shell.gschema.xml.in:189
-#, fuzzy
-#| msgid "Keybinding to open the application menu."
 msgid "Keybinding to toggle the quick settings menu."
-msgstr "用于打开应用程序菜单的快捷键。"
+msgstr "用于打开快速设置菜单的快捷键。"
 
 #: data/org.gnome.shell.gschema.xml.in:195
 msgid "Keybinding to focus the active notification"
@@ -757,7 +750,7 @@ msgstr "%Y年%-m月%-d日，%p %-l∶%M"
 
 #: js/portalHelper/main.js:98
 msgid "Your connection seems to be secure"
-msgstr ""
+msgstr "您的连接似乎是安全的"
 
 #: js/portalHelper/main.js:104
 msgid ""
@@ -1692,11 +1685,8 @@ msgid "Take Screenshot"
 msgstr "截图"
 
 #: js/ui/screenshot.js:1267
-#, fuzzy
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
 msgid "Record Screen"
-msgstr "锁屏"
+msgstr "录制屏幕"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
@@ -1729,10 +1719,8 @@ msgstr "屏幕已录制"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:1945
-#, fuzzy
-#| msgid "Screencast recorded"
 msgid "Screencast ended unexpectedly"
-msgstr "屏幕已录制"
+msgstr "录屏意外结束"
 
 #. Translators: notification source name.
 #: js/ui/screenshot.js:1954 js/ui/screenshot.js:2189
@@ -1933,10 +1921,8 @@ msgid_plural "%d Background Apps"
 msgstr[0] "%d 个后台应用"
 
 #: js/ui/status/backlight.js:37
-#, fuzzy
-#| msgid "Brightness"
 msgid "Keyboard Brightness"
-msgstr "亮度"
+msgstr "键盘亮度"
 
 #: js/ui/status/backlight.js:72
 msgid "Off"
@@ -1944,11 +1930,11 @@ msgstr "关"
 
 #: js/ui/status/backlight.js:73
 msgid "Low"
-msgstr ""
+msgstr "低"
 
 #: js/ui/status/backlight.js:74
 msgid "High"
-msgstr ""
+msgstr "高"
 
 #: js/ui/status/backlight.js:139 js/ui/status/keyboard.js:851
 msgid "Keyboard"
