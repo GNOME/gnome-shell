@@ -44,9 +44,14 @@ const SliderItem = GObject.registerClass({
     }
 
     set value(value) {
+        if (this.value === value)
+            return;
+
         this._slider.block_signal_handler(this._sliderChangedId);
         this._slider.value = value / 100;
         this._slider.unblock_signal_handler(this._sliderChangedId);
+
+        this.notify('value');
     }
 });
 
