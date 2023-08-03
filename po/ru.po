@@ -16,13 +16,14 @@
 # Stas Solovey <whats_up@tut.by>, 2011, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
 # Konstantin Nezhbert <zhbert@yandex.ru>, 2021.
 # Ivan Molodetskikh <yalterz@gmail.com>, 2020-2022.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-07-20 21:47+0000\n"
-"PO-Revision-Date: 2023-07-24 12:00+0300\n"
-"Last-Translator: Дронова Юлия <juliette.tux@gmail.com>\n"
+"POT-Creation-Date: 2023-07-30 11:17+0000\n"
+"PO-Revision-Date: 2023-07-30 15:42+0300\n"
+"Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: RU\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -30,12 +31,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 23.04.0\n"
-"X-DL-Team: ru\n"
-"X-DL-Module: gnome-shell\n"
-"X-DL-Branch: main\n"
-"X-DL-Domain: po\n"
-"X-DL-State: None\n"
+"X-Generator: Poedit 3.3.2\n"
 
 # Запуск приложений, как другой вариант
 #: data/50-gnome-shell-launchers.xml:6
@@ -1676,16 +1672,16 @@ msgstr "Нажмите Esc для выхода"
 msgid "Press any key to exit"
 msgstr "Нажмите любую клавишу для выхода"
 
-#: js/ui/panel.js:269
+#: js/ui/panel.js:271
 msgid "Activities"
 msgstr "Обзор"
 
-#: js/ui/panel.js:354
+#: js/ui/panel.js:356
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:493
+#: js/ui/panel.js:504
 msgid "Top Bar"
 msgstr "Верхняя панель"
 
@@ -1993,6 +1989,26 @@ msgstr[0] "%d фоновое приложение"
 msgstr[1] "%d фоновых приложения"
 msgstr[2] "%d фоновых приложений"
 
+#: js/ui/status/backlight.js:37
+msgid "Keyboard Brightness"
+msgstr "Подсветка клавиатуры"
+
+#: js/ui/status/backlight.js:72
+msgid "Off"
+msgstr "Выкл"
+
+#: js/ui/status/backlight.js:73
+msgid "Low"
+msgstr "Низкая"
+
+#: js/ui/status/backlight.js:74
+msgid "High"
+msgstr "Высокая"
+
+#: js/ui/status/backlight.js:139 js/ui/status/keyboard.js:849
+msgid "Keyboard"
+msgstr "Клавиатура"
+
 #: js/ui/status/bluetooth.js:226 js/ui/status/network.js:376
 msgid "Disconnect"
 msgstr "Отключить"
@@ -2049,10 +2065,6 @@ msgstr "Нажатие правой кнопки мыши"
 #: js/ui/status/dwellClick.js:40
 msgid "Dwell Click"
 msgstr "Нажатие левой кнопки мыши после задержки над кнопкой"
-
-#: js/ui/status/keyboard.js:849
-msgid "Keyboard"
-msgstr "Клавиатура"
 
 #: js/ui/status/keyboard.js:866
 msgid "Show Keyboard Layout"
@@ -3230,12 +3242,6 @@ msgstr "Системные звуки"
 #~ msgstr[0] "%s модемное соединение"
 #~ msgstr[1] "%s модемных соединения"
 #~ msgstr[2] "%s модемных соединений"
-
-#, javascript-format
-#~ msgid "%s Off"
-#~ msgstr ""
-#~ "%s соединение\n"
-#~ "выключено"
 
 #, javascript-format
 #~ msgid "%s Unmanaged"
