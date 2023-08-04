@@ -35,6 +35,7 @@
 
 struct _StFocusManagerPrivate
 {
+  ClutterStage *stage;
   GHashTable *groups;
 };
 
@@ -79,10 +80,10 @@ st_focus_manager_stage_event (ClutterActor *stage,
   gboolean wrap_around = FALSE;
   ClutterActor *focused, *group;
 
-  if (event->type != CLUTTER_KEY_PRESS)
+  if (clutter_event_type (event) != CLUTTER_KEY_PRESS)
     return FALSE;
 
-  switch (event->key.keyval)
+  switch (clutter_event_get_key_symbol (event))
     {
     case CLUTTER_KEY_Up:
       direction = ST_DIR_UP;
@@ -97,7 +98,7 @@ st_focus_manager_stage_event (ClutterActor *stage,
       direction = ST_DIR_RIGHT;
       break;
     case CLUTTER_KEY_Tab:
-      if (event->key.modifier_state & CLUTTER_SHIFT_MASK)
+      if (clutter_event_get_state (event) & CLUTTER_SHIFT_MASK)
         direction = ST_DIR_TAB_BACKWARD;
       else
         direction = ST_DIR_TAB_FORWARD;
@@ -144,6 +145,7 @@ st_focus_manager_get_for_stage (ClutterStage *stage)
   if (!manager)
     {
       manager = g_object_new (ST_TYPE_FOCUS_MANAGER, NULL);
+      manager->priv->stage = stage;
       g_object_set_data_full (G_OBJECT (stage), "st-focus-manager",
 			      manager, g_object_unref);
 
@@ -246,11 +248,9 @@ gboolean
 st_focus_manager_navigate_from_event (StFocusManager *manager,
                                       ClutterEvent   *event)
 {
-  ClutterActor *stage;
-
-  if (event->type != CLUTTER_KEY_PRESS)
+  if (clutter_event_type (event) != CLUTTER_KEY_PRESS)
     return FALSE;
 
-  stage = CLUTTER_ACTOR (event->key.stage);
-  return st_focus_manager_stage_event (stage, event, manager);
+  return st_focus_manager_stage_event (CLUTTER_ACTOR (manager->priv->stage),
+                                       event, manager);
 }
