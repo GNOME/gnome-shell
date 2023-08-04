@@ -473,7 +473,7 @@ st_scroll_bar_scroll_event (ClutterActor       *actor,
     return TRUE;
 
   direction = clutter_actor_get_text_direction (actor);
-  scroll_dir = event->direction;
+  scroll_dir = clutter_event_get_scroll_direction ((ClutterEvent *) event);
 
   switch (scroll_dir)
     {
@@ -656,10 +656,13 @@ handle_motion_event_cb (ClutterActor       *trough,
                         StScrollBar        *bar)
 {
   StScrollBarPrivate *priv = st_scroll_bar_get_instance_private (bar);
+  graphene_point_t coords;
+
   if (!priv->grab_device)
     return FALSE;
 
-  move_slider (bar, event->x, event->y);
+  clutter_event_get_position ((ClutterEvent *) event, &coords);
+  move_slider (bar, coords.x, coords.y);
   return TRUE;
 }
 
@@ -668,7 +671,7 @@ handle_button_release_event_cb (ClutterActor       *trough,
                                 ClutterButtonEvent *event,
                                 StScrollBar        *bar)
 {
-  if (event->button != 1)
+  if (clutter_event_get_button ((ClutterEvent *) event) != 1)
     return FALSE;
 
   stop_scrolling (bar);
@@ -682,14 +685,17 @@ handle_button_press_event_cb (ClutterActor       *actor,
 {
   StScrollBarPrivate *priv = st_scroll_bar_get_instance_private (bar);
   ClutterInputDevice *device = clutter_event_get_device ((ClutterEvent*) event);
+  graphene_point_t coords;
   ClutterActor *stage;
 
-  if (event->button != 1)
+  if (clutter_event_get_button ((ClutterEvent *) event) != 1)
     return FALSE;
 
+  clutter_event_get_position ((ClutterEvent *) event, &coords);
+
   if (!clutter_actor_transform_stage_point (priv->handle,
-                                            event->x,
-                                            event->y,
+                                            coords.x,
+                                            coords.y,
                                             &priv->x_origin,
                                             &priv->y_origin))
     return FALSE;
@@ -836,18 +842,21 @@ trough_button_press_event_cb (ClutterActor       *actor,
                               StScrollBar        *self)
 {
   StScrollBarPrivate *priv;
+  graphene_point_t coords;
 
   g_return_val_if_fail (self, FALSE);
 
-  if (event->button != 1)
+  if (clutter_event_get_button ((ClutterEvent *) event) != 1)
     return FALSE;
 
   priv = st_scroll_bar_get_instance_private (self);
   if (priv->adjustment == NULL)
     return FALSE;
 
-  priv->move_x = event->x;
-  priv->move_y = event->y;
+  clutter_event_get_position ((ClutterEvent *) event, &coords);
+
+  priv->move_x = coords.x;
+  priv->move_y = coords.y;
   priv->paging_direction = NONE;
   priv->paging_event_no = 0;
   trough_paging_cb (self);
@@ -862,7 +871,7 @@ trough_button_release_event_cb (ClutterActor       *actor,
 {
   StScrollBarPrivate *priv = st_scroll_bar_get_instance_private (self);
 
-  if (event->button != 1)
+  if (clutter_event_get_button ((ClutterEvent *) event) != 1)
     return FALSE;
 
   g_clear_handle_id (&priv->paging_source_id, g_source_remove);
