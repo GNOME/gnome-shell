@@ -697,7 +697,7 @@ st_widget_enter (ClutterActor         *actor,
       ClutterStage *stage;
       ClutterActor *target;
 
-      stage = clutter_event_get_stage ((ClutterEvent *) event);
+      stage = CLUTTER_STAGE (clutter_actor_get_stage (actor));
       target = clutter_stage_get_event_actor (stage, (ClutterEvent *) event);
 
       if (clutter_actor_contains (actor, target))
@@ -726,7 +726,11 @@ st_widget_leave (ClutterActor         *actor,
 
   if (priv->track_hover)
     {
-      if (!event->related || !clutter_actor_contains (actor, event->related))
+      ClutterActor *related;
+
+      related = clutter_event_get_related ((ClutterEvent *) event);
+
+      if (!related || !clutter_actor_contains (actor, related))
         st_widget_set_hover (ST_WIDGET (actor), FALSE);
     }
 
@@ -756,9 +760,15 @@ static gboolean
 st_widget_key_press_event (ClutterActor    *actor,
                            ClutterKeyEvent *event)
 {
-  if (event->keyval == CLUTTER_KEY_Menu ||
-      (event->keyval == CLUTTER_KEY_F10 &&
-       (event->modifier_state & CLUTTER_SHIFT_MASK)))
+  ClutterModifierType state;
+  uint32_t keyval;
+
+  state = clutter_event_get_state ((ClutterEvent *) event);
+  keyval = clutter_event_get_key_symbol ((ClutterEvent *) event);
+
+  if (keyval == CLUTTER_KEY_Menu ||
+      (keyval == CLUTTER_KEY_F10 &&
+       (state & CLUTTER_SHIFT_MASK)))
     {
       st_widget_popup_menu (ST_WIDGET (actor));
       return TRUE;
