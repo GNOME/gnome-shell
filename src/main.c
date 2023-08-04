@@ -129,10 +129,16 @@ shell_dbus_init (gboolean replace)
   g_object_unref (session);
 }
 
-#ifdef HAVE_EXE_INTROSPECTION
 static void
 maybe_add_rpath_introspection_paths (void)
 {
+  /* We're reasonably confident that this works reliably on x86_64, but
+   * on other architectures it can go wrong: for example it seems that
+   * on mips*el, the DT_STRTAB is an offset relative to the base address
+   * of the executable, rather than a ready-to-use pointer.
+   *
+   * Other architectures can be added here, but please test them first. */
+#if defined(HAVE_EXE_INTROSPECTION) && defined(__x86_64__)
   ElfW (Dyn) *dyn;
   ElfW (Dyn) *rpath = NULL;
   ElfW (Dyn) *runpath = NULL;
@@ -194,15 +200,15 @@ maybe_add_rpath_introspection_paths (void)
       g_irepository_prepend_search_path (rpath_dir->str);
       g_irepository_prepend_library_path (rpath_dir->str);
     }
-}
 #endif /* HAVE_EXE_INTROSPECTION */
+}
 
 static void
 shell_introspection_init (void)
 {
+  const char *env;
 
   g_irepository_prepend_search_path (MUTTER_TYPELIB_DIR);
-  g_irepository_prepend_search_path (GNOME_SHELL_PKGLIBDIR);
 
   /* We need to explicitly add the directories where the private libraries are
    * installed to the GIR's library path, so that they can be found at runtime
@@ -210,11 +216,30 @@ shell_introspection_init (void)
    * for some linkers (e.g. gold) and in some distros (e.g. Debian).
    */
   g_irepository_prepend_library_path (MUTTER_TYPELIB_DIR);
-  g_irepository_prepend_library_path (GNOME_SHELL_PKGLIBDIR);
 
-#ifdef HAVE_EXE_INTROSPECTION
-  maybe_add_rpath_introspection_paths ();
-#endif
+  env = g_getenv ("GNOME_SHELL_TEST_LIBRARY_PATH");
+
+  if (env != NULL)
+    {
+      g_auto (GStrv) paths = NULL;
+      char **str;
+
+      paths = g_strsplit (env, ":", -1);
+
+      for (str = paths; *str; str++)
+        {
+          g_debug ("Prepending '%s' to introspection library search path",
+                   *str);
+          g_irepository_prepend_search_path (*str);
+          g_irepository_prepend_library_path (*str);
+        }
+    }
+  else
+    {
+      g_irepository_prepend_search_path (GNOME_SHELL_PKGLIBDIR);
+      g_irepository_prepend_library_path (GNOME_SHELL_PKGLIBDIR);
+      maybe_add_rpath_introspection_paths ();
+    }
 }
 
 static void

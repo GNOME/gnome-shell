@@ -61,6 +61,10 @@ shell_testenv.set('GNOME_SHELL_DATADIR', data_builddir)
 shell_testenv.set('GNOME_SHELL_BUILDDIR', src_builddir)
 shell_testenv.set('GNOME_SHELL_SESSION_MODE', 'user')
 shell_testenv.set('SHELL_BACKGROUND_IMAGE', '@0@'.format(background_file))
+shell_testenv.set('GNOME_SHELL_TEST_LIBRARY_PATH', ':'.join([
+  src_builddir,
+  src_builddir / 'st',
+]))
 shell_testenv.append('GI_TYPELIB_PATH', gvc_typelib_path, separator: ':')
 shell_testenv.append('LD_LIBRARY_PATH', libgvc_path, separator: ':')
 
