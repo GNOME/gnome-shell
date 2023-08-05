@@ -116,7 +116,7 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
       }
 
       &.screen-sharing-indicator {
-        @include panel_button($warning_color, transparentize(black, 0.2), $flat: false);
+        @include panel_button($privacy_indicator_color, $flat: false);
       }
     }
   }
