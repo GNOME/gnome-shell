@@ -127,6 +127,7 @@ const DiscreteItem = GObject.registerClass({
         this._levelButtons.get('off').visible = this.nLevels > 0;
         this._levelButtons.get('high').visible = this.nLevels > 1;
         this._levelButtons.get('low').visible = this.nLevels > 2;
+        this._syncChecked();
     }
 
     _syncChecked() {
