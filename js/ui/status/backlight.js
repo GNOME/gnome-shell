@@ -74,7 +74,7 @@ const DiscreteItem = GObject.registerClass({
         });
 
         this._levelButtons = new Map();
-        this._addLevelButton('off', _('Off'), 'keyboard-brightness-low-symbolic');
+        this._addLevelButton('off', _('Off'), 'keyboard-brightness-off-symbolic');
         this._addLevelButton('low', _('Low'), 'keyboard-brightness-medium-symbolic');
         this._addLevelButton('high', _('High'), 'keyboard-brightness-high-symbolic');
 
