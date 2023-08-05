@@ -98,6 +98,7 @@
 
     &.calendar-today {
       @extend .button, .default;
+      color: $selected_fg_color; /* override weekends */
     }
 
     &.calendar-day-with-events {
