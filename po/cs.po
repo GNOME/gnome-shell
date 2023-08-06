@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-04-25 15:21+0000\n"
-"PO-Revision-Date: 2023-04-26 14:48+0200\n"
+"POT-Creation-Date: 2023-08-05 19:37+0000\n"
+"PO-Revision-Date: 2023-08-06 17:16+0200\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-launchers.xml:6
@@ -66,7 +66,7 @@ msgid "Activate favorite app 9"
 msgstr "Aktivovat oblíbenou aplikaci č. 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2110
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2131
 msgid "Screenshots"
 msgstr "Snímky obrazovky"
 
@@ -294,7 +294,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:152
 msgid "Keybinding to open the application menu"
-msgstr "Klávesová zkratka otevírající nabidku aplikací"
+msgstr "Klávesová zkratka otevírající nabídku aplikací"
 
 #: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to open the application menu."
@@ -1534,7 +1534,8 @@ msgstr "Povoleno"
 msgid "Disabled"
 msgstr "Zakázáno"
 
-#: js/ui/lookingGlass.js:798
+#. Translators: notification title.
+#: js/ui/lookingGlass.js:798 js/ui/screenshot.js:1940
 msgid "Error"
 msgstr "Chyba"
 
@@ -1714,97 +1715,97 @@ msgstr "Nelze uzamknout obrazovku"
 msgid "Lock was blocked by an app"
 msgstr "Zamknutí je blokováno některou z aplikací"
 
-#: js/ui/screenshot.js:1165
+#: js/ui/screenshot.js:1178
 msgid "Selection"
 msgstr "Výběr"
 
-#: js/ui/screenshot.js:1175
+#: js/ui/screenshot.js:1188
 msgid "Area Selection"
 msgstr "Výběr oblasti"
 
-#: js/ui/screenshot.js:1180
+#: js/ui/screenshot.js:1193
 msgid "Screen"
 msgstr "Obrazovka"
 
-#: js/ui/screenshot.js:1190
+#: js/ui/screenshot.js:1203
 msgid "Screen Selection"
 msgstr "Výběr obrazovky"
 
-#: js/ui/screenshot.js:1195
+#: js/ui/screenshot.js:1208
 msgid "Window"
 msgstr "Okno"
 
-#: js/ui/screenshot.js:1205
+#: js/ui/screenshot.js:1218
 msgid "Window Selection"
 msgstr "Výběr okna"
 
-#: js/ui/screenshot.js:1243
+#: js/ui/screenshot.js:1256
 msgid "Screenshot / Screencast"
 msgstr "Snímek/záznam obrazovky"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1264
+#: js/ui/screenshot.js:1277
 msgid "Capture"
 msgstr "Zachytit"
 
-#: js/ui/screenshot.js:1286
+#: js/ui/screenshot.js:1299
 msgid "Show Pointer"
 msgstr "Zobrazit ukazatel"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1877
+#: js/ui/screenshot.js:1890
 msgid "Screencasts"
 msgstr "Záznamy obrazovky"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1882
+#: js/ui/screenshot.js:1895
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Záznam obrazovky z %d %t.webm"
 
-#. Translators: notification source name.
-#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2163
-msgid "Screenshot"
-msgstr "Snímek obrazovky"
-
 #. Translators: notification title.
-#: js/ui/screenshot.js:1930
+#: js/ui/screenshot.js:1933
 msgid "Screencast recorded"
 msgstr "Bylo zaznamenáno dění na obrazovce"
 
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1949 js/ui/screenshot.js:2184
+msgid "Screenshot"
+msgstr "Snímek obrazovky"
+
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1932
+#: js/ui/screenshot.js:1956
 msgid "Click here to view the video."
 msgstr "Kliknutím zde video zobrazíte."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1935 js/ui/screenshot.js:2177
+#: js/ui/screenshot.js:1959 js/ui/screenshot.js:2198
 msgid "Show in Files"
 msgstr "Zobrazit v Souborech"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:2144
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Snímek obrazovky z %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2169
+#: js/ui/screenshot.js:2190
 msgid "Screenshot captured"
 msgstr "Byl pořízen snímek obrazovky"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2171
+#: js/ui/screenshot.js:2192
 msgid "You can paste the image from the clipboard."
 msgstr "Obrázek můžete vložit ze schránky."
 
-#: js/ui/screenshot.js:2224 js/ui/screenshot.js:2389
+#: js/ui/screenshot.js:2245 js/ui/screenshot.js:2410
 msgid "Screenshot taken"
 msgstr "Byl pořízen snímek obrazovky"
 
@@ -2474,23 +2475,23 @@ msgstr "Přesunout o monitor doprava"
 msgid "Close"
 msgstr "Zavřít"
 
-#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:528 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Vypsat verzi"
 
-#: src/main.c:514
+#: src/main.c:534
 msgid "Mode used by GDM for login screen"
 msgstr "Režim použitý GDM pro přihlašovací obrazovku"
 
-#: src/main.c:520
+#: src/main.c:540
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Použít pro přihlašovací obrazovku zadaný režim, např. „gdm“"
 
-#: src/main.c:526
+#: src/main.c:546
 msgid "List possible modes"
 msgstr "Vypsat možné režimy"
 
-#: src/main.c:532
+#: src/main.c:552
 msgid "Force animations to be enabled"
 msgstr "Vynutit povolení animací"
 
