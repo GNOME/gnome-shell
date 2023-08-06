@@ -56,7 +56,7 @@ class ShellInfo {
             notification.setForFeedback(forFeedback);
         } else {
             notification = this._source.notifications[0];
-            notification.update(text, null, { clear: true });
+            notification.update(text, null, {clear: true});
         }
 
         if (undoCallback)
@@ -77,7 +77,7 @@ class OverviewActor extends St.BoxLayout {
             vertical: true,
         });
 
-        this.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
+        this.add_constraint(new LayoutManager.MonitorConstraint({primary: true}));
 
         this._controls = new OverviewControls.ControlsManager();
         this.add_child(this._controls);
@@ -239,7 +239,7 @@ export class Overview extends Signals.EventEmitter {
     }
 
     _sessionUpdated() {
-        const { hasOverview } = Main.sessionMode;
+        const {hasOverview} = Main.sessionMode;
         if (!hasOverview)
             this.hide();
 
@@ -268,7 +268,7 @@ export class Overview extends Signals.EventEmitter {
 
         Main.wm.addKeybinding(
             'toggle-overview',
-            new Gio.Settings({ schema_id: WindowManager.SHELL_KEYBINDINGS_SCHEMA }),
+            new Gio.Settings({schema_id: WindowManager.SHELL_KEYBINDINGS_SCHEMA}),
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
             this.toggle.bind(this));
@@ -276,7 +276,7 @@ export class Overview extends Signals.EventEmitter {
         const swipeTracker = new SwipeTracker.SwipeTracker(global.stage,
             Clutter.Orientation.VERTICAL,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
-            { allowDrag: false, allowScroll: false });
+            {allowDrag: false, allowScroll: false});
         swipeTracker.orientation = Clutter.Orientation.VERTICAL;
         swipeTracker.connect('begin', this._gestureBegin.bind(this));
         swipeTracker.connect('update', this._gestureUpdate.bind(this));

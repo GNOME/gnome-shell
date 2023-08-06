@@ -69,7 +69,7 @@ export class WeatherClient extends Signals.EventEmitter {
         this._permStore.connectSignal('Changed',
                                       this._onPermStoreChanged.bind(this));
 
-        this._locationSettings = new Gio.Settings({ schema_id: 'org.gnome.system.location' });
+        this._locationSettings = new Gio.Settings({schema_id: 'org.gnome.system.location'});
         this._locationSettings.connect('changed::enabled',
                                        this._updateAutoLocation.bind(this));
 

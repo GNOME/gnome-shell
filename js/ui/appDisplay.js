@@ -733,7 +733,7 @@ var BaseAppView = GObject.registerClass({
         adjustment.remove_transition('value');
 
         const progress = adjustment.value / adjustment.page_size;
-        const points = Array.from({ length: this._grid.nPages }, (v, i) => i);
+        const points = Array.from({length: this._grid.nPages}, (v, i) => i);
         const size = tracker.orientation === Clutter.Orientation.VERTICAL
             ? this._grid.allocation.get_height() : this._grid.allocation.get_width();
 
@@ -794,7 +794,7 @@ var BaseAppView = GObject.registerClass({
         if (!success)
             return;
 
-        const { source } = dragEvent;
+        const {source} = dragEvent;
         const [page, position, dragLocation] =
             this._getDropTarget(x, y, source);
         const item = position !== -1
@@ -836,7 +836,7 @@ var BaseAppView = GObject.registerClass({
         if (!this._delayedMoveData)
             return;
 
-        const { source, destroyId, timeoutId  } = this._delayedMoveData;
+        const {source, destroyId, timeoutId} = this._delayedMoveData;
 
         if (timeoutId > 0)
             GLib.source_remove(timeoutId);
@@ -1032,7 +1032,7 @@ var BaseAppView = GObject.registerClass({
         if (dropTarget === this._prevPageIndicator ||
             dropTarget === this._nextPageIndicator) {
             const increment = dropTarget === this._prevPageIndicator ? -1 : 1;
-            const { currentPage, nPages } = this._grid;
+            const {currentPage, nPages} = this._grid;
             const page = Math.min(currentPage + increment, nPages);
             const position = page < nPages ? -1 : 0;
 
@@ -1040,7 +1040,7 @@ var BaseAppView = GObject.registerClass({
             this.goToPage(page);
         } else if (this._delayedMoveData) {
             // Dropped before the icon was moved
-            const { page, position } = this._delayedMoveData;
+            const {page, position} = this._delayedMoveData;
 
             this._moveItem(source, page, position);
             this._removeDelayedMove();
@@ -1094,7 +1094,7 @@ var BaseAppView = GObject.registerClass({
     }
 
     _getItemPosition(item) {
-        const { itemsPerPage } = this._grid;
+        const {itemsPerPage} = this._grid;
 
         let iconIndex = this._orderedItems.indexOf(item);
         if (iconIndex === -1)
@@ -1285,7 +1285,7 @@ var BaseAppView = GObject.registerClass({
 });
 
 const PageManager = GObject.registerClass({
-    Signals: { 'layout-changed': {} },
+    Signals: {'layout-changed': {}},
 }, class PageManager extends GObject.Object {
     _init() {
         super._init();
@@ -1376,7 +1376,7 @@ class AppDisplay extends BaseAppView {
         Shell.AppSystem.get_default().connect('installed-changed', () => {
             Main.queueDeferredWork(this._redisplayWorkId);
         });
-        this._folderSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
+        this._folderSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.app-folders'});
         this._ensureDefaultFolders();
         this._folderSettings.connect('changed::folder-children', () => {
             Main.queueDeferredWork(this._redisplayWorkId);
@@ -1441,9 +1441,9 @@ class AppDisplay extends BaseAppView {
         const folders = Object.keys(DEFAULT_FOLDERS);
         this._folderSettings.set_strv('folder-children', folders);
 
-        const { path } = this._folderSettings;
+        const {path} = this._folderSettings;
         for (const folder of folders) {
-            const { name, categories, apps } = DEFAULT_FOLDERS[folder];
+            const {name, categories, apps} = DEFAULT_FOLDERS[folder];
             const child = new Gio.Settings({
                 schema_id: 'org.gnome.desktop.app-folders.folder',
                 path: `${path}folders/${folder}/`,
@@ -1467,7 +1467,7 @@ class AppDisplay extends BaseAppView {
             global.settings.is_writable('favorite-apps') ||
             global.settings.is_writable('app-picker-layout');
 
-        this._placeholder = new AppIcon(app, { isDraggable });
+        this._placeholder = new AppIcon(app, {isDraggable});
         this._placeholder.connect('notify::pressed', icon => {
             if (icon.pressed)
                 this.updateDragFocus(icon);
@@ -1583,7 +1583,7 @@ class AppDisplay extends BaseAppView {
             if (!icon) {
                 let app = appSys.lookup_app(appId);
 
-                icon = new AppIcon(app, { isDraggable });
+                icon = new AppIcon(app, {isDraggable});
                 icon.connect('notify::pressed', () => {
                     if (icon.pressed)
                         this.updateDragFocus(icon);
@@ -1801,7 +1801,7 @@ export class AppSearchProvider {
     }
 
     getResultMetas(apps) {
-        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
         let metas = [];
         for (let id of apps) {
             if (id.endsWith('.desktop')) {
@@ -1823,7 +1823,7 @@ export class AppSearchProvider {
                     style_class: 'system-action-icon',
                 });
 
-                metas.push({ id, name, createIcon });
+                metas.push({id, name, createIcon});
             }
         }
 
@@ -1885,7 +1885,7 @@ export const AppViewItem = GObject.registerClass(
 class AppViewItem extends St.Button {
     _init(params = {}, isDraggable = true, expandTitleOnHover = true) {
         super._init({
-            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+            pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
             reactive: true,
             button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
             can_focus: true,
@@ -1895,7 +1895,7 @@ class AppViewItem extends St.Button {
         this._delegate = this;
 
         if (isDraggable) {
-            this._draggable = DND.makeDraggable(this, { timeoutThreshold: 200 });
+            this._draggable = DND.makeDraggable(this, {timeoutThreshold: 200});
 
             this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
             this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
@@ -1927,8 +1927,8 @@ class AppViewItem extends St.Button {
         if (!this._expandTitleOnHover || !this.icon.label)
             return;
 
-        const { label } = this.icon;
-        const { clutterText } = label;
+        const {label} = this.icon;
+        const {clutterText} = label;
         const layout = clutterText.get_layout();
         if (!layout.is_wrapped() && !layout.is_ellipsized())
             return;
@@ -2188,7 +2188,7 @@ class FolderView extends BaseAppView {
         let rtl = icon.get_text_direction() == Clutter.TextDirection.RTL;
         for (let i = 0; i < 4; i++) {
             const style = `width: ${subSize}px; height: ${subSize}px;`;
-            let bin = new St.Bin({ style });
+            let bin = new St.Bin({style});
             if (i < numItems)
                 bin.child = this._orderedItems[i].app.create_icon_texture(subSize);
             layout.attach(bin, rtl ? (i + 1) % 2 : i % 2, Math.floor(i / 2), 1, 1);
@@ -2288,7 +2288,7 @@ class FolderView extends BaseAppView {
             for (const key of keys)
                 this._folder.reset(key);
 
-            let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
+            let settings = new Gio.Settings({schema_id: 'org.gnome.desktop.app-folders'});
             let folders = settings.get_strv('folder-children');
             folders.splice(folders.indexOf(this._id), 1);
             settings.set_strv('folder-children', folders);
@@ -2491,7 +2491,7 @@ export const FolderIcon = GObject.registerClass({
 
 export const AppFolderDialog = GObject.registerClass({
     Signals: {
-        'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
+        'open-state-changed': {param_types: [GObject.TYPE_BOOLEAN]},
     },
 }, class AppFolderDialog extends St.Bin {
     _init(source, folder, appDisplay) {
@@ -2502,7 +2502,7 @@ export const AppFolderDialog = GObject.registerClass({
             reactive: true,
         });
 
-        this.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        this.add_constraint(new Layout.MonitorConstraint({primary: true}));
 
         const clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', () => {
@@ -2784,7 +2784,7 @@ export const AppFolderDialog = GObject.registerClass({
     _onDestroy() {
         if (this._isOpen) {
             this._isOpen = false;
-            this._grabHelper.ungrab({ actor: this });
+            this._grabHelper.ungrab({actor: this});
             this._grabHelper = null;
         }
 
@@ -2865,7 +2865,7 @@ export const AppFolderDialog = GObject.registerClass({
 
     _withinDialog(x, y) {
         const childExtents = this.child.get_transformed_extents();
-        return childExtents.contains_point(new Graphene.Point({ x, y }));
+        return childExtents.contains_point(new Graphene.Point({x, y}));
     }
 
     _setupDragMonitor() {
@@ -2969,26 +2969,26 @@ export const AppFolderDialog = GObject.registerClass({
         this._showFolderLabel();
 
         this._isOpen = false;
-        this._grabHelper.ungrab({ actor: this });
+        this._grabHelper.ungrab({actor: this});
         this.emit('open-state-changed', false);
     }
 });
 
 export const AppIcon = GObject.registerClass({
     Signals: {
-        'menu-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
+        'menu-state-changed': {param_types: [GObject.TYPE_BOOLEAN]},
         'sync-tooltip': {},
     },
 }, class AppIcon extends AppViewItem {
     _init(app, iconParams = {}) {
         // Get the isDraggable property without passing it on to the BaseIcon:
-        const appIconParams = Params.parse(iconParams, { isDraggable: true }, true);
+        const appIconParams = Params.parse(iconParams, {isDraggable: true}, true);
         const isDraggable = appIconParams['isDraggable'];
         delete iconParams['isDraggable'];
         const expandTitleOnHover = appIconParams['expandTitleOnHover'];
         delete iconParams['expandTitleOnHover'];
 
-        super._init({ style_class: 'app-well-app' }, isDraggable, expandTitleOnHover);
+        super._init({style_class: 'app-well-app'}, isDraggable, expandTitleOnHover);
 
         this.app = app;
         this._id = app.get_id();
@@ -3185,7 +3185,7 @@ export const AppIcon = GObject.registerClass({
     }
 
     shellWorkspaceLaunch(params) {
-        let { stack } = new Error();
+        let {stack} = new Error();
         log(`shellWorkspaceLaunch is deprecated, use app.open_new_window() instead\n${stack}`);
 
         params = Params.parse(params, {

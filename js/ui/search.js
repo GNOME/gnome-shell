@@ -136,7 +136,7 @@ class GridSearchResult extends SearchResult {
         this.style_class = 'grid-search-result';
 
         this.icon = new IconGrid.BaseIcon(this.metaInfo['name'],
-                                          { createIcon: this.metaInfo['createIcon'] });
+                                          {createIcon: this.metaInfo['createIcon']});
         let content = new St.Bin({
             child: this.icon,
             x_align: Clutter.ActorAlign.START,
@@ -158,7 +158,7 @@ const SearchResultsBase = GObject.registerClass({
     },
 }, class SearchResultsBase extends St.BoxLayout {
     _init(provider, resultsView) {
-        super._init({ style_class: 'search-section', vertical: true });
+        super._init({style_class: 'search-section', vertical: true});
 
         this.provider = provider;
         this._resultsView = resultsView;
@@ -169,7 +169,7 @@ const SearchResultsBase = GObject.registerClass({
         this._resultDisplayBin = new St.Bin();
         this.add_child(this._resultDisplayBin);
 
-        let separator = new St.Widget({ style_class: 'search-section-separator' });
+        let separator = new St.Widget({style_class: 'search-section-separator'});
         this.add(separator);
 
         this._resultDisplays = {};
@@ -285,7 +285,7 @@ class ListSearchResults extends SearchResultsBase {
     _init(provider, resultsView) {
         super._init(provider, resultsView);
 
-        this._container = new St.BoxLayout({ style_class: 'search-section-content' });
+        this._container = new St.BoxLayout({style_class: 'search-section-content'});
         this.providerInfo = new ProviderInfo(provider);
         this.providerInfo.connect('key-focus-in', this._keyFocusIn.bind(this));
         this.providerInfo.connect('clicked', () => {
@@ -459,7 +459,7 @@ class GridSearchResults extends SearchResultsBase {
     _init(provider, resultsView) {
         super._init(provider, resultsView);
 
-        this._grid = new St.Widget({ style_class: 'grid-search-results' });
+        this._grid = new St.Widget({style_class: 'grid-search-results'});
         this._grid.layout_manager = new GridSearchResultsLayout();
 
         this._grid.connect('style-changed', () => {
@@ -567,7 +567,7 @@ export const SearchResultsView = GObject.registerClass({
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         this._scrollView.add_actor(this._content);
 
-        let action = new Clutter.PanAction({ interpolate: true });
+        let action = new Clutter.PanAction({interpolate: true});
         action.connect('pan', this._onPan.bind(this));
         this._scrollView.add_action(action);
 
@@ -578,7 +578,7 @@ export const SearchResultsView = GObject.registerClass({
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
         });
-        this._statusBin = new St.Bin({ y_expand: true });
+        this._statusBin = new St.Bin({y_expand: true});
         this.add_child(this._statusBin);
         this._statusBin.add_actor(this._statusText);
 
@@ -593,7 +593,7 @@ export const SearchResultsView = GObject.registerClass({
 
         this._highlighter = new Highlighter();
 
-        this._searchSettings = new Gio.Settings({ schema_id: SEARCH_PROVIDERS_SCHEMA });
+        this._searchSettings = new Gio.Settings({schema_id: SEARCH_PROVIDERS_SCHEMA});
         this._searchSettings.connect('changed::disabled', this._reloadRemoteProviders.bind(this));
         this._searchSettings.connect('changed::enabled', this._reloadRemoteProviders.bind(this));
         this._searchSettings.connect('changed::disable-external', this._reloadRemoteProviders.bind(this));
@@ -925,7 +925,7 @@ class ProviderInfo extends St.Button {
             x_align: Clutter.ActorAlign.START,
         });
 
-        this._moreLabel = new St.Label({ x_align: Clutter.ActorAlign.START });
+        this._moreLabel = new St.Label({x_align: Clutter.ActorAlign.START});
 
         detailsBox.add_actor(nameLabel);
         detailsBox.add_actor(this._moreLabel);

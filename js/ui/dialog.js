@@ -58,7 +58,7 @@ class Dialog extends St.Widget {
         this._dialog.add_child(this.contentLayout);
 
         this.buttonLayout = new St.Widget({
-            layout_manager: new Clutter.BoxLayout({ homogeneous: true }),
+            layout_manager: new Clutter.BoxLayout({homogeneous: true}),
         });
         this._dialog.add_child(this.buttonLayout);
     }
@@ -86,7 +86,7 @@ class Dialog extends St.Widget {
             if (!buttonInfo)
                 return Clutter.EVENT_PROPAGATE;
 
-            let { button, action } = buttonInfo;
+            let {button, action} = buttonInfo;
 
             if (action && button.reactive) {
                 action();
@@ -111,7 +111,7 @@ class Dialog extends St.Widget {
     }
 
     addButton(buttonInfo) {
-        let { label, action, key } = buttonInfo;
+        let {label, action, key} = buttonInfo;
         let isDefault = buttonInfo['default'];
         let keys;
 
@@ -170,8 +170,8 @@ export const MessageDialogContent = GObject.registerClass({
     },
 }, class MessageDialogContent extends St.BoxLayout {
     _init(params) {
-        this._title = new St.Label({ style_class: 'message-dialog-title' });
-        this._description = new St.Label({ style_class: 'message-dialog-description' });
+        this._title = new St.Label({style_class: 'message-dialog-title'});
+        this._description = new St.Label({style_class: 'message-dialog-description'});
 
         this._description.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._description.clutter_text.line_wrap = true;
@@ -257,7 +257,7 @@ export const ListSection = GObject.registerClass({
     },
 }, class ListSection extends St.BoxLayout {
     _init(params) {
-        this._title = new St.Label({ style_class: 'dialog-list-title' });
+        this._title = new St.Label({style_class: 'dialog-list-title'});
 
         this._listScrollView = new St.ScrollView({
             style_class: 'dialog-list-scrollview',
@@ -319,7 +319,7 @@ export const ListSectionItem = GObject.registerClass({
             y_align: Clutter.ActorAlign.CENTER,
         });
 
-        this._title = new St.Label({ style_class: 'dialog-list-item-title' });
+        this._title = new St.Label({style_class: 'dialog-list-item-title'});
 
         this._description = new St.Label({
             style_class: 'dialog-list-item-title-description',
@@ -328,7 +328,7 @@ export const ListSectionItem = GObject.registerClass({
         textLayout.add_child(this._title);
         textLayout.add_child(this._description);
 
-        let defaultParams = { style_class: 'dialog-list-item' };
+        let defaultParams = {style_class: 'dialog-list-item'};
         super._init(Object.assign(defaultParams, params));
 
         this.label_actor = this._title;

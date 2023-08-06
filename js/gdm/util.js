@@ -99,7 +99,7 @@ export function cloneAndFadeOutActor(actor) {
 export class ShellUserVerifier extends Signals.EventEmitter {
     constructor(client, params) {
         super();
-        params = Params.parse(params, { reauthenticationOnly: false });
+        params = Params.parse(params, {reauthenticationOnly: false});
         this._reauthOnly = params.reauthenticationOnly;
 
         this._client = client;
@@ -107,7 +107,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._defaultService = null;
         this._preemptingService = null;
 
-        this._settings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
+        this._settings = new Gio.Settings({schema_id: LOGIN_SCREEN_SCHEMA});
         this._settings.connect('changed',
                                this._updateDefaultService.bind(this));
         this._updateDefaultService();
@@ -316,7 +316,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     _queueMessage(serviceName, message, messageType) {
         let interval = this._getIntervalForMessage(message);
 
-        this._messageQueue.push({ serviceName, text: message, type: messageType, interval });
+        this._messageQueue.push({serviceName, text: message, type: messageType, interval});
         this._queueMessageTimeout();
     }
 

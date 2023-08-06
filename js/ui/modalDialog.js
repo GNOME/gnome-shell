@@ -32,7 +32,7 @@ export const ModalDialog = GObject.registerClass({
                                        Math.max(...Object.values(State)),
                                        State.CLOSED),
     },
-    Signals: { 'opened': {}, 'closed': {} },
+    Signals: {'opened': {}, 'closed': {}},
 }, class ModalDialog extends St.Widget {
     _init(params) {
         super._init({
@@ -73,7 +73,7 @@ export const ModalDialog = GObject.registerClass({
             x_expand: true,
             y_expand: true,
         });
-        this._backgroundBin = new St.Bin({ child: this.backgroundStack });
+        this._backgroundBin = new St.Bin({child: this.backgroundStack});
         this._monitorConstraint = new Layout.MonitorConstraint();
         this._backgroundBin.add_constraint(this._monitorConstraint);
         this.add_actor(this._backgroundBin);
@@ -89,7 +89,7 @@ export const ModalDialog = GObject.registerClass({
             });
             this._lightbox.highlight(this._backgroundBin);
 
-            this._eventBlocker = new Clutter.Actor({ reactive: true });
+            this._eventBlocker = new Clutter.Actor({reactive: true});
             this.backgroundStack.add_actor(this._eventBlocker);
         }
 
@@ -237,7 +237,7 @@ export const ModalDialog = GObject.registerClass({
         if (this._hasModal)
             return true;
 
-        let params = { actionMode: this._actionMode };
+        let params = {actionMode: this._actionMode};
         if (timestamp)
             params['timestamp'] = timestamp;
         let grab = Main.pushModal(this, params);

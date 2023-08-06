@@ -184,7 +184,7 @@ class UnalignedLayoutStrategy extends LayoutStrategy {
     }
 
     _computeRowSizes(layout) {
-        let { rows, scale } = layout;
+        let {rows, scale} = layout;
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
             row.width = row.fullWidth * scale + (row.windows.length - 1) * this._columnSpacing;
@@ -304,7 +304,7 @@ class UnalignedLayoutStrategy extends LayoutStrategy {
     computeWindowSlots(layout, area) {
         this._computeRowSizes(layout);
 
-        let { rows, scale } = layout;
+        let {rows, scale} = layout;
 
         let slots = [];
 
@@ -453,7 +453,7 @@ export const WorkspaceLayout = GObject.registerClass({
     }
 
     _syncOpacities() {
-        this._windows.forEach(({ metaWindow }, actor) => {
+        this._windows.forEach(({metaWindow}, actor) => {
             this._syncOpacity(actor, metaWindow);
         });
     }
@@ -499,7 +499,7 @@ export const WorkspaceLayout = GObject.registerClass({
         if (containerBox) {
             const monitor = Main.layoutManager.monitors[this._monitorIndex];
 
-            const bottomPoint = new Graphene.Point3D({ y: containerBox.y2 });
+            const bottomPoint = new Graphene.Point3D({y: containerBox.y2});
             const transformedBottomPoint =
                 this._container.apply_transform_to_point(bottomPoint);
             const bottomFreeSpace =
@@ -646,8 +646,8 @@ export const WorkspaceLayout = GObject.registerClass({
             this.notify('layout-frozen');
         }
 
-        const { ControlsState } = OverviewControls;
-        const { currentState } =
+        const {ControlsState} = OverviewControls;
+        const {currentState} =
             this._overviewAdjustment.getStateTransitionParams();
         const inSessionTransition = currentState <= ControlsState.WINDOW_PICKER;
 
@@ -1005,7 +1005,7 @@ class WorkspaceBackground extends Shell.WorkspaceBackground {
     }
 
     _updateBorderRadius() {
-        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
         const cornerRadius = scaleFactor * BACKGROUND_CORNER_RADIUS_PIXELS;
 
         const backgroundContent = this._bgManager.backgroundActor.content;
@@ -1041,7 +1041,7 @@ class Workspace extends St.Widget {
     _init(metaWorkspace, monitorIndex, overviewAdjustment) {
         super._init({
             style_class: 'window-picker',
-            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+            pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
             layout_manager: new Clutter.BinLayout(),
         });
 

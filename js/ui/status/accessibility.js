@@ -40,7 +40,7 @@ class ATIndicator extends PanelMenu.Button {
             icon_name: 'org.gnome.Settings-accessibility-symbolic',
         }));
 
-        this._a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
+        this._a11ySettings = new Gio.Settings({schema_id: A11Y_SCHEMA});
         this._a11ySettings.connect(`changed::${KEY_ALWAYS_SHOW}`, this._queueSyncMenuVisibility.bind(this));
 
         let highContrast = this._buildItem(_('High Contrast'), A11Y_INTERFACE_SCHEMA, KEY_HIGH_CONTRAST);
@@ -115,7 +115,7 @@ class ATIndicator extends PanelMenu.Button {
     }
 
     _buildItem(string, schema, key) {
-        let settings = new Gio.Settings({ schema_id: schema });
+        let settings = new Gio.Settings({schema_id: schema});
         let widget = this._buildItemExtended(string,
             settings.get_boolean(key),
             settings.is_writable(key),
@@ -131,7 +131,7 @@ class ATIndicator extends PanelMenu.Button {
     }
 
     _buildFontItem() {
-        let settings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
+        let settings = new Gio.Settings({schema_id: DESKTOP_INTERFACE_SCHEMA});
         let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
         let initialSetting = factor > 1.0;
         let widget = this._buildItemExtended(_('Large Text'),

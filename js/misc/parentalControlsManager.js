@@ -76,7 +76,7 @@ const ParentalControlsManager = GObject.registerClass({
 
         try {
             const connection = await Gio.DBus.get(Gio.BusType.SYSTEM, null);
-            this._manager = new Malcontent.Manager({ connection });
+            this._manager = new Malcontent.Manager({connection});
             this._appFilter = await this._getAppFilter();
         } catch (e) {
             logError(e, 'Failed to get parental controls settings');

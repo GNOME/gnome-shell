@@ -12,7 +12,7 @@ import * as Main from './main.js';
 const OsdMonitorLabel = GObject.registerClass(
 class OsdMonitorLabel extends St.Widget {
     _init(monitor, label) {
-        super._init({ x_expand: true, y_expand: true });
+        super._init({x_expand: true, y_expand: true});
 
         this._monitor = monitor;
 

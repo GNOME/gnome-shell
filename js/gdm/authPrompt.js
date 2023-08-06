@@ -51,7 +51,7 @@ export const AuthPrompt = GObject.registerClass({
         'failed': {},
         'next': {},
         'prompted': {},
-        'reset': { param_types: [GObject.TYPE_UINT] },
+        'reset': {param_types: [GObject.TYPE_UINT]},
     },
 }, class AuthPrompt extends St.BoxLayout {
     _init(gdmClient, mode) {
@@ -76,7 +76,7 @@ export const AuthPrompt = GObject.registerClass({
         else if (this._mode == AuthPromptMode.UNLOCK_OR_LOG_IN)
             reauthenticationOnly = false;
 
-        this._userVerifier = new GdmUtil.ShellUserVerifier(this._gdmClient, { reauthenticationOnly });
+        this._userVerifier = new GdmUtil.ShellUserVerifier(this._gdmClient, {reauthenticationOnly});
 
         this._userVerifier.connect('ask-question', this._onAskQuestion.bind(this));
         this._userVerifier.connect('show-message', this._onShowMessage.bind(this));

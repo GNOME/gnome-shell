@@ -106,7 +106,7 @@ export const EventSourceBase = GObject.registerClass({
             GObject.ParamFlags.READABLE,
             false),
     },
-    Signals: { 'changed': {} },
+    Signals: {'changed': {}},
 }, class EventSourceBase extends GObject.Object {
     /**
      * @returns {boolean}
@@ -405,17 +405,17 @@ class DBusEventSource extends EventSourceBase {
         let dayBegin = _getBeginningOfDay(day);
         let dayEnd = _getEndOfDay(day);
 
-        const { done } = this._getFilteredEvents(dayBegin, dayEnd).next();
+        const {done} = this._getFilteredEvents(dayBegin, dayEnd).next();
         return !done;
     }
 });
 
 export const Calendar = GObject.registerClass({
-    Signals: { 'selected-date-changed': { param_types: [GLib.DateTime.$gtype] } },
+    Signals: {'selected-date-changed': {param_types: [GLib.DateTime.$gtype]}},
 }, class Calendar extends St.Widget {
     _init() {
         this._weekStart = Shell.util_get_week_start();
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.calendar' });
+        this._settings = new Gio.Settings({schema_id: 'org.gnome.desktop.calendar'});
 
         this._settings.connect(`changed::${SHOW_WEEKDATE_KEY}`, this._onSettingsChange.bind(this));
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
@@ -491,7 +491,7 @@ export const Calendar = GObject.registerClass({
         this.destroy_all_children();
 
         // Top line of the calendar '<| September 2009 |>'
-        this._topBox = new St.BoxLayout({ style_class: 'calendar-month-header' });
+        this._topBox = new St.BoxLayout({style_class: 'calendar-month-header'});
         layout.attach(this._topBox, 0, 0, offsetCols + 7, 1);
 
         this._backButton = new St.Button({
@@ -898,13 +898,13 @@ class NotificationSection extends MessageList.MessageListSection {
 const Placeholder = GObject.registerClass(
 class Placeholder extends St.BoxLayout {
     _init() {
-        super._init({ style_class: 'message-list-placeholder', vertical: true });
+        super._init({style_class: 'message-list-placeholder', vertical: true});
         this._date = new Date();
 
-        this._icon = new St.Icon({ icon_name: 'no-notifications-symbolic' });
+        this._icon = new St.Icon({icon_name: 'no-notifications-symbolic'});
         this.add_actor(this._icon);
 
-        this._label = new St.Label({ text: _('No Notifications') });
+        this._label = new St.Label({text: _('No Notifications')});
         this.add_actor(this._label);
     }
 });
@@ -957,7 +957,7 @@ class CalendarMessageList extends St.Widget {
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         box.add_actor(this._scrollView);
 
-        let hbox = new St.BoxLayout({ style_class: 'message-list-controls' });
+        let hbox = new St.BoxLayout({style_class: 'message-list-controls'});
         box.add_child(hbox);
 
         const dndLabel = new St.Label({

@@ -363,7 +363,7 @@ export const Message = GObject.registerClass({
         let titleBox = new St.BoxLayout();
         contentBox.add_actor(titleBox);
 
-        this.titleLabel = new St.Label({ style_class: 'message-title' });
+        this.titleLabel = new St.Label({style_class: 'message-title'});
         this.setTitle(title);
         titleBox.add_actor(this.titleLabel);
 
@@ -381,7 +381,7 @@ export const Message = GObject.registerClass({
         });
         titleBox.add_actor(this._closeButton);
 
-        this._bodyStack = new St.Widget({ x_expand: true });
+        this._bodyStack = new St.Widget({x_expand: true});
         this._bodyStack.layout_manager = new LabelExpanderLayout();
         contentBox.add_actor(this._bodyStack);
 
@@ -569,7 +569,7 @@ export const MessageListSection = GObject.registerClass({
     Signals: {
         'can-clear-changed': {},
         'empty-changed': {},
-        'message-focused': { param_types: [Message.$gtype] },
+        'message-focused': {param_types: [Message.$gtype]},
     },
 }, class MessageListSection extends St.BoxLayout {
     _init() {
@@ -628,7 +628,7 @@ export const MessageListSection = GObject.registerClass({
         let listItem = new St.Bin({
             child: message,
             layout_manager: new ScaleLayout(),
-            pivot_point: new Graphene.Point({ x: .5, y: .5 }),
+            pivot_point: new Graphene.Point({x: .5, y: .5}),
         });
         listItem._connectionsIds = [];
 
@@ -645,7 +645,7 @@ export const MessageListSection = GObject.registerClass({
         this._list.insert_child_at_index(listItem, index);
 
         if (animate) {
-            listItem.set({ scale_x: 0, scale_y: 0 });
+            listItem.set({scale_x: 0, scale_y: 0});
             listItem.ease({
                 scale_x: 1,
                 scale_y: 1,

@@ -75,7 +75,7 @@ const GeoclueAgent = GObject.registerClass({
     _init() {
         super._init();
 
-        this._settings = new Gio.Settings({ schema_id: LOCATION_SCHEMA });
+        this._settings = new Gio.Settings({schema_id: LOCATION_SCHEMA});
         this._settings.connectObject(
             `changed::${ENABLED}`, () => this.notify('enabled'),
             `changed::${MAX_ACCURACY_LEVEL}`, () => this._onMaxAccuracyLevelChanged(),
@@ -329,10 +329,10 @@ class AppAuthorizer {
 }
 
 export const GeolocationDialog = GObject.registerClass({
-    Signals: { 'response': { param_types: [GObject.TYPE_UINT] } },
+    Signals: {'response': {param_types: [GObject.TYPE_UINT]}},
 }, class GeolocationDialog extends ModalDialog.ModalDialog {
     _init(name, reason, reqAccuracyLevel) {
-        super._init({ styleClass: 'geolocation-dialog' });
+        super._init({styleClass: 'geolocation-dialog'});
         this.reqAccuracyLevel = reqAccuracyLevel;
 
         let content = new Dialog.MessageDialogContent({

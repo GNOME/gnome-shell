@@ -56,11 +56,11 @@ export const WindowClone = GObject.registerClass({
         'drag-begin': {},
         'drag-cancelled': {},
         'drag-end': {},
-        'selected': { param_types: [GObject.TYPE_UINT] },
+        'selected': {param_types: [GObject.TYPE_UINT]},
     },
 }, class WindowClone extends Clutter.Actor {
     _init(realWindow) {
-        let clone = new Clutter.Clone({ source: realWindow });
+        let clone = new Clutter.Clone({source: realWindow});
         super._init({
             layout_manager: new PrimaryActorLayout(clone),
             reactive: true,
@@ -151,7 +151,7 @@ export const WindowClone = GObject.registerClass({
     }
 
     _doAddAttachedDialog(metaDialog, realDialog) {
-        let clone = new Clutter.Clone({ source: realDialog });
+        let clone = new Clutter.Clone({source: realDialog});
         this._updateDialogPosition(realDialog, clone);
 
         realDialog.connectObject(
@@ -242,7 +242,7 @@ export const WorkspaceThumbnail = GObject.registerClass({
         super._init({
             clip_to_allocation: true,
             style_class: 'workspace-thumbnail',
-            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+            pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
         });
         this._delegate = this;
 
@@ -593,12 +593,12 @@ export const ThumbnailsBox = GObject.registerClass({
             style_class: 'workspace-thumbnails',
             reactive: true,
             x_align: Clutter.ActorAlign.CENTER,
-            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+            pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
         });
 
         this._delegate = this;
 
-        let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator' });
+        let indicator = new St.Bin({style_class: 'workspace-thumbnail-indicator'});
 
         // We don't want the indicator to affect drag-and-drop
         Shell.util_set_hidden_from_pick(indicator, true);
@@ -610,7 +610,7 @@ export const ThumbnailsBox = GObject.registerClass({
 
         this._dropWorkspace = -1;
         this._dropPlaceholderPos = -1;
-        this._dropPlaceholder = new St.Bin({ style_class: 'placeholder' });
+        this._dropPlaceholder = new St.Bin({style_class: 'placeholder'});
         this.add_actor(this._dropPlaceholder);
         this._spliceIndex = -1;
 
@@ -647,7 +647,7 @@ export const ThumbnailsBox = GObject.registerClass({
             'window-drag-end', () => this._onDragEnd(),
             'window-drag-cancelled', () => this._onDragCancelled(), this);
 
-        this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
+        this._settings = new Gio.Settings({schema_id: MUTTER_SCHEMA});
         this._settings.connect('changed::dynamic-workspaces',
             () => this._updateShouldShow());
         this._updateShouldShow();
@@ -688,7 +688,7 @@ export const ThumbnailsBox = GObject.registerClass({
     }
 
     _updateShouldShow() {
-        const { nWorkspaces } = global.workspace_manager;
+        const {nWorkspaces} = global.workspace_manager;
         const shouldShow = this._settings.get_boolean('dynamic-workspaces')
             ? nWorkspaces > NUM_WORKSPACES_THRESHOLD
             : nWorkspaces > 1;
@@ -701,8 +701,8 @@ export const ThumbnailsBox = GObject.registerClass({
     }
 
     _updateIndicator() {
-        const { value } = this._scrollAdjustment;
-        const { workspaceManager } = global;
+        const {value} = this._scrollAdjustment;
+        const {workspaceManager} = global;
         const activeIndex = workspaceManager.get_active_workspace_index();
 
         this._animatingIndicator = value !== activeIndex;
@@ -926,7 +926,7 @@ export const ThumbnailsBox = GObject.registerClass({
         if (this._thumbnails.length > 0)
             return;
 
-        const { workspaceManager } = global;
+        const {workspaceManager} = global;
         this._transientSignalHolder = new TransientSignalHolder(this);
         workspaceManager.connectObject(
             'notify::n-workspaces', this._workspacesChanged.bind(this),
@@ -1230,8 +1230,8 @@ export const ThumbnailsBox = GObject.registerClass({
 
     _updatePorthole() {
         if (!Main.layoutManager.monitors[this._monitorIndex]) {
-            const { x, y, width, height } = global.stage;
-            this._porthole = { x, y, width, height };
+            const {x, y, width, height} = global.stage;
+            this._porthole = {x, y, width, height};
         } else {
             this._porthole =
                 Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);

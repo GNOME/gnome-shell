@@ -25,7 +25,7 @@ class OsdWindow extends Clutter.Actor {
         });
 
         this._monitorIndex = monitorIndex;
-        let constraint = new Layout.MonitorConstraint({ index: monitorIndex });
+        let constraint = new Layout.MonitorConstraint({index: monitorIndex});
         this.add_constraint(constraint);
 
         this._hbox = new St.BoxLayout({
@@ -33,7 +33,7 @@ class OsdWindow extends Clutter.Actor {
         });
         this.add_actor(this._hbox);
 
-        this._icon = new St.Icon({ y_expand: true });
+        this._icon = new St.Icon({y_expand: true});
         this._hbox.add_child(this._icon);
 
         this._vbox = new St.BoxLayout({

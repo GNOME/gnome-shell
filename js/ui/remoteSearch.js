@@ -237,7 +237,7 @@ class RemoteSearchProvider {
         }
 
         if (gicon)
-            icon = new St.Icon({ gicon, icon_size: size });
+            icon = new St.Icon({gicon, icon_size: size});
         return icon;
     }
 

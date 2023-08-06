@@ -41,8 +41,8 @@ const CandidateArea = GObject.registerClass({
                 reactive: true,
                 track_hover: true,
             });
-            box._indexLabel = new St.Label({ style_class: 'candidate-index' });
-            box._candidateLabel = new St.Label({ style_class: 'candidate-label' });
+            box._indexLabel = new St.Label({style_class: 'candidate-index'});
+            box._candidateLabel = new St.Label({style_class: 'candidate-label'});
             box.add_child(box._indexLabel);
             box.add_child(box._candidateLabel);
             this._candidateBoxes.push(box);
@@ -55,7 +55,7 @@ const CandidateArea = GObject.registerClass({
             });
         }
 
-        this._buttonBox = new St.BoxLayout({ style_class: 'candidate-page-button-box' });
+        this._buttonBox = new St.BoxLayout({style_class: 'candidate-page-button-box'});
 
         this._previousButton = new St.Button({
             style_class: 'candidate-page-button candidate-page-button-previous button',
@@ -152,7 +152,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
         this.visible = false;
         this.style_class = 'candidate-popup-boxpointer';
 
-        this._dummyCursor = new Clutter.Actor({ opacity: 0 });
+        this._dummyCursor = new Clutter.Actor({opacity: 0});
         Main.layoutManager.uiGroup.add_actor(this._dummyCursor);
 
         Main.layoutManager.addTopChrome(this);
@@ -328,7 +328,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
             // so don't raise to the top.
             // The on-screen keyboard is expected to be above any entries,
             // so just above the keyboard gets us to the right layer.
-            const { keyboardBox } = Main.layoutManager;
+            const {keyboardBox} = Main.layoutManager;
             this.get_parent().set_child_above_sibling(this, keyboardBox);
         } else {
             this.close(BoxPointer.PopupAnimation.NONE);

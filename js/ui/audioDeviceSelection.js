@@ -21,10 +21,10 @@ const AudioDevice = {
 const AudioDeviceSelectionIface = loadInterfaceXML('org.gnome.Shell.AudioDeviceSelection');
 
 const AudioDeviceSelectionDialog = GObject.registerClass({
-    Signals: { 'device-selected': { param_types: [GObject.TYPE_UINT] } },
+    Signals: {'device-selected': {param_types: [GObject.TYPE_UINT]}},
 }, class AudioDeviceSelectionDialog extends ModalDialog.ModalDialog {
     _init(devices) {
-        super._init({ styleClass: 'audio-device-selection-dialog' });
+        super._init({styleClass: 'audio-device-selection-dialog'});
 
         this._deviceItems = {};
 

@@ -67,7 +67,7 @@ class KeyboardManager {
             this._currentKeymap.options == options)
             return;
 
-        this._currentKeymap = { layouts, variants, options };
+        this._currentKeymap = {layouts, variants, options};
         global.backend.set_keymap(layouts, variants, options);
     }
 
@@ -106,7 +106,7 @@ class KeyboardManager {
         for (let i = 0; i < ids.length; ++i) {
             let [found, , , _layout, _variant] = this._xkbInfo.get_layout_info(ids[i]);
             if (found)
-                this._layoutInfos[ids[i]] = { id: ids[i], layout: _layout, variant: _variant };
+                this._layoutInfos[ids[i]] = {id: ids[i], layout: _layout, variant: _variant};
         }
 
         let i = 0;
@@ -142,9 +142,9 @@ class KeyboardManager {
         let _layout, _variant;
         [found, , , _layout, _variant] = this._xkbInfo.get_layout_info(id);
         if (found)
-            return { layout: _layout, variant: _variant };
+            return {layout: _layout, variant: _variant};
         else
-            return { layout: DEFAULT_LAYOUT, variant: DEFAULT_VARIANT };
+            return {layout: DEFAULT_LAYOUT, variant: DEFAULT_VARIANT};
     }
 
     _buildGroupStrings(_group) {

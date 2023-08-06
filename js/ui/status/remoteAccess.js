@@ -66,7 +66,7 @@ class RemoteAccessApplet extends SystemIndicator {
 });
 
 export const ScreenRecordingIndicator = GObject.registerClass({
-    Signals: { 'menu-set': {} },
+    Signals: {'menu-set': {}},
 }, class ScreenRecordingIndicator extends PanelMenu.ButtonBox {
     _init() {
         super._init({

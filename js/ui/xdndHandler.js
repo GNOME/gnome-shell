@@ -15,7 +15,7 @@ export class XdndHandler extends Signals.EventEmitter {
         this._cursorWindowClone = null;
 
         // Used as a drag actor in case we don't have a cursor window clone
-        this._dummy = new Clutter.Actor({ width: 1, height: 1, opacity: 0 });
+        this._dummy = new Clutter.Actor({width: 1, height: 1, opacity: 0});
         Main.uiGroup.add_actor(this._dummy);
         this._dummy.hide();
 
@@ -60,7 +60,7 @@ export class XdndHandler extends Signals.EventEmitter {
                 source: cursorWindow,
             });
 
-            this._cursorWindowClone = new Clutter.Clone({ source: cursorWindow });
+            this._cursorWindowClone = new Clutter.Clone({source: cursorWindow});
             Main.uiGroup.add_actor(this._cursorWindowClone);
 
             // Make sure that the clone has the same position as the source

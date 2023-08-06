@@ -68,7 +68,7 @@ const EventHistory = class {
     append(time, delta) {
         this.trim(time);
 
-        this._data.push({ time, delta });
+        this._data.push({time, delta});
     }
 
     calculateVelocity() {
@@ -100,9 +100,9 @@ const TouchpadSwipeGesture = GObject.registerClass({
             Clutter.Orientation, Clutter.Orientation.HORIZONTAL),
     },
     Signals: {
-        'begin':  { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
-        'update': { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
-        'end':    { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE] },
+        'begin':  {param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE]},
+        'update': {param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE]},
+        'end':    {param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE]},
     },
 }, class TouchpadSwipeGesture extends GObject.Object {
     _init(allowedModes) {
@@ -222,10 +222,10 @@ const TouchSwipeGesture = GObject.registerClass({
             Clutter.Orientation, Clutter.Orientation.HORIZONTAL),
     },
     Signals: {
-        'begin':  { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
-        'update': { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
-        'end':    { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE] },
-        'cancel': { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE] },
+        'begin':  {param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE]},
+        'update': {param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE]},
+        'end':    {param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE]},
+        'cancel': {param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE]},
     },
 }, class TouchSwipeGesture extends Clutter.GestureAction {
     _init(allowedModes, nTouchPoints, thresholdTriggerEdge) {
@@ -317,9 +317,9 @@ const ScrollGesture = GObject.registerClass({
             Clutter.ModifierType, 0),
     },
     Signals: {
-        'begin':  { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
-        'update': { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
-        'end':    { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE] },
+        'begin':  {param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE]},
+        'update': {param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE]},
+        'end':    {param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE]},
     },
 }, class ScrollGesture extends GObject.Object {
     _init(actor, allowedModes) {
@@ -453,14 +453,14 @@ export const SwipeTracker = GObject.registerClass({
             Clutter.ModifierType, 0),
     },
     Signals: {
-        'begin':  { param_types: [GObject.TYPE_UINT] },
-        'update': { param_types: [GObject.TYPE_DOUBLE] },
-        'end':    { param_types: [GObject.TYPE_UINT64, GObject.TYPE_DOUBLE] },
+        'begin':  {param_types: [GObject.TYPE_UINT]},
+        'update': {param_types: [GObject.TYPE_DOUBLE]},
+        'end':    {param_types: [GObject.TYPE_UINT64, GObject.TYPE_DOUBLE]},
     },
 }, class SwipeTracker extends GObject.Object {
     _init(actor, orientation, allowedModes, params) {
         super._init();
-        params = Params.parse(params, { allowDrag: true, allowScroll: true });
+        params = Params.parse(params, {allowDrag: true, allowScroll: true});
 
         this.orientation = orientation;
         this._allowedModes = allowedModes;
@@ -595,7 +595,7 @@ export const SwipeTracker = GObject.registerClass({
 
         this._history.append(time, 0);
 
-        let rect = new Meta.Rectangle({ x, y, width: 1, height: 1 });
+        let rect = new Meta.Rectangle({x, y, width: 1, height: 1});
         let monitor = global.display.get_monitor_index_for_rect(rect);
 
         this.emit('begin', monitor);

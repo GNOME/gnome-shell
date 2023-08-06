@@ -11,7 +11,7 @@ const INDICATOR_INACTIVE_SCALE = 2 / 3;
 const INDICATOR_INACTIVE_SCALE_PRESSED = 0.5;
 
 export const PageIndicators = GObject.registerClass({
-    Signals: { 'page-activated': { param_types: [GObject.TYPE_INT] } },
+    Signals: {'page-activated': {param_types: [GObject.TYPE_INT]}},
 }, class PageIndicators extends St.BoxLayout {
     _init(orientation = Clutter.Orientation.VERTICAL) {
         let vertical = orientation == Clutter.Orientation.VERTICAL;
@@ -65,7 +65,7 @@ export const PageIndicators = GObject.registerClass({
                 });
                 indicator.child = new St.Widget({
                     style_class: 'page-indicator-icon',
-                    pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+                    pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
                 });
                 indicator.connect('clicked', () => {
                     this.emit('page-activated', pageIndex);

@@ -23,7 +23,7 @@ class WorkspaceSwitcherPopup extends Clutter.Actor {
             y_align: Clutter.ActorAlign.END,
         });
 
-        const constraint = new Layout.MonitorConstraint({ primary: true });
+        const constraint = new Layout.MonitorConstraint({primary: true});
         this.add_constraint(constraint);
 
         Main.uiGroup.add_actor(this);

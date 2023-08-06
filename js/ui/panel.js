@@ -68,13 +68,13 @@ const AppMenuButton = GObject.registerClass({
         this._menuManager = panel.menuManager;
         this._targetApp = null;
 
-        let bin = new St.Bin({ name: 'appMenu' });
+        let bin = new St.Bin({name: 'appMenu'});
         this.add_actor(bin);
 
         this.bind_property('reactive', this, 'can-focus', 0);
         this.reactive = false;
 
-        this._container = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
+        this._container = new St.BoxLayout({style_class: 'panel-status-menu-box'});
         bin.set_child(this._container);
 
         let textureCache = St.TextureCache.get_default();
@@ -478,11 +478,11 @@ class Panel extends St.Widget {
 
         this.menuManager = new PopupMenu.PopupMenuManager(this);
 
-        this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
+        this._leftBox = new St.BoxLayout({name: 'panelLeft'});
         this.add_child(this._leftBox);
-        this._centerBox = new St.BoxLayout({ name: 'panelCenter' });
+        this._centerBox = new St.BoxLayout({name: 'panelCenter'});
         this.add_child(this._centerBox);
-        this._rightBox = new St.BoxLayout({ name: 'panelRight' });
+        this._rightBox = new St.BoxLayout({name: 'panelRight'});
         this.add_child(this._rightBox);
 
         this.connect('button-press-event', this._onButtonPress.bind(this));
@@ -497,7 +497,7 @@ class Panel extends St.Widget {
 
         Main.layoutManager.panelBox.add(this);
         Main.ctrlAltTabManager.addGroup(this, _('Top Bar'), 'focus-top-bar-symbolic',
-                                        { sortGroup: CtrlAltTab.SortGroup.TOP });
+                                        {sortGroup: CtrlAltTab.SortGroup.TOP});
 
         Main.sessionMode.connect('updated', this._updatePanel.bind(this));
 

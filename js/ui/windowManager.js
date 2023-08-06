@@ -69,7 +69,7 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
         let title = _('Keep these display settings?');
         let description = this._formatCountDown();
 
-        this._content = new Dialog.MessageDialogContent({ title, description });
+        this._content = new Dialog.MessageDialogContent({title, description});
         this.contentLayout.add_child(this._content);
 
         /* Translators: this and the following message should be limited in length,
@@ -208,7 +208,7 @@ class WorkspaceTracker {
         global.display.connect('window-left-monitor',
                                this._windowLeftMonitor.bind(this));
 
-        this._workspaceSettings = new Gio.Settings({ schema_id: 'org.gnome.mutter' });
+        this._workspaceSettings = new Gio.Settings({schema_id: 'org.gnome.mutter'});
         this._workspaceSettings.connect('changed::dynamic-workspaces', this._queueCheckWorkspaces.bind(this));
 
         this._nWorkspacesChanged();
@@ -476,7 +476,7 @@ class TilePreview extends St.Widget {
 });
 
 const AppSwitchAction = GObject.registerClass({
-    Signals: { 'activated': {} },
+    Signals: {'activated': {}},
 }, class AppSwitchAction extends Clutter.GestureAction {
     _init() {
         super._init();
@@ -535,7 +535,7 @@ const AppSwitchAction = GObject.registerClass({
 const ResizePopup = GObject.registerClass(
 class ResizePopup extends St.Widget {
     _init() {
-        super._init({ layout_manager: new Clutter.BinLayout() });
+        super._init({layout_manager: new Clutter.BinLayout()});
         this._label = new St.Label({
             style_class: 'resize-popup',
             x_align: Clutter.ActorAlign.CENTER,
@@ -1302,7 +1302,7 @@ export class WindowManager {
         // Position a clone of the window on top of the old position,
         // while actor updates are frozen.
         let actorContent = actor.paint_to_content(oldFrameRect);
-        let actorClone = new St.Widget({ content: actorContent });
+        let actorClone = new St.Widget({content: actorContent});
         actorClone.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
         actorClone.set_position(oldFrameRect.x, oldFrameRect.y);
         actorClone.set_size(oldFrameRect.width, oldFrameRect.height);

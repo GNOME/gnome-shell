@@ -91,7 +91,7 @@ export const SearchController = GObject.registerClass({
         // Since the entry isn't inside the results container we install this
         // dummy widget as the last results container child so that we can
         // include the entry in the keynav tab path
-        this._focusTrap = new FocusTrap({ can_focus: true });
+        this._focusTrap = new FocusTrap({can_focus: true});
         this._focusTrap.connect('key-focus-in', () => {
             this._entry.grab_key_focus();
         });

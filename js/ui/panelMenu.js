@@ -22,7 +22,7 @@ class ButtonBox extends St.Widget {
 
         this._delegate = this;
 
-        this.container = new St.Bin({ child: this });
+        this.container = new St.Bin({child: this});
 
         this.connect('style-changed', this._onStyleChanged.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
@@ -95,7 +95,7 @@ class ButtonBox extends St.Widget {
 });
 
 export const Button = GObject.registerClass({
-    Signals: { 'menu-set': {} },
+    Signals: {'menu-set': {}},
 }, class PanelMenuButton extends ButtonBox {
     _init(menuAlignment, nameText, dontCreateMenu) {
         super._init({
@@ -216,7 +216,7 @@ class SystemIndicator extends St.BoxLayout {
 
     get indicators() {
         let klass = this.constructor.name;
-        let { stack } = new Error();
+        let {stack} = new Error();
         log(`Usage of indicator.indicators is deprecated for ${klass}\n${stack}`);
         return this;
     }
@@ -226,7 +226,7 @@ class SystemIndicator extends St.BoxLayout {
     }
 
     _addIndicator() {
-        let icon = new St.Icon({ style_class: 'system-status-icon' });
+        let icon = new St.Icon({style_class: 'system-status-icon'});
         this.add_actor(icon);
         icon.connect('notify::visible', this._syncIndicatorsVisible.bind(this));
         this._syncIndicatorsVisible();

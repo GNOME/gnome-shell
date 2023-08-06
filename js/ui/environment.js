@@ -159,7 +159,7 @@ function _easeActor(actor, params) {
         .map(p => actor.get_transition(p))
         .filter(t => t !== null);
 
-    transitions.forEach(t => t.set({ repeatCount, autoReverse }));
+    transitions.forEach(t => t.set({repeatCount, autoReverse}));
 
     const [transition] = transitions;
 
@@ -232,7 +232,7 @@ function _easeActorProperty(actor, propName, target, params) {
     let pspec = actor.find_property(propName);
     let transition = new Clutter.PropertyTransition(Object.assign({
         property_name: propName,
-        interval: new Clutter.Interval({ value_type: pspec.value_type }),
+        interval: new Clutter.Interval({value_type: pspec.value_type}),
         remove_on_complete: true,
         repeat_count: repeatCount,
         auto_reverse: autoReverse,

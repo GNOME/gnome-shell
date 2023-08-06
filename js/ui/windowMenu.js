@@ -217,7 +217,7 @@ export class WindowMenuManager {
     constructor() {
         this._manager = new PopupMenu.PopupMenuManager(Main.layoutManager.dummyCursor);
 
-        this._sourceActor = new St.Widget({ reactive: true, visible: false });
+        this._sourceActor = new St.Widget({reactive: true, visible: false});
         this._sourceActor.connect('button-press-event', () => {
             this._manager.activeMenu.toggle();
         });

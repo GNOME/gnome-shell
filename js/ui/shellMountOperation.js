@@ -56,7 +56,7 @@ function _setLabelsForMessage(content, message) {
 
 export class ShellMountOperation {
     constructor(source, params) {
-        params = Params.parse(params, { existingDialog: null });
+        params = Params.parse(params, {existingDialog: null});
 
         this._dialog = null;
         this._existingDialog = params.existingDialog;
@@ -226,10 +226,10 @@ class ShellUnmountNotifier extends MessageTray.Source {
 });
 
 const ShellMountQuestionDialog = GObject.registerClass({
-    Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
+    Signals: {'response': {param_types: [GObject.TYPE_INT]}},
 }, class ShellMountQuestionDialog extends ModalDialog.ModalDialog {
     _init() {
-        super._init({ styleClass: 'mount-question-dialog' });
+        super._init({styleClass: 'mount-question-dialog'});
 
         this._oldChoices = [];
 
@@ -271,13 +271,13 @@ const ShellMountPasswordDialog = GObject.registerClass({
         let strings = message.split('\n');
         let title = strings.shift() || null;
         let description = strings.shift() || null;
-        super._init({ styleClass: 'prompt-dialog' });
+        super._init({styleClass: 'prompt-dialog'});
 
         let disksApp = Shell.AppSystem.get_default().lookup_app('org.gnome.DiskUtility.desktop');
 
-        let content = new Dialog.MessageDialogContent({ title, description });
+        let content = new Dialog.MessageDialogContent({title, description});
 
-        let passwordGridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
+        let passwordGridLayout = new Clutter.GridLayout({orientation: Clutter.Orientation.VERTICAL});
         let passwordGrid = new St.Widget({
             style_class: 'prompt-dialog-password-grid',
             layout_manager: passwordGridLayout,
@@ -355,7 +355,7 @@ const ShellMountPasswordDialog = GObject.registerClass({
         }
         curGridRow += 1;
 
-        let warningBox = new St.BoxLayout({ vertical: true });
+        let warningBox = new St.BoxLayout({vertical: true});
 
         let capsLockWarning = new ShellEntry.CapsLockWarning();
         warningBox.add_child(capsLockWarning);
@@ -475,10 +475,10 @@ const ShellMountPasswordDialog = GObject.registerClass({
 });
 
 const ShellProcessesDialog = GObject.registerClass({
-    Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
+    Signals: {'response': {param_types: [GObject.TYPE_INT]}},
 }, class ShellProcessesDialog extends ModalDialog.ModalDialog {
     _init() {
-        super._init({ styleClass: 'processes-dialog' });
+        super._init({styleClass: 'processes-dialog'});
 
         this._oldChoices = [];
 

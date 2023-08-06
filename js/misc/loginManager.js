@@ -199,7 +199,7 @@ class LoginManagerSystemd extends Signals.EventEmitter {
             await this._proxy.call_with_unix_fd_list('Inhibit',
                 inVariant, 0, -1, null, cancellable);
         const [fd] = fdList.steal_fds();
-        return new Gio.UnixInputStream({ fd });
+        return new Gio.UnixInputStream({fd});
     }
 
     _prepareForSleep(proxy, sender, [aboutToSuspend]) {

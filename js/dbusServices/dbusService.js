@@ -136,7 +136,7 @@ export class ServiceImplementation {
     }
 
     _injectTracking(methodName) {
-        const { prototype } = Gio.DBusMethodInvocation;
+        const {prototype} = Gio.DBusMethodInvocation;
         const origMethod = prototype[methodName];
         const that = this;
 

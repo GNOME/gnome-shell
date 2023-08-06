@@ -384,13 +384,13 @@ class SwitcherButton extends St.Button {
 
 export const SwitcherList = GObject.registerClass({
     Signals: {
-        'item-activated': { param_types: [GObject.TYPE_INT] },
-        'item-entered': { param_types: [GObject.TYPE_INT] },
-        'item-removed': { param_types: [GObject.TYPE_INT] },
+        'item-activated': {param_types: [GObject.TYPE_INT]},
+        'item-entered': {param_types: [GObject.TYPE_INT]},
+        'item-removed': {param_types: [GObject.TYPE_INT]},
     },
 }, class SwitcherList extends St.Widget {
     _init(squareItems) {
-        super._init({ style_class: 'switcher-list' });
+        super._init({style_class: 'switcher-list'});
 
         this._list = new St.BoxLayout({
             style_class: 'switcher-list-item-container',

@@ -246,7 +246,7 @@ export class GrabHelper {
 
         if (type == Clutter.EventType.KEY_PRESS &&
             event.get_key_symbol() == Clutter.KEY_Escape) {
-            this.ungrab({ isUser: true });
+            this.ungrab({isUser: true});
             return Clutter.EVENT_STOP;
         }
 
@@ -286,7 +286,7 @@ export class GrabHelper {
                 this._ignoreUntilRelease = true;
 
             let i = this._actorInGrabStack(targetActor) + 1;
-            this.ungrab({ actor: this._grabStack[i].actor, isUser: true });
+            this.ungrab({actor: this._grabStack[i].actor, isUser: true});
             return Clutter.EVENT_STOP;
         }
 

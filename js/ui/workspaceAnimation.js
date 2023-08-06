@@ -101,7 +101,7 @@ class WorkspaceGroup extends Clutter.Actor {
 
             this.add_child(clone);
 
-            const record = { windowActor, clone };
+            const record = {windowActor, clone};
 
             windowActor.connectObject('destroy', () => {
                 clone.destroy();
@@ -143,7 +143,7 @@ const MonitorGroup = GObject.registerClass({
 
         this._monitor = monitor;
 
-        const constraint = new Layout.MonitorConstraint({ index: monitor.index });
+        const constraint = new Layout.MonitorConstraint({index: monitor.index});
         this.add_constraint(constraint);
 
         this._container = new Clutter.Actor();
@@ -289,7 +289,7 @@ export class WorkspaceAnimationController {
         const swipeTracker = new SwipeTracker.SwipeTracker(global.stage,
             Clutter.Orientation.HORIZONTAL,
             Shell.ActionMode.NORMAL,
-            { allowDrag: false });
+            {allowDrag: false});
         swipeTracker.connect('begin', this._switchWorkspaceBegin.bind(this));
         swipeTracker.connect('update', this._switchWorkspaceUpdate.bind(this));
         swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));

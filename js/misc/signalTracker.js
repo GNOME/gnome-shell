@@ -106,7 +106,7 @@ class SignalTracker {
     _getSignalData(obj) {
         let data = this._map.get(obj);
         if (data === undefined) {
-            data = { ownerSignals: [], destroyId: 0 };
+            data = {ownerSignals: [], destroyId: 0};
             this._map.set(obj, data);
         }
         return data;
@@ -164,7 +164,7 @@ class SignalTracker {
      * @returns {void}
      */
     untrack(obj) {
-        const { ownerSignals, destroyId } = this._getSignalData(obj);
+        const {ownerSignals, destroyId} = this._getSignalData(obj);
         this._map.delete(obj);
 
         const ownerProto = this._getObjectProto(this._owner);

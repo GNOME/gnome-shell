@@ -18,7 +18,7 @@ const AUTORUN_EXPIRE_TIMEOUT_SECS = 10;
 
 class AutomountManager {
     constructor() {
-        this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
+        this._settings = new Gio.Settings({schema_id: SETTINGS_SCHEMA});
         this._activeOperations = new Map();
         this._session = new GnomeSession.SessionManager();
         this._session.connectSignal('InhibitorAdded',
@@ -227,7 +227,7 @@ class AutomountManager {
         const existingDialog = prevOperation?.borrowDialog();
         let operation =
             new ShellMountOperation.ShellMountOperation(volume,
-                                                        { existingDialog });
+                                                        {existingDialog});
         this._mountVolume(volume, operation);
     }
 

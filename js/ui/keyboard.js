@@ -176,7 +176,7 @@ class Suggestions extends St.BoxLayout {
     }
 
     add(word, callback) {
-        let button = new St.Button({ label: word });
+        let button = new St.Button({label: word});
         button.connect('button-press-event', () => {
             callback();
             return Clutter.EVENT_STOP;
@@ -272,7 +272,7 @@ const Key = GObject.registerClass({
 }, class Key extends St.BoxLayout {
     _init(params, extendedKeys = []) {
         const {label, iconName, commitString, keyval} = {keyval: 0, ...params};
-        super._init({ style_class: 'key-container' });
+        super._init({style_class: 'key-container'});
 
         this._keyval = parseInt(keyval, 16);
         this.keyButton = this._makeKey(commitString, label, iconName);
@@ -659,7 +659,7 @@ const EmojiPager = GObject.registerClass({
             GLib.MININT32, GLib.MAXINT32, 0),
     },
     Signals: {
-        'emoji': { param_types: [GObject.TYPE_STRING] },
+        'emoji': {param_types: [GObject.TYPE_STRING]},
         'page-changed': {
             param_types: [GObject.TYPE_INT, GObject.TYPE_INT, GObject.TYPE_INT],
         },
@@ -813,7 +813,7 @@ const EmojiPager = GObject.registerClass({
                 if (j % itemsPerPage == 0) {
                     page++;
                     pageKeys = [];
-                    this._pages.push({ pageKeys, nPages, page, section: this._sections[i] });
+                    this._pages.push({pageKeys, nPages, page, section: this._sections[i]});
                 }
 
                 pageKeys.push(section.keys[j]);
@@ -936,7 +936,7 @@ const EmojiPager = GObject.registerClass({
 
 const EmojiSelection = GObject.registerClass({
     Signals: {
-        'emoji-selected': { param_types: [GObject.TYPE_STRING] },
+        'emoji-selected': {param_types: [GObject.TYPE_STRING]},
         'close-request': {},
         'toggle': {},
     },
@@ -956,15 +956,15 @@ const EmojiSelection = GObject.registerClass({
         });
 
         this._sections = [
-            { first: 'grinning face', label: '🙂️' },
-            { first: 'selfie', label: '👍️' },
-            { first: 'monkey face', label: '🌷️' },
-            { first: 'grapes', label: '🍴️' },
-            { first: 'globe showing Europe-Africa', label: '✈️' },
-            { first: 'jack-o-lantern', label: '🏃️' },
-            { first: 'muted speaker', label: '🔔️' },
-            { first: 'ATM sign', label: '❤️' },
-            { first: 'chequered flag', label: '🚩️' },
+            {first: 'grinning face', label: '🙂️'},
+            {first: 'selfie', label: '👍️'},
+            {first: 'monkey face', label: '🌷️'},
+            {first: 'grapes', label: '🍴️'},
+            {first: 'globe showing Europe-Africa', label: '✈️'},
+            {first: 'jack-o-lantern', label: '🏃️'},
+            {first: 'muted speaker', label: '🔔️'},
+            {first: 'ATM sign', label: '❤️'},
+            {first: 'chequered flag', label: '🚩️'},
         ];
 
         this._gridLayout = gridLayout;
@@ -1057,7 +1057,7 @@ const EmojiSelection = GObject.registerClass({
 
             /* Create the key */
             let label = emoji[currentKey].char + String.fromCharCode(0xFE0F);
-            currentSection.keys.push({ label, variants });
+            currentSection.keys.push({label, variants});
             currentKey = i;
             variants = [];
         }
@@ -1121,23 +1121,23 @@ const EmojiSelection = GObject.registerClass({
 
 const Keypad = GObject.registerClass({
     Signals: {
-        'keyval': { param_types: [GObject.TYPE_UINT] },
+        'keyval': {param_types: [GObject.TYPE_UINT]},
     },
 }, class Keypad extends AspectContainer {
     _init() {
         let keys = [
-            { label: '1', keyval: Clutter.KEY_1, left: 0, top: 0 },
-            { label: '2', keyval: Clutter.KEY_2, left: 1, top: 0 },
-            { label: '3', keyval: Clutter.KEY_3, left: 2, top: 0 },
-            { label: '4', keyval: Clutter.KEY_4, left: 0, top: 1 },
-            { label: '5', keyval: Clutter.KEY_5, left: 1, top: 1 },
-            { label: '6', keyval: Clutter.KEY_6, left: 2, top: 1 },
-            { label: '7', keyval: Clutter.KEY_7, left: 0, top: 2 },
-            { label: '8', keyval: Clutter.KEY_8, left: 1, top: 2 },
-            { label: '9', keyval: Clutter.KEY_9, left: 2, top: 2 },
-            { label: '0', keyval: Clutter.KEY_0, left: 1, top: 3 },
-            { keyval: Clutter.KEY_BackSpace, icon: 'edit-clear-symbolic', left: 3, top: 0 },
-            { keyval: Clutter.KEY_Return, extraClassName: 'enter-key', icon: 'keyboard-enter-symbolic', left: 3, top: 1, height: 2 },
+            {label: '1', keyval: Clutter.KEY_1, left: 0, top: 0},
+            {label: '2', keyval: Clutter.KEY_2, left: 1, top: 0},
+            {label: '3', keyval: Clutter.KEY_3, left: 2, top: 0},
+            {label: '4', keyval: Clutter.KEY_4, left: 0, top: 1},
+            {label: '5', keyval: Clutter.KEY_5, left: 1, top: 1},
+            {label: '6', keyval: Clutter.KEY_6, left: 2, top: 1},
+            {label: '7', keyval: Clutter.KEY_7, left: 0, top: 2},
+            {label: '8', keyval: Clutter.KEY_8, left: 1, top: 2},
+            {label: '9', keyval: Clutter.KEY_9, left: 2, top: 2},
+            {label: '0', keyval: Clutter.KEY_0, left: 1, top: 3},
+            {keyval: Clutter.KEY_BackSpace, icon: 'edit-clear-symbolic', left: 3, top: 0},
+            {keyval: Clutter.KEY_Return, extraClassName: 'enter-key', icon: 'keyboard-enter-symbolic', left: 3, top: 1, height: 2},
         ];
 
         super._init({
@@ -1151,7 +1151,7 @@ const Keypad = GObject.registerClass({
             column_homogeneous: true,
             row_homogeneous: true,
         });
-        this._box = new St.Widget({ layout_manager: gridLayout, x_expand: true, y_expand: true });
+        this._box = new St.Widget({layout_manager: gridLayout, x_expand: true, y_expand: true});
         this.add_child(this._box);
 
         for (let i = 0; i < keys.length; i++) {
@@ -1181,7 +1181,7 @@ export class KeyboardManager extends Signals.EventEmitter {
         super();
 
         this._keyboard = null;
-        this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
+        this._a11yApplicationsSettings = new Gio.Settings({schema_id: A11Y_APPLICATIONS_SCHEMA});
         this._a11yApplicationsSettings.connect('changed', this._syncEnabled.bind(this));
 
         this._seat = Clutter.get_default_backend().get_default_seat();

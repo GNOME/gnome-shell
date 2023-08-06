@@ -70,7 +70,7 @@ export class ScreenShield extends Signals.EventEmitter {
             y_expand: true,
             reactive: true,
             can_focus: true,
-            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+            pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
             name: 'lockDialogGroup',
         });
 
@@ -108,10 +108,10 @@ export class ScreenShield extends Signals.EventEmitter {
         this._loginSession = null;
         this._getLoginSession();
 
-        this._settings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
+        this._settings = new Gio.Settings({schema_id: SCREENSAVER_SCHEMA});
         this._settings.connect(`changed::${LOCK_ENABLED_KEY}`, this._syncInhibitor.bind(this));
 
-        this._lockSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
+        this._lockSettings = new Gio.Settings({schema_id: LOCKDOWN_SCHEMA});
         this._lockSettings.connect(`changed::${DISABLE_LOCK_KEY}`, this._syncInhibitor.bind(this));
 
         this._isModal = false;
@@ -202,7 +202,7 @@ export class ScreenShield extends Signals.EventEmitter {
         if (this._isModal)
             return true;
 
-        let grab = Main.pushModal(Main.uiGroup, { actionMode: Shell.ActionMode.LOCK_SCREEN });
+        let grab = Main.pushModal(Main.uiGroup, {actionMode: Shell.ActionMode.LOCK_SCREEN});
 
         // We expect at least a keyboard grab here
         this._isModal = (grab.get_seat_state() & Clutter.GrabState.KEYBOARD) !== 0;
@@ -478,12 +478,12 @@ export class ScreenShield extends Signals.EventEmitter {
                 duration: Overview.ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
-                    this._lockScreenShown({ fadeToBlack, animateFade: true });
+                    this._lockScreenShown({fadeToBlack, animateFade: true});
                 },
             });
         } else {
             this._lockDialogGroup.translation_y = 0;
-            this._lockScreenShown({ fadeToBlack, animateFade: false });
+            this._lockScreenShown({fadeToBlack, animateFade: false});
         }
 
         this._dialog.grab_key_focus();

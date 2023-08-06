@@ -74,7 +74,7 @@ class Avatar extends St.Bin {
                 iconFile = null;
         }
 
-        let { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        let {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
         this.set_size(
             this._iconSize * scaleFactor,
             this._iconSize * scaleFactor);
@@ -98,7 +98,7 @@ class Avatar extends St.Bin {
 export const UserWidgetLabel = GObject.registerClass(
 class UserWidgetLabel extends St.Widget {
     _init(user) {
-        super._init({ layout_manager: new Clutter.BinLayout() });
+        super._init({layout_manager: new Clutter.BinLayout()});
 
         this._user = user;
 

@@ -408,17 +408,17 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 const CyclerHighlight = GObject.registerClass(
 class CyclerHighlight extends St.Widget {
     _init() {
-        super._init({ layout_manager: new Clutter.BinLayout() });
+        super._init({layout_manager: new Clutter.BinLayout()});
         this._window = null;
 
         this._clone = new Clutter.Clone();
         this.add_actor(this._clone);
 
-        this._highlight = new St.Widget({ style_class: 'cycler-highlight' });
+        this._highlight = new St.Widget({style_class: 'cycler-highlight'});
         this.add_actor(this._highlight);
 
         let coordinate = Clutter.BindCoordinate.ALL;
-        let constraint = new Clutter.BindConstraint({ coordinate });
+        let constraint = new Clutter.BindConstraint({coordinate});
         this._clone.bind_property('source', constraint, 'source', 0);
 
         this.add_constraint(constraint);
@@ -473,10 +473,10 @@ class CyclerHighlight extends St.Widget {
 // expects instead of inheriting from SwitcherList
 const CyclerList = GObject.registerClass({
     Signals: {
-        'item-activated': { param_types: [GObject.TYPE_INT] },
-        'item-entered': { param_types: [GObject.TYPE_INT] },
-        'item-removed': { param_types: [GObject.TYPE_INT] },
-        'item-highlighted': { param_types: [GObject.TYPE_INT] },
+        'item-activated': {param_types: [GObject.TYPE_INT]},
+        'item-entered': {param_types: [GObject.TYPE_INT]},
+        'item-removed': {param_types: [GObject.TYPE_INT]},
+        'item-highlighted': {param_types: [GObject.TYPE_INT]},
     },
 }, class CyclerList extends St.Widget {
     highlight(index, _justOutline) {
@@ -543,7 +543,7 @@ const CyclerPopup = GObject.registerClass({
 export const GroupCyclerPopup = GObject.registerClass(
 class GroupCyclerPopup extends CyclerPopup {
     _init() {
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.app-switcher' });
+        this._settings = new Gio.Settings({schema_id: 'org.gnome.shell.app-switcher'});
         super._init();
     }
 
@@ -577,7 +577,7 @@ export const WindowSwitcherPopup = GObject.registerClass(
 class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
         super._init();
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
+        this._settings = new Gio.Settings({schema_id: 'org.gnome.shell.window-switcher'});
 
         let windows = this._getWindowList();
 
@@ -634,7 +634,7 @@ class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 export const WindowCyclerPopup = GObject.registerClass(
 class WindowCyclerPopup extends CyclerPopup {
     _init() {
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
+        this._settings = new Gio.Settings({schema_id: 'org.gnome.shell.window-switcher'});
         super._init();
     }
 
@@ -698,7 +698,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         this._arrows = [];
 
         let windowTracker = Shell.WindowTracker.get_default();
-        let settings = new Gio.Settings({ schema_id: 'org.gnome.shell.app-switcher' });
+        let settings = new Gio.Settings({schema_id: 'org.gnome.shell.app-switcher'});
 
         let workspace = null;
         if (settings.get_boolean('current-workspace-only')) {
@@ -880,7 +880,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
                 this._removeIcon(app);
         }, this);
 
-        let arrow = new St.DrawingArea({ style_class: 'switcher-arrow' });
+        let arrow = new St.DrawingArea({style_class: 'switcher-arrow'});
         arrow.connect('repaint', () => SwitcherPopup.drawArrow(arrow, St.Side.BOTTOM));
         this.add_actor(arrow);
         this._arrows.push(arrow);
@@ -922,7 +922,7 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
                 vertical: true,
             });
 
-            let bin = new St.Bin({ style_class: 'thumbnail' });
+            let bin = new St.Bin({style_class: 'thumbnail'});
 
             box.add_actor(bin);
             this._thumbnailBins.push(bin);
@@ -1006,10 +1006,10 @@ class WindowIcon extends St.BoxLayout {
 
         this.window = window;
 
-        this._icon = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+        this._icon = new St.Widget({layout_manager: new Clutter.BinLayout()});
 
         this.add_child(this._icon);
-        this.label = new St.Label({ text: window.get_title() });
+        this.label = new St.Label({text: window.get_title()});
 
         let tracker = Shell.WindowTracker.get_default();
         this.app = tracker.get_window_app(window);
@@ -1048,7 +1048,7 @@ class WindowIcon extends St.BoxLayout {
     _createAppIcon(app, size) {
         let appIcon = app
             ? app.create_icon_texture(size)
-            : new St.Icon({ icon_name: 'icon-missing', icon_size: size });
+            : new St.Icon({icon_name: 'icon-missing', icon_size: size});
         appIcon.x_expand = appIcon.y_expand = true;
         appIcon.x_align = appIcon.y_align = Clutter.ActorAlign.END;
 

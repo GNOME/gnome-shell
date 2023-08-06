@@ -140,9 +140,9 @@ export const Lightbox = GObject.registerClass({
         this._radialEffect = params.radialEffect;
 
         if (this._radialEffect)
-            this.add_effect(new RadialShaderEffect({ name: 'radial' }));
+            this.add_effect(new RadialShaderEffect({name: 'radial'}));
         else
-            this.set({ opacity: 0, style_class: 'lightbox' });
+            this.set({opacity: 0, style_class: 'lightbox'});
 
         container.add_actor(this);
         container.set_child_above_sibling(this, null);
@@ -209,7 +209,7 @@ export const Lightbox = GObject.registerClass({
                 '@effects.radial.brightness', VIGNETTE_BRIGHTNESS, easeProps);
             this.ease_property(
                 '@effects.radial.sharpness', VIGNETTE_SHARPNESS,
-                Object.assign({ onComplete }, easeProps));
+                Object.assign({onComplete}, easeProps));
         } else {
             this.ease(Object.assign(easeProps, {
                 opacity: 255 * this._fadeFactor,
@@ -235,9 +235,9 @@ export const Lightbox = GObject.registerClass({
             this.ease_property(
                 '@effects.radial.brightness', 1.0, easeProps);
             this.ease_property(
-                '@effects.radial.sharpness', 0.0, Object.assign({ onComplete }, easeProps));
+                '@effects.radial.sharpness', 0.0, Object.assign({onComplete}, easeProps));
         } else {
-            this.ease(Object.assign(easeProps, { opacity: 0, onComplete }));
+            this.ease(Object.assign(easeProps, {opacity: 0, onComplete}));
         }
     }
 

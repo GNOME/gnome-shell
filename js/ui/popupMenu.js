@@ -73,7 +73,7 @@ export const PopupBaseMenuItem = GObject.registerClass({
                                                true),
     },
     Signals: {
-        'activate': { param_types: [Clutter.Event.$gtype] },
+        'activate': {param_types: [Clutter.Event.$gtype]},
     },
 }, class PopupBaseMenuItem extends St.BoxLayout {
     _init(params) {
@@ -291,7 +291,7 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
             can_focus: false,
         });
 
-        this.label = new St.Label({ text: text || '' });
+        this.label = new St.Label({text: text || ''});
         this.add(this.label);
         this.label_actor = this.label;
 
@@ -354,7 +354,7 @@ export const Switch = GObject.registerClass({
 });
 
 export const PopupSwitchMenuItem = GObject.registerClass({
-    Signals: { 'toggled': { param_types: [GObject.TYPE_BOOLEAN] } },
+    Signals: {'toggled': {param_types: [GObject.TYPE_BOOLEAN]}},
 }, class PopupSwitchMenuItem extends PopupBaseMenuItem {
     _init(text, active, params) {
         super._init(params);
@@ -614,7 +614,7 @@ export class PopupMenuBase extends Signals.EventEmitter {
     _connectItemSignals(menuItem) {
         menuItem.connectObject(
             'notify::active', () => {
-                const { active } = menuItem;
+                const {active} = menuItem;
                 if (active && this._activeMenuItem !== menuItem) {
                     if (this._activeMenuItem)
                         this._activeMenuItem.active = false;
@@ -626,7 +626,7 @@ export class PopupMenuBase extends Signals.EventEmitter {
                 }
             },
             'notify::sensitive', () => {
-                const { sensitive } = menuItem;
+                const {sensitive} = menuItem;
                 if (!sensitive && this._activeMenuItem === menuItem) {
                     if (!this.actor.navigate_focus(menuItem.actor,
                         St.DirectionType.TAB_FORWARD, true))
@@ -1168,7 +1168,7 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
         this.add_style_class_name('popup-submenu-menu-item');
 
         if (wantIcon) {
-            this.icon = new St.Icon({ style_class: 'popup-menu-icon' });
+            this.icon = new St.Icon({style_class: 'popup-menu-icon'});
             this.add_child(this.icon);
         }
 
@@ -1187,7 +1187,7 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
         this.add_child(expander);
 
         this._triangle = arrowIcon(St.Side.RIGHT);
-        this._triangle.pivot_point = new Graphene.Point({ x: 0.5, y: 0.6 });
+        this._triangle.pivot_point = new Graphene.Point({x: 0.5, y: 0.6});
 
         this._triangleBin = new St.Widget({
             y_expand: true,
@@ -1270,7 +1270,7 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
 export class PopupMenuManager {
     constructor(owner, grabParams) {
         this._grabParams = Params.parse(grabParams,
-            { actionMode: Shell.ActionMode.POPUP });
+            {actionMode: Shell.ActionMode.POPUP});
         global.stage.connect('notify::key-focus', () => {
             if (!this.activeMenu)
                 return;

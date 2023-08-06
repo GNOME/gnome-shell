@@ -20,10 +20,10 @@ class CheckBox extends St.Button {
         });
         this.set_accessible_role(Atk.Role.CHECK_BOX);
 
-        this._box = new St.Bin({ y_align: Clutter.ActorAlign.START });
+        this._box = new St.Bin({y_align: Clutter.ActorAlign.START});
         container.add_actor(this._box);
 
-        this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
+        this._label = new St.Label({y_align: Clutter.ActorAlign.CENTER});
         this._label.clutter_text.set_line_wrap(true);
         this._label.clutter_text.set_ellipsize(Pango.EllipsizeMode.NONE);
         this.set_label_actor(this._label);

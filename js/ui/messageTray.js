@@ -199,7 +199,7 @@ export const NotificationGenericPolicy = GObject.registerClass({
         super._init();
         this.id = 'generic';
 
-        this._masterSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.notifications' });
+        this._masterSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.notifications'});
         this._masterSettings.connect('changed', this._changed.bind(this));
     }
 
@@ -231,7 +231,7 @@ export const NotificationApplicationPolicy = GObject.registerClass({
         this.id = id;
         this._canonicalId = this._canonicalizeId(id);
 
-        this._masterSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.notifications' });
+        this._masterSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.notifications'});
         this._settings = new Gio.Settings({
             schema_id: 'org.gnome.desktop.notifications.application',
             path: `/org/gnome/desktop/notifications/application/${this._canonicalId}/`,
@@ -360,8 +360,8 @@ export const Notification = GObject.registerClass({
     },
     Signals: {
         'activated': {},
-        'destroy': { param_types: [GObject.TYPE_UINT] },
-        'updated': { param_types: [GObject.TYPE_BOOLEAN] },
+        'destroy': {param_types: [GObject.TYPE_UINT]},
+        'updated': {param_types: [GObject.TYPE_BOOLEAN]},
     },
 }, class Notification extends GObject.Object {
     _init(source, title, banner, params) {
@@ -441,7 +441,7 @@ export const Notification = GObject.registerClass({
     // @label: the label for the action's button
     // @callback: the callback for the action
     addAction(label, callback) {
-        this.actions.push({ label, callback });
+        this.actions.push({label, callback});
     }
 
     setUrgency(urgency) {
@@ -656,14 +656,14 @@ export const Source = GObject.registerClass({
             null),
     },
     Signals: {
-        'destroy': { param_types: [GObject.TYPE_UINT] },
+        'destroy': {param_types: [GObject.TYPE_UINT]},
         'icon-updated': {},
-        'notification-added': { param_types: [Notification.$gtype] },
-        'notification-show': { param_types: [Notification.$gtype] },
+        'notification-added': {param_types: [Notification.$gtype]},
+        'notification-show': {param_types: [Notification.$gtype]},
     },
 }, class Source extends GObject.Object {
     _init(title, iconName) {
-        super._init({ title });
+        super._init({title});
 
         this.SOURCE_ICON_SIZE = 48;
 
@@ -735,7 +735,7 @@ export const Source = GObject.registerClass({
     }
 
     getIcon() {
-        return new Gio.ThemedIcon({ name: this.iconName });
+        return new Gio.ThemedIcon({name: this.iconName});
     }
 
     _onNotificationDestroy(notification) {
@@ -809,8 +809,8 @@ SignalTracker.registerDestroyableType(Source);
 export const MessageTray = GObject.registerClass({
     Signals: {
         'queue-changed': {},
-        'source-added': { param_types: [Source.$gtype] },
-        'source-removed': { param_types: [Source.$gtype] },
+        'source-added': {param_types: [Source.$gtype]},
+        'source-removed': {param_types: [Source.$gtype]},
     },
 }, class MessageTray extends St.Widget {
     _init() {
@@ -829,7 +829,7 @@ export const MessageTray = GObject.registerClass({
             this._onStatusChanged(status);
         });
 
-        let constraint = new Layout.MonitorConstraint({ primary: true });
+        let constraint = new Layout.MonitorConstraint({primary: true});
         Main.layoutManager.panelBox.bind_property('visible',
                                                   constraint, 'work-area',
                                                   GObject.BindingFlags.SYNC_CREATE);
@@ -877,8 +877,8 @@ export const MessageTray = GObject.registerClass({
         this._notificationTimeoutId = 0;
         this._notificationRemoved = false;
 
-        Main.layoutManager.addChrome(this, { affectsInputRegion: false });
-        Main.layoutManager.trackChrome(this._bannerBin, { affectsInputRegion: true });
+        Main.layoutManager.addChrome(this, {affectsInputRegion: false});
+        Main.layoutManager.trackChrome(this._bannerBin, {affectsInputRegion: true});
 
         global.display.connect('in-fullscreen-changed', this._updateState.bind(this));
 
@@ -904,7 +904,7 @@ export const MessageTray = GObject.registerClass({
                                  this._onDragEnd.bind(this));
 
         Main.wm.addKeybinding('focus-active-notification',
-                              new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
+                              new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
                               Meta.KeyBindingFlags.NONE,
                               Shell.ActionMode.NORMAL |
                               Shell.ActionMode.OVERVIEW,

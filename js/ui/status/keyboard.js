@@ -33,7 +33,7 @@ class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
             text: displayName,
             x_expand: true,
         });
-        this.indicator = new St.Label({ text: shortName });
+        this.indicator = new St.Label({text: shortName});
         this.add_child(this.label);
         this.add(this.indicator);
         this.label_actor = this.label;
@@ -123,9 +123,9 @@ class InputSourceSwitcher extends SwitcherPopup.SwitcherList {
     }
 
     _addIcon(item) {
-        let box = new St.BoxLayout({ vertical: true });
+        let box = new St.BoxLayout({vertical: true});
 
-        let bin = new St.Bin({ style_class: 'input-source-switcher-symbol' });
+        let bin = new St.Bin({style_class: 'input-source-switcher-symbol'});
         let symbol = new St.Label({
             text: item.shortName,
             x_align: Clutter.ActorAlign.CENTER,
@@ -250,7 +250,7 @@ class InputSourceSystemSettings extends InputSourceSettings {
             let id = layouts[i];
             if (variants[i])
                 id += `+${variants[i]}`;
-            sourcesList.push({ type: INPUT_SOURCE_TYPE_XKB, id });
+            sourcesList.push({type: INPUT_SOURCE_TYPE_XKB, id});
         }
         return sourcesList;
     }
@@ -270,7 +270,7 @@ class InputSourceSessionSettings extends InputSourceSettings {
         this._KEY_KEYBOARD_OPTIONS = 'xkb-options';
         this._KEY_PER_WINDOW = 'per-window';
 
-        this._settings = new Gio.Settings({ schema_id: this._DESKTOP_INPUT_SOURCES_SCHEMA });
+        this._settings = new Gio.Settings({schema_id: this._DESKTOP_INPUT_SOURCES_SCHEMA});
         this._settings.connect(`changed::${this._KEY_INPUT_SOURCES}`, this._emitInputSourcesChanged.bind(this));
         this._settings.connect(`changed::${this._KEY_KEYBOARD_OPTIONS}`, this._emitKeyboardOptionsChanged.bind(this));
         this._settings.connect(`changed::${this._KEY_PER_WINDOW}`, this._emitPerWindowChanged.bind(this));
@@ -283,7 +283,7 @@ class InputSourceSessionSettings extends InputSourceSettings {
 
         for (let i = 0; i < nSources; i++) {
             let [type, id] = sources.get_child_value(i).deepUnpack();
-            sourcesList.push({ type, id });
+            sourcesList.push({type, id});
         }
         return sourcesList;
     }
@@ -330,13 +330,13 @@ export class InputSourceManager extends Signals.EventEmitter {
         this._mruSourcesBackup = null;
         this._keybindingAction =
             Main.wm.addKeybinding('switch-input-source',
-                                  new Gio.Settings({ schema_id: 'org.gnome.desktop.wm.keybindings' }),
+                                  new Gio.Settings({schema_id: 'org.gnome.desktop.wm.keybindings'}),
                                   Meta.KeyBindingFlags.NONE,
                                   Shell.ActionMode.ALL,
                                   this._switchInputSource.bind(this));
         this._keybindingActionBackward =
             Main.wm.addKeybinding('switch-input-source-backward',
-                                  new Gio.Settings({ schema_id: 'org.gnome.desktop.wm.keybindings' }),
+                                  new Gio.Settings({schema_id: 'org.gnome.desktop.wm.keybindings'}),
                                   Meta.KeyBindingFlags.IS_REVERSED,
                                   Shell.ActionMode.ALL,
                                   this._switchInputSource.bind(this));
@@ -588,14 +588,14 @@ export class InputSourceManager extends Signals.EventEmitter {
             }
 
             if (exists)
-                infosList.push({ type, id, displayName, shortName });
+                infosList.push({type, id, displayName, shortName});
         }
 
         if (infosList.length == 0) {
             let type = INPUT_SOURCE_TYPE_XKB;
             let id = KeyboardManager.DEFAULT_LAYOUT;
             let [, displayName, shortName] = this._xkbInfo.get_layout_info(id);
-            infosList.push({ type, id, displayName, shortName });
+            infosList.push({type, id, displayName, shortName});
         }
 
         let inputSourcesByShortName = {};
@@ -857,7 +857,7 @@ class InputSourceIndicator extends PanelMenu.Button {
         this._menuItems = {};
         this._indicatorLabels = {};
 
-        this._container = new InputSourceIndicatorContainer({ style_class: 'system-status-icon' });
+        this._container = new InputSourceIndicatorContainer({style_class: 'system-status-icon'});
         this.add_child(this._container);
 
         this._propSeparator = new PopupMenu.PopupSeparatorMenuItem();

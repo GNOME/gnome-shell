@@ -25,7 +25,7 @@ const LTR = 0;
 const RTL = 1;
 
 const PadChooser = GObject.registerClass({
-    Signals: { 'pad-selected': { param_types: [Clutter.InputDevice.$gtype] } },
+    Signals: {'pad-selected': {param_types: [Clutter.InputDevice.$gtype]}},
 }, class PadChooser extends St.Button {
     _init(device, groupDevices) {
         super._init({
@@ -94,7 +94,7 @@ const PadChooser = GObject.registerClass({
 });
 
 const KeybindingEntry = GObject.registerClass({
-    Signals: { 'keybinding-edited': { param_types: [GObject.TYPE_STRING] } },
+    Signals: {'keybinding-edited': {param_types: [GObject.TYPE_STRING]}},
 }, class KeybindingEntry extends St.Entry {
     _init() {
         super._init({hint_text: _('New shortcut…'), style: 'width: 10em'});
@@ -114,20 +114,20 @@ const KeybindingEntry = GObject.registerClass({
 });
 
 const ActionComboBox = GObject.registerClass({
-    Signals: { 'action-selected': { param_types: [GObject.TYPE_INT] } },
+    Signals: {'action-selected': {param_types: [GObject.TYPE_INT]}},
 }, class ActionComboBox extends St.Button {
     _init() {
-        super._init({ style_class: 'button' });
+        super._init({style_class: 'button'});
         this.set_toggle_mode(true);
 
         const boxLayout = new Clutter.BoxLayout({
             orientation: Clutter.Orientation.HORIZONTAL,
             spacing: 6,
         });
-        let box = new St.Widget({ layout_manager: boxLayout });
+        let box = new St.Widget({layout_manager: boxLayout});
         this.set_child(box);
 
-        this._label = new St.Label({ style_class: 'combo-box-label' });
+        this._label = new St.Label({style_class: 'combo-box-label'});
         box.add_child(this._label);
 
         const arrow = new St.Icon({
@@ -203,7 +203,7 @@ const ActionComboBox = GObject.registerClass({
 });
 
 const ActionEditor = GObject.registerClass({
-    Signals: { 'done': {} },
+    Signals: {'done': {}},
 }, class ActionEditor extends St.Widget {
     _init() {
         const boxLayout = new Clutter.BoxLayout({
@@ -211,7 +211,7 @@ const ActionEditor = GObject.registerClass({
             spacing: 12,
         });
 
-        super._init({ layout_manager: boxLayout });
+        super._init({layout_manager: boxLayout});
 
         this._actionComboBox = new ActionComboBox();
         this._actionComboBox.connect('action-selected', this._onActionSelected.bind(this));
@@ -447,12 +447,12 @@ const PadDiagram = GObject.registerClass({
         this._updateDiagramScale();
 
         for (let i = 0; i < this._labels.length; i++) {
-            const { label, x, y, arrangement } = this._labels[i];
+            const {label, x, y, arrangement} = this._labels[i];
             this._allocateChild(label, x, y, arrangement);
         }
 
         if (this._editorActor && this._curEdited) {
-            const { x, y, arrangement } = this._curEdited;
+            const {x, y, arrangement} = this._curEdited;
             this._allocateChild(this._editorActor, x, y, arrangement);
         }
     }
@@ -567,14 +567,14 @@ const PadDiagram = GObject.registerClass({
             return false;
 
         let label = new St.Label();
-        this._labels.push({ label, action, idx, dir, x, y, arrangement });
+        this._labels.push({label, action, idx, dir, x, y, arrangement});
         this.add_actor(label);
         return true;
     }
 
     updateLabels(getText) {
         for (let i = 0; i < this._labels.length; i++) {
-            const { label, action, idx, dir } = this._labels[i];
+            const {label, action, idx, dir} = this._labels[i];
             let str = getText(action, idx, dir);
             label.set_text(str);
         }
@@ -592,7 +592,7 @@ const PadDiagram = GObject.registerClass({
         this._editorActor.hide();
 
         if (this._curEdited) {
-            const { label, action, idx, dir } = this._curEdited;
+            const {label, action, idx, dir} = this._curEdited;
             this._applyLabel(label, action, idx, dir, str);
             this._curEdited = null;
         }
@@ -625,7 +625,7 @@ const PadDiagram = GObject.registerClass({
 
 export const PadOsd = GObject.registerClass({
     Signals: {
-        'pad-selected': { param_types: [Clutter.InputDevice.$gtype] },
+        'pad-selected': {param_types: [Clutter.InputDevice.$gtype]},
         'closed': {},
     },
 }, class PadOsd extends St.BoxLayout {
@@ -677,7 +677,7 @@ export const PadOsd = GObject.registerClass({
         Main.uiGroup.add_actor(this);
 
         this._monitorIndex = monitorIndex;
-        let constraint = new Layout.MonitorConstraint({ index: monitorIndex });
+        let constraint = new Layout.MonitorConstraint({index: monitorIndex});
         this.add_constraint(constraint);
 
         this._titleBox = new St.BoxLayout({
@@ -702,7 +702,7 @@ export const PadOsd = GObject.registerClass({
         this._titleLabel.clutter_text.set_text(padDevice.get_device_name());
         labelBox.add_actor(this._titleLabel);
 
-        this._tipLabel = new St.Label({ x_align: Clutter.ActorAlign.CENTER });
+        this._tipLabel = new St.Label({x_align: Clutter.ActorAlign.CENTER});
         labelBox.add_actor(this._tipLabel);
 
         this._updatePadChooser();
@@ -896,7 +896,7 @@ export const PadOsd = GObject.registerClass({
             return;
 
         this._endActionEdition();
-        this._editedAction = { type, number, dir, mode };
+        this._editedAction = {type, number, dir, mode};
 
         const settingsPath = `${this._settings.path}${key}/`;
         this._editedActionSettings = Gio.Settings.new_with_path('org.gnome.desktop.peripherals.tablet.pad-button',

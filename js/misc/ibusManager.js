@@ -221,7 +221,7 @@ class IBusManager extends Signals.EventEmitter {
         this._candidatePopup.setPanelService(this._panelService);
         this._panelService.connect('update-property', this._updateProperty.bind(this));
         this._panelService.connect('set-cursor-location', (ps, x, y, w, h) => {
-            let cursorLocation = { x, y, width: w, height: h };
+            let cursorLocation = {x, y, width: w, height: h};
             this.emit('set-cursor-location', cursorLocation);
         });
         this._panelService.connect('focus-in', (panel, path) => {

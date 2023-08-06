@@ -25,7 +25,7 @@ export function getMixerControl() {
     if (_mixerControl)
         return _mixerControl;
 
-    _mixerControl = new Gvc.MixerControl({ name: 'GNOME Shell Volume Control' });
+    _mixerControl = new Gvc.MixerControl({name: 'GNOME Shell Volume Control'});
     _mixerControl.open();
 
     return _mixerControl;

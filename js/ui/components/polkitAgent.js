@@ -28,10 +28,10 @@ const DIALOG_ICON_SIZE = 64;
 const DELAYED_RESET_TIMEOUT = 200;
 
 const AuthenticationDialog = GObject.registerClass({
-    Signals: { 'done': { param_types: [GObject.TYPE_BOOLEAN] } },
+    Signals: {'done': {param_types: [GObject.TYPE_BOOLEAN]}},
 }, class AuthenticationDialog extends ModalDialog.ModalDialog {
     _init(actionId, description, cookie, userNames) {
-        super._init({ styleClass: 'prompt-dialog' });
+        super._init({styleClass: 'prompt-dialog'});
 
         this.actionId = actionId;
         this.message = description;
@@ -45,7 +45,7 @@ const AuthenticationDialog = GObject.registerClass({
 
         let title = _('Authentication Required');
 
-        let headerContent = new Dialog.MessageDialogContent({ title, description });
+        let headerContent = new Dialog.MessageDialogContent({title, description});
         this.contentLayout.add_child(headerContent);
 
         let bodyContent = new Dialog.MessageDialogContent();
@@ -106,7 +106,7 @@ const AuthenticationDialog = GObject.registerClass({
             GObject.BindingFlags.SYNC_CREATE);
         passwordBox.add_child(this._passwordEntry);
 
-        let warningBox = new St.BoxLayout({ vertical: true });
+        let warningBox = new St.BoxLayout({vertical: true});
 
         let capsLockWarning = new ShellEntry.CapsLockWarning();
         this._passwordEntry.bind_property('visible',
@@ -134,7 +134,7 @@ const AuthenticationDialog = GObject.registerClass({
          * infoMessage and errorMessageLabel - but it is still invisible because
          * gnome-shell.css sets the color to be transparent
          */
-        this._nullMessageLabel = new St.Label({ style_class: 'prompt-dialog-null-label' });
+        this._nullMessageLabel = new St.Label({style_class: 'prompt-dialog-null-label'});
         this._nullMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._nullMessageLabel.clutter_text.line_wrap = true;
         warningBox.add_child(this._nullMessageLabel);

@@ -25,7 +25,7 @@ const DialogResponse = {
 const AccessDialog = GObject.registerClass(
 class AccessDialog extends ModalDialog.ModalDialog {
     _init(invocation, handle, title, description, body, options) {
-        super._init({ styleClass: 'access-dialog' });
+        super._init({styleClass: 'access-dialog'});
 
         this._invocation = invocation;
         this._handle = handle;
@@ -46,7 +46,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
         let grantLabel = options['grant_label'] || _('Allow');
         let choices = options['choices'] || [];
 
-        let content = new Dialog.MessageDialogContent({ title, description });
+        let content = new Dialog.MessageDialogContent({title, description});
         this.contentLayout.add_actor(content);
 
         this._choices = new Map();

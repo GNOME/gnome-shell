@@ -105,7 +105,7 @@ export class Magnifier extends Signals.EventEmitter {
         let cursorTracker = Meta.CursorTracker.get_for_display(global.display);
         this._cursorTracker = cursorTracker;
 
-        this._mouseSprite = new Clutter.Actor({ request_mode: Clutter.RequestMode.CONTENT_SIZE });
+        this._mouseSprite = new Clutter.Actor({request_mode: Clutter.RequestMode.CONTENT_SIZE});
         this._mouseSprite.content = new MouseSpriteContent();
 
         this._cursorRoot = new Clutter.Actor();
@@ -553,7 +553,7 @@ export class Magnifier extends Signals.EventEmitter {
     }
 
     _settingsInit(zoomRegion) {
-        this._settings = new Gio.Settings({ schema_id: MAGNIFIER_SCHEMA });
+        this._settings = new Gio.Settings({schema_id: MAGNIFIER_SCHEMA});
 
         this._settings.connect(`changed::${SCREEN_POSITION_KEY}`,
                                this._updateScreenPosition.bind(this));
@@ -772,8 +772,8 @@ class ZoomRegion {
         this._screenPosition = GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN;
         this._invertLightness = false;
         this._colorSaturation = 1.0;
-        this._brightness = { r: NO_CHANGE, g: NO_CHANGE, b: NO_CHANGE };
-        this._contrast = { r: NO_CHANGE, g: NO_CHANGE, b: NO_CHANGE };
+        this._brightness = {r: NO_CHANGE, g: NO_CHANGE, b: NO_CHANGE};
+        this._contrast = {r: NO_CHANGE, g: NO_CHANGE, b: NO_CHANGE};
 
         this._magView = null;
         this._background = null;
@@ -878,7 +878,7 @@ class ZoomRegion {
             throw new Error(`Failed to validate parent window: ${e}`);
         }
 
-        const { focusWindow } = global.display;
+        const {focusWindow} = global.display;
         if (!focusWindow)
             return null;
 
@@ -1298,7 +1298,7 @@ class ZoomRegion {
     scrollToMousePos() {
         this._followingCursor = true;
         if (this._mouseTrackingMode != GDesktopEnums.MagnifierMouseTrackingMode.NONE)
-            this._changeROI({ redoCursorTracking: true });
+            this._changeROI({redoCursorTracking: true});
         else
             this._updateMousePosition();
 
@@ -1476,14 +1476,14 @@ class ZoomRegion {
 
     _createActors() {
         // The root actor for the zoom region
-        this._magView = new St.Bin({ style_class: 'magnifier-zoom-region' });
+        this._magView = new St.Bin({style_class: 'magnifier-zoom-region'});
         global.stage.add_actor(this._magView);
 
         // hide the magnified region from CLUTTER_PICK_ALL
         Shell.util_set_hidden_from_pick(this._magView, true);
 
         // Add a group to clip the contents of the magnified view.
-        let mainGroup = new Clutter.Actor({ clip_to_allocation: true });
+        let mainGroup = new Clutter.Actor({clip_to_allocation: true});
         this._magView.set_child(mainGroup);
 
         // Add a background for when the magnified uiGroup is scrolled
@@ -1502,7 +1502,7 @@ class ZoomRegion {
         // Add either the given mouseSourceActor to the ZoomRegion, or a clone of
         // it.
         if (this._mouseSourceActor.get_parent() != null)
-            this._mouseActor = new Clutter.Clone({ source: this._mouseSourceActor });
+            this._mouseActor = new Clutter.Clone({source: this._mouseSourceActor});
         else
             this._mouseActor = this._mouseSourceActor;
         mainGroup.add_actor(this._mouseActor);
@@ -1555,7 +1555,7 @@ class ZoomRegion {
         this._updateMagViewGeometry();
 
         if (!fromROIUpdate)
-            this._changeROI({ redoCursorTracking: this._followingCursor }); // will update mouse
+            this._changeROI({redoCursorTracking: this._followingCursor}); // will update mouse
 
         if (this.isActive() && this._isMouseOverRegion())
             this._magnifier.hideSystemCursor();
@@ -1885,7 +1885,7 @@ class Crosshairs extends Clutter.Actor {
             if (container) {
                 crosshairsActor = this;
                 if (this.get_parent() != null) {
-                    crosshairsActor = new Clutter.Clone({ source: this });
+                    crosshairsActor = new Clutter.Clone({source: this});
                     this._clones.push(crosshairsActor);
 
                     // Clones don't share visibility.

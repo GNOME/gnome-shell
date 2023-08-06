@@ -45,7 +45,7 @@ const _SCROLL_ANIMATION_TIME = 500;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 
 export const UserListItem = GObject.registerClass({
-    Signals: { 'activate': {} },
+    Signals: {'activate': {}},
 }, class UserListItem extends St.Button {
     _init(user) {
         let layout = new St.BoxLayout({
@@ -158,8 +158,8 @@ export const UserListItem = GObject.registerClass({
 
 const UserList = GObject.registerClass({
     Signals: {
-        'activate': { param_types: [UserListItem.$gtype] },
-        'item-added': { param_types: [UserListItem.$gtype] },
+        'activate': {param_types: [UserListItem.$gtype]},
+        'item-added': {param_types: [UserListItem.$gtype]},
     },
 }, class UserList extends St.ScrollView {
     _init() {
@@ -312,7 +312,7 @@ const UserList = GObject.registerClass({
 });
 
 const SessionMenuButton = GObject.registerClass({
-    Signals: { 'session-activated': { param_types: [GObject.TYPE_STRING] } },
+    Signals: {'session-activated': {param_types: [GObject.TYPE_STRING]}},
 }, class SessionMenuButton extends St.Bin {
     _init() {
         let button = new St.Button({
@@ -327,7 +327,7 @@ const SessionMenuButton = GObject.registerClass({
             y_align: Clutter.ActorAlign.CENTER,
         });
 
-        super._init({ child: button });
+        super._init({child: button});
         this._button = button;
 
         this._menu = new PopupMenu.PopupMenu(this._button, 0, St.Side.BOTTOM);
@@ -342,7 +342,7 @@ const SessionMenuButton = GObject.registerClass({
         });
 
         this._manager = new PopupMenu.PopupMenuManager(this._button,
-                                                       { actionMode: Shell.ActionMode.NONE });
+                                                       {actionMode: Shell.ActionMode.NONE});
         this._manager.addMenu(this._menu);
 
         this._button.connect('clicked', () => this._menu.toggle());
@@ -413,11 +413,11 @@ export const LoginDialog = GObject.registerClass({
     },
 }, class LoginDialog extends St.Widget {
     _init(parentActor) {
-        super._init({ style_class: 'login-dialog', visible: false });
+        super._init({style_class: 'login-dialog', visible: false});
 
         this.get_accessible().set_role(Atk.Role.WINDOW);
 
-        this.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        this.add_constraint(new Layout.MonitorConstraint({primary: true}));
         this.connect('destroy', this._onDestroy.bind(this));
         parentActor.add_child(this);
 
@@ -429,7 +429,7 @@ export const LoginDialog = GObject.registerClass({
         } catch (e) {
         }
 
-        this._settings = new Gio.Settings({ schema_id: GdmUtil.LOGIN_SCREEN_SCHEMA });
+        this._settings = new Gio.Settings({schema_id: GdmUtil.LOGIN_SCREEN_SCHEMA});
 
         this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_KEY}`,
                                this._updateBanner.bind(this));
@@ -493,7 +493,7 @@ export const LoginDialog = GObject.registerClass({
         });
         this.add_child(this._bannerView);
 
-        let bannerBox = new St.BoxLayout({ vertical: true });
+        let bannerBox = new St.BoxLayout({vertical: true});
 
         this._bannerView.add_actor(bannerBox);
         this._bannerLabel = new St.Label({
@@ -885,7 +885,7 @@ export const LoginDialog = GObject.registerClass({
         if (previousUser && beginRequest === AuthPrompt.BeginRequestType.REUSE_USERNAME) {
             this._user = previousUser;
             this._authPrompt.setUser(this._user);
-            this._authPrompt.begin({ userName: previousUser.get_user_name() });
+            this._authPrompt.begin({userName: previousUser.get_user_name()});
         } else if (beginRequest === AuthPrompt.BeginRequestType.PROVIDE_USERNAME) {
             if (!this._disableUserList)
                 this._showUserList();
@@ -953,7 +953,7 @@ export const LoginDialog = GObject.registerClass({
                 let answer = this._authPrompt.getAnswer();
                 this._user = this._userManager.get_user(answer);
                 this._authPrompt.clear();
-                this._authPrompt.begin({ userName: answer });
+                this._authPrompt.begin({userName: answer});
                 this._updateCancelButton();
             });
         this._updateCancelButton();
@@ -1195,7 +1195,7 @@ export const LoginDialog = GObject.registerClass({
         let userName = item.user.get_user_name();
         let hold = new Batch.Hold();
 
-        this._authPrompt.begin({ userName, hold });
+        this._authPrompt.begin({userName, hold});
         return hold;
     }
 
@@ -1264,12 +1264,12 @@ export const LoginDialog = GObject.registerClass({
         Main.ctrlAltTabManager.addGroup(this,
                                         _('Login Window'),
                                         'dialog-password-symbolic',
-                                        { sortGroup: CtrlAltTab.SortGroup.MIDDLE });
+                                        {sortGroup: CtrlAltTab.SortGroup.MIDDLE});
         this.activate();
 
         this.opacity = 0;
 
-        this._grab = Main.pushModal(global.stage, { actionMode: Shell.ActionMode.LOGIN_SCREEN });
+        this._grab = Main.pushModal(global.stage, {actionMode: Shell.ActionMode.LOGIN_SCREEN});
 
         this.ease({
             opacity: 255,

@@ -44,7 +44,7 @@ export const CloseDialog = GObject.registerClass({
         let title = _('“%s” is not responding.').format(windowApp.get_name());
         let description = _('You may choose to wait a short while for it to ' +
                             'continue or force the app to quit entirely.');
-        return new Dialog.MessageDialogContent({ title, description });
+        return new Dialog.MessageDialogContent({title, description});
     }
 
     _updateScale() {
@@ -55,7 +55,7 @@ export const CloseDialog = GObject.registerClass({
         if (this._window.get_client_type() !== Meta.WindowClientType.WAYLAND)
             return;
 
-        let { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        let {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
         this._dialog.set_scale(1 / scaleFactor, 1 / scaleFactor);
     }
 
@@ -131,7 +131,7 @@ export const CloseDialog = GObject.registerClass({
 
         if (shouldTrack) {
             Main.layoutManager.trackChrome(this._dialog,
-                                           { affectsInputRegion: true });
+                                           {affectsInputRegion: true});
         } else {
             Main.layoutManager.untrackChrome(this._dialog);
         }

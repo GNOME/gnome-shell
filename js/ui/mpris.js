@@ -27,7 +27,7 @@ class MediaMessage extends MessageList.Message {
 
         this._player = player;
 
-        this._icon = new St.Icon({ style_class: 'media-message-cover-icon' });
+        this._icon = new St.Icon({style_class: 'media-message-cover-icon'});
         this.setIcon(this._icon);
 
         // reclaim space used by unused elements

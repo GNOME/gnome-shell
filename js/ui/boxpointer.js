@@ -28,7 +28,7 @@ const POPUP_ANIMATION_TIME = 150;
  *
  */
 export const BoxPointer = GObject.registerClass({
-    Signals: { 'arrow-side-changed': {} },
+    Signals: {'arrow-side-changed': {}},
 }, class BoxPointer extends St.Widget {
     /**
      * @param {*} arrowSide side to draw the arrow on

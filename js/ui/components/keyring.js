@@ -17,7 +17,7 @@ import {wiggle} from '../../misc/animationUtils.js';
 const KeyringDialog = GObject.registerClass(
 class KeyringDialog extends ModalDialog.ModalDialog {
     _init() {
-        super._init({ styleClass: 'prompt-dialog' });
+        super._init({styleClass: 'prompt-dialog'});
 
         this.prompt = new Shell.KeyringPrompt();
         this.prompt.connect('show-password', this._onShowPassword.bind(this));
@@ -61,7 +61,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         this.prompt.set_password_actor(this._passwordEntry.clutter_text);
         this.prompt.set_confirm_actor(this._confirmEntry.clutter_text);
 
-        let warningBox = new St.BoxLayout({ vertical: true });
+        let warningBox = new St.BoxLayout({vertical: true});
 
         let capsLockWarning = new ShellEntry.CapsLockWarning();
         let syncCapsLockWarningVisibility = () => {
@@ -72,7 +72,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         this.prompt.connect('notify::confirm-visible', syncCapsLockWarningVisibility);
         warningBox.add_child(capsLockWarning);
 
-        let warning = new St.Label({ style_class: 'prompt-dialog-error-label' });
+        let warning = new St.Label({style_class: 'prompt-dialog-error-label'});
         warning.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         warning.clutter_text.line_wrap = true;
         this.prompt.bind_property('warning',

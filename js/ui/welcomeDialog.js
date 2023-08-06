@@ -19,7 +19,7 @@ const DialogResponse = {
 export const WelcomeDialog = GObject.registerClass(
 class WelcomeDialog extends ModalDialog.ModalDialog {
     _init() {
-        super._init({ styleClass: 'welcome-dialog' });
+        super._init({styleClass: 'welcome-dialog'});
 
         const appSystem = Shell.AppSystem.get_default();
         this._tourAppInfo = appSystem.lookup_app('org.gnome.Tour.desktop');
@@ -38,9 +38,9 @@ class WelcomeDialog extends ModalDialog.ModalDialog {
         const [majorVersion] = Config.PACKAGE_VERSION.split('.');
         const title = _('Welcome to GNOME %s').format(majorVersion);
         const description = _('If you want to learn your way around, check out the tour.');
-        const content = new Dialog.MessageDialogContent({ title, description });
+        const content = new Dialog.MessageDialogContent({title, description});
 
-        const icon = new St.Widget({ style_class: 'welcome-dialog-image' });
+        const icon = new St.Widget({style_class: 'welcome-dialog-image'});
         content.insert_child_at_index(icon, 0);
 
         this.contentLayout.add_child(content);

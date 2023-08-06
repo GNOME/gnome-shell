@@ -95,7 +95,7 @@ export function uninstallExtension(uuid) {
  * @throws
  */
 function checkResponse(message) {
-    const { statusCode } = message;
+    const {statusCode} = message;
     const phrase = Soup.Status.get_phrase(statusCode);
     if (statusCode !== Soup.Status.OK)
         throw new Error(`Unexpected response: ${phrase}`);
@@ -159,7 +159,7 @@ export async function downloadExtensionUpdate(uuid) {
     const dir = Gio.File.new_for_path(
         GLib.build_filenamev([global.userdatadir, 'extension-updates', uuid]));
 
-    const params = { shell_version: Config.PACKAGE_VERSION };
+    const params = {shell_version: Config.PACKAGE_VERSION};
     const message = Soup.Message.new_from_encoded_form('GET',
         REPOSITORY_URL_DOWNLOAD.format(uuid),
         Soup.form_encode_hash(params));
@@ -246,7 +246,7 @@ export async function checkForUpdates() {
 const InstallExtensionDialog = GObject.registerClass(
 class InstallExtensionDialog extends ModalDialog.ModalDialog {
     _init(uuid, info, invocation) {
-        super._init({ styleClass: 'extension-dialog' });
+        super._init({styleClass: 'extension-dialog'});
 
         this._uuid = uuid;
         this._info = info;
@@ -278,7 +278,7 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
     async _onInstallButtonPressed() {
         this.close();
 
-        const params = { shell_version: Config.PACKAGE_VERSION };
+        const params = {shell_version: Config.PACKAGE_VERSION};
         const message = Soup.Message.new_from_encoded_form('GET',
             REPOSITORY_URL_DOWNLOAD.format(this._uuid),
             Soup.form_encode_hash(params));

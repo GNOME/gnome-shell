@@ -44,7 +44,7 @@ class DwellClickIndicator extends PanelMenu.Button {
         });
         this.add_child(this._icon);
 
-        this._a11ySettings = new Gio.Settings({ schema_id: MOUSE_A11Y_SCHEMA });
+        this._a11ySettings = new Gio.Settings({schema_id: MOUSE_A11Y_SCHEMA});
         this._a11ySettings.connect(`changed::${KEY_DWELL_CLICK_ENABLED}`, this._syncMenuVisibility.bind(this));
         this._a11ySettings.connect(`changed::${KEY_DWELL_MODE}`, this._syncMenuVisibility.bind(this));
 

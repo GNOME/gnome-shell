@@ -465,7 +465,7 @@ export class ExtensionManager extends Signals.EventEmitter {
     }
 
     async unloadExtension(extension) {
-        const { uuid, type } = extension;
+        const {uuid, type} = extension;
 
         // Try to disable it -- if it's ERROR'd, we can't guarantee that,
         // but it will be removed on next reboot, and hopefully nothing
@@ -486,7 +486,7 @@ export class ExtensionManager extends Signals.EventEmitter {
     async reloadExtension(oldExtension) {
         // Grab the things we'll need to pass to createExtensionObject
         // to reload it.
-        let { uuid, dir, type } = oldExtension;
+        let {uuid, dir, type} = oldExtension;
 
         // Then unload the old extension.
         await this.unloadExtension(oldExtension);

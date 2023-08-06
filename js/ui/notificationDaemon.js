@@ -67,17 +67,17 @@ class FdoNotificationDaemon {
             stockIcon = 'dialog-error';
             break;
         }
-        return new Gio.ThemedIcon({ name: stockIcon });
+        return new Gio.ThemedIcon({name: stockIcon});
     }
 
     _iconForNotificationData(icon) {
         if (icon) {
             if (icon.substr(0, 7) == 'file://')
-                return new Gio.FileIcon({ file: Gio.File.new_for_uri(icon) });
+                return new Gio.FileIcon({file: Gio.File.new_for_uri(icon)});
             else if (icon[0] == '/')
-                return new Gio.FileIcon({ file: Gio.File.new_for_path(icon) });
+                return new Gio.FileIcon({file: Gio.File.new_for_path(icon)});
             else
-                return new Gio.ThemedIcon({ name: icon });
+                return new Gio.ThemedIcon({name: icon});
         }
         return null;
     }
@@ -139,7 +139,7 @@ class FdoNotificationDaemon {
             hints[hint] = hints[hint].deepUnpack();
         }
 
-        hints = Params.parse(hints, { urgency: Urgency.NORMAL }, true);
+        hints = Params.parse(hints, {urgency: Urgency.NORMAL}, true);
 
         // Filter out chat, presence, calls and invitation notifications from
         // Empathy, since we handle that information from telepathyClient.js
@@ -200,8 +200,8 @@ class FdoNotificationDaemon {
     }
 
     _notifyForSource(source, ndata) {
-        const { icon, summary, body, actions, hints } = ndata;
-        let { notification } = ndata;
+        const {icon, summary, body, actions, hints} = ndata;
+        let {notification} = ndata;
 
         if (notification == null) {
             notification = new MessageTray.Notification(source);
@@ -524,7 +524,7 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
     }
 
     _onButtonClicked(button) {
-        let { action, target } = button;
+        let {action, target} = button;
         this._activateAction(action.unpack(), target);
     }
 

@@ -39,7 +39,7 @@ export const WindowPreview = GObject.registerClass({
         'drag-begin': {},
         'drag-cancelled': {},
         'drag-end': {},
-        'selected': { param_types: [GObject.TYPE_UINT] },
+        'selected': {param_types: [GObject.TYPE_UINT]},
         'show-chrome': {},
         'size-changed': {},
     },
@@ -59,7 +59,7 @@ export const WindowPreview = GObject.registerClass({
         });
 
         const windowContainer = new Clutter.Actor({
-            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+            pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
         });
         this.window_container = windowContainer;
 
@@ -136,7 +136,7 @@ export const WindowPreview = GObject.registerClass({
         this._icon.add_style_class_name('icon-dropshadow');
         this._icon.set({
             reactive: true,
-            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+            pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
         });
         this._icon.add_constraint(new Clutter.BindConstraint({
             source: windowContainer,
@@ -150,11 +150,11 @@ export const WindowPreview = GObject.registerClass({
         this._icon.add_constraint(new Clutter.AlignConstraint({
             source: windowContainer,
             align_axis: Clutter.AlignAxis.Y_AXIS,
-            pivot_point: new Graphene.Point({ x: -1, y: ICON_OVERLAP }),
+            pivot_point: new Graphene.Point({x: -1, y: ICON_OVERLAP}),
             factor: 1,
         }));
 
-        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
         this._title = new St.Label({
             visible: false,
             style_class: 'window-caption',
@@ -180,7 +180,7 @@ export const WindowPreview = GObject.registerClass({
         this._title.add_constraint(new Clutter.AlignConstraint({
             source: windowContainer,
             align_axis: Clutter.AlignAxis.Y_AXIS,
-            pivot_point: new Graphene.Point({ x: -1, y: 0 }),
+            pivot_point: new Graphene.Point({x: -1, y: 0}),
             factor: 1,
         }));
         this._title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
@@ -206,13 +206,13 @@ export const WindowPreview = GObject.registerClass({
         this._closeButton.add_constraint(new Clutter.AlignConstraint({
             source: windowContainer,
             align_axis: Clutter.AlignAxis.X_AXIS,
-            pivot_point: new Graphene.Point({ x: 0.5, y: -1 }),
+            pivot_point: new Graphene.Point({x: 0.5, y: -1}),
             factor: this._closeButtonSide === St.Side.LEFT ? 0 : 1,
         }));
         this._closeButton.add_constraint(new Clutter.AlignConstraint({
             source: windowContainer,
             align_axis: Clutter.AlignAxis.Y_AXIS,
-            pivot_point: new Graphene.Point({ x: -1, y: 0.5 }),
+            pivot_point: new Graphene.Point({x: -1, y: 0.5}),
             factor: 0,
         }));
         this._closeButton.connect('clicked', () => this._deleteAll());
@@ -235,8 +235,8 @@ export const WindowPreview = GObject.registerClass({
     }
 
     _updateIconScale() {
-        const { ControlsState } = OverviewControls;
-        const { currentState, initialState, finalState } =
+        const {ControlsState} = OverviewControls;
+        const {currentState, initialState, finalState} =
             this._overviewAdjustment.getStateTransitionParams();
         const visible =
             initialState === ControlsState.WINDOW_PICKER ||
@@ -276,7 +276,7 @@ export const WindowPreview = GObject.registerClass({
     chromeHeights() {
         const [, closeButtonHeight] = this._closeButton.get_preferred_height(-1);
         const [, iconHeight] = this._icon.get_preferred_height(-1);
-        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
         const activeExtraSize = WINDOW_ACTIVE_SIZE_INC * scaleFactor;
 
         const topOversize = closeButtonHeight / 2;
@@ -290,7 +290,7 @@ export const WindowPreview = GObject.registerClass({
 
     chromeWidths() {
         const [, closeButtonWidth] = this._closeButton.get_preferred_width(-1);
-        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
         const activeExtraSize = WINDOW_ACTIVE_SIZE_INC * scaleFactor;
 
         const leftOversize = this._closeButtonSide === St.Side.LEFT
@@ -339,7 +339,7 @@ export const WindowPreview = GObject.registerClass({
         });
 
         const [width, height] = this.window_container.get_size();
-        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
         const activeExtraSize = WINDOW_ACTIVE_SIZE_INC * 2 * scaleFactor;
         const origSize = Math.max(width, height);
         const scale = (origSize + activeExtraSize) / origSize;
@@ -475,7 +475,7 @@ export const WindowPreview = GObject.registerClass({
     }
 
     get boundingBox() {
-        return { ...this._cachedBoundingBox };
+        return {...this._cachedBoundingBox};
     }
 
     get windowCenter() {

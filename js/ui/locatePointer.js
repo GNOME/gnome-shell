@@ -9,7 +9,7 @@ const LOCATE_POINTER_SCHEMA = 'org.gnome.desktop.interface';
 
 export class LocatePointer {
     constructor() {
-        this._settings = new Gio.Settings({ schema_id: LOCATE_POINTER_SCHEMA });
+        this._settings = new Gio.Settings({schema_id: LOCATE_POINTER_SCHEMA});
         this._settings.connect(`changed::${LOCATE_POINTER_KEY}`, () => this._syncEnabled());
         this._syncEnabled();
     }

@@ -138,11 +138,11 @@ export function addContextMenu(entry, params) {
     if (entry.menu)
         return;
 
-    params = Params.parse(params, { actionMode: Shell.ActionMode.POPUP });
+    params = Params.parse(params, {actionMode: Shell.ActionMode.POPUP});
 
     entry.menu = new EntryMenu(entry);
     entry._menuManager = new PopupMenu.PopupMenuManager(entry,
-                                                        { actionMode: params.actionMode });
+                                                        {actionMode: params.actionMode});
     entry._menuManager.addMenu(entry.menu);
 
     // Add an event handler to both the entry and its clutter_text; the former
@@ -167,7 +167,7 @@ export function addContextMenu(entry, params) {
 export const CapsLockWarning = GObject.registerClass(
 class CapsLockWarning extends St.Label {
     _init(params) {
-        let defaultParams = { style_class: 'caps-lock-warning-label' };
+        let defaultParams = {style_class: 'caps-lock-warning-label'};
         super._init(Object.assign(defaultParams, params));
 
         this.text = _('Caps lock is on.');
@@ -195,7 +195,7 @@ class CapsLockWarning extends St.Label {
 
         this.remove_all_transitions();
 
-        const { naturalHeightSet } = this;
+        const {naturalHeightSet} = this;
         this.natural_height_set = false;
         let [, height] = this.get_preferred_height(-1);
         this.natural_height_set = naturalHeightSet;

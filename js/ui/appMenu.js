@@ -157,7 +157,7 @@ export class AppMenu extends PopupMenu.PopupMenu {
         if (!canFavorite)
             return;
 
-        const { id } = this._app;
+        const {id} = this._app;
         this._toggleFavoriteItem.label.text = this._appFavorites.isFavorite(id)
             ? _('Unpin')
             : _('Pin to Dash');

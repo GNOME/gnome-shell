@@ -187,7 +187,7 @@ class BackgroundCache extends Signals.EventEmitter {
             return;
         }
 
-        animation = new Animation({ file: params.file });
+        animation = new Animation({file: params.file});
 
         animation.load_async(null, () => {
             this._animations[params.settingsSchema] = animation;
@@ -238,7 +238,7 @@ function getBackgroundCache() {
 }
 
 const Background = GObject.registerClass({
-    Signals: { 'loaded': {}, 'bg-changed': {} },
+    Signals: {'loaded': {}, 'bg-changed': {}},
 }, class Background extends Meta.Background {
     _init(params) {
         params = Params.parse(params, {
@@ -249,7 +249,7 @@ const Background = GObject.registerClass({
             style: null,
         });
 
-        super._init({ meta_display: global.display });
+        super._init({meta_display: global.display});
 
         this._settings = params.settings;
         this._file = params.file;
@@ -260,7 +260,7 @@ const Background = GObject.registerClass({
         this._cancellable = new Gio.Cancellable();
         this.isLoaded = false;
 
-        this._interfaceSettings = new Gio.Settings({ schema_id: INTERFACE_SCHEMA });
+        this._interfaceSettings = new Gio.Settings({schema_id: INTERFACE_SCHEMA});
 
         this._clock = new GnomeDesktop.WallClock();
         this._clock.connectObject('notify::timezone',
@@ -532,11 +532,11 @@ const Background = GObject.registerClass({
 let _systemBackground;
 
 export const SystemBackground = GObject.registerClass({
-    Signals: { 'loaded': {} },
+    Signals: {'loaded': {}},
 }, class SystemBackground extends Meta.BackgroundActor {
     _init() {
         if (_systemBackground == null) {
-            _systemBackground = new Meta.Background({ meta_display: global.display });
+            _systemBackground = new Meta.Background({meta_display: global.display});
             _systemBackground.set_color(DEFAULT_BACKGROUND_COLOR);
         }
 
@@ -559,7 +559,7 @@ class BackgroundSource {
         // Allow override the background image setting for performance testing
         this._layoutManager = layoutManager;
         this._overrideImage = GLib.getenv('SHELL_BACKGROUND_IMAGE');
-        this._settings = new Gio.Settings({ schema_id: settingsSchema });
+        this._settings = new Gio.Settings({schema_id: settingsSchema});
         this._backgrounds = [];
 
         const monitorManager = global.backend.get_monitor_manager();
@@ -567,7 +567,7 @@ class BackgroundSource {
             monitorManager.connect('monitors-changed',
                                    this._onMonitorsChanged.bind(this));
 
-        this._interfaceSettings = new Gio.Settings({ schema_id: INTERFACE_SCHEMA });
+        this._interfaceSettings = new Gio.Settings({schema_id: INTERFACE_SCHEMA});
     }
 
     _onMonitorsChanged() {
@@ -772,7 +772,7 @@ export class BackgroundManager extends Signals.EventEmitter {
 
         this._newBackgroundActor = newBackgroundActor;
 
-        const { background } = newBackgroundActor.content;
+        const {background} = newBackgroundActor.content;
 
         if (background.isLoaded) {
             this._swapBackgroundActor();

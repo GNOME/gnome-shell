@@ -35,7 +35,7 @@ const BLUR_SIGMA = 45;
 const SUMMARY_ICON_SIZE = 32;
 
 const NotificationsBox = GObject.registerClass({
-    Signals: { 'wake-up-screen': {} },
+    Signals: {'wake-up-screen': {}},
 }, class NotificationsBox extends St.BoxLayout {
     _init() {
         super._init({
@@ -43,7 +43,7 @@ const NotificationsBox = GObject.registerClass({
             name: 'unlockDialogNotifications',
         });
 
-        this._scrollView = new St.ScrollView({ hscrollbar_policy: St.PolicyType.NEVER });
+        this._scrollView = new St.ScrollView({hscrollbar_policy: St.PolicyType.NEVER});
         this._notificationBox = new St.BoxLayout({
             vertical: true,
             style_class: 'unlock-dialog-notifications-container',
@@ -114,10 +114,10 @@ const NotificationsBox = GObject.registerClass({
 
     _makeNotificationDetailedSource(source, box) {
         let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
-        let sourceBin = new St.Bin({ child: sourceActor });
+        let sourceBin = new St.Bin({child: sourceActor});
         box.add(sourceBin);
 
-        let textBox = new St.BoxLayout({ vertical: true });
+        let textBox = new St.BoxLayout({vertical: true});
         box.add_child(textBox);
 
         let title = new St.Label({
@@ -141,7 +141,7 @@ const NotificationsBox = GObject.registerClass({
                     : GLib.markup_escape_text(bodyText, -1);
             }
 
-            let label = new St.Label({ style_class: 'unlock-dialog-notification-count-text' });
+            let label = new St.Label({style_class: 'unlock-dialog-notification-count-text'});
             label.clutter_text.set_markup(`<b>${n.title}</b> ${body}`);
             textBox.add(label);
 
@@ -314,7 +314,7 @@ const NotificationsBox = GObject.registerClass({
 const Clock = GObject.registerClass(
 class UnlockDialogClock extends St.BoxLayout {
     _init() {
-        super._init({ style_class: 'unlock-dialog-clock', vertical: true });
+        super._init({style_class: 'unlock-dialog-clock', vertical: true});
 
         this._time = new St.Label({
             style_class: 'unlock-dialog-clock-time',
@@ -334,7 +334,7 @@ class UnlockDialogClock extends St.BoxLayout {
         this.add_child(this._date);
         this.add_child(this._hint);
 
-        this._wallClock = new GnomeDesktop.WallClock({ time_only: true });
+        this._wallClock = new GnomeDesktop.WallClock({time_only: true});
         this._wallClock.connect('notify::clock', this._updateClock.bind(this));
 
         this._seat = Clutter.get_default_backend().get_default_seat();
@@ -543,7 +543,7 @@ export const UnlockDialog = GObject.registerClass({
         // Authentication & Clock stack
         this._stack = new Shell.Stack();
 
-        this._promptBox = new St.BoxLayout({ vertical: true });
+        this._promptBox = new St.BoxLayout({vertical: true});
         this._promptBox.set_pivot_point(0.5, 0.5);
         this._promptBox.hide();
         this._stack.add_child(this._promptBox);
@@ -575,12 +575,12 @@ export const UnlockDialog = GObject.registerClass({
         this._otherUserButton.set_pivot_point(0.5, 0.5);
         this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
 
-        this._screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
+        this._screenSaverSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.screensaver'});
 
         this._screenSaverSettings.connectObject('changed::user-switch-enabled',
             this._updateUserSwitchVisibility.bind(this), this);
 
-        this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
+        this._lockdownSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.lockdown'});
         this._lockdownSettings.connect('changed::disable-user-switching',
             this._updateUserSwitchVisibility.bind(this));
 
@@ -591,7 +591,7 @@ export const UnlockDialog = GObject.registerClass({
 
         // Main Box
         let mainBox = new St.Widget();
-        mainBox.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        mainBox.add_constraint(new Layout.MonitorConstraint({primary: true}));
         mainBox.add_child(this._stack);
         mainBox.add_child(this._notificationsBox);
         mainBox.add_child(this._otherUserButton);
@@ -644,7 +644,7 @@ export const UnlockDialog = GObject.registerClass({
             y: monitor.y,
             width: monitor.width,
             height: monitor.height,
-            effect: new Shell.BlurEffect({ name: 'blur' }),
+            effect: new Shell.BlurEffect({name: 'blur'}),
         });
 
         let bgManager = new Background.BackgroundManager({
@@ -748,7 +748,7 @@ export const UnlockDialog = GObject.registerClass({
             can_focus: progress > 0,
         });
 
-        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
 
         this._promptBox.set({
             opacity: 255 * progress,
@@ -785,7 +785,7 @@ export const UnlockDialog = GObject.registerClass({
             userName = null;
         }
 
-        this._authPrompt.begin({ userName });
+        this._authPrompt.begin({userName});
     }
 
     _escape() {

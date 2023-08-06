@@ -24,7 +24,7 @@ import St from 'gi://St';
 const SCROLL_ANIMATION_TIME = 500;
 
 const AuthListItem = GObject.registerClass({
-    Signals: { 'activate': {} },
+    Signals: {'activate': {}},
 }, class AuthListItem extends St.Button {
     _init(key, text) {
         this.key = key;
@@ -69,8 +69,8 @@ const AuthListItem = GObject.registerClass({
 
 export const AuthList = GObject.registerClass({
     Signals: {
-        'activate': { param_types: [GObject.TYPE_STRING] },
-        'item-added': { param_types: [AuthListItem.$gtype] },
+        'activate': {param_types: [GObject.TYPE_STRING]},
+        'item-added': {param_types: [AuthListItem.$gtype]},
     },
 }, class AuthList extends St.BoxLayout {
     _init() {
@@ -81,7 +81,7 @@ export const AuthList = GObject.registerClass({
             y_align: Clutter.ActorAlign.CENTER,
         });
 
-        this.label = new St.Label({ style_class: 'login-dialog-auth-list-title' });
+        this.label = new St.Label({style_class: 'login-dialog-auth-list-title'});
         this.add_child(this.label);
 
         this._scrollView = new St.ScrollView({

@@ -66,7 +66,7 @@ class DashItemContainer extends St.Widget {
     _init() {
         super._init({
             style_class: 'dash-item-container',
-            pivot_point: new Graphene.Point({ x: .5, y: .5 }),
+            pivot_point: new Graphene.Point({x: .5, y: .5}),
             layout_manager: new Clutter.BinLayout(),
             scale_x: 0,
             scale_y: 0,
@@ -76,7 +76,7 @@ class DashItemContainer extends St.Widget {
         });
 
         this._labelText = '';
-        this.label = new St.Label({ style_class: 'dash-label' });
+        this.label = new St.Label({style_class: 'dash-label'});
         this.label.hide();
         Main.layoutManager.addChrome(this.label);
         this.label.connectObject('destroy', () => (this.label = null), this);
@@ -288,7 +288,7 @@ const DragPlaceholderItem = GObject.registerClass(
 class DragPlaceholderItem extends DashItemContainer {
     _init() {
         super._init();
-        this.setChild(new St.Bin({ style_class: 'placeholder' }));
+        this.setChild(new St.Bin({style_class: 'placeholder'}));
     }
 });
 
@@ -296,7 +296,7 @@ const EmptyDropTargetItem = GObject.registerClass(
 class EmptyDropTargetItem extends DashItemContainer {
     _init() {
         super._init();
-        this.setChild(new St.Bin({ style_class: 'empty-dash-drop-target' }));
+        this.setChild(new St.Bin({style_class: 'empty-dash-drop-target'}));
     }
 });
 
@@ -317,7 +317,7 @@ class DashIconsLayout extends Clutter.BoxLayout {
 const baseIconSizes = [16, 22, 24, 32, 48, 64];
 
 export const Dash = GObject.registerClass({
-    Signals: { 'icon-size-changed': {} },
+    Signals: {'icon-size-changed': {}},
 }, class Dash extends St.Widget {
     _init() {
         this._maxWidth = -1;

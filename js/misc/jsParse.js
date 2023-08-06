@@ -103,7 +103,7 @@ export function findMatchingSlash(expr, offset) {
  */
 export function findMatchingBrace(expr, offset) {
     let closeBrace = expr.charAt(offset);
-    let openBrace = { ')': '(', ']': '[' }[closeBrace];
+    let openBrace = {')': '(', ']': '['}[closeBrace];
 
     return findTheBrace(expr, offset - 1, openBrace, closeBrace);
 }

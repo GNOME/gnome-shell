@@ -18,6 +18,3 @@ rules:
   jsdoc/require-param-description: off
   jsdoc/require-param-name: off
   jsdoc/require-param-type: off
-  object-curly-spacing:
-    - error
-    - always

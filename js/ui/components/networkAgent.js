@@ -24,7 +24,7 @@ const VPN_UI_GROUP = 'VPN Plugin UI';
 const NetworkSecretDialog = GObject.registerClass(
 class NetworkSecretDialog extends ModalDialog.ModalDialog {
     _init(agent, requestId, connection, settingName, hints, flags, contentOverride) {
-        super._init({ styleClass: 'prompt-dialog' });
+        super._init({styleClass: 'prompt-dialog'});
 
         this._agent = agent;
         this._requestId = requestId;
@@ -469,10 +469,10 @@ class VPNRequestHandler extends Signals.EventEmitter {
                     });
 
             this._childPid = pid;
-            this._stdin = new Gio.UnixOutputStream({ fd: stdin, close_fd: true });
-            this._stdout = new Gio.UnixInputStream({ fd: stdout, close_fd: true });
+            this._stdin = new Gio.UnixOutputStream({fd: stdin, close_fd: true});
+            this._stdout = new Gio.UnixInputStream({fd: stdout, close_fd: true});
             GLib.close(stderr);
-            this._dataStdout = new Gio.DataInputStream({ base_stream: this._stdout });
+            this._dataStdout = new Gio.DataInputStream({base_stream: this._stdout});
 
             if (this._newStylePlugin)
                 this._readStdoutNewStyle();

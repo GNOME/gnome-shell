@@ -87,7 +87,7 @@ function HotplugSniffer() {
 
 class ContentTypeDiscoverer {
     constructor() {
-        this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
+        this._settings = new Gio.Settings({schema_id: SETTINGS_SCHEMA});
     }
 
     async guessContentTypes(mount) {
@@ -166,7 +166,7 @@ class AutorunDispatcher {
     constructor(manager) {
         this._manager = manager;
         this._sources = [];
-        this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
+        this._settings = new Gio.Settings({schema_id: SETTINGS_SCHEMA});
     }
 
     _getAutorunSettingForType(contentType) {

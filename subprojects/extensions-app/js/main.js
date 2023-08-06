@@ -44,7 +44,7 @@ var Application = GObject.registerClass(
 class Application extends Adw.Application {
     _init() {
         GLib.set_prgname('gnome-extensions-app');
-        super._init({ application_id: Package.name });
+        super._init({application_id: Package.name});
 
         this.connect('window-removed', (a, window) => window.run_dispose());
     }
@@ -72,7 +72,7 @@ class Application extends Adw.Application {
         this._shellProxy = new GnomeShellProxy(Gio.DBus.session,
             'org.gnome.Shell.Extensions', '/org/gnome/Shell/Extensions');
 
-        this._window = new ExtensionsWindow({ application: this });
+        this._window = new ExtensionsWindow({application: this});
     }
 });
 
@@ -100,7 +100,7 @@ var ExtensionsWindow = GObject.registerClass({
 
         this._updatesCheckId = 0;
 
-        this._exporter = new Shew.WindowExporter({ window: this });
+        this._exporter = new Shew.WindowExporter({window: this});
         this._exportedHandle = '';
 
         this.add_action_entries(
@@ -120,7 +120,7 @@ var ExtensionsWindow = GObject.registerClass({
 
         this._searchTerms = [];
         this._searchEntry.connect('search-changed', () => {
-            const { text } = this._searchEntry;
+            const {text} = this._searchEntry;
             if (text === '')
                 this._searchTerms = [];
             else
@@ -458,7 +458,7 @@ var ExtensionRow = GObject.registerClass({
     }
 
     get hasError() {
-        const { state } = this._extension;
+        const {state} = this._extension;
         return state === ExtensionState.OUT_OF_DATE ||
                state === ExtensionState.ERROR;
     }

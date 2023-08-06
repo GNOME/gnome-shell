@@ -52,7 +52,7 @@ let _desktopSettings = null;
 export function findUrls(str) {
     let res = [], match;
     while ((match = _urlRegexp.exec(str)))
-        res.push({ url: match[2], pos: match.index + match[1].length });
+        res.push({url: match[2], pos: match.index + match[1].length});
     return res;
 }
 
@@ -143,7 +143,7 @@ function trySpawn(argv) {
             // We are only interested in the part in the parentheses. (And
             // we can't pattern match the text, since it gets localized.)
             let message = err.message.replace(/.*\((.+)\)/, '$1');
-            throw new err.constructor({ code: err.code, message });
+            throw new err.constructor({code: err.code, message});
         } else {
             throw err;
         }
@@ -196,9 +196,9 @@ function _handleSpawnError(command, err) {
  */
 export function createTimeLabel(date, params) {
     if (_desktopSettings == null)
-        _desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
+        _desktopSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.interface'});
 
-    let label = new St.Label({ text: formatTime(date, params) });
+    let label = new St.Label({text: formatTime(date, params)});
     _desktopSettings.connectObject(
         'changed::clock-format', () => (label.text = formatTime(date, params)),
         label);

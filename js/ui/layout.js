@@ -219,7 +219,7 @@ export const LayoutManager = GObject.registerClass({
         this._pendingLoadBackground = false;
 
         // Set up stage hierarchy to group all UI actors under one container.
-        this.uiGroup = new UiActor({ name: 'uiGroup' });
+        this.uiGroup = new UiActor({name: 'uiGroup'});
         this.uiGroup.set_flags(Clutter.ActorFlags.NO_LAYOUT);
 
         global.stage.add_child(this.uiGroup);
@@ -308,7 +308,7 @@ export const LayoutManager = GObject.registerClass({
 
         // A dummy actor that tracks the mouse or text cursor, based on the
         // position and size set in setDummyCursorGeometry.
-        this.dummyCursor = new St.Widget({ width: 0, height: 0, opacity: 0 });
+        this.dummyCursor = new St.Widget({width: 0, height: 0, opacity: 0});
         this.uiGroup.add_actor(this.dummyCursor);
 
         let feedbackGroup = Meta.get_feedback_group_for_display(global.display);
@@ -984,7 +984,7 @@ export const LayoutManager = GObject.registerClass({
     findIndexForActor(actor) {
         let [x, y] = actor.get_transformed_position();
         let [w, h] = actor.get_transformed_size();
-        let rect = new Meta.Rectangle({ x, y, width: w, height: h });
+        let rect = new Meta.Rectangle({x, y, width: w, height: h});
         return global.display.get_monitor_index_for_rect(rect);
     }
 
@@ -1048,7 +1048,7 @@ export const LayoutManager = GObject.registerClass({
             h = Math.round(h);
 
             if (actorData.affectsInputRegion && wantsInputRegion && actorData.actor.get_paint_visibility())
-                rects.push(new Meta.Rectangle({ x, y, width: w, height: h }));
+                rects.push(new Meta.Rectangle({x, y, width: w, height: h}));
 
             let monitor = null;
             if (actorData.affectsStruts)
@@ -1098,8 +1098,8 @@ export const LayoutManager = GObject.registerClass({
                     continue;
                 }
 
-                let strutRect = new Meta.Rectangle({ x: x1, y: y1, width: x2 - x1, height: y2 - y1 });
-                let strut = new Meta.Strut({ rect: strutRect, side });
+                let strutRect = new Meta.Rectangle({x: x1, y: y1, width: x2 - x1, height: y2 - y1});
+                let strut = new Meta.Strut({rect: strutRect, side});
                 struts.push(strut);
             }
         }
@@ -1445,7 +1445,7 @@ class PressureBarrier extends Signals.EventEmitter {
 const ScreenTransition = GObject.registerClass(
 class ScreenTransition extends Clutter.Actor {
     _init() {
-        super._init({ visible: false });
+        super._init({visible: false});
     }
 
     vfunc_hide() {

@@ -73,7 +73,7 @@ class BaseIcon extends Shell.SquareBin {
         if (params.showLabel)
             styleClass += ' overview-icon-with-label';
 
-        super._init({ style_class: styleClass });
+        super._init({style_class: styleClass});
 
         this._box = new St.BoxLayout({
             vertical: true,
@@ -83,12 +83,12 @@ class BaseIcon extends Shell.SquareBin {
         this.set_child(this._box);
 
         this.iconSize = ICON_SIZE;
-        this._iconBin = new St.Bin({ x_align: Clutter.ActorAlign.CENTER });
+        this._iconBin = new St.Bin({x_align: Clutter.ActorAlign.CENTER});
 
         this._box.add_actor(this._iconBin);
 
         if (params.showLabel) {
-            this.label = new St.Label({ text: label });
+            this.label = new St.Label({text: label});
             this.label.clutter_text.set({
                 x_align: Clutter.ActorAlign.CENTER,
                 y_align: Clutter.ActorAlign.CENTER,
@@ -142,7 +142,7 @@ class BaseIcon extends Shell.SquareBin {
         if (this._setSizeManually) {
             size = this.iconSize;
         } else {
-            const { scaleFactor } =
+            const {scaleFactor} =
                 St.ThemeContext.get_for_stage(global.stage);
 
             let [found, len] = node.lookup_length('icon-size', false);
@@ -526,7 +526,7 @@ export const IconGridLayout = GObject.registerClass({
     }
 
     _appendPage() {
-        this._pages.push({ children: [] });
+        this._pages.push({children: []});
         this.emit('pages-changed');
     }
 
@@ -1226,7 +1226,7 @@ export const IconGrid = GObject.registerClass({
     }
 
     _findBestModeForSize(width, height) {
-        const { pagePadding } = this.layout_manager;
+        const {pagePadding} = this.layout_manager;
         width -= pagePadding.left + pagePadding.right;
         height -= pagePadding.top + pagePadding.bottom;
 

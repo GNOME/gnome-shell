@@ -388,9 +388,9 @@ class ChatSource extends MessageTray.Source {
     getIcon() {
         let file = this._contact.get_avatar_file();
         if (file)
-            return new Gio.FileIcon({ file });
+            return new Gio.FileIcon({file});
         else
-            return new Gio.ThemedIcon({ name: 'avatar-default' });
+            return new Gio.ThemedIcon({name: 'avatar-default'});
     }
 
     getSecondaryIcon() {
@@ -419,7 +419,7 @@ class ChatSource extends MessageTray.Source {
         default:
             iconName = 'user-offline';
         }
-        return new Gio.ThemedIcon({ name: iconName });
+        return new Gio.ThemedIcon({name: iconName});
     }
 
     _updateAvatarIcon() {
@@ -427,7 +427,7 @@ class ChatSource extends MessageTray.Source {
         if (this._notification) {
             this._notification.update(this._notification.title,
                                       this._notification.bannerBodyText,
-                                      { gicon: this.getIcon() });
+                                      {gicon: this.getIcon()});
         }
     }
 
@@ -633,7 +633,7 @@ class ChatSource extends MessageTray.Source {
         if (this._notification) {
             this._notification.update(this._notification.title,
                                       this._notification.bannerBodyText,
-                                      { secondaryGIcon: this.getSecondaryIcon() });
+                                      {secondaryGIcon: this.getSecondaryIcon()});
         }
     }
 
@@ -667,14 +667,14 @@ class ChatNotificationMessage extends GObject.Object {
 
 const ChatNotification = HAVE_TP ? GObject.registerClass({
     Signals: {
-        'message-removed': { param_types: [ChatNotificationMessage.$gtype] },
-        'message-added': { param_types: [ChatNotificationMessage.$gtype] },
-        'timestamp-changed': { param_types: [ChatNotificationMessage.$gtype] },
+        'message-removed': {param_types: [ChatNotificationMessage.$gtype]},
+        'message-added': {param_types: [ChatNotificationMessage.$gtype]},
+        'timestamp-changed': {param_types: [ChatNotificationMessage.$gtype]},
     },
 }, class ChatNotification extends MessageTray.Notification {
     _init(source) {
         super._init(source, source.title, null,
-            { secondaryGIcon: source.getSecondaryIcon() });
+            {secondaryGIcon: source.getSecondaryIcon()});
         this.setUrgency(MessageTray.Urgency.HIGH);
         this.setResident(true);
 
@@ -775,7 +775,7 @@ const ChatNotification = HAVE_TP ? GObject.registerClass({
             timestamp: currentTime,
             noTimestamp: false,
         });
-        const { noTimestamp } = props;
+        const {noTimestamp} = props;
         delete props.noTimestamp;
 
         // Reset the old message timeout
@@ -897,7 +897,7 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
             this._oldMaxScrollValue = Math.max(adjustment.lower, adjustment.upper - adjustment.page_size);
         });
 
-        this._inputHistory = new History.HistoryManager({ entry: this._responseEntry.clutter_text });
+        this._inputHistory = new History.HistoryManager({entry: this._responseEntry.clutter_text});
 
         this._composingTimeoutId = 0;
 

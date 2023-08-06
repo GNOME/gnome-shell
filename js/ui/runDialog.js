@@ -32,8 +32,8 @@ class RunDialog extends ModalDialog.ModalDialog {
             destroyOnClose: false,
         });
 
-        this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
-        this._terminalSettings = new Gio.Settings({ schema_id: TERMINAL_SCHEMA });
+        this._lockdownSettings = new Gio.Settings({schema_id: LOCKDOWN_SCHEMA});
+        this._terminalSettings = new Gio.Settings({schema_id: TERMINAL_SCHEMA});
         global.settings.connect('changed::development-tools', () => {
             this._enableInternalCommands = global.settings.get_boolean('development-tools');
         });
@@ -62,7 +62,7 @@ class RunDialog extends ModalDialog.ModalDialog {
 
         let title = _('Run a Command');
 
-        let content = new Dialog.MessageDialogContent({ title });
+        let content = new Dialog.MessageDialogContent({title});
         this.contentLayout.add_actor(content);
 
         let entry = new St.Entry({

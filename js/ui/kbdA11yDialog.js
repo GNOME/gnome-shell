@@ -15,7 +15,7 @@ class KbdA11yDialog extends GObject.Object {
     _init() {
         super._init();
 
-        this._a11ySettings = new Gio.Settings({ schema_id: KEYBOARD_A11Y_SCHEMA });
+        this._a11ySettings = new Gio.Settings({schema_id: KEYBOARD_A11Y_SCHEMA});
 
         let seat = Clutter.get_default_backend().get_default_seat();
         seat.connect('kbd-a11y-flags-changed',
@@ -50,7 +50,7 @@ class KbdA11yDialog extends GObject.Object {
             return;
         }
 
-        let content = new Dialog.MessageDialogContent({ title, description });
+        let content = new Dialog.MessageDialogContent({title, description});
         dialog.contentLayout.add_child(content);
 
         dialog.addButton({
