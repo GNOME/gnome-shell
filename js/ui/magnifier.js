@@ -68,7 +68,7 @@ const MouseSpriteContent = GObject.registerClass({
         let color = Clutter.Color.get_static(Clutter.StaticColor.WHITE);
         let [minFilter, magFilter] = actor.get_content_scaling_filters();
         let textureNode = new Clutter.TextureNode(this._texture,
-                                                  color, minFilter, magFilter);
+            color, minFilter, magFilter);
         textureNode.set_name('MouseSpriteContent');
         node.add_child(textureNode);
 
@@ -556,38 +556,38 @@ export class Magnifier extends Signals.EventEmitter {
         this._settings = new Gio.Settings({schema_id: MAGNIFIER_SCHEMA});
 
         this._settings.connect(`changed::${SCREEN_POSITION_KEY}`,
-                               this._updateScreenPosition.bind(this));
+            this._updateScreenPosition.bind(this));
         this._settings.connect(`changed::${MAG_FACTOR_KEY}`,
-                               this._updateMagFactor.bind(this));
+            this._updateMagFactor.bind(this));
         this._settings.connect(`changed::${LENS_MODE_KEY}`,
-                               this._updateLensMode.bind(this));
+            this._updateLensMode.bind(this));
         this._settings.connect(`changed::${CLAMP_MODE_KEY}`,
-                               this._updateClampMode.bind(this));
+            this._updateClampMode.bind(this));
         this._settings.connect(`changed::${MOUSE_TRACKING_KEY}`,
-                               this._updateMouseTrackingMode.bind(this));
+            this._updateMouseTrackingMode.bind(this));
         this._settings.connect(`changed::${FOCUS_TRACKING_KEY}`,
-                               this._updateFocusTrackingMode.bind(this));
+            this._updateFocusTrackingMode.bind(this));
         this._settings.connect(`changed::${CARET_TRACKING_KEY}`,
-                               this._updateCaretTrackingMode.bind(this));
+            this._updateCaretTrackingMode.bind(this));
 
         this._settings.connect(`changed::${INVERT_LIGHTNESS_KEY}`,
-                               this._updateInvertLightness.bind(this));
+            this._updateInvertLightness.bind(this));
         this._settings.connect(`changed::${COLOR_SATURATION_KEY}`,
-                               this._updateColorSaturation.bind(this));
+            this._updateColorSaturation.bind(this));
 
         this._settings.connect(`changed::${BRIGHT_RED_KEY}`,
-                               this._updateBrightness.bind(this));
+            this._updateBrightness.bind(this));
         this._settings.connect(`changed::${BRIGHT_GREEN_KEY}`,
-                               this._updateBrightness.bind(this));
+            this._updateBrightness.bind(this));
         this._settings.connect(`changed::${BRIGHT_BLUE_KEY}`,
-                               this._updateBrightness.bind(this));
+            this._updateBrightness.bind(this));
 
         this._settings.connect(`changed::${CONTRAST_RED_KEY}`,
-                               this._updateContrast.bind(this));
+            this._updateContrast.bind(this));
         this._settings.connect(`changed::${CONTRAST_GREEN_KEY}`,
-                               this._updateContrast.bind(this));
+            this._updateContrast.bind(this));
         this._settings.connect(`changed::${CONTRAST_BLUE_KEY}`,
-                               this._updateContrast.bind(this));
+            this._updateContrast.bind(this));
 
         this._settings.connect(`changed::${SHOW_CROSS_HAIRS_KEY}`, () => {
             this.setCrosshairsVisible(this._settings.get_boolean(SHOW_CROSS_HAIRS_KEY));
@@ -807,7 +807,7 @@ class ZoomRegion {
 
         this._signalConnections = [];
         let id = Main.layoutManager.connect('monitors-changed',
-                                            this._monitorsChanged.bind(this));
+            this._monitorsChanged.bind(this));
         this._signalConnections.push([Main.layoutManager, id]);
 
         id = this._focusCaretTracker.connect('caret-moved', this._updateCaret.bind(this));
@@ -1889,8 +1889,9 @@ class Crosshairs extends Clutter.Actor {
                     this._clones.push(crosshairsActor);
 
                     // Clones don't share visibility.
-                    this.bind_property('visible', crosshairsActor, 'visible',
-                                       GObject.BindingFlags.SYNC_CREATE);
+                    this.bind_property('visible',
+                        crosshairsActor, 'visible',
+                        GObject.BindingFlags.SYNC_CREATE);
                 }
 
                 container.add_actor(crosshairsActor);

@@ -196,17 +196,17 @@ class WorkspaceTracker {
 
         let workspaceManager = global.workspace_manager;
         workspaceManager.connect('notify::n-workspaces',
-                                 this._nWorkspacesChanged.bind(this));
+            this._nWorkspacesChanged.bind(this));
         workspaceManager.connect('workspaces-reordered', () => {
             this._workspaces.sort((a, b) => a.index() - b.index());
         });
         global.window_manager.connect('switch-workspace',
-                                      this._queueCheckWorkspaces.bind(this));
+            this._queueCheckWorkspaces.bind(this));
 
         global.display.connect('window-entered-monitor',
-                               this._windowEnteredMonitor.bind(this));
+            this._windowEnteredMonitor.bind(this));
         global.display.connect('window-left-monitor',
-                               this._windowLeftMonitor.bind(this));
+            this._windowLeftMonitor.bind(this));
 
         this._workspaceSettings = new Gio.Settings({schema_id: 'org.gnome.mutter'});
         this._workspaceSettings.connect('changed::dynamic-workspaces', this._queueCheckWorkspaces.bind(this));
@@ -897,12 +897,12 @@ export class WindowManager {
             Main.osdWindowManager.show(monitorIndex, icon, label, null);
         });
 
-        this._gsdWacomProxy = new GsdWacomProxy(Gio.DBus.session, GSD_WACOM_BUS_NAME,
-                                                GSD_WACOM_OBJECT_PATH,
-                                                (proxy, error) => {
-                                                    if (error)
-                                                        log(error.message);
-                                                });
+        this._gsdWacomProxy = new GsdWacomProxy(Gio.DBus.session,
+            GSD_WACOM_BUS_NAME, GSD_WACOM_OBJECT_PATH,
+            (proxy, error) => {
+                if (error)
+                    log(error.message);
+            });
 
         global.display.connect('pad-mode-switch', (display, pad, _group, _mode) => {
             let labels = [];
@@ -1243,8 +1243,9 @@ export class WindowManager {
             let [success, geom] = actor.meta_window.get_icon_geometry();
             if (success) {
                 actor.set_position(geom.x, geom.y);
-                actor.set_scale(geom.width / actor.width,
-                                geom.height / actor.height);
+                actor.set_scale(
+                    geom.width / actor.width,
+                    geom.height / actor.height);
             } else {
                 let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
                 if (!monitor) {

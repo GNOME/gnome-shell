@@ -88,7 +88,7 @@ export class CtrlAltTabManager {
             let workspaceManager = global.workspace_manager;
             let activeWorkspace = workspaceManager.get_active_workspace();
             let windows = display.get_tab_list(Meta.TabList.DOCKS,
-                                               activeWorkspace);
+                activeWorkspace);
             let windowTracker = Shell.WindowTracker.get_default();
             let textureCache = St.TextureCache.get_default();
             for (let i = 0; i < windows.length; i++) {
@@ -130,10 +130,9 @@ export class CtrlAltTabManager {
             this._popup = new CtrlAltTabPopup(items);
             this._popup.show(backward, binding, mask);
 
-            this._popup.connect('destroy',
-                                () => {
-                                    this._popup = null;
-                                });
+            this._popup.connect('destroy', () => {
+                this._popup = null;
+            });
         }
     }
 

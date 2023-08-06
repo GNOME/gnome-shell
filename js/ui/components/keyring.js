@@ -216,7 +216,7 @@ class KeyringPrompter extends Gcr.SystemPrompter {
         if (!this._registered) {
             this.register(Gio.DBus.session);
             this._dbusId = Gio.DBus.session.own_name('org.gnome.keyring.SystemPrompter',
-                                                     Gio.BusNameOwnerFlags.ALLOW_REPLACEMENT, null, null);
+                Gio.BusNameOwnerFlags.ALLOW_REPLACEMENT, null, null);
             this._registered = true;
         }
         this._enabled = true;

@@ -107,15 +107,14 @@ function _sessionUpdated() {
     if (sessionMode.isPrimary)
         _loadDefaultStylesheet();
 
-    wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
-                                      Shell.ActionMode.OVERVIEW);
+    wm.allowKeybinding('overlay-key',
+        Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW);
 
     wm.allowKeybinding('locate-pointer-key', Shell.ActionMode.ALL);
 
     wm.setCustomKeybindingHandler('panel-run-dialog',
-                                  Shell.ActionMode.NORMAL |
-                                  Shell.ActionMode.OVERVIEW,
-                                  sessionMode.hasRunDialog ? openRunDialog : null);
+        Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+        sessionMode.hasRunDialog ? openRunDialog : null);
 
     if (!sessionMode.hasRunDialog) {
         if (runDialog)

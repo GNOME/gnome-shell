@@ -148,7 +148,7 @@ export class OsdWindowManager {
     constructor() {
         this._osdWindows = [];
         Main.layoutManager.connect('monitors-changed',
-                                   this._monitorsChanged.bind(this));
+            this._monitorsChanged.bind(this));
         this._monitorsChanged();
     }
 

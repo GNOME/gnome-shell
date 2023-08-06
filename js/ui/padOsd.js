@@ -292,21 +292,18 @@ const ActionEditor = GObject.registerClass({
 
 const PadDiagram = GObject.registerClass({
     Properties: {
-        'left-handed': GObject.ParamSpec.boolean('left-handed',
-                                                 'left-handed', 'Left handed',
-                                                 GObject.ParamFlags.READWRITE |
-                                                 GObject.ParamFlags.CONSTRUCT_ONLY,
-                                                 false),
-        'image': GObject.ParamSpec.string('image', 'image', 'Image',
-                                          GObject.ParamFlags.READWRITE |
-                                          GObject.ParamFlags.CONSTRUCT_ONLY,
-                                          null),
-        'editor-actor': GObject.ParamSpec.object('editor-actor',
-                                                 'editor-actor',
-                                                 'Editor actor',
-                                                 GObject.ParamFlags.READWRITE |
-                                                 GObject.ParamFlags.CONSTRUCT_ONLY,
-                                                 Clutter.Actor.$gtype),
+        'left-handed': GObject.ParamSpec.boolean(
+            'left-handed', 'left-handed', 'Left handed',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
+        'image': GObject.ParamSpec.string(
+            'image', 'image', 'Image',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            null),
+        'editor-actor': GObject.ParamSpec.object(
+            'editor-actor', 'editor-actor', 'Editor actor',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            Clutter.Actor.$gtype),
     },
 }, class PadDiagram extends St.DrawingArea {
     _init(params) {
@@ -899,8 +896,9 @@ export const PadOsd = GObject.registerClass({
         this._editedAction = {type, number, dir, mode};
 
         const settingsPath = `${this._settings.path}${key}/`;
-        this._editedActionSettings = Gio.Settings.new_with_path('org.gnome.desktop.peripherals.tablet.pad-button',
-                                                                settingsPath);
+        this._editedActionSettings = Gio.Settings.new_with_path(
+            'org.gnome.desktop.peripherals.tablet.pad-button',
+            settingsPath);
         this._actionEditor.setSettings(this._editedActionSettings, type);
         this._padDiagram.startEdition(type, number, dir);
     }
@@ -964,9 +962,10 @@ export class PadOsdService extends Signals.EventEmitter {
         });
 
         if (padDevice == null) {
-            invocation.return_error_literal(Gio.IOErrorEnum,
-                                            Gio.IOErrorEnum.CANCELLED,
-                                            'Invalid params');
+            invocation.return_error_literal(
+                Gio.IOErrorEnum,
+                Gio.IOErrorEnum.CANCELLED,
+                'Invalid params');
             return;
         }
 

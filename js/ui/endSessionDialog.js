@@ -247,22 +247,22 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._updatesPermission = null;
 
         this._pkOfflineProxy = new PkOfflineProxy(Gio.DBus.system,
-                                                  'org.freedesktop.PackageKit',
-                                                  '/org/freedesktop/PackageKit',
-                                                  this._onPkOfflineProxyCreated.bind(this));
+            'org.freedesktop.PackageKit',
+            '/org/freedesktop/PackageKit',
+            this._onPkOfflineProxyCreated.bind(this));
 
         this._powerProxy = new UPowerProxy(Gio.DBus.system,
-                                           'org.freedesktop.UPower',
-                                           '/org/freedesktop/UPower/devices/DisplayDevice',
-                                           (proxy, error) => {
-                                               if (error) {
-                                                   log(error.message);
-                                                   return;
-                                               }
-                                               this._powerProxy.connect('g-properties-changed',
-                                                                        this._sync.bind(this));
-                                               this._sync();
-                                           });
+            'org.freedesktop.UPower',
+            '/org/freedesktop/UPower/devices/DisplayDevice',
+            (proxy, error) => {
+                if (error) {
+                    log(error.message);
+                    return;
+                }
+                this._powerProxy.connect('g-properties-changed',
+                    this._sync.bind(this));
+                this._sync();
+            });
 
         this._secondsLeft = 0;
         this._totalSecondsToStayOpen = 0;
@@ -272,8 +272,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._rebootButton = null;
         this._rebootButtonAlt = null;
 
-        this.connect('opened',
-                     this._onOpened.bind(this));
+        this.connect('opened', this._onOpened.bind(this));
 
         this._user.connectObject(
             'notify::is-loaded', this._sync.bind(this),
@@ -379,9 +378,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._batteryWarning.visible = this._shouldShowLowBatteryWarning(dialogContent);
 
         let description;
-        let displayTime = _roundSecondsToInterval(this._totalSecondsToStayOpen,
-                                                  this._secondsLeft,
-                                                  10);
+        let displayTime = _roundSecondsToInterval(
+            this._totalSecondsToStayOpen, this._secondsLeft, 10);
 
         if (this._user.is_loaded) {
             let realName = this._user.get_real_name();
@@ -748,8 +746,9 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._sessionSection.list.destroy_all_children();
 
         if (!(this._type in DialogContent)) {
-            invocation.return_dbus_error('org.gnome.Shell.ModalDialog.TypeError',
-                                         'Unknown dialog type requested');
+            invocation.return_dbus_error(
+                'org.gnome.Shell.ModalDialog.TypeError',
+                'Unknown dialog type requested');
             return;
         }
 
@@ -781,8 +780,9 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._updateButtons();
 
         if (!this.open(timestamp)) {
-            invocation.return_dbus_error('org.gnome.Shell.ModalDialog.GrabError',
-                                         'Cannot grab pointer and keyboard');
+            invocation.return_dbus_error(
+                'org.gnome.Shell.ModalDialog.GrabError',
+                'Cannot grab pointer and keyboard');
             return;
         }
 

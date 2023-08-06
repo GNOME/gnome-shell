@@ -18,12 +18,12 @@ const IntrospectDBusIface = loadInterfaceXML('org.gnome.Shell.Introspect');
 
 export class IntrospectService {
     constructor() {
-        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(IntrospectDBusIface,
-                                                             this);
+        this._dbusImpl =
+            Gio.DBusExportedObject.wrapJSObject(IntrospectDBusIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell/Introspect');
         Gio.DBus.session.own_name('org.gnome.Shell.Introspect',
-                                  Gio.BusNameOwnerFlags.REPLACE,
-                                  null, null);
+            Gio.BusNameOwnerFlags.REPLACE,
+            null, null);
 
         this._runningApplications = {};
         this._runningApplicationsDirty = true;
@@ -32,18 +32,16 @@ export class IntrospectService {
         this._animationsEnabled = true;
 
         this._appSystem = Shell.AppSystem.get_default();
-        this._appSystem.connect('app-state-changed',
-                                () => {
-                                    this._runningApplicationsDirty = true;
-                                    this._syncRunningApplications();
-                                });
+        this._appSystem.connect('app-state-changed', () => {
+            this._runningApplicationsDirty = true;
+            this._syncRunningApplications();
+        });
 
         let tracker = Shell.WindowTracker.get_default();
-        tracker.connect('notify::focus-app',
-                        () => {
-                            this._activeApplicationDirty = true;
-                            this._syncRunningApplications();
-                        });
+        tracker.connect('notify::focus-app', () => {
+            this._activeApplicationDirty = true;
+            this._syncRunningApplications();
+        });
 
         tracker.connect('tracked-windows-changed',
             () => this._dbusImpl.emit_signal('WindowsChanged', null));

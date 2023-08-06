@@ -1350,7 +1350,7 @@ class Workspace extends St.Widget {
         let clone = new WindowPreview(metaWindow, this, this._overviewAdjustment);
 
         clone.connect('selected',
-                      this._onCloneSelected.bind(this));
+            this._onCloneSelected.bind(this));
         clone.connect('drag-begin', () => {
             Main.overview.beginWindowDrag(metaWindow);
         });

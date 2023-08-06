@@ -97,9 +97,7 @@ class Client extends Signals.EventEmitter {
 
     _onDeviceAdded(proxy, emitter, params) {
         let [path] = params;
-        let device = new BoltDeviceProxy(Gio.DBus.system,
-                                         BOLT_DBUS_NAME,
-                                         path);
+        let device = new BoltDeviceProxy(Gio.DBus.system, BOLT_DBUS_NAME, path);
         this.emit('device-added', device);
     }
 
@@ -187,7 +185,7 @@ class AuthRobot extends Signals.EventEmitter {
 
         this._enrolling = true;
         GLib.idle_add(GLib.PRIORITY_DEFAULT,
-                      this._enrollDevicesIdle.bind(this));
+            this._enrollDevicesIdle.bind(this));
     }
 
     async _enrollDevicesIdle() {
@@ -259,7 +257,7 @@ class Indicator extends SystemIndicator {
     _ensureSource() {
         if (!this._source) {
             this._source = new MessageTray.Source(_('Thunderbolt'),
-                                                  'thunderbolt-symbolic');
+                'thunderbolt-symbolic');
             this._source.connect('destroy', () => (this._source = null));
 
             Main.messageTray.add(this._source);

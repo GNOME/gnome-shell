@@ -172,9 +172,8 @@ export async function disableHelperAutoExit() {
  * within a performance automation script
  */
 export function defineScriptEvent(name, description) {
-    Shell.PerfLog.get_default().define_event(`script.${name}`,
-                                             description,
-                                             '');
+    Shell.PerfLog.get_default().define_event(
+        `script.${name}`, description, '');
 }
 
 /**
@@ -218,9 +217,10 @@ function _collect(scriptModule, outputFile) {
 
     if (outputFile) {
         let f = Gio.file_new_for_path(outputFile);
-        let raw = f.replace(null, false,
-                            Gio.FileCreateFlags.NONE,
-                            null);
+        let raw = f.replace(null,
+            false,
+            Gio.FileCreateFlags.NONE,
+            null);
         let out = Gio.BufferedOutputStream.new_sized(raw, 4096);
         Shell.write_string_to_stream(out, '{\n');
 
@@ -264,10 +264,10 @@ function _collect(scriptModule, outputFile) {
             first = false;
 
             Shell.write_string_to_stream(out,
-                                         `{ "name": ${JSON.stringify(name)},\n` +
-                                         `    "description": ${JSON.stringify(metric.description)},\n` +
-                                         `    "units": ${JSON.stringify(metric.units)},\n` +
-                                         `    "value": ${JSON.stringify(metric.value)} }`);
+                `{ "name": ${JSON.stringify(name)},\n` +
+                `    "description": ${JSON.stringify(metric.description)},\n` +
+                `    "units": ${JSON.stringify(metric.units)},\n` +
+                `    "value": ${JSON.stringify(metric.value)} }`);
         }
         Shell.write_string_to_stream(out, ' ]');
 

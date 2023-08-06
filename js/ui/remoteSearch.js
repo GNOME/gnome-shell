@@ -232,8 +232,13 @@ class RemoteSearchProvider {
                 width, height, rowStride, hasAlpha,
                 bitsPerSample, nChannels_, data,
             ] = meta['icon-data'];
-            gicon = Shell.util_create_pixbuf_from_data(data, GdkPixbuf.Colorspace.RGB, hasAlpha,
-                                                       bitsPerSample, width, height, rowStride);
+            gicon = Shell.util_create_pixbuf_from_data(data,
+                GdkPixbuf.Colorspace.RGB,
+                hasAlpha,
+                bitsPerSample,
+                width,
+                height,
+                rowStride);
         }
 
         if (gicon)

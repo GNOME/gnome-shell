@@ -142,16 +142,18 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         // We actually want the second window if we're in the unset state
         if (this._currentWindow == -1)
             this._currentWindow = 0;
-        return SwitcherPopup.mod(this._currentWindow + 1,
-                                 this._items[this._selectedIndex].cachedWindows.length);
+        return SwitcherPopup.mod(
+            this._currentWindow + 1,
+            this._items[this._selectedIndex].cachedWindows.length);
     }
 
     _previousWindow() {
         // Also assume second window here
         if (this._currentWindow == -1)
             this._currentWindow = 1;
-        return SwitcherPopup.mod(this._currentWindow - 1,
-                                 this._items[this._selectedIndex].cachedWindows.length);
+        return SwitcherPopup.mod(
+            this._currentWindow - 1,
+            this._items[this._selectedIndex].cachedWindows.length);
     }
 
     _closeAppWindow(appIndex, windowIndex) {
@@ -1032,8 +1034,8 @@ class WindowIcon extends St.BoxLayout {
             this._icon.add_actor(_createWindowClone(mutterWindow, size * scaleFactor));
 
             if (this.app) {
-                this._icon.add_actor(this._createAppIcon(this.app,
-                                                         APP_ICON_SIZE_SMALL));
+                this._icon.add_actor(
+                    this._createAppIcon(this.app, APP_ICON_SIZE_SMALL));
             }
             break;
 

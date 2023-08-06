@@ -22,9 +22,9 @@ class AutomountManager {
         this._activeOperations = new Map();
         this._session = new GnomeSession.SessionManager();
         this._session.connectSignal('InhibitorAdded',
-                                    this._InhibitorsChanged.bind(this));
+            this._InhibitorsChanged.bind(this));
         this._session.connectSignal('InhibitorRemoved',
-                                    this._InhibitorsChanged.bind(this));
+            this._InhibitorsChanged.bind(this));
         this._inhibited = false;
 
         this._volumeMonitor = Gio.VolumeMonitor.get();
@@ -81,8 +81,8 @@ class AutomountManager {
 
         let player = global.display.get_sound_player();
         player.play_from_theme('device-added-media',
-                               _('External drive connected'),
-                               null);
+            _('External drive connected'),
+            null);
     }
 
     _onDriveDisconnected() {
@@ -93,8 +93,8 @@ class AutomountManager {
 
         let player = global.display.get_sound_player();
         player.play_from_theme('device-removed-media',
-                               _('External drive disconnected'),
-                               null);
+            _('External drive disconnected'),
+            null);
     }
 
     _onDriveEjectButton(monitor, drive) {
@@ -180,7 +180,7 @@ class AutomountManager {
         this._activeOperations.set(volume, operation);
 
         volume.mount(0, mountOp, null,
-                     this._onVolumeMounted.bind(this));
+            this._onVolumeMounted.bind(this));
     }
 
     _onVolumeMounted(volume, res) {
@@ -226,8 +226,7 @@ class AutomountManager {
         let prevOperation = this._activeOperations.get(volume);
         const existingDialog = prevOperation?.borrowDialog();
         let operation =
-            new ShellMountOperation.ShellMountOperation(volume,
-                                                        {existingDialog});
+            new ShellMountOperation.ShellMountOperation(volume, {existingDialog});
         this._mountVolume(volume, operation);
     }
 

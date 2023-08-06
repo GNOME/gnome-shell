@@ -46,34 +46,39 @@ class ATIndicator extends PanelMenu.Button {
         let highContrast = this._buildItem(_('High Contrast'), A11Y_INTERFACE_SCHEMA, KEY_HIGH_CONTRAST);
         this.menu.addMenuItem(highContrast);
 
-        let magnifier = this._buildItem(_('Zoom'), APPLICATIONS_SCHEMA,
-                                        'screen-magnifier-enabled');
+        const magnifier = this._buildItem(_('Zoom'),
+            APPLICATIONS_SCHEMA, 'screen-magnifier-enabled');
         this.menu.addMenuItem(magnifier);
 
         let textZoom = this._buildFontItem();
         this.menu.addMenuItem(textZoom);
 
-        let screenReader = this._buildItem(_('Screen Reader'), APPLICATIONS_SCHEMA,
-                                           'screen-reader-enabled');
+        const screenReader = this._buildItem(_('Screen Reader'),
+            APPLICATIONS_SCHEMA, 'screen-reader-enabled');
         this.menu.addMenuItem(screenReader);
 
-        let screenKeyboard = this._buildItem(_('Screen Keyboard'), APPLICATIONS_SCHEMA,
-                                             'screen-keyboard-enabled');
+        const screenKeyboard = this._buildItem(_('Screen Keyboard'),
+            APPLICATIONS_SCHEMA, 'screen-keyboard-enabled');
         this.menu.addMenuItem(screenKeyboard);
 
-        let visualBell = this._buildItem(_('Visual Alerts'), WM_SCHEMA, KEY_VISUAL_BELL);
+        const visualBell = this._buildItem(_('Visual Alerts'),
+            WM_SCHEMA, KEY_VISUAL_BELL);
         this.menu.addMenuItem(visualBell);
 
-        let stickyKeys = this._buildItem(_('Sticky Keys'), A11Y_KEYBOARD_SCHEMA, KEY_STICKY_KEYS_ENABLED);
+        const stickyKeys = this._buildItem(_('Sticky Keys'),
+            A11Y_KEYBOARD_SCHEMA, KEY_STICKY_KEYS_ENABLED);
         this.menu.addMenuItem(stickyKeys);
 
-        let slowKeys = this._buildItem(_('Slow Keys'), A11Y_KEYBOARD_SCHEMA, KEY_SLOW_KEYS_ENABLED);
+        const slowKeys = this._buildItem(_('Slow Keys'),
+            A11Y_KEYBOARD_SCHEMA, KEY_SLOW_KEYS_ENABLED);
         this.menu.addMenuItem(slowKeys);
 
-        let bounceKeys = this._buildItem(_('Bounce Keys'), A11Y_KEYBOARD_SCHEMA, KEY_BOUNCE_KEYS_ENABLED);
+        const bounceKeys = this._buildItem(_('Bounce Keys'),
+            A11Y_KEYBOARD_SCHEMA, KEY_BOUNCE_KEYS_ENABLED);
         this.menu.addMenuItem(bounceKeys);
 
-        let mouseKeys = this._buildItem(_('Mouse Keys'), A11Y_KEYBOARD_SCHEMA, KEY_MOUSE_KEYS_ENABLED);
+        const mouseKeys = this._buildItem(_('Mouse Keys'),
+            A11Y_KEYBOARD_SCHEMA, KEY_MOUSE_KEYS_ENABLED);
         this.menu.addMenuItem(mouseKeys);
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());

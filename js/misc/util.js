@@ -98,8 +98,9 @@ export function spawnCommandLine(commandLine) {
  */
 export function spawnApp(argv) {
     try {
-        let app = Gio.AppInfo.create_from_commandline(argv.join(' '), null,
-                                                      Gio.AppInfoCreateFlags.SUPPORTS_STARTUP_NOTIFICATION);
+        const app = Gio.AppInfo.create_from_commandline(argv.join(' '),
+            null,
+            Gio.AppInfoCreateFlags.SUPPORTS_STARTUP_NOTIFICATION);
 
         let context = global.create_app_launch_context(0, -1);
         app.launch([], context);

@@ -103,7 +103,7 @@ export class ScreenShield extends Signals.EventEmitter {
 
         this._loginManager = LoginManager.getLoginManager();
         this._loginManager.connect('prepare-for-sleep',
-                                   this._prepareForSleep.bind(this));
+            this._prepareForSleep.bind(this));
 
         this._loginSession = null;
         this._getLoginSession();

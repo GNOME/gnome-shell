@@ -238,7 +238,7 @@ class _Draggable extends Signals.EventEmitter {
     _grabActor(device, touchSequence) {
         this._grabDevice(this.actor, device, touchSequence);
         this._onEventId = this.actor.connect('event',
-                                             this._onEvent.bind(this));
+            this._onEvent.bind(this));
     }
 
     _ungrabActor() {
@@ -573,8 +573,8 @@ class _Draggable extends Signals.EventEmitter {
     }
 
     _pickTargetActor() {
-        return this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
-                                                            this._dragX, this._dragY);
+        return this._dragActor.get_stage().get_actor_at_pos(
+            Clutter.PickMode.ALL, this._dragX, this._dragY);
     }
 
     _updateDragHover() {
@@ -619,11 +619,12 @@ class _Draggable extends Signals.EventEmitter {
                 // We currently loop through all parents on drag-over even if one of the children has handled it.
                 // We can check the return value of the function and break the loop if it's true if we don't want
                 // to continue checking the parents.
-                let result = target._delegate.handleDragOver(this.actor._delegate,
-                                                             this._dragActor,
-                                                             targX,
-                                                             targY,
-                                                             0);
+                let result = target._delegate.handleDragOver(
+                    this.actor._delegate,
+                    this._dragActor,
+                    targX,
+                    targY,
+                    0);
                 if (result != DragMotionResult.CONTINUE) {
                     global.display.set_cursor(DRAG_CURSOR_MAP[result]);
                     return GLib.SOURCE_REMOVE;
@@ -640,7 +641,7 @@ class _Draggable extends Signals.EventEmitter {
             return;
 
         this._updateHoverId = GLib.idle_add(GLib.PRIORITY_DEFAULT,
-                                            this._updateDragHover.bind(this));
+            this._updateDragHover.bind(this));
         GLib.Source.set_name_by_id(this._updateHoverId, '[gnome-shell] this._updateDragHover');
     }
 
@@ -648,8 +649,9 @@ class _Draggable extends Signals.EventEmitter {
         let [stageX, stageY] = event.get_coords();
         this._dragX = stageX;
         this._dragY = stageY;
-        this._dragActor.set_position(stageX + this._dragOffsetX,
-                                     stageY + this._dragOffsetY);
+        this._dragActor.set_position(
+            stageX + this._dragOffsetX,
+            stageY + this._dragOffsetY);
 
         this._queueUpdateDragHover();
         return true;
@@ -657,8 +659,8 @@ class _Draggable extends Signals.EventEmitter {
 
     _dragActorDropped(event) {
         let [dropX, dropY] = event.get_coords();
-        let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
-                                                                  dropX, dropY);
+        let target = this._dragActor.get_stage().get_actor_at_pos(
+            Clutter.PickMode.ALL, dropX, dropY);
 
         // We call observers only once per motion with the innermost
         // target actor. If necessary, the observer can walk the

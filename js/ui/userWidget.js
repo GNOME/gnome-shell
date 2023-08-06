@@ -190,8 +190,9 @@ class UserWidget extends St.BoxLayout {
             this._label = new UserWidgetLabel(user);
             this.add_child(this._label);
 
-            this._label.bind_property('label-actor', this, 'label-actor',
-                                      GObject.BindingFlags.SYNC_CREATE);
+            this._label.bind_property('label-actor',
+                this, 'label-actor',
+                GObject.BindingFlags.SYNC_CREATE);
 
             this._user.connectObject(
                 'notify::is-loaded', this._updateUser.bind(this),

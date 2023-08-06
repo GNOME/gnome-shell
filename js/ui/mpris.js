@@ -254,9 +254,9 @@ class MediaSection extends MessageList.MessageListSection {
         this._players = new Map();
 
         this._proxy = new DBusProxy(Gio.DBus.session,
-                                    'org.freedesktop.DBus',
-                                    '/org/freedesktop/DBus',
-                                    this._onProxyReady.bind(this));
+            'org.freedesktop.DBus',
+            '/org/freedesktop/DBus',
+            this._onProxyReady.bind(this));
     }
 
     get allowed() {
@@ -294,7 +294,7 @@ class MediaSection extends MessageList.MessageListSection {
             this._addPlayer(name);
         });
         this._proxy.connectSignal('NameOwnerChanged',
-                                  this._onNameOwnerChanged.bind(this));
+            this._onNameOwnerChanged.bind(this));
     }
 
     _onNameOwnerChanged(proxy, sender, [name, oldOwner, newOwner]) {

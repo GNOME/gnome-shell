@@ -19,7 +19,7 @@ class KbdA11yDialog extends GObject.Object {
 
         let seat = Clutter.get_default_backend().get_default_seat();
         seat.connect('kbd-a11y-flags-changed',
-                     this._showKbdA11yDialog.bind(this));
+            this._showKbdA11yDialog.bind(this));
     }
 
     _showKbdA11yDialog(seat, newFlags, whatChanged) {

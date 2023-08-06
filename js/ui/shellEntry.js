@@ -141,8 +141,9 @@ export function addContextMenu(entry, params) {
     params = Params.parse(params, {actionMode: Shell.ActionMode.POPUP});
 
     entry.menu = new EntryMenu(entry);
-    entry._menuManager = new PopupMenu.PopupMenuManager(entry,
-                                                        {actionMode: params.actionMode});
+    entry._menuManager = new PopupMenu.PopupMenuManager(entry, {
+        actionMode: params.actionMode,
+    });
     entry._menuManager.addMenu(entry.menu);
 
     // Add an event handler to both the entry and its clutter_text; the former

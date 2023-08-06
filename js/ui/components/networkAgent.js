@@ -480,7 +480,7 @@ class VPNRequestHandler extends Signals.EventEmitter {
                 this._readStdoutOldStyle();
 
             this._childWatch = GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid,
-                                                    this._vpnChildFinished.bind(this));
+                this._vpnChildFinished.bind(this));
 
             this._writeConnection();
         } catch (e) {

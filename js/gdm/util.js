@@ -109,7 +109,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         this._settings = new Gio.Settings({schema_id: LOGIN_SCREEN_SCHEMA});
         this._settings.connect('changed',
-                               this._updateDefaultService.bind(this));
+            this._updateDefaultService.bind(this));
         this._updateDefaultService();
 
         this._fprintManager = new FprintManagerProxy(Gio.DBus.system,

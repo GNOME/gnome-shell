@@ -87,10 +87,10 @@ const GeoclueAgent = GObject.registerClass({
         this.connect('notify::enabled', this._onMaxAccuracyLevelChanged.bind(this));
 
         this._watchId = Gio.bus_watch_name(Gio.BusType.SYSTEM,
-                                           'org.freedesktop.GeoClue2',
-                                           0,
-                                           this._connectToGeoclue.bind(this),
-                                           this._onGeoclueVanished.bind(this));
+            'org.freedesktop.GeoClue2',
+            0,
+            this._connectToGeoclue.bind(this),
+            this._onGeoclueVanished.bind(this));
         this._onMaxAccuracyLevelChanged();
         this._connectToGeoclue();
         this._connectToPermissionStore();
@@ -140,9 +140,9 @@ const GeoclueAgent = GObject.registerClass({
 
         this._connecting = true;
         new GeoclueManager(Gio.DBus.system,
-                           'org.freedesktop.GeoClue2',
-                           '/org/freedesktop/GeoClue2/Manager',
-                           this._onManagerProxyReady.bind(this));
+            'org.freedesktop.GeoClue2',
+            '/org/freedesktop/GeoClue2/Manager',
+            this._onManagerProxyReady.bind(this));
         return true;
     }
 

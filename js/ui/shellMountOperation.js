@@ -65,15 +65,15 @@ export class ShellMountOperation {
         this.mountOp = new Shell.MountOperation();
 
         this.mountOp.connect('ask-question',
-                             this._onAskQuestion.bind(this));
+            this._onAskQuestion.bind(this));
         this.mountOp.connect('ask-password',
-                             this._onAskPassword.bind(this));
+            this._onAskPassword.bind(this));
         this.mountOp.connect('show-processes-2',
-                             this._onShowProcesses2.bind(this));
+            this._onShowProcesses2.bind(this));
         this.mountOp.connect('aborted',
-                             this.close.bind(this));
+            this.close.bind(this));
         this.mountOp.connect('show-unmount-progress',
-                             this._onShowUnmountProgress.bind(this));
+            this._onShowUnmountProgress.bind(this));
     }
 
     _closeExistingDialog() {
@@ -543,8 +543,9 @@ export class GnomeShellMountOpHandler {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellMountOpIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gtk/MountOperationHandler');
-        Gio.bus_own_name_on_connection(Gio.DBus.session, 'org.gtk.MountOperationHandler',
-                                       Gio.BusNameOwnerFlags.REPLACE, null, null);
+        Gio.bus_own_name_on_connection(Gio.DBus.session,
+            'org.gtk.MountOperationHandler',
+            Gio.BusNameOwnerFlags.REPLACE, null, null);
 
         this._dialog = null;
 

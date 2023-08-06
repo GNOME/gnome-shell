@@ -55,7 +55,7 @@ const RadialShaderEffect = GObject.registerClass({
 
     vfunc_build_pipeline() {
         this.add_glsl_snippet(Shell.SnippetHook.FRAGMENT,
-                              VIGNETTE_DECLARATIONS, VIGNETTE_CODE, true);
+            VIGNETTE_DECLARATIONS, VIGNETTE_CODE, true);
     }
 
     get brightness() {

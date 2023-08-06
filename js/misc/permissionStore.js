@@ -14,7 +14,7 @@ const PermissionStoreProxy = Gio.DBusProxy.makeProxyWrapper(PermissionStoreIface
  */
 export function PermissionStore(initCallback, cancellable) {
     return new PermissionStoreProxy(Gio.DBus.session,
-                                    'org.freedesktop.impl.portal.PermissionStore',
-                                    '/org/freedesktop/impl/portal/PermissionStore',
-                                    initCallback, cancellable);
+        'org.freedesktop.impl.portal.PermissionStore',
+        '/org/freedesktop/impl/portal/PermissionStore',
+        initCallback, cancellable);
 }

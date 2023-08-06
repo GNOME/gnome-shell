@@ -223,7 +223,7 @@ export class Overview extends Signals.EventEmitter {
 
 
         Main.layoutManager.overviewGroup.connect('scroll-event',
-                                                 this._onScrollEvent.bind(this));
+            this._onScrollEvent.bind(this));
         Main.xdndHandler.connect('drag-begin', this._onDragBegin.bind(this));
         Main.xdndHandler.connect('drag-end', this._onDragEnd.bind(this));
 
@@ -367,7 +367,7 @@ export class Overview extends Signals.EventEmitter {
                 () => {
                     this._windowSwitchTimeoutId = 0;
                     Main.activateWindow(dragEvent.targetActor._delegate.metaWindow,
-                                        this._windowSwitchTimestamp);
+                        this._windowSwitchTimestamp);
                     this.hide();
                     this._lastHoveredWindow = null;
                     return GLib.SOURCE_REMOVE;

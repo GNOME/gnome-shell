@@ -70,8 +70,9 @@ export const UserListItem = GObject.registerClass({
         this._userWidget = new UserWidget.UserWidget(this.user);
         layout.add(this._userWidget);
 
-        this._userWidget.bind_property('label-actor', this, 'label-actor',
-                                       GObject.BindingFlags.SYNC_CREATE);
+        this._userWidget.bind_property('label-actor',
+            this, 'label-actor',
+            GObject.BindingFlags.SYNC_CREATE);
 
         this._timedLoginIndicator = new St.Bin({
             style_class: 'login-dialog-timed-login-indicator',
@@ -168,8 +169,9 @@ const UserList = GObject.registerClass({
             x_expand: true,
             y_expand: true,
         });
-        this.set_policy(St.PolicyType.NEVER,
-                        St.PolicyType.AUTOMATIC);
+        this.set_policy(
+            St.PolicyType.NEVER,
+            St.PolicyType.AUTOMATIC);
 
         this._box = new St.BoxLayout({
             vertical: true,
@@ -342,7 +344,7 @@ const SessionMenuButton = GObject.registerClass({
         });
 
         this._manager = new PopupMenu.PopupMenuManager(this._button,
-                                                       {actionMode: Shell.ActionMode.NONE});
+            {actionMode: Shell.ActionMode.NONE});
         this._manager.addMenu(this._menu);
 
         this._button.connect('clicked', () => this._menu.toggle());
@@ -432,13 +434,13 @@ export const LoginDialog = GObject.registerClass({
         this._settings = new Gio.Settings({schema_id: GdmUtil.LOGIN_SCREEN_SCHEMA});
 
         this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_KEY}`,
-                               this._updateBanner.bind(this));
+            this._updateBanner.bind(this));
         this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_TEXT_KEY}`,
-                               this._updateBanner.bind(this));
+            this._updateBanner.bind(this));
         this._settings.connect(`changed::${GdmUtil.DISABLE_USER_LIST_KEY}`,
-                               this._updateDisableUserList.bind(this));
+            this._updateDisableUserList.bind(this));
         this._settings.connect(`changed::${GdmUtil.LOGO_KEY}`,
-                               this._updateLogo.bind(this));
+            this._updateLogo.bind(this));
 
         this._textureCache = St.TextureCache.get_default();
         this._textureCache.connectObject('texture-file-changed',
@@ -833,11 +835,12 @@ export const LoginDialog = GObject.registerClass({
         this._logoBin.destroy_all_children();
         const resourceScale = this._logoBin.get_resource_scale();
         if (this._logoFile) {
-            let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-            this._logoBin.add_child(this._textureCache.load_file_async(this._logoFile,
-                                                                       -1, -1,
-                                                                       scaleFactor,
-                                                                       resourceScale));
+            const scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+            const texture = this._textureCache.load_file_async(
+                this._logoFile,
+                -1, -1,
+                scaleFactor, resourceScale);
+            this._logoBin.add_child(texture);
         }
     }
 
@@ -1262,9 +1265,9 @@ export const LoginDialog = GObject.registerClass({
 
     open() {
         Main.ctrlAltTabManager.addGroup(this,
-                                        _('Login Window'),
-                                        'dialog-password-symbolic',
-                                        {sortGroup: CtrlAltTab.SortGroup.MIDDLE});
+            _('Login Window'),
+            'dialog-password-symbolic',
+            {sortGroup: CtrlAltTab.SortGroup.MIDDLE});
         this.activate();
 
         this.opacity = 0;

@@ -102,10 +102,10 @@ export class XdndHandler extends Signals.EventEmitter {
             if (pickedActor._delegate && pickedActor._delegate.handleDragOver) {
                 let [r_, targX, targY] = pickedActor.transform_stage_point(x, y);
                 let result = pickedActor._delegate.handleDragOver(this,
-                                                                  dragEvent.dragActor,
-                                                                  targX,
-                                                                  targY,
-                                                                  global.get_current_time());
+                    dragEvent.dragActor,
+                    targX,
+                    targY,
+                    global.get_current_time());
                 if (result != DND.DragMotionResult.CONTINUE)
                     return;
             }

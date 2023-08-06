@@ -904,7 +904,7 @@ export const ThumbnailsBox = GObject.registerClass({
                 // workspace while we wait for the startup sequence to load.
                 let workspaceManager = global.workspace_manager;
                 Main.wm.keepWorkspaceAlive(workspaceManager.get_workspace_by_index(newWorkspaceIndex),
-                                           WORKSPACE_KEEP_ALIVE_TIME);
+                    WORKSPACE_KEEP_ALIVE_TIME);
             }
 
             // Start the animation on the workspace (which is actually
@@ -998,8 +998,9 @@ export const ThumbnailsBox = GObject.registerClass({
         for (let k = start; k < start + count; k++) {
             let metaWorkspace = workspaceManager.get_workspace_by_index(k);
             let thumbnail = new WorkspaceThumbnail(metaWorkspace, this._monitorIndex);
-            thumbnail.setPorthole(this._porthole.x, this._porthole.y,
-                                  this._porthole.width, this._porthole.height);
+            thumbnail.setPorthole(
+                this._porthole.x, this._porthole.y,
+                this._porthole.width, this._porthole.height);
             this._thumbnails.push(thumbnail);
             this.add_actor(thumbnail);
 

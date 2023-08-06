@@ -67,11 +67,11 @@ export class WeatherClient extends Signals.EventEmitter {
             this._onPermStoreChanged(this._permStore, '', params);
         });
         this._permStore.connectSignal('Changed',
-                                      this._onPermStoreChanged.bind(this));
+            this._onPermStoreChanged.bind(this));
 
         this._locationSettings = new Gio.Settings({schema_id: 'org.gnome.system.location'});
         this._locationSettings.connect('changed::enabled',
-                                       this._updateAutoLocation.bind(this));
+            this._updateAutoLocation.bind(this));
 
         this._world = GWeather.Location.get_world();
 
@@ -240,7 +240,7 @@ export class WeatherClient extends Signals.EventEmitter {
 
             this._gclueLocationChangedId =
                 this._gclueService.connect('notify::location',
-                                           this._onGClueLocationChanged.bind(this));
+                    this._onGClueLocationChanged.bind(this));
             this._onGClueLocationChanged();
         } else {
             if (this._gclueLocationChangedId)
@@ -270,10 +270,11 @@ export class WeatherClient extends Signals.EventEmitter {
 
     _onGClueLocationChanged() {
         let geoLocation = this._gclueService.location;
-        let location = GWeather.Location.new_detached(geoLocation.description,
-                                                      null,
-                                                      geoLocation.latitude,
-                                                      geoLocation.longitude);
+        let location = GWeather.Location.new_detached(
+            geoLocation.description,
+            null,
+            geoLocation.latitude,
+            geoLocation.longitude);
         this._setLocation(location);
     }
 

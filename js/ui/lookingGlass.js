@@ -699,9 +699,8 @@ const Inspector = GObject.registerClass({
 
     _update(event) {
         let [stageX, stageY] = event.get_coords();
-        let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
-                                                   stageX,
-                                                   stageY);
+        let target = global.stage.get_actor_at_pos(
+            Clutter.PickMode.ALL, stageX, stageY);
 
         if (target != this._pointerTarget)
             this._target = target;
@@ -738,7 +737,7 @@ const Extensions = GObject.registerClass({
         });
 
         Main.extensionManager.connect('extension-loaded',
-                                      this._loadExtension.bind(this));
+            this._loadExtension.bind(this));
     }
 
     _loadExtension(o, uuid) {
@@ -1300,17 +1299,17 @@ class LookingGlass extends St.BoxLayout {
 
         this._interfaceSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.interface'});
         this._interfaceSettings.connect('changed::monospace-font-name',
-                                        this._updateFont.bind(this));
+            this._updateFont.bind(this));
         this._updateFont();
 
         // We want it to appear to slide out from underneath the panel
         Main.uiGroup.add_actor(this);
         Main.uiGroup.set_child_below_sibling(this,
-                                             Main.layoutManager.panelBox);
+            Main.layoutManager.panelBox);
         Main.layoutManager.panelBox.connect('notify::allocation',
-                                            this._queueResize.bind(this));
+            this._queueResize.bind(this));
         Main.layoutManager.keyboardBox.connect('notify::allocation',
-                                               this._queueResize.bind(this));
+            this._queueResize.bind(this));
 
         this._objInspector = new ObjInspector(this);
         Main.uiGroup.add_actor(this._objInspector);
@@ -1590,8 +1589,9 @@ class LookingGlass extends St.BoxLayout {
         this.width = myWidth;
         this.height = myHeight;
         this._objInspector.set_size(Math.floor(myWidth * 0.8), Math.floor(myHeight * 0.8));
-        this._objInspector.set_position(this.x + Math.floor(myWidth * 0.1),
-                                        this._targetY + Math.floor(myHeight * 0.1));
+        this._objInspector.set_position(
+            this.x + Math.floor(myWidth * 0.1),
+            this._targetY + Math.floor(myHeight * 0.1));
     }
 
     insertObject(obj) {
@@ -1663,8 +1663,9 @@ class LookingGlass extends St.BoxLayout {
         this.setBorderPaintTarget(null);
 
         let settings = St.Settings.get();
-        let duration = Math.min(LG_ANIMATION_TIME / settings.slow_down_factor,
-                                LG_ANIMATION_TIME);
+        let duration = Math.min(
+            LG_ANIMATION_TIME / settings.slow_down_factor,
+            LG_ANIMATION_TIME);
         this.ease({
             y: this._hiddenY,
             duration,

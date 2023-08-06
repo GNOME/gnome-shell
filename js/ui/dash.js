@@ -99,16 +99,18 @@ class DashItemContainer extends St.Widget {
         let themeNode = this.get_theme_node();
         forWidth = themeNode.adjust_for_width(forWidth);
         let [minHeight, natHeight] = super.vfunc_get_preferred_height(forWidth);
-        return themeNode.adjust_preferred_height(minHeight * this.scale_y,
-                                                 natHeight * this.scale_y);
+        return themeNode.adjust_preferred_height(
+            minHeight * this.scale_y,
+            natHeight * this.scale_y);
     }
 
     vfunc_get_preferred_width(forHeight) {
         let themeNode = this.get_theme_node();
         forHeight = themeNode.adjust_for_height(forHeight);
         let [minWidth, natWidth] = super.vfunc_get_preferred_width(forHeight);
-        return themeNode.adjust_preferred_width(minWidth * this.scale_x,
-                                                natWidth * this.scale_x);
+        return themeNode.adjust_preferred_width(
+            minWidth * this.scale_x,
+            natWidth * this.scale_x);
     }
 
     showLabel() {
@@ -512,10 +514,9 @@ export const Dash = GObject.registerClass({
     _createAppItem(app) {
         let appIcon = new DashIcon(app);
 
-        appIcon.connect('menu-state-changed',
-                        (o, opened) => {
-                            this._itemMenuStateChanged(item, opened);
-                        });
+        appIcon.connect('menu-state-changed', (o, opened) => {
+            this._itemMenuStateChanged(item, opened);
+        });
 
         let item = new DashItemContainer();
         item.setChild(appIcon);
@@ -663,8 +664,9 @@ export const Dash = GObject.registerClass({
 
             // Scale the icon's texture to the previous size and
             // tween to the new size
-            icon.icon.set_size(icon.icon.width * scale,
-                               icon.icon.height * scale);
+            icon.icon.set_size(
+                icon.icon.width * scale,
+                icon.icon.height * scale);
 
             icon.icon.ease({
                 width: targetWidth,
@@ -782,8 +784,9 @@ export const Dash = GObject.registerClass({
         }
 
         for (let i = 0; i < addedItems.length; i++) {
-            this._box.insert_child_at_index(addedItems[i].item,
-                                            addedItems[i].pos);
+            this._box.insert_child_at_index(
+                addedItems[i].item,
+                addedItems[i].pos);
         }
 
         for (let i = 0; i < removedActors.length; i++) {
@@ -925,8 +928,9 @@ export const Dash = GObject.registerClass({
             this._dragPlaceholder = new DragPlaceholderItem();
             this._dragPlaceholder.child.set_width(this.iconSize);
             this._dragPlaceholder.child.set_height(this.iconSize / 2);
-            this._box.insert_child_at_index(this._dragPlaceholder,
-                                            this._dragPlaceholderPos);
+            this._box.insert_child_at_index(
+                this._dragPlaceholder,
+                this._dragPlaceholderPos);
             this._dragPlaceholder.show(fadeIn);
         }
 

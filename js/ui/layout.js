@@ -39,18 +39,18 @@ function isPopupMetaWindow(actor) {
 
 export const MonitorConstraint = GObject.registerClass({
     Properties: {
-        'primary': GObject.ParamSpec.boolean('primary',
-                                             'Primary', 'Track primary monitor',
-                                             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-                                             false),
-        'index': GObject.ParamSpec.int('index',
-                                       'Monitor index', 'Track specific monitor',
-                                       GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-                                       -1, 64, -1),
-        'work-area': GObject.ParamSpec.boolean('work-area',
-                                               'Work-area', 'Track monitor\'s work-area',
-                                               GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-                                               false),
+        'primary': GObject.ParamSpec.boolean(
+            'primary', 'Primary', 'Track primary monitor',
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+            false),
+        'index': GObject.ParamSpec.int(
+            'index', 'Monitor index', 'Track specific monitor',
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+            -1, 64, -1),
+        'work-area': GObject.ParamSpec.boolean(
+            'work-area', 'Work-area', 'Track monitor\'s work-area',
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+            false),
     },
 }, class MonitorConstraint extends Clutter.Constraint {
     _init(props) {
@@ -284,7 +284,7 @@ export const LayoutManager = GObject.registerClass({
             trackFullscreen: true,
         });
         this.panelBox.connect('notify::allocation',
-                              this._panelBoxChanged.bind(this));
+            this._panelBoxChanged.bind(this));
 
         this.modalDialogGroup = new St.Widget({
             name: 'modalDialogGroup',
@@ -325,12 +325,12 @@ export const LayoutManager = GObject.registerClass({
         });
 
         this._interfaceSettings.connect('changed::enable-hot-corners',
-                                        this._updateHotCorners.bind(this));
+            this._updateHotCorners.bind(this));
 
         // Need to update struts on new workspaces when they are added
         let workspaceManager = global.workspace_manager;
         workspaceManager.connect('notify::n-workspaces',
-                                 this._queueUpdateRegions.bind(this));
+            this._queueUpdateRegions.bind(this));
 
         let display = global.display;
         display.connect('restacked',
@@ -387,8 +387,8 @@ export const LayoutManager = GObject.registerClass({
         let nMonitors = display.get_n_monitors();
         for (let i = 0; i < nMonitors; i++) {
             this.monitors.push(new Monitor(i,
-                                           display.get_monitor_geometry(i),
-                                           display.get_monitor_scale(i)));
+                display.get_monitor_geometry(i),
+                display.get_monitor_scale(i)));
         }
 
         if (nMonitors == 0) {
@@ -548,8 +548,9 @@ export const LayoutManager = GObject.registerClass({
     }
 
     _updateKeyboardBox() {
-        this.keyboardBox.set_position(this.keyboardMonitor.x,
-                                      this.keyboardMonitor.y + this.keyboardMonitor.height);
+        this.keyboardBox.set_position(
+            this.keyboardMonitor.x,
+            this.keyboardMonitor.y + this.keyboardMonitor.height);
         this.keyboardBox.set_size(this.keyboardMonitor.width, -1);
     }
 
@@ -1148,10 +1149,10 @@ class HotCorner extends Clutter.Actor {
 
         this._setupFallbackCornerIfNeeded(layoutManager);
 
-        this._pressureBarrier = new PressureBarrier(HOT_CORNER_PRESSURE_THRESHOLD,
-                                                    HOT_CORNER_PRESSURE_TIMEOUT,
-                                                    Shell.ActionMode.NORMAL |
-                                                    Shell.ActionMode.OVERVIEW);
+        this._pressureBarrier = new PressureBarrier(
+            HOT_CORNER_PRESSURE_THRESHOLD,
+            HOT_CORNER_PRESSURE_TIMEOUT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW);
         this._pressureBarrier.connect('trigger', this._toggleOverview.bind(this));
 
         let px = 0.0;
@@ -1242,9 +1243,9 @@ class HotCorner extends Clutter.Actor {
             }
 
             this._corner.connect('enter-event',
-                                 this._onCornerEntered.bind(this));
+                this._onCornerEntered.bind(this));
             this._corner.connect('leave-event',
-                                 this._onCornerLeft.bind(this));
+                this._onCornerLeft.bind(this));
         }
     }
 

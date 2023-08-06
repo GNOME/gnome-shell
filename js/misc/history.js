@@ -23,7 +23,7 @@ export class HistoryManager extends Signals.EventEmitter {
         if (this._key) {
             this._history = global.settings.get_strv(this._key);
             global.settings.connect(`changed::${this._key}`,
-                                    this._historyChanged.bind(this));
+                this._historyChanged.bind(this));
         } else {
             this._history = [];
         }
@@ -32,7 +32,7 @@ export class HistoryManager extends Signals.EventEmitter {
 
         if (this._entry) {
             this._entry.connect('key-press-event',
-                                this._onEntryKeyPress.bind(this));
+                this._onEntryKeyPress.bind(this));
         }
     }
 

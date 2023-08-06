@@ -2328,9 +2328,8 @@ export class ScreenshotService {
         }
 
         let shooter = new Shell.Screenshot();
-        shooter._watchNameId =
-                        Gio.bus_watch_name(Gio.BusType.SESSION, sender, 0, null,
-                                           this._onNameVanished.bind(this));
+        shooter._watchNameId = Gio.bus_watch_name(Gio.BusType.SESSION,
+            sender, 0, null, this._onNameVanished.bind(this));
 
         this._screenShooter.set(sender, shooter);
 
@@ -2460,9 +2459,10 @@ export class ScreenshotService {
         let [x, y, width, height, flash, filename] = params;
         [x, y, width, height] = this._scaleArea(x, y, width, height);
         if (!this._checkArea(x, y, width, height)) {
-            invocation.return_error_literal(Gio.IOErrorEnum,
-                                            Gio.IOErrorEnum.CANCELLED,
-                                            'Invalid params');
+            invocation.return_error_literal(
+                Gio.IOErrorEnum,
+                Gio.IOErrorEnum.CANCELLED,
+                'Invalid params');
             return;
         }
         let screenshot = await this._createScreenshot(invocation);
@@ -2565,9 +2565,10 @@ export class ScreenshotService {
         let [x, y, width, height] = params;
         [x, y, width, height] = this._scaleArea(x, y, width, height);
         if (!this._checkArea(x, y, width, height)) {
-            invocation.return_error_literal(Gio.IOErrorEnum,
-                                            Gio.IOErrorEnum.CANCELLED,
-                                            'Invalid params');
+            invocation.return_error_literal(
+                Gio.IOErrorEnum,
+                Gio.IOErrorEnum.CANCELLED,
+                'Invalid params');
             return;
         }
         let flashspot = new Flashspot({x, y, width, height});

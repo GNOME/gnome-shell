@@ -41,9 +41,9 @@ export class GnomeShell {
 
         this._cachedOverviewVisible = false;
         Main.overview.connect('showing',
-                              this._checkOverviewVisibleChanged.bind(this));
+            this._checkOverviewVisibleChanged.bind(this));
         Main.overview.connect('hidden',
-                              this._checkOverviewVisibleChanged.bind(this));
+            this._checkOverviewVisibleChanged.bind(this));
     }
 
     /**
@@ -303,8 +303,8 @@ export class GnomeShell {
         this._grabbedAccelerators.set(bindingAction, sender);
 
         if (!this._grabbers.has(sender)) {
-            let id = Gio.bus_watch_name(Gio.BusType.SESSION, sender, 0, null,
-                                        this._onGrabberBusNameVanished.bind(this));
+            let id = Gio.bus_watch_name(Gio.BusType.SESSION,
+                sender, 0, null, this._onGrabberBusNameVanished.bind(this));
             this._grabbers.set(sender, id);
         }
 
@@ -409,7 +409,7 @@ class GnomeShellExtensions {
         });
 
         Main.extensionManager.connect('extension-state-changed',
-                                      this._extensionStateChanged.bind(this));
+            this._extensionStateChanged.bind(this));
     }
 
     ListExtensions() {
@@ -490,7 +490,7 @@ class GnomeShellExtensions {
             new GLib.Variant('(sa{sv})', [newState.uuid, state]));
 
         this._dbusImpl.emit_signal('ExtensionStatusChanged',
-                                   GLib.Variant.new('(sis)', [newState.uuid, newState.state, newState.error]));
+            new GLib.Variant('(sis)', [newState.uuid, newState.state, newState.error]));
     }
 }
 

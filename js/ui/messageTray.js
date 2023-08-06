@@ -831,8 +831,8 @@ export const MessageTray = GObject.registerClass({
 
         let constraint = new Layout.MonitorConstraint({primary: true});
         Main.layoutManager.panelBox.bind_property('visible',
-                                                  constraint, 'work-area',
-                                                  GObject.BindingFlags.SYNC_CREATE);
+            constraint, 'work-area',
+            GObject.BindingFlags.SYNC_CREATE);
         this.add_constraint(constraint);
 
         this._bannerBin = new St.Widget({
@@ -846,9 +846,9 @@ export const MessageTray = GObject.registerClass({
             layout_manager: new Clutter.BinLayout(),
         });
         this._bannerBin.connect('key-release-event',
-                                this._onNotificationKeyRelease.bind(this));
+            this._onNotificationKeyRelease.bind(this));
         this._bannerBin.connect('notify::hover',
-                                this._onNotificationHoverChanged.bind(this));
+            this._onNotificationHoverChanged.bind(this));
         this.add_actor(this._bannerBin);
 
         this._notificationFocusGrabber = new FocusGrabber(this._bannerBin);
@@ -885,30 +885,29 @@ export const MessageTray = GObject.registerClass({
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
 
         Main.overview.connect('window-drag-begin',
-                              this._onDragBegin.bind(this));
+            this._onDragBegin.bind(this));
         Main.overview.connect('window-drag-cancelled',
-                              this._onDragEnd.bind(this));
+            this._onDragEnd.bind(this));
         Main.overview.connect('window-drag-end',
-                              this._onDragEnd.bind(this));
+            this._onDragEnd.bind(this));
 
         Main.overview.connect('item-drag-begin',
-                              this._onDragBegin.bind(this));
+            this._onDragBegin.bind(this));
         Main.overview.connect('item-drag-cancelled',
-                              this._onDragEnd.bind(this));
+            this._onDragEnd.bind(this));
         Main.overview.connect('item-drag-end',
-                              this._onDragEnd.bind(this));
+            this._onDragEnd.bind(this));
 
         Main.xdndHandler.connect('drag-begin',
-                                 this._onDragBegin.bind(this));
+            this._onDragBegin.bind(this));
         Main.xdndHandler.connect('drag-end',
-                                 this._onDragEnd.bind(this));
+            this._onDragEnd.bind(this));
 
         Main.wm.addKeybinding('focus-active-notification',
-                              new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
-                              Meta.KeyBindingFlags.NONE,
-                              Shell.ActionMode.NORMAL |
-                              Shell.ActionMode.OVERVIEW,
-                              this._expandActiveNotification.bind(this));
+            new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
+            Meta.KeyBindingFlags.NONE,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            this._expandActiveNotification.bind(this));
 
         this._sources = new Set();
 
@@ -1044,7 +1043,7 @@ export const MessageTray = GObject.registerClass({
             let full = this.queueCount + bannerCount >= MAX_NOTIFICATIONS_IN_QUEUE;
             if (!full || notification.urgency == Urgency.CRITICAL) {
                 notification.connect('destroy',
-                                     this._onNotificationDestroy.bind(this));
+                    this._onNotificationDestroy.bind(this));
                 this._notificationQueue.push(notification);
                 this._notificationQueue.sort(
                     (n1, n2) => n2.urgency - n1.urgency);

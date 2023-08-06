@@ -348,8 +348,9 @@ export const BoxPointer = GObject.registerClass({
 
         if (!skipTopRight) {
             cr.lineTo(x2 - borderRadius, y1);
-            cr.arc(x2 - borderRadius, y1 + borderRadius, borderRadius,
-                   3 * Math.PI / 2, Math.PI * 2);
+            cr.arc(
+                x2 - borderRadius, y1 + borderRadius, borderRadius,
+                3 * Math.PI / 2, Math.PI * 2);
         }
 
         if (this._arrowSide == St.Side.RIGHT && rise) {
@@ -369,8 +370,9 @@ export const BoxPointer = GObject.registerClass({
 
         if (!skipBottomRight) {
             cr.lineTo(x2, y2 - borderRadius);
-            cr.arc(x2 - borderRadius, y2 - borderRadius, borderRadius,
-                   0, Math.PI / 2);
+            cr.arc(
+                x2 - borderRadius, y2 - borderRadius, borderRadius,
+                0, Math.PI / 2);
         }
 
         if (this._arrowSide == St.Side.BOTTOM && rise) {
@@ -390,8 +392,9 @@ export const BoxPointer = GObject.registerClass({
 
         if (!skipBottomLeft) {
             cr.lineTo(x1 + borderRadius, y2);
-            cr.arc(x1 + borderRadius, y2 - borderRadius, borderRadius,
-                   Math.PI / 2, Math.PI);
+            cr.arc(
+                x1 + borderRadius, y2 - borderRadius, borderRadius,
+                Math.PI / 2, Math.PI);
         }
 
         if (this._arrowSide == St.Side.LEFT && rise) {
@@ -411,8 +414,9 @@ export const BoxPointer = GObject.registerClass({
 
         if (!skipTopLeft) {
             cr.lineTo(x1, y1 + borderRadius);
-            cr.arc(x1 + borderRadius, y1 + borderRadius, borderRadius,
-                   Math.PI, 3 * Math.PI / 2);
+            cr.arc(
+                x1 + borderRadius, y1 + borderRadius, borderRadius,
+                Math.PI, 3 * Math.PI / 2);
         }
 
         const [hasColor, bgColor] =

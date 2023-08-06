@@ -79,7 +79,7 @@ const AppMenuButton = GObject.registerClass({
 
         let textureCache = St.TextureCache.get_default();
         textureCache.connect('icon-theme-changed',
-                             this._onIconThemeChanged.bind(this));
+            this._onIconThemeChanged.bind(this));
 
         let iconEffect = new Clutter.DesaturateEffect();
         this._iconBox = new St.Bin({
@@ -496,8 +496,9 @@ class Panel extends St.Widget {
         });
 
         Main.layoutManager.panelBox.add(this);
-        Main.ctrlAltTabManager.addGroup(this, _('Top Bar'), 'focus-top-bar-symbolic',
-                                        {sortGroup: CtrlAltTab.SortGroup.TOP});
+        Main.ctrlAltTabManager.addGroup(this,
+            _('Top Bar'), 'focus-top-bar-symbolic',
+            {sortGroup: CtrlAltTab.SortGroup.TOP});
 
         Main.sessionMode.connect('updated', this._updatePanel.bind(this));
 
@@ -542,14 +543,13 @@ class Panel extends St.Widget {
         childBox.y1 = 0;
         childBox.y2 = allocHeight;
         if (this.get_text_direction() == Clutter.TextDirection.RTL) {
-            childBox.x1 = Math.max(allocWidth - Math.min(Math.floor(sideWidth),
-                                                         leftNaturalWidth),
-                                   0);
+            childBox.x1 = Math.max(
+                allocWidth - Math.min(Math.floor(sideWidth), leftNaturalWidth),
+                0);
             childBox.x2 = allocWidth;
         } else {
             childBox.x1 = 0;
-            childBox.x2 = Math.min(Math.floor(sideWidth),
-                                   leftNaturalWidth);
+            childBox.x2 = Math.min(Math.floor(sideWidth), leftNaturalWidth);
         }
         this._leftBox.allocate(childBox);
 
@@ -563,12 +563,11 @@ class Panel extends St.Widget {
         childBox.y2 = allocHeight;
         if (this.get_text_direction() == Clutter.TextDirection.RTL) {
             childBox.x1 = 0;
-            childBox.x2 = Math.min(Math.floor(sideWidth),
-                                   rightNaturalWidth);
+            childBox.x2 = Math.min(Math.floor(sideWidth), rightNaturalWidth);
         } else {
-            childBox.x1 = Math.max(allocWidth - Math.min(Math.floor(sideWidth),
-                                                         rightNaturalWidth),
-                                   0);
+            childBox.x1 = Math.max(
+                allocWidth - Math.min(Math.floor(sideWidth), rightNaturalWidth),
+                0);
             childBox.x2 = allocWidth;
         }
         this._rightBox.allocate(childBox);

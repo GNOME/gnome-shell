@@ -22,8 +22,10 @@ const PresenceProxy = Gio.DBusProxy.makeProxyWrapper(PresenceIface);
  * @returns {Gio.DBusProxy}
  */
 export function Presence(initCallback, cancellable) {
-    return new PresenceProxy(Gio.DBus.session, 'org.gnome.SessionManager',
-                             '/org/gnome/SessionManager/Presence', initCallback, cancellable);
+    return new PresenceProxy(Gio.DBus.session,
+        'org.gnome.SessionManager',
+        '/org/gnome/SessionManager/Presence',
+        initCallback, cancellable);
 }
 
 // Note inhibitors are immutable objects, so they don't

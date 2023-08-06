@@ -42,7 +42,7 @@ export const InputMethod = GObject.registerClass({
 
         this._inputSourceManager = Keyboard.getInputSourceManager();
         this._sourceChangedId = this._inputSourceManager.connect('current-source-changed',
-                                                                 this._onSourceChanged.bind(this));
+            this._onSourceChanged.bind(this));
         this._currentSource = this._inputSourceManager.currentSource;
 
         if (this._ibus.is_connected())

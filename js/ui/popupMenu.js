@@ -65,12 +65,14 @@ export function arrowIcon(side) {
 
 export const PopupBaseMenuItem = GObject.registerClass({
     Properties: {
-        'active': GObject.ParamSpec.boolean('active', 'active', 'active',
-                                            GObject.ParamFlags.READWRITE,
-                                            false),
-        'sensitive': GObject.ParamSpec.boolean('sensitive', 'sensitive', 'sensitive',
-                                               GObject.ParamFlags.READWRITE,
-                                               true),
+        'active': GObject.ParamSpec.boolean(
+            'active', 'active', 'active',
+            GObject.ParamFlags.READWRITE,
+            false),
+        'sensitive': GObject.ParamSpec.boolean(
+            'sensitive', 'sensitive', 'sensitive',
+            GObject.ParamFlags.READWRITE,
+            true),
     },
     Signals: {
         'activate': {param_types: [Clutter.Event.$gtype]},
@@ -296,7 +298,7 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
         this.label_actor = this.label;
 
         this.label.connect('notify::text',
-                           this._syncVisibility.bind(this));
+            this._syncVisibility.bind(this));
         this._syncVisibility();
 
         this._separator = new St.Widget({

@@ -194,8 +194,9 @@ export class SessionMode extends Signals.EventEmitter {
         let params = _modes[this.currentMode];
         let defaults;
         if (params.parentMode) {
-            defaults = Params.parse(_modes[params.parentMode],
-                                    _modes[DEFAULT_MODE]);
+            defaults = Params.parse(
+                _modes[params.parentMode],
+                _modes[DEFAULT_MODE]);
         } else {
             defaults = _modes[DEFAULT_MODE];
         }

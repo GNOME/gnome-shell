@@ -135,8 +135,9 @@ class GridSearchResult extends SearchResult {
 
         this.style_class = 'grid-search-result';
 
-        this.icon = new IconGrid.BaseIcon(this.metaInfo['name'],
-                                          {createIcon: this.metaInfo['createIcon']});
+        this.icon = new IconGrid.BaseIcon(this.metaInfo['name'], {
+            createIcon: this.metaInfo['createIcon'],
+        });
         let content = new St.Bin({
             child: this.icon,
             x_align: Clutter.ActorAlign.START,

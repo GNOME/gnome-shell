@@ -157,13 +157,13 @@ class BackgroundCache extends Signals.EventEmitter {
 
         let monitor = file.monitor(Gio.FileMonitorFlags.NONE, null);
         monitor.connect('changed',
-                        (obj, theFile, otherFile, eventType) => {
-                            // Ignore CHANGED and CREATED events, since in both cases
-                            // we'll get a CHANGES_DONE_HINT event when done.
-                            if (eventType != Gio.FileMonitorEvent.CHANGED &&
-                                eventType != Gio.FileMonitorEvent.CREATED)
-                                this.emit('file-changed', file);
-                        });
+            (obj, theFile, otherFile, eventType) => {
+                // Ignore CHANGED and CREATED events, since in both cases
+                // we'll get a CHANGES_DONE_HINT event when done.
+                if (eventType != Gio.FileMonitorEvent.CHANGED &&
+                    eventType != Gio.FileMonitorEvent.CREATED)
+                    this.emit('file-changed', file);
+            });
 
         this._fileMonitors[key] = monitor;
     }
@@ -374,13 +374,13 @@ const Background = GObject.registerClass({
 
         this._cache.monitorFile(file);
         let signalId = this._cache.connect('file-changed',
-                                           (cache, changedFile) => {
-                                               if (changedFile.equal(file)) {
-                                                   let imageCache = Meta.BackgroundImageCache.get_default();
-                                                   imageCache.purge(changedFile);
-                                                   this._emitChangedSignal();
-                                               }
-                                           });
+            (cache, changedFile) => {
+                if (changedFile.equal(file)) {
+                    let imageCache = Meta.BackgroundImageCache.get_default();
+                    imageCache.purge(changedFile);
+                    this._emitChangedSignal();
+                }
+            });
         this._fileWatches[key] = signalId;
     }
 
@@ -401,8 +401,8 @@ const Background = GObject.registerClass({
             this._setLoaded();
             if (files.length > 1) {
                 this.set_blend(files[0], files[1],
-                               this._animation.transitionProgress,
-                               this._style);
+                    this._animation.transitionProgress,
+                    this._style);
             } else if (files.length > 0) {
                 this.set_file(files[0], this._style);
             } else {
@@ -445,19 +445,20 @@ const Background = GObject.registerClass({
         let nSteps = 255 / ANIMATION_OPACITY_STEP_INCREMENT;
         let timePerStep = (this._animation.transitionDuration * 1000) / nSteps;
 
-        let interval = Math.max(ANIMATION_MIN_WAKEUP_INTERVAL * 1000,
-                                timePerStep);
+        let interval = Math.max(
+            ANIMATION_MIN_WAKEUP_INTERVAL * 1000,
+            timePerStep);
 
         if (interval > GLib.MAXUINT32)
             return;
 
         this._updateAnimationTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                                                          interval,
-                                                          () => {
-                                                              this._updateAnimationTimeoutId = 0;
-                                                              this._updateAnimation();
-                                                              return GLib.SOURCE_REMOVE;
-                                                          });
+            interval,
+            () => {
+                this._updateAnimationTimeoutId = 0;
+                this._updateAnimation();
+                return GLib.SOURCE_REMOVE;
+            });
         GLib.Source.set_name_by_id(this._updateAnimationTimeoutId, '[gnome-shell] this._updateAnimation');
     }
 
@@ -565,7 +566,7 @@ class BackgroundSource {
         const monitorManager = global.backend.get_monitor_manager();
         this._monitorsChangedId =
             monitorManager.connect('monitors-changed',
-                                   this._onMonitorsChanged.bind(this));
+                this._onMonitorsChanged.bind(this));
 
         this._interfaceSettings = new Gio.Settings({schema_id: INTERFACE_SCHEMA});
     }

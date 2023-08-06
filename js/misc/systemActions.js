@@ -161,26 +161,26 @@ const SystemActions = GObject.registerClass({
         this._userManager = AccountsService.UserManager.get_default();
 
         this._userManager.connect('notify::is-loaded',
-                                  () => this._updateMultiUser());
+            () => this._updateMultiUser());
         this._userManager.connect('notify::has-multiple-users',
-                                  () => this._updateMultiUser());
+            () => this._updateMultiUser());
         this._userManager.connect('user-added',
-                                  () => this._updateMultiUser());
+            () => this._updateMultiUser());
         this._userManager.connect('user-removed',
-                                  () => this._updateMultiUser());
+            () => this._updateMultiUser());
 
         this._lockdownSettings.connect(`changed::${DISABLE_USER_SWITCH_KEY}`,
-                                       () => this._updateSwitchUser());
+            () => this._updateSwitchUser());
         this._lockdownSettings.connect(`changed::${DISABLE_LOG_OUT_KEY}`,
-                                       () => this._updateLogout());
+            () => this._updateLogout());
         global.settings.connect(`changed::${ALWAYS_SHOW_LOG_OUT_KEY}`,
-                                () => this._updateLogout());
+            () => this._updateLogout());
 
         this._lockdownSettings.connect(`changed::${DISABLE_LOCK_SCREEN_KEY}`,
-                                       () => this._updateLockScreen());
+            () => this._updateLockScreen());
 
         this._lockdownSettings.connect(`changed::${DISABLE_LOG_OUT_KEY}`,
-                                       () => this._updateHaveShutdown());
+            () => this._updateHaveShutdown());
 
         this.forceUpdate();
 
@@ -189,7 +189,7 @@ const SystemActions = GObject.registerClass({
             this._updateOrientationLockStatus();
         });
         Main.layoutManager.connect('monitors-changed',
-                                   () => this._updateOrientationLock());
+            () => this._updateOrientationLock());
         this._monitorManager.connect('notify::panel-orientation-managed',
             () => this._updateOrientationLock());
         this._updateOrientationLock();

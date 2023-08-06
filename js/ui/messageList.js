@@ -216,12 +216,10 @@ class ScaleLayout extends Clutter.BinLayout {
 
 const LabelExpanderLayout = GObject.registerClass({
     Properties: {
-        'expansion': GObject.ParamSpec.double('expansion',
-                                              'Expansion',
-                                              'Expansion of the layout, between 0 (collapsed) ' +
-                                              'and 1 (fully expanded',
-                                              GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-                                              0, 1, 0),
+        'expansion': GObject.ParamSpec.double(
+            'expansion', 'Expansion', 'Expansion',
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+            0, 1, 0),
     },
 }, class LabelExpanderLayout extends Clutter.LayoutManager {
     _init(params) {
@@ -418,7 +416,7 @@ export const Message = GObject.registerClass({
     setBody(text) {
         this._bodyText = text;
         this.bodyLabel.setMarkup(text ? text.replace(/\n/g, ' ') : '',
-                                 this._useBodyMarkup);
+            this._useBodyMarkup);
         if (this._expandedLabel)
             this._expandedLabel.setMarkup(text, this._useBodyMarkup);
     }
@@ -479,7 +477,7 @@ export const Message = GObject.registerClass({
 
         if (this._bodyStack.get_n_children() < 2) {
             this._expandedLabel = new URLHighlighter(this._bodyText,
-                                                     true, this._useBodyMarkup);
+                true, this._useBodyMarkup);
             this.setExpandedBody(this._expandedLabel);
         }
 

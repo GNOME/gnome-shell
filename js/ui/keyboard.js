@@ -2270,11 +2270,11 @@ class KeyboardController extends Signals.EventEmitter {
 
     keyvalPress(keyval) {
         this._virtualDevice.notify_keyval(Clutter.get_current_event_time() * 1000,
-                                          keyval, Clutter.KeyState.PRESSED);
+            keyval, Clutter.KeyState.PRESSED);
     }
 
     keyvalRelease(keyval) {
         this._virtualDevice.notify_keyval(Clutter.get_current_event_time() * 1000,
-                                          keyval, Clutter.KeyState.RELEASED);
+            keyval, Clutter.KeyState.RELEASED);
     }
 }

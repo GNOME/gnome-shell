@@ -38,12 +38,13 @@ function versionCompare(required, reference) {
 export function canLock() {
     try {
         let params = GLib.Variant.new('(ss)', ['org.gnome.DisplayManager.Manager', 'Version']);
-        let result = Gio.DBus.system.call_sync('org.gnome.DisplayManager',
-                                               '/org/gnome/DisplayManager/Manager',
-                                               'org.freedesktop.DBus.Properties',
-                                               'Get', params, null,
-                                               Gio.DBusCallFlags.NONE,
-                                               -1, null);
+        let result = Gio.DBus.system.call_sync(
+            'org.gnome.DisplayManager',
+            '/org/gnome/DisplayManager/Manager',
+            'org.freedesktop.DBus.Properties',
+            'Get', params, null,
+            Gio.DBusCallFlags.NONE,
+            -1, null);
 
         let version = result.deepUnpack()[0].deepUnpack();
         return haveSystemd() && versionCompare('3.5.91', version);
@@ -93,13 +94,13 @@ class LoginManagerSystemd extends Signals.EventEmitter {
         super();
 
         this._proxy = new SystemdLoginManager(Gio.DBus.system,
-                                              'org.freedesktop.login1',
-                                              '/org/freedesktop/login1');
+            'org.freedesktop.login1',
+            '/org/freedesktop/login1');
         this._userProxy = new SystemdLoginUser(Gio.DBus.system,
-                                               'org.freedesktop.login1',
-                                               '/org/freedesktop/login1/user/self');
+            'org.freedesktop.login1',
+            '/org/freedesktop/login1/user/self');
         this._proxy.connectSignal('PrepareForSleep',
-                                  this._prepareForSleep.bind(this));
+            this._prepareForSleep.bind(this));
     }
 
     async getCurrentSessionProxy() {
@@ -118,8 +119,8 @@ class LoginManagerSystemd extends Signals.EventEmitter {
 
                 for ([session, objectPath] of this._userProxy.Sessions) {
                     let sessionProxy = new SystemdLoginSession(Gio.DBus.system,
-                                                               'org.freedesktop.login1',
-                                                               objectPath);
+                        'org.freedesktop.login1',
+                        objectPath);
                     log(`Considering ${session}, class=${sessionProxy.Class}`);
                     if (sessionProxy.Class == 'greeter') {
                         log(`Yes, will monitor session ${session}`);

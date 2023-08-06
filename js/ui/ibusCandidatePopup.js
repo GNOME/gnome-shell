@@ -227,10 +227,8 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
             this._preeditText.text = text.get_text();
 
             let attrs = text.get_attributes();
-            if (attrs) {
-                this._setTextAttributes(this._preeditText.clutter_text,
-                                        attrs);
-            }
+            if (attrs)
+                this._setTextAttributes(this._preeditText.clutter_text, attrs);
         });
         panelService.connect('show-preedit-text', () => {
             this._preeditText.show();
@@ -285,9 +283,9 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
             }
 
             this._candidateArea.setCandidates(indexes,
-                                              candidates,
-                                              cursorPos % pageSize,
-                                              lookupTable.is_cursor_visible());
+                candidates,
+                cursorPos % pageSize,
+                lookupTable.is_cursor_visible());
             this._candidateArea.setOrientation(lookupTable.get_orientation());
             this._candidateArea.updateButtons(lookupTable.is_round(), page, nPages);
         });

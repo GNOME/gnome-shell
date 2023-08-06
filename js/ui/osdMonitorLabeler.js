@@ -57,7 +57,7 @@ export class OsdMonitorLabeler {
         this._osdLabels = [];
         this._monitorLabels = null;
         Main.layoutManager.connect('monitors-changed',
-                                   this._reset.bind(this));
+            this._reset.bind(this));
         this._reset();
     }
 
@@ -76,10 +76,11 @@ export class OsdMonitorLabeler {
             return this._client == client;
 
         this._client = client;
-        this._clientWatchId = Gio.bus_watch_name(Gio.BusType.SESSION, client, 0, null,
-                                                 (c, name) => {
-                                                     this.hide(name);
-                                                 });
+        this._clientWatchId = Gio.bus_watch_name(Gio.BusType.SESSION,
+            client, 0, null,
+            (c, name) => {
+                this.hide(name);
+            });
         return true;
     }
 

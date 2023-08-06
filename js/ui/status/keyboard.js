@@ -201,12 +201,12 @@ class InputSourceSystemSettings extends InputSourceSettings {
         this._reload();
 
         Gio.DBus.system.signal_subscribe(this._BUS_NAME,
-                                         this._BUS_PROPS_IFACE,
-                                         'PropertiesChanged',
-                                         this._BUS_PATH,
-                                         null,
-                                         Gio.DBusSignalFlags.NONE,
-                                         this._reload.bind(this));
+            this._BUS_PROPS_IFACE,
+            'PropertiesChanged',
+            this._BUS_PATH,
+            null,
+            Gio.DBusSignalFlags.NONE,
+            this._reload.bind(this));
     }
 
     async _reload() {
@@ -330,16 +330,16 @@ export class InputSourceManager extends Signals.EventEmitter {
         this._mruSourcesBackup = null;
         this._keybindingAction =
             Main.wm.addKeybinding('switch-input-source',
-                                  new Gio.Settings({schema_id: 'org.gnome.desktop.wm.keybindings'}),
-                                  Meta.KeyBindingFlags.NONE,
-                                  Shell.ActionMode.ALL,
-                                  this._switchInputSource.bind(this));
+                new Gio.Settings({schema_id: 'org.gnome.desktop.wm.keybindings'}),
+                Meta.KeyBindingFlags.NONE,
+                Shell.ActionMode.ALL,
+                this._switchInputSource.bind(this));
         this._keybindingActionBackward =
             Main.wm.addKeybinding('switch-input-source-backward',
-                                  new Gio.Settings({schema_id: 'org.gnome.desktop.wm.keybindings'}),
-                                  Meta.KeyBindingFlags.IS_REVERSED,
-                                  Shell.ActionMode.ALL,
-                                  this._switchInputSource.bind(this));
+                new Gio.Settings({schema_id: 'org.gnome.desktop.wm.keybindings'}),
+                Meta.KeyBindingFlags.IS_REVERSED,
+                Shell.ActionMode.ALL,
+                this._switchInputSource.bind(this));
         if (Main.sessionMode.isGreeter)
             this._settings = new InputSourceSystemSettings();
         else
@@ -601,10 +601,10 @@ export class InputSourceManager extends Signals.EventEmitter {
         let inputSourcesByShortName = {};
         for (let i = 0; i < infosList.length; i++) {
             let is = new InputSource(infosList[i].type,
-                                     infosList[i].id,
-                                     infosList[i].displayName,
-                                     infosList[i].shortName,
-                                     i);
+                infosList[i].id,
+                infosList[i].displayName,
+                infosList[i].shortName,
+                i);
             is.connect('activate', this.activateInputSource.bind(this));
 
             if (!(is.shortName in inputSourcesByShortName))
@@ -752,7 +752,7 @@ export class InputSourceManager extends Signals.EventEmitter {
 
         if (this._sourcesPerWindow && this._focusWindowNotifyId == 0) {
             this._focusWindowNotifyId = global.display.connect('notify::focus-window',
-                                                               this._setPerWindowInputSource.bind(this));
+                this._setPerWindowInputSource.bind(this));
             Main.overview.connectObject(
                 'showing', this._setPerWindowInputSource.bind(this),
                 'hidden', this._setPerWindowInputSource.bind(this), this);
@@ -1020,13 +1020,13 @@ class InputSourceIndicator extends PanelMenu.Button {
                         if (group[j] == item) {
                             item.setOrnament(PopupMenu.Ornament.DOT);
                             item.prop.set_state(IBus.PropState.CHECKED);
-                            ibusManager.activateProperty(item.prop.get_key(),
-                                                         IBus.PropState.CHECKED);
+                            ibusManager.activateProperty(
+                                item.prop.get_key(), IBus.PropState.CHECKED);
                         } else {
                             group[j].setOrnament(PopupMenu.Ornament.NONE);
                             group[j].prop.set_state(IBus.PropState.UNCHECKED);
-                            ibusManager.activateProperty(group[j].prop.get_key(),
-                                                         IBus.PropState.UNCHECKED);
+                            ibusManager.activateProperty(
+                                group[j].prop.get_key(), IBus.PropState.UNCHECKED);
                         }
                     }
                 });
@@ -1038,12 +1038,12 @@ class InputSourceIndicator extends PanelMenu.Button {
                 item.connect('toggled', () => {
                     if (item.state) {
                         item.prop.set_state(IBus.PropState.CHECKED);
-                        ibusManager.activateProperty(item.prop.get_key(),
-                                                     IBus.PropState.CHECKED);
+                        ibusManager.activateProperty(
+                            item.prop.get_key(), IBus.PropState.CHECKED);
                     } else {
                         item.prop.set_state(IBus.PropState.UNCHECKED);
-                        ibusManager.activateProperty(item.prop.get_key(),
-                                                     IBus.PropState.UNCHECKED);
+                        ibusManager.activateProperty(
+                            item.prop.get_key(), IBus.PropState.UNCHECKED);
                     }
                 });
                 break;
@@ -1052,8 +1052,8 @@ class InputSourceIndicator extends PanelMenu.Button {
                 item = new PopupMenu.PopupMenuItem(prop.get_label().get_text());
                 item.prop = prop;
                 item.connect('activate', () => {
-                    ibusManager.activateProperty(item.prop.get_key(),
-                                                 item.prop.get_state());
+                    ibusManager.activateProperty(
+                        item.prop.get_key(), item.prop.get_state());
                 });
                 break;
 

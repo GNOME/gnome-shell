@@ -96,9 +96,10 @@ class AccessDialog extends ModalDialog.ModalDialog {
 
     CloseAsync(invocation, _params) {
         if (this._invocation.get_sender() != invocation.get_sender()) {
-            invocation.return_error_literal(Gio.DBusError,
-                                            Gio.DBusError.ACCESS_DENIED,
-                                            '');
+            invocation.return_error_literal(
+                Gio.DBusError,
+                Gio.DBusError.ACCESS_DENIED,
+                '');
             return;
         }
 
@@ -120,8 +121,8 @@ class AccessDialog extends ModalDialog.ModalDialog {
 
         // Delay actual response until the end of the close animation (if any)
         this.connect('closed', () => {
-            this._invocation.return_value(new GLib.Variant('(ua{sv})',
-                                                           [response, results]));
+            this._invocation.return_value(
+                new GLib.Variant('(ua{sv})', [response, results]));
         });
         this.close();
     }
@@ -141,9 +142,10 @@ export class AccessDialogDBus {
 
     AccessDialogAsync(params, invocation) {
         if (this._accessDialog) {
-            invocation.return_error_literal(Gio.DBusError,
-                                            Gio.DBusError.LIMITS_EXCEEDED,
-                                            'Already showing a system access dialog');
+            invocation.return_error_literal(
+                Gio.DBusError,
+                Gio.DBusError.LIMITS_EXCEEDED,
+                'Already showing a system access dialog');
             return;
         }
 
@@ -151,9 +153,10 @@ export class AccessDialogDBus {
         // We probably want to use parentWindow and global.display.focus_window
         // for this check in the future
         if (appId && `${appId}.desktop` !== this._windowTracker.focus_app.id) {
-            invocation.return_error_literal(Gio.DBusError,
-                                            Gio.DBusError.ACCESS_DENIED,
-                                            'Only the focused app is allowed to show a system access dialog');
+            invocation.return_error_literal(
+                Gio.DBusError,
+                Gio.DBusError.ACCESS_DENIED,
+                'Only the focused app is allowed to show a system access dialog');
             return;
         }
 

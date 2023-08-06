@@ -48,8 +48,13 @@ class FdoNotificationDaemon {
                 width, height, rowStride, hasAlpha,
                 bitsPerSample, nChannels_, data,
             ] = hints['image-data'];
-            return Shell.util_create_pixbuf_from_data(data, GdkPixbuf.Colorspace.RGB, hasAlpha,
-                                                      bitsPerSample, width, height, rowStride);
+            return Shell.util_create_pixbuf_from_data(data,
+                GdkPixbuf.Colorspace.RGB,
+                hasAlpha,
+                bitsPerSample,
+                width,
+                height,
+                rowStride);
         } else if (hints['image-path']) {
             return this._iconForNotificationData(hints['image-path']);
         }
@@ -329,12 +334,12 @@ class FdoNotificationDaemon {
 
     _emitNotificationClosed(id, reason) {
         this._dbusImpl.emit_signal('NotificationClosed',
-                                   GLib.Variant.new('(uu)', [id, reason]));
+            GLib.Variant.new('(uu)', [id, reason]));
     }
 
     _emitActionInvoked(id, action) {
         this._dbusImpl.emit_signal('ActionInvoked',
-                                   GLib.Variant.new('(us)', [id, action]));
+            GLib.Variant.new('(us)', [id, action]));
     }
 }
 
@@ -354,9 +359,9 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
 
         if (sender) {
             this._nameWatcherId = Gio.DBus.session.watch_name(sender,
-                                                              Gio.BusNameWatcherFlags.NONE,
-                                                              null,
-                                                              this._onNameVanished.bind(this));
+                Gio.BusNameWatcherFlags.NONE,
+                null,
+                this._onNameVanished.bind(this));
         } else {
             this._nameWatcherId = 0;
         }

@@ -425,9 +425,10 @@ class ChatSource extends MessageTray.Source {
     _updateAvatarIcon() {
         this.iconUpdated();
         if (this._notification) {
-            this._notification.update(this._notification.title,
-                                      this._notification.bannerBodyText,
-                                      {gicon: this.getIcon()});
+            this._notification.update(
+                this._notification.title,
+                this._notification.bannerBodyText,
+                {gicon: this.getIcon()});
         }
     }
 
@@ -631,9 +632,10 @@ class ChatSource extends MessageTray.Source {
 
     _presenceChanged(_contact, _presence, _status, _message) {
         if (this._notification) {
-            this._notification.update(this._notification.title,
-                                      this._notification.bannerBodyText,
-                                      {secondaryGIcon: this.getSecondaryIcon()});
+            this._notification.update(
+                this._notification.title,
+                this._notification.bannerBodyText,
+                {secondaryGIcon: this.getSecondaryIcon()});
         }
     }
 

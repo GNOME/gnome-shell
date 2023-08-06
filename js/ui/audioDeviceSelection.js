@@ -168,11 +168,12 @@ export class AudioDeviceSelectionDBus {
         let info = this._dbusImpl.get_info();
         const deviceName = Object.keys(AudioDevice)
             .filter(dev => AudioDevice[dev] === device)[0].toLowerCase();
-        connection.emit_signal(this._audioSelectionDialog._sender,
-                               this._dbusImpl.get_object_path(),
-                               info ? info.name : null,
-                               'DeviceSelected',
-                               GLib.Variant.new('(s)', [deviceName]));
+        connection.emit_signal(
+            this._audioSelectionDialog._sender,
+            this._dbusImpl.get_object_path(),
+            info ? info.name : null,
+            'DeviceSelected',
+            GLib.Variant.new('(s)', [deviceName]));
     }
 
     OpenAsync(params, invocation) {
@@ -196,7 +197,7 @@ export class AudioDeviceSelectionDBus {
 
         dialog.connect('closed', this._onDialogClosed.bind(this));
         dialog.connect('device-selected',
-                       this._onDeviceSelected.bind(this));
+            this._onDeviceSelected.bind(this));
         dialog.open();
 
         this._audioSelectionDialog = dialog;

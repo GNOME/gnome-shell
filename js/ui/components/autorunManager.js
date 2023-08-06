@@ -69,7 +69,7 @@ function startAppForMount(app, mount) {
 
     try {
         retval = app.launch(files,
-                            global.create_app_launch_context(0, -1));
+            global.create_app_launch_context(0, -1));
     } catch (e) {
         log(`Unable to launch the app ${app.get_name()}: ${e}`);
     }
@@ -81,8 +81,8 @@ const HotplugSnifferIface = loadInterfaceXML('org.gnome.Shell.HotplugSniffer');
 const HotplugSnifferProxy = Gio.DBusProxy.makeProxyWrapper(HotplugSnifferIface);
 function HotplugSniffer() {
     return new HotplugSnifferProxy(Gio.DBus.session,
-                                   'org.gnome.Shell.HotplugSniffer',
-                                   '/org/gnome/Shell/HotplugSniffer');
+        'org.gnome.Shell.HotplugSniffer',
+        '/org/gnome/Shell/HotplugSniffer');
 }
 
 class ContentTypeDiscoverer {

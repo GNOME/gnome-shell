@@ -131,7 +131,7 @@ export const CloseDialog = GObject.registerClass({
 
         if (shouldTrack) {
             Main.layoutManager.trackChrome(this._dialog,
-                                           {affectsInputRegion: true});
+                {affectsInputRegion: true});
         } else {
             Main.layoutManager.untrackChrome(this._dialog);
         }
