@@ -202,7 +202,7 @@ export class MprisPlayer extends Signals.EventEmitter {
                     this._busName}; expected an array of strings, got ${
                     this._trackArtists} (${typeof this._trackArtists})`);
             }
-            this._trackArtists =  [_("Unknown artist")];
+            this._trackArtists =  [_('Unknown artist')];
         }
 
         this._trackTitle = metadata['xesam:title'];
@@ -212,7 +212,7 @@ export class MprisPlayer extends Signals.EventEmitter {
                     this._busName}; expected a string, got ${
                     this._trackTitle} (${typeof this._trackTitle})`);
             }
-            this._trackTitle = _("Unknown title");
+            this._trackTitle = _('Unknown title');
         }
 
         this._trackCoverUrl = metadata['mpris:artUrl'];

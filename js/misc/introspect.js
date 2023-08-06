@@ -75,7 +75,7 @@ export class IntrospectService {
     _syncRunningApplications() {
         let tracker = Shell.WindowTracker.get_default();
         let apps = this._appSystem.get_running();
-        let seatName = "seat0";
+        let seatName = 'seat0';
         let newRunningApplications = {};
 
         let newActiveApplication = null;

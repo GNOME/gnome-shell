@@ -258,7 +258,7 @@ class Indicator extends SystemIndicator {
 
     _ensureSource() {
         if (!this._source) {
-            this._source = new MessageTray.Source(_("Thunderbolt"),
+            this._source = new MessageTray.Source(_('Thunderbolt'),
                                                   'thunderbolt-symbolic');
             this._source.connect('destroy', () => (this._source = null));
 
@@ -319,19 +319,19 @@ class Indicator extends SystemIndicator {
             return; /* we are done */
 
         if (!unlocked) {
-            const title = _("Unknown Thunderbolt device");
-            const body = _("New device has been detected while you were away. Please disconnect and reconnect the device to start using it.");
+            const title = _('Unknown Thunderbolt device');
+            const body = _('New device has been detected while you were away. Please disconnect and reconnect the device to start using it.');
             this._notify(title, body);
         } else {
-            const title = _("Unauthorized Thunderbolt device");
-            const body = _("New device has been detected and needs to be authorized by an administrator.");
+            const title = _('Unauthorized Thunderbolt device');
+            const body = _('New device has been detected and needs to be authorized by an administrator.');
             this._notify(title, body);
         }
     }
 
     _onEnrollFailed(obj, device, error) {
-        const title = _("Thunderbolt authorization error");
-        const body = _("Could not authorize the Thunderbolt device: %s").format(error.message);
+        const title = _('Thunderbolt authorization error');
+        const body = _('Could not authorize the Thunderbolt device: %s').format(error.message);
         this._notify(title, body);
     }
 });

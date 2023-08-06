@@ -695,7 +695,7 @@ class _Draggable extends Signals.EventEmitter {
                         this._dragActor, targX, targY, event.get_time());
                 } catch (e) {
                     // On error, skip this target
-                    logError(e, "Skipping drag target");
+                    logError(e, 'Skipping drag target');
                 }
                 if (accepted) {
                     // If it accepted the drop without taking the actor,

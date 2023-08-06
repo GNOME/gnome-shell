@@ -509,7 +509,7 @@ export class ExtensionManager extends Signals.EventEmitter {
 
         let extension = this.lookup(uuid);
         if (!extension)
-            throw new Error("Extension was not properly created. Call createExtensionObject first");
+            throw new Error('Extension was not properly created. Call createExtensionObject first');
 
         let dir = extension.dir;
         let extensionJs = dir.get_child('extension.js');

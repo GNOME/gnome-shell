@@ -15,7 +15,7 @@ const SystemdLoginSession = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIf
 const SystemdLoginUser = Gio.DBusProxy.makeProxyWrapper(SystemdLoginUserIface);
 
 function haveSystemd() {
-    return GLib.access("/run/systemd/seats", 0) >= 0;
+    return GLib.access('/run/systemd/seats', 0) >= 0;
 }
 
 function versionCompare(required, reference) {
@@ -53,7 +53,7 @@ export function canLock() {
 }
 
 export async function registerSessionWithGDM() {
-    log("Registering session with GDM");
+    log('Registering session with GDM');
     try {
         await Gio.DBus.system.call(
             'org.gnome.DisplayManager',

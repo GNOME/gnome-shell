@@ -227,6 +227,6 @@ export const BarLevel = GObject.registerClass({
     }
 
     _valueChanged() {
-        this._customAccessible.notify("accessible-value");
+        this._customAccessible.notify('accessible-value');
     }
 });

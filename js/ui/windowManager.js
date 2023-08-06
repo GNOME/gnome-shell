@@ -50,7 +50,7 @@ const GSD_WACOM_OBJECT_PATH = '/org/gnome/SettingsDaemon/Wacom';
 const GsdWacomIface = loadInterfaceXML('org.gnome.SettingsDaemon.Wacom');
 const GsdWacomProxy = Gio.DBusProxy.makeProxyWrapper(GsdWacomIface);
 
-const WINDOW_DIMMER_EFFECT_NAME = "gnome-shell-window-dimmer";
+const WINDOW_DIMMER_EFFECT_NAME = 'gnome-shell-window-dimmer';
 
 Gio._promisify(Shell, 'util_start_systemd_unit');
 Gio._promisify(Shell, 'util_stop_systemd_unit');
@@ -550,7 +550,7 @@ class ResizePopup extends St.Widget {
     set(rect, displayW, displayH) {
         /* Translators: This represents the size of a window. The first number is
          * the width of the window and the second is the height. */
-        let text = _("%d × %d").format(displayW, displayH);
+        let text = _('%d × %d').format(displayW, displayH);
         this._label.set_text(text);
 
         this.set_position(rect.x, rect.y);

@@ -521,7 +521,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._defaultService = FINGERPRINT_SERVICE_NAME;
 
         if (!this._defaultService) {
-            log("no authentication service is enabled, using password authentication");
+            log('no authentication service is enabled, using password authentication');
             this._defaultService = PASSWORD_SERVICE_NAME;
         }
     }

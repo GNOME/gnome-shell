@@ -43,7 +43,7 @@ const AuthenticationDialog = GObject.registerClass({
 
         this.connect('closed', this._onDialogClosed.bind(this));
 
-        let title = _("Authentication Required");
+        let title = _('Authentication Required');
 
         let headerContent = new Dialog.MessageDialogContent({ title, description });
         this.contentLayout.add_child(headerContent);
@@ -94,7 +94,7 @@ const AuthenticationDialog = GObject.registerClass({
 
         this._passwordEntry = new St.PasswordEntry({
             style_class: 'prompt-dialog-password-entry',
-            text: "",
+            text: '',
             can_focus: true,
             visible: false,
             x_align: Clutter.ActorAlign.CENTER,
@@ -262,7 +262,7 @@ const AuthenticationDialog = GObject.registerClass({
                  * requested authentication was not gained; this can happen
                  * because of an authentication error (like invalid password),
                  * for instance. */
-                this._errorMessageLabel.set_text(_("Sorry, that didn’t work. Please try again."));
+                this._errorMessageLabel.set_text(_('Sorry, that didn’t work. Please try again.'));
                 this._errorMessageLabel.show();
                 this._infoMessageLabel.hide();
                 this._nullMessageLabel.hide();

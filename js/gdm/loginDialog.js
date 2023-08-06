@@ -321,7 +321,7 @@ const SessionMenuButton = GObject.registerClass({
             reactive: true,
             track_hover: true,
             can_focus: true,
-            accessible_name: _("Choose Session"),
+            accessible_name: _('Choose Session'),
             accessible_role: Atk.Role.MENU,
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
@@ -466,7 +466,7 @@ export const LoginDialog = GObject.registerClass({
         // login screen. It can be activated to reveal an entry for
         // manually entering the username.
         let notListedLabel = new St.Label({
-            text: _("Not listed?"),
+            text: _('Not listed?'),
             style_class: 'login-dialog-not-listed-label',
         });
         this._notListedButton = new St.Button({
@@ -934,7 +934,7 @@ export const LoginDialog = GObject.registerClass({
 
         // Translators: this message is shown below the username entry field
         // to clue the user in on how to login to the local network realm
-        this._authPrompt.setMessage(_("(e.g., user or %s)").format(hint), GdmUtil.MessageType.HINT);
+        this._authPrompt.setMessage(_('(e.g., user or %s)').format(hint), GdmUtil.MessageType.HINT);
     }
 
     _askForUsernameAndBeginVerification() {
@@ -1262,7 +1262,7 @@ export const LoginDialog = GObject.registerClass({
 
     open() {
         Main.ctrlAltTabManager.addGroup(this,
-                                        _("Login Window"),
+                                        _('Login Window'),
                                         'dialog-password-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.MIDDLE });
         this.activate();

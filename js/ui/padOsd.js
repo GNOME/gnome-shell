@@ -19,7 +19,7 @@ import * as Layout from './layout.js';
 
 import {loadInterfaceXML} from '../misc/fileUtils.js';
 
-const ACTIVE_COLOR = "#729fcf";
+const ACTIVE_COLOR = '#729fcf';
 
 const LTR = 0;
 const RTL = 1;
@@ -846,11 +846,11 @@ export const PadOsd = GObject.registerClass({
         let title;
 
         if (this._editionMode) {
-            title = _("Press a button to configure");
-            this._tipLabel.set_text(_("Press Esc to exit"));
+            title = _('Press a button to configure');
+            this._tipLabel.set_text(_('Press Esc to exit'));
         } else {
             title = this.padDevice.get_device_name();
-            this._tipLabel.set_text(_("Press any key to exit"));
+            this._tipLabel.set_text(_('Press any key to exit'));
         }
 
         this._titleLabel.set_text(title);
@@ -966,7 +966,7 @@ export class PadOsdService extends Signals.EventEmitter {
         if (padDevice == null) {
             invocation.return_error_literal(Gio.IOErrorEnum,
                                             Gio.IOErrorEnum.CANCELLED,
-                                            "Invalid params");
+                                            'Invalid params');
             return;
         }
 

@@ -41,7 +41,7 @@ export const CloseDialog = GObject.registerClass({
         let windowApp = tracker.get_window_app(this._window);
 
         /* Translators: %s is an application name */
-        let title = _("“%s” is not responding.").format(windowApp.get_name());
+        let title = _('“%s” is not responding.').format(windowApp.get_name());
         let description = _('You may choose to wait a short while for it to ' +
                             'continue or force the app to quit entirely.');
         return new Dialog.MessageDialogContent({ title, description });
@@ -96,13 +96,13 @@ export const CloseDialog = GObject.registerClass({
         let surfaceActor = windowActor.get_first_child();
         let effect = new Clutter.BrightnessContrastEffect();
         effect.set_brightness(FROZEN_WINDOW_BRIGHTNESS);
-        surfaceActor.add_effect_with_name("gnome-shell-frozen-window", effect);
+        surfaceActor.add_effect_with_name('gnome-shell-frozen-window', effect);
     }
 
     _removeWindowEffect() {
         let windowActor = this._window.get_compositor_private();
         let surfaceActor = windowActor.get_first_child();
-        surfaceActor.remove_effect_by_name("gnome-shell-frozen-window");
+        surfaceActor.remove_effect_by_name('gnome-shell-frozen-window');
     }
 
     _onWait() {

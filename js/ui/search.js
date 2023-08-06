@@ -814,9 +814,9 @@ export const SearchResultsView = GObject.registerClass({
 
         if (!haveResults) {
             if (this.searchInProgress)
-                this._statusText.set_text(_("Searching…"));
+                this._statusText.set_text(_('Searching…'));
             else
-                this._statusText.set_text(_("No results."));
+                this._statusText.set_text(_('No results.'));
         }
     }
 
@@ -947,7 +947,7 @@ class ProviderInfo extends St.Button {
     }
 
     setMoreCount(count) {
-        this._moreLabel.text = ngettext("%d more", "%d more", count).format(count);
+        this._moreLabel.text = ngettext('%d more', '%d more', count).format(count);
         this._moreLabel.visible = count > 0;
     }
 });

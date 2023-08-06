@@ -71,11 +71,11 @@ const AudioDeviceSelectionDialog = GObject.registerClass({
     _getDeviceLabel(device) {
         switch (device) {
         case AudioDevice.HEADPHONES:
-            return _("Headphones");
+            return _('Headphones');
         case AudioDevice.HEADSET:
-            return _("Headset");
+            return _('Headset');
         case AudioDevice.MICROPHONE:
-            return _("Microphone");
+            return _('Microphone');
         default:
             return null;
         }

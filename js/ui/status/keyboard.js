@@ -330,13 +330,13 @@ export class InputSourceManager extends Signals.EventEmitter {
         this._mruSourcesBackup = null;
         this._keybindingAction =
             Main.wm.addKeybinding('switch-input-source',
-                                  new Gio.Settings({ schema_id: "org.gnome.desktop.wm.keybindings" }),
+                                  new Gio.Settings({ schema_id: 'org.gnome.desktop.wm.keybindings' }),
                                   Meta.KeyBindingFlags.NONE,
                                   Shell.ActionMode.ALL,
                                   this._switchInputSource.bind(this));
         this._keybindingActionBackward =
             Main.wm.addKeybinding('switch-input-source-backward',
-                                  new Gio.Settings({ schema_id: "org.gnome.desktop.wm.keybindings" }),
+                                  new Gio.Settings({ schema_id: 'org.gnome.desktop.wm.keybindings' }),
                                   Meta.KeyBindingFlags.IS_REVERSED,
                                   Shell.ActionMode.ALL,
                                   this._switchInputSource.bind(this));
@@ -850,7 +850,7 @@ class InputSourceIndicatorContainer extends St.Widget {
 export const InputSourceIndicator = GObject.registerClass(
 class InputSourceIndicator extends PanelMenu.Button {
     _init() {
-        super._init(0.5, _("Keyboard"));
+        super._init(0.5, _('Keyboard'));
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -867,7 +867,7 @@ class InputSourceIndicator extends PanelMenu.Button {
         this._propSection.actor.hide();
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this._showLayoutItem = this.menu.addAction(_("Show Keyboard Layout"), this._showLayout.bind(this));
+        this._showLayoutItem = this.menu.addAction(_('Show Keyboard Layout'), this._showLayout.bind(this));
         this.menu.addSettingsAction(_('Keyboard Settings'),
             'gnome-keyboard-panel.desktop');
 

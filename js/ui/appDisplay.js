@@ -1770,7 +1770,7 @@ class AppDisplay extends BaseAppView {
         let appItems = apps.map(id => this._items.get(id).app);
         let folderName = _findBestFolderName(appItems);
         if (!folderName)
-            folderName = _("Unnamed Folder");
+            folderName = _('Unnamed Folder');
 
         newFolderSettings.delay();
         newFolderSettings.set_string('name', folderName);

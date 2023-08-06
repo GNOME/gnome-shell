@@ -12,22 +12,22 @@ const KEY_DWELL_MODE          = 'dwell-mode';
 const DWELL_MODE_WINDOW       = 'window';
 const DWELL_CLICK_MODES = {
     primary: {
-        name: _("Single Click"),
+        name: _('Single Click'),
         icon: 'pointer-primary-click-symbolic',
         type: Clutter.PointerA11yDwellClickType.PRIMARY,
     },
     double: {
-        name: _("Double Click"),
+        name: _('Double Click'),
         icon: 'pointer-double-click-symbolic',
         type: Clutter.PointerA11yDwellClickType.DOUBLE,
     },
     drag: {
-        name: _("Drag"),
+        name: _('Drag'),
         icon: 'pointer-drag-symbolic',
         type: Clutter.PointerA11yDwellClickType.DRAG,
     },
     secondary: {
-        name: _("Secondary Click"),
+        name: _('Secondary Click'),
         icon: 'pointer-secondary-click-symbolic',
         type: Clutter.PointerA11yDwellClickType.SECONDARY,
     },
@@ -36,7 +36,7 @@ const DWELL_CLICK_MODES = {
 export const DwellClickIndicator = GObject.registerClass(
 class DwellClickIndicator extends PanelMenu.Button {
     _init() {
-        super._init(0.5, _("Dwell Click"));
+        super._init(0.5, _('Dwell Click'));
 
         this._icon = new St.Icon({
             style_class: 'system-status-icon',

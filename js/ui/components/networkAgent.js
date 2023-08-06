@@ -106,13 +106,13 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         this.contentLayout.add_child(contentBox);
 
         this._okButton = {
-            label: _("Connect"),
+            label: _('Connect'),
             action: this._onOk.bind(this),
             default: true,
         };
 
         this.setButtons([{
-            label: _("Cancel"),
+            label: _('Cancel'),
             action: this.cancel.bind(this),
             key: Clutter.KEY_Escape,
         }, this._okButton]);
@@ -253,7 +253,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         let ieee8021xSetting = this._connection.get_setting_802_1x();
 
         /* If hints were given we know exactly what we need to ask */
-        if (this._settingName == "802-1x" && this._hints.length) {
+        if (this._settingName == '802-1x' && this._hints.length) {
             if (this._hints.includes('identity')) {
                 secrets.push({
                     label: _('Username'),
@@ -370,11 +370,11 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             wirelessSetting = this._connection.get_setting_wireless();
             ssid = NM.utils_ssid_to_utf8(wirelessSetting.get_ssid().get_data());
             content.title = _('Authentication required');
-            content.message = _("Passwords or encryption keys are required to access the wireless network “%s”.").format(ssid);
+            content.message = _('Passwords or encryption keys are required to access the wireless network “%s”.').format(ssid);
             this._getWirelessSecrets(content.secrets, wirelessSetting);
             break;
         case '802-3-ethernet':
-            content.title = _("Wired 802.1X authentication");
+            content.title = _('Wired 802.1X authentication');
             content.message = null;
             content.secrets.push({
                 label: _('Network name'),
@@ -385,15 +385,15 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             this._get8021xSecrets(content.secrets);
             break;
         case 'pppoe':
-            content.title = _("DSL authentication");
+            content.title = _('DSL authentication');
             content.message = null;
             this._getPPPoESecrets(content.secrets);
             break;
         case 'gsm':
             if (this._hints.includes('pin')) {
                 let gsmSetting = this._connection.get_setting_gsm();
-                content.title = _("PIN code required");
-                content.message = _("PIN code is needed for the mobile broadband device");
+                content.title = _('PIN code required');
+                content.message = _('PIN code is needed for the mobile broadband device');
                 content.secrets.push({
                     label: _('PIN'),
                     key: 'pin',
@@ -406,7 +406,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         case 'cdma':
         case 'bluetooth':
             content.title = _('Authentication required');
-            content.message = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
+            content.message = _('A password is required to connect to “%s”.').format(connectionSetting.get_id());
             this._getMobileSecrets(content.secrets, connectionType);
             break;
         default:
@@ -739,7 +739,7 @@ class NetworkAgent {
     }
 
     _showNotification(requestId, connection, settingName, hints, flags) {
-        let source = new MessageTray.Source(_("Network Manager"), 'network-transmit-receive');
+        let source = new MessageTray.Source(_('Network Manager'), 'network-transmit-receive');
         source.policy = new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
 
         let title, body;
@@ -751,32 +751,32 @@ class NetworkAgent {
             let wirelessSetting = connection.get_setting_wireless();
             let ssid = NM.utils_ssid_to_utf8(wirelessSetting.get_ssid().get_data());
             title = _('Authentication required');
-            body = _("Passwords or encryption keys are required to access the wireless network “%s”.").format(ssid);
+            body = _('Passwords or encryption keys are required to access the wireless network “%s”.').format(ssid);
             break;
         }
         case '802-3-ethernet':
-            title = _("Wired 802.1X authentication");
+            title = _('Wired 802.1X authentication');
             body = _('A password is required to connect to “%s”.').format(connection.get_id());
             break;
         case 'pppoe':
-            title = _("DSL authentication");
+            title = _('DSL authentication');
             body = _('A password is required to connect to “%s”.').format(connection.get_id());
             break;
         case 'gsm':
             if (hints.includes('pin')) {
-                title = _("PIN code required");
-                body = _("PIN code is needed for the mobile broadband device");
+                title = _('PIN code required');
+                body = _('PIN code is needed for the mobile broadband device');
                 break;
             }
             // fall through
         case 'cdma':
         case 'bluetooth':
             title = _('Authentication required');
-            body = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
+            body = _('A password is required to connect to “%s”.').format(connectionSetting.get_id());
             break;
         case 'vpn':
-            title = _("VPN password");
-            body = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
+            title = _('VPN password');
+            body = _('A password is required to connect to “%s”.').format(connectionSetting.get_id());
             break;
         default:
             log(`Invalid connection type: ${connectionType}`);

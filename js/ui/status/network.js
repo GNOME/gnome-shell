@@ -58,7 +58,7 @@ function signalToIcon(value) {
 function ssidToLabel(ssid) {
     let label = NM.utils_ssid_to_utf8(ssid.get_data());
     if (!label)
-        label = _("<unknown>");
+        label = _('<unknown>');
     return label;
 }
 

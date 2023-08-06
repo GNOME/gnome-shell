@@ -73,7 +73,7 @@ class OverviewActor extends St.BoxLayout {
             name: 'overview',
             /* Translators: This is the main view to select
                 activities. See also note for "Activities" string. */
-            accessible_name: _("Overview"),
+            accessible_name: _('Overview'),
             vertical: true,
         });
 

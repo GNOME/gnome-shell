@@ -37,7 +37,7 @@ function sameDay(dateA, dateB) {
 
 function _isWorkDay(date) {
     /* Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
-    let days = C_('calendar-no-work', "06");
+    let days = C_('calendar-no-work', '06');
     return !days.includes(date.getDay().toString());
 }
 
@@ -63,19 +63,19 @@ function _getCalendarDayAbbreviation(dayNumber) {
          * NOTE: These grid abbreviations are always shown together
          * and in order, e.g. "S M T W T F S".
          */
-        NC_("grid sunday", "S"),
+        NC_('grid sunday', 'S'),
         /* Translators: Calendar grid abbreviation for Monday */
-        NC_("grid monday", "M"),
+        NC_('grid monday', 'M'),
         /* Translators: Calendar grid abbreviation for Tuesday */
-        NC_("grid tuesday", "T"),
+        NC_('grid tuesday', 'T'),
         /* Translators: Calendar grid abbreviation for Wednesday */
-        NC_("grid wednesday", "W"),
+        NC_('grid wednesday', 'W'),
         /* Translators: Calendar grid abbreviation for Thursday */
-        NC_("grid thursday", "T"),
+        NC_('grid thursday', 'T'),
         /* Translators: Calendar grid abbreviation for Friday */
-        NC_("grid friday", "F"),
+        NC_('grid friday', 'F'),
         /* Translators: Calendar grid abbreviation for Saturday */
-        NC_("grid saturday", "S"),
+        NC_('grid saturday', 'S'),
     ];
     return Shell.util_translate_time_string(abbreviations[dayNumber]);
 }
@@ -725,7 +725,7 @@ export const Calendar = GObject.registerClass({
                     style_class: 'calendar-week-number',
                     can_focus: true,
                 });
-                let weekFormat = Shell.util_translate_time_string(N_("Week %V"));
+                let weekFormat = Shell.util_translate_time_string(N_('Week %V'));
                 label.clutter_text.y_align = Clutter.ActorAlign.CENTER;
                 label.accessible_name = formatDateWithCFormatString(iter, weekFormat);
                 layout.attach(label, rtl ? 7 : 0, row, 1, 1);

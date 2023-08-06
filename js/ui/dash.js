@@ -75,7 +75,7 @@ class DashItemContainer extends St.Widget {
             x_align: Clutter.ActorAlign.CENTER,
         });
 
-        this._labelText = "";
+        this._labelText = '';
         this.label = new St.Label({ style_class: 'dash-label' });
         this.label.hide();
         Main.layoutManager.addChrome(this.label);
@@ -405,7 +405,7 @@ export const Dash = GObject.registerClass({
 
         // Translators: this is the name of the dock/favorites area on
         // the left of the overview
-        Main.ctrlAltTabManager.addGroup(this, _("Dash"), 'user-bookmarks-symbolic');
+        Main.ctrlAltTabManager.addGroup(this, _('Dash'), 'user-bookmarks-symbolic');
     }
 
     _onItemDragBegin() {

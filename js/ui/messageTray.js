@@ -1421,7 +1421,7 @@ export const MessageTray = GObject.registerClass({
 export const SystemNotificationSource = GObject.registerClass(
 class SystemNotificationSource extends Source {
     _init() {
-        super._init(_("System Information"), 'dialog-information-symbolic');
+        super._init(_('System Information'), 'dialog-information-symbolic');
     }
 
     open() {

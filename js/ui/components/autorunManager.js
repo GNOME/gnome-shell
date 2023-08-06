@@ -57,7 +57,7 @@ function isMountNonLocal(mount) {
     if (volume == null)
         return true;
 
-    return volume.get_identifier("class") == "network";
+    return volume.get_identifier('class') == 'network';
 }
 
 function startAppForMount(app, mount) {
@@ -316,7 +316,7 @@ class AutorunNotification extends MessageTray.Notification {
 
         let label = new St.Bin({
             child: new St.Label({
-                text: _("Open with %s").format(app.get_name()),
+                text: _('Open with %s').format(app.get_name()),
                 y_align: Clutter.ActorAlign.CENTER,
             }),
         });

@@ -276,13 +276,13 @@ export const BroadbandModem = GObject.registerClass({
     }
 
     _reloadOperatorName() {
-        let newName = "";
+        let newName = '';
         if (this.operator_name_3gpp && this.operator_name_3gpp.length > 0)
             newName += this.operator_name_3gpp;
 
         if (this.operator_name_cdma && this.operator_name_cdma.length > 0) {
-            if (newName != "")
-                newName += ", ";
+            if (newName != '')
+                newName += ', ';
             newName += this.operator_name_cdma;
         }
 

@@ -88,7 +88,7 @@ const SystemActions = GObject.registerClass({
         this._actions = new Map();
         this._actions.set(POWER_OFF_ACTION_ID, {
             // Translators: The name of the power-off action in search
-            name: C_("search-result", "Power Off"),
+            name: C_('search-result', 'Power Off'),
             iconName: 'system-shutdown-symbolic',
             // Translators: A list of keywords that match the power-off action, separated by semicolons
             keywords: tokenizeKeywords(_('power off;poweroff;shutdown;halt;stop')),
@@ -104,7 +104,7 @@ const SystemActions = GObject.registerClass({
         });
         this._actions.set(LOCK_SCREEN_ACTION_ID, {
             // Translators: The name of the lock screen action in search
-            name: C_("search-result", "Lock Screen"),
+            name: C_('search-result', 'Lock Screen'),
             iconName: 'system-lock-screen-symbolic',
             // Translators: A list of keywords that match the lock screen action, separated by semicolons
             keywords: tokenizeKeywords(_('lock screen')),
@@ -112,7 +112,7 @@ const SystemActions = GObject.registerClass({
         });
         this._actions.set(LOGOUT_ACTION_ID, {
             // Translators: The name of the logout action in search
-            name: C_("search-result", "Log Out"),
+            name: C_('search-result', 'Log Out'),
             iconName: 'system-log-out-symbolic',
             // Translators: A list of keywords that match the logout action, separated by semicolons
             keywords: tokenizeKeywords(_('logout;log out;sign off')),
@@ -120,7 +120,7 @@ const SystemActions = GObject.registerClass({
         });
         this._actions.set(SUSPEND_ACTION_ID, {
             // Translators: The name of the suspend action in search
-            name: C_("search-result", "Suspend"),
+            name: C_('search-result', 'Suspend'),
             iconName: 'media-playback-pause-symbolic',
             // Translators: A list of keywords that match the suspend action, separated by semicolons
             keywords: tokenizeKeywords(_('suspend;sleep')),
@@ -128,7 +128,7 @@ const SystemActions = GObject.registerClass({
         });
         this._actions.set(SWITCH_USER_ACTION_ID, {
             // Translators: The name of the switch user action in search
-            name: C_("search-result", "Switch User"),
+            name: C_('search-result', 'Switch User'),
             iconName: 'system-switch-user-symbolic',
             // Translators: A list of keywords that match the switch user action, separated by semicolons
             keywords: tokenizeKeywords(_('switch user')),

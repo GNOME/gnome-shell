@@ -50,7 +50,7 @@ export class WindowMenu extends PopupMenu.PopupMenu {
                 window.unmaximize(Meta.MaximizeFlags.BOTH);
             });
         } else {
-            item = this.addAction(_("Maximize"), () => {
+            item = this.addAction(_('Maximize'), () => {
                 window.maximize(Meta.MaximizeFlags.BOTH);
             });
         }
@@ -96,12 +96,12 @@ export class WindowMenu extends PopupMenu.PopupMenu {
             item.setSensitive(false);
 
         if (!window.titlebar_is_onscreen() && type != Meta.WindowType.DOCK && type != Meta.WindowType.DESKTOP) {
-            this.addAction(_("Move Titlebar Onscreen"), () => {
+            this.addAction(_('Move Titlebar Onscreen'), () => {
                 window.shove_titlebar_onscreen();
             });
         }
 
-        item = this.addAction(_("Always on Top"), () => {
+        item = this.addAction(_('Always on Top'), () => {
             if (window.is_above())
                 window.unmake_above();
             else
@@ -120,7 +120,7 @@ export class WindowMenu extends PopupMenu.PopupMenu {
              window.is_on_primary_monitor())) {
             let isSticky = window.is_on_all_workspaces();
 
-            item = this.addAction(_("Always on Visible Workspace"), () => {
+            item = this.addAction(_('Always on Visible Workspace'), () => {
                 if (isSticky)
                     window.unstick();
                 else
@@ -134,25 +134,25 @@ export class WindowMenu extends PopupMenu.PopupMenu {
             if (!isSticky) {
                 let workspace = window.get_workspace();
                 if (workspace != workspace.get_neighbor(Meta.MotionDirection.LEFT)) {
-                    this.addAction(_("Move to Workspace Left"), () => {
+                    this.addAction(_('Move to Workspace Left'), () => {
                         let dir = Meta.MotionDirection.LEFT;
                         window.change_workspace(workspace.get_neighbor(dir));
                     });
                 }
                 if (workspace != workspace.get_neighbor(Meta.MotionDirection.RIGHT)) {
-                    this.addAction(_("Move to Workspace Right"), () => {
+                    this.addAction(_('Move to Workspace Right'), () => {
                         let dir = Meta.MotionDirection.RIGHT;
                         window.change_workspace(workspace.get_neighbor(dir));
                     });
                 }
                 if (workspace != workspace.get_neighbor(Meta.MotionDirection.UP)) {
-                    this.addAction(_("Move to Workspace Up"), () => {
+                    this.addAction(_('Move to Workspace Up'), () => {
                         let dir = Meta.MotionDirection.UP;
                         window.change_workspace(workspace.get_neighbor(dir));
                     });
                 }
                 if (workspace != workspace.get_neighbor(Meta.MotionDirection.DOWN)) {
-                    this.addAction(_("Move to Workspace Down"), () => {
+                    this.addAction(_('Move to Workspace Down'), () => {
                         let dir = Meta.MotionDirection.DOWN;
                         window.change_workspace(workspace.get_neighbor(dir));
                     });
@@ -170,7 +170,7 @@ export class WindowMenu extends PopupMenu.PopupMenu {
             let upMonitorIndex =
                 display.get_monitor_neighbor_index(monitorIndex, dir);
             if (upMonitorIndex != -1) {
-                this.addAction(_("Move to Monitor Up"), () => {
+                this.addAction(_('Move to Monitor Up'), () => {
                     window.move_to_monitor(upMonitorIndex);
                 });
             }
@@ -179,7 +179,7 @@ export class WindowMenu extends PopupMenu.PopupMenu {
             let downMonitorIndex =
                 display.get_monitor_neighbor_index(monitorIndex, dir);
             if (downMonitorIndex != -1) {
-                this.addAction(_("Move to Monitor Down"), () => {
+                this.addAction(_('Move to Monitor Down'), () => {
                     window.move_to_monitor(downMonitorIndex);
                 });
             }
@@ -188,7 +188,7 @@ export class WindowMenu extends PopupMenu.PopupMenu {
             let leftMonitorIndex =
                 display.get_monitor_neighbor_index(monitorIndex, dir);
             if (leftMonitorIndex != -1) {
-                this.addAction(_("Move to Monitor Left"), () => {
+                this.addAction(_('Move to Monitor Left'), () => {
                     window.move_to_monitor(leftMonitorIndex);
                 });
             }
@@ -197,7 +197,7 @@ export class WindowMenu extends PopupMenu.PopupMenu {
             let rightMonitorIndex =
                 display.get_monitor_neighbor_index(monitorIndex, dir);
             if (rightMonitorIndex != -1) {
-                this.addAction(_("Move to Monitor Right"), () => {
+                this.addAction(_('Move to Monitor Right'), () => {
                     window.move_to_monitor(rightMonitorIndex);
                 });
             }
@@ -205,7 +205,7 @@ export class WindowMenu extends PopupMenu.PopupMenu {
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        item = this.addAction(_("Close"), event => {
+        item = this.addAction(_('Close'), event => {
             window.delete(event.get_time());
         });
         if (!window.can_close())

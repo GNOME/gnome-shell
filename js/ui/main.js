@@ -337,7 +337,7 @@ async function _initializeUI() {
         LoginManager.registerSessionWithGDM();
 
         if (perfModule) {
-            let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
+            let perfOutput = GLib.getenv('SHELL_PERF_OUTPUT');
             Scripting.runPerfScript(perfModule, perfOutput);
         }
     });

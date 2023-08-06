@@ -81,7 +81,7 @@ class AutomountManager {
 
         let player = global.display.get_sound_player();
         player.play_from_theme('device-added-media',
-                               _("External drive connected"),
+                               _('External drive connected'),
                                null);
     }
 
@@ -93,7 +93,7 @@ class AutomountManager {
 
         let player = global.display.get_sound_player();
         player.play_from_theme('device-removed-media',
-                               _("External drive disconnected"),
+                               _('External drive disconnected'),
                                null);
     }
 
@@ -204,8 +204,8 @@ class AutomountManager {
                 this._reaskPassword(volume);
             } else {
                 if (e.message.includes('Compiled against a version of libcryptsetup that does not support the VeraCrypt PIM setting')) {
-                    Main.notifyError(_("Unable to unlock volume"),
-                        _("The installed udisks version does not support the PIM setting"));
+                    Main.notifyError(_('Unable to unlock volume'),
+                        _('The installed udisks version does not support the PIM setting'));
                 }
 
                 if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED_HANDLED))

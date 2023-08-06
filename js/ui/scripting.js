@@ -174,7 +174,7 @@ export async function disableHelperAutoExit() {
 export function defineScriptEvent(name, description) {
     Shell.PerfLog.get_default().define_event(`script.${name}`,
                                              description,
-                                             "");
+                                             '');
 }
 
 /**
@@ -222,7 +222,7 @@ function _collect(scriptModule, outputFile) {
                             Gio.FileCreateFlags.NONE,
                             null);
         let out = Gio.BufferedOutputStream.new_sized(raw, 4096);
-        Shell.write_string_to_stream(out, "{\n");
+        Shell.write_string_to_stream(out, '{\n');
 
         Shell.write_string_to_stream(out, '"events":\n');
         Shell.PerfLog.get_default().dump_events(out);

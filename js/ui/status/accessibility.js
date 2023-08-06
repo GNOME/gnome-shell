@@ -33,7 +33,7 @@ const KEY_HIGH_CONTRAST             = 'high-contrast';
 export const ATIndicator = GObject.registerClass(
 class ATIndicator extends PanelMenu.Button {
     _init() {
-        super._init(0.5, _("Accessibility"));
+        super._init(0.5, _('Accessibility'));
 
         this.add_child(new St.Icon({
             style_class: 'system-status-icon',
@@ -46,31 +46,31 @@ class ATIndicator extends PanelMenu.Button {
         let highContrast = this._buildItem(_('High Contrast'), A11Y_INTERFACE_SCHEMA, KEY_HIGH_CONTRAST);
         this.menu.addMenuItem(highContrast);
 
-        let magnifier = this._buildItem(_("Zoom"), APPLICATIONS_SCHEMA,
+        let magnifier = this._buildItem(_('Zoom'), APPLICATIONS_SCHEMA,
                                         'screen-magnifier-enabled');
         this.menu.addMenuItem(magnifier);
 
         let textZoom = this._buildFontItem();
         this.menu.addMenuItem(textZoom);
 
-        let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
+        let screenReader = this._buildItem(_('Screen Reader'), APPLICATIONS_SCHEMA,
                                            'screen-reader-enabled');
         this.menu.addMenuItem(screenReader);
 
-        let screenKeyboard = this._buildItem(_("Screen Keyboard"), APPLICATIONS_SCHEMA,
+        let screenKeyboard = this._buildItem(_('Screen Keyboard'), APPLICATIONS_SCHEMA,
                                              'screen-keyboard-enabled');
         this.menu.addMenuItem(screenKeyboard);
 
-        let visualBell = this._buildItem(_("Visual Alerts"), WM_SCHEMA, KEY_VISUAL_BELL);
+        let visualBell = this._buildItem(_('Visual Alerts'), WM_SCHEMA, KEY_VISUAL_BELL);
         this.menu.addMenuItem(visualBell);
 
-        let stickyKeys = this._buildItem(_("Sticky Keys"), A11Y_KEYBOARD_SCHEMA, KEY_STICKY_KEYS_ENABLED);
+        let stickyKeys = this._buildItem(_('Sticky Keys'), A11Y_KEYBOARD_SCHEMA, KEY_STICKY_KEYS_ENABLED);
         this.menu.addMenuItem(stickyKeys);
 
-        let slowKeys = this._buildItem(_("Slow Keys"), A11Y_KEYBOARD_SCHEMA, KEY_SLOW_KEYS_ENABLED);
+        let slowKeys = this._buildItem(_('Slow Keys'), A11Y_KEYBOARD_SCHEMA, KEY_SLOW_KEYS_ENABLED);
         this.menu.addMenuItem(slowKeys);
 
-        let bounceKeys = this._buildItem(_("Bounce Keys"), A11Y_KEYBOARD_SCHEMA, KEY_BOUNCE_KEYS_ENABLED);
+        let bounceKeys = this._buildItem(_('Bounce Keys'), A11Y_KEYBOARD_SCHEMA, KEY_BOUNCE_KEYS_ENABLED);
         this.menu.addMenuItem(bounceKeys);
 
         let mouseKeys = this._buildItem(_('Mouse Keys'), A11Y_KEYBOARD_SCHEMA, KEY_MOUSE_KEYS_ENABLED);
@@ -134,7 +134,7 @@ class ATIndicator extends PanelMenu.Button {
         let settings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
         let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
         let initialSetting = factor > 1.0;
-        let widget = this._buildItemExtended(_("Large Text"),
+        let widget = this._buildItemExtended(_('Large Text'),
             initialSetting,
             settings.is_writable(KEY_TEXT_SCALING_FACTOR),
             enabled => {

@@ -71,7 +71,7 @@ const AppMenuButton = GObject.registerClass({
         let bin = new St.Bin({ name: 'appMenu' });
         this.add_actor(bin);
 
-        this.bind_property("reactive", this, "can-focus", 0);
+        this.bind_property('reactive', this, 'can-focus', 0);
         this.reactive = false;
 
         this._container = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
@@ -496,7 +496,7 @@ class Panel extends St.Widget {
         });
 
         Main.layoutManager.panelBox.add(this);
-        Main.ctrlAltTabManager.addGroup(this, _("Top Bar"), 'focus-top-bar-symbolic',
+        Main.ctrlAltTabManager.addGroup(this, _('Top Bar'), 'focus-top-bar-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
 
         Main.sessionMode.connect('updated', this._updatePanel.bind(this));

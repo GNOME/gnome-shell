@@ -784,17 +784,17 @@ const Extensions = GObject.registerClass({
                     errorDisplay.add(new St.Label({ text: errors[i] }));
             } else {
                 /* Translators: argument is an extension UUID. */
-                let message = _("%s has not emitted any errors.").format(extension.uuid);
+                let message = _('%s has not emitted any errors.').format(extension.uuid);
                 errorDisplay.add(new St.Label({ text: message }));
             }
 
             actor._errorDisplay = errorDisplay;
             actor._parentBox.add(errorDisplay);
-            actor.label = _("Hide Errors");
+            actor.label = _('Hide Errors');
         } else {
             actor._errorDisplay.destroy();
             actor._errorDisplay = null;
-            actor.label = _("Show Errors");
+            actor.label = _('Show Errors');
         }
 
         actor._isShowing = shouldShow;

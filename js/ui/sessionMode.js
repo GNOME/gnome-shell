@@ -172,7 +172,7 @@ export class SessionMode extends Signals.EventEmitter {
 
     popMode(mode) {
         if (this.currentMode != mode || this._modeStack.length === 1)
-            throw new Error("Invalid SessionMode.popMode");
+            throw new Error('Invalid SessionMode.popMode');
 
         console.debug(`sessionMode: Popping mode ${mode}`);
         this._modeStack.pop();

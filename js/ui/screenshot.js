@@ -2462,7 +2462,7 @@ export class ScreenshotService {
         if (!this._checkArea(x, y, width, height)) {
             invocation.return_error_literal(Gio.IOErrorEnum,
                                             Gio.IOErrorEnum.CANCELLED,
-                                            "Invalid params");
+                                            'Invalid params');
             return;
         }
         let screenshot = await this._createScreenshot(invocation);
@@ -2567,7 +2567,7 @@ export class ScreenshotService {
         if (!this._checkArea(x, y, width, height)) {
             invocation.return_error_literal(Gio.IOErrorEnum,
                                             Gio.IOErrorEnum.CANCELLED,
-                                            "Invalid params");
+                                            'Invalid params');
             return;
         }
         let flashspot = new Flashspot({ x, y, width, height });

@@ -20,12 +20,12 @@ export class EntryMenu extends PopupMenu.PopupMenu {
 
         // Populate menu
         let item;
-        item = new PopupMenu.PopupMenuItem(_("Copy"));
+        item = new PopupMenu.PopupMenuItem(_('Copy'));
         item.connect('activate', this._onCopyActivated.bind(this));
         this.addMenuItem(item);
         this._copyItem = item;
 
-        item = new PopupMenu.PopupMenuItem(_("Paste"));
+        item = new PopupMenu.PopupMenuItem(_('Paste'));
         item.connect('activate', this._onPasteActivated.bind(this));
         this.addMenuItem(item);
         this._pasteItem = item;
@@ -77,9 +77,9 @@ export class EntryMenu extends PopupMenu.PopupMenu {
 
     _updatePasswordItem() {
         if (!this._entry.password_visible)
-            this._passwordItem.label.set_text(_("Show Text"));
+            this._passwordItem.label.set_text(_('Show Text'));
         else
-            this._passwordItem.label.set_text(_("Hide Text"));
+            this._passwordItem.label.set_text(_('Hide Text'));
     }
 
     _onCopyActivated() {

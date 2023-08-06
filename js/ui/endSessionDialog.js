@@ -43,8 +43,8 @@ const LOW_BATTERY_THRESHOLD = 30;
 const EndSessionDialogIface = loadInterfaceXML('org.gnome.SessionManager.EndSessionDialog');
 
 const logoutDialogContent = {
-    subjectWithUser: C_("title", "Log Out %s"),
-    subject: C_("title", "Log Out"),
+    subjectWithUser: C_('title', 'Log Out %s'),
+    subject: C_('title', 'Log Out'),
     descriptionWithUser(user, seconds) {
         return ngettext(
             '%s will be logged out automatically in %d second.',
@@ -66,15 +66,15 @@ const logoutDialogContent = {
 };
 
 const shutdownDialogContent = {
-    subject: C_("title", "Power Off"),
-    subjectWithUpdates: C_("title", "Install Updates & Power Off"),
+    subject: C_('title', 'Power Off'),
+    subjectWithUpdates: C_('title', 'Install Updates & Power Off'),
     description(seconds) {
         return ngettext(
             'The system will power off automatically in %d second.',
             'The system will power off automatically in %d seconds.',
             seconds).format(seconds);
     },
-    checkBoxText: C_("checkbox", "Install pending software updates"),
+    checkBoxText: C_('checkbox', 'Install pending software updates'),
     showBatteryWarning: true,
     confirmButtons: [{
         signal: 'ConfirmedShutdown',
@@ -85,7 +85,7 @@ const shutdownDialogContent = {
 };
 
 const restartDialogContent = {
-    subject: C_("title", "Restart"),
+    subject: C_('title', 'Restart'),
     subjectWithUpdates: C_('title', 'Install Updates & Restart'),
     description(seconds) {
         return ngettext(
@@ -105,7 +105,7 @@ const restartDialogContent = {
 
 const restartUpdateDialogContent = {
 
-    subject: C_("title", "Restart & Install Updates"),
+    subject: C_('title', 'Restart & Install Updates'),
     description(seconds) {
         return ngettext(
             'The system will automatically restart and install updates in %d second.',
@@ -117,20 +117,20 @@ const restartUpdateDialogContent = {
         signal: 'ConfirmedReboot',
         label: C_('button', 'Restart &amp; Install'),
     }],
-    unusedFutureButtonForTranslation: C_("button", "Install &amp; Power Off"),
-    unusedFutureCheckBoxForTranslation: C_("checkbox", "Power off after updates are installed"),
+    unusedFutureButtonForTranslation: C_('button', 'Install &amp; Power Off'),
+    unusedFutureCheckBoxForTranslation: C_('checkbox', 'Power off after updates are installed'),
     iconName: 'view-refresh-symbolic',
     showOtherSessions: true,
 };
 
 const restartUpgradeDialogContent = {
 
-    subject: C_("title", "Restart & Install Upgrade"),
+    subject: C_('title', 'Restart & Install Upgrade'),
     upgradeDescription(distroName, distroVersion) {
         /* Translators: This is the text displayed for system upgrades in the
            shut down dialog. First %s gets replaced with the distro name and
            second %s with the distro version to upgrade to */
-        return _("%s %s will be installed after restart. Upgrade installation can take a long time: ensure that you have backed up and that the computer is plugged in.").format(distroName, distroVersion);
+        return _('%s %s will be installed after restart. Upgrade installation can take a long time: ensure that you have backed up and that the computer is plugged in.').format(distroName, distroVersion);
     },
     disableTimer: true,
     showBatteryWarning: false,
@@ -749,7 +749,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         if (!(this._type in DialogContent)) {
             invocation.return_dbus_error('org.gnome.Shell.ModalDialog.TypeError',
-                                         "Unknown dialog type requested");
+                                         'Unknown dialog type requested');
             return;
         }
 
@@ -782,7 +782,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         if (!this.open(timestamp)) {
             invocation.return_dbus_error('org.gnome.Shell.ModalDialog.GrabError',
-                                         "Cannot grab pointer and keyboard");
+                                         'Cannot grab pointer and keyboard');
             return;
         }
 

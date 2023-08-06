@@ -657,7 +657,7 @@ export const MessageListSection = GObject.registerClass({
 
     moveMessage(message, index, animate) {
         if (!this._messages.includes(message))
-            throw new Error(`Impossible to move untracked message`);
+            throw new Error('Impossible to move untracked message');
 
         let listItem = message.get_parent();
 
@@ -688,7 +688,7 @@ export const MessageListSection = GObject.registerClass({
         const messages = this._messages;
 
         if (!messages.includes(message))
-            throw new Error(`Impossible to remove untracked message`);
+            throw new Error('Impossible to remove untracked message');
 
         let listItem = message.get_parent();
         listItem._connectionsIds.forEach(id => message.disconnect(id));

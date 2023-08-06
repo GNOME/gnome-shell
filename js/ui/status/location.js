@@ -279,7 +279,7 @@ class AppAuthorizer {
     _userAuthorizeApp() {
         let name = this._app.get_name();
         let appInfo = this._app.get_app_info();
-        let reason = appInfo.get_locale_string("X-Geoclue-Reason");
+        let reason = appInfo.get_locale_string('X-Geoclue-Reason');
 
         this._dialog =
             new GeolocationDialog(name, reason, this.reqAccuracyLevel);

@@ -31,21 +31,21 @@ class KbdA11yDialog extends GObject.Object {
             key = KEY_SLOW_KEYS_ENABLED;
             enabled = (newFlags & Meta.KeyboardA11yFlags.SLOW_KEYS_ENABLED) > 0;
             title = enabled
-                ? _("Slow Keys Turned On")
-                : _("Slow Keys Turned Off");
+                ? _('Slow Keys Turned On')
+                : _('Slow Keys Turned Off');
             description = _('You just held down the Shift key for 8 seconds. This is the shortcut ' +
                             'for the Slow Keys feature, which affects the way your keyboard works.');
         } else if (whatChanged & Meta.KeyboardA11yFlags.STICKY_KEYS_ENABLED) {
             key = KEY_STICKY_KEYS_ENABLED;
             enabled = (newFlags & Meta.KeyboardA11yFlags.STICKY_KEYS_ENABLED) > 0;
             title = enabled
-                ? _("Sticky Keys Turned On")
-                : _("Sticky Keys Turned Off");
+                ? _('Sticky Keys Turned On')
+                : _('Sticky Keys Turned Off');
             description = enabled
-                ? _("You just pressed the Shift key 5 times in a row. This is the shortcut " +
-                  "for the Sticky Keys feature, which affects the way your keyboard works.")
-                : _("You just pressed two keys at once, or pressed the Shift key 5 times in a row. " +
-                  "This turns off the Sticky Keys feature, which affects the way your keyboard works.");
+                ? _('You just pressed the Shift key 5 times in a row. This is the shortcut ' +
+                  'for the Sticky Keys feature, which affects the way your keyboard works.')
+                : _('You just pressed two keys at once, or pressed the Shift key 5 times in a row. ' +
+                  'This turns off the Sticky Keys feature, which affects the way your keyboard works.');
         } else {
             return;
         }
