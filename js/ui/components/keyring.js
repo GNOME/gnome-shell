@@ -12,7 +12,7 @@ import * as Dialog from '../dialog.js';
 import * as ModalDialog from '../modalDialog.js';
 import * as ShellEntry from '../shellEntry.js';
 import * as CheckBox from '../checkBox.js';
-import {wiggle} from '../misc/animationUtils.js';
+import {wiggle} from '../../misc/animationUtils.js';
 
 const KeyringDialog = GObject.registerClass(
 class KeyringDialog extends ModalDialog.ModalDialog {
