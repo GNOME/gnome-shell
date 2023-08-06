@@ -15,7 +15,7 @@ import * as Main from '../main.js';
 import * as ModalDialog from '../modalDialog.js';
 import * as ShellEntry from '../shellEntry.js';
 import * as UserWidget from '../userWidget.js';
-import {wiggle} from '../misc/animationUtils.js';
+import {wiggle} from '../../misc/animationUtils.js';
 
 /** @enum {number} */
 const DialogMode = {
