@@ -4,7 +4,7 @@ import GObject from 'gi://GObject';
 
 import {bindtextdomain} from 'gettext';
 
-const Config = imports.misc.config;
+import * as Config from '../misc/config.js';
 
 export class ExtensionBase {
     #gettextDomain;

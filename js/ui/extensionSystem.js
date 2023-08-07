@@ -7,13 +7,12 @@ import St from 'gi://St';
 import Shell from 'gi://Shell';
 import * as Signals from '../misc/signals.js';
 
+import * as Config from '../misc/config.js';
 import * as ExtensionDownloader from './extensionDownloader.js';
 import {ExtensionState, ExtensionType} from '../misc/extensionUtils.js';
 import * as FileUtils from '../misc/fileUtils.js';
 import * as Main from './main.js';
 import * as MessageTray from './messageTray.js';
-
-const Config = imports.misc.config;
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
 const DISABLED_EXTENSIONS_KEY = 'disabled-extensions';

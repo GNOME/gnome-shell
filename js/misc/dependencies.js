@@ -26,7 +26,7 @@ import 'gi://Rsvg?version=2.0';
 import 'gi://Soup?version=3.0';
 import 'gi://UPowerGlib?version=1.0';
 
-const Config = imports.misc.config;
+import * as Config from './config.js';
 
 // Meta-related dependencies use a shared version
 // from the compile-time config.

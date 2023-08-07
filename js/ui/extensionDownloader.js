@@ -6,7 +6,7 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Soup from 'gi://Soup';
 
-const Config = imports.misc.config;
+import * as Config from '../misc/config.js';
 import * as Dialog from './dialog.js';
 import * as ExtensionUtils from '../misc/extensionUtils.js';
 import * as FileUtils from '../misc/fileUtils.js';

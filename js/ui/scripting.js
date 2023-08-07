@@ -5,7 +5,7 @@ import GLib from 'gi://GLib';
 import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
 
-const Config = imports.misc.config;
+import * as Config from '../misc/config.js';
 import * as Main from './main.js';
 import * as Params from '../misc/params.js';
 import * as Util from '../misc/util.js';

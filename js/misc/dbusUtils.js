@@ -1,7 +1,7 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
-const Config = imports.misc.config;
+import * as Config from './config.js';
 
 let _ifaceResource = null;
 

@@ -9,7 +9,7 @@ import * as Params from '../misc/params.js';
 import {LoginDialog}  from '../gdm/loginDialog.js';
 import {UnlockDialog} from '../ui/unlockDialog.js';
 
-const Config = imports.misc.config;
+import * as Config from '../misc/config.js';
 
 const DEFAULT_MODE = 'restrictive';
 

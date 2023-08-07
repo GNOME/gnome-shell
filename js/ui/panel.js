@@ -10,7 +10,7 @@ import St from 'gi://St';
 
 import * as Animation from './animation.js';
 import {AppMenu} from './appMenu.js';
-const Config = imports.misc.config;
+import * as Config from '../misc/config.js';
 import * as CtrlAltTab from './ctrlAltTab.js';
 import * as DND from './dnd.js';
 import * as Overview from './overview.js';

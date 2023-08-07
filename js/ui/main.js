@@ -10,6 +10,7 @@ import St from 'gi://St';
 
 import * as AccessDialog from './accessDialog.js';
 import * as AudioDeviceSelection from './audioDeviceSelection.js';
+import * as Config from '../misc/config.js';
 import * as Components from './components.js';
 import * as CtrlAltTab from './ctrlAltTab.js';
 import * as EndSessionDialog from './endSessionDialog.js';
@@ -45,7 +46,6 @@ import * as KbdA11yDialog from './kbdA11yDialog.js';
 import * as LocatePointer from './locatePointer.js';
 import * as PointerA11yTimeout from './pointerA11yTimeout.js';
 import * as ParentalControlsManager from '../misc/parentalControlsManager.js';
-const Config = imports.misc.config;
 import * as Util from '../misc/util.js';
 
 const WELCOME_DIALOG_LAST_SHOWN_VERSION = 'welcome-dialog-last-shown-version';

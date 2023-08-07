@@ -7,7 +7,7 @@ import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
-const Config = imports.misc.config;
+import * as Config from '../misc/config.js';
 import * as Main from './main.js';
 import * as MessageTray from './messageTray.js';
 import * as Params from '../misc/params.js';
