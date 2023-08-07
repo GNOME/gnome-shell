@@ -1,3 +1,34 @@
+45.beta
+=======
+* Load extensions as modules [Florian; !2795]
+* Run "perf" tests as external scripts [Florian; !2812]
+* Remove toLocaleFormat() from date [Evan; !2827]
+* Use Tecla for keyboard layout previews [Carlos; !2834]
+* Fix accessibility of quick settings sliders [Lukáš; !2762]
+* Port to EcmaScript modules [Evan, Florian; !2842, !2822, !1499, !2868]
+* Overhaul ExtensionUtils API for modules [Florian; !2832, !2837, !2838]
+* Add a camera indicator [Robert]
+* Add keyboard backlight quick toggle [Florian; !2820]
+* Hide popup menu ornaments by default [Florian, Sebastian; !2843]
+* Improve light style variant [Sam; !2823]
+* Add InjectionManager convenience API for extensions [Florian; !2809]
+* Use per-direction labels on ring/strip tablet actions [Carlos; !2766]
+* Misc. bug fixes and cleanups [Florian, Robert, Carlos, Daniel, Sebastian,
+  Takao; !2807, !2814, !2831, !2830, !2829, !2835, !2836, !2824, !2841, !2845,
+  !2846, !2850, !2849, !2844, !2854, !2852, !2855, !2856, !2860, !2718, !2861,
+  !2862, !2864, !2668, !2666]
+
+Contributors:
+  Takao Fujiwara, Carlos Garnacho, Sam Hewitt, Sebastian Keller, Robert Mader,
+  Florian Müllner, Lukáš Tyrychtr, Daniel van Vugt, Evan Welsh
+
+Translators:
+  Vasil Pupkin [be], Fabio Tomat [fur], Balázs Úr [hu], Ekaterine Papava [ka],
+  Yuri Chornoivan [uk], Artur So [ru], Danial Behzadi [fa], Ngọc Quân Trần [vi],
+  Yosef Or Boczko [he], Boyuan Yang [zh_CN], Hugo Carvalho [pt],
+  Daniel Rusek [cs], Jiri Grönroos [fi], Florentina Musat [ro],
+  Fran Dieguez [gl], Daniel Mustieles [es]
+
 45.alpha
 ========
 * Improve background apps menu [Florian; !2732, !2790]
