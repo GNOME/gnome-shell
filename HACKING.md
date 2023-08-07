@@ -74,18 +74,18 @@ gobject-introspection or modules added by gjs itself.
 
 The second block of imports should contain only "application imports". These
 are the JS code that is in the gnome-shell codebase,
-e.g. `imports.ui.popupMenu`.
+e.g. `'./popupMenu.js'`.
 
 Each import block should be sorted alphabetically. Don't import modules you
 don't use.
 ```javascript
-    const GLib = imports.gi.GLib;
-    const Gio = imports.gi.Gio;
-    const St = imports.gi.St;
+    import GLib from 'gi://GLib';
+    import Gio from 'gi://Gio';
+    import St from 'gi://St';
 
-    const Main = imports.ui.main;
-    const Params = imports.misc.params;
-    const Util = imports.misc.util;
+    import * as Main from './main.js';
+    import * as Params from '../misc/params.js';
+    import * as Util from '../misc/util.js';
 ```
 The alphabetical ordering should be done independently of the location of the
 location. Never reference `imports` in actual code.
@@ -259,7 +259,7 @@ notation.
 A more realistic example would be connecting to a signal on a method of a
 prototype:
 ```javascript
-    const FnorbLib = imports.fborbLib;
+    import * as FnorbLib from './fborbLib.js';
 
     export class MyClass {
         constructor() {
