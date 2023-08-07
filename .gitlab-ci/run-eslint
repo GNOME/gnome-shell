@@ -1,85 +1,11 @@
 #!/usr/bin/env node
 
-const { ESLint } = require('eslint');
+const {ESLint} = require('eslint');
 
 console.log(`Running ESLint version ${ESLint.version}...`);
 
 const fs = require('fs');
 const path = require('path');
-const { spawn } = require('child_process');
-
-function createConfig(config) {
-    const options = {
-        cache: true,
-        cacheLocation: `.eslintcache-${config}`,
-    };
-
-    if (config === 'legacy')
-        options.overrideConfigFile='lint/eslintrc-legacy.yml';
-
-    return new ESLint(options);
-}
-
-function git(...args) {
-    const git = spawn('git', args, { stdio: ['ignore', null, 'ignore'] });
-    git.stdout.setEncoding('utf8');
-
-    return new Promise(resolve => {
-        let out = '';
-        git.stdout.on('data', chunk => out += chunk);
-        git.stdout.on('end', () => resolve(out.trim()));
-    });
-}
-
-function createCommon(report1, report2, ignoreColumn=false) {
-    return report1.map(result => {
-        const { filePath, messages } = result;
-        const match =
-            report2.find(r => r.filePath === filePath) || { messages: [] };
-
-        const filteredMessages = messages.filter(
-            msg => match.messages.some(
-                m => m.line === msg.line && (ignoreColumn || m.column === msg.column)));
-
-        const [errorCount, warningCount] = filteredMessages.reduce(
-            ([e, w], msg) => {
-                return [
-                    e + Number(msg.severity === 2),
-                    w + Number(msg.severity === 1)];
-            }, [0, 0]);
-
-        return {
-            filePath,
-            messages: filteredMessages,
-            errorCount,
-            warningCount,
-        };
-    });
-}
-
-async function getMergeRequestChanges(remote, branch) {
-    await git('fetch', remote, branch);
-    const branchPoint = await git('merge-base', 'HEAD', 'FETCH_HEAD');
-    const diff = await git('diff', '-U0', `${branchPoint}...HEAD`);
-
-    const report = [];
-    let messages = null;
-    for (const line of diff.split('\n')) {
-        if (line.startsWith('+++ b/')) {
-            const filePath = path.resolve(line.substring(6));
-            messages = filePath.endsWith('.js') ? [] : null;
-            if (messages)
-                report.push({ filePath, messages });
-        } else if (messages && line.startsWith('@@ ')) {
-            [, , changes] = line.split(' ');
-            [start, count] = `${changes},1`.split(',').map(i => parseInt(i));
-            for (let i = start; i < start + count; i++)
-                messages.push({ line: i });
-        }
-    }
-
-    return report;
-}
 
 function hasOption(...names) {
     return process.argv.some(arg => names.includes(arg));
@@ -102,38 +28,26 @@ function getOption(...names) {
     const sourceDir = path.dirname(process.argv[1]);
     process.chdir(path.resolve(sourceDir, '..'));
 
-    const remote = getOption('--remote') || 'origin';
-    const branch = getOption('--branch', '-b');
-
     const sources = ['js', 'subprojects/extensions-app/js', 'tests'];
-    const regular = createConfig('regular');
+    const eslint = new ESLint({cache: true});
 
-    const ops = [];
-    ops.push(regular.lintFiles(sources));
-    if (branch)
-        ops.push(getMergeRequestChanges(remote, branch));
-    else
-        ops.push(createConfig('legacy').lintFiles(sources));
-
-    const results = await Promise.all(ops);
-    const commonResults = createCommon(...results, branch !== undefined);
-
-    const formatter = await regular.loadFormatter(getOption('--format', '-f'));
-    const resultText = formatter.format(commonResults);
+    const results = await eslint.lintFiles(sources);
+    const formatter = await eslint.loadFormatter(getOption('--format', '-f'));
+    const resultText = formatter.format(results);
 
     if (outputPath) {
         fs.mkdirSync(path.dirname(outputPath), { recursive: true });
         fs.writeFileSync(outputPath, resultText);
 
         if (hasOption('--stdout')) {
-            const consoleFormatter = await regular.loadFormatter();
-            console.log(consoleFormatter.format(commonResults));
+            const consoleFormatter = await eslint.loadFormatter();
+            console.log(consoleFormatter.format(results));
         }
     } else {
         console.log(resultText);
     }
 
-    process.exitCode = commonResults.some(r => r.errorCount > 0) ? 1 : 0;
+    process.exitCode = results.some(r => r.errorCount > 0) ? 1 : 0;
 })().catch((error) => {
     process.exitCode = 1;
     console.error(error);
