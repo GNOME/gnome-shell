@@ -148,23 +148,6 @@ eslint:
       junit: ${LINT_LOG}
     when: always
 
-eslint_mr:
-  extends:
-    - .fdo.distribution-image@fedora
-    - .gnome-shell.fedora
-  stage: review
-  script:
-    - export NODE_PATH=$(npm root -g)
-    - ./.gitlab-ci/run-eslint --output-file ${LINT_MR_LOG} --format junit --stdout
-      --remote ${CI_MERGE_REQUEST_PROJECT_URL}.git
-      --branch ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
-  only:
-    - merge_requests
-  artifacts:
-    reports:
-      junit: ${LINT_MR_LOG}
-    when: always
-
 potfile_c_check:
   extends:
     - .fdo.distribution-image@fedora
