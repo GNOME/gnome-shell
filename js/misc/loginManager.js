@@ -74,8 +74,8 @@ export async function registerSessionWithGDM() {
 let _loginManager = null;
 
 /**
- * getLoginManager:
  * An abstraction over systemd/logind and ConsoleKit.
+ *
  * @returns {LoginManagerSystemd | LoginManagerDummy} - the LoginManager singleton
  */
 export function getLoginManager() {

@@ -692,15 +692,14 @@ const ChatNotification = HAVE_TP ? GObject.registerClass({
     }
 
     /**
-     * appendMessage:
-     * @param {Object} message: An object with the properties
-     *   {string} message.text: the body of the message,
-     *   {Tp.ChannelTextMessageType} message.messageType: the type
-     *   {string} message.sender: the name of the sender,
-     *   {number} message.timestamp: the time the message was sent
-     *   {NotificationDirection} message.direction: a #NotificationDirection
+     * @param {object} message - An object with the properties
+     *   {string} message.text - the body of the message,
+     *   {Tp.ChannelTextMessageType} message.messageType - the type
+     *   {string} message.sender - the name of the sender,
+     *   {number} message.timestamp - the time the message was sent
+     *   {NotificationDirection} message.direction - a #NotificationDirection
      *
-     * @param {bool} noTimestamp: Whether to add a timestamp. If %true,
+     * @param {bool} noTimestamp - Whether to add a timestamp. If %true,
      *   no timestamp will be added, regardless of the difference since
      *   the last timestamp
      */
@@ -759,14 +758,13 @@ const ChatNotification = HAVE_TP ? GObject.registerClass({
     }
 
     /**
-     * _append:
-     * @param {Object} props: An object with the properties:
-     *  {string} props.body: The text of the message.
-     *  {string} props.group: The group of the message, one of:
+     * @param {object} props - An object with the properties:
+     *  {string} props.body - The text of the message.
+     *  {string} props.group - The group of the message, one of:
      *         'received', 'sent', 'meta'.
-     *  {string[]} props.styles: Style class names for the message to have.
-     *  {number} props.timestamp: The timestamp of the message.
-     *  {bool} props.noTimestamp: suppress timestamp signal?
+     *  {string[]} props.styles - Style class names for the message to have.
+     *  {number} props.timestamp - The timestamp of the message.
+     *  {bool} props.noTimestamp - suppress timestamp signal?
      */
     _append(props) {
         let currentTime = Date.now() / 1000;

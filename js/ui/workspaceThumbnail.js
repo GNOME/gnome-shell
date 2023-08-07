@@ -223,9 +223,6 @@ const ThumbnailState = {
     DESTROYED:      9,
 };
 
-/**
- * @metaWorkspace: a #Meta.Workspace
- */
 export const WorkspaceThumbnail = GObject.registerClass({
     Properties: {
         'collapse-fraction': GObject.ParamSpec.double(
@@ -238,6 +235,10 @@ export const WorkspaceThumbnail = GObject.registerClass({
             0, 1, 0),
     },
 }, class WorkspaceThumbnail extends St.Widget {
+    /**
+     * @param {Meta.Workspace} metaWorkspace
+     * @param {number} monitorIndex
+     */
     _init(metaWorkspace, monitorIndex) {
         super._init({
             clip_to_allocation: true,

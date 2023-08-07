@@ -30,13 +30,12 @@ import {loadInterfaceXML} from '../misc/fileUtils.js';
 //
 
 /**
- * sleep:
- * @param {number} milliseconds - number of milliseconds to wait
- * @returns {Promise} that resolves after @milliseconds ms
- *
  * Used within an automation script to pause the the execution of the
  * current script for the specified amount of time. Use as
  * 'yield Scripting.sleep(500);'
+ *
+ * @param {number} milliseconds - number of milliseconds to wait
+ * @returns {Promise} that resolves after @milliseconds ms
  */
 export function sleep(milliseconds) {
     return new Promise(resolve => {
@@ -49,12 +48,11 @@ export function sleep(milliseconds) {
 }
 
 /**
- * waitLeisure:
- * @returns {Promise} that resolves when the shell is idle
- *
  * Used within an automation script to pause the the execution of the
  * current script until the shell is completely idle. Use as
  * 'yield Scripting.waitLeisure();'
+ *
+ * @returns {Promise} that resolves when the shell is idle
  */
 export function waitLeisure() {
     return new Promise(resolve => {

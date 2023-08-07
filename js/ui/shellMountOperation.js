@@ -592,7 +592,12 @@ export class GnomeShellMountOpHandler {
     }
 
     /**
-     * AskPassword:
+     * The dialog will stay visible until clients call the Close() method, or
+     * another dialog becomes visible.
+     * Calling AskPassword again for the same id will have the effect to clear
+     * the existing dialog and update it with a message indicating the previous
+     * attempt went wrong.
+     *
      * @param {Array} params
      *   {string} id: an opaque ID identifying the object for which
      *       the operation is requested
@@ -609,12 +614,6 @@ export class GnomeShellMountOpHandler {
      *   - "password_save" -> (u): a GPasswordSave
      * @param {Gio.DBusMethodInvocation} invocation
      *      The ID must be unique in the context of the calling process.
-     *
-     * The dialog will stay visible until clients call the Close() method, or
-     * another dialog becomes visible.
-     * Calling AskPassword again for the same id will have the effect to clear
-     * the existing dialog and update it with a message indicating the previous
-     * attempt went wrong.
      */
     AskPasswordAsync(params, invocation) {
         let [id, message, iconName_, defaultUser_, defaultDomain_, flags] = params;
@@ -651,7 +650,11 @@ export class GnomeShellMountOpHandler {
     }
 
     /**
-     * AskQuestion:
+     * The dialog will stay visible until clients call the Close() method, or
+     * another dialog becomes visible.
+     * Calling AskQuestion again for the same id will have the effect to clear
+     * update the dialog with the new question.
+     *
      * @param {Array} params - params
      *   {string} id: an opaque ID identifying the object for which
      *       the operation is requested
@@ -660,11 +663,6 @@ export class GnomeShellMountOpHandler {
      *   {string} icon_name: the name of an icon to display
      *   {string[]} choices: an array of choice strings
      * @param {Gio.DBusMethodInvocation} invocation - invocation
-     *
-     * The dialog will stay visible until clients call the Close() method, or
-     * another dialog becomes visible.
-     * Calling AskQuestion again for the same id will have the effect to clear
-     * update the dialog with the new question.
      */
     AskQuestionAsync(params, invocation) {
         let [id, message, iconName_, choices] = params;
@@ -696,7 +694,12 @@ export class GnomeShellMountOpHandler {
     }
 
     /**
-     * ShowProcesses:
+     * The dialog will stay visible until clients call the Close() method, or
+     * another dialog becomes visible.
+     * Calling ShowProcesses again for the same id will have the effect to clear
+     * the existing dialog and update it with the new message and the new list
+     * of processes.
+     *
      * @param {Array} params - params
      *   {string} id: an opaque ID identifying the object for which
      *       the operation is requested
@@ -706,12 +709,6 @@ export class GnomeShellMountOpHandler {
      *   {number[]} application_pids: the PIDs of the applications to display
      *   {string[]} choices: an array of choice strings
      * @param {Gio.DBusMethodInvocation} invocation - invocation
-     *
-     * The dialog will stay visible until clients call the Close() method, or
-     * another dialog becomes visible.
-     * Calling ShowProcesses again for the same id will have the effect to clear
-     * the existing dialog and update it with the new message and the new list
-     * of processes.
      */
     ShowProcessesAsync(params, invocation) {
         let [id, message, iconName_, applicationPids, choices] = params;
@@ -743,12 +740,11 @@ export class GnomeShellMountOpHandler {
     }
 
     /**
-     * Close:
-     * @param {Array} _params - params
-     * @param {Gio.DBusMethodInvocation} _invocation - invocation
-     *
      * Closes a dialog previously opened by AskPassword, AskQuestion or ShowProcesses.
      * If no dialog is open, does nothing.
+     *
+     * @param {Array} _params - params
+     * @param {Gio.DBusMethodInvocation} _invocation - invocation
      */
     Close(_params, _invocation) {
         this._clearCurrentRequest(Gio.MountOperationResult.UNHANDLED, {});

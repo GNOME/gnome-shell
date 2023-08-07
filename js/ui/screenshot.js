@@ -2239,7 +2239,7 @@ function _storeScreenshot(bytes, pixbuf) {
  * @param {Cogl.Texture} texture - The texture to take the screenshot from.
  * @param {number[4]} [geometry] - The region to use: x, y, width and height.
  * @param {number} scale - The texture scale.
- * @param {Object} [cursor] - Cursor data to include in the screenshot.
+ * @param {object} [cursor] - Cursor data to include in the screenshot.
  * @param {Cogl.Texture} cursor.texture - The cursor texture.
  * @param {number} cursor.x - The cursor x coordinate.
  * @param {number} cursor.y - The cursor y coordinate.

@@ -47,10 +47,6 @@ export class GnomeShell {
     }
 
     /**
-     * Eval:
-     * @param {string} code A string containing JavaScript code
-     * @returns {Array}
-     *
      * This function executes arbitrary code in the main
      * loop, and returns a boolean success and
      * JSON representation of the object as a string.
@@ -60,6 +56,8 @@ export class GnomeShell {
      * If evaluation fails, then the return value will be
      * [false, JSON.stringify(exception)];
      *
+     * @param {string} code A string containing JavaScript code
+     * @returns {Array}
      */
     Eval(code) {
         if (!global.context.unsafe_mode)

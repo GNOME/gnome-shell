@@ -336,8 +336,6 @@ class _Draggable extends Signals.EventEmitter {
     }
 
     /**
-     * fakeRelease:
-     *
      * Fake a release event.
      * Must be called if you want to intercept release events on draggable
      * actors for other purposes (for example if you're using
@@ -348,16 +346,15 @@ class _Draggable extends Signals.EventEmitter {
     }
 
     /**
-     * startDrag:
-     * @param {number} stageX: X coordinate of event
-     * @param {number} stageY: Y coordinate of event
-     * @param {number} time: Event timestamp
-     * @param {Clutter.EventSequence=} sequence: Event sequence
-     * @param {Clutter.InputDevice=} device: device that originated the event
-     *
      * Directly initiate a drag and drop operation from the given actor.
      * This function is useful to call if you've specified manualMode
      * for the draggable.
+     *
+     * @param {number} stageX - X coordinate of event
+     * @param {number} stageY - Y coordinate of event
+     * @param {number} time - Event timestamp
+     * @param {Clutter.EventSequence=} sequence - Event sequence
+     * @param {Clutter.InputDevice=} device - device that originated the event
      */
     startDrag(stageX, stageY, time, sequence, device) {
         if (currentDraggable)
@@ -870,11 +867,6 @@ class _Draggable extends Signals.EventEmitter {
 }
 
 /**
- * makeDraggable:
- * @param {Clutter.Actor} actor Source actor
- * @param {object} [params] Additional parameters
- * @returns {_Draggable} a new Draggable
- *
  * Create an object which controls drag and drop for the given actor.
  *
  * If %manualMode is %true in @params, do not automatically start
@@ -890,6 +882,10 @@ class _Draggable extends Signals.EventEmitter {
  * succeeds, the actor scale and opacity aren't reset; if the drop
  * target wants to reuse the actor, it's up to the drop target to
  * reset these values.
+ *
+ * @param {Clutter.Actor} actor Source actor
+ * @param {object} [params] Additional parameters
+ * @returns {_Draggable} a new Draggable
  */
 export function makeDraggable(actor, params) {
     return new _Draggable(actor, params);

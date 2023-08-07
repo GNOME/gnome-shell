@@ -59,12 +59,11 @@ export class ServiceImplementation {
     }
 
     /**
-     * _handleError:
-     * @param {Gio.DBusMethodInvocation}
-     * @param {Error}
-     *
      * Complete @invocation with an appropriate error if @error is set;
      * useful for implementing early returns from method implementations.
+     *
+     * @param {Gio.DBusMethodInvocation}
+     * @param {Error}
      *
      * @returns {bool} - true if @invocation was completed
      */

@@ -436,7 +436,6 @@ export class Magnifier extends Signals.EventEmitter {
     }
 
     /**
-     * getCrosshairsThickness:
      * Get the crosshairs thickness.
      *
      * @returns {number} The width of the vertical and horizontal
@@ -450,8 +449,6 @@ export class Magnifier extends Signals.EventEmitter {
     }
 
     /**
-     * setCrosshairsOpacity:
-     *
      * @param {number} opacity Value between 0.0 (transparent)
      *     and 1.0 (fully opaque).
      */
@@ -461,7 +458,6 @@ export class Magnifier extends Signals.EventEmitter {
     }
 
     /**
-     * getCrosshairsOpacity:
      * @returns {number} Value between 0.0 (transparent) and 1.0 (fully opaque).
      */
     getCrosshairsOpacity() {
@@ -472,8 +468,6 @@ export class Magnifier extends Signals.EventEmitter {
     }
 
     /**
-     * setCrosshairsLength:
-     *
      * Set the crosshairs length for all ZoomRegions.
      *
      * @param {number} length The length of the vertical and horizontal
@@ -1865,19 +1859,18 @@ class Crosshairs extends Clutter.Actor {
     }
 
     /**
-    * addToZoomRegion
-    * Either add the crosshairs actor to the given ZoomRegion, or, if it is
-    * already part of some other ZoomRegion, create a clone of the crosshairs
-    * actor, and add the clone instead.  Returns either the original or the
-    * clone.
-    *
-    * @param {ZoomRegion} zoomRegion The container to add the crosshairs
-    *     group to.
-    * @param {Clutter.Actor} magnifiedMouse The mouse actor for the
-    *     zoom region -- used to position the crosshairs and properly
-    *     layer them below the mouse.
-    * @returns {Clutter.Actor} The crosshairs actor, or its clone.
-    */
+     * Either add the crosshairs actor to the given ZoomRegion, or, if it is
+     * already part of some other ZoomRegion, create a clone of the crosshairs
+     * actor, and add the clone instead.  Returns either the original or the
+     * clone.
+     *
+     * @param {ZoomRegion} zoomRegion The container to add the crosshairs
+     *     group to.
+     * @param {Clutter.Actor} magnifiedMouse The mouse actor for the
+     *     zoom region -- used to position the crosshairs and properly
+     *     layer them below the mouse.
+     * @returns {Clutter.Actor} The crosshairs actor, or its clone.
+     */
     addToZoomRegion(zoomRegion, magnifiedMouse) {
         let crosshairsActor = null;
         if (zoomRegion && magnifiedMouse) {

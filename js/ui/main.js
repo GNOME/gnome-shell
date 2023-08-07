@@ -444,8 +444,6 @@ function _loadDefaultStylesheet() {
 }
 
 /**
- * getThemeStylesheet:
- *
  * Get the theme CSS file that the shell will load
  *
  * @returns {?Gio.File}: A #GFile that contains the theme CSS,
@@ -456,11 +454,10 @@ export function getThemeStylesheet() {
 }
 
 /**
- * setThemeStylesheet:
- * @param {string=} cssStylesheet: A file path that contains the theme CSS,
- *     set it to null to use the default
- *
  * Set the theme CSS file that the shell will load
+ *
+ * @param {string=} cssStylesheet - A file path that contains the theme CSS,
+ *     set it to null to use the default
  */
 export function setThemeStylesheet(cssStylesheet) {
     _cssStylesheet = cssStylesheet ? Gio.File.new_for_path(cssStylesheet) : null;
@@ -514,8 +511,6 @@ export function loadTheme() {
 }
 
 /**
- * notify:
- *
  * @param {string} msg A message
  * @param {string} details Additional information
  */
@@ -528,11 +523,10 @@ export function notify(msg, details) {
 }
 
 /**
- * notifyError:
- * @param {string} msg: An error message
- * @param {string} details: Additional information
- *
  * See shell_global_notify_problem().
+ *
+ * @param {string} msg - An error message
+ * @param {string} details - Additional information
  */
 export function notifyError(msg, details) {
     // Also print to stderr so it's logged somewhere
@@ -545,12 +539,8 @@ export function notifyError(msg, details) {
 }
 
 /**
- * _findModal:
- *
+ * @private
  * @param {Clutter.Grab} grab - grab
- *
- * Private function.
- *
  */
 function _findModal(grab) {
     for (let i = 0; i < modalActorFocusStack.length; i++) {
@@ -561,10 +551,6 @@ function _findModal(grab) {
 }
 
 /**
- * pushModal:
- * @param {Clutter.Actor} actor: actor which will be given keyboard focus
- * @param {Object=} params: optional parameters
- *
  * Ensure we are in a mode where all keyboard and mouse input goes to
  * the stage, and focus @actor. Multiple calls to this function act in
  * a stacking fashion; the effect will be undone when an equal number
@@ -574,7 +560,7 @@ function _findModal(grab) {
  * modal stack returns to this actor, reset the focus to the actor
  * which was focused at the time pushModal() was invoked.
  *
- * @params may be used to provide the following parameters:
+ * `params` may be used to provide the following parameters:
  *  - timestamp: used to associate the call with a specific user initiated
  *               event. If not provided then the value of
  *               global.get_current_time() is assumed.
@@ -586,7 +572,9 @@ function _findModal(grab) {
  *                global keybindings; the default of NONE will filter
  *                out all keybindings
  *
- * @returns {Clutter.Grab}: the grab handle created
+ * @param {Clutter.Actor} actor - actor which will be given keyboard focus
+ * @param {object=} params - optional parameters
+ * @returns {Clutter.Grab} - the grab handle created
  */
 export function pushModal(actor, params) {
     params = Params.parse(params, {
@@ -633,17 +621,16 @@ export function pushModal(actor, params) {
 }
 
 /**
- * popModal:
- * @param {Clutter.Grab} grab - the grab given by pushModal()
- * @param {number=} timestamp - optional timestamp
- *
  * Reverse the effect of pushModal(). If this invocation is undoing
  * the topmost invocation, then the focus will be restored to the
  * previous focus at the time when pushModal() was invoked.
  *
- * @timestamp is optionally used to associate the call with a specific user
+ * `timestamp` is optionally used to associate the call with a specific user
  * initiated event. If not provided then the value of
  * global.get_current_time() is assumed.
+ *
+ * @param {Clutter.Grab} grab - the grab given by pushModal()
+ * @param {number=} timestamp - optional timestamp
  */
 export function popModal(grab, timestamp) {
     if (timestamp === undefined)
@@ -842,10 +829,6 @@ function _queueBeforeRedraw(workId) {
 }
 
 /**
- * initializeDeferredWork:
- * @param {Clutter.Actor} actor: an actor
- * @param {callback} callback: Function to invoke to perform work
- *
  * This function sets up a callback to be invoked when either the
  * given actor is mapped, or after some period of time when the machine
  * is idle. This is useful if your actor isn't always visible on the
@@ -857,7 +840,10 @@ function _queueBeforeRedraw(workId) {
  * initialization as well, under the assumption that new actors
  * will need it.
  *
- * @returns {string}: A string work identifier
+ * @param {Clutter.Actor} actor - an actor
+ * @param {callback} callback - Function to invoke to perform work
+ *
+ * @returns {string} - A string work identifier
  */
 export function initializeDeferredWork(actor, callback) {
     // Turn into a string so we can use as an object property

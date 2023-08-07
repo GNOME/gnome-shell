@@ -779,8 +779,6 @@ export const WorkspaceLayout = GObject.registerClass({
     }
 
     /**
-     * syncOverlays:
-     *
      * Synchronizes the overlay state of all window previews.
      */
     syncOverlays() {
@@ -788,14 +786,13 @@ export const WorkspaceLayout = GObject.registerClass({
     }
 
     /**
-     * addWindow:
-     * @param {WindowPreview} window: the window to add
-     * @param {Meta.Window} metaWindow: the MetaWindow of the window
-     *
-     * Adds @window to the workspace, it will be shown immediately if
+     * Adds `window` to the workspace, it will be shown immediately if
      * the layout isn't frozen using the layout-frozen property.
      *
-     * If @window is already part of the workspace, nothing will happen.
+     * If `window` is already part of the workspace, nothing will happen.
+     *
+     * @param {WindowPreview} window - the window to add
+     * @param {Meta.Window} metaWindow - the MetaWindow of the window
      */
     addWindow(window, metaWindow) {
         if (this._windows.has(window))
@@ -829,12 +826,11 @@ export const WorkspaceLayout = GObject.registerClass({
     }
 
     /**
-     * removeWindow:
-     * @param {WindowPreview} window: the window to remove
-     *
-     * Removes @window from the workspace if @window is a part of the
+     * Removes `window` from the workspace if `window` is a part of the
      * workspace. If the layout-frozen property is set to true, the
      * window will still be visible until the property is set to false.
+     *
+     * @param {WindowPreview} window - the window to remove
      */
     removeWindow(window) {
         const windowInfo = this._windows.get(window);
@@ -1033,11 +1029,13 @@ class WorkspaceBackground extends Shell.WorkspaceBackground {
     }
 });
 
-/**
- * @metaWorkspace: a #Meta.Workspace, or null
- */
 export const Workspace = GObject.registerClass(
 class Workspace extends St.Widget {
+    /**
+     * @param {Meta.Workspace} metaWorkspace
+     * @param {number} monitorIndex
+     * @param {OverviewAdjustment} overviewAdjustment
+     */
     _init(metaWorkspace, monitorIndex, overviewAdjustment) {
         super._init({
             style_class: 'window-picker',

@@ -747,19 +747,17 @@ export const SwipeTracker = GObject.registerClass({
     }
 
     /**
-     * confirmSwipe:
-     * @param {number} distance: swipe distance in pixels
-     * @param {number[]} snapPoints:
-     *     An array of snap points, sorted in ascending order
-     * @param {number} currentProgress: initial progress value
-     * @param {number} cancelProgress: the value to be used on cancelling
-     *
      * Confirms a swipe. User has to call this in 'begin' signal handler,
      * otherwise the swipe wouldn't start. If there's an animation running,
      * it should be stopped first.
      *
-     * @cancel_progress must always be a snap point, or a value matching
+     * `cancelProgress` must always be a snap point, or a value matching
      * some other non-transient state.
+     *
+     * @param {number} distance - swipe distance in pixels
+     * @param {number[]} snapPoints - An array of snap points, sorted in ascending order
+     * @param {number} currentProgress - initial progress value
+     * @param {number} cancelProgress - the value to be used on cancelling
      */
     confirmSwipe(distance, snapPoints, currentProgress, cancelProgress) {
         this.distance = distance;

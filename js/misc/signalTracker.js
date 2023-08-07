@@ -4,7 +4,7 @@ const destroyableTypes = [];
 
 /**
  * @private
- * @param {Object} obj - an object
+ * @param {object} obj - an object
  * @returns {bool} - true if obj has a 'destroy' GObject signal
  */
 function _hasDestroySignal(obj) {
@@ -51,7 +51,7 @@ class SignalManager {
     }
 
     /**
-     * @param {Object} obj - object to get signal tracker for
+     * @param {object} obj - object to get signal tracker for
      * @returns {SignalTracker} - the signal tracker for object
      */
     getSignalTracker(obj) {
@@ -64,7 +64,7 @@ class SignalManager {
     }
 
     /**
-     * @param {Object} obj - object to get signal tracker for
+     * @param {object} obj - object to get signal tracker for
      * @returns {?SignalTracker} - the signal tracker for object if it exists
      */
     maybeGetSignalTracker(obj) {
@@ -72,7 +72,7 @@ class SignalManager {
     }
 
     /*
-     * @param {Object} obj - object to remove signal tracker for
+     * @param {object} obj - object to remove signal tracker for
      * @returns {void}
      */
     removeSignalTracker(obj) {
@@ -82,7 +82,7 @@ class SignalManager {
 
 class SignalTracker {
     /**
-     * @param {Object=} owner - object that owns the tracker
+     * @param {object=} owner - object that owns the tracker
      */
     constructor(owner) {
         if (_hasDestroySignal(owner))
@@ -100,7 +100,7 @@ class SignalTracker {
 
     /**
      * @private
-     * @param {Object} obj - a tracked object
+     * @param {object} obj - a tracked object
      * @returns {SignalData} - signal data for object
      */
     _getSignalData(obj) {
@@ -148,7 +148,7 @@ class SignalTracker {
     }
 
     /**
-     * @param {Object} obj - tracked object
+     * @param {object} obj - tracked object
      * @param {...number} handlerIds - tracked handler IDs
      * @returns {void}
      */
@@ -160,7 +160,7 @@ class SignalTracker {
     }
 
     /**
-     * @param {Object} obj - tracked object instance
+     * @param {object} obj - tracked object instance
      * @returns {void}
      */
     untrack(obj) {
@@ -249,8 +249,8 @@ export function connectObject(thisObj, ...args) {
  * Disconnect all signals that were connected for
  * the specified tracked object
  *
- * @param {Object} thisObj - the emitter object
- * @param {Object} obj - the tracked object
+ * @param {object} thisObj - the emitter object
+ * @param {object} obj - the tracked object
  * @returns {void}
  */
 export function disconnectObject(thisObj, obj) {
