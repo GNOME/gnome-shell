@@ -7,7 +7,7 @@ import {ExtensionPrefsDialog} from './extensionPrefsDialog.js';
 import {ServiceImplementation} from './dbusService.js';
 
 import {deserializeExtension} from './misc/extensionUtils.js';
-const {loadInterfaceXML} = imports.misc.dbusUtils;
+import {loadInterfaceXML} from './misc/dbusUtils.js';
 
 const ExtensionsIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 const ExtensionsProxy = Gio.DBusProxy.makeProxyWrapper(ExtensionsIface);

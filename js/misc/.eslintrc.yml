@@ -1,5 +1,0 @@
-overrides:
-  - files:
-      - dbusUtils.js
-    parserOptions:
-      sourceType: script

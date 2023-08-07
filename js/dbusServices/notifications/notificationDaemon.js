@@ -4,7 +4,7 @@ import GLib from 'gi://GLib';
 
 import {ServiceImplementation} from './dbusService.js';
 
-const {loadInterfaceXML} = imports.misc.dbusUtils;
+import {loadInterfaceXML} from './misc/dbusUtils.js';
 
 const NotificationsIface = loadInterfaceXML('org.freedesktop.Notifications');
 const NotificationsProxy = Gio.DBusProxy.makeProxyWrapper(NotificationsIface);

@@ -11,7 +11,7 @@ import * as Util from '../../misc/util.js';
 
 import {Spinner} from '../animation.js';
 import {QuickToggle, SystemIndicator} from '../quickSettings.js';
-const {loadInterfaceXML} = imports.misc.dbusUtils;
+import {loadInterfaceXML} from '../../misc/dbusUtils.js';
 
 const DBUS_NAME = 'org.freedesktop.background.Monitor';
 const DBUS_OBJECT_PATH = '/org/freedesktop/background/monitor';

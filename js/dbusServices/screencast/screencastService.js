@@ -6,7 +6,7 @@ import Gtk from 'gi://Gtk?version=4.0';
 
 import {ServiceImplementation} from './dbusService.js';
 
-const {loadInterfaceXML, loadSubInterfaceXML} = imports.misc.dbusUtils;
+import {loadInterfaceXML, loadSubInterfaceXML} from './misc/dbusUtils.js';
 import * as Signals from './misc/signals.js';
 
 const ScreencastIface = loadInterfaceXML('org.gnome.Shell.Screencast');

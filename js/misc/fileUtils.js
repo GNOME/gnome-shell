@@ -3,7 +3,7 @@
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 
-export const {loadInterfaceXML} = imports.misc.dbusUtils;
+export {loadInterfaceXML} from './dbusUtils.js';
 
 /**
  * @typedef {object} SubdirInfo
