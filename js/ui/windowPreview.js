@@ -445,7 +445,7 @@ export const WindowPreview = GObject.registerClass({
             parent = parent.get_transient_for();
 
         // Display dialog if it is attached to our metaWindow
-        if (win.is_attached_dialog() && parent == this.metaWindow)
+        if (win.is_attached_dialog() && parent === this.metaWindow)
             this._addWindow(win);
 
         // The dialog popped up after the user tried to close the window,
@@ -606,7 +606,7 @@ export const WindowPreview = GObject.registerClass({
 
     vfunc_key_press_event(event) {
         let symbol = event.get_key_symbol();
-        let isEnter = symbol == Clutter.KEY_Return || symbol == Clutter.KEY_KP_Enter;
+        let isEnter = symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter;
         if (isEnter) {
             this._activate();
             return true;

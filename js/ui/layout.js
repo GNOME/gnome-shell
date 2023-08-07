@@ -91,7 +91,7 @@ export const MonitorConstraint = GObject.registerClass({
     }
 
     set workArea(v) {
-        if (v == this._workArea)
+        if (v === this._workArea)
             return;
         this._workArea = v;
         if (this.actor)
@@ -200,7 +200,7 @@ export const LayoutManager = GObject.registerClass({
     _init() {
         super._init();
 
-        this._rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
+        this._rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
         this.monitors = [];
         this.primaryMonitor = null;
         this.primaryIndex = -1;
@@ -391,9 +391,9 @@ export const LayoutManager = GObject.registerClass({
                 display.get_monitor_scale(i)));
         }
 
-        if (nMonitors == 0) {
+        if (nMonitors === 0) {
             this.primaryIndex = this.bottomIndex = -1;
-        } else if (nMonitors == 1) {
+        } else if (nMonitors === 1) {
             this.primaryIndex = this.bottomIndex = 0;
         } else {
             // If there are monitors below the primary, then we need
@@ -407,7 +407,7 @@ export const LayoutManager = GObject.registerClass({
                 }
             }
         }
-        if (this.primaryIndex != -1) {
+        if (this.primaryIndex !== -1) {
             this.primaryMonitor = this.monitors[this.primaryIndex];
             this.bottomMonitor = this.monitors[this.bottomIndex];
 
@@ -445,7 +445,7 @@ export const LayoutManager = GObject.registerClass({
 
             let haveTopLeftCorner = true;
 
-            if (i != this.primaryIndex) {
+            if (i !== this.primaryIndex) {
                 // Check if we have a top left (right for RTL) corner.
                 // I.e. if there is no monitor directly above or to the left(right)
                 let besideX = this._rtl ? monitor.x + 1 : cornerX - 1;
@@ -454,7 +454,7 @@ export const LayoutManager = GObject.registerClass({
                 let aboveY = cornerY - 1;
 
                 for (let j = 0; j < this.monitors.length; j++) {
-                    if (i == j)
+                    if (i === j)
                         continue;
                     let otherMonitor = this.monitors[j];
                     if (besideX >= otherMonitor.x &&
@@ -505,7 +505,7 @@ export const LayoutManager = GObject.registerClass({
 
     _showSecondaryBackgrounds() {
         for (let i = 0; i < this.monitors.length; i++) {
-            if (i != this.primaryIndex) {
+            if (i !== this.primaryIndex) {
                 let backgroundActor = this._bgManagers[i].backgroundActor;
                 backgroundActor.show();
                 backgroundActor.opacity = 0;
@@ -540,7 +540,7 @@ export const LayoutManager = GObject.registerClass({
             let bgManager = this._createBackgroundManager(i);
             this._bgManagers.push(bgManager);
 
-            if (i != this.primaryIndex && this._startingUp)
+            if (i !== this.primaryIndex && this._startingUp)
                 bgManager.backgroundActor.hide();
         }
 
@@ -879,7 +879,7 @@ export const LayoutManager = GObject.registerClass({
     trackChrome(actor, params = {}) {
         let ancestor = actor.get_parent();
         let index = this._findActor(ancestor);
-        while (ancestor && index == -1) {
+        while (ancestor && index === -1) {
             ancestor = ancestor.get_parent();
             index = this._findActor(ancestor);
         }
@@ -917,14 +917,14 @@ export const LayoutManager = GObject.registerClass({
     _findActor(actor) {
         for (let i = 0; i < this._trackedActors.length; i++) {
             let actorData = this._trackedActors[i];
-            if (actorData.actor == actor)
+            if (actorData.actor === actor)
                 return i;
         }
         return -1;
     }
 
     _trackActor(actor, params) {
-        if (this._findActor(actor) != -1)
+        if (this._findActor(actor) !== -1)
             throw new Error('trying to re-track existing chrome actor');
 
         let actorData = Params.parse(params, defaultParams);
@@ -944,7 +944,7 @@ export const LayoutManager = GObject.registerClass({
     _untrackActor(actor) {
         let i = this._findActor(actor);
 
-        if (i == -1)
+        if (i === -1)
             return;
 
         this._trackedActors.splice(i, 1);
@@ -1012,7 +1012,7 @@ export const LayoutManager = GObject.registerClass({
     _windowsRestacked() {
         let changed = false;
 
-        if (this._isPopupWindowVisible != global.top_window_group.get_children().some(isPopupMetaWindow))
+        if (this._isPopupWindowVisible !== global.top_window_group.get_children().some(isPopupMetaWindow))
             changed = true;
 
         if (changed) {
@@ -1157,7 +1157,7 @@ class HotCorner extends Clutter.Actor {
 
         let px = 0.0;
         let py = 0.0;
-        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
+        if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL) {
             px = 1.0;
             py = 0.0;
         }
@@ -1182,7 +1182,7 @@ class HotCorner extends Clutter.Actor {
         }
 
         if (size > 0) {
-            if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
+            if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL) {
                 this._verticalBarrier = new Meta.Barrier({
                     display: global.display,
                     x1: this._x, x2: this._x, y1: this._y, y2: this._y + size,
@@ -1234,7 +1234,7 @@ class HotCorner extends Clutter.Actor {
             this.add_child(this._corner);
             layoutManager.addChrome(this);
 
-            if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
+            if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL) {
                 this._corner.set_position(this.width - this._corner.width, 0);
                 this.set_pivot_point(1.0, 0.0);
                 this.translation_x = -this.width;
@@ -1269,7 +1269,7 @@ class HotCorner extends Clutter.Actor {
     }
 
     handleDragOver(source, _actor, _x, _y, _time) {
-        if (source != Main.xdndHandler)
+        if (source !== Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
         this._toggleOverview();
@@ -1286,7 +1286,7 @@ class HotCorner extends Clutter.Actor {
     }
 
     _onCornerLeft(actor, event) {
-        if (event.get_related() != this)
+        if (event.get_related() !== this)
             this._entered = false;
         // Consume event, otherwise this will confuse onEnvironsLeft
         return Clutter.EVENT_STOP;
@@ -1346,7 +1346,7 @@ class PressureBarrier extends Signals.EventEmitter {
     }
 
     _isHorizontal(barrier) {
-        return barrier.y1 == barrier.y2;
+        return barrier.y1 === barrier.y2;
     }
 
     _getDistanceAcrossBarrier(barrier, event) {

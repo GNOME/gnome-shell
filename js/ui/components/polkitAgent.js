@@ -335,7 +335,7 @@ const AuthenticationDialog = GObject.registerClass({
         let resetDialog = () => {
             this._sessionRequestTimeoutId = 0;
 
-            if (this.state != ModalDialog.State.OPENED)
+            if (this.state !== ModalDialog.State.OPENED)
                 return GLib.SOURCE_REMOVE;
 
             this._passwordEntry.hide();

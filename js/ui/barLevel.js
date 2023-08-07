@@ -54,7 +54,7 @@ export const BarLevel = GObject.registerClass({
     set value(value) {
         value = Math.max(Math.min(value, this._maxValue), 0);
 
-        if (this._value == value)
+        if (this._value === value)
             return;
 
         this._value = value;
@@ -69,7 +69,7 @@ export const BarLevel = GObject.registerClass({
     set maximumValue(value) {
         value = Math.max(value, 1);
 
-        if (this._maxValue == value)
+        if (this._maxValue === value)
             return;
 
         this._maxValue = value;
@@ -83,7 +83,7 @@ export const BarLevel = GObject.registerClass({
     }
 
     set overdriveStart(value) {
-        if (this._overdriveStart == value)
+        if (this._overdriveStart === value)
             return;
 
         if (value > this._maxValue) {

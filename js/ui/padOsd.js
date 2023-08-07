@@ -72,7 +72,7 @@ const PadChooser = GObject.registerClass({
 
         for (let i = 0; i < devices.length; i++) {
             let device = devices[i];
-            if (device == this.currentDevice)
+            if (device === this.currentDevice)
                 continue;
 
             this._padChooserMenu.addAction(device.get_device_name(), () => {
@@ -101,7 +101,7 @@ const KeybindingEntry = GObject.registerClass({
     }
 
     vfunc_captured_event(event) {
-        if (event.type() != Clutter.EventType.KEY_PRESS)
+        if (event.type() !== Clutter.EventType.KEY_PRESS)
             return Clutter.EVENT_PROPAGATE;
 
         const str = Meta.accelerator_name(
@@ -164,8 +164,8 @@ const ActionComboBox = GObject.registerClass({
             });
 
             /* These actions only apply to pad buttons */
-            if (selectedAction == GDesktopEnums.PadButtonAction.HELP ||
-                selectedAction == GDesktopEnums.PadButtonAction.SWITCH_MONITOR)
+            if (selectedAction === GDesktopEnums.PadButtonAction.HELP ||
+                selectedAction === GDesktopEnums.PadButtonAction.SWITCH_MONITOR)
                 this._buttonItems.push(item);
         }
 
@@ -231,7 +231,7 @@ const ActionEditor = GObject.registerClass({
     }
 
     _updateKeybindingEntryState() {
-        if (this._currentAction == GDesktopEnums.PadButtonAction.KEYBINDING) {
+        if (this._currentAction === GDesktopEnums.PadButtonAction.KEYBINDING) {
             this._keybindingEdit.set_text(this._currentKeybinding);
             this._keybindingEdit.show();
             this._keybindingEdit.grab_key_focus();
@@ -272,7 +272,7 @@ const ActionEditor = GObject.registerClass({
 
         let keybinding = null;
 
-        if (this._currentAction == GDesktopEnums.PadButtonAction.KEYBINDING)
+        if (this._currentAction === GDesktopEnums.PadButtonAction.KEYBINDING)
             keybinding = this._currentKeybinding;
 
         this._buttonSettings.set_enum('action', this._currentAction);
@@ -423,7 +423,7 @@ const PadDiagram = GObject.registerClass({
         x = x * this._scale + this._actorWidth / 2 - dimensions.width / 2 * this._scale;
         y = y * this._scale + this._actorHeight / 2 - dimensions.height / 2 * this._scale;
 
-        if (direction == LTR) {
+        if (direction === LTR) {
             childBox.x1 = x;
             childBox.x2 = x + natWidth;
         } else {
@@ -552,7 +552,7 @@ const PadDiagram = GObject.registerClass({
 
     deactivateButton(button) {
         for (let i = 0; i < this._activeButtons.length; i++) {
-            if (this._activeButtons[i] == button)
+            if (this._activeButtons[i] === button)
                 this._activeButtons.splice(i, 1);
         }
         this._invalidateSvg();
@@ -604,8 +604,8 @@ const PadDiagram = GObject.registerClass({
             return;
 
         for (let i = 0; i < this._labels.length; i++) {
-            if (action == this._labels[i].action &&
-                idx == this._labels[i].idx && dir == this._labels[i].dir) {
+            if (action === this._labels[i].action &&
+                idx === this._labels[i].idx && dir === this._labels[i].dir) {
                 this._curEdited = this._labels[i];
                 editedLabel = this._curEdited.label;
                 break;
@@ -664,8 +664,8 @@ export const PadOsd = GObject.registerClass({
             }, this);
 
         seat.list_devices().forEach(device => {
-            if (device != this.padDevice &&
-                device.get_device_type() == Clutter.InputDeviceType.PAD_DEVICE &&
+            if (device !== this.padDevice &&
+                device.get_device_type() === Clutter.InputDeviceType.PAD_DEVICE &&
                 this.padDevice.is_grouped(device))
                 this._groupPads.push(device);
         });
@@ -757,7 +757,7 @@ export const PadOsd = GObject.registerClass({
     }
 
     _requestForOtherPad(pad) {
-        if (pad == this.padDevice || !this._groupPads.includes(pad))
+        if (pad === this.padDevice || !this._groupPads.includes(pad))
             return;
 
         let editionMode = this._editionMode;
@@ -781,20 +781,20 @@ export const PadOsd = GObject.registerClass({
 
     vfunc_captured_event(event) {
         let isModeSwitch =
-            (event.type() == Clutter.EventType.PAD_BUTTON_PRESS ||
-             event.type() == Clutter.EventType.PAD_BUTTON_RELEASE) &&
+            (event.type() === Clutter.EventType.PAD_BUTTON_PRESS ||
+             event.type() === Clutter.EventType.PAD_BUTTON_RELEASE) &&
             this.padDevice.get_mode_switch_button_group(event.get_button()) >= 0;
 
-        if (event.type() == Clutter.EventType.PAD_BUTTON_PRESS &&
-            event.get_source_device() == this.padDevice) {
+        if (event.type() === Clutter.EventType.PAD_BUTTON_PRESS &&
+            event.get_source_device() === this.padDevice) {
             this._padDiagram.activateButton(event.get_button());
 
             /* Buttons that switch between modes cannot be edited */
             if (this._editionMode && !isModeSwitch)
                 this._startButtonActionEdition(event.get_button());
             return Clutter.EVENT_STOP;
-        } else if (event.type() == Clutter.EventType.PAD_BUTTON_RELEASE &&
-                   event.get_source_device() == this.padDevice) {
+        } else if (event.type() === Clutter.EventType.PAD_BUTTON_RELEASE &&
+                   event.get_source_device() === this.padDevice) {
             this._padDiagram.deactivateButton(event.get_button());
 
             if (isModeSwitch) {
@@ -802,21 +802,21 @@ export const PadOsd = GObject.registerClass({
                 this._updateActionLabels();
             }
             return Clutter.EVENT_STOP;
-        } else if (event.type() == Clutter.EventType.KEY_PRESS &&
+        } else if (event.type() === Clutter.EventType.KEY_PRESS &&
                    (!this._editionMode || event.get_key_symbol() === Clutter.KEY_Escape)) {
             if (this._editedAction != null)
                 this._endActionEdition();
             else
                 this.destroy();
             return Clutter.EVENT_STOP;
-        } else if (event.get_source_device() == this.padDevice &&
-                   event.type() == Clutter.EventType.PAD_STRIP) {
+        } else if (event.get_source_device() === this.padDevice &&
+                   event.type() === Clutter.EventType.PAD_STRIP) {
             if (this._editionMode) {
                 let [retval_, number, mode] = event.get_pad_event_details();
                 this._startStripActionEdition(number, Meta.PadDirection.UP, mode);
             }
-        } else if (event.get_source_device() == this.padDevice &&
-                   event.type() == Clutter.EventType.PAD_RING) {
+        } else if (event.get_source_device() === this.padDevice &&
+                   event.type() === Clutter.EventType.PAD_RING) {
             if (this._editionMode) {
                 let [retval_, number, mode] = event.get_pad_event_details();
                 this._startRingActionEdition(number, Meta.PadDirection.CCW, mode);
@@ -857,9 +857,9 @@ export const PadOsd = GObject.registerClass({
         if (!this._editedAction)
             return false;
 
-        return this._editedAction.type == type &&
-                this._editedAction.number == number &&
-                this._editedAction.dir == dir;
+        return this._editedAction.type === type &&
+                this._editedAction.number === number &&
+                this._editedAction.dir === dir;
     }
 
     _endActionEdition() {
@@ -922,7 +922,7 @@ export const PadOsd = GObject.registerClass({
     }
 
     setEditionMode(editionMode) {
-        if (this._editionMode == editionMode)
+        if (this._editionMode === editionMode)
             return;
 
         this._editionMode = editionMode;
@@ -956,8 +956,8 @@ export class PadOsdService extends Signals.EventEmitter {
         let padDevice = null;
 
         devices.forEach(device => {
-            if (deviceNode == device.get_device_node() &&
-                device.get_device_type() == Clutter.InputDeviceType.PAD_DEVICE)
+            if (deviceNode === device.get_device_node() &&
+                device.get_device_type() === Clutter.InputDeviceType.PAD_DEVICE)
                 padDevice = device;
         });
 

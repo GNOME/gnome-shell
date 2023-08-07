@@ -105,7 +105,7 @@ export const ModalDialog = GObject.registerClass({
     }
 
     _setState(state) {
-        if (this._state == state)
+        if (this._state === state)
             return;
 
         this._state = state;
@@ -175,7 +175,7 @@ export const ModalDialog = GObject.registerClass({
     }
 
     open(timestamp, onPrimary) {
-        if (this.state == State.OPENED || this.state == State.OPENING)
+        if (this.state === State.OPENED || this.state === State.OPENING)
             return true;
 
         if (!this.pushModal(timestamp))
@@ -195,7 +195,7 @@ export const ModalDialog = GObject.registerClass({
     }
 
     close(timestamp) {
-        if (this.state == State.CLOSED || this.state == State.CLOSING)
+        if (this.state === State.CLOSED || this.state === State.CLOSING)
             return;
 
         this._setState(State.CLOSING);
@@ -276,10 +276,10 @@ export const ModalDialog = GObject.registerClass({
     // immediately, but the lightbox should remain until the logout is
     // complete.
     _fadeOutDialog(timestamp) {
-        if (this.state == State.CLOSED || this.state == State.CLOSING)
+        if (this.state === State.CLOSED || this.state === State.CLOSING)
             return;
 
-        if (this.state == State.FADED_OUT)
+        if (this.state === State.FADED_OUT)
             return;
 
         this.popModal(timestamp);

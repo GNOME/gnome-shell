@@ -289,7 +289,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _queueMessageTimeout() {
-        if (this._messageQueueTimeoutId != 0)
+        if (this._messageQueueTimeoutId !== 0)
             return;
 
         const message = this.currentMessage;
@@ -337,7 +337,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     _clearMessageQueue() {
         this.finishMessageQueue();
 
-        if (this._messageQueueTimeoutId != 0) {
+        if (this._messageQueueTimeoutId !== 0) {
             GLib.source_remove(this._messageQueueTimeoutId);
             this._messageQueueTimeoutId = 0;
         }
@@ -383,12 +383,12 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         else
             smartcardDetected = this._smartcardManager.hasInsertedTokens();
 
-        if (smartcardDetected != this.smartcardDetected) {
+        if (smartcardDetected !== this.smartcardDetected) {
             this.smartcardDetected = smartcardDetected;
 
             if (this.smartcardDetected)
                 this._preemptingService = SMARTCARD_SERVICE_NAME;
-            else if (this._preemptingService == SMARTCARD_SERVICE_NAME)
+            else if (this._preemptingService === SMARTCARD_SERVICE_NAME)
                 this._preemptingService = null;
 
             this.emit('smartcard-status-changed');
@@ -504,7 +504,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     serviceIsDefault(serviceName) {
-        return serviceName == this._defaultService;
+        return serviceName === this._defaultService;
     }
 
     serviceIsFingerprint(serviceName) {

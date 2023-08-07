@@ -33,7 +33,7 @@ const PieTimer = GObject.registerClass({
     }
 
     set angle(angle) {
-        if (this._angle == angle)
+        if (this._angle === angle)
             return;
 
         this._angle = angle;
@@ -121,7 +121,7 @@ export class PointerA11yTimeout {
 
             this._pieTimer.start(x, y, timeout);
 
-            if (type == Clutter.PointerA11yTimeoutType.GESTURE)
+            if (type === Clutter.PointerA11yTimeoutType.GESTURE)
                 global.display.set_cursor(Meta.Cursor.CROSSHAIR);
         });
 
@@ -129,7 +129,7 @@ export class PointerA11yTimeout {
             if (!clicked)
                 this._pieTimer.destroy();
 
-            if (type == Clutter.PointerA11yTimeoutType.GESTURE)
+            if (type === Clutter.PointerA11yTimeoutType.GESTURE)
                 global.display.set_cursor(Meta.Cursor.DEFAULT);
         });
     }

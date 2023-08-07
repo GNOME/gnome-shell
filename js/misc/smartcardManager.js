@@ -49,12 +49,12 @@ class SmartcardManager extends Signals.EventEmitter {
             this._addToken(tokens[i]);
 
         this._objectManager.connect('interface-added', (objectManager, interfaceName, proxy) => {
-            if (interfaceName == 'org.gnome.SettingsDaemon.Smartcard.Token')
+            if (interfaceName === 'org.gnome.SettingsDaemon.Smartcard.Token')
                 this._addToken(proxy);
         });
 
         this._objectManager.connect('interface-removed', (objectManager, interfaceName, proxy) => {
-            if (interfaceName == 'org.gnome.SettingsDaemon.Smartcard.Token')
+            if (interfaceName === 'org.gnome.SettingsDaemon.Smartcard.Token')
                 this._removeToken(proxy);
         });
     }
@@ -94,12 +94,12 @@ class SmartcardManager extends Signals.EventEmitter {
     _removeToken(token) {
         let objectPath = token.get_object_path();
 
-        if (this._insertedTokens[objectPath] == token) {
+        if (this._insertedTokens[objectPath] === token) {
             delete this._insertedTokens[objectPath];
             this.emit('smartcard-removed', token);
         }
 
-        if (this._loginToken == token)
+        if (this._loginToken === token)
             this._loginToken = null;
 
         token.disconnectAll();

@@ -65,15 +65,15 @@ class OsdWindow extends Clutter.Actor {
     }
 
     setLabel(label) {
-        this._label.visible = label != undefined;
+        this._label.visible = label !== undefined;
         if (label)
             this._label.text = label;
         this._updateBoxVisibility();
     }
 
     setLevel(value) {
-        this._level.visible = value != undefined;
-        if (value != undefined) {
+        this._level.visible = value !== undefined;
+        if (value !== undefined) {
             if (this.visible) {
                 this._level.ease_property('value', value, {
                     mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -154,7 +154,7 @@ export class OsdWindowManager {
 
     _monitorsChanged() {
         for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
-            if (this._osdWindows[i] == undefined)
+            if (this._osdWindows[i] === undefined)
                 this._osdWindows[i] = new OsdWindow(i);
         }
 
@@ -175,9 +175,9 @@ export class OsdWindowManager {
     }
 
     show(monitorIndex, icon, label, level, maxLevel) {
-        if (monitorIndex != -1) {
+        if (monitorIndex !== -1) {
             for (let i = 0; i < this._osdWindows.length; i++) {
-                if (i == monitorIndex)
+                if (i === monitorIndex)
                     this._showOsdWindow(i, icon, label, level, maxLevel);
                 else
                     this._osdWindows[i].cancel();

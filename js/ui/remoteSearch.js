@@ -170,7 +170,7 @@ export function loadRemoteSearchProviders(searchSettings) {
         idxB = sortOrder.indexOf(appIdB);
 
         // if no provider is found in the order, use alphabetical order
-        if ((idxA == -1) && (idxB == -1)) {
+        if ((idxA === -1) && (idxB === -1)) {
             let nameA = providerA.appInfo.get_name();
             let nameB = providerB.appInfo.get_name();
 
@@ -178,11 +178,11 @@ export function loadRemoteSearchProviders(searchSettings) {
         }
 
         // if providerA isn't found, it's sorted after providerB
-        if (idxA == -1)
+        if (idxA === -1)
             return 1;
 
         // if providerB isn't found, it's sorted after providerA
-        if (idxB == -1)
+        if (idxB === -1)
             return -1;
 
         // finally, if both providers are found, return their order in the list

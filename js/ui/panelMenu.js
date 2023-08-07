@@ -139,8 +139,8 @@ export const Button = GObject.registerClass({
 
     vfunc_event(event) {
         if (this.menu &&
-            (event.type() == Clutter.EventType.TOUCH_BEGIN ||
-             event.type() == Clutter.EventType.BUTTON_PRESS))
+            (event.type() === Clutter.EventType.TOUCH_BEGIN ||
+             event.type() === Clutter.EventType.BUTTON_PRESS))
             this.menu.toggle();
 
         return Clutter.EVENT_PROPAGATE;
@@ -158,10 +158,10 @@ export const Button = GObject.registerClass({
             return Clutter.EVENT_STOP;
 
         let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_Left || symbol == Clutter.KEY_Right) {
+        if (symbol === Clutter.KEY_Left || symbol === Clutter.KEY_Right) {
             let group = global.focus_manager.get_group(this);
             if (group) {
-                let direction = symbol == Clutter.KEY_Left ? St.DirectionType.LEFT : St.DirectionType.RIGHT;
+                let direction = symbol === Clutter.KEY_Left ? St.DirectionType.LEFT : St.DirectionType.RIGHT;
                 group.navigate_focus(this, direction, false);
                 return Clutter.EVENT_STOP;
             }

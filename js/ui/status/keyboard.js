@@ -92,13 +92,13 @@ class InputSourcePopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _keyPressHandler(keysym, action) {
-        if (action == this._action)
+        if (action === this._action)
             this._select(this._next());
-        else if (action == this._actionBackward)
+        else if (action === this._actionBackward)
             this._select(this._previous());
-        else if (keysym == Clutter.KEY_Left)
+        else if (keysym === Clutter.KEY_Left)
             this._select(this._previous());
-        else if (keysym == Clutter.KEY_Right)
+        else if (keysym === Clutter.KEY_Right)
             this._select(this._next());
         else
             return Clutter.EVENT_PROPAGATE;
@@ -375,7 +375,7 @@ export class InputSourceManager extends Signals.EventEmitter {
     }
 
     _ibusReadyCallback(im, ready) {
-        if (this._ibusReady == ready)
+        if (this._ibusReady === ready)
             return;
 
         this._ibusReady = ready;
@@ -385,7 +385,7 @@ export class InputSourceManager extends Signals.EventEmitter {
 
     _modifiersSwitcher() {
         let sourceIndexes = Object.keys(this._inputSources);
-        if (sourceIndexes.length == 0) {
+        if (sourceIndexes.length === 0) {
             KeyboardManager.releaseKeyboard();
             return true;
         }
@@ -460,7 +460,7 @@ export class InputSourceManager extends Signals.EventEmitter {
         this.emit('current-source-changed', oldSource);
 
         for (let i = 1; i < this._mruSources.length; ++i) {
-            if (this._mruSources[i] == newSource) {
+            if (this._mruSources[i] === newSource) {
                 let currentSource = this._mruSources.splice(i, 1);
                 this._mruSources = currentSource.concat(this._mruSources);
                 break;
@@ -488,7 +488,7 @@ export class InputSourceManager extends Signals.EventEmitter {
         // work without restarting when/if the user adds an IBus input
         // source.
         let engine;
-        if (is.type == INPUT_SOURCE_TYPE_IBUS)
+        if (is.type === INPUT_SOURCE_TYPE_IBUS)
             engine = is.id;
         else
             engine = 'xkb:us::eng';
@@ -516,7 +516,7 @@ export class InputSourceManager extends Signals.EventEmitter {
         }
 
         // Initialize from settings when we have no MRU sources list
-        if (this._mruSources.length == 0) {
+        if (this._mruSources.length === 0) {
             let mruSettings = this._settings.mruSources;
             for (let i = 0; i < mruSettings.length; i++) {
                 let mruSettingSource = mruSettings[i];
@@ -524,8 +524,8 @@ export class InputSourceManager extends Signals.EventEmitter {
 
                 for (let j = 0; j < sourcesList.length; j++) {
                     let source = sourcesList[j];
-                    if (source.type == mruSettingSource.type &&
-                        source.id == mruSettingSource.id) {
+                    if (source.type === mruSettingSource.type &&
+                        source.id === mruSettingSource.id) {
                         mruSource = source;
                         break;
                     }
@@ -568,10 +568,10 @@ export class InputSourceManager extends Signals.EventEmitter {
             let id = sources[i].id;
             let exists = false;
 
-            if (type == INPUT_SOURCE_TYPE_XKB) {
+            if (type === INPUT_SOURCE_TYPE_XKB) {
                 [exists, displayName, shortName] =
                     this._xkbInfo.get_layout_info(id);
-            } else if (type == INPUT_SOURCE_TYPE_IBUS) {
+            } else if (type === INPUT_SOURCE_TYPE_IBUS) {
                 if (this._disableIBus)
                     continue;
                 let engineDesc = this._ibusManager.getEngineDesc(id);
@@ -579,7 +579,7 @@ export class InputSourceManager extends Signals.EventEmitter {
                     let language = IBus.get_language_name(engineDesc.get_language());
                     let longName = engineDesc.get_longname();
                     let textdomain = engineDesc.get_textdomain();
-                    if (textdomain != '')
+                    if (textdomain !== '')
                         longName = Gettext.dgettext(textdomain, longName);
                     exists = true;
                     displayName = `${language} (${longName})`;
@@ -591,7 +591,7 @@ export class InputSourceManager extends Signals.EventEmitter {
                 infosList.push({type, id, displayName, shortName});
         }
 
-        if (infosList.length == 0) {
+        if (infosList.length === 0) {
             let type = INPUT_SOURCE_TYPE_XKB;
             let id = KeyboardManager.DEFAULT_LAYOUT;
             let [, displayName, shortName] = this._xkbInfo.get_layout_info(id);
@@ -613,7 +613,7 @@ export class InputSourceManager extends Signals.EventEmitter {
 
             this._inputSources[is.index] = is;
 
-            if (is.type == INPUT_SOURCE_TYPE_IBUS)
+            if (is.type === INPUT_SOURCE_TYPE_IBUS)
                 this._ibusSources[is.id] = is;
         }
 
@@ -643,7 +643,7 @@ export class InputSourceManager extends Signals.EventEmitter {
             return symbol;
 
         let langCode = engineDesc.get_language().split('_', 1)[0];
-        if (langCode.length == 2 || langCode.length == 3)
+        if (langCode.length === 2 || langCode.length === 3)
             return langCode.toLowerCase();
 
         return String.fromCharCode(0x2328); // keyboard glyph
@@ -656,7 +656,7 @@ export class InputSourceManager extends Signals.EventEmitter {
 
         source.properties = props;
 
-        if (source == this._currentSource)
+        if (source === this._currentSource)
             this.emit('current-source-changed', null);
     }
 
@@ -666,7 +666,7 @@ export class InputSourceManager extends Signals.EventEmitter {
             return;
 
         if (this._updateSubProperty(source.properties, prop) &&
-            source == this._currentSource)
+            source === this._currentSource)
             this.emit('current-source-changed', null);
     }
 
@@ -676,10 +676,10 @@ export class InputSourceManager extends Signals.EventEmitter {
 
         let p;
         for (let i = 0; (p = props.get(i)) != null; ++i) {
-            if (p.get_key() == prop.get_key() && p.get_prop_type() == prop.get_prop_type()) {
+            if (p.get_key() === prop.get_key() && p.get_prop_type() === prop.get_prop_type()) {
                 p.update(prop);
                 return true;
-            } else if (p.get_prop_type() == IBus.PropType.MENU) {
+            } else if (p.get_prop_type() === IBus.PropType.MENU) {
                 if (this._updateSubProperty(p.get_sub_props(), prop))
                     return true;
             }
@@ -692,8 +692,8 @@ export class InputSourceManager extends Signals.EventEmitter {
         // the focus change caused by the switcher popup causing this purpose change.
         if (this._switcherPopup)
             return;
-        if (purpose == IBus.InputPurpose.PASSWORD) {
-            if (Object.keys(this._inputSources).length == Object.keys(this._ibusSources).length)
+        if (purpose === IBus.InputPurpose.PASSWORD) {
+            if (Object.keys(this._inputSources).length === Object.keys(this._ibusSources).length)
                 return;
 
             if (this._disableIBus)
@@ -710,14 +710,14 @@ export class InputSourceManager extends Signals.EventEmitter {
 
     _getNewInputSource(current) {
         let sourceIndexes = Object.keys(this._inputSources);
-        if (sourceIndexes.length == 0)
+        if (sourceIndexes.length === 0)
             return null;
 
         if (current) {
             for (let i in this._inputSources) {
                 let is = this._inputSources[i];
-                if (is.type == current.type &&
-                    is.id == current.id)
+                if (is.type === current.type &&
+                    is.id === current.id)
                     return is;
             }
         }
@@ -750,13 +750,13 @@ export class InputSourceManager extends Signals.EventEmitter {
     _sourcesPerWindowChanged() {
         this._sourcesPerWindow = this._settings.perWindow;
 
-        if (this._sourcesPerWindow && this._focusWindowNotifyId == 0) {
+        if (this._sourcesPerWindow && this._focusWindowNotifyId === 0) {
             this._focusWindowNotifyId = global.display.connect('notify::focus-window',
                 this._setPerWindowInputSource.bind(this));
             Main.overview.connectObject(
                 'showing', this._setPerWindowInputSource.bind(this),
                 'hidden', this._setPerWindowInputSource.bind(this), this);
-        } else if (!this._sourcesPerWindow && this._focusWindowNotifyId != 0) {
+        } else if (!this._sourcesPerWindow && this._focusWindowNotifyId !== 0) {
             global.display.disconnect(this._focusWindowNotifyId);
             this._focusWindowNotifyId = 0;
             Main.overview.disconnectObject(this);
@@ -981,7 +981,7 @@ class InputSourceIndicator extends PanelMenu.Button {
             if (!prop.get_visible())
                 continue;
 
-            if (prop.get_key() == 'InputMode') {
+            if (prop.get_key() === 'InputMode') {
                 let text;
                 if (prop.get_symbol)
                     text = prop.get_symbol().get_text();
@@ -1009,15 +1009,15 @@ class InputSourceIndicator extends PanelMenu.Button {
                 item.prop = prop;
                 radioGroup.push(item);
                 item.radioGroup = radioGroup;
-                item.setOrnament(prop.get_state() == IBus.PropState.CHECKED
+                item.setOrnament(prop.get_state() === IBus.PropState.CHECKED
                     ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
                 item.connect('activate', () => {
-                    if (item.prop.get_state() == IBus.PropState.CHECKED)
+                    if (item.prop.get_state() === IBus.PropState.CHECKED)
                         return;
 
                     let group = item.radioGroup;
                     for (let j = 0; j < group.length; ++j) {
-                        if (group[j] == item) {
+                        if (group[j] === item) {
                             item.setOrnament(PopupMenu.Ornament.DOT);
                             item.prop.set_state(IBus.PropState.CHECKED);
                             ibusManager.activateProperty(
@@ -1033,7 +1033,7 @@ class InputSourceIndicator extends PanelMenu.Button {
                 break;
 
             case IBus.PropType.TOGGLE:
-                item = new PopupMenu.PopupSwitchMenuItem(prop.get_label().get_text(), prop.get_state() == IBus.PropState.CHECKED);
+                item = new PopupMenu.PopupSwitchMenuItem(prop.get_label().get_text(), prop.get_state() === IBus.PropState.CHECKED);
                 item.prop = prop;
                 item.connect('toggled', () => {
                     if (item.state) {
@@ -1078,9 +1078,9 @@ class InputSourceIndicator extends PanelMenu.Button {
         let xkbLayout = '';
         let xkbVariant = '';
 
-        if (source.type == INPUT_SOURCE_TYPE_XKB) {
+        if (source.type === INPUT_SOURCE_TYPE_XKB) {
             [, , , xkbLayout, xkbVariant] = KeyboardManager.getXkbInfo().get_layout_info(source.id);
-        } else if (source.type == INPUT_SOURCE_TYPE_IBUS) {
+        } else if (source.type === INPUT_SOURCE_TYPE_IBUS) {
             let engineDesc = IBusManager.getIBusManager().getEngineDesc(source.id);
             if (engineDesc) {
                 xkbLayout = engineDesc.get_layout();
@@ -1096,7 +1096,7 @@ class InputSourceIndicator extends PanelMenu.Button {
             }
         }
 
-        if (!xkbLayout || xkbLayout.length == 0)
+        if (!xkbLayout || xkbLayout.length === 0)
             return;
 
         let description = xkbLayout;

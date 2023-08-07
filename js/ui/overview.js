@@ -50,7 +50,7 @@ class ShellInfo {
         }
 
         let notification = null;
-        if (this._source.notifications.length == 0) {
+        if (this._source.notifications.length === 0) {
             notification = new MessageTray.Notification(this._source, text, null);
             notification.setTransient(true);
             notification.setForFeedback(forFeedback);
@@ -337,7 +337,7 @@ export class Overview extends Signals.EventEmitter {
     }
 
     _resetWindowSwitchTimeout() {
-        if (this._windowSwitchTimeoutId != 0) {
+        if (this._windowSwitchTimeoutId !== 0) {
             GLib.source_remove(this._windowSwitchTimeoutId);
             this._windowSwitchTimeoutId = 0;
         }
@@ -352,7 +352,7 @@ export class Overview extends Signals.EventEmitter {
         this._windowSwitchTimestamp = global.get_current_time();
 
         if (targetIsWindow &&
-            dragEvent.targetActor._delegate.metaWindow == this._lastHoveredWindow)
+            dragEvent.targetActor._delegate.metaWindow === this._lastHoveredWindow)
             return DND.DragMotionResult.CONTINUE;
 
         this._lastHoveredWindow = null;
@@ -605,9 +605,10 @@ export class Overview extends Signals.EventEmitter {
         let event = Clutter.get_current_event();
         if (event) {
             let type = event.type();
-            let button = type == Clutter.EventType.BUTTON_PRESS ||
-                          type == Clutter.EventType.BUTTON_RELEASE;
-            let ctrl = (event.get_state() & Clutter.ModifierType.CONTROL_MASK) != 0;
+            const button =
+                type === Clutter.EventType.BUTTON_PRESS ||
+                type === Clutter.EventType.BUTTON_RELEASE;
+            let ctrl = (event.get_state() & Clutter.ModifierType.CONTROL_MASK) !== 0;
             if (button && ctrl)
                 return;
         }

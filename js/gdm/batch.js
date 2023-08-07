@@ -94,7 +94,7 @@ export class Hold extends Task {
     release() {
         this._acquisitions--;
 
-        if (this._acquisitions == 0)
+        if (this._acquisitions === 0)
             this.emit('release');
     }
 

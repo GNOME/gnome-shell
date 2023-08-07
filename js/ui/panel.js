@@ -91,7 +91,7 @@ const AppMenuButton = GObject.registerClass({
 
         this._iconBox.connect('style-changed', () => {
             let themeNode = this._iconBox.get_theme_node();
-            iconEffect.enabled = themeNode.get_icon_style() == St.IconStyle.SYMBOLIC;
+            iconEffect.enabled = themeNode.get_icon_style() === St.IconStyle.SYMBOLIC;
         });
 
         this._label = new St.Label({
@@ -178,9 +178,9 @@ const AppMenuButton = GObject.registerClass({
 
     _onAppStateChanged(appSys, app) {
         let state = app.state;
-        if (state != Shell.AppState.STARTING)
-            this._startingApps = this._startingApps.filter(a => a != app);
-        else if (state == Shell.AppState.STARTING)
+        if (state !== Shell.AppState.STARTING)
+            this._startingApps = this._startingApps.filter(a => a !== app);
+        else if (state === Shell.AppState.STARTING)
             this._startingApps.push(app);
         // For now just resync on all running state changes; this is mainly to handle
         // cases where the focused window's application changes without the focus
@@ -221,7 +221,7 @@ const AppMenuButton = GObject.registerClass({
     _sync() {
         let targetApp = this._findTargetApp();
 
-        if (this._targetApp != targetApp) {
+        if (this._targetApp !== targetApp) {
             this._targetApp?.disconnectObject(this);
 
             this._targetApp = targetApp;
@@ -242,7 +242,7 @@ const AppMenuButton = GObject.registerClass({
             this.fadeOut();
 
         let isBusy = this._targetApp != null &&
-                      (this._targetApp.get_state() == Shell.AppState.STARTING ||
+                      (this._targetApp.get_state() === Shell.AppState.STARTING ||
                        this._targetApp.get_busy());
         if (isBusy)
             this.startAnimation();
@@ -287,10 +287,10 @@ class ActivitiesButton extends PanelMenu.Button {
     }
 
     handleDragOver(source, _actor, _x, _y, _time) {
-        if (source != Main.xdndHandler)
+        if (source !== Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
-        if (this._xdndTimeOut != 0)
+        if (this._xdndTimeOut !== 0)
             GLib.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = GLib.timeout_add(GLib.PRIORITY_DEFAULT, BUTTON_DND_ACTIVATION_TIMEOUT, () => {
             this._xdndToggleOverview();
@@ -301,8 +301,8 @@ class ActivitiesButton extends PanelMenu.Button {
     }
 
     vfunc_event(event) {
-        if (event.type() == Clutter.EventType.TOUCH_END ||
-            event.type() == Clutter.EventType.BUTTON_RELEASE) {
+        if (event.type() === Clutter.EventType.TOUCH_END ||
+            event.type() === Clutter.EventType.BUTTON_RELEASE) {
             if (Main.overview.shouldToggleByCornerOrButton())
                 Main.overview.toggle();
         }
@@ -312,7 +312,7 @@ class ActivitiesButton extends PanelMenu.Button {
 
     vfunc_key_release_event(event) {
         let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_space) {
+        if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_space) {
             if (Main.overview.shouldToggleByCornerOrButton()) {
                 Main.overview.toggle();
                 return Clutter.EVENT_STOP;
@@ -326,7 +326,7 @@ class ActivitiesButton extends PanelMenu.Button {
         let [x, y] = global.get_pointer();
         let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
 
-        if (pickedActor == this && Main.overview.shouldToggleByCornerOrButton())
+        if (pickedActor === this && Main.overview.shouldToggleByCornerOrButton())
             Main.overview.toggle();
 
         GLib.source_remove(this._xdndTimeOut);
@@ -542,7 +542,7 @@ class Panel extends St.Widget {
 
         childBox.y1 = 0;
         childBox.y2 = allocHeight;
-        if (this.get_text_direction() == Clutter.TextDirection.RTL) {
+        if (this.get_text_direction() === Clutter.TextDirection.RTL) {
             childBox.x1 = Math.max(
                 allocWidth - Math.min(Math.floor(sideWidth), leftNaturalWidth),
                 0);
@@ -561,7 +561,7 @@ class Panel extends St.Widget {
 
         childBox.y1 = 0;
         childBox.y2 = allocHeight;
-        if (this.get_text_direction() == Clutter.TextDirection.RTL) {
+        if (this.get_text_direction() === Clutter.TextDirection.RTL) {
             childBox.x1 = 0;
             childBox.x2 = Math.min(Math.floor(sideWidth), rightNaturalWidth);
         } else {
@@ -610,7 +610,7 @@ class Panel extends St.Widget {
 
     vfunc_key_press_event(event) {
         let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_Escape) {
+        if (symbol === Clutter.KEY_Escape) {
             global.display.focus_default_window(event.get_time());
             return Clutter.EVENT_STOP;
         }
@@ -785,7 +785,7 @@ class Panel extends St.Widget {
                 else if (this._rightBox.contains(indicator.container))
                     boxAlignment = Clutter.ActorAlign.END;
 
-                if (boxAlignment == Main.messageTray.bannerAlignment)
+                if (boxAlignment === Main.messageTray.bannerAlignment)
                     Main.messageTray.bannerBlocked = isOpen;
             });
     }
@@ -800,7 +800,7 @@ class Panel extends St.Widget {
             let rect = metaWindow.get_frame_rect();
             return metaWindow.is_on_primary_monitor() &&
                    metaWindow.showing_on_its_workspace() &&
-                   metaWindow.get_window_type() != Meta.WindowType.DESKTOP &&
+                   metaWindow.get_window_type() !== Meta.WindowType.DESKTOP &&
                    metaWindow.maximized_vertically &&
                    stageX > rect.x && stageX < rect.x + rect.width;
         });

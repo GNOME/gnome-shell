@@ -77,9 +77,9 @@ class FdoNotificationDaemon {
 
     _iconForNotificationData(icon) {
         if (icon) {
-            if (icon.substr(0, 7) == 'file://')
+            if (icon.substr(0, 7) === 'file://')
                 return new Gio.FileIcon({file: Gio.File.new_for_uri(icon)});
-            else if (icon[0] == '/')
+            else if (icon[0] === '/')
                 return new Gio.FileIcon({file: Gio.File.new_for_path(icon)});
             else
                 return new Gio.ThemedIcon({name: icon});
@@ -90,7 +90,7 @@ class FdoNotificationDaemon {
     _lookupSource(title, pid) {
         for (let i = 0; i < this._sources.length; i++) {
             let source = this._sources[i];
-            if (source.pid == pid && source.initialTitle == title)
+            if (source.pid === pid && source.initialTitle === title)
                 return source;
         }
         return null;
@@ -151,7 +151,7 @@ class FdoNotificationDaemon {
         //
         // Note that empathy uses im.received for one to one chats and
         // x-empathy.im.mentioned for multi-user, so we're good here
-        if (appName == 'Empathy' && hints['category'] == 'im.received') {
+        if (appName === 'Empathy' && hints['category'] === 'im.received') {
             // Ignore replacesId since we already sent back a
             // NotificationClosed for that id.
             id = this._nextNotificationId++;
@@ -186,7 +186,7 @@ class FdoNotificationDaemon {
             hints,
             timeout,
         };
-        if (replacesId != 0 && this._notifications[replacesId]) {
+        if (replacesId !== 0 && this._notifications[replacesId]) {
             ndata.id = id = replacesId;
             ndata.notification = this._notifications[replacesId].notification;
         } else {
@@ -254,7 +254,7 @@ class FdoNotificationDaemon {
         if (actions.length) {
             for (let i = 0; i < actions.length - 1; i += 2) {
                 let [actionId, label] = [actions[i], actions[i + 1]];
-                if (actionId == 'default') {
+                if (actionId === 'default') {
                     hasDefaultAction = true;
                 } else {
                     notification.addAction(label, () => {
@@ -291,7 +291,7 @@ class FdoNotificationDaemon {
         notification.setTransient(!!hints['transient']);
 
         let privacyScope = hints['x-gnome-privacy-scope'] || 'user';
-        notification.setPrivacyScope(privacyScope == 'system'
+        notification.setPrivacyScope(privacyScope === 'system'
             ? MessageTray.PrivacyScope.SYSTEM
             : MessageTray.PrivacyScope.USER);
 
@@ -392,7 +392,7 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
         this.iconUpdated();
 
         let tracker = Shell.WindowTracker.get_default();
-        if (notification.resident && this.app && tracker.focus_app == this.app)
+        if (notification.resident && this.app && tracker.focus_app === this.app)
             this.pushNotification(notification);
         else
             this.showNotification(notification);
@@ -489,7 +489,7 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
 
         if (priority) {
             let urgency = PRIORITY_URGENCY_MAP[priority.unpack()];
-            this.setUrgency(urgency != undefined ? urgency : MessageTray.Urgency.NORMAL);
+            this.setUrgency(urgency !== undefined ? urgency : MessageTray.Urgency.NORMAL);
         } else if (urgent) {
             this.setUrgency(urgent.unpack()
                 ? MessageTray.Urgency.CRITICAL
@@ -707,7 +707,7 @@ class GtkNotificationDaemon {
             if (value) {
                 let sources = value.deepUnpack();
                 sources.forEach(([appId, notifications]) => {
-                    if (notifications.length == 0)
+                    if (notifications.length === 0)
                         return;
 
                     let source;

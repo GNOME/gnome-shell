@@ -110,7 +110,7 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
     _tick() {
         this._countDown--;
 
-        if (this._countDown == 0) {
+        if (this._countDown === 0) {
             /* mutter already takes care of failing at timeout */
             this._timeoutId = 0;
             this.close();
@@ -239,9 +239,9 @@ class WorkspaceTracker {
         for (i = 0; i < this._workspaces.length; i++) {
             let lastRemoved = this._workspaces[i]._lastRemovedWindow;
             if ((lastRemoved &&
-                 (lastRemoved.get_window_type() == Meta.WindowType.SPLASHSCREEN ||
-                  lastRemoved.get_window_type() == Meta.WindowType.DIALOG ||
-                  lastRemoved.get_window_type() == Meta.WindowType.MODAL_DIALOG)) ||
+                 (lastRemoved.get_window_type() === Meta.WindowType.SPLASHSCREEN ||
+                  lastRemoved.get_window_type() === Meta.WindowType.DIALOG ||
+                  lastRemoved.get_window_type() === Meta.WindowType.MODAL_DIALOG)) ||
                 this._workspaces[i]._keepAliveId)
                 emptyWorkspaces[i] = false;
             else
@@ -289,7 +289,7 @@ class WorkspaceTracker {
         for (i = lastIndex; i >= 0; i--) {
             if (workspaceManager.n_workspaces === MIN_NUM_WORKSPACES)
                 break;
-            if (emptyWorkspaces[i] && i != lastEmptyIndex)
+            if (emptyWorkspaces[i] && i !== lastEmptyIndex)
                 workspaceManager.remove_workspace(this._workspaces[i], global.get_current_time());
         }
 
@@ -313,7 +313,7 @@ class WorkspaceTracker {
         workspace._lastRemovedWindow = window;
         this._queueCheckWorkspaces();
         let id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, LAST_WINDOW_GRACE_TIME, () => {
-            if (workspace._lastRemovedWindow == window) {
+            if (workspace._lastRemovedWindow === window) {
                 workspace._lastRemovedWindow = null;
                 this._queueCheckWorkspaces();
             }
@@ -325,7 +325,7 @@ class WorkspaceTracker {
     _windowLeftMonitor(metaDisplay, monitorIndex, _metaWin) {
         // If the window left the primary monitor, that
         // might make that workspace empty
-        if (monitorIndex == Main.layoutManager.primaryIndex)
+        if (monitorIndex === Main.layoutManager.primaryIndex)
             this._queueCheckWorkspaces();
     }
 
@@ -349,7 +349,7 @@ class WorkspaceTracker {
         let oldNumWorkspaces = this._workspaces.length;
         let newNumWorkspaces = workspaceManager.n_workspaces;
 
-        if (oldNumWorkspaces == newNumWorkspaces)
+        if (oldNumWorkspaces === newNumWorkspaces)
             return false;
 
         if (newNumWorkspaces > oldNumWorkspaces) {
@@ -371,7 +371,7 @@ class WorkspaceTracker {
             let removedNum = oldNumWorkspaces - newNumWorkspaces;
             for (let w = 0; w < oldNumWorkspaces; w++) {
                 let workspace = workspaceManager.get_workspace_by_index(w);
-                if (this._workspaces[w] != workspace) {
+                if (this._workspaces[w] !== workspace) {
                     removedIndex = w;
                     break;
                 }
@@ -407,8 +407,8 @@ class TilePreview extends St.Widget {
         if (this._rect && this._rect.equal(tileRect))
             return;
 
-        let changeMonitor = this._monitorIndex == -1 ||
-                             this._monitorIndex != monitorIndex;
+        let changeMonitor = this._monitorIndex === -1 ||
+                             this._monitorIndex !== monitorIndex;
 
         this._monitorIndex = monitorIndex;
         this._rect = tileRect;
@@ -464,11 +464,11 @@ class TilePreview extends St.Widget {
 
     _updateStyle(monitor) {
         let styles = ['tile-preview'];
-        if (this._monitorIndex == Main.layoutManager.primaryIndex)
+        if (this._monitorIndex === Main.layoutManager.primaryIndex)
             styles.push('on-primary');
-        if (this._rect.x == monitor.x)
+        if (this._rect.x === monitor.x)
             styles.push('tile-preview-left');
-        if (this._rect.x + this._rect.width == monitor.x + monitor.width)
+        if (this._rect.x + this._rect.width === monitor.x + monitor.width)
             styles.push('tile-preview-right');
 
         this.style_class = styles.join(' ');
@@ -484,7 +484,7 @@ const AppSwitchAction = GObject.registerClass({
     }
 
     vfunc_gesture_prepare(_actor) {
-        if (Main.actionMode != Shell.ActionMode.NORMAL) {
+        if (Main.actionMode !== Shell.ActionMode.NORMAL) {
             this.cancel();
             return false;
         }
@@ -499,9 +499,9 @@ const AppSwitchAction = GObject.registerClass({
         let nPoints = this.get_n_current_points();
         let event = this.get_last_event(nPoints - 1);
 
-        if (nPoints == 3) {
+        if (nPoints === 3) {
             this._longPressStartTime = event.get_time();
-        } else if (nPoints == 4) {
+        } else if (nPoints === 4) {
             // Check whether the 4th finger press happens after a 3-finger long press,
             // this only needs to be checked on the first 4th finger press
             if (this._longPressStartTime != null &&
@@ -517,7 +517,7 @@ const AppSwitchAction = GObject.registerClass({
     }
 
     vfunc_gesture_progress(_actor) {
-        if (this.get_n_current_points() == 3) {
+        if (this.get_n_current_points() === 3) {
             for (let i = 0; i < this.get_n_current_points(); i++) {
                 let [startX, startY] = this.get_press_coords(i);
                 let [x, y] = this.get_motion_coords(i);
@@ -1021,7 +1021,7 @@ export class WindowManager {
 
     _lookupIndex(windows, metaWindow) {
         for (let i = 0; i < windows.length; i++) {
-            if (windows[i].metaWindow == metaWindow)
+            if (windows[i].metaWindow === metaWindow)
                 return i;
         }
         return -1;
@@ -1036,7 +1036,7 @@ export class WindowManager {
                     win.located_on_workspace(activeWorkspace);
         });
 
-        if (windows.length == 0)
+        if (windows.length === 0)
             return;
 
         let focusWindow = global.display.focus_window;
@@ -1117,7 +1117,7 @@ export class WindowManager {
 
     addKeybinding(name, settings, flags, modes, handler) {
         let action = global.display.add_keybinding(name, settings, flags, handler);
-        if (action != Meta.KeyBindingAction.NONE)
+        if (action !== Meta.KeyBindingAction.NONE)
             this.allowKeybinding(name, modes);
         return action;
     }
@@ -1188,7 +1188,7 @@ export class WindowManager {
                 }
                 xDest = monitor.x;
                 yDest = monitor.y;
-                if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
+                if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
                     xDest += monitor.width;
                 xScale = 0;
                 yScale = 0;
@@ -1254,7 +1254,7 @@ export class WindowManager {
                     return;
                 }
                 actor.set_position(monitor.x, monitor.y);
-                if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
+                if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
                     actor.x += monitor.width;
                 actor.set_scale(0, 0);
             }
@@ -1423,7 +1423,7 @@ export class WindowManager {
         } else if (!shouldDim && window._dimmed) {
             window._dimmed = false;
             this._dimmedWindows =
-                this._dimmedWindows.filter(win => win != window);
+                this._dimmedWindows.filter(win => win !== window);
             this._undimWindow(window);
         }
     }
@@ -1554,7 +1554,7 @@ export class WindowManager {
         window.disconnectObject(actor);
         if (window._dimmed) {
             this._dimmedWindows =
-                this._dimmedWindows.filter(win => win != window);
+                this._dimmedWindows.filter(win => win !== window);
         }
 
         if (window.is_attached_dialog())
@@ -1618,14 +1618,14 @@ export class WindowManager {
     }
 
     _filterKeybinding(shellwm, binding) {
-        if (Main.actionMode == Shell.ActionMode.NONE)
+        if (Main.actionMode === Shell.ActionMode.NONE)
             return true;
 
         // There's little sense in implementing a keybinding in mutter and
         // not having it work in NORMAL mode; handle this case generically
         // so we don't have to explicitly allow all builtin keybindings in
         // NORMAL mode.
-        if (Main.actionMode == Shell.ActionMode.NORMAL &&
+        if (Main.actionMode === Shell.ActionMode.NORMAL &&
             binding.is_builtin())
             return false;
 
@@ -1744,26 +1744,26 @@ export class WindowManager {
         if (!Main.sessionMode.hasWorkspaces)
             return;
 
-        if (workspaceManager.n_workspaces == 1)
+        if (workspaceManager.n_workspaces === 1)
             return;
 
         let [action,,, target] = binding.get_name().split('-');
         let newWs;
         let direction;
-        let vertical = workspaceManager.layout_rows == -1;
-        let rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
+        let vertical = workspaceManager.layout_rows === -1;
+        let rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
 
-        if (action == 'move') {
+        if (action === 'move') {
             // "Moving" a window to another workspace doesn't make sense when
             // it cannot be unstuck, and is potentially confusing if a new
             // workspaces is added at the start/end
             if (window.is_always_on_all_workspaces() ||
                 (Meta.prefs_get_workspaces_only_on_primary() &&
-                 window.get_monitor() != Main.layoutManager.primaryIndex))
+                 window.get_monitor() !== Main.layoutManager.primaryIndex))
                 return;
         }
 
-        if (target == 'last') {
+        if (target === 'last') {
             if (vertical)
                 direction = Meta.MotionDirection.DOWN;
             else if (rtl)
@@ -1810,17 +1810,17 @@ export class WindowManager {
             }
         }
 
-        if (workspaceManager.layout_rows == -1 &&
-            direction != Meta.MotionDirection.UP &&
-            direction != Meta.MotionDirection.DOWN)
+        if (workspaceManager.layout_rows === -1 &&
+            direction !== Meta.MotionDirection.UP &&
+            direction !== Meta.MotionDirection.DOWN)
             return;
 
-        if (workspaceManager.layout_columns == -1 &&
-            direction != Meta.MotionDirection.LEFT &&
-            direction != Meta.MotionDirection.RIGHT)
+        if (workspaceManager.layout_columns === -1 &&
+            direction !== Meta.MotionDirection.LEFT &&
+            direction !== Meta.MotionDirection.RIGHT)
             return;
 
-        if (action == 'switch')
+        if (action === 'switch')
             this.actionMoveWorkspace(newWs);
         else
             this.actionMoveWindow(window, newWs);

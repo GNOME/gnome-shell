@@ -2377,7 +2377,7 @@ export class ScreenshotService {
     }
 
     _createStream(filename, invocation) {
-        if (filename == '')
+        if (filename === '')
             return [Gio.MemoryOutputStream.new_resizable(), null];
 
         if (GLib.path_is_absolute(filename)) {
@@ -2664,7 +2664,7 @@ class SelectArea extends St.Widget {
     }
 
     vfunc_motion_event(event) {
-        if (this._startX == -1 || this._startY == -1 || this._result)
+        if (this._startX === -1 || this._startY === -1 || this._result)
             return Clutter.EVENT_PROPAGATE;
 
         [this._lastX, this._lastY] = event.get_coords();

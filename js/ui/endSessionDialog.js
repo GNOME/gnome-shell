@@ -363,7 +363,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     }
 
     _sync() {
-        let open = this.state == ModalDialog.State.OPENING || this.state == ModalDialog.State.OPENED;
+        let open = this.state === ModalDialog.State.OPENING || this.state === ModalDialog.State.OPENED;
         if (!open)
             return;
 
@@ -732,7 +732,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         }
 
         // Only consider updates and upgrades if PackageKit is available.
-        if (this._pkOfflineProxy && this._type == DialogType.RESTART) {
+        if (this._pkOfflineProxy && this._type === DialogType.RESTART) {
             if (this._updateInfo.UpdateTriggered)
                 this._type = DialogType.UPDATE_RESTART;
             else if (this._updateInfo.UpgradeTriggered)

@@ -104,7 +104,7 @@ class RunDialog extends ModalDialog.ModalDialog {
             if (symbol === Clutter.KEY_Tab) {
                 let text = o.get_text();
                 let prefix;
-                if (text.lastIndexOf(' ') == -1)
+                if (text.lastIndexOf(' ') === -1)
                     prefix = text;
                 else
                     prefix = text.substr(text.lastIndexOf(' ') + 1);
@@ -138,10 +138,10 @@ class RunDialog extends ModalDialog.ModalDialog {
 
             let k = 0;
             for (; k < s1.length && k < s2.length; k++) {
-                if (s1[k] != s2[k])
+                if (s1[k] !== s2[k])
                     break;
             }
-            if (k == 0)
+            if (k === 0)
                 return '';
             return s1.substr(0, k);
         }
@@ -156,7 +156,7 @@ class RunDialog extends ModalDialog.ModalDialog {
                 let info;
                 while ((info = fileEnum.next_file(null))) {
                     let name = info.get_name();
-                    if (name.slice(0, text.length) == text)
+                    if (name.slice(0, text.length) === text)
                         results.push(name);
                 }
             } catch (e) {
@@ -205,10 +205,10 @@ class RunDialog extends ModalDialog.ModalDialog {
             } catch (e) {
                 // Mmmh, that failed - see if @input matches an existing file
                 let path = null;
-                if (input.charAt(0) == '/') {
+                if (input.charAt(0) === '/') {
                     path = input;
                 } else if (input) {
-                    if (input.charAt(0) == '~')
+                    if (input.charAt(0) === '~')
                         input = input.slice(1);
                     path = `${GLib.get_home_dir()}/${input}`;
                 }

@@ -178,13 +178,13 @@ export const Lightbox = GObject.registerClass({
             // and add it to this._children as the new topmost actor.
             this._container.set_child_above_sibling(this, newChild);
             this._children.push(newChild);
-        } else if (newChildIndex == 0) {
+        } else if (newChildIndex === 0) {
             // Bottom of stack
             this._children.unshift(newChild);
         } else {
             // Somewhere else; insert it into the correct spot
             let prevChild = this._children.indexOf(children[newChildIndex - 1]);
-            if (prevChild != -1) // paranoia
+            if (prevChild !== -1) // paranoia
                 this._children.splice(prevChild + 1, 0, newChild);
         }
     }
@@ -243,10 +243,10 @@ export const Lightbox = GObject.registerClass({
 
     _actorRemoved(container, child) {
         let index = this._children.indexOf(child);
-        if (index != -1) // paranoia
+        if (index !== -1) // paranoia
             this._children.splice(index, 1);
 
-        if (child == this._highlighted)
+        if (child === this._highlighted)
             this._highlighted = null;
     }
 
@@ -260,7 +260,7 @@ export const Lightbox = GObject.registerClass({
      * @param {Clutter.Actor=} window actor to highlight
      */
     highlight(window) {
-        if (this._highlighted == window)
+        if (this._highlighted === window)
             return;
 
         // Walk this._children raising and lowering actors as needed.
@@ -271,9 +271,9 @@ export const Lightbox = GObject.registerClass({
 
         let below = this;
         for (let i = this._children.length - 1; i >= 0; i--) {
-            if (this._children[i] == window)
+            if (this._children[i] === window)
                 this._container.set_child_above_sibling(this._children[i], null);
-            else if (this._children[i] == this._highlighted)
+            else if (this._children[i] === this._highlighted)
                 this._container.set_child_below_sibling(this._children[i], below);
             else
                 below = this._children[i];

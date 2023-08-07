@@ -41,12 +41,12 @@ export function addBackgroundMenu(actor, layoutManager) {
 
     let clickAction = new Clutter.ClickAction();
     clickAction.connect('long-press', (action, theActor, state) => {
-        if (state == Clutter.LongPressState.QUERY) {
-            return (action.get_button() == 0 ||
-                     action.get_button() == 1) &&
+        if (state === Clutter.LongPressState.QUERY) {
+            return (action.get_button() === 0 ||
+                     action.get_button() === 1) &&
                     !actor._backgroundMenu.isOpen;
         }
-        if (state == Clutter.LongPressState.ACTIVATE) {
+        if (state === Clutter.LongPressState.ACTIVATE) {
             let [x, y] = action.get_coords();
             openMenu(x, y);
             actor._backgroundManager.ignoreRelease();
@@ -54,7 +54,7 @@ export function addBackgroundMenu(actor, layoutManager) {
         return true;
     });
     clickAction.connect('clicked', action => {
-        if (action.get_button() == 3) {
+        if (action.get_button() === 3) {
             let [x, y] = action.get_coords();
             openMenu(x, y);
         }

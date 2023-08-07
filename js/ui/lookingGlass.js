@@ -76,12 +76,12 @@ class AutoComplete extends Signals.EventEmitter {
     }
 
     _processCompletionRequest(event) {
-        if (event.completions.length == 0)
+        if (event.completions.length === 0)
             return;
 
         // Unique match = go ahead and complete; multiple matches + single tab = complete the common starting string;
         // multiple matches + double tab = emit a suggest event with all possible options
-        if (event.completions.length == 1) {
+        if (event.completions.length === 1) {
             this.additionalCompletionText(event.completions[0], event.attrHead);
             this.emit('completion', {completion: event.completions[0], type: 'whole-word'});
         } else if (event.completions.length > 1 && event.tabType === 'single') {
@@ -115,7 +115,7 @@ class AutoComplete extends Signals.EventEmitter {
     _entryKeyPressEvent(actor, event) {
         let cursorPos = this._entry.clutter_text.get_cursor_position();
         let text = this._entry.get_text();
-        if (cursorPos != -1)
+        if (cursorPos !== -1)
             text = text.slice(0, cursorPos);
 
         if (event.get_key_symbol() === Clutter.KEY_Tab)
@@ -181,7 +181,7 @@ const Notebook = GObject.registerClass({
         vAdjust.connect('changed', () => this._onAdjustScopeChanged(tabData));
         vAdjust.connect('notify::value', () => this._onAdjustValueChanged(tabData));
 
-        if (this._selectedIndex == -1)
+        if (this._selectedIndex === -1)
             this.selectIndex(0);
     }
 
@@ -195,7 +195,7 @@ const Notebook = GObject.registerClass({
     }
 
     selectIndex(index) {
-        if (index == this._selectedIndex)
+        if (index === this._selectedIndex)
             return;
         if (index < 0) {
             this._unselect();
@@ -222,7 +222,7 @@ const Notebook = GObject.registerClass({
         } else {
             for (let i = 0; i < this._tabs.length; i++) {
                 let tabData = this._tabs[i];
-                if (tabData.child == child) {
+                if (tabData.child === child) {
                     this.selectIndex(i);
                     return;
                 }
@@ -266,7 +266,7 @@ const Notebook = GObject.registerClass({
 });
 
 function objectToString(o) {
-    if (typeof o == typeof objectToString) {
+    if (typeof o === typeof objectToString) {
         // special case this since the default is way, way too verbose
         return '<js function>';
     } else if (o && o.toString === undefined) {
@@ -441,7 +441,7 @@ class ObjInspector extends St.ScrollView {
         });
         button.connect('clicked', this.close.bind(this));
         hbox.add(button);
-        if (typeof obj == typeof {}) {
+        if (typeof obj === typeof {}) {
             let properties = [];
             for (let propName in obj)
                 properties.push(propName);
@@ -671,11 +671,11 @@ const Inspector = GObject.registerClass({
 
         case Clutter.ScrollDirection.DOWN:
             // select child
-            if (this._target != this._pointerTarget) {
+            if (this._target !== this._pointerTarget) {
                 let child = this._pointerTarget;
                 while (child) {
                     let parent = child.get_parent();
-                    if (parent == this._target)
+                    if (parent === this._target)
                         break;
                     child = parent;
                 }
@@ -702,7 +702,7 @@ const Inspector = GObject.registerClass({
         let target = global.stage.get_actor_at_pos(
             Clutter.PickMode.ALL, stageX, stageY);
 
-        if (target != this._pointerTarget)
+        if (target !== this._pointerTarget)
             this._target = target;
         this._pointerTarget = target;
 
@@ -748,7 +748,7 @@ const Extensions = GObject.registerClass({
             return;
 
         let extensionDisplay = this._createExtensionDisplay(extension);
-        if (this._numExtensions == 0)
+        if (this._numExtensions === 0)
             this._extensionsList.remove_actor(this._noExtensions);
 
         this._numExtensions++;
@@ -1425,7 +1425,7 @@ class LookingGlass extends St.BoxLayout {
         // If a completion is completed unambiguously, the currently-displayed completion
         // suggestions become irrelevant.
         this._autoComplete.connect('completion', (a, e) => {
-            if (e.type == 'whole-word')
+            if (e.type === 'whole-word')
                 this._hideCompletions();
         });
 
@@ -1606,15 +1606,15 @@ class LookingGlass extends St.BoxLayout {
     // Handle key events which are relevant for all tabs of the LookingGlass
     vfunc_key_press_event(event) {
         let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_Escape) {
+        if (symbol === Clutter.KEY_Escape) {
             this.close();
             return Clutter.EVENT_STOP;
         }
         // Ctrl+PgUp and Ctrl+PgDown switches tabs in the notebook view
         if (event.get_state() & Clutter.ModifierType.CONTROL_MASK) {
-            if (symbol == Clutter.KEY_Page_Up)
+            if (symbol === Clutter.KEY_Page_Up)
                 this._notebook.prevTab();
-            else if (symbol == Clutter.KEY_Page_Down)
+            else if (symbol === Clutter.KEY_Page_Down)
                 this._notebook.nextTab();
         }
         return super.vfunc_key_press_event(event);

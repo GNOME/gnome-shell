@@ -110,7 +110,7 @@ export class ShellMountOperation {
 
         this._dialog.connectObject('response',
             (object, choice, password, remember, hiddenVolume, systemVolume, pim) => {
-                if (choice == -1) {
+                if (choice === -1) {
                     this.mountOp.reply(Gio.MountOperationResult.ABORTED);
                 } else {
                     if (remember)
@@ -156,7 +156,7 @@ export class ShellMountOperation {
 
             this._processesDialog.connectObject('response',
                 (object, choice) => {
-                    if (choice == -1) {
+                    if (choice === -1) {
                         this.mountOp.reply(Gio.MountOperationResult.ABORTED);
                     } else {
                         this.mountOp.set_choice(choice);
@@ -175,7 +175,7 @@ export class ShellMountOperation {
         if (!this._notifier)
             this._notifier = new ShellUnmountNotifier();
 
-        if (bytesLeft == 0)
+        if (bytesLeft === 0)
             this._notifier.done(message);
         else
             this._notifier.show(message);
@@ -578,7 +578,7 @@ export class GnomeShellMountOpHandler {
         this._currentId = requestId;
         this._currentType = type;
 
-        if (this._dialog && (oldId == requestId) && (oldType == type))
+        if (this._dialog && (oldId === requestId) && (oldType === type))
             return true;
 
         return false;
@@ -632,7 +632,7 @@ export class GnomeShellMountOpHandler {
                 let details = {};
                 let response;
 
-                if (choice == -1) {
+                if (choice === -1) {
                     response = Gio.MountOperationResult.ABORTED;
                 } else {
                     response = Gio.MountOperationResult.HANDLED;
@@ -681,7 +681,7 @@ export class GnomeShellMountOpHandler {
             let response;
             let details = {};
 
-            if (choice == -1) {
+            if (choice === -1) {
                 response = Gio.MountOperationResult.ABORTED;
             } else {
                 response = Gio.MountOperationResult.HANDLED;
@@ -728,7 +728,7 @@ export class GnomeShellMountOpHandler {
             let response;
             let details = {};
 
-            if (choice == -1) {
+            if (choice === -1) {
                 response = Gio.MountOperationResult.ABORTED;
             } else {
                 response = Gio.MountOperationResult.HANDLED;

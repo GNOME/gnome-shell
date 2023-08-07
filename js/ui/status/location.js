@@ -33,7 +33,7 @@ const GeoclueAccuracyLevel = {
 
 function accuracyLevelToString(accuracyLevel) {
     for (let key in GeoclueAccuracyLevel) {
-        if (GeoclueAccuracyLevel[key] == accuracyLevel)
+        if (GeoclueAccuracyLevel[key] === accuracyLevel)
             return key;
     }
 
@@ -296,7 +296,7 @@ class AppAuthorizer {
     }
 
     _completeAuth() {
-        if (this._accuracyLevel != GeoclueAccuracyLevel.NONE) {
+        if (this._accuracyLevel !== GeoclueAccuracyLevel.NONE) {
             this._accuracyLevel = Math.clamp(this._accuracyLevel,
                 0, this._maxAccuracyLevel);
         }

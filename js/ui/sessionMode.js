@@ -105,7 +105,7 @@ const _modes = {
 function _loadMode(file, info) {
     let name = info.get_name();
     let suffix = name.indexOf('.json');
-    let modeName = suffix == -1 ? name : name.slice(name, suffix);
+    let modeName = suffix === -1 ? name : name.slice(name, suffix);
 
     if (Object.prototype.hasOwnProperty.call(_modes, modeName))
         return;
@@ -171,7 +171,7 @@ export class SessionMode extends Signals.EventEmitter {
     }
 
     popMode(mode) {
-        if (this.currentMode != mode || this._modeStack.length === 1)
+        if (this.currentMode !== mode || this._modeStack.length === 1)
             throw new Error('Invalid SessionMode.popMode');
 
         console.debug(`sessionMode: Popping mode ${mode}`);
@@ -180,7 +180,7 @@ export class SessionMode extends Signals.EventEmitter {
     }
 
     switchMode(to) {
-        if (this.currentMode == to)
+        if (this.currentMode === to)
             return;
         this._modeStack[this._modeStack.length - 1] = to;
         this._sync();

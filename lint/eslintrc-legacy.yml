@@ -1,5 +1,4 @@
 rules:
-  eqeqeq: off
   jsdoc/check-alignment: off
   jsdoc/check-param-names: off
   jsdoc/check-tag-names: off

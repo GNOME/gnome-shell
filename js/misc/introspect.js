@@ -81,7 +81,7 @@ export class IntrospectService {
 
         for (let app of apps) {
             let appInfo = {};
-            let isAppActive = focusedApp == app;
+            let isAppActive = focusedApp === app;
 
             if (!this._isStandaloneApp(app))
                 continue;
@@ -100,7 +100,7 @@ export class IntrospectService {
 
         if (this._runningApplicationsDirty ||
             (this._activeApplicationDirty &&
-             this._activeApplication != newActiveApplication)) {
+             this._activeApplication !== newActiveApplication)) {
             this._runningApplications = newRunningApplications;
             this._activeApplication = newActiveApplication;
 
@@ -115,10 +115,10 @@ export class IntrospectService {
             return false;
 
         let type = window.get_window_type();
-        return type == Meta.WindowType.NORMAL ||
-                type == Meta.WindowType.DIALOG ||
-                type == Meta.WindowType.MODAL_DIALOG ||
-                type == Meta.WindowType.UTILITY;
+        return type === Meta.WindowType.NORMAL ||
+            type === Meta.WindowType.DIALOG ||
+            type === Meta.WindowType.MODAL_DIALOG ||
+            type === Meta.WindowType.UTILITY;
     }
 
     async GetRunningApplicationsAsync(params, invocation) {
@@ -160,7 +160,7 @@ export class IntrospectService {
                     'app-id': GLib.Variant.new('s', app.get_id()),
                     'client-type': GLib.Variant.new('u', window.get_client_type()),
                     'is-hidden': GLib.Variant.new('b', window.is_hidden()),
-                    'has-focus': GLib.Variant.new('b', window == focusWindow),
+                    'has-focus': GLib.Variant.new('b', window === focusWindow),
                     'width': GLib.Variant.new('u', frameRect.width),
                     'height': GLib.Variant.new('u', frameRect.height),
                 };

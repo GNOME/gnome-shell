@@ -315,8 +315,8 @@ class OutputStreamSlider extends StreamSlider {
 
     _findHeadphones(sink) {
         // This only works for external headphones (e.g. bluetooth)
-        if (sink.get_form_factor() == 'headset' ||
-            sink.get_form_factor() == 'headphone')
+        if (sink.get_form_factor() === 'headset' ||
+            sink.get_form_factor() === 'headphone')
             return true;
 
         // a bit hackish, but ALSA/PulseAudio have a number

@@ -157,7 +157,7 @@ class DashItemContainer extends St.Widget {
     }
 
     setChild(actor) {
-        if (this.child == actor)
+        if (this.child === actor)
             return;
 
         this.destroy_all_children();
@@ -417,7 +417,7 @@ export const Dash = GObject.registerClass({
         };
         DND.addDragMonitor(this._dragMonitor);
 
-        if (this._box.get_n_children() == 0) {
+        if (this._box.get_n_children() === 0) {
             this._emptyDropTarget = new EmptyDropTargetItem();
             this._box.insert_child_at_index(this._emptyDropTarget, 0);
             this._emptyDropTarget.show(true);
@@ -549,7 +549,7 @@ export const Dash = GObject.registerClass({
         let shouldShow = appIcon ? appIcon.shouldShowTooltip() : item.child.get_hover();
 
         if (shouldShow) {
-            if (this._showLabelTimeoutId == 0) {
+            if (this._showLabelTimeoutId === 0) {
                 let timeout = this._labelShowing ? 0 : DASH_ITEM_HOVER_TIMEOUT;
                 this._showLabelTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, timeout,
                     () => {
@@ -638,7 +638,7 @@ export const Dash = GObject.registerClass({
                 newIconSize = baseIconSizes[i];
         }
 
-        if (newIconSize == this.iconSize)
+        if (newIconSize === this.iconSize)
             return;
 
         let oldIconSize = this.iconSize;
@@ -736,7 +736,7 @@ export const Dash = GObject.registerClass({
             let newApp = newApps.length > newIndex ? newApps[newIndex] : null;
 
             // No change at oldIndex/newIndex
-            if (oldApp == newApp) {
+            if (oldApp === newApp) {
                 oldIndex++;
                 newIndex++;
                 continue;
@@ -763,10 +763,10 @@ export const Dash = GObject.registerClass({
             // App moved
             let nextApp = newApps.length > newIndex + 1
                 ? newApps[newIndex + 1] : null;
-            let insertHere = nextApp && nextApp == oldApp;
+            let insertHere = nextApp && nextApp === oldApp;
             let alreadyRemoved = removedActors.reduce((result, actor) => {
                 let removedApp = actor.child._delegate.app;
-                return result || removedApp == newApp;
+                return result || removedApp === newApp;
             }, false);
 
             if (insertHere || alreadyRemoved) {
@@ -909,7 +909,7 @@ export const Dash = GObject.registerClass({
             this._dragPlaceholderPos = pos;
 
             // Don't allow positioning before or after self
-            if (favPos != -1 && (pos == favPos || pos == favPos + 1)) {
+            if (favPos !== -1 && (pos === favPos || pos === favPos + 1)) {
                 this._clearDragPlaceholder();
                 return DND.DragMotionResult.CONTINUE;
             }
@@ -937,7 +937,7 @@ export const Dash = GObject.registerClass({
         if (!this._dragPlaceholder)
             return DND.DragMotionResult.NO_DROP;
 
-        let srcIsFavorite = favPos != -1;
+        let srcIsFavorite = favPos !== -1;
 
         if (srcIsFavorite)
             return DND.DragMotionResult.MOVE_DROP;
@@ -966,11 +966,11 @@ export const Dash = GObject.registerClass({
         let children = this._box.get_children();
         for (let i = 0; i < this._dragPlaceholderPos; i++) {
             if (this._dragPlaceholder &&
-                children[i] == this._dragPlaceholder)
+                children[i] === this._dragPlaceholder)
                 continue;
 
             let childId = children[i].child._delegate.app.get_id();
-            if (childId == id)
+            if (childId === id)
                 continue;
             if (childId in favorites)
                 favPos++;

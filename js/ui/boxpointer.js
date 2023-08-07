@@ -178,8 +178,8 @@ export const BoxPointer = GObject.registerClass({
         let borderWidth = themeNode.get_length('-arrow-border-width');
         minSize += borderWidth * 2;
         natSize += borderWidth * 2;
-        if ((!isWidth && (this._arrowSide == St.Side.TOP || this._arrowSide == St.Side.BOTTOM)) ||
-            (isWidth && (this._arrowSide == St.Side.LEFT || this._arrowSide == St.Side.RIGHT))) {
+        if ((!isWidth && (this._arrowSide === St.Side.TOP || this._arrowSide === St.Side.BOTTOM)) ||
+            (isWidth && (this._arrowSide === St.Side.LEFT || this._arrowSide === St.Side.RIGHT))) {
             let rise = themeNode.get_length('-arrow-rise');
             minSize += rise;
             natSize += rise;
@@ -258,8 +258,8 @@ export const BoxPointer = GObject.registerClass({
             let [sourceWidth, sourceHeight] = this._arrowActor.get_transformed_size();
             let [absX, absY] = this.get_transformed_position();
 
-            if (this._arrowSide == St.Side.TOP ||
-                this._arrowSide == St.Side.BOTTOM)
+            if (this._arrowSide === St.Side.TOP ||
+                this._arrowSide === St.Side.BOTTOM)
                 this._arrowOrigin = sourceX - absX + sourceWidth / 2;
             else
                 this._arrowOrigin = sourceY - absY + sourceHeight / 2;
@@ -275,7 +275,7 @@ export const BoxPointer = GObject.registerClass({
 
         let [width, height] = area.get_surface_size();
         let [boxWidth, boxHeight] = [width, height];
-        if (this._arrowSide == St.Side.TOP || this._arrowSide == St.Side.BOTTOM)
+        if (this._arrowSide === St.Side.TOP || this._arrowSide === St.Side.BOTTOM)
             boxHeight -= rise;
         else
             boxWidth -= rise;
@@ -284,9 +284,9 @@ export const BoxPointer = GObject.registerClass({
 
         // Translate so that box goes from 0,0 to boxWidth,boxHeight,
         // with the arrow poking out of that
-        if (this._arrowSide == St.Side.TOP)
+        if (this._arrowSide === St.Side.TOP)
             cr.translate(0, rise);
-        else if (this._arrowSide == St.Side.LEFT)
+        else if (this._arrowSide === St.Side.LEFT)
             cr.translate(rise, 0);
 
         let [x1, y1] = [halfBorder, halfBorder];
@@ -300,37 +300,37 @@ export const BoxPointer = GObject.registerClass({
         if (rise) {
             switch (this._arrowSide) {
             case St.Side.TOP:
-                if (this._arrowOrigin == x1)
+                if (this._arrowOrigin === x1)
                     skipTopLeft = true;
-                else if (this._arrowOrigin == x2)
+                else if (this._arrowOrigin === x2)
                     skipTopRight = true;
                 break;
 
             case St.Side.RIGHT:
-                if (this._arrowOrigin == y1)
+                if (this._arrowOrigin === y1)
                     skipTopRight = true;
-                else if (this._arrowOrigin == y2)
+                else if (this._arrowOrigin === y2)
                     skipBottomRight = true;
                 break;
 
             case St.Side.BOTTOM:
-                if (this._arrowOrigin == x1)
+                if (this._arrowOrigin === x1)
                     skipBottomLeft = true;
-                else if (this._arrowOrigin == x2)
+                else if (this._arrowOrigin === x2)
                     skipBottomRight = true;
                 break;
 
             case St.Side.LEFT:
-                if (this._arrowOrigin == y1)
+                if (this._arrowOrigin === y1)
                     skipTopLeft = true;
-                else if (this._arrowOrigin == y2)
+                else if (this._arrowOrigin === y2)
                     skipBottomLeft = true;
                 break;
             }
         }
 
         cr.moveTo(x1 + borderRadius, y1);
-        if (this._arrowSide == St.Side.TOP && rise) {
+        if (this._arrowSide === St.Side.TOP && rise) {
             if (skipTopLeft) {
                 cr.moveTo(x1, y2 - borderRadius);
                 cr.lineTo(x1, y1 - rise);
@@ -353,7 +353,7 @@ export const BoxPointer = GObject.registerClass({
                 3 * Math.PI / 2, Math.PI * 2);
         }
 
-        if (this._arrowSide == St.Side.RIGHT && rise) {
+        if (this._arrowSide === St.Side.RIGHT && rise) {
             if (skipTopRight) {
                 cr.lineTo(x2 + rise, y1);
                 cr.lineTo(x2 + rise, y1 + halfBase);
@@ -375,7 +375,7 @@ export const BoxPointer = GObject.registerClass({
                 0, Math.PI / 2);
         }
 
-        if (this._arrowSide == St.Side.BOTTOM && rise) {
+        if (this._arrowSide === St.Side.BOTTOM && rise) {
             if (skipBottomLeft) {
                 cr.lineTo(x1 + halfBase, y2);
                 cr.lineTo(x1, y2 + rise);
@@ -397,7 +397,7 @@ export const BoxPointer = GObject.registerClass({
                 Math.PI / 2, Math.PI);
         }
 
-        if (this._arrowSide == St.Side.LEFT && rise) {
+        if (this._arrowSide === St.Side.LEFT && rise) {
             if (skipTopLeft) {
                 cr.lineTo(x1, y1 + halfBase);
                 cr.lineTo(x1 - rise, y1);
@@ -437,7 +437,7 @@ export const BoxPointer = GObject.registerClass({
     }
 
     setPosition(sourceActor, alignment) {
-        if (!this._sourceActor || sourceActor != this._sourceActor) {
+        if (!this._sourceActor || sourceActor !== this._sourceActor) {
             this._sourceActor?.disconnectObject(this);
 
             this._sourceActor = sourceActor;
@@ -587,7 +587,7 @@ export const BoxPointer = GObject.registerClass({
     // the Y axis for St.Side.LEFT, St.Side.RIGHT from the top and X axis from
     // the left for St.Side.TOP and St.Side.BOTTOM.
     setArrowOrigin(origin) {
-        if (this._arrowOrigin != origin) {
+        if (this._arrowOrigin !== origin) {
             this._arrowOrigin = origin;
             this._border.queue_repaint();
         }
@@ -597,7 +597,7 @@ export const BoxPointer = GObject.registerClass({
     // Differently from setPosition, this will not move the boxpointer itself,
     // on the arrow
     setArrowActor(actor) {
-        if (this._arrowActor != actor) {
+        if (this._arrowActor !== actor) {
             this._arrowActor = actor;
             this._border.queue_repaint();
         }
@@ -637,7 +637,7 @@ export const BoxPointer = GObject.registerClass({
 
     _updateFlip(allocationBox) {
         let arrowSide = this._calculateArrowSide(this._userArrowSide);
-        if (this._arrowSide != arrowSide) {
+        if (this._arrowSide !== arrowSide) {
             this._arrowSide = arrowSide;
             this._reposition(allocationBox);
 

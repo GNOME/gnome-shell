@@ -40,7 +40,7 @@ class OsdMonitorLabel extends St.Widget {
     _position() {
         let workArea = Main.layoutManager.getWorkAreaForMonitor(this._monitor);
 
-        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
+        if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
             this._box.x = workArea.x + (workArea.width - this._box.width);
         else
             this._box.x = workArea.x;
@@ -73,7 +73,7 @@ export class OsdMonitorLabeler {
 
     _trackClient(client) {
         if (this._client)
-            return this._client == client;
+            return this._client === client;
 
         this._client = client;
         this._clientWatchId = Gio.bus_watch_name(Gio.BusType.SESSION,
@@ -85,7 +85,7 @@ export class OsdMonitorLabeler {
     }
 
     _untrackClient(client) {
-        if (!this._client || this._client != client)
+        if (!this._client || this._client !== client)
             return false;
 
         Gio.bus_unwatch_name(this._clientWatchId);
@@ -102,7 +102,7 @@ export class OsdMonitorLabeler {
 
         for (let connector in params) {
             let monitor = this._monitorManager.get_monitor_for_connector(connector);
-            if (monitor == -1)
+            if (monitor === -1)
                 continue;
             this._monitorLabels.get(monitor).push(params[connector].deepUnpack());
         }

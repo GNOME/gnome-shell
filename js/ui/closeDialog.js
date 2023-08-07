@@ -122,7 +122,7 @@ export const CloseDialog = GObject.registerClass({
 
         let shouldTrack;
         if (focusWindow != null)
-            shouldTrack = focusWindow == this._window;
+            shouldTrack = focusWindow === this._window;
         else
             shouldTrack = keyFocus && this._dialog.contains(keyFocus);
 

@@ -159,7 +159,7 @@ export class ScreenShield extends Signals.EventEmitter {
         let prevIsActive = this._isActive;
         this._isActive = active;
 
-        if (prevIsActive != this._isActive)
+        if (prevIsActive !== this._isActive)
             this.emit('active-changed');
 
         this._syncInhibitor();
@@ -254,7 +254,7 @@ export class ScreenShield extends Signals.EventEmitter {
     }
 
     _onStatusChanged(status) {
-        if (status != GnomeSession.PresenceStatus.IDLE)
+        if (status !== GnomeSession.PresenceStatus.IDLE)
             return;
 
         this._maybeCancelDialog();
@@ -278,7 +278,7 @@ export class ScreenShield extends Signals.EventEmitter {
             return;
         }
 
-        if (this._activationTime == 0)
+        if (this._activationTime === 0)
             this._activationTime = GLib.get_monotonic_time();
 
         let shouldLock = this._settings.get_boolean(LOCK_ENABLED_KEY) && !this._isLocked;
@@ -305,7 +305,7 @@ export class ScreenShield extends Signals.EventEmitter {
         Main.uiGroup.set_child_above_sibling(lightbox, null);
         lightbox.lightOn(time);
 
-        if (this._becameActiveId == 0)
+        if (this._becameActiveId === 0)
             this._becameActiveId = this.idleMonitor.add_user_active_watch(this._onUserBecameActive.bind(this));
     }
 
@@ -390,7 +390,7 @@ export class ScreenShield extends Signals.EventEmitter {
     }
 
     _hideLockScreen(animate) {
-        if (this._lockScreenState == MessageTray.State.HIDDEN)
+        if (this._lockScreenState === MessageTray.State.HIDDEN)
             return;
 
         this._lockScreenState = MessageTray.State.HIDING;
@@ -462,7 +462,7 @@ export class ScreenShield extends Signals.EventEmitter {
         // This prevents the shield going down if the lock-delay timeout
         // fires while the user is dragging (which has the potential
         // to confuse our state)
-        if (this._lockScreenState != MessageTray.State.HIDDEN)
+        if (this._lockScreenState !== MessageTray.State.HIDDEN)
             return;
 
         this._lockScreenGroup.show();
@@ -544,7 +544,7 @@ export class ScreenShield extends Signals.EventEmitter {
     _continueDeactivate(animate) {
         this._hideLockScreen(animate);
 
-        if (Main.sessionMode.currentMode == 'unlock-dialog')
+        if (Main.sessionMode.currentMode === 'unlock-dialog')
             Main.sessionMode.popMode('unlock-dialog');
 
         this.emit('wake-up-screen');
@@ -590,12 +590,12 @@ export class ScreenShield extends Signals.EventEmitter {
 
         this.actor.hide();
 
-        if (this._becameActiveId != 0) {
+        if (this._becameActiveId !== 0) {
             this.idleMonitor.remove_watch(this._becameActiveId);
             this._becameActiveId = 0;
         }
 
-        if (this._lockTimeoutId != 0) {
+        if (this._lockTimeoutId !== 0) {
             GLib.source_remove(this._lockTimeoutId);
             this._lockTimeoutId = 0;
         }
@@ -607,7 +607,7 @@ export class ScreenShield extends Signals.EventEmitter {
     }
 
     activate(animate) {
-        if (this._activationTime == 0)
+        if (this._activationTime === 0)
             this._activationTime = GLib.get_monotonic_time();
 
         if (!this._ensureUnlockDialog(true))

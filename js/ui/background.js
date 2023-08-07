@@ -132,7 +132,7 @@ const ANIMATION_MIN_WAKEUP_INTERVAL = 1.0;
 let _backgroundCache = null;
 
 function _fileEqual0(file1, file2) {
-    if (file1 == file2)
+    if (file1 === file2)
         return true;
 
     if (!file1 || !file2)
@@ -160,8 +160,8 @@ class BackgroundCache extends Signals.EventEmitter {
             (obj, theFile, otherFile, eventType) => {
                 // Ignore CHANGED and CREATED events, since in both cases
                 // we'll get a CHANGES_DONE_HINT event when done.
-                if (eventType != Gio.FileMonitorEvent.CHANGED &&
-                    eventType != Gio.FileMonitorEvent.CREATED)
+                if (eventType !== Gio.FileMonitorEvent.CHANGED &&
+                    eventType !== Gio.FileMonitorEvent.CREATED)
                     this.emit('file-changed', file);
             });
 
@@ -220,7 +220,7 @@ class BackgroundCache extends Signals.EventEmitter {
         if (settingsSchema in this._backgroundSources) {
             let source = this._backgroundSources[settingsSchema];
             source._useCount--;
-            if (source._useCount == 0) {
+            if (source._useCount === 0) {
                 delete this._backgroundSources[settingsSchema];
                 source.destroy();
             }
@@ -361,7 +361,7 @@ const Background = GObject.registerClass({
 
         let shadingType = this._settings.get_enum(COLOR_SHADING_TYPE_KEY);
 
-        if (shadingType == GDesktopEnums.BackgroundShading.SOLID)
+        if (shadingType === GDesktopEnums.BackgroundShading.SOLID)
             this.set_color(color);
         else
             this.set_gradient(shadingType, color, secondColor);
@@ -418,14 +418,14 @@ const Background = GObject.registerClass({
             let image = cache.load(files[i]);
             if (image.is_loaded()) {
                 numPendingImages--;
-                if (numPendingImages == 0)
+                if (numPendingImages === 0)
                     finish();
             } else {
                 // eslint-disable-next-line no-loop-func
                 let id = image.connect('loaded', () => {
                     image.disconnect(id);
                     numPendingImages--;
-                    if (numPendingImages == 0)
+                    if (numPendingImages === 0)
                         finish();
                 });
             }
@@ -433,7 +433,7 @@ const Background = GObject.registerClass({
     }
 
     _queueUpdateAnimation() {
-        if (this._updateAnimationTimeoutId != 0)
+        if (this._updateAnimationTimeoutId !== 0)
             return;
 
         if (!this._cancellable || this._cancellable.is_cancelled())
@@ -598,7 +598,7 @@ class BackgroundSource {
             style = GDesktopEnums.BackgroundStyle.ZOOM; // Hardcode
         } else {
             style = this._settings.get_enum(BACKGROUND_STYLE_KEY);
-            if (style != GDesktopEnums.BackgroundStyle.NONE) {
+            if (style !== GDesktopEnums.BackgroundStyle.NONE) {
                 const colorScheme = this._interfaceSettings.get_enum('color-scheme');
                 const uri = this._settings.get_string(
                     colorScheme === GDesktopEnums.ColorScheme.PREFER_DARK

@@ -402,7 +402,7 @@ export class ExtensionManager extends Signals.EventEmitter {
                 throw new Error(`property "${prop}" is not of type ${typeName}`);
         }
 
-        if (uuid != meta.uuid)
+        if (uuid !== meta.uuid)
             throw new Error(`uuid "${meta.uuid}" from metadata.json does not match directory name "${uuid}"`);
 
         let extension = {

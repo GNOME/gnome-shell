@@ -304,14 +304,14 @@ async function _initializeUI() {
     }
 
     layoutManager.connect('startup-complete', () => {
-        if (actionMode == Shell.ActionMode.NONE)
+        if (actionMode === Shell.ActionMode.NONE)
             actionMode = Shell.ActionMode.NORMAL;
 
         if (screenShield)
             screenShield.lockIfWasLocked();
 
-        if (sessionMode.currentMode != 'gdm' &&
-            sessionMode.currentMode != 'initial-setup') {
+        if (sessionMode.currentMode !== 'gdm' &&
+            sessionMode.currentMode !== 'initial-setup') {
             GLib.log_structured(LOG_DOMAIN, GLib.LogLevelFlags.LEVEL_MESSAGE, {
                 'MESSAGE': `GNOME Shell started at ${_startDate}`,
                 'MESSAGE_ID': GNOMESHELL_STARTED_MESSAGE_ID,
@@ -646,7 +646,7 @@ export function pushModal(actor, params) {
  * global.get_current_time() is assumed.
  */
 export function popModal(grab, timestamp) {
-    if (timestamp == undefined)
+    if (timestamp === undefined)
         timestamp = global.get_current_time();
 
     let focusIndex = _findModal(grab);
@@ -664,7 +664,7 @@ export function popModal(grab, timestamp) {
 
     record.grab.dismiss();
 
-    if (focusIndex == modalActorFocusStack.length - 1) {
+    if (focusIndex === modalActorFocusStack.length - 1) {
         if (record.prevFocus)
             record.prevFocus.disconnect(record.prevFocusDestroyId);
         actionMode = record.actionMode;
@@ -752,7 +752,7 @@ export function activateWindow(window, time, workspaceNum) {
     if (!time)
         time = global.get_current_time();
 
-    if (windowWorkspaceNum != activeWorkspaceNum) {
+    if (windowWorkspaceNum !== activeWorkspaceNum) {
         let workspace = workspaceManager.get_workspace_by_index(windowWorkspaceNum);
         workspace.activate_with_focus(window, time);
     } else {
@@ -811,7 +811,7 @@ function _runDeferredWork(workId) {
 
     _deferredWorkQueue.splice(index, 1);
     _deferredWorkData[workId].callback();
-    if (_deferredWorkQueue.length == 0 && _deferredTimeoutId > 0) {
+    if (_deferredWorkQueue.length === 0 && _deferredTimeoutId > 0) {
         GLib.source_remove(_deferredTimeoutId);
         _deferredTimeoutId = 0;
     }
@@ -832,7 +832,7 @@ function _runBeforeRedrawQueue() {
 
 function _queueBeforeRedraw(workId) {
     _beforeRedrawQueue.push(workId);
-    if (_beforeRedrawQueue.length == 1) {
+    if (_beforeRedrawQueue.length === 1) {
         const laters = global.compositor.get_laters();
         laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
             _runBeforeRedrawQueue();
@@ -902,7 +902,7 @@ export function queueDeferredWork(workId) {
         _deferredWorkQueue.push(workId);
     if (data.actor.mapped) {
         _queueBeforeRedraw(workId);
-    } else if (_deferredTimeoutId == 0) {
+    } else if (_deferredTimeoutId === 0) {
         _deferredTimeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, DEFERRED_TIMEOUT_SECONDS, () => {
             _runAllDeferredWork();
             _deferredTimeoutId = 0;

@@ -70,7 +70,7 @@ export class GnomeShell {
         try {
             returnValue = JSON.stringify(eval(code));
             // A hack; DBus doesn't have null/undefined
-            if (returnValue == undefined)
+            if (returnValue === undefined)
                 returnValue = '';
             success = true;
         } catch (e) {
@@ -294,7 +294,7 @@ export class GnomeShell {
 
     _grabAcceleratorForSender(accelerator, modeFlags, grabFlags, sender) {
         let bindingAction = global.display.grab_accelerator(accelerator, grabFlags);
-        if (bindingAction == Meta.KeyBindingAction.NONE)
+        if (bindingAction === Meta.KeyBindingAction.NONE)
             return Meta.KeyBindingAction.NONE;
 
         let bindingName = Meta.external_binding_name_for_action(bindingAction);
@@ -321,7 +321,7 @@ export class GnomeShell {
 
     _ungrabAcceleratorForSender(action, sender) {
         let grabbedBy = this._grabbedAccelerators.get(action);
-        if (sender != grabbedBy)
+        if (sender !== grabbedBy)
             return false;
 
         return this._ungrabAccelerator(action);
@@ -330,7 +330,7 @@ export class GnomeShell {
     _onGrabberBusNameVanished(connection, name) {
         let grabs = this._grabbedAccelerators.entries();
         for (let [action, sender] of grabs) {
-            if (sender == name)
+            if (sender === name)
                 this._ungrabAccelerator(action);
         }
         Gio.bus_unwatch_name(this._grabbers.get(name));

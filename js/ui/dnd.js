@@ -119,7 +119,7 @@ class _Draggable extends Signals.EventEmitter {
         this.actor.connect('destroy', () => {
             this._actorDestroyed = true;
 
-            if (this._dragState == DragState.DRAGGING && this._dragCancellable)
+            if (this._dragState === DragState.DRAGGING && this._dragCancellable)
                 this._cancelDrag(global.get_current_time());
             this.disconnectAll();
         });
@@ -180,7 +180,7 @@ class _Draggable extends Signals.EventEmitter {
     }
 
     _onButtonPress(actor, event) {
-        if (event.get_button() != 1)
+        if (event.get_button() !== 1)
             return Clutter.EVENT_PROPAGATE;
 
         this._grabActor(event.get_device());
@@ -205,7 +205,7 @@ class _Draggable extends Signals.EventEmitter {
         if (!Meta.is_wayland_compositor())
             return Clutter.EVENT_PROPAGATE;
 
-        if (event.type() != Clutter.EventType.TOUCH_BEGIN ||
+        if (event.type() !== Clutter.EventType.TOUCH_BEGIN ||
             !global.display.is_pointer_emulating_sequence(event.get_event_sequence()))
             return Clutter.EVENT_PROPAGATE;
 
@@ -271,15 +271,15 @@ class _Draggable extends Signals.EventEmitter {
     }
 
     _eventIsRelease(event) {
-        if (event.type() == Clutter.EventType.BUTTON_RELEASE) {
+        if (event.type() === Clutter.EventType.BUTTON_RELEASE) {
             let buttonMask = Clutter.ModifierType.BUTTON1_MASK |
                               Clutter.ModifierType.BUTTON2_MASK |
                               Clutter.ModifierType.BUTTON3_MASK;
             /* We only obey the last button release from the device,
              * other buttons may get pressed/released during the DnD op.
              */
-            return (event.get_state() & buttonMask) == 0;
-        } else if (event.type() == Clutter.EventType.TOUCH_END) {
+            return (event.get_state() & buttonMask) === 0;
+        } else if (event.type() === Clutter.EventType.TOUCH_END) {
             /* For touch, we only obey the pointer emulating sequence */
             return global.display.is_pointer_emulating_sequence(event.get_event_sequence());
         }
@@ -291,8 +291,8 @@ class _Draggable extends Signals.EventEmitter {
         let device = event.get_device();
 
         if (this._grabbedDevice &&
-            device != this._grabbedDevice &&
-            device.get_device_type() != Clutter.InputDeviceType.KEYBOARD_DEVICE)
+            device !== this._grabbedDevice &&
+            device.get_device_type() !== Clutter.InputDeviceType.KEYBOARD_DEVICE)
             return Clutter.EVENT_PROPAGATE;
 
         // We intercept BUTTON_RELEASE event to know that the button was released in case we
@@ -300,9 +300,9 @@ class _Draggable extends Signals.EventEmitter {
         // to complete the drag and ensure that whatever happens to be under the pointer does
         // not get triggered if the drag was cancelled with Esc.
         if (this._eventIsRelease(event)) {
-            if (this._dragState == DragState.DRAGGING) {
+            if (this._dragState === DragState.DRAGGING) {
                 return this._dragActorDropped(event);
-            } else if ((this._dragActor != null || this._dragState == DragState.CANCELLED) &&
+            } else if ((this._dragActor != null || this._dragState === DragState.CANCELLED) &&
                        !this._animationInProgress) {
                 // Drag must have been cancelled with Esc.
                 this._dragComplete();
@@ -314,19 +314,19 @@ class _Draggable extends Signals.EventEmitter {
             }
         // We intercept MOTION event to figure out if the drag has started and to draw
         // this._dragActor under the pointer when dragging is in progress
-        } else if (event.type() == Clutter.EventType.MOTION ||
-                   (event.type() == Clutter.EventType.TOUCH_UPDATE &&
+        } else if (event.type() === Clutter.EventType.MOTION ||
+                   (event.type() === Clutter.EventType.TOUCH_UPDATE &&
                     global.display.is_pointer_emulating_sequence(event.get_event_sequence()))) {
-            if (this._dragActor && this._dragState == DragState.DRAGGING)
+            if (this._dragActor && this._dragState === DragState.DRAGGING)
                 return this._updateDragPosition(event);
-            else if (this._dragActor == null && this._dragState != DragState.CANCELLED)
+            else if (this._dragActor == null && this._dragState !== DragState.CANCELLED)
                 return this._maybeStartDrag(event);
 
         // We intercept KEY_PRESS event so that we can process Esc key press to cancel
         // dragging and ignore all other key presses.
-        } else if (event.type() == Clutter.EventType.KEY_PRESS && this._dragState == DragState.DRAGGING) {
+        } else if (event.type() === Clutter.EventType.KEY_PRESS && this._dragState === DragState.DRAGGING) {
             let symbol = event.get_key_symbol();
-            if (symbol == Clutter.KEY_Escape) {
+            if (symbol === Clutter.KEY_Escape) {
                 this._cancelDrag(event.get_time());
                 return Clutter.EVENT_STOP;
             }
@@ -363,13 +363,13 @@ class _Draggable extends Signals.EventEmitter {
         if (currentDraggable)
             return;
 
-        if (device == undefined) {
+        if (device === undefined) {
             let event = Clutter.get_current_event();
 
             if (event)
                 device = event.get_device();
 
-            if (device == undefined) {
+            if (device === undefined) {
                 let seat = Clutter.get_default_backend().get_default_seat();
                 device = seat.get_pointer();
             }
@@ -479,11 +479,11 @@ class _Draggable extends Signals.EventEmitter {
             this._finishAnimation();
 
             this._dragActor = null;
-            if (this._dragState == DragState.DRAGGING)
+            if (this._dragState === DragState.DRAGGING)
                 this._dragState = DragState.CANCELLED;
         });
         this._dragOrigOpacity = this._dragActor.opacity;
-        if (this._dragActorOpacity != undefined)
+        if (this._dragActorOpacity !== undefined)
             this._dragActor.opacity = this._dragActorOpacity;
 
         this._snapBackX = this._dragStartX + this._dragOffsetX;
@@ -500,7 +500,7 @@ class _Draggable extends Signals.EventEmitter {
             this._dragX + this._dragOffsetX,
             this._dragY + this._dragOffsetY);
 
-        if (this._dragActorMaxSize != undefined) {
+        if (this._dragActorMaxSize !== undefined) {
             let currentSize = Math.max(scaledWidth, scaledHeight);
             if (currentSize > this._dragActorMaxSize) {
                 let scale = this._dragActorMaxSize / currentSize;
@@ -604,7 +604,7 @@ class _Draggable extends Signals.EventEmitter {
             let motionFunc = dragMonitors[i].dragMotion;
             if (motionFunc) {
                 let result = motionFunc(dragEvent);
-                if (result != DragMotionResult.CONTINUE) {
+                if (result !== DragMotionResult.CONTINUE) {
                     global.display.set_cursor(DRAG_CURSOR_MAP[result]);
                     dragEvent.targetActor.disconnect(targetActorDestroyHandlerId);
                     return GLib.SOURCE_REMOVE;
@@ -625,7 +625,7 @@ class _Draggable extends Signals.EventEmitter {
                     targX,
                     targY,
                     0);
-                if (result != DragMotionResult.CONTINUE) {
+                if (result !== DragMotionResult.CONTINUE) {
                     global.display.set_cursor(DRAG_CURSOR_MAP[result]);
                     return GLib.SOURCE_REMOVE;
                 }
@@ -702,7 +702,7 @@ class _Draggable extends Signals.EventEmitter {
                 if (accepted) {
                     // If it accepted the drop without taking the actor,
                     // handle it ourselves.
-                    if (this._dragActor && this._dragActor.get_parent() == Main.uiGroup) {
+                    if (this._dragActor && this._dragActor.get_parent() === Main.uiGroup) {
                         if (this._restoreOnSuccess) {
                             this._restoreDragActor(event.get_time());
                             return true;
@@ -756,7 +756,7 @@ class _Draggable extends Signals.EventEmitter {
 
     _cancelDrag(eventTime) {
         this.emit('drag-cancelled', eventTime);
-        let wasCancelled = this._dragState == DragState.CANCELLED;
+        let wasCancelled = this._dragState === DragState.CANCELLED;
         this._dragState = DragState.CANCELLED;
 
         if (this._actorDestroyed || wasCancelled) {

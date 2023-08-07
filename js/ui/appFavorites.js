@@ -149,7 +149,7 @@ class AppFavorites extends Signals.EventEmitter {
             return false;
 
         let ids = this._getIds();
-        if (pos == -1)
+        if (pos === -1)
             ids.push(appId);
         else
             ids.splice(pos, 0, appId);
@@ -183,7 +183,7 @@ class AppFavorites extends Signals.EventEmitter {
         if (!(appId in this._favorites))
             return false;
 
-        let ids = this._getIds().filter(id => id != appId);
+        let ids = this._getIds().filter(id => id !== appId);
         global.settings.set_strv(this.FAVORITE_APPS_KEY, ids);
         return true;
     }

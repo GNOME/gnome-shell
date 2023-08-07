@@ -25,7 +25,7 @@ function versionCompare(required, reference) {
     for (let i = 0; i < required.length; i++) {
         let requiredInt = parseInt(required[i]);
         let referenceInt = parseInt(reference[i]);
-        if (requiredInt != referenceInt)
+        if (requiredInt !== referenceInt)
             return requiredInt < referenceInt;
     }
 
@@ -122,7 +122,7 @@ class LoginManagerSystemd extends Signals.EventEmitter {
                         'org.freedesktop.login1',
                         objectPath);
                     log(`Considering ${session}, class=${sessionProxy.Class}`);
-                    if (sessionProxy.Class == 'greeter') {
+                    if (sessionProxy.Class === 'greeter') {
                         log(`Yes, will monitor session ${session}`);
                         sessionId = session;
                         break;

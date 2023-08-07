@@ -24,15 +24,15 @@ const MESSAGE_ICON_SIZE = -1; // pick up from CSS
 const NC_ = (context, str) => `${context}\u0004${str}`;
 
 function sameYear(dateA, dateB) {
-    return dateA.getYear() == dateB.getYear();
+    return dateA.getYear() === dateB.getYear();
 }
 
 function sameMonth(dateA, dateB) {
-    return sameYear(dateA, dateB) && (dateA.getMonth() == dateB.getMonth());
+    return sameYear(dateA, dateB) && (dateA.getMonth() === dateB.getMonth());
 }
 
 function sameDay(dateA, dateB) {
-    return sameMonth(dateA, dateB) && (dateA.getDate() == dateB.getDate());
+    return sameMonth(dateA, dateB) && (dateA.getDate() === dateB.getDate());
 }
 
 function _isWorkDay(date) {
@@ -540,7 +540,7 @@ export const Calendar = GObject.registerClass({
             });
             label.accessible_name = formatDateWithCFormatString(iter, '%A');
             let col;
-            if (this.get_text_direction() == Clutter.TextDirection.RTL)
+            if (this.get_text_direction() === Clutter.TextDirection.RTL)
                 col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
             else
                 col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
@@ -569,16 +569,16 @@ export const Calendar = GObject.registerClass({
     _onPrevMonthButtonClicked() {
         let newDate = new Date(this._selectedDate);
         let oldMonth = newDate.getMonth();
-        if (oldMonth == 0) {
+        if (oldMonth === 0) {
             newDate.setMonth(11);
             newDate.setFullYear(newDate.getFullYear() - 1);
-            if (newDate.getMonth() != 11) {
+            if (newDate.getMonth() !== 11) {
                 let day = 32 - new Date(newDate.getFullYear() - 1, 11, 32).getDate();
                 newDate = new Date(newDate.getFullYear() - 1, 11, day);
             }
         } else {
             newDate.setMonth(oldMonth - 1);
-            if (newDate.getMonth() != oldMonth - 1) {
+            if (newDate.getMonth() !== oldMonth - 1) {
                 let day = 32 - new Date(newDate.getFullYear(), oldMonth - 1, 32).getDate();
                 newDate = new Date(newDate.getFullYear(), oldMonth - 1, day);
             }
@@ -592,16 +592,16 @@ export const Calendar = GObject.registerClass({
     _onNextMonthButtonClicked() {
         let newDate = new Date(this._selectedDate);
         let oldMonth = newDate.getMonth();
-        if (oldMonth == 11) {
+        if (oldMonth === 11) {
             newDate.setMonth(0);
             newDate.setFullYear(newDate.getFullYear() + 1);
-            if (newDate.getMonth() != 0) {
+            if (newDate.getMonth() !== 0) {
                 let day = 32 - new Date(newDate.getFullYear() + 1, 0, 32).getDate();
                 newDate = new Date(newDate.getFullYear() + 1, 0, day);
             }
         } else {
             newDate.setMonth(oldMonth + 1);
-            if (newDate.getMonth() != oldMonth + 1) {
+            if (newDate.getMonth() !== oldMonth + 1) {
                 let day = 32 - new Date(newDate.getFullYear(), oldMonth + 1, 32).getDate();
                 newDate = new Date(newDate.getFullYear(), oldMonth + 1, day);
             }
@@ -653,7 +653,7 @@ export const Calendar = GObject.registerClass({
         this._markedAsToday = now;
 
         let daysToWeekStart = (7 + beginDate.getDay() - this._weekStart) % 7;
-        let startsOnWeekStart = daysToWeekStart == 0;
+        let startsOnWeekStart = daysToWeekStart === 0;
         let weekPadding = startsOnWeekStart ? 7 : 0;
 
         beginDate.setDate(beginDate.getDate() - (weekPadding + daysToWeekStart));
@@ -669,7 +669,7 @@ export const Calendar = GObject.registerClass({
                 label: formatDateWithCFormatString(iter, C_('date day number format', '%d')),
                 can_focus: true,
             });
-            let rtl = button.get_text_direction() == Clutter.TextDirection.RTL;
+            let rtl = button.get_text_direction() === Clutter.TextDirection.RTL;
 
             if (this._eventSource instanceof EmptyEventSource)
                 button.reactive = false;
@@ -690,18 +690,18 @@ export const Calendar = GObject.registerClass({
                 styleClass += ' calendar-weekend';
 
             // Hack used in lieu of border-collapse - see gnome-shell.css
-            if (row == 2)
+            if (row === 2)
                 styleClass = `calendar-day-top ${styleClass}`;
 
             let leftMost = rtl
-                ? iter.getDay() == (this._weekStart + 6) % 7
-                : iter.getDay() == this._weekStart;
+                ? iter.getDay() === (this._weekStart + 6) % 7
+                : iter.getDay() === this._weekStart;
             if (leftMost)
                 styleClass = `calendar-day-left ${styleClass}`;
 
             if (sameDay(now, iter))
                 styleClass += ' calendar-today';
-            else if (iter.getMonth() != this._selectedDate.getMonth())
+            else if (iter.getMonth() !== this._selectedDate.getMonth())
                 styleClass += ' calendar-other-month';
 
             if (hasEvents)
@@ -719,7 +719,7 @@ export const Calendar = GObject.registerClass({
 
             this._buttons.push(button);
 
-            if (this._useWeekdate && iter.getDay() == 4) {
+            if (this._useWeekdate && iter.getDay() === 4) {
                 const label = new St.Label({
                     text: formatDateWithCFormatString(iter, '%V'),
                     style_class: 'calendar-week-number',
@@ -733,7 +733,7 @@ export const Calendar = GObject.registerClass({
 
             iter.setDate(iter.getDate() + 1);
 
-            if (iter.getDay() == this._weekStart)
+            if (iter.getDay() === this._weekStart)
                 row++;
         }
 
@@ -860,7 +860,7 @@ class NotificationSection extends MessageList.MessageListSection {
         let message = new NotificationMessage(notification);
         message.setSecondaryActor(new TimeLabel(notification.datetime));
 
-        let isUrgent = notification.urgency == MessageTray.Urgency.CRITICAL;
+        let isUrgent = notification.urgency === MessageTray.Urgency.CRITICAL;
 
         notification.connectObject(
             'destroy', () => {
@@ -888,7 +888,7 @@ class NotificationSection extends MessageList.MessageListSection {
 
     vfunc_map() {
         this._messages.forEach(message => {
-            if (message.notification.urgency != MessageTray.Urgency.CRITICAL)
+            if (message.notification.urgency !== MessageTray.Urgency.CRITICAL)
                 message.notification.acknowledged = true;
         });
         super.vfunc_map();

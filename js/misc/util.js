@@ -230,7 +230,7 @@ function lowerBound(array, val, cmp) {
     let min, max, mid, v;
     cmp ||= (a, b) => a - b;
 
-    if (array.length == 0)
+    if (array.length === 0)
         return 0;
 
     min = 0;
@@ -245,7 +245,7 @@ function lowerBound(array, val, cmp) {
             max = mid;
     }
 
-    return min == max || cmp(array[min], val) < 0 ? max : min;
+    return min === max || cmp(array[min], val) < 0 ? max : min;
 }
 
 /**

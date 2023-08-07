@@ -205,7 +205,7 @@ const SearchResultsBase = GObject.registerClass({
     }
 
     _keyFocusIn(actor) {
-        if (this._focusChild == actor)
+        if (this._focusChild === actor)
             return;
         this._focusChild = actor;
         this.notify('focus-child');
@@ -249,7 +249,7 @@ const SearchResultsBase = GObject.registerClass({
 
     async updateSearch(providerResults, terms, callback) {
         this._terms = terms;
-        if (providerResults.length == 0) {
+        if (providerResults.length === 0) {
             this._clearResultDisplay();
             this.hide();
             callback();
@@ -511,7 +511,7 @@ class GridSearchResults extends SearchResultsBase {
 
     _getMaxDisplayedResults() {
         let width = this.allocation.get_width();
-        if (width == 0)
+        if (width === 0)
             return -1;
 
         return this._grid.layout_manager.columnsForWidth(width);
@@ -709,7 +709,7 @@ export const SearchResultsView = GObject.registerClass({
         // search while the previous search is still active.
         let searchString = terms.join(' ');
         let previousSearchString = this._terms.join(' ');
-        if (searchString == previousSearchString)
+        if (searchString === previousSearchString)
             return;
 
         this._startingSearch = true;
@@ -717,20 +717,20 @@ export const SearchResultsView = GObject.registerClass({
         this._cancellable.cancel();
         this._cancellable.reset();
 
-        if (terms.length == 0) {
+        if (terms.length === 0) {
             this._reset();
             return;
         }
 
         let isSubSearch = false;
         if (this._terms.length > 0)
-            isSubSearch = searchString.indexOf(previousSearchString) == 0;
+            isSubSearch = searchString.indexOf(previousSearchString) === 0;
 
         this._terms = terms;
         this._isSubSearch = isSubSearch;
         this._updateSearchProgress();
 
-        if (this._searchTimeoutId == 0)
+        if (this._searchTimeoutId === 0)
             this._searchTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, this._onSearchTimeout.bind(this));
 
         this._highlighter = new Highlighter(this._terms);
@@ -789,7 +789,7 @@ export const SearchResultsView = GObject.registerClass({
             }
         }
 
-        if (newDefaultResult != this._defaultResult) {
+        if (newDefaultResult !== this._defaultResult) {
             this._setSelected(this._defaultResult, false);
             this._setSelected(newDefaultResult, this._highlightDefault);
 
@@ -857,12 +857,12 @@ export const SearchResultsView = GObject.registerClass({
     }
 
     navigateFocus(direction) {
-        let rtl = this.get_text_direction() == Clutter.TextDirection.RTL;
-        if (direction == St.DirectionType.TAB_BACKWARD ||
-            direction == (rtl
+        let rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
+        if (direction === St.DirectionType.TAB_BACKWARD ||
+            direction === (rtl
                 ? St.DirectionType.RIGHT
                 : St.DirectionType.LEFT) ||
-            direction == St.DirectionType.UP) {
+            direction === St.DirectionType.UP) {
             this.navigate_focus(null, direction, false);
             return;
         }
@@ -943,7 +943,7 @@ class ProviderInfo extends St.Button {
     animateLaunch() {
         let appSys = Shell.AppSystem.get_default();
         let app = appSys.lookup_app(this.provider.appInfo.get_id());
-        if (app.state == Shell.AppState.STOPPED)
+        if (app.state === Shell.AppState.STOPPED)
             IconGrid.zoomOutActor(this._content);
     }
 

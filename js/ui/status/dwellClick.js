@@ -63,7 +63,7 @@ class DwellClickIndicator extends PanelMenu.Button {
     _syncMenuVisibility() {
         this.visible =
           this._a11ySettings.get_boolean(KEY_DWELL_CLICK_ENABLED) &&
-           this._a11ySettings.get_string(KEY_DWELL_MODE) == DWELL_MODE_WINDOW;
+           this._a11ySettings.get_string(KEY_DWELL_MODE) === DWELL_MODE_WINDOW;
 
         return GLib.SOURCE_REMOVE;
     }
@@ -74,7 +74,7 @@ class DwellClickIndicator extends PanelMenu.Button {
 
     _updateClickType(manager, clickType) {
         for (let mode in DWELL_CLICK_MODES) {
-            if (DWELL_CLICK_MODES[mode].type == clickType)
+            if (DWELL_CLICK_MODES[mode].type === clickType)
                 this._icon.icon_name = DWELL_CLICK_MODES[mode].icon;
         }
     }

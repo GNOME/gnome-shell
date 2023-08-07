@@ -14,7 +14,7 @@ export const PageIndicators = GObject.registerClass({
     Signals: {'page-activated': {param_types: [GObject.TYPE_INT]}},
 }, class PageIndicators extends St.BoxLayout {
     _init(orientation = Clutter.Orientation.VERTICAL) {
-        let vertical = orientation == Clutter.Orientation.VERTICAL;
+        let vertical = orientation === Clutter.Orientation.VERTICAL;
         super._init({
             style_class: 'page-indicators',
             vertical,
@@ -49,7 +49,7 @@ export const PageIndicators = GObject.registerClass({
     }
 
     setNPages(nPages) {
-        if (this._nPages == nPages)
+        if (this._nPages === nPages)
             return;
 
         let diff = nPages - this._nPages;

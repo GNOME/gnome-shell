@@ -72,14 +72,14 @@ class Dialog extends St.Widget {
     }
 
     vfunc_event(event) {
-        if (event.type() == Clutter.EventType.KEY_PRESS) {
+        if (event.type() === Clutter.EventType.KEY_PRESS) {
             this._pressedKey = event.get_key_symbol();
-        } else if (event.type() == Clutter.EventType.KEY_RELEASE) {
+        } else if (event.type() === Clutter.EventType.KEY_RELEASE) {
             let pressedKey = this._pressedKey;
             this._pressedKey = null;
 
             let symbol = event.get_key_symbol();
-            if (symbol != pressedKey)
+            if (symbol !== pressedKey)
                 return Clutter.EVENT_PROPAGATE;
 
             let buttonInfo = this._buttonKeys[symbol];

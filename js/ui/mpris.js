@@ -80,7 +80,7 @@ class MediaMessage extends MessageList.Message {
             this._icon.add_style_class_name('fallback');
         }
 
-        let isPlaying = this._player.status == 'Playing';
+        let isPlaying = this._player.status === 'Playing';
         let iconName = isPlaying
             ? 'media-playback-pause-symbolic'
             : 'media-playback-start-symbolic';
@@ -236,7 +236,7 @@ export class MprisPlayer extends Signals.EventEmitter {
 
         let visible = this._playerProxy.CanPlay;
 
-        if (this._visible != visible) {
+        if (this._visible !== visible) {
             this._visible = visible;
             if (visible)
                 this.emit('show');

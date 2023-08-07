@@ -457,7 +457,7 @@ class WorkspacesView extends WorkspacesViewBase {
             } else  {
                 workspace = this._workspaces[j];
 
-                if (workspace.metaWorkspace != metaWorkspace) { /* removed */
+                if (workspace.metaWorkspace !== metaWorkspace) { /* removed */
                     workspace.destroy();
                     this._workspaces.splice(j, 1);
                 } /* else kept */
@@ -1082,7 +1082,7 @@ class WorkspacesDisplay extends St.Widget {
             return Clutter.EVENT_PROPAGATE;
 
         if (this._workspacesOnlyOnPrimary &&
-            this._getMonitorIndexForEvent(event) != this._primaryIndex)
+            this._getMonitorIndexForEvent(event) !== this._primaryIndex)
             return Clutter.EVENT_PROPAGATE;
 
         return Main.wm.handleWorkspaceScroll(event);

@@ -232,7 +232,7 @@ function _collect(scriptModule, outputFile) {
         Shell.write_string_to_stream(out, ',\n"monitors":\n[');
         for (let i = 0; i < monitors.length; i++) {
             let monitor = monitors[i];
-            if (i != 0)
+            if (i !== 0)
                 Shell.write_string_to_stream(out, ', ');
             const prefix = i === primary ? '*' : '';
             Shell.write_string_to_stream(out,

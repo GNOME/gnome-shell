@@ -118,18 +118,18 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _initialSelection(backward, binding) {
-        if (binding == 'switch-group') {
+        if (binding === 'switch-group') {
             if (backward)
                 this._select(0, this._items[0].cachedWindows.length - 1);
             else if (this._items[0].cachedWindows.length > 1)
                 this._select(0, 1);
             else
                 this._select(0, 0);
-        } else if (binding == 'switch-group-backward') {
+        } else if (binding === 'switch-group-backward') {
             this._select(0, this._items[0].cachedWindows.length - 1);
-        } else if (binding == 'switch-applications-backward') {
+        } else if (binding === 'switch-applications-backward') {
             this._select(this._items.length - 1);
-        } else if (this._items.length == 1) {
+        } else if (this._items.length === 1) {
             this._select(0);
         } else if (backward) {
             this._select(this._items.length - 1);
@@ -140,7 +140,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
     _nextWindow() {
         // We actually want the second window if we're in the unset state
-        if (this._currentWindow == -1)
+        if (this._currentWindow === -1)
             this._currentWindow = 0;
         return SwitcherPopup.mod(
             this._currentWindow + 1,
@@ -149,7 +149,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
     _previousWindow() {
         // Also assume second window here
-        if (this._currentWindow == -1)
+        if (this._currentWindow === -1)
             this._currentWindow = 1;
         return SwitcherPopup.mod(
             this._currentWindow - 1,
@@ -178,18 +178,18 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
     _keyPressHandler(keysym, action) {
         const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
-        if (action == Meta.KeyBindingAction.SWITCH_GROUP) {
+        if (action === Meta.KeyBindingAction.SWITCH_GROUP) {
             if (!this._thumbnailsFocused)
                 this._select(this._selectedIndex, 0);
             else
                 this._select(this._selectedIndex, this._nextWindow());
-        } else if (action == Meta.KeyBindingAction.SWITCH_GROUP_BACKWARD) {
+        } else if (action === Meta.KeyBindingAction.SWITCH_GROUP_BACKWARD) {
             this._select(this._selectedIndex, this._previousWindow());
-        } else if (action == Meta.KeyBindingAction.SWITCH_APPLICATIONS) {
+        } else if (action === Meta.KeyBindingAction.SWITCH_APPLICATIONS) {
             this._select(this._next());
-        } else if (action == Meta.KeyBindingAction.SWITCH_APPLICATIONS_BACKWARD) {
+        } else if (action === Meta.KeyBindingAction.SWITCH_APPLICATIONS_BACKWARD) {
             this._select(this._previous());
-        } else if (keysym == Clutter.KEY_q || keysym === Clutter.KEY_Q) {
+        } else if (keysym === Clutter.KEY_q || keysym === Clutter.KEY_Q) {
             this._quitApplication(this._selectedIndex);
         } else if (this._thumbnailsFocused) {
             if (keysym === Clutter.KEY_Left)
@@ -202,11 +202,11 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
                 this._closeAppWindow(this._selectedIndex, this._currentWindow);
             else
                 return Clutter.EVENT_PROPAGATE;
-        } else if (keysym == Clutter.KEY_Left) {
+        } else if (keysym === Clutter.KEY_Left) {
             this._select(rtl ? this._next() : this._previous());
-        } else if (keysym == Clutter.KEY_Right) {
+        } else if (keysym === Clutter.KEY_Right) {
             this._select(rtl ? this._previous() : this._next());
-        } else if (keysym == Clutter.KEY_Down) {
+        } else if (keysym === Clutter.KEY_Down) {
             this._select(this._selectedIndex, 0);
         } else {
             return Clutter.EVENT_PROPAGATE;
@@ -216,9 +216,9 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _scrollHandler(direction) {
-        if (direction == Clutter.ScrollDirection.UP) {
+        if (direction === Clutter.ScrollDirection.UP) {
             if (this._thumbnailsFocused) {
-                if (this._currentWindow == 0 || this._currentWindow == -1)
+                if (this._currentWindow === 0 || this._currentWindow === -1)
                     this._select(this._previous());
                 else
                     this._select(this._selectedIndex, this._previousWindow());
@@ -229,9 +229,9 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
                 else
                     this._select(this._previous());
             }
-        } else if (direction == Clutter.ScrollDirection.DOWN) {
+        } else if (direction === Clutter.ScrollDirection.DOWN) {
             if (this._thumbnailsFocused) {
-                if (this._currentWindow == this._items[this._selectedIndex].cachedWindows.length - 1)
+                if (this._currentWindow === this._items[this._selectedIndex].cachedWindows.length - 1)
                     this._select(this._next());
                 else
                     this._select(this._selectedIndex, this._nextWindow());
@@ -249,7 +249,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         // If the user clicks on the selected app, activate the
         // selected window; otherwise (eg, they click on an app while
         // !mouseActive) activate the clicked-on app.
-        if (n == this._selectedIndex && this._currentWindow >= 0)
+        if (n === this._selectedIndex && this._currentWindow >= 0)
             this._select(n, this._currentWindow);
         else
             this._select(n);
@@ -290,7 +290,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _onDestroy() {
-        if (this._thumbnailTimeoutId != 0)
+        if (this._thumbnailTimeoutId !== 0)
             GLib.source_remove(this._thumbnailTimeoutId);
 
         super._onDestroy();
@@ -323,12 +323,12 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
      * app list will have the keyboard focus.
      */
     _select(app, window, forceAppFocus) {
-        if (app != this._selectedIndex || window == null) {
+        if (app !== this._selectedIndex || window == null) {
             if (this._thumbnails)
                 this._destroyThumbnails();
         }
 
-        if (this._thumbnailTimeoutId != 0) {
+        if (this._thumbnailTimeoutId !== 0) {
             GLib.source_remove(this._thumbnailTimeoutId);
             this._thumbnailTimeoutId = 0;
         }
@@ -429,7 +429,7 @@ class CyclerHighlight extends St.Widget {
     }
 
     set window(w) {
-        if (this._window == w)
+        if (this._window === w)
             return;
 
         this._window?.disconnectObject(this);
@@ -519,7 +519,7 @@ const CyclerPopup = GObject.registerClass({
             window.unminimize();
         }
 
-        if (activeWs == ws) {
+        if (activeWs === ws) {
             Main.activateWindow(window);
         } else {
             // If the selected window is on a different workspace, we don't
@@ -564,9 +564,9 @@ class GroupCyclerPopup extends CyclerPopup {
     }
 
     _keyPressHandler(keysym, action) {
-        if (action == Meta.KeyBindingAction.CYCLE_GROUP)
+        if (action === Meta.KeyBindingAction.CYCLE_GROUP)
             this._select(this._next());
-        else if (action == Meta.KeyBindingAction.CYCLE_GROUP_BACKWARD)
+        else if (action === Meta.KeyBindingAction.CYCLE_GROUP_BACKWARD)
             this._select(this._previous());
         else
             return Clutter.EVENT_PROPAGATE;
@@ -610,13 +610,13 @@ class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
     _keyPressHandler(keysym, action) {
         const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
-        if (action == Meta.KeyBindingAction.SWITCH_WINDOWS)
+        if (action === Meta.KeyBindingAction.SWITCH_WINDOWS)
             this._select(this._next());
-        else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS_BACKWARD)
+        else if (action === Meta.KeyBindingAction.SWITCH_WINDOWS_BACKWARD)
             this._select(this._previous());
-        else if (keysym == Clutter.KEY_Left)
+        else if (keysym === Clutter.KEY_Left)
             this._select(rtl ? this._next() : this._previous());
-        else if (keysym == Clutter.KEY_Right)
+        else if (keysym === Clutter.KEY_Right)
             this._select(rtl ? this._previous() : this._next());
         else if (keysym === Clutter.KEY_w || keysym === Clutter.KEY_W || keysym === Clutter.KEY_F4)
             this._closeWindow(this._selectedIndex);
@@ -653,9 +653,9 @@ class WindowCyclerPopup extends CyclerPopup {
     }
 
     _keyPressHandler(keysym, action) {
-        if (action == Meta.KeyBindingAction.CYCLE_WINDOWS)
+        if (action === Meta.KeyBindingAction.CYCLE_WINDOWS)
             this._select(this._next());
-        else if (action == Meta.KeyBindingAction.CYCLE_WINDOWS_BACKWARD)
+        else if (action === Meta.KeyBindingAction.CYCLE_WINDOWS_BACKWARD)
             this._select(this._previous());
         else
             return Clutter.EVENT_PROPAGATE;
@@ -730,7 +730,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
     }
 
     _onDestroy() {
-        if (this._mouseTimeOutId != 0)
+        if (this._mouseTimeOutId !== 0)
             GLib.source_remove(this._mouseTimeOutId);
 
         this.icons.forEach(
@@ -739,7 +739,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
 
     _setIconSize() {
         let j = 0;
-        while (this._items.length > 1 && this._items[j].style_class != 'item-box')
+        while (this._items.length > 1 && this._items[j].style_class !== 'item-box')
             j++;
 
         let themeNode = this._items[j].get_theme_node();
@@ -878,7 +878,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         let item = this.addItem(appIcon, appIcon.label);
 
         appIcon.app.connectObject('notify::state', app => {
-            if (app.state != Shell.AppState.RUNNING)
+            if (app.state !== Shell.AppState.RUNNING)
                 this._removeIcon(app);
         }, this);
 
@@ -887,7 +887,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         this.add_actor(arrow);
         this._arrows.push(arrow);
 
-        if (appIcon.cachedWindows.length == 1)
+        if (appIcon.cachedWindows.length === 1)
             arrow.hide();
         else
             item.add_accessible_state(Atk.StateType.EXPANDABLE);
@@ -895,7 +895,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
 
     _removeIcon(app) {
         let index = this.icons.findIndex(icon => {
-            return icon.app == app;
+            return icon.app === app;
         });
         if (index === -1)
             return;
@@ -1130,12 +1130,12 @@ class WindowSwitcher extends SwitcherPopup.SwitcherList {
     highlight(index, justOutline) {
         super.highlight(index, justOutline);
 
-        this._label.set_text(index == -1 ? '' : this.icons[index].label.text);
+        this._label.set_text(index === -1 ? '' : this.icons[index].label.text);
     }
 
     _removeWindow(window) {
         let index = this.icons.findIndex(icon => {
-            return icon.window == window;
+            return icon.window === window;
         });
         if (index === -1)
             return;

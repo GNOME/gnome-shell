@@ -62,9 +62,9 @@ class KeyboardManager {
         let [layouts, variants] = this._buildGroupStrings(group);
 
         if (this._currentKeymap &&
-            this._currentKeymap.layouts == layouts &&
-            this._currentKeymap.variants == variants &&
-            this._currentKeymap.options == options)
+            this._currentKeymap.layouts === layouts &&
+            this._currentKeymap.variants === variants &&
+            this._currentKeymap.options === options)
             return;
 
         this._currentKeymap = {layouts, variants, options};
@@ -80,8 +80,8 @@ class KeyboardManager {
         if (!info)
             return;
 
-        if (this._current && this._current.group == info.group) {
-            if (this._current.groupIndex != info.groupIndex)
+        if (this._current && this._current.group === info.group) {
+            if (this._current.groupIndex !== info.groupIndex)
                 this._applyLayoutGroupIndex(info.groupIndex);
         } else {
             this._applyLayoutGroup(info.group);
@@ -118,7 +118,7 @@ class KeyboardManager {
             // handle mnemonics like Alt+Ф even if the user is
             // actually typing in a different layout.
             let groupIndex = i % (this.MAX_LAYOUTS_PER_GROUP - 1);
-            if (groupIndex == 0)
+            if (groupIndex === 0)
                 group = [];
 
             let info = this._layoutInfos[id];

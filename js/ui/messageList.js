@@ -57,7 +57,7 @@ class URLHighlighter extends St.Label {
             let [hasColor, color] = this.get_theme_node().lookup_color('link-color', false);
             if (hasColor) {
                 let linkColor = color.to_string().substr(0, 7);
-                if (linkColor != this._linkColor) {
+                if (linkColor !== this._linkColor) {
                     this._linkColor = linkColor;
                     this._highlightUrls();
                 }
@@ -73,7 +73,7 @@ class URLHighlighter extends St.Label {
         // Don't try to URL highlight when invisible.
         // The MessageTray doesn't actually hide us, so
         // we need to check for paint opacities as well.
-        if (!this.visible || this.get_paint_opacity() == 0)
+        if (!this.visible || this.get_paint_opacity() === 0)
             return Clutter.EVENT_PROPAGATE;
 
         // Keep Notification from seeing this and taking
@@ -83,11 +83,11 @@ class URLHighlighter extends St.Label {
     }
 
     vfunc_button_release_event(event) {
-        if (!this.visible || this.get_paint_opacity() == 0)
+        if (!this.visible || this.get_paint_opacity() === 0)
             return Clutter.EVENT_PROPAGATE;
 
         const urlId = this._findUrlAtPos(event);
-        if (urlId != -1) {
+        if (urlId !== -1) {
             let url = this._urls[urlId].url;
             if (!url.includes(':'))
                 url = `http://${url}`;
@@ -100,14 +100,14 @@ class URLHighlighter extends St.Label {
     }
 
     vfunc_motion_event(event) {
-        if (!this.visible || this.get_paint_opacity() == 0)
+        if (!this.visible || this.get_paint_opacity() === 0)
             return Clutter.EVENT_PROPAGATE;
 
         const urlId = this._findUrlAtPos(event);
-        if (urlId != -1 && !this._cursorChanged) {
+        if (urlId !== -1 && !this._cursorChanged) {
             global.display.set_cursor(Meta.Cursor.POINTING_HAND);
             this._cursorChanged = true;
-        } else if (urlId == -1) {
+        } else if (urlId === -1) {
             global.display.set_cursor(Meta.Cursor.DEFAULT);
             this._cursorChanged = false;
         }
@@ -115,7 +115,7 @@ class URLHighlighter extends St.Label {
     }
 
     vfunc_leave_event(event) {
-        if (!this.visible || this.get_paint_opacity() == 0)
+        if (!this.visible || this.get_paint_opacity() === 0)
             return Clutter.EVENT_PROPAGATE;
 
         if (this._cursorChanged) {
@@ -160,7 +160,7 @@ class URLHighlighter extends St.Label {
                 continue;
             findPos = i;
         }
-        if (findPos != -1) {
+        if (findPos !== -1) {
             for (let i = 0; i < this._urls.length; i++) {
                 if (findPos >= this._urls[i].pos &&
                     this._urls[i].pos + this._urls[i].url.length > findPos)
@@ -179,7 +179,7 @@ class ScaleLayout extends Clutter.BinLayout {
     }
 
     _connectContainer(container) {
-        if (this._container == container)
+        if (this._container === container)
             return;
 
         this._container?.disconnectObject(this);
@@ -234,20 +234,20 @@ const LabelExpanderLayout = GObject.registerClass({
     }
 
     set expansion(v) {
-        if (v == this._expansion)
+        if (v === this._expansion)
             return;
         this._expansion = v;
         this.notify('expansion');
 
         let visibleIndex = this._expansion > 0 ? 1 : 0;
         for (let i = 0; this._container && i < this._container.get_n_children(); i++)
-            this._container.get_child_at_index(i).visible = i == visibleIndex;
+            this._container.get_child_at_index(i).visible = i === visibleIndex;
 
         this.layout_changed();
     }
 
     set expandLines(v) {
-        if (v == this._expandLines)
+        if (v === this._expandLines)
             return;
         this._expandLines = v;
         if (this._expansion > 0)
@@ -542,8 +542,8 @@ export const Message = GObject.registerClass({
     vfunc_key_press_event(event) {
         let keysym = event.get_key_symbol();
 
-        if (keysym == Clutter.KEY_Delete ||
-            keysym == Clutter.KEY_KP_Delete) {
+        if (keysym === Clutter.KEY_Delete ||
+            keysym === Clutter.KEY_KP_Delete) {
             if (this.canClose()) {
                 this.close();
                 return Clutter.EVENT_STOP;
@@ -750,15 +750,15 @@ export const MessageListSection = GObject.registerClass({
 
     _sync() {
         let messages = this._messages;
-        let empty = messages.length == 0;
+        let empty = messages.length === 0;
 
-        if (this._empty != empty) {
+        if (this._empty !== empty) {
             this._empty = empty;
             this.notify('empty');
         }
 
         let canClear = messages.some(m => m.canClose());
-        if (this._canClear != canClear) {
+        if (this._canClear !== canClear) {
             this._canClear = canClear;
             this.notify('can-clear');
         }

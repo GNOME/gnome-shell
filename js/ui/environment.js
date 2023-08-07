@@ -110,21 +110,21 @@ function _getPropertyTarget(actor, propName) {
 function _easeActor(actor, params) {
     actor.save_easing_state();
 
-    if (params.duration != undefined)
+    if (params.duration !== undefined)
         actor.set_easing_duration(params.duration);
     delete params.duration;
 
-    if (params.delay != undefined)
+    if (params.delay !== undefined)
         actor.set_easing_delay(params.delay);
     delete params.delay;
 
     let repeatCount = 0;
-    if (params.repeatCount != undefined)
+    if (params.repeatCount !== undefined)
         repeatCount = params.repeatCount;
     delete params.repeatCount;
 
     let autoReverse = false;
-    if (params.autoReverse != undefined)
+    if (params.autoReverse !== undefined)
         autoReverse = params.autoReverse;
     delete params.autoReverse;
 
@@ -133,7 +133,7 @@ function _easeActor(actor, params) {
     // whether the transition should finish where it started
     const isReversed = autoReverse && numIterations % 2 === 0;
 
-    if (params.mode != undefined)
+    if (params.mode !== undefined)
         actor.set_easing_mode(params.mode);
     delete params.mode;
 
@@ -185,12 +185,12 @@ function _easeActorProperty(actor, propName, target, params) {
     let duration = Math.floor(params.duration || 0);
 
     let repeatCount = 0;
-    if (params.repeatCount != undefined)
+    if (params.repeatCount !== undefined)
         repeatCount = params.repeatCount;
     delete params.repeatCount;
 
     let autoReverse = false;
-    if (params.autoReverse != undefined)
+    if (params.autoReverse !== undefined)
         autoReverse = params.autoReverse;
     delete params.autoReverse;
 
@@ -217,7 +217,7 @@ function _easeActorProperty(actor, propName, target, params) {
     // cancel overwritten transition
     actor.remove_transition(propName);
 
-    if (duration == 0) {
+    if (duration === 0) {
         let [obj, prop] = _getPropertyTarget(actor, propName);
 
         if (!isReversed)

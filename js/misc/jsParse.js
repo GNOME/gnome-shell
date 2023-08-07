@@ -37,7 +37,7 @@ export async function getCompletions(text, commandHeader, globalCompletionList) 
         // Look for the empty expression or partially entered words
         // not proceeded by a dot and match them against global constants
         matches = text.match(/^(\w*)$/);
-        if (text == '' || matches) {
+        if (text === '' || matches) {
             [expr_, attrHead] = matches;
             methods = globalCompletionList.filter(
                 attr => attr.slice(0, attrHead.length) === attrHead);
@@ -72,7 +72,7 @@ function isStopChar(c) {
 export function findMatchingQuote(expr, offset) {
     let quoteChar = expr.charAt(offset);
     for (let i = offset - 1; i >= 0; --i) {
-        if (expr.charAt(i) == quoteChar && expr.charAt(i - 1) != '\\')
+        if (expr.charAt(i) === quoteChar && expr.charAt(i - 1) !== '\\')
             return i;
     }
     return -1;
@@ -86,7 +86,7 @@ export function findMatchingQuote(expr, offset) {
  */
 export function findMatchingSlash(expr, offset) {
     for (let i = offset - 1; i >= 0; --i) {
-        if (expr.charAt(i) == '/' && expr.charAt(i - 1) != '\\')
+        if (expr.charAt(i) === '/' && expr.charAt(i - 1) !== '\\')
             return i;
     }
     return -1;
@@ -120,16 +120,16 @@ export function findTheBrace(expr, offset, ...braces) {
     if (offset < 0)
         return -1;
 
-    if (expr.charAt(offset) == openBrace)
+    if (expr.charAt(offset) === openBrace)
         return offset;
 
     if (expr.charAt(offset).match(/['"]/))
         return findTheBrace(expr, findMatchingQuote(expr, offset) - 1, ...braces);
 
-    if (expr.charAt(offset) == '/')
+    if (expr.charAt(offset) === '/')
         return findTheBrace(expr, findMatchingSlash(expr, offset) - 1, ...braces);
 
-    if (expr.charAt(offset) == closeBrace)
+    if (expr.charAt(offset) === closeBrace)
         return findTheBrace(expr, findTheBrace(expr, offset - 1, ...braces) - 1, ...braces);
 
     return findTheBrace(expr, offset - 1, ...braces);
@@ -230,7 +230,7 @@ export function getCommonPrefix(words) {
     let word = words[0];
     for (let i = 0; i < word.length; i++) {
         for (let w = 1; w < words.length; w++) {
-            if (words[w].charAt(i) != word.charAt(i))
+            if (words[w].charAt(i) !== word.charAt(i))
                 return word.slice(0, i);
         }
     }
@@ -243,14 +243,14 @@ export function getCommonPrefix(words) {
  * @param {string} str
  */
 export function removeLiterals(str) {
-    if (str.length == 0)
+    if (str.length === 0)
         return '';
 
     let currChar = str.charAt(str.length - 1);
-    if (currChar == '"' || currChar == '\'') {
+    if (currChar === '"' || currChar === '\'') {
         return removeLiterals(
             str.slice(0, findMatchingQuote(str, str.length - 1)));
-    } else if (currChar == '/') {
+    } else if (currChar === '/') {
         return removeLiterals(
             str.slice(0, findMatchingSlash(str, str.length - 1)));
     }

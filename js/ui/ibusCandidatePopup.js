@@ -95,12 +95,12 @@ const CandidateArea = GObject.registerClass({
     }
 
     setOrientation(orientation) {
-        if (this._orientation == orientation)
+        if (this._orientation === orientation)
             return;
 
         this._orientation = orientation;
 
-        if (this._orientation == IBus.Orientation.HORIZONTAL) {
+        if (this._orientation === IBus.Orientation.HORIZONTAL) {
             this.vertical = false;
             this.remove_style_class_name('vertical');
             this.add_style_class_name('horizontal');
@@ -260,7 +260,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
             let cursorPos = lookupTable.get_cursor_pos();
             let pageSize = lookupTable.get_page_size();
             let nPages = Math.ceil(nCandidates / pageSize);
-            let page = cursorPos == 0 ? 0 : Math.floor(cursorPos / pageSize);
+            let page = cursorPos === 0 ? 0 : Math.floor(cursorPos / pageSize);
             let startIndex = page * pageSize;
             let endIndex = Math.min((page + 1) * pageSize, nCandidates);
 
@@ -336,7 +336,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
     _setTextAttributes(clutterText, ibusAttrList) {
         let attr;
         for (let i = 0; (attr = ibusAttrList.get(i)); ++i) {
-            if (attr.get_attr_type() == IBus.AttrType.BACKGROUND)
+            if (attr.get_attr_type() === IBus.AttrType.BACKGROUND)
                 clutterText.set_selection(attr.get_start_index(), attr.get_end_index());
         }
     }

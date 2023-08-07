@@ -137,7 +137,7 @@ class KeyContainer extends St.Widget {
             let row = this._rows[i];
 
             /* When starting a new row, see if we need some padding */
-            if (nCol == 0) {
+            if (nCol === 0) {
                 let diff = this._maxCols - row.width;
                 if (diff >= 1)
                     nCol = diff * KEY_SIZE / 2;
@@ -238,7 +238,7 @@ class LanguageSelectionPopup extends PopupMenu.PopupMenu {
             this.actor.contains(targetActor))
             return Clutter.EVENT_PROPAGATE;
 
-        if (event.type() == Clutter.EventType.BUTTON_RELEASE || event.type() == Clutter.EventType.TOUCH_END)
+        if (event.type() === Clutter.EventType.BUTTON_RELEASE || event.type() === Clutter.EventType.TOUCH_END)
             this.close(true);
 
         return Clutter.EVENT_STOP;
@@ -355,7 +355,7 @@ const Key = GObject.registerClass({
     }
 
     _release(button, commitString) {
-        if (this._pressTimeoutId != 0) {
+        if (this._pressTimeoutId !== 0) {
             GLib.source_remove(this._pressTimeoutId);
             this._pressTimeoutId = 0;
         }
@@ -376,7 +376,7 @@ const Key = GObject.registerClass({
     }
 
     cancel() {
-        if (this._pressTimeoutId != 0) {
+        if (this._pressTimeoutId !== 0) {
             GLib.source_remove(this._pressTimeoutId);
             this._pressTimeoutId = 0;
         }
@@ -387,8 +387,8 @@ const Key = GObject.registerClass({
 
     _onCapturedEvent(actor, event) {
         let type = event.type();
-        let press = type == Clutter.EventType.BUTTON_PRESS || type == Clutter.EventType.TOUCH_BEGIN;
-        let release = type == Clutter.EventType.BUTTON_RELEASE || type == Clutter.EventType.TOUCH_END;
+        let press = type === Clutter.EventType.BUTTON_PRESS || type === Clutter.EventType.TOUCH_BEGIN;
+        let release = type === Clutter.EventType.BUTTON_RELEASE || type === Clutter.EventType.TOUCH_END;
         const targetActor = global.stage.get_event_actor(event);
 
         if (targetActor === this._boxPointer.bin ||
@@ -463,7 +463,7 @@ const Key = GObject.registerClass({
             const slot = event.get_event_sequence().get_slot();
 
             if (!this._touchPressSlot &&
-                event.type() == Clutter.EventType.TOUCH_BEGIN) {
+                event.type() === Clutter.EventType.TOUCH_BEGIN) {
                 this._touchPressSlot = slot;
                 this._press(button, commitString);
                 button.add_style_pseudo_class('active');
@@ -548,7 +548,7 @@ class KeyboardModel {
     }
 
     getKeysForLevel(levelName) {
-        return this._model.levels.find(level => level == levelName);
+        return this._model.levels.find(level => level === levelName);
     }
 }
 
@@ -711,7 +711,7 @@ const EmojiPager = GObject.registerClass({
     }
 
     set delta(value) {
-        if (this._delta == value)
+        if (this._delta === value)
             return;
 
         this._delta = value;
@@ -719,7 +719,7 @@ const EmojiPager = GObject.registerClass({
 
         let followingPage = this.getFollowingPage();
 
-        if (this._followingPage != followingPage) {
+        if (this._followingPage !== followingPage) {
             if (this._followingPanel) {
                 this._followingPanel.destroy();
                 this._followingPanel = null;
@@ -756,7 +756,7 @@ const EmojiPager = GObject.registerClass({
     }
 
     getFollowingPage() {
-        if (this.delta == 0)
+        if (this.delta === 0)
             return null;
 
         if (this.delta < 0)
@@ -810,7 +810,7 @@ const EmojiPager = GObject.registerClass({
             let pageKeys;
 
             for (let j = 0; j < section.keys.length; j++) {
-                if (j % itemsPerPage == 0) {
+                if (j % itemsPerPage === 0) {
                     page++;
                     pageKeys = [];
                     this._pages.push({pageKeys, nPages, page, section: this._sections[i]});
@@ -825,7 +825,7 @@ const EmojiPager = GObject.registerClass({
         for (let i = 0; i < this._pages.length; i++) {
             let page = this._pages[i];
 
-            if (page.section == section && page.page == nPage)
+            if (page.section === section && page.page === nPage)
                 return i;
         }
 
@@ -865,7 +865,7 @@ const EmojiPager = GObject.registerClass({
                 this._currentKey = key;
             });
             key.connect('commit', (actor, keyval, str) => {
-                if (this._currentKey != key)
+                if (this._currentKey !== key)
                     return;
                 this._currentKey = null;
                 this.emit('emoji', str);
@@ -884,7 +884,7 @@ const EmojiPager = GObject.registerClass({
     }
 
     setCurrentPage(nPage) {
-        if (this._curPage == nPage)
+        if (this._curPage === nPage)
             return;
 
         this._curPage = nPage;
@@ -895,7 +895,7 @@ const EmojiPager = GObject.registerClass({
         }
 
         /* Reuse followingPage if possible */
-        if (nPage == this._followingPage) {
+        if (nPage === this._followingPage) {
             this._panel = this._followingPanel;
             this._followingPanel = null;
         }
@@ -920,7 +920,7 @@ const EmojiPager = GObject.registerClass({
         for (let i = 0; i < this._pages.length; i++) {
             let page = this._pages[i];
 
-            if (page.section == section && page.page == nPage) {
+            if (page.section === section && page.page === nPage) {
                 this.setCurrentPage(i);
                 break;
             }
@@ -1013,7 +1013,7 @@ const EmojiSelection = GObject.registerClass({
 
         for (let i = 0; i < this._sections.length; i++) {
             let sect = this._sections[i];
-            sect.button.setLatched(sectionLabel == sect.label);
+            sect.button.setLatched(sectionLabel === sect.label);
         }
     }
 
@@ -1024,7 +1024,7 @@ const EmojiSelection = GObject.registerClass({
 
     _findSection(emoji) {
         for (let i = 0; i < this._sections.length; i++) {
-            if (this._sections[i].first == emoji)
+            if (this._sections[i].first === emoji)
                 return this._sections[i];
         }
 
@@ -1221,7 +1221,7 @@ export class KeyboardManager extends Signals.EventEmitter {
             return false;
 
         let deviceType = this._lastDevice.get_device_type();
-        return deviceType == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE;
+        return deviceType === Clutter.InputDeviceType.TOUCHSCREEN_DEVICE;
     }
 
     _syncEnabled() {
@@ -1494,7 +1494,7 @@ export const Keyboard = GObject.registerClass({
              * basically). We however make things consistent by skipping that
              * second level.
              */
-            let level = i >= 1 && levels.length == 3 ? i + 1 : i;
+            let level = i >= 1 && levels.length === 3 ? i + 1 : i;
 
             let layout = new KeyContainer();
             layout.shiftKeys = [];
@@ -1837,7 +1837,7 @@ export const Keyboard = GObject.registerClass({
     }
 
     _onKeypadVisible(controller, visible) {
-        if (visible == this._keypadVisible)
+        if (visible === this._keypadVisible)
             return;
 
         this._keypadVisible = visible;
@@ -1846,7 +1846,7 @@ export const Keyboard = GObject.registerClass({
     }
 
     _onEmojiKeyVisible(controller, visible) {
-        if (visible == this._emojiKeyVisible)
+        if (visible === this._emojiKeyVisible)
             return;
 
         this._emojiKeyVisible = visible;
@@ -1856,12 +1856,12 @@ export const Keyboard = GObject.registerClass({
 
     _onKeyboardStateChanged(controller, state) {
         let enabled;
-        if (state == Clutter.InputPanelState.OFF)
+        if (state === Clutter.InputPanelState.OFF)
             enabled = false;
-        else if (state == Clutter.InputPanelState.ON)
+        else if (state === Clutter.InputPanelState.ON)
             enabled = true;
-        else if (state == Clutter.InputPanelState.TOGGLE)
-            enabled = this._keyboardVisible == false;
+        else if (state === Clutter.InputPanelState.TOGGLE)
+            enabled = this._keyboardVisible === false;
         else
             return;
 
@@ -1876,7 +1876,7 @@ export const Keyboard = GObject.registerClass({
         let layers = this._groups[activeGroupName];
         let currentPage = layers[activeLevel];
 
-        if (this._currentPage == currentPage) {
+        if (this._currentPage === currentPage) {
             this._updateCurrentPageVisible();
             return;
         }
@@ -2211,14 +2211,14 @@ class KeyboardController extends Signals.EventEmitter {
         let emojiVisible = false;
         let keypadVisible = false;
 
-        if (purpose == Clutter.InputContentPurpose.NORMAL ||
-            purpose == Clutter.InputContentPurpose.ALPHA ||
-            purpose == Clutter.InputContentPurpose.PASSWORD ||
-            purpose == Clutter.InputContentPurpose.TERMINAL)
+        if (purpose === Clutter.InputContentPurpose.NORMAL ||
+            purpose === Clutter.InputContentPurpose.ALPHA ||
+            purpose === Clutter.InputContentPurpose.PASSWORD ||
+            purpose === Clutter.InputContentPurpose.TERMINAL)
             emojiVisible = true;
-        if (purpose == Clutter.InputContentPurpose.DIGITS ||
-            purpose == Clutter.InputContentPurpose.NUMBER ||
-            purpose == Clutter.InputContentPurpose.PHONE)
+        if (purpose === Clutter.InputContentPurpose.DIGITS ||
+            purpose === Clutter.InputContentPurpose.NUMBER ||
+            purpose === Clutter.InputContentPurpose.PHONE)
             keypadVisible = true;
 
         this.emit('emoji-visible', emojiVisible);
@@ -2261,7 +2261,7 @@ class KeyboardController extends Signals.EventEmitter {
         if (string == null)
             return false;
         /* Let ibus methods fall through keyval emission */
-        if (fromKey && this._currentSource.type == InputSourceManager.INPUT_SOURCE_TYPE_IBUS)
+        if (fromKey && this._currentSource.type === InputSourceManager.INPUT_SOURCE_TYPE_IBUS)
             return false;
 
         Main.inputMethod.commit(string);

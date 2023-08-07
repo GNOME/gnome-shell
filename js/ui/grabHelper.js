@@ -39,7 +39,7 @@ export class GrabHelper {
     _isWithinGrabbedActor(actor) {
         let currentActor = this.currentGrab.actor;
         while (actor) {
-            if (actor == currentActor)
+            if (actor === currentActor)
                 return true;
             actor = actor.get_parent();
         }
@@ -155,7 +155,7 @@ export class GrabHelper {
     }
 
     _takeModalGrab() {
-        let firstGrab = this._modalCount == 0;
+        let firstGrab = this._modalCount === 0;
         if (firstGrab) {
             let grab = Main.pushModal(this._owner, this._modalParams);
             if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
@@ -244,20 +244,20 @@ export class GrabHelper {
     onCapturedEvent(event) {
         let type = event.type();
 
-        if (type == Clutter.EventType.KEY_PRESS &&
-            event.get_key_symbol() == Clutter.KEY_Escape) {
+        if (type === Clutter.EventType.KEY_PRESS &&
+            event.get_key_symbol() === Clutter.KEY_Escape) {
             this.ungrab({isUser: true});
             return Clutter.EVENT_STOP;
         }
 
-        let motion = type == Clutter.EventType.MOTION;
-        let press = type == Clutter.EventType.BUTTON_PRESS;
-        let release = type == Clutter.EventType.BUTTON_RELEASE;
+        let motion = type === Clutter.EventType.MOTION;
+        let press = type === Clutter.EventType.BUTTON_PRESS;
+        let release = type === Clutter.EventType.BUTTON_RELEASE;
         let button = press || release;
 
-        let touchUpdate = type == Clutter.EventType.TOUCH_UPDATE;
-        let touchBegin = type == Clutter.EventType.TOUCH_BEGIN;
-        let touchEnd = type == Clutter.EventType.TOUCH_END;
+        let touchUpdate = type === Clutter.EventType.TOUCH_UPDATE;
+        let touchBegin = type === Clutter.EventType.TOUCH_BEGIN;
+        let touchEnd = type === Clutter.EventType.TOUCH_END;
         let touch = touchUpdate || touchBegin || touchEnd;
 
         if (touch && !global.display.is_pointer_emulating_sequence(event.get_event_sequence()))

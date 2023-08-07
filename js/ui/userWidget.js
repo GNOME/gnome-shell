@@ -170,7 +170,7 @@ class UserWidget extends St.BoxLayout {
         // If user is null, that implies a username-based login authorization.
         this._user = user;
 
-        let vertical = orientation == Clutter.Orientation.VERTICAL;
+        let vertical = orientation === Clutter.Orientation.VERTICAL;
         let xAlign = vertical ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.START;
         let styleClass = vertical ? 'user-widget vertical' : 'user-widget horizontal';
 

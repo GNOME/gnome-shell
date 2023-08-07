@@ -95,7 +95,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
     }
 
     CloseAsync(invocation, _params) {
-        if (this._invocation.get_sender() != invocation.get_sender()) {
+        if (this._invocation.get_sender() !== invocation.get_sender()) {
             invocation.return_error_literal(
                 Gio.DBusError,
                 Gio.DBusError.ACCESS_DENIED,
@@ -112,7 +112,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
         this._requestExported = false;
 
         let results = {};
-        if (response == DialogResponse.OK) {
+        if (response === DialogResponse.OK) {
             for (let [id, check] of this._choices) {
                 let checked = check.checked ? 'true' : 'false';
                 results[id] = new GLib.Variant('s', checked);

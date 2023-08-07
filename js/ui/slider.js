@@ -121,14 +121,14 @@ export const Slider = GObject.registerClass({
         let sequence = event.get_event_sequence();
 
         if (!this._dragging &&
-            event.type() == Clutter.EventType.TOUCH_BEGIN) {
+            event.type() === Clutter.EventType.TOUCH_BEGIN) {
             this.startDragging(event);
             return Clutter.EVENT_STOP;
         } else if (this._grabbedSequence &&
                    sequence.get_slot() === this._grabbedSequence.get_slot()) {
-            if (event.type() == Clutter.EventType.TOUCH_UPDATE)
+            if (event.type() === Clutter.EventType.TOUCH_UPDATE)
                 return this._motionEvent(this, event);
-            else if (event.type() == Clutter.EventType.TOUCH_END)
+            else if (event.type() === Clutter.EventType.TOUCH_END)
                 return this._endDragging();
         }
 
@@ -142,11 +142,11 @@ export const Slider = GObject.registerClass({
         if (event.get_flags() & Clutter.EventFlags.POINTER_EMULATED)
             return Clutter.EVENT_PROPAGATE;
 
-        if (direction == Clutter.ScrollDirection.DOWN) {
+        if (direction === Clutter.ScrollDirection.DOWN) {
             delta = -SLIDER_SCROLL_STEP;
-        } else if (direction == Clutter.ScrollDirection.UP) {
+        } else if (direction === Clutter.ScrollDirection.UP) {
             delta = SLIDER_SCROLL_STEP;
-        } else if (direction == Clutter.ScrollDirection.SMOOTH) {
+        } else if (direction === Clutter.ScrollDirection.SMOOTH) {
             let [, dy] = event.get_scroll_delta();
             // Even though the slider is horizontal, use dy to match
             // the UP/DOWN above.
@@ -178,8 +178,8 @@ export const Slider = GObject.registerClass({
 
     vfunc_key_press_event(event) {
         let key = event.get_key_symbol();
-        if (key == Clutter.KEY_Right || key == Clutter.KEY_Left) {
-            let delta = key == Clutter.KEY_Right ? 0.1 : -0.1;
+        if (key === Clutter.KEY_Right || key === Clutter.KEY_Left) {
+            let delta = key === Clutter.KEY_Right ? 0.1 : -0.1;
             this.value = Math.max(0, Math.min(this._value + delta, this._maxValue));
             return Clutter.EVENT_STOP;
         }

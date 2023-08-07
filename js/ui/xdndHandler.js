@@ -93,7 +93,7 @@ export class XdndHandler extends Signals.EventEmitter {
             let motionFunc = DND.dragMonitors[i].dragMotion;
             if (motionFunc) {
                 let result = motionFunc(dragEvent);
-                if (result != DND.DragMotionResult.CONTINUE)
+                if (result !== DND.DragMotionResult.CONTINUE)
                     return;
             }
         }
@@ -106,7 +106,7 @@ export class XdndHandler extends Signals.EventEmitter {
                     targX,
                     targY,
                     global.get_current_time());
-                if (result != DND.DragMotionResult.CONTINUE)
+                if (result !== DND.DragMotionResult.CONTINUE)
                     return;
             }
             pickedActor = pickedActor.get_parent();

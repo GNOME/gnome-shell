@@ -1069,7 +1069,7 @@ class Workspace extends St.Widget {
         this.monitorIndex = monitorIndex;
         this._monitor = Main.layoutManager.monitors[this.monitorIndex];
 
-        if (monitorIndex != Main.layoutManager.primaryIndex)
+        if (monitorIndex !== Main.layoutManager.primaryIndex)
             this.add_style_class_name('external-monitor');
 
         const clickAction = new Clutter.ClickAction();
@@ -1130,7 +1130,7 @@ class Workspace extends St.Widget {
     }
 
     _lookupIndex(metaWindow) {
-        return this._windows.findIndex(w => w.metaWindow == metaWindow);
+        return this._windows.findIndex(w => w.metaWindow === metaWindow);
     }
 
     containsMetaWindow(metaWindow) {
@@ -1138,7 +1138,7 @@ class Workspace extends St.Widget {
     }
 
     isEmpty() {
-        return this._windows.length == 0;
+        return this._windows.length === 0;
     }
 
     syncStacking(stackIndices) {
@@ -1199,7 +1199,7 @@ class Workspace extends St.Widget {
             // the compositor finds out about them...
             let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
                 if (metaWin.get_compositor_private() &&
-                    metaWin.get_workspace() == this.metaWorkspace)
+                    metaWin.get_workspace() === this.metaWorkspace)
                     this._doAddWindow(metaWin);
                 return GLib.SOURCE_REMOVE;
             });
@@ -1209,7 +1209,7 @@ class Workspace extends St.Widget {
 
         // We might have the window in our list already if it was on all workspaces and
         // now was moved to this workspace
-        if (this._lookupIndex(metaWin) != -1)
+        if (this._lookupIndex(metaWin) !== -1)
             return;
 
         if (!this._isMyWindow(metaWin))
@@ -1229,7 +1229,7 @@ class Workspace extends St.Widget {
 
             // Let the top-most ancestor handle all transients
             let parent = metaWin.find_root_ancestor();
-            let clone = this._windows.find(c => c.metaWindow == parent);
+            let clone = this._windows.find(c => c.metaWindow === parent);
 
             // If no clone was found, the parent hasn't been created yet
             // and will take care of the dialog when added
@@ -1276,7 +1276,7 @@ class Workspace extends St.Widget {
     }
 
     _windowLeftMonitor(metaDisplay, monitorIndex, metaWin) {
-        if (monitorIndex == this.monitorIndex)
+        if (monitorIndex === this.monitorIndex)
             this._doRemoveWindow(metaWin);
     }
 
@@ -1376,7 +1376,7 @@ class Workspace extends St.Widget {
 
         this._container.layout_manager.addWindow(clone, metaWindow);
 
-        if (this._windows.length == 0)
+        if (this._windows.length === 0)
             clone.setStackAbove(null);
         else
             clone.setStackAbove(this._windows[this._windows.length - 1]);
@@ -1390,7 +1390,7 @@ class Workspace extends St.Widget {
         // find the position of the window in our list
         let index = this._lookupIndex(metaWin);
 
-        if (index == -1)
+        if (index === -1)
             return null;
 
         this._container.layout_manager.removeWindow(this._windows[index]);

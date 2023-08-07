@@ -194,7 +194,7 @@ const UserList = GObject.registerClass({
         if (!hasItems)
             return;
 
-        if (global.stage.get_key_focus() != this)
+        if (global.stage.get_key_focus() !== this)
             return;
 
         let focusSet = this.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
@@ -364,7 +364,7 @@ const SessionMenuButton = GObject.registerClass({
     _updateOrnament() {
         let itemIds = Object.keys(this._items);
         for (let i = 0; i < itemIds.length; i++) {
-            if (itemIds[i] == this._activeSessionId)
+            if (itemIds[i] === this._activeSessionId)
                 this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.DOT);
             else
                 this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.NONE);
@@ -372,7 +372,7 @@ const SessionMenuButton = GObject.registerClass({
     }
 
     setActiveSession(sessionId) {
-        if (sessionId == this._activeSessionId)
+        if (sessionId === this._activeSessionId)
             return;
 
         this._activeSessionId = sessionId;
@@ -774,13 +774,13 @@ export const LoginDialog = GObject.registerClass({
         let disableUserList = this._settings.get_boolean(GdmUtil.DISABLE_USER_LIST_KEY);
 
         // Disable user list when there are no users.
-        if (this._userListLoaded && this._userList.numItems() == 0)
+        if (this._userListLoaded && this._userList.numItems() === 0)
             disableUserList = true;
 
-        if (disableUserList != this._disableUserList) {
+        if (disableUserList !== this._disableUserList) {
             this._disableUserList = disableUserList;
 
-            if (this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
+            if (this._authPrompt.verificationStatus === AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
                 this._authPrompt.reset();
 
             if (this._disableUserList && this._timedLoginUserListHold)
@@ -793,7 +793,8 @@ export const LoginDialog = GObject.registerClass({
 
         // Hide the cancel button if the user list is disabled and we're asking for
         // a username
-        if (this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING && this._disableUserList)
+        if (this._authPrompt.verificationStatus === AuthPrompt.AuthPromptStatus.NOT_VERIFYING &&
+            this._disableUserList)
             cancelVisible = false;
         else
             cancelVisible = true;
@@ -860,7 +861,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _resetGreeterProxy() {
-        if (GLib.getenv('GDM_GREETER_TEST') != '1') {
+        if (GLib.getenv('GDM_GREETER_TEST') !== '1') {
             if (this._greeter)
                 this._greeter.run_dispose();
 
@@ -904,8 +905,8 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _shouldShowSessionMenuButton() {
-        if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFYING &&
-            this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFICATION_FAILED)
+        if (this._authPrompt.verificationStatus !== AuthPrompt.AuthPromptStatus.VERIFYING &&
+            this._authPrompt.verificationStatus !== AuthPrompt.AuthPromptStatus.VERIFICATION_FAILED)
             return false;
 
         if (this._user && this._user.is_loaded && this._user.is_logged_in())
@@ -968,7 +969,7 @@ export const LoginDialog = GObject.registerClass({
 
     _bindOpacity() {
         this._bindings = Main.layoutManager.uiGroup.get_children()
-            .filter(c => c != Main.layoutManager.screenShieldGroup)
+            .filter(c => c !== Main.layoutManager.screenShieldGroup)
             .map(c => this.bind_property('opacity', c, 'opacity', 0));
     }
 
@@ -977,7 +978,8 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _loginScreenSessionActivated() {
-        if (this.opacity == 255 && this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
+        if (this.opacity === 255 &&
+            this._authPrompt.verificationStatus === AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
             return;
 
         if (this._authPrompt.verificationStatus !== AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
@@ -1152,8 +1154,8 @@ export const LoginDialog = GObject.registerClass({
 
         // Restart timed login on user interaction
         global.stage.connect('captured-event', (actor, event) => {
-            if (event.type() == Clutter.EventType.KEY_PRESS ||
-                event.type() == Clutter.EventType.BUTTON_PRESS)
+            if (event.type() === Clutter.EventType.KEY_PRESS ||
+                event.type() === Clutter.EventType.BUTTON_PRESS)
                 this._startTimedLogin(userName, seconds);
 
             return Clutter.EVENT_PROPAGATE;

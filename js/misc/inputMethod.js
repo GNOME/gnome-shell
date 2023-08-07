@@ -172,7 +172,7 @@ export const InputMethod = GObject.registerClass({
     }
 
     _onForwardKeyEvent(_context, keyval, keycode, state) {
-        let press = (state & IBus.ModifierType.RELEASE_MASK) == 0;
+        let press = (state & IBus.ModifierType.RELEASE_MASK) === 0;
         state &= ~IBus.ModifierType.RELEASE_MASK;
 
         let curEvent = Clutter.get_current_event();
@@ -278,23 +278,23 @@ export const InputMethod = GObject.registerClass({
 
     vfunc_update_content_purpose(purpose) {
         let ibusPurpose = 0;
-        if (purpose == Clutter.InputContentPurpose.NORMAL)
+        if (purpose === Clutter.InputContentPurpose.NORMAL)
             ibusPurpose = IBus.InputPurpose.FREE_FORM;
-        else if (purpose == Clutter.InputContentPurpose.ALPHA)
+        else if (purpose === Clutter.InputContentPurpose.ALPHA)
             ibusPurpose = IBus.InputPurpose.ALPHA;
-        else if (purpose == Clutter.InputContentPurpose.DIGITS)
+        else if (purpose === Clutter.InputContentPurpose.DIGITS)
             ibusPurpose = IBus.InputPurpose.DIGITS;
-        else if (purpose == Clutter.InputContentPurpose.NUMBER)
+        else if (purpose === Clutter.InputContentPurpose.NUMBER)
             ibusPurpose = IBus.InputPurpose.NUMBER;
-        else if (purpose == Clutter.InputContentPurpose.PHONE)
+        else if (purpose === Clutter.InputContentPurpose.PHONE)
             ibusPurpose = IBus.InputPurpose.PHONE;
-        else if (purpose == Clutter.InputContentPurpose.URL)
+        else if (purpose === Clutter.InputContentPurpose.URL)
             ibusPurpose = IBus.InputPurpose.URL;
-        else if (purpose == Clutter.InputContentPurpose.EMAIL)
+        else if (purpose === Clutter.InputContentPurpose.EMAIL)
             ibusPurpose = IBus.InputPurpose.EMAIL;
-        else if (purpose == Clutter.InputContentPurpose.NAME)
+        else if (purpose === Clutter.InputContentPurpose.NAME)
             ibusPurpose = IBus.InputPurpose.NAME;
-        else if (purpose == Clutter.InputContentPurpose.PASSWORD)
+        else if (purpose === Clutter.InputContentPurpose.PASSWORD)
             ibusPurpose = IBus.InputPurpose.PASSWORD;
         else if (purpose === Clutter.InputContentPurpose.TERMINAL &&
                  IBus.InputPurpose.TERMINAL)
@@ -325,7 +325,7 @@ export const InputMethod = GObject.registerClass({
         if (state & IBus.ModifierType.IGNORED_MASK)
             return false;
 
-        if (event.type() == Clutter.EventType.KEY_RELEASE)
+        if (event.type() === Clutter.EventType.KEY_RELEASE)
             state |= IBus.ModifierType.RELEASE_MASK;
 
         this._context.process_key_event_async(
@@ -333,7 +333,7 @@ export const InputMethod = GObject.registerClass({
             event.get_key_code() - 8, // Convert XKB keycodes to evcodes
             state, -1, this._cancellable,
             (context, res) => {
-                if (context != this._context)
+                if (context !== this._context)
                     return;
 
                 try {

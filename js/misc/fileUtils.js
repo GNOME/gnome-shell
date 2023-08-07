@@ -54,9 +54,9 @@ export function recursivelyDeleteDir(dir, deleteParent) {
     while ((info = children.next_file(null)) != null) {
         let type = info.get_file_type();
         let child = dir.get_child(info.get_name());
-        if (type == Gio.FileType.REGULAR)
+        if (type === Gio.FileType.REGULAR)
             child.delete(null);
-        else if (type == Gio.FileType.DIRECTORY)
+        else if (type === Gio.FileType.DIRECTORY)
             recursivelyDeleteDir(child, true);
     }
 
@@ -80,9 +80,9 @@ export function recursivelyMoveDir(srcDir, destDir) {
         let type = info.get_file_type();
         let srcChild = srcDir.get_child(info.get_name());
         let destChild = destDir.get_child(info.get_name());
-        if (type == Gio.FileType.REGULAR)
+        if (type === Gio.FileType.REGULAR)
             srcChild.move(destChild, Gio.FileCopyFlags.NONE, null, null);
-        else if (type == Gio.FileType.DIRECTORY)
+        else if (type === Gio.FileType.DIRECTORY)
             recursivelyMoveDir(srcChild, destChild);
     }
 }

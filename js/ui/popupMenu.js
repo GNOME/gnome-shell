@@ -163,7 +163,7 @@ export const PopupBaseMenuItem = GObject.registerClass({
             return Clutter.EVENT_PROPAGATE;
 
         let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
+        if (symbol === Clutter.KEY_space || symbol === Clutter.KEY_Return) {
             this.activate(event);
             return Clutter.EVENT_STOP;
         }
@@ -189,7 +189,7 @@ export const PopupBaseMenuItem = GObject.registerClass({
     }
 
     set active(active) {
-        let activeChanged = active != this.active;
+        let activeChanged = active !== this.active;
         if (activeChanged) {
             this._active = active;
             if (active) {
@@ -224,7 +224,7 @@ export const PopupBaseMenuItem = GObject.registerClass({
     }
 
     setSensitive(sensitive) {
-        if (this._sensitive == sensitive)
+        if (this._sensitive === sensitive)
             return;
 
         this._sensitive = sensitive;
@@ -245,13 +245,13 @@ export const PopupBaseMenuItem = GObject.registerClass({
 
         this._ornament = ornament;
 
-        if (ornament == Ornament.DOT) {
+        if (ornament === Ornament.DOT) {
             this._ornamentIcon.icon_name = 'ornament-dot-symbolic';
             this.add_accessible_state(Atk.StateType.CHECKED);
-        } else if (ornament == Ornament.CHECK) {
+        } else if (ornament === Ornament.CHECK) {
             this._ornamentIcon.icon_name = 'ornament-check-symbolic';
             this.add_accessible_state(Atk.StateType.CHECKED);
-        } else if (ornament == Ornament.NONE || ornament == Ornament.HIDDEN) {
+        } else if (ornament === Ornament.NONE || ornament === Ornament.HIDDEN) {
             this._ornamentIcon.icon_name = '';
             this.remove_accessible_state(Atk.StateType.CHECKED);
         }
@@ -311,7 +311,7 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
     }
 
     _syncVisibility() {
-        this.label.visible = this.label.text != '';
+        this.label.visible = this.label.text !== '';
     }
 });
 
@@ -409,8 +409,8 @@ export const PopupSwitchMenuItem = GObject.registerClass({
 
         // we allow pressing space to toggle the switch
         // without closing the menu
-        if (event.type() == Clutter.EventType.KEY_PRESS &&
-            event.get_key_symbol() == Clutter.KEY_space)
+        if (event.type() === Clutter.EventType.KEY_PRESS &&
+            event.get_key_symbol() === Clutter.KEY_space)
             return;
 
         super.activate(event);
@@ -549,7 +549,7 @@ export class PopupMenuBase extends Signals.EventEmitter {
 
     addAction(title, callback, icon) {
         let menuItem;
-        if (icon != undefined)
+        if (icon !== undefined)
             menuItem = new PopupImageMenuItem(title, icon);
         else
             menuItem = new PopupMenuItem(title);
@@ -600,14 +600,14 @@ export class PopupMenuBase extends Signals.EventEmitter {
     }
 
     itemActivated(animate) {
-        if (animate == undefined)
+        if (animate === undefined)
             animate = BoxPointer.PopupAnimation.FULL;
 
         this._getTopMenu().close(animate);
     }
 
     _subMenuActiveChanged(submenu, submenuItem) {
-        if (this._activeMenuItem && this._activeMenuItem != submenuItem)
+        if (this._activeMenuItem && this._activeMenuItem !== submenuItem)
             this._activeMenuItem.active = false;
         this._activeMenuItem = submenuItem;
         this.emit('active-changed', submenuItem);
@@ -692,13 +692,13 @@ export class PopupMenuBase extends Signals.EventEmitter {
         let i = 0;
 
         while (i < items.length && position > 0) {
-            if (items[i] != menuItem)
+            if (items[i] !== menuItem)
                 position--;
             i++;
         }
 
         if (i < items.length) {
-            if (items[i] != menuItem)
+            if (items[i] !== menuItem)
                 this.box.set_child_below_sibling(menuItem.actor, items[i].actor);
         } else {
             this.box.set_child_above_sibling(menuItem.actor, null);
@@ -707,7 +707,7 @@ export class PopupMenuBase extends Signals.EventEmitter {
 
     addMenuItem(menuItem, position) {
         let beforeItem = null;
-        if (position == undefined) {
+        if (position === undefined) {
             this.box.add(menuItem.actor);
         } else {
             let items = this._getMenuItems();
@@ -884,10 +884,10 @@ export class PopupMenu extends PopupMenuBase {
 
         let symbol = event.get_key_symbol();
 
-        if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
+        if (symbol === Clutter.KEY_space || symbol === Clutter.KEY_Return) {
             this.toggle();
             return Clutter.EVENT_STOP;
-        } else if (symbol == navKey) {
+        } else if (symbol === navKey) {
             if (!this.isOpen)
                 this.toggle();
             this.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
@@ -1064,7 +1064,7 @@ export class PopupSubMenu extends PopupMenuBase {
         if (animate && needsScrollbar)
             animate = false;
 
-        let targetAngle = this.actor.text_direction == Clutter.TextDirection.RTL ? -90 : 90;
+        let targetAngle = this.actor.text_direction === Clutter.TextDirection.RTL ? -90 : 90;
 
         if (animate) {
             let [, naturalHeight] = this.actor.get_preferred_height(-1);
@@ -1122,7 +1122,7 @@ export class PopupSubMenu extends PopupMenuBase {
     _onKeyPressEvent(actor, event) {
         // Move focus back to parent menu if the user types Left.
 
-        if (this.isOpen && event.get_key_symbol() == Clutter.KEY_Left) {
+        if (this.isOpen && event.get_key_symbol() === Clutter.KEY_Left) {
             this.close(BoxPointer.PopupAnimation.FULL);
             this.sourceActor._delegate.active = true;
             return Clutter.EVENT_STOP;
@@ -1249,11 +1249,11 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
     vfunc_key_press_event(event) {
         let symbol = event.get_key_symbol();
 
-        if (symbol == Clutter.KEY_Right) {
+        if (symbol === Clutter.KEY_Right) {
             this._setOpenState(true);
             this.menu.actor.navigate_focus(null, St.DirectionType.DOWN, false);
             return Clutter.EVENT_STOP;
-        } else if (symbol == Clutter.KEY_Left && this._getOpenState()) {
+        } else if (symbol === Clutter.KEY_Left && this._getOpenState()) {
             this._setOpenState(false);
             return Clutter.EVENT_STOP;
         }
@@ -1296,7 +1296,7 @@ export class PopupMenuManager {
         menu.actor.connectObject('captured-event',
             this._onCapturedEvent.bind(this), this);
 
-        if (position == undefined)
+        if (position === undefined)
             this._menus.push(menu);
         else
             this._menus.splice(position, 0, menu);
@@ -1309,7 +1309,7 @@ export class PopupMenuManager {
         }
 
         const position = this._menus.indexOf(menu);
-        if (position == -1) // not a menu we manage
+        if (position === -1) // not a menu we manage
             return;
 
         menu.disconnectObject(this);

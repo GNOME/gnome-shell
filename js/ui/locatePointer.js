@@ -16,7 +16,7 @@ export class LocatePointer {
 
     _syncEnabled() {
         let enabled = this._settings.get_boolean(LOCATE_POINTER_KEY);
-        if (enabled == !!this._ripples)
+        if (enabled === !!this._ripples)
             return;
 
         if (enabled) {

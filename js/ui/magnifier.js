@@ -80,7 +80,7 @@ const MouseSpriteContent = GObject.registerClass({
     }
 
     set texture(coglTexture) {
-        if (this._texture == coglTexture)
+        if (this._texture === coglTexture)
             return;
 
         let oldTexture = this._texture;
@@ -88,8 +88,8 @@ const MouseSpriteContent = GObject.registerClass({
         this.invalidate();
 
         if (!oldTexture || !coglTexture ||
-            oldTexture.get_width() != coglTexture.get_width() ||
-            oldTexture.get_height() != coglTexture.get_height())
+            oldTexture.get_width() !== coglTexture.get_width() ||
+            oldTexture.get_height() !== coglTexture.get_height())
             this.invalidate_size();
     }
 });
@@ -214,7 +214,7 @@ export class Magnifier extends Signals.EventEmitter {
     isActive() {
         // Sufficient to check one ZoomRegion since Magnifier's active
         // state applies to all of them.
-        if (this._zoomRegions.length == 0)
+        if (this._zoomRegions.length === 0)
             return false;
         else
             return this._zoomRegions[0].isActive();
@@ -616,7 +616,7 @@ export class Magnifier extends Signals.EventEmitter {
         if (zoomRegion) {
             // Mag factor is accurate to two decimal places.
             let aPref = parseFloat(this._settings.get_double(MAG_FACTOR_KEY).toFixed(2));
-            if (aPref != 0.0)
+            if (aPref !== 0.0)
                 zoomRegion.setMagFactor(aPref, aPref);
 
             aPref = this._settings.get_enum(SCREEN_POSITION_KEY);
@@ -668,7 +668,7 @@ export class Magnifier extends Signals.EventEmitter {
         if (this._zoomRegions.length) {
             let position = this._settings.get_enum(SCREEN_POSITION_KEY);
             this._zoomRegions[0].setScreenPosition(position);
-            if (position != GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN)
+            if (position !== GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN)
                 this._updateLensMode();
         }
     }
@@ -825,7 +825,7 @@ class ZoomRegion {
     }
 
     _updateScreenPosition() {
-        if (this._screenPosition == GDesktopEnums.MagnifierScreenPosition.NONE) {
+        if (this._screenPosition === GDesktopEnums.MagnifierScreenPosition.NONE) {
             this._setViewPort({
                 x: this._viewPortX,
                 y: this._viewPortY,
@@ -899,7 +899,7 @@ class ZoomRegion {
 
     _updateFocus(caller, event) {
         let component = event.source.get_component_iface();
-        if (!component || event.detail1 != 1)
+        if (!component || event.detail1 !== 1)
             return;
         let extents;
         try {
@@ -959,7 +959,7 @@ class ZoomRegion {
      * @param {boolean} activate Boolean to show/hide the ZoomRegion.
      */
     setActive(activate) {
-        if (activate == this.isActive())
+        if (activate === this.isActive())
             return;
 
         if (activate) {
@@ -1061,7 +1061,7 @@ class ZoomRegion {
     }
 
     _syncFocusTracking() {
-        let enabled = this._focusTrackingMode != GDesktopEnums.MagnifierFocusTrackingMode.NONE &&
+        let enabled = this._focusTrackingMode !== GDesktopEnums.MagnifierFocusTrackingMode.NONE &&
             this.isActive();
 
         if (enabled)
@@ -1071,7 +1071,7 @@ class ZoomRegion {
     }
 
     _syncCaretTracking() {
-        let enabled = this._caretTrackingMode != GDesktopEnums.MagnifierCaretTrackingMode.NONE &&
+        let enabled = this._caretTrackingMode !== GDesktopEnums.MagnifierCaretTrackingMode.NONE &&
             this.isActive();
 
         if (enabled)
@@ -1297,7 +1297,7 @@ class ZoomRegion {
      */
     scrollToMousePos() {
         this._followingCursor = true;
-        if (this._mouseTrackingMode != GDesktopEnums.MagnifierMouseTrackingMode.NONE)
+        if (this._mouseTrackingMode !== GDesktopEnums.MagnifierMouseTrackingMode.NONE)
             this._changeROI({redoCursorTracking: true});
         else
             this._updateMousePosition();
@@ -1521,7 +1521,7 @@ class ZoomRegion {
     }
 
     _destroyActors() {
-        if (this._mouseActor == this._mouseSourceActor)
+        if (this._mouseActor === this._mouseSourceActor)
             this._mouseActor.get_parent().remove_actor(this._mouseActor);
         if (this._crossHairs)
             this._crossHairs.removeFromParent(this._crossHairsActor);
@@ -1587,7 +1587,7 @@ class ZoomRegion {
         this._yMagFactor = params.yMagFactor;
 
         if (params.redoCursorTracking &&
-            this._mouseTrackingMode != GDesktopEnums.MagnifierMouseTrackingMode.NONE) {
+            this._mouseTrackingMode !== GDesktopEnums.MagnifierMouseTrackingMode.NONE) {
             // This depends on this.xMagFactor/yMagFactor already being updated
             [params.xCenter, params.yCenter] = this._centerFromMousePosition();
         }
@@ -1640,10 +1640,10 @@ class ZoomRegion {
         // doesn't necessarily imply
         // this._screenPosition = GDesktopEnums.MagnifierScreenPosition.FULL_SCREEN;
 
-        if (this._viewPortX != 0 || this._viewPortY != 0)
+        if (this._viewPortX !== 0 || this._viewPortY !== 0)
             return false;
-        if (this._viewPortWidth != global.screen_width ||
-            this._viewPortHeight != global.screen_height)
+        if (this._viewPortWidth !== global.screen_width ||
+            this._viewPortHeight !== global.screen_height)
             return false;
         return true;
     }
@@ -1655,11 +1655,11 @@ class ZoomRegion {
         let xMouse = this._magnifier.xMouse;
         let yMouse = this._magnifier.yMouse;
 
-        if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.PROPORTIONAL)
+        if (this._mouseTrackingMode === GDesktopEnums.MagnifierMouseTrackingMode.PROPORTIONAL)
             return this._centerFromPointProportional(xMouse, yMouse);
-        else if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.PUSH)
+        else if (this._mouseTrackingMode === GDesktopEnums.MagnifierMouseTrackingMode.PUSH)
             return this._centerFromPointPush(xMouse, yMouse);
-        else if (this._mouseTrackingMode == GDesktopEnums.MagnifierMouseTrackingMode.CENTERED)
+        else if (this._mouseTrackingMode === GDesktopEnums.MagnifierMouseTrackingMode.CENTERED)
             return this._centerFromPointCentered(xMouse, yMouse);
 
         return null; // Should never be hit
@@ -1669,11 +1669,11 @@ class ZoomRegion {
         let xCaret = this._xCaret;
         let yCaret = this._yCaret;
 
-        if (this._caretTrackingMode == GDesktopEnums.MagnifierCaretTrackingMode.PROPORTIONAL)
+        if (this._caretTrackingMode === GDesktopEnums.MagnifierCaretTrackingMode.PROPORTIONAL)
             [xCaret, yCaret] = this._centerFromPointProportional(xCaret, yCaret);
-        else if (this._caretTrackingMode == GDesktopEnums.MagnifierCaretTrackingMode.PUSH)
+        else if (this._caretTrackingMode === GDesktopEnums.MagnifierCaretTrackingMode.PUSH)
             [xCaret, yCaret] = this._centerFromPointPush(xCaret, yCaret);
-        else if (this._caretTrackingMode == GDesktopEnums.MagnifierCaretTrackingMode.CENTERED)
+        else if (this._caretTrackingMode === GDesktopEnums.MagnifierCaretTrackingMode.CENTERED)
             [xCaret, yCaret] = this._centerFromPointCentered(xCaret, yCaret);
 
         this._scrollContentsToDelayed(xCaret, yCaret);
@@ -1683,11 +1683,11 @@ class ZoomRegion {
         let xFocus = this._xFocus;
         let yFocus = this._yFocus;
 
-        if (this._focusTrackingMode == GDesktopEnums.MagnifierFocusTrackingMode.PROPORTIONAL)
+        if (this._focusTrackingMode === GDesktopEnums.MagnifierFocusTrackingMode.PROPORTIONAL)
             [xFocus, yFocus] = this._centerFromPointProportional(xFocus, yFocus);
-        else if (this._focusTrackingMode == GDesktopEnums.MagnifierFocusTrackingMode.PUSH)
+        else if (this._focusTrackingMode === GDesktopEnums.MagnifierFocusTrackingMode.PUSH)
             [xFocus, yFocus] = this._centerFromPointPush(xFocus, yFocus);
-        else if (this._focusTrackingMode == GDesktopEnums.MagnifierFocusTrackingMode.CENTERED)
+        else if (this._focusTrackingMode === GDesktopEnums.MagnifierFocusTrackingMode.CENTERED)
             [xFocus, yFocus] = this._centerFromPointCentered(xFocus, yFocus);
 
         this._scrollContentsToDelayed(xFocus, yFocus);
@@ -1914,7 +1914,7 @@ class Crosshairs extends Clutter.Actor {
      *     addToZoomRegion
      */
     removeFromParent(childActor) {
-        if (childActor == this)
+        if (childActor === this)
             childActor.get_parent().remove_actor(childActor);
         else
             childActor.destroy();

@@ -138,7 +138,7 @@ function _findBestFolderName(apps) {
             // If a category is present in all apps, its counter will
             // reach appInfos.length
             if (category.length > 0 &&
-                categoryCounter[category] == appInfos.length)
+                categoryCounter[category] === appInfos.length)
                 categories.push(category);
         }
         return categories;
@@ -1256,7 +1256,7 @@ var BaseAppView = GObject.registerClass({
             duration: VIEWS_SWITCH_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         };
-        if (animationDirection == IconGrid.AnimationDirection.IN) {
+        if (animationDirection === IconGrid.AnimationDirection.IN) {
             this.show();
             params.opacity = 255;
             params.delay = VIEWS_SWITCH_ANIMATION_DELAY;
@@ -1604,7 +1604,7 @@ class AppDisplay extends BaseAppView {
         super.animateSwitch(animationDirection);
 
         if (this._currentDialog && this._displayingDialog &&
-            animationDirection == IconGrid.AnimationDirection.OUT) {
+            animationDirection === IconGrid.AnimationDirection.OUT) {
             this._currentDialog.ease({
                 opacity: 0,
                 duration: VIEWS_SWITCH_TIME,
@@ -2185,7 +2185,7 @@ class FolderView extends BaseAppView {
         let subSize = Math.floor(FOLDER_SUBICON_FRACTION * size);
 
         let numItems = this._orderedItems.length;
-        let rtl = icon.get_text_direction() == Clutter.TextDirection.RTL;
+        let rtl = icon.get_text_direction() === Clutter.TextDirection.RTL;
         for (let i = 0; i < 4; i++) {
             const style = `width: ${subSize}px; height: ${subSize}px;`;
             let bin = new St.Bin({style});
@@ -2280,7 +2280,7 @@ class FolderView extends BaseAppView {
 
         // Remove the folder if this is the last app icon; otherwise,
         // just remove the icon
-        if (folderApps.length == 0) {
+        if (folderApps.length === 0) {
             this._deletingFolder = true;
 
             // Resetting all keys deletes the relocatable schema
@@ -2379,7 +2379,7 @@ export const FolderIcon = GObject.registerClass({
     }
 
     _setHoveringByDnd(hovering) {
-        if (this._otherIconIsHovering == hovering)
+        if (this._otherIconIsHovering === hovering)
             return;
 
         super._setHoveringByDnd(hovering);
@@ -2441,7 +2441,7 @@ export const FolderIcon = GObject.registerClass({
 
     _updateName() {
         let name = _getFolderName(this._folder);
-        if (this.name == name)
+        if (this.name === name)
             return;
 
         this._name = name;
@@ -2806,7 +2806,7 @@ export const AppFolderDialog = GObject.registerClass({
     }
 
     vfunc_key_press_event(event) {
-        if (global.stage.get_key_focus() != this)
+        if (global.stage.get_key_focus() !== this)
             return Clutter.EVENT_PROPAGATE;
 
         // Since we need to only grab focus on one item child when the user
@@ -2827,7 +2827,7 @@ export const AppFolderDialog = GObject.registerClass({
         // and TAB_BACKWARD for up key and left key on ltr
         // languages
         let direction;
-        let isLtr = Clutter.get_default_text_direction() == Clutter.TextDirection.LTR;
+        let isLtr = Clutter.get_default_text_direction() === Clutter.TextDirection.LTR;
         switch (event.get_key_symbol()) {
         case Clutter.KEY_Down:
             direction = St.DirectionType.TAB_FORWARD;
@@ -3062,7 +3062,7 @@ export const AppIcon = GObject.registerClass({
     }
 
     _updateRunningStyle() {
-        if (this.app.state != Shell.AppState.STOPPED)
+        if (this.app.state !== Shell.AppState.STOPPED)
             this._dot.show();
         else
             this._dot.hide();
@@ -3159,13 +3159,13 @@ export const AppIcon = GObject.registerClass({
     activate(button) {
         let event = Clutter.get_current_event();
         let modifiers = event ? event.get_state() : 0;
-        let isMiddleButton = button && button == Clutter.BUTTON_MIDDLE;
-        let isCtrlPressed = (modifiers & Clutter.ModifierType.CONTROL_MASK) != 0;
+        let isMiddleButton = button && button === Clutter.BUTTON_MIDDLE;
+        let isCtrlPressed = (modifiers & Clutter.ModifierType.CONTROL_MASK) !== 0;
         let openNewWindow = this.app.can_open_new_window() &&
-                            this.app.state == Shell.AppState.RUNNING &&
+                            this.app.state === Shell.AppState.RUNNING &&
                             (isCtrlPressed || isMiddleButton);
 
-        if (this.app.state == Shell.AppState.STOPPED || openNewWindow)
+        if (this.app.state === Shell.AppState.STOPPED || openNewWindow)
             this.animateLaunch();
 
         if (openNewWindow)
@@ -3229,13 +3229,13 @@ export const AppIcon = GObject.registerClass({
     _canAccept(source) {
         let view = _getViewFromIcon(source);
 
-        return source != this &&
+        return source !== this &&
                (source instanceof this.constructor) &&
                (view instanceof AppDisplay);
     }
 
     _setHoveringByDnd(hovering) {
-        if (this._otherIconIsHovering == hovering)
+        if (this._otherIconIsHovering === hovering)
             return;
 
         super._setHoveringByDnd(hovering);

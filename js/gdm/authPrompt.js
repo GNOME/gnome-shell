@@ -71,9 +71,9 @@ export const AuthPrompt = GObject.registerClass({
         this._cancelledRetries = 0;
 
         let reauthenticationOnly;
-        if (this._mode == AuthPromptMode.UNLOCK_ONLY)
+        if (this._mode === AuthPromptMode.UNLOCK_ONLY)
             reauthenticationOnly = true;
-        else if (this._mode == AuthPromptMode.UNLOCK_OR_LOG_IN)
+        else if (this._mode === AuthPromptMode.UNLOCK_OR_LOG_IN)
             reauthenticationOnly = false;
 
         this._userVerifier = new GdmUtil.ShellUserVerifier(this._gdmClient, {reauthenticationOnly});
@@ -337,7 +337,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     _onCredentialManagerAuthenticated() {
-        if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED)
+        if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
             this.reset();
     }
 
@@ -352,11 +352,11 @@ export const AuthPrompt = GObject.registerClass({
         //                     2) Don't reset if we've already succeeded at verification and
         //                        the user is getting logged in.
         if (this._userVerifier.serviceIsDefault(GdmUtil.SMARTCARD_SERVICE_NAME) &&
-            this.verificationStatus == AuthPromptStatus.VERIFYING &&
+            this.verificationStatus === AuthPromptStatus.VERIFYING &&
             this.smartcardDetected)
             return;
 
-        if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED)
+        if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
             this.reset();
     }
 
@@ -419,18 +419,18 @@ export const AuthPrompt = GObject.registerClass({
             oldActor.remove_all_transitions();
 
         let wasSpinner;
-        if (oldActor == this._spinner)
+        if (oldActor === this._spinner)
             wasSpinner = true;
         else
             wasSpinner = false;
 
         let isSpinner;
-        if (actor == this._spinner)
+        if (actor === this._spinner)
             isSpinner = true;
         else
             isSpinner = false;
 
-        if (this._defaultButtonWellActor != actor && oldActor) {
+        if (this._defaultButtonWellActor !== actor && oldActor) {
             if (!animate) {
                 oldActor.opacity = 0;
 
@@ -538,7 +538,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     _fadeOutMessage() {
-        if (this._message.opacity == 0)
+        if (this._message.opacity === 0)
             return;
         this._message.remove_all_transitions();
         this._message.ease({
@@ -549,12 +549,12 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     setMessage(message, type, wiggleParameters = {duration: 0}) {
-        if (type == GdmUtil.MessageType.ERROR)
+        if (type === GdmUtil.MessageType.ERROR)
             this._message.add_style_class_name('login-dialog-message-warning');
         else
             this._message.remove_style_class_name('login-dialog-message-warning');
 
-        if (type == GdmUtil.MessageType.HINT)
+        if (type === GdmUtil.MessageType.HINT)
             this._message.add_style_class_name('login-dialog-message-hint');
         else
             this._message.remove_style_class_name('login-dialog-message-hint');
@@ -627,14 +627,14 @@ export const AuthPrompt = GObject.registerClass({
         this._updateEntry(true);
         this.stopSpinning();
 
-        if (oldStatus == AuthPromptStatus.VERIFICATION_FAILED)
+        if (oldStatus === AuthPromptStatus.VERIFICATION_FAILED)
             this.emit('failed');
         else if (oldStatus === AuthPromptStatus.VERIFICATION_CANCELLED)
             this.emit('cancelled');
 
         let beginRequestType;
 
-        if (this._mode == AuthPromptMode.UNLOCK_ONLY) {
+        if (this._mode === AuthPromptMode.UNLOCK_ONLY) {
             // The user is constant at the unlock screen, so it will immediately
             // respond to the request with the username
             if (oldStatus === AuthPromptStatus.VERIFICATION_CANCELLED)
@@ -694,7 +694,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     cancel() {
-        if (this.verificationStatus == AuthPromptStatus.VERIFICATION_SUCCEEDED)
+        if (this.verificationStatus === AuthPromptStatus.VERIFICATION_SUCCEEDED)
             return;
 
         if (this.verificationStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS) {

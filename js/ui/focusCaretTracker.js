@@ -39,14 +39,14 @@ export class FocusCaretTracker extends Signals.EventEmitter {
     }
 
     _onChanged(event) {
-        if (event.type.indexOf(STATECHANGED) == 0)
+        if (event.type.indexOf(STATECHANGED) === 0)
             this.emit('focus-changed', event);
-        else if (event.type == CARETMOVED)
+        else if (event.type === CARETMOVED)
             this.emit('caret-moved', event);
     }
 
     _initAtspi() {
-        if (!this._atspiInited && Atspi.init() == 0) {
+        if (!this._atspiInited && Atspi.init() === 0) {
             Atspi.set_timeout(250, 250);
             this._atspiInited = true;
         }

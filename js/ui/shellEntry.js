@@ -65,13 +65,13 @@ export class EntryMenu extends PopupMenu.PopupMenu {
     _updateCopyItem() {
         let selection = this._entry.clutter_text.get_selection();
         this._copyItem.setSensitive(!this._entry.clutter_text.password_char &&
-                                    selection && selection != '');
+                                    selection && selection !== '');
     }
 
     _updatePasteItem() {
         this._clipboard.get_text(St.ClipboardType.CLIPBOARD,
             (clipboard, text) => {
-                this._pasteItem.setSensitive(text && text != '');
+                this._pasteItem.setSensitive(text && text !== '');
             });
     }
 
@@ -113,7 +113,7 @@ function _onButtonPressEvent(actor, event, entry) {
     if (entry.menu.isOpen) {
         entry.menu.close(BoxPointer.PopupAnimation.FULL);
         return Clutter.EVENT_STOP;
-    } else if (event.get_button() == 3) {
+    } else if (event.get_button() === 3) {
         let [stageX] = event.get_coords();
         _setMenuAlignment(entry, stageX);
         entry.menu.open(BoxPointer.PopupAnimation.FULL);

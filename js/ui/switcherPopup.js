@@ -25,7 +25,7 @@ export function mod(a, b) {
 }
 
 function primaryModifier(mask) {
-    if (mask == 0)
+    if (mask === 0)
         return 0;
 
     let primary = 1;
@@ -99,14 +99,14 @@ export const SwitcherPopup = GObject.registerClass({
     _initialSelection(backward, _binding) {
         if (backward)
             this._select(this._items.length - 1);
-        else if (this._items.length == 1)
+        else if (this._items.length === 1)
             this._select(0);
         else
             this._select(1);
     }
 
     show(backward, binding, mask) {
-        if (this._items.length == 0)
+        if (this._items.length === 0)
             return false;
 
         let grab = Main.pushModal(this);
@@ -190,7 +190,7 @@ export const SwitcherPopup = GObject.registerClass({
 
         this._disableHover();
 
-        if (this._keyPressHandler(keysym, action) != Clutter.EVENT_PROPAGATE) {
+        if (this._keyPressHandler(keysym, action) !== Clutter.EVENT_PROPAGATE) {
             this._showImmediately();
             return Clutter.EVENT_STOP;
         }
@@ -216,7 +216,7 @@ export const SwitcherPopup = GObject.registerClass({
             let [x_, y_, mods] = global.get_pointer();
             let state = mods & this._modifierMask;
 
-            if (state == 0)
+            if (state === 0)
                 this._finish(event.get_time());
         } else {
             this._resetNoModsTimeout();
@@ -232,9 +232,9 @@ export const SwitcherPopup = GObject.registerClass({
     }
 
     _scrollHandler(direction) {
-        if (direction == Clutter.ScrollDirection.UP)
+        if (direction === Clutter.ScrollDirection.UP)
             this._select(this._previous());
-        else if (direction == Clutter.ScrollDirection.DOWN)
+        else if (direction === Clutter.ScrollDirection.DOWN)
             this._select(this._next());
     }
 
@@ -288,7 +288,7 @@ export const SwitcherPopup = GObject.registerClass({
     _disableHover() {
         this.mouseActive = false;
 
-        if (this._motionTimeoutId != 0)
+        if (this._motionTimeoutId !== 0)
             GLib.source_remove(this._motionTimeoutId);
 
         this._motionTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, DISABLE_HOVER_TIMEOUT, this._mouseTimedOut.bind(this));
@@ -302,7 +302,7 @@ export const SwitcherPopup = GObject.registerClass({
     }
 
     _resetNoModsTimeout() {
-        if (this._noModsTimeoutId != 0)
+        if (this._noModsTimeoutId !== 0)
             GLib.source_remove(this._noModsTimeoutId);
 
         this._noModsTimeoutId = GLib.timeout_add(
@@ -344,11 +344,11 @@ export const SwitcherPopup = GObject.registerClass({
     _onDestroy() {
         this._popModal();
 
-        if (this._motionTimeoutId != 0)
+        if (this._motionTimeoutId !== 0)
             GLib.source_remove(this._motionTimeoutId);
-        if (this._initialDelayTimeoutId != 0)
+        if (this._initialDelayTimeoutId !== 0)
             GLib.source_remove(this._initialDelayTimeoutId);
-        if (this._noModsTimeoutId != 0)
+        if (this._noModsTimeoutId !== 0)
             GLib.source_remove(this._noModsTimeoutId);
 
         // Make sure the SwitcherList is always destroyed, it may not be

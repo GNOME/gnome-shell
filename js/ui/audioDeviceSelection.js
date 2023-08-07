@@ -206,7 +206,7 @@ export class AudioDeviceSelectionDBus {
 
     CloseAsync(params, invocation) {
         if (this._audioSelectionDialog &&
-            this._audioSelectionDialog._sender == invocation.get_sender())
+            this._audioSelectionDialog._sender === invocation.get_sender())
             this._audioSelectionDialog.close();
 
         invocation.return_value(null);

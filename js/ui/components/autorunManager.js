@@ -57,7 +57,7 @@ function isMountNonLocal(mount) {
     if (volume == null)
         return true;
 
-    return volume.get_identifier('class') == 'network';
+    return volume.get_identifier('class') === 'network';
 }
 
 function startAppForMount(app, mount) {
@@ -186,12 +186,12 @@ class AutorunDispatcher {
     }
 
     _getSourceForMount(mount) {
-        let filtered = this._sources.filter(source => source.mount == mount);
+        let filtered = this._sources.filter(source => source.mount === mount);
 
         // we always make sure not to add two sources for the same
         // mount in addMount(), so it's safe to assume filtered.length
         // is always either 1 or 0.
-        if (filtered.length == 1)
+        if (filtered.length === 1)
             return filtered[0];
 
         return null;
@@ -224,15 +224,15 @@ class AutorunDispatcher {
 
         // check at the settings for the first content type
         // to see whether we should ask
-        if (setting == AutorunSetting.IGNORE)
+        if (setting === AutorunSetting.IGNORE)
             return; // return right away
 
         let success = false;
         let app = null;
 
-        if (setting == AutorunSetting.RUN)
+        if (setting === AutorunSetting.RUN)
             app = Gio.app_info_get_default_for_type(contentTypes[0], false);
-        else if (setting == AutorunSetting.FILES)
+        else if (setting === AutorunSetting.FILES)
             app = Gio.app_info_get_default_for_type('inode/directory', false);
 
         if (app)

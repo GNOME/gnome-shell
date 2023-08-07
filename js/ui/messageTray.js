@@ -386,7 +386,7 @@ export const Notification = GObject.registerClass({
         // will call .update() later on. This is the case of
         // NotificationDaemon, which wants to use the same code
         // for new and updated notifications
-        if (arguments.length != 1)
+        if (arguments.length !== 1)
             this.update(title, banner, params);
     }
 
@@ -427,8 +427,8 @@ export const Notification = GObject.registerClass({
         if (params.clear)
             this.actions = [];
 
-        if (this._soundName != params.soundName ||
-            this._soundFile != params.soundFile) {
+        if (this._soundName !== params.soundName ||
+            this._soundFile !== params.soundFile) {
             this._soundName = params.soundName;
             this._soundFile = params.soundFile;
             this._soundPlayed = false;
@@ -707,13 +707,13 @@ export const Source = GObject.registerClass({
     }
 
     get narrowestPrivacyScope() {
-        return this.notifications.every(n => n.privacyScope == PrivacyScope.SYSTEM)
+        return this.notifications.every(n => n.privacyScope === PrivacyScope.SYSTEM)
             ? PrivacyScope.SYSTEM
             : PrivacyScope.USER;
     }
 
     setTitle(newTitle) {
-        if (this.title == newTitle)
+        if (this.title === newTitle)
             return;
 
         this.title = newTitle;
@@ -746,7 +746,7 @@ export const Source = GObject.registerClass({
         this.notifications.splice(index, 1);
         this.countUpdated();
 
-        if (this.notifications.length == 0)
+        if (this.notifications.length === 0)
             this.destroy();
     }
 
@@ -772,7 +772,7 @@ export const Source = GObject.registerClass({
         if (notification.urgency === Urgency.LOW)
             return;
 
-        if (this.policy.showBanners || notification.urgency == Urgency.CRITICAL)
+        if (this.policy.showBanners || notification.urgency === Urgency.CRITICAL)
             this.emit('notification-show', notification);
     }
 
@@ -935,7 +935,7 @@ export const MessageTray = GObject.registerClass({
     }
 
     _onNotificationKeyRelease(actor, event) {
-        if (event.get_key_symbol() == Clutter.KEY_Escape && event.get_state() == 0) {
+        if (event.get_key_symbol() === Clutter.KEY_Escape && event.get_state() === 0) {
             this._expireNotification();
             return Clutter.EVENT_STOP;
         }
@@ -953,7 +953,7 @@ export const MessageTray = GObject.registerClass({
     }
 
     set bannerBlocked(v) {
-        if (this._bannerBlocked == v)
+        if (this._bannerBlocked === v)
             return;
         this._bannerBlocked = v;
         this._updateState();
@@ -1003,7 +1003,7 @@ export const MessageTray = GObject.registerClass({
         let wasEnabled = this.contains(source);
         let shouldBeEnabled = policy.enable;
 
-        if (wasEnabled != shouldBeEnabled) {
+        if (wasEnabled !== shouldBeEnabled) {
             if (shouldBeEnabled)
                 this._addSource(source);
             else
@@ -1029,7 +1029,7 @@ export const MessageTray = GObject.registerClass({
     }
 
     _onNotificationShow(_source, notification) {
-        if (this._notification == notification) {
+        if (this._notification === notification) {
             // If a notification that is being shown is updated, we update
             // how it is shown and extend the time until it auto-hides.
             // If a new notification is updated while it is being hidden,
@@ -1041,7 +1041,7 @@ export const MessageTray = GObject.registerClass({
             // notifications, as only banner mode allows expansion.
             let bannerCount = this._notification ? 1 : 0;
             let full = this.queueCount + bannerCount >= MAX_NOTIFICATIONS_IN_QUEUE;
-            if (!full || notification.urgency == Urgency.CRITICAL) {
+            if (!full || notification.urgency === Urgency.CRITICAL) {
                 notification.connect('destroy',
                     this._onNotificationDestroy.bind(this));
                 this._notificationQueue.push(notification);
@@ -1064,7 +1064,7 @@ export const MessageTray = GObject.registerClass({
     }
 
     _onNotificationHoverChanged() {
-        if (this._bannerBin.hover == this._notificationHovered)
+        if (this._bannerBin.hover === this._notificationHovered)
             return;
 
         this._notificationHovered = this._bannerBin.hover;
@@ -1108,11 +1108,11 @@ export const MessageTray = GObject.registerClass({
     }
 
     _onStatusChanged(status) {
-        if (status == GnomeSession.PresenceStatus.BUSY) {
+        if (status === GnomeSession.PresenceStatus.BUSY) {
             // remove notification and allow the summary to be closed now
             this._updateNotificationTimeout(0);
             this._busy = true;
-        } else if (status != GnomeSession.PresenceStatus.IDLE) {
+        } else if (status !== GnomeSession.PresenceStatus.IDLE) {
             // We preserve the previous value of this._busy if the status turns to IDLE
             // so that we don't start showing notifications queued during the BUSY state
             // as the screensaver gets activated.
@@ -1182,19 +1182,19 @@ export const MessageTray = GObject.registerClass({
 
         let hasNotifications = Main.sessionMode.hasNotifications;
 
-        if (this._notificationState == State.HIDDEN) {
+        if (this._notificationState === State.HIDDEN) {
             let nextNotification = this._notificationQueue[0] || null;
             if (hasNotifications && nextNotification) {
                 let limited = this._busy || Main.layoutManager.primaryMonitor.inFullscreen;
-                let showNextNotification = !limited || nextNotification.forFeedback || nextNotification.urgency == Urgency.CRITICAL;
+                let showNextNotification = !limited || nextNotification.forFeedback || nextNotification.urgency === Urgency.CRITICAL;
                 if (showNextNotification)
                     this._showNotification();
             }
         } else if (this._notificationState === State.SHOWING ||
                    this._notificationState === State.SHOWN) {
             let expired = (this._userActiveWhileNotificationShown &&
-                           this._notificationTimeoutId == 0 &&
-                           this._notification.urgency != Urgency.CRITICAL &&
+                           this._notificationTimeoutId === 0 &&
+                           this._notification.urgency !== Urgency.CRITICAL &&
                            !this._banner.focused &&
                            !this._pointerInNotification) || this._notificationExpired;
             let mustClose = this._notificationRemoved || !hasNotifications || expired;
@@ -1272,7 +1272,7 @@ export const MessageTray = GObject.registerClass({
 
         // We auto-expand notifications with CRITICAL urgency, or for which the relevant setting
         // is on in the control center.
-        if (this._notification.urgency == Urgency.CRITICAL ||
+        if (this._notification.urgency === Urgency.CRITICAL ||
             this._notification.source.policy.forceExpanded)
             this._expandBanner(true);
 
@@ -1307,7 +1307,7 @@ export const MessageTray = GObject.registerClass({
     }
 
     _showNotificationCompleted() {
-        if (this._notification.urgency != Urgency.CRITICAL)
+        if (this._notification.urgency !== Urgency.CRITICAL)
             this._updateNotificationTimeout(NOTIFICATION_TIMEOUT);
     }
 
@@ -1333,7 +1333,7 @@ export const MessageTray = GObject.registerClass({
             // simpler.)
             this._updateNotificationTimeout(1000);
         } else if (this._useLongerNotificationLeftTimeout && !this._notificationLeftTimeoutId &&
-                  (x != this._lastSeenMouseX || y != this._lastSeenMouseY)) {
+                  (x !== this._lastSeenMouseX || y !== this._lastSeenMouseY)) {
             // Refresh the timeout if the notification originally
             // popped up under the pointer, and the pointer is hovering
             // inside it.

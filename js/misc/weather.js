@@ -210,7 +210,7 @@ export class WeatherClient extends Signals.EventEmitter {
     }
 
     _locationsEqual(loc1, loc2) {
-        if (loc1 == loc2)
+        if (loc1 === loc2)
             return true;
 
         if (loc1 == null || loc2 == null)
@@ -235,7 +235,7 @@ export class WeatherClient extends Signals.EventEmitter {
 
     _updateLocationMonitoring() {
         if (this._useAutoLocation) {
-            if (this._gclueLocationChangedId != 0 || this._gclueService == null)
+            if (this._gclueLocationChangedId !== 0 || this._gclueService == null)
                 return;
 
             this._gclueLocationChangedId =
@@ -280,7 +280,7 @@ export class WeatherClient extends Signals.EventEmitter {
 
     _onAutomaticLocationChanged() {
         let useAutoLocation = this._settings.get_boolean('automatic-location');
-        if (this._autoLocationRequested == useAutoLocation)
+        if (this._autoLocationRequested === useAutoLocation)
             return;
 
         this._autoLocationRequested = useAutoLocation;
@@ -317,12 +317,12 @@ export class WeatherClient extends Signals.EventEmitter {
     _onPermStoreChanged(proxy, sender, params) {
         let [table, id, deleted_, data_, perms] = params;
 
-        if (table != 'gnome' || id != 'geolocation')
+        if (table !== 'gnome' || id !== 'geolocation')
             return;
 
         let permission = perms['org.gnome.Weather'] || ['NONE'];
         let [accuracy] = permission;
-        this._weatherAuthorized = accuracy != 'NONE';
+        this._weatherAuthorized = accuracy !== 'NONE';
 
         this._updateAutoLocation();
     }

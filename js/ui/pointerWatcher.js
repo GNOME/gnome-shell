@@ -67,7 +67,7 @@ class PointerWatcher {
 
     _removeWatch(watch) {
         for (let i = 0; i < this._watches.length; i++) {
-            if (this._watches[i] == watch) {
+            if (this._watches[i] === watch) {
                 this._watches.splice(i, 1);
                 this._updateTimeout();
                 return;
@@ -93,7 +93,7 @@ class PointerWatcher {
             this._timeoutId = 0;
         }
 
-        if (this._idle || this._watches.length == 0)
+        if (this._idle || this._watches.length === 0)
             return;
 
         let minInterval = this._watches[0].interval;
@@ -112,7 +112,7 @@ class PointerWatcher {
 
     _updatePointer() {
         let [x, y] = global.get_pointer();
-        if (this.pointerX == x && this.pointerY == y)
+        if (this.pointerX === x && this.pointerY === y)
             return;
 
         this.pointerX = x;
@@ -121,7 +121,7 @@ class PointerWatcher {
         for (let i = 0; i < this._watches.length;) {
             let watch = this._watches[i];
             watch.callback(x, y);
-            if (watch == this._watches[i]) // guard against self-removal
+            if (watch === this._watches[i]) // guard against self-removal
                 i++;
         }
     }

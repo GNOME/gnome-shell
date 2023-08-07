@@ -658,7 +658,7 @@ class NMModemDeviceItem extends NMDeviceItem {
         this._mobileDevice = null;
 
         let capabilities = device.current_capabilities;
-        if (device.udi.indexOf('/org/freedesktop/ModemManager1/Modem') == 0)
+        if (device.udi.indexOf('/org/freedesktop/ModemManager1/Modem') === 0)
             this._mobileDevice = new ModemManager.BroadbandModem(device.udi, capabilities);
         else if (capabilities & NM.DeviceModemCapabilities.GSM_UMTS)
             this._mobileDevice = new ModemManager.ModemGsm(device.udi);
@@ -2073,14 +2073,14 @@ class Indicator extends SystemIndicator {
     async _portalHelperDone(parameters) {
         let [path, result] = parameters;
 
-        if (result == PortalHelperResult.CANCELLED) {
+        if (result === PortalHelperResult.CANCELLED) {
             // Keep the connection in the queue, so the user is not
             // spammed with more logins until we next flush the queue,
             // which will happen once they choose a better connection
             // or we get to full connectivity through other means
-        } else if (result == PortalHelperResult.COMPLETED) {
+        } else if (result === PortalHelperResult.COMPLETED) {
             this._closeConnectivityCheck(path);
-        } else if (result == PortalHelperResult.RECHECK) {
+        } else if (result === PortalHelperResult.RECHECK) {
             try {
                 const state = await this._client.check_connectivity_async(null);
                 if (state >= NM.ConnectivityState.FULL)
@@ -2093,12 +2093,12 @@ class Indicator extends SystemIndicator {
 
     async _syncConnectivity() {
         if (this._mainConnection == null ||
-            this._mainConnection.state != NM.ActiveConnectionState.ACTIVATED) {
+            this._mainConnection.state !== NM.ActiveConnectionState.ACTIVATED) {
             this._flushConnectivityQueue();
             return;
         }
 
-        let isPortal = this._client.connectivity == NM.ConnectivityState.PORTAL;
+        let isPortal = this._client.connectivity === NM.ConnectivityState.PORTAL;
         // For testing, allow interpreting any value != FULL as PORTAL, because
         // LIMITED (no upstream route after the default gateway) is easy to obtain
         // with a tethered phone

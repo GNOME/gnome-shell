@@ -40,7 +40,7 @@ function _getMobileProvidersDatabase() {
 //
 function _findProviderForMccMnc(operatorName, operatorCode) {
     if (operatorName) {
-        if (operatorName.length != 0 &&
+        if (operatorName.length !== 0 &&
             (operatorName.length > 6 || operatorName.length < 5)) {
             // this looks like a valid name, i.e. not an MCCMNC (that some
             // devices return when not yet connected
@@ -55,9 +55,9 @@ function _findProviderForMccMnc(operatorName, operatorCode) {
     }
 
     let needle;
-    if ((!operatorName || operatorName.length == 0) && operatorCode)
+    if ((!operatorName || operatorName.length === 0) && operatorCode)
         needle = operatorCode;
-    else if (operatorName && (operatorName.length == 6 || operatorName.length == 5))
+    else if (operatorName && (operatorName.length === 6 || operatorName.length === 5))
         needle = operatorName;
     else // nothing to search
         return null;
@@ -132,14 +132,14 @@ const ModemBase = GObject.registerClass({
     }
 
     _setOperatorName(operatorName) {
-        if (this._operatorName == operatorName)
+        if (this._operatorName === operatorName)
             return;
         this._operatorName = operatorName;
         this.notify('operator-name');
     }
 
     _setSignalQuality(signalQuality) {
-        if (this._signalQuality == signalQuality)
+        if (this._signalQuality === signalQuality)
             return;
         this._signalQuality = signalQuality;
         this.notify('signal-quality');
@@ -281,7 +281,7 @@ export const BroadbandModem = GObject.registerClass({
             newName += this.operator_name_3gpp;
 
         if (this.operator_name_cdma && this.operator_name_cdma.length > 0) {
-            if (newName != '')
+            if (newName !== '')
                 newName += ', ';
             newName += this.operator_name_cdma;
         }

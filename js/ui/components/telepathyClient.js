@@ -193,7 +193,7 @@ class TelepathyClient extends Tp.BaseClient {
 
             /* Only observe contact text channels */
             if (!(channel instanceof Tp.TextChannel) ||
-               targetHandleType != Tp.HandleType.CONTACT)
+               targetHandleType !== Tp.HandleType.CONTACT)
                 continue;
 
             this._createChatSource(account, conn, channel, channel.get_target_contact());
@@ -267,7 +267,7 @@ class TelepathyClient extends Tp.BaseClient {
             return;
         }
 
-        if (chanType == Tp.IFACE_CHANNEL_TYPE_TEXT) {
+        if (chanType === Tp.IFACE_CHANNEL_TYPE_TEXT) {
             this._approveTextChannel(account, conn, channel, dispatchOp, context);
         } else {
             context.fail(new Tp.Error({
@@ -280,7 +280,7 @@ class TelepathyClient extends Tp.BaseClient {
     async _approveTextChannel(account, conn, channel, dispatchOp, context) {
         let [targetHandle_, targetHandleType] = channel.get_handle();
 
-        if (targetHandleType != Tp.HandleType.CONTACT) {
+        if (targetHandleType !== Tp.HandleType.CONTACT) {
             context.fail(new Tp.Error({
                 code: Tp.Error.INVALID_ARGUMENT,
                 message: 'Unsupported handle type',
@@ -357,7 +357,7 @@ class ChatSource extends MessageTray.Source {
     }
 
     _createPolicy() {
-        if (this._account.protocol_name == 'irc')
+        if (this._account.protocol_name === 'irc')
             return new MessageTray.NotificationApplicationPolicy('org.gnome.Polari');
         return new MessageTray.NotificationApplicationPolicy('empathy');
     }
@@ -377,7 +377,7 @@ class ChatSource extends MessageTray.Source {
         let oldAlias = this.title;
         let newAlias = this._contact.get_alias();
 
-        if (oldAlias == newAlias)
+        if (oldAlias === newAlias)
             return;
 
         this.setTitle(newAlias);
@@ -443,7 +443,7 @@ class ChatSource extends MessageTray.Source {
             // fallback to something else if activation fails
 
             let target;
-            if (this._channel.connection.protocol_name == 'irc')
+            if (this._channel.connection.protocol_name === 'irc')
                 target = 'org.freedesktop.Telepathy.Client.Polari';
             else
                 target = 'org.freedesktop.Telepathy.Client.Empathy.Chat';
@@ -475,7 +475,7 @@ class ChatSource extends MessageTray.Source {
         for (let i = 0; i < pendingTpMessages.length; i++) {
             let message = pendingTpMessages[i];
 
-            if (message.get_message_type() == Tp.ChannelTextMessageType.DELIVERY_REPORT)
+            if (message.get_message_type() === Tp.ChannelTextMessageType.DELIVERY_REPORT)
                 continue;
 
             pendingMessages.push(ChatMessage.newFromTpMessage(message,
@@ -495,7 +495,7 @@ class ChatSource extends MessageTray.Source {
             // Skip any log messages that are also in pendingMessages
             for (let j = 0; j < pendingMessages.length; j++) {
                 let pending = pendingMessages[j];
-                if (logMessage.timestamp == pending.timestamp && logMessage.text == pending.text) {
+                if (logMessage.timestamp === pending.timestamp && logMessage.text === pending.text) {
                     isPending = true;
                     break;
                 }
@@ -531,7 +531,7 @@ class ChatSource extends MessageTray.Source {
         }
 
         // Keep source alive while the channel is open
-        if (reason != MessageTray.NotificationDestroyedReason.SOURCE_CLOSED)
+        if (reason !== MessageTray.NotificationDestroyedReason.SOURCE_CLOSED)
             return;
 
         if (this._destroyed)
@@ -562,7 +562,7 @@ class ChatSource extends MessageTray.Source {
     }
 
     _messageReceived(channel, message) {
-        if (message.get_message_type() == Tp.ChannelTextMessageType.DELIVERY_REPORT)
+        if (message.get_message_type() === Tp.ChannelTextMessageType.DELIVERY_REPORT)
             return;
 
         this._ensureNotification();
@@ -575,7 +575,7 @@ class ChatSource extends MessageTray.Source {
 
         // Wait a bit before notifying for the received message, a handler
         // could ack it in the meantime.
-        if (this._notifyTimeoutId != 0)
+        if (this._notifyTimeoutId !== 0)
             GLib.source_remove(this._notifyTimeoutId);
         this._notifyTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 500,
             this._notifyTimeout.bind(this));
@@ -583,7 +583,7 @@ class ChatSource extends MessageTray.Source {
     }
 
     _notifyTimeout() {
-        if (this._pendingMessages.length != 0)
+        if (this._pendingMessages.length !== 0)
             this.showNotification();
 
         this._notifyTimeoutId = 0;
@@ -606,7 +606,7 @@ class ChatSource extends MessageTray.Source {
 
     respond(text) {
         let type;
-        if (text.slice(0, 4) == '/me ') {
+        if (text.slice(0, 4) === '/me ') {
             type = Tp.ChannelTextMessageType.ACTION;
             text = text.slice(4);
         } else {
@@ -624,7 +624,7 @@ class ChatSource extends MessageTray.Source {
         // gnome-shell's entry and the Empathy conversation window. We could
         // keep track of it with the ChatStateChanged signal but it is good
         // enough right now.
-        if (state != this._chatState) {
+        if (state !== this._chatState) {
             this._chatState = state;
             this._channel.set_chat_state_async(state, null);
         }
@@ -647,7 +647,7 @@ class ChatSource extends MessageTray.Source {
             this.countUpdated();
         }
 
-        if (this._pendingMessages.length == 0 &&
+        if (this._pendingMessages.length === 0 &&
             this._banner && !this._banner.expanded)
             this._banner.hide();
     }
@@ -708,20 +708,20 @@ const ChatNotification = HAVE_TP ? GObject.registerClass({
         let messageBody = GLib.markup_escape_text(message.text, -1);
         let styles = [message.direction];
 
-        if (message.messageType == Tp.ChannelTextMessageType.ACTION) {
+        if (message.messageType === Tp.ChannelTextMessageType.ACTION) {
             let senderAlias = GLib.markup_escape_text(message.sender, -1);
             messageBody = `<i>${senderAlias}</i> ${messageBody}`;
             styles.push('chat-action');
         }
 
-        if (message.direction == NotificationDirection.RECEIVED) {
+        if (message.direction === NotificationDirection.RECEIVED) {
             this.update(this.source.title, messageBody, {
                 datetime: GLib.DateTime.new_from_unix_local(message.timestamp),
                 bannerMarkup: true,
             });
         }
 
-        let group = message.direction == NotificationDirection.RECEIVED
+        let group = message.direction === NotificationDirection.RECEIVED
             ? 'received' : 'sent';
 
         this._append({
@@ -894,7 +894,7 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
         // bottom
         this._oldMaxScrollValue = this._scrollArea.vscroll.adjustment.value;
         this._scrollArea.vscroll.adjustment.connect('changed', adjustment => {
-            if (adjustment.value == this._oldMaxScrollValue)
+            if (adjustment.value === this._oldMaxScrollValue)
                 this.scrollTo(St.Side.BOTTOM);
             this._oldMaxScrollValue = Math.max(adjustment.lower, adjustment.upper - adjustment.page_size);
         });
@@ -920,9 +920,9 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
 
     scrollTo(side) {
         let adjustment = this._scrollArea.vscroll.adjustment;
-        if (side == St.Side.TOP)
+        if (side === St.Side.TOP)
             adjustment.value = adjustment.lower;
-        else if (side == St.Side.BOTTOM)
+        else if (side === St.Side.BOTTOM)
             adjustment.value = adjustment.upper;
     }
 
@@ -938,7 +938,7 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
             body.add_style_class_name(styles[i]);
 
         let group = message.group;
-        if (group != this._lastGroup) {
+        if (group !== this._lastGroup) {
             this._lastGroup = group;
             body.add_style_class_name('chat-new-group');
         }
@@ -974,7 +974,7 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
 
     _onEntryActivated() {
         let text = this._responseEntry.get_text();
-        if (text == '')
+        if (text === '')
             return;
 
         this._inputHistory.addItem(text);
@@ -1007,7 +1007,7 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
             this._composingTimeoutId = 0;
         }
 
-        if (text != '') {
+        if (text !== '') {
             this.notification.source.setChatState(Tp.ChannelChatState.COMPOSING);
 
             this._composingTimeoutId = GLib.timeout_add_seconds(

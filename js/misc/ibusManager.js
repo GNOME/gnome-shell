@@ -36,8 +36,8 @@ const KEY_INPUTMETHOD = 'inputmethod';
 
 function _checkIBusVersion(requiredMajor, requiredMinor, requiredMicro) {
     if ((IBus.MAJOR_VERSION > requiredMajor) ||
-        (IBus.MAJOR_VERSION == requiredMajor && IBus.MINOR_VERSION > requiredMinor) ||
-        (IBus.MAJOR_VERSION == requiredMajor && IBus.MINOR_VERSION == requiredMinor &&
+        (IBus.MAJOR_VERSION === requiredMajor && IBus.MINOR_VERSION > requiredMinor) ||
+        (IBus.MAJOR_VERSION === requiredMajor && IBus.MINOR_VERSION === requiredMinor &&
          IBus.MICRO_VERSION >= requiredMicro))
         return;
 
@@ -263,7 +263,7 @@ class IBusManager extends Signals.EventEmitter {
         this._currentEngineName = engineName;
         this._candidatePopup.close(BoxPointer.PopupAnimation.NONE);
 
-        if (this._registerPropertiesId != 0)
+        if (this._registerPropertiesId !== 0)
             return;
 
         this._registerPropertiesId =
@@ -341,7 +341,7 @@ class IBusManager extends Signals.EventEmitter {
         if (!ids.includes(TYPING_BOOSTER_ENGINE))
             ids.push(TYPING_BOOSTER_ENGINE);
 
-        if (this._preloadEnginesId != 0) {
+        if (this._preloadEnginesId !== 0) {
             GLib.source_remove(this._preloadEnginesId);
             this._preloadEnginesId = 0;
         }

@@ -42,8 +42,8 @@ class Animation extends St.Bin {
     }
 
     play() {
-        if (this._isLoaded && this._timeoutId == 0) {
-            if (this._frame == 0)
+        if (this._isLoaded && this._timeoutId === 0) {
+            if (this._frame === 0)
                 this._showFrame(0);
 
             this._timeoutId = GLib.timeout_add(GLib.PRIORITY_LOW, this._speed, this._update.bind(this));
