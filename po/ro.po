@@ -10,19 +10,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-09-03 21:44+0000\n"
-"PO-Revision-Date: 2021-09-05 11:47+0200\n"
-"Last-Translator: Florentina Mușat <florentina.musat.28@gmail.com>\n"
+"POT-Creation-Date: 2023-08-06 11:29+0000\n"
+"PO-Revision-Date: 2023-08-06 18:05+0300\n"
+"Last-Translator: Florentina Mușat <florentina [dot] musat [dot] 28 [at] "
+"gmail [dot] com>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
 "sourceforge.net>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && n"
-"%100<=19) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && "
+"n%100<=19) ? 1 : 2);\n"
 "20)) ? 1: 2);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.3.2\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -31,40 +32,65 @@ msgid "Launchers"
 msgstr "Lansatoare"
 
 #: data/50-gnome-shell-launchers.xml:10
-msgid "Activate favorite application 1"
+msgid "Activate favorite app 1"
 msgstr "Activează aplicația preferată 1"
 
 #: data/50-gnome-shell-launchers.xml:14
-msgid "Activate favorite application 2"
+msgid "Activate favorite app 2"
 msgstr "Activează aplicația preferată 2"
 
 #: data/50-gnome-shell-launchers.xml:18
-msgid "Activate favorite application 3"
+msgid "Activate favorite app 3"
 msgstr "Activează aplicația preferată 3"
 
 #: data/50-gnome-shell-launchers.xml:22
-msgid "Activate favorite application 4"
+msgid "Activate favorite app 4"
 msgstr "Activează aplicația preferată 4"
 
 #: data/50-gnome-shell-launchers.xml:26
-msgid "Activate favorite application 5"
+msgid "Activate favorite app 5"
 msgstr "Activează aplicația preferată 5"
 
 #: data/50-gnome-shell-launchers.xml:30
-msgid "Activate favorite application 6"
+msgid "Activate favorite app 6"
 msgstr "Activează aplicația preferată 6"
 
 #: data/50-gnome-shell-launchers.xml:34
-msgid "Activate favorite application 7"
+msgid "Activate favorite app 7"
 msgstr "Activează aplicația preferată 7"
 
 #: data/50-gnome-shell-launchers.xml:38
-msgid "Activate favorite application 8"
+msgid "Activate favorite app 8"
 msgstr "Activează aplicația preferată 8"
 
 #: data/50-gnome-shell-launchers.xml:42
-msgid "Activate favorite application 9"
+msgid "Activate favorite app 9"
 msgstr "Activează aplicația preferată 9"
+
+#. Translators: name of the folder under ~/Pictures for screenshots.
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2135
+msgid "Screenshots"
+msgstr "Capturi de ecran"
+
+#: data/50-gnome-shell-screenshots.xml:9
+#: data/org.gnome.shell.gschema.xml.in:238
+msgid "Take a screenshot interactively"
+msgstr "Ia o captură de ecran interactiv"
+
+#: data/50-gnome-shell-screenshots.xml:12
+#: data/org.gnome.shell.gschema.xml.in:250
+msgid "Take a screenshot"
+msgstr "Ia o captură de ecran"
+
+#: data/50-gnome-shell-screenshots.xml:15
+#: data/org.gnome.shell.gschema.xml.in:246
+msgid "Take a screenshot of a window"
+msgstr "Ia o captură de ecran a unei ferestre"
+
+#: data/50-gnome-shell-screenshots.xml:18
+#: data/org.gnome.shell.gschema.xml.in:242
+msgid "Record a screencast interactively"
+msgstr "Ia o înregistrare de ecran interactiv"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -75,20 +101,20 @@ msgid "Show the notification list"
 msgstr "Arată lista de notificare"
 
 #: data/50-gnome-shell-system.xml:12
+msgid "Open the quick settings menu"
+msgstr "Deschide meniul de configurări rapide"
+
+#: data/50-gnome-shell-system.xml:15
 msgid "Focus the active notification"
 msgstr "Focalizează notificarea activă"
 
-#: data/50-gnome-shell-system.xml:15
+#: data/50-gnome-shell-system.xml:18
 msgid "Show the overview"
 msgstr "Arată prezentarea generală"
 
-#: data/50-gnome-shell-system.xml:18
-msgid "Show all applications"
-msgstr "Arată toate aplicațiile"
-
 #: data/50-gnome-shell-system.xml:21
-msgid "Open the application menu"
-msgstr "Arată meniul aplicației"
+msgid "Show all apps"
+msgstr "Arată toate aplicațiile"
 
 #: data/org.gnome.Shell.desktop.in.in:4
 msgid "GNOME Shell"
@@ -228,28 +254,25 @@ msgstr ""
 "afișată. Această cheie determină starea implicită a căsuței."
 
 #: data/org.gnome.shell.gschema.xml.in:89
-msgid ""
-"Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr "Dacă adaptorul implicit Bluetooth are dispozitive asociate lui"
+msgid "The last selected non-default power profile"
+msgstr "Ultimul profil de alimentare neimplicit selectat"
 
 #: data/org.gnome.shell.gschema.xml.in:90
 msgid ""
-"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-"powered, or if there were devices set up associated with the default "
-"adapter. This will be reset if the default adapter is ever seen not to have "
-"devices associated to it."
+"Some systems support more than two power profiles. In order to still support "
+"toggling between two profiles, this key records the last selected non-"
+"default profile."
 msgstr ""
-"Vizualizatorul va arăta un element de meniu Bluetooth numai dacă adaptorul "
-"Bluetooth este pornit, sau dacă există dispozitive configurate asociate cu "
-"adaptorul implicit. Acesta va fi restabilit dacă adaptorul este perceput a "
-"nu avea dispozitive asociate lui."
+"Unele sisteme suportă mai mult decât două profiluri de alimentare. Pentru a "
+"suporta încă comutarea între două profiluri, această cheie înregistrează "
+"ultimul profil neimplicit selectat."
 
-#: data/org.gnome.shell.gschema.xml.in:99
+#: data/org.gnome.shell.gschema.xml.in:98
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr ""
 "Ultima versiune pentru care a fost afișat dialogul „Bine ați venit la GNOME”"
 
-#: data/org.gnome.shell.gschema.xml.in:100
+#: data/org.gnome.shell.gschema.xml.in:99
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -262,11 +285,11 @@ msgstr ""
 "există încă. Numărul gigantic poate fi folosit pentru a dezactiva efectiv "
 "dialogul."
 
-#: data/org.gnome.shell.gschema.xml.in:133
+#: data/org.gnome.shell.gschema.xml.in:132
 msgid "Layout of the app picker"
 msgstr "Aspectul selectorului de aplicații"
 
-#: data/org.gnome.shell.gschema.xml.in:134
+#: data/org.gnome.shell.gschema.xml.in:133
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -279,113 +302,113 @@ msgstr ""
 "următoarele valori sunt stocate ca „data”: • „poziție”: poziția iconiței "
 "aplicației în pagină"
 
-#: data/org.gnome.shell.gschema.xml.in:149
-msgid "Keybinding to open the application menu"
-msgstr "Combinație de taste pentru deschiderea meniului aplicației"
-
-#: data/org.gnome.shell.gschema.xml.in:150
-msgid "Keybinding to open the application menu."
-msgstr "Combinație de taste pentru deschiderea meniului aplicației."
-
-#: data/org.gnome.shell.gschema.xml.in:156
-#: data/org.gnome.shell.gschema.xml.in:163
+#: data/org.gnome.shell.gschema.xml.in:152
+#: data/org.gnome.shell.gschema.xml.in:159
 msgid "Keybinding to shift between overview states"
 msgstr ""
 "Combinație de taste pentru comutarea între stările prezentării generale"
 
-#: data/org.gnome.shell.gschema.xml.in:157
+#: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Combinație de taste pentru a comuta între sesiune, selectorul de ferestre și "
 "grila de aplicații"
 
-#: data/org.gnome.shell.gschema.xml.in:164
+#: data/org.gnome.shell.gschema.xml.in:160
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "Combinație de taste pentru a comuta între grila de aplicații, selectorul de "
 "ferestre și sesiunea"
 
-#: data/org.gnome.shell.gschema.xml.in:170
+#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to open the “Show Applications” view"
 msgstr ""
 "Combinație de taste pentru deschiderea modului de afișare „Arată aplicațiile”"
 
-#: data/org.gnome.shell.gschema.xml.in:171
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Combinație de taste pentru deschiderea modului de afișare „Arată "
 "aplicațiile” a prezentării generale a activităților."
 
-#: data/org.gnome.shell.gschema.xml.in:178
+#: data/org.gnome.shell.gschema.xml.in:174
 msgid "Keybinding to open the overview"
 msgstr "Combinație de taste pentru deschiderea prezentării generale"
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:175
 msgid "Keybinding to open the Activities Overview."
 msgstr ""
 "Combinație de taste pentru deschiderea prezentării generale a activităților."
 
-#: data/org.gnome.shell.gschema.xml.in:185
+#: data/org.gnome.shell.gschema.xml.in:181
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr ""
 "Combinație de taste pentru comutarea vizibilității listei de notificare"
 
-#: data/org.gnome.shell.gschema.xml.in:186
+#: data/org.gnome.shell.gschema.xml.in:182
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr ""
 "Combinație de taste pentru comutarea vizibilității listei de notificare."
 
-#: data/org.gnome.shell.gschema.xml.in:192
+#: data/org.gnome.shell.gschema.xml.in:188
+msgid "Keybinding to toggle the quick settings menu"
+msgstr "Combinație de taste pentru a comuta meniul de configurări rapide"
+
+#: data/org.gnome.shell.gschema.xml.in:189
+msgid "Keybinding to toggle the quick settings menu."
+msgstr "Combinație de taste pentru a comuta meniul de configurări rapide."
+
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Keybinding to focus the active notification"
 msgstr "Combinație de taste pentru focalizarea notificării active"
 
-#: data/org.gnome.shell.gschema.xml.in:193
+#: data/org.gnome.shell.gschema.xml.in:196
 msgid "Keybinding to focus the active notification."
 msgstr "Combinație de taste pentru focalizarea notificării active."
 
-#: data/org.gnome.shell.gschema.xml.in:199
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Switch to application 1"
 msgstr "Comută la aplicația 1"
 
-#: data/org.gnome.shell.gschema.xml.in:203
+#: data/org.gnome.shell.gschema.xml.in:206
 msgid "Switch to application 2"
 msgstr "Comută la aplicația 2"
 
-#: data/org.gnome.shell.gschema.xml.in:207
+#: data/org.gnome.shell.gschema.xml.in:210
 msgid "Switch to application 3"
 msgstr "Comută la aplicația 3"
 
-#: data/org.gnome.shell.gschema.xml.in:211
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "Switch to application 4"
 msgstr "Comută la aplicația 4"
 
-#: data/org.gnome.shell.gschema.xml.in:215
+#: data/org.gnome.shell.gschema.xml.in:218
 msgid "Switch to application 5"
 msgstr "Comută la aplicația 5"
 
-#: data/org.gnome.shell.gschema.xml.in:219
+#: data/org.gnome.shell.gschema.xml.in:222
 msgid "Switch to application 6"
 msgstr "Comută la aplicația 6"
 
-#: data/org.gnome.shell.gschema.xml.in:223
+#: data/org.gnome.shell.gschema.xml.in:226
 msgid "Switch to application 7"
 msgstr "Comută la aplicația 7"
 
-#: data/org.gnome.shell.gschema.xml.in:227
+#: data/org.gnome.shell.gschema.xml.in:230
 msgid "Switch to application 8"
 msgstr "Comută la aplicația 8"
 
-#: data/org.gnome.shell.gschema.xml.in:231
+#: data/org.gnome.shell.gschema.xml.in:234
 msgid "Switch to application 9"
 msgstr "Comută la aplicația 9"
 
-#: data/org.gnome.shell.gschema.xml.in:240
-#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:286
 msgid "Limit switcher to current workspace."
 msgstr "Limitează comutatorul la spațiul de lucru curent."
 
-#: data/org.gnome.shell.gschema.xml.in:241
+#: data/org.gnome.shell.gschema.xml.in:260
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -393,11 +416,11 @@ msgstr ""
 "Dacă este activat, doar aplicațiile care au ferestre în spațiul de lucru "
 "curent sunt arătate în comutator. Altfel, toate aplicațiile sunt incluse."
 
-#: data/org.gnome.shell.gschema.xml.in:258
+#: data/org.gnome.shell.gschema.xml.in:277
 msgid "The application icon mode."
 msgstr "Miniatură și pictograma aplicației."
 
-#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:278
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -407,7 +430,7 @@ msgstr ""
 "Posibilități valide sunt „mod miniatură” (arată o miniatură a ferestrei) "
 "„mod iconiță” (arată doar iconița aplicației) sau „ambele”."
 
-#: data/org.gnome.shell.gschema.xml.in:268
+#: data/org.gnome.shell.gschema.xml.in:287
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -415,74 +438,40 @@ msgstr ""
 "Dacă este activat, doar ferestrele din spațiul de lucru curent sunt arătate "
 "în comutator. Altfel, toate ferestrele sunt incluse."
 
-#: data/org.gnome.shell.gschema.xml.in:278
+#: data/org.gnome.shell.gschema.xml.in:297
 msgid "Locations"
 msgstr "Locații"
 
-#: data/org.gnome.shell.gschema.xml.in:279
+#: data/org.gnome.shell.gschema.xml.in:298
 msgid "The locations to show in world clocks"
 msgstr "Locațiile de arătat în ceasuri globale"
 
-#: data/org.gnome.shell.gschema.xml.in:289
+#: data/org.gnome.shell.gschema.xml.in:308
 msgid "Automatic location"
 msgstr "Locație automată"
 
-#: data/org.gnome.shell.gschema.xml.in:290
+#: data/org.gnome.shell.gschema.xml.in:309
 msgid "Whether to fetch the current location or not"
 msgstr "Dacă să se obțină locația curentă"
 
-#: data/org.gnome.shell.gschema.xml.in:297
+#: data/org.gnome.shell.gschema.xml.in:316
 msgid "Location"
 msgstr "Locație"
 
-#: data/org.gnome.shell.gschema.xml.in:298
+#: data/org.gnome.shell.gschema.xml.in:317
 msgid "The location for which to show a forecast"
 msgstr "Locația pentru care să se arate o prognoză"
-
-#: data/org.gnome.shell.gschema.xml.in:310
-msgid "Attach modal dialog to the parent window"
-msgstr "Atașează dialogul modal la fereastra părinte"
-
-#: data/org.gnome.shell.gschema.xml.in:311
-#: data/org.gnome.shell.gschema.xml.in:320
-#: data/org.gnome.shell.gschema.xml.in:328
-#: data/org.gnome.shell.gschema.xml.in:336
-#: data/org.gnome.shell.gschema.xml.in:344
-msgid ""
-"This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Această cheie suprascrie cheia corespondentă din org.gnome.mutter când "
-"Vizualizatorul activităților GNOME rulează."
-
-#: data/org.gnome.shell.gschema.xml.in:319
-msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
-"Activează mozaic lateral la plasarea ferestrelor pe marginile ecranului"
-
-#: data/org.gnome.shell.gschema.xml.in:327
-msgid "Workspaces are managed dynamically"
-msgstr "Spațiile de lucru sunt gestionate în mod dinamic"
-
-#: data/org.gnome.shell.gschema.xml.in:335
-msgid "Workspaces only on primary monitor"
-msgstr "Spații de lucru doar pe monitorul principal"
-
-#: data/org.gnome.shell.gschema.xml.in:343
-msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr ""
-"Întârzie schimbările de focalizare în maus până când cursorul încetează să "
-"se miște"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
 msgstr "Logare prin rețea"
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:28
-#: subprojects/extensions-app/data/ui/extensions-window.ui:241
+#: js/dbusServices/extensions/ui/extension-error-page.ui:15
+#: subprojects/extensions-app/data/ui/extensions-window.ui:143
 msgid "Something’s gone wrong"
 msgstr "Ceva nu a funcționat cum trebuie"
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:39
+#: js/dbusServices/extensions/ui/extension-error-page.ui:23
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -492,181 +481,190 @@ msgstr ""
 "extensie nu pot fi afișate. Vă recomandăm să raportați problema autorilor "
 "extensiei."
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:64
+#: js/dbusServices/extensions/ui/extension-error-page.ui:48
 msgid "Technical Details"
 msgstr "Detalii tehnice"
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:106
+#: js/dbusServices/extensions/ui/extension-error-page.ui:90
 msgid "Homepage"
 msgstr "Pagină principală"
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:107
+#: js/dbusServices/extensions/ui/extension-error-page.ui:91
 msgid "Visit extension homepage"
 msgstr "Vizitează pagina principală a extensiei"
 
-#: js/gdm/authPrompt.js:141 js/ui/audioDeviceSelection.js:61
-#: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:138
-#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:228
-#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:978 subprojects/extensions-app/js/main.js:183
+#: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
+#: js/ui/components/networkAgent.js:115 js/ui/components/polkitAgent.js:146
+#: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:256
+#: js/ui/shellMountOperation.js:387 js/ui/shellMountOperation.js:397
+#: subprojects/extensions-app/js/main.js:179
 msgid "Cancel"
 msgstr "Anulează"
 
-#. Cisco LEAP
-#: js/gdm/authPrompt.js:285 js/ui/components/networkAgent.js:209
-#: js/ui/components/networkAgent.js:225 js/ui/components/networkAgent.js:249
-#: js/ui/components/networkAgent.js:270 js/ui/components/networkAgent.js:290
-#: js/ui/components/networkAgent.js:300 js/ui/components/polkitAgent.js:275
-#: js/ui/shellMountOperation.js:326
+#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:215
+#: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
+#: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
+#: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
+#: js/ui/shellMountOperation.js:337
 msgid "Password"
 msgstr "Parolă"
 
-#: js/gdm/loginDialog.js:317
+#: js/gdm/loginDialog.js:324
 msgid "Choose Session"
 msgstr "Alegeți o sesiune"
 
-#: js/gdm/loginDialog.js:456
+#: js/gdm/loginDialog.js:469
 msgid "Not listed?"
 msgstr "Nelistat?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:921
+#: js/gdm/loginDialog.js:937
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(de exemplu, utilizator sau %s)"
 
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: js/gdm/loginDialog.js:926 js/ui/components/networkAgent.js:245
-#: js/ui/components/networkAgent.js:268 js/ui/components/networkAgent.js:286
+#: js/gdm/loginDialog.js:942 js/ui/components/networkAgent.js:259
+#: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:328
 msgid "Username"
 msgstr "Nume de utilizator"
 
-#: js/gdm/loginDialog.js:1279
+#: js/gdm/loginDialog.js:1265
 msgid "Login Window"
 msgstr "Fereastră de autentificare"
 
-#: js/gdm/util.js:430
+#: js/gdm/util.js:402
 msgid "Authentication error"
 msgstr "Eroare de autentificare"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:589
+#: js/gdm/util.js:584
 msgid "(or swipe finger across reader)"
 msgstr "(sau treceți cu degetul peste cititor)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:594
+#: js/gdm/util.js:589
 msgid "(or place finger on reader)"
 msgstr "(sau plasați degetul pe cititor)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:82
+#: js/misc/systemActions.js:91
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Oprire"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:85
-msgid "power off;shutdown;halt;stop"
-msgstr "power off;shutdown;halt;stop;oprește;închide;blochează"
+#: js/misc/systemActions.js:94
+msgid "power off;poweroff;shutdown;halt;stop"
+msgstr "power off;poweroff;shutdown;halt;stop;oprește;închide;blochează"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:90
+#: js/misc/systemActions.js:99
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Repornire"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:93
+#: js/misc/systemActions.js:102
 msgid "reboot;restart;"
 msgstr "reboot;restart;repornește;restartează;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:98
+#: js/misc/systemActions.js:107
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Blochează ecranul"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:101
+#: js/misc/systemActions.js:110
 msgid "lock screen"
 msgstr "lock screen;blochează ecranul"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:106
+#: js/misc/systemActions.js:115
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Ieșire din sesiune"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:118
 msgid "logout;log out;sign off"
 msgstr "logout;sign off;ieșire din sesiune;deautentificare"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:114
+#: js/misc/systemActions.js:123
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Suspendare"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:117
+#: js/misc/systemActions.js:126
 msgid "suspend;sleep"
 msgstr "suspend;sleep;suspendare"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:122
+#: js/misc/systemActions.js:131
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Comută utilizatorul"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:125
+#: js/misc/systemActions.js:134
 msgid "switch user"
 msgstr "switch user;comută utilizatorul"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:132
+#: js/misc/systemActions.js:141
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 "lock orientation;screen;rotation;blocare orientare;blocare de orientare;"
 "ecran;rotație"
 
-#: js/misc/systemActions.js:232
+#. Translators: The name of the screenshot UI action in search
+#: js/misc/systemActions.js:146
+msgctxt "search-result"
+msgid "Take a Screenshot"
+msgstr "Ia o captură de ecran"
+
+#. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
+#: js/misc/systemActions.js:149
+msgid "screenshot;screencast;snip;capture;record"
+msgstr ""
+"screenshot;screencast;snip;capture;record;captură de ecran;înregistrare de "
+"ecran;captură;înregistrare"
+
+#: js/misc/systemActions.js:249
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Deblochează rotația ecranului"
 
-#: js/misc/systemActions.js:233
+#: js/misc/systemActions.js:250
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Rotație de ecran blocat"
 
-#: js/misc/util.js:121
+#: js/misc/util.js:137
 msgid "Command not found"
 msgstr "Comanda nu a fost găsită"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:157
+#: js/misc/util.js:177
 msgid "Could not parse command:"
 msgstr "Nu s-a putut analiza comanda:"
 
-#: js/misc/util.js:165
+#: js/misc/util.js:185
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Execuția comenzii „%s” a eșuat:"
 
-#: js/misc/util.js:182
+#: js/misc/dateUtils.js:69
 msgid "Just now"
 msgstr "Acum"
 
-#: js/misc/util.js:184
+#: js/misc/dateUtils.js:72
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -674,7 +672,7 @@ msgstr[0] "%d minut în urmă"
 msgstr[1] "%d minute în urmă"
 msgstr[2] "%d de minute în urmă"
 
-#: js/misc/util.js:188
+#: js/misc/dateUtils.js:79
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -682,11 +680,11 @@ msgstr[0] "%d oră în urmă"
 msgstr[1] "%d ore în urmă"
 msgstr[2] "%d de ore în urmă"
 
-#: js/misc/util.js:192 js/ui/dateMenu.js:162
+#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:182
 msgid "Yesterday"
 msgstr "Ieri"
 
-#: js/misc/util.js:194
+#: js/misc/dateUtils.js:88
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -694,7 +692,7 @@ msgstr[0] "%d zi în urmă"
 msgstr[1] "%d zile în urmă"
 msgstr[2] "%d de zile în urmă"
 
-#: js/misc/util.js:198
+#: js/misc/dateUtils.js:95
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -702,7 +700,7 @@ msgstr[0] "%d săptămână în urmă"
 msgstr[1] "%d săptămâni în urmă"
 msgstr[2] "%d de săptămâni în urmă"
 
-#: js/misc/util.js:202
+#: js/misc/dateUtils.js:102
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
@@ -710,7 +708,7 @@ msgstr[0] "%d lună în urmă"
 msgstr[1] "%d luni în urmă"
 msgstr[2] "%d de luni în urmă"
 
-#: js/misc/util.js:205
+#: js/misc/dateUtils.js:108
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -719,20 +717,20 @@ msgstr[1] "%d ani în urmă"
 msgstr[2] "%d de ani în urmă"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:238
+#: js/misc/dateUtils.js:155
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:244
+#: js/misc/dateUtils.js:161
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Ieri, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:250
+#: js/misc/dateUtils.js:167
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -740,7 +738,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:256
+#: js/misc/dateUtils.js:173
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%B %-d, %H∶%M"
@@ -748,7 +746,7 @@ msgstr "%B %-d, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:262
+#: js/misc/dateUtils.js:179
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%B %-d %Y, %H∶%M"
@@ -756,20 +754,20 @@ msgstr "%B %-d %Y, %H∶%M"
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
-#: js/misc/util.js:267
+#: js/misc/dateUtils.js:184
 msgid "%l∶%M %p"
 msgstr "%l:%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:273
+#: js/misc/dateUtils.js:190
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Ieri, %l:%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:279
+#: js/misc/dateUtils.js:196
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -777,7 +775,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:285
+#: js/misc/dateUtils.js:202
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%B %-d, %l∶%M %p"
@@ -785,17 +783,16 @@ msgstr "%B %-d, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:291
+#: js/misc/dateUtils.js:208
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%B %-d %Y, %l∶%M %p"
 
-#. TRANSLATORS: this is the title of the wifi captive portal login window
-#: js/portalHelper/main.js:49
-msgid "Hotspot Login"
-msgstr "Logare hotspot"
+#: js/portalHelper/main.js:98
+msgid "Your connection seems to be secure"
+msgstr "Conexiunea pare a fi sigură"
 
-#: js/portalHelper/main.js:95
+#: js/portalHelper/main.js:104
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -804,97 +801,102 @@ msgstr ""
 "informății pe care le-ați introdus pe această pagină pot fi văzute de "
 "oamenii din jur."
 
+#: js/portalHelper/main.js:115
+msgid "Hotspot Login"
+msgstr "Logare hotspot"
+
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:417
-msgid "Deny Access"
-msgstr "Refuză accesul"
+#: js/ui/accessDialog.js:45 js/ui/inhibitShortcutsDialog.js:92
+msgid "Deny"
+msgstr "Refuză"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:420
-msgid "Grant Access"
-msgstr "Permite accesul"
+#: js/ui/accessDialog.js:46 js/ui/inhibitShortcutsDialog.js:101
+msgid "Allow"
+msgstr "Permite"
 
-#: js/ui/appDisplay.js:1846
+#: js/ui/appDisplay.js:1773
 msgid "Unnamed Folder"
 msgstr "Dosar nedenumit"
 
-#: js/ui/appFavorites.js:164
+#: js/ui/appFavorites.js:166
 #, javascript-format
-msgid "%s has been added to your favorites."
-msgstr "%s a fost adăugat la favorite."
+msgid "%s has been pinned to the dash."
+msgstr "%s a fost fixat pe tabloul de bord."
 
-#: js/ui/appFavorites.js:197
+#: js/ui/appFavorites.js:199
 #, javascript-format
-msgid "%s has been removed from your favorites."
-msgstr "%s a fost eliminat de la favorite."
+msgid "%s has been unpinned from the dash."
+msgstr "%s a fost desprins de pe tabloul de bord."
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appMenu.js:46
+#: js/ui/appMenu.js:51
 msgid "Open Windows"
 msgstr "Ferestre deschise"
 
-#: js/ui/appMenu.js:54
+#: js/ui/appMenu.js:59
 msgid "New Window"
 msgstr "Fereastră nouă"
 
-#: js/ui/appMenu.js:81
-msgid "Show Details"
-msgstr "Arată detaliile"
+#: js/ui/appMenu.js:86
+msgid "App Details"
+msgstr "Detalii aplicație"
 
-#: js/ui/appMenu.js:96
+#: js/ui/appMenu.js:102
 msgid "Quit"
 msgstr "Ieșire"
 
-#: js/ui/appMenu.js:163 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "Elimină din favorite"
+#: js/ui/appMenu.js:162 js/ui/dash.js:258
+msgid "Unpin"
+msgstr "Desprinde"
 
-#: js/ui/appMenu.js:164
-msgid "Add to Favorites"
-msgstr "Adaugă la Favorite"
+#: js/ui/appMenu.js:163
+msgid "Pin to Dash"
+msgstr "Fixează pe tabloul de bord"
 
-#: js/ui/appMenu.js:181
+#: js/ui/appMenu.js:180
 msgid "Launch using Integrated Graphics Card"
 msgstr "Lansează folosind placa grafică integrată"
 
-#: js/ui/appMenu.js:182
+#: js/ui/appMenu.js:181
 msgid "Launch using Discrete Graphics Card"
 msgstr "Lansează folosind placa grafică discretă"
 
-#: js/ui/audioDeviceSelection.js:41
+#: js/ui/audioDeviceSelection.js:46
 msgid "Select Audio Device"
 msgstr "Selectați dispozitivul audio"
 
-#: js/ui/audioDeviceSelection.js:56
+#: js/ui/audioDeviceSelection.js:61 js/ui/status/volume.js:83
 msgid "Sound Settings"
 msgstr "Configurări de sunet"
 
-#: js/ui/audioDeviceSelection.js:69
+#: js/ui/audioDeviceSelection.js:74
 msgid "Headphones"
 msgstr "Căști auriculare"
 
-#: js/ui/audioDeviceSelection.js:71
+#: js/ui/audioDeviceSelection.js:76
 msgid "Headset"
 msgstr "Căști cu microfon"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:277
+#: js/ui/audioDeviceSelection.js:78 js/ui/status/volume.js:352
 msgid "Microphone"
 msgstr "Microfon"
 
-#: js/ui/backgroundMenu.js:14
+#: js/ui/backgroundMenu.js:15
 msgid "Change Background…"
 msgstr "Schimbă fundalul…"
 
-#: js/ui/backgroundMenu.js:16 js/ui/status/nightLight.js:45
+#: js/ui/backgroundMenu.js:17
 msgid "Display Settings"
 msgstr "Configurări afișaj"
 
-#: js/ui/backgroundMenu.js:17
+#: js/ui/backgroundMenu.js:18
+#: subprojects/extensions-app/data/ui/extension-row.ui:122
 msgid "Settings"
 msgstr "Configurări"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:36
+#: js/ui/calendar.js:40
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -904,43 +906,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:65
+#: js/ui/calendar.js:66
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:67
+#: js/ui/calendar.js:68
 msgctxt "grid monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:69
+#: js/ui/calendar.js:70
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:72
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:73
+#: js/ui/calendar.js:74
 msgctxt "grid thursday"
 msgid "T"
 msgstr "J"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:75
+#: js/ui/calendar.js:76
 msgctxt "grid friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:77
+#: js/ui/calendar.js:78
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -951,7 +953,7 @@ msgstr "S"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:392
+#: js/ui/calendar.js:429
 msgid "%OB"
 msgstr "%OB"
 
@@ -964,117 +966,117 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:402
+#: js/ui/calendar.js:439
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:461
+#: js/ui/calendar.js:500
 msgid "Previous month"
 msgstr "Luna precedentă"
 
-#: js/ui/calendar.js:476
+#: js/ui/calendar.js:518
 msgid "Next month"
 msgstr "Luna viitoare"
 
-#: js/ui/calendar.js:626
+#: js/ui/calendar.js:669
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:682
+#: js/ui/calendar.js:728
 msgid "Week %V"
 msgstr "Săptămâna %V"
 
-#: js/ui/calendar.js:896
+#: js/ui/calendar.js:907
 msgid "No Notifications"
 msgstr "Nu există notificări"
 
-#: js/ui/calendar.js:950
+#: js/ui/calendar.js:964
 msgid "Do Not Disturb"
 msgstr "Nu deranja"
 
-#: js/ui/calendar.js:971
+#: js/ui/calendar.js:985
 msgid "Clear"
 msgstr "Curăță"
 
 #. Translators: %s is an application name
-#: js/ui/closeDialog.js:42
+#: js/ui/closeDialog.js:44
 #, javascript-format
 msgid "“%s” is not responding."
 msgstr "„%s” nu răspunde."
 
-#: js/ui/closeDialog.js:43
+#: js/ui/closeDialog.js:45
 msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
+"You may choose to wait a short while for it to continue or force the app to "
+"quit entirely."
 msgstr ""
-"Puteți alege să așteptați o scurtă vreme pentru a continua sau să forțați "
+"Puteți alege să așteptați o vreme scurtă pentru a continua sau să forțați "
 "aplicația să se închidă complet."
 
-#: js/ui/closeDialog.js:70
+#: js/ui/closeDialog.js:73
 msgid "Force Quit"
 msgstr "Forțează închiderea"
 
-#: js/ui/closeDialog.js:73
+#: js/ui/closeDialog.js:78
 msgid "Wait"
 msgstr "Așteaptă"
 
-#: js/ui/components/automountManager.js:85
+#: js/ui/components/automountManager.js:84
 msgid "External drive connected"
 msgstr "A fost conectat un disc extern"
 
-#: js/ui/components/automountManager.js:97
+#: js/ui/components/automountManager.js:96
 msgid "External drive disconnected"
 msgstr "A fost deconectat un disc extern"
 
-#: js/ui/components/automountManager.js:206
+#: js/ui/components/automountManager.js:207
 msgid "Unable to unlock volume"
 msgstr "Nu s-a putut debloca volumul"
 
-#: js/ui/components/automountManager.js:207
+#: js/ui/components/automountManager.js:208
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Versiunea instalată udisks nu suportă configurarea PIM"
 
-#: js/ui/components/autorunManager.js:332
+#: js/ui/components/autorunManager.js:319
 #, javascript-format
 msgid "Open with %s"
 msgstr "Deschide cu %s"
 
-#: js/ui/components/networkAgent.js:92
+#: js/ui/components/networkAgent.js:97
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "În mod alternativ vă puteți conecta apăsând butonul „WPS” pe routerul "
 "dumneavoastră."
 
-#: js/ui/components/networkAgent.js:104 js/ui/status/network.js:258
-#: js/ui/status/network.js:349 js/ui/status/network.js:981
+#: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:226
+#: js/ui/status/network.js:371 js/ui/status/network.js:455
 msgid "Connect"
 msgstr "Conectare"
 
-#: js/ui/components/networkAgent.js:215
+#: js/ui/components/networkAgent.js:224
 msgid "Key"
 msgstr "Tastă"
 
-#: js/ui/components/networkAgent.js:253 js/ui/components/networkAgent.js:276
+#: js/ui/components/networkAgent.js:275 js/ui/components/networkAgent.js:314
 msgid "Private key password"
 msgstr "Parolă pentru cheia privată"
 
-#: js/ui/components/networkAgent.js:274
+#: js/ui/components/networkAgent.js:308
 msgid "Identity"
 msgstr "Identitate"
 
-#: js/ui/components/networkAgent.js:288
+#: js/ui/components/networkAgent.js:334
 msgid "Service"
 msgstr "Serviciu"
 
-#: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:345
-#: js/ui/components/networkAgent.js:679 js/ui/components/networkAgent.js:700
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:408
+#: js/ui/components/networkAgent.js:753 js/ui/components/networkAgent.js:774
 msgid "Authentication required"
 msgstr "Autentificarea este necesară"
 
-#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:754
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1083,54 +1085,54 @@ msgstr ""
 "Sunt necesare parole sau chei de criptare pentru a accesa rețeaua fără fir "
 "„%s”."
 
-#: js/ui/components/networkAgent.js:322 js/ui/components/networkAgent.js:684
+#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:758
 msgid "Wired 802.1X authentication"
 msgstr "Autentificare 802.1X prin cablu"
 
-#: js/ui/components/networkAgent.js:324
+#: js/ui/components/networkAgent.js:380
 msgid "Network name"
 msgstr "Nume de rețea"
 
-#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:688
+#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:762
 msgid "DSL authentication"
 msgstr "Autentificare DSL"
 
-#: js/ui/components/networkAgent.js:336 js/ui/components/networkAgent.js:693
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:767
 msgid "PIN code required"
 msgstr "Este necesar codul PIN"
 
-#: js/ui/components/networkAgent.js:337 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:768
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Este necesar codul PIN pentru dispozitivul mobil de bandă largă"
 
-#: js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:398
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:346 js/ui/components/networkAgent.js:685
-#: js/ui/components/networkAgent.js:689 js/ui/components/networkAgent.js:701
-#: js/ui/components/networkAgent.js:705
+#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:763 js/ui/components/networkAgent.js:775
+#: js/ui/components/networkAgent.js:779
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Este necesară o parolă pentru conectarea la „%s”."
 
-#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1789
+#: js/ui/components/networkAgent.js:742 js/ui/status/network.js:2024
 msgid "Network Manager"
 msgstr "Gestionar de rețea"
 
-#: js/ui/components/networkAgent.js:704
+#: js/ui/components/networkAgent.js:778
 msgid "VPN password"
 msgstr "Parolă VPN"
 
-#: js/ui/components/polkitAgent.js:39
+#: js/ui/components/polkitAgent.js:46
 msgid "Authentication Required"
 msgstr "Necesită autentificare"
 
-#: js/ui/components/polkitAgent.js:79
+#: js/ui/components/polkitAgent.js:86
 msgid "Administrator"
 msgstr "Administrator"
 
-#: js/ui/components/polkitAgent.js:141
+#: js/ui/components/polkitAgent.js:151
 msgid "Authenticate"
 msgstr "Autentificare"
 
@@ -1138,28 +1140,26 @@ msgstr "Autentificare"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:252 js/ui/shellMountOperation.js:402
+#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:420
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Nu a funcționat. Încercați din nou."
 
-#. Translators: this is the other person changing their old IM name to their new
-#. IM name.
-#: js/ui/components/telepathyClient.js:822
+#: js/ui/components/telepathyClient.js:831
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s este acum cunoscut ca %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:404
+#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:426
 msgid "Windows"
 msgstr "Ferestre"
 
-#: js/ui/dash.js:204 js/ui/dash.js:247
-msgid "Show Applications"
+#: js/ui/dash.js:214 js/ui/dash.js:260
+msgid "Show Apps"
 msgstr "Arată aplicațiile"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:394
+#: js/ui/dash.js:408
 msgid "Dash"
 msgstr "Dash"
 
@@ -1168,7 +1168,7 @@ msgstr "Dash"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:79
+#: js/ui/dateMenu.js:98
 msgid "%B %-d %Y"
 msgstr "%B %-d %Y"
 
@@ -1176,82 +1176,89 @@ msgstr "%B %-d %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:86
+#: js/ui/dateMenu.js:105
 msgid "%A %B %e %Y"
 msgstr "%A %B %e %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:151
+#: js/ui/dateMenu.js:171
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%B %-d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:154
+#: js/ui/dateMenu.js:174
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%B %-d %Y"
 
-#: js/ui/dateMenu.js:160
+#: js/ui/dateMenu.js:180
 msgid "Today"
 msgstr "Astăzi"
 
-#: js/ui/dateMenu.js:164
+#: js/ui/dateMenu.js:184
 msgid "Tomorrow"
 msgstr "Mâine"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:180
+#: js/ui/dateMenu.js:215
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Toată ziua"
 
-#: js/ui/dateMenu.js:231
+#. Translators: Shown in calendar event list as the start/end of events
+#. * that only show day and month
+#.
+#: js/ui/dateMenu.js:237
+msgid "%m/%d"
+msgstr "%m/%d"
+
+#: js/ui/dateMenu.js:288
 msgid "No Events"
 msgstr "Nu există evenimente"
 
-#: js/ui/dateMenu.js:348
+#: js/ui/dateMenu.js:410
 msgid "Add world clocks…"
 msgstr "Adaugă un fus orar…"
 
-#: js/ui/dateMenu.js:349
+#: js/ui/dateMenu.js:411
 msgid "World Clocks"
 msgstr "Fusuri orare"
 
-#: js/ui/dateMenu.js:629
+#: js/ui/dateMenu.js:695
 msgid "Loading…"
 msgstr "Se încarcă…"
 
-#: js/ui/dateMenu.js:639
+#: js/ui/dateMenu.js:705
 msgid "Go online for weather information"
 msgstr "Conectați-vă la internet pentru informații despre vreme"
 
-#: js/ui/dateMenu.js:641
+#: js/ui/dateMenu.js:707
 msgid "Weather information is currently unavailable"
 msgstr "Informațiile despre vreme nu sunt disponibile momentan"
 
-#: js/ui/dateMenu.js:651
+#: js/ui/dateMenu.js:717
 msgid "Weather"
 msgstr "Vreme"
 
-#: js/ui/dateMenu.js:653
+#: js/ui/dateMenu.js:719
 msgid "Select weather location…"
 msgstr "Selectează locația vremii…"
 
-#: js/ui/endSessionDialog.js:39
+#: js/ui/endSessionDialog.js:46
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Ieșire din sesiune pentru %s"
 
-#: js/ui/endSessionDialog.js:40
+#: js/ui/endSessionDialog.js:47
 msgctxt "title"
 msgid "Log Out"
 msgstr "Ieșire din sesiune"
 
-#: js/ui/endSessionDialog.js:43
+#: js/ui/endSessionDialog.js:50
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -1259,7 +1266,7 @@ msgstr[0] "%s va fi scos din sesiune automat în %d secundă."
 msgstr[1] "%s va fi scos din sesiune automat în %d secunde."
 msgstr[2] "%s va fi scos din sesiune automat în %d de secunde."
 
-#: js/ui/endSessionDialog.js:49
+#: js/ui/endSessionDialog.js:56
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
@@ -1267,22 +1274,22 @@ msgstr[0] "Veți fi scos din sesiune automat în %d secundă."
 msgstr[1] "Veți fi scos din sesiune automat în %d secunde."
 msgstr[2] "Veți fi scos din sesiune automat în %d de secunde."
 
-#: js/ui/endSessionDialog.js:56
+#: js/ui/endSessionDialog.js:63
 msgctxt "button"
 msgid "Log Out"
 msgstr "Ieșire din sesiune"
 
-#: js/ui/endSessionDialog.js:62
+#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:175
 msgctxt "title"
 msgid "Power Off"
 msgstr "Oprire"
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:70
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Instalarea actualizărilor și repornirea"
 
-#: js/ui/endSessionDialog.js:66
+#: js/ui/endSessionDialog.js:73
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -1290,27 +1297,27 @@ msgstr[0] "Sistemul se va opri automat în %d secundă."
 msgstr[1] "Sistemul se va opri automat în %d secunde."
 msgstr[2] "Sistemul se va opri automat în %d de secunde."
 
-#: js/ui/endSessionDialog.js:70 js/ui/endSessionDialog.js:89
+#: js/ui/endSessionDialog.js:77 js/ui/endSessionDialog.js:96
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Instalează actualizările în așteptare"
 
-#: js/ui/endSessionDialog.js:74
+#: js/ui/endSessionDialog.js:81
 msgctxt "button"
 msgid "Power Off"
 msgstr "Oprire"
 
-#: js/ui/endSessionDialog.js:81
+#: js/ui/endSessionDialog.js:88
 msgctxt "title"
 msgid "Restart"
 msgstr "Repornire"
 
-#: js/ui/endSessionDialog.js:82
+#: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "Instalează actualizările și repornește"
 
-#: js/ui/endSessionDialog.js:85
+#: js/ui/endSessionDialog.js:92
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -1318,17 +1325,17 @@ msgstr[0] "Sistemul se va reporni automat în %d secundă."
 msgstr[1] "Sistemul se va reporni automat în %d secunde."
 msgstr[2] "Sistemul se va reporni automat în %d de secunde."
 
-#: js/ui/endSessionDialog.js:93
+#: js/ui/endSessionDialog.js:100
 msgctxt "button"
 msgid "Restart"
 msgstr "Repornire"
 
-#: js/ui/endSessionDialog.js:101
+#: js/ui/endSessionDialog.js:108
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Repornire și instalare actualizări"
 
-#: js/ui/endSessionDialog.js:104
+#: js/ui/endSessionDialog.js:111
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1337,22 +1344,22 @@ msgstr[0] "Sistemul se va reporni automat în %d secundă."
 msgstr[1] "Sistemul se va reporni automat în %d secunde."
 msgstr[2] "Sistemul se va reporni automat în %d de secunde."
 
-#: js/ui/endSessionDialog.js:111 js/ui/endSessionDialog.js:132
+#: js/ui/endSessionDialog.js:118 js/ui/endSessionDialog.js:139
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Repornește și instalează"
 
-#: js/ui/endSessionDialog.js:113
+#: js/ui/endSessionDialog.js:120
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Instalează și oprește"
 
-#: js/ui/endSessionDialog.js:114
+#: js/ui/endSessionDialog.js:121
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Oprește după ce actualizările au fost instalate"
 
-#: js/ui/endSessionDialog.js:121
+#: js/ui/endSessionDialog.js:128
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Repornire și instalare înnoiri"
@@ -1360,7 +1367,7 @@ msgstr "Repornire și instalare înnoiri"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:126
+#: js/ui/endSessionDialog.js:133
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1370,94 +1377,86 @@ msgstr ""
 "timp: asigurați-vă că ați făcut o copie de siguranță și că calculatorul este "
 "conectat la rețeaua electrică."
 
-#: js/ui/endSessionDialog.js:284
+#: js/ui/endSessionDialog.js:290
 msgid "Low battery power: please plug in before installing updates."
 msgstr ""
 "Putere de baterie scăzută: conectați înainte de a instala actualizările."
 
-#: js/ui/endSessionDialog.js:293
+#: js/ui/endSessionDialog.js:299
 msgid "Some applications are busy or have unsaved work"
 msgstr "Unele aplicații sunt ocupate sau au muncă nesalvată"
 
-#: js/ui/endSessionDialog.js:298
+#: js/ui/endSessionDialog.js:304
 msgid "Other users are logged in"
 msgstr "Alți utilizatori sunt autentificați"
 
-#: js/ui/endSessionDialog.js:467
+#: js/ui/endSessionDialog.js:475
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Opțiuni de inițializare"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:686
+#: js/ui/endSessionDialog.js:680
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (la distanță)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:689
+#: js/ui/endSessionDialog.js:683
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (consolă)"
 
-#: js/ui/extensionDownloader.js:232
+#: js/ui/extensionDownloader.js:260
 msgid "Install"
 msgstr "Instalează"
 
-#: js/ui/extensionDownloader.js:238
+#: js/ui/extensionDownloader.js:266
 msgid "Install Extension"
 msgstr "Instalează extensia"
 
-#: js/ui/extensionDownloader.js:239
+#: js/ui/extensionDownloader.js:267
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Descărcați și instalați „%s” de la extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:334
 msgid "Extension Updates Available"
 msgstr "Actualizări de extensie disponibile"
 
-#: js/ui/extensionSystem.js:253
+#: js/ui/extensionSystem.js:335
 msgid "Extension updates are ready to be installed."
 msgstr "Actualizările de extensie sunt gata de instalat."
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:70
 msgid "Allow inhibiting shortcuts"
 msgstr "Permite inhibarea scurtăturilor"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:82
+#: js/ui/inhibitShortcutsDialog.js:73
 #, javascript-format
-msgid "The application %s wants to inhibit shortcuts"
+msgid "The app %s wants to inhibit shortcuts"
 msgstr "Aplicația %s dorește să inhibe scurtăturile"
 
-#: js/ui/inhibitShortcutsDialog.js:83
-msgid "An application wants to inhibit shortcuts"
+#: js/ui/inhibitShortcutsDialog.js:74
+msgid "An app wants to inhibit shortcuts"
 msgstr "O aplicație vrea să inhibe scurtăturile"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:90
+#: js/ui/inhibitShortcutsDialog.js:81
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Puteți restaura scurtăturile apăsând %s."
 
-#: js/ui/inhibitShortcutsDialog.js:100
-msgid "Deny"
-msgstr "Refuză"
-
-#: js/ui/inhibitShortcutsDialog.js:107
-msgid "Allow"
-msgstr "Permite"
-
-#: js/ui/kbdA11yDialog.js:32
+#: js/ui/kbdA11yDialog.js:34
 msgid "Slow Keys Turned On"
 msgstr "Taste încete pornite"
 
-#: js/ui/kbdA11yDialog.js:33
+#: js/ui/kbdA11yDialog.js:35
 msgid "Slow Keys Turned Off"
 msgstr "Taste încete oprite"
 
-#: js/ui/kbdA11yDialog.js:34
+#: js/ui/kbdA11yDialog.js:36
 msgid ""
 "You just held down the Shift key for 8 seconds. This is the shortcut for the "
 "Slow Keys feature, which affects the way your keyboard works."
@@ -1466,15 +1465,15 @@ msgstr ""
 "scurtătra pentru funcționalitatea Taste încete, care afectează modul în care "
 "tastatura funcționează."
 
-#: js/ui/kbdA11yDialog.js:40
+#: js/ui/kbdA11yDialog.js:42
 msgid "Sticky Keys Turned On"
 msgstr "Taste persistente pornite"
 
-#: js/ui/kbdA11yDialog.js:41
+#: js/ui/kbdA11yDialog.js:43
 msgid "Sticky Keys Turned Off"
 msgstr "Taste persistente oprite"
 
-#: js/ui/kbdA11yDialog.js:43
+#: js/ui/kbdA11yDialog.js:45
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
@@ -1483,7 +1482,7 @@ msgstr ""
 "pentru funcționalitatea Taste persistente, care afectează modul în care "
 "tastatura funcționează."
 
-#: js/ui/kbdA11yDialog.js:45
+#: js/ui/kbdA11yDialog.js:47
 msgid ""
 "You just pressed two keys at once, or pressed the Shift key 5 times in a "
 "row. This turns off the Sticky Keys feature, which affects the way your "
@@ -1493,85 +1492,99 @@ msgstr ""
 "rând. Aceasta oprește funcționalitatea Taste persistente, care afectează "
 "modul în care tastatura funcționează."
 
-#: js/ui/kbdA11yDialog.js:54
+#: js/ui/kbdA11yDialog.js:57
 msgid "Leave On"
 msgstr "Lasă pornit"
 
-#: js/ui/kbdA11yDialog.js:54 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:1377
+#: js/ui/kbdA11yDialog.js:57
 msgid "Turn On"
 msgstr "Pornește"
 
-#: js/ui/kbdA11yDialog.js:62 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:166 js/ui/status/network.js:350
-#: js/ui/status/network.js:1377 js/ui/status/network.js:1489
-#: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
-#: js/ui/status/rfkill.js:110
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:466
 msgid "Turn Off"
 msgstr "Oprește"
 
-#: js/ui/kbdA11yDialog.js:62
+#: js/ui/kbdA11yDialog.js:67
 msgid "Leave Off"
 msgstr "Lasă oprit"
 
-#: js/ui/keyboard.js:226
-msgid "Region & Language Settings"
-msgstr "Configurări de regiune și limbă"
+#: js/ui/keyboard.js:225 js/ui/status/keyboard.js:871
+msgid "Keyboard Settings"
+msgstr "Setări tastatură"
 
-#: js/ui/lookingGlass.js:676
+#: js/ui/lookingGlass.js:726
 msgid "No extensions installed"
 msgstr "Nicio extensie instalată"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:734
+#: js/ui/lookingGlass.js:787
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s nu a emis nicio eroare."
 
-#: js/ui/lookingGlass.js:740
+#: js/ui/lookingGlass.js:793
 msgid "Hide Errors"
 msgstr "Ascunde erorile"
 
-#: js/ui/lookingGlass.js:744 js/ui/lookingGlass.js:810
+#: js/ui/lookingGlass.js:797 js/ui/lookingGlass.js:874
 msgid "Show Errors"
 msgstr "Afișează erorile"
 
-#: js/ui/lookingGlass.js:753
+#: js/ui/lookingGlass.js:806
 msgid "Enabled"
 msgstr "Activat"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:756 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:809 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Dezactivat"
 
-#: js/ui/lookingGlass.js:758
-#: subprojects/extensions-app/data/ui/extension-row.ui:158
+#: js/ui/lookingGlass.js:811
 msgid "Error"
 msgstr "Eroare"
 
-#: js/ui/lookingGlass.js:760
+#: js/ui/lookingGlass.js:813
 msgid "Out of date"
 msgstr "Învechit"
 
-#: js/ui/lookingGlass.js:762
+#: js/ui/lookingGlass.js:815
 msgid "Downloading"
 msgstr "Se descarcă"
 
-#: js/ui/lookingGlass.js:792
+#: js/ui/lookingGlass.js:817
+msgid "Disabling"
+msgstr "Se dezactivează"
+
+#: js/ui/lookingGlass.js:819
+msgid "Enabling"
+msgstr "Se activează"
+
+#: js/ui/lookingGlass.js:852
 msgid "View Source"
 msgstr "Vizualizează sursa"
 
-#: js/ui/lookingGlass.js:801
+#: js/ui/lookingGlass.js:863
 msgid "Web Page"
 msgstr "Pagină Web"
 
-#: js/ui/main.js:290
+#: js/ui/main.js:266
+msgid "System was put in unsafe mode"
+msgstr "Sistemul a fost pus în modul nesigur"
+
+#: js/ui/main.js:267
+msgid "Apps now have unrestricted access"
+msgstr "Aplicațiile au acum acces nerestricționat"
+
+#: js/ui/main.js:268 js/ui/overview.js:63
+msgid "Undo"
+msgstr "Anulează"
+
+#: js/ui/main.js:326
 msgid "Logged in as a privileged user"
 msgstr "Autentificat ca utilizator privilegiat"
 
-#: js/ui/main.js:291
+#: js/ui/main.js:327
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1580,23 +1593,23 @@ msgstr ""
 "pentru motive de securitate. Dacă este posibil, ar trebui să vă "
 "autentificați ca un utilizator normal."
 
-#: js/ui/main.js:340
+#: js/ui/main.js:375
 msgid "Screen Lock disabled"
 msgstr "Blocarea ecranului este dezactivată"
 
-#: js/ui/main.js:341
+#: js/ui/main.js:376
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Blocarea ecranului necesită administratorul de afișaj GNOME."
 
-#: js/ui/messageTray.js:1443
+#: js/ui/messageTray.js:1424
 msgid "System Information"
 msgstr "Informații despre sistem"
 
-#: js/ui/mpris.js:207
+#: js/ui/mpris.js:205
 msgid "Unknown artist"
 msgstr "Artist necunoscut"
 
-#: js/ui/mpris.js:217
+#: js/ui/mpris.js:215
 msgid "Unknown title"
 msgstr "Titlu necunoscut"
 
@@ -1604,131 +1617,222 @@ msgstr "Titlu necunoscut"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:313
+#: js/ui/overviewControls.js:336
 msgid "Type to search"
 msgstr "Tastați pentru a căuta"
 
-#: js/ui/overviewControls.js:392
-msgid "Applications"
+#: js/ui/overviewControls.js:414
+msgid "Apps"
 msgstr "Aplicații"
-
-#: js/ui/overview.js:58
-msgid "Undo"
-msgstr "Anulează"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:71
+#: js/ui/overview.js:76
 msgid "Overview"
 msgstr "Prezentare generală"
 
-#: js/ui/padOsd.js:95
+#: js/ui/padOsd.js:106
 msgid "New shortcut…"
 msgstr "Scurtătură nouă…"
 
-#: js/ui/padOsd.js:142
-msgid "Application defined"
+#: js/ui/padOsd.js:159
+msgid "App defined"
 msgstr "Aplicație definită"
 
-#: js/ui/padOsd.js:143
+#: js/ui/padOsd.js:160
 msgid "Show on-screen help"
 msgstr "Arată ajutorul pe ecran"
 
-#: js/ui/padOsd.js:144
+#: js/ui/padOsd.js:161
 msgid "Switch monitor"
 msgstr "Comută monitorul"
 
-#: js/ui/padOsd.js:145
+#: js/ui/padOsd.js:162
 msgid "Assign keystroke"
 msgstr "Alochează tasta apăsată"
 
-#: js/ui/padOsd.js:211
+#: js/ui/padOsd.js:231
 msgid "Done"
 msgstr "Gata"
 
-#: js/ui/padOsd.js:716
+#: js/ui/padOsd.js:748
 msgid "Edit…"
 msgstr "Editează…"
 
-#: js/ui/padOsd.js:758 js/ui/padOsd.js:875
+#: js/ui/padOsd.js:790 js/ui/padOsd.js:907
 msgid "None"
 msgstr "Nespecificat"
 
-#: js/ui/padOsd.js:829
+#: js/ui/padOsd.js:861
 msgid "Press a button to configure"
 msgstr "Apăsați un buton de configurat"
 
-#: js/ui/padOsd.js:830
+#: js/ui/padOsd.js:862
 msgid "Press Esc to exit"
 msgstr "Apăsați Esc pentru a ieși"
 
-#: js/ui/padOsd.js:833
+#: js/ui/padOsd.js:865
 msgid "Press any key to exit"
 msgstr "Apăsați orice tastă pentru a ieși"
 
-#. Translators: If there is no suitable word for "Activities"
-#. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:271
+#: js/ui/panel.js:270
 msgid "Activities"
 msgstr "Activități"
 
-#: js/ui/panel.js:556
+#: js/ui/panel.js:355
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:674
+#: js/ui/panel.js:499
 msgid "Top Bar"
 msgstr "Bara de sus"
 
-#: js/ui/runDialog.js:58
+#: js/ui/quickSettings.js:187
+msgid "Open menu"
+msgstr "Deschide meniul"
+
+#: js/ui/runDialog.js:63
 msgid "Run a Command"
 msgstr "Rulează o comandă"
 
-#: js/ui/runDialog.js:73
+#: js/ui/runDialog.js:78
 msgid "Press ESC to close"
 msgstr "Apăsați ESC pentru a închide"
 
-#: js/ui/runDialog.js:238
+#: js/ui/runDialog.js:243
 msgid "Restart is not available on Wayland"
 msgstr "Repornirea nu este disponibilă în Wayland"
 
-#: js/ui/runDialog.js:243
+#: js/ui/runDialog.js:248
 msgid "Restarting…"
 msgstr "Se repornește…"
 
-#: js/ui/screenShield.js:224
+#: js/ui/screenShield.js:235
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME trebuie să blocheze ecranul"
 
-#. We could not become modal, so we can't activate the
-#. screenshield. The user is probably very upset at this
-#. point, but any application using global grabs is broken
-#. Just tell him to stop using this app
-#.
-#. XXX: another option is to kick the user into the gdm login
-#. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:264 js/ui/screenShield.js:634
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:674
 msgid "Unable to lock"
 msgstr "Blocare nereușită"
 
-#: js/ui/screenShield.js:265 js/ui/screenShield.js:635
-msgid "Lock was blocked by an application"
+#: js/ui/screenShield.js:277 js/ui/screenShield.js:675
+msgid "Lock was blocked by an app"
 msgstr "Blocarea a fost împiedicată de o aplicație"
 
-#: js/ui/screenshot.js:155
+#: js/ui/screenshot.js:1185
+msgid "Selection"
+msgstr "Selecție"
+
+#: js/ui/screenshot.js:1195
+msgid "Area Selection"
+msgstr "Selecția zonei"
+
+#: js/ui/screenshot.js:1200
+msgid "Screen"
+msgstr "Ecran"
+
+#: js/ui/screenshot.js:1210
+msgid "Screen Selection"
+msgstr "Selecția ecranului"
+
+#: js/ui/screenshot.js:1215
+msgid "Window"
+msgstr "Fereastră"
+
+#: js/ui/screenshot.js:1225
+msgid "Window Selection"
+msgstr "Selecție fereastră"
+
+#. Translators: entry in the window right click menu.
+#: js/ui/screenshot.js:1250 js/ui/status/system.js:112 js/ui/windowMenu.js:30
+msgid "Take Screenshot"
+msgstr "Ia captură de ecran"
+
+#: js/ui/screenshot.js:1266
+msgid "Record Screen"
+msgstr "Înregistrează ecranul"
+
+#. Translators: since this string refers to an action,
+#. it needs to be phrased as a verb.
+#: js/ui/screenshot.js:1281
+msgid "Capture"
+msgstr "Captură"
+
+#: js/ui/screenshot.js:1303
+msgid "Show Pointer"
+msgstr "Arată cursorul"
+
+#. Translators: this is the folder where recorded
+#. screencasts are stored.
+#: js/ui/screenshot.js:1894
+msgid "Screencasts"
+msgstr "Înregistrări de ecran"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#: js/ui/screenshot.js:1899
+#, no-c-format
+msgid "Screencast from %d %t.webm"
+msgstr "Înregistrare de ecran de la %d %t.webm"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:1937
+msgid "Screencast recorded"
+msgstr "Înregistrarea ecranului efectuată"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:1944
+msgid "Screencast ended unexpectedly"
+msgstr "Înregistrarea de ecran s-a terminat neașteptat"
+
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1953 js/ui/screenshot.js:2188
+msgid "Screenshot"
+msgstr "Captură de ecran"
+
+#. Translators: notification body when a screencast was recorded.
+#: js/ui/screenshot.js:1960
+msgid "Click here to view the video."
+msgstr "Clic aici pentru a vizualiza video-ul."
+
+#. Translators: button on the screencast notification.
+#. Translators: button on the screenshot notification.
+#: js/ui/screenshot.js:1963 js/ui/screenshot.js:2202
+msgid "Show in Files"
+msgstr "Arată în Fișiere"
+
+#. Translators: this is the name of the file that the screenshot is
+#. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
+#: js/ui/screenshot.js:2148
+#, javascript-format
+msgid "Screenshot from %s"
+msgstr "Captură de ecran de la %s"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2194
+msgid "Screenshot captured"
+msgstr "Captură de ecran capturată"
+
+#. Translators: notification body when a screenshot was captured.
+#: js/ui/screenshot.js:2196
+msgid "You can paste the image from the clipboard."
+msgstr "Puteți lipi imaginea de la clipboard."
+
+#: js/ui/screenshot.js:2249 js/ui/screenshot.js:2414
 msgid "Screenshot taken"
 msgstr "Captură de ecran efectuată"
 
-#: js/ui/search.js:825
+#: js/ui/search.js:817
 msgid "Searching…"
 msgstr "Se caută…"
 
-#: js/ui/search.js:827
+#: js/ui/search.js:819
 msgid "No results."
 msgstr "Niciun rezultat."
 
-#: js/ui/search.js:953
+#: js/ui/search.js:950
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1736,44 +1840,44 @@ msgstr[0] "încă %d"
 msgstr[1] "încă %d"
 msgstr[2] "încă %d"
 
-#: js/ui/searchController.js:87
+#: js/ui/searchController.js:89
 msgid "Search"
 msgstr "Caută"
 
-#: js/ui/shellEntry.js:20
+#: js/ui/shellEntry.js:23
 msgid "Copy"
 msgstr "Copiere"
 
-#: js/ui/shellEntry.js:25
+#: js/ui/shellEntry.js:28
 msgid "Paste"
 msgstr "Lipire"
 
-#: js/ui/shellEntry.js:77
+#: js/ui/shellEntry.js:80
 msgid "Show Text"
 msgstr "Afișează text"
 
-#: js/ui/shellEntry.js:79
+#: js/ui/shellEntry.js:82
 msgid "Hide Text"
 msgstr "Ascunde text"
 
-#: js/ui/shellEntry.js:166
+#: js/ui/shellEntry.js:173
 msgid "Caps lock is on."
 msgstr "Caps lock este activat."
 
-#: js/ui/shellMountOperation.js:285
+#: js/ui/shellMountOperation.js:291
 msgid "Hidden Volume"
 msgstr "Volum ascuns"
 
-#: js/ui/shellMountOperation.js:288
+#: js/ui/shellMountOperation.js:294
 msgid "Windows System Volume"
 msgstr "Volum de sistem Windows"
 
-#: js/ui/shellMountOperation.js:291
+#: js/ui/shellMountOperation.js:297
 msgid "Uses Keyfiles"
 msgstr "Utilizează fișiere cheie"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:298
+#: js/ui/shellMountOperation.js:305
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -1781,94 +1885,155 @@ msgstr ""
 "Pentru a debloca un volum care utilizează fișiere cheie, utilizați în schimb "
 "utilitatea <i>%s</i>."
 
-#: js/ui/shellMountOperation.js:306
+#: js/ui/shellMountOperation.js:309
+msgid ""
+"You need an external utility like <i>Disks</i> to unlock a volume that uses "
+"keyfiles."
+msgstr ""
+"Aveți nevoie de o utilitate externă precum <i>Discuri</i> pentru a debloca "
+"un volum care utilizează fișiere cheie."
+
+#: js/ui/shellMountOperation.js:317
 msgid "PIM Number"
 msgstr "Număr PIM"
 
-#: js/ui/shellMountOperation.js:365
+#: js/ui/shellMountOperation.js:376
 msgid "Remember Password"
 msgstr "Memorează parola"
 
-#: js/ui/shellMountOperation.js:380
+#: js/ui/shellMountOperation.js:391
 msgid "Unlock"
 msgstr "Deblochează"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:391
+#: js/ui/shellMountOperation.js:405
 #, javascript-format
 msgid "Open %s"
 msgstr "Deschide %s"
 
-#: js/ui/shellMountOperation.js:423
+#: js/ui/shellMountOperation.js:441
 msgid "The PIM must be a number or empty."
 msgstr "PIM-ul trebuie să fie un număr sau gol."
 
-#. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:465
-#, javascript-format
-msgid "Unable to start %s"
-msgstr "Nu s-a putut porni %s"
-
-#. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:467
-#, javascript-format
-msgid "Couldn’t find the %s application"
-msgstr "Nu s-a putut găsi aplicația %s"
-
-#: js/ui/status/accessibility.js:35
+#: js/ui/status/accessibility.js:36
 msgid "Accessibility"
 msgstr "Accesibilitate"
 
-#: js/ui/status/accessibility.js:48
-msgid "Zoom"
-msgstr "Zoom"
-
-#: js/ui/status/accessibility.js:55
-msgid "Screen Reader"
-msgstr "Cititor de ecran"
-
-#: js/ui/status/accessibility.js:59
-msgid "Screen Keyboard"
-msgstr "Tastatură virtuală"
-
-#: js/ui/status/accessibility.js:63
-msgid "Visual Alerts"
-msgstr "Alerte vizuale"
-
-#: js/ui/status/accessibility.js:66
-msgid "Sticky Keys"
-msgstr "Taste persistente"
-
-#: js/ui/status/accessibility.js:69
-msgid "Slow Keys"
-msgstr "Taste încete"
-
-#: js/ui/status/accessibility.js:72
-msgid "Bounce Keys"
-msgstr "Taste fără repetiție"
-
-#: js/ui/status/accessibility.js:75
-msgid "Mouse Keys"
-msgstr "Butoanele mausului"
-
-#: js/ui/status/accessibility.js:134
+#: js/ui/status/accessibility.js:46
 msgid "High Contrast"
 msgstr "Contrast ridicat"
 
-#: js/ui/status/accessibility.js:176
+#: js/ui/status/accessibility.js:49
+msgid "Zoom"
+msgstr "Zoom"
+
+#: js/ui/status/accessibility.js:56
+msgid "Screen Reader"
+msgstr "Cititor de ecran"
+
+#: js/ui/status/accessibility.js:60
+msgid "Screen Keyboard"
+msgstr "Tastatură virtuală"
+
+#: js/ui/status/accessibility.js:64
+msgid "Visual Alerts"
+msgstr "Alerte vizuale"
+
+#: js/ui/status/accessibility.js:67
+msgid "Sticky Keys"
+msgstr "Taste persistente"
+
+#: js/ui/status/accessibility.js:70
+msgid "Slow Keys"
+msgstr "Taste încete"
+
+#: js/ui/status/accessibility.js:73
+msgid "Bounce Keys"
+msgstr "Taste fără repetiție"
+
+#: js/ui/status/accessibility.js:76
+msgid "Mouse Keys"
+msgstr "Butoanele mausului"
+
+#: js/ui/status/accessibility.js:80
+msgid "Accessibility Settings"
+msgstr "Configurări de accesibilitate"
+
+#: js/ui/status/accessibility.js:137
 msgid "Large Text"
 msgstr "Text mare"
 
-#: js/ui/status/bluetooth.js:40
+#: js/ui/status/autoRotate.js:14
+msgid "Auto Rotate"
+msgstr "Rotește automat"
+
+#: js/ui/status/backgroundApps.js:162
+msgctxt "title"
+msgid "Background Apps"
+msgstr "Aplicații de fundal"
+
+#: js/ui/status/backgroundApps.js:177
+msgid "Apps known to be running without a window"
+msgstr "Aplicații care se știe că rulează fără o fereastră"
+
+#: js/ui/status/backgroundApps.js:188
+msgid "App Settings"
+msgstr "Configurări aplicație"
+
+#: js/ui/status/backgroundApps.js:244
+msgid "No Background Apps"
+msgstr "Nu sunt aplicații de fundal"
+
+#: js/ui/status/backgroundApps.js:246
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%d aplicație de fundal"
+msgstr[1] "%d aplicații de fundal"
+msgstr[2] "%d de aplicații de fundal"
+
+#: js/ui/status/backlight.js:40
+msgid "Keyboard Brightness"
+msgstr "Luminozitate tastatură"
+
+#: js/ui/status/backlight.js:80
+msgid "Off"
+msgstr "Oprit"
+
+#: js/ui/status/backlight.js:81
+msgid "Low"
+msgstr "Scăzut"
+
+#: js/ui/status/backlight.js:82
+msgid "High"
+msgstr "Ridicat"
+
+#: js/ui/status/backlight.js:148 js/ui/status/keyboard.js:853
+msgid "Keyboard"
+msgstr "Tastatură"
+
+#: js/ui/status/bluetooth.js:226 js/ui/status/network.js:371
+msgid "Disconnect"
+msgstr "Deconectează"
+
+#: js/ui/status/bluetooth.js:243 js/ui/status/bluetooth.js:245
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:652
+#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:1891
 msgid "Bluetooth Settings"
 msgstr "Configurări Bluetooth"
 
-#. Translators: this is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:148
+#: js/ui/status/bluetooth.js:315
+msgid "No available or connected devices"
+msgstr "Nu sunt dispozitive disponibile sau conectate"
+
+#: js/ui/status/bluetooth.js:316
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "Activați Bluetooth pentru a vă conecta la dispozitive"
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:370
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -1876,413 +2041,248 @@ msgstr[0] "%d conectată"
 msgstr[1] "%d conectate"
 msgstr[2] "%d conectate"
 
-#: js/ui/status/bluetooth.js:152
-msgid "Bluetooth Off"
-msgstr "Bluetooth oprit"
-
-#: js/ui/status/bluetooth.js:154
-msgid "Bluetooth On"
-msgstr "Bluetooth pornit"
-
-#: js/ui/status/brightness.js:39
+#: js/ui/status/brightness.js:34
 msgid "Brightness"
 msgstr "Luminozitate"
 
-#: js/ui/status/dwellClick.js:12
+#: js/ui/status/darkMode.js:12
+msgid "Dark Style"
+msgstr "Stil întunecat"
+
+#: js/ui/status/dwellClick.js:15
 msgid "Single Click"
 msgstr "Clic simplu"
 
-#: js/ui/status/dwellClick.js:17
+#: js/ui/status/dwellClick.js:20
 msgid "Double Click"
 msgstr "Clic dublu"
 
-#: js/ui/status/dwellClick.js:22
+#: js/ui/status/dwellClick.js:25
 msgid "Drag"
 msgstr "Trage"
 
-#: js/ui/status/dwellClick.js:27
+#: js/ui/status/dwellClick.js:30
 msgid "Secondary Click"
 msgstr "Clic secundar"
 
-#: js/ui/status/dwellClick.js:36
+#: js/ui/status/dwellClick.js:39
 msgid "Dwell Click"
 msgstr "Clic întârziat"
 
-#: js/ui/status/keyboard.js:829
-msgid "Keyboard"
-msgstr "Tastatură"
-
-#: js/ui/status/keyboard.js:846
+#: js/ui/status/keyboard.js:870
 msgid "Show Keyboard Layout"
 msgstr "Afișează aranjamentul tastaturii"
 
-#: js/ui/status/location.js:234 js/ui/status/location.js:267
-msgid "Location Enabled"
-msgstr "Locația activată"
-
-#: js/ui/status/location.js:235 js/ui/status/location.js:268
-msgid "Disable"
-msgstr "Dezactivează"
-
-#: js/ui/status/location.js:236
-msgid "Privacy Settings"
-msgstr "Configurări de confidențialitate"
-
-#: js/ui/status/location.js:266
-msgid "Location In Use"
-msgstr "Locație utilizată"
-
-#: js/ui/status/location.js:270
-msgid "Location Disabled"
-msgstr "Locația dezactivată"
-
-#: js/ui/status/location.js:271
-msgid "Enable"
-msgstr "Activează"
-
-#: js/ui/status/location.js:398
+#: js/ui/status/location.js:339
 msgid "Allow location access"
 msgstr "Permite accesul la locație"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:400
+#: js/ui/status/location.js:341
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "Aplicația %s dorește să vă acceseze locația"
 
-#: js/ui/status/location.js:410
+#: js/ui/status/location.js:351
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Accesul la locație poate fi schimbat oricând din configurările de "
 "confidențialitate."
 
-#: js/ui/status/network.js:72
+#: js/ui/status/location.js:359
+msgid "Deny Access"
+msgstr "Refuză accesul"
+
+#: js/ui/status/location.js:364
+msgid "Grant Access"
+msgstr "Permite accesul"
+
+#: js/ui/status/network.js:61
 msgid "<unknown>"
 msgstr "<necunoscut>"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:455 js/ui/status/network.js:1406
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:365
 #, javascript-format
-msgid "%s Off"
-msgstr "%s oprit"
+msgid "Disconnect %s"
+msgstr "Deconectează %s"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:458
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:367
 #, javascript-format
-msgid "%s Connected"
-msgstr "%s conectat"
+msgid "Connect to %s"
+msgstr "Conectează la %s"
 
-#. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu);
-#. %s is a network identifier
-#: js/ui/status/network.js:463
-#, javascript-format
-msgid "%s Unmanaged"
-msgstr "%s este negestionat"
+#: js/ui/status/network.js:1050
+msgid "Secure"
+msgstr "Sigur"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:466
-#, javascript-format
-msgid "%s Disconnecting"
-msgstr "Se deconectează %s"
+#: js/ui/status/network.js:1050
+msgid "Not secure"
+msgstr "Nu este sigur"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:473 js/ui/status/network.js:1398
+#: js/ui/status/network.js:1051
 #, javascript-format
-msgid "%s Connecting"
-msgstr "Se conectează %s"
+msgid "Signal strength %s%%"
+msgstr "Putere semnal %s%%"
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:476
+#. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
+#: js/ui/status/network.js:1053
 #, javascript-format
-msgid "%s Requires Authentication"
-msgstr "%s necesită autentificare"
-
-#. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:484
-#, javascript-format
-msgid "Firmware Missing For %s"
-msgstr "Firmware lipsă pentru %s"
-
-#. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:488
-#, javascript-format
-msgid "%s Unavailable"
-msgstr "%s indisponibil"
+msgid "%s, %s, %s"
+msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:491
+#: js/ui/status/network.js:1155
 #, javascript-format
-msgid "%s Connection Failed"
-msgstr "Conectarea la %s a eșuat"
+msgid "%s Hotspot"
+msgstr "Hotspot %s"
 
-#: js/ui/status/network.js:503
-msgid "Wired Settings"
-msgstr "Configurări pentru conexiune cu fir"
-
-#: js/ui/status/network.js:550
-msgid "Mobile Broadband Settings"
-msgstr "Configurări de rețea de bandă largă mobilă"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:619 js/ui/status/network.js:1403
+#: js/ui/status/network.js:1421
 #, javascript-format
-msgid "%s Hardware Disabled"
-msgstr "Hardware %s dezactivat"
+msgid "%d connected"
+msgid_plural "%d connected"
+msgstr[0] "%d conectată"
+msgstr[1] "%d conectate"
+msgstr[2] "%d conectate"
 
-#. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:623
-#, javascript-format
-msgid "%s Disabled"
-msgstr "%s dezactivat"
-
-#: js/ui/status/network.js:664
-msgid "Connect to Internet"
-msgstr "Conectează la Internet"
-
-#: js/ui/status/network.js:873
-msgid "Airplane Mode is On"
-msgstr "Modul avion este pornit"
-
-#: js/ui/status/network.js:874
-msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "Wi-Fi este dezactivat când modul avion este pornit."
-
-#: js/ui/status/network.js:875
-msgid "Turn Off Airplane Mode"
-msgstr "Oprește modul avion"
-
-#: js/ui/status/network.js:884
-msgid "Wi-Fi is Off"
-msgstr "Wi-Fi este oprit"
-
-#: js/ui/status/network.js:885
-msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "Wi-Fi trebuie pornit pentru a se putea face conexiunea la o rețea."
-
-#: js/ui/status/network.js:886
-msgid "Turn On Wi-Fi"
-msgstr "Pornește Wi-Fi"
-
-#: js/ui/status/network.js:911
-msgid "Wi-Fi Networks"
-msgstr "Rețele Wi-Fi"
-
-#: js/ui/status/network.js:913
-msgid "Select a network"
-msgstr "Selectați o rețea"
-
-#: js/ui/status/network.js:945
-msgid "No Networks"
-msgstr "Nicio rețea"
-
-#: js/ui/status/network.js:966 js/ui/status/rfkill.js:108
-msgid "Use hardware switch to turn off"
-msgstr "Folosește un întrerupător hardware pentru a opri"
-
-#: js/ui/status/network.js:1267
-msgid "Select Network"
-msgstr "Selectați rețeaua"
-
-#: js/ui/status/network.js:1273
-msgid "Wi-Fi Settings"
-msgstr "Configurări Wi-Fi"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:1394
-#, javascript-format
-msgid "%s Hotspot Active"
-msgstr "Hotspot %s activ"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:1409
-#, javascript-format
-msgid "%s Not Connected"
-msgstr "%s nu este conectat"
-
-#: js/ui/status/network.js:1506
-msgid "connecting…"
-msgstr "se conectează…"
-
-#. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1509
-msgid "authentication required"
-msgstr "necesită autentificare"
-
-#: js/ui/status/network.js:1511
-msgid "connection failed"
-msgstr "conexiune eșuată"
-
-#: js/ui/status/network.js:1562
-msgid "VPN Settings"
-msgstr "Configurări VPN"
-
-#: js/ui/status/network.js:1579
+#: js/ui/status/network.js:1519 js/ui/status/network.js:1535
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1589
-msgid "VPN Off"
-msgstr "VPN oprit"
+#: js/ui/status/network.js:1520
+msgid "VPN Settings"
+msgstr "Configurări VPN"
 
-#: js/ui/status/network.js:1650 js/ui/status/rfkill.js:84
-msgid "Network Settings"
-msgstr "Configurări de rețea"
+#: js/ui/status/network.js:1776
+msgid "Wi–Fi"
+msgstr "Wi-Fi"
 
-#: js/ui/status/network.js:1678
-#, javascript-format
-msgid "%s Wired Connection"
-msgid_plural "%s Wired Connections"
-msgstr[0] "%s conexiune cu fir"
-msgstr[1] "%s conexiuni cu fir"
-msgstr[2] "%s de conexiuni cu fir"
+#: js/ui/status/network.js:1778
+msgid "All Networks"
+msgstr "Toate rețelele"
 
-#: js/ui/status/network.js:1682
-#, javascript-format
-msgid "%s Wi-Fi Connection"
-msgid_plural "%s Wi-Fi Connections"
-msgstr[0] "%s conexiune fără fir"
-msgstr[1] "%s conexiuni fără fir"
-msgstr[2] "%s de conexiuni fără fir"
+#: js/ui/status/network.js:1875
+msgid "Wired Connections"
+msgstr "Conexiuni cu fir"
 
-#: js/ui/status/network.js:1686
-#, javascript-format
-msgid "%s Modem Connection"
-msgid_plural "%s Modem Connections"
-msgstr[0] "%s conexiune cu modem"
-msgstr[1] "%s conexiuni cu modem"
-msgstr[2] "%s de conexiuni cu modem"
+#: js/ui/status/network.js:1876
+msgid "Wired Settings"
+msgstr "Configurări pentru conexiune cu fir"
 
-#: js/ui/status/network.js:1830
+#: js/ui/status/network.js:1890
+msgid "Bluetooth Tethers"
+msgstr "Conexiuni Bluetooth"
+
+#. Translators: "Tether" from "Bluetooth Tether"
+#: js/ui/status/network.js:1897
+msgid "Tether"
+msgstr "Conexiune"
+
+#: js/ui/status/network.js:1910
+msgid "Mobile Connections"
+msgstr "Conexiuni mobile"
+
+#: js/ui/status/network.js:1912
+msgid "Mobile Broadband Settings"
+msgstr "Configurări de rețea de bandă largă mobilă"
+
+#. Translators: "Mobile" from "Mobile Broadband"
+#: js/ui/status/network.js:1921
+msgid "Mobile"
+msgstr "Mobil"
+
+#: js/ui/status/network.js:2029
 msgid "Connection failed"
 msgstr "Conexiune eșuată"
 
-#: js/ui/status/network.js:1831
+#: js/ui/status/network.js:2030
 msgid "Activation of network connection failed"
 msgstr "Activarea conexiunii de rețea a eșuat"
 
-#: js/ui/status/nightLight.js:63
-msgid "Night Light Disabled"
-msgstr "Lumina de noapte este dezactivată"
+#: js/ui/status/nightLight.js:21
+msgid "Night Light"
+msgstr "Lumină de noapte"
 
-#: js/ui/status/nightLight.js:64
-msgid "Night Light On"
-msgstr "Lumina de noapte este activată"
-
-#: js/ui/status/nightLight.js:66
-msgid "Resume"
-msgstr "Reia"
-
-#: js/ui/status/nightLight.js:67
-msgid "Disable Until Tomorrow"
-msgstr "Dezactivează până mâine"
-
-#: js/ui/status/power.js:51 js/ui/status/powerProfiles.js:57
-msgid "Power Settings"
-msgstr "Configurări consum"
-
-#: js/ui/status/power.js:68
-msgid "Fully Charged"
-msgstr "Complet încărcată"
-
-#: js/ui/status/power.js:74
-msgid "Not Charging"
-msgstr "Nu încarcă"
-
-#. 0 is reported when UPower does not have enough data
-#. to estimate battery life
-#: js/ui/status/power.js:77 js/ui/status/power.js:83
-msgid "Estimating…"
-msgstr "Se estimează…"
-
-#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: js/ui/status/power.js:91
-#, javascript-format
-msgid "%d∶%02d Remaining (%d %%)"
-msgstr "%d∶%02d rămase (%d%%)"
-
-#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: js/ui/status/power.js:97
-#, javascript-format
-msgid "%d∶%02d Until Full (%d %%)"
-msgstr "%d∶%02d până este plină (%d%%)"
-
-#. The icon label
-#: js/ui/status/power.js:145
-#, javascript-format
-msgid "%d %%"
-msgstr "%d%%"
-
-#: js/ui/status/powerProfiles.js:19
+#: js/ui/status/powerProfiles.js:21
 msgctxt "Power profile"
 msgid "Performance"
 msgstr "Performanță"
 
-#: js/ui/status/powerProfiles.js:20
+#: js/ui/status/powerProfiles.js:26
 msgctxt "Power profile"
 msgid "Balanced"
 msgstr "Echilibrată"
 
-#: js/ui/status/powerProfiles.js:21
+#: js/ui/status/powerProfiles.js:31
 msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Economizor de energie"
 
-#: js/ui/status/remoteAccess.js:38
-msgid "Screen is Being Shared"
-msgstr "Ecranul este partajat"
+#: js/ui/status/powerProfiles.js:41 js/ui/status/powerProfiles.js:71
+msgid "Power Mode"
+msgstr "Mod de alimentare"
 
-#: js/ui/status/remoteAccess.js:40
-msgid "Turn off"
-msgstr "Oprește"
+#: js/ui/status/powerProfiles.js:73
+msgid "Power Settings"
+msgstr "Configurări consum"
 
-#. The menu only appears when airplane mode is on, so just
-#. statically build it as if it was on, rather than dynamically
-#. changing the menu contents.
-#: js/ui/status/rfkill.js:79
-msgid "Airplane Mode On"
-msgstr "Modul avion este pornit"
+#: js/ui/status/remoteAccess.js:76
+msgid "Stop Screencast"
+msgstr "Oprește înregistrarea ecranului"
 
-#: js/ui/status/system.js:104
-msgid "Lock"
-msgstr "Blocare"
+#: js/ui/status/remoteAccess.js:146
+msgid "Stop Screen Sharing"
+msgstr "Oprește partajarea ecranului"
 
-#: js/ui/status/system.js:116
-msgid "Power Off / Log Out"
-msgstr "Oprire / Deautentificare"
+#: js/ui/status/rfkill.js:101
+msgid "Airplane Mode"
+msgstr "Mod avion"
 
-#: js/ui/status/system.js:119
+#: js/ui/status/system.js:97
+#, javascript-format
+msgid "%d %%"
+msgstr "%d%%"
+
+#: js/ui/status/system.js:169
+msgid "Power Off Menu"
+msgstr "Meniu oprire"
+
+#: js/ui/status/system.js:177
 msgid "Suspend"
 msgstr "Suspendare"
 
-#: js/ui/status/system.js:130
+#: js/ui/status/system.js:182
 msgid "Restart…"
 msgstr "Repornește…"
 
-#: js/ui/status/system.js:141
+#: js/ui/status/system.js:187
 msgid "Power Off…"
 msgstr "Oprire…"
 
-#: js/ui/status/system.js:154
-msgid "Log Out"
-msgstr "Ieșire din sesiune"
+#: js/ui/status/system.js:194
+#: subprojects/extensions-app/data/ui/extensions-window.ui:189
+msgid "Log Out…"
+msgstr "Deautentificare…"
 
-#: js/ui/status/system.js:165
+#: js/ui/status/system.js:199
 msgid "Switch User…"
 msgstr "Comută utilizatorul…"
 
-#: js/ui/status/thunderbolt.js:262
+#: js/ui/status/system.js:243
+msgctxt "action"
+msgid "Lock Screen"
+msgstr "Blochează ecranul"
+
+#: js/ui/status/thunderbolt.js:261
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:324
+#: js/ui/status/thunderbolt.js:322
 msgid "Unknown Thunderbolt device"
 msgstr "Dispozitiv Thunderbolt necunoscut"
 
-#: js/ui/status/thunderbolt.js:325
+#: js/ui/status/thunderbolt.js:323
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2290,97 +2290,113 @@ msgstr ""
 "Un nou dispozitiv a fost detectat în timp ce erați plecat. Deconectați și "
 "reconectați dispozitivul pentru a începe utilizarea lui."
 
-#: js/ui/status/thunderbolt.js:328
+#: js/ui/status/thunderbolt.js:326
 msgid "Unauthorized Thunderbolt device"
 msgstr "Dispozitiv Thunderbolt neautorizat"
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:327
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "Un nou dispozitiv a fost detectat și trebuie autorizat de un administrator."
 
-#: js/ui/status/thunderbolt.js:335
+#: js/ui/status/thunderbolt.js:333
 msgid "Thunderbolt authorization error"
 msgstr "Eroare de autorizare Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:336
+#: js/ui/status/thunderbolt.js:334
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nu s-a putut autoriza dispozitivul Thunderbolt: %s"
 
-#: js/ui/status/volume.js:160
+#: js/ui/status/volume.js:214
 msgid "Volume changed"
 msgstr "Volumul a fost schimbat"
 
-#: js/ui/status/volume.js:222
+#: js/ui/status/volume.js:227
+msgid "Unmute"
+msgstr "Activează sunetul"
+
+#: js/ui/status/volume.js:227
+msgid "Mute"
+msgstr "Mut"
+
+#: js/ui/status/volume.js:282
 msgid "Volume"
 msgstr "Volum"
+
+#: js/ui/status/volume.js:298
+msgid "Sound Output"
+msgstr "Ieșire sunet"
+
+#: js/ui/status/volume.js:370
+msgid "Sound Input"
+msgstr "Intrare sunet"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:17
+#: js/ui/switchMonitor.js:22
 msgid "Mirror"
 msgstr "Oglindește"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:22
+#: js/ui/switchMonitor.js:31
 msgid "Join Displays"
 msgstr "Unește afișajele"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:27
+#: js/ui/switchMonitor.js:41
 msgid "External Only"
 msgstr "Numai extern"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:32
+#: js/ui/switchMonitor.js:49
 msgid "Built-in Only"
 msgstr "Numai încorporat"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:371
+#: js/ui/unlockDialog.js:368
 msgid "%A %B %-d"
 msgstr "%A %B %-d"
 
-#: js/ui/unlockDialog.js:377
+#: js/ui/unlockDialog.js:374
 msgid "Swipe up to unlock"
 msgstr "Glisați în sus pentru a debloca"
 
-#: js/ui/unlockDialog.js:378
+#: js/ui/unlockDialog.js:375
 msgid "Click or press a key to unlock"
 msgstr "Apăsați clic sau o tastă pentru a debloca"
 
-#: js/ui/unlockDialog.js:556
+#: js/ui/unlockDialog.js:558
 msgid "Unlock Window"
 msgstr "Deblochează fereastră"
 
-#: js/ui/unlockDialog.js:565
+#: js/ui/unlockDialog.js:567
 msgid "Log in as another user"
 msgstr "Intră în sesiune ca utilizator diferit"
 
-#: js/ui/welcomeDialog.js:36
+#: js/ui/welcomeDialog.js:39
 #, javascript-format
 msgid "Welcome to GNOME %s"
 msgstr "Bine ați venit la GNOME %s"
 
-#: js/ui/welcomeDialog.js:37
+#: js/ui/welcomeDialog.js:40
 msgid "If you want to learn your way around, check out the tour."
 msgstr "Dacă doriți să aflați despre împrejurimi, consultați turul Gnome."
 
-#: js/ui/welcomeDialog.js:45
+#: js/ui/welcomeDialog.js:49
 msgid "No Thanks"
 msgstr "Nu, merci"
 
-#: js/ui/welcomeDialog.js:50
+#: js/ui/welcomeDialog.js:54
 msgid "Take Tour"
 msgstr "Începe turul"
 
@@ -2390,22 +2406,19 @@ msgid "“%s” is ready"
 msgstr "„%s” este gata"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:63
+#: js/ui/windowManager.js:69
 msgid "Keep these display settings?"
 msgstr "Doriți să păstrați aceste configurări de afișaj?"
 
-#. Translators: this and the following message should be limited in length,
-#. to avoid ellipsizing the labels.
-#.
-#: js/ui/windowManager.js:72
+#: js/ui/windowManager.js:79
 msgid "Revert Settings"
 msgstr "Restaurează configurările"
 
-#: js/ui/windowManager.js:75
+#: js/ui/windowManager.js:84
 msgid "Keep Changes"
 msgstr "Păstrați modificările"
 
-#: js/ui/windowManager.js:94
+#: js/ui/windowManager.js:104
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2415,114 +2428,114 @@ msgstr[2] "Schimbările vor fi restaurare în %d de secunde"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:550
+#: js/ui/windowManager.js:553
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: js/ui/windowMenu.js:27
+#: js/ui/windowMenu.js:42
 msgid "Hide"
 msgstr "Ascunde"
 
-#: js/ui/windowMenu.js:34
+#: js/ui/windowMenu.js:49
 msgid "Restore"
 msgstr "Restaurează"
 
-#: js/ui/windowMenu.js:38
+#: js/ui/windowMenu.js:53
 msgid "Maximize"
 msgstr "Maximizează"
 
-#: js/ui/windowMenu.js:45
+#: js/ui/windowMenu.js:60
 msgid "Move"
 msgstr "Mută"
 
-#: js/ui/windowMenu.js:51
+#: js/ui/windowMenu.js:79
 msgid "Resize"
 msgstr "Redimensionează"
 
-#: js/ui/windowMenu.js:58
+#: js/ui/windowMenu.js:99
 msgid "Move Titlebar Onscreen"
 msgstr "Mută bara de titlu pe ecran"
 
-#: js/ui/windowMenu.js:63
+#: js/ui/windowMenu.js:104
 msgid "Always on Top"
 msgstr "Întotdeauna deasupra"
 
-#: js/ui/windowMenu.js:82
+#: js/ui/windowMenu.js:123
 msgid "Always on Visible Workspace"
 msgstr "Întotdeauna pe spațiul de lucru vizibil"
 
-#: js/ui/windowMenu.js:96
+#: js/ui/windowMenu.js:137
 msgid "Move to Workspace Left"
 msgstr "Mută pe spațiul de lucru din stânga"
 
-#: js/ui/windowMenu.js:102
+#: js/ui/windowMenu.js:143
 msgid "Move to Workspace Right"
 msgstr "Mută pe spațiul de lucru din dreapta"
 
-#: js/ui/windowMenu.js:108
+#: js/ui/windowMenu.js:149
 msgid "Move to Workspace Up"
 msgstr "Mută fereastra pe spațiul de lucru de mai sus"
 
-#: js/ui/windowMenu.js:114
+#: js/ui/windowMenu.js:155
 msgid "Move to Workspace Down"
 msgstr "Mută fereastra pe spațiul de lucru de mai jos"
 
-#: js/ui/windowMenu.js:132
+#: js/ui/windowMenu.js:173
 msgid "Move to Monitor Up"
 msgstr "Mută fereastra cu un monitor mai sus"
 
-#: js/ui/windowMenu.js:141
+#: js/ui/windowMenu.js:182
 msgid "Move to Monitor Down"
 msgstr "Mută fereastra cu un monitor mai jos"
 
-#: js/ui/windowMenu.js:150
+#: js/ui/windowMenu.js:191
 msgid "Move to Monitor Left"
 msgstr "Mută fereastra cu un monitor spre stânga"
 
-#: js/ui/windowMenu.js:159
+#: js/ui/windowMenu.js:200
 msgid "Move to Monitor Right"
 msgstr "Mută fereastra cu un monitor spre dreapta"
 
-#: js/ui/windowMenu.js:167
+#: js/ui/windowMenu.js:208
 msgid "Close"
 msgstr "Închide"
 
-#: src/calendar-server/evolution-calendar.desktop.in:3
-msgid "Evolution Calendar"
-msgstr "Calendar Evolution"
-
-#: src/main.c:419 subprojects/extensions-tool/src/main.c:317
+#: src/main.c:529 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Tipărește versiunea"
 
-#: src/main.c:425
+#: src/main.c:535
 msgid "Mode used by GDM for login screen"
 msgstr "Mod folosit de GDM pentru meniul de autentificare"
 
-#: src/main.c:431
+#: src/main.c:541
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Utilizează un mod specific, de exemplu „gdm” pentru ecranul de logare"
 
-#: src/main.c:437
+#: src/main.c:547
 msgid "List possible modes"
 msgstr "Enumeră câmpurile care pot fi afișate"
 
-#: src/shell-app.c:298
+#: src/main.c:553
+msgid "Force animations to be enabled"
+msgstr "Forțează animațiile să fie activate"
+
+#: src/shell-app.c:305
 msgctxt "program"
 msgid "Unknown"
 msgstr "Necunoscut"
 
-#: src/shell-app.c:549
+#: src/shell-app.c:556
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Nu s-a putut lansa „%s”"
 
-#: src/shell-keyring-prompt.c:731
+#: src/shell-keyring-prompt.c:764
 msgid "Passwords do not match."
 msgstr "Parolele nu se potrivesc."
 
-#: src/shell-keyring-prompt.c:739
+#: src/shell-keyring-prompt.c:772
 msgid "Password cannot be blank"
 msgstr "Parola nu poate fi goală"
 
@@ -2530,19 +2543,29 @@ msgstr "Parola nu poate fi goală"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Fereastra de autentificare a fost închisă de către utilizator"
 
+#: src/st/st-icon-theme.c:1865
+#, c-format
+msgid "Icon '%s' not present in theme %s"
+msgstr "Iconița „%s” nu este prezentă în tema %s"
+
+#: src/st/st-icon-theme.c:3454 src/st/st-icon-theme.c:3757
+msgid "Failed to load icon"
+msgstr "Nu s-a putut încărca iconița"
+
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:217
-#: subprojects/extensions-app/data/ui/extensions-window.ui:56
+#: subprojects/extensions-app/js/main.js:218
+#: subprojects/extensions-app/data/ui/extensions-window.ui:18
+#: subprojects/extensions-app/data/ui/extensions-window.ui:82
 msgid "Extensions"
 msgstr "Extensii"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:218
 msgid "Manage your GNOME Extensions"
 msgstr "Administrați Exensiile GNOME"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:17
+#: subprojects/extensions-app/js/main.js:222
 msgid "The GNOME Project"
 msgstr "Proiectul GNOME"
 
@@ -2558,17 +2581,17 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "Configurarea extensiilor pentru Vizualizatorul activităților GNOME"
 
-#: subprojects/extensions-app/js/main.js:142
-#: subprojects/extensions-app/js/main.js:152
+#: subprojects/extensions-app/js/main.js:136
+#: subprojects/extensions-app/js/main.js:147
 msgid "No Matches"
 msgstr "Nu există potriviri"
 
-#: subprojects/extensions-app/js/main.js:179
+#: subprojects/extensions-app/js/main.js:175
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Se elimină „%s”?"
 
-#: subprojects/extensions-app/js/main.js:180
+#: subprojects/extensions-app/js/main.js:176
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2576,18 +2599,18 @@ msgstr ""
 "Dacă eliminați extensia, trebuie să vă întoarceți să o descărcați dacă "
 "doriți să o activați din nou"
 
-#: subprojects/extensions-app/js/main.js:184
+#: subprojects/extensions-app/js/main.js:180
 msgid "Remove"
 msgstr "Elimină"
 
-#: subprojects/extensions-app/js/main.js:216
+#: subprojects/extensions-app/js/main.js:217
 msgid "translator-credits"
 msgstr ""
 "Florentina Mușat <florentina [dot] musat [dot] 28 [at] gmail [dot] com>, "
-"2020-2021\n"
+"2020-2021, 2023\n"
 "Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>, 2021"
 
-#: subprojects/extensions-app/js/main.js:344
+#: subprojects/extensions-app/js/main.js:345
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -2595,80 +2618,65 @@ msgstr[0] "%d extensie va fi actualizată la următoarea autentificare."
 msgstr[1] "%d extensii vor fi actualizate la următoarea autentificare."
 msgstr[2] "%d de extensii vor fi actualizate la următoarea autentificare."
 
-#: subprojects/extensions-app/js/main.js:494
+#: subprojects/extensions-app/js/main.js:487
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "Extensia nu este compatibilă cu versiunea GNOME curentă"
 
-#: subprojects/extensions-app/js/main.js:497
+#: subprojects/extensions-app/js/main.js:490
+#: subprojects/extensions-app/data/ui/extension-row.ui:52
 msgid "The extension had an error"
 msgstr "Extensia a avut o eroare"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:83
-#: subprojects/extensions-tool/src/command-create.c:322
-#: subprojects/extensions-tool/src/main.c:241
-msgid "Description"
-msgstr "Descriere"
+#: subprojects/extensions-app/data/ui/extension-row.ui:62
+msgid "The extension can be updated"
+msgstr "Extensia poate fi actualizată"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:104
-#: subprojects/extensions-tool/src/main.c:253
-msgid "Version"
-msgstr "Versiune"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:131
-msgid "Author"
-msgstr "Autor"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:185
+#: subprojects/extensions-app/data/ui/extension-row.ui:112
 msgid "Website"
 msgstr "Pagină web"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:201
+#: subprojects/extensions-app/data/ui/extension-row.ui:134
 msgid "Remove…"
 msgstr "Elimină…"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:7
+#: subprojects/extensions-app/data/ui/extensions-window.ui:6
 msgid "Help"
 msgstr "Ajutor"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:11
+#: subprojects/extensions-app/data/ui/extensions-window.ui:10
 msgid "About Extensions"
 msgstr "Despre extensii"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:27
+#: subprojects/extensions-app/data/ui/extensions-window.ui:83
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"Extensions can cause performance and stability issues. Disable extensions if "
+"you encounter problems with your system."
+msgstr ""
+"Extensiile pot cauza probleme de performanță și stabilitate. Dezactivați "
+"extensiile dacă întâlniți probleme cu sistemul."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:97
+msgid "Manually Installed"
+msgstr "Instalat manual"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:98
+#: subprojects/extensions-app/data/ui/extensions-window.ui:133
+msgid ""
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "Pentru a găsi și adăuga extensii, vizitați <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:34
-msgid "Warning"
-msgstr "Avertisment"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:44
-msgid ""
-"Extensions can cause system issues, including performance problems. If you "
-"encounter problems with your system, it is recommended to disable all "
-"extensions."
-msgstr ""
-"Extensiile pot cauza probleme de sistem, inclusiv probleme de performanță. "
-"Dacă întâlniți probleme cu sistemul, este recomandat să dezactivați toate "
-"extensiile."
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:150
-msgid "Manually Installed"
-msgstr "Instalat manual"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:174
+#: subprojects/extensions-app/data/ui/extensions-window.ui:111
 msgid "Built-In"
 msgstr "Încorporat"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:217
+#: subprojects/extensions-app/data/ui/extensions-window.ui:132
 msgid "No Installed Extensions"
 msgstr "Nu sunt extensii instalate"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:252
+#: subprojects/extensions-app/data/ui/extensions-window.ui:144
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -2676,13 +2684,9 @@ msgstr ""
 "Nu a fost posibil să se obțină lista extensiilor instalate. Asigurați-vă că "
 "sunteți autentificat la GNOME și încercați din nou."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:288
+#: subprojects/extensions-app/data/ui/extensions-window.ui:174
 msgid "Extension Updates Ready"
 msgstr "Actualizările de extensie sunt gata"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:303
-msgid "Log Out…"
-msgstr "Deautentificare…"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:222
@@ -2700,7 +2704,7 @@ msgstr ""
 "Exemple: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:302
-#: subprojects/extensions-tool/src/main.c:238
+#: subprojects/extensions-tool/src/main.c:242
 msgid "Name"
 msgstr "Nume"
 
@@ -2713,6 +2717,11 @@ msgstr ""
 "Descrierea este o explicație într-o singură propoziție despre ce face "
 "extensia.\n"
 "Exemple: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:322
+#: subprojects/extensions-tool/src/main.c:245
+msgid "Description"
+msgstr "Descriere"
 
 #: subprojects/extensions-tool/src/command-create.c:336
 msgid ""
@@ -2777,47 +2786,46 @@ msgstr "Argumente necunoscute"
 msgid "UUID, name and description are required"
 msgstr "UUID-ul, numele și descrierea sunt necesare"
 
-#: subprojects/extensions-tool/src/command-disable.c:46
-#: subprojects/extensions-tool/src/command-enable.c:46
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
-msgid "Failed to connect to GNOME Shell\n"
-msgstr "Nu s-a putut conecta la Shell GNOME\n"
-
-#: subprojects/extensions-tool/src/command-disable.c:53
-#: subprojects/extensions-tool/src/command-enable.c:53
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "Extensia „%s” nu există\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:101
+#: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
 msgstr "Dezactivează o extensie"
 
-#: subprojects/extensions-tool/src/command-disable.c:119
-#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
 #: subprojects/extensions-tool/src/command-info.c:103
-#: subprojects/extensions-tool/src/command-prefs.c:97
+#: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
 #: subprojects/extensions-tool/src/command-uninstall.c:104
 msgid "No UUID given"
 msgstr "Niciun UUID dat"
 
-#: subprojects/extensions-tool/src/command-disable.c:124
-#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
 #: subprojects/extensions-tool/src/command-info.c:108
-#: subprojects/extensions-tool/src/command-prefs.c:102
+#: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
 #: subprojects/extensions-tool/src/command-uninstall.c:109
 msgid "More than one UUID given"
 msgstr "Mai mult de un UUID dat"
 
-#: subprojects/extensions-tool/src/command-enable.c:101
+#: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
 msgstr "Activează o extensie"
 
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:150
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "Nu s-a putut conecta la Shell GNOME\n"
+
 #: subprojects/extensions-tool/src/command-info.c:59
-#: subprojects/extensions-tool/src/main.c:155
+#: subprojects/extensions-tool/src/main.c:159
 #, c-format
 msgid "Extension “%s” doesn't exist\n"
 msgstr "Extensia „%s” nu există\n"
@@ -2826,23 +2834,23 @@ msgstr "Extensia „%s” nu există\n"
 msgid "Show extensions info"
 msgstr "Arată informații despre extensii"
 
-#: subprojects/extensions-tool/src/command-install.c:173
+#: subprojects/extensions-tool/src/command-install.c:190
 msgid "Overwrite an existing extension"
 msgstr "Suprascrie o extensie existentă"
 
-#: subprojects/extensions-tool/src/command-install.c:175
+#: subprojects/extensions-tool/src/command-install.c:192
 msgid "EXTENSION_BUNDLE"
 msgstr "PACHET_EXTENSIE"
 
-#: subprojects/extensions-tool/src/command-install.c:184
+#: subprojects/extensions-tool/src/command-install.c:201
 msgid "Install an extension bundle"
 msgstr "Instalează un pachet de extensii"
 
-#: subprojects/extensions-tool/src/command-install.c:202
+#: subprojects/extensions-tool/src/command-install.c:219
 msgid "No extension bundle specified"
 msgstr "Niciun pachet de extensii specificat"
 
-#: subprojects/extensions-tool/src/command-install.c:208
+#: subprojects/extensions-tool/src/command-install.c:225
 msgid "More than one extension bundle specified"
 msgstr "Mai mult de un pachet de extensii specificat"
 
@@ -2878,56 +2886,56 @@ msgstr "Tipărește detaliile extensiei"
 msgid "List installed extensions"
 msgstr "Listează extensiile instalate"
 
-#: subprojects/extensions-tool/src/command-pack.c:450
+#: subprojects/extensions-tool/src/command-pack.c:456
 msgid "FILE"
 msgstr "FIȘIER"
 
-#: subprojects/extensions-tool/src/command-pack.c:451
+#: subprojects/extensions-tool/src/command-pack.c:457
 msgid "Additional source to include in the bundle"
 msgstr "Sursă adițională de inclus în pachet"
 
-#: subprojects/extensions-tool/src/command-pack.c:454
+#: subprojects/extensions-tool/src/command-pack.c:460
 msgid "SCHEMA"
 msgstr "SCHEMĂ"
 
-#: subprojects/extensions-tool/src/command-pack.c:455
+#: subprojects/extensions-tool/src/command-pack.c:461
 msgid "A GSettings schema that should be included"
 msgstr "O schemă GSettings care ar trebui inclusă"
 
-#: subprojects/extensions-tool/src/command-pack.c:457
-#: subprojects/extensions-tool/src/command-pack.c:468
+#: subprojects/extensions-tool/src/command-pack.c:463
+#: subprojects/extensions-tool/src/command-pack.c:474
 msgid "DIRECTORY"
 msgstr "DIRECTOR"
 
-#: subprojects/extensions-tool/src/command-pack.c:459
+#: subprojects/extensions-tool/src/command-pack.c:465
 msgid "The directory where translations are found"
 msgstr "Directorul unde se găsesc traducerile"
 
-#: subprojects/extensions-tool/src/command-pack.c:461
+#: subprojects/extensions-tool/src/command-pack.c:467
 msgid "DOMAIN"
 msgstr "DOMENIU"
 
-#: subprojects/extensions-tool/src/command-pack.c:463
+#: subprojects/extensions-tool/src/command-pack.c:469
 msgid "The gettext domain to use for translations"
 msgstr "Domeniu gettext de folosit pentru traduceri"
 
-#: subprojects/extensions-tool/src/command-pack.c:466
+#: subprojects/extensions-tool/src/command-pack.c:472
 msgid "Overwrite an existing pack"
 msgstr "Suprascrie un pachet existent"
 
-#: subprojects/extensions-tool/src/command-pack.c:470
+#: subprojects/extensions-tool/src/command-pack.c:476
 msgid "The directory where the pack should be created"
 msgstr "Directorul unde pachetul ar trebui creat"
 
-#: subprojects/extensions-tool/src/command-pack.c:472
+#: subprojects/extensions-tool/src/command-pack.c:478
 msgid "SOURCE_DIRECTORY"
 msgstr "DIRECTOR_SURSĂ"
 
-#: subprojects/extensions-tool/src/command-pack.c:481
+#: subprojects/extensions-tool/src/command-pack.c:487
 msgid "Create an extension bundle"
 msgstr "Creează un pachet de extensii"
 
-#: subprojects/extensions-tool/src/command-pack.c:501
+#: subprojects/extensions-tool/src/command-pack.c:507
 msgid "More than one source directory specified"
 msgstr "Mai mult de un director sursă specificat"
 
@@ -2936,7 +2944,12 @@ msgstr "Mai mult de un director sursă specificat"
 msgid "Extension “%s” doesn't have preferences\n"
 msgstr "Extensia „%s” nu are preferințe\n"
 
-#: subprojects/extensions-tool/src/command-prefs.c:79
+#: subprojects/extensions-tool/src/command-prefs.c:62
+#, c-format
+msgid "Failed to open prefs for extension “%s”: %s\n"
+msgstr "Nu s-au putut deschide preferințele pentru extensia „%s”: %s\n"
+
+#: subprojects/extensions-tool/src/command-prefs.c:87
 msgid "Opens extension preferences"
 msgstr "Deschide preferințele extensiei"
 
@@ -2957,102 +2970,102 @@ msgstr "Nu s-a putut dezinstala „%s”\n"
 msgid "Uninstall an extension"
 msgstr "Dezinstalează o extensie"
 
-#: subprojects/extensions-tool/src/main.c:72
+#: subprojects/extensions-tool/src/main.c:76
 msgid "Do not print error messages"
 msgstr "Nu tipări mesajele eroare"
 
-#: subprojects/extensions-tool/src/main.c:146
-msgid "Failed to connect to GNOME Shell"
-msgstr "Nu s-a putut conecta la Shell GNOME"
-
-#: subprojects/extensions-tool/src/main.c:244
+#: subprojects/extensions-tool/src/main.c:248
 msgid "Path"
 msgstr "Cale"
 
-#: subprojects/extensions-tool/src/main.c:247
+#: subprojects/extensions-tool/src/main.c:251
 msgid "URL"
 msgstr "URL"
 
-#: subprojects/extensions-tool/src/main.c:250
+#: subprojects/extensions-tool/src/main.c:254
 msgid "Original author"
 msgstr "Autor original"
 
-#: subprojects/extensions-tool/src/main.c:256
+#: subprojects/extensions-tool/src/main.c:257
+msgid "Version"
+msgstr "Versiune"
+
+#: subprojects/extensions-tool/src/main.c:260
 msgid "State"
 msgstr "Stare"
 
-#: subprojects/extensions-tool/src/main.c:290
+#: subprojects/extensions-tool/src/main.c:298
 msgid "“version” takes no arguments"
 msgstr "„version” nu primește argumente"
 
-#: subprojects/extensions-tool/src/main.c:292
-#: subprojects/extensions-tool/src/main.c:312
+#: subprojects/extensions-tool/src/main.c:300
+#: subprojects/extensions-tool/src/main.c:320
 msgid "Usage:"
 msgstr "Utilizare:"
 
-#: subprojects/extensions-tool/src/main.c:295
+#: subprojects/extensions-tool/src/main.c:303
 msgid "Print version information and exit."
 msgstr "Tipărește informațiile versiunii și ieși."
 
-#: subprojects/extensions-tool/src/main.c:310
-#: subprojects/extensions-tool/src/main.c:313
+#: subprojects/extensions-tool/src/main.c:318
+#: subprojects/extensions-tool/src/main.c:321
 msgid "COMMAND"
 msgstr "COMANDĂ"
 
-#: subprojects/extensions-tool/src/main.c:313
+#: subprojects/extensions-tool/src/main.c:321
 msgid "[ARGS…]"
 msgstr "[ARGUMENTE…]"
 
-#: subprojects/extensions-tool/src/main.c:315
+#: subprojects/extensions-tool/src/main.c:323
 msgid "Commands:"
 msgstr "Comenzi:"
 
-#: subprojects/extensions-tool/src/main.c:316
+#: subprojects/extensions-tool/src/main.c:324
 msgid "Print help"
 msgstr "Tipărește ajutorul"
 
-#: subprojects/extensions-tool/src/main.c:318
+#: subprojects/extensions-tool/src/main.c:326
 msgid "Enable extension"
 msgstr "Activează extensia"
 
-#: subprojects/extensions-tool/src/main.c:319
+#: subprojects/extensions-tool/src/main.c:327
 msgid "Disable extension"
 msgstr "Dezactivează extensia"
 
-#: subprojects/extensions-tool/src/main.c:320
+#: subprojects/extensions-tool/src/main.c:328
 msgid "Reset extension"
 msgstr "Restabilește extensia"
 
-#: subprojects/extensions-tool/src/main.c:321
+#: subprojects/extensions-tool/src/main.c:329
 msgid "Uninstall extension"
 msgstr "Dezinstalează extensia"
 
-#: subprojects/extensions-tool/src/main.c:322
+#: subprojects/extensions-tool/src/main.c:330
 msgid "List extensions"
 msgstr "Listează extensiile"
 
-#: subprojects/extensions-tool/src/main.c:323
-#: subprojects/extensions-tool/src/main.c:324
+#: subprojects/extensions-tool/src/main.c:331
+#: subprojects/extensions-tool/src/main.c:332
 msgid "Show extension info"
 msgstr "Arată informații despre extensie"
 
-#: subprojects/extensions-tool/src/main.c:325
+#: subprojects/extensions-tool/src/main.c:333
 msgid "Open extension preferences"
 msgstr "Deschide preferințele extensiei"
 
-#: subprojects/extensions-tool/src/main.c:326
+#: subprojects/extensions-tool/src/main.c:334
 msgid "Create extension"
 msgstr "Creează extensie"
 
-#: subprojects/extensions-tool/src/main.c:327
+#: subprojects/extensions-tool/src/main.c:335
 msgid "Package extension"
 msgstr "Împachetează extensia"
 
-#: subprojects/extensions-tool/src/main.c:328
+#: subprojects/extensions-tool/src/main.c:336
 msgid "Install extension bundle"
 msgstr "Instalează pachetul de extensii"
 
-#: subprojects/extensions-tool/src/main.c:330
+#: subprojects/extensions-tool/src/main.c:338
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Utilizați „%s” pentru a obține ajutor detaliat.\n"
@@ -3075,7 +3088,7 @@ msgstr "Adaugă o iconiță la bara de sus"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1907
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3085,7 +3098,7 @@ msgstr[2] "%u de rezultate"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1917
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -3093,9 +3106,250 @@ msgstr[0] "%u intrare"
 msgstr[1] "%u intrări"
 msgstr[2] "%u de intrări"
 
-#: subprojects/gvc/gvc-mixer-control.c:2867
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sunete de sistem"
+
+#~ msgid ""
+#~ "Whether the default Bluetooth adapter had set up devices associated to it"
+#~ msgstr "Dacă adaptorul implicit Bluetooth are dispozitive asociate lui"
+
+#~ msgid ""
+#~ "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+#~ "powered, or if there were devices set up associated with the default "
+#~ "adapter. This will be reset if the default adapter is ever seen not to "
+#~ "have devices associated to it."
+#~ msgstr ""
+#~ "Vizualizatorul va arăta un element de meniu Bluetooth numai dacă "
+#~ "adaptorul Bluetooth este pornit, sau dacă există dispozitive configurate "
+#~ "asociate cu adaptorul implicit. Acesta va fi restabilit dacă adaptorul "
+#~ "este perceput a nu avea dispozitive asociate lui."
+
+#~ msgid "Attach modal dialog to the parent window"
+#~ msgstr "Atașează dialogul modal la fereastra părinte"
+
+#~ msgid ""
+#~ "This key overrides the key in org.gnome.mutter when running GNOME Shell."
+#~ msgstr ""
+#~ "Această cheie suprascrie cheia corespondentă din org.gnome.mutter când "
+#~ "Vizualizatorul activităților GNOME rulează."
+
+#~ msgid "Enable edge tiling when dropping windows on screen edges"
+#~ msgstr ""
+#~ "Activează mozaic lateral la plasarea ferestrelor pe marginile ecranului"
+
+#~ msgid "Workspaces are managed dynamically"
+#~ msgstr "Spațiile de lucru sunt gestionate în mod dinamic"
+
+#~ msgid "Workspaces only on primary monitor"
+#~ msgstr "Spații de lucru doar pe monitorul principal"
+
+#~ msgid "Delay focus changes in mouse mode until the pointer stops moving"
+#~ msgstr ""
+#~ "Întârzie schimbările de focalizare în maus până când cursorul încetează "
+#~ "să se miște"
+
+#~ msgid "Remove from Favorites"
+#~ msgstr "Elimină din favorite"
+
+#~ msgid "Add to Favorites"
+#~ msgstr "Adaugă la Favorite"
+
+#~ msgid "Region & Language Settings"
+#~ msgstr "Configurări de regiune și limbă"
+
+#~ msgid "Applications"
+#~ msgstr "Aplicații"
+
+#, javascript-format
+#~ msgid "Unable to start %s"
+#~ msgstr "Nu s-a putut porni %s"
+
+#, javascript-format
+#~ msgid "Couldn’t find the %s application"
+#~ msgstr "Nu s-a putut găsi aplicația %s"
+
+#~ msgid "Bluetooth Off"
+#~ msgstr "Bluetooth oprit"
+
+#~ msgid "Bluetooth On"
+#~ msgstr "Bluetooth pornit"
+
+#~ msgid "Privacy Settings"
+#~ msgstr "Configurări de confidențialitate"
+
+#~ msgid "Location In Use"
+#~ msgstr "Locație utilizată"
+
+#~ msgid "Location Disabled"
+#~ msgstr "Locația dezactivată"
+
+#, javascript-format
+#~ msgid "%s Off"
+#~ msgstr "%s oprit"
+
+#, javascript-format
+#~ msgid "%s Connected"
+#~ msgstr "%s conectat"
+
+#, javascript-format
+#~ msgid "%s Unmanaged"
+#~ msgstr "%s este negestionat"
+
+#, javascript-format
+#~ msgid "%s Connecting"
+#~ msgstr "Se conectează %s"
+
+#, javascript-format
+#~ msgid "%s Requires Authentication"
+#~ msgstr "%s necesită autentificare"
+
+#, javascript-format
+#~ msgid "Firmware Missing For %s"
+#~ msgstr "Firmware lipsă pentru %s"
+
+#, javascript-format
+#~ msgid "%s Unavailable"
+#~ msgstr "%s indisponibil"
+
+#, javascript-format
+#~ msgid "%s Connection Failed"
+#~ msgstr "Conectarea la %s a eșuat"
+
+#, javascript-format
+#~ msgid "%s Hardware Disabled"
+#~ msgstr "Hardware %s dezactivat"
+
+#, javascript-format
+#~ msgid "%s Disabled"
+#~ msgstr "%s dezactivat"
+
+#~ msgid "Connect to Internet"
+#~ msgstr "Conectează la Internet"
+
+#~ msgid "Airplane Mode is On"
+#~ msgstr "Modul avion este pornit"
+
+#~ msgid "Wi-Fi is disabled when airplane mode is on."
+#~ msgstr "Wi-Fi este dezactivat când modul avion este pornit."
+
+#~ msgid "Turn Off Airplane Mode"
+#~ msgstr "Oprește modul avion"
+
+#~ msgid "Wi-Fi is Off"
+#~ msgstr "Wi-Fi este oprit"
+
+#~ msgid "Wi-Fi needs to be turned on in order to connect to a network."
+#~ msgstr "Wi-Fi trebuie pornit pentru a se putea face conexiunea la o rețea."
+
+#~ msgid "Turn On Wi-Fi"
+#~ msgstr "Pornește Wi-Fi"
+
+#~ msgid "Wi-Fi Networks"
+#~ msgstr "Rețele Wi-Fi"
+
+#~ msgid "Select a network"
+#~ msgstr "Selectați o rețea"
+
+#~ msgid "Use hardware switch to turn off"
+#~ msgstr "Folosește un întrerupător hardware pentru a opri"
+
+#~ msgid "Select Network"
+#~ msgstr "Selectați rețeaua"
+
+#~ msgid "Wi-Fi Settings"
+#~ msgstr "Configurări Wi-Fi"
+
+#, javascript-format
+#~ msgid "%s Not Connected"
+#~ msgstr "%s nu este conectat"
+
+#~ msgid "connecting…"
+#~ msgstr "se conectează…"
+
+#~ msgid "authentication required"
+#~ msgstr "necesită autentificare"
+
+#~ msgid "connection failed"
+#~ msgstr "conexiune eșuată"
+
+#~ msgid "VPN Off"
+#~ msgstr "VPN oprit"
+
+#~ msgid "Network Settings"
+#~ msgstr "Configurări de rețea"
+
+#, javascript-format
+#~ msgid "%s Wi-Fi Connection"
+#~ msgid_plural "%s Wi-Fi Connections"
+#~ msgstr[0] "%s conexiune fără fir"
+#~ msgstr[1] "%s conexiuni fără fir"
+#~ msgstr[2] "%s de conexiuni fără fir"
+
+#~ msgid "Night Light Disabled"
+#~ msgstr "Lumina de noapte este dezactivată"
+
+#~ msgid "Resume"
+#~ msgstr "Reia"
+
+#~ msgid "Disable Until Tomorrow"
+#~ msgstr "Dezactivează până mâine"
+
+#~ msgid "Fully Charged"
+#~ msgstr "Complet încărcată"
+
+#~ msgid "Not Charging"
+#~ msgstr "Nu încarcă"
+
+#~ msgid "Estimating…"
+#~ msgstr "Se estimează…"
+
+#, javascript-format
+#~ msgid "%d∶%02d Remaining (%d %%)"
+#~ msgstr "%d∶%02d rămase (%d%%)"
+
+#, javascript-format
+#~ msgid "%d∶%02d Until Full (%d %%)"
+#~ msgstr "%d∶%02d până este plină (%d%%)"
+
+#~ msgid "Screen is Being Shared"
+#~ msgstr "Ecranul este partajat"
+
+#~ msgid "Turn off"
+#~ msgstr "Oprește"
+
+#~ msgid "Airplane Mode On"
+#~ msgstr "Modul avion este pornit"
+
+#~ msgid "Lock"
+#~ msgstr "Blocare"
+
+#~ msgid "Power Off / Log Out"
+#~ msgstr "Oprire / Deautentificare"
+
+#~ msgid "Log Out"
+#~ msgstr "Ieșire din sesiune"
+
+#~ msgid "Evolution Calendar"
+#~ msgstr "Calendar Evolution"
+
+#~ msgid "Author"
+#~ msgstr "Autor"
+
+#~ msgid "Warning"
+#~ msgstr "Avertisment"
+
+#~ msgid ""
+#~ "Extensions can cause system issues, including performance problems. If "
+#~ "you encounter problems with your system, it is recommended to disable all "
+#~ "extensions."
+#~ msgstr ""
+#~ "Extensiile pot cauza probleme de sistem, inclusiv probleme de "
+#~ "performanță. Dacă întâlniți probleme cu sistemul, este recomandat să "
+#~ "dezactivați toate extensiile."
+
+#~ msgid "Failed to connect to GNOME Shell"
+#~ msgstr "Nu s-a putut conecta la Shell GNOME"
 
 #~ msgid "Enable introspection API"
 #~ msgstr "Activează API-ul de introspecție"
@@ -3181,9 +3435,6 @@ msgstr "Sunete de sistem"
 #~ msgstr[1] "%d notificări"
 #~ msgstr[2] "%d de notificări"
 
-#~ msgid "Off"
-#~ msgstr "Oprit"
-
 #~ msgid "On"
 #~ msgstr "Pornit"
 
@@ -3211,9 +3462,6 @@ msgstr "Sunete de sistem"
 
 #~ msgid "toggle-switch-us"
 #~ msgstr "toggle-switch-us"
-
-#~ msgid "evolution"
-#~ msgstr "evolution"
 
 #~ msgid "There was an error loading the preferences dialog for %s:"
 #~ msgstr ""
@@ -3243,9 +3491,6 @@ msgstr "Sunete de sistem"
 #~ msgid "Web Authentication Redirect"
 #~ msgstr "Redirecționează autentificarea web"
 
-#~ msgid "Clear section"
-#~ msgstr "Curăță secțiunea"
-
 #~ msgid "Events"
 #~ msgstr "Evenimente"
 
@@ -3257,9 +3502,6 @@ msgstr "Sunete de sistem"
 
 #~ msgid "Status Icons"
 #~ msgstr "Iconițe de stare"
-
-#~ msgid "Not In Use"
-#~ msgstr "Neutilizată"
 
 #~ msgid "Use as Internet connection"
 #~ msgstr "Folosește pe post de conexiunea la internet"
@@ -3318,12 +3560,6 @@ msgstr "Sunete de sistem"
 
 #~ msgid "File Transfer"
 #~ msgstr "Transfer de fișiere"
-
-#~ msgid "Unmute"
-#~ msgstr "Activează sunetul"
-
-#~ msgid "Mute"
-#~ msgstr "Mut"
 
 #~ msgid "Invitation to %s"
 #~ msgstr "Invitație către %s"
@@ -3431,9 +3667,6 @@ msgstr "Sunete de sistem"
 #~ msgid "View account"
 #~ msgstr "Editează contul"
 
-#~ msgid "Open Calendar"
-#~ msgstr "Deschide calendarul"
-
 #~ msgid "Date & Time Settings"
 #~ msgstr "Setări pentru dată și oră"
 
@@ -3458,9 +3691,6 @@ msgstr "Sunete de sistem"
 
 #~ msgid "Battery"
 #~ msgstr "Baterie"
-
-#~ msgid "Airplane Mode"
-#~ msgstr "Mod avion"
 
 #~ msgid "unavailable"
 #~ msgstr "indisponibil"
@@ -3573,11 +3803,6 @@ msgstr "Sunete de sistem"
 #~ "Numele de fișier ale înregistrărilor de ecran vor fi unice, bazate pe "
 #~ "data curentă și vor folosi această extensie. Ar trebui să fie modificată "
 #~ "când se înregistrează într-un format de container diferit."
-
-#, fuzzy
-#~| msgid "Power Off"
-#~ msgid "Power"
-#~ msgstr "Oprire"
 
 #~ msgid "Click Log Out to quit these applications and log out of the system."
 #~ msgstr ""
@@ -3728,9 +3953,6 @@ msgstr "Sunete de sistem"
 #~ msgid "The requested device cannot be browsed, error is '%s'"
 #~ msgstr "Dispozitivul solicitat nu poate fi explorat, eroarea este „%s”"
 
-#~ msgid "Keyboard Settings"
-#~ msgstr "Setări tastatură"
-
 #~ msgid "cable unplugged"
 #~ msgstr "cablu deconectat"
 
@@ -3820,9 +4042,6 @@ msgstr "Sunete de sistem"
 
 #~ msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 #~ msgstr "Trimis pe <b>%A</b>, <b>%d %B</b> %Y"
-
-#~ msgid "Connection to %s failed"
-#~ msgstr "Conexiunea la %s a eșuat"
 
 #~ msgid "Reconnect"
 #~ msgstr "Reconectează"
