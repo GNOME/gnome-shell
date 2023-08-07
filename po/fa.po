@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Mahyar Moghimi <mahyar.moqimi@gmail.com>, 2010.
 # Arash Mousavi <mousavi.arash@gmail.com>, 2010-2017.
-# Danial behzadi <dani.behzi@ubuntu.com>, 2018-2022.
+# Danial behzadi <dani.behzi@ubuntu.com>, 2018-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-09-20 09:42+0000\n"
-"PO-Revision-Date: 2022-09-20 14:34+0430\n"
+"POT-Creation-Date: 2023-07-06 18:09+0000\n"
+"PO-Revision-Date: 2023-08-07 13:04+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-DamnedLies-Scope: partial\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: data/50-gnome-shell-launchers.xml:6
@@ -63,7 +63,7 @@ msgid "Activate favorite application 9"
 msgstr "فعّال‌سازی برنامهٔ مورد علاقهٔ ۹"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2076
 msgid "Screenshots"
 msgstr "نماگرفت‌ها"
 
@@ -475,7 +475,7 @@ msgstr "صفحهٔ خانگی"
 msgid "Visit extension homepage"
 msgstr "مشاهدهٔ صفحهٔ خانگی افزونه"
 
-#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:146 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
@@ -483,7 +483,7 @@ msgstr "مشاهدهٔ صفحهٔ خانگی افزونه"
 msgid "Cancel"
 msgstr "لغو"
 
-#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:312 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -521,13 +521,13 @@ msgstr "خطا تأیید هویت"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:603
+#: js/gdm/util.js:604
 msgid "(or swipe finger across reader)"
 msgstr "(یا انگشتتان را روی خواننده بکشید)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:608
+#: js/gdm/util.js:609
 msgid "(or place finger on reader)"
 msgstr "(یا انگشتتان را روی خواننده بگذارید)"
 
@@ -793,7 +793,7 @@ msgstr "رد دسترسی"
 msgid "Grant Access"
 msgstr "پذیرفتن دسترسی"
 
-#: js/ui/appDisplay.js:1728
+#: js/ui/appDisplay.js:1732
 msgid "Unnamed Folder"
 msgstr "پوشهٔ بی‌نام"
 
@@ -824,7 +824,7 @@ msgstr "نمایش جزییات"
 msgid "Quit"
 msgstr "خروج"
 
-#: js/ui/appMenu.js:157 js/ui/dash.js:249
+#: js/ui/appMenu.js:157 js/ui/dash.js:250
 msgid "Unpin"
 msgstr "سنجاق نکردن"
 
@@ -856,7 +856,7 @@ msgstr "هدفون‌ها"
 msgid "Headset"
 msgstr "هدست"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:322
 msgid "Microphone"
 msgstr "میکروفون"
 
@@ -1085,7 +1085,7 @@ msgstr "پین"
 msgid "A password is required to connect to “%s”."
 msgstr "برای اتّصال به «%s» گذرواژه لازم است."
 
-#: js/ui/components/networkAgent.js:736
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1960
 msgid "Network Manager"
 msgstr "مدیر شبکه"
 
@@ -1123,13 +1123,13 @@ msgstr "‏%s با عنوان %s شناخته می‌شود"
 msgid "Windows"
 msgstr "پنجره‌‌ها"
 
-#: js/ui/dash.js:205 js/ui/dash.js:251
+#: js/ui/dash.js:206 js/ui/dash.js:252
 msgid "Show Applications"
 msgstr "نمایش برنامه‌ها"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:398
+#: js/ui/dash.js:399
 msgid "Dash"
 msgstr "دَش"
 
@@ -1395,31 +1395,31 @@ msgstr "به‌روز رسانی‌های افزونه موجودند"
 msgid "Extension updates are ready to be installed."
 msgstr "به‌روز رسانی‌های افزونه‌ها آمادهٔ نصبند."
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:75
 msgid "Allow inhibiting shortcuts"
 msgstr "اجازه به جلوگیری از میان‌بر ها"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:82
+#: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
 msgstr "برنامهٔ %s می‌خواهد جلوی میان‌برها را بگیرد"
 
-#: js/ui/inhibitShortcutsDialog.js:83
+#: js/ui/inhibitShortcutsDialog.js:79
 msgid "An application wants to inhibit shortcuts"
 msgstr "برنامه‌ای می‌خواهد جلوی میان‌برها را بگیرد"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:90
+#: js/ui/inhibitShortcutsDialog.js:86
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "می‌توانید با فشردن %s میان‌برها را برگردانید."
 
-#: js/ui/inhibitShortcutsDialog.js:101
+#: js/ui/inhibitShortcutsDialog.js:97
 msgid "Deny"
 msgstr "رد کردن"
 
-#: js/ui/inhibitShortcutsDialog.js:110
+#: js/ui/inhibitShortcutsDialog.js:106
 msgid "Allow"
 msgstr "اجازه دادن"
 
@@ -1507,7 +1507,7 @@ msgstr "به کار افتاده"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "از کار افتاده"
 
@@ -1563,7 +1563,7 @@ msgstr "قفل صفحه از کار افتاده"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "قفل صفحه نیاز به مدیر نمایش گنوم دارد."
 
-#: js/ui/messageTray.js:1418
+#: js/ui/messageTray.js:1417
 msgid "System Information"
 msgstr "اطّلاعات سامانه"
 
@@ -1685,103 +1685,103 @@ msgstr "نمی‌توان قفل کرد"
 msgid "Lock was blocked by an application"
 msgstr "قفل توسط یک برنامه مسدود شده بود"
 
-#: js/ui/screenshot.js:1147
+#: js/ui/screenshot.js:1165
 msgid "Selection"
 msgstr "گزینش"
 
-#: js/ui/screenshot.js:1157
+#: js/ui/screenshot.js:1175
 msgid "Area Selection"
 msgstr "گزینش ناحیه"
 
-#: js/ui/screenshot.js:1162
+#: js/ui/screenshot.js:1180
 msgid "Screen"
 msgstr "صفحه"
 
-#: js/ui/screenshot.js:1172
+#: js/ui/screenshot.js:1190
 msgid "Screen Selection"
 msgstr "گزینش صفحه"
 
-#: js/ui/screenshot.js:1177
+#: js/ui/screenshot.js:1195
 msgid "Window"
 msgstr "پنجره‌"
 
-#: js/ui/screenshot.js:1187
+#: js/ui/screenshot.js:1205
 msgid "Window Selection"
 msgstr "گزینش پنجره"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1243
 msgid "Screenshot / Screencast"
 msgstr "نماگرفت / ضبط صفحه"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1279
 msgid "Show Pointer"
 msgstr "نمایش اشاره‌گر"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1849
+#: js/ui/screenshot.js:1870
 msgid "Screencasts"
 msgstr "ضبط‌های صفحه"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1854
+#: js/ui/screenshot.js:1875
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "ضبط صفحه از %t %d.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
+#: js/ui/screenshot.js:1917 js/ui/screenshot.js:2129
 msgid "Screenshot"
 msgstr "نماگرفت"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1926
+#: js/ui/screenshot.js:1923
 msgid "Screencast recorded"
 msgstr "صفحه ضبط شد"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1928
+#: js/ui/screenshot.js:1925
 msgid "Click here to view the video."
 msgstr "برای دیدن ویدیو این‌جا بزنید."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
+#: js/ui/screenshot.js:1928 js/ui/screenshot.js:2143
 msgid "Show in Files"
 msgstr "نمایش در پرونده‌ها"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2089
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "نماگرفت از %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2138
+#: js/ui/screenshot.js:2135
 msgid "Screenshot captured"
 msgstr "نماگرفت ضبط شد"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2140
+#: js/ui/screenshot.js:2137
 msgid "You can paste the image from the clipboard."
 msgstr "می‌توانید تصویر را از تخته‌گیره بچسبانید."
 
-#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
+#: js/ui/screenshot.js:2190 js/ui/screenshot.js:2355
 msgid "Screenshot taken"
 msgstr "نماگرفت انجام شد"
 
-#: js/ui/search.js:804
+#: js/ui/search.js:809
 msgid "Searching…"
 msgstr "درحال جست‌وجو…"
 
-#: js/ui/search.js:806
+#: js/ui/search.js:811
 msgid "No results."
 msgstr "بدون نتیجه."
 
-#: js/ui/search.js:937
+#: js/ui/search.js:942
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1946,11 +1946,11 @@ msgstr "کلیک دوم"
 msgid "Dwell Click"
 msgstr "کلیک طولانی"
 
-#: js/ui/status/keyboard.js:830
+#: js/ui/status/keyboard.js:842
 msgid "Keyboard"
 msgstr "صفحه‌کلید"
 
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:859
 msgid "Show Keyboard Layout"
 msgstr "نمایش چیدمان صفحه‌کلید"
 
@@ -1985,10 +1985,58 @@ msgid "Connect to %s"
 msgstr "وصل شدن به %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1107
+#: js/ui/status/network.js:1113
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "نقطهٔ داغ %s"
+
+#: js/ui/status/network.js:1472 js/ui/status/network.js:1488
+msgid "VPN"
+msgstr "وی‌پی‌ان"
+
+#: js/ui/status/network.js:1473
+msgid "VPN Settings"
+msgstr "تنظیمات وی‌پی‌ان"
+
+#: js/ui/status/network.js:1722
+msgid "Wi–Fi"
+msgstr "وای‌فای"
+
+#: js/ui/status/network.js:1724
+msgid "All Networks"
+msgstr "همهٔ شبکه‌ها"
+
+#: js/ui/status/network.js:1821
+msgid "Wired Connections"
+msgstr "اتّصال‌های سیمی"
+
+#: js/ui/status/network.js:1822
+msgid "Wired Settings"
+msgstr "تنظیمات اتّصال سیمی"
+
+#: js/ui/status/network.js:1836
+msgid "Bluetooth Tethers"
+msgstr "چترهای بلوتوث"
+
+#: js/ui/status/network.js:1837
+msgid "Bluetooth Settings"
+msgstr "تنظیمات بلوتوث"
+
+#: js/ui/status/network.js:1851
+msgid "Mobile Connections"
+msgstr "اتّصال‌های همراه"
+
+#: js/ui/status/network.js:1853
+msgid "Mobile Broadband Settings"
+msgstr "تنظیمات پهن‌باند همراه"
+
+#: js/ui/status/network.js:1965
+msgid "Connection failed"
+msgstr "اتّصال شکست خورد"
+
+#: js/ui/status/network.js:1966
+msgid "Activation of network connection failed"
+msgstr "فعّال‌سازی اتّصال شبکه شکست خورد"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
@@ -2009,15 +2057,15 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "ذخیرهٔ نیرو"
 
-#: js/ui/status/powerProfiles.js:68
+#: js/ui/status/powerProfiles.js:70
 msgid "Power Profiles"
 msgstr "نمایه‌های نیرو"
 
-#: js/ui/status/remoteAccess.js:74
+#: js/ui/status/remoteAccess.js:72
 msgid "Stop Screencast"
 msgstr "توقّف ضبط صفحه"
 
-#: js/ui/status/remoteAccess.js:144
+#: js/ui/status/remoteAccess.js:142
 msgid "Stop Screen Sharing"
 msgstr "توقّف هم‌رسانی صفحه"
 
@@ -2099,19 +2147,19 @@ msgstr "خطای تأیید هویت تاندربولت"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "نمی‌توان افزارهٔ تاندربولت را تأیید هویت کرد: %s"
 
-#: js/ui/status/volume.js:191
+#: js/ui/status/volume.js:194
 msgid "Volume changed"
 msgstr "حجم صدا تغییر کرد"
 
-#: js/ui/status/volume.js:253
+#: js/ui/status/volume.js:256
 msgid "Volume"
 msgstr "حجم صدا"
 
-#: js/ui/status/volume.js:269
+#: js/ui/status/volume.js:272
 msgid "Sound Output"
 msgstr "خروجی صدا"
 
-#: js/ui/status/volume.js:337
+#: js/ui/status/volume.js:340
 msgid "Sound Input"
 msgstr "ورودی صدا"
 
@@ -2551,26 +2599,18 @@ msgstr "آرگومان ناشناخته"
 msgid "UUID, name and description are required"
 msgstr "شناسهٔ یکتا، نام و شرح مورد نیازند"
 
-#: subprojects/extensions-tool/src/command-disable.c:46
-#: subprojects/extensions-tool/src/command-enable.c:46
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
-#: subprojects/extensions-tool/src/main.c:146
-msgid "Failed to connect to GNOME Shell\n"
-msgstr "شکست در وصل شدن به پوستهٔ گنوم\n"
-
-#: subprojects/extensions-tool/src/command-disable.c:53
-#: subprojects/extensions-tool/src/command-enable.c:53
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "افزونهٔ «%s» وجود ندارد\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:101
+#: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
 msgstr "از کار انداختن یک افزونه"
 
-#: subprojects/extensions-tool/src/command-disable.c:119
-#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
 #: subprojects/extensions-tool/src/command-info.c:103
 #: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
@@ -2578,8 +2618,8 @@ msgstr "از کار انداختن یک افزونه"
 msgid "No UUID given"
 msgstr "هیچ شناسهٔ یکتایی داده نشده"
 
-#: subprojects/extensions-tool/src/command-disable.c:124
-#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
 #: subprojects/extensions-tool/src/command-info.c:108
 #: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
@@ -2587,9 +2627,15 @@ msgstr "هیچ شناسهٔ یکتایی داده نشده"
 msgid "More than one UUID given"
 msgstr "بیش از یک شناسهٔ یکتا داده شده"
 
-#: subprojects/extensions-tool/src/command-enable.c:101
+#: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
 msgstr "به کار انداختن یک افزونه"
+
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:146
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "شکست در وصل شدن به پوستهٔ گنوم\n"
 
 #: subprojects/extensions-tool/src/command-info.c:59
 #: subprojects/extensions-tool/src/main.c:155
@@ -2855,7 +2901,7 @@ msgstr "افزودن نقشکی به نوار بالا"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1907
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2864,14 +2910,14 @@ msgstr[1] "%Iu خروجی"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1917
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%Iu ورودی"
 msgstr[1] "%Iu ورودی"
 
-#: subprojects/gvc/gvc-mixer-control.c:2867
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "صداهای سامانه"
 
@@ -2889,15 +2935,6 @@ msgstr "صداهای سامانه"
 
 #~ msgid "Log Out"
 #~ msgstr "خروج"
-
-#~ msgid "Wired Settings"
-#~ msgstr "تنظیمات اتّصال سیمی"
-
-#~ msgid "Mobile Broadband Settings"
-#~ msgstr "تنظیمات پهن‌باند همراه"
-
-#~ msgid "Bluetooth Settings"
-#~ msgstr "تنظیمات بلوتوث"
 
 #~ msgid "Connect to Internet"
 #~ msgstr "وصل شدن به اینترنت"
@@ -2926,9 +2963,6 @@ msgstr "صداهای سامانه"
 #~ msgid "Select a network"
 #~ msgstr "شبکه‌ای برگزینید"
 
-#~ msgid "No Networks"
-#~ msgstr "هیچ شبکه‌ای نیست"
-
 #~ msgid "Use hardware switch to turn off"
 #~ msgstr "برای خاموش کردن از کلید سخت‌افزاری استفاده کنید"
 
@@ -2937,12 +2971,6 @@ msgstr "صداهای سامانه"
 
 #~ msgid "Wi-Fi Settings"
 #~ msgstr "تنظیمات وای‌فای"
-
-#~ msgid "VPN Settings"
-#~ msgstr "تنظیمات وی‌پی‌ان"
-
-#~ msgid "VPN"
-#~ msgstr "وی‌پی‌ان"
 
 #~ msgid "VPN Off"
 #~ msgstr "وی‌پی‌ان خاموش است"
@@ -2957,28 +2985,10 @@ msgstr "صداهای سامانه"
 #~ msgstr[1] "اتّصال وای‌فای %s"
 
 #, javascript-format
-#~ msgid "%s Wired Connection"
-#~ msgid_plural "%s Wired Connections"
-#~ msgstr[0] "اتّصال سیمی %s"
-#~ msgstr[1] "اتّصال سیمی %s"
-
-#, javascript-format
 #~ msgid "%s Bluetooth Connection"
 #~ msgid_plural "%s Bluetooth Connections"
 #~ msgstr[0] "اتّصال بلوتوثی %s"
 #~ msgstr[1] "اتّصال‌های بلوتوثی %s"
-
-#, javascript-format
-#~ msgid "%s Modem Connection"
-#~ msgid_plural "%s Modem Connections"
-#~ msgstr[0] "اتّصال مودم %s"
-#~ msgstr[1] "اتّصال مودم %s"
-
-#~ msgid "Connection failed"
-#~ msgstr "اتّصال شکست خورد"
-
-#~ msgid "Activation of network connection failed"
-#~ msgstr "فعّال‌سازی اتّصال شبکه شکست خورد"
 
 #, javascript-format
 #~ msgid "%s Off"
