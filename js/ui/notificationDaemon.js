@@ -343,7 +343,7 @@ class FdoNotificationDaemon {
     }
 }
 
-const FdoNotificationDaemonSource = GObject.registerClass(
+export const FdoNotificationDaemonSource = GObject.registerClass(
 class FdoNotificationDaemonSource extends MessageTray.Source {
     _init(title, pid, sender, appId) {
         this.pid = pid;
@@ -560,7 +560,7 @@ function getPlatformData() {
 
 function InvalidAppError() {}
 
-const GtkNotificationDaemonAppSource = GObject.registerClass(
+export const GtkNotificationDaemonAppSource = GObject.registerClass(
 class GtkNotificationDaemonAppSource extends MessageTray.Source {
     _init(appId) {
         let objectPath = objectPathFromAppId(appId);
