@@ -1,1 +1,1 @@
-var PROFILE = '@PROFILE@';
+export const PROFILE = '@PROFILE@';

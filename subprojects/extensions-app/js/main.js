@@ -10,7 +10,7 @@ const Package = imports.package;
 
 Package.initFormat();
 
-const Config = imports.misc.config;
+import * as Config from './misc/config.js';
 import * as ExtensionUtils from './misc/extensionUtils.js';
 
 import {ExtensionState, ExtensionType}  from './misc/extensionUtils.js';
