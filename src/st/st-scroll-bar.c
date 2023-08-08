@@ -469,7 +469,8 @@ st_scroll_bar_scroll_event (ClutterActor       *actor,
   ClutterTextDirection direction;
   ClutterScrollDirection scroll_dir;
 
-  if (clutter_event_is_pointer_emulated ((ClutterEvent *) event))
+  if (!!(clutter_event_get_flags ((ClutterEvent *) event) &
+         CLUTTER_EVENT_FLAG_POINTER_EMULATED))
     return TRUE;
 
   direction = clutter_actor_get_text_direction (actor);

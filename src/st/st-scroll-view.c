@@ -770,7 +770,8 @@ st_scroll_view_scroll_event (ClutterActor       *self,
   if (!priv->mouse_scroll)
     return FALSE;
 
-  if (clutter_event_is_pointer_emulated ((ClutterEvent *) event))
+  if (!!(clutter_event_get_flags ((ClutterEvent *) event) &
+         CLUTTER_EVENT_FLAG_POINTER_EMULATED))
     return TRUE;
 
   direction = clutter_actor_get_text_direction (self);
