@@ -759,8 +759,8 @@ st_scroll_view_style_changed (StWidget *widget)
 }
 
 static gboolean
-st_scroll_view_scroll_event (ClutterActor       *self,
-                             ClutterScrollEvent *event)
+st_scroll_view_scroll_event (ClutterActor *self,
+                             ClutterEvent *event)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (self)->priv;
   ClutterTextDirection direction;
@@ -770,19 +770,19 @@ st_scroll_view_scroll_event (ClutterActor       *self,
   if (!priv->mouse_scroll)
     return FALSE;
 
-  if (!!(clutter_event_get_flags ((ClutterEvent *) event) &
+  if (!!(clutter_event_get_flags (event) &
          CLUTTER_EVENT_FLAG_POINTER_EMULATED))
     return TRUE;
 
   direction = clutter_actor_get_text_direction (self);
-  scroll_direction = clutter_event_get_scroll_direction ((ClutterEvent *) event);
+  scroll_direction = clutter_event_get_scroll_direction (event);
 
   switch (scroll_direction)
     {
     case CLUTTER_SCROLL_SMOOTH:
       {
         gdouble delta_x, delta_y;
-        clutter_event_get_scroll_delta ((ClutterEvent *)event, &delta_x, &delta_y);
+        clutter_event_get_scroll_delta (event, &delta_x, &delta_y);
 
         if (direction == CLUTTER_TEXT_DIRECTION_RTL)
           delta_x *= -1;

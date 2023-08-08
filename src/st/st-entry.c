@@ -605,13 +605,13 @@ st_entry_clipboard_callback (StClipboard *clipboard,
 }
 
 static gboolean
-clutter_text_button_press_event (ClutterActor       *actor,
-                                 ClutterButtonEvent *event,
-                                 gpointer            user_data)
+clutter_text_button_press_event (ClutterActor *actor,
+                                 ClutterEvent *event,
+                                 gpointer      user_data)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (user_data);
 
-  if (clutter_event_get_button ((ClutterEvent *) event) == 2 &&
+  if (clutter_event_get_button (event) == 2 &&
       clutter_text_get_editable (CLUTTER_TEXT (priv->entry)))
     {
       StSettings *settings;
@@ -642,8 +642,8 @@ clutter_text_button_press_event (ClutterActor       *actor,
 }
 
 static gboolean
-st_entry_key_press_event (ClutterActor    *actor,
-                          ClutterKeyEvent *event)
+st_entry_key_press_event (ClutterActor *actor,
+                          ClutterEvent *event)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
   ClutterModifierType state;
@@ -654,8 +654,8 @@ st_entry_key_press_event (ClutterActor    *actor,
      didn't handle them */
 
   /* paste */
-  state = clutter_event_get_state ((ClutterEvent *) event);
-  keyval = clutter_event_get_key_symbol ((ClutterEvent *) event);
+  state = clutter_event_get_state (event);
+  keyval = clutter_event_get_key_symbol (event);
 
   if (((state & CLUTTER_CONTROL_MASK)
        && keyval == CLUTTER_KEY_v) ||
@@ -790,26 +790,26 @@ st_entry_set_cursor (StEntry  *entry,
 }
 
 static gboolean
-st_entry_enter_event (ClutterActor         *actor,
-                      ClutterCrossingEvent *event)
+st_entry_enter_event (ClutterActor *actor,
+                      ClutterEvent *event)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
   ClutterStage *stage;
   ClutterActor *target;
 
   stage = CLUTTER_STAGE (clutter_actor_get_stage (actor));
-  target = clutter_stage_get_event_actor (stage, (ClutterEvent *) event);
+  target = clutter_stage_get_event_actor (stage, event);
 
   if (target == priv->entry &&
-      clutter_event_get_related ((ClutterEvent *) event) != NULL)
+      clutter_event_get_related (event) != NULL)
     st_entry_set_cursor (ST_ENTRY (actor), TRUE);
 
   return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->enter_event (actor, event);
 }
 
 static gboolean
-st_entry_leave_event (ClutterActor         *actor,
-                      ClutterCrossingEvent *event)
+st_entry_leave_event (ClutterActor *actor,
+                      ClutterEvent *event)
 {
   st_entry_set_cursor (ST_ENTRY (actor), FALSE);
 
