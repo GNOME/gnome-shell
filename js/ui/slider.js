@@ -61,8 +61,8 @@ export const Slider = GObject.registerClass({
         cr.$dispose();
     }
 
-    vfunc_button_press_event() {
-        return this.startDragging(Clutter.get_current_event());
+    vfunc_button_press_event(event) {
+        return this.startDragging(event);
     }
 
     startDragging(event) {
@@ -117,8 +117,7 @@ export const Slider = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
-    vfunc_touch_event() {
-        let event = Clutter.get_current_event();
+    vfunc_touch_event(event) {
         let sequence = event.get_event_sequence();
 
         if (!this._dragging &&
@@ -159,13 +158,13 @@ export const Slider = GObject.registerClass({
         return Clutter.EVENT_STOP;
     }
 
-    vfunc_scroll_event() {
-        return this.scroll(Clutter.get_current_event());
+    vfunc_scroll_event(event) {
+        return this.scroll(event);
     }
 
-    vfunc_motion_event() {
+    vfunc_motion_event(event) {
         if (this._dragging && !this._grabbedSequence)
-            return this._motionEvent(this, Clutter.get_current_event());
+            return this._motionEvent(this, event);
 
         return Clutter.EVENT_PROPAGATE;
     }

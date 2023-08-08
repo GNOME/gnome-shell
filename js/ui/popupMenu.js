@@ -143,7 +143,7 @@ export const PopupBaseMenuItem = GObject.registerClass({
     }
 
     vfunc_key_press_event(event) {
-        if (global.focus_manager.navigate_from_event(Clutter.get_current_event()))
+        if (global.focus_manager.navigate_from_event(event))
             return Clutter.EVENT_STOP;
 
         if (!this._activatable)
@@ -162,7 +162,7 @@ export const PopupBaseMenuItem = GObject.registerClass({
 
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
-            this.activate(Clutter.get_current_event());
+            this.activate(event);
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
