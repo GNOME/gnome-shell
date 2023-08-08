@@ -556,7 +556,7 @@ GOptionEntry gnome_shell_options[] = {
   {
     "automation-script", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_FILENAME,
     &script_path,
-    N_(""),
+    "",
     NULL
   },
   { NULL }
