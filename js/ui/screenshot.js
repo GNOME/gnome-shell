@@ -7,6 +7,7 @@ import GObject from 'gi://GObject';
 import GLib from 'gi://GLib';
 import Graphene from 'gi://Graphene';
 import Meta from 'gi://Meta';
+import Mtk from 'gi://Mtk';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
@@ -2655,7 +2656,7 @@ class SelectArea extends St.Widget {
     }
 
     _getGeometry() {
-        return new Meta.Rectangle({
+        return new Mtk.Rectangle({
             x: Math.min(this._startX, this._lastX),
             y: Math.min(this._startY, this._lastY),
             width: Math.abs(this._startX - this._lastX) + 1,

@@ -183,7 +183,7 @@ st_cflags = [
 libst = shared_library('st-' + mutter_api_version,
   sources: st_gir_sources + st_nogir_sources + croco_sources,
   c_args: st_cflags,
-  dependencies: [clutter_dep, mutter_dep, libxml_dep, gdk_pixbuf_dep, m_dep, schemas_dep],
+  dependencies: [mtk_dep, clutter_dep, mutter_dep, libxml_dep, gdk_pixbuf_dep, m_dep, schemas_dep],
   build_rpath: mutter_typelibdir,
   install_rpath: mutter_typelibdir,
   install_dir: pkglibdir,
@@ -199,7 +199,7 @@ if get_option('tests')
   test_theme = executable('test-theme',
     sources: 'test-theme.c',
     c_args: st_cflags,
-    dependencies: [mutter_test_dep, libxml_dep],
+    dependencies: [mutter_test_dep, mtk_dep, libxml_dep],
     build_rpath: mutter_typelibdir,
     link_with: libst
   )

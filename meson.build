@@ -15,6 +15,7 @@ mutter_api_version = '13'
 clutter_pc = 'mutter-clutter-' + mutter_api_version
 cogl_pc = 'mutter-cogl-' + mutter_api_version
 cogl_pango_pc = 'mutter-cogl-pango-' + mutter_api_version
+mtk_pc = 'mutter-mtk-' + mutter_api_version
 libmutter_pc = 'libmutter-' + mutter_api_version
 libmutter_test_pc = 'libmutter-test-' + mutter_api_version
 
@@ -83,6 +84,7 @@ gjs_dep = dependency('gjs-1.0', version: gjs_req)
 gtk_dep = dependency('gtk4', version: gtk_req)
 libxml_dep = dependency('libxml-2.0')
 clutter_dep = dependency(clutter_pc, version: mutter_req)
+mtk_dep = dependency(mtk_pc, version: mutter_req)
 cogl_dep = dependency(cogl_pc, version: mutter_req)
 cogl_pango_dep = dependency(cogl_pango_pc, version: mutter_req)
 mutter_dep = dependency(libmutter_pc, version: mutter_req)

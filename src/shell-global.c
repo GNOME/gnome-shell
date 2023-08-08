@@ -27,6 +27,7 @@
 #include <meta/meta-settings.h>
 #include <meta/meta-workspace-manager.h>
 #include <meta/meta-x11-display.h>
+#include <mtk/mtk.h>
 
 #define GNOME_DESKTOP_USE_UNSTABLE_API
 #include <libgnome-desktop/gnome-systemd.h>
@@ -844,7 +845,7 @@ sync_input_region (ShellGlobal *global)
 /**
  * shell_global_set_stage_input_region:
  * @global: the #ShellGlobal
- * @rectangles: (element-type Meta.Rectangle): a list of #MetaRectangle
+ * @rectangles: (element-type Mtk.Rectangle): a list of #MtkRectangle
  * describing the input region.
  *
  * Sets the area of the stage that is responsive to mouse clicks when
@@ -854,7 +855,7 @@ void
 shell_global_set_stage_input_region (ShellGlobal *global,
                                      GSList      *rectangles)
 {
-  MetaRectangle *rect;
+  MtkRectangle *rect;
   XRectangle *rects;
   int nrects, i;
   GSList *r;
@@ -868,7 +869,7 @@ shell_global_set_stage_input_region (ShellGlobal *global,
   rects = g_new (XRectangle, nrects);
   for (r = rectangles, i = 0; r; r = r->next, i++)
     {
-      rect = (MetaRectangle *)r->data;
+      rect = (MtkRectangle *)r->data;
       rects[i].x = rect->x;
       rects[i].y = rect->y;
       rects[i].width = rect->width;

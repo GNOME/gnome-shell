@@ -5,6 +5,7 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
+import Mtk from 'gi://Mtk';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 import * as Signals from '../misc/signals.js';
@@ -985,7 +986,7 @@ export const LayoutManager = GObject.registerClass({
     findIndexForActor(actor) {
         let [x, y] = actor.get_transformed_position();
         let [w, h] = actor.get_transformed_size();
-        let rect = new Meta.Rectangle({x, y, width: w, height: h});
+        const rect = new Mtk.Rectangle({x, y, width: w, height: h});
         return global.display.get_monitor_index_for_rect(rect);
     }
 
@@ -1049,7 +1050,7 @@ export const LayoutManager = GObject.registerClass({
             h = Math.round(h);
 
             if (actorData.affectsInputRegion && wantsInputRegion && actorData.actor.get_paint_visibility())
-                rects.push(new Meta.Rectangle({x, y, width: w, height: h}));
+                rects.push(new Mtk.Rectangle({x, y, width: w, height: h}));
 
             let monitor = null;
             if (actorData.affectsStruts)
@@ -1099,7 +1100,7 @@ export const LayoutManager = GObject.registerClass({
                     continue;
                 }
 
-                let strutRect = new Meta.Rectangle({x: x1, y: y1, width: x2 - x1, height: y2 - y1});
+                const strutRect = new Mtk.Rectangle({x: x1, y: y1, width: x2 - x1, height: y2 - y1});
                 let strut = new Meta.Strut({rect: strutRect, side});
                 struts.push(strut);
             }

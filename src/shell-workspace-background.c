@@ -4,6 +4,7 @@
 
 #include "shell-global.h"
 #include <meta/meta-workspace-manager.h>
+#include <mtk/mtk.h>
 
 #define BACKGROUND_MARGIN 12
 
@@ -27,8 +28,8 @@ struct _ShellWorkspaceBackground
   int monitor_index;
   double state_adjustment_value;
 
-  MetaRectangle work_area;
-  MetaRectangle monitor_geometry;
+  MtkRectangle work_area;
+  MtkRectangle monitor_geometry;
 };
 
 G_DEFINE_TYPE (ShellWorkspaceBackground, shell_workspace_background, ST_TYPE_WIDGET);

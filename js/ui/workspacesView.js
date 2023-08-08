@@ -4,6 +4,7 @@ import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
+import Mtk from 'gi://Mtk';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
@@ -1052,7 +1053,7 @@ class WorkspacesDisplay extends St.Widget {
 
     _getMonitorIndexForEvent(event) {
         let [x, y] = event.get_coords();
-        let rect = new Meta.Rectangle({x, y, width: 1, height: 1});
+        const rect = new Mtk.Rectangle({x, y, width: 1, height: 1});
         return global.display.get_monitor_index_for_rect(rect);
     }
 

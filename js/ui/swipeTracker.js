@@ -3,7 +3,7 @@
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
-import Meta from 'gi://Meta';
+import Mtk from 'gi://Mtk';
 
 import * as Main from './main.js';
 import * as Params from '../misc/params.js';
@@ -595,7 +595,7 @@ export const SwipeTracker = GObject.registerClass({
 
         this._history.append(time, 0);
 
-        let rect = new Meta.Rectangle({x, y, width: 1, height: 1});
+        const rect = new Mtk.Rectangle({x, y, width: 1, height: 1});
         let monitor = global.display.get_monitor_index_for_rect(rect);
 
         this.emit('begin', monitor);

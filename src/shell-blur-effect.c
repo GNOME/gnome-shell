@@ -18,6 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+#include <mtk/mtk.h>
+
 #include "shell-blur-effect.h"
 
 #include "shell-enum-types.h"
@@ -342,7 +344,7 @@ update_actor_box (ShellBlurEffect     *self,
 
       if (stage_view)
         {
-          cairo_rectangle_int_t stage_view_layout;
+          MtkRectangle stage_view_layout;
 
           box_scale_factor = clutter_stage_view_get_scale (stage_view);
           clutter_stage_view_get_layout (stage_view, &stage_view_layout);

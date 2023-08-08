@@ -5,6 +5,7 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
+import Mtk from 'gi://Mtk';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
@@ -417,7 +418,7 @@ class TilePreview extends St.Widget {
         this._updateStyle(monitor);
 
         if (!this._showing || changeMonitor) {
-            const monitorRect = new Meta.Rectangle({
+            const monitorRect = new Mtk.Rectangle({
                 x: monitor.x,
                 y: monitor.y,
                 width: monitor.width,

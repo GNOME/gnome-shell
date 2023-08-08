@@ -2,7 +2,7 @@
 
 import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
-import Meta from 'gi://Meta';
+import Mtk from 'gi://Mtk';
 import St from 'gi://St';
 
 import * as Main from './main.js';
@@ -25,7 +25,7 @@ export const EdgeDragAction = GObject.registerClass({
     }
 
     _getMonitorRect(x, y) {
-        let rect = new Meta.Rectangle({x: x - 1, y: y - 1, width: 1, height: 1});
+        const rect = new Mtk.Rectangle({x: x - 1, y: y - 1, width: 1, height: 1});
         let monitorIndex = global.display.get_monitor_index_for_rect(rect);
 
         return global.display.get_monitor_geometry(monitorIndex);

@@ -57,6 +57,7 @@ gnome_shell_deps = [
   atk_bridge_dep,
   gdk_pixbuf_dep,
   gjs_dep,
+  mtk_dep,
   clutter_dep,
   cogl_pango_dep,
   startup_dep,
@@ -83,7 +84,7 @@ libshell_menu_sources = [
 
 libshell_menu = library('gnome-shell-menu',
   sources: libshell_menu_sources,
-  dependencies: [gio_dep, clutter_dep],
+  dependencies: [gio_dep, clutter_dep, mtk_dep],
   include_directories: conf_inc,
   build_rpath: mutter_typelibdir,
   install_rpath: mutter_typelibdir,
@@ -271,7 +272,7 @@ executable('gnome-shell-perf-helper', 'shell-perf-helper.c', js_resources,
 )
 
 executable('run-js-test', 'run-js-test.c',
-  dependencies: [mutter_dep, gdk_pixbuf_dep, gio_dep, gi_dep, gjs_dep],
+  dependencies: [mutter_dep, mtk_dep, gdk_pixbuf_dep, gio_dep, gi_dep, gjs_dep],
   include_directories: [conf_inc],
   link_with: libshell,
   build_rpath: mutter_typelibdir,
