@@ -557,18 +557,18 @@ export const WindowPreview = GObject.registerClass({
         this.emit('selected', global.get_current_time());
     }
 
-    vfunc_enter_event(crossingEvent) {
+    vfunc_enter_event(event) {
         this.showOverlay(true);
-        return super.vfunc_enter_event(crossingEvent);
+        return super.vfunc_enter_event(event);
     }
 
-    vfunc_leave_event(crossingEvent) {
+    vfunc_leave_event(event) {
         if (this._destroyed)
-            return super.vfunc_leave_event(crossingEvent);
+            return super.vfunc_leave_event(event);
 
-        if ((crossingEvent.flags & Clutter.EventFlags.FLAG_GRAB_NOTIFY) !== 0 &&
+        if ((event.get_flags() & Clutter.EventFlags.FLAG_GRAB_NOTIFY) !== 0 &&
             global.stage.get_grab_actor() === this._closeButton)
-            return super.vfunc_leave_event(crossingEvent);
+            return super.vfunc_leave_event(event);
 
         if (this._idleHideOverlayId > 0)
             GLib.source_remove(this._idleHideOverlayId);
@@ -589,7 +589,7 @@ export const WindowPreview = GObject.registerClass({
 
         GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlayId');
 
-        return super.vfunc_leave_event(crossingEvent);
+        return super.vfunc_leave_event(event);
     }
 
     vfunc_key_focus_in() {
@@ -604,15 +604,15 @@ export const WindowPreview = GObject.registerClass({
             this.hideOverlay(true);
     }
 
-    vfunc_key_press_event(keyEvent) {
-        let symbol = keyEvent.keyval;
+    vfunc_key_press_event(event) {
+        let symbol = event.get_key_symbol();
         let isEnter = symbol == Clutter.KEY_Return || symbol == Clutter.KEY_KP_Enter;
         if (isEnter) {
             this._activate();
             return true;
         }
 
-        return super.vfunc_key_press_event(keyEvent);
+        return super.vfunc_key_press_event(event);
     }
 
     _restack() {

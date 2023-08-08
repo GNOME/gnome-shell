@@ -69,7 +69,7 @@ class URLHighlighter extends St.Label {
         this.setMarkup(text, allowMarkup);
     }
 
-    vfunc_button_press_event(buttonEvent) {
+    vfunc_button_press_event(event) {
         // Don't try to URL highlight when invisible.
         // The MessageTray doesn't actually hide us, so
         // we need to check for paint opacities as well.
@@ -79,14 +79,14 @@ class URLHighlighter extends St.Label {
         // Keep Notification from seeing this and taking
         // a pointer grab, which would block our button-release-event
         // handler, if an URL is clicked
-        return this._findUrlAtPos(buttonEvent) != -1;
+        return this._findUrlAtPos(event) !== -1;
     }
 
-    vfunc_button_release_event(buttonEvent) {
+    vfunc_button_release_event(event) {
         if (!this.visible || this.get_paint_opacity() == 0)
             return Clutter.EVENT_PROPAGATE;
 
-        let urlId = this._findUrlAtPos(buttonEvent);
+        const urlId = this._findUrlAtPos(event);
         if (urlId != -1) {
             let url = this._urls[urlId].url;
             if (!url.includes(':'))
@@ -99,11 +99,11 @@ class URLHighlighter extends St.Label {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    vfunc_motion_event(motionEvent) {
+    vfunc_motion_event(event) {
         if (!this.visible || this.get_paint_opacity() == 0)
             return Clutter.EVENT_PROPAGATE;
 
-        let urlId = this._findUrlAtPos(motionEvent);
+        const urlId = this._findUrlAtPos(event);
         if (urlId != -1 && !this._cursorChanged) {
             global.display.set_cursor(Meta.Cursor.POINTING_HAND);
             this._cursorChanged = true;
@@ -114,7 +114,7 @@ class URLHighlighter extends St.Label {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    vfunc_leave_event(crossingEvent) {
+    vfunc_leave_event(event) {
         if (!this.visible || this.get_paint_opacity() == 0)
             return Clutter.EVENT_PROPAGATE;
 
@@ -122,7 +122,7 @@ class URLHighlighter extends St.Label {
             this._cursorChanged = false;
             global.display.set_cursor(Meta.Cursor.DEFAULT);
         }
-        return super.vfunc_leave_event(crossingEvent);
+        return super.vfunc_leave_event(event);
     }
 
     setMarkup(text, allowMarkup) {
@@ -151,7 +151,7 @@ class URLHighlighter extends St.Label {
     }
 
     _findUrlAtPos(event) {
-        let { x, y } = event;
+        let [x, y] = event.get_coords();
         [, x, y] = this.transform_stage_point(x, y);
         let findPos = -1;
         for (let i = 0; i < this.clutter_text.text.length; i++) {
@@ -541,8 +541,8 @@ export const Message = GObject.registerClass({
     _onDestroy() {
     }
 
-    vfunc_key_press_event(keyEvent) {
-        let keysym = keyEvent.keyval;
+    vfunc_key_press_event(event) {
+        let keysym = event.get_key_symbol();
 
         if (keysym == Clutter.KEY_Delete ||
             keysym == Clutter.KEY_KP_Delete) {
@@ -551,7 +551,7 @@ export const Message = GObject.registerClass({
                 return Clutter.EVENT_STOP;
             }
         }
-        return super.vfunc_key_press_event(keyEvent);
+        return super.vfunc_key_press_event(event);
     }
 });
 

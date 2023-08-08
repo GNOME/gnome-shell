@@ -310,8 +310,8 @@ class ActivitiesButton extends PanelMenu.Button {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    vfunc_key_release_event(keyEvent) {
-        let symbol = keyEvent.keyval;
+    vfunc_key_release_event(event) {
+        let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_space) {
             if (Main.overview.shouldToggleByCornerOrButton()) {
                 Main.overview.toggle();
@@ -609,14 +609,14 @@ class Panel extends St.Widget {
         return this._tryDragWindow(event);
     }
 
-    vfunc_key_press_event(keyEvent) {
-        let symbol = keyEvent.keyval;
+    vfunc_key_press_event(event) {
+        let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Escape) {
-            global.display.focus_default_window(keyEvent.time);
+            global.display.focus_default_window(event.get_time());
             return Clutter.EVENT_STOP;
         }
 
-        return super.vfunc_key_press_event(keyEvent);
+        return super.vfunc_key_press_event(event);
     }
 
     _toggleMenu(indicator) {

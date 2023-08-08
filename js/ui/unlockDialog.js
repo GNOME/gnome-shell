@@ -607,19 +607,19 @@ export const UnlockDialog = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
-    vfunc_key_press_event(keyEvent) {
+    vfunc_key_press_event(event) {
         if (this._activePage === this._promptBox ||
             (this._promptBox && this._promptBox.visible))
             return Clutter.EVENT_PROPAGATE;
 
-        const { keyval } = keyEvent;
+        const keyval = event.get_key_symbol();
         if (keyval === Clutter.KEY_Shift_L ||
             keyval === Clutter.KEY_Shift_R ||
             keyval === Clutter.KEY_Shift_Lock ||
             keyval === Clutter.KEY_Caps_Lock)
             return Clutter.EVENT_PROPAGATE;
 
-        let unichar = keyEvent.unicode_value;
+        let unichar = event.get_key_unicode();
 
         this._showPrompt();
 

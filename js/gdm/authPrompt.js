@@ -133,10 +133,10 @@ export const AuthPrompt = GObject.registerClass({
         this._userVerifier = null;
     }
 
-    vfunc_key_press_event(keyPressEvent) {
-        if (keyPressEvent.keyval == Clutter.KEY_Escape)
+    vfunc_key_press_event(event) {
+        if (event.get_key_symbol() === Clutter.KEY_Escape)
             this.cancel();
-        return super.vfunc_key_press_event(keyPressEvent);
+        return super.vfunc_key_press_event(event);
     }
 
     _initInputRow() {

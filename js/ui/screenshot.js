@@ -430,19 +430,20 @@ const UIAreaSelector = GObject.registerClass({
         if (this._dragButton)
             return Clutter.EVENT_PROPAGATE;
 
-        const cursor = this._computeCursorType(event.x, event.y);
+        const [x, y] = event.get_coords();
+        const cursor = this._computeCursorType(x, y);
 
         // Clicking outside of the selection, or using the right mouse button,
         // or with Ctrl results in dragging a new selection from scratch.
         if (cursor === Meta.Cursor.CROSSHAIR ||
             button === Clutter.BUTTON_SECONDARY ||
-            (event.modifier_state & Clutter.ModifierType.CONTROL_MASK)) {
+            (event.get_state() & Clutter.ModifierType.CONTROL_MASK)) {
             this._dragButton = button;
 
             this._dragCursor = Meta.Cursor.CROSSHAIR;
             global.display.set_cursor(Meta.Cursor.CROSSHAIR);
 
-            [this._startX, this._startY] = [event.x, event.y];
+            [this._startX, this._startY] = event.get_coords();
             this._lastX = this._startX = Math.floor(this._startX);
             this._lastY = this._startY = Math.floor(this._startY);
 
@@ -452,8 +453,7 @@ const UIAreaSelector = GObject.registerClass({
             this._dragButton = button;
 
             this._dragCursor = cursor;
-            this._dragStartX = event.x;
-            this._dragStartY = event.y;
+            [this._dragStartX, this._dragStartY] = event.get_coords();
 
             const [leftX, topY, width, height] = this.getGeometry();
             const rightX = leftX + width - 1;
@@ -517,14 +517,16 @@ const UIAreaSelector = GObject.registerClass({
 
         // We might have finished creating a new selection, so we need to
         // update the cursor.
-        this._updateCursor(event.x, event.y);
+        const [x, y] = event.get_coords();
+        this._updateCursor(x, y);
 
         return Clutter.EVENT_STOP;
     }
 
     _onMotion(event, sequence) {
         if (!this._dragButton) {
-            this._updateCursor(event.x, event.y);
+            const [x, y] = event.get_coords();
+            this._updateCursor(x, y);
             return Clutter.EVENT_PROPAGATE;
         }
 
@@ -532,12 +534,13 @@ const UIAreaSelector = GObject.registerClass({
             return Clutter.EVENT_PROPAGATE;
 
         if (this._dragCursor === Meta.Cursor.CROSSHAIR) {
-            [this._lastX, this._lastY] = [event.x, event.y];
+            [this._lastX, this._lastY] = event.get_coords();
             this._lastX = Math.floor(this._lastX);
             this._lastY = Math.floor(this._lastY);
         } else {
-            let dx = Math.round(event.x - this._dragStartX);
-            let dy = Math.round(event.y - this._dragStartY);
+            const [x, y] = event.get_coords();
+            let dx = Math.round(x - this._dragStartX);
+            let dy = Math.round(y - this._dragStartY);
 
             if (this._dragCursor === Meta.Cursor.MOVE_OR_RESIZE_WINDOW) {
                 const [,, selectionWidth, selectionHeight] = this.getGeometry();
@@ -658,17 +661,19 @@ const UIAreaSelector = GObject.registerClass({
     }
 
     vfunc_button_press_event(event) {
-        if (event.button === Clutter.BUTTON_PRIMARY ||
-            event.button === Clutter.BUTTON_SECONDARY)
-            return this._onPress(event, event.button, null);
+        const button = event.get_button();
+        if (button === Clutter.BUTTON_PRIMARY ||
+            button === Clutter.BUTTON_SECONDARY)
+            return this._onPress(event, button, null);
 
         return Clutter.EVENT_PROPAGATE;
     }
 
     vfunc_button_release_event(event) {
-        if (event.button === Clutter.BUTTON_PRIMARY ||
-            event.button === Clutter.BUTTON_SECONDARY)
-            return this._onRelease(event, event.button, null);
+        const button = event.get_button();
+        if (button === Clutter.BUTTON_PRIMARY ||
+            button === Clutter.BUTTON_SECONDARY)
+            return this._onRelease(event, button, null);
 
         return Clutter.EVENT_PROPAGATE;
     }
@@ -678,12 +683,13 @@ const UIAreaSelector = GObject.registerClass({
     }
 
     vfunc_touch_event(event) {
-        if (event.type === Clutter.EventType.TOUCH_BEGIN)
-            return this._onPress(event, 'touch', event.sequence);
-        else if (event.type === Clutter.EventType.TOUCH_END)
-            return this._onRelease(event, 'touch', event.sequence);
-        else if (event.type === Clutter.EventType.TOUCH_UPDATE)
-            return this._onMotion(event, event.sequence);
+        const eventType = event.type();
+        if (eventType === Clutter.EventType.TOUCH_BEGIN)
+            return this._onPress(event, 'touch', event.get_event_sequence());
+        else if (eventType === Clutter.EventType.TOUCH_END)
+            return this._onRelease(event, 'touch', event.get_event_sequence());
+        else if (eventType === Clutter.EventType.TOUCH_UPDATE)
+            return this._onMotion(event, event.get_event_sequence());
 
         return Clutter.EVENT_PROPAGATE;
     }
@@ -1999,9 +2005,9 @@ export const ScreenshotUI = GObject.registerClass({
     }
 
     vfunc_key_press_event(event) {
-        const symbol = event.keyval;
+        const symbol = event.get_key_symbol();
         if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_space ||
-            ((event.modifier_state & Clutter.ModifierType.CONTROL_MASK) &&
+            ((event.get_state() & Clutter.ModifierType.CONTROL_MASK) &&
              (symbol === Clutter.KEY_c || symbol === Clutter.KEY_C))) {
             this._onCaptureButtonClicked();
             return Clutter.EVENT_STOP;
@@ -2656,11 +2662,11 @@ class SelectArea extends St.Widget {
         });
     }
 
-    vfunc_motion_event(motionEvent) {
+    vfunc_motion_event(event) {
         if (this._startX == -1 || this._startY == -1 || this._result)
             return Clutter.EVENT_PROPAGATE;
 
-        [this._lastX, this._lastY] = [motionEvent.x, motionEvent.y];
+        [this._lastX, this._lastY] = event.get_coords();
         this._lastX = Math.floor(this._lastX);
         this._lastY = Math.floor(this._lastY);
         let geometry = this._getGeometry();
@@ -2672,11 +2678,11 @@ class SelectArea extends St.Widget {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    vfunc_button_press_event(buttonEvent) {
+    vfunc_button_press_event(event) {
         if (this._result)
             return Clutter.EVENT_PROPAGATE;
 
-        [this._startX, this._startY] = [buttonEvent.x, buttonEvent.y];
+        [this._startX, this._startY] = event.get_coords();
         this._startX = Math.floor(this._startX);
         this._startY = Math.floor(this._startY);
         this._rubberband.set_position(this._startX, this._startY);
@@ -2913,8 +2919,8 @@ class PickPixel extends St.Widget {
         this._previewCursor.show();
     }
 
-    vfunc_motion_event(motionEvent) {
-        const { x, y } = motionEvent;
+    vfunc_motion_event(event) {
+        const [x, y] = event.get_coords();
         this._pickColor(x, y);
         return Clutter.EVENT_PROPAGATE;
     }

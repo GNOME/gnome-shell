@@ -123,7 +123,7 @@ class RunDialog extends ModalDialog.ModalDialog {
     }
 
     vfunc_key_release_event(event) {
-        if (event.keyval === Clutter.KEY_Escape) {
+        if (event.get_key_symbol() === Clutter.KEY_Escape) {
             this.close();
             return Clutter.EVENT_STOP;
         }

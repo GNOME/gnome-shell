@@ -1291,8 +1291,8 @@ class HotCorner extends Clutter.Actor {
         return Clutter.EVENT_STOP;
     }
 
-    vfunc_leave_event(crossingEvent) {
-        if (crossingEvent.related != this._corner)
+    vfunc_leave_event(event) {
+        if (event.get_related() !== this._corner)
             this._entered = false;
         return Clutter.EVENT_PROPAGATE;
     }

@@ -82,8 +82,8 @@ const CandidateArea = GObject.registerClass({
         this._cursorPosition = 0;
     }
 
-    vfunc_scroll_event(scrollEvent) {
-        switch (scrollEvent.direction) {
+    vfunc_scroll_event(event) {
+        switch (event.get_scroll_direction()) {
         case Clutter.ScrollDirection.UP:
             this.emit('cursor-up');
             break;

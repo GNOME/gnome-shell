@@ -502,13 +502,13 @@ class ObjInspector extends St.ScrollView {
         this._obj = null;
     }
 
-    vfunc_key_press_event(keyPressEvent) {
-        const symbol = keyPressEvent.keyval;
+    vfunc_key_press_event(event) {
+        const symbol = event.get_key_symbol();
         if (symbol === Clutter.KEY_Escape) {
             this.close();
             return Clutter.EVENT_STOP;
         }
-        return super.vfunc_key_press_event(keyPressEvent);
+        return super.vfunc_key_press_event(event);
     }
 
     _onInsert() {
@@ -1604,20 +1604,20 @@ class LookingGlass extends St.BoxLayout {
     }
 
     // Handle key events which are relevant for all tabs of the LookingGlass
-    vfunc_key_press_event(keyPressEvent) {
-        let symbol = keyPressEvent.keyval;
+    vfunc_key_press_event(event) {
+        let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Escape) {
             this.close();
             return Clutter.EVENT_STOP;
         }
         // Ctrl+PgUp and Ctrl+PgDown switches tabs in the notebook view
-        if (keyPressEvent.modifier_state & Clutter.ModifierType.CONTROL_MASK) {
+        if (event.get_state() & Clutter.ModifierType.CONTROL_MASK) {
             if (symbol == Clutter.KEY_Page_Up)
                 this._notebook.prevTab();
             else if (symbol == Clutter.KEY_Page_Down)
                 this._notebook.nextTab();
         }
-        return super.vfunc_key_press_event(keyPressEvent);
+        return super.vfunc_key_press_event(event);
     }
 
     open() {

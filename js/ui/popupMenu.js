@@ -142,14 +142,14 @@ export const PopupBaseMenuItem = GObject.registerClass({
         this._parent = parent;
     }
 
-    vfunc_key_press_event(keyEvent) {
+    vfunc_key_press_event(event) {
         if (global.focus_manager.navigate_from_event(Clutter.get_current_event()))
             return Clutter.EVENT_STOP;
 
         if (!this._activatable)
-            return super.vfunc_key_press_event(keyEvent);
+            return super.vfunc_key_press_event(event);
 
-        let state = keyEvent.modifier_state;
+        let state = event.get_state();
 
         // if user has a modifier down (except capslock and numlock)
         // then don't handle the key press here
@@ -160,7 +160,7 @@ export const PopupBaseMenuItem = GObject.registerClass({
         if (state)
             return Clutter.EVENT_PROPAGATE;
 
-        let symbol = keyEvent.keyval;
+        let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
             this.activate(Clutter.get_current_event());
             return Clutter.EVENT_STOP;
@@ -1244,8 +1244,8 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
         return this.menu.isOpen;
     }
 
-    vfunc_key_press_event(keyPressEvent) {
-        let symbol = keyPressEvent.keyval;
+    vfunc_key_press_event(event) {
+        let symbol = event.get_key_symbol();
 
         if (symbol == Clutter.KEY_Right) {
             this._setOpenState(true);
@@ -1256,7 +1256,7 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
             return Clutter.EVENT_STOP;
         }
 
-        return super.vfunc_key_press_event(keyPressEvent);
+        return super.vfunc_key_press_event(event);
     }
 
     activate(_event) {

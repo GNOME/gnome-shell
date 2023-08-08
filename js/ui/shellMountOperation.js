@@ -238,7 +238,7 @@ const ShellMountQuestionDialog = GObject.registerClass({
     }
 
     vfunc_key_release_event(event) {
-        if (event.keyval === Clutter.KEY_Escape) {
+        if (event.get_key_symbol() === Clutter.KEY_Escape) {
             this.emit('response', -1);
             return Clutter.EVENT_STOP;
         }
@@ -491,7 +491,7 @@ const ShellProcessesDialog = GObject.registerClass({
     }
 
     vfunc_key_release_event(event) {
-        if (event.keyval === Clutter.KEY_Escape) {
+        if (event.get_key_symbol() === Clutter.KEY_Escape) {
             this.emit('response', -1);
             return Clutter.EVENT_STOP;
         }

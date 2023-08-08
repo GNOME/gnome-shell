@@ -183,10 +183,10 @@ export const SwitcherPopup = GObject.registerClass({
         throw new GObject.NotImplementedError(`_keyPressHandler in ${this.constructor.name}`);
     }
 
-    vfunc_key_press_event(keyEvent) {
-        let keysym = keyEvent.keyval;
+    vfunc_key_press_event(event) {
+        let keysym = event.get_key_symbol();
         let action = global.display.get_keybinding_action(
-            keyEvent.hardware_keycode, keyEvent.modifier_state);
+            event.get_key_code(), event.get_state());
 
         this._disableHover();
 
@@ -206,18 +206,18 @@ export const SwitcherPopup = GObject.registerClass({
             keysym === Clutter.KEY_Return ||
             keysym === Clutter.KEY_KP_Enter ||
             keysym === Clutter.KEY_ISO_Enter)
-            this._finish(keyEvent.time);
+            this._finish(event.get_time());
 
         return Clutter.EVENT_STOP;
     }
 
-    vfunc_key_release_event(keyEvent) {
+    vfunc_key_release_event(event) {
         if (this._modifierMask) {
             let [x_, y_, mods] = global.get_pointer();
             let state = mods & this._modifierMask;
 
             if (state == 0)
-                this._finish(keyEvent.time);
+                this._finish(event.get_time());
         } else {
             this._resetNoModsTimeout();
         }
@@ -238,10 +238,10 @@ export const SwitcherPopup = GObject.registerClass({
             this._select(this._next());
     }
 
-    vfunc_scroll_event(scrollEvent) {
+    vfunc_scroll_event(event) {
         this._disableHover();
 
-        this._scrollHandler(scrollEvent.direction);
+        this._scrollHandler(event.get_scroll_direction());
         return Clutter.EVENT_PROPAGATE;
     }
 

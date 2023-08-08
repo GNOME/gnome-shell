@@ -2805,7 +2805,7 @@ export const AppFolderDialog = GObject.registerClass({
             this._zoomAndFadeIn();
     }
 
-    vfunc_key_press_event(keyEvent) {
+    vfunc_key_press_event(event) {
         if (global.stage.get_key_focus() != this)
             return Clutter.EVENT_PROPAGATE;
 
@@ -2828,7 +2828,7 @@ export const AppFolderDialog = GObject.registerClass({
         // languages
         let direction;
         let isLtr = Clutter.get_default_text_direction() == Clutter.TextDirection.LTR;
-        switch (keyEvent.keyval) {
+        switch (event.get_key_symbol()) {
         case Clutter.KEY_Down:
             direction = St.DirectionType.TAB_FORWARD;
             break;
@@ -3078,28 +3078,29 @@ export const AppIcon = GObject.registerClass({
         GLib.Source.set_name_by_id(this._menuTimeoutId, '[gnome-shell] this.popupMenu');
     }
 
-    vfunc_leave_event(crossingEvent) {
-        const ret = super.vfunc_leave_event(crossingEvent);
+    vfunc_leave_event(event) {
+        const ret = super.vfunc_leave_event(event);
 
         this.fake_release();
         this._removeMenuTimeout();
         return ret;
     }
 
-    vfunc_button_press_event(buttonEvent) {
-        const ret = super.vfunc_button_press_event(buttonEvent);
-        if (buttonEvent.button == 1) {
+    vfunc_button_press_event(event) {
+        const ret = super.vfunc_button_press_event(event);
+        const button = event.get_button();
+        if (button === 1) {
             this._setPopupTimeout();
-        } else if (buttonEvent.button == 3) {
+        } else if (button === 3) {
             this.popupMenu();
             return Clutter.EVENT_STOP;
         }
         return ret;
     }
 
-    vfunc_touch_event(touchEvent) {
-        const ret = super.vfunc_touch_event(touchEvent);
-        if (touchEvent.type == Clutter.EventType.TOUCH_BEGIN)
+    vfunc_touch_event(event) {
+        const ret = super.vfunc_touch_event(event);
+        if (event.type() === Clutter.EventType.TOUCH_BEGIN)
             this._setPopupTimeout();
 
         return ret;

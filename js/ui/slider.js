@@ -177,14 +177,14 @@ export const Slider = GObject.registerClass({
         return Clutter.EVENT_STOP;
     }
 
-    vfunc_key_press_event(keyPressEvent) {
-        let key = keyPressEvent.keyval;
+    vfunc_key_press_event(event) {
+        let key = event.get_key_symbol();
         if (key == Clutter.KEY_Right || key == Clutter.KEY_Left) {
             let delta = key == Clutter.KEY_Right ? 0.1 : -0.1;
             this.value = Math.max(0, Math.min(this._value + delta, this._maxValue));
             return Clutter.EVENT_STOP;
         }
-        return super.vfunc_key_press_event(keyPressEvent);
+        return super.vfunc_key_press_event(event);
     }
 
     _moveHandle(absX, _absY) {
