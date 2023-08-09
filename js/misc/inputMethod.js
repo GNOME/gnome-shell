@@ -376,9 +376,11 @@ var InputMethod = GObject.registerClass({
             return;
         this._updateCapabilities();
         this._context.set_content_type(this._purpose, this._hints);
-        this._context.set_cursor_location(
-            this._cursorRect.x, this._cursorRect.y,
-            this._cursorRect.width, this._cursorRect.height);
+        if (this._cursorRect) {
+            this._context.set_cursor_location(
+                this._cursorRect.x, this._cursorRect.y,
+                this._cursorRect.width, this._cursorRect.height);
+        }
         this._emitRequestSurrounding();
     }
 });
