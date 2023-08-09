@@ -270,8 +270,8 @@ export class WeatherClient extends Signals.EventEmitter {
 
     _onGClueLocationChanged() {
         let geoLocation = this._gclueService.location;
-        let location = GWeather.Location.new_detached(
-            geoLocation.description,
+        // Provide empty name so GWeather sets location name
+        const location = GWeather.Location.new_detached('',
             null,
             geoLocation.latitude,
             geoLocation.longitude);
