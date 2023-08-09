@@ -28,7 +28,7 @@ export class ExtensionBase {
 
             const dirName = GLib.path_get_basename(path);
             const extension = this.lookupByUUID(dirName);
-            if (extension !== undefined)
+            if (extension !== null)
                 return extension;
         } while (path !== '/');
 
