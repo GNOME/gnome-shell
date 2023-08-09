@@ -2269,7 +2269,7 @@ async function captureScreenshot(texture, geometry, scale, cursor) {
 /**
  * Shows the screenshot UI.
  */
-function showScreenshotUI() {
+export function showScreenshotUI() {
     Main.screenshotUI.open().catch(err => {
         logError(err, 'Error opening the screenshot UI');
     });
@@ -2278,7 +2278,7 @@ function showScreenshotUI() {
 /**
  * Shows the screen recording UI.
  */
-function showScreenRecordingUI() {
+export function showScreenRecordingUI() {
     Main.screenshotUI.open(UIMode.SCREENCAST).catch(err => {
         logError(err, 'Error opening the screenshot UI');
     });
