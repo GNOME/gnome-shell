@@ -85,6 +85,10 @@ const DEFAULT_FOLDERS = {
         name: 'suse-yast.directory',
         categories: ['X-SuSE-YaST'],
     },
+    'Pardus': {
+        name: 'X-Pardus-Apps.directory',
+        categories: ['X-Pardus-Apps'],
+    },
 };
 
 function _getCategories(info) {
