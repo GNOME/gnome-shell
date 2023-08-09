@@ -33,12 +33,37 @@ typedef struct _WindowInfo
 {
   MetaWindow *window;
   ClutterActor *window_actor;
+  ClutterActor *window_clone;
 
   gulong size_changed_id;
   gulong position_changed_id;
   gulong window_actor_destroy_id;
   gulong destroy_id;
 } WindowInfo;
+
+static void
+window_info_free (WindowInfo *info)
+{
+  if (G_LIKELY (info->window))
+    {
+      g_clear_signal_handler (&info->size_changed_id, info->window);
+      g_clear_signal_handler (&info->position_changed_id, info->window);
+    }
+
+  if (G_LIKELY (info->window_actor))
+    g_clear_signal_handler (&info->window_actor_destroy_id, info->window_actor);
+
+  if (G_LIKELY (info->window_clone))
+    g_clear_signal_handler (&info->destroy_id, info->window_clone);
+
+  g_clear_weak_pointer (&info->window);
+  g_clear_weak_pointer (&info->window_actor);
+  g_clear_weak_pointer (&info->window_clone);
+
+  g_free (info);
+}
+
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (WindowInfo, window_info_free);
 
 static void
 shell_window_preview_layout_get_property (GObject      *object,
@@ -271,23 +296,13 @@ shell_window_preview_layout_dispose (GObject *gobject)
   ShellWindowPreviewLayout *self = SHELL_WINDOW_PREVIEW_LAYOUT (gobject);
   ShellWindowPreviewLayoutPrivate *priv;
   GHashTableIter iter;
-  gpointer key, value;
+  gpointer actor;
 
   priv = shell_window_preview_layout_get_instance_private (self);
 
   g_hash_table_iter_init (&iter, priv->windows);
-  while (g_hash_table_iter_next (&iter, &key, &value))
-    {
-      ClutterActor *actor = key;
-      WindowInfo *info = value;
-
-      g_clear_signal_handler (&info->size_changed_id, info->window);
-      g_clear_signal_handler (&info->position_changed_id, info->window);
-      g_clear_signal_handler (&info->window_actor_destroy_id, info->window_actor);
-      g_clear_signal_handler (&info->destroy_id, actor);
-
-      clutter_actor_remove_child (priv->container, actor);
-    }
+  while (g_hash_table_iter_next (&iter, &actor, NULL))
+    clutter_actor_remove_child (priv->container, actor);
 
   g_hash_table_remove_all (priv->windows);
 
@@ -314,8 +329,9 @@ shell_window_preview_layout_init (ShellWindowPreviewLayout *self)
 
   priv = shell_window_preview_layout_get_instance_private (self);
 
-  priv->windows = g_hash_table_new_full (NULL, NULL, NULL,
-                                         (GDestroyNotify) g_free);
+  priv->windows = g_hash_table_new_full (NULL, NULL,
+                                         g_object_unref,
+                                         (GDestroyNotify) window_info_free);
 }
 
 static void
@@ -387,8 +403,9 @@ shell_window_preview_layout_add_window (ShellWindowPreviewLayout *self,
 
   window_info = g_new0 (WindowInfo, 1);
 
-  window_info->window = window;
-  window_info->window_actor = window_actor;
+  g_set_weak_pointer (&window_info->window, window);
+  g_set_weak_pointer (&window_info->window_actor, window_actor);
+  g_set_weak_pointer (&window_info->window_clone, actor);
   window_info->size_changed_id =
     g_signal_connect (window, "size-changed",
                       G_CALLBACK (on_window_size_position_changed), self);
@@ -402,7 +419,7 @@ shell_window_preview_layout_add_window (ShellWindowPreviewLayout *self,
     g_signal_connect (actor, "destroy",
                       G_CALLBACK (on_actor_destroyed), self);
 
-  g_hash_table_insert (priv->windows, actor, window_info);
+  g_hash_table_insert (priv->windows, g_object_ref (actor), window_info);
 
   clutter_actor_add_child (priv->container, actor);
 
@@ -425,8 +442,7 @@ shell_window_preview_layout_remove_window (ShellWindowPreviewLayout *self,
                                            MetaWindow               *window)
 {
   ShellWindowPreviewLayoutPrivate *priv;
-  ClutterActor *actor;
-  WindowInfo *window_info = NULL;
+  g_autoptr (ClutterActor) actor = NULL;
   GHashTableIter iter;
   gpointer key, value;
 
@@ -442,21 +458,15 @@ shell_window_preview_layout_remove_window (ShellWindowPreviewLayout *self,
 
       if (info->window == window)
         {
+          g_hash_table_iter_steal (&iter);
           actor = CLUTTER_ACTOR (key);
-          window_info = info;
+          window_info_free (info);
           break;
         }
     }
 
-  if (window_info == NULL)
+  if (actor == NULL)
     return;
-
-  g_clear_signal_handler (&window_info->size_changed_id, window);
-  g_clear_signal_handler (&window_info->position_changed_id, window);
-  g_clear_signal_handler (&window_info->window_actor_destroy_id, window_info->window_actor);
-  g_clear_signal_handler (&window_info->destroy_id, actor);
-
-  g_hash_table_remove (priv->windows, actor);
 
   clutter_actor_remove_child (priv->container, actor);
 
