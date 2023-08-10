@@ -4,11 +4,11 @@
 
 // Needed so that Util can bring some UI stuff
 // we don't actually use
-import '../../js/ui/environment.js';
+import 'resource:///org/gnome/shell/ui/environment.js';
 
 import * as Assertions from '../common/assertions.js';
 
-import * as Util from '../../js/misc/util.js';
+import * as Util from 'resource:///org/gnome/shell/misc/util.js';
 
 let arrayInt = [1, 2, 3, 5, 6];
 Util.insertSorted(arrayInt, 4, (one, two) => one - two);

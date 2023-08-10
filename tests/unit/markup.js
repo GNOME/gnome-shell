@@ -5,10 +5,10 @@
 const JsUnit = imports.jsUnit;
 import Pango from 'gi://Pango';
 
-import '../../js/ui/environment.js';
-import '../../js/ui/main.js';
+import 'resource:///org/gnome/shell/ui/environment.js';
+import 'resource:///org/gnome/shell/ui/main.js';
 
-import * as MessageList from '../../js/ui/messageList.js';
+import * as MessageList from 'resource:///org/gnome/shell/ui/messageList.js';
 
 /**
  * Assert that `input`, assumed to be markup, gets "fixed" to `output`,

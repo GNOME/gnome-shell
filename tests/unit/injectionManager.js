@@ -2,9 +2,9 @@ const JsUnit = imports.jsUnit;
 
 import GObject from 'gi://GObject';
 
-import '../../js/ui/environment.js';
+import 'resource:///org/gnome/shell/ui/environment.js';
 
-import {InjectionManager} from '../../js/extensions/extension.js';
+import {InjectionManager} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 class Object1 {
     count = 0;

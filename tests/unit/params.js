@@ -1,5 +1,5 @@
 const JsUnit = imports.jsUnit;
-import * as Params from '../../js/misc/params.js';
+import * as Params from 'resource:///org/gnome/shell/misc/params.js';
 
 /**
  * Asserts that two "param" objects have the same properties

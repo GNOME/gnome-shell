@@ -4,11 +4,11 @@
 
 const JsUnit = imports.jsUnit;
 
-import '../../js/ui/environment.js';
+import 'resource:///org/gnome/shell/ui/environment.js';
 
 import * as Assertions from '../common/assertions.js';
 
-import * as JsParse from '../../js/misc/jsParse.js';
+import * as JsParse from 'resource:///org/gnome/shell/misc/jsParse.js';
 
 const HARNESS_COMMAND_HEADER = 'let imports = obj;' +
                                'let global = obj;' +

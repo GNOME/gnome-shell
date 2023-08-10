@@ -4,9 +4,9 @@
 
 const JsUnit = imports.jsUnit;
 
-import '../../js/ui/environment.js';
+import 'resource:///org/gnome/shell/ui/environment.js';
 
-import * as Util from '../../js/misc/util.js';
+import * as Util from 'resource:///org/gnome/shell/misc/util.js';
 
 const tests = [
     {

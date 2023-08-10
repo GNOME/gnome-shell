@@ -263,7 +263,7 @@ if have_networkmanager
   )
 endif
 
-executable('gnome-shell-perf-helper', 'shell-perf-helper.c',
+executable('gnome-shell-perf-helper', 'shell-perf-helper.c', js_resources,
   dependencies: [gtk_dep, gio_dep, m_dep],
   include_directories: [conf_inc],
   install_dir: libexecdir,

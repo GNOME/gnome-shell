@@ -2,13 +2,13 @@
 
 // Test cases for version comparison
 
-import '../../js/ui/environment.js';
+import 'resource:///org/gnome/shell/ui/environment.js';
 import GObject from 'gi://GObject';
 
 const JsUnit = imports.jsUnit;
-import * as Signals from '../../js/misc/signals.js';
+import * as Signals from 'resource:///org/gnome/shell/misc/signals.js';
 
-import {TransientSignalHolder, registerDestroyableType} from '../../js/misc/signalTracker.js';
+import {TransientSignalHolder, registerDestroyableType} from 'resource:///org/gnome/shell/misc/signalTracker.js';
 
 const Destroyable = GObject.registerClass({
     Signals: {'destroy': {}},
