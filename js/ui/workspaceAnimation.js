@@ -214,6 +214,8 @@ const MonitorGroup = GObject.registerClass({
             this._container.x = Math.round(p * this.baseDistance);
         else
             this._container.x = -Math.round(p * this.baseDistance);
+
+        this.notify('progress');
     }
 
     get index() {
