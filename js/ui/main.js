@@ -97,6 +97,7 @@ let _cssStylesheet = null;
 let _themeResource = null;
 let _oskResource = null;
 let _iconResource = null;
+let _workspacesAdjustment = null;
 
 Gio._promisify(Gio.File.prototype, 'delete_async');
 Gio._promisify(Gio.File.prototype, 'touch_async');
@@ -191,6 +192,7 @@ async function _initializeUI() {
     _loadIcons();
     _loadOskLayouts();
     _loadDefaultStylesheet();
+    _loadWorkspacesAdjustment();
 
     new AnimationsSettings();
 
@@ -441,6 +443,62 @@ function _loadDefaultStylesheet() {
 
     _defaultCssStylesheet = stylesheet;
     loadTheme();
+}
+
+function _loadWorkspacesAdjustment() {
+    const {workspaceManager} = global;
+    const activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
+
+    _workspacesAdjustment = new St.Adjustment({
+        value: activeWorkspaceIndex,
+        lower: 0,
+        page_increment: 1,
+        page_size: 1,
+        step_increment: 0,
+        upper: workspaceManager.n_workspaces,
+    });
+
+    workspaceManager.bind_property('n-workspaces',
+        _workspacesAdjustment, 'upper',
+        GObject.BindingFlags.SYNC_CREATE);
+
+    _workspacesAdjustment.connect('notify::upper', () => {
+        const newActiveIndex = workspaceManager.get_active_workspace_index();
+
+        // A workspace might have been inserted or removed before the active
+        // one, causing the adjustment to go out of sync, so update the value
+        _workspacesAdjustment.remove_transition('value');
+        _workspacesAdjustment.value = newActiveIndex;
+    });
+}
+
+/**
+ * Creates an adjustment that has its lower, upper, and value
+ * properties set for the number of available workspaces. Consumers
+ * of the returned adjustment must only change the 'value' property,
+ * and only that.
+ *
+ * @param {Clutter.Actor} actor
+ *
+ * @returns {St.Adjustment} - an adjustment representing the
+ * current workspaces layout
+ */
+export function createWorkspacesAdjustment(actor) {
+    const adjustment = new St.Adjustment({actor});
+
+    const properties = [
+        ['lower', GObject.BindingFlags.SYNC_CREATE],
+        ['page-increment', GObject.BindingFlags.SYNC_CREATE],
+        ['page-size', GObject.BindingFlags.SYNC_CREATE],
+        ['step-increment', GObject.BindingFlags.SYNC_CREATE],
+        ['upper', GObject.BindingFlags.SYNC_CREATE],
+        ['value', GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL],
+    ];
+
+    for (const [propName, flags] of properties)
+        _workspacesAdjustment.bind_property(propName, adjustment, propName, flags);
+
+    return adjustment;
 }
 
 /**
