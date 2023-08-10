@@ -554,10 +554,14 @@ class QuickSettings extends PanelMenu.Button {
         this._unsafeMode = new UnsafeModeIndicator();
         this._backgroundApps = new BackgroundAppsStatus.Indicator();
 
-        this._indicators.add_child(this._remoteAccess);
-        this._indicators.add_child(this._camera);
-        this._indicators.add_child(this._volumeInput);
-        this._indicators.add_child(this._location);
+        // add privacy-related indicators before any external indicators
+        let pos = 0;
+        this._indicators.insert_child_at_index(this._remoteAccess, pos++);
+        this._indicators.insert_child_at_index(this._camera, pos++);
+        this._indicators.insert_child_at_index(this._volumeInput, pos++);
+        this._indicators.insert_child_at_index(this._location, pos++);
+
+        // append all other indicators
         this._indicators.add_child(this._brightness);
         this._indicators.add_child(this._thunderbolt);
         this._indicators.add_child(this._nightLight);
@@ -574,32 +578,57 @@ class QuickSettings extends PanelMenu.Button {
         this._indicators.add_child(this._unsafeMode);
         this._indicators.add_child(this._system);
 
-        this._addItems(this._system.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
-        this._addItems(this._volumeOutput.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
-        this._addItems(this._volumeInput.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
-        this._addItems(this._brightness.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
+        // add our quick settings items before any external ones
+        const sibling = this.menu.getFirstItem();
+        this._addItemsBefore(this._system.quickSettingsItems,
+            sibling, N_QUICK_SETTINGS_COLUMNS);
+        this._addItemsBefore(this._volumeOutput.quickSettingsItems,
+            sibling, N_QUICK_SETTINGS_COLUMNS);
+        this._addItemsBefore(this._volumeInput.quickSettingsItems,
+            sibling, N_QUICK_SETTINGS_COLUMNS);
+        this._addItemsBefore(this._brightness.quickSettingsItems,
+            sibling, N_QUICK_SETTINGS_COLUMNS);
 
-        this._addItems(this._camera.quickSettingsItems);
-        this._addItems(this._remoteAccess.quickSettingsItems);
-        this._addItems(this._thunderbolt.quickSettingsItems);
-        this._addItems(this._location.quickSettingsItems);
+        this._addItemsBefore(this._camera.quickSettingsItems, sibling);
+        this._addItemsBefore(this._remoteAccess.quickSettingsItems, sibling);
+        this._addItemsBefore(this._thunderbolt.quickSettingsItems, sibling);
+        this._addItemsBefore(this._location.quickSettingsItems, sibling);
         if (this._network)
-            this._addItems(this._network.quickSettingsItems);
+            this._addItemsBefore(this._network.quickSettingsItems, sibling);
         if (this._bluetooth)
-            this._addItems(this._bluetooth.quickSettingsItems);
-        this._addItems(this._powerProfiles.quickSettingsItems);
-        this._addItems(this._nightLight.quickSettingsItems);
-        this._addItems(this._darkMode.quickSettingsItems);
-        this._addItems(this._backlight.quickSettingsItems);
-        this._addItems(this._rfkill.quickSettingsItems);
-        this._addItems(this._autoRotate.quickSettingsItems);
-        this._addItems(this._unsafeMode.quickSettingsItems);
+            this._addItemsBefore(this._bluetooth.quickSettingsItems, sibling);
+        this._addItemsBefore(this._powerProfiles.quickSettingsItems, sibling);
+        this._addItemsBefore(this._nightLight.quickSettingsItems, sibling);
+        this._addItemsBefore(this._darkMode.quickSettingsItems, sibling);
+        this._addItemsBefore(this._backlight.quickSettingsItems, sibling);
+        this._addItemsBefore(this._rfkill.quickSettingsItems, sibling);
+        this._addItemsBefore(this._autoRotate.quickSettingsItems, sibling);
+        this._addItemsBefore(this._unsafeMode.quickSettingsItems, sibling);
 
-        this._addItems(this._backgroundApps.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
+        // append background apps
+        this._backgroundApps.quickSettingsItems.forEach(
+            item => this.menu.addItem(item, N_QUICK_SETTINGS_COLUMNS));
     }
 
-    _addItems(items, colSpan = 1) {
-        items.forEach(item => this.menu.addItem(item, colSpan));
+    _addItemsBefore(items, sibling, colSpan = 1) {
+        items.forEach(item => this.menu.insertItemBefore(item, sibling, colSpan));
+    }
+
+    /**
+     * Insert indicator and quick settings items at
+     * appropriate positions
+     *
+     * @param {PanelMenu.Button} indicator
+     * @param {number=} colSpan
+     */
+    addExternalIndicator(indicator, colSpan = 1) {
+        // Insert before first non-privacy indicator if it exists
+        let sibling = this._brightness ?? null;
+        this._indicators.insert_child_below(indicator, sibling);
+
+        // Insert before background apps if it exists
+        sibling = this._backgroundApps?.quickSettingsItems?.at(-1) ?? null;
+        this._addItemsBefore(indicator.quickSettingsItems, sibling, colSpan);
     }
 });
 
