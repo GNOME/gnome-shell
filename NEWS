@@ -1,3 +1,18 @@
+45.beta.1
+=========
+* Fix input handling in alt-tab and several other components [Carlos; !2872]
+* Fix screenshot tool [Florian; 2877]
+* Export notification source classes for extensions [Andy; 2869]
+* Finishing ESM porting touches [Florian; 2880]
+* Misc. bug fixes and cleanups [Andrew, Carlos, Florian; !2866, !2871,
+  !2876, !2878, !2879]
+
+Contributors:
+  Carlos Garnacho, Florian Müllner, Andy Holmes, Andrew Zaech
+
+Translators:
+  Piotr Drąg [pl], Kukuh Syafaat [id]
+
 45.beta
 =======
 * Load extensions as modules [Florian; !2795]
