@@ -44,7 +44,18 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
     }
 
     &#panelActivities {
-      -natural-hpadding: $base_padding * 3;
+      -natural-hpadding: $base_padding * 2.5;
+
+      & StBoxLayout {
+        spacing: 5px;
+      }
+
+      & .workspace-dot {
+        border-radius: 999px;
+        min-width: 8px;
+        min-height: 8px;
+        background-color: $panel_fg_color;
+      }
     }
 
     // screen activity indicators
@@ -89,6 +100,10 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
 
     .panel-button {
       @include panel_button($panel_system_fg_color, $fg:$panel_system_fg_color);
+
+      &#panelActivities .workspace-dot {
+        background-color: $panel_system_fg_color;
+      }
 
       // clock
       &.clock-display {
