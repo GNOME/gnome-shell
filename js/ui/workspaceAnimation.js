@@ -9,6 +9,7 @@ import St from 'gi://St';
 import * as Background from './background.js';
 import * as Layout from './layout.js';
 import * as SwipeTracker from './swipeTracker.js';
+import * as Util from '../misc/util.js';
 
 import * as Main from './main.js';
 
@@ -187,6 +188,25 @@ const MonitorGroup = GObject.registerClass({
         }
 
         this.progress = this.getWorkspaceProgress(activeWorkspace);
+
+        if (monitor.index === Main.layoutManager.primaryIndex) {
+            this._workspacesAdjustment = Main.createWorkspacesAdjustment(this);
+            this.bind_property_full('progress',
+                this._workspacesAdjustment, 'value',
+                GObject.BindingFlags.SYNC_CREATE,
+                (bind, source) => {
+                    const indices = [
+                        workspaceIndices[Math.floor(source)],
+                        workspaceIndices[Math.ceil(source)],
+                    ];
+                    return [true, Util.lerp(...indices, source % 1.0)];
+                },
+                null);
+
+            this.connect('destroy', () => {
+                delete this._workspacesAdjustment;
+            });
+        }
     }
 
     get baseDistance() {
