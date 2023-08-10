@@ -345,24 +345,10 @@ class ControlsManager extends St.Widget {
 
         this.dash = new Dash.Dash();
 
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
-
-        this._workspaceAdjustment = new St.Adjustment({
-            actor: this,
-            value: activeWorkspaceIndex,
-            lower: 0,
-            page_increment: 1,
-            page_size: 1,
-            step_increment: 0,
-            upper: workspaceManager.n_workspaces,
-        });
+        this._workspaceAdjustment = Main.createWorkspacesAdjustment(this);
 
         this._stateAdjustment = new OverviewAdjustment(this);
         this._stateAdjustment.connect('notify::value', this._update.bind(this));
-
-        workspaceManager.connectObject(
-            'notify::n-workspaces', () => this._updateAdjustment(), this);
 
         this._searchController = new SearchController.SearchController(
             this._searchEntry,
@@ -706,19 +692,6 @@ class ControlsManager extends St.Widget {
                 },
             });
         }
-    }
-
-    _updateAdjustment() {
-        let workspaceManager = global.workspace_manager;
-        let newNumWorkspaces = workspaceManager.n_workspaces;
-        let activeIndex = workspaceManager.get_active_workspace_index();
-
-        this._workspaceAdjustment.upper = newNumWorkspaces;
-
-        // A workspace might have been inserted or removed before the active
-        // one, causing the adjustment to go out of sync, so update the value
-        this._workspaceAdjustment.remove_transition('value');
-        this._workspaceAdjustment.value = activeIndex;
     }
 
     vfunc_unmap() {
