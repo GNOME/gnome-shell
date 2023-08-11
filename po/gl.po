@@ -10,21 +10,20 @@
 # Fran Diéguez <frandieguez@gnome.org>, 2009-2022.
 # Fran Dieguez <frandieguez@gnome.org>, 2012-2023.
 #
-#: src/main.c:559
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-08-07 15:51+0000\n"
-"PO-Revision-Date: 2023-08-08 02:13+0200\n"
+"POT-Creation-Date: 2023-08-08 08:49+0000\n"
+"PO-Revision-Date: 2023-08-11 02:34+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 42.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.3.2\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: gl\n"
 "X-DL-Module: gnome-shell\n"
@@ -1617,47 +1616,47 @@ msgstr "Aplicacións"
 msgid "Overview"
 msgstr "Vista xeral"
 
-#: js/ui/padOsd.js:106
+#: js/ui/padOsd.js:100
 msgid "New shortcut…"
 msgstr "Novo atallo…"
 
-#: js/ui/padOsd.js:159
+#: js/ui/padOsd.js:153
 msgid "App defined"
 msgstr "Aplicación definida"
 
-#: js/ui/padOsd.js:160
+#: js/ui/padOsd.js:154
 msgid "Show on-screen help"
 msgstr "Mostrar a axuda en pantalla"
 
-#: js/ui/padOsd.js:161
+#: js/ui/padOsd.js:155
 msgid "Switch monitor"
 msgstr "Cambiar monitor"
 
-#: js/ui/padOsd.js:162
+#: js/ui/padOsd.js:156
 msgid "Assign keystroke"
 msgstr "Asignar combinación de teclas"
 
-#: js/ui/padOsd.js:231
+#: js/ui/padOsd.js:225
 msgid "Done"
 msgstr "Feito"
 
-#: js/ui/padOsd.js:748
+#: js/ui/padOsd.js:731
 msgid "Edit…"
 msgstr "Editar…"
 
-#: js/ui/padOsd.js:790 js/ui/padOsd.js:907
+#: js/ui/padOsd.js:778
 msgid "None"
 msgstr "Ningún"
 
-#: js/ui/padOsd.js:861
+#: js/ui/padOsd.js:849
 msgid "Press a button to configure"
 msgstr "Prema un botón para continuar"
 
-#: js/ui/padOsd.js:862
+#: js/ui/padOsd.js:850
 msgid "Press Esc to exit"
 msgstr "Prema Esc para saír"
 
-#: js/ui/padOsd.js:865
+#: js/ui/padOsd.js:853
 msgid "Press any key to exit"
 msgstr "Prema calquera tecla para saír"
 
@@ -1734,6 +1733,10 @@ msgstr "Seleccionar xanela"
 #: js/ui/screenshot.js:1250 js/ui/status/system.js:112 js/ui/windowMenu.js:30
 msgid "Take Screenshot"
 msgstr "Tomar unha captura"
+
+#: js/ui/screenshot.js:1266
+msgid "Record Screen"
+msgstr "Gravar a pantalla"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
@@ -2635,8 +2638,8 @@ msgstr "Instaladas manualmente"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:98
 #: subprojects/extensions-app/data/ui/extensions-window.ui:133
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "Para atopar e engadir extensións visite <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
