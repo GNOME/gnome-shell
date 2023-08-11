@@ -95,7 +95,11 @@ const BackgroundAppMenuItem = GObject.registerClass({
 
         closeButton.connect('clicked', () => this._quitApp().catch(logError));
 
-        this.connect('activate', () => this.app.activate());
+        this.connect('activate', () => {
+            Main.overview.hide();
+            Main.panel.closeQuickSettings();
+            this.app.activate();
+        });
 
         this.connect('destroy', () => this._onDestroy());
     }
