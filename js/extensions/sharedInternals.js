@@ -55,10 +55,7 @@ export class ExtensionBase {
             throw new Error(`${this.constructor.name} did not pass metadata to parent`);
 
         this.metadata = metadata;
-
-        const domain = this.metadata['gettext-domain'];
-        if (domain)
-            this.initTranslations(domain);
+        this.initTranslations();
     }
 
     /**
@@ -116,14 +113,12 @@ export class ExtensionBase {
     /**
      * Initialize Gettext to load translations from extensionsdir/locale. If
      * domain is not provided, it will be taken from metadata['gettext-domain']
+     * if provided, or use the UUID
      *
      * @param {string=} domain - the gettext domain to use
      */
     initTranslations(domain) {
-        domain ||= this.metadata['gettext-domain'];
-
-        if (!domain)
-            throw new Error('initTranslations() was called without providing a valid domain');
+        domain ||= this.metadata['gettext-domain'] ?? this.uuid;
 
         // Expect USER extensions to have a locale/ subfolder, otherwise assume a
         // SYSTEM extension that has been installed in the same prefix as the shell
