@@ -117,7 +117,7 @@ export function spawnApp(argv) {
  * Runs argv in the background. If launching argv fails,
  * this will throw an error.
  */
-function trySpawn(argv) {
+export function trySpawn(argv) {
     let success_, pid;
     try {
         [success_, pid] = GLib.spawn_async(
