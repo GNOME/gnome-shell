@@ -615,6 +615,7 @@ export const ThumbnailsBox = GObject.registerClass({
         this.add_actor(this._dropPlaceholder);
         this._spliceIndex = -1;
 
+        this._maxThumbnailScale = MAX_THUMBNAIL_SCALE;
         this._targetScale = 0;
         this._scale = 0;
         this._expandFraction = 1;
@@ -673,6 +674,10 @@ export const ThumbnailsBox = GObject.registerClass({
         this._scrollAdjustment = scrollAdjustment;
         this._scrollAdjustment.connectObject('notify::value',
             () => this._updateIndicator(), this);
+    }
+
+    get maxThumbnailScale() {
+        return this._maxThumbnailScale;
     }
 
     setMonitorIndex(monitorIndex) {
@@ -1198,7 +1203,7 @@ export const ThumbnailsBox = GObject.registerClass({
         const avail = forWidth - totalSpacing;
 
         let scale = (avail / nWorkspaces) / this._porthole.width;
-        scale = Math.min(scale, MAX_THUMBNAIL_SCALE);
+        scale = Math.min(scale, this._maxThumbnailScale);
 
         const height = Math.round(this._porthole.height * scale);
         return themeNode.adjust_preferred_height(height, height);
@@ -1223,7 +1228,7 @@ export const ThumbnailsBox = GObject.registerClass({
                 workspaceSpacing += spacing / 2;
 
             const progress = 1 - thumbnail.collapse_fraction;
-            const width = (this._porthole.width * MAX_THUMBNAIL_SCALE + workspaceSpacing) * progress;
+            const width = (this._porthole.width * this._maxThumbnailScale + workspaceSpacing) * progress;
             return accumulator + width;
         }, 0);
 
@@ -1290,10 +1295,10 @@ export const ThumbnailsBox = GObject.registerClass({
         const thumbnailHeight = thumbnailFullHeight * this._expandFraction;
         const roundedVScale = thumbnailHeight / portholeHeight;
 
-        // We always request size for MAX_THUMBNAIL_SCALE, distribute
+        // We always request size for maxThumbnailScale, distribute
         // space evently if we use smaller thumbnails
         const extraWidth =
-            (MAX_THUMBNAIL_SCALE * portholeWidth - thumbnailWidth) * nWorkspaces;
+            (this._maxThumbnailScale * portholeWidth - thumbnailWidth) * nWorkspaces;
         box.x1 += Math.round(extraWidth / 2);
         box.x2 -= Math.round(extraWidth / 2);
 

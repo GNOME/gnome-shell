@@ -195,7 +195,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
                 this._workspacesThumbnails.get_preferred_height(width);
             thumbnailsHeight = Math.min(
                 thumbnailsHeight * expandFraction,
-                height * WorkspaceThumbnail.MAX_THUMBNAIL_SCALE);
+                height * this._workspacesThumbnails.maxThumbnailScale);
             childBox.set_origin(0, startY + searchHeight + spacing);
             childBox.set_size(width, thumbnailsHeight);
             this._workspacesThumbnails.allocate(childBox);

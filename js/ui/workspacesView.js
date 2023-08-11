@@ -15,7 +15,7 @@ import * as OverviewControls from './overviewControls.js';
 import * as SwipeTracker from './swipeTracker.js';
 import * as Util from '../misc/util.js';
 import * as Workspace from './workspace.js';
-import {ThumbnailsBox, MAX_THUMBNAIL_SCALE} from './workspaceThumbnail.js';
+import {ThumbnailsBox} from './workspaceThumbnail.js';
 
 const WORKSPACE_SWITCH_TIME = 250;
 
@@ -651,7 +651,7 @@ class SecondaryMonitorDisplay extends St.Widget {
         const [thumbnailsHeight] = this._thumbnails.get_preferred_height(width);
         return Math.min(
             thumbnailsHeight * expandFraction,
-            height * MAX_THUMBNAIL_SCALE);
+            height * this._thumbnails.maxThumbnailScale);
     }
 
     _getWorkspacesBoxForState(state, box, padding, thumbnailsHeight, spacing) {
