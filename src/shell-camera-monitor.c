@@ -297,10 +297,10 @@ shell_camera_monitor_disconnect_core (ShellCameraMonitor *monitor)
   g_ptr_array_set_size (monitor->node_list, 0);
   g_clear_handle_id (&monitor->delayed_disable_id, g_source_remove);
 
-  g_clear_pointer ((struct pw_proxy**) &monitor->registry, pw_proxy_destroy);
   spa_hook_remove (&monitor->registry_listener);
-  g_clear_pointer (&monitor->core, pw_core_disconnect);
+  g_clear_pointer ((struct pw_proxy**) &monitor->registry, pw_proxy_destroy);
   spa_hook_remove (&monitor->core_listener);
+  g_clear_pointer (&monitor->core, pw_core_disconnect);
 }
 
 static gboolean
