@@ -182,6 +182,42 @@ create_metadata (GFile       *target_dir,
                                   error);
 }
 
+static gboolean
+create_settings_schema (GFile       *target_dir,
+                        const char  *settings_schema,
+                        GError     **error)
+{
+  g_autoptr (GFile) schema_dir = NULL;
+  g_autoptr (GFile) schema = NULL;
+  g_autofree char *schema_filename = NULL;
+  g_autofree char *schema_path = NULL;
+  g_autofree char *xml = NULL;
+
+  schema_dir = g_file_get_child (target_dir, "schemas");
+  if (!g_file_make_directory (schema_dir, NULL, error))
+    return FALSE;
+
+  schema_filename = g_strdup_printf ("%s.gschema.xml", settings_schema);
+  schema = g_file_get_child (schema_dir, schema_filename);
+
+  schema_path = g_strconcat ("/", settings_schema, "/", NULL);
+  g_strdelimit (schema_path, ".", '/');
+
+  xml = g_strdup_printf ("<schemalist>\n"
+                         "  <schema id=\"%s\" path=\"%s\">\n"
+                         "  </schema>\n"
+                         "</schemalist>\n", settings_schema, schema_path);
+
+  return g_file_replace_contents (schema,
+                                  xml,
+                                  strlen (xml),
+                                  NULL,
+                                  FALSE,
+                                  0,
+                                  NULL,
+                                  NULL,
+                                  error);
+}
 
 static gboolean
 copy_extension_template (const char *template, GFile *target_dir, GError **error)
@@ -267,6 +303,12 @@ create_extension (const char *uuid,
     }
 
   if (!create_metadata (dir, uuid, name, description, gettext_domain, settings_schema, &error))
+    {
+      g_printerr ("%s\n", error->message);
+      return FALSE;
+    }
+
+  if (settings_schema && !create_settings_schema (dir, settings_schema, &error))
     {
       g_printerr ("%s\n", error->message);
       return FALSE;
