@@ -254,6 +254,23 @@ copy_extension_template (const char *template, GFile *target_dir, GError **error
 }
 
 static gboolean
+copy_prefs_template (GFile *target_dir, GError **error)
+{
+  g_autoptr (GFile) target = NULL;
+  g_autoptr (GFile) source = NULL;
+  g_autofree char *uri = NULL;
+
+  uri = g_strdup ("resource://" TEMPLATES_PATH "/prefs.js");
+  source = g_file_new_for_uri (uri);
+  target = g_file_get_child (target_dir, "prefs.js");
+
+  if (!g_file_copy (source, target, G_FILE_COPY_TARGET_DEFAULT_PERMS, NULL, NULL, NULL, error))
+    return FALSE;
+
+  return TRUE;
+}
+
+static gboolean
 launch_extension_source (GFile *dir, GError **error)
 {
   g_autoptr (GFile) main_source = NULL;
@@ -282,7 +299,8 @@ create_extension (const char *uuid,
                   const char *description,
                   const char *gettext_domain,
                   const char *settings_schema,
-                  const char *template)
+                  const char *template,
+                  gboolean    prefs)
 {
   g_autoptr (GFile) dir = NULL;
   g_autoptr (GError) error = NULL;
@@ -315,6 +333,12 @@ create_extension (const char *uuid,
     }
 
   if (!copy_extension_template (template, dir, &error))
+    {
+      g_printerr ("%s\n", error->message);
+      return FALSE;
+    }
+
+  if (prefs && !copy_prefs_template (dir, &error))
     {
       g_printerr ("%s\n", error->message);
       return FALSE;
@@ -481,6 +505,7 @@ handle_create (int argc, char *argv[], gboolean do_help)
   g_autofree char *gettext_domain = NULL;
   g_autofree char *settings_schema = NULL;
   g_autofree char *template = NULL;
+  gboolean prefs = FALSE;
   gboolean interactive = FALSE;
   gboolean list_templates = FALSE;
   GOptionEntry entries[] = {
@@ -508,6 +533,9 @@ handle_create (int argc, char *argv[], gboolean do_help)
       .arg = G_OPTION_ARG_STRING, .arg_data = &template,
       .arg_description = _("TEMPLATE"),
       .description = _("The template to use for the new extension") },
+    { .long_name = "prefs",
+      .arg = G_OPTION_ARG_NONE, .arg_data = &prefs,
+      .description = _("Include prefs.js template") },
     { .long_name = "list-templates",
       .arg = G_OPTION_ARG_NONE, .arg_data = &list_templates,
       .flags = G_OPTION_FLAG_HIDDEN },
@@ -568,5 +596,5 @@ handle_create (int argc, char *argv[], gboolean do_help)
       return 1;
     }
 
-  return create_extension (uuid, name, description, gettext_domain, settings_schema, template) ? 0 : 2;
+  return create_extension (uuid, name, description, gettext_domain, settings_schema, template, prefs) ? 0 : 2;
 }

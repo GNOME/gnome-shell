@@ -2,4 +2,5 @@ data/org.gnome.Shell@wayland.service.in
 data/org.gnome.Shell@x11.service.in
 js/ui/init.js
 subprojects/extensions-tool/src/templates/indicator/extension.js
+subprojects/extensions-tool/src/templates/prefs.js
 subprojects/extensions-tool/src/templates/quick-settings/extension.js

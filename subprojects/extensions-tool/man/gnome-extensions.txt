@@ -137,6 +137,9 @@ Creates a new extension from a template.
   *--template*='TEMPLATE':::
     Use 'TEMPLATE' as base for the new extension
 
+  *--prefs*:::
+    Include a prefs.js template
+
   *-i*:::
   *--interactive*:::
     Prompt for any extension metadata that hasn't been provided
