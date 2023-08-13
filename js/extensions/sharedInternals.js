@@ -218,10 +218,8 @@ export class GettextWrapper {
     }
 
     #lookupExtension(funcName) {
-        if (!this.#url)
-            this.#url = this.#detectUrl();
-
-        const extension = this.#extensionClass.lookupByURL(this.#url);
+        const url = this.#url ?? this.#detectUrl();
+        const extension = this.#extensionClass.lookupByURL(url);
         if (!extension)
             throw new Error(`${funcName} can only be called from extensions`);
         return extension;
