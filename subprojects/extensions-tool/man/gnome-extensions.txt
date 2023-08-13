@@ -131,6 +131,9 @@ Creates a new extension from a template.
   *--gettext-domain*='DOMAIN':::
     Set the gettext domain used by the extension
 
+  *--settings-schema*='SCHEMA':::
+    Set the GSettings schema used by the extension
+
   *--template*='TEMPLATE':::
     Use 'TEMPLATE' as base for the new extension
 
