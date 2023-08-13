@@ -135,6 +135,7 @@ create_metadata (GFile       *target_dir,
                  const char  *uuid,
                  const char  *name,
                  const char  *description,
+                 const char  *gettext_domain,
                  GError     **error)
 {
   g_autofree char *uuid_escaped = NULL;
@@ -157,6 +158,10 @@ create_metadata (GFile       *target_dir,
   g_string_append_printf (json, "  \"name\": \"%s\",\n", name_escaped);
   g_string_append_printf (json, "  \"description\": \"%s\",\n", desc_escaped);
   g_string_append_printf (json, "  \"uuid\": \"%s\",\n", uuid_escaped);
+
+  if (gettext_domain)
+    g_string_append_printf (json, "  \"gettext-domain\": \"%s\",\n", gettext_domain);
+
   g_string_append_printf (json, "  \"shell-version\": [\n");
   g_string_append_printf (json, "    \"%s\"\n", version);
   g_string_append_printf (json, "  ]\n}\n");
@@ -232,7 +237,11 @@ launch_extension_source (GFile *dir, GError **error)
 }
 
 static gboolean
-create_extension (const char *uuid, const char *name, const char *description, const char *template)
+create_extension (const char *uuid,
+                  const char *name,
+                  const char *description,
+                  const char *gettext_domain,
+                  const char *template)
 {
   g_autoptr (GFile) dir = NULL;
   g_autoptr (GError) error = NULL;
@@ -252,7 +261,7 @@ create_extension (const char *uuid, const char *name, const char *description, c
       return FALSE;
     }
 
-  if (!create_metadata (dir, uuid, name, description, &error))
+  if (!create_metadata (dir, uuid, name, description, gettext_domain, &error))
     {
       g_printerr ("%s\n", error->message);
       return FALSE;
@@ -422,6 +431,7 @@ handle_create (int argc, char *argv[], gboolean do_help)
   g_autofree char *name = NULL;
   g_autofree char *description = NULL;
   g_autofree char *uuid = NULL;
+  g_autofree char *gettext_domain = NULL;
   g_autofree char *template = NULL;
   gboolean interactive = FALSE;
   gboolean list_templates = FALSE;
@@ -438,6 +448,10 @@ handle_create (int argc, char *argv[], gboolean do_help)
       .arg_description = _("DESCRIPTION"),
       .arg = G_OPTION_ARG_STRING, .arg_data = &description,
       .description = _("A short description of what the extension does") },
+    { .long_name = "gettext-domain",
+      .arg_description = _("DOMAIN"),
+      .arg = G_OPTION_ARG_STRING, .arg_data = &gettext_domain,
+      .description = _("The gettext domain used by the extension") },
     { .long_name = "template",
       .arg = G_OPTION_ARG_STRING, .arg_data = &template,
       .arg_description = _("TEMPLATE"),
@@ -502,5 +516,5 @@ handle_create (int argc, char *argv[], gboolean do_help)
       return 1;
     }
 
-  return create_extension (uuid, name, description, template) ? 0 : 2;
+  return create_extension (uuid, name, description, gettext_domain, template) ? 0 : 2;
 }
