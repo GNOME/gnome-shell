@@ -780,6 +780,15 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
 
     addItem(item, colSpan = 1) {
         this._grid.add_child(item);
+        this._completeAddItem(item, colSpan);
+    }
+
+    insertItemBefore(item, sibling, colSpan = 1) {
+        this._grid.insert_child_below(item, sibling);
+        this._completeAddItem(item, colSpan);
+    }
+
+    _completeAddItem(item, colSpan) {
         this._grid.layout_manager.child_set_property(
             this._grid, item, 'column-span', colSpan);
 
