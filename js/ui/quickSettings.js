@@ -802,6 +802,10 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
         }
     }
 
+    getFirstItem() {
+        return this._grid.get_first_child();
+    }
+
     open(animate) {
         this.actor.show();
         super.open(animate);
