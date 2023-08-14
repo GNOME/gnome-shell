@@ -1,6 +1,7 @@
 template_metas = [
   '00-plain.desktop',
   'indicator.desktop',
+  'quick-settings.desktop',
 ]
 template_deps = []
 foreach template : template_metas
