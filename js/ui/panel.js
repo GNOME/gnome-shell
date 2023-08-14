@@ -422,11 +422,11 @@ class QuickSettings extends PanelMenu.Button {
         this._indicators.add_child(this._system);
 
         this._addItems(this._system.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
-        this._addItems(this._camera.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
         this._addItems(this._volumeOutput.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
         this._addItems(this._volumeInput.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
         this._addItems(this._brightness.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
 
+        this._addItems(this._camera.quickSettingsItems);
         this._addItems(this._remoteAccess.quickSettingsItems);
         this._addItems(this._thunderbolt.quickSettingsItems);
         this._addItems(this._location.quickSettingsItems);
