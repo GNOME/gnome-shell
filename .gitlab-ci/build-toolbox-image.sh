@@ -35,7 +35,7 @@ build_container() {
     abattis-cantarell-fonts # system font
     gnome-backgrounds # no blank background!
   )
-  buildah run $build_cntr dnf config-manager --set-disabled '*-modular,*-openh264'
+  buildah run $build_cntr dnf config-manager --set-disabled '*-openh264'
   buildah run $build_cntr dnf install -y "${extra_packages[@]}"
   buildah run $build_cntr dnf clean all
   buildah run $build_cntr rm -rf /var/lib/cache/dnf
