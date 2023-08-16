@@ -1,6 +1,7 @@
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
+import GnomeDesktop from 'gi://GnomeDesktop';
 import GObject from 'gi://GObject';
 import IBus from 'gi://IBus';
 import Meta from 'gi://Meta';
@@ -22,6 +23,8 @@ export const INPUT_SOURCE_TYPE_IBUS = 'ibus';
 
 const DESKTOP_INPUT_SOURCES_SCHEMA = 'org.gnome.desktop.input-sources';
 const KEY_INPUT_SOURCES = 'sources';
+
+Gio._promisify(GnomeDesktop, 'get_default_input_sources');
 
 export const LayoutMenuItem = GObject.registerClass(
 class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
@@ -202,9 +205,9 @@ class InputSourceSystemSettings extends InputSourceSettings {
         this._BUS_IFACE = 'org.freedesktop.locale1';
         this._BUS_PROPS_IFACE = 'org.freedesktop.DBus.Properties';
 
-        this._layouts = '';
-        this._variants = '';
-        this._options = '';
+        this._inputSourceIds = [];
+        this._inputSourceTypes = [];
+        this._options = [];
         this._model = '';
 
         this._reload().catch(error => {
@@ -221,30 +224,22 @@ class InputSourceSystemSettings extends InputSourceSettings {
     }
 
     async _reload() {
-        let props;
+        let inputSourceIds;
+        let inputSourceTypes;
+        let options;
+        let model;
         try {
-            const result = await Gio.DBus.system.call(
-                this._BUS_NAME,
-                this._BUS_PATH,
-                this._BUS_PROPS_IFACE,
-                'GetAll',
-                new GLib.Variant('(s)', [this._BUS_IFACE]),
-                null, Gio.DBusCallFlags.NONE, -1, null);
-            [props] = result.deepUnpack();
+            [inputSourceIds, inputSourceTypes, options, model] =
+                await GnomeDesktop.get_default_input_sources(null);
         } catch (e) {
-            log(`Could not get properties from ${this._BUS_NAME}`);
+            logError(e, 'Could not get default input sources');
             return;
         }
 
-        const layouts = props['X11Layout'].unpack();
-        const variants = props['X11Variant'].unpack();
-        const options = props['X11Options'].unpack();
-        const model = props['X11Model'].unpack();
-
-        if (layouts !== this._layouts ||
-            variants !== this._variants) {
-            this._layouts = layouts;
-            this._variants = variants;
+        if (inputSourceIds !== this._inputSourceIds ||
+            inputSourceTypes !== this._inputSourceTypes) {
+            this._inputSourceIds = inputSourceIds;
+            this._inputSourceTypes = inputSourceTypes;
             this._emitInputSourcesChanged();
         }
         if (options !== this._options) {
@@ -258,21 +253,21 @@ class InputSourceSystemSettings extends InputSourceSettings {
     }
 
     get inputSources() {
-        let sourcesList = [];
-        let layouts = this._layouts.split(',');
-        let variants = this._variants.split(',');
+        let sourcesList;
 
-        for (let i = 0; i < layouts.length && !!layouts[i]; i++) {
-            let id = layouts[i];
-            if (variants[i])
-                id += `+${variants[i]}`;
-            sourcesList.push({type: INPUT_SOURCE_TYPE_XKB, id});
+        if (this._inputSourceIds) {
+            sourcesList = this._inputSourceIds.map((id, index) => {
+                return {type: this._inputSourceTypes[index], id};
+            });
+        } else {
+            sourcesList = [];
         }
+
         return sourcesList;
     }
 
     get keyboardOptions() {
-        return this._options.split(',');
+        return this._options;
     }
 
     get keyboardModel() {
