@@ -131,6 +131,7 @@ export class IntrospectService {
         let windowDict = {
             'app-id': GLib.Variant.new('s', app.get_id()),
             'client-type': GLib.Variant.new('u', window.get_client_type()),
+            'id': GLib.Variant.new('t', windowId),
             'is-hidden': GLib.Variant.new('b', window.is_hidden()),
             'has-focus': GLib.Variant.new('b', window === focusWindow),
             'width': GLib.Variant.new('u', frameRect.width),
