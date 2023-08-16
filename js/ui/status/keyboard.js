@@ -20,6 +20,9 @@ import * as Util from '../../misc/util.js';
 export const INPUT_SOURCE_TYPE_XKB = 'xkb';
 export const INPUT_SOURCE_TYPE_IBUS = 'ibus';
 
+const DESKTOP_INPUT_SOURCES_SCHEMA = 'org.gnome.desktop.input-sources';
+const KEY_INPUT_SOURCES = 'sources';
+
 export const LayoutMenuItem = GObject.registerClass(
 class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
     _init(displayName, shortName) {
@@ -278,18 +281,16 @@ class InputSourceSystemSettings extends InputSourceSettings {
 }
 
 class InputSourceSessionSettings extends InputSourceSettings {
-    constructor() {
+    constructor(settings) {
         super();
 
-        this._DESKTOP_INPUT_SOURCES_SCHEMA = 'org.gnome.desktop.input-sources';
-        this._KEY_INPUT_SOURCES = 'sources';
         this._KEY_MRU_SOURCES = 'mru-sources';
         this._KEY_KEYBOARD_OPTIONS = 'xkb-options';
         this._KEY_KEYBOARD_MODEL = 'xkb-model';
         this._KEY_PER_WINDOW = 'per-window';
 
-        this._settings = new Gio.Settings({schema_id: this._DESKTOP_INPUT_SOURCES_SCHEMA});
-        this._settings.connect(`changed::${this._KEY_INPUT_SOURCES}`, this._emitInputSourcesChanged.bind(this));
+        this._settings = settings;
+        this._settings.connect(`changed::${KEY_INPUT_SOURCES}`, this._emitInputSourcesChanged.bind(this));
         this._settings.connect(`changed::${this._KEY_KEYBOARD_OPTIONS}`, this._emitKeyboardOptionsChanged.bind(this));
         this._settings.connect(`changed::${this._KEY_KEYBOARD_MODEL}`, this._emitKeyboardModelChanged.bind(this));
         this._settings.connect(`changed::${this._KEY_PER_WINDOW}`, this._emitPerWindowChanged.bind(this));
@@ -308,7 +309,7 @@ class InputSourceSessionSettings extends InputSourceSettings {
     }
 
     get inputSources() {
-        return this._getSourcesList(this._KEY_INPUT_SOURCES);
+        return this._getSourcesList(KEY_INPUT_SOURCES);
     }
 
     get mruSources() {
@@ -363,13 +364,6 @@ export class InputSourceManager extends Signals.EventEmitter {
                 Meta.KeyBindingFlags.IS_REVERSED,
                 Shell.ActionMode.ALL,
                 this._switchInputSource.bind(this));
-        if (Main.sessionMode.isGreeter)
-            this._settings = new InputSourceSystemSettings();
-        else
-            this._settings = new InputSourceSessionSettings();
-        this._settings.connect('input-sources-changed', this._inputSourcesChanged.bind(this));
-        this._settings.connect('keyboard-options-changed', this._keyboardOptionsChanged.bind(this));
-        this._settings.connect('keyboard-model-changed', this._keyboardModelChanged.bind(this));
 
         this._xkbInfo = KeyboardManager.getXkbInfo();
         this._keyboardManager = KeyboardManager.getKeyboardManager();
@@ -381,14 +375,54 @@ export class InputSourceManager extends Signals.EventEmitter {
         this._ibusManager.connect('property-updated', this._ibusPropertyUpdated.bind(this));
         this._ibusManager.connect('set-content-type', this._ibusSetContentType.bind(this));
 
+        this._inputSettings = new Gio.Settings({schema_id: DESKTOP_INPUT_SOURCES_SCHEMA});
+        this._setupInputSettings();
+
         global.display.connect('modifiers-accelerator-activated', this._modifiersSwitcher.bind(this));
 
         this._sourcesPerWindow = false;
         this._focusWindowNotifyId = 0;
-        this._settings.connect('per-window-changed', this._sourcesPerWindowChanged.bind(this));
         this._sourcesPerWindowChanged();
         this._disableIBus = false;
         this._reloading = false;
+    }
+
+    _sessionHasNoInputSettings() {
+        return this._inputSettings.get_user_value(KEY_INPUT_SOURCES) === null;
+    }
+
+    _reloadInputSettings() {
+        const hadNoSessionInputSettings = this._hasNoSessionInputSettings;
+
+        if (Main.sessionMode.isGreeter)
+            this._hasNoSessionInputSettings = true;
+        else
+            this._hasNoSessionInputSettings = this._sessionHasNoInputSettings();
+
+        if (this._settings && hadNoSessionInputSettings === this._hasNoSessionInputSettings)
+            return;
+
+        this._settings?.disconnectObject(this);
+
+        if (this._hasNoSessionInputSettings)
+            this._settings = new InputSourceSystemSettings();
+        else
+            this._settings = new InputSourceSessionSettings(this._inputSettings);
+
+        this._settings.connectObject(
+            'input-sources-changed', this._inputSourcesChanged.bind(this),
+            'keyboard-options-changed', this._keyboardOptionsChanged.bind(this),
+            'keyboard-model-changed', this._keyboardModelChanged.bind(this),
+            'per-window-changed', this._sourcesPerWindowChanged.bind(this),
+            this);
+        this.reload();
+    }
+
+    _setupInputSettings() {
+        if (!Main.sessionMode.isGreeter)
+            this._inputSettings.connect(`changed::${KEY_INPUT_SOURCES}`, this._reloadInputSettings.bind(this));
+
+        this._reloadInputSettings();
     }
 
     reload() {
