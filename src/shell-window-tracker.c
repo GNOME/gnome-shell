@@ -122,7 +122,9 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
                                                    G_SIGNAL_RUN_LAST,
                                                    0,
                                                    NULL, NULL, NULL,
-                                                   G_TYPE_NONE, 0);
+                                                   G_TYPE_NONE,
+                                                   3, META_TYPE_WINDOW, SHELL_TYPE_APP,
+                                                   G_TYPE_INT);
 }
 
 static gboolean
@@ -529,8 +531,12 @@ on_title_changed (MetaWindow  *window,
                   GParamSpec  *pspec,
                   gpointer     user_data)
 {
+  ShellApp *app;
   ShellWindowTracker *self = SHELL_WINDOW_TRACKER (user_data);
-  g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0);
+
+  app = get_app_for_window (self, window);
+
+  g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0, window, app, SHELL_WINDOW_TRACKER_CHANGED);
 }
 
 static void
@@ -569,7 +575,7 @@ track_window (ShellWindowTracker *self,
 
   _shell_app_add_window (app, window);
 
-  g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0);
+  g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0, window, app, SHELL_WINDOW_TRACKER_ADDED);
 }
 
 static void
@@ -590,6 +596,7 @@ disassociate_window (ShellWindowTracker   *self,
   if (!app)
     return;
 
+  g_object_ref (window);
   g_object_ref (app);
 
   g_hash_table_remove (self->window_to_app, window);
@@ -600,8 +607,9 @@ disassociate_window (ShellWindowTracker   *self,
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK (on_gtk_application_id_changed), self);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK (on_window_unmanaged), self);
 
-  g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0);
+  g_signal_emit (self, signals[TRACKED_WINDOWS_CHANGED], 0, window, app, SHELL_WINDOW_TRACKER_REMOVED);
 
+  g_object_unref (window);
   g_object_unref (app);
 }
 

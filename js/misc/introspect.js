@@ -44,7 +44,25 @@ export class IntrospectService {
         });
 
         tracker.connect('tracked-windows-changed',
-            () => this._dbusImpl.emit_signal('WindowsChanged', null));
+            (self, window, app, action) => {
+                if (!this._isEligibleWindow(window))
+                    return;
+                let windowDict = this._getWindowDict(window, app);
+                let windowVariant = new GLib.Variant('(a{sv})', [windowDict]);
+                switch (action) {
+                case Shell.WindowTrackerAction.ADDED:
+                    this._dbusImpl.emit_signal('WindowAdded', windowVariant);
+                    break;
+                case Shell.WindowTrackerAction.CHANGED:
+                    this._dbusImpl.emit_signal('WindowChanged', windowVariant);
+                    break;
+                case Shell.WindowTrackerAction.REMOVED:
+                    this._dbusImpl.emit_signal('WindowRemoved', windowVariant);
+                    break;
+                default:
+                    log(`Incorrect window action ${action}`);
+                }
+            });
 
         this._syncRunningApplications();
 

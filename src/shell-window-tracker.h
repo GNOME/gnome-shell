@@ -16,6 +16,12 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (ShellWindowTracker, shell_window_tracker,
                       SHELL, WINDOW_TRACKER, GObject)
 
+typedef enum {
+  SHELL_WINDOW_TRACKER_ADDED,
+  SHELL_WINDOW_TRACKER_CHANGED,
+  SHELL_WINDOW_TRACKER_REMOVED
+} ShellWindowTrackerAction;
+
 ShellWindowTracker* shell_window_tracker_get_default(void);
 
 ShellApp *shell_window_tracker_get_window_app (ShellWindowTracker *tracker, MetaWindow *metawin);
