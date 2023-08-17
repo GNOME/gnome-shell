@@ -574,7 +574,7 @@ class RedBorderEffect extends Clutter.Effect {
     }
 });
 
-const Inspector = GObject.registerClass({
+export const Inspector = GObject.registerClass({
     Signals: {
         'closed': {},
         'target': {param_types: [Clutter.Actor.$gtype, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE]},
