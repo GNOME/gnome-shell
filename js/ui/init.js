@@ -11,7 +11,7 @@ imports._promiseNative.setMainLoopHook(() => {
         import('./main.js').then(main => main.start()).catch(e => {
             const error = new GLib.Error(
                 Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED,
-                e.message);
+                `${e.message}\n${e.stack}`);
             global.context.terminate_with_error(error);
         });
         return GLib.SOURCE_REMOVE;
