@@ -1299,7 +1299,7 @@ class HotCorner extends Clutter.Actor {
     }
 });
 
-class PressureBarrier extends Signals.EventEmitter {
+export class PressureBarrier extends Signals.EventEmitter {
     constructor(threshold, timeout, actionMode) {
         super();
 
