@@ -186,7 +186,7 @@ const SearchResultsBase = GObject.registerClass({
 
     _createResultDisplay(meta) {
         if (this.provider.createResultObject)
-            return this.provider.createResultObject(meta, this._resultsView);
+            return this.provider.createResultObject(meta);
 
         return null;
     }
