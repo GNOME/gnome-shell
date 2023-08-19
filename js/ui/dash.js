@@ -20,16 +20,6 @@ const DASH_ITEM_LABEL_SHOW_TIME = 150;
 const DASH_ITEM_LABEL_HIDE_TIME = 100;
 const DASH_ITEM_HOVER_TIMEOUT = 300;
 
-/**
- * @param {AppDisplay.AppIcon} source
- */
-function getAppFromSource(source) {
-    if (source instanceof AppDisplay.AppIcon)
-        return source.app;
-    else
-        return null;
-}
-
 export const DashIcon = GObject.registerClass(
 class DashIcon extends AppDisplay.AppIcon {
     _init(app) {
@@ -263,14 +253,14 @@ class ShowAppsIcon extends DashItemContainer {
     }
 
     handleDragOver(source, _actor, _x, _y, _time) {
-        if (!this._canRemoveApp(getAppFromSource(source)))
+        if (!this._canRemoveApp(Dash.getAppFromSource(source)))
             return DND.DragMotionResult.NO_DROP;
 
         return DND.DragMotionResult.MOVE_DROP;
     }
 
     acceptDrop(source, _actor, _x, _y, _time) {
-        let app = getAppFromSource(source);
+        const app = Dash.getAppFromSource(source);
         if (!this._canRemoveApp(app))
             return false;
 
@@ -321,6 +311,16 @@ const baseIconSizes = [16, 22, 24, 32, 48, 64];
 export const Dash = GObject.registerClass({
     Signals: {'icon-size-changed': {}},
 }, class Dash extends St.Widget {
+    /**
+     * @param {object} source
+     */
+    static getAppFromSource(source) {
+        if (source instanceof AppDisplay.AppIcon)
+            return source.app;
+        else
+            return null;
+    }
+
     _init() {
         this._maxWidth = -1;
         this._maxHeight = -1;
@@ -444,7 +444,7 @@ export const Dash = GObject.registerClass({
     }
 
     _onItemDragMotion(dragEvent) {
-        let app = getAppFromSource(dragEvent.source);
+        const app = Dash.getAppFromSource(dragEvent.source);
         if (app == null)
             return DND.DragMotionResult.CONTINUE;
 
@@ -860,7 +860,7 @@ export const Dash = GObject.registerClass({
     }
 
     handleDragOver(source, actor, x, _y, _time) {
-        let app = getAppFromSource(source);
+        const app = Dash.getAppFromSource(source);
 
         // Don't allow favoriting of transient apps
         if (app == null || app.is_window_backed())
@@ -947,7 +947,7 @@ export const Dash = GObject.registerClass({
 
     // Draggable target interface
     acceptDrop(source, _actor, _x, _y, _time) {
-        let app = getAppFromSource(source);
+        const app = Dash.getAppFromSource(source);
 
         // Don't allow favoriting of transient apps
         if (app == null || app.is_window_backed())
