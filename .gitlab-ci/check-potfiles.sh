@@ -2,12 +2,16 @@
 
 srcdirs="src subprojects/extensions-tool"
 uidirs="js subprojects/extensions-app"
+desktopdirs="data subprojects/extensions-app/ subprojects/extensions-tool"
 
 # find source files that contain gettext keywords
 files=$(grep -lR --include='*.c' '\(gettext\|[^I_)]_\)(' $srcdirs)
 
 # find ui files that contain translatable string
 files="$files "$(grep -lRi --include='*.ui' 'translatable="[ty1]' $uidirs)
+
+# find .desktop files
+files="$files "$(find $desktopdirs -name '*.desktop*')
 
 # filter out excluded files
 if [ -f po/POTFILES.skip ]; then
