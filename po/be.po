@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-08-07 15:51+0000\n"
-"PO-Revision-Date: 2023-08-07 23:26+0300\n"
+"POT-Creation-Date: 2023-08-20 00:51+0000\n"
+"PO-Revision-Date: 2023-08-21 19:34+0300\n"
 "Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -59,7 +59,7 @@ msgid "Activate favorite app 9"
 msgstr "Актываваць абраную праграму 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2135
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2141
 msgid "Screenshots"
 msgstr "Здымкі экрана"
 
@@ -469,7 +469,7 @@ msgstr "Наведаць хатнюю старонку пашырэння"
 
 #: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
 #: js/ui/components/networkAgent.js:115 js/ui/components/polkitAgent.js:146
-#: js/ui/endSessionDialog.js:445 js/ui/extensionDownloader.js:256
+#: js/ui/endSessionDialog.js:443 js/ui/extensionDownloader.js:256
 #: js/ui/shellMountOperation.js:387 js/ui/shellMountOperation.js:397
 #: subprojects/extensions-app/js/main.js:179
 msgid "Cancel"
@@ -483,27 +483,27 @@ msgstr "Скасаваць"
 msgid "Password"
 msgstr "Пароль"
 
-#: js/gdm/loginDialog.js:324
+#: js/gdm/loginDialog.js:326
 msgid "Choose Session"
 msgstr "Выбраць сеанс"
 
-#: js/gdm/loginDialog.js:469
+#: js/gdm/loginDialog.js:471
 msgid "Not listed?"
 msgstr "Няма ў спісе?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:937
+#: js/gdm/loginDialog.js:941
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(напр. карыстальнік ці %s)"
 
-#: js/gdm/loginDialog.js:942 js/ui/components/networkAgent.js:259
+#: js/gdm/loginDialog.js:946 js/ui/components/networkAgent.js:259
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:328
 msgid "Username"
 msgstr "Імя карыстальніка"
 
-#: js/gdm/loginDialog.js:1265
+#: js/gdm/loginDialog.js:1270
 msgid "Login Window"
 msgstr "Акно ўваходу ў сістэму"
 
@@ -617,17 +617,17 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Заблакіраваць паварот экрана"
 
-#: js/misc/util.js:137
+#: js/misc/util.js:138
 msgid "Command not found"
 msgstr "Каманда не знойдзена"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:177
+#: js/misc/util.js:178
 msgid "Could not parse command:"
 msgstr "Не ўдалося разабраць каманду:"
 
-#: js/misc/util.js:185
+#: js/misc/util.js:186
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Не ўдалося выканаць «%s»:"
@@ -817,7 +817,7 @@ msgstr "Падрабязнасці праграмы"
 msgid "Quit"
 msgstr "Выйсці"
 
-#: js/ui/appMenu.js:162 js/ui/dash.js:258
+#: js/ui/appMenu.js:162 js/ui/dash.js:260
 msgid "Unpin"
 msgstr "Адмацаваць"
 
@@ -1116,17 +1116,17 @@ msgstr "Не ўдалося пацвердзіць сапраўднасць. П�
 msgid "%s is now known as %s"
 msgstr "%s змяніў імя на %s"
 
-#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:426
+#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:412
 msgid "Windows"
 msgstr "Вокны"
 
-#: js/ui/dash.js:214 js/ui/dash.js:260
+#: js/ui/dash.js:216 js/ui/dash.js:262
 msgid "Show Apps"
 msgstr "Паказаць праграмы"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:408
+#: js/ui/dash.js:410
 msgid "Dash"
 msgstr "Панэль праграм"
 
@@ -1347,33 +1347,33 @@ msgstr ""
 "пераканайцеся, што вы маеце рэзервовую копію, а камп'ютар працуе ад "
 "электрасеткі."
 
-#: js/ui/endSessionDialog.js:290
+#: js/ui/endSessionDialog.js:289
 msgid "Low battery power: please plug in before installing updates."
 msgstr ""
 "Нізкі зарад акумулятара. Падключыце зарадную прыладу перад усталяваннем "
 "абнаўленняў."
 
-#: js/ui/endSessionDialog.js:299
+#: js/ui/endSessionDialog.js:298
 msgid "Some applications are busy or have unsaved work"
 msgstr "Некаторыя праграмы заняты або маюць незахаваныя вынікі працы"
 
-#: js/ui/endSessionDialog.js:304
+#: js/ui/endSessionDialog.js:303
 msgid "Other users are logged in"
 msgstr "Іншыя карыстальнікі не завяршылі сеанс"
 
-#: js/ui/endSessionDialog.js:475
+#: js/ui/endSessionDialog.js:473
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Параметры запуску"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:680
+#: js/ui/endSessionDialog.js:678
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (аддалены сеанс)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:683
+#: js/ui/endSessionDialog.js:681
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (кансоль)"
@@ -1391,11 +1391,11 @@ msgstr "Усталяваць пашырэнне"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Спампаваць і ўсталяваць «%s» з extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:334
+#: js/ui/extensionSystem.js:333
 msgid "Extension Updates Available"
 msgstr "Даступны абнаўленні пашырэнняў"
 
-#: js/ui/extensionSystem.js:335
+#: js/ui/extensionSystem.js:334
 msgid "Extension updates are ready to be installed."
 msgstr "Абнаўленні пашырэнняў гатовыя да ўсталявання."
 
@@ -1482,79 +1482,79 @@ msgstr "Пакінуць выключанай"
 msgid "Keyboard Settings"
 msgstr "Налады клавіятуры"
 
-#: js/ui/lookingGlass.js:726
+#: js/ui/lookingGlass.js:725
 msgid "No extensions installed"
 msgstr "Няма ўсталяваных пашырэнняў"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:787
+#: js/ui/lookingGlass.js:786
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s не генеруе ніякіх памылак."
 
-#: js/ui/lookingGlass.js:793
+#: js/ui/lookingGlass.js:792
 msgid "Hide Errors"
 msgstr "Схаваць памылкі"
 
-#: js/ui/lookingGlass.js:797 js/ui/lookingGlass.js:874
+#: js/ui/lookingGlass.js:796 js/ui/lookingGlass.js:873
 msgid "Show Errors"
 msgstr "Паказаць памылкі"
 
-#: js/ui/lookingGlass.js:806
+#: js/ui/lookingGlass.js:805
 msgid "Enabled"
 msgstr "Уключана"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:809 subprojects/gvc/gvc-mixer-control.c:1908
+#: js/ui/lookingGlass.js:808 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Выключана"
 
-#: js/ui/lookingGlass.js:811
+#: js/ui/lookingGlass.js:810
 msgid "Error"
 msgstr "Памылка"
 
-#: js/ui/lookingGlass.js:813
+#: js/ui/lookingGlass.js:812
 msgid "Out of date"
 msgstr "Састарэла"
 
-#: js/ui/lookingGlass.js:815
+#: js/ui/lookingGlass.js:814
 msgid "Downloading"
 msgstr "Спампоўванне"
 
-#: js/ui/lookingGlass.js:817
+#: js/ui/lookingGlass.js:816
 msgid "Disabling"
 msgstr "Адключэнне"
 
-#: js/ui/lookingGlass.js:819
+#: js/ui/lookingGlass.js:818
 msgid "Enabling"
 msgstr "Уключэнне"
 
-#: js/ui/lookingGlass.js:852
+#: js/ui/lookingGlass.js:851
 msgid "View Source"
 msgstr "Зыходны код"
 
-#: js/ui/lookingGlass.js:863
+#: js/ui/lookingGlass.js:862
 msgid "Web Page"
 msgstr "Вэб-старонка"
 
-#: js/ui/main.js:266
+#: js/ui/main.js:267
 msgid "System was put in unsafe mode"
 msgstr "Сістэма пераведзена ў небяспечны рэжым"
 
-#: js/ui/main.js:267
+#: js/ui/main.js:268
 msgid "Apps now have unrestricted access"
 msgstr "Цяпер праграмы маюць неабмежаваны доступ"
 
-#: js/ui/main.js:268 js/ui/overview.js:63
+#: js/ui/main.js:269 js/ui/overview.js:63
 msgid "Undo"
 msgstr "Адрабіць"
 
-#: js/ui/main.js:326
+#: js/ui/main.js:327
 msgid "Logged in as a privileged user"
 msgstr "Увайшоў як прывілеяваны карыстальнік"
 
-#: js/ui/main.js:327
+#: js/ui/main.js:328
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1562,15 +1562,15 @@ msgstr ""
 "У мэтах бяспекі неабходна пазбягаць запуску сеанса ў якасці прывілеяванага "
 "карыстальніка. Калі магчыма, увайдзіце як звычайны карыстальнік."
 
-#: js/ui/main.js:375
+#: js/ui/main.js:376
 msgid "Screen Lock disabled"
 msgstr "Блакіраванне экрана адключана"
 
-#: js/ui/main.js:376
+#: js/ui/main.js:377
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Для блакіравання экрана патрабуецца GNOME display manager."
 
-#: js/ui/messageTray.js:1424
+#: js/ui/messageTray.js:1423
 msgid "System Information"
 msgstr "Сістэмная інфармацыя"
 
@@ -1590,7 +1590,7 @@ msgstr "Невядомая назва"
 msgid "Type to search"
 msgstr "Увядзіце пошукавы запыт"
 
-#: js/ui/overviewControls.js:414
+#: js/ui/overviewControls.js:400
 msgid "Apps"
 msgstr "Праграмы"
 
@@ -1600,60 +1600,62 @@ msgstr "Праграмы"
 msgid "Overview"
 msgstr "Агляд"
 
-#: js/ui/padOsd.js:106
+#: js/ui/padOsd.js:100
 msgid "New shortcut…"
 msgstr "Новае спалучэнні клавіш…"
 
-#: js/ui/padOsd.js:159
+#: js/ui/padOsd.js:153
 msgid "App defined"
 msgstr "Праграма вызначана"
 
-#: js/ui/padOsd.js:160
+#: js/ui/padOsd.js:154
 msgid "Show on-screen help"
 msgstr "Паказваць даведку на экране"
 
-#: js/ui/padOsd.js:161
+#: js/ui/padOsd.js:155
 msgid "Switch monitor"
 msgstr "Пераключыць манітор"
 
-#: js/ui/padOsd.js:162
+#: js/ui/padOsd.js:156
 msgid "Assign keystroke"
 msgstr "Прызначыць клавішу"
 
-#: js/ui/padOsd.js:231
+#: js/ui/padOsd.js:225
 msgid "Done"
 msgstr "Гатова"
 
-#: js/ui/padOsd.js:748
+#: js/ui/padOsd.js:728
 msgid "Edit…"
 msgstr "Рэдагаваць…"
 
-#: js/ui/padOsd.js:790 js/ui/padOsd.js:907
+#: js/ui/padOsd.js:775
 msgid "None"
 msgstr "Няма"
 
-#: js/ui/padOsd.js:861
+#: js/ui/padOsd.js:846
 msgid "Press a button to configure"
 msgstr "Націсніце кнопку, каб наладзіць"
 
-#: js/ui/padOsd.js:862
+#: js/ui/padOsd.js:847
 msgid "Press Esc to exit"
 msgstr "Націсніце Esc, каб выйсці"
 
-#: js/ui/padOsd.js:865
+#: js/ui/padOsd.js:850
 msgid "Press any key to exit"
 msgstr "Націсніце любую клавішу, каб выйсці"
 
-#: js/ui/panel.js:270
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: js/ui/panel.js:425
 msgid "Activities"
 msgstr "Дзейнасць"
 
-#: js/ui/panel.js:355
+#: js/ui/panel.js:508
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Сістэма"
 
-#: js/ui/panel.js:499
+#: js/ui/panel.js:682
 msgid "Top Bar"
 msgstr "Верхняя панэль"
 
@@ -1689,119 +1691,119 @@ msgstr "Не ўдалося заблакіраваць"
 msgid "Lock was blocked by an app"
 msgstr "Блакіраванне спынена праграмай"
 
-#: js/ui/screenshot.js:1185
+#: js/ui/screenshot.js:1191
 msgid "Selection"
 msgstr "Вылучэнне"
 
-#: js/ui/screenshot.js:1195
+#: js/ui/screenshot.js:1201
 msgid "Area Selection"
 msgstr "Вылучэнне вобласці"
 
-#: js/ui/screenshot.js:1200
+#: js/ui/screenshot.js:1206
 msgid "Screen"
 msgstr "Экран"
 
-#: js/ui/screenshot.js:1210
+#: js/ui/screenshot.js:1216
 msgid "Screen Selection"
 msgstr "Выбар экрана"
 
-#: js/ui/screenshot.js:1215
+#: js/ui/screenshot.js:1221
 msgid "Window"
 msgstr "Акно"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1231
 msgid "Window Selection"
 msgstr "Выбар акна"
 
 #. Translators: entry in the window right click menu.
-#: js/ui/screenshot.js:1250 js/ui/status/system.js:112 js/ui/windowMenu.js:30
+#: js/ui/screenshot.js:1256 js/ui/status/system.js:112 js/ui/windowMenu.js:30
 msgid "Take Screenshot"
 msgstr "Зрабіць экранны здымак"
 
-#: js/ui/screenshot.js:1266
+#: js/ui/screenshot.js:1272
 msgid "Record Screen"
 msgstr "Запіс відэа з экрана"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1281
+#: js/ui/screenshot.js:1287
 msgid "Capture"
 msgstr "Зняць"
 
-#: js/ui/screenshot.js:1303
+#: js/ui/screenshot.js:1309
 msgid "Show Pointer"
 msgstr "Паказваць указальнік мышы"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1894
+#: js/ui/screenshot.js:1900
 msgid "Screencasts"
 msgstr "Запісы экрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1899
+#: js/ui/screenshot.js:1905
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Запіс экрана ад %d %t.webm"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1937
+#: js/ui/screenshot.js:1943
 msgid "Screencast recorded"
 msgstr "Запіс экрана зроблены"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1944
+#: js/ui/screenshot.js:1950
 msgid "Screencast ended unexpectedly"
 msgstr "Запіс экрана нечакана завяршыўся"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1953 js/ui/screenshot.js:2188
+#: js/ui/screenshot.js:1959 js/ui/screenshot.js:2194
 msgid "Screenshot"
 msgstr "Здымак экрана"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1960
+#: js/ui/screenshot.js:1966
 msgid "Click here to view the video."
 msgstr "Націсніце сюды, каб праглядзець відэа."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1963 js/ui/screenshot.js:2202
+#: js/ui/screenshot.js:1969 js/ui/screenshot.js:2208
 msgid "Show in Files"
 msgstr "Паказаць праз «Файлы»"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2148
+#: js/ui/screenshot.js:2154
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Здымак экрана ад %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2194
+#: js/ui/screenshot.js:2200
 msgid "Screenshot captured"
 msgstr "Здымак экрана захоплены"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2196
+#: js/ui/screenshot.js:2202
 msgid "You can paste the image from the clipboard."
 msgstr "Вы можаце ўставіць выяву з буфера абмену."
 
-#: js/ui/screenshot.js:2249 js/ui/screenshot.js:2414
+#: js/ui/screenshot.js:2255 js/ui/screenshot.js:2419
 msgid "Screenshot taken"
 msgstr "Здымак экрана атрыманы"
 
-#: js/ui/search.js:817
+#: js/ui/search.js:818
 msgid "Searching…"
 msgstr "Пошук…"
 
-#: js/ui/search.js:819
+#: js/ui/search.js:820
 msgid "No results."
 msgstr "Нічога не знойдзена."
 
-#: js/ui/search.js:950
+#: js/ui/search.js:951
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1829,7 +1831,7 @@ msgstr "Паказаць тэкст"
 msgid "Hide Text"
 msgstr "Схаваць тэкст"
 
-#: js/ui/shellEntry.js:173
+#: js/ui/shellEntry.js:174
 msgid "Caps lock is on."
 msgstr "Caps lock уключаны."
 
@@ -1909,27 +1911,27 @@ msgstr "Экранная клавіятура"
 msgid "Visual Alerts"
 msgstr "Візуальныя сігналы"
 
-#: js/ui/status/accessibility.js:67
+#: js/ui/status/accessibility.js:68
 msgid "Sticky Keys"
 msgstr "Ліпкія клавішы"
 
-#: js/ui/status/accessibility.js:70
+#: js/ui/status/accessibility.js:72
 msgid "Slow Keys"
 msgstr "Павольныя клавішы"
 
-#: js/ui/status/accessibility.js:73
+#: js/ui/status/accessibility.js:76
 msgid "Bounce Keys"
 msgstr "Пругкія клавішы"
 
-#: js/ui/status/accessibility.js:76
+#: js/ui/status/accessibility.js:80
 msgid "Mouse Keys"
 msgstr "Кіраванне ўказальнікам мышы"
 
-#: js/ui/status/accessibility.js:80
+#: js/ui/status/accessibility.js:85
 msgid "Accessibility Settings"
 msgstr "Налады спецыяльных магчымасцей"
 
-#: js/ui/status/accessibility.js:137
+#: js/ui/status/accessibility.js:142
 msgid "Large Text"
 msgstr "Вялікі тэкст"
 
@@ -1937,24 +1939,24 @@ msgstr "Вялікі тэкст"
 msgid "Auto Rotate"
 msgstr "Аўтапаварот"
 
-#: js/ui/status/backgroundApps.js:162
+#: js/ui/status/backgroundApps.js:166
 msgctxt "title"
 msgid "Background Apps"
 msgstr "Праграмы ў фоне"
 
-#: js/ui/status/backgroundApps.js:177
+#: js/ui/status/backgroundApps.js:181
 msgid "Apps known to be running without a window"
 msgstr "Вядомыя праграмы, якія будуць выконваюцца без акна"
 
-#: js/ui/status/backgroundApps.js:188
+#: js/ui/status/backgroundApps.js:192
 msgid "App Settings"
 msgstr "Налады праграм"
 
-#: js/ui/status/backgroundApps.js:244
+#: js/ui/status/backgroundApps.js:248
 msgid "No Background Apps"
 msgstr "Няма праграм у фоне"
 
-#: js/ui/status/backgroundApps.js:246
+#: js/ui/status/backgroundApps.js:250
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2243,15 +2245,15 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "Заблакіраваць экран"
 
-#: js/ui/status/thunderbolt.js:261
+#: js/ui/status/thunderbolt.js:259
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:322
+#: js/ui/status/thunderbolt.js:320
 msgid "Unknown Thunderbolt device"
 msgstr "Невядомая прылада Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:323
+#: js/ui/status/thunderbolt.js:321
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2259,20 +2261,20 @@ msgstr ""
 "Падчас вашай адсутнасці была выяўлена новая прылада. Каб пачаць ёй "
 "карыстацца, адлучыце і зноў падлучыце прыладу."
 
-#: js/ui/status/thunderbolt.js:326
+#: js/ui/status/thunderbolt.js:324
 msgid "Unauthorized Thunderbolt device"
 msgstr "Несанкцыянаваная прылада Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:327
+#: js/ui/status/thunderbolt.js:325
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr "Выяўлена новая прылада. Патрабуецца аўтарызацыя ад адміністратара."
 
-#: js/ui/status/thunderbolt.js:333
+#: js/ui/status/thunderbolt.js:331
 msgid "Thunderbolt authorization error"
 msgstr "Памылка аўтарызацыі Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:334
+#: js/ui/status/thunderbolt.js:332
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Не ўдалося аўтарызаваць прыладу Thunderbolt: %s"
@@ -3053,6 +3055,14 @@ msgstr "Індыкатар"
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
 msgid "Add an icon to the top bar"
 msgstr "Дадаць значок у верхнюю панэль"
+
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
+msgid "Quick Settings Item"
+msgstr "Элемент хуткіх налад"
+
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:5
+msgid "Add an item to quick settings"
+msgstr "Дадаць элемент у хуткія налады"
 
 #. translators:
 #. * The number of sound outputs on a particular device
