@@ -1,3 +1,17 @@
+44.4
+====
+* Fix accessibility of quick settings sliders [Lukáš; !2762]
+* Allow notification dismissal with backspace [Chris; !2435]
+* Misc. bug fixes and cleanups [Daniel, Florian, Takao, Carlos, Brendan; !2718,
+  !2814, !2842, !2849, !2668, !2666, !2876, !2729, !2828, !2904]
+
+Contributors:
+  Takao Fujiwara, Carlos Garnacho, Chris Heywood, Florian Müllner,
+  Lukáš Tyrychtr, Daniel van Vugt, Brendan William
+
+Translators:
+  Vasil Pupkin [be], Daniel Mustieles [es], Daniel Rusek [cs]
+
 44.3
 ====
 * Fix cursor offset when using magnifier [Андрей; !2780]
