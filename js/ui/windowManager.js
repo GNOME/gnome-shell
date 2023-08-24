@@ -38,7 +38,6 @@ const SCROLL_TIMEOUT_TIME = 150;
 const DIM_BRIGHTNESS = -0.3;
 const DIM_TIME = 500;
 const UNDIM_TIME = 250;
-const APP_MOTION_THRESHOLD = 30;
 
 const ONE_SECOND = 1000; // in ms
 
@@ -475,63 +474,6 @@ class TilePreview extends St.Widget {
     }
 });
 
-const AppSwitchAction = GObject.registerClass({
-    Signals: {'activated': {}},
-}, class AppSwitchAction extends Clutter.GestureAction {
-    _init() {
-        super._init();
-        this.set_n_touch_points(3);
-    }
-
-    vfunc_gesture_prepare(_actor) {
-        if (Main.actionMode !== Shell.ActionMode.NORMAL) {
-            this.cancel();
-            return false;
-        }
-
-        return this.get_n_current_points() <= 4;
-    }
-
-    vfunc_gesture_begin(_actor) {
-        // in milliseconds
-        const LONG_PRESS_TIMEOUT = 250;
-
-        let nPoints = this.get_n_current_points();
-        let event = this.get_last_event(nPoints - 1);
-
-        if (nPoints === 3) {
-            this._longPressStartTime = event.get_time();
-        } else if (nPoints === 4) {
-            // Check whether the 4th finger press happens after a 3-finger long press,
-            // this only needs to be checked on the first 4th finger press
-            if (this._longPressStartTime != null &&
-                event.get_time() < this._longPressStartTime + LONG_PRESS_TIMEOUT) {
-                this.cancel();
-            } else {
-                this._longPressStartTime = null;
-                this.emit('activated');
-            }
-        }
-
-        return this.get_n_current_points() <= 4;
-    }
-
-    vfunc_gesture_progress(_actor) {
-        if (this.get_n_current_points() === 3) {
-            for (let i = 0; i < this.get_n_current_points(); i++) {
-                let [startX, startY] = this.get_press_coords(i);
-                let [x, y] = this.get_motion_coords(i);
-
-                if (Math.abs(x - startX) > APP_MOTION_THRESHOLD ||
-                    Math.abs(y - startY) > APP_MOTION_THRESHOLD)
-                    return false;
-            }
-        }
-
-        return true;
-    }
-});
-
 const ResizePopup = GObject.registerClass(
 class ResizePopup extends St.Widget {
     _init() {
@@ -946,10 +888,6 @@ export class WindowManager {
 
         if (Main.sessionMode.hasWorkspaces)
             this._workspaceTracker = new WorkspaceTracker(this);
-
-        let appSwitchAction = new AppSwitchAction();
-        appSwitchAction.connect('activated', this._switchApp.bind(this));
-        global.stage.add_action_full('app-switch', Clutter.EventPhase.CAPTURE, appSwitchAction);
 
         let mode = Shell.ActionMode.NORMAL;
         let topDragAction = new EdgeDragAction.EdgeDragAction(St.Side.TOP, mode);
