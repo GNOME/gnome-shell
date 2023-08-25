@@ -55,11 +55,11 @@ workflow:
       nodejs
       npm
       meson
-      pkgconfig(gobject-introspection-1.0)
-      pkgconfig(gio-2.0)
-      pkgconfig(gio-unix-2.0)
-      pkgconfig(gnome-autoar-0)
-      pkgconfig(json-glib-1.0)
+      'pkgconfig(gobject-introspection-1.0)'
+      'pkgconfig(gio-2.0)'
+      'pkgconfig(gio-unix-2.0)'
+      'pkgconfig(gnome-autoar-0)'
+      'pkgconfig(json-glib-1.0)'
     FDO_DISTRIBUTION_EXEC: |
       # For static analysis with eslint
       npm install -g eslint@^8.0.0 eslint-plugin-jsdoc@^46.0.0 &&
