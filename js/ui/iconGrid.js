@@ -178,7 +178,7 @@ class BaseIcon extends Shell.SquareBin {
 /**
  * @param {Clutter.Actor} actor
  */
-function zoomOutActor(actor) {
+export function zoomOutActor(actor) {
     let [x, y] = actor.get_transformed_position();
     zoomOutActorAtPos(actor, x, y);
 }
