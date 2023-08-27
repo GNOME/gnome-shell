@@ -65,15 +65,15 @@ class OsdWindow extends Clutter.Actor {
     }
 
     setLabel(label) {
-        this._label.visible = label !== undefined;
-        if (label)
+        this._label.visible = label != null;
+        if (this._label.visible)
             this._label.text = label;
         this._updateBoxVisibility();
     }
 
     setLevel(value) {
-        this._level.visible = value !== undefined;
-        if (value !== undefined) {
+        this._level.visible = value != null;
+        if (this._level.visible) {
             if (this.visible) {
                 this._level.ease_property('value', value, {
                     mode: Clutter.AnimationMode.EASE_OUT_QUAD,
