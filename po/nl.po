@@ -16,16 +16,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-24 14:45+0000\n"
-"PO-Revision-Date: 2023-03-26 18:25+0200\n"
+"POT-Creation-Date: 2023-08-08 06:19+0000\n"
+"PO-Revision-Date: 2023-08-27 14:04+0200\n"
 "Last-Translator: Nathan Follens <nfollens@gnome.org>\n"
-"Language-Team: Dutch <https://matrix.to/#/#nl:gnome.org>\n"
+"Language-Team: GNOME-NL <https://matrix.to/#/#nl:gnome.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Project-Style: gnome\n"
 
@@ -70,7 +70,7 @@ msgid "Activate favorite app 9"
 msgstr "Favoriete toepassing 9 activeren"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2110
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2131
 msgid "Screenshots"
 msgstr "Schermafdrukken"
 
@@ -489,7 +489,7 @@ msgstr "Website van uitbreiding openen"
 
 #: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:250
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 #: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
@@ -831,7 +831,7 @@ msgstr "Toepassingsdetails"
 msgid "Quit"
 msgstr "Afsluiten"
 
-#: js/ui/appMenu.js:157 js/ui/dash.js:249
+#: js/ui/appMenu.js:157 js/ui/dash.js:250
 msgid "Unpin"
 msgstr "Losmaken"
 
@@ -1104,7 +1104,7 @@ msgstr "Pincode"
 msgid "A password is required to connect to “%s”."
 msgstr "Er is een wachtwoord nodig om met ‘%s’ te verbinden."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1996
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:2020
 msgid "Network Manager"
 msgstr "Netwerk-manager"
 
@@ -1142,14 +1142,14 @@ msgstr "%s heet vanaf nu %s"
 msgid "Windows"
 msgstr "Vensters"
 
-#: js/ui/dash.js:205 js/ui/dash.js:251
+#: js/ui/dash.js:206 js/ui/dash.js:252
 msgid "Show Apps"
 msgstr "Toepassingen tonen"
 
 # Betere vertaling is welkom (Wouter Bolsterlee)
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:399
+#: js/ui/dash.js:400
 msgid "Dash"
 msgstr "Zijbalk"
 
@@ -1395,15 +1395,15 @@ msgstr "%s (op afstand)"
 msgid "%s (console)"
 msgstr "%s (console)"
 
-#: js/ui/extensionDownloader.js:245
+#: js/ui/extensionDownloader.js:254
 msgid "Install"
 msgstr "Installeren"
 
-#: js/ui/extensionDownloader.js:251
+#: js/ui/extensionDownloader.js:260
 msgid "Install Extension"
 msgstr "Uitbreiding installeren"
 
-#: js/ui/extensionDownloader.js:252
+#: js/ui/extensionDownloader.js:261
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "‘%s’ downloaden van extensions.gnome.org en daarna installeren?"
@@ -1528,7 +1528,8 @@ msgstr "Ingeschakeld"
 msgid "Disabled"
 msgstr "Uitgeschakeld"
 
-#: js/ui/lookingGlass.js:798
+#. Translators: notification title.
+#: js/ui/lookingGlass.js:798 js/ui/screenshot.js:1940
 msgid "Error"
 msgstr "Fout"
 
@@ -1556,23 +1557,23 @@ msgstr "Broncode weergeven"
 msgid "Web Page"
 msgstr "Webpagina"
 
-#: js/ui/main.js:286
+#: js/ui/main.js:288
 msgid "System was put in unsafe mode"
 msgstr "Systeem is in onveilige modus gezet"
 
-#: js/ui/main.js:287
+#: js/ui/main.js:289
 msgid "Apps now have unrestricted access"
 msgstr "Toepassingen hebben nu onbeperkte toegang"
 
-#: js/ui/main.js:288 js/ui/overview.js:58
+#: js/ui/main.js:290 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Ongedaan maken"
 
-#: js/ui/main.js:344
+#: js/ui/main.js:346
 msgid "Logged in as a privileged user"
 msgstr "Aangemeld als gebruiker met extra rechten"
 
-#: js/ui/main.js:345
+#: js/ui/main.js:347
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1581,15 +1582,15 @@ msgstr ""
 "als gebruiker met extra rechten vermijdt. Meld u, indien mogelijk, aan als "
 "een normale gebruiker."
 
-#: js/ui/main.js:393
+#: js/ui/main.js:395
 msgid "Screen Lock disabled"
 msgstr "Schermvergrendeling uitgeschakeld"
 
-#: js/ui/main.js:394
+#: js/ui/main.js:396
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Schermvergrendeling vereist de GNOME-displaymanager."
 
-#: js/ui/messageTray.js:1418
+#: js/ui/messageTray.js:1417
 msgid "System Information"
 msgstr "Systeeminformatie"
 
@@ -1667,12 +1668,12 @@ msgstr "Druk op een willekeurige toets om af te sluiten"
 msgid "Activities"
 msgstr "Activiteiten"
 
-#: js/ui/panel.js:338
+#: js/ui/panel.js:329
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Systeem"
 
-#: js/ui/panel.js:460
+#: js/ui/panel.js:451
 msgid "Top Bar"
 msgstr "Menubalk"
 
@@ -1708,109 +1709,109 @@ msgstr "Kon niet vergrendelen"
 msgid "Lock was blocked by an app"
 msgstr "Vergrendelen is door een toepassing voorkomen"
 
-#: js/ui/screenshot.js:1165
+#: js/ui/screenshot.js:1178
 msgid "Selection"
 msgstr "Selectie"
 
-#: js/ui/screenshot.js:1175
+#: js/ui/screenshot.js:1188
 msgid "Area Selection"
 msgstr "Gebiedsselectie"
 
-#: js/ui/screenshot.js:1180
+#: js/ui/screenshot.js:1193
 msgid "Screen"
 msgstr "Scherm"
 
-#: js/ui/screenshot.js:1190
+#: js/ui/screenshot.js:1203
 msgid "Screen Selection"
 msgstr "Schermselectie"
 
-#: js/ui/screenshot.js:1195
+#: js/ui/screenshot.js:1208
 msgid "Window"
 msgstr "Venster"
 
-#: js/ui/screenshot.js:1205
+#: js/ui/screenshot.js:1218
 msgid "Window Selection"
 msgstr "Vensterselectie"
 
-#: js/ui/screenshot.js:1243
+#: js/ui/screenshot.js:1256
 msgid "Screenshot / Screencast"
 msgstr "Schermafdruk / schermopname"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1264
+#: js/ui/screenshot.js:1277
 msgid "Capture"
 msgstr "Opnemen"
 
-#: js/ui/screenshot.js:1286
+#: js/ui/screenshot.js:1299
 msgid "Show Pointer"
 msgstr "Muisaanwijzer tonen"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1877
+#: js/ui/screenshot.js:1890
 msgid "Screencasts"
 msgstr "Schermopnamen"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1882
+#: js/ui/screenshot.js:1895
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Schermopname van %d %t.webm"
 
-#. Translators: notification source name.
-#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2163
-msgid "Screenshot"
-msgstr "Schermafdruk"
-
 #. Translators: notification title.
-#: js/ui/screenshot.js:1930
+#: js/ui/screenshot.js:1933
 msgid "Screencast recorded"
 msgstr "Schermopname opgenomen"
 
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1949 js/ui/screenshot.js:2184
+msgid "Screenshot"
+msgstr "Schermafdruk"
+
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1932
+#: js/ui/screenshot.js:1956
 msgid "Click here to view the video."
 msgstr "Klik hier om de video te bekijken."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1935 js/ui/screenshot.js:2177
+#: js/ui/screenshot.js:1959 js/ui/screenshot.js:2198
 msgid "Show in Files"
 msgstr "In Bestanden tonen"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:2144
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Schermafdruk van %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2169
+#: js/ui/screenshot.js:2190
 msgid "Screenshot captured"
 msgstr "Schermafdruk gemaakt"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2171
+#: js/ui/screenshot.js:2192
 msgid "You can paste the image from the clipboard."
 msgstr "U kunt de afbeelding van het klembord plakken."
 
-#: js/ui/screenshot.js:2224 js/ui/screenshot.js:2389
+#: js/ui/screenshot.js:2245 js/ui/screenshot.js:2410
 msgid "Screenshot taken"
 msgstr "Schermafdruk gemaakt"
 
-#: js/ui/search.js:807
+#: js/ui/search.js:812
 msgid "Searching…"
 msgstr "Zoeken…"
 
-#: js/ui/search.js:809
+#: js/ui/search.js:814
 msgid "No results."
 msgstr "Geen resultaten."
 
-#: js/ui/search.js:940
+#: js/ui/search.js:945
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1976,7 +1977,7 @@ msgstr "Verbinding verbreken"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1863
+#: js/ui/status/bluetooth.js:264 js/ui/status/network.js:1887
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-instellingen"
 
@@ -2071,71 +2072,89 @@ msgstr "Verbinding verbreken met %s"
 msgid "Connect to %s"
 msgstr "Verbinden met %s"
 
+#: js/ui/status/network.js:1046
+msgid "Secure"
+msgstr "Veilig"
+
+#: js/ui/status/network.js:1046
+msgid "Not secure"
+msgstr "Onveilig"
+
+#: js/ui/status/network.js:1047
+#, javascript-format
+msgid "Signal strength %s%%"
+msgstr "Signaalsterkte %s%%"
+
+#. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
+#: js/ui/status/network.js:1049
+#, javascript-format
+msgid "%s, %s, %s"
+msgstr "%s, %s, %s"
+
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1128
+#: js/ui/status/network.js:1151
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s-hotspot"
 
-#: js/ui/status/network.js:1393
+#: js/ui/status/network.js:1417
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d verbonden"
 msgstr[1] "%d verbonden"
 
-#: js/ui/status/network.js:1491 js/ui/status/network.js:1507
+#: js/ui/status/network.js:1515 js/ui/status/network.js:1531
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1492
+#: js/ui/status/network.js:1516
 msgid "VPN Settings"
 msgstr "VPN-instellingen"
 
-#: js/ui/status/network.js:1748
+#: js/ui/status/network.js:1772
 msgid "Wi–Fi"
 msgstr "Wifi"
 
-#: js/ui/status/network.js:1750
+#: js/ui/status/network.js:1774
 msgid "All Networks"
 msgstr "Alle netwerken"
 
-#: js/ui/status/network.js:1847
+#: js/ui/status/network.js:1871
 msgid "Wired Connections"
 msgstr "Bekabelde verbindingen"
 
-#: js/ui/status/network.js:1848
+#: js/ui/status/network.js:1872
 msgid "Wired Settings"
 msgstr "Instellingen voor bekabeld netwerk"
 
-#: js/ui/status/network.js:1862
+#: js/ui/status/network.js:1886
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth-tethers"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1869
-#| msgid "Weather"
+#: js/ui/status/network.js:1893
 msgid "Tether"
 msgstr "Tether"
 
-#: js/ui/status/network.js:1882
+#: js/ui/status/network.js:1906
 msgid "Mobile Connections"
 msgstr "Mobiele verbindingen"
 
-#: js/ui/status/network.js:1884
+#: js/ui/status/network.js:1908
 msgid "Mobile Broadband Settings"
 msgstr "Instellingen voor mobiel breedband"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1893
+#: js/ui/status/network.js:1917
 msgid "Mobile"
 msgstr "Mobiel"
 
-#: js/ui/status/network.js:2001
+#: js/ui/status/network.js:2025
 msgid "Connection failed"
 msgstr "Verbinding mislukt"
 
-#: js/ui/status/network.js:2002
+#: js/ui/status/network.js:2026
 msgid "Activation of network connection failed"
 msgstr "Activeren van netwerkverbinding mislukt"
 
@@ -2158,13 +2177,9 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Energie besparen"
 
-#: js/ui/status/powerProfiles.js:40
+#: js/ui/status/powerProfiles.js:40 js/ui/status/powerProfiles.js:70
 msgid "Power Mode"
 msgstr "Energiemodus"
-
-#: js/ui/status/powerProfiles.js:70
-msgid "Power Profiles"
-msgstr "Energiemodi"
 
 #: js/ui/status/powerProfiles.js:72
 msgid "Power Settings"
@@ -2449,23 +2464,23 @@ msgstr "Naar monitor rechts"
 msgid "Close"
 msgstr "Sluiten"
 
-#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:528 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Versie weergeven"
 
-#: src/main.c:514
+#: src/main.c:534
 msgid "Mode used by GDM for login screen"
 msgstr "De modus die door GDM voor het aanmeldscherm gebruikt wordt"
 
-#: src/main.c:520
+#: src/main.c:540
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Specifieke modus gebruiken, bijv. ‘gdm’ voor het aanmeldscherm"
 
-#: src/main.c:526
+#: src/main.c:546
 msgid "List possible modes"
 msgstr "Mogelijke modi tonen"
 
-#: src/main.c:532
+#: src/main.c:552
 msgid "Force animations to be enabled"
 msgstr "Animaties geforceerd inschakelen"
 
@@ -2491,12 +2506,12 @@ msgstr "Het wachtwoord mag niet leeg blijven"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Authenticatievenster is door de gebruiker afgesloten"
 
-#: src/st/st-icon-theme.c:1883
+#: src/st/st-icon-theme.c:1884
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "Pictogram ‘%s’ niet beschikbaar in thema %s"
 
-#: src/st/st-icon-theme.c:3472 src/st/st-icon-theme.c:3775
+#: src/st/st-icon-theme.c:3473 src/st/st-icon-theme.c:3776
 msgid "Failed to load icon"
 msgstr "Kon pictogram niet laden"
 
@@ -3057,6 +3072,9 @@ msgstr[1] "%u invoerkanalen"
 msgid "System Sounds"
 msgstr "Systeemgeluiden"
 
+#~ msgid "Power Profiles"
+#~ msgstr "Energiemodi"
+
 #~ msgid "Applications"
 #~ msgstr "Toepassingen"
 
@@ -3450,9 +3468,6 @@ msgstr "Systeemgeluiden"
 
 #~ msgid "%d x %d"
 #~ msgstr "%d x %d"
-
-#~ msgid "Not In Use"
-#~ msgstr "Niet in gebruik"
 
 #~ msgid "Show the week date in the calendar"
 #~ msgstr "Weeknummers tonen in kalender"
