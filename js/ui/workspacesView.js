@@ -331,7 +331,7 @@ class WorkspacesView extends WorkspacesViewBase {
     vfunc_allocate(box) {
         this.set_allocation(box);
 
-        if (this.get_n_children() === 0)
+        if (this._workspaces.length === 0)
             return;
 
         const vertical = global.workspaceManager.layout_rows === -1;
