@@ -793,7 +793,7 @@ st_scroll_view_scroll_event (ClutterActor *self,
       break;
     case CLUTTER_SCROLL_UP:
     case CLUTTER_SCROLL_DOWN:
-      adjust_with_direction (priv->vadjustment, direction);
+      adjust_with_direction (priv->vadjustment, scroll_direction);
       break;
     case CLUTTER_SCROLL_LEFT:
     case CLUTTER_SCROLL_RIGHT:
@@ -807,7 +807,7 @@ st_scroll_view_scroll_event (ClutterActor *self,
         }
       else
         {
-          adjust_with_direction (priv->hadjustment, direction);
+          adjust_with_direction (priv->hadjustment, scroll_direction);
         }
       break;
     default:
