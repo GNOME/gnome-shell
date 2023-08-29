@@ -7,6 +7,9 @@
 
   @extend %system_entry;
 
+  // %system_entry style override as to not have neutral focus color
+  &:focus { @include entry(focus, $c:$system_fg_color, $fc:$selected_bg_color);}
+
   .search-entry-icon {
     icon-size: $base_icon_size;
     margin-top: 2px; // center vertically
