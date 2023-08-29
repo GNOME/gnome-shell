@@ -780,6 +780,7 @@ const WirelessNetwork = GObject.registerClass({
 
         this._device.connectObject(
             'notify::active-access-point', () => this.notify('is-active'),
+            'notify::active-connection', () => this.notify('is-active'),
             this);
 
         this._accessPoints = new Set();
@@ -814,7 +815,14 @@ const WirelessNetwork = GObject.registerClass({
     }
 
     get is_active() {
-        return this._accessPoints.has(this._device.activeAccessPoint);
+        if (this._accessPoints.has(this._device.activeAccessPoint))
+            return true;
+
+        const {activeConnection} = this._device;
+        if (activeConnection)
+            return this._connections.includes(activeConnection.connection);
+
+        return false;
     }
 
     hasAccessPoint(ap) {
