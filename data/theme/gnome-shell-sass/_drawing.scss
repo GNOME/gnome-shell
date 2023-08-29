@@ -259,21 +259,38 @@
     background-color: transparent;
   } @else {
     background-color: transparentize($color, .84);
-    @if $is_highcontrast {
-      box-shadow: inset 999px 0 0 0 transparentize($color, .2); // bit of a hack
-    }
+  }
+  @if $is_highcontrast {
+    border-color: transparentize($color, .7) !important;
+    box-shadow: inset 999px 0 0 0 transparentize($color, .9);
   }
   &:hover { background-color: transparentize($color, .9);}
-  &:selected, &:focus {
+  &:focus {
+    $fc: mix($color, $selected_bg_color, 20%);
+    background-color: transparentize($fc, .7);
+    border-color: transparentize($selected_bg_color, .3);
+    &:active { background-color: transparentize($fc, .67);}
+    &:hover { background-color: transparentize($fc, .63);}
+    @if $is_highcontrast {
+      border-color: $selected_bg_color !important;
+    }
+  }
+  &:selected {
     background-color: transparentize($color, .87);
     &:hover { background-color: transparentize($color, .84);}
     &:active { background-color: transparentize($color, .87);}
+    @if $is_highcontrast {
+      border-color: transparentize($color, .3) !important;
+    }
   }
   &:active { background-color: transparentize($color, .84);}
   &:outlined, &:checked {
     background-color: transparentize($color, .81);
     &:active { background-color: transparentize($color, .78);}
     &:hover { background-color: transparentize($color, .75);}
+    @if $is_highcontrast {
+      border-color: transparentize($color, .5) !important;
+    }
   }
   &:drop {
     border: 2px solid transparentize($selected_bg_color, .2); //already 2px transparent so no jumping

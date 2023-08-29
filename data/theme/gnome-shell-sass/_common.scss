@@ -68,7 +68,7 @@ stage {
   color: inherit;
 
   @if $is_highcontrast {
-    border-color: $hc_inset_color;
+    border-color: $hc_inset_color !important;
   }
 }
 
