@@ -811,7 +811,10 @@ const WirelessNetwork = GObject.registerClass({
     }
 
     get secure() {
-        return this._securityType !== NM.UtilsSecurityType.NONE;
+        return this._securityType !== NM.UtilsSecurityType.NONE &&
+            this._securityType !== NM.UtilsSecurityType.UNKOWN &&
+            this._securityType !== NM.UtilsSecurityType.OWE &&
+            this._securityType !== NM.UtilsSecurityType.OWE_TM;
     }
 
     get is_active() {
