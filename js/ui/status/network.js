@@ -1166,6 +1166,11 @@ const NMWirelessDeviceItem = GObject.registerClass({
         if (ssid)
             return ssidToLabel(ssid);
 
+        // Use connection name when connected to hidden AP
+        const {activeConnection} = this._device;
+        if (activeConnection)
+            return activeConnection.connection.get_id();
+
         return this._deviceName;
     }
 
