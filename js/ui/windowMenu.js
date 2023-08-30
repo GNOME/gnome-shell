@@ -211,6 +211,12 @@ export class WindowMenu extends PopupMenu.PopupMenu {
         if (!window.can_close())
             item.setSensitive(false);
     }
+
+    addAction(label, callback) {
+        const item = super.addAction(label, callback);
+        item.setOrnament(PopupMenu.Ornament.NONE);
+        return item;
+    }
 }
 
 export class WindowMenuManager {
