@@ -1,10 +1,10 @@
 # Italian translations for gnome-shell package.
 # Copyright (C) 2009, 2010, the gnome-shell copyright holder
 # Copyright (C) 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018 the Free Software Foundation
-# Copyright (C) 2019, 2020, 2021, 2022 the Free Software Foundation
+# Copyright (C) 2019, 2020, 2021, 2022, 2023 the Free Software Foundation
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Milo Casagrande <milo@milo.name>, 2009, 2010, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022.
+# Milo Casagrande <milo@milo.name>, 2009, 2010, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
 # Luca Ferretti <elle.uca@infinito.it>, 2010, 2011, 2012, 2013, 2014.
 # Gianvito Cavasoli <gianvito@gmx.it>, 2016-2023.
 #
@@ -12,16 +12,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-04-25 15:21+0000\n"
-"PO-Revision-Date: 2023-05-11 12:35+0200\n"
-"Last-Translator: Gianvito Cavasoli <gianvito@gmx.it>\n"
+"POT-Creation-Date: 2023-08-22 13:36+0000\n"
+"PO-Revision-Date: 2023-08-30 09:22+0200\n"
+"Last-Translator: Milo Casagrande <milo@milo.name>\n"
 "Language-Team: Italian <gnome-it-list@gnome.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 42.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1.1\n"
 "X-DamnedLies-Scope: partial\n"
 
 #: data/50-gnome-shell-launchers.xml:6
@@ -65,7 +65,7 @@ msgid "Activate favorite app 9"
 msgstr "Attiva l'applicazione preferita 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2110
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2131
 msgid "Screenshots"
 msgstr "Schermate"
 
@@ -154,7 +154,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "UUIDs of extensions to force disabling"
-msgstr "UUID delle estensioni da disabilitare in maniera fozata"
+msgstr "UUID delle estensioni da disabilitare in maniera forzata"
 
 #: data/org.gnome.shell.gschema.xml.in:27
 msgid ""
@@ -458,6 +458,16 @@ msgstr "Posizione"
 #: data/org.gnome.shell.gschema.xml.in:317
 msgid "The location for which to show a forecast"
 msgstr "La posizione per cui mostrare le previsioni meteorologiche"
+
+#. Keep in sync with subprojects/extensions-app
+#: data/org.gnome.Shell.Extensions.desktop.in.in:5
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/js/main.js:212
+#: subprojects/extensions-app/data/ui/extensions-window.ui:18
+#: subprojects/extensions-app/data/ui/extensions-window.ui:83
+msgid "Extensions"
+msgstr "Estensioni"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
@@ -1496,62 +1506,63 @@ msgstr "Lascia disattivata"
 msgid "Keyboard Settings"
 msgstr "Impostazioni tastiera"
 
-#: js/ui/lookingGlass.js:713
+#: js/ui/lookingGlass.js:718
 msgid "No extensions installed"
 msgstr "Nessuna estensione installata"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:774
+#: js/ui/lookingGlass.js:779
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s non ha emesso alcun errore."
 
-#: js/ui/lookingGlass.js:780
+#: js/ui/lookingGlass.js:785
 msgid "Hide Errors"
 msgstr "Nascondi errori"
 
-#: js/ui/lookingGlass.js:784 js/ui/lookingGlass.js:861
+#: js/ui/lookingGlass.js:789 js/ui/lookingGlass.js:866
 msgid "Show Errors"
 msgstr "Mostra errori"
 
 # (ndt) o abilitata?
-#: js/ui/lookingGlass.js:793
+#: js/ui/lookingGlass.js:798
 msgid "Enabled"
 msgstr "Abilitato"
 
 # (ndt) o disabilitata?
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1908
+#: js/ui/lookingGlass.js:801 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Disabilitato"
 
-#: js/ui/lookingGlass.js:798
+#. Translators: notification title.
+#: js/ui/lookingGlass.js:803 js/ui/screenshot.js:1940
 msgid "Error"
 msgstr "Errore"
 
-#: js/ui/lookingGlass.js:800
+#: js/ui/lookingGlass.js:805
 msgid "Out of date"
 msgstr "Non aggiornato"
 
-#: js/ui/lookingGlass.js:802
+#: js/ui/lookingGlass.js:807
 msgid "Downloading"
 msgstr "Scaricamento"
 
 # (ndt) o disabilitata?
-#: js/ui/lookingGlass.js:804
+#: js/ui/lookingGlass.js:809
 msgid "Disabling"
 msgstr "Disattivazione"
 
-#: js/ui/lookingGlass.js:806
+#: js/ui/lookingGlass.js:811
 msgid "Enabling"
 msgstr "Attivazione"
 
-#: js/ui/lookingGlass.js:839
+#: js/ui/lookingGlass.js:844
 msgid "View Source"
 msgstr "Visualizza sorgente"
 
-#: js/ui/lookingGlass.js:850
+#: js/ui/lookingGlass.js:855
 msgid "Web Page"
 msgstr "Pagina web"
 
@@ -1706,97 +1717,97 @@ msgstr "Impossibile bloccare"
 msgid "Lock was blocked by an app"
 msgstr "Il blocco è stato impedito da un'applicazione"
 
-#: js/ui/screenshot.js:1165
+#: js/ui/screenshot.js:1178
 msgid "Selection"
 msgstr "Selezione"
 
-#: js/ui/screenshot.js:1175
+#: js/ui/screenshot.js:1188
 msgid "Area Selection"
 msgstr "Selezione area"
 
-#: js/ui/screenshot.js:1180
+#: js/ui/screenshot.js:1193
 msgid "Screen"
 msgstr "Schermo"
 
-#: js/ui/screenshot.js:1190
+#: js/ui/screenshot.js:1203
 msgid "Screen Selection"
 msgstr "Selezione schermo"
 
-#: js/ui/screenshot.js:1195
+#: js/ui/screenshot.js:1208
 msgid "Window"
 msgstr "Finestra"
 
-#: js/ui/screenshot.js:1205
+#: js/ui/screenshot.js:1218
 msgid "Window Selection"
 msgstr "Selezione finestra"
 
-#: js/ui/screenshot.js:1243
+#: js/ui/screenshot.js:1256
 msgid "Screenshot / Screencast"
 msgstr "Schermata / Video"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1264
+#: js/ui/screenshot.js:1277
 msgid "Capture"
 msgstr "Cattura"
 
-#: js/ui/screenshot.js:1286
+#: js/ui/screenshot.js:1299
 msgid "Show Pointer"
 msgstr "Mostra puntatore"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1877
+#: js/ui/screenshot.js:1890
 msgid "Screencasts"
 msgstr "Video"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1882
+#: js/ui/screenshot.js:1895
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Video del %d %t.webm"
 
-#. Translators: notification source name.
-#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2163
-msgid "Screenshot"
-msgstr "Schermata"
-
 #. Translators: notification title.
-#: js/ui/screenshot.js:1930
+#: js/ui/screenshot.js:1933
 msgid "Screencast recorded"
 msgstr "Video registrato"
 
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1949 js/ui/screenshot.js:2184
+msgid "Screenshot"
+msgstr "Schermata"
+
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1932
+#: js/ui/screenshot.js:1956
 msgid "Click here to view the video."
 msgstr "Fare clic per visualizzare il video."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1935 js/ui/screenshot.js:2177
+#: js/ui/screenshot.js:1959 js/ui/screenshot.js:2198
 msgid "Show in Files"
 msgstr "Mostra in File"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:2144
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Schermata del %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2169
+#: js/ui/screenshot.js:2190
 msgid "Screenshot captured"
 msgstr "Schermata catturata"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2171
+#: js/ui/screenshot.js:2192
 msgid "You can paste the image from the clipboard."
 msgstr "È possibile incollare l'immagine dagli appunti."
 
-#: js/ui/screenshot.js:2224 js/ui/screenshot.js:2389
+#: js/ui/screenshot.js:2245 js/ui/screenshot.js:2410
 msgid "Screenshot taken"
 msgstr "Schermata catturata"
 
@@ -1857,8 +1868,8 @@ msgstr "Utilizza file di chiave"
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
-"Per sbloccare un volume che utilizza file di chiave, usare lo strumento <i>"
-"%s</i>."
+"Per sbloccare un volume che utilizza file di chiave, usare lo strumento "
+"<i>%s</i>."
 
 #: js/ui/shellMountOperation.js:304
 msgid ""
@@ -2170,7 +2181,7 @@ msgstr "Prestazioni"
 #: js/ui/status/powerProfiles.js:25
 msgctxt "Power profile"
 msgid "Balanced"
-msgstr "Bilanciate"
+msgstr "Bilanciata"
 
 #: js/ui/status/powerProfiles.js:30
 msgctxt "Power profile"
@@ -2179,7 +2190,7 @@ msgstr "Risparmio energia"
 
 #: js/ui/status/powerProfiles.js:40 js/ui/status/powerProfiles.js:70
 msgid "Power Mode"
-msgstr "Modalità energetica"
+msgstr "Modalità energia"
 
 #: js/ui/status/powerProfiles.js:72
 msgid "Power Settings"
@@ -2465,23 +2476,23 @@ msgstr "Sposta su schermo a destra"
 msgid "Close"
 msgstr "Chiudi"
 
-#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:528 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Stampa la versione"
 
-#: src/main.c:514
+#: src/main.c:534
 msgid "Mode used by GDM for login screen"
 msgstr "Modalità usata da GDM per la schermata d'accesso"
 
-#: src/main.c:520
+#: src/main.c:540
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Usa una modalità specifica, per es. «gdm» per la schermata d'accesso"
 
-#: src/main.c:526
+#: src/main.c:546
 msgid "List possible modes"
 msgstr "Elenca le modalità possibili"
 
-#: src/main.c:532
+#: src/main.c:552
 msgid "Force animations to be enabled"
 msgstr "Forza le animazioni ad essere abilitate"
 
@@ -2510,19 +2521,11 @@ msgstr "La finestra di dialogo di autenticazione è stata annullata dall'utente"
 #: src/st/st-icon-theme.c:1884
 #, c-format
 msgid "Icon '%s' not present in theme %s"
-msgstr "L'icona \"%s\" non è presente nel tema %s"
+msgstr "L'icona «%s» non è presente nel tema %s"
 
 #: src/st/st-icon-theme.c:3473 src/st/st-icon-theme.c:3776
 msgid "Failed to load icon"
 msgstr "Caricamento dell'icona non riuscito"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:212
-#: subprojects/extensions-app/data/ui/extensions-window.ui:18
-#: subprojects/extensions-app/data/ui/extensions-window.ui:83
-msgid "Extensions"
-msgstr "Estensioni"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 msgid "Manage your GNOME Extensions"
@@ -2623,8 +2626,8 @@ msgstr "Installata manualmente"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "Per trovare e installare estensioni, visitare il sito web <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
@@ -2841,7 +2844,7 @@ msgstr "Mostra estensioni con aggiornamenti"
 
 #: subprojects/extensions-tool/src/command-list.c:146
 msgid "Print extension details"
-msgstr "Stampa dettagli dell'estensioni"
+msgstr "Stampa dettagli dell'estensione"
 
 #: subprojects/extensions-tool/src/command-list.c:154
 msgid "List installed extensions"
