@@ -78,7 +78,6 @@ struct _StButtonPrivate
 
   ClutterInputDevice *device;
   ClutterEventSequence *press_sequence;
-  ClutterGrab *grab;
 
   guint  button_mask : 3;
   guint  is_toggle   : 1;
@@ -195,13 +194,6 @@ st_button_button_press (ClutterActor *actor,
 
   if (priv->button_mask & mask)
     {
-      ClutterActor *stage;
-
-      stage = clutter_actor_get_stage (actor);
-
-      if (priv->grabbed == 0)
-        priv->grab = clutter_stage_grab (CLUTTER_STAGE (stage), actor);
-
       priv->grabbed |= mask;
       st_button_press (button, device, mask, NULL);
 
@@ -234,11 +226,6 @@ st_button_button_release (ClutterActor *actor,
       st_button_release (button, device, mask, is_click ? button_nr : 0, NULL);
 
       priv->grabbed &= ~mask;
-      if (priv->grab && priv->grabbed == 0)
-        {
-          clutter_grab_dismiss (priv->grab);
-          g_clear_pointer (&priv->grab, clutter_grab_unref);
-        }
 
       return TRUE;
     }
@@ -266,7 +253,8 @@ st_button_touch_event (ClutterActor *actor,
   sequence = clutter_event_get_event_sequence (event);
   event_type = clutter_event_type (event);
 
-  if (event_type == CLUTTER_TOUCH_BEGIN && !priv->grab && !priv->press_sequence)
+  if (event_type == CLUTTER_TOUCH_BEGIN &&
+      priv->grabbed == 0 && !priv->press_sequence)
     {
       st_button_press (button, device, 0, sequence);
       return CLUTTER_EVENT_STOP;
@@ -922,12 +910,6 @@ st_button_fake_release (StButton *button)
   g_return_if_fail (ST_IS_BUTTON (button));
 
   priv = st_button_get_instance_private (button);
-
-  if (priv->grab)
-    {
-      clutter_grab_dismiss (priv->grab);
-      g_clear_pointer (&priv->grab, clutter_grab_unref);
-    }
 
   priv->grabbed = 0;
 
