@@ -47,7 +47,6 @@ const BtClient = GObject.registerClass({
         this._client = new GnomeBluetooth.Client();
         this._client.connect('notify::default-adapter-powered', () => {
             this.notify('active');
-            this.notify('available');
         });
         this._client.connect('notify::default-adapter-state',
             () => this.notify('adapter-state'));
@@ -59,7 +58,6 @@ const BtClient = GObject.registerClass({
             this.emit('devices-changed');
 
             this.notify('active');
-            this.notify('available');
         });
 
         this._proxy = new Gio.DBusProxy({
@@ -101,9 +99,8 @@ const BtClient = GObject.registerClass({
     get available() {
         // If we have an rfkill switch, make sure it's not a hardware
         // one as we can't get out of it in software
-        return this._proxy.BluetoothHasAirplaneMode
-            ? !this._proxy.BluetoothHardwareAirplaneMode
-            : this.active;
+        return this._proxy.BluetoothHasAirplaneMode &&
+            !this._proxy.BluetoothHardwareAirplaneMode;
     }
 
     get active() {
