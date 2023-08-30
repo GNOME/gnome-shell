@@ -2246,7 +2246,7 @@ function _storeScreenshot(bytes, pixbuf) {
  * @param {number} cursor.y - The cursor y coordinate.
  * @param {number} cursor.scale - The cursor texture scale.
  */
-async function captureScreenshot(texture, geometry, scale, cursor) {
+export async function captureScreenshot(texture, geometry, scale, cursor) {
     const stream = Gio.MemoryOutputStream.new_resizable();
     const [x, y, w, h] = geometry ?? [0, 0, -1, -1];
     if (cursor === null)
