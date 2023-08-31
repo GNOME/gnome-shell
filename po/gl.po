@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-08-27 12:06+0000\n"
-"PO-Revision-Date: 2023-08-27 21:24+0200\n"
+"POT-Creation-Date: 2023-08-30 09:23+0000\n"
+"PO-Revision-Date: 2023-08-31 21:13+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -1772,7 +1772,7 @@ msgstr "Capturas en vídeo da pantalla"
 #: js/ui/screenshot.js:1905
 #, no-c-format
 msgid "Screencast from %d %t.webm"
-msgstr "Captura en vídeo da pantalla"
+msgstr "Captura en vídeo da pantalla %d %t.webm"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:1943
