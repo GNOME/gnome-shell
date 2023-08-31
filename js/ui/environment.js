@@ -10,6 +10,7 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
+import Mtk from 'gi://Mtk';
 import Polkit from 'gi://Polkit';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
@@ -321,6 +322,11 @@ Object.defineProperty(Clutter.Actor.prototype, 'actor', {
         return this;
     },
 });
+
+Meta.Rectangle = function (params = {}) {
+    console.warn('Meta.Rectangle is deprecated, use Mtk.Rectangle instead');
+    return new Mtk.Rectangle(params);
+};
 
 Gio.File.prototype.touch_async = function (callback) {
     Shell.util_touch_file_async(this, callback);
