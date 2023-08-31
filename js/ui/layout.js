@@ -1461,7 +1461,7 @@ class ScreenTransition extends Clutter.Actor {
 
         Main.uiGroup.set_child_above_sibling(this, null);
 
-        const rect = new imports.gi.cairo.RectangleInt({
+        const rect = new Mtk.Rectangle({
             x: 0,
             y: 0,
             width: global.screen_width,
