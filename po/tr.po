@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-08-22 00:21+0000\n"
-"PO-Revision-Date: 2023-08-21 01:02+0300\n"
+"POT-Creation-Date: 2023-08-31 03:54+0000\n"
+"PO-Revision-Date: 2023-08-31 10:54+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -75,7 +75,7 @@ msgid "Activate favorite app 9"
 msgstr "Gözde uygulama 9ʼu etkinleştir"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2141
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2142
 msgid "Screenshots"
 msgstr "Ekran Görüntüleri"
 
@@ -1210,7 +1210,7 @@ msgstr "Olay Yok"
 
 #: js/ui/dateMenu.js:410
 msgid "Add world clocks…"
-msgstr "Dünya saatlerini ekle…"
+msgstr "Dünya saatleri ekle…"
 
 #: js/ui/dateMenu.js:411
 msgid "World Clocks"
@@ -1698,107 +1698,107 @@ msgstr "Kilitlenemedi"
 msgid "Lock was blocked by an app"
 msgstr "Kilitleme bir uygulamaca engellendi"
 
-#: js/ui/screenshot.js:1191
+#: js/ui/screenshot.js:1192
 msgid "Selection"
 msgstr "Seçim"
 
-#: js/ui/screenshot.js:1201
+#: js/ui/screenshot.js:1202
 msgid "Area Selection"
 msgstr "Alan Seçimi"
 
-#: js/ui/screenshot.js:1206
+#: js/ui/screenshot.js:1207
 msgid "Screen"
 msgstr "Ekran"
 
-#: js/ui/screenshot.js:1216
+#: js/ui/screenshot.js:1217
 msgid "Screen Selection"
 msgstr "Ekran Seçimi"
 
-#: js/ui/screenshot.js:1221
+#: js/ui/screenshot.js:1222
 msgid "Window"
 msgstr "Pencere"
 
-#: js/ui/screenshot.js:1231
+#: js/ui/screenshot.js:1232
 msgid "Window Selection"
 msgstr "Pencere Seçimi"
 
 #. Translators: entry in the window right click menu.
-#: js/ui/screenshot.js:1256 js/ui/status/system.js:112 js/ui/windowMenu.js:30
+#: js/ui/screenshot.js:1257 js/ui/status/system.js:112 js/ui/windowMenu.js:30
 msgid "Take Screenshot"
 msgstr "Ekran Görüntüsü Al"
 
-#: js/ui/screenshot.js:1272
+#: js/ui/screenshot.js:1273
 msgid "Record Screen"
 msgstr "Ekranı Kaydet"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1287
+#: js/ui/screenshot.js:1288
 msgid "Capture"
 msgstr "Yakala"
 
-#: js/ui/screenshot.js:1309
+#: js/ui/screenshot.js:1310
 msgid "Show Pointer"
 msgstr "İmleci Göster"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1900
+#: js/ui/screenshot.js:1901
 msgid "Screencasts"
 msgstr "Ekran Kaydı"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1905
+#: js/ui/screenshot.js:1906
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Ekran Kaydı - %d %t.webm"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1943
+#: js/ui/screenshot.js:1944
 msgid "Screencast recorded"
 msgstr "Ekran kaydı yakalandı"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1950
+#: js/ui/screenshot.js:1951
 msgid "Screencast ended unexpectedly"
 msgstr "Ekran kaydı beklenmedik biçimde bitti"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1959 js/ui/screenshot.js:2194
+#: js/ui/screenshot.js:1960 js/ui/screenshot.js:2195
 msgid "Screenshot"
 msgstr "Ekran Görüntüsü"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1966
+#: js/ui/screenshot.js:1967
 msgid "Click here to view the video."
 msgstr "Videoyu görmek için buraya tıkla."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1969 js/ui/screenshot.js:2208
+#: js/ui/screenshot.js:1970 js/ui/screenshot.js:2209
 msgid "Show in Files"
 msgstr "Dosyalar’da Göster"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2154
+#: js/ui/screenshot.js:2155
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Ekran Görüntüsü - %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2200
+#: js/ui/screenshot.js:2201
 msgid "Screenshot captured"
 msgstr "Ekran görüntüsü yakalandı"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2202
+#: js/ui/screenshot.js:2203
 msgid "You can paste the image from the clipboard."
 msgstr "Resmi panodan yapıştırabilirsiniz."
 
-#: js/ui/screenshot.js:2255 js/ui/screenshot.js:2419
+#: js/ui/screenshot.js:2256 js/ui/screenshot.js:2420
 msgid "Screenshot taken"
 msgstr "Ekran görüntüsü alındı"
 
@@ -2393,7 +2393,7 @@ msgstr[0] "Ayarlardaki değişiklikler %d saniyede eskisine döndürülecek"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:553
+#: js/ui/windowManager.js:496
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2644,12 +2644,12 @@ msgid "Extension Updates Ready"
 msgstr "Uzantı Güncellemeleri Hazır"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:222
+#: subprojects/extensions-tool/src/command-create.c:284
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "Yeni uzantı %s içinde oluşturuldu.\n"
 
-#: subprojects/extensions-tool/src/command-create.c:296
+#: subprojects/extensions-tool/src/command-create.c:376
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
@@ -2658,12 +2658,12 @@ msgstr ""
 "Ad çok kısa (ideal olarak açıklayıcı) dizge olmalıdır.\n"
 "Örnekler: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:302
+#: subprojects/extensions-tool/src/command-create.c:382
 #: subprojects/extensions-tool/src/main.c:242
 msgid "Name"
 msgstr "Ad"
 
-#: subprojects/extensions-tool/src/command-create.c:316
+#: subprojects/extensions-tool/src/command-create.c:396
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
@@ -2672,12 +2672,12 @@ msgstr ""
 "Açıklama, uzantınızın ne yaptığı anlatan tek tümcelik tanımlamadır.\n"
 "Örnekler: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:322
+#: subprojects/extensions-tool/src/command-create.c:402
 #: subprojects/extensions-tool/src/main.c:245
 msgid "Description"
 msgstr "Açıklama"
 
-#: subprojects/extensions-tool/src/command-create.c:336
+#: subprojects/extensions-tool/src/command-create.c:416
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address (clicktofocus@janedoe."
@@ -2686,56 +2686,78 @@ msgstr ""
 "UUID, uzantınız için genel ve benzersiz tanımlayıcıdır.\n"
 "E-posta biçiminde olmalıdır (tiklayarakodakla@birisi.ornek.com)\n"
 
-#: subprojects/extensions-tool/src/command-create.c:363
+#: subprojects/extensions-tool/src/command-create.c:443
 msgid "Choose one of the available templates:\n"
 msgstr "Uygun şablonlardan birini seçin:\n"
 
-#: subprojects/extensions-tool/src/command-create.c:377
+#: subprojects/extensions-tool/src/command-create.c:457
 msgid "Template"
 msgstr "Şablon"
 
-#: subprojects/extensions-tool/src/command-create.c:432
+#: subprojects/extensions-tool/src/command-create.c:515
 msgid "The unique identifier of the new extension"
 msgstr "Yeni uzantının eşsiz tanımlayıcısı"
 
-#: subprojects/extensions-tool/src/command-create.c:435
+#: subprojects/extensions-tool/src/command-create.c:518
 msgid "NAME"
 msgstr "AD"
 
-#: subprojects/extensions-tool/src/command-create.c:436
+#: subprojects/extensions-tool/src/command-create.c:519
 msgid "The user-visible name of the new extension"
 msgstr "Yeni uzantının kullanıcıca görülebilir adı"
 
-#: subprojects/extensions-tool/src/command-create.c:438
+#: subprojects/extensions-tool/src/command-create.c:521
 msgid "DESCRIPTION"
 msgstr "AÇIKLAMA"
 
-#: subprojects/extensions-tool/src/command-create.c:440
+#: subprojects/extensions-tool/src/command-create.c:523
 msgid "A short description of what the extension does"
 msgstr "Uzantının ne yaptığıyla ilgili kısa açıklama"
 
-#: subprojects/extensions-tool/src/command-create.c:443
+#: subprojects/extensions-tool/src/command-create.c:525
+#: subprojects/extensions-tool/src/command-pack.c:467
+msgid "DOMAIN"
+msgstr "ALAN_ADI"
+
+#: subprojects/extensions-tool/src/command-create.c:527
+msgid "The gettext domain used by the extension"
+msgstr "Uzantı tarafından kullanılan gettext alan adı"
+
+#: subprojects/extensions-tool/src/command-create.c:529
+#: subprojects/extensions-tool/src/command-pack.c:460
+msgid "SCHEMA"
+msgstr "ŞEMA"
+
+#: subprojects/extensions-tool/src/command-create.c:531
+msgid "The GSettings schema used by the extension"
+msgstr "Uzantı tarafından kullanılan GSettings şeması"
+
+#: subprojects/extensions-tool/src/command-create.c:534
 msgid "TEMPLATE"
 msgstr "ŞABLON"
 
-#: subprojects/extensions-tool/src/command-create.c:444
+#: subprojects/extensions-tool/src/command-create.c:535
 msgid "The template to use for the new extension"
 msgstr "Yeni uzantı için kullanılacak şablon"
 
-#: subprojects/extensions-tool/src/command-create.c:450
+#: subprojects/extensions-tool/src/command-create.c:538
+msgid "Include prefs.js template"
+msgstr "prefs.js şablonunu içer"
+
+#: subprojects/extensions-tool/src/command-create.c:544
 msgid "Enter extension information interactively"
 msgstr "Uzantı bilgisini etkileşimli olarak gir"
 
-#: subprojects/extensions-tool/src/command-create.c:458
+#: subprojects/extensions-tool/src/command-create.c:552
 msgid "Create a new extension"
 msgstr "Yeni uzantı oluştur"
 
-#: subprojects/extensions-tool/src/command-create.c:476
+#: subprojects/extensions-tool/src/command-create.c:570
 #: subprojects/extensions-tool/src/command-list.c:172
 msgid "Unknown arguments"
 msgstr "Bilinmeyen argüman"
 
-#: subprojects/extensions-tool/src/command-create.c:501
+#: subprojects/extensions-tool/src/command-create.c:595
 msgid "UUID, name and description are required"
 msgstr "UUID, ad ve açıklama gereklidir"
 
@@ -2847,10 +2869,6 @@ msgstr "DOSYA"
 msgid "Additional source to include in the bundle"
 msgstr "Demete eklenecek ek kaynak"
 
-#: subprojects/extensions-tool/src/command-pack.c:460
-msgid "SCHEMA"
-msgstr "ŞEMA"
-
 #: subprojects/extensions-tool/src/command-pack.c:461
 msgid "A GSettings schema that should be included"
 msgstr "İçerilmesi gereken GSettings şeması"
@@ -2863,10 +2881,6 @@ msgstr "DİZİN"
 #: subprojects/extensions-tool/src/command-pack.c:465
 msgid "The directory where translations are found"
 msgstr "Çevirilerin bulunduğu dizin"
-
-#: subprojects/extensions-tool/src/command-pack.c:467
-msgid "DOMAIN"
-msgstr "ALAN_ADI"
 
 #: subprojects/extensions-tool/src/command-pack.c:469
 msgid "The gettext domain to use for translations"
