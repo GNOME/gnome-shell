@@ -104,6 +104,9 @@ unset TEMP
 NAME=$DEFAULT_NAME
 LOCALES=()
 
+# set up first toolbox as default
+[ ! -f $CONFIG_FILE ] && SET_DEFAULT=1
+
 while true; do
   case "$1" in
     -n|--name)
