@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-08-20 00:51+0000\n"
-"PO-Revision-Date: 2023-08-24 19:45-0700\n"
+"POT-Creation-Date: 2023-08-30 09:23+0000\n"
+"PO-Revision-Date: 2023-09-02 08:55-0700\n"
 "Last-Translator: A S Alam <aalam@satluj.org>\n"
 "Language-Team: Punjabi <punjabi-users@list.sf.net>\n"
 "Language: pa\n"
@@ -22,47 +22,38 @@ msgid "Launchers"
 msgstr "ਲਾਂਚਰ"
 
 #: data/50-gnome-shell-launchers.xml:10
-#| msgid "Activate favorite application 1"
 msgid "Activate favorite app 1"
 msgstr "ਪਸੰਦੀਦਾ ਐਪ 1 ਐਕਟੀਵੇਟ"
 
 #: data/50-gnome-shell-launchers.xml:14
-#| msgid "Activate favorite application 2"
 msgid "Activate favorite app 2"
 msgstr "ਪਸੰਦੀਦਾ ਐਪ 2 ਐਕਟੀਵੇਟ"
 
 #: data/50-gnome-shell-launchers.xml:18
-#| msgid "Activate favorite application 3"
 msgid "Activate favorite app 3"
 msgstr "ਪਸੰਦੀਦਾ ਐਪ 3 ਐਕਟੀਵੇਟ"
 
 #: data/50-gnome-shell-launchers.xml:22
-#| msgid "Activate favorite application 4"
 msgid "Activate favorite app 4"
 msgstr "ਪਸੰਦੀਦਾ ਐਪ 4 ਐਕਟੀਵੇਟ"
 
 #: data/50-gnome-shell-launchers.xml:26
-#| msgid "Activate favorite application 5"
 msgid "Activate favorite app 5"
 msgstr "ਪਸੰਦੀਦਾ ਐਪ 5 ਐਕਟੀਵੇਟ"
 
 #: data/50-gnome-shell-launchers.xml:30
-#| msgid "Activate favorite application 6"
 msgid "Activate favorite app 6"
 msgstr "ਪਸੰਦੀਦਾ ਐਪ 6 ਐਕਟੀਵੇਟ"
 
 #: data/50-gnome-shell-launchers.xml:34
-#| msgid "Activate favorite application 7"
 msgid "Activate favorite app 7"
 msgstr "ਪਸੰਦੀਦਾ ਐਪ 7 ਐਕਟੀਵੇਟ"
 
 #: data/50-gnome-shell-launchers.xml:38
-#| msgid "Activate favorite application 8"
 msgid "Activate favorite app 8"
 msgstr "ਪਸੰਦੀਦਾ ਐਪ 8 ਐਕਟੀਵੇਟ"
 
 #: data/50-gnome-shell-launchers.xml:42
-#| msgid "Activate favorite application 9"
 msgid "Activate favorite app 9"
 msgstr "ਪਸੰਦੀਦਾ ਐਪ 9 ਐਕਟੀਵੇਟ"
 
@@ -100,7 +91,6 @@ msgid "Show the notification list"
 msgstr "ਨੋਟੀਫਿਕੇਸ਼ਨ ਸੂਚੀ ਵੇਖਾਓ"
 
 #: data/50-gnome-shell-system.xml:12
-#| msgid "Open the application menu"
 msgid "Open the quick settings menu"
 msgstr "ਫ਼ੌਰੀ ਸੈਟਿੰਗਾਂ ਮੇਨੂ ਖੋਲ੍ਹੋ"
 
@@ -113,7 +103,6 @@ msgid "Show the overview"
 msgstr "ਸੰਖੇਪ ਵੇਖਾਓ"
 
 #: data/50-gnome-shell-system.xml:21
-#| msgid "Show all applications"
 msgid "Show all apps"
 msgstr "ਸਭ ਐਪਾਂ ਵੇਖੋ"
 
@@ -344,12 +333,10 @@ msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "ਨੋਟੀਫਿਕੇਸ਼ਨ ਸੂਚੀ ਦੀ ਦਿੱਖਣ ਨੂੰ ਬਦਲਣ ਲਈ ਕੀਬਾਈਡਿੰਗ ਹੈ।"
 
 #: data/org.gnome.shell.gschema.xml.in:188
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to toggle the quick settings menu"
 msgstr "ਫ਼ੌਰੀ ਸੈਟਿੰਗਾਂ ਮੇਨੂ ਖੋਲ੍ਹਣ ਲਈ ਕੀਬਾਈਡਿੰਗ ਹੈ"
 
 #: data/org.gnome.shell.gschema.xml.in:189
-#| msgid "Keybinding to open the application menu."
 msgid "Keybinding to toggle the quick settings menu."
 msgstr "ਫ਼ੌਰੀ ਸੈਟਿੰਗਾਂ ਮੇਨੂ ਖੋਲ੍ਹਣ ਲਈ ਕੀਬਾਈਡਿੰਗ ਹੈ।"
 
@@ -460,6 +447,16 @@ msgstr "ਟਿਕਾਣਾ"
 msgid "The location for which to show a forecast"
 msgstr "ਭਵਿੱਖਬਾਣੀ ਵੇਖਾਏ ਜਾਣ ਵਾਲਾ ਟਿਕਾਣਾ"
 
+#. Keep in sync with subprojects/extensions-app
+#: data/org.gnome.Shell.Extensions.desktop.in.in:5
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/js/main.js:218
+#: subprojects/extensions-app/data/ui/extensions-window.ui:18
+#: subprojects/extensions-app/data/ui/extensions-window.ui:82
+msgid "Extensions"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ"
+
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
 msgstr "ਨੈੱਟਵਰਕ ਲਾਗਇਨ"
@@ -555,7 +552,6 @@ msgstr "ਬੰਦ ਕਰੋ"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:94
-#| msgid "power off;shutdown;halt;stop"
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "ਬੰਦ ਕਰੋ;ਪਾਵਰ ਆਫ਼;ਮੁੜ-ਚਾਲੂ ਕਰੋ;ਰੋਕੋ;ਅਟਕਾਓ"
 
@@ -828,7 +824,6 @@ msgid "New Window"
 msgstr "ਨਵੀਂ ਵਿੰਡੋ"
 
 #: js/ui/appMenu.js:86
-#| msgid "Show Details"
 msgid "App Details"
 msgstr "ਐਪ ਵੇਰਵੇ"
 
@@ -836,7 +831,7 @@ msgstr "ਐਪ ਵੇਰਵੇ"
 msgid "Quit"
 msgstr "ਬਾਹਰ"
 
-#: js/ui/appMenu.js:162 js/ui/dash.js:260
+#: js/ui/appMenu.js:162 js/ui/dash.js:250
 msgid "Unpin"
 msgstr "ਲਾਹੋ"
 
@@ -997,9 +992,6 @@ msgid "“%s” is not responding."
 msgstr "“%s” ਜਵਾਬ ਨਹੀਂ ਦਿੰਦਾ ਹੈ।"
 
 #: js/ui/closeDialog.js:45
-#| msgid ""
-#| "You may choose to wait a short while for it to continue or force the "
-#| "application to quit entirely."
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
 "quit entirely."
@@ -1142,8 +1134,7 @@ msgstr "%s ਨੂੰ ਹੁਣ %s ਵਜੋਂ ਜਾਣਿਆ ਜਾਵੇਗ�
 msgid "Windows"
 msgstr "ਵਿੰਡੋ"
 
-#: js/ui/dash.js:216 js/ui/dash.js:262
-#| msgid "Show Applications"
+#: js/ui/dash.js:206 js/ui/dash.js:252
 msgid "Show Apps"
 msgstr "ਐਪਾਂ ਵੇਖੋ"
 
@@ -1421,12 +1412,10 @@ msgstr "ਸ਼ਾਰਟਕੱਟਾਂ ਲਈ ਰੁਕਾਵਟ ਪਾਉਣ �
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:73
 #, javascript-format
-#| msgid "The application %s wants to inhibit shortcuts"
 msgid "The app %s wants to inhibit shortcuts"
 msgstr "%s ਐਪ ਸ਼ਾਰਟਕੱਟਾਂ ਲਈ ਰੁਕਾਵਟ ਚਾਹੁੰਦੀ ਹੈ"
 
 #: js/ui/inhibitShortcutsDialog.js:74
-#| msgid "An application wants to inhibit shortcuts"
 msgid "An app wants to inhibit shortcuts"
 msgstr "ਐਪ ਸ਼ਾਰਟਕੱਟਾਂ ਲਈ ਰੁਕਾਵਟ ਚਾਹੁੰਦੀ ਹੈ"
 
@@ -1542,12 +1531,10 @@ msgid "Downloading"
 msgstr "ਡਾਊਨਲੋਡ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ"
 
 #: js/ui/lookingGlass.js:816
-#| msgid "Disable"
 msgid "Disabling"
 msgstr "ਅਸਮਰੱਥ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
 #: js/ui/lookingGlass.js:818
-#| msgid "Enable"
 msgid "Enabling"
 msgstr "ਸਮਰੱਥ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
@@ -1564,7 +1551,6 @@ msgid "System was put in unsafe mode"
 msgstr "ਸਿਸਟਮ ਨੂੰ ਗੈਰ-ਸੁਰੱਖਿਅਤ ਢੰਗ ਵਿੱਚ ਰੱਖਿਆ ਗਿਆ ਹੈ"
 
 #: js/ui/main.js:268
-#| msgid "Applications now have unrestricted access"
 msgid "Apps now have unrestricted access"
 msgstr "ਐਪਾਂ ਕੋਲ ਹੁਣ ਬਿਨਾਂ ਰੋਕ-ਟੋਕ ਪਹੁੰਚ ਹੈ"
 
@@ -1628,7 +1614,6 @@ msgid "New shortcut…"
 msgstr "...ਨਵਾਂ ਸ਼ਾਰਟਕੱਟ"
 
 #: js/ui/padOsd.js:153
-#| msgid "Application defined"
 msgid "App defined"
 msgstr "ਪਰਿਭਾਸ਼ਿਤ ਐਪ"
 
@@ -1684,7 +1669,6 @@ msgid "Top Bar"
 msgstr "ਉੱਤਲੀ ਪੱਟੀ"
 
 #: js/ui/quickSettings.js:187
-#| msgid "Open Calendar"
 msgid "Open menu"
 msgstr "ਮੇਨੂ ਖੋਲ੍ਹੋ"
 
@@ -1713,7 +1697,6 @@ msgid "Unable to lock"
 msgstr "ਅਣਲਾਕ ਕਰਨ ਲਈ ਅਸਮਰੱਥ"
 
 #: js/ui/screenShield.js:277 js/ui/screenShield.js:675
-#| msgid "Lock was blocked by an application"
 msgid "Lock was blocked by an app"
 msgstr "ਐਪ ਵਲੋਂ ਲਾਕ ਉੱਤੇ ਪਾਬੰਦੀ ਲਗਾਈ"
 
@@ -1747,8 +1730,6 @@ msgid "Take Screenshot"
 msgstr "ਸਕਰੀਨਸ਼ਾਟ ਲਵੋ"
 
 #: js/ui/screenshot.js:1272
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
 msgid "Record Screen"
 msgstr "ਸਕਰੀਨ ਰਿਕਾਰਡ ਕਰੋ"
 
@@ -1783,7 +1764,6 @@ msgstr "ਸਕਰੀਨਕਾਸਟ ਰਿਕਾਰਡ ਕੀਤਾ"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:1950
-#| msgid "Screencast recorded"
 msgid "Screencast ended unexpectedly"
 msgstr "ਸਕਰੀਨਕਾਸਟ ਅਚਾਨਕ ਬੰਦ ਹੋ ਗਿਆ"
 
@@ -1889,7 +1869,8 @@ msgid ""
 "keyfiles."
 msgstr ""
 "ਕੀ-ਫ਼ਾਇਲਾਂ ਵਰਤਣ ਵਾਲੇ ਵਾਲੀਅਮ ਨੂੰ ਅਣ-ਲਾਕ ਕਰਨ ਲਈ ਤੁਹਾਨੂੰ <i>ਡਿਸਕਾਂ</i> ਵਰਗੀ ਬਾਹਰੀ"
-" ਸਹੂਲਤ ਦੀ ਲੋੜ ਹੈ।"
+" ਸਹੂਲਤ "
+"ਦੀ ਲੋੜ ਹੈ।"
 
 #: js/ui/shellMountOperation.js:317
 msgid "PIM Number"
@@ -1954,7 +1935,6 @@ msgid "Mouse Keys"
 msgstr "ਮਾਊਸ ਸਵਿੱਚਾਂ"
 
 #: js/ui/status/accessibility.js:85
-#| msgid "Accessibility"
 msgid "Accessibility Settings"
 msgstr "ਅਸੈੱਸਬਿਲਟੀ ਸੈਟਿੰਗਾਂ"
 
@@ -1976,7 +1956,6 @@ msgid "Apps known to be running without a window"
 msgstr "ਬਿਨਾਂ ਐਪ ਤੋਂ ਚੱਲ ਲਈ ਜਾਣੀਆਂ ਜਾਦੀਆਂ ਐਪਾਂ"
 
 #: js/ui/status/backgroundApps.js:192
-#| msgid "Settings"
 msgid "App Settings"
 msgstr "ਐਪ ਸੈਟਿੰਗਾਂ"
 
@@ -1992,7 +1971,6 @@ msgstr[0] "%d ਬੈਕਗਰਾਊਂਡ ਐਪ"
 msgstr[1] "%d ਬੈਕਗਰਾਊਂਡ ਐਪਾਂ"
 
 #: js/ui/status/backlight.js:40
-#| msgid "Brightness"
 msgid "Keyboard Brightness"
 msgstr "ਕੀਬੋਰਡ ਚਮਕ"
 
@@ -2013,7 +1991,6 @@ msgid "Keyboard"
 msgstr "ਕੀਬੋਰਡ"
 
 #: js/ui/status/bluetooth.js:226 js/ui/status/network.js:371
-#| msgid "Disconnect %s"
 msgid "Disconnect"
 msgstr "ਡਿਸ-ਕਨੈਕਟ"
 
@@ -2046,7 +2023,6 @@ msgid "Brightness"
 msgstr "ਚਮਕ"
 
 #: js/ui/status/darkMode.js:12
-#| msgid "Dark Mode"
 msgid "Dark Style"
 msgstr "ਗੂੜ੍ਹਾ ਸਟਾਈਲ"
 
@@ -2118,7 +2094,6 @@ msgid "Secure"
 msgstr "ਸੁਰੱਖਿਅਤ"
 
 #: js/ui/status/network.js:1050
-#| msgid "Not In Use"
 msgid "Not secure"
 msgstr "ਸੁਰੱਖਿਅਤ ਨਹੀਂ"
 
@@ -2141,8 +2116,6 @@ msgstr "%s ਹਾਟਸਪਾਟ"
 
 #: js/ui/status/network.js:1421
 #, javascript-format
-#| msgid "%d Connected"
-#| msgid_plural "%d Connected"
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d ਕਨੈਕਟ ਹੈ"
@@ -2161,13 +2134,10 @@ msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
 #: js/ui/status/network.js:1778
-#| msgid "No Networks"
 msgid "All Networks"
 msgstr "ਸਭ ਨੈੱਟਵਰਕ"
 
 #: js/ui/status/network.js:1875
-#| msgid "%s Wired Connection"
-#| msgid_plural "%s Wired Connections"
 msgid "Wired Connections"
 msgstr "ਤਾਰ ਵਾਲੇ ਕਨੈਕਸ਼ਨ"
 
@@ -2176,19 +2146,15 @@ msgid "Wired Settings"
 msgstr "ਤਾਰ ਵਾਲੇ ਲਈ ਸੈਟਿੰਗਾਂ"
 
 #: js/ui/status/network.js:1890
-#| msgid "Bluetooth Agent"
 msgid "Bluetooth Tethers"
 msgstr "ਬਲੂਟੁੱਥ ਟੀਥਰ"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1897
-#| msgid "Weather"
 msgid "Tether"
 msgstr "ਟੀਥਰ"
 
 #: js/ui/status/network.js:1910
-#| msgid "%s Modem Connection"
-#| msgid_plural "%s Modem Connections"
 msgid "Mobile Connections"
 msgstr "ਮੋਬਾਇਲ ਕਨੈਕਸ਼ਨ"
 
@@ -2229,7 +2195,6 @@ msgid "Power Saver"
 msgstr "ਪਾਵਰ ਬੱਚਤ"
 
 #: js/ui/status/powerProfiles.js:41 js/ui/status/powerProfiles.js:71
-#| msgid "Power Profiles"
 msgid "Power Mode"
 msgstr "ਪਾਵਰ ਢੰਗ"
 
@@ -2418,19 +2383,19 @@ msgid "“%s” is ready"
 msgstr "“%s” ਤਿਆਰ ਹੈ"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:69
+#: js/ui/windowManager.js:68
 msgid "Keep these display settings?"
 msgstr "ਇਹ ਡਿਸਪਲੇਅ ਸੈਟਿੰਗਾਂ ਰੱਖਣੀਆਂ ਚਾਹੁੰਦੇ ਹੋ?"
 
-#: js/ui/windowManager.js:79
+#: js/ui/windowManager.js:78
 msgid "Revert Settings"
 msgstr "ਸੈਟਿੰਗਾਂ ਵਾਪਿਸ ਲਵੋ"
 
-#: js/ui/windowManager.js:84
+#: js/ui/windowManager.js:83
 msgid "Keep Changes"
 msgstr "ਬਦਲਾਅ ਲਾਗੂ ਰੱਖੋ"
 
-#: js/ui/windowManager.js:104
+#: js/ui/windowManager.js:103
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2439,7 +2404,7 @@ msgstr[1] "ਸੈਟਿੰਗਾਂ ਬਦਲਾਅ ਨੂੰ %d ਸਕਿੰਟ
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:553
+#: js/ui/windowManager.js:495
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2529,7 +2494,6 @@ msgid "List possible modes"
 msgstr "ਸੰਭਵ ਮੋਡ ਵੇਖਾਓ"
 
 #: src/main.c:553
-#| msgid "Location Enabled"
 msgid "Force animations to be enabled"
 msgstr "ਐਨੀਮੇਸ਼ਨਾਂ ਨੂੰ ਸਮਰੱਥ ਕਰਨ ਲਈ ਮਜ਼ਬੂਰ ਕਰੋ"
 
@@ -2561,17 +2525,8 @@ msgid "Icon '%s' not present in theme %s"
 msgstr "ਆਈਕਾਨ '%s' ਥੀਮ %s ਵਿੱਚ ਮੌਜੂਦ ਨਹੀਂ ਹੈ"
 
 #: src/st/st-icon-theme.c:3454 src/st/st-icon-theme.c:3757
-#| msgid "Unable to lock"
 msgid "Failed to load icon"
 msgstr "ਆਈਕਾਨ ਲੋਡ ਕਰਨ ਲਈ ਅਸਮਰੱਥ"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:218
-#: subprojects/extensions-app/data/ui/extensions-window.ui:18
-#: subprojects/extensions-app/data/ui/extensions-window.ui:82
-msgid "Extensions"
-msgstr "ਇਕਸਟੈਨਸ਼ਨ"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 msgid "Manage your GNOME Extensions"
@@ -2704,12 +2659,12 @@ msgid "Extension Updates Ready"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅੱਪਡੇਟ ਤਿਆਰ ਹਨ"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:222
+#: subprojects/extensions-tool/src/command-create.c:284
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "ਨਵੀਂ ਇਕਸਟੈਨਸ਼ਨ %s ਵਿੱਚ ਕਾਮਯਾਬੀ ਨਾਲ ਬਣਾਈ ਗਈ ਸੀ।\n"
 
-#: subprojects/extensions-tool/src/command-create.c:296
+#: subprojects/extensions-tool/src/command-create.c:376
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
@@ -2718,12 +2673,12 @@ msgstr ""
 "ਨਾਂ ਬਹੁਤ ਛੋਟੀ ਸਤਰ (ਸਹੀ ਵਰਣਨਾਤਮਿਕ) ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ।\n"
 "ਮਿਸਾਲ ਵਜੋਂ: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:302
+#: subprojects/extensions-tool/src/command-create.c:382
 #: subprojects/extensions-tool/src/main.c:242
 msgid "Name"
 msgstr "ਨਾਂ"
 
-#: subprojects/extensions-tool/src/command-create.c:316
+#: subprojects/extensions-tool/src/command-create.c:396
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
@@ -2732,12 +2687,12 @@ msgstr ""
 "ਤੁਹਾਡੀ ਇਕਟੈਨਸ਼ਨ ਕੀ ਕਰਦੀ ਹੈ, ਉਸ ਬਾਰੇ ਇੱਕ ਲਾਈਨ ਵਿੱਚ ਜਾਣਕਾਰੀ ਹੈ।\n"
 "ਮਿਸਾਲ ਵਜੋਂ: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:322
+#: subprojects/extensions-tool/src/command-create.c:402
 #: subprojects/extensions-tool/src/main.c:245
 msgid "Description"
 msgstr "ਵਰਣਨ"
 
-#: subprojects/extensions-tool/src/command-create.c:336
+#: subprojects/extensions-tool/src/command-create.c:416
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address (clicktofocus@janedoe."
@@ -2747,56 +2702,80 @@ msgstr ""
 "ਇਹ ਈਮੇਲ ਸਿਰਨਾਵੇਂ(clicktofocus@janedoe.example.com) ਦੇ ਰੂਪ ਵਿੱਚ ਹੋਣਾ ਚਾਹੀਦਾ"
 " ਹੈ।\n"
 
-#: subprojects/extensions-tool/src/command-create.c:363
+#: subprojects/extensions-tool/src/command-create.c:443
 msgid "Choose one of the available templates:\n"
 msgstr "ਮੌਜੂਦਾ ਟੈਂਪਲੇਟ ਵਿੱਚੋਂ ਇੱਕ ਚੁਣੋ:\n"
 
-#: subprojects/extensions-tool/src/command-create.c:377
+#: subprojects/extensions-tool/src/command-create.c:457
 msgid "Template"
 msgstr "ਟੈਂਪਲੇਟ"
 
-#: subprojects/extensions-tool/src/command-create.c:432
+#: subprojects/extensions-tool/src/command-create.c:515
 msgid "The unique identifier of the new extension"
 msgstr "ਨਵੀਂ ਇਕਟੈਨਸ਼ਨ ਲਈ ਵਿੱਲਖਣ ਪਛਾਣਕਰਤਾ"
 
-#: subprojects/extensions-tool/src/command-create.c:435
+#: subprojects/extensions-tool/src/command-create.c:518
 msgid "NAME"
 msgstr "ਨਾਂ"
 
-#: subprojects/extensions-tool/src/command-create.c:436
+#: subprojects/extensions-tool/src/command-create.c:519
 msgid "The user-visible name of the new extension"
 msgstr "ਨਵੀਂ ਇਕਟੈਨਸ਼ਨ ਦਾ ਵਰਤੋਂਕਾਰ ਨੂੰ ਦਿਸਣ ਵਾਲਾ ਨਾਂ"
 
-#: subprojects/extensions-tool/src/command-create.c:438
+#: subprojects/extensions-tool/src/command-create.c:521
 msgid "DESCRIPTION"
 msgstr "ਵਰਣਨ"
 
-#: subprojects/extensions-tool/src/command-create.c:440
+#: subprojects/extensions-tool/src/command-create.c:523
 msgid "A short description of what the extension does"
 msgstr "ਛੋਟਾ ਵਰਣਨ ਕਿ ਇਕਸਟੈਨਸ਼ਨ ਕੀ ਕਰਦੀ ਹੈ"
 
-#: subprojects/extensions-tool/src/command-create.c:443
+#: subprojects/extensions-tool/src/command-create.c:525
+#: subprojects/extensions-tool/src/command-pack.c:467
+msgid "DOMAIN"
+msgstr "ਡੋਮੇਨ"
+
+#: subprojects/extensions-tool/src/command-create.c:527
+#| msgid "The gettext domain to use for translations"
+msgid "The gettext domain used by the extension"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਵਲੋਂ ਵਰਤੀ ਜਾਂਦੀ gettext ਡੋਮੇਨ"
+
+#: subprojects/extensions-tool/src/command-create.c:529
+#: subprojects/extensions-tool/src/command-pack.c:460
+msgid "SCHEMA"
+msgstr "ਸਕੀਮਾ"
+
+#: subprojects/extensions-tool/src/command-create.c:531
+#| msgid "The template to use for the new extension"
+msgid "The GSettings schema used by the extension"
+msgstr "ਇਕਟੈਨਸ਼ਨ ਵਲੋਂ ਵਰਤਿਆ ਜਾਂਦਾ GSettings ਸਕੀਮਾ"
+
+#: subprojects/extensions-tool/src/command-create.c:534
 msgid "TEMPLATE"
 msgstr "ਟੈਂਪਲੇਟ"
 
-#: subprojects/extensions-tool/src/command-create.c:444
+#: subprojects/extensions-tool/src/command-create.c:535
 msgid "The template to use for the new extension"
 msgstr "ਨਵੀਂ ਇਕਟੈਨਸ਼ਨ ਲਈ ਵਰਤਣ ਲਈ ਟੈਂਪਲੇਟ"
 
-#: subprojects/extensions-tool/src/command-create.c:450
+#: subprojects/extensions-tool/src/command-create.c:538
+msgid "Include prefs.js template"
+msgstr "prefs.js ਟੈਂਪਲੇਟ ਸਮੇਤ"
+
+#: subprojects/extensions-tool/src/command-create.c:544
 msgid "Enter extension information interactively"
 msgstr "ਇਕਟੈਨਸ਼ਨ ਜਾਣਕਾਰੀ ਤਾਲਮੇਲ ਦਿਓ"
 
-#: subprojects/extensions-tool/src/command-create.c:458
+#: subprojects/extensions-tool/src/command-create.c:552
 msgid "Create a new extension"
 msgstr "ਨਵੀਂ ਇਕਸਟੈਨਸ਼ਨ ਬਣਾਓ"
 
-#: subprojects/extensions-tool/src/command-create.c:476
+#: subprojects/extensions-tool/src/command-create.c:570
 #: subprojects/extensions-tool/src/command-list.c:172
 msgid "Unknown arguments"
 msgstr "ਅਣਪਛਾਤਾ ਆਰਗੂਮੈਂਟ"
 
-#: subprojects/extensions-tool/src/command-create.c:501
+#: subprojects/extensions-tool/src/command-create.c:595
 msgid "UUID, name and description are required"
 msgstr "UUID, ਨਾਂ ਅਤੇ ਵਰਣਨ ਚਾਹੀਦਾ ਹੈ"
 
@@ -2908,10 +2887,6 @@ msgstr "ਫਾਇਲ"
 msgid "Additional source to include in the bundle"
 msgstr "ਬੰਡਲ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰਨ ਲਈ ਵਧੀਕ ਸਰੋਤ"
 
-#: subprojects/extensions-tool/src/command-pack.c:460
-msgid "SCHEMA"
-msgstr "ਸਕੀਮਾ"
-
 #: subprojects/extensions-tool/src/command-pack.c:461
 msgid "A GSettings schema that should be included"
 msgstr "GSettings ਸਕੀਮ, ਜੋ ਸ਼ਾਮਲ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ"
@@ -2924,10 +2899,6 @@ msgstr "ਡਾਇਰੈਕਟਰੀ"
 #: subprojects/extensions-tool/src/command-pack.c:465
 msgid "The directory where translations are found"
 msgstr "ਡਾਇਰੈਕਟਰੀ, ਜਿੱਥੇ ਉਲੱਥੇ ਲੱਭੇ ਜਾਂਦੇ ਹਨ"
-
-#: subprojects/extensions-tool/src/command-pack.c:467
-msgid "DOMAIN"
-msgstr "ਡੋਮੇਨ"
 
 #: subprojects/extensions-tool/src/command-pack.c:469
 msgid "The gettext domain to use for translations"
@@ -3101,7 +3072,6 @@ msgid "Add an icon to the top bar"
 msgstr "ਸਿਖਰ ਪੱਟੀ ਲਈ ਆਈਕਾਨ ਜੋੜੋ"
 
 #: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
-#| msgid "Privacy Settings"
 msgid "Quick Settings Item"
 msgstr "ਫ਼ੌਰੀ ਸੈਟਿੰਗਾਂ ਚੀਜ਼"
 
