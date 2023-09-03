@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-08-30 09:23+0000\n"
-"PO-Revision-Date: 2023-08-31 21:13+0200\n"
+"POT-Creation-Date: 2023-08-31 19:14+0000\n"
+"PO-Revision-Date: 2023-09-03 21:39+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -72,7 +72,7 @@ msgid "Activate favorite app 9"
 msgstr "Activar aplicación favorita 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2141
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2142
 msgid "Screenshots"
 msgstr "Capturas de pantalla"
 
@@ -310,12 +310,12 @@ msgstr "Combinación de teclas para cambiar entre os estados da vista"
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Combinación de teclas para cambiar entre a sesión, o selector de xanelas e a "
-"grella de aplicacións"
+"grade de aplicacións"
 
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
-"Combinación de teclas para cambiar entre a grella de aplicacións, o selector "
+"Combinación de teclas para cambiar entre a grade de aplicacións, o selector "
 "de xanelas e a sesión"
 
 #: data/org.gnome.shell.gschema.xml.in:166
@@ -1112,7 +1112,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Requírese un contrasinal para conectarse a «%s»."
 
-#: js/ui/components/networkAgent.js:742 js/ui/status/network.js:2024
+#: js/ui/components/networkAgent.js:742 js/ui/status/network.js:2040
 msgid "Network Manager"
 msgstr "Xestor da rede"
 
@@ -1717,107 +1717,107 @@ msgstr "Non foi posíbel bloquear"
 msgid "Lock was blocked by an app"
 msgstr "Unha aplicación impediu o bloqueo"
 
-#: js/ui/screenshot.js:1191
+#: js/ui/screenshot.js:1192
 msgid "Selection"
 msgstr "Selección"
 
-#: js/ui/screenshot.js:1201
+#: js/ui/screenshot.js:1202
 msgid "Area Selection"
 msgstr "Seleccionar área"
 
-#: js/ui/screenshot.js:1206
+#: js/ui/screenshot.js:1207
 msgid "Screen"
 msgstr "Pantalla"
 
-#: js/ui/screenshot.js:1216
+#: js/ui/screenshot.js:1217
 msgid "Screen Selection"
 msgstr "Seleccionar pantalla"
 
-#: js/ui/screenshot.js:1221
+#: js/ui/screenshot.js:1222
 msgid "Window"
 msgstr "Xanela"
 
-#: js/ui/screenshot.js:1231
+#: js/ui/screenshot.js:1232
 msgid "Window Selection"
 msgstr "Seleccionar xanela"
 
 #. Translators: entry in the window right click menu.
-#: js/ui/screenshot.js:1256 js/ui/status/system.js:112 js/ui/windowMenu.js:30
+#: js/ui/screenshot.js:1257 js/ui/status/system.js:112 js/ui/windowMenu.js:30
 msgid "Take Screenshot"
 msgstr "Tomar unha captura"
 
-#: js/ui/screenshot.js:1272
+#: js/ui/screenshot.js:1273
 msgid "Record Screen"
 msgstr "Gravar a pantalla"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1287
+#: js/ui/screenshot.js:1288
 msgid "Capture"
 msgstr "Capturar"
 
-#: js/ui/screenshot.js:1309
+#: js/ui/screenshot.js:1310
 msgid "Show Pointer"
 msgstr "Mostrar punteiro"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1900
+#: js/ui/screenshot.js:1901
 msgid "Screencasts"
 msgstr "Capturas en vídeo da pantalla"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1905
+#: js/ui/screenshot.js:1906
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Captura en vídeo da pantalla %d %t.webm"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1943
+#: js/ui/screenshot.js:1944
 msgid "Screencast recorded"
 msgstr "Captura en vídeo da pantalla realizada"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1950
+#: js/ui/screenshot.js:1951
 msgid "Screencast ended unexpectedly"
 msgstr "A captura en vídeo da pantalla finalizou de forma non esperada"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1959 js/ui/screenshot.js:2194
+#: js/ui/screenshot.js:1960 js/ui/screenshot.js:2195
 msgid "Screenshot"
 msgstr "Captura de pantalla"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1966
+#: js/ui/screenshot.js:1967
 msgid "Click here to view the video."
 msgstr "Prema aquí para ver o vídeo."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1969 js/ui/screenshot.js:2208
+#: js/ui/screenshot.js:1970 js/ui/screenshot.js:2209
 msgid "Show in Files"
 msgstr "Mostrar en Ficheiros"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2154
+#: js/ui/screenshot.js:2155
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Captura de pantalla de %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2200
+#: js/ui/screenshot.js:2201
 msgid "Screenshot captured"
 msgstr "Captura de pantalla realizada"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2202
+#: js/ui/screenshot.js:2203
 msgid "You can paste the image from the clipboard."
 msgstr "Pode pegar a imaxe desde o portapapeis."
 
-#: js/ui/screenshot.js:2255 js/ui/screenshot.js:2419
+#: js/ui/screenshot.js:2256 js/ui/screenshot.js:2420
 msgid "Screenshot taken"
 msgstr "Captura de pantalla realizada"
 
@@ -2015,7 +2015,7 @@ msgstr "Desconectar"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:1891
+#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:1907
 msgid "Bluetooth Settings"
 msgstr "Preferencias do Bluetooth"
 
@@ -2107,89 +2107,89 @@ msgstr "Desconectarse de %s"
 msgid "Connect to %s"
 msgstr "Conectarse a %s"
 
-#: js/ui/status/network.js:1050
+#: js/ui/status/network.js:1061
 msgid "Secure"
 msgstr "Segura"
 
-#: js/ui/status/network.js:1050
+#: js/ui/status/network.js:1061
 msgid "Not secure"
 msgstr "Non segura"
 
-#: js/ui/status/network.js:1051
+#: js/ui/status/network.js:1062
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Intensidade de sinal %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1053
+#: js/ui/status/network.js:1064
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1155
+#: js/ui/status/network.js:1166
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s punto wifi"
 
-#: js/ui/status/network.js:1421
+#: js/ui/status/network.js:1437
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d conectado"
 msgstr[1] "%d conectados"
 
-#: js/ui/status/network.js:1519 js/ui/status/network.js:1535
+#: js/ui/status/network.js:1535 js/ui/status/network.js:1551
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1520
+#: js/ui/status/network.js:1536
 msgid "VPN Settings"
 msgstr "Preferencias de VPN"
 
-#: js/ui/status/network.js:1776
+#: js/ui/status/network.js:1792
 msgid "Wi–Fi"
 msgstr "Wifi"
 
-#: js/ui/status/network.js:1778
+#: js/ui/status/network.js:1794
 msgid "All Networks"
 msgstr "Todas as redes"
 
-#: js/ui/status/network.js:1875
+#: js/ui/status/network.js:1891
 msgid "Wired Connections"
 msgstr "Conexións con fíos"
 
-#: js/ui/status/network.js:1876
+#: js/ui/status/network.js:1892
 msgid "Wired Settings"
 msgstr "Preferencias da rede con fíos"
 
-#: js/ui/status/network.js:1890
+#: js/ui/status/network.js:1906
 msgid "Bluetooth Tethers"
 msgstr "Comparticións de datos por Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1897
+#: js/ui/status/network.js:1913
 msgid "Tether"
 msgstr "Compartir datos"
 
-#: js/ui/status/network.js:1910
+#: js/ui/status/network.js:1926
 msgid "Mobile Connections"
 msgstr "Conexións de banda larga"
 
-#: js/ui/status/network.js:1912
+#: js/ui/status/network.js:1928
 msgid "Mobile Broadband Settings"
 msgstr "Preferencias da banda larga móbil"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1921
+#: js/ui/status/network.js:1937
 msgid "Mobile"
 msgstr "Móbil"
 
-#: js/ui/status/network.js:2029
+#: js/ui/status/network.js:2045
 msgid "Connection failed"
 msgstr "Produciuse un fallo na conexión"
 
-#: js/ui/status/network.js:2030
+#: js/ui/status/network.js:2046
 msgid "Activation of network connection failed"
 msgstr "Produciuse un fallo na activación da conexión de rede"
 
@@ -2399,19 +2399,19 @@ msgid "“%s” is ready"
 msgstr "«%s» está preparado"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:68
+#: js/ui/windowManager.js:69
 msgid "Keep these display settings?"
 msgstr "Desexa manter estas preferencias de pantalla?"
 
-#: js/ui/windowManager.js:78
+#: js/ui/windowManager.js:79
 msgid "Revert Settings"
 msgstr "Reverter preferencias"
 
-#: js/ui/windowManager.js:83
+#: js/ui/windowManager.js:84
 msgid "Keep Changes"
 msgstr "Manter cambios"
 
-#: js/ui/windowManager.js:103
+#: js/ui/windowManager.js:104
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2420,7 +2420,7 @@ msgstr[1] "Os cambios das preferencias revertiranse en %d segundos"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:495
+#: js/ui/windowManager.js:496
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
