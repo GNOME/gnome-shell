@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-03-08 16:48+0000\n"
-"PO-Revision-Date: 2023-03-11 11:44+0100\n"
+"POT-Creation-Date: 2023-08-26 17:14+0000\n"
+"PO-Revision-Date: 2023-09-01 08:41+0200\n"
 "Last-Translator: Alan Mortensen <alanmortensen.am@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -69,7 +69,7 @@ msgid "Activate favorite app 9"
 msgstr "Aktivér favoritprogram 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2106
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2141
 msgid "Screenshots"
 msgstr "Skærmbilleder"
 
@@ -102,20 +102,20 @@ msgid "Show the notification list"
 msgstr "Vis påmindelseslisten"
 
 #: data/50-gnome-shell-system.xml:12
+msgid "Open the quick settings menu"
+msgstr "Åbn menuen til hurtige indstillinger"
+
+#: data/50-gnome-shell-system.xml:15
 msgid "Focus the active notification"
 msgstr "Fokusér på den aktive påmindelse"
 
-#: data/50-gnome-shell-system.xml:15
+#: data/50-gnome-shell-system.xml:18
 msgid "Show the overview"
 msgstr "Vis oversigten"
 
-#: data/50-gnome-shell-system.xml:18
+#: data/50-gnome-shell-system.xml:21
 msgid "Show all apps"
 msgstr "Vis alle programmer"
-
-#: data/50-gnome-shell-system.xml:21
-msgid "Open the app menu"
-msgstr "Åbn programmenuen"
 
 #: data/org.gnome.Shell.desktop.in.in:4
 msgid "GNOME Shell"
@@ -298,53 +298,53 @@ msgstr ""
 "“placering”: programikonets placering på siden"
 
 #: data/org.gnome.shell.gschema.xml.in:152
-msgid "Keybinding to open the application menu"
-msgstr "Genvejstast til at åbne programmenuen"
-
-#: data/org.gnome.shell.gschema.xml.in:153
-msgid "Keybinding to open the application menu."
-msgstr "Genvejstast til at åbne programmenuen."
-
 #: data/org.gnome.shell.gschema.xml.in:159
-#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to shift between overview states"
 msgstr "Genvejstast til at skifte mellem oversigtstilstande"
 
-#: data/org.gnome.shell.gschema.xml.in:160
+#: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Genvejstast til at skifte mellem session, vinduesvælger og programgitter"
 
-#: data/org.gnome.shell.gschema.xml.in:167
+#: data/org.gnome.shell.gschema.xml.in:160
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "Genvejstast til at skifte mellem programgitter, vinduesvælger og session"
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Genvejstast til at åbne “Vis programmer”-visningen"
 
-#: data/org.gnome.shell.gschema.xml.in:174
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Genvejstast til at åbne “Vis programmer”-visningen i Aktivitetsoversigten."
 
-#: data/org.gnome.shell.gschema.xml.in:181
+#: data/org.gnome.shell.gschema.xml.in:174
 msgid "Keybinding to open the overview"
 msgstr "Genvejstast til at åbne oversigten"
 
-#: data/org.gnome.shell.gschema.xml.in:182
+#: data/org.gnome.shell.gschema.xml.in:175
 msgid "Keybinding to open the Activities Overview."
 msgstr "Genvejstast til at åbne Aktivitetsoversigten."
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:181
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Genvejstast til at slå synligheden af påmindelseslisten til eller fra"
 
-#: data/org.gnome.shell.gschema.xml.in:189
+#: data/org.gnome.shell.gschema.xml.in:182
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Genvejstast til at slå synligheden af påmindelseslisten til eller fra."
+
+#: data/org.gnome.shell.gschema.xml.in:188
+msgid "Keybinding to toggle the quick settings menu"
+msgstr "Genvejstast til at slå menuen til hurtige indstillinger til/fra"
+
+#: data/org.gnome.shell.gschema.xml.in:189
+msgid "Keybinding to toggle the quick settings menu."
+msgstr "Genvejstast til at slå menuen til hurtige indstillinger til/fra."
 
 #: data/org.gnome.shell.gschema.xml.in:195
 msgid "Keybinding to focus the active notification"
@@ -449,12 +449,22 @@ msgstr "Placering"
 msgid "The location for which to show a forecast"
 msgstr "Placeringen der skal vises en prognose for"
 
+#. Keep in sync with subprojects/extensions-app
+#: data/org.gnome.Shell.Extensions.desktop.in.in:5
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/js/main.js:218
+#: subprojects/extensions-app/data/ui/extensions-window.ui:18
+#: subprojects/extensions-app/data/ui/extensions-window.ui:82
+msgid "Extensions"
+msgstr "Udvidelser"
+
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
 msgstr "Netværksindlogning"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:144
+#: subprojects/extensions-app/data/ui/extensions-window.ui:143
 msgid "Something’s gone wrong"
 msgstr "Noget gik galt"
 
@@ -480,213 +490,213 @@ msgstr "Hjemmeside"
 msgid "Visit extension homepage"
 msgstr "Besøg udvidelsens hjemmeside"
 
-#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
-#: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:241
-#: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
-#: subprojects/extensions-app/js/main.js:173
+#: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
+#: js/ui/components/networkAgent.js:115 js/ui/components/polkitAgent.js:146
+#: js/ui/endSessionDialog.js:443 js/ui/extensionDownloader.js:256
+#: js/ui/shellMountOperation.js:387 js/ui/shellMountOperation.js:397
+#: subprojects/extensions-app/js/main.js:179
 msgid "Cancel"
 msgstr "Annullér"
 
-#: js/gdm/authPrompt.js:310 js/ui/components/networkAgent.js:209
-#: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
-#: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
-#: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
-#: js/ui/shellMountOperation.js:332
+#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:215
+#: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
+#: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
+#: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
+#: js/ui/shellMountOperation.js:337
 msgid "Password"
 msgstr "Adgangskode"
 
-#: js/gdm/loginDialog.js:318
+#: js/gdm/loginDialog.js:326
 msgid "Choose Session"
 msgstr "Vælg session"
 
-#: js/gdm/loginDialog.js:463
+#: js/gdm/loginDialog.js:471
 msgid "Not listed?"
 msgstr "Ikke listet?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:931
+#: js/gdm/loginDialog.js:941
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(f.eks. bruger eller %s)"
 
-#: js/gdm/loginDialog.js:936 js/ui/components/networkAgent.js:253
-#: js/ui/components/networkAgent.js:288 js/ui/components/networkAgent.js:322
+#: js/gdm/loginDialog.js:946 js/ui/components/networkAgent.js:259
+#: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:328
 msgid "Username"
 msgstr "Brugernavn"
 
-#: js/gdm/loginDialog.js:1259
+#: js/gdm/loginDialog.js:1270
 msgid "Login Window"
 msgstr "Indlogningsvindue"
 
-#: js/gdm/util.js:442
+#: js/gdm/util.js:402
 msgid "Authentication error"
 msgstr "Godkendelsesfejl"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:624
+#: js/gdm/util.js:584
 msgid "(or swipe finger across reader)"
 msgstr "(eller stryg fingeren over aflæseren)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:629
+#: js/gdm/util.js:589
 msgid "(or place finger on reader)"
 msgstr "(eller placér fingeren på aflæseren)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:84
+#: js/misc/systemActions.js:91
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Sluk"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:87
+#: js/misc/systemActions.js:94
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "sluk;luk ned;stands;stop"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:92
+#: js/misc/systemActions.js:99
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Genstart"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:95
+#: js/misc/systemActions.js:102
 msgid "reboot;restart;"
 msgstr "reboot;genstart;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:100
+#: js/misc/systemActions.js:107
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Lås skærm"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:103
+#: js/misc/systemActions.js:110
 msgid "lock screen"
 msgstr "lås skærm"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:108
+#: js/misc/systemActions.js:115
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Log ud"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:111
+#: js/misc/systemActions.js:118
 msgid "logout;log out;sign off"
 msgstr "log ud;log af;udmeld"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:116
+#: js/misc/systemActions.js:123
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Hviletilstand"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:119
+#: js/misc/systemActions.js:126
 msgid "suspend;sleep"
 msgstr "hviletilstand"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:124
+#: js/misc/systemActions.js:131
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Skift bruger"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:127
+#: js/misc/systemActions.js:134
 msgid "switch user"
 msgstr "skift bruger"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:141
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "lås orientering;deaktivér låst orientering;skærm;rotation"
 
 #. Translators: The name of the screenshot UI action in search
-#: js/misc/systemActions.js:139
+#: js/misc/systemActions.js:146
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Tag et skærmbillede"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
-#: js/misc/systemActions.js:142
+#: js/misc/systemActions.js:149
 msgid "screenshot;screencast;snip;capture;record"
 msgstr "screenshot;screencast;skærmbillede;snip;klip;optag"
 
-#: js/misc/systemActions.js:242
+#: js/misc/systemActions.js:249
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Deaktivér låst skærmrotation"
 
-#: js/misc/systemActions.js:243
+#: js/misc/systemActions.js:250
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Lås skærmrotation"
 
-#: js/misc/util.js:129
+#: js/misc/util.js:138
 msgid "Command not found"
 msgstr "Kommando ikke fundet"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:166
+#: js/misc/util.js:178
 msgid "Could not parse command:"
 msgstr "Kunne ikke fortolke kommando:"
 
-#: js/misc/util.js:174
+#: js/misc/util.js:186
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Kørsel af “%s” mislykkedes:"
 
-#: js/misc/util.js:191
+#: js/misc/dateUtils.js:69
 msgid "Just now"
 msgstr "Lige nu"
 
-#: js/misc/util.js:193
+#: js/misc/dateUtils.js:72
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minut siden"
 msgstr[1] "%d minutter siden"
 
-#: js/misc/util.js:197
+#: js/misc/dateUtils.js:79
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d time siden"
 msgstr[1] "%d timer siden"
 
-#: js/misc/util.js:201 js/ui/dateMenu.js:167
+#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:182
 msgid "Yesterday"
 msgstr "I går"
 
-#: js/misc/util.js:203
+#: js/misc/dateUtils.js:88
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag siden"
 msgstr[1] "%d dage siden"
 
-#: js/misc/util.js:207
+#: js/misc/dateUtils.js:95
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d uge siden"
 msgstr[1] "%d uger siden"
 
-#: js/misc/util.js:211
+#: js/misc/dateUtils.js:102
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
 msgstr[0] "%d måned siden"
 msgstr[1] "%d måneder siden"
 
-#: js/misc/util.js:214
+#: js/misc/dateUtils.js:108
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -694,20 +704,20 @@ msgstr[0] "%d år siden"
 msgstr[1] "%d år siden"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:247
+#: js/misc/dateUtils.js:155
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:253
+#: js/misc/dateUtils.js:161
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "I går, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:259
+#: js/misc/dateUtils.js:167
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -715,7 +725,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:265
+#: js/misc/dateUtils.js:173
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%-d. %B, %H∶%M"
@@ -723,7 +733,7 @@ msgstr "%-d. %B, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:271
+#: js/misc/dateUtils.js:179
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%-d. %B %Y, %H∶%M"
@@ -731,20 +741,20 @@ msgstr "%-d. %B %Y, %H∶%M"
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
-#: js/misc/util.js:276
+#: js/misc/dateUtils.js:184
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:282
+#: js/misc/dateUtils.js:190
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "I går, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:288
+#: js/misc/dateUtils.js:196
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -752,7 +762,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:294
+#: js/misc/dateUtils.js:202
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%-d. %B, %l∶%M %p"
@@ -760,16 +770,16 @@ msgstr "%-d. %B, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:300
+#: js/misc/dateUtils.js:208
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d. %B %Y, %l∶%M %p"
 
-#: js/portalHelper/main.js:55
-msgid "Hotspot Login"
-msgstr "Hotspot-login"
+#: js/portalHelper/main.js:98
+msgid "Your connection seems to be secure"
+msgstr "Din forbindelse ser ud til at være sikker"
 
-#: js/portalHelper/main.js:108
+#: js/portalHelper/main.js:104
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -777,17 +787,21 @@ msgstr ""
 "Din forbindelse til dette hotspot-login er ikke sikkert. Adgangskoder eller "
 "anden information du indtaster på denne side, kan ses af personer i nærheden."
 
+#: js/portalHelper/main.js:115
+msgid "Hotspot Login"
+msgstr "Hotspot-login"
+
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/inhibitShortcutsDialog.js:88
+#: js/ui/accessDialog.js:45 js/ui/inhibitShortcutsDialog.js:92
 msgid "Deny"
 msgstr "Nægt"
 
-#: js/ui/accessDialog.js:40 js/ui/inhibitShortcutsDialog.js:97
+#: js/ui/accessDialog.js:46 js/ui/inhibitShortcutsDialog.js:101
 msgid "Allow"
 msgstr "Tillad"
 
-#: js/ui/appDisplay.js:1767
+#: js/ui/appDisplay.js:1773
 msgid "Unnamed Folder"
 msgstr "Unavngivet mappe"
 
@@ -802,73 +816,73 @@ msgid "%s has been unpinned from the dash."
 msgstr "%s er blevet frigjort fra favoritområdet."
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appMenu.js:46
+#: js/ui/appMenu.js:51
 msgid "Open Windows"
 msgstr "Åbne vinduer"
 
-#: js/ui/appMenu.js:54
+#: js/ui/appMenu.js:59
 msgid "New Window"
 msgstr "Nyt vindue"
 
-#: js/ui/appMenu.js:81
+#: js/ui/appMenu.js:86
 msgid "App Details"
 msgstr "Programdetaljer"
 
-#: js/ui/appMenu.js:97
+#: js/ui/appMenu.js:102
 msgid "Quit"
 msgstr "Afslut"
 
-#: js/ui/appMenu.js:157 js/ui/dash.js:249
+#: js/ui/appMenu.js:162 js/ui/dash.js:250
 msgid "Unpin"
 msgstr "Frigør"
 
-#: js/ui/appMenu.js:158
+#: js/ui/appMenu.js:163
 msgid "Pin to Dash"
 msgstr "Fastgør til favoritområde"
 
-#: js/ui/appMenu.js:175
+#: js/ui/appMenu.js:180
 msgid "Launch using Integrated Graphics Card"
 msgstr "Start med integreret grafikkort"
 
-#: js/ui/appMenu.js:176
+#: js/ui/appMenu.js:181
 msgid "Launch using Discrete Graphics Card"
 msgstr "Start med særskilt grafikkort"
 
-#: js/ui/audioDeviceSelection.js:41
+#: js/ui/audioDeviceSelection.js:46
 msgid "Select Audio Device"
 msgstr "Vælg lydenhed"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:79
+#: js/ui/audioDeviceSelection.js:61 js/ui/status/volume.js:83
 msgid "Sound Settings"
 msgstr "Indstillinger for lyd"
 
-#: js/ui/audioDeviceSelection.js:69
+#: js/ui/audioDeviceSelection.js:74
 msgid "Headphones"
 msgstr "Hovedtelefoner"
 
-#: js/ui/audioDeviceSelection.js:71
+#: js/ui/audioDeviceSelection.js:76
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:348
+#: js/ui/audioDeviceSelection.js:78 js/ui/status/volume.js:352
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: js/ui/backgroundMenu.js:14
+#: js/ui/backgroundMenu.js:15
 msgid "Change Background…"
 msgstr "Skift baggrund …"
 
-#: js/ui/backgroundMenu.js:16
+#: js/ui/backgroundMenu.js:17
 msgid "Display Settings"
 msgstr "Skærmindstillinger"
 
-#: js/ui/backgroundMenu.js:17
+#: js/ui/backgroundMenu.js:18
 #: subprojects/extensions-app/data/ui/extension-row.ui:122
 msgid "Settings"
 msgstr "Indstillinger"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:35
+#: js/ui/calendar.js:40
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -878,43 +892,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:61
+#: js/ui/calendar.js:66
 msgctxt "grid sunday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:63
+#: js/ui/calendar.js:68
 msgctxt "grid monday"
 msgid "M"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:65
+#: js/ui/calendar.js:70
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:67
+#: js/ui/calendar.js:72
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "O"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:69
+#: js/ui/calendar.js:74
 msgctxt "grid thursday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:76
 msgctxt "grid friday"
 msgid "F"
 msgstr "F"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:73
+#: js/ui/calendar.js:78
 msgctxt "grid saturday"
 msgid "S"
 msgstr "L"
@@ -925,7 +939,7 @@ msgstr "L"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:414
+#: js/ui/calendar.js:429
 msgid "%OB"
 msgstr "%OB"
 
@@ -938,47 +952,47 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:424
+#: js/ui/calendar.js:439
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:485
+#: js/ui/calendar.js:500
 msgid "Previous month"
 msgstr "Forrige måned"
 
-#: js/ui/calendar.js:503
+#: js/ui/calendar.js:518
 msgid "Next month"
 msgstr "Næste måned"
 
-#: js/ui/calendar.js:654
+#: js/ui/calendar.js:669
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:713
+#: js/ui/calendar.js:728
 msgid "Week %V"
 msgstr "Uge %V"
 
-#: js/ui/calendar.js:892
+#: js/ui/calendar.js:907
 msgid "No Notifications"
 msgstr "Ingen påmindelser"
 
-#: js/ui/calendar.js:949
+#: js/ui/calendar.js:964
 msgid "Do Not Disturb"
 msgstr "Forstyr ikke"
 
-#: js/ui/calendar.js:970
+#: js/ui/calendar.js:985
 msgid "Clear"
 msgstr "Ryd"
 
 #. Translators: %s is an application name
-#: js/ui/closeDialog.js:40
+#: js/ui/closeDialog.js:44
 #, javascript-format
 msgid "“%s” is not responding."
 msgstr "“%s” svarer ikke."
 
-#: js/ui/closeDialog.js:41
+#: js/ui/closeDialog.js:45
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
 "quit entirely."
@@ -986,11 +1000,11 @@ msgstr ""
 "Du kan vælge at vente et øjeblik på, at det fortsætter, eller tvinge "
 "programmet til at lukke ned."
 
-#: js/ui/closeDialog.js:69
+#: js/ui/closeDialog.js:73
 msgid "Force Quit"
 msgstr "Tving lukning"
 
-#: js/ui/closeDialog.js:74
+#: js/ui/closeDialog.js:78
 msgid "Wait"
 msgstr "Vent"
 
@@ -1010,44 +1024,44 @@ msgstr "Kunne ikke låse op for diskenhed"
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Den installerede version af udisks understøtter ikke PIM-indstillingen"
 
-#: js/ui/components/autorunManager.js:316
+#: js/ui/components/autorunManager.js:319
 #, javascript-format
 msgid "Open with %s"
 msgstr "Åbn med %s"
 
-#: js/ui/components/networkAgent.js:91
+#: js/ui/components/networkAgent.js:97
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "Du kan også oprette forbindelse ved at trykke på “WPS”-knappen på din router."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/bluetooth.js:221
-#: js/ui/status/network.js:369 js/ui/status/network.js:451
+#: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:226
+#: js/ui/status/network.js:371 js/ui/status/network.js:455
 msgid "Connect"
 msgstr "Forbind"
 
-#: js/ui/components/networkAgent.js:218
+#: js/ui/components/networkAgent.js:224
 msgid "Key"
 msgstr "Nøgle"
 
-#: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:308
+#: js/ui/components/networkAgent.js:275 js/ui/components/networkAgent.js:314
 msgid "Private key password"
 msgstr "Adgangskode til privat nøgle"
 
-#: js/ui/components/networkAgent.js:302
+#: js/ui/components/networkAgent.js:308
 msgid "Identity"
 msgstr "Identitet"
 
-#: js/ui/components/networkAgent.js:328
+#: js/ui/components/networkAgent.js:334
 msgid "Service"
 msgstr "Tjeneste"
 
-#: js/ui/components/networkAgent.js:366 js/ui/components/networkAgent.js:402
-#: js/ui/components/networkAgent.js:747 js/ui/components/networkAgent.js:768
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:408
+#: js/ui/components/networkAgent.js:753 js/ui/components/networkAgent.js:774
 msgid "Authentication required"
 msgstr "Godkendelse påkrævet"
 
-#: js/ui/components/networkAgent.js:367 js/ui/components/networkAgent.js:748
+#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:754
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1056,54 +1070,54 @@ msgstr ""
 "Adgangskoder eller krypteringsnøgler er påkrævet for at få adgang til det "
 "trådløse netværk “%s”."
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:752
+#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:758
 msgid "Wired 802.1X authentication"
 msgstr "Trådet 802.1X-godkendelse"
 
-#: js/ui/components/networkAgent.js:374
+#: js/ui/components/networkAgent.js:380
 msgid "Network name"
 msgstr "Netværksnavn"
 
-#: js/ui/components/networkAgent.js:382 js/ui/components/networkAgent.js:756
+#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:762
 msgid "DSL authentication"
 msgstr "DSL-godkendelse"
 
-#: js/ui/components/networkAgent.js:389 js/ui/components/networkAgent.js:761
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:767
 msgid "PIN code required"
 msgstr "PIN-kode er påkrævet"
 
-#: js/ui/components/networkAgent.js:390 js/ui/components/networkAgent.js:762
+#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:768
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN-kode er nødvendig for den mobile bredbåndsenhed"
 
-#: js/ui/components/networkAgent.js:392
+#: js/ui/components/networkAgent.js:398
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:403 js/ui/components/networkAgent.js:753
-#: js/ui/components/networkAgent.js:757 js/ui/components/networkAgent.js:769
-#: js/ui/components/networkAgent.js:773
+#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:763 js/ui/components/networkAgent.js:775
+#: js/ui/components/networkAgent.js:779
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Der kræves en adgangskode for at forbinde til “%s”."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1996
+#: js/ui/components/networkAgent.js:742 js/ui/status/network.js:2024
 msgid "Network Manager"
 msgstr "Netværkshåndtering"
 
-#: js/ui/components/networkAgent.js:772
+#: js/ui/components/networkAgent.js:778
 msgid "VPN password"
 msgstr "VPN-adgangskode"
 
-#: js/ui/components/polkitAgent.js:41
+#: js/ui/components/polkitAgent.js:46
 msgid "Authentication Required"
 msgstr "Godkendelse er påkrævet"
 
-#: js/ui/components/polkitAgent.js:81
+#: js/ui/components/polkitAgent.js:86
 msgid "Administrator"
 msgstr "Administrator"
 
-#: js/ui/components/polkitAgent.js:146
+#: js/ui/components/polkitAgent.js:151
 msgid "Authenticate"
 msgstr "Godkend"
 
@@ -1111,26 +1125,26 @@ msgstr "Godkend"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:415
+#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:420
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Beklager, det fungerede ikke. Prøv igen."
 
-#: js/ui/components/telepathyClient.js:828
+#: js/ui/components/telepathyClient.js:831
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s kalder sig nu %s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:420
+#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:412
 msgid "Windows"
 msgstr "Vinduer"
 
-#: js/ui/dash.js:205 js/ui/dash.js:251
+#: js/ui/dash.js:206 js/ui/dash.js:252
 msgid "Show Apps"
 msgstr "Vis programmer"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:399
+#: js/ui/dash.js:410
 msgid "Dash"
 msgstr "Favoritområde"
 
@@ -1139,7 +1153,7 @@ msgstr "Favoritområde"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:83
+#: js/ui/dateMenu.js:98
 msgid "%B %-d %Y"
 msgstr "%-d. %B %Y"
 
@@ -1147,34 +1161,34 @@ msgstr "%-d. %B %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:90
+#: js/ui/dateMenu.js:105
 msgid "%A %B %e %Y"
 msgstr "%A %-d. %B %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:156
+#: js/ui/dateMenu.js:171
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-d. %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:159
+#: js/ui/dateMenu.js:174
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%-d. %B %Y"
 
-#: js/ui/dateMenu.js:165
+#: js/ui/dateMenu.js:180
 msgid "Today"
 msgstr "I dag"
 
-#: js/ui/dateMenu.js:169
+#: js/ui/dateMenu.js:184
 msgid "Tomorrow"
 msgstr "I morgen"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:200
+#: js/ui/dateMenu.js:215
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Hele dagen"
@@ -1182,127 +1196,127 @@ msgstr "Hele dagen"
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
 #.
-#: js/ui/dateMenu.js:222
+#: js/ui/dateMenu.js:237
 msgid "%m/%d"
 msgstr "%d/%m"
 
-#: js/ui/dateMenu.js:273
+#: js/ui/dateMenu.js:288
 msgid "No Events"
 msgstr "Ingen begivenheder"
 
-#: js/ui/dateMenu.js:395
+#: js/ui/dateMenu.js:410
 msgid "Add world clocks…"
 msgstr "Tilføj verdensure …"
 
-#: js/ui/dateMenu.js:396
+#: js/ui/dateMenu.js:411
 msgid "World Clocks"
 msgstr "Verdensure"
 
-#: js/ui/dateMenu.js:680
+#: js/ui/dateMenu.js:695
 msgid "Loading…"
 msgstr "Indlæser …"
 
-#: js/ui/dateMenu.js:690
+#: js/ui/dateMenu.js:705
 msgid "Go online for weather information"
 msgstr "Gå online for at se information om vejret"
 
-#: js/ui/dateMenu.js:692
+#: js/ui/dateMenu.js:707
 msgid "Weather information is currently unavailable"
 msgstr "Vejrinformation er ikke tilgængelig i øjeblikket"
 
-#: js/ui/dateMenu.js:702
+#: js/ui/dateMenu.js:717
 msgid "Weather"
 msgstr "Vejr"
 
-#: js/ui/dateMenu.js:704
+#: js/ui/dateMenu.js:719
 msgid "Select weather location…"
 msgstr "Vælg en placering for vejr …"
 
-#: js/ui/endSessionDialog.js:41
+#: js/ui/endSessionDialog.js:46
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Log %s ud"
 
-#: js/ui/endSessionDialog.js:42
+#: js/ui/endSessionDialog.js:47
 msgctxt "title"
 msgid "Log Out"
 msgstr "Log ud"
 
-#: js/ui/endSessionDialog.js:45
+#: js/ui/endSessionDialog.js:50
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s vil blive logget ud automatisk om %d sekund."
 msgstr[1] "%s vil blive logget ud automatisk om %d sekunder."
 
-#: js/ui/endSessionDialog.js:51
+#: js/ui/endSessionDialog.js:56
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Du vil blive logget ud automatisk om %d sekund."
 msgstr[1] "Du vil blive logget ud automatisk om %d sekunder."
 
-#: js/ui/endSessionDialog.js:58
+#: js/ui/endSessionDialog.js:63
 msgctxt "button"
 msgid "Log Out"
 msgstr "Log ud"
 
-#: js/ui/endSessionDialog.js:64 js/ui/status/system.js:168
+#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:175
 msgctxt "title"
 msgid "Power Off"
 msgstr "Sluk"
 
-#: js/ui/endSessionDialog.js:65
+#: js/ui/endSessionDialog.js:70
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Installér opdateringer og sluk"
 
-#: js/ui/endSessionDialog.js:68
+#: js/ui/endSessionDialog.js:73
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Systemet vil lukke ned automatisk om %d sekund."
 msgstr[1] "Systemet vil lukke ned automatisk om %d sekunder."
 
-#: js/ui/endSessionDialog.js:72 js/ui/endSessionDialog.js:91
+#: js/ui/endSessionDialog.js:77 js/ui/endSessionDialog.js:96
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Installér ventende softwareopdateringer"
 
-#: js/ui/endSessionDialog.js:76
+#: js/ui/endSessionDialog.js:81
 msgctxt "button"
 msgid "Power Off"
 msgstr "Sluk"
 
-#: js/ui/endSessionDialog.js:83
+#: js/ui/endSessionDialog.js:88
 msgctxt "title"
 msgid "Restart"
 msgstr "Genstart"
 
-#: js/ui/endSessionDialog.js:84
+#: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "Installér opdateringer og genstart"
 
-#: js/ui/endSessionDialog.js:87
+#: js/ui/endSessionDialog.js:92
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Systemet vil genstarte automatisk om %d sekund."
 msgstr[1] "Systemet vil genstarte automatisk om %d sekunder."
 
-#: js/ui/endSessionDialog.js:95
+#: js/ui/endSessionDialog.js:100
 msgctxt "button"
 msgid "Restart"
 msgstr "Genstart"
 
-#: js/ui/endSessionDialog.js:103
+#: js/ui/endSessionDialog.js:108
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Genstart og installér opdateringer"
 
-#: js/ui/endSessionDialog.js:106
+#: js/ui/endSessionDialog.js:111
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1312,22 +1326,22 @@ msgstr[0] ""
 msgstr[1] ""
 "Systemet vil genstarte og installere opdateringer automatisk om %d sekunder."
 
-#: js/ui/endSessionDialog.js:113 js/ui/endSessionDialog.js:134
+#: js/ui/endSessionDialog.js:118 js/ui/endSessionDialog.js:139
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Genstart og installér"
 
-#: js/ui/endSessionDialog.js:115
+#: js/ui/endSessionDialog.js:120
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Installér og sluk"
 
-#: js/ui/endSessionDialog.js:116
+#: js/ui/endSessionDialog.js:121
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Sluk efter opdateringerne er installeret"
 
-#: js/ui/endSessionDialog.js:123
+#: js/ui/endSessionDialog.js:128
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Genstart og installér opgradering"
@@ -1335,7 +1349,7 @@ msgstr "Genstart og installér opgradering"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:128
+#: js/ui/endSessionDialog.js:133
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1345,86 +1359,86 @@ msgstr ""
 "vare længe: Sikr dig, at du har sikkerhedskopier, og at computeren er "
 "tilsluttet elnettet."
 
-#: js/ui/endSessionDialog.js:285
+#: js/ui/endSessionDialog.js:289
 msgid "Low battery power: please plug in before installing updates."
 msgstr "Lavt batteriniveau: Tilslut strøm før installation af opdateringer."
 
-#: js/ui/endSessionDialog.js:294
+#: js/ui/endSessionDialog.js:298
 msgid "Some applications are busy or have unsaved work"
 msgstr ""
 "Nogle programmer er optagede eller indeholder arbejde, der ikke er gemt"
 
-#: js/ui/endSessionDialog.js:299
+#: js/ui/endSessionDialog.js:303
 msgid "Other users are logged in"
 msgstr "Andre brugere er logget ind"
 
-#: js/ui/endSessionDialog.js:470
+#: js/ui/endSessionDialog.js:473
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Bootindstillinger"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:675
+#: js/ui/endSessionDialog.js:678
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (fjern)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:678
+#: js/ui/endSessionDialog.js:681
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konsol)"
 
-#: js/ui/extensionDownloader.js:245
+#: js/ui/extensionDownloader.js:260
 msgid "Install"
 msgstr "Installér"
 
-#: js/ui/extensionDownloader.js:251
+#: js/ui/extensionDownloader.js:266
 msgid "Install Extension"
 msgstr "Installér udvidelse"
 
-#: js/ui/extensionDownloader.js:252
+#: js/ui/extensionDownloader.js:267
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Hent og installér “%s” fra extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:282
+#: js/ui/extensionSystem.js:333
 msgid "Extension Updates Available"
 msgstr "Der er opdateringer til udvidelser"
 
-#: js/ui/extensionSystem.js:283
+#: js/ui/extensionSystem.js:334
 msgid "Extension updates are ready to be installed."
 msgstr "Opdateringer til udvidelser er klar til at blive installeret."
 
-#: js/ui/inhibitShortcutsDialog.js:66
+#: js/ui/inhibitShortcutsDialog.js:70
 msgid "Allow inhibiting shortcuts"
 msgstr "Tillad at genveje hindres"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:69
+#: js/ui/inhibitShortcutsDialog.js:73
 #, javascript-format
 msgid "The app %s wants to inhibit shortcuts"
 msgstr "Programmet %s vil forhindre genveje"
 
-#: js/ui/inhibitShortcutsDialog.js:70
+#: js/ui/inhibitShortcutsDialog.js:74
 msgid "An app wants to inhibit shortcuts"
 msgstr "Et program vil forhindre genveje"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:77
+#: js/ui/inhibitShortcutsDialog.js:81
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Du kan gendanne genveje ved at trykke %s."
 
-#: js/ui/kbdA11yDialog.js:32
+#: js/ui/kbdA11yDialog.js:34
 msgid "Slow Keys Turned On"
 msgstr "Langsomme taster slået til"
 
-#: js/ui/kbdA11yDialog.js:33
+#: js/ui/kbdA11yDialog.js:35
 msgid "Slow Keys Turned Off"
 msgstr "Langsomme taster slået fra"
 
-#: js/ui/kbdA11yDialog.js:34
+#: js/ui/kbdA11yDialog.js:36
 msgid ""
 "You just held down the Shift key for 8 seconds. This is the shortcut for the "
 "Slow Keys feature, which affects the way your keyboard works."
@@ -1432,15 +1446,15 @@ msgstr ""
 "Du har lige holdt skift-tasten nede i otte sekunder. Dette er genvejen til "
 "langsomme taster, som påvirker, hvordan dit tastatur virker."
 
-#: js/ui/kbdA11yDialog.js:40
+#: js/ui/kbdA11yDialog.js:42
 msgid "Sticky Keys Turned On"
 msgstr "Klæbetaster slået til"
 
-#: js/ui/kbdA11yDialog.js:41
+#: js/ui/kbdA11yDialog.js:43
 msgid "Sticky Keys Turned Off"
 msgstr "Klæbetaster slået fra"
 
-#: js/ui/kbdA11yDialog.js:43
+#: js/ui/kbdA11yDialog.js:45
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
@@ -1448,7 +1462,7 @@ msgstr ""
 "Du har lige trykket på skift-tasten fem gange i træk. Dette er genvejen til "
 "klæbetaster, som påvirker, hvordan dit tastatur virker."
 
-#: js/ui/kbdA11yDialog.js:45
+#: js/ui/kbdA11yDialog.js:47
 msgid ""
 "You just pressed two keys at once, or pressed the Shift key 5 times in a "
 "row. This turns off the Sticky Keys feature, which affects the way your "
@@ -1458,99 +1472,99 @@ msgstr ""
 "gange i træk. Dette slår klæbetaster fra, hvilket påvirker, hvordan dit "
 "tastatur virker."
 
-#: js/ui/kbdA11yDialog.js:55
+#: js/ui/kbdA11yDialog.js:57
 msgid "Leave On"
 msgstr "Lad være tændt"
 
-#: js/ui/kbdA11yDialog.js:55
+#: js/ui/kbdA11yDialog.js:57
 msgid "Turn On"
 msgstr "Tænd"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:462
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:466
 msgid "Turn Off"
 msgstr "Sluk"
 
-#: js/ui/kbdA11yDialog.js:65
+#: js/ui/kbdA11yDialog.js:67
 msgid "Leave Off"
 msgstr "Lad være slukket"
 
-#: js/ui/keyboard.js:219 js/ui/status/keyboard.js:860
+#: js/ui/keyboard.js:225 js/ui/status/keyboard.js:871
 msgid "Keyboard Settings"
 msgstr "Indstillinger for tastatur"
 
-#: js/ui/lookingGlass.js:713
+#: js/ui/lookingGlass.js:725
 msgid "No extensions installed"
 msgstr "Ingen udvidelser er installeret"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:774
+#: js/ui/lookingGlass.js:786
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s er ikke kommet med nogen fejl."
 
-#: js/ui/lookingGlass.js:780
+#: js/ui/lookingGlass.js:792
 msgid "Hide Errors"
 msgstr "Skjul fejl"
 
-#: js/ui/lookingGlass.js:784 js/ui/lookingGlass.js:861
+#: js/ui/lookingGlass.js:796 js/ui/lookingGlass.js:873
 msgid "Show Errors"
 msgstr "Vis fejl"
 
-#: js/ui/lookingGlass.js:793
+#: js/ui/lookingGlass.js:805
 msgid "Enabled"
 msgstr "Aktiveret"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1908
+#: js/ui/lookingGlass.js:808 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Deaktiveret"
 
-#: js/ui/lookingGlass.js:798
+#: js/ui/lookingGlass.js:810
 msgid "Error"
 msgstr "Fejl"
 
-#: js/ui/lookingGlass.js:800
+#: js/ui/lookingGlass.js:812
 msgid "Out of date"
 msgstr "Udløbet"
 
-#: js/ui/lookingGlass.js:802
+#: js/ui/lookingGlass.js:814
 msgid "Downloading"
 msgstr "Henter"
 
-#: js/ui/lookingGlass.js:804
+#: js/ui/lookingGlass.js:816
 msgid "Disabling"
 msgstr "Deaktiverer"
 
-#: js/ui/lookingGlass.js:806
+#: js/ui/lookingGlass.js:818
 msgid "Enabling"
 msgstr "Aktiverer"
 
-#: js/ui/lookingGlass.js:839
+#: js/ui/lookingGlass.js:851
 msgid "View Source"
 msgstr "Vis kilde"
 
-#: js/ui/lookingGlass.js:850
+#: js/ui/lookingGlass.js:862
 msgid "Web Page"
 msgstr "Webside"
 
-#: js/ui/main.js:286
+#: js/ui/main.js:267
 msgid "System was put in unsafe mode"
 msgstr "Systemet blev placeret i usikker tilstand"
 
-#: js/ui/main.js:287
+#: js/ui/main.js:268
 msgid "Apps now have unrestricted access"
 msgstr "Programmer har nu ubegrænset adgang"
 
-#: js/ui/main.js:288 js/ui/overview.js:58
+#: js/ui/main.js:269 js/ui/overview.js:63
 msgid "Undo"
 msgstr "Fortryd"
 
-#: js/ui/main.js:344
+#: js/ui/main.js:327
 msgid "Logged in as a privileged user"
 msgstr "Logget ind som en privilegeret bruger"
 
-#: js/ui/main.js:345
+#: js/ui/main.js:328
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1558,23 +1572,23 @@ msgstr ""
 "Kørsel af en session som en privilegeret bruger bør undgås af "
 "sikkerhedsmæssige årsager. Log ind som en normal bruger, hvis det er muligt."
 
-#: js/ui/main.js:393
+#: js/ui/main.js:376
 msgid "Screen Lock disabled"
 msgstr "Skærmlås er deaktiveret"
 
-#: js/ui/main.js:394
+#: js/ui/main.js:377
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Skærmlåsning kræver GNOME-skærmhåndteringen."
 
-#: js/ui/messageTray.js:1418
+#: js/ui/messageTray.js:1423
 msgid "System Information"
 msgstr "Systeminformation"
 
-#: js/ui/mpris.js:202
+#: js/ui/mpris.js:205
 msgid "Unknown artist"
 msgstr "Ukendt kunstner"
 
-#: js/ui/mpris.js:212
+#: js/ui/mpris.js:215
 msgid "Unknown title"
 msgstr "Ukendt titel"
 
@@ -1582,17 +1596,17 @@ msgstr "Ukendt titel"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:330
+#: js/ui/overviewControls.js:336
 msgid "Type to search"
 msgstr "Skriv for at søge"
 
-#: js/ui/overviewControls.js:408
+#: js/ui/overviewControls.js:400
 msgid "Apps"
 msgstr "Programmer"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:71
+#: js/ui/overview.js:76
 msgid "Overview"
 msgstr "Oversigt"
 
@@ -1620,218 +1634,230 @@ msgstr "Tildel tastekombination"
 msgid "Done"
 msgstr "Færdig"
 
-#: js/ui/padOsd.js:742
+#: js/ui/padOsd.js:728
 msgid "Edit…"
 msgstr "Redigér …"
 
-#: js/ui/padOsd.js:784 js/ui/padOsd.js:901
+#: js/ui/padOsd.js:775
 msgid "None"
 msgstr "Ingen"
 
-#: js/ui/padOsd.js:855
+#: js/ui/padOsd.js:846
 msgid "Press a button to configure"
 msgstr "Tryk på en knap for at konfigurere"
 
-#: js/ui/padOsd.js:856
+#: js/ui/padOsd.js:847
 msgid "Press Esc to exit"
 msgstr "Tryk Esc for at afslutte"
 
-#: js/ui/padOsd.js:859
+#: js/ui/padOsd.js:850
 msgid "Press any key to exit"
 msgstr "Tryk en vilkårlig tast for at afslutte"
 
-#: js/ui/panel.js:244
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: js/ui/panel.js:425
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: js/ui/panel.js:338
+#: js/ui/panel.js:508
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "System"
 
-#: js/ui/panel.js:460
+#: js/ui/panel.js:682
 msgid "Top Bar"
 msgstr "Toppanel"
 
-#: js/ui/quickSettings.js:181
+#: js/ui/quickSettings.js:187
 msgid "Open menu"
 msgstr "Åbn menu"
 
-#: js/ui/runDialog.js:58
+#: js/ui/runDialog.js:63
 msgid "Run a Command"
 msgstr "Kør en kommando"
 
-#: js/ui/runDialog.js:73
+#: js/ui/runDialog.js:78
 msgid "Press ESC to close"
 msgstr "Tryk Esc for at lukke"
 
-#: js/ui/runDialog.js:238
+#: js/ui/runDialog.js:243
 msgid "Restart is not available on Wayland"
 msgstr "Genstart er ikke tilgængelig på Wayland"
 
-#: js/ui/runDialog.js:243
+#: js/ui/runDialog.js:248
 msgid "Restarting…"
 msgstr "Genstarter …"
 
-#: js/ui/screenShield.js:231
+#: js/ui/screenShield.js:235
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME er nødt til at låse skærmen"
 
-#: js/ui/screenShield.js:272 js/ui/screenShield.js:670
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:674
 msgid "Unable to lock"
 msgstr "Kunne ikke låse"
 
-#: js/ui/screenShield.js:273 js/ui/screenShield.js:671
+#: js/ui/screenShield.js:277 js/ui/screenShield.js:675
 msgid "Lock was blocked by an app"
 msgstr "Lås blev blokeret af et program"
 
-#: js/ui/screenshot.js:1161
+#: js/ui/screenshot.js:1191
 msgid "Selection"
 msgstr "Markering"
 
-#: js/ui/screenshot.js:1171
+#: js/ui/screenshot.js:1201
 msgid "Area Selection"
 msgstr "Områdemarkering"
 
-#: js/ui/screenshot.js:1176
+#: js/ui/screenshot.js:1206
 msgid "Screen"
 msgstr "Skærm"
 
-#: js/ui/screenshot.js:1186
+#: js/ui/screenshot.js:1216
 msgid "Screen Selection"
 msgstr "Skærmmarkering"
 
-#: js/ui/screenshot.js:1191
+#: js/ui/screenshot.js:1221
 msgid "Window"
 msgstr "Vindue"
 
-#: js/ui/screenshot.js:1201
+#: js/ui/screenshot.js:1231
 msgid "Window Selection"
 msgstr "Vinduesmarkering"
 
-#: js/ui/screenshot.js:1239
-msgid "Screenshot / Screencast"
-msgstr "Skærmbillede/-optagelse"
+#. Translators: entry in the window right click menu.
+#: js/ui/screenshot.js:1256 js/ui/status/system.js:112 js/ui/windowMenu.js:30
+msgid "Take Screenshot"
+msgstr "Tag skærmbillede"
+
+#: js/ui/screenshot.js:1272
+msgid "Record Screen"
+msgstr "Optag skærm"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1260
+#: js/ui/screenshot.js:1287
 msgid "Capture"
 msgstr "Optag"
 
-#: js/ui/screenshot.js:1282
+#: js/ui/screenshot.js:1309
 msgid "Show Pointer"
 msgstr "Vis markør"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1873
+#: js/ui/screenshot.js:1900
 msgid "Screencasts"
 msgstr "Skærmoptagelser"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1878
+#: js/ui/screenshot.js:1905
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Skærmoptagelse fra %d %t.webm"
 
-#. Translators: notification source name.
-#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2159
-msgid "Screenshot"
-msgstr "Skærmbillede"
-
 #. Translators: notification title.
-#: js/ui/screenshot.js:1926
+#: js/ui/screenshot.js:1943
 msgid "Screencast recorded"
 msgstr "Skærmoptagelse optaget"
 
+#. Translators: notification title.
+#: js/ui/screenshot.js:1950
+msgid "Screencast ended unexpectedly"
+msgstr "Skærmoptagelse afsluttede uventet"
+
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1959 js/ui/screenshot.js:2194
+msgid "Screenshot"
+msgstr "Skærmbillede"
+
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1928
+#: js/ui/screenshot.js:1966
 msgid "Click here to view the video."
 msgstr "Klik her for at se videoen."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2173
+#: js/ui/screenshot.js:1969 js/ui/screenshot.js:2208
 msgid "Show in Files"
 msgstr "Vis i Filer"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2119
+#: js/ui/screenshot.js:2154
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Skærmbillede fra %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2165
+#: js/ui/screenshot.js:2200
 msgid "Screenshot captured"
 msgstr "Skærmbillede taget"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2167
+#: js/ui/screenshot.js:2202
 msgid "You can paste the image from the clipboard."
 msgstr "Du kan indsætte billedet fra udklipsholderen."
 
-#: js/ui/screenshot.js:2220 js/ui/screenshot.js:2385
+#: js/ui/screenshot.js:2255 js/ui/screenshot.js:2419
 msgid "Screenshot taken"
 msgstr "Skærmbillede blev taget"
 
-#: js/ui/search.js:807
+#: js/ui/search.js:818
 msgid "Searching…"
 msgstr "Søger …"
 
-#: js/ui/search.js:809
+#: js/ui/search.js:820
 msgid "No results."
 msgstr "Ingen resultater."
 
-#: js/ui/search.js:940
+#: js/ui/search.js:951
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
 msgstr[0] "%d mere"
 msgstr[1] "%d mere"
 
-#: js/ui/searchController.js:88
+#: js/ui/searchController.js:89
 msgid "Search"
 msgstr "Søg"
 
-#: js/ui/shellEntry.js:20
+#: js/ui/shellEntry.js:23
 msgid "Copy"
 msgstr "Kopiér"
 
-#: js/ui/shellEntry.js:25
+#: js/ui/shellEntry.js:28
 msgid "Paste"
 msgstr "Indsæt"
 
-#: js/ui/shellEntry.js:77
+#: js/ui/shellEntry.js:80
 msgid "Show Text"
 msgstr "Vis tekst"
 
-#: js/ui/shellEntry.js:79
+#: js/ui/shellEntry.js:82
 msgid "Hide Text"
 msgstr "Skjul tekst"
 
-#: js/ui/shellEntry.js:166
+#: js/ui/shellEntry.js:174
 msgid "Caps lock is on."
 msgstr "Caps lock er slået til."
 
-#: js/ui/shellMountOperation.js:286
+#: js/ui/shellMountOperation.js:291
 msgid "Hidden Volume"
 msgstr "Skjult diskenhed"
 
-#: js/ui/shellMountOperation.js:289
+#: js/ui/shellMountOperation.js:294
 msgid "Windows System Volume"
 msgstr "Windows systemdiskenhed"
 
-#: js/ui/shellMountOperation.js:292
+#: js/ui/shellMountOperation.js:297
 msgid "Uses Keyfiles"
 msgstr "Bruger nøglefiler"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:300
+#: js/ui/shellMountOperation.js:305
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -1839,7 +1865,7 @@ msgstr ""
 "Brug i stedet <i>%s</i>-redskabet for at låse op for en diskenhed, som "
 "bruger nøglefiler."
 
-#: js/ui/shellMountOperation.js:304
+#: js/ui/shellMountOperation.js:309
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
@@ -1847,73 +1873,73 @@ msgstr ""
 "Du skal bruge et eksternt værktøj som f.eks. <i>Diske</i> for at oplåse en "
 "diskenhed, som bruger nøglefiler."
 
-#: js/ui/shellMountOperation.js:312
+#: js/ui/shellMountOperation.js:317
 msgid "PIM Number"
 msgstr "PIM-nummer"
 
-#: js/ui/shellMountOperation.js:371
+#: js/ui/shellMountOperation.js:376
 msgid "Remember Password"
 msgstr "Husk adgangskode"
 
-#: js/ui/shellMountOperation.js:386
+#: js/ui/shellMountOperation.js:391
 msgid "Unlock"
 msgstr "Lås op"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:400
+#: js/ui/shellMountOperation.js:405
 #, javascript-format
 msgid "Open %s"
 msgstr "Åbn %s"
 
-#: js/ui/shellMountOperation.js:436
+#: js/ui/shellMountOperation.js:441
 msgid "The PIM must be a number or empty."
 msgstr "PIM'et skal være et nummer eller tomt."
 
-#: js/ui/status/accessibility.js:34
+#: js/ui/status/accessibility.js:36
 msgid "Accessibility"
 msgstr "Tilgængelighed"
 
-#: js/ui/status/accessibility.js:44
+#: js/ui/status/accessibility.js:46
 msgid "High Contrast"
 msgstr "Høj kontrast"
 
-#: js/ui/status/accessibility.js:47
+#: js/ui/status/accessibility.js:49
 msgid "Zoom"
 msgstr "Zoom"
 
-#: js/ui/status/accessibility.js:54
+#: js/ui/status/accessibility.js:56
 msgid "Screen Reader"
 msgstr "Skærmlæser"
 
-#: js/ui/status/accessibility.js:58
+#: js/ui/status/accessibility.js:60
 msgid "Screen Keyboard"
 msgstr "Skærmtastatur"
 
-#: js/ui/status/accessibility.js:62
+#: js/ui/status/accessibility.js:64
 msgid "Visual Alerts"
 msgstr "Visuelle påmindelser"
 
-#: js/ui/status/accessibility.js:65
+#: js/ui/status/accessibility.js:68
 msgid "Sticky Keys"
 msgstr "Klæbetaster"
 
-#: js/ui/status/accessibility.js:68
+#: js/ui/status/accessibility.js:72
 msgid "Slow Keys"
 msgstr "Langsomme taster"
 
-#: js/ui/status/accessibility.js:71
+#: js/ui/status/accessibility.js:76
 msgid "Bounce Keys"
 msgstr "Hoppende taster"
 
-#: js/ui/status/accessibility.js:74
+#: js/ui/status/accessibility.js:80
 msgid "Mouse Keys"
 msgstr "Musetaster"
 
-#: js/ui/status/accessibility.js:78
+#: js/ui/status/accessibility.js:85
 msgid "Accessibility Settings"
 msgstr "Indstillinger for tilgængelighed"
 
-#: js/ui/status/accessibility.js:135
+#: js/ui/status/accessibility.js:142
 msgid "Large Text"
 msgstr "Stor tekst"
 
@@ -1921,48 +1947,72 @@ msgstr "Stor tekst"
 msgid "Auto Rotate"
 msgstr "Autorotation"
 
-#: js/ui/status/backgroundApps.js:135
+#: js/ui/status/backgroundApps.js:166
 msgctxt "title"
 msgid "Background Apps"
 msgstr "Baggrundsprogrammer"
 
-#: js/ui/status/backgroundApps.js:153
+#: js/ui/status/backgroundApps.js:181
+msgid "Apps known to be running without a window"
+msgstr "Programmer som vides at køre uden et vindue"
+
+#: js/ui/status/backgroundApps.js:192
 msgid "App Settings"
 msgstr "Programindstillinger"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:248
 msgid "No Background Apps"
 msgstr "Ingen baggrundsprogrammer"
 
-#: js/ui/status/backgroundApps.js:183
+#: js/ui/status/backgroundApps.js:250
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
 msgstr[0] "%d baggrundsprogram"
 msgstr[1] "%d baggrundsprogrammer"
 
-#: js/ui/status/bluetooth.js:221 js/ui/status/network.js:369
+#: js/ui/status/backlight.js:40
+msgid "Keyboard Brightness"
+msgstr "Tastaturlysstyrke"
+
+#: js/ui/status/backlight.js:80
+msgid "Off"
+msgstr "Slukket"
+
+#: js/ui/status/backlight.js:81
+msgid "Low"
+msgstr "Lav"
+
+#: js/ui/status/backlight.js:82
+msgid "High"
+msgstr "Høj"
+
+#: js/ui/status/backlight.js:148 js/ui/status/keyboard.js:853
+msgid "Keyboard"
+msgstr "Tastatur"
+
+#: js/ui/status/bluetooth.js:226 js/ui/status/network.js:371
 msgid "Disconnect"
 msgstr "Afbryd"
 
-#: js/ui/status/bluetooth.js:238 js/ui/status/bluetooth.js:240
+#: js/ui/status/bluetooth.js:243 js/ui/status/bluetooth.js:245
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:263 js/ui/status/network.js:1863
+#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:1891
 msgid "Bluetooth Settings"
 msgstr "Indstillinger for Bluetooth"
 
-#: js/ui/status/bluetooth.js:310
+#: js/ui/status/bluetooth.js:315
 msgid "No available or connected devices"
 msgstr "Ingen tilgængelige eller tilsluttede enheder"
 
-#: js/ui/status/bluetooth.js:311
+#: js/ui/status/bluetooth.js:316
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Slå Bluetooth til for at tilslutte til enheder"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:365
+#: js/ui/status/bluetooth.js:370
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -1973,236 +2023,242 @@ msgstr[1] "%d forbundet"
 msgid "Brightness"
 msgstr "Lysstyrke"
 
-#: js/ui/status/darkMode.js:11
+#: js/ui/status/darkMode.js:12
 msgid "Dark Style"
 msgstr "Mørk stil"
 
-#: js/ui/status/dwellClick.js:12
+#: js/ui/status/dwellClick.js:15
 msgid "Single Click"
 msgstr "Enkeltklik"
 
-#: js/ui/status/dwellClick.js:17
+#: js/ui/status/dwellClick.js:20
 msgid "Double Click"
 msgstr "Dobbeltklik"
 
-#: js/ui/status/dwellClick.js:22
+#: js/ui/status/dwellClick.js:25
 msgid "Drag"
 msgstr "Træk"
 
-#: js/ui/status/dwellClick.js:27
+#: js/ui/status/dwellClick.js:30
 msgid "Secondary Click"
 msgstr "Sekundært klik"
 
-#: js/ui/status/dwellClick.js:36
+#: js/ui/status/dwellClick.js:39
 msgid "Dwell Click"
 msgstr "Hvileklik"
 
-#: js/ui/status/keyboard.js:842
-msgid "Keyboard"
-msgstr "Tastatur"
-
-#: js/ui/status/keyboard.js:859
+#: js/ui/status/keyboard.js:870
 msgid "Show Keyboard Layout"
 msgstr "Vis tastaturlayout"
 
-#: js/ui/status/location.js:330
+#: js/ui/status/location.js:339
 msgid "Allow location access"
 msgstr "Tillad adgang til placering"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:332
+#: js/ui/status/location.js:341
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "Programmet %s ønsker adgang til din placering"
 
-#: js/ui/status/location.js:342
+#: js/ui/status/location.js:351
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Placeringsadgang kan ændres når som helst via privatlivsindstillingerne."
 
-#: js/ui/status/location.js:350
+#: js/ui/status/location.js:359
 msgid "Deny Access"
 msgstr "Forbyd adgang"
 
-#: js/ui/status/location.js:355
+#: js/ui/status/location.js:364
 msgid "Grant Access"
 msgstr "Giv adgang"
 
-#: js/ui/status/network.js:53
+#: js/ui/status/network.js:61
 msgid "<unknown>"
 msgstr "<ukendt>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:363
+#: js/ui/status/network.js:365
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Frakobl %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:365
+#: js/ui/status/network.js:367
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Forbind til %s"
 
+#: js/ui/status/network.js:1050
+msgid "Secure"
+msgstr "Sikker"
+
+#: js/ui/status/network.js:1050
+msgid "Not secure"
+msgstr "Usikker"
+
+#: js/ui/status/network.js:1051
+#, javascript-format
+msgid "Signal strength %s%%"
+msgstr "Signalstyrke %s %%"
+
+#. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
+#: js/ui/status/network.js:1053
+#, javascript-format
+msgid "%s, %s, %s"
+msgstr "%s, %s, %s"
+
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1128
+#: js/ui/status/network.js:1155
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s-hotspot"
 
-#: js/ui/status/network.js:1393
+#: js/ui/status/network.js:1421
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d forbundet"
 msgstr[1] "%d forbundet"
 
-#: js/ui/status/network.js:1491 js/ui/status/network.js:1507
+#: js/ui/status/network.js:1519 js/ui/status/network.js:1535
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1492
+#: js/ui/status/network.js:1520
 msgid "VPN Settings"
 msgstr "Indstillinger for VPN"
 
-#: js/ui/status/network.js:1741
+#: js/ui/status/network.js:1776
 msgid "Wi–Fi"
 msgstr "Wi-fi"
 
-#: js/ui/status/network.js:1743
+#: js/ui/status/network.js:1778
 msgid "All Networks"
 msgstr "Alle netværk"
 
-#: js/ui/status/network.js:1840
+#: js/ui/status/network.js:1875
 msgid "Wired Connections"
 msgstr "Kablede forbindelser"
 
-#: js/ui/status/network.js:1841
+#: js/ui/status/network.js:1876
 msgid "Wired Settings"
 msgstr "Indstillinger for trådet netværk"
 
-#: js/ui/status/network.js:1862
+#: js/ui/status/network.js:1890
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth-internetdelinger"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1869
+#: js/ui/status/network.js:1897
 msgid "Tether"
 msgstr "Internetdeling"
 
-#: js/ui/status/network.js:1882
+#: js/ui/status/network.js:1910
 msgid "Mobile Connections"
 msgstr "Mobile forbindelser"
 
-#: js/ui/status/network.js:1884
+#: js/ui/status/network.js:1912
 msgid "Mobile Broadband Settings"
 msgstr "Indstillinger for mobilbredbånd"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1893
+#: js/ui/status/network.js:1921
 msgid "Mobile"
 msgstr "Mobil"
 
-#: js/ui/status/network.js:2001
+#: js/ui/status/network.js:2029
 msgid "Connection failed"
 msgstr "Forbindelse mislykkedes"
 
-#: js/ui/status/network.js:2002
+#: js/ui/status/network.js:2030
 msgid "Activation of network connection failed"
 msgstr "Aktivering af netværksforbindelse mislykkedes"
 
-#: js/ui/status/nightLight.js:20
+#: js/ui/status/nightLight.js:21
 msgid "Night Light"
 msgstr "Nattelys"
 
-#: js/ui/status/powerProfiles.js:20
+#: js/ui/status/powerProfiles.js:21
 msgctxt "Power profile"
 msgid "Performance"
 msgstr "Ydelse"
 
-#: js/ui/status/powerProfiles.js:25
+#: js/ui/status/powerProfiles.js:26
 msgctxt "Power profile"
 msgid "Balanced"
 msgstr "Balanceret"
 
-#: js/ui/status/powerProfiles.js:30
+#: js/ui/status/powerProfiles.js:31
 msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Strømsparetilstand"
 
-#: js/ui/status/powerProfiles.js:40
+#: js/ui/status/powerProfiles.js:41 js/ui/status/powerProfiles.js:71
 msgid "Power Mode"
 msgstr "Strømsparetilstand"
 
-#: js/ui/status/powerProfiles.js:70
-msgid "Power Profiles"
-msgstr "Strømprofiler"
-
-#: js/ui/status/powerProfiles.js:72
+#: js/ui/status/powerProfiles.js:73
 msgid "Power Settings"
 msgstr "Indstillinger for strømstyring"
 
-#: js/ui/status/remoteAccess.js:72
+#: js/ui/status/remoteAccess.js:76
 msgid "Stop Screencast"
 msgstr "Stop en skærmoptagelse"
 
-#: js/ui/status/remoteAccess.js:142
+#: js/ui/status/remoteAccess.js:146
 msgid "Stop Screen Sharing"
 msgstr "Stop skærmdeling"
 
-#: js/ui/status/rfkill.js:96
+#: js/ui/status/rfkill.js:101
 msgid "Airplane Mode"
 msgstr "Flytilstand"
 
-#: js/ui/status/system.js:90
+#: js/ui/status/system.js:97
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
 
-#. Translators: entry in the window right click menu.
-#: js/ui/status/system.js:105 js/ui/windowMenu.js:29
-msgid "Take Screenshot"
-msgstr "Tag skærmbillede"
-
-#: js/ui/status/system.js:162
+#: js/ui/status/system.js:169
 msgid "Power Off Menu"
 msgstr "Slukmenu"
 
-#: js/ui/status/system.js:170
+#: js/ui/status/system.js:177
 msgid "Suspend"
 msgstr "Hviletilstand"
 
-#: js/ui/status/system.js:175
+#: js/ui/status/system.js:182
 msgid "Restart…"
 msgstr "Genstart …"
 
-#: js/ui/status/system.js:180
+#: js/ui/status/system.js:187
 msgid "Power Off…"
 msgstr "Sluk …"
 
-#: js/ui/status/system.js:187
-#: subprojects/extensions-app/data/ui/extensions-window.ui:190
+#: js/ui/status/system.js:194
+#: subprojects/extensions-app/data/ui/extensions-window.ui:189
 msgid "Log Out…"
 msgstr "Log ud …"
 
-#: js/ui/status/system.js:192
+#: js/ui/status/system.js:199
 msgid "Switch User…"
 msgstr "Skift bruger …"
 
-#: js/ui/status/system.js:236
+#: js/ui/status/system.js:243
 msgctxt "action"
 msgid "Lock Screen"
 msgstr "Lås skærm"
 
-#: js/ui/status/thunderbolt.js:256
+#: js/ui/status/thunderbolt.js:259
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:317
+#: js/ui/status/thunderbolt.js:320
 msgid "Unknown Thunderbolt device"
 msgstr "Ukendt Thunderbolt-enhed"
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:321
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2210,45 +2266,45 @@ msgstr ""
 "En ny enhed blev fundet, mens du var væk. Frakobl og tilkobl enheden igen "
 "for at kunne bruge den."
 
-#: js/ui/status/thunderbolt.js:321
+#: js/ui/status/thunderbolt.js:324
 msgid "Unauthorized Thunderbolt device"
 msgstr "Ikkegodkendt Thunderbolt-enhed"
 
-#: js/ui/status/thunderbolt.js:322
+#: js/ui/status/thunderbolt.js:325
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr "Ny enhed er fundet og skal godkendes af en administrator."
 
-#: js/ui/status/thunderbolt.js:328
+#: js/ui/status/thunderbolt.js:331
 msgid "Thunderbolt authorization error"
 msgstr "Thunderbolt-godkendelsesfejl"
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:332
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Kunne ikke godkende Thunderbolt-enheden: %s"
 
-#: js/ui/status/volume.js:210
+#: js/ui/status/volume.js:214
 msgid "Volume changed"
 msgstr "Lydstyrke ændret"
 
-#: js/ui/status/volume.js:223
+#: js/ui/status/volume.js:227
 msgid "Unmute"
 msgstr "Slå lyd til"
 
-#: js/ui/status/volume.js:223
+#: js/ui/status/volume.js:227
 msgid "Mute"
 msgstr "Slå lyd fra"
 
-#: js/ui/status/volume.js:278
+#: js/ui/status/volume.js:282
 msgid "Volume"
 msgstr "Lydstyrke"
 
-#: js/ui/status/volume.js:294
+#: js/ui/status/volume.js:298
 msgid "Sound Output"
 msgstr "Lydoutput"
 
-#: js/ui/status/volume.js:366
+#: js/ui/status/volume.js:370
 msgid "Sound Input"
 msgstr "Lydinput"
 
@@ -2259,67 +2315,67 @@ msgstr "Lydinput"
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:20
+#: js/ui/switchMonitor.js:22
 msgid "Mirror"
 msgstr "Klon"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:29
+#: js/ui/switchMonitor.js:31
 msgid "Join Displays"
 msgstr "Sammenføj skærme"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:39
+#: js/ui/switchMonitor.js:41
 msgid "External Only"
 msgstr "Kun ekstern"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:47
+#: js/ui/switchMonitor.js:49
 msgid "Built-in Only"
 msgstr "Kun indbygget"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:363
+#: js/ui/unlockDialog.js:368
 msgid "%A %B %-d"
 msgstr "%A %-d. %B"
 
-#: js/ui/unlockDialog.js:369
+#: js/ui/unlockDialog.js:374
 msgid "Swipe up to unlock"
 msgstr "Stryg op for at låse op"
 
-#: js/ui/unlockDialog.js:370
+#: js/ui/unlockDialog.js:375
 msgid "Click or press a key to unlock"
 msgstr "Klik eller tryk en tast for at låse op"
 
-#: js/ui/unlockDialog.js:553
+#: js/ui/unlockDialog.js:558
 msgid "Unlock Window"
 msgstr "Lås vindue op"
 
-#: js/ui/unlockDialog.js:562
+#: js/ui/unlockDialog.js:567
 msgid "Log in as another user"
 msgstr "Log ind som en anden bruger"
 
-#: js/ui/welcomeDialog.js:36
+#: js/ui/welcomeDialog.js:39
 #, javascript-format
 msgid "Welcome to GNOME %s"
 msgstr "Velkommen til GNOME %s"
 
-#: js/ui/welcomeDialog.js:37
+#: js/ui/welcomeDialog.js:40
 msgid "If you want to learn your way around, check out the tour."
 msgstr "Hvis du vil lære at finde rundt, så tjek rundvisningen."
 
-#: js/ui/welcomeDialog.js:46
+#: js/ui/welcomeDialog.js:49
 msgid "No Thanks"
 msgstr "Nej tak"
 
-#: js/ui/welcomeDialog.js:51
+#: js/ui/welcomeDialog.js:54
 msgid "Take Tour"
 msgstr "Tag rundvisningen"
 
@@ -2329,19 +2385,19 @@ msgid "“%s” is ready"
 msgstr "“%s” er klar"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:63
+#: js/ui/windowManager.js:68
 msgid "Keep these display settings?"
 msgstr "Behold disse skærmindstillinger?"
 
-#: js/ui/windowManager.js:73
+#: js/ui/windowManager.js:78
 msgid "Revert Settings"
 msgstr "Forkast indstillinger"
 
-#: js/ui/windowManager.js:78
+#: js/ui/windowManager.js:83
 msgid "Keep Changes"
 msgstr "Behold ændringer"
 
-#: js/ui/windowManager.js:98
+#: js/ui/windowManager.js:103
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2350,96 +2406,96 @@ msgstr[1] "Indstillingsændringer forkastes om %d sekunder"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:544
+#: js/ui/windowManager.js:495
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: js/ui/windowMenu.js:41
+#: js/ui/windowMenu.js:42
 msgid "Hide"
 msgstr "Skjul"
 
-#: js/ui/windowMenu.js:48
+#: js/ui/windowMenu.js:49
 msgid "Restore"
 msgstr "Gendan"
 
-#: js/ui/windowMenu.js:52
+#: js/ui/windowMenu.js:53
 msgid "Maximize"
 msgstr "Maksimér"
 
-#: js/ui/windowMenu.js:59
+#: js/ui/windowMenu.js:60
 msgid "Move"
 msgstr "Flyt"
 
-#: js/ui/windowMenu.js:78
+#: js/ui/windowMenu.js:79
 msgid "Resize"
 msgstr "Ændr størrelse"
 
-#: js/ui/windowMenu.js:98
+#: js/ui/windowMenu.js:99
 msgid "Move Titlebar Onscreen"
 msgstr "Flyt titellinjen på skærmen"
 
-#: js/ui/windowMenu.js:103
+#: js/ui/windowMenu.js:104
 msgid "Always on Top"
 msgstr "Altid øverst"
 
-#: js/ui/windowMenu.js:122
+#: js/ui/windowMenu.js:123
 msgid "Always on Visible Workspace"
 msgstr "Altid på synligt arbejdsområde"
 
-#: js/ui/windowMenu.js:136
+#: js/ui/windowMenu.js:137
 msgid "Move to Workspace Left"
 msgstr "Flyt til venstre arbejdsområde"
 
-#: js/ui/windowMenu.js:142
+#: js/ui/windowMenu.js:143
 msgid "Move to Workspace Right"
 msgstr "Flyt til højre arbejdsområde"
 
-#: js/ui/windowMenu.js:148
+#: js/ui/windowMenu.js:149
 msgid "Move to Workspace Up"
 msgstr "Flyt til arbejdsområdet ovenover"
 
-#: js/ui/windowMenu.js:154
+#: js/ui/windowMenu.js:155
 msgid "Move to Workspace Down"
 msgstr "Flyt til arbejdsområdet nedenunder"
 
-#: js/ui/windowMenu.js:172
+#: js/ui/windowMenu.js:173
 msgid "Move to Monitor Up"
 msgstr "Flyt til skærmen ovenover"
 
-#: js/ui/windowMenu.js:181
+#: js/ui/windowMenu.js:182
 msgid "Move to Monitor Down"
 msgstr "Flyt til skærmen nedenunder"
 
-#: js/ui/windowMenu.js:190
+#: js/ui/windowMenu.js:191
 msgid "Move to Monitor Left"
 msgstr "Flyt til venstre skærm"
 
-#: js/ui/windowMenu.js:199
+#: js/ui/windowMenu.js:200
 msgid "Move to Monitor Right"
 msgstr "Flyt til højre skærm"
 
-#: js/ui/windowMenu.js:207
+#: js/ui/windowMenu.js:208
 msgid "Close"
 msgstr "Luk"
 
-#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:529 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Udskriv version"
 
-#: src/main.c:514
+#: src/main.c:535
 msgid "Mode used by GDM for login screen"
 msgstr "Tilstand brugt af GDM til indlogningsskærm"
 
-#: src/main.c:520
+#: src/main.c:541
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Brug en specifik tilstand, f.eks. “gdm” til indlogningsskærm"
 
-#: src/main.c:526
+#: src/main.c:547
 msgid "List possible modes"
 msgstr "Vis mulige tilstande"
 
-#: src/main.c:532
+#: src/main.c:553
 msgid "Force animations to be enabled"
 msgstr "Tving animationer til at være aktiverede"
 
@@ -2465,29 +2521,21 @@ msgstr "Adgangskode må ikke være tom"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Godkendelsesdialogen blev afvist af brugeren"
 
-#: src/st/st-icon-theme.c:1883
+#: src/st/st-icon-theme.c:1865
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "Ikonet “%s” er ikke tilgængeligt i temaet %s"
 
-#: src/st/st-icon-theme.c:3472 src/st/st-icon-theme.c:3775
+#: src/st/st-icon-theme.c:3454 src/st/st-icon-theme.c:3757
 msgid "Failed to load icon"
 msgstr "Kunne ikke indlæse ikon"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:212
-#: subprojects/extensions-app/data/ui/extensions-window.ui:18
-#: subprojects/extensions-app/data/ui/extensions-window.ui:83
-msgid "Extensions"
-msgstr "Udvidelser"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 msgid "Manage your GNOME Extensions"
 msgstr "Håndtér dine GNOME-udvidelser"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:17
-#: subprojects/extensions-app/js/main.js:216
+#: subprojects/extensions-app/js/main.js:222
 msgid "The GNOME Project"
 msgstr "GNOME-projektet"
 
@@ -2503,27 +2551,27 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "Konfigurér GNOME Shell-udvidelser"
 
-#: subprojects/extensions-app/js/main.js:130
-#: subprojects/extensions-app/js/main.js:141
+#: subprojects/extensions-app/js/main.js:136
+#: subprojects/extensions-app/js/main.js:147
 msgid "No Matches"
 msgstr "Ingen fundet"
 
-#: subprojects/extensions-app/js/main.js:169
+#: subprojects/extensions-app/js/main.js:175
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Fjern “%s”?"
 
-#: subprojects/extensions-app/js/main.js:170
+#: subprojects/extensions-app/js/main.js:176
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
 msgstr "Fjerner du udvidelsen, skal du hente den igen for at aktivere den"
 
-#: subprojects/extensions-app/js/main.js:174
+#: subprojects/extensions-app/js/main.js:180
 msgid "Remove"
 msgstr "Fjern"
 
-#: subprojects/extensions-app/js/main.js:211
+#: subprojects/extensions-app/js/main.js:217
 msgid "translator-credits"
 msgstr ""
 "Kenneth Nielsen\n"
@@ -2535,18 +2583,18 @@ msgstr ""
 "Dansk-gruppen <dansk@dansk-gruppen.dk>\n"
 "Mere info: http://www.dansk-gruppen.dk"
 
-#: subprojects/extensions-app/js/main.js:339
+#: subprojects/extensions-app/js/main.js:345
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d udvidelse vil blive opdateret ved næste login."
 msgstr[1] "%d udvidelser vil blive opdateret ved næste login."
 
-#: subprojects/extensions-app/js/main.js:481
+#: subprojects/extensions-app/js/main.js:487
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "Denne udvidelse er ikke kompatibel med denne version af GNOME"
 
-#: subprojects/extensions-app/js/main.js:484
+#: subprojects/extensions-app/js/main.js:490
 #: subprojects/extensions-app/data/ui/extension-row.ui:52
 msgid "The extension had an error"
 msgstr "Udvidelsen havde en fejl"
@@ -2571,7 +2619,7 @@ msgstr "Hjælp"
 msgid "About Extensions"
 msgstr "Om udvidelser"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:84
+#: subprojects/extensions-app/data/ui/extensions-window.ui:83
 msgid ""
 "Extensions can cause performance and stability issues. Disable extensions if "
 "you encounter problems with your system."
@@ -2579,12 +2627,12 @@ msgstr ""
 "Udvidelser kan skabe ydelses- og stabilitetsproblemer. Deaktivér udvidelser, "
 "hvis du får problemer med dit system."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:98
+#: subprojects/extensions-app/data/ui/extensions-window.ui:97
 msgid "Manually Installed"
 msgstr "Manuelt installeret"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:99
-#: subprojects/extensions-app/data/ui/extensions-window.ui:134
+#: subprojects/extensions-app/data/ui/extensions-window.ui:98
+#: subprojects/extensions-app/data/ui/extensions-window.ui:133
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
@@ -2592,15 +2640,15 @@ msgstr ""
 "Gå til <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a> for "
 "at finde og tilføje udvidelser."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:112
+#: subprojects/extensions-app/data/ui/extensions-window.ui:111
 msgid "Built-In"
 msgstr "Indbygget"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:133
+#: subprojects/extensions-app/data/ui/extensions-window.ui:132
 msgid "No Installed Extensions"
 msgstr "Ingen installerede udvidelser"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:145
+#: subprojects/extensions-app/data/ui/extensions-window.ui:144
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -2608,17 +2656,17 @@ msgstr ""
 "Vi beklager meget, men det var ikke muligt at hente listen over installerede "
 "udvidelser. Sørg for at du er logget ind i GNOME og prøv igen."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:175
+#: subprojects/extensions-app/data/ui/extensions-window.ui:174
 msgid "Extension Updates Ready"
 msgstr "Opdateringer til udvidelser er klar"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:222
+#: subprojects/extensions-tool/src/command-create.c:284
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "Den nye udvidelse blev oprettet i %s.\n"
 
-#: subprojects/extensions-tool/src/command-create.c:296
+#: subprojects/extensions-tool/src/command-create.c:376
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
@@ -2627,12 +2675,12 @@ msgstr ""
 "Navnet skal være en meget kort (helst beskrivende) streng.\n"
 "Eksempler: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:302
+#: subprojects/extensions-tool/src/command-create.c:382
 #: subprojects/extensions-tool/src/main.c:242
 msgid "Name"
 msgstr "Navn"
 
-#: subprojects/extensions-tool/src/command-create.c:316
+#: subprojects/extensions-tool/src/command-create.c:396
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
@@ -2641,12 +2689,12 @@ msgstr ""
 "Beskrivelsen er én sætning, som forklarer, hvad din udvidelse gør.\n"
 "Eksempler: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:322
+#: subprojects/extensions-tool/src/command-create.c:402
 #: subprojects/extensions-tool/src/main.c:245
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: subprojects/extensions-tool/src/command-create.c:336
+#: subprojects/extensions-tool/src/command-create.c:416
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address (clicktofocus@janedoe."
@@ -2655,56 +2703,78 @@ msgstr ""
 "Uuid er en globalt unik identifikator til din udvidelse.\n"
 "Det skal udformes som en e-mailadresse (klikforfokus@rikkeræv.eksempel.org)\n"
 
-#: subprojects/extensions-tool/src/command-create.c:363
+#: subprojects/extensions-tool/src/command-create.c:443
 msgid "Choose one of the available templates:\n"
 msgstr "Vælg en af de tilgængelige skabeloner:\n"
 
-#: subprojects/extensions-tool/src/command-create.c:377
+#: subprojects/extensions-tool/src/command-create.c:457
 msgid "Template"
 msgstr "Skabelon"
 
-#: subprojects/extensions-tool/src/command-create.c:432
+#: subprojects/extensions-tool/src/command-create.c:515
 msgid "The unique identifier of the new extension"
 msgstr "Den nye udvidelses unikke identifikator"
 
-#: subprojects/extensions-tool/src/command-create.c:435
+#: subprojects/extensions-tool/src/command-create.c:518
 msgid "NAME"
 msgstr "NAVN"
 
-#: subprojects/extensions-tool/src/command-create.c:436
+#: subprojects/extensions-tool/src/command-create.c:519
 msgid "The user-visible name of the new extension"
 msgstr "Navnet på den nye udvidelse, som brugeren kommer til at se"
 
-#: subprojects/extensions-tool/src/command-create.c:438
+#: subprojects/extensions-tool/src/command-create.c:521
 msgid "DESCRIPTION"
 msgstr "BESKRIVELSE"
 
-#: subprojects/extensions-tool/src/command-create.c:440
+#: subprojects/extensions-tool/src/command-create.c:523
 msgid "A short description of what the extension does"
 msgstr "En kort beskrivelse af hvad udvidelsen gør"
 
-#: subprojects/extensions-tool/src/command-create.c:443
+#: subprojects/extensions-tool/src/command-create.c:525
+#: subprojects/extensions-tool/src/command-pack.c:467
+msgid "DOMAIN"
+msgstr "DOMÆNE"
+
+#: subprojects/extensions-tool/src/command-create.c:527
+msgid "The gettext domain used by the extension"
+msgstr "Gettext-domænet som bruges af udvidelsen"
+
+#: subprojects/extensions-tool/src/command-create.c:529
+#: subprojects/extensions-tool/src/command-pack.c:460
+msgid "SCHEMA"
+msgstr "SKEMA"
+
+#: subprojects/extensions-tool/src/command-create.c:531
+msgid "The GSettings schema used by the extension"
+msgstr "GSettings-skemaet som bruges af udvidelsen"
+
+#: subprojects/extensions-tool/src/command-create.c:534
 msgid "TEMPLATE"
 msgstr "SKABELON"
 
-#: subprojects/extensions-tool/src/command-create.c:444
+#: subprojects/extensions-tool/src/command-create.c:535
 msgid "The template to use for the new extension"
 msgstr "Skabelonen der skal bruges til den nye udvidelse"
 
-#: subprojects/extensions-tool/src/command-create.c:450
+#: subprojects/extensions-tool/src/command-create.c:538
+msgid "Include prefs.js template"
+msgstr "Medtag prefs.js-skabelon"
+
+#: subprojects/extensions-tool/src/command-create.c:544
 msgid "Enter extension information interactively"
 msgstr "Indtast information om udvidelse interaktivt"
 
-#: subprojects/extensions-tool/src/command-create.c:458
+#: subprojects/extensions-tool/src/command-create.c:552
 msgid "Create a new extension"
 msgstr "Opret en ny udvidelse"
 
-#: subprojects/extensions-tool/src/command-create.c:476
+#: subprojects/extensions-tool/src/command-create.c:570
 #: subprojects/extensions-tool/src/command-list.c:172
 msgid "Unknown arguments"
 msgstr "Ukendte argumenter"
 
-#: subprojects/extensions-tool/src/command-create.c:501
+#: subprojects/extensions-tool/src/command-create.c:595
 msgid "UUID, name and description are required"
 msgstr "Uuid, navn og beskrivelse er påkrævet"
 
@@ -2808,56 +2878,48 @@ msgstr "Vis detaljer om udvidelse"
 msgid "List installed extensions"
 msgstr "Vis installerede udvidelser"
 
-#: subprojects/extensions-tool/src/command-pack.c:450
+#: subprojects/extensions-tool/src/command-pack.c:456
 msgid "FILE"
 msgstr "FIL"
 
-#: subprojects/extensions-tool/src/command-pack.c:451
+#: subprojects/extensions-tool/src/command-pack.c:457
 msgid "Additional source to include in the bundle"
 msgstr "Yderligere kilde som skal medtages i bundet"
 
-#: subprojects/extensions-tool/src/command-pack.c:454
-msgid "SCHEMA"
-msgstr "SKEMA"
-
-#: subprojects/extensions-tool/src/command-pack.c:455
+#: subprojects/extensions-tool/src/command-pack.c:461
 msgid "A GSettings schema that should be included"
 msgstr "Et GSettings-skema som skal medtages"
 
-#: subprojects/extensions-tool/src/command-pack.c:457
-#: subprojects/extensions-tool/src/command-pack.c:468
+#: subprojects/extensions-tool/src/command-pack.c:463
+#: subprojects/extensions-tool/src/command-pack.c:474
 msgid "DIRECTORY"
 msgstr "MAPPE"
 
-#: subprojects/extensions-tool/src/command-pack.c:459
+#: subprojects/extensions-tool/src/command-pack.c:465
 msgid "The directory where translations are found"
 msgstr "Mappen hvor oversættelser findes"
 
-#: subprojects/extensions-tool/src/command-pack.c:461
-msgid "DOMAIN"
-msgstr "DOMÆNE"
-
-#: subprojects/extensions-tool/src/command-pack.c:463
+#: subprojects/extensions-tool/src/command-pack.c:469
 msgid "The gettext domain to use for translations"
 msgstr "Gettext-domænet som skal bruges til oversættelser"
 
-#: subprojects/extensions-tool/src/command-pack.c:466
+#: subprojects/extensions-tool/src/command-pack.c:472
 msgid "Overwrite an existing pack"
 msgstr "Overskriv en eksisterende pakke"
 
-#: subprojects/extensions-tool/src/command-pack.c:470
+#: subprojects/extensions-tool/src/command-pack.c:476
 msgid "The directory where the pack should be created"
 msgstr "Mappen hvor pakken skal oprettes"
 
-#: subprojects/extensions-tool/src/command-pack.c:472
+#: subprojects/extensions-tool/src/command-pack.c:478
 msgid "SOURCE_DIRECTORY"
 msgstr "KILDEMAPPE"
 
-#: subprojects/extensions-tool/src/command-pack.c:481
+#: subprojects/extensions-tool/src/command-pack.c:487
 msgid "Create an extension bundle"
 msgstr "Opret et udvidelsesbundt"
 
-#: subprojects/extensions-tool/src/command-pack.c:501
+#: subprojects/extensions-tool/src/command-pack.c:507
 msgid "More than one source directory specified"
 msgstr "Der er angivet mere end én kildemappe"
 
@@ -3008,6 +3070,14 @@ msgstr "Indikator"
 msgid "Add an icon to the top bar"
 msgstr "Tilføj et ikon til toppanelet"
 
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
+msgid "Quick Settings Item"
+msgstr "Hurtige Indstillinger-element"
+
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:5
+msgid "Add an item to quick settings"
+msgstr "Tilføj et element til hurtige Indstillinger"
+
 #. translators:
 #. * The number of sound outputs on a particular device
 #: subprojects/gvc/gvc-mixer-control.c:1915
@@ -3029,6 +3099,12 @@ msgstr[1] "%u inputs"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Systemlyde"
+
+#~ msgid "Screenshot / Screencast"
+#~ msgstr "Skærmbillede/-optagelse"
+
+#~ msgid "Power Profiles"
+#~ msgstr "Strømprofiler"
 
 #~ msgid ""
 #~ "Whether the default Bluetooth adapter had set up devices associated to it"
@@ -3095,9 +3171,6 @@ msgstr "Systemlyde"
 
 #~ msgid "Bluetooth Off"
 #~ msgstr "Bluetooth fra"
-
-#~ msgid "Privacy Settings"
-#~ msgstr "Indstillinger for privatliv"
 
 #~ msgid "Location In Use"
 #~ msgstr "Placering i brug"
@@ -3300,9 +3373,6 @@ msgstr "Systemlyde"
 #~ msgid "%A, %B %-d, %Y"
 #~ msgstr "%A, %-d. %B %Y"
 
-#~ msgid "Off"
-#~ msgstr "Slukket"
-
 #~ msgid "On"
 #~ msgstr "Tændt"
 
@@ -3427,9 +3497,6 @@ msgstr "Systemlyde"
 
 #~ msgid "Web Authentication Redirect"
 #~ msgstr "Omdirigering af webgodkendelse"
-
-#~ msgid "Not In Use"
-#~ msgstr "Ikke i brug"
 
 #~ msgid "Show the week date in the calendar"
 #~ msgstr "Vis ugenummer i kalenderen"
