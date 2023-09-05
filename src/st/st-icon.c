@@ -602,7 +602,7 @@ st_icon_new (void)
  * @icon: an #StIcon
  *
  * This is a convenience method to get the icon name of the current icon, if it
- * is currenyly a #GThemedIcon, or %NULL otherwise.
+ * is currently a #GThemedIcon, or %NULL otherwise.
  *
  * Returns: (transfer none) (nullable): The name of the icon or %NULL
  */
