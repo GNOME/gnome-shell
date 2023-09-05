@@ -1,3 +1,45 @@
+45.rc
+=====
+* Allow notification dismissal with backspace [Chris; !2435]
+* Add workspace indicators in activities button [Georges; !2902]
+* Add extension hook to add quick settings items [Florian; !2894]
+* Fix legibility issue in calendar [Jakub; !2857]
+* Fix three-finger swipes on touchscreens [Carlos; !2910]
+* Add more options to `gnome-extensions create` [Florian; !2889]
+* Fix scrolling regression in ScrollView [Andrew; !2920]
+* Fix broken workspace animation with swipe gesture [Carlos; !2918]
+* Restore focus indication in system entries [Florian; !2922]
+* Use UUID as fallback extension gettext domain [Florian; !2888]
+* Reflect core app change in default "Utilities" folder [kramo; !2916]
+* Support OWE networks in status menu [Florian; !2927]
+* Show immediate feedback when toggling bluetooth [Florian; !2815]
+* Switch workspaces when scrolling over activities button [Florian; !2933]
+* Wrap around when navigating menus with arrow keys [Lukáš; !2525]
+* Fix background apps menu showing up empty [Florian; !2938]
+* Misc. bug fixes and cleanups [Florian, Dallas, Georges, Sebastian, Brendan,
+  Simon, Marco, Daniel, Stuart, Bilal, Carlos, aliriza, Bryan; !2884, !2885,
+  !2881, !2887, !2893, !2891, !2729, !2892, !2897, !2898, !2899, !2900, !2828,
+  !2903, !2904, !2859, !2911, !2912, !2917, !2919, !2873, !2928, !2924, !2926,
+  !2930, !2932, !2934, !2936, !2875, !2938, !2940, !2939]
+
+Contributors:
+  aliriza, Bilal Elmoussaoui, Carlos Garnacho, Stuart Hayhurst, Chris Heywood,
+  Sebastian Keller, kramo, Florian Müllner, Georges Basile Stavracas Neto,
+  Bryan Ricker, Simon Schneegans, Jakub Steiner, Dallas Strouse,
+  Marco Trevisan (Treviño), Lukáš Tyrychtr, Daniel van Vugt, Brendan William,
+  Andrew Zaech
+
+Translators:
+  Fran Dieguez [gl], Asier Sarasua Garmendia [eu], Quentin PAGÈS [oc],
+  Sabri Ünal [tr], Baurzhan Muftakhidinov [kk], Ekaterine Papava [ka],
+  Jordi Mas [ca], Yuri Chornoivan [uk], Piotr Drąg [pl], Vasil Pupkin [be],
+  Philipp Kiemle [de], Daniel Rusek [cs], Daniel Mustieles [es],
+  Danial Behzadi [fa], Amn Alam [pa], Artur S0 [ru], Yosef Or Boczko [he],
+  Jiri Grönroos [fi], Nathan Follens [nl], Luming Zh [zh_CN],
+  Kukuh Syafaat [id], Milo Casagrande [it], Aurimas Černius [lt],
+  Changwoo Ryu [ko], A S Alam [pa], Alan Mortensen [da], Balázs Úr [hu],
+  Bruce Cowan [en_GB]
+
 45.beta.1
 =========
 * Fix input handling in alt-tab and several other components [Carlos; !2872]
