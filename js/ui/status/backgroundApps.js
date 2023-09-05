@@ -226,6 +226,7 @@ class BackgroundAppsToggle extends QuickToggle {
 
                 return {app, message};
             })
+            .filter(item => !!item.app)
             .sort((a, b) => {
                 return a.app.get_name().localeCompare(b.app.get_name());
             })
