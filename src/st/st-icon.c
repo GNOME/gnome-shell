@@ -324,7 +324,7 @@ st_icon_class_init (StIconClass *klass)
   /**
    * StIcon:icon-size:
    *
-   * The size of the icon, if greater than `0`. Other the icon size is derived
+   * The size of the icon, if greater than `0`. Otherwise the icon size is derived
    * from the current style.
    */
   props[PROP_ICON_SIZE] =
@@ -602,7 +602,7 @@ st_icon_new (void)
  * @icon: an #StIcon
  *
  * This is a convenience method to get the icon name of the current icon, if it
- * is currenyly a #GThemedIcon, or %NULL otherwise.
+ * is currently a #GThemedIcon, or %NULL otherwise.
  *
  * Returns: (transfer none) (nullable): The name of the icon or %NULL
  */
