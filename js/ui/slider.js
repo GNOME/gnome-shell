@@ -37,6 +37,7 @@ export const Slider = GObject.registerClass({
         let cr = this.get_context();
         let themeNode = this.get_theme_node();
         let [width, height] = this.get_surface_size();
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
 
         let handleRadius = themeNode.get_length('-slider-handle-radius');
 
@@ -45,9 +46,12 @@ export const Slider = GObject.registerClass({
             themeNode.lookup_color('-slider-handle-border-color', false);
 
         const ceiledHandleRadius = Math.ceil(handleRadius + handleBorderWidth);
-        const handleX = ceiledHandleRadius +
-            (width - 2 * ceiledHandleRadius) * this._value / this._maxValue;
         const handleY = height / 2;
+
+        let handleX = ceiledHandleRadius +
+            (width - 2 * ceiledHandleRadius) * this._value / this._maxValue;
+        if (rtl)
+            handleX = width - handleX;
 
         let color = themeNode.get_foreground_color();
         Clutter.cairo_set_source_color(cr, color);
@@ -189,9 +193,13 @@ export const Slider = GObject.registerClass({
     _moveHandle(absX, _absY) {
         let relX, sliderX;
         [sliderX] = this.get_transformed_position();
-        relX = absX - sliderX;
-
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
         let width = this._barLevelWidth;
+
+        relX = absX - sliderX;
+        if (rtl)
+            relX = width - relX;
+
         let handleRadius = this.get_theme_node().get_length('-slider-handle-radius');
 
         let newvalue;
