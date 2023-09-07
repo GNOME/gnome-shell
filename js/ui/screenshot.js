@@ -2040,7 +2040,8 @@ export const ScreenshotUI = GObject.registerClass({
             return Clutter.EVENT_STOP;
         }
 
-        if (symbol === Clutter.KEY_v || symbol === Clutter.KEY_V) {
+        if (this._castButton.reactive &&
+            (symbol === Clutter.KEY_v || symbol === Clutter.KEY_V)) {
             this._castButton.checked = !this._castButton.checked;
             return Clutter.EVENT_STOP;
         }
