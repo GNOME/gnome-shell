@@ -1370,6 +1370,16 @@ var ScreenshotUI = GObject.registerClass({
         this._castButton.reactive = Main.sessionMode.allowScreencast;
     }
 
+    _syncWindowButtonSensitivity() {
+        const windows =
+            this._windowSelectors.flatMap(selector => selector.windows());
+
+        this._windowButton.reactive =
+            Main.sessionMode.hasWindows &&
+            windows.length > 0 &&
+            !this._castButton.checked;
+    }
+
     _refreshButtonLayout() {
         const buttonLayout = Meta.prefs_get_button_layout();
 
@@ -1486,10 +1496,7 @@ var ScreenshotUI = GObject.registerClass({
                 });
             }
 
-            this._windowButton.reactive =
-                Main.sessionMode.hasWindows &&
-                windows.length > 0 &&
-                !this._castButton.checked;
+            this._syncWindowButtonSensitivity();
             if (!this._windowButton.reactive)
                 this._selectionButton.checked = true;
 
@@ -1732,9 +1739,7 @@ var ScreenshotUI = GObject.registerClass({
 
             this._captureButton.remove_style_pseudo_class('cast');
 
-            const windows =
-                this._windowSelectors.flatMap(selector => selector.windows());
-            this._windowButton.reactive = windows.length > 0;
+            this._syncWindowButtonSensitivity();
         }
     }
 
