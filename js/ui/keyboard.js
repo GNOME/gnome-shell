@@ -1533,7 +1533,10 @@ export const Keyboard = GObject.registerClass({
 
             if (key.action !== 'modifier') {
                 button.connect('commit', (_actor, keyval, str) => {
-                    this._commitAction(keyval, str);
+                    this._commitAction(keyval, str).then(() => {
+                        if (!this._latched)
+                            this._setActiveLayer(0);
+                    });
                 });
             }
 
@@ -1613,9 +1616,6 @@ export const Keyboard = GObject.registerClass({
                 });
             }
         }
-
-        if (!this._latched)
-            this._setActiveLayer(0);
     }
 
     _previousWordPosition(text, cursor) {
