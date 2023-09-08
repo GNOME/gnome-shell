@@ -1498,6 +1498,7 @@ export const Keyboard = GObject.registerClass({
 
             let layout = new KeyContainer();
             layout.shiftKeys = [];
+            layout.mode = currentLevel.mode;
 
             this._loadRows(currentLevel, level, levels.length, layout);
             layers[level] = layout;
@@ -1534,7 +1535,7 @@ export const Keyboard = GObject.registerClass({
             if (key.action !== 'modifier') {
                 button.connect('commit', (_actor, keyval, str) => {
                     this._commitAction(keyval, str).then(() => {
-                        if (!this._latched)
+                        if (layout.mode === 'latched' && !this._latched)
                             this._setActiveLayer(0);
                     });
                 });
