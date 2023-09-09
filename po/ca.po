@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-08-20 00:51+0000\n"
-"PO-Revision-Date: 2023-08-20 21:58+0200\n"
+"POT-Creation-Date: 2023-09-08 22:00+0000\n"
+"PO-Revision-Date: 2023-09-09 21:58+0200\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -64,7 +64,7 @@ msgid "Activate favorite app 9"
 msgstr "Activa l'aplicació preferida 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2141
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2148
 msgid "Screenshots"
 msgstr "Captures de pantalla"
 
@@ -463,6 +463,16 @@ msgstr "Ubicació"
 msgid "The location for which to show a forecast"
 msgstr "La ubicació a mostrar la predicció del temps"
 
+#. Keep in sync with subprojects/extensions-app
+#: data/org.gnome.Shell.Extensions.desktop.in.in:5
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/js/main.js:218
+#: subprojects/extensions-app/data/ui/extensions-window.ui:18
+#: subprojects/extensions-app/data/ui/extensions-window.ui:82
+msgid "Extensions"
+msgstr "Extensions"
+
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
 msgstr "Inici de sessió de xarxa"
@@ -814,7 +824,7 @@ msgstr "Denega"
 msgid "Allow"
 msgstr "Permet"
 
-#: js/ui/appDisplay.js:1773
+#: js/ui/appDisplay.js:1777
 msgid "Unnamed Folder"
 msgstr "Carpeta sense nom"
 
@@ -845,7 +855,7 @@ msgstr "Detalls de l'aplicació"
 msgid "Quit"
 msgstr "Surt"
 
-#: js/ui/appMenu.js:162 js/ui/dash.js:260
+#: js/ui/appMenu.js:162 js/ui/dash.js:250
 msgid "Unpin"
 msgstr "Desancora"
 
@@ -1047,7 +1057,7 @@ msgid ""
 msgstr ""
 "També us podeu connectar prement el botó «WPS» del vostre encaminador."
 
-#: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:226
+#: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:371 js/ui/status/network.js:455
 msgid "Connect"
 msgstr "Connecta"
@@ -1113,7 +1123,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Cal introduir una contrasenya per a connectar-vos a «%s»."
 
-#: js/ui/components/networkAgent.js:742 js/ui/status/network.js:2024
+#: js/ui/components/networkAgent.js:742 js/ui/status/network.js:2040
 msgid "Network Manager"
 msgstr "Gestor de connexions de xarxa"
 
@@ -1150,7 +1160,7 @@ msgstr "En/na %s ara es diu %s"
 msgid "Windows"
 msgstr "Finestres"
 
-#: js/ui/dash.js:216 js/ui/dash.js:262
+#: js/ui/dash.js:206 js/ui/dash.js:252
 msgid "Show Apps"
 msgstr "Mostra les aplicacions"
 
@@ -1721,107 +1731,107 @@ msgstr "No es pot bloquejar"
 msgid "Lock was blocked by an app"
 msgstr "Una aplicació ha bloquejat el bloqueig"
 
-#: js/ui/screenshot.js:1191
+#: js/ui/screenshot.js:1192
 msgid "Selection"
 msgstr "Selecció"
 
-#: js/ui/screenshot.js:1201
+#: js/ui/screenshot.js:1202
 msgid "Area Selection"
 msgstr "Selecció d'àrea"
 
-#: js/ui/screenshot.js:1206
+#: js/ui/screenshot.js:1207
 msgid "Screen"
 msgstr "Pantalla"
 
-#: js/ui/screenshot.js:1216
+#: js/ui/screenshot.js:1217
 msgid "Screen Selection"
 msgstr "Selecció de pantalla"
 
-#: js/ui/screenshot.js:1221
+#: js/ui/screenshot.js:1222
 msgid "Window"
 msgstr "Finestra"
 
-#: js/ui/screenshot.js:1231
+#: js/ui/screenshot.js:1232
 msgid "Window Selection"
 msgstr "Selecció de finestra"
 
 #. Translators: entry in the window right click menu.
-#: js/ui/screenshot.js:1256 js/ui/status/system.js:112 js/ui/windowMenu.js:30
+#: js/ui/screenshot.js:1257 js/ui/status/system.js:112 js/ui/windowMenu.js:30
 msgid "Take Screenshot"
 msgstr "Fes una captura de pantalla"
 
-#: js/ui/screenshot.js:1272
+#: js/ui/screenshot.js:1273
 msgid "Record Screen"
 msgstr "Enregistra la pantalla"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1287
+#: js/ui/screenshot.js:1288
 msgid "Capture"
 msgstr "Captura"
 
-#: js/ui/screenshot.js:1309
+#: js/ui/screenshot.js:1310
 msgid "Show Pointer"
 msgstr "Mostra el punter"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1900
+#: js/ui/screenshot.js:1906
 msgid "Screencasts"
 msgstr "Enregistraments de pantalla"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1905
+#: js/ui/screenshot.js:1911
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Enregistrament de pantalla des de %d %t.webm"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1943
+#: js/ui/screenshot.js:1949
 msgid "Screencast recorded"
 msgstr "Enregistrament de pantalla completat"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1950
+#: js/ui/screenshot.js:1956
 msgid "Screencast ended unexpectedly"
 msgstr "L'enregistrament de pantalla ha acabat inesperadament"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1959 js/ui/screenshot.js:2194
+#: js/ui/screenshot.js:1965 js/ui/screenshot.js:2201
 msgid "Screenshot"
 msgstr "Captura de pantalla"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1966
+#: js/ui/screenshot.js:1972
 msgid "Click here to view the video."
 msgstr "Cliqueu aquí per a veure el vídeo."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1969 js/ui/screenshot.js:2208
+#: js/ui/screenshot.js:1975 js/ui/screenshot.js:2215
 msgid "Show in Files"
 msgstr "Mostra-ho al Fitxers"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2154
+#: js/ui/screenshot.js:2161
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Captura de pantalla de %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2200
+#: js/ui/screenshot.js:2207
 msgid "Screenshot captured"
 msgstr "Captura de pantalla realitzada"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2202
+#: js/ui/screenshot.js:2209
 msgid "You can paste the image from the clipboard."
 msgstr "Podeu enganxar la imatge des del porta-retalls."
 
-#: js/ui/screenshot.js:2255 js/ui/screenshot.js:2419
+#: js/ui/screenshot.js:2262 js/ui/screenshot.js:2426
 msgid "Screenshot taken"
 msgstr "S'ha fet una captura de pantalla"
 
@@ -1979,11 +1989,11 @@ msgstr "Aplicacions conegudes que s'estan executant sense una finestra"
 msgid "App Settings"
 msgstr "Paràmetres d'aplicació"
 
-#: js/ui/status/backgroundApps.js:248
+#: js/ui/status/backgroundApps.js:249
 msgid "No Background Apps"
 msgstr "No hi ha cap aplicació en segon pla"
 
-#: js/ui/status/backgroundApps.js:250
+#: js/ui/status/backgroundApps.js:251
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2010,28 +2020,28 @@ msgstr "Alta"
 msgid "Keyboard"
 msgstr "Teclat"
 
-#: js/ui/status/bluetooth.js:226 js/ui/status/network.js:371
+#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:371
 msgid "Disconnect"
 msgstr "Desconnecta"
 
-#: js/ui/status/bluetooth.js:243 js/ui/status/bluetooth.js:245
+#: js/ui/status/bluetooth.js:263 js/ui/status/bluetooth.js:265
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:1891
+#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1907
 msgid "Bluetooth Settings"
 msgstr "Paràmetres del Bluetooth"
 
-#: js/ui/status/bluetooth.js:315
+#: js/ui/status/bluetooth.js:335
 msgid "No available or connected devices"
 msgstr "No hi ha cap dispositiu disponible o connectat"
 
-#: js/ui/status/bluetooth.js:316
+#: js/ui/status/bluetooth.js:336
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Activa el Bluetooth per a connectar-se als dispositius"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:370
+#: js/ui/status/bluetooth.js:390
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2110,15 +2120,15 @@ msgstr "Desconnecta %s"
 msgid "Connect to %s"
 msgstr "Connecta a %s"
 
-#: js/ui/status/network.js:1050
+#: js/ui/status/network.js:1061
 msgid "Secure"
 msgstr "Segur"
 
-#: js/ui/status/network.js:1050
+#: js/ui/status/network.js:1061
 msgid "Not secure"
 msgstr "No és segur"
 
-#: js/ui/status/network.js:1051
+#: js/ui/status/network.js:1062
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Força del senyal %s%%"
@@ -2126,75 +2136,75 @@ msgstr "Força del senyal %s%%"
 #. translators: The first placeholder is the network name, the second and
 #. indication whether it is secure, and the last the signal strength
 #. indication
-#: js/ui/status/network.js:1053
+#: js/ui/status/network.js:1064
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1155
+#: js/ui/status/network.js:1166
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Punt d'accés %s"
 
-#: js/ui/status/network.js:1421
+#: js/ui/status/network.js:1437
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d connectat"
 msgstr[1] "%d connectats"
 
-#: js/ui/status/network.js:1519 js/ui/status/network.js:1535
+#: js/ui/status/network.js:1535 js/ui/status/network.js:1551
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1520
+#: js/ui/status/network.js:1536
 msgid "VPN Settings"
 msgstr "Paràmetres de la VPN"
 
-#: js/ui/status/network.js:1776
+#: js/ui/status/network.js:1792
 msgid "Wi–Fi"
 msgstr "Wi-Fi"
 
-#: js/ui/status/network.js:1778
+#: js/ui/status/network.js:1794
 msgid "All Networks"
 msgstr "Totes les xarxes"
 
-#: js/ui/status/network.js:1875
+#: js/ui/status/network.js:1891
 msgid "Wired Connections"
 msgstr "Connexions per cable"
 
-#: js/ui/status/network.js:1876
+#: js/ui/status/network.js:1892
 msgid "Wired Settings"
 msgstr "Paràmetres del cable"
 
-#: js/ui/status/network.js:1890
+#: js/ui/status/network.js:1906
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth Tethers"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1897
+#: js/ui/status/network.js:1913
 msgid "Tether"
 msgstr "Tether"
 
-#: js/ui/status/network.js:1910
+#: js/ui/status/network.js:1926
 msgid "Mobile Connections"
 msgstr "Connexions mòbils"
 
-#: js/ui/status/network.js:1912
+#: js/ui/status/network.js:1928
 msgid "Mobile Broadband Settings"
 msgstr "Paràmetres de la banda ampla mòbil"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1921
+#: js/ui/status/network.js:1937
 msgid "Mobile"
 msgstr "Mòbil"
 
-#: js/ui/status/network.js:2029
+#: js/ui/status/network.js:2045
 msgid "Connection failed"
 msgstr "Ha fallat la connexió"
 
-#: js/ui/status/network.js:2030
+#: js/ui/status/network.js:2046
 msgid "Activation of network connection failed"
 msgstr "Ha fallat l'activació de la connexió de xarxa"
 
@@ -2422,7 +2432,7 @@ msgstr[1] "Es descartaran els canvis d'aquí %d segons"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:553
+#: js/ui/windowManager.js:496
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2545,14 +2555,6 @@ msgstr "La icona «%s» no està present al tema %s"
 #: src/st/st-icon-theme.c:3454 src/st/st-icon-theme.c:3757
 msgid "Failed to load icon"
 msgstr "No s'ha pogut carregar la icona"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:218
-#: subprojects/extensions-app/data/ui/extensions-window.ui:18
-#: subprojects/extensions-app/data/ui/extensions-window.ui:82
-msgid "Extensions"
-msgstr "Extensions"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 msgid "Manage your GNOME Extensions"
@@ -2685,12 +2687,12 @@ msgid "Extension Updates Ready"
 msgstr "Les actualitzacions d'extensions preparades"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:222
+#: subprojects/extensions-tool/src/command-create.c:284
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "L'extensió nova s'ha creat amb èxit a %s.\n"
 
-#: subprojects/extensions-tool/src/command-create.c:296
+#: subprojects/extensions-tool/src/command-create.c:376
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
@@ -2699,12 +2701,12 @@ msgstr ""
 "El nom ha de ser una cadena molt curta (idealment descriptiva).\n"
 "Per exemple: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:302
+#: subprojects/extensions-tool/src/command-create.c:382
 #: subprojects/extensions-tool/src/main.c:242
 msgid "Name"
 msgstr "Nom"
 
-#: subprojects/extensions-tool/src/command-create.c:316
+#: subprojects/extensions-tool/src/command-create.c:396
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
@@ -2713,12 +2715,12 @@ msgstr ""
 "La descripció és una explicació d'una frase de què fa l'extensió.\n"
 "Per exemple: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:322
+#: subprojects/extensions-tool/src/command-create.c:402
 #: subprojects/extensions-tool/src/main.c:245
 msgid "Description"
 msgstr "Descripció"
 
-#: subprojects/extensions-tool/src/command-create.c:336
+#: subprojects/extensions-tool/src/command-create.c:416
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
@@ -2726,56 +2728,78 @@ msgstr ""
 "L'UUID és un identificador únic global per l'extensió\n"
 "Ha de tenir el format d'una adreça de correu (exemple@softcatala.org)\n"
 
-#: subprojects/extensions-tool/src/command-create.c:363
+#: subprojects/extensions-tool/src/command-create.c:443
 msgid "Choose one of the available templates:\n"
 msgstr "Trieu una de les plantilles disponibles:\n"
 
-#: subprojects/extensions-tool/src/command-create.c:377
+#: subprojects/extensions-tool/src/command-create.c:457
 msgid "Template"
 msgstr "Plantilla"
 
-#: subprojects/extensions-tool/src/command-create.c:432
+#: subprojects/extensions-tool/src/command-create.c:515
 msgid "The unique identifier of the new extension"
 msgstr "L'identificador únic de l'extensió nova"
 
-#: subprojects/extensions-tool/src/command-create.c:435
+#: subprojects/extensions-tool/src/command-create.c:518
 msgid "NAME"
 msgstr "NOM"
 
-#: subprojects/extensions-tool/src/command-create.c:436
+#: subprojects/extensions-tool/src/command-create.c:519
 msgid "The user-visible name of the new extension"
 msgstr "El nom visible a l'usuari de l'extensió nova"
 
-#: subprojects/extensions-tool/src/command-create.c:438
+#: subprojects/extensions-tool/src/command-create.c:521
 msgid "DESCRIPTION"
 msgstr "DESCRIPCIÓ"
 
-#: subprojects/extensions-tool/src/command-create.c:440
+#: subprojects/extensions-tool/src/command-create.c:523
 msgid "A short description of what the extension does"
 msgstr "Una descripció curta del que fa l'extensió"
 
-#: subprojects/extensions-tool/src/command-create.c:443
+#: subprojects/extensions-tool/src/command-create.c:525
+#: subprojects/extensions-tool/src/command-pack.c:467
+msgid "DOMAIN"
+msgstr "DOMINI"
+
+#: subprojects/extensions-tool/src/command-create.c:527
+msgid "The gettext domain used by the extension"
+msgstr "El domini del gettext per a les traduccions"
+
+#: subprojects/extensions-tool/src/command-create.c:529
+#: subprojects/extensions-tool/src/command-pack.c:460
+msgid "SCHEMA"
+msgstr "ESQUEMA"
+
+#: subprojects/extensions-tool/src/command-create.c:531
+msgid "The GSettings schema used by the extension"
+msgstr "L'esquema GSettings utilitzat per l'extensió"
+
+#: subprojects/extensions-tool/src/command-create.c:534
 msgid "TEMPLATE"
 msgstr "PLANTILLA"
 
-#: subprojects/extensions-tool/src/command-create.c:444
+#: subprojects/extensions-tool/src/command-create.c:535
 msgid "The template to use for the new extension"
 msgstr "La plantilla a usar per a l'extensió nova"
 
-#: subprojects/extensions-tool/src/command-create.c:450
+#: subprojects/extensions-tool/src/command-create.c:538
+msgid "Include prefs.js template"
+msgstr "Inclou la plantilla prefs.js"
+
+#: subprojects/extensions-tool/src/command-create.c:544
 msgid "Enter extension information interactively"
 msgstr "Introduïu la informació de l'extensió interactivament"
 
-#: subprojects/extensions-tool/src/command-create.c:458
+#: subprojects/extensions-tool/src/command-create.c:552
 msgid "Create a new extension"
 msgstr "Crea una extensió nova"
 
-#: subprojects/extensions-tool/src/command-create.c:476
+#: subprojects/extensions-tool/src/command-create.c:570
 #: subprojects/extensions-tool/src/command-list.c:172
 msgid "Unknown arguments"
 msgstr "Arguments desconeguts"
 
-#: subprojects/extensions-tool/src/command-create.c:501
+#: subprojects/extensions-tool/src/command-create.c:595
 msgid "UUID, name and description are required"
 msgstr "Calen l'UUID, el nom i la descripció"
 
@@ -2887,10 +2911,6 @@ msgstr "FITXER"
 msgid "Additional source to include in the bundle"
 msgstr "Font a addicional a incloure al paquet"
 
-#: subprojects/extensions-tool/src/command-pack.c:460
-msgid "SCHEMA"
-msgstr "ESQUEMA"
-
 #: subprojects/extensions-tool/src/command-pack.c:461
 msgid "A GSettings schema that should be included"
 msgstr "Un esquema del GSettings a incloure"
@@ -2903,10 +2923,6 @@ msgstr "DIRECTORI"
 #: subprojects/extensions-tool/src/command-pack.c:465
 msgid "The directory where translations are found"
 msgstr "El directori on es troben les traduccions"
-
-#: subprojects/extensions-tool/src/command-pack.c:467
-msgid "DOMAIN"
-msgstr "DOMINI"
 
 #: subprojects/extensions-tool/src/command-pack.c:469
 msgid "The gettext domain to use for translations"
