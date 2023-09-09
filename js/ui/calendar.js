@@ -552,8 +552,8 @@ export const Calendar = GObject.registerClass({
         this._firstDayIndex = this.get_n_children();
     }
 
-    vfunc_scroll_event(scrollEvent) {
-        switch (scrollEvent.direction) {
+    vfunc_scroll_event(event) {
+        switch (event.get_scroll_direction()) {
         case Clutter.ScrollDirection.UP:
         case Clutter.ScrollDirection.LEFT:
             this._onPrevMonthButtonClicked();
