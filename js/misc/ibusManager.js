@@ -115,17 +115,9 @@ class IBusManager extends Signals.EventEmitter {
 
     _spawn(extraArgs = []) {
         try {
-            let cmdLine = ['ibus-daemon', '--panel', 'disable', ...extraArgs];
-            let env = [];
-
-            this._tryAppendEnv(env, 'DBUS_SESSION_BUS_ADDRESS');
-            this._tryAppendEnv(env, 'WAYLAND_DISPLAY');
-            this._tryAppendEnv(env, 'HOME');
-            this._tryAppendEnv(env, 'LANG');
-            this._tryAppendEnv(env, 'LC_CTYPE');
-            this._tryAppendEnv(env, 'COMPOSE_FILE');
-            this._tryAppendEnv(env, 'DISPLAY');
-
+            const cmdLine = ['ibus-daemon', '--panel', 'disable', ...extraArgs];
+            const launchContext = global.create_app_launch_context(0, -1);
+            const env = launchContext.get_environment();
             // Use DO_NOT_REAP_CHILD to avoid adouble-fork internally
             // since ibus-daemon refuses to start with init as its parent.
             const [success_, pid] = GLib.spawn_async(
