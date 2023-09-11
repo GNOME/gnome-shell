@@ -98,6 +98,7 @@ let _themeResource = null;
 let _oskResource = null;
 let _iconResource = null;
 let _workspacesAdjustment = null;
+let _workspaceAdjustmentRegistry = null;
 
 Gio._promisify(Gio.File.prototype, 'delete_async');
 Gio._promisify(Gio.File.prototype, 'touch_async');
@@ -445,6 +446,30 @@ function _loadDefaultStylesheet() {
     loadTheme();
 }
 
+class AdjustmentRegistry {
+    #count = 0;
+    #adjustments = new Map();
+    #registry = new FinalizationRegistry(key => {
+        this.#adjustments.delete(key);
+    });
+
+    register(adj) {
+        const key = this.#count++;
+        this.#adjustments.set(key, new WeakRef(adj));
+        this.#registry.register(adj, key);
+    }
+
+    forEach(callback) {
+        this.#adjustments.forEach((ref, key) => {
+            const adj = ref.deref();
+            if (adj)
+                callback(adj);
+            else
+                this.#adjustments.delete(key);
+        });
+    }
+}
+
 function _loadWorkspacesAdjustment() {
     const {workspaceManager} = global;
     const activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
@@ -467,9 +492,12 @@ function _loadWorkspacesAdjustment() {
 
         // A workspace might have been inserted or removed before the active
         // one, causing the adjustment to go out of sync, so update the value
+        _workspaceAdjustmentRegistry.forEach(c => c.remove_transition('value'));
         _workspacesAdjustment.remove_transition('value');
         _workspacesAdjustment.value = newActiveIndex;
     });
+
+    _workspaceAdjustmentRegistry = new AdjustmentRegistry();
 }
 
 /**
@@ -497,6 +525,8 @@ export function createWorkspacesAdjustment(actor) {
 
     for (const [propName, flags] of properties)
         _workspacesAdjustment.bind_property(propName, adjustment, propName, flags);
+
+    _workspaceAdjustmentRegistry.register(adjustment);
 
     return adjustment;
 }
