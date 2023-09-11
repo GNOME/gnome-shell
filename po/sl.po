@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-04-10 19:43+0000\n"
+"POT-Creation-Date: 2023-08-08 06:19+0000\n"
 "PO-Revision-Date: 2023-04-12 21:48+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
@@ -63,7 +63,7 @@ msgid "Activate favorite app 9"
 msgstr "Omogoči priljubljeni program 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2110
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2131
 msgid "Screenshots"
 msgstr "Zaslonske slike"
 
@@ -829,7 +829,7 @@ msgstr "Podrobnosti programa"
 msgid "Quit"
 msgstr "Končaj"
 
-#: js/ui/appMenu.js:157 js/ui/dash.js:249
+#: js/ui/appMenu.js:157 js/ui/dash.js:250
 msgid "Unpin"
 msgstr "Odpni"
 
@@ -1134,13 +1134,13 @@ msgstr "%s je sedaj znan kot v %s"
 msgid "Windows"
 msgstr "Okna"
 
-#: js/ui/dash.js:205 js/ui/dash.js:251
+#: js/ui/dash.js:206 js/ui/dash.js:252
 msgid "Show Apps"
 msgstr "Pokaži programe"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:399
+#: js/ui/dash.js:400
 msgid "Dash"
 msgstr "Pregledna plošča"
 
@@ -1530,7 +1530,8 @@ msgstr "Omogočeno"
 msgid "Disabled"
 msgstr "Onemogočeno"
 
-#: js/ui/lookingGlass.js:798
+#. Translators: notification title.
+#: js/ui/lookingGlass.js:798 js/ui/screenshot.js:1940
 msgid "Error"
 msgstr "Napaka"
 
@@ -1558,23 +1559,23 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: js/ui/main.js:286
+#: js/ui/main.js:288
 msgid "System was put in unsafe mode"
 msgstr "Sistem je v ne-varnem načinu"
 
-#: js/ui/main.js:287
+#: js/ui/main.js:289
 msgid "Apps now have unrestricted access"
 msgstr "Programi imajo zdaj neomejen dostop"
 
-#: js/ui/main.js:288 js/ui/overview.js:58
+#: js/ui/main.js:290 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: js/ui/main.js:344
+#: js/ui/main.js:346
 msgid "Logged in as a privileged user"
 msgstr "Zaznana je prijava s skrbniškimi dovoljenji"
 
-#: js/ui/main.js:345
+#: js/ui/main.js:347
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1582,16 +1583,16 @@ msgstr ""
 "Zagona seje s skrbniškim računom se je treba iz varnostnih razlogov "
 "izogibati. Priporočljivo je uporabljati običajen uporabniški račun."
 
-#: js/ui/main.js:393
+#: js/ui/main.js:395
 msgid "Screen Lock disabled"
 msgstr "Zaklep zaslona je onemogočen"
 
-#: js/ui/main.js:394
+#: js/ui/main.js:396
 msgid "Screen Locking requires the GNOME display manager."
 msgstr ""
 "Zaklepanje zaslona zahteva namestitev upravljalnika zaslona za okolje GNOME."
 
-#: js/ui/messageTray.js:1418
+#: js/ui/messageTray.js:1417
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -1669,12 +1670,12 @@ msgstr "Pritisnite katerokoli tipko za končanje"
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: js/ui/panel.js:338
+#: js/ui/panel.js:329
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:460
+#: js/ui/panel.js:451
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -1710,109 +1711,109 @@ msgstr "Zaklep ni mogoč"
 msgid "Lock was blocked by an app"
 msgstr "Zaklep je preprečil program"
 
-#: js/ui/screenshot.js:1165
+#: js/ui/screenshot.js:1178
 msgid "Selection"
 msgstr "Izbor"
 
-#: js/ui/screenshot.js:1175
+#: js/ui/screenshot.js:1188
 msgid "Area Selection"
 msgstr "Izbor polja"
 
-#: js/ui/screenshot.js:1180
+#: js/ui/screenshot.js:1193
 msgid "Screen"
 msgstr "Zaslon"
 
-#: js/ui/screenshot.js:1190
+#: js/ui/screenshot.js:1203
 msgid "Screen Selection"
 msgstr "Izbor zaslona"
 
-#: js/ui/screenshot.js:1195
+#: js/ui/screenshot.js:1208
 msgid "Window"
 msgstr "Okno"
 
-#: js/ui/screenshot.js:1205
+#: js/ui/screenshot.js:1218
 msgid "Window Selection"
 msgstr "Izbor okna"
 
-#: js/ui/screenshot.js:1243
+#: js/ui/screenshot.js:1256
 msgid "Screenshot / Screencast"
 msgstr "Zaslonski slika / posnetek"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1264
+#: js/ui/screenshot.js:1277
 msgid "Capture"
 msgstr "Zajemi"
 
-#: js/ui/screenshot.js:1286
+#: js/ui/screenshot.js:1299
 msgid "Show Pointer"
 msgstr "Pokaži kazalnik"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1877
+#: js/ui/screenshot.js:1890
 msgid "Screencasts"
 msgstr "Zaslonski posnetek"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1882
+#: js/ui/screenshot.js:1895
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Zaslonski posnetek %d %t.webm"
 
-#. Translators: notification source name.
-#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2163
-msgid "Screenshot"
-msgstr "Zaslonska slika"
-
 #. Translators: notification title.
-#: js/ui/screenshot.js:1930
+#: js/ui/screenshot.js:1933
 msgid "Screencast recorded"
 msgstr "Zaslonski posnetek je zajet"
 
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1949 js/ui/screenshot.js:2184
+msgid "Screenshot"
+msgstr "Zaslonska slika"
+
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1932
+#: js/ui/screenshot.js:1956
 msgid "Click here to view the video."
 msgstr "Kliknite za ogled posnetka."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1935 js/ui/screenshot.js:2177
+#: js/ui/screenshot.js:1959 js/ui/screenshot.js:2198
 msgid "Show in Files"
 msgstr "Pokaži v mapi"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:2144
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Zaslonska slika %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2169
+#: js/ui/screenshot.js:2190
 msgid "Screenshot captured"
 msgstr "Zaslonska slika je zajeta"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2171
+#: js/ui/screenshot.js:2192
 msgid "You can paste the image from the clipboard."
 msgstr "Prilepiti je mogoče sliko iz odložišča."
 
-#: js/ui/screenshot.js:2224 js/ui/screenshot.js:2389
+#: js/ui/screenshot.js:2245 js/ui/screenshot.js:2410
 msgid "Screenshot taken"
 msgstr "Zaslonska slika je zajeta"
 
-#: js/ui/search.js:807
+#: js/ui/search.js:812
 msgid "Searching…"
 msgstr "Iskanje …"
 
-#: js/ui/search.js:809
+#: js/ui/search.js:814
 msgid "No results."
 msgstr "Ni najdenih zadetkov."
 
-#: js/ui/search.js:940
+#: js/ui/search.js:945
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2128,7 +2129,7 @@ msgstr "Omrežje Wi-Fi"
 
 #: js/ui/status/network.js:1774
 msgid "All Networks"
-msgstr "Vsa omrežija"
+msgstr "Vsa omrežja"
 
 #: js/ui/status/network.js:1871
 msgid "Wired Connections"
@@ -2474,23 +2475,23 @@ msgstr "Premakni na zaslon desno"
 msgid "Close"
 msgstr "Zapri"
 
-#: src/main.c:508 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:528 subprojects/extensions-tool/src/main.c:325
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: src/main.c:514
+#: src/main.c:534
 msgid "Mode used by GDM for login screen"
 msgstr "Način, uporabljen v upravljalniku GDM kot prijavni zaslon"
 
-#: src/main.c:520
+#: src/main.c:540
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Uporabi poseben način, na primer »gdm« za prijavni zaslon"
 
-#: src/main.c:526
+#: src/main.c:546
 msgid "List possible modes"
 msgstr "Seznam mogočih načinov"
 
-#: src/main.c:532
+#: src/main.c:552
 msgid "Force animations to be enabled"
 msgstr "Vsili omogočanje animacij"
 
@@ -2516,12 +2517,12 @@ msgstr "Geslo ne more biti prazna vrednost"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Uporabnik je preklical pogovorno okno overitve"
 
-#: src/st/st-icon-theme.c:1883
+#: src/st/st-icon-theme.c:1884
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "Ikone »%s« v temi %s ni mogoče najti."
 
-#: src/st/st-icon-theme.c:3472 src/st/st-icon-theme.c:3775
+#: src/st/st-icon-theme.c:3473 src/st/st-icon-theme.c:3776
 msgid "Failed to load icon"
 msgstr "Nalaganje ikone je spodletelo"
 
