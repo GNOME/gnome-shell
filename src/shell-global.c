@@ -766,73 +766,6 @@ _shell_global_destroy_gjs_context (ShellGlobal *self)
   g_clear_object (&self->js_context);
 }
 
-static guint32
-get_current_time_maybe_roundtrip (ShellGlobal *global)
-{
-  guint32 time;
-
-  time = shell_global_get_current_time (global);
-  if (time != CurrentTime)
-    return time;
-
-  return meta_display_get_current_time_roundtrip (global->meta_display);
-}
-
-static void
-focus_window_changed (MetaDisplay *display,
-                      GParamSpec  *param,
-                      gpointer     user_data)
-{
-  ShellGlobal *global = user_data;
-
-  /* If the stage window became unfocused, drop the key focus
-   * on Clutter's side. */
-  if (!meta_stage_is_focused (global->meta_display))
-    clutter_stage_set_key_focus (global->stage, NULL);
-}
-
-static ClutterActor *
-get_key_focused_actor (ShellGlobal *global)
-{
-  ClutterActor *actor;
-
-  actor = clutter_stage_get_key_focus (global->stage);
-
-  /* If there's no explicit key focus, clutter_stage_get_key_focus()
-   * returns the stage. This is a terrible API. */
-  if (actor == CLUTTER_ACTOR (global->stage))
-    actor = NULL;
-
-  return actor;
-}
-
-static void
-sync_stage_window_focus (ShellGlobal *global)
-{
-  ClutterActor *actor;
-
-  actor = get_key_focused_actor (global);
-
-  /* An actor got key focus and the stage needs to be focused. */
-  if (actor != NULL && !meta_stage_is_focused (global->meta_display))
-    meta_focus_stage_window (global->meta_display,
-                             get_current_time_maybe_roundtrip (global));
-
-  /* An actor dropped key focus. Focus the default window. */
-  else if (actor == NULL && meta_stage_is_focused (global->meta_display))
-    meta_display_focus_default_window (global->meta_display,
-                                       get_current_time_maybe_roundtrip (global));
-}
-
-static void
-focus_actor_changed (ClutterStage *stage,
-                     GParamSpec   *param,
-                     gpointer      user_data)
-{
-  ShellGlobal *global = user_data;
-  sync_stage_window_focus (global);
-}
-
 static void
 sync_input_region (ShellGlobal *global)
 {
@@ -1146,11 +1079,6 @@ _shell_global_set_plugin (ShellGlobal *global,
                                "clutter.stagePaintDone",
                                "End of frame, possibly including swap time",
                                "");
-
-  g_signal_connect (global->stage, "notify::key-focus",
-                    G_CALLBACK (focus_actor_changed), global);
-  g_signal_connect (global->meta_display, "notify::focus-window",
-                    G_CALLBACK (focus_window_changed), global);
 
   if (global->xdisplay)
     g_signal_connect_object (global->meta_display, "x11-display-closing",
