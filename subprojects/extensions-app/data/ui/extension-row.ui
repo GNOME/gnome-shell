@@ -86,7 +86,16 @@
     <child type="suffix">
       <object class="GtkSwitch" id="switch">
         <property name="valign">center</property>
-        <property name="action-name">row.enabled</property>
+        <binding name="active">
+          <lookup name="enabled" type="Extension">
+            <lookup name="extension" type="ExtensionRow"/>
+          </lookup>
+        </binding>
+        <binding name="sensitive">
+          <lookup name="can-change" type="Extension">
+            <lookup name="extension" type="ExtensionRow"/>
+          </lookup>
+        </binding>
       </object>
     </child>
     <child type="suffix">

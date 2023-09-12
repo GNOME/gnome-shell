@@ -44,6 +44,10 @@ const Extension = GObject.registerClass({
             'state', null, null,
             GObject.ParamFlags.READABLE,
             1, 99, ExtensionState.INITIALIZED),
+        'enabled': GObject.ParamSpec.boolean(
+            'enabled', null, null,
+            GObject.ParamFlags.READABLE,
+            false),
         'creator': GObject.ParamSpec.string(
             'creator', null, null,
             GObject.ParamFlags.READABLE,
@@ -95,7 +99,7 @@ const Extension = GObject.registerClass({
         const deserialized = deserializeExtension(variant);
 
         const {
-            uuid, type, state, error, hasPrefs, hasUpdate, canChange, metadata,
+            uuid, type, state, enabled, error, hasPrefs, hasUpdate, canChange, metadata,
         } = deserialized;
 
         if (!this._uuid)
@@ -126,6 +130,11 @@ const Extension = GObject.registerClass({
         if (this._errorDetail !== error) {
             this._errorDetail = error;
             this.notify('error');
+        }
+
+        if (this._enabled !== enabled) {
+            this._enabled = enabled;
+            this.notify('enabled');
         }
 
         if (this._state !== state) {
@@ -191,6 +200,10 @@ const Extension = GObject.registerClass({
 
     get state() {
         return this._state;
+    }
+
+    get enabled() {
+        return this._enabled;
     }
 
     get creator() {

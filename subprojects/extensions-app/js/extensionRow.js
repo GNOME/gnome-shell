@@ -1,5 +1,4 @@
 import Adw from 'gi://Adw?version=1';
-import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 
@@ -54,35 +53,31 @@ export const ExtensionRow = GObject.registerClass({
                     this.get_root().uninstall(extension);
                 },
                 enabledProp: 'is-user',
-            }, {
-                name: 'enabled',
-                state: 'false',
-                activate: action => {
-                    const state = action.get_state();
-                    action.change_state(new GLib.Variant('b', !state.get_boolean()));
-                },
-                change_state: (a, state) => {
-                    const {uuid} = this._extension;
-                    if (state.get_boolean())
-                        this._app.extensionManager.enableExtension(uuid);
-                    else
-                        this._app.extensionManager.disableExtension(uuid);
-                },
-                enabledProp: 'can-change',
             },
         ];
         this._actionGroup.add_action_entries(actionEntries);
         this._bindActionEnabled(actionEntries);
+
+        this._switch.connect('state-set', (sw, state) => {
+            const {uuid} = this._extension;
+            if (state)
+                this._app.extensionManager.enableExtension(uuid);
+            else
+                this._app.extensionManager.disableExtension(uuid);
+            return true;
+        });
+
+        this._extension.bind_property_full('state',
+            this._switch, 'state',
+            GObject.BindingFlags.SYNC_CREATE,
+            (bind, source) => [true, source === ExtensionState.ACTIVE],
+            null);
 
         this._extension.bind_property_full('version',
             this._versionLabel, 'label',
             GObject.BindingFlags.SYNC_CREATE,
             (bind, source) => [true, _('Version %s').format(source)],
             null);
-
-        this._extension.connect('notify::state',
-            () => this._updateState());
-        this._updateState();
     }
 
     get extension() {
@@ -112,15 +107,5 @@ export const ExtensionRow = GObject.registerClass({
                     GObject.BindingFlags.SYNC_CREATE);
             }
         }
-    }
-
-    _updateState() {
-        const state = this._extension.state === ExtensionState.ACTIVE;
-
-        const action = this._actionGroup.lookup_action('enabled');
-        action.set_state(new GLib.Variant('b', state));
-
-        if (!action.enabled)
-            this._switch.active = state;
     }
 });
