@@ -30,6 +30,7 @@ export const ExtensionState = {
 const SERIALIZED_PROPERTIES = [
     'type',
     'state',
+    'enabled',
     'path',
     'error',
     'hasPrefs',

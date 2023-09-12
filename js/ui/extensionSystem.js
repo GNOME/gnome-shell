@@ -429,6 +429,7 @@ export class ExtensionManager extends Signals.EventEmitter {
             path: dir.get_path(),
             error: '',
             hasPrefs: dir.get_child('prefs.js').query_exists(null),
+            enabled: this._enabledExtensions.includes(uuid),
             hasUpdate: false,
             canChange: false,
             sessionModes: meta['session-modes'] ? meta['session-modes'] : ['user'],
@@ -608,6 +609,13 @@ export class ExtensionManager extends Signals.EventEmitter {
 
     async _onEnabledExtensionsChanged() {
         let newEnabledExtensions = this._getEnabledExtensions();
+
+        for (const extension of this._extensions.values()) {
+            const wasEnabled = extension.enabled;
+            extension.enabled = newEnabledExtensions.includes(extension.uuid);
+            if (wasEnabled !== extension.enabled)
+                this.emit('extension-state-changed', extension);
+        }
 
         // Find and enable all the newly enabled extensions: UUIDs found in the
         // new setting, but not in the old one.
