@@ -27,6 +27,8 @@ export class ExtensionManager extends Signals.EventEmitter {
 
         this._initializationPromise = null;
         this._updateNotified = false;
+        this._updateInProgress = false;
+        this._updatedUUIDS = [];
 
         this._extensions = new Map();
         this._unloadedExtensions = new Map();
@@ -316,6 +318,11 @@ export class ExtensionManager extends Signals.EventEmitter {
     }
 
     notifyExtensionUpdate(uuid) {
+        if (this._updateInProgress) {
+            this._updatedUUIDS.push(uuid);
+            return;
+        }
+
         let extension = this.lookup(uuid);
         if (!extension)
             return;
@@ -646,6 +653,30 @@ export class ExtensionManager extends Signals.EventEmitter {
         }
     }
 
+    async _handleMajorUpdate() {
+        const [majorVersion] = Config.PACKAGE_VERSION.split('.');
+        const path = `${global.userdatadir}/update-check-${majorVersion}`;
+        const file = Gio.File.new_for_path(path);
+
+        try {
+            if (!await file.touch_async())
+                return;
+        } catch (e) {
+            logError(e);
+        }
+
+        this._updateInProgress = true;
+
+        await ExtensionDownloader.checkForUpdates();
+        this._installExtensionUpdates();
+
+        this._updatedUUIDS.map(uuid => this.lookup(uuid)).forEach(
+            ext => this.reloadExtension(ext));
+        this._updatedUUIDS = [];
+
+        this._updateInProgress = false;
+    }
+
     _installExtensionUpdates() {
         if (!this.updatesSupported)
             return;
@@ -718,6 +749,10 @@ export class ExtensionManager extends Signals.EventEmitter {
 
             return extension;
         }).filter(extension => extension !== null);
+
+        // after updating to a new major version,
+        // update extensions before loading them
+        await this._handleMajorUpdate();
 
         for (const extension of extensionObjects) {
             // eslint-disable-next-line no-await-in-loop
