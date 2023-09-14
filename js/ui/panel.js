@@ -11,31 +11,14 @@ import St from 'gi://St';
 
 import * as Animation from './animation.js';
 import {AppMenu} from './appMenu.js';
-import * as Config from '../misc/config.js';
 import * as CtrlAltTab from './ctrlAltTab.js';
 import * as DND from './dnd.js';
 import * as Overview from './overview.js';
 import * as PopupMenu from './popupMenu.js';
 import * as PanelMenu from './panelMenu.js';
-import {QuickSettingsMenu} from './quickSettings.js';
+import {QuickSettingsManager, QuickSettingsMenu} from './quickSettings.js';
 import * as Main from './main.js';
 import * as Util from '../misc/util.js';
-
-import * as RemoteAccessStatus from './status/remoteAccess.js';
-import * as PowerProfileStatus from './status/powerProfiles.js';
-import * as RFKillStatus from './status/rfkill.js';
-import * as CameraStatus from './status/camera.js';
-import * as VolumeStatus from './status/volume.js';
-import * as BrightnessStatus from './status/brightness.js';
-import * as SystemStatus from './status/system.js';
-import * as LocationStatus from './status/location.js';
-import * as NightLightStatus from './status/nightLight.js';
-import * as DarkModeStatus from './status/darkMode.js';
-import * as UnsafeModeStatus from './status/unsafeMode.js';
-import * as BacklightStatus from './status/backlight.js';
-import * as ThunderboltStatus from './status/thunderbolt.js';
-import * as AutoRotateStatus from './status/autoRotate.js';
-import * as BackgroundAppsStatus from './status/backgroundApps.js';
 
 import {DateMenuButton} from './dateMenu.js';
 import {ATIndicator} from './status/accessibility.js';
@@ -489,10 +472,19 @@ class ActivitiesButton extends PanelMenu.Button {
     }
 });
 
+const QuickSettingsOrderings = {
+    privacy: ['remoteAccess', 'camera', 'volume.InputIndicator', 'location'],
+    internal: ['brightness', 'thunderbolt', 'nightLight', 'network', 'darkMode', 'backlight', 'powerProfiles', 'bluetooth', 'rfkill', 'autoRotate', 'volume.OutputIndicator', 'unsafeMode', 'system'],
+    menu: ['system', 'volume.OutputIndicator', 'volume.InputIndicator', 'brightness', 'camera', 'remoteAccess', 'thunderbolt', 'network', 'bluetooth', 'powerProfiles', 'nightLight', 'darkMode', 'backlight', 'rfkill', 'autoRotate', 'unsafeMode'],
+    menuEnd: ['backgroundApps'],
+};
+
 const QuickSettings = GObject.registerClass(
 class QuickSettings extends PanelMenu.Button {
     constructor() {
         super(0.0, C_('System menu in the top bar', 'System'), true);
+
+        this._quickSettingsManager = new QuickSettingsManager();
 
         this._indicators = new St.BoxLayout({
             style_class: 'panel-status-indicators-box',
@@ -501,100 +493,50 @@ class QuickSettings extends PanelMenu.Button {
 
         this.setMenu(new QuickSettingsMenu(this, N_QUICK_SETTINGS_COLUMNS));
 
-        this._setupIndicators().catch(error =>
-            logError(error, 'Failed to setup quick settings'));
+        this._quickSettingsManager.connect('disable-indicators', this._disableIndicators.bind(this));
+        this._quickSettingsManager.connect('enable-indicators', this._enableIndicators.bind(this));
     }
 
-    async _setupIndicators() {
-        if (Config.HAVE_NETWORKMANAGER) {
-            /** @type {import('./status/network.js')} */
-            const NetworkStatus = await import('./status/network.js');
+    _disableIndicators(manager, indicatorsToDisable) {
+        indicatorsToDisable.forEach(indicator => {
+            this.menu.removeItems(indicator.quickSettingsItems);
+            this._indicators.remove_child(indicator);
+        });
+    }
 
-            this._network = new NetworkStatus.Indicator();
-        } else {
-            this._network = null;
+    _insertIndicatorAndItems(indicator, indicatorOrdering, menuOrdering, colSpan = 1) {
+        if (indicatorOrdering.includes(indicator.name)) {
+            const nextIndicator = this._quickSettingsManager.findIndicatorAfter(indicator, indicatorOrdering, laterIndicator => {
+                return this._indicators.get_children().includes(laterIndicator);
+            });
+
+            if (nextIndicator)
+                this._indicators.insert_child_below(indicator, nextIndicator);
+            else
+                this._indicators.add_child(indicator);
         }
 
-        if (Config.HAVE_BLUETOOTH) {
-            /** @type {import('./status/bluetooth.js')} */
-            const BluetoothStatus = await import('./status/bluetooth.js');
+        if (menuOrdering.includes(indicator.name)) {
+            let nextQuickSettingsItem = null;
+            this._quickSettingsManager.findIndicatorAfter(indicator, menuOrdering, laterIndicator => {
+                nextQuickSettingsItem = laterIndicator.quickSettingsItems.find(item => this.menu.hasItem(item));
+                return !!nextQuickSettingsItem;
+            });
+            if (!nextQuickSettingsItem)
+                nextQuickSettingsItem = this.menu.getFirstItem();
 
-            this._bluetooth = new BluetoothStatus.Indicator();
-        } else {
-            this._bluetooth = null;
+            this._addItemsBefore(indicator.quickSettingsItems, nextQuickSettingsItem, colSpan);
         }
+    }
 
-        this._system = new SystemStatus.Indicator();
-        this._camera = new CameraStatus.Indicator();
-        this._volumeOutput = new VolumeStatus.OutputIndicator();
-        this._volumeInput = new VolumeStatus.InputIndicator();
-        this._brightness = new BrightnessStatus.Indicator();
-        this._remoteAccess = new RemoteAccessStatus.RemoteAccessApplet();
-        this._location = new LocationStatus.Indicator();
-        this._thunderbolt = new ThunderboltStatus.Indicator();
-        this._nightLight = new NightLightStatus.Indicator();
-        this._darkMode = new DarkModeStatus.Indicator();
-        this._backlight = new BacklightStatus.Indicator();
-        this._powerProfiles = new PowerProfileStatus.Indicator();
-        this._rfkill = new RFKillStatus.Indicator();
-        this._autoRotate = new AutoRotateStatus.Indicator();
-        this._unsafeMode = new UnsafeModeStatus.Indicator();
-        this._backgroundApps = new BackgroundAppsStatus.Indicator();
+    _enableIndicators(manager, indicatorsToEnable) {
+        const indicatorOrdering = [...QuickSettingsOrderings['privacy'], ...QuickSettingsOrderings['internal']];
+        const menuOrdering = [...QuickSettingsOrderings['menu'], ...QuickSettingsOrderings['menuEnd']];
 
-        // add privacy-related indicators before any external indicators
-        let pos = 0;
-        this._indicators.insert_child_at_index(this._remoteAccess, pos++);
-        this._indicators.insert_child_at_index(this._camera, pos++);
-        this._indicators.insert_child_at_index(this._volumeInput, pos++);
-        this._indicators.insert_child_at_index(this._location, pos++);
-
-        // append all other indicators
-        this._indicators.add_child(this._brightness);
-        this._indicators.add_child(this._thunderbolt);
-        this._indicators.add_child(this._nightLight);
-        if (this._network)
-            this._indicators.add_child(this._network);
-        this._indicators.add_child(this._darkMode);
-        this._indicators.add_child(this._backlight);
-        this._indicators.add_child(this._powerProfiles);
-        if (this._bluetooth)
-            this._indicators.add_child(this._bluetooth);
-        this._indicators.add_child(this._rfkill);
-        this._indicators.add_child(this._autoRotate);
-        this._indicators.add_child(this._volumeOutput);
-        this._indicators.add_child(this._unsafeMode);
-        this._indicators.add_child(this._system);
-
-        // add our quick settings items before any external ones
-        const sibling = this.menu.getFirstItem();
-        this._addItemsBefore(this._system.quickSettingsItems,
-            sibling, N_QUICK_SETTINGS_COLUMNS);
-        this._addItemsBefore(this._volumeOutput.quickSettingsItems,
-            sibling, N_QUICK_SETTINGS_COLUMNS);
-        this._addItemsBefore(this._volumeInput.quickSettingsItems,
-            sibling, N_QUICK_SETTINGS_COLUMNS);
-        this._addItemsBefore(this._brightness.quickSettingsItems,
-            sibling, N_QUICK_SETTINGS_COLUMNS);
-
-        this._addItemsBefore(this._camera.quickSettingsItems, sibling);
-        this._addItemsBefore(this._remoteAccess.quickSettingsItems, sibling);
-        this._addItemsBefore(this._thunderbolt.quickSettingsItems, sibling);
-        this._addItemsBefore(this._location.quickSettingsItems, sibling);
-        if (this._network)
-            this._addItemsBefore(this._network.quickSettingsItems, sibling);
-        if (this._bluetooth)
-            this._addItemsBefore(this._bluetooth.quickSettingsItems, sibling);
-        this._addItemsBefore(this._powerProfiles.quickSettingsItems, sibling);
-        this._addItemsBefore(this._nightLight.quickSettingsItems, sibling);
-        this._addItemsBefore(this._darkMode.quickSettingsItems, sibling);
-        this._addItemsBefore(this._backlight.quickSettingsItems, sibling);
-        this._addItemsBefore(this._rfkill.quickSettingsItems, sibling);
-        this._addItemsBefore(this._autoRotate.quickSettingsItems, sibling);
-        this._addItemsBefore(this._unsafeMode.quickSettingsItems, sibling);
-
-        // append background apps
-        this._backgroundApps.quickSettingsItems.forEach(
-            item => this.menu.addItem(item, N_QUICK_SETTINGS_COLUMNS));
+        indicatorsToEnable.forEach(indicator => {
+            const colSpan = indicator.quickSettingsItems.expand ? N_QUICK_SETTINGS_COLUMNS : 1;
+            this._insertIndicatorAndItems(indicator, indicatorOrdering, menuOrdering, colSpan);
+        });
     }
 
     _addItemsBefore(items, sibling, colSpan = 1) {
@@ -609,13 +551,11 @@ class QuickSettings extends PanelMenu.Button {
      * @param {number=} colSpan
      */
     addExternalIndicator(indicator, colSpan = 1) {
-        // Insert before first non-privacy indicator if it exists
-        let sibling = this._brightness ?? null;
-        this._indicators.insert_child_below(indicator, sibling);
+        // Note indicator.name may legitimately be undefined
+        const indicatorOrdering = [...QuickSettingsOrderings['privacy'], indicator.name, ...QuickSettingsOrderings['internal']];
+        const menuOrdering = [...QuickSettingsOrderings['menu'], indicator.name, ...QuickSettingsOrderings['menuEnd']];
 
-        // Insert before background apps if it exists
-        sibling = this._backgroundApps?.quickSettingsItems?.at(-1) ?? null;
-        this._addItemsBefore(indicator.quickSettingsItems, sibling, colSpan);
+        this._insertIndicatorAndItems(indicator, indicatorOrdering, menuOrdering, colSpan);
     }
 });
 

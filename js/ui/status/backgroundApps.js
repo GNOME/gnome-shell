@@ -265,5 +265,6 @@ class Indicator extends SystemIndicator {
         super._init();
 
         this.quickSettingsItems.push(new BackgroundAppsToggle());
+        this.quickSettingsItems.expand = true;
     }
 });

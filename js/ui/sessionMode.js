@@ -21,6 +21,31 @@ const USER_SESSION_COMPONENTS = [
 if (Config.HAVE_NETWORKMANAGER)
     USER_SESSION_COMPONENTS.push('networkAgent');
 
+export const DEFAULT_QUICK_SETTINGS = [
+    'autoRotate',
+    'backgroundApps',
+    'backlight',
+    'brightness',
+    'camera',
+    'darkMode',
+    'location',
+    'nightLight',
+    'powerProfiles',
+    'remoteAccess',
+    'rfkill',
+    'system',
+    'thunderbolt',
+    'unsafeMode',
+    'volume.InputIndicator',
+    'volume.OutputIndicator',
+];
+
+if (Config.HAVE_NETWORKMANAGER)
+    DEFAULT_QUICK_SETTINGS.push('network');
+
+if (Config.HAVE_BLUETOOTH)
+    DEFAULT_QUICK_SETTINGS.push('bluetooth');
+
 const _modes = {
     'restrictive': {
         parentMode: null,
@@ -49,6 +74,7 @@ const _modes = {
             right: [],
         },
         panelStyle: null,
+        quickSettings: [],
     },
 
     'gdm': {
@@ -65,6 +91,7 @@ const _modes = {
             right: ['dwellClick', 'a11y', 'keyboard', 'quickSettings'],
         },
         panelStyle: 'login-screen',
+        quickSettings: null,
     },
 
     'unlock-dialog': {
@@ -77,6 +104,7 @@ const _modes = {
             right: ['dwellClick', 'a11y', 'keyboard', 'quickSettings'],
         },
         panelStyle: 'unlock-screen',
+        quickSettings: null,
     },
 
     'user': {
@@ -99,6 +127,7 @@ const _modes = {
             center: ['dateMenu'],
             right: ['screenRecording', 'screenSharing', 'dwellClick', 'a11y', 'keyboard', 'quickSettings'],
         },
+        quickSettings: null,
     },
 };
 

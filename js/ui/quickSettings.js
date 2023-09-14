@@ -10,13 +10,114 @@ import St from 'gi://St';
 
 import * as Main from './main.js';
 import * as PopupMenu from './popupMenu.js';
+import * as SessionMode from './sessionMode.js';
+import * as Signals from '../misc/signals.js';
 import {Slider} from './slider.js';
+import * as Util from '../misc/util.js';
 
 import {PopupAnimation} from './boxpointer.js';
+
 
 const DIM_BRIGHTNESS = -0.4;
 const POPUP_ANIMATION_TIME = 400;
 const MENU_BUTTON_BRIGHTNESS = 0.1;
+
+export class QuickSettingsManager extends Signals.EventEmitter {
+    constructor() {
+        super();
+        this.indicators = {};
+
+        Main.sessionMode.connect('updated', this._syncQuickSettings.bind(this));
+        GLib.idle_add(GLib.PRIORITY_DEFAULT, this._syncQuickSettings.bind(this));
+    }
+
+    findIndicatorAfter(indicator, ordering, callback) {
+        const index = ordering.indexOf(indicator.name);
+
+        if (index === -1)
+            return null;
+
+        const nextIndicatorName = ordering.slice(index + 1)
+            .filter(name => this.indicators[name])
+            .find(name => callback(this.indicators[name]));
+
+        if (!nextIndicatorName)
+            return null;
+
+        return this.indicators[nextIndicatorName];
+    }
+
+    _syncQuickSettings() {
+        this._updateQuickSettings().catch(logError);
+    }
+
+    async _updateQuickSettings() {
+        const enabledIndicatorNames = Object.keys(this.indicators);
+        const quickSettings = Main.sessionMode.quickSettings || SessionMode.DEFAULT_QUICK_SETTINGS;
+        const quickSettingsToEnable = quickSettings.filter(name => !enabledIndicatorNames.includes(name));
+        await Promise.allSettled(quickSettingsToEnable
+            .map(name => this._ensureIndicator(name)));
+
+        const disabledQuickSettings = enabledIndicatorNames
+            .filter(name => !quickSettingsToEnable.includes(name));
+
+        const disabledIndicators = disabledQuickSettings
+            .map(name => this.indicators[name])
+            .filter(indicator => indicator);
+
+        if (disabledIndicators.length > 0)
+            this.emit('disable-indicators', disabledIndicators);
+
+        disabledQuickSettings.forEach(name => {
+            delete this.indicators[name];
+        });
+
+        const enabledIndicators = quickSettingsToEnable
+            .map(name => this.indicators[name])
+            .filter(indicator => indicator);
+
+        if (enabledIndicators.length > 0)
+            this.emit('enable-indicators', enabledIndicators);
+    }
+
+    async _importQuickSetting(name) {
+        let moduleName = name;
+        let className = null;
+
+        if (name.includes('.'))
+            [moduleName, className] = name.split('.', 2);
+
+        const module = await import(`./status/${moduleName}.js`);
+
+        if (className) {
+            if (Util.classExtends(module[className], SystemIndicator))
+                return module[className];
+            return null;
+        }
+
+        const indicatorClassName = Object.keys(module).find(exportedName => {
+            return Util.classExtends(module[exportedName], SystemIndicator);
+        });
+
+        if (!indicatorClassName)
+            return null;
+
+        return module[indicatorClassName];
+    }
+
+    async _ensureIndicator(name) {
+        let indicator = this.indicators[name];
+        if (indicator)
+            return indicator;
+
+        const constructor = await this._importQuickSetting(name);
+        indicator = new constructor();
+        this.indicators[name] = indicator;
+        indicator.name = name;
+
+        return indicator;
+    }
+}
 
 export const QuickSettingsItem = GObject.registerClass({
     Properties: {
@@ -786,6 +887,14 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
     insertItemBefore(item, sibling, colSpan = 1) {
         this._grid.insert_child_below(item, sibling);
         this._completeAddItem(item, colSpan);
+    }
+
+    removeItems(items) {
+        items.forEach(item => this._grid.remove_child(item));
+    }
+
+    hasItem(item) {
+        return this._grid.get_children().includes(item);
     }
 
     _completeAddItem(item, colSpan) {

@@ -334,6 +334,7 @@ class Indicator extends SystemIndicator {
             this);
 
         this.quickSettingsItems.push(this._systemItem);
+        this.quickSettingsItems.expand = true;
 
         this._sync();
     }

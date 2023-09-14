@@ -453,6 +453,7 @@ class OutputIndicator extends VolumeIndicator {
         });
 
         this.quickSettingsItems.push(this._output);
+        this.quickSettingsItems.expand = true;
 
         this._onControlStateChanged();
     }
@@ -498,6 +499,7 @@ class InputIndicator extends VolumeIndicator {
             GObject.BindingFlags.SYNC_CREATE);
 
         this.quickSettingsItems.push(this._input);
+        this.quickSettingsItems.expand = true;
 
         this._onControlStateChanged();
     }

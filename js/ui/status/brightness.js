@@ -60,5 +60,6 @@ class Indicator extends SystemIndicator {
         super._init();
 
         this.quickSettingsItems.push(new BrightnessItem());
+        this.quickSettingsItems.expand = true;
     }
 });
