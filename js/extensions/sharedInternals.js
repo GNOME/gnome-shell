@@ -227,7 +227,7 @@ export class GettextWrapper {
 
     #ngettext(str, strPlural, n) {
         const extension = this.#lookupExtension('ngettext');
-        return extension.gettext(str, strPlural, n);
+        return extension.ngettext(str, strPlural, n);
     }
 
     #pgettext(context, str) {
