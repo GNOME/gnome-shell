@@ -17,7 +17,7 @@ import * as DND from './dnd.js';
 import * as Overview from './overview.js';
 import * as PopupMenu from './popupMenu.js';
 import * as PanelMenu from './panelMenu.js';
-import {QuickSettingsMenu, SystemIndicator} from './quickSettings.js';
+import {QuickSettingsMenu} from './quickSettings.js';
 import * as Main from './main.js';
 import * as Util from '../misc/util.js';
 
@@ -31,6 +31,7 @@ import * as SystemStatus from './status/system.js';
 import * as LocationStatus from './status/location.js';
 import * as NightLightStatus from './status/nightLight.js';
 import * as DarkModeStatus from './status/darkMode.js';
+import * as UnsafeModeStatus from './status/unsafeMode.js';
 import * as BacklightStatus from './status/backlight.js';
 import * as ThunderboltStatus from './status/thunderbolt.js';
 import * as AutoRotateStatus from './status/autoRotate.js';
@@ -488,20 +489,6 @@ class ActivitiesButton extends PanelMenu.Button {
     }
 });
 
-const UnsafeModeIndicator = GObject.registerClass(
-class UnsafeModeIndicator extends SystemIndicator {
-    _init() {
-        super._init();
-
-        this._indicator = this._addIndicator();
-        this._indicator.icon_name = 'channel-insecure-symbolic';
-
-        global.context.bind_property('unsafe-mode',
-            this._indicator, 'visible',
-            GObject.BindingFlags.SYNC_CREATE);
-    }
-});
-
 const QuickSettings = GObject.registerClass(
 class QuickSettings extends PanelMenu.Button {
     constructor() {
@@ -551,7 +538,7 @@ class QuickSettings extends PanelMenu.Button {
         this._powerProfiles = new PowerProfileStatus.Indicator();
         this._rfkill = new RFKillStatus.Indicator();
         this._autoRotate = new AutoRotateStatus.Indicator();
-        this._unsafeMode = new UnsafeModeIndicator();
+        this._unsafeMode = new UnsafeModeStatus.Indicator();
         this._backgroundApps = new BackgroundAppsStatus.Indicator();
 
         // add privacy-related indicators before any external indicators

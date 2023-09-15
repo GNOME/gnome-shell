@@ -154,5 +154,6 @@
     <file>ui/status/remoteAccess.js</file>
     <file>ui/status/system.js</file>
     <file>ui/status/thunderbolt.js</file>
+    <file>ui/status/unsafeMode.js</file>
   </gresource>
 </gresources>
