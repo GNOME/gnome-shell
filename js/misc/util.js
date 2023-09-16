@@ -280,6 +280,29 @@ export function lerp(start, end, progress) {
 }
 
 /**
+ * @typedef {Function} Class
+ * @description A class
+ *
+ * Note: A class (as defined by the ES6 class keyword)
+ */
+
+/**
+ * @param {Class} subClass
+ * @param {Class} superClass
+ * @returns {boolean}
+ *
+ * Returns whether `subClass` is a subclass of `superClass` or not
+ */
+export function classExtends(subClass, superClass) {
+    for (let prototype = subClass?.prototype; prototype; prototype = Object.getPrototypeOf(prototype)) {
+        if (prototype === superClass?.prototype)
+            return true;
+    }
+
+    return false;
+}
+
+/**
  * _GNOMEversionToNumber:
  *
  * @param {string} version a GNOME version element
