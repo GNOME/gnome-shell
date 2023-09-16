@@ -449,20 +449,6 @@ shell_app_activate_window (ShellApp     *app,
           return;
         }
 
-      /* Now raise all the other windows for the app that are on
-       * the same workspace, in reverse order to preserve the stacking.
-       */
-      windows_reversed = g_slist_copy (windows);
-      windows_reversed = g_slist_reverse (windows_reversed);
-      for (iter = windows_reversed; iter; iter = iter->next)
-        {
-          MetaWindow *other_window = iter->data;
-
-          if (other_window != window && meta_window_get_workspace (other_window) == workspace)
-            meta_window_raise_and_make_recent (other_window);
-        }
-      g_slist_free (windows_reversed);
-
       /* If we have a transient that the user's interacted with more recently than
        * the window, pick that.
        */
@@ -474,10 +460,23 @@ shell_app_activate_window (ShellApp     *app,
         window = most_recent_transient;
 
 
+      /* First activate the window, so that we are on the correct
+       * workspace when raising other windows
+       */
       if (active != workspace)
         meta_workspace_activate_with_focus (workspace, window, timestamp);
       else
         meta_window_activate (window, timestamp);
+
+      /* Now raise all the windows for the app in reverse order to
+       * preserve the stacking. This only has an effect for windows
+       * on the current workspace
+       */
+      windows_reversed = g_slist_copy (windows);
+      windows_reversed = g_slist_reverse (windows_reversed);
+      for (iter = windows_reversed; iter; iter = iter->next)
+        meta_window_raise_and_make_recent (META_WINDOW (iter->data));
+      g_slist_free (windows_reversed);
     }
 }
 
