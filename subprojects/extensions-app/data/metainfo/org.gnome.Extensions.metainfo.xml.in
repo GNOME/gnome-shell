@@ -39,10 +39,7 @@
   </description>
 
   <releases>
-    <release version="45.rc" date="2023-09-05" type="development"/>
-    <release version="45.beta.1" date="2023-08-11" type="development"/>
-    <release version="45.beta" date="2023-08-07" type="development"/>
-    <release version="45.alpha" date="2023-07-03" type="development">
+    <release version="45.0" date="2023-09-16">
       <p>Modernize layout</p>
     </release>
   </releases>

@@ -1,3 +1,22 @@
+45.0
+====
+* Fix exposing window previews on lock screen via keyboard shortcuts
+  [Florian; !2944]
+* Improve handling of latched vs. locked modes in OSK [Carlos; !2945]
+* Fix regression in workspace state tracking [Florian; !2949]
+* Update extensions immediately on startup after major upgrades [Florian; !2951]
+* Reverse slider direction in RTL locales [Khalid; !2943]
+* Misc. bug fixes and cleanups [Hollow, xiaofan, Florian; !2946, !2947, !2952,
+  !2956]
+
+Contributors:
+  Carlos Garnacho, Hollow Man, Florian Müllner, Khalid Abu Shawarib, xiaofan
+
+Translators:
+  Anders Jonsson [sv], Jordi Mas [ca], Rafael Fontenelle [pt_BR],
+  Matej Urbančič [sl], Irénée THIRION [fr], Carmen Bianca BAKKER [eo],
+  Rūdolfs Mazurs [lv], Artur S0 [ru]
+
 45.rc
 =====
 * Allow notification dismissal with backspace [Chris; !2435]
