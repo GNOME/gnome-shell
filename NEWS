@@ -1,3 +1,17 @@
+43.9
+====
+* Fix exposing window previews on lock screen via keyboard shortcuts
+  [Florian; !2944]
+* Improve handling of latched vs. locked modes in OSK [Carlos; !2945]
+* Reverse slider direction in RTL locales [Khalid; !2943]
+* Misc. bug fixes and cleanups [xiaofan; !2947]
+
+Contributors:
+  Carlos Garnacho, Florian Müllner, Khalid Abu Shawarib, xiaofan
+
+Translators:
+  Daniel Rusek [cs]
+
 43.8
 ====
 * Fix accessibility of quick settings sliders [Lukáš; !2762]
