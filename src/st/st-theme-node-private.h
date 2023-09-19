@@ -107,9 +107,9 @@ struct _StThemeNode {
 
   guint stylesheets_changed_id;
 
-  CoglPipeline *border_slices_texture;
+  CoglTexture *border_slices_texture;
   CoglPipeline *border_slices_pipeline;
-  CoglPipeline *background_texture;
+  CoglTexture *background_texture;
   CoglPipeline *background_pipeline;
   CoglPipeline *background_shadow_pipeline;
   CoglPipeline *color_pipeline;

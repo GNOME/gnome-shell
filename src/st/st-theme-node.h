@@ -170,7 +170,7 @@ struct _StThemeNodePaintState {
   float resource_scale;
 
   CoglPipeline *box_shadow_pipeline;
-  CoglPipeline *prerendered_texture;
+  CoglTexture *prerendered_texture;
   CoglPipeline *prerendered_pipeline;
   CoglPipeline *corner_material[4];
 };
