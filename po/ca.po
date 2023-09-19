@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2023-09-08 22:00+0000\n"
-"PO-Revision-Date: 2023-09-09 21:58+0200\n"
+"PO-Revision-Date: 2023-09-19 21:58+0200\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -1786,7 +1786,7 @@ msgstr "Enregistraments de pantalla"
 #: js/ui/screenshot.js:1911
 #, no-c-format
 msgid "Screencast from %d %t.webm"
-msgstr "Enregistrament de pantalla des de %d %t.webm"
+msgstr "Enregistrament de pantalla del %d %t.webm"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:1949
