@@ -31,7 +31,7 @@ shell_glsl_effect_create_pipeline (ClutterOffscreenEffect *effect,
 
   cogl_pipeline_set_layer_texture (priv->pipeline, 0, texture);
 
-  return cogl_object_ref (priv->pipeline);
+  return g_object_ref (priv->pipeline);
 }
 
 /**
@@ -76,7 +76,7 @@ shell_glsl_effect_add_glsl_snippet (ShellGLSLEffect  *effect,
   else
     cogl_pipeline_add_layer_snippet (klass->base_pipeline, 0, snippet);
 
-  cogl_object_unref (snippet);
+  g_object_unref (snippet);
 }
 
 static void
@@ -87,7 +87,7 @@ shell_glsl_effect_dispose (GObject *gobject)
 
   priv = shell_glsl_effect_get_instance_private (self);
 
-  g_clear_pointer (&priv->pipeline, cogl_object_unref);
+  g_clear_object (&priv->pipeline);
 
   G_OBJECT_CLASS (shell_glsl_effect_parent_class)->dispose (gobject);
 }

@@ -978,7 +978,7 @@ st_texture_cache_load (StTextureCache       *cache,
     }
 
   if (texture && policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
-    cogl_object_ref (texture);
+    g_object_ref (texture);
 
   return texture;
 }
@@ -1604,7 +1604,7 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
    * clutter_image_set_data(), so it's safe to use the texture
    * of ClutterImage here. */
   texdata = clutter_image_get_texture (CLUTTER_IMAGE (image));
-  cogl_object_ref (texdata);
+  g_object_ref (texdata);
 
   ensure_monitor_for_file (cache, file);
 

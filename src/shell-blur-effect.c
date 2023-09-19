@@ -138,7 +138,7 @@ create_brightness_pipeline (void)
                                   brightness_glsl_declarations,
                                   brightness_glsl);
       cogl_pipeline_add_snippet (brightness_pipeline, snippet);
-      cogl_object_unref (snippet);
+      g_object_unref (snippet);
     }
 
   return cogl_pipeline_copy (brightness_pipeline);
@@ -188,7 +188,7 @@ update_fbo (FramebufferData *data,
   CoglContext *ctx =
     clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
-  g_clear_pointer (&data->texture, cogl_object_unref);
+  g_clear_object (&data->texture);
   g_clear_object (&data->framebuffer);
 
   float new_width = floorf (width / downscale_factor);
@@ -269,7 +269,7 @@ update_background_fbo (ShellBlurEffect *self,
 static void
 clear_framebuffer_data (FramebufferData *fb_data)
 {
-  g_clear_pointer (&fb_data->texture, cogl_object_unref);
+  g_clear_object (&fb_data->texture);
   g_clear_object (&fb_data->framebuffer);
 }
 
@@ -697,9 +697,9 @@ shell_blur_effect_finalize (GObject *object)
   clear_framebuffer_data (&self->background_fb);
   clear_framebuffer_data (&self->brightness_fb);
 
-  g_clear_pointer (&self->actor_fb.pipeline, cogl_object_unref);
-  g_clear_pointer (&self->background_fb.pipeline, cogl_object_unref);
-  g_clear_pointer (&self->brightness_fb.pipeline, cogl_object_unref);
+  g_clear_object (&self->actor_fb.pipeline);
+  g_clear_object (&self->background_fb.pipeline);
+  g_clear_object (&self->brightness_fb.pipeline);
 
   G_OBJECT_CLASS (shell_blur_effect_parent_class)->finalize (object);
 }

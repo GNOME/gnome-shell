@@ -216,7 +216,7 @@ st_entry_dispose (GObject *object)
   StEntry *entry = ST_ENTRY (object);
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
 
-  cogl_clear_object (&priv->text_shadow_material);
+  g_clear_object (&priv->text_shadow_material);
 
   G_OBJECT_CLASS (st_entry_parent_class)->dispose (object);
 }
@@ -254,7 +254,7 @@ st_entry_style_changed (StWidget *self)
   if (!priv->shadow_spec || !shadow_spec ||
       !st_shadow_equal (shadow_spec, priv->shadow_spec))
     {
-      g_clear_pointer (&priv->text_shadow_material, cogl_object_unref);
+      g_clear_object (&priv->text_shadow_material);
 
       g_clear_pointer (&priv->shadow_spec, st_shadow_unref);
       if (shadow_spec)
@@ -555,7 +555,7 @@ clutter_text_cursor_changed (ClutterText *text,
 
   st_entry_update_hint_visibility (entry);
 
-  g_clear_pointer (&priv->text_shadow_material, cogl_object_unref);
+  g_clear_object (&priv->text_shadow_material);
 }
 
 static void
@@ -569,7 +569,7 @@ clutter_text_changed_cb (GObject    *object,
   st_entry_update_hint_visibility (entry);
 
   /* Since the text changed, force a regen of the shadow texture */
-  cogl_clear_object (&priv->text_shadow_material);
+  g_clear_object (&priv->text_shadow_material);
 
   g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_TEXT]);
 }
@@ -581,7 +581,7 @@ invalidate_shadow_pipeline (GObject    *object,
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
 
-  g_clear_pointer (&priv->text_shadow_material, cogl_object_unref);
+  g_clear_object (&priv->text_shadow_material);
 }
 
 static void
@@ -839,7 +839,7 @@ st_entry_paint (ClutterActor        *actor,
         {
           CoglPipeline *material;
 
-          cogl_clear_object (&priv->text_shadow_material);
+          g_clear_object (&priv->text_shadow_material);
 
           material = _st_create_shadow_pipeline_from_actor (priv->shadow_spec,
                                                             priv->entry);

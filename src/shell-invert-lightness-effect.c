@@ -80,7 +80,7 @@ shell_glsl_effect_create_pipeline (ClutterOffscreenEffect *effect,
 
   cogl_pipeline_set_layer_texture (self->pipeline, 0, texture);
 
-  return cogl_object_ref (self->pipeline);
+  return g_object_ref (self->pipeline);
 }
 
 static void
@@ -88,11 +88,7 @@ shell_invert_lightness_effect_dispose (GObject *gobject)
 {
   ShellInvertLightnessEffect *self = SHELL_INVERT_LIGHTNESS_EFFECT (gobject);
 
-  if (self->pipeline != NULL)
-    {
-      cogl_object_unref (self->pipeline);
-      self->pipeline = NULL;
-    }
+  g_clear_object (&self->pipeline);
 
   G_OBJECT_CLASS (shell_invert_lightness_effect_parent_class)->dispose (gobject);
 }
@@ -128,7 +124,7 @@ shell_invert_lightness_effect_init (ShellInvertLightnessEffect *self)
                                   NULL);
       cogl_snippet_set_replace (snippet, invert_lightness_source);
       cogl_pipeline_add_layer_snippet (klass->base_pipeline, 0, snippet);
-      cogl_object_unref (snippet);
+      g_object_unref (snippet);
 
       cogl_pipeline_set_layer_null_texture (klass->base_pipeline, 0);
     }

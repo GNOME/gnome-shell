@@ -262,11 +262,11 @@ setup_framebuffers (StThemeNodeTransition *transition,
   g_return_val_if_fail (width  > 0, FALSE);
   g_return_val_if_fail (height > 0, FALSE);
 
-  cogl_clear_object (&priv->old_texture);
-  priv->old_texture = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx, width, height));
+  g_clear_object (&priv->old_texture);
+  priv->old_texture = cogl_texture_2d_new_with_size (ctx, width, height);
 
-  cogl_clear_object (&priv->new_texture);
-  priv->new_texture = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx, width, height));
+  g_clear_object (&priv->new_texture);
+  priv->new_texture = cogl_texture_2d_new_with_size (ctx, width, height);
 
   if (priv->old_texture == NULL)
     return FALSE;
@@ -402,13 +402,13 @@ st_theme_node_transition_dispose (GObject *object)
   g_clear_object (&priv->old_theme_node);
   g_clear_object (&priv->new_theme_node);
 
-  cogl_clear_object (&priv->old_texture);
-  cogl_clear_object (&priv->new_texture);
+  g_clear_object (&priv->old_texture);
+  g_clear_object (&priv->new_texture);
 
   g_clear_object (&priv->old_offscreen);
   g_clear_object (&priv->new_offscreen);
 
-  cogl_clear_object (&priv->material);
+  g_clear_object (&priv->material);
 
   if (priv->timeline)
     {

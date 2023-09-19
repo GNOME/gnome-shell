@@ -525,7 +525,7 @@ grab_screenshot_content (ShellScreenshot *screenshot,
       unsigned int width, height;
       CoglContext *ctx;
       CoglPipeline *pipeline;
-      CoglTexture2D *texture;
+      CoglTexture *texture;
       CoglOffscreen *offscreen;
       ClutterStageView *view;
 
@@ -548,12 +548,12 @@ grab_screenshot_content (ShellScreenshot *screenshot,
                                                 pipeline,
                                                 -1, 1, 1, -1,
                                                 0, 0, 1, 1);
-      cogl_object_unref (pipeline);
+      g_object_unref (pipeline);
       g_object_unref (offscreen);
 
       priv->cursor_content =
         clutter_texture_content_new_from_texture (texture, NULL);
-      cogl_object_unref (texture);
+      g_object_unref (texture);
 
       priv->cursor_scale = meta_cursor_tracker_get_scale (tracker);
 
@@ -1313,7 +1313,7 @@ shell_screenshot_composite_to_stream (CoglTexture         *texture,
                          cairo_image_surface_get_data (surface));
   cairo_surface_mark_dirty (surface);
 
-  cogl_object_unref (sub_texture);
+  g_object_unref (sub_texture);
 
   cairo_surface_set_device_scale (surface, scale, scale);
 

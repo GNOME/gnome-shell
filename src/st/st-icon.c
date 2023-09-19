@@ -173,7 +173,7 @@ st_icon_dispose (GObject *gobject)
   g_clear_object (&priv->gicon);
   g_clear_object (&priv->fallback_gicon);
   g_clear_pointer (&priv->colors, st_icon_colors_unref);
-  g_clear_pointer (&priv->shadow_pipeline, cogl_object_unref);
+  g_clear_object (&priv->shadow_pipeline);
   g_clear_pointer (&priv->shadow_spec, st_shadow_unref);
 
   G_OBJECT_CLASS (st_icon_parent_class)->dispose (gobject);
@@ -377,7 +377,7 @@ st_icon_clear_shadow_pipeline (StIcon *icon)
 {
   StIconPrivate *priv = icon->priv;
 
-  g_clear_pointer (&priv->shadow_pipeline, cogl_object_unref);
+  g_clear_object (&priv->shadow_pipeline);
   graphene_size_init (&priv->shadow_size, 0, 0);
 }
 

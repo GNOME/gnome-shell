@@ -234,7 +234,7 @@ st_shadow_helper_update (StShadowHelper *helper,
       helper->height != height)
     {
       if (helper->pipeline)
-        cogl_object_unref (helper->pipeline);
+        g_object_unref (helper->pipeline);
 
       helper->pipeline = _st_create_shadow_pipeline_from_actor (helper->shadow, source);
       helper->width = width;
@@ -256,7 +256,7 @@ st_shadow_helper_copy (StShadowHelper *helper)
   copy = g_new (StShadowHelper, 1);
   *copy = *helper;
   if (copy->pipeline)
-    cogl_object_ref (copy->pipeline);
+    g_object_ref (copy->pipeline);
   st_shadow_ref (copy->shadow);
 
   return copy;
@@ -272,7 +272,7 @@ void
 st_shadow_helper_free (StShadowHelper *helper)
 {
   if (helper->pipeline)
-    cogl_object_unref (helper->pipeline);
+    g_object_unref (helper->pipeline);
   st_shadow_unref (helper->shadow);
 
   g_free (helper);

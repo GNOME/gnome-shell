@@ -180,11 +180,11 @@ create_corner_material (StCornerSpec *corner)
 
   cairo_surface_destroy (surface);
 
-  texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx, size, size,
-                                                         COGL_PIXEL_FORMAT_CAIRO_ARGB32_COMPAT,
-                                                         rowstride,
-                                                         data,
-                                                         &error));
+  texture = cogl_texture_2d_new_from_data (ctx, size, size,
+                                           COGL_PIXEL_FORMAT_CAIRO_ARGB32_COMPAT,
+                                           rowstride,
+                                           data,
+                                           &error);
 
   if (error)
     {
@@ -427,7 +427,7 @@ st_theme_node_lookup_corner (StThemeNode    *node,
   if (texture)
     {
       material = _st_create_texture_pipeline (texture);
-      cogl_object_unref (texture);
+      g_object_unref (texture);
     }
 
   g_free (key);
@@ -1341,13 +1341,13 @@ st_theme_node_prerender_background (StThemeNode *node,
   if (interior_path != NULL)
     cairo_path_destroy (interior_path);
 
-  texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx,
-                                                         texture_width,
-                                                         texture_height,
-                                                         COGL_PIXEL_FORMAT_CAIRO_ARGB32_COMPAT,
-                                                         rowstride,
-                                                         data,
-                                                         &error));
+  texture = cogl_texture_2d_new_from_data (ctx,
+                                           texture_width,
+                                           texture_height,
+                                           COGL_PIXEL_FORMAT_CAIRO_ARGB32_COMPAT,
+                                           rowstride,
+                                           data,
+                                           &error);
 
   if (error)
     {
@@ -1371,8 +1371,8 @@ static void st_theme_node_paint_borders (StThemeNodePaintState *state,
 void
 st_theme_node_invalidate_border_image (StThemeNode *node)
 {
-  cogl_clear_object (&node->border_slices_texture);
-  cogl_clear_object (&node->border_slices_pipeline);
+  g_clear_object (&node->border_slices_texture);
+  g_clear_object (&node->border_slices_pipeline);
 }
 
 static gboolean
@@ -1407,9 +1407,9 @@ st_theme_node_load_border_image (StThemeNode *node,
 void
 st_theme_node_invalidate_background_image (StThemeNode *node)
 {
-  cogl_clear_object (&node->background_texture);
-  cogl_clear_object (&node->background_pipeline);
-  cogl_clear_object (&node->background_shadow_pipeline);
+  g_clear_object (&node->background_texture);
+  g_clear_object (&node->background_pipeline);
+  g_clear_object (&node->background_shadow_pipeline);
 }
 
 static gboolean
@@ -1624,16 +1624,16 @@ st_theme_node_update_resources (StThemeNodePaintState *state,
 
   /* Free handles we can't reuse */
   had_prerendered_texture = (state->prerendered_texture != NULL);
-  cogl_clear_object (&state->prerendered_texture);
+  g_clear_object (&state->prerendered_texture);
 
   if (state->prerendered_pipeline != NULL)
     {
-      cogl_clear_object (&state->prerendered_pipeline);
+      g_clear_object (&state->prerendered_pipeline);
 
       if (node->border_slices_texture == NULL &&
           state->box_shadow_pipeline != NULL)
         {
-          cogl_clear_object (&state->box_shadow_pipeline);
+          g_clear_object (&state->box_shadow_pipeline);
           had_box_shadow = TRUE;
         }
     }
@@ -2317,7 +2317,7 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
   /* Render offscreen */
   fb_width = ceilf (state->box_shadow_width * state->resource_scale);
   fb_height = ceilf (state->box_shadow_height * state->resource_scale);
-  buffer = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx, fb_width, fb_height));
+  buffer = cogl_texture_2d_new_with_size (ctx, fb_width, fb_height);
   if (buffer == NULL)
     return;
 
@@ -2343,7 +2343,7 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
 
   g_clear_error (&error);
   g_clear_object (&offscreen);
-  cogl_clear_object (&buffer);
+  g_clear_object (&buffer);
 }
 
 static void
@@ -2754,12 +2754,12 @@ st_theme_node_paint_state_node_free_internal (StThemeNodePaintState *state,
 {
   int corner_id;
 
-  cogl_clear_object (&state->prerendered_texture);
-  cogl_clear_object (&state->prerendered_pipeline);
-  cogl_clear_object (&state->box_shadow_pipeline);
+  g_clear_object (&state->prerendered_texture);
+  g_clear_object (&state->prerendered_pipeline);
+  g_clear_object (&state->box_shadow_pipeline);
 
   for (corner_id = 0; corner_id < 4; corner_id++)
-    cogl_clear_object (&state->corner_material[corner_id]);
+    g_clear_object (&state->corner_material[corner_id]);
 
   if (unref_node)
     st_theme_node_paint_state_set_node (state, NULL);
@@ -2831,14 +2831,14 @@ st_theme_node_paint_state_copy (StThemeNodePaintState *state,
   state->box_shadow_height = other->box_shadow_height;
 
   if (other->box_shadow_pipeline)
-    state->box_shadow_pipeline = cogl_object_ref (other->box_shadow_pipeline);
+    state->box_shadow_pipeline = g_object_ref (other->box_shadow_pipeline);
   if (other->prerendered_texture)
-    state->prerendered_texture = cogl_object_ref (other->prerendered_texture);
+    state->prerendered_texture = g_object_ref (other->prerendered_texture);
   if (other->prerendered_pipeline)
-    state->prerendered_pipeline = cogl_object_ref (other->prerendered_pipeline);
+    state->prerendered_pipeline = g_object_ref (other->prerendered_pipeline);
   for (corner_id = 0; corner_id < 4; corner_id++)
     if (other->corner_material[corner_id])
-      state->corner_material[corner_id] = cogl_object_ref (other->corner_material[corner_id]);
+      state->corner_material[corner_id] = g_object_ref (other->corner_material[corner_id]);
 }
 
 void

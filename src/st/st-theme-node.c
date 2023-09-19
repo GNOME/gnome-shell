@@ -127,12 +127,12 @@ st_theme_node_finalize (GObject *object)
 
   g_clear_object (&node->background_image);
 
-  cogl_clear_object (&node->background_texture);
-  cogl_clear_object (&node->background_pipeline);
-  cogl_clear_object (&node->background_shadow_pipeline);
-  cogl_clear_object (&node->border_slices_texture);
-  cogl_clear_object (&node->border_slices_pipeline);
-  cogl_clear_object (&node->color_pipeline);
+  g_clear_object (&node->background_texture);
+  g_clear_object (&node->background_pipeline);
+  g_clear_object (&node->background_shadow_pipeline);
+  g_clear_object (&node->border_slices_texture);
+  g_clear_object (&node->border_slices_pipeline);
+  g_clear_object (&node->color_pipeline);
 
   G_OBJECT_CLASS (st_theme_node_parent_class)->finalize (object);
 }

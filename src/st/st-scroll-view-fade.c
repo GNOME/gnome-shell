@@ -74,7 +74,7 @@ st_scroll_view_fade_create_texture (ClutterOffscreenEffect *effect,
   CoglContext *ctx =
     clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
-  return COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx, min_width, min_height));
+  return cogl_texture_2d_new_with_size (ctx, min_width, min_height);
 }
 
 static char *

@@ -130,7 +130,7 @@ st_label_style_changed (StWidget *self)
   if (!priv->shadow_spec || !shadow_spec ||
       !st_shadow_equal (shadow_spec, priv->shadow_spec))
     {
-      g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
+      g_clear_object (&priv->text_shadow_pipeline);
 
       g_clear_pointer (&priv->shadow_spec, st_shadow_unref);
       if (shadow_spec)
@@ -199,7 +199,7 @@ st_label_dispose (GObject   *object)
   StLabelPrivate *priv = ST_LABEL (object)->priv;
 
   priv->label = NULL;
-  g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
+  g_clear_object (&priv->text_shadow_pipeline);
 
   G_OBJECT_CLASS (st_label_parent_class)->dispose (object);
 }
@@ -230,7 +230,7 @@ st_label_paint (ClutterActor        *actor,
           width != priv->shadow_width ||
           height != priv->shadow_height)
         {
-          g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
+          g_clear_object (&priv->text_shadow_pipeline);
 
           priv->shadow_width = width;
           priv->shadow_height = height;
@@ -261,7 +261,7 @@ st_label_resource_scale_changed (ClutterActor *actor)
 {
   StLabelPrivate *priv = ST_LABEL (actor)->priv;
 
-  g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
+  g_clear_object (&priv->text_shadow_pipeline);
 
   if (CLUTTER_ACTOR_CLASS (st_label_parent_class)->resource_scale_changed)
     CLUTTER_ACTOR_CLASS (st_label_parent_class)->resource_scale_changed (actor);
@@ -321,7 +321,7 @@ invalidate_shadow_pipeline (GObject    *object,
 {
   StLabelPrivate *priv = st_label_get_instance_private (label);
 
-  g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
+  g_clear_object (&priv->text_shadow_pipeline);
 }
 
 static void
@@ -416,7 +416,7 @@ st_label_set_text (StLabel     *label,
   if (clutter_text_get_editable (ctext) ||
       g_strcmp0 (clutter_text_get_text (ctext), text) != 0)
     {
-      g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
+      g_clear_object (&priv->text_shadow_pipeline);
 
       clutter_text_set_text (ctext, text);
 
