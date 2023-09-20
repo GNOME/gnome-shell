@@ -682,6 +682,8 @@ class Panel extends St.Widget {
             _('Top Bar'), 'focus-top-bar-symbolic',
             {sortGroup: CtrlAltTab.SortGroup.TOP});
 
+        Main.languageManager.connect('language-changed', this._updateLanguage.bind(this));
+
         Main.sessionMode.connect('updated', this._updatePanel.bind(this));
 
         global.display.connect('workareas-changed', () => this.queue_relayout());
@@ -852,6 +854,13 @@ class Panel extends St.Widget {
 
     get boxOpacity() {
         return this._leftBox.opacity;
+    }
+
+    _updateLanguage() {
+        this._leftBox.destroy_all_children();
+        this._centerBox.destroy_all_children();
+        this._rightBox.destroy_all_children();
+        this._updatePanel();
     }
 
     _updatePanel() {
