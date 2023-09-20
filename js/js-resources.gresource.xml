@@ -28,6 +28,7 @@
     <file>misc/introspect.js</file>
     <file>misc/jsParse.js</file>
     <file>misc/keyboardManager.js</file>
+    <file>misc/languageManager.js</file>
     <file>misc/loginManager.js</file>
     <file>misc/modemManager.js</file>
     <file>misc/objectManager.js</file>

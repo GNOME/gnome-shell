@@ -18,6 +18,7 @@ import * as ExtensionSystem from './extensionSystem.js';
 import * as ExtensionDownloader from './extensionDownloader.js';
 import * as InputMethod from '../misc/inputMethod.js';
 import * as Introspect from '../misc/introspect.js';
+import * as LanguageManager from '../misc/languageManager.js';
 import * as Keyboard from './keyboard.js';
 import * as MessageTray from './messageTray.js';
 import * as ModalDialog from './modalDialog.js';
@@ -57,6 +58,7 @@ const GNOMESHELL_STARTED_MESSAGE_ID = 'f3ea493c22934e26811cd62abe8e203a';
 
 export let componentManager = null;
 export let extensionManager = null;
+export let languageManager = null;
 export let panel = null;
 export let overview = null;
 export let runDialog = null;
@@ -151,6 +153,8 @@ export async function start() {
     let currentDesktop = GLib.getenv('XDG_CURRENT_DESKTOP');
     if (!currentDesktop || !currentDesktop.split(':').includes('GNOME'))
         Gio.DesktopAppInfo.set_desktop_env('GNOME');
+
+    languageManager = new LanguageManager.LanguageManager();
 
     sessionMode = new SessionMode.SessionMode();
     sessionMode.connect('updated', _sessionUpdated);
