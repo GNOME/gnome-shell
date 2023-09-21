@@ -25,6 +25,7 @@
                 <property name="receives-default">True</property>
                 <property name="menu-model">primary-menu</property>
                 <property name="icon-name">open-menu-symbolic</property>
+                <property name="primary">True</property>
               </object>
             </child>
             <child type="start">
