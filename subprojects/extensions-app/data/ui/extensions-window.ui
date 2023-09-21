@@ -64,6 +64,7 @@
                       bind-flags="bidirectional"/>
             <child>
               <object class="GtkSearchEntry" id="searchEntry">
+                <property name="placeholder-text" translatable="yes">Search extensions</property>
                 <property name="max-width-chars">35</property>
               </object>
             </child>
