@@ -93,8 +93,9 @@ const PowerToggle = GObject.registerClass({
             use_default_fallbacks: false,
         });
 
+        const formatter = new Intl.NumberFormat(undefined, {style: 'percent'});
         this.set({
-            title: _('%d\u2009%%').format(this._proxy.Percentage),
+            title: formatter.format(this._proxy.Percentage / 100),
             fallback_icon_name: this._proxy.IconName,
             gicon,
         });
