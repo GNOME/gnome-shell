@@ -12,7 +12,7 @@ import * as ModalDialog from './modalDialog.js';
 
 /** @enum {number} */
 const DialogResponse = {
-    NO_THANKS: 0,
+    SKIP: 0,
     TAKE_TOUR: 1,
 };
 
@@ -46,8 +46,8 @@ class WelcomeDialog extends ModalDialog.ModalDialog {
         this.contentLayout.add_child(content);
 
         this.addButton({
-            label: _('No Thanks'),
-            action: () => this._sendResponse(DialogResponse.NO_THANKS),
+            label: _('Skip'),
+            action: () => this._sendResponse(DialogResponse.SKIP),
             key: Clutter.KEY_Escape,
         });
         this.addButton({
