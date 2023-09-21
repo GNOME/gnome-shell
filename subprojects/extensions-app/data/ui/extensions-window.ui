@@ -22,6 +22,7 @@
           <object class="GtkHeaderBar">
             <child type="end">
               <object class="GtkMenuButton" id="menuButton">
+                <property name="tooltip-text" translatable="yes">Main Menu</property>
                 <property name="receives-default">True</property>
                 <property name="menu-model">primary-menu</property>
                 <property name="icon-name">open-menu-symbolic</property>
@@ -30,6 +31,7 @@
             </child>
             <child type="start">
               <object class="GtkToggleButton" id="searchButton">
+                <property name="tooltip-text" translatable="yes">Search</property>
                 <property name="receives-default">True</property>
                 <property name="icon-name">edit-find-symbolic</property>
                 <child>
