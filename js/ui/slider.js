@@ -141,7 +141,7 @@ export const Slider = GObject.registerClass({
 
     scroll(event) {
         let direction = event.get_scroll_direction();
-        let delta;
+        let delta = 0;
 
         if (event.get_flags() & Clutter.EventFlags.FLAG_POINTER_EMULATED)
             return Clutter.EVENT_PROPAGATE;
