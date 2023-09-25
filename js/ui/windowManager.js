@@ -1192,6 +1192,7 @@ export class WindowManager {
             }
 
             actor.ease({
+                opacity: 0,
                 scale_x: xScale,
                 scale_y: yScale,
                 x: xDest,
