@@ -128,6 +128,9 @@ export const QuickToggle = GObject.registerClass({
             GObject.BindingFlags.SYNC_CREATE,
             (bind, source) => [true, source !== null],
             null);
+
+        this.connect('notify::checked', () => this._updateAccessibleState());
+        this._updateAccessibleState();
     }
 
     get label() {
@@ -138,6 +141,13 @@ export const QuickToggle = GObject.registerClass({
     set label(label) {
         console.warn('Trying to set label on QuickToggle. Use title instead.');
         this.title = label;
+    }
+
+    _updateAccessibleState() {
+        if (this.checked)
+            this.add_accessible_state(Atk.StateType.CHECKED);
+        else
+            this.remove_accessible_state(Atk.StateType.CHECKED);
     }
 });
 
