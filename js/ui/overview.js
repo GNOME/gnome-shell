@@ -296,6 +296,11 @@ var Overview = class extends Signals.EventEmitter {
                 `${this._shownState} to ${state}`);
         }
 
+        if (this._shownState === OverviewShownState.HIDDEN)
+            Meta.disable_unredirect_for_display(global.display);
+        else if (state === OverviewShownState.HIDDEN)
+            Meta.enable_unredirect_for_display(global.display);
+
         this._shownState = state;
         this.emit(OVERVIEW_SHOWN_TRANSITIONS[state].signal);
     }
@@ -402,8 +407,6 @@ var Overview = class extends Signals.EventEmitter {
 
     _gestureUpdate(tracker, progress) {
         if (!this._shown) {
-            Meta.disable_unredirect_for_display(global.display);
-
             this._shown = true;
             this._visible = true;
             this._visibleTarget = true;
@@ -558,8 +561,6 @@ var Overview = class extends Signals.EventEmitter {
         this._visibleTarget = true;
         this._activationTime = GLib.get_monotonic_time() / GLib.USEC_PER_SEC;
 
-        Meta.disable_unredirect_for_display(global.display);
-
         Main.layoutManager.overviewGroup.set_child_above_sibling(
             this._coverPane, null);
         this._coverPane.show();
@@ -626,9 +627,6 @@ var Overview = class extends Signals.EventEmitter {
     }
 
     _hideDone() {
-        // Re-enable unredirection
-        Meta.enable_unredirect_for_display(global.display);
-
         this._coverPane.hide();
 
         this._visible = false;
@@ -677,8 +675,6 @@ var Overview = class extends Signals.EventEmitter {
         // We should call this._syncGrab() here, but moved it to happen after
         // the animation because of a race in the xserver where the grab
         // fails when requested very early during startup.
-
-        Meta.disable_unredirect_for_display(global.display);
 
         this._changeShownState(OverviewShownState.SHOWING);
 
