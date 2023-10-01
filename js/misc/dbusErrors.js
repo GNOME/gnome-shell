@@ -43,3 +43,14 @@ export const ExtensionError = {
 };
 export const ExtensionErrors =
     registerErrorDomain('Extensions', ExtensionError);
+
+export const ScreencastError = {
+    ALL_PIPELINES_FAILED: 0,
+    PIPELINE_ERROR: 1,
+    SAVE_TO_DISK_DISABLED: 2,
+    ALREADY_RECORDING: 3,
+    RECORDER_ERROR: 4,
+    SERVICE_CRASH: 5,
+};
+export const ScreencastErrors =
+    registerErrorDomain('Screencast', ScreencastError);

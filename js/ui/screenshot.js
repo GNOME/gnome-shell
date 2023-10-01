@@ -25,6 +25,7 @@ Gio._promisify(Shell.Screenshot.prototype, 'screenshot_area');
 Gio._promisify(Shell.Screenshot.prototype, 'screenshot_stage_to_content');
 Gio._promisify(Shell.Screenshot, 'composite_to_stream');
 
+import {ScreencastErrors, ScreencastError} from '../misc/dbusErrors.js';
 import {loadInterfaceXML} from '../misc/fileUtils.js';
 import {DBusSenderChecker} from '../misc/util.js';
 
@@ -1099,8 +1100,8 @@ export const ScreenshotUI = GObject.registerClass({
                 this._syncCastButton();
             });
 
-        this._screencastProxy.connectSignal('Error',
-            () => this._screencastFailed());
+        this._screencastProxy.connectSignal('Error', (proxy, sender, [errorName, message]) =>
+            this._screencastFailed(Gio.DBusError.new_for_dbus_error(errorName, message)));
 
         this._screencastProxy.connect('notify::g-name-owner', () => {
             if (this._screencastProxy.g_name_owner)
@@ -1109,7 +1110,9 @@ export const ScreenshotUI = GObject.registerClass({
             if (!this._screencastInProgress)
                 return;
 
-            this._screencastFailed();
+            this._screencastFailed(
+                new GLib.Error(ScreencastErrors, ScreencastError.SERVICE_CRASH,
+                    'Service crashed'));
         });
 
         this._lockdownSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.lockdown'});
@@ -1974,7 +1977,7 @@ export const ScreenshotUI = GObject.registerClass({
         this._setScreencastInProgress(true);
 
         try {
-            const [success, path] = await method(
+            const [, path] = await method(
                 GLib.build_filenamev([
                     /* Translators: this is the folder where recorded
                        screencasts are stored. */
@@ -1986,8 +1989,7 @@ export const ScreenshotUI = GObject.registerClass({
                     _('Screencast from %d %t.webm'),
                 ]),
                 {'draw-cursor': new GLib.Variant('b', drawCursor)});
-            if (!success)
-                throw new Error();
+
             this._screencastPath = path;
         } catch (error) {
             this._setScreencastInProgress(false);
@@ -2024,7 +2026,9 @@ export const ScreenshotUI = GObject.registerClass({
         this._showNotification(_('Screencast recorded'));
     }
 
-    _screencastFailed() {
+    _screencastFailed(error) {
+        console.error(`Screencast failed: ${error}`);
+
         this._setScreencastInProgress(false);
 
         // Translators: notification title.

@@ -93,6 +93,7 @@
     </method>
 
     <signal name="Error">
+      <arg type="s" name="name"/>
       <arg type="s" name="message"/>
     </signal>
 
