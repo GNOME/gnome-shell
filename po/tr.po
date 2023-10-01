@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-08-31 03:54+0000\n"
-"PO-Revision-Date: 2023-08-31 10:54+0300\n"
+"POT-Creation-Date: 2023-09-22 17:09+0000\n"
+"PO-Revision-Date: 2023-09-28 01:18+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: tr\n"
 "X-DL-Module: gnome-shell\n"
@@ -75,7 +75,7 @@ msgid "Activate favorite app 9"
 msgstr "Gözde uygulama 9ʼu etkinleştir"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2142
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2148
 msgid "Screenshots"
 msgstr "Ekran Görüntüleri"
 
@@ -806,7 +806,7 @@ msgstr "Reddet"
 msgid "Allow"
 msgstr "İzin Ver"
 
-#: js/ui/appDisplay.js:1773
+#: js/ui/appDisplay.js:1777
 msgid "Unnamed Folder"
 msgstr "Adsız Klasör"
 
@@ -1040,7 +1040,7 @@ msgstr ""
 "Diğer seçenek olarak, yönlendiricinizde “WPS” düğmesini kullanarak "
 "bağlayabilirsiniz."
 
-#: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:226
+#: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:371 js/ui/status/network.js:455
 msgid "Connect"
 msgstr "Bağlan"
@@ -1105,7 +1105,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "“%s”e bağlanmak için parola gerekli."
 
-#: js/ui/components/networkAgent.js:742 js/ui/status/network.js:2024
+#: js/ui/components/networkAgent.js:742 js/ui/status/network.js:2040
 msgid "Network Manager"
 msgstr "Ağ Yöneticisi"
 
@@ -1264,7 +1264,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "Çıkış"
 
-#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:175
+#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:176
 msgctxt "title"
 msgid "Power Off"
 msgstr "Bilgisayarı Kapat"
@@ -1400,11 +1400,11 @@ msgstr "Uzantı Kur"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "“%s” uzantısı extensions.gnome.org üstünden indirilip kurulsun mu?"
 
-#: js/ui/extensionSystem.js:333
+#: js/ui/extensionSystem.js:340
 msgid "Extension Updates Available"
 msgstr "Uzantı Güncellemeleri Var"
 
-#: js/ui/extensionSystem.js:334
+#: js/ui/extensionSystem.js:341
 msgid "Extension updates are ready to be installed."
 msgstr "Uzantı güncellemeleri kuruluma hazır."
 
@@ -1545,23 +1545,23 @@ msgstr "Kaynağı Görüntüle"
 msgid "Web Page"
 msgstr "Web Sayfası"
 
-#: js/ui/main.js:267
+#: js/ui/main.js:268
 msgid "System was put in unsafe mode"
 msgstr "Sistem güvensiz kipe sokuldu"
 
-#: js/ui/main.js:268
+#: js/ui/main.js:269
 msgid "Apps now have unrestricted access"
 msgstr "Şimdi uygulamalar sınırsız erişime sahip"
 
-#: js/ui/main.js:269 js/ui/overview.js:63
+#: js/ui/main.js:270 js/ui/overview.js:63
 msgid "Undo"
 msgstr "Geri Al"
 
-#: js/ui/main.js:327
+#: js/ui/main.js:328
 msgid "Logged in as a privileged user"
 msgstr "Yetkili kullanıcı olarak oturum açılmış"
 
-#: js/ui/main.js:328
+#: js/ui/main.js:329
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1569,11 +1569,11 @@ msgstr ""
 "Oturumu öncelikli kullanıcı olarak çalıştırmaktan güvenlik nedeniyle "
 "kaçınılmalıdır. Eğer yapabiliyorsanız sıradan kullanıcı olarak girmelisiniz."
 
-#: js/ui/main.js:376
+#: js/ui/main.js:377
 msgid "Screen Lock disabled"
 msgstr "Ekran Kilidi devre dışı"
 
-#: js/ui/main.js:377
+#: js/ui/main.js:378
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Ekran Kilitleme, GNOME ekran yöneticisi gerektirir."
 
@@ -1723,7 +1723,7 @@ msgid "Window Selection"
 msgstr "Pencere Seçimi"
 
 #. Translators: entry in the window right click menu.
-#: js/ui/screenshot.js:1257 js/ui/status/system.js:112 js/ui/windowMenu.js:30
+#: js/ui/screenshot.js:1257 js/ui/status/system.js:113 js/ui/windowMenu.js:30
 msgid "Take Screenshot"
 msgstr "Ekran Görüntüsü Al"
 
@@ -1743,62 +1743,62 @@ msgstr "İmleci Göster"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1901
+#: js/ui/screenshot.js:1906
 msgid "Screencasts"
 msgstr "Ekran Kaydı"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1906
+#: js/ui/screenshot.js:1911
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Ekran Kaydı - %d %t.webm"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1944
+#: js/ui/screenshot.js:1949
 msgid "Screencast recorded"
 msgstr "Ekran kaydı yakalandı"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1951
+#: js/ui/screenshot.js:1956
 msgid "Screencast ended unexpectedly"
 msgstr "Ekran kaydı beklenmedik biçimde bitti"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1960 js/ui/screenshot.js:2195
+#: js/ui/screenshot.js:1965 js/ui/screenshot.js:2201
 msgid "Screenshot"
 msgstr "Ekran Görüntüsü"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1967
+#: js/ui/screenshot.js:1972
 msgid "Click here to view the video."
-msgstr "Videoyu görmek için buraya tıkla."
+msgstr "Videoyu görmek için buraya tıklayın."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1970 js/ui/screenshot.js:2209
+#: js/ui/screenshot.js:1975 js/ui/screenshot.js:2215
 msgid "Show in Files"
 msgstr "Dosyalar’da Göster"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2155
+#: js/ui/screenshot.js:2161
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Ekran Görüntüsü - %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2201
+#: js/ui/screenshot.js:2207
 msgid "Screenshot captured"
 msgstr "Ekran görüntüsü yakalandı"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2203
+#: js/ui/screenshot.js:2209
 msgid "You can paste the image from the clipboard."
 msgstr "Resmi panodan yapıştırabilirsiniz."
 
-#: js/ui/screenshot.js:2256 js/ui/screenshot.js:2420
+#: js/ui/screenshot.js:2262 js/ui/screenshot.js:2426
 msgid "Screenshot taken"
 msgstr "Ekran görüntüsü alındı"
 
@@ -1956,11 +1956,11 @@ msgstr "Penceresiz çalıştığı bilinen uygulamalar"
 msgid "App Settings"
 msgstr "Uygulama Ayarları"
 
-#: js/ui/status/backgroundApps.js:248
+#: js/ui/status/backgroundApps.js:249
 msgid "No Background Apps"
 msgstr "Arka Plan Uygulaması Yok"
 
-#: js/ui/status/backgroundApps.js:250
+#: js/ui/status/backgroundApps.js:251
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -1986,28 +1986,28 @@ msgstr "Yüksek"
 msgid "Keyboard"
 msgstr "Klavye"
 
-#: js/ui/status/bluetooth.js:226 js/ui/status/network.js:371
+#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:371
 msgid "Disconnect"
 msgstr "Bağlantıyı Kes"
 
-#: js/ui/status/bluetooth.js:243 js/ui/status/bluetooth.js:245
+#: js/ui/status/bluetooth.js:263 js/ui/status/bluetooth.js:265
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:1891
+#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1907
 msgid "Bluetooth Settings"
 msgstr "Bluetooth Ayarları"
 
-#: js/ui/status/bluetooth.js:315
+#: js/ui/status/bluetooth.js:335
 msgid "No available or connected devices"
 msgstr "Kullanılabilir ya da bağlı aygıt yok"
 
-#: js/ui/status/bluetooth.js:316
+#: js/ui/status/bluetooth.js:336
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Aygıtlara bağlanmak için Bluetooth’u aç"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:370
+#: js/ui/status/bluetooth.js:390
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2083,88 +2083,88 @@ msgstr "%s Bağlantısını Kes"
 msgid "Connect to %s"
 msgstr "Bağlan: %s"
 
-#: js/ui/status/network.js:1050
+#: js/ui/status/network.js:1061
 msgid "Secure"
 msgstr "Güvenli"
 
-#: js/ui/status/network.js:1050
+#: js/ui/status/network.js:1061
 msgid "Not secure"
 msgstr "Güvensiz"
 
-#: js/ui/status/network.js:1051
+#: js/ui/status/network.js:1062
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "%%%s sinyal gücü"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1053
+#: js/ui/status/network.js:1064
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1155
+#: js/ui/status/network.js:1166
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s Erişim Noktası"
 
-#: js/ui/status/network.js:1421
+#: js/ui/status/network.js:1437
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d bağlı"
 
-#: js/ui/status/network.js:1519 js/ui/status/network.js:1535
+#: js/ui/status/network.js:1535 js/ui/status/network.js:1551
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1520
+#: js/ui/status/network.js:1536
 msgid "VPN Settings"
 msgstr "VPN Ayarları"
 
-#: js/ui/status/network.js:1776
+#: js/ui/status/network.js:1792
 msgid "Wi–Fi"
 msgstr "Kablosuz"
 
-#: js/ui/status/network.js:1778
+#: js/ui/status/network.js:1794
 msgid "All Networks"
 msgstr "Tüm Ağlar"
 
-#: js/ui/status/network.js:1875
+#: js/ui/status/network.js:1891
 msgid "Wired Connections"
 msgstr "Kablolu Bağlantılar"
 
-#: js/ui/status/network.js:1876
+#: js/ui/status/network.js:1892
 msgid "Wired Settings"
 msgstr "Kablolu Ayarları"
 
-#: js/ui/status/network.js:1890
+#: js/ui/status/network.js:1906
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth İnternet"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1897
+#: js/ui/status/network.js:1913
 msgid "Tether"
 msgstr "İnternet Paylaşımı"
 
-#: js/ui/status/network.js:1910
+#: js/ui/status/network.js:1926
 msgid "Mobile Connections"
 msgstr "Mobil Bağlantılar"
 
-#: js/ui/status/network.js:1912
+#: js/ui/status/network.js:1928
 msgid "Mobile Broadband Settings"
 msgstr "Mobil Geniş Bant Ayarları"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1921
+#: js/ui/status/network.js:1937
 msgid "Mobile"
 msgstr "Mobil"
 
-#: js/ui/status/network.js:2029
+#: js/ui/status/network.js:2045
 msgid "Connection failed"
 msgstr "Bağlantı başarısız"
 
-#: js/ui/status/network.js:2030
+#: js/ui/status/network.js:2046
 msgid "Activation of network connection failed"
 msgstr "Ağ bağlantısının etkinleşimi başarısız"
 
@@ -2207,37 +2207,32 @@ msgstr "Ekran Paylaşımını Durdur"
 msgid "Airplane Mode"
 msgstr "Uçak Kipi"
 
-#: js/ui/status/system.js:97
-#, javascript-format
-msgid "%d %%"
-msgstr "%d %%"
-
-#: js/ui/status/system.js:169
+#: js/ui/status/system.js:170
 msgid "Power Off Menu"
 msgstr "Bilgisayarı Kapat Menüsü"
 
-#: js/ui/status/system.js:177
+#: js/ui/status/system.js:178
 msgid "Suspend"
 msgstr "Askıya Al"
 
-#: js/ui/status/system.js:182
+#: js/ui/status/system.js:183
 msgid "Restart…"
 msgstr "Yeniden Başlat…"
 
-#: js/ui/status/system.js:187
+#: js/ui/status/system.js:188
 msgid "Power Off…"
 msgstr "Gücü Kapat…"
 
-#: js/ui/status/system.js:194
+#: js/ui/status/system.js:195
 #: subprojects/extensions-app/data/ui/extensions-window.ui:189
 msgid "Log Out…"
 msgstr "Oturumu Kapat…"
 
-#: js/ui/status/system.js:199
+#: js/ui/status/system.js:200
 msgid "Switch User…"
 msgstr "Kullanıcı Değiştir…"
 
-#: js/ui/status/system.js:243
+#: js/ui/status/system.js:244
 msgctxt "action"
 msgid "Lock Screen"
 msgstr "Ekranı Kilitle"
@@ -3080,3 +3075,7 @@ msgstr[0] "%u Girdi"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
+
+#, javascript-format
+#~ msgid "%d %%"
+#~ msgstr "%d %%"
