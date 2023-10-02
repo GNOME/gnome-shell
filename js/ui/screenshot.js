@@ -1116,6 +1116,11 @@ export const ScreenshotUI = GObject.registerClass({
             if (!this._screencastInProgress)
                 return;
 
+            // If the recorder crashed while we're starting it in _startScreencast(),
+            // let the catch-block there handle the error.
+            if (this._screencastStarting)
+                return;
+
             this._screencastFailed(ScreencastPhase.RECORDING,
                 new GLib.Error(ScreencastErrors, ScreencastError.SERVICE_CRASH,
                     'Service crashed'));
@@ -1947,7 +1952,7 @@ export const ScreenshotUI = GObject.registerClass({
             this.emit('screenshot-taken', file);
     }
 
-    async _startScreencast() {
+    async _startScreencast(nRetries = 0) {
         if (this._windowButton.checked)
             return; // TODO
 
@@ -1981,8 +1986,11 @@ export const ScreenshotUI = GObject.registerClass({
         // Set this before calling the method as the screen recording indicator
         // will check it before the success callback fires.
         this._setScreencastInProgress(true);
+        let retry = false;
 
         try {
+            this._screencastStarting = true;
+
             const [, path] = await method(
                 GLib.build_filenamev([
                     /* Translators: this is the folder where recorded
@@ -1998,7 +2006,21 @@ export const ScreenshotUI = GObject.registerClass({
 
             this._screencastPath = path;
         } catch (error) {
-            this._screencastFailed(ScreencastPhase.STARTUP, error);
+            // Recorder service disconnected without reply -> service crash
+            // That should have blocklisted the pipeline that caused the crash,
+            // so try again.
+            if (error.matches(Gio.DBusError, Gio.DBusError.NO_REPLY) && nRetries < 2)
+                retry = true;
+            else
+                this._screencastFailed(ScreencastPhase.STARTUP, error);
+        }
+
+        delete this._screencastStarting;
+
+        if (retry) {
+            console.log('Screencast service crashed during startup, trying again');
+            this._setScreencastInProgress(false);
+            this._startScreencast(nRetries + 1);
         }
     }
 
