@@ -90,8 +90,6 @@ struct _StScrollViewPrivate
   gfloat        row_size;
   gfloat        column_size;
 
-  StScrollViewFade *fade_effect;
-
   guint         row_size_set : 1;
   guint         column_size_set : 1;
   guint         mouse_scroll : 1;
@@ -173,32 +171,35 @@ void
 st_scroll_view_update_fade_effect (StScrollView  *scroll,
                                    ClutterMargin *fade_margins)
 {
-  StScrollViewPrivate *priv = ST_SCROLL_VIEW (scroll)->priv;
+  ClutterEffect *fade_effect =
+    clutter_actor_get_effect (CLUTTER_ACTOR (scroll), "fade");
+
+  if (fade_effect && !ST_IS_SCROLL_VIEW_FADE (fade_effect))
+    {
+      clutter_actor_remove_effect (CLUTTER_ACTOR (scroll), fade_effect);
+      fade_effect = NULL;
+    }
 
   /* A fade amount of other than 0 enables the effect. */
   if (fade_margins->left != 0. || fade_margins->right != 0. ||
       fade_margins->top != 0. || fade_margins->bottom != 0.)
     {
-      if (priv->fade_effect == NULL)
+      if (fade_effect == NULL)
         {
-          priv->fade_effect = g_object_new (ST_TYPE_SCROLL_VIEW_FADE, NULL);
+          fade_effect = g_object_new (ST_TYPE_SCROLL_VIEW_FADE, NULL);
 
           clutter_actor_add_effect_with_name (CLUTTER_ACTOR (scroll), "fade",
-                                              CLUTTER_EFFECT (priv->fade_effect));
+                                              fade_effect);
         }
 
-      g_object_set (priv->fade_effect,
+      g_object_set (ST_SCROLL_VIEW_FADE (fade_effect),
                     "fade-margins", fade_margins,
                     NULL);
     }
    else
     {
-      if (priv->fade_effect != NULL)
-        {
-          clutter_actor_remove_effect (CLUTTER_ACTOR (scroll),
-                                       CLUTTER_EFFECT (priv->fade_effect));
-          priv->fade_effect = NULL;
-        }
+      if (fade_effect != NULL)
+        clutter_actor_remove_effect (CLUTTER_ACTOR (scroll), fade_effect);
     }
 }
 
@@ -241,11 +242,10 @@ st_scroll_view_dispose (GObject *object)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (object)->priv;
 
-  if (priv->fade_effect)
-    {
-      clutter_actor_remove_effect (CLUTTER_ACTOR (object), CLUTTER_EFFECT (priv->fade_effect));
-      priv->fade_effect = NULL;
-    }
+  /* The fade effect disconnects from the adjustments and
+   * needs to be removed while those are still alive.
+   */
+  clutter_actor_clear_effects (CLUTTER_ACTOR (object));
 
   g_clear_pointer (&priv->vscroll, clutter_actor_destroy);
   g_clear_pointer (&priv->hscroll, clutter_actor_destroy);
