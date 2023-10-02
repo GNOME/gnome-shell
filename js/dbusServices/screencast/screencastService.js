@@ -363,9 +363,15 @@ class Recorder extends Signals.EventEmitter {
             case PipelineState.PLAYING:
             case PipelineState.FLUSHING: {
                 const [error] = message.parse_error();
-                this._handleFatalPipelineError(
-                    `GStreamer error while in state ${this._pipelineState}: ${error.message}`,
-                    ScreencastErrors, ScreencastError.PIPELINE_ERROR);
+
+                if (error.matches(Gst.ResourceError, Gst.ResourceError.NO_SPACE_LEFT)) {
+                    this._handleFatalPipelineError('Out of disk space',
+                        ScreencastErrors, ScreencastError.OUT_OF_DISK_SPACE);
+                } else {
+                    this._handleFatalPipelineError(
+                        `GStreamer error while in state ${this._pipelineState}: ${error.message}`,
+                        ScreencastErrors, ScreencastError.PIPELINE_ERROR);
+                }
 
                 break;
             }

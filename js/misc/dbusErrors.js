@@ -51,6 +51,7 @@ export const ScreencastError = {
     ALREADY_RECORDING: 3,
     RECORDER_ERROR: 4,
     SERVICE_CRASH: 5,
+    OUT_OF_DISK_SPACE: 6,
 };
 export const ScreencastErrors =
     registerErrorDomain('Screencast', ScreencastError);

@@ -2039,7 +2039,14 @@ export const ScreenshotUI = GObject.registerClass({
             // Translators: notification title.
             this._showNotification(_('Screencast failed to start'));
             break;
+
         case ScreencastPhase.RECORDING:
+            if (error.matches(ScreencastErrors, ScreencastError.OUT_OF_DISK_SPACE)) {
+                // Translators: notification title.
+                this._showNotification(_('Screencast ended: Out of disk space'));
+                return;
+            }
+
             // Translators: notification title.
             this._showNotification(_('Screencast ended unexpectedly'));
             break;
