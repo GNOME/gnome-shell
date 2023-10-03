@@ -243,6 +243,7 @@ export const LayoutManager = GObject.registerClass({
             }
 
             this._destroyHotCorners();
+            this._destroyPanelBarrier();
             this.uiGroup.destroy();
         });
 
@@ -575,11 +576,15 @@ export const LayoutManager = GObject.registerClass({
         });
     }
 
-    _updatePanelBarrier() {
+    _destroyPanelBarrier() {
         if (this._rightPanelBarrier) {
             this._rightPanelBarrier.destroy();
             this._rightPanelBarrier = null;
         }
+    }
+
+    _updatePanelBarrier() {
+        this._destroyPanelBarrier();
 
         if (!this.primaryMonitor)
             return;
