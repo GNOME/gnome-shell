@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-09-22 17:09+0000\n"
-"PO-Revision-Date: 2023-09-28 01:18+0300\n"
+"POT-Creation-Date: 2023-10-01 18:30+0000\n"
+"PO-Revision-Date: 2023-10-06 01:57+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -1064,7 +1064,7 @@ msgstr "Hizmet"
 #: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:408
 #: js/ui/components/networkAgent.js:753 js/ui/components/networkAgent.js:774
 msgid "Authentication required"
-msgstr "Kimlik doğrulama gerekir"
+msgstr "Kimlik doğrulaması gerekli"
 
 #: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:754
 #, javascript-format
@@ -2909,7 +2909,7 @@ msgstr "“%s” uzantısının tercihleri yok\n"
 #: subprojects/extensions-tool/src/command-prefs.c:62
 #, c-format
 msgid "Failed to open prefs for extension “%s”: %s\n"
-msgstr "“%s” eklentisi için seçenekler açılamadı: %s\n"
+msgstr "“%s” eklentisi için prefs açılamadı: %s\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:87
 msgid "Opens extension preferences"
