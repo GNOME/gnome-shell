@@ -185,7 +185,9 @@ cdata.set('HAVE_POLKIT_AUTOCLEANUP', polkit_has_autocleanup)
 
 buildtype = get_option('buildtype')
 if buildtype != 'plain'
-  all_warnings = [
+  gs_c_args = [
+    '-fno-omit-frame-pointer',
+    '-mno-omit-leaf-frame-pointer',
     '-fno-strict-aliasing',
     '-Wpointer-arith',
     '-Wmissing-declarations',
@@ -222,17 +224,16 @@ if buildtype != 'plain'
     '-Werror=empty-body',
     '-Werror=write-strings',
   ]
-  supported_warnings = cc.get_supported_arguments(all_warnings)
-  add_project_arguments(supported_warnings, language: 'c')
-endif
 
-if get_option('debug')
-  debug_c_args = [
-    '-DG_ENABLE_DEBUG',
-    '-fno-omit-frame-pointer'
-  ]
-  supported_debug_c_args = cc.get_supported_arguments(debug_c_args)
-  add_project_arguments(supported_debug_c_args, language: 'c')
+
+  if get_option('debug')
+    gs_c_args += [
+      '-DG_ENABLE_DEBUG',
+    ]
+  endif
+
+  supported_gs_c_args = cc.get_supported_arguments(gs_c_args)
+  add_project_arguments(supported_gs_c_args, language: 'c')
 endif
 
 config_h = configure_file(
