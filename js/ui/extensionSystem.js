@@ -583,6 +583,8 @@ export class ExtensionManager extends Signals.EventEmitter {
         if (!global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY))
             extensions = extensions.concat(global.settings.get_strv(ENABLED_EXTENSIONS_KEY));
 
+        extensions.sort((a, b) => this._compareExtensions(this.lookup(a), this.lookup(b)));
+
         // filter out 'disabled-extensions' which takes precedence
         let disabledExtensions = global.settings.get_strv(DISABLED_EXTENSIONS_KEY);
         return extensions.filter(item => !disabledExtensions.includes(item));
@@ -700,6 +702,12 @@ export class ExtensionManager extends Signals.EventEmitter {
         }
     }
 
+    _compareExtensions(a, b) {
+        const modesA = a?.sessionModes ?? [];
+        const modesB = b?.sessionModes ?? [];
+        return modesB.length - modesA.length;
+    }
+
     async _loadExtensions() {
         global.settings.connect(`changed::${ENABLED_EXTENSIONS_KEY}`, () => {
             this._onEnabledExtensionsChanged();
@@ -748,7 +756,7 @@ export class ExtensionManager extends Signals.EventEmitter {
             }
 
             return extension;
-        }).filter(extension => extension !== null);
+        }).filter(extension => extension !== null).sort(this._compareExtensions.bind(this));
 
         // after updating to a new major version,
         // update extensions before loading them
