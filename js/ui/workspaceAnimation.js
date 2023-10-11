@@ -19,7 +19,11 @@ const WORKSPACE_SPACING = 100;
 const WorkspaceGroup = GObject.registerClass(
 class WorkspaceGroup extends Clutter.Actor {
     _init(workspace, monitor, movingWindow) {
-        super._init();
+        super._init({
+            width: monitor.width,
+            height: monitor.height,
+            clip_to_allocation: true,
+        });
 
         this._workspace = workspace;
         this._monitor = monitor;
@@ -36,11 +40,8 @@ class WorkspaceGroup extends Clutter.Actor {
                 monitorIndex: this._monitor.index,
                 controlPosition: false,
             });
+            this._createDesktopWindows();
         }
-
-        this.width = monitor.width;
-        this.height = monitor.height;
-        this.clip_to_allocation = true;
 
         this._createWindows();
 
@@ -54,12 +55,10 @@ class WorkspaceGroup extends Clutter.Actor {
     }
 
     _shouldShowWindow(window) {
-        if (!window.showing_on_its_workspace())
+        if (!window.showing_on_its_workspace() || this._isDesktopWindow(window))
             return false;
 
-        const geometry = global.display.get_monitor_geometry(this._monitor.index);
-        const [intersects] = window.get_frame_rect().intersect(geometry);
-        if (!intersects)
+        if (!this._windowIsOnThisMonitor(window))
             return false;
 
         const isSticky =
@@ -89,28 +88,46 @@ class WorkspaceGroup extends Clutter.Actor {
         }
     }
 
+    _isDesktopWindow(metaWindow) {
+        return metaWindow.get_window_type() === Meta.WindowType.DESKTOP;
+    }
+
+    _windowIsOnThisMonitor(metawindow) {
+        const geometry = global.display.get_monitor_geometry(this._monitor.index);
+        const [intersects] = metawindow.get_frame_rect().intersect(geometry);
+        return intersects;
+    }
+
+    _createDesktopWindows() {
+        const desktopActors = global.get_window_actors().filter(w => {
+            return this._isDesktopWindow(w.meta_window) && this._windowIsOnThisMonitor(w.meta_window);
+        });
+        desktopActors.map(a => this._createClone(a)).forEach(clone => this._background.add_child(clone));
+    }
+
     _createWindows() {
         const windowActors = global.get_window_actors().filter(w =>
             this._shouldShowWindow(w.meta_window));
 
-        for (const windowActor of windowActors) {
-            const clone = new Clutter.Clone({
-                source: windowActor,
-                x: windowActor.x - this._monitor.x,
-                y: windowActor.y - this._monitor.y,
-            });
+        windowActors.map(a => this._createClone(a)).forEach(clone => this.add_child(clone));
+    }
 
-            this.add_child(clone);
+    _createClone(windowActor) {
+        const clone = new Clutter.Clone({
+            source: windowActor,
+            x: windowActor.x - this._monitor.x,
+            y: windowActor.y - this._monitor.y,
+        });
 
-            const record = {windowActor, clone};
+        const record = {windowActor, clone};
 
-            windowActor.connectObject('destroy', () => {
-                clone.destroy();
-                this._windowRecords.splice(this._windowRecords.indexOf(record), 1);
-            }, this);
+        windowActor.connectObject('destroy', () => {
+            clone.destroy();
+            this._windowRecords.splice(this._windowRecords.indexOf(record), 1);
+        }, this);
 
-            this._windowRecords.push(record);
-        }
+        this._windowRecords.push(record);
+        return clone;
     }
 
     _removeWindows() {
