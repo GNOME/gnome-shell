@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-10-05 13:13+0000\n"
-"PO-Revision-Date: 2023-10-11 17:27+0200\n"
+"POT-Creation-Date: 2023-10-11 15:31+0000\n"
+"PO-Revision-Date: 2023-10-15 21:11+0200\n"
 "Last-Translator: Brage <bragefuglseth@gnome.org>\n"
 "Language-Team: \n"
 "Language: nb\n"
@@ -97,7 +97,7 @@ msgstr "Vis kontrollsenter"
 
 #: data/50-gnome-shell-system.xml:15
 msgid "Focus the active notification"
-msgstr "Marker aktivt varsel"
+msgstr "Marker aktiv varsling"
 
 #: data/50-gnome-shell-system.xml:18
 msgid "Show the overview"
@@ -331,11 +331,11 @@ msgstr "Tastatursnarvei for å vise/skjule kontrollsenteret."
 
 #: data/org.gnome.shell.gschema.xml.in:195
 msgid "Keybinding to focus the active notification"
-msgstr "Tastatursnarvei for aktivt varsel"
+msgstr "Tastatursnarvei for aktiv varsling"
 
 #: data/org.gnome.shell.gschema.xml.in:196
 msgid "Keybinding to focus the active notification."
-msgstr "Tastatursnarvei for å markere det aktive varselet."
+msgstr "Tastatursnarvei for å markere den aktive varslingen."
 
 #: data/org.gnome.shell.gschema.xml.in:202
 msgid "Switch to application 1"
@@ -959,7 +959,7 @@ msgstr "Uke %V"
 
 #: js/ui/calendar.js:907
 msgid "No Notifications"
-msgstr "Ingen varsler"
+msgstr "Ingen varslinger"
 
 #: js/ui/calendar.js:964
 msgid "Do Not Disturb"
