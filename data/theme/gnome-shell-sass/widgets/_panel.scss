@@ -71,7 +71,7 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
     }
 
     &.screen-recording-indicator {
-      @include panel_button($screenshot_ui_button_red, $flat: false);
+      @include panel_button($screenshot_ui_button_red, $fg:$panel_system_fg_color, $flat: false);
     }
 
     &.screen-sharing-indicator {
@@ -112,7 +112,7 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
 
       // unfortunate duplication so these indicators have styles
       &.screen-recording-indicator {
-        @include panel_button($screenshot_ui_button_red, $flat: false);
+        @include panel_button($screenshot_ui_button_red, $fg:$panel_system_fg_color, $flat: false);
       }
 
       &.screen-sharing-indicator {
