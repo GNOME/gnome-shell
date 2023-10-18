@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-09-22 17:09+0000\n"
-"PO-Revision-Date: 2023-09-30 14:44+0200\n"
+"POT-Creation-Date: 2023-10-18 18:46+0000\n"
+"PO-Revision-Date: 2023-10-18 22:45+0200\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -2320,20 +2320,25 @@ msgstr "ფანჯრის განბლოკვა"
 msgid "Log in as another user"
 msgstr "სხვა მომხმარებლით შესვლა"
 
-#: js/ui/welcomeDialog.js:39
+#: js/ui/welcomeDialog.js:49
 #, javascript-format
-msgid "Welcome to GNOME %s"
-msgstr "მოგესალმებათ GNOME %s"
+msgid "GNOME %s"
+msgstr "GNOME %s"
 
-#: js/ui/welcomeDialog.js:40
+#: js/ui/welcomeDialog.js:53
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "მოგესალმებათ %s"
+
+#: js/ui/welcomeDialog.js:54
 msgid "If you want to learn your way around, check out the tour."
 msgstr "თუ გნებავთ, ისწავლოთ, დაიწყეთ ჩვენი ტურით."
 
-#: js/ui/welcomeDialog.js:49
-msgid "No Thanks"
-msgstr "არა, მადლობა"
+#: js/ui/welcomeDialog.js:63
+msgid "Skip"
+msgstr "გამოტოვება"
 
-#: js/ui/welcomeDialog.js:54
+#: js/ui/welcomeDialog.js:68
 msgid "Take Tour"
 msgstr "ტურის აღება"
 
@@ -3047,6 +3052,9 @@ msgstr[0] "%u შეტანა"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "სისტემური ხმები"
+
+#~ msgid "No Thanks"
+#~ msgstr "არა, მადლობა"
 
 #, javascript-format
 #~ msgid "%d %%"
