@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-09-30 12:47+0000\n"
-"PO-Revision-Date: 2023-10-09 17:41+0300\n"
+"POT-Creation-Date: 2023-10-18 15:11+0000\n"
+"PO-Revision-Date: 2023-10-18 20:22+0200\n"
 "Last-Translator: Florentina Mușat <florentina [dot] musat [dot] 28 [at] "
 "gmail [dot] com>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
@@ -23,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && "
 "n%100<=19) ? 1 : 2);\n"
 "20)) ? 1: 2);\n"
-"X-Generator: Poedit 3.4\n"
+"X-Generator: Poedit 3.3.2\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -2400,8 +2400,8 @@ msgid "If you want to learn your way around, check out the tour."
 msgstr "Dacă doriți să aflați despre împrejurimi, consultați turul Gnome."
 
 #: js/ui/welcomeDialog.js:49
-msgid "No Thanks"
-msgstr "Nu, merci"
+msgid "Skip"
+msgstr "Omite"
 
 #: js/ui/welcomeDialog.js:54
 msgid "Take Tour"
@@ -3130,6 +3130,9 @@ msgstr[2] "%u de intrări"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sunete de sistem"
+
+#~ msgid "No Thanks"
+#~ msgstr "Nu, merci"
 
 #, javascript-format
 #~ msgid "%d %%"
