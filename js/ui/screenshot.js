@@ -2044,11 +2044,17 @@ export const ScreenshotUI = GObject.registerClass({
             if (error.matches(ScreencastErrors, ScreencastError.OUT_OF_DISK_SPACE)) {
                 // Translators: notification title.
                 this._showNotification(_('Screencast ended: Out of disk space'));
-                return;
+            } else if (error.matches(ScreencastErrors, ScreencastError.SERVICE_CRASH)) {
+                // We can encourage user to try again on service crashes since the
+                // recorder will auto-blocklist the pipeline that crashed.
+
+                // Translators: notification title.
+                this._showNotification(_('Screencast ended unexpectedly, please try again'));
+            } else {
+                // Translators: notification title.
+                this._showNotification(_('Screencast ended unexpectedly'));
             }
 
-            // Translators: notification title.
-            this._showNotification(_('Screencast ended unexpectedly'));
             break;
         }
     }
