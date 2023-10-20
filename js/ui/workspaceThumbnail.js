@@ -210,7 +210,7 @@ export const WindowClone = GObject.registerClass({
 });
 
 
-const ThumbnailState = {
+export const ThumbnailState = {
     NEW:            0,
     EXPANDING:      1,
     EXPANDED:       2,
