@@ -5,12 +5,13 @@ import St from 'gi://St';
 
 // Shamelessly copied from the layout "hotcorner" ripples implementation
 export class Ripples {
-    constructor(px, py, styleClass) {
+    constructor(px, py, styleClass, animationRequired = false) {
         this._x = 0;
         this._y = 0;
 
         this._px = px;
         this._py = py;
+        this._animationRequired = animationRequired;
 
         this._ripple1 = new St.BoxLayout({
             style_class: styleClass,
@@ -60,11 +61,13 @@ export class Ripples {
         ripple.opacity = 255 * Math.sqrt(startOpacity);
         ripple.scale_x = ripple.scale_y = startScale;
         ripple.set_translation(-this._px * ripple.width, -this._py * ripple.height, 0.0);
+        const animationRequired = this._animationRequired;
 
         ripple.ease({
             opacity: 0,
             delay,
             duration,
+            animationRequired,
             mode: Clutter.AnimationMode.EASE_IN_QUAD,
         });
         ripple.ease({
@@ -72,6 +75,7 @@ export class Ripples {
             scale_y: finalScale,
             delay,
             duration,
+            animationRequired,
             mode: Clutter.AnimationMode.LINEAR,
             onComplete: () => (ripple.visible = false),
         });
