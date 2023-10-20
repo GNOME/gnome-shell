@@ -13,14 +13,20 @@ const N_WIGGLES = 3;
  * adjustAnimationTime:
  *
  * @param {number} msecs - time in milliseconds
+ * @param {object} params - optional parameters
+ * @param {boolean=} params.animationRequired - whether to ignore the enable-animations setting
  *
  * Adjust `msecs` to account for St's enable-animations
  * and slow-down-factor settings
  */
-export function adjustAnimationTime(msecs) {
+export function adjustAnimationTime(msecs, params) {
+    params = Params.parse(params, {
+        animationRequired: false,
+    });
+
     const settings = St.Settings.get();
 
-    if (!settings.enable_animations)
+    if (!settings.enable_animations && !params.animationRequired)
         return 0;
     return settings.slow_down_factor * msecs;
 }
