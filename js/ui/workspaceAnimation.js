@@ -14,9 +14,9 @@ import * as Util from '../misc/util.js';
 import * as Main from './main.js';
 
 const WINDOW_ANIMATION_TIME = 250;
-const WORKSPACE_SPACING = 100;
+export const WORKSPACE_SPACING = 100;
 
-const WorkspaceGroup = GObject.registerClass(
+export const WorkspaceGroup = GObject.registerClass(
 class WorkspaceGroup extends Clutter.Actor {
     _init(workspace, monitor, movingWindow) {
         super._init({
@@ -145,7 +145,7 @@ class WorkspaceGroup extends Clutter.Actor {
     }
 });
 
-const MonitorGroup = GObject.registerClass({
+export const MonitorGroup = GObject.registerClass({
     Properties: {
         'progress': GObject.ParamSpec.double(
             'progress', 'progress', 'progress',
