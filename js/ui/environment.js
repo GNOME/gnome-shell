@@ -93,17 +93,21 @@ function _easeActor(actor, params) {
     params = {
         repeatCount: 0,
         autoReverse: false,
+        animationRequired: false,
         ...params,
     };
 
     actor.save_easing_state();
 
+    const animationRequired = params.animationRequired;
+    delete params.animationRequired;
+
     if (params.duration !== undefined)
-        actor.set_easing_duration(params.duration);
+        actor.set_easing_duration(params.duration, {animationRequired});
     delete params.duration;
 
     if (params.delay !== undefined)
-        actor.set_easing_delay(params.delay);
+        actor.set_easing_delay(params.delay, {animationRequired});
     delete params.delay;
 
     const repeatCount = params.repeatCount;
@@ -162,6 +166,7 @@ function _easeActorProperty(actor, propName, target, params) {
     params = {
         repeatCount: 0,
         autoReverse: false,
+        animationRequired: false,
         ...params,
     };
 
@@ -170,12 +175,15 @@ function _easeActorProperty(actor, propName, target, params) {
         params.progress_mode = params.mode;
     delete params.mode;
 
+    const animationRequired = params.animationRequired;
+    delete params.animationRequired;
+
     if (params.duration)
-        params.duration = adjustAnimationTime(params.duration);
+        params.duration = adjustAnimationTime(params.duration, {animationRequired});
     let duration = Math.floor(params.duration || 0);
 
     if (params.delay)
-        params.delay = adjustAnimationTime(params.delay);
+        params.delay = adjustAnimationTime(params.delay, {animationRequired});
 
     const repeatCount = params.repeatCount;
     delete params.repeatCount;
@@ -282,12 +290,12 @@ _patchLayoutClass(Clutter.GridLayout, {
 _patchLayoutClass(Clutter.BoxLayout, {spacing: 'spacing'});
 
 const origSetEasingDuration = Clutter.Actor.prototype.set_easing_duration;
-Clutter.Actor.prototype.set_easing_duration = function (msecs) {
-    origSetEasingDuration.call(this, adjustAnimationTime(msecs));
+Clutter.Actor.prototype.set_easing_duration = function (msecs, params = {}) {
+    origSetEasingDuration.call(this, adjustAnimationTime(msecs, params));
 };
 const origSetEasingDelay = Clutter.Actor.prototype.set_easing_delay;
-Clutter.Actor.prototype.set_easing_delay = function (msecs) {
-    origSetEasingDelay.call(this, adjustAnimationTime(msecs));
+Clutter.Actor.prototype.set_easing_delay = function (msecs, params = {}) {
+    origSetEasingDelay.call(this, adjustAnimationTime(msecs, params));
 };
 
 Clutter.Actor.prototype.ease = function (props) {
