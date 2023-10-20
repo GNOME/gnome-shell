@@ -18,7 +18,7 @@ export class LocatePointer {
             return;
 
         if (enabled) {
-            this._ripples = new Ripples.Ripples(0.5, 0.5, 'ripple-pointer-location');
+            this._ripples = new Ripples.Ripples(0.5, 0.5, 'ripple-pointer-location', true);
             this._ripples.addTo(Main.uiGroup);
         } else {
             this._ripples.destroy();
