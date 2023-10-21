@@ -397,25 +397,21 @@ export class ScreenShield extends Signals.EventEmitter {
 
         this._lockDialogGroup.remove_all_transitions();
 
-        if (animate) {
-            // Animate the lock screen out of screen
-            // if velocity is not specified (i.e. we come here from pressing ESC),
-            // use the same speed regardless of original position
-            // if velocity is specified, it's in pixels per milliseconds
-            let h = global.stage.height;
-            let delta = h + this._lockDialogGroup.translation_y;
-            let velocity = global.stage.height / CURTAIN_SLIDE_TIME;
-            let duration = delta / velocity;
+        // Animate the lock screen out of screen
+        // if velocity is not specified (i.e. we come here from pressing ESC),
+        // use the same speed regardless of original position
+        // if velocity is specified, it's in pixels per milliseconds
+        const height = global.stage.height;
+        const delta = height + this._lockDialogGroup.translation_y;
+        const velocity = height / CURTAIN_SLIDE_TIME;
+        const duration = animate ? delta / velocity : 0;
 
-            this._lockDialogGroup.ease({
-                translation_y: -h,
-                duration,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => this._hideLockScreenComplete(),
-            });
-        } else {
-            this._hideLockScreenComplete();
-        }
+        this._lockDialogGroup.ease({
+            translation_y: -height,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this._hideLockScreenComplete(),
+        });
 
         this._showPointer();
     }
