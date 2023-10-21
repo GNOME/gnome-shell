@@ -1076,23 +1076,20 @@ export class PopupSubMenu extends PopupMenuBase {
 
         let targetAngle = this.actor.text_direction === Clutter.TextDirection.RTL ? -90 : 90;
 
-        if (animate) {
-            let [, naturalHeight] = this.actor.get_preferred_height(-1);
-            this.actor.height = 0;
-            this.actor.ease({
-                height: naturalHeight,
-                duration: 250,
-                mode: Clutter.AnimationMode.EASE_OUT_EXPO,
-                onComplete: () => this.actor.set_height(-1),
-            });
-            this._arrow.ease({
-                rotation_angle_z: targetAngle,
-                duration: 250,
-                mode: Clutter.AnimationMode.EASE_OUT_EXPO,
-            });
-        } else {
-            this._arrow.rotation_angle_z = targetAngle;
-        }
+        const duration = animate ? 250 : 0;
+        let [, naturalHeight] = this.actor.get_preferred_height(-1);
+        this.actor.height = 0;
+        this.actor.ease({
+            height: naturalHeight,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_EXPO,
+            onComplete: () => this.actor.set_height(-1),
+        });
+        this._arrow.ease({
+            rotation_angle_z: targetAngle,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_EXPO,
+        });
     }
 
     close(animate) {
@@ -1108,25 +1105,21 @@ export class PopupSubMenu extends PopupMenuBase {
         if (animate && this._needsScrollbar())
             animate = false;
 
-        if (animate) {
-            this.actor.ease({
-                height: 0,
-                duration: 250,
-                mode: Clutter.AnimationMode.EASE_OUT_EXPO,
-                onComplete: () => {
-                    this.actor.hide();
-                    this.actor.set_height(-1);
-                },
-            });
-            this._arrow.ease({
-                rotation_angle_z: 0,
-                duration: 250,
-                mode: Clutter.AnimationMode.EASE_OUT_EXPO,
-            });
-        } else {
-            this._arrow.rotation_angle_z = 0;
-            this.actor.hide();
-        }
+        const duration = animate ? 250 : 0;
+        this.actor.ease({
+            height: 0,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_EXPO,
+            onComplete: () => {
+                this.actor.hide();
+                this.actor.set_height(-1);
+            },
+        });
+        this._arrow.ease({
+            rotation_angle_z: 0,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_EXPO,
+        });
     }
 
     _onKeyPressEvent(actor, event) {
