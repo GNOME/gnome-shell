@@ -456,11 +456,12 @@ var Calendar = GObject.registerClass({
             return;
 
         this._selectedDate = date;
-        this._update();
 
         let datetime = GLib.DateTime.new_from_unix_local(
             this._selectedDate.getTime() / 1000);
         this.emit('selected-date-changed', datetime);
+
+        this._update();
     }
 
     updateTimeZone() {
