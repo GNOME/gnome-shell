@@ -186,8 +186,16 @@ libshell_gir_sources = [
   libshell_sources
 ]
 
+libshell_marshal = gnome.genmarshal('shell-marshal',
+  prefix: '_shell_marshal',
+  sources: 'shell-marshal.list',
+  valist_marshallers: true,
+  extra_args: ['--quiet'],
+)
+
 libshell_no_gir_sources = [
   js_resources,
+  libshell_marshal,
   libshell_private_headers,
   libshell_private_sources
 ]

@@ -9,6 +9,7 @@
 
 #include "shell-wm-private.h"
 #include "shell-global.h"
+#include "shell-marshal.h"
 
 struct _ShellWM {
   GObject parent;
@@ -66,110 +67,168 @@ shell_wm_class_init (ShellWMClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL, NULL,
+                  NULL, NULL,
+                  _shell_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   META_TYPE_WINDOW_ACTOR);
+  g_signal_set_va_marshaller (shell_wm_signals[MINIMIZE],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__OBJECTv);
   shell_wm_signals[UNMINIMIZE] =
     g_signal_new ("unminimize",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL, NULL,
+                  NULL, NULL,
+                  _shell_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   META_TYPE_WINDOW_ACTOR);
+  g_signal_set_va_marshaller (shell_wm_signals[UNMINIMIZE],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__OBJECTv);
   shell_wm_signals[SIZE_CHANGED] =
     g_signal_new ("size-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL, NULL,
+                  NULL, NULL,
+                  _shell_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   META_TYPE_WINDOW_ACTOR);
+  g_signal_set_va_marshaller (shell_wm_signals[SIZE_CHANGED],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__OBJECTv);
   shell_wm_signals[SIZE_CHANGE] =
     g_signal_new ("size-change",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL, NULL,
+                  NULL, NULL,
+                  _shell_marshal_VOID__OBJECT_ENUM_BOXED_BOXED,
                   G_TYPE_NONE, 4,
                   META_TYPE_WINDOW_ACTOR, META_TYPE_SIZE_CHANGE, MTK_TYPE_RECTANGLE, MTK_TYPE_RECTANGLE);
+  g_signal_set_va_marshaller (shell_wm_signals[SIZE_CHANGE],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__OBJECT_ENUM_BOXED_BOXEDv);
   shell_wm_signals[MAP] =
     g_signal_new ("map",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL, NULL,
+                  NULL, NULL,
+                  _shell_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   META_TYPE_WINDOW_ACTOR);
+  g_signal_set_va_marshaller (shell_wm_signals[MAP],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__OBJECTv);
   shell_wm_signals[DESTROY] =
     g_signal_new ("destroy",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL, NULL,
+                  NULL, NULL,
+                  _shell_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   META_TYPE_WINDOW_ACTOR);
+  g_signal_set_va_marshaller (shell_wm_signals[DESTROY],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__OBJECTv);
   shell_wm_signals[SWITCH_WORKSPACE] =
     g_signal_new ("switch-workspace",
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  0,
-          NULL, NULL, NULL,
+                  NULL, NULL,
+                  _shell_marshal_VOID__INT_INT_INT,
 		  G_TYPE_NONE, 3,
                   G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
+  g_signal_set_va_marshaller (shell_wm_signals[SWITCH_WORKSPACE],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__INT_INT_INTv);
   shell_wm_signals[KILL_SWITCH_WORKSPACE] =
     g_signal_new ("kill-switch-workspace",
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  0,
-          NULL, NULL, NULL,
+                  NULL, NULL,
+                  _shell_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
+  g_signal_set_va_marshaller (shell_wm_signals[KILL_SWITCH_WORKSPACE],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__VOIDv);
   shell_wm_signals[KILL_WINDOW_EFFECTS] =
     g_signal_new ("kill-window-effects",
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  0,
-          NULL, NULL, NULL,
+                  NULL, NULL,
+                  _shell_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
 		  META_TYPE_WINDOW_ACTOR);
+  g_signal_set_va_marshaller (shell_wm_signals[KILL_WINDOW_EFFECTS],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__OBJECTv);
   shell_wm_signals[SHOW_TILE_PREVIEW] =
     g_signal_new ("show-tile-preview",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
-                  0, NULL, NULL, NULL,
+                  0,
+                  NULL, NULL,
+                  _shell_marshal_VOID__OBJECT_BOXED_INT,
                   G_TYPE_NONE, 3,
                   META_TYPE_WINDOW,
                   MTK_TYPE_RECTANGLE,
                   G_TYPE_INT);
+  g_signal_set_va_marshaller (shell_wm_signals[SHOW_TILE_PREVIEW],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__OBJECT_BOXED_INTv);
   shell_wm_signals[HIDE_TILE_PREVIEW] =
     g_signal_new ("hide-tile-preview",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL, NULL,
+                  NULL, NULL,
+                  _shell_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+  g_signal_set_va_marshaller (shell_wm_signals[HIDE_TILE_PREVIEW],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__VOIDv);
   shell_wm_signals[SHOW_WINDOW_MENU] =
     g_signal_new ("show-window-menu",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
-                  0, NULL, NULL, NULL,
+                  0,
+                  NULL, NULL,
+                  _shell_marshal_VOID__OBJECT_INT_BOXED,
                   G_TYPE_NONE, 3,
                   META_TYPE_WINDOW, G_TYPE_INT, MTK_TYPE_RECTANGLE);
+  g_signal_set_va_marshaller (shell_wm_signals[SHOW_WINDOW_MENU],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__OBJECT_INT_BOXEDv);
   shell_wm_signals[FILTER_KEYBINDING] =
     g_signal_new ("filter-keybinding",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  g_signal_accumulator_true_handled, NULL, NULL,
+                  g_signal_accumulator_true_handled, NULL,
+                  _shell_marshal_BOOLEAN__BOXED,
                   G_TYPE_BOOLEAN, 1,
                   META_TYPE_KEY_BINDING);
+  g_signal_set_va_marshaller (shell_wm_signals[FILTER_KEYBINDING],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_BOOLEAN__BOXEDv);
   shell_wm_signals[CONFIRM_DISPLAY_CHANGE] =
     g_signal_new ("confirm-display-change",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL, NULL,
+                  NULL, NULL,
+                  _shell_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+  g_signal_set_va_marshaller (shell_wm_signals[CONFIRM_DISPLAY_CHANGE],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__VOIDv);
   /**
    * ShellWM::create-close-dialog:
    * @wm: The WM
@@ -184,8 +243,12 @@ shell_wm_class_init (ShellWMClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL, NULL,
+                  NULL, NULL,
+                  _shell_marshal_OBJECT__OBJECT,
                   META_TYPE_CLOSE_DIALOG, 1, META_TYPE_WINDOW);
+  g_signal_set_va_marshaller (shell_wm_signals[CREATE_CLOSE_DIALOG],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_OBJECT__OBJECTv);
   /**
    * ShellWM::create-inhibit-shortcuts-dialog:
    * @wm: The WM
@@ -200,8 +263,12 @@ shell_wm_class_init (ShellWMClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
-                  NULL, NULL, NULL,
+                  NULL, NULL,
+                  _shell_marshal_OBJECT__OBJECT,
                   META_TYPE_INHIBIT_SHORTCUTS_DIALOG, 1, META_TYPE_WINDOW);
+  g_signal_set_va_marshaller (shell_wm_signals[CREATE_INHIBIT_SHORTCUTS_DIALOG],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_OBJECT__OBJECTv);
 }
 
 void
