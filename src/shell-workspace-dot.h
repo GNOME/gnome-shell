@@ -35,6 +35,9 @@ struct _ShellWorkspaceDotClass
   void        (*scale_out_and_destroy)          (ShellWorkspaceDot *dot);
 };
 
+void         shell_workspace_dot_set_state             (ShellWorkspaceDot *self,
+                                                        float              expansion,
+                                                        float              width_multiplier);
 gboolean     shell_workspace_dot_is_destroying         (ShellWorkspaceDot *self);
 void         shell_workspace_dot_scale_in              (ShellWorkspaceDot *self);
 void         shell_workspace_dot_scale_out_and_destroy (ShellWorkspaceDot *self);

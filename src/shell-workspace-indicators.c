@@ -80,7 +80,7 @@ update_expansion (ShellWorkspaceIndicators *self)
   ShellWorkspaceIndicatorsPrivate *priv;
   g_autoptr (GPtrArray) active_dots = NULL;
   size_t n_indicators;
-  double active_workspace, width_multiplier;
+  float active_workspace, width_multiplier;
   size_t index = 0;
 
   g_return_if_fail (SHELL_IS_WORKSPACE_INDICATORS (self));
@@ -102,12 +102,11 @@ update_expansion (ShellWorkspaceIndicators *self)
        child != NULL;
        index++, child = clutter_actor_get_next_sibling (child))
     {
-      double distance = fabs (((double) index) - active_workspace);
-      
-      g_object_set (child,
-                    "expansion", CLAMP (1.0 - distance, 0.0, 1.0),
-                    "width-multiplier", width_multiplier,
-                    NULL);
+      float distance = fabsf (((float) index) - active_workspace);
+
+      shell_workspace_dot_set_state (SHELL_WORKSPACE_DOT (child),
+                                     CLAMP (1.0 - distance, 0.0, 1.0),
+                                     width_multiplier);
     }
 }
 

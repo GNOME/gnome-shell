@@ -64,32 +64,6 @@ shell_workspace_dot_dispose (GObject *object)
   G_OBJECT_CLASS (shell_workspace_dot_parent_class)->dispose (object);
 }
 
-
-static inline gboolean
-value_changed (float old_value, float new_value)
-{
-  return !G_APPROX_VALUE (old_value, new_value, FLT_EPSILON);
-}
-
-
-static gboolean
-set_if_changed (GObject      *object,
-                GParamSpec   *pspec,
-                float        *target,
-                const GValue *value)
-{
-  float new_value = g_value_get_double (value);
- 
-  if (G_LIKELY (value_changed (*target, new_value)))
-    {
-      *target = new_value;
-      g_object_notify_by_pspec (object, pspec);
-      return TRUE;
-    }
-
-  return FALSE;
-}
-
 static inline float
 lerp (float start, float end, float progress)
 {
@@ -121,17 +95,14 @@ shell_workspace_dot_set_property (GObject      *object,
   switch (property_id)
     {
     case PROP_WIDTH_MULTIPLIER:
-      if (set_if_changed (object, pspec, &priv->width_multiplier, value))
-        {
-          clutter_actor_queue_relayout (CLUTTER_ACTOR (object));
-        }
+      shell_workspace_dot_set_state (self,
+                                     priv->expansion,
+                                     g_value_get_double (value));
       break;
     case PROP_EXPANSION:
-      if (set_if_changed (object, pspec, &priv->expansion, value))
-        {
-          update_visuals (self);
-          clutter_actor_queue_relayout (CLUTTER_ACTOR (object));
-        }
+      shell_workspace_dot_set_state (self,
+                                     g_value_get_double (value),
+                                     priv->width_multiplier);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -266,6 +237,63 @@ shell_workspace_dot_init (ShellWorkspaceDot *self)
   priv->destroying = FALSE;
 
   update_visuals (self);
+}
+
+static inline gboolean
+value_changed (float old_value, float new_value)
+{
+  return !G_APPROX_VALUE (old_value, new_value, FLT_EPSILON);
+}
+
+static gboolean
+set_if_changed (GObject    *object,
+                GParamSpec *pspec,
+                float      *target,
+                float       new_value)
+{
+  if (G_LIKELY (value_changed (*target, new_value)))
+    {
+      *target = new_value;
+      g_object_notify_by_pspec (object, pspec);
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+void
+shell_workspace_dot_set_state (ShellWorkspaceDot *self,
+                               float              expansion,
+                               float              width_multiplier)
+{
+  ShellWorkspaceDotPrivate *priv;
+  GObject *object = G_OBJECT (self);
+  gboolean trigger_layout = FALSE;
+
+  g_return_if_fail (SHELL_IS_WORKSPACE_DOT (self));
+
+  priv = shell_workspace_dot_get_instance_private (self);
+
+  g_object_freeze_notify (object);
+
+  trigger_layout = set_if_changed (object,
+                                   obj_props[PROP_WIDTH_MULTIPLIER],
+                                   &priv->width_multiplier,
+                                   width_multiplier);
+
+  if (set_if_changed (object,
+                      obj_props[PROP_EXPANSION],
+                      &priv->expansion,
+                      expansion))
+    {
+      update_visuals (self);
+      trigger_layout = TRUE;
+    }
+
+  g_object_thaw_notify (object);
+
+  if (G_LIKELY (trigger_layout))
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 gboolean
