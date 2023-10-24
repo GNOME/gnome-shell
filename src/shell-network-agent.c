@@ -26,6 +26,7 @@
 #include <libsecret/secret.h>
 
 #include "shell-network-agent.h"
+#include "shell-marshal.h"
 
 enum {
   SIGNAL_NEW_REQUEST,
@@ -877,7 +878,7 @@ shell_network_agent_class_init (ShellNetworkAgentClass *klass)
 					      0, /* class offset */
 					      NULL, /* accumulator */
 					      NULL, /* accu_data */
-                                              NULL, /* marshaller */
+                                              _shell_marshal_VOID__STRING_OBJECT_STRING_BOXED_INT,
 					      G_TYPE_NONE, /* return */
 					      5, /* n_params */
 					      G_TYPE_STRING,
@@ -885,6 +886,9 @@ shell_network_agent_class_init (ShellNetworkAgentClass *klass)
 					      G_TYPE_STRING,
                                               G_TYPE_STRV,
                                               G_TYPE_INT);
+  g_signal_set_va_marshaller (signals[SIGNAL_NEW_REQUEST],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__STRING_OBJECT_STRING_BOXED_INTv);
 
   signals[SIGNAL_CANCEL_REQUEST] = g_signal_new ("cancel-request",
                                                  G_TYPE_FROM_CLASS (klass),
@@ -892,8 +896,11 @@ shell_network_agent_class_init (ShellNetworkAgentClass *klass)
                                                  0, /* class offset */
                                                  NULL, /* accumulator */
                                                  NULL, /* accu_data */
-                                                 NULL, /* marshaller */
+                                                 _shell_marshal_VOID__STRING,
                                                  G_TYPE_NONE,
                                                  1, /* n_params */
                                                  G_TYPE_STRING);
+  g_signal_set_va_marshaller (signals[SIGNAL_CANCEL_REQUEST],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__STRINGv);
 }
