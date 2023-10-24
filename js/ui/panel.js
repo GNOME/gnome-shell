@@ -286,61 +286,11 @@ class WorkspaceDot extends Shell.WorkspaceDot {
 });
 
 const WorkspaceIndicators = GObject.registerClass(
-class WorkspaceIndicators extends St.BoxLayout {
-    constructor() {
-        super();
-
-        this._workspacesAdjustment = Main.createWorkspacesAdjustment(this);
-        this._workspacesAdjustment.connectObject(
-            'notify::value', () => this._updateExpansion(),
-            'notify::upper', () => this._recalculateDots(),
-            this);
-
-        for (let i = 0; i < this._workspacesAdjustment.upper; i++)
-            this.insert_child_at_index(new WorkspaceDot(), i);
-        this._updateExpansion();
-    }
-
-    _getActiveIndicators() {
-        return [...this].filter(i => !i.destroying);
-    }
-
-    _recalculateDots() {
-        const activeIndicators = this._getActiveIndicators();
-        const nIndicators = activeIndicators.length;
-        const targetIndicators = this._workspacesAdjustment.upper;
-
-        let remaining = Math.abs(nIndicators - targetIndicators);
-        while (remaining--) {
-            if (nIndicators < targetIndicators) {
-                const indicator = new WorkspaceDot();
-                this.add_child(indicator);
-                indicator.scale_in();
-            } else {
-                const indicator = activeIndicators[nIndicators - remaining - 1];
-                indicator.scale_out_and_destroy();
-            }
-        }
-
-        this._updateExpansion();
-    }
-
-    _updateExpansion() {
-        const nIndicators = this._getActiveIndicators().length;
-        const activeWorkspace = this._workspacesAdjustment.value;
-
-        let widthMultiplier;
-        if (nIndicators <= 2)
-            widthMultiplier = 3.625;
-        else if (nIndicators <= 5)
-            widthMultiplier = 3.25;
-        else
-            widthMultiplier = 2.75;
-
-        this.get_children().forEach((indicator, index) => {
-            const distance = Math.abs(index - activeWorkspace);
-            indicator.expansion = Math.clamp(1 - distance, 0, 1);
-            indicator.widthMultiplier = widthMultiplier;
+class WorkspaceIndicators extends Shell.WorkspaceIndicators {
+    constructor(params = {}) {
+        super({
+            dot_type: WorkspaceDot.$gtype,
+            ...params
         });
     }
 });
@@ -358,7 +308,9 @@ class ActivitiesButton extends PanelMenu.Button {
             accessible_name: _('Activities'),
         });
 
-        this.add_child(new WorkspaceIndicators());
+        this.add_child(new WorkspaceIndicators({
+            workspaces_adjustment: Main.createWorkspacesAdjustment(this),
+        }));
 
         Main.overview.connect('showing', () => {
             this.add_style_pseudo_class('checked');

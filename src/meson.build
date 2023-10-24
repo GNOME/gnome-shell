@@ -118,6 +118,7 @@ libshell_public_headers = [
   'shell-wm.h',
   'shell-workspace-background.h',
   'shell-workspace-dot.h',
+  'shell-workspace-indicators.h',
 ]
 
 if have_networkmanager
@@ -164,6 +165,7 @@ libshell_sources = [
   'shell-wm.c',
   'shell-workspace-background.c',
   'shell-workspace-dot.c',
+  'shell-workspace-indicators.c',
 ]
 
 if have_networkmanager
