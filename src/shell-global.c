@@ -44,6 +44,7 @@
 #include "shell-app-cache-private.h"
 #include "shell-wm.h"
 #include "shell-util.h"
+#include "shell-marshal.h"
 #include "st.h"
 #include "switcheroo-control.h"
 
@@ -531,24 +532,36 @@ shell_global_class_init (ShellGlobalClass *klass)
                     G_TYPE_FROM_CLASS (klass),
                     G_SIGNAL_RUN_LAST,
                     0,
-                    NULL, NULL, NULL,
+                    NULL, NULL,
+                    _shell_marshal_VOID__STRING_STRING,
                     G_TYPE_NONE, 2,
                     G_TYPE_STRING,
                     G_TYPE_STRING);
+  g_signal_set_va_marshaller (shell_global_signals[NOTIFY_ERROR],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__STRING_STRINGv);
   shell_global_signals[LOCATE_POINTER] =
       g_signal_new ("locate-pointer",
                     G_TYPE_FROM_CLASS (klass),
                     G_SIGNAL_RUN_LAST,
                     0,
-                    NULL, NULL, NULL,
+                    NULL, NULL,
+                    _shell_marshal_VOID__VOID,
                     G_TYPE_NONE, 0);
+  g_signal_set_va_marshaller (shell_global_signals[LOCATE_POINTER],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__VOIDv);
   shell_global_signals[SHUTDOWN] =
       g_signal_new ("shutdown",
                     G_TYPE_FROM_CLASS (klass),
                     G_SIGNAL_RUN_LAST,
                     0,
-                    NULL, NULL, NULL,
+                    NULL, NULL,
+                    _shell_marshal_VOID__VOID,
                     G_TYPE_NONE, 0);
+  g_signal_set_va_marshaller (shell_global_signals[SHUTDOWN],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__VOIDv);
 
   props[PROP_SESSION_MODE] =
     g_param_spec_string ("session-mode",
