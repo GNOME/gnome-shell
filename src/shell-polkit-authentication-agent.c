@@ -11,6 +11,7 @@
 #include <pwd.h>
 
 #include "shell-polkit-authentication-agent.h"
+#include "shell-marshal.h"
 
 #include <glib/gi18n.h>
 
@@ -148,7 +149,7 @@ shell_polkit_authentication_agent_class_init (ShellPolkitAuthenticationAgentClas
                   0,    /* class_offset */
                   NULL, /* accumulator */
                   NULL, /* accumulator data */
-                  NULL, /* marshaller */
+                  _shell_marshal_VOID__STRING_STRING_STRING_STRING_BOXED,
                   G_TYPE_NONE,
                   5,
                   G_TYPE_STRING,
@@ -156,6 +157,9 @@ shell_polkit_authentication_agent_class_init (ShellPolkitAuthenticationAgentClas
                   G_TYPE_STRING,
                   G_TYPE_STRING,
                   G_TYPE_STRV);
+  g_signal_set_va_marshaller (signals[INITIATE_SIGNAL],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__STRING_STRING_STRING_STRING_BOXEDv);
 
   signals[CANCEL_SIGNAL] =
     g_signal_new ("cancel",
@@ -164,9 +168,12 @@ shell_polkit_authentication_agent_class_init (ShellPolkitAuthenticationAgentClas
                   0,    /* class_offset */
                   NULL, /* accumulator */
                   NULL, /* accumulator data */
-                  NULL, /* marshaller */
+                  _shell_marshal_VOID__VOID,
                   G_TYPE_NONE,
                   0);
+  g_signal_set_va_marshaller (signals[CANCEL_SIGNAL],
+                              G_TYPE_FROM_CLASS (klass),
+                              _shell_marshal_VOID__VOIDv);
 }
 
 ShellPolkitAuthenticationAgent *
