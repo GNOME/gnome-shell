@@ -455,11 +455,12 @@ class VPNRequestHandler extends Signals.EventEmitter {
         this._newStylePlugin = authHelper.externalUIMode;
 
         try {
+            const launchContext = global.create_app_launch_context(0, -1);
             let [success_, pid, stdin, stdout, stderr] =
                 GLib.spawn_async_with_pipes(
                     null, /* pwd */
                     argv,
-                    null, /* envp */
+                    launchContext.get_environment(),
                     GLib.SpawnFlags.DO_NOT_REAP_CHILD,
                     () => {
                         try {
