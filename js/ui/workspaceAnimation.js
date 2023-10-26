@@ -17,20 +17,20 @@ const WINDOW_ANIMATION_TIME = 250;
 export const WORKSPACE_SPACING = 100;
 
 export const WorkspaceGroup = GObject.registerClass(
-class WorkspaceGroup extends Clutter.Actor {
+class WorkspaceGroup extends Shell.WorkspaceGroup {
     _init(workspace, monitor, movingWindow) {
         super._init({
             width: monitor.width,
             height: monitor.height,
             clip_to_allocation: true,
+            workspace: workspace,
         });
 
-        this._workspace = workspace;
         this._monitor = monitor;
         this._movingWindow = movingWindow;
         this._windowRecords = [];
 
-        if (this._workspace) {
+        if (workspace) {
             this._background = new Meta.BackgroundGroup();
 
             this.add_actor(this._background);
@@ -50,10 +50,6 @@ class WorkspaceGroup extends Clutter.Actor {
             this._syncStacking.bind(this), this);
     }
 
-    get workspace() {
-        return this._workspace;
-    }
-
     _shouldShowWindow(window) {
         if (!window.showing_on_its_workspace() || this._isDesktopWindow(window))
             return false;
@@ -65,11 +61,11 @@ class WorkspaceGroup extends Clutter.Actor {
             window.is_on_all_workspaces() || window === this._movingWindow;
 
         // No workspace means we should show windows that are on all workspaces
-        if (!this._workspace)
+        if (!this.workspace)
             return isSticky;
 
         // Otherwise only show windows that are (only) on that workspace
-        return !isSticky && window.located_on_workspace(this._workspace);
+        return !isSticky && window.located_on_workspace(this.workspace);
     }
 
     _syncStacking() {
@@ -140,7 +136,7 @@ class WorkspaceGroup extends Clutter.Actor {
     _onDestroy() {
         this._removeWindows();
 
-        if (this._workspace)
+        if (this.workspace)
             this._bgManager.destroy();
     }
 });

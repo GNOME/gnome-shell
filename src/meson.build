@@ -116,7 +116,8 @@ libshell_public_headers = [
   'shell-window-preview-layout.h',
   'shell-window-tracker.h',
   'shell-wm.h',
-  'shell-workspace-background.h'
+  'shell-workspace-background.h',
+  'shell-workspace-group.h',
 ]
 
 if have_networkmanager
@@ -161,7 +162,8 @@ libshell_sources = [
   'shell-window-preview-layout.c',
   'shell-window-tracker.c',
   'shell-wm.c',
-  'shell-workspace-background.c'
+  'shell-workspace-background.c',
+  'shell-workspace-group.c',
 ]
 
 if have_networkmanager
