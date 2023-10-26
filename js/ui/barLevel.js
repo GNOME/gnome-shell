@@ -110,7 +110,7 @@ export const BarLevel = GObject.registerClass({
         let barLevelActiveColor = themeNode.get_color('-barlevel-active-background-color');
         let barLevelOverdriveColor = themeNode.get_color('-barlevel-overdrive-color');
 
-        let barLevelBorderWidth = Math.min(themeNode.get_length('-barlevel-border-width'), 1);
+        let barLevelBorderWidth = Math.min(themeNode.get_length('-barlevel-border-width'), barLevelHeight);
         let [hasBorderColor, barLevelBorderColor] =
             themeNode.lookup_color('-barlevel-border-color', false);
         if (!hasBorderColor)
