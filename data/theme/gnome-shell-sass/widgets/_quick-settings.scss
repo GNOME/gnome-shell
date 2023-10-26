@@ -84,7 +84,6 @@
 
   .slider-bin {
     &:focus {@include button(focus);}
-    min-height: 16px; // slider size
     padding: $base_padding;
     border-radius: 99px;
   }
@@ -163,10 +162,6 @@
 }
 
 .device-subtitle { color: transparentize($fg_color, 0.5); }
-
-.keyboard-brightness-item .slider {
-  min-height: 16px;
-}
 
 .keyboard-brightness-level {
   spacing: $base_padding;

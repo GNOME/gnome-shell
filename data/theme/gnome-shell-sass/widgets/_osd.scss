@@ -23,7 +23,6 @@ $osd_levelbar_height:6px;
     margin-bottom: 4px;
     &:first-child { margin-bottom: 0px; }
 
-    height: $osd_levelbar_height;
     min-width:$base_icon_size * 10;
     -barlevel-height: $osd_levelbar_height;
     -barlevel-background-color: transparentize($osd_fg_color, if($variant=='light', 0.7, 0.9));
