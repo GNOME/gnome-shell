@@ -27,7 +27,23 @@ export const Slider = GObject.registerClass({
         this._releaseId = 0;
         this._dragging = false;
 
+        this._handleRadius = 0;
+        this._handleBorderWidth = 0;
+        this._handleBorderColor = null;
+
         this._customAccessible.connect('get-minimum-increment', this._getMinimumIncrement.bind(this));
+    }
+
+    vfunc_style_changed() {
+        super.vfunc_style_changed();
+
+        const themeNode = this.get_theme_node();
+        this._handleRadius = themeNode.get_length('-slider-handle-radius');
+        this._handleBorderWidth =
+            themeNode.get_length('-slider-handle-border-width');
+        const [hasHandleColor, handleBorderColor] =
+            themeNode.lookup_color('-slider-handle-border-color', false);
+        this._handleBorderColor = hasHandleColor ? handleBorderColor : null;
     }
 
     vfunc_repaint() {
@@ -39,13 +55,7 @@ export const Slider = GObject.registerClass({
         let [width, height] = this.get_surface_size();
         const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
 
-        let handleRadius = themeNode.get_length('-slider-handle-radius');
-
-        let handleBorderWidth = themeNode.get_length('-slider-handle-border-width');
-        let [hasHandleColor, handleBorderColor] =
-            themeNode.lookup_color('-slider-handle-border-color', false);
-
-        const ceiledHandleRadius = Math.ceil(handleRadius + handleBorderWidth);
+        const ceiledHandleRadius = Math.ceil(this._handleRadius + this._handleBorderWidth);
         const handleY = height / 2;
 
         let handleX = ceiledHandleRadius +
@@ -55,11 +65,11 @@ export const Slider = GObject.registerClass({
 
         let color = themeNode.get_foreground_color();
         cr.setSourceColor(color);
-        cr.arc(handleX, handleY, handleRadius, 0, 2 * Math.PI);
+        cr.arc(handleX, handleY, this._handleRadius, 0, 2 * Math.PI);
         cr.fillPreserve();
-        if (hasHandleColor && handleBorderWidth) {
-            cr.setSourceColor(handleBorderColor);
-            cr.setLineWidth(handleBorderWidth);
+        if (this._handleBorderColor && this._handleBorderWidth) {
+            cr.setSourceColor(this._handleBorderColor);
+            cr.setLineWidth(this._handleBorderWidth);
             cr.stroke();
         }
         cr.$dispose();
@@ -200,15 +210,13 @@ export const Slider = GObject.registerClass({
         if (rtl)
             relX = width - relX;
 
-        let handleRadius = this.get_theme_node().get_length('-slider-handle-radius');
-
         let newvalue;
-        if (relX < handleRadius)
+        if (relX < this._handleRadius)
             newvalue = 0;
-        else if (relX > width - handleRadius)
+        else if (relX > width - this._handleRadius)
             newvalue = 1;
         else
-            newvalue = (relX - handleRadius) / (width - 2 * handleRadius);
+            newvalue = (relX - this._handleRadius) / (width - 2 * this._handleRadius);
         this.value = newvalue * this._maxValue;
     }
 
