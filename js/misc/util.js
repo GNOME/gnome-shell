@@ -120,8 +120,9 @@ export function spawnApp(argv) {
 export function trySpawn(argv) {
     let success_, pid;
     try {
+        const launchContext = global.create_app_launch_context(0, -1);
         [success_, pid] = GLib.spawn_async(
-            null, argv, null,
+            null, argv, launchContext.get_environment(),
             GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
             () => {
                 try {
