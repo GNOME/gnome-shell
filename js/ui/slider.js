@@ -75,6 +75,18 @@ export const Slider = GObject.registerClass({
         cr.$dispose();
     }
 
+    _getPreferredHeight() {
+        const barHeight = super._getPreferredHeight();
+        const handleHeight = 2 * this._handleRadius + this._handleBorderWidth;
+        return Math.max(barHeight, handleHeight);
+    }
+
+    _getPreferredWidth() {
+        const barWidth = super._getPreferredWidth();
+        const handleWidth = 2 * this._handleRadius + this._handleBorderWidth;
+        return Math.max(barWidth, handleWidth);
+    }
+
     vfunc_button_press_event(event) {
         return this.startDragging(event);
     }
