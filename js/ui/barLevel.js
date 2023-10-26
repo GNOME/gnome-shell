@@ -259,6 +259,26 @@ export const BarLevel = GObject.registerClass({
         cr.$dispose();
     }
 
+    vfunc_get_preferred_height(_forWidth) {
+        const themeNode = this.get_theme_node();
+        const height = this._getPreferredHeight();
+        return themeNode.adjust_preferred_height(height, height);
+    }
+
+    vfunc_get_preferred_width(_forHeight) {
+        const themeNode = this.get_theme_node();
+        const width = this._getPreferredWidth();
+        return themeNode.adjust_preferred_width(width, width);
+    }
+
+    _getPreferredHeight() {
+        return this._barLevelHeight + this._barLevelBorderWidth;
+    }
+
+    _getPreferredWidth() {
+        return this._overdriveSeparatorWidth + this._barLevelBorderWidth;
+    }
+
     _getCurrentValue() {
         return this._value;
     }
