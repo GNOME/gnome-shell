@@ -108,6 +108,11 @@
           </varlistentry>
 
           <varlistentry>
+            <term>version-name s</term>
+            <listitem><para>The extension version name</para></listitem>
+          </varlistentry>
+
+          <varlistentry>
             <term>url s</term>
             <listitem><para>The URL to the extension homepage or repository</para></listitem>
           </varlistentry>

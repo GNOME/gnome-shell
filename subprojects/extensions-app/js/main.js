@@ -476,7 +476,7 @@ var ExtensionRow = GObject.registerClass({
     }
 
     get version() {
-        return this._extension.metadata.version || '';
+        return this._extension.metadata['version-name'] || this._extension.metadata.version || '';
     }
 
     get error() {
