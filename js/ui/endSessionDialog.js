@@ -223,14 +223,7 @@ function _setCheckBoxLabel(checkBox, text) {
     }
 }
 
-export function init() {
-    // This always returns the same singleton object
-    // By instantiating it initially, we register the
-    // bus object, etc.
-    new EndSessionDialog();
-}
-
-const EndSessionDialog = GObject.registerClass(
+export const EndSessionDialog = GObject.registerClass(
 class EndSessionDialog extends ModalDialog.ModalDialog {
     _init() {
         super._init({
