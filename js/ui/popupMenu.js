@@ -1276,7 +1276,7 @@ export class PopupMenuManager {
     constructor(owner, grabParams) {
         this._grabParams = Params.parse(grabParams,
             {actionMode: Shell.ActionMode.POPUP});
-        global.stage.connect('notify::key-focus', () => {
+        global.stage.connectObject('notify::key-focus', () => {
             if (!this.activeMenu)
                 return;
 
@@ -1285,7 +1285,7 @@ export class PopupMenuManager {
 
             if (newMenu)
                 this._changeMenu(newMenu);
-        });
+        }, owner);
         this._menus = [];
     }
 
