@@ -1060,6 +1060,10 @@ export const ScreenshotUI = GObject.registerClass({
             GObject.ParamFlags.READABLE,
             false),
     },
+    Signals: {
+        'screenshot-taken': {param_types: [Gio.File.$gtype]},
+        'closed': {},
+    },
 }, class ScreenshotUI extends St.Widget {
     _init() {
         super._init({
@@ -1663,6 +1667,8 @@ export const ScreenshotUI = GObject.registerClass({
         this._areaSelector.reset();
         for (const selector of this._windowSelectors)
             selector.reset();
+
+        this.emit('closed');
     }
 
     close(instantly = false) {
@@ -1845,7 +1851,7 @@ export const ScreenshotUI = GObject.registerClass({
 
     _onCaptureButtonClicked() {
         if (this._shotButton.checked) {
-            this._saveScreenshot();
+            this._saveScreenshot().catch(logError);
             this.close();
         } else {
             // Screencast closes the UI on its own.
@@ -1853,7 +1859,9 @@ export const ScreenshotUI = GObject.registerClass({
         }
     }
 
-    _saveScreenshot() {
+    async _saveScreenshot() {
+        let file = null;
+
         if (this._selectionButton.checked || this._screenButton.checked) {
             const content = this._stageScreenshot.get_content();
             if (!content)
@@ -1866,15 +1874,19 @@ export const ScreenshotUI = GObject.registerClass({
             if (!this._cursor.visible)
                 cursorTexture = null;
 
-            captureScreenshot(
-                texture, geometry, this._scale,
-                {
-                    texture: cursorTexture ?? null,
-                    x: this._cursor.x * this._scale,
-                    y: this._cursor.y * this._scale,
-                    scale: this._cursorScale,
-                }
-            ).catch(e => logError(e, 'Error capturing screenshot'));
+            try {
+                file = await captureScreenshot(
+                    texture, geometry, this._scale,
+                    {
+                        texture: cursorTexture ?? null,
+                        x: this._cursor.x * this._scale,
+                        y: this._cursor.y * this._scale,
+                        scale: this._cursorScale,
+                    }
+                );
+            } catch (e) {
+                logError(e, 'Error capturing screenshot');
+            }
         } else if (this._windowButton.checked) {
             const window =
                 this._windowSelectors.flatMap(selector => selector.windows())
@@ -1892,18 +1904,25 @@ export const ScreenshotUI = GObject.registerClass({
             if (!this._cursor.visible)
                 cursorTexture = null;
 
-            captureScreenshot(
-                texture,
-                null,
-                window.bufferScale,
-                {
-                    texture: cursorTexture ?? null,
-                    x: window.cursorPoint.x * window.bufferScale,
-                    y: window.cursorPoint.y * window.bufferScale,
-                    scale: this._cursorScale,
-                }
-            ).catch(e => logError(e, 'Error capturing screenshot'));
+            try {
+                file = await captureScreenshot(
+                    texture,
+                    null,
+                    window.bufferScale,
+                    {
+                        texture: cursorTexture ?? null,
+                        x: window.cursorPoint.x * window.bufferScale,
+                        y: window.cursorPoint.y * window.bufferScale,
+                        scale: this._cursorScale,
+                    }
+                );
+            } catch (e) {
+                logError(e, 'Error capturing screenshot');
+            }
         }
+
+        if (file)
+            this.emit('screenshot-taken', file);
     }
 
     async _startScreencast() {
