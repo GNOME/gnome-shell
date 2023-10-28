@@ -90,6 +90,7 @@ export let kbdA11yDialog = null;
 export let inputMethod = null;
 export let introspectService = null;
 export let locatePointer = null;
+export let endSessionDialog = null;
 
 let _startDate;
 let _defaultCssStylesheet = null;
@@ -275,7 +276,7 @@ async function _initializeUI() {
 
     // Provide the bus object for gnome-session to
     // initiate logouts.
-    EndSessionDialog.init();
+    endSessionDialog = new EndSessionDialog.EndSessionDialog();
 
     // We're ready for the session manager to move to the next phase
     GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
