@@ -4,7 +4,6 @@ import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
-import St from 'gi://St';
 
 import * as Background from './background.js';
 import * as Layout from './layout.js';
@@ -14,7 +13,6 @@ import * as Util from '../misc/util.js';
 import * as Main from './main.js';
 
 const WINDOW_ANIMATION_TIME = 250;
-export const WORKSPACE_SPACING = 100;
 
 export const WorkspaceGroup = GObject.registerClass(
 class WorkspaceGroup extends Shell.WorkspaceGroup {
@@ -141,32 +139,22 @@ class WorkspaceGroup extends Shell.WorkspaceGroup {
     }
 });
 
-export const MonitorGroup = GObject.registerClass({
-    Properties: {
-        'progress': GObject.ParamSpec.double(
-            'progress', 'progress', 'progress',
-            GObject.ParamFlags.READWRITE,
-            -Infinity, Infinity, 0),
-    },
-}, class MonitorGroup extends St.Widget {
+export const MonitorGroup = GObject.registerClass(
+class MonitorGroup extends Shell.MonitorGroup {
     _init(monitor, workspaceIndices, movingWindow) {
         super._init({
             clip_to_allocation: true,
             style_class: 'workspace-animation',
+            index: monitor.index,
+            monitor_width: monitor.width,
+            monitor_height: monitor.height,
         });
-
-        this._monitor = monitor;
 
         const constraint = new Layout.MonitorConstraint({index: monitor.index});
         this.add_constraint(constraint);
 
-        this._container = new Clutter.Actor();
-        this.add_child(this._container);
-
         const stickyGroup = new WorkspaceGroup(null, monitor, movingWindow);
         this.add_child(stickyGroup);
-
-        this._workspaceGroups = [];
 
         const workspaceManager = global.workspace_manager;
         const vertical = workspaceManager.layout_rows === -1;
@@ -186,21 +174,17 @@ export const MonitorGroup = GObject.registerClass({
                 y -= Main.panel.height;
             }
 
-            const group = new WorkspaceGroup(ws, monitor, movingWindow);
-
-            this._workspaceGroups.push(group);
-            this._container.add_child(group);
-            group.set_position(x, y);
+            this.add_group(new WorkspaceGroup(ws, monitor, movingWindow), x, y);
 
             if (vertical)
-                y += this.baseDistance;
+                y += this.base_distance;
             else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
-                x -= this.baseDistance;
+                x -= this.base_distance;
             else
-                x += this.baseDistance;
+                x += this.base_distance;
         }
 
-        this.progress = this.getWorkspaceProgress(activeWorkspace);
+        this.progress = this.get_workspace_progress(activeWorkspace);
 
         if (monitor.index === Main.layoutManager.primaryIndex) {
             this._workspacesAdjustment = Main.createWorkspacesAdjustment(this);
@@ -220,88 +204,6 @@ export const MonitorGroup = GObject.registerClass({
                 delete this._workspacesAdjustment;
             });
         }
-    }
-
-    get baseDistance() {
-        const spacing = WORKSPACE_SPACING * St.ThemeContext.get_for_stage(global.stage).scale_factor;
-
-        if (global.workspace_manager.layout_rows === -1)
-            return this._monitor.height + spacing;
-        else
-            return this._monitor.width + spacing;
-    }
-
-    get progress() {
-        if (global.workspace_manager.layout_rows === -1)
-            return -this._container.y / this.baseDistance;
-        else if (this.get_text_direction() === Clutter.TextDirection.RTL)
-            return this._container.x / this.baseDistance;
-        else
-            return -this._container.x / this.baseDistance;
-    }
-
-    set progress(p) {
-        if (global.workspace_manager.layout_rows === -1)
-            this._container.y = -Math.round(p * this.baseDistance);
-        else if (this.get_text_direction() === Clutter.TextDirection.RTL)
-            this._container.x = Math.round(p * this.baseDistance);
-        else
-            this._container.x = -Math.round(p * this.baseDistance);
-
-        this.notify('progress');
-    }
-
-    get index() {
-        return this._monitor.index;
-    }
-
-    getWorkspaceProgress(workspace) {
-        const group = this._workspaceGroups.find(g =>
-            g.workspace.index() === workspace.index());
-        return this._getWorkspaceGroupProgress(group);
-    }
-
-    _getWorkspaceGroupProgress(group) {
-        if (global.workspace_manager.layout_rows === -1)
-            return group.y / this.baseDistance;
-        else if (this.get_text_direction() === Clutter.TextDirection.RTL)
-            return -group.x / this.baseDistance;
-        else
-            return group.x / this.baseDistance;
-    }
-
-    getSnapPoints() {
-        return this._workspaceGroups.map(g =>
-            this._getWorkspaceGroupProgress(g));
-    }
-
-    findClosestWorkspace(progress) {
-        const distances = this.getSnapPoints().map(p =>
-            Math.abs(p - progress));
-        const index = distances.indexOf(Math.min(...distances));
-        return this._workspaceGroups[index].workspace;
-    }
-
-    _interpolateProgress(progress, monitorGroup) {
-        if (this.index === monitorGroup.index)
-            return progress;
-
-        const points1 = monitorGroup.getSnapPoints();
-        const points2 = this.getSnapPoints();
-
-        const upper = points1.indexOf(points1.find(p => p >= progress));
-        const lower = points1.indexOf(points1.slice().reverse().find(p => p <= progress));
-
-        if (points1[upper] === points1[lower])
-            return points2[upper];
-
-        const t = (progress - points1[lower]) / (points1[upper] - points1[lower]);
-
-        return points2[lower] + (points2[upper] - points2[lower]) * t;
-    }
-
-    updateSwipeForMonitor(progress, monitorGroup) {
-        this.progress = this._interpolateProgress(progress, monitorGroup);
     }
 });
 
@@ -414,8 +316,8 @@ export class WorkspaceAnimationController {
         const toWs = global.workspace_manager.get_workspace_by_index(to);
 
         for (const monitorGroup of this._switchData.monitors) {
-            monitorGroup.progress = monitorGroup.getWorkspaceProgress(fromWs);
-            const progress = monitorGroup.getWorkspaceProgress(toWs);
+            monitorGroup.progress = monitorGroup.get_workspace_progress(fromWs);
+            const progress = monitorGroup.get_workspace_progress(toWs);
 
             const params = {
                 duration: WINDOW_ANIMATION_TIME,
@@ -461,12 +363,12 @@ export class WorkspaceAnimationController {
         }
 
         const monitorGroup = this._findMonitorGroup(monitor);
-        const baseDistance = monitorGroup.baseDistance;
+        const baseDistance = monitorGroup.base_distance;
         const progress = monitorGroup.progress;
 
-        const closestWs = monitorGroup.findClosestWorkspace(progress);
-        const cancelProgress = monitorGroup.getWorkspaceProgress(closestWs);
-        const points = monitorGroup.getSnapPoints();
+        const closestWs = monitorGroup.find_closest_workspace(progress);
+        const cancelProgress = monitorGroup.get_workspace_progress(closestWs);
+        const points = monitorGroup.get_snap_points();
 
         this._switchData.baseMonitorGroup = monitorGroup;
 
@@ -478,7 +380,7 @@ export class WorkspaceAnimationController {
             return;
 
         for (const monitorGroup of this._switchData.monitors)
-            monitorGroup.updateSwipeForMonitor(progress, this._switchData.baseMonitorGroup);
+            monitorGroup.update_swipe_for_monitor(progress, this._switchData.baseMonitorGroup);
     }
 
     _switchWorkspaceEnd(tracker, duration, endProgress) {
@@ -488,11 +390,11 @@ export class WorkspaceAnimationController {
         const switchData = this._switchData;
         switchData.gestureActivated = true;
 
-        const newWs = switchData.baseMonitorGroup.findClosestWorkspace(endProgress);
+        const newWs = switchData.baseMonitorGroup.find_closest_workspace(endProgress);
         const endTime = Clutter.get_current_event_time();
 
         for (const monitorGroup of this._switchData.monitors) {
-            const progress = monitorGroup.getWorkspaceProgress(newWs);
+            const progress = monitorGroup.get_workspace_progress(newWs);
 
             const params = {
                 duration,
