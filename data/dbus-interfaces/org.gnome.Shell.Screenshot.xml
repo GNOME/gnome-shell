@@ -12,6 +12,22 @@
   <interface name="org.gnome.Shell.Screenshot">
 
     <!--
+        InteractiveScreenshot:
+        @success: whether the screenshot was captured
+        @uri: the file where the screenshot was saved
+
+        Shows Shell's interactive screenshot dialog, and lets the
+        user take an interactive screenshot, which is then returned
+        in @filename as png image. It returns a boolean indicating
+        whether the operation was successful or not. The URI of the
+        screenshot will be returned in @uri.
+    -->
+    <method name="InteractiveScreenshot">
+      <arg type="b" direction="out" name="success"/>
+      <arg type="s" direction="out" name="uri"/>
+    </method>
+
+    <!--
         Screenshot:
         @filename: The filename for the screenshot
         @include_cursor: Whether to include the cursor image or not

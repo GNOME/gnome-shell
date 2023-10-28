@@ -2604,6 +2604,34 @@ export class ScreenshotService {
         }
     }
 
+    async InteractiveScreenshotAsync(params, invocation) {
+        try {
+            await this._senderChecker.checkInvocation(invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+            return;
+        }
+
+        Main.screenshotUI.connectObject(
+            'screenshot-taken', (ui, file) => {
+                Main.screenshotUI.disconnectObject(invocation);
+                invocation.return_value(new GLib.Variant('(bs)', [true, file.get_uri()]));
+            },
+            'closed', () => {
+                Main.screenshotUI.disconnectObject(invocation);
+                invocation.return_value(new GLib.Variant('(bs)', [false, '']));
+            },
+            invocation);
+
+
+        try {
+            Main.screenshotUI.open(UIMode.SCREENSHOT_ONLY);
+        } catch (e) {
+            Main.screenshotUI.disconnectObject(invocation);
+            invocation.return_value(new GLib.Variant('(bs)', [false, '']));
+        }
+    }
+
     async SelectAreaAsync(params, invocation) {
         try {
             await this._senderChecker.checkInvocation(invocation);
