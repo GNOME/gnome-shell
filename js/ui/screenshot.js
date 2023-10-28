@@ -2279,6 +2279,8 @@ function _storeScreenshot(bytes, pixbuf) {
     notification.setTransient(true);
     Main.messageTray.add(source);
     source.showNotification(notification);
+
+    return file;
 }
 
 /**
@@ -2312,7 +2314,7 @@ export async function captureScreenshot(texture, geometry, scale, cursor) {
     );
 
     stream.close(null);
-    _storeScreenshot(stream.steal_as_bytes(), pixbuf);
+    return _storeScreenshot(stream.steal_as_bytes(), pixbuf);
 }
 
 /**
