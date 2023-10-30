@@ -412,13 +412,6 @@ get_app_for_window (ShellWindowTracker    *tracker,
   if (meta_window_is_remote (window))
     return _shell_app_new_for_window (window);
 
-  /* HACK: Exclude screen recorder from tracking until
-   * we implement a proper fix
-   */
-  if (meta_window_get_wm_class (window) == NULL &&
-      g_strcmp0 (meta_window_get_title (window), "OpenGL Renderer") == 0)
-    return NULL;
-
   /* Check if the app's WM_CLASS specifies an app; this is
    * canonical if it does.
    */
