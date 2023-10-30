@@ -23,16 +23,12 @@ const MPRIS_PLAYER_PREFIX = 'org.mpris.MediaPlayer2.';
 export const MediaMessage = GObject.registerClass(
 class MediaMessage extends MessageList.Message {
     _init(player) {
-        super._init('', '');
+        super._init(player.source, '', '');
 
         this._player = player;
 
         this._icon = new St.Icon({style_class: 'media-message-cover-icon'});
         this.setIcon(this._icon);
-
-        // reclaim space used by unused elements
-        this._timeLabel.hide();
-        this._closeButton.hide();
 
         this._prevButton = this.addMediaControl('media-skip-backward-symbolic',
             () => {
@@ -104,6 +100,7 @@ export class MprisPlayer extends Signals.EventEmitter {
         this._trackTitle = '';
         this._trackCoverUrl = '';
         this._busName = busName;
+        this.source = new MessageList.Source();
     }
 
     get status() {
@@ -228,6 +225,11 @@ export class MprisPlayer extends Signals.EventEmitter {
         } else {
             this._app = null;
         }
+
+        this.source.set({
+            title: this._app?.get_name() ?? null,
+            icon: this._app?.get_icon() ?? null,
+        });
 
         this.emit('changed');
 

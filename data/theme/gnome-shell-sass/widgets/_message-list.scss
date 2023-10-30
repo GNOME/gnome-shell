@@ -65,60 +65,96 @@
   @extend %card;
   padding: 0 !important;
 
-  // icon container
-  .message-icon-bin {
-    padding: ($base_padding * 3);
+  // subtract side padding to accommodate the close button
+  &:ltr { padding-right: $base_padding - 2px; };
+  &:rtl { padding-left: $base_padding - 2px; };
 
-    &:ltr {padding-right:$base_padding;}
-    &:rtl {padding-left:$base_padding;}
+  // message header
+  .message-header {
+    padding: 0 $scaled_padding;
+    margin: 0 $base_padding;
+    margin-top: $base_padding;
+    color: $insensitive_fg_color;
+    spacing: $base_padding;
 
-    // icon size and color
-    > StIcon {
-      icon-size: $large_icon_size;
+    // header source icon
+    .message-source-icon {
+      padding: 2px 0;
+      icon-size: $scalable_icon_size; // 16px
       -st-icon-style: symbolic;
     }
+
+    // box that contains the source icon, source name and timestamp of the message
+    .message-header-content {
+      spacing: $base_padding;
+      min-height: to_em(24px);
+      padding-bottom: $base_padding;
+
+      // header source title
+      .message-source-title {
+        font-weight: bold;
+      }
+
+      // Time label
+      .event-time {
+        @extend %caption;
+        color: $insensitive_fg_color;
+        // Add bottom padding to align the app name with the time horizontally
+        padding-bottom: to_em(1px);
+
+        &:ltr { text-align: right };
+        &:rtl { text-align: left };
+      }
+    }
+
+    // close button
+    .message-close-button {
+      @extend .icon-button;
+      color: $fg_color !important;
+      background-color: transparentize($fg_color, 0.8);
+      padding: 0 !important;
+      border: 4px transparent solid;
+      &:hover {background-color: transparentize($fg_color, 0.7);}
+      &:insensitive {background-color: transparentize($fg_color, 0.9);}
+      &:active {background-color: transparentize($fg_color, 0.8);}
+    }
   }
 
-  // content
-  .message-content {
-    spacing: 4px;
-    padding: ($base_padding * 1.5);
-    margin-bottom: $base_margin * 2;
-  }
-
-  .message-title-box {
+  // container for message contents
+  .message-box {
+    padding: 0 $base_padding;
+    padding-bottom: $base_padding;
+    margin: $base_padding;
+    margin-top: $base_padding;
     spacing: $base_padding;
-    // title
-    .message-title {
-      font-weight: bold;
+
+    // icon container
+    .message-icon-bin {
+      &:ltr {padding-right:$base_padding;}
+      &:rtl {padding-left:$base_padding;}
+
+      // icon size and color
+      > StIcon {
+        icon-size: $base_icon_size * 3; // 48px
+        -st-icon-style: symbolic;
+      }
     }
 
-    // notification time stamp
-    > .event-time {
-      @extend %caption;
-      color: $insensitive_fg_color;
-      padding-bottom: to_em(1px);
+    // If the header isn't displayed we need more top margin
+    &:first-child {
+      margin-top: $base_padding * 2;
+    }
 
-      &:ltr { text-align: right };
-      &:rtl { text-align: left };
+    // text of the message
+    .message-content {
+      spacing: $base_margin;
+
+      // message title
+      .message-title {
+        font-weight: bold;
+      }
     }
   }
-
-
-  // close button
-  .message-close-button {
-    @extend .icon-button;
-    color: $fg_color;
-    background-color: transparentize($fg_color, 0.8);
-    padding: 0 !important;
-    border: 5px transparent solid;
-    margin: 1px;
-    &:hover {background-color: transparentize($fg_color, 0.7);}
-    &:active {background-color: transparentize($fg_color, 0.8);}
-  }
-
-  // body
-  .message-body {color: darken($fg_color, 10%);}
 }
 
 // URLs in messages
@@ -129,7 +165,6 @@
 /* Media Controls */
 .message-media-control {
   padding: 0 $base_padding * 3;
-  margin: $base_padding * 2 0;
   border-radius: $base_border_radius;
   color: $fg_color;
   border: 1px solid transparent;
@@ -157,10 +192,6 @@
       border-color: transparent;
     }
   }
-
-  // fix margin for last button
-  &:last-child:ltr { margin-right: $base_margin * 3; }
-  &:last-child:rtl { margin-left: $base_margin * 3; }
 
   & StIcon { icon-size: $base_icon_size; }
 }
