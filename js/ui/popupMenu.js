@@ -1296,16 +1296,6 @@ var PopupMenuManager = class {
     constructor(owner, grabParams) {
         this._grabParams = Params.parse(grabParams,
             { actionMode: Shell.ActionMode.POPUP });
-        global.stage.connect('notify::key-focus', () => {
-            if (!this.activeMenu)
-                return;
-
-            let actor = global.stage.get_key_focus();
-            let newMenu = this._findMenuForSource(actor);
-
-            if (newMenu)
-                this._changeMenu(newMenu);
-        });
         this._menus = [];
     }
 
@@ -1329,6 +1319,11 @@ var PopupMenuManager = class {
         if (menu === this.activeMenu) {
             Main.popModal(this._grab);
             this._grab = null;
+
+            if (this._keyFocusId) {
+                global.stage.disconnect(this._keyFocusId);
+                delete this._keyFocusId;
+            }
         }
 
         const position = this._menus.indexOf(menu);
@@ -1356,10 +1351,29 @@ var PopupMenuManager = class {
             oldMenu?.close(BoxPointer.PopupAnimation.FADE);
             if (oldGrab)
                 Main.popModal(oldGrab);
+
+            if (!this._keyFocusId) {
+                this._keyFocusId =
+                    global.stage.connect('notify::key-focus', () => {
+                        if (!this.activeMenu)
+                            return;
+
+                        let actor = global.stage.get_key_focus();
+                        let newMenu = this._findMenuForSource(actor);
+
+                        if (newMenu)
+                            this._changeMenu(newMenu);
+                    });
+            }
         } else if (this.activeMenu === menu) {
             this.activeMenu = null;
             Main.popModal(this._grab);
             this._grab = null;
+
+            if (this._keyFocusId) {
+                global.stage.disconnect(this._keyFocusId);
+                delete this._keyFocusId;
+            }
         }
     }
 
