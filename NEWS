@@ -1,3 +1,14 @@
+44.6
+====
+* overview: Handle unredirection as part of the state transition [Robert; !2970]
+* Fix calendar popup shrinking on date changes [Sebastian; !2989]
+
+Contributors:
+  Sebastian Keller, robert.mader@collabora.com
+
+Translators:
+  Florentina Mușat [ro]
+
 44.5
 ====
 * Fix exposing window previews on lock screen via keyboard shortcuts
