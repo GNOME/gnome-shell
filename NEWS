@@ -1,3 +1,26 @@
+45.1
+====
+* Fix scroll handling on sliders [Carlos; !2967]
+* overview: Handle unredirection as part of the state transition [Robert; !2970]
+* Handle DESKTOP windows during workspace animations [Sundeep; !2865]
+* Fix unexpected focus changes with multi-window apps [Florian; !2959]
+* Improve recording indicator in light style [Georges; !2983]
+* Fix calendar popup shrinking on date changes [Sebastian; !2989]
+* Fixed crashes [Daniel, Sebastian; !2975, !2974]
+* Misc. bug fixes and cleanups [Florian, Martin, Alessandro, Sebastian; !2966,
+  !2978, !2987, !3000, #6763]
+
+Contributors:
+  Alessandro Bono, Carlos Garnacho, Sebastian Keller, Sundeep Mediratta,
+  Florian Müllner, Georges Basile Stavracas Neto, robert.mader@collabora.com,
+  Daniel van Vugt, Martin Zurowietz
+
+Translators:
+  Jordi Mas [ca], Fabio Tomat [fur], Ekaterine Papava [ka], Sabri Ünal [tr],
+  Cheng-Chia Tseng [zh_TW], Changwoo Ryu [ko], Florentina Mușat [ro],
+  Brage Fuglseth [nb], Evangelos Skarmoutsos [el], Efstathios Iosifidis [el],
+  Марко Костић [sr], Hugo Carvalho [pt]
+
 45.0
 ====
 * Fix exposing window previews on lock screen via keyboard shortcuts
