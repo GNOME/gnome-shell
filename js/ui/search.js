@@ -472,6 +472,8 @@ class GridSearchResults extends SearchResultsBase {
             child: this._grid,
             x_align: Clutter.ActorAlign.CENTER,
         }));
+
+        this._maxResults = provider.maxResults ?? -1;
     }
 
     _onDestroy() {
@@ -510,11 +512,18 @@ class GridSearchResults extends SearchResultsBase {
     }
 
     _getMaxDisplayedResults() {
-        let width = this.allocation.get_width();
+        const width = this.allocation.get_width();
         if (width === 0)
-            return -1;
+            return this._maxResults;
 
-        return this._grid.layout_manager.columnsForWidth(width);
+        const nCols = this._grid.layout_manager.columnsForWidth(width);
+        if (nCols < 0)
+            return this._maxResults;
+
+        if (this._maxResults < 0)
+            return nCols;
+
+        return Math.min(nCols, this._maxResults);
     }
 
     _clearResultDisplay() {
