@@ -1798,6 +1798,7 @@ export class AppSearchProvider {
         this.id = 'applications';
         this.isRemoteProvider = false;
         this.canLaunchSearch = false;
+        this.maxResults = 6;
 
         this._systemActions = new SystemActions.getDefault();
 
