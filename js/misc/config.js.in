@@ -20,4 +20,4 @@ var PKGDATADIR = '@datadir@/@PACKAGE_NAME@';
 var LIBMUTTER_API_VERSION = '@LIBMUTTER_API_VERSION@'
 
 var HAVE_BLUETOOTH = pkg.checkSymbol('GnomeBluetooth', '3.0',
-    'Client.default_adapter_state')
+    'Client.default_adapter_state');
