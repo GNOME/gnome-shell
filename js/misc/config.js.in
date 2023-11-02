@@ -18,4 +18,4 @@ export const PKGDATADIR = '@datadir@/@PACKAGE_NAME@';
 export const LIBMUTTER_API_VERSION = '@LIBMUTTER_API_VERSION@';
 
 export const HAVE_BLUETOOTH = pkg.checkSymbol('GnomeBluetooth', '3.0',
-    'Client.default_adapter_state')
+    'Client.default_adapter_state');
