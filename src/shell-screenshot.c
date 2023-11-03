@@ -376,7 +376,7 @@ draw_cursor_image (cairo_surface_t *surface,
   MetaDisplay *display;
   MetaCursorTracker *tracker;
   cairo_surface_t *cursor_surface;
-  cairo_region_t *screenshot_region;
+  g_autoptr (MtkRegion) screenshot_region = NULL;
   cairo_t *cr;
   int x, y;
   int xhot, yhot;
@@ -390,16 +390,13 @@ draw_cursor_image (cairo_surface_t *surface,
   if (!texture)
     return;
 
-  screenshot_region = cairo_region_create_rectangle (&area);
+  screenshot_region = mtk_region_create_rectangle (&area);
   meta_cursor_tracker_get_pointer (tracker, &point, NULL);
   x = point.x;
   y = point.y;
 
-  if (!cairo_region_contains_point (screenshot_region, point.x, point.y))
-    {
-      cairo_region_destroy (screenshot_region);
-      return;
-    }
+  if (!mtk_region_contains_point (screenshot_region, point.x, point.y))
+    return;
 
   meta_cursor_tracker_get_hot (tracker, &xhot, &yhot);
   width = cogl_texture_get_width (texture);
@@ -439,7 +436,6 @@ draw_cursor_image (cairo_surface_t *surface,
 
   cairo_destroy (cr);
   cairo_surface_destroy (cursor_surface);
-  cairo_region_destroy (screenshot_region);
   g_free (data);
 }
 
