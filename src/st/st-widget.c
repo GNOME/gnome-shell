@@ -1189,6 +1189,7 @@ st_widget_add_style_class_name (StWidget    *actor,
 
   g_return_if_fail (ST_IS_WIDGET (actor));
   g_return_if_fail (style_class != NULL);
+  g_return_if_fail (style_class[0] != '\0');
 
   priv = st_widget_get_instance_private (actor);
 
@@ -1215,6 +1216,7 @@ st_widget_remove_style_class_name (StWidget    *actor,
 
   g_return_if_fail (ST_IS_WIDGET (actor));
   g_return_if_fail (style_class != NULL);
+  g_return_if_fail (style_class[0] != '\0');
 
   priv = st_widget_get_instance_private (actor);
 
@@ -1259,6 +1261,8 @@ st_widget_has_style_class_name (StWidget    *actor,
   StWidgetPrivate *priv;
 
   g_return_val_if_fail (ST_IS_WIDGET (actor), FALSE);
+  g_return_val_if_fail (style_class != NULL, FALSE);
+  g_return_val_if_fail (style_class[0] != '\0', FALSE);
 
   priv = st_widget_get_instance_private (actor);
 
@@ -1303,6 +1307,8 @@ st_widget_has_style_pseudo_class (StWidget    *actor,
   StWidgetPrivate *priv;
 
   g_return_val_if_fail (ST_IS_WIDGET (actor), FALSE);
+  g_return_val_if_fail (pseudo_class != NULL, FALSE);
+  g_return_val_if_fail (pseudo_class[0] != '\0', FALSE);
 
   priv = st_widget_get_instance_private (actor);
 
@@ -1352,6 +1358,7 @@ st_widget_add_style_pseudo_class (StWidget    *actor,
 
   g_return_if_fail (ST_IS_WIDGET (actor));
   g_return_if_fail (pseudo_class != NULL);
+  g_return_if_fail (pseudo_class[0] != '\0');
 
   priv = st_widget_get_instance_private (actor);
 
@@ -1377,6 +1384,7 @@ st_widget_remove_style_pseudo_class (StWidget    *actor,
 
   g_return_if_fail (ST_IS_WIDGET (actor));
   g_return_if_fail (pseudo_class != NULL);
+  g_return_if_fail (pseudo_class[0] != '\0');
 
   priv = st_widget_get_instance_private (actor);
 
