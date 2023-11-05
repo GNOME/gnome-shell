@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-09-22 17:09+0000\n"
-"PO-Revision-Date: 2023-09-30 14:44+0200\n"
+"POT-Creation-Date: 2023-10-31 23:41+0000\n"
+"PO-Revision-Date: 2023-11-05 23:38+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -935,33 +935,33 @@ msgstr "%OB"
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:500
+#: js/ui/calendar.js:501
 msgid "Previous month"
 msgstr "წინა თვე"
 
-#: js/ui/calendar.js:518
+#: js/ui/calendar.js:519
 msgid "Next month"
 msgstr "შემდეგი თვე"
 
-#: js/ui/calendar.js:669
+#: js/ui/calendar.js:670
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:728
+#: js/ui/calendar.js:729
 msgid "Week %V"
 msgstr "%V კვირა"
 
-#: js/ui/calendar.js:907
+#: js/ui/calendar.js:908
 msgid "No Notifications"
 msgstr "შეტყობინებების გარეშე"
 
-#: js/ui/calendar.js:964
+#: js/ui/calendar.js:965
 msgid "Do Not Disturb"
 msgstr "არ შემაწუხო"
 
-#: js/ui/calendar.js:985
+#: js/ui/calendar.js:986
 msgid "Clear"
 msgstr "გასუფთავება"
 
@@ -1550,7 +1550,7 @@ msgstr "ეკრანის ჩაკეტვა გათიშულია"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "ეკრანის ჩაკეტვას GNOME-ის ეკრანის მმართველი სჭირდება."
 
-#: js/ui/messageTray.js:1423
+#: js/ui/messageTray.js:1417
 msgid "System Information"
 msgstr "ინფორმაცის სისტემის შესახებ"
 
@@ -1663,11 +1663,11 @@ msgstr "გადატვირთვა…"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME -ს სჭირდება თქვენი ეკრანის ჩაკეტვა"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:674
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:670
 msgid "Unable to lock"
 msgstr "ჩაკეტვის შეცდომა"
 
-#: js/ui/screenShield.js:277 js/ui/screenShield.js:675
+#: js/ui/screenShield.js:277 js/ui/screenShield.js:671
 msgid "Lock was blocked by an app"
 msgstr "ჩაკეტვა დაბლოკილია აპის მიერ"
 
@@ -2310,7 +2310,7 @@ msgstr "გადაუსვით ბლოკის მოსახსნე�
 
 #: js/ui/unlockDialog.js:375
 msgid "Click or press a key to unlock"
-msgstr "ბლოკის მოსახსნელად წკაპი ან ღილაკს დააწექით"
+msgstr "ბლოკის მოსახსნელად დააწექით ნებისმიერ ღილაკს"
 
 #: js/ui/unlockDialog.js:558
 msgid "Unlock Window"
@@ -2461,7 +2461,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Unknown"
 
-#: src/shell-app.c:556
+#: src/shell-app.c:555
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "%s-ის გაშვების შეცდომა"
