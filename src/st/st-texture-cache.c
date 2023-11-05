@@ -1381,7 +1381,7 @@ load_sliced_image (GTask        *result,
   GdkPixbuf *pix;
   gint width, height, y, x;
   gint scale_factor;
-  GdkPixbufLoader *loader;
+  GdkPixbufLoader *loader = NULL;
   GError *error = NULL;
   gchar *buffer = NULL;
   gsize length;
@@ -1391,14 +1391,14 @@ load_sliced_image (GTask        *result,
   data = task_data;
   g_assert (data);
 
-  loader = gdk_pixbuf_loader_new ();
-  g_signal_connect (loader, "size-prepared", G_CALLBACK (on_loader_size_prepared), data);
-
   if (!g_file_load_contents (data->gfile, cancellable, &buffer, &length, NULL, &error))
     {
       g_warning ("Failed to open sliced image: %s", error->message);
       goto out;
     }
+
+  loader = gdk_pixbuf_loader_new ();
+  g_signal_connect (loader, "size-prepared", G_CALLBACK (on_loader_size_prepared), data);
 
   if (!gdk_pixbuf_loader_write (loader, (const guchar *) buffer, length, &error))
     {
@@ -1428,7 +1428,7 @@ load_sliced_image (GTask        *result,
  out:
   /* We don't need the original pixbuf anymore, which is owned by the loader,
    * though the subpixbufs will hold a reference. */
-  g_object_unref (loader);
+  g_clear_object (&loader);
   g_free (buffer);
   g_clear_pointer (&error, g_error_free);
   g_task_return_pointer (result, res, free_glist_unref_gobjects);
