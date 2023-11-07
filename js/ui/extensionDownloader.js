@@ -267,7 +267,7 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
             description: _('Download and install “%s” from extensions.gnome.org?').format(info.name),
         });
 
-        this.contentLayout.add(content);
+        this.contentLayout.add_child(content);
     }
 
     _onCancelButtonPressed() {

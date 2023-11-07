@@ -387,7 +387,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             this._thumbnailsFocused = false;
         });
 
-        this.add_actor(this._thumbnails);
+        this.add_child(this._thumbnails);
 
         // Need to force an allocation so we can figure out whether we
         // need to scroll when selecting
@@ -414,10 +414,10 @@ class CyclerHighlight extends St.Widget {
         this._window = null;
 
         this._clone = new Clutter.Clone();
-        this.add_actor(this._clone);
+        this.add_child(this._clone);
 
         this._highlight = new St.Widget({style_class: 'cycler-highlight'});
-        this.add_actor(this._highlight);
+        this.add_child(this._highlight);
 
         let coordinate = Clutter.BindCoordinate.ALL;
         let constraint = new Clutter.BindConstraint({coordinate});
@@ -495,7 +495,7 @@ const CyclerPopup = GObject.registerClass({
         this._items = this._getWindows();
 
         this._highlight = new CyclerHighlight();
-        global.window_group.add_actor(this._highlight);
+        global.window_group.add_child(this._highlight);
 
         this._switcherList = new CyclerList();
         this._switcherList.connect('item-highlighted', (list, index) => {
@@ -884,7 +884,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
 
         let arrow = new St.DrawingArea({style_class: 'switcher-arrow'});
         arrow.connect('repaint', () => SwitcherPopup.drawArrow(arrow, St.Side.BOTTOM));
-        this.add_actor(arrow);
+        this.add_child(arrow);
         this._arrows.push(arrow);
 
         if (appIcon.cachedWindows.length === 1)
@@ -926,7 +926,7 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
 
             let bin = new St.Bin({style_class: 'thumbnail'});
 
-            box.add_actor(bin);
+            box.add_child(bin);
             this._thumbnailBins.push(bin);
 
             const title = windows[i].get_title();
@@ -936,7 +936,7 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
                 x_align: Clutter.ActorAlign.CENTER,
             });
             this._labels.push(name);
-            box.add_actor(name);
+            box.add_child(name);
 
             this.addItem(box, name);
         }
@@ -965,7 +965,7 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
 
             let clone = _createWindowClone(mutterWindow, thumbnailSize);
             this._thumbnailBins[i].set_height(binHeight);
-            this._thumbnailBins[i].add_actor(clone);
+            this._thumbnailBins[i].add_child(clone);
 
             mutterWindow.connectObject('destroy',
                 source => this._removeThumbnail(source, clone), this);
@@ -1026,22 +1026,22 @@ class WindowIcon extends St.BoxLayout {
         switch (mode) {
         case AppIconMode.THUMBNAIL_ONLY:
             size = WINDOW_PREVIEW_SIZE;
-            this._icon.add_actor(_createWindowClone(mutterWindow, size * scaleFactor));
+            this._icon.add_child(_createWindowClone(mutterWindow, size * scaleFactor));
             break;
 
         case AppIconMode.BOTH:
             size = WINDOW_PREVIEW_SIZE;
-            this._icon.add_actor(_createWindowClone(mutterWindow, size * scaleFactor));
+            this._icon.add_child(_createWindowClone(mutterWindow, size * scaleFactor));
 
             if (this.app) {
-                this._icon.add_actor(
+                this._icon.add_child(
                     this._createAppIcon(this.app, APP_ICON_SIZE_SMALL));
             }
             break;
 
         case AppIconMode.APP_ICON_ONLY:
             size = APP_ICON_SIZE;
-            this._icon.add_actor(this._createAppIcon(this.app, size));
+            this._icon.add_child(this._createAppIcon(this.app, size));
         }
 
         this._icon.set_size(size * scaleFactor, size * scaleFactor);
@@ -1067,7 +1067,7 @@ class WindowSwitcher extends SwitcherPopup.SwitcherList {
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
         });
-        this.add_actor(this._label);
+        this.add_child(this._label);
 
         this.windows = windows;
         this.icons = [];

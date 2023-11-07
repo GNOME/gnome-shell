@@ -332,13 +332,13 @@ export const Message = GObject.registerClass({
         this.set_child(vbox);
 
         let hbox = new St.BoxLayout();
-        vbox.add_actor(hbox);
+        vbox.add_child(hbox);
 
         this._actionBin = new St.Widget({
             layout_manager: new ScaleLayout(),
             visible: false,
         });
-        vbox.add_actor(this._actionBin);
+        vbox.add_child(this._actionBin);
 
         this._iconBin = new St.Bin({
             style_class: 'message-icon-bin',
@@ -346,30 +346,30 @@ export const Message = GObject.registerClass({
             y_align: Clutter.ActorAlign.START,
             visible: false,
         });
-        hbox.add_actor(this._iconBin);
+        hbox.add_child(this._iconBin);
 
         const contentBox = new St.BoxLayout({
             style_class: 'message-content',
             vertical: true,
             x_expand: true,
         });
-        hbox.add_actor(contentBox);
+        hbox.add_child(contentBox);
 
         this._mediaControls = new St.BoxLayout();
-        hbox.add_actor(this._mediaControls);
+        hbox.add_child(this._mediaControls);
 
         let titleBox = new St.BoxLayout();
-        contentBox.add_actor(titleBox);
+        contentBox.add_child(titleBox);
 
         this.titleLabel = new St.Label({style_class: 'message-title'});
         this.setTitle(title);
-        titleBox.add_actor(this.titleLabel);
+        titleBox.add_child(this.titleLabel);
 
         this._secondaryBin = new St.Bin({
             style_class: 'message-secondary-bin',
             x_expand: true, y_expand: true,
         });
-        titleBox.add_actor(this._secondaryBin);
+        titleBox.add_child(this._secondaryBin);
 
         this._closeButton = new St.Button({
             style_class: 'message-close-button',
@@ -377,15 +377,15 @@ export const Message = GObject.registerClass({
             y_align: Clutter.ActorAlign.CENTER,
             opacity: 0,
         });
-        titleBox.add_actor(this._closeButton);
+        titleBox.add_child(this._closeButton);
 
         this._bodyStack = new St.Widget({x_expand: true});
         this._bodyStack.layout_manager = new LabelExpanderLayout();
-        contentBox.add_actor(this._bodyStack);
+        contentBox.add_child(this._bodyStack);
 
         this.bodyLabel = new URLHighlighter('', false, this._useBodyMarkup);
         this.bodyLabel.add_style_class_name('message-body');
-        this._bodyStack.add_actor(this.bodyLabel);
+        this._bodyStack.add_child(this.bodyLabel);
         this.setBody(body);
 
         this._closeButton.connect('clicked', this.close.bind(this));
@@ -439,7 +439,7 @@ export const Message = GObject.registerClass({
         if (this._actionBin.get_n_children() > 0)
             throw new Error('Message already has an action area');
 
-        this._actionBin.add_actor(actor);
+        this._actionBin.add_child(actor);
         this._actionBin.visible = this.expanded;
     }
 
@@ -449,7 +449,7 @@ export const Message = GObject.registerClass({
             iconName,
         });
         button.connect('clicked', callback);
-        this._mediaControls.add_actor(button);
+        this._mediaControls.add_child(button);
         return button;
     }
 
@@ -574,7 +574,7 @@ export const MessageListSection = GObject.registerClass({
             style_class: 'message-list-section-list',
             vertical: true,
         });
-        this.add_actor(this._list);
+        this.add_child(this._list);
 
         this._list.connect('actor-added', this._sync.bind(this));
         this._list.connect('actor-removed', this._sync.bind(this));

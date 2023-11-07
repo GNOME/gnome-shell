@@ -154,7 +154,7 @@ class DashItemContainer extends St.Widget {
 
         this.child = actor;
         this.child.y_expand = true;
-        this.add_actor(this.child);
+        this.add_child(this.child);
     }
 
     show(animate) {
@@ -210,7 +210,7 @@ class ShowAppsIcon extends DashItemContainer {
         });
         this.icon.y_align = Clutter.ActorAlign.CENTER;
 
-        this.toggleButton.add_actor(this.icon);
+        this.toggleButton.add_child(this.icon);
         this.toggleButton._delegate = this;
 
         this.setChild(this.toggleButton);

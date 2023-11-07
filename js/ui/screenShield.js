@@ -74,8 +74,8 @@ export class ScreenShield extends Signals.EventEmitter {
             name: 'lockDialogGroup',
         });
 
-        this.actor.add_actor(this._lockScreenGroup);
-        this.actor.add_actor(this._lockDialogGroup);
+        this.actor.add_child(this._lockScreenGroup);
+        this.actor.add_child(this._lockDialogGroup);
 
         this._presence = new GnomeSession.Presence((proxy, error) => {
             if (error) {

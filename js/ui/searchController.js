@@ -95,7 +95,7 @@ export const SearchController = GObject.registerClass({
         this._focusTrap.connect('key-focus-in', () => {
             this._entry.grab_key_focus();
         });
-        this._searchResults.add_actor(this._focusTrap);
+        this._searchResults.add_child(this._focusTrap);
 
         global.focus_manager.add_group(this._searchResults);
 

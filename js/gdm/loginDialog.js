@@ -68,7 +68,7 @@ export const UserListItem = GObject.registerClass({
         });
 
         this._userWidget = new UserWidget.UserWidget(this.user);
-        layout.add(this._userWidget);
+        layout.add_child(this._userWidget);
 
         this._userWidget.bind_property('label-actor',
             this, 'label-actor',
@@ -79,7 +79,7 @@ export const UserListItem = GObject.registerClass({
             scale_x: 0,
             visible: false,
         });
-        layout.add(this._timedLoginIndicator);
+        layout.add_child(this._timedLoginIndicator);
 
         this._onUserChanged();
     }
@@ -179,7 +179,7 @@ const UserList = GObject.registerClass({
             pseudo_class: 'expanded',
         });
 
-        this.add_actor(this._box);
+        this.add_child(this._box);
         this._items = {};
     }
 
@@ -333,7 +333,7 @@ const SessionMenuButton = GObject.registerClass({
         this._button = button;
 
         this._menu = new PopupMenu.PopupMenu(this._button, 0, St.Side.BOTTOM);
-        Main.uiGroup.add_actor(this._menu.actor);
+        Main.uiGroup.add_child(this._menu.actor);
         this._menu.actor.hide();
 
         this._menu.connect('open-state-changed', (menu, isOpen) => {
@@ -497,7 +497,7 @@ export const LoginDialog = GObject.registerClass({
 
         let bannerBox = new St.BoxLayout({vertical: true});
 
-        this._bannerView.add_actor(bannerBox);
+        this._bannerView.add_child(bannerBox);
         this._bannerLabel = new St.Label({
             style_class: 'login-dialog-banner',
             text: '',

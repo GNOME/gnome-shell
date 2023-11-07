@@ -501,7 +501,7 @@ export const Calendar = GObject.registerClass({
             accessible_name: _('Previous month'),
             can_focus: true,
         });
-        this._topBox.add(this._backButton);
+        this._topBox.add_child(this._backButton);
         this._backButton.connect('clicked', this._onPrevMonthButtonClicked.bind(this));
 
         this._monthLabel = new St.Label({
@@ -519,7 +519,7 @@ export const Calendar = GObject.registerClass({
             accessible_name: _('Next month'),
             can_focus: true,
         });
-        this._topBox.add(this._forwardButton);
+        this._topBox.add_child(this._forwardButton);
         this._forwardButton.connect('clicked', this._onNextMonthButtonClicked.bind(this));
 
         // Add weekday labels...
@@ -903,10 +903,10 @@ class Placeholder extends St.BoxLayout {
         this._date = new Date();
 
         this._icon = new St.Icon({icon_name: 'no-notifications-symbolic'});
-        this.add_actor(this._icon);
+        this.add_child(this._icon);
 
         this._label = new St.Label({text: _('No Notifications')});
-        this.add_actor(this._label);
+        this.add_child(this._label);
     }
 });
 
@@ -941,14 +941,14 @@ class CalendarMessageList extends St.Widget {
         });
 
         this._placeholder = new Placeholder();
-        this.add_actor(this._placeholder);
+        this.add_child(this._placeholder);
 
         let box = new St.BoxLayout({
             vertical: true,
             x_expand: true,
             y_expand: true,
         });
-        this.add_actor(box);
+        this.add_child(box);
 
         this._scrollView = new St.ScrollView({
             style_class: 'vfade',
@@ -956,7 +956,7 @@ class CalendarMessageList extends St.Widget {
             x_expand: true, y_expand: true,
         });
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
-        box.add_actor(this._scrollView);
+        box.add_child(this._scrollView);
 
         let hbox = new St.BoxLayout({style_class: 'message-list-controls'});
         box.add_child(hbox);
@@ -991,7 +991,7 @@ class CalendarMessageList extends St.Widget {
         this._clearButton.connect('clicked', () => {
             this._sectionList.get_children().forEach(s => s.clear());
         });
-        hbox.add_actor(this._clearButton);
+        hbox.add_child(this._clearButton);
 
         this._placeholder.bind_property('visible',
             this._clearButton, 'visible',
@@ -1008,7 +1008,7 @@ class CalendarMessageList extends St.Widget {
             'actor-added', this._sync.bind(this),
             'actor-removed', this._sync.bind(this),
             this);
-        this._scrollView.add_actor(this._sectionList);
+        this._scrollView.add_child(this._sectionList);
 
         this._mediaSection = new Mpris.MediaSection();
         this._addSection(this._mediaSection);
@@ -1024,11 +1024,11 @@ class CalendarMessageList extends St.Widget {
             'notify::visible', this._sync.bind(this),
             'notify::empty', this._sync.bind(this),
             'notify::can-clear', this._sync.bind(this),
-            'destroy', () => this._sectionList.remove_actor(section),
+            'destroy', () => this._sectionList.remove_child(section),
             'message-focused', (_s, messageActor) => {
                 ensureActorVisibleInScrollView(this._scrollView, messageActor);
             }, this);
-        this._sectionList.add_actor(section);
+        this._sectionList.add_child(section);
     }
 
     _sync() {

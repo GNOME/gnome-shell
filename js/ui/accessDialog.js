@@ -47,7 +47,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
         let choices = options['choices'] || [];
 
         let content = new Dialog.MessageDialogContent({title, description});
-        this.contentLayout.add_actor(content);
+        this.contentLayout.add_child(content);
 
         this._choices = new Map();
 

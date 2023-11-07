@@ -312,7 +312,7 @@ class AutorunNotification extends MessageTray.Notification {
             gicon: app.get_icon(),
             style_class: 'hotplug-notification-item-icon',
         });
-        box.add(icon);
+        box.add_child(icon);
 
         let label = new St.Bin({
             child: new St.Label({
@@ -320,7 +320,7 @@ class AutorunNotification extends MessageTray.Notification {
                 y_align: Clutter.ActorAlign.CENTER,
             }),
         });
-        box.add(label);
+        box.add_child(label);
 
         const button = new St.Button({
             child: box,

@@ -33,7 +33,7 @@ class WorkspaceGroup extends Clutter.Actor {
         if (this._workspace) {
             this._background = new Meta.BackgroundGroup();
 
-            this.add_actor(this._background);
+            this.add_child(this._background);
 
             this._bgManager = new Background.BackgroundManager({
                 container: this._background,

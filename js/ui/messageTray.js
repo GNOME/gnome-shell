@@ -571,7 +571,7 @@ export const NotificationBanner = GObject.registerClass({
         if (this._buttonBox.get_n_children() >= MAX_NOTIFICATION_BUTTONS)
             return null;
 
-        this._buttonBox.add(button);
+        this._buttonBox.add_child(button);
         button.connect('clicked', () => {
             callback();
 
@@ -619,7 +619,7 @@ class SourceActor extends St.Widget {
             width: size * scaleFactor,
         });
 
-        this.add_actor(this._iconBin);
+        this.add_child(this._iconBin);
 
         this._source.connectObject('icon-updated',
             this._updateIcon.bind(this), this);
@@ -849,7 +849,7 @@ export const MessageTray = GObject.registerClass({
             this._onNotificationKeyRelease.bind(this));
         this._bannerBin.connect('notify::hover',
             this._onNotificationHoverChanged.bind(this));
-        this.add_actor(this._bannerBin);
+        this.add_child(this._bannerBin);
 
         this._notificationFocusGrabber = new FocusGrabber(this._bannerBin);
         this._notificationQueue = [];
@@ -1240,7 +1240,7 @@ export const MessageTray = GObject.registerClass({
             'done-displaying', this._escapeTray.bind(this),
             'unfocused', () => this._updateState(), this);
 
-        this._bannerBin.add_actor(this._banner);
+        this._bannerBin.add_child(this._banner);
 
         this._bannerBin.opacity = 0;
         this._bannerBin.y = -this._banner.height;

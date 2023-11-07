@@ -15,7 +15,7 @@ export class WindowMenu extends PopupMenu.PopupMenu {
 
         this.actor.add_style_class_name('window-menu');
 
-        Main.layoutManager.uiGroup.add_actor(this.actor);
+        Main.layoutManager.uiGroup.add_child(this.actor);
         this.actor.hide();
 
         this._buildMenu(window);
@@ -227,7 +227,7 @@ export class WindowMenuManager {
         this._sourceActor.connect('button-press-event', () => {
             this._manager.activeMenu.toggle();
         });
-        Main.uiGroup.add_actor(this._sourceActor);
+        Main.uiGroup.add_child(this._sourceActor);
     }
 
     showWindowMenuForWindow(window, type, rect) {

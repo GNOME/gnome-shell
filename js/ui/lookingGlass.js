@@ -160,11 +160,11 @@ const Notebook = GObject.registerClass({
             return true;
         });
         labelBox.add_child(label);
-        this.tabControls.add(labelBox);
+        this.tabControls.add_child(labelBox);
 
         let scrollview = new St.ScrollView({y_expand: true});
         scrollview.get_hscroll_bar().hide();
-        scrollview.add_actor(child);
+        scrollview.add_child(child);
 
         const tabData = {
             child,
@@ -319,14 +319,14 @@ class Result extends St.BoxLayout {
 
         let cmdTxt = new St.Label({text: command});
         cmdTxt.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-        this.add(cmdTxt);
+        this.add_child(cmdTxt);
         let box = new St.BoxLayout({});
-        this.add(box);
+        this.add_child(box);
         let resultTxt = new St.Label({text: `r(${index}) = `});
         resultTxt.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-        box.add(resultTxt);
+        box.add_child(resultTxt);
         let objLink = new ObjLink(this._lookingGlass, o);
-        box.add(objLink);
+        box.add_child(objLink);
     }
 });
 
@@ -357,23 +357,23 @@ const WindowList = GObject.registerClass({
                 metaWindow._lookingGlassManaged = true;
             }
             let box = new St.BoxLayout({vertical: true});
-            this.add(box);
+            this.add_child(box);
             let windowLink = new ObjLink(this._lookingGlass, metaWindow, metaWindow.title);
             box.add_child(windowLink);
             let propsBox = new St.BoxLayout({vertical: true, style: 'padding-left: 6px;'});
-            box.add(propsBox);
-            propsBox.add(new St.Label({text: `wmclass: ${metaWindow.get_wm_class()}`}));
+            box.add_child(propsBox);
+            propsBox.add_child(new St.Label({text: `wmclass: ${metaWindow.get_wm_class()}`}));
             let app = tracker.get_window_app(metaWindow);
             if (app != null && !app.is_window_backed()) {
                 let icon = app.create_icon_texture(22);
                 let propBox = new St.BoxLayout({style: 'spacing: 6px; '});
-                propsBox.add(propBox);
+                propsBox.add_child(propBox);
                 propBox.add_child(new St.Label({text: 'app: '}));
                 let appLink = new ObjLink(this._lookingGlass, app, app.get_id());
                 propBox.add_child(appLink);
                 propBox.add_child(icon);
             } else {
-                propsBox.add(new St.Label({text: '<untracked>'}));
+                propsBox.add_child(new St.Label({text: '<untracked>'}));
             }
         }
     }
@@ -403,7 +403,7 @@ class ObjInspector extends St.ScrollView {
             x_expand: true,
             y_expand: true,
         });
-        this.add_actor(this._container);
+        this.add_child(this._container);
 
         this._lookingGlass = lookingGlass;
     }
@@ -418,7 +418,7 @@ class ObjInspector extends St.ScrollView {
         this._container.destroy_all_children();
 
         let hbox = new St.BoxLayout({style_class: 'lg-obj-inspector-title'});
-        this._container.add_actor(hbox);
+        this._container.add_child(hbox);
         let label = new St.Label({
             text: `Inspecting: ${typeof obj}: ${objectToString(obj)}`,
             x_expand: true,
@@ -427,12 +427,12 @@ class ObjInspector extends St.ScrollView {
         hbox.add_child(label);
         let button = new St.Button({label: 'Insert', style_class: 'lg-obj-inspector-button'});
         button.connect('clicked', this._onInsert.bind(this));
-        hbox.add(button);
+        hbox.add_child(button);
 
         if (this._previousObj != null) {
             button = new St.Button({label: 'Back', style_class: 'lg-obj-inspector-button'});
             button.connect('clicked', this._onBack.bind(this));
-            hbox.add(button);
+            hbox.add_child(button);
         }
 
         button = new St.Button({
@@ -440,7 +440,7 @@ class ObjInspector extends St.ScrollView {
             icon_name: 'window-close-symbolic',
         });
         button.connect('clicked', this.close.bind(this));
-        hbox.add(button);
+        hbox.add_child(button);
         if (typeof obj === typeof {}) {
             let properties = [];
             for (let propName in obj)
@@ -457,9 +457,9 @@ class ObjInspector extends St.ScrollView {
                     link = new St.Label({text: '<error>'});
                 }
                 let box = new St.BoxLayout();
-                box.add(new St.Label({text: `${propName}: `}));
-                box.add(link);
-                this._container.add_actor(box);
+                box.add_child(new St.Label({text: `${propName}: `}));
+                box.add_child(link);
+                this._container.add_child(box);
             }
         }
     }
@@ -583,7 +583,7 @@ export const Inspector = GObject.registerClass({
     _init(lookingGlass) {
         super._init({width: 0, height: 0});
 
-        Main.uiGroup.add_actor(this);
+        Main.uiGroup.add_child(this);
 
         const eventHandler = new St.BoxLayout({
             name: 'LookingGlassDialog',
@@ -591,7 +591,7 @@ export const Inspector = GObject.registerClass({
             reactive: true,
         });
         this._eventHandler = eventHandler;
-        this.add_actor(eventHandler);
+        this.add_child(eventHandler);
         this._displayText = new St.Label({x_expand: true});
         eventHandler.add_child(this._displayText);
 
@@ -729,8 +729,8 @@ const Extensions = GObject.registerClass({
             vertical: true,
             style_class: 'lg-extensions-list',
         });
-        this._extensionsList.add(this._noExtensions);
-        this.add(this._extensionsList);
+        this._extensionsList.add_child(this._noExtensions);
+        this.add_child(this._extensionsList);
 
         Main.extensionManager.getUuids().forEach(uuid => {
             this._loadExtension(null, uuid);
@@ -749,7 +749,7 @@ const Extensions = GObject.registerClass({
 
         let extensionDisplay = this._createExtensionDisplay(extension);
         if (this._numExtensions === 0)
-            this._extensionsList.remove_actor(this._noExtensions);
+            this._extensionsList.remove_child(this._noExtensions);
 
         this._numExtensions++;
         const {name} = extension.metadata;
@@ -780,15 +780,15 @@ const Extensions = GObject.registerClass({
             let errorDisplay = new St.BoxLayout({vertical: true});
             if (errors && errors.length) {
                 for (let i = 0; i < errors.length; i++)
-                    errorDisplay.add(new St.Label({text: errors[i]}));
+                    errorDisplay.add_child(new St.Label({text: errors[i]}));
             } else {
                 /* Translators: argument is an extension UUID. */
                 let message = _('%s has not emitted any errors.').format(extension.uuid);
-                errorDisplay.add(new St.Label({text: message}));
+                errorDisplay.add_child(new St.Label({text: message}));
             }
 
             actor._errorDisplay = errorDisplay;
-            actor._parentBox.add(errorDisplay);
+            actor._parentBox.add_child(errorDisplay);
             actor.label = _('Hide Errors');
         } else {
             actor._errorDisplay.destroy();
@@ -837,12 +837,12 @@ const Extensions = GObject.registerClass({
         box.add_child(description);
 
         let metaBox = new St.BoxLayout({style_class: 'lg-extension-meta'});
-        box.add(metaBox);
+        box.add_child(metaBox);
         const state = new St.Label({
             style_class: 'lg-extension-state',
             text: this._stateToString(extension.state),
         });
-        metaBox.add(state);
+        metaBox.add_child(state);
 
         const viewsource = new St.Button({
             reactive: true,
@@ -852,7 +852,7 @@ const Extensions = GObject.registerClass({
         });
         viewsource._extension = extension;
         viewsource.connect('clicked', this._onViewSource.bind(this));
-        metaBox.add(viewsource);
+        metaBox.add_child(viewsource);
 
         if (extension.metadata.url) {
             const webpage = new St.Button({
@@ -863,7 +863,7 @@ const Extensions = GObject.registerClass({
             });
             webpage._extension = extension;
             webpage.connect('clicked', this._onWebPage.bind(this));
-            metaBox.add(webpage);
+            metaBox.add_child(webpage);
         }
 
         const viewerrors = new St.Button({
@@ -876,7 +876,7 @@ const Extensions = GObject.registerClass({
         viewerrors._parentBox = box;
         viewerrors._isShowing = false;
         viewerrors.connect('clicked', this._onViewErrors.bind(this));
-        metaBox.add(viewerrors);
+        metaBox.add_child(viewerrors);
 
         return box;
     }
@@ -1303,7 +1303,7 @@ class LookingGlass extends St.BoxLayout {
         this._updateFont();
 
         // We want it to appear to slide out from underneath the panel
-        Main.uiGroup.add_actor(this);
+        Main.uiGroup.add_child(this);
         Main.uiGroup.set_child_below_sibling(this,
             Main.layoutManager.panelBox);
         Main.layoutManager.panelBox.connect('notify::allocation',
@@ -1312,16 +1312,16 @@ class LookingGlass extends St.BoxLayout {
             this._queueResize.bind(this));
 
         this._objInspector = new ObjInspector(this);
-        Main.uiGroup.add_actor(this._objInspector);
+        Main.uiGroup.add_child(this._objInspector);
         this._objInspector.hide();
 
         let toolbar = new St.BoxLayout({name: 'Toolbar'});
-        this.add_actor(toolbar);
+        this.add_child(toolbar);
         const inspectButton = new St.Button({
             style_class: 'lg-toolbar-button',
             icon_name: 'find-location-symbolic',
         });
-        toolbar.add_actor(inspectButton);
+        toolbar.add_child(inspectButton);
         inspectButton.connect('clicked', () => {
             let inspector = new Inspector(this);
             inspector.connect('target', (i, target, stageX, stageY) => {
@@ -1339,7 +1339,7 @@ class LookingGlass extends St.BoxLayout {
             style_class: 'lg-toolbar-button',
             icon_name: 'user-trash-full-symbolic',
         });
-        toolbar.add_actor(gcButton);
+        toolbar.add_child(gcButton);
         gcButton.connect('clicked', () => {
             gcButton.child.icon_name = 'user-trash-symbolic';
             System.gc();
@@ -1361,7 +1361,7 @@ class LookingGlass extends St.BoxLayout {
 
         let emptyBox = new St.Bin({x_expand: true});
         toolbar.add_child(emptyBox);
-        toolbar.add_actor(notebook.tabControls);
+        toolbar.add_child(notebook.tabControls);
 
         this._evalBox = new St.BoxLayout({name: 'EvalBox', vertical: true});
         notebook.appendPage('Evaluator', this._evalBox);
@@ -1377,10 +1377,10 @@ class LookingGlass extends St.BoxLayout {
             name: 'EntryArea',
             y_align: Clutter.ActorAlign.END,
         });
-        this._evalBox.add_actor(this._entryArea);
+        this._evalBox.add_child(this._entryArea);
 
         let label = new St.Label({text: CHEVRON});
-        this._entryArea.add(label);
+        this._entryArea.add_child(label);
 
         this._entry = new St.Entry({
             can_focus: true,
@@ -1462,7 +1462,7 @@ class LookingGlass extends St.BoxLayout {
     _pushResult(command, obj) {
         let index = this._resultsArea.get_n_children() + this._offset;
         let result = new Result(this, CHEVRON + command, obj, index);
-        this._resultsArea.add(result);
+        this._resultsArea.add_child(result);
         if (obj instanceof Clutter.Actor)
             this.setBorderPaintTarget(obj);
 

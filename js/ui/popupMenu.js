@@ -96,7 +96,7 @@ export const PopupBaseMenuItem = GObject.registerClass({
         this._delegate = this;
 
         this._ornamentIcon = new St.Icon({style_class: 'popup-menu-ornament'});
-        this.add(this._ornamentIcon);
+        this.add_child(this._ornamentIcon);
         this.setOrnament(Ornament.HIDDEN);
 
         this._parent = null;
@@ -304,7 +304,7 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
         });
 
         this.label = new St.Label({text: text || ''});
-        this.add(this.label);
+        this.add_child(this.label);
         this.label_actor = this.label;
 
         this.label.connect('notify::text',
@@ -718,14 +718,14 @@ export class PopupMenuBase extends Signals.EventEmitter {
     addMenuItem(menuItem, position) {
         let beforeItem = null;
         if (position === undefined) {
-            this.box.add(menuItem.actor);
+            this.box.add_child(menuItem.actor);
         } else {
             let items = this._getMenuItems();
             if (position < items.length) {
                 beforeItem = items[position].actor;
                 this.box.insert_child_below(menuItem.actor, beforeItem);
             } else {
-                this.box.add(menuItem.actor);
+                this.box.add_child(menuItem.actor);
             }
         }
 
@@ -746,7 +746,7 @@ export class PopupMenuBase extends Signals.EventEmitter {
                 menuItem);
         } else if (menuItem instanceof PopupSubMenuMenuItem) {
             if (beforeItem == null)
-                this.box.add(menuItem.menu.actor);
+                this.box.add_child(menuItem.menu.actor);
             else
                 this.box.insert_child_below(menuItem.menu.actor, beforeItem);
 
@@ -1018,7 +1018,7 @@ export class PopupSubMenu extends PopupMenuBase {
             vscrollbar_policy: St.PolicyType.NEVER,
         });
 
-        this.actor.add_actor(this.box);
+        this.actor.add_child(this.box);
         this.actor._delegate = this;
         this.actor.clip_to_allocation = true;
         this.actor.connect('key-press-event', this._onKeyPressEvent.bind(this));

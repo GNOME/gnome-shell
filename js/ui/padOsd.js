@@ -65,7 +65,7 @@ const PadChooser = GObject.registerClass({
             this.set_checked(false);
         });
         this._padChooserMenu.actor.hide();
-        Main.uiGroup.add_actor(this._padChooserMenu.actor);
+        Main.uiGroup.add_child(this._padChooserMenu.actor);
 
         this._menuManager = new PopupMenu.PopupMenuManager(this);
         this._menuManager.addMenu(this._padChooserMenu);
@@ -144,7 +144,7 @@ const ActionComboBox = GObject.registerClass({
             this.set_checked(false);
         });
         this._editMenu.actor.hide();
-        Main.uiGroup.add_actor(this._editMenu.actor);
+        Main.uiGroup.add_child(this._editMenu.actor);
 
         this._editMenuManager = new PopupMenu.PopupMenuManager(this);
         this._editMenuManager.addMenu(this._editMenu);
@@ -215,11 +215,11 @@ const ActionEditor = GObject.registerClass({
 
         this._actionComboBox = new ActionComboBox();
         this._actionComboBox.connect('action-selected', this._onActionSelected.bind(this));
-        this.add_actor(this._actionComboBox);
+        this.add_child(this._actionComboBox);
 
         this._keybindingEdit = new KeybindingEntry();
         this._keybindingEdit.connect('keybinding-edited', this._onKeybindingEdited.bind(this));
-        this.add_actor(this._keybindingEdit);
+        this.add_child(this._keybindingEdit);
 
         this._doneButton = new St.Button({
             label: _('Done'),
@@ -227,7 +227,7 @@ const ActionEditor = GObject.registerClass({
             x_expand: false,
         });
         this._doneButton.connect('clicked', this._onEditingDone.bind(this));
-        this.add_actor(this._doneButton);
+        this.add_child(this._doneButton);
     }
 
     _updateKeybindingEntryState() {
@@ -338,7 +338,7 @@ const PadDiagram = GObject.registerClass({
     set editorActor(actor) {
         actor.hide();
         this._editorActor = actor;
-        this.add_actor(actor);
+        this.add_child(actor);
     }
 
     _initLabels() {
@@ -565,7 +565,7 @@ const PadDiagram = GObject.registerClass({
 
         let label = new St.Label();
         this._labels.push({label, action, idx, dir, x, y, arrangement});
-        this.add_actor(label);
+        this.add_child(label);
         return true;
     }
 
@@ -671,7 +671,7 @@ export const PadOsd = GObject.registerClass({
         });
 
         this.connect('destroy', this._onDestroy.bind(this));
-        Main.uiGroup.add_actor(this);
+        Main.uiGroup.add_child(this);
 
         this._monitorIndex = monitorIndex;
         let constraint = new Layout.MonitorConstraint({index: monitorIndex});
@@ -683,13 +683,13 @@ export const PadOsd = GObject.registerClass({
             x_expand: false,
             x_align: Clutter.ActorAlign.CENTER,
         });
-        this.add_actor(this._titleBox);
+        this.add_child(this._titleBox);
 
         const labelBox = new St.BoxLayout({
             style_class: 'pad-osd-title-menu-box',
             vertical: true,
         });
-        this._titleBox.add_actor(labelBox);
+        this._titleBox.add_child(labelBox);
 
         this._titleLabel = new St.Label({
             style: 'font-side: larger; font-weight: bold;',
@@ -697,10 +697,10 @@ export const PadOsd = GObject.registerClass({
         });
         this._titleLabel.clutter_text.set_ellipsize(Pango.EllipsizeMode.NONE);
         this._titleLabel.clutter_text.set_text(padDevice.get_device_name());
-        labelBox.add_actor(this._titleLabel);
+        labelBox.add_child(this._titleLabel);
 
         this._tipLabel = new St.Label({x_align: Clutter.ActorAlign.CENTER});
-        labelBox.add_actor(this._tipLabel);
+        labelBox.add_child(this._tipLabel);
 
         this._updatePadChooser();
 
@@ -714,7 +714,7 @@ export const PadOsd = GObject.registerClass({
             x_expand: true,
             y_expand: true,
         });
-        this.add_actor(this._padDiagram);
+        this.add_child(this._padDiagram);
         this._updateActionLabels();
 
         const buttonBox = new St.Widget({
@@ -723,7 +723,7 @@ export const PadOsd = GObject.registerClass({
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
         });
-        this.add_actor(buttonBox);
+        this.add_child(buttonBox);
         this._editButton = new St.Button({
             label: _('Edit…'),
             style_class: 'button',
@@ -733,7 +733,7 @@ export const PadOsd = GObject.registerClass({
         this._editButton.connect('clicked', () => {
             this.setEditionMode(true);
         });
-        buttonBox.add_actor(this._editButton);
+        buttonBox.add_child(this._editButton);
 
         this._syncEditionMode();
         this._grab = Main.pushModal(this);

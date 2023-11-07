@@ -1014,7 +1014,7 @@ class NMWirelessNetworkItem extends PopupMenu.PopupBaseMenuItem {
             style_class: 'wireless-secure-icon',
             y_align: Clutter.ActorAlign.END,
         });
-        icons.add_actor(this._secureIcon);
+        icons.add_child(this._secureIcon);
 
         this._label = new St.Label();
         this.add_child(this._label);
@@ -1023,7 +1023,7 @@ class NMWirelessNetworkItem extends PopupMenu.PopupBaseMenuItem {
             style_class: 'popup-menu-icon',
             icon_name: 'object-select-symbolic',
         });
-        this.add(this._selectedIcon);
+        this.add_child(this._selectedIcon);
 
         this._network.bind_property('icon-name',
             this._signalIcon, 'icon-name',

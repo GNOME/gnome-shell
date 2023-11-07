@@ -85,7 +85,7 @@ class BaseIcon extends Shell.SquareBin {
         this.iconSize = ICON_SIZE;
         this._iconBin = new St.Bin({x_align: Clutter.ActorAlign.CENTER});
 
-        this._box.add_actor(this._iconBin);
+        this._box.add_child(this._iconBin);
 
         if (params.showLabel) {
             this.label = new St.Label({text: label});
@@ -93,7 +93,7 @@ class BaseIcon extends Shell.SquareBin {
                 x_align: Clutter.ActorAlign.CENTER,
                 y_align: Clutter.ActorAlign.CENTER,
             });
-            this._box.add_actor(this.label);
+            this._box.add_child(this.label);
         } else {
             this.label = null;
         }
@@ -199,7 +199,7 @@ function zoomOutActorAtPos(actor, x, y) {
     actorClone.opacity = 255;
     actorClone.set_pivot_point(0.5, 0.5);
 
-    Main.uiGroup.add_actor(actorClone);
+    Main.uiGroup.add_child(actorClone);
 
     // Avoid monitor edges to not zoom outside the current monitor
     let scaledWidth = width * APPICON_ANIMATION_OUT_SCALE;

@@ -97,7 +97,7 @@ export const AuthList = GObject.registerClass({
             pseudo_class: 'expanded',
         });
 
-        this._scrollView.add_actor(this._box);
+        this._scrollView.add_child(this._box);
         this._items = new Map();
 
         this.connect('key-focus-in', this._moveFocusToItems.bind(this));
@@ -142,7 +142,7 @@ export const AuthList = GObject.registerClass({
         this.removeItem(key);
 
         let item = new AuthListItem(key, text);
-        this._box.add(item);
+        this._box.add_child(item);
 
         this._items.set(key, item);
 

@@ -144,7 +144,7 @@ class Dialog extends St.Widget {
         for (let i in keys)
             this._buttonKeys[keys[i]] = buttonInfo;
 
-        this.buttonLayout.add_actor(button);
+        this.buttonLayout.add_child(button);
 
         return button;
     }
@@ -268,7 +268,7 @@ export const ListSection = GObject.registerClass({
             style_class: 'dialog-list-box',
             vertical: true,
         });
-        this._listScrollView.add_actor(this.list);
+        this._listScrollView.add_child(this.list);
 
         let defaultParams = {
             style_class: 'dialog-list',

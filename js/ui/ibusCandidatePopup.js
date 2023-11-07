@@ -46,7 +46,7 @@ const CandidateArea = GObject.registerClass({
             box.add_child(box._indexLabel);
             box.add_child(box._candidateLabel);
             this._candidateBoxes.push(box);
-            this.add(box);
+            this.add_child(box);
 
             let j = i;
             box.connect('button-release-event', (actor, event) => {
@@ -69,7 +69,7 @@ const CandidateArea = GObject.registerClass({
         });
         this._buttonBox.add_child(this._nextButton);
 
-        this.add(this._buttonBox);
+        this.add_child(this._buttonBox);
 
         this._previousButton.connect('clicked', () => {
             this.emit('previous-page');
@@ -153,7 +153,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
         this.style_class = 'candidate-popup-boxpointer';
 
         this._dummyCursor = new Clutter.Actor({opacity: 0});
-        Main.layoutManager.uiGroup.add_actor(this._dummyCursor);
+        Main.layoutManager.uiGroup.add_child(this._dummyCursor);
 
         Main.layoutManager.addTopChrome(this);
 
@@ -167,16 +167,16 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
             style_class: 'candidate-popup-text',
             visible: false,
         });
-        box.add(this._preeditText);
+        box.add_child(this._preeditText);
 
         this._auxText = new St.Label({
             style_class: 'candidate-popup-text',
             visible: false,
         });
-        box.add(this._auxText);
+        box.add_child(this._auxText);
 
         this._candidateArea = new CandidateArea();
-        box.add(this._candidateArea);
+        box.add_child(this._candidateArea);
 
         this._candidateArea.connect('previous-page', () => {
             this._panelService.page_up();

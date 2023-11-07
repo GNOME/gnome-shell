@@ -33,7 +33,7 @@ export class EntryMenu extends PopupMenu.PopupMenu {
         if (entry instanceof St.PasswordEntry)
             this._makePasswordItem();
 
-        Main.uiGroup.add_actor(this.actor);
+        Main.uiGroup.add_child(this.actor);
         this.actor.hide();
     }
 

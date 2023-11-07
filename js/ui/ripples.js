@@ -82,9 +82,9 @@ export class Ripples {
             throw new Error('Ripples already added');
 
         this._stage = stage;
-        this._stage.add_actor(this._ripple1);
-        this._stage.add_actor(this._ripple2);
-        this._stage.add_actor(this._ripple3);
+        this._stage.add_child(this._ripple1);
+        this._stage.add_child(this._ripple2);
+        this._stage.add_child(this._ripple3);
     }
 
     playAnimation(x, y) {

@@ -847,7 +847,7 @@ class SystemIndicator extends St.BoxLayout {
 
     _addIndicator() {
         const icon = new St.Icon({style_class: 'system-status-icon'});
-        this.add_actor(icon);
+        this.add_child(icon);
         icon.connect('notify::visible', () => this._syncIndicatorsVisible());
         this._syncIndicatorsVisible();
         return icon;

@@ -483,7 +483,7 @@ export const WorkspaceThumbnail = GObject.registerClass({
         clone.connect('destroy', () => {
             this._removeWindowClone(clone.metaWindow);
         });
-        this._contents.add_actor(clone);
+        this._contents.add_child(clone);
 
         if (this._windows.length > 0)
             clone.setStackAbove(this._windows[this._windows.length - 1]);
@@ -605,14 +605,14 @@ export const ThumbnailsBox = GObject.registerClass({
         Shell.util_set_hidden_from_pick(indicator, true);
 
         this._indicator = indicator;
-        this.add_actor(indicator);
+        this.add_child(indicator);
 
         this._monitorIndex = monitorIndex;
 
         this._dropWorkspace = -1;
         this._dropPlaceholderPos = -1;
         this._dropPlaceholder = new St.Bin({style_class: 'placeholder'});
-        this.add_actor(this._dropPlaceholder);
+        this.add_child(this._dropPlaceholder);
         this._spliceIndex = -1;
 
         this._maxThumbnailScale = MAX_THUMBNAIL_SCALE;
@@ -1008,7 +1008,7 @@ export const ThumbnailsBox = GObject.registerClass({
                 this._porthole.x, this._porthole.y,
                 this._porthole.width, this._porthole.height);
             this._thumbnails.push(thumbnail);
-            this.add_actor(thumbnail);
+            this.add_child(thumbnail);
 
             if (this._shouldShow && start > 0 && this._spliceIndex === -1) {
                 // not the initial fill, and not splicing via DND

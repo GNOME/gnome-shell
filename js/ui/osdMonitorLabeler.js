@@ -19,13 +19,13 @@ class OsdMonitorLabel extends St.Widget {
         this._box = new St.BoxLayout({
             vertical: true,
         });
-        this.add_actor(this._box);
+        this.add_child(this._box);
 
         this._label = new St.Label({
             style_class: 'osd-monitor-label',
             text: label,
         });
-        this._box.add(this._label);
+        this._box.add_child(this._label);
 
         Main.uiGroup.add_child(this);
         Main.uiGroup.set_child_above_sibling(this, null);

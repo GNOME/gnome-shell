@@ -116,7 +116,7 @@ export class PointerA11yTimeout {
             let [x, y] = global.get_pointer();
 
             this._pieTimer = new PieTimer();
-            Main.uiGroup.add_actor(this._pieTimer);
+            Main.uiGroup.add_child(this._pieTimer);
             Main.uiGroup.set_child_above_sibling(this._pieTimer, null);
 
             this._pieTimer.start(x, y, timeout);
