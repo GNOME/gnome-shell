@@ -53,7 +53,7 @@ export const SwitcherPopup = GObject.registerClass({
 
         this.connect('destroy', this._onDestroy.bind(this));
 
-        Main.uiGroup.add_actor(this);
+        Main.uiGroup.add_child(this);
 
         Main.layoutManager.connectObject(
             'system-modal-opened', () => this.destroy(), this);
@@ -119,7 +119,7 @@ export const SwitcherPopup = GObject.registerClass({
         this._haveModal = true;
         this._modifierMask = primaryModifier(mask);
 
-        this.add_actor(this._switcherList);
+        this.add_child(this._switcherList);
         this._switcherList.connect('item-activated', this._itemActivated.bind(this));
         this._switcherList.connect('item-entered', this._itemEntered.bind(this));
         this._switcherList.connect('item-removed', this._itemRemoved.bind(this));
@@ -412,8 +412,8 @@ export const SwitcherList = GObject.registerClass({
         });
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.NEVER);
 
-        this._scrollView.add_actor(this._list);
-        this.add_actor(this._scrollView);
+        this._scrollView.add_child(this._list);
+        this.add_child(this._scrollView);
 
         // Those arrows indicate whether scrolling in one direction is possible
         this._leftArrow = new St.DrawingArea({
@@ -431,8 +431,8 @@ export const SwitcherList = GObject.registerClass({
             drawArrow(this._rightArrow, St.Side.RIGHT);
         });
 
-        this.add_actor(this._leftArrow);
-        this.add_actor(this._rightArrow);
+        this.add_child(this._leftArrow);
+        this.add_child(this._rightArrow);
 
         this._items = [];
         this._highlighted = -1;
@@ -447,7 +447,7 @@ export const SwitcherList = GObject.registerClass({
         let bbox = new SwitcherButton(this._squareItems);
 
         bbox.set_child(item);
-        this._list.add_actor(bbox);
+        this._list.add_child(bbox);
 
         bbox.connect('clicked', () => this._onItemClicked(bbox));
         bbox.connect('motion-event', () => this._onItemMotion(bbox));

@@ -19,7 +19,7 @@ export class BackgroundMenu extends PopupMenu.PopupMenu {
 
         this.actor.add_style_class_name('background-menu');
 
-        layoutManager.uiGroup.add_actor(this.actor);
+        layoutManager.uiGroup.add_child(this.actor);
         this.actor.hide();
     }
 }

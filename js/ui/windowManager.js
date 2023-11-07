@@ -391,7 +391,7 @@ export const TilePreview = GObject.registerClass(
 class TilePreview extends St.Widget {
     _init() {
         super._init();
-        global.window_group.add_actor(this);
+        global.window_group.add_child(this);
 
         this._reset();
         this._showing = false;
@@ -487,7 +487,7 @@ class ResizePopup extends St.Widget {
             y_expand: true,
         });
         this.add_child(this._label);
-        Main.uiGroup.add_actor(this);
+        Main.uiGroup.add_child(this);
     }
 
     set(rect, displayW, displayH) {

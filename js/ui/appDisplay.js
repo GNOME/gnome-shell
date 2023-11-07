@@ -527,7 +527,7 @@ var BaseAppView = GObject.registerClass({
         this._scrollTimeoutId = 0;
         this._scrollView.connect('scroll-event', this._onScroll.bind(this));
 
-        this._scrollView.add_actor(this._grid);
+        this._scrollView.add_child(this._grid);
 
         const scroll = this._scrollView.hscroll;
         this._adjustment = scroll.adjustment;
@@ -3143,7 +3143,7 @@ export const AppIcon = GObject.registerClass({
             Main.overview.connectObject('hiding',
                 () => this._menu.close(), this);
 
-            Main.uiGroup.add_actor(this._menu.actor);
+            Main.uiGroup.add_child(this._menu.actor);
             this._menuManager.addMenu(this._menu);
         }
 

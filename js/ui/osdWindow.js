@@ -31,7 +31,7 @@ class OsdWindow extends Clutter.Actor {
         this._hbox = new St.BoxLayout({
             style_class: 'osd-window',
         });
-        this.add_actor(this._hbox);
+        this.add_child(this._hbox);
 
         this._icon = new St.Icon({y_expand: true});
         this._hbox.add_child(this._icon);

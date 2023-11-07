@@ -51,7 +51,7 @@ let currentDraggable = null;
 function _getEventHandlerActor() {
     if (!eventHandlerActor) {
         eventHandlerActor = new Clutter.Actor({width: 0, height: 0, reactive: true});
-        Main.uiGroup.add_actor(eventHandlerActor);
+        Main.uiGroup.add_child(eventHandlerActor);
         // We connect to 'event' rather than 'captured-event' because the capturing phase doesn't happen
         // when you've grabbed the pointer.
         eventHandlerActor.connect('event', (actor, event) => {
@@ -461,7 +461,7 @@ class _Draggable extends Signals.EventEmitter {
             this._dragActor.scale_x = scaledWidth / this._dragOrigWidth;
             this._dragActor.scale_y = scaledHeight / this._dragOrigHeight;
 
-            this._dragOrigParent.remove_actor(this._dragActor);
+            this._dragOrigParent.remove_child(this._dragActor);
             Main.uiGroup.add_child(this._dragActor);
             Main.uiGroup.set_child_above_sibling(this._dragActor, null);
             Shell.util_set_hidden_from_pick(this._dragActor, true);
@@ -817,7 +817,7 @@ class _Draggable extends Signals.EventEmitter {
     _onAnimationComplete(dragActor, eventTime) {
         if (this._dragOrigParent) {
             Main.uiGroup.remove_child(this._dragActor);
-            this._dragOrigParent.add_actor(this._dragActor);
+            this._dragOrigParent.add_child(this._dragActor);
             dragActor.set_scale(this._dragOrigScale, this._dragOrigScale);
             if (this._dragActorHadFixedPos)
                 dragActor.set_position(this._dragOrigX, this._dragOrigY);

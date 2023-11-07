@@ -144,7 +144,7 @@ export const Lightbox = GObject.registerClass({
         else
             this.set({opacity: 0, style_class: 'lightbox'});
 
-        container.add_actor(this);
+        container.add_child(this);
         container.set_child_above_sibling(this, null);
 
         this.connect('destroy', this._onDestroy.bind(this));

@@ -880,7 +880,7 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
             style_class: 'chat-body',
             vertical: true,
         });
-        this._scrollArea.add_actor(this._contentArea);
+        this._scrollArea.add_child(this._contentArea);
 
         this.setExpandedBody(this._scrollArea);
         this.setExpandedLines(CHAT_EXPAND_LINES);
@@ -942,8 +942,8 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
         }
 
         let lineBox = new ChatLineBox();
-        lineBox.add(body);
-        this._contentArea.add_actor(lineBox);
+        lineBox.add_child(body);
+        this._contentArea.add_child(lineBox);
         this._messageActors.set(message, lineBox);
 
         this._updateTimestamp(message);
@@ -966,7 +966,7 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
             timeLabel.x_expand = timeLabel.y_expand = true;
             timeLabel.x_align = timeLabel.y_align = Clutter.ActorAlign.END;
 
-            actor.add_actor(timeLabel);
+            actor.add_child(timeLabel);
         }
     }
 

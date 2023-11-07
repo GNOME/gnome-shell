@@ -453,7 +453,7 @@ class WorkspacesView extends WorkspacesViewBase {
                     metaWorkspace,
                     this._monitorIndex,
                     this._overviewAdjustment);
-                this.add_actor(workspace);
+                this.add_child(workspace);
                 this._workspaces[j] = workspace;
             } else  {
                 workspace = this._workspaces[j];
@@ -537,7 +537,7 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
         super._init(monitorIndex, overviewAdjustment);
         this._workspace =
             new Workspace.Workspace(null, monitorIndex, overviewAdjustment);
-        this.add_actor(this._workspace);
+        this.add_child(this._workspace);
     }
 
     _updateWorkspaceMode() {
@@ -1044,7 +1044,7 @@ class WorkspacesDisplay extends St.Widget {
                     this._scrollAdjustment,
                     this._fitModeAdjustment,
                     this._overviewAdjustment);
-                Main.layoutManager.overviewGroup.add_actor(view);
+                Main.layoutManager.overviewGroup.add_child(view);
             }
 
             this._workspacesViews.push(view);

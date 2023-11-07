@@ -2664,7 +2664,7 @@ class SelectArea extends St.Widget {
             x: 0,
             y: 0,
         });
-        Main.uiGroup.add_actor(this);
+        Main.uiGroup.add_child(this);
 
         this._grabHelper = new GrabHelper.GrabHelper(this);
 
@@ -2678,7 +2678,7 @@ class SelectArea extends St.Widget {
             style_class: 'select-area-rubberband',
             visible: false,
         });
-        this.add_actor(this._rubberband);
+        this.add_child(this._rubberband);
     }
 
     async selectAsync() {
@@ -2892,7 +2892,7 @@ class PickPixel extends St.Widget {
         this._color = null;
         this._inPick = false;
 
-        Main.uiGroup.add_actor(this);
+        Main.uiGroup.add_child(this);
 
         this._grabHelper = new GrabHelper.GrabHelper(this);
 
@@ -2925,7 +2925,7 @@ class PickPixel extends St.Widget {
             effect: this._recolorEffect,
             visible: false,
         });
-        Main.uiGroup.add_actor(this._previewCursor);
+        Main.uiGroup.add_child(this._previewCursor);
     }
 
     async pickAsync() {

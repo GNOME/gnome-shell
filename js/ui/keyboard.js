@@ -493,13 +493,13 @@ const Key = GObject.registerClass({
             let key = this._makeKey(extendedKey);
 
             key.extendedKey = extendedKey;
-            this._extendedKeyboard.add(key);
+            this._extendedKeyboard.add_child(key);
 
             key.set_size(...this.keyButton.allocation.get_size());
             this.keyButton.connect('notify::allocation',
                 () => key.set_size(...this.keyButton.allocation.get_size()));
         }
-        this._boxPointer.bin.add_actor(this._extendedKeyboard);
+        this._boxPointer.bin.add_child(this._extendedKeyboard);
     }
 
     get subkeys() {
@@ -1387,7 +1387,7 @@ export const Keyboard = GObject.registerClass({
         this._keyboardController.destroy();
 
         Main.layoutManager.untrackChrome(this);
-        Main.layoutManager.keyboardBox.remove_actor(this);
+        Main.layoutManager.keyboardBox.remove_child(this);
         Main.layoutManager.keyboardBox.hide();
 
         if (this._languagePopup) {
@@ -1399,7 +1399,7 @@ export const Keyboard = GObject.registerClass({
     }
 
     _setupKeyboard() {
-        Main.layoutManager.keyboardBox.add_actor(this);
+        Main.layoutManager.keyboardBox.add_child(this);
         Main.layoutManager.trackChrome(this);
 
         this._keyboardController = new KeyboardController();

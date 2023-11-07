@@ -63,7 +63,7 @@ class RunDialog extends ModalDialog.ModalDialog {
         let title = _('Run a Command');
 
         let content = new Dialog.MessageDialogContent({title});
-        this.contentLayout.add_actor(content);
+        this.contentLayout.add_child(content);
 
         let entry = new St.Entry({
             style_class: 'run-dialog-entry',

@@ -131,7 +131,7 @@ export const Button = GObject.registerClass({
             this.menu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
             this.menu.actor.connect('key-press-event', this._onMenuKeyPress.bind(this));
 
-            Main.uiGroup.add_actor(this.menu.actor);
+            Main.uiGroup.add_child(this.menu.actor);
             this.menu.actor.hide();
         }
         this.emit('menu-set');
@@ -227,7 +227,7 @@ class SystemIndicator extends St.BoxLayout {
 
     _addIndicator() {
         let icon = new St.Icon({style_class: 'system-status-icon'});
-        this.add_actor(icon);
+        this.add_child(icon);
         icon.connect('notify::visible', this._syncIndicatorsVisible.bind(this));
         this._syncIndicatorsVisible();
         return icon;

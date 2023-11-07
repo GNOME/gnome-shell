@@ -26,7 +26,7 @@ class WorkspaceSwitcherPopup extends Clutter.Actor {
         const constraint = new Layout.MonitorConstraint({primary: true});
         this.add_constraint(constraint);
 
-        Main.uiGroup.add_actor(this);
+        Main.uiGroup.add_child(this);
 
         this._timeoutId = 0;
 
@@ -60,7 +60,7 @@ class WorkspaceSwitcherPopup extends Clutter.Actor {
             if (i === this._activeWorkspaceIndex)
                 indicator.add_style_pseudo_class('active');
 
-            this._list.add_actor(indicator);
+            this._list.add_child(indicator);
         }
     }
 

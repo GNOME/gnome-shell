@@ -48,7 +48,7 @@ const NotificationsBox = GObject.registerClass({
             vertical: true,
             style_class: 'unlock-dialog-notifications-container',
         });
-        this._scrollView.add_actor(this._notificationBox);
+        this._scrollView.add_child(this._notificationBox);
 
         this.add_child(this._scrollView);
 
@@ -98,7 +98,7 @@ const NotificationsBox = GObject.registerClass({
             x_expand: true,
             x_align: Clutter.ActorAlign.START,
         });
-        textBox.add(title);
+        textBox.add_child(title);
 
         let count = source.unseenCount;
         let countLabel = new St.Label({
@@ -106,7 +106,7 @@ const NotificationsBox = GObject.registerClass({
             visible: count > 1,
             style_class: 'unlock-dialog-notification-count-text',
         });
-        textBox.add(countLabel);
+        textBox.add_child(countLabel);
 
         box.visible = count !== 0;
         return [title, countLabel];
@@ -115,7 +115,7 @@ const NotificationsBox = GObject.registerClass({
     _makeNotificationDetailedSource(source, box) {
         let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
         let sourceBin = new St.Bin({child: sourceActor});
-        box.add(sourceBin);
+        box.add_child(sourceBin);
 
         let textBox = new St.BoxLayout({vertical: true});
         box.add_child(textBox);
@@ -124,7 +124,7 @@ const NotificationsBox = GObject.registerClass({
             text: source.title.replace(/\n/g, ' '),
             style_class: 'unlock-dialog-notification-label',
         });
-        textBox.add(title);
+        textBox.add_child(title);
 
         let visible = false;
         for (let i = 0; i < source.notifications.length; i++) {
@@ -143,7 +143,7 @@ const NotificationsBox = GObject.registerClass({
 
             let label = new St.Label({style_class: 'unlock-dialog-notification-count-text'});
             label.clutter_text.set_markup(`<b>${n.title}</b> ${body}`);
-            textBox.add(label);
+            textBox.add_child(label);
 
             visible = true;
         }

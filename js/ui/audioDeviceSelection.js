@@ -111,21 +111,21 @@ const AudioDeviceSelectionDialog = GObject.registerClass({
             style_class: 'audio-selection-device-icon',
             icon_name: this._getDeviceIcon(device),
         });
-        box.add(icon);
+        box.add_child(icon);
 
         const label = new St.Label({
             style_class: 'audio-selection-device-label',
             text: this._getDeviceLabel(device),
             x_align: Clutter.ActorAlign.CENTER,
         });
-        box.add(label);
+        box.add_child(label);
 
         const button = new St.Button({
             style_class: 'audio-selection-device',
             can_focus: true,
             child: box,
         });
-        this._selectionBox.add(button);
+        this._selectionBox.add_child(button);
 
         button.connect('clicked', () => {
             this.emit('device-selected', device);

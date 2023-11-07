@@ -61,7 +61,7 @@ export const ModalDialog = GObject.registerClass({
         this._shouldFadeOut = params.shouldFadeOut;
         this._destroyOnClose = params.destroyOnClose;
 
-        Main.layoutManager.modalDialogGroup.add_actor(this);
+        Main.layoutManager.modalDialogGroup.add_child(this);
 
         const constraint = new Clutter.BindConstraint({
             source: global.stage,
@@ -77,7 +77,7 @@ export const ModalDialog = GObject.registerClass({
         this._backgroundBin = new St.Bin({child: this.backgroundStack});
         this._monitorConstraint = new Layout.MonitorConstraint();
         this._backgroundBin.add_constraint(this._monitorConstraint);
-        this.add_actor(this._backgroundBin);
+        this.add_child(this._backgroundBin);
 
         this.dialogLayout = new Dialog.Dialog(this.backgroundStack, params.styleClass);
         this.contentLayout = this.dialogLayout.contentLayout;
@@ -91,7 +91,7 @@ export const ModalDialog = GObject.registerClass({
             this._lightbox.highlight(this._backgroundBin);
 
             this._eventBlocker = new Clutter.Actor({reactive: true});
-            this.backgroundStack.add_actor(this._eventBlocker);
+            this.backgroundStack.add_child(this._eventBlocker);
         }
 
         global.focus_manager.add_group(this.dialogLayout);

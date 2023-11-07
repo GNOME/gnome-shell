@@ -73,7 +73,7 @@ const AppMenuButton = GObject.registerClass({
         this._targetApp = null;
 
         let bin = new St.Bin({name: 'appMenu'});
-        this.add_actor(bin);
+        this.add_child(bin);
 
         this.bind_property('reactive', this, 'can-focus', 0);
         this.reactive = false;
@@ -91,7 +91,7 @@ const AppMenuButton = GObject.registerClass({
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._iconBox.add_effect(iconEffect);
-        this._container.add_actor(this._iconBox);
+        this._container.add_child(this._iconBox);
 
         this._iconBox.connect('style-changed', () => {
             let themeNode = this._iconBox.get_theme_node();
@@ -102,7 +102,7 @@ const AppMenuButton = GObject.registerClass({
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
         });
-        this._container.add_actor(this._label);
+        this._container.add_child(this._label);
 
         this._visible = !Main.overview.visible;
         if (!this._visible)
@@ -115,7 +115,7 @@ const AppMenuButton = GObject.registerClass({
             animate: true,
             hideOnStop: true,
         });
-        this._container.add_actor(this._spinner);
+        this._container.add_child(this._spinner);
 
         let menu = new AppMenu(this);
         this.setMenu(menu);
@@ -677,7 +677,7 @@ class Panel extends St.Widget {
             this.remove_style_pseudo_class('overview');
         });
 
-        Main.layoutManager.panelBox.add(this);
+        Main.layoutManager.panelBox.add_child(this);
         Main.ctrlAltTabManager.addGroup(this,
             _('Top Bar'), 'focus-top-bar-symbolic',
             {sortGroup: CtrlAltTab.SortGroup.TOP});
@@ -919,7 +919,7 @@ class Panel extends St.Widget {
 
         let parent = container.get_parent();
         if (parent)
-            parent.remove_actor(container);
+            parent.remove_child(container);
 
 
         box.insert_child_at_index(container, position);

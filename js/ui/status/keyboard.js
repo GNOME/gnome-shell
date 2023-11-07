@@ -35,7 +35,7 @@ class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
         });
         this.indicator = new St.Label({text: shortName});
         this.add_child(this.label);
-        this.add(this.indicator);
+        this.add_child(this.indicator);
         this.label_actor = this.label;
     }
 });
@@ -922,7 +922,7 @@ class InputSourceIndicator extends PanelMenu.Button {
             });
 
             this.menu.addMenuItem(menuItem, menuIndex++);
-            this._container.add_actor(indicatorLabel);
+            this._container.add_child(indicatorLabel);
         }
     }
 

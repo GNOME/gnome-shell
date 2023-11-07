@@ -77,7 +77,7 @@ export const PageIndicators = GObject.registerClass({
                     this._updateIndicator(indicator, pageIndex);
                 });
                 this._updateIndicator(indicator, pageIndex);
-                this.add_actor(indicator);
+                this.add_child(indicator);
             }
         } else {
             let children = this.get_children().splice(diff);

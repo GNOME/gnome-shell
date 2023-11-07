@@ -94,7 +94,7 @@ class ListSearchResult extends SearchResult {
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](this.ICON_SIZE);
         if (icon)
-            titleBox.add(icon);
+            titleBox.add_child(icon);
 
         let title = new St.Label({
             text: this.metaInfo['name'],
@@ -171,7 +171,7 @@ const SearchResultsBase = GObject.registerClass({
         this.add_child(this._resultDisplayBin);
 
         let separator = new St.Widget({style_class: 'search-section-separator'});
-        this.add(separator);
+        this.add_child(separator);
 
         this._resultDisplays = {};
 
@@ -325,7 +325,7 @@ class ListSearchResults extends SearchResultsBase {
     }
 
     _addItem(display) {
-        this._content.add_actor(display);
+        this._content.add_child(display);
     }
 
     getFirstResult() {
@@ -575,7 +575,7 @@ export const SearchResultsView = GObject.registerClass({
             y_expand: true,
         });
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
-        this._scrollView.add_actor(this._content);
+        this._scrollView.add_child(this._content);
 
         let action = new Clutter.PanAction({interpolate: true});
         action.connect('pan', this._onPan.bind(this));
@@ -590,7 +590,7 @@ export const SearchResultsView = GObject.registerClass({
         });
         this._statusBin = new St.Bin({y_expand: true});
         this.add_child(this._statusBin);
-        this._statusBin.add_actor(this._statusText);
+        this._statusBin.add_child(this._statusText);
 
         this._highlightDefault = false;
         this._defaultResult = null;
@@ -770,7 +770,7 @@ export const SearchResultsView = GObject.registerClass({
 
         providerDisplay.connect('notify::focus-child', this._focusChildChanged.bind(this));
         providerDisplay.hide();
-        this._content.add(providerDisplay);
+        this._content.add_child(providerDisplay);
         provider.display = providerDisplay;
     }
 
@@ -937,12 +937,12 @@ class ProviderInfo extends St.Button {
 
         this._moreLabel = new St.Label({x_align: Clutter.ActorAlign.START});
 
-        detailsBox.add_actor(nameLabel);
-        detailsBox.add_actor(this._moreLabel);
+        detailsBox.add_child(nameLabel);
+        detailsBox.add_child(this._moreLabel);
 
 
-        this._content.add_actor(icon);
-        this._content.add_actor(detailsBox);
+        this._content.add_child(icon);
+        this._content.add_child(detailsBox);
     }
 
     get PROVIDER_ICON_SIZE() {
