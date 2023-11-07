@@ -870,17 +870,17 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
             this.emit('unfocused');
         });
 
+        this._contentArea = new St.BoxLayout({
+            style_class: 'chat-body',
+            vertical: true,
+        });
         this._scrollArea = new St.ScrollView({
             style_class: 'chat-scrollview vfade',
             vscrollbar_policy: St.PolicyType.AUTOMATIC,
             hscrollbar_policy: St.PolicyType.NEVER,
             visible: this.expanded,
+            child: this._contentArea,
         });
-        this._contentArea = new St.BoxLayout({
-            style_class: 'chat-body',
-            vertical: true,
-        });
-        this._scrollArea.add_child(this._contentArea);
 
         this.setExpandedBody(this._scrollArea);
         this.setExpandedLines(CHAT_EXPAND_LINES);

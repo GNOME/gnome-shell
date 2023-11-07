@@ -168,10 +168,8 @@ const UserList = GObject.registerClass({
             style_class: 'login-dialog-user-list-view',
             x_expand: true,
             y_expand: true,
+            hscrollbar_policy: St.PolicyType.NEVER,
         });
-        this.set_policy(
-            St.PolicyType.NEVER,
-            St.PolicyType.AUTOMATIC);
 
         this._box = new St.BoxLayout({
             vertical: true,
@@ -179,7 +177,7 @@ const UserList = GObject.registerClass({
             pseudo_class: 'expanded',
         });
 
-        this.add_child(this._box);
+        this.child = this._box;
         this._items = {};
     }
 
@@ -226,7 +224,7 @@ const UserList = GObject.registerClass({
     scrollToItem(item) {
         let box = item.get_allocation_box();
 
-        let adjustment = this.get_vscroll_bar().get_adjustment();
+        const {adjustment} = this.vscroll;
 
         let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
         adjustment.ease(value, {
@@ -238,7 +236,7 @@ const UserList = GObject.registerClass({
     jumpToItem(item) {
         let box = item.get_allocation_box();
 
-        let adjustment = this.get_vscroll_bar().get_adjustment();
+        const {adjustment} = this.vscroll;
 
         let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
 
@@ -487,17 +485,16 @@ export const LoginDialog = GObject.registerClass({
 
         this._userSelectionBox.add_child(this._notListedButton);
 
+        const bannerBox = new St.BoxLayout({vertical: true});
+
         this._bannerView = new St.ScrollView({
             style_class: 'login-dialog-banner-view',
             opacity: 0,
-            vscrollbar_policy: St.PolicyType.AUTOMATIC,
             hscrollbar_policy: St.PolicyType.NEVER,
+            child: bannerBox,
         });
         this.add_child(this._bannerView);
 
-        let bannerBox = new St.BoxLayout({vertical: true});
-
-        this._bannerView.add_child(bannerBox);
         this._bannerLabel = new St.Label({
             style_class: 'login-dialog-banner',
             text: '',

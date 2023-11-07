@@ -573,9 +573,9 @@ export const SearchResultsView = GObject.registerClass({
             style_class: 'search-display vfade',
             x_expand: true,
             y_expand: true,
+            hscrollbar_policy: St.PolicyType.NEVER,
+            child: this._content,
         });
-        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
-        this._scrollView.add_child(this._content);
 
         let action = new Clutter.PanAction({interpolate: true});
         action.connect('pan', this._onPan.bind(this));

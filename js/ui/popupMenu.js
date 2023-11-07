@@ -1016,9 +1016,9 @@ export class PopupSubMenu extends PopupMenuBase {
             style_class: 'popup-sub-menu',
             hscrollbar_policy: St.PolicyType.NEVER,
             vscrollbar_policy: St.PolicyType.NEVER,
+            child: this.box,
         });
 
-        this.actor.add_child(this.box);
         this.actor._delegate = this;
         this.actor.clip_to_allocation = true;
         this.actor.connect('key-press-event', this._onKeyPressEvent.bind(this));
