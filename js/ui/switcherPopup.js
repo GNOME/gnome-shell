@@ -409,10 +409,11 @@ export const SwitcherList = GObject.registerClass({
         this._scrollView = new St.ScrollView({
             style_class: 'hfade',
             enable_mouse_scrolling: false,
+            hscrollbar_policy: St.PolicyType.NEVER,
+            vscrollbar_policy: St.PolicyType.NEVER,
+            child: this._list,
         });
-        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.NEVER);
 
-        this._scrollView.add_child(this._list);
         this.add_child(this._scrollView);
 
         // Those arrows indicate whether scrolling in one direction is possible

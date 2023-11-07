@@ -954,8 +954,8 @@ class CalendarMessageList extends St.Widget {
             style_class: 'vfade',
             overlay_scrollbars: true,
             x_expand: true, y_expand: true,
+            hscrollbar_policy: St.PolicyType.NEVER,
         });
-        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
         box.add_child(this._scrollView);
 
         let hbox = new St.BoxLayout({style_class: 'message-list-controls'});
@@ -1008,7 +1008,7 @@ class CalendarMessageList extends St.Widget {
             'actor-added', this._sync.bind(this),
             'actor-removed', this._sync.bind(this),
             this);
-        this._scrollView.add_child(this._sectionList);
+        this._scrollView.child = this._sectionList;
 
         this._mediaSection = new Mpris.MediaSection();
         this._addSection(this._mediaSection);

@@ -259,16 +259,16 @@ export const ListSection = GObject.registerClass({
     _init(params) {
         this._title = new St.Label({style_class: 'dialog-list-title'});
 
-        this._listScrollView = new St.ScrollView({
-            style_class: 'dialog-list-scrollview',
-            hscrollbar_policy: St.PolicyType.NEVER,
-        });
-
         this.list = new St.BoxLayout({
             style_class: 'dialog-list-box',
             vertical: true,
         });
-        this._listScrollView.add_child(this.list);
+
+        this._listScrollView = new St.ScrollView({
+            style_class: 'dialog-list-scrollview',
+            hscrollbar_policy: St.PolicyType.NEVER,
+            child: this.list,
+        });
 
         let defaultParams = {
             style_class: 'dialog-list',

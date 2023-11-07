@@ -162,9 +162,8 @@ const Notebook = GObject.registerClass({
         labelBox.add_child(label);
         this.tabControls.add_child(labelBox);
 
-        let scrollview = new St.ScrollView({y_expand: true});
-        scrollview.get_hscroll_bar().hide();
-        scrollview.add_child(child);
+        const scrollview = new St.ScrollView({y_expand: true, child});
+        scrollview.hscroll.hide();
 
         const tabData = {
             child,
@@ -395,7 +394,7 @@ class ObjInspector extends St.ScrollView {
 
         this._parentList = [];
 
-        this.get_hscroll_bar().hide();
+        this.hscroll.hide();
         this._container = new St.BoxLayout({
             name: 'LookingGlassPropertyInspector',
             style_class: 'lg-dialog',
@@ -403,7 +402,7 @@ class ObjInspector extends St.ScrollView {
             x_expand: true,
             y_expand: true,
         });
-        this.add_child(this._container);
+        this.child = this._container;
 
         this._lookingGlass = lookingGlass;
     }

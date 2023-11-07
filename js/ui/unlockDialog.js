@@ -43,13 +43,15 @@ const NotificationsBox = GObject.registerClass({
             name: 'unlockDialogNotifications',
         });
 
-        this._scrollView = new St.ScrollView({hscrollbar_policy: St.PolicyType.NEVER});
         this._notificationBox = new St.BoxLayout({
             vertical: true,
             style_class: 'unlock-dialog-notifications-container',
         });
-        this._scrollView.add_child(this._notificationBox);
 
+        this._scrollView = new St.ScrollView({
+            hscrollbar_policy: St.PolicyType.NEVER,
+            child: this._notificationBox,
+        });
         this.add_child(this._scrollView);
 
         this._settings = new Gio.Settings({

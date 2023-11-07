@@ -520,14 +520,14 @@ var BaseAppView = GObject.registerClass({
             y_expand: true,
             reactive: true,
             enable_mouse_scrolling: false,
+            hscrollbar_policy: St.PolicyType.EXTERNAL,
+            vscrollbar_policy: St.PolicyType.NEVER,
+            child: this._grid,
         });
-        this._scrollView.set_policy(St.PolicyType.EXTERNAL, St.PolicyType.NEVER);
 
         this._canScroll = true; // limiting scrolling speed
         this._scrollTimeoutId = 0;
         this._scrollView.connect('scroll-event', this._onScroll.bind(this));
-
-        this._scrollView.add_child(this._grid);
 
         const scroll = this._scrollView.hscroll;
         this._adjustment = scroll.adjustment;
