@@ -55,36 +55,16 @@ enum
 
 static GParamSpec *props[N_PROPS] = { NULL, };
 
-static void clutter_container_iface_init (ClutterContainerIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (StBin, st_bin, ST_TYPE_WIDGET,
-                         G_ADD_PRIVATE (StBin)
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                clutter_container_iface_init));
+G_DEFINE_TYPE_WITH_PRIVATE (StBin, st_bin, ST_TYPE_WIDGET)
 
 static void
-st_bin_add (ClutterContainer *container,
-            ClutterActor     *actor)
+st_bin_dispose (GObject *object)
 {
-  st_bin_set_child (ST_BIN (container), actor);
-}
+  StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (object));
 
-static void
-st_bin_remove (ClutterContainer *container,
-               ClutterActor     *actor)
-{
-  StBin *bin = ST_BIN (container);
-  StBinPrivate *priv = st_bin_get_instance_private (bin);
+  g_clear_weak_pointer (&priv->child);
 
-  if (priv->child == actor)
-    st_bin_set_child (bin, NULL);
-}
-
-static void
-clutter_container_iface_init (ClutterContainerIface *iface)
-{
-  iface->add = st_bin_add;
-  iface->remove = st_bin_remove;
+  G_OBJECT_CLASS (st_bin_parent_class)->dispose (object);
 }
 
 static double
@@ -197,18 +177,6 @@ st_bin_get_preferred_height (ClutterActor *self,
 }
 
 static void
-st_bin_destroy (ClutterActor *actor)
-{
-  StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (actor));
-
-  if (priv->child)
-    clutter_actor_destroy (priv->child);
-  g_assert (priv->child == NULL);
-
-  CLUTTER_ACTOR_CLASS (st_bin_parent_class)->destroy (actor);
-}
-
-static void
 st_bin_popup_menu (StWidget *widget)
 {
   StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (widget));
@@ -291,13 +259,13 @@ st_bin_class_init (StBinClass *klass)
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
 
+  gobject_class->dispose = st_bin_dispose;
   gobject_class->set_property = st_bin_set_property;
   gobject_class->get_property = st_bin_get_property;
 
   actor_class->get_preferred_width = st_bin_get_preferred_width;
   actor_class->get_preferred_height = st_bin_get_preferred_height;
   actor_class->allocate = st_bin_allocate;
-  actor_class->destroy = st_bin_destroy;
 
   widget_class->popup_menu = st_bin_popup_menu;
   widget_class->navigate_focus = st_bin_navigate_focus;
@@ -318,8 +286,51 @@ st_bin_class_init (StBinClass *klass)
 }
 
 static void
+set_child (StBin *bin, ClutterActor *child)
+{
+  StBinPrivate *priv = st_bin_get_instance_private (bin);
+
+  if (!g_set_weak_pointer (&priv->child, child))
+    return;
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (bin));
+
+  g_object_notify_by_pspec (G_OBJECT (bin), props[PROP_CHILD]);
+}
+
+static void
+actor_added (ClutterActor *container,
+             ClutterActor *actor)
+{
+  StBin *bin = ST_BIN (container);
+  StBinPrivate *priv = st_bin_get_instance_private (bin);
+
+  if (priv->child)
+    g_warning ("Attempting to add an actor of type %s to "
+               "an StBin, but the bin already contains a %s. "
+               "Was add_child() used repeatedly?",
+               G_OBJECT_TYPE_NAME (actor),
+               G_OBJECT_TYPE_NAME (priv->child));
+
+  set_child (ST_BIN (container), actor);
+}
+
+static void
+actor_removed (ClutterActor *container,
+               ClutterActor *actor)
+{
+  StBin *bin = ST_BIN (container);
+  StBinPrivate *priv = st_bin_get_instance_private (bin);
+
+  if (priv->child == actor)
+    set_child (bin, NULL);
+}
+
+static void
 st_bin_init (StBin *bin)
 {
+  g_signal_connect (bin, "actor-added", G_CALLBACK (actor_added), NULL);
+  g_signal_connect (bin, "actor-removed", G_CALLBACK (actor_removed), NULL);
 }
 
 /**
@@ -355,36 +366,15 @@ st_bin_set_child (StBin        *bin,
 
   priv = st_bin_get_instance_private (bin);
 
-  if (priv->child == child)
-    return;
-
-  if (child)
-    {
-      ClutterActor *parent = clutter_actor_get_parent (child);
-
-      if (parent)
-        {
-          g_warning ("%s: The provided 'child' actor %p already has a "
-                     "(different) parent %p and can't be made a child of %p.",
-                     G_STRFUNC, child, parent, bin);
-          return;
-        }
-    }
+  g_object_freeze_notify (G_OBJECT (bin));
 
   if (priv->child)
     clutter_actor_remove_child (CLUTTER_ACTOR (bin), priv->child);
 
-  priv->child = NULL;
-
   if (child)
-    {
-      priv->child = child;
-      clutter_actor_add_child (CLUTTER_ACTOR (bin), child);
-    }
+    clutter_actor_add_child (CLUTTER_ACTOR (bin), child);
 
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (bin));
-
-  g_object_notify_by_pspec (G_OBJECT (bin), props[PROP_CHILD]);
+  g_object_thaw_notify (G_OBJECT (bin));
 }
 
 /**
@@ -398,7 +388,11 @@ st_bin_set_child (StBin        *bin,
 ClutterActor *
 st_bin_get_child (StBin *bin)
 {
+  StBinPrivate *priv;
+
   g_return_val_if_fail (ST_IS_BIN (bin), NULL);
 
-  return ((StBinPrivate *)st_bin_get_instance_private (bin))->child;
+  priv = st_bin_get_instance_private (bin);
+
+  return priv->child;
 }
