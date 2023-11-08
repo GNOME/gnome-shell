@@ -24,15 +24,20 @@
 #error "Only <st/st.h> can be included directly.h"
 #endif
 
-#ifndef __ST_SCROLL_VIEW_H__
-#define __ST_SCROLL_VIEW_H__
+#pragma once
 
-#include <st/st-bin.h>
+#include <st/st-widget.h>
+#include <st/st-scrollable.h>
 
 G_BEGIN_DECLS
 
 #define ST_TYPE_SCROLL_VIEW            (st_scroll_view_get_type())
-G_DECLARE_FINAL_TYPE (StScrollView, st_scroll_view, ST, SCROLL_VIEW, StBin)
+G_DECLARE_DERIVABLE_TYPE (StScrollView, st_scroll_view, ST, SCROLL_VIEW, StWidget)
+
+struct _StScrollViewClass
+{
+  StWidgetClass parent_class;
+};
 
 typedef enum
 {
@@ -42,23 +47,11 @@ typedef enum
   ST_POLICY_EXTERNAL,
 } StPolicyType;
 
-typedef struct _StScrollViewPrivate   StScrollViewPrivate;
-
-/**
- * StScrollView:
- *
- * The contents of this structure are private and should only be accessed
- * through the public API.
- */
-struct _StScrollView
-{
-  /*< private >*/
-  StBin parent_instance;
-
-  StScrollViewPrivate *priv;
-};
-
 StWidget *st_scroll_view_new (void);
+
+StScrollable *st_scroll_view_get_child           (StScrollView *scroll);
+void          st_scroll_view_set_child           (StScrollView *scroll,
+                                                  StScrollable *child);
 
 ClutterActor *st_scroll_view_get_hscroll_bar     (StScrollView *scroll);
 ClutterActor *st_scroll_view_get_vscroll_bar     (StScrollView *scroll);
@@ -86,5 +79,3 @@ void          st_scroll_view_update_fade_effect  (StScrollView  *scroll,
                                                   ClutterMargin *fade_margins);
 
 G_END_DECLS
-
-#endif /* __ST_SCROLL_VIEW_H__ */
