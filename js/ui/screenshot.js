@@ -771,8 +771,8 @@ class UIWindowSelectorLayout extends Workspace.WorkspaceLayout {
     }
 });
 
-const UIWindowSelectorWindow = GObject.registerClass(
-class UIWindowSelectorWindow extends St.Button {
+const UIWindowSelectorWindowContent = GObject.registerClass(
+class UIWindowSelectorWindowContent extends Clutter.Actor {
     _init(actor, params) {
         super._init(params);
 
@@ -785,19 +785,20 @@ class UIWindowSelectorWindow extends St.Button {
         });
         this.add_child(this._actor);
 
-        this._border = new St.Bin({style_class: 'screenshot-ui-window-selector-window-border'});
+        this._border = new St.Bin({
+            style_class: 'screenshot-ui-window-selector-window-border',
+            child: new St.Icon({
+                icon_name: 'object-select-symbolic',
+                style_class: 'screenshot-ui-window-selector-check',
+                x_align: Clutter.ActorAlign.CENTER,
+                y_align: Clutter.ActorAlign.CENTER,
+            }),
+        });
         this._border.connect('style-changed', () => {
             this._borderSize =
                 this._border.get_theme_node().get_border_width(St.Side.TOP);
         });
         this.add_child(this._border);
-
-        this._border.child = new St.Icon({
-            icon_name: 'object-select-symbolic',
-            style_class: 'screenshot-ui-window-selector-check',
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER,
-        });
 
         this._cursor = null;
         this._cursorPoint = {x: 0, y: 0};
@@ -808,26 +809,6 @@ class UIWindowSelectorWindow extends St.Button {
 
     get boundingBox() {
         return this._boundingBox;
-    }
-
-    get windowCenter() {
-        const boundingBox = this.boundingBox;
-        return {
-            x: boundingBox.x + boundingBox.width / 2,
-            y: boundingBox.y + boundingBox.height / 2,
-        };
-    }
-
-    chromeHeights() {
-        return [0, 0];
-    }
-
-    chromeWidths() {
-        return [0, 0];
-    }
-
-    overlapHeights() {
-        return [0, 0];
     }
 
     get cursorPoint() {
@@ -940,6 +921,64 @@ class UIWindowSelectorWindow extends St.Button {
             return;
 
         this._cursor.visible = visible;
+    }
+});
+
+const UIWindowSelectorWindow = GObject.registerClass(
+class UIWindowSelectorWindow extends St.Button {
+    _init(actor, params) {
+        super._init({
+            child: new UIWindowSelectorWindowContent(actor),
+            ...params,
+        });
+    }
+
+    get boundingBox() {
+        return this.child.boundingBox;
+    }
+
+    get windowCenter() {
+        const boundingBox = this.boundingBox;
+        return {
+            x: boundingBox.x + boundingBox.width / 2,
+            y: boundingBox.y + boundingBox.height / 2,
+        };
+    }
+
+    chromeHeights() {
+        return [0, 0];
+    }
+
+    chromeWidths() {
+        return [0, 0];
+    }
+
+    overlapHeights() {
+        return [0, 0];
+    }
+
+    get cursorPoint() {
+        return this.child.cursorPoint;
+    }
+
+    get bufferScale() {
+        return this.child.bufferScale;
+    }
+
+    get windowContent() {
+        return this.child.windowContent;
+    }
+
+    addCursorTexture(content, point, scale) {
+        this.child.addCursorTexture(content, point, scale);
+    }
+
+    getCursorTexture() {
+        return this.child.getCursorTexture();
+    }
+
+    setCursorVisible(visible) {
+        this.child.setCursorVisible(visible);
     }
 });
 
