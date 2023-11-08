@@ -1641,15 +1641,20 @@ export const Keyboard = GObject.registerClass({
         this._deleteEnabled = enabled;
         this._timesDeleted = 0;
 
-        if (!Main.inputMethod.currentFocus ||
-            Main.inputMethod.hasPreedit() ||
-            Main.inputMethod.terminalMode) {
-            /* If there is no IM focus or are in the middle of preedit,
-             * fallback to keypresses */
-            if (enabled)
-                this._keyboardController.keyvalPress(Clutter.KEY_BackSpace);
-            else
-                this._keyboardController.keyvalRelease(Clutter.KEY_BackSpace);
+        /* If there is no IM focus or are in the middle of preedit, fallback to
+         * keypresses */
+        if (enabled &&
+            (!Main.inputMethod.currentFocus ||
+             Main.inputMethod.hasPreedit() ||
+             Main.inputMethod.terminalMode)) {
+            this._keyboardController.keyvalPress(Clutter.KEY_BackSpace);
+            this._backspacePressed = true;
+            return;
+        }
+
+        if (!enabled && this._backspacePressed) {
+            this._keyboardController.keyvalRelease(Clutter.KEY_BackSpace);
+            delete this._backspacePressed;
             return;
         }
 
