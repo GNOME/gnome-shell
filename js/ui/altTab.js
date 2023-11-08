@@ -965,7 +965,7 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
 
             let clone = _createWindowClone(mutterWindow, thumbnailSize);
             this._thumbnailBins[i].set_height(binHeight);
-            this._thumbnailBins[i].add_child(clone);
+            this._thumbnailBins[i].child = clone;
 
             mutterWindow.connectObject('destroy',
                 source => this._removeThumbnail(source, clone), this);

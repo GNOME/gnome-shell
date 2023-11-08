@@ -1469,16 +1469,18 @@ class ZoomRegion {
     // Private methods //
 
     _createActors() {
+        // Add a group to clip the contents of the magnified view.
+        const mainGroup = new Clutter.Actor({clip_to_allocation: true});
+
         // The root actor for the zoom region
-        this._magView = new St.Bin({style_class: 'magnifier-zoom-region'});
+        this._magView = new St.Bin({
+            style_class: 'magnifier-zoom-region',
+            child: mainGroup,
+        });
         global.stage.add_child(this._magView);
 
         // hide the magnified region from CLUTTER_PICK_ALL
         Shell.util_set_hidden_from_pick(this._magView, true);
-
-        // Add a group to clip the contents of the magnified view.
-        let mainGroup = new Clutter.Actor({clip_to_allocation: true});
-        this._magView.set_child(mainGroup);
 
         // Add a background for when the magnified uiGroup is scrolled
         // out of view (don't want to see desktop showing through).

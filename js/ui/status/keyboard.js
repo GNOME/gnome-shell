@@ -125,14 +125,15 @@ class InputSourceSwitcher extends SwitcherPopup.SwitcherList {
     _addIcon(item) {
         let box = new St.BoxLayout({vertical: true});
 
-        let bin = new St.Bin({style_class: 'input-source-switcher-symbol'});
-        let symbol = new St.Label({
-            text: item.shortName,
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER,
+        const symbol = new St.Bin({
+            style_class: 'input-source-switcher-symbol',
+            child: new St.Label({
+                text: item.shortName,
+                x_align: Clutter.ActorAlign.CENTER,
+                y_align: Clutter.ActorAlign.CENTER,
+            }),
         });
-        bin.set_child(symbol);
-        box.add_child(bin);
+        box.add_child(symbol);
 
         let text = new St.Label({
             text: item.displayName,

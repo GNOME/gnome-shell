@@ -304,7 +304,7 @@ class ListSearchResults extends SearchResultsBase {
         });
         this._container.add_child(this._content);
 
-        this._resultDisplayBin.set_child(this._container);
+        this._resultDisplayBin.child = this._container;
     }
 
     _setMoreCount(count) {
@@ -468,10 +468,10 @@ class GridSearchResults extends SearchResultsBase {
             this._grid.layout_manager.spacing = node.get_length('spacing');
         });
 
-        this._resultDisplayBin.set_child(new St.Bin({
+        this._resultDisplayBin.child = new St.Bin({
             child: this._grid,
             x_align: Clutter.ActorAlign.CENTER,
-        }));
+        });
 
         this._maxResults = provider.maxResults ?? -1;
     }
@@ -588,9 +588,11 @@ export const SearchResultsView = GObject.registerClass({
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
         });
-        this._statusBin = new St.Bin({y_expand: true});
+        this._statusBin = new St.Bin({
+            y_expand: true,
+            child: this._statusText,
+        });
         this.add_child(this._statusBin);
-        this._statusBin.add_child(this._statusText);
 
         this._highlightDefault = false;
         this._defaultResult = null;

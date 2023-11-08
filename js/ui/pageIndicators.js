@@ -62,10 +62,10 @@ export const PageIndicators = GObject.registerClass({
                                  St.ButtonMask.TWO |
                                  St.ButtonMask.THREE,
                     reactive: this._reactive,
-                });
-                indicator.child = new St.Widget({
-                    style_class: 'page-indicator-icon',
-                    pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
+                    child: new St.Widget({
+                        style_class: 'page-indicator-icon',
+                        pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
+                    }),
                 });
                 indicator.connect('clicked', () => {
                     this.emit('page-activated', pageIndex);

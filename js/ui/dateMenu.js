@@ -64,7 +64,7 @@ class TodayButton extends St.Button {
         });
 
         const hbox = new St.BoxLayout({vertical: true});
-        this.add_child(hbox);
+        this.child = hbox;
 
         this._dayLabel = new St.Label({
             style_class: 'day-label',
