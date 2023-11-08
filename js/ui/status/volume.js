@@ -138,7 +138,13 @@ const StreamSlider = GObject.registerClass({
             ? `${description} – ${origin}`
             : description;
         const item = new PopupMenu.PopupImageMenuItem(name, device.get_gicon());
-        item.connect('activate', () => this._activateDevice(device));
+        item.connect('activate', () => {
+            const dev = this._lookupDevice(id);
+            if (dev)
+                this._activateDevice(dev);
+            else
+                console.warn(`Trying to activate invalid device ${id}`);
+        });
 
         this._deviceSection.addMenuItem(item);
         this._deviceItems.set(id, item);
