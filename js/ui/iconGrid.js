@@ -1192,12 +1192,10 @@ export const IconGrid = GObject.registerClass({
         this._currentPage = 0;
         this._currentMode = -1;
 
-        this.connect('child-added', this._childAdded.bind(this));
-        this.connect('child-removed', this._childRemoved.bind(this));
         this.connect('destroy', () => layoutManager.disconnect(pagesChangedId));
     }
 
-    _childAdded(grid, child) {
+    vfunc_child_added(child) {
         child._iconGridKeyFocusInId = child.connect('key-focus-in', () => {
             this._ensureItemIsVisible(child);
         });
@@ -1247,7 +1245,7 @@ export const IconGrid = GObject.registerClass({
         this._setGridMode(bestMode);
     }
 
-    _childRemoved(grid, child) {
+    vfunc_child_removed(child) {
         child.disconnect(child._iconGridKeyFocusInId);
         delete child._iconGridKeyFocusInId;
     }
