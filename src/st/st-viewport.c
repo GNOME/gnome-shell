@@ -283,10 +283,10 @@ st_viewport_allocate (ClutterActor           *actor,
   st_theme_node_get_content_box (theme_node, box, &viewport_box);
   clutter_actor_box_get_size (&viewport_box, &avail_width, &avail_height);
 
-  clutter_layout_manager_get_preferred_width (layout, CLUTTER_CONTAINER (actor),
+  clutter_layout_manager_get_preferred_width (layout, actor,
                                               avail_height,
                                               &min_width, &natural_width);
-  clutter_layout_manager_get_preferred_height (layout, CLUTTER_CONTAINER (actor),
+  clutter_layout_manager_get_preferred_height (layout, actor,
                                                MAX (avail_width, min_width),
                                                &min_height, &natural_height);
 
@@ -302,8 +302,7 @@ st_viewport_allocate (ClutterActor           *actor,
   if (priv->vadjustment)
     content_box.y2 += MAX (0, min_height - avail_height);
 
-  clutter_layout_manager_allocate (layout, CLUTTER_CONTAINER (actor),
-                                   &content_box);
+  clutter_layout_manager_allocate (layout, actor, &content_box);
 
   /* update adjustments for scrolling */
   if (priv->vadjustment)
