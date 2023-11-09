@@ -577,6 +577,7 @@ export const WindowPreview = GObject.registerClass({
             GLib.PRIORITY_DEFAULT,
             WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, () => {
                 if (this._closeButton['has-pointer'] ||
+                    this._icon['has-pointer'] ||
                     this._title['has-pointer'])
                     return GLib.SOURCE_CONTINUE;
 
