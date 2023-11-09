@@ -64,7 +64,7 @@ shell_window_preview_layout_get_property (GObject      *object,
 
 static void
 shell_window_preview_layout_set_container (ClutterLayoutManager *layout,
-                                           ClutterContainer     *container)
+                                           ClutterActor         *container)
 {
   ShellWindowPreviewLayout *self = SHELL_WINDOW_PREVIEW_LAYOUT (layout);
   ShellWindowPreviewLayoutPrivate *priv;
@@ -72,7 +72,7 @@ shell_window_preview_layout_set_container (ClutterLayoutManager *layout,
 
   priv = shell_window_preview_layout_get_instance_private (self);
 
-  priv->container = CLUTTER_ACTOR (container);
+  priv->container = container;
 
   parent_class = CLUTTER_LAYOUT_MANAGER_CLASS (shell_window_preview_layout_parent_class);
   parent_class->set_container (layout, container);
@@ -80,7 +80,7 @@ shell_window_preview_layout_set_container (ClutterLayoutManager *layout,
 
 static void
 shell_window_preview_layout_get_preferred_width (ClutterLayoutManager *layout,
-                                                 ClutterContainer     *container,
+                                                 ClutterActor         *container,
                                                  float                 for_height,
                                                  float                *min_width_p,
                                                  float                *natural_width_p)
@@ -99,7 +99,7 @@ shell_window_preview_layout_get_preferred_width (ClutterLayoutManager *layout,
 
 static void
 shell_window_preview_layout_get_preferred_height (ClutterLayoutManager *layout,
-                                                  ClutterContainer     *container,
+                                                  ClutterActor         *container,
                                                   float                 for_width,
                                                   float                *min_height_p,
                                                   float                *natural_height_p)
@@ -119,7 +119,7 @@ shell_window_preview_layout_get_preferred_height (ClutterLayoutManager *layout,
 
 static void
 shell_window_preview_layout_allocate (ClutterLayoutManager   *layout,
-                                      ClutterContainer       *container,
+                                      ClutterActor           *container,
                                       const ClutterActorBox  *box)
 {
   ShellWindowPreviewLayout *self = SHELL_WINDOW_PREVIEW_LAYOUT (layout);
@@ -144,7 +144,7 @@ shell_window_preview_layout_allocate (ClutterLayoutManager   *layout,
   else
     scale_y = clutter_actor_box_get_height (box) / bounding_box_height;
 
-  clutter_actor_iter_init (&iter, CLUTTER_ACTOR (container));
+  clutter_actor_iter_init (&iter, container);
   while (clutter_actor_iter_next (&iter, &child))
     {
       ClutterActorBox child_box = { 0, };
