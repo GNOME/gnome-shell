@@ -360,8 +360,7 @@ st_icon_init (StIcon *self)
 
   self->priv = st_icon_get_instance_private (self);
 
-  layout_manager = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_FILL,
-                                           CLUTTER_BIN_ALIGNMENT_FILL);
+  layout_manager = clutter_bin_layout_new ();
   clutter_actor_set_layout_manager (CLUTTER_ACTOR (self), layout_manager);
 
   /* Set the icon size to -1 here to make sure we apply the scale to the
