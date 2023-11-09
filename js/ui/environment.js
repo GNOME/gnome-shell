@@ -35,27 +35,6 @@ Gio._promisify(Polkit.Permission, 'new');
 // variable initializations, etc, that depend on this file's
 // changes
 
-// "monkey patch" in some varargs ClutterContainer methods; we need
-// to do this per-container class since there is no representation
-// of interfaces in Javascript
-function _patchContainerClass(containerClass) {
-    // This one is a straightforward mapping of the C method
-    containerClass.prototype.child_set = function (actor, props) {
-        let meta = this.get_child_meta(actor);
-        for (let prop in props)
-            meta[prop] = props[prop];
-    };
-
-    // clutter_container_add() actually is a an add-many-actors
-    // method. We conveniently, but somewhat dubiously, take the
-    // this opportunity to make it do something more useful.
-    containerClass.prototype.add = function (actor, props) {
-        this.add_actor(actor);
-        if (props)
-            this.child_set(actor, props);
-    };
-}
-
 function _patchLayoutClass(layoutClass, styleProps) {
     if (styleProps) {
         layoutClass.prototype.hookup_style = function (container) {
@@ -287,8 +266,6 @@ Cairo.Context.prototype.setSourceColor = function (color) {
 };
 
 // Miscellaneous monkeypatching
-_patchContainerClass(St.BoxLayout);
-
 _patchLayoutClass(Clutter.GridLayout, {
     row_spacing: 'spacing-rows',
     column_spacing: 'spacing-columns',
