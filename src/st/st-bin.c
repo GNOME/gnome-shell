@@ -177,6 +177,47 @@ st_bin_get_preferred_height (ClutterActor *self,
 }
 
 static void
+set_child (StBin *bin, ClutterActor *child)
+{
+  StBinPrivate *priv = st_bin_get_instance_private (bin);
+
+  if (!g_set_weak_pointer (&priv->child, child))
+    return;
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (bin));
+
+  g_object_notify_by_pspec (G_OBJECT (bin), props[PROP_CHILD]);
+}
+
+static void
+st_bin_child_added (ClutterActor *container,
+                    ClutterActor *actor)
+{
+  StBin *bin = ST_BIN (container);
+  StBinPrivate *priv = st_bin_get_instance_private (bin);
+
+  if (priv->child)
+    g_warning ("Attempting to add an actor of type %s to "
+               "an StBin, but the bin already contains a %s. "
+               "Was add_child() used repeatedly?",
+               G_OBJECT_TYPE_NAME (actor),
+               G_OBJECT_TYPE_NAME (priv->child));
+
+  set_child (ST_BIN (container), actor);
+}
+
+static void
+st_bin_child_removed (ClutterActor *container,
+                      ClutterActor *actor)
+{
+  StBin *bin = ST_BIN (container);
+  StBinPrivate *priv = st_bin_get_instance_private (bin);
+
+  if (priv->child == actor)
+    set_child (bin, NULL);
+}
+
+static void
 st_bin_popup_menu (StWidget *widget)
 {
   StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (widget));
@@ -266,6 +307,8 @@ st_bin_class_init (StBinClass *klass)
   actor_class->get_preferred_width = st_bin_get_preferred_width;
   actor_class->get_preferred_height = st_bin_get_preferred_height;
   actor_class->allocate = st_bin_allocate;
+  actor_class->child_added = st_bin_child_added;
+  actor_class->child_removed = st_bin_child_removed;
 
   widget_class->popup_menu = st_bin_popup_menu;
   widget_class->navigate_focus = st_bin_navigate_focus;
@@ -286,51 +329,8 @@ st_bin_class_init (StBinClass *klass)
 }
 
 static void
-set_child (StBin *bin, ClutterActor *child)
-{
-  StBinPrivate *priv = st_bin_get_instance_private (bin);
-
-  if (!g_set_weak_pointer (&priv->child, child))
-    return;
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (bin));
-
-  g_object_notify_by_pspec (G_OBJECT (bin), props[PROP_CHILD]);
-}
-
-static void
-actor_added (ClutterActor *container,
-             ClutterActor *actor)
-{
-  StBin *bin = ST_BIN (container);
-  StBinPrivate *priv = st_bin_get_instance_private (bin);
-
-  if (priv->child)
-    g_warning ("Attempting to add an actor of type %s to "
-               "an StBin, but the bin already contains a %s. "
-               "Was add_child() used repeatedly?",
-               G_OBJECT_TYPE_NAME (actor),
-               G_OBJECT_TYPE_NAME (priv->child));
-
-  set_child (ST_BIN (container), actor);
-}
-
-static void
-actor_removed (ClutterActor *container,
-               ClutterActor *actor)
-{
-  StBin *bin = ST_BIN (container);
-  StBinPrivate *priv = st_bin_get_instance_private (bin);
-
-  if (priv->child == actor)
-    set_child (bin, NULL);
-}
-
-static void
 st_bin_init (StBin *bin)
 {
-  g_signal_connect (bin, "actor-added", G_CALLBACK (actor_added), NULL);
-  g_signal_connect (bin, "actor-removed", G_CALLBACK (actor_removed), NULL);
 }
 
 /**
