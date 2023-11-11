@@ -4,21 +4,22 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2010-2013.
 # Ngô Chin <ndtrung4419@gmail.com>, 2011.
-# Trần Ngọc Quân <vnwildman@gmail.com>, 2013-2019, 2021-2023.
+# Trần Ngọc Quân <vnwildman@gmail.com>, 2013-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2023-07-20 21:47+0000\n"
-"PO-Revision-Date: 2023-07-29 14:47+0700\n"
+"PO-Revision-Date: 2023-11-11 13:47+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
-"Language-Team: Vietnamese <gnome-vi-list@gnome.org>\n"
+"Language-Team: Vietnamese <Vietnamese <gnome-vi-list@gnome.org>>\n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 42.0\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -987,11 +988,11 @@ msgstr "Chờ"
 
 #: js/ui/components/automountManager.js:85
 msgid "External drive connected"
-msgstr "Ổ ngoài đã kết nối"
+msgstr "Ổ đĩa ngoài đã kết nối"
 
 #: js/ui/components/automountManager.js:97
 msgid "External drive disconnected"
-msgstr "Ổ ngoài đã ngắt kết nối"
+msgstr "Ổ đĩa ngoài đã ngắt kết nối"
 
 #: js/ui/components/automountManager.js:208
 msgid "Unable to unlock volume"
@@ -2991,7 +2992,7 @@ msgstr "Gõ lệnh “%s” để biết thêm chi tiết.\n"
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
 msgid "Plain"
-msgstr "Thường"
+msgstr "Đơn giản"
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
 msgid "An empty extension"
