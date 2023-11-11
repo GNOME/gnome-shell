@@ -292,7 +292,7 @@ export const SearchController = GObject.registerClass({
             } else if (symbol === Clutter.KEY_Down) {
                 this._searchResults.navigateFocus(St.DirectionType.DOWN);
                 return Clutter.EVENT_STOP;
-            } else if (symbol === arrowNext && this._text.position === -1) {
+            } else if (symbol === arrowNext && this._text.cursor_position === -1) {
                 this._searchResults.navigateFocus(nextDirection);
                 return Clutter.EVENT_STOP;
             } else if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter) {
