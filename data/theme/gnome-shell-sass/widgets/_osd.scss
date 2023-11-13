@@ -36,14 +36,17 @@ $osd_levelbar_height:6px;
 }
 
 // Monitor number label
-.osd-monitor-label { 
-  @extend %osd_panel;
+.osd-monitor-label {
+  background-color: $selected_bg_color;
+  color: $selected_fg_color;
   border-radius: $modal_radius;
   font-size: 3em;
   font-weight: bold;
+  font-feature-settings: "tnum";
   margin: $base_margin * 3;
+  padding: $base_padding * 2;
   text-align: center;
-  min-width: 1.3em;
+  min-width: 1.5em;
 }
 
 /* Pad OSD */
