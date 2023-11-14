@@ -30,4 +30,6 @@ $variant: 'dark';
   background-color: $osd_bg_color;
   padding: $base_padding * 2;
   border-radius: $modal_radius;
+  border: 2px solid $hc_inset_color;
+  margin: $base_padding * 3;
 }

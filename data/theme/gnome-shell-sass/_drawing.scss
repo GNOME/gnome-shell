@@ -253,63 +253,71 @@
   }
 }
 
-// tile
+// Helper mixin for button-like elements with an icon
 @mixin tile_button($color, $flat: true) {
   @extend %tile;
+
+  // focus-color
+  $fc: mix($selected_bg_color, $color, 90%);
+
   @if $flat {
     background-color: transparent;
+    &:hover { background-color: transparentize($color, .88);}
+    &:highlighted, &:focus {
+      background-color: transparentize($fc, .84);
+      &:hover {
+        background-color: transparentize($fc, .68);
+      }
+    }
   } @else {
     background-color: transparentize($color, .84);
-    @if $is_highcontrast {
-      box-shadow: inset 999px 0 0 0 transparentize($color, .2); // bit of a hack
+    &:hover { background-color: transparentize($color, .72);}
+    &:highlighted, &:focus {
+      background-color: transparentize(mix($fc, $color, 20%), .84);
+      &:hover {
+        background-color: transparentize(mix($fc, $color, 20%), .68);
+      }
     }
   }
-  &:hover { background-color: transparentize($color, .9);}
-  &:selected, &:focus {
-    background-color: transparentize($color, .87);
-    &:hover { background-color: transparentize($color, .84);}
-    &:active { background-color: transparentize($color, .87);}
+
+  // bit of a hack to have nice high contrast
+  @if $is_highcontrast {
+    @if $flat {
+      &:hover {
+        box-shadow: inset 999px 0 0 0 transparentize($color, .92);
+      }
+      &:highlighted, &:focus {
+        box-shadow: inset 999px 0 0 0 transparentize($fc, .8);
+      }
+    } @else {
+      box-shadow: inset 999px 0 0 0 transparentize($color, .92);
+      border-color: transparentize($color, .44);
+      &:highlighted, &:focus {
+        box-shadow: inset 999px 0 0 0 transparentize($fc, .8);
+      }
+    }
   }
-  &:active { background-color: transparentize($color, .84);}
-  &:outlined, &:checked {
+
+  &:highlighted, &:focus {
+    border-color: transparentize($fc, .3);
+  }
+
+  &:active {
+    background-color: transparentize($color, .76);
+    &:focus {
+      background-color: transparentize($fc, .68);
+    }
+  }
+
+  &:selected,
+  &:checked {
     background-color: transparentize($color, .81);
     &:active { background-color: transparentize($color, .78);}
     &:hover { background-color: transparentize($color, .75);}
   }
+
   &:drop {
-    border: 2px solid transparentize($selected_bg_color, .2); //already 2px transparent so no jumping
-    background-color: transparentize($selected_bg_color, .8);
-  }
-}
-
-// overview icon, dash, app grid
-@mixin overview_icon($color, $flat: true) {
-  transition-duration: 400ms;
-  .overview-icon {
-    @extend %tile;
-  }
-  @if $flat {
-    .overview-icon { background-color: transparent;}
-  } @else {
-    .overview-icon { background-color: transparentize($color, .93); }
-  }
-  &:hover .overview-icon { background-color: transparentize($color, .87);}
-
-  &:selected .overview-icon,
-  &:focus .overview-icon {
-    background-color: transparentize($color, .87);
-    &:hover .overview-icon { background-color: transparentize($color, .84);}
-    &:active .overview-icon { background-color: transparentize($color, .87);}
-  }
-  &:active .overview-icon { background-color: transparentize($color, .84);}
-  &:outlined .overview-icon,
-  &:checked .overview-icon {
-    background-color: transparentize($color, .81);
-    &:active .overview-icon { background-color: transparentize($color, .78);}
-    &:hover .overview-icon { background-color: transparentize($color, .75);}
-  }
-  &:drop .overview-icon {
-    border: 2px solid transparentize($selected_bg_color, .2); //already 2px transparent so no jumping
+    border-color: transparentize($selected_bg_color, .2);
     background-color: transparentize($selected_bg_color, .8);
   }
 }

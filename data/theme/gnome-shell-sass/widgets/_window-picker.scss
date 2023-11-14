@@ -42,7 +42,7 @@ $window_close_button_padding: 3px;
   }
 
   @if $is_highcontrast {
-    border:2px solid $outer_borders_color;
+    border:2px solid $hc_inset_color;
   }
 }
 

@@ -71,4 +71,4 @@ $active_bg_color: if($variant=='light', darken($bg_color, 10%), lighten($bg_colo
 $active_fg_color: if($variant=='light', darken($fg_color, 10%), lighten($fg_color, 22%));
 
 // inset colour for high contrast
-$hc_inset_color: transparentize($fg_color, 0.7);
+$hc_inset_color: transparentize($fg_color, 0.6);
