@@ -1012,7 +1012,7 @@ set_child (StScrollView *scroll, ClutterActor *child)
 }
 
 static void
-actor_added (ClutterActor *container,
+child_added (ClutterActor *container,
              ClutterActor *actor)
 {
   StScrollView *scroll = ST_SCROLL_VIEW (container);
@@ -1038,7 +1038,7 @@ actor_added (ClutterActor *container,
 }
 
 static void
-actor_removed (ClutterActor *container,
+child_removed (ClutterActor *container,
                ClutterActor *actor)
 {
   StScrollView *scroll = ST_SCROLL_VIEW (container);
@@ -1083,8 +1083,8 @@ st_scroll_view_init (StScrollView *self)
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
   /* Connect these *after* we've added our internal actors */
-  g_signal_connect (self, "actor-added", G_CALLBACK (actor_added), NULL);
-  g_signal_connect (self, "actor-removed", G_CALLBACK (actor_removed), NULL);
+  g_signal_connect (self, "child-added", G_CALLBACK (child_added), NULL);
+  g_signal_connect (self, "child-removed", G_CALLBACK (child_removed), NULL);
 }
 
 /**
