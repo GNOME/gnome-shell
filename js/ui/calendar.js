@@ -1005,8 +1005,8 @@ class CalendarMessageList extends St.Widget {
             y_align: Clutter.ActorAlign.START,
         });
         this._sectionList.connectObject(
-            'actor-added', this._sync.bind(this),
-            'actor-removed', this._sync.bind(this),
+            'child-added', this._sync.bind(this),
+            'child-removed', this._sync.bind(this),
             this);
         this._scrollView.child = this._sectionList;
 

@@ -576,8 +576,8 @@ export const MessageListSection = GObject.registerClass({
         });
         this.add_child(this._list);
 
-        this._list.connect('actor-added', this._sync.bind(this));
-        this._list.connect('actor-removed', this._sync.bind(this));
+        this._list.connect('child-added', this._sync.bind(this));
+        this._list.connect('child-removed', this._sync.bind(this));
 
         Main.sessionMode.connectObject(
             'updated', () => this._sync(), this);

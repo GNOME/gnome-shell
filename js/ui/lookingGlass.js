@@ -950,10 +950,10 @@ class ActorTreeViewer extends St.BoxLayout {
             return;
 
         data.visible = true;
-        data.actorAddedId = actor.connect('actor-added', (container, child) => {
+        data.actorAddedId = actor.connect('child-added', (container, child) => {
             this._addActor(data.children, child);
         });
-        data.actorRemovedId = actor.connect('actor-removed', (container, child) => {
+        data.actorRemovedId = actor.connect('child-removed', (container, child) => {
             this._removeActor(child);
         });
 

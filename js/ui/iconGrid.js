@@ -1192,8 +1192,8 @@ export const IconGrid = GObject.registerClass({
         this._currentPage = 0;
         this._currentMode = -1;
 
-        this.connect('actor-added', this._childAdded.bind(this));
-        this.connect('actor-removed', this._childRemoved.bind(this));
+        this.connect('child-added', this._childAdded.bind(this));
+        this.connect('child-removed', this._childRemoved.bind(this));
         this.connect('destroy', () => layoutManager.disconnect(pagesChangedId));
     }
 

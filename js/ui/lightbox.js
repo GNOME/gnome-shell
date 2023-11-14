@@ -157,8 +157,8 @@ export const Lightbox = GObject.registerClass({
         }
 
         container.connectObject(
-            'actor-added', this._actorAdded.bind(this),
-            'actor-removed', this._actorRemoved.bind(this), this);
+            'child-added', this._childAdded.bind(this),
+            'child-removed', this._childRemoved.bind(this), this);
 
         this._highlighted = null;
     }
@@ -167,7 +167,7 @@ export const Lightbox = GObject.registerClass({
         return this._active;
     }
 
-    _actorAdded(container, newChild) {
+    _childAdded(container, newChild) {
         let children = this._container.get_children();
         let myIndex = children.indexOf(this);
         let newChildIndex = children.indexOf(newChild);
@@ -241,7 +241,7 @@ export const Lightbox = GObject.registerClass({
         }
     }
 
-    _actorRemoved(container, child) {
+    _childRemoved(container, child) {
         let index = this._children.indexOf(child);
         if (index !== -1) // paranoia
             this._children.splice(index, 1);
