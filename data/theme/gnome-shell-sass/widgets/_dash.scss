@@ -4,75 +4,75 @@
 $dash_background_color: $system_overlay_bg_color;
 
 $dash_placeholder_size: 32px;
-$dash_padding: $base_padding * 2; // 12px
+$dash_padding: $base_padding * 1.5;
+$dash_edge_offset: $base_margin * 3;
 $dash_border_radius: $modal_radius + $dash_padding;
 
 // container for the dash
 #dash {
-  @extend %caption;
-  margin-top: $dash_padding;
+  margin-top: $dash_edge_offset;
 
-  .placeholder {
-    // background-image: url("resource:///org/gnome/shell/theme/dash-placeholder.svg");
-    background-image:none;
-    background-size: contain;
-    height: $dash_placeholder_size;
+  // background behind item container
+  .dash-background {
+    background-color: $dash_background_color;
+    border-radius: $dash_border_radius;
+    border: 2px solid transparent;
+    padding: $dash_padding * 2 $dash_padding; // padding is uneven
+
+    @if $is_highcontrast {
+      border-color: $hc_inset_color;
+    }
   }
 
-  .empty-dash-drop-target {
-    width: $dash_placeholder_size;
-    height: $dash_placeholder_size;
+  // items on the dash
+  .dash-item-container {
+
+    .placeholder {
+      // background-image: url("resource:///org/gnome/shell/theme/dash-placeholder.svg");
+      background-image: none;
+      background-size: contain;
+      height: $dash_placeholder_size;
+    }
+
+    .empty-dash-drop-target {
+      width: $dash_placeholder_size;
+      height: $dash_placeholder_size;
+    }
+
+    // app icons
+    .overview-tile {
+      // inherits styles from _app-grid.css
+    }
+
+    // button to show app grid
+    .show-apps {
+      @include tile_button($system_fg_color);
+    }
+
+    .show-apps, .overview-tile {
+      margin: $base_margin * 0.5;
+      padding: $base_padding;
+      border-radius: $base_border_radius * 2;}
   }
 
-  // Running app indicator (also shown in app grid)
-  .app-well-app-running-dot {
-    margin-bottom: 14px; // hardcoded
-  }
-}
+  // separator between pinned and running apps
+  .dash-separator {
+    width: 1px;
+    margin-left:$base_margin;
+    margin-right:$base_margin;
+    background-color: $system_borders_color;
 
-// background of the dash behind app icons
-.dash-background {
-  background-color: $dash_background_color;
-  border-radius: $dash_border_radius;
-  padding: $dash_padding;
-  spacing: $base_padding;
-  margin-bottom: $dash_padding;
-
-  @if $is_highcontrast {
-    border: 2px solid $hc_inset_color;
-    box-shadow:none;
-  }
-}
-
-// items on the dash
-.dash-item-container {
-  > * {margin: 0 2px;}
-  &:ltr{&:first-child {margin-left: 0;}}
-  &:rtl{&:first-child {margin-right: 0;}}
-
-  // each app item on the dash
-  .app-well-app .overview-icon {
-    padding: $base_padding;
-    border-radius: $base_border_radius * 2;
+    @if $is_highcontrast {
+      width: 2px;
+      background-color: $hc_inset_color;
+    }
   }
 
-  // show apps button
-  .show-apps { @include overview_icon($system_fg_color);}
-
-  .show-apps, .app-well-app {
-    padding-bottom: $dash_padding;
-    color: $system_fg_color;
-  }
-}
-
-// separator between favourites and running apps
-.dash-separator {
-  width: 1px;
-  margin: 0 $base_margin;
-  background-color: $system_borders_color;
-  margin-bottom: $dash_padding;
-  @if $is_highcontrast {
-    width: 2px;
+  // make sure all dash components have same margin from screen edge
+  .dash-separator,
+  .dash-background,
+  .dash-item-container {
+    margin-bottom: $dash_edge_offset;
   }
 }
 

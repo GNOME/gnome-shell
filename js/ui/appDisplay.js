@@ -2324,7 +2324,7 @@ export const FolderIcon = GObject.registerClass({
 }, class FolderIcon extends AppViewItem {
     _init(id, path, parentView) {
         super._init({
-            style_class: 'app-well-app app-folder',
+            style_class: 'overview-tile app-folder',
             button_mask: St.ButtonMask.ONE,
             toggle_mode: true,
             can_focus: true,
@@ -2992,7 +2992,7 @@ export const AppIcon = GObject.registerClass({
         const expandTitleOnHover = appIconParams['expandTitleOnHover'];
         delete iconParams['expandTitleOnHover'];
 
-        super._init({style_class: 'app-well-app'}, isDraggable, expandTitleOnHover);
+        super._init({style_class: 'overview-tile'}, isDraggable, expandTitleOnHover);
 
         this.app = app;
         this._id = app.get_id();
@@ -3014,13 +3014,14 @@ export const AppIcon = GObject.registerClass({
         this._iconContainer.add_child(this.icon);
 
         this._dot = new St.Widget({
-            style_class: 'app-well-app-running-dot',
+            style_class: 'app-grid-running-dot',
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.END,
         });
+        this._dot.translationY = 8;
         this._iconContainer.add_child(this._dot);
 
         this.label_actor = this.icon.label;

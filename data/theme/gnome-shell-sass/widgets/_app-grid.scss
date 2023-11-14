@@ -16,25 +16,40 @@ $app_icon_size: 96px;
 
 /* App Icons */
 
-// Icon tiles in the app grid
-.app-well-app {
-  @include overview_icon($system_fg_color);
+// items in the app grid and dash
+.overview-tile {
+  @include tile_button($system_fg_color);
 
+  // override the %tile style
+  border-radius: $base_border_radius*3;
+  padding: $base_padding * 2;
+
+  // the icon itself
   .overview-icon {
-    padding: $base_padding * 2;
-    border-radius: $base_border_radius * 3;
-    color: $system_fg_color;
-  }
-  .overview-icon.overview-icon-with-label {
-    > StBoxLayout {
-      spacing: $base_padding;
+    // item with a label
+    &.overview-icon-with-label {
+      > StBoxLayout {
+        spacing: $base_padding;
+      }
     }
   }
 }
 
 // app folders
-.app-well-app.app-folder {
-  @include overview_icon($system_fg_color, $flat: false);
+.app-folder {
+  @include tile_button($system_fg_color, $flat: false);
+}
+
+// Running app indicator (also shown in dash)
+.app-grid-running-dot {
+  height: 5px;
+  width: 5px;
+  border-radius:5px;
+  background-color: $system_fg_color;
+  margin-bottom: 2px;
+  @if $is_highcontrast {
+    margin-bottom: 4px;
+  }
 }
 
 // expanded folder
@@ -88,14 +103,6 @@ $app_icon_size: 96px;
   height: 720px;
 }
 
-// Running app indicator (also shown in dash)
-.app-well-app-running-dot {
-  height: 5px;
-  width: 5px;
-  border-radius:5px;
-  margin-bottom: 8px;
-  background-color: $system_fg_color;
-}
 
 // Rename popup for app folders
 .rename-folder-popup {
@@ -135,6 +142,7 @@ $page_indicator_size: 10px;
   }
 }
 
+// page navigation
 .page-navigation-hint {
   &.dnd {
     background: rgba(255, 255, 255, 0.1);
