@@ -609,6 +609,12 @@ main (int argc, char **argv)
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
+  /* FIXME: Add gjs API to set this stuff and don't depend on the
+   * environment.  These propagate to child processes.
+   */
+  g_setenv ("GJS_DEBUG_OUTPUT", "stderr", TRUE);
+  g_setenv ("GJS_DEBUG_TOPICS", "JS ERROR;JS LOG", TRUE);
+
   context = meta_create_context (WM_NAME);
   meta_context_add_option_entries (context, gnome_shell_options,
                                    GETTEXT_PACKAGE);
@@ -633,12 +639,6 @@ main (int argc, char **argv)
       g_printerr ("Failed to setup: %s\n", error->message);
       return EXIT_FAILURE;
     }
-
-  /* FIXME: Add gjs API to set this stuff and don't depend on the
-   * environment.  These propagate to child processes.
-   */
-  g_setenv ("GJS_DEBUG_OUTPUT", "stderr", TRUE);
-  g_setenv ("GJS_DEBUG_TOPICS", "JS ERROR;JS LOG", TRUE);
 
   shell_init_debug (g_getenv ("SHELL_DEBUG"));
 
