@@ -21,7 +21,7 @@
 
 #include "st-private.h"
 #include "st-scroll-view-fade.h"
-#include "st-scroll-view.h"
+#include "st-scroll-view-private.h"
 #include "st-widget.h"
 #include "st-theme-node.h"
 #include "st-scroll-bar.h"
@@ -94,9 +94,8 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect,
   ClutterOffscreenEffectClass *parent;
 
   gdouble value, lower, upper, page_size;
-  ClutterActor *vscroll = st_scroll_view_get_vscroll_bar (ST_SCROLL_VIEW (self->actor));
-  ClutterActor *hscroll = st_scroll_view_get_hscroll_bar (ST_SCROLL_VIEW (self->actor));
-  gboolean h_scroll_visible, v_scroll_visible, rtl;
+  float h_offset, v_offset;
+  gboolean rtl;
 
   ClutterActorBox allocation, content_box, paint_box;
 
@@ -120,21 +119,14 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect,
   fade_area_bottomright[0] = content_box.x2 + (verts[3].x - paint_box.x2) + 1;
   fade_area_bottomright[1] = content_box.y2 + (verts[3].y - paint_box.y2) + 1;
 
-  g_object_get (ST_SCROLL_VIEW (self->actor),
-                "hscrollbar-visible", &h_scroll_visible,
-                "vscrollbar-visible", &v_scroll_visible,
-                NULL);
+  st_scroll_view_get_bar_offsets (ST_SCROLL_VIEW (self->actor), &h_offset, &v_offset);
 
-  if (v_scroll_visible)
-    {
-      if (clutter_actor_get_text_direction (self->actor) == CLUTTER_TEXT_DIRECTION_RTL)
-          fade_area_topleft[0] += clutter_actor_get_width (vscroll);
+  if (clutter_actor_get_text_direction (self->actor) == CLUTTER_TEXT_DIRECTION_RTL)
+      fade_area_topleft[0] += h_offset;
 
-      fade_area_bottomright[0] -= clutter_actor_get_width (vscroll);
-    }
+  fade_area_bottomright[0] -= h_offset;
 
-  if (h_scroll_visible)
-      fade_area_bottomright[1] -= clutter_actor_get_height (hscroll);
+  fade_area_bottomright[1] -= v_offset;
 
   if (self->fade_margins.left < 0)
     fade_area_topleft[0] -= ABS (self->fade_margins.left);
@@ -226,10 +218,8 @@ st_scroll_view_fade_set_actor (ClutterActorMeta *meta,
   if (actor)
     {
         StScrollView *scroll_view = ST_SCROLL_VIEW (actor);
-        StScrollBar *vscroll = ST_SCROLL_BAR (st_scroll_view_get_vscroll_bar (scroll_view));
-        StScrollBar *hscroll = ST_SCROLL_BAR (st_scroll_view_get_hscroll_bar (scroll_view));
-        self->vadjustment = ST_ADJUSTMENT (st_scroll_bar_get_adjustment (vscroll));
-        self->hadjustment = ST_ADJUSTMENT (st_scroll_bar_get_adjustment (hscroll));
+        self->vadjustment = st_scroll_view_get_vadjustment (scroll_view);
+        self->hadjustment = st_scroll_view_get_hadjustment (scroll_view);
 
         g_signal_connect (self->vadjustment, "changed",
                           G_CALLBACK (on_adjustment_changed),
