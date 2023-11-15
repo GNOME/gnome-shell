@@ -943,7 +943,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                        "Horizontal Scrollbar Policy",
                        "When the horizontal scrollbar is displayed",
                        ST_TYPE_POLICY_TYPE,
-                       ST_POLICY_AUTOMATIC,
+                       ST_POLICY_NEVER,
                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
@@ -1060,7 +1060,7 @@ st_scroll_view_init (StScrollView *self)
   StScrollViewPrivate *priv = st_scroll_view_get_instance_private (self);
   ClutterActor *scrollbar;
 
-  priv->hscrollbar_policy = ST_POLICY_AUTOMATIC;
+  priv->hscrollbar_policy = ST_POLICY_NEVER;
   priv->vscrollbar_policy = ST_POLICY_AUTOMATIC;
 
   priv->hadjustment = g_object_new (ST_TYPE_ADJUSTMENT,
