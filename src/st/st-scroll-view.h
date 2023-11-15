@@ -56,6 +56,9 @@ void          st_scroll_view_set_child           (StScrollView *scroll,
 ClutterActor *st_scroll_view_get_hscroll_bar     (StScrollView *scroll);
 ClutterActor *st_scroll_view_get_vscroll_bar     (StScrollView *scroll);
 
+StAdjustment *st_scroll_view_get_hadjustment     (StScrollView *scroll);
+StAdjustment *st_scroll_view_get_vadjustment     (StScrollView *scroll);
+
 gfloat        st_scroll_view_get_column_size     (StScrollView *scroll);
 void          st_scroll_view_set_column_size     (StScrollView *scroll,
                                                   gfloat        column_size);

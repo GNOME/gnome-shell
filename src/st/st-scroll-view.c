@@ -99,6 +99,8 @@ enum {
   PROP_CHILD,
   PROP_HSCROLL,
   PROP_VSCROLL,
+  PROP_HADJUSTMENT,
+  PROP_VADJUSTMENT,
   PROP_HSCROLLBAR_POLICY,
   PROP_VSCROLLBAR_POLICY,
   PROP_HSCROLLBAR_VISIBLE,
@@ -130,6 +132,12 @@ st_scroll_view_get_property (GObject    *object,
       break;
     case PROP_VSCROLL:
       g_value_set_object (value, priv->vscroll);
+      break;
+    case PROP_HADJUSTMENT:
+      g_value_set_object (value, priv->hadjustment);
+      break;
+    case PROP_VADJUSTMENT:
+      g_value_set_object (value, priv->vadjustment);
       break;
     case PROP_HSCROLLBAR_POLICY:
       g_value_set_enum (value, priv->hscrollbar_policy);
@@ -889,6 +897,30 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                          ST_PARAM_READABLE);
 
   /**
+   * StScrollView:hadjustment:
+   *
+   * The horizontal #StAdjustment for the #StScrollView.
+   */
+  props[PROP_HADJUSTMENT] =
+    g_param_spec_object ("hadjustment",
+                         "StAdjustment",
+                         "Horizontal scroll adjustment",
+                         ST_TYPE_ADJUSTMENT,
+                         ST_PARAM_READABLE);
+
+  /**
+   * StScrollView:vadjustment:
+   *
+   * The vertical #StAdjustment for the #StScrollView.
+   */
+  props[PROP_VADJUSTMENT] =
+    g_param_spec_object ("vadjustment",
+                         "StAdjustment",
+                         "Vertical scroll adjustment",
+                         ST_TYPE_ADJUSTMENT,
+                         ST_PARAM_READABLE);
+
+  /**
    * StScrollView:vscrollbar-policy:
    *
    * The #StPolicyType for when to show the vertical #StScrollBar.
@@ -1167,6 +1199,46 @@ st_scroll_view_get_vscroll_bar (StScrollView *scroll)
   priv = st_scroll_view_get_instance_private (scroll);
 
   return priv->vscroll;
+}
+
+/**
+ * st_scroll_view_get_hadjustment:
+ * @scroll: a #StScrollView
+ *
+ * Gets the horizontal #StAdjustment of the #StScrollView.
+ *
+ * Returns: (transfer none): the horizontal adjustment
+ */
+StAdjustment *
+st_scroll_view_get_hadjustment (StScrollView *scroll)
+{
+  StScrollViewPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_SCROLL_VIEW (scroll), NULL);
+
+  priv = st_scroll_view_get_instance_private (scroll);
+
+  return priv->hadjustment;
+}
+
+/**
+ * st_scroll_view_get_vadjustment:
+ * @scroll: a #StScrollView
+ *
+ * Gets the vertical #StAdjustment of the #StScrollView.
+ *
+ * Returns: (transfer none): the vertical adjustment
+ */
+StAdjustment *
+st_scroll_view_get_vadjustment (StScrollView *scroll)
+{
+  StScrollViewPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_SCROLL_VIEW (scroll), NULL);
+
+  priv = st_scroll_view_get_instance_private (scroll);
+
+  return priv->vadjustment;
 }
 
 /**
