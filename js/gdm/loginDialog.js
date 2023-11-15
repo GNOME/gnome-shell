@@ -168,7 +168,6 @@ const UserList = GObject.registerClass({
             style_class: 'login-dialog-user-list-view',
             x_expand: true,
             y_expand: true,
-            hscrollbar_policy: St.PolicyType.NEVER,
         });
 
         this._box = new St.BoxLayout({
@@ -490,7 +489,6 @@ export const LoginDialog = GObject.registerClass({
         this._bannerView = new St.ScrollView({
             style_class: 'login-dialog-banner-view',
             opacity: 0,
-            hscrollbar_policy: St.PolicyType.NEVER,
             child: bannerBox,
         });
         this.add_child(this._bannerView);

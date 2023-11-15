@@ -954,7 +954,6 @@ class CalendarMessageList extends St.Widget {
             style_class: 'vfade',
             overlay_scrollbars: true,
             x_expand: true, y_expand: true,
-            hscrollbar_policy: St.PolicyType.NEVER,
         });
         box.add_child(this._scrollView);
 

@@ -929,7 +929,6 @@ class DateMenuButton extends PanelMenu.Button {
             style_class: 'datemenu-displays-section vfade',
             x_expand: true,
             overlay_scrollbars: true,
-            hscrollbar_policy: St.PolicyType.NEVER,
             vscrollbar_policy: St.PolicyType.EXTERNAL,
             child: displaysBox,
         });

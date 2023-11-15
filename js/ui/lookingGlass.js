@@ -164,7 +164,6 @@ const Notebook = GObject.registerClass({
 
         const scrollview = new St.ScrollView({
             child,
-            hscrollbar_policy: St.PolicyType.NEVER,
             y_expand: true,
         });
 
@@ -390,7 +389,6 @@ class ObjInspector extends St.ScrollView {
     _init(lookingGlass) {
         super._init({
             pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
-            hscrollbar_policy: St.PolicyType.NEVER,
         });
 
         this._obj = null;

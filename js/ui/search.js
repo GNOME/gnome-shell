@@ -573,7 +573,6 @@ export const SearchResultsView = GObject.registerClass({
             style_class: 'search-display vfade',
             x_expand: true,
             y_expand: true,
-            hscrollbar_policy: St.PolicyType.NEVER,
             child: this._content,
         });
 

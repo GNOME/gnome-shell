@@ -266,7 +266,6 @@ export const ListSection = GObject.registerClass({
 
         this._listScrollView = new St.ScrollView({
             style_class: 'dialog-list-scrollview',
-            hscrollbar_policy: St.PolicyType.NEVER,
             child: this.list,
         });
 

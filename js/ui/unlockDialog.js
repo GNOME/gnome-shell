@@ -49,7 +49,6 @@ const NotificationsBox = GObject.registerClass({
         });
 
         this._scrollView = new St.ScrollView({
-            hscrollbar_policy: St.PolicyType.NEVER,
             child: this._notificationBox,
         });
         this.add_child(this._scrollView);

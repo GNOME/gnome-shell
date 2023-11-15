@@ -876,8 +876,6 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
         });
         this._scrollArea = new St.ScrollView({
             style_class: 'chat-scrollview vfade',
-            vscrollbar_policy: St.PolicyType.AUTOMATIC,
-            hscrollbar_policy: St.PolicyType.NEVER,
             visible: this.expanded,
             child: this._contentArea,
         });

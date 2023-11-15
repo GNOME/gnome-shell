@@ -1014,7 +1014,6 @@ export class PopupSubMenu extends PopupMenuBase {
         // effect if a CSS max-height is set on the top menu.
         this.actor = new St.ScrollView({
             style_class: 'popup-sub-menu',
-            hscrollbar_policy: St.PolicyType.NEVER,
             vscrollbar_policy: St.PolicyType.NEVER,
             child: this.box,
         });

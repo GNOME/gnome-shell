@@ -92,7 +92,6 @@ export const AuthList = GObject.registerClass({
 
         this._scrollView = new St.ScrollView({
             style_class: 'login-dialog-auth-list-view',
-            hscrollbar_policy: St.PolicyType.NEVER,
             child: this._box,
         });
         this.add_child(this._scrollView);
