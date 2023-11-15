@@ -23,7 +23,7 @@ export class CtrlAltTabManager {
         this._items = [];
         this.addGroup(global.window_group,
             _('Windows'),
-            'focus-windows-symbolic', {
+            'shell-focus-windows-symbolic', {
                 sortGroup: SortGroup.TOP,
                 focusCallback: this._focusWindows.bind(this),
             });
@@ -95,7 +95,7 @@ export class CtrlAltTabManager {
                 let icon = null;
                 let iconName = null;
                 if (windows[i].get_window_type() === Meta.WindowType.DESKTOP) {
-                    iconName = 'video-display-symbolic';
+                    iconName = 'shell-focus-desktop-symbolic';
                 } else {
                     let app = windowTracker.get_window_app(windows[i]);
                     if (app) {

@@ -398,7 +398,7 @@ class ControlsManager extends St.Widget {
         Main.ctrlAltTabManager.addGroup(
             this.appDisplay,
             _('Apps'),
-            'view-app-grid-symbolic', {
+            'shell-focus-app-grid-symbolic', {
                 proxy: this,
                 focusCallback: () => {
                     this.dash.showAppsButton.checked = true;
@@ -410,7 +410,7 @@ class ControlsManager extends St.Widget {
         Main.ctrlAltTabManager.addGroup(
             this._workspacesDisplay,
             _('Windows'),
-            'focus-windows-symbolic', {
+            'shell-focus-windows-symbolic', {
                 proxy: this,
                 focusCallback: () => {
                     this.dash.showAppsButton.checked = false;
