@@ -224,7 +224,7 @@ const UserList = GObject.registerClass({
     scrollToItem(item) {
         let box = item.get_allocation_box();
 
-        const {adjustment} = this.vscroll;
+        const adjustment = this.vadjustment;
 
         let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
         adjustment.ease(value, {
@@ -236,7 +236,7 @@ const UserList = GObject.registerClass({
     jumpToItem(item) {
         let box = item.get_allocation_box();
 
-        const {adjustment} = this.vscroll;
+        const adjustment = this.vadjustment;
 
         let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
 

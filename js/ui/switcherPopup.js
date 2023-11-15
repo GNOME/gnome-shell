@@ -501,7 +501,7 @@ export const SwitcherList = GObject.registerClass({
 
         this._highlighted = index;
 
-        let adjustment = this._scrollView.hscroll.adjustment;
+        const adjustment = this._scrollView.hadjustment;
         let [value] = adjustment.get_values();
         let [absItemX] = this._items[index].get_transformed_position();
         let [result_, posX, posY_] = this.transform_stage_point(absItemX, 0);
@@ -513,7 +513,7 @@ export const SwitcherList = GObject.registerClass({
     }
 
     _scrollToLeft(index) {
-        let adjustment = this._scrollView.hscroll.adjustment;
+        const adjustment = this._scrollView.hadjustment;
         let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
 
         let item = this._items[index];
@@ -536,7 +536,7 @@ export const SwitcherList = GObject.registerClass({
     }
 
     _scrollToRight(index) {
-        let adjustment = this._scrollView.hscroll.adjustment;
+        const adjustment = this._scrollView.hadjustment;
         let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
 
         let item = this._items[index];

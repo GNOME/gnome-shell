@@ -529,8 +529,7 @@ var BaseAppView = GObject.registerClass({
         this._scrollTimeoutId = 0;
         this._scrollView.connect('scroll-event', this._onScroll.bind(this));
 
-        const scroll = this._scrollView.hscroll;
-        this._adjustment = scroll.adjustment;
+        this._adjustment = this._scrollView.hadjustment;
         this._adjustment.connect('notify::value', adj => {
             const value = adj.value / adj.page_size;
             this._pageIndicators.setCurrentPosition(value);
@@ -2375,7 +2374,7 @@ export const FolderIcon = GObject.registerClass({
 
     open() {
         this._ensureFolderDialog();
-        this.view._scrollView.vscroll.adjustment.value = 0;
+        this.view._scrollView.vadjustment.value = 0;
         this._dialog.popup();
     }
 

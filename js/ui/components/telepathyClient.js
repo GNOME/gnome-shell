@@ -890,8 +890,8 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
         // Keep track of the bottom position for the current adjustment and
         // force a scroll to the bottom if things change while we were at the
         // bottom
-        this._oldMaxScrollValue = this._scrollArea.vscroll.adjustment.value;
-        this._scrollArea.vscroll.adjustment.connect('changed', adjustment => {
+        this._oldMaxScrollValue = this._scrollArea.vadjustment.value;
+        this._scrollArea.vadjustment.connect('changed', adjustment => {
             if (adjustment.value === this._oldMaxScrollValue)
                 this.scrollTo(St.Side.BOTTOM);
             this._oldMaxScrollValue = Math.max(adjustment.lower, adjustment.upper - adjustment.page_size);
@@ -917,7 +917,7 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
     }
 
     scrollTo(side) {
-        let adjustment = this._scrollArea.vscroll.adjustment;
+        let adjustment = this._scrollArea.vadjustment;
         if (side === St.Side.TOP)
             adjustment.value = adjustment.lower;
         else if (side === St.Side.BOTTOM)

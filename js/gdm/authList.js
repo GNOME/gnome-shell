@@ -128,7 +128,7 @@ export const AuthList = GObject.registerClass({
     scrollToItem(item) {
         let box = item.get_allocation_box();
 
-        const {adjustment} = this._scrollView.vscroll;
+        const adjustment = this._scrollView.vadjustment;
 
         let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
         adjustment.ease(value, {

@@ -751,7 +751,7 @@ export const SearchResultsView = GObject.registerClass({
 
     _onPan(action) {
         let [dist_, dx_, dy] = action.get_motion_delta(0);
-        let adjustment = this._scrollView.vscroll.adjustment;
+        let adjustment = this._scrollView.vadjustment;
         adjustment.value -= (dy / this.height) * adjustment.page_size;
         return false;
     }

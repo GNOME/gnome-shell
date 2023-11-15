@@ -179,7 +179,7 @@ const Notebook = GObject.registerClass({
         scrollview.hide();
         this.add_child(scrollview);
 
-        let vAdjust = scrollview.vscroll.adjustment;
+        const vAdjust = scrollview.vadjustment;
         vAdjust.connect('changed', () => this._onAdjustScopeChanged(tabData));
         vAdjust.connect('notify::value', () => this._onAdjustValueChanged(tabData));
 
@@ -238,7 +238,7 @@ const Notebook = GObject.registerClass({
     }
 
     _onAdjustValueChanged(tabData) {
-        let vAdjust = tabData.scrollView.vscroll.adjustment;
+        const vAdjust = tabData.scrollView.vadjustment;
         if (vAdjust.value < (vAdjust.upper - vAdjust.lower - 0.5))
             tabData._scrolltoBottom = false;
     }
@@ -246,7 +246,7 @@ const Notebook = GObject.registerClass({
     _onAdjustScopeChanged(tabData) {
         if (!tabData._scrollToBottom)
             return;
-        let vAdjust = tabData.scrollView.vscroll.adjustment;
+        const vAdjust = tabData.scrollView.vadjustment;
         vAdjust.value = vAdjust.upper - vAdjust.page_size;
     }
 

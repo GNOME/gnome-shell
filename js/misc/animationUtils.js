@@ -32,7 +32,7 @@ export function adjustAnimationTime(msecs) {
  * @param {Clutter.Actor} actor - the actor
  */
 export function ensureActorVisibleInScrollView(scrollView, actor) {
-    const {adjustment} = scrollView.vscroll;
+    const adjustment = scrollView.vadjustment;
     let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
 
     let offset = 0;
