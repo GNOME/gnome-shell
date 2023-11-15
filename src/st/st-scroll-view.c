@@ -882,7 +882,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                          "StScrollBar",
                          "Horizontal scroll indicator",
                          ST_TYPE_SCROLL_BAR,
-                         ST_PARAM_READABLE);
+                         ST_PARAM_READABLE | G_PARAM_DEPRECATED);
 
   /**
    * StScrollView:vscroll:
@@ -894,7 +894,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                          "StScrollBar",
                          "Vertical scroll indicator",
                          ST_TYPE_SCROLL_BAR,
-                         ST_PARAM_READABLE);
+                         ST_PARAM_READABLE | G_PARAM_DEPRECATED);
 
   /**
    * StScrollView:hadjustment:
