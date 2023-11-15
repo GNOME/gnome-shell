@@ -60,7 +60,7 @@
 
 #include "st-enum-types.h"
 #include "st-private.h"
-#include "st-scroll-view.h"
+#include "st-scroll-view-private.h"
 #include "st-scroll-bar.h"
 #include "st-scrollable.h"
 #include "st-scroll-view-fade.h"
@@ -1493,4 +1493,28 @@ st_scroll_view_set_policy (StScrollView   *scroll,
   clutter_actor_queue_relayout (CLUTTER_ACTOR (scroll));
 
   g_object_thaw_notify ((GObject *) scroll);
+}
+
+void
+st_scroll_view_get_bar_offsets (StScrollView *scroll,
+                                float        *hoffset,
+                                float        *voffset)
+{
+  StScrollViewPrivate *priv;
+
+  g_return_if_fail (ST_IS_SCROLL_VIEW (scroll));
+
+  priv = st_scroll_view_get_instance_private (scroll);
+
+  if (hoffset)
+    {
+      *hoffset = priv->vscrollbar_visible ? clutter_actor_get_width (priv->vscroll)
+                                          : 0.;
+    }
+
+  if (voffset)
+    {
+      *voffset = priv->hscrollbar_visible ? clutter_actor_get_height (priv->hscroll)
+                                          : 0.;
+    }
 }
