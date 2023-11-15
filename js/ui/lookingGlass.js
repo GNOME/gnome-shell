@@ -162,8 +162,11 @@ const Notebook = GObject.registerClass({
         labelBox.add_child(label);
         this.tabControls.add_child(labelBox);
 
-        const scrollview = new St.ScrollView({y_expand: true, child});
-        scrollview.hscroll.hide();
+        const scrollview = new St.ScrollView({
+            child,
+            hscrollbar_policy: St.PolicyType.NEVER,
+            y_expand: true,
+        });
 
         const tabData = {
             child,
@@ -387,6 +390,7 @@ class ObjInspector extends St.ScrollView {
     _init(lookingGlass) {
         super._init({
             pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
+            hscrollbar_policy: St.PolicyType.NEVER,
         });
 
         this._obj = null;
@@ -394,7 +398,6 @@ class ObjInspector extends St.ScrollView {
 
         this._parentList = [];
 
-        this.hscroll.hide();
         this._container = new St.BoxLayout({
             name: 'LookingGlassPropertyInspector',
             style_class: 'lg-dialog',
