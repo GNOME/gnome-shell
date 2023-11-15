@@ -679,7 +679,7 @@ class Panel extends St.Widget {
 
         Main.layoutManager.panelBox.add_child(this);
         Main.ctrlAltTabManager.addGroup(this,
-            _('Top Bar'), 'focus-top-bar-symbolic',
+            _('Top Bar'), 'shell-focus-top-bar-symbolic',
             {sortGroup: CtrlAltTab.SortGroup.TOP});
 
         Main.sessionMode.connect('updated', this._updatePanel.bind(this));

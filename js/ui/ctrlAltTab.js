@@ -23,7 +23,7 @@ export class CtrlAltTabManager {
         this._items = [];
         this.addGroup(global.window_group,
             _('Windows'),
-            'focus-windows-symbolic', {
+            'shell-focus-windows-symbolic', {
                 sortGroup: SortGroup.TOP,
                 focusCallback: this._focusWindows.bind(this),
             });
