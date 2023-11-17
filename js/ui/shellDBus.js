@@ -56,17 +56,22 @@ export class GnomeShell {
      * If evaluation fails, then the return value will be
      * [false, JSON.stringify(exception)];
      *
-     * @param {string} code A string containing JavaScript code
-     * @returns {Array}
+     * @async
+     * @param {...any} params - method parameters
+     * @param {Gio.DBusMethodInvocation} invocation - the invocation
+     * @returns {void}
      */
-    Eval(code) {
-        if (!global.context.unsafe_mode)
-            return [false, ''];
+    async EvalAsync(params, invocation) {
+        if (!global.context.unsafe_mode) {
+            invocation.return_value(new GLib.Variant('(bs)', [false, '']));
+            return;
+        }
 
+        const [code] = params;
         let returnValue;
         let success;
         try {
-            returnValue = JSON.stringify(eval(code));
+            returnValue = JSON.stringify(await eval(code));
             // A hack; DBus doesn't have null/undefined
             if (returnValue === undefined)
                 returnValue = '';
@@ -75,7 +80,8 @@ export class GnomeShell {
             returnValue = `${e}`;
             success = false;
         }
-        return [success, returnValue];
+        invocation.return_value(
+            new GLib.Variant('(bs)', [success, returnValue]));
     }
 
     /**
