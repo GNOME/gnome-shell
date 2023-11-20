@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-10-01 18:30+0000\n"
-"PO-Revision-Date: 2023-10-06 01:57+0300\n"
+"POT-Creation-Date: 2023-11-03 00:07+0000\n"
+"PO-Revision-Date: 2023-11-19 15:13+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: tr\n"
 "X-DL-Module: gnome-shell\n"
@@ -558,7 +558,7 @@ msgstr "(ya da parmağı okuyucuya yerleştir)"
 #: js/misc/systemActions.js:91
 msgctxt "search-result"
 msgid "Power Off"
-msgstr "Bilgisayarı Kapat"
+msgstr "Gücü Kapat"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:94
@@ -602,7 +602,7 @@ msgstr "çıkış;oturumu kapat;çıkış yap"
 #: js/misc/systemActions.js:123
 msgctxt "search-result"
 msgid "Suspend"
-msgstr "Bilgisayarı askıya al"
+msgstr "Askıya al"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
 #: js/misc/systemActions.js:126
@@ -906,7 +906,7 @@ msgstr "P"
 #: js/ui/calendar.js:68
 msgctxt "grid monday"
 msgid "M"
-msgstr "P"
+msgstr "Pt"
 
 #. Translators: Calendar grid abbreviation for Tuesday
 #: js/ui/calendar.js:70
@@ -924,7 +924,7 @@ msgstr "Ç"
 #: js/ui/calendar.js:74
 msgctxt "grid thursday"
 msgid "T"
-msgstr "P"
+msgstr "Pş"
 
 #. Translators: Calendar grid abbreviation for Friday
 #: js/ui/calendar.js:76
@@ -936,7 +936,7 @@ msgstr "C"
 #: js/ui/calendar.js:78
 msgctxt "grid saturday"
 msgid "S"
-msgstr "C"
+msgstr "Ct"
 
 #. *
 #. * Translators: The header displaying just the month name
@@ -961,33 +961,33 @@ msgstr "%OB"
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:500
+#: js/ui/calendar.js:501
 msgid "Previous month"
 msgstr "Önceki ay"
 
-#: js/ui/calendar.js:518
+#: js/ui/calendar.js:519
 msgid "Next month"
 msgstr "Gelecek ay"
 
-#: js/ui/calendar.js:669
+#: js/ui/calendar.js:670
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:728
+#: js/ui/calendar.js:729
 msgid "Week %V"
 msgstr "%V. Hafta"
 
-#: js/ui/calendar.js:907
+#: js/ui/calendar.js:908
 msgid "No Notifications"
 msgstr "Bildirim Yok"
 
-#: js/ui/calendar.js:964
+#: js/ui/calendar.js:965
 msgid "Do Not Disturb"
 msgstr "Rahatsız Etme"
 
-#: js/ui/calendar.js:985
+#: js/ui/calendar.js:986
 msgid "Clear"
 msgstr "Temizle"
 
@@ -1147,7 +1147,7 @@ msgid "Show Apps"
 msgstr "Uygulamaları Göster"
 
 #. Translators: this is the name of the dock/favorites area on
-#. the left of the overview
+#. the bottom of the overview
 #: js/ui/dash.js:410
 msgid "Dash"
 msgstr "Konsol"
@@ -1262,17 +1262,17 @@ msgstr[0] "%d saniyede oturumunuz kendiliğinden kapatılacak."
 #: js/ui/endSessionDialog.js:63
 msgctxt "button"
 msgid "Log Out"
-msgstr "Çıkış"
+msgstr "Oturumu Kapat"
 
 #: js/ui/endSessionDialog.js:69 js/ui/status/system.js:176
 msgctxt "title"
 msgid "Power Off"
-msgstr "Bilgisayarı Kapat"
+msgstr "Gücü Kapat"
 
 #: js/ui/endSessionDialog.js:70
 msgctxt "title"
 msgid "Install Updates & Power Off"
-msgstr "Güncellemeleri Kur ve Kapat"
+msgstr "Güncellemeleri Kur ve Gücü Kapat"
 
 #: js/ui/endSessionDialog.js:73
 #, javascript-format
@@ -1288,12 +1288,12 @@ msgstr "Bekleyen yazılım güncellemelerini kur"
 #: js/ui/endSessionDialog.js:81
 msgctxt "button"
 msgid "Power Off"
-msgstr "Kapat"
+msgstr "Gücü Kapat"
 
 #: js/ui/endSessionDialog.js:88
 msgctxt "title"
 msgid "Restart"
-msgstr "Bilgisayarı Yeniden Başlat"
+msgstr "Yeniden Başlat"
 
 #: js/ui/endSessionDialog.js:89
 msgctxt "title"
@@ -1333,12 +1333,12 @@ msgstr "Yeniden Başlat ve Kur"
 #: js/ui/endSessionDialog.js:120
 msgctxt "button"
 msgid "Install &amp; Power Off"
-msgstr "Kur ve Kapat"
+msgstr "Kur ve Gücü Kapat"
 
 #: js/ui/endSessionDialog.js:121
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
-msgstr "Güncellemeler kurulduktan sonra kapat"
+msgstr "Güncellemeler kurulduktan sonra gücü kapat"
 
 #: js/ui/endSessionDialog.js:128
 msgctxt "title"
@@ -1354,9 +1354,9 @@ msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
 msgstr ""
-"Bilgisayarınız yeniden başladıktan sonra %s %s kurulacak. Yükseltme kurulumu "
-"uzun sürebilir: verilerinizi yedeklediğinizden ve bilgisayarınızın prize "
-"takılı olduğundan emin olun."
+"Yeniden başladıktan sonra %s %s kurulacak. Yükseltme kurulumu uzun "
+"sürebilir: verilerinizi yedeklediğinizden ve bilgisayarınızın prize takılı "
+"olduğundan emin olun."
 
 #: js/ui/endSessionDialog.js:289
 msgid "Low battery power: please plug in before installing updates."
@@ -1577,7 +1577,7 @@ msgstr "Ekran Kilidi devre dışı"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Ekran Kilitleme, GNOME ekran yöneticisi gerektirir."
 
-#: js/ui/messageTray.js:1423
+#: js/ui/messageTray.js:1417
 msgid "System Information"
 msgstr "Sistem Bilgisi"
 
@@ -1690,11 +1690,11 @@ msgstr "Yeniden başlatılıyor…"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME’un ekranı kilitlemesi gerekiyor"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:674
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:670
 msgid "Unable to lock"
 msgstr "Kilitlenemedi"
 
-#: js/ui/screenShield.js:277 js/ui/screenShield.js:675
+#: js/ui/screenShield.js:277 js/ui/screenShield.js:671
 msgid "Lock was blocked by an app"
 msgstr "Kilitleme bir uygulamaca engellendi"
 
@@ -2209,7 +2209,7 @@ msgstr "Uçak Kipi"
 
 #: js/ui/status/system.js:170
 msgid "Power Off Menu"
-msgstr "Bilgisayarı Kapat Menüsü"
+msgstr "Gücü Kapat Menüsü"
 
 #: js/ui/status/system.js:178
 msgid "Suspend"
@@ -2345,20 +2345,26 @@ msgstr "Kilit Açma Penceresi"
 msgid "Log in as another user"
 msgstr "Başka kullanıcı olarak oturum aç"
 
-#: js/ui/welcomeDialog.js:39
+#: js/ui/welcomeDialog.js:49
 #, javascript-format
-msgid "Welcome to GNOME %s"
-msgstr "GNOME %s’a Hoş Geldiniz"
+#| msgid "GNOME Shell"
+msgid "GNOME %s"
+msgstr "GNOME %s"
 
-#: js/ui/welcomeDialog.js:40
+#: js/ui/welcomeDialog.js:53
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "%s’a Hoş Geldiniz"
+
+#: js/ui/welcomeDialog.js:54
 msgid "If you want to learn your way around, check out the tour."
 msgstr "Eğer yolu öğrenmek istiyorsanız, gezintiye çıkın."
 
-#: js/ui/welcomeDialog.js:49
-msgid "No Thanks"
-msgstr "Hayır, Sağ Ol"
+#: js/ui/welcomeDialog.js:63
+msgid "Skip"
+msgstr "Atla"
 
-#: js/ui/welcomeDialog.js:54
+#: js/ui/welcomeDialog.js:68
 msgid "Take Tour"
 msgstr "Gezintiye Çık"
 
@@ -2612,11 +2618,11 @@ msgstr "Elle Kurulmuş"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:98
 #: subprojects/extensions-app/data/ui/extensions-window.ui:133
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
-"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a> adresine göz atın."
+"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a> adresine göz atın."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:111
 msgid "Built-In"
@@ -3076,6 +3082,8 @@ msgstr[0] "%u Girdi"
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
 
-#, javascript-format
+#~ msgid "No Thanks"
+#~ msgstr "Hayır, Sağ Ol"
+
 #~ msgid "%d %%"
 #~ msgstr "%d %%"
