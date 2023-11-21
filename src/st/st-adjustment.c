@@ -283,6 +283,34 @@ st_adjustment_dispose (GObject *object)
 }
 
 static void
+st_adjustment_dispatch_properties_changed (GObject     *object,
+                                           guint        n_pspecs,
+                                           GParamSpec **pspecs)
+{
+  gboolean changed = FALSE;
+  gint i;
+
+  G_OBJECT_CLASS (st_adjustment_parent_class)->dispatch_properties_changed (object, n_pspecs, pspecs);
+
+  for (i = 0; i < n_pspecs; i++)
+    switch (pspecs[i]->param_id)
+      {
+      case PROP_LOWER:
+      case PROP_UPPER:
+      case PROP_STEP_INC:
+      case PROP_PAGE_INC:
+      case PROP_PAGE_SIZE:
+        changed = TRUE;
+        break;
+      default:
+        break;
+      }
+
+  if (changed)
+    g_signal_emit (object, signals[CHANGED], 0);
+}
+
+static void
 st_adjustment_class_init (StAdjustmentClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -291,6 +319,7 @@ st_adjustment_class_init (StAdjustmentClass *klass)
   object_class->get_property = st_adjustment_get_property;
   object_class->set_property = st_adjustment_set_property;
   object_class->dispose = st_adjustment_dispose;
+  object_class->dispatch_properties_changed = st_adjustment_dispatch_properties_changed;
 
   /**
    * StAdjustment:actor:
@@ -544,11 +573,11 @@ st_adjustment_clamp_page (StAdjustment *adjustment,
  * When setting multiple adjustment properties via their individual
  * setters, multiple #GObject::notify and #StAdjustment::changed
  * signals will be emitted. However, it’s possible to compress the
- * #GObject::notify signals into one by calling
- * g_object_freeze_notify() and g_object_thaw_notify() around the
+ * #GObject::notify and #StAdjustment::changed signals into one of each
+ * by calling g_object_freeze_notify() and g_object_thaw_notify() around the
  * calls to the individual setters.
  *
- * Alternatively, using st_adjustment_set_values() will compress both
+ * Alternatively, st_adjustment_set_values() can be used to compress
  * #GObject::notify and #StAdjustment::changed emissions.
  */
 static gboolean
@@ -560,8 +589,6 @@ st_adjustment_set_lower (StAdjustment *adjustment,
   if (priv->lower != lower)
     {
       priv->lower = lower;
-
-      g_signal_emit (adjustment, signals[CHANGED], 0);
 
       g_object_notify_by_pspec (G_OBJECT (adjustment), props[PROP_LOWER]);
 
@@ -600,8 +627,6 @@ st_adjustment_set_upper (StAdjustment *adjustment,
     {
       priv->upper = upper;
 
-      g_signal_emit (adjustment, signals[CHANGED], 0);
-
       g_object_notify_by_pspec (G_OBJECT (adjustment), props[PROP_UPPER]);
 
       /* Defer clamp until after construction. */
@@ -636,8 +661,6 @@ st_adjustment_set_step_increment (StAdjustment *adjustment,
     {
       priv->step_increment = step;
 
-      g_signal_emit (adjustment, signals[CHANGED], 0);
-
       g_object_notify_by_pspec (G_OBJECT (adjustment), props[PROP_STEP_INC]);
 
       return TRUE;
@@ -667,8 +690,6 @@ st_adjustment_set_page_increment (StAdjustment *adjustment,
   if (priv->page_increment != page)
     {
       priv->page_increment = page;
-
-      g_signal_emit (adjustment, signals[CHANGED], 0);
 
       g_object_notify_by_pspec (G_OBJECT (adjustment), props[PROP_PAGE_INC]);
 
@@ -700,8 +721,6 @@ st_adjustment_set_page_size (StAdjustment *adjustment,
     {
       priv->page_size = size;
 
-      g_signal_emit (adjustment, signals[CHANGED], 0);
-
       g_object_notify_by_pspec (G_OBJECT (adjustment), props[PROP_PAGE_SIZE]);
 
       /* We'll explicitly clamp after construction. */
@@ -728,8 +747,8 @@ st_adjustment_set_page_size (StAdjustment *adjustment,
  *
  * Use this function to avoid multiple emissions of the #GObject::notify and
  * #StAdjustment::changed signals. See st_adjustment_set_lower() for an
- * alternative way of compressing multiple emissions of #GObject::notify into
- * one.
+ * alternative way of compressing multiple emissions of #GObject::notify and
+ * #StAdjustmet::changed into one of each.
  */
 void
 st_adjustment_set_values (StAdjustment *adjustment,
@@ -740,34 +759,19 @@ st_adjustment_set_values (StAdjustment *adjustment,
                           gdouble       page_increment,
                           gdouble       page_size)
 {
-  StAdjustmentPrivate *priv;
-  gboolean emit_changed = FALSE;
-
   g_return_if_fail (ST_IS_ADJUSTMENT (adjustment));
   g_return_if_fail (page_size >= 0 && page_size <= G_MAXDOUBLE);
   g_return_if_fail (step_increment >= 0 && step_increment <= G_MAXDOUBLE);
   g_return_if_fail (page_increment >= 0 && page_increment <= G_MAXDOUBLE);
 
-  priv = st_adjustment_get_instance_private (adjustment);
-
-  emit_changed = FALSE;
-
   g_object_freeze_notify (G_OBJECT (adjustment));
 
-  emit_changed |= st_adjustment_set_lower (adjustment, lower);
-  emit_changed |= st_adjustment_set_upper (adjustment, upper);
-  emit_changed |= st_adjustment_set_step_increment (adjustment, step_increment);
-  emit_changed |= st_adjustment_set_page_increment (adjustment, page_increment);
-  emit_changed |= st_adjustment_set_page_size (adjustment, page_size);
-
-  if (value != priv->value)
-    {
-      st_adjustment_set_value (adjustment, value);
-      emit_changed = TRUE;
-    }
-
-  if (emit_changed)
-    g_signal_emit (G_OBJECT (adjustment), signals[CHANGED], 0);
+  st_adjustment_set_lower (adjustment, lower);
+  st_adjustment_set_upper (adjustment, upper);
+  st_adjustment_set_step_increment (adjustment, step_increment);
+  st_adjustment_set_page_increment (adjustment, page_increment);
+  st_adjustment_set_page_size (adjustment, page_size);
+  st_adjustment_set_value (adjustment, value);
 
   g_object_thaw_notify (G_OBJECT (adjustment));
 }
