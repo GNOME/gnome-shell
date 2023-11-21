@@ -9,6 +9,9 @@ import Gtk from 'gi://Gtk?version=4.0';
 
 export const ExtensionPrefsDialog = GObject.registerClass({
     GTypeName: 'ExtensionPrefsDialog',
+    Signals: {
+        'loaded': {},
+    },
 }, class ExtensionPrefsDialog extends Adw.PreferencesWindow {
     _init(extension) {
         super._init({
@@ -21,7 +24,7 @@ export const ExtensionPrefsDialog = GObject.registerClass({
         this._loadPrefs().catch(e => {
             this._showErrorPage(e);
             logError(e, 'Failed to open preferences');
-        });
+        }).finally(() => this.emit('loaded'));
     }
 
     async _loadPrefs() {

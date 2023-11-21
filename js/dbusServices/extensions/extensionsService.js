@@ -137,6 +137,8 @@ export const ExtensionsService = class extends ServiceImplementation {
             const extension = extensionManager.createExtensionObject(serialized);
 
             this._prefsDialog = new ExtensionPrefsDialog(extension);
+            this._prefsDialog.connect('loaded',
+                () => this._prefsDialog.show());
             this._prefsDialog.connect('realize', () => {
                 let externalWindow = null;
 
@@ -156,8 +158,6 @@ export const ExtensionsService = class extends ServiceImplementation {
                 return false;
             });
             this.hold();
-
-            this._prefsDialog.show();
 
             invocation.return_value(null);
         } catch (error) {
