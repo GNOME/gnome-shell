@@ -64,7 +64,8 @@ shell_tray_icon_window_created_cb (MetaDisplay   *display,
                                    MetaWindow    *window,
                                    ShellTrayIcon *tray_icon)
 {
-  Window xwindow = meta_window_get_xwindow (window);
+  MetaX11Display *x11_display = meta_display_get_x11_display (display);
+  Window xwindow = meta_x11_display_lookup_xwindow (x11_display, window);
 
   if (tray_icon->tray_child &&
       xwindow == na_xembed_get_socket_window (NA_XEMBED (tray_icon->tray_child)))
