@@ -644,7 +644,7 @@ stop_scrolling (StScrollBar *bar)
   if (priv->grab)
     {
       clutter_grab_dismiss (priv->grab);
-      g_clear_pointer (&priv->grab, clutter_grab_unref);
+      g_clear_object (&priv->grab);
     }
 
   priv->grab_device = NULL;
