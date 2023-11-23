@@ -27,7 +27,7 @@ class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
     _init(displayName, shortName) {
         super._init();
 
-        this.setOrnament(PopupMenu.Ornament.NONE);
+        this.setOrnament(PopupMenu.Ornament.NO_DOT);
 
         this.label = new St.Label({
             text: displayName,
@@ -932,7 +932,7 @@ class InputSourceIndicator extends PanelMenu.Button {
         let newSource = this._inputSourceManager.currentSource;
 
         if (oldSource) {
-            this._menuItems[oldSource.index].setOrnament(PopupMenu.Ornament.NONE);
+            this._menuItems[oldSource.index].setOrnament(PopupMenu.Ornament.NO_DOT);
             this._indicatorLabels[oldSource.index].hide();
         }
 
@@ -1011,7 +1011,7 @@ class InputSourceIndicator extends PanelMenu.Button {
                 radioGroup.push(item);
                 item.radioGroup = radioGroup;
                 item.setOrnament(prop.get_state() === IBus.PropState.CHECKED
-                    ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
+                    ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NO_DOT);
                 item.connect('activate', () => {
                     if (item.prop.get_state() === IBus.PropState.CHECKED)
                         return;
@@ -1024,7 +1024,7 @@ class InputSourceIndicator extends PanelMenu.Button {
                             ibusManager.activateProperty(
                                 item.prop.get_key(), IBus.PropState.CHECKED);
                         } else {
-                            group[j].setOrnament(PopupMenu.Ornament.NONE);
+                            group[j].setOrnament(PopupMenu.Ornament.NO_DOT);
                             group[j].prop.set_state(IBus.PropState.UNCHECKED);
                             ibusManager.activateProperty(
                                 group[j].prop.get_key(), IBus.PropState.UNCHECKED);

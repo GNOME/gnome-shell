@@ -364,7 +364,7 @@ const SessionMenuButton = GObject.registerClass({
             if (itemIds[i] === this._activeSessionId)
                 this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.DOT);
             else
-                this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.NONE);
+                this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.NO_DOT);
         }
     }
 

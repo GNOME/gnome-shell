@@ -218,7 +218,7 @@ class LanguageSelectionPopup extends PopupMenu.PopupMenu {
             item.can_focus = false;
             item.setOrnament(is === inputSourceManager.currentSource
                 ? PopupMenu.Ornament.DOT
-                : PopupMenu.Ornament.NONE);
+                : PopupMenu.Ornament.NO_DOT);
         }
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());

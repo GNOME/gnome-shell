@@ -19,6 +19,7 @@ export const Ornament = {
     DOT: 1,
     CHECK: 2,
     HIDDEN: 3,
+    NO_DOT: 4,
 };
 
 function isPopupMenuItemVisible(child) {
@@ -256,8 +257,11 @@ export const PopupBaseMenuItem = GObject.registerClass({
         this._ornament = ornament;
 
         if (ornament === Ornament.DOT) {
-            this._ornamentIcon.icon_name = 'ornament-dot-symbolic';
+            this._ornamentIcon.icon_name = 'ornament-dot-checked-symbolic';
             this.add_accessible_state(Atk.StateType.CHECKED);
+        } else if (ornament === Ornament.NO_DOT) {
+            this._ornamentIcon.icon_name = 'ornament-dot-unchecked-symbolic';
+            this.remove_accessible_state(Atk.StateType.CHECKED);
         } else if (ornament === Ornament.CHECK) {
             this._ornamentIcon.icon_name = 'ornament-check-symbolic';
             this.add_accessible_state(Atk.StateType.CHECKED);
@@ -271,7 +275,7 @@ export const PopupBaseMenuItem = GObject.registerClass({
     }
 
     _updateOrnamentStyle() {
-        if (this._ornament !== Ornament.HIDDEN)
+        if (this._ornament === Ornament.CHECK || this._ornament === Ornament.NONE)
             this.add_style_class_name('popup-ornamented-menu-item');
         else
             this.remove_style_class_name('popup-ornamented-menu-item');

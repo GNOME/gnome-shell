@@ -379,7 +379,7 @@ class NMConnectionItem extends NMMenuItem {
             this.accessible_name = this.name;
             this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
             this.setOrnament(this.is_active
-                ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
+                ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NO_DOT);
         } else {
             this.accessible_name = this._getAccessibleName();
             this._subtitle.text = this._getSubtitleLabel();
