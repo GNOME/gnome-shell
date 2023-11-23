@@ -126,6 +126,7 @@ export class Magnifier extends Signals.EventEmitter {
         });
 
         this.setActive(St.Settings.get().magnifier_active);
+        this._cursorUnfocusInhibited = false;
     }
 
     /**
@@ -135,8 +136,10 @@ export class Magnifier extends Signals.EventEmitter {
     showSystemCursor() {
         const seat = Clutter.get_default_backend().get_default_seat();
 
-        if (seat.is_unfocus_inhibited())
+        if (this._cursorUnfocusInhibited) {
             seat.uninhibit_unfocus();
+            this._cursorUnfocusInhibited = false;
+        }
 
         if (this._cursorVisibilityChangedId) {
             this._cursorTracker.disconnect(this._cursorVisibilityChangedId);
@@ -153,8 +156,10 @@ export class Magnifier extends Signals.EventEmitter {
     hideSystemCursor() {
         const seat = Clutter.get_default_backend().get_default_seat();
 
-        if (!seat.is_unfocus_inhibited())
+        if (!this._cursorUnfocusInhibited) {
             seat.inhibit_unfocus();
+            this._cursorUnfocusInhibited = true;
+        }
 
         if (!this._cursorVisibilityChangedId) {
             this._cursorTracker.set_pointer_visible(false);
