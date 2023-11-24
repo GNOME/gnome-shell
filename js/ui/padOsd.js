@@ -812,13 +812,13 @@ export const PadOsd = GObject.registerClass({
         } else if (event.get_source_device() === this.padDevice &&
                    event.type() === Clutter.EventType.PAD_STRIP) {
             if (this._editionMode) {
-                let [retval_, number, mode] = event.get_pad_event_details();
+                let [retval_, number, mode] = event.get_pad_details();
                 this._startStripActionEdition(number, Meta.PadDirection.UP, mode);
             }
         } else if (event.get_source_device() === this.padDevice &&
                    event.type() === Clutter.EventType.PAD_RING) {
             if (this._editionMode) {
-                let [retval_, number, mode] = event.get_pad_event_details();
+                let [retval_, number, mode] = event.get_pad_details();
                 this._startRingActionEdition(number, Meta.PadDirection.CCW, mode);
             }
         }
