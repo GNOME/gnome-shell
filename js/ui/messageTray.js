@@ -22,7 +22,7 @@ const HIDE_TIMEOUT = 200;
 const LONGER_HIDE_TIMEOUT = 600;
 
 const MAX_NOTIFICATIONS_IN_QUEUE = 3;
-const MAX_NOTIFICATIONS_PER_SOURCE = 3;
+const MAX_NOTIFICATIONS_PER_SOURCE = 10;
 
 // We delay hiding of the tray if the mouse is within MOUSE_LEFT_ACTOR_THRESHOLD
 // range from the point where it left the tray.
