@@ -16,8 +16,8 @@
 
     // icon size and color
     > StIcon {
-      icon-size: $base_icon_size*3; // 48px
-      margin-bottom: $base_margin*3;
+      icon-size: $scalable_icon_size * 3; // 48px
+      margin-bottom: $base_margin * 3;
       -st-icon-style: symbolic;
     }
   }
@@ -63,6 +63,7 @@
 // message bubbles
 .message {
   @include card;
+  padding: 0 !important;
 
   // icon container
   .message-icon-bin {
@@ -73,7 +74,7 @@
 
     // icon size and color
     > StIcon {
-      icon-size: $large_icon_size; // 32px
+      icon-size: $large_icon_size;
       -st-icon-style: symbolic;
     }
 
@@ -87,44 +88,43 @@
   // content
   .message-content {
     spacing: 4px;
-    padding: ($base_padding*1.5);
-    margin-bottom: $base_margin*2;
+    padding: ($base_padding * 1.5);
+    margin-bottom: $base_margin * 2;
   }
 
-  // title
-  .message-title {
-    font-weight: bold;
-    /* HACK: the label should be baseline-aligned with a 1em label, fake this with some bottom padding */
-    padding-top: 0.57em;
-  }
+  .message-title-box {
+    spacing: $base_padding;
+    // title
+    .message-title {
+      font-weight: bold;
+    }
 
-  // secondary container in title box
-  .message-secondary-bin {
-    padding: 0 $base_margin * 2;
+    // secondary container in title box
+    .message-secondary-bin {
 
-    // notification time stamp
-    > .event-time {
-      color: transparentize($fg_color, 0.5);
-      @include fontsize($base_font_size - 2);
-      /* HACK: the label should be baseline-aligned with a 1em label, fake this with some bottom padding */
-      padding-bottom: 0.13em;
+      // notification time stamp
+      > .event-time {
+        @extend %caption;
+        color: transparentize($fg_color, 0.5);
+        padding-bottom: to_em(1px);
 
-      &:ltr { text-align: right };
-      &:rtl { text-align: left };
+        &:ltr { text-align: right };
+        &:rtl { text-align: left };
+      }
     }
   }
 
+
   // close button
   .message-close-button {
+    @extend .icon-button;
     color: $fg_color;
     background-color: transparentize($fg_color, 0.8);
-    border-radius: 99px;
-    padding: $base_padding - 1px;
+    padding: 0 !important;
+    border: 5px transparent solid;
     margin: 1px;
     &:hover {background-color: transparentize($fg_color, 0.7);}
     &:active {background-color: transparentize($fg_color, 0.8);}
-
-    > StIcon { icon-size: $base_icon_size; }
   }
 
   // body
@@ -138,14 +138,14 @@
 
 /* Media Controls */
 .message-media-control {
-  padding: 0 $base_padding*3;
-  margin: $base_padding*2 0;
+  padding: 0 $base_padding * 3;
+  margin: $base_padding * 2 0;
   border-radius: $base_border_radius;
   color: $fg_color;
 
   @if $is_highcontrast {
     border: 1px solid $hc_inset_color;
-    margin: $base_padding*2 2px;
+    margin: $base_padding * 2 2px;
   }
 
   // colors are lightened since the media controls are in a card
@@ -167,15 +167,15 @@
   }
 
   // fix margin for last button
-  &:last-child:ltr { margin-right: $base_margin*3; }
-  &:last-child:rtl { margin-left: $base_margin*3; }
+  &:last-child:ltr { margin-right: $base_margin * 3; }
+  &:last-child:rtl { margin-left: $base_margin * 3; }
 
   & StIcon { icon-size: $base_icon_size; }
 }
 
 // album-art
 .media-message-cover-icon {
-  icon-size: $base_icon_size*3 !important; // 48px
+  icon-size: $base_icon_size * 3 !important; // 48px
   border-radius: $base_border_radius;
 
   // when there is no artwork
@@ -185,6 +185,6 @@
     border: 1px solid transparent;
     border-radius: $base_border_radius;
     icon-size: $large_icon_size !important; // 32px
-    padding: ($base_padding*2 + 2); // 16px
+    padding: ($base_padding * 2 + 2); // 16px
   }
 }

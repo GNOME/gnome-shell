@@ -25,29 +25,39 @@ $cakeisalie: "This stylesheet is generated, DO NOT EDIT";
 
 /* Global Values */
 
-// padding, margin and spacing
-$base_padding: 6px;
-$base_margin: 4px;
+// Base values of elemetns of the shell in their smallest "unit".
+// These are used in calculations elsewhere to have elements in proportion
+$base_font_size: 11pt;      // font size
+$base_padding: 6px;         // internal padding of elements
+$base_margin: 4px;          // margin between elements
+$base_border_radius: 8px;   // radii on all elements
 
-// border radii
-$base_border_radius: 8px;
+// Radius used to make sure elements that have rounded corners stay as such.
+// This is a workaround for 50% not working.
+$forced_circular_radius: 999px;
 
 // radii of things that display over other things, e.g. popovers
-$modal_radius: $base_border_radius*2; // 24px
+$modal_radius: $base_border_radius * 2;
 
 // Chroma key to flag when a background-color is always occluded, not visible.
 // This allows any box-shadow behind it to be rendered more efficiently by
 // omitting the middle rectangle.
 $invisible_occluded_bg_color: rgba(3,2,1,0);
 
-// fonts
-$base_font_size: 11;
-$text_shadow_color: if($variant == 'light', rgba(255,255,255,0.3), rgba(0,0,0,0.2));
+// Fixed icon sizes
+$base_icon_size: 16px;
+$medium_icon_size: $base_icon_size * 1.5; // 24px
+$large_icon_size: $base_icon_size * 2; // 32px
 
-// icons
-$base_icon_size: 1.09em;
-$large_icon_size: $base_icon_size*2; // 32px
-// $base_icon_size: 16px;
+// Scaled values
+// Used in elements that follow text scaling factors
+$scaled_padding: to_em(6px); // same as $base_padding
+
+// Used for symbolic icons that scale
+$scalable_icon_size: to_em(16px);
+$medium_scalable_icon_size: $scalable_icon_size * 1.5;
+$large_scalable_icon_size: $scalable_icon_size * 2;
+
 
 // Stage
 stage {
@@ -59,7 +69,7 @@ stage {
 
 // icon tiles
 %tile {
-  border-radius: $base_border_radius * 2; // 16px
+  border-radius: $base_border_radius * 2;
   padding: $base_padding;
   spacing: $base_padding;
   border: 2px solid transparent;
@@ -78,7 +88,7 @@ stage {
   border-style: solid;
   border-width: 1px;
   font-weight: bold;
-  padding: $base_padding*.5 $base_padding*4;
+  padding: $base_padding * .5 $base_padding * 4;
 }
 
 %button {
@@ -108,7 +118,7 @@ stage {
 // normal entry style
 %entry_common {
   border-radius: $base_border_radius;
-  padding: $base_padding*1.5 $base_padding*1.5;
+  padding: $base_padding * 1.5 $base_padding * 1.5;
   selection-background-color: $selected_bg_color;
   selected-color: $selected_fg_color;
 }
@@ -172,7 +182,7 @@ stage {
   border: 1px solid transparentize($light_1, 0.9);
   color: $light_1;
 
-  border-radius: 99px;
+  border-radius: $forced_circular_radius;
   padding: $base_padding $base_padding * 2;
   text-align: center;
 
@@ -185,47 +195,47 @@ stage {
 /* General Typography */
 %large_title {
   font-weight: 300;
-  @include fontsize(24);
+  @include fontsize(24pt);
 }
 
 %title_1 {
   font-weight: 800;
-  @include fontsize(20);
+  @include fontsize(20pt);
 }
 
 %title_2 {
   font-weight: 800;
-  @include fontsize(15);
+  @include fontsize(15pt);
 }
 
 %title_3 {
   font-weight: 700;
-  @include fontsize(15);
+  @include fontsize(15pt);
 }
 
 %title_4 {
   font-weight: 700;
-  @include fontsize(13);
+  @include fontsize(13pt);
 }
 
 %heading {
   font-weight: 700;
-  @include fontsize(11);
+  @include fontsize(11pt);
 }
 
 %caption_heading {
   font-weight: 700;
-  @include fontsize(9);
+  @include fontsize(9pt);
 }
 
 %caption {
   font-weight: 400;
-  @include fontsize(9);
+  @include fontsize(9pt);
 }
 
 %smaller {
   font-weight: 400;
-  @include fontsize(8);
+  @include fontsize(8pt);
 }
 
 %monospace {font-family: monospace;}
@@ -237,8 +247,8 @@ stage {
   color: $osd_fg_color;
   background-color: $osd_bg_color;
   border: 1px solid $osd_outer_borders_color;
-  border-radius: 999px;
-  padding: $base_padding*2;
+  border-radius: $forced_circular_radius;
+  padding: $base_padding * 2;
 
   @if $is_highcontrast {
     border: 2px solid $hc_inset_color;

@@ -4,7 +4,7 @@
 $dash_background_color: $system_overlay_bg_color;
 
 $dash_placeholder_size: 32px;
-$dash_padding: $base_padding*2; // 12px
+$dash_padding: $base_padding * 2; // 12px
 $dash_border_radius: $modal_radius + $dash_padding;
 
 // container for the dash
@@ -53,7 +53,7 @@ $dash_border_radius: $modal_radius + $dash_padding;
   // each app item on the dash
   .app-well-app .overview-icon {
     padding: $base_padding;
-    border-radius: $base_border_radius*2;
+    border-radius: $base_border_radius * 2;
   }
 
   // show apps button

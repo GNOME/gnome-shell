@@ -2,13 +2,13 @@
 
 $menu_bg_color: $bg_color;
 $menuitem_bg_color: lighten($menu_bg_color, 4%);
-$menuitem_border_radius: $base_border_radius*1.5;
+$menuitem_border_radius: $base_border_radius * 1.5;
 
 $submenu_bg_color: lighten($menu_bg_color, 7%);
 
 // the popover itself
 .popup-menu-boxpointer {
-  -arrow-rise: $base_margin+2px; // distance from the panel & screen edge
+  -arrow-rise: $base_padding; // distance from the panel & screen edge
 }
 
 // container of the popover menu
@@ -26,7 +26,7 @@ $submenu_bg_color: lighten($menu_bg_color, 7%);
 .popup-menu-content {
   padding: $base_padding;
   background-color: $bg_color;
-  border-radius: $modal_radius*1.25;
+  border-radius: $modal_radius * 1.25;
   border: 1px solid $outer_borders_color;
   box-shadow: 0 2px 4px 0 $shadow_color;
 }
@@ -67,7 +67,7 @@ $submenu_bg_color: lighten($menu_bg_color, 7%);
 // symbolic icons in popover
 .popup-menu-arrow,
 .popup-menu-icon {
-  icon-size: 16px !important; // for some reason the variable doesn't work here
+  icon-size: $scalable_icon_size;
 }
 
 // popover submenus
@@ -103,8 +103,8 @@ $submenu_bg_color: lighten($menu_bg_color, 7%);
 
 // container for radio and check boxes
 .popup-menu-ornament {
-  icon-size: $base_icon_size !important;
-  width: $base_icon_size;
+  icon-size: $scalable_icon_size !important;
+  width: $scalable_icon_size;
 }
 
 // separator
@@ -144,8 +144,8 @@ $submenu_bg_color: lighten($menu_bg_color, 7%);
     // "Open Windows" label
     > StLabel {
       @extend %caption_heading;
-      &:ltr {margin-right: $base_margin*2;}
-      &:rtl {margin-left: $base_margin*2;}
+      &:ltr {margin-right: $base_margin * 2;}
+      &:rtl {margin-left: $base_margin * 2;}
     }
   }
 }

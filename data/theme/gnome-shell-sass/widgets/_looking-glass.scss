@@ -29,7 +29,7 @@
 
     .lg-toolbar-button {
       @extend %osd_button;
-      padding: $base_padding $base_padding*2;
+      padding: $base_padding $base_padding * 2;
 
       & > StIcon { icon-size: $base_icon_size; }
     }
@@ -41,9 +41,9 @@
 
   .notebook-tab {
     @extend %osd_button;
-    -natural-hpadding: $base_padding*2;
-    -minimum-hpadding: $base_padding*2;
-    padding: $base_padding $base_padding*2;
+    -natural-hpadding: $base_padding * 2;
+    -minimum-hpadding: $base_padding * 2;
+    padding: $base_padding $base_padding * 2;
   }
 
   StBoxLayout#EvalBox { padding: 4px; spacing: $base_padding; padding: $base_padding; }
@@ -54,7 +54,7 @@
 
   StEntry {
     @extend %osd_entry;
-    min-height: 22px;
+    min-height: to_em(22px);
   }
 
   .shell-link {
@@ -97,7 +97,6 @@
 }
 
 .lg-extension {
-  padding: $base_padding*2;
   @include card;
 }
 

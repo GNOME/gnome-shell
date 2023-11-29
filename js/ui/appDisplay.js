@@ -2607,7 +2607,7 @@ export const AppFolderDialog = GObject.registerClass({
 
         // Edit button
         this._editButton = new St.Button({
-            style_class: 'edit-folder-button',
+            style_class: 'icon-button',
             button_mask: St.ButtonMask.ONE,
             toggle_mode: true,
             reactive: true,

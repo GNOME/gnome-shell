@@ -358,16 +358,20 @@ export const Message = GObject.registerClass({
         this._mediaControls = new St.BoxLayout();
         hbox.add_child(this._mediaControls);
 
-        let titleBox = new St.BoxLayout();
+        let titleBox = new St.BoxLayout({style_class: 'message-title-box'});
         contentBox.add_child(titleBox);
 
-        this.titleLabel = new St.Label({style_class: 'message-title'});
+        this.titleLabel = new St.Label({
+            style_class: 'message-title',
+            y_align: Clutter.ActorAlign.END,
+        });
         this.setTitle(title);
         titleBox.add_child(this.titleLabel);
 
         this._secondaryBin = new St.Bin({
             style_class: 'message-secondary-bin',
             x_expand: true, y_expand: true,
+            y_align: Clutter.ActorAlign.END,
         });
         titleBox.add_child(this._secondaryBin);
 

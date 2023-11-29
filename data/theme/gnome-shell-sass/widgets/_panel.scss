@@ -27,14 +27,9 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
 
     // status area icons
     .system-status-icon {
-      icon-size: $base_icon_size;
-      padding: $base_padding - 1px;
+      icon-size: $scalable_icon_size;
+      padding: $base_padding;
       margin: 0 $base_margin;
-    }
-
-    .panel-status-indicators-box .system-status-icon,
-    .panel-status-menu-box .system-status-icon {
-      margin: 0;
     }
 
     // app menu icon
@@ -43,17 +38,26 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
       // dimensions of the icon are hardcoded
     }
 
-    &#panelActivities {
-      -natural-hpadding: $base_padding * 2.5;
+    // reduce margin between icons in combined menu
+    .panel-status-menu-box,
+    .panel-status-indicators-box {
+      spacing: $base_margin;
 
+      > .system-status-icon {
+        padding: 0;
+      }
+    }
+
+    &#panelActivities {
       & StBoxLayout {
+        padding: 0 $scaled_padding * 0.5; // use em padding to keep proportion
         spacing: 5px;
       }
 
       & .workspace-dot {
-        border-radius: 999px;
-        min-width: 8px;
-        min-height: 8px;
+        border-radius: $forced_circular_radius;
+        min-width: $scalable_icon_size * 0.5;
+        min-height: $scalable_icon_size * 0.5;
         background-color: $panel_fg_color;
       }
     }
@@ -62,11 +66,11 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
     &.screen-recording-indicator,
     &.screen-sharing-indicator {
       StBoxLayout {
-        spacing: $base_padding;
+        spacing: $scaled_padding;
       }
 
       StIcon {
-        icon-size: $base_icon_size;
+        icon-size: $scalable_icon_size;
       }
     }
 
@@ -87,6 +91,10 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
 
       .clock {
         // the highlighted child
+      }
+
+      .messages-indicator {
+        icon-size: $scalable_icon_size;
       }
     }
   }
@@ -137,13 +145,13 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
 
 // App Menu
 #appMenu {
-  spacing: $base_padding;
+  spacing: $scaled_padding;
   .label-shadow { color: transparent; }
 }
 
 #appMenu .panel-status-menu-box {
-  padding: 0 $base_padding;
-  spacing: $base_padding;
+  padding: 0 $scaled_padding;
+  spacing: $scaled_padding;
 }
 
 
@@ -151,7 +159,7 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
 .clock-display-box {
   spacing: 2px;
   .clock {
-    padding-left: $base_padding * 2;
-    padding-right: $base_padding * 2;
+    padding-left: $scaled_padding * 2;
+    padding-right: $scaled_padding * 2;
   }
 }

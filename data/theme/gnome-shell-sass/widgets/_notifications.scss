@@ -52,8 +52,8 @@ $notification_banner_width: 34em;
 }
 
 .chat-meta-message {
+  @extend %caption;
   padding-left: 4px;
-  @include fontsize($base_font_size - 2);
   font-weight: bold;
   color: lighten($fg_color,18%);
   &:rtl { padding-left: 0; padding-right: 4px; }

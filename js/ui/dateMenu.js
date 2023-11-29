@@ -729,7 +729,7 @@ const MessagesIndicator = GObject.registerClass(
 class MessagesIndicator extends St.Icon {
     _init() {
         super._init({
-            icon_size: 16,
+            style_class: 'messages-indicator',
             visible: false,
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER,

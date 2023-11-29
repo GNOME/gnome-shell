@@ -12,11 +12,11 @@
 // search results sections "the boxes"
 .search-section {
   // This should be equal to #searchResultsContent spacing
-  spacing: $base_padding*3;
+  spacing: $base_padding * 3;
 
   // separator (unstyled)
   .search-section-separator {
-    height: $base_margin*2; // use it as a spacer
+    height: $base_margin * 2; // use it as a spacer
     background-color: transparent;
   }
 }
@@ -25,14 +25,14 @@
 .search-section-content {
   background-color: $system_overlay_bg_color;
   color: $system_fg_color;
-  border-radius: $modal_radius*1.5;
-  padding: $base_padding*2;
-  margin:0 $base_margin*3;
+  border-radius: $modal_radius * 1.5;
+  padding: $base_padding * 2;
+  margin:0 $base_margin * 3;
 }
 
 %search_section_content_item {
   @include tile_button($system_fg_color);
-  border-radius: $base_border_radius+3px;
+  border-radius: $base_border_radius * 1.65;
 }
 
 // "no results" text
@@ -42,8 +42,8 @@
 }
 
 .grid-search-results {
-  spacing: $base_padding*5;
-  margin:0 $base_margin*3;
+  spacing: $base_padding * 5;
+  margin:0 $base_margin * 3;
 }
 
 // Search results with icons
