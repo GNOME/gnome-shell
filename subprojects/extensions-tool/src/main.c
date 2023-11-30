@@ -229,8 +229,9 @@ void
 print_extension_info (GVariantDict  *info,
                       DisplayFormat  format)
 {
-  const char *uuid, *name, *desc, *path, *url, *author;
+  const char *uuid, *name, *desc, *path, *url, *author, *version_name;
   double state, version;
+  gboolean has_version, has_version_name;
 
   g_variant_dict_lookup (info, "uuid", "&s", &uuid);
   g_print ("%s\n", uuid);
@@ -253,7 +254,14 @@ print_extension_info (GVariantDict  *info,
   if (g_variant_dict_lookup (info, "original-author", "&s", &author))
     g_print ("  %s: %s\n", _("Original author"), author);
 
-  if (g_variant_dict_lookup (info, "version", "d", &version))
+  has_version = g_variant_dict_lookup (info, "version", "d", &version);
+  has_version_name = g_variant_dict_lookup (info, "version-name", "&s", &version_name);
+
+  if (has_version_name && has_version)
+    g_print ("  %s: %s (%.0f)\n", _("Version"), version_name, version);
+  else if (has_version_name)
+    g_print ("  %s: %s\n", _("Version"), version_name);
+  else if (has_version)
     g_print ("  %s: %.0f\n", _("Version"), version);
 
   g_variant_dict_lookup (info, "state", "d", &state);
