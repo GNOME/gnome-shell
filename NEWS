@@ -1,3 +1,28 @@
+45.2
+====
+* Fix performance degradation due to repeated signal leak [Sebastian; !3001]
+* Optimize application search [Sebastian; !3004]
+* Fix on-screen keyboard backspace getting stuck [Sebastian; !3009]
+* Fix arrow navigation in search results [Sebastian; !3015]
+* Support async code in Eval() D-Bus method [Florian; !3021]
+* Fix sliders not requesting any size [Florian; !2994]
+* Only show prefs dialog after the extension has been loaded [Florian; !3025]
+* Improve high-contrast styling [Sam; !3030]
+* Fix mapping of tablet rings/strips [Peter; !3029]
+* Add support for "version-name" field in extension metainfo
+  [Aryan, Florian; !2995, !3034]
+* Fixed crashes [Carlos, Sebastian, Florian; !2993, !3018, !3011]
+* Misc. bug fixes and cleanups [Florian, Barnabás, Jonas, Julian, Charles;
+  !3005, !3008, !2190, !3023, !2997]
+
+Contributors:
+  Jonas Dreßler, Carlos Garnacho, Sam Hewitt, Peter Hutterer, Aryan Kaushik,
+  Sebastian Keller, Florian Müllner, Barnabás Pőcze, Julian Sparber,
+  Charles Wong
+
+Translators:
+  Ekaterine Papava [ka], Ngọc Quân Trần [vi], Dušan Kazik [sk]
+
 45.1
 ====
 * Fix scroll handling on sliders [Carlos; !2967]
