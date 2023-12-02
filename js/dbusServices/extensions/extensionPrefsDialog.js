@@ -7,6 +7,8 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk?version=4.0';
 
+import {formatError} from './misc/errorUtils.js';
+
 export const ExtensionPrefsDialog = GObject.registerClass({
     GTypeName: 'ExtensionPrefsDialog',
     Signals: {
@@ -120,21 +122,14 @@ const ExtensionPrefsErrorPage = GObject.registerClass({
         this._revealer.connect('notify::child-revealed',
             () => this._syncExpandedStyle());
 
-        this._errorView.buffer.text = `${error}\n\nStack trace:\n`;
-        // Indent stack trace.
-        this._errorView.buffer.text +=
-            error.stack.split('\n').map(line => `  ${line}`).join('\n');
+        const formattedError = formatError(error);
+        this._errorView.buffer.text = formattedError;
 
         // markdown for pasting in gitlab issues
         let lines = [
             `The settings of extension ${this._uuid} had an error:`,
             '```',
-            `${error}`,
-            '```',
-            '',
-            'Stack trace:',
-            '```',
-            error.stack.replace(/\n$/, ''), // stack without trailing newline
+            formattedError.replace(/\n$/, ''),  // remove trailing newline
             '```',
             '',
         ];
