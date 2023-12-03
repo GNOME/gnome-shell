@@ -138,7 +138,6 @@ extension_pack_add_schemas (ExtensionPack  *pack,
 {
   g_autoptr (GSubprocess) proc = NULL;
   g_autoptr (GFile) dstdir = NULL;
-  g_autofree char *dstpath = NULL;
   char **s;
 
   if (!ensure_tmpdir (pack, error))
@@ -162,17 +161,6 @@ extension_pack_add_schemas (ExtensionPack  *pack,
       if (!g_file_copy (src, dst, G_FILE_COPY_NONE, NULL, NULL, NULL, error))
         return FALSE;
     }
-
-#if MAJOR_VERSION >= 46
-#error "Outdated compatibility code, please remove"
-#else
-  dstpath = g_file_get_path (dstdir);
-  proc = g_subprocess_new (G_SUBPROCESS_FLAGS_STDERR_SILENCE, error,
-                           "glib-compile-schemas", "--strict", dstpath, NULL);
-
-  if (!g_subprocess_wait_check (proc, NULL, error))
-    return FALSE;
-#endif
 
   g_hash_table_insert (pack->files,
                        g_strdup ("schemas"), g_steal_pointer (&dstdir));
