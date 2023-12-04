@@ -30,6 +30,8 @@
   &:ltr {margin-right: $base_margin * 3; }
   &:rtl {margin-left: $base_margin * 3;}
 
+  -st-vfade-offset: 68px;
+
   .message {
     margin-bottom: $base_padding * 2 !important;
   }

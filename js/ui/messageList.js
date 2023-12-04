@@ -1,11 +1,13 @@
 import Atk from 'gi://Atk';
 import Clutter from 'gi://Clutter';
+import Cogl from 'gi://Cogl';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Graphene from 'gi://Graphene';
 import Meta from 'gi://Meta';
 import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
 import St from 'gi://St';
 
 import * as Main from './main.js';
@@ -1486,6 +1488,7 @@ export const MessageView = GObject.registerClass({
         super({
             style_class: 'message-view',
             layout_manager: new MessageViewLayout(overlay),
+            effect: new FadeEffect({name: 'highlight'}),
             x_expand: true,
             y_expand: true,
         });
@@ -1736,6 +1739,15 @@ export const MessageView = GObject.registerClass({
         this.vadjustment.thaw_notify();
     }
 
+    vfunc_style_changed() {
+        // This widget doesn't use the normal st scroll view fade effect because
+        // highlighting groups needs more control over the fade.
+        const fadeOffset = this.get_theme_node().get_length('-st-vfade-offset');
+        this.get_effect('highlight').fadeMargin = fadeOffset;
+
+        super.vfunc_style_changed();
+    }
+
     _setupMpris() {
         this._mediaSource.connectObject(
             'player-added', (_, player) => this._addPlayer(player),
@@ -1848,7 +1860,10 @@ export const MessageView = GObject.registerClass({
         this.notify('expanded-group');
 
         // Collapse the previously expanded group
-        await prevGroup?.collapse();
+        if (prevGroup) {
+            this._unhighlightGroup(prevGroup);
+            await prevGroup.collapse();
+        }
 
         if (group) {
             // Make sure that the overlay is the child below the expanded group
@@ -1857,6 +1872,7 @@ export const MessageView = GObject.registerClass({
             this._overlay.show();
             this._scrollToExpandedGroup();
 
+            this._highlightGroup(group);
             await group.expand();
         } else {
             this._overlay.hide();
@@ -1866,5 +1882,190 @@ export const MessageView = GObject.registerClass({
     // Collapse expanded notification group
     collapse() {
         this._setExpandedGroup(null).catch(logError);
+    }
+
+    _highlightGroup(group) {
+        const effect = this.get_effect('highlight');
+
+        effect.opacity = 0.0;
+        effect.highlightActor = group;
+        this.ease_property('@effects.highlight.opacity', 1.0, {
+            progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: MESSAGE_ANIMATION_TIME,
+        });
+    }
+
+    _unhighlightGroup() {
+        this.ease_property('@effects.highlight.opacity', 0.0, {
+            progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: MESSAGE_ANIMATION_TIME,
+            onStopped: () => {
+                const effect = this.get_effect('highlight');
+                effect.highlightActor = null;
+            },
+        });
+    }
+});
+
+const FadeEffect = GObject.registerClass({
+    Properties: {
+        'fade-margin': GObject.ParamSpec.float(
+            'fade-margin', null, null,
+            GObject.ParamFlags.READWRITE,
+            0, Infinity, 0),
+        'opacity': GObject.ParamSpec.float(
+            'opacity', null, null,
+            GObject.ParamFlags.READWRITE,
+            0, 1, 0),
+        'highlight-actor': GObject.ParamSpec.object(
+            'highlight-actor', null, null,
+            GObject.ParamFlags.READWRITE,
+            Clutter.Actor),
+    },
+}, class FadeEffect extends Shell.GLSLEffect {
+    constructor(params) {
+        super(params);
+
+        this._heightLocation = this.get_uniform_location('height');
+        this._topFadePositionLocation = this.get_uniform_location('top_fade_position');
+        this._bottomFadePositionLocation = this.get_uniform_location('bottom_fade_position');
+        this._opacityLocation = this.get_uniform_location('opacity');
+        this._topEdgeFadeLocation = this.get_uniform_location('top_edge_fade');
+        this._bottomEdgeFadeLocation = this.get_uniform_location('bottom_edge_fade');
+    }
+
+    _updateEnabled() {
+        if (!this._vadjustment) {
+            this.enabled = false;
+            return;
+        }
+
+        const {upper, pageSize} = this._vadjustment;
+
+        this.enabled = (upper > pageSize && this._fadeMargin > 0.0) || this._highlightActor;
+    }
+
+    get highlightActor() {
+        return this._highlightActor;
+    }
+
+    set highlightActor(actor) {
+        if (this._highlightActor === actor)
+            return;
+
+        this._highlightActor = actor;
+        this.queue_repaint();
+
+        this._updateEnabled();
+        this.notify('highlight-actor');
+    }
+
+    get opacity() {
+        return this._opacity;
+    }
+
+    set opacity(opacity) {
+        if (this._opacity === opacity)
+            return;
+
+        this._opacity = opacity;
+        this.set_uniform_float(this._opacityLocation, 1, [opacity]);
+        this.queue_repaint();
+
+        this.notify('opacity');
+    }
+
+    get fadeMargin() {
+        return this._fadeMargin;
+    }
+
+    set fadeMargin(fadeMargin) {
+        if (this._fadeMargin === fadeMargin)
+            return;
+
+        this._fadeMargin = fadeMargin;
+        this.queue_repaint();
+
+        this.notify('fade-margin');
+    }
+
+    _vadjustmentChanged() {
+        const newAdj = this.actor.vadjustment;
+        if (this._vadjustment === newAdj)
+            return;
+
+        this._vadjustment?.disconnectObject(this);
+        this._vadjustment = newAdj;
+        this._vadjustment?.connectObject('changed', this._updateEnabled.bind(this));
+        this._updateEnabled();
+    }
+
+    vfunc_set_actor(actor) {
+        if (this.actor === actor)
+            return;
+
+        this.actor?.disconnectObject(this);
+
+        actor?.connectObject('notify::vadjustment', this._vadjustmentChanged.bind(this));
+        super.vfunc_set_actor(actor);
+        this._vadjustmentChanged();
+    }
+
+    vfunc_paint_target(node, paintContext) {
+        const {pageSize, upper, value} = this._vadjustment ?? [this.actor.height, this.actor.height, 0];
+
+        if (this._highlightActor) {
+            const position = this._highlightActor.apply_relative_transform_to_point(this.actor, new Graphene.Point3D());
+
+            this.set_uniform_float(this._topFadePositionLocation, 1, [position.y - value]);
+            this.set_uniform_float(this._bottomFadePositionLocation, 1, [(position.y + this._highlightActor.height - 1) - value]);
+        } else {
+            this.set_uniform_float(this._topFadePositionLocation, 1, [0.0]);
+            this.set_uniform_float(this._bottomFadePositionLocation, 1, [0.0]);
+        }
+
+        this.set_uniform_float(this._heightLocation, 1, [pageSize]);
+
+        this.set_uniform_float(this._topEdgeFadeLocation, 1, [Math.min(value, this._fadeMargin)]);
+        this.set_uniform_float(this._bottomEdgeFadeLocation, 1, [
+            pageSize - Math.min(upper - pageSize - value, this._fadeMargin),
+        ]);
+
+        super.vfunc_paint_target(node, paintContext);
+    }
+
+    vfunc_build_pipeline() {
+        const dec = `uniform sampler2D tex;                       \n
+                     uniform float height;                        \n
+                     uniform float opacity;                       \n
+                     uniform float top_edge_fade;                 \n
+                     uniform float bottom_edge_fade;              \n
+                     uniform float top_fade_position;             \n
+                     uniform float bottom_fade_position;          \n`;
+
+        const src = `cogl_color_out = cogl_color_in * texture2D (tex, vec2 (cogl_tex_coord_in[0].xy));    \n
+                     float fade_base = 300;                                                               \n
+                     float fade_height = 400;                                                             \n
+                     float y = height * cogl_tex_coord_in[0].y;                                           \n
+                     float ratio = 1.0;                                                                   \n
+
+                     if (y < top_fade_position && top_fade_position > 0.0) {                              \n
+                         float edge1 = top_fade_position - fade_height;                                   \n
+                         float edge2 = top_fade_position;                                                 \n
+                         ratio = (smoothstep (edge1, edge2 + fade_base, y) - 1.0) * opacity + 1.0;        \n
+                     } else if (y > bottom_fade_position && bottom_fade_position < height) {              \n
+                         float edge1 = bottom_fade_position + fade_height;                                \n
+                         float edge2 = bottom_fade_position;                                              \n
+                         ratio = (smoothstep (edge1, edge2 - fade_base, y) - 1.0) * opacity + 1.0;        \n
+                     }                                                                                    \n
+
+                     if (top_edge_fade > 0.0)                                                             \n
+                         ratio *= smoothstep (0.0, top_edge_fade, y);                                     \n
+                     if (bottom_edge_fade > 0.0 && bottom_edge_fade < height)                             \n
+                         ratio *= smoothstep (height, bottom_edge_fade, y);                               \n
+
+                     cogl_color_out *= ratio;                                                             \n`;
+
+        this.add_glsl_snippet(Cogl.SnippetHook.FRAGMENT, dec, src, true);
     }
 });
