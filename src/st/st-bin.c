@@ -185,7 +185,7 @@ st_bin_get_preferred_height (ClutterActor *self,
     }
   else
     {
-      ClutterActorAlign x_align = clutter_actor_get_y_align (priv->child);
+      ClutterActorAlign x_align = clutter_actor_get_x_align (priv->child);
 
       _st_actor_get_preferred_height (priv->child, for_width,
                                       x_align == CLUTTER_ACTOR_ALIGN_FILL,
