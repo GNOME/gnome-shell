@@ -829,7 +829,7 @@ st_widget_get_paint_volume (ClutterActor *self,
            child != NULL;
            child = clutter_actor_get_next_sibling (child))
         {
-          const ClutterPaintVolume *child_volume;
+          g_autoptr (ClutterPaintVolume) child_volume = NULL;
 
           if (!clutter_actor_is_visible (child))
             continue;
