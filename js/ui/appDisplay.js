@@ -2531,16 +2531,16 @@ export const AppFolderDialog = GObject.registerClass({
             style_class: 'app-folder-dialog',
             x_expand: true,
             y_expand: true,
-            x_align: Clutter.ActorAlign.FILL,
-            y_align: Clutter.ActorAlign.FILL,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
             vertical: true,
         });
 
         this.child = new St.Bin({
             style_class: 'app-folder-dialog-container',
             child: this._viewBox,
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.FILL,
         });
 
         this._addFolderNameEntry();
