@@ -67,115 +67,6 @@ st_bin_dispose (GObject *object)
   G_OBJECT_CLASS (st_bin_parent_class)->dispose (object);
 }
 
-static double
-get_align_factor (ClutterActorAlign align)
-{
-  switch (align)
-    {
-    case CLUTTER_ACTOR_ALIGN_CENTER:
-      return 0.5;
-
-    case CLUTTER_ACTOR_ALIGN_START:
-      return 0.0;
-
-    case CLUTTER_ACTOR_ALIGN_END:
-      return 1.0;
-
-    case CLUTTER_ACTOR_ALIGN_FILL:
-      break;
-   }
-
-  return 0.0;
-}
-
-static void
-st_bin_allocate (ClutterActor          *self,
-                 const ClutterActorBox *box)
-{
-  StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (self));
-
-  clutter_actor_set_allocation (self, box);
-
-  if (priv->child && clutter_actor_is_visible (priv->child))
-    {
-      StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
-      ClutterActorAlign x_align = clutter_actor_get_x_align (priv->child);
-      ClutterActorAlign y_align = clutter_actor_get_y_align (priv->child);
-      ClutterActorBox childbox;
-
-      st_theme_node_get_content_box (theme_node, box, &childbox);
-      clutter_actor_allocate_align_fill (priv->child, &childbox,
-                                         get_align_factor (x_align),
-                                         get_align_factor (y_align),
-                                         x_align == CLUTTER_ACTOR_ALIGN_FILL,
-                                         y_align == CLUTTER_ACTOR_ALIGN_FILL);
-    }
-}
-
-static void
-st_bin_get_preferred_width (ClutterActor *self,
-                            gfloat        for_height,
-                            gfloat       *min_width_p,
-                            gfloat       *natural_width_p)
-{
-  StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (self));
-  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
-
-  st_theme_node_adjust_for_height (theme_node, &for_height);
-
-  if (priv->child == NULL || !clutter_actor_is_visible (priv->child))
-    {
-      if (min_width_p)
-        *min_width_p = 0;
-
-      if (natural_width_p)
-        *natural_width_p = 0;
-    }
-  else
-    {
-      ClutterActorAlign y_align = clutter_actor_get_y_align (priv->child);
-
-      _st_actor_get_preferred_width (priv->child, for_height,
-                                     y_align == CLUTTER_ACTOR_ALIGN_FILL,
-                                     min_width_p,
-                                     natural_width_p);
-    }
-
-  st_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
-}
-
-static void
-st_bin_get_preferred_height (ClutterActor *self,
-                             gfloat        for_width,
-                             gfloat       *min_height_p,
-                             gfloat       *natural_height_p)
-{
-  StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (self));
-  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
-
-  st_theme_node_adjust_for_width (theme_node, &for_width);
-
-  if (priv->child == NULL || !clutter_actor_is_visible (priv->child))
-    {
-      if (min_height_p)
-        *min_height_p = 0;
-
-      if (natural_height_p)
-        *natural_height_p = 0;
-    }
-  else
-    {
-      ClutterActorAlign x_align = clutter_actor_get_x_align (priv->child);
-
-      _st_actor_get_preferred_height (priv->child, for_width,
-                                      x_align == CLUTTER_ACTOR_ALIGN_FILL,
-                                      min_height_p,
-                                      natural_height_p);
-    }
-
-  st_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
-}
-
 static void
 set_child (StBin *bin, ClutterActor *child)
 {
@@ -304,9 +195,6 @@ st_bin_class_init (StBinClass *klass)
   gobject_class->set_property = st_bin_set_property;
   gobject_class->get_property = st_bin_get_property;
 
-  actor_class->get_preferred_width = st_bin_get_preferred_width;
-  actor_class->get_preferred_height = st_bin_get_preferred_height;
-  actor_class->allocate = st_bin_allocate;
   actor_class->child_added = st_bin_child_added;
   actor_class->child_removed = st_bin_child_removed;
 
@@ -326,6 +214,8 @@ st_bin_class_init (StBinClass *klass)
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
+
+  clutter_actor_class_set_layout_manager_type (actor_class, CLUTTER_TYPE_BIN_LAYOUT);
 }
 
 static void
