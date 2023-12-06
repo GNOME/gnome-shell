@@ -212,11 +212,7 @@ class FdoNotificationDaemon {
             });
         }
 
-        // 'image-data' (or 'image-path') takes precedence over 'app-icon'.
         let gicon = this._imageForNotificationData(hints);
-
-        if (!gicon)
-            gicon = this._iconForNotificationData(appIcon);
 
         if (!gicon)
             gicon = this._fallbackIconForNotificationData(hints);
@@ -278,7 +274,8 @@ class FdoNotificationDaemon {
             ? MessageTray.PrivacyScope.SYSTEM
             : MessageTray.PrivacyScope.USER);
 
-        let sourceGIcon = source.useNotificationIcon ? gicon : null;
+        // Only fallback to 'app-icon' when the source doesn't have a valid app
+        const sourceGIcon = source.app ? null : this._iconForNotificationData(appIcon);
         source.processNotification(notification, sourceGIcon);
     }
 
@@ -337,8 +334,6 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
 
         if (this.app)
             this.title = this.app.get_name();
-        else
-            this.useNotificationIcon = true;
 
         if (sender) {
             this._nameWatcherId = Gio.DBus.session.watch_name(sender,

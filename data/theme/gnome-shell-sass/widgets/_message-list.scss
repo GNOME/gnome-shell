@@ -77,12 +77,6 @@
       icon-size: $large_icon_size;
       -st-icon-style: symbolic;
     }
-
-    // fallback
-    > .fallback-app-icon {
-      width: $base_icon_size;
-      height: $base_icon_size;
-    }
   }
 
   // content

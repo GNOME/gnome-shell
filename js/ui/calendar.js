@@ -798,7 +798,7 @@ class NotificationMessage extends MessageList.Message {
                 icon_size: MESSAGE_ICON_SIZE,
             });
         } else {
-            return this.notification.source.createIcon(MESSAGE_ICON_SIZE);
+            return null;
         }
     }
 
