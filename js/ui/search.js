@@ -286,7 +286,10 @@ class ListSearchResults extends SearchResultsBase {
     _init(provider, resultsView) {
         super._init(provider, resultsView);
 
-        this._container = new St.BoxLayout({style_class: 'search-section-content'});
+        this._container = new St.BoxLayout({
+            style_class: 'search-section-content',
+            x_expand: true,
+        });
         this.providerInfo = new ProviderInfo(provider);
         this.providerInfo.connect('key-focus-in', this._keyFocusIn.bind(this));
         this.providerInfo.connect('clicked', () => {

@@ -63,7 +63,10 @@ class TodayButton extends St.Button {
             reactive: false,
         });
 
-        const hbox = new St.BoxLayout({vertical: true});
+        const hbox = new St.BoxLayout({
+            vertical: true,
+            x_expand: true,
+        });
         this.child = hbox;
 
         this._dayLabel = new St.Label({

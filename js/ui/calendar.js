@@ -824,6 +824,7 @@ class NotificationTimeLabel extends St.Label {
             style_class: 'event-time',
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.END,
+            x_expand: true,
         });
         this._datetime = datetime;
     }

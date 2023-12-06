@@ -1320,6 +1320,8 @@ export const ScreenshotUI = GObject.registerClass({
         this._captureButton = new St.Button({style_class: 'screenshot-ui-capture-button'});
         this._captureButton.set_child(new St.Widget({
             style_class: 'screenshot-ui-capture-button-circle',
+            x_expand: true,
+            y_expand: true,
         }));
         this.add_child(new Tooltip(this._captureButton, {
             /* Translators: since this string refers to an action,

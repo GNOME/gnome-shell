@@ -50,6 +50,7 @@ export const UserListItem = GObject.registerClass({
     _init(user) {
         let layout = new St.BoxLayout({
             vertical: true,
+            x_expand: true,
         });
         super._init({
             style_class: 'login-dialog-user-list-item',
