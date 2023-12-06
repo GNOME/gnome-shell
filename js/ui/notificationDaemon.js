@@ -61,20 +61,6 @@ class FdoNotificationDaemon {
         return null;
     }
 
-    _fallbackIconForNotificationData(hints) {
-        let stockIcon;
-        switch (hints.urgency) {
-        case Urgency.LOW:
-        case Urgency.NORMAL:
-            stockIcon = 'dialog-information';
-            break;
-        case Urgency.CRITICAL:
-            stockIcon = 'dialog-error';
-            break;
-        }
-        return new Gio.ThemedIcon({name: stockIcon});
-    }
-
     _iconForNotificationData(icon) {
         if (icon) {
             if (icon.substr(0, 7) === 'file://')
@@ -212,10 +198,7 @@ class FdoNotificationDaemon {
             });
         }
 
-        let gicon = this._imageForNotificationData(hints);
-
-        if (!gicon)
-            gicon = this._fallbackIconForNotificationData(hints);
+        const gicon = this._imageForNotificationData(hints);
 
         const soundFile = 'sound-file' in hints
             ? Gio.File.new_for_path(hints['sound-file']) : null;
