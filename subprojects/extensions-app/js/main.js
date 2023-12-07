@@ -88,8 +88,7 @@ var ExtensionsWindow = GObject.registerClass({
         'searchBar',
         'searchButton',
         'searchEntry',
-        'updatesBar',
-        'updatesLabel',
+        'updatesBanner',
     ],
 }, class ExtensionsWindow extends Adw.ApplicationWindow {
     _init(params) {
@@ -341,11 +340,11 @@ var ExtensionsWindow = GObject.registerClass({
     _checkUpdates() {
         let nUpdates = [...this._userList].filter(c => c.hasUpdate).length;
 
-        this._updatesLabel.label = Gettext.ngettext(
+        this._updatesBanner.title = Gettext.ngettext(
             '%d extension will be updated on next login.',
             '%d extensions will be updated on next login.',
             nUpdates).format(nUpdates);
-        this._updatesBar.revealed = nUpdates > 0;
+        this._updatesBanner.revealed = nUpdates > 0;
     }
 
     _extensionsLoaded() {

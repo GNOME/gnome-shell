@@ -74,47 +74,58 @@
               <object class="GtkStackPage">
                 <property name="name">main</property>
                 <property name="child">
-                  <object class="AdwPreferencesPage">
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
                     <child>
-                      <object class="AdwPreferencesGroup">
+                      <object class="AdwBanner" id="updatesBanner">
+                        <property name="button-label" translatable="yes">Log Out…</property>
+                        <property name="action-name">win.logout</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwPreferencesPage">
                         <child>
-                          <object class="AdwActionRow">
-                            <property name="title" translatable="yes">Extensions</property>
-                            <property name="subtitle" translatable="yes">Extensions can cause performance and stability issues. Disable extensions if you encounter problems with your system.</property>
-                            <property name="activatable-widget">enabledSwitch</property>
+                          <object class="AdwPreferencesGroup">
                             <child>
-                              <object class="GtkSwitch" id="enabledSwitch">
-                                <property name="action-name">win.user-extensions-enabled</property>
-                                <property name="valign">center</property>
+                              <object class="AdwActionRow">
+                                <property name="title" translatable="yes">Extensions</property>
+                                <property name="subtitle" translatable="yes">Extensions can cause performance and stability issues. Disable extensions if you encounter problems with your system.</property>
+                                <property name="activatable-widget">enabledSwitch</property>
+                                <child>
+                                  <object class="GtkSwitch" id="enabledSwitch">
+                                    <property name="action-name">win.user-extensions-enabled</property>
+                                    <property name="valign">center</property>
+                                  </object>
+                                </child>
                               </object>
                             </child>
                           </object>
                         </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="AdwPreferencesGroup" id="userGroup">
-                        <property name="title" translatable="yes">Manually Installed</property>
-                        <property name="description" translatable="yes">To find and add extensions, visit &lt;a href="https://extensions.gnome.org"&gt;extensions.gnome.org&lt;/a&gt;.</property>
                         <child>
-                          <object class="GtkListBox" id="userList">
-                            <property name="selection-mode">none</property>
-                            <style>
-                              <class name="boxed-list"/>
-                            </style>
+                          <object class="AdwPreferencesGroup" id="userGroup">
+                            <property name="title" translatable="yes">Manually Installed</property>
+                            <property name="description" translatable="yes">To find and add extensions, visit &lt;a href="https://extensions.gnome.org"&gt;extensions.gnome.org&lt;/a&gt;.</property>
+                            <child>
+                              <object class="GtkListBox" id="userList">
+                                <property name="selection-mode">none</property>
+                                <style>
+                                  <class name="boxed-list"/>
+                                </style>
+                              </object>
+                            </child>
                           </object>
                         </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="AdwPreferencesGroup" id="systemGroup">
-                        <property name="title" translatable="yes">Built-In</property>
                         <child>
-                          <object class="GtkListBox" id="systemList">
-                            <property name="selection-mode">none</property>
-                            <style>
-                              <class name="boxed-list"/>
-                            </style>
+                          <object class="AdwPreferencesGroup" id="systemGroup">
+                            <property name="title" translatable="yes">Built-In</property>
+                            <child>
+                              <object class="GtkListBox" id="systemList">
+                                <property name="selection-mode">none</property>
+                                <style>
+                                  <class name="boxed-list"/>
+                                </style>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -148,55 +159,6 @@
             </child>
           </object>
         </property>
-        <child type="bottom">
-          <object class="GtkActionBar" id="updatesBar">
-            <property name="revealed">False</property>
-            <child>
-              <object class="GtkImage">
-                <property name="pixel-size">24</property>
-                <property name="margin-start">6</property>
-                <property name="margin-end">6</property>
-                <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-                <property name="icon-name">software-update-available-symbolic</property>
-                <style>
-                  <class name="warning"/>
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <property name="valign">center</property>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="halign">start</property>
-                    <property name="label" translatable="yes">Extension Updates Ready</property>
-                    <style>
-                      <class name="heading"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="updatesLabel">
-                    <property name="halign">start</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child type="end">
-              <object class="GtkButton">
-                <property name="label" translatable="yes">Log Out…</property>
-                <property name="valign">center</property>
-                <property name="action-name">win.logout</property>
-                <property name="receives-default">True</property>
-                <style>
-                  <class name="suggested-action"/>
-                </style>
-              </object>
-            </child>
-          </object>
-        </child>
       </object>
     </child>
   </template>
