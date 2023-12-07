@@ -714,24 +714,20 @@ static void
 st_scroll_view_style_changed (StWidget *widget)
 {
   StScrollView *self = ST_SCROLL_VIEW (widget);
-  gboolean has_vfade, has_hfade;
   double vfade_offset = 0.0;
   double hfade_offset = 0.0;
 
   StThemeNode *theme_node = st_widget_get_theme_node (widget);
 
-  has_vfade = st_theme_node_lookup_length (theme_node, "-st-vfade-offset", FALSE, &vfade_offset);
-  has_hfade = st_theme_node_lookup_length (theme_node, "-st-hfade-offset", FALSE, &hfade_offset);
-  if (has_vfade || has_hfade)
-    {
-      st_scroll_view_update_fade_effect (self,
-                                         &(ClutterMargin) {
-                                           .top = vfade_offset,
-                                           .bottom = vfade_offset,
-                                           .left = hfade_offset,
-                                           .right = hfade_offset,
-                                         });
-    }
+  st_theme_node_lookup_length (theme_node, "-st-vfade-offset", FALSE, &vfade_offset);
+  st_theme_node_lookup_length (theme_node, "-st-hfade-offset", FALSE, &hfade_offset);
+  st_scroll_view_update_fade_effect (self,
+                                     &(ClutterMargin) {
+                                       .top = vfade_offset,
+                                       .bottom = vfade_offset,
+                                       .left = hfade_offset,
+                                       .right = hfade_offset,
+                                     });
 
   ST_WIDGET_CLASS (st_scroll_view_parent_class)->style_changed (widget);
 }
