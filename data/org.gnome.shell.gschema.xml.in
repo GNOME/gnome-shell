@@ -68,10 +68,12 @@
     </key>
     <key name="always-show-log-out" type="b">
       <default>false</default>
-      <summary>Always show the “Log out” menu item in the user menu.</summary>
+      <summary>Always show the “Log Out” action in the system menu</summary>
       <description>
-        This key overrides the automatic hiding of the “Log out”
-        menu item in single-user, single-session situations.
+        This key overrides the automatic hiding of the “Log out” action in the
+        system menu for logged-in situations where there is a single, local,
+        non-system user and only a single available session type (e.g. GNOME on
+        Wayland).
       </description>
     </key>
     <key name="remember-mount-password" type="b">
