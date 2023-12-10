@@ -73,9 +73,7 @@ class Recorder extends Signals.EventEmitter {
         invocation) {
         super();
 
-        this._startInvocation = invocation;
         this._dbusConnection = invocation.get_connection();
-        this._stopInvocation = null;
 
         this._x = x;
         this._y = y;
