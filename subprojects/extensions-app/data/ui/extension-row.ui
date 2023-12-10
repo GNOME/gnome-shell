@@ -46,23 +46,68 @@
                           <class name="status"/>
                         </style>
                         <child>
-                          <object class="GtkImage" id="errorIcon">
+                          <object class="GtkMenuButton" id="errorButton">
                             <property name="visible">false</property>
+                            <property name="valign">center</property>
+                            <property name="has-frame">false</property>
                             <property name="icon-name">dialog-error-symbolic</property>
                             <property name="tooltip-text" translatable="yes">The extension had an error</property>
-                            <style>
-                              <class name="error"/>
-                            </style>
+                            <accessibility>
+                              <property name="label" translatable="yes">Error Details</property>
+                            </accessibility>
+                            <property name="popover">
+                              <object class="GtkPopover" id="errorPopover">
+                                <property name="child">
+                                  <object class="AdwClamp">
+                                    <property name="maximum-size">300</property>
+                                    <property name="tightening-threshold">300</property>
+                                    <property name="child">
+                                      <object class="GtkLabel" id="errorLabel">
+                                        <!-- Hack to make the screen reader read the label -->
+                                        <property name="selectable"
+                                                  bind-source="errorPopover"
+                                                  bind-property="visible"
+                                                  bind-flags="invert-boolean|sync-create"/>
+                                        <property name="wrap">true</property>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </property>
+                              </object>
+                            </property>
                           </object>
                         </child>
                         <child>
-                          <object class="GtkImage" id="updatesIcon">
+                          <object class="GtkMenuButton" id="updatesButton">
                             <property name="visible">false</property>
+                            <property name="valign">center</property>
+                            <property name="has-frame">false</property>
                             <property name="icon-name">software-update-available-symbolic</property>
                             <property name="tooltip-text" translatable="yes">The extension can be updated</property>
-                            <style>
-                              <class name="warning"/>
-                            </style>
+                            <accessibility>
+                              <property name="label" translatable="yes">Updates Details</property>
+                            </accessibility>
+                            <property name="popover">
+                              <object class="GtkPopover" id="updatesPopover">
+                                <property name="child">
+                                  <object class="AdwClamp">
+                                    <property name="maximum-size">200</property>
+                                    <property name="tightening-threshold">200</property>
+                                    <property name="child">
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">A new version of this extension is ready and will be loaded on next login.</property>
+                                        <!-- Hack to make the screen reader read the label -->
+                                        <property name="selectable"
+                                                  bind-source="updatesPopover"
+                                                  bind-property="visible"
+                                                  bind-flags="invert-boolean|sync-create"/>
+                                        <property name="wrap">true</property>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </property>
+                              </object>
+                            </property>
                           </object>
                         </child>
                       </object>
@@ -75,18 +120,6 @@
                     <property name="ellipsize">end</property>
                     <style>
                       <class name="subtitle"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="errorLabel">
-                    <property name="visible">false</property>
-                    <property name="selectable">true</property>
-                    <property name="wrap">True</property>
-                    <property name="xalign">0</property>
-                    <style>
-                      <class name="caption"/>
-                      <class name="error"/>
                     </style>
                   </object>
                 </child>

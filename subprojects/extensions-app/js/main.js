@@ -361,8 +361,8 @@ var ExtensionRow = GObject.registerClass({
         'descriptionLabel',
         'versionLabel',
         'errorLabel',
-        'errorIcon',
-        'updatesIcon',
+        'errorButton',
+        'updatesButton',
         'switch',
         'actionsBox',
     ],
@@ -503,13 +503,9 @@ var ExtensionRow = GObject.registerClass({
         if (!action.enabled)
             this._switch.active = state;
 
-        this._updatesIcon.visible = this.hasUpdate;
-        this._errorIcon.visible = this.hasError;
-
-        this._descriptionLabel.visible = !this.hasError;
-
+        this._updatesButton.visible = this.hasUpdate;
+        this._errorButton.visible = this.hasError;
         this._errorLabel.label = this.error;
-        this._errorLabel.visible = this.error !== '';
 
         this._versionLabel.label = this.version.toString();
         this._versionLabel.visible = this.version !== '';

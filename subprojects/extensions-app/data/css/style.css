@@ -16,6 +16,3 @@ row.extension box.information,
 row.extension box.status {
   border-spacing: 3px;
 }
-
-image.error { color: @error_color; }
-image.warning { color: @warning_color; }
