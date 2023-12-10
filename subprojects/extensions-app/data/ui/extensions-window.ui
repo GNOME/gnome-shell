@@ -92,10 +92,41 @@
                           <object class="AdwPreferencesGroup">
                             <child>
                               <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Extensions</property>
-                                <property name="subtitle" translatable="yes">Extensions can cause performance and stability issues. Disable extensions if you encounter problems with your system.</property>
+                                <property name="title" translatable="yes">_Extensions</property>
                                 <property name="activatable-widget">enabledSwitch</property>
-                                <child>
+                                <property name="use-underline">true</property>
+                                <child type="suffix">
+                                  <object class="GtkMenuButton">
+                                    <property name="valign">center</property>
+                                    <property name="has-frame">false</property>
+                                    <property name="icon-name">info-symbolic</property>
+                                    <accessibility>
+                                      <property name="label" translatable="yes">More Information</property>
+                                    </accessibility>
+                                    <property name="popover">
+                                      <object class="GtkPopover" id="infoPopover">
+                                        <property name="child">
+                                          <object class="AdwClamp">
+                                            <property name="maximum-size">350</property>
+                                            <property name="tightening-threshold">350</property>
+                                            <property name="child">
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Extensions can cause performance and stability issues. It is recommended to disable all extensions if you experience problems with your system.</property>
+                                                <property name="wrap">true</property>
+                                                <!-- Hack to make the screen reader read the label -->
+                                                <property name="selectable"
+                                                          bind-source="infoPopover"
+                                                          bind-property="visible"
+                                                          bind-flags="invert-boolean|sync-create"/>
+                                              </object>
+                                            </property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </child>
+                                <child type="suffix">
                                   <object class="GtkSwitch" id="enabledSwitch">
                                     <property name="action-name">win.user-extensions-enabled</property>
                                     <property name="valign">center</property>

@@ -3,6 +3,8 @@
   <gresource prefix="/org/gnome/Extensions@profile@">
     <file alias="style.css">css/style.css</file>
 
+    <file preprocess="xml-stripblanks">icons/scalable/actions/info-symbolic.svg</file>
+
     <file alias="gtk/help-overlay.ui">ui/help-overlay.ui</file>
   </gresource>
 
