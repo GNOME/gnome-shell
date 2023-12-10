@@ -357,7 +357,7 @@ var ExtensionRow = GObject.registerClass({
     GTypeName: 'ExtensionRow',
     Template: 'resource:///org/gnome/Extensions/ui/extension-row.ui',
     InternalChildren: [
-        'nameLabel',
+        'detailsPopover',
         'descriptionLabel',
         'versionLabel',
         'errorLabel',
@@ -366,7 +366,7 @@ var ExtensionRow = GObject.registerClass({
         'switch',
         'actionsBox',
     ],
-}, class ExtensionRow extends Gtk.ListBoxRow {
+}, class ExtensionRow extends Adw.ActionRow {
     _init(extension) {
         super._init();
 
@@ -384,7 +384,10 @@ var ExtensionRow = GObject.registerClass({
             name: 'show-prefs',
             enabled: this.hasPrefs,
         });
-        action.connect('activate', () => this.get_root().openPrefs(this.uuid));
+        action.connect('activate', () => {
+            this._detailsPopover.popdown();
+            this.get_root().openPrefs(this.uuid);
+        });
         this._actionGroup.add_action(action);
 
         action = new Gio.SimpleAction({
@@ -392,6 +395,7 @@ var ExtensionRow = GObject.registerClass({
             enabled: this.url !== '',
         });
         action.connect('activate', () => {
+            this._detailsPopover.popdown();
             Gio.AppInfo.launch_default_for_uri(
                 this.url, this.get_display().get_app_launch_context());
         });
@@ -401,7 +405,10 @@ var ExtensionRow = GObject.registerClass({
             name: 'uninstall',
             enabled: this.type === ExtensionType.PER_USER,
         });
-        action.connect('activate', () => this.get_root().uninstall(this.uuid));
+        action.connect('activate', () => {
+            this._detailsPopover.popdown();
+            this.get_root().uninstall(this.uuid);
+        });
         this._actionGroup.add_action(action);
 
         action = new Gio.SimpleAction({
@@ -417,7 +424,7 @@ var ExtensionRow = GObject.registerClass({
         });
         this._actionGroup.add_action(action);
 
-        this._nameLabel.label = this.name;
+        this.title = this.name;
 
         const desc = this._extension.metadata.description.split('\n')[0];
         this._descriptionLabel.label = desc;
@@ -434,10 +441,6 @@ var ExtensionRow = GObject.registerClass({
                 this._updateState();
             });
         this._updateState();
-    }
-
-    vfunc_activate() {
-        this._switch.mnemonic_activate(false);
     }
 
     get uuid() {
@@ -520,7 +523,7 @@ var ExtensionRow = GObject.registerClass({
         this._errorButton.visible = this.hasError;
         this._errorLabel.label = this.error;
 
-        this._versionLabel.label = this.version.toString();
+        this._versionLabel.label = _('Version %s').format(this.version.toString());
         this._versionLabel.visible = this.version !== '';
     }
 

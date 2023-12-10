@@ -4,6 +4,9 @@
     <file alias="style.css">css/style.css</file>
 
     <file preprocess="xml-stripblanks">icons/scalable/actions/info-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/remove-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/settings-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/website-symbolic.svg</file>
 
     <file alias="gtk/help-overlay.ui">ui/help-overlay.ui</file>
   </gresource>

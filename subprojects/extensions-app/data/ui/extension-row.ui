@@ -1,173 +1,227 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="ExtensionRow" parent="GtkListBoxRow">
-    <style>
-      <class name="extension"/>
-    </style>
-    <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkBox">
-            <child>
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <property name="hexpand">true</property>
-                <style>
-                  <class name="information"/>
-                </style>
-                <child>
+  <template class="ExtensionRow" parent="AdwActionRow">
+    <property name="activatable-widget">switch</property>
+    <child type="suffix">
+      <object class="GtkMenuButton" id="errorButton">
+        <property name="visible">false</property>
+        <property name="valign">center</property>
+        <property name="has-frame">false</property>
+        <property name="icon-name">dialog-error-symbolic</property>
+        <accessibility>
+          <property name="label" translatable="yes">Error Details</property>
+        </accessibility>
+        <property name="popover">
+          <object class="GtkPopover" id="errorPopover">
+            <property name="child">
+              <object class="AdwClamp">
+                <property name="maximum-size">300</property>
+                <property name="tightening-threshold">300</property>
+                <property name="child">
+                  <object class="GtkLabel" id="errorLabel">
+                    <!-- Hack to make the screen reader read the label -->
+                    <property name="selectable"
+                              bind-source="errorPopover"
+                              bind-property="visible"
+                              bind-flags="invert-boolean|sync-create"/>
+                    <property name="wrap">true</property>
+                  </object>
+                </property>
+              </object>
+            </property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child type="suffix">
+      <object class="GtkMenuButton" id="updatesButton">
+        <property name="visible">false</property>
+        <property name="valign">center</property>
+        <property name="has-frame">false</property>
+        <property name="icon-name">software-update-available-symbolic</property>
+        <accessibility>
+          <property name="label" translatable="yes">Updates Details</property>
+        </accessibility>
+        <property name="popover">
+          <object class="GtkPopover" id="updatesPopover">
+            <property name="child">
+              <object class="AdwClamp">
+                <property name="maximum-size">200</property>
+                <property name="tightening-threshold">200</property>
+                <property name="child">
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">A new version of this extension is ready and will be loaded on next login.</property>
+                    <property name="wrap">true</property>
+                    <!-- Hack to make the screen reader read the label -->
+                    <property name="selectable"
+                              bind-source="updatesPopover"
+                              bind-property="visible"
+                              bind-flags="invert-boolean|sync-create"/>
+                  </object>
+                </property>
+              </object>
+            </property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child type="suffix">
+      <object class="GtkSwitch" id="switch">
+        <property name="valign">center</property>
+        <property name="action-name">row.enabled</property>
+      </object>
+    </child>
+    <child type="suffix">
+      <object class="GtkMenuButton">
+        <property name="icon-name">view-more-symbolic</property>
+        <property name="has-frame">false</property>
+        <property name="valign">center</property>
+        <accessibility>
+          <property name="label" translatable="yes">Extension Details</property>
+        </accessibility>
+        <property name="popover">
+          <object class="GtkPopover" id="detailsPopover">
+            <style>
+              <class name="details-popover"/>
+            </style>
+            <property name="child">
+              <object class="AdwClamp">
+                <property name="maximum-size">300</property>
+                <property name="tightening-threshold">300</property>
+                <property name="child">
                   <object class="GtkBox">
+                    <property name="orientation">vertical</property>
                     <style>
-                      <class name="header"/>
+                      <class name="information"/>
                     </style>
                     <child>
-                      <object class="GtkLabel" id="nameLabel">
+                      <object class="GtkLabel">
+                        <property name="label"
+                                  bind-source="ExtensionRow"
+                                  bind-property="title"
+                                  bind-flags="sync-create"/>
                         <property name="xalign">0</property>
+                    <!-- Hack to make the screen reader read the label -->
+                        <property name="selectable"
+                                  bind-source="detailsPopover"
+                                  bind-property="visible"
+                                  bind-flags="invert-boolean|sync-create"/>
                         <style>
-                          <class name="title"/>
+                          <class name="title-4"/>
                         </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="descriptionLabel">
+                        <property name="xalign">0</property>
+                        <property name="wrap">True</property>
+                        <property name="selectable">true</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkLabel" id="versionLabel">
                         <property name="visible">false</property>
                         <property name="xalign">0</property>
-                        <property name="yalign">1</property>
+                        <property name="selectable">true</property>
                         <style>
-                          <class name="caption"/>
                           <class name="dim-label"/>
                         </style>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkBox">
+                      <object class="GtkBox" id="actionsBox">
                         <style>
-                          <class name="status"/>
+                          <class name="actions"/>
                         </style>
                         <child>
-                          <object class="GtkMenuButton" id="errorButton">
-                            <property name="visible">false</property>
-                            <property name="valign">center</property>
-                            <property name="has-frame">false</property>
-                            <property name="icon-name">dialog-error-symbolic</property>
-                            <accessibility>
-                              <property name="label" translatable="yes">Error Details</property>
-                            </accessibility>
-                            <property name="popover">
-                              <object class="GtkPopover" id="errorPopover">
-                                <property name="child">
-                                  <object class="AdwClamp">
-                                    <property name="maximum-size">300</property>
-                                    <property name="tightening-threshold">300</property>
-                                    <property name="child">
-                                      <object class="GtkLabel" id="errorLabel">
-                                        <!-- Hack to make the screen reader read the label -->
-                                        <property name="selectable"
-                                                  bind-source="errorPopover"
-                                                  bind-property="visible"
-                                                  bind-flags="invert-boolean|sync-create"/>
-                                        <property name="wrap">true</property>
-                                      </object>
-                                    </property>
+                          <object class="GtkButton" id="websiteButton">
+                            <property name="visible"
+                                      bind-source="websiteButton"
+                                      bind-property="sensitive"
+                                      bind-flags="sync-create"/>
+                            <property name="hexpand">true</property>
+                            <property name="action-name">row.show-url</property>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkImage">
+                                    <property name="icon-name">website-symbolic</property>
+                                    <property name="accessible-role">presentation</property>
                                   </object>
-                                </property>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="use-underline">true</property>
+                                    <property name="label" translatable="yes">_Website</property>
+                                  </object>
+                                </child>
                               </object>
-                            </property>
+                            </child>
                           </object>
                         </child>
                         <child>
-                          <object class="GtkMenuButton" id="updatesButton">
-                            <property name="visible">false</property>
-                            <property name="valign">center</property>
-                            <property name="has-frame">false</property>
-                            <property name="icon-name">software-update-available-symbolic</property>
-                            <accessibility>
-                              <property name="label" translatable="yes">Updates Details</property>
-                            </accessibility>
-                            <property name="popover">
-                              <object class="GtkPopover" id="updatesPopover">
-                                <property name="child">
-                                  <object class="AdwClamp">
-                                    <property name="maximum-size">200</property>
-                                    <property name="tightening-threshold">200</property>
-                                    <property name="child">
-                                      <object class="GtkLabel">
-                                        <property name="label" translatable="yes">A new version of this extension is ready and will be loaded on next login.</property>
-                                        <!-- Hack to make the screen reader read the label -->
-                                        <property name="selectable"
-                                                  bind-source="updatesPopover"
-                                                  bind-property="visible"
-                                                  bind-flags="invert-boolean|sync-create"/>
-                                        <property name="wrap">true</property>
-                                      </object>
-                                    </property>
+                          <object class="GtkButton" id="prefsButton">
+                            <property name="visible"
+                                      bind-source="prefsButton"
+                                      bind-property="sensitive"
+                                      bind-flags="sync-create"/>
+                            <property name="hexpand">true</property>
+                            <property name="action-name">row.show-prefs</property>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkImage">
+                                    <property name="icon-name">settings-symbolic</property>
+                                    <property name="accessible-role">presentation</property>
                                   </object>
-                                </property>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="use-underline">true</property>
+                                    <property name="label" translatable="yes">_Settings</property>
+                                  </object>
+                                </child>
                               </object>
-                            </property>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="removeButton">
+                            <property name="visible"
+                                      bind-source="removeButton"
+                                      bind-property="sensitive"
+                                      bind-flags="sync-create"/>
+                            <property name="hexpand">true</property>
+                            <property name="action-name">row.uninstall</property>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkImage">
+                                    <property name="icon-name">remove-symbolic</property>
+                                    <property name="accessible-role">presentation</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="use-underline">true</property>
+                                    <property name="label" translatable="yes">_Remove…</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
                     </child>
                   </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="descriptionLabel">
-                    <property name="xalign">0</property>
-                    <property name="ellipsize">end</property>
-                    <style>
-                      <class name="subtitle"/>
-                    </style>
-                  </object>
-                </child>
+                </property>
               </object>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="switch">
-                <property name="valign">center</property>
-                <property name="action-name">row.enabled</property>
-              </object>
-            </child>
+            </property>
           </object>
-        </child>
-        <child>
-          <object class="GtkCenterBox" id="actionsBox">
-            <style>
-              <class name="actions"/>
-            </style>
-            <child type="start">
-              <object class="GtkBox">
-                <child>
-                  <object class="GtkButton" id="websiteButton">
-                    <property name="label" translatable="yes">Website</property>
-                    <property name="action-name">row.show-url</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="prefsButton">
-                    <property name="visible"
-                              bind-source="prefsButton"
-                              bind-property="sensitive"
-                              bind-flags="sync-create"/>
-                    <property name="label" translatable="yes">Settings</property>
-                    <property name="action-name">row.show-prefs</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child type="end">
-              <object class="GtkButton" id="removeButton">
-                <property name="visible"
-                          bind-source="removeButton"
-                          bind-property="sensitive"
-                          bind-flags="sync-create"/>
-                <property name="label" translatable="yes">Remove…</property>
-                <property name="action-name">row.uninstall</property>
-              </object>
-            </child>
-          </object>
-        </child>
+        </property>
       </object>
     </child>
   </template>

@@ -1,18 +1,16 @@
-row.extension>box {
- margin: 12px;
+.details-popover contents {
+  padding: 12px;
 }
 
-row.extension>box,
-row.extension box.header {
-  border-spacing: 12px;
-}
-
-row.extension box.actions,
-row.extension box.actions>box {
+.details-popover .information {
   border-spacing: 6px;
 }
 
-row.extension box.information,
-row.extension box.status {
-  border-spacing: 3px;
+.details-popover .actions {
+  margin-top: 6px;
+  border-spacing: 12px;
+}
+
+.details-popover .actions button {
+  padding: 12px;
 }
