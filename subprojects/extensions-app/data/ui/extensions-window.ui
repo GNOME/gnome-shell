@@ -138,8 +138,7 @@
                         </child>
                         <child>
                           <object class="AdwPreferencesGroup" id="userGroup">
-                            <property name="title" translatable="yes">Manually Installed</property>
-                            <property name="description" translatable="yes">To find and add extensions, visit &lt;a href="https://extensions.gnome.org"&gt;extensions.gnome.org&lt;/a&gt;.</property>
+                            <property name="title" translatable="yes">User Extensions</property>
                             <child>
                               <object class="GtkListBox" id="userList">
                                 <property name="selection-mode">none</property>
@@ -152,7 +151,7 @@
                         </child>
                         <child>
                           <object class="AdwPreferencesGroup" id="systemGroup">
-                            <property name="title" translatable="yes">Built-In</property>
+                            <property name="title" translatable="yes">System Extensions</property>
                             <child>
                               <object class="GtkListBox" id="systemList">
                                 <property name="selection-mode">none</property>
