@@ -51,7 +51,6 @@
                             <property name="valign">center</property>
                             <property name="has-frame">false</property>
                             <property name="icon-name">dialog-error-symbolic</property>
-                            <property name="tooltip-text" translatable="yes">The extension had an error</property>
                             <accessibility>
                               <property name="label" translatable="yes">Error Details</property>
                             </accessibility>
@@ -83,7 +82,6 @@
                             <property name="valign">center</property>
                             <property name="has-frame">false</property>
                             <property name="icon-name">software-update-available-symbolic</property>
-                            <property name="tooltip-text" translatable="yes">The extension can be updated</property>
                             <accessibility>
                               <property name="label" translatable="yes">Updates Details</property>
                             </accessibility>
