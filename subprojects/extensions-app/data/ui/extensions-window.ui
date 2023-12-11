@@ -3,10 +3,6 @@
   <menu id="primary-menu">
     <section>
       <item>
-        <attribute name="label" translatable="yes">Help</attribute>
-        <attribute name="action">win.show-help</attribute>
-      </item>
-      <item>
         <attribute name="label" translatable="yes">About Extensions</attribute>
         <attribute name="action">win.show-about</attribute>
       </item>
