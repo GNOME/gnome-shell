@@ -482,11 +482,24 @@ var ExtensionRow = GObject.registerClass({
         if (!this.hasError)
             return '';
 
-        if (this._extension.state === ExtensionState.OUT_OF_DATE)
-            return _('The extension is incompatible with the current GNOME version');
+        if (this._extension.state === ExtensionState.OUT_OF_DATE) {
+            const {ShellVersion: shellVersion} = this._app.shellProxy;
+            return this.version !== ''
+                ? _('The installed version of this extension (%s) is incompatible with the current version of GNOME (%s). The extension has been disabled.').format(this.version, shellVersion)
+                : _('The installed version of this extension is incompatible with the current version of GNOME (%s). The extension has been disabled.').format(shellVersion);
+        }
 
-        return this._extension.error
-            ? this._extension.error : _('The extension had an error');
+        const message = [
+            _('An error has occurred in this extension. This could cause issues elsewhere in the system. It is recommended to turn the extension off until the error is resolved.'),
+        ];
+
+        if (this._extension.error) {
+            message.push(
+                // translators: Details for an extension error
+                _('Error details:'), this._extension.error);
+        }
+
+        return message.join('\n\n');
     }
 
     get keywords() {
