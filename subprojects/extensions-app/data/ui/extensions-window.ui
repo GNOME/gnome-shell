@@ -142,6 +142,9 @@
                             <child>
                               <object class="GtkListBox" id="userList">
                                 <property name="selection-mode">none</property>
+                                <accessibility>
+                                  <relation name="labelled-by">userGroup</relation>
+                                </accessibility>
                                 <style>
                                   <class name="boxed-list"/>
                                 </style>
@@ -155,6 +158,9 @@
                             <child>
                               <object class="GtkListBox" id="systemList">
                                 <property name="selection-mode">none</property>
+                                <accessibility>
+                                  <relation name="labelled-by">systemGroup</relation>
+                                </accessibility>
                                 <style>
                                   <class name="boxed-list"/>
                                 </style>
