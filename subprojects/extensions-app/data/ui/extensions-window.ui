@@ -3,6 +3,10 @@
   <menu id="primary-menu">
     <section>
       <item>
+        <attribute name="label" translatable="yes">Keyboard Shortcuts</attribute>
+        <attribute name="action">win.show-help-overlay</attribute>
+      </item>
+      <item>
         <attribute name="label" translatable="yes">About Extensions</attribute>
         <attribute name="action">win.show-about</attribute>
       </item>

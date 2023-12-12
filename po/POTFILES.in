@@ -95,6 +95,7 @@ subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in
 subprojects/extensions-app/js/main.js
 subprojects/extensions-app/data/ui/extension-row.ui
 subprojects/extensions-app/data/ui/extensions-window.ui
+subprojects/extensions-app/data/ui/help-overlay.ui
 subprojects/extensions-tool/src/command-create.c
 subprojects/extensions-tool/src/command-disable.c
 subprojects/extensions-tool/src/command-enable.c
