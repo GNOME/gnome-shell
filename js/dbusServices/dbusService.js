@@ -21,6 +21,8 @@ export class ServiceImplementation {
         this._senders = new Map();
         this._holdCount = 0;
 
+        this._shellName = this._getUniqueShellName();
+
         this._hasSignals = this._dbusImpl.get_info().signals.length > 0;
         this._shutdownTimeoutId = 0;
 
@@ -115,6 +117,9 @@ export class ServiceImplementation {
         if (this._senders.has(sender))
             return;
 
+        if (sender === this._shellName)
+            return; // don't track the shell
+
         this.hold();
         this._senders.set(sender,
             this._dbusImpl.get_connection().watch_name(
@@ -147,6 +152,26 @@ export class ServiceImplementation {
 
             that._queueShutdownCheck();
         };
+    }
+
+    _getUniqueShellName() {
+        try {
+            const res = Gio.DBus.session.call_sync(
+                'org.freedesktop.DBus',
+                '/org/freedesktop/DBus',
+                'org.freedesktop.DBus',
+                'GetNameOwner',
+                new GLib.Variant('(s)', ['org.gnome.Shell']),
+                null,
+                Gio.DBusCallFlags.NONE,
+                -1,
+                null);
+            const [name] = res.deepUnpack();
+            return name;
+        } catch (e) {
+            console.warn(`Failed to resolve shell name: ${e.message}`);
+            return '';
+        }
     }
 }
 Signals.addSignalMethods(ServiceImplementation.prototype);
