@@ -18,6 +18,7 @@ import {formatTimeSpan} from '../misc/dateUtils.js';
 const MAX_NOTIFICATION_BUTTONS = 3;
 const MESSAGE_ANIMATION_TIME = 100;
 
+const EXPANDED_GROUP_OVERSHOT_HEIGHT = 50;
 const DEFAULT_EXPAND_LINES = 6;
 
 const GROUP_EXPENSION_TIME = 200;
@@ -987,6 +988,11 @@ const NotificationMessageGroup = GObject.registerClass({
         this._headerBox.hide();
     }
 
+    get expandedHeight() {
+        const [min] = this.layoutManager.getExpandedHeight(this, -1);
+        return min;
+    }
+
     // Ensure that the cover is still below the top most message
     _ensureCoverPosition() {
         // If the group doesn't have any messages,
@@ -1456,6 +1462,7 @@ export const MessageView = GObject.registerClass({
     Signals: {
         'message-focused': {param_types: [Message]},
     },
+    Implements: [St.Scrollable],
 }, class MessageView extends St.Viewport {
     messages = [];
 
@@ -1643,6 +1650,92 @@ export const MessageView = GObject.registerClass({
         }
     }
 
+    // When a group is expanded the user isn't allowed to scroll outside the expanded group,
+    // therefore the adjustment used by the MessageView needs to be different then the external
+    // adjustment used by the scrollbar and scrollview.
+    vfunc_set_adjustments(hadjustment, vadjustment) {
+        const internalAdjustment = new St.Adjustment({actor: vadjustment.actor});
+
+        this._scrollViewAdjustment = vadjustment;
+        this._adjValueOffset = 0;
+
+        this._adjBinding = new GObject.BindingGroup();
+        this._adjBinding.bind('lower',
+            this._scrollViewAdjustment,
+            'lower',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._adjBinding.bind('upper',
+            this._scrollViewAdjustment,
+            'upper', GObject.BindingFlags.SYNC_CREATE);
+        this._adjBinding.bind('step-increment',
+            this._scrollViewAdjustment, 'step-increment',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._adjBinding.bind('page-increment',
+            this._scrollViewAdjustment, 'page-increment',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._adjBinding.bind('page-size',
+            this._scrollViewAdjustment, 'page-size',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        internalAdjustment.bind_property_full('value',
+            this._scrollViewAdjustment,
+            'value',
+            GObject.BindingFlags.BIDIRECTIONAL,
+            (bind, value) => {
+                return [true, value - this._adjValueOffset];
+            },
+            (bind, value) => {
+                return [true, value + this._adjValueOffset];
+            });
+
+        super.vfunc_set_adjustments(hadjustment, internalAdjustment);
+    }
+
+    vfunc_allocate(box) {
+        const group = this.expandedGroup;
+
+        this.vadjustment.freeze_notify();
+
+        const prevUpper = this.vadjustment.upper;
+        const prevAdjValueOffset = this._adjValueOffset;
+
+        super.vfunc_allocate(box);
+
+        if (group) {
+            // Decouple the internal adjustment from the external when there is an expanded group
+            this._adjBinding.set_source(null);
+
+            const pageHeight = this.vadjustment.pageSize;
+            const position = group.apply_relative_transform_to_point(this, new Graphene.Point3D());
+            const [groupHeight] = group.get_preferred_height(box.x2 - box.x1);
+
+            this._adjValueOffset = Math.max(0, position.y - EXPANDED_GROUP_OVERSHOT_HEIGHT);
+
+            // Limit the area the user can scroll to the expanded group with some extra space
+            this._scrollViewAdjustment.freeze_notify();
+            this._scrollViewAdjustment.upper =
+                Math.max(groupHeight + EXPANDED_GROUP_OVERSHOT_HEIGHT * 2, pageHeight);
+            this._scrollViewAdjustment.stepIncrement = pageHeight / 6;
+            this._scrollViewAdjustment.pageIncrement = pageHeight - pageHeight / 6;
+            this._scrollViewAdjustment.pageSize = pageHeight;
+            this._scrollViewAdjustment.thaw_notify();
+
+            // Adjust the value when new messages are added before the expanded group
+            if (this._adjValueOffset > prevAdjValueOffset) {
+                const offset = this.vadjustment.upper - prevUpper;
+                if (offset > 0)
+                    this.vadjustment.value += offset;
+            }
+        } else if (this._adjBinding.source === null) {
+            this._adjValueOffset = 0;
+            this._adjBinding.set_source(this.vadjustment);
+            // We need to notify the 'value' property since it indirectly changed
+            this.vadjustment.notify('value');
+        }
+
+        this.vadjustment.thaw_notify();
+    }
+
     _setupMpris() {
         this._mediaSource.connectObject(
             'player-added', (_, player) => this._addPlayer(player),
@@ -1722,6 +1815,25 @@ export const MessageView = GObject.registerClass({
         this._notificationSourceToGroup.delete(source);
     }
 
+    // Try to center the expanded group in the available space
+    _scrollToExpandedGroup() {
+        if (!this._expandedGroup)
+            return;
+
+        const group = this._expandedGroup;
+        const groupExpandedHeight = group.expandedHeight;
+        const position = group.apply_relative_transform_to_point(this, new Graphene.Point3D());
+        const groupCenter = position.y + (groupExpandedHeight / 2);
+        const pageHeight = this.vadjustment.pageSize;
+        const pageCenter = pageHeight / 2;
+        const value = Math.min(position.y, groupCenter - pageCenter);
+
+        this.vadjustment.ease(value, {
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: GROUP_EXPENSION_TIME,
+        });
+    }
+
     get expandedGroup() {
         return this._expandedGroup;
     }
@@ -1743,6 +1855,8 @@ export const MessageView = GObject.registerClass({
             this.set_child_above_sibling(group.get_parent(), null);
             this.set_child_below_sibling(this._overlay, group.get_parent());
             this._overlay.show();
+            this._scrollToExpandedGroup();
+
             await group.expand();
         } else {
             this._overlay.hide();
