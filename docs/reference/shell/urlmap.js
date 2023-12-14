@@ -7,5 +7,5 @@ baseURLs = [
     [ 'Mtk', 'https://gnome.pages.gitlab.gnome.org/mutter/mtk/' ],
     [ 'Cogl', 'https://gnome.pages.gitlab.gnome.org/mutter/cogl/' ],
     [ 'Clutter', 'https://gnome.pages.gitlab.gnome.org/mutter/clutter/' ],
-    [ 'St', 'https://gnome.pages/gitlab.gnome.org/gnome-shell/st/' ],
+    [ 'St', 'https://gnome.pages.gitlab.gnome.org/gnome-shell/st/' ],
 ]
