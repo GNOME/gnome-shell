@@ -175,8 +175,8 @@ var ExtensionsWindow = GObject.registerClass({
             secondary_text: _('If you remove the extension, you need to return to download it if you want to enable it again'),
         });
 
-        dialog.add_button(_('Cancel'), Gtk.ResponseType.CANCEL);
-        dialog.add_button(_('Remove'), Gtk.ResponseType.ACCEPT)
+        dialog.add_button(_('_Cancel'), Gtk.ResponseType.CANCEL);
+        dialog.add_button(_('_Remove'), Gtk.ResponseType.ACCEPT)
             .get_style_context().add_class('destructive-action');
 
         dialog.connect('response', (dlg, response) => {
