@@ -63,9 +63,6 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
                                     GFunc           load_callback,
                                     gpointer        user_data);
 
-GIcon *st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
-                                                     GObject           *object,
-                                                     const char *property_name);
 GIcon *
 st_texture_cache_load_cairo_surface_to_gicon (StTextureCache  *cache,
                                               cairo_surface_t *surface);

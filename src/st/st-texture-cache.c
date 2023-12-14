@@ -799,14 +799,6 @@ load_texture_async (StTextureCache       *cache,
     g_assert_not_reached ();
 }
 
-typedef struct {
-  StTextureCache *cache;
-  ClutterContent *image;
-  GObject *source;
-  gulong notify_signal_id;
-  gboolean weakref_active;
-} StTextureCachePropertyBind;
-
 static void
 st_texture_cache_load_surface (ClutterContent  **image,
                                cairo_surface_t  *surface)
@@ -844,84 +836,6 @@ st_texture_cache_load_surface (ClutterContent  **image,
     {
       *image = st_image_content_new_with_preferred_size (0, 0);
     }
-}
-
-static void
-st_texture_cache_reset_texture (StTextureCachePropertyBind *bind,
-                                const char                 *propname)
-{
-  cairo_surface_t *surface;
-
-  g_object_get (bind->source, propname, &surface, NULL);
-
-  st_texture_cache_load_surface (&bind->image, surface);
-}
-
-static void
-st_texture_cache_on_pixbuf_notify (GObject           *object,
-                                   GParamSpec        *paramspec,
-                                   gpointer           data)
-{
-  StTextureCachePropertyBind *bind = data;
-  st_texture_cache_reset_texture (bind, paramspec->name);
-}
-
-static void
-st_texture_cache_bind_weak_notify (gpointer     data,
-                                   GObject     *source_location)
-{
-  StTextureCachePropertyBind *bind = data;
-  bind->weakref_active = FALSE;
-  g_signal_handler_disconnect (bind->source, bind->notify_signal_id);
-}
-
-static void
-st_texture_cache_free_bind (gpointer data)
-{
-  StTextureCachePropertyBind *bind = data;
-  if (bind->weakref_active)
-    g_object_weak_unref (G_OBJECT (bind->image), st_texture_cache_bind_weak_notify, bind);
-  g_free (bind);
-}
-
-/**
- * st_texture_cache_bind_cairo_surface_property:
- * @cache: A #StTextureCache
- * @object: A #GObject with a property @property_name of type #cairo_surface_t
- * @property_name: Name of a property
- *
- * Create a #GIcon which tracks the #cairo_surface_t value of a GObject property
- * named by @property_name.  Unlike other methods in StTextureCache, the underlying
- * #CoglTexture is not shared by default with other invocations to this method.
- *
- * If the source object is destroyed, the texture will continue to show the last
- * value of the property.
- *
- * Returns: (transfer full): A new #GIcon
- */
-GIcon *
-st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
-                                              GObject           *object,
-                                              const char        *property_name)
-{
-  gchar *notify_key;
-  StTextureCachePropertyBind *bind;
-
-  bind = g_new0 (StTextureCachePropertyBind, 1);
-  bind->cache = cache;
-  bind->source = object;
-
-  st_texture_cache_reset_texture (bind, property_name);
-
-  g_object_weak_ref (G_OBJECT (bind->image), st_texture_cache_bind_weak_notify, bind);
-  bind->weakref_active = TRUE;
-
-  notify_key = g_strdup_printf ("notify::%s", property_name);
-  bind->notify_signal_id = g_signal_connect_data (object, notify_key, G_CALLBACK(st_texture_cache_on_pixbuf_notify),
-                                                  bind, (GClosureNotify)st_texture_cache_free_bind, 0);
-  g_free (notify_key);
-
-  return G_ICON (bind->image);
 }
 
 /**
