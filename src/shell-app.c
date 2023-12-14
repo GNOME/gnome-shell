@@ -80,7 +80,6 @@ struct _ShellApp
                           * the way shell-window-tracker.c works).
                           */
   GIcon *fallback_icon;
-  MetaWindow *fallback_icon_window;
 
   ShellAppRunningState *running_state;
 
@@ -191,35 +190,6 @@ window_backed_app_get_window (ShellApp     *app)
     return NULL;
 }
 
-static GIcon *
-x11_window_create_fallback_gicon (MetaWindow *window)
-{
-  StTextureCache *texture_cache;
-  cairo_surface_t *surface;
-
-  g_object_get (window, "icon", &surface, NULL);
-
-  texture_cache = st_texture_cache_get_default ();
-  return st_texture_cache_load_cairo_surface_to_gicon (texture_cache, surface);
-}
-
-static void
-on_window_icon_changed (GObject          *object,
-                        const GParamSpec *pspec,
-                        gpointer          user_data)
-{
-  MetaWindow *window = META_WINDOW (object);
-  ShellApp *app = user_data;
-
-  g_clear_object (&app->fallback_icon);
-  app->fallback_icon = x11_window_create_fallback_gicon (window);
-
-  if (!app->fallback_icon)
-    app->fallback_icon = g_themed_icon_new ("application-x-executable");
-
-  g_object_notify_by_pspec (G_OBJECT (app), props[PROP_ICON]);
-}
-
 /**
  * shell_app_get_icon:
  *
@@ -230,35 +200,13 @@ on_window_icon_changed (GObject          *object,
 GIcon *
 shell_app_get_icon (ShellApp *app)
 {
-  MetaWindow *window = NULL;
-
   g_return_val_if_fail (SHELL_IS_APP (app), NULL);
 
   if (app->info)
     return g_app_info_get_icon (G_APP_INFO (app->info));
 
-  if (app->fallback_icon)
-    return app->fallback_icon;
-
-  /* During a state transition from running to not-running for
-   * window-backend apps, it's possible we get a request for the icon.
-   * Avoid asserting here and just return a fallback icon
-   */
-  if (app->running_state != NULL)
-    window = window_backed_app_get_window (app);
-
-  if (window &&
-      meta_window_get_client_type (window) == META_WINDOW_CLIENT_TYPE_X11)
-    {
-      app->fallback_icon_window = window;
-      app->fallback_icon = x11_window_create_fallback_gicon (window);
-      g_signal_connect (G_OBJECT (window),
-                        "notify::icon", G_CALLBACK (on_window_icon_changed), app);
-    }
-  else
-    {
-      app->fallback_icon = g_themed_icon_new ("application-x-executable");
-    }
+  if (!app->fallback_icon)
+    app->fallback_icon = g_themed_icon_new ("application-x-executable");
 
   return app->fallback_icon;
 }
@@ -1170,15 +1118,6 @@ _shell_app_remove_window (ShellApp   *app,
 
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_user_time_changed), app);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_skip_taskbar_changed), app);
-  if (window == app->fallback_icon_window)
-    {
-      g_signal_handlers_disconnect_by_func (window, G_CALLBACK(on_window_icon_changed), app);
-      app->fallback_icon_window = NULL;
-
-      /* Select a new icon from a different window. */
-      g_clear_object (&app->fallback_icon);
-      g_object_notify_by_pspec (G_OBJECT (app), props[PROP_ICON]);
-    }
 
   g_object_unref (window);
 
