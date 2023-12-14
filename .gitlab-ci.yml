@@ -294,8 +294,8 @@ pages:
   artifacts:
     paths:
       - public
-  only:
-    - master
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PROJECT_NAMESPACE == "GNOME"'
 
 build-toolbox:
   image: quay.io/freedesktop.org/ci-templates:container-build-base-2021-07-29.0
