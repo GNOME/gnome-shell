@@ -89,7 +89,7 @@ adjustment_value_notify_cb (StAdjustment *adjustment,
 {
   clutter_actor_invalidate_transform (CLUTTER_ACTOR (viewport));
   clutter_actor_invalidate_paint_volume (CLUTTER_ACTOR (viewport));
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (viewport));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (viewport));
 }
 
 static void
