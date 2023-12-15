@@ -168,7 +168,7 @@ you to inherit from a type to use it, you can do so:
              let coglContext = framebuffer.get_context();
              let alloc = this.get_allocation_box();
 
-             let pipeline = new Cogl.Pipeline(coglContext);
+             let pipeline = Cogl.Pipeline.new(coglContext);
              pipeline.set_color4ub(255, 0, 0, 255);
 
              framebuffer.draw_rectangle(pipeline,
