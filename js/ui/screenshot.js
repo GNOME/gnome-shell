@@ -1048,6 +1048,7 @@ class UIWindowSelector extends St.Widget {
 const UIMode = {
     SCREENSHOT: 0,
     SCREENCAST: 1,
+    SCREENSHOT_ONLY: 2,
 };
 
 export const ScreenshotUI = GObject.registerClass({
@@ -1542,6 +1543,7 @@ export const ScreenshotUI = GObject.registerClass({
             return;
 
         this._castButton.checked = mode === UIMode.SCREENCAST;
+        this._castButton.reactive = mode !== UIMode.SCREENSHOT_ONLY;
 
         if (!this.visible) {
             // Screenshot UI is opening from completely closed state
