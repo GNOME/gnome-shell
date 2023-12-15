@@ -1067,7 +1067,7 @@ const DebugFlag = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class DebugFlag extends St.Button {
     _init(label) {
-        const box = new St.BoxLayout();
+        const box = new St.BoxLayout({x_expand: true});
 
         const flagLabel = new St.Label({
             text: label,
