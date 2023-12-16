@@ -90,6 +90,8 @@ class Avatar extends St.Bin {
             this.child = new St.Icon({
                 icon_name: 'avatar-default-symbolic',
                 icon_size: this._iconSize,
+                x_expand: true,
+                y_expand: true,
             });
         }
     }
