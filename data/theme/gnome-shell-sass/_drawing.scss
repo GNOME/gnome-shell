@@ -276,6 +276,7 @@
 // Helper mixin for button-like elements with an icon
 @mixin tile_button($color, $flat: true) {
   @extend %tile;
+  color: $color;
 
   // focus-color
   $fc: mix($selected_bg_color, $color, 90%);

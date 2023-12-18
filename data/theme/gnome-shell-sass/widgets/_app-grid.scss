@@ -122,7 +122,7 @@ $page_indicator_size: 10px;
     width: $page_indicator_size;
     height: $page_indicator_size;
     border-radius: $forced_circular_radius;
-    background-color: white;
+    background-color: $system_fg_color;
     transition-duration: 400ms;
   }
 }
