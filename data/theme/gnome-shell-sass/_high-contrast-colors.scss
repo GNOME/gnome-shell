@@ -5,11 +5,13 @@
 
 $is_highcontrast:true;
 
+$_light_fg_color: $light_1; // always light (white) fg color
+
 $base_color: if($variant == 'light', $light_1, $dark_5);
 $bg_color: if($variant == 'light', darken($base_color, 10%), lighten($base_color, 10%));
 $fg_color: if($variant == 'light', transparentize($dark_5, .2), $light_1);
 
-$selected_fg_color: $light_1;
+$selected_fg_color: $_light_fg_color;
 $selected_bg_color: $blue_3;
 $selected_borders_color: darken($selected_bg_color, 20%);
 
@@ -25,7 +27,7 @@ $success_color: if($variant == 'light', $green_4, $green_5);
 $destructive_color: $error_color;
 
 // color definitions for OSD elements
-$osd_fg_color: $light_1;
+$osd_fg_color: $_light_fg_color;
 $osd_bg_color: $base_color;
 
 // derived osd colors
