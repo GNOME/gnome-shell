@@ -2,12 +2,21 @@
 <interface>
   <template class="ExtensionRow" parent="AdwActionRow">
     <property name="activatable-widget">switch</property>
+    <binding name="title">
+      <lookup name="name" type="Extension">
+        <lookup name="extension" type="ExtensionRow"/>
+      </lookup>
+    </binding>
     <child type="suffix">
       <object class="GtkMenuButton" id="errorButton">
-        <property name="visible">false</property>
         <property name="valign">center</property>
         <property name="has-frame">false</property>
         <property name="icon-name">dialog-error-symbolic</property>
+        <binding name="visible">
+          <lookup name="has-error" type="Extension">
+            <lookup name="extension" type="ExtensionRow"/>
+          </lookup>
+        </binding>
         <accessibility>
           <property name="label" translatable="yes">Error Details</property>
         </accessibility>
@@ -19,6 +28,11 @@
                 <property name="tightening-threshold">300</property>
                 <property name="child">
                   <object class="GtkLabel" id="errorLabel">
+                    <binding name="label">
+                      <lookup name="error" type="Extension">
+                        <lookup name="extension" type="ExtensionRow"/>
+                      </lookup>
+                    </binding>
                     <!-- Hack to make the screen reader read the label -->
                     <property name="selectable"
                               bind-source="errorPopover"
@@ -35,10 +49,14 @@
     </child>
     <child type="suffix">
       <object class="GtkMenuButton" id="updatesButton">
-        <property name="visible">false</property>
         <property name="valign">center</property>
         <property name="has-frame">false</property>
         <property name="icon-name">software-update-available-symbolic</property>
+        <binding name="visible">
+          <lookup name="has-update" type="Extension">
+            <lookup name="extension" type="ExtensionRow"/>
+          </lookup>
+        </binding>
         <accessibility>
           <property name="label" translatable="yes">Updates Details</property>
         </accessibility>
@@ -116,6 +134,11 @@
                         <property name="xalign">0</property>
                         <property name="wrap">True</property>
                         <property name="selectable">true</property>
+                        <binding name="label">
+                          <lookup name="description" type="Extension">
+                            <lookup name="extension" type="ExtensionRow"/>
+                          </lookup>
+                        </binding>
                       </object>
                     </child>
                     <child>
@@ -123,6 +146,11 @@
                         <property name="visible">false</property>
                         <property name="xalign">0</property>
                         <property name="selectable">true</property>
+                        <binding name="visible">
+                          <lookup name="has-version" type="Extension">
+                            <lookup name="extension" type="ExtensionRow"/>
+                          </lookup>
+                        </binding>
                         <style>
                           <class name="dim-label"/>
                         </style>

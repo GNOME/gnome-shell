@@ -17,11 +17,7 @@ export const ExtensionRow = GObject.registerClass({
     },
     InternalChildren: [
         'detailsPopover',
-        'descriptionLabel',
         'versionLabel',
-        'errorLabel',
-        'errorButton',
-        'updatesButton',
         'switch',
         'actionsBox',
     ],
@@ -78,14 +74,14 @@ export const ExtensionRow = GObject.registerClass({
         this._actionGroup.add_action_entries(actionEntries);
         this._bindActionEnabled(actionEntries);
 
-        this.title = extension.name;
+        this._extension.bind_property_full('version',
+            this._versionLabel, 'label',
+            GObject.BindingFlags.SYNC_CREATE,
+            (bind, source) => [true, _('Version %s').format(source)],
+            null);
 
-        this._descriptionLabel.label = extension.description;
-
-        this.connect('destroy', this._onDestroy.bind(this));
-
-        this._extensionStateChangedId = this._app.extensionManager.connect(
-            `extension-changed::${extension.uuid}`, () => this._updateState());
+        this._extension.connect('notify::state',
+            () => this._updateState());
         this._updateState();
     }
 
@@ -126,18 +122,5 @@ export const ExtensionRow = GObject.registerClass({
 
         if (!action.enabled)
             this._switch.active = state;
-
-        this._updatesButton.visible = this._extension.hasUpdate;
-        this._errorButton.visible = this._extension.hasError;
-        this._errorLabel.label = this._extension.error;
-
-        this._versionLabel.label = _('Version %s').format(this._extension.version);
-        this._versionLabel.visible = this._extension.version !== '';
-    }
-
-    _onDestroy() {
-        if (this._extensionStateChangedId)
-            this._app.extensionManager.disconnect(this._extensionStateChangedId);
-        delete this._extensionStateChangedId;
     }
 });
