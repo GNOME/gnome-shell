@@ -541,22 +541,6 @@ var ExtensionRow = GObject.registerClass({
     }
 });
 
-function initEnvironment() {
-    // Monkey-patch in a "global" object that fakes some Shell utilities
-    // that ExtensionUtils depends on.
-    globalThis.global = {
-        log(...args) {
-            print(args.join(', '));
-        },
-
-        logError(s) {
-            log(`ERROR: ${s}`);
-        },
-
-        userdatadir: GLib.build_filenamev([GLib.get_user_data_dir(), 'gnome-shell']),
-    };
-}
-
 /**
  * Main entrypoint for the app
  *
@@ -564,7 +548,6 @@ function initEnvironment() {
  * @returns {void}
  */
 export async function main(argv) {
-    initEnvironment();
     Package.initGettext();
     setConsoleLogDomain('Extensions');
 
