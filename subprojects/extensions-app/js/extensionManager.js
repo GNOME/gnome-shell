@@ -142,6 +142,10 @@ const Extension = GObject.registerClass({
             this._state = state;
             this.notify('state');
 
+            // Compat with older shell versions
+            if (this._enabled === undefined)
+                this.notify('enabled');
+
             if (this.hasError !== hadError) {
                 this.notify('has-error');
                 this.notify('error');
@@ -203,6 +207,12 @@ const Extension = GObject.registerClass({
     }
 
     get enabled() {
+        // Compat with older shell versions
+        if (this._enabled === undefined) {
+            return this.state === ExtensionState.ACTIVE ||
+                   this.state === ExtensionState.ACTIVATING;
+        }
+
         return this._enabled;
     }
 
