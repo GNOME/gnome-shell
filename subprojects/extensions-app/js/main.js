@@ -428,7 +428,6 @@ var ExtensionRow = GObject.registerClass({
 
         const desc = this._extension.metadata.description.split('\n')[0];
         this._descriptionLabel.label = desc;
-        this._descriptionLabel.tooltip_text = desc;
 
         this.connect('destroy', this._onDestroy.bind(this));
 
