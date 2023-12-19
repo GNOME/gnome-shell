@@ -34,54 +34,49 @@ export const ExtensionRow = GObject.registerClass({
         this._actionGroup = new Gio.SimpleActionGroup();
         this.insert_action_group('row', this._actionGroup);
 
-        let action;
-        action = new Gio.SimpleAction({
-            name: 'show-prefs',
-            enabled: extension.hasPrefs,
-        });
-        action.connect('activate', () => {
-            this._detailsPopover.popdown();
-            this.get_root().openPrefs(extension);
-        });
-        this._actionGroup.add_action(action);
-
-        action = new Gio.SimpleAction({
-            name: 'show-url',
-            enabled: extension.url !== '',
-        });
-        action.connect('activate', () => {
-            this._detailsPopover.popdown();
-            Gio.AppInfo.launch_default_for_uri(
-                extension.url, this.get_display().get_app_launch_context());
-        });
-        this._actionGroup.add_action(action);
-
-        action = new Gio.SimpleAction({
-            name: 'uninstall',
-            enabled: extension.isUser,
-        });
-        action.connect('activate', () => {
-            this._detailsPopover.popdown();
-            this.get_root().uninstall(extension);
-        });
-        this._actionGroup.add_action(action);
-
-        action = new Gio.SimpleAction({
-            name: 'enabled',
-            state: new GLib.Variant('b', false),
-        });
-        action.connect('activate', () => {
-            const state = action.get_state();
-            action.change_state(new GLib.Variant('b', !state.get_boolean()));
-        });
-        action.connect('change-state', (a, state) => {
-            const {uuid} = this._extension;
-            if (state.get_boolean())
-                this._app.extensionManager.enableExtension(uuid);
-            else
-                this._app.extensionManager.disableExtension(uuid);
-        });
-        this._actionGroup.add_action(action);
+        const actionEntries = [
+            {
+                name: 'show-prefs',
+                activate: () => {
+                    this._detailsPopover.popdown();
+                    this.get_root().openPrefs(extension);
+                },
+                enabledProp: 'has-prefs',
+            }, {
+                name: 'show-url',
+                activate: () => {
+                    this._detailsPopover.popdown();
+                    Gio.AppInfo.launch_default_for_uri(
+                        extension.url, this.get_display().get_app_launch_context());
+                },
+                enabledProp: 'url',
+                enabledTransform: s => s !== '',
+            }, {
+                name: 'uninstall',
+                activate: () => {
+                    this._detailsPopover.popdown();
+                    this.get_root().uninstall(extension);
+                },
+                enabledProp: 'is-user',
+            }, {
+                name: 'enabled',
+                state: 'false',
+                activate: action => {
+                    const state = action.get_state();
+                    action.change_state(new GLib.Variant('b', !state.get_boolean()));
+                },
+                change_state: (a, state) => {
+                    const {uuid} = this._extension;
+                    if (state.get_boolean())
+                        this._app.extensionManager.enableExtension(uuid);
+                    else
+                        this._app.extensionManager.disableExtension(uuid);
+                },
+                enabledProp: 'can-change',
+            },
+        ];
+        this._actionGroup.add_action_entries(actionEntries);
+        this._bindActionEnabled(actionEntries);
 
         this.title = extension.name;
 
@@ -102,12 +97,32 @@ export const ExtensionRow = GObject.registerClass({
         this._extension = ext;
     }
 
+    _bindActionEnabled(entries) {
+        for (const entry of entries) {
+            const {name, enabledProp, enabledTransform} = entry;
+            if (!enabledProp)
+                continue;
+
+            const action = this._actionGroup.lookup_action(name);
+            if (enabledTransform) {
+                this._extension.bind_property_full(enabledProp,
+                    action, 'enabled',
+                    GObject.BindingFlags.SYNC_CREATE,
+                    (bind, source) => [true, enabledTransform(source)],
+                    null);
+            } else {
+                this._extension.bind_property(enabledProp,
+                    action, 'enabled',
+                    GObject.BindingFlags.SYNC_CREATE);
+            }
+        }
+    }
+
     _updateState() {
         const state = this._extension.state === ExtensionState.ENABLED;
 
         const action = this._actionGroup.lookup_action('enabled');
         action.set_state(new GLib.Variant('b', state));
-        action.enabled = this._extension.canChange;
 
         if (!action.enabled)
             this._switch.active = state;
