@@ -25,8 +25,69 @@ function loadInterfaceXML(iface) {
     return null;
 }
 
-class Extension {
+const Extension = GObject.registerClass({
+    GTypeName: 'Extension',
+    Properties: {
+        'uuid': GObject.ParamSpec.string(
+            'uuid', null, null,
+            GObject.ParamFlags.READABLE,
+            ''),
+        'name': GObject.ParamSpec.string(
+            'name', null, null,
+            GObject.ParamFlags.READABLE,
+            ''),
+        'description': GObject.ParamSpec.string(
+            'description', null, null,
+            GObject.ParamFlags.READABLE,
+            ''),
+        'state': GObject.ParamSpec.int(
+            'state', null, null,
+            GObject.ParamFlags.READABLE,
+            1, 99, ExtensionState.INITIALIZED),
+        'creator': GObject.ParamSpec.string(
+            'creator', null, null,
+            GObject.ParamFlags.READABLE,
+            ''),
+        'url': GObject.ParamSpec.string(
+            'url', null, null,
+            GObject.ParamFlags.READABLE,
+            ''),
+        'version': GObject.ParamSpec.string(
+            'version', null, null,
+            GObject.ParamFlags.READABLE,
+            ''),
+        'error': GObject.ParamSpec.string(
+            'error', null, null,
+            GObject.ParamFlags.READABLE,
+            ''),
+        'has-error': GObject.ParamSpec.boolean(
+            'has-error', null, null,
+            GObject.ParamFlags.READABLE,
+            false),
+        'has-prefs': GObject.ParamSpec.boolean(
+            'has-prefs', null, null,
+            GObject.ParamFlags.READABLE,
+            false),
+        'has-update': GObject.ParamSpec.boolean(
+            'has-update', null, null,
+            GObject.ParamFlags.READABLE,
+            false),
+        'has-version': GObject.ParamSpec.boolean(
+            'has-version', null, null,
+            GObject.ParamFlags.READABLE,
+            false),
+        'can-change': GObject.ParamSpec.boolean(
+            'can-change', null, null,
+            GObject.ParamFlags.READABLE,
+            false),
+        'is-user': GObject.ParamSpec.boolean(
+            'is-user', null, null,
+            GObject.ParamFlags.READABLE,
+            false),
+    },
+}, class Extension extends GObject.Object {
     constructor(variant) {
+        super();
         this.update(variant);
     }
 
@@ -43,30 +104,79 @@ class Extension {
         if (this._uuid !== uuid)
             throw new Error(`Invalid update of extension ${this._uuid} with data from ${uuid}`);
 
+        this.freeze_notify();
+
         const {name} = metadata;
-        this._name = name;
-        [this._keywords] = GLib.str_tokenize_and_fold(name, null);
+        if (this._name !== name) {
+            [this._keywords] = GLib.str_tokenize_and_fold(name, null);
+
+            this._name = name;
+            this.notify('name');
+        }
 
         const [desc] = metadata.description.split('\n');
-        this._description = desc;
+        if (this._description !== desc) {
+            this._description = desc;
+            this.notify('description');
+        }
 
-        this._type = type;
-        this._errorDetail = error;
-        this._state = state;
+        if (this._type !== type) {
+            this._type = type;
+            this.notify('is-user');
+        }
+
+        if (this._errorDetail !== error) {
+            this._errorDetail = error;
+            this.notify('error');
+        }
+
+        if (this._state !== state) {
+            const hadError = this.hasError;
+            this._state = state;
+            this.notify('state');
+
+            if (this.hasError !== hadError) {
+                this.notify('has-error');
+                this.notify('error');
+            }
+        }
 
         const creator = metadata.creator ?? '';
-        this._creator = creator;
+        if (this._creator !== creator) {
+            this._creator = creator;
+            this.notify('creator');
+        }
 
         const url = metadata.url ?? '';
-        this._url = url;
+        if (this._url !== url) {
+            this._url = url;
+            this.notify('url');
+        }
 
         const version = String(
             metadata['version-name'] || metadata['version'] || '');
-        this._version = version;
+        if (this._version !== version) {
+            this._version = version;
+            this.notify('version');
+            this.notify('has-version');
+        }
 
-        this._hasPrefs = hasPrefs;
-        this._hasUpdate = hasUpdate;
-        this._canChange = canChange;
+        if (this._hasPrefs !== hasPrefs) {
+            this._hasPrefs = hasPrefs;
+            this.notify('has-prefs');
+        }
+
+        if (this._hasUpdate !== hasUpdate) {
+            this._hasUpdate = hasUpdate;
+            this.notify('has-update');
+        }
+
+        if (this._canChange !== canChange) {
+            this._canChange = canChange;
+            this.notify('can-change');
+        }
+
+        this.thaw_notify();
     }
 
     get uuid() {
@@ -148,7 +258,9 @@ class Extension {
     get isUser() {
         return this._type === ExtensionType.PER_USER;
     }
-}
+});
+const {$gtype: TYPE_EXTENSION} = Extension;
+export {TYPE_EXTENSION as Extension};
 
 export const ExtensionManager = GObject.registerClass({
     Properties: {
@@ -166,9 +278,9 @@ export const ExtensionManager = GObject.registerClass({
             false),
     },
     Signals: {
-        'extension-added': {param_types: [GObject.TYPE_JSOBJECT]},
-        'extension-removed': {param_types: [GObject.TYPE_JSOBJECT]},
-        'extension-changed': {param_types: [GObject.TYPE_JSOBJECT], flags: GObject.SignalFlags.DETAILED},
+        'extension-added': {param_types: [Extension]},
+        'extension-removed': {param_types: [Extension]},
+        'extension-changed': {param_types: [Extension], flags: GObject.SignalFlags.DETAILED},
         'extensions-loaded': {},
     },
 }, class ExtensionManager extends GObject.Object {

@@ -4,10 +4,17 @@ import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 
 import {ExtensionState}  from './misc/extensionUtils.js';
+import {Extension} from './extensionManager.js';
 
 export const ExtensionRow = GObject.registerClass({
     GTypeName: 'ExtensionRow',
     Template: 'resource:///org/gnome/Extensions/ui/extension-row.ui',
+    Properties: {
+        'extension': GObject.ParamSpec.object(
+            'extension', null, null,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            Extension),
+    },
     InternalChildren: [
         'detailsPopover',
         'descriptionLabel',
@@ -19,11 +26,10 @@ export const ExtensionRow = GObject.registerClass({
         'actionsBox',
     ],
 }, class ExtensionRow extends Adw.ActionRow {
-    _init(extension) {
-        super._init();
+    constructor(extension) {
+        super({extension});
 
         this._app = Gio.Application.get_default();
-        this._extension = extension;
 
         this._actionGroup = new Gio.SimpleActionGroup();
         this.insert_action_group('row', this._actionGroup);
@@ -89,7 +95,11 @@ export const ExtensionRow = GObject.registerClass({
     }
 
     get extension() {
-        return this._extension;
+        return this._extension ?? null;
+    }
+
+    set extension(ext) {
+        this._extension = ext;
     }
 
     _updateState() {
