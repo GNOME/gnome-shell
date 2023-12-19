@@ -137,6 +137,14 @@
       > StIcon {
         icon-size: $base_icon_size * 3; // 48px
         -st-icon-style: symbolic;
+
+        .message-themed-icon {
+          border-radius: $forced_circular_radius; // is circular
+          background-color: transparentize($fg_color, 0.8);
+          icon-size: $base_icon_size;
+          min-width: $base_icon_size * 3;
+          min-height: $base_icon_size * 3;
+        }
       }
     }
 

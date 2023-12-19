@@ -790,10 +790,11 @@ class NotificationMessage extends MessageList.Message {
     }
 
     _getIcon() {
-        if (this.notification.gicon) {
-            return new St.Icon({
-                gicon: this.notification.gicon,
-            });
+        const {gicon} = this.notification;
+        if (gicon) {
+            const styleClass =
+                gicon instanceof Gio.ThemedIcon ? 'message-themed-icon' : '';
+            return new St.Icon({gicon, styleClass});
         } else {
             return null;
         }
