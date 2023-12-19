@@ -5,6 +5,7 @@ import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk?version=4.0';
 import Shew from 'gi://Shew';
 
+import {setConsoleLogDomain} from 'console';
 import * as Gettext from 'gettext';
 const Package = imports.package;
 
@@ -29,7 +30,7 @@ function loadInterfaceXML(iface) {
         let [ok_, bytes] = f.load_contents(null);
         return new TextDecoder().decode(bytes);
     } catch (e) {
-        log(`Failed to load D-Bus interface ${iface}`);
+        console.error(`Failed to load D-Bus interface ${iface}`);
     }
 
     return null;
@@ -54,7 +55,7 @@ class Application extends Adw.Application {
     }
 
     vfunc_activate() {
-        this._shellProxy.CheckForUpdatesAsync().catch(logError);
+        this._shellProxy.CheckForUpdatesAsync().catch(console.error);
         this._window.present();
     }
 
@@ -181,7 +182,7 @@ var ExtensionsWindow = GObject.registerClass({
 
         dialog.connect('response', (dlg, response) => {
             if (response === Gtk.ResponseType.ACCEPT)
-                this._shellProxy.UninstallExtensionAsync(uuid).catch(logError);
+                this._shellProxy.UninstallExtensionAsync(uuid).catch(console.error);
             dialog.destroy();
         });
         dialog.present();
@@ -192,13 +193,13 @@ var ExtensionsWindow = GObject.registerClass({
             try {
                 this._exportedHandle = await this._exporter.export();
             } catch (e) {
-                log(`Failed to export window: ${e.message}`);
+                console.warn(`Failed to export window: ${e.message}`);
             }
         }
 
         this._shellProxy.OpenExtensionPrefsAsync(uuid,
             this._exportedHandle,
-            {modal: new GLib.Variant('b', true)}).catch(logError);
+            {modal: new GLib.Variant('b', true)}).catch(console.error);
     }
 
     _showAbout() {
@@ -297,7 +298,7 @@ var ExtensionsWindow = GObject.registerClass({
             this._extensionsLoaded();
         } catch (e) {
             if (e instanceof Gio.DBusError) {
-                log(`Failed to connect to shell proxy: ${e}`);
+                console.log(`Failed to connect to shell proxy: ${e}`);
                 this._mainStack.visible_child_name = 'noshell';
             } else {
                 throw e;
@@ -418,9 +419,9 @@ var ExtensionRow = GObject.registerClass({
         action.connect('activate', toggleState);
         action.connect('change-state', (a, state) => {
             if (state.get_boolean())
-                this._app.shellProxy.EnableExtensionAsync(this.uuid).catch(logError);
+                this._app.shellProxy.EnableExtensionAsync(this.uuid).catch(console.error);
             else
-                this._app.shellProxy.DisableExtensionAsync(this.uuid).catch(logError);
+                this._app.shellProxy.DisableExtensionAsync(this.uuid).catch(console.error);
         });
         this._actionGroup.add_action(action);
 
@@ -565,6 +566,7 @@ function initEnvironment() {
 export async function main(argv) {
     initEnvironment();
     Package.initGettext();
+    setConsoleLogDomain('Extensions');
 
     await new Application().runAsync(argv);
 }
