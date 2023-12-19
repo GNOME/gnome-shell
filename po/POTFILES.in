@@ -92,7 +92,8 @@ src/shell-util.c
 src/st/st-icon-theme.c
 subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in
 subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in
-subprojects/extensions-app/js/main.js
+subprojects/extensions-app/js/extensionRow.js
+subprojects/extensions-app/js/extensionsWindow.js
 subprojects/extensions-app/data/ui/extension-row.ui
 subprojects/extensions-app/data/ui/extensions-window.ui
 subprojects/extensions-app/data/ui/help-overlay.ui
