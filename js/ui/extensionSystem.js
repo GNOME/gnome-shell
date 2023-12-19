@@ -370,7 +370,6 @@ export class ExtensionManager extends Signals.EventEmitter {
         extension.errors.push(message);
 
         logError(error, `Extension ${uuid}`);
-        this._updateCanChange(extension);
         this.emit('extension-state-changed', extension);
     }
 
@@ -572,10 +571,6 @@ export class ExtensionManager extends Signals.EventEmitter {
     }
 
     _updateCanChange(extension) {
-        let hasError =
-            extension.state === ExtensionState.ERROR ||
-            extension.state === ExtensionState.OUT_OF_DATE;
-
         let isMode = this._getModeExtensions().includes(extension.uuid);
         let modeOnly = global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY);
 
@@ -584,7 +579,6 @@ export class ExtensionManager extends Signals.EventEmitter {
             : ENABLED_EXTENSIONS_KEY;
 
         extension.canChange =
-            !hasError &&
             global.settings.is_writable(changeKey) &&
             (isMode || !modeOnly);
     }
