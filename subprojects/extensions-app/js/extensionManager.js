@@ -108,8 +108,6 @@ const Extension = GObject.registerClass({
 
         const {name} = metadata;
         if (this._name !== name) {
-            [this._keywords] = GLib.str_tokenize_and_fold(name, null);
-
             this._name = name;
             this.notify('name');
         }
@@ -207,10 +205,6 @@ const Extension = GObject.registerClass({
         return this._version;
     }
 
-    get keywords() {
-        return this._keywords;
-    }
-
     get error() {
         if (!this.hasError)
             return '';
@@ -268,6 +262,10 @@ export const ExtensionManager = GObject.registerClass({
             'user-extensions-enabled', null, null,
             GObject.ParamFlags.READWRITE,
             true),
+        'extensions': GObject.ParamSpec.object(
+            'extensions', null, null,
+            GObject.ParamFlags.READABLE,
+            Gio.ListModel),
         'n-updates': GObject.ParamSpec.int(
             'n-updates', null, null,
             GObject.ParamFlags.READABLE,
@@ -278,16 +276,13 @@ export const ExtensionManager = GObject.registerClass({
             false),
     },
     Signals: {
-        'extension-added': {param_types: [Extension]},
-        'extension-removed': {param_types: [Extension]},
-        'extension-changed': {param_types: [Extension], flags: GObject.SignalFlags.DETAILED},
         'extensions-loaded': {},
     },
 }, class ExtensionManager extends GObject.Object {
     constructor() {
         super();
 
-        this._extensions = new Map();
+        this._extensions = new Gio.ListStore({itemType: Extension});
 
         this._proxyReady = false;
         this._shellProxy = new GnomeShellProxy(Gio.DBus.session,
@@ -312,6 +307,10 @@ export const ExtensionManager = GObject.registerClass({
         this._loadExtensions().catch(console.error);
     }
 
+    get extensions() {
+        return this._extensions;
+    }
+
     get userExtensionsEnabled() {
         return this._shellProxy.UserExtensionsEnabled ?? false;
     }
@@ -322,7 +321,7 @@ export const ExtensionManager = GObject.registerClass({
 
     get nUpdates() {
         let nUpdates = 0;
-        for (const ext of this._extensions.values()) {
+        for (const ext of this._extensions) {
             if (ext.isUser && ext.hasUpdate)
                 nUpdates++;
         }
@@ -355,43 +354,37 @@ export const ExtensionManager = GObject.registerClass({
         this._shellProxy.CheckForUpdatesAsync().catch(console.error);
     }
 
-    _addExtension(extension) {
-        const {uuid} = extension;
-        if (this._extensions.has(uuid))
-            return;
-
-        this._extensions.set(uuid, extension);
-        this.emit('extension-added', extension);
-    }
-
-    _removeExtension(extension) {
-        const {uuid} = extension;
-        if (this._extensions.delete(uuid))
-            this.emit('extension-removed', extension);
-    }
-
     async _loadExtensions() {
         const [extensionsMap] = await this._shellProxy.ListExtensionsAsync();
 
         for (let uuid in extensionsMap) {
             const extension = new Extension(extensionsMap[uuid]);
-            this._addExtension(extension);
+            this._extensions.append(extension);
         }
         this.emit('extensions-loaded');
     }
 
+    _findExtension(uuid) {
+        const len = this._extensions.get_n_items();
+        for (let pos = 0; pos < len; pos++) {
+            const extension = this._extensions.get_item(pos);
+            if (extension.uuid === uuid)
+                return [extension, pos];
+        }
+
+        return [null, -1];
+    }
+
     _onExtensionStateChanged(p, sender, [uuid, newState]) {
-        const extension = this._extensions.get(uuid);
+        const [extension, pos] = this._findExtension(uuid);
 
         if (extension)
             extension.update(newState);
 
         if (!extension)
-            this._addExtension(new Extension(newState));
+            this._extensions.append(new Extension(newState));
         else if (extension.state === ExtensionState.UNINSTALLED)
-            this._removeExtension(extension);
-        else
-            this.emit(`extension-changed::${uuid}`, extension);
+            this._extensions.remove(pos);
 
         if (this._updatesCheckId)
             return;

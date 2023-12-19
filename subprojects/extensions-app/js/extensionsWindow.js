@@ -18,6 +18,10 @@ export const ExtensionsWindow = GObject.registerClass({
     GTypeName: 'ExtensionsWindow',
     Template: 'resource:///org/gnome/Extensions/ui/extensions-window.ui',
     InternalChildren: [
+        'sortModel',
+        'searchFilter',
+        'userListModel',
+        'systemListModel',
         'userGroup',
         'userList',
         'systemGroup',
@@ -54,20 +58,9 @@ export const ExtensionsWindow = GObject.registerClass({
                 },
             }]);
 
-        this._searchTerms = [];
-        this._searchEntry.connect('search-changed', () => {
-            const {text} = this._searchEntry;
-            if (text === '')
-                this._searchTerms = [];
-            else
-                [this._searchTerms] = GLib.str_tokenize_and_fold(text, null);
+        this._searchEntry.connect('search-changed',
+            () => (this._searchFilter.search = this._searchEntry.text));
 
-            this._userList.invalidate_filter();
-            this._systemList.invalidate_filter();
-        });
-
-        this._userList.set_sort_func(this._sortList.bind(this));
-        this._userList.set_filter_func(this._filterList.bind(this));
         this._userList.set_placeholder(new Gtk.Label({
             label: _('No Matches'),
             margin_start: 12,
@@ -76,9 +69,8 @@ export const ExtensionsWindow = GObject.registerClass({
             margin_bottom: 12,
         }));
         this._userList.connect('row-activated', (_list, row) => row.activate());
+        this._userGroup.connect('notify::visible', () => this._syncVisiblePage());
 
-        this._systemList.set_sort_func(this._sortList.bind(this));
-        this._systemList.set_filter_func(this._filterList.bind(this));
         this._systemList.set_placeholder(new Gtk.Label({
             label: _('No Matches'),
             margin_start: 12,
@@ -87,6 +79,7 @@ export const ExtensionsWindow = GObject.registerClass({
             margin_bottom: 12,
         }));
         this._systemList.connect('row-activated', (_list, row) => row.activate());
+        this._systemGroup.connect('notify::visible', () => this._syncVisiblePage());
 
         const {extensionManager} = this.application;
         extensionManager.connect('notify::failed',
@@ -97,19 +90,16 @@ export const ExtensionsWindow = GObject.registerClass({
             this._onUserExtensionsEnabledChanged.bind(this));
         this._onUserExtensionsEnabledChanged();
 
-        extensionManager.connect('extension-added',
-            (mgr, extension) => this._addExtensionRow(extension));
-        extensionManager.connect('extension-removed',
-            (mgr, extension) => this._removeExtensionRow(extension));
-        extensionManager.connect('extension-changed',
-            (mgr, extension) => {
-                const row = this._findExtensionRow(extension);
-                const isUser = row?.get_parent() === this._userList;
-                if (extension.isUser !== isUser) {
-                    this._removeExtensionRow(extension);
-                    this._addExtensionRow(extension);
-                }
-            });
+        this._sortModel.model = extensionManager.extensions;
+
+        this._userList.bind_model(new Gtk.FilterListModel({
+            filter: this._searchFilter,
+            model: this._userListModel,
+        }), extension => new ExtensionRow(extension));
+        this._systemList.bind_model(new Gtk.FilterListModel({
+            filter: this._searchFilter,
+            model: this._systemListModel,
+        }), extension => new ExtensionRow(extension));
 
         extensionManager.connect('extensions-loaded',
             () => this._extensionsLoaded());
@@ -189,54 +179,10 @@ export const ExtensionsWindow = GObject.registerClass({
             null);
     }
 
-    _sortList(row1, row2) {
-        const {name: name1} = row1.extension;
-        const {name: name2} = row2.extension;
-        return name1.localeCompare(name2);
-    }
-
-    _filterList(row) {
-        const {keywords} = row.extension;
-        return this._searchTerms.every(
-            t => keywords.some(k => k.startsWith(t)));
-    }
-
-    _findExtensionRow(extension) {
-        return [
-            ...this._userList,
-            ...this._systemList,
-        ].find(c => c.extension === extension);
-    }
-
     _onUserExtensionsEnabledChanged() {
         const {userExtensionsEnabled} = this.application.extensionManager;
         const action = this.lookup_action('user-extensions-enabled');
         action.set_state(new GLib.Variant('b', userExtensionsEnabled));
-    }
-
-    _addExtensionRow(extension) {
-        const row = new ExtensionRow(extension);
-
-        if (extension.isUser)
-            this._userList.append(row);
-        else
-            this._systemList.append(row);
-
-        this._syncListVisibility();
-    }
-
-    _removeExtensionRow(extension) {
-        const row = this._findExtensionRow(extension);
-        if (row)
-            row.get_parent().remove(row);
-        this._syncListVisibility();
-    }
-
-    _syncListVisibility() {
-        this._userGroup.visible = [...this._userList].length > 1;
-        this._systemGroup.visible = [...this._systemList].length > 1;
-
-        this._syncVisiblePage();
     }
 
     _syncVisiblePage() {
@@ -261,7 +207,7 @@ export const ExtensionsWindow = GObject.registerClass({
     }
 
     _extensionsLoaded() {
-        this._syncListVisibility();
+        this._syncVisiblePage();
         this._checkUpdates();
     }
 });
