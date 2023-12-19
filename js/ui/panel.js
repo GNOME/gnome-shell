@@ -952,12 +952,13 @@ class Panel extends St.Widget {
     }
 
     _onMenuSet(indicator) {
-        if (!indicator.menu || indicator.menu._openChangedId)
+        if (!indicator.menu || indicator.menu._openChangedConnected)
             return;
 
         this.menuManager.addMenu(indicator.menu);
 
-        indicator.menu._openChangedId = indicator.menu.connect('open-state-changed',
+        indicator.menu._openChangedConnected = true;
+        indicator.menu.connectObject('open-state-changed',
             (menu, isOpen) => {
                 let boxAlignment;
                 if (this._leftBox.contains(indicator.container))
@@ -969,7 +970,7 @@ class Panel extends St.Widget {
 
                 if (boxAlignment === Main.messageTray.bannerAlignment)
                     Main.messageTray.bannerBlocked = isOpen;
-            });
+            }, this);
     }
 
     _getDraggableWindowForPosition(stageX) {
