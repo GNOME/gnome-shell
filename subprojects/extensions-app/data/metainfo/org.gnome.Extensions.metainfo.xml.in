@@ -8,10 +8,11 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0-or-later</project_license>
 
-  <url type="homepage">https://gitlab.gnome.org/GNOME/gnome-shell/-/tree/HEAD/subprojects/extensions-app</url>
+  <url type="homepage">https://apps.gnome.org/Extensions/</url>
   <url type="bugtracker">https://gitlab.gnome.org/GNOME/gnome-shell/issues/new</url>
   <url type="donation">http://www.gnome.org/friends/</url>
   <url type="translate">https://wiki.gnome.org/TranslationProject</url>
+  <url type="vcs-browser">https://gitlab.gnome.org/GNOME/gnome-shell/-/tree/HEAD/subprojects/extensions-app</url>
 
   <project_group>GNOME</project_group>
   <developer_name>The GNOME Project</developer_name>
@@ -23,6 +24,10 @@
     <kudo>HighContrast</kudo>
     <kudo>ModernToolkit</kudo>
   </kudos>
+
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
 
   <recommends>
     <control>pointing</control>
@@ -47,12 +52,15 @@
   <screenshots>
     <screenshot type="default">
       <image>https://gitlab.gnome.org/GNOME/gnome-shell/raw/HEAD/subprojects/extensions-app/data/metainfo/extensions-main.png</image>
+      <caption>Main Window</caption>
     </screenshot>
     <screenshot>
       <image>https://gitlab.gnome.org/GNOME/gnome-shell/raw/HEAD/subprojects/extensions-app/data/metainfo/extensions-update.png</image>
+      <caption>Available Updates</caption>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/GNOME/gnome-shell/raw/HEAD/subprojects/extensions-app/data/metainfo/extensions-remove.png</image>
+      <image>https://gitlab.gnome.org/GNOME/gnome-shell/raw/HEAD/subprojects/extensions-app/data/metainfo/extensions-search.png</image>
+      <caption>Search View</caption>
     </screenshot>
   </screenshots>
 </component>
