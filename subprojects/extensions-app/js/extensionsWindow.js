@@ -22,13 +22,14 @@ export const ExtensionsWindow = GObject.registerClass({
         'searchFilter',
         'userListModel',
         'systemListModel',
+        'searchListModel',
         'userGroup',
         'userList',
         'systemGroup',
         'systemList',
+        'searchList',
         'mainStack',
         'searchBar',
-        'searchButton',
         'searchEntry',
         'updatesBanner',
     ],
@@ -60,24 +61,14 @@ export const ExtensionsWindow = GObject.registerClass({
 
         this._searchEntry.connect('search-changed',
             () => (this._searchFilter.search = this._searchEntry.text));
+        this._searchBar.connect('notify::search-mode-enabled',
+            () => this._syncVisiblePage());
+        this._searchListModel.connect('notify::n-items',
+            () => this._syncVisiblePage());
 
-        this._userList.set_placeholder(new Gtk.Label({
-            label: _('No Matches'),
-            margin_start: 12,
-            margin_end: 12,
-            margin_top: 12,
-            margin_bottom: 12,
-        }));
         this._userList.connect('row-activated', (_list, row) => row.activate());
         this._userGroup.connect('notify::visible', () => this._syncVisiblePage());
 
-        this._systemList.set_placeholder(new Gtk.Label({
-            label: _('No Matches'),
-            margin_start: 12,
-            margin_end: 12,
-            margin_top: 12,
-            margin_bottom: 12,
-        }));
         this._systemList.connect('row-activated', (_list, row) => row.activate());
         this._systemGroup.connect('notify::visible', () => this._syncVisiblePage());
 
@@ -92,14 +83,12 @@ export const ExtensionsWindow = GObject.registerClass({
 
         this._sortModel.model = extensionManager.extensions;
 
-        this._userList.bind_model(new Gtk.FilterListModel({
-            filter: this._searchFilter,
-            model: this._userListModel,
-        }), extension => new ExtensionRow(extension));
-        this._systemList.bind_model(new Gtk.FilterListModel({
-            filter: this._searchFilter,
-            model: this._systemListModel,
-        }), extension => new ExtensionRow(extension));
+        this._userList.bind_model(this._userListModel,
+            extension => new ExtensionRow(extension));
+        this._systemList.bind_model(this._systemListModel,
+            extension => new ExtensionRow(extension));
+        this._searchList.bind_model(this._searchListModel,
+            extension => new ExtensionRow(extension));
 
         extensionManager.connect('extensions-loaded',
             () => this._extensionsLoaded());
@@ -187,9 +176,14 @@ export const ExtensionsWindow = GObject.registerClass({
 
     _syncVisiblePage() {
         const {extensionManager} = this.application;
+        const {searchModeEnabled} = this._searchBar;
 
         if (extensionManager.failed)
             this._mainStack.visible_child_name = 'noshell';
+        else if (searchModeEnabled && this._searchListModel.get_n_items() > 0)
+            this._mainStack.visible_child_name = 'search';
+        else if (searchModeEnabled)
+            this._mainStack.visible_child_name = 'noresults';
         else if (this._userGroup.visible || this._systemGroup.visible)
             this._mainStack.visible_child_name = 'main';
         else
