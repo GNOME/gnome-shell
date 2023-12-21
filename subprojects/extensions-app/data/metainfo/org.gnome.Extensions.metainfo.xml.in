@@ -10,13 +10,16 @@
 
   <url type="homepage">https://apps.gnome.org/Extensions/</url>
   <url type="bugtracker">https://gitlab.gnome.org/GNOME/gnome-shell/issues/new</url>
-  <url type="donation">http://www.gnome.org/friends/</url>
+  <url type="donation">https://www.gnome.org/donate/</url>
   <url type="translate">https://wiki.gnome.org/TranslationProject</url>
   <url type="vcs-browser">https://gitlab.gnome.org/GNOME/gnome-shell/-/tree/HEAD/subprojects/extensions-app</url>
 
   <project_group>GNOME</project_group>
-  <developer_name>The GNOME Project</developer_name>
+  <developer id="gnome.org">
+    <name>The GNOME Project</name>
+  </developer>
 
+  <translation type="gettext">gnome-extensions-app</translation>
   <launchable type="desktop-id">org.gnome.Extensions.desktop</launchable>
 
   <kudos>
@@ -45,7 +48,9 @@
 
   <releases>
     <release version="45.0" date="2023-09-16">
-      <p>Modernize layout</p>
+      <description>
+        <p>Modernize layout</p>
+      </description>
     </release>
   </releases>
 
