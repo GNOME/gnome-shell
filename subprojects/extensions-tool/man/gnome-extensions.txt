@@ -100,6 +100,12 @@ Displays a list of installed extensions.
   *--disabled*;;
     Include disabled extensions
 
+  *--active*;;
+    Only include extensions in active state
+
+  *--inactive*;;
+    Only include extensions in inactive state
+
   *--prefs*;;
     Only include extensions with preferences
 
