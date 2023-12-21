@@ -13,14 +13,14 @@ export const ExtensionType = {
  * @enum {number}
  */
 export const ExtensionState = {
-    ENABLED: 1,
-    DISABLED: 2,
+    ACTIVE: 1,
+    INACTIVE: 2,
     ERROR: 3,
     OUT_OF_DATE: 4,
     DOWNLOADING: 5,
     INITIALIZED: 6,
-    DISABLING: 7,
-    ENABLING: 8,
+    DEACTIVATING: 7,
+    ACTIVATING: 8,
 
     // Used as an error state for operations on unknown extensions,
     // should never be in a real extensionMeta object.

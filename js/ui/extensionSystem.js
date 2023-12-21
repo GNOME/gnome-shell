@@ -119,8 +119,8 @@ export class ExtensionManager extends Signals.EventEmitter {
     }
 
     _loadExtensionStylesheet(extension) {
-        if (extension.state !== ExtensionState.ENABLED &&
-            extension.state !== ExtensionState.ENABLING)
+        if (extension.state !== ExtensionState.ACTIVE &&
+            extension.state !== ExtensionState.ACTIVATING)
             return;
 
         const variant = Main.getStyleVariant();
@@ -182,10 +182,10 @@ export class ExtensionManager extends Signals.EventEmitter {
         if (!extension)
             return;
 
-        if (extension.state !== ExtensionState.ENABLED)
+        if (extension.state !== ExtensionState.ACTIVE)
             return;
 
-        this._changeExtensionState(extension, ExtensionState.DISABLING);
+        this._changeExtensionState(extension, ExtensionState.DEACTIVATING);
 
         // "Rebase" the extension order by disabling and then enabling extensions
         // in order to help prevent conflicts.
@@ -231,7 +231,7 @@ export class ExtensionManager extends Signals.EventEmitter {
         this._extensionOrder.splice(orderIdx, 1);
 
         if (extension.state !== ExtensionState.ERROR)
-            this._changeExtensionState(extension, ExtensionState.DISABLED);
+            this._changeExtensionState(extension, ExtensionState.INACTIVE);
     }
 
     async _callExtensionEnable(uuid) {
@@ -246,10 +246,10 @@ export class ExtensionManager extends Signals.EventEmitter {
             await this._callExtensionInit(uuid);
 
 
-        if (extension.state !== ExtensionState.DISABLED)
+        if (extension.state !== ExtensionState.INACTIVE)
             return;
 
-        this._changeExtensionState(extension, ExtensionState.ENABLING);
+        this._changeExtensionState(extension, ExtensionState.ACTIVATING);
 
         try {
             this._loadExtensionStylesheet(extension);
@@ -260,7 +260,7 @@ export class ExtensionManager extends Signals.EventEmitter {
 
         try {
             await extension.stateObj.enable();
-            this._changeExtensionState(extension, ExtensionState.ENABLED);
+            this._changeExtensionState(extension, ExtensionState.ACTIVE);
             this._extensionOrder.push(uuid);
         } catch (e) {
             this._unloadExtensionStylesheet(extension);
@@ -469,7 +469,7 @@ export class ExtensionManager extends Signals.EventEmitter {
                 if (!await this._callExtensionInit(uuid))
                     return;
 
-                if (extension.state === ExtensionState.DISABLED)
+                if (extension.state === ExtensionState.INACTIVE)
                     await this._callExtensionEnable(uuid);
             } else {
                 extension.state = ExtensionState.INITIALIZED;
@@ -560,7 +560,7 @@ export class ExtensionManager extends Signals.EventEmitter {
         }
 
         extension.stateObj = extensionState;
-        this._changeExtensionState(extension, ExtensionState.DISABLED);
+        this._changeExtensionState(extension, ExtensionState.INACTIVE);
         return true;
     }
 

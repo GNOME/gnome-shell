@@ -801,21 +801,21 @@ const Extensions = GObject.registerClass({
 
     _stateToString(extensionState) {
         switch (extensionState) {
-        case ExtensionState.ENABLED:
-            return _('Enabled');
-        case ExtensionState.DISABLED:
+        case ExtensionState.ACTIVE:
+            return _('Active');
+        case ExtensionState.INACTIVE:
         case ExtensionState.INITIALIZED:
-            return _('Disabled');
+            return _('Inactive');
         case ExtensionState.ERROR:
             return _('Error');
         case ExtensionState.OUT_OF_DATE:
             return _('Out of date');
         case ExtensionState.DOWNLOADING:
             return _('Downloading');
-        case ExtensionState.DISABLING:
-            return _('Disabling');
-        case ExtensionState.ENABLING:
-            return _('Enabling');
+        case ExtensionState.DEACTIVATING:
+            return _('Deactivating');
+        case ExtensionState.ACTIVATING:
+            return _('Activating');
         }
         return 'Unknown'; // Not translated, shouldn't appear
     }

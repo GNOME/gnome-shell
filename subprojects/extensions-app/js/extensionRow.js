@@ -115,7 +115,7 @@ export const ExtensionRow = GObject.registerClass({
     }
 
     _updateState() {
-        const state = this._extension.state === ExtensionState.ENABLED;
+        const state = this._extension.state === ExtensionState.ACTIVE;
 
         const action = this._actionGroup.lookup_action('enabled');
         action.set_state(new GLib.Variant('b', state));

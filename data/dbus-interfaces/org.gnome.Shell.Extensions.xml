@@ -71,14 +71,14 @@
             <listitem><para>
               The state the extension is in:
               <simplelist>
-                <member>1: ENABLED</member>
-                <member>2: DISABLED</member>
+                <member>1: ACTIVE</member>
+                <member>2: INACTIVE</member>
                 <member>3: ERROR</member>
                 <member>4: OUT_OF_DATE</member>
                 <member>5: DOWNLOADING</member>
                 <member>6: INITIALIZED</member>
-                <member>7: DISABLING</member>
-                <member>8: ENABLING</member>
+                <member>7: DEACTIVATING</member>
+                <member>8: ACTIVATING</member>
                 <member>99: UNINSTALLED</member>
               </simplelist>
             </para></listitem>
