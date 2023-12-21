@@ -71,13 +71,14 @@ list_extensions (ListFilterFlags filter, DisplayFormat format)
   while (g_variant_iter_loop (&iter, "{s@a{sv}}", &uuid, &value))
     {
       g_autoptr (GVariantDict) info = NULL;
-      double type, state;
+      double type;
       gboolean has_prefs;
       gboolean has_update;
+      gboolean enabled;
 
       info = g_variant_dict_new (value);
       g_variant_dict_lookup (info, "type", "d", &type);
-      g_variant_dict_lookup (info, "state", "d", &state);
+      g_variant_dict_lookup (info, "enabled", "b", &enabled);
       g_variant_dict_lookup (info, "hasPrefs", "b", &has_prefs);
       g_variant_dict_lookup (info, "hasUpdate", "b", &has_update);
 
@@ -87,10 +88,10 @@ list_extensions (ListFilterFlags filter, DisplayFormat format)
       if (type == TYPE_SYSTEM && (filter & LIST_FLAGS_SYSTEM) == 0)
         continue;
 
-      if (state == STATE_ACTIVE && (filter & LIST_FLAGS_ENABLED) == 0)
+      if (enabled && (filter & LIST_FLAGS_ENABLED) == 0)
         continue;
 
-      if (state != STATE_ACTIVE && (filter & LIST_FLAGS_DISABLED) == 0)
+      if (!enabled && (filter & LIST_FLAGS_DISABLED) == 0)
         continue;
 
       if (!has_prefs && (filter & LIST_FLAGS_NO_PREFS) == 0)
