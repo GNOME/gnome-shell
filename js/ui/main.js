@@ -143,6 +143,16 @@ function _sessionUpdated() {
 /** @returns {void} */
 export async function start() {
     globalThis.log = console.log;
+    globalThis.logError = function (err, msg) {
+        const args = [err];
+        try {
+            // toString() can throw
+            if (msg)
+                args.unshift(`${msg}:`);
+        } catch (e) {}
+
+        console.error(...args);
+    };
 
     // Chain up async errors reported from C
     global.connect('notify-error', (global, msg, detail) => {
