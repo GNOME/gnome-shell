@@ -31,10 +31,10 @@ extension_state_to_string (ExtensionState state)
 {
   switch (state)
     {
-    case STATE_ENABLED:
-      return "ENABLED";
-    case STATE_DISABLED:
-      return "DISABLED";
+    case STATE_ACTIVE:
+      return "ACTIVE";
+    case STATE_INACTIVE:
+      return "INACTIVE";
     case STATE_ERROR:
       return "ERROR";
     case STATE_OUT_OF_DATE:
@@ -43,10 +43,10 @@ extension_state_to_string (ExtensionState state)
       return "DOWNLOADING";
     case STATE_INITIALIZED:
       return "INITIALIZED";
-    case STATE_DISABLING:
-      return "DISABLING";
-    case STATE_ENABLING:
-      return "ENABLING";
+    case STATE_DEACTIVATING:
+      return "DEACTIVATING";
+    case STATE_ACTIVATING:
+      return "ACTIVATING";
     case STATE_UNINSTALLED:
       return "UNINSTALLED";
     }

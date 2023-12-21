@@ -87,10 +87,10 @@ list_extensions (ListFilterFlags filter, DisplayFormat format)
       if (type == TYPE_SYSTEM && (filter & LIST_FLAGS_SYSTEM) == 0)
         continue;
 
-      if (state == STATE_ENABLED && (filter & LIST_FLAGS_ENABLED) == 0)
+      if (state == STATE_ACTIVE && (filter & LIST_FLAGS_ENABLED) == 0)
         continue;
 
-      if (state != STATE_ENABLED && (filter & LIST_FLAGS_DISABLED) == 0)
+      if (state != STATE_ACTIVE && (filter & LIST_FLAGS_DISABLED) == 0)
         continue;
 
       if (!has_prefs && (filter & LIST_FLAGS_NO_PREFS) == 0)

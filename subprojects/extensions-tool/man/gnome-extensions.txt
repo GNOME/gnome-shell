@@ -62,7 +62,7 @@ Prints the program version.
 Enables the extension identified by 'UUID'.
 +
 The command will not detect any errors from the extension itself, use the
-*info* command to confirm that the extension state is *ENABLED*.
+*info* command to confirm that the extension state is *ACTIVE*.
 +
 If the extension is already enabled, the command will do nothing.
 
