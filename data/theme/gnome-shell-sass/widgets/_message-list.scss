@@ -105,7 +105,7 @@
       // notification time stamp
       > .event-time {
         @extend %caption;
-        color: transparentize($fg_color, 0.5);
+        color: $insensitive_fg_color;
         padding-bottom: to_em(1px);
 
         &:ltr { text-align: right };

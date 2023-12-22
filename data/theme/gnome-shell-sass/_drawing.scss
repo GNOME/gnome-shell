@@ -197,7 +197,7 @@
     background-color: $hover_bg_color;
 
     @if $is_highcontrast {
-      background-color: mix($hover_bg_color, $hc_inset_color, 10%);
+      background-color: mix($hover_bg_color, $hc_mix_color, 90%);
     }
   }
 
@@ -208,7 +208,7 @@
     background-color: $active_bg_color;
 
     @if $is_highcontrast {
-      background-color: mix($active_bg_color, $hc_inset_color, 10%);
+      background-color: mix($active_bg_color, $hc_mix_color, 90%);
     }
   }
 
@@ -222,9 +222,9 @@
     &:active { background-color: lighten($checked_bg_color, 15%);}
 
     @if $is_highcontrast {
-      background-color: mix($checked_bg_color, $hc_inset_color, 10%);
-      &:hover { background-color: mix(lighten($checked_bg_color, 12%), $hc_inset_color, 10%);}
-      &:active { background-color: mix(lighten($checked_bg_color, 15%), $hc_inset_color, 10%);}
+      background-color: mix($checked_bg_color, $hc_mix_color, 90%);
+      &:hover { background-color: mix(lighten($checked_bg_color, 12%), $hc_mix_color, 90%);}
+      &:active { background-color: mix(lighten($checked_bg_color, 15%), $hc_mix_color, 90%);}
     }
   }
 
@@ -355,6 +355,7 @@
   } @else {
     @include button(normal);
   }
+
   &:hover {@include button(hover);}
   &:active {@include button(active);}
   &:focus {@include button(focus);}

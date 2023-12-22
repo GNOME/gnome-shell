@@ -11,6 +11,10 @@ $notification_banner_width: 34em;
   border-radius: $modal_radius;
   margin: $base_margin;
 
+  @if $is_highcontrast {
+    border: 1px solid $hc_inset_color;
+  }
+
   .notification-actions {
     spacing: 0;
   }
