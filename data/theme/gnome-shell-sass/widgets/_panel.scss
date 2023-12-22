@@ -30,7 +30,7 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
     // status area icons
     .system-status-icon {
       icon-size: $scalable_icon_size;
-      padding: $base_padding;
+      padding: 0 $base_padding;
       margin: 0 $base_margin;
     }
 
