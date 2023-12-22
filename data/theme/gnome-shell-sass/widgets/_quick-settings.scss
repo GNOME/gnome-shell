@@ -92,9 +92,10 @@
 .quick-toggle-menu {
   @include card;
 
-  // override some card styles
-  background-color: $bg_color !important;
-  color: $fg_color !important;
+  &:insensitive {
+    // override insensitive style on submenu
+    @include button(normal);
+  }
 
   border-radius: $base_border_radius * 3;
 
