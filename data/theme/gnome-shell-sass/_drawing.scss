@@ -265,10 +265,10 @@
   // reset
   @else if $t==undecorated {
     background-color: transparent;
-    background-color: none;
     &:insensitive {
       @include button(insensitive);
       background-color: transparent;
+      box-shadow: none;
     }
   }
 }
@@ -351,7 +351,6 @@
 
   @if $flat {
     @include button(undecorated);
-    box-shadow: none !important;
   } @else {
     @include button(normal);
   }
@@ -362,7 +361,7 @@
   &:insensitive {
     @include button(insensitive);
     @if $flat {
-     background-color: transparent;
+      background-color: transparent;
     }
   }
 }
