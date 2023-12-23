@@ -6,39 +6,39 @@
                 package="gnome-shell">
 
 	<KeyListEntry name="switch-to-application-1"
-                      description="Activate favorite app 1"
+                      description="Activate pinned app 1"
                       hidden="true"/>
 
 	<KeyListEntry name="switch-to-application-2"
-                      description="Activate favorite app 2"
+                      description="Activate pinned app 2"
                       hidden="true"/>
 
 	<KeyListEntry name="switch-to-application-3"
-                      description="Activate favorite app 3"
+                      description="Activate pinned app 3"
                       hidden="true"/>
 
 	<KeyListEntry name="switch-to-application-4"
-                      description="Activate favorite app 4"
+                      description="Activate pinned app 4"
                       hidden="true"/>
 
 	<KeyListEntry name="switch-to-application-5"
-                      description="Activate favorite app 5"
+                      description="Activate pinned app 5"
                       hidden="true"/>
 
 	<KeyListEntry name="switch-to-application-6"
-                      description="Activate favorite app 6"
+                      description="Activate pinned app 6"
                       hidden="true"/>
 
 	<KeyListEntry name="switch-to-application-7"
-                      description="Activate favorite app 7"
+                      description="Activate pinned app 7"
                       hidden="true"/>
 
 	<KeyListEntry name="switch-to-application-8"
-                      description="Activate favorite app 8"
+                      description="Activate pinned app 8"
                       hidden="true"/>
 
 	<KeyListEntry name="switch-to-application-9"
-                      description="Activate favorite app 9"
+                      description="Activate pinned app 9"
                       hidden="true"/>
 
 </KeyListEntries>
