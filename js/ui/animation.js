@@ -21,14 +21,20 @@ class Animation extends St.Bin {
             style: `width: ${width}px; height: ${height}px;`,
         });
 
+        this._file = file;
+        this._width = width;
+        this._height = height;
+
         this.connect('destroy', this._onDestroy.bind(this));
         this.connect('resource-scale-changed',
-            this._loadFile.bind(this, file, width, height));
+            () => this._loadFile());
 
         themeContext.connectObject('notify::scale-factor',
             () => {
-                this._loadFile(file, width, height);
-                this.set_size(width * themeContext.scale_factor, height * themeContext.scale_factor);
+                this._loadFile();
+                this.set_size(
+                    this._width * themeContext.scale_factor,
+                    this._height * themeContext.scale_factor);
             }, this);
 
         this._speed = speed;
@@ -38,7 +44,7 @@ class Animation extends St.Bin {
         this._timeoutId = 0;
         this._frame = 0;
 
-        this._loadFile(file, width, height);
+        this._loadFile();
     }
 
     play() {
@@ -62,7 +68,7 @@ class Animation extends St.Bin {
         this._isPlaying = false;
     }
 
-    _loadFile(file, width, height) {
+    _loadFile() {
         const resourceScale = this.get_resource_scale();
         let wasPlaying = this._isPlaying;
 
@@ -74,7 +80,8 @@ class Animation extends St.Bin {
 
         let textureCache = St.TextureCache.get_default();
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        this._animations = textureCache.load_sliced_image(file, width, height,
+        this._animations = textureCache.load_sliced_image(this._file,
+            this._width, this._height,
             scaleFactor, resourceScale,
             () => this._loadFinished());
         this._animations.set({
