@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-12-19 12:10+0000\n"
-"PO-Revision-Date: 2023-12-20 21:18+0100\n"
+"POT-Creation-Date: 2023-12-20 20:21+0000\n"
+"PO-Revision-Date: 2023-12-27 00:29+0100\n"
 "Last-Translator: Brage <bragefuglseth@gnome.org>\n"
 "Language-Team: \n"
 "Language: nb\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -2120,11 +2120,11 @@ msgstr "Alle nettverk"
 
 #: js/ui/status/network.js:1891
 msgid "Wired Connections"
-msgstr "Ethernet"
+msgstr "Kablede tilkoblinger"
 
 #: js/ui/status/network.js:1892
 msgid "Wired Settings"
-msgstr "Ethernet-innstillinger"
+msgstr "Kabel-innstillinger"
 
 #: js/ui/status/network.js:1906
 msgid "Bluetooth Tethers"
@@ -2141,7 +2141,7 @@ msgstr "Mobiltilkobling"
 
 #: js/ui/status/network.js:1928
 msgid "Mobile Broadband Settings"
-msgstr "Bredbåndsinnstillinger"
+msgstr "Bredbånd-innstillinger"
 
 #. Translators: "Mobile" from "Mobile Broadband"
 #: js/ui/status/network.js:1937
@@ -2181,7 +2181,7 @@ msgstr "Strømmodus"
 
 #: js/ui/status/powerProfiles.js:73
 msgid "Power Settings"
-msgstr "Strøminnstillinger"
+msgstr "Strøm-innstillinger"
 
 #: js/ui/status/remoteAccess.js:76
 msgid "Stop Screencast"
