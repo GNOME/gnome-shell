@@ -33,6 +33,32 @@ const ScreenshotIface = loadInterfaceXML('org.gnome.Shell.Screenshot');
 const ScreencastIface = loadInterfaceXML('org.gnome.Shell.Screencast');
 const ScreencastProxy = Gio.DBusProxy.makeProxyWrapper(ScreencastIface);
 
+const FileManagerIface = loadInterfaceXML('org.freedesktop.FileManager1');
+const FileManagerProxy = Gio.DBusProxy.makeProxyWrapper(FileManagerIface);
+
+function showInFiles(file) {
+    new FileManagerProxy(
+        Gio.DBus.session,
+        'org.freedesktop.FileManager1',
+        '/org/freedesktop/FileManager1',
+        (proxy, error) => {
+            if (error) {
+                Main.notifyError(
+                    _('Unable to Show in Files'),
+                    _('File manager encountered a problem'));
+                console.warn(error.message);
+                return;
+            }
+
+            proxy.ShowItemsAsync([file.get_uri()], '').catch(e => {
+                Main.notifyError(
+                    _('Unable to Show in Files'),
+                    _('File manager encountered a problem'));
+                console.warn(e.message);
+            });
+        });
+}
+
 const IconLabelButton = GObject.registerClass(
 class IconLabelButton extends St.Button {
     _init(iconName, label, params) {
@@ -2034,18 +2060,7 @@ export const ScreenshotUI = GObject.registerClass({
             _('Click here to view the video.')
         );
         // Translators: button on the screencast notification.
-        notification.addAction(_('Show in Files'), () => {
-            const app =
-                Gio.app_info_get_default_for_type('inode/directory', false);
-
-            if (app === null) {
-                // It may be null e.g. in a toolbox without nautilus.
-                log('Error showing in files: no default app set for inode/directory');
-                return;
-            }
-
-            app.launch([file], global.create_app_launch_context(0, -1));
-        });
+        notification.addAction(_('Show in Files'), () => showInFiles(file));
         notification.connect('activated', () => {
             try {
                 Gio.app_info_launch_default_for_uri(
@@ -2275,18 +2290,7 @@ function _storeScreenshot(bytes, pixbuf) {
 
     if (!disableSaveToDisk) {
         // Translators: button on the screenshot notification.
-        notification.addAction(_('Show in Files'), () => {
-            const app =
-                Gio.app_info_get_default_for_type('inode/directory', false);
-
-            if (app === null) {
-                // It may be null e.g. in a toolbox without nautilus.
-                log('Error showing in files: no default app set for inode/directory');
-                return;
-            }
-
-            app.launch([file], global.create_app_launch_context(0, -1));
-        });
+        notification.addAction(_('Show in Files'), () => showInFiles(file));
         notification.connect('activated', () => {
             try {
                 Gio.app_info_launch_default_for_uri(

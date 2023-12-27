@@ -10,6 +10,7 @@
     <file preprocess="xml-stripblanks">org.freedesktop.bolt1.Device.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.bolt1.Manager.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.DBus.xml</file>
+    <file preprocess="xml-stripblanks">org.freedesktop.FileManager1.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.GeoClue2.Agent.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.GeoClue2.Manager.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.impl.portal.Access.xml</file>
