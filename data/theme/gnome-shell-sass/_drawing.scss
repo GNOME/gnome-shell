@@ -82,9 +82,7 @@
 // $tc:   optional text color for colored* types
 //
 // possible $t values:
-// normal, hover, active, insensitive, insensitive-active,
-// backdrop, backdrop-active, backdrop-insensitive, backdrop-insensitive-active,
-// osd, osd-hover, osd-active, osd-insensitive, osd-backdrop, undecorated
+// normal, hover, active, checked, insensitive, undecorated
 //
 
   // normal key
@@ -142,24 +140,32 @@
 //
 // Button drawing function
 //
-// $t:    button type,
-// $c:    base button colors, derived from fg_color
-// $tc:    base button colors, derived from fg_color
+// $t:    button type
 //
 // possible $t values:
-// normal, hover, active, insensitive, insensitive-active,
-// backdrop, backdrop-active, backdrop-insensitive, backdrop-insensitive-active,
-// osd, osd-hover, osd-active, osd-insensitive, osd-backdrop, undecorated
+// normal, focus, hover, active, checked, insensitive, default, undecorated,
 //
-// since buttons are all flat an borderless now the mixin is simpler
+// $c:    button bg color, derived from bg_color
+// $tc:   button text color, derived from fg_color
+//
+// $flat:   button has no styling
+// $osd:    button uses OSD styling
+// $card:   button uses card styling
+//
 
-@mixin button($t, $tc:$fg_color, $c:$bg_color, $flat: false, $osd: false) {
+@mixin button($t, $tc:$fg_color, $c:$bg_color, $flat: false, $osd: false, $card: false){
 
+  // background color
   $button_bg_color: mix($tc, $c, $button_mix_factor);
-  transition-duration: 100ms;
 
+  // background color override for OSD elements
   @if $osd {
     $button_bg_color: transparentize($tc, 0.9);
+  }
+
+  // background color override for card elements
+  @if $card {
+    $button_bg_color: $card_bg_color;
   }
 
   // normal button
@@ -172,6 +178,13 @@
     @if $is_highcontrast {
       box-shadow: inset 0 0 0 1px $hc_inset_color;
     }
+
+    // card style
+    @if $card {
+      @if $is_highcontrast {
+        background-color: mix($button_bg_color, $hc_inset_color, 50%);
+      }
+    }
   }
 
   // focused button
@@ -180,13 +193,19 @@
     color: $tc;
     background-color: $focus_bg_color;
     box-shadow: inset 0 0 0 2px transparentize($selected_bg_color, 0.4) !important;
+
     &:hover {
-      background-color: lighten($focus_bg_color, 3%);
+      background-color: if($variant == 'light', darken($focus_bg_color, 3%), lighten($focus_bg_color, 3%));
       box-shadow: inset 0 0 0 2px transparentize($selected_bg_color, 0.3) !important;
     }
     &:active {
-      background-color: lighten($focus_bg_color, 6%);
+      background-color: if($variant == 'light', darken($focus_bg_color, 6%), lighten($focus_bg_color, 6%));
       box-shadow: inset 0 0 0 2px transparentize($selected_bg_color, 0.3) !important;
+    }
+
+    // card style
+    @if $card {
+      border-color: transparent;
     }
   }
 
@@ -199,6 +218,16 @@
     @if $is_highcontrast {
       background-color: mix($hover_bg_color, $hc_mix_color, 90%);
     }
+
+    // card style
+    @if $card {
+      $card_hover_bg_color:  mix($tc, $card_bg_color, 4%);
+      background-color: $card_hover_bg_color;
+
+      @if $is_highcontrast {
+        background-color: mix($card_hover_bg_color, $hc_inset_color, 40%);
+      }
+    }
   }
 
   // active button
@@ -209,6 +238,12 @@
 
     @if $is_highcontrast {
       background-color: mix($active_bg_color, $hc_mix_color, 90%);
+    }
+
+    // card style
+    @if $card {
+      $card_active_bg_color:  mix($tc, $card_bg_color, 7%);
+      background-color: $card_active_bg_color;
     }
   }
 
@@ -262,13 +297,15 @@
     }
   }
 
-  // reset
+  // reset (unstyled button)
   @else if $t==undecorated {
     background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+
     &:insensitive {
       @include button(insensitive);
-      background-color: transparent;
-      box-shadow: none;
+      background-color: transparent !important;
     }
   }
 }
@@ -345,24 +382,20 @@
 
 // styling for elements within popovers that look like notifications
 @mixin card($flat: false) {
-  border-radius: $base_border_radius * 1.5;
-  padding: $scaled_padding * 2;
-  margin: $base_margin;
+  @extend %card;
 
   @if $flat {
-    @include button(undecorated);
+    @include button(undecorated, $card: false);
+    &:hover {@include button(hover, $card: false);}
+    &:active {@include button(active, $card: false);}
   } @else {
-    @include button(normal);
+    @include button(normal, $card: true);
+    &:hover {@include button(hover, $card: true);}
+    &:active {@include button(active, $card: true);}
   }
-
-  &:hover {@include button(hover);}
-  &:active {@include button(active);}
-  &:focus {@include button(focus);}
+  &:focus {@include button(focus, $card: true);}
   &:insensitive {
-    @include button(insensitive);
-    @if $flat {
-      background-color: transparent;
-    }
+    @include button(insensitive, $card: true);
   }
 }
 
@@ -379,7 +412,6 @@
 
   @if $flat {
     @include button(undecorated);
-    box-shadow: none !important;
   } @else {
     @include button(normal, $c:$bg);
   }

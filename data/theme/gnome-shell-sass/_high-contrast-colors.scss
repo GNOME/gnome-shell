@@ -44,6 +44,11 @@ $button_mix_factor: 20%;
 // notifications
 $bubble_buttons_color: if($variant == 'light', darken($bg_color, 7%), lighten($bg_color, 5%));
 
+// color definitions for card elements
+$card_bg_color: if($variant == 'light', $light_1, $bg_color);
+$card_shadow_color: transparent;
+$card_shadow_border_color: $card_bg_color;
+
 // color definitions for system elements
 $system_base_color: $dark_5;
 $system_fg_color: $light_1;

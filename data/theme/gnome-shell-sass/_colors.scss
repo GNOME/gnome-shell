@@ -44,6 +44,11 @@ $text_shadow_color: if($variant == 'light', rgba(255,255,255,0.3), rgba(0,0,0,0.
 // buttons
 $button_mix_factor: if($variant == 'light', 12%, 9%);
 
+// color definitions for "card" elements
+$card_bg_color: if($variant == 'light', $light_1, lighten($bg_color, 7%));
+$card_shadow_color: if($variant == 'light', transparentize($dark_5, .97), transparent);
+$card_shadow_border_color: if($variant == 'light', transparentize($dark_5, .91), transparent);
+
 // notifications
 $bubble_buttons_color: if($variant == 'light', darken($bg_color, 7%), lighten($bg_color, 5%));
 
