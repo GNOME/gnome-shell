@@ -773,8 +773,11 @@ class UIWindowSelectorLayout extends Workspace.WorkspaceLayout {
 
 const UIWindowSelectorWindowContent = GObject.registerClass(
 class UIWindowSelectorWindowContent extends Clutter.Actor {
-    _init(actor, params) {
-        super._init(params);
+    constructor(actor) {
+        super({
+            x_expand: true,
+            y_expand: true,
+        });
 
         const window = actor.metaWindow;
         this._boundingBox = window.get_frame_rect();
