@@ -199,9 +199,8 @@ export class AppMenu extends PopupMenu.PopupMenu {
 
     /** */
     destroy() {
-        super.destroy();
-
         this.setApp(null);
+        super.destroy();
     }
 
     /**
