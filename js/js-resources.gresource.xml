@@ -4,23 +4,23 @@
     <file>gdm/authList.js</file>
     <file>gdm/authPrompt.js</file>
     <file>gdm/batch.js</file>
+    <file>gdm/credentialManager.js</file>
     <file>gdm/loginDialog.js</file>
     <file>gdm/oVirt.js</file>
-    <file>gdm/credentialManager.js</file>
-    <file>gdm/vmware.js</file>
     <file>gdm/realmd.js</file>
     <file>gdm/util.js</file>
+    <file>gdm/vmware.js</file>
 
-    <file>extensions/sharedInternals.js</file>
     <file>extensions/extension.js</file>
+    <file>extensions/sharedInternals.js</file>
 
     <file>misc/animationUtils.js</file>
     <file>misc/config.js</file>
-    <file>misc/extensionUtils.js</file>
-    <file>misc/fileUtils.js</file>
     <file>misc/dateUtils.js</file>
     <file>misc/dbusUtils.js</file>
     <file>misc/dependencies.js</file>
+    <file>misc/extensionUtils.js</file>
+    <file>misc/fileUtils.js</file>
     <file>misc/gnomeSession.js</file>
     <file>misc/history.js</file>
     <file>misc/ibusManager.js</file>
@@ -34,9 +34,9 @@
     <file>misc/params.js</file>
     <file>misc/parentalControlsManager.js</file>
     <file>misc/permissionStore.js</file>
+    <file>misc/signals.js</file>
     <file>misc/signalTracker.js</file>
     <file>misc/smartcardManager.js</file>
-    <file>misc/signals.js</file>
     <file>misc/systemActions.js</file>
     <file>misc/util.js</file>
     <file>misc/weather.js</file>
@@ -48,8 +48,8 @@
     <file>ui/appFavorites.js</file>
     <file>ui/appMenu.js</file>
     <file>ui/audioDeviceSelection.js</file>
-    <file>ui/backgroundMenu.js</file>
     <file>ui/background.js</file>
+    <file>ui/backgroundMenu.js</file>
     <file>ui/barLevel.js</file>
     <file>ui/boxpointer.js</file>
     <file>ui/calendar.js</file>
@@ -80,13 +80,13 @@
     <file>ui/lookingGlass.js</file>
     <file>ui/magnifier.js</file>
     <file>ui/main.js</file>
-    <file>ui/messageTray.js</file>
     <file>ui/messageList.js</file>
+    <file>ui/messageTray.js</file>
     <file>ui/modalDialog.js</file>
     <file>ui/mpris.js</file>
     <file>ui/notificationDaemon.js</file>
-    <file>ui/osdWindow.js</file>
     <file>ui/osdMonitorLabeler.js</file>
+    <file>ui/osdWindow.js</file>
     <file>ui/overview.js</file>
     <file>ui/overviewControls.js</file>
     <file>ui/padOsd.js</file>
@@ -117,42 +117,42 @@
     <file>ui/userWidget.js</file>
     <file>ui/welcomeDialog.js</file>
     <file>ui/windowAttentionHandler.js</file>
-    <file>ui/windowMenu.js</file>
     <file>ui/windowManager.js</file>
+    <file>ui/windowMenu.js</file>
     <file>ui/windowPreview.js</file>
     <file>ui/workspace.js</file>
     <file>ui/workspaceAnimation.js</file>
+    <file>ui/workspacesView.js</file>
     <file>ui/workspaceSwitcherPopup.js</file>
     <file>ui/workspaceThumbnail.js</file>
-    <file>ui/workspacesView.js</file>
     <file>ui/xdndHandler.js</file>
 
     <file>ui/components.js</file>
-    <file>ui/components/autorunManager.js</file>
     <file>ui/components/automountManager.js</file>
+    <file>ui/components/autorunManager.js</file>
+    <file>ui/components/keyring.js</file>
     <file>ui/components/networkAgent.js</file>
     <file>ui/components/polkitAgent.js</file>
     <file>ui/components/telepathyClient.js</file>
-    <file>ui/components/keyring.js</file>
 
     <file>ui/status/accessibility.js</file>
     <file>ui/status/autoRotate.js</file>
     <file>ui/status/backgroundApps.js</file>
     <file>ui/status/backlight.js</file>
+    <file>ui/status/bluetooth.js</file>
     <file>ui/status/brightness.js</file>
     <file>ui/status/camera.js</file>
     <file>ui/status/darkMode.js</file>
     <file>ui/status/dwellClick.js</file>
-    <file>ui/status/location.js</file>
     <file>ui/status/keyboard.js</file>
-    <file>ui/status/nightLight.js</file>
+    <file>ui/status/location.js</file>
     <file>ui/status/network.js</file>
+    <file>ui/status/nightLight.js</file>
     <file>ui/status/powerProfiles.js</file>
-    <file>ui/status/rfkill.js</file>
-    <file>ui/status/volume.js</file>
-    <file>ui/status/bluetooth.js</file>
     <file>ui/status/remoteAccess.js</file>
+    <file>ui/status/rfkill.js</file>
     <file>ui/status/system.js</file>
     <file>ui/status/thunderbolt.js</file>
+    <file>ui/status/volume.js</file>
   </gresource>
 </gresources>
