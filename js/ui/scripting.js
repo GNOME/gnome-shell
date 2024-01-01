@@ -295,14 +295,14 @@ async function _runPerfScript(scriptModule, outputFile) {
     try {
         await scriptModule.run();
     } catch (err) {
-        log(`Script failed: ${err}\n${err.stack}`);
+        logError(err, 'Script failed');
         Meta.exit(Meta.ExitCode.ERROR);
     }
 
     try {
         _collect(scriptModule, outputFile);
     } catch (err) {
-        log(`Script failed: ${err}\n${err.stack}`);
+        logError(err, 'Script failed');
         Meta.exit(Meta.ExitCode.ERROR);
     }
 
@@ -311,7 +311,7 @@ async function _runPerfScript(scriptModule, outputFile) {
         if (perfHelper._autoExit)
             perfHelper.ExitSync();
     } catch (err) {
-        log(`Failed to exit helper: ${err}\n${err.stack}`);
+        logError(err, 'Failed to exit helper');
         Meta.exit(Meta.ExitCode.ERROR);
     }
 
