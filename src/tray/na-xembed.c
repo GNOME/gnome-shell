@@ -23,7 +23,7 @@
 
 #include "na-xembed.h"
 
-#include <meta/meta-x11-errors.h>
+#include <mtk/mtk-x11.h>
 #include <X11/extensions/Xfixes.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -110,6 +110,7 @@ xembed_send_message (NaXembed          *xembed,
                      glong              data2)
 {
   NaXembedPrivate *priv = na_xembed_get_instance_private (xembed);
+  Display *xdisplay = meta_x11_display_get_xdisplay (priv->x11_display);
   XClientMessageEvent xclient;
 
   memset (&xclient, 0, sizeof (xclient));
@@ -123,11 +124,11 @@ xembed_send_message (NaXembed          *xembed,
   xclient.data.l[3] = data1;
   xclient.data.l[4] = data2;
 
-  meta_x11_error_trap_push (priv->x11_display);
-  XSendEvent (meta_x11_display_get_xdisplay (priv->x11_display),
+  mtk_x11_error_trap_push (xdisplay);
+  XSendEvent (xdisplay,
               recipient,
               False, NoEventMask, (XEvent*) &xclient);
-  meta_x11_error_trap_pop (priv->x11_display);
+  mtk_x11_error_trap_pop (xdisplay);
 }
 
 static void
@@ -147,6 +148,7 @@ na_xembed_send_configure_event (NaXembed *xembed)
 {
   NaXembedPrivate *priv = na_xembed_get_instance_private (xembed);
   XConfigureEvent xconfigure;
+  Display *xdisplay = meta_x11_display_get_xdisplay (priv->x11_display);
 
   memset (&xconfigure, 0, sizeof (xconfigure));
   xconfigure.type = ConfigureNotify;
@@ -163,12 +165,12 @@ na_xembed_send_configure_event (NaXembed *xembed)
   xconfigure.above = None;
   xconfigure.override_redirect = False;
 
-  meta_x11_error_trap_push (priv->x11_display);
-  XSendEvent (meta_x11_display_get_xdisplay (priv->x11_display),
+  mtk_x11_error_trap_push (xdisplay);
+  XSendEvent (xdisplay,
               priv->plug_window,
               False, NoEventMask,
               (XEvent*) &xconfigure);
-  meta_x11_error_trap_pop (priv->x11_display);
+  mtk_x11_error_trap_pop (xdisplay);
 }
 
 static void
@@ -190,7 +192,7 @@ na_xembed_synchronize_size (NaXembed *xembed)
 
   if (priv->plug_window)
     {
-      meta_x11_error_trap_push (priv->x11_display);
+      mtk_x11_error_trap_push (xdisplay);
 
       if (width != priv->current_width ||
           height != priv->current_height)
@@ -218,7 +220,7 @@ na_xembed_synchronize_size (NaXembed *xembed)
           priv->resize_count--;
         }
 
-      meta_x11_error_trap_pop (priv->x11_display);
+      mtk_x11_error_trap_pop (xdisplay);
     }
 }
 
@@ -238,17 +240,18 @@ static void
 na_xembed_resize (NaXembed *xembed)
 {
   NaXembedPrivate *priv = na_xembed_get_instance_private (xembed);
+  Display *xdisplay = meta_x11_display_get_xdisplay (priv->x11_display);
   XSizeHints hints;
   long supplied;
 
   g_clear_handle_id (&priv->resize_id, g_source_remove);
 
-  meta_x11_error_trap_push (priv->x11_display);
+  mtk_x11_error_trap_push (xdisplay);
 
   priv->request_width = 1;
   priv->request_height = 1;
 
-  if (XGetWMNormalHints (meta_x11_display_get_xdisplay (priv->x11_display),
+  if (XGetWMNormalHints (xdisplay,
                          priv->plug_window,
                          &hints, &supplied))
     {
@@ -265,7 +268,7 @@ na_xembed_resize (NaXembed *xembed)
     }
 
   priv->have_size = TRUE;
-  meta_x11_error_trap_pop (priv->x11_display);
+  mtk_x11_error_trap_pop (xdisplay);
 
   priv->resize_id = g_idle_add (synchronize_size_cb, xembed);
 }
@@ -286,7 +289,7 @@ na_xembed_get_info (NaXembed      *xembed,
   unsigned long *data_long;
   int status;
 
-  meta_x11_error_trap_push (x11_display);
+  mtk_x11_error_trap_push (xdisplay);
   status = XGetWindowProperty (xdisplay,
                                xwindow,
                                priv->atom__XEMBED_INFO,
@@ -294,7 +297,7 @@ na_xembed_get_info (NaXembed      *xembed,
                                priv->atom__XEMBED_INFO,
                                &type, &format,
                                &nitems, &bytes_after, &data);
-  meta_x11_error_trap_pop (x11_display);
+  mtk_x11_error_trap_pop (xdisplay);
 
   if (status != Success)
     return FALSE;
@@ -339,13 +342,13 @@ na_xembed_add_window (NaXembed  *xembed,
 
   priv->plug_window = xid;
 
-  meta_x11_error_trap_push (priv->x11_display);
+  mtk_x11_error_trap_push (xdisplay);
 
   XSelectInput (xdisplay,
                 priv->plug_window,
                 StructureNotifyMask | PropertyChangeMask);
 
-  if (meta_x11_error_trap_pop_with_return (priv->x11_display))
+  if (mtk_x11_error_trap_pop_with_return (xdisplay))
     {
       priv->plug_window = None;
       return;
@@ -353,7 +356,7 @@ na_xembed_add_window (NaXembed  *xembed,
 
   /* OK, we now will reliably get destroy notification on socket->plug_window */
 
-  meta_x11_error_trap_push (priv->x11_display);
+  mtk_x11_error_trap_push (xdisplay);
 
   if (need_reparent)
     {
@@ -364,21 +367,20 @@ na_xembed_add_window (NaXembed  *xembed,
       result = XGetWindowAttributes (xdisplay, priv->plug_window, &plug_attrs);
       if (result == 0)
         {
-          meta_x11_error_trap_pop (priv->x11_display);
+          mtk_x11_error_trap_pop (xdisplay);
           priv->plug_window = None;
           return;
         }
 
       template.visualid = plug_attrs.visual->visualid;
-      priv->xvisual_info =
-        XGetVisualInfo (meta_x11_display_get_xdisplay (priv->x11_display),
-                        VisualIDMask,
-                        &template,
-                        &n_xvisuals);
+      priv->xvisual_info = XGetVisualInfo (xdisplay,
+                                           VisualIDMask,
+                                           &template,
+                                           &n_xvisuals);
 
       if (!priv->xvisual_info)
         {
-          meta_x11_error_trap_pop (priv->x11_display);
+          mtk_x11_error_trap_pop (xdisplay);
           priv->plug_window = None;
           return;
         }
@@ -423,12 +425,12 @@ na_xembed_add_window (NaXembed  *xembed,
 
   priv->need_map = priv->is_mapped;
 
-  meta_x11_error_trap_pop (priv->x11_display);
+  mtk_x11_error_trap_pop (xdisplay);
 
-  meta_x11_error_trap_push (priv->x11_display);
+  mtk_x11_error_trap_push (xdisplay);
   XFixesChangeSaveSet (xdisplay, priv->plug_window,
                        SetModeInsert, SaveSetRoot, SaveSetUnmap);
-  meta_x11_error_trap_pop (priv->x11_display);
+  mtk_x11_error_trap_pop (xdisplay);
 
   xembed_send_message (xembed,
 		       priv->plug_window,
@@ -571,9 +573,9 @@ xembed_filter_func (MetaX11Display *x11_display,
                         }
                       else
                         {
-                          meta_x11_error_trap_push (priv->x11_display);
+                          mtk_x11_error_trap_push (xdisplay);
                           XMapWindow (xdisplay, priv->plug_window);
-                          meta_x11_error_trap_pop (priv->x11_display);
+                          mtk_x11_error_trap_pop (xdisplay);
 
                           na_xembed_handle_unmap_notify (xembed);
                         }

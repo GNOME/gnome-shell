@@ -24,6 +24,7 @@
 
 #include "na-tray-manager.h"
 
+#include <mtk/mtk-x11.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
@@ -603,7 +604,7 @@ na_tray_manager_manage (NaTrayManager *manager)
 
   xdisplay = meta_x11_display_get_xdisplay (manager->x11_display);
 
-  meta_x11_error_trap_push (manager->x11_display);
+  mtk_x11_error_trap_push (xdisplay);
   manager->window = XCreateSimpleWindow (xdisplay,
                                          XDefaultRootWindow (xdisplay),
                                          0, 0, 1, 1,
@@ -611,7 +612,7 @@ na_tray_manager_manage (NaTrayManager *manager)
   XSelectInput (xdisplay, manager->window,
                 StructureNotifyMask | PropertyChangeMask);
 
-  if (meta_x11_error_trap_pop_with_return (manager->x11_display) ||
+  if (mtk_x11_error_trap_pop_with_return (xdisplay) ||
       !manager->window)
     return FALSE;
 
@@ -620,13 +621,13 @@ na_tray_manager_manage (NaTrayManager *manager)
   na_tray_manager_set_visual_property (manager);
   na_tray_manager_set_colors_property (manager);
 
-  meta_x11_error_trap_push (manager->x11_display);
+  mtk_x11_error_trap_push (xdisplay);
 
   XSetSelectionOwner (xdisplay, manager->selection_atom,
 		      manager->window, CurrentTime);
 
   /* Check if we could set the selection owner successfully */
-  if (!meta_x11_error_trap_pop_with_return (manager->x11_display))
+  if (!mtk_x11_error_trap_pop_with_return (xdisplay))
     {
       XClientMessageEvent xev;
 

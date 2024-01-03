@@ -23,8 +23,6 @@
 
 #include "na-xembed.h"
 
-#include <meta/meta-x11-errors.h>
-
 G_BEGIN_DECLS
 
 #define NA_TYPE_TRAY_CHILD (na_tray_child_get_type ())
