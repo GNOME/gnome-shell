@@ -9,6 +9,7 @@ import * as Signals from '../misc/signals.js';
 
 import * as Config from '../misc/config.js';
 import * as ExtensionDownloader from './extensionDownloader.js';
+import {formatError} from '../misc/errorUtils.js';
 import {ExtensionState, ExtensionType} from '../misc/extensionUtils.js';
 import * as FileUtils from '../misc/fileUtils.js';
 import * as Main from './main.js';
@@ -350,8 +351,7 @@ export class ExtensionManager extends Signals.EventEmitter {
         if (!extension)
             return;
 
-        const message = error instanceof Error
-            ? error.message : error.toString();
+        const message = formatError(error, {showStack: false});
 
         extension.error = message;
         extension.state = ExtensionState.ERROR;
