@@ -11,6 +11,12 @@
 
 G_BEGIN_DECLS
 
+typedef struct _StCapture
+{
+  cairo_surface_t *image;
+  MtkRectangle rect;
+} StCapture;
+
 void     shell_util_set_hidden_from_pick       (ClutterActor     *actor,
                                                 gboolean          hidden);
 
@@ -46,13 +52,13 @@ GdkPixbuf *shell_util_create_pixbuf_from_data (const guchar      *data,
                                                int                height,
                                                int                rowstride);
 
-cairo_surface_t * shell_util_composite_capture_images (ClutterCapture  *captures,
-                                                       int              n_captures,
-                                                       int              x,
-                                                       int              y,
-                                                       int              target_width,
-                                                       int              target_height,
-                                                       float            target_scale);
+cairo_surface_t * shell_util_composite_capture_images (StCapture  *captures,
+                                                       int         n_captures,
+                                                       int         x,
+                                                       int         y,
+                                                       int         target_width,
+                                                       int         target_height,
+                                                       float       target_scale);
 
 void shell_util_check_cloexec_fds (void);
 

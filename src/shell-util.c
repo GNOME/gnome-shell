@@ -354,13 +354,13 @@ shell_util_create_pixbuf_from_data (const guchar      *data,
 typedef const gchar *(*ShellGLGetString) (GLenum);
 
 cairo_surface_t *
-shell_util_composite_capture_images (ClutterCapture  *captures,
-                                     int              n_captures,
-                                     int              x,
-                                     int              y,
-                                     int              target_width,
-                                     int              target_height,
-                                     float            target_scale)
+shell_util_composite_capture_images (StCapture  *captures,
+                                     int         n_captures,
+                                     int         x,
+                                     int         y,
+                                     int         target_width,
+                                     int         target_height,
+                                     float       target_scale)
 {
   int i;
   cairo_format_t format;
@@ -378,7 +378,7 @@ shell_util_composite_capture_images (ClutterCapture  *captures,
 
   for (i = 0; i < n_captures; i++)
     {
-      ClutterCapture *capture = &captures[i];
+      StCapture *capture = &captures[i];
 
       cairo_save (cr);
 
