@@ -74,6 +74,10 @@ export class ShellMountOperation {
             this.close.bind(this));
         this.mountOp.connect('show-unmount-progress',
             this._onShowUnmountProgress.bind(this));
+
+        this._drive = source.get_drive();
+        this._drive?.connectObject('disconnected',
+            this.close.bind(this), this);
     }
 
     _closeExistingDialog() {
@@ -140,6 +144,11 @@ export class ShellMountOperation {
         if (this._notifier) {
             this._notifier.done();
             this._notifier = null;
+        }
+
+        if (this._drive) {
+            this._drive.disconnectObject(this);
+            this._drive = null;
         }
     }
 
