@@ -59,7 +59,10 @@ export const ExtensionRow = GObject.registerClass({
         this._bindActionEnabled(actionEntries);
 
         this._switch.connect('state-set', (sw, state) => {
-            const {uuid} = this._extension;
+            const {uuid, enabled} = this._extension;
+            if (enabled === state)
+                return true;
+
             if (state)
                 this._app.extensionManager.enableExtension(uuid);
             else
