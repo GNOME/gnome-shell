@@ -353,48 +353,6 @@ shell_util_create_pixbuf_from_data (const guchar      *data,
 
 typedef const gchar *(*ShellGLGetString) (GLenum);
 
-cairo_surface_t *
-shell_util_composite_capture_images (StCapture  *captures,
-                                     int         n_captures,
-                                     int         x,
-                                     int         y,
-                                     int         target_width,
-                                     int         target_height,
-                                     float       target_scale)
-{
-  int i;
-  cairo_format_t format;
-  cairo_surface_t *image;
-  cairo_t *cr;
-
-  g_assert (n_captures > 0);
-  g_assert (target_scale > 0.0f);
-
-  format = cairo_image_surface_get_format (captures[0].image);
-  image = cairo_image_surface_create (format, target_width, target_height);
-  cairo_surface_set_device_scale (image, target_scale, target_scale);
-
-  cr = cairo_create (image);
-
-  for (i = 0; i < n_captures; i++)
-    {
-      StCapture *capture = &captures[i];
-
-      cairo_save (cr);
-
-      cairo_translate (cr,
-                       capture->rect.x - x,
-                       capture->rect.y - y);
-      cairo_set_source_surface (cr, capture->image, 0, 0);
-      cairo_paint (cr);
-
-      cairo_restore (cr);
-    }
-  cairo_destroy (cr);
-
-  return image;
-}
-
 #ifndef HAVE_FDWALK
 static int
 fdwalk (int  (*cb)(void *data, int fd),
