@@ -49,9 +49,10 @@
   </description>
 
   <releases>
-    <release version="45.0" date="2023-09-16">
+    <release version="46.alpha" date="2024-01-06" type="development">
       <description>
-        <p>Modernize layout</p>
+        <p>Streamline layout to be fully adaptive on mobile.</p>
+        <p>Improve handling of extensions in error state.</p>
       </description>
     </release>
   </releases>

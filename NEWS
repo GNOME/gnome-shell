@@ -1,3 +1,68 @@
+46.alpha
+========
+* Fix scroll handling on sliders [Carlos; !2967]
+* overview: Handle unredirection as part of the state transition [Robert; !2970]
+* Handle DESKTOP windows during workspace animations [Sundeep; !2865]
+* Improve wording in welcome dialog [Automeris, Florian; !2963, !2962]
+* Improve recording indicator in light style [Georges; !2983]
+* Fix calendar popup shrinking on date changes [Sebastian K.; !2989]
+* app: Make all windows on target workspace recent when activated
+  [Sebastian W.; !2991]
+* Fix performance degradation due to repeated signal leak [Sebastian K.; !3001]
+* Optimize application search [Sebastian K.; !3004]
+* Fix on-screen keyboard backspace getting stuck [Sebastian K.; !3009]
+* Adapt to ClutterContainer removal [Zander; !3010, !3014]
+* Fix arrow navigation in search results [Sebastian K.; !3015]
+* Improve monitor OSD labels [Sam; !3016]
+* Support async code in Eval() D-Bus method [Florian; !3021]
+* Fix sliders not requesting any size [Florian; !2994]
+* Only show prefs dialog after the extension has been loaded [Florian; !3025]
+* Use dedicated assets in ctrl-alt-tab popup [Sam; !3019]
+* Improve high-contrast styling [Sam; !3030]
+* Fix mapping of tablet rings/strips [Peter; !3029]
+* Add support for "version-name" field in extension metainfo
+  [Aryan, Florian; !2995, !3034]
+* Add more toolbox developer tooling [Florian; !2935, !3040]
+* Use less ambiguous symbols for radio menu items [Sam; !3027]
+* Improve icon- and text scaling [Sam; !3033]
+* Modernize Extensions app [Florian; !3048, !3051, !3067]
+* Use gi-docgen for API documentation [Zander; !1873]
+* Improve high-contrast styling [Sam; !3017]
+* Allow any enter key to be used to screenshot [Scott; !2777]
+* Remove X11-specific icon fallback [Florian; !3056]
+* Replace StBin's custom layout code [Florian; !3046]
+* Minimize need to rebase when loading extensions [Sundeep; !2851]
+* Add D-Bus method to take interactive screenshots [Georges; !2999]
+* Add shortcuts to open new window of pinned apps [Florian, Leleat; !1829]
+* Fix spinner in light style variant [Florian; !3080]
+* Improve handling of enabled-but-inactive extensions [Florian; !3073]
+* Improve formatting of extension errors [Philip; !3041]
+* Fixed crashes [Daniel, Sebastian K., Carlos, Florian; !2975, !2974, !2993,
+  !3018, !3011, !3006]
+* Misc. bug fixes and cleanups [Florian, Martin, Alessandro, Bilal,
+  Sebastian K., Barnabás, Jonas, Julian, Charles, Daniel, Automeris, Cassidy,
+  Carlos, Sam, Sabri, Jonian, Sebastian W.; !2966, !2978, !2987, !2988, !2808,
+  !2964, !3000, !3005, !3008, !3013, !2190, !3020, !3023, !2997, !3031, !3042,
+  !3043, !3045, !3047, !3049, !2653, !3052, !3050, !3054, !3055, !1905, !3060,
+  !3061, !2950, !3062, !3068, !3058, !3064, !3072, !3071, !3079, !2998, !3085,
+  !3083, !3088, !3087, !3091, !3057, !3090]
+
+Contributors:
+  Cassidy James Blaede, Alessandro Bono, Zander Brown, Scott Buchanan,
+  Philip Chimento, Jonas Dreßler, Bilal Elmoussaoui, Carlos Garnacho,
+  Jonian Guveli, Sam Hewitt, Peter Hutterer, Aryan Kaushik, Sebastian Keller,
+  Leleat, Robert Mader, Sundeep Mediratta, Florian Müllner, Automeris naranja,
+  Georges Basile Stavracas Neto, Barnabás Pőcze, Julian Sparber, Sabri Ünal,
+  Daniel van Vugt, Sebastian Wick, Charles Wong, Martin Zurowietz
+
+Translators:
+  Jordi Mas [ca], Fabio Tomat [fur], Ekaterine Papava [ka], Sabri Ünal [tr],
+  Cheng-Chia Tseng [zh_TW], Changwoo Ryu [ko], Florentina Mușat [ro],
+  Brage Fuglseth [nb], Evangelos Skarmoutsos [el], Efstathios Iosifidis [el],
+  Quentin PAGÈS [oc], Jürgen Benvenuti [de], Daniel Șerbănescu [ro],
+  Artur S0 [ru], Марко Костић [sr], Hugo Carvalho [pt], Ngọc Quân Trần [vi],
+  Dušan Kazik [sk], Aefgh Threenine [th]
+
 45.0
 ====
 * Fix exposing window previews on lock screen via keyboard shortcuts
