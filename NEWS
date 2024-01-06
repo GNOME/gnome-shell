@@ -1,3 +1,12 @@
+44.8
+====
+* Fixed crash [Sebastian; !3006]
+* Misc. bug fixes and cleanups [Florian, Julian, Jonian; !3043, !3047, !3049,
+  !3064, !2998]
+
+Contributors:
+  Jonian Guveli, Sebastian Keller, Florian Müllner, Julian Sparber
+
 44.7
 ====
 * Fix performance degradation due to repeated signal leak [Sebastian; !3001]
