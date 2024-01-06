@@ -1,3 +1,19 @@
+45.3
+====
+* Allow any enter key to be used to screenshot [Scott; !2777]
+* Fix spinner in light style variant [Florian; !3080]
+* Improve formatting of extension errors [Philip; !3041]
+* Fixed crash [Sebastian; !3006]
+* Misc. bug fixes and cleanups [Florian, Daniel, Julian, Jonian; !3065, !3031,
+  !3043, !3047, !3049, !3052, !3064, !3072, !2998]
+
+Contributors:
+  Scott Buchanan, Philip Chimento, Jonian Guveli, Sebastian Keller,
+  Florian Müllner, Julian Sparber, Daniel van Vugt
+
+Translators:
+  Brage Fuglseth [nb]
+
 45.2
 ====
 * Fix performance degradation due to repeated signal leak [Sebastian; !3001]
