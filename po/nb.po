@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-12-20 20:21+0000\n"
-"PO-Revision-Date: 2023-12-27 00:29+0100\n"
+"POT-Creation-Date: 2024-01-07 08:34+0000\n"
+"PO-Revision-Date: 2024-01-07 21:36+0100\n"
 "Last-Translator: Brage <bragefuglseth@gnome.org>\n"
 "Language-Team: \n"
 "Language: nb\n"
@@ -59,7 +59,7 @@ msgid "Activate favorite app 9"
 msgstr "Åpne favorittapp 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2148
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2149
 msgid "Screenshots"
 msgstr "Skjermbilder"
 
@@ -1250,14 +1250,14 @@ msgstr "Slå av"
 #: js/ui/endSessionDialog.js:70
 msgctxt "title"
 msgid "Install Updates & Power Off"
-msgstr "Installer oppdateringer og slå av"
+msgstr "Oppdater og slå av"
 
 #: js/ui/endSessionDialog.js:73
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Systemet vil automatisk slå seg av om %d sekund."
-msgstr[1] "Systemet vil automatisk slå seg av om %d sekunder."
+msgstr[0] "Systemet vil slå seg av automatisk om %d sekund."
+msgstr[1] "Systemet vil slå seg av automatisk om %d sekunder."
 
 #: js/ui/endSessionDialog.js:77 js/ui/endSessionDialog.js:96
 msgctxt "checkbox"
@@ -1277,14 +1277,14 @@ msgstr "Start på nytt"
 #: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Install Updates & Restart"
-msgstr "Installer oppdateringer og  start på nytt"
+msgstr "Oppdater og start på nytt"
 
 #: js/ui/endSessionDialog.js:92
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Systemet vil automatisk starte på nytt om %d sekund."
-msgstr[1] "Systemet vil automatisk starte på nytt om %d sekunder."
+msgstr[0] "Systemet vil starte på nytt automatisk om %d sekund."
+msgstr[1] "Systemet vil starte på nytt automatisk om %d sekunder."
 
 #: js/ui/endSessionDialog.js:100
 msgctxt "button"
@@ -1294,19 +1294,16 @@ msgstr "Start på nytt"
 #: js/ui/endSessionDialog.js:108
 msgctxt "title"
 msgid "Restart & Install Updates"
-msgstr "Start på nytt og installer oppdateringer"
+msgstr "Start på nytt og oppdater"
 
 #: js/ui/endSessionDialog.js:111
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] ""
-"Systemet vil automatisk starte på nytt og installere oppdateringer om %d "
-"sekund."
+msgstr[0] "Systemet vil starte på nytt automatisk og oppdateres om %d sekund."
 msgstr[1] ""
-"Systemet vil automatisk starte på nytt og installere oppdateringer om %d "
-"sekunder."
+"Systemet vil starte på nytt automatisk og oppdateres om %d sekunder."
 
 #: js/ui/endSessionDialog.js:118 js/ui/endSessionDialog.js:139
 msgctxt "button"
@@ -1326,7 +1323,7 @@ msgstr "Slå av etter at oppdateringer er installert"
 #: js/ui/endSessionDialog.js:128
 msgctxt "title"
 msgid "Restart & Install Upgrade"
-msgstr "Start på nytt og installer oppdatering"
+msgstr "Start på nytt og oppdater"
 
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
@@ -1383,11 +1380,11 @@ msgstr "Installer utvidelse"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Last ned og installer “%s” fra extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:340
+#: js/ui/extensionSystem.js:341
 msgid "Extension Updates Available"
 msgstr "Utvidelser kan oppdateres"
 
-#: js/ui/extensionSystem.js:341
+#: js/ui/extensionSystem.js:342
 msgid "Extension updates are ready to be installed."
 msgstr "Oppdateringer av utvidelser er klare for installering."
 
@@ -1529,23 +1526,23 @@ msgstr "Se kilde"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: js/ui/main.js:269
+#: js/ui/main.js:280
 msgid "System was put in unsafe mode"
 msgstr "System satt i usikret modus"
 
-#: js/ui/main.js:270
+#: js/ui/main.js:281
 msgid "Apps now have unrestricted access"
 msgstr "Apper har nå ubegrenset tilgang"
 
-#: js/ui/main.js:271 js/ui/overview.js:63
+#: js/ui/main.js:282 js/ui/overview.js:63
 msgid "Undo"
 msgstr "Angre"
 
-#: js/ui/main.js:329
+#: js/ui/main.js:340
 msgid "Logged in as a privileged user"
 msgstr "Logg inn som priviligert bruker"
 
-#: js/ui/main.js:330
+#: js/ui/main.js:341
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1553,11 +1550,11 @@ msgstr ""
 "Å være logget inn som priviligert bruker bør unngås av sikkerhetshensyn. "
 "Hvis mulig, bør du logge inn som vanlig bruker."
 
-#: js/ui/main.js:378
+#: js/ui/main.js:389
 msgid "Screen Lock disabled"
 msgstr "Kan ikke låse skjerm"
 
-#: js/ui/main.js:379
+#: js/ui/main.js:390
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Låsing av skjerm krever GNOME sin låseskjerm."
 
@@ -1750,7 +1747,7 @@ msgid "Screencast ended unexpectedly"
 msgstr "Skjermopptak avbrutt"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1965 js/ui/screenshot.js:2201
+#: js/ui/screenshot.js:1965 js/ui/screenshot.js:2202
 msgid "Screenshot"
 msgstr "Skjermbilde"
 
@@ -1761,28 +1758,28 @@ msgstr "Trykk her for å se opptaket."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1975 js/ui/screenshot.js:2215
+#: js/ui/screenshot.js:1975 js/ui/screenshot.js:2216
 msgid "Show in Files"
 msgstr "Vis i Filer"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2161
+#: js/ui/screenshot.js:2162
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Skjermbilde fra %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2207
+#: js/ui/screenshot.js:2208
 msgid "Screenshot captured"
 msgstr "Skjermbilde tatt"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2209
+#: js/ui/screenshot.js:2210
 msgid "You can paste the image from the clipboard."
 msgstr "Bildet kan limes inn fra utklippstavlen."
 
-#: js/ui/screenshot.js:2262 js/ui/screenshot.js:2426
+#: js/ui/screenshot.js:2263 js/ui/screenshot.js:2427
 msgid "Screenshot taken"
 msgstr "Skjermbilde tatt"
 
