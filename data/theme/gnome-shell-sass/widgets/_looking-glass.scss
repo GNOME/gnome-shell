@@ -9,13 +9,13 @@
 
   border-radius: $modal_radius;
   margin-top: $base_margin;
-  border-top-width: 0;
+  border: 2px solid transparent;
   padding: $base_padding;
   spacing: $base_padding;
   box-shadow: 0 2px 4px 0 $shadow_color;
 
-  @if $is_highcontrast {
-    border: 2px solid $hc_inset_color;
+  @if $contrast == 'high' {
+    border-color: $hc_inset_color;
     background-color: $osd_bg_color;
     box-shadow:none;
   }

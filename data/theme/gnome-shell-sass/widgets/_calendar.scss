@@ -117,9 +117,10 @@
     border-radius: $base_border_radius * 0.5;
     background-color: transparentize($fg_color, 0.9);
     color: $insensitive_fg_color;
+    border: 1px solid transparent;
 
-    @if $is_highcontrast {
-      border:1px solid $hc_inset_color;
+    @if $contrast == 'high' {
+      border-color: $hc_inset_color;
     }
   }
 }

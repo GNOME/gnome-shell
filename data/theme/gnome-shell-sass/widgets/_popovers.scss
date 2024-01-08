@@ -40,7 +40,7 @@ $submenu_bg_color: lighten($menu_bg_color, 7%);
   &:checked {
     border-radius: $menuitem_border_radius $menuitem_border_radius 0 0 !important;
 
-    @if $is_highcontrast {
+    @if $contrast == 'high' {
       border: 1px solid $hc_inset_color;
       border-bottom-width:0;
     }
@@ -74,9 +74,10 @@ $submenu_bg_color: lighten($menu_bg_color, 7%);
 .popup-sub-menu {
   border-radius: 0 0 $menuitem_border_radius+1px $menuitem_border_radius+1px;
   margin-bottom: $base_padding;
+  border: 1px solid transparent;
 
-  @if $is_highcontrast {
-    border: 1px solid $hc_inset_color;
+  @if $contrast == 'high' {
+    border-color: $hc_inset_color;
   }
 
   // submenu specific styles

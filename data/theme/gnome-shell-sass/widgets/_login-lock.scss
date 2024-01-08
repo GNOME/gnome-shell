@@ -99,9 +99,10 @@ $_gdm_dialog_width: 23em;
     background-color: transparentize($_gdm_fg, .95);
     color: $_gdm_fg;
 
-    @if $is_highcontrast {
-      box-shadow:inset 0 0 0 1px $hc_inset_color;;
+    @if $contrast == 'high' {
+      box-shadow:inset 0 0 0 1px $hc_inset_color;
     }
+
     .user-widget .user-icon {
       border: 4px solid transparent;
     }

@@ -3,12 +3,8 @@
 
 $privacy_indicator_color: if($variant == 'light', $orange_4, $orange_3);
 
-$panel_bg_color: if($variant == 'light', $light_3, $dark_5);
-$panel_fg_color: $fg_color;
-$panel_border_color: if($variant == 'light', darken($panel_bg_color, 2%), $panel_bg_color);
-
-$transparent_panel_fg_color: $_light_fg_color; // always use brightest text for transparent panels
-$system_panel_fg_color: $system_fg_color; // always use system text color for overview
+$transparent_panel_fg_color: $light_1;    // always white for transparent lock screens
+$system_panel_fg_color: $system_fg_color; // always light for lockscreen, overview
 
 $panel_height: 2.2em;
 $panel_transition_duration: 250ms; // same as the overview transition duration
@@ -19,7 +15,6 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
   height: $panel_height;
   @extend %numeric;
   transition-duration: $panel_transition_duration;
-  box-shadow: inset 0 -1px 0 0 $panel_border_color;
 
   // panel menus
   .panel-button {
@@ -77,11 +72,11 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
     }
 
     &.screen-recording-indicator {
-      @include panel_button($screenshot_ui_button_red, $fg:$_light_fg_color, $flat: false);
+      @include panel_button($screenshot_ui_button_red, $fg:$_base_color_light, $flat: false);
     }
 
     &.screen-sharing-indicator {
-      @include panel_button($privacy_indicator_color, $fg:$_light_fg_color, $flat: false);
+      @include panel_button($privacy_indicator_color, $fg:$_base_color_light, $flat: false);
     }
 
     // clock
@@ -111,11 +106,11 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
     // unfortunate duplication to keep indicator style in these states
     .panel-button {
       &.screen-recording-indicator {
-        @include panel_button($screenshot_ui_button_red, $fg:$_light_fg_color, $flat: false);
+        @include panel_button($screenshot_ui_button_red, $fg:$_base_color_light, $flat: false);
       }
 
       &.screen-sharing-indicator {
-        @include panel_button($privacy_indicator_color, $fg:$_light_fg_color, $flat: false);
+        @include panel_button($privacy_indicator_color, $fg:$_base_color_light, $flat: false);
       }
     }
   }

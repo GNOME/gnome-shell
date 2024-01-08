@@ -2,7 +2,7 @@
 
 $screenshot_ui_panel_padding: $base_padding * 3;
 $screenshot_ui_panel_border_radius: $modal_radius * 2;
-$screenshot_ui_button_red: $error_color;
+$screenshot_ui_button_red: $red_4;
 
 .screenshot-ui-panel {
   @extend %osd_panel;
@@ -86,7 +86,7 @@ $screenshot_ui_button_red: $error_color;
   padding: $base_padding * 0.5;
   spacing: $base_padding * 0.5;
 
-  @if $is_highcontrast {
+  @if $contrast == 'high' {
     box-shadow: inset 0 0 0 1px $hc_inset_color;
   }
 }
@@ -97,7 +97,7 @@ $screenshot_ui_button_red: $error_color;
   background-color: transparent;
   border-radius: $forced_circular_radius;
 
-  @if $is_highcontrast {
+  @if $contrast == 'high' {
     box-shadow: inset 0 0 0 1px $hc_inset_color;
   }
 

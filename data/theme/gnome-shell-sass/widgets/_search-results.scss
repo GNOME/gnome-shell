@@ -29,7 +29,8 @@
   padding: $base_padding * 2;
   margin:0 $base_margin * 3;
   border: 2px solid transparent;
-  @if $is_highcontrast {
+
+  @if $contrast == 'high' {
     border-color: $hc_inset_color;
   }
 }
@@ -91,7 +92,7 @@
   .list-search-result-title {
     spacing: $base_padding * 2;
 
-    @if $is_highcontrast {
+    @if $contrast == 'high' {
       font-weight: bold;
     }
   }
@@ -100,7 +101,7 @@
   .list-search-result-description {
     color: $system_insensitive_fg_color;
 
-    @if $is_highcontrast {
+    @if $contrast == 'high' {
       color: $system_fg_color;
     }
   }

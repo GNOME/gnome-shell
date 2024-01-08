@@ -1,17 +1,20 @@
 // Drawing mixins
 
-// generic drawing of more complex things
-
-@function draw_widget_edge($c:$outer_borders_color) {
-// outer highlight "used" on most widgets
-  @return 0 1px $c;
-}
-
 // Function to convert px values to em
 @function to_em($input, $base: 16px) {
   // multiplied and divided by 1000 to make up for round() shortcoming
   $em_value: ($input / $base) * 1.091 * 1000;
   @return round($em_value) / 1000 * 1em;
+}
+
+// Boost the contrast of a color by mixing it with high contrast defined colors
+@function hc_color_mix($c, $mc:$hc_mix_color, $mf:$hc_mix_factor) {
+  //
+  // $c: input color
+  // $mc: mix color, defined in High Contrast specific stylesheet
+  // $mf: mix factor (%), defined in High Contrast specific stylesheet
+  //
+  @return mix($c, $mc, $mf);
 }
 
 // Mixin to convert provided font size in pt to em units
@@ -22,17 +25,6 @@
   font-size: $rounded_size * 1em;
   // font-size: round($size) + pt;
 }
-
-@mixin draw_shadows($shadow1, $shadow2:none, $shadow3:none, $shadow4:none) {
-//
-// Helper function to stack up to 4 box-shadows;
-//
-  @if $shadow4!=none { box-shadow: $shadow1, $shadow2, $shadow3, $shadow4; }
-  @else if $shadow3!=none { box-shadow: $shadow1, $shadow2, $shadow3; }
-  @else if $shadow2!=none { box-shadow: $shadow1, $shadow2; }
-  @else { box-shadow: $shadow1; }
-}
-
 
 // Text entries
 @mixin entry($t, $c, $fc:$selected_bg_color) {
@@ -50,7 +42,7 @@
     background-color: transparentize($c, 0.85);
     color: transparentize($c,0.3);
 
-    @if $is_highcontrast {
+    @if $contrast == 'high' {
       box-shadow: inset 0 0 0 1px $hc_inset_color;
     }
   }
@@ -166,6 +158,10 @@
   // background color override for card elements
   @if $card {
     $button_bg_color: $card_bg_color;
+
+    @if $contrast == 'high' {
+      $button_bg_color: hc_color_mix($card_bg_color);
+   }
   }
 
   // normal button
@@ -175,15 +171,8 @@
     @if $flat {
       background-color: transparent;
     }
-    @if $is_highcontrast {
+    @if $contrast == 'high' {
       box-shadow: inset 0 0 0 1px $hc_inset_color;
-    }
-
-    // card style
-    @if $card {
-      @if $is_highcontrast {
-        background-color: mix($button_bg_color, $hc_inset_color, 50%);
-      }
     }
   }
 
@@ -215,8 +204,8 @@
     color: $tc;
     background-color: $hover_bg_color;
 
-    @if $is_highcontrast {
-      background-color: mix($hover_bg_color, $hc_mix_color, 90%);
+    @if $contrast == 'high' {
+      background-color: hc_color_mix($hover_bg_color);
     }
 
     // card style
@@ -224,8 +213,8 @@
       $card_hover_bg_color:  mix($tc, $card_bg_color, 4%);
       background-color: $card_hover_bg_color;
 
-      @if $is_highcontrast {
-        background-color: mix($card_hover_bg_color, $hc_inset_color, 40%);
+      @if $contrast == 'high' {
+        background-color: hc_color_mix($card_hover_bg_color);
       }
     }
   }
@@ -236,14 +225,18 @@
     color: $tc;
     background-color: $active_bg_color;
 
-    @if $is_highcontrast {
-      background-color: mix($active_bg_color, $hc_mix_color, 90%);
+    @if $contrast == 'high' {
+      background-color: hc_color_mix($active_bg_color);
     }
 
     // card style
     @if $card {
       $card_active_bg_color:  mix($tc, $card_bg_color, 7%);
       background-color: $card_active_bg_color;
+
+      @if $contrast == 'high' {
+        background-color: hc_color_mix($card_active_bg_color);
+      }
     }
   }
 
@@ -256,10 +249,10 @@
     &:hover { background-color: lighten($checked_bg_color, 12%);}
     &:active { background-color: lighten($checked_bg_color, 15%);}
 
-    @if $is_highcontrast {
-      background-color: mix($checked_bg_color, $hc_mix_color, 90%);
-      &:hover { background-color: mix(lighten($checked_bg_color, 12%), $hc_mix_color, 90%);}
-      &:active { background-color: mix(lighten($checked_bg_color, 15%), $hc_mix_color, 90%);}
+    @if $contrast == 'high' {
+      background-color: hc_color_mix($checked_bg_color);
+      &:hover { background-color: hc_color_mix(lighten($checked_bg_color, 12%));}
+      &:active { background-color: hc_color_mix(lighten($checked_bg_color, 15%));}
     }
   }
 
@@ -268,7 +261,7 @@
     color: if($variant == 'light', transparentize($tc, .6), transparentize($tc, .5));
     background-color: if($variant == 'light', transparentize($tc, .9), transparentize($tc, .95));
 
-    @if $is_highcontrast {
+    @if $contrast == 'high' {
       // no border since it isn't sensitive
       box-shadow: none;
     }
@@ -339,7 +332,7 @@
   }
 
   // bit of a hack to have nice high contrast
-  @if $is_highcontrast {
+  @if $contrast == 'high' {
     @if $flat {
       &:hover {
         box-shadow: inset 999px 0 0 0 transparentize($color, .92);
@@ -463,7 +456,7 @@
   } @else {
     background-color: transparentize($bg, 0.2);
 
-    @if $is_highcontrast {
+     @if $contrast == 'high' {
       border-color: $hc_inset_color;
     }
 
@@ -479,7 +472,7 @@
     }
   }
 
-  @if $is_highcontrast {
+   @if $contrast == 'high' {
     &:hover, &:active, &:focus, &:checked {
       border-color: $hc_inset_color;
     }
@@ -495,7 +488,7 @@
       border-radius: $forced_circular_radius;
 
       // use box-shadow instead of border
-      @if $is_highcontrast {
+       @if $contrast == 'high' {
         box-shadow: inset 0 0 0 1px $hc_inset_color;
       }
     }

@@ -19,7 +19,7 @@ $dash_border_radius: $modal_radius + $dash_padding;
     border: 2px solid transparent;
     padding: $dash_padding * 2 $dash_padding; // padding is uneven
 
-    @if $is_highcontrast {
+    @if $contrast == 'high' {
       border-color: $hc_inset_color;
     }
   }
@@ -62,7 +62,7 @@ $dash_border_radius: $modal_radius + $dash_padding;
     margin-right:$base_margin;
     background-color: $system_borders_color;
 
-    @if $is_highcontrast {
+    @if $contrast == 'high' {
       width: 2px;
       background-color: $hc_inset_color;
     }

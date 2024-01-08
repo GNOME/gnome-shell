@@ -12,7 +12,7 @@
     border-radius: $base_border_radius * 0.5;
     border: 1px solid transparent;
 
-    @if $is_highcontrast {
+    @if $contrast == 'high' {
       border-color: $hc_inset_color;
     }
   }
