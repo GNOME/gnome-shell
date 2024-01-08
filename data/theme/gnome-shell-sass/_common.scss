@@ -79,7 +79,7 @@ stage {
   text-align: center;
   color: inherit;
 
-  @if $is_highcontrast {
+  @if $contrast == 'high' {
     border-color: $hc_inset_color;
   }
 }
@@ -127,6 +127,7 @@ stage {
   // bit of a hack here with border since we can't have double box-shadow
   border: 1px solid $card_shadow_border_color;
 }
+
 
 // normal entry style
 %entry_common {
@@ -199,7 +200,7 @@ stage {
   padding: $base_padding $base_padding * 2;
   text-align: center;
 
-  @if $is_highcontrast {
+  @if $contrast == 'high' {
     background-color: black;
     border-color: $hc_inset_color;
   }
@@ -262,9 +263,10 @@ stage {
   border: 1px solid $osd_outer_borders_color;
   border-radius: $forced_circular_radius;
   padding: $base_padding * 2;
+  border: 2px solid transparent;
 
-  @if $is_highcontrast {
-    border: 2px solid $hc_inset_color;
+  @if $contrast == 'high' {
+    border-color: $hc_inset_color;
   }
 }
 
