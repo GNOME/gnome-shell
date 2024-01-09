@@ -535,7 +535,7 @@ export const Calendar = GObject.registerClass({
             // and we want, ideally, a single character for e.g. S M T W T F S
             let customDayAbbrev = _getCalendarDayAbbreviation(iter.getDay());
             let label = new St.Label({
-                style_class: 'calendar-day calendar-day-heading',
+                style_class: 'calendar-day-heading',
                 text: customDayAbbrev,
                 can_focus: true,
             });
