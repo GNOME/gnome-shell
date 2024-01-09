@@ -225,6 +225,11 @@ if buildtype != 'plain'
     gs_c_args += [
       '-DG_ENABLE_DEBUG',
     ]
+  else
+    gs_c_args += [
+      '-DG_DISABLE_ASSERT',
+      '-DG_DISABLE_CAST_CHECKS',
+    ]
   endif
 
   supported_gs_c_args = cc.get_supported_arguments(gs_c_args)
