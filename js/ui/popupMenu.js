@@ -368,7 +368,11 @@ export const Switch = GObject.registerClass({
         });
         box.add_child(this._offIcon);
 
-        St.Settings.get().connectObject('notify::high-contrast',
+        this._a11ySettings = new Gio.Settings({
+            schema_id: 'org.gnome.desktop.a11y.interface',
+        });
+
+        this._a11ySettings.connectObject('changed::show-status-shapes',
             () => this._updateIconOpacity(),
             this);
         this.connect('notify::state',
@@ -377,7 +381,7 @@ export const Switch = GObject.registerClass({
     }
 
     _updateIconOpacity() {
-        const activeOpacity = St.Settings.get().high_contrast
+        const activeOpacity = this._a11ySettings.get_boolean('show-status-shapes')
             ? 255. : 0.;
 
         this._onIcon.opacity = this.state
