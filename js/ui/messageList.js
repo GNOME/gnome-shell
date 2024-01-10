@@ -374,7 +374,6 @@ class MessageHeader extends St.BoxLayout {
             style_class: 'message-close-button',
             icon_name: 'window-close-symbolic',
             y_align: Clutter.ActorAlign.CENTER,
-            opacity: 0,
         });
         this.add_child(this.closeButton);
 
@@ -499,9 +498,7 @@ export const Message = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._header.closeButton.connect('clicked', this.close.bind(this));
-        let actorHoverId = this.connect('notify::hover', this._sync.bind(this));
-        this._header.closeButton.connect('destroy', this.disconnect.bind(this, actorHoverId));
-        this._sync();
+        this._header.closeButton.visible = this.canClose();
     }
 
     close() {
@@ -625,12 +622,6 @@ export const Message = GObject.registerClass({
 
     canClose() {
         return false;
-    }
-
-    _sync() {
-        let visible = this.hover && this.canClose();
-        this._header.closeButton.opacity = visible ? 255 : 0;
-        this._header.closeButton.reactive = visible;
     }
 
     _onDestroy() {
