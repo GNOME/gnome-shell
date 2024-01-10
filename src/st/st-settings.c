@@ -399,8 +399,6 @@ on_a11y_interface_settings_changed (GSettings   *g_settings,
     {
       settings->high_contrast = g_settings_get_boolean (g_settings, key);
       g_object_notify_by_pspec (G_OBJECT (settings), props[PROP_HIGH_CONTRAST]);
-
-      g_object_notify_by_pspec (G_OBJECT (settings), props[PROP_GTK_ICON_THEME]);
     }
 }
 
