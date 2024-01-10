@@ -60,7 +60,6 @@ icondir = join_paths(datadir, 'icons')
 ifacedir = join_paths(datadir, 'dbus-1', 'interfaces')
 localedir = join_paths(datadir, 'locale')
 metainfodir = join_paths(datadir, 'metainfo')
-portaldir = join_paths(datadir, 'xdg-desktop-portal', 'portals')
 schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 servicedir = join_paths(datadir, 'dbus-1', 'services')
 
