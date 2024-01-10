@@ -340,11 +340,50 @@ export const Switch = GObject.registerClass({
     _init(state) {
         this._state = false;
 
+        const box = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+        });
+
         super._init({
             style_class: 'toggle-switch',
+            child: box,
             accessible_role: Atk.Role.CHECK_BOX,
             state,
         });
+
+        this._onIcon = new St.Icon({
+            icon_name: 'switch-on-symbolic',
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        box.add_child(this._onIcon);
+
+        this._offIcon = new St.Icon({
+            icon_name: 'switch-off-symbolic',
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        box.add_child(this._offIcon);
+
+        St.Settings.get().connectObject('notify::high-contrast',
+            () => this._updateIconOpacity(),
+            this);
+        this.connect('notify::state',
+            () => this._updateIconOpacity());
+        this._updateIconOpacity();
+    }
+
+    _updateIconOpacity() {
+        const activeOpacity = St.Settings.get().high_contrast
+            ? 255. : 0.;
+
+        this._onIcon.opacity = this.state
+            ? activeOpacity : 0.;
+        this._offIcon.opacity = this.state
+            ? 0. : activeOpacity;
     }
 
     get state() {

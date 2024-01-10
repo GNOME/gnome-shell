@@ -45,5 +45,7 @@
     <file preprocess="xml-stripblanks">scalable/status/no-notifications-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/screen-privacy-disabled-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/screen-privacy-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">scalable/status/switch-on-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">scalable/status/switch-off-symbolic.svg</file>
   </gresource>
 </gresources>

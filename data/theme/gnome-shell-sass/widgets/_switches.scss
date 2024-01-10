@@ -14,9 +14,5 @@ $switch_width: 48px;
     background-image: if($variant == 'light', url("resource:///org/gnome/shell/theme/toggle-on-light.svg"),url("resource:///org/gnome/shell/theme/toggle-on.svg"));
   }
 
-  @if $contrast == 'high' {
-    background-image: url("resource:///org/gnome/shell/theme/toggle-off-hc.svg");
-    &:checked { background-image: url("resource:///org/gnome/shell/theme/toggle-on-hc.svg"); }
-  }
-
+  & StIcon {icon-size: $base_icon_size;}
 }
