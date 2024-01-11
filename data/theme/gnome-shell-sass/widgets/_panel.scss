@@ -2,6 +2,7 @@
 // a.k.a. the panel
 
 $privacy_indicator_color: if($variant == 'light', $orange_4, $orange_3);
+$recording_indicator_color: $red_4;
 
 $transparent_panel_fg_color: $light_1;    // always white for transparent lock screens
 $system_panel_fg_color: $system_fg_color; // always light for lockscreen, overview
@@ -18,7 +19,7 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
 
   // panel menus
   .panel-button {
-    @include panel_button($panel_fg_color);
+    @include panel_button();
     -natural-hpadding: $base_padding * 2;
     -minimum-hpadding: $base_padding;
 
@@ -72,11 +73,11 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
     }
 
     &.screen-recording-indicator {
-      @include panel_button($screenshot_ui_button_red, $fg:$_base_color_light, $style: null);
+      @include panel_button($bg:$recording_indicator_color, $fg:$_base_color_light, $style: filled);
     }
 
     &.screen-sharing-indicator {
-      @include panel_button($privacy_indicator_color, $fg:$_base_color_light, $style: null);
+      @include panel_button($bg:$privacy_indicator_color, $fg:$_base_color_light, $style: filled);
     }
 
     // clock
@@ -84,7 +85,7 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
       // The clock display needs to have the background on .clock because
       // we want to exclude the do-not-disturb indicator from the background
       // see _drawing.scss for override details
-      @include panel_button($highlighted_child: true, $child_class:".clock");
+      @include panel_button($highlighted_child: true, $child_class: '.clock');
 
       .clock {
         // the highlighted child
@@ -101,16 +102,15 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
   &.unlock-screen,
   &.login-screen {
     background-color: transparent;
-    box-shadow: none;
 
     // unfortunate duplication to keep indicator style in these states
     .panel-button {
       &.screen-recording-indicator {
-        @include panel_button($screenshot_ui_button_red, $fg:$_base_color_light, $style: null);
+        @include panel_button($bg:$recording_indicator_color, $fg:$_base_color_light, $style: filled);
       }
 
       &.screen-sharing-indicator {
-        @include panel_button($privacy_indicator_color, $fg:$_base_color_light, $style: null);
+        @include panel_button($bg:$privacy_indicator_color, $fg:$_base_color_light, $style: filled);
       }
     }
   }
@@ -119,11 +119,11 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
   &.unlock-screen,
   &.login-screen {
     .panel-button {
-      @include panel_button($transparent_panel_fg_color, $fg:$transparent_panel_fg_color);
+      @include panel_button($fg:$transparent_panel_fg_color);
 
       // clock
       &.clock-display {
-        @include panel_button($transparent_panel_fg_color, $fg:$transparent_panel_fg_color, $highlighted_child: true, $child_class:".clock");
+        @include panel_button($fg:$transparent_panel_fg_color, $highlighted_child: true, $child_class: '.clock');
       }
     }
   }
@@ -131,7 +131,7 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
   // use system text styles for overview panel
   &:overview {
     .panel-button {
-      @include panel_button($system_panel_fg_color, $fg:$system_panel_fg_color);
+      @include panel_button($fg:$system_panel_fg_color);
 
       &#panelActivities .workspace-dot {
         background-color: $system_panel_fg_color;
@@ -139,7 +139,7 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
 
       // clock
       &.clock-display {
-        @include panel_button($system_panel_fg_color, $fg:$system_panel_fg_color, $highlighted_child: true, $child_class:".clock");
+        @include panel_button($fg:$system_panel_fg_color, $highlighted_child: true, $child_class: '.clock');
       }
     }
   }

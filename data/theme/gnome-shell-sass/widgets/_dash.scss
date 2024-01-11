@@ -4,7 +4,7 @@
 $dash_background_color: $system_overlay_bg_color;
 
 $dash_placeholder_size: 32px;
-$dash_padding: $base_padding * 1.5;
+$dash_padding: $base_padding * 2;
 $dash_edge_offset: $base_margin * 3;
 $dash_border_radius: $modal_radius + $dash_padding;
 
@@ -16,10 +16,10 @@ $dash_border_radius: $modal_radius + $dash_padding;
   .dash-background {
     background-color: $dash_background_color;
     border-radius: $dash_border_radius;
-    padding-top: $dash_padding * 2;
-    padding-bottom: $dash_padding * 2;
-    padding-left: $dash_padding + 2px; // padding is uneven and needs hardcoded values
-    padding-right: $dash_padding + 2px;
+    padding-top: $dash_padding;
+    padding-bottom: $dash_padding;
+    padding-left: $dash_padding - $base_margin; // subtract the margins added to .overview-tile below as padding
+    padding-right: $dash_padding - $base_margin;
 
     @if $contrast == 'high' {
       @include draw_hc_inset($width: 2px);
@@ -41,12 +41,33 @@ $dash_border_radius: $modal_radius + $dash_padding;
       height: $dash_placeholder_size;
     }
 
+    // IMPORTANT: items on the dash need to extend to the edge to be adequate click targets
+    // as such the %tile style is overriden and button styles are applied to the child class .overview-icon
     .show-apps,
     .overview-tile {
-      @include tile_button($bg:$dash_background_color);
-      margin: $base_margin * 0.5;
-      padding: $base_padding;
-      border-radius: $base_border_radius * 2;}
+      // remove styles
+      @extend %reset;
+
+      padding: $dash_padding $base_margin;
+      padding-bottom: $dash_padding + $dash_edge_offset;
+
+      $fg:$system_fg_color;
+      $bg:$dash_background_color;
+
+      .overview-icon {
+        @extend %tile;
+        @include button(normal, $tc:$fg, $c:$bg, $style: flat, $always_dark: true);
+
+        @if $contrast == 'high' {
+          @include draw_hc_inset();
+        }
+      }
+
+      &:focus .overview-icon { @include button(focus, $tc:$fg, $c:$bg, $style: flat, $always_dark: true);}
+      &:hover .overview-icon { @include button(hover, $tc:$fg, $c:$bg, $style: flat, $always_dark: true);}
+      &:active .overview-icon { @include button(active, $tc:$fg, $c:$bg, $style: flat, $always_dark: true);}
+      &:checked .overview-icon { @include button(checked, $tc:$fg, $c:$bg, $style: flat, $always_dark: true);}
+    }
   }
 
   // separator between pinned and running apps
@@ -64,8 +85,7 @@ $dash_border_radius: $modal_radius + $dash_padding;
 
   // make sure all dash components have same margin from screen edge
   .dash-separator,
-  .dash-background,
-  .dash-item-container {
+  .dash-background {
     margin-bottom: $dash_edge_offset;
   }
 }
