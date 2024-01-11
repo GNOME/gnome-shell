@@ -19,7 +19,7 @@ $app_folder_size: 720px;
 
 // items in the app grid and dash
 .overview-tile {
-  @include tile_button($system_fg_color);
+  @include tile_button($bg:$system_base_color);
 
   // override the %tile style
   border-radius: $base_border_radius*3;
@@ -38,7 +38,7 @@ $app_folder_size: 720px;
 
 // app folders
 .app-folder {
-  @include tile_button($system_fg_color, $flat: false);
+  @include tile_button($bg:$system_base_color, $raised: true);
 }
 
 // Running app indicator (also shown in dash)
@@ -47,10 +47,11 @@ $app_folder_size: 720px;
   width: 5px;
   border-radius:5px;
   background-color: $system_fg_color;
-  margin-bottom: 2px;
 
   @if $contrast == 'high' {
     margin-bottom: 4px;
+  } @else {
+    margin-bottom: 2px;
   }
 }
 
@@ -66,12 +67,14 @@ $app_folder_size: 720px;
 
   border-radius: $modal_radius * 4;
   background-color: $system_overlay_bg_color;
-  box-shadow: inset 0 0 0 1px $system_borders_color;
-  padding: 0 1px;
+  color: $system_fg_color;
 
   @if $contrast == 'high' {
     padding: 0 2px;
     box-shadow: inset 0 0 0 2px $hc_inset_color;
+  } @else {
+    padding: 0 1px;
+    box-shadow: inset 0 0 0 1px $system_borders_color;
   }
 
   & .folder-name-container {
@@ -84,6 +87,7 @@ $app_folder_size: 720px;
     }
 
     & .folder-name-entry {
+      @extend %system_entry;
       width: 12em;
     }
   }
@@ -91,9 +95,11 @@ $app_folder_size: 720px;
   & .page-indicators {
     margin-bottom: $base_padding * 4;
   }
+
+  & .overview-tile {
+    @include tile_button($bg:$system_overlay_bg_color);
+  }
 }
-
-
 
 // Rename popup for app folders
 .rename-folder-popup {
@@ -166,11 +172,7 @@ $page_indicator_size: 10px;
 
   > StIcon { color: $system_fg_color;}
 
-  @if $contrast == 'high' {
-    @include button(normal, $system_fg_color, transparentize($system_bg_color, 0.5));
-  }
-
-  &:insensitive { @include button(undecorated, $system_fg_color, transparentize($system_bg_color, 0.5));}
-  &:hover { @include button(hover, $system_fg_color, transparentize($system_bg_color, 0.5));}
-  &:active { @include button(active, $system_fg_color, transparentize($system_bg_color, 0.5));}
+  @include button(normal, $tc:$system_fg_color, $c:$system_base_color, $style: flat);
+  &:hover { @include button(hover, $tc:$system_fg_color, $c:$system_base_color, $style: flat);}
+  &:active { @include button(active, $tc:$system_fg_color, $c:$system_base_color, $style: flat);}
 }

@@ -21,7 +21,8 @@
 }
 
 .quick-toggle {
-  &:checked { @include button(default, $c:$selected_bg_color); }
+  background-color: none;
+  &:checked { @extend %default_button;}
 
   & > StBoxLayout { spacing: $base_padding * 1.5; }
 
@@ -62,7 +63,7 @@
     border-color: transparentize($fg_color, .75);
 
     &:checked {
-      @include button(default, $c:$selected_bg_color);
+      @extend %default_button;
       border-color: $selected_borders_color;
     }
 
@@ -90,7 +91,7 @@
 }
 
 .quick-toggle-menu {
-  @include card;
+  @extend %card;
 
   &:insensitive {
     // override insensitive style on submenu
@@ -170,7 +171,7 @@
 .keyboard-brightness-level {
   spacing: $base_padding;
 
-  .button:checked { @include button(default, $c:$selected_bg_color); }
+  .button:checked { @extend %default_button; }
 }
 
 // background apps

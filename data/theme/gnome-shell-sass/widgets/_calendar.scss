@@ -15,7 +15,7 @@
 
 /* today button (the date) */
 .datemenu-today-button {
-  @include card($flat: true);
+  @extend %card_flat;
   padding: $base_padding * 1.5;
 
   // weekday label
@@ -31,7 +31,7 @@
 
 /* Calendar */
 .calendar {
-  @include card($flat: true);
+  @extend %card_flat;
   margin-top: 0;
   padding: 0;
 
@@ -47,7 +47,7 @@
     // month label
     .calendar-month-label {
       @extend %heading;
-      @extend .button, .flat;
+      @extend %flat_button;
       color: $fg_color !important;
       padding: 8px 0;
       width: 10em;
@@ -67,7 +67,7 @@
   .calendar-day {
     @extend %numeric;
     @extend %smaller;
-    @extend .button, .flat;
+    @extend %flat_button;
     border-radius: $forced_circular_radius;
     height: 3em;
     width: 3em;
@@ -92,7 +92,7 @@
     }
 
     &.calendar-today {
-      @extend .default;
+      @extend %default_button;
       border: none;
       &.calendar-day-with-events {
         background-image: url("resource:///org/gnome/shell/theme/calendar-today.svg") !important; // always use light asset with .default style
@@ -109,7 +109,7 @@
   .calendar-day-heading {
     @extend %numeric;
     @extend %smaller;
-    @extend .button, .flat;
+    @extend %flat_button;
     font-weight: bold;
     text-align: center;
     margin: $base_margin;
@@ -128,17 +128,16 @@
     border-radius: $base_border_radius * 0.5;
     background-color: transparentize($insensitive_fg_color, .8);
     color: $insensitive_fg_color;
-    border: 1px solid transparent;
 
     @if $contrast == 'high' {
-      border-color: $hc_inset_color;
+      @include draw_hc_inset();
     }
   }
 }
 
 /* Events */
 .events-button {
-  @include card;
+  @extend %card;
 
   .events-box {
     spacing: $base_padding;
@@ -163,7 +162,7 @@
 
 /* World clocks */
 .world-clocks-button {
-  @include card;
+  @extend %card;
 
   .world-clocks-grid {
     spacing-rows: $base_padding;
@@ -201,7 +200,7 @@
 
 /* Weather */
 .weather-button {
-  @include card;
+  @extend %card;
 
   .weather-box {
     spacing: $base_padding + $base_margin;

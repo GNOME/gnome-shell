@@ -36,7 +36,7 @@
 }
 
 %search_section_content_item {
-  @include tile_button($system_fg_color);
+  @include tile_button($bg:$system_overlay_bg_color);
   border-radius: $base_border_radius * 1.65;
 }
 

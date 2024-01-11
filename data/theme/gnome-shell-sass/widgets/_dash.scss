@@ -16,11 +16,13 @@ $dash_border_radius: $modal_radius + $dash_padding;
   .dash-background {
     background-color: $dash_background_color;
     border-radius: $dash_border_radius;
-    border: 2px solid transparent;
-    padding: $dash_padding * 2 $dash_padding; // padding is uneven
+    padding-top: $dash_padding * 2;
+    padding-bottom: $dash_padding * 2;
+    padding-left: $dash_padding + 2px; // padding is uneven and needs hardcoded values
+    padding-right: $dash_padding + 2px;
 
     @if $contrast == 'high' {
-      border-color: $hc_inset_color;
+      @include draw_hc_inset($width: 2px);
     }
   }
 
@@ -39,17 +41,9 @@ $dash_border_radius: $modal_radius + $dash_padding;
       height: $dash_placeholder_size;
     }
 
-    // app icons
+    .show-apps,
     .overview-tile {
-      // inherits styles from _app-grid.css
-    }
-
-    // button to show app grid
-    .show-apps {
-      @include tile_button($system_fg_color);
-    }
-
-    .show-apps, .overview-tile {
+      @include tile_button($bg:$dash_background_color);
       margin: $base_margin * 0.5;
       padding: $base_padding;
       border-radius: $base_border_radius * 2;}

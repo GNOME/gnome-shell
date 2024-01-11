@@ -62,7 +62,7 @@
 
 // message bubbles
 .message {
-  @include card;
+  @extend %card;
   padding: 0 !important;
 
   // icon container

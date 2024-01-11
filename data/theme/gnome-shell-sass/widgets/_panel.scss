@@ -72,11 +72,11 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
     }
 
     &.screen-recording-indicator {
-      @include panel_button($screenshot_ui_button_red, $fg:$_base_color_light, $flat: false);
+      @include panel_button($screenshot_ui_button_red, $fg:$_base_color_light, $style: null);
     }
 
     &.screen-sharing-indicator {
-      @include panel_button($privacy_indicator_color, $fg:$_base_color_light, $flat: false);
+      @include panel_button($privacy_indicator_color, $fg:$_base_color_light, $style: null);
     }
 
     // clock
@@ -106,11 +106,11 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
     // unfortunate duplication to keep indicator style in these states
     .panel-button {
       &.screen-recording-indicator {
-        @include panel_button($screenshot_ui_button_red, $fg:$_base_color_light, $flat: false);
+        @include panel_button($screenshot_ui_button_red, $fg:$_base_color_light, $style: null);
       }
 
       &.screen-sharing-indicator {
-        @include panel_button($privacy_indicator_color, $fg:$_base_color_light, $flat: false);
+        @include panel_button($privacy_indicator_color, $fg:$_base_color_light, $style: null);
       }
     }
   }

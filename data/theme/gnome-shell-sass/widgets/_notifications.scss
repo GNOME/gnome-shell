@@ -12,7 +12,7 @@ $notification_banner_width: 34em;
   margin: $base_margin;
 
   @if $contrast == 'high' {
-    border: 1px solid $hc_inset_color;
+    @include draw_hc_inset();
   }
 
   .notification-actions {

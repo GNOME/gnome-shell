@@ -24,7 +24,7 @@ $switcher_radius: $modal_radius + $switcher_padding;
 
   // each item in the list
   .item-box {
-    @include tile_button($osd_fg_color);
+    @include tile_button($fg:$osd_fg_color, $bg:$osd_bg_color);
     // override %tile style so mouse doesn't steal focus
     &:hover {background: none;}
   }

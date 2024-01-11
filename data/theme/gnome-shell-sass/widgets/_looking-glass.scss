@@ -97,7 +97,7 @@
 }
 
 .lg-extension {
-  @include card;
+  @extend %card;
 }
 
 .lg-extension-name {

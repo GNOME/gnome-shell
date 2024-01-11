@@ -83,7 +83,7 @@ $submenu_bg_color: lighten($menu_bg_color, 7%);
   // submenu specific styles
   .popup-menu-item {
     border-radius: 0;
-    @include menuitem($bg:$submenu_bg_color, $flat:false);
+    @include menuitem($bg:$submenu_bg_color);
     border-top-width:0;
 
     &:last-child {

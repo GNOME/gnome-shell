@@ -23,29 +23,32 @@ $error_fg_color: $light_1;
 $error_color: $error_bg_color;
 
 // colors for selected or default elements
-$selected_bg_color: if($variant == 'light', $blue_3, $blue_4);
+$selected_bg_color: if($variant == 'light', $blue_4, $blue_3);
 $selected_fg_color: $light_1;
-$selected_borders_color: if($variant== 'light', darken($selected_bg_color, 15%), darken($selected_bg_color, 20%));
 
 // link colors
-$link_color: if($variant == 'light', $blue_3, $blue_4);
+$link_color: if($variant == 'light', $blue_4, $blue_2);
 $link_visited_color: transparentize($link_color, .6);
 
 // special cased widget definitions
-$button_mix_factor: if($variant == 'light', 12%, 9%);
-$border_opacity: if($variant == 'light', .85, .9);
+$background_mix_factor: if($variant == 'light', 12%, 9%); // used to boost the color of backgrounds in different variants
+$border_opacity: if($variant == 'light', .85, .9); // change the border opacity in different variants
 
 // shadows
 $shadow_color: if($variant == 'light', rgba(0,0,0,.05), rgba(0,0,0,0.2));
 $text_shadow_color: if($variant == 'light', rgba(255,255,255,0.3), rgba(0,0,0,0.2));
 
+// focus colors
+$focus_color: $selected_bg_color;
+$focus_border_color: transparentize($focus_color, 0.5);
+
 // High Contrast overrides
 @if $contrast == 'high' {
     // increase border opacity
     $border_opacity: .5;
-    // increase the button mix factor
-    $button_mix_factor: 20%;
     // remove shadows
     $shadow_color: transparent;
     $text_shadow_color: transparent;
+    // less transparent focus color
+    $focus_border_color: transparentize($focus_color, 0.2);
 }
