@@ -48,6 +48,9 @@ shell_tests = [
     'name': 'headlessStart',
     'options': ['--hotplug'],
   },
+  {
+    'name': 'fittsy',
+  },
 ]
 
 gvc_typelib_path = fs.parent(libgvc.get_variable('libgvc_gir')[1].full_path())
