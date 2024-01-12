@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 DEFAULT_TOOLBOX=gnome-shell-devel
 CONFIG_FILE=${XDG_CONFIG_HOME:-$HOME/.config}/gnome-shell-toolbox-tools.conf
 
