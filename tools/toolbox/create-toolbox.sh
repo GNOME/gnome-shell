@@ -96,7 +96,7 @@ TEMP=$(getopt \
   --longoptions 'skip-mutter' \
   --longoptions 'set-default' \
   --longoptions 'help' \
-  -- "$@")
+  -- "$@") || die "Run $(basename $0) --help to see available options"
 
 eval set -- "$TEMP"
 unset TEMP

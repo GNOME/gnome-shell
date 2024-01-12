@@ -50,7 +50,7 @@ TEMP=$(getopt \
   --longoptions 'toolbox:' \
   --longoptions 'dist' \
   --longoptions 'help' \
-  -- "$@")
+  -- "$@") || die "Run $(basename $0) --help to see available options"
 
 eval set -- "$TEMP"
 unset TEMP
