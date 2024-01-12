@@ -31,6 +31,14 @@ the project.
 
 Run the script with `--help` to see available options.
 
+## meson-test.sh
+Run a meson project's test suite in a toolbox.
+
+The script wraps meson's `test` command to make invoking it inside a
+toolbox more convenient.
+
+Run the script with `--help` to see available options.
+
 ## run-gnome-shell.sh
 Run gnome-shell from a toolbox.
 
