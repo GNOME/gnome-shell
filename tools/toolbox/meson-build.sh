@@ -16,6 +16,7 @@ usage() {
 
 	  -Dkey=val               Option to pass to meson setup
 	  --dist                  Run meson dist
+	  --wipe                  Wipe build directory and reconfigure
 
 	  -h, --help              Display this help
 
@@ -49,6 +50,7 @@ TEMP=$(getopt \
   --options 't:D:h' \
   --longoptions 'toolbox:' \
   --longoptions 'dist' \
+  --longoptions 'wipe' \
   --longoptions 'help' \
   -- "$@") || die "Run $(basename $0) --help to see available options"
 
@@ -66,6 +68,11 @@ while true; do
 
     --dist)
       RUN_DIST=1
+      shift
+    ;;
+
+    --wipe)
+      WIPE=--wipe
       shift
     ;;
 
@@ -94,7 +101,7 @@ BUILD_DIR=build-$TOOLBOX
 needs_reconfigure && RECONFIGURE=--reconfigure
 
 toolbox run --container $TOOLBOX sh -c "
-  meson setup --prefix=/usr $RECONFIGURE ${MESON_OPTIONS[*]} $BUILD_DIR &&
+  meson setup --prefix=/usr $RECONFIGURE $WIPE ${MESON_OPTIONS[*]} $BUILD_DIR &&
   meson compile -C $BUILD_DIR &&
   sudo meson install -C $BUILD_DIR &&
   $DIST
