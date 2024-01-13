@@ -54,8 +54,6 @@
     <property name="filter">searchFilter</property>
   </object>
   <template class="ExtensionsWindow" parent="AdwApplicationWindow">
-    <property name="default-width">800</property>
-    <property name="default-height">500</property>
     <property name="title" translatable="yes">Extensions</property>
     <child>
       <object class="AdwToolbarView">

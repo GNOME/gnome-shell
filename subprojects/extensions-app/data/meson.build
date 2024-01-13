@@ -48,3 +48,5 @@ configure_file(
 
 subdir('icons')
 subdir('metainfo')
+
+install_data(base_id + '.gschema.xml', install_dir: schemadir)

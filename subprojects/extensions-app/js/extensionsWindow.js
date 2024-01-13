@@ -59,6 +59,20 @@ export const ExtensionsWindow = GObject.registerClass({
                 },
             }]);
 
+        const settings = new Gio.Settings({
+            schema_id: 'org.gnome.Extensions',
+        });
+
+        settings.bind('window-width',
+            this, 'default-width',
+            Gio.SettingsBindFlags.DEFAULT);
+        settings.bind('window-height',
+            this, 'default-height',
+            Gio.SettingsBindFlags.DEFAULT);
+        settings.bind('window-maximized',
+            this, 'maximized',
+            Gio.SettingsBindFlags.DEFAULT);
+
         this._searchEntry.connect('search-changed',
             () => (this._searchFilter.search = this._searchEntry.text));
         this._searchBar.connect('notify::search-mode-enabled',

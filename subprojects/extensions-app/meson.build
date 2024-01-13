@@ -44,6 +44,7 @@ desktopdir = join_paths(datadir, 'applications')
 icondir = join_paths(datadir, 'icons')
 localedir = join_paths(datadir, 'locale')
 metainfodir = join_paths(datadir, 'metainfo')
+schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 servicedir = join_paths(datadir, 'dbus-1', 'services')
 
 gjs = find_program('gjs')
@@ -64,6 +65,7 @@ if not meson.is_subproject()
   subdir('po')
 
   gnome.post_install(
+    glib_compile_schemas: true,
     gtk_update_icon_cache: true
   )
 
