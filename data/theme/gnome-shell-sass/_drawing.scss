@@ -63,7 +63,7 @@
 }
 
 // Text entries drawing function
-@mixin entry($type, $c:$fg_color, $bc:$bg_color, $always_dark: false) {
+@mixin entry($type, $c:$fg_color, $bc:$bg_color, $style: null, $always_dark: false) {
   //
   // $type:         entry type, possible values: normal, focus, hover, insensitive
   // $c:            text color
@@ -71,8 +71,19 @@
   // $always_dark:  override the light theme check to use dark colors, true or false
   //
 
-  // background color
+  // entry colors
+  $entry_fg_color: $c;
   $entry_bg_color: mix($c, $bc, $background_mix_factor);
+  $entry_focus_color: $focus_color;
+
+  // entry color overrides for lockscreen style
+  @if $style == 'lockscreen' {
+    $entry_bg_color: transparentize($c, 0.95);
+    $entry_focus_color: transparentize($entry_fg_color, 0.6);
+    @if $contrast == 'high' {
+      $entry_focus_color: transparentize($entry_fg_color, 0.3);
+    }
+  }
 
   // background color adjustment factors
   // the % a color is lightened or darkened for button states
@@ -96,26 +107,32 @@
   // normal
   @if $type == 'normal' {
     background-color: $entry_bg_color;
-    color: transparentize($c,0.3);
+    color: transparentize($c, 0.3);
   }
 
   // focus styles
   @if $type == 'focus' {
     @include focus_ring();
     background-color: focus_bg_color($entry_bg_color);
-    color: $c;
+    color: $entry_fg_color;
+
+    // lockscreen style
+    @if $style == 'lockscreen' {
+      @include focus_ring($fc:$entry_focus_color);
+      background-color: focus_bg_color($entry_bg_color, $fc:$entry_focus_color);
+    }
   }
 
   // hover styles
   @if $type == 'hover' {
     background-color: $hover_entry_bg_color;
-    color: $c;
+    color: $entry_fg_color;
   }
 
   // insensitive styles
   @if $type == 'insensitive' {
     background-color: $insensitive_entry_bg_color;
-    color: transparentize($c, 0.5);
+    color: transparentize($entry_fg_color, 0.5);
   }
 }
 

@@ -360,3 +360,17 @@ stage {
   &:active { @include button(active, $tc:$system_fg_color, $c:$system_bg_color);}
   &:checked { @include button(checked, $tc:$system_fg_color, $c:$system_bg_color);}
 }
+
+/* Lockscreen Elements */
+
+// entries
+%lockscreen_entry {
+  @extend %entry_common;
+  @include entry(normal, $c:$system_fg_color, $style: lockscreen, $always_dark: true);
+  &:hover { @include entry(hover, $c:$system_fg_color, $style: lockscreen, $always_dark: true);}
+  &:focus { @include entry(focus, $c:$system_fg_color, $style: lockscreen, $always_dark: true);}
+  &:insensitive { @include entry(insensitive, $c:$system_fg_color, $style: lockscreen, $always_dark: true);}
+
+  StLabel.hint-text { color: transparentize($system_fg_color, 0.3);}
+}
+

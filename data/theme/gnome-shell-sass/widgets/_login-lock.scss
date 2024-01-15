@@ -5,6 +5,7 @@ $_gdm_dialog_width: 23em;
 // common style for gdm and lockscreen
 .login-dialog,
 .unlock-dialog {
+  color: $_gdm_fg;
 
   .caps-lock-warning-label,
   .login-dialog-message-warning {
@@ -155,9 +156,8 @@ $_gdm_dialog_width: 23em;
 .unlock-dialog {
   background-color: transparent;
 
-  // %system_entry style override to have neutral focus color with wallpaper background
   .login-dialog-prompt-entry {
-    &:focus { @include entry(focus, $c:$system_fg_color);}
+    @extend %lockscreen_entry;
   }
 }
 
