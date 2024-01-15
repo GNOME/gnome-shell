@@ -153,7 +153,7 @@ class DashItemContainer extends St.Widget {
         this.destroy_all_children();
 
         this.child = actor;
-        this.child.y_expand = false;
+        this.child.y_expand = true;
         this.add_child(this.child);
     }
 
