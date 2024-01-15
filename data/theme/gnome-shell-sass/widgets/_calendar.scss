@@ -5,22 +5,24 @@
   padding: $base_margin;
 }
 
-// Calendar menu side column
+// calendar menu side column
 .datemenu-calendar-column {
   spacing: $base_padding;
-  &:ltr {padding-left: $base_padding;}
-  &:rtl {padding-right: $base_padding;}
-  .datemenu-displays-box {spacing: $base_padding;}
+  &:ltr { margin-left: $base_padding;}
+  &:rtl { margin-right: $base_padding;}
+  .datemenu-displays-box {
+    spacing: $base_padding;
+  }
 }
 
-/* today button (the date) */
+// today button (the date)
 .datemenu-today-button {
   @extend %card_flat;
   padding: $base_padding * 1.5;
 
   // weekday label
   .day-label {
-    @extend %heading;
+    font-weight: bold;
   }
 
   // date label
@@ -29,7 +31,7 @@
   }
 }
 
-/* Calendar */
+// the mini calendar
 .calendar {
   @extend %card_flat;
   margin-top: 0;
@@ -77,23 +79,35 @@
     text-align: center;
 
     &.calendar-weekday {}
+
     &.calendar-weekend {
       color: $insensitive_fg_color;
+      @if $contrast == 'high' {
+        font-style: italic;
+      }
     }
 
     &.calendar-other-month {
-      color: transparentize($insensitive_fg_color, 0.2);
+      color: transparentize($fg_color, 0.5);
       font-weight: normal;
 
+      &.calendar-weekend {
+        color: transparentize($fg_color, 0.5);
+        @if $contrast == 'high' {
+          color: $fg_color;
+        }
+      }
+
       @if $contrast == 'high' {
-        color: $insensitive_fg_color;
+        color: $fg_color;
         font-style: italic; // differentiate with a font-style instead of text color
       }
     }
 
     &.calendar-today {
       @extend %default_button;
-      border: none;
+      // override colors above for when today is a weekend
+      color: $selected_fg_color !important;
       &.calendar-day-with-events {
         background-image: url("resource:///org/gnome/shell/theme/calendar-today.svg") !important; // always use light asset with .default style
       }
@@ -128,115 +142,137 @@
     border-radius: $base_border_radius * 0.5;
     background-color: transparentize($insensitive_fg_color, .8);
     color: $insensitive_fg_color;
+  }
+}
 
-    @if $contrast == 'high' {
-      @include draw_hc_inset();
+// common style for the date menu widgets
+.events-button,
+.world-clocks-button,
+.weather-button {
+  @extend %card;
+}
+
+// events
+.events-button {
+
+  .events-box {
+
+    // event title
+    .events-title {
+      @extend %heading;
+      color: $insensitive_fg_color;
+      padding-bottom: $base_padding;
+    }
+
+    // list of events
+    .events-list {
+      spacing: $base_padding;
+
+      // container for an event
+      .event-box {
+        spacing: $base_padding;
+        border-radius: $base_border_radius;
+
+        .event-summary {
+          @extend %heading;
+        }
+
+        .event-time {
+          @extend %numeric;
+          @extend %caption;
+          color: $insensitive_fg_color;
+        }
+      }
+
+      .event-placeholder {
+        color: $insensitive_fg_color;
+        font-style: italic;
+      }
     }
   }
 }
 
-/* Events */
-.events-button {
-  @extend %card;
-
-  .events-box {
-    spacing: $base_padding;
-  }
-
-  .events-list {
-    spacing: 2 * $base_padding;
-    color: $fg_color;
-  }
-
-  .events-title {
-    @extend %heading;
-    margin-bottom: $base_margin;
-  }
-
-  .event-time {
-    @extend %numeric;
-    @extend %caption;
-    color: $insensitive_fg_color;
-  }
-}
-
-/* World clocks */
+// world clocks
 .world-clocks-button {
-  @extend %card;
-
-  .world-clocks-grid {
-    spacing-rows: $base_padding;
-    spacing-columns: $base_padding * 2;
-  }
 
   // title
   .world-clocks-header {
     @extend %heading;
     color: $insensitive_fg_color;
-  }
 
-  // city label
-  .world-clocks-city {
-    color: $fg_color;
-  }
-
-  // timezone time
-  .world-clocks-time {
-    @extend %heading;
-    @extend %numeric;
-    color: $fg_color;
-
-    &:ltr {text-align: right;}
-    &:rtl {text-align: left;}
-  }
-
-  // timezone offset label
-  .world-clocks-timezone {
-    @extend %numeric;
-    @extend %caption;
-    color: $insensitive_fg_color;
-  }
-}
-
-/* Weather */
-.weather-button {
-  @extend %card;
-
-  .weather-box {
-    spacing: $base_padding + $base_margin;
-  }
-
-  .weather-header-box {
-    spacing: $base_padding;
-  }
-
-  .weather-header {
-    color: $insensitive_fg_color;
-    @extend %heading;
-
-    &.location {
-      font-weight: normal;
+    // change style when no world clocks are configured
+    &.no-world-clocks {
+      color: $fg_color;
     }
   }
 
-  .weather-grid {
+  // clocks
+  .world-clocks-grid {
     spacing-rows: $base_padding;
     spacing-columns: $base_padding * 2;
-  }
 
-  .weather-forecast-time {
-    @extend %numeric;
-    @extend %caption;
-    color: darken($fg_color,30%);
-    padding-top: 0.2em;
-    padding-bottom: 0.4em;
-  }
+    // city label
+    .world-clocks-city {
+    }
 
-  .weather-forecast-icon {
-    icon-size: $large_scalable_icon_size;
-  }
+    // timezone time
+    .world-clocks-time {
+      @extend %numeric;
+      font-weight: bold;
 
-  .weather-forecast-temp {
-    @extend %heading;
+      &:ltr {text-align: right;}
+      &:rtl {text-align: left;}
+    }
+
+    // timezone offset label
+    .world-clocks-timezone {
+      @extend %numeric;
+      @extend %caption;
+      color: $insensitive_fg_color;
+    }
+  }
+}
+
+// weather
+.weather-button {
+
+  .weather-box {
+    spacing: $base_padding;
+
+    // header
+    .weather-header-box {
+      spacing: $base_padding;
+
+      .weather-header {
+        @extend %heading;
+        color: $insensitive_fg_color;
+
+        &.location {
+          font-weight: normal;
+        }
+      }
+    }
+
+    // weather items
+    .weather-grid {
+      spacing-rows: $base_padding;
+      spacing-columns: $base_padding * 2;
+
+      .weather-forecast-time {
+        @extend %numeric;
+        @include fontsize(10pt);
+        padding-top: 0.2em;
+        padding-bottom: 0.4em;
+      }
+      .weather-forecast-icon {
+        icon-size: $large_scalable_icon_size;
+        margin-bottom: $base_margin;
+      }
+
+      .weather-forecast-temp {
+        @extend %numeric;
+        font-weight: bold;
+      }
+    }
   }
 }

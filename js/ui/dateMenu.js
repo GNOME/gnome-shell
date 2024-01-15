@@ -417,6 +417,12 @@ class WorldClocksSection extends St.Button {
             x_align: Clutter.ActorAlign.START,
             text: title,
         });
+
+        if (this._locations.length === 0)
+            header.add_style_class_name('no-world-clocks');
+        else
+            header.remove_style_class_name('no-world-clocks');
+
         if (this._grid.text_direction === Clutter.TextDirection.RTL)
             layout.attach(header, 2, 0, 1, 1);
         else
