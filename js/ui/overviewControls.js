@@ -22,6 +22,8 @@ import * as WorkspacesView from './workspacesView.js';
 export const SMALL_WORKSPACE_RATIO = 0.15;
 const DASH_MAX_HEIGHT_RATIO = 0.15;
 const VERTICAL_SPACING_RATIO = 0.02;
+const THUMBNAILS_SPACING_ADJUSTMENT_TOP = 0.6;
+const THUMBNAILS_SPACING_ADJUSTMENT_BOTTOM = 0.4;
 
 const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
 
@@ -88,13 +90,13 @@ class ControlsManagerLayout extends Clutter.LayoutManager {
             break;
         case ControlsState.WINDOW_PICKER:
             workspaceBox.set_origin(0,
-                startY + searchHeight + spacing +
-                thumbnailsHeight + spacing * expandFraction);
+                startY + searchHeight + Math.round(spacing * THUMBNAILS_SPACING_ADJUSTMENT_TOP) +
+                thumbnailsHeight + Math.round(spacing * THUMBNAILS_SPACING_ADJUSTMENT_BOTTOM) * expandFraction);
             workspaceBox.set_size(width,
                 height -
                 dashHeight - spacing -
-                searchHeight - spacing -
-                thumbnailsHeight - spacing * expandFraction);
+                searchHeight - Math.round(spacing * THUMBNAILS_SPACING_ADJUSTMENT_TOP) -
+                thumbnailsHeight - Math.round(spacing * THUMBNAILS_SPACING_ADJUSTMENT_BOTTOM) * expandFraction);
             break;
         case ControlsState.APP_GRID:
             workspaceBox.set_origin(0, startY + searchHeight + spacing);
@@ -188,7 +190,7 @@ class ControlsManagerLayout extends Clutter.LayoutManager {
             thumbnailsHeight = Math.min(
                 thumbnailsHeight * expandFraction,
                 height * this._workspacesThumbnails.maxThumbnailScale);
-            childBox.set_origin(0, startY + searchHeight + spacing);
+            childBox.set_origin(0, startY + searchHeight + Math.round(spacing * THUMBNAILS_SPACING_ADJUSTMENT_TOP));
             childBox.set_size(width, thumbnailsHeight);
             this._workspacesThumbnails.allocate(childBox);
         }
