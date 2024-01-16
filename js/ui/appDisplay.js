@@ -173,13 +173,8 @@ export const AppGrid = GObject.registerClass({
 
     _updatePadding() {
         const node = this.get_theme_node();
-        const {rowSpacing, columnSpacing} = this.layoutManager;
 
         const padding = this._indicatorsPadding.copy();
-        padding.left += rowSpacing;
-        padding.right += rowSpacing;
-        padding.top += columnSpacing;
-        padding.bottom += columnSpacing;
         ['top', 'right', 'bottom', 'left'].forEach(side => {
             padding[side] += node.get_length(`page-padding-${side}`);
         });
