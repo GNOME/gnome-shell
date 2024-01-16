@@ -35,7 +35,7 @@ awk --assign dir=$OUTDIR -- '
   /```javascript$/ {
     do_print = 1;
   }
-' HACKING.md
+' docs/js-coding-style.md
 
 eslint \
   --rule 'no-undef: off' \
