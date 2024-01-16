@@ -17,12 +17,9 @@ All interactions with the project should follow the [Code of Conduct][conduct].
 
 To contribute, open merge requests at https://gitlab.gnome.org/GNOME/gnome-shell.
 
-Commit messages should follow the [GNOME commit message
-guidelines](https://wiki.gnome.org/Git/CommitMessages). If a merge request
-fixes an existing issue, it is good practice to append the full issue URL
-to each commit message. Try to always prefix commit subjects with a relevant
-topic, such as `panel:` or `status/network:`, and it's always better to write
-too much in the commit message body than too little.
+Commit messages should follow the [commit message guidelines][commit-messages].
+
+[commit-messages]: docs/commit-messages.md
 
 ## License
 
