@@ -96,6 +96,34 @@ The following guidelines will help your change to be successfully merged:
 [mr-handbook]: https://handbook.gnome.org/development/change-submission.html
 [commit-messages]: docs/commit-messages.md
 
+## Documentation
+
+ * [Coding style and conventions for javascript][js-style]
+ * [Coding style and conventions for C code][c-style]
+ * [The GJS Developer Guide][gjs-guide]
+ * [Building and Running][building]
+ * [Debugging][debugging]
+
+[js-style]: docs/js-coding-style.md
+[c-style]: docs/c-coding-style.md
+[gjs-guide]: https://gjs.guide
+[building]: docs/building-and-running.md
+[debugging]: docs/debugging.md
+
+## API Reference
+
+ * [Meta][meta-docs]: Display server and window manager
+ * [St][st-docs]: Shell toolkit
+ * [Clutter][clutter-docs]: OpenGL based scene graph
+ * [Shell][shell-docs]: Non-ui shell objects and utilities
+ * See the [mutter page][mutter-docs] for additional documentation
+
+[st-docs]: <https://gnome.pages.gitlab.gnome.org/gnome-shell/st/>
+[shell-docs]: <https://gnome.pages.gitlab.gnome.org/gnome-shell/shell/>
+[clutter-docs]: <https://mutter.gnome.org/clutter/>
+[meta-docs]: <https://mutter.gnome.org/clutter/>
+[mutter-docs]: <https://mutter.gnome.org>
+
 ## License
 
 GNOME Shell is distributed under the terms of the GNU General Public License,
