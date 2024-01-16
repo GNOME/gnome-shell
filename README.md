@@ -7,11 +7,22 @@ innovative user interface concepts to provide a visually attractive and
 easy to use experience.
 
 Bugs should be reported to the GNOME [bug tracking system][bug-tracker].
-Please refer to the [*Schedule* wiki page][schedule] to see the supported versions.
 
 All interactions with the project should follow the [Code of Conduct][conduct].
 
 [conduct]: https://conduct.gnome.org/
+
+## Supported versions
+
+Upstream gnome-shell only supports the most recent stable release series,
+the previous stable release series, and the current development release
+series. Any older stable release series are no longer supported, although
+they may still receive backported security updates in long-term support
+distributions. Such support is up to the distributions, though.
+
+Please refer to the [schedule] to see when a new version will be released.
+
+[schedule]: https://release.gnome.org/calendar
 
 ## Contributing
 
@@ -27,5 +38,4 @@ GNOME Shell is distributed under the terms of the GNU General Public License,
 version 2 or later. See the [COPYING][license] file for details.
 
 [bug-tracker]: https://gitlab.gnome.org/GNOME/gnome-shell/issues
-[schedule]: https://wiki.gnome.org/Schedule
 [license]: COPYING
