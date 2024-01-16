@@ -1,4 +1,4 @@
-# Coding guide
+# JS Coding Style
 
 Our goal is to have all JavaScript code in GNOME follow a consistent style. In
 a dynamic language like JavaScript, it is essential to be rigorous about style
