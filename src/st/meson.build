@@ -221,7 +221,5 @@ libst_gir = gnome.generate_gir(libst,
   dependencies: [mutter_dep, gdk_pixbuf_dep],
   include_directories: include_directories('..'),
   extra_args: ['-DST_COMPILATION', '--quiet'],
-  install_dir_gir: pkgdatadir,
-  install_dir_typelib: pkglibdir,
-  install: true
+  kwargs: introspection_common,
 )

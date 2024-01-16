@@ -3,6 +3,13 @@ src_builddir = meson.current_build_dir()
 service_data = configuration_data()
 service_data.set('libexecdir', libexecdir)
 
+introspection_common = {
+  'install_dir_gir': pkgdatadir,
+  'install_dir_typelib': pkglibdir,
+  'install': true,
+  'fatal_warnings': get_option('werror'),
+}
+
 subdir('calendar-server')
 subdir('hotplug-sniffer')
 subdir('st')
@@ -237,9 +244,7 @@ libshell_gir = gnome.generate_gir(libshell,
   namespace: 'Shell',
   includes: libshell_gir_includes,
   extra_args: ['--quiet'],
-  install_dir_gir: pkgdatadir,
-  install_dir_typelib: pkglibdir,
-  install: true
+  kwargs: introspection_common,
 )
 
 executable('gnome-shell', 'main.c',
