@@ -23,7 +23,7 @@ search_index = true
   [dependencies."Clutter-@MUTTER_API_VERSION@"]
   name = "Clutter"
   description = "An OpenGL based 'interactive canvas' library"
-  docs_url = "https://gnome.pages.gitlab.gnome.org/mutter/clutter/"
+  docs_url = "https://mutter.gnome.org/clutter/"
 
 [theme]
 name = "basic"

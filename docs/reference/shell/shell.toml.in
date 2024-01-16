@@ -23,12 +23,12 @@ search_index = true
   [dependencies."Meta-@MUTTER_API_VERSION@"]
   name = "Meta"
   description = "The mutter display server, window manager and compositor library"
-  docs_url = "https://gnome.pages.gitlab.gnome.org/mutter/meta/"
+  docs_url = "https://mutter.gnome.org/meta/"
 
   [dependencies."Clutter-@MUTTER_API_VERSION@"]
   name = "Clutter"
   description = "An OpenGL based 'interactive canvas' library"
-  docs_url = "https://gnome.pages.gitlab.gnome.org/mutter/clutter/"
+  docs_url = "https://mutter.gnome.org/clutter/"
 
 [theme]
 name = "basic"
