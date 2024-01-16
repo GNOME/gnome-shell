@@ -24,19 +24,6 @@ to each commit message. Try to always prefix commit subjects with a relevant
 topic, such as `panel:` or `status/network:`, and it's always better to write
 too much in the commit message body than too little.
 
-## Default branch
-
-The default development branch is `main`. If you still have a local
-checkout under the old name, use:
-```sh
-git checkout master
-git branch -m master main
-git fetch
-git branch --unset-upstream
-git branch -u origin/main
-git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main
-```
-
 ## License
 
 GNOME Shell is distributed under the terms of the GNU General Public License,
