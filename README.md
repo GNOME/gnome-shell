@@ -9,6 +9,10 @@ easy to use experience.
 Bugs should be reported to the GNOME [bug tracking system][bug-tracker].
 Please refer to the [*Schedule* wiki page][schedule] to see the supported versions.
 
+All interactions with the project should follow the [Code of Conduct][conduct].
+
+[conduct]: https://conduct.gnome.org/
+
 ## Contributing
 
 To contribute, open merge requests at https://gitlab.gnome.org/GNOME/gnome-shell.
