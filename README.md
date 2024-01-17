@@ -77,8 +77,23 @@ When in doubt, it is better to ask before opening an issue.
 
 To contribute, open merge requests at https://gitlab.gnome.org/GNOME/gnome-shell.
 
-Commit messages should follow the [commit message guidelines][commit-messages].
+It can be useful to first look at the [GNOME handbook][mr-handbook].
 
+If a change likely requires discussion beyond code review, it is probably better to
+open an issue first, or follow the process for [feature requests](#feature-requests).
+Otherwise, creating a separate issue is not required.
+
+The following guidelines will help your change to be successfully merged:
+
+ * Keep the change as small as possible. If you can split it into multiple
+   merge requests, please do so.
+ * Use multiple commits. This makes it easier to review and helps to diagnose
+   bugs in the future.
+ * Use clear commit messages following the [conventions][commit-messages].
+ * Pay attention to the CI results. Merge requests cannot be merged until the
+   CI passes.
+
+[mr-handbook]: https://handbook.gnome.org/development/change-submission.html
 [commit-messages]: docs/commit-messages.md
 
 ## License
