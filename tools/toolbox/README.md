@@ -1,4 +1,5 @@
 # Toolbox tools
+
 [Toolbox][toolbox] is a container tool for Linux, which allows the use of
 interactive command line environments for development, without having to
 install software on the host.
@@ -22,6 +23,7 @@ and running gnome-shell from within the app.
 For other options, run the script with `--help`.
 
 ## meson-build.sh
+
 Build and install a meson project in a toolbox.
 
 gnome-shell uses the [meson] build system, and doesn't require any build
@@ -32,6 +34,7 @@ the project.
 Run the script with `--help` to see available options.
 
 ## meson-test.sh
+
 Run a meson project's test suite in a toolbox.
 
 The script wraps meson's `test` command to make invoking it inside a
@@ -40,6 +43,7 @@ toolbox more convenient.
 Run the script with `--help` to see available options.
 
 ## run-gnome-shell.sh
+
 Run gnome-shell from a toolbox.
 
 The script can be used both from within a graphical session and from a TTY.

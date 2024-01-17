@@ -1,4 +1,5 @@
 # GNOME Shell
+
 GNOME Shell provides core user interface functions for the GNOME desktop,
 like switching to windows and launching applications. GNOME Shell takes
 advantage of the capabilities of modern graphics hardware and introduces
@@ -37,6 +38,7 @@ git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main
 ```
 
 ## License
+
 GNOME Shell is distributed under the terms of the GNU General Public License,
 version 2 or later. See the [COPYING][license] file for details.
 
