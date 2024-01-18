@@ -1124,6 +1124,21 @@ export class WindowManager {
         this._allowedKeybindings[name] = modes;
     }
 
+    _getAnimationWindowType(actor) {
+        const {metaWindow: window} = actor;
+        const {windowType} = window;
+
+        if (windowType !== Meta.WindowType.NORMAL ||
+            window.get_client_type() === Meta.WindowClientType.X11)
+            return windowType;
+
+        // wayland doesn't use the DIALOG type, but for
+        // animations we want transients to behave like ones
+        return window.get_transient_for() != null
+            ? Meta.WindowType.DIALOG
+            : windowType;
+    }
+
     _shouldAnimate() {
         const overviewOpen = Main.overview.visible && !Main.overview.closing;
         return !(overviewOpen || this._workspaceAnimation.gestureActive);
@@ -1139,7 +1154,7 @@ export class WindowManager {
         if (!actor.get_texture())
             return false;
 
-        let type = actor.meta_window.get_window_type();
+        const type = this._getAnimationWindowType(actor);
         return types.includes(type);
     }
 
@@ -1487,7 +1502,7 @@ export class WindowManager {
             return;
         }
 
-        switch (actor._windowType) {
+        switch (this._getAnimationWindowType(actor)) {
         case Meta.WindowType.NORMAL:
             actor.set_pivot_point(0.5, 1.0);
             actor.scale_x = 0.01;
@@ -1563,7 +1578,7 @@ export class WindowManager {
             return;
         }
 
-        switch (actor.meta_window.window_type) {
+        switch (this._getAnimationWindowType(actor)) {
         case Meta.WindowType.NORMAL:
             actor.set_pivot_point(0.5, 0.5);
             this._destroying.add(actor);
