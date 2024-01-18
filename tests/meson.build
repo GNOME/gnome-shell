@@ -56,7 +56,7 @@ shell_tests = [
 gvc_typelib_path = fs.parent(libgvc.get_variable('libgvc_gir')[1].full_path())
 libgvc_path = fs.parent(libgvc.get_variable('libgvc').full_path())
 
-background_file = files(join_paths('data', 'background.png'))
+background_file = join_paths(meson.current_source_dir(), 'data', 'background.png')
 
 shell_testenv = environment()
 shell_testenv.set('G_DEBUG', 'fatal-warnings')
