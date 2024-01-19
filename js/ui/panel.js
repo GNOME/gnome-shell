@@ -671,7 +671,7 @@ class Panel extends St.Widget {
         Main.overview.connectObject('showing',
             () => this.add_style_pseudo_class('overview'),
             this);
-        Main.overview.connect('hiding',
+        Main.overview.connectObject('hiding',
             () => this.remove_style_pseudo_class('overview'),
             this);
 
