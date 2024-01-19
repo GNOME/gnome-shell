@@ -427,12 +427,12 @@ class ActivitiesButton extends PanelMenu.Button {
 
         this.add_child(new WorkspaceIndicators());
 
-        Main.overview.connect('showing', () => {
-            this.add_style_pseudo_class('checked');
-        });
-        Main.overview.connect('hiding', () => {
-            this.remove_style_pseudo_class('checked');
-        });
+        Main.overview.connectObject('showing',
+            () => this.add_style_pseudo_class('checked'),
+            this);
+        Main.overview.connectObject('hiding',
+            () => this.remove_style_pseudo_class('checked'),
+            this);
 
         this._xdndTimeOut = 0;
     }
@@ -668,12 +668,12 @@ class Panel extends St.Widget {
         this.connect('button-press-event', this._onButtonPress.bind(this));
         this.connect('touch-event', this._onTouchEvent.bind(this));
 
-        Main.overview.connect('showing', () => {
-            this.add_style_pseudo_class('overview');
-        });
-        Main.overview.connect('hiding', () => {
-            this.remove_style_pseudo_class('overview');
-        });
+        Main.overview.connectObject('showing',
+            () => this.add_style_pseudo_class('overview'),
+            this);
+        Main.overview.connect('hiding',
+            () => this.remove_style_pseudo_class('overview'),
+            this);
 
         Main.layoutManager.panelBox.add_child(this);
         Main.ctrlAltTabManager.addGroup(this,
