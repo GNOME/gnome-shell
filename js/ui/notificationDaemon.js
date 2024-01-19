@@ -136,7 +136,7 @@ class FdoNotificationDaemon {
     }
 
     NotifyAsync(params, invocation) {
-        let [appName, replacesId, icon, summary, body, actions, hints, timeout] = params;
+        let [appName, replacesId, appIcon, summary, body, actions, hints, timeout] = params;
         let id;
 
         for (let hint in hints) {
@@ -162,7 +162,7 @@ class FdoNotificationDaemon {
 
         const ndata = {
             appName,
-            icon,
+            appIcon,
             summary,
             body,
             actions,
@@ -188,7 +188,7 @@ class FdoNotificationDaemon {
     }
 
     _notifyForSource(source, ndata) {
-        const {icon, summary, body, actions, hints} = ndata;
+        const {appIcon, summary, body, actions, hints} = ndata;
         let {notification} = ndata;
 
         if (notification == null) {
@@ -216,7 +216,7 @@ class FdoNotificationDaemon {
         let gicon = this._imageForNotificationData(hints);
 
         if (!gicon)
-            gicon = this._iconForNotificationData(icon);
+            gicon = this._iconForNotificationData(appIcon);
 
         if (!gicon)
             gicon = this._fallbackIconForNotificationData(hints);
