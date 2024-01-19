@@ -15,7 +15,7 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
         let items = [];
 
         items.push({
-            icon: 'view-mirror-symbolic',
+            icon: 'shell-display-mirror-symbolic',
             /* Translators: this is for display mirroring i.e. cloning.
              * Try to keep it under around 15 characters.
              */
@@ -24,7 +24,7 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
         });
 
         items.push({
-            icon: 'video-joined-displays-symbolic',
+            icon: 'shell-display-extend-all-symbolic',
             /* Translators: this is for the desktop spanning displays.
              * Try to keep it under around 15 characters.
              */
@@ -34,15 +34,15 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
 
         if (global.backend.get_monitor_manager().has_builtin_panel) {
             items.push({
-                icon: 'video-single-display-symbolic',
-                /* Translators: this is for using only an external display.
+                icon: 'shell-display-external-only-symbolic',
+                /* Translators: this is for using only external displays.
                  * Try to keep it under around 15 characters.
                  */
                 label: _('External Only'),
                 configType: Meta.MonitorSwitchConfigType.EXTERNAL,
             });
             items.push({
-                icon: 'computer-symbolic',
+                icon: 'shell-display-built-in-only-symbolic',
                 /* Translators: this is for using only the laptop display.
                  * Try to keep it under around 15 characters.
                  */
