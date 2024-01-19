@@ -294,8 +294,10 @@ function _GNOMEversionToNumber(version) {
     if (!isNaN(ret))
         return ret;
     if (version === 'alpha')
-        return -2;
+        return -3;
     if (version === 'beta')
+        return -2;
+    if (version === 'rc')
         return -1;
     return ret;
 }
