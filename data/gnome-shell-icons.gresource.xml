@@ -22,6 +22,10 @@
     <file preprocess="xml-stripblanks">scalable/actions/screenshot-ui-show-pointer-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/actions/screenshot-ui-window-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/actions/screenshot-recorded-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">scalable/actions/shell-display-built-in-only-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">scalable/actions/shell-display-extend-all-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">scalable/actions/shell-display-external-only-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">scalable/actions/shell-display-mirror-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/actions/shell-focus-app-grid-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/actions/shell-focus-dash-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/actions/shell-focus-dash-symbolic-rtl.svg</file>
@@ -49,3 +53,6 @@
     <file preprocess="xml-stripblanks">scalable/status/switch-off-symbolic.svg</file>
   </gresource>
 </gresources>
+
+
+
