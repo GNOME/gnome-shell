@@ -27,6 +27,17 @@ $switcher_radius: $modal_radius + $switcher_padding;
     @include tile_button($fg:$osd_fg_color, $bg:$osd_bg_color);
     // override %tile style so mouse doesn't steal focus
     &:hover {background: none;}
+
+    // brighter than normal selected style
+    &:selected {
+      background-color: transparentize($osd_fg_color, 0.8);
+    }
+
+    @if $contrast == 'high' {
+      &:selected {
+        background-color: transparentize($osd_fg_color, 0.7);
+      }
+    }
   }
 
   .separator {

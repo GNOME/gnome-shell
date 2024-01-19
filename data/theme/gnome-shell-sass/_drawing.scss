@@ -344,7 +344,7 @@
     &:focus { @include button(focus, $tc:$fg, $c:$bg, $always_dark: $system);}
     &:hover { @include button(hover, $tc:$fg, $c:$bg, $always_dark: $system);}
     &:active { @include button(active, $tc:$fg, $c:$bg, $always_dark: $system);}
-    &:selected,
+    &:highlighted,&:selected,
     &:checked { @include button(checked, $tc:$fg, $c:$bg, $always_dark: $system);}
     &:insensitive { @include button(insensitive, $tc:$fg, $c:$bg, $always_dark: $system);}
   } @else {
@@ -352,16 +352,9 @@
     &:focus { @include button(focus, $tc:$fg, $c:$bg, $style: flat, $always_dark: $system);}
     &:hover { @include button(hover, $tc:$fg, $c:$bg, $style: flat, $always_dark: $system);}
     &:active { @include button(active, $tc:$fg, $c:$bg, $style: flat, $always_dark: $system);}
-    &:selected,
+    &:highlighted,&:selected,
     &:checked { @include button(checked, $tc:$fg, $c:$bg, $style: flat, $always_dark: $system);}
     &:insensitive { @include button(insensitive, $tc:$fg, $c:$bg, $style: flat, $always_dark: $system);}
-  }
-
-
-  &:highlighted {
-    // brighter background color than other states
-    $bg: transparentize($fg, 0.8);
-    @include button(active, $tc:$fg, $c:$bg, $always_dark: $system);
   }
 
   &:drop {

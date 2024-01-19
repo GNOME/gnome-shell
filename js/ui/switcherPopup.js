@@ -494,9 +494,9 @@ export const SwitcherList = GObject.registerClass({
 
         if (this._items[index]) {
             if (justOutline)
-                this._items[index].add_style_pseudo_class('selected');
-            else
                 this._items[index].add_style_pseudo_class('highlighted');
+            else
+                this._items[index].add_style_pseudo_class('selected');
         }
 
         this._highlighted = index;
