@@ -1,16 +1,16 @@
-const JsUnit = imports.jsUnit;
-
 import GObject from 'gi://GObject';
 
 import 'resource:///org/gnome/shell/ui/environment.js';
 
 import {InjectionManager} from 'resource:///org/gnome/shell/extensions/extension.js';
 
+const FIXED_NUMBER = 42;
+
 class Object1 {
     count = 0;
 
     getNumber() {
-        return 42;
+        return FIXED_NUMBER;
     }
 
     getCount() {
@@ -29,109 +29,166 @@ class GObject1 extends GObject.Object {
     static {
         GObject.registerClass(this);
     }
-
-    plonk() {
-        this.set_property('plonked', true);
-    }
 }
 
-/**
- * @param {object} object to modify
- */
-function addInjections(object) {
-    // extend original method
-    injectionManager.overrideMethod(
-        object, 'getNumber', originalMethod => {
+describe('InjectionManager', () => {
+    const INJECTIONS = {
+        'getNumber': originalMethod => {
             return function () {
                 // eslint-disable-next-line no-invalid-this
                 const num = originalMethod.call(this);
                 return 2 * num;
             };
-        });
-
-    // override original method
-    injectionManager.overrideMethod(
-        object, 'getCount', () => {
+        },
+        'getCount': () => {
             return function () {
-                return 42;
+                return FIXED_NUMBER;
             };
-        });
-
-    // inject new method
-    injectionManager.overrideMethod(
-        object, 'getOtherNumber', () => {
+        },
+        'getOtherNumber': () => {
             return function () {
-                return 42;
+                return FIXED_NUMBER;
             };
-        });
-}
+        },
+    };
 
+    let injectionManager;
 
-const injectionManager = new InjectionManager();
-let obj;
+    function injectAll(obj) {
+        for (const func in INJECTIONS) {
+            injectionManager.overrideMethod(obj,
+                func, INJECTIONS[func]);
+        }
+    }
 
-// Prototype injections
-addInjections(Object1.prototype);
-
-obj = new Object1();
-
-// new obj is modified
-JsUnit.assertEquals(obj.getNumber(), 84);
-JsUnit.assertEquals(obj.getCount(), 42);
-JsUnit.assertEquals(obj.count, 0);
-JsUnit.assertEquals(obj.getOtherNumber(), 42);
-
-injectionManager.clear();
-
-obj = new Object1();
-
-// new obj is unmodified
-JsUnit.assertEquals(obj.getNumber(), 42);
-JsUnit.assertEquals(obj.getCount(), obj.count);
-JsUnit.assert(obj.count > 0);
-JsUnit.assertRaises(() => obj.getOtherNumber());
-
-// instance injections
-addInjections(obj);
-
-// obj is now modified
-JsUnit.assertEquals(obj.getNumber(), 84);
-JsUnit.assertEquals(obj.getCount(), 42);
-JsUnit.assertEquals(obj.count, 1);
-JsUnit.assertEquals(obj.getOtherNumber(), 42);
-
-injectionManager.restoreMethod(obj, 'getNumber');
-JsUnit.assertEquals(obj.getNumber(), 42);
-
-injectionManager.clear();
-
-// obj is unmodified again
-JsUnit.assertEquals(obj.getNumber(), 42);
-JsUnit.assertEquals(obj.getCount(), obj.count);
-JsUnit.assert(obj.count > 0);
-JsUnit.assertRaises(() => obj.getOtherNumber());
-
-// GObject injections
-const gobj = new GObject1();
-let vfuncCalled;
-
-injectionManager.overrideMethod(
-    GObject1.prototype, 'vfunc_set_property', originalMethod => {
-        return function (...args) {
-            // eslint-disable-next-line no-invalid-this
-            originalMethod.apply(this, args);
-            vfuncCalled = true;
-        };
+    beforeEach(() => {
+        injectionManager = new InjectionManager();
     });
 
-// gobj is now modified
-vfuncCalled = false;
-gobj.plonk();
-JsUnit.assertTrue(vfuncCalled);
+    afterEach(() => {
+        injectionManager.clear();
+    });
 
-injectionManager.clear();
+    it('can extend prototype methods', () => {
+        injectionManager.overrideMethod(Object1.prototype,
+            'getNumber', INJECTIONS['getNumber']);
 
-// gobj is unmodified again
-vfuncCalled = false;
-gobj.plonk();
-JsUnit.assertFalse(vfuncCalled);
+        const obj = new Object1();
+        expect(obj.getNumber()).toEqual(2 * FIXED_NUMBER);
+    });
+
+    it('can replace prototype methods', () => {
+        injectionManager.overrideMethod(Object1.prototype,
+            'getCount', INJECTIONS['getCount']);
+
+        const obj = new Object1();
+        expect(obj.getCount()).toEqual(42);
+        expect(obj.count).toEqual(0);
+    });
+
+    it('can inject methods into prototypes', () => {
+        injectionManager.overrideMethod(Object1.prototype,
+            'getOtherNumber', INJECTIONS['getOtherNumber']);
+
+        const obj = new Object1();
+        expect(obj.getOtherNumber()).toEqual(42);
+    });
+
+    it('can undo prototype injections', () => {
+        injectAll(Object1.prototype);
+
+        injectionManager.clear();
+
+        const obj = new Object1();
+        expect(obj.getNumber()).toEqual(FIXED_NUMBER);
+        expect(obj.getCount()).toEqual(obj.count);
+        expect(obj.count).toBeGreaterThan(0);
+        expect(() => obj.getOtherNumber()).toThrow();
+    });
+
+    it('can extend instance methods', () => {
+        const obj = new Object1();
+        injectionManager.overrideMethod(obj,
+            'getNumber', INJECTIONS['getNumber']);
+
+        expect(obj.getNumber()).toEqual(2 * FIXED_NUMBER);
+    });
+
+    it('can replace instance methods', () => {
+        const obj = new Object1();
+        injectionManager.overrideMethod(obj,
+            'getCount', INJECTIONS['getCount']);
+
+        expect(obj.getCount()).toEqual(42);
+        expect(obj.count).toEqual(0);
+    });
+
+    it('can inject methods into instances', () => {
+        const obj = new Object1();
+        injectionManager.overrideMethod(obj,
+            'getOtherNumber', INJECTIONS['getOtherNumber']);
+
+        expect(obj.getOtherNumber()).toEqual(42);
+    });
+
+    it('can undo instance injections', () => {
+        const obj = new Object1();
+
+        injectAll(obj);
+
+        injectionManager.clear();
+
+        expect(obj.getNumber()).toEqual(FIXED_NUMBER);
+        expect(obj.getCount()).toEqual(obj.count);
+        expect(obj.count).toBeGreaterThan(0);
+        expect(() => obj.getOtherNumber()).toThrow();
+    });
+
+    it('can restore an original method', () => {
+        const obj = new Object1();
+
+        injectAll(obj);
+
+        expect(obj.getNumber()).toEqual(2 * FIXED_NUMBER);
+
+        injectionManager.restoreMethod(obj, 'getNumber');
+        expect(obj.getNumber()).toEqual(FIXED_NUMBER);
+    });
+
+    it('can extend a GObject vfunc', () => {
+        const gobj = new GObject1();
+        let vfuncCalled;
+
+        injectionManager.overrideMethod(
+            GObject1.prototype, 'vfunc_set_property', originalMethod => {
+                return function (...args) {
+                    // eslint-disable-next-line no-invalid-this
+                    originalMethod.apply(this, args);
+                    vfuncCalled = true;
+                };
+            });
+
+        vfuncCalled = false;
+        gobj.set_property('plonked', true);
+        expect(vfuncCalled).toEqual(true);
+    });
+
+    it('can restore a GObject vfunc', () => {
+        const gobj = new GObject1();
+        let vfuncCalled;
+
+        injectionManager.overrideMethod(
+            GObject1.prototype, 'vfunc_set_property', originalMethod => {
+                return function (...args) {
+                    // eslint-disable-next-line no-invalid-this
+                    originalMethod.apply(this, args);
+                    vfuncCalled = true;
+                };
+            });
+        injectionManager.clear();
+
+        vfuncCalled = false;
+        gobj.set_property('plonked', true);
+        expect(vfuncCalled).toEqual(false);
+    });
+});
