@@ -1,73 +1,54 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-
 // Test cases for version comparison
 
-const JsUnit = imports.jsUnit;
-
 import 'resource:///org/gnome/shell/ui/environment.js';
+import {GNOMEversionCompare} from 'resource:///org/gnome/shell/misc/util.js';
 
-import * as Util from 'resource:///org/gnome/shell/misc/util.js';
+describe('GNOMEversionCompare()', () => {
+    it('compares matching versions', () => {
+        expect(GNOMEversionCompare('40', '40')).toBe(0);
+    });
 
-const tests = [
-    {
-        v1: '40',
-        v2: '40',
-        res: 0,
-    },
-    {
-        v1: '40',
-        v2: '42',
-        res: -1,
-    },
-    {
-        v1: '42',
-        v2: '40',
-        res: 1,
-    },
-    {
-        v1: '3.38.0',
-        v2: '40',
-        res: -1,
-    },
-    {
-        v1: '40',
-        v2: '3.38.0',
-        res: 1,
-    },
-    {
-        v1: '40',
-        v2: '40.rc',
-        res: 1,
-    },
-    {
-        v1: '40.alpha.1.1',
-        v2: '40',
-        res: -1,
-    },
-    {
-        v1: '40',
-        v2: '40.alpha.1.1',
-        res: 1,
-    },
-    {
-        v1: '40.beta',
-        v2: '40',
-        res: -1,
-    },
-    {
-        v1: '40.1',
-        v2: '40',
-        res: 1,
-    },
-    {
-        v1: '',
-        v2: '40.alpha',
-        res: -1,
-    },
-];
+    it('compares older versions', () => {
+        expect(GNOMEversionCompare('40', '42')).toBeLessThan(0);
+        expect(GNOMEversionCompare('40.0', '40.1')).toBeLessThan(0);
+    });
 
-for (let i = 0; i < tests.length; i++) {
-    const name = `Test #${i} v1: ${tests[i].v1}, v2: ${tests[i].v2}`;
-    print(name);
-    JsUnit.assertEquals(name, Util.GNOMEversionCompare(tests[i].v1, tests[i].v2), tests[i].res);
-}
+    it('compares newer versions', () => {
+        expect(GNOMEversionCompare('42', '40')).toBeGreaterThan(0);
+        expect(GNOMEversionCompare('40.1', '40.0')).toBeGreaterThan(0);
+    });
+
+    it('compares legacy versions', () => {
+        expect(GNOMEversionCompare('3.38.0', '40')).toBeLessThan(0);
+        expect(GNOMEversionCompare('40', '3.38.0')).toBeGreaterThan(0);
+    });
+
+    it('compares pre-release versions', () => {
+        expect(GNOMEversionCompare('40.beta', '40')).toBeLessThan(0);
+        expect(GNOMEversionCompare('40.alpha', '40')).toBeLessThan(0);
+        expect(GNOMEversionCompare('40.rc', '40')).toBeLessThan(0);
+
+        expect(GNOMEversionCompare('40', '40.beta')).toBeGreaterThan(0);
+        expect(GNOMEversionCompare('40', '40.alpha')).toBeGreaterThan(0);
+        expect(GNOMEversionCompare('40', '40.rc')).toBeGreaterThan(0);
+
+        expect(GNOMEversionCompare('40.alpha', '40.beta')).toBeLessThan(0);
+        expect(GNOMEversionCompare('40.beta', '40.rc')).toBeLessThan(0);
+        expect(GNOMEversionCompare('40.rc', '40.0')).toBeLessThan(0);
+    });
+
+    it('compares point-release versions', () => {
+        expect(GNOMEversionCompare('40.1', '40')).toBeGreaterThan(0);
+        expect(GNOMEversionCompare('40.alpha.1', '40.alpha')).toBeGreaterThan(0);
+        expect(GNOMEversionCompare('40.beta.1.1', '40.beta.1')).toBeGreaterThan(0);
+
+        expect(GNOMEversionCompare('40', '40.1')).toBeLessThan(0);
+        expect(GNOMEversionCompare('40.alpha', '40.alpha.1')).toBeLessThan(0);
+        expect(GNOMEversionCompare('40.beta.1', '40.beta.1.1')).toBeLessThan(0);
+    });
+
+    it('compares empty versions', () => {
+        expect(GNOMEversionCompare('', '40')).toBeLessThan(0);
+    });
+});

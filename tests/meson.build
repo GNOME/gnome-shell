@@ -28,6 +28,7 @@ unit_tests = [
     'params',
     'signalTracker',
     'url',
+    'versionCompare',
 ]
 
 foreach test : unit_tests
@@ -42,18 +43,6 @@ foreach test : unit_tests
     suite: 'unit',
     env: unit_testenv,
     protocol: 'tap',
-    workdir: meson.current_source_dir())
-endforeach
-
-legacy_tests = [
-    'versionCompare',
-]
-
-foreach test : legacy_tests
-  test(test, run_test,
-    args: 'unit/@0@.js'.format(test),
-    suite: 'unit',
-    env: unit_testenv,
     workdir: meson.current_source_dir())
 endforeach
 
