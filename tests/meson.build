@@ -25,6 +25,7 @@ unit_tests = [
     'insertSorted',
     'jsParse',
     'markup',
+    'params',
 ]
 
 foreach test : unit_tests
@@ -43,7 +44,6 @@ foreach test : unit_tests
 endforeach
 
 legacy_tests = [
-    'params',
     'signalTracker',
     'url',
     'versionCompare',
