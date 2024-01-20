@@ -94,11 +94,6 @@ x11_dep = dependency('x11')
 schemas_dep = dependency('gsettings-desktop-schemas', version: schemas_req)
 gnome_desktop_dep = dependency('gnome-desktop-4', version: gnome_desktop_req)
 
-gidocgen_dep = dependency('gi-docgen',
-  version: '>= 2021.1',
-  fallback: ['gi-docgen', 'dummy_dep'],
-  required: get_option('gtk_doc'))
-
 nm_deps = []
 if get_option('networkmanager')
   nm_deps += dependency('libnm', version: nm_req)
