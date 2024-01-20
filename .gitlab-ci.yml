@@ -201,6 +201,7 @@ build:
     paths:
       - mutter
       - build
+      - subprojects/jasmine-gjs
 
 test:
   stage: test

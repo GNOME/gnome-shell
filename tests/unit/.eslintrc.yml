@@ -1,0 +1,26 @@
+---
+# SPDX-License-Identifier: MIT OR LGPL-2.0-or-later
+# SPDX-FileCopyrightText: 2024 Florian Müllner <fmuellner@gnome.org>
+rules:
+  jsdoc/require-jsdoc: 'off'
+globals:
+  jasmine: readonly
+  afterAll: readonly
+  afterEach: readonly
+  beforeAll: readonly
+  beforeEach: readonly
+  describe: readonly
+  expect: readonly
+  expectAsync: readonly
+  fail: readonly
+  fdescribe: readonly
+  fit: readonly
+  it: readonly
+  pending: readonly
+  setSpecProperty: readonly
+  setSuiteProperty: readonly
+  spyOn: readonly
+  spyOnAllFunctions: readonly
+  spyOnProperty: readonly
+  xdescribe: readonly
+  xit: readonly

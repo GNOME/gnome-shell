@@ -293,6 +293,8 @@ if get_option('tests')
   common_test_env.set('GSETTINGS_BACKEND', 'memory')
   common_test_env.set('XDG_CURRENT_DESKTOP', '')
 
+  jasmine = find_program('jasmine')
+
   add_test_setup('default',
     is_default: true,
     env: common_test_env,

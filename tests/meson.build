@@ -20,6 +20,24 @@ unit_testenv.append('GI_TYPELIB_PATH', shell_typelib_path, separator: ':')
 unit_testenv.append('GI_TYPELIB_PATH', st_typelib_path, separator: ':')
 
 unit_tests = [
+]
+
+foreach test : unit_tests
+  test(test, jasmine,
+    args: [
+      '--module',
+      '--tap',
+      '--no-config',
+      '--interpreter', run_test,
+      'unit/@0@.js'.format(test),
+    ],
+    suite: 'unit',
+    env: unit_testenv,
+    protocol: 'tap',
+    workdir: meson.current_source_dir())
+endforeach
+
+legacy_tests = [
     'highlighter',
     'injectionManager',
     'insertSorted',
@@ -31,7 +49,7 @@ unit_tests = [
     'versionCompare',
 ]
 
-foreach test : unit_tests
+foreach test : legacy_tests
   test(test, run_test,
     args: 'unit/@0@.js'.format(test),
     suite: 'unit',
