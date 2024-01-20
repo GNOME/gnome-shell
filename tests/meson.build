@@ -27,6 +27,7 @@ unit_tests = [
     'markup',
     'params',
     'signalTracker',
+    'url',
 ]
 
 foreach test : unit_tests
@@ -45,7 +46,6 @@ foreach test : unit_tests
 endforeach
 
 legacy_tests = [
-    'url',
     'versionCompare',
 ]
 
