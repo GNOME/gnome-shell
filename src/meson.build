@@ -45,6 +45,11 @@ install_data('gnome-shell-extension-prefs',
   install_dir: bindir
 )
 
+typelib_cflags = [
+  '-DMUTTER_TYPELIB_DIR="@0@"'.format(mutter_typelibdir),
+  '-DSHELL_TYPELIB_DIR="@0@"'.format(pkglibdir),
+]
+
 gnome_shell_cflags = [
   '-DCLUTTER_ENABLE_EXPERIMENTAL_API',
   '-DCOGL_ENABLE_EXPERIMENTAL_API',
@@ -248,9 +253,7 @@ libshell_gir = gnome.generate_gir(libshell,
 )
 
 executable('gnome-shell', 'main.c',
-  c_args: gnome_shell_cflags + [
-    '-DMUTTER_TYPELIB_DIR="@0@"'.format(mutter_typelibdir)
-  ],
+  c_args: gnome_shell_cflags + typelib_cflags,
   dependencies: gnome_shell_deps + [libshell_dep, libst_dep, mutter_dep],
   include_directories: [conf_inc, st_inc, include_directories('tray')],
   build_rpath: mutter_typelibdir,
@@ -276,8 +279,9 @@ executable('gnome-shell-perf-helper', 'shell-perf-helper.c', js_resources,
   install: true
 )
 
-executable('run-js-test', 'run-js-test.c',
+run_test = executable('run-js-test', 'run-js-test.c',
   dependencies: [mutter_dep, mtk_dep, gdk_pixbuf_dep, gio_dep, gi_dep, gjs_dep],
+  c_args: typelib_cflags,
   include_directories: [conf_inc],
   link_with: libshell,
   build_rpath: mutter_typelibdir,

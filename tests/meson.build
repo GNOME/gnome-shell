@@ -1,12 +1,3 @@
-testconf = configuration_data()
-testconf.set('MUTTER_TYPELIB_DIR', mutter_typelibdir)
-testconf.set('srcdir', meson.current_source_dir())
-run_test = configure_file(
-  input: 'run-test.sh.in',
-  output: 'run-test.sh',
-  configuration: testconf
-)
-
 mutter_tests_datadir = mutter_test_dep.get_variable('tests_datadir')
 dbusrunnerconf = configuration_data()
 dbusrunnerconf.set('MUTTER_TEST_PKGDATADIR', mutter_tests_datadir)
@@ -17,6 +8,16 @@ dbus_runner = configure_file(
   output: 'gnome-shell-dbus-runner.py',
   configuration: dbusrunnerconf,
 )
+
+gvc_typelib_path = fs.parent(libgvc.get_variable('libgvc_gir')[1].full_path())
+shell_typelib_path = fs.parent(libshell_gir[1].full_path())
+st_typelib_path = fs.parent(libst_gir[1].full_path())
+
+unit_testenv = environment()
+unit_testenv.set('GNOME_SHELL_DATADIR', data_builddir)
+unit_testenv.append('GI_TYPELIB_PATH', gvc_typelib_path, separator: ':')
+unit_testenv.append('GI_TYPELIB_PATH', shell_typelib_path, separator: ':')
+unit_testenv.append('GI_TYPELIB_PATH', st_typelib_path, separator: ':')
 
 unit_tests = [
     'highlighter',
@@ -34,6 +35,7 @@ foreach test : unit_tests
   test(test, run_test,
     args: 'unit/@0@.js'.format(test),
     suite: 'unit',
+    env: unit_testenv,
     workdir: meson.current_source_dir())
 endforeach
 
@@ -53,7 +55,6 @@ shell_tests = [
   },
 ]
 
-gvc_typelib_path = fs.parent(libgvc.get_variable('libgvc_gir')[1].full_path())
 libgvc_path = fs.parent(libgvc.get_variable('libgvc').full_path())
 
 background_file = join_paths(meson.current_source_dir(), 'data', 'background.png')

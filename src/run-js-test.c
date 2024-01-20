@@ -61,6 +61,9 @@ main(int argc, char **argv)
   global = shell_global_get ();
   js_context = _shell_global_get_gjs_context (global);
 
+  g_irepository_prepend_search_path (MUTTER_TYPELIB_DIR);
+  g_irepository_prepend_search_path (SHELL_TYPELIB_DIR);
+
   /* prepare command line arguments */
   if (!gjs_context_define_string_array (js_context, "ARGV",
                                         argc - 2, (const char**)argv + 2,
