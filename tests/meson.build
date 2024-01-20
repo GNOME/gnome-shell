@@ -22,6 +22,7 @@ unit_testenv.append('GI_TYPELIB_PATH', st_typelib_path, separator: ':')
 unit_tests = [
     'highlighter',
     'injectionManager',
+    'insertSorted',
 ]
 
 foreach test : unit_tests
@@ -40,7 +41,6 @@ foreach test : unit_tests
 endforeach
 
 legacy_tests = [
-    'insertSorted',
     'jsParse',
     'markup',
     'params',
