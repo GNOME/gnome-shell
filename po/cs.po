@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-08-05 19:37+0000\n"
-"PO-Revision-Date: 2023-08-06 17:16+0200\n"
+"POT-Creation-Date: 2024-01-07 08:32+0000\n"
+"PO-Revision-Date: 2024-01-22 00:26+0100\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-launchers.xml:6
@@ -66,7 +66,7 @@ msgid "Activate favorite app 9"
 msgstr "Aktivovat oblíbenou aplikaci č. 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2131
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2137
 msgid "Screenshots"
 msgstr "Snímky obrazovky"
 
@@ -444,6 +444,16 @@ msgstr "Místo"
 msgid "The location for which to show a forecast"
 msgstr "Místo, pro které se má zobrazovat předpověď počasí"
 
+#. Keep in sync with subprojects/extensions-app
+#: data/org.gnome.Shell.Extensions.desktop.in.in:5
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/js/main.js:212
+#: subprojects/extensions-app/data/ui/extensions-window.ui:18
+#: subprojects/extensions-app/data/ui/extensions-window.ui:83
+msgid "Extensions"
+msgstr "Rozšíření"
+
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
 msgstr "Přihlášení do sítě"
@@ -637,26 +647,26 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Zamknout otočení obrazovky"
 
-#: js/misc/util.js:129
+#: js/misc/util.js:130
 msgid "Command not found"
 msgstr "Příkaz nenalezen"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:166
+#: js/misc/util.js:167
 msgid "Could not parse command:"
 msgstr "Nelze analyzovat příkaz:"
 
-#: js/misc/util.js:174
+#: js/misc/util.js:175
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Vykonání „%s“ selhalo:"
 
-#: js/misc/util.js:191
+#: js/misc/util.js:192
 msgid "Just now"
 msgstr "právě teď"
 
-#: js/misc/util.js:193
+#: js/misc/util.js:194
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -664,7 +674,7 @@ msgstr[0] "před minutou"
 msgstr[1] "před %d minutami"
 msgstr[2] "před %d minutami"
 
-#: js/misc/util.js:197
+#: js/misc/util.js:198
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -672,11 +682,11 @@ msgstr[0] "před hodinou"
 msgstr[1] "před %d hodinami"
 msgstr[2] "před %d hodinami"
 
-#: js/misc/util.js:201 js/ui/dateMenu.js:167
+#: js/misc/util.js:202 js/ui/dateMenu.js:167
 msgid "Yesterday"
 msgstr "včera"
 
-#: js/misc/util.js:203
+#: js/misc/util.js:204
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -684,7 +694,7 @@ msgstr[0] "před %d dnem"
 msgstr[1] "před %d dny"
 msgstr[2] "před %d dny"
 
-#: js/misc/util.js:207
+#: js/misc/util.js:208
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -692,7 +702,7 @@ msgstr[0] "před týdnem"
 msgstr[1] "před %d týdny"
 msgstr[2] "před %d týdny"
 
-#: js/misc/util.js:211
+#: js/misc/util.js:212
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
@@ -700,7 +710,7 @@ msgstr[0] "před měsícem"
 msgstr[1] "před %d měsíci"
 msgstr[2] "před %d měsíci"
 
-#: js/misc/util.js:214
+#: js/misc/util.js:215
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -709,20 +719,20 @@ msgstr[1] "před %d roky"
 msgstr[2] "před %d lety"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:247
+#: js/misc/util.js:248
 msgid "%H∶%M"
 msgstr "%k∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:253
+#: js/misc/util.js:254
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "včera, %k∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:259
+#: js/misc/util.js:260
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A %k∶%M"
@@ -730,7 +740,7 @@ msgstr "%A %k∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:265
+#: js/misc/util.js:266
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%-e. %B %k∶%M"
@@ -738,7 +748,7 @@ msgstr "%-e. %B %k∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:271
+#: js/misc/util.js:272
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%-e. %B %Y, %k∶%M"
@@ -746,20 +756,20 @@ msgstr "%-e. %B %Y, %k∶%M"
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
-#: js/misc/util.js:276
+#: js/misc/util.js:277
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:282
+#: js/misc/util.js:283
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "včera %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:288
+#: js/misc/util.js:289
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A %l∶%M %p"
@@ -767,7 +777,7 @@ msgstr "%A %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:294
+#: js/misc/util.js:295
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%-e. %B %l∶%M %p"
@@ -775,7 +785,7 @@ msgstr "%-e. %B %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:300
+#: js/misc/util.js:301
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-e. %B %Y, %l∶%M %p"
@@ -865,7 +875,7 @@ msgstr "Sluchátka"
 msgid "Headset"
 msgstr "Sluchátka s mikrofonem"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:348
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:354
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -957,33 +967,33 @@ msgstr "%OB"
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:485
+#: js/ui/calendar.js:486
 msgid "Previous month"
 msgstr "Předchozí měsíc"
 
-#: js/ui/calendar.js:503
+#: js/ui/calendar.js:504
 msgid "Next month"
 msgstr "Následující měsíc"
 
-#: js/ui/calendar.js:654
+#: js/ui/calendar.js:655
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%-e"
 
-#: js/ui/calendar.js:713
+#: js/ui/calendar.js:714
 msgid "Week %V"
 msgstr "%V. týden"
 
-#: js/ui/calendar.js:892
+#: js/ui/calendar.js:893
 msgid "No Notifications"
 msgstr "Nejsou žádná upozornění"
 
-#: js/ui/calendar.js:949
+#: js/ui/calendar.js:950
 msgid "Do Not Disturb"
 msgstr "Nevyrušovat"
 
-#: js/ui/calendar.js:970
+#: js/ui/calendar.js:971
 msgid "Clear"
 msgstr "Vymazat"
 
@@ -1057,11 +1067,11 @@ msgid "Service"
 msgstr "Služba"
 
 #: js/ui/components/networkAgent.js:366 js/ui/components/networkAgent.js:402
-#: js/ui/components/networkAgent.js:747 js/ui/components/networkAgent.js:768
+#: js/ui/components/networkAgent.js:748 js/ui/components/networkAgent.js:769
 msgid "Authentication required"
 msgstr "Vyžaduje ověření"
 
-#: js/ui/components/networkAgent.js:367 js/ui/components/networkAgent.js:748
+#: js/ui/components/networkAgent.js:367 js/ui/components/networkAgent.js:749
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1070,7 +1080,7 @@ msgstr ""
 "Pro přístup k bezdrátové síti „%s“ jsou vyžadována hesla nebo šifrovací "
 "klíče."
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:752
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:753
 msgid "Wired 802.1X authentication"
 msgstr "Ověření připojení po drátu 802.1X"
 
@@ -1078,15 +1088,15 @@ msgstr "Ověření připojení po drátu 802.1X"
 msgid "Network name"
 msgstr "Název sítě"
 
-#: js/ui/components/networkAgent.js:382 js/ui/components/networkAgent.js:756
+#: js/ui/components/networkAgent.js:382 js/ui/components/networkAgent.js:757
 msgid "DSL authentication"
 msgstr "Ověření DSL"
 
-#: js/ui/components/networkAgent.js:389 js/ui/components/networkAgent.js:761
+#: js/ui/components/networkAgent.js:389 js/ui/components/networkAgent.js:762
 msgid "PIN code required"
 msgstr "Požadován kód PIN"
 
-#: js/ui/components/networkAgent.js:390 js/ui/components/networkAgent.js:762
+#: js/ui/components/networkAgent.js:390 js/ui/components/networkAgent.js:763
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Pro mobilní širokopásmové zařízení je vyžadován kód PIN"
 
@@ -1094,18 +1104,18 @@ msgstr "Pro mobilní širokopásmové zařízení je vyžadován kód PIN"
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:403 js/ui/components/networkAgent.js:753
-#: js/ui/components/networkAgent.js:757 js/ui/components/networkAgent.js:769
-#: js/ui/components/networkAgent.js:773
+#: js/ui/components/networkAgent.js:403 js/ui/components/networkAgent.js:754
+#: js/ui/components/networkAgent.js:758 js/ui/components/networkAgent.js:770
+#: js/ui/components/networkAgent.js:774
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Pro připojení k „%s“ je vyžadováno heslo."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:2020
+#: js/ui/components/networkAgent.js:737 js/ui/status/network.js:2020
 msgid "Network Manager"
 msgstr "Network Manager"
 
-#: js/ui/components/networkAgent.js:772
+#: js/ui/components/networkAgent.js:773
 msgid "VPN password"
 msgstr "Heslo k VPN"
 
@@ -1506,60 +1516,60 @@ msgstr "Ponechat vypnuté"
 msgid "Keyboard Settings"
 msgstr "Nastavení klávesnice"
 
-#: js/ui/lookingGlass.js:713
+#: js/ui/lookingGlass.js:718
 msgid "No extensions installed"
 msgstr "Nejsou nainstalována žádná rozšíření"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:774
+#: js/ui/lookingGlass.js:779
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "Rozšíření %s nevyvolalo žádné chyby."
 
-#: js/ui/lookingGlass.js:780
+#: js/ui/lookingGlass.js:785
 msgid "Hide Errors"
 msgstr "Skrývat chyby"
 
-#: js/ui/lookingGlass.js:784 js/ui/lookingGlass.js:861
+#: js/ui/lookingGlass.js:789 js/ui/lookingGlass.js:866
 msgid "Show Errors"
 msgstr "Zobrazovat chyby"
 
-#: js/ui/lookingGlass.js:793
+#: js/ui/lookingGlass.js:798
 msgid "Enabled"
 msgstr "Povoleno"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:796 subprojects/gvc/gvc-mixer-control.c:1908
+#: js/ui/lookingGlass.js:801 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Zakázáno"
 
 #. Translators: notification title.
-#: js/ui/lookingGlass.js:798 js/ui/screenshot.js:1940
+#: js/ui/lookingGlass.js:803 js/ui/screenshot.js:1945
 msgid "Error"
 msgstr "Chyba"
 
-#: js/ui/lookingGlass.js:800
+#: js/ui/lookingGlass.js:805
 msgid "Out of date"
 msgstr "Neaktuální"
 
-#: js/ui/lookingGlass.js:802
+#: js/ui/lookingGlass.js:807
 msgid "Downloading"
 msgstr "Stahování"
 
-#: js/ui/lookingGlass.js:804
+#: js/ui/lookingGlass.js:809
 msgid "Disabling"
 msgstr "Zakazuje se"
 
-#: js/ui/lookingGlass.js:806
+#: js/ui/lookingGlass.js:811
 msgid "Enabling"
 msgstr "Povoluje se"
 
-#: js/ui/lookingGlass.js:839
+#: js/ui/lookingGlass.js:844
 msgid "View Source"
 msgstr "Zobrazit zdroj"
 
-#: js/ui/lookingGlass.js:850
+#: js/ui/lookingGlass.js:855
 msgid "Web Page"
 msgstr "Webová stránka"
 
@@ -1656,7 +1666,7 @@ msgstr "Upravit…"
 
 #: js/ui/padOsd.js:784 js/ui/padOsd.js:901
 msgid "None"
-msgstr "Źádná"
+msgstr "Žádná"
 
 #: js/ui/padOsd.js:855
 msgid "Press a button to configure"
@@ -1755,69 +1765,69 @@ msgstr "Zobrazit ukazatel"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1890
+#: js/ui/screenshot.js:1895
 msgid "Screencasts"
 msgstr "Záznamy obrazovky"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1895
+#: js/ui/screenshot.js:1900
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Záznam obrazovky z %d %t.webm"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1933
+#: js/ui/screenshot.js:1938
 msgid "Screencast recorded"
 msgstr "Bylo zaznamenáno dění na obrazovce"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1949 js/ui/screenshot.js:2184
+#: js/ui/screenshot.js:1954 js/ui/screenshot.js:2190
 msgid "Screenshot"
 msgstr "Snímek obrazovky"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1956
+#: js/ui/screenshot.js:1961
 msgid "Click here to view the video."
 msgstr "Kliknutím zde video zobrazíte."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1959 js/ui/screenshot.js:2198
+#: js/ui/screenshot.js:1964 js/ui/screenshot.js:2204
 msgid "Show in Files"
 msgstr "Zobrazit v Souborech"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2144
+#: js/ui/screenshot.js:2150
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Snímek obrazovky z %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2190
+#: js/ui/screenshot.js:2196
 msgid "Screenshot captured"
 msgstr "Byl pořízen snímek obrazovky"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2192
+#: js/ui/screenshot.js:2198
 msgid "You can paste the image from the clipboard."
 msgstr "Obrázek můžete vložit ze schránky."
 
-#: js/ui/screenshot.js:2245 js/ui/screenshot.js:2410
+#: js/ui/screenshot.js:2251 js/ui/screenshot.js:2416
 msgid "Screenshot taken"
 msgstr "Byl pořízen snímek obrazovky"
 
-#: js/ui/search.js:812
+#: js/ui/search.js:821
 msgid "Searching…"
 msgstr "Hledá se…"
 
-#: js/ui/search.js:814
+#: js/ui/search.js:823
 msgid "No results."
 msgstr "Žádné výsledky."
 
-#: js/ui/search.js:945
+#: js/ui/search.js:954
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2282,27 +2292,27 @@ msgstr "Chyba ověření Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nezdařilo se provést ověření zařízení Thunderbolt: %s"
 
-#: js/ui/status/volume.js:210
+#: js/ui/status/volume.js:216
 msgid "Volume changed"
 msgstr "Hlasitost změněna"
 
-#: js/ui/status/volume.js:223
+#: js/ui/status/volume.js:229
 msgid "Unmute"
 msgstr "Zrušit ztišení"
 
-#: js/ui/status/volume.js:223
+#: js/ui/status/volume.js:229
 msgid "Mute"
 msgstr "Ztišit"
 
-#: js/ui/status/volume.js:278
+#: js/ui/status/volume.js:284
 msgid "Volume"
 msgstr "Hlasitost"
 
-#: js/ui/status/volume.js:294
+#: js/ui/status/volume.js:300
 msgid "Sound Output"
 msgstr "Zvukový výstup"
 
-#: js/ui/status/volume.js:366
+#: js/ui/status/volume.js:372
 msgid "Sound Input"
 msgstr "Zvukový vstup"
 
@@ -2525,14 +2535,6 @@ msgstr "V motivu %2$s schází ikona „%1$s“"
 #: src/st/st-icon-theme.c:3473 src/st/st-icon-theme.c:3776
 msgid "Failed to load icon"
 msgstr "Nezdařilo se načíst ikonu"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:212
-#: subprojects/extensions-app/data/ui/extensions-window.ui:18
-#: subprojects/extensions-app/data/ui/extensions-window.ui:83
-msgid "Extensions"
-msgstr "Rozšíření"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 msgid "Manage your GNOME Extensions"
