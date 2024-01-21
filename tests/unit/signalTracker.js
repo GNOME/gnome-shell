@@ -1,11 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-// Test cases for version comparison
-
 import 'resource:///org/gnome/shell/ui/environment.js';
 import GObject from 'gi://GObject';
 
-const JsUnit = imports.jsUnit;
 import * as Signals from 'resource:///org/gnome/shell/misc/signals.js';
 
 import {TransientSignalHolder, registerDestroyableType} from 'resource:///org/gnome/shell/misc/signalTracker.js';
@@ -16,99 +13,168 @@ const Destroyable = GObject.registerClass({
 registerDestroyableType(Destroyable);
 
 const GObjectEmitter = GObject.registerClass({
-    Signals: {'signal': {}},
+    Signals: {
+        'signal1': {},
+        'signal2': {},
+    },
 }, class GObjectEmitter extends Destroyable {});
 
-const emitter1 = new Signals.EventEmitter();
-const emitter2 = new GObjectEmitter();
+describe('connectObject()', () => {
+    let gobjectEmitter, eventEmitter;
+    let trackedObject;
 
-const tracked1 = new Destroyable();
-const tracked2 = {};
+    beforeEach(() => {
+        gobjectEmitter = new GObjectEmitter();
+        eventEmitter = new Signals.EventEmitter();
 
-let transientHolder;
-let count = 0;
-const handler = () => count++;
+        trackedObject = {};
+    });
 
-emitter1.connectObject('signal', handler, tracked1);
-emitter2.connectObject('signal', handler, tracked1);
+    it('connects to GObject signals', () => {
+        const handler = jasmine.createSpy();
 
-emitter1.connectObject('signal', handler, tracked2);
-emitter2.connectObject('signal', handler, tracked2);
+        gobjectEmitter.connectObject('signal1', handler, trackedObject);
+        gobjectEmitter.emit('signal1');
 
-JsUnit.assertEquals(count, 0);
+        expect(handler).toHaveBeenCalled();
+    });
 
-emitter1.emit('signal');
-emitter2.emit('signal');
+    it('connects to EventEmitter signals', () => {
+        const handler = jasmine.createSpy();
 
-JsUnit.assertEquals(count, 4);
+        eventEmitter.connectObject('signal1', handler, trackedObject);
+        eventEmitter.emit('signal1');
 
-tracked1.emit('destroy');
+        expect(handler).toHaveBeenCalled();
+    });
 
-emitter1.emit('signal');
-emitter2.emit('signal');
+    it('can connect multiple GObject signals', () => {
+        const handler1 = jasmine.createSpy();
+        const handler2 = jasmine.createSpy();
 
-JsUnit.assertEquals(count, 6);
+        gobjectEmitter.connectObject(
+            'signal1', handler1,
+            'signal2', handler2,
+            trackedObject);
+        gobjectEmitter.emit('signal1');
+        gobjectEmitter.emit('signal2');
 
-emitter1.disconnectObject(tracked2);
-emitter2.emit('destroy');
+        expect(handler1).toHaveBeenCalled();
+        expect(handler2).toHaveBeenCalled();
+    });
 
-emitter1.emit('signal');
-emitter2.emit('signal');
+    it('can connect multiple EventEmitter signals', () => {
+        const handler1 = jasmine.createSpy();
+        const handler2 = jasmine.createSpy();
 
-JsUnit.assertEquals(count, 6);
+        eventEmitter.connectObject(
+            'signal1', handler1,
+            'signal2', handler2,
+            trackedObject);
+        eventEmitter.emit('signal1');
+        eventEmitter.emit('signal2');
 
-emitter1.connectObject(
-    'signal', handler,
-    'signal', handler, GObject.ConnectFlags.AFTER,
-    tracked1);
-emitter2.connectObject(
-    'signal', handler,
-    'signal', handler, GObject.ConnectFlags.AFTER,
-    tracked1);
+        expect(handler1).toHaveBeenCalled();
+        expect(handler2).toHaveBeenCalled();
+    });
 
-emitter1.emit('signal');
-emitter2.emit('signal');
+    it('supports ConnectFlags for GObject signals', () => {
+        const handler1 = jasmine.createSpy();
+        const handler2 = jasmine.createSpy();
 
-JsUnit.assertEquals(count, 10);
+        gobjectEmitter.connectObject(
+            'signal1', handler1,
+            'signal2', handler2, GObject.ConnectFlags.AFTER,
+            trackedObject);
+        gobjectEmitter.emit('signal1');
+        gobjectEmitter.emit('signal2');
 
-tracked1.emit('destroy');
-emitter1.emit('signal');
-emitter2.emit('signal');
+        expect(handler1).toHaveBeenCalled();
+        expect(handler2).toHaveBeenCalled();
+    });
 
-JsUnit.assertEquals(count, 10);
+    it('supports ConnectFlags for EventEmitter signals', () => {
+        const handler1 = jasmine.createSpy();
+        const handler2 = jasmine.createSpy();
 
-emitter1.connectObject('signal', handler, tracked1);
-emitter2.connectObject('signal', handler, tracked1);
+        eventEmitter.connectObject(
+            'signal1', handler1,
+            'signal2', handler2, GObject.ConnectFlags.AFTER,
+            trackedObject);
+        eventEmitter.emit('signal1');
+        eventEmitter.emit('signal2');
 
-transientHolder = new TransientSignalHolder(tracked1);
+        expect(handler1).toHaveBeenCalled();
+        expect(handler2).toHaveBeenCalled();
+    });
+});
 
-emitter1.connectObject('signal', handler, transientHolder);
-emitter2.connectObject('signal', handler, transientHolder);
+describe('disconnectObject()', () => {
+    let emitter;
+    let trackedDestroyable, trackedObject;
 
-emitter1.emit('signal');
-emitter2.emit('signal');
+    beforeEach(() => {
+        emitter = new GObjectEmitter();
 
-JsUnit.assertEquals(count, 14);
+        trackedDestroyable = new Destroyable();
+        trackedObject = {};
+    });
 
-transientHolder.destroy();
+    it('disconnects signals by tracked object', () => {
+        const handler = jasmine.createSpy();
 
-emitter1.emit('signal');
-emitter2.emit('signal');
+        emitter.connectObject(
+            'signal1', handler,
+            'signal2', handler,
+            trackedObject);
+        emitter.disconnectObject(trackedObject);
+        emitter.emit('signal1');
+        emitter.emit('signal2');
 
-JsUnit.assertEquals(count, 16);
+        expect(handler).not.toHaveBeenCalled();
+    });
 
-transientHolder = new TransientSignalHolder(tracked1);
+    it('is called when a tracked destroyable is destroyed', () => {
+        const handler = jasmine.createSpy();
 
-emitter1.connectObject('signal', handler, transientHolder);
-emitter2.connectObject('signal', handler, transientHolder);
+        emitter.connectObject('signal1', handler, trackedDestroyable);
+        trackedDestroyable.emit('destroy');
+        emitter.emit('signal1');
 
-emitter1.emit('signal');
-emitter2.emit('signal');
+        expect(handler).not.toHaveBeenCalled();
+    });
+});
 
-JsUnit.assertEquals(count, 20);
+describe('TransientSignalHolder', () => {
+    let emitter;
+    let tracked, transientHolder;
 
-tracked1.emit('destroy');
-emitter1.emit('signal');
-emitter2.emit('signal');
+    beforeEach(() => {
+        emitter = new GObjectEmitter();
+        tracked = new Destroyable();
+        transientHolder = new TransientSignalHolder(tracked);
+    });
 
-JsUnit.assertEquals(count, 20);
+    it('destroys with its owner', () => {
+        const handler = jasmine.createSpy();
+
+        emitter.connectObject('signal1', handler, transientHolder);
+        tracked.emit('destroy');
+        emitter.emit('signal1');
+
+        expect(handler).not.toHaveBeenCalled();
+    });
+
+    it('can be destroyed without affecting its owner', () => {
+        const handler1 = jasmine.createSpy();
+        const handler2 = jasmine.createSpy();
+
+        emitter.connectObject('signal1', handler1, tracked);
+        emitter.connectObject('signal1', handler2, transientHolder);
+        transientHolder.destroy();
+        emitter.emit('signal1');
+
+        expect(handler1).toHaveBeenCalled();
+        expect(handler2).not.toHaveBeenCalled();
+    });
+});

@@ -26,6 +26,7 @@ unit_tests = [
     'jsParse',
     'markup',
     'params',
+    'signalTracker',
 ]
 
 foreach test : unit_tests
@@ -44,7 +45,6 @@ foreach test : unit_tests
 endforeach
 
 legacy_tests = [
-    'signalTracker',
     'url',
     'versionCompare',
 ]
