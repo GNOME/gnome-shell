@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-08-23 12:52+0000\n"
-"PO-Revision-Date: 2023-09-08 16:52+0200\n"
+"POT-Creation-Date: 2023-10-16 18:12+0000\n"
+"PO-Revision-Date: 2024-01-22 00:28+0100\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-launchers.xml:6
@@ -65,7 +65,7 @@ msgid "Activate favorite application 9"
 msgstr "Aktivovat oblíbenou aplikaci č. 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2076
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2082
 msgid "Screenshots"
 msgstr "Snímky obrazovky"
 
@@ -1692,7 +1692,7 @@ msgstr "Upravit…"
 
 #: js/ui/padOsd.js:785 js/ui/padOsd.js:902
 msgid "None"
-msgstr "Źádná"
+msgstr "Žádná"
 
 #: js/ui/padOsd.js:856
 msgid "Press a button to configure"
@@ -1788,57 +1788,57 @@ msgstr "Zobrazit ukazatel"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1870
+#: js/ui/screenshot.js:1875
 msgid "Screencasts"
 msgstr "Záznamy obrazovky"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1875
+#: js/ui/screenshot.js:1880
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Záznam obrazovky z %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1917 js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:1922 js/ui/screenshot.js:2135
 msgid "Screenshot"
 msgstr "Snímek obrazovky"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1923
+#: js/ui/screenshot.js:1928
 msgid "Screencast recorded"
 msgstr "Bylo zaznamenáno dění na obrazovce"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1925
+#: js/ui/screenshot.js:1930
 msgid "Click here to view the video."
 msgstr "Kliknutím zde video zobrazíte."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1928 js/ui/screenshot.js:2143
+#: js/ui/screenshot.js:1933 js/ui/screenshot.js:2149
 msgid "Show in Files"
 msgstr "Zobrazit v Souborech"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2089
+#: js/ui/screenshot.js:2095
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Snímek obrazovky z %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2135
+#: js/ui/screenshot.js:2141
 msgid "Screenshot captured"
 msgstr "Byl pořízen snímek obrazovky"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2137
+#: js/ui/screenshot.js:2143
 msgid "You can paste the image from the clipboard."
 msgstr "Obrázek můžete vložit ze schránky."
 
-#: js/ui/screenshot.js:2190 js/ui/screenshot.js:2355
+#: js/ui/screenshot.js:2196 js/ui/screenshot.js:2361
 msgid "Screenshot taken"
 msgstr "Byl pořízen snímek obrazovky"
 
