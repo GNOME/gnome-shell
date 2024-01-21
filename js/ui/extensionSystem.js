@@ -8,7 +8,9 @@ import * as Signals from '../misc/signals.js';
 import * as Config from '../misc/config.js';
 import * as ExtensionDownloader from './extensionDownloader.js';
 import {formatError} from '../misc/errorUtils.js';
-import {ExtensionState, ExtensionType} from '../misc/extensionUtils.js';
+import {
+    ExtensionState, ExtensionType, loadExtensionMetadata
+} from '../misc/extensionUtils.js';
 import * as FileUtils from '../misc/fileUtils.js';
 import * as Main from './main.js';
 import * as MessageTray from './messageTray.js';
@@ -377,55 +379,10 @@ export class ExtensionManager extends Signals.EventEmitter {
     }
 
     createExtensionObject(uuid, dir, type) {
-        let metadataFile = dir.get_child('metadata.json');
-        if (!metadataFile.query_exists(null))
-            throw new Error('Missing metadata.json');
-
-        let metadataContents, success_;
-        try {
-            [success_, metadataContents] = metadataFile.load_contents(null);
-            metadataContents = new TextDecoder().decode(metadataContents);
-        } catch (e) {
-            throw new Error(`Failed to load metadata.json: ${e}`);
-        }
-        let meta;
-        try {
-            meta = JSON.parse(metadataContents);
-        } catch (e) {
-            throw new Error(`Failed to parse metadata.json: ${e}`);
-        }
-
-        const requiredProperties = [{
-            prop: 'uuid',
-            typeName: 'string',
-        }, {
-            prop: 'name',
-            typeName: 'string',
-        }, {
-            prop: 'description',
-            typeName: 'string',
-        }, {
-            prop: 'shell-version',
-            typeName: 'string array',
-            typeCheck: v => Array.isArray(v) && v.length > 0 && v.every(e => typeof e === 'string'),
-        }];
-        for (let i = 0; i < requiredProperties.length; i++) {
-            const {
-                prop, typeName, typeCheck = v => typeof v === typeName,
-            } = requiredProperties[i];
-
-            if (!meta[prop])
-                throw new Error(`missing "${prop}" property in metadata.json`);
-            if (!typeCheck(meta[prop]))
-                throw new Error(`property "${prop}" is not of type ${typeName}`);
-        }
-
-        if (uuid !== meta.uuid)
-            throw new Error(`uuid "${meta.uuid}" from metadata.json does not match directory name "${uuid}"`);
-
-        let extension = {
-            metadata: meta,
-            uuid: meta.uuid,
+        const metadata = loadExtensionMetadata(uuid, dir);
+        const extension = {
+            metadata,
+            uuid,
             type,
             dir,
             path: dir.get_path(),
@@ -434,7 +391,7 @@ export class ExtensionManager extends Signals.EventEmitter {
             enabled: this._enabledExtensions.includes(uuid),
             hasUpdate: false,
             canChange: false,
-            sessionModes: meta['session-modes'] ? meta['session-modes'] : ['user'],
+            sessionModes: metadata['session-modes'] ?? ['user'],
         };
         this._extensions.set(uuid, extension);
 
