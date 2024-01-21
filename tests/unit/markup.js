@@ -1,150 +1,216 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-
 // Test cases for MessageList markup parsing
 
-const JsUnit = imports.jsUnit;
 import Pango from 'gi://Pango';
 
+import 'resource:///org/gnome/shell/ui/environment.js';
 import {fixMarkup} from 'resource:///org/gnome/shell/misc/util.js';
 
-/**
- * Assert that `input`, assumed to be markup, gets "fixed" to `output`,
- * which is valid markup. If `output` is null, `input` is expected to
- * convert to itself
- *
- * @param {string} input the input
- * @param {string} output the output
- */
-function assertConverts(input, output) {
-    if (!output)
-        output = input;
-    let fixed = fixMarkup(input, true);
-    JsUnit.assertEquals(output, fixed);
+describe('fixMarkup()', () => {
+    function convertAndEscape(text) {
+        return {
+            converted: fixMarkup(text, true),
+            escaped: fixMarkup(text, false),
+        };
+    }
 
-    let parsed = false;
-    try {
-        Pango.parse_markup(fixed, -1, '');
-        parsed = true;
-    } catch (e) {}
-    JsUnit.assertEquals(true, parsed);
-}
+    beforeAll(() => {
+        jasmine.addMatchers({
+            toParseCorrectlyAndMatch: () => {
+                function isMarkupValid(markup) {
+                    try {
+                        Pango.parse_markup(markup, -1, '');
+                    } catch (e) {
+                        return false;
+                    }
+                    return true;
+                }
 
+                return {
+                    compare: (actual, expected) => {
+                        if (!expected)
+                            expected = actual;
 
-/**
- * Assert that `input`, assumed to be plain text, gets escaped to `output`,
- * which is valid markup.
- *
- * @param {string} input the input
- * @param {string} output the output
- */
-function assertEscapes(input, output) {
-    let fixed = fixMarkup(input, false);
-    JsUnit.assertEquals(output, fixed);
+                        return {
+                            pass: isMarkupValid(actual) && actual === expected,
+                            message: `Expected "${actual}" to parse correctly and equal "${expected}"`,
+                        };
+                    },
+                };
+            },
+        });
+    });
 
-    let parsed = false;
-    try {
-        Pango.parse_markup(fixed, -1, '');
-        parsed = true;
-    } catch (e) {}
-    JsUnit.assertEquals(true, parsed);
-}
+    it('does not do anything on no markup', () => {
+        const text = 'foo';
+        const result = convertAndEscape(text);
+        expect(result.converted).toParseCorrectlyAndMatch(text);
+        expect(result.escaped).toParseCorrectlyAndMatch(text);
+    });
 
+    it('converts and escapes bold markup', () => {
+        const text = '<b>foo</b>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch();
+        expect(escaped).toParseCorrectlyAndMatch('&lt;b&gt;foo&lt;/b&gt;');
+    });
 
+    it('converts and escapes italic markup', () => {
+        const text = 'something <i>foo</i>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch();
+        expect(escaped).toParseCorrectlyAndMatch('something &lt;i&gt;foo&lt;/i&gt;');
+    });
 
-// CORRECT MARKUP
+    it('converts and escapes underlined markup', () => {
+        const text = '<u>foo</u> something';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch();
+        expect(escaped).toParseCorrectlyAndMatch('&lt;u&gt;foo&lt;/u&gt; something');
+    });
 
-assertConverts('foo');
-assertEscapes('foo', 'foo');
+    it('converts and escapes non-nested bold italic and underline markup', () => {
+        const text = '<b>bold</b> <i>italic <u>and underlined</u></i>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch();
+        expect(escaped).toParseCorrectlyAndMatch('&lt;b&gt;bold&lt;/b&gt; &lt;i&gt;italic &lt;u&gt;and underlined&lt;/u&gt;&lt;/i&gt;');
+    });
 
-assertConverts('<b>foo</b>');
-assertEscapes('<b>foo</b>', '&lt;b&gt;foo&lt;/b&gt;');
+    it('converts and escapes ampersands', () => {
+        const text = 'this &amp; that';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch();
+        expect(escaped).toParseCorrectlyAndMatch('this &amp;amp; that');
+    });
 
-assertConverts('something <i>foo</i>');
-assertEscapes('something <i>foo</i>', 'something &lt;i&gt;foo&lt;/i&gt;');
+    it('converts and escapes <', () => {
+        const text = 'this &lt; that';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch();
+        expect(escaped).toParseCorrectlyAndMatch('this &amp;lt; that');
+    });
 
-assertConverts('<u>foo</u> something');
-assertEscapes('<u>foo</u> something', '&lt;u&gt;foo&lt;/u&gt; something');
+    it('converts and escapes >', () => {
+        const text = 'this &lt; that &gt; the other';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch();
+        expect(escaped).toParseCorrectlyAndMatch('this &amp;lt; that &amp;gt; the other');
+    });
 
-assertConverts('<b>bold</b> <i>italic <u>and underlined</u></i>');
-assertEscapes('<b>bold</b> <i>italic <u>and underlined</u></i>', '&lt;b&gt;bold&lt;/b&gt; &lt;i&gt;italic &lt;u&gt;and underlined&lt;/u&gt;&lt;/i&gt;');
+    it('converts and escapes HTML markup inside escaped tags', () => {
+        const text = 'this &lt;<i>that</i>&gt;';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch();
+        expect(escaped).toParseCorrectlyAndMatch('this &amp;lt;&lt;i&gt;that&lt;/i&gt;&amp;gt;');
+    });
 
-assertConverts('this &amp; that');
-assertEscapes('this &amp; that', 'this &amp;amp; that');
+    it('converts and escapes angle brackets within HTML markup', () => {
+        const text = '<b>this</b> > <i>that</i>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch();
+        expect(escaped).toParseCorrectlyAndMatch('&lt;b&gt;this&lt;/b&gt; &gt; &lt;i&gt;that&lt;/i&gt;');
+    });
 
-assertConverts('this &lt; that');
-assertEscapes('this &lt; that', 'this &amp;lt; that');
+    it('converts and escapes markup whilst still keeping an unrecognized entity', () => {
+        const text = '<b>smile</b> &#9786;!';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch();
+        expect(escaped).toParseCorrectlyAndMatch('&lt;b&gt;smile&lt;/b&gt; &amp;#9786;!');
+    });
 
-assertConverts('this &lt; that &gt; the other');
-assertEscapes('this &lt; that &gt; the other', 'this &amp;lt; that &amp;gt; the other');
+    it('converts and escapes markup and a stray ampersand', () => {
+        const text = '<b>this</b> & <i>that</i>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('<b>this</b> &amp; <i>that</i>');
+        expect(escaped).toParseCorrectlyAndMatch('&lt;b&gt;this&lt;/b&gt; &amp; &lt;i&gt;that&lt;/i&gt;');
+    });
 
-assertConverts('this &lt;<i>that</i>&gt;');
-assertEscapes('this &lt;<i>that</i>&gt;', 'this &amp;lt;&lt;i&gt;that&lt;/i&gt;&amp;gt;');
+    it('converts and escapes a stray <', () => {
+        const text = 'this < that';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('this &lt; that');
+        expect(escaped).toParseCorrectlyAndMatch('this &lt; that');
+    });
 
-assertConverts('<b>this</b> > <i>that</i>');
-assertEscapes('<b>this</b> > <i>that</i>', '&lt;b&gt;this&lt;/b&gt; &gt; &lt;i&gt;that&lt;/i&gt;');
+    it('converts and escapes markup with a stray <', () => {
+        const text = '<b>this</b> < <i>that</i>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('<b>this</b> &lt; <i>that</i>');
+        expect(escaped).toParseCorrectlyAndMatch('&lt;b&gt;this&lt;/b&gt; &lt; &lt;i&gt;that&lt;/i&gt;');
+    });
 
+    it('converts and escapes stray less than and greater than characters that do not form tags', () => {
+        const text = 'this < that > the other';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('this &lt; that > the other');
+        expect(escaped).toParseCorrectlyAndMatch('this &lt; that &gt; the other');
+    });
 
+    it('converts and escapes stray less than and greater than characters next to HTML markup tags', () => {
+        const text = 'this <<i>that</i>>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('this &lt;<i>that</i>>');
+        expect(escaped).toParseCorrectlyAndMatch('this &lt;&lt;i&gt;that&lt;/i&gt;&gt;');
+    });
 
-// PARTIALLY CORRECT MARKUP
-// correct bits are kept, incorrect bits are escaped
+    it('converts and escapes angle brackets around unknown tags', () => {
+        const text = '<unknown>tag</unknown>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('&lt;unknown>tag&lt;/unknown>');
+        expect(escaped).toParseCorrectlyAndMatch('&lt;unknown&gt;tag&lt;/unknown&gt;');
+    });
 
-// unrecognized entity
-assertConverts('<b>smile</b> &#9786;!', '<b>smile</b> &amp;#9786;!');
-assertEscapes('<b>smile</b> &#9786;!', '&lt;b&gt;smile&lt;/b&gt; &amp;#9786;!');
+    it('converts and escapes angle brackets around unknown tags where the first letter might otherwise be valid HTML markup', () => {
+        const text = '<bunknown>tag</bunknown>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('&lt;bunknown>tag&lt;/bunknown>');
+        expect(escaped).toParseCorrectlyAndMatch('&lt;bunknown&gt;tag&lt;/bunknown&gt;');
+    });
 
-// stray '&'; this is really a bug, but it's easier to do it this way
-assertConverts('<b>this</b> & <i>that</i>', '<b>this</b> &amp; <i>that</i>');
-assertEscapes('<b>this</b> & <i>that</i>', '&lt;b&gt;this&lt;/b&gt; &amp; &lt;i&gt;that&lt;/i&gt;');
+    it('converts good tags but escapes bad tags', () => {
+        const text = '<i>known</i> and <unknown>tag</unknown>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('<i>known</i> and &lt;unknown>tag&lt;/unknown>');
+        expect(escaped).toParseCorrectlyAndMatch('&lt;i&gt;known&lt;/i&gt; and &lt;unknown&gt;tag&lt;/unknown&gt;');
+    });
 
-// likewise with stray '<'
-assertConverts('this < that', 'this &lt; that');
-assertEscapes('this < that', 'this &lt; that');
+    it('completely escapes mismatched tags where the mismatch is at the beginning', () => {
+        const text = '<b>in<i>com</i>plete';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('&lt;b&gt;in&lt;i&gt;com&lt;/i&gt;plete');
+        expect(escaped).toParseCorrectlyAndMatch('&lt;b&gt;in&lt;i&gt;com&lt;/i&gt;plete');
+    });
 
-assertConverts('<b>this</b> < <i>that</i>', '<b>this</b> &lt; <i>that</i>');
-assertEscapes('<b>this</b> < <i>that</i>', '&lt;b&gt;this&lt;/b&gt; &lt; &lt;i&gt;that&lt;/i&gt;');
+    it('completely escapes mismatched tags where the mismatch is at the end', () => {
+        const text = 'in<i>com</i>plete</b>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('in&lt;i&gt;com&lt;/i&gt;plete&lt;/b&gt;');
+        expect(escaped).toParseCorrectlyAndMatch('in&lt;i&gt;com&lt;/i&gt;plete&lt;/b&gt;');
+    });
 
-assertConverts('this < that > the other', 'this &lt; that > the other');
-assertEscapes('this < that > the other', 'this &lt; that &gt; the other');
+    it('escapes all tags where there are attributes', () => {
+        const text = '<b>good</b> and <b style=\'bad\'>bad</b>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('&lt;b&gt;good&lt;/b&gt; and &lt;b style=&apos;bad&apos;&gt;bad&lt;/b&gt;');
+        expect(escaped).toParseCorrectlyAndMatch('&lt;b&gt;good&lt;/b&gt; and &lt;b style=&apos;bad&apos;&gt;bad&lt;/b&gt;');
+    });
+    it('escapes all tags where syntax is invalid', () => {
+        const text = '<b>unrecognized</b stuff>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('&lt;b&gt;unrecognized&lt;/b stuff&gt;');
+        expect(escaped).toParseCorrectlyAndMatch('&lt;b&gt;unrecognized&lt;/b stuff&gt;');
+    });
 
-assertConverts('this <<i>that</i>>', 'this &lt;<i>that</i>>');
-assertEscapes('this <<i>that</i>>', 'this &lt;&lt;i&gt;that&lt;/i&gt;&gt;');
+    it('escapes completely mismatched tags', () => {
+        const text = '<b>mismatched</i>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('&lt;b&gt;mismatched&lt;/i&gt;');
+        expect(escaped).toParseCorrectlyAndMatch('&lt;b&gt;mismatched&lt;/i&gt;');
+    });
 
-// unknown tags
-assertConverts('<unknown>tag</unknown>', '&lt;unknown>tag&lt;/unknown>');
-assertEscapes('<unknown>tag</unknown>', '&lt;unknown&gt;tag&lt;/unknown&gt;');
-
-// make sure we check beyond the first letter
-assertConverts('<bunknown>tag</bunknown>', '&lt;bunknown>tag&lt;/bunknown>');
-assertEscapes('<bunknown>tag</bunknown>', '&lt;bunknown&gt;tag&lt;/bunknown&gt;');
-
-// with mix of good and bad, we keep the good and escape the bad
-assertConverts('<i>known</i> and <unknown>tag</unknown>', '<i>known</i> and &lt;unknown>tag&lt;/unknown>');
-assertEscapes('<i>known</i> and <unknown>tag</unknown>', '&lt;i&gt;known&lt;/i&gt; and &lt;unknown&gt;tag&lt;/unknown&gt;');
-
-
-
-// FULLY INCORRECT MARKUP
-// (fall back to escaping the whole thing)
-
-// tags not matched up
-assertConverts('<b>in<i>com</i>plete', '&lt;b&gt;in&lt;i&gt;com&lt;/i&gt;plete');
-assertEscapes('<b>in<i>com</i>plete', '&lt;b&gt;in&lt;i&gt;com&lt;/i&gt;plete');
-
-assertConverts('in<i>com</i>plete</b>', 'in&lt;i&gt;com&lt;/i&gt;plete&lt;/b&gt;');
-assertEscapes('in<i>com</i>plete</b>', 'in&lt;i&gt;com&lt;/i&gt;plete&lt;/b&gt;');
-
-// we don't support attributes, and it's too complicated to try
-// to escape both start and end tags, so we just treat it as bad
-assertConverts('<b>good</b> and <b style=\'bad\'>bad</b>', '&lt;b&gt;good&lt;/b&gt; and &lt;b style=&apos;bad&apos;&gt;bad&lt;/b&gt;');
-assertEscapes('<b>good</b> and <b style=\'bad\'>bad</b>', '&lt;b&gt;good&lt;/b&gt; and &lt;b style=&apos;bad&apos;&gt;bad&lt;/b&gt;');
-
-// this is just syntactically invalid
-assertConverts('<b>unrecognized</b stuff>', '&lt;b&gt;unrecognized&lt;/b stuff&gt;');
-assertEscapes('<b>unrecognized</b stuff>', '&lt;b&gt;unrecognized&lt;/b stuff&gt;');
-
-// mismatched tags
-assertConverts('<b>mismatched</i>', '&lt;b&gt;mismatched&lt;/i&gt;');
-assertEscapes('<b>mismatched</i>', '&lt;b&gt;mismatched&lt;/i&gt;');
-
-assertConverts('<b>mismatched/unknown</bunknown>', '&lt;b&gt;mismatched/unknown&lt;/bunknown&gt;');
-assertEscapes('<b>mismatched/unknown</bunknown>', '&lt;b&gt;mismatched/unknown&lt;/bunknown&gt;');
+    it('escapes mismatched tags where the first character is mismatched', () => {
+        const text = '<b>mismatched/unknown</bunknown>';
+        const {converted, escaped} = convertAndEscape(text);
+        expect(converted).toParseCorrectlyAndMatch('&lt;b&gt;mismatched/unknown&lt;/bunknown&gt;');
+        expect(escaped).toParseCorrectlyAndMatch('&lt;b&gt;mismatched/unknown&lt;/bunknown&gt;');
+    });
+});
