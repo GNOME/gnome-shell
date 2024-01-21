@@ -210,8 +210,8 @@ for (let i = 0; i < testsIsUnsafeExpression.length; i++) {
 
 for (let i = 0; i < testsModifyScope.length; i++) {
     let text = testsModifyScope[i];
-    // We need to use var here for the with statement
-    var obj = {};
+
+    const globalPropsPre = Object.getOwnPropertyNames(globalThis).sort();
 
     // Just as in JsParse.getCompletions, we will find the offset
     // of the expression, test whether it is unsafe, and then eval it.
@@ -232,6 +232,8 @@ for (let i = 0; i < testsModifyScope.length; i++) {
             }
         }
     }
-    let propertyNames = Object.getOwnPropertyNames(obj);
-    JsUnit.assertEquals(`The context '${JSON.stringify(obj)}' was not modified`, propertyNames.length, 0);
+
+    const globalPropsPost = Object.getOwnPropertyNames(globalThis).sort();
+    Assertions.assertArrayEquals('The global object was not modified',
+        globalPropsPre, globalPropsPost);
 }
