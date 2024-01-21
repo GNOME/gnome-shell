@@ -1,239 +1,288 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-// Test cases for MessageTray URLification
-
-const JsUnit = imports.jsUnit;
-
 import 'resource:///org/gnome/shell/ui/environment.js';
 
-import * as Assertions from '../common/assertions.js';
-
 import * as JsParse from 'resource:///org/gnome/shell/misc/jsParse.js';
-
-const HARNESS_COMMAND_HEADER = 'let imports = obj;' +
-                               'let global = obj;' +
-                               'let Main = obj;' +
-                               'let foo = obj;' +
-                               'let r = obj;';
-
-const testsFindMatchingQuote = [
-    {
-        input: '"double quotes"',
-        output: 0,
-    },
-    {
-        input: '\'single quotes\'',
-        output: 0,
-    },
-    {
-        input: 'some unquoted "some quoted"',
-        output: 14,
-    },
-    {
-        input: '"mixed \' quotes\'"',
-        output: 0,
-    },
-    {
-        input: '"escaped \\" quote"',
-        output: 0,
-    },
-];
-const testsFindMatchingSlash = [
-    {
-        input: '/slash/',
-        output: 0,
-    },
-    {
-        input: '/slash " with $ funny ^\' stuff/',
-        output: 0,
-    },
-    {
-        input: 'some unslashed /some slashed/',
-        output: 15,
-    },
-    {
-        input: '/escaped \\/ slash/',
-        output: 0,
-    },
-];
-const testsFindMatchingBrace = [
-    {
-        input: '[square brace]',
-        output: 0,
-    },
-    {
-        input: '(round brace)',
-        output: 0,
-    },
-    {
-        input: '([()][nesting!])',
-        output: 0,
-    },
-    {
-        input: '[we have "quoted [" braces]',
-        output: 0,
-    },
-    {
-        input: '[we have /regex [/ braces]',
-        output: 0,
-    },
-    {
-        input: '([[])[] mismatched braces ]',
-        output: 1,
-    },
-];
-const testsGetExpressionOffset = [
-    {
-        input: 'abc.123',
-        output: 0,
-    },
-    {
-        input: 'foo().bar',
-        output: 0,
-    },
-    {
-        input: 'foo(bar',
-        output: 4,
-    },
-    {
-        input: 'foo[abc.match(/"/)]',
-        output: 0,
-    },
-];
-const testsGetDeclaredConstants = [
-    {
-        input: 'const foo = X; const bar = Y;',
-        output: ['foo', 'bar'],
-    },
-    {
-        input: 'const foo=X; const bar=Y',
-        output: ['foo', 'bar'],
-    },
-];
-const testsIsUnsafeExpression = [
-    {
-        input: 'foo.bar',
-        output: false,
-    },
-    {
-        input: 'foo[\'bar\']',
-        output: false,
-    },
-    {
-        input: 'foo["a=b=c".match(/=/)',
-        output: false,
-    },
-    {
-        input: 'foo[1==2]',
-        output: false,
-    },
-    {
-        input: '(x=4)',
-        output: true,
-    },
-    {
-        input: '(x = 4)',
-        output: true,
-    },
-    {
-        input: '(x;y)',
-        output: true,
-    },
-];
-const testsModifyScope = [
-    "foo['a",
-    "foo()['b'",
-    "obj.foo()('a', 1, 2, 'b')().",
-    'foo.[.',
-    'foo]]]()))].',
-    "123'ab\"",
-    'Main.foo.bar = 3; bar.',
-    '(Main.foo = 3).',
-    'Main[Main.foo+=-1].',
-];
 
 //
 // Test javascript parsing
 //
+//
+// TODO: We probably want to change all these to use
+//       a table driven method, using for() inside
+//       a test body hampers readibility and
+//       debuggability when something goes wrong.
+//
+// NOTE: The inconsistent use of "" and '' quotes in this
+//       file is largely to handle nesting without passing
+//       escape markers to the functions under test. The
+//       preferred style in the shell is single quotes
+//       so we use that wherever possible.
 
-for (let i = 0; i < testsFindMatchingQuote.length; i++) {
-    let text = testsFindMatchingQuote[i].input;
-    let match = JsParse.findMatchingQuote(text, text.length - 1);
+describe('Matching quote search', () => {
+    const FindMatchingQuoteParameters = [
+        {
+            name: 'only double quotes',
+            input: "'double quotes'",
+            output: 0,
+        },
+        {
+            name: 'only single quotes',
+            input: '\'single quotes\'',
+            output: 0,
+        },
+        {
+            name: 'some parts unquoted and other parts quoted',
+            input: "some unquoted 'some quoted'",
+            output: 14,
+        },
+        {
+            name: 'mixed quotes',
+            input: "'mixed \" quotes\"'",
+            output: 0,
+        },
+        {
+            name: 'escaped quotes',
+            input: "'escaped \\' quote'",
+            output: 0,
+        },
+    ];
 
-    JsUnit.assertEquals(`Test testsFindMatchingQuote ${i}`,
-        match, testsFindMatchingQuote[i].output);
-}
+    for (const {name, input, output} of FindMatchingQuoteParameters) {
+        it(`finds a matching quote where there are ${name}`, () => {
+            const match = JsParse.findMatchingQuote(input, input.length - 1);
+            expect(match).toEqual(output);
+        });
+    }
+});
 
-for (let i = 0; i < testsFindMatchingSlash.length; i++) {
-    let text = testsFindMatchingSlash[i].input;
-    let match = JsParse.findMatchingSlash(text, text.length - 1);
+describe('Matching slash search', () => {
+    const FindMatchingSlashParameters = [
+        {
+            name: 'matching slashes',
+            input: '/slash/',
+            output: 0,
+        },
+        {
+            name: 'matching slashes with extraneous characters in-between',
+            input: '/slash " with $ funny ^\' stuff/',
+            output: 0,
+        },
+        {
+            name: 'mathcing slashes with some parts unslashed',
+            input: 'some unslashed /some slashed/',
+            output: 15,
+        },
+        {
+            name: 'matching slashes with an escaped slash in the middle',
+            input: '/escaped \\/ slash/',
+            output: 0,
+        },
+    ];
 
-    JsUnit.assertEquals(`Test testsFindMatchingSlash ${i}`,
-        match, testsFindMatchingSlash[i].output);
-}
+    for (let {name, input, output} of FindMatchingSlashParameters) {
+        it(`finds a matching slash where there are ${name}`, () => {
+            let match = JsParse.findMatchingQuote(input, input.length - 1);
+            expect(match).toEqual(output);
+        });
+    }
+});
 
-for (let i = 0; i < testsFindMatchingBrace.length; i++) {
-    let text = testsFindMatchingBrace[i].input;
-    let match = JsParse.findMatchingBrace(text, text.length - 1);
+describe('Matching brace search', () => {
+    const FindMatchingBraceParameters = [
+        {
+            name: 'square braces',
+            input: '[square brace]',
+            output: 0,
+        },
+        {
+            name: 'round braces',
+            input: '(round brace)',
+            output: 0,
+        },
+        {
+            name: 'braces with nesting',
+            input: '([()][nesting!])',
+            output: 0,
+        },
+        {
+            name: 'braces with quoted braces in the middle',
+            input: "[we have 'quoted [' braces]",
+            output: 0,
+        },
+        {
+            name: 'braces with regexed braces in the middle',
+            input: '[we have /regex [/ braces]',
+            output: 0,
+        },
+        {
+            name: 'mismatched braces',
+            input: '([[])[] mismatched braces ]',
+            output: 1,
+        },
+    ];
 
-    JsUnit.assertEquals(`Test testsFindMatchingBrace ${i}`,
-        match, testsFindMatchingBrace[i].output);
-}
+    for (let {name, input, output} of FindMatchingBraceParameters) {
+        it(`finds matching braces where there are ${name}`, () => {
+            let match = JsParse.findMatchingBrace(input, input.length - 1);
+            expect(match).toEqual(output);
+        });
+    }
+});
 
-for (let i = 0; i < testsGetExpressionOffset.length; i++) {
-    let text = testsGetExpressionOffset[i].input;
-    let match = JsParse.getExpressionOffset(text, text.length - 1);
+describe('Beginning of expression search', () => {
+    const ExpressionOffsetParameters = [
+        {
+            name: 'object property name',
+            input: 'abc.123',
+            output: 0,
+        },
+        {
+            name: 'function call result property name',
+            input: 'foo().bar',
+            output: 0,
+        },
+        {
+            name: 'centre of malformed function call expression',
+            input: 'foo(bar',
+            output: 4,
+        },
+        {
+            name: 'complete nested expression',
+            input: 'foo[abc.match(/"/)]',
+            output: 0,
+        },
+    ];
 
-    JsUnit.assertEquals(`Test testsGetExpressionOffset ${i}`,
-        match, testsGetExpressionOffset[i].output);
-}
+    for (const {name, input, output} of ExpressionOffsetParameters) {
+        it(`finds the beginning of a ${name}`, () => {
+            const match = JsParse.getExpressionOffset(input, input.length - 1);
+            expect(match).toEqual(output);
+        });
+    }
+});
 
-for (let i = 0; i < testsGetDeclaredConstants.length; i++) {
-    let text = testsGetDeclaredConstants[i].input;
-    let match = JsParse.getDeclaredConstants(text);
+describe('Constant variable search', () => {
+    const DeclaredConstantsParameters = [
+        {
+            name: 'two constants on one line with space between equals',
+            input: 'const foo = X; const bar = Y',
+            output: ['foo', 'bar'],
+        },
+        {
+            name: 'two constants on one line with no space between equlas',
+            input: 'const foo=X; const bar=Y;',
+            output: ['foo', 'bar'],
+        },
+    ];
 
-    Assertions.assertArrayEquals(`Test testsGetDeclaredConstants ${i}`,
-        match, testsGetDeclaredConstants[i].output);
-}
+    for (const {name, input, output} of DeclaredConstantsParameters) {
+        it(`finds ${name}`, () => {
+            const match = JsParse.getDeclaredConstants(input);
+            expect(match).toEqual(output);
+        });
+    }
+});
 
-for (let i = 0; i < testsIsUnsafeExpression.length; i++) {
-    let text = testsIsUnsafeExpression[i].input;
-    let unsafe = JsParse.isUnsafeExpression(text);
+describe('Expression safety determination', () => {
+    const UnsafeExpressionParams = [
+        {
+            name: 'property access',
+            input: 'foo.bar',
+            output: false,
+        },
+        {
+            name: 'property access by array',
+            input: 'foo[\'bar\']',
+            output: false,
+        },
+        {
+            name: 'expression with syntax error',
+            input: 'foo["a=b=c".match(/=/)',
+            output: false,
+        },
+        {
+            name: 'property access by array with nested const expression',
+            input: 'foo[1==2]',
+            output: false,
+        },
+        {
+            name: 'bracketed assignment no whitespace',
+            input: '(x=4)',
+            output: true,
+        },
+        {
+            name: 'bracked assignment with whitespace',
+            input: '(x = 4)',
+            output: true,
+        },
+        {
+            name: 'bracketed implicit call',
+            input: '(x;y)',
+            output: true,
+        },
+    ];
 
-    JsUnit.assertEquals(`Test testsIsUnsafeExpression ${i}`,
-        unsafe, testsIsUnsafeExpression[i].output);
-}
+    for (const {name, input, output} of UnsafeExpressionParams) {
+        const isOrIsNot = output ? 'is' : 'is not';
+        it(`finds that an expression which is a ${name} ${isOrIsNot} safe`, () => {
+            let unsafe = JsParse.isUnsafeExpression(input);
+            expect(unsafe).toEqual(output);
+        });
+    }
+});
 
 //
 // Test safety of eval to get completions
 //
+describe('Expression evaluation', () => {
+    const HARNESS_COMMAND_HEADER =
+        'let imports = obj;' +
+        'let global = obj;' +
+        'let Main = obj;' +
+        'let foo = obj;' +
+        'let r = obj;';
 
-for (let i = 0; i < testsModifyScope.length; i++) {
-    let text = testsModifyScope[i];
+    const ExpressionParameters = [
+        "foo['a",
+        "foo()['b'",
+        "obj.foo()('a', 1, 2, 'b')().",
+        'foo.[.',
+        'foo]]]()))].',
+        "123'ab\"",
+        'Main.foo.bar = 3; bar.',
+        '(Main.foo = 3).',
+        'Main[Main.foo+=-1].',
+    ];
 
-    const globalPropsPre = Object.getOwnPropertyNames(globalThis).sort();
+    function evalIfSafe(text) {
+        // Just as in JsParse.getCompletions, we will find the offset
+        // of the expression, test whether it is unsafe, and then eval it.
+        const offset = JsParse.getExpressionOffset(text, text.length - 1);
+        if (offset < 0)
+            return;
 
-    // Just as in JsParse.getCompletions, we will find the offset
-    // of the expression, test whether it is unsafe, and then eval it.
-    let offset = JsParse.getExpressionOffset(text, text.length - 1);
-    if (offset >= 0) {
-        text = text.slice(offset);
+        const matches = text.slice(offset).match(/(.*)\.(.*)/);
+        if (matches == null)
+            return;
 
-        let matches = text.match(/(.*)\.(.*)/);
-        if (matches) {
-            let [, base] = matches;
+        const [, base] = matches;
+        if (JsParse.isUnsafeExpression(base))
+            return;
 
-            if (!JsParse.isUnsafeExpression(base)) {
-                try {
-                    eval(HARNESS_COMMAND_HEADER + base);
-                } catch (e) {
-                    JsUnit.assertNotEquals(`Code '${base}' is valid code`, e.constructor, SyntaxError);
-                }
-            }
-        }
+        eval(HARNESS_COMMAND_HEADER + base);
     }
 
-    const globalPropsPost = Object.getOwnPropertyNames(globalThis).sort();
-    Assertions.assertArrayEquals('The global object was not modified',
-        globalPropsPre, globalPropsPost);
-}
+    for (const expression of ExpressionParameters) {
+        const globalPropsPre = Object.getOwnPropertyNames(globalThis).sort();
+
+        it(`of ${expression} does not throw syntax errors with a known safe expression`, () => {
+            expect(() => evalIfSafe(expression)).not.toThrow(SyntaxError);
+        });
+
+        const globalPropsPost = Object.getOwnPropertyNames(globalThis).sort();
+        it(`of ${expression} does not modify the global scope`, () => {
+            expect(globalPropsPre).toEqual(globalPropsPost);
+        });
+    }
+});

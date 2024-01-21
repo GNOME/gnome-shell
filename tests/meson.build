@@ -23,6 +23,7 @@ unit_tests = [
     'highlighter',
     'injectionManager',
     'insertSorted',
+    'jsParse',
 ]
 
 foreach test : unit_tests
@@ -41,7 +42,6 @@ foreach test : unit_tests
 endforeach
 
 legacy_tests = [
-    'jsParse',
     'markup',
     'params',
     'signalTracker',
