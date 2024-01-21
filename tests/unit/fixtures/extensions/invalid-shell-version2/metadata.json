@@ -1,0 +1,9 @@
+{
+  "uuid": "invalid-shell-version2",
+  "name": "Some Name",
+  "description": "Some Description",
+  "shell-version": [
+    45,
+    46
+  ]
+}
