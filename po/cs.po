@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2024-01-21 23:32+0000\n"
-"PO-Revision-Date: 2024-01-22 00:52+0100\n"
+"POT-Creation-Date: 2024-01-21 23:55+0000\n"
+"PO-Revision-Date: 2024-01-22 01:58+0100\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -2746,7 +2746,7 @@ msgstr "Zobrazit rozšíření nainstalovaná pro systém"
 
 #: subprojects/extensions-tool/src/command-list.c:134
 msgid "Show enabled extensions"
-msgstr "Zobrazit povolená rošíření"
+msgstr "Zobrazit povolená rozšíření"
 
 #: subprojects/extensions-tool/src/command-list.c:137
 msgid "Show disabled extensions"
