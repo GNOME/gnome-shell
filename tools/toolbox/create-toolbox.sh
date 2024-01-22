@@ -74,7 +74,6 @@ setup_classic() {
   local branch=${VERSION:+gnome-}${VERSION:-main}
 
   toolbox_run /usr/libexec/install-meson-project.sh \
-    --prepare "git submodule update --init" \
     -Dclassic_mode=true \
     https://gitlab.gnome.org/GNOME/gnome-shell-extensions.git $branch
 }
