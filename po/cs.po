@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2024-01-07 10:14+0000\n"
-"PO-Revision-Date: 2024-01-22 01:16+0100\n"
+"POT-Creation-Date: 2024-01-22 00:26+0000\n"
+"PO-Revision-Date: 2024-01-22 01:44+0100\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -522,8 +522,8 @@ msgstr "Místo, pro které se má zobrazovat předpověď počasí"
 #: data/org.gnome.Shell.Extensions.desktop.in.in:5
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/extensionsWindow.js:145
-#: subprojects/extensions-app/data/ui/extensions-window.ui:59
+#: subprojects/extensions-app/js/extensionsWindow.js:159
+#: subprojects/extensions-app/data/ui/extensions-window.ui:57
 msgid "Extensions"
 msgstr "Rozšíření"
 
@@ -532,7 +532,7 @@ msgid "Network Login"
 msgstr "Přihlášení do sítě"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:279
+#: subprojects/extensions-app/data/ui/extensions-window.ui:277
 msgid "Something’s gone wrong"
 msgstr "Něco se stalo špatně"
 
@@ -560,7 +560,7 @@ msgstr "Navštívit domovskou stránku rozšíření"
 #: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
 #: js/ui/components/networkAgent.js:115 js/ui/components/polkitAgent.js:146
 #: js/ui/endSessionDialog.js:436 js/ui/extensionDownloader.js:256
-#: js/ui/shellMountOperation.js:387 js/ui/shellMountOperation.js:397
+#: js/ui/shellMountOperation.js:396 js/ui/shellMountOperation.js:406
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -568,7 +568,7 @@ msgstr "Zrušit"
 #: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
 #: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
 #: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
-#: js/ui/shellMountOperation.js:337
+#: js/ui/shellMountOperation.js:346
 msgid "Password"
 msgstr "Heslo"
 
@@ -1210,7 +1210,7 @@ msgstr "Ověřit"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:420
+#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:429
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Ověření bohužel nebylo úspěšné. Zkuste to prosím znovu."
 
@@ -1219,7 +1219,7 @@ msgstr "Ověření bohužel nebylo úspěšné. Zkuste to prosím znovu."
 msgid "%s is now known as %s"
 msgstr "%s je teď znám jako %s"
 
-#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:412
+#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:418
 msgid "Windows"
 msgstr "Okna"
 
@@ -1587,7 +1587,7 @@ msgstr "Vypnout"
 msgid "Leave Off"
 msgstr "Ponechat vypnuté"
 
-#: js/ui/keyboard.js:225 js/ui/status/keyboard.js:872
+#: js/ui/keyboard.js:225 js/ui/status/keyboard.js:899
 msgid "Keyboard Settings"
 msgstr "Nastavení klávesnice"
 
@@ -1694,11 +1694,11 @@ msgstr "Neznámý název"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:336
+#: js/ui/overviewControls.js:342
 msgid "Type to search"
 msgstr "vyhledávejte psaním"
 
-#: js/ui/overviewControls.js:400
+#: js/ui/overviewControls.js:406
 msgid "Apps"
 msgstr "Aplikace"
 
@@ -1758,12 +1758,12 @@ msgstr "Zmáčknutím klávesy ukončíte"
 msgid "Activities"
 msgstr "Činnosti"
 
-#: js/ui/panel.js:508
+#: js/ui/panel.js:506
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Systém"
 
-#: js/ui/panel.js:682
+#: js/ui/panel.js:680
 msgid "Top Bar"
 msgstr "Horní lišta"
 
@@ -1920,7 +1920,7 @@ msgstr[1] "%d další"
 msgstr[2] "%d dalších"
 
 #: js/ui/searchController.js:89
-#: subprojects/extensions-app/data/ui/extensions-window.ui:75
+#: subprojects/extensions-app/data/ui/extensions-window.ui:73
 msgid "Search"
 msgstr "Hledat"
 
@@ -1944,20 +1944,20 @@ msgstr "Skrýt text"
 msgid "Caps lock is on."
 msgstr "Je zapnutý Caps Lock."
 
-#: js/ui/shellMountOperation.js:291
+#: js/ui/shellMountOperation.js:300
 msgid "Hidden Volume"
 msgstr "Skrytý svazek"
 
-#: js/ui/shellMountOperation.js:294
+#: js/ui/shellMountOperation.js:303
 msgid "Windows System Volume"
 msgstr "Systémový svazek Windows"
 
-#: js/ui/shellMountOperation.js:297
+#: js/ui/shellMountOperation.js:306
 msgid "Uses Keyfiles"
 msgstr "Používat soubory s klíči"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:305
+#: js/ui/shellMountOperation.js:314
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -1965,7 +1965,7 @@ msgstr ""
 "K odemknutí svazku, který používá soubory s klíči, místo toho použijte "
 "pomůcku <i>%s</i>."
 
-#: js/ui/shellMountOperation.js:309
+#: js/ui/shellMountOperation.js:318
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
@@ -1973,25 +1973,25 @@ msgstr ""
 "K odemčení svazku, který používá soubory s klíči, potřebujete externí "
 "nástroj, například <i>Disky</i>."
 
-#: js/ui/shellMountOperation.js:317
+#: js/ui/shellMountOperation.js:326
 msgid "PIM Number"
 msgstr "Číslo PIM"
 
-#: js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:385
 msgid "Remember Password"
 msgstr "Pamatovat si heslo"
 
-#: js/ui/shellMountOperation.js:391
+#: js/ui/shellMountOperation.js:400
 msgid "Unlock"
 msgstr "Odemknout"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:405
+#: js/ui/shellMountOperation.js:414
 #, javascript-format
 msgid "Open %s"
 msgstr "Otevřít %s"
 
-#: js/ui/shellMountOperation.js:441
+#: js/ui/shellMountOperation.js:450
 msgid "The PIM must be a number or empty."
 msgstr "PIM musí být číslo nebo prázdné."
 
@@ -2088,7 +2088,7 @@ msgstr "Nízké"
 msgid "High"
 msgstr "Vysoké"
 
-#: js/ui/status/backlight.js:148 js/ui/status/keyboard.js:854
+#: js/ui/status/backlight.js:148 js/ui/status/keyboard.js:881
 msgid "Keyboard"
 msgstr "Klávesnice"
 
@@ -2149,7 +2149,7 @@ msgstr "Druhé kliknutí"
 msgid "Dwell Click"
 msgstr "Kliknutí posečkáním"
 
-#: js/ui/status/keyboard.js:871
+#: js/ui/status/keyboard.js:898
 msgid "Show Keyboard Layout"
 msgstr "Zobrazit rozložení klávesnice"
 
@@ -2336,7 +2336,7 @@ msgid "Power Off…"
 msgstr "Vypnout…"
 
 #: js/ui/status/system.js:195
-#: subprojects/extensions-app/data/ui/extensions-window.ui:126
+#: subprojects/extensions-app/data/ui/extensions-window.ui:124
 msgid "Log Out…"
 msgstr "Odhlásit se…"
 
@@ -2460,7 +2460,6 @@ msgstr "Přihlásit se jako jiný uživatel"
 
 #: js/ui/welcomeDialog.js:49
 #, javascript-format
-#| msgid "GNOME Shell"
 msgid "GNOME %s"
 msgstr "GNOME %s"
 
@@ -2639,7 +2638,7 @@ msgstr "Správa vašich rozšíření GNOME"
 
 #. developer_name tag deprecated with Appstream 1.0
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:19
-#: subprojects/extensions-app/js/extensionsWindow.js:149
+#: subprojects/extensions-app/js/extensionsWindow.js:163
 msgid "The GNOME Project"
 msgstr "Projekt GNOME"
 
@@ -2651,15 +2650,15 @@ msgstr ""
 "Aplikace Rozšíření GNOME umožňuje aktualizaci a nastavení předvoleb "
 "rozšíření a odstranění nebo vypnutí nechtěných rozšíření."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:62
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:63
 msgid "Main Window"
 msgstr "Hlavní okno"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:66
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:67
 msgid "Available Updates"
 msgstr "Dostupné aktualizace"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:71
 msgid "Search View"
 msgstr "Zobrazení vyhledávání"
 
@@ -2704,12 +2703,12 @@ msgstr "Podrobnosti o chybě:"
 msgid "Version %s"
 msgstr "Verze %s"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:101
+#: subprojects/extensions-app/js/extensionsWindow.js:115
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Odebrat „%s“?"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:102
+#: subprojects/extensions-app/js/extensionsWindow.js:116
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2717,19 +2716,19 @@ msgstr ""
 "Pokud rozšíření odeberete a budete jej chtít znovu povolit, budete se muset "
 "vrátit k jeho stažení."
 
-#: subprojects/extensions-app/js/extensionsWindow.js:105
+#: subprojects/extensions-app/js/extensionsWindow.js:119
 msgid "_Cancel"
 msgstr "_Zrušit"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:106
+#: subprojects/extensions-app/js/extensionsWindow.js:120
 msgid "_Remove"
 msgstr "Odeb_rat"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:144
+#: subprojects/extensions-app/js/extensionsWindow.js:158
 msgid "translator-credits"
 msgstr "Marek Černocký <marek@manet.cz>"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:197
+#: subprojects/extensions-app/js/extensionsWindow.js:211
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -2776,23 +2775,23 @@ msgstr "Klávesové zkratky"
 msgid "About Extensions"
 msgstr "O aplikaci Rozšíření"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:66
+#: subprojects/extensions-app/data/ui/extensions-window.ui:64
 msgid "Main Menu"
 msgstr "Hlavní nabídka"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:108
+#: subprojects/extensions-app/data/ui/extensions-window.ui:106
 msgid "Search extensions"
 msgstr "Hledat rozšíření"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:136
+#: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid "_Extensions"
 msgstr "_Rozšíření"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:145
+#: subprojects/extensions-app/data/ui/extensions-window.ui:143
 msgid "More Information"
 msgstr "Další informace"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:155
+#: subprojects/extensions-app/data/ui/extensions-window.ui:153
 msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
@@ -2801,31 +2800,31 @@ msgstr ""
 "systému narazíte na podobné problémy, je doporučeno zakázat všechna "
 "rozšíření."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:182
+#: subprojects/extensions-app/data/ui/extensions-window.ui:180
 msgid "User Extensions"
 msgstr "Uživatelská rozšíření"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:202
+#: subprojects/extensions-app/data/ui/extensions-window.ui:200
 msgid "System Extensions"
 msgstr "Systémová rozšíření"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:237
+#: subprojects/extensions-app/data/ui/extensions-window.ui:235
 msgid "Search Results"
 msgstr "Výsledky vyhledávání"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:256
+#: subprojects/extensions-app/data/ui/extensions-window.ui:254
 msgid "No Results Found"
 msgstr "Nebyly nalezeny žádné výsledky"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:257
+#: subprojects/extensions-app/data/ui/extensions-window.ui:255
 msgid "Try a different search."
 msgstr "Zkuste jiné hledání."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:268
+#: subprojects/extensions-app/data/ui/extensions-window.ui:266
 msgid "No Installed Extensions"
 msgstr "Není nainstalované žádné rozšíření"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:269
+#: subprojects/extensions-app/data/ui/extensions-window.ui:267
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
@@ -2833,7 +2832,7 @@ msgstr ""
 "Jestli chcete vyhledat a nainstalovat rozšíření, navštivte stránku <a "
 "href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:280
+#: subprojects/extensions-app/data/ui/extensions-window.ui:278
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -3062,7 +3061,7 @@ msgstr "Zobrazit rozšíření nainstalovaná pro systém"
 
 #: subprojects/extensions-tool/src/command-list.c:146
 msgid "Show enabled extensions"
-msgstr "Zobrazit povolená rošíření"
+msgstr "Zobrazit povolená rozšíření"
 
 #: subprojects/extensions-tool/src/command-list.c:149
 msgid "Show disabled extensions"
