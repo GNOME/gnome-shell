@@ -11,22 +11,22 @@
 # Muhammet Kara <muhammetk@gmail.com>, 2011-2017.
 # Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017, 2018.
 # Sabri Ünal <libreajans@gmail.com>, 2014, 2019, 2022, 2023.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2017-2023.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-12-13 14:09+0000\n"
-"PO-Revision-Date: 2023-12-18 02:43+0300\n"
-"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
+"POT-Creation-Date: 2024-01-19 18:02+0000\n"
+"PO-Revision-Date: 2024-01-22 08:00+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: tr\n"
 "X-DL-Module: gnome-shell\n"
@@ -39,63 +39,99 @@ msgid "Launchers"
 msgstr "Başlatıcılar"
 
 #: data/50-gnome-shell-launchers.xml:10
-msgid "Activate favorite app 1"
-msgstr "Gözde uygulama 1ʼi etkinleştir"
+msgid "Activate pinned app 1"
+msgstr "Sabitlenmiş 1. uygulamayı etkinleştir"
 
 #: data/50-gnome-shell-launchers.xml:14
-msgid "Activate favorite app 2"
-msgstr "Gözde uygulama 2ʼyi etkinleştir"
+msgid "Activate pinned app 2"
+msgstr "Sabitlenmiş 2. uygulamayı etkinleştir"
 
 #: data/50-gnome-shell-launchers.xml:18
-msgid "Activate favorite app 3"
-msgstr "Gözde uygulama 3ʼü etkinleştir"
+msgid "Activate pinned app 3"
+msgstr "Sabitlenmiş 3. uygulamayı etkinleştir"
 
 #: data/50-gnome-shell-launchers.xml:22
-msgid "Activate favorite app 4"
-msgstr "Gözde uygulama 4ʼü etkinleştir"
+msgid "Activate pinned app 4"
+msgstr "Sabitlenmiş 4. uygulamayı etkinleştir"
 
 #: data/50-gnome-shell-launchers.xml:26
-msgid "Activate favorite app 5"
-msgstr "Gözde uygulama 5ʼi etkinleştir"
+msgid "Activate pinned app 5"
+msgstr "Sabitlenmiş 5. uygulamayı etkinleştir"
 
 #: data/50-gnome-shell-launchers.xml:30
-msgid "Activate favorite app 6"
-msgstr "Gözde uygulama 6ʼyı etkinleştir"
+msgid "Activate pinned app 6"
+msgstr "Sabitlenmiş 6. uygulamayı etkinleştir"
 
 #: data/50-gnome-shell-launchers.xml:34
-msgid "Activate favorite app 7"
-msgstr "Gözde uygulama 7ʼyi etkinleştir"
+msgid "Activate pinned app 7"
+msgstr "Sabitlenmiş 7. uygulamayı etkinleştir"
 
 #: data/50-gnome-shell-launchers.xml:38
-msgid "Activate favorite app 8"
-msgstr "Gözde uygulama 8ʼi etkinleştir"
+msgid "Activate pinned app 8"
+msgstr "Sabitlenmiş 8. uygulamayı etkinleştir"
 
 #: data/50-gnome-shell-launchers.xml:42
-msgid "Activate favorite app 9"
-msgstr "Gözde uygulama 9ʼu etkinleştir"
+msgid "Activate pinned app 9"
+msgstr "Sabitlenmiş 9. uygulamayı etkinleştir"
+
+#: data/50-gnome-shell-launchers.xml:46
+msgid "Open new window of pinned app 1"
+msgstr "Sabitlenmiş 1. uygulamanın yeni penceresini aç"
+
+#: data/50-gnome-shell-launchers.xml:50
+msgid "Open new window of pinned app 2"
+msgstr "Sabitlenmiş 2. uygulamanın yeni penceresini aç"
+
+#: data/50-gnome-shell-launchers.xml:54
+msgid "Open new window of pinned app 3"
+msgstr "Sabitlenmiş 3. uygulamanın yeni penceresini aç"
+
+#: data/50-gnome-shell-launchers.xml:58
+msgid "Open new window of pinned app 4"
+msgstr "Sabitlenmiş 4. uygulamanın yeni penceresini aç"
+
+#: data/50-gnome-shell-launchers.xml:62
+msgid "Open new window of pinned app 5"
+msgstr "Sabitlenmiş 5. uygulamanın yeni penceresini aç"
+
+#: data/50-gnome-shell-launchers.xml:66
+msgid "Open new window of pinned app 6"
+msgstr "Sabitlenmiş 6. uygulamanın yeni penceresini aç"
+
+#: data/50-gnome-shell-launchers.xml:70
+msgid "Open new window of pinned app 7"
+msgstr "Sabitlenmiş 7. uygulamanın yeni penceresini aç"
+
+#: data/50-gnome-shell-launchers.xml:74
+msgid "Open new window of pinned app 8"
+msgstr "Sabitlenmiş 8. uygulamanın yeni penceresini aç"
+
+#: data/50-gnome-shell-launchers.xml:78
+msgid "Open new window of pinned app 9"
+msgstr "Sabitlenmiş 9. uygulamanın yeni penceresini aç"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2187
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2214
 msgid "Screenshots"
 msgstr "Ekran Görüntüleri"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:240
+#: data/org.gnome.shell.gschema.xml.in:276
 msgid "Take a screenshot interactively"
 msgstr "Etkileşimli olarak ekran görüntüsü al"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:288
 msgid "Take a screenshot"
 msgstr "Ekran görüntüsü al"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:248
+#: data/org.gnome.shell.gschema.xml.in:284
 msgid "Take a screenshot of a window"
 msgstr "Pencerenin ekran görüntüsünü al"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:280
 msgid "Record a screencast interactively"
 msgstr "Etkileşimli olarak ekranı kaydet"
 
@@ -230,17 +266,14 @@ msgid "Always show the “Log Out” action in the system menu"
 msgstr "Sistem menüsünde “Oturumu Kapat” eylemini hep göster."
 
 #: data/org.gnome.shell.gschema.xml.in:72
-#, fuzzy
-#| msgid ""
-#| "This key overrides the automatic hiding of the “Log out” menu item in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the “Log out” action in the "
 "system menu for logged-in situations where there is a single, local, non-"
 "system user and only a single available session type (e.g. GNOME on Wayland)."
 msgstr ""
-"Bu ayar tek kullanıcı oturum açtığında “Oturumu Kapat” menü ögesinin "
-"gizlenmesini önler."
+"Bu ayar; tek, yerel, sistem kullanıcısı olmayan ve yalnızca tek uygun oturum "
+"türünde (örn. Wayland üzerinde GNOME) oturum açıldığında sistem menüsündeki "
+"“Oturumu Kapat” eyleminin kendiliğinden gizlenmesini önler."
 
 #: data/org.gnome.shell.gschema.xml.in:81
 msgid ""
@@ -402,12 +435,48 @@ msgstr "Uygulama 8ʼe geç"
 msgid "Switch to application 9"
 msgstr "Uygulama 9ʼa geç"
 
-#: data/org.gnome.shell.gschema.xml.in:261
-#: data/org.gnome.shell.gschema.xml.in:288
+#: data/org.gnome.shell.gschema.xml.in:240
+msgid "Open a new instance of application 1"
+msgstr "1. uygulamanın yeni örneğini aç"
+
+#: data/org.gnome.shell.gschema.xml.in:244
+msgid "Open a new instance of application 2"
+msgstr "2. uygulamanın yeni örneğini aç"
+
+#: data/org.gnome.shell.gschema.xml.in:248
+msgid "Open a new instance of application 3"
+msgstr "3. uygulamanın yeni örneğini aç"
+
+#: data/org.gnome.shell.gschema.xml.in:252
+msgid "Open a new instance of application 4"
+msgstr "4. uygulamanın yeni örneğini aç"
+
+#: data/org.gnome.shell.gschema.xml.in:256
+msgid "Open a new instance of application 5"
+msgstr "5. uygulamanın yeni örneğini aç"
+
+#: data/org.gnome.shell.gschema.xml.in:260
+msgid "Open a new instance of application 6"
+msgstr "6. uygulamanın yeni örneğini aç"
+
+#: data/org.gnome.shell.gschema.xml.in:264
+msgid "Open a new instance of application 7"
+msgstr "7. uygulamanın yeni örneğini aç"
+
+#: data/org.gnome.shell.gschema.xml.in:268
+msgid "Open a new instance of application 8"
+msgstr "8. uygulamanın yeni örneğini aç"
+
+#: data/org.gnome.shell.gschema.xml.in:272
+msgid "Open a new instance of application 9"
+msgstr "9. uygulamanın yeni örneğini aç"
+
+#: data/org.gnome.shell.gschema.xml.in:297
+#: data/org.gnome.shell.gschema.xml.in:324
 msgid "Limit switcher to current workspace."
 msgstr "Geçiş menüsünü geçerli çalışma alanıyla sınırla."
 
-#: data/org.gnome.shell.gschema.xml.in:262
+#: data/org.gnome.shell.gschema.xml.in:298
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -416,11 +485,11 @@ msgstr ""
 "uygulamalar geçiş menüsünde gösterilir. Aksi halde, tüm uygulamalar "
 "görünecektir."
 
-#: data/org.gnome.shell.gschema.xml.in:279
+#: data/org.gnome.shell.gschema.xml.in:315
 msgid "The application icon mode."
 msgstr "Uygulama simge kipi."
 
-#: data/org.gnome.shell.gschema.xml.in:280
+#: data/org.gnome.shell.gschema.xml.in:316
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -431,7 +500,7 @@ msgstr ""
 "only” (yalnızca uygulama simgesini gösterir) ya da “both” (her ikisi) "
 "değerleridir."
 
-#: data/org.gnome.shell.gschema.xml.in:289
+#: data/org.gnome.shell.gschema.xml.in:325
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -439,27 +508,27 @@ msgstr ""
 "Eğer bu seçenek etkinse, yalnızca geçerli çalışma alanındaki pencereler "
 "geçiş menüsünde gösterilir. Aksi halde, tüm pencereler görünecektir."
 
-#: data/org.gnome.shell.gschema.xml.in:299
+#: data/org.gnome.shell.gschema.xml.in:335
 msgid "Locations"
 msgstr "Konumlar"
 
-#: data/org.gnome.shell.gschema.xml.in:300
+#: data/org.gnome.shell.gschema.xml.in:336
 msgid "The locations to show in world clocks"
 msgstr "Dünya saatlerinde gösterilecek konumlar"
 
-#: data/org.gnome.shell.gschema.xml.in:310
+#: data/org.gnome.shell.gschema.xml.in:346
 msgid "Automatic location"
 msgstr "Kendiliğinden konumlama"
 
-#: data/org.gnome.shell.gschema.xml.in:311
+#: data/org.gnome.shell.gschema.xml.in:347
 msgid "Whether to fetch the current location or not"
 msgstr "Geçerli konumun getirilip getirilmeyeceğini belirler"
 
-#: data/org.gnome.shell.gschema.xml.in:318
+#: data/org.gnome.shell.gschema.xml.in:354
 msgid "Location"
 msgstr "Konum"
 
-#: data/org.gnome.shell.gschema.xml.in:319
+#: data/org.gnome.shell.gschema.xml.in:355
 msgid "The location for which to show a forecast"
 msgstr "Hava durumunun gösterileceği konum"
 
@@ -467,9 +536,8 @@ msgstr "Hava durumunun gösterileceği konum"
 #: data/org.gnome.Shell.Extensions.desktop.in.in:5
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:217
-#: subprojects/extensions-app/data/ui/extensions-window.ui:18
-#: subprojects/extensions-app/data/ui/extensions-window.ui:95
+#: subprojects/extensions-app/js/extensionsWindow.js:159
+#: subprojects/extensions-app/data/ui/extensions-window.ui:57
 msgid "Extensions"
 msgstr "Uzantılar"
 
@@ -478,7 +546,7 @@ msgid "Network Login"
 msgstr "Ağ Girişi"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:158
+#: subprojects/extensions-app/data/ui/extensions-window.ui:277
 msgid "Something’s gone wrong"
 msgstr "Bir şeyler ters gitti"
 
@@ -506,8 +574,7 @@ msgstr "Uzantı ana sayfasını ziyaret et"
 #: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
 #: js/ui/components/networkAgent.js:115 js/ui/components/polkitAgent.js:146
 #: js/ui/endSessionDialog.js:436 js/ui/extensionDownloader.js:256
-#: js/ui/shellMountOperation.js:387 js/ui/shellMountOperation.js:397
-#: subprojects/extensions-app/js/main.js:178
+#: js/ui/shellMountOperation.js:396 js/ui/shellMountOperation.js:406
 msgid "Cancel"
 msgstr "İptal"
 
@@ -515,31 +582,31 @@ msgstr "İptal"
 #: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
 #: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
 #: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
-#: js/ui/shellMountOperation.js:337
+#: js/ui/shellMountOperation.js:346
 msgid "Password"
 msgstr "Parola"
 
-#: js/gdm/loginDialog.js:323
+#: js/gdm/loginDialog.js:324
 msgid "Choose Session"
 msgstr "Oturum Seç"
 
-#: js/gdm/loginDialog.js:468
+#: js/gdm/loginDialog.js:469
 msgid "Not listed?"
 msgstr "Listede yok mu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:936
+#: js/gdm/loginDialog.js:937
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(örneğin, kullanıcı veya %s)"
 
-#: js/gdm/loginDialog.js:941 js/ui/components/networkAgent.js:259
+#: js/gdm/loginDialog.js:942 js/ui/components/networkAgent.js:259
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:328
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
-#: js/gdm/loginDialog.js:1265
+#: js/gdm/loginDialog.js:1266
 msgid "Login Window"
 msgstr "Oturum Açma Penceresi"
 
@@ -684,7 +751,7 @@ msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d saat önce"
 
-#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:182
+#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:185
 msgid "Yesterday"
 msgstr "Dün"
 
@@ -887,7 +954,6 @@ msgid "Display Settings"
 msgstr "Görüntü Ayarları"
 
 #: js/ui/backgroundMenu.js:18
-#: subprojects/extensions-app/data/ui/extension-row.ui:122
 msgid "Settings"
 msgstr "Ayarlar"
 
@@ -984,15 +1050,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "%V. Hafta"
 
-#: js/ui/calendar.js:908
+#: js/ui/calendar.js:909
 msgid "No Notifications"
 msgstr "Bildirim Yok"
 
-#: js/ui/calendar.js:964
+#: js/ui/calendar.js:965
 msgid "Do Not Disturb"
 msgstr "Rahatsız Etme"
 
-#: js/ui/calendar.js:985
+#: js/ui/calendar.js:986
 msgid "Clear"
 msgstr "Temizle"
 
@@ -1134,7 +1200,7 @@ msgstr "Doğrula"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:420
+#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:429
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Üzgünüm ama işe yaramadı. Lütfen yeniden deneyin."
 
@@ -1143,7 +1209,7 @@ msgstr "Üzgünüm ama işe yaramadı. Lütfen yeniden deneyin."
 msgid "%s is now known as %s"
 msgstr "%s, şimdi %s olarak biliniyor"
 
-#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:412
+#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:418
 msgid "Windows"
 msgstr "Pencereler"
 
@@ -1162,7 +1228,7 @@ msgstr "Konsol"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:98
+#: js/ui/dateMenu.js:101
 msgid "%B %-d %Y"
 msgstr "%-d %B %Y"
 
@@ -1170,34 +1236,34 @@ msgstr "%-d %B %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:105
+#: js/ui/dateMenu.js:108
 msgid "%A %B %e %Y"
 msgstr "%e %B %Y %A"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:171
+#: js/ui/dateMenu.js:174
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:174
+#: js/ui/dateMenu.js:177
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%-d %B %Y"
 
-#: js/ui/dateMenu.js:180
+#: js/ui/dateMenu.js:183
 msgid "Today"
 msgstr "Bugün"
 
-#: js/ui/dateMenu.js:184
+#: js/ui/dateMenu.js:187
 msgid "Tomorrow"
 msgstr "Yarın"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:215
+#: js/ui/dateMenu.js:218
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Tüm Gün"
@@ -1205,39 +1271,39 @@ msgstr "Tüm Gün"
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
 #.
-#: js/ui/dateMenu.js:237
+#: js/ui/dateMenu.js:240
 msgid "%m/%d"
 msgstr "%d/%m"
 
-#: js/ui/dateMenu.js:288
+#: js/ui/dateMenu.js:291
 msgid "No Events"
 msgstr "Olay Yok"
 
-#: js/ui/dateMenu.js:410
+#: js/ui/dateMenu.js:413
 msgid "Add world clocks…"
 msgstr "Dünya saatleri ekle…"
 
-#: js/ui/dateMenu.js:411
+#: js/ui/dateMenu.js:414
 msgid "World Clocks"
 msgstr "Dünya Saatleri"
 
-#: js/ui/dateMenu.js:695
+#: js/ui/dateMenu.js:698
 msgid "Loading…"
 msgstr "Yükleniyor…"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:708
 msgid "Go online for weather information"
 msgstr "Hava durumu bilgisi için çevrim içi olun"
 
-#: js/ui/dateMenu.js:707
+#: js/ui/dateMenu.js:710
 msgid "Weather information is currently unavailable"
 msgstr "Hava durumu bilgisi şu anda kullanılabilir değil"
 
-#: js/ui/dateMenu.js:717
+#: js/ui/dateMenu.js:720
 msgid "Weather"
 msgstr "Hava Durumu"
 
-#: js/ui/dateMenu.js:719
+#: js/ui/dateMenu.js:722
 msgid "Select weather location…"
 msgstr "Hava durumu konumu seç…"
 
@@ -1405,11 +1471,11 @@ msgstr "Uzantı Kur"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "“%s” uzantısı extensions.gnome.org üstünden indirilip kurulsun mu?"
 
-#: js/ui/extensionSystem.js:340
+#: js/ui/extensionSystem.js:350
 msgid "Extension Updates Available"
 msgstr "Uzantı Güncellemeleri Var"
 
-#: js/ui/extensionSystem.js:341
+#: js/ui/extensionSystem.js:351
 msgid "Extension updates are ready to be installed."
 msgstr "Uzantı güncellemeleri kuruluma hazır."
 
@@ -1490,7 +1556,7 @@ msgstr "Kapat"
 msgid "Leave Off"
 msgstr "Kapalı Bırak"
 
-#: js/ui/keyboard.js:225 js/ui/status/keyboard.js:872
+#: js/ui/keyboard.js:225 js/ui/status/keyboard.js:899
 msgid "Keyboard Settings"
 msgstr "Klavye Ayarları"
 
@@ -1513,14 +1579,12 @@ msgid "Show Errors"
 msgstr "Hataları Göster"
 
 #: js/ui/lookingGlass.js:805
-msgid "Enabled"
+msgid "Active"
 msgstr "Etkin"
 
-#. translators:
-#. * The device has been disabled
-#: js/ui/lookingGlass.js:808 subprojects/gvc/gvc-mixer-control.c:1908
-msgid "Disabled"
-msgstr "Devre dışı"
+#: js/ui/lookingGlass.js:808
+msgid "Inactive"
+msgstr "Devre Dışı"
 
 #: js/ui/lookingGlass.js:810
 msgid "Error"
@@ -1528,18 +1592,18 @@ msgstr "Hata"
 
 #: js/ui/lookingGlass.js:812
 msgid "Out of date"
-msgstr "Güncel değil"
+msgstr "Güncel Değil"
 
 #: js/ui/lookingGlass.js:814
 msgid "Downloading"
 msgstr "İndiriliyor"
 
 #: js/ui/lookingGlass.js:816
-msgid "Disabling"
-msgstr "Devre dışı bırakılıyor"
+msgid "Deactivating"
+msgstr "Devre Dışı Bırakılıyor"
 
 #: js/ui/lookingGlass.js:818
-msgid "Enabling"
+msgid "Activating"
 msgstr "Etkinleştiriliyor"
 
 #: js/ui/lookingGlass.js:851
@@ -1550,35 +1614,35 @@ msgstr "Kaynağı Görüntüle"
 msgid "Web Page"
 msgstr "Web Sayfası"
 
-#: js/ui/main.js:269
+#: js/ui/main.js:280
 msgid "System was put in unsafe mode"
 msgstr "Sistem güvensiz kipe sokuldu"
 
-#: js/ui/main.js:270
+#: js/ui/main.js:281
 msgid "Apps now have unrestricted access"
 msgstr "Şimdi uygulamalar sınırsız erişime sahip"
 
-#: js/ui/main.js:271 js/ui/overview.js:63
+#: js/ui/main.js:282 js/ui/overview.js:63
 msgid "Undo"
 msgstr "Geri Al"
 
-#: js/ui/main.js:329
+#: js/ui/main.js:340
 msgid "Logged in as a privileged user"
 msgstr "Yetkili kullanıcı olarak oturum açılmış"
 
-#: js/ui/main.js:330
+#: js/ui/main.js:341
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
 msgstr ""
 "Oturumu öncelikli kullanıcı olarak çalıştırmaktan güvenlik nedeniyle "
-"kaçınılmalıdır. Eğer yapabiliyorsanız sıradan kullanıcı olarak girmelisiniz."
+"kaçınılmalıdır. Eğer yapabiliyorsanız sıradan kullanıcı olarak oturum açmalısınız."
 
-#: js/ui/main.js:378
+#: js/ui/main.js:389
 msgid "Screen Lock disabled"
 msgstr "Ekran Kilidi devre dışı"
 
-#: js/ui/main.js:379
+#: js/ui/main.js:390
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Ekran Kilitleme, GNOME ekran yöneticisi gerektirir."
 
@@ -1598,11 +1662,11 @@ msgstr "Bilinmeyen başlık"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:336
+#: js/ui/overviewControls.js:342
 msgid "Type to search"
 msgstr "Yazarak ara"
 
-#: js/ui/overviewControls.js:400
+#: js/ui/overviewControls.js:406
 msgid "Apps"
 msgstr "Uygulamalar"
 
@@ -1662,12 +1726,12 @@ msgstr "Çıkmak için herhangi bir tuşa bas"
 msgid "Activities"
 msgstr "Etkinlikler"
 
-#: js/ui/panel.js:508
+#: js/ui/panel.js:506
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:682
+#: js/ui/panel.js:680
 msgid "Top Bar"
 msgstr "Tepe Çubuğu"
 
@@ -1703,126 +1767,126 @@ msgstr "Kilitlenemedi"
 msgid "Lock was blocked by an app"
 msgstr "Kilitleme bir uygulamaca engellendi"
 
-#: js/ui/screenshot.js:1231
+#: js/ui/screenshot.js:1239
 msgid "Selection"
 msgstr "Seçim"
 
-#: js/ui/screenshot.js:1241
+#: js/ui/screenshot.js:1249
 msgid "Area Selection"
 msgstr "Alan Seçimi"
 
-#: js/ui/screenshot.js:1246
+#: js/ui/screenshot.js:1254
 msgid "Screen"
 msgstr "Ekran"
 
-#: js/ui/screenshot.js:1256
+#: js/ui/screenshot.js:1264
 msgid "Screen Selection"
 msgstr "Ekran Seçimi"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1269
 msgid "Window"
 msgstr "Pencere"
 
-#: js/ui/screenshot.js:1271
+#: js/ui/screenshot.js:1279
 msgid "Window Selection"
 msgstr "Pencere Seçimi"
 
 #. Translators: entry in the window right click menu.
-#: js/ui/screenshot.js:1296 js/ui/status/system.js:113 js/ui/windowMenu.js:30
+#: js/ui/screenshot.js:1304 js/ui/status/system.js:113 js/ui/windowMenu.js:30
 msgid "Take Screenshot"
 msgstr "Ekran Görüntüsü Al"
 
-#: js/ui/screenshot.js:1312
+#: js/ui/screenshot.js:1320
 msgid "Record Screen"
 msgstr "Ekranı Kaydet"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1327
+#: js/ui/screenshot.js:1337
 msgid "Capture"
 msgstr "Yakala"
 
-#: js/ui/screenshot.js:1349
+#: js/ui/screenshot.js:1359
 msgid "Show Pointer"
 msgstr "İmleci Göster"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1945
+#: js/ui/screenshot.js:1971
 msgid "Screencasts"
 msgstr "Ekran Kaydı"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1950
+#: js/ui/screenshot.js:1976
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Ekran Kaydı - %d %t.webm"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1988
+#: js/ui/screenshot.js:2014
 msgid "Screencast recorded"
 msgstr "Ekran kaydı yakalandı"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1995
+#: js/ui/screenshot.js:2021
 msgid "Screencast ended unexpectedly"
 msgstr "Ekran kaydı beklenmedik biçimde bitti"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:2004 js/ui/screenshot.js:2240
+#: js/ui/screenshot.js:2030 js/ui/screenshot.js:2267
 msgid "Screenshot"
 msgstr "Ekran Görüntüsü"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2011
+#: js/ui/screenshot.js:2037
 msgid "Click here to view the video."
 msgstr "Videoyu görmek için buraya tıklayın."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2014 js/ui/screenshot.js:2254
+#: js/ui/screenshot.js:2040 js/ui/screenshot.js:2281
 msgid "Show in Files"
 msgstr "Dosyalar’da Göster"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2200
+#: js/ui/screenshot.js:2227
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Ekran Görüntüsü - %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2246
+#: js/ui/screenshot.js:2273
 msgid "Screenshot captured"
 msgstr "Ekran görüntüsü yakalandı"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2248
+#: js/ui/screenshot.js:2275
 msgid "You can paste the image from the clipboard."
 msgstr "Resmi panodan yapıştırabilirsiniz."
 
-#: js/ui/screenshot.js:2301 js/ui/screenshot.js:2465
+#: js/ui/screenshot.js:2330 js/ui/screenshot.js:2494
 msgid "Screenshot taken"
 msgstr "Ekran görüntüsü alındı"
 
-#: js/ui/search.js:828
+#: js/ui/search.js:831
 msgid "Searching…"
 msgstr "Aranıyor…"
 
-#: js/ui/search.js:830
+#: js/ui/search.js:833
 msgid "No results."
 msgstr "Sonuç yok."
 
-#: js/ui/search.js:961
+#: js/ui/search.js:964
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
 msgstr[0] "%d tane daha"
 
 #: js/ui/searchController.js:89
-#: subprojects/extensions-app/data/ui/extensions-window.ui:34
+#: subprojects/extensions-app/data/ui/extensions-window.ui:73
 msgid "Search"
 msgstr "Ara"
 
@@ -1846,20 +1910,20 @@ msgstr "Metni Gizle"
 msgid "Caps lock is on."
 msgstr "Caps lock açık."
 
-#: js/ui/shellMountOperation.js:291
+#: js/ui/shellMountOperation.js:300
 msgid "Hidden Volume"
 msgstr "Gizli Bölüm"
 
-#: js/ui/shellMountOperation.js:294
+#: js/ui/shellMountOperation.js:303
 msgid "Windows System Volume"
 msgstr "Windows Sistem Bölümü"
 
-#: js/ui/shellMountOperation.js:297
+#: js/ui/shellMountOperation.js:306
 msgid "Uses Keyfiles"
 msgstr "Anahtar Dosyaları Kullanır"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:305
+#: js/ui/shellMountOperation.js:314
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -1867,7 +1931,7 @@ msgstr ""
 "Anahtar dosyaları kullanan bölümün kilidini açmak için <i>%s</i> aracını "
 "kullanın."
 
-#: js/ui/shellMountOperation.js:309
+#: js/ui/shellMountOperation.js:318
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
@@ -1875,25 +1939,25 @@ msgstr ""
 "Anahtar dosyaları kullanan bölümün kilidini açmak için <i>Diskler</i> gibi "
 "dış araca gereksinirsiniz."
 
-#: js/ui/shellMountOperation.js:317
+#: js/ui/shellMountOperation.js:326
 msgid "PIM Number"
 msgstr "PIM Numarası"
 
-#: js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:385
 msgid "Remember Password"
 msgstr "Parolayı Anımsa"
 
-#: js/ui/shellMountOperation.js:391
+#: js/ui/shellMountOperation.js:400
 msgid "Unlock"
 msgstr "Kilit Aç"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:405
+#: js/ui/shellMountOperation.js:414
 #, javascript-format
 msgid "Open %s"
 msgstr "%s’i Aç"
 
-#: js/ui/shellMountOperation.js:441
+#: js/ui/shellMountOperation.js:450
 msgid "The PIM must be a number or empty."
 msgstr "PIM bir sayı veya boşluk olmalı."
 
@@ -1988,7 +2052,7 @@ msgstr "Düşük"
 msgid "High"
 msgstr "Yüksek"
 
-#: js/ui/status/backlight.js:148 js/ui/status/keyboard.js:854
+#: js/ui/status/backlight.js:148 js/ui/status/keyboard.js:881
 msgid "Keyboard"
 msgstr "Klavye"
 
@@ -2047,7 +2111,7 @@ msgstr "İkincil Tık"
 msgid "Dwell Click"
 msgstr "Durağan Tık"
 
-#: js/ui/status/keyboard.js:871
+#: js/ui/status/keyboard.js:898
 msgid "Show Keyboard Layout"
 msgstr "Klavye Düzenini Göster"
 
@@ -2230,7 +2294,7 @@ msgid "Power Off…"
 msgstr "Gücü Kapat…"
 
 #: js/ui/status/system.js:195
-#: subprojects/extensions-app/data/ui/extensions-window.ui:85
+#: subprojects/extensions-app/data/ui/extensions-window.ui:124
 msgid "Log Out…"
 msgstr "Oturumu Kapat…"
 
@@ -2472,7 +2536,7 @@ msgstr "Sağdaki Monitöre Taşı"
 msgid "Close"
 msgstr "Kapat"
 
-#: src/main.c:529 subprojects/extensions-tool/src/main.c:333
+#: src/main.c:529 subprojects/extensions-tool/src/main.c:336
 msgid "Print version"
 msgstr "Sürümü yazdır"
 
@@ -2492,12 +2556,12 @@ msgstr "Olası kipleri listele"
 msgid "Force animations to be enabled"
 msgstr "Canlandırmaları etkinleştirilmeye zorla"
 
-#: src/shell-app.c:305
+#: src/shell-app.c:253
 msgctxt "program"
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: src/shell-app.c:556
+#: src/shell-app.c:504
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "“%s” başlatılamadı"
@@ -2527,12 +2591,13 @@ msgstr "Simge yüklenemedi"
 msgid "Manage your GNOME Extensions"
 msgstr "GNOME Uzantılarını Yönet"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:17
-#: subprojects/extensions-app/js/main.js:221
+#. developer_name tag deprecated with Appstream 1.0
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:19
+#: subprojects/extensions-app/js/extensionsWindow.js:163
 msgid "The GNOME Project"
 msgstr "GNOME Projesi"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:36
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -2540,21 +2605,65 @@ msgstr ""
 "GNOME Uzantılar; uzantıları güncellemeyi, uzantı tercihlerini yapılandırmayı "
 "ve istenmeyen uzantıları kaldırmayı veya devre dışı bırakmanızı sağlar."
 
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:63
+msgid "Main Window"
+msgstr "Ana Pencere"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:67
+msgid "Available Updates"
+msgstr "Kullanılabilir Güncellemeler"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:71
+msgid "Search View"
+msgstr "Arama Görünümü"
+
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
 msgstr "GNOME Kabuğu Uzantılarını Ayarla"
 
-#: subprojects/extensions-app/js/main.js:135
-#: subprojects/extensions-app/js/main.js:146
-msgid "No Matches"
-msgstr "Eşleşme Yok"
+#: subprojects/extensions-app/js/extensionManager.js:237
+#, javascript-format
+msgid ""
+"The installed version of this extension (%s) is incompatible with the "
+"current version of GNOME (%s). The extension has been disabled."
+msgstr ""
+"Bu uzantının kurulu sürümü (%s) geçerli GNOME (%s) sürümüyle uyumsuz. Uzantı "
+"devre dışı bırakıldı."
 
-#: subprojects/extensions-app/js/main.js:174
+#: subprojects/extensions-app/js/extensionManager.js:238
+#, javascript-format
+msgid ""
+"The installed version of this extension is incompatible with the current "
+"version of GNOME (%s). The extension has been disabled."
+msgstr ""
+"Bu uzantının kurulu sürümü geçerli GNOME (%s) sürümüyle uyumsuz. Uzantı "
+"devre dışı bırakıldı."
+
+#: subprojects/extensions-app/js/extensionManager.js:242
+msgid ""
+"An error has occurred in this extension. This could cause issues elsewhere "
+"in the system. It is recommended to turn the extension off until the error "
+"is resolved."
+msgstr ""
+"Bu uzantıda hata oluştu. Bu, sistemin herhangi bir yerinde sorunlara neden olabilir. "
+"Hata çözülene dek uzantıyı kapatmanız önerilir."
+
+#. translators: Details for an extension error
+#: subprojects/extensions-app/js/extensionManager.js:248
+msgid "Error details:"
+msgstr "Hata ayrıntıları:"
+
+#: subprojects/extensions-app/js/extensionRow.js:82
+#, javascript-format
+msgid "Version %s"
+msgstr "Sürüm %s"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:115
 #, javascript-format
 msgid "Remove “%s”?"
-msgstr "“%s” kaldırılsın mı?"
+msgstr "“%s” Kaldırılsın Mı?"
 
-#: subprojects/extensions-app/js/main.js:175
+#: subprojects/extensions-app/js/extensionsWindow.js:116
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2562,96 +2671,152 @@ msgstr ""
 "Uzantıyı kaldırırsanız, yeniden etkinleştirmek istediğinizde yeniden "
 "indirmeniz gerekir"
 
-#: subprojects/extensions-app/js/main.js:179
-msgid "Remove"
-msgstr "Sil"
+#: subprojects/extensions-app/js/extensionsWindow.js:119
+msgid "_Cancel"
+msgstr "İ_ptal"
 
-#: subprojects/extensions-app/js/main.js:216
+#: subprojects/extensions-app/js/extensionsWindow.js:120
+msgid "_Remove"
+msgstr "_Kaldır"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:158
 msgid "translator-credits"
 msgstr ""
 "Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Muhammet Kara <muhammetk@gmail.com>\n"
 "Sabri Ünal <libreajans@gmail.com>"
 
-#: subprojects/extensions-app/js/main.js:344
+#: subprojects/extensions-app/js/extensionsWindow.js:211
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d uzantı sonraki girişte güncellenecek."
 
-#: subprojects/extensions-app/js/main.js:486
-msgid "The extension is incompatible with the current GNOME version"
-msgstr "Uzantı, geçerli GNOME sürümüyle uyumsuz"
+#: subprojects/extensions-app/data/ui/extension-row.ui:21
+msgid "Error Details"
+msgstr "Hata Ayrıntıları"
 
-#: subprojects/extensions-app/js/main.js:489
-#: subprojects/extensions-app/data/ui/extension-row.ui:52
-msgid "The extension had an error"
-msgstr "Uzantıda hata oluştu"
+#: subprojects/extensions-app/data/ui/extension-row.ui:61
+msgid "Updates Details"
+msgstr "Güncelleme Ayrıntıları"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:62
-msgid "The extension can be updated"
-msgstr "Uzantı güncellenebilir"
+#: subprojects/extensions-app/data/ui/extension-row.ui:71
+msgid ""
+"A new version of this extension is ready and will be loaded on next login."
+msgstr "Bu uzantının yeni sürümü hazır ve sonraki girişte yüklenecek."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:112
-msgid "Website"
-msgstr "Web Sitesi"
+#: subprojects/extensions-app/data/ui/extension-row.ui:107
+msgid "Extension Details"
+msgstr "Uzantı Ayrıntıları"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:134
-msgid "Remove…"
-msgstr "Kaldır…"
+#: subprojects/extensions-app/data/ui/extension-row.ui:193
+msgid "_Website"
+msgstr "_Web Sitesi"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:220
+msgid "_Settings"
+msgstr "_Ayarlar"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:247
+msgid "_Remove…"
+msgstr "_Kaldır…"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:6
-msgid "Help"
-msgstr "Yardım"
+msgid "Keyboard Shortcuts"
+msgstr "Klavye Kısayolları"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:10
 msgid "About Extensions"
 msgstr "Uzantılar Hakkında"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:25
+#: subprojects/extensions-app/data/ui/extensions-window.ui:64
 msgid "Main Menu"
 msgstr "Ana Menü"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:67
+#: subprojects/extensions-app/data/ui/extensions-window.ui:106
 msgid "Search extensions"
 msgstr "Uzantı ara"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:96
+#: subprojects/extensions-app/data/ui/extensions-window.ui:134
+msgid "_Extensions"
+msgstr "_Uzantılar"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:143
+msgid "More Information"
+msgstr "Daha Çok Bilgi"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:153
 msgid ""
-"Extensions can cause performance and stability issues. Disable extensions if "
-"you encounter problems with your system."
+"Extensions can cause performance and stability issues. It is recommended to "
+"disable all extensions if you experience problems with your system."
 msgstr ""
 "Uzantılar başarım ve kararlılık sorunlarına neden olabilir. Sisteminizde "
-"sorun yaşarsanız uzantıları devre dışı bırakın."
+"sorun yaşarsanız tüm uzantıları devre dışı bırakmanız önerilir."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:110
-msgid "Manually Installed"
-msgstr "Elle Kurulmuş"
+#: subprojects/extensions-app/data/ui/extensions-window.ui:180
+msgid "User Extensions"
+msgstr "Kullanıcı Uzantıları"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:111
-#: subprojects/extensions-app/data/ui/extensions-window.ui:148
-msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
-msgstr ""
-"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a> adresine göz atın."
+#: subprojects/extensions-app/data/ui/extensions-window.ui:200
+msgid "System Extensions"
+msgstr "Sistem Uzantıları"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:124
-msgid "Built-In"
-msgstr "Dahili"
+#: subprojects/extensions-app/data/ui/extensions-window.ui:235
+msgid "Search Results"
+msgstr "Arama Sonuçları"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:147
+#: subprojects/extensions-app/data/ui/extensions-window.ui:254
+msgid "No Results Found"
+msgstr "Sonuç Bulunamadı"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:255
+msgid "Try a different search."
+msgstr "Başka arama deneyin."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:266
 msgid "No Installed Extensions"
 msgstr "Yüklü Uzantı Yok"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:159
+#: subprojects/extensions-app/data/ui/extensions-window.ui:267
+msgid ""
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
+msgstr ""
+"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a> adresine göz atın."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:278
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
 msgstr ""
 "Maalesef, yüklü uzantıların listesi alınamadı. GNOME'da oturum açtığınızdan "
 "emin olun ve tekrar deneyin."
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:9
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Genel"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:12
+msgctxt "shortcut window"
+msgid "Open Menu"
+msgstr "Menüyü Aç"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:18
+msgctxt "shortcut window"
+msgid "Toggle Search"
+msgstr "Aramayı Değiştir"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:24
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Kısayolları Göster"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:30
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Çık"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:284
@@ -2763,7 +2928,7 @@ msgid "Create a new extension"
 msgstr "Yeni uzantı oluştur"
 
 #: subprojects/extensions-tool/src/command-create.c:570
-#: subprojects/extensions-tool/src/command-list.c:172
+#: subprojects/extensions-tool/src/command-list.c:190
 msgid "Unknown arguments"
 msgstr "Bilinmeyen argüman"
 
@@ -2804,7 +2969,7 @@ msgid "Enable an extension"
 msgstr "Uzantı etkinleştir"
 
 #: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/command-list.c:66
 #: subprojects/extensions-tool/src/main.c:150
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "GNOME Kabuğu’na bağlanılamadı\n"
@@ -2839,35 +3004,43 @@ msgstr "Uzantı demeti belirtilmedi"
 msgid "More than one extension bundle specified"
 msgstr "Birden çok uzantı demeti belirtildi"
 
-#: subprojects/extensions-tool/src/command-list.c:128
+#: subprojects/extensions-tool/src/command-list.c:140
 msgid "Show user-installed extensions"
 msgstr "Kullanıcı uzantılarını göster"
 
-#: subprojects/extensions-tool/src/command-list.c:131
+#: subprojects/extensions-tool/src/command-list.c:143
 msgid "Show system-installed extensions"
 msgstr "Sistem uzantılarını göster"
 
-#: subprojects/extensions-tool/src/command-list.c:134
+#: subprojects/extensions-tool/src/command-list.c:146
 msgid "Show enabled extensions"
 msgstr "Etkinleştirilmiş uzantıları göster"
 
-#: subprojects/extensions-tool/src/command-list.c:137
+#: subprojects/extensions-tool/src/command-list.c:149
 msgid "Show disabled extensions"
 msgstr "Devre dışı bırakılmış uzantıları göster"
 
-#: subprojects/extensions-tool/src/command-list.c:140
+#: subprojects/extensions-tool/src/command-list.c:152
+msgid "Show extensions in active state"
+msgstr "Etkin durumdaki uzantıları göster"
+
+#: subprojects/extensions-tool/src/command-list.c:155
+msgid "Show extensions in inactive state"
+msgstr "Etkin olmayan uzantıları göster"
+
+#: subprojects/extensions-tool/src/command-list.c:158
 msgid "Show extensions with preferences"
 msgstr "Tercihleri olan uzantıları göster"
 
-#: subprojects/extensions-tool/src/command-list.c:143
+#: subprojects/extensions-tool/src/command-list.c:161
 msgid "Show extensions with updates"
 msgstr "Güncellemeleri olan uzantıları göster"
 
-#: subprojects/extensions-tool/src/command-list.c:146
+#: subprojects/extensions-tool/src/command-list.c:164
 msgid "Print extension details"
 msgstr "Uzantı ayrıntılarını yazdır"
 
-#: subprojects/extensions-tool/src/command-list.c:154
+#: subprojects/extensions-tool/src/command-list.c:172
 msgid "List installed extensions"
 msgstr "Kurulu uzantıları listele"
 
@@ -2970,81 +3143,93 @@ msgid "Version"
 msgstr "Sürüm"
 
 #: subprojects/extensions-tool/src/main.c:268
+msgid "Enabled"
+msgstr "Etkin"
+
+#: subprojects/extensions-tool/src/main.c:268
+msgid "Yes"
+msgstr "Evet"
+
+#: subprojects/extensions-tool/src/main.c:268
+msgid "No"
+msgstr "Hayır"
+
+#: subprojects/extensions-tool/src/main.c:271
 msgid "State"
 msgstr "Durum"
 
-#: subprojects/extensions-tool/src/main.c:306
+#: subprojects/extensions-tool/src/main.c:309
 msgid "“version” takes no arguments"
 msgstr "“version” hiçbir argüman almaz"
 
-#: subprojects/extensions-tool/src/main.c:308
-#: subprojects/extensions-tool/src/main.c:328
+#: subprojects/extensions-tool/src/main.c:311
+#: subprojects/extensions-tool/src/main.c:331
 msgid "Usage:"
 msgstr "Kullanım:"
 
-#: subprojects/extensions-tool/src/main.c:311
+#: subprojects/extensions-tool/src/main.c:314
 msgid "Print version information and exit."
 msgstr "Sürüm bilgisini yazdır ve çık."
 
-#: subprojects/extensions-tool/src/main.c:326
 #: subprojects/extensions-tool/src/main.c:329
+#: subprojects/extensions-tool/src/main.c:332
 msgid "COMMAND"
 msgstr "KOMUT"
 
-#: subprojects/extensions-tool/src/main.c:329
+#: subprojects/extensions-tool/src/main.c:332
 msgid "[ARGS…]"
 msgstr "[ARGÜMANLAR…]"
 
-#: subprojects/extensions-tool/src/main.c:331
+#: subprojects/extensions-tool/src/main.c:334
 msgid "Commands:"
 msgstr "Komutlar:"
 
-#: subprojects/extensions-tool/src/main.c:332
+#: subprojects/extensions-tool/src/main.c:335
 msgid "Print help"
 msgstr "Yardımı yazdır"
 
-#: subprojects/extensions-tool/src/main.c:334
+#: subprojects/extensions-tool/src/main.c:337
 msgid "Enable extension"
 msgstr "Uzantıyı etkinleştir"
 
-#: subprojects/extensions-tool/src/main.c:335
+#: subprojects/extensions-tool/src/main.c:338
 msgid "Disable extension"
 msgstr "Uzantıyı devre dışı bırak"
 
-#: subprojects/extensions-tool/src/main.c:336
+#: subprojects/extensions-tool/src/main.c:339
 msgid "Reset extension"
 msgstr "Uzantıyı sıfırla"
 
-#: subprojects/extensions-tool/src/main.c:337
+#: subprojects/extensions-tool/src/main.c:340
 msgid "Uninstall extension"
 msgstr "Uzantıyı kaldır"
 
-#: subprojects/extensions-tool/src/main.c:338
+#: subprojects/extensions-tool/src/main.c:341
 msgid "List extensions"
 msgstr "Uzantıları listele"
 
-#: subprojects/extensions-tool/src/main.c:339
-#: subprojects/extensions-tool/src/main.c:340
+#: subprojects/extensions-tool/src/main.c:342
+#: subprojects/extensions-tool/src/main.c:343
 msgid "Show extension info"
 msgstr "Uzantı bilgisini göster"
 
-#: subprojects/extensions-tool/src/main.c:341
+#: subprojects/extensions-tool/src/main.c:344
 msgid "Open extension preferences"
 msgstr "GNOME Kabuğu Uzantı Tercihleri"
 
-#: subprojects/extensions-tool/src/main.c:342
+#: subprojects/extensions-tool/src/main.c:345
 msgid "Create extension"
 msgstr "Uzantı oluştur"
 
-#: subprojects/extensions-tool/src/main.c:343
+#: subprojects/extensions-tool/src/main.c:346
 msgid "Package extension"
 msgstr "Uzantıyı paketle"
 
-#: subprojects/extensions-tool/src/main.c:344
+#: subprojects/extensions-tool/src/main.c:347
 msgid "Install extension bundle"
 msgstr "Uzantı demetini kur"
 
-#: subprojects/extensions-tool/src/main.c:346
+#: subprojects/extensions-tool/src/main.c:349
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Ayrıntılı yardım almak için “%s” kullanın.\n"
@@ -3074,6 +3259,12 @@ msgid "Add an item to quick settings"
 msgstr "Hızlı ayarlara öge ekle"
 
 #. translators:
+#. * The device has been disabled
+#: subprojects/gvc/gvc-mixer-control.c:1908
+msgid "Disabled"
+msgstr "Devre dışı"
+
+#. translators:
 #. * The number of sound outputs on a particular device
 #: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
@@ -3092,6 +3283,30 @@ msgstr[0] "%u Girdi"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
+
+#~ msgid "Disabling"
+#~ msgstr "Devre dışı bırakılıyor"
+
+#~ msgid "Enabling"
+#~ msgstr "Etkinleştiriliyor"
+
+#~ msgid "No Matches"
+#~ msgstr "Eşleşme Yok"
+
+#~ msgid "The extension had an error"
+#~ msgstr "Uzantıda hata oluştu"
+
+#~ msgid "The extension can be updated"
+#~ msgstr "Uzantı güncellenebilir"
+
+#~ msgid "Help"
+#~ msgstr "Yardım"
+
+#~ msgid "Manually Installed"
+#~ msgstr "Elle Kurulmuş"
+
+#~ msgid "Built-In"
+#~ msgstr "Dahili"
 
 #~ msgid "Extension Updates Ready"
 #~ msgstr "Uzantı Güncellemeleri Hazır"
