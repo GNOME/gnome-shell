@@ -156,7 +156,9 @@ class BaseIcon extends Shell.SquareBin {
     }
 
     _onIconThemeChanged() {
-        this._createIconTexture(this.iconSize);
+        // St.Icon updates automatically
+        if (!(this.icon instanceof St.Icon))
+            this._createIconTexture(this.iconSize);
     }
 
     animateZoomOut() {
