@@ -193,6 +193,9 @@ stage {
   padding: $base_padding * 2;
   font-weight: bold !important;
 
+  &:ltr {margin-right: 1px;}
+  &:rtl {margin-left: 1px;}
+
   // needs a 1px adjustment to fit exactly into the outer radius
   $bubble_button_radius: $modal_radius - 1px;
 

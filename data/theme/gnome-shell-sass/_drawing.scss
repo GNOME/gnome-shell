@@ -154,7 +154,7 @@
   // background color override for card elements
   @if $style == 'card' { $button_bg_color: $card_bg_color;}
   // background color override for buttons in notifications
-  @if $style == 'bubble' { $button_bg_color: if($variant == 'light', darken($button_bg_color, 3%), lighten($button_bg_color, 10%));}
+  @if $style == 'bubble' { $button_bg_color: if($variant == 'light', darken($button_bg_color, 3%), lighten($button_bg_color, 5%));}
   // background color mix override for flat style; the button bg color is the background color input
   @if $style == 'flat' { $button_bg_color: $c;}
   // background color mix override for default button style
