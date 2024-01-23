@@ -81,7 +81,7 @@ const BackgroundAppMenuItem = GObject.registerClass({
 
         const closeButton = new St.Button({
             iconName: 'window-close-symbolic',
-            styleClass: 'close-button',
+            styleClass: 'icon-button',
             x_expand: true,
             y_expand: false,
             x_align: Clutter.ActorAlign.END,
