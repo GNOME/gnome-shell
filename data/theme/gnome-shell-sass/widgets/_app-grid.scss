@@ -92,8 +92,20 @@ $app_folder_size: 720px;
     }
   }
 
+  & .icon-button {
+    @include button(normal, $tc:$system_fg_color, $c:$system_overlay_bg_color, $always_dark: true);
+    &:hover { @include button(hover, $tc:$system_fg_color, $c:$system_overlay_bg_color, $always_dark: true);}
+    &:active { @include button(active, $tc:$system_fg_color, $c:$system_overlay_bg_color, $always_dark: true);}
+  }
+
   & .page-indicators {
     margin-bottom: $base_padding * 4;
+  }
+
+  & .page-navigation-arrow {
+    @include button(normal, $tc:$system_fg_color, $c:$system_overlay_bg_color, $style: flat, $always_dark: true);
+    &:hover { @include button(hover, $tc:$system_fg_color, $c:$system_overlay_bg_color, $style: flat, $always_dark: true);}
+    &:active { @include button(active, $tc:$system_fg_color, $c:$system_overlay_bg_color, $style: flat, $always_dark: true);}
   }
 
   & .overview-tile {
@@ -172,7 +184,7 @@ $page_indicator_size: 10px;
 
   > StIcon { color: $system_fg_color;}
 
-  @include button(normal, $tc:$system_fg_color, $c:$system_base_color, $style: flat);
-  &:hover { @include button(hover, $tc:$system_fg_color, $c:$system_base_color, $style: flat);}
-  &:active { @include button(active, $tc:$system_fg_color, $c:$system_base_color, $style: flat);}
+  @include button(normal, $tc:$system_fg_color, $c:$system_base_color, $style: flat, $always_dark: true);
+  &:hover { @include button(hover, $tc:$system_fg_color, $c:$system_base_color, $style: flat, $always_dark: true);}
+  &:active { @include button(active, $tc:$system_fg_color, $c:$system_base_color, $style: flat, $always_dark: true);}
 }

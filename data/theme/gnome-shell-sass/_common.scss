@@ -323,22 +323,22 @@ stage {
 // buttons on OSD elements
 %osd_button {
   @extend %button_common;
-  @include button(normal, $tc:$osd_fg_color, $c:$osd_bg_color);
-  &:focus { @include button(focus, $tc:$osd_fg_color, $c:$osd_bg_color);}
-  &:hover { @include button(hover, $tc:$osd_fg_color, $c:$osd_bg_color);}
-  &:active { @include button(active, $tc:$osd_fg_color, $c:$osd_bg_color);}
-  &:checked { @include button(checked, $tc:$osd_fg_color, $c:$osd_bg_color);}
-  &:insensitive { @include button(insensitive, $tc:$osd_fg_color, $c:$osd_bg_color);}
+  @include button(normal, $tc:$osd_fg_color, $c:$osd_bg_color, $always_dark: true);
+  &:focus { @include button(focus, $tc:$osd_fg_color, $c:$osd_bg_color, $always_dark: true);}
+  &:hover { @include button(hover, $tc:$osd_fg_color, $c:$osd_bg_color, $always_dark: true);}
+  &:active { @include button(active, $tc:$osd_fg_color, $c:$osd_bg_color, $always_dark: true);}
+  &:checked { @include button(checked, $tc:$osd_fg_color, $c:$osd_bg_color, $always_dark: true);}
+  &:insensitive { @include button(insensitive, $tc:$osd_fg_color, $c:$osd_bg_color, $always_dark: true);}
 }
 
 %osd_button_flat {
   @extend %button_common;
-  @include button(normal, $tc:$osd_fg_color, $c:$osd_bg_color, $style: flat);
-  &:focus { @include button(focus, $tc:$osd_fg_color, $c:$osd_bg_color, $style: flat);}
-  &:hover { @include button(hover, $tc:$osd_fg_color, $c:$osd_bg_color, $style: flat);}
-  &:active { @include button(active, $tc:$osd_fg_color, $c:$osd_bg_color, $style: flat);}
-  &:checked { @include button(checked, $tc:$osd_fg_color, $c:$osd_bg_color, $style: flat);}
-  &:insensitive { @include button(insensitive, $tc:$osd_fg_color, $c:$osd_bg_color, $style: flat);}
+  @include button(normal, $tc:$osd_fg_color, $c:$osd_bg_color, $style: flat, $always_dark: true);
+  &:focus { @include button(focus, $tc:$osd_fg_color, $c:$osd_bg_color, $style: flat, $always_dark: true);}
+  &:hover { @include button(hover, $tc:$osd_fg_color, $c:$osd_bg_color, $style: flat, $always_dark: true);}
+  &:active { @include button(active, $tc:$osd_fg_color, $c:$osd_bg_color, $style: flat, $always_dark: true);}
+  &:checked { @include button(checked, $tc:$osd_fg_color, $c:$osd_bg_color, $style: flat, $always_dark: true);}
+  &:insensitive { @include button(insensitive, $tc:$osd_fg_color, $c:$osd_bg_color, $style: flat, $always_dark: true);}
 }
 
 /* System Elements */
