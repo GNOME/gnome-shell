@@ -53,6 +53,7 @@ struct _StIconPrivate
   ClutterActor    *icon_texture;
   ClutterActor    *pending_texture;
   gulong           opacity_handler_id;
+  gulong           icon_theme_changed_id;
 
   GIcon           *gicon;
   gint             prop_icon_size;  /* icon size set as property */
@@ -60,6 +61,7 @@ struct _StIconPrivate
   gint             icon_size;       /* icon size we are using */
   GIcon           *fallback_gicon;
   gboolean         needs_update;
+  gboolean         is_themed;
 
   StIconColors     *colors;
 
@@ -79,6 +81,13 @@ static GIcon *default_gicon = NULL;
 
 #define IMAGE_MISSING_ICON_NAME "image-missing"
 #define DEFAULT_ICON_SIZE 48
+
+static void
+on_icon_theme_changed (StIcon *icon)
+{
+  if (icon->priv->is_themed)
+    st_icon_update (icon);
+}
 
 static void
 st_icon_set_property (GObject      *gobject,
@@ -169,6 +178,9 @@ st_icon_dispose (GObject *gobject)
       g_object_unref (priv->pending_texture);
       priv->pending_texture = NULL;
     }
+
+  g_clear_signal_handler (&priv->icon_theme_changed_id,
+                          st_texture_cache_get_default ());
 
   g_clear_object (&priv->gicon);
   g_clear_object (&priv->fallback_gicon);
@@ -354,6 +366,7 @@ static void
 st_icon_init (StIcon *self)
 {
   ClutterLayoutManager *layout_manager;
+  StTextureCache *texture_cache;
 
   if (G_UNLIKELY (default_gicon == NULL))
     default_gicon = g_themed_icon_new (IMAGE_MISSING_ICON_NAME);
@@ -363,6 +376,11 @@ st_icon_init (StIcon *self)
   layout_manager = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_FILL,
                                            CLUTTER_BIN_ALIGNMENT_FILL);
   clutter_actor_set_layout_manager (CLUTTER_ACTOR (self), layout_manager);
+
+  texture_cache = st_texture_cache_get_default ();
+  self->priv->icon_theme_changed_id =
+    g_signal_connect_swapped (texture_cache, "icon-theme-changed",
+                              G_CALLBACK (on_icon_theme_changed), self);
 
   /* Set the icon size to -1 here to make sure we apply the scale to the
    * default size on the first "style-changed" signal. */
@@ -463,6 +481,32 @@ opacity_changed_cb (GObject *object,
   st_icon_finish_update (icon);
 }
 
+static ClutterActor *
+load_gicon (StTextureCache *cache,
+            StThemeNode    *theme_node,
+            GIcon          *gicon,
+            int             size,
+            int             paint_scale,
+            float           resource_scale,
+            gboolean       *is_themed)
+{
+  ClutterActor *texture;
+
+  g_assert (is_themed != NULL);
+
+  texture = st_texture_cache_load_gicon (cache,
+                                         theme_node,
+                                         gicon,
+                                         size,
+                                         paint_scale,
+                                         resource_scale);
+
+
+  if (texture)
+    *is_themed = G_IS_THEMED_ICON (gicon);
+  return texture;
+}
+
 static void
 st_icon_update (StIcon *icon)
 {
@@ -505,29 +549,34 @@ st_icon_update (StIcon *icon)
 
   cache = st_texture_cache_get_default ();
 
+  priv->is_themed = FALSE;
+
   if (priv->gicon != NULL)
-    priv->pending_texture = st_texture_cache_load_gicon (cache,
-                                                         theme_node,
-                                                         priv->gicon,
-                                                         priv->icon_size / paint_scale,
-                                                         paint_scale,
-                                                         resource_scale);
+    priv->pending_texture = load_gicon (cache,
+                                        theme_node,
+                                        priv->gicon,
+                                        priv->icon_size / paint_scale,
+                                        paint_scale,
+                                        resource_scale,
+                                        &priv->is_themed);
 
   if (priv->pending_texture == NULL && priv->fallback_gicon != NULL)
-    priv->pending_texture = st_texture_cache_load_gicon (cache,
-                                                         theme_node,
-                                                         priv->fallback_gicon,
-                                                         priv->icon_size / paint_scale,
-                                                         paint_scale,
-                                                         resource_scale);
+    priv->pending_texture = load_gicon (cache,
+                                        theme_node,
+                                        priv->fallback_gicon,
+                                        priv->icon_size / paint_scale,
+                                        paint_scale,
+                                        resource_scale,
+                                        &priv->is_themed);
 
   if (priv->pending_texture == NULL)
-    priv->pending_texture = st_texture_cache_load_gicon (cache,
-                                                         theme_node,
-                                                         default_gicon,
-                                                         priv->icon_size / paint_scale,
-                                                         paint_scale,
-                                                         resource_scale);
+    priv->pending_texture = load_gicon (cache,
+                                        theme_node,
+                                        default_gicon,
+                                        priv->icon_size / paint_scale,
+                                        paint_scale,
+                                        resource_scale,
+                                        &priv->is_themed);
   priv->needs_update = FALSE;
 
   if (priv->pending_texture)
