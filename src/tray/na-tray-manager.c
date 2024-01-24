@@ -71,10 +71,10 @@ struct _NaTrayManager
   Atom message_data_atom;
 
   Window window;
-  ClutterColor fg;
-  ClutterColor error;
-  ClutterColor warning;
-  ClutterColor success;
+  CoglColor fg;
+  CoglColor error;
+  CoglColor warning;
+  CoglColor success;
 
   unsigned int event_func_id;
 
@@ -670,17 +670,17 @@ na_tray_manager_manage (NaTrayManager *manager)
 
 void
 na_tray_manager_set_colors (NaTrayManager *manager,
-                            ClutterColor  *fg,
-                            ClutterColor  *error,
-                            ClutterColor  *warning,
-                            ClutterColor  *success)
+                            CoglColor     *fg,
+                            CoglColor     *error,
+                            CoglColor     *warning,
+                            CoglColor     *success)
 {
   g_return_if_fail (NA_IS_TRAY_MANAGER (manager));
 
-  if (!clutter_color_equal (&manager->fg, fg) ||
-      !clutter_color_equal (&manager->error, error) ||
-      !clutter_color_equal (&manager->warning, warning) ||
-      !clutter_color_equal (&manager->success, success))
+  if (!cogl_color_equal (&manager->fg, fg) ||
+      !cogl_color_equal (&manager->error, error) ||
+      !cogl_color_equal (&manager->warning, warning) ||
+      !cogl_color_equal (&manager->success, success))
     {
       manager->fg = *fg;
       manager->error = *error;

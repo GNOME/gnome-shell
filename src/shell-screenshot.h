@@ -70,7 +70,7 @@ void     shell_screenshot_pick_color        (ShellScreenshot      *screenshot,
                                              gpointer              user_data);
 gboolean shell_screenshot_pick_color_finish (ShellScreenshot      *screenshot,
                                              GAsyncResult         *result,
-                                             ClutterColor         *color,
+                                             CoglColor            *color,
                                              GError              **error);
 
 void shell_screenshot_composite_to_stream (CoglTexture         *texture,

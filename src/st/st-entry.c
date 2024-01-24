@@ -245,7 +245,7 @@ st_entry_style_changed (StWidget *self)
   StEntryPrivate *priv = ST_ENTRY_PRIV (self);
   StThemeNode *theme_node;
   StShadow *shadow_spec;
-  ClutterColor color;
+  CoglColor color;
   gdouble size;
 
   theme_node = st_widget_get_theme_node (self);

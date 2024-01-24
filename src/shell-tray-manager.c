@@ -23,7 +23,7 @@ struct _ShellTrayManager
 
 struct _ShellTrayManagerPrivate {
   NaTrayManager *na_manager;
-  ClutterColor bg_color;
+  CoglColor bg_color;
 
   GHashTable *icons;
   StWidget *theme_widget;
@@ -53,7 +53,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (ShellTrayManager, shell_tray_manager, G_TYPE_OBJECT)
 
 static guint shell_tray_manager_signals [LAST_SIGNAL] = { 0 };
 
-static const ClutterColor default_color = { 0x00, 0x00, 0x00, 0xff };
+static const CoglColor default_color = { 0x00, 0x00, 0x00, 0xff };
 
 static void shell_tray_manager_release_resources (ShellTrayManager *manager);
 
@@ -91,7 +91,7 @@ shell_tray_manager_set_property(GObject         *object,
     {
     case PROP_BG_COLOR:
       {
-        ClutterColor *color = g_value_get_boxed (value);
+        CoglColor *color = g_value_get_boxed (value);
         if (color)
           manager->priv->bg_color = *color;
         else
@@ -176,7 +176,7 @@ shell_tray_manager_class_init (ShellTrayManagerClass *klass)
                                    g_param_spec_boxed ("bg-color",
                                                        "BG Color",
                                                        "Background color (only if we don't have transparency)",
-                                                       CLUTTER_TYPE_COLOR,
+                                                       COGL_TYPE_COLOR,
                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }
 

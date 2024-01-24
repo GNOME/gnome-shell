@@ -3638,7 +3638,7 @@ symbolic_cache_get_proxy (SymbolicPixbufCache *symbolic_cache,
 }
 
 static char *
-color_to_string_noalpha (const ClutterColor *color)
+color_to_string_noalpha (const CoglColor *color)
 {
   return g_strdup_printf ("rgb(%d,%d,%d)",
                           color->red,
@@ -3647,8 +3647,8 @@ color_to_string_noalpha (const ClutterColor *color)
 }
 
 static void
-color_to_pixel(const ClutterColor *color,
-               uint8_t             pixel[4])
+color_to_pixel(const CoglColor *color,
+               uint8_t          pixel[4])
 {
   pixel[0] = color->red;
   pixel[1] = color->green;

@@ -2877,11 +2877,11 @@ const RecolorEffect = GObject.registerClass({
         color: GObject.ParamSpec.boxed(
             'color', 'color', 'replacement color',
             GObject.ParamFlags.WRITABLE,
-            Clutter.Color.$gtype),
+            Cogl.Color.$gtype),
         chroma: GObject.ParamSpec.boxed(
             'chroma', 'chroma', 'color to replace',
             GObject.ParamFlags.WRITABLE,
-            Clutter.Color.$gtype),
+            Cogl.Color.$gtype),
         threshold: GObject.ParamSpec.float(
             'threshold', 'threshold', 'threshold',
             GObject.ParamFlags.WRITABLE,
@@ -2893,8 +2893,8 @@ const RecolorEffect = GObject.registerClass({
     },
 }, class RecolorEffect extends Shell.GLSLEffect {
     _init(params) {
-        this._color = new Clutter.Color();
-        this._chroma = new Clutter.Color();
+        this._color = new Cogl.Color();
+        this._chroma = new Cogl.Color();
         this._threshold = 0;
         this._smoothing = 0;
 
@@ -3031,7 +3031,7 @@ class PickPixel extends St.Widget {
         this.add_action(action);
 
         this._recolorEffect = new RecolorEffect({
-            chroma: new Clutter.Color({
+            chroma: new Cogl.Color({
                 red: 80,
                 green: 219,
                 blue: 181,

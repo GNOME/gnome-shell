@@ -127,11 +127,11 @@ assert_foreground_color (StThemeNode *node,
                          const char  *node_description,
                          const char  *expected)
 {
-  ClutterColor color;
+  CoglColor color;
   g_autofree char* value;
 
   st_theme_node_get_foreground_color (node, &color);
-  value = clutter_color_to_string (&color);
+  value = cogl_color_to_string (&color);
 
   if (g_strcmp0 (expected, value) != 0)
     {
@@ -146,11 +146,11 @@ assert_background_color (StThemeNode *node,
                          const char  *node_description,
                          const char  *expected)
 {
-  ClutterColor color;
+  CoglColor color;
   g_autofree char* value;
 
   st_theme_node_get_background_color (node, &color);
-  value = clutter_color_to_string (&color);
+  value = cogl_color_to_string (&color);
 
   if (g_strcmp0 (expected, value) != 0)
     {
@@ -184,11 +184,11 @@ assert_border_color (StThemeNode *node,
                      StSide       side,
                      const char  *expected)
 {
-  ClutterColor color;
+  CoglColor color;
   g_autofree char* value;
 
   st_theme_node_get_border_color (node, side, &color);
-  value = clutter_color_to_string (&color);
+  value = cogl_color_to_string (&color);
 
   if (g_strcmp0 (expected, value) != 0)
     {

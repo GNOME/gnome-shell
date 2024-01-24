@@ -204,7 +204,7 @@ GStrv       st_theme_node_get_pseudo_classes (StThemeNode *node);
 gboolean st_theme_node_lookup_color  (StThemeNode  *node,
                                       const char   *property_name,
                                       gboolean      inherit,
-                                      ClutterColor *color);
+                                      CoglColor    *color);
 gboolean st_theme_node_lookup_double (StThemeNode  *node,
                                       const char   *property_name,
                                       gboolean      inherit,
@@ -229,7 +229,7 @@ gboolean st_theme_node_lookup_url    (StThemeNode  *node,
 /* Easier-to-use variants of the above, for application-level use */
 void          st_theme_node_get_color  (StThemeNode  *node,
                                         const char   *property_name,
-                                        ClutterColor *color);
+                                        CoglColor    *color);
 gdouble       st_theme_node_get_double (StThemeNode  *node,
                                         const char   *property_name);
 gdouble       st_theme_node_get_length (StThemeNode  *node,
@@ -242,13 +242,13 @@ GFile        *st_theme_node_get_url    (StThemeNode  *node,
 /* Specific getters for particular properties: cached
  */
 void st_theme_node_get_background_color (StThemeNode  *node,
-                                         ClutterColor *color);
+                                         CoglColor    *color);
 void st_theme_node_get_foreground_color (StThemeNode  *node,
-                                         ClutterColor *color);
+                                         CoglColor    *color);
 void st_theme_node_get_background_gradient (StThemeNode   *node,
                                             StGradientType *type,
-                                            ClutterColor   *start,
-                                            ClutterColor   *end);
+                                            CoglColor      *start,
+                                            CoglColor      *end);
 
 GFile *st_theme_node_get_background_image (StThemeNode *node);
 
@@ -258,11 +258,11 @@ int    st_theme_node_get_border_radius (StThemeNode  *node,
                                         StCorner      corner);
 void   st_theme_node_get_border_color  (StThemeNode  *node,
                                         StSide        side,
-                                        ClutterColor *color);
+                                        CoglColor   *color);
 
 int    st_theme_node_get_outline_width (StThemeNode  *node);
 void   st_theme_node_get_outline_color (StThemeNode  *node,
-                                        ClutterColor *color);
+                                        CoglColor   *color);
 
 double st_theme_node_get_padding       (StThemeNode  *node,
                                         StSide        side);

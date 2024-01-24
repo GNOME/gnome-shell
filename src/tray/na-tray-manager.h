@@ -36,10 +36,10 @@ NaTrayManager *na_tray_manager_new (MetaX11Display *x11_display);
 gboolean na_tray_manager_manage (NaTrayManager *manager);
 
 void na_tray_manager_set_colors (NaTrayManager *manager,
-                                 ClutterColor  *fg,
-                                 ClutterColor  *error,
-                                 ClutterColor  *warning,
-                                 ClutterColor  *success);
+                                 CoglColor     *fg,
+                                 CoglColor     *error,
+                                 CoglColor     *warning,
+                                 CoglColor     *success);
 
 G_END_DECLS
 

@@ -34,11 +34,11 @@
 static void st_theme_node_dispose           (GObject                 *object);
 static void st_theme_node_finalize          (GObject                 *object);
 
-static const ClutterColor BLACK_COLOR = { 0, 0, 0, 0xff };
-static const ClutterColor TRANSPARENT_COLOR = { 0, 0, 0, 0 };
-static const ClutterColor DEFAULT_SUCCESS_COLOR = { 0x4e, 0x9a, 0x06, 0xff };
-static const ClutterColor DEFAULT_WARNING_COLOR = { 0xf5, 0x79, 0x3e, 0xff };
-static const ClutterColor DEFAULT_ERROR_COLOR = { 0xcc, 0x00, 0x00, 0xff };
+static const CoglColor BLACK_COLOR = { 0, 0, 0, 0xff };
+static const CoglColor TRANSPARENT_COLOR = { 0, 0, 0, 0 };
+static const CoglColor DEFAULT_SUCCESS_COLOR = { 0x4e, 0x9a, 0x06, 0xff };
+static const CoglColor DEFAULT_WARNING_COLOR = { 0xf5, 0x79, 0x3e, 0xff };
+static const CoglColor DEFAULT_ERROR_COLOR = { 0xcc, 0x00, 0x00, 0xff };
 
 G_DEFINE_TYPE (StThemeNode, st_theme_node, G_TYPE_OBJECT)
 
@@ -517,8 +517,8 @@ color_component_from_double (double component)
 }
 
 static GetFromTermResult
-get_color_from_rgba_term (CRTerm       *term,
-                          ClutterColor *color)
+get_color_from_rgba_term (CRTerm    *term,
+                          CoglColor *color)
 {
   CRTerm *arg = term->ext_content.func_param;
   CRNum *num;
@@ -598,7 +598,7 @@ get_color_from_rgba_term (CRTerm       *term,
 static GetFromTermResult
 get_color_from_term (StThemeNode  *node,
                      CRTerm       *term,
-                     ClutterColor *color)
+                     CoglColor    *color)
 {
   CRRgb rgb;
   enum CRStatus status;
@@ -670,7 +670,7 @@ gboolean
 st_theme_node_lookup_color (StThemeNode  *node,
                             const char   *property_name,
                             gboolean      inherit,
-                            ClutterColor *color)
+                            CoglColor    *color)
 {
 
   int i;
@@ -729,12 +729,12 @@ st_theme_node_lookup_color (StThemeNode  *node,
 void
 st_theme_node_get_color (StThemeNode  *node,
                          const char   *property_name,
-                         ClutterColor *color)
+                         CoglColor    *color)
 {
   if (!st_theme_node_lookup_color (node, property_name, FALSE, color))
     {
       g_warning ("Did not find color property '%s'", property_name);
-      memset (color, 0, sizeof (ClutterColor));
+      memset (color, 0, sizeof (CoglColor));
     }
 }
 
@@ -1353,7 +1353,7 @@ do_border_property (StThemeNode   *node,
 {
   const char *property_name = decl->property->stryng->str + 6; /* Skip 'border' */
   StSide side = (StSide)-1;
-  ClutterColor color;
+  CoglColor color;
   gboolean color_set = FALSE;
   int width = 0; /* suppress warning */
   gboolean width_set = FALSE;
@@ -1486,7 +1486,7 @@ do_outline_property (StThemeNode   *node,
                      CRDeclaration *decl)
 {
   const char *property_name = decl->property->stryng->str + 7; /* Skip 'outline' */
-  ClutterColor color;
+  CoglColor color;
   gboolean color_set = FALSE;
   int width = 0; /* suppress warning */
   gboolean width_set = FALSE;
@@ -1920,8 +1920,8 @@ st_theme_node_get_outline_width (StThemeNode  *node)
  * Gets the color of @node's outline.
  */
 void
-st_theme_node_get_outline_color (StThemeNode  *node,
-                                 ClutterColor *color)
+st_theme_node_get_outline_color (StThemeNode *node,
+                                 CoglColor   *color)
 {
   g_return_if_fail (ST_IS_THEME_NODE (node));
 
@@ -2269,8 +2269,8 @@ _st_theme_node_ensure_background (StThemeNode *node)
  * Gets @node's background color.
  */
 void
-st_theme_node_get_background_color (StThemeNode  *node,
-                                    ClutterColor *color)
+st_theme_node_get_background_color (StThemeNode *node,
+                                    CoglColor   *color)
 {
   g_return_if_fail (ST_IS_THEME_NODE (node));
 
@@ -2304,7 +2304,7 @@ st_theme_node_get_background_image (StThemeNode *node)
  */
 void
 st_theme_node_get_foreground_color (StThemeNode  *node,
-                                    ClutterColor *color)
+                                    CoglColor    *color)
 {
   g_return_if_fail (ST_IS_THEME_NODE (node));
 
@@ -2353,8 +2353,8 @@ st_theme_node_get_foreground_color (StThemeNode  *node,
 void
 st_theme_node_get_background_gradient (StThemeNode    *node,
                                        StGradientType *type,
-                                       ClutterColor   *start,
-                                       ClutterColor   *end)
+                                       CoglColor      *start,
+                                       CoglColor      *end)
 {
   g_return_if_fail (ST_IS_THEME_NODE (node));
 
@@ -2379,7 +2379,7 @@ st_theme_node_get_background_gradient (StThemeNode    *node,
 void
 st_theme_node_get_border_color (StThemeNode  *node,
                                 StSide        side,
-                                ClutterColor *color)
+                                CoglColor    *color)
 {
   g_return_if_fail (ST_IS_THEME_NODE (node));
   g_return_if_fail (side >= ST_SIDE_TOP && side <= ST_SIDE_LEFT);
@@ -3382,7 +3382,7 @@ _st_theme_node_apply_margins (StThemeNode *node,
 static GetFromTermResult
 parse_shadow_property (StThemeNode       *node,
                        CRDeclaration     *decl,
-                       ClutterColor      *color,
+                       CoglColor         *color,
                        gdouble           *xoffset,
                        gdouble           *yoffset,
                        gdouble           *blur,
@@ -3526,7 +3526,7 @@ st_theme_node_lookup_shadow (StThemeNode  *node,
                              gboolean      inherit,
                              StShadow    **shadow)
 {
-  ClutterColor color = { 0., };
+  CoglColor color = { 0., };
   gdouble xoffset = 0.;
   gdouble yoffset = 0.;
   gdouble blur = 0.;
@@ -3769,7 +3769,7 @@ st_theme_node_get_icon_colors (StThemeNode *node)
 
   gboolean shared_with_parent;
   int i;
-  ClutterColor color = { 0, };
+  CoglColor color = { 0, };
 
   guint still_need = FOREGROUND | WARNING | ERROR | SUCCESS;
 
@@ -4220,14 +4220,14 @@ st_theme_node_paint_equal (StThemeNode *node,
   _st_theme_node_ensure_background (node);
   _st_theme_node_ensure_background (other);
 
-  if (!clutter_color_equal (&node->background_color, &other->background_color))
+  if (!cogl_color_equal (&node->background_color, &other->background_color))
     return FALSE;
 
   if (node->background_gradient_type != other->background_gradient_type)
     return FALSE;
 
   if (node->background_gradient_type != ST_GRADIENT_NONE &&
-      !clutter_color_equal (&node->background_gradient_end, &other->background_gradient_end))
+      !cogl_color_equal (&node->background_gradient_end, &other->background_gradient_end))
     return FALSE;
 
   if ((node->background_image != NULL) &&
@@ -4244,7 +4244,7 @@ st_theme_node_paint_equal (StThemeNode *node,
         return FALSE;
 
       if (node->border_width[i] > 0 &&
-          !clutter_color_equal (&node->border_color[i], &other->border_color[i]))
+          !cogl_color_equal (&node->border_color[i], &other->border_color[i]))
         return FALSE;
 
       if (node->border_radius[i] != other->border_radius[i])
@@ -4255,7 +4255,7 @@ st_theme_node_paint_equal (StThemeNode *node,
     return FALSE;
 
   if (node->outline_width > 0 &&
-      !clutter_color_equal (&node->outline_color, &other->outline_color))
+      !cogl_color_equal (&node->outline_color, &other->outline_color))
     return FALSE;
 
   border_image = st_theme_node_get_border_image (node);

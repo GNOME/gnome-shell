@@ -1120,7 +1120,7 @@ shell_screenshot_screenshot_window_finish (ShellScreenshot  *screenshot,
  * @callback: (scope async): function to call returning success or failure
  * of the async grabbing
  *
- * Picks the pixel at @x, @y and returns its color as #ClutterColor.
+ * Picks the pixel at @x, @y and returns its color as #CoglColor.
  *
  */
 void
@@ -1183,7 +1183,7 @@ shell_screenshot_pick_color (ShellScreenshot     *screenshot,
 gboolean
 shell_screenshot_pick_color_finish (ShellScreenshot  *screenshot,
                                     GAsyncResult     *result,
-                                    ClutterColor     *color,
+                                    CoglColor        *color,
                                     GError          **error)
 {
   ShellScreenshotPrivate *priv;

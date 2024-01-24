@@ -37,10 +37,10 @@ struct _StThemeNode {
 
   PangoFontDescription *font_desc;
 
-  ClutterColor background_color;
+  CoglColor background_color;
   /* If gradient is set, then background_color is the gradient start */
   StGradientType background_gradient_type;
-  ClutterColor background_gradient_end;
+  CoglColor background_gradient_end;
 
   int background_position_x;
   int background_position_y;
@@ -49,9 +49,9 @@ struct _StThemeNode {
   gint background_size_w;
   gint background_size_h;
 
-  ClutterColor foreground_color;
-  ClutterColor border_color[4];
-  ClutterColor outline_color;
+  CoglColor foreground_color;
+  CoglColor border_color[4];
+  CoglColor outline_color;
 
   int border_width[4];
   int border_radius[4];

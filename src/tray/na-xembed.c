@@ -841,8 +841,8 @@ get_pixel_details (unsigned long  pixel_mask,
 }
 
 void
-na_xembed_set_background_color (NaXembed           *xembed,
-                                const ClutterColor *color)
+na_xembed_set_background_color (NaXembed        *xembed,
+                                const CoglColor *color)
 {
   NaXembedPrivate *priv = na_xembed_get_instance_private (xembed);
   XVisualInfo *xvisual_info;

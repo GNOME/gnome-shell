@@ -42,9 +42,9 @@
  ****/
 
 typedef struct {
-  ClutterColor   color;
-  ClutterColor   border_color_1;
-  ClutterColor   border_color_2;
+  CoglColor      color;
+  CoglColor      border_color_1;
+  CoglColor      border_color_2;
   guint          radius;
   guint          border_width_1;
   guint          border_width_2;
@@ -228,7 +228,7 @@ load_corner (StTextureCache  *cache,
 #define MULT(c,a) NORM(c*a)
 
 static void
-premultiply (ClutterColor *color)
+premultiply (CoglColor *color)
 {
   guint t;
   color->red = MULT (color->red, color->alpha);
@@ -237,7 +237,7 @@ premultiply (ClutterColor *color)
 }
 
 static void
-unpremultiply (ClutterColor *color)
+unpremultiply (CoglColor *color)
 {
   if (color->alpha != 0)
     {
@@ -248,13 +248,13 @@ unpremultiply (ClutterColor *color)
 }
 
 static void
-over (const ClutterColor *source,
-      const ClutterColor *destination,
-      ClutterColor       *result)
+over (const CoglColor *source,
+      const CoglColor *destination,
+      CoglColor       *result)
 {
   guint t;
-  ClutterColor src = *source;
-  ClutterColor dst = *destination;
+  CoglColor src = *source;
+  CoglColor dst = *destination;
 
   premultiply (&src);
   premultiply (&dst);
@@ -418,7 +418,7 @@ st_theme_node_lookup_corner (StThemeNode    *node,
       if (node->box_shadow == NULL)
         return NULL;
       else  /* We still need a corner texture to render the box-shadow */
-        corner.color = (ClutterColor) {0, 0, 0, 255};
+        corner.color = (CoglColor) {0, 0, 0, 255};
     }
 
   key = corner_to_string (&corner);
@@ -569,7 +569,7 @@ get_background_position (StThemeNode             *self,
  */
 static void
 get_arbitrary_border_color (StThemeNode   *node,
-                            ClutterColor  *color)
+                            CoglColor     *color)
 {
   if (color)
     st_theme_node_get_border_color (node, ST_SIDE_TOP, color);
@@ -1031,7 +1031,7 @@ st_theme_node_prerender_background (StThemeNode *node,
   gboolean interior_dirty;
   gboolean draw_background_image_shadow = FALSE;
   gboolean has_visible_outline;
-  ClutterColor border_color;
+  CoglColor border_color;
   guint border_width[4];
   guint rowstride;
   guchar *data;
@@ -1722,7 +1722,7 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
   guint max_border_radius = 0;
   guint max_width_radius[4];
   int corner_id, side_id;
-  ClutterColor border_color;
+  CoglColor border_color;
   guint8 alpha;
   gboolean corners_are_transparent;
   CoglColor pipeline_color;
@@ -1757,7 +1757,7 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
       border_width[ST_SIDE_BOTTOM] > 0 ||
       border_width[ST_SIDE_LEFT] > 0)
     {
-      ClutterColor effective_border;
+      CoglColor effective_border;
       gboolean skip_corner_1, skip_corner_2;
       float rects[16];
 
@@ -2028,8 +2028,8 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
   gfloat shadow_blur_radius, x_spread_factor, y_spread_factor;
   float rectangles[8 * 9];
   gint idx;
-  ClutterColor background_color;
-  static const ClutterColor invisible_occluded = {3, 2, 1, 0};
+  CoglColor background_color;
+  static const CoglColor invisible_occluded = {3, 2, 1, 0};
 
   if (paint_opacity == 0)
     return;
@@ -2189,7 +2189,7 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
 
   /* Center middle is not definitely occluded? */
   st_theme_node_get_background_color (node, &background_color);
-  if (!clutter_color_equal (&background_color, &invisible_occluded) ||
+  if (!cogl_color_equal (&background_color, &invisible_occluded) ||
       paint_opacity < 255 ||
       xoffset > shadow_blur_radius || left < 0 ||
       yoffset > shadow_blur_radius || top < 0)
@@ -2493,8 +2493,7 @@ st_theme_node_paint_outline (StThemeNode           *node,
   float width, height;
   int outline_width;
   float rects[16];
-  ClutterColor outline_color, effective_outline;
-  CoglColor pipeline_color;
+  CoglColor outline_color, effective_outline, pipeline_color;
   guint8 alpha;
 
   width = box->x2 - box->x1;
