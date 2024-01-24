@@ -111,7 +111,7 @@ _st_set_text_from_style (ClutterText *text,
                          StThemeNode *theme_node)
 {
 
-  ClutterColor color;
+  CoglColor color;
   StTextDecoration decoration;
   PangoAttrList *attribs = NULL;
   const PangoFontDescription *font;

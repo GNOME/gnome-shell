@@ -94,6 +94,7 @@
 //     MetaBackgroundImage         MetaBackgroundImage
 
 import Clutter from 'gi://Clutter';
+import Cogl from 'gi://Cogl';
 import GDesktopEnums from 'gi://GDesktopEnums';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
@@ -107,7 +108,7 @@ import * as LoginManager from '../misc/loginManager.js';
 import * as Main from './main.js';
 import * as Params from '../misc/params.js';
 
-const DEFAULT_BACKGROUND_COLOR = new Clutter.Color({red: 40, green: 40, blue: 40, alpha: 255});
+const DEFAULT_BACKGROUND_COLOR = new Cogl.Color({red: 40, green: 40, blue: 40, alpha: 255});
 
 const BACKGROUND_SCHEMA = 'org.gnome.desktop.background';
 const PRIMARY_COLOR_KEY = 'primary-color';
@@ -355,9 +356,9 @@ const Background = GObject.registerClass({
         let colorString, res_, color, secondColor;
 
         colorString = this._settings.get_string(PRIMARY_COLOR_KEY);
-        [res_, color] = Clutter.Color.from_string(colorString);
+        [res_, color] = Cogl.Color.from_string(colorString);
         colorString = this._settings.get_string(SECONDARY_COLOR_KEY);
-        [res_, secondColor] = Clutter.Color.from_string(colorString);
+        [res_, secondColor] = Cogl.Color.from_string(colorString);
 
         let shadingType = this._settings.get_enum(COLOR_SHADING_TYPE_KEY);
 

@@ -50,7 +50,7 @@ G_DEFINE_BOXED_TYPE (StShadowHelper, st_shadow_helper, st_shadow_helper_copy, st
  * Returns: the newly allocated shadow. Use st_shadow_free() when done
  */
 StShadow *
-st_shadow_new (ClutterColor *color,
+st_shadow_new (CoglColor    *color,
                gdouble       xoffset,
                gdouble       yoffset,
                gdouble       blur,
@@ -130,7 +130,7 @@ st_shadow_equal (StShadow *shadow,
    * that a few false negatives are mostly harmless.
    */
 
-  return (clutter_color_equal (&shadow->color, &other->color) &&
+  return (cogl_color_equal (&shadow->color, &other->color) &&
           shadow->xoffset == other->xoffset &&
           shadow->yoffset == other->yoffset &&
           shadow->blur == other->blur &&

@@ -112,10 +112,10 @@ st_icon_colors_equal (StIconColors *colors,
   if (colors == NULL || other == NULL)
     return FALSE;
 
-  return clutter_color_equal (&colors->foreground, &other->foreground) &&
-         clutter_color_equal (&colors->warning, &other->warning) &&
-         clutter_color_equal (&colors->error, &other->error) &&
-         clutter_color_equal (&colors->success, &other->success);
+  return cogl_color_equal (&colors->foreground, &other->foreground) &&
+         cogl_color_equal (&colors->warning, &other->warning) &&
+         cogl_color_equal (&colors->error, &other->error) &&
+         cogl_color_equal (&colors->success, &other->success);
 }
 
 G_DEFINE_BOXED_TYPE (StIconColors,

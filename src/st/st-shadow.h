@@ -45,7 +45,7 @@ typedef struct _StShadowHelper StShadowHelper;
  * Attributes of the -st-shadow property.
  */
 struct _StShadow {
-    ClutterColor color;
+    CoglColor color;
     gdouble      xoffset;
     gdouble      yoffset;
     gdouble      blur;
@@ -55,7 +55,7 @@ struct _StShadow {
 
 GType     st_shadow_get_type (void) G_GNUC_CONST;
 
-StShadow *st_shadow_new      (ClutterColor   *color,
+StShadow *st_shadow_new      (CoglColor      *color,
                               gdouble         xoffset,
                               gdouble         yoffset,
                               gdouble         blur,
