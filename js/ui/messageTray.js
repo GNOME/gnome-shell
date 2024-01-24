@@ -580,46 +580,6 @@ export const NotificationBanner = GObject.registerClass({
     }
 });
 
-export const SourceActor = GObject.registerClass(
-class SourceActor extends St.Widget {
-    _init(source, size) {
-        super._init();
-
-        this._source = source;
-        this._size = size;
-
-        this.connect('destroy',
-            () => (this._actorDestroyed = true));
-        this._actorDestroyed = false;
-
-        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        this._iconBin = new St.Bin({
-            x_expand: true,
-            height: size * scaleFactor,
-            width: size * scaleFactor,
-        });
-
-        this.add_child(this._iconBin);
-
-        this._source.connectObject('icon-updated',
-            this._updateIcon.bind(this), this);
-        this._updateIcon();
-    }
-
-    setIcon(icon) {
-        this._iconBin.child = icon;
-        this._iconSet = true;
-    }
-
-    _updateIcon() {
-        if (this._actorDestroyed)
-            return;
-
-        if (!this._iconSet)
-            this._iconBin.child = this._source.createIcon(this._size);
-    }
-});
-
 export const Source = GObject.registerClass({
     Properties: {
         'count': GObject.ParamSpec.int(
@@ -634,10 +594,17 @@ export const Source = GObject.registerClass({
             'title', 'title', 'title',
             GObject.ParamFlags.READWRITE,
             null),
+        'icon': GObject.ParamSpec.object(
+            'icon', 'icon', 'icon',
+            GObject.ParamFlags.READWRITE,
+            Gio.Icon),
+        'icon-name': GObject.ParamSpec.string(
+            'icon-name', 'icon-name', 'icon-name',
+            GObject.ParamFlags.READWRITE,
+            null),
     },
     Signals: {
         'destroy': {param_types: [GObject.TYPE_UINT]},
-        'icon-updated': {},
         'notification-added': {param_types: [Notification.$gtype]},
         'notification-show': {param_types: [Notification.$gtype]},
     },
@@ -645,7 +612,7 @@ export const Source = GObject.registerClass({
     _init(title, iconName) {
         super._init({title});
 
-        this.iconName = iconName;
+        this.icon = new Gio.ThemedIcon({name: iconName});
 
         this.notifications = [];
 
@@ -700,18 +667,15 @@ export const Source = GObject.registerClass({
         return new NotificationBanner(notification);
     }
 
-    // Called to create a new icon actor.
-    // Provides a sane default implementation, override if you need
-    // something more fancy.
-    createIcon(size) {
-        return new St.Icon({
-            gicon: this.getIcon(),
-            icon_size: size,
-        });
+    get iconName() {
+        if (this.gicon instanceof Gio.ThemedIcon)
+            return this.gicon.iconName;
+        else
+            return null;
     }
 
-    getIcon() {
-        return new Gio.ThemedIcon({name: this.iconName});
+    set iconName(iconName) {
+        this.icon = new Gio.ThemedIcon({name: iconName});
     }
 
     _onNotificationDestroy(notification) {
@@ -763,10 +727,6 @@ export const Source = GObject.registerClass({
 
         this.policy.destroy();
         this.run_dispose();
-    }
-
-    iconUpdated() {
-        this.emit('icon-updated');
     }
 
     // To be overridden by subclasses

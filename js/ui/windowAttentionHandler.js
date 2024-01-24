@@ -84,8 +84,8 @@ class WindowAttentionSource extends MessageTray.Source {
         }
     }
 
-    createIcon(size) {
-        return this._app.create_icon_texture(size);
+    get icon() {
+        return this._app.get_icon();
     }
 
     destroy(params) {

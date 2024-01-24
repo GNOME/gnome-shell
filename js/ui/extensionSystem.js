@@ -833,7 +833,7 @@ class ExtensionUpdateSource extends MessageTray.Source {
         super._init(this._app.get_name());
     }
 
-    getIcon() {
+    get icon() {
         return this._app.app_info.get_icon();
     }
 

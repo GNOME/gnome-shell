@@ -32,8 +32,6 @@ const FADE_OUT_SCALE = 0.3;
 const BLUR_BRIGHTNESS = 0.65;
 const BLUR_RADIUS = 90;
 
-const SUMMARY_ICON_SIZE = 32;
-
 const NotificationsBox = GObject.registerClass({
     Signals: {'wake-up-screen': {}},
 }, class NotificationsBox extends St.BoxLayout {
@@ -83,8 +81,12 @@ const NotificationsBox = GObject.registerClass({
     }
 
     _makeNotificationSource(source, box) {
-        let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
-        box.add_child(sourceActor);
+        let iconActor = new St.Icon({
+            style_class: 'unlock-dialog-notification-icon',
+            fallback_icon_name: 'application-x-executable',
+        });
+        source.bind_property('icon', iconActor, 'gicon', GObject.BindingFlags.SYNC_CREATE);
+        box.add_child(iconActor);
 
         let textBox = new St.BoxLayout({
             x_expand: true,
@@ -114,9 +116,12 @@ const NotificationsBox = GObject.registerClass({
     }
 
     _makeNotificationDetailedSource(source, box) {
-        let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
-        let sourceBin = new St.Bin({child: sourceActor});
-        box.add_child(sourceBin);
+        let iconActor = new St.Icon({
+            style_class: 'unlock-dialog-notification-icon',
+            fallback_icon_name: 'application-x-executable',
+        });
+        source.bind_property('icon', iconActor, 'gicon', GObject.BindingFlags.SYNC_CREATE);
+        box.add_child(iconActor);
 
         let textBox = new St.BoxLayout({vertical: true});
         box.add_child(textBox);

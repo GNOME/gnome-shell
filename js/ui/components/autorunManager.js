@@ -272,7 +272,7 @@ class AutorunSource extends MessageTray.Source {
         this.showNotification(this._notification);
     }
 
-    getIcon() {
+    get icon() {
         return this.mount.get_icon();
     }
 

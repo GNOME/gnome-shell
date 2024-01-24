@@ -383,7 +383,7 @@ class ChatSource extends MessageTray.Source {
             this._notification.appendAliasChange(oldAlias, newAlias);
     }
 
-    getIcon() {
+    get icon() {
         let file = this._contact.get_avatar_file();
         if (file)
             return new Gio.FileIcon({file});
@@ -392,12 +392,12 @@ class ChatSource extends MessageTray.Source {
     }
 
     _updateAvatarIcon() {
-        this.iconUpdated();
+        this.notify('icon');
         if (this._notification) {
             this._notification.update(
                 this._notification.title,
                 this._notification.bannerBodyText,
-                {gicon: this.getIcon()});
+                {gicon: this.icon});
         }
     }
 

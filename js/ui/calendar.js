@@ -19,8 +19,6 @@ import {loadInterfaceXML} from '../misc/fileUtils.js';
 
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
 
-const MESSAGE_ICON_SIZE = -1; // pick up from CSS
-
 const NC_ = (context, str) => `${context}\u0004${str}`;
 
 function sameYear(dateA, dateB) {
@@ -795,7 +793,6 @@ class NotificationMessage extends MessageList.Message {
         if (this.notification.gicon) {
             return new St.Icon({
                 gicon: this.notification.gicon,
-                icon_size: MESSAGE_ICON_SIZE,
             });
         } else {
             return null;

@@ -5,7 +5,6 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
-import St from 'gi://St';
 
 import * as Config from '../misc/config.js';
 import * as Main from './main.js';
@@ -347,10 +346,11 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
             this.destroy();
     }
 
-    processNotification(notification, gicon) {
-        if (gicon)
-            this._gicon = gicon;
-        this.iconUpdated();
+    processNotification(notification, appIcon) {
+        if (!this.app && appIcon) {
+            this._appIcon = appIcon;
+            this.notify('icon');
+        }
 
         let tracker = Shell.WindowTracker.get_default();
         if (notification.resident && this.app && tracker.focus_app === this.app)
@@ -409,17 +409,13 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
         super.destroy();
     }
 
-    createIcon(size) {
-        if (this.app) {
-            return this.app.create_icon_texture(size);
-        } else if (this._gicon) {
-            return new St.Icon({
-                gicon: this._gicon,
-                icon_size: size,
-            });
-        } else {
+    get icon() {
+        if (this.app)
+            return this.app.get_icon();
+        else if (this._appIcon)
+            return this._appIcon;
+        else
             return null;
-        }
     }
 });
 
@@ -542,8 +538,8 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
         this._notificationPending = false;
     }
 
-    createIcon(size) {
-        return this._app.create_icon_texture(size);
+    get icon() {
+        return this._app.get_icon();
     }
 
     _createPolicy() {

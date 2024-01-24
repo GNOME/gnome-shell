@@ -226,6 +226,10 @@ $_gdm_dialog_width: 23em;
   }
 }
 
+.unlock-dialog-notification-icon {
+  icon-size: $large_icon_size;
+}
+
 .unlock-dialog-notification-label {
   padding-left: $base_padding * 2;
   padding-right: 0;
