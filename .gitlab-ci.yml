@@ -149,6 +149,21 @@ eslint:
       junit: ${LINT_LOG}
     when: always
 
+eslint-doc:
+  extends:
+    - .fdo.distribution-image@fedora
+    - .gnome-shell.fedora
+  stage: review
+  script:
+    - export NODE_PATH=$(npm root -g)
+    - ./.gitlab-ci/eslint-coding-style.sh
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - HACKING.md
+        - .eslintrc.yml
+        - lint/*
+
 potfile_c_check:
   extends:
     - .fdo.distribution-image@fedora
