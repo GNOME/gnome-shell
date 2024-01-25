@@ -101,10 +101,8 @@ class FdoNotificationDaemon {
             return ndata.notification.source;
 
         let source = this._lookupSource(title, pid);
-        if (source) {
-            source.setTitle(title);
+        if (source)
             return source;
-        }
 
         const appId = ndata?.hints['desktop-entry'];
         source = new FdoNotificationDaemonSource(title, pid, sender, appId);
@@ -312,10 +310,9 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
         this.initialTitle = title;
         this.app = this._getApp(appId);
 
-        super._init(title);
-
-        if (this.app)
-            this.title = this.app.get_name();
+        // Use app name as title if available, instead of whatever is provided
+        // through libnotify (usually garbage)
+        super._init(this.app ? this.app.get_name() : title);
 
         if (sender) {
             this._nameWatcherId = Gio.DBus.session.watch_name(sender,
@@ -374,16 +371,6 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
             app = appSys.lookup_app(`${this.initialTitle}.desktop`);
 
         return app;
-    }
-
-    setTitle(title) {
-        // Do nothing if .app is set, we don't want to override the
-        // app name with whatever is provided through libnotify (usually
-        // garbage)
-        if (this.app)
-            return;
-
-        super.setTitle(title);
     }
 
     open() {
