@@ -333,9 +333,6 @@ export const NotificationApplicationPolicy = GObject.registerClass({
 // However, if @params contains a 'gicon' parameter, the passed in gicon
 // will be used.
 //
-// You can add a secondary icon to the banner with 'secondaryGIcon'. There
-// is no fallback for this icon.
-//
 // If @params contains 'bannerMarkup', with the value %true, a subset (<b>,
 // <i> and <u>) of the markup in [1] will be interpreted within @banner. If
 // the parameter is not present, then anything that looks like markup
@@ -401,7 +398,6 @@ export const Notification = GObject.registerClass({
     update(title, banner, params) {
         params = Params.parse(params, {
             gicon: null,
-            secondaryGIcon: null,
             bannerMarkup: false,
             clear: false,
             datetime: null,
@@ -420,9 +416,6 @@ export const Notification = GObject.registerClass({
 
         if (params.gicon || params.clear)
             this.gicon = params.gicon;
-
-        if (params.secondaryGIcon || params.clear)
-            this.secondaryGIcon = params.secondaryGIcon;
 
         if (params.clear)
             this.actions = [];
@@ -518,7 +511,6 @@ export const NotificationBanner = GObject.registerClass({
         this._buttonBox = null;
 
         this._addActions();
-        this._addSecondaryIcon();
 
         this.notification.connectObject('activated', () => {
             // We hide all types of notifications once the user clicks on
@@ -533,29 +525,17 @@ export const NotificationBanner = GObject.registerClass({
         super._onUpdated(n, clear);
 
         if (clear) {
-            this.setSecondaryActor(null);
             this.setActionArea(null);
             this._buttonBox = null;
         }
 
         this._addActions();
-        this._addSecondaryIcon();
     }
 
     _addActions() {
         this.notification.actions.forEach(action => {
             this.addAction(action.label, action.callback);
         });
-    }
-
-    _addSecondaryIcon() {
-        if (this.notification.secondaryGIcon) {
-            const icon = new St.Icon({
-                gicon: this.notification.secondaryGIcon,
-                x_align: Clutter.ActorAlign.END,
-            });
-            this.setSecondaryActor(icon);
-        }
     }
 
     addButton(button, callback) {
