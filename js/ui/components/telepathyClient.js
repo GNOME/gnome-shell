@@ -314,7 +314,6 @@ class ChatSource extends MessageTray.Source {
 
         super._init(contact.get_alias());
 
-        this.isChat = true;
         this._pendingMessages = [];
 
         this._conn = conn;

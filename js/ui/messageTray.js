@@ -645,11 +645,7 @@ export const Source = GObject.registerClass({
     _init(title, iconName) {
         super._init({title});
 
-        this.SOURCE_ICON_SIZE = 48;
-
         this.iconName = iconName;
-
-        this.isChat = false;
 
         this.notifications = [];
 
