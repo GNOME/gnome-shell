@@ -187,11 +187,6 @@ explicitly import it. This is done through some magic in the
 file. If you can't find a method that's used, it's probably either in gjs itself
 or installed on the global object from the Environment.
 
-Use 'single quotes' for programming strings that should not be translated
-and "double quotes" for strings that the user may see. This allows us to
-quickly find untranslated or mistranslated strings by grepping through the
-sources for double quotes without a gettext call around them.
-
 ## `actor` (deprecated) and `_delegate`
 
 gjs allows us to set so-called "expando properties" on introspected objects,
