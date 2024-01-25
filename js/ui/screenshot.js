@@ -2025,11 +2025,11 @@ export const ScreenshotUI = GObject.registerClass({
         // Show a notification.
         const file = Gio.file_new_for_path(this._screencastPath);
 
-        const source = new MessageTray.Source(
+        const source = new MessageTray.Source({
             // Translators: notification source name.
-            _('Screenshot'),
-            'screencast-recorded-symbolic'
-        );
+            title: _('Screenshot'),
+            iconName: 'screencast-recorded-symbolic',
+        });
         const notification = new MessageTray.Notification(
             source,
             title,
@@ -2262,11 +2262,11 @@ function _storeScreenshot(bytes, pixbuf) {
     );
 
     // Show a notification.
-    const source = new MessageTray.Source(
+    const source = new MessageTray.Source({
         // Translators: notification source name.
-        _('Screenshot'),
-        'screenshot-recorded-symbolic'
-    );
+        title: _('Screenshot'),
+        iconName: 'screenshot-recorded-symbolic',
+    });
     const notification = new MessageTray.Notification(
         source,
         // Translators: notification title.

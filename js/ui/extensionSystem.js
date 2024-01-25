@@ -830,11 +830,10 @@ class ExtensionUpdateSource extends MessageTray.Source {
         if (!this._app)
             this._app = appSys.lookup_app('com.mattjakeman.ExtensionManager.desktop');
 
-        super._init(this._app.get_name());
-    }
-
-    get icon() {
-        return this._app.app_info.get_icon();
+        super._init({
+            title: this._app.get_name(),
+            icon: this._app.get_icon(),
+        });
     }
 
     _createPolicy() {

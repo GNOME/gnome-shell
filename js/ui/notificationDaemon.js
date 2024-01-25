@@ -309,10 +309,13 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
         this.pid = pid;
         this.initialTitle = title;
         this.app = this._getApp(appId);
+        this._appIcon = null;
 
         // Use app name as title if available, instead of whatever is provided
         // through libnotify (usually garbage)
-        super._init(this.app ? this.app.get_name() : title);
+        super._init({
+            title: this.app?.get_name() ?? title,
+        });
 
         if (sender) {
             this._nameWatcherId = Gio.DBus.session.watch_name(sender,
@@ -348,6 +351,7 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
             this._appIcon = appIcon;
             this.notify('icon');
         }
+
 
         let tracker = Shell.WindowTracker.get_default();
         if (notification.resident && this.app && tracker.focus_app === this.app)
@@ -397,12 +401,7 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
     }
 
     get icon() {
-        if (this.app)
-            return this.app.get_icon();
-        else if (this._appIcon)
-            return this._appIcon;
-        else
-            return null;
+        return this.app?.get_icon() ?? this._appIcon;
     }
 });
 
@@ -519,14 +518,13 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
         this._app = app;
         this._objectPath = objectPath;
 
-        super._init(app.get_name());
+        super._init({
+            title: app.get_name(),
+            icon: app.get_icon(),
+        });
 
         this._notifications = {};
         this._notificationPending = false;
-    }
-
-    get icon() {
-        return this._app.get_icon();
     }
 
     _createPolicy() {

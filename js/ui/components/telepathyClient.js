@@ -312,7 +312,7 @@ class ChatSource extends MessageTray.Source {
         this._contact = contact;
         this._client = client;
 
-        super._init(contact.get_alias());
+        super._init();
 
         this._pendingMessages = [];
 
@@ -333,6 +333,8 @@ class ChatSource extends MessageTray.Source {
             'notify::alias', this._updateAlias.bind(this),
             'notify::avatar-file', this._updateAvatarIcon.bind(this), this);
 
+        this._updateAlias();
+        this._updateAvatarIcon();
         // Add ourselves as a source.
         Main.messageTray.add(this);
 
@@ -378,22 +380,23 @@ class ChatSource extends MessageTray.Source {
         if (oldAlias === newAlias)
             return;
 
-        this.setTitle(newAlias);
+        this.title = newAlias;
         if (this._notification)
             this._notification.appendAliasChange(oldAlias, newAlias);
     }
 
-    get icon() {
-        let file = this._contact.get_avatar_file();
-        if (file)
-            return new Gio.FileIcon({file});
-        else
-            return new Gio.ThemedIcon({name: 'avatar-default'});
-    }
-
     _updateAvatarIcon() {
-        this.notify('icon');
-        if (this._notification) {
+        let file = this._contact.get_avatar_file();
+        if (file) {
+            if (this.icon instanceof Gio.FileIcon)
+                this.icon.file = file;
+            else
+                this.icon = new Gio.FileIcon({file});
+        } else if (!(this.icon instanceof Gio.ThemedIcon)) {
+            this.iconName = 'avatar-default';
+        }
+
+        if (this._notification && this.icon !== this._notification.gicon) {
             this._notification.update(
                 this._notification.title,
                 this._notification.bannerBodyText,

@@ -198,8 +198,10 @@ export class ShellMountOperation {
 
 const ShellUnmountNotifier = GObject.registerClass(
 class ShellUnmountNotifier extends MessageTray.Source {
-    _init() {
-        super._init('', 'media-removable');
+    constructor() {
+        super({
+            iconName: 'media-removable',
+        });
 
         this._notification = null;
         Main.messageTray.add(this);

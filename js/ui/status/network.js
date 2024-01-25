@@ -2036,8 +2036,10 @@ class Indicator extends SystemIndicator {
     _onActivationFailed() {
         this._notification?.destroy();
 
-        const source = new MessageTray.Source(
-            _('Network Manager'), 'network-error-symbolic');
+        const source = new MessageTray.Source({
+            title: _('Network Manager'),
+            iconName: 'network-error-symbolic',
+        });
         source.policy =
             new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
 

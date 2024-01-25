@@ -60,7 +60,10 @@ class WindowAttentionSource extends MessageTray.Source {
         this._window = window;
         this._app = app;
 
-        super._init(app.get_name());
+        super._init({
+            title: this._app.get_name(),
+            icon: this._app.get_icon(),
+        });
 
         this._window.connectObject(
             'notify::demands-attention', this._sync.bind(this),
@@ -82,10 +85,6 @@ class WindowAttentionSource extends MessageTray.Source {
         } else {
             return new MessageTray.NotificationGenericPolicy();
         }
-    }
-
-    get icon() {
-        return this._app.get_icon();
     }
 
     destroy(params) {

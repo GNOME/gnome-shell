@@ -740,7 +740,10 @@ class NetworkAgent {
     }
 
     _showNotification(requestId, connection, settingName, hints, flags) {
-        let source = new MessageTray.Source(_('Network Manager'), 'network-transmit-receive');
+        const source = new MessageTray.Source({
+            title: _('Network Manager'),
+            iconName: 'network-transmit-receive',
+        });
         source.policy = new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
 
         let title, body;

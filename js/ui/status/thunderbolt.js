@@ -256,8 +256,10 @@ class Indicator extends SystemIndicator {
 
     _ensureSource() {
         if (!this._source) {
-            this._source = new MessageTray.Source(_('Thunderbolt'),
-                'thunderbolt-symbolic');
+            this._source = new MessageTray.Source({
+                title: _('Thunderbolt'),
+                iconName: 'thunderbolt-symbolic',
+            });
             this._source.connect('destroy', () => (this._source = null));
 
             Main.messageTray.add(this._source);

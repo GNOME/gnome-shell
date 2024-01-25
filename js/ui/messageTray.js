@@ -609,10 +609,8 @@ export const Source = GObject.registerClass({
         'notification-show': {param_types: [Notification.$gtype]},
     },
 }, class Source extends GObject.Object {
-    _init(title, iconName) {
-        super._init({title});
-
-        this.icon = new Gio.ThemedIcon({name: iconName});
+    constructor(params) {
+        super(params);
 
         this.notifications = [];
 
@@ -653,14 +651,6 @@ export const Source = GObject.registerClass({
         return this.notifications.every(n => n.privacyScope === PrivacyScope.SYSTEM)
             ? PrivacyScope.SYSTEM
             : PrivacyScope.USER;
-    }
-
-    setTitle(newTitle) {
-        if (this.title === newTitle)
-            return;
-
-        this.title = newTitle;
-        this.notify('title');
     }
 
     createBanner(notification) {
@@ -1349,8 +1339,11 @@ export const MessageTray = GObject.registerClass({
 
 export const SystemNotificationSource = GObject.registerClass(
 class SystemNotificationSource extends Source {
-    _init() {
-        super._init(_('System Information'), 'dialog-information-symbolic');
+    constructor() {
+        super({
+            title: _('System Information'),
+            iconName: 'dialog-information-symbolic',
+        });
     }
 
     open() {

@@ -258,8 +258,11 @@ class AutorunDispatcher {
 
 const AutorunSource = GObject.registerClass(
 class AutorunSource extends MessageTray.Source {
-    _init(manager, mount, apps) {
-        super._init(mount.get_name());
+    constructor(manager, mount, apps) {
+        super({
+            title: mount.get_name(),
+            icon: mount.get_icon(),
+        });
 
         this._manager = manager;
         this.mount = mount;
@@ -270,10 +273,6 @@ class AutorunSource extends MessageTray.Source {
         // add ourselves as a source, and popup the notification
         Main.messageTray.add(this);
         this.showNotification(this._notification);
-    }
-
-    get icon() {
-        return this.mount.get_icon();
     }
 
     _createPolicy() {
