@@ -332,8 +332,7 @@ class ChatSource extends MessageTray.Source {
 
         this._contact.connectObject(
             'notify::alias', this._updateAlias.bind(this),
-            'notify::avatar-file', this._updateAvatarIcon.bind(this),
-            'presence-changed', this._presenceChanged.bind(this), this);
+            'notify::avatar-file', this._updateAvatarIcon.bind(this), this);
 
         // Add ourselves as a source.
         Main.messageTray.add(this);
@@ -391,35 +390,6 @@ class ChatSource extends MessageTray.Source {
             return new Gio.FileIcon({file});
         else
             return new Gio.ThemedIcon({name: 'avatar-default'});
-    }
-
-    getSecondaryIcon() {
-        let iconName;
-        let presenceType = this._contact.get_presence_type();
-
-        switch (presenceType) {
-        case Tp.ConnectionPresenceType.AVAILABLE:
-            iconName = 'user-available';
-            break;
-        case Tp.ConnectionPresenceType.BUSY:
-            iconName = 'user-busy';
-            break;
-        case Tp.ConnectionPresenceType.OFFLINE:
-            iconName = 'user-offline';
-            break;
-        case Tp.ConnectionPresenceType.HIDDEN:
-            iconName = 'user-invisible';
-            break;
-        case Tp.ConnectionPresenceType.AWAY:
-            iconName = 'user-away';
-            break;
-        case Tp.ConnectionPresenceType.EXTENDED_AWAY:
-            iconName = 'user-idle';
-            break;
-        default:
-            iconName = 'user-offline';
-        }
-        return new Gio.ThemedIcon({name: iconName});
     }
 
     _updateAvatarIcon() {
@@ -630,15 +600,6 @@ class ChatSource extends MessageTray.Source {
         }
     }
 
-    _presenceChanged(_contact, _presence, _status, _message) {
-        if (this._notification) {
-            this._notification.update(
-                this._notification.title,
-                this._notification.bannerBodyText,
-                {secondaryGIcon: this.getSecondaryIcon()});
-        }
-    }
-
     _pendingRemoved(channel, message) {
         let idx = this._pendingMessages.indexOf(message);
 
@@ -674,9 +635,8 @@ const ChatNotification = HAVE_TP ? GObject.registerClass({
         'timestamp-changed': {param_types: [ChatNotificationMessage.$gtype]},
     },
 }, class ChatNotification extends MessageTray.Notification {
-    _init(source) {
-        super._init(source, source.title, null,
-            {secondaryGIcon: source.getSecondaryIcon()});
+    constructor(source) {
+        super(source, source.title, null, null);
         this.setUrgency(MessageTray.Urgency.HIGH);
         this.setResident(true);
 
