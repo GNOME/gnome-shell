@@ -28,7 +28,7 @@ what to do.
         else
             bar = do_thing(b);
 
-        if (var === 5) {
+        if (bar === 5) {
             for (let i = 0; i < 10; i++)
                 print(i);
         } else {
@@ -103,12 +103,13 @@ under the imports:
 Always use either `const` or `let` when defining a variable.
 ```javascript
     // Iterating over an array
-    for (let i = 0; i < arr.length; ++i)
-        let item = arr[i];
+    for (let i = 0; i < arr.length; ++i) {
+        const item = arr[i];
+    }
 
     // Iterating over an object's properties
-    for (let prop in someobj) {
-        ...
+    for (const prop in someobj) {
+        const val = someobj[prop];
     }
 ```
 
