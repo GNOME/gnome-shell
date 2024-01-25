@@ -28,7 +28,7 @@ what to do.
         else
             bar = do_thing(b);
 
-        if (var == 5) {
+        if (var === 5) {
             for (let i = 0; i < 10; i++)
                 print(i);
         } else {
@@ -122,15 +122,15 @@ whenever possible, that is when not inheriting from GObjects.
 ```javascript
     export class IconLabelMenuItem extends PopupMenu.PopupMenuBaseItem {
         constructor(icon, label) {
-            super({ reactive: false });
+            super({reactive: false});
             this.actor.add_child(icon);
             this.actor.add_child(label);
         }
 
         open() {
-            log("menu opened!");
+            log('menu opened!');
         }
-    };
+    }
 ```
 
 For GObject inheritance, we use the GObject.registerClass() function provided
@@ -138,8 +138,8 @@ by gjs.
 ```javascript
     export const MyActor = GObject.registerClass(
     class MyActor extends Clutter.Actor {
-        _init(params) {
-            super._init(params);
+        constructor(params) {
+            super(params);
 
             this.name = 'MyCustomActor';
         }
@@ -154,26 +154,25 @@ you to inherit from a type to use it, you can do so:
 ```javascript
     export const MyClutterActor = GObject.registerClass(
     class MyClutterActor extends Clutter.Actor {
-
         vfunc_get_preferred_width(forHeight) {
-             return [100, 100];
+            return [100, 100];
         }
 
         vfunc_get_preferred_height(forWidth) {
-             return [100, 100];
+            return [100, 100];
         }
 
         vfunc_paint(paintContext) {
-             let framebuffer = paintContext.get_framebuffer();
-             let coglContext = framebuffer.get_context();
-             let alloc = this.get_allocation_box();
+            let framebuffer = paintContext.get_framebuffer();
+            let coglContext = framebuffer.get_context();
+            let alloc = this.get_allocation_box();
 
-             let pipeline = Cogl.Pipeline.new(coglContext);
-             pipeline.set_color4ub(255, 0, 0, 255);
+            let pipeline = Cogl.Pipeline.new(coglContext);
+            pipeline.set_color4ub(255, 0, 0, 255);
 
-             framebuffer.draw_rectangle(pipeline,
-		 alloc.x1, alloc.y1,
-		 alloc.x2, alloc.y2);
+            framebuffer.draw_rectangle(pipeline,
+                alloc.x1, alloc.y1,
+                alloc.x2, alloc.y2);
         }
     });
 ```
@@ -200,8 +199,8 @@ the actor itself:
 ```javascript
     export const MyActor = GObject.registerClass(
     class MyActor extends Clutter.Actor {
-        _init(params) {
-            super._init(params);
+        constructor(params) {
+            super(params);
             this._delegate = this;
         }
     });
@@ -211,16 +210,16 @@ Or using the deprecated `actor`:
 ```javascript
     export class MyClass {
         constructor() {
-            this.actor = new St.Button({ text: "This is a button" });
+            this.actor = new St.Button({text: 'This is a button'});
             this.actor._delegate = this;
 
             this.actor.connect('clicked', this._onClicked.bind(this));
         }
 
         _onClicked(actor) {
-            actor.set_label("You clicked the button!");
+            actor.set_label('You clicked the button!');
         }
-    };
+    }
 ```
 
 The 'delegate' property is important for anything which trying to get the
@@ -265,30 +264,30 @@ prototype:
         _onFnorbFrobate(fnorb) {
             this._updateFnorb();
         }
-    };
+    }
 ```
 
 ## Object literal syntax
 
 In JavaScript, these are equivalent:
 ```javascript
-    foo = { 'bar': 42 };
-    foo = { bar: 42 };
+    foo = {'bar': 42};
+    foo = {bar: 42};
 ```
 
 and so are these:
 ```javascript
-    var b = foo['bar'];
-    var b = foo.bar;
+    b = foo['bar'];
+    b = foo.bar;
 ```
 
 If your usage of an object is like an object, then you're defining "member
-variables." For member variables, use the no-quotes no-brackets syntax: `{ bar:
-42 }` `foo.bar`.
+variables." For member variables, use the no-quotes no-brackets syntax:
+`{bar: 42}` `foo.bar`.
 
 If your usage of an object is like a hash table (and thus conceptually the keys
-can have special chars in them), don't use quotes, but use brackets: `{ bar: 42
-}`, `foo['bar']`.
+can have special chars in them), don't use quotes, but use brackets:
+`{bar: 42}`, `foo['bar']`.
 
 ## Animations
 
@@ -301,7 +300,7 @@ are animatable, which means they can use implicit animations:
             x,
             y,
             duration: 500, // ms
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 ```
@@ -317,7 +316,7 @@ be preferred over the more verbose:
         actor.set_easing_mode(Clutter.AnimationMode.EASE_OUT_QUAD);
         actor.set({
             x,
-            y
+            y,
         });
 
         actor.restore_easing_state();
@@ -332,7 +331,7 @@ actor (or actor meta) properties that cannot use implicit animations:
         let factor = desaturate ? 1.0 : 0.0;
         actor.ease_property('@effects.desaturate.factor', factor, {
             duration: 500, // ms
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 ```
