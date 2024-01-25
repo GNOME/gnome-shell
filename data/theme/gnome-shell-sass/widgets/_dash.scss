@@ -58,10 +58,6 @@ $dash_spacing: $base_margin * 0.5;
       .overview-icon {
         @extend %tile;
         @include button(normal, $tc:$fg, $c:$bg, $style: flat, $always_dark: true);
-
-        @if $contrast == 'high' {
-          @include draw_hc_inset();
-        }
       }
 
       &:focus .overview-icon { @include button(focus, $tc:$fg, $c:$bg, $style: flat, $always_dark: true);}

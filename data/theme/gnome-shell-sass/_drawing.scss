@@ -29,11 +29,27 @@
 //
 
 // Draw the inset for High Contrast elements
-@mixin draw_hc_inset($width: 1px, $fc: $hc_inset_color, $border: false) {
-  box-shadow: inset 0 0 0 $width $fc;
+@mixin draw_hc_inset($width: 1px, $ic: $hc_inset_color, $border: false, $no_inset: false) {
+  //
+  // $width     width of the inset, in pixels
+  // $ic        color of the inset
+  //
+  // $border    if true, use a border instead of a box-shadow to draw inset
+  // $no_inset  if true, override the mixin to not draw an iset
+  //
+
+  box-shadow: inset 0 0 0 $width $ic;
+
+  // draw inset as border
   @if $border {
-    border: $width solid $fc;
+    border: $width solid $ic;
     box-shadow: none;
+  }
+
+  // don't draw an inset at all
+  @if $no_inset {
+    box-shadow: none;
+    border: none;
   }
 }
 
@@ -217,7 +233,7 @@
     }
 
     @if $style == 'default' {
-      @include draw_hc_inset($width:0px);
+      @include draw_hc_inset($no_inset: true);
     }
   }
 
@@ -225,6 +241,11 @@
   @if $type == 'normal' {
     color: $tc;
     background-color: $button_bg_color;
+
+    // no inset in High Contrast when the style is flat
+    @if $style == 'flat' and $contrast == 'high' {
+      @include draw_hc_inset($no_inset: true);
+    }
   }
 
   // hover button
@@ -261,7 +282,7 @@
 
     // no outline in High Contrast for insensitive buttons
     @if $contrast == 'high' {
-      @include draw_hc_inset($fc:transparent);
+      @include draw_hc_inset($no_inset: true);
     }
   }
 
@@ -328,9 +349,6 @@
     &:insensitive { @include button(insensitive, $tc:$fg, $c:$bg, $style: flat, $always_dark: $system);}
   }
 
-  @if $contrast == 'high' {
-    @include draw_hc_inset();
-  }
 
   &:highlighted {
     // brighter background color than other states
