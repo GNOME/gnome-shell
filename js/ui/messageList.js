@@ -306,6 +306,34 @@ const LabelExpanderLayout = GObject.registerClass({
     }
 });
 
+export const Source = GObject.registerClass({
+    Properties: {
+        'title': GObject.ParamSpec.string(
+            'title', 'title', 'title',
+            GObject.ParamFlags.READWRITE,
+            null),
+        'icon': GObject.ParamSpec.object(
+            'icon', 'icon', 'icon',
+            GObject.ParamFlags.READWRITE,
+            Gio.Icon),
+        'icon-name': GObject.ParamSpec.string(
+            'icon-name', 'icon-name', 'icon-name',
+            GObject.ParamFlags.READWRITE,
+            null),
+    },
+}, class Source extends GObject.Object {
+    get iconName() {
+        if (this.gicon instanceof Gio.ThemedIcon)
+            return this.gicon.iconName;
+        else
+            return null;
+    }
+
+    set iconName(iconName) {
+        this.icon = new Gio.ThemedIcon({name: iconName});
+    }
+});
+
 const TimeLabel = GObject.registerClass(
 class TimeLabel extends St.Label {
     _init() {

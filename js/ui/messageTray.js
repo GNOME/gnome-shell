@@ -12,6 +12,7 @@ import * as Calendar from './calendar.js';
 import * as GnomeSession from '../misc/gnomeSession.js';
 import * as Layout from './layout.js';
 import * as Main from './main.js';
+import * as MessageList from './messageList.js';
 import * as Params from '../misc/params.js';
 import * as SignalTracker from '../misc/signalTracker.js';
 
@@ -590,25 +591,13 @@ export const Source = GObject.registerClass({
             'policy', 'policy', 'policy',
             GObject.ParamFlags.READWRITE,
             NotificationPolicy.$gtype),
-        'title': GObject.ParamSpec.string(
-            'title', 'title', 'title',
-            GObject.ParamFlags.READWRITE,
-            null),
-        'icon': GObject.ParamSpec.object(
-            'icon', 'icon', 'icon',
-            GObject.ParamFlags.READWRITE,
-            Gio.Icon),
-        'icon-name': GObject.ParamSpec.string(
-            'icon-name', 'icon-name', 'icon-name',
-            GObject.ParamFlags.READWRITE,
-            null),
     },
     Signals: {
         'destroy': {param_types: [GObject.TYPE_UINT]},
         'notification-added': {param_types: [Notification.$gtype]},
         'notification-show': {param_types: [Notification.$gtype]},
     },
-}, class Source extends GObject.Object {
+}, class Source extends MessageList.Source {
     constructor(params) {
         super(params);
 
@@ -655,17 +644,6 @@ export const Source = GObject.registerClass({
 
     createBanner(notification) {
         return new NotificationBanner(notification);
-    }
-
-    get iconName() {
-        if (this.gicon instanceof Gio.ThemedIcon)
-            return this.gicon.iconName;
-        else
-            return null;
-    }
-
-    set iconName(iconName) {
-        this.icon = new Gio.ThemedIcon({name: iconName});
     }
 
     _onNotificationDestroy(notification) {
