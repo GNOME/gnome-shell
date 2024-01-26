@@ -21,7 +21,6 @@ const HAVE_REQUIRE_SURROUNDING_TEXT = GObject.signal_lookup('require-surrounding
 export const InputMethod = GObject.registerClass({
     Signals: {
         'surrounding-text-set': {},
-        'terminal-mode-changed': {},
     },
 }, class InputMethod extends Clutter.InputMethod {
     _init() {
@@ -34,7 +33,6 @@ export const InputMethod = GObject.registerClass({
         this._preeditAnchor = 0;
         this._preeditVisible = false;
         this._hidePanelId = 0;
-        this.terminalMode = false;
         this._ibus = IBus.Bus.new_async();
         this._ibus.connect('connected', this._onConnected.bind(this));
         this._ibus.connect('disconnected', this._clear.bind(this));
@@ -229,7 +227,6 @@ export const InputMethod = GObject.registerClass({
         this._surroundingTextCursor = null;
         this._surroundingTextAnchor = null;
         this._preeditStr = null;
-        this._setTerminalMode(false);
     }
 
     vfunc_set_cursor_location(rect) {
@@ -302,19 +299,9 @@ export const InputMethod = GObject.registerClass({
                  IBus.InputPurpose.TERMINAL)
             ibusPurpose = IBus.InputPurpose.TERMINAL;
 
-        this._setTerminalMode(
-            purpose === Clutter.InputContentPurpose.TERMINAL);
-
         this._purpose = ibusPurpose;
         if (this._context)
             this._context.set_content_type(this._purpose, this._hints);
-    }
-
-    _setTerminalMode(terminalMode) {
-        if (this.terminalMode !== terminalMode) {
-            this.terminalMode = terminalMode;
-            this.emit('terminal-mode-changed');
-        }
     }
 
     vfunc_filter_key_event(event) {

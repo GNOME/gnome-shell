@@ -1413,10 +1413,6 @@ export const Keyboard = GObject.registerClass({
 
         this._updateKeys();
 
-        Main.inputMethod.connectObject(
-            'terminal-mode-changed', this._onTerminalModeChanged.bind(this),
-            this);
-
         this._keyboardController.connectObject(
             'active-group', this._onGroupChanged.bind(this),
             'groups-changed', this._onKeyboardGroupsChanged.bind(this),
@@ -1493,7 +1489,12 @@ export const Keyboard = GObject.registerClass({
     }
 
     _ensureKeys() {
-        const group = this._keyboardController.getCurrentGroup();
+        let group;
+        if (this._purpose === Clutter.InputContentPurpose.TERMINAL)
+            group = 'us-extended';
+        else
+            group = this._keyboardController.getCurrentGroup();
+
         if (!this._groups[group])
             this._groups[group] = this._createLayersForGroup(group);
     }
@@ -1617,7 +1618,7 @@ export const Keyboard = GObject.registerClass({
         if (enabled &&
             (!Main.inputMethod.currentFocus ||
              Main.inputMethod.hasPreedit() ||
-             Main.inputMethod.terminalMode)) {
+             this._purpose === Clutter.InputContentPurpose.TERMINAL)) {
             this._keyboardController.keyvalPress(Clutter.KEY_BackSpace);
             this._backspacePressed = true;
             return;
@@ -1800,10 +1801,6 @@ export const Keyboard = GObject.registerClass({
     }
 
     _onGroupChanged() {
-        this._updateKeys();
-    }
-
-    _onTerminalModeChanged() {
         this._updateKeys();
     }
 
@@ -2220,9 +2217,6 @@ class KeyboardController extends Signals.EventEmitter {
     }
 
     getCurrentGroup() {
-        if (Main.inputMethod.terminalMode)
-            return 'us-extended';
-
         // Special case for Korean, if Hangul mode is disabled, use the 'us' keymap
         if (this._currentSource.id === 'hangul') {
             const inputSourceManager = InputSourceManager.getInputSourceManager();
