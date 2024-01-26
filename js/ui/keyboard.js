@@ -1391,10 +1391,12 @@ export const Keyboard = GObject.registerClass({
             y_expand: true,
         });
 
-        if (purpose === Clutter.InputContentPurpose.DIGITS ||
-            purpose === Clutter.InputContentPurpose.NUMBER ||
-            purpose === Clutter.InputContentPurpose.PHONE) {
+        if (purpose === Clutter.InputContentPurpose.DIGITS) {
             keyboardModel = new KeyboardModel('digits');
+        } else if (purpose === Clutter.InputContentPurpose.NUMBER) {
+            keyboardModel = new KeyboardModel('number');
+        } else if (purpose === Clutter.InputContentPurpose.PHONE) {
+            keyboardModel = new KeyboardModel('phone');
         } else {
             let groups = [groupName];
             if (groupName.includes('+'))

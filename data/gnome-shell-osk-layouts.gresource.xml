@@ -44,7 +44,9 @@
     <file>my.json</file>
     <file>nl.json</file>
     <file>no.json</file>
+    <file>number.json</file>
     <file>ph.json</file>
+    <file>phone.json</file>
     <file>pl.json</file>
     <file>pt.json</file>
     <file>ro.json</file>
