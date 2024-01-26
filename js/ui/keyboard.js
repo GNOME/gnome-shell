@@ -1380,7 +1380,6 @@ export const Keyboard = GObject.registerClass({
 
         this._keyboardController = new KeyboardController();
 
-        this._groups = {};
         this._currentPage = null;
 
         this._suggestions = new Suggestions();
@@ -1461,10 +1460,15 @@ export const Keyboard = GObject.registerClass({
         }
     }
 
-    _createLayersForGroup(groupName) {
+    _updateLayoutForGroup(groupName) {
         let keyboardModel = new KeyboardModel(groupName);
-        let layers = {};
         let levels = keyboardModel.getLevels();
+        let layers = {};
+        let layout = new Clutter.Actor({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+            y_expand: true,
+        });
         for (let i = 0; i < levels.length; i++) {
             let currentLevel = levels[i];
             /* There are keyboard maps which consist of 3 levels (no uppercase,
@@ -1473,19 +1477,21 @@ export const Keyboard = GObject.registerClass({
              */
             let level = i >= 1 && levels.length === 3 ? i + 1 : i;
 
-            let layout = new KeyContainer();
-            layout.shiftKeys = [];
-            layout.mode = currentLevel.mode;
+            let levelLayout = new KeyContainer();
+            levelLayout.shiftKeys = [];
+            levelLayout.mode = currentLevel.mode;
 
-            this._loadRows(currentLevel, level, levels.length, layout);
-            layers[level] = layout;
-            this._aspectContainer.add_child(layout);
-            layout.layoutButtons();
-
-            layout.hide();
+            this._loadRows(currentLevel, level, levels.length, levelLayout);
+            layers[level] = levelLayout;
+            layout.add_child(levelLayout);
+            levelLayout.layoutButtons();
+            levelLayout.hide();
         }
 
-        return layers;
+        this._aspectContainer.add_child(layout);
+        this._currentLayout?.destroy();
+        this._currentLayout = layout;
+        this._layers = layers;
     }
 
     _ensureKeys() {
@@ -1495,8 +1501,7 @@ export const Keyboard = GObject.registerClass({
         else
             group = this._keyboardController.getCurrentGroup();
 
-        if (!this._groups[group])
-            this._groups[group] = this._createLayersForGroup(group);
+        this._updateLayoutForGroup(group);
     }
 
     _addRowKeys(keys, layout) {
@@ -1805,12 +1810,6 @@ export const Keyboard = GObject.registerClass({
     }
 
     _onKeyboardGroupsChanged() {
-        let nonGroupActors = [this._emojiSelection, this._keypad];
-        this._aspectContainer.get_children().filter(c => !nonGroupActors.includes(c)).forEach(c => {
-            c.destroy();
-        });
-
-        this._groups = {};
         this._onGroupChanged();
     }
 
@@ -1850,8 +1849,7 @@ export const Keyboard = GObject.registerClass({
     }
 
     _setActiveLayer(activeLevel) {
-        let activeGroupName = this._keyboardController.getCurrentGroup();
-        let layers = this._groups[activeGroupName];
+        const layers = this._layers;
         let currentPage = layers[activeLevel];
 
         if (this._currentPage === currentPage) {
