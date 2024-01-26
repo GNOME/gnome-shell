@@ -1,0 +1,83 @@
+{
+  "levels": [
+    {
+      "level": "",
+      "mode": "default",
+      "rows": [
+        [
+          {
+            "strings": [
+              "7"
+            ]
+          },
+          {
+            "strings": [
+              "8"
+            ]
+          },
+          {
+            "strings": [
+              "9"
+            ]
+          },
+          {
+            "action": "delete",
+            "iconName": "edit-clear-symbolic"
+          }
+        ],
+        [
+          {
+            "strings": [
+              "4"
+            ]
+          },
+          {
+            "strings": [
+              "5"
+            ]
+          },
+          {
+            "strings": [
+              "6"
+            ]
+          },
+          {
+            "iconName": "keyboard-enter-symbolic",
+            "keyval": "0xff0d",
+            "height": 2
+          }
+        ],
+        [
+          {
+            "strings": [
+              "1"
+            ]
+          },
+          {
+            "strings": [
+              "2"
+            ]
+          },
+          {
+            "strings": [
+              "3"
+            ]
+          }
+        ],
+        [
+          {
+            "width": 3,
+            "strings": [
+              "0"
+            ]
+          },
+          {
+            "action": "hide",
+            "iconName": "keyboard-hide-symbolic"
+          }
+        ]
+      ]
+    }
+  ],
+  "name": "Digits"
+}

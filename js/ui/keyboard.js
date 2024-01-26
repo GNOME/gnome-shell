@@ -1084,63 +1084,6 @@ const EmojiSelection = GObject.registerClass({
     }
 });
 
-const Keypad = GObject.registerClass({
-    Signals: {
-        'keyval': {param_types: [GObject.TYPE_UINT]},
-    },
-}, class Keypad extends AspectContainer {
-    _init() {
-        let keys = [
-            {label: '1', keyval: Clutter.KEY_1, left: 0, top: 0},
-            {label: '2', keyval: Clutter.KEY_2, left: 1, top: 0},
-            {label: '3', keyval: Clutter.KEY_3, left: 2, top: 0},
-            {label: '4', keyval: Clutter.KEY_4, left: 0, top: 1},
-            {label: '5', keyval: Clutter.KEY_5, left: 1, top: 1},
-            {label: '6', keyval: Clutter.KEY_6, left: 2, top: 1},
-            {label: '7', keyval: Clutter.KEY_7, left: 0, top: 2},
-            {label: '8', keyval: Clutter.KEY_8, left: 1, top: 2},
-            {label: '9', keyval: Clutter.KEY_9, left: 2, top: 2},
-            {label: '0', keyval: Clutter.KEY_0, left: 1, top: 3},
-            {keyval: Clutter.KEY_BackSpace, icon: 'edit-clear-symbolic', left: 3, top: 0},
-            {keyval: Clutter.KEY_Return, extraClassName: 'enter-key', icon: 'keyboard-enter-symbolic', left: 3, top: 1, height: 2},
-        ];
-
-        super._init({
-            layout_manager: new Clutter.BinLayout(),
-            x_expand: true,
-            y_expand: true,
-        });
-
-        const gridLayout = new Clutter.GridLayout({
-            orientation: Clutter.Orientation.HORIZONTAL,
-            column_homogeneous: true,
-            row_homogeneous: true,
-        });
-        this._box = new St.Widget({layout_manager: gridLayout, x_expand: true, y_expand: true});
-        this.add_child(this._box);
-
-        for (let i = 0; i < keys.length; i++) {
-            let cur = keys[i];
-            let key = new Key({
-                label: cur.label,
-                iconName: cur.icon,
-            });
-
-            if (keys[i].extraClassName)
-                key.keyButton.add_style_class_name(cur.extraClassName);
-
-            let w, h;
-            w = cur.width || 1;
-            h = cur.height || 1;
-            gridLayout.attach(key, cur.left, cur.top, w, h);
-
-            key.connect('released', () => {
-                this.emit('keyval', cur.keyval);
-            });
-        }
-    }
-});
-
 export class KeyboardManager extends Signals.EventEmitter {
     constructor() {
         super();
@@ -1390,15 +1333,6 @@ export const Keyboard = GObject.registerClass({
         this._emojiSelection.hide();
         this._aspectContainer.add_child(this._emojiSelection);
 
-        this._keypad = new Keypad();
-        this._keypad.connectObject('keyval', (_keypad, keyval) => {
-            this._keyboardController.keyvalPress(keyval);
-            this._keyboardController.keyvalRelease(keyval);
-        }, this);
-        this._aspectContainer.add_child(this._keypad);
-        this._keypad.hide();
-        this._keypadVisible = false;
-
         this._updateKeys();
 
         this._keyboardController.connectObject(
@@ -1460,7 +1394,7 @@ export const Keyboard = GObject.registerClass({
         if (purpose === Clutter.InputContentPurpose.DIGITS ||
             purpose === Clutter.InputContentPurpose.NUMBER ||
             purpose === Clutter.InputContentPurpose.PHONE) {
-            this._onKeypadVisible(null, true);
+            keyboardModel = new KeyboardModel('digits');
         } else {
             let groups = [groupName];
             if (groupName.includes('+'))
@@ -1480,8 +1414,6 @@ export const Keyboard = GObject.registerClass({
 
             if (!keyboardModel)
                 return;
-
-            this._onKeypadVisible(null, false);
         }
 
         let levels = keyboardModel.getLevels();
@@ -1753,7 +1685,7 @@ export const Keyboard = GObject.registerClass({
 
     _updateCurrentPageVisible() {
         if (this._currentPage)
-            this._currentPage.visible = !this._emojiActive && !this._keypadVisible;
+            this._currentPage.visible = !this._emojiActive;
     }
 
     _setEmojiActive(active) {
@@ -1823,15 +1755,6 @@ export const Keyboard = GObject.registerClass({
 
     _onKeyboardGroupsChanged() {
         this._onGroupChanged();
-    }
-
-    _onKeypadVisible(controller, visible) {
-        if (visible === this._keypadVisible)
-            return;
-
-        this._keypadVisible = visible;
-        this._keypad.visible = this._keypadVisible;
-        this._updateCurrentPageVisible();
     }
 
     _onEmojiKeyVisible(controller, visible) {
