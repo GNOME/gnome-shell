@@ -118,10 +118,15 @@
           {
             "iconName": "keyboard-enter-symbolic",
             "keyval": "0xff0d",
-            "width": 2.5
+            "width": 2
           }
         ],
         [
+          {
+            "action": "levelSwitch",
+            "iconName": "keyboard-shift-symbolic",
+            "level": 1
+          },
           {
             "strings": [
               "ზ"
@@ -177,6 +182,222 @@
               "'",
               "@"
             ]
+          },
+          {
+            "action": "levelSwitch",
+            "iconName": "keyboard-shift-symbolic",
+            "level": 1,
+            "width": 1.5
+          }
+        ],
+        [
+          {
+            "action": "levelSwitch",
+            "label": "?123",
+            "level": 2,
+            "width": 1.5
+          },
+          {
+            "action": "emoji",
+            "iconName": "face-smile-symbolic",
+            "width": 1.5
+          },
+          {
+            "strings": [
+              " "
+            ],
+            "width": 5
+          },
+          {
+            "action": "languageMenu",
+            "iconName": "keyboard-layout-symbolic",
+            "width": 1.5
+          },
+          {
+            "action": "hide",
+            "iconName": "keyboard-hide-symbolic",
+            "width": 2
+          }
+        ]
+      ]
+    },
+    {
+      "level": "shift",
+      "mode": "latched",
+      "rows": [
+        [
+          {
+            "strings": [
+              "Q"
+            ]
+          },
+          {
+            "strings": [
+              "ჭ"
+            ]
+          },
+          {
+            "strings": [
+              "E"
+            ]
+          },
+          {
+            "strings": [
+              "ღ"
+            ]
+          },
+          {
+            "strings": [
+              "თ"
+            ]
+          },
+          {
+            "strings": [
+              "Y"
+            ]
+          },
+          {
+            "strings": [
+              "U"
+            ]
+          },
+          {
+            "strings": [
+              "I"
+            ]
+          },
+          {
+            "strings": [
+              "O"
+            ]
+          },
+          {
+            "strings": [
+              "P"
+            ]
+          },
+          {
+            "action": "delete",
+            "iconName": "edit-clear-symbolic",
+            "width": 1.5
+          }
+        ],
+        [
+          {
+            "strings": [
+              "A"
+            ]
+          },
+          {
+            "strings": [
+              "შ"
+            ]
+          },
+          {
+            "strings": [
+              "D"
+            ]
+          },
+          {
+            "strings": [
+              "F"
+            ]
+          },
+          {
+            "strings": [
+              "G"
+            ]
+          },
+          {
+            "strings": [
+              "H"
+            ]
+          },
+          {
+            "strings": [
+              "ჟ"
+            ]
+          },
+          {
+            "strings": [
+              "K"
+            ]
+          },
+          {
+            "strings": [
+              "L"
+            ]
+          },
+          {
+            "iconName": "keyboard-enter-symbolic",
+            "keyval": "0xff0d",
+            "width": 2
+          }
+        ],
+        [
+          {
+            "action": "levelSwitch",
+            "iconName": "keyboard-shift-symbolic",
+            "level": 0
+          },
+          {
+            "strings": [
+              "ძ"
+            ]
+          },
+          {
+            "strings": [
+              "X"
+            ]
+          },
+          {
+            "strings": [
+              "ჩ"
+            ]
+          },
+          {
+            "strings": [
+              "V"
+            ]
+          },
+          {
+            "strings": [
+              "B"
+            ]
+          },
+          {
+            "strings": [
+              "N"
+            ]
+          },
+          {
+            "strings": [
+              "M"
+            ]
+          },
+          {
+            "strings": [
+              ","
+            ]
+          },
+          {
+            "strings": [
+              ".",
+              "#",
+              "!",
+              ",",
+              "?",
+              "-",
+              ":",
+              "'",
+              "@"
+            ]
+          },
+          {
+            "action": "levelSwitch",
+            "iconName": "keyboard-shift-symbolic",
+            "level": 0,
+            "width": 1.5
           }
         ],
         [
