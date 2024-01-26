@@ -409,12 +409,8 @@ export const Message = GObject.registerClass({
         this.setTitle(title);
         titleBox.add_child(this.titleLabel);
 
-        this._secondaryBin = new St.Bin({
-            style_class: 'message-secondary-bin',
-            x_expand: true, y_expand: true,
-            y_align: Clutter.ActorAlign.END,
-        });
-        titleBox.add_child(this._secondaryBin);
+        this._timeLabel = new TimeLabel();
+        titleBox.add_child(this._timeLabel);
 
         this._closeButton = new St.Button({
             style_class: 'message-close-button',
@@ -450,21 +446,11 @@ export const Message = GObject.registerClass({
     }
 
     get datetime() {
-        if (this._secondaryBin.child instanceof TimeLabel)
-            return this._secondaryBin.child.datetime;
-        else
-            return null;
+        return this._timeLabel.datetime;
     }
 
     set datetime(datetime) {
-        if (!(this._secondaryBin.child instanceof TimeLabel))
-            this._secondaryBin.child = new TimeLabel();
-
-        this._secondaryBin.child.set({datetime});
-    }
-
-    setSecondaryActor(actor) {
-        this._secondaryBin.child = actor;
+        this._timeLabel.datetime = datetime;
     }
 
     setTitle(text) {

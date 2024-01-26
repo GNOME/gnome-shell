@@ -99,18 +99,14 @@
       font-weight: bold;
     }
 
-    // secondary container in title box
-    .message-secondary-bin {
+    // notification time stamp
+    > .event-time {
+      @extend %caption;
+      color: $insensitive_fg_color;
+      padding-bottom: to_em(1px);
 
-      // notification time stamp
-      > .event-time {
-        @extend %caption;
-        color: $insensitive_fg_color;
-        padding-bottom: to_em(1px);
-
-        &:ltr { text-align: right };
-        &:rtl { text-align: left };
-      }
+      &:ltr { text-align: right };
+      &:rtl { text-align: left };
     }
   }
 

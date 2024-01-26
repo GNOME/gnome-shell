@@ -31,7 +31,7 @@ class MediaMessage extends MessageList.Message {
         this.setIcon(this._icon);
 
         // reclaim space used by unused elements
-        this._secondaryBin.hide();
+        this._timeLabel.hide();
         this._closeButton.hide();
 
         this._prevButton = this.addMediaControl('media-skip-backward-symbolic',
