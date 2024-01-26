@@ -151,6 +151,7 @@
         ],
         [
           {
+            "leftOffset": 1,
             "strings": [
               "ذ"
             ]
@@ -335,6 +336,7 @@
         ],
         [
           {
+            "leftOffset": 0.5,
             "strings": [
               "@"
             ]
@@ -603,6 +605,7 @@
         ],
         [
           {
+            "leftOffset": 0.5,
             "strings": [
               "£"
             ]

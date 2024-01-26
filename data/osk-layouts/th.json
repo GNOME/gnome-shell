@@ -150,6 +150,7 @@
         ],
         [
           {
+            "leftOffset": 0.5,
             "strings": [
               "ฟ"
             ]
@@ -464,6 +465,7 @@
         ],
         [
           {
+            "leftOffset": 0.5,
             "strings": [
               "ฤ"
             ]
@@ -716,6 +718,7 @@
         ],
         [
           {
+            "leftOffset": 0.5,
             "strings": [
               "@"
             ]
@@ -965,6 +968,7 @@
         ],
         [
           {
+            "leftOffset": 0.5,
             "strings": [
               "£"
             ]

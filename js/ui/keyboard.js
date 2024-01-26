@@ -113,10 +113,10 @@ class KeyContainer extends St.Widget {
         this._rows.push(row);
     }
 
-    appendKey(key, width = 1, height = 1) {
-        let keyInfo = {
+    appendKey(key, width = 1, height = 1, leftOffset = 0) {
+        const keyInfo = {
             key,
-            left: this._currentCol,
+            left: this._currentCol + leftOffset,
             top: this._currentRow,
             width,
             height,
@@ -126,37 +126,19 @@ class KeyContainer extends St.Widget {
         row.keys.push(keyInfo);
         row.width += width;
 
-        this._currentCol += width;
+        this._currentCol += leftOffset + width;
         this._maxCols = Math.max(this._currentCol, this._maxCols);
     }
 
     layoutButtons() {
-        let nCol = 0, nRow = 0;
-
-        for (let i = 0; i < this._rows.length; i++) {
-            let row = this._rows[i];
-
-            /* When starting a new row, see if we need some padding */
-            if (nCol === 0) {
-                let diff = this._maxCols - row.width;
-                if (diff >= 1)
-                    nCol = diff * KEY_SIZE / 2;
-                else
-                    nCol = diff * KEY_SIZE;
-            }
-
-            for (let j = 0; j < row.keys.length; j++) {
-                let keyInfo = row.keys[j];
-                let width = keyInfo.width * KEY_SIZE;
-                let height = keyInfo.height * KEY_SIZE;
-
-                this._gridLayout.attach(keyInfo.key, nCol, nRow, width, height);
-                nCol += width;
-            }
-
-            nRow += KEY_SIZE;
-            nCol = 0;
-        }
+        this._rows.forEach(row => {
+            row.keys.forEach(keyInfo => {
+                const {left, top, width, height} = keyInfo;
+                this._gridLayout.attach(keyInfo.key,
+                                        left * KEY_SIZE, top * KEY_SIZE,
+                                        width * KEY_SIZE, height * KEY_SIZE);
+            });
+        });
     }
 
     getRatio() {
@@ -1582,7 +1564,7 @@ export const Keyboard = GObject.registerClass({
             if (key.action || key.keyval)
                 button.keyButton.add_style_class_name('default-key');
 
-            layout.appendKey(button, key.width);
+            layout.appendKey(button, key.width, 1, key.leftOffset);
         }
     }
 

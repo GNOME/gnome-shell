@@ -74,6 +74,7 @@
         [
           {
             "label": "ㅁ",
+            "leftOffset": 0.5,
             "strings": [
               "a"
             ]
@@ -135,6 +136,7 @@
         [
           {
             "label": "ㅋ",
+            "leftOffset": 1,
             "strings": [
               "z"
             ]
@@ -303,6 +305,7 @@
         ],
         [
           {
+            "leftOffset": 0.5,
             "strings": [
               "@"
             ]
@@ -551,6 +554,7 @@
         ],
         [
           {
+            "leftOffset": 0.5,
             "strings": [
               "£"
             ]

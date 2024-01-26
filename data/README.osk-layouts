@@ -55,6 +55,12 @@ it has the following structure:
   - keyval (String): Hexadecimal keyval to emit as
     emulated key presses. Committed strings are
     preferred.
+  - leftOffset (Double): If set, the left offset of
+    this key, relative to the key immediately to the
+    left, or the start of the row. If not set, the key
+    will be implicitly located at the right of the
+    previous key in the row. Multiples of 0.5 are
+    accepted.
   - width (Double): Relative width of the key in the
     row. 1 is for a square key. Multiples of 0.5 are
     accepted.

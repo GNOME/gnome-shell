@@ -63,6 +63,7 @@
         ],
         [
           {
+            "leftOffset": 0.5,
             "strings": [
               "a"
             ]
@@ -273,6 +274,7 @@
         ],
         [
           {
+            "leftOffset": 0.5,
             "strings": [
               "A"
             ]
@@ -498,6 +500,7 @@
         ],
         [
           {
+            "leftOffset": 0.5,
             "strings": [
               "@"
             ]
@@ -746,6 +749,7 @@
         ],
         [
           {
+            "leftOffset": 0.5,
             "strings": [
               "£"
             ]
