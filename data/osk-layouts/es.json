@@ -1,7 +1,7 @@
 {
   "levels": [
     {
-      "level": "",
+      "level": "default",
       "mode": "default",
       "rows": [
         [
@@ -159,7 +159,7 @@
           {
             "action": "levelSwitch",
             "iconName": "keyboard-shift-symbolic",
-            "level": 1
+            "level": "shift"
           },
           {
             "strings": [
@@ -222,7 +222,7 @@
           {
             "action": "levelSwitch",
             "iconName": "keyboard-shift-symbolic",
-            "level": 1,
+            "level": "shift",
             "width": 1.5
           }
         ],
@@ -230,7 +230,7 @@
           {
             "action": "levelSwitch",
             "label": "?123",
-            "level": 2,
+            "level": "opt",
             "width": 1.5
           },
           {
@@ -416,7 +416,7 @@
           {
             "action": "levelSwitch",
             "iconName": "keyboard-shift-symbolic",
-            "level": 0
+            "level": "default"
           },
           {
             "strings": [
@@ -479,7 +479,7 @@
           {
             "action": "levelSwitch",
             "iconName": "keyboard-shift-symbolic",
-            "level": 0,
+            "level": "default",
             "width": 1.5
           }
         ],
@@ -487,7 +487,7 @@
           {
             "action": "levelSwitch",
             "label": "?123",
-            "level": 2,
+            "level": "opt",
             "width": 1.5
           },
           {
@@ -664,7 +664,7 @@
           {
             "action": "levelSwitch",
             "label": "=/<",
-            "level": 3,
+            "level": "opt+shift",
             "width": 1.5
           },
           {
@@ -718,7 +718,7 @@
           {
             "action": "levelSwitch",
             "label": "=/<",
-            "level": 3,
+            "level": "opt+shift",
             "width": 3
           }
         ],
@@ -726,7 +726,7 @@
           {
             "action": "levelSwitch",
             "label": "ABC",
-            "level": 0,
+            "level": "default",
             "width": 1.5
           },
           {
@@ -909,7 +909,7 @@
           {
             "action": "levelSwitch",
             "label": "?123",
-            "level": 2,
+            "level": "opt",
             "width": 1.5
           },
           {
@@ -950,7 +950,7 @@
           {
             "action": "levelSwitch",
             "label": "?123",
-            "level": 2,
+            "level": "opt",
             "width": 3
           }
         ],
@@ -958,7 +958,7 @@
           {
             "action": "levelSwitch",
             "label": "ABC",
-            "level": 0,
+            "level": "default",
             "width": 1.5
           },
           {

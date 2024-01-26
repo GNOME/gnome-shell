@@ -1418,26 +1418,17 @@ export const Keyboard = GObject.registerClass({
                 return;
         }
 
-        let levels = keyboardModel.getLevels();
-
-        for (let i = 0; i < levels.length; i++) {
-            let currentLevel = levels[i];
-            /* There are keyboard maps which consist of 3 levels (no uppercase,
-             * basically). We however make things consistent by skipping that
-             * second level.
-             */
-            let level = i >= 1 && levels.length === 3 ? i + 1 : i;
-
+        keyboardModel.getLevels().forEach(currentLevel => {
             let levelLayout = new KeyContainer();
             levelLayout.shiftKeys = [];
             levelLayout.mode = currentLevel.mode;
 
-            this._loadRows(currentLevel, level, levels.length, levelLayout);
-            layers[level] = levelLayout;
+            this._loadRows(currentLevel, levelLayout);
+            layers[currentLevel.level] = levelLayout;
             layout.add_child(levelLayout);
             levelLayout.layoutButtons();
             levelLayout.hide();
-        }
+        });
 
         this._aspectContainer.add_child(layout);
         this._currentLayout?.destroy();
@@ -1467,7 +1458,7 @@ export const Keyboard = GObject.registerClass({
                 button.connect('commit', (_actor, keyval, str) => {
                     this._commitAction(keyval, str).then(() => {
                         if (layout.mode === 'latched' && !this._latched)
-                            this._setActiveLayer(0);
+                            this._setActiveLevel('default');
                     });
                 });
             }
@@ -1486,7 +1477,7 @@ export const Keyboard = GObject.registerClass({
                         this._toggleDelete(true);
                         this._toggleDelete(false);
                     } else if (!this._longPressed && key.action === 'levelSwitch') {
-                        this._setActiveLayer(key.level);
+                        this._setActiveLevel(key.level);
                         this._setLatched(
                             key.level === 1 &&
                                 key.iconName === 'keyboard-caps-lock-symbolic');
@@ -1499,9 +1490,9 @@ export const Keyboard = GObject.registerClass({
             if (key.action === 'levelSwitch' &&
                 key.iconName === 'keyboard-shift-symbolic') {
                 layout.shiftKeys.push(button);
-                if (key.level === 1) {
+                if (key.level === 'shift') {
                     button.connect('long-press', () => {
-                        this._setActiveLayer(key.level);
+                        this._setActiveLevel(key.level);
                         this._setLatched(true);
                         this._longPressed = true;
                     });
@@ -1709,7 +1700,7 @@ export const Keyboard = GObject.registerClass({
         }
     }
 
-    _loadRows(model, level, numLevels, layout) {
+    _loadRows(model, layout) {
         let rows = model.rows;
         for (let i = 0; i < rows.length; ++i) {
             layout.appendRow();
@@ -1748,7 +1739,7 @@ export const Keyboard = GObject.registerClass({
 
     _updateKeys() {
         this._ensureKeys();
-        this._setActiveLayer(0);
+        this._setActiveLevel('default');
     }
 
     _onGroupChanged() {
@@ -1785,7 +1776,7 @@ export const Keyboard = GObject.registerClass({
             this.close();
     }
 
-    _setActiveLayer(activeLevel) {
+    _setActiveLevel(activeLevel) {
         const layers = this._layers;
         let currentPage = layers[activeLevel];
 
