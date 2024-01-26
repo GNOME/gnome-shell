@@ -2110,18 +2110,6 @@ class KeyboardController extends Signals.EventEmitter {
         this.emit('purpose-changed', purpose);
     }
 
-    getGroups() {
-        let inputSources = this._inputSourceManager.inputSources;
-        let groups = [];
-
-        for (let i in inputSources) {
-            let is = inputSources[i];
-            groups[is.index] = is.xkbId;
-        }
-
-        return groups;
-    }
-
     getCurrentGroup() {
         // Special case for Korean, if Hangul mode is disabled, use the 'us' keymap
         if (this._currentSource.id === 'hangul') {
