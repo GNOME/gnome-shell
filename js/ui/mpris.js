@@ -227,7 +227,7 @@ export class MprisPlayer extends Signals.EventEmitter {
         }
 
         this.source.set({
-            title: this._app?.get_name() ?? null,
+            title: this._app?.get_name() ?? this._mprisProxy.Identity,
             icon: this._app?.get_icon() ?? null,
         });
 
