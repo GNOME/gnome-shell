@@ -12,6 +12,7 @@ import * as Main from './main.js';
 import * as MessageTray from './messageTray.js';
 
 import * as Util from '../misc/util.js';
+import {formatTimeSpan} from '../misc/dateUtils.js';
 
 const MESSAGE_ANIMATION_TIME = 100;
 
@@ -305,6 +306,46 @@ const LabelExpanderLayout = GObject.registerClass({
     }
 });
 
+const TimeLabel = GObject.registerClass(
+class TimeLabel extends St.Label {
+    _init() {
+        super._init({
+            style_class: 'event-time',
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.END,
+            visible: false,
+        });
+    }
+
+    get datetime() {
+        return this._datetime;
+    }
+
+    set datetime(datetime) {
+        if (this._datetime?.equal(datetime))
+            return;
+
+        this._datetime = datetime;
+
+        this.visible = !!this._datetime;
+
+        if (this.mapped)
+            this._updateText();
+    }
+
+    _updateText() {
+        if (this._datetime)
+            this.text = formatTimeSpan(this._datetime);
+    }
+
+    vfunc_map() {
+        this._updateText();
+
+        super.vfunc_map();
+    }
+});
 
 export const Message = GObject.registerClass({
     Signals: {
@@ -406,6 +447,20 @@ export const Message = GObject.registerClass({
     setIcon(actor) {
         this._iconBin.child = actor;
         this._iconBin.visible = actor != null;
+    }
+
+    get datetime() {
+        if (this._secondaryBin.child instanceof TimeLabel)
+            return this._secondaryBin.child.datetime;
+        else
+            return null;
+    }
+
+    set datetime(datetime) {
+        if (!(this._secondaryBin.child instanceof TimeLabel))
+            this._secondaryBin.child = new TimeLabel();
+
+        this._secondaryBin.child.set({datetime});
     }
 
     setSecondaryActor(actor) {
