@@ -496,18 +496,7 @@ const Key = GObject.registerClass({
 
 class KeyboardModel {
     constructor(groupName) {
-        let names = [groupName];
-        if (groupName.includes('+'))
-            names.push(groupName.replace(/\+.*/, ''));
-        names.push('us');
-
-        for (let i = 0; i < names.length; i++) {
-            try {
-                this._model = this._loadModel(names[i]);
-                break;
-            } catch (e) {
-            }
-        }
+        this._model = this._loadModel(groupName);
     }
 
     _loadModel(groupName) {
@@ -1460,15 +1449,36 @@ export const Keyboard = GObject.registerClass({
         }
     }
 
-    _updateLayoutForGroup(groupName) {
-        let keyboardModel = new KeyboardModel(groupName);
-        let levels = keyboardModel.getLevels();
+    _updateLayout(groupName, purpose) {
+        let keyboardModel = null;
         let layers = {};
         let layout = new Clutter.Actor({
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
         });
+
+        let groups = [groupName];
+        if (groupName.includes('+'))
+            groups.push(groupName.replace(/\+.*/, ''));
+        groups.push('us');
+
+        if (purpose === Clutter.InputContentPurpose.TERMINAL)
+            groups = groups.map(g => `${g}-extended`);
+
+        for (const group of groups) {
+            try {
+                keyboardModel = new KeyboardModel(group);
+            } catch (e) {
+                // Ignore this error
+            }
+        }
+
+        if (!keyboardModel)
+            return;
+
+        let levels = keyboardModel.getLevels();
+
         for (let i = 0; i < levels.length; i++) {
             let currentLevel = levels[i];
             /* There are keyboard maps which consist of 3 levels (no uppercase,
@@ -1495,13 +1505,8 @@ export const Keyboard = GObject.registerClass({
     }
 
     _ensureKeys() {
-        let group;
-        if (this._purpose === Clutter.InputContentPurpose.TERMINAL)
-            group = 'us-extended';
-        else
-            group = this._keyboardController.getCurrentGroup();
-
-        this._updateLayoutForGroup(group);
+        const group = this._keyboardController.getCurrentGroup();
+        this._updateLayout(group, this._purpose);
     }
 
     _addRowKeys(keys, layout) {
