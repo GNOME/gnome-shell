@@ -14,7 +14,7 @@ import * as Mpris from './mpris.js';
 import * as PopupMenu from './popupMenu.js';
 import {ensureActorVisibleInScrollView} from '../misc/animationUtils.js';
 
-import {formatDateWithCFormatString, formatTimeSpan} from '../misc/dateUtils.js';
+import {formatDateWithCFormatString} from '../misc/dateUtils.js';
 import {loadInterfaceXML} from '../misc/fileUtils.js';
 
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
@@ -773,6 +773,7 @@ class NotificationMessage extends MessageList.Message {
         this.setUseBodyMarkup(notification.bannerBodyMarkup);
 
         this.notification = notification;
+        this.datetime = notification.datetime;
 
         this.setIcon(this._getIcon());
 
@@ -802,6 +803,7 @@ class NotificationMessage extends MessageList.Message {
     }
 
     _onUpdated(n, _clear) {
+        this.datetime = n.datetime;
         this.setIcon(this._getIcon());
         this.setTitle(n.title);
         this.setBody(n.bannerBodyText);
@@ -814,24 +816,6 @@ class NotificationMessage extends MessageList.Message {
 
     canClose() {
         return true;
-    }
-});
-
-const TimeLabel = GObject.registerClass(
-class NotificationTimeLabel extends St.Label {
-    _init(datetime) {
-        super._init({
-            style_class: 'event-time',
-            x_align: Clutter.ActorAlign.START,
-            y_align: Clutter.ActorAlign.END,
-            x_expand: true,
-        });
-        this._datetime = datetime;
-    }
-
-    vfunc_map() {
-        this.text = formatTimeSpan(this._datetime);
-        super.vfunc_map();
     }
 });
 
@@ -860,7 +844,6 @@ class NotificationSection extends MessageList.MessageListSection {
 
     _onNotificationAdded(source, notification) {
         let message = new NotificationMessage(notification);
-        message.setSecondaryActor(new TimeLabel(notification.datetime));
 
         let isUrgent = notification.urgency === MessageTray.Urgency.CRITICAL;
 
@@ -870,7 +853,6 @@ class NotificationSection extends MessageList.MessageListSection {
                     this._nUrgent--;
             },
             'updated', () => {
-                message.setSecondaryActor(new TimeLabel(notification.datetime));
                 this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.mapped);
             }, this);
 
