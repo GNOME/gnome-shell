@@ -1486,7 +1486,8 @@ export const Keyboard = GObject.registerClass({
         return layers;
     }
 
-    _ensureKeysForGroup(group) {
+    _ensureKeys() {
+        const group = this._keyboardController.getCurrentGroup();
         if (!this._groups[group])
             this._groups[group] = this._createLayersForGroup(group);
     }
@@ -1788,7 +1789,7 @@ export const Keyboard = GObject.registerClass({
     }
 
     _updateKeys() {
-        this._ensureKeysForGroup(this._keyboardController.getCurrentGroup());
+        this._ensureKeys();
         this._setActiveLayer(0);
     }
 
