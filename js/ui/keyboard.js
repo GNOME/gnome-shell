@@ -1232,7 +1232,6 @@ export const Keyboard = GObject.registerClass({
         this._modifierKeys = new Map();
 
         this._suggestions = null;
-        this._emojiKeyVisible = Meta.is_wayland_compositor();
 
         this._focusTracker = new FocusTracker();
         this._focusTracker.connectObject(
@@ -1344,11 +1343,6 @@ export const Keyboard = GObject.registerClass({
         global.stage.connectObject('notify::key-focus',
             this._onKeyFocusChanged.bind(this), this);
 
-        if (Meta.is_wayland_compositor()) {
-            this._keyboardController.connectObject('emoji-visible',
-                this._onEmojiKeyVisible.bind(this), this);
-        }
-
         this._relayout();
     }
 
@@ -1418,12 +1412,23 @@ export const Keyboard = GObject.registerClass({
                 return;
         }
 
+        const emojiVisible = Meta.is_wayland_compositor() &&
+            (purpose === Clutter.InputContentPurpose.NORMAL ||
+             purpose === Clutter.InputContentPurpose.ALPHA ||
+             purpose === Clutter.InputContentPurpose.PASSWORD ||
+             purpose === Clutter.InputContentPurpose.TERMINAL);
+
         keyboardModel.getLevels().forEach(currentLevel => {
             let levelLayout = new KeyContainer();
             levelLayout.shiftKeys = [];
             levelLayout.mode = currentLevel.mode;
 
-            this._loadRows(currentLevel, levelLayout);
+            const rows = currentLevel.rows;
+            rows.forEach(row => {
+                levelLayout.appendRow();
+                this._addRowKeys(row, levelLayout, emojiVisible);
+            });
+
             layers[currentLevel.level] = levelLayout;
             layout.add_child(levelLayout);
             levelLayout.layoutButtons();
@@ -1441,11 +1446,23 @@ export const Keyboard = GObject.registerClass({
         this._updateLayout(group, this._purpose);
     }
 
-    _addRowKeys(keys, layout) {
+    _addRowKeys(keys, layout, emojiVisible) {
+        let accumulatedWidth = 0;
         for (let i = 0; i < keys.length; ++i) {
             const key = keys[i];
             const {strings} = key;
             const commitString = strings?.shift();
+
+            if (key.action === 'emoji' && !emojiVisible) {
+                accumulatedWidth = key.width ?? 1;
+                continue;
+            }
+
+            if (accumulatedWidth > 0) {
+                // Pass accumulated width onto the next key
+                key.width = (key.width ?? 1) + accumulatedWidth;
+                accumulatedWidth = 0;
+            }
 
             let button = new Key({
                 commitString,
@@ -1700,14 +1717,6 @@ export const Keyboard = GObject.registerClass({
         }
     }
 
-    _loadRows(model, layout) {
-        let rows = model.rows;
-        for (let i = 0; i < rows.length; ++i) {
-            layout.appendRow();
-            this._addRowKeys(rows[i], layout);
-        }
-    }
-
     _getGridSlots() {
         let numOfHorizSlots = 0, numOfVertSlots;
         let rows = this._currentPage.get_children();
@@ -1748,15 +1757,6 @@ export const Keyboard = GObject.registerClass({
 
     _onKeyboardGroupsChanged() {
         this._onGroupChanged();
-    }
-
-    _onEmojiKeyVisible(controller, visible) {
-        if (visible === this._emojiKeyVisible)
-            return;
-
-        this._emojiKeyVisible = visible;
-        /* Rebuild keyboard widgetry to include emoji button */
-        this._onKeyboardGroupsChanged();
     }
 
     _onKeyboardStateChanged(controller, state) {
@@ -2111,16 +2111,7 @@ class KeyboardController extends Signals.EventEmitter {
     }
 
     _onContentPurposeHintsChanged(method) {
-        let purpose = method.content_purpose;
-        let emojiVisible = false;
-
-        if (purpose === Clutter.InputContentPurpose.NORMAL ||
-            purpose === Clutter.InputContentPurpose.ALPHA ||
-            purpose === Clutter.InputContentPurpose.PASSWORD ||
-            purpose === Clutter.InputContentPurpose.TERMINAL)
-            emojiVisible = true;
-
-        this.emit('emoji-visible', emojiVisible);
+        const purpose = method.content_purpose;
         this.emit('purpose-changed', purpose);
     }
 
