@@ -1564,7 +1564,7 @@ export const Keyboard = GObject.registerClass({
             if (key.action || key.keyval)
                 button.keyButton.add_style_class_name('default-key');
 
-            layout.appendKey(button, key.width, 1, key.leftOffset);
+            layout.appendKey(button, key.width, key.height, key.leftOffset);
         }
     }
 

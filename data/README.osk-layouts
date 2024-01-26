@@ -63,7 +63,10 @@ it has the following structure:
     accepted.
   - width (Double): Relative width of the key in the
     row. 1 is for a square key. Multiples of 0.5 are
-    accepted.
+    accepted. The implicit default value is 1.
+  - height (Double): Relative height of the key in
+    the grid. The key will overflow downwards. Multiples
+    of 0.5 are accepted. The implicit default value is 1.
   - level (Integer): Level that the key switches to.
     See the levelSwitch action.
   - action (string): Action performed by the key,
