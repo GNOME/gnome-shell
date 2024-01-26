@@ -1411,8 +1411,7 @@ export const Keyboard = GObject.registerClass({
         this._keypad.hide();
         this._keypadVisible = false;
 
-        this._ensureKeysForGroup(this._keyboardController.getCurrentGroup());
-        this._setActiveLayer(0);
+        this._updateKeys();
 
         Main.inputMethod.connectObject(
             'terminal-mode-changed', this._onTerminalModeChanged.bind(this),
