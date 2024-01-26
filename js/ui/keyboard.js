@@ -1421,6 +1421,7 @@ export const Keyboard = GObject.registerClass({
             'active-group', this._onGroupChanged.bind(this),
             'groups-changed', this._onKeyboardGroupsChanged.bind(this),
             'panel-state', this._onKeyboardStateChanged.bind(this),
+            'purpose-changed', this._onPurposeChanged.bind(this),
             'keypad-visible', this._onKeypadVisible.bind(this),
             this);
         global.stage.connectObject('notify::key-focus',
@@ -1432,6 +1433,11 @@ export const Keyboard = GObject.registerClass({
         }
 
         this._relayout();
+    }
+
+    _onPurposeChanged(controller, purpose) {
+        this._purpose = purpose;
+        this._updateKeys();
     }
 
     _onKeyFocusChanged() {
@@ -2198,6 +2204,7 @@ class KeyboardController extends Signals.EventEmitter {
 
         this.emit('emoji-visible', emojiVisible);
         this.emit('keypad-visible', keypadVisible);
+        this.emit('purpose-changed', purpose);
     }
 
     getGroups() {
