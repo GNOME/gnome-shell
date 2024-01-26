@@ -1335,8 +1335,7 @@ export const Keyboard = GObject.registerClass({
         this._updateKeys();
 
         this._keyboardController.connectObject(
-            'active-group', this._onGroupChanged.bind(this),
-            'groups-changed', this._onKeyboardGroupsChanged.bind(this),
+            'group-changed', this._onGroupChanged.bind(this),
             'panel-state', this._onKeyboardStateChanged.bind(this),
             'purpose-changed', this._onPurposeChanged.bind(this),
             this);
@@ -1755,10 +1754,6 @@ export const Keyboard = GObject.registerClass({
         this._updateKeys();
     }
 
-    _onKeyboardGroupsChanged() {
-        this._onGroupChanged();
-    }
-
     _onKeyboardStateChanged(controller, state) {
         let enabled;
         if (state === Clutter.InputPanelState.OFF)
@@ -2101,13 +2096,13 @@ class KeyboardController extends Signals.EventEmitter {
     }
 
     _onSourcesModified() {
-        this.emit('groups-changed');
+        this.emit('group-changed');
     }
 
     _onSourceChanged(inputSourceManager, _oldSource) {
         let source = inputSourceManager.currentSource;
         this._currentSource = source;
-        this.emit('active-group', source.id);
+        this.emit('group-changed');
     }
 
     _onContentPurposeHintsChanged(method) {
