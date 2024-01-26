@@ -1406,7 +1406,6 @@ export const Keyboard = GObject.registerClass({
             'groups-changed', this._onKeyboardGroupsChanged.bind(this),
             'panel-state', this._onKeyboardStateChanged.bind(this),
             'purpose-changed', this._onPurposeChanged.bind(this),
-            'keypad-visible', this._onKeypadVisible.bind(this),
             this);
         global.stage.connectObject('notify::key-focus',
             this._onKeyFocusChanged.bind(this), this);
@@ -1458,24 +1457,32 @@ export const Keyboard = GObject.registerClass({
             y_expand: true,
         });
 
-        let groups = [groupName];
-        if (groupName.includes('+'))
-            groups.push(groupName.replace(/\+.*/, ''));
-        groups.push('us');
+        if (purpose === Clutter.InputContentPurpose.DIGITS ||
+            purpose === Clutter.InputContentPurpose.NUMBER ||
+            purpose === Clutter.InputContentPurpose.PHONE) {
+            this._onKeypadVisible(null, true);
+        } else {
+            let groups = [groupName];
+            if (groupName.includes('+'))
+                groups.push(groupName.replace(/\+.*/, ''));
+            groups.push('us');
 
-        if (purpose === Clutter.InputContentPurpose.TERMINAL)
-            groups = groups.map(g => `${g}-extended`);
+            if (purpose === Clutter.InputContentPurpose.TERMINAL)
+                groups = groups.map(g => `${g}-extended`);
 
-        for (const group of groups) {
-            try {
-                keyboardModel = new KeyboardModel(group);
-            } catch (e) {
-                // Ignore this error
+            for (const group of groups) {
+                try {
+                    keyboardModel = new KeyboardModel(group);
+                } catch (e) {
+                    // Ignore this error
+                }
             }
-        }
 
-        if (!keyboardModel)
-            return;
+            if (!keyboardModel)
+                return;
+
+            this._onKeypadVisible(null, false);
+        }
 
         let levels = keyboardModel.getLevels();
 
@@ -2190,20 +2197,14 @@ class KeyboardController extends Signals.EventEmitter {
     _onContentPurposeHintsChanged(method) {
         let purpose = method.content_purpose;
         let emojiVisible = false;
-        let keypadVisible = false;
 
         if (purpose === Clutter.InputContentPurpose.NORMAL ||
             purpose === Clutter.InputContentPurpose.ALPHA ||
             purpose === Clutter.InputContentPurpose.PASSWORD ||
             purpose === Clutter.InputContentPurpose.TERMINAL)
             emojiVisible = true;
-        if (purpose === Clutter.InputContentPurpose.DIGITS ||
-            purpose === Clutter.InputContentPurpose.NUMBER ||
-            purpose === Clutter.InputContentPurpose.PHONE)
-            keypadVisible = true;
 
         this.emit('emoji-visible', emojiVisible);
-        this.emit('keypad-visible', keypadVisible);
         this.emit('purpose-changed', purpose);
     }
 
