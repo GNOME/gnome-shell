@@ -1440,11 +1440,6 @@ export const Keyboard = GObject.registerClass({
         this._layers = layers;
     }
 
-    _ensureKeys() {
-        const group = this._keyboardController.getCurrentGroup();
-        this._updateLayout(group, this._purpose);
-    }
-
     _addRowKeys(keys, layout, emojiVisible) {
         let accumulatedWidth = 0;
         for (let i = 0; i < keys.length; ++i) {
@@ -1746,7 +1741,8 @@ export const Keyboard = GObject.registerClass({
     }
 
     _updateKeys() {
-        this._ensureKeys();
+        const group = this._keyboardController.getCurrentGroup();
+        this._updateLayout(group, this._purpose);
         this._setActiveLevel('default');
     }
 
