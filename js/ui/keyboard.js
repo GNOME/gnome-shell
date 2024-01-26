@@ -437,7 +437,6 @@ const Key = GObject.registerClass({
             button.set_label(commitString);
         }
 
-        button.keyWidth = 1;
         button.connect('button-press-event', () => {
             this._press(button, commitString);
             button.add_style_pseudo_class('active');
@@ -503,10 +502,6 @@ const Key = GObject.registerClass({
 
     get subkeys() {
         return this._boxPointer;
-    }
-
-    setWidth(width) {
-        this.keyButton.keyWidth = width;
     }
 
     setLatched(latched) {
@@ -1528,9 +1523,6 @@ export const Keyboard = GObject.registerClass({
                 keyval: key.keyval,
             }, strings);
 
-            if (key.width !== null)
-                button.setWidth(key.width);
-
             if (key.action !== 'modifier') {
                 button.connect('commit', (_actor, keyval, str) => {
                     this._commitAction(keyval, str).then(() => {
@@ -1590,7 +1582,7 @@ export const Keyboard = GObject.registerClass({
             if (key.action || key.keyval)
                 button.keyButton.add_style_class_name('default-key');
 
-            layout.appendKey(button, button.keyButton.keyWidth);
+            layout.appendKey(button, key.width);
         }
     }
 
