@@ -1023,7 +1023,7 @@ const EmojiSelection = GObject.registerClass({
             section.button = key;
         }
 
-        key = new Key({iconName: 'go-down-symbolic'});
+        key = new Key({iconName: 'keyboard-hide-symbolic'});
         key.keyButton.add_style_class_name('default-key');
         key.keyButton.add_style_class_name('hide-key');
         key.connect('released', () => {
