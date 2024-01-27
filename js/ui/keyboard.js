@@ -94,55 +94,29 @@ class KeyContainer extends St.Widget {
             y_expand: true,
         });
         this._gridLayout = gridLayout;
-        this._currentRow = 0;
+        this._nRows = 0;
         this._currentCol = 0;
         this._maxCols = 0;
-
-        this._currentRow = null;
-        this._rows = [];
     }
 
     appendRow() {
-        this._currentRow++;
+        this._nRows++;
         this._currentCol = 0;
-
-        let row = {
-            keys: [],
-            width: 0,
-        };
-        this._rows.push(row);
     }
 
     appendKey(key, width = 1, height = 1, leftOffset = 0) {
-        const keyInfo = {
-            key,
-            left: this._currentCol + leftOffset,
-            top: this._currentRow,
-            width,
-            height,
-        };
-
-        let row = this._rows[this._rows.length - 1];
-        row.keys.push(keyInfo);
-        row.width += width;
+        const left = this._currentCol + leftOffset;
+        const top = this._nRows;
+        this._gridLayout.attach(key,
+            left * KEY_SIZE, top * KEY_SIZE,
+            width * KEY_SIZE, height * KEY_SIZE);
 
         this._currentCol += leftOffset + width;
         this._maxCols = Math.max(this._currentCol, this._maxCols);
     }
 
-    layoutButtons() {
-        this._rows.forEach(row => {
-            row.keys.forEach(keyInfo => {
-                const {left, top, width, height} = keyInfo;
-                this._gridLayout.attach(keyInfo.key,
-                                        left * KEY_SIZE, top * KEY_SIZE,
-                                        width * KEY_SIZE, height * KEY_SIZE);
-            });
-        });
-    }
-
     getRatio() {
-        return [this._maxCols, this._rows.length];
+        return [this._maxCols, this._nRows];
     }
 });
 
@@ -1056,7 +1030,6 @@ const EmojiSelection = GObject.registerClass({
             this.emit('close-request');
         });
         row.appendKey(key);
-        row.layoutButtons();
 
         const actor = new AspectContainer({
             layout_manager: new Clutter.BinLayout(),
@@ -1430,7 +1403,6 @@ export const Keyboard = GObject.registerClass({
 
             layers[currentLevel.level] = levelLayout;
             layout.add_child(levelLayout);
-            levelLayout.layoutButtons();
             levelLayout.hide();
         });
 
