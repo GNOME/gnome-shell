@@ -431,6 +431,17 @@ export const Notification = GObject.registerClass({
         this.emit('updated', params.clear);
     }
 
+    get iconName() {
+        if (this.gicon instanceof Gio.ThemedIcon)
+            return this.gicon.iconName;
+        else
+            return null;
+    }
+
+    set iconName(iconName) {
+        this.gicon = new Gio.ThemedIcon({name: iconName});
+    }
+
     // addAction:
     // @label: the label for the action's button
     // @callback: the callback for the action
