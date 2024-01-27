@@ -1297,7 +1297,7 @@ export const Keyboard = GObject.registerClass({
 
         this._emojiSelection = new EmojiSelection();
         this._emojiSelection.connect('toggle', this._toggleEmoji.bind(this));
-        this._emojiSelection.connect('close-request', () => this.close());
+        this._emojiSelection.connect('close-request', () => this.close(true));
         this._emojiSelection.connect('emoji-selected', (selection, emoji) => {
             this._keyboardController.commitString(emoji);
         });
@@ -1449,7 +1449,7 @@ export const Keyboard = GObject.registerClass({
             if (key.action !== null) {
                 button.connect('released', () => {
                     if (key.action === 'hide') {
-                        this.close();
+                        this.close(true);
                     } else if (key.action === 'languageMenu') {
                         this._popupLanguageMenu(button);
                     } else if (key.action === 'emoji') {
