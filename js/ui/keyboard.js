@@ -1644,7 +1644,7 @@ export const Keyboard = GObject.registerClass({
         if (enabled)
             this.open(Main.layoutManager.focusIndex);
         else
-            this.close();
+            this.close(true);
     }
 
     _setActiveLevel(activeLevel) {
