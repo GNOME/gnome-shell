@@ -297,6 +297,7 @@ st_clipboard_set_content (StClipboard     *clipboard,
 {
   MetaSelectionType selection_type;
   MetaSelectionSource *source;
+  g_autoptr (GError) error = NULL;
 
   g_return_if_fail (ST_IS_CLIPBOARD (clipboard));
   g_return_if_fail (meta_selection != NULL);
@@ -305,7 +306,15 @@ st_clipboard_set_content (StClipboard     *clipboard,
   if (!convert_type (type, &selection_type))
     return;
 
-  source = meta_selection_source_memory_new (mimetype, bytes);
+  source = meta_selection_source_memory_new (mimetype, bytes, &error);
+
+  if (!source)
+    {
+      g_warning ("Failed to create new MetaSelectionSourceMemory: %s",
+                 error->message);
+      return;
+    }
+
   meta_selection_set_owner (meta_selection, selection_type, source);
   g_object_unref (source);
 }
