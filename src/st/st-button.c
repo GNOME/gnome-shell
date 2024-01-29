@@ -682,7 +682,6 @@ st_button_set_label (StButton    *button,
                             "text", priv->text,
                             "line-alignment", PANGO_ALIGN_CENTER,
                             "ellipsize", PANGO_ELLIPSIZE_END,
-                            "use-markup", TRUE,
                             "x-align", CLUTTER_ACTOR_ALIGN_CENTER,
                             "y-align", CLUTTER_ACTOR_ALIGN_CENTER,
                             NULL);
