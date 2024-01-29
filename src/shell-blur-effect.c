@@ -149,11 +149,12 @@ static void
 update_brightness (ShellBlurEffect *self,
                    uint8_t          paint_opacity)
 {
-  cogl_pipeline_set_color4ub (self->brightness_fb.pipeline,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity);
+  CoglColor color;
+
+  cogl_color_init_from_4f (&color,
+                           paint_opacity / 255.0, paint_opacity / 255.0,
+                           paint_opacity / 255.0, paint_opacity / 255.0);
+  cogl_pipeline_set_color (self->brightness_fb.pipeline, &color);
 
   if (self->brightness_uniform > -1)
     {

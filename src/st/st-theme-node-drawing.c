@@ -1673,8 +1673,12 @@ paint_material_with_opacity (CoglPipeline    *material,
                              ClutterActorBox *coords,
                              guint8           paint_opacity)
 {
-  cogl_pipeline_set_color4ub (material,
-                              paint_opacity, paint_opacity, paint_opacity, paint_opacity);
+  CoglColor color;
+
+  cogl_color_init_from_4f (&color,
+                           paint_opacity / 255.0, paint_opacity / 255.0,
+                           paint_opacity / 255.0, paint_opacity / 255.0);
+  cogl_pipeline_set_color (material, &color);
 
   if (coords)
     cogl_framebuffer_draw_textured_rectangle (framebuffer, material,
@@ -1721,6 +1725,7 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
   ClutterColor border_color;
   guint8 alpha;
   gboolean corners_are_transparent;
+  CoglColor pipeline_color;
 
   width = box->x2 - box->x1;
   height = box->y2 - box->y1;
@@ -1762,11 +1767,12 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
       if (alpha > 0)
         {
           st_theme_node_ensure_color_pipeline (node);
-          cogl_pipeline_set_color4ub (node->color_pipeline,
-                                      effective_border.red * alpha / 255,
-                                      effective_border.green * alpha / 255,
-                                      effective_border.blue * alpha / 255,
-                                      alpha);
+          cogl_color_init_from_4f (&pipeline_color,
+                                   effective_border.red / 255.0 * alpha / 255.0,
+                                   effective_border.green / 255.0 * alpha / 255.0,
+                                   effective_border.blue / 255.0 * alpha / 255.0,
+                                   alpha / 255.0);
+          cogl_pipeline_set_color (node->color_pipeline, &pipeline_color);
 
           /* NORTH */
           skip_corner_1 = border_radius[ST_CORNER_TOPLEFT] > 0;
@@ -1819,6 +1825,9 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
                             node->background_color.alpha == 0 &&
                             node->border_color[0].alpha == 0;
 
+  cogl_color_init_from_4f (&pipeline_color,
+                           paint_opacity / 255.0, paint_opacity / 255.0,
+                           paint_opacity / 255.0, paint_opacity / 255.0);
   /* corners */
   if (max_border_radius > 0 && paint_opacity > 0 && !corners_are_transparent)
     {
@@ -1827,9 +1836,7 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
           if (state->corner_material[corner_id] == NULL)
             continue;
 
-          cogl_pipeline_set_color4ub (state->corner_material[corner_id],
-                                      paint_opacity, paint_opacity,
-                                      paint_opacity, paint_opacity);
+          cogl_pipeline_set_color (state->corner_material[corner_id], &pipeline_color);
 
           switch (corner_id)
             {
@@ -1875,12 +1882,12 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
   if (alpha > 0)
     {
       st_theme_node_ensure_color_pipeline (node);
-      cogl_pipeline_set_color4ub (node->color_pipeline,
-                                  node->background_color.red * alpha / 255,
-                                  node->background_color.green * alpha / 255,
-                                  node->background_color.blue * alpha / 255,
-                                  alpha);
-
+      cogl_color_init_from_4f (&pipeline_color,
+                               node->background_color.red / 255.0 * alpha / 255.0,
+                               node->background_color.green / 255.0 * alpha / 255.0,
+                               node->background_color.blue / 255.0 * alpha / 255.0,
+                               alpha / 255.0);
+      cogl_pipeline_set_color (node->color_pipeline, &pipeline_color);
       /* We add padding to each corner, so that all corners end up as if they
        * had a border-radius of max_border_radius, which allows us to treat
        * corners as uniform further on.
@@ -2264,7 +2271,8 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
                                    xend, yoffset, xend + shadow_width, yoffset + shadow_height);
 
   st_theme_node_ensure_color_pipeline (node);
-  cogl_pipeline_set_color4ub (node->color_pipeline, 0xff, 0x0, 0x0, 0xff);
+  cogl_color_init_from_4f (&color, 1.0, 0.0, 0.0, 1.0);
+  cogl_pipeline_set_color (node->color_pipeline, &color);
 
   cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
                                    xoffset, top, xend, top + 1);
@@ -2392,6 +2400,7 @@ st_theme_node_paint_sliced_border_image (StThemeNode           *node,
   float img_width, img_height;
   StBorderImage *border_image;
   CoglPipeline *pipeline;
+  CoglColor color;
 
   border_image = st_theme_node_get_border_image (node);
   g_assert (border_image != NULL);
@@ -2416,8 +2425,10 @@ st_theme_node_paint_sliced_border_image (StThemeNode           *node,
     ey = border_bottom;          /* FIXME ? */
 
   pipeline = node->border_slices_pipeline;
-  cogl_pipeline_set_color4ub (pipeline,
-                              paint_opacity, paint_opacity, paint_opacity, paint_opacity);
+  cogl_color_init_from_4f (&color,
+                           paint_opacity / 255.0, paint_opacity / 255.0,
+                           paint_opacity / 255.0, paint_opacity / 255.0);
+  cogl_pipeline_set_color (pipeline, &color);
 
   {
     float rectangles[] =
@@ -2483,6 +2494,7 @@ st_theme_node_paint_outline (StThemeNode           *node,
   int outline_width;
   float rects[16];
   ClutterColor outline_color, effective_outline;
+  CoglColor pipeline_color;
   guint8 alpha;
 
   width = box->x2 - box->x1;
@@ -2498,11 +2510,12 @@ st_theme_node_paint_outline (StThemeNode           *node,
   alpha = paint_opacity * outline_color.alpha / 255;
 
   st_theme_node_ensure_color_pipeline (node);
-  cogl_pipeline_set_color4ub (node->color_pipeline,
-                              effective_outline.red * alpha / 255,
-                              effective_outline.green * alpha / 255,
-                              effective_outline.blue * alpha / 255,
-                              alpha);
+  cogl_color_init_from_4f (&pipeline_color,
+                           effective_outline.red / 255.0 * alpha / 255.0,
+                           effective_outline.green / 255.0 * alpha / 255.0,
+                           effective_outline.blue / 255.0 * alpha / 255.0,
+                           alpha / 255.0);
+  cogl_pipeline_set_color (node->color_pipeline, &pipeline_color);
 
   /* The outline is drawn just outside the border, which means just
    * outside the allocation box. This means that in some situations
