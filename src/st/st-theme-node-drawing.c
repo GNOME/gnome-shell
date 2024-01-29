@@ -2120,11 +2120,11 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
   right += xoffset;
 
   /* Setup pipeline */
-  cogl_color_init_from_4ub (&color,
-                            box_shadow_spec->color.red   * paint_opacity / 255,
-                            box_shadow_spec->color.green * paint_opacity / 255,
-                            box_shadow_spec->color.blue  * paint_opacity / 255,
-                            box_shadow_spec->color.alpha * paint_opacity / 255);
+  cogl_color_init_from_4f (&color,
+                           box_shadow_spec->color.red / 255.0   * paint_opacity / 255.0,
+                           box_shadow_spec->color.green / 255.0 * paint_opacity / 255.0,
+                           box_shadow_spec->color.blue / 255.0 * paint_opacity / 255.0,
+                           box_shadow_spec->color.alpha / 255.0 * paint_opacity / 255.0);
   cogl_color_premultiply (&color);
 
   cogl_pipeline_set_layer_combine_constant (state->box_shadow_pipeline, 0, &color);

@@ -558,7 +558,7 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
           return NULL;
         }
 
-      cogl_color_init_from_4ub (&clear_color, 0, 0, 0, 0);
+      cogl_color_init_from_4f (&clear_color, 0.0, 0.0, 0.0, 0.0);
       clutter_actor_get_position (actor, &x, &y);
       x *= resource_scale;
       y *= resource_scale;
@@ -787,11 +787,11 @@ _st_paint_shadow_with_opacity (StShadow        *shadow_spec,
 
   st_shadow_get_box (shadow_spec, box, &shadow_box);
 
-  cogl_color_init_from_4ub (&color,
-                            shadow_spec->color.red   * paint_opacity / 255,
-                            shadow_spec->color.green * paint_opacity / 255,
-                            shadow_spec->color.blue  * paint_opacity / 255,
-                            shadow_spec->color.alpha * paint_opacity / 255);
+  cogl_color_init_from_4f (&color,
+                           shadow_spec->color.red / 255.0   * paint_opacity / 255.0,
+                           shadow_spec->color.green / 255.0 * paint_opacity / 255.0,
+                           shadow_spec->color.blue / 255.0  * paint_opacity / 255.0,
+                           shadow_spec->color.alpha / 255.0 * paint_opacity / 255.0);
   cogl_color_premultiply (&color);
   cogl_pipeline_set_layer_combine_constant (shadow_pipeline, 0, &color);
   cogl_framebuffer_draw_rectangle (framebuffer,
