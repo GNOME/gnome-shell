@@ -115,9 +115,9 @@ const restartUpdateDialogContent = {
     showBatteryWarning: true,
     confirmButtons: [{
         signal: 'ConfirmedReboot',
-        label: C_('button', 'Restart &amp; Install'),
+        label: C_('button', 'Restart & Install'),
     }],
-    unusedFutureButtonForTranslation: C_('button', 'Install &amp; Power Off'),
+    unusedFutureButtonForTranslation: C_('button', 'Install & Power Off'),
     unusedFutureCheckBoxForTranslation: C_('checkbox', 'Power off after updates are installed'),
     iconName: 'view-refresh-symbolic',
     showOtherSessions: true,
@@ -136,7 +136,7 @@ const restartUpgradeDialogContent = {
     showBatteryWarning: false,
     confirmButtons: [{
         signal: 'ConfirmedReboot',
-        label: C_('button', 'Restart &amp; Install'),
+        label: C_('button', 'Restart & Install'),
     }],
     iconName: 'view-refresh-symbolic',
     showOtherSessions: true,
