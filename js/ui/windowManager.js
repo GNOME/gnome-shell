@@ -512,8 +512,6 @@ export class WindowManager {
         this._resizePending = new Set();
         this._destroying = new Set();
 
-        this._dimmedWindows = [];
-
         this._skippedActors = new Set();
 
         this._allowedKeybindings = {};
@@ -874,15 +872,6 @@ export class WindowManager {
             this._stopX11Services(null);
 
             IBusManager.getIBusManager().restartDaemon();
-        });
-
-        Main.overview.connect('showing', () => {
-            for (let i = 0; i < this._dimmedWindows.length; i++)
-                this._undimWindow(this._dimmedWindows[i]);
-        });
-        Main.overview.connect('hiding', () => {
-            for (let i = 0; i < this._dimmedWindows.length; i++)
-                this._dimWindow(this._dimmedWindows[i]);
         });
 
         this._windowMenuManager = new WindowMenu.WindowMenuManager();
@@ -1357,12 +1346,9 @@ export class WindowManager {
 
         if (shouldDim && !window._dimmed) {
             window._dimmed = true;
-            this._dimmedWindows.push(window);
             this._dimWindow(window);
         } else if (!shouldDim && window._dimmed) {
             window._dimmed = false;
-            this._dimmedWindows =
-                this._dimmedWindows.filter(win => win !== window);
             this._undimWindow(window);
         }
     }
@@ -1491,10 +1477,6 @@ export class WindowManager {
     _destroyWindow(shellwm, actor) {
         let window = actor.meta_window;
         window.disconnectObject(actor);
-        if (window._dimmed) {
-            this._dimmedWindows =
-                this._dimmedWindows.filter(win => win !== window);
-        }
 
         if (window.is_attached_dialog())
             this._checkDimming(window.get_transient_for());
