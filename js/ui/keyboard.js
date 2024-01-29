@@ -434,8 +434,7 @@ const Key = GObject.registerClass({
         } else if (label) {
             button.set_label(label);
         } else if (commitString) {
-            const str = GLib.markup_escape_text(commitString, -1);
-            button.set_label(str);
+            button.set_label(commitString);
         }
 
         button.keyWidth = 1;
