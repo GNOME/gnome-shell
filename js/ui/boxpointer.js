@@ -525,6 +525,9 @@ var BoxPointer = GObject.registerClass({
         switch (this._arrowSide) {
         case St.Side.TOP:
         case St.Side.BOTTOM:
+            if (this.text_direction === Clutter.TextDirection.RTL)
+                alignment = 1.0 - alignment;
+
             resX = sourceCenterX - (halfMargin + (natWidth - margin) * alignment);
 
             resX = Math.max(resX, workarea.x + padding);
