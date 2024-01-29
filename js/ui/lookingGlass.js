@@ -288,7 +288,6 @@ class ObjLink extends St.Button {
             text = title;
         else
             text = objectToString(o);
-        text = GLib.markup_escape_text(text, -1);
 
         super._init({
             reactive: true,
