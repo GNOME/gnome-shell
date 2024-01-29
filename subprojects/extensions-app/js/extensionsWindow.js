@@ -11,6 +11,7 @@ import * as Gettext from 'gettext';
 import * as Config from './misc/config.js';
 import {ExtensionRow} from './extensionRow.js';
 
+Gio._promisify(Adw.AlertDialog.prototype, 'choose');
 Gio._promisify(Gio.DBusConnection.prototype, 'call');
 Gio._promisify(Shew.WindowExporter.prototype, 'export');
 
@@ -108,26 +109,22 @@ export const ExtensionsWindow = GObject.registerClass({
             () => this._extensionsLoaded());
     }
 
-    uninstall(extension) {
-        const dialog = new Gtk.MessageDialog({
-            transient_for: this,
-            modal: true,
-            text: _('Remove “%s”?').format(extension.name),
-            secondary_text: _('If you remove the extension, you need to return to download it if you want to enable it again'),
+    async uninstall(extension) {
+        const dialog = new Adw.AlertDialog({
+            heading: _('Remove “%s”?').format(extension.name),
+            body: _('If you remove the extension, you need to return to download it if you want to enable it again'),
         });
 
-        dialog.add_button(_('_Cancel'), Gtk.ResponseType.CANCEL);
-        dialog.add_button(_('_Remove'), Gtk.ResponseType.ACCEPT)
-            .get_style_context().add_class('destructive-action');
+        dialog.add_response('cancel', _('_Cancel'));
+        dialog.add_response('remove', _('_Remove'));
 
-        dialog.connect('response', (dlg, response) => {
-            const {extensionManager} = this.application;
+        dialog.set_response_appearance('remove',
+            Adw.ResponseAppearance.DESTRUCTIVE);
 
-            if (response === Gtk.ResponseType.ACCEPT)
-                extensionManager.uninstallExtension(extension.uuid);
-            dialog.destroy();
-        });
-        dialog.present();
+        const {extensionManager} = this.application;
+        const response = await dialog.choose(this, null);
+        if (response === 'remove')
+            extensionManager.uninstallExtension(extension.uuid);
     }
 
     async openPrefs(extension) {
@@ -144,7 +141,7 @@ export const ExtensionsWindow = GObject.registerClass({
     }
 
     _showAbout() {
-        const aboutWindow = new Adw.AboutWindow({
+        const aboutDialog = new Adw.AboutDialog({
             developers: [
                 'Florian Müllner <fmuellner@gnome.org>',
                 'Jasper St. Pierre <jstpierre@mecheye.net>',
@@ -163,10 +160,8 @@ export const ExtensionsWindow = GObject.registerClass({
             developer_name: _('The GNOME Project'),
             website: 'https://apps.gnome.org/app/org.gnome.Extensions/',
             issue_url: 'https://gitlab.gnome.org/GNOME/gnome-shell/issues/new',
-
-            transient_for: this,
         });
-        aboutWindow.present();
+        aboutDialog.present(this);
     }
 
     _logout() {

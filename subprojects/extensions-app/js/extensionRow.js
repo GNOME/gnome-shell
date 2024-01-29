@@ -50,7 +50,7 @@ export const ExtensionRow = GObject.registerClass({
                 name: 'uninstall',
                 activate: () => {
                     this._detailsPopover.popdown();
-                    this.get_root().uninstall(extension);
+                    this.get_root().uninstall(extension).catch(logError);
                 },
                 enabledProp: 'is-user',
             },
