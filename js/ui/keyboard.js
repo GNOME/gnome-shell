@@ -1440,7 +1440,8 @@ export const Keyboard = GObject.registerClass({
             if (key.action !== 'modifier') {
                 button.connect('commit', (_actor, keyval, str) => {
                     this._commitAction(keyval, str).then(() => {
-                        if (layout.mode === 'latched' && !this._latched)
+                        if (layout.mode === 'default' ||
+                            (layout.mode === 'latched' && !this._latched))
                             this._setActiveLevel('default');
                     });
                 });
