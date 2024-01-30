@@ -94,7 +94,7 @@
 
   // entry color overrides for lockscreen style
   @if $style == 'lockscreen' {
-    $entry_bg_color: transparentize($c, 0.95);
+    $entry_bg_color: transparentize($c, .9);
     $entry_focus_color: transparentize($entry_fg_color, 0.6);
     @if $contrast == 'high' {
       $entry_focus_color: transparentize($entry_fg_color, 0.3);
@@ -209,6 +209,14 @@
     $active_hover_button_bg_color: lighten($active_button_bg_color, $hover_factor);
     $checked_hover_button_bg_color: lighten($checked_button_bg_color, $hover_factor);
     $checked_active_button_bg_color: lighten($checked_button_bg_color, $active_factor);
+  }
+
+  // background color overrides for the lockscreen style
+  @if $style == 'lockscreen' {
+    $button_bg_color: transparentize($tc, .9);
+    $hover_button_bg_color: transparentize($tc, .87);
+    $active_button_bg_color: transparentize($tc, .84);
+    $active_hover_button_bg_color: transparentize($tc, .81);
   }
 
   // flat style overrides

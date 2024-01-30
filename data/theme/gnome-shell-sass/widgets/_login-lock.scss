@@ -1,8 +1,8 @@
-$_gdm_bg: $system_bg_color;
+$_gdm_bg: $system_base_color;
 $_gdm_fg: $system_fg_color;
-$_gdm_dialog_width: 23em;
+$_gdm_dialog_width: 25em;
 
-// common style for gdm and lockscreen
+// common style for login and lockscreen
 .login-dialog,
 .unlock-dialog {
   color: $_gdm_fg;
@@ -11,14 +11,24 @@ $_gdm_dialog_width: 23em;
   .login-dialog-message-warning {
     color: $_gdm_fg;
   }
+
+  .login-dialog-prompt-layout {
+    width: $_gdm_dialog_width;
+    spacing: $base_padding * 1.5;
+  }
 }
 
-/* Login Dialog */
+// GDM Login Dialog
+// uses dark grey system styles
 .login-dialog {
   background-color: $_gdm_bg;
+
+  .login-dialog-prompt-entry {
+    @extend %system_entry;
+  }
 }
 
-// buttons
+// buttons on login screen
 .login-dialog-button {
 
   &.cancel-button,
@@ -34,38 +44,58 @@ $_gdm_dialog_width: 23em;
 }
 
 .login-dialog-button-box {
-  width: $_gdm_dialog_width;
   spacing: $base_padding * 2;
 }
 
 .login-dialog-logo-bin {
-  margin:3em 0;
+  margin: 3em 0;
 }
-.login-dialog-banner { color: darken($_gdm_fg,10%); }
-.login-dialog-banner-view { max-width: $_gdm_dialog_width; }
-.login-dialog-message { text-align: center; }
-.login-dialog-user-selection-box { padding: 100px 0px; }
+
+.login-dialog-banner-view {
+  max-width: $_gdm_dialog_width;
+
+  .login-dialog-banner {
+    color: darken($_gdm_fg,10%);
+  }
+}
+
+.login-dialog-message {
+  text-align: center;
+}
+
+.login-dialog-user-selection-box {
+  // padding to ensure the box doesn't overlap the panel
+  padding-top: 4em;
+  padding-bottom: 8em;
+}
 
 .login-dialog-not-listed-label {
   @extend %heading;
-  font-weight: bold;
-  color: darken($_gdm_fg,30%);
-  padding: $base_padding * 2;
-
-  .login-dialog-not-listed-button:focus &,
-  .login-dialog-not-listed-button:hover & {
-    color: $_gdm_fg;
-  }
-  .login-dialog-not-listed-button:focus & {
-    text-decoration: underline;
-  }
+  padding: $base_padding;
 }
 
-.login-dialog-auth-list-view { -st-vfade-offset: 1em; }
+.login-dialog-not-listed-button {
+  // use button styling
+  @extend %button_common;
+  @include button(normal, $tc:$_gdm_fg, $c:$_gdm_bg, $style: flat, $always_dark: true);
+  &:focus { @include button(focus, $tc:$_gdm_fg, $c:$_gdm_bg, $style: flat, $always_dark: true);}
+  &:hover { @include button(hover, $tc:$_gdm_fg, $c:$_gdm_bg, $style: flat, $always_dark: true);}
+  &:active { @include button(active, $tc:$_gdm_fg, $c:$_gdm_bg, $style: flat, $always_dark: true);}
+
+  padding: 0 $base_padding;
+  margin: $base_padding;
+}
+
+// Authentication methods list
+.login-dialog-auth-list-view {
+  -st-vfade-offset: 3em;
+}
+
 .login-dialog-auth-list {
   spacing: $base_padding;
   margin-left: 2em;
 }
+
 .login-dialog-auth-list-title {
   margin-left: 2em;
 }
@@ -83,81 +113,68 @@ $_gdm_dialog_width: 23em;
 
 .login-dialog-auth-list-label {
   @extend %title_4;
-  font-weight: bold;
   &:ltr { padding-left: $base_padding * 2.5; text-align: left; }
   &:rtl { padding-right: $base_padding * 2.5; text-align: right; }
 }
 
-.login-dialog-user-list-view { -st-vfade-offset: 1em; }
 
-.login-dialog-user-list {
-  spacing: $base_padding * 2;
+// User list
+.login-dialog-user-list-view {
   width: $_gdm_dialog_width;
+  -st-vfade-offset: 3em;
 
-  .login-dialog-user-list-item {
-    border-radius: $base_border_radius + $base_margin;
-    padding: $base_padding;
-    background-color: transparentize($_gdm_fg, .95);
-    color: $_gdm_fg;
+  .login-dialog-user-list {
+    margin: 0 $base_margin * 2; // margin to account for scrollbar
+    spacing: $base_padding * 2;
 
-    @if $contrast == 'high' {
-      box-shadow:inset 0 0 0 1px $hc_inset_color;
-    }
+    .login-dialog-user-list-item {
+      // use button styling
+      @extend %button_common;
+      @include button(normal, $tc:$_gdm_fg, $c:$system_base_color, $always_dark: true);
+      &:selected,
+      &:focus { @include button(focus, $tc:$_gdm_fg, $c:$system_base_color, $always_dark: true);}
+      &:hover { @include button(hover, $tc:$_gdm_fg, $c:$system_base_color, $always_dark: true);}
+      &:active { @include button(active, $tc:$_gdm_fg, $c:$system_base_color, $always_dark: true);}
 
-    .user-widget .user-icon {
-      border: 4px solid transparent;
-    }
+      border-radius: $modal_radius;
+      padding: $base_padding * 1.5;
 
-    .login-dialog-timed-login-indicator {
-      height: 2px;
-      margin-top: $base_padding;
-      background-color: darken($_gdm_fg, 30%);
-    }
+      // create border for indicating logged in user
+      .user-icon {
+        border: 2px solid transparent;
+      }
 
-    &:focus .login-dialog-timed-login-indicator { background-color: $selected_fg_color; }
-  }
+      .login-dialog-timed-login-indicator {
+        height: 2px;
+        margin-top: $base_padding;
+        background-color: transparentize($_gdm_fg, .3);
+      }
 
-  &:expanded .login-dialog-user-list-item {
-    transition-duration: 300ms;
-    transition-timing-function: ease;
-
-    &:hover {
-      background-color: transparentize($_gdm_fg, .9);
-      color: $_gdm_fg;
-    }
-
-    &:selected {
-      background-color: $selected_bg_color;
-      color: $selected_fg_color;
-      &:hover { background-color: lighten($selected_bg_color,5%); }
-    }
-
-    &:logged-in {
-      .user-widget .user-icon {
-        border-color: $selected_bg_color;
+      &:logged-in {
+        // color border for logged-in user
+        .user-icon {
+          border-color: $selected_bg_color;
+          StIcon {
+            background-color: transparentize($selected_bg_color, .7);
+          }
+        }
       }
     }
   }
 }
 
-.login-dialog-prompt-layout {
-  spacing: $base_padding * 2;
-  width: 26em;
-}
-
-.login-dialog-prompt-entry {
-  @extend %system_entry;
-}
-
-
-/* Screen Shield */
-// a.k.a. the lockscreen
-
+// Screen Shield
+// a.k.a. the lockscreen, uses transparent styles
 .unlock-dialog {
   background-color: transparent;
 
   .login-dialog-prompt-entry {
     @extend %lockscreen_entry;
+  }
+
+  .button,
+  .icon-button {
+    @extend %lockscreen_button;
   }
 }
 
@@ -240,7 +257,7 @@ $_gdm_dialog_width: 23em;
   font-weight: bold;
   padding: 0 $base_padding * 2;
   color: $_gdm_fg;
-  background-color: transparentize($_gdm_fg, 0.9);
+  background-color: transparentize($_gdm_fg, .9);
   border-radius: $forced_circular_radius;
 }
 
@@ -252,6 +269,19 @@ $_gdm_dialog_width: 23em;
     color: $_gdm_fg;
   }
 
+  & .user-icon {
+    border-radius: $forced_circular_radius;
+    StIcon {
+      background-color: transparentize($_gdm_fg, .87);
+      color: $_gdm_fg;
+
+      @if $contrast == 'high' {
+        background-color: transparentize($_gdm_fg, .7);
+        box-shadow:inset 0 0 0 1px $hc_inset_color;
+      }
+    }
+  }
+
   // layout of the user list
   &.horizontal {
     spacing: $base_padding * 3;
@@ -260,14 +290,11 @@ $_gdm_dialog_width: 23em;
     }
 
     .user-icon {
-      border-radius: $forced_circular_radius;
+      icon-size: $base_icon_size * 4;
 
       & StIcon {
         padding: $base_padding * 2;
         icon-size: $base_icon_size * 2;
-        width: $base_icon_size * 3;
-        height:  $base_icon_size * 3;
-        background-color: transparentize($_gdm_fg, 0.9);
       }
     }
   }
@@ -288,7 +315,6 @@ $_gdm_dialog_width: 23em;
       & StIcon {
         padding: $base_padding * 4;
         icon-size: $base_icon_size * 4;
-        background-color: transparentize($_gdm_fg, 0.9);
       }
     }
   }

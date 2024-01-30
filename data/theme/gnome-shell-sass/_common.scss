@@ -366,6 +366,17 @@ stage {
 
 /* Lockscreen Elements */
 
+// buttons
+%lockscreen_button {
+  @extend %button_common;
+  @include button(normal, $tc:$system_fg_color, $style: lockscreen);
+  &:focus { @include button(focus, $tc:$system_fg_color, $style: lockscreen);}
+  &:hover { @include button(hover, $tc:$system_fg_color, $style: lockscreen);}
+  &:active { @include button(active, $tc:$system_fg_color, $style: lockscreen);}
+  &:checked { @include button(checked, $tc:$system_fg_color, $style: lockscreen);}
+  &:insensitive { @include button(insensitive, $tc:$system_fg_color, $style: lockscreen);}
+}
+
 // entries
 %lockscreen_entry {
   @extend %entry_common;
