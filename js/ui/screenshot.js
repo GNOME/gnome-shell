@@ -1083,6 +1083,7 @@ export const ScreenshotUI = GObject.registerClass({
 
         this._screencastInProgress = false;
         this._screencastSupported = false;
+        this._currentMode = UIMode.SCREENSHOT;
 
         this._screencastProxy = new ScreencastProxy(
             Gio.DBus.session,
@@ -1095,7 +1096,7 @@ export const ScreenshotUI = GObject.registerClass({
                 }
 
                 this._screencastSupported = this._screencastProxy.ScreencastSupported;
-                this._castButton.visible = this._screencastSupported;
+                this._syncCastButton();
             });
 
         this._screencastProxy.connectSignal('Error',
@@ -1447,7 +1448,15 @@ export const ScreenshotUI = GObject.registerClass({
 
     _sessionUpdated() {
         this.close(true);
-        this._castButton.reactive = Main.sessionMode.allowScreencast;
+    }
+
+    _syncCastButton() {
+        const visible = this._screencastSupported;
+        const reactive = visible &&
+            this._currentMode !== UIMode.SCREENSHOT_ONLY &&
+            Main.sessionMode.allowScreencast;
+
+        this._castButton.set({visible, reactive});
     }
 
     _syncWindowButtonSensitivity() {
@@ -1549,8 +1558,9 @@ export const ScreenshotUI = GObject.registerClass({
         if (mode === UIMode.SCREENCAST && !this._screencastSupported)
             return;
 
+        this._currentMode = mode;
         this._castButton.checked = mode === UIMode.SCREENCAST;
-        this._castButton.reactive = mode !== UIMode.SCREENSHOT_ONLY;
+        this._syncCastButton();
 
         if (!this.visible) {
             // Screenshot UI is opening from completely closed state
