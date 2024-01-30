@@ -223,6 +223,7 @@ const Key = GObject.registerClass({
         'long-press': {},
         'pressed': {},
         'released': {},
+        'keyval': {param_types: [GObject.TYPE_UINT]},
         'commit': {param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING]},
     },
 }, class Key extends St.BoxLayout {
@@ -316,15 +317,16 @@ const Key = GObject.registerClass({
             this._pressTimeoutId = 0;
         }
 
-        let keyval;
-        if (button === this.keyButton)
-            keyval = this._keyval;
-        if (!keyval && commitString)
-            keyval = this._getKeyvalFromString(commitString);
-        console.assert(keyval !== undefined, 'Need keyval or commitString');
-
-        if (this._pressed && (commitString || keyval))
-            this.emit('commit', keyval, commitString || '');
+        if (this._pressed) {
+            if (this._keyval && button === this.keyButton)
+                this.emit('keyval', this._keyval);
+            else if (commitString) {
+                const keyval = this._getKeyvalFromString(commitString);
+                this.emit('commit', keyval, commitString);
+            } else {
+                console.error('Need keyval or commitString');
+            }
+        }
 
         this.emit('released');
         this._hideSubkeys();
@@ -1436,6 +1438,13 @@ export const Keyboard = GObject.registerClass({
                 iconName: key.iconName,
                 keyval: key.keyval,
             }, strings);
+
+            if (key.keyval) {
+                button.connect('keyval', (_actor, keyval) => {
+                    this._keyboardController.keyvalPress(keyval);
+                    this._keyboardController.keyvalRelease(keyval);
+                });
+            }
 
             if (key.action !== 'modifier') {
                 button.connect('commit', (_actor, keyval, str) => {
