@@ -1326,6 +1326,29 @@ export const MessageTray = GObject.registerClass({
     }
 });
 
+let systemNotificationSource = null;
+
+/**
+ * The {Source} that should be used to send system notifications.
+ *
+ * @returns {Source}
+ */
+export function getSystemSource() {
+    if (!systemNotificationSource) {
+        systemNotificationSource = new Source({
+            title: _('System'),
+            iconName: 'emblem-system-symbolic',
+        });
+
+        systemNotificationSource.connect('destroy', () => {
+            systemNotificationSource = null;
+        });
+        Main.messageTray.add(systemNotificationSource);
+    }
+
+    return systemNotificationSource;
+}
+
 export const SystemNotificationSource = GObject.registerClass(
 class SystemNotificationSource extends Source {
     constructor() {
