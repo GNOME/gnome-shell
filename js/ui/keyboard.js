@@ -224,7 +224,7 @@ const Key = GObject.registerClass({
         'pressed': {},
         'released': {},
         'keyval': {param_types: [GObject.TYPE_UINT]},
-        'commit': {param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING]},
+        'commit': {param_types: [GObject.TYPE_STRING]},
     },
 }, class Key extends St.BoxLayout {
     _init(params, extendedKeys = []) {
@@ -281,11 +281,6 @@ const Key = GObject.registerClass({
         this.keyButton._extendedKeys = this._extendedKeyboard;
     }
 
-    _getKeyvalFromString(string) {
-        let unicode = string?.length ? string.charCodeAt(0) : undefined;
-        return Clutter.unicode_to_keysym(unicode);
-    }
-
     _press(button) {
         if (button === this.keyButton) {
             this._pressTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
@@ -320,12 +315,10 @@ const Key = GObject.registerClass({
         if (this._pressed) {
             if (this._keyval && button === this.keyButton)
                 this.emit('keyval', this._keyval);
-            else if (commitString) {
-                const keyval = this._getKeyvalFromString(commitString);
-                this.emit('commit', keyval, commitString);
-            } else {
+            else if (commitString)
+                this.emit('commit', commitString);
+            else
                 console.error('Need keyval or commitString');
-            }
         }
 
         this.emit('released');
@@ -805,7 +798,7 @@ const EmojiPager = GObject.registerClass({
             key.connect('pressed', () => {
                 this._currentKey = key;
             });
-            key.connect('commit', (actor, keyval, str) => {
+            key.connect('commit', (actor, str) => {
                 if (this._currentKey !== key)
                     return;
                 this._currentKey = null;
@@ -1266,6 +1259,7 @@ export const Keyboard = GObject.registerClass({
 
         this._clearShowIdle();
 
+        this._keyboardController.oskCompletion = false;
         this._keyboardController.destroy();
 
         Main.layoutManager.untrackChrome(this);
@@ -1276,8 +1270,6 @@ export const Keyboard = GObject.registerClass({
             this._languagePopup.destroy();
             this._languagePopup = null;
         }
-
-        IBusManager.getIBusManager().setCompletionEnabled(false, () => Main.inputMethod.update());
     }
 
     _setupKeyboard() {
@@ -1301,7 +1293,7 @@ export const Keyboard = GObject.registerClass({
         this._emojiSelection.connect('toggle', this._toggleEmoji.bind(this));
         this._emojiSelection.connect('close-request', () => this.close(true));
         this._emojiSelection.connect('emoji-selected', (selection, emoji) => {
-            this._keyboardController.commitString(emoji);
+            this._keyboardController.commit(emoji).catch(console.error);
         });
 
         this._emojiSelection.hide();
@@ -1447,12 +1439,13 @@ export const Keyboard = GObject.registerClass({
             }
 
             if (key.action !== 'modifier') {
-                button.connect('commit', (_actor, keyval, str) => {
-                    this._commitAction(keyval, str).then(() => {
+                button.connect('commit', (_actor, str) => {
+                    this._keyboardController.commit(str, this._modifiers).then(() => {
+                        this._disableAllModifiers();
                         if (layout.mode === 'default' ||
                             (layout.mode === 'latched' && !this._latched))
                             this._setActiveLevel('default');
-                    });
+                    }).catch(console.error);
                 });
             }
 
@@ -1510,30 +1503,6 @@ export const Keyboard = GObject.registerClass({
         }
     }
 
-    async _commitAction(keyval, str) {
-        if (this._modifiers.size === 0 && str !== '' &&
-            keyval && this._oskCompletionEnabled) {
-            if (await Main.inputMethod.handleVirtualKey(keyval))
-                return;
-        }
-
-        if (str === '' || !Main.inputMethod.currentFocus ||
-            (keyval && this._oskCompletionEnabled) ||
-            this._modifiers.size > 0 ||
-            !this._keyboardController.commitString(str, true)) {
-            if (keyval !== 0) {
-                this._forwardModifiers(this._modifiers, Clutter.EventType.KEY_PRESS);
-                this._keyboardController.keyvalPress(keyval);
-                GLib.timeout_add(GLib.PRIORITY_DEFAULT, KEY_RELEASE_TIMEOUT, () => {
-                    this._keyboardController.keyvalRelease(keyval);
-                    this._forwardModifiers(this._modifiers, Clutter.EventType.KEY_RELEASE);
-                    this._disableAllModifiers();
-                    return GLib.SOURCE_REMOVE;
-                });
-            }
-        }
-    }
-
     _setLatched(latched) {
         this._latched = latched;
         this._setCurrentLevelLatched(this._currentPage, this._latched);
@@ -1552,15 +1521,6 @@ export const Keyboard = GObject.registerClass({
     _toggleModifier(keyval) {
         const isActive = this._modifiers.has(keyval);
         this._setModifierEnabled(keyval, !isActive);
-    }
-
-    _forwardModifiers(modifiers, type) {
-        for (const keyval of modifiers) {
-            if (type === Clutter.EventType.KEY_PRESS)
-                this._keyboardController.keyvalPress(keyval);
-            else if (type === Clutter.EventType.KEY_RELEASE)
-                this._keyboardController.keyvalRelease(keyval);
-        }
     }
 
     _disableAllModifiers() {
@@ -1699,8 +1659,7 @@ export const Keyboard = GObject.registerClass({
             return;
         }
 
-        this._oskCompletionEnabled =
-            IBusManager.getIBusManager().setCompletionEnabled(true, () => Main.inputMethod.update());
+        this._keyboardController.oskCompletion = true;
         this._clearKeyboardRestTimer();
 
         if (immediate) {
@@ -1735,8 +1694,7 @@ export const Keyboard = GObject.registerClass({
         if (!this._keyboardVisible)
             return;
 
-        IBusManager.getIBusManager().setCompletionEnabled(false, () => Main.inputMethod.update());
-        this._oskCompletionEnabled = false;
+        this._keyboardController.oskCompletion = false;
         this._clearKeyboardRestTimer();
 
         if (immediate) {
@@ -2014,15 +1972,72 @@ class KeyboardController extends Signals.EventEmitter {
         return this._currentSource.xkbId;
     }
 
-    commitString(string, fromKey) {
-        if (string == null)
-            return false;
-        /* Let ibus methods fall through keyval emission */
-        if (fromKey && this._currentSource.type === InputSourceManager.INPUT_SOURCE_TYPE_IBUS)
-            return false;
+    _forwardModifiers(modifiers, type) {
+        for (const keyval of modifiers) {
+            if (type === Clutter.EventType.KEY_PRESS)
+                this.keyvalPress(keyval);
+            else if (type === Clutter.EventType.KEY_RELEASE)
+                this.keyvalRelease(keyval);
+        }
+    }
 
-        Main.inputMethod.commit(string);
-        return true;
+    _getKeyvalsFromString(string) {
+        const keyvals = [];
+        for (const unicode of string) {
+            const keyval = Clutter.unicode_to_keysym(unicode.codePointAt(0));
+            // If the unicode character is unknown, try to avoid keyvals at all
+            if (keyval === (unicode || 0x01000000))
+                return [];
+
+            keyvals.push(keyval);
+        }
+
+        return keyvals;
+    }
+
+    async commit(str, modifiers) {
+        const keyvals = this._getKeyvalsFromString(str);
+
+        // If there is no IM focus (e.g. with X11 clients), or modifiers
+        // are in use, send raw key events.
+        if (!Main.inputMethod.currentFocus || modifiers?.size > 0) {
+            if (modifiers)
+                this._forwardModifiers(modifiers, Clutter.EventType.KEY_PRESS);
+
+            for (const keyval of keyvals) {
+                this.keyvalPress(keyval);
+                this.keyvalRelease(keyval);
+            }
+
+            if (modifiers)
+                this._forwardModifiers(modifiers, Clutter.EventType.KEY_RELEASE);
+
+            return;
+        }
+
+        // If OSK completion is enabled, or there is an active source requiring
+        // IBus to receive input, prefer to feed the events directly to the IM
+        if (this._oskCompletionEnabled ||
+            this._currentSource.type === InputSourceManager.INPUT_SOURCE_TYPE_IBUS) {
+            for (const keyval of keyvals) {
+                // eslint-disable-next-line no-await-in-loop
+                if (!await Main.inputMethod.handleVirtualKey(keyval)) {
+                    this.keyvalPress(keyval);
+                    this.keyvalRelease(keyval);
+                }
+            }
+            return;
+        }
+
+        Main.inputMethod.commit(str);
+    }
+
+    set oskCompletion(enabled) {
+        if (this._oskCompletionEnabled === enabled)
+            return;
+
+        this._oskCompletionEnabled =
+            IBusManager.getIBusManager().setCompletionEnabled(enabled, () => Main.inputMethod.update());
     }
 
     keyvalPress(keyval) {
