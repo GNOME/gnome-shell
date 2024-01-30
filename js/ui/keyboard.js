@@ -1244,6 +1244,7 @@ export const Keyboard = GObject.registerClass({
     _onFocusPositionChanged(focusTracker) {
         let rect = focusTracker.getCurrentRect();
         this.setCursorLocation(focusTracker.currentWindow, rect.x, rect.y, rect.width, rect.height);
+        this._updateLevelFromHints();
     }
 
     _onDestroy() {
@@ -1305,6 +1306,7 @@ export const Keyboard = GObject.registerClass({
             'group-changed', this._onGroupChanged.bind(this),
             'panel-state', this._onKeyboardStateChanged.bind(this),
             'purpose-changed', this._onPurposeChanged.bind(this),
+            'content-hints-changed', this._onContentHintsChanged.bind(this),
             this);
         global.stage.connectObject('notify::key-focus',
             this._onKeyFocusChanged.bind(this), this);
@@ -1315,6 +1317,60 @@ export const Keyboard = GObject.registerClass({
     _onPurposeChanged(controller, purpose) {
         this._purpose = purpose;
         this._updateKeys();
+    }
+
+    _onContentHintsChanged(controller, contentHint) {
+        this._contentHint = contentHint;
+        this._updateLevelFromHints();
+    }
+
+    _updateLevelFromHints() {
+        // If the latch is enabled, avoid level changes
+        if (this._latched)
+            return;
+
+        if ((this._contentHint & Clutter.InputContentHintFlags.LOWERCASE) !== 0) {
+            this._setActiveLevel('default');
+            return;
+        }
+
+        if (!this._layers['shift'])
+            return;
+
+        if ((this._contentHint & Clutter.InputContentHintFlags.UPPERCASE) !== 0) {
+            this._setActiveLevel('shift');
+        } else if (!this._surroundingTextId &&
+                   (this._contentHint &
+                    (Clutter.InputContentHintFlags.AUTO_CAPITALIZATION |
+                     Clutter.InputContentHintFlags.TITLECASE)) !== 0) {
+            this._surroundingTextId =
+                Main.inputMethod.connect('surrounding-text-set', () => {
+                    const [text, cursor] = Main.inputMethod.getSurroundingText();
+                    if (!text || cursor === 0) {
+                        // First character in the buffer
+                        this._setActiveLevel('shift');
+                        return;
+                    }
+
+                    const beforeCursor = GLib.utf8_substring(text, 0, cursor);
+
+                    if ((this._contentHint & Clutter.InputContentHintFlags.TITLECASE) !== 0) {
+                        if (beforeCursor.charAt(beforeCursor.length - 1) === ' ')
+                            this._setActiveLevel('shift');
+                        else
+                            this._setActiveLevel('default');
+                    } else if ((this._contentHint & Clutter.InputContentHintFlags.AUTO_CAPITALIZATION) !== 0) {
+                        if (beforeCursor.charAt(beforeCursor.trimEnd().length - 1) === '.')
+                            this._setActiveLevel('shift');
+                        else
+                            this._setActiveLevel('default');
+                    }
+
+                    Main.inputMethod.disconnect(this._surroundingTextId);
+                    this._surroundingTextId = 0;
+                });
+            Main.inputMethod.request_surrounding();
+        }
     }
 
     _onKeyFocusChanged() {
@@ -1443,8 +1499,12 @@ export const Keyboard = GObject.registerClass({
                     this._keyboardController.commit(str, this._modifiers).then(() => {
                         this._disableAllModifiers();
                         if (layout.mode === 'default' ||
-                            (layout.mode === 'latched' && !this._latched))
-                            this._setActiveLevel('default');
+                            (layout.mode === 'latched' && !this._latched)) {
+                            if (this._contentHint !== 0)
+                                this._updateLevelFromHints();
+                            else
+                                this._setActiveLevel('default');
+                        }
                     }).catch(console.error);
                 });
             }
@@ -1925,8 +1985,8 @@ class KeyboardController extends Signals.EventEmitter {
         this._currentSource = this._inputSourceManager.currentSource;
 
         Main.inputMethod.connectObject(
-            'notify::content-purpose', this._onContentPurposeHintsChanged.bind(this),
-            'notify::content-hints', this._onContentPurposeHintsChanged.bind(this),
+            'notify::content-purpose', this._onPurposeHintsChanged.bind(this),
+            'notify::content-hints', this._onContentHintsChanged.bind(this),
             'input-panel-state', (o, state) => this.emit('panel-state', state), this);
     }
 
@@ -1949,10 +2009,16 @@ class KeyboardController extends Signals.EventEmitter {
         this.emit('group-changed');
     }
 
-    _onContentPurposeHintsChanged(method) {
+    _onPurposeHintsChanged(method) {
         const purpose = method.content_purpose;
         this._purpose = purpose;
         this.emit('purpose-changed', purpose);
+    }
+
+    _onContentHintsChanged(method) {
+        const contentHints = method.content_hints;
+        this._contentHints = contentHints;
+        this.emit('content-hints-changed', contentHints);
     }
 
     getCurrentGroup() {
