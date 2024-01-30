@@ -28,11 +28,6 @@ let _ibusManager = null;
 const IBUS_SYSTEMD_SERVICE = 'org.freedesktop.IBus.session.GNOME.service';
 
 const TYPING_BOOSTER_ENGINE = 'typing-booster';
-const IBUS_TYPING_BOOSTER_SCHEMA = 'org.freedesktop.ibus.engine.typing-booster';
-const KEY_EMOJIPREDICTIONS = 'emojipredictions';
-const KEY_DICTIONARY = 'dictionary';
-const KEY_INLINECOMPLETION = 'inlinecompletion';
-const KEY_INPUTMETHOD = 'inputmethod';
 
 function _checkIBusVersion(requiredMajor, requiredMinor, requiredMicro) {
     if ((IBus.MAJOR_VERSION > requiredMajor) ||
@@ -313,8 +308,8 @@ class IBusManager extends Signals.EventEmitter {
     }
 
     async setEngine(id, callback) {
-        if (this._preOskState)
-            this._preOskState.engine = id;
+        if (this._oskCompletion)
+            this._preOskEngine = id;
 
         const isXkb = id.startsWith('xkb:');
         if (this._oskCompletion && isXkb)
@@ -365,40 +360,13 @@ class IBusManager extends Signals.EventEmitter {
             return true;
 
         this._oskCompletion = enabled;
-        let settings =
-            new Gio.Settings({schema_id: IBUS_TYPING_BOOSTER_SCHEMA});
 
         if (enabled) {
-            this._preOskState = {
-                'engine': this._currentEngineName,
-                'emoji': settings.get_value(KEY_EMOJIPREDICTIONS),
-                'langs': settings.get_value(KEY_DICTIONARY),
-                'completion': settings.get_value(KEY_INLINECOMPLETION),
-                'inputMethod': settings.get_value(KEY_INPUTMETHOD),
-            };
-            settings.reset(KEY_EMOJIPREDICTIONS);
-
-            const removeEncoding = l => l.replace(/\..*/, '');
-            const removeDups = (l, pos, arr) => {
-                return !pos || arr[pos - 1] !== l;
-            };
-            settings.set_string(
-                KEY_DICTIONARY,
-                GLib.get_language_names().map(removeEncoding)
-                    .sort().filter(removeDups).join(','));
-
-            settings.reset(KEY_INLINECOMPLETION);
-            settings.set_string(KEY_INPUTMETHOD, 'NoIME');
+            this._preOskEngine = this._currentEngineName;
             this._setEngine(TYPING_BOOSTER_ENGINE, callback);
-        } else if (this._preOskState) {
-            const {engine, emoji, langs, completion, inputMethod} =
-                  this._preOskState;
-            this._preOskState = null;
-            this._setEngine(engine, callback);
-            settings.set_value(KEY_EMOJIPREDICTIONS, emoji);
-            settings.set_value(KEY_DICTIONARY, langs);
-            settings.set_value(KEY_INLINECOMPLETION, completion);
-            settings.set_value(KEY_INPUTMETHOD, inputMethod);
+        } else if (this._preOskEngine) {
+            this._setEngine(this._preOskEngine, callback);
+            delete this._preOskEngine;
         }
         return true;
     }
