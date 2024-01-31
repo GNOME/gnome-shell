@@ -41,3 +41,13 @@ const notificationErrorNames = [
 export const NotificationErrors =
     registerErrorDomain('Notifications', notificationErrorNames, 'org.gtk');
 export const NotificationError = createErrorEnum(notificationErrorNames);
+
+const extensionErrorNames = [
+    'InfoDownloadFailed',
+    'DownloadFailed',
+    'ExtractFailed',
+    'EnableFailed',
+];
+export const ExtensionErrors =
+    registerErrorDomain('Extensions', extensionErrorNames);
+export const ExtensionError = createErrorEnum(extensionErrorNames);

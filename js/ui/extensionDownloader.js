@@ -13,6 +13,8 @@ import * as FileUtils from '../misc/fileUtils.js';
 import * as Main from './main.js';
 import * as ModalDialog from './modalDialog.js';
 
+import {ExtensionErrors, ExtensionError} from '../misc/dbusErrors.js';
+
 Gio._promisify(Soup.Session.prototype, 'send_and_read_async');
 Gio._promisify(Gio.OutputStream.prototype, 'write_bytes_async');
 Gio._promisify(Gio.IOStream.prototype, 'close_async');
@@ -50,8 +52,9 @@ export async function installExtension(uuid, invocation) {
         info = JSON.parse(decoder.decode(bytes.get_data()));
     } catch (e) {
         Main.extensionManager.logExtensionError(uuid, e);
-        invocation.return_dbus_error(
-            'org.gnome.Shell.ExtensionError', e.message);
+        invocation.return_error_literal(
+            ExtensionErrors, ExtensionError.INFO_DOWNLOAD_FAILED,
+            e.message);
         return;
     }
 
@@ -243,6 +246,18 @@ export async function checkForUpdates() {
     }
 }
 
+class ExtractError extends Error {
+    get name() {
+        return 'ExtractError';
+    }
+}
+
+class EnableError extends Error {
+    get name() {
+        return 'EnableError';
+    }
+}
+
 const InstallExtensionDialog = GObject.registerClass(
 class InstallExtensionDialog extends ModalDialog.ModalDialog {
     _init(uuid, info, invocation) {
@@ -293,19 +308,31 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
                 null);
             checkResponse(message);
 
-            await extractExtensionArchive(bytes, dir);
+            try {
+                await extractExtensionArchive(bytes, dir);
+            } catch (e) {
+                throw new ExtractError(e.message);
+            }
 
             const extension = Main.extensionManager.createExtensionObject(
                 this._uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
             Main.extensionManager.loadExtension(extension);
             if (!Main.extensionManager.enableExtension(this._uuid))
-                throw new Error(`Cannot enable ${this._uuid}`);
+                throw new EnableError(`Cannot enable ${this._uuid}`);
 
             this._invocation.return_value(new GLib.Variant('(s)', ['successful']));
         } catch (e) {
+            let code;
+            if (e instanceof ExtractError)
+                code = ExtensionError.EXTRACT_FAILED;
+            else if (e instanceof EnableError)
+                code = ExtensionError.ENABLE_FAILED;
+            else
+                code = ExtensionError.DOWNLOAD_FAILED;
+
             log(`Error while installing ${this._uuid}: ${e.message}`);
-            this._invocation.return_dbus_error(
-                'org.gnome.Shell.ExtensionError', e.message);
+            this._invocation.return_error_literal(
+                ExtensionErrors, code, e.message);
         }
     }
 });
