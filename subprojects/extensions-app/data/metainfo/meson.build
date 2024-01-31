@@ -1,6 +1,10 @@
 metainfo = app_id + '.metainfo.xml'
 i18n.merge_file(
-  input: base_id + '.metainfo.xml.in',
+  input: configure_file(
+    input: base_id + '.metainfo.xml.in',
+    output: app_id + '.metainfo.xml.in',
+    configuration: {'app_id': app_id},
+  ),
   output: metainfo,
   po_dir: po_dir,
   install: true,

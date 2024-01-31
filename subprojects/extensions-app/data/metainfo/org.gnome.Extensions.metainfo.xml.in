@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>org.gnome.Extensions</id>
+  <id>@app_id@</id>
 
   <name>Extensions</name>
   <summary>Manage your GNOME Extensions</summary>
@@ -16,7 +16,7 @@
   <project_group>GNOME</project_group>
   <developer_name>The GNOME Project</developer_name>
 
-  <launchable type="desktop-id">org.gnome.Extensions.desktop</launchable>
+  <launchable type="desktop-id">@app_id@.desktop</launchable>
 
   <kudos>
     <kudo>HiDpiIcon</kudo>
