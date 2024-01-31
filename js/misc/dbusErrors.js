@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 
@@ -27,3 +26,11 @@ function createErrorEnum(errorNames) {
     }
     return obj;
 }
+
+const modalDialogErrorNames = [
+    'UnknownType',
+    'GrabFailed',
+];
+export const ModalDialogErrors =
+    registerErrorDomain('ModalDialog', modalDialogErrorNames);
+export const ModalDialogError = createErrorEnum(modalDialogErrorNames);
