@@ -313,7 +313,7 @@ get_app_from_window_group (ShellWindowTracker  *tracker,
   MetaGroup *group;
   GSList *iter;
 
-  group = meta_window_get_group (window);
+  group = meta_window_x11_get_group (window);
   if (group == NULL)
     return NULL;
 
@@ -463,7 +463,7 @@ get_app_for_window (ShellWindowTracker    *tracker,
   /* If we didn't get a startup-notification match, see if we matched
    * any other windows in the group.
    */
-  if (result == NULL)
+  if (result == NULL && meta_window_get_client_type (window) == META_WINDOW_CLIENT_TYPE_X11)
     result = get_app_from_window_group (tracker, window);
 
   /* Our last resort - we create a fake app from the window */

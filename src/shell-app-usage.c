@@ -10,7 +10,6 @@
 #include <glib.h>
 #include <gio/gio.h>
 #include <meta/display.h>
-#include <meta/group.h>
 #include <meta/window.h>
 
 #include "shell-app-usage.h"
