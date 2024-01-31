@@ -34,3 +34,10 @@ const modalDialogErrorNames = [
 export const ModalDialogErrors =
     registerErrorDomain('ModalDialog', modalDialogErrorNames);
 export const ModalDialogError = createErrorEnum(modalDialogErrorNames);
+
+const notificationErrorNames = [
+    'InvalidApp',
+];
+export const NotificationErrors =
+    registerErrorDomain('Notifications', notificationErrorNames, 'org.gtk');
+export const NotificationError = createErrorEnum(notificationErrorNames);

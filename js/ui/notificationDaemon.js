@@ -12,6 +12,7 @@ import * as MessageTray from './messageTray.js';
 import * as Params from '../misc/params.js';
 
 import {loadInterfaceXML} from '../misc/fileUtils.js';
+import {NotificationErrors, NotificationError} from '../misc/dbusErrors.js';
 
 const FdoNotificationsIface = loadInterfaceXML('org.freedesktop.Notifications');
 
@@ -694,7 +695,8 @@ class GtkNotificationDaemon {
             source = this._ensureAppSource(appId);
         } catch (e) {
             if (e instanceof InvalidAppError) {
-                invocation.return_dbus_error('org.gtk.Notifications.InvalidApp',
+                invocation.return_error_literal(NotificationErrors,
+                    NotificationError.INVALID_APP,
                     `The app by ID "${appId}" could not be found`);
                 return;
             }
