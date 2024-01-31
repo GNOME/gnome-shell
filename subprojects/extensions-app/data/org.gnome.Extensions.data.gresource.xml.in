@@ -13,6 +13,7 @@
 
   <gresource prefix="/org/gnome/Extensions">
     <file>dbus-interfaces/org.gnome.Shell.Extensions.xml</file>
+    <file preprocess="xml-stripblanks" alias="metainfo.xml">metainfo/@app_id@.metainfo.xml</file>
 
     <file>ui/extension-row.ui</file>
     <file>ui/extensions-window.ui</file>

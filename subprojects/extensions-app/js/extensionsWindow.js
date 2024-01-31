@@ -2,7 +2,6 @@ import Adw from 'gi://Adw?version=1';
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk?version=4.0';
 import Shew from 'gi://Shew';
 
 const Package = imports.package;
@@ -141,7 +140,11 @@ export const ExtensionsWindow = GObject.registerClass({
     }
 
     _showAbout() {
-        const aboutDialog = new Adw.AboutDialog({
+        const [version] = Package.version.split(' ');
+        const aboutDialog = Adw.AboutDialog.new_from_appdata(
+            '/org/gnome/Extensions/metainfo.xml', version);
+
+        aboutDialog.set({
             developers: [
                 'Florian Müllner <fmuellner@gnome.org>',
                 'Jasper St. Pierre <jstpierre@mecheye.net>',
@@ -153,13 +156,7 @@ export const ExtensionsWindow = GObject.registerClass({
                 'Tobias Bernard <tbernard@gnome.org>',
             ],
             translator_credits: _('translator-credits'),
-            application_name: _('Extensions'),
-            license_type: Gtk.License.GPL_2_0,
-            application_icon: Package.name,
             version: Package.version,
-            developer_name: _('The GNOME Project'),
-            website: 'https://apps.gnome.org/app/org.gnome.Extensions/',
-            issue_url: 'https://gitlab.gnome.org/GNOME/gnome-shell/issues/new',
         });
         aboutDialog.present(this);
     }
