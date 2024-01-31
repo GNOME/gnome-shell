@@ -75,6 +75,7 @@ export class ServiceImplementation {
             return false;
 
         if (error instanceof GLib.Error) {
+            Gio.DBusError.strip_remote_error(error);
             invocation.return_gerror(error);
         } else {
             let name = error.name;
