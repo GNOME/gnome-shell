@@ -3,6 +3,8 @@ import GLib from 'gi://GLib';
 
 import {programArgs} from 'system';
 
+import './misc/dbusErrors.js';
+
 const Signals = imports.signals;
 
 const IDLE_SHUTDOWN_TIME = 2; // s

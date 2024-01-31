@@ -12,6 +12,7 @@
     <file>misc/config.js</file>
     <file>misc/errorUtils.js</file>
     <file>misc/extensionUtils.js</file>
+    <file>misc/dbusErrors.js</file>
     <file>misc/dbusUtils.js</file>
     <file>misc/params.js</file>
   </gresource>
