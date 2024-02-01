@@ -1,53 +1,45 @@
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 
-function decamelcase(str, sep) {
-    return str.replace(/(.)([A-Z])/g, `$1${sep}$2`);
+function camelcase(str) {
+    const words = str.toLowerCase().split('_');
+    return words.map(w => `${w.at(0).toUpperCase()}${w.substring(1)}`).join('');
 }
 
-function registerErrorDomain(domain, errorNames, prefix = 'org.gnome.Shell') {
+function decamelcase(str) {
+    return str.replace(/(.)([A-Z])/g, '$1-$2');
+}
+
+function registerErrorDomain(domain, errorEnum, prefix = 'org.gnome.Shell') {
     const domainName =
-        `shell-${decamelcase(domain, '-').toLowerCase()}-error`;
+        `shell-${decamelcase(domain).toLowerCase()}-error`;
     const quark = GLib.quark_from_string(domainName);
 
-    for (const [code, name] of errorNames.entries()) {
+    for (const [name, code] of Object.entries(errorEnum)) {
         Gio.dbus_error_register_error(quark,
-            code, `${prefix}.${domain}.Error.${name}`);
+            code, `${prefix}.${domain}.Error.${camelcase(name)}`);
     }
     return quark;
 }
 
-function createErrorEnum(errorNames) {
-    const obj = {};
-
-    for (const [code, name] of errorNames.entries()) {
-        const propName = decamelcase(name, '_').toUpperCase();
-        obj[propName] = code;
-    }
-    return obj;
-}
-
-const modalDialogErrorNames = [
-    'UnknownType',
-    'GrabFailed',
-];
+export const ModalDialogError = {
+    UNKNOWN_TYPE: 0,
+    GRAB_FAILED: 1,
+};
 export const ModalDialogErrors =
-    registerErrorDomain('ModalDialog', modalDialogErrorNames);
-export const ModalDialogError = createErrorEnum(modalDialogErrorNames);
+    registerErrorDomain('ModalDialog', ModalDialogError);
 
-const notificationErrorNames = [
-    'InvalidApp',
-];
+export const NotificationError = {
+    INVALID_APP: 0,
+};
 export const NotificationErrors =
-    registerErrorDomain('Notifications', notificationErrorNames, 'org.gtk');
-export const NotificationError = createErrorEnum(notificationErrorNames);
+    registerErrorDomain('Notifications', NotificationError, 'org.gtk');
 
-const extensionErrorNames = [
-    'InfoDownloadFailed',
-    'DownloadFailed',
-    'ExtractFailed',
-    'EnableFailed',
-];
+export const ExtensionError = {
+    INFO_DOWNLOAD_FAILED: 0,
+    DOWNLOAD_FAILED: 1,
+    EXTRACT_FAILED: 2,
+    ENABLE_FAILED: 3,
+};
 export const ExtensionErrors =
-    registerErrorDomain('Extensions', extensionErrorNames);
-export const ExtensionError = createErrorEnum(extensionErrorNames);
+    registerErrorDomain('Extensions', ExtensionError);
