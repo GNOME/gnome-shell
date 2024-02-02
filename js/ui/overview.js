@@ -28,41 +28,29 @@ const DND_WINDOW_SWITCH_TIMEOUT = 750;
 const OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
 
 class ShellInfo {
-    constructor() {
-        this._source = null;
-    }
-
     setMessage(text, options) {
         options = Params.parse(options, {
             undoCallback: null,
             forFeedback: false,
         });
 
+        const source = MessageTray.getSystemSource();
         let undoCallback = options.undoCallback;
         let forFeedback = options.forFeedback;
 
-        if (this._source == null) {
-            this._source = new MessageTray.SystemNotificationSource();
-            this._source.connect('destroy', () => {
-                this._source = null;
-            });
-            Main.messageTray.add(this._source);
-        }
-
-        let notification = null;
-        if (this._source.notifications.length === 0) {
-            notification = new MessageTray.Notification(this._source, text, null);
-            notification.setTransient(true);
-            notification.setForFeedback(forFeedback);
+        if (!this._notification) {
+            this._notification = new MessageTray.Notification(source, text, null);
+            this._notification.setTransient(true);
+            this._notification.setForFeedback(forFeedback);
+            this._notification.connect('destroy', () => delete this._notification);
         } else {
-            notification = this._source.notifications[0];
-            notification.update(text, null, {clear: true});
+            this._notification.update(text, null, {clear: true});
         }
 
         if (undoCallback)
-            notification.addAction(_('Undo'), () => undoCallback());
+            this._notification.addAction(_('Undo'), () => undoCallback());
 
-        this._source.showNotification(notification);
+        source.showNotification(this._notification);
     }
 }
 

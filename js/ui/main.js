@@ -274,8 +274,7 @@ async function _initializeUI() {
         if (lookingGlass?.isOpen)
             return; // assume user action
 
-        const source = new MessageTray.SystemNotificationSource();
-        messageTray.add(source);
+        const source = MessageTray.getSystemSource();
         const notification = new MessageTray.Notification(source,
             _('System was put in unsafe mode'),
             _('Apps now have unrestricted access'));
@@ -615,8 +614,7 @@ export function loadTheme() {
  * @param {string} details Additional information
  */
 export function notify(msg, details) {
-    let source = new MessageTray.SystemNotificationSource();
-    messageTray.add(source);
+    const source = MessageTray.getSystemSource();
     let notification = new MessageTray.Notification(source, msg, details);
     notification.setTransient(true);
     source.showNotification(notification);

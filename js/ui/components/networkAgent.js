@@ -11,7 +11,6 @@ import St from 'gi://St';
 import * as Signals from '../../misc/signals.js';
 
 import * as Dialog from '../dialog.js';
-import * as Main from '../main.js';
 import * as MessageTray from '../messageTray.js';
 import * as ModalDialog from '../modalDialog.js';
 import * as ShellEntry from '../shellEntry.js';
@@ -740,12 +739,6 @@ class NetworkAgent {
     }
 
     _showNotification(requestId, connection, settingName, hints, flags) {
-        const source = new MessageTray.Source({
-            title: _('Network Manager'),
-            iconName: 'network-transmit-receive',
-        });
-        source.policy = new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
-
         let title, body;
 
         let connectionSetting = connection.get_setting_connection();
@@ -788,7 +781,9 @@ class NetworkAgent {
             return;
         }
 
-        let notification = new MessageTray.Notification(source, title, body);
+        const source = new MessageTray.getSystemSource();
+        const notification = new MessageTray.Notification(source, title, body);
+        notification.iconName = 'dialog-password-symbolic';
 
         notification.connect('activated', () => {
             notification.answered = true;
@@ -802,7 +797,6 @@ class NetworkAgent {
             delete this._notifications[requestId];
         });
 
-        Main.messageTray.add(source);
         source.showNotification(notification);
     }
 

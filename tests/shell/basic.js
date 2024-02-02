@@ -50,8 +50,7 @@ export async function run() {
 
     // notification
     console.debug('Show notification message');
-    const source = new MessageTray.SystemNotificationSource();
-    Main.messageTray.add(source);
+    const source = new MessageTray.getSystemSource();
 
     Scripting.scriptEvent('notificationShowStart');
     source.connect('notification-show',

@@ -11,7 +11,6 @@ import St from 'gi://St';
 import * as Animation from './animation.js';
 import * as CheckBox from './checkBox.js';
 import * as Dialog from './dialog.js';
-import * as Main from './main.js';
 import * as MessageTray from './messageTray.js';
 import * as ModalDialog from './modalDialog.js';
 import * as Params from '../misc/params.js';
@@ -181,60 +180,43 @@ export class ShellMountOperation {
     }
 
     _onShowUnmountProgress(op, message, timeLeft, bytesLeft) {
-        if (!this._notifier)
-            this._notifier = new ShellUnmountNotifier();
-
         if (bytesLeft === 0)
-            this._notifier.done(message);
+            this._showUnmountNotificationDone(message);
         else
-            this._notifier.show(message);
+            this._showUnmountNotification(message);
     }
 
     borrowDialog() {
         this._dialog?.disconnectObject(this);
         return this._dialog;
     }
+
+    _createNotification(title, body) {
+        this._notification?.destroy();
+
+        const source = MessageTray.getSystemSource();
+        this._notification = new MessageTray.Notification(source, title, body);
+
+        this._notification.setTransient(true);
+        this._notification.iconName = 'media-removable-symbolic';
+        this._notification.connect('destroy', () => delete this._notification);
+        source.showNotification(this._notification);
+    }
+
+    _showUnmountNotificationDone(message) {
+        if (message)
+            this._createNotification(message, null);
+    }
+
+    _showUnmountNotification(message) {
+        const [title, body] = message.split('\n', 2);
+
+        if (!this._notification)
+            this._createNotification(title, body);
+        else
+            this._notification.update(title, body);
+    }
 }
-
-const ShellUnmountNotifier = GObject.registerClass(
-class ShellUnmountNotifier extends MessageTray.Source {
-    constructor() {
-        super({
-            iconName: 'media-removable',
-        });
-
-        this._notification = null;
-        Main.messageTray.add(this);
-    }
-
-    show(message) {
-        let [header, text] = message.split('\n', 2);
-
-        if (!this._notification) {
-            this._notification = new MessageTray.Notification(this, header, text);
-            this._notification.setTransient(true);
-            this._notification.setUrgency(MessageTray.Urgency.CRITICAL);
-        } else {
-            this._notification.update(header, text);
-        }
-
-        this.showNotification(this._notification);
-    }
-
-    done(message) {
-        if (this._notification) {
-            this._notification.destroy();
-            this._notification = null;
-        }
-
-        if (message) {
-            let notification = new MessageTray.Notification(this, message, null);
-            notification.setTransient(true);
-
-            this.showNotification(notification);
-        }
-    }
-});
 
 const ShellMountQuestionDialog = GObject.registerClass({
     Signals: {'response': {param_types: [GObject.TYPE_INT]}},

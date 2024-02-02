@@ -236,7 +236,6 @@ class Indicator extends SystemIndicator {
         Main.sessionMode.connect('updated', this._sync.bind(this));
         this._sync();
 
-        this._source = null;
         this._perm = null;
         this._createPermission();
     }
@@ -254,27 +253,13 @@ class Indicator extends SystemIndicator {
         this._client.close();
     }
 
-    _ensureSource() {
-        if (!this._source) {
-            this._source = new MessageTray.Source({
-                title: _('Thunderbolt'),
-                iconName: 'thunderbolt-symbolic',
-            });
-            this._source.connect('destroy', () => (this._source = null));
-
-            Main.messageTray.add(this._source);
-        }
-
-        return this._source;
-    }
-
     _notify(title, body) {
         if (this._notification)
             this._notification.destroy();
 
-        let source = this._ensureSource();
-
+        const source = MessageTray.getSystemSource();
         this._notification = new MessageTray.Notification(source, title, body);
+        this._notification.iconName = 'thunderbolt-symbolic';
         this._notification.setUrgency(MessageTray.Urgency.HIGH);
         this._notification.connect('destroy', () => {
             this._notification = null;

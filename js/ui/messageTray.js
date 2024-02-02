@@ -1348,17 +1348,3 @@ export function getSystemSource() {
 
     return systemNotificationSource;
 }
-
-export const SystemNotificationSource = GObject.registerClass(
-class SystemNotificationSource extends Source {
-    constructor() {
-        super({
-            title: _('System Information'),
-            iconName: 'dialog-information-symbolic',
-        });
-    }
-
-    open() {
-        this.destroy();
-    }
-});
