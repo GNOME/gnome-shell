@@ -1415,6 +1415,8 @@ export const Keyboard = GObject.registerClass({
             keyboardModel = new KeyboardModel('phone');
         } else if (purpose === Clutter.InputContentPurpose.EMAIL) {
             keyboardModel = new KeyboardModel('email');
+        } else if (purpose === Clutter.InputContentPurpose.URL) {
+            keyboardModel = new KeyboardModel('url');
         } else {
             let groups = [groupName];
             if (groupName.includes('+'))
