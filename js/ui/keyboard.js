@@ -1413,6 +1413,8 @@ export const Keyboard = GObject.registerClass({
             keyboardModel = new KeyboardModel('number');
         } else if (purpose === Clutter.InputContentPurpose.PHONE) {
             keyboardModel = new KeyboardModel('phone');
+        } else if (purpose === Clutter.InputContentPurpose.EMAIL) {
+            keyboardModel = new KeyboardModel('email');
         } else {
             let groups = [groupName];
             if (groupName.includes('+'))
