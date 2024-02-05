@@ -2110,7 +2110,7 @@ msgstr "אין התקנים זמינים או מחוברים"
 
 #: js/ui/status/bluetooth.js:336
 msgid "Turn on Bluetooth to connect to devices"
-msgstr "הפעלת Bluetooth כדי להתחבר להתקנים"
+msgstr "יש להפעיל בלוטות׳ כדי להתחבר להתקנים"
 
 #. Translators: This is the number of connected bluetooth devices
 #: js/ui/status/bluetooth.js:390
