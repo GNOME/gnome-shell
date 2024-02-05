@@ -24,10 +24,6 @@
 }
 
 .message-list-sections {
-  spacing: $base_padding;
-  margin: 0;
-  padding-bottom: $base_padding;
-
   // to account for scrollbar
   &:ltr {margin-right: $base_margin * 3; }
   &:rtl {margin-left: $base_margin * 3;}
@@ -35,7 +31,7 @@
 
 .message-list-section,
 .message-list-section-list {
-  spacing: $base_padding;
+  spacing: $base_padding * 1.5;
 }
 
 // do-not-disturb + clear button
@@ -63,23 +59,23 @@
 // message bubbles
 .message {
   @extend %card;
-  padding: 0 !important;
+  padding: 0;
+  border-radius: $modal_radius;
 
-  // subtract side padding to accommodate the close button
-  &:ltr { padding-right: $base_padding - 2px; };
-  &:rtl { padding-left: $base_padding - 2px; };
+  // subtract side padding to accommodate the close button's border
+  &:ltr { padding-right:-2px; };
+  &:rtl { padding-left:-2px; };
 
   // message header
   .message-header {
     padding: 0 $scaled_padding;
-    margin: 0 $base_padding;
-    margin-top: $base_padding;
-    color: $insensitive_fg_color;
+    margin: $base_padding;
+    margin-bottom: 0;
     spacing: $base_padding;
+    color: $insensitive_fg_color;
 
     // header source icon
     .message-source-icon {
-      padding: 2px 0;
       icon-size: $scalable_icon_size; // 16px
       -st-icon-style: symbolic;
     }
@@ -110,28 +106,26 @@
     // close button
     .message-close-button {
       @extend .icon-button;
-      color: $fg_color !important;
+      color: $fg_color;
       background-color: transparentize($fg_color, 0.8);
-      padding: 0 !important;
-      border: 4px transparent solid;
-      &:hover {background-color: transparentize($fg_color, 0.7);}
-      &:insensitive {background-color: transparentize($fg_color, 0.9);}
-      &:active {background-color: transparentize($fg_color, 0.8);}
+      padding: 4px;
+      &:hover { background-color: transparentize($fg_color, 0.7);}
+      &:insensitive { background-color: transparentize($fg_color, 0.9);}
+      &:active { background-color: transparentize($fg_color, 0.8);}
     }
   }
 
   // container for message contents
   .message-box {
-    padding: 0 $base_padding;
-    padding-bottom: $base_padding;
+    padding: $base_padding;
     margin: $base_padding;
-    margin-top: $base_padding;
+    margin-top: 0;
     spacing: $base_padding;
 
     // icon container
     .message-icon-bin {
-      &:ltr {padding-right:$base_padding;}
-      &:rtl {padding-left:$base_padding;}
+      &:ltr { padding-right:$base_padding;}
+      &:rtl { padding-left:$base_padding;}
 
       // icon size and color
       > StIcon {
