@@ -122,6 +122,14 @@
         background-color: $selected_bg_color;
         color: $selected_fg_color;
       }
+
+      // draw hc outline
+      @if $contrast == 'high' {
+        @include draw_hc_inset();
+        &.active {
+          @include draw_hc_inset($no_inset: true);
+        }
+      }
     }
 
     & .title {

@@ -159,6 +159,7 @@ stage {
 
 %card_flat {
   @extend %card_common;
+  border: 1px solid transparent !important; // override of the button style needed here
   @include button(undecorated, $style: flat);
   &:hover { @include button(hover, $style: flat);}
   &:active { @include button(active, $style: flat);}
