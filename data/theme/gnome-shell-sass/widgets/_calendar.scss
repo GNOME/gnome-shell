@@ -1,8 +1,13 @@
 /* Date/Time Menu */
 
 // overall menu
+
 #calendarArea {
   padding: $base_margin;
+}
+
+.datemenu-popover {
+  border-radius: $base_border_radius * 1.5 + $base_padding * 3;
 }
 
 // calendar menu side column

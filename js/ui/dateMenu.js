@@ -890,6 +890,7 @@ class DateMenuButton extends PanelMenu.Button {
         // For some minimal compatibility with PopupMenuItem
         bin._delegate = this;
         this.menu.box.add_child(bin);
+        this.menu.box.add_style_class_name('datemenu-popover');
 
         hbox = new St.BoxLayout({name: 'calendarArea'});
         bin.add_child(hbox);
