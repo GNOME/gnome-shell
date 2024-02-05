@@ -20,9 +20,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2024-01-07 10:20+0000\n"
-"PO-Revision-Date: 2024-01-08 15:00+0300\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
+"POT-Creation-Date: 2024-01-30 17:14+0000\n"
+"PO-Revision-Date: 2024-02-01 18:50+0300\n"
 "Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: RU\n"
 "Language: ru\n"
@@ -539,8 +539,8 @@ msgstr "Местоположение для которого отображае�
 #: data/org.gnome.Shell.Extensions.desktop.in.in:5
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/extensionsWindow.js:145
-#: subprojects/extensions-app/data/ui/extensions-window.ui:59
+#: subprojects/extensions-app/js/extensionsWindow.js:159
+#: subprojects/extensions-app/data/ui/extensions-window.ui:57
 msgid "Extensions"
 msgstr "Расширения"
 
@@ -549,7 +549,7 @@ msgid "Network Login"
 msgstr "Сетевая авторизация"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:279
+#: subprojects/extensions-app/data/ui/extensions-window.ui:277
 msgid "Something’s gone wrong"
 msgstr "Что-то пошло не так"
 
@@ -577,7 +577,7 @@ msgstr "Посетить домашнюю страницу расширения"
 #: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
 #: js/ui/components/networkAgent.js:115 js/ui/components/polkitAgent.js:146
 #: js/ui/endSessionDialog.js:436 js/ui/extensionDownloader.js:256
-#: js/ui/shellMountOperation.js:387 js/ui/shellMountOperation.js:397
+#: js/ui/shellMountOperation.js:398 js/ui/shellMountOperation.js:408
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -585,7 +585,7 @@ msgstr "Отмена"
 #: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
 #: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
 #: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
-#: js/ui/shellMountOperation.js:337
+#: js/ui/shellMountOperation.js:348
 msgid "Password"
 msgstr "Пароль"
 
@@ -972,7 +972,7 @@ msgid "Settings"
 msgstr "Настройки"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:40
+#: js/ui/calendar.js:38
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -982,43 +982,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:66
+#: js/ui/calendar.js:64
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Вс"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:68
+#: js/ui/calendar.js:66
 msgctxt "grid monday"
 msgid "M"
 msgstr "Пн"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:68
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "Вт"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:72
+#: js/ui/calendar.js:70
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ср"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:74
+#: js/ui/calendar.js:72
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Чт"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:74
 msgctxt "grid friday"
 msgid "F"
 msgstr "Пт"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:78
+#: js/ui/calendar.js:76
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Сб"
@@ -1029,7 +1029,7 @@ msgstr "Сб"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:429
+#: js/ui/calendar.js:427
 msgid "%OB"
 msgstr "%OB"
 
@@ -1042,37 +1042,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:439
+#: js/ui/calendar.js:437
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:501
+#: js/ui/calendar.js:499
 msgid "Previous month"
 msgstr "Предыдущий месяц"
 
-#: js/ui/calendar.js:519
+#: js/ui/calendar.js:517
 msgid "Next month"
 msgstr "Следующий месяц"
 
-#: js/ui/calendar.js:670
+#: js/ui/calendar.js:668
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:729
+#: js/ui/calendar.js:727
 msgid "Week %V"
 msgstr "%V неделя"
 
-#: js/ui/calendar.js:909
+#: js/ui/calendar.js:888
 msgid "No Notifications"
 msgstr "Уведомлений нет"
 
-#: js/ui/calendar.js:965
+#: js/ui/calendar.js:944
 msgid "Do Not Disturb"
 msgstr "Не беспокоить"
 
-#: js/ui/calendar.js:986
+#: js/ui/calendar.js:965
 msgid "Clear"
 msgstr "Очистить"
 
@@ -1114,7 +1114,7 @@ msgstr "Не удалось разблокировать том"
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Установленная версия udisks не поддерживает настройку PIM"
 
-#: js/ui/components/autorunManager.js:319
+#: js/ui/components/autorunManager.js:318
 #, javascript-format
 msgid "Open with %s"
 msgstr "Открыть с помощью %s"
@@ -1148,11 +1148,11 @@ msgid "Service"
 msgstr "Служба"
 
 #: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:408
-#: js/ui/components/networkAgent.js:754 js/ui/components/networkAgent.js:775
+#: js/ui/components/networkAgent.js:757 js/ui/components/networkAgent.js:778
 msgid "Authentication required"
 msgstr "Требуется подтверждение подлинности"
 
-#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:755
+#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:758
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1160,7 +1160,7 @@ msgid ""
 msgstr ""
 "Для доступа к беспроводной сети \"%s\" требуется пароль или ключ шифрования."
 
-#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:762
 msgid "Wired 802.1X authentication"
 msgstr "Проводная аутентификация 802.1X"
 
@@ -1168,15 +1168,15 @@ msgstr "Проводная аутентификация 802.1X"
 msgid "Network name"
 msgstr "Название сети"
 
-#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:763
+#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:766
 msgid "DSL authentication"
 msgstr "Аутентификация DSL"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:768
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:771
 msgid "PIN code required"
 msgstr "Требуется PIN-код"
 
-#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:769
+#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:772
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Для устройства мобильной связи требуется PIN-код"
 
@@ -1184,18 +1184,18 @@ msgstr "Для устройства мобильной связи требует
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:760
-#: js/ui/components/networkAgent.js:764 js/ui/components/networkAgent.js:776
-#: js/ui/components/networkAgent.js:780
+#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:763
+#: js/ui/components/networkAgent.js:767 js/ui/components/networkAgent.js:779
+#: js/ui/components/networkAgent.js:783
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Для подключения к \"%s\" требуется пароль."
 
-#: js/ui/components/networkAgent.js:743 js/ui/status/network.js:2040
+#: js/ui/components/networkAgent.js:744 js/ui/status/network.js:2040
 msgid "Network Manager"
 msgstr "Диспетчер сети"
 
-#: js/ui/components/networkAgent.js:779
+#: js/ui/components/networkAgent.js:782
 msgid "VPN password"
 msgstr "Пароль VPN"
 
@@ -1215,16 +1215,16 @@ msgstr "Подтвердить"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:420
+#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:431
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Не удалось подтвердить подлинность. Попробуйте снова."
 
-#: js/ui/components/telepathyClient.js:831
+#: js/ui/components/telepathyClient.js:793
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "Контакт %s теперь известен как %s"
 
-#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:412
+#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:418
 msgid "Windows"
 msgstr "Окна"
 
@@ -1302,23 +1302,23 @@ msgstr "Добавить мировые часы…"
 msgid "World Clocks"
 msgstr "Мировые часы"
 
-#: js/ui/dateMenu.js:698
+#: js/ui/dateMenu.js:704
 msgid "Loading…"
 msgstr "Загрузка…"
 
-#: js/ui/dateMenu.js:708
+#: js/ui/dateMenu.js:714
 msgid "Go online for weather information"
 msgstr "Подключите интернет для получения информации о погоде"
 
-#: js/ui/dateMenu.js:710
+#: js/ui/dateMenu.js:716
 msgid "Weather information is currently unavailable"
 msgstr "Информация о погоде сейчас недоступна"
 
-#: js/ui/dateMenu.js:720
+#: js/ui/dateMenu.js:726
 msgid "Weather"
 msgstr "Погода"
 
-#: js/ui/dateMenu.js:722
+#: js/ui/dateMenu.js:728
 msgid "Select weather location…"
 msgstr "Выберите ваше местоположение…"
 
@@ -1331,7 +1331,7 @@ msgstr "Выход пользователя %s"
 #: js/ui/endSessionDialog.js:47
 msgctxt "title"
 msgid "Log Out"
-msgstr "Выйти из системы"
+msgstr "Выход из системы"
 
 #: js/ui/endSessionDialog.js:50
 #, javascript-format
@@ -1362,7 +1362,7 @@ msgstr "Выключение"
 #: js/ui/endSessionDialog.js:70
 msgctxt "title"
 msgid "Install Updates & Power Off"
-msgstr "Установить обновления и выключить"
+msgstr "Установка обновлений и выключение"
 
 #: js/ui/endSessionDialog.js:73
 #, javascript-format
@@ -1390,7 +1390,7 @@ msgstr "Перезапуск"
 #: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Install Updates & Restart"
-msgstr "Установить обновления и перезапустить"
+msgstr "Установка обновлений и перезапуск"
 
 #: js/ui/endSessionDialog.js:92
 #, javascript-format
@@ -1424,12 +1424,12 @@ msgstr[2] ""
 
 #: js/ui/endSessionDialog.js:118 js/ui/endSessionDialog.js:139
 msgctxt "button"
-msgid "Restart &amp; Install"
+msgid "Restart & Install"
 msgstr "Перезапустить и установить"
 
 #: js/ui/endSessionDialog.js:120
 msgctxt "button"
-msgid "Install &amp; Power Off"
+msgid "Install & Power Off"
 msgstr "Установить и выключить"
 
 #: js/ui/endSessionDialog.js:121
@@ -1472,7 +1472,7 @@ msgstr "Есть открытые сеансы других пользовате
 #: js/ui/endSessionDialog.js:466
 msgctxt "button"
 msgid "Boot Options"
-msgstr "Опции загрузки"
+msgstr "Параметры загрузки"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: js/ui/endSessionDialog.js:671
@@ -1587,61 +1587,61 @@ msgstr "Выключить"
 msgid "Leave Off"
 msgstr "Оставить выключенными"
 
-#: js/ui/keyboard.js:225 js/ui/status/keyboard.js:872
+#: js/ui/keyboard.js:225 js/ui/status/keyboard.js:899
 msgid "Keyboard Settings"
 msgstr "Настройки клавиатуры"
 
-#: js/ui/lookingGlass.js:725
+#: js/ui/lookingGlass.js:724
 msgid "No extensions installed"
 msgstr "Расширения не установлены"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:786
+#: js/ui/lookingGlass.js:785
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s не сообщал о каких-либо ошибках."
 
-#: js/ui/lookingGlass.js:792
+#: js/ui/lookingGlass.js:791
 msgid "Hide Errors"
 msgstr "Скрыть ошибки"
 
-#: js/ui/lookingGlass.js:796 js/ui/lookingGlass.js:873
+#: js/ui/lookingGlass.js:795 js/ui/lookingGlass.js:872
 msgid "Show Errors"
 msgstr "Показать ошибки"
 
-#: js/ui/lookingGlass.js:805
+#: js/ui/lookingGlass.js:804
 msgid "Active"
 msgstr "Активное"
 
-#: js/ui/lookingGlass.js:808
+#: js/ui/lookingGlass.js:807
 msgid "Inactive"
 msgstr "Неактивное"
 
-#: js/ui/lookingGlass.js:810
+#: js/ui/lookingGlass.js:809
 msgid "Error"
 msgstr "Ошибка"
 
-#: js/ui/lookingGlass.js:812
+#: js/ui/lookingGlass.js:811
 msgid "Out of date"
 msgstr "Устарело"
 
-#: js/ui/lookingGlass.js:814
+#: js/ui/lookingGlass.js:813
 msgid "Downloading"
 msgstr "Загрузка"
 
-#: js/ui/lookingGlass.js:816
+#: js/ui/lookingGlass.js:815
 msgid "Deactivating"
 msgstr "Отключение"
 
-#: js/ui/lookingGlass.js:818
+#: js/ui/lookingGlass.js:817
 msgid "Activating"
 msgstr "Активация"
 
-#: js/ui/lookingGlass.js:851
+#: js/ui/lookingGlass.js:850
 msgid "View Source"
 msgstr "Показать код"
 
-#: js/ui/lookingGlass.js:862
+#: js/ui/lookingGlass.js:861
 msgid "Web Page"
 msgstr "Веб-страница"
 
@@ -1678,15 +1678,21 @@ msgstr "Блокировка экрана отключена"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Для блокировки экрана требуется менеджер дисплеев GNOME."
 
-#: js/ui/messageTray.js:1417
+#. Translators: this is the string displayed in the header when a message
+#. source doesn't have a name
+#: js/ui/messageList.js:427
+msgid "Unknown App"
+msgstr "Неизвестное приложение"
+
+#: js/ui/messageTray.js:1322
 msgid "System Information"
 msgstr "Системная информация"
 
-#: js/ui/mpris.js:205
+#: js/ui/mpris.js:199
 msgid "Unknown artist"
 msgstr "Неизвестный исполнитель"
 
-#: js/ui/mpris.js:215
+#: js/ui/mpris.js:209
 msgid "Unknown title"
 msgstr "Неизвестное название"
 
@@ -1694,11 +1700,11 @@ msgstr "Неизвестное название"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:336
+#: js/ui/overviewControls.js:342
 msgid "Type to search"
 msgstr "Введите для поиска"
 
-#: js/ui/overviewControls.js:400
+#: js/ui/overviewControls.js:406
 msgid "Apps"
 msgstr "Приложения"
 
@@ -1758,12 +1764,12 @@ msgstr "Нажмите любую клавишу для выхода"
 msgid "Activities"
 msgstr "Обзор"
 
-#: js/ui/panel.js:508
+#: js/ui/panel.js:506
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:682
+#: js/ui/panel.js:680
 msgid "Top Bar"
 msgstr "Верхняя панель"
 
@@ -1920,7 +1926,7 @@ msgstr[1] "%d ещё"
 msgstr[2] "%d ещё"
 
 #: js/ui/searchController.js:89
-#: subprojects/extensions-app/data/ui/extensions-window.ui:75
+#: subprojects/extensions-app/data/ui/extensions-window.ui:73
 msgid "Search"
 msgstr "Поиск"
 
@@ -1944,20 +1950,20 @@ msgstr "Скрыть текст"
 msgid "Caps lock is on."
 msgstr "Включён Caps Lock."
 
-#: js/ui/shellMountOperation.js:291
+#: js/ui/shellMountOperation.js:302
 msgid "Hidden Volume"
 msgstr "Скрытый том"
 
-#: js/ui/shellMountOperation.js:294
+#: js/ui/shellMountOperation.js:305
 msgid "Windows System Volume"
 msgstr "Системный том Windows"
 
-#: js/ui/shellMountOperation.js:297
+#: js/ui/shellMountOperation.js:308
 msgid "Uses Keyfiles"
 msgstr "Использует файлы-ключи"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:305
+#: js/ui/shellMountOperation.js:316
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -1965,7 +1971,7 @@ msgstr ""
 "Чтобы разблокировать том, использующий файлы-ключи, используйте вместо этого "
 "утилиту <i>%s</i>."
 
-#: js/ui/shellMountOperation.js:309
+#: js/ui/shellMountOperation.js:320
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
@@ -1973,25 +1979,25 @@ msgstr ""
 "Для разблокирования тома, использующего файлы-ключи, требуется сторонняя "
 "утилита, например <i>Disks</i>."
 
-#: js/ui/shellMountOperation.js:317
+#: js/ui/shellMountOperation.js:328
 msgid "PIM Number"
 msgstr "Номер PIM"
 
-#: js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:387
 msgid "Remember Password"
 msgstr "Запомнить пароль"
 
-#: js/ui/shellMountOperation.js:391
+#: js/ui/shellMountOperation.js:402
 msgid "Unlock"
 msgstr "Разблокировать"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:405
+#: js/ui/shellMountOperation.js:416
 #, javascript-format
 msgid "Open %s"
 msgstr "Открыть \"%s\""
 
-#: js/ui/shellMountOperation.js:441
+#: js/ui/shellMountOperation.js:452
 msgid "The PIM must be a number or empty."
 msgstr "PIM должен содержать цифры или быть пустым."
 
@@ -2088,7 +2094,7 @@ msgstr "Низкая"
 msgid "High"
 msgstr "Высокая"
 
-#: js/ui/status/backlight.js:148 js/ui/status/keyboard.js:854
+#: js/ui/status/backlight.js:148 js/ui/status/keyboard.js:881
 msgid "Keyboard"
 msgstr "Клавиатура"
 
@@ -2149,7 +2155,7 @@ msgstr "Нажатие правой кнопки мыши"
 msgid "Dwell Click"
 msgstr "Нажатие левой кнопки мыши после задержки над кнопкой"
 
-#: js/ui/status/keyboard.js:871
+#: js/ui/status/keyboard.js:898
 msgid "Show Keyboard Layout"
 msgstr "Показать раскладку клавиатуры"
 
@@ -2272,11 +2278,11 @@ msgstr "Настройки мобильной связи"
 msgid "Mobile"
 msgstr "Мобильная"
 
-#: js/ui/status/network.js:2045
+#: js/ui/status/network.js:2047
 msgid "Connection failed"
 msgstr "Сбой подключения"
 
-#: js/ui/status/network.js:2046
+#: js/ui/status/network.js:2048
 msgid "Activation of network connection failed"
 msgstr "Не удалось активировать сетевое подключение"
 
@@ -2337,7 +2343,7 @@ msgid "Power Off…"
 msgstr "Выключение…"
 
 #: js/ui/status/system.js:195
-#: subprojects/extensions-app/data/ui/extensions-window.ui:126
+#: subprojects/extensions-app/data/ui/extensions-window.ui:124
 msgid "Log Out…"
 msgstr "Выйти…"
 
@@ -2350,15 +2356,15 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "Заблокировать экран"
 
-#: js/ui/status/thunderbolt.js:259
+#: js/ui/status/thunderbolt.js:260
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:320
+#: js/ui/status/thunderbolt.js:322
 msgid "Unknown Thunderbolt device"
 msgstr "Неизвестное устройство Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:321
+#: js/ui/status/thunderbolt.js:323
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2367,21 +2373,21 @@ msgstr ""
 "снова подключите устройство, Чтобы начать использовать устройство, отключите "
 "и снова подключите его."
 
-#: js/ui/status/thunderbolt.js:324
+#: js/ui/status/thunderbolt.js:326
 msgid "Unauthorized Thunderbolt device"
 msgstr "Неавторизованное устройство Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:325
+#: js/ui/status/thunderbolt.js:327
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "Новое устройство было обнаружено и должно быть авторизовано администратором."
 
-#: js/ui/status/thunderbolt.js:331
+#: js/ui/status/thunderbolt.js:333
 msgid "Thunderbolt authorization error"
 msgstr "Ошибка авторизации Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:332
+#: js/ui/status/thunderbolt.js:334
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Не удалось авторизовать устройство Thunderbolt: %s"
@@ -2424,7 +2430,7 @@ msgstr "Зеркальное отображение"
 msgid "Join Displays"
 msgstr "Объединить дисплеи"
 
-#. Translators: this is for using only an external display.
+#. Translators: this is for using only external displays.
 #. * Try to keep it under around 15 characters.
 #.
 #: js/ui/switchMonitor.js:41
@@ -2440,23 +2446,23 @@ msgstr "Только встроенный"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:369
+#: js/ui/unlockDialog.js:374
 msgid "%A %B %-d"
 msgstr "%A, %-d %B"
 
-#: js/ui/unlockDialog.js:375
+#: js/ui/unlockDialog.js:380
 msgid "Swipe up to unlock"
 msgstr "Проведите вверх, чтобы разблокировать"
 
-#: js/ui/unlockDialog.js:376
+#: js/ui/unlockDialog.js:381
 msgid "Click or press a key to unlock"
 msgstr "Нажмите клавишу или кнопку мыши, чтобы разблокировать"
 
-#: js/ui/unlockDialog.js:559
+#: js/ui/unlockDialog.js:564
 msgid "Unlock Window"
 msgstr "Разблокировать окно"
 
-#: js/ui/unlockDialog.js:568
+#: js/ui/unlockDialog.js:573
 msgid "Log in as another user"
 msgstr "Войти от имени другого пользователя"
 
@@ -2641,7 +2647,7 @@ msgstr "Управление расширениями GNOME Shell"
 
 #. developer_name tag deprecated with Appstream 1.0
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:19
-#: subprojects/extensions-app/js/extensionsWindow.js:149
+#: subprojects/extensions-app/js/extensionsWindow.js:163
 msgid "The GNOME Project"
 msgstr "Проект GNOME"
 
@@ -2707,12 +2713,12 @@ msgstr "Сведения об ошибке:"
 msgid "Version %s"
 msgstr "Версия %s"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:101
+#: subprojects/extensions-app/js/extensionsWindow.js:115
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Удалить \"%s\"?"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:102
+#: subprojects/extensions-app/js/extensionsWindow.js:116
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2720,15 +2726,15 @@ msgstr ""
 "После удаления расширения, если потребуется использовать его снова, нужно "
 "будет загрузить и установить его заново"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:105
+#: subprojects/extensions-app/js/extensionsWindow.js:119
 msgid "_Cancel"
 msgstr "_Отменить"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:106
+#: subprojects/extensions-app/js/extensionsWindow.js:120
 msgid "_Remove"
 msgstr "_Удалить"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:144
+#: subprojects/extensions-app/js/extensionsWindow.js:158
 msgid "translator-credits"
 msgstr ""
 "Stas Solovey <whats_up@tut.by>, 2011-2020\n"
@@ -2736,7 +2742,7 @@ msgstr ""
 "Alexey Rubtsov <rushills@gmail.com>, 2021\n"
 "Aleksandr Melman <alexmelman88@gmail.com>, 2022-2023"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:197
+#: subprojects/extensions-app/js/extensionsWindow.js:211
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -2783,23 +2789,23 @@ msgstr "Комбинации клавиш"
 msgid "About Extensions"
 msgstr "О приложении"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:66
+#: subprojects/extensions-app/data/ui/extensions-window.ui:64
 msgid "Main Menu"
 msgstr "Главное меню"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:108
+#: subprojects/extensions-app/data/ui/extensions-window.ui:106
 msgid "Search extensions"
 msgstr "Поиск расширений"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:136
+#: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid "_Extensions"
 msgstr "_Расширения"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:145
+#: subprojects/extensions-app/data/ui/extensions-window.ui:143
 msgid "More Information"
 msgstr "Дополнительная информация"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:155
+#: subprojects/extensions-app/data/ui/extensions-window.ui:153
 msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
@@ -2808,31 +2814,31 @@ msgstr ""
 "Рекомендуется отключить все расширения, если у вас возникли проблемы с "
 "системой."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:182
+#: subprojects/extensions-app/data/ui/extensions-window.ui:180
 msgid "User Extensions"
 msgstr "Пользовательские расширения"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:202
+#: subprojects/extensions-app/data/ui/extensions-window.ui:200
 msgid "System Extensions"
 msgstr "Системные расширения"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:237
+#: subprojects/extensions-app/data/ui/extensions-window.ui:235
 msgid "Search Results"
 msgstr "Результаты поиска"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:256
+#: subprojects/extensions-app/data/ui/extensions-window.ui:254
 msgid "No Results Found"
 msgstr "Результатов не найдено"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:257
+#: subprojects/extensions-app/data/ui/extensions-window.ui:255
 msgid "Try a different search."
 msgstr "Попробуйте другой поисковый запрос."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:268
+#: subprojects/extensions-app/data/ui/extensions-window.ui:266
 msgid "No Installed Extensions"
 msgstr "Нет установленных расширений"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:269
+#: subprojects/extensions-app/data/ui/extensions-window.ui:267
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
@@ -2840,7 +2846,7 @@ msgstr ""
 "Чтобы найти и добавить расширения, посетите <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:280
+#: subprojects/extensions-app/data/ui/extensions-window.ui:278
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
