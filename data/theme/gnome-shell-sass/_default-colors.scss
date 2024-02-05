@@ -16,7 +16,7 @@ $success_color: $success_bg_color;
 
 $warning_bg_color: if($variant == 'light', $yellow_4, $yellow_3);
 $warning_fg_color: transparentize(black, .2);
-$warning_color: $success_bg_color;
+$warning_color: $warning_bg_color;
 
 $error_bg_color: if($variant == 'light', $red_3, $red_4);
 $error_fg_color: $light_1;
