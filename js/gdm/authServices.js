@@ -157,6 +157,8 @@ export const AuthServices = GObject.registerClass({
         this._activeServices.clear();
 
         this._clearUserVerifier();
+
+        this._handleClear();
     }
 
     _clearUserVerifier() {
@@ -457,6 +459,8 @@ export const AuthServices = GObject.registerClass({
     }
 
     _handleReset() {}
+
+    _handleClear() {}
 
     _handleUpdateEnabledMechanisms() {}
 
