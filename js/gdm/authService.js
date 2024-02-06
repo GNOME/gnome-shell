@@ -15,6 +15,10 @@ export class AuthService extends Signals.EventEmitter {
     // : 'reset'
     // : 'service-request'
     // : 'ask-question'
+    // : 'mechanism-response'
+    // : 'web-login'
+    // : 'web-login-time-out'
+    // : 'show-failed-notification'
     // : 'cancel'
     // : 'destroy'
 

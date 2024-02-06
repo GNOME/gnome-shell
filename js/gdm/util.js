@@ -35,6 +35,7 @@ const CLONE_FADE_ANIMATION_TIME = 250;
 export const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 export const SWITCHABLE_AUTHENTICATION_KEY = 'enable-switchable-authentication';
 export const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
+export const WEB_LOGIN_AUTHENTICATION_KEY = 'enable-web-authentication';
 export const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
 export const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
 export const BANNER_MESSAGE_KEY = 'banner-message-enable';
@@ -242,8 +243,16 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             (_, ...args) => this.emit('ask-question', serviceName, ...args), this);
         authService.connectObject('mechanism-response',
             (s, ...args) => this._replyWithMechanismResponse(s, serviceName, ...args), this);
+        authService.connectObject('web-login',
+            (_, ...args) => this.emit('web-login', serviceName, ...args), this);
+        authService.connectObject('web-login-close',
+            (_, ...args) => this.emit('web-login-close', ...args), this);
+        authService.connectObject('web-login-time-out',
+            (_, ...args) => this.emit('web-login-time-out', serviceName, ...args), this);
         authService.connectObject('protocol-request-handled',
             (_, ...args) => this._onCustomJSONRequestHandled(serviceName, ...args), this);
+        authService.connectObject('show-failed-notification',
+            (_, ...args) => this.emit('show-failed-notification', ...args), this);
         authService.connectObject('verification-complete',
             () => this._onVerificationComplete(serviceName), this);
         authService.connectObject('verification-failed',
@@ -1339,6 +1348,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         const doneTrying = !shouldRetry || !this._canRetry();
 
         this.emit('verification-failed', serviceName, !doneTrying);
+
         try {
             if (doneTrying) {
                 this._disconnectSignals();

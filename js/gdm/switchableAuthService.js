@@ -1,3 +1,5 @@
+import GLib from 'gi://GLib';
+
 import * as Const from './const.js';
 import * as Util from './util.js';
 import {AuthService} from './authService.js';
@@ -24,6 +26,7 @@ export class SwitchableAuthService extends AuthService {
     getSupportedRoles() {
         return [
             Const.PASSWORD_ROLE_NAME,
+            Const.WEB_LOGIN_ROLE_NAME,
         ];
     }
 
@@ -73,6 +76,7 @@ export class SwitchableAuthService extends AuthService {
     handlesMechanism(mechanism) {
         switch (mechanism.role) {
         case Const.PASSWORD_ROLE_NAME:
+        case Const.WEB_LOGIN_ROLE_NAME:
             return true;
         default:
             return false;
@@ -83,6 +87,8 @@ export class SwitchableAuthService extends AuthService {
         switch (mechanism.role) {
         case Const.PASSWORD_ROLE_NAME:
             return this._startPasswordLogin(mechanism);
+        case Const.WEB_LOGIN_ROLE_NAME:
+            return this._startWebLogin(mechanism);
         default:
             throw GObject.NotImplementedError(`handleMechanism: ${mechanism.id}`);
         }
@@ -105,6 +111,85 @@ export class SwitchableAuthService extends AuthService {
         }
     }
 
+    _startWebLogin(mechanism) {
+        const {
+            init_prompt: initPrompt,
+            link_prompt: linkPrompt,
+            uri, code, timeout,
+        } = mechanism;
+
+        if (!linkPrompt || !uri)
+            return true;
+
+        if (timeout) {
+            this._webLoginTimeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT,
+                timeout, () => {
+                    this.emit('web-login-time-out');
+                    this._webLoginTimeoutId = 0;
+                    return GLib.SOURCE_REMOVE;
+                });
+        }
+
+        const buttons = mechanism.buttons ?? [];
+        const webLoginArgs = [initPrompt, linkPrompt, uri, code, buttons];
+
+        if (buttons?.length) {
+            this.emit('web-login', ...webLoginArgs);
+            return true;
+        }
+
+        buttons.push({
+            default: true,
+            needsLoading: true,
+            label: _('Done'),
+            action: () => {
+                if (this._doneButtonTracker) {
+                    this._userVerifier.disconnectObject(this._doneButtonTracker);
+                    this.disconnectObject(this._doneButtonTracker);
+                } else {
+                    this._doneButtonTracker = {};
+                }
+
+                this.connectObject('service-request', () => {
+                    this._userVerifier.disconnectObject(this._doneButtonTracker);
+                    this.emit('web-login-close');
+                }, this._doneButtonTracker);
+
+                this._userVerifier.connectObject(
+                    'verification-complete', () => {
+                        this._userVerifier.disconnectObject(this._doneButtonTracker);
+                        this.emit('web-login-close');
+                    },
+
+                    'verification-failed', () => {
+                        this._userVerifier.disconnectObject(this._doneButtonTracker);
+                        this.emit('web-login-close');
+                        this.emit('show-failed-notification');
+                        this.emit('reset');
+                    },
+                    this._doneButtonTracker);
+
+                this._webLoginDone(mechanism.role);
+            },
+        });
+
+        this.emit('web-login', ...webLoginArgs);
+        return true;
+    }
+
+    _clearWebLoginTimeout() {
+        if (!this._webLoginTimeoutId)
+            return;
+
+        GLib.source_remove(this._webLoginTimeoutId);
+        delete this._webLoginTimeoutId;
+    }
+
+    _webLoginDone(role) {
+        this.emit('mechanism-response', role, {});
+        this._clearWebLoginTimeout();
+    }
+
     getProtocolResponse(mechanism, role, response) {
         return {
             'auth-selection': {
@@ -116,6 +201,11 @@ export class SwitchableAuthService extends AuthService {
 
     clear() {
         super.clear();
+
+        this._clearWebLoginTimeout();
+        this.disconnectObject(this._doneButtonTracker);
+        this._userVerifier.disconnectObject(this._doneButtonTracker);
+        delete this._doneButtonTracker;
     }
 
     destroy() {
