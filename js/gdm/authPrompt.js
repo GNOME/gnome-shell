@@ -51,6 +51,7 @@ export const AuthPrompt = GObject.registerClass({
         'failed': {},
         'next': {},
         'prompted': {param_types: [GObject.TYPE_STRING]},
+        'mechanisms-changed': {param_types: [GObject.TYPE_JSOBJECT, GObject.TYPE_JSOBJECT]},
         'reset': {param_types: [GObject.TYPE_UINT]},
     },
 }, class AuthPrompt extends St.BoxLayout {
@@ -81,6 +82,8 @@ export const AuthPrompt = GObject.registerClass({
         this._userVerifier.connect('ask-question', this._onAskQuestion.bind(this));
         this._userVerifier.connect('show-message', this._onShowMessage.bind(this));
         this._userVerifier.connect('show-choice-list', this._onShowChoiceList.bind(this));
+        this._userVerifier.connect('mechanisms-changed', (_, ...args) => this.emit('mechanisms-changed', ...args));
+        this._userVerifier.connect('mechanism-selected', (...args) => this._onMechanismSelected(...args));
         this._userVerifier.connect('verification-failed', this._onVerificationFailed.bind(this));
         this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
         this._userVerifier.connect('reset', this._onReset.bind(this));
@@ -89,6 +92,7 @@ export const AuthPrompt = GObject.registerClass({
         this.smartcardDetected = this._userVerifier.smartcardDetected;
 
         this.connect('destroy', this._onDestroy.bind(this));
+        this.mechanisms = new Map();
 
         this._userWell = new St.Bin({
             x_expand: true,
@@ -422,6 +426,11 @@ export const AuthPrompt = GObject.registerClass({
             this.reset();
     }
 
+    _onMechanismSelected() {
+        if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
+            this.reset({ beginRequestType: BeginRequestType.REUSE_USERNAME });
+    }
+
     _onShowMessage(_userVerifier, serviceName, message, type) {
         let wiggleParameters = {duration: 0};
 
@@ -703,6 +712,10 @@ export const AuthPrompt = GObject.registerClass({
 
         if (!user)
             this._updateEntry(false);
+    }
+
+    selectMechanism(mechanism) {
+        this._userVerifier.selectMechanism(mechanism);
     }
 
     _showLoginFailedNotification() {

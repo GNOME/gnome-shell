@@ -5,6 +5,7 @@ import GLib from 'gi://GLib';
 import * as Signals from '../misc/signals.js';
 
 import * as Batch from './batch.js';
+import * as Const from './const.js';
 import * as OVirt from './oVirt.js';
 import * as Vmware from './vmware.js';
 import * as Main from '../ui/main.js';
@@ -895,6 +896,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     _onConversationStopped(client, serviceName) {
         this._activeServices.delete(serviceName);
+        this.emit('mechanisms-list-changed', serviceName, []);
 
         // If the login failed with the preauthenticated oVirt credentials
         // then discard the credentials and revert to default authentication
