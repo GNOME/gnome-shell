@@ -11,19 +11,52 @@ import * as Params from '../misc/params.js';
 const ANIMATED_ICON_UPDATE_TIMEOUT = 16;
 const SPINNER_ANIMATION_TIME = 300;
 const SPINNER_ANIMATION_DELAY = 1000;
+const SPINNER_ANIMATION_CELL_SIZE = 16;
 
 export const Animation = GObject.registerClass(
 class Animation extends St.Bin {
-    _init(file, width, height, speed) {
+    _init(params) {
         const themeContext = St.ThemeContext.get_for_stage(global.stage);
+        params = Params.parse(params, {
+            file: null,
+            cellWidth: null,
+            cellHeight: null,
+            frameWidth: null,
+            frameHeight: null,
+            speed: 0,
+        });
+
+        const {file, speed} = params;
+        let { frameWidth, frameHeight, cellHeight, cellWidth } = params;
+
+        if (!cellWidth)
+            throw new Error('Animation has unspecified cell width');
+
+        if (!frameHeight) {
+            if (frameWidth)
+                frameHeight = frameWidth;
+            else
+                frameHeight = cellHeight;
+        }
+
+        if (!frameWidth)
+            frameWidth = cellWidth;
+
+        if (!cellHeight)
+            cellHeight = cellWidth;
+
+        if (!frameHeight)
+            frameHeight = cellWidth;
 
         super._init({
-            style: `width: ${width}px; height: ${height}px;`,
+            style: `width: ${frameWidth}px; height: ${frameHeight}px;`,
         });
 
         this._file = file;
-        this._width = width;
-        this._height = height;
+        this._cellWidth = cellWidth;
+        this._cellHeight = cellHeight;
+        this._frameWidth = frameWidth;
+        this._frameHeight = frameHeight;
 
         this.connect('destroy', this._onDestroy.bind(this));
         this.connect('resource-scale-changed',
@@ -33,8 +66,8 @@ class Animation extends St.Bin {
             () => {
                 this._loadFile();
                 this.set_size(
-                    this._width * themeContext.scale_factor,
-                    this._height * themeContext.scale_factor);
+                    this._frameWidth * themeContext.scale_factor,
+                    this._frameHeight * themeContext.scale_factor);
             }, this);
 
         this._speed = speed;
@@ -81,7 +114,8 @@ class Animation extends St.Bin {
         let textureCache = St.TextureCache.get_default();
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         this._animations = textureCache.load_sliced_image(this._file,
-            this._width, this._height,
+            this._cellWidth, this._cellHeight,
+            this._frameWidth, this._frameHeight,
             scaleFactor, resourceScale,
             () => this._loadFinished());
         this._animations.set({
@@ -126,8 +160,14 @@ class Animation extends St.Bin {
 
 export const AnimatedIcon = GObject.registerClass(
 class AnimatedIcon extends Animation {
-    _init(file, size) {
-        super._init(file, size, size, ANIMATED_ICON_UPDATE_TIMEOUT);
+    _init(params) {
+        const { file, cellSize, frameSize } = params;
+
+        super._init({file,
+            cellWidth: cellSize,
+            frameWidth: frameSize,
+            speed: ANIMATED_ICON_UPDATE_TIMEOUT,
+        });
     }
 });
 
@@ -142,7 +182,11 @@ class Spinner extends AnimatedIcon {
             'resource:///org/gnome/shell/theme/process-working-dark.svg');
         this._fileLight = Gio.File.new_for_uri(
             'resource:///org/gnome/shell/theme/process-working-light.svg');
-        super._init(this._fileDark, size);
+        super._init({
+            file: this._fileDark,
+            cellSize: SPINNER_ANIMATION_CELL_SIZE,
+            frameSize: size
+        });
 
         this.connect('style-changed', () => {
             const themeNode = this.get_theme_node();
