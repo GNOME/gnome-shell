@@ -156,7 +156,7 @@ export const AuthPrompt = GObject.registerClass({
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             reactive: this._hasCancelButton,
             can_focus: this._hasCancelButton,
-            x_align: Clutter.ActorAlign.START,
+            x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.CENTER,
             icon_name: 'go-previous-symbolic',
         });
