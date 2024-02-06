@@ -48,6 +48,7 @@ const _SCROLL_ANIMATION_TIME = 500;
 const _FIXED_TOP_ACTOR_HEIGHT = 400;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _CONFLICTING_SESSION_DIALOG_TIMEOUT = 60;
+const _PRIMARY_LOGIN_METHOD_SECTION_NAME = _('Login Options');
 const _SESSION_TYPE_SECTION_NAME = _('Session Type');
 
 const N_A11Y_MENU_COLUMNS = 2;
@@ -432,6 +433,7 @@ export const LoginDialog = GObject.registerClass({
         this._authPrompt.connect('reset', this._onReset.bind(this));
         this._authPrompt.connect('verification-complete', this._onVerificationComplete.bind(this));
         this._authPrompt.connect('loading', this._onLoading.bind(this));
+        this._authPrompt.connect('mechanisms-changed', this._onMechanismsChanged.bind(this));
         this._authPrompt.hide();
         this.add_child(this._authPrompt);
 
@@ -524,7 +526,7 @@ export const LoginDialog = GObject.registerClass({
     _createAuthMenuButton() {
         this._authMenuButton = new AuthMenuButton.AuthMenuButton({
             accessible_name: _('Login Options'),
-            sectionOrder: [_SESSION_TYPE_SECTION_NAME],
+            sectionOrder: [_PRIMARY_LOGIN_METHOD_SECTION_NAME, _SESSION_TYPE_SECTION_NAME],
             animateVisibility: true,
             visible: false,
         });
@@ -534,7 +536,9 @@ export const LoginDialog = GObject.registerClass({
             if (!item)
                 return;
 
-            if (sectionName === _SESSION_TYPE_SECTION_NAME)
+            if (sectionName === _PRIMARY_LOGIN_METHOD_SECTION_NAME)
+                this._selectAuthMechanism(item);
+            else if (sectionName === _SESSION_TYPE_SECTION_NAME)
                 this._greeter.call_select_session(item.id, null).catch(logError);
 
             this._authMenuButton.closeMenu();
@@ -569,6 +573,20 @@ export const LoginDialog = GObject.registerClass({
                 id,
             });
         }
+    }
+
+    _selectAuthMechanism(authMechanism) {
+        const oldMechanism = this._selectedAuthMechanism;
+
+        if (authMechanism === oldMechanism)
+            return;
+
+        if (!this._authPrompt.selectMechanism(authMechanism)) {
+            this._authMenuButton.setActiveItem(oldMechanism);
+            return;
+        }
+
+        this._selectedAuthMechanism = authMechanism;
     }
 
     _getBannerAllocation(dialogBox) {
@@ -1007,6 +1025,27 @@ export const LoginDialog = GObject.registerClass({
 
     _onLoading(_authPrompt, isLoading) {
         this._authMenuButton.reactive = !isLoading;
+    }
+
+    _onMechanismsChanged(_authPrompt, mechanisms, selectedMechanism) {
+        this._authMenuButton.clearItems({
+            sectionName: _PRIMARY_LOGIN_METHOD_SECTION_NAME,
+        });
+
+        if (mechanisms.length === 0)
+            return;
+
+        for (const m of mechanisms) {
+            if (GdmUtil.isSelectable(m)) {
+                this._authMenuButton.addItem({
+                    sectionName: _PRIMARY_LOGIN_METHOD_SECTION_NAME,
+                    ...m,
+                });
+            }
+        }
+
+        if (Object.keys(selectedMechanism).length > 0)
+            this._authMenuButton.setActiveItem(selectedMechanism);
     }
 
     _onDefaultSessionChanged(client, sessionId) {
