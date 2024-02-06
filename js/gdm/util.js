@@ -30,6 +30,10 @@ export const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 export const SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
 const CLONE_FADE_ANIMATION_TIME = 250;
 
+export const PASSWORD_ROLE_NAME = 'password';
+export const SMARTCARD_ROLE_NAME = 'smartcard';
+export const FINGERPRINT_ROLE_NAME = 'fingerprint';
+
 export const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 export const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
 export const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
@@ -45,6 +49,35 @@ export const DISABLE_USER_LIST_KEY = 'disable-user-list';
 const USER_READ_TIME = 48;
 const FINGERPRINT_SERVICE_PROXY_TIMEOUT = 5000;
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
+
+const DiscreteServiceMechanismDefinitions = [
+    {
+        serviceName: PASSWORD_SERVICE_NAME,
+        mechanismId: "password",
+        mechanismName: _("Password"),
+        setting: PASSWORD_AUTHENTICATION_KEY,
+        role: PASSWORD_ROLE_NAME,
+        selectable: true,
+    },
+
+    {
+        serviceName: SMARTCARD_SERVICE_NAME,
+        mechanismId: "smartcard",
+        mechanismName: _("Smartcard"),
+        setting: SMARTCARD_AUTHENTICATION_KEY,
+        role: SMARTCARD_ROLE_NAME,
+        selectable: true,
+    },
+
+    {
+        serviceName: FINGERPRINT_SERVICE_NAME,
+        mechanismId: "fingerprint",
+        mechanismName: _("Fingerprint"),
+        setting: FINGERPRINT_AUTHENTICATION_KEY,
+        role: FINGERPRINT_ROLE_NAME,
+        selectable: false,
+    },
+];
 
 /**
  * Keep messages in order by priority
@@ -108,6 +141,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         this._defaultService = null;
         this._preemptingService = null;
+        this._foregroundMechanism = null;
         this._fingerprintReaderType = FingerprintReaderType.NONE;
 
         this._messageQueue = [];
@@ -116,6 +150,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._failCounter = 0;
         this._activeServices = new Set();
         this._unavailableServices = new Set();
+        this._activeServices = new Set();
+        this._pendingMechanisms = new Map();
 
         this._credentialManagers = {};
 
@@ -194,6 +230,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _clearUserVerifier() {
+        this._pendingMechanisms.clear();
         if (this._userVerifier) {
             this._disconnectSignals();
             this._userVerifier.run_dispose();
@@ -395,6 +432,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     _handleFingerprintError(e) {
         this._fingerprintReaderType = FingerprintReaderType.NONE;
 
+        logError(e);
+
         if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
             return;
         if (e.matches(Gio.DBusError, Gio.DBusError.SERVICE_UNKNOWN))
@@ -446,7 +485,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _onCredentialManagerAuthenticated(credentialManager, _token) {
-        this._preemptingService = credentialManager.service;
+        this.setForegroundService(credentialManager.service);
         this.emit('credential-manager-authenticated');
     }
 
@@ -482,9 +521,9 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this.smartcardDetected = smartcardDetected;
 
             if (this.smartcardDetected)
-                this._preemptingService = SMARTCARD_SERVICE_NAME;
+                this.setForegroundService(SMARTCARD_SERVICE_NAME);
             else if (this._preemptingService === SMARTCARD_SERVICE_NAME)
-                this._preemptingService = null;
+                this.setForegroundService(null);
 
             this.emit('smartcard-status-changed');
         }
@@ -586,6 +625,49 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         return this._defaultService;
     }
 
+    setForegroundService(serviceName) {
+        if (this._getForegroundService() === serviceName)
+            return;
+
+        this._preemptingService = serviceName;
+        this.emit('foreground-service-changed');
+    }
+
+    _getForegroundMechanism() {
+        if (this._foregroundMechanism)
+            return this._foregroundMechanism;
+
+        const foregroundService = this._getForegroundService();
+        if (foregroundService === this._defaultService) {
+            const definition = DiscreteServiceMechanismDefinitions.find(definition => definition.serviceName === foregroundService);
+
+            if (!definition)
+                return null;
+
+            const { mechanismName, mechanismId, role, serviceName } = definition;
+
+            return { name: mechanismName, id: mechanismId, role, serviceName };
+        }
+
+        return null;
+    }
+
+    setForegroundMechanism(mechanism) {
+        const foregroundMechanism = this._getForegroundMechanism();
+
+        this._foregroundMechanism = mechanism;
+
+        if (foregroundMechanism === mechanism)
+            return;
+
+        if (foregroundMechanism?.role === mechanism?.role &&
+            foregroundMechanism?.mechanismName === mechanism?.mechanismName &&
+            foregroundMechanism?.serviceName === mechanism?.serviceName)
+            return;
+
+        this.emit('foreground-mechanism-changed');
+    }
+
     serviceIsForeground(serviceName) {
         return serviceName === this._getForegroundService();
     }
@@ -666,6 +748,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     async _startService(serviceName) {
+        this._activeServices.add(serviceName);
         this._hold.acquire();
         try {
             this._activeServices.add(serviceName);
@@ -696,16 +779,24 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._hold.release();
     }
 
-    _beginVerification() {
-        this._startService(this._getForegroundService());
-        this._maybeStartFingerprintVerification().catch(logError);
-    }
-
     async _maybeStartFingerprintVerification() {
         if (this._userName &&
             this._fingerprintReaderType !== FingerprintReaderType.NONE &&
             !this.serviceIsForeground(FINGERPRINT_SERVICE_NAME))
             await this._startService(FINGERPRINT_SERVICE_NAME);
+    }
+
+    _startBackgroundServices() {
+        this._maybeStartFingerprintVerification().catch(logError);
+    }
+
+    _beginVerification() {
+        const foregroundService = this._getForegroundService();
+
+        this._synthesizeMechanismsFromServices();
+
+        this._startService(foregroundService);
+        this._startBackgroundServices();
     }
 
     _onChoiceListQuery(client, serviceName, promptMessage, list) {
@@ -795,11 +886,29 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this.emit('ask-question', serviceName, secretQuestion, true);
     }
 
+    _generateMechanismsFromDiscreteServices() {
+        for (const definition of DiscreteServiceMechanismDefinitions) {
+            const enabled = this._settings.get_boolean(definition.setting);
+            const available = this._activeServices.has(definition.serviceName) && !this._unavailableServices.has(definition.serviceName);
+
+            let mechanismsList = [];
+            if (enabled && available)
+                mechanismsList.push({
+                    id: definition.mechanismId,
+                    name: definition.mechanismName,
+                    role: definition.role,
+                    selectable: definition.selectable,
+                });
+            this.emit('mechanisms-list-changed', serviceName, mechanismsList);
+        }
+    }
+
     _onReset() {
         // Clear previous attempts to authenticate
         this._failCounter = 0;
         this._activeServices.clear();
         this._unavailableServices.clear();
+        this._activeServices.clear();
         this._updateDefaultService();
 
         this.emit('reset');
@@ -887,6 +996,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     _onConversationStopped(client, serviceName) {
         this._activeServices.delete(serviceName);
+        this.emit('mechanisms-list-changed', serviceName, []);
 
         // If the login failed with the preauthenticated oVirt credentials
         // then discard the credentials and revert to default authentication
@@ -895,7 +1005,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this.serviceIsForeground(service));
         if (foregroundService) {
             this._credentialManagers[foregroundService].token = null;
-            this._preemptingService = null;
+            this.setForegroundService(null);
             this._verificationFailed(serviceName, false);
             return;
         }
