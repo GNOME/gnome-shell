@@ -9,6 +9,7 @@ import * as Main from '../ui/main.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as Params from '../misc/params.js';
 import {AuthServicesLegacy} from './authServicesLegacy.js';
+import {AuthServicesSSSDSwitchable} from './authServicesSSSDSwitchable.js';
 
 export const CLONE_FADE_ANIMATION_TIME = 250;
 
@@ -16,6 +17,7 @@ export const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 export const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
 export const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
 export const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
+export const SWITCHABLE_AUTHENTICATION_KEY = 'enable-switchable-authentication';
 export const BANNER_MESSAGE_KEY = 'banner-message-enable';
 export const BANNER_MESSAGE_SOURCE_KEY = 'banner-message-source';
 export const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
@@ -163,6 +165,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         try {
             const proxies = await this._getUserVerifierProxies(userName, this._cancellable);
             this._setUserVerifier(proxies.userVerifier);
+            await this._authServicesSSSDSwitchable?.beginVerification(userName, proxies);
             await this._authServicesLegacy?.beginVerification(userName, proxies);
         } catch (e) {
             if (e instanceof InitError)
@@ -173,14 +176,19 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     selectMechanism(mechanism) {
-        return this._authServicesLegacy?.selectMechanism(mechanism);
+        let selected = false;
+        selected |= this._authServicesSSSDSwitchable?.selectMechanism(mechanism);
+        selected |= this._authServicesLegacy?.selectMechanism(mechanism);
+        return selected;
     }
 
     needsUsername() {
-        return this._authServicesLegacy?.needsUsername();
+        return this._authServicesSSSDSwitchable?.needsUsername() ||
+            this._authServicesLegacy?.needsUsername();
     }
 
     reset() {
+        this._authServicesSSSDSwitchable?.reset();
         this._authServicesLegacy?.reset();
 
         this._userVerifier?.call_cancel_sync(null);
@@ -189,6 +197,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     cancel() {
+        this._authServicesSSSDSwitchable?.cancel();
         this._authServicesLegacy?.cancel();
 
         this._userVerifier?.call_cancel_sync(null);
@@ -197,6 +206,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     clear() {
+        this._authServicesSSSDSwitchable?.clear();
         this._authServicesLegacy?.clear();
 
         this._clearMessageQueue();
@@ -221,6 +231,9 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     destroy() {
+        this._authServicesSSSDSwitchable?.destroy();
+        this._authServicesSSSDSwitchable = null;
+
         this._authServicesLegacy?.destroy();
         this._authServicesLegacy = null;
 
@@ -231,6 +244,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     selectChoice(serviceName, key) {
+        this._authServicesSSSDSwitchable?.selectChoice(serviceName, key);
         this._authServicesLegacy?.selectChoice(serviceName, key);
     }
 
@@ -239,6 +253,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         // ensure no messages get lost
         await this._handlePendingMessages().catch(logErrorUnlessCancelled);
 
+        this._authServicesSSSDSwitchable?.answerQuery(serviceName, answer);
         this._authServicesLegacy?.answerQuery(serviceName, answer);
     }
 
@@ -415,10 +430,15 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         if (this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY))
             enabledRoles.push(Constants.FINGERPRINT_ROLE_NAME);
 
-        if (JSON.stringify(enabledRoles) === JSON.stringify(this._enabledRoles))
+        const switchableAuthentication =
+            this._settings.get_boolean(SWITCHABLE_AUTHENTICATION_KEY);
+
+        if (JSON.stringify(enabledRoles) === JSON.stringify(this._enabledRoles) &&
+            switchableAuthentication === this._switchableAuthenticationEnabled)
             return;
 
         this._enabledRoles = enabledRoles;
+        this._switchableAuthenticationEnabled = switchableAuthentication;
 
         this._createAuthServices();
     }
@@ -432,19 +452,25 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             allowedFailures: this.allowedFailures,
             reauthOnly: this._reauthOnly,
         };
-        if (AuthServicesLegacy.supportsAny(this._enabledRoles))
+        if (this._switchableAuthenticationEnabled &&
+            AuthServicesSSSDSwitchable.supportsAny(this._enabledRoles))
+            this._authServicesSSSDSwitchable = new AuthServicesSSSDSwitchable(params);
+        else if (AuthServicesLegacy.supportsAny(this._enabledRoles))
             this._authServicesLegacy = new AuthServicesLegacy(params);
 
         this._connectAuthServices();
     }
 
     _clearAuthServices() {
+        this._authServicesSSSDSwitchable?.destroy();
+        this._authServicesSSSDSwitchable = null;
         this._authServicesLegacy?.destroy();
         this._authServicesLegacy = null;
     }
 
     _connectAuthServices() {
         [
+            this._authServicesSSSDSwitchable,
             this._authServicesLegacy,
         ].forEach(authServices => {
             authServices?.connectObject(
@@ -468,11 +494,15 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     get selectedMechanism() {
-        return this._authServicesLegacy?.selectedMechanism ?? null;
+        return this._authServicesSSSDSwitchable?.selectedMechanism ??
+            this._authServicesLegacy?.selectedMechanism ??
+            null;
     }
 
     _onMechanismsChanged() {
-        const mechanisms = this._authServicesLegacy?.enabledMechanisms ?? [];
+        const mechanismsSwitchable = this._authServicesSSSDSwitchable?.enabledMechanisms ?? [];
+        const mechanismsLegacy = this._authServicesLegacy?.enabledMechanisms ?? [];
+        const mechanisms = [...mechanismsSwitchable, ...mechanismsLegacy];
 
         const selectedMechanism = this.selectedMechanism ??
             mechanisms.find(m => isSelectable(m)) ??
