@@ -614,7 +614,8 @@ export const Source = GObject.registerClass({
 
         this.notifications = [];
 
-        this._policy = this._createPolicy();
+        if (!this._policy)
+            this._policy = this._createPolicy();
     }
 
     get policy() {
