@@ -120,7 +120,7 @@
           'org.gnome.gedit.desktop': <{'position': <9>}>,
           'simple-scan.desktop': <{'position': <10>}>,
           'org.gnome.Settings.desktop': <{'position': <11>}>,
-          'gnome-system-monitor.desktop': <{'position': <12>}>,
+          'org.gnome.SystemMonitor.desktop': <{'position': <12>}>,
           'org.gnome.Boxes.desktop': <{'position': <13>}>,
           'org.gnome.Terminal.desktop': <{'position': <14>}>,
           'Utilities': <{'position': <15>}>,
