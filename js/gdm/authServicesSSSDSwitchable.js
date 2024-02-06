@@ -1,3 +1,4 @@
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
 import * as Const from './const.js';
@@ -15,10 +16,12 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
     static SupportedRoles = [
         Const.PASSWORD_ROLE_NAME,
+        Const.WEB_LOGIN_ROLE_NAME,
     ];
 
     static RoleToService = {
         [Const.PASSWORD_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
+        [Const.WEB_LOGIN_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
     };
 
     static {
@@ -58,6 +61,9 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         case Const.PASSWORD_ROLE_NAME:
             this._startPasswordLogin();
             break;
+        case Const.WEB_LOGIN_ROLE_NAME:
+            this._startWebLogin();
+            break;
         }
     }
 
@@ -94,6 +100,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         this._selectedMechanism = null;
 
         this._resettingPassword = false;
+
+        this._clearWebLoginTimeout();
     }
 
     _handleOnCustomJSONRequest(_serviceName, _protocol, _version, json) {
@@ -130,6 +138,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             // filter out mechanisms with roles that are not enabled
             .filter(m => this._enabledRoles.includes(m.role)));
 
+        this._trackWebLoginTimeout();
+
         const selectedMechanism =
             this._enabledMechanisms
                 .find(m => this._savedMechanism?.role === m.role) ??
@@ -139,6 +149,31 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         this.selectMechanism(selectedMechanism);
 
         this._savedMechanism = null;
+    }
+
+    _trackWebLoginTimeout() {
+        this._clearWebLoginTimeout();
+
+        const webLoginMechanism = this._enabledMechanisms
+            .find(m => m.role === Const.WEB_LOGIN_ROLE_NAME);
+        if (!webLoginMechanism)
+            return;
+
+        const {timeout} = webLoginMechanism;
+        if (!timeout)
+            return;
+
+        this._webLoginTimeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT,
+            timeout, () => {
+                if (this._selectedMechanism?.role !== Const.WEB_LOGIN_ROLE_NAME)
+                    webLoginMechanism.needsRefresh = true;
+                else
+                    this.emit('reset', {softReset: true});
+
+                this._webLoginTimeoutId = 0;
+
+                return GLib.SOURCE_REMOVE;
+            });
     }
 
     _handleOnInfo(serviceName, info) {
@@ -209,6 +244,10 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             response = {password: answer};
             break;
         }
+        case Const.WEB_LOGIN_ROLE_NAME: {
+            response = {};
+            break;
+        }
         default:
             throw new GObject.NotImplementedError(`formatResponse: ${role}`);
         }
@@ -246,5 +285,48 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         const {serviceName, prompt} = this._selectedMechanism;
 
         this.emit('ask-question', serviceName, prompt, true);
+    }
+
+    _startWebLogin() {
+        const {
+            serviceName,
+            initPrompt, linkPrompt,
+            uri, code, needsRefresh,
+        } = this._selectedMechanism;
+
+        if (!linkPrompt || !uri)
+            return;
+
+        if (needsRefresh) {
+            this.emit('reset', {softReset: true});
+            return;
+        }
+
+        const buttons = [{
+            default: true,
+            needsLoading: true,
+            label: _('Done'),
+            action: () => this._webLoginDone(),
+        }];
+
+        this.emit('web-login', serviceName, initPrompt, linkPrompt, uri, code, buttons);
+    }
+
+    _webLoginDone() {
+        if (this._selectedMechanism?.role !== Const.WEB_LOGIN_ROLE_NAME)
+            return;
+
+        const response = this._formatResponse();
+        this._sendResponse(response);
+
+        this._clearWebLoginTimeout();
+    }
+
+    _clearWebLoginTimeout() {
+        if (!this._webLoginTimeoutId)
+            return;
+
+        GLib.source_remove(this._webLoginTimeoutId);
+        this._webLoginTimeoutId = 0;
     }
 }

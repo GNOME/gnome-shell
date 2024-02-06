@@ -45,6 +45,12 @@ export class AuthServices extends GObject.Object {
             param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_JSOBJECT],
         },
         'mechanisms-changed': {},
+        'web-login': {
+            param_types: [
+                GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_STRING,
+                GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_JSOBJECT,
+            ],
+        },
     };
 
     static {
