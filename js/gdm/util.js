@@ -5,6 +5,7 @@ import GLib from 'gi://GLib';
 import * as Signals from '../misc/signals.js';
 
 import * as Batch from './batch.js';
+import * as Const from './const.js';
 import * as OVirt from './oVirt.js';
 import * as Vmware from './vmware.js';
 import * as Main from '../ui/main.js';
@@ -45,6 +46,42 @@ export const DISABLE_USER_LIST_KEY = 'disable-user-list';
 const USER_READ_TIME = 48;
 const FINGERPRINT_SERVICE_PROXY_TIMEOUT = 5000;
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
+
+// Note these are specified in order of preference
+const DiscreteServiceMechanismDefinitions = [
+    {
+        serviceName: PASSWORD_SERVICE_NAME,
+        protocol: 'discrete',
+        mechanismId: 'password',
+        mechanismName: _('Password'),
+        iconName: 'dialog-password-symbolic',
+        setting: PASSWORD_AUTHENTICATION_KEY,
+        role: Const.PASSWORD_ROLE_NAME,
+        selectable: true,
+    },
+
+    {
+        serviceName: SMARTCARD_SERVICE_NAME,
+        protocol: 'discrete',
+        mechanismId: 'smartcard',
+        mechanismName: _('Smartcard'),
+        iconName: 'application-certificate-symbolic',
+        setting: SMARTCARD_AUTHENTICATION_KEY,
+        role: Const.SMARTCARD_ROLE_NAME,
+        selectable: true,
+    },
+
+    {
+        serviceName: FINGERPRINT_SERVICE_NAME,
+        protocol: 'discrete',
+        mechanismId: 'fingerprint',
+        mechanismName: _('Fingerprint'),
+        iconName: 'fingerprint-auth-symbolic',
+        setting: FINGERPRINT_AUTHENTICATION_KEY,
+        role: Const.FINGERPRINT_ROLE_NAME,
+        selectable: false,
+    },
+];
 
 /**
  * Keep messages in order by priority
@@ -108,6 +145,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         this._defaultService = null;
         this._preemptingService = null;
+        this._foregroundMechanism = null;
         this._fingerprintReaderType = FingerprintReaderType.NONE;
 
         this._messageQueue = [];
@@ -116,6 +154,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._failCounter = 0;
         this._activeServices = new Set();
         this._unavailableServices = new Set();
+        this._pendingMechanisms = new Map();
 
         this._credentialManagers = {};
 
@@ -194,6 +233,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _clearUserVerifier() {
+        this._pendingMechanisms.clear();
         if (this._userVerifier) {
             this._disconnectSignals();
             this._userVerifier.run_dispose();
@@ -447,7 +487,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _onCredentialManagerAuthenticated(credentialManager, _token) {
-        this._preemptingService = credentialManager.service;
+        this.setForegroundService(credentialManager.service);
         this.emit('credential-manager-authenticated');
     }
 
@@ -483,9 +523,9 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this.smartcardDetected = smartcardDetected;
 
             if (this.smartcardDetected)
-                this._preemptingService = SMARTCARD_SERVICE_NAME;
+                this.setForegroundService(SMARTCARD_SERVICE_NAME);
             else if (this._preemptingService === SMARTCARD_SERVICE_NAME)
-                this._preemptingService = null;
+                this.setForegroundService(null);
 
             this.emit('smartcard-status-changed');
         }
@@ -587,6 +627,51 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         return this._defaultService;
     }
 
+    setForegroundService(serviceName) {
+        if (this._getForegroundService() === serviceName)
+            return;
+
+        this._preemptingService = serviceName;
+        this.emit('foreground-service-changed');
+    }
+
+    getForegroundMechanism() {
+        if (this._foregroundMechanism)
+            return this._foregroundMechanism;
+
+        const foregroundService = this._getForegroundService();
+        if (foregroundService === this._defaultService) {
+            const definition = DiscreteServiceMechanismDefinitions.find(
+                def => def.serviceName === foregroundService);
+
+            if (!definition)
+                return null;
+
+            const {mechanismName, mechanismId, role, serviceName, protocol} = definition;
+
+            return {name: mechanismName, id: mechanismId, role, serviceName, protocol};
+        }
+
+        return null;
+    }
+
+    setForegroundMechanism(mechanism) {
+        const foregroundMechanism = this.getForegroundMechanism();
+
+        this._foregroundMechanism = mechanism;
+
+        if (foregroundMechanism === mechanism)
+            return;
+
+        if (foregroundMechanism?.role === mechanism?.role &&
+            foregroundMechanism?.id === mechanism?.id &&
+            foregroundMechanism?.mechanismName === mechanism?.mechanismName &&
+            foregroundMechanism?.serviceName === mechanism?.serviceName)
+            return;
+
+        this.emit('foreground-mechanism-changed');
+    }
+
     serviceIsForeground(serviceName) {
         return serviceName === this._getForegroundService();
     }
@@ -641,14 +726,23 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._cancelAndReset();
     }
 
+    _isDiscreteServiceEnabled(definition) {
+        switch (definition.serviceName) {
+        case PASSWORD_SERVICE_NAME:
+            return this._settings.get_boolean(definition.setting);
+        case FINGERPRINT_SERVICE_NAME:
+            return this._fingerprintReaderType !== FingerprintReaderType.NONE;
+        case SMARTCARD_SERVICE_NAME:
+            return !!this._smartcardManager;
+        default:
+            return false;
+        }
+    }
+
     _getDetectedDefaultService() {
-        if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
-            return PASSWORD_SERVICE_NAME;
-        else if (this._smartcardManager)
-            return SMARTCARD_SERVICE_NAME;
-        else if (this._fingerprintReaderType !== FingerprintReaderType.NONE)
-            return FINGERPRINT_SERVICE_NAME;
-        return null;
+        const definition = DiscreteServiceMechanismDefinitions.find(
+            def => this._isDiscreteServiceEnabled(def));
+        return definition?.serviceName ?? null;
     }
 
     _updateDefaultService() {
@@ -667,6 +761,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     async _startService(serviceName) {
+        this._activeServices.add(serviceName);
         this._hold.acquire();
         try {
             this._activeServices.add(serviceName);
@@ -801,6 +896,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._failCounter = 0;
         this._activeServices.clear();
         this._unavailableServices.clear();
+        this._activeServices.clear();
         this._updateDefaultService();
 
         this.emit('reset');
@@ -895,6 +991,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     _onConversationStopped(client, serviceName) {
         this._activeServices.delete(serviceName);
+        this.emit('mechanisms-list-changed', serviceName, []);
 
         // If the login failed with the preauthenticated oVirt credentials
         // then discard the credentials and revert to default authentication
@@ -903,7 +1000,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         const isForeground = this.serviceIsForeground(serviceName);
         if (isCredentialManager && isForeground) {
             this._credentialManagers[serviceName].token = null;
-            this._preemptingService = null;
+            this.setForegroundService(null);
             this._verificationFailed(serviceName, false);
             return;
         }

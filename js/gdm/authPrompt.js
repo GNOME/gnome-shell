@@ -50,6 +50,7 @@ export const AuthPrompt = GObject.registerClass({
         'failed': {},
         'next': {},
         'prompted': {param_types: [GObject.TYPE_STRING]},
+        'mechanisms-changed': {param_types: [GObject.TYPE_STRING]},
         'reset': {param_types: [GObject.TYPE_UINT]},
     },
 }, class AuthPrompt extends St.BoxLayout {
@@ -80,6 +81,8 @@ export const AuthPrompt = GObject.registerClass({
         this._userVerifier.connect('ask-question', this._onAskQuestion.bind(this));
         this._userVerifier.connect('show-message', this._onShowMessage.bind(this));
         this._userVerifier.connect('show-choice-list', this._onShowChoiceList.bind(this));
+        this._userVerifier.connect('mechanisms-list-changed', (...args) => this._onAuthMechanismsListChanged(...args));
+        this._userVerifier.connect('foreground-mechanism-changed', (...args) => this._onForegroundMechanismChanged(...args));
         this._userVerifier.connect('verification-failed', this._onVerificationFailed.bind(this));
         this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
         this._userVerifier.connect('reset', this._onReset.bind(this));
@@ -88,6 +91,7 @@ export const AuthPrompt = GObject.registerClass({
         this.smartcardDetected = this._userVerifier.smartcardDetected;
 
         this.connect('destroy', this._onDestroy.bind(this));
+        this.mechanisms = new Map();
 
         this._userWell = new St.Bin({
             x_expand: true,
@@ -385,6 +389,11 @@ export const AuthPrompt = GObject.registerClass({
         this.emit('prompted', serviceName);
     }
 
+    _onAuthMechanismsListChanged(userVerifier, serviceName, mechanismsList) {
+        this.mechanisms.set(serviceName, mechanismsList);
+        this.emit('mechanisms-changed', serviceName);
+    }
+
     _onCredentialManagerAuthenticated() {
         if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
             this.reset();
@@ -408,6 +417,11 @@ export const AuthPrompt = GObject.registerClass({
 
         if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
             this.reset();
+    }
+
+    _onForegroundMechanismChanged() {
+        if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
+            this.reset({ beginRequestType: BeginRequestType.REUSE_USERNAME });
     }
 
     _onShowMessage(_userVerifier, serviceName, message, type) {
@@ -683,6 +697,11 @@ export const AuthPrompt = GObject.registerClass({
 
         if (!user)
             this._updateEntry(false);
+    }
+
+    setForegroundMechanism(mechanism) {
+        this._userVerifier.setForegroundService(mechanism.serviceName);
+        this._userVerifier.setForegroundMechanism(mechanism);
     }
 
     reset(params) {

@@ -48,6 +48,7 @@ const _FADE_ANIMATION_TIME = 250;
 const _SCROLL_ANIMATION_TIME = 500;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _CONFLICTING_SESSION_DIALOG_TIMEOUT = 60;
+const _PRIMARY_LOGIN_METHOD_SECTION_NAME = _('Primary Login Method');
 const _SESSION_TYPE_SECTION_NAME = _('Session Type');
 
 const N_A11Y_MENU_COLUMNS = 2;
@@ -500,6 +501,7 @@ export const LoginDialog = GObject.registerClass({
         this._authPrompt = new AuthPrompt.AuthPrompt(this._gdmClient, AuthPrompt.AuthPromptMode.UNLOCK_OR_LOG_IN);
         this._authPrompt.connect('prompted', this._onPrompted.bind(this));
         this._authPrompt.connect('reset', this._onReset.bind(this));
+        this._authPrompt.connect('mechanisms-changed', (...args) => this._onMechanismsChanged(...args));
         this._authPrompt.hide();
         this.add_child(this._authPrompt);
 
@@ -604,17 +606,12 @@ export const LoginDialog = GObject.registerClass({
         this._authMenuButton = new AuthMenuButton.AuthMenuButton({
             title: _('Login Options'),
             iconName: 'cog-wheel-symbolic',
-            sectionOrder: [_SESSION_TYPE_SECTION_NAME],
+            sectionOrder: [_PRIMARY_LOGIN_METHOD_SECTION_NAME, _SESSION_TYPE_SECTION_NAME],
         });
         this._authMenuButton.updateSensitivity(false);
 
         let ids = Gdm.get_session_ids();
         ids.sort();
-
-        if (ids.length <= 1) {
-            this._button.hide();
-            return;
-        }
 
         for (const id of ids) {
             let [sessionName, _sessionDescription] = Gdm.get_session_name_and_description(id);
@@ -632,7 +629,9 @@ export const LoginDialog = GObject.registerClass({
             if (!item)
                 return;
 
-            if (sectionName === _SESSION_TYPE_SECTION_NAME)
+            if (sectionName === _PRIMARY_LOGIN_METHOD_SECTION_NAME)
+                this._authPrompt.setForegroundMechanism(item);
+            else
                 this._greeter.call_select_session_sync(item.id, null);
         });
         this._menuButtonBox.add_child(this._authMenuButton);
@@ -1048,6 +1047,39 @@ export const LoginDialog = GObject.registerClass({
         }
     }
 
+    _onMechanismsChanged(authPrompt, serviceName) {
+        const mechanisms = Array.from(authPrompt.mechanisms.get(serviceName));
+        const activeMechanism = this._authMenuButton.getActiveItem({sectionName: _PRIMARY_LOGIN_METHOD_SECTION_NAME});
+
+        this._authMenuButton.clearItems({
+            sectionName: _PRIMARY_LOGIN_METHOD_SECTION_NAME,
+            serviceName,
+        });
+
+        if (mechanisms.length === 0)
+            return;
+
+        const defaultId = mechanisms[0].id;
+
+        mechanisms.sort((a, b) => a.name.localeCompare(b.name));
+
+        for (const {role, protocol, id, name, selectable} of mechanisms) {
+            if (selectable) {
+                const mechanism = {serviceName, protocol, id, name, role};
+                this._authMenuButton.addItem({
+                    sectionName: _PRIMARY_LOGIN_METHOD_SECTION_NAME,
+                    ...mechanism,
+                });
+
+                const wasActive = activeMechanism?.id === id;
+                const isDefault = id === defaultId;
+
+                if (wasActive || (!activeMechanism && isDefault))
+                    this._authMenuButton.setActiveItem(mechanism);
+            }
+        }
+    }
+
     _onDefaultSessionChanged(client, sessionId) {
         this._authMenuButton.setActiveItem({
             sectionName: _SESSION_TYPE_SECTION_NAME,
@@ -1436,6 +1468,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _hideUserList() {
+        this._authMenuButton.clearItems({ sectionName: _PRIMARY_LOGIN_METHOD_SECTION_NAME });
         this._setUserListExpanded(false);
         if (this._userSelectionBox.visible)
             GdmUtil.cloneAndFadeOutActor(this._userSelectionBox);
