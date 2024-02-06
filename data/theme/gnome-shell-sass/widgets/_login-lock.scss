@@ -31,6 +31,7 @@ $_gdm_dialog_width: 25em;
 
   &.cancel-button,
   &.switch-user-button,
+  &.login-dialog-auth-menu-button,
   &.login-dialog-session-list-button {
     @extend .icon-button;
     @extend %system_button;
@@ -41,8 +42,34 @@ $_gdm_dialog_width: 25em;
   }
 }
 
+.login-dialog-auth-menu-button-title {
+  @include fontsize($base_font_size - 1);
+  color: darken($_gdm_fg,40%);
+  font-weight: bold;
+  padding-top: $base_padding;
+  padding-bottom: $base_padding * 2;
+  padding-left: $base_padding * 2;
+  padding-right: $base_padding * 2;
+}
+
+.login-dialog-auth-menu-button-popup-menu-box {
+  padding: $base_padding * 3;
+}
+
+.login-dialog-auth-menu-button-item {
+  padding-left: $base_padding * 2;
+  padding-right: $base_padding * 2;
+}
+
 .login-dialog-button-box {
   spacing: $base_padding * 2;
+}
+
+.login-dialog-menu-button-box {
+  spacing: $base_padding * 2;
+  padding-left: $base_padding * 2;
+  padding-right: $base_padding * 2;
+  padding-bottom: $base_padding * 2;
 }
 
 .login-dialog-logo-bin {
