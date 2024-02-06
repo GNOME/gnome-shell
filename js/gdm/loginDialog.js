@@ -885,7 +885,7 @@ export const LoginDialog = GObject.registerClass({
         if (previousUser && beginRequest === AuthPrompt.BeginRequestType.REUSE_USERNAME) {
             this._user = previousUser;
             this._authPrompt.setUser(this._user);
-            this._authPrompt.begin({userName: previousUser.get_user_name()});
+            this._beginVerification({userName: previousUser.get_user_name()});
         } else if (beginRequest === AuthPrompt.BeginRequestType.PROVIDE_USERNAME) {
             if (!this._disableUserList)
                 this._showUserList();
@@ -953,7 +953,7 @@ export const LoginDialog = GObject.registerClass({
                 let answer = this._authPrompt.getAnswer();
                 this._user = this._userManager.get_user(answer);
                 this._authPrompt.clear();
-                this._authPrompt.begin({userName: answer});
+                this._beginVerification({userName: answer});
                 this._updateCancelButton();
             });
         this._updateCancelButton();
@@ -1158,6 +1158,15 @@ export const LoginDialog = GObject.registerClass({
         });
     }
 
+    _beginVerification(params) {
+        params = Params.parse(params, {
+            userName: null,
+            hold: null,
+        });
+
+        this._authPrompt.begin(params);
+    }
+
     _setUserListExpanded(expanded) {
         this._userList.updateStyle(expanded);
         this._userSelectionBox.visible = expanded;
@@ -1176,7 +1185,7 @@ export const LoginDialog = GObject.registerClass({
 
     _hideUserListAndBeginVerification() {
         this._hideUserList();
-        this._authPrompt.begin();
+	this._beginVerification();
     }
 
     _showUserList() {
@@ -1196,7 +1205,8 @@ export const LoginDialog = GObject.registerClass({
         let userName = item.user.get_user_name();
         let hold = new Batch.Hold();
 
-        this._authPrompt.begin({userName, hold});
+        this._beginVerification({userName, hold});
+
         return hold;
     }
 
