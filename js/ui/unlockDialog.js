@@ -16,10 +16,15 @@ import * as MessageTray from './messageTray.js';
 import * as SwipeTracker from './swipeTracker.js';
 import {formatDateWithCFormatString} from '../misc/dateUtils.js';
 import {TimeLimitsState} from '../misc/timeLimitsManager.js';
+import * as AuthMenuButton from '../gdm/authMenuButton.js';
 import * as AuthPrompt from '../gdm/authPrompt.js';
+import * as GdmConst from '../gdm/const.js';
+import * as GdmUtil from '../gdm/util.js';
 import {AuthPromptStatus} from '../gdm/authPrompt.js';
 import {MprisSource} from './mpris.js';
 import {MediaMessage} from './messageList.js';
+
+const PRIMARY_UNLOCK_METHOD_SECTION_NAME = _('Unlock Options');
 
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
@@ -433,12 +438,13 @@ class UnlockDialogClock extends St.BoxLayout {
 
 const UnlockDialogLayout = GObject.registerClass(
 class UnlockDialogLayout extends Clutter.LayoutManager {
-    _init(stack, notifications, switchUserButton) {
+    _init(stack, notifications, authIndicatorButton, bottomButtonGroup) {
         super._init();
 
         this._stack = stack;
         this._notifications = notifications;
-        this._switchUserButton = switchUserButton;
+        this._authIndicatorButton = authIndicatorButton;
+        this._bottomButtonGroup = bottomButtonGroup;
     }
 
     vfunc_get_preferred_width(container, forHeight) {
@@ -498,22 +504,40 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
 
         this._stack.allocate(actorBox);
 
-        // Switch User button
-        if (this._switchUserButton.visible) {
+        // Auth Indicator button (left bottom)
+        if (this._authIndicatorButton.visible) {
             const [, , natWidth, natHeight] =
-                this._switchUserButton.get_preferred_size();
+                this._authIndicatorButton.get_preferred_size();
 
-            const textDirection = this._switchUserButton.get_text_direction();
+            const textDirection = this._authIndicatorButton.get_text_direction();
             if (textDirection === Clutter.TextDirection.RTL)
-                actorBox.x1 = box.x1 + natWidth;
+                actorBox.x1 = box.x2 - natWidth;
             else
-                actorBox.x1 = box.x2 - (natWidth * 2);
+                actorBox.x1 = box.x1;
 
-            actorBox.y1 = box.y2 - (natHeight * 2);
+            actorBox.y1 = box.y2 - natHeight;
             actorBox.x2 = actorBox.x1 + natWidth;
             actorBox.y2 = actorBox.y1 + natHeight;
 
-            this._switchUserButton.allocate(actorBox);
+            this._authIndicatorButton.allocate(actorBox);
+        }
+
+        // bottom button group, (has login options and switch user buttons) (right bottom)
+        if (this._bottomButtonGroup.visible) {
+            const [, , natWidth, natHeight] =
+                this._bottomButtonGroup.get_preferred_size();
+
+            const textDirection = this._bottomButtonGroup.get_text_direction();
+            if (textDirection === Clutter.TextDirection.RTL)
+                actorBox.x1 = box.x1;
+            else
+                actorBox.x1 = box.x2 - natWidth;
+
+            actorBox.y1 = box.y2 - natHeight;
+            actorBox.x2 = actorBox.x1 + natWidth;
+            actorBox.y2 = actorBox.y1 + natHeight;
+
+            this._bottomButtonGroup.allocate(actorBox);
         }
     }
 });
@@ -623,19 +647,48 @@ export const UnlockDialog = GObject.registerClass({
         this._notificationsBox = new NotificationsBox();
         this._notificationsBox.connect('wake-up-screen', () => this.emit('wake-up-screen'));
 
+        this._bottomButtonGroup = new St.BoxLayout({
+            style_class: 'login-dialog-bottom-button-group',
+        });
+
         // Switch User button
         this._otherUserButton = new St.Button({
             style_class: 'login-dialog-button switch-user-button',
             accessible_name: _('Log in as another user'),
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             reactive: false,
-            opacity: 0,
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.END,
-            icon_name: 'system-users-symbolic',
+            label: _('Switch User…'),
         });
         this._otherUserButton.set_pivot_point(0.5, 0.5);
         this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
+        this._bottomButtonGroup.add_child(this._otherUserButton);
+
+        // Login Options button
+        this._authMenuButton = new AuthMenuButton.AuthMenuButton({
+            title: _('Login Options'),
+            iconName: 'cog-wheel-symbolic',
+        });
+        this._authMenuButton.connect('active-item-changed', () => {
+            const authMechanism = this._authMenuButton.getActiveItem();
+            if (!authMechanism)
+                return;
+
+            this._selectAuthMechanism(authMechanism);
+            this._authMenuButton.close();
+        });
+        this._authMenuButton.updateSensitivity(true);
+        this._bottomButtonGroup.add_child(this._authMenuButton);
+
+        // Auth Indicators
+        this._authIndicatorButton = new AuthMenuButton.AuthMenuButtonIndicator({
+            title: _('Background Authentication Methods'),
+            animateVisibility: true,
+        });
+        this._authIndicatorButton.add_style_class_name('login-dialog-bottom-button-group');
+        this._authIndicatorButton.set_pivot_point(0.5, 0.5);
+        this._authIndicatorButton.updateSensitivity(true);
 
         this._screenSaverSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.screensaver'});
 
@@ -666,11 +719,13 @@ export const UnlockDialog = GObject.registerClass({
         mainBox.add_constraint(new Layout.MonitorConstraint({primary: true}));
         mainBox.add_child(this._stack);
         mainBox.add_child(this._notificationsBox);
-        mainBox.add_child(this._otherUserButton);
+        mainBox.add_child(this._authIndicatorButton);
+        mainBox.add_child(this._bottomButtonGroup);
         mainBox.layout_manager = new UnlockDialogLayout(
             this._stack,
             this._notificationsBox,
-            this._otherUserButton);
+            this._authIndicatorButton,
+            this._bottomButtonGroup);
         this.add_child(mainBox);
 
         this._idleMonitor = global.backend.get_core_idle_monitor();
@@ -706,6 +761,20 @@ export const UnlockDialog = GObject.registerClass({
             return Clutter.EVENT_STOP;
 
         return Clutter.EVENT_PROPAGATE;
+    }
+
+    _selectAuthMechanism(authMechanism) {
+        const oldMechanism = this._selectedAuthMechanism;
+
+        if (authMechanism === oldMechanism)
+            return;
+
+        if (!this._authPrompt.selectMechanism(authMechanism)) {
+            this._authMenuButton.setActiveItem(oldMechanism);
+            return;
+        }
+
+        this._selectedAuthMechanism = authMechanism;
     }
 
     _createBackground(monitorIndex) {
@@ -764,6 +833,8 @@ export const UnlockDialog = GObject.registerClass({
             this._authPrompt.connect('failed', this._fail.bind(this));
             this._authPrompt.connect('cancelled', this._fail.bind(this));
             this._authPrompt.connect('reset', this._onReset.bind(this));
+            this._authPrompt.connect('loading', this._onLoading.bind(this));
+            this._authPrompt.connect('mechanisms-changed', this._onMechanismsChanged.bind(this));
             this._promptBox.add_child(this._authPrompt);
         }
 
@@ -828,6 +899,12 @@ export const UnlockDialog = GObject.registerClass({
             reactive: progress > 0,
             can_focus: progress > 0,
         });
+        this._authIndicatorButton.set({
+            opacity: 255 * progress,
+            scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
+            scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
+        });
+        this._updateUserSwitchVisibility();
 
         const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
 
@@ -845,7 +922,7 @@ export const UnlockDialog = GObject.registerClass({
             translation_y: -FADE_OUT_TRANSLATION * progress * scaleFactor,
         });
 
-        this._otherUserButton.set({
+        this._bottomButtonGroup.set({
             opacity: 255 * progress,
             scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
             scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
@@ -867,6 +944,52 @@ export const UnlockDialog = GObject.registerClass({
         }
 
         this._authPrompt.begin({userName});
+    }
+
+    _onLoading(_authPrompt, isLoading) {
+        this._authMenuButton.updateReactive(!isLoading);
+    }
+
+    _onMechanismsChanged(_authPrompt, mechanisms, selectedMechanism) {
+        this._authMenuButton.clearItems({
+            sectionName: PRIMARY_UNLOCK_METHOD_SECTION_NAME,
+        });
+
+        this._authIndicatorButton.clearItems();
+
+        if (mechanisms.length === 0)
+            return;
+
+        for (const m of mechanisms) {
+            if (GdmUtil.isSelectable(m)) {
+                this._authMenuButton.addItem({
+                    sectionName: PRIMARY_UNLOCK_METHOD_SECTION_NAME,
+                    ...m,
+                });
+            } else {
+                this._authIndicatorButton.addItem({
+                    iconName: GdmUtil.getIconName(m),
+                    description: this._getUnlockDescription(m),
+                    ...m,
+                });
+            }
+        }
+
+        if (Object.keys(selectedMechanism).length > 0)
+            this._authMenuButton.setActiveItem(selectedMechanism);
+
+        this._authIndicatorButton.updateDescriptionLabel();
+    }
+
+    _getUnlockDescription(mechanism) {
+        // This is only used for non selectable mechanisms.
+        // Currently only fingerprint is non selectable
+        switch (mechanism.role) {
+        case GdmConst.FINGERPRINT_ROLE_NAME:
+            return _('Unlock with fingerprint');
+        default:
+            throw new Error(`Failed getting unlock description: ${mechanism.role}`);
+        }
     }
 
     _escape() {
@@ -932,7 +1055,8 @@ export const UnlockDialog = GObject.registerClass({
         this._otherUserButton.visible = this._userManager.can_switch() &&
             this._userManager.has_multiple_users &&
             this._screenSaverSettings.get_boolean('user-switch-enabled') &&
-            !this._lockdownSettings.get_boolean('disable-user-switching');
+            !this._lockdownSettings.get_boolean('disable-user-switching') &&
+            this._promptBox.visible;
     }
 
     _updateAuthBlocked() {
