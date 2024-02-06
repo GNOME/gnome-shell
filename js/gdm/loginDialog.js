@@ -45,7 +45,7 @@ import * as A11y from '../ui/status/accessibility.js';
 
 const _FADE_ANIMATION_TIME = 250;
 const _SCROLL_ANIMATION_TIME = 500;
-const _FIXED_TOP_ACTOR_HEIGHT = 400;
+const _FIXED_TOP_ACTOR_HEIGHT = 550;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _CONFLICTING_SESSION_DIALOG_TIMEOUT = 60;
 const _PRIMARY_LOGIN_METHOD_SECTION_NAME = _('Login Options');

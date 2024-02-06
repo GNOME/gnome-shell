@@ -16,6 +16,7 @@ js/gdm/authServicesSSSDSwitchable.js
 js/gdm/conflictingSessionDialog.js
 js/gdm/loginDialog.js
 js/gdm/util.js
+js/gdm/webLogin.js
 js/misc/breakManager.js
 js/misc/brightnessManager.js
 js/misc/systemActions.js
