@@ -72,6 +72,14 @@ export class AuthServices extends GObject.Object {
          */
         'show-button': {param_types: [GObject.TYPE_JSOBJECT]},
         'mechanisms-changed': {},
+        /**
+         * @param {string} serviceName
+         * @param {string} message
+         * @param {string} url
+         * @param {string} code
+         * @param {object[]} buttons
+         */
+        'web-login': {param_types: [GObject.TYPE_JSOBJECT]},
     };
 
     static {
