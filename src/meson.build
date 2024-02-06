@@ -76,6 +76,7 @@ gnome_shell_deps = [
   libsystemd_dep,
   libpipewire_dep,
   pango_dep,
+  gnome_qr_dep,
 ]
 
 if have_xwayland
@@ -176,6 +177,8 @@ libshell_sources = [
   'shell-perf-log.c',
   'shell-polkit-authentication-agent.c',
   'shell-polkit-authentication-agent.h',
+  'shell-qr-code-generator.c',
+  'shell-qr-code-generator.h',
   'shell-screenshot.c',
   'shell-secure-text-buffer.c',
   'shell-secure-text-buffer.h',
