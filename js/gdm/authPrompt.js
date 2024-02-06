@@ -140,9 +140,16 @@ export const AuthPrompt = GObject.registerClass({
         this._userVerifier = null;
     }
 
+    _handleCancel() {
+        if (this._userVerifier.cancelRequested())
+            return;
+
+        this.cancel();
+    }
+
     on_key_press_event(event) {
         if (event.get_key_symbol() === Clutter.KEY_Escape) {
-            this.cancel();
+            this._handleCancel();
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
@@ -166,7 +173,7 @@ export const AuthPrompt = GObject.registerClass({
             icon_name: 'go-previous-symbolic',
         });
         if (this._hasCancelButton)
-            this.cancelButton.connect('clicked', () => this.cancel());
+            this.cancelButton.connect('clicked', () => this._handleCancel());
         else
             this.cancelButton.opacity = 0;
         this._mainBox.add_child(this.cancelButton);

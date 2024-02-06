@@ -1,14 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
 import * as Signals from '../misc/signals.js';
-import * as Const from './const.js';
-
-const AUTH_MECHANISM_PROTOCOL_NAME = 'auth-mechanisms';
-
-const AUTH_SELECTION_COMPLETION_STATUS = 'Ok';
 
 export class AuthService extends Signals.EventEmitter {
     // FIXME: USE GObject so we have proper signal definitions
