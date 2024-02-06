@@ -27,9 +27,9 @@ import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
+import * as AuthMenuButton from './authMenuButton.js';
 import * as AuthPrompt from './authPrompt.js';
 import * as Batch from './batch.js';
-import * as BoxPointer from '../ui/boxpointer.js';
 import * as CtrlAltTab from '../ui/ctrlAltTab.js';
 import * as GdmUtil from './util.js';
 import * as Layout from '../ui/layout.js';
@@ -38,7 +38,6 @@ import * as Main from '../ui/main.js';
 import * as MessageTray from '../ui/messageTray.js';
 import * as ModalDialog from '../ui/modalDialog.js';
 import * as Params from '../misc/params.js';
-import * as PopupMenu from '../ui/popupMenu.js';
 import * as Realmd from './realmd.js';
 import * as UserWidget from '../ui/userWidget.js';
 
@@ -316,101 +315,6 @@ const UserList = GObject.registerClass({
     }
 });
 
-const SessionMenuButton = GObject.registerClass({
-    Signals: {'session-activated': {param_types: [GObject.TYPE_STRING]}},
-}, class SessionMenuButton extends St.Bin {
-    _init() {
-        let button = new St.Button({
-            style_class: 'login-dialog-button login-dialog-session-list-button',
-            icon_name: 'cog-wheel-symbolic',
-            reactive: true,
-            track_hover: true,
-            can_focus: true,
-            accessible_name: _('Choose Session'),
-            accessible_role: Atk.Role.MENU,
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-
-        super._init({child: button});
-        this._button = button;
-
-        this._menu = new PopupMenu.PopupMenu(this._button, 0, St.Side.BOTTOM);
-        Main.uiGroup.add_child(this._menu.actor);
-        this._menu.actor.hide();
-
-        this._menu.connect('open-state-changed', (menu, isOpen) => {
-            if (isOpen)
-                this._button.add_style_pseudo_class('active');
-            else
-                this._button.remove_style_pseudo_class('active');
-        });
-
-        this._manager = new PopupMenu.PopupMenuManager(this._button,
-            {actionMode: Shell.ActionMode.NONE});
-        this._manager.addMenu(this._menu);
-
-        this._button.connect('clicked', () => this._menu.toggle());
-
-        this._items = {};
-        this._activeSessionId = null;
-        this._populate();
-    }
-
-    updateSensitivity(sensitive) {
-        this._button.reactive = sensitive;
-        this._button.can_focus = sensitive;
-        this.opacity = sensitive ? 255 : 0;
-        this._menu.close(BoxPointer.PopupAnimation.NONE);
-    }
-
-    _updateOrnament() {
-        let itemIds = Object.keys(this._items);
-        for (let i = 0; i < itemIds.length; i++) {
-            if (itemIds[i] === this._activeSessionId)
-                this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.DOT);
-            else
-                this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.NO_DOT);
-        }
-    }
-
-    setActiveSession(sessionId) {
-        if (sessionId === this._activeSessionId)
-            return;
-
-        this._activeSessionId = sessionId;
-        this._updateOrnament();
-    }
-
-    close() {
-        this._menu.close();
-    }
-
-    _populate() {
-        let ids = Gdm.get_session_ids();
-        ids.sort();
-
-        if (ids.length <= 1) {
-            this._button.hide();
-            return;
-        }
-
-        for (let i = 0; i < ids.length; i++) {
-            let [sessionName, sessionDescription_] = Gdm.get_session_name_and_description(ids[i]);
-
-            let id = ids[i];
-            let item = new PopupMenu.PopupMenuItem(sessionName);
-            this._menu.addMenuItem(item);
-            this._items[id] = item;
-
-            item.connect('activate', () => {
-                this.setActiveSession(id);
-                this.emit('session-activated', this._activeSessionId);
-            });
-        }
-    }
-});
-
 export const ConflictingSessionDialog = GObject.registerClass({
     Signals: {
         'cancel': {},
@@ -593,14 +497,10 @@ export const LoginDialog = GObject.registerClass({
         this._updateBannerMessageFile();
         this._updateBanner().catch(logError);
 
-        this._sessionMenuButton = new SessionMenuButton();
-        this._sessionMenuButton.connect('session-activated',
-            (list, sessionId) => {
-                this._greeter.call_select_session_sync(sessionId, null);
-            });
-        this._sessionMenuButton.opacity = 0;
-        this._sessionMenuButton.show();
-        this.add_child(this._sessionMenuButton);
+        this._menuButtonBox = new St.BoxLayout({style_class: 'login-dialog-menu-button-box'});
+        this.add_child(this._menuButtonBox);
+
+        this._createSessionMenuButton();
 
         this._logoBin = new St.Widget({
             style_class: 'login-dialog-logo-bin',
@@ -633,6 +533,35 @@ export const LoginDialog = GObject.registerClass({
             this._updateDisableUserList.bind(this), this);
     }
 
+    _createSessionMenuButton() {
+        this._sessionMenuButton = new AuthMenuButton.AuthMenuButton({
+            title: _('Session'),
+            iconName: 'emblem-system-symbolic',
+        });
+
+        let ids = Gdm.get_session_ids();
+        ids.sort();
+
+        if (ids.length <= 1) {
+            this._button.hide();
+            return;
+        }
+
+        for (const id of ids) {
+            let [sessionName, sessionDescription_] = Gdm.get_session_name_and_description(id);
+
+            this._sessionMenuButton.addItem({name: sessionName, id});
+        }
+
+        this._sessionMenuButton.connect('active-item-changed', () => {
+            const session = this._sessionMenuButton.getActiveItem();
+
+            if (session)
+                this._greeter.call_select_session_sync(session.id, null);
+        });
+        this._menuButtonBox.add_child(this._sessionMenuButton);
+    }
+
     _getBannerAllocation(dialogBox) {
         let actorBox = new Clutter.ActorBox();
 
@@ -661,17 +590,17 @@ export const LoginDialog = GObject.registerClass({
         return actorBox;
     }
 
-    _getSessionMenuButtonAllocation(dialogBox) {
+    _getMenuButtonAllocation(dialogBox) {
         let actorBox = new Clutter.ActorBox();
 
-        let [, , natWidth, natHeight] = this._sessionMenuButton.get_preferred_size();
+        let [, , natWidth, natHeight] = this._menuButtonBox.get_preferred_size();
 
         if (this.get_text_direction() === Clutter.TextDirection.RTL)
             actorBox.x1 = dialogBox.x1 + natWidth;
         else
-            actorBox.x1 = dialogBox.x2 - (natWidth * 2);
+            actorBox.x1 = dialogBox.x2 - natWidth;
 
-        actorBox.y1 = dialogBox.y2 - (natHeight * 2);
+        actorBox.y1 = dialogBox.y2 - natHeight;
         actorBox.x2 = actorBox.x1 + natWidth;
         actorBox.y2 = actorBox.y1 + natHeight;
 
@@ -734,9 +663,10 @@ export const LoginDialog = GObject.registerClass({
             logoHeight = logoAllocation.y2 - logoAllocation.y1;
         }
 
-        let sessionMenuButtonAllocation = null;
-        if (this._sessionMenuButton.visible)
-            sessionMenuButtonAllocation = this._getSessionMenuButtonAllocation(dialogBox);
+        let menuButtonBoxAllocation = null;
+        if (this._menuButtonBox.visible)
+            menuButtonBoxAllocation = this._getMenuButtonAllocation(dialogBox);
+
 
         // Then figure out if we're overly constrained and need to
         // try a different layout, or if we have what extra space we
@@ -837,8 +767,8 @@ export const LoginDialog = GObject.registerClass({
         if (logoAllocation)
             this._logoBin.allocate(logoAllocation);
 
-        if (sessionMenuButtonAllocation)
-            this._sessionMenuButton.allocate(sessionMenuButtonAllocation);
+        if (menuButtonBoxAllocation)
+            this._menuButtonBox.allocate(menuButtonBoxAllocation);
     }
 
     _ensureUserListLoaded() {
@@ -1032,7 +962,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _onDefaultSessionChanged(client, sessionId) {
-        this._sessionMenuButton.setActiveSession(sessionId);
+        this._sessionMenuButton.setActiveItem({id: sessionId});
     }
 
     _shouldShowSessionMenuButton() {
@@ -1416,8 +1346,7 @@ export const LoginDialog = GObject.registerClass({
         this._ensureUserListLoaded();
         this._authPrompt.hide();
         this._hideBannerView();
-        this._sessionMenuButton.close();
-        this._sessionMenuButton.hide();
+        this._sessionMenuButton.updateSensitivity(false);
         this._setUserListExpanded(true);
         this._notListedButton.show();
         this._userList.grab_key_focus();
