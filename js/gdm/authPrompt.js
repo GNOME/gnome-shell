@@ -565,9 +565,11 @@ export const AuthPrompt = GObject.registerClass({
         this.emit('verification-complete');
     }
 
-    _onReset() {
-        this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
-        this.reset();
+    _onReset(_, resetParams) {
+        if (this.verificationStatus === AuthPromptStatus.VERIFICATION_SUCCEEDED)
+            return;
+
+        this.reset(resetParams);
     }
 
     setActorInDefaultButtonWell(actor, animate) {
@@ -631,10 +633,17 @@ export const AuthPrompt = GObject.registerClass({
         this.setActorInDefaultButtonWell(this._nextButton, animate);
     }
 
-    clear() {
+    clear(params) {
+        const {reuseEntryText} = Params.parse(params, {
+            reuseEntryText: false,
+        });
+
+        if (!reuseEntryText) {
+            this._entry.text = '';
+            this._inactiveEntry.text = '';
+        }
+
         this._entryArea.hide();
-        this._entry.text = '';
-        this._inactiveEntry.text = '';
         this.stopSpinning();
         this._authList.clear();
         this._authList.hide();
@@ -774,7 +783,12 @@ export const AuthPrompt = GObject.registerClass({
             this._updateEntry(false);
     }
 
-    reset() {
+    reset(params) {
+        const {reuseEntryText, softReset} = Params.parse(params, {
+            reuseEntryText: false,
+            softReset: false,
+        });
+
         const oldStatus = this.verificationStatus;
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.cancelButton.reactive = this._hasCancelButton;
@@ -786,7 +800,7 @@ export const AuthPrompt = GObject.registerClass({
             this._userVerifier.cancel();
 
         this._queryingService = null;
-        this.clear();
+        this.clear({reuseEntryText});
         this._message.opacity = 0;
         this.setUser(null);
         this._updateEntry(true);
@@ -809,7 +823,8 @@ export const AuthPrompt = GObject.registerClass({
             // We don't need to know the username if the user preempted the login screen
             // with a smartcard or with preauthenticated oVirt credentials
             beginRequestType = BeginRequestType.DONT_PROVIDE_USERNAME;
-        } else if (oldStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS) {
+        } else if (oldStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS ||
+            softReset) {
             // We're going back to retry with current user
             beginRequestType = BeginRequestType.REUSE_USERNAME;
         } else {
