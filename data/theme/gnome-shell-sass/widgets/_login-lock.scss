@@ -50,6 +50,7 @@ $_gdm_dialog_width: 25em;
   &.a11y-button,
   &.cancel-button,
   &.switch-user-button,
+  &.login-dialog-auth-menu-button,
   &.login-dialog-session-list-button {
     @extend .icon-button;
     @extend %system_button;
