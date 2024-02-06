@@ -1049,6 +1049,28 @@ export class PopupMenu extends PopupMenuBase {
         this._boxPointer.setSourceAlignment(alignment);
     }
 
+    setSourceActor(sourceActor) {
+        if (this.sourceActor === sourceActor)
+            return;
+
+        this.sourceActor?.disconnectObject(this);
+
+        this.sourceActor = sourceActor;
+        this.focusActor = sourceActor;
+
+        if (this.sourceActor) {
+            this.sourceActor.connectObject(
+                'key-press-event', this._onKeyPress.bind(this),
+                'notify::mapped', () => {
+                    if (!this.sourceActor.mapped)
+                        this.close();
+                }, this);
+        }
+
+        if (this.isOpen)
+            this._boxPointer.setPosition(this.sourceActor, this._arrowAlignment);
+    }
+
     open(animate) {
         if (this.isOpen)
             return;
