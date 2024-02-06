@@ -1197,6 +1197,7 @@ export const LoginDialog = GObject.registerClass({
         this._authMenuButton.updateSensitivity(false);
         this._authPrompt.updateSensitivity(true);
         this._authPrompt.showNextButton(false);
+        this._authPrompt.showInputRow(true);
         this._showPrompt();
         this._authPrompt.cancelButton.show();
         this._switchUserButton.hide();

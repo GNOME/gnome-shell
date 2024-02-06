@@ -14,6 +14,7 @@ import * as MessageTray from '../ui/messageTray.js';
 import * as Params from '../misc/params.js';
 import * as ShellEntry from '../ui/shellEntry.js';
 import * as UserWidget from '../ui/userWidget.js';
+import * as WebLogin from './webLogin.js';
 import {wiggle} from '../misc/animationUtils.js';
 
 const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
@@ -83,6 +84,8 @@ export const AuthPrompt = GObject.registerClass({
         this._userVerifier.connect('show-message', this._onShowMessage.bind(this));
         this._userVerifier.connect('show-choice-list', this._onShowChoiceList.bind(this));
         this._userVerifier.connect('mechanisms-changed', (_, ...args) => this.emit('mechanisms-changed', ...args));
+        this._userVerifier.connect('web-login', this._onWebLogin.bind(this));
+        this._userVerifier.connect('web-login-failed', this._onWebLoginFailed.bind(this));
         this._userVerifier.connect('verification-failed', this._onVerificationFailed.bind(this));
         this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
         this._userVerifier.connect('reset', this._onReset.bind(this));
@@ -98,6 +101,13 @@ export const AuthPrompt = GObject.registerClass({
         this.add_child(this._userWell);
 
         this._hasCancelButton = this._mode === AuthPromptMode.UNLOCK_OR_LOG_IN;
+
+        this._webLoginPromptWell = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        this.add_child(this._webLoginPromptWell);
 
         this._initInputRow();
 
@@ -372,6 +382,10 @@ export const AuthPrompt = GObject.registerClass({
 
         this._updateEntry(secret);
 
+        this._webLoginPromptWell.visible = false;
+        this._mainBox.visible = true;
+        this.setActorInDefaultButtonWell(this._nextButton, false);
+
         // Hack: The question string comes directly from PAM, if it's "Password:"
         // we replace it with our own to allow localization, if it's something
         // else we remove the last colon and any trailing or leading spaces.
@@ -394,6 +408,78 @@ export const AuthPrompt = GObject.registerClass({
             this._preemptiveAnswer = null;
 
         this.setChoiceList(promptMessage, choiceList);
+        this.updateSensitivity(true);
+        this.emit('prompted', serviceName);
+    }
+
+    _onWebLogin(_, serviceName, introMessage, linkMessage, uri, code, buttons) {
+        if (this._queryingService)
+            this.clear();
+
+        this._queryingService = serviceName;
+
+        this._mainBox.visible = false;
+
+        if (this._preemptiveAnswer)
+            this._preemptiveAnswer = null;
+
+        this._webLoginPromptWell.remove_all_children();
+
+        if (this._spinner)
+            this._spinner.stop();
+
+        if (!this._webLoginDialog && introMessage) {
+            this._webLoginIntro = new WebLogin.WebLoginIntro({message: introMessage});
+            this._webLoginIntro.set({
+                y_align: Clutter.ActorAlign.START,
+            });
+            this._webLoginIntro.connect('clicked', () => {
+                this._openWebLoginDialog(serviceName,
+                    introMessage, linkMessage, uri, code, buttons);
+            });
+            this._webLoginPromptWell.add_child(this._webLoginIntro);
+            this._webLoginPromptWell.visible = true;
+
+            this.updateSensitivity(true);
+        } else {
+            this._openWebLoginDialog(serviceName,
+                introMessage, linkMessage, uri, code, buttons);
+        }
+
+        this.emit('prompted', serviceName);
+    }
+
+    _onWebLoginFailed(_, serviceName) {
+        if (this._queryingService !== serviceName)
+            return;
+
+        this._closeWebLoginDialog();
+        this._showLoginFailedNotification();
+    }
+
+    _closeWebLoginDialog() {
+        this._webLoginDialog?.close();
+        this._webLoginDialog = null;
+    }
+
+    _openWebLoginDialog(serviceName, introMessage, message, url, code, buttons) {
+        this._closeWebLoginDialog();
+
+        this._webLoginPromptWell.remove_all_children();
+
+        this._webLoginDialog = new WebLogin.WebLoginDialog({message, url, code, buttons});
+        this._webLoginDialog.open(global.get_current_time());
+        this._webLoginDialog?.connect('cancel', () => {
+            if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED) {
+                this._closeWebLoginDialog();
+                this._onWebLogin(this, serviceName,
+                    introMessage, message, url, code, buttons);
+            }
+        });
+
+        if (this._spinner)
+            this._spinner.stop();
+
         this.updateSensitivity(true);
         this.emit('prompted', serviceName);
     }
@@ -554,12 +640,16 @@ export const AuthPrompt = GObject.registerClass({
         this.stopSpinning();
         this._authList.clear();
         this._authList.hide();
+        this._webLoginPromptWell.remove_all_children();
+        this._webLoginPromptWell.visible = false;
     }
 
     setQuestion(question) {
         this._entry.hint_text = question;
 
         this._authList.hide();
+        this._closeWebLoginDialog();
+
         this._entry.show();
         this._entry.grab_key_focus();
     }
@@ -645,11 +735,21 @@ export const AuthPrompt = GObject.registerClass({
         this._nextButton.can_focus = sensitive;
     }
 
+    showInputRow(show) {
+        this._mainBox.visible = show;
+    }
+
     updateSensitivity(sensitive) {
+        if (this._webLoginDialog)
+            return;
+
         let authWidget = this._entry;
 
         if (this._authList.visible)
             authWidget = this._authList;
+
+        if (this._webLoginPromptWell.visible && this._webLoginIntro.visible)
+            authWidget = this._webLoginIntro;
 
         this._updateNextButtonSensitivity(authWidget === this._entry &&
             sensitive && (this._entry.text.length > 0 &&
@@ -793,6 +893,7 @@ export const AuthPrompt = GObject.registerClass({
         });
 
         this.setActorInDefaultButtonWell(this._nextButton, false);
+        this._hideLoginFailedNotification();
         this.updateSensitivity(false);
 
         this._userVerifier.begin(params.userName, params.hold);

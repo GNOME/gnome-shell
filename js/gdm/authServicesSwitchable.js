@@ -1,3 +1,4 @@
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
 import * as Const from './const.js';
@@ -14,9 +15,11 @@ export const AuthServicesSwitchable = GObject.registerClass({
 }, class AuthServicesSwitchable extends AuthServices {
     static SupportedRoles = [
         Const.PASSWORD_ROLE_NAME,
+        Const.WEB_LOGIN_ROLE_NAME,
     ];
     static RoleToService = {
         [Const.PASSWORD_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
+        [Const.WEB_LOGIN_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
     };
 
     _init(params) {
@@ -42,6 +45,9 @@ export const AuthServicesSwitchable = GObject.registerClass({
         switch (this._selectedMechanism?.role) {
         case Const.PASSWORD_ROLE_NAME:
             this._startPasswordLogin();
+            break;
+        case Const.WEB_LOGIN_ROLE_NAME:
+            this._startWebLogin();
             break;
         }
     }
@@ -151,6 +157,12 @@ export const AuthServicesSwitchable = GObject.registerClass({
         if (this._unavailableServices.has(serviceName))
             return;
 
+        if (this._selectedMechanism.role === Const.WEB_LOGIN_ROLE_NAME) {
+            this.emit('web-login-failed', serviceName);
+            this._verificationFailed(serviceName, false);
+            return;
+        }
+
         this._savedMechanism = this._selectedMechanism;
         this._mechanismsStatus = MechanismsStatus.WAITING;
 
@@ -180,6 +192,9 @@ export const AuthServicesSwitchable = GObject.registerClass({
         switch (role) {
         case Const.PASSWORD_ROLE_NAME:
             response = { password: answer };
+            break;
+        case Const.WEB_LOGIN_ROLE_NAME:
+            response = {};
             break;
         default:
             throw new GObject.NotImplementedError(`formatResponse: ${role}`);
@@ -218,5 +233,57 @@ export const AuthServicesSwitchable = GObject.registerClass({
         const { serviceName, prompt } = this._selectedMechanism;
 
         this.emit('ask-question', serviceName, prompt, true);
+    }
+
+    _startWebLogin() {
+        const {
+            serviceName,
+            init_prompt: initPrompt,
+            link_prompt: linkPrompt,
+            uri, code, timeout,
+        } = this._selectedMechanism;
+
+        if (!linkPrompt || !uri)
+            return;
+
+        if (timeout) {
+            this._webLoginTimeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT,
+                timeout, () => {
+                    this._webLoginTimeoutId = 0;
+
+                    this._savedMechanism = this._selectedMechanism;
+                    this._mechanismsStatus = MechanismsStatus.WAITING;
+                    this.emit('reset', { softReset: true });
+
+                    return GLib.SOURCE_REMOVE;
+                });
+        }
+
+        const buttons = [{
+            default: true,
+            needsLoading: true,
+            label: _('Done'),
+            action: () => this._webLoginDone(),
+        }];
+
+        this.emit('web-login', serviceName, initPrompt, linkPrompt, uri, code, buttons);
+    }
+
+    _webLoginDone() {
+        if (this._selectedMechanism?.role !== Const.WEB_LOGIN_ROLE_NAME)
+            return;
+
+        const response = this._formatResponse(this._selectedMechanism);
+        this._sendResponse(response);
+
+        this._clearWebLoginTimeout();
+    }
+
+    _clearWebLoginTimeout() {
+        if (!this._webLoginTimeoutId)
+            return;
+
+        GLib.source_remove(this._webLoginTimeoutId);
+        this._webLoginTimeoutId = 0;
     }
 });
