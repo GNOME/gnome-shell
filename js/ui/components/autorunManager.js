@@ -187,9 +187,13 @@ class AutorunDispatcher {
             return;
 
         const source = MessageTray.getSystemSource();
+        /* Translators: %s is the name of a partition on a external drive */
+        const title = _('“%s” connected'.format(mount.get_name()));
+        const body = _('Disk can now be used');
         const notification = new MessageTray.Notification({
             source,
-            title: mount.get_name(),
+            title,
+            body,
         });
         notification.connect('activate', () => {
             const app = Gio.app_info_get_default_for_type('inode/directory', false);
