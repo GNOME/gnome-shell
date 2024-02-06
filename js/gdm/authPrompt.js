@@ -172,7 +172,7 @@ export const AuthPrompt = GObject.registerClass({
             'show-choice-list', (_, ...args) => this._onShowChoiceList(...args),
             'verification-failed', (_, ...args) => this._onVerificationFailed(...args),
             'verification-complete', () => this._onVerificationComplete(),
-            'reset', () => this._onReset(),
+            'reset', (_, ...args) => this._onReset(...args),
             'smartcard-status-changed', () => this._onSmartcardStatusChanged(),
             'credential-manager-authenticated', () => this._onCredentialManagerAuthenticated(),
             this);
@@ -561,12 +561,11 @@ export const AuthPrompt = GObject.registerClass({
         this.emit('verification-complete');
     }
 
-    _onReset() {
+    _onReset(resetParams) {
         if (this.verificationStatus === AuthPromptStatus.VERIFICATION_SUCCEEDED)
             return;
 
-        this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
-        this.reset();
+        this.reset(resetParams);
     }
 
     setActorInDefaultButtonWell(actor, animate) {
@@ -630,11 +629,18 @@ export const AuthPrompt = GObject.registerClass({
         this.setActorInDefaultButtonWell(this._nextButton, animate);
     }
 
-    clear() {
-        this._entryArea.hide();
-        this._entry.text = '';
-        this._inactiveEntry.text = '';
-        this.stopSpinning();
+    clear(params) {
+        const {reuseEntryText} = Params.parse(params, {
+            reuseEntryText: false,
+        });
+
+        if (!reuseEntryText) {
+            this._entryArea.hide();
+            this._entry.text = '';
+            this._inactiveEntry.text = '';
+            this.stopSpinning();
+        }
+
         this._authList.clear();
         this._authList.hide();
 
@@ -767,7 +773,12 @@ export const AuthPrompt = GObject.registerClass({
             this._updateEntry(false);
     }
 
-    reset() {
+    reset(params) {
+        const {reuseEntryText, softReset} = Params.parse(params, {
+            reuseEntryText: false,
+            softReset: false,
+        });
+
         const oldStatus = this.verificationStatus;
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.cancelButton.reactive = this._hasCancelButton;
@@ -779,7 +790,7 @@ export const AuthPrompt = GObject.registerClass({
             this._userVerifier.cancel();
 
         this._queryingService = null;
-        this.clear();
+        this.clear({reuseEntryText});
         this._message.opacity = 0;
         this.setUser(null);
         this._updateEntry(true);
@@ -802,7 +813,8 @@ export const AuthPrompt = GObject.registerClass({
             // We don't need to know the username if the user preempted the login screen
             // with a smartcard or with preauthenticated oVirt credentials
             beginRequestType = BeginRequestType.DONT_PROVIDE_USERNAME;
-        } else if (oldStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS) {
+        } else if (oldStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS ||
+            softReset) {
             // We're going back to retry with current user
             beginRequestType = BeginRequestType.REUSE_USERNAME;
         } else {
