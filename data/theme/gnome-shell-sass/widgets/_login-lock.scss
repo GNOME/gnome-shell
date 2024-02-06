@@ -67,6 +67,48 @@ $_gdm_dialog_width: 25em;
   }
 }
 
+.login-dialog-auth-menu-button-popup {
+  padding: $base_padding * 3;
+  margin-right: $base_padding * 2;
+
+  .login-dialog-auth-menu-header {
+    @include fontsize($base_font_size - 1);
+    text-align: center;
+    font-weight: bold;
+    padding-top: $base_padding * 3;
+    padding-bottom: $base_padding;
+
+    &:first-child {
+      padding-top: $base_padding;
+    }
+  }
+
+  .login-dialog-auth-menu-item-indicator {
+    spacing: $base_padding * .5;
+
+    .login-dialog-auth-menu-item-indicator-name {
+      @include fontsize($base_font_size + 1.75);
+      font-weight: bold;
+    }
+
+    .login-dialog-auth-menu-item-indicator-description {
+      @include fontsize($base_font_size - .25);
+    }
+  }
+}
+
+.login-dialog-auth-menu-button-indicator {
+  background-color: transparent !important;
+
+  .login-dialog-auth-menu-button-indicator-icons {
+     spacing: $base_padding * 3;
+
+    .login-dialog-auth-menu-button-indicator-icon {
+      icon-size: 2em;
+    }
+  }
+}
+
 .login-dialog-button-box {
   height: 4em;
 }
