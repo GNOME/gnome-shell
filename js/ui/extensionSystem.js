@@ -824,20 +824,19 @@ export class ExtensionManager extends Signals.EventEmitter {
 
 const ExtensionUpdateSource = GObject.registerClass(
 class ExtensionUpdateSource extends MessageTray.Source {
-    _init() {
-        let appSys = Shell.AppSystem.get_default();
-        this._app = appSys.lookup_app('org.gnome.Extensions.desktop');
-        if (!this._app)
-            this._app = appSys.lookup_app('com.mattjakeman.ExtensionManager.desktop');
+    constructor() {
+        const appSys = Shell.AppSystem.get_default();
+        const app =
+            appSys.lookup_app('org.gnome.Extensions.desktop') ||
+            appSys.lookup_app('com.mattjakeman.ExtensionManager.desktop');
 
-        super._init({
-            title: this._app.get_name(),
-            icon: this._app.get_icon(),
+        super({
+            title: app.get_name(),
+            icon: app.get_icon(),
+            policy: MessageTray.NotificationPolicy.newForApp(app),
         });
-    }
 
-    _createPolicy() {
-        return new MessageTray.NotificationApplicationPolicy(this._app.id);
+        this._app = app;
     }
 
     open() {

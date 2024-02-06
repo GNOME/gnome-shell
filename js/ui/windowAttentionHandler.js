@@ -56,15 +56,14 @@ export class WindowAttentionHandler {
 
 const WindowAttentionSource = GObject.registerClass(
 class WindowAttentionSource extends MessageTray.Source {
-    _init(app, window) {
-        this._window = window;
-        this._app = app;
-
-        super._init({
-            title: this._app.get_name(),
-            icon: this._app.get_icon(),
+    constructor(app, window) {
+        super({
+            title: app.get_name(),
+            icon: app.get_icon(),
+            policy: MessageTray.NotificationPolicy.newForApp(app),
         });
 
+        this._window = window;
         this._window.connectObject(
             'notify::demands-attention', this._sync.bind(this),
             'notify::urgent', this._sync.bind(this),
@@ -76,15 +75,6 @@ class WindowAttentionSource extends MessageTray.Source {
         if (this._window.demands_attention || this._window.urgent)
             return;
         this.destroy();
-    }
-
-    _createPolicy() {
-        if (this._app && this._app.get_app_info()) {
-            let id = this._app.get_id().replace(/\.desktop$/, '');
-            return new MessageTray.NotificationApplicationPolicy(id);
-        } else {
-            return new MessageTray.NotificationGenericPolicy();
-        }
     }
 
     destroy(params) {

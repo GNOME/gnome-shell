@@ -306,17 +306,29 @@ class FdoNotificationDaemon {
 
 export const FdoNotificationDaemonSource = GObject.registerClass(
 class FdoNotificationDaemonSource extends MessageTray.Source {
-    _init(title, pid, sender, appId) {
-        this.pid = pid;
-        this.initialTitle = title;
-        this.app = this._getApp(appId);
-        this._appIcon = null;
+    constructor(title, pid, sender, appId) {
+        const appSys = Shell.AppSystem.get_default();
+        let app;
+
+        app = Shell.WindowTracker.get_default().get_app_from_pid(pid);
+        if (!app && appId)
+            app = appSys.lookup_app(`${appId}.desktop`);
+
+        if (!app)
+            app = appSys.lookup_app(`${title}.desktop`);
 
         // Use app name as title if available, instead of whatever is provided
         // through libnotify (usually garbage)
-        super._init({
-            title: this.app?.get_name() ?? title,
+        super({
+            title: app?.get_name() ?? title,
+            policy: MessageTray.NotificationPolicy.newForApp(app),
         });
+
+        this.pid = pid;
+        this.initialTitle = title;
+        this.app = app;
+        this._appIcon = null;
+
 
         if (sender) {
             this._nameWatcherId = Gio.DBus.session.watch_name(sender,
@@ -325,15 +337,6 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
                 this._onNameVanished.bind(this));
         } else {
             this._nameWatcherId = 0;
-        }
-    }
-
-    _createPolicy() {
-        if (this.app && this.app.get_app_info()) {
-            let id = this.app.get_id().replace(/\.desktop$/, '');
-            return new MessageTray.NotificationApplicationPolicy(id);
-        } else {
-            return new MessageTray.NotificationGenericPolicy();
         }
     }
 
@@ -359,23 +362,6 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
             this.pushNotification(notification);
         else
             this.showNotification(notification);
-    }
-
-    _getApp(appId) {
-        const appSys = Shell.AppSystem.get_default();
-        let app;
-
-        app = Shell.WindowTracker.get_default().get_app_from_pid(this.pid);
-        if (app != null)
-            return app;
-
-        if (appId)
-            app = appSys.lookup_app(`${appId}.desktop`);
-
-        if (!app)
-            app = appSys.lookup_app(`${this.initialTitle}.desktop`);
-
-        return app;
     }
 
     open() {
@@ -506,30 +492,27 @@ function InvalidAppError() {}
 
 export const GtkNotificationDaemonAppSource = GObject.registerClass(
 class GtkNotificationDaemonAppSource extends MessageTray.Source {
-    _init(appId) {
-        let objectPath = objectPathFromAppId(appId);
+    constructor(appId) {
+        const objectPath = objectPathFromAppId(appId);
         if (!GLib.Variant.is_object_path(objectPath))
             throw new InvalidAppError();
 
-        let app = Shell.AppSystem.get_default().lookup_app(`${appId}.desktop`);
+        const app = Shell.AppSystem.get_default().lookup_app(`${appId}.desktop`);
         if (!app)
             throw new InvalidAppError();
+
+        super({
+            title: app.get_name(),
+            icon: app.get_icon(),
+            policy: new MessageTray.NotificationApplicationPolicy(appId),
+        });
 
         this._appId = appId;
         this._app = app;
         this._objectPath = objectPath;
 
-        super._init({
-            title: app.get_name(),
-            icon: app.get_icon(),
-        });
-
         this._notifications = {};
         this._notificationPending = false;
-    }
-
-    _createPolicy() {
-        return new MessageTray.NotificationApplicationPolicy(this._appId);
     }
 
     _createApp() {

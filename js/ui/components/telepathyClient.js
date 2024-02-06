@@ -307,12 +307,18 @@ class TelepathyClient extends Tp.BaseClient {
 
 const ChatSource = HAVE_TP ? GObject.registerClass(
 class ChatSource extends MessageTray.Source {
-    _init(account, conn, channel, contact, client) {
+    constructor(account, conn, channel, contact, client) {
+        const appId = account.protocol_name === 'irc'
+            ? 'org.gnome.Polari'
+            : 'empathy';
+        const policy =
+            new MessageTray.NotificationApplicationPolicy(appId);
+
+        super({policy});
+
         this._account = account;
         this._contact = contact;
         this._client = client;
-
-        super._init();
 
         this._pendingMessages = [];
 
@@ -354,12 +360,6 @@ class ChatSource extends MessageTray.Source {
                     this._ackMessages();
             }, this);
         this.pushNotification(this._notification);
-    }
-
-    _createPolicy() {
-        if (this._account.protocol_name === 'irc')
-            return new MessageTray.NotificationApplicationPolicy('org.gnome.Polari');
-        return new MessageTray.NotificationApplicationPolicy('empathy');
     }
 
     createBanner() {
