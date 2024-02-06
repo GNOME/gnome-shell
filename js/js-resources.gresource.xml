@@ -6,6 +6,7 @@
     <file>gdm/authPrompt.js</file>
     <file>gdm/authServices.js</file>
     <file>gdm/authServicesLegacy.js</file>
+    <file>gdm/authServicesSSSDSwitchable.js</file>
     <file>gdm/batch.js</file>
     <file>gdm/conflictingSessionDialog.js</file>
     <file>gdm/constants.js</file>

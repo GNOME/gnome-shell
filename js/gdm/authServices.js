@@ -16,6 +16,7 @@ Gio._promisify(Gdm.UserVerifierProxy.prototype, 'call_begin_verification_for_use
 Gio._promisify(Gdm.UserVerifierProxy.prototype, 'call_begin_verification');
 Gio._promisify(Gdm.UserVerifierProxy.prototype, 'call_answer_query');
 Gio._promisify(Gdm.UserVerifierChoiceListProxy.prototype, 'call_select_choice');
+Gio._promisify(Gdm.UserVerifierCustomJSONProxy.prototype, 'call_reply');
 
 export class AuthServices extends GObject.Object {
     static [GObject.signals] = {

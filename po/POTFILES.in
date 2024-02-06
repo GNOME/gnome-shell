@@ -13,6 +13,7 @@ js/dbusServices/extensions/ui/extension-error-page.ui
 js/gdm/authPrompt.js
 js/gdm/authServices.js
 js/gdm/authServicesLegacy.js
+js/gdm/authServicesSSSDSwitchable.js
 js/gdm/conflictingSessionDialog.js
 js/gdm/loginDialog.js
 js/gdm/util.js
