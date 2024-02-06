@@ -15,7 +15,10 @@ import * as Main from './main.js';
 import * as MessageTray from './messageTray.js';
 import * as SwipeTracker from './swipeTracker.js';
 import {formatDateWithCFormatString} from '../misc/dateUtils.js';
+import * as AuthMenuButton from '../gdm/authMenuButton.js';
 import * as AuthPrompt from '../gdm/authPrompt.js';
+
+const PRIMARY_UNLOCK_METHOD_SECTION_NAME = _('Primary Unlock Method');
 
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
@@ -400,12 +403,13 @@ class UnlockDialogClock extends St.BoxLayout {
 
 const UnlockDialogLayout = GObject.registerClass(
 class UnlockDialogLayout extends Clutter.LayoutManager {
-    _init(stack, notifications, switchUserButton) {
+    _init(stack, notifications, switchUserButton, menuButtons) {
         super._init();
 
         this._stack = stack;
         this._notifications = notifications;
         this._switchUserButton = switchUserButton;
+        this._menuButtons = menuButtons;
     }
 
     vfunc_get_preferred_width(container, forHeight) {
@@ -466,13 +470,31 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
             if (textDirection === Clutter.TextDirection.RTL)
                 actorBox.x1 = box.x2 - natWidth;
             else
-                actorBox.x1 = box.x1 + natWidth;
+                actorBox.x1 = box.x1;
 
-            actorBox.y1 = box.y2 - (natHeight * 2);
+            actorBox.y1 = box.y2 - natHeight;
             actorBox.x2 = actorBox.x1 + natWidth;
             actorBox.y2 = actorBox.y1 + natHeight;
 
             this._switchUserButton.allocate(actorBox);
+        }
+
+        // Login Options buttons
+        if (this._menuButtons.visible) {
+            let [, , natWidth, natHeight] =
+                this._menuButtons.get_preferred_size();
+
+            const textDirection = this._menuButtons.get_text_direction();
+            if (textDirection === Clutter.TextDirection.RTL)
+                actorBox.x1 = box.x2 - natWidth;
+            else
+                actorBox.x1 = box.x2 - natWidth;
+
+            actorBox.y1 = box.y2 - natHeight;
+            actorBox.x2 = actorBox.x1 + natWidth;
+            actorBox.y2 = actorBox.y1 + natHeight;
+
+            this._menuButtons.allocate(actorBox);
         }
     }
 });
@@ -585,13 +607,43 @@ export const UnlockDialog = GObject.registerClass({
             accessible_name: _('Log in as another user'),
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             reactive: false,
-            opacity: 0,
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.END,
             label: _('Switch User…')
         });
         this._otherUserButton.set_pivot_point(0.5, 0.5);
         this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
+
+        this._menuButtons = new St.BoxLayout({
+            opacity: 0,
+            style_class: 'login-dialog-menu-button-box',
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.END,
+        });
+
+        // Login Options button
+        this._authMenuButton = new AuthMenuButton.AuthMenuButton({
+            title: _('Login Options'),
+            iconName: 'emblem-system-symbolic',
+        });
+        this._authMenuButton.connect('active-item-changed',
+            () => {
+                const activeMechanism = this._authMenuButton.getActiveItem();
+                if (activeMechanism)
+                    this._authPrompt.setForegroundMechanism(activeMechanism);
+            });
+        this._authMenuButton.updateSensitivity(true);
+        this._authMenuButton.opacity = 255;
+        this._authMenuButton.visible = true;
+        this._menuButtons.add_child(this._authMenuButton);
+
+        // Auth Indicators
+        this._authIndicatorButton = new AuthMenuButton.AuthMenuButton({
+            title: _('Background Authentication Methods'),
+            readOnly: true,
+        });
+        this._authIndicatorButton.updateSensitivity(true);
+        this._menuButtons.add_child(this._authIndicatorButton);
 
         this._screenSaverSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.screensaver'});
 
@@ -615,10 +667,12 @@ export const UnlockDialog = GObject.registerClass({
         mainBox.add_child(this._stack);
         mainBox.add_child(this._notificationsBox);
         mainBox.add_child(this._otherUserButton);
+        mainBox.add_child(this._menuButtons);
         mainBox.layout_manager = new UnlockDialogLayout(
             this._stack,
             this._notificationsBox,
-            this._otherUserButton);
+            this._otherUserButton,
+            this._menuButtons);
         this.add_child(mainBox);
 
         this._idleMonitor = global.backend.get_core_idle_monitor();
@@ -712,6 +766,7 @@ export const UnlockDialog = GObject.registerClass({
             this._authPrompt.connect('failed', this._fail.bind(this));
             this._authPrompt.connect('cancelled', this._fail.bind(this));
             this._authPrompt.connect('reset', this._onReset.bind(this));
+            this._authPrompt.connect('mechanisms-changed', this._onMechanismsChanged.bind(this));
             this._promptBox.add_child(this._authPrompt);
         }
 
@@ -785,7 +840,7 @@ export const UnlockDialog = GObject.registerClass({
             translation_y: -FADE_OUT_TRANSLATION * progress * scaleFactor,
         });
 
-        this._otherUserButton.set({
+        this._menuButtons.set({
             opacity: 255 * progress,
             scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
             scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
@@ -807,6 +862,40 @@ export const UnlockDialog = GObject.registerClass({
         }
 
         this._authPrompt.begin({userName});
+    }
+
+    _onMechanismsChanged(authPrompt, serviceName) {
+        const mechanisms = Array.from(authPrompt.mechanisms.get(serviceName));
+        const activeMechanism = this._authMenuButton.getActiveItem();
+
+        this._authMenuButton.clearItems({serviceName});
+        this._authIndicatorButton.clearItems({serviceName});
+
+        if (mechanisms.length === 0)
+            return;
+
+        const defaultId = mechanisms[0].id;
+
+        mechanisms.sort((a, b) => a.name.localeCompare(b.name));
+
+        for (const {role, id, name, selectable, iconName} of mechanisms) {
+            if (selectable) {
+                const mechanism = {serviceName, id, name, role};
+                this._authMenuButton.addItem({
+                    sectionName: PRIMARY_UNLOCK_METHOD_SECTION_NAME,
+                    ...mechanism,
+                });
+
+                const wasActive = activeMechanism?.id === id;
+                const isDefault = id === defaultId;
+
+                if (wasActive || (!activeMechanism && isDefault))
+                    this._authMenuButton.setActiveItem(mechanism);
+            } else {
+                const mechanism = {serviceName, id, name, role, iconName};
+                this._authIndicatorButton.addItem(mechanism);
+            }
+        }
     }
 
     _escape() {
