@@ -215,4 +215,12 @@ class UserWidget extends St.BoxLayout {
     _updateUser() {
         this._avatar.update();
     }
+
+    hideAvatar() {
+        this._avatar?.hide();
+    }
+
+    showAvatar() {
+        this._avatar?.show();
+    }
 });
