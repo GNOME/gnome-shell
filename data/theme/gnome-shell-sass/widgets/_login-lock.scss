@@ -41,6 +41,7 @@ $_gdm_dialog_width: 25em;
   }
 }
 
+.login-dialog-auth-indicator-button,
 .login-dialog-bottom-button-group {
   padding: 32px;
   spacing: 16px;
@@ -293,6 +294,23 @@ $_gdm_dialog_width: 25em;
   .button,
   .icon-button {
     @extend %lockscreen_button;
+  }
+
+  .login-dialog-auth-indicator-button {
+    .login-dialog-button {
+      background-color: rgba(0,0,0,0);
+      border-color: rgba(0,0,0,0);
+
+      &:hover, &:focus, &:active, &:pressed, &:selected, &:insensitive {
+        background-color: rgba(0,0,0,0) !important;
+        border-color: rgba(0,0,0,0) !important;
+      }
+    }
+
+    .login-dialog-auth-menu-button-icon {
+      icon-size: 2em;
+      opacity: 1;
+    }
   }
 }
 
