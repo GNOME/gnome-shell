@@ -161,6 +161,24 @@ export const NotificationPolicy = GObject.registerClass({
             GObject.ParamFlags.READABLE, false),
     },
 }, class NotificationPolicy extends GObject.Object {
+    /**
+     * Create a new policy for app.
+     *
+     * This will be a NotificationApplicationPolicy for valid apps,
+     * or a NotificationGenericPolicy otherwise.
+     *
+     * @param {Shell.App=} app
+     * @returns {NotificationPolicy}
+     */
+    static newForApp(app) {
+        // fallback to generic policy
+        if (!app?.get_app_info())
+            return new NotificationGenericPolicy();
+
+        const id = app.get_id().replace(/\.desktop$/, '');
+        return new NotificationApplicationPolicy(id);
+    }
+
     // Do nothing for the default policy. These methods are only useful for the
     // GSettings policy.
     store() { }
