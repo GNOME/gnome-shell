@@ -15,6 +15,7 @@ import * as GdmUtil from './util.js';
 import * as Params from '../misc/params.js';
 import * as ShellEntry from '../ui/shellEntry.js';
 import * as UserWidget from '../ui/userWidget.js';
+import * as WebLogin from './webLogin.js';
 import {wiggle} from '../misc/animationUtils.js';
 
 import {loadInterfaceXML} from '../misc/fileUtils.js';
@@ -174,6 +175,7 @@ export const AuthPrompt = GObject.registerClass({
             'show-message', this._onShowMessage.bind(this),
             'show-choice-list', this._onShowChoiceList.bind(this),
             'mechanisms-changed', (_, ...args) => this.emit('mechanisms-changed', ...args),
+            'web-login', this._onWebLogin.bind(this),
             'verification-failed', this._onVerificationFailed.bind(this),
             'verification-complete', this._onVerificationComplete.bind(this),
             'reset', this._onReset.bind(this),
@@ -380,6 +382,30 @@ export const AuthPrompt = GObject.registerClass({
 
         this.setActorInDefaultButtonWell(this._nextButton);
 
+        this._webLoginIntro = new WebLogin.WebLoginIntro();
+        this._webLoginIntro.set({
+            x_align: Clutter.ActorAlign.CENTER,
+            x_expand: true,
+            y_expand: true,
+        });
+        this._webLoginIntro.connect('clicked', () => {
+            this._webLoginIntro.hide();
+            this._openWebLoginDialog();
+        });
+        this._mainBox.add_child(this._webLoginIntro);
+
+        this._webLoginDialog = new WebLogin.WebLoginDialog();
+        this._webLoginDialog.connect('cancel', () => {
+            if (this._webLoginDialog.isLoading) {
+                this.reset({softReset: true});
+            } else {
+                this._closeWebLoginDialog();
+                this._fadeInElement(this._webLoginIntro);
+                this.updateSensitivity({sensitive: true});
+            }
+        });
+        this._webLoginDialog.connect('loading', () => this.emit('loading', this._webLoginDialog.isLoading));
+        this._inputWell.add_child(this._webLoginDialog);
 
         // center elements inside _mainBox between the cancel
         // button on the left and this spacer on the right
@@ -530,7 +556,9 @@ export const AuthPrompt = GObject.registerClass({
         if (message &&
             type < GdmUtil.MessageType.ERROR &&
             !this._entryArea.visible &&
-            !this._authList.visible) {
+            !this._authList.visible &&
+            !this._webLoginIntro.visible &&
+            !this._webLoginDialog.visible) {
             this._fadeInElement(this._entryArea);
             this.updateSensitivity({sensitive: true});
         }
@@ -543,6 +571,53 @@ export const AuthPrompt = GObject.registerClass({
             : Promise.resolve();
 
         showMessageResolver?.(wigglePromise);
+    }
+
+    _onWebLogin(_userVerifier, serviceName, introMessage, message, url, code, buttons) {
+        if (this._queryingService)
+            this.clear();
+
+        this._queryingService = serviceName;
+        this._promptStep++;
+        this._updateCancelButton();
+
+        this._webLoginParams = {message, url, code, buttons};
+
+        this._entryArea.hide();
+
+        this._clearPreemptiveState();
+
+        if (!this._webLoginDialog.visible && introMessage) {
+            this._webLoginIntro.setMessage(introMessage);
+            this._fadeInElement(this._webLoginIntro);
+            this.updateSensitivity({sensitive: true});
+        } else {
+            this._openWebLoginDialog();
+        }
+
+        this.emit('prompted');
+    }
+
+    _closeWebLoginDialog() {
+        this._webLoginDialog.hide();
+
+        this._userWell.get_child()?.showAvatar();
+        this._mainBox.show();
+
+        this.webLoginActive = false;
+        this.remove_style_class_name('web-login-active');
+    }
+
+    _openWebLoginDialog() {
+        this._userWell.get_child()?.hideAvatar();
+        this._mainBox.hide();
+
+        this._webLoginDialog.update(this._webLoginParams);
+        this._fadeInElement(this._webLoginDialog);
+        this.updateSensitivity({sensitive: true});
+
+        this.webLoginActive = true;
+        this.add_style_class_name('web-login-active');
     }
 
     _onVerificationFailed(userVerifier, serviceName, canRetry) {
@@ -571,12 +646,14 @@ export const AuthPrompt = GObject.registerClass({
         this.stopSpinning({animate: true});
         this.verificationStatus = AuthPromptStatus.VERIFICATION_SUCCEEDED;
 
-        this._mainBox.reactive = false;
-        this._mainBox.can_focus = false;
-        this._mainBox.ease({
-            opacity: 0,
-            duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        [this._mainBox, this._webLoginDialog].forEach(widget => {
+            widget.reactive = false;
+            widget.can_focus = false;
+            widget.ease({
+                opacity: 0,
+                duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
         });
 
         this.emit('verification-complete');
@@ -648,6 +725,9 @@ export const AuthPrompt = GObject.registerClass({
     stopSpinning({animate = false} = {}) {
         this.emit('loading', false);
         this.setActorInDefaultButtonWell(this._nextButton, animate);
+
+        if (this._webLoginDialog.isLoading)
+            this._webLoginDialog.stopLoading();
     }
 
     clear(params) {
@@ -667,16 +747,22 @@ export const AuthPrompt = GObject.registerClass({
         this._authListTitle.child.text = '';
         this._authList.clear();
         this._authList.hide();
+        this._webLoginIntro.hide();
+        this._closeWebLoginDialog();
 
-        this._mainBox.opacity = 255;
-        this._mainBox.reactive = true;
-        this._mainBox.can_focus = true;
+        [this._mainBox, this._webLoginDialog].forEach(widget => {
+            widget.opacity = 255;
+            widget.reactive = true;
+            widget.can_focus = true;
+        });
     }
 
     setQuestion(question) {
         this._entry.hint_text = question;
 
         this._authList.hide();
+        this._webLoginIntro.hide();
+        this._closeWebLoginDialog();
 
         this._fadeInElement(this._entryArea);
         this.updateSensitivity({sensitive: true});
@@ -761,6 +847,8 @@ export const AuthPrompt = GObject.registerClass({
 
         const authWidget = [
             this._authList,
+            this._webLoginIntro,
+            this._webLoginDialog,
         ].find(widget => widget.visible) ?? this._entry;
 
         if (authWidget === this._entry)
