@@ -12,11 +12,13 @@
 
   .message-list-placeholder {
     @extend %title_2;
-    color: $insensitive_fg_color;
-
+    color: transparentize($fg_color, .75);
+    @if $contrast == 'high' {
+      color: transparentize($fg_color, .5);
+    }
     // icon size and color
     > StIcon {
-      icon-size: $scalable_icon_size * 3; // 48px
+      icon-size: 96px; // non-em asset size
       margin-bottom: $base_margin * 3;
       -st-icon-style: symbolic;
     }

@@ -45,7 +45,6 @@
     <file preprocess="xml-stripblanks">scalable/status/keyboard-layout-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/keyboard-shift-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/message-indicator-symbolic.svg</file>
-    <file preprocess="xml-stripblanks">scalable/status/no-events-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/no-notifications-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/screen-privacy-disabled-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/screen-privacy-symbolic.svg</file>
