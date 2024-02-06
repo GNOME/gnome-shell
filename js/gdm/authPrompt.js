@@ -465,9 +465,11 @@ export const AuthPrompt = GObject.registerClass({
         this.emit('verification-complete');
     }
 
-    _onReset() {
-        this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
-        this.reset();
+    _onReset(_, resetParams) {
+        if (this.verificationStatus === AuthPromptStatus.VERIFICATION_SUCCEEDED)
+            return;
+
+        this.reset(resetParams);
     }
 
     setActorInDefaultButtonWell(actor, animate) {
@@ -677,13 +679,22 @@ export const AuthPrompt = GObject.registerClass({
             this._updateEntry(false);
     }
 
-    reset() {
+    reset(params) {
+        let {beginRequestType, reuseEntryText, softReset} = Params.parse(params, {
+            beginRequestType: null,
+            reuseEntryText: false,
+            softReset: false,
+        });
+
         const oldStatus = this.verificationStatus;
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.cancelButton.reactive = this._hasCancelButton;
         this.cancelButton.can_focus = this._hasCancelButton;
         if (oldStatus !== AuthPromptStatus.VERIFICATION_IN_PROGRESS)
             this._preemptiveAnswer = null;
+
+        const oldEntryText = this._textEntry.text;
+        const oldPasswordText = this._passwordEntry.text;
 
         if (this._userVerifier)
             this._userVerifier.cancel();
@@ -695,29 +706,35 @@ export const AuthPrompt = GObject.registerClass({
         this._updateEntry(true);
         this.stopSpinning();
 
+        if (reuseEntryText) {
+            this._textEntry.text = oldEntryText;
+            this._passwordEntry.text = oldPasswordText;
+        }
+
         if (oldStatus === AuthPromptStatus.VERIFICATION_FAILED)
             this.emit('failed');
         else if (oldStatus === AuthPromptStatus.VERIFICATION_CANCELLED)
             this.emit('cancelled');
 
-        let beginRequestType;
-
-        if (this._mode === AuthPromptMode.UNLOCK_ONLY) {
-            // The user is constant at the unlock screen, so it will immediately
-            // respond to the request with the username
-            if (oldStatus === AuthPromptStatus.VERIFICATION_CANCELLED)
-                return;
-            beginRequestType = BeginRequestType.PROVIDE_USERNAME;
-        } else if (this._userVerifier.foregroundServiceDeterminesUsername()) {
-            // We don't need to know the username if the user preempted the login screen
-            // with a smartcard or with preauthenticated oVirt credentials
-            beginRequestType = BeginRequestType.DONT_PROVIDE_USERNAME;
-        } else if (oldStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS) {
-            // We're going back to retry with current user
-            beginRequestType = BeginRequestType.REUSE_USERNAME;
-        } else {
-            // In all other cases, we should get the username up front.
-            beginRequestType = BeginRequestType.PROVIDE_USERNAME;
+        if (beginRequestType === null) {
+            if (this._mode === AuthPromptMode.UNLOCK_ONLY) {
+                // The user is constant at the unlock screen, so it will immediately
+                // respond to the request with the username
+                if (oldStatus === AuthPromptStatus.VERIFICATION_CANCELLED)
+                    return;
+                beginRequestType = BeginRequestType.PROVIDE_USERNAME;
+            } else if (!this._userVerifier.needsUsername()) {
+                // We don't need to know the username if the user preempted the login screen
+                // with a smartcard or with preauthenticated oVirt credentials
+                beginRequestType = BeginRequestType.DONT_PROVIDE_USERNAME;
+            } else if (oldStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS ||
+                softReset) {
+                // We're going back to retry with current user
+                beginRequestType = BeginRequestType.REUSE_USERNAME;
+            } else {
+                // In all other cases, we should get the username up front.
+                beginRequestType = BeginRequestType.PROVIDE_USERNAME;
+            }
         }
 
         this.emit('reset', beginRequestType);
