@@ -17,6 +17,7 @@ export const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
 export const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
 export const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
 export const SWITCHABLE_AUTHENTICATION_KEY = 'enable-switchable-authentication';
+export const WEB_AUTHENTICATION_KEY = 'enable-web-authentication';
 export const BANNER_MESSAGE_KEY = 'banner-message-enable';
 export const BANNER_MESSAGE_SOURCE_KEY = 'banner-message-source';
 export const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
@@ -94,6 +95,7 @@ export function isSelectable(mechanism) {
     switch (mechanism.role) {
     case Const.PASSWORD_ROLE_NAME:
     case Const.SMARTCARD_ROLE_NAME:
+    case Const.WEB_LOGIN_ROLE_NAME:
         return true;
     case Const.FINGERPRINT_ROLE_NAME:
         return false;
@@ -387,6 +389,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             enabledRoles.push(Const.SMARTCARD_ROLE_NAME);
         if (this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY))
             enabledRoles.push(Const.FINGERPRINT_ROLE_NAME);
+        if (this._settings.get_boolean(WEB_AUTHENTICATION_KEY))
+            enabledRoles.push(Const.WEB_LOGIN_ROLE_NAME);
 
         const switchableAuthentication =
             this._settings.get_boolean(SWITCHABLE_AUTHENTICATION_KEY);
@@ -449,6 +453,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 'reset', (_, ...args) => this.emit('reset', ...args),
                 'show-choice-list', (_, ...args) => this.emit('show-choice-list', ...args),
                 'mechanisms-changed', (_, ...args) => this._onMechanismsChanged(...args),
+                'web-login', (_, ...args) => this.emit('web-login', ...args),
                 this);
         });
     }
