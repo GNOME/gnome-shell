@@ -18,6 +18,7 @@
     <file>gdm/smartcardManager.js</file>
     <file>gdm/util.js</file>
     <file>gdm/vmware.js</file>
+    <file>gdm/webLogin.js</file>
 
     <file>extensions/extension.js</file>
     <file>extensions/sharedInternals.js</file>
