@@ -219,6 +219,11 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._getUserVerifier();
     }
 
+    selectMechanism(mechanism) {
+        // TODO: Implement mechanism selection
+        return false;
+    }
+
     cancel() {
         if (this._cancellable)
             this._cancellable.cancel();
