@@ -139,6 +139,7 @@ export const AuthPrompt = GObject.registerClass({
         'failed': {},
         'next': {},
         'prompted': {},
+        'mechanisms-changed': {param_types: [GObject.TYPE_JSOBJECT, GObject.TYPE_JSOBJECT]},
         'reset': {param_types: [GObject.TYPE_UINT]},
         'verification-complete': {},
         'loading': {param_types: [GObject.TYPE_BOOLEAN]},
@@ -173,6 +174,7 @@ export const AuthPrompt = GObject.registerClass({
             'ask-question', this._onAskQuestion.bind(this),
             'show-message', this._onShowMessage.bind(this),
             'show-choice-list', this._onShowChoiceList.bind(this),
+            'mechanisms-changed', (_, ...args) => this.emit('mechanisms-changed', ...args),
             'verification-failed', this._onVerificationFailed.bind(this),
             'verification-complete', this._onVerificationComplete.bind(this),
             'reset', this._onReset.bind(this),
@@ -835,6 +837,17 @@ export const AuthPrompt = GObject.registerClass({
 
         if (!user)
             this._updateEntry(false);
+    }
+
+    selectMechanism(mechanism) {
+        const invalidStatus = [
+            AuthPromptStatus.VERIFICATION_SUCCEEDED,
+            AuthPromptStatus.VERIFICATION_IN_PROGRESS,
+        ];
+        if (invalidStatus.includes(this.verificationStatus))
+            return false;
+
+        return true;
     }
 
     reset(params) {
