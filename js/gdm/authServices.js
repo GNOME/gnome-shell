@@ -43,6 +43,12 @@ export const AuthServices = GObject.registerClass({
             param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_JSOBJECT],
         },
         'mechanisms-changed': {},
+        'web-login': {
+            param_types: [
+                GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_STRING,
+                GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_JSOBJECT,
+            ],
+        },
     },
 }, class AuthServices extends GObject.Object {
     static SupportedRoles = [];

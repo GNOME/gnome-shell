@@ -16,6 +16,7 @@ import 'gi://GioUnix?version=2.0';
 import 'gi://GDesktopEnums?version=3.0';
 import 'gi://GdkPixbuf?version=2.0';
 import 'gi://GnomeBG?version=4.0';
+import 'gi://GnomeQR?version=4.0';
 import 'gi://GnomeDesktop?version=4.0';
 import 'gi://Graphene?version=1.0';
 import 'gi://GUdev?version=1.0';
