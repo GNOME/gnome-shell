@@ -799,7 +799,7 @@ export const UnlockDialog = GObject.registerClass({
 
     _onReset(authPrompt, beginRequest) {
         let userName;
-        if (beginRequest === AuthPrompt.BeginRequestType.PROVIDE_USERNAME) {
+        if (beginRequest !== AuthPrompt.BeginRequestType.DONT_PROVIDE_USERNAME) {
             this._authPrompt.setUser(this._user);
             userName = this._userName;
         } else {
