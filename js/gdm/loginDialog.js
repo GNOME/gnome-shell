@@ -27,9 +27,9 @@ import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
+import * as AuthMenuButton from './authMenuButton.js';
 import * as AuthPrompt from './authPrompt.js';
 import * as Batch from './batch.js';
-import * as BoxPointer from '../ui/boxpointer.js';
 import * as CtrlAltTab from '../ui/ctrlAltTab.js';
 import * as GdmUtil from './util.js';
 import * as Layout from '../ui/layout.js';
@@ -47,6 +47,7 @@ const _FADE_ANIMATION_TIME = 250;
 const _SCROLL_ANIMATION_TIME = 500;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _CONFLICTING_SESSION_DIALOG_TIMEOUT = 60;
+const _SESSION_TYPE_SECTION_NAME = _('Session Type');
 
 const N_A11Y_MENU_COLUMNS = 2;
 
@@ -314,103 +315,6 @@ const UserList = GObject.registerClass({
     }
 });
 
-const SessionMenuButton = GObject.registerClass({
-    Signals: {'session-activated': {param_types: [GObject.TYPE_STRING]}},
-}, class SessionMenuButton extends St.Bin {
-    _init() {
-        const button = new St.Button({
-            style_class: 'login-dialog-button login-dialog-session-list-button',
-            icon_name: 'cog-wheel-symbolic',
-            reactive: true,
-            track_hover: true,
-            can_focus: true,
-            accessible_name: _('Choose Session'),
-            accessible_role: Atk.Role.MENU,
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-
-        super._init({child: button});
-        this._button = button;
-
-        this._menu = new PopupMenu.PopupMenu(this._button, 0, St.Side.BOTTOM);
-        Main.uiGroup.add_child(this._menu.actor);
-        this._menu.actor.hide();
-
-        this._menu.connect('open-state-changed', (menu, isOpen) => {
-            if (isOpen)
-                this._button.add_style_pseudo_class('active');
-            else
-                this._button.remove_style_pseudo_class('active');
-        });
-
-        this._manager = new PopupMenu.PopupMenuManager(this._button,
-            {actionMode: Shell.ActionMode.NONE});
-        this._manager.addMenu(this._menu);
-
-        this._button.connect('clicked', () => this._menu.toggle());
-
-        this._items = new Map();
-        this._activeSessionId = null;
-        this._populate();
-    }
-
-    updateSensitivity(sensitive) {
-        this._button.reactive = sensitive;
-        this._button.can_focus = sensitive;
-        this.opacity = sensitive ? 255 : 0;
-        this._menu.close(BoxPointer.PopupAnimation.NONE);
-    }
-
-    _updateOrnament() {
-        for (const itemId of this._items.keys()) {
-            if (itemId === this._activeSessionId)
-                this._items.get(itemId).setOrnament(PopupMenu.Ornament.DOT);
-            else
-                this._items.get(itemId).setOrnament(PopupMenu.Ornament.NO_DOT);
-        }
-    }
-
-    setActiveSession(sessionId) {
-        if (sessionId === this._activeSessionId)
-            return;
-
-        this._activeSessionId = sessionId;
-        this._updateOrnament();
-    }
-
-    close() {
-        this._menu.close();
-    }
-
-    _populate() {
-        const ids = Gdm.get_session_ids();
-
-        if (ids.length <= 1) {
-            this._button.hide();
-            return;
-        }
-
-        const sessions = ids.map(id => {
-            const [sessionName] = Gdm.get_session_name_and_description(id);
-            return {id, sessionName};
-        });
-
-        sessions.sort((a, b) => a.sessionName.localeCompare(b.sessionName));
-
-        for (const {id, sessionName} of sessions) {
-            const item = new PopupMenu.PopupMenuItem(sessionName);
-            this._menu.addMenuItem(item);
-            this._items.set(id, item);
-
-            item.connect('activate', () => {
-                this.setActiveSession(id);
-                this.emit('session-activated', this._activeSessionId);
-            });
-        }
-    }
-});
-
 const A11yMenuButton = GObject.registerClass(
 class A11yMenuButton extends St.Button {
     constructor() {
@@ -591,6 +495,7 @@ export const LoginDialog = GObject.registerClass({
         this._authPrompt.connect('prompted', this._onPrompted.bind(this));
         this._authPrompt.connect('reset', this._onReset.bind(this));
         this._authPrompt.connect('verification-complete', this._onVerificationComplete.bind(this));
+        this._authPrompt.connect('loading', this._onLoading.bind(this));
         this._authPrompt.hide();
         this.add_child(this._authPrompt);
 
@@ -644,14 +549,7 @@ export const LoginDialog = GObject.registerClass({
         });
         this.add_child(this._bottomButtonGroup);
 
-        this._sessionMenuButton = new SessionMenuButton();
-        this._sessionMenuButton.connect('session-activated',
-            (list, sessionId) => {
-                this._greeter.call_select_session_sync(sessionId, null);
-            });
-        this._sessionMenuButton.opacity = 0;
-        this._sessionMenuButton.show();
-        this._bottomButtonGroup.add_child(this._sessionMenuButton);
+        this._createAuthMenuButton();
 
         this._a11yMenuButton = new A11yMenuButton();
         this._bottomButtonGroup.add_child(this._a11yMenuButton);
@@ -685,6 +583,45 @@ export const LoginDialog = GObject.registerClass({
         // focus later
         Main.layoutManager.connectObject('startup-complete',
             this._updateDisableUserList.bind(this), this);
+    }
+
+    _createAuthMenuButton() {
+        this._authMenuButton = new AuthMenuButton.AuthMenuButton({
+            title: _('Login Options'),
+            iconName: 'cog-wheel-symbolic',
+            sectionOrder: [_SESSION_TYPE_SECTION_NAME],
+        });
+        this._authMenuButton.updateSensitivity(false);
+
+        const ids = Gdm.get_session_ids();
+        ids.sort();
+
+        if (ids.length <= 1) {
+            this._button.hide();
+            return;
+        }
+
+        for (const id of ids) {
+            const [sessionName, _] = Gdm.get_session_name_and_description(id);
+
+            this._authMenuButton.addItem({
+                sectionName: _SESSION_TYPE_SECTION_NAME,
+                name: sessionName,
+                id,
+            });
+        }
+
+        this._authMenuButton.connect('active-item-changed', (_button, sectionName) => {
+            const item = this._authMenuButton.getActiveItem({sectionName});
+            if (!item)
+                return;
+
+            if (sectionName === _SESSION_TYPE_SECTION_NAME)
+                this._greeter.call_select_session_sync(item.id, null);
+
+            this._authMenuButton.close();
+        });
+        this._bottomButtonGroup.add_child(this._authMenuButton);
     }
 
     _getBannerAllocation(dialogBox) {
@@ -1057,10 +994,8 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _onPrompted() {
-        const showSessionMenu = this._shouldShowSessionMenuButton();
+        this._authMenuButton.updateSensitivity(this._shouldShowAuthMenu());
 
-        this._sessionMenuButton.updateSensitivity(showSessionMenu);
-        this._sessionMenuButton.visible = showSessionMenu;
         this._showPrompt();
     }
 
@@ -1080,7 +1015,6 @@ export const LoginDialog = GObject.registerClass({
 
     _onReset(authPrompt, beginRequest) {
         this._ensureGreeterProxy();
-        this._sessionMenuButton.updateSensitivity(true);
 
         const previousUser = this._user;
         this._user = null;
@@ -1114,11 +1048,18 @@ export const LoginDialog = GObject.registerClass({
         });
     }
 
-    _onDefaultSessionChanged(client, sessionId) {
-        this._sessionMenuButton.setActiveSession(sessionId);
+    _onLoading(_authPrompt, isLoading) {
+        this._authMenuButton.updateReactive(!isLoading);
     }
 
-    _shouldShowSessionMenuButton() {
+    _onDefaultSessionChanged(client, sessionId) {
+        this._authMenuButton.setActiveItem({
+            sectionName: _SESSION_TYPE_SECTION_NAME,
+            id: sessionId,
+        });
+    }
+
+    _shouldShowAuthMenu() {
         const visibleStatuses = [
             AuthPrompt.AuthPromptStatus.VERIFYING,
             AuthPrompt.AuthPromptStatus.VERIFICATION_FAILED,
@@ -1180,7 +1121,7 @@ export const LoginDialog = GObject.registerClass({
             });
         this._updateCancelButton();
 
-        this._sessionMenuButton.updateSensitivity(false);
+        this._authMenuButton.updateSensitivity(false);
         this._authPrompt.updateSensitivity(true);
         this._showPrompt();
     }
@@ -1494,8 +1435,7 @@ export const LoginDialog = GObject.registerClass({
         this._ensureUserListLoaded();
         this._authPrompt.hide();
         this._hideBannerView();
-        this._sessionMenuButton.close();
-        this._sessionMenuButton.hide();
+        this._authMenuButton.updateSensitivity(false);
         this._setUserListExpanded(true);
         this._notListedButton.show();
         this._userList.grab_key_focus();
