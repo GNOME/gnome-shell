@@ -49,7 +49,8 @@ $_gdm_dialog_width: 25em;
   &.cancel-button,
   &.switch-user-button,
   &.login-dialog-auth-menu-button,
-  &.login-dialog-session-list-button {
+  &.login-dialog-session-list-button,
+  &.web-login-intro-button {
     @extend .icon-button;
     @extend %system_button;
   }
@@ -274,8 +275,69 @@ $_gdm_dialog_width: 25em;
   }
 }
 
+.web-login-dialog-content-overlay {
+  background-color: transparentize($bg_color, 0.3);
+  border-radius: $modal_radius;
+  margin-bottom: 3em;
+}
+
+.web-login-spinner {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 5px rgba(0, 0, 0, 0.0);
+  border-radius: 50px;
+}
+
+.web-login-title-label {
+  @include fontsize($base_font_size);
+  color: darken($_gdm_fg,30%);
+}
+
+.web-login-url-label {
+  @include fontsize($base_font_size);
+  @extend %monospace;
+  color: $_gdm_fg;
+  text-align: center;
+}
+
+.web-login-code-title-label {
+  @include fontsize($base_font_size);
+  @include fontsize($base_font_size);
+  color: $_gdm_fg;
+}
+
+.web-login-code-label {
+  @include fontsize($base_font_size);
+  color: $_gdm_fg;
+  font-weight: bold;
+}
+
+.web-login-prompt {
+  padding-top: $base_padding;
+  padding-bottom: $base_padding;
+  padding-left: $base_padding * 4.5;
+  padding-right: $base_padding * 4.5;
+  spacing: 1.75em;
+  border-radius: $base_border_radius * 2;
+}
+
+.web-login-intro-button-label {
+  @include fontsize($base_font_size + 2);
+  color: $_gdm_fg;
+  min-width: 12em;
+  text-align: center;
+  font-weight: bold;
+}
+
+.web-login-intro-button {
+  @include fontsize($base_font_size);
+  height: 2em;
+  text-align: center;
+  border-radius: $base_border_radius * 4;
+}
+
 // Screen Shield
 // a.k.a. the lockscreen, uses transparent styles
+
 .unlock-dialog {
   background-color: transparent;
 

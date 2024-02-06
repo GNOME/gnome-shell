@@ -39,6 +39,7 @@ export const AUTH_MECHANISM_PROTOCOL = 'auth-mechanisms';
 export const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 export const SWITCHABLE_AUTHENTICATION_KEY = 'enable-switchable-authentication';
 export const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
+export const WEB_LOGIN_AUTHENTICATION_KEY = 'enable-web-authentication';
 export const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
 export const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
 export const BANNER_MESSAGE_KEY = 'banner-message-enable';
@@ -270,6 +271,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._cancellable = null;
         }
 
+        this._clearWebLoginTimeout();
         this._clearUserVerifier();
         this._clearMessageQueue();
         this._activeServices.clear();
@@ -954,6 +956,45 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         await this.replyWithJSON(serviceName, JSON.stringify(reply));
     }
 
+    _startWebLogin(serviceName, mechanismId) {
+        const mechanisms = this._publishedMechanisms.get(serviceName);
+
+        if (!mechanisms)
+            return;
+
+        if (!mechanisms[mechanismId])
+            return;
+
+        const {init_prompt: initPrompt, link_prompt: linkPrompt, uri, code, role, timeout} = mechanisms[mechanismId];
+
+        if (!linkPrompt || !uri)
+            return;
+
+        if (timeout) {
+            this._webLoginTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, timeout * 1000,
+                () => {
+                    this.emit('web-login-time-out', serviceName);
+                    this._webLoginTimeoutId = 0;
+                    return GLib.SOURCE_REMOVE;
+                });
+        }
+
+        this._pendingMechanisms.set(role, mechanismId);
+        this.emit('web-login', serviceName, initPrompt, linkPrompt, uri, code);
+    }
+
+    _clearWebLoginTimeout() {
+        if (this._webLoginTimeoutId) {
+            GLib.source_remove(this._webLoginTimeoutId);
+            this._webLoginTimeoutId = 0;
+        }
+    }
+
+    webLoginDone(serviceName) {
+        this._clearWebLoginTimeout();
+        this._replyWithAuthSelectionResponse(serviceName, WEB_LOGIN_ROLE_NAME, {});
+    }
+
     _filterAuthMechanisms(mechanismsList, filterFunc) {
         return mechanismsList.filter(mechanism => {
             const mapping = DiscreteServiceMechanismDefinitions.find(m =>
@@ -1218,6 +1259,10 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         const doneTrying = !shouldRetry || !this._canRetry();
 
         this.emit('verification-failed', serviceName, !doneTrying);
+
+        if (!this._userVerifier)
+            return;
+
         try {
             if (doneTrying) {
                 this._disconnectSignals();
