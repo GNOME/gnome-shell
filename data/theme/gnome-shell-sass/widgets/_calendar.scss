@@ -251,6 +251,11 @@
         @extend %heading;
         color: $insensitive_fg_color;
 
+         // change style when no location is configured
+        &.no-location {
+          color: $fg_color;
+        }
+
         &.location {
           font-weight: normal;
         }

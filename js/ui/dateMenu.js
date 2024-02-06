@@ -727,6 +727,11 @@ class WeatherSection extends St.Button {
         else
             this._titleLabel.text = _('Select weather location…');
 
+        if (this._weatherClient.hasLocation)
+            this._titleLabel.remove_style_class_name('no-location');
+        else
+            this._titleLabel.add_style_class_name('no-location');
+
         this._forecastGrid.visible = this._weatherClient.hasLocation;
         this._titleLocation.visible = this._weatherClient.hasLocation;
 
