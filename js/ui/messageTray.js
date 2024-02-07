@@ -633,7 +633,7 @@ export const Source = GObject.registerClass({
         this.notifications = [];
 
         if (!this._policy)
-            this._policy = this._createPolicy();
+            this._policy = new NotificationGenericPolicy();
     }
 
     get policy() {
@@ -660,10 +660,6 @@ export const Source = GObject.registerClass({
 
     countUpdated() {
         this.notify('count');
-    }
-
-    _createPolicy() {
-        return new NotificationGenericPolicy();
     }
 
     get narrowestPrivacyScope() {
