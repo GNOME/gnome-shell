@@ -9,6 +9,7 @@ import St from 'gi://St';
 
 import * as Animation from '../ui/animation.js';
 import * as AuthList from './authList.js';
+import * as AuthNotification from '../gdm/authNotification.js';
 import * as Batch from './batch.js';
 import * as GdmUtil from './util.js';
 import * as Params from '../misc/params.js';
@@ -628,6 +629,27 @@ export const AuthPrompt = GObject.registerClass({
     setForegroundMechanism(mechanism) {
         this._userVerifier.setForegroundService(mechanism.serviceName);
         this._userVerifier.setForegroundMechanism(mechanism);
+    }
+
+    showLoginFailedNotification() {
+        const source = new AuthNotification.AuthNotificationSource();
+        Main.messageTray.add(source);
+
+        const gicon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
+        this._loginFailedNotification = new MessageTray.Notification(source,
+            _('Login Failed'),
+            _('Please try again'),
+            { gicon });
+        this._loginFailedNotification.setTransient(true);
+        source.showNotification(this._loginFailedNotification);
+    }
+
+    hideLoginFailedNotification() {
+        if (!this._loginFailedNotification)
+            return;
+
+        this._loginFailedNotification.destroy();
+        this._loginFailedNotification = null;
     }
 
     reset(params) {
