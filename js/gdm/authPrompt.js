@@ -10,6 +10,7 @@ import * as Animation from '../ui/animation.js';
 import * as AuthList from './authList.js';
 import * as Batch from './batch.js';
 import * as GdmUtil from './util.js';
+import * as MessageTray from '../ui/messageTray.js';
 import * as Params from '../misc/params.js';
 import * as ShellEntry from '../ui/shellEntry.js';
 import * as UserWidget from '../ui/userWidget.js';
@@ -709,6 +710,25 @@ export const AuthPrompt = GObject.registerClass({
     setForegroundMechanism(mechanism) {
         this._userVerifier.setForegroundService(mechanism.serviceName);
         this._userVerifier.setForegroundMechanism(mechanism);
+    }
+
+    showLoginFailedNotification() {
+        const source = new MessageTray.getSystemSource();
+
+        this._loginFailedNotification = new MessageTray.Notification({
+            source,
+            iconName: 'dialog-password-symbolic',
+            title: _('Login Failed'),
+            body: _('Please try again'),
+            isTransient: true,
+        });
+
+        source.addNotification(this._loginFailedNotification);
+    }
+
+    hideLoginFailedNotification() {
+        this._loginFailedNotification?.destroy();
+        this._loginFailedNotification = null;
     }
 
     reset(params) {
