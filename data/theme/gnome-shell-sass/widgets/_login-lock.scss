@@ -45,6 +45,25 @@ $_gdm_dialog_width: 25em;
   spacing: $base_padding * 2;
 }
 
+.conflicting-session-dialog-content {
+  spacing: 20px;
+
+  .conflicting-session-dialog-title {
+    text-align: center;
+    @extend %title_2;
+    margin-bottom: 5px;
+  }
+
+  .conflicting-session-dialog-desc {
+    text-align: center;
+  }
+
+  .conflicting-session-dialog-desc-warning {
+    text-align: center;
+    color: $warning_color;
+  }
+}
+
 .login-dialog-logo-bin {
   margin: 3em 0;
 }

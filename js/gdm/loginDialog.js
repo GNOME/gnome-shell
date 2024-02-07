@@ -36,6 +36,7 @@ import * as GdmUtil from './util.js';
 import * as Layout from '../ui/layout.js';
 import * as LoginManager from '../misc/loginManager.js';
 import * as Main from '../ui/main.js';
+import * as ModalDialog from '../ui/modalDialog.js';
 import * as PopupMenu from '../ui/popupMenu.js';
 import * as Realmd from './realmd.js';
 import * as UserWidget from '../ui/userWidget.js';
@@ -403,6 +404,76 @@ const SessionMenuButton = GObject.registerClass({
                 this.emit('session-activated', this._activeSessionId);
             });
         }
+    }
+});
+
+export const ConflictingSessionDialog = GObject.registerClass({
+    Signals: {
+        'cancel': {},
+        'force-stop': {},
+    },
+}, class ConflictingSessionDialog extends ModalDialog.ModalDialog {
+    _init(conflictingSession, greeterSession, userName) {
+        super._init();
+
+        let bannerText;
+        if (greeterSession.Remote && conflictingSession.Remote)
+            /* Translators: is running for <username> */
+            bannerText = _('Remote login is not possible because a remote session is already running for %s. To login remotely, you must log out from the remote session or force stop it.').format(userName);
+        else if (!greeterSession.Remote && conflictingSession.Remote)
+            /* Translators: is running for <username> */
+            bannerText = _('Login is not possible because a remote session is already running for %s. To login, you must log out from the remote session or force stop it.').format(userName);
+        else if (greeterSession.Remote && !conflictingSession.Remote)
+            /* Translators: is running for <username> */
+            bannerText = _('Remote login is not possible because a local session is already running for %s. To login remotely, you must log out from the local session or force stop it.').format(userName);
+        else
+            /* Translators: is running for <username> */
+            bannerText = _('Login is not possible because a session is already running for %s. To login, you must log out from the session or force stop it.').format(userName);
+
+        let textLayout = new St.BoxLayout({
+            style_class: 'conflicting-session-dialog-content',
+            vertical: true,
+            x_expand: true,
+        });
+
+        let title = new St.Label({
+            text: _('Session Already Running'),
+            style_class: 'conflicting-session-dialog-title',
+        });
+
+        let banner = new St.Label({
+            text: bannerText,
+            style_class: 'conflicting-session-dialog-desc',
+        });
+        banner.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        banner.clutter_text.line_wrap = true;
+
+        let warningBanner = new St.Label({
+            text: _('Force stopping will quit any running apps and processes, and could result in data loss.'),
+            style_class: 'conflicting-session-dialog-desc-warning',
+        });
+        warningBanner.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        warningBanner.clutter_text.line_wrap = true;
+
+        textLayout.add_child(title);
+        textLayout.add_child(banner);
+        textLayout.add_child(warningBanner);
+        this.contentLayout.add_child(textLayout);
+
+        this.addButton({
+            label: _('Cancel'),
+            action: () => {
+                this.emit('cancel');
+            },
+            key: Clutter.KEY_Escape,
+            default: true,
+        });
+        this.addButton({
+            label: _('Force Stop'),
+            action: () => {
+                this.emit('force-stop');
+            },
+        });
     }
 });
 
