@@ -101,6 +101,8 @@ class LoginManagerSystemd extends Signals.EventEmitter {
             '/org/freedesktop/login1/user/self');
         this._proxy.connectSignal('PrepareForSleep',
             this._prepareForSleep.bind(this));
+        this._proxy.connectSignal('SessionRemoved',
+            this._sessionRemoved.bind(this));
     }
 
     async getCurrentSessionProxy() {
@@ -189,6 +191,10 @@ class LoginManagerSystemd extends Signals.EventEmitter {
         }
     }
 
+    getSession(objectPath) {
+        return new SystemdLoginSession(Gio.DBus.system, 'org.freedesktop.login1', objectPath);
+    }
+
     suspend() {
         this._proxy.SuspendAsync(true);
     }
@@ -205,6 +211,10 @@ class LoginManagerSystemd extends Signals.EventEmitter {
 
     _prepareForSleep(proxy, sender, [aboutToSuspend]) {
         this.emit('prepare-for-sleep', aboutToSuspend);
+    }
+
+    _sessionRemoved(proxy, sender, [sessionId]) {
+        this.emit('session-removed', sessionId);
     }
 }
 
@@ -235,6 +245,10 @@ class LoginManagerDummy extends Signals.EventEmitter  {
 
     listSessions() {
         return new Promise(resolve => resolve([]));
+    }
+
+    getSession(_objectPath) {
+        return null;
     }
 
     suspend() {
