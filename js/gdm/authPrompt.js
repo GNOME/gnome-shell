@@ -1,4 +1,5 @@
 import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Pango from 'gi://Pango';
@@ -9,6 +10,8 @@ import * as Animation from '../ui/animation.js';
 import * as AuthList from './authList.js';
 import * as Batch from './batch.js';
 import * as GdmUtil from './util.js';
+import * as Main from '../ui/main.js';
+import * as MessageTray from '../ui/messageTray.js';
 import * as Params from '../misc/params.js';
 import * as ShellEntry from '../ui/shellEntry.js';
 import * as UserWidget from '../ui/userWidget.js';
@@ -694,6 +697,29 @@ export const AuthPrompt = GObject.registerClass({
     setForegroundMechanism(mechanism) {
         this._userVerifier.setForegroundService(mechanism.serviceName);
         this._userVerifier.setForegroundMechanism(mechanism);
+    }
+
+    showLoginFailedNotification() {
+        const source = new MessageTray.getSystemSource();
+
+        this._loginFailedNotification = new MessageTray.Notification({
+            source,
+            title: _('Login Failed'),
+            body: _('Please try again'),
+            isTransient: true,
+        });
+
+        this._loginFailedNotification.iconName = 'dialog-password-symbolic';
+
+        source.addNotification(this._loginFailedNotification);
+    }
+
+    hideLoginFailedNotification() {
+        if (!this._loginFailedNotification)
+            return;
+
+        this._loginFailedNotification.destroy();
+        this._loginFailedNotification = null;
     }
 
     reset(params) {

@@ -443,6 +443,19 @@ $_gdm_dialog_width: 25em;
   }
 }
 
+// Login Failed banner
+.auth-notification-banner {
+  .message-header {
+    width: 0px;
+    height: 0px;
+
+    .message-close-button {
+      border: none;
+      background-color: rgba(0, 0, 0, 0.0);
+    }
+  }
+}
+
 // QR Code
 .qr-code {
   background: black;
