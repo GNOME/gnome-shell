@@ -1055,6 +1055,11 @@ const UIMode = {
     SCREENSHOT_ONLY: 2,
 };
 
+const ScreencastPhase = {
+    STARTUP: 'STARTUP',
+    RECORDING: 'RECORDING',
+};
+
 export const ScreenshotUI = GObject.registerClass({
     Properties: {
         'screencast-in-progress': GObject.ParamSpec.boolean(
@@ -1101,7 +1106,8 @@ export const ScreenshotUI = GObject.registerClass({
             });
 
         this._screencastProxy.connectSignal('Error', (proxy, sender, [errorName, message]) =>
-            this._screencastFailed(Gio.DBusError.new_for_dbus_error(errorName, message)));
+            this._screencastFailed(ScreencastPhase.RECORDING,
+                Gio.DBusError.new_for_dbus_error(errorName, message)));
 
         this._screencastProxy.connect('notify::g-name-owner', () => {
             if (this._screencastProxy.g_name_owner)
@@ -1110,7 +1116,7 @@ export const ScreenshotUI = GObject.registerClass({
             if (!this._screencastInProgress)
                 return;
 
-            this._screencastFailed(
+            this._screencastFailed(ScreencastPhase.RECORDING,
                 new GLib.Error(ScreencastErrors, ScreencastError.SERVICE_CRASH,
                     'Service crashed'));
         });
@@ -1992,12 +1998,7 @@ export const ScreenshotUI = GObject.registerClass({
 
             this._screencastPath = path;
         } catch (error) {
-            this._setScreencastInProgress(false);
-            const {message} = error;
-            if (message)
-                log(`Error starting screencast: ${message}`);
-            else
-                log('Error starting screencast');
+            this._screencastFailed(ScreencastPhase.STARTUP, error);
         }
     }
 
@@ -2026,19 +2027,26 @@ export const ScreenshotUI = GObject.registerClass({
         this._showNotification(_('Screencast recorded'));
     }
 
-    _screencastFailed(error) {
-        console.error(`Screencast failed: ${error}`);
+    _screencastFailed(phase, error) {
+        console.error(`Screencast failed during phase ${phase}: ${error}`);
 
         this._setScreencastInProgress(false);
 
-        // Translators: notification title.
-        this._showNotification(_('Screencast ended unexpectedly'));
+        switch (phase) {
+        case ScreencastPhase.STARTUP:
+            delete this._screencastPath;
+
+            // Translators: notification title.
+            this._showNotification(_('Screencast failed to start'));
+            break;
+        case ScreencastPhase.RECORDING:
+            // Translators: notification title.
+            this._showNotification(_('Screencast ended unexpectedly'));
+            break;
+        }
     }
 
     _showNotification(title) {
-        // Show a notification.
-        const file = Gio.file_new_for_path(this._screencastPath);
-
         const source = new MessageTray.Source({
             // Translators: notification source name.
             title: _('Screenshot'),
@@ -2048,30 +2056,35 @@ export const ScreenshotUI = GObject.registerClass({
             source,
             title,
             // Translators: notification body when a screencast was recorded.
-            _('Click here to view the video.')
+            this._screencastPath ? _('Click here to view the video.') : ''
         );
-        // Translators: button on the screencast notification.
-        notification.addAction(_('Show in Files'), () => {
-            const app =
-                Gio.app_info_get_default_for_type('inode/directory', false);
-
-            if (app === null) {
-                // It may be null e.g. in a toolbox without nautilus.
-                log('Error showing in files: no default app set for inode/directory');
-                return;
-            }
-
-            app.launch([file], global.create_app_launch_context(0, -1));
-        });
-        notification.connect('activated', () => {
-            try {
-                Gio.app_info_launch_default_for_uri(
-                    file.get_uri(), global.create_app_launch_context(0, -1));
-            } catch (err) {
-                logError(err, 'Error opening screencast');
-            }
-        });
         notification.setTransient(true);
+
+        if (this._screencastPath) {
+            const file = Gio.file_new_for_path(this._screencastPath);
+
+            // Translators: button on the screencast notification.
+            notification.addAction(_('Show in Files'), () => {
+                const app =
+                    Gio.app_info_get_default_for_type('inode/directory', false);
+
+                if (app === null) {
+                    // It may be null e.g. in a toolbox without nautilus.
+                    log('Error showing in files: no default app set for inode/directory');
+                    return;
+                }
+
+                app.launch([file], global.create_app_launch_context(0, -1));
+            });
+            notification.connect('activated', () => {
+                try {
+                    Gio.app_info_launch_default_for_uri(
+                        file.get_uri(), global.create_app_launch_context(0, -1));
+                } catch (err) {
+                    logError(err, 'Error opening screencast');
+                }
+            });
+        }
 
         Main.messageTray.add(source);
         source.showNotification(notification);
