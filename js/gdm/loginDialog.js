@@ -1071,6 +1071,30 @@ export const LoginDialog = GObject.registerClass({
         }, this);
     }
 
+    _showConflictingSessionDialog(serviceName, conflictingSession) {
+        let conflictingSessionDialog = new ConflictingSessionDialog(conflictingSession,
+            this._greeterSessionProxy,
+            this._user.get_user_name());
+
+        conflictingSessionDialog.connect('cancel', () => {
+            this._authPrompt.reset();
+            conflictingSessionDialog.close();
+        });
+        conflictingSessionDialog.connect('force-stop', () => {
+            this._greeter.call_stop_conflicting_session_sync(null);
+        });
+
+        const loginManager = LoginManager.getLoginManager();
+        loginManager.connectObject('session-removed', (lm, sessionId) => {
+            if (sessionId === conflictingSession.Id) {
+                conflictingSessionDialog.close();
+                this._authPrompt.finish(() => this._startSession(serviceName));
+            }
+        }, conflictingSessionDialog);
+
+        conflictingSessionDialog.open();
+    }
+
     _startSession(serviceName) {
         this._bindOpacity();
         this.ease({
@@ -1084,7 +1108,40 @@ export const LoginDialog = GObject.registerClass({
         });
     }
 
-    _onSessionOpened(client, serviceName) {
+    async _findConflictingSession(ignoreSessionId) {
+        const userName = this._user.get_user_name();
+        const loginManager = LoginManager.getLoginManager();
+        const sessions = await loginManager.listSessions();
+        for (const session of sessions.map(([id, , user, , path]) => ({id, user, path}))) {
+            if (ignoreSessionId === session.id)
+                continue;
+
+            if (userName !== session.user)
+                continue;
+
+            const sessionProxy = loginManager.getSession(session.path);
+
+            if (sessionProxy.Type !== 'wayland' && sessionProxy.Type !== 'x11')
+                continue;
+
+            if (sessionProxy.State !== 'active' && sessionProxy.State !== 'online')
+                continue;
+
+            return sessionProxy;
+        }
+
+        return null;
+    }
+
+    async _onSessionOpened(client, serviceName, sessionId) {
+        if (sessionId) {
+            const conflictingSession = await this._findConflictingSession(sessionId);
+            if (conflictingSession) {
+                this._showConflictingSessionDialog(serviceName, conflictingSession);
+                return;
+            }
+        }
+
         this._authPrompt.finish(() => this._startSession(serviceName));
     }
 
