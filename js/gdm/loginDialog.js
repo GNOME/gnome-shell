@@ -420,6 +420,13 @@ export const LoginDialog = GObject.registerClass({
         this._createLoginOptionsButton();
         this._createSessionMenuButton();
 
+        this._footerBin = new St.Widget({
+            style_class: 'login-dialog-footer-bin',
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.END,
+        });
+        this.add_child(this._footerBin);
+
         this._logoBin = new St.Widget({
             style_class: 'login-dialog-logo-bin',
             x_align: Clutter.ActorAlign.CENTER,
@@ -428,8 +435,16 @@ export const LoginDialog = GObject.registerClass({
         this._logoBin.connect('resource-scale-changed', () => {
             this._updateLogoTexture(this._textureCache, this._logoFile);
         });
-        this.add_child(this._logoBin);
+        this._footerBin.add_child(this._logoBin);
         this._updateLogo();
+
+        this._backgroundServicesMessageBin = new St.Widget({
+            style_class: 'login-dialog-background-services-messages-bin',
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.END,
+        });
+        this._backgroundServicesMessageBin.hide();
+        this._footerBin.add_child(this._backgroundServicesMessageBin);
 
         this._userList.connect('activate', (userList, item) => {
             this._onUserListActivated(item);
@@ -511,10 +526,10 @@ export const LoginDialog = GObject.registerClass({
         return actorBox;
     }
 
-    _getLogoBinAllocation(dialogBox) {
+    _getFooterBinAllocation(dialogBox) {
         let actorBox = new Clutter.ActorBox();
 
-        let [, , natWidth, natHeight] = this._logoBin.get_preferred_size();
+        let [, , natWidth, natHeight] = this._footerBin.get_preferred_size();
         let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
 
         actorBox.x1 = Math.floor(centerX - natWidth / 2);
@@ -591,11 +606,11 @@ export const LoginDialog = GObject.registerClass({
             userSelectionHeight = userSelectionAllocation.y2 - userSelectionAllocation.y1;
         }
 
-        let logoAllocation = null;
-        let logoHeight = 0;
-        if (this._logoBin.visible) {
-            logoAllocation = this._getLogoBinAllocation(dialogBox);
-            logoHeight = logoAllocation.y2 - logoAllocation.y1;
+        let footerAllocation = null;
+        let footerHeight = 0;
+        if (this._footerBin.visible) {
+            footerAllocation = this._getFooterBinAllocation(dialogBox);
+            footerHeight = footerAllocation.y2 - footerAllocation.y1;
         }
 
         let menuButtonBoxAllocation = null;
@@ -653,10 +668,10 @@ export const LoginDialog = GObject.registerClass({
                     bannerAllocation.x1 = Math.floor(bannerAllocation.x2 - wideBannerWidth);
 
                     // figure out how tall it would like to be and try to accommodate
-                    // but don't let it get too close to the logo
+                    // but don't let it get too close to the footer
                     let [, wideBannerHeight] = this._bannerView.get_preferred_height(wideBannerWidth);
 
-                    let maxWideHeight = dialogHeight - 3 * logoHeight;
+                    let maxWideHeight = dialogHeight - 3 * footerHeight;
                     wideBannerHeight = Math.min(maxWideHeight, wideBannerHeight);
                     bannerAllocation.y1 = Math.floor(centerY - wideBannerHeight / 2);
                     bannerAllocation.y2 = bannerAllocation.y1 + wideBannerHeight;
@@ -680,7 +695,7 @@ export const LoginDialog = GObject.registerClass({
             }
         } else if (userSelectionAllocation) {
             // Grow the user list to fill the space
-            let leftOverYSpace = dialogHeight - userSelectionHeight - logoHeight;
+            let leftOverYSpace = dialogHeight - userSelectionHeight - footerHeight;
 
             if (leftOverYSpace > 0) {
                 let topExpansion = Math.floor(leftOverYSpace / 2);
@@ -701,8 +716,8 @@ export const LoginDialog = GObject.registerClass({
         if (userSelectionAllocation)
             this._userSelectionBox.allocate(userSelectionAllocation);
 
-        if (logoAllocation)
-            this._logoBin.allocate(logoAllocation);
+        if (footerAllocation)
+            this._footerBin.allocate(footerAllocation);
 
         if (menuButtonBoxAllocation)
             this._menuButtonBox.allocate(menuButtonBoxAllocation);
@@ -1143,6 +1158,29 @@ export const LoginDialog = GObject.registerClass({
         });
     }
 
+    _fadeOutLogo() {
+        if (!this._logoBin.visible)
+            return;
+
+        this._logoBin.ease({
+            opacity: 0,
+            duration: _FADE_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this._logoBin.hide();
+            },
+        });
+    }
+
+    _fadeInLogo() {
+        this._logoBin.show();
+        this._logoBin.ease({
+            opacity: 255,
+            duration: _FADE_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
     _beginVerification(params) {
         params = Params.parse(params, {
             userName: null,
@@ -1152,6 +1190,8 @@ export const LoginDialog = GObject.registerClass({
         this._authPrompt.begin(params);
 
         this._loginOptionsButton.updateSensitivity(true);
+        this._fadeOutLogo();
+        this._backgroundServicesMessageBin.show();
     }
 
     _setUserListExpanded(expanded) {
@@ -1185,6 +1225,8 @@ export const LoginDialog = GObject.registerClass({
         this._sessionMenuButton.updateSensitivity(false);
         this._setUserListExpanded(true);
         this._notListedButton.show();
+        this._backgroundServicesMessageBin.hide();
+        this._fadeInLogo();
         this._userList.grab_key_focus();
     }
 
