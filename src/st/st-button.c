@@ -824,7 +824,7 @@ st_button_get_toggle_mode (StButton *button)
  * @button: a #Stbutton
  * @toggle: %TRUE or %FALSE
  *
- * Enables or disables toggle mode for the button. In toggle mode, the active
+ * Enables or disables toggle mode for the button. In toggle mode, the checked
  * state will be "toggled" when the user clicks the button.
  */
 void
