@@ -141,6 +141,7 @@ export const AuthPrompt = GObject.registerClass({
         'next': {},
         'prompted': {},
         'reset': {param_types: [GObject.TYPE_UINT]},
+        'verification-complete': {},
     },
 }, class AuthPrompt extends St.BoxLayout {
     _init(gdmClient, mode) {
@@ -511,8 +512,16 @@ export const AuthPrompt = GObject.registerClass({
     _onVerificationComplete() {
         this.setActorInDefaultButtonWell(null);
         this.verificationStatus = AuthPromptStatus.VERIFICATION_SUCCEEDED;
-        this.cancelButton.reactive = false;
-        this.cancelButton.can_focus = false;
+
+        this._mainBox.reactive = false;
+        this._mainBox.can_focus = false;
+        this._mainBox.ease({
+            opacity: 0,
+            duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
+        this.emit('verification-complete');
     }
 
     _onReset() {
@@ -599,6 +608,10 @@ export const AuthPrompt = GObject.registerClass({
         this.stopSpinning();
         this._authList.clear();
         this._authList.hide();
+
+        this._mainBox.opacity = 255;
+        this._mainBox.reactive = true;
+        this._mainBox.can_focus = true;
     }
 
     setQuestion(question) {
