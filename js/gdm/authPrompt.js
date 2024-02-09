@@ -537,6 +537,11 @@ export const AuthPrompt = GObject.registerClass({
         this.verificationStatus = AuthPromptStatus.VERIFICATION_SUCCEEDED;
         this.cancelButton.reactive = false;
         this.cancelButton.can_focus = false;
+        this.cancelButton.ease({
+            opacity: 0,
+            duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     _onReset() {
