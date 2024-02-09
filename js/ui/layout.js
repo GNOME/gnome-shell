@@ -593,7 +593,7 @@ export const LayoutManager = GObject.registerClass({
             let primary = this.primaryMonitor;
 
             this._rightPanelBarrier = new Meta.Barrier({
-                display: global.display,
+                backend: global.backend,
                 x1: primary.x + primary.width, y1: primary.y,
                 x2: primary.x + primary.width, y2: primary.y + this.panelBox.height,
                 directions: Meta.BarrierDirection.NEGATIVE_X,
@@ -1190,23 +1190,23 @@ class HotCorner extends Clutter.Actor {
         if (size > 0) {
             if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL) {
                 this._verticalBarrier = new Meta.Barrier({
-                    display: global.display,
+                    backend: global.backend,
                     x1: this._x, x2: this._x, y1: this._y, y2: this._y + size,
                     directions: Meta.BarrierDirection.NEGATIVE_X,
                 });
                 this._horizontalBarrier = new Meta.Barrier({
-                    display: global.display,
+                    backend: global.backend,
                     x1: this._x - size, x2: this._x, y1: this._y, y2: this._y,
                     directions: Meta.BarrierDirection.POSITIVE_Y,
                 });
             } else {
                 this._verticalBarrier = new Meta.Barrier({
-                    display: global.display,
+                    backend: global.backend,
                     x1: this._x, x2: this._x, y1: this._y, y2: this._y + size,
                     directions: Meta.BarrierDirection.POSITIVE_X,
                 });
                 this._horizontalBarrier = new Meta.Barrier({
-                    display: global.display,
+                    backend: global.backend,
                     x1: this._x, x2: this._x + size, y1: this._y, y2: this._y,
                     directions: Meta.BarrierDirection.POSITIVE_Y,
                 });
