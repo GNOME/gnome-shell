@@ -63,12 +63,3 @@ try {
 } catch {
     console.debug('Malcontent is not available, parental controls integration will be disabled.');
 }
-
-
-try {
-    // Telepathy is optional, so catch any errors loading it
-    gi.require('TelepathyGLib', '0.12');
-    gi.require('TelepathyLogger', '0.2');
-} catch {
-    console.debug('Telepathy is not available, chat integration will be disabled.');
-}

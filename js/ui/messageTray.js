@@ -59,8 +59,7 @@ export const NotificationDestroyedReason = {
 
 // Message tray has its custom Urgency enumeration. LOW, NORMAL and CRITICAL
 // urgency values map to the corresponding values for the notifications received
-// through the notification daemon. HIGH urgency value is used for chats received
-// through the Telepathy client.
+// through the notification daemon.
 /** @enum {number} */
 export const Urgency = {
     LOW: 0,
@@ -529,7 +528,6 @@ SignalTracker.registerDestroyableType(Notification);
 export const NotificationBanner = GObject.registerClass({
     Signals: {
         'done-displaying': {},
-        'unfocused': {},
     },
 }, class NotificationBanner extends Calendar.NotificationMessage {
     _init(notification) {
@@ -1125,7 +1123,6 @@ export const MessageTray = GObject.registerClass({
             let expired = (this._userActiveWhileNotificationShown &&
                            this._notificationTimeoutId === 0 &&
                            this._notification.urgency !== Urgency.CRITICAL &&
-                           !this._banner.focused &&
                            !this._pointerInNotification) || this._notificationExpired;
             let mustClose = this._notificationRemoved || !hasNotifications || expired;
 
@@ -1166,9 +1163,7 @@ export const MessageTray = GObject.registerClass({
         }
 
         this._banner = this._notification.createBanner();
-        this._banner.connectObject(
-            'done-displaying', this._escapeTray.bind(this),
-            'unfocused', () => this._updateState(), this);
+        this._banner.connectObject('done-displaying', this._escapeTray.bind(this), this);
 
         this._bannerBin.add_child(this._banner);
 

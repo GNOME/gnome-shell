@@ -13,7 +13,7 @@ import * as Config from '../misc/config.js';
 const DEFAULT_MODE = 'restrictive';
 
 const USER_SESSION_COMPONENTS = [
-    'polkitAgent', 'telepathyClient', 'keyring',
+    'polkitAgent', 'keyring',
     'autorunManager', 'automountManager',
 ];
 
@@ -69,7 +69,7 @@ const _modes = {
     'unlock-dialog': {
         isLocked: true,
         unlockDialog: undefined,
-        components: ['polkitAgent', 'telepathyClient'],
+        components: ['polkitAgent'],
         panel: {
             left: [],
             center: [],
