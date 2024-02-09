@@ -1218,7 +1218,8 @@ class HotCorner extends Clutter.Actor {
     }
 
     _setupFallbackCornerIfNeeded(layoutManager) {
-        if (!global.display.supports_extended_barriers()) {
+        const {capabilities} = global.backend;
+        if ((capabilities & Meta.BackendCapabilities.BARRIERS) === 0) {
             this.set({
                 name: 'hot-corner-environs',
                 x: this._x,
