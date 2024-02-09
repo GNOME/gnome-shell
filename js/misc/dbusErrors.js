@@ -40,6 +40,7 @@ export const ExtensionError = {
     DOWNLOAD_FAILED: 1,
     EXTRACT_FAILED: 2,
     ENABLE_FAILED: 3,
+    NOT_ALLOWED: 4,
 };
 export const ExtensionErrors =
     registerErrorDomain('Extensions', ExtensionError);

@@ -40,6 +40,17 @@
         the “enabled-extension” setting.
       </description>
     </key>
+    <key name="allow-extension-installation" type="b">
+      <default>true</default>
+      <summary>Allow extension installation</summary>
+      <description>
+        Allow users to install extensions in their home folder. If disabled,
+        the InstallRemoteExtension D-Bus method will fail, and extensions
+        are only loaded from system directories on startup.
+        It does not affect extensions that are already loaded, so a change
+        only takes full effect on the next login.
+      </description>
+    </key>
     <key name="disable-extension-version-validation" type="b">
       <default>false</default>
       <summary>Disables the validation of extension version compatibility</summary>

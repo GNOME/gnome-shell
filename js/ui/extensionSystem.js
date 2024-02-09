@@ -86,8 +86,11 @@ export class ExtensionManager extends Signals.EventEmitter {
 
     get updatesSupported() {
         const appSys = Shell.AppSystem.get_default();
-        return (appSys.lookup_app('org.gnome.Extensions.desktop') !== null) ||
-               (appSys.lookup_app('com.mattjakeman.ExtensionManager.desktop') !== null);
+        const hasUpdatesApp =
+            appSys.lookup_app('org.gnome.Extensions.desktop') !== null ||
+            appSys.lookup_app('com.mattjakeman.ExtensionManager.desktop') !== null;
+        const allowed = global.settings.get_boolean('allow-extension-installation');
+        return allowed && hasUpdatesApp;
     }
 
     lookup(uuid) {
@@ -745,7 +748,8 @@ export class ExtensionManager extends Signals.EventEmitter {
 
         let perUserDir = Gio.File.new_for_path(global.userdatadir);
 
-        const extensionFiles = [...FileUtils.collectFromDatadirs('extensions', true)];
+        const includeUserDir = global.settings.get_boolean('allow-extension-installation');
+        const extensionFiles = [...FileUtils.collectFromDatadirs('extensions', includeUserDir)];
         const extensionObjects = extensionFiles.map(({dir, info}) => {
             let fileType = info.get_file_type();
             if (fileType !== Gio.FileType.DIRECTORY)

@@ -32,6 +32,13 @@ let _httpSession;
  * @returns {void}
  */
 export async function installExtension(uuid, invocation) {
+    if (!global.settings.get_boolean('allow-extension-installation')) {
+        invocation.return_error_literal(
+            ExtensionErrors, ExtensionError.NOT_ALLOWED,
+            'Extension installation is not allowed');
+        return;
+    }
+
     const params = {
         uuid,
         shell_version: Config.PACKAGE_VERSION,
