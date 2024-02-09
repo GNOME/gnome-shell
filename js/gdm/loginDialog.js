@@ -590,6 +590,7 @@ export const LoginDialog = GObject.registerClass({
         this._authPrompt = new AuthPrompt.AuthPrompt(this._gdmClient, AuthPrompt.AuthPromptMode.UNLOCK_OR_LOG_IN);
         this._authPrompt.connect('prompted', this._onPrompted.bind(this));
         this._authPrompt.connect('reset', this._onReset.bind(this));
+        this._authPrompt.connect('verification-complete', this._onVerificationComplete.bind(this));
         this._authPrompt.hide();
         this.add_child(this._authPrompt);
 
@@ -1082,6 +1083,16 @@ export const LoginDialog = GObject.registerClass({
         } else {
             this._hideUserListAndBeginVerification();
         }
+    }
+
+    _onVerificationComplete() {
+        this._bottomButtonGroup.reactive = false;
+        this._bottomButtonGroup.can_focus = false;
+        this._bottomButtonGroup.ease({
+            opacity: 0,
+            duration: _FADE_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     _onDefaultSessionChanged(client, sessionId) {
