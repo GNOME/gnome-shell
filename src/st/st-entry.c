@@ -120,6 +120,8 @@ G_DECLARE_FINAL_TYPE (StEntryAccessible,
                       ST, ENTRY_ACCESSIBLE,
                       StWidgetAccessible)
 
+static void update_hint_relation (StEntry *entry);
+
 static void
 st_entry_set_property (GObject      *gobject,
                        guint         prop_id,
@@ -1485,6 +1487,8 @@ st_entry_set_hint_actor (StEntry      *entry,
   st_entry_update_hint_visibility (entry);
   g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_HINT_ACTOR]);
 
+  update_hint_relation (entry);
+
   clutter_actor_queue_relayout (CLUTTER_ACTOR (entry));
 }
 
@@ -1517,6 +1521,8 @@ st_entry_get_hint_actor (StEntry *entry)
 typedef struct _StEntryAccessible
 {
   StWidgetAccessible parent;
+
+  AtkObject *current_hint;
 } StEntryAccessible;
 
 G_DEFINE_FINAL_TYPE (StEntryAccessible, st_entry_accessible, ST_TYPE_WIDGET_ACCESSIBLE)
@@ -1528,6 +1534,16 @@ st_entry_accessible_init (StEntryAccessible *self)
 }
 
 static void
+st_entry_accessible_dispose (GObject *object)
+{
+  StEntryAccessible *accessible = ST_ENTRY_ACCESSIBLE (object);
+
+  g_clear_object (&accessible->current_hint);
+
+  G_OBJECT_CLASS (st_entry_accessible_parent_class)->dispose (object);
+}
+
+static void
 st_entry_accessible_initialize (AtkObject *obj,
                                 gpointer   data)
 {
@@ -1535,6 +1551,8 @@ st_entry_accessible_initialize (AtkObject *obj,
 
   /* StEntry is behaving as a ClutterText container */
   atk_object_set_role (obj, ATK_ROLE_PANEL);
+
+  update_hint_relation (ST_ENTRY (data));
 }
 
 static gint
@@ -1588,8 +1606,48 @@ static void
 st_entry_accessible_class_init (StEntryAccessibleClass *klass)
 {
   AtkObjectClass *atk_class = ATK_OBJECT_CLASS (klass);
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+  gobject_class->dispose = st_entry_accessible_dispose;
 
   atk_class->initialize = st_entry_accessible_initialize;
   atk_class->get_n_children = st_entry_accessible_get_n_children;
   atk_class->ref_child= st_entry_accessible_ref_child;
+}
+
+static void
+update_hint_relation (StEntry *entry)
+{
+  StEntryPrivate *priv;
+  AtkObject *accessible;
+  StEntryAccessible *entry_accessible;
+
+  priv = st_entry_get_instance_private (entry);
+
+  accessible = clutter_actor_get_accessible (priv->entry);
+  entry_accessible = ST_ENTRY_ACCESSIBLE (atk_object_get_parent (accessible));
+
+  if (entry_accessible->current_hint != NULL)
+    {
+      atk_object_remove_relationship (accessible,
+                                      ATK_RELATION_DESCRIBED_BY,
+                                      entry_accessible->current_hint);
+      atk_object_remove_relationship (entry_accessible->current_hint,
+                                      ATK_RELATION_DESCRIPTION_FOR,
+                                      accessible);
+      g_clear_object (&entry_accessible->current_hint);
+    }
+
+  if (ST_IS_LABEL (priv->hint_actor))
+    {
+      g_set_object (&entry_accessible->current_hint,
+                    clutter_actor_get_accessible (priv->hint_actor));
+
+      atk_object_add_relationship (accessible,
+                                   ATK_RELATION_DESCRIBED_BY,
+                                   entry_accessible->current_hint);
+      atk_object_add_relationship (entry_accessible->current_hint,
+                                   ATK_RELATION_DESCRIPTION_FOR,
+                                   accessible);
+    }
 }
