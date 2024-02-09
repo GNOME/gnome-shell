@@ -103,6 +103,7 @@ export const MessageType = {
     HINT: 1,
     INFO: 2,
     ERROR: 3,
+    BACKGROUND: 4,
 };
 
 const FingerprintReaderType = {
