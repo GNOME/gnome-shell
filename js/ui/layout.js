@@ -234,7 +234,7 @@ export const LayoutManager = GObject.registerClass({
             const adoptedUiGroupActors = [
                 global.window_group,
                 global.top_window_group,
-                Meta.get_feedback_group_for_display(global.display),
+                global.compositor.get_feedback_group(),
             ];
 
             for (let adoptedActor of adoptedUiGroupActors) {
@@ -313,7 +313,7 @@ export const LayoutManager = GObject.registerClass({
         this.dummyCursor = new St.Widget({width: 0, height: 0, opacity: 0});
         this.uiGroup.add_actor(this.dummyCursor);
 
-        let feedbackGroup = Meta.get_feedback_group_for_display(global.display);
+        const feedbackGroup = global.compositor.get_feedback_group();
         global.stage.remove_actor(feedbackGroup);
         this.uiGroup.add_actor(feedbackGroup);
 
