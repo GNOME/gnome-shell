@@ -1,9 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
-import GObject from 'gi://GObject';
-import St from 'gi://St';
 
 import * as GnomeSession from '../../misc/gnomeSession.js';
 import * as MessageTray from '../messageTray.js';
@@ -190,7 +187,20 @@ class AutorunDispatcher {
             return;
 
         const source = MessageTray.getSystemSource();
-        const notification = new AutorunNotification(source, mount, apps);
+        const notification = new MessageTray.Notification(
+            source,
+            mount.get_name()
+        );
+        notification.connect('activate', () => {
+            const app = Gio.app_info_get_default_for_type('inode/directory', false);
+            startAppForMount(app, mount);
+        });
+        apps.forEach(app => {
+            notification.addAction(
+                _('Open with %s').format(app.get_name()),
+                () => startAppForMount(app, mount)
+            );
+        });
         notification.connect('destroy', () => this._notifications.delete(mount));
         this._notifications.set(mount, notification);
         source.showNotification(notification);
@@ -237,71 +247,5 @@ class AutorunDispatcher {
         this._notifications.get(mount)?.destroy();
     }
 }
-
-const AutorunNotification = GObject.registerClass(
-class AutorunNotification extends MessageTray.Notification {
-    constructor(source, mount, apps) {
-        super(source, mount.get_name());
-
-        this.gicon = mount.get_icon();
-
-        this._mount = mount;
-        this._apps = apps;
-    }
-
-    createBanner() {
-        let banner = new MessageTray.NotificationBanner(this);
-
-        this._apps.forEach(app => {
-            let actor = this._buttonForApp(app);
-
-            if (actor)
-                banner.addButton(actor);
-        });
-
-        return banner;
-    }
-
-    _buttonForApp(app) {
-        let box = new St.BoxLayout({
-            x_expand: true,
-            x_align: Clutter.ActorAlign.START,
-        });
-        const icon = new St.Icon({
-            gicon: app.get_icon(),
-            style_class: 'hotplug-notification-item-icon',
-        });
-        box.add_child(icon);
-
-        let label = new St.Bin({
-            child: new St.Label({
-                text: _('Open with %s').format(app.get_name()),
-                y_align: Clutter.ActorAlign.CENTER,
-            }),
-        });
-        box.add_child(label);
-
-        const button = new St.Button({
-            child: box,
-            x_expand: true,
-            button_mask: St.ButtonMask.ONE,
-            style_class: 'hotplug-notification-item button',
-        });
-
-        button.connect('clicked', () => {
-            startAppForMount(app, this._mount);
-            this.destroy();
-        });
-
-        return button;
-    }
-
-    activate() {
-        super.activate();
-
-        let app = Gio.app_info_get_default_for_type('inode/directory', false);
-        startAppForMount(app, this._mount);
-    }
-});
 
 export {AutorunManager as Component};
