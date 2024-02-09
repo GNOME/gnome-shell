@@ -29,11 +29,13 @@
   // to account for scrollbar
   &:ltr {margin-right: $base_margin * 3; }
   &:rtl {margin-left: $base_margin * 3;}
+
+  spacing: $base_padding * 2;
 }
 
 .message-list-section,
 .message-list-section-list {
-  spacing: $base_padding * 1.5;
+  spacing: $base_padding * 2;
 }
 
 // do-not-disturb + clear button
@@ -62,6 +64,7 @@
 .message {
   @extend %card;
   padding: 0;
+  margin: 0;
   border-radius: $modal_radius;
 
   // subtract side padding to accommodate the close button's border
