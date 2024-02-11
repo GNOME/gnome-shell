@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # vi: sw=2 ts=4
 
 set -e
