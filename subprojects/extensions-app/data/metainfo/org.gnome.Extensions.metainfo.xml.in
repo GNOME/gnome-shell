@@ -39,6 +39,7 @@
   </description>
 
   <releases>
+    <release version="45.4" date="2024-02-11"/>
     <release version="45.3" date="2024-01-06"/>
     <release version="45.2" date="2023-12-01">
       <p>Support version-name field</p>

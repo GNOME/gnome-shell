@@ -1,3 +1,23 @@
+45.4
+====
+* Close mount notification when drive gets disconnected [Florian; !3089]
+* Fix feedback look in keyboard backlight slider [Barnabás; !3086]
+* Fix menu alignment in RTL locales [Florian; !3151]
+* overview: Keep dimming effect for modal dialogs [Florian; !3150]
+* Fix overview transition from search results to session [Suryashankar; !3152]
+* Improve minimize animation [Keyu; !2968]
+* Add missing shift level to Georgian OSK layout [Carlos; !3145]
+* Fixed crash [Florian; !3117]
+* Misc. bug fixes and cleanups [Florian, Jonas, Julian; !3105, !3110, !3141,
+  !786, !2475, !3153, !3159, !3172]
+
+Contributors:
+  Suryashankar Das, Jonas Dreßler, Carlos Garnacho, Florian Müllner,
+  Barnabás Pőcze, Julian Sparber, Keyu Tao
+
+Translators:
+  Brage Fuglseth [nb], Balázs Meskó [hu], Daniel Rusek [cs]
+
 45.3
 ====
 * Allow any enter key to be used to screenshot [Scott; !2777]
