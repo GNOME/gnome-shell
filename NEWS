@@ -1,3 +1,21 @@
+44.9
+====
+* Fix menu alignment in RTL locales [Florian; !3151]
+* overview: Keep dimming effect for modal dialogs [Florian; !3150]
+* Fix overview transition from search results to session [Suryashankar; !3152]
+* Improve minimize animation [Keyu; !2968]
+* Add missing shift level to Georgian OSK layout [Carlos; !3145]
+* Fixed crash [Florian; !3117]
+* Misc. bug fixes and cleanups [Jonas, Florian, Julian; !786, !2475, !3153,
+  !3159, !3172]
+
+Contributors:
+  Suryashankar Das, Jonas Dreßler, Carlos Garnacho, Florian Müllner,
+  Julian Sparber, Keyu Tao
+
+Translators:
+  Daniel Rusek [cs]
+
 44.8
 ====
 * Fixed crash [Sebastian; !3006]
