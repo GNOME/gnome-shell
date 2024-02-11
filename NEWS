@@ -1,3 +1,51 @@
+46.beta
+=======
+* Improve High Contrast styling
+  [Sam; !3063, !3075, !3076, !3097, !3143, !3120, !3154]
+* Improve default styling [Sam; !3044, !3084, !3102, !3140, !3167]
+* Close mount notification when drive gets disconnected [Florian; !3089]
+* extensions-app: Remember window state [Florian; !3115]
+* Fix feedback look in keyboard backlight slider [Barnabás; !3086]
+* Follow "switch-shapes" accessibility setting [Florian; !3107]
+* Fix effects of transient wayland windows [Florian; !3125]
+* Add keyboard model configuration support [Leorize; !2583]
+* Add Text Editor to the dash by default [Allan; !3135]
+* Fix icon size regression in dash [Sam; !3119]
+* Improve project and development documentation [Florian; !3122]
+* overview: Keep dimming effect for modal dialogs [Florian; !3151]
+* Do not use markup in button labels [Carlos; !3149]
+* Fix menu alignment in RTL locales [Florian; !3150]
+* Overhaul assets in monitor layout switcher [Sam; !3128]
+* Fix overview transition from search results to session [Suryashankar; !3152]
+* Add header to notifications [Julian; !3103]
+* extensions-app: Use adaptive dialogs [Florian; !3148]
+* Register custom D-Bus errors [Florian; !3159, !3160]
+* Improve appearance of symbolic icons in notifications [Julian; !3066]
+* Improve minimize animation [Keyu; !2968]
+* Use a single source for all system notifications [Julian; !3156]
+* Add missing shift level to Georgian OSK layout [Carlos; !3145]
+* Tweak switch appearance [kramo; !3077]
+* Improve handling of screencast failures [Jonas; !2976]
+* Fixed crash [Florian; !3117]
+* Misc. bug fixes and cleanups [Julian, Robert, Bilal, Florian, Georges, Sam,
+  Shmuel, Jonas, Andy, Evan, Óscar, Bilal; !3059, !2982, !3026, !3105, !3104,
+  !3106, !3109, !3110, !3112, !3111, !3113, !3114, !3118, !3121, !3098, !3123,
+  !3126, !3129, !3136, !3138, !3139, !3137, !3133, !3132, !3130, !3131, !3141,
+  !3146, !786, !2475, !2901, !2037, !3153, !3158, !3155, !3165, !3171, !3169,
+  !3127, !3172, !3157, !3170, !3175, !3176, !3178, !3177, !3181]
+
+Contributors:
+  Suryashankar Das, Allan Day, Jonas Dreßler, Bilal Elmoussaoui,
+  Óscar Fernández Diaz, Carlos Garnacho, Sam Hewitt, Andy Holmes, kramo,
+  Leorize, Robert Mader, Shmuel Melamud, Florian Müllner,
+  Georges Basile Stavracas Neto, Barnabás Pőcze, Julian Sparber, Keyu Tao,
+  Evan Welsh
+
+Translators:
+  Ekaterine Papava [ka], Artur S0 [ru], Sabri Ünal [tr], Balázs Meskó [hu],
+  Danial Behzadi [fa], A S Alam [pa], Daniel Rusek [cs], Fran Dieguez [gl],
+  Vasil Pupkin [be], Yosef Or Boczko [he]
+
 46.alpha
 ========
 * Fix scroll handling on sliders [Carlos; !2967]

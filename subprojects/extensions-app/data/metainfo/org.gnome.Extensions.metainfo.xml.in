@@ -49,6 +49,12 @@
   </description>
 
   <releases>
+    <release version="46.beta" date="2024-02-11" type="development">
+      <description>
+        <p>Remember window state.</p>
+        <p>Use adaptive dialogs.</p>
+      </description>
+    </release>
     <release version="46.alpha" date="2024-01-06" type="development">
       <description>
         <p>Streamline layout to be fully adaptive on mobile.</p>
