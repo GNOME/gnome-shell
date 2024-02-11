@@ -14,7 +14,10 @@ var Application = GObject.registerClass(
 class Application extends Adw.Application {
     _init() {
         GLib.set_prgname('gnome-extensions-app');
-        super._init({application_id: Package.name});
+        super._init({
+            application_id: Package.name,
+            version: Package.version,
+        });
 
         this.connect('window-removed', (a, window) => window.run_dispose());
     }
