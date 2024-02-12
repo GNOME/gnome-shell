@@ -62,6 +62,7 @@ const USER_READ_TIME = 48;
 const FINGERPRINT_SERVICE_PROXY_TIMEOUT = 5000;
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 
+// Note these are specified in order of preference
 const DiscreteServiceMechanismDefinitions = [
     {
         serviceName: PASSWORD_SERVICE_NAME,
@@ -768,16 +769,26 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._cancelAndReset();
     }
 
+    _isDiscreteServiceEnabled(definition) {
+        switch (definition.serviceName) {
+        case PASSWORD_AUTHENTICATION_KEY:
+            return this._settings.get_boolean(definition.setting);
+        case FINGERPRINT_AUTHENTICATION_KEY:
+            return this._fingerprintReaderType !== FingerprintReaderType.NONE;
+        case SMARTCARD_SERVICE_NAME:
+            return !!this._smartcardManager;
+        default:
+            return false;
+        }
+    }
+
     _getDetectedDefaultService() {
         if (this._settings.get_boolean(SWITCHABLE_AUTHENTICATION_KEY))
             return SWITCHABLE_AUTH_SERVICE_NAME;
-        else if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
-            return PASSWORD_SERVICE_NAME;
-        else if (this._smartcardManager)
-            return SMARTCARD_SERVICE_NAME;
-        else if (this._fingerprintReaderType !== FingerprintReaderType.NONE)
-            return FINGERPRINT_SERVICE_NAME;
-        return null;
+
+        const definition = DiscreteServiceMechanismDefinitions.find(
+            def => this._isDiscreteServiceEnabled(def.setting));
+        return definition?.serviceName ?? null;
     }
 
     _updateDefaultService() {
