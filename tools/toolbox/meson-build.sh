@@ -103,7 +103,7 @@ done
 find_toplevel
 
 BUILD_DIR=build-$TOOLBOX
-[[ $RUN_DIST ]] && DIST="meson dist -C $BUILD_DIR" || DIST=:
+[[ $RUN_DIST ]] && DIST="meson dist -C $BUILD_DIR --include-subprojects" || DIST=:
 
 needs_reconfigure && RECONFIGURE=--reconfigure
 
