@@ -222,12 +222,12 @@ const LabelExpanderLayout = GObject.registerClass({
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
             0, 1, 0),
     },
-}, class LabelExpanderLayout extends Clutter.LayoutManager {
-    _init(params) {
+}, class LabelExpanderLayout extends Clutter.BinLayout {
+    constructor(params) {
+        super(params);
+
         this._expansion = 0;
         this._expandLines = DEFAULT_EXPAND_LINES;
-
-        super._init(params);
     }
 
     get expansion() {
@@ -240,10 +240,6 @@ const LabelExpanderLayout = GObject.registerClass({
         this._expansion = v;
         this.notify('expansion');
 
-        let visibleIndex = this._expansion > 0 ? 1 : 0;
-        for (let i = 0; this._container && i < this._container.get_n_children(); i++)
-            this._container.get_child_at_index(i).visible = i === visibleIndex;
-
         this.layout_changed();
     }
 
@@ -255,54 +251,24 @@ const LabelExpanderLayout = GObject.registerClass({
             this.layout_changed();
     }
 
-    vfunc_set_container(container) {
-        this._container = container;
-    }
-
-    vfunc_get_preferred_width(container, forHeight) {
-        let [min, nat] = [0, 0];
-
-        for (let i = 0; i < container.get_n_children(); i++) {
-            if (i > 1)
-                break; // we support one unexpanded + one expanded child
-
-            let child = container.get_child_at_index(i);
-            let [childMin, childNat] = child.get_preferred_width(forHeight);
-            [min, nat] = [Math.max(min, childMin), Math.max(nat, childNat)];
-        }
-
-        return [min, nat];
-    }
-
     vfunc_get_preferred_height(container, forWidth) {
         let [min, nat] = [0, 0];
 
-        let children = container.get_children();
-        if (children[0])
-            [min, nat] = children[0].get_preferred_height(forWidth);
+        const [child] = container;
 
-        if (children[1]) {
-            let [min2, nat2] = children[1].get_preferred_height(forWidth);
-            const [expMin, expNat] = [
-                Math.min(min2, min * this._expandLines),
-                Math.min(nat2, nat * this._expandLines),
-            ];
+        if (child) {
+            [min, nat] = child.get_preferred_height(-1);
+
+            const [, nat2] = child.get_preferred_height(forWidth);
+            const expHeight =
+                Math.min(nat2, nat * this._expandLines);
             [min, nat] = [
-                min + this._expansion * (expMin - min),
-                nat + this._expansion * (expNat - nat),
+                min + this._expansion * (expHeight - min),
+                nat + this._expansion * (expHeight - nat),
             ];
         }
 
         return [min, nat];
-    }
-
-    vfunc_allocate(container, box) {
-        for (let i = 0; i < container.get_n_children(); i++) {
-            let child = container.get_child_at_index(i);
-
-            if (child.visible)
-                child.allocate(box);
-        }
     }
 });
 
@@ -521,15 +487,14 @@ export const Message = GObject.registerClass({
         });
         contentBox.add_child(this.titleLabel);
 
-        this._bodyStack = new St.Widget({x_expand: true});
-        this._bodyStack.layout_manager = new LabelExpanderLayout();
-        contentBox.add_child(this._bodyStack);
-
-        this.bodyLabel = new URLHighlighter('', false, this._useBodyMarkup);
-        this.bodyLabel.add_style_class_name('message-body');
-        this._bodyStack.add_child(this.bodyLabel);
-        this._expandedLabel = new URLHighlighter('', true, this._useBodyMarkup);
-        this._bodyStack.add_child(this._expandedLabel);
+        this._bodyLabel = new URLHighlighter('', true, this._useBodyMarkup);
+        this._bodyLabel.add_style_class_name('message-body');
+        this._bodyBin = new St.Bin({
+            x_expand: true,
+            layout_manager: new LabelExpanderLayout(),
+            child: this._bodyLabel,
+        });
+        contentBox.add_child(this._bodyBin);
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -581,9 +546,8 @@ export const Message = GObject.registerClass({
 
     set body(text) {
         this._bodyText = text;
-        this.bodyLabel.setMarkup(text ? text.replace(/\n/g, ' ') : '',
+        this._bodyLabel.setMarkup(text ? text.replace(/\n/g, ' ') : '',
             this._useBodyMarkup);
-        this._expandedLabel.setMarkup(text, this._useBodyMarkup);
         this.notify('body');
     }
 
@@ -595,9 +559,7 @@ export const Message = GObject.registerClass({
         if (this._useBodyMarkup === enable)
             return;
         this._useBodyMarkup = enable;
-        if (this.bodyLabel)
-            this.setBody(this._bodyText);
-
+        this.setBody(this._bodyText);
         this.notify('use-body-markup');
     }
 
@@ -626,7 +588,7 @@ export const Message = GObject.registerClass({
         this._actionBin.visible = !!this._actionBin.child;
 
         const duration = animate ? MessageTray.ANIMATION_TIME : 0;
-        this._bodyStack.ease_property('@layout.expansion', 1, {
+        this._bodyBin.ease_property('@layout.expansion', 1, {
             progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration,
         });
@@ -643,7 +605,7 @@ export const Message = GObject.registerClass({
 
     unexpand(animate) {
         const duration = animate ? MessageTray.ANIMATION_TIME : 0;
-        this._bodyStack.ease_property('@layout.expansion', 0, {
+        this._bodyBin.ease_property('@layout.expansion', 0, {
             progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration,
         });
