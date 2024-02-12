@@ -200,6 +200,7 @@ class FdoNotificationDaemon {
         const soundFile = 'sound-file' in hints
             ? Gio.File.new_for_path(hints['sound-file']) : null;
 
+        notification.acknowledged = false;
         notification.update(summary, body, {
             gicon,
             bannerMarkup: true,
@@ -355,10 +356,12 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
         }
 
         let tracker = Shell.WindowTracker.get_default();
+        // Acknowledge notifications that are resident and their app has the
+        // current focus so that we don't show a banner.
         if (notification.resident && this.app && tracker.focus_app === this.app)
-            this.pushNotification(notification);
-        else
-            this.showNotification(notification);
+            notification.acknowledged = true;
+
+        this.addNotification(notification);
     }
 
     open() {
@@ -402,9 +405,10 @@ const PRIORITY_URGENCY_MAP = {
 
 const GtkNotificationDaemonNotification = GObject.registerClass(
 class GtkNotificationDaemonNotification extends MessageTray.Notification {
-    _init(source, notification) {
+    _init(source, id, notification) {
         super._init(source);
         this._serialized = GLib.Variant.new('a{sv}', notification);
+        this.id = id;
 
         const {
             title,
@@ -499,15 +503,12 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
         this._notificationPending = false;
     }
 
-    _createNotification(params) {
-        return new GtkNotificationDaemonNotification(this, params);
-    }
-
     activateAction(actionId, target) {
         const params = target ? GLib.Variant.new('av', [target]) : null;
         this._app.activate_action(actionId, params, 0, -1, null).catch(error => {
             logError(error, `Failed to activate action for ${this._appId}`);
         });
+
         Main.overview.hide();
         Main.panel.closeCalendar();
     }
@@ -518,22 +519,18 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
         Main.panel.closeCalendar();
     }
 
-    addNotification(notificationId, notificationParams, showBanner) {
+    addNotification(notification) {
         this._notificationPending = true;
 
-        if (this._notifications[notificationId])
-            this._notifications[notificationId].destroy(MessageTray.NotificationDestroyedReason.REPLACED);
+        this._notifications[notification.id]?.destroy(
+            MessageTray.NotificationDestroyedReason.REPLACED);
 
-        let notification = this._createNotification(notificationParams);
         notification.connect('destroy', () => {
-            delete this._notifications[notificationId];
+            delete this._notifications[notification.id];
         });
-        this._notifications[notificationId] = notification;
+        this._notifications[notification.id] = notification;
 
-        if (showBanner)
-            this.showNotification(notification);
-        else
-            this.pushNotification(notification);
+        super.addNotification(notification);
 
         this._notificationPending = false;
     }
@@ -609,8 +606,13 @@ class GtkNotificationDaemon {
                         throw e;
                     }
 
-                    notifications.forEach(([notificationId, notification]) => {
-                        source.addNotification(notificationId, notification.deepUnpack(), false);
+                    notifications.forEach(([notificationId, notificationPacked]) => {
+                        const notification = new GtkNotificationDaemonNotification(source,
+                            notificationId,
+                            notificationPacked.deepUnpack());
+                        // Acknowledge all stored notification so that we don't show a banner again
+                        notification.acknowledged = true;
+                        source.addNotification(notification);
                     });
                 });
             }
@@ -635,7 +637,7 @@ class GtkNotificationDaemon {
     }
 
     AddNotificationAsync(params, invocation) {
-        let [appId, notificationId, notification] = params;
+        let [appId, notificationId, notificationSerialized] = params;
 
         let source;
         try {
@@ -651,9 +653,12 @@ class GtkNotificationDaemon {
         }
 
         let timestamp = GLib.DateTime.new_now_local().to_unix();
-        notification['timestamp'] = new GLib.Variant('x', timestamp);
+        notificationSerialized['timestamp'] = new GLib.Variant('x', timestamp);
 
-        source.addNotification(notificationId, notification, true);
+        const notification = new GtkNotificationDaemonNotification(source,
+            notificationId,
+            notificationSerialized);
+        source.addNotification(notification);
 
         invocation.return_value(null);
     }

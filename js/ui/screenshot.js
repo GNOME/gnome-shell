@@ -2122,7 +2122,7 @@ export const ScreenshotUI = GObject.registerClass({
         }
 
         Main.messageTray.add(source);
-        source.showNotification(notification);
+        source.addNotification(notification);
     }
 
     get screencast_in_progress() {
@@ -2364,7 +2364,7 @@ function _storeScreenshot(bytes, pixbuf) {
 
     notification.setTransient(true);
     Main.messageTray.add(source);
-    source.showNotification(notification);
+    source.addNotification(notification);
 
     return file;
 }

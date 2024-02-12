@@ -797,7 +797,7 @@ class NetworkAgent {
             delete this._notifications[requestId];
         });
 
-        source.showNotification(notification);
+        source.addNotification(notification);
     }
 
     _newRequest(agent, requestId, connection, settingName, hints, flags) {

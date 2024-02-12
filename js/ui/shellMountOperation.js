@@ -200,7 +200,7 @@ export class ShellMountOperation {
         this._notification.setTransient(true);
         this._notification.iconName = 'media-removable-symbolic';
         this._notification.connect('destroy', () => delete this._notification);
-        source.showNotification(this._notification);
+        source.addNotification(this._notification);
     }
 
     _showUnmountNotificationDone(message) {

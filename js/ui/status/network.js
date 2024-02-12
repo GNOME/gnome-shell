@@ -2039,7 +2039,7 @@ class Indicator extends SystemIndicator {
         this._notification.connect('destroy',
             () => (this._notification = null));
 
-        source.showNotification(this._notification);
+        source.addNotification(this._notification);
     }
 
     _syncMainConnection() {

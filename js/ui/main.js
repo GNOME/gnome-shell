@@ -280,7 +280,7 @@ async function _initializeUI() {
         notification.addAction(_('Undo'),
             () => (global.context.unsafe_mode = false));
         notification.setTransient(true);
-        source.showNotification(notification);
+        source.addNotification(notification);
     });
 
     // Provide the bus object for gnome-session to
@@ -616,7 +616,7 @@ export function notify(msg, details) {
     const source = MessageTray.getSystemSource();
     let notification = new MessageTray.Notification(source, msg, details);
     notification.setTransient(true);
-    source.showNotification(notification);
+    source.addNotification(notification);
 }
 
 /**

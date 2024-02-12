@@ -50,7 +50,7 @@ class ShellInfo {
         if (undoCallback)
             this._notification.addAction(_('Undo'), () => undoCallback());
 
-        source.showNotification(this._notification);
+        source.addNotification(this._notification);
     }
 }
 

@@ -203,7 +203,7 @@ class AutorunDispatcher {
         });
         notification.connect('destroy', () => this._notifications.delete(mount));
         this._notifications.set(mount, notification);
-        source.showNotification(notification);
+        source.addNotification(notification);
     }
 
     addMount(mount, apps, contentTypes) {

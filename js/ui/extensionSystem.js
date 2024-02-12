@@ -354,7 +354,7 @@ export class ExtensionManager extends Signals.EventEmitter {
                 _('Extension updates are ready to be installed.'));
             notification.connect('activated',
                 () => source.open());
-            source.showNotification(notification);
+            source.addNotification(notification);
         }
     }
 

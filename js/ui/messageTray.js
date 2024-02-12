@@ -590,7 +590,7 @@ export const Source = GObject.registerClass({
         'destroy': {param_types: [GObject.TYPE_UINT]},
         'notification-added': {param_types: [Notification.$gtype]},
         'notification-removed': {param_types: [Notification.$gtype]},
-        'notification-show': {param_types: [Notification.$gtype]},
+        'notification-request-banner': {param_types: [Notification.$gtype]},
     },
 }, class Source extends MessageList.Source {
     constructor(params) {
@@ -647,7 +647,7 @@ export const Source = GObject.registerClass({
             this.destroy();
     }
 
-    pushNotification(notification) {
+    addNotification(notification) {
         if (this.notifications.includes(notification))
             return;
 
@@ -655,22 +655,17 @@ export const Source = GObject.registerClass({
             this.notifications.shift().destroy(NotificationDestroyedReason.EXPIRED);
 
         notification.connect('destroy', this._onNotificationDestroy.bind(this));
-        notification.connect('notify::acknowledged', this.countUpdated.bind(this));
+        notification.connect('notify::acknowledged', () => {
+            this.countUpdated();
+
+            // If acknowledged was set to false try to show the notification again
+            if (!notification.acknowledged)
+                this.emit('notification-request-banner', notification);
+        });
         this.notifications.push(notification);
+
         this.emit('notification-added', notification);
-
-        this.countUpdated();
-    }
-
-    showNotification(notification) {
-        notification.acknowledged = false;
-        this.pushNotification(notification);
-
-        if (notification.urgency === Urgency.LOW)
-            return;
-
-        if (this.policy.showBanners || notification.urgency === Urgency.CRITICAL)
-            this.emit('notification-show', notification);
+        this.emit('notification-request-banner', notification);
     }
 
     destroy(reason) {
@@ -876,7 +871,7 @@ export const MessageTray = GObject.registerClass({
         this._sources.add(source);
 
         source.connectObject(
-            'notification-show', this._onNotificationShow.bind(this),
+            'notification-request-banner', this._onNotificationRequestBanner.bind(this),
             'notification-removed', this._onNotificationRemoved.bind(this),
             'destroy', () => this._removeSource(source), this);
 
@@ -923,7 +918,17 @@ export const MessageTray = GObject.registerClass({
         }
     }
 
-    _onNotificationShow(_source, notification) {
+    _onNotificationRequestBanner(_source, notification) {
+        // We never display a banner for already acknowledged notifications
+        if (notification.acknowledged)
+            return;
+
+        if (notification.urgency === Urgency.LOW)
+            return;
+
+        if (!notification.source.policy.showBanners && notification.urgency !== Urgency.CRITICAL)
+            return;
+
         if (this._notification === notification) {
             // If a notification that is being shown is updated, we update
             // how it is shown and extend the time until it auto-hides.

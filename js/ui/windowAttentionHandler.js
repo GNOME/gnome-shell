@@ -45,7 +45,7 @@ export class WindowAttentionHandler {
         });
         notification.setForFeedback(true);
 
-        source.showNotification(notification);
+        source.addNotification(notification);
 
         window.connectObject('notify::title', () => {
             [title, banner] = this._getTitleAndBanner(app, window);
