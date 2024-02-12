@@ -555,15 +555,6 @@ export const Notification = GObject.registerClass({
         this.sound?.play(this.title);
     }
 
-    // Allow customizing the banner UI:
-    // the default implementation defers the creation to
-    // the source (which will create a NotificationBanner),
-    // so customization can be done by subclassing either
-    // Notification or Source
-    createBanner() {
-        return this.source.createBanner(this);
-    }
-
     activate() {
         this.emit('activated');
 
@@ -662,10 +653,6 @@ export const Source = GObject.registerClass({
         return this.notifications.every(n => n.privacyScope === PrivacyScope.SYSTEM)
             ? PrivacyScope.SYSTEM
             : PrivacyScope.USER;
-    }
-
-    createBanner(notification) {
-        return new NotificationBanner(notification);
     }
 
     _onNotificationDestroy(notification) {
@@ -1160,7 +1147,7 @@ export const MessageTray = GObject.registerClass({
             this.idleMonitor.add_user_active_watch(this._onIdleMonitorBecameActive.bind(this));
         }
 
-        this._banner = this._notification.createBanner();
+        this._banner = new NotificationBanner(this._notification);
         this._banner.connectObject('done-displaying', this._escapeTray.bind(this), this);
 
         this._bannerBin.add_child(this._banner);
