@@ -287,7 +287,7 @@ dist:
     - sudo meson install -C mutter/build
     - mkdir -m 700 $XDG_RUNTIME_DIR
   script:
-    - dbus-run-session xvfb-run meson dist -C build
+    - dbus-run-session xvfb-run meson dist -C build --include-subprojects
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
