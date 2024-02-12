@@ -36,6 +36,7 @@ import * as GdmUtil from './util.js';
 import * as Layout from '../ui/layout.js';
 import * as LoginManager from '../misc/loginManager.js';
 import * as Main from '../ui/main.js';
+import * as MessageTray from '../ui/messageTray.js';
 import * as ModalDialog from '../ui/modalDialog.js';
 import * as PopupMenu from '../ui/popupMenu.js';
 import * as Realmd from './realmd.js';
@@ -44,6 +45,7 @@ import * as UserWidget from '../ui/userWidget.js';
 const _FADE_ANIMATION_TIME = 250;
 const _SCROLL_ANIMATION_TIME = 500;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
+const _CONFLICTING_SESSION_DIALOG_TIMEOUT = 60;
 
 export const UserListItem = GObject.registerClass({
     Signals: {'activate': {}},
@@ -1071,6 +1073,22 @@ export const LoginDialog = GObject.registerClass({
         }, this);
     }
 
+    _notifyConflictingSessionDialogClosed(userName) {
+        const source = new MessageTray.SystemNotificationSource();
+        Main.messageTray.add(source);
+
+        this._conflictingSessionNotification = new MessageTray.Notification(source,
+            _('Stop conflicting session dialog closed'),
+            _('Try to login again to start a session for user %s.').format(userName));
+        this._conflictingSessionNotification.setUrgency(MessageTray.Urgency.CRITICAL);
+        this._conflictingSessionNotification.setTransient(true);
+        this._conflictingSessionNotification.connect('destroy', () => {
+            this._conflictingSessionNotification = null;
+        });
+
+        source.showNotification(this._conflictingSessionNotification);
+    }
+
     _showConflictingSessionDialog(serviceName, conflictingSession) {
         let conflictingSessionDialog = new ConflictingSessionDialog(conflictingSession,
             this._greeterSessionProxy,
@@ -1091,6 +1109,17 @@ export const LoginDialog = GObject.registerClass({
                 this._authPrompt.finish(() => this._startSession(serviceName));
             }
         }, conflictingSessionDialog);
+
+        const closeDialogTimeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, _CONFLICTING_SESSION_DIALOG_TIMEOUT, () => {
+            this._notifyConflictingSessionDialogClosed(this._user.get_user_name());
+            conflictingSessionDialog.close();
+            this._authPrompt.reset();
+            return GLib.SOURCE_REMOVE;
+        });
+
+        conflictingSessionDialog.connect('closed', () => {
+            GLib.source_remove(closeDialogTimeoutId);
+        });
 
         conflictingSessionDialog.open();
     }
@@ -1332,6 +1361,9 @@ export const LoginDialog = GObject.registerClass({
         this._user = activatedItem.user;
 
         this._updateCancelButton();
+
+        if (this._conflictingSessionNotification)
+            this._conflictingSessionNotification.destroy();
 
         const batch = new Batch.ConcurrentBatch(this, [
             GdmUtil.cloneAndFadeOutActor(this._userSelectionBox),
