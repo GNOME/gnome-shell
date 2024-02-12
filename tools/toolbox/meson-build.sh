@@ -16,6 +16,7 @@ usage() {
 
 	  -Dkey=val               Option to pass to meson setup
 	  --dist                  Run meson dist
+	  --reconfigure           Reconfigure the project
 	  --wipe                  Wipe build directory and reconfigure
 
 	  -h, --help              Display this help
@@ -50,6 +51,7 @@ TEMP=$(getopt \
   --options 't:D:h' \
   --longoptions 'toolbox:' \
   --longoptions 'dist' \
+  --longoptions 'reconfigure' \
   --longoptions 'wipe' \
   --longoptions 'help' \
   -- "$@") || die "Run $(basename $0) --help to see available options"
@@ -69,6 +71,11 @@ while true; do
     --dist)
       RUN_DIST=1
       shift
+    ;;
+
+    --reconfigure)
+       RECONFIGURE=--reconfigure
+       shift
     ;;
 
     --wipe)
