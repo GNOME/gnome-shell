@@ -265,9 +265,8 @@ class Indicator extends SystemIndicator {
             this._notification = null;
         });
         this._notification.connect('activated', () => {
-            let app = Shell.AppSystem.get_default().lookup_app('gnome-thunderbolt-panel.desktop');
-            if (app)
-                app.activate();
+            const app = Shell.AppSystem.get_default().lookup_app('gnome-thunderbolt-panel.desktop');
+            app?.activate();
         });
         source.showNotification(this._notification);
     }
