@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-01-30 17:14+0000\n"
-"PO-Revision-Date: 2024-02-01 18:50+0300\n"
+"POT-Creation-Date: 2024-02-11 22:55+0000\n"
+"PO-Revision-Date: 2024-02-12 13:25+0300\n"
 "Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: RU\n"
 "Language: ru\n"
@@ -111,7 +111,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Открыть новое окно закрепленного приложения 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2214
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2276
 msgid "Screenshots"
 msgstr "Снимки экрана"
 
@@ -135,7 +135,7 @@ msgstr "Сделать снимок окна"
 msgid "Record a screencast interactively"
 msgstr "Сделать запись экрана интерактивно"
 
-#: data/50-gnome-shell-system.xml:6
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1354
 msgid "System"
 msgstr "Система"
 
@@ -539,7 +539,6 @@ msgstr "Местоположение для которого отображае�
 #: data/org.gnome.Shell.Extensions.desktop.in.in:5
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/extensionsWindow.js:159
 #: subprojects/extensions-app/data/ui/extensions-window.ui:57
 msgid "Extensions"
 msgstr "Расширения"
@@ -575,17 +574,17 @@ msgid "Visit extension homepage"
 msgstr "Посетить домашнюю страницу расширения"
 
 #: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
-#: js/ui/components/networkAgent.js:115 js/ui/components/polkitAgent.js:146
-#: js/ui/endSessionDialog.js:436 js/ui/extensionDownloader.js:256
-#: js/ui/shellMountOperation.js:398 js/ui/shellMountOperation.js:408
+#: js/ui/components/networkAgent.js:114 js/ui/components/polkitAgent.js:146
+#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:271
+#: js/ui/shellMountOperation.js:380 js/ui/shellMountOperation.js:390
 msgid "Cancel"
 msgstr "Отмена"
 
-#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:215
-#: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
-#: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
-#: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
-#: js/ui/shellMountOperation.js:348
+#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:214
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:288
+#: js/ui/shellMountOperation.js:330
 msgid "Password"
 msgstr "Пароль"
 
@@ -604,8 +603,8 @@ msgstr "Нет в списке?"
 msgid "(e.g., user or %s)"
 msgstr "(например, пользователь или %s)"
 
-#: js/gdm/loginDialog.js:942 js/ui/components/networkAgent.js:259
-#: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:328
+#: js/gdm/loginDialog.js:942 js/ui/components/networkAgent.js:258
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Имя пользователя"
 
@@ -1064,15 +1063,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "%V неделя"
 
-#: js/ui/calendar.js:888
+#: js/ui/calendar.js:889
 msgid "No Notifications"
 msgstr "Уведомлений нет"
 
-#: js/ui/calendar.js:944
+#: js/ui/calendar.js:945
 msgid "Do Not Disturb"
 msgstr "Не беспокоить"
 
-#: js/ui/calendar.js:965
+#: js/ui/calendar.js:966
 msgid "Clear"
 msgstr "Очистить"
 
@@ -1114,45 +1113,45 @@ msgstr "Не удалось разблокировать том"
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Установленная версия udisks не поддерживает настройку PIM"
 
-#: js/ui/components/autorunManager.js:318
+#: js/ui/components/autorunManager.js:278
 #, javascript-format
 msgid "Open with %s"
 msgstr "Открыть с помощью %s"
 
-#: js/ui/components/networkAgent.js:97
+#: js/ui/components/networkAgent.js:96
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "В качестве альтернативы вы можете подключиться, нажав кнопку \"WPS\" на "
 "вашем маршрутизаторе."
 
-#: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:246
+#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:371 js/ui/status/network.js:455
 msgid "Connect"
 msgstr "Подключить"
 
-#: js/ui/components/networkAgent.js:224
+#: js/ui/components/networkAgent.js:223
 msgid "Key"
 msgstr "Ключ"
 
-#: js/ui/components/networkAgent.js:275 js/ui/components/networkAgent.js:314
+#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
 msgid "Private key password"
 msgstr "Пароль личного ключа"
 
-#: js/ui/components/networkAgent.js:308
+#: js/ui/components/networkAgent.js:307
 msgid "Identity"
 msgstr "Идентичность"
 
-#: js/ui/components/networkAgent.js:334
+#: js/ui/components/networkAgent.js:333
 msgid "Service"
 msgstr "Служба"
 
-#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:408
-#: js/ui/components/networkAgent.js:757 js/ui/components/networkAgent.js:778
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
+#: js/ui/components/networkAgent.js:750 js/ui/components/networkAgent.js:771
 msgid "Authentication required"
 msgstr "Требуется подтверждение подлинности"
 
-#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:758
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:751
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1160,42 +1159,38 @@ msgid ""
 msgstr ""
 "Для доступа к беспроводной сети \"%s\" требуется пароль или ключ шифрования."
 
-#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:762
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:755
 msgid "Wired 802.1X authentication"
 msgstr "Проводная аутентификация 802.1X"
 
-#: js/ui/components/networkAgent.js:380
+#: js/ui/components/networkAgent.js:379
 msgid "Network name"
 msgstr "Название сети"
 
-#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:766
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:759
 msgid "DSL authentication"
 msgstr "Аутентификация DSL"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:771
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:764
 msgid "PIN code required"
 msgstr "Требуется PIN-код"
 
-#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:772
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:765
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Для устройства мобильной связи требуется PIN-код"
 
-#: js/ui/components/networkAgent.js:398
+#: js/ui/components/networkAgent.js:397
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:763
-#: js/ui/components/networkAgent.js:767 js/ui/components/networkAgent.js:779
-#: js/ui/components/networkAgent.js:783
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:756
+#: js/ui/components/networkAgent.js:760 js/ui/components/networkAgent.js:772
+#: js/ui/components/networkAgent.js:776
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Для подключения к \"%s\" требуется пароль."
 
-#: js/ui/components/networkAgent.js:744 js/ui/status/network.js:2040
-msgid "Network Manager"
-msgstr "Диспетчер сети"
-
-#: js/ui/components/networkAgent.js:782
+#: js/ui/components/networkAgent.js:775
 msgid "VPN password"
 msgstr "Пароль VPN"
 
@@ -1215,7 +1210,7 @@ msgstr "Подтвердить"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:431
+#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:413
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Не удалось подтвердить подлинность. Попробуйте снова."
 
@@ -1322,18 +1317,18 @@ msgstr "Погода"
 msgid "Select weather location…"
 msgstr "Выберите ваше местоположение…"
 
-#: js/ui/endSessionDialog.js:46
+#: js/ui/endSessionDialog.js:48
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Выход пользователя %s"
 
-#: js/ui/endSessionDialog.js:47
+#: js/ui/endSessionDialog.js:49
 msgctxt "title"
 msgid "Log Out"
 msgstr "Выход из системы"
 
-#: js/ui/endSessionDialog.js:50
+#: js/ui/endSessionDialog.js:52
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -1341,7 +1336,7 @@ msgstr[0] "%s выйдет из системы автоматически чер
 msgstr[1] "%s выйдет из системы автоматически через %d секунды."
 msgstr[2] "%s выйдет из системы автоматически через %d секунд."
 
-#: js/ui/endSessionDialog.js:56
+#: js/ui/endSessionDialog.js:58
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
@@ -1349,22 +1344,22 @@ msgstr[0] "Вы автоматически выйдете из системы ч
 msgstr[1] "Вы автоматически выйдете из системы через %d секунды."
 msgstr[2] "Вы автоматически выйдете из системы через %d секунд."
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:65
 msgctxt "button"
 msgid "Log Out"
 msgstr "Выйти"
 
-#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:176
+#: js/ui/endSessionDialog.js:71 js/ui/status/system.js:176
 msgctxt "title"
 msgid "Power Off"
 msgstr "Выключение"
 
-#: js/ui/endSessionDialog.js:70
+#: js/ui/endSessionDialog.js:72
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Установка обновлений и выключение"
 
-#: js/ui/endSessionDialog.js:73
+#: js/ui/endSessionDialog.js:75
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -1372,27 +1367,27 @@ msgstr[0] "Система будет автоматически выключен
 msgstr[1] "Система будет автоматически выключена через %d секунды."
 msgstr[2] "Система будет автоматически выключена через %d секунд."
 
-#: js/ui/endSessionDialog.js:77 js/ui/endSessionDialog.js:96
+#: js/ui/endSessionDialog.js:79 js/ui/endSessionDialog.js:98
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Установить отложенные обновления ПО"
 
-#: js/ui/endSessionDialog.js:81
+#: js/ui/endSessionDialog.js:83
 msgctxt "button"
 msgid "Power Off"
 msgstr "Выключить"
 
-#: js/ui/endSessionDialog.js:88
+#: js/ui/endSessionDialog.js:90
 msgctxt "title"
 msgid "Restart"
 msgstr "Перезапуск"
 
-#: js/ui/endSessionDialog.js:89
+#: js/ui/endSessionDialog.js:91
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "Установка обновлений и перезапуск"
 
-#: js/ui/endSessionDialog.js:92
+#: js/ui/endSessionDialog.js:94
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -1400,17 +1395,17 @@ msgstr[0] "Система будет автоматически перезапу
 msgstr[1] "Система будет автоматически перезапущена через %d секунды."
 msgstr[2] "Система будет автоматически перезапущена через %d секунд."
 
-#: js/ui/endSessionDialog.js:100
+#: js/ui/endSessionDialog.js:102
 msgctxt "button"
 msgid "Restart"
 msgstr "Перезапустить"
 
-#: js/ui/endSessionDialog.js:108
+#: js/ui/endSessionDialog.js:110
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Перезапуск и установка обновлений"
 
-#: js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:113
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1422,22 +1417,22 @@ msgstr[1] ""
 msgstr[2] ""
 "Система автоматически перезапустится и установит обновления через %d секунд."
 
-#: js/ui/endSessionDialog.js:118 js/ui/endSessionDialog.js:139
+#: js/ui/endSessionDialog.js:120 js/ui/endSessionDialog.js:141
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "Перезапустить и установить"
 
-#: js/ui/endSessionDialog.js:120
+#: js/ui/endSessionDialog.js:122
 msgctxt "button"
 msgid "Install & Power Off"
 msgstr "Установить и выключить"
 
-#: js/ui/endSessionDialog.js:121
+#: js/ui/endSessionDialog.js:123
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Выключить после установки обновлений"
 
-#: js/ui/endSessionDialog.js:128
+#: js/ui/endSessionDialog.js:130
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Перезапуск и установка обновлений"
@@ -1445,7 +1440,7 @@ msgstr "Перезапуск и установка обновлений"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:133
+#: js/ui/endSessionDialog.js:135
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1455,46 +1450,46 @@ msgstr ""
 "продолжительное время: убедитесь, что у вас есть резервная копия и что "
 "компьютер подключен к сети."
 
-#: js/ui/endSessionDialog.js:282
+#: js/ui/endSessionDialog.js:284
 msgid "Low battery power: please plug in before installing updates."
 msgstr ""
 "Низкий заряд батареи: перед установкой обновлений подключите зарядное "
 "устройство."
 
-#: js/ui/endSessionDialog.js:291
+#: js/ui/endSessionDialog.js:293
 msgid "Some applications are busy or have unsaved work"
 msgstr "Некоторые приложения заняты или результаты их работы не сохранены"
 
-#: js/ui/endSessionDialog.js:296
+#: js/ui/endSessionDialog.js:298
 msgid "Other users are logged in"
 msgstr "Есть открытые сеансы других пользователей"
 
-#: js/ui/endSessionDialog.js:466
+#: js/ui/endSessionDialog.js:468
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Параметры загрузки"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:671
+#: js/ui/endSessionDialog.js:673
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (удалённый)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:674
+#: js/ui/endSessionDialog.js:676
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (консоль)"
 
-#: js/ui/extensionDownloader.js:260
+#: js/ui/extensionDownloader.js:275
 msgid "Install"
 msgstr "Установить"
 
-#: js/ui/extensionDownloader.js:266
+#: js/ui/extensionDownloader.js:281
 msgid "Install Extension"
 msgstr "Установить расширение"
 
-#: js/ui/extensionDownloader.js:267
+#: js/ui/extensionDownloader.js:282
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Загрузить и установить расширение \"%s\" из extensions.gnome.org?"
@@ -1645,23 +1640,23 @@ msgstr "Показать код"
 msgid "Web Page"
 msgstr "Веб-страница"
 
-#: js/ui/main.js:280
+#: js/ui/main.js:279
 msgid "System was put in unsafe mode"
 msgstr "Система была переведена в небезопасный режим"
 
-#: js/ui/main.js:281
+#: js/ui/main.js:280
 msgid "Apps now have unrestricted access"
 msgstr "Приложения теперь имеют неограниченный доступ"
 
-#: js/ui/main.js:282 js/ui/overview.js:63
+#: js/ui/main.js:281 js/ui/overview.js:51
 msgid "Undo"
 msgstr "Отменить"
 
-#: js/ui/main.js:340
+#: js/ui/main.js:339
 msgid "Logged in as a privileged user"
 msgstr "Авторизован как привилегированный пользователь"
 
-#: js/ui/main.js:341
+#: js/ui/main.js:340
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1670,11 +1665,11 @@ msgstr ""
 "привилегированного пользователя. Если это возможно, вам следует войти от "
 "имени обычного пользователя."
 
-#: js/ui/main.js:389
+#: js/ui/main.js:388
 msgid "Screen Lock disabled"
 msgstr "Блокировка экрана отключена"
 
-#: js/ui/main.js:390
+#: js/ui/main.js:389
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Для блокировки экрана требуется менеджер дисплеев GNOME."
 
@@ -1683,10 +1678,6 @@ msgstr "Для блокировки экрана требуется менедж
 #: js/ui/messageList.js:427
 msgid "Unknown App"
 msgstr "Неизвестное приложение"
-
-#: js/ui/messageTray.js:1322
-msgid "System Information"
-msgstr "Системная информация"
 
 #: js/ui/mpris.js:199
 msgid "Unknown artist"
@@ -1710,7 +1701,7 @@ msgstr "Приложения"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:76
+#: js/ui/overview.js:64
 msgid "Overview"
 msgstr "Обзор"
 
@@ -1805,107 +1796,124 @@ msgstr "Не удалось заблокировать"
 msgid "Lock was blocked by an app"
 msgstr "Блокировке помешало приложение"
 
-#: js/ui/screenshot.js:1239
+#: js/ui/screenshot.js:1254
 msgid "Selection"
 msgstr "Область"
 
-#: js/ui/screenshot.js:1249
+#: js/ui/screenshot.js:1264
 msgid "Area Selection"
 msgstr "Выбор области"
 
-#: js/ui/screenshot.js:1254
+#: js/ui/screenshot.js:1269
 msgid "Screen"
 msgstr "Экран"
 
-#: js/ui/screenshot.js:1264
+#: js/ui/screenshot.js:1279
 msgid "Screen Selection"
 msgstr "Выбор экрана"
 
-#: js/ui/screenshot.js:1269
+#: js/ui/screenshot.js:1284
 msgid "Window"
 msgstr "Окно"
 
-#: js/ui/screenshot.js:1279
+#: js/ui/screenshot.js:1294
 msgid "Window Selection"
 msgstr "Выбор окна"
 
 #. Translators: entry in the window right click menu.
-#: js/ui/screenshot.js:1304 js/ui/status/system.js:113 js/ui/windowMenu.js:30
+#: js/ui/screenshot.js:1319 js/ui/status/system.js:113 js/ui/windowMenu.js:30
 msgid "Take Screenshot"
 msgstr "Сделать снимок экрана"
 
-#: js/ui/screenshot.js:1320
+#: js/ui/screenshot.js:1335
 msgid "Record Screen"
 msgstr "Записать экран"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1337
+#: js/ui/screenshot.js:1352
 msgid "Capture"
 msgstr "Снять"
 
-#: js/ui/screenshot.js:1359
+#: js/ui/screenshot.js:1374
 msgid "Show Pointer"
 msgstr "Показать курсор мыши"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1971
+#: js/ui/screenshot.js:1998
 msgid "Screencasts"
 msgstr "Записи экрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1976
+#: js/ui/screenshot.js:2003
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Запись экрана от %d %t.webm"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2014
+#: js/ui/screenshot.js:2049
 msgid "Screencast recorded"
 msgstr "Запись экрана сделана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2021
+#: js/ui/screenshot.js:2062
+msgid "Screencast failed to start"
+msgstr "Не удалось начать запись экрана"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2068
+msgid "Screencast ended: Out of disk space"
+msgstr "Запись экрана завершилась: Закончилось место на диске"
+
+#. We can encourage user to try again on service crashes since the
+#. recorder will auto-blocklist the pipeline that crashed.
+#. Translators: notification title.
+#: js/ui/screenshot.js:2074
+msgid "Screencast ended unexpectedly, please try again"
+msgstr "Запись экрана неожиданно завершилась, попробуйте еще раз"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2077
 msgid "Screencast ended unexpectedly"
 msgstr "Запись экрана неожиданно завершилась"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:2030 js/ui/screenshot.js:2267
+#: js/ui/screenshot.js:2087 js/ui/screenshot.js:2329
 msgid "Screenshot"
 msgstr "Снимок экрана"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2037
+#: js/ui/screenshot.js:2094
 msgid "Click here to view the video."
 msgstr "Нажмите здесь, чтобы посмотреть видео."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2040 js/ui/screenshot.js:2281
+#: js/ui/screenshot.js:2102 js/ui/screenshot.js:2343
 msgid "Show in Files"
 msgstr "Показать в Файлах"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2227
+#: js/ui/screenshot.js:2289
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Снимок экрана от %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2273
+#: js/ui/screenshot.js:2335
 msgid "Screenshot captured"
 msgstr "Снимок экрана сделан"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2275
+#: js/ui/screenshot.js:2337
 msgid "You can paste the image from the clipboard."
 msgstr "Вы можете вставить изображение из буфера обмена."
 
-#: js/ui/screenshot.js:2330 js/ui/screenshot.js:2494
+#: js/ui/screenshot.js:2392 js/ui/screenshot.js:2556
 msgid "Screenshot taken"
 msgstr "Сделан снимок экрана"
 
@@ -1950,20 +1958,20 @@ msgstr "Скрыть текст"
 msgid "Caps lock is on."
 msgstr "Включён Caps Lock."
 
-#: js/ui/shellMountOperation.js:302
+#: js/ui/shellMountOperation.js:284
 msgid "Hidden Volume"
 msgstr "Скрытый том"
 
-#: js/ui/shellMountOperation.js:305
+#: js/ui/shellMountOperation.js:287
 msgid "Windows System Volume"
 msgstr "Системный том Windows"
 
-#: js/ui/shellMountOperation.js:308
+#: js/ui/shellMountOperation.js:290
 msgid "Uses Keyfiles"
 msgstr "Использует файлы-ключи"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:316
+#: js/ui/shellMountOperation.js:298
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -1971,7 +1979,7 @@ msgstr ""
 "Чтобы разблокировать том, использующий файлы-ключи, используйте вместо этого "
 "утилиту <i>%s</i>."
 
-#: js/ui/shellMountOperation.js:320
+#: js/ui/shellMountOperation.js:302
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
@@ -1979,25 +1987,25 @@ msgstr ""
 "Для разблокирования тома, использующего файлы-ключи, требуется сторонняя "
 "утилита, например <i>Disks</i>."
 
-#: js/ui/shellMountOperation.js:328
+#: js/ui/shellMountOperation.js:310
 msgid "PIM Number"
 msgstr "Номер PIM"
 
-#: js/ui/shellMountOperation.js:387
+#: js/ui/shellMountOperation.js:369
 msgid "Remember Password"
 msgstr "Запомнить пароль"
 
-#: js/ui/shellMountOperation.js:402
+#: js/ui/shellMountOperation.js:384
 msgid "Unlock"
 msgstr "Разблокировать"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:416
+#: js/ui/shellMountOperation.js:398
 #, javascript-format
 msgid "Open %s"
 msgstr "Открыть \"%s\""
 
-#: js/ui/shellMountOperation.js:452
+#: js/ui/shellMountOperation.js:434
 msgid "The PIM must be a number or empty."
 msgstr "PIM должен содержать цифры или быть пустым."
 
@@ -2278,11 +2286,11 @@ msgstr "Настройки мобильной связи"
 msgid "Mobile"
 msgstr "Мобильная"
 
-#: js/ui/status/network.js:2047
+#: js/ui/status/network.js:2041
 msgid "Connection failed"
 msgstr "Сбой подключения"
 
-#: js/ui/status/network.js:2048
+#: js/ui/status/network.js:2042
 msgid "Activation of network connection failed"
 msgstr "Не удалось активировать сетевое подключение"
 
@@ -2356,15 +2364,11 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "Заблокировать экран"
 
-#: js/ui/status/thunderbolt.js:260
-msgid "Thunderbolt"
-msgstr "Thunderbolt"
-
-#: js/ui/status/thunderbolt.js:322
+#: js/ui/status/thunderbolt.js:307
 msgid "Unknown Thunderbolt device"
 msgstr "Неизвестное устройство Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:323
+#: js/ui/status/thunderbolt.js:308
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2373,21 +2377,21 @@ msgstr ""
 "снова подключите устройство, Чтобы начать использовать устройство, отключите "
 "и снова подключите его."
 
-#: js/ui/status/thunderbolt.js:326
+#: js/ui/status/thunderbolt.js:311
 msgid "Unauthorized Thunderbolt device"
 msgstr "Неавторизованное устройство Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:327
+#: js/ui/status/thunderbolt.js:312
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "Новое устройство было обнаружено и должно быть авторизовано администратором."
 
-#: js/ui/status/thunderbolt.js:333
+#: js/ui/status/thunderbolt.js:318
 msgid "Thunderbolt authorization error"
 msgstr "Ошибка авторизации Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:334
+#: js/ui/status/thunderbolt.js:319
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Не удалось авторизовать устройство Thunderbolt: %s"
@@ -2647,7 +2651,6 @@ msgstr "Управление расширениями GNOME Shell"
 
 #. developer_name tag deprecated with Appstream 1.0
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:19
-#: subprojects/extensions-app/js/extensionsWindow.js:163
 msgid "The GNOME Project"
 msgstr "Проект GNOME"
 
@@ -2660,15 +2663,15 @@ msgstr ""
 "настройкой параметров расширений и удалением или отключением ненужных "
 "расширений."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:63
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
 msgid "Main Window"
 msgstr "Главное окно"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:67
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
 msgid "Available Updates"
 msgstr "Доступные обновления"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:71
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
 msgid "Search View"
 msgstr "Отображение поиска"
 
@@ -2713,12 +2716,12 @@ msgstr "Сведения об ошибке:"
 msgid "Version %s"
 msgstr "Версия %s"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:115
+#: subprojects/extensions-app/js/extensionsWindow.js:113
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Удалить \"%s\"?"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:116
+#: subprojects/extensions-app/js/extensionsWindow.js:114
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2726,11 +2729,11 @@ msgstr ""
 "После удаления расширения, если потребуется использовать его снова, нужно "
 "будет загрузить и установить его заново"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:119
+#: subprojects/extensions-app/js/extensionsWindow.js:117
 msgid "_Cancel"
 msgstr "_Отменить"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:120
+#: subprojects/extensions-app/js/extensionsWindow.js:118
 msgid "_Remove"
 msgstr "_Удалить"
 
@@ -2742,7 +2745,7 @@ msgstr ""
 "Alexey Rubtsov <rushills@gmail.com>, 2021\n"
 "Aleksandr Melman <alexmelman88@gmail.com>, 2022-2023"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:211
+#: subprojects/extensions-app/js/extensionsWindow.js:203
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -3349,6 +3352,15 @@ msgstr[2] "%u входов"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Системные звуки"
+
+#~ msgid "Network Manager"
+#~ msgstr "Диспетчер сети"
+
+#~ msgid "System Information"
+#~ msgstr "Системная информация"
+
+#~ msgid "Thunderbolt"
+#~ msgstr "Thunderbolt"
 
 #~ msgid "Disabling"
 #~ msgstr "Отключение"
