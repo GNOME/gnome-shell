@@ -314,6 +314,25 @@ export const NotificationApplicationPolicy = GObject.registerClass({
     }
 });
 
+export const Sound = GObject.registerClass(
+class Sound extends GObject.Object {
+    constructor(file, themedName) {
+        super();
+
+        this._soundFile = file;
+        this._soundName = themedName;
+    }
+
+    play() {
+        const player = global.display.get_sound_player();
+
+        if (this._soundName)
+            player.play_from_theme(this._soundName, _('Notification sound'), null);
+        else if (this._soundFile)
+            player.play_from_file(this._soundFile, _('Notification sound'), null);
+    }
+});
+
 // Notification:
 // @source: the notification's Source
 // @title: the title
@@ -391,8 +410,7 @@ export const Notification = GObject.registerClass({
         this.forFeedback = false;
         this.bannerBodyText = null;
         this.bannerBodyMarkup = false;
-        this._soundName = null;
-        this._soundFile = null;
+        this.sound = null;
         this._soundPlayed = false;
         this.actions = [];
         this.setResident(false);
@@ -419,8 +437,7 @@ export const Notification = GObject.registerClass({
             bannerMarkup: false,
             clear: false,
             datetime: null,
-            soundName: null,
-            soundFile: null,
+            sound: null,
         });
 
         this.title = title;
@@ -438,10 +455,8 @@ export const Notification = GObject.registerClass({
         if (params.clear)
             this.actions = [];
 
-        if (this._soundName !== params.soundName ||
-            this._soundFile !== params.soundFile) {
-            this._soundName = params.soundName;
-            this._soundFile = params.soundFile;
+        if (this.sound !== params.sound) {
+            this.sound = params.sound;
             this._soundPlayed = false;
         }
 
@@ -495,11 +510,7 @@ export const Notification = GObject.registerClass({
             return;
         }
 
-        let player = global.display.get_sound_player();
-        if (this._soundName)
-            player.play_from_theme(this._soundName, this.title, null);
-        else if (this._soundFile)
-            player.play_from_file(this._soundFile, this.title, null);
+        this.sound?.play(this.title);
     }
 
     // Allow customizing the banner UI:
