@@ -350,77 +350,10 @@ class Action extends GObject.Object {
     }
 });
 
-// Notification:
-// @source: the notification's Source
-// @title: the title
-// @banner: the banner text
-// @params: optional additional params
-//
-// Creates a notification. In the banner mode, the notification
-// will show an icon, @title (in bold) and @banner, all on a single
-// line (with @banner ellipsized if necessary).
-//
-// The notification will be expandable if either it has additional
-// elements that were added to it or if the @banner text did not
-// fit fully in the banner mode. When the notification is expanded,
-// the @banner text from the top line is always removed. The complete
-// @banner text is added as the first element in the content section,
-// unless 'customContent' parameter with the value 'true' is specified
-// in @params.
-//
-// Additional notification content can be added with addActor() and
-// addBody() methods. The notification content is put inside a
-// scrollview, so if it gets too tall, the notification will scroll
-// rather than continue to grow. In addition to this main content
-// area, there is also a single-row action area, which is not
-// scrolled and can contain a single actor. The action area can
-// be set by calling setActionArea() method. There is also a
-// convenience method addButton() for adding a button to the action
-// area.
-//
-// If @params contains a 'customContent' parameter with the value %true,
-// then @banner will not be shown in the body of the notification when the
-// notification is expanded and calls to update() will not clear the content
-// unless 'clear' parameter with value %true is explicitly specified.
-//
-// By default, the icon shown is the same as the source's.
-// However, if @params contains a 'gicon' parameter, the passed in gicon
-// will be used.
-//
-// If @params contains 'bannerMarkup', with the value %true, a subset (<b>,
-// <i> and <u>) of the markup in [1] will be interpreted within @banner. If
-// the parameter is not present, then anything that looks like markup
-// in @banner will appear literally in the output.
-//
-// If @params contains a 'clear' parameter with the value %true, then
-// the content and the action area of the notification will be cleared.
-// The content area is also always cleared if 'customContent' is false
-// because it might contain the @banner that didn't fit in the banner mode.
-//
-// If @params contains 'soundName' or 'soundFile', the corresponding
-// event sound is played when the notification is shown (if the policy for
-// @source allows playing sounds).
-//
-// [1] https://developer.gnome.org/notification-spec/#markup
-export const Notification = GObject.registerClass({
-    Properties: {
-        'acknowledged': GObject.ParamSpec.boolean(
-            'acknowledged', 'acknowledged', 'acknowledged',
-            GObject.ParamFlags.READWRITE,
-            false),
-    },
-    Signals: {
-        'action-added': {param_types: [Action]},
-        'action-removed': {param_types: [Action]},
-        'activated': {},
-        'destroy': {param_types: [GObject.TYPE_UINT]},
-        'updated': {param_types: [GObject.TYPE_BOOLEAN]},
-    },
-}, class Notification extends GObject.Object {
+export class Notification extends GObject.Object {
     _init(source, title, banner, params) {
-        super._init();
+        super._init({source});
 
-        this.source = source;
         this.title = title;
         this.urgency = Urgency.NORMAL;
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
@@ -491,6 +424,36 @@ export const Notification = GObject.registerClass({
 
     set iconName(iconName) {
         this.gicon = new Gio.ThemedIcon({name: iconName});
+    }
+
+    get privacyScope() {
+        return this._privacyScope;
+    }
+
+    set privacyScope(privacyScope) {
+        if (!Object.values(PrivacyScope).includes(privacyScope))
+            throw new Error('out of range');
+
+        if (this._privacyScope === privacyScope)
+            return;
+
+        this._privacyScope = privacyScope;
+        this.notify('privacy-scope');
+    }
+
+    get urgency() {
+        return this._urgency;
+    }
+
+    set urgency(urgency) {
+        if (!Object.values(Urgency).includes(urgency))
+            throw new Error('out of range');
+
+        if (this._urgency === urgency)
+            return;
+
+        this._urgency = urgency;
+        this.notify('urgency');
     }
 
     // addAction:
@@ -572,8 +535,7 @@ export const Notification = GObject.registerClass({
         this.emit('destroy', reason);
         this.run_dispose();
     }
-});
-SignalTracker.registerDestroyableType(Notification);
+}
 
 export const Source = GObject.registerClass({
     Properties: {
@@ -693,6 +655,79 @@ export const Source = GObject.registerClass({
     }
 });
 SignalTracker.registerDestroyableType(Source);
+
+GObject.registerClass({
+    Properties: {
+        'source': GObject.ParamSpec.object(
+            'source', 'source', 'source',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            Source),
+        'title': GObject.ParamSpec.string(
+            'title', 'title', 'title',
+            GObject.ParamFlags.READWRITE,
+            null),
+        'body': GObject.ParamSpec.string(
+            'body', 'body', 'body',
+            GObject.ParamFlags.READWRITE,
+            null),
+        'use-body-markup': GObject.ParamSpec.boolean(
+            'use-body-markup', 'use-body-markup', 'use-body-markup',
+            GObject.ParamFlags.READWRITE,
+            false),
+        'gicon': GObject.ParamSpec.object(
+            'gicon', 'gicon', 'gicon',
+            GObject.ParamFlags.READWRITE,
+            Gio.Icon),
+        'icon-name': GObject.ParamSpec.string(
+            'icon-name', 'icon-name', 'icon-name',
+            GObject.ParamFlags.READWRITE,
+            null),
+        'sound': GObject.ParamSpec.object(
+            'sound', 'sound', 'sound',
+            GObject.ParamFlags.READWRITE,
+            Sound),
+        'datetime': GObject.ParamSpec.boxed(
+            'datetime', 'datetime', 'datetime',
+            GObject.ParamFlags.READWRITE,
+            GLib.DateTime),
+        // Unfortunately we can't register new enum types in GJS
+        // See: https://gitlab.gnome.org/GNOME/gjs/-/issues/573
+        'privacy-scope': GObject.ParamSpec.int(
+            'privacy-scope', 'privacy-scope', 'privacy-scope',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXINT32,
+            PrivacyScope.User),
+        'urgency': GObject.ParamSpec.int(
+            'urgency', 'urgency', 'urgency',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXINT32,
+            Urgency.NORMAL),
+        'acknowledged': GObject.ParamSpec.boolean(
+            'acknowledged', 'acknowledged', 'acknowledged',
+            GObject.ParamFlags.READWRITE,
+            false),
+        'resident': GObject.ParamSpec.boolean(
+            'resident', 'resident', 'resident',
+            GObject.ParamFlags.READWRITE,
+            false),
+        'for-feedback': GObject.ParamSpec.boolean(
+            'for-feedback', 'for-feedback', 'for-feedback',
+            GObject.ParamFlags.READWRITE,
+            false),
+        'is-transient': GObject.ParamSpec.boolean(
+            'is-transient', 'is-transient', 'is-transient',
+            GObject.ParamFlags.READWRITE,
+            false),
+    },
+    Signals: {
+        'action-added': {param_types: [Action]},
+        'action-removed': {param_types: [Action]},
+        'activated': {},
+        'destroy': {param_types: [GObject.TYPE_UINT]},
+        'updated': {param_types: [GObject.TYPE_BOOLEAN]},
+    },
+}, Notification);
+SignalTracker.registerDestroyableType(Notification);
 
 export const MessageTray = GObject.registerClass({
     Signals: {
