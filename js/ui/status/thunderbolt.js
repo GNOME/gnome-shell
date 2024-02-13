@@ -269,7 +269,7 @@ class Indicator extends SystemIndicator {
             if (app)
                 app.activate();
         });
-        this._source.showNotification(this._notification);
+        source.showNotification(this._notification);
     }
 
     /* Session callbacks */
