@@ -767,7 +767,7 @@ export const Calendar = GObject.registerClass({
 export const NotificationMessage = GObject.registerClass(
 class NotificationMessage extends MessageList.Message {
     _init(notification) {
-        super._init(notification.source, notification.title, notification.bannerBodyText);
+        super._init(notification.source, notification.title, notification.body);
         this.setUseBodyMarkup(notification.bannerBodyMarkup);
 
         this.notification = notification;
@@ -804,7 +804,7 @@ class NotificationMessage extends MessageList.Message {
         this.datetime = n.datetime;
         this.setIcon(this._getIcon());
         this.setTitle(n.title);
-        this.setBody(n.bannerBodyText);
+        this.setBody(n.body);
         this.setUseBodyMarkup(n.bannerBodyMarkup);
     }
 
