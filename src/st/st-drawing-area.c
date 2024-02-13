@@ -298,6 +298,7 @@ st_drawing_area_queue_repaint (StDrawingArea *area)
   if (priv->width <= 0 || priv->height <= 0)
     return;
 
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (area));
   st_drawing_area_emit_repaint (area);
 }
 
