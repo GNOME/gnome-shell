@@ -1014,7 +1014,6 @@ class CalendarMessageList extends St.Widget {
             vertical: true,
             x_expand: true,
             y_expand: true,
-            y_align: Clutter.ActorAlign.START,
         });
         this._sectionList.connectObject(
             'child-added', this._sync.bind(this),
