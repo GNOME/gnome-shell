@@ -6,16 +6,16 @@
 # Petr Kovar <pknbe@volny.cz>, 2009, 2010, 2011, 2012, 2014, 2015, 2020.
 # Adam Matoušek <adamatousek@gmail.com>, 2012, 2013.
 # Vojtěch Perník <translations@pervoj.cz>, 2022.
-# Marek Černocký <marek@manet.cz>, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
+# Marek Černocký <marek@manet.cz>, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
 # Kryštof Černý <cleerline1mc@gmail.com>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-06 17:28+0000\n"
-"PO-Revision-Date: 2024-02-07 00:44+0100\n"
-"Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
+"POT-Creation-Date: 2024-02-11 22:55+0000\n"
+"PO-Revision-Date: 2024-02-13 11:07+0100\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -102,7 +102,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Otevřít nové okno aplikace 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2224
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2276
 msgid "Screenshots"
 msgstr "Snímky obrazovky"
 
@@ -126,7 +126,7 @@ msgstr "Pořídit snímek okna"
 msgid "Record a screencast interactively"
 msgstr "Zaznamenat dění na obrazovce interaktivně"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1339
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1354
 msgid "System"
 msgstr "Systém"
 
@@ -1796,107 +1796,124 @@ msgstr "Nelze uzamknout obrazovku"
 msgid "Lock was blocked by an app"
 msgstr "Zamknutí je blokováno některou z aplikací"
 
-#: js/ui/screenshot.js:1240
+#: js/ui/screenshot.js:1254
 msgid "Selection"
 msgstr "Výběr"
 
-#: js/ui/screenshot.js:1250
+#: js/ui/screenshot.js:1264
 msgid "Area Selection"
 msgstr "Výběr oblasti"
 
-#: js/ui/screenshot.js:1255
+#: js/ui/screenshot.js:1269
 msgid "Screen"
 msgstr "Obrazovka"
 
-#: js/ui/screenshot.js:1265
+#: js/ui/screenshot.js:1279
 msgid "Screen Selection"
 msgstr "Výběr obrazovky"
 
-#: js/ui/screenshot.js:1270
+#: js/ui/screenshot.js:1284
 msgid "Window"
 msgstr "Okno"
 
-#: js/ui/screenshot.js:1280
+#: js/ui/screenshot.js:1294
 msgid "Window Selection"
 msgstr "Výběr okna"
 
 #. Translators: entry in the window right click menu.
-#: js/ui/screenshot.js:1305 js/ui/status/system.js:113 js/ui/windowMenu.js:30
+#: js/ui/screenshot.js:1319 js/ui/status/system.js:113 js/ui/windowMenu.js:30
 msgid "Take Screenshot"
 msgstr "Pořídit snímek obrazovky"
 
-#: js/ui/screenshot.js:1321
+#: js/ui/screenshot.js:1335
 msgid "Record Screen"
 msgstr "Nahrávat obrazovku"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1338
+#: js/ui/screenshot.js:1352
 msgid "Capture"
 msgstr "Zachytit"
 
-#: js/ui/screenshot.js:1360
+#: js/ui/screenshot.js:1374
 msgid "Show Pointer"
 msgstr "Zobrazit ukazatel"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1981
+#: js/ui/screenshot.js:1998
 msgid "Screencasts"
 msgstr "Záznamy obrazovky"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1986
+#: js/ui/screenshot.js:2003
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Záznam obrazovky z %d %t.webm"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2024
+#: js/ui/screenshot.js:2049
 msgid "Screencast recorded"
 msgstr "Bylo zaznamenáno dění na obrazovce"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2031
+#: js/ui/screenshot.js:2062
+msgid "Screencast failed to start"
+msgstr "Započetí záznamu dění na obrazovce selhalo"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2068
+msgid "Screencast ended: Out of disk space"
+msgstr "Záznam dění na obrazovce skončil: nedostatek místa na disku"
+
+#. We can encourage user to try again on service crashes since the
+#. recorder will auto-blocklist the pipeline that crashed.
+#. Translators: notification title.
+#: js/ui/screenshot.js:2074
+msgid "Screencast ended unexpectedly, please try again"
+msgstr "Záznam dění na obrazovce nečekaně skončil, zkuste to prosím znovu"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2077
 msgid "Screencast ended unexpectedly"
 msgstr "Záznam dění na obrazovce nečekaně skončil"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:2040 js/ui/screenshot.js:2277
+#: js/ui/screenshot.js:2087 js/ui/screenshot.js:2329
 msgid "Screenshot"
 msgstr "Snímek obrazovky"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2047
+#: js/ui/screenshot.js:2094
 msgid "Click here to view the video."
 msgstr "Kliknutím zde video zobrazíte."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2050 js/ui/screenshot.js:2291
+#: js/ui/screenshot.js:2102 js/ui/screenshot.js:2343
 msgid "Show in Files"
 msgstr "Zobrazit v Souborech"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2237
+#: js/ui/screenshot.js:2289
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Snímek obrazovky z %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2283
+#: js/ui/screenshot.js:2335
 msgid "Screenshot captured"
 msgstr "Byl pořízen snímek obrazovky"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2285
+#: js/ui/screenshot.js:2337
 msgid "You can paste the image from the clipboard."
 msgstr "Obrázek můžete vložit ze schránky."
 
-#: js/ui/screenshot.js:2340 js/ui/screenshot.js:2504
+#: js/ui/screenshot.js:2392 js/ui/screenshot.js:2556
 msgid "Screenshot taken"
 msgstr "Byl pořízen snímek obrazovky"
 
@@ -2642,15 +2659,15 @@ msgstr ""
 "Aplikace Rozšíření GNOME umožňuje aktualizaci a nastavení předvoleb "
 "rozšíření a odstranění nebo vypnutí nechtěných rozšíření."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:63
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
 msgid "Main Window"
 msgstr "Hlavní okno"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:67
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
 msgid "Available Updates"
 msgstr "Dostupné aktualizace"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:71
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
 msgid "Search View"
 msgstr "Zobrazení vyhledávání"
 
