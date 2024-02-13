@@ -142,7 +142,7 @@ const NotificationsBox = GObject.registerClass({
             let body = '';
             if (n.body) {
                 const bodyText = n.body.replace(/\n/g, ' ');
-                body = n.bannerBodyMarkup
+                body = n.useBodyMarkup
                     ? bodyText
                     : GLib.markup_escape_text(bodyText, -1);
             }

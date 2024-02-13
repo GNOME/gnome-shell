@@ -409,7 +409,7 @@ export const Notification = GObject.registerClass({
         this.privacyScope = PrivacyScope.USER;
         this.forFeedback = false;
         this.body = null;
-        this.bannerBodyMarkup = false;
+        this.useBodyMarkup = false;
         this.sound = null;
         this._soundPlayed = false;
         this.actions = [];
@@ -442,7 +442,7 @@ export const Notification = GObject.registerClass({
 
         this.title = title;
         this.body = banner;
-        this.bannerBodyMarkup = params.bannerMarkup;
+        this.useBodyMarkup = params.bannerMarkup;
 
         if (params.datetime)
             this.datetime = params.datetime;

@@ -768,7 +768,7 @@ export const NotificationMessage = GObject.registerClass(
 class NotificationMessage extends MessageList.Message {
     _init(notification) {
         super._init(notification.source, notification.title, notification.body);
-        this.setUseBodyMarkup(notification.bannerBodyMarkup);
+        this.setUseBodyMarkup(notification.useBodyMarkup);
 
         this.notification = notification;
         this.datetime = notification.datetime;
@@ -805,7 +805,7 @@ class NotificationMessage extends MessageList.Message {
         this.setIcon(this._getIcon());
         this.setTitle(n.title);
         this.setBody(n.body);
-        this.setUseBodyMarkup(n.bannerBodyMarkup);
+        this.setUseBodyMarkup(n.useBodyMarkup);
     }
 
     vfunc_clicked() {
