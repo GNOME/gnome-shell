@@ -33,13 +33,13 @@ export function getKeyboardManager() {
 
 export function releaseKeyboard() {
     if (Main.modalCount > 0)
-        global.display.unfreeze_keyboard(global.get_current_time());
+        global.backend.unfreeze_keyboard(global.get_current_time());
     else
-        global.display.ungrab_keyboard(global.get_current_time());
+        global.backend.ungrab_keyboard(global.get_current_time());
 }
 
 export function holdKeyboard() {
-    global.display.freeze_keyboard(global.get_current_time());
+    global.backend.freeze_keyboard(global.get_current_time());
 }
 
 class KeyboardManager {
