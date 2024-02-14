@@ -200,13 +200,15 @@ class FdoNotificationDaemon {
         const soundFile = 'sound-file' in hints
             ? Gio.File.new_for_path(hints['sound-file']) : null;
 
-        notification.acknowledged = false;
-        notification.update(summary, body, {
+        notification.set({
+            title: summary,
+            body,
             gicon,
             bannerMarkup: true,
-            clear: true,
             sound: new MessageTray.Sound(soundFile, hints['sound-name']),
+            acknowledged: false,
         });
+        notification.clearActions();
 
         let hasDefaultAction = false;
 
@@ -444,7 +446,9 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
         this._defaultAction = defaultAction?.unpack();
         this._defaultActionTarget = defaultActionTarget;
 
-        this.update(title.unpack(), body?.unpack(), {
+        this.set({
+            title: title.unpack(),
+            body: body?.unpack(),
             gicon: gicon
                 ? Gio.icon_deserialize(gicon) : null,
             datetime: time

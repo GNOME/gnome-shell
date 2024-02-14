@@ -28,7 +28,7 @@ const DND_WINDOW_SWITCH_TIMEOUT = 750;
 const OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
 
 class ShellInfo {
-    setMessage(text, options) {
+    setMessage(title, options) {
         options = Params.parse(options, {
             undoCallback: null,
             forFeedback: false,
@@ -41,14 +41,14 @@ class ShellInfo {
         if (!this._notification) {
             this._notification = new MessageTray.Notification({
                 source,
-                title: text,
                 isTransient: true,
                 forFeedback,
             });
             this._notification.connect('destroy', () => delete this._notification);
-        } else {
-            this._notification.update(text, null, {clear: true});
         }
+        this._notification.set({title});
+
+        this._notification.clearActions();
 
         if (undoCallback)
             this._notification.addAction(_('Undo'), () => undoCallback());

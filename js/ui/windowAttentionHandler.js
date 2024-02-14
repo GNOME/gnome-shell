@@ -53,7 +53,7 @@ export class WindowAttentionHandler {
 
         window.connectObject('notify::title', () => {
             [title, body] = this._getTitleAndBanner(app, window);
-            notification.update(title, body);
+            notification.set({title, body});
         }, source);
     }
 }

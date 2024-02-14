@@ -218,7 +218,7 @@ export class ShellMountOperation {
         if (!this._notification)
             this._createNotification(title, body);
         else
-            this._notification.update(title, body);
+            this._notification.set({title, body});
     }
 }
 
