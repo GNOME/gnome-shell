@@ -633,6 +633,7 @@ export const Source = GObject.registerClass({
     Signals: {
         'destroy': {param_types: [GObject.TYPE_UINT]},
         'notification-added': {param_types: [Notification.$gtype]},
+        'notification-removed': {param_types: [Notification.$gtype]},
         'notification-show': {param_types: [Notification.$gtype]},
     },
 }, class Source extends MessageList.Source {
@@ -687,6 +688,7 @@ export const Source = GObject.registerClass({
             return;
 
         this.notifications.splice(index, 1);
+        this.emit('notification-removed', notification);
         this.countUpdated();
 
         if (this.notifications.length === 0)
