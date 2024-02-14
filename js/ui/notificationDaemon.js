@@ -35,8 +35,9 @@ class FdoNotificationDaemon {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(FdoNotificationsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/freedesktop/Notifications');
 
-        this._sources = [];
-        this._notifications = {};
+        this._sourcesForApp = new Map();
+        this._sourceForPidAndName = new Map();
+        this._notifications = new Map();
 
         this._nextNotificationId = 1;
     }
@@ -72,54 +73,69 @@ class FdoNotificationDaemon {
         return null;
     }
 
-    _lookupSource(title, pid) {
-        for (let i = 0; i < this._sources.length; i++) {
-            let source = this._sources[i];
-            if (source.pid === pid && source.initialTitle === title)
-                return source;
-        }
-        return null;
+    _getApp(pid, appId, appName) {
+        const appSys = Shell.AppSystem.get_default();
+        let app;
+
+        app = Shell.WindowTracker.get_default().get_app_from_pid(pid);
+        if (!app && appId)
+            app = appSys.lookup_app(`${appId}.desktop`);
+
+        if (!app)
+            app = appSys.lookup_app(`${appName}.desktop`);
+
+        return app;
     }
 
-    // Returns the source associated with ndata.notification if it is set.
-    // If the existing or requested source is associated with a tray icon
-    // and passed in pid matches a pid of an existing source, the title
-    // match is ignored to enable representing a tray icon and notifications
-    // from the same application with a single source.
+    // Returns the source associated with an app.
     //
-    // If no existing source is found, a new source is created as long as
-    // pid is provided.
-    _getSource(title, pid, ndata, sender) {
-        if (!pid && !(ndata && ndata.notification))
-            throw new Error('Either a pid or ndata.notification is needed');
+    // If no existing source is found a new one is created.
+    _getSourceForApp(sender, app) {
+        let source = this._sourcesForApp.get(app);
 
-        // We use notification's source for the notifications we still have
-        // around that are getting replaced because we don't keep sources
-        // for transient notifications in this._sources, but we still want
-        // the notification associated with them to get replaced correctly.
-        if (ndata && ndata.notification)
-            return ndata.notification.source;
-
-        let source = this._lookupSource(title, pid);
         if (source)
             return source;
 
-        const appId = ndata?.hints['desktop-entry'];
-        source = new FdoNotificationDaemonSource(title, pid, sender, appId);
+        source = new FdoNotificationDaemonSource(sender, app);
 
-        this._sources.push(source);
-        source.connect('destroy', () => {
-            let index = this._sources.indexOf(source);
-            if (index >= 0)
-                this._sources.splice(index, 1);
-        });
+        if (app) {
+            this._sourcesForApp.set(app, source);
+            source.connect('destroy', () => {
+                this._sourcesForApp.delete(app);
+            });
+        }
+
+        Main.messageTray.add(source);
+        return source;
+    }
+
+    // Returns the source associated with a pid and the app name.
+    //
+    // If no existing source is found, a new one is created.
+    _getSourceForPidAndName(sender, pid, appName) {
+        const key = `${pid}${appName}`;
+        let source = this._sourceForPidAndName.get(key);
+
+        if (source)
+            return source;
+
+        source = new FdoNotificationDaemonSource(sender, null);
+
+        // Only check whether we have a PID since it's enough to identify
+        // uniquely an app and "" is a valid app name.
+        if (pid) {
+            this._sourceForPidAndName.set(key, source);
+            source.connect('destroy', () => {
+                this._sourceForPidAndName.delete(key);
+            });
+        }
 
         Main.messageTray.add(source);
         return source;
     }
 
     NotifyAsync(params, invocation) {
-        let [appName, replacesId, appIcon, summary, body, actions, hints, timeout] = params;
+        let [appName, replacesId, appIcon, summary, body, actions, hints, timeout_] = params;
         let id;
 
         for (let hint in hints) {
@@ -143,42 +159,26 @@ class FdoNotificationDaemon {
                 hints['image-data'] = hints['icon_data'];
         }
 
-        const ndata = {
-            appName,
-            appIcon,
-            summary,
-            body,
-            actions,
-            hints,
-            timeout,
-        };
-        if (replacesId !== 0 && this._notifications[replacesId]) {
-            ndata.id = id = replacesId;
-            ndata.notification = this._notifications[replacesId].notification;
+        let source, notification;
+        if (replacesId !== 0 && this._notifications.has(replacesId)) {
+            notification = this._notifications.get(replacesId);
+            source = notification.source;
+            id = replacesId;
         } else {
-            replacesId = 0;
-            ndata.id = id = this._nextNotificationId++;
-        }
-        this._notifications[id] = ndata;
+            const sender = hints['x-shell-sender'];
+            const pid = hints['x-shell-sender-pid'];
+            const appId = hints['desktop-entry'];
+            const app = this._getApp(pid, appId, appName);
 
-        const sender = hints['x-shell-sender'];
-        const pid = hints['x-shell-sender-pid'];
+            id = this._nextNotificationId++;
+            source = app
+                ? this._getSourceForApp(sender, app)
+                : this._getSourceForPidAndName(sender, pid, appName);
 
-        let source = this._getSource(appName, pid, ndata, sender, null);
-        this._notifyForSource(source, ndata);
-
-        return invocation.return_value(GLib.Variant.new('(u)', [id]));
-    }
-
-    _notifyForSource(source, ndata) {
-        const {appIcon, summary, body, actions, hints} = ndata;
-        let {notification} = ndata;
-
-        if (notification == null) {
             notification = new MessageTray.Notification(source);
-            ndata.notification = notification;
+            this._notifications.set(id, notification);
             notification.connect('destroy', (n, reason) => {
-                delete this._notifications[ndata.id];
+                this._notifications.delete(id);
                 let notificationClosedReason;
                 switch (reason) {
                 case MessageTray.NotificationDestroyedReason.EXPIRED:
@@ -191,7 +191,7 @@ class FdoNotificationDaemon {
                     notificationClosedReason = NotificationClosedReason.APP_CLOSED;
                     break;
                 }
-                this._emitNotificationClosed(ndata.id, notificationClosedReason);
+                this._emitNotificationClosed(id, notificationClosedReason);
             });
         }
 
@@ -216,8 +216,8 @@ class FdoNotificationDaemon {
                     hasDefaultAction = true;
                 } else {
                     notification.addAction(label, () => {
-                        this._emitActivationToken(source, ndata.id);
-                        this._emitActionInvoked(ndata.id, actionId);
+                        this._emitActivationToken(source, id);
+                        this._emitActionInvoked(id, actionId);
                     });
                 }
             }
@@ -225,8 +225,8 @@ class FdoNotificationDaemon {
 
         if (hasDefaultAction) {
             notification.connect('activated', () => {
-                this._emitActivationToken(source, ndata.id);
-                this._emitActionInvoked(ndata.id, 'default');
+                this._emitActivationToken(source, id);
+                this._emitActionInvoked(id, 'default');
             });
         } else {
             notification.connect('activated', () => {
@@ -257,16 +257,14 @@ class FdoNotificationDaemon {
 
         // Only fallback to 'app-icon' when the source doesn't have a valid app
         const sourceGIcon = source.app ? null : this._iconForNotificationData(appIcon);
-        source.processNotification(notification, sourceGIcon);
+        source.processNotification(notification, appName, sourceGIcon);
+
+        return invocation.return_value(GLib.Variant.new('(u)', [id]));
     }
 
     CloseNotification(id) {
-        let ndata = this._notifications[id];
-        if (ndata) {
-            if (ndata.notification)
-                ndata.notification.destroy(MessageTray.NotificationDestroyedReason.SOURCE_CLOSED);
-            delete this._notifications[id];
-        }
+        const notification = this._notifications.get(id);
+        notification?.destroy(MessageTray.NotificationDestroyedReason.SOURCE_CLOSED);
     }
 
     GetCapabilities() {
@@ -316,29 +314,14 @@ class FdoNotificationDaemon {
 
 export const FdoNotificationDaemonSource = GObject.registerClass(
 class FdoNotificationDaemonSource extends MessageTray.Source {
-    constructor(title, pid, sender, appId) {
-        const appSys = Shell.AppSystem.get_default();
-        let app;
-
-        app = Shell.WindowTracker.get_default().get_app_from_pid(pid);
-        if (!app && appId)
-            app = appSys.lookup_app(`${appId}.desktop`);
-
-        if (!app)
-            app = appSys.lookup_app(`${title}.desktop`);
-
-        // Use app name as title if available, instead of whatever is provided
-        // through libnotify (usually garbage)
+    constructor(sender, app) {
         super({
-            title: app?.get_name() ?? title,
             policy: MessageTray.NotificationPolicy.newForApp(app),
         });
 
-        this.pid = pid;
-        this.initialTitle = title;
         this.app = app;
+        this._appName = null;
         this._appIcon = null;
-
 
         if (sender) {
             this._nameWatcherId = Gio.DBus.session.watch_name(sender,
@@ -360,12 +343,16 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
             this.destroy();
     }
 
-    processNotification(notification, appIcon) {
+    processNotification(notification, appName, appIcon) {
+        if (!this.app && appName) {
+            this._appName = appName;
+            this.notify('title');
+        }
+
         if (!this.app && appIcon) {
             this._appIcon = appIcon;
             this.notify('icon');
         }
-
 
         let tracker = Shell.WindowTracker.get_default();
         if (notification.resident && this.app && tracker.focus_app === this.app)
@@ -395,6 +382,10 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
         }
 
         super.destroy();
+    }
+
+    get title() {
+        return this.app?.get_name() ?? this._appName;
     }
 
     get icon() {
