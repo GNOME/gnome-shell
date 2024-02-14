@@ -56,8 +56,10 @@ export async function run() {
     source.connect('notification-request-banner',
         () => Scripting.scriptEvent('notificationShowDone'));
 
-    const notification = new MessageTray.Notification(source,
-        'A test notification');
+    const notification = new MessageTray.Notification({
+        source,
+        title: 'A test notification',
+    });
     source.addNotification(notification);
     await Scripting.sleep(400);
 

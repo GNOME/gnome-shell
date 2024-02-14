@@ -274,9 +274,11 @@ async function _initializeUI() {
             return; // assume user action
 
         const source = MessageTray.getSystemSource();
-        const notification = new MessageTray.Notification(source,
-            _('System was put in unsafe mode'),
-            _('Apps now have unrestricted access'));
+        const notification = new MessageTray.Notification({
+            source,
+            title: _('System was put in unsafe mode'),
+            body: _('Apps now have unrestricted access'),
+        });
         notification.addAction(_('Undo'),
             () => (global.context.unsafe_mode = false));
         notification.setTransient(true);
@@ -614,7 +616,11 @@ export function loadTheme() {
  */
 export function notify(msg, details) {
     const source = MessageTray.getSystemSource();
-    let notification = new MessageTray.Notification(source, msg, details);
+    const notification = new MessageTray.Notification({
+        source,
+        title: msg,
+        body: details,
+    });
     notification.setTransient(true);
     source.addNotification(notification);
 }

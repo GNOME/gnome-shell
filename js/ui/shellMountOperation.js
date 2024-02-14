@@ -195,7 +195,7 @@ export class ShellMountOperation {
         this._notification?.destroy();
 
         const source = MessageTray.getSystemSource();
-        this._notification = new MessageTray.Notification(source, title, body);
+        this._notification = new MessageTray.Notification({source, title, body});
 
         this._notification.setTransient(true);
         this._notification.iconName = 'media-removable-symbolic';

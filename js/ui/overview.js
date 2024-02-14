@@ -39,7 +39,10 @@ class ShellInfo {
         let forFeedback = options.forFeedback;
 
         if (!this._notification) {
-            this._notification = new MessageTray.Notification(source, text, null);
+            this._notification = new MessageTray.Notification({
+                source,
+                title: text,
+            });
             this._notification.setTransient(true);
             this._notification.setForFeedback(forFeedback);
             this._notification.connect('destroy', () => delete this._notification);

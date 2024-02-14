@@ -175,7 +175,7 @@ class FdoNotificationDaemon {
                 ? this._getSourceForApp(sender, app)
                 : this._getSourceForPidAndName(sender, pid, appName);
 
-            notification = new MessageTray.Notification(source);
+            notification = new MessageTray.Notification({source});
             this._notifications.set(id, notification);
             notification.connect('destroy', (n, reason) => {
                 this._notifications.delete(id);
@@ -405,8 +405,8 @@ const PRIORITY_URGENCY_MAP = {
 
 const GtkNotificationDaemonNotification = GObject.registerClass(
 class GtkNotificationDaemonNotification extends MessageTray.Notification {
-    _init(source, id, notification) {
-        super._init(source);
+    constructor(source, id, notification) {
+        super({source});
         this._serialized = GLib.Variant.new('a{sv}', notification);
         this.id = id;
 

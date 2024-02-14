@@ -187,10 +187,10 @@ class AutorunDispatcher {
             return;
 
         const source = MessageTray.getSystemSource();
-        const notification = new MessageTray.Notification(
+        const notification = new MessageTray.Notification({
             source,
-            mount.get_name()
-        );
+            title: mount.get_name(),
+        });
         notification.connect('activate', () => {
             const app = Gio.app_info_get_default_for_type('inode/directory', false);
             startAppForMount(app, mount);

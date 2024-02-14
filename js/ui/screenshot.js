@@ -2087,12 +2087,12 @@ export const ScreenshotUI = GObject.registerClass({
             title: _('Screenshot'),
             iconName: 'screencast-recorded-symbolic',
         });
-        const notification = new MessageTray.Notification(
+        const notification = new MessageTray.Notification({
             source,
             title,
             // Translators: notification body when a screencast was recorded.
-            this._screencastPath ? _('Click here to view the video.') : ''
-        );
+            body: this._screencastPath ? _('Click here to view the video.') : '',
+        });
         notification.setTransient(true);
 
         if (this._screencastPath) {
@@ -2329,14 +2329,15 @@ function _storeScreenshot(bytes, pixbuf) {
         title: _('Screenshot'),
         iconName: 'screenshot-recorded-symbolic',
     });
-    const notification = new MessageTray.Notification(
+    const notification = new MessageTray.Notification({
         source,
         // Translators: notification title.
-        _('Screenshot captured'),
+        title: _('Screenshot captured'),
         // Translators: notification body when a screenshot was captured.
-        _('You can paste the image from the clipboard.'),
-        {datetime: time, gicon: content}
-    );
+        body: _('You can paste the image from the clipboard.'),
+        datetime: time,
+        gicon: content,
+    });
 
     if (!disableSaveToDisk) {
         // Translators: button on the screenshot notification.

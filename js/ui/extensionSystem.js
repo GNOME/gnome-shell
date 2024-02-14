@@ -349,9 +349,11 @@ export class ExtensionManager extends Signals.EventEmitter {
             let source = new ExtensionUpdateSource();
             Main.messageTray.add(source);
 
-            let notification = new MessageTray.Notification(source,
-                _('Extension Updates Available'),
-                _('Extension updates are ready to be installed.'));
+            const notification = new MessageTray.Notification({
+                source,
+                title: _('Extension Updates Available'),
+                body: _('Extension updates are ready to be installed.'),
+            });
             notification.connect('activated',
                 () => source.open());
             source.addNotification(notification);
