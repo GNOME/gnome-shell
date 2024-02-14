@@ -39,11 +39,15 @@ export class WindowAttentionHandler {
 
         let [title, body] = this._getTitleAndBanner(app, window);
 
-        let notification = new MessageTray.Notification({source, title, body});
+        let notification = new MessageTray.Notification({
+            source,
+            title,
+            body,
+            forFeedback: true,
+        });
         notification.connect('activated', () => {
             source.open();
         });
-        notification.setForFeedback(true);
 
         source.addNotification(notification);
 

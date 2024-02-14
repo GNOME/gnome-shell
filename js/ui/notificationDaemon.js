@@ -237,24 +237,24 @@ class FdoNotificationDaemon {
 
         switch (hints.urgency) {
         case Urgency.LOW:
-            notification.setUrgency(MessageTray.Urgency.LOW);
+            notification.urgency = MessageTray.Urgency.LOW;
             break;
         case Urgency.NORMAL:
-            notification.setUrgency(MessageTray.Urgency.NORMAL);
+            notification.urgency = MessageTray.Urgency.NORMAL;
             break;
         case Urgency.CRITICAL:
-            notification.setUrgency(MessageTray.Urgency.CRITICAL);
+            notification.urgency = MessageTray.Urgency.CRITICAL;
             break;
         }
-        notification.setResident(!!hints.resident);
+        notification.resident = !!hints.resident;
         // 'transient' is a reserved keyword in JS, so we have to retrieve the value
         // of the 'transient' hint with hints['transient'] rather than hints.transient
-        notification.setTransient(!!hints['transient']);
+        notification.isTransient = !!hints['transient'];
 
         let privacyScope = hints['x-gnome-privacy-scope'] || 'user';
-        notification.setPrivacyScope(privacyScope === 'system'
+        notification.privacyScope = privacyScope === 'system'
             ? MessageTray.PrivacyScope.SYSTEM
-            : MessageTray.PrivacyScope.USER);
+            : MessageTray.PrivacyScope.USER;
 
         // Only fallback to 'app-icon' when the source doesn't have a valid app
         const sourceGIcon = source.app ? null : this._iconForNotificationData(appIcon);
@@ -424,13 +424,13 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
 
         if (priority) {
             let urgency = PRIORITY_URGENCY_MAP[priority.unpack()];
-            this.setUrgency(urgency !== undefined ? urgency : MessageTray.Urgency.NORMAL);
+            this.urgency = urgency !== undefined ? urgency : MessageTray.Urgency.NORMAL;
         } else if (urgent) {
-            this.setUrgency(urgent.unpack()
+            this.urgency = urgent.unpack()
                 ? MessageTray.Urgency.CRITICAL
-                : MessageTray.Urgency.NORMAL);
+                : MessageTray.Urgency.NORMAL;
         } else {
-            this.setUrgency(MessageTray.Urgency.NORMAL);
+            this.urgency = MessageTray.Urgency.NORMAL;
         }
 
         if (buttons) {

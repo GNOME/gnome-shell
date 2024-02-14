@@ -278,10 +278,10 @@ async function _initializeUI() {
             source,
             title: _('System was put in unsafe mode'),
             body: _('Apps now have unrestricted access'),
+            isTransient: true,
         });
         notification.addAction(_('Undo'),
             () => (global.context.unsafe_mode = false));
-        notification.setTransient(true);
         source.addNotification(notification);
     });
 
@@ -620,8 +620,8 @@ export function notify(msg, details) {
         source,
         title: msg,
         body: details,
+        isTransient: true,
     });
-    notification.setTransient(true);
     source.addNotification(notification);
 }
 

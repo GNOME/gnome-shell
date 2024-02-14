@@ -42,9 +42,9 @@ class ShellInfo {
             this._notification = new MessageTray.Notification({
                 source,
                 title: text,
+                isTransient: true,
+                forFeedback,
             });
-            this._notification.setTransient(true);
-            this._notification.setForFeedback(forFeedback);
             this._notification.connect('destroy', () => delete this._notification);
         } else {
             this._notification.update(text, null, {clear: true});

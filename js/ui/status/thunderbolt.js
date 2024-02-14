@@ -258,9 +258,13 @@ class Indicator extends SystemIndicator {
             this._notification.destroy();
 
         const source = MessageTray.getSystemSource();
-        this._notification = new MessageTray.Notification({source, title, body});
-        this._notification.iconName = 'thunderbolt-symbolic';
-        this._notification.setUrgency(MessageTray.Urgency.HIGH);
+        this._notification = new MessageTray.Notification({
+            source,
+            title,
+            body,
+            iconName: 'thunderbolt-symbolic',
+            urgency: MessageTray.Urgency.HIGH,
+        });
         this._notification.connect('destroy', () => {
             this._notification = null;
         });
