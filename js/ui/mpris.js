@@ -21,11 +21,11 @@ const MPRIS_PLAYER_PREFIX = 'org.mpris.MediaPlayer2.';
 
 export const MediaMessage = GObject.registerClass(
 class MediaMessage extends MessageList.Message {
-    _init(player) {
-        super._init(player.source, '', '');
-        this.add_style_class_name('media-message');
+    constructor(player) {
+        super(player.source);
 
         this._player = player;
+        this.add_style_class_name('media-message');
 
         this._prevButton = this.addMediaControl('media-skip-backward-symbolic',
             () => {
@@ -58,15 +58,19 @@ class MediaMessage extends MessageList.Message {
     }
 
     _update() {
-        this.setTitle(this._player.trackTitle);
-        this.setBody(this._player.trackArtists.join(', '));
-
+        let icon;
         if (this._player.trackCoverUrl) {
             const file = Gio.File.new_for_uri(this._player.trackCoverUrl);
-            this.setIcon(new Gio.FileIcon({file}));
+            icon = new Gio.FileIcon({file});
         } else {
-            this.setIcon(new Gio.ThemedIcon({name: 'audio-x-generic-symbolic'}));
+            icon = new Gio.ThemedIcon({name: 'audio-x-generic-symbolic'});
         }
+
+        this.set({
+            title: this._player.trackTitle,
+            body: this._player.trackArtists.join(', '),
+            icon,
+        });
 
         let isPlaying = this._player.status === 'Playing';
         let iconName = isPlaying

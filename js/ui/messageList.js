@@ -437,14 +437,36 @@ class MessageHeader extends St.BoxLayout {
 });
 
 export const Message = GObject.registerClass({
+    Properties: {
+        'title': GObject.ParamSpec.string(
+            'title', 'title', 'title',
+            GObject.ParamFlags.READWRITE,
+            null),
+        'body': GObject.ParamSpec.string(
+            'body', 'body', 'body',
+            GObject.ParamFlags.READWRITE,
+            null),
+        'use-body-markup': GObject.ParamSpec.boolean(
+            'use-body-markup', 'use-body-markup', 'use-body-markup',
+            GObject.ParamFlags.READWRITE,
+            false),
+        'icon': GObject.ParamSpec.object(
+            'icon', 'icon', 'icon',
+            GObject.ParamFlags.READWRITE,
+            Gio.Icon),
+        'datetime': GObject.ParamSpec.boxed(
+            'datetime', 'datetime', 'datetime',
+            GObject.ParamFlags.READWRITE,
+            GLib.DateTime),
+    },
     Signals: {
         'close': {},
         'expanded': {},
         'unexpanded': {},
     },
 }, class Message extends St.Button {
-    _init(source, title, body) {
-        super._init({
+    constructor(source) {
+        super({
             style_class: 'message',
             accessible_role: Atk.Role.NOTIFICATION,
             can_focus: true,
@@ -497,7 +519,6 @@ export const Message = GObject.registerClass({
             style_class: 'message-title',
             y_align: Clutter.ActorAlign.END,
         });
-        this.setTitle(title);
         contentBox.add_child(this.titleLabel);
 
         this._bodyStack = new St.Widget({x_expand: true});
@@ -509,7 +530,6 @@ export const Message = GObject.registerClass({
         this._bodyStack.add_child(this.bodyLabel);
         this._expandedLabel = new URLHighlighter('', true, this._useBodyMarkup);
         this._bodyStack.add_child(this._expandedLabel);
-        this.setBody(body);
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -523,7 +543,7 @@ export const Message = GObject.registerClass({
         this.emit('close');
     }
 
-    setIcon(icon) {
+    set icon(icon) {
         this._icon.gicon = icon;
 
         if (icon instanceof Gio.ThemedIcon)
@@ -532,34 +552,57 @@ export const Message = GObject.registerClass({
             this._icon.remove_style_class_name('message-themed-icon');
 
         this._icon.visible = !!icon;
+        this.notify('icon');
+    }
+
+    get icon() {
+        return this._icon.gicon;
+    }
+
+    set datetime(datetime) {
+        this._header.timeLabel.datetime = datetime;
+        this.notify('datetime');
     }
 
     get datetime() {
         return this._header.timeLabel.datetime;
     }
 
-    set datetime(datetime) {
-        this._header.timeLabel.datetime = datetime;
-    }
-
-    setTitle(text) {
-        let title = text ? _fixMarkup(text.replace(/\n/g, ' '), false) : '';
+    set title(text) {
+        this._titleText = text;
+        const title = text ? _fixMarkup(text.replace(/\n/g, ' '), false) : '';
         this.titleLabel.clutter_text.set_markup(title);
+        this.notify('title');
     }
 
-    setBody(text) {
+    get title() {
+        return this._titleText;
+    }
+
+    set body(text) {
         this._bodyText = text;
         this.bodyLabel.setMarkup(text ? text.replace(/\n/g, ' ') : '',
             this._useBodyMarkup);
         this._expandedLabel.setMarkup(text, this._useBodyMarkup);
+        this.notify('body');
     }
 
-    setUseBodyMarkup(enable) {
+    get body() {
+        return this._bodyText;
+    }
+
+    set useBodyMarkup(enable) {
         if (this._useBodyMarkup === enable)
             return;
         this._useBodyMarkup = enable;
         if (this.bodyLabel)
             this.setBody(this._bodyText);
+
+        this.notify('use-body-markup');
+    }
+
+    get useBodyMarkup() {
+        return this._useBodyMarkup;
     }
 
     setActionArea(actor) {

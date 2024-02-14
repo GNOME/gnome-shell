@@ -767,14 +767,10 @@ export const Calendar = GObject.registerClass({
 
 export const NotificationMessage = GObject.registerClass(
 class NotificationMessage extends MessageList.Message {
-    _init(notification) {
-        super._init(notification.source, notification.title, notification.body);
-        this.setUseBodyMarkup(notification.useBodyMarkup);
+    constructor(notification) {
+        super(notification.source);
 
         this.notification = notification;
-        this.datetime = notification.datetime;
-
-        this.setIcon(notification.gicon);
 
         this.connect('close', () => {
             this._closed = true;
@@ -792,6 +788,8 @@ class NotificationMessage extends MessageList.Message {
                     this.close();
             }, this);
 
+        this._onUpdated(notification);
+
         this._actions = new Map();
         this.notification.actions.forEach(action => {
             this._addAction(action);
@@ -800,10 +798,10 @@ class NotificationMessage extends MessageList.Message {
 
     _onUpdated(n, _clear) {
         this.datetime = n.datetime;
-        this.setIcon(n.gicon);
-        this.setTitle(n.title);
-        this.setBody(n.body);
-        this.setUseBodyMarkup(n.useBodyMarkup);
+        this.icon = n.gicon;
+        this.title = n.title;
+        this.body = n.body;
+        this.useBodyMarkup = n.useBodyMarkup;
     }
 
     vfunc_clicked() {
