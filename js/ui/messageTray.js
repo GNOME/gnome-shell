@@ -494,26 +494,6 @@ export class Notification extends GObject.Object {
         this._actions = [];
     }
 
-    setUrgency(urgency) {
-        this.urgency = urgency;
-    }
-
-    setResident(resident) {
-        this.resident = resident;
-    }
-
-    setTransient(isTransient) {
-        this.isTransient = isTransient;
-    }
-
-    setForFeedback(forFeedback) {
-        this.forFeedback = forFeedback;
-    }
-
-    setPrivacyScope(privacyScope) {
-        this.privacyScope = privacyScope;
-    }
-
     playSound() {
         if (this._soundPlayed)
             return;
