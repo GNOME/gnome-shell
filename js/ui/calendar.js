@@ -778,30 +778,34 @@ class NotificationMessage extends MessageList.Message {
                 this.notification.destroy(MessageTray.NotificationDestroyedReason.DISMISSED);
         });
         notification.connectObject(
-            'updated', this._onUpdated.bind(this),
             'action-added', (_, action) => this._addAction(action),
             'action-removed', (_, action) => this._removeAction(action),
-
             'destroy', () => {
                 this.notification = null;
                 if (!this._closed)
                     this.close();
             }, this);
 
-        this._onUpdated(notification);
+        notification.bind_property('title',
+            this, 'title',
+            GObject.BindingFlags.SYNC_CREATE);
+        notification.bind_property('body',
+            this, 'body',
+            GObject.BindingFlags.SYNC_CREATE);
+        notification.bind_property('use-body-markup',
+            this, 'use-body-markup',
+            GObject.BindingFlags.SYNC_CREATE);
+        notification.bind_property('datetime',
+            this, 'datetime',
+            GObject.BindingFlags.SYNC_CREATE);
+        notification.bind_property('gicon',
+            this, 'icon',
+            GObject.BindingFlags.SYNC_CREATE);
 
         this._actions = new Map();
         this.notification.actions.forEach(action => {
             this._addAction(action);
         });
-    }
-
-    _onUpdated(n, _clear) {
-        this.datetime = n.datetime;
-        this.icon = n.gicon;
-        this.title = n.title;
-        this.body = n.body;
-        this.useBodyMarkup = n.useBodyMarkup;
     }
 
     vfunc_clicked() {
@@ -876,7 +880,8 @@ class NotificationSection extends MessageList.MessageListSection {
                 if (isUrgent)
                     this._nUrgent--;
             },
-            'updated', () => {
+            'notify::datetime', () => {
+                // The datetime property changes whenever the notification is updated
                 this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.mapped);
             }, this);
 
