@@ -333,6 +333,24 @@ class Sound extends GObject.Object {
     }
 });
 
+export const Action = GObject.registerClass(
+class Action extends GObject.Object {
+    constructor(label, callback) {
+        super();
+
+        this._label = label;
+        this._callback = callback;
+    }
+
+    get label() {
+        return this._label;
+    }
+
+    activate() {
+        this._callback();
+    }
+});
+
 // Notification:
 // @source: the notification's Source
 // @title: the title
@@ -393,6 +411,8 @@ export const Notification = GObject.registerClass({
             false),
     },
     Signals: {
+        'action-added': {param_types: [Action]},
+        'action-removed': {param_types: [Action]},
         'activated': {},
         'destroy': {param_types: [GObject.TYPE_UINT]},
         'updated': {param_types: [GObject.TYPE_BOOLEAN]},
@@ -453,7 +473,7 @@ export const Notification = GObject.registerClass({
             this.gicon = params.gicon;
 
         if (params.clear)
-            this.actions = [];
+            this.clearActions();
 
         if (this.sound !== params.sound) {
             this.sound = params.sound;
@@ -478,7 +498,19 @@ export const Notification = GObject.registerClass({
     // @label: the label for the action's button
     // @callback: the callback for the action
     addAction(label, callback) {
-        this.actions.push({label, callback});
+        const action = new Action(label, callback);
+        this.actions.push(action);
+        this.emit('action-added', action);
+    }
+
+    clearActions() {
+        if (this.actions.length === 0)
+            return;
+
+        this.actions.forEach(action => {
+            this.emit('action-removed', action);
+        });
+        this.actions = [];
     }
 
     setUrgency(urgency) {
@@ -573,7 +605,7 @@ export const NotificationBanner = GObject.registerClass({
 
     _addActions() {
         this.notification.actions.forEach(action => {
-            this.addAction(action.label, action.callback);
+            this.addAction(action.label, () => action.activate());
         });
     }
 
