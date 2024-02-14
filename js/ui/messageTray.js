@@ -925,6 +925,7 @@ export const MessageTray = GObject.registerClass({
 
         source.connectObject(
             'notification-show', this._onNotificationShow.bind(this),
+            'notification-removed', this._onNotificationRemoved.bind(this),
             'destroy', () => this._removeSource(source), this);
 
         this.emit('source-added', source);
@@ -952,7 +953,7 @@ export const MessageTray = GObject.registerClass({
         }
     }
 
-    _onNotificationDestroy(notification) {
+    _onNotificationRemoved(source, notification) {
         if (this._notification === notification) {
             this._notificationRemoved = true;
             if (this._notificationState === State.SHOWN ||
@@ -983,8 +984,6 @@ export const MessageTray = GObject.registerClass({
             let bannerCount = this._notification ? 1 : 0;
             let full = this.queueCount + bannerCount >= MAX_NOTIFICATIONS_IN_QUEUE;
             if (!full || notification.urgency === Urgency.CRITICAL) {
-                notification.connect('destroy',
-                    this._onNotificationDestroy.bind(this));
                 this._notificationQueue.push(notification);
                 this._notificationQueue.sort(
                     (n1, n2) => n2.urgency - n1.urgency);
