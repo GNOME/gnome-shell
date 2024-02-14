@@ -13,7 +13,6 @@ import * as GnomeSession from '../misc/gnomeSession.js';
 import * as Layout from './layout.js';
 import * as Main from './main.js';
 import * as MessageList from './messageList.js';
-import * as Params from '../misc/params.js';
 import * as SignalTracker from '../misc/signalTracker.js';
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
@@ -379,44 +378,6 @@ export class Notification extends GObject.Object {
         });
     }
 
-    // update:
-    // @title: the new title
-    // @banner: the new banner
-    // @params: as in the Notification constructor
-    //
-    // Updates the notification by regenerating its icon and updating
-    // the title/banner. If @params.clear is %true, it will also
-    // remove any additional actors/action buttons previously added.
-    update(title, banner, params) {
-        params = Params.parse(params, {
-            gicon: null,
-            bannerMarkup: false,
-            clear: false,
-            datetime: null,
-            sound: null,
-        });
-
-        this.title = title;
-        this.body = banner;
-        this.useBodyMarkup = params.bannerMarkup;
-
-        if (params.datetime)
-            this.datetime = params.datetime;
-        else
-            this.datetime = GLib.DateTime.new_now_local();
-
-        if (params.gicon || params.clear)
-            this.gicon = params.gicon;
-
-        if (params.clear)
-            this.clearActions();
-
-        if (this.sound !== params.sound)
-            this.sound = params.sound;
-
-        this.emit('updated', params.clear);
-    }
-
     get actions() {
         return this._actions;
     }
@@ -705,7 +666,6 @@ GObject.registerClass({
         'action-removed': {param_types: [Action]},
         'activated': {},
         'destroy': {param_types: [GObject.TYPE_UINT]},
-        'updated': {param_types: [GObject.TYPE_BOOLEAN]},
     },
 }, Notification);
 SignalTracker.registerDestroyableType(Notification);
