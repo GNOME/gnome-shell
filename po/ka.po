@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-11 22:55+0000\n"
-"PO-Revision-Date: 2024-02-12 13:59+0100\n"
+"POT-Creation-Date: 2024-02-14 16:26+0000\n"
+"PO-Revision-Date: 2024-02-15 07:47+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -100,22 +100,22 @@ msgid "Screenshots"
 msgstr "ეკრანის ანაბეჭდები"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:276
+#: data/org.gnome.shell.gschema.xml.in:287
 msgid "Take a screenshot interactively"
 msgstr "ეკრანის ანაბეჭდის ინტერაქტიული გადაღება"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:288
+#: data/org.gnome.shell.gschema.xml.in:299
 msgid "Take a screenshot"
 msgstr "ეკრანის ანაბეჭდის გადაღება"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:295
 msgid "Take a screenshot of a window"
 msgstr "ფანჯრის ანაბეჭდის გადაღება"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:280
+#: data/org.gnome.shell.gschema.xml.in:291
 msgid "Record a screencast interactively"
 msgstr "ეკრანიდან ვიდეოს ჩაწერა"
 
@@ -208,10 +208,28 @@ msgstr ""
 "პარამეტრის შეხების გარეშე."
 
 #: data/org.gnome.shell.gschema.xml.in:45
+msgid "Allow extension installation"
+msgstr "გაფართოებების დაყენების დაშვება"
+
+#: data/org.gnome.shell.gschema.xml.in:46
+msgid ""
+"Allow users to install extensions in their home folder. If disabled, the "
+"InstallRemoteExtension D-Bus method will fail, and extensions are only "
+"loaded from system directories on startup. It does not affect extensions "
+"that are already loaded, so a change only takes full effect on the next "
+"login."
+msgstr ""
+"უფლებას აძლევს მომხმარებლებს, გაფართოებები თავიანთ საწყის საქაღალდეში "
+"დააყენონ. თუ გათიშულია, D-Bus-ის მეთოდი InstallRemoteExtension ჩავარდება და "
+"გაფართოებები გაშვებისას, მხოლოდ, სისტემური საქაღალდეებიდან ჩაიტვირთება. ეს "
+"არ ეხება გაფართოებებს, რომლებიც უკვე ჩატვირთულია, ასე რომ, ცვლილებები, "
+"მხოლოდ, შემდეგი შესვლისას შევა ძალაში."
+
+#: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
 msgstr "გაფართოების ვერსიის თავსებადობის გადამოწმების გამორთვა"
 
-#: data/org.gnome.shell.gschema.xml.in:46
+#: data/org.gnome.shell.gschema.xml.in:57
 msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
@@ -222,30 +240,30 @@ msgstr ""
 "ჩატვირთავს ყველა გაფართოებას იმის მიუხედავად, რომელი ვერსიის მხარდაჭერა "
 "გააჩნია."
 
-#: data/org.gnome.shell.gschema.xml.in:54
+#: data/org.gnome.shell.gschema.xml.in:65
 msgid "List of desktop file IDs for favorite applications"
 msgstr "რჩეული აპლიკაციების სამუშაო მაგიდის ფაილის ID-ების სია"
 
-#: data/org.gnome.shell.gschema.xml.in:55
+#: data/org.gnome.shell.gschema.xml.in:66
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr "ამ იდენტიფიკატორების შესაბამისი აპლიკაციები რჩეულ სიაში გამოჩნდება."
 
-#: data/org.gnome.shell.gschema.xml.in:62
+#: data/org.gnome.shell.gschema.xml.in:73
 msgid "History for command (Alt-F2) dialog"
 msgstr "ისტორია ბრძანების (Alt-F2) ფანჯრისთვის"
 
 #. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
-#: data/org.gnome.shell.gschema.xml.in:67
+#: data/org.gnome.shell.gschema.xml.in:78
 msgid "History for the looking glass dialog"
 msgstr "გამადიდებელი ლინზის ფანჯრის ისტორია"
 
-#: data/org.gnome.shell.gschema.xml.in:71
+#: data/org.gnome.shell.gschema.xml.in:82
 msgid "Always show the “Log Out” action in the system menu"
 msgstr "მომხმარებლის მენიუში \"გასვლის\" ყოველთვის ჩვენება"
 
-#: data/org.gnome.shell.gschema.xml.in:72
+#: data/org.gnome.shell.gschema.xml.in:83
 msgid ""
 "This key overrides the automatic hiding of the “Log out” action in the "
 "system menu for logged-in situations where there is a single, local, non-"
@@ -256,12 +274,12 @@ msgstr ""
 "სიტუაციებისას და, მხოლოდ, ერთი ხელმისაწვდომი სესიის ტიპისას (მაგ: GNOME "
 "Wayland-ზე)."
 
-#: data/org.gnome.shell.gschema.xml.in:81
+#: data/org.gnome.shell.gschema.xml.in:92
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr "დავიმახსოვრო თუ არა დაშიფრული ან დაშორებული ფაილურ სისტემის პაროლები"
 
-#: data/org.gnome.shell.gschema.xml.in:82
+#: data/org.gnome.shell.gschema.xml.in:93
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -273,11 +291,11 @@ msgstr ""
 "შეინახოთ, ასევე დაინახავთ თოლიას \"პაროლის დამახსოვრება. ეს პარამეტრი ამ "
 "თოლიის ნაგულისხმევ მნიშვნელობას აყენებს."
 
-#: data/org.gnome.shell.gschema.xml.in:91
+#: data/org.gnome.shell.gschema.xml.in:102
 msgid "The last selected non-default power profile"
 msgstr "ბოლოს არჩეული არა-ნაგულისხმები კვების პროფილი"
 
-#: data/org.gnome.shell.gschema.xml.in:92
+#: data/org.gnome.shell.gschema.xml.in:103
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
 "toggling between two profiles, this key records the last selected non-"
@@ -287,11 +305,11 @@ msgstr ""
 "ორ პროფილს შორის გადართვა ჯერ კიდევ მხარდაჭერილ იყოს, ეს პარამეტრი ბოლოს "
 "არჩეულ არანაგულისხმევ პროფილს შეიცავს."
 
-#: data/org.gnome.shell.gschema.xml.in:100
+#: data/org.gnome.shell.gschema.xml.in:111
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr "ბოლო ვერსია, რომლისთვისაც \"მოგესალმებათ GNOME\" ფანჯარა იყო ნაჩვენები"
 
-#: data/org.gnome.shell.gschema.xml.in:101
+#: data/org.gnome.shell.gschema.xml.in:112
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -303,11 +321,11 @@ msgstr ""
 "რიცხვი კი წარმოადგენს ვერსიას, რომლებიც ჯერ არ არსებობს. ეს დიდი რიცხვი "
 "შეგიძლიათ ამ დიალოგის გამოსართავად გამოიყენოთ."
 
-#: data/org.gnome.shell.gschema.xml.in:134
+#: data/org.gnome.shell.gschema.xml.in:145
 msgid "Layout of the app picker"
 msgstr "აპლიკაციის ამრჩევის განლაგება"
 
-#: data/org.gnome.shell.gschema.xml.in:135
+#: data/org.gnome.shell.gschema.xml.in:146
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -320,144 +338,144 @@ msgstr ""
 "მნიშვნელობები, როგორც 'data': * \"მდებარეობა\": აპლიკაციის ხატულის "
 "მდებარეობა გვერდზე"
 
-#: data/org.gnome.shell.gschema.xml.in:154
-#: data/org.gnome.shell.gschema.xml.in:161
+#: data/org.gnome.shell.gschema.xml.in:165
+#: data/org.gnome.shell.gschema.xml.in:172
 msgid "Keybinding to shift between overview states"
 msgstr "კლავიატურის მალსახმობი მდგომარეობებს შორის გადასართავად"
 
-#: data/org.gnome.shell.gschema.xml.in:155
+#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "კლავიატურის მალსახმობი სესიებს, ფანჯრებსა და აპლიკაციის ბადეს შორის "
 "გადართავად"
 
-#: data/org.gnome.shell.gschema.xml.in:162
+#: data/org.gnome.shell.gschema.xml.in:173
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "კლავიატურის მალსახმობი აპლიკაციის ბადეს, ფანჯრებსა და სესიებს შორის "
 "გადასართავად"
 
-#: data/org.gnome.shell.gschema.xml.in:168
+#: data/org.gnome.shell.gschema.xml.in:179
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "კლავიატურის მალსახმობი \"აპლიკაციების ჩვენების\" ხედის გასახსნელად"
 
-#: data/org.gnome.shell.gschema.xml.in:169
+#: data/org.gnome.shell.gschema.xml.in:180
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "კლავიატურის მალსახმობი \"აპლიკაციების ჩვენების\" ხედის გასახსნელად "
 "ქმედებების მიმოხილვით."
 
-#: data/org.gnome.shell.gschema.xml.in:176
+#: data/org.gnome.shell.gschema.xml.in:187
 msgid "Keybinding to open the overview"
 msgstr "კლავიატურის მალსახმობი მიმოხილვის გასახსნელად"
 
-#: data/org.gnome.shell.gschema.xml.in:177
+#: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to open the Activities Overview."
 msgstr "კლავიატურის მალსახმობი ქმედებების გადასახედად."
 
-#: data/org.gnome.shell.gschema.xml.in:183
+#: data/org.gnome.shell.gschema.xml.in:194
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "კლავიატურის მალსახმობი გაფრთხილებების სიის ხილვადობის ჩართ/გამორთ"
 
-#: data/org.gnome.shell.gschema.xml.in:184
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "კლავიატურის მალსახმობი გაფრთხილებების სიის ხილვადობის ჩართ/გამორთ."
 
-#: data/org.gnome.shell.gschema.xml.in:190
+#: data/org.gnome.shell.gschema.xml.in:201
 msgid "Keybinding to toggle the quick settings menu"
 msgstr "კლავიატურის მალსახმობი სწრაფი პარამეტრების მენიუს გადასართავად"
 
-#: data/org.gnome.shell.gschema.xml.in:191
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Keybinding to toggle the quick settings menu."
 msgstr "კლავიატურის მალსახმობი სწრაფი პარამეტრების მენიუს გადასართავად."
 
-#: data/org.gnome.shell.gschema.xml.in:197
+#: data/org.gnome.shell.gschema.xml.in:208
 msgid "Keybinding to focus the active notification"
 msgstr "კლავიატურის მალსახმობი აქტიურ გაფრთხილებაზე გადასართავად"
 
-#: data/org.gnome.shell.gschema.xml.in:198
+#: data/org.gnome.shell.gschema.xml.in:209
 msgid "Keybinding to focus the active notification."
 msgstr "კლავიატურის მალსახმობი აქტიურ გაფრთხილებაზე გადასართავად."
 
-#: data/org.gnome.shell.gschema.xml.in:204
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid "Switch to application 1"
 msgstr "#1 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:219
 msgid "Switch to application 2"
 msgstr "აპლიკაცია 2-ზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:212
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Switch to application 3"
 msgstr "#3 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:216
+#: data/org.gnome.shell.gschema.xml.in:227
 msgid "Switch to application 4"
 msgstr "#4 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:220
+#: data/org.gnome.shell.gschema.xml.in:231
 msgid "Switch to application 5"
 msgstr "#5 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:224
+#: data/org.gnome.shell.gschema.xml.in:235
 msgid "Switch to application 6"
 msgstr "#6 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:239
 msgid "Switch to application 7"
 msgstr "#7 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:232
+#: data/org.gnome.shell.gschema.xml.in:243
 msgid "Switch to application 8"
 msgstr "#8 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:236
+#: data/org.gnome.shell.gschema.xml.in:247
 msgid "Switch to application 9"
 msgstr "#9 აპლიკაციაზე გადართვა"
 
-#: data/org.gnome.shell.gschema.xml.in:240
+#: data/org.gnome.shell.gschema.xml.in:251
 msgid "Open a new instance of application 1"
 msgstr "აპლიკაცია 1-ის ახალი გაშვებული ასლის გახსნა"
 
-#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:255
 msgid "Open a new instance of application 2"
 msgstr "აპლიკაცია 2-ის ახალი გაშვებული ასლის გახსნა"
 
-#: data/org.gnome.shell.gschema.xml.in:248
+#: data/org.gnome.shell.gschema.xml.in:259
 msgid "Open a new instance of application 3"
 msgstr "აპლიკაცია 3-ის ახალი გაშვებული ასლის გახსნა"
 
-#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:263
 msgid "Open a new instance of application 4"
 msgstr "აპლიკაცია 4-ის ახალი გაშვებული ასლის გახსნა"
 
-#: data/org.gnome.shell.gschema.xml.in:256
+#: data/org.gnome.shell.gschema.xml.in:267
 msgid "Open a new instance of application 5"
 msgstr "აპლიკაცია 5-ის ახალი გაშვებული ასლის გახსნა"
 
-#: data/org.gnome.shell.gschema.xml.in:260
+#: data/org.gnome.shell.gschema.xml.in:271
 msgid "Open a new instance of application 6"
 msgstr "აპლიკაცია 6-ის ახალი გაშვებული ასლის გახსნა"
 
-#: data/org.gnome.shell.gschema.xml.in:264
+#: data/org.gnome.shell.gschema.xml.in:275
 msgid "Open a new instance of application 7"
 msgstr "აპლიკაცია 7-ის ახალი გაშვებული ასლის გახსნა"
 
-#: data/org.gnome.shell.gschema.xml.in:268
+#: data/org.gnome.shell.gschema.xml.in:279
 msgid "Open a new instance of application 8"
 msgstr "აპლიკაცია 8-ის ახალი გაშვებული ასლის გახსნა"
 
-#: data/org.gnome.shell.gschema.xml.in:272
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid "Open a new instance of application 9"
 msgstr "აპლიკაცია 9-ის ახალი გაშვებული ასლის გახსნა"
 
-#: data/org.gnome.shell.gschema.xml.in:297
-#: data/org.gnome.shell.gschema.xml.in:324
+#: data/org.gnome.shell.gschema.xml.in:308
+#: data/org.gnome.shell.gschema.xml.in:335
 msgid "Limit switcher to current workspace."
 msgstr "გადამრთველის მიმდინარე სამუშაო სივრცეზე შეზღუდვა."
 
-#: data/org.gnome.shell.gschema.xml.in:298
+#: data/org.gnome.shell.gschema.xml.in:309
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -465,11 +483,11 @@ msgstr ""
 "თუ ჩართულია, გადამრთველში მხოლოდ მიმდინარე სამუშაო სივრცეში ფანჯრების მქონე "
 "აპლიკაციები გამოჩნდება. სხვა შემთხვევაში გამოჩნდება ყველა აპლიკაცია."
 
-#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:326
 msgid "The application icon mode."
 msgstr "აპლიკაციის ხატულების რეჟიმი."
 
-#: data/org.gnome.shell.gschema.xml.in:316
+#: data/org.gnome.shell.gschema.xml.in:327
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -478,7 +496,7 @@ msgstr ""
 "გადამრთველში ფანჯრების გარეგნობის მორგება. შესაძლო ვარიანტების \"მხოლოდ "
 "მინიატურები\", \"მხოლოდ აპლიკაციის ხატულები\" ან \"ორივე\"."
 
-#: data/org.gnome.shell.gschema.xml.in:325
+#: data/org.gnome.shell.gschema.xml.in:336
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -486,27 +504,27 @@ msgstr ""
 "თუ ჩართულია, გადამრთველში, მხოლოდ, მიმდინარე სამუშაო სივრცეში არსებული "
 "ფანჯრები გამოჩნდება. სხვა შემთხვევაში გამოჩნდება ყველა ფანჯარა."
 
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:346
 msgid "Locations"
 msgstr "მდებარეობები"
 
-#: data/org.gnome.shell.gschema.xml.in:336
+#: data/org.gnome.shell.gschema.xml.in:347
 msgid "The locations to show in world clocks"
 msgstr "საათის ჩვენების მდებარეობა"
 
-#: data/org.gnome.shell.gschema.xml.in:346
+#: data/org.gnome.shell.gschema.xml.in:357
 msgid "Automatic location"
 msgstr "ავტომატური მდებარეობა"
 
-#: data/org.gnome.shell.gschema.xml.in:347
+#: data/org.gnome.shell.gschema.xml.in:358
 msgid "Whether to fetch the current location or not"
 msgstr "გამოვითხოვო თუ არა მდებარეობა"
 
-#: data/org.gnome.shell.gschema.xml.in:354
+#: data/org.gnome.shell.gschema.xml.in:365
 msgid "Location"
 msgstr "მდებარეობა"
 
-#: data/org.gnome.shell.gschema.xml.in:355
+#: data/org.gnome.shell.gschema.xml.in:366
 msgid "The location for which to show a forecast"
 msgstr "მდებარეობა ამინდის პროგნოზის საჩვენებლად"
 
@@ -550,7 +568,7 @@ msgstr "გაფართოებების ვებგვერდის �
 
 #: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
 #: js/ui/components/networkAgent.js:114 js/ui/components/polkitAgent.js:146
-#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:271
+#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:278
 #: js/ui/shellMountOperation.js:380 js/ui/shellMountOperation.js:390
 msgid "Cancel"
 msgstr "გაუქმება"
@@ -1426,24 +1444,24 @@ msgstr "%s (დაშორებული)"
 msgid "%s (console)"
 msgstr "%s (კონსოლიდან)"
 
-#: js/ui/extensionDownloader.js:275
+#: js/ui/extensionDownloader.js:282
 msgid "Install"
 msgstr "დაყენება"
 
-#: js/ui/extensionDownloader.js:281
+#: js/ui/extensionDownloader.js:288
 msgid "Install Extension"
 msgstr "გაფართოების დაყენება"
 
-#: js/ui/extensionDownloader.js:282
+#: js/ui/extensionDownloader.js:289
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "გადმოვწერო და დავაყენო %s extensions.gnome.org-დან?"
 
-#: js/ui/extensionSystem.js:350
+#: js/ui/extensionSystem.js:353
 msgid "Extension Updates Available"
 msgstr "ხელმისაწვდომია გაფართოების განახლება"
 
-#: js/ui/extensionSystem.js:351
+#: js/ui/extensionSystem.js:354
 msgid "Extension updates are ready to be installed."
 msgstr "გაფართოების განახლება მზადაა დასაყენებლად."
 
@@ -2296,11 +2314,11 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "ეკრანის ჩაკეტვა"
 
-#: js/ui/status/thunderbolt.js:307
+#: js/ui/status/thunderbolt.js:306
 msgid "Unknown Thunderbolt device"
 msgstr "Thunderbolt-ის უცნობი მოწყობილობა"
 
-#: js/ui/status/thunderbolt.js:308
+#: js/ui/status/thunderbolt.js:307
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2308,21 +2326,21 @@ msgstr ""
 "სანამ გასული ბრძანდებოდით, აღმოჩენილია ახალი მოწყობილობები. გამოსაყენებლად "
 "ჯერ გამოაერთეთ ისინი, შემდეგ კი თავიდან მიაერთეთ."
 
-#: js/ui/status/thunderbolt.js:311
+#: js/ui/status/thunderbolt.js:310
 msgid "Unauthorized Thunderbolt device"
 msgstr "უცნობი Thunderbolt მოწყობილობა"
 
-#: js/ui/status/thunderbolt.js:312
+#: js/ui/status/thunderbolt.js:311
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "აღმოჩენილია ახალი მოწყობილობა და ადმინისტრატორის მიერ ავტორიზებული უნდა იყოს."
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:317
 msgid "Thunderbolt authorization error"
 msgstr "Thunderbolt მოწყობილობის ავტორიზაციის შეცდომა"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:318
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Thunderbolt მოწყობილობასთან ავტორიზაციის შეცდომა: %s"
