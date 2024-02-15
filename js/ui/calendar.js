@@ -967,6 +967,7 @@ class CalendarMessageList extends St.Widget {
             can_focus: true,
             x_expand: true,
             x_align: Clutter.ActorAlign.END,
+            accessible_name: C_('action', 'Clear all notifications'),
         });
         this._clearButton.connect('clicked', () => {
             this._sectionList.get_children().forEach(s => s.clear());
