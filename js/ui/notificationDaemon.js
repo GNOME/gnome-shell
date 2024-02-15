@@ -472,28 +472,12 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
     }
 });
 
-const FdoApplicationIface = loadInterfaceXML('org.freedesktop.Application');
-const FdoApplicationProxy = Gio.DBusProxy.makeProxyWrapper(FdoApplicationIface);
-
-function objectPathFromAppId(appId) {
-    return `/${appId.replace(/\./g, '/').replace(/-/g, '_')}`;
-}
-
-/**
- * @returns {{ 'desktop-startup-id': string }}
- */
-function getPlatformData() {
-    let startupId = GLib.Variant.new('s', `_TIME${global.get_current_time()}`);
-    return {'desktop-startup-id': startupId};
-}
-
 function InvalidAppError() {}
 
 export const GtkNotificationDaemonAppSource = GObject.registerClass(
 class GtkNotificationDaemonAppSource extends MessageTray.Source {
     constructor(appId) {
-        const objectPath = objectPathFromAppId(appId);
-        if (!GLib.Variant.is_object_path(objectPath))
+        if (!Gio.Application.id_is_valid(appId))
             throw new InvalidAppError();
 
         const app = Shell.AppSystem.get_default().lookup_app(`${appId}.desktop`);
@@ -508,47 +492,26 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
 
         this._appId = appId;
         this._app = app;
-        this._objectPath = objectPath;
 
         this._notifications = {};
         this._notificationPending = false;
-    }
-
-    _createApp() {
-        return new Promise((resolve, reject) => {
-            new FdoApplicationProxy(Gio.DBus.session,
-                this._appId, this._objectPath, (proxy, err) => {
-                    if (err)
-                        reject(err);
-                    else
-                        resolve(proxy);
-                });
-        });
     }
 
     _createNotification(params) {
         return new GtkNotificationDaemonNotification(this, params);
     }
 
-    async activateAction(actionId, target) {
-        try {
-            const app = await this._createApp();
-            const params = target ? [target] : [];
-            app.ActivateActionAsync(actionId, params, getPlatformData());
-        } catch (error) {
-            logError(error, 'Failed to activate app proxy');
-        }
+    activateAction(actionId, target) {
+        const params = target ? GLib.Variant.new('av', [target]) : null;
+        this._app.activate_action(actionId, params, 0, -1, null).catch(error => {
+            logError(error, `Failed to activate action for ${this._appId}`);
+        });
         Main.overview.hide();
         Main.panel.closeCalendar();
     }
 
-    async open() {
-        try {
-            const app = await this._createApp();
-            app.ActivateAsync(getPlatformData());
-        } catch (error) {
-            logError(error, 'Failed to open app proxy');
-        }
+    open() {
+        this._app.activate();
         Main.overview.hide();
         Main.panel.closeCalendar();
     }
