@@ -427,8 +427,7 @@ export class ScreenShield extends Signals.EventEmitter {
 
             this._dialog = new constructor(this._lockDialogGroup);
 
-            let time = global.get_current_time();
-            if (!this._dialog.open(time)) {
+            if (!this._dialog.open()) {
                 // This is kind of an impossible error: we're already modal
                 // by the time we reach this...
                 log('Could not open login dialog: failed to acquire grab');

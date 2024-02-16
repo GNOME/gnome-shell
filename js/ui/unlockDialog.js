@@ -876,17 +876,14 @@ export const UnlockDialog = GObject.registerClass({
         this._authPrompt.finish(onComplete);
     }
 
-    open(timestamp) {
+    open() {
         this.show();
 
         if (this._isModal)
             return true;
 
-        let modalParams = {
-            timestamp,
-            actionMode: Shell.ActionMode.UNLOCK_SCREEN,
-        };
-        let grab = Main.pushModal(Main.uiGroup, modalParams);
+        const grab = Main.pushModal(Main.uiGroup,
+            {actionMode: Shell.ActionMode.UNLOCK_SCREEN});
         if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
             Main.popModal(grab);
             return false;
@@ -902,9 +899,9 @@ export const UnlockDialog = GObject.registerClass({
         this._showPrompt();
     }
 
-    popModal(timestamp) {
+    popModal() {
         if (this._isModal) {
-            Main.popModal(this._grab, timestamp);
+            Main.popModal(this._grab);
             this._grab = null;
             this._isModal = false;
         }
