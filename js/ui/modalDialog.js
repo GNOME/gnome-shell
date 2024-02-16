@@ -178,7 +178,7 @@ export const ModalDialog = GObject.registerClass({
         if (this.state === State.OPENED || this.state === State.OPENING)
             return true;
 
-        if (!this.pushModal(timestamp))
+        if (!this.pushModal())
             return false;
 
         this._fadeOpen(onPrimary);
@@ -234,14 +234,11 @@ export const ModalDialog = GObject.registerClass({
             this.backgroundStack.set_child_above_sibling(this._eventBlocker, null);
     }
 
-    pushModal(timestamp) {
+    pushModal() {
         if (this._hasModal)
             return true;
 
-        let params = {actionMode: this._actionMode};
-        if (timestamp)
-            params['timestamp'] = timestamp;
-        let grab = Main.pushModal(this, params);
+        const grab = Main.pushModal(this, {actionMode: this._actionMode});
         if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
             Main.popModal(grab);
             return false;
