@@ -66,7 +66,7 @@ export async function installExtension(uuid, invocation) {
     }
 
     const dialog = new InstallExtensionDialog(uuid, info, invocation);
-    dialog.open(global.get_current_time());
+    dialog.open();
 }
 
 /**

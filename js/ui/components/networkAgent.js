@@ -648,7 +648,7 @@ class VPNRequestHandler extends Signals.EventEmitter {
         if (contentOverride && contentOverride.secrets.length) {
             // Only show the dialog if we actually have something to ask
             this._shellDialog = new NetworkSecretDialog(this._agent, this._requestId, this._connection, 'vpn', [], this._flags, contentOverride);
-            this._shellDialog.open(global.get_current_time());
+            this._shellDialog.open();
         } else {
             this._agent.respond(this._requestId, Shell.NetworkAgentResponse.CONFIRMED);
             this.destroy();
@@ -818,7 +818,7 @@ class NetworkAgent {
             delete this._dialogs[requestId];
         });
         this._dialogs[requestId] = dialog;
-        dialog.open(global.get_current_time());
+        dialog.open();
     }
 
     _cancelRequest(agent, requestId) {

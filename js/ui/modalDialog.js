@@ -171,7 +171,7 @@ export const ModalDialog = GObject.registerClass({
             () => (this._initialKeyFocus = null), this);
     }
 
-    open(_timestamp) {
+    open() {
         if (this.state === State.OPENED || this.state === State.OPENING)
             return true;
 

@@ -708,7 +708,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     }
 
     async OpenAsync(parameters, invocation) {
-        let [type, timestamp, totalSecondsToStayOpen, inhibitorObjectPaths] = parameters;
+        let [type, timestamp_, totalSecondsToStayOpen, inhibitorObjectPaths] = parameters;
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._type = type;
 
@@ -774,7 +774,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         this._updateButtons();
 
-        if (!this.open(timestamp)) {
+        if (!this.open()) {
             invocation.return_error_literal(
                 ModalDialogError.GRAB_FAILED,
                 'Cannot grab pointer and keyboard');

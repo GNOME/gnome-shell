@@ -193,7 +193,7 @@ const AuthenticationDialog = GObject.registerClass({
     _ensureOpen() {
         // NOTE: ModalDialog.open() is safe to call if the dialog is
         // already open - it just returns true without side-effects
-        if (!this.open(global.get_current_time())) {
+        if (!this.open()) {
             // This can fail if e.g. unable to get input grab
             //
             // In an ideal world this wouldn't happen (because the
