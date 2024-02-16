@@ -141,11 +141,8 @@ export const ModalDialog = GObject.registerClass({
         return this.dialogLayout.addButton(buttonInfo);
     }
 
-    _fadeOpen(onPrimary) {
-        if (onPrimary)
-            this._monitorConstraint.primary = true;
-        else
-            this._monitorConstraint.index = global.display.get_current_monitor();
+    _fadeOpen() {
+        this._monitorConstraint.index = global.display.get_current_monitor();
 
         this._setState(State.OPENING);
 
@@ -174,14 +171,14 @@ export const ModalDialog = GObject.registerClass({
             () => (this._initialKeyFocus = null), this);
     }
 
-    open(timestamp, onPrimary) {
+    open(_timestamp) {
         if (this.state === State.OPENED || this.state === State.OPENING)
             return true;
 
         if (!this.pushModal())
             return false;
 
-        this._fadeOpen(onPrimary);
+        this._fadeOpen();
         return true;
     }
 
