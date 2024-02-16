@@ -3189,18 +3189,6 @@ export const AppIcon = GObject.registerClass({
         this.icon.animateZoomOutAtPos(x, y);
     }
 
-    shellWorkspaceLaunch(params) {
-        let {stack} = new Error();
-        log(`shellWorkspaceLaunch is deprecated, use app.open_new_window() instead\n${stack}`);
-
-        params = Params.parse(params, {
-            workspace: -1,
-            timestamp: 0,
-        });
-
-        this.app.open_new_window(params.workspace);
-    }
-
     getDragActor() {
         return this.app.create_icon_texture(Main.overview.dash.iconSize);
     }
