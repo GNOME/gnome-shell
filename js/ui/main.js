@@ -714,17 +714,9 @@ export function pushModal(actor, params = {}) {
  * the topmost invocation, then the focus will be restored to the
  * previous focus at the time when pushModal() was invoked.
  *
- * `timestamp` is optionally used to associate the call with a specific user
- * initiated event. If not provided then the value of
- * global.get_current_time() is assumed.
- *
  * @param {Clutter.Grab} grab - the grab given by pushModal()
- * @param {number=} timestamp - optional timestamp
  */
-export function popModal(grab, timestamp) {
-    if (timestamp === undefined)
-        timestamp = global.get_current_time();
-
+export function popModal(grab) {
     let focusIndex = _findModal(grab);
     if (focusIndex < 0) {
         global.stage.set_key_focus(null);
