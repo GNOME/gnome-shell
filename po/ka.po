@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-14 16:26+0000\n"
-"PO-Revision-Date: 2024-02-15 07:47+0100\n"
+"POT-Creation-Date: 2024-02-16 11:19+0000\n"
+"PO-Revision-Date: 2024-02-16 12:22+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -1053,6 +1053,11 @@ msgstr "არ შემაწუხო"
 #: js/ui/calendar.js:966
 msgid "Clear"
 msgstr "გასუფთავება"
+
+#: js/ui/calendar.js:970
+msgctxt "action"
+msgid "Clear all notifications"
+msgstr "ყველა გაფრთხილების გასუფთავება"
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
