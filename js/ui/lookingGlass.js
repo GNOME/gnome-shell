@@ -539,7 +539,7 @@ class RedBorderEffect extends Clutter.Effect {
             const coglContext = framebuffer.get_context();
 
             let color = new Cogl.Color();
-            color.init_from_4ub(0xff, 0, 0, 0xc4);
+            color.init_from_4f(1.0, 0.0, 0.0, 196.0 / 255.0);
 
             this._pipeline = Cogl.Pipeline.new(coglContext);
             this._pipeline.set_color(color);
