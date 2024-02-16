@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-14 16:26+0000\n"
-"PO-Revision-Date: 2024-02-14 20:41+0200\n"
+"POT-Creation-Date: 2024-02-16 11:19+0000\n"
+"PO-Revision-Date: 2024-02-16 20:33+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
@@ -226,7 +226,6 @@ msgstr ""
 "параметра «enabled-extension»."
 
 #: data/org.gnome.shell.gschema.xml.in:45
-#| msgid "No extensions installed"
 msgid "Allow extension installation"
 msgstr "Дозволити встановлення розширень"
 
@@ -238,12 +237,12 @@ msgid ""
 "that are already loaded, so a change only takes full effect on the next "
 "login."
 msgstr ""
-"Дозволити користувачам встановлювати розширення до власної домашньої теки."
-" Якщо вимкнено, спроба скористатися методом D-Bus InstallRemoteExtension"
-" завершуватиметься помилкою, а розширення при запуску завантажуватимуться"
-" лише з загальносистемних каталогів. Це не стосуватиметься вже завантажених"
-" розширень, тому внесені зміни набудуть чинності лише після наступного входу"
-" до системи."
+"Дозволити користувачам встановлювати розширення до власної домашньої теки. "
+"Якщо вимкнено, спроба скористатися методом D-Bus InstallRemoteExtension "
+"завершуватиметься помилкою, а розширення при запуску завантажуватимуться "
+"лише з загальносистемних каталогів. Це не стосуватиметься вже завантажених "
+"розширень, тому внесені зміни набудуть чинності лише після наступного входу "
+"до системи."
 
 #: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
@@ -1097,6 +1096,12 @@ msgstr "Не турбувати"
 #: js/ui/calendar.js:966
 msgid "Clear"
 msgstr "Очистити"
+
+#: js/ui/calendar.js:970
+#| msgid "No Notifications"
+msgctxt "action"
+msgid "Clear all notifications"
+msgstr "Вилучити усі сповіщення"
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
