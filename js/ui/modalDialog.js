@@ -217,7 +217,7 @@ export const ModalDialog = GObject.registerClass({
     // Drop modal status without closing the dialog; this makes the
     // dialog insensitive as well, so it needs to be followed shortly
     // by either a close() or a pushModal()
-    popModal(timestamp) {
+    popModal() {
         if (!this._hasModal)
             return;
 
@@ -226,7 +226,7 @@ export const ModalDialog = GObject.registerClass({
             this._savedKeyFocus = focus;
         else
             this._savedKeyFocus = null;
-        Main.popModal(this._grab, timestamp);
+        Main.popModal(this._grab);
         this._grab = null;
         this._hasModal = false;
 
@@ -272,14 +272,14 @@ export const ModalDialog = GObject.registerClass({
     // e.g., if a user clicked "Log Out" then the dialog should go away
     // immediately, but the lightbox should remain until the logout is
     // complete.
-    _fadeOutDialog(timestamp) {
+    _fadeOutDialog() {
         if (this.state === State.CLOSED || this.state === State.CLOSING)
             return;
 
         if (this.state === State.FADED_OUT)
             return;
 
-        this.popModal(timestamp);
+        this.popModal();
         this.dialogLayout.ease({
             opacity: 0,
             duration: FADE_OUT_DIALOG_TIME,
