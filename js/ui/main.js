@@ -26,7 +26,6 @@ import * as OsdMonitorLabeler from './osdMonitorLabeler.js';
 import * as Overview from './overview.js';
 import * as PadOsd from './padOsd.js';
 import * as Panel from './panel.js';
-import * as Params from '../misc/params.js';
 import * as RunDialog from './runDialog.js';
 import * as WelcomeDialog from './welcomeDialog.js';
 import * as Layout from './layout.js';
@@ -659,13 +658,6 @@ function _findModal(grab) {
  * which was focused at the time pushModal() was invoked.
  *
  * `params` may be used to provide the following parameters:
- *  - timestamp: used to associate the call with a specific user initiated
- *               event. If not provided then the value of
- *               global.get_current_time() is assumed.
- *
- *  - options: Meta.ModalOptions flags to indicate that the pointer is
- *             already grabbed
- *
  *  - actionMode: used to set the current Shell.ActionMode to filter
  *                global keybindings; the default of NONE will filter
  *                out all keybindings
@@ -674,12 +666,11 @@ function _findModal(grab) {
  * @param {object=} params - optional parameters
  * @returns {Clutter.Grab} - the grab handle created
  */
-export function pushModal(actor, params) {
-    params = Params.parse(params, {
-        timestamp: global.get_current_time(),
-        options: 0,
+export function pushModal(actor, params = {}) {
+    const {actionMode: newActionMode} = {
         actionMode: Shell.ActionMode.NONE,
-    });
+        ...params,
+    };
 
     let grab = global.stage.grab(actor);
 
@@ -713,7 +704,7 @@ export function pushModal(actor, params) {
         actionMode,
     });
 
-    actionMode = params.actionMode;
+    actionMode = newActionMode;
     global.stage.set_key_focus(actor);
     return grab;
 }
