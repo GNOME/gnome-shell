@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-14 16:26+0000\n"
-"PO-Revision-Date: 2024-02-16 00:31+0330\n"
+"POT-Creation-Date: 2024-02-16 11:19+0000\n"
+"PO-Revision-Date: 2024-02-17 16:12+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -1051,6 +1051,11 @@ msgstr "مزاحم نشوید"
 #: js/ui/calendar.js:966
 msgid "Clear"
 msgstr "پاک‌سازی"
+
+#: js/ui/calendar.js:970
+msgctxt "action"
+msgid "Clear all notifications"
+msgstr "پاک‌سازی همهٔ آگاهی‌ها"
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
@@ -3635,11 +3640,6 @@ msgstr "صداهای سامانه"
 #~ msgid_plural "%d new messages"
 #~ msgstr[0] "%Id پیام جدید"
 #~ msgstr[1] "%Id پیام جدید"
-
-#~ msgid "%d new notification"
-#~ msgid_plural "%d new notifications"
-#~ msgstr[0] "%Id آگاهی جدید"
-#~ msgstr[1] "%Id آگاهی جدید"
 
 #~ msgid "Browse in Software"
 #~ msgstr "مرور در نرم‌افزارها"
