@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-12 13:52+0000\n"
-"PO-Revision-Date: 2024-02-13 16:08+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"POT-Creation-Date: 2024-02-16 11:19+0000\n"
+"PO-Revision-Date: 2024-02-16 23:47+0300\n"
+"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -116,22 +116,22 @@ msgid "Screenshots"
 msgstr "Ekran Görüntüleri"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:276
+#: data/org.gnome.shell.gschema.xml.in:287
 msgid "Take a screenshot interactively"
 msgstr "Etkileşimli olarak ekran görüntüsü al"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:288
+#: data/org.gnome.shell.gschema.xml.in:299
 msgid "Take a screenshot"
 msgstr "Ekran görüntüsü al"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:295
 msgid "Take a screenshot of a window"
 msgstr "Pencerenin ekran görüntüsünü al"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:280
+#: data/org.gnome.shell.gschema.xml.in:291
 msgid "Record a screencast interactively"
 msgstr "Etkileşimli olarak ekranı kaydet"
 
@@ -228,10 +228,23 @@ msgstr ""
 "etmeden devre dışı bırak."
 
 #: data/org.gnome.shell.gschema.xml.in:45
+msgid "Allow extension installation"
+msgstr "Uzantı kurulumuna izin ver"
+
+#: data/org.gnome.shell.gschema.xml.in:46
+msgid ""
+"Allow users to install extensions in their home folder. If disabled, the "
+"InstallRemoteExtension D-Bus method will fail, and extensions are only "
+"loaded from system directories on startup. It does not affect extensions "
+"that are already loaded, so a change only takes full effect on the next "
+"login."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
 msgstr "Uzantının sürüm uyumu doğrulamasını devre dışı bırakır"
 
-#: data/org.gnome.shell.gschema.xml.in:46
+#: data/org.gnome.shell.gschema.xml.in:57
 msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
@@ -242,30 +255,30 @@ msgstr ""
 "bırakacak ve desteklendiği ileri sürülen sürümleri dikkate almaksızın, tüm "
 "uygulamaları yüklemeye çalışacaktır."
 
-#: data/org.gnome.shell.gschema.xml.in:54
+#: data/org.gnome.shell.gschema.xml.in:65
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Gözde uygulamalar için masa üstü dosyalarının ID listesi"
 
-#: data/org.gnome.shell.gschema.xml.in:55
+#: data/org.gnome.shell.gschema.xml.in:66
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr "Bu tanımlayıcıya sahip uygulamalar gözdeler bölümünde gösterilecek."
 
-#: data/org.gnome.shell.gschema.xml.in:62
+#: data/org.gnome.shell.gschema.xml.in:73
 msgid "History for command (Alt-F2) dialog"
 msgstr "Komut kutucuğu (Alt-F2) geçmişi"
 
 #. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
-#: data/org.gnome.shell.gschema.xml.in:67
+#: data/org.gnome.shell.gschema.xml.in:78
 msgid "History for the looking glass dialog"
 msgstr "Ayna iletişim penceresinin geçmişi"
 
-#: data/org.gnome.shell.gschema.xml.in:71
+#: data/org.gnome.shell.gschema.xml.in:82
 msgid "Always show the “Log Out” action in the system menu"
 msgstr "Sistem menüsünde “Oturumu Kapat” eylemini hep göster."
 
-#: data/org.gnome.shell.gschema.xml.in:72
+#: data/org.gnome.shell.gschema.xml.in:83
 msgid ""
 "This key overrides the automatic hiding of the “Log out” action in the "
 "system menu for logged-in situations where there is a single, local, non-"
@@ -275,13 +288,13 @@ msgstr ""
 "türünde (örn. Wayland üzerinde GNOME) oturum açıldığında sistem menüsündeki "
 "“Oturumu Kapat” eyleminin kendiliğinden gizlenmesini önler."
 
-#: data/org.gnome.shell.gschema.xml.in:81
+#: data/org.gnome.shell.gschema.xml.in:92
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Şifreli ya da uzak dosya sistemlerini bağlamak için parolanın anımsanması"
 
-#: data/org.gnome.shell.gschema.xml.in:82
+#: data/org.gnome.shell.gschema.xml.in:93
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -293,11 +306,11 @@ msgstr ""
 "“Parolayı Anımsa” onay kutusu sunulacak. Bu anahtar, onay kutusunun "
 "öntanımlı durumunu belirler."
 
-#: data/org.gnome.shell.gschema.xml.in:91
+#: data/org.gnome.shell.gschema.xml.in:102
 msgid "The last selected non-default power profile"
 msgstr "En son seçilen öntanımlı olmayan güç profili"
 
-#: data/org.gnome.shell.gschema.xml.in:92
+#: data/org.gnome.shell.gschema.xml.in:103
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
 "toggling between two profiles, this key records the last selected non-"
@@ -307,13 +320,13 @@ msgstr ""
 "geçişi destekleyebilmek için bu anahtar, en son seçilen öntanımlı olmayan "
 "profili kaydeder."
 
-#: data/org.gnome.shell.gschema.xml.in:100
+#: data/org.gnome.shell.gschema.xml.in:111
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr ""
 "“GNOME’a Hoş Geldiniz” iletişim penceresinin en son hangi sürüm için "
 "gösterildiği"
 
-#: data/org.gnome.shell.gschema.xml.in:101
+#: data/org.gnome.shell.gschema.xml.in:112
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -325,11 +338,11 @@ msgstr ""
 "ve büyük sayı henüz var olmayan sürümlere karşılık gelir. Bu büyük sayı, "
 "iletişim penceresini devre dışı bırakmada da kullanılabilir."
 
-#: data/org.gnome.shell.gschema.xml.in:134
+#: data/org.gnome.shell.gschema.xml.in:145
 msgid "Layout of the app picker"
 msgstr "Uygulama seçicinin düzeni"
 
-#: data/org.gnome.shell.gschema.xml.in:135
+#: data/org.gnome.shell.gschema.xml.in:146
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -341,142 +354,142 @@ msgstr ""
 "'data' çifti içerir. Şimdilik şu değerler 'data' olarak depolanır: • "
 "“position”: sayfadaki uygulama simgesinin konumu"
 
-#: data/org.gnome.shell.gschema.xml.in:154
-#: data/org.gnome.shell.gschema.xml.in:161
+#: data/org.gnome.shell.gschema.xml.in:165
+#: data/org.gnome.shell.gschema.xml.in:172
 msgid "Keybinding to shift between overview states"
 msgstr "Genel görünüm durumları arası geçiş için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:155
+#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Oturum, pencere seçici ve uygulama ızgarası arası geçiş için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:162
+#: data/org.gnome.shell.gschema.xml.in:173
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "Uygulama ızgarası, pencere seçici ve oturum arası geçiş için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:168
+#: data/org.gnome.shell.gschema.xml.in:179
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "“Uygulamaları Göster” görünümünü açmak için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:169
+#: data/org.gnome.shell.gschema.xml.in:180
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Etkinlikler Genel Görünümünün “Uygulamaları Göster” görünümünü açmak için "
 "klavye kısayolu."
 
-#: data/org.gnome.shell.gschema.xml.in:176
+#: data/org.gnome.shell.gschema.xml.in:187
 msgid "Keybinding to open the overview"
 msgstr "Genel görünümü açmak için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:177
+#: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to open the Activities Overview."
 msgstr "Etkinlikler Genel Görünümünü açmak için klavye kısayolu."
 
-#: data/org.gnome.shell.gschema.xml.in:183
+#: data/org.gnome.shell.gschema.xml.in:194
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Bildirim listesinin görünürlüğünü değiştirmek için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:184
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Bildirim listesinin görünürlüğünü değiştirmek için klavye kısayolu."
 
-#: data/org.gnome.shell.gschema.xml.in:190
+#: data/org.gnome.shell.gschema.xml.in:201
 msgid "Keybinding to toggle the quick settings menu"
 msgstr "Hızlı ayarlar menüsünü açmak/kapatmak için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:191
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Keybinding to toggle the quick settings menu."
 msgstr "Hızlı ayarlar menüsünü açmak/kapatmak için klavye kısayolu."
 
-#: data/org.gnome.shell.gschema.xml.in:197
+#: data/org.gnome.shell.gschema.xml.in:208
 msgid "Keybinding to focus the active notification"
 msgstr "Etkin bildirime odaklanmak için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:198
+#: data/org.gnome.shell.gschema.xml.in:209
 msgid "Keybinding to focus the active notification."
 msgstr "Etkin bildirime odaklanmak için klavye kısayolu."
 
-#: data/org.gnome.shell.gschema.xml.in:204
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid "Switch to application 1"
 msgstr "Uygulama 1ʼe geç"
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:219
 msgid "Switch to application 2"
 msgstr "Uygulama 2ʼye geç"
 
-#: data/org.gnome.shell.gschema.xml.in:212
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Switch to application 3"
 msgstr "Uygulama 3ʼe geç"
 
-#: data/org.gnome.shell.gschema.xml.in:216
+#: data/org.gnome.shell.gschema.xml.in:227
 msgid "Switch to application 4"
 msgstr "Uygulama 4ʼe geç"
 
-#: data/org.gnome.shell.gschema.xml.in:220
+#: data/org.gnome.shell.gschema.xml.in:231
 msgid "Switch to application 5"
 msgstr "Uygulama 5ʼe geç"
 
-#: data/org.gnome.shell.gschema.xml.in:224
+#: data/org.gnome.shell.gschema.xml.in:235
 msgid "Switch to application 6"
 msgstr "Uygulama 6ʼya geç"
 
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:239
 msgid "Switch to application 7"
 msgstr "Uygulama 7ʼye geç"
 
-#: data/org.gnome.shell.gschema.xml.in:232
+#: data/org.gnome.shell.gschema.xml.in:243
 msgid "Switch to application 8"
 msgstr "Uygulama 8ʼe geç"
 
-#: data/org.gnome.shell.gschema.xml.in:236
+#: data/org.gnome.shell.gschema.xml.in:247
 msgid "Switch to application 9"
 msgstr "Uygulama 9ʼa geç"
 
-#: data/org.gnome.shell.gschema.xml.in:240
+#: data/org.gnome.shell.gschema.xml.in:251
 msgid "Open a new instance of application 1"
 msgstr "1. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:255
 msgid "Open a new instance of application 2"
 msgstr "2. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:248
+#: data/org.gnome.shell.gschema.xml.in:259
 msgid "Open a new instance of application 3"
 msgstr "3. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:263
 msgid "Open a new instance of application 4"
 msgstr "4. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:256
+#: data/org.gnome.shell.gschema.xml.in:267
 msgid "Open a new instance of application 5"
 msgstr "5. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:260
+#: data/org.gnome.shell.gschema.xml.in:271
 msgid "Open a new instance of application 6"
 msgstr "6. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:264
+#: data/org.gnome.shell.gschema.xml.in:275
 msgid "Open a new instance of application 7"
 msgstr "7. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:268
+#: data/org.gnome.shell.gschema.xml.in:279
 msgid "Open a new instance of application 8"
 msgstr "8. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:272
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid "Open a new instance of application 9"
 msgstr "9. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:297
-#: data/org.gnome.shell.gschema.xml.in:324
+#: data/org.gnome.shell.gschema.xml.in:308
+#: data/org.gnome.shell.gschema.xml.in:335
 msgid "Limit switcher to current workspace."
 msgstr "Geçiş menüsünü geçerli çalışma alanıyla sınırla."
 
-#: data/org.gnome.shell.gschema.xml.in:298
+#: data/org.gnome.shell.gschema.xml.in:309
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -485,11 +498,11 @@ msgstr ""
 "uygulamalar geçiş menüsünde gösterilir. Aksi halde, tüm uygulamalar "
 "görünecektir."
 
-#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:326
 msgid "The application icon mode."
 msgstr "Uygulama simge kipi."
 
-#: data/org.gnome.shell.gschema.xml.in:316
+#: data/org.gnome.shell.gschema.xml.in:327
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -500,7 +513,7 @@ msgstr ""
 "only” (yalnızca uygulama simgesini gösterir) ya da “both” (her ikisi) "
 "değerleridir."
 
-#: data/org.gnome.shell.gschema.xml.in:325
+#: data/org.gnome.shell.gschema.xml.in:336
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -508,27 +521,27 @@ msgstr ""
 "Eğer bu seçenek etkinse, yalnızca geçerli çalışma alanındaki pencereler "
 "geçiş menüsünde gösterilir. Aksi halde, tüm pencereler görünecektir."
 
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:346
 msgid "Locations"
 msgstr "Konumlar"
 
-#: data/org.gnome.shell.gschema.xml.in:336
+#: data/org.gnome.shell.gschema.xml.in:347
 msgid "The locations to show in world clocks"
 msgstr "Dünya saatlerinde gösterilecek konumlar"
 
-#: data/org.gnome.shell.gschema.xml.in:346
+#: data/org.gnome.shell.gschema.xml.in:357
 msgid "Automatic location"
 msgstr "Kendiliğinden konumlama"
 
-#: data/org.gnome.shell.gschema.xml.in:347
+#: data/org.gnome.shell.gschema.xml.in:358
 msgid "Whether to fetch the current location or not"
 msgstr "Geçerli konumun getirilip getirilmeyeceğini belirler"
 
-#: data/org.gnome.shell.gschema.xml.in:354
+#: data/org.gnome.shell.gschema.xml.in:365
 msgid "Location"
 msgstr "Konum"
 
-#: data/org.gnome.shell.gschema.xml.in:355
+#: data/org.gnome.shell.gschema.xml.in:366
 msgid "The location for which to show a forecast"
 msgstr "Hava durumunun gösterileceği konum"
 
@@ -572,7 +585,7 @@ msgstr "Uzantı ana sayfasını ziyaret et"
 
 #: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
 #: js/ui/components/networkAgent.js:114 js/ui/components/polkitAgent.js:146
-#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:271
+#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:278
 #: js/ui/shellMountOperation.js:380 js/ui/shellMountOperation.js:390
 msgid "Cancel"
 msgstr "İptal"
@@ -1061,6 +1074,11 @@ msgstr "Rahatsız Etme"
 msgid "Clear"
 msgstr "Temizle"
 
+#: js/ui/calendar.js:970
+msgctxt "action"
+msgid "Clear all notifications"
+msgstr "Tüm bildirimleri temizle"
+
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
 #, javascript-format
@@ -1453,24 +1471,24 @@ msgstr "%s (uzak)"
 msgid "%s (console)"
 msgstr "%s (uçbirim)"
 
-#: js/ui/extensionDownloader.js:275
+#: js/ui/extensionDownloader.js:282
 msgid "Install"
 msgstr "Kur"
 
-#: js/ui/extensionDownloader.js:281
+#: js/ui/extensionDownloader.js:288
 msgid "Install Extension"
 msgstr "Uzantı Kur"
 
-#: js/ui/extensionDownloader.js:282
+#: js/ui/extensionDownloader.js:289
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "“%s” uzantısı extensions.gnome.org üstünden indirilip kurulsun mu?"
 
-#: js/ui/extensionSystem.js:350
+#: js/ui/extensionSystem.js:353
 msgid "Extension Updates Available"
 msgstr "Uzantı Güncellemeleri Var"
 
-#: js/ui/extensionSystem.js:351
+#: js/ui/extensionSystem.js:354
 msgid "Extension updates are ready to be installed."
 msgstr "Uzantı güncellemeleri kuruluma hazır."
 
@@ -2322,11 +2340,11 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "Ekranı Kilitle"
 
-#: js/ui/status/thunderbolt.js:307
+#: js/ui/status/thunderbolt.js:306
 msgid "Unknown Thunderbolt device"
 msgstr "Bilinmeyen Thunderbolt aygıtı"
 
-#: js/ui/status/thunderbolt.js:308
+#: js/ui/status/thunderbolt.js:307
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2334,20 +2352,20 @@ msgstr ""
 "Siz uzaktayken yeni aygıt saptandı. Kullanmaya başlamadan önce aygıtın "
 "bağlantısını kesin ve yeniden bağlayın."
 
-#: js/ui/status/thunderbolt.js:311
+#: js/ui/status/thunderbolt.js:310
 msgid "Unauthorized Thunderbolt device"
 msgstr "Yetkisiz Thunderbolt aygıtı"
 
-#: js/ui/status/thunderbolt.js:312
+#: js/ui/status/thunderbolt.js:311
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr "Yeni aygıt saptandı ve yöneticice yetkilendirilmelidir."
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:317
 msgid "Thunderbolt authorization error"
 msgstr "Thunderbolt yetkilendirme hatası"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:318
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Thunderbolt aygıtı yetkilendirilemedi: %s"
@@ -2789,11 +2807,11 @@ msgstr "Yüklü Uzantı Yok"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:267
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
-"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a> adresine göz atın."
+"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a> adresine göz atın."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:278
 msgid ""
