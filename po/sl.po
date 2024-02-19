@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-15 06:49+0000\n"
-"PO-Revision-Date: 2024-02-19 11:02+0100\n"
+"POT-Creation-Date: 2024-02-19 10:04+0000\n"
+"PO-Revision-Date: 2024-02-19 11:09+0100\n"
 "Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -899,7 +899,7 @@ msgstr "Zavrni"
 msgid "Allow"
 msgstr "Dovoli"
 
-#: js/ui/appDisplay.js:1776
+#: js/ui/appDisplay.js:1775
 msgid "Unnamed Folder"
 msgstr "Neimenovana mapa"
 
@@ -1082,6 +1082,11 @@ msgstr "Ne moti"
 #: js/ui/calendar.js:966
 msgid "Clear"
 msgstr "Počisti"
+
+#: js/ui/calendar.js:970
+msgctxt "action"
+msgid "Clear all notifications"
+msgstr "Počisti vsa obvestila"
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
@@ -1652,23 +1657,23 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: js/ui/main.js:279
+#: js/ui/main.js:278
 msgid "System was put in unsafe mode"
 msgstr "Sistem je v ne-varnem načinu"
 
-#: js/ui/main.js:280
+#: js/ui/main.js:279
 msgid "Apps now have unrestricted access"
 msgstr "Programi imajo zdaj neomejen dostop"
 
-#: js/ui/main.js:281 js/ui/overview.js:51
+#: js/ui/main.js:280 js/ui/overview.js:51
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: js/ui/main.js:339
+#: js/ui/main.js:338
 msgid "Logged in as a privileged user"
 msgstr "Zaznana je prijava s skrbniškimi dovoljenji"
 
-#: js/ui/main.js:340
+#: js/ui/main.js:339
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1676,11 +1681,11 @@ msgstr ""
 "Zagona seje s skrbniškim računom se je treba iz varnostnih razlogov "
 "izogibati. Priporočljivo je uporabljati običajen uporabniški račun."
 
-#: js/ui/main.js:388
+#: js/ui/main.js:387
 msgid "Screen Lock disabled"
 msgstr "Zaklep zaslona je onemogočen"
 
-#: js/ui/main.js:389
+#: js/ui/main.js:388
 msgid "Screen Locking requires the GNOME display manager."
 msgstr ""
 "Zaklepanje zaslona zahteva namestitev upravljalnika zaslona za okolje GNOME."
@@ -1800,11 +1805,11 @@ msgstr "Poteka ponovno zaganjanje …"
 msgid "GNOME needs to lock the screen"
 msgstr "Zakleniti je treba zaslon"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:670
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:669
 msgid "Unable to lock"
 msgstr "Zaklep ni mogoč"
 
-#: js/ui/screenShield.js:277 js/ui/screenShield.js:671
+#: js/ui/screenShield.js:277 js/ui/screenShield.js:670
 msgid "Lock was blocked by an app"
 msgstr "Zaklep je preprečil program"
 
@@ -1967,7 +1972,7 @@ msgstr "Pokaži besedilo"
 msgid "Hide Text"
 msgstr "Skrij besedilo"
 
-#: js/ui/shellEntry.js:174
+#: js/ui/shellEntry.js:176
 msgid "Caps lock is on."
 msgstr "Vključena je tipka zaklepa velikosti črk."
 
@@ -3740,13 +3745,6 @@ msgstr "Sistemski zvoki"
 #~ msgstr[1] "%d novo sporočilo"
 #~ msgstr[2] "%d novi sporočili"
 #~ msgstr[3] "%d nova sporočila"
-
-#~ msgid "%d new notification"
-#~ msgid_plural "%d new notifications"
-#~ msgstr[0] "%d novih obvestil"
-#~ msgstr[1] "%d novo obvestilo"
-#~ msgstr[2] "%d novi obvestili"
-#~ msgstr[3] "%d nova obvestila"
 
 #~ msgid "Account Settings"
 #~ msgstr "Nastavitve računa"
