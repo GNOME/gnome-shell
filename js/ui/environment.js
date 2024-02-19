@@ -30,6 +30,7 @@ Gio._promisify(Gio.DBusProxy.prototype, 'init_async');
 Gio._promisify(Gio.DBusProxy.prototype, 'call_with_unix_fd_list');
 Gio._promisify(Gio.File.prototype, 'query_info_async');
 Gio._promisify(Polkit.Permission, 'new');
+Gio._promisify(Shell.App.prototype, 'activate_action');
 
 // We can't import shell JS modules yet, because they may have
 // variable initializations, etc, that depend on this file's

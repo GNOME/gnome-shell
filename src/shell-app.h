@@ -69,6 +69,19 @@ void shell_app_launch_action (ShellApp        *app,
                               guint            timestamp,
                               int              workspace);
 
+void shell_app_activate_action (ShellApp            *app,
+                                const char          *action_name,
+                                GVariant            *parameter,
+                                guint                timestamp,
+                                int                  workspace,
+                                GCancellable        *cancellable,
+                                GAsyncReadyCallback  callback,
+                                gpointer             user_data);
+gboolean
+shell_app_activate_action_finish (ShellApp      *app,
+                                  GAsyncResult  *result,
+                                  GError       **error);
+
 int shell_app_compare_by_name (ShellApp *app, ShellApp *other);
 
 int shell_app_compare (ShellApp *app, ShellApp *other);
