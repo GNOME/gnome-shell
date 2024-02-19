@@ -7,6 +7,7 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import NM from 'gi://NM';
 import Polkit from 'gi://Polkit';
+import Shell from 'gi://Shell';
 import St from 'gi://St';
 
 import * as Main from '../main.js';
@@ -65,25 +66,13 @@ function ssidToLabel(ssid) {
 function launchSettingsPanel(panel, ...args) {
     const param = new GLib.Variant('(sav)',
         [panel, args.map(s => new GLib.Variant('s', s))]);
-    const platformData = {
-        'desktop-startup-id': new GLib.Variant('s',
-            `_TIME${global.get_current_time()}`),
-    };
-    try {
-        Gio.DBus.session.call(
-            'org.gnome.Settings',
-            '/org/gnome/Settings',
-            'org.freedesktop.Application',
-            'ActivateAction',
-            new GLib.Variant('(sava{sv})',
-                ['launch-panel', [param], platformData]),
-            null,
-            Gio.DBusCallFlags.NONE,
-            -1,
-            null);
-    } catch (e) {
-        log(`Failed to launch Settings panel: ${e.message}`);
-    }
+
+    const app = Shell.AppSystem.get_default()
+        .lookup_app('org.gnome.Settings.desktop');
+
+    app.activate_action('launch-panel', param, 0, -1, null).catch(error => {
+        log(`Failed to launch Settings panel: ${error.message}`);
+    });
 }
 
 class ItemSorter {
