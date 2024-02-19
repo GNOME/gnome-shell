@@ -27,6 +27,14 @@ export const NotificationDaemon = class extends ServiceImplementation {
                     log(error.message);
             });
 
+        this._proxy.connectSignal('ActivationToken',
+            (proxy, sender, params) => {
+                const [id] = params;
+                this._emitSignal(
+                    this._activeNotifications.get(id),
+                    'ActivationToken',
+                    new GLib.Variant('(us)', params));
+            });
         this._proxy.connectSignal('ActionInvoked',
             (proxy, sender, params) => {
                 const [id] = params;

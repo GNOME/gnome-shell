@@ -31,5 +31,9 @@
       <arg type="u"/>
       <arg type="s"/>
     </signal>
+    <signal name="ActivationToken">
+      <arg type="u"/>
+      <arg type="s"/>
+    </signal>
   </interface>
 </node>

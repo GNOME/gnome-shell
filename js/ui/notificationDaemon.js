@@ -217,6 +217,7 @@ class FdoNotificationDaemon {
                     hasDefaultAction = true;
                 } else {
                     notification.addAction(label, () => {
+                        this._emitActivationToken(source, ndata.id);
                         this._emitActionInvoked(ndata.id, actionId);
                     });
                 }
@@ -225,6 +226,7 @@ class FdoNotificationDaemon {
 
         if (hasDefaultAction) {
             notification.connect('activated', () => {
+                this._emitActivationToken(source, ndata.id);
                 this._emitActionInvoked(ndata.id, 'default');
             });
         } else {
@@ -300,6 +302,16 @@ class FdoNotificationDaemon {
     _emitActionInvoked(id, action) {
         this._dbusImpl.emit_signal('ActionInvoked',
             GLib.Variant.new('(us)', [id, action]));
+    }
+
+    _emitActivationToken(source, id) {
+        const context = global.create_app_launch_context(0, -1);
+        const info = source.app?.get_app_info();
+        if (info) {
+            const token = context.get_startup_notify_id(info, []);
+            this._dbusImpl.emit_signal('ActivationToken',
+                GLib.Variant.new('(us)', [id, token]));
+        }
     }
 }
 
