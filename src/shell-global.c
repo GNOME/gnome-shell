@@ -1439,10 +1439,10 @@ shell_global_app_launched_cb (GAppLaunchContext *context,
  * shell_global_create_app_launch_context:
  * @global: A #ShellGlobal
  * @timestamp: the timestamp for the launch (or 0 for current time)
- * @workspace: a workspace index, or -1 to indicate the current one
+ * @workspace: a workspace index, or -1 to indicate no specific one
  *
  * Create a #GAppLaunchContext set up with the correct timestamp, and
- * targeted to activate on the current workspace.
+ * targeted to activate on @workspace.
  *
  * Return value: (transfer full): A new #GAppLaunchContext
  */
@@ -1463,12 +1463,11 @@ shell_global_create_app_launch_context (ShellGlobal *global,
     timestamp = shell_global_get_current_time (global);
   meta_launch_context_set_timestamp (context, timestamp);
 
-  if (workspace < 0)
-    ws = meta_workspace_manager_get_active_workspace (workspace_manager);
-  else
-    ws = meta_workspace_manager_get_workspace_by_index (workspace_manager, workspace);
-
-  meta_launch_context_set_workspace (context, ws);
+  if (workspace > -1)
+    {
+      ws = meta_workspace_manager_get_workspace_by_index (workspace_manager, workspace);
+      meta_launch_context_set_workspace (context, ws);
+    }
 
   g_signal_connect (context,
                     "launched",
