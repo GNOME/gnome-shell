@@ -111,8 +111,6 @@ const BackgroundAppMenuItem = GObject.registerClass({
     }
 
     async _quitApp() {
-        const appId = this.app.get_id().replace(/\.desktop$/, '');
-
         this._spinner.play();
         this._spinnerTimeoutId =
             GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, SPINNER_TIMEOUT,
@@ -124,18 +122,10 @@ const BackgroundAppMenuItem = GObject.registerClass({
                 });
 
         try {
-            await Gio.DBus.session.call(
-                appId,
-                `/${appId.replaceAll('.', '/')}`,
-                'org.freedesktop.Application',
-                'ActivateAction',
-                new GLib.Variant('(sava{sv})', ['quit', [], {}]),
-                null,
-                Gio.DBusCallFlags.NONE,
-                -1,
-                null);
+            await this.app.activate_action('quit', null, 0, -1, null);
         } catch (_error) {
             try {
+                const appId = this.app.get_id().replace(/\.desktop$/, '');
                 Util.trySpawn(['flatpak', 'kill', appId]);
             } catch (pidError) {
                 logError(pidError, 'Failed to kill application');
