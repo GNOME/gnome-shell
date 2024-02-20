@@ -781,7 +781,7 @@ class NetworkAgent {
             return;
         }
 
-        const source = new MessageTray.getSystemSource();
+        const source = MessageTray.getSystemSource();
         const notification = new MessageTray.Notification(source, title, body);
         notification.iconName = 'dialog-password-symbolic';
 
