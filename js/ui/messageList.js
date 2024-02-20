@@ -507,6 +507,8 @@ export const Message = GObject.registerClass({
         this.bodyLabel = new URLHighlighter('', false, this._useBodyMarkup);
         this.bodyLabel.add_style_class_name('message-body');
         this._bodyStack.add_child(this.bodyLabel);
+        this._expandedLabel = new URLHighlighter('', true, this._useBodyMarkup);
+        this._bodyStack.add_child(this._expandedLabel);
         this.setBody(body);
 
         this.connect('destroy', this._onDestroy.bind(this));
@@ -543,8 +545,7 @@ export const Message = GObject.registerClass({
         this._bodyText = text;
         this.bodyLabel.setMarkup(text ? text.replace(/\n/g, ' ') : '',
             this._useBodyMarkup);
-        if (this._expandedLabel)
-            this._expandedLabel.setMarkup(text, this._useBodyMarkup);
+        this._expandedLabel.setMarkup(text, this._useBodyMarkup);
     }
 
     setUseBodyMarkup(enable) {
@@ -579,33 +580,10 @@ export const Message = GObject.registerClass({
         return button;
     }
 
-    setExpandedBody(actor) {
-        if (actor == null) {
-            if (this._bodyStack.get_n_children() > 1)
-                this._bodyStack.get_child_at_index(1).destroy();
-            return;
-        }
-
-        if (this._bodyStack.get_n_children() > 1)
-            throw new Error('Message already has an expanded body actor');
-
-        this._bodyStack.insert_child_at_index(actor, 1);
-    }
-
-    setExpandedLines(nLines) {
-        this._bodyStack.layout_manager.expandLines = nLines;
-    }
-
     expand(animate) {
         this.expanded = true;
 
         this._actionBin.visible = this._actionBin.get_n_children() > 0;
-
-        if (this._bodyStack.get_n_children() < 2) {
-            this._expandedLabel = new URLHighlighter(this._bodyText,
-                true, this._useBodyMarkup);
-            this.setExpandedBody(this._expandedLabel);
-        }
 
         const duration = animate ? MessageTray.ANIMATION_TIME : 0;
         this._bodyStack.ease_property('@layout.expansion', 1, {
