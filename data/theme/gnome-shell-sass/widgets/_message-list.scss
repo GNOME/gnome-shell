@@ -127,23 +127,21 @@
     margin-top: 0;
     spacing: $base_padding;
 
-    // icon container
-    .message-icon-bin {
-      &:ltr { padding-right:$base_padding;}
-      &:rtl { padding-left:$base_padding;}
+    // icon of the message
+    .message-icon {
+      &:ltr { margin-right:$base_padding;}
+      &:rtl { margin-left:$base_padding;}
 
       // icon size and color
-      > StIcon {
-        icon-size: $base_icon_size * 3; // 48px
-        -st-icon-style: symbolic;
+      icon-size: $base_icon_size * 3; // 48px
+      -st-icon-style: symbolic;
 
-        .message-themed-icon {
-          border-radius: $forced_circular_radius; // is circular
-          background-color: transparentize($fg_color, 0.8);
-          icon-size: $base_icon_size;
-          min-width: $base_icon_size * 3;
-          min-height: $base_icon_size * 3;
-        }
+      &.message-themed-icon {
+        border-radius: $forced_circular_radius; // is circular
+        background-color: transparentize($fg_color, 0.8);
+        icon-size: $base_icon_size;
+        min-width: $base_icon_size * 3;
+        min-height: $base_icon_size * 3;
       }
     }
 
@@ -203,18 +201,13 @@
   & StIcon { icon-size: $base_icon_size; }
 }
 
-// album-art
-.media-message-cover-icon {
-  icon-size: $base_icon_size * 3 !important; // 48px
-  border-radius: $base_border_radius;
+.media-message {
+  // album-art
+  .message-icon {
+    border-radius: $base_border_radius !important;
 
-  // when there is no artwork
-  &.fallback {
-    color: darken($fg_color, 17%);
-    background-color: $bg_color;
-    border: 1px solid transparent;
-    border-radius: $base_border_radius;
-    icon-size: $large_icon_size !important; // 32px
-    padding: ($base_padding * 2 + 2); // 16px
+    &.message-themed-icon {
+      icon-size: $large_icon_size !important; // 32px
+    }
   }
 }

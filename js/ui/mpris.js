@@ -1,7 +1,6 @@
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
-import St from 'gi://St';
 import * as Signals from '../misc/signals.js';
 
 import * as Main from './main.js';
@@ -24,11 +23,9 @@ export const MediaMessage = GObject.registerClass(
 class MediaMessage extends MessageList.Message {
     _init(player) {
         super._init(player.source, '', '');
+        this.add_style_class_name('media-message');
 
         this._player = player;
-
-        this._icon = new St.Icon({style_class: 'media-message-cover-icon'});
-        this.setIcon(this._icon);
 
         this._prevButton = this.addMediaControl('media-skip-backward-symbolic',
             () => {
@@ -65,12 +62,10 @@ class MediaMessage extends MessageList.Message {
         this.setBody(this._player.trackArtists.join(', '));
 
         if (this._player.trackCoverUrl) {
-            let file = Gio.File.new_for_uri(this._player.trackCoverUrl);
-            this._icon.gicon = new Gio.FileIcon({file});
-            this._icon.remove_style_class_name('fallback');
+            const file = Gio.File.new_for_uri(this._player.trackCoverUrl);
+            this.setIcon(new Gio.FileIcon({file}));
         } else {
-            this._icon.icon_name = 'audio-x-generic-symbolic';
-            this._icon.add_style_class_name('fallback');
+            this.setIcon(new Gio.ThemedIcon({name: 'audio-x-generic-symbolic'}));
         }
 
         let isPlaying = this._player.status === 'Playing';

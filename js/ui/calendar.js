@@ -774,7 +774,7 @@ class NotificationMessage extends MessageList.Message {
         this.notification = notification;
         this.datetime = notification.datetime;
 
-        this.setIcon(this._getIcon());
+        this.setIcon(notification.gicon);
 
         this.connect('close', () => {
             this._closed = true;
@@ -798,20 +798,9 @@ class NotificationMessage extends MessageList.Message {
         });
     }
 
-    _getIcon() {
-        const {gicon} = this.notification;
-        if (gicon) {
-            const styleClass =
-                gicon instanceof Gio.ThemedIcon ? 'message-themed-icon' : '';
-            return new St.Icon({gicon, styleClass});
-        } else {
-            return null;
-        }
-    }
-
     _onUpdated(n, _clear) {
         this.datetime = n.datetime;
-        this.setIcon(this._getIcon());
+        this.setIcon(n.gicon);
         this.setTitle(n.title);
         this.setBody(n.body);
         this.setUseBodyMarkup(n.useBodyMarkup);

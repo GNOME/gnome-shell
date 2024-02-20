@@ -475,13 +475,13 @@ export const Message = GObject.registerClass({
         });
         vbox.add_child(this._actionBin);
 
-        this._iconBin = new St.Bin({
-            style_class: 'message-icon-bin',
+        this._icon = new St.Icon({
+            style_class: 'message-icon',
             y_expand: true,
             y_align: Clutter.ActorAlign.START,
             visible: false,
         });
-        hbox.add_child(this._iconBin);
+        hbox.add_child(this._icon);
 
         const contentBox = new St.BoxLayout({
             style_class: 'message-content',
@@ -523,9 +523,15 @@ export const Message = GObject.registerClass({
         this.emit('close');
     }
 
-    setIcon(actor) {
-        this._iconBin.child = actor;
-        this._iconBin.visible = actor != null;
+    setIcon(icon) {
+        this._icon.gicon = icon;
+
+        if (icon instanceof Gio.ThemedIcon)
+            this._icon.add_style_class_name('message-themed-icon');
+        else
+            this._icon.remove_style_class_name('message-themed-icon');
+
+        this._icon.visible = !!icon;
     }
 
     get datetime() {
