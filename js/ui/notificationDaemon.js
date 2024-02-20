@@ -179,7 +179,7 @@ class FdoNotificationDaemon {
         this._notifications[id] = ndata;
 
         let sender = invocation.get_sender();
-        let pid = hints['sender-pid'];
+        const pid = hints['x-shell-sender-pid'];
 
         let source = this._getSource(appName, pid, ndata, sender, null);
         this._notifyForSource(source, ndata);
