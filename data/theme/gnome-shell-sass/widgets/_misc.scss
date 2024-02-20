@@ -7,15 +7,14 @@
 // User icon
 .user-icon {
   background-size: contain;
-  color: $osd_fg_color;
   border-radius: $forced_circular_radius;
-  icon-size: $base_icon_size * 4; // 64px
+  icon-size: $base_icon_size * 4;
+
+  background-color: transparentize($osd_fg_color,0.95);
+  color: $osd_fg_color;
 
   & StIcon {
-    background-color: transparentize($osd_fg_color,0.95);
-    border-radius: $forced_circular_radius;
-    padding: $base_padding * 2 ; // 12px
-    width: $base_icon_size * 2.5; height:  $base_icon_size * 2.5; // 40px;
+    padding: $base_padding * 2;
   }
 
   &.user-avatar {
