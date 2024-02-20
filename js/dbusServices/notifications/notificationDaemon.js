@@ -101,6 +101,7 @@ export const NotificationDaemon = class extends ServiceImplementation {
         params[6] = {
             ...hints,
             'x-shell-sender-pid': new GLib.Variant('u', pid),
+            'x-shell-sender': new GLib.Variant('s', sender),
         };
 
         try {
