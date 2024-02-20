@@ -57,50 +57,12 @@ struct _GnomeShellPlugin
 {
   MetaPlugin parent;
 
-  int glx_error_base;
-  int glx_event_base;
-  guint have_swap_event : 1;
   CoglContext *cogl_context;
 
   ShellGlobal *global;
 };
 
 G_DEFINE_TYPE (GnomeShellPlugin, gnome_shell_plugin, META_TYPE_PLUGIN)
-
-static gboolean
-gnome_shell_plugin_has_swap_event (GnomeShellPlugin *shell_plugin)
-{
-  CoglDisplay *cogl_display =
-    cogl_context_get_display (shell_plugin->cogl_context);
-  CoglRenderer *renderer = cogl_display_get_renderer (cogl_display);
-  const char * (* query_extensions_string) (Display *dpy, int screen);
-  Bool (* query_extension) (Display *dpy, int *error, int *event);
-  MetaDisplay *display = meta_plugin_get_display (META_PLUGIN (shell_plugin));
-  MetaX11Display *x11_display = meta_display_get_x11_display (display);
-  Display *xdisplay;
-  int screen_number;
-  const char *glx_extensions;
-
-  /* We will only get swap events if Cogl is using GLX */
-  if (cogl_renderer_get_winsys_id (renderer) != COGL_WINSYS_ID_GLX)
-    return FALSE;
-
-  xdisplay = meta_x11_display_get_xdisplay (x11_display);
-
-  query_extensions_string =
-    (void *) cogl_get_proc_address ("glXQueryExtensionsString");
-  query_extension =
-    (void *) cogl_get_proc_address ("glXQueryExtension");
-
-  query_extension (xdisplay,
-                   &shell_plugin->glx_error_base,
-                   &shell_plugin->glx_event_base);
-
-  screen_number = XDefaultScreen (xdisplay);
-  glx_extensions = query_extensions_string (xdisplay, screen_number);
-
-  return strstr (glx_extensions, "GLX_INTEL_swap_event") != NULL;
-}
 
 static void
 gnome_shell_plugin_start (MetaPlugin *plugin)
@@ -110,14 +72,6 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
 
   backend = clutter_get_default_backend ();
   shell_plugin->cogl_context = clutter_backend_get_cogl_context (backend);
-
-  shell_plugin->have_swap_event =
-    gnome_shell_plugin_has_swap_event (shell_plugin);
-
-  shell_perf_log_define_event (shell_perf_log_get_default (),
-                               "glx.swapComplete",
-                               "GL buffer swap complete event received (with timestamp of completion)",
-                               "x");
 
   shell_plugin->global = shell_global_get ();
   _shell_global_set_plugin (shell_plugin->global, META_PLUGIN (shell_plugin));
@@ -245,40 +199,6 @@ gnome_shell_plugin_show_window_menu_for_rect (MetaPlugin         *plugin,
 }
 
 static gboolean
-gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
-                                  XEvent     *xev)
-{
-#ifdef GLX_INTEL_swap_event
-  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
-
-  if (shell_plugin->have_swap_event &&
-      xev->type == (shell_plugin->glx_event_base + GLX_BufferSwapComplete))
-    {
-      GLXBufferSwapComplete *swap_complete_event;
-      swap_complete_event = (GLXBufferSwapComplete *)xev;
-
-      /* Buggy early versions of the INTEL_swap_event implementation in Mesa
-       * can send this with a ust of 0. Simplify life for consumers
-       * by ignoring such events */
-      if (swap_complete_event->ust != 0)
-        {
-          gboolean frame_timestamps;
-          g_object_get (shell_plugin->global,
-                        "frame-timestamps", &frame_timestamps,
-                        NULL);
-
-          if (frame_timestamps)
-            shell_perf_log_event_x (shell_perf_log_get_default (),
-                                    "glx.swapComplete",
-                                    swap_complete_event->ust);
-        }
-    }
-#endif
-
-  return FALSE;
-}
-
-static gboolean
 gnome_shell_plugin_keybinding_filter (MetaPlugin     *plugin,
                                       MetaKeyBinding *binding)
 {
@@ -349,7 +269,6 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
   plugin_class->show_window_menu = gnome_shell_plugin_show_window_menu;
   plugin_class->show_window_menu_for_rect = gnome_shell_plugin_show_window_menu_for_rect;
 
-  plugin_class->xevent_filter     = gnome_shell_plugin_xevent_filter;
   plugin_class->keybinding_filter = gnome_shell_plugin_keybinding_filter;
 
   plugin_class->confirm_display_change = gnome_shell_plugin_confirm_display_change;

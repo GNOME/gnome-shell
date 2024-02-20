@@ -281,17 +281,6 @@ function _frameDone(time) {
 
 /**
  * @param {number} time - event timestamp
- * @param {number} swapTime - event data
- * @returns {void}
- */
-export function glx_swapComplete(time, swapTime) {
-    haveSwapComplete = true;
-
-    _frameDone(swapTime);
-}
-
-/**
- * @param {number} time - event timestamp
  * @returns {void}
  */
 export function clutter_stagePaintDone(time) {
