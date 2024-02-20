@@ -31,6 +31,8 @@ class Avatar extends St.Bin {
             reactive: params.reactive,
             width: params.iconSize * themeContext.scaleFactor,
             height: params.iconSize * themeContext.scaleFactor,
+            x_expand: false,
+            y_expand: false,
         });
 
         this._iconSize = params.iconSize;
