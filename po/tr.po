@@ -1,6 +1,6 @@
 # Turkish translation of gnome-shell
 # Copyright (C) 2009, 2011 the Free Software Foundation, Inc.
-# Copyright (C) 2012-2023 gnome-shell'S COPYRIGHT HOLDER
+# Copyright (C) 2012-2024 gnome-shell'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Baris Cicek <baris@teamforce.name.tr>, 2009.
@@ -10,14 +10,14 @@
 # Gökhan Gurbetoğlu <ggurbet@gmail.com>, 2014.
 # Muhammet Kara <muhammetk@gmail.com>, 2011-2017.
 # Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017, 2018.
-# Sabri Ünal <libreajans@gmail.com>, 2014, 2019, 2022-2024.
+# Sabri Ünal <libreajans@gmail.com>, 2014, 2019, 2020, 2023, 2024.
 # Emin Tufan Çetin <etcetin@gmail.com>, 2017-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-18 09:23+0000\n"
+"POT-Creation-Date: 2024-02-18 15:42+0000\n"
 "PO-Revision-Date: 2024-02-18 08:00+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
@@ -27,12 +27,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.4.2\n"
-"X-Project-Style: gnome\n"
-"X-DL-Team: tr\n"
-"X-DL-Module: gnome-shell\n"
-"X-DL-Branch: main\n"
-"X-DL-Domain: po\n"
-"X-DL-State: Translating\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -239,10 +233,10 @@ msgid ""
 "that are already loaded, so a change only takes full effect on the next "
 "login."
 msgstr ""
-"Kullanıcıların ev klasörlerine uzantı kurmasını sağlar. Eğer devre dışı bırakılırsa "
-"InstallRemoteExtension D-Bus yöntemi başarısız olur ve uzantılar başlangıçta yalnızca "
-"sistem klasörlerinden yüklenir. Halihazırda yüklenmiş uzantıları etkilemez, değişiklikler "
-"sonraki oturum açmada tümüyle etkinleşir."
+"Kullanıcıların ev klasörlerine uzantı kurmasını sağlar. Eğer devre dışı "
+"bırakılırsa InstallRemoteExtension D-Bus yöntemi başarısız olur ve uzantılar "
+"başlangıçta yalnızca sistem klasörlerinden yüklenir. Halihazırda yüklenmiş "
+"uzantıları etkilemez, değişiklikler sonraki oturum açmada tümüyle etkinleşir."
 
 #: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
