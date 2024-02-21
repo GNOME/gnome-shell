@@ -27,7 +27,6 @@ const LONGER_HIDE_TIMEOUT = 600;
 
 const MAX_NOTIFICATIONS_IN_QUEUE = 3;
 const MAX_NOTIFICATIONS_PER_SOURCE = 3;
-const MAX_NOTIFICATION_BUTTONS = 3;
 
 // We delay hiding of the tray if the mouse is within MOUSE_LEFT_ACTOR_THRESHOLD
 // range from the point where it left the tray.
@@ -498,7 +497,18 @@ export const Notification = GObject.registerClass({
     // @label: the label for the action's button
     // @callback: the callback for the action
     addAction(label, callback) {
-        const action = new Action(label, callback);
+        const action = new Action(label, () => {
+            callback();
+
+            // We don't hide a resident notification when the user invokes one of its actions,
+            // because it is common for such notifications to update themselves with new
+            // information based on the action. We'd like to display the updated information
+            // in place, rather than pop-up a new notification.
+            if (this.resident)
+                return;
+
+            this.destroy();
+        });
         this.actions.push(action);
         this.emit('action-added', action);
     }
@@ -557,8 +567,14 @@ export const Notification = GObject.registerClass({
     activate() {
         this.emit('activated');
 
-        if (!this.resident)
-            this.destroy();
+        // We don't hide a resident notification when the user invokes one of its actions,
+        // because it is common for such notifications to update themselves with new
+        // information based on the action. We'd like to display the updated information
+        // in place, rather than pop-up a new notification.
+        if (this.resident)
+            return;
+
+        this.destroy();
     }
 
     destroy(reason = NotificationDestroyedReason.DISMISSED) {
@@ -579,10 +595,6 @@ export const NotificationBanner = GObject.registerClass({
         this.can_focus = false;
         this.add_style_class_name('notification-banner');
 
-        this._buttonBox = null;
-
-        this._addActions();
-
         this.notification.connectObject('activated', () => {
             // We hide all types of notifications once the user clicks on
             // them because the common outcome of clicking should be the
@@ -590,64 +602,6 @@ export const NotificationBanner = GObject.registerClass({
             // attention switching to the window.
             this.emit('done-displaying');
         }, this);
-    }
-
-    _onUpdated(n, clear) {
-        super._onUpdated(n, clear);
-
-        if (clear) {
-            this.setActionArea(null);
-            this._buttonBox = null;
-        }
-
-        this._addActions();
-    }
-
-    _addActions() {
-        this.notification.actions.forEach(action => {
-            this.addAction(action.label, () => action.activate());
-        });
-    }
-
-    addButton(button, callback) {
-        if (!this._buttonBox) {
-            this._buttonBox = new St.BoxLayout({
-                style_class: 'notification-actions',
-                x_expand: true,
-            });
-            this.setActionArea(this._buttonBox);
-            global.focus_manager.add_group(this._buttonBox);
-        }
-
-        if (this._buttonBox.get_n_children() >= MAX_NOTIFICATION_BUTTONS)
-            return null;
-
-        this._buttonBox.add_child(button);
-        button.connect('clicked', () => {
-            callback();
-
-            if (!this.notification.resident) {
-                // We don't hide a resident notification when the user invokes one of its actions,
-                // because it is common for such notifications to update themselves with new
-                // information based on the action. We'd like to display the updated information
-                // in place, rather than pop-up a new notification.
-                this.emit('done-displaying');
-                this.notification.destroy();
-            }
-        });
-
-        return button;
-    }
-
-    addAction(label, callback) {
-        const button = new St.Button({
-            style_class: 'notification-button',
-            label,
-            x_expand: true,
-            can_focus: true,
-        });
-
-        return this.addButton(button, callback);
     }
 });
 

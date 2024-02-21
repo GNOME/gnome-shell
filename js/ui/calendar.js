@@ -18,6 +18,7 @@ import {formatDateWithCFormatString} from '../misc/dateUtils.js';
 import {loadInterfaceXML} from '../misc/fileUtils.js';
 
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
+const MAX_NOTIFICATION_BUTTONS = 3;
 
 const NC_ = (context, str) => `${context}\u0004${str}`;
 
@@ -782,11 +783,19 @@ class NotificationMessage extends MessageList.Message {
         });
         notification.connectObject(
             'updated', this._onUpdated.bind(this),
+            'action-added', (_, action) => this._addAction(action),
+            'action-removed', (_, action) => this._removeAction(action),
+
             'destroy', () => {
                 this.notification = null;
                 if (!this._closed)
                     this.close();
             }, this);
+
+        this._actions = new Map();
+        this.notification.actions.forEach(action => {
+            this._addAction(action);
+        });
     }
 
     _getIcon() {
@@ -814,6 +823,36 @@ class NotificationMessage extends MessageList.Message {
 
     canClose() {
         return true;
+    }
+
+    _addAction(action) {
+        if (!this._buttonBox) {
+            this._buttonBox = new St.BoxLayout({
+                x_expand: true,
+                style_class: 'notification-buttons-bin',
+            });
+            this.setActionArea(this._buttonBox);
+            global.focus_manager.add_group(this._buttonBox);
+        }
+
+        if (this._buttonBox.get_n_children() >= MAX_NOTIFICATION_BUTTONS)
+            return;
+
+        const button = new St.Button({
+            style_class: 'notification-button',
+            x_expand: true,
+            label: action.label,
+        });
+
+        button.connect('clicked', () => action.activate());
+
+        this._actions.set(action, button);
+        this._buttonBox.add_child(button);
+    }
+
+    _removeAction(action) {
+        this._actions.get(action)?.destroy();
+        this._actions.delete(action);
     }
 });
 

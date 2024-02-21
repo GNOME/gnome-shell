@@ -469,7 +469,7 @@ export const Message = GObject.registerClass({
         });
         vbox.add_child(hbox);
 
-        this._actionBin = new St.Widget({
+        this._actionBin = new St.Bin({
             layout_manager: new ScaleLayout(),
             visible: false,
         });
@@ -557,17 +557,8 @@ export const Message = GObject.registerClass({
     }
 
     setActionArea(actor) {
-        if (actor == null) {
-            if (this._actionBin.get_n_children() > 0)
-                this._actionBin.get_child_at_index(0).destroy();
-            return;
-        }
-
-        if (this._actionBin.get_n_children() > 0)
-            throw new Error('Message already has an action area');
-
-        this._actionBin.add_child(actor);
-        this._actionBin.visible = this.expanded;
+        this._actionBin.child = actor;
+        this._actionBin.visible = actor && this.expanded;
     }
 
     addMediaControl(iconName, callback) {
@@ -583,7 +574,7 @@ export const Message = GObject.registerClass({
     expand(animate) {
         this.expanded = true;
 
-        this._actionBin.visible = this._actionBin.get_n_children() > 0;
+        this._actionBin.visible = !!this._actionBin.child;
 
         const duration = animate ? MessageTray.ANIMATION_TIME : 0;
         this._bodyStack.ease_property('@layout.expansion', 1, {

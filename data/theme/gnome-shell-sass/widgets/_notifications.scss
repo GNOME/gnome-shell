@@ -14,12 +14,12 @@ $notification_banner_width: 34em;
   @if $contrast == 'high' {
     @include draw_hc_inset();
   }
+}
 
-  .notification-actions {
-    spacing: 0;
-  }
+.notification-buttons-bin {
+  spacing: 0;
+}
 
-  .notification-button {
-    @extend %bubble_button;
-  }
+.notification-button {
+  @extend %bubble_button;
 }
