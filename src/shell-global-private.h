@@ -5,6 +5,7 @@
 #include "shell-global.h"
 
 #include <gjs/gjs.h>
+#include <X11/Xlib.h>
 
 #include "shell-app-cache-private.h"
 
