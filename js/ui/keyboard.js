@@ -1619,18 +1619,10 @@ export const Keyboard = GObject.registerClass({
     }
 
     _previousWordPosition(text, cursor) {
-        /* Skip word prior to cursor */
-        let pos = Math.max(0, text.slice(0, cursor).search(/\s+\S+\s*$/));
-        if (pos < 0)
-            return 0;
-
-        /* Skip contiguous spaces */
-        for (; pos >= 0; pos--) {
-            if (text.charAt(pos) !== ' ')
-                return GLib.utf8_strlen(text.slice(0, pos + 1), -1);
-        }
-
-        return 0;
+        const upToCursor = [...text].slice(0, cursor).join('');
+        const jsStringPos = Math.max(0, upToCursor.search(/\s+\S+\s*$/));
+        const charPos = GLib.utf8_strlen(text.slice(0, jsStringPos), -1);
+        return charPos;
     }
 
     _toggleDelete(enabled) {
@@ -1662,17 +1654,10 @@ export const Keyboard = GObject.registerClass({
                 if (cursor === 0)
                     return;
 
-                let encoder = new TextEncoder();
-                let decoder = new TextDecoder();
-
-                /* Find cursor/anchor position in characters */
-                const cursorIdx = GLib.utf8_strlen(decoder.decode(encoder.encode(
-                    text).slice(0, cursor)), -1);
-                const anchorIdx = this._timesDeleted < BACKSPACE_WORD_DELETE_THRESHOLD
-                    ? cursorIdx - 1
+                const anchor = this._timesDeleted < BACKSPACE_WORD_DELETE_THRESHOLD
+                    ? cursor - 1
                     : this._previousWordPosition(text, cursor);
-                /* Now get offset from cursor */
-                const offset = anchorIdx - cursorIdx;
+                const offset = anchor - cursor;
 
                 this._timesDeleted++;
                 Main.inputMethod.delete_surrounding(offset, Math.abs(offset));
