@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-14 16:26+0000\n"
-"PO-Revision-Date: 2024-02-15 01:04+0100\n"
+"POT-Creation-Date: 2024-02-16 11:19+0000\n"
+"PO-Revision-Date: 2024-02-22 19:08+0100\n"
 "Last-Translator: Fran Dieguez <fran.dieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -1084,6 +1084,11 @@ msgstr "Non molestar"
 #: js/ui/calendar.js:966
 msgid "Clear"
 msgstr "Limpar"
+
+#: js/ui/calendar.js:970
+msgctxt "action"
+msgid "Clear all notifications"
+msgstr "Limpar todas as notificacións"
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
