@@ -21,8 +21,6 @@ $_gdm_dialog_width: 25em;
 // GDM Login Dialog
 // uses dark grey system styles
 .login-dialog {
-  background-color: $_gdm_bg;
-
   .login-dialog-prompt-entry {
     @extend %system_entry;
   }
