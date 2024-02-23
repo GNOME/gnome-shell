@@ -58,6 +58,7 @@ workflow:
       nodejs
       npm
       meson
+      git
       'pkgconfig(gobject-introspection-1.0)'
       'pkgconfig(gio-2.0)'
       'pkgconfig(gio-unix-2.0)'
@@ -66,9 +67,6 @@ workflow:
     FDO_DISTRIBUTION_EXEC: |
       # For static analysis with eslint
       npm install -g eslint@^8.0.0 eslint-plugin-jsdoc@^46.0.0 &&
-
-      dnf group install -y 'Development Tools' \
-                 'C Development Tools and Libraries' &&
 
       ./.gitlab-ci/install-meson-project.sh \
         https://gitlab.gnome.org/fmuellner/gjs-ci-tools.git \
