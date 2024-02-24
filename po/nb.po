@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-16 11:19+0000\n"
-"PO-Revision-Date: 2024-02-17 23:23+0100\n"
-"Last-Translator: Brage <bragefuglseth@gnome.org>\n"
+"POT-Creation-Date: 2024-02-17 22:25+0000\n"
+"PO-Revision-Date: 2024-02-24 14:34+0100\n"
+"Last-Translator: Brage Fuglseth <bragefuglseth@gnome.org>\n"
 "Language-Team: \n"
 "Language: nb\n"
 "MIME-Version: 1.0\n"
@@ -177,7 +177,7 @@ msgstr ""
 "Utvidelser for GNOME Shell har UUID-er. Denne innstillingen bestemmer "
 "utvidelser som bør lastes inn. Alle utvidelser som ønsker å lastes inn må "
 "stå i denne listen. Listen kan også endres med D-Bus-metodene "
-"“EnableExtension” og “DisableExtension” for “org.gnome.Shell”."
+"«EnableExtension» og «DisableExtension» for «org.gnome.Shell»."
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "UUIDs of extensions to force disabling"
@@ -193,8 +193,8 @@ msgid ""
 msgstr ""
 "Utvidelser for GNOME Shell har UUID-er. Dette feltet inneholder utvidelser "
 "som bør slås av, selv hvis de lastes inn. Listen kan også endres med D-Bus-"
-"metodene “EnableExtension” og “DisableExtension” for “org.gnome.Shell”. "
-"Denne innstillingen vektlegges mer enn “enabled-extensions”."
+"metodene «EnableExtension» og «DisableExtension» for «org.gnome.Shell». "
+"Denne innstillingen vektlegges mer enn «enabled-extensions»."
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -206,7 +206,7 @@ msgid ""
 "extension” setting."
 msgstr ""
 "Slå av alle utvidelser brukeren har slått på uten å påvirke innstillingen "
-"“enabled-extensions”."
+"«enabled-extensions»."
 
 #: data/org.gnome.shell.gschema.xml.in:45
 msgid "Allow extension installation"
@@ -262,7 +262,7 @@ msgstr "Logg for inspeksjonsverktøy"
 
 #: data/org.gnome.shell.gschema.xml.in:82
 msgid "Always show the “Log Out” action in the system menu"
-msgstr "Vis alltid “Logg ut” i brukermenyen"
+msgstr "Vis alltid «Logg ut» i brukermenyen"
 
 #: data/org.gnome.shell.gschema.xml.in:83
 msgid ""
@@ -270,7 +270,7 @@ msgid ""
 "system menu for logged-in situations where there is a single, local, non-"
 "system user and only a single available session type (e.g. GNOME on Wayland)."
 msgstr ""
-"Denne innstillingen overstyrer den automatiske skjuligen av “Logg ut”-"
+"Denne innstillingen overstyrer den automatiske skjuligen av «Logg ut»-"
 "handlingen i kontrollsenteret på systemer som bare har én vanlig bruker og "
 "én økttype (f.eks. GNOME på Wayland)."
 
@@ -307,7 +307,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:111
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
-msgstr "Siste versjon “Velkommen til GNOME” ble vist"
+msgstr "Siste versjon hvor «Velkommen til GNOME» ble vist"
 
 #: data/org.gnome.shell.gschema.xml.in:112
 msgid ""
@@ -316,8 +316,8 @@ msgid ""
 "number will represent versions that do not exist yet. This huge number can "
 "be used to effectively disable the dialog."
 msgstr ""
-"Denne innstillingen husker versjonen GNOME Shell hadde da vinduet “Velkommen "
-"til GNOME” sist ble vist. Hvis verdien ikke er satt, vil dette være den "
+"Denne innstillingen husker versjonen GNOME Shell hadde da vinduet «Velkommen "
+"til GNOME» sist ble vist. Hvis verdien ikke er satt, vil dette være den "
 "eldste mulige versjonen. Et høyt tall vil representere versjoner som ikke "
 "finnes ennå, og kan brukes til å hindre at vinduet vises."
 
@@ -336,7 +336,7 @@ msgstr ""
 "lagret i rekkefølgen de dukker opp i GNOME Shell. Hver side inneholder app-"
 "ID-er paret med data for deres respektive apper. For øyeblikket lagres disse "
 "verdiene i datafeltet:\n"
-"• “position”: appikonets posisjon på siden"
+"• «position»: appikonets posisjon på siden"
 
 #: data/org.gnome.shell.gschema.xml.in:165
 #: data/org.gnome.shell.gschema.xml.in:172
@@ -488,9 +488,9 @@ msgid ""
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
 "only” (shows only the application icon) or “both”."
 msgstr ""
-"Hvordan apper vises i appveksleren. Gyldige alternativer er “thumbnail-"
-"only” (miniatyrbilde av vinduet),  “app-icon-only” (appikon) eller "
-"“both” (begge)."
+"Hvordan apper vises i appveksleren. Gyldige alternativer er «thumbnail-"
+"only» (miniatyrbilde av vinduet),  «app-icon-only» (appikon) eller "
+"«both» (begge)."
 
 #: data/org.gnome.shell.gschema.xml.in:336
 msgid ""
@@ -723,7 +723,7 @@ msgstr "Kunne ikke tolke kommando:"
 #: js/misc/util.js:187
 #, javascript-format
 msgid "Execution of “%s” failed:"
-msgstr "Kjøring av “%s” mislyktes:"
+msgstr "Kjøring av «%s» mislyktes:"
 
 #: js/misc/dateUtils.js:69
 msgid "Just now"
@@ -873,19 +873,19 @@ msgstr "Avvis"
 msgid "Allow"
 msgstr "Tillat"
 
-#: js/ui/appDisplay.js:1776
+#: js/ui/appDisplay.js:1775
 msgid "Unnamed Folder"
 msgstr "Mappe uten navn"
 
 #: js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been pinned to the dash."
-msgstr "“%s” ble festet til hyllen."
+msgstr "«%s» ble festet til hyllen."
 
 #: js/ui/appFavorites.js:199
 #, javascript-format
 msgid "%s has been unpinned from the dash."
-msgstr "“%s” ble løsnet fra hyllen."
+msgstr "«%s» ble løsnet fra hyllen."
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:51
@@ -1066,7 +1066,7 @@ msgstr "Fjern alle varslinger"
 #: js/ui/closeDialog.js:44
 #, javascript-format
 msgid "“%s” is not responding."
-msgstr "“%s” svarer ikke."
+msgstr "«%s» svarer ikke."
 
 #: js/ui/closeDialog.js:45
 msgid ""
@@ -1107,7 +1107,7 @@ msgstr "Åpne med %s"
 #: js/ui/components/networkAgent.js:96
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
-msgstr "Du kan også koble til ved å trykke på “WPS”-knappen på ruteren din."
+msgstr "Du kan også koble til ved å trykke på «WPS»-knappen på ruteren din."
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:371 js/ui/status/network.js:455
@@ -1141,7 +1141,7 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr ""
-"Passord eller krypteringsnøkler kreves for å koble til nettverket “%s”."
+"Passord eller krypteringsnøkler kreves for å koble til nettverket «%s»."
 
 #: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:755
 msgid "Wired 802.1X authentication"
@@ -1172,7 +1172,7 @@ msgstr "PIN"
 #: js/ui/components/networkAgent.js:776
 #, javascript-format
 msgid "A password is required to connect to “%s”."
-msgstr "Passord kreves for å koble til “%s”."
+msgstr "Passord kreves for å koble til «%s»."
 
 #: js/ui/components/networkAgent.js:775
 msgid "VPN password"
@@ -1470,7 +1470,7 @@ msgstr "Installer utvidelse"
 #: js/ui/extensionDownloader.js:289
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr "Last ned og installer “%s” fra extensions.gnome.org?"
+msgstr "Last ned og installer «%s» fra extensions.gnome.org?"
 
 #: js/ui/extensionSystem.js:353
 msgid "Extension Updates Available"
@@ -1488,7 +1488,7 @@ msgstr "Tillat overstyring av snarveier"
 #: js/ui/inhibitShortcutsDialog.js:73
 #, javascript-format
 msgid "The app %s wants to inhibit shortcuts"
-msgstr "“%s” ønsker å overstyre tastatursnarveier"
+msgstr "«%s» ønsker å overstyre tastatursnarveier"
 
 #: js/ui/inhibitShortcutsDialog.js:74
 msgid "An app wants to inhibit shortcuts"
@@ -1570,7 +1570,7 @@ msgstr "Ingen utvidelser installert"
 #: js/ui/lookingGlass.js:785
 #, javascript-format
 msgid "%s has not emitted any errors."
-msgstr "“%s” har ikke varslet om noen feil."
+msgstr "«%s» har ikke varslet om noen feil."
 
 #: js/ui/lookingGlass.js:791
 msgid "Hide Errors"
@@ -1616,23 +1616,23 @@ msgstr "Se kilde"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: js/ui/main.js:279
+#: js/ui/main.js:278
 msgid "System was put in unsafe mode"
 msgstr "System satt i usikret modus"
 
-#: js/ui/main.js:280
+#: js/ui/main.js:279
 msgid "Apps now have unrestricted access"
 msgstr "Apper har nå ubegrenset tilgang"
 
-#: js/ui/main.js:281 js/ui/overview.js:51
+#: js/ui/main.js:280 js/ui/overview.js:51
 msgid "Undo"
 msgstr "Angre"
 
-#: js/ui/main.js:339
+#: js/ui/main.js:338
 msgid "Logged in as a privileged user"
 msgstr "Logg inn som priviligert bruker"
 
-#: js/ui/main.js:340
+#: js/ui/main.js:339
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1640,11 +1640,11 @@ msgstr ""
 "Å være logget inn som priviligert bruker bør unngås av sikkerhetshensyn. "
 "Hvis mulig, bør du logge inn som vanlig bruker."
 
-#: js/ui/main.js:388
+#: js/ui/main.js:387
 msgid "Screen Lock disabled"
 msgstr "Kan ikke låse skjerm"
 
-#: js/ui/main.js:389
+#: js/ui/main.js:388
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Låsing av skjerm krever GNOME sin låseskjerm."
 
@@ -1763,11 +1763,11 @@ msgstr "Starter på nytt…"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME trenger å låse skjermen"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:670
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:669
 msgid "Unable to lock"
 msgstr "Kan ikke låse"
 
-#: js/ui/screenShield.js:277 js/ui/screenShield.js:671
+#: js/ui/screenShield.js:277 js/ui/screenShield.js:670
 msgid "Lock was blocked by an app"
 msgstr "En app hindret låsing av skjermen"
 
@@ -1928,7 +1928,7 @@ msgstr "Vis tekst"
 msgid "Hide Text"
 msgstr "Skjul tekst"
 
-#: js/ui/shellEntry.js:174
+#: js/ui/shellEntry.js:176
 msgid "Caps lock is on."
 msgstr "Caps lock er på."
 
@@ -2042,11 +2042,11 @@ msgstr "Apper i bakgrunnen"
 
 #: js/ui/status/backgroundApps.js:181
 msgid "Apps known to be running without a window"
-msgstr "Apper som kjører uten et synlig vindu"
+msgstr "Apper som er i aktivitet uten å være åpne"
 
 #: js/ui/status/backgroundApps.js:192
 msgid "App Settings"
-msgstr "Appinnstillinger"
+msgstr "App-innstillinger"
 
 #: js/ui/status/backgroundApps.js:249
 msgid "No Background Apps"
@@ -2147,7 +2147,7 @@ msgstr "Gi posisjonstilgang"
 #: js/ui/status/location.js:341
 #, javascript-format
 msgid "The app %s wants to access your location"
-msgstr "“%s” ber om tilgang til posisjonen din"
+msgstr "«%s» ber om tilgang til posisjonen din"
 
 #: js/ui/status/location.js:351
 msgid "Location access can be changed at any time from the privacy settings."
@@ -2227,11 +2227,11 @@ msgstr "Alle nettverk"
 
 #: js/ui/status/network.js:1891
 msgid "Wired Connections"
-msgstr "Ethernet"
+msgstr "Kablede tilkoblinger"
 
 #: js/ui/status/network.js:1892
 msgid "Wired Settings"
-msgstr "Ethernet-innstillinger"
+msgstr "Kablet-innstillinger"
 
 #: js/ui/status/network.js:1906
 msgid "Bluetooth Tethers"
@@ -2459,7 +2459,7 @@ msgstr "Ta omvisning"
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
-msgstr "“%s” er klar"
+msgstr "«%s» er klar"
 
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:69
@@ -2566,7 +2566,7 @@ msgstr "Modus brukt av GDM til innloggingsskjerm"
 
 #: src/main.c:541
 msgid "Use a specific mode, e.g. “gdm” for login screen"
-msgstr "Bruk en spesifikk modus, for eksempel “gdm”, til innloggingsskjerm"
+msgstr "Bruk en spesifikk modus, for eksempel «gdm», til innloggingsskjerm"
 
 #: src/main.c:547
 msgid "List possible modes"
@@ -2584,7 +2584,7 @@ msgstr "Ukjent"
 #: src/shell-app.c:504
 #, c-format
 msgid "Failed to launch “%s”"
-msgstr "Kunne ikke åpne “%s”"
+msgstr "Kunne ikke åpne «%s»"
 
 #: src/shell-keyring-prompt.c:764
 msgid "Passwords do not match."
@@ -2601,7 +2601,7 @@ msgstr "Autentiseringsvindu lukket av bruker"
 #: src/st/st-icon-theme.c:1865
 #, c-format
 msgid "Icon '%s' not present in theme %s"
-msgstr "Ikonet “%s” finnes ikke i settet “%s”"
+msgstr "Ikonet «%s» finnes ikke i settet «%s»"
 
 #: src/st/st-icon-theme.c:3454 src/st/st-icon-theme.c:3757
 msgid "Failed to load icon"
@@ -2680,7 +2680,7 @@ msgstr "Versjon %s"
 #: subprojects/extensions-app/js/extensionsWindow.js:113
 #, javascript-format
 msgid "Remove “%s”?"
-msgstr "Fjerne “%s”?"
+msgstr "Fjerne «%s»?"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:114
 msgid ""
@@ -2878,7 +2878,7 @@ msgid ""
 msgstr ""
 "UUID-en er et helt unikt øremerke for utvidelsen din.\n"
 "Dette bør være på formen til en e-postadresse, for eksempel "
-"“clicktofocus@janedoe.example.com”\n"
+"«clicktofocus@janedoe.example.com»\n"
 
 #: subprojects/extensions-tool/src/command-create.c:443
 msgid "Choose one of the available templates:\n"
@@ -2959,7 +2959,7 @@ msgstr "Må ha UUID, navn og beskrivelse"
 #: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
-msgstr "Utvidelsen “%s” finnes ikke\n"
+msgstr "Utvidelsen «%s» finnes ikke\n"
 
 #: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
@@ -2997,7 +2997,7 @@ msgstr "Kunne ikke koble til GNOME Shell\n"
 #: subprojects/extensions-tool/src/main.c:159
 #, c-format
 msgid "Extension “%s” doesn't exist\n"
-msgstr "Utvidelsen “%s” finnes ikke\n"
+msgstr "Utvidelsen «%s» finnes ikke\n"
 
 #: subprojects/extensions-tool/src/command-info.c:85
 msgid "Show extensions info"
@@ -3111,12 +3111,12 @@ msgstr "Flere kildemapper oppgitt"
 #: subprojects/extensions-tool/src/command-prefs.c:47
 #, c-format
 msgid "Extension “%s” doesn't have preferences\n"
-msgstr "“%s” har ingen innstillinger\n"
+msgstr "«%s» har ingen innstillinger\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:62
 #, c-format
 msgid "Failed to open prefs for extension “%s”: %s\n"
-msgstr "Kunne ikke åpne innstillinger for “%s”: %s\n"
+msgstr "Kunne ikke åpne innstillinger for «%s»: %s\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:87
 msgid "Opens extension preferences"
@@ -3134,7 +3134,7 @@ msgstr "Kan ikke avinstallere innebygde utvidelser\n"
 #, c-format
 msgid "Failed to uninstall “%s”\n"
 msgstr ""
-"Avinstallering av “%s”\n"
+"Avinstallering av «%s»\n"
 " mislyktes\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:86
@@ -3181,7 +3181,7 @@ msgstr "Tilstand"
 
 #: subprojects/extensions-tool/src/main.c:309
 msgid "“version” takes no arguments"
-msgstr "“version” tar ingen argumenter"
+msgstr "«version» tar ingen argumenter"
 
 #: subprojects/extensions-tool/src/main.c:311
 #: subprojects/extensions-tool/src/main.c:331
@@ -3253,7 +3253,7 @@ msgstr "Installer utvidelsespakke"
 #: subprojects/extensions-tool/src/main.c:349
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
-msgstr "Bruk “%s” for gjennomgående veiledning.\n"
+msgstr "Bruk «%s» for gjennomgående veiledning.\n"
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
 msgid "Plain"
