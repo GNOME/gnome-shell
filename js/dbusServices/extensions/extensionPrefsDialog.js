@@ -58,6 +58,11 @@ export const ExtensionPrefsDialog = GObject.registerClass({
         });
     }
 
+    destroy() {
+        this._showErrorPage(
+            new Error('destroy() breaks tracking open dialogs, use close() if you must'));
+    }
+
     _showErrorPage(e) {
         while (this.visible_page)
             this.remove(this.visible_page);
