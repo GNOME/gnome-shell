@@ -231,7 +231,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         // If possible, reauthenticate an already running session,
         // so any session specific credentials get updated appropriately
         if (userName)
-            this._openReauthenticationChannel(userName);
+            this._openReauthenticationChannel(userName).catch(logError);
         else
             this._getUserVerifier();
     }
