@@ -71,7 +71,8 @@ export class WindowMenu extends PopupMenu.PopupMenu {
             window.begin_grab_op(
                 Meta.GrabOp.KEYBOARD_MOVING,
                 pointer, null,
-                event.get_time());
+                event.get_time(),
+                null);
         });
         if (!window.allows_move())
             item.setSensitive(false);
@@ -90,7 +91,8 @@ export class WindowMenu extends PopupMenu.PopupMenu {
             window.begin_grab_op(
                 Meta.GrabOp.KEYBOARD_RESIZING_UNKNOWN,
                 pointer, null,
-                event.get_time());
+                event.get_time(),
+                null);
         });
         if (!window.allows_resize())
             item.setSensitive(false);
