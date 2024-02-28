@@ -383,6 +383,7 @@
   }
   &:active {@include button(active, $c:$bg);}
   &:checked {@include button(checked, $c:$bg);}
+  &:insensitive {@include button(insensitive, $c:$bg);}
 }
 
 // Panel menu/button drawing function
