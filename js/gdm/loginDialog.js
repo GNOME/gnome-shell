@@ -477,7 +477,7 @@ export const LoginDialog = GObject.registerClass({
                if (activeMechanism)
                    this._authPrompt.setForegroundMechanism(activeMechanism);
             });
-        this._loginOptionsButton.opacity = 0;
+        // this._loginOptionsButton.opacity = 0;
         this._loginOptionsButton.show();
         this._menuButtonBox.add_child(this._loginOptionsButton);
     }

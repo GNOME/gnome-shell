@@ -25,7 +25,7 @@ Gio._promisify(Gdm.UserVerifierProxy.prototype,
     'call_begin_verification_for_user');
 Gio._promisify(Gdm.UserVerifierProxy.prototype, 'call_begin_verification');
 
-export const UNIFIED_AUTH_SERVICE_NAME = 'gdm-unified-auth';
+export const UNIFIED_AUTH_SERVICE_NAME = 'gdm-authd';
 export const PASSWORD_SERVICE_NAME = 'gdm-password';
 export const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 export const SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
@@ -57,6 +57,54 @@ const UNIFIED_AUTH_SUPPORTED_ROLES = [
     PASSWORD_ROLE_NAME,
     WEB_LOGIN_ROLE_NAME,
 ];
+const exampleJSON = `{"auth-selection":
+   {
+     "mechanisms":
+       {
+         "eidp":
+           {
+             "name": "Web Login",
+             "role": "eidp",
+             "init_prompt": "Log In",
+             "link_prompt": "Log in online with another device",
+             "uri": "https://short.url.com/1234",
+             "code": "1234"
+           },
+         "password":
+           {
+             "selectable": true,
+             "name": "Password",
+             "role": "password",
+             "prompt": "Password:"
+           },
+         "smartcard:honescu@BIZ.COM":
+           {
+             "selectable": true,
+             "name": "Smartcard honescu@BIZ.COM",
+             "role": "smartcard",
+             "prompt": "Enter PIN:",
+             "slot_id": "0",
+             "token_name": "honescu@BIZ.COM"
+           },
+         "smartcard:honescu@NAVY.MIL":
+           {
+             "selectable": true,
+             "name": "Smartcard honescu@NAVY.MIL",
+             "role": "smartcard",
+             "prompt": "Enter PIN:",
+             "slot_id": "1",
+             "token_name": "honescu@BIZ.COM"
+           }
+       },
+     "priority":
+       [
+         "eidp",
+         "password",
+         "smartcard:honescu@NAVY.MIL",
+         "smartcard:honescu@BIZ.COM"
+       ]
+   }
+ }`
 
 // Give user 48ms to read each character of a PAM message
 const USER_READ_TIME = 48;
@@ -1047,7 +1095,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             if (!name || !role)
                 continue;
 
-            mechanismsList.push({ id, name, role, serviceName });
+            mechanismsList.push({ id, name, role, serviceName, selectable: true });
         }
 
         mechanismsList = this._filterAuthMechanisms(mechanismsList, (mechanism) => {
@@ -1067,10 +1115,14 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._handleAuthSelection(serviceName, authSelection);
     }
 
-    _onCustomJSONRequest(client, serviceName, name, version, json) {
+    _onCustomJSONRequest(client, serviceName, protocol, version, json) {
         this.emit(`service-request::${serviceName}`);
+        print('Got',serviceName, protocol, version, json);
 
-        if (name === AUTH_MECHANISM_PROTOCOL) {
+        protocol = AUTH_MECHANISM_PROTOCOL;
+        json = exampleJSON;
+
+        if (protocol === AUTH_MECHANISM_PROTOCOL) {
             let requestObject;
 
             try {
