@@ -355,11 +355,11 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             return;
         }
 
-        const [device] = await this._fprintManager.GetDefaultDeviceAsync(
+        const [devicePath] = await this._fprintManager.GetDefaultDeviceAsync(
             Gio.DBusCallFlags.NONE, this._cancellable);
         const fprintDeviceProxy = new FprintDeviceProxy(Gio.DBus.system,
             'net.reactivated.Fprint',
-            device);
+            devicePath);
         const fprintDeviceType = fprintDeviceProxy['scan-type'];
 
         this._fingerprintReaderType = fprintDeviceType === 'swipe'
