@@ -761,17 +761,19 @@ class Panel extends St.Widget {
         if (targetActor !== this)
             return Clutter.EVENT_PROPAGATE;
 
-        const [x, y_] = event.get_coords();
+        const [x, y] = event.get_coords();
         let dragWindow = this._getDraggableWindowForPosition(x);
 
         if (!dragWindow)
             return Clutter.EVENT_PROPAGATE;
 
+        const positionHint = new Graphene.Point({x, y});
         return dragWindow.begin_grab_op(
             Meta.GrabOp.MOVING,
             event.get_device(),
             event.get_event_sequence(),
-            event.get_time()) ? Clutter.EVENT_STOP : Clutter.EVENT_PROPAGATE;
+            event.get_time(),
+            positionHint) ? Clutter.EVENT_STOP : Clutter.EVENT_PROPAGATE;
     }
 
     _onButtonPress(actor, event) {
