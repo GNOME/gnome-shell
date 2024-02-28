@@ -1178,7 +1178,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         // services.
         const unifiedAuthAvailable = this._activeServices.has(UNIFIED_AUTH_SERVICE_NAME) && !this._unavailableServices.has(UNIFIED_AUTH_SERVICE_NAME);
         for (const definition of DiscreteServiceMechanismDefinitions) {
-            const enabled = this._settings.get_boolean(definition.setting);
+            const enabled = this._isDiscreteServiceEnabled(definition);
             const available = this._activeServices.has(definition.serviceName) && !this._unavailableServices.has(definition.serviceName);
             const supportedByUnifiedAuth = unifiedAuthAvailable && UNIFIED_AUTH_SUPPORTED_ROLES.includes(definition.role);
 
