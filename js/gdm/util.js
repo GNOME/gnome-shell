@@ -13,6 +13,8 @@ import * as Main from '../ui/main.js';
 import {loadInterfaceXML} from '../misc/fileUtils.js';
 import * as Params from '../misc/params.js';
 import * as SmartcardManager from '../misc/smartcardManager.js';
+import * as UnifiedMechanism from './unifiedMechanism.js';
+import * as Consts from './consts.js';
 
 const FprintManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(
     loadInterfaceXML('net.reactivated.Fprint.Manager'));
@@ -31,12 +33,15 @@ export const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 export const SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
 const CLONE_FADE_ANIMATION_TIME = 250;
 
-export const WEB_LOGIN_ROLE_NAME = 'eidp';
-export const PASSWORD_ROLE_NAME = 'password';
-export const SMARTCARD_ROLE_NAME = 'smartcard';
-export const FINGERPRINT_ROLE_NAME = 'fingerprint';
-
-export const AUTH_MECHANISM_PROTOCOL = 'auth-mechanisms';
+export const WEB_LOGIN_ROLE_NAME = Consts.WEB_LOGIN_ROLE_NAME;
+export const PASSWORD_ROLE_NAME = Consts.PASSWORD_ROLE_NAME;
+export const SMARTCARD_ROLE_NAME = Consts.SMARTCARD_ROLE_NAME;
+export const FINGERPRINT_ROLE_NAME = Consts.FINGERPRINT_ROLE_NAME;
+const AUTH_MECHANISM_PROTOCOL = UnifiedMechanism.MECHANISM_PROTOCOL;
+// export const WEB_LOGIN_ROLE_NAME = 'eidp';
+// export const PASSWORD_ROLE_NAME = 'password';
+// export const SMARTCARD_ROLE_NAME = 'smartcard';
+// export const FINGERPRINT_ROLE_NAME = 'fingerprint';
 
 export const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 export const UNIFIED_AUTHENTICATION_KEY = 'enable-unified-authentication';
@@ -53,10 +58,6 @@ export const DISABLE_USER_LIST_KEY = 'disable-user-list';
 
 const AUTH_SELECTION_COMPLETION_STATUS = 'Ok';
 
-const UNIFIED_AUTH_SUPPORTED_ROLES = [
-    PASSWORD_ROLE_NAME,
-    WEB_LOGIN_ROLE_NAME,
-];
 const exampleJSON = `{"auth-selection":
    {
      "mechanisms":
@@ -115,6 +116,7 @@ const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 const DiscreteServiceMechanismDefinitions = [
     {
         serviceName: PASSWORD_SERVICE_NAME,
+        protocol: 'discrete',
         mechanismId: "password",
         mechanismName: _("Password"),
         setting: PASSWORD_AUTHENTICATION_KEY,
@@ -124,6 +126,7 @@ const DiscreteServiceMechanismDefinitions = [
 
     {
         serviceName: SMARTCARD_SERVICE_NAME,
+        protocol: 'discrete',
         mechanismId: "smartcard",
         mechanismName: _("Smartcard"),
         setting: SMARTCARD_AUTHENTICATION_KEY,
@@ -133,6 +136,7 @@ const DiscreteServiceMechanismDefinitions = [
 
     {
         serviceName: FINGERPRINT_SERVICE_NAME,
+        protocol: 'discrete',
         mechanismId: "fingerprint",
         mechanismName: _("Fingerprint"),
         setting: FINGERPRINT_AUTHENTICATION_KEY,
@@ -217,6 +221,9 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._publishedMechanisms = new Map();
         this._pendingMechanisms = new Map();
 
+        this._unifiedAuthServices = new Map();
+        this.addUnifiedAuthService(new UnifiedMechanism.UnifiedMechanismProtocolHandler());
+
         this._credentialManagers = {};
 
         this.reauthenticating = false;
@@ -229,6 +236,48 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         this.addCredentialManager(OVirt.SERVICE_NAME, OVirt.getOVirtCredentialsManager());
         this.addCredentialManager(Vmware.SERVICE_NAME, Vmware.getVmwareCredentialsManager());
+    }
+
+    addUnifiedAuthService(unifiedService) {
+        /* TODO: check if not implements too */
+        if (!unifiedService || !unifiedService.protocolName)
+            throw new Error('Invalid unified AuthService');
+
+        const handler = this._unifiedAuthServices.get(unifiedService.protocolName);
+        if (handler && handler !== unifiedService)
+            throw new Error(`Protocol ${unifiedService.protocolName} is already handled`);
+
+        this._unifiedAuthServices.set(unifiedService.protocolName, unifiedService);
+        this._monitorUnifiedServiceMechanisms(unifiedService);
+    }
+
+    _monitorUnifiedServiceMechanisms(unifiedService) {
+        unifiedService.connectObject('mechanisms-changed', (_, mechanisms) => {
+            const serviceName = UNIFIED_AUTH_SERVICE_NAME;
+            let mechanismsList = [];
+            for (const id of Object.keys(mechanisms)) {
+                const name = mechanisms[id].name;
+                const role = mechanisms[id].role;
+
+                if (!name || !role)
+                    continue;
+
+                const protocol = unifiedService.protocolName;
+                const selectable = mechanisms[id].selectable;
+                mechanisms[id].protocol = protocol;
+                mechanismsList.push({id, name, role, serviceName, protocol, selectable});
+            }
+
+            // FIXME: invert the logic, using mechanismsList.filter() instead.
+            mechanismsList = this._filterAuthMechanisms(mechanismsList, m => {
+                delete mechanisms[m.id];
+            });
+
+            log('newly published mechanisms:', mechanisms);
+            this._publishedMechanisms.set(serviceName, mechanisms);
+
+            this.emit('mechanisms-list-changed', serviceName, mechanismsList);
+        }, this);
     }
 
     addCredentialManager(serviceName, credentialManager) {
@@ -332,6 +381,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._smartcardManager = null;
 
         this._fingerprintManager = null;
+        this._unifiedAuthServices.forEach(s => s.disconnectObject(this));
+        this._unifiedAuthServices.clear()
 
         for (let service in this._credentialManagers)
             this.removeCredentialManager(service);
@@ -897,6 +948,13 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _startMechanismFromUnifiedService(mechanism) {
+        const unifiedService = this._unifiedAuthServices.get(mechanism.protocol);
+        if (!unifiedService)
+            return;
+
+        if (unifiedService.handleMechanism(mechanism))
+            return;
+
         const roleHandlers = {
             [WEB_LOGIN_ROLE_NAME]: this._startWebLogin.bind(this),
             [PASSWORD_ROLE_NAME]: this._startPasswordLogin.bind(this),
@@ -989,16 +1047,18 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     async _replyWithAuthSelectionResponse(serviceName, role, response) {
-        const mechanismId = this._pendingMechanisms.get(role);
+        const mechanism = this._getPendingMechanismForRole(role);
+        if (!mechanism)
+            return;
+
         this._pendingMechanisms.delete(role);
+        const authService = this._unifiedAuthServices.get(mechanism.protocol);
 
-        const reply = {
-            "auth-selection": {
-                "status": AUTH_SELECTION_COMPLETION_STATUS,
-                [mechanismId]: response,
-            }
-        };
+        if (!authService)
+            throw new Error(`No authentication service for protocol ${mechanism.protocol}`);
 
+        const reply = authService.getProtocolResponse(mechanism, role, response);
+        log('Sending back via JSON...', reply)
         await this.replyWithJSON(serviceName, JSON.stringify(reply));
     }
 
@@ -1035,8 +1095,23 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         }
     }
 
+    _getPendingMechanismForRole(role) {
+        const mechanismId = this._pendingMechanisms.get(role);
+        if (!mechanismId)
+            return null;
+
+        return [...this._publishedMechanisms.values()].find(m => m[mechanismId])?.[mechanismId];
+    }
+
     async webLoginDone(serviceName) {
         this._clearWebLoginTimeout();
+
+        const mechanism = this._getPendingMechanismForRole(WEB_LOGIN_ROLE_NAME);
+        const authService = this._unifiedAuthServices.get(mechanism?.protocol);
+        log('Found auth service',authService)
+        if (!authService)
+            return;
+
         this._replyWithAuthSelectionResponse(serviceName, WEB_LOGIN_ROLE_NAME, {});
     }
 
@@ -1054,6 +1129,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                     return false;
                 }
 
+                // FIXME: Do no rely on gsettings only, some methods may be imposed!
                 const enabled = this._settings.get_boolean(mapping.setting);
 
                 if (!enabled && filterFunc)
@@ -1063,58 +1139,6 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             });
     }
 
-    _handleAuthSelection(serviceName, authSelection) {
-        let mechanisms = authSelection.mechanisms;
-        const priorityList = authSelection.priority;
-
-        if (!mechanisms)
-            return;
-
-        const ids = Object.keys(mechanisms);
-        ids.sort((a, b) => {
-            const priorityA = priorityList.indexOf(a);
-            const priorityB = priorityList.indexOf(b);
-
-            if (priorityA !== -1 && priorityB !== -1)
-                return priorityA - priorityB;
-
-            if (priorityA !== -1)
-                return -1;
-
-            if (priorityB !== -1)
-                return 1;
-
-            return 0;
-        });
-
-        let mechanismsList = [];
-        for (const id of ids) {
-            const name = mechanisms[id].name;
-            const role = mechanisms[id].role;
-
-            if (!name || !role)
-                continue;
-
-            mechanismsList.push({ id, name, role, serviceName, selectable: true });
-        }
-
-        mechanismsList = this._filterAuthMechanisms(mechanismsList, (mechanism) => {
-            delete mechanisms[mechanism.id];
-        });
-
-        log(`newly published mechanisms: ${JSON.stringify(mechanisms)}`);
-        this._publishedMechanisms.set(serviceName, mechanisms);
-
-        this.emit('mechanisms-list-changed', serviceName, mechanismsList);
-    }
-
-    _handleAuthMechanismsRequest(serviceName, requestObject) {
-        const authSelection = requestObject['auth-selection'];
-
-        if (authSelection)
-            this._handleAuthSelection(serviceName, authSelection);
-    }
-
     _onCustomJSONRequest(client, serviceName, protocol, version, json) {
         this.emit(`service-request::${serviceName}`);
         print('Got',serviceName, protocol, version, json);
@@ -1122,18 +1146,15 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         protocol = AUTH_MECHANISM_PROTOCOL;
         json = exampleJSON;
 
-        if (protocol === AUTH_MECHANISM_PROTOCOL) {
-            let requestObject;
 
-            try {
-                requestObject = JSON.parse(json);
-            } catch (e) {
-                logError(e);
-                return;
-            }
 
-            this._handleAuthMechanismsRequest(serviceName, requestObject);
+        // FIXME: ? use {protocol,version} as key?!
+        const authService = this._unifiedAuthServices.get(protocol);
+        if (!authService) {
+            console.log(`Got a request using protocol ${protocol} v${version} but it was ignored`);
+            return;
         }
+        authService.handleProtocolRequest(protocol, version, json);
     }
 
     _onInfo(client, serviceName, info) {
@@ -1231,8 +1252,10 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         const unifiedAuthAvailable = this._activeServices.has(UNIFIED_AUTH_SERVICE_NAME) && !this._unavailableServices.has(UNIFIED_AUTH_SERVICE_NAME);
         for (const definition of DiscreteServiceMechanismDefinitions) {
             const enabled = this._isDiscreteServiceEnabled(definition);
-            const available = this._activeServices.has(definition.serviceName) && !this._unavailableServices.has(definition.serviceName);
-            const supportedByUnifiedAuth = unifiedAuthAvailable && UNIFIED_AUTH_SUPPORTED_ROLES.includes(definition.role);
+            const available = this._activeServices.has(definition.serviceName) &&
+                !this._unavailableServices.has(definition.serviceName);
+            const supportedByUnifiedAuth = unifiedAuthAvailable &&
+                UnifiedMechanism.SUPPORTED_ROLES.includes(definition.role);
 
             const mechanismsList = [];
             if (enabled && available && !supportedByUnifiedAuth)
