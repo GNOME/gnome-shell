@@ -7,13 +7,13 @@
 #include <meta/meta-plugin.h>
 #include <st/st.h>
 
-#include <qrencode.h>
+#include "qrcodegen.h"
 
 #include "shell-qr-code-generator.h"
 
-#define BYTES_PER_RGB_888 3
-
 typedef struct _ShellQrCodeGeneratorPrivate  ShellQrCodeGeneratorPrivate;
+
+#define BYTES_PER_R8G8B8 3
 
 struct _ShellQrCodeGenerator
 {
@@ -53,32 +53,42 @@ shell_qr_code_generator_init (ShellQrCodeGenerator *qr_code_generator)
   qr_code_generator->priv = shell_qr_code_generator_get_instance_private (qr_code_generator);
 }
 
+static void
+fill_pixel (GByteArray *array,
+            guint8     value,
+            int        pixel_size)
+{
+  guint i;
+
+  for (i = 0; i < pixel_size; i++)
+    {
+      g_byte_array_append (array, &value, 1); /* R */
+      g_byte_array_append (array, &value, 1); /* G */
+      g_byte_array_append (array, &value, 1); /* B */
+    }
+}
+
+
 static guint8 *
 generate_icon (const char   *url,
                size_t        width,
                size_t        height,
                GError      **error)
 {
-  QRcode *qrcode;
-  g_autofree guint8 *pixel_data = NULL;
-  guint8 white_pixel[BYTES_PER_RGB_888] = {255, 255, 255};
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-  guint8 black_pixel[BYTES_PER_RGB_888] = {0, 0, 0};
-#else
-  guint8 black_pixel[BYTES_PER_RGB_888] = {255, 0, 0};
-#endif
-  size_t pixel_size = sizeof (white_pixel);
-  size_t symbol_size;
-  size_t symbols_per_row, number_of_rows;
-  size_t code_width;
-  size_t code_height;
-  size_t offset_x;
-  size_t offset_y;
-  size_t row, symbol, symbol_x, symbol_y;
+  uint8_t qr_code[qrcodegen_BUFFER_LEN_FOR_VERSION (qrcodegen_VERSION_MAX)];
+  uint8_t temp_buf[qrcodegen_BUFFER_LEN_FOR_VERSION (qrcodegen_VERSION_MAX)];
+  GByteArray *qr_matrix;
+  gint pixel_size, qr_size, total_size;
+  gint column, row, i;
 
-  qrcode = QRcode_encodeString (url, 1, QR_ECLEVEL_L, QR_MODE_8, 1);
-
-  if (!qrcode)
+  if (!qrcodegen_encodeText (url,
+                             temp_buf,
+                             qr_code,
+                             qrcodegen_Ecc_LOW,
+                             qrcodegen_VERSION_MIN,
+                             qrcodegen_VERSION_MAX,
+                             qrcodegen_Mask_AUTO,
+                             FALSE))
     {
       g_set_error (error,
                    G_IO_ERROR,
@@ -88,45 +98,26 @@ generate_icon (const char   *url,
       return NULL;
     }
 
-  symbols_per_row = qrcode->width;
-  number_of_rows = qrcode->width;
+  qr_size = qrcodegen_getSize (qr_code);
+  pixel_size = MAX (1, width / (qr_size));
+  total_size = qr_size * pixel_size;
+  qr_matrix = g_byte_array_sized_new (total_size * total_size * pixel_size * BYTES_PER_R8G8B8);
 
-  symbol_size = MIN (width, height) / symbols_per_row;
-  code_width = symbol_size * symbols_per_row;
-  code_height = symbol_size * number_of_rows;
-  offset_x = (width - code_width) / 2;
-  offset_y = (height - code_height) / 2;
-
-  pixel_data = calloc (height, width * BYTES_PER_RGB_888);
-
-  for (row = 0; row < number_of_rows; row++)
+  for (column = 0; column < total_size; column++)
     {
-      for (symbol = 0; symbol < symbols_per_row; symbol++)
+      for (i = 0; i < pixel_size; i++)
         {
-          guint8 *pixel;
-
-          if (qrcode->data[row * symbols_per_row + symbol] & 1)
-            pixel = black_pixel;
-          else
-            pixel = white_pixel;
-
-          for (symbol_y = 0; symbol_y < symbol_size; symbol_y++)
+          for (row = 0; row < total_size / pixel_size; row++)
             {
-              for (symbol_x = 0; symbol_x < symbol_size; symbol_x++)
-                {
-                  size_t x, y;
-                  y = offset_y + (row * symbol_size) + symbol_y;
-                  x = offset_x + (symbol * symbol_size) + symbol_x;
-
-                  memcpy (&pixel_data[(y * width + x) * pixel_size],
-                          pixel,
-                          pixel_size);
-                }
+              if (qrcodegen_getModule (qr_code, column, row))
+                fill_pixel (qr_matrix, 0x00, pixel_size);
+              else
+                fill_pixel (qr_matrix, 0xff, pixel_size);
             }
         }
     }
 
-  return g_steal_pointer (&pixel_data);
+  return g_byte_array_free (qr_matrix, FALSE);
 }
 
 static void
@@ -171,7 +162,7 @@ on_image_task_complete (ShellQrCodeGenerator *self,
                                      COGL_PIXEL_FORMAT_RGB_888,
                                      self->priv->width,
                                      self->priv->height,
-                                     self->priv->width * BYTES_PER_RGB_888,
+                                     self->priv->width * BYTES_PER_R8G8B8,
                                      &error);
 
   if (!data_set)
@@ -216,7 +207,20 @@ shell_qr_code_generator_generate_qr_code (ShellQrCodeGenerator *self,
                                  shell_qr_code_generator_generate_qr_code,
                                  G_IO_ERROR,
                                  G_IO_ERROR_INVALID_DATA,
-                                 "No valid QR code URI provided");
+                                 "No valid QR code uri is provided");
+      return;
+    }
+
+  if (width != height)
+    {
+      if (callback)
+        g_task_report_new_error (self,
+                                 callback,
+                                 user_data,
+                                 shell_qr_code_generator_generate_qr_code,
+                                 G_IO_ERROR,
+                                 G_IO_ERROR_INVALID_DATA,
+                                 "Qr code size mismatch");
       return;
     }
 

@@ -73,7 +73,6 @@ gnome_shell_deps = [
   gcr_dep,
   libsystemd_dep,
   libpipewire_dep,
-  qrencode_dep
 ]
 
 gnome_shell_deps += nm_deps
@@ -172,6 +171,10 @@ libshell_sources = [
   'shell-window-tracker.c',
   'shell-wm.c',
   'shell-workspace-background.c'
+]
+
+libshell_sources += [
+  'qrcodegen.c',
 ]
 
 if have_networkmanager
