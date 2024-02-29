@@ -90,4 +90,4 @@ if yours is out of date, the problem may already have been solved.
 
 ADDITIONAL INFORMATION
 ----------------------
-For further information, visit the website https://wiki.gnome.org/Projects/GnomeShell.
+For further information, visit the website https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/README.md.
