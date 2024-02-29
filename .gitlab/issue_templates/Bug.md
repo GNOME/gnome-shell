@@ -1,5 +1,5 @@
-<!-- 
-Please read https://wiki.gnome.org/Community/GettingInTouch/BugReportingGuidelines
+<!--
+Please read https://gitlab.gnome.org/GNOME/gnome-shell/-/tree/main#reporting-bugs
 first to ensure that you create a clear and specific issue.
 -->
 
@@ -8,7 +8,8 @@ first to ensure that you create a clear and specific issue.
 <!--
 Provide at least the following information:
 * Your OS and version
-* Affected GNOME Shell version (see https://wiki.gnome.org/Schedule for currently supported versions)
+* Affected GNOME Shell version (see https://release.gnome.org/calendar/
+  for currently supported versions)
 * Does this issue appear in XOrg and/or Wayland
 * Does this issue happen without extensions (please follow instructions below)
 
@@ -53,7 +54,7 @@ screenshots or screencasts related, please provide them here.
 If the bug is a crash, please obtain a stack trace with installed debug
 symbols (at least for GNOME Shell and Mutter) and attach it to
 this issue following the instructions on
-https://wiki.gnome.org/Community/GettingInTouch/Bugzilla/GettingTraces.
+https://handbook.gnome.org/issues/stack-traces.html.
 -->
 
 
