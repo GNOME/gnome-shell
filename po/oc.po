@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master oc\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-16 11:19+0000\n"
-"PO-Revision-Date: 2024-02-24 18:04+0100\n"
+"POT-Creation-Date: 2024-02-24 17:04+0000\n"
+"PO-Revision-Date: 2024-02-29 21:32+0100\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -225,6 +225,11 @@ msgid ""
 "that are already loaded, so a change only takes full effect on the next "
 "login."
 msgstr ""
+"Permet als utilizaires d’installar d’extension dins lor dossièr personal. "
+"Se’s desactivat, lo metòde nstallRemoteExtension D-Bus fracassarà e sonque "
+"las installacion que son solament cargadas a partir dels repertòris sistèma. "
+"Tòca pas las extensions que son ja cargadas, doncas las modificacions "
+"prendràn sonque efièch a la connexion que ven."
 
 #: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
@@ -268,18 +273,15 @@ msgid "Always show the “Log Out” action in the system menu"
 msgstr "Totjorn afichar l’element « Se desconnectar » dins lo menú utilizaire"
 
 #: data/org.gnome.shell.gschema.xml.in:83
-#, fuzzy
-#| msgid ""
-#| "This key overrides the automatic hiding of the “Log out” menu item in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the “Log out” action in the "
 "system menu for logged-in situations where there is a single, local, non-"
 "system user and only a single available session type (e.g. GNOME on Wayland)."
 msgstr ""
-"Aquesta clau aficha l’element « Se desconnectar » del menú utilizaire "
-"normalament amagat automaticament dins lo cas d’una session o d’un "
-"utilizaire unic."
+"Aquesta clau subrecarga lo mascatge automatic de l’acion « Se desconnectar » "
+"del menú sistèma per de situacions de connexion quand i a un sol utilizaire "
+"local qu'es pas un utilizaire sistèma e quand i a pas qu'un sol tipe de "
+"session disponible (per exemple : GNOME on Wayland)."
 
 #: data/org.gnome.shell.gschema.xml.in:92
 msgid ""
@@ -897,7 +899,7 @@ msgstr "Refusar"
 msgid "Allow"
 msgstr "Autorizar"
 
-#: js/ui/appDisplay.js:1776
+#: js/ui/appDisplay.js:1775
 msgid "Unnamed Folder"
 msgstr "Dossièr sens nom"
 
@@ -1682,23 +1684,23 @@ msgstr "Afichar la font"
 msgid "Web Page"
 msgstr "Pagina Web"
 
-#: js/ui/main.js:279
+#: js/ui/main.js:278
 msgid "System was put in unsafe mode"
 msgstr "Lo sistèma es estat passat en mòde pas segur"
 
-#: js/ui/main.js:280
+#: js/ui/main.js:279
 msgid "Apps now have unrestricted access"
 msgstr "Las aplicacions auràn ara un accès restrenh"
 
-#: js/ui/main.js:281 js/ui/overview.js:51
+#: js/ui/main.js:280 js/ui/overview.js:51
 msgid "Undo"
 msgstr "Anullar"
 
-#: js/ui/main.js:339
+#: js/ui/main.js:338
 msgid "Logged in as a privileged user"
 msgstr "Connectat coma utilizaire amb privilègis"
 
-#: js/ui/main.js:340
+#: js/ui/main.js:339
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1707,11 +1709,11 @@ msgstr ""
 "per de rasons de seguretat. Vos caldriá, se es possible, de vos connectar "
 "coma utilizaire normal."
 
-#: js/ui/main.js:388
+#: js/ui/main.js:387
 msgid "Screen Lock disabled"
 msgstr "Verrolhatge d’ecran desactivat"
 
-#: js/ui/main.js:389
+#: js/ui/main.js:388
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Lo verrolhatge d’ecran requerís lo gestionari d’afichatge GNOME."
 
@@ -1830,11 +1832,11 @@ msgstr "Reaviada en cors…"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME a besonh de verrolhar l'ecran"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:670
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:669
 msgid "Unable to lock"
 msgstr "Impossible de verrolhar"
 
-#: js/ui/screenShield.js:277 js/ui/screenShield.js:671
+#: js/ui/screenShield.js:277 js/ui/screenShield.js:670
 msgid "Lock was blocked by an app"
 msgstr "Lo verrolhatge es estat blocat per una aplicacion"
 
@@ -1997,7 +1999,7 @@ msgstr "Afichar lo tèxte"
 msgid "Hide Text"
 msgstr "Amagar lo tèxte"
 
-#: js/ui/shellEntry.js:174
+#: js/ui/shellEntry.js:176
 msgid "Caps lock is on."
 msgstr "Verr. maj. es activat."
 
@@ -2717,20 +2719,22 @@ msgid "Configure GNOME Shell Extensions"
 msgstr "Configurar las extensions GNOME Shell"
 
 #: subprojects/extensions-app/js/extensionManager.js:237
-#, fuzzy, javascript-format
-#| msgid "The extension is incompatible with the current GNOME version"
+#, javascript-format
 msgid ""
 "The installed version of this extension (%s) is incompatible with the "
 "current version of GNOME (%s). The extension has been disabled."
-msgstr "Aquesta extension es pas compatibla amb vòstra version de GNOME"
+msgstr ""
+"La version installada d’aquesta extension (%s) es incompatibla amb la "
+"version actuala de GNOME (%s). Se’s desactivat l’extension."
 
 #: subprojects/extensions-app/js/extensionManager.js:238
-#, fuzzy, javascript-format
-#| msgid "The extension is incompatible with the current GNOME version"
+#, javascript-format
 msgid ""
 "The installed version of this extension is incompatible with the current "
 "version of GNOME (%s). The extension has been disabled."
-msgstr "Aquesta extension es pas compatibla amb vòstra version de GNOME"
+msgstr ""
+"La version installada d’aquesta extension es incompatibla amb la version "
+"actuala de GNOME (%s). Se’s desactivat l’extension."
 
 #: subprojects/extensions-app/js/extensionManager.js:242
 msgid ""
@@ -2738,6 +2742,9 @@ msgid ""
 "in the system. It is recommended to turn the extension off until the error "
 "is resolved."
 msgstr ""
+"Una error se’s producha dins aquesta extension. Aquò pòt causar de problèmas "
+"endacòm mai dins lo sistèma. Es recomandat d’atudar l’extension dusca que "
+"l’error siá corregida."
 
 #. translators: Details for an extension error
 #: subprojects/extensions-app/js/extensionManager.js:248
