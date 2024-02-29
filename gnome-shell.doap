@@ -14,15 +14,14 @@ provide a visually attractive and easy to use experience.
 
 Tarball releases are provided largely for distributions to build
 packages. If you are interested in building GNOME Shell from source,
-we would recommend building from version control using the build
-script described at:
+we would recommend building from version control as described at:
 
- https://wiki.gnome.org/Projects/GnomeShell
+  https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/building-and-running.md
 
 Not only will that give you the very latest version of this rapidly
 changing project, it will be much easier than get GNOME Shell and
 its dependencies to build from tarballs.</description>
-  <homepage rdf:resource="https://wiki.gnome.org/Projects/GnomeShell" />
+  <homepage rdf:resource="https://gitlab.gnome.org/GNOME/gnome-shell/" />
   <support-forum rdf:resource="https://discourse.gnome.org/tags/shell" />
   <download-page rdf:resource="http://download.gnome.org/sources/gnome-shell/" />
   <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/gnome-shell/issues/" />
