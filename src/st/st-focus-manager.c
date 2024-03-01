@@ -113,7 +113,7 @@ st_focus_manager_stage_event (ClutterActor *stage,
   if (!focused)
     return FALSE;
 
-  for (group = focused; group != stage; group = clutter_actor_get_parent (group))
+  for (group = focused; group != NULL; group = clutter_actor_get_parent (group))
     {
       if (g_hash_table_lookup (manager->groups, group))
         {
