@@ -114,11 +114,11 @@
     .message-close-button {
       @extend .icon-button;
       color: $fg_color;
-      background-color: transparentize($fg_color, 0.8);
+      background-color: transparentize($fg_color, .9);
       padding: 4px;
-      &:hover { background-color: transparentize($fg_color, 0.7);}
-      &:insensitive { background-color: transparentize($fg_color, 0.9);}
-      &:active { background-color: transparentize($fg_color, 0.8);}
+      &:hover { background-color: transparentize($fg_color, .87);}
+      &:active { background-color: transparentize($fg_color, .84);}
+      &:insensitive { background-color: transparentize($fg_color, .93);}
     }
 
     .message-expand-button {
