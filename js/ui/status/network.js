@@ -1597,6 +1597,10 @@ class NMVpnToggle extends NMToggle {
             'activation-failed', () => this.emit('activation-failed'),
             this);
         this._addItem(connection, item);
+
+        // FIXME: NM is emitting "connection-added" after "notify::active-connections",
+        // so we need to sync connections here once again.
+        this._syncActiveConnections();
     }
 
     _removeConnection(connection) {
