@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-16 11:19+0000\n"
-"PO-Revision-Date: 2024-02-16 12:22+0100\n"
+"POT-Creation-Date: 2024-03-02 20:50+0000\n"
+"PO-Revision-Date: 2024-03-02 23:37+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -254,7 +254,7 @@ msgstr "ამ იდენტიფიკატორების შესა�
 msgid "History for command (Alt-F2) dialog"
 msgstr "ისტორია ბრძანების (Alt-F2) ფანჯრისთვის"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
 #: data/org.gnome.shell.gschema.xml.in:78
 msgid "History for the looking glass dialog"
 msgstr "გამადიდებელი ლინზის ფანჯრის ისტორია"
@@ -566,10 +566,11 @@ msgstr "Homepage"
 msgid "Visit extension homepage"
 msgstr "გაფართოებების ვებგვერდის გახსნა"
 
-#: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
-#: js/ui/components/networkAgent.js:114 js/ui/components/polkitAgent.js:146
-#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:278
-#: js/ui/shellMountOperation.js:380 js/ui/shellMountOperation.js:390
+#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
+#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
+#: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:380
+#: js/ui/shellMountOperation.js:390
 msgid "Cancel"
 msgstr "გაუქმება"
 
@@ -581,43 +582,113 @@ msgstr "გაუქმება"
 msgid "Password"
 msgstr "პაროლი"
 
-#: js/gdm/loginDialog.js:324
+#: js/gdm/loginDialog.js:327
 msgid "Choose Session"
 msgstr "აირჩიეთ სესია"
 
-#: js/gdm/loginDialog.js:469
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:424
+#, javascript-format
+msgid ""
+"Remote login is not possible because a remote session is already running for "
+"%s. To login remotely, you must log out from the remote session or force "
+"stop it."
+msgstr ""
+"დაშორებულად შესვლა შეუძლებელია, რადგან დაშორებული სესია უკვე გაშვებულია %s-"
+"სთვის. იმისათვის, რომ შეხვიდეთ, ჯერ გამოდით გაშვებული სესიიდან, ან ძალით "
+"დაასრულეთ ის."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:427
+#, javascript-format
+msgid ""
+"Login is not possible because a remote session is already running for %s. To "
+"login, you must log out from the remote session or force stop it."
+msgstr ""
+"შესვლა შეუძლებელია, რადგან დაშორებული სესია უკვე გაშვებულია %s-სთვის. "
+"იმისათვის, რომ შეხვიდეთ, ჯერ გამოდით დაშორებული სესიიდან, ან ძალით დაასრულეთ "
+"ის."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:430
+#, javascript-format
+msgid ""
+"Remote login is not possible because a local session is already running for "
+"%s. To login remotely, you must log out from the local session or force stop "
+"it."
+msgstr ""
+"დაშორებული შესვლა შეუძლებელია, რადგან ლოკალური სესია უკვე გაშვებულია %s-"
+"სთვის. დაშორებულად შესვლისთვის, თქვენ უნდა გამოხვიდეთ ლოკალური სესიიდან, ან "
+"ძალით დაასრულოთ ის."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:433
+#, javascript-format
+msgid ""
+"Login is not possible because a session is already running for %s. To login, "
+"you must log out from the session or force stop it."
+msgstr ""
+"შესვლა შეუძლებელია, რადგან სესია უკვე გაშვებულია %s-სთვის. მისათვის, რომ "
+"შეხვიდეთ, ჯერ უნდა გამოხვიდეთ სესიიდან, ან ძალით დაასრულოთ ის."
+
+#: js/gdm/loginDialog.js:442
+msgid "Session Already Running"
+msgstr "სესია უკვე გაშვებულია"
+
+#: js/gdm/loginDialog.js:454
+msgid ""
+"Force stopping will quit any running apps and processes, and could result in "
+"data loss."
+msgstr ""
+"ძალით დასრულება ასევე ძალით დაასრულებს ყველა გაშვებულ აპს და პროცესს და, "
+"შეიძლება, მონაცემების კარგვა გამოიწვიოს."
+
+#: js/gdm/loginDialog.js:474
+msgid "Force Stop"
+msgstr "ძალით გაჩერება"
+
+#: js/gdm/loginDialog.js:542
 msgid "Not listed?"
 msgstr "არაა სიაში?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:937
+#: js/gdm/loginDialog.js:1010
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(მაგ, user ან %s)"
 
-#: js/gdm/loginDialog.js:942 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "მომხმარებლის სახელი"
 
-#: js/gdm/loginDialog.js:1266
+#: js/gdm/loginDialog.js:1081
+msgid "Stop conflicting session dialog closed"
+msgstr "კონფლიქტური სესიის გაჩერების დიალოგი დაიხურა"
+
+#: js/gdm/loginDialog.js:1082
+#, javascript-format
+msgid "Try to login again to start a session for user %s."
+msgstr "სცადეთ, თავიდან შეხვიდეთ, რომ დაიწყოთ სესია მომხმარებლისთვის %s."
+
+#: js/gdm/loginDialog.js:1426
 msgid "Login Window"
 msgstr "შესვლის ფანჯარა"
 
-#: js/gdm/util.js:402
+#: js/gdm/util.js:497
 msgid "Authentication error"
 msgstr "ავთენტიკაციის შეცდომა"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:584
+#: js/gdm/util.js:728
 msgid "(or swipe finger across reader)"
 msgstr "(ან გადაუსვით თითი წამკითხველს)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:589
+#: js/gdm/util.js:733
 msgid "(or place finger on reader)"
 msgstr "(ან მოათავსეთ თითი წამკითხველზე)"
 
@@ -870,7 +941,7 @@ msgstr "უარყოფა"
 msgid "Allow"
 msgstr "დაშვება"
 
-#: js/ui/appDisplay.js:1776
+#: js/ui/appDisplay.js:1775
 msgid "Unnamed Folder"
 msgstr "უსახელო საქაღალდე"
 
@@ -1107,7 +1178,7 @@ msgid ""
 msgstr "დაკავშირება ასევე შეგიძლიათ რაუტერზე \"WPS\" ღილაკზე დაწოლით."
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
-#: js/ui/status/network.js:371 js/ui/status/network.js:455
+#: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "დაკავშირება"
 
@@ -1540,7 +1611,7 @@ msgstr "ჩართული დატოვება"
 msgid "Turn On"
 msgstr "ჩართვა"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:466
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
 msgid "Turn Off"
 msgstr "გამორთვა"
 
@@ -1548,7 +1619,7 @@ msgstr "გამორთვა"
 msgid "Leave Off"
 msgstr "გამორთული დატოვება"
 
-#: js/ui/keyboard.js:225 js/ui/status/keyboard.js:899
+#: js/ui/keyboard.js:181 js/ui/status/keyboard.js:899
 msgid "Keyboard Settings"
 msgstr "კლავიატურის მორგება"
 
@@ -1606,23 +1677,23 @@ msgstr "წყაროს ნახვა"
 msgid "Web Page"
 msgstr "ვებ გვერდი"
 
-#: js/ui/main.js:279
+#: js/ui/main.js:278
 msgid "System was put in unsafe mode"
 msgstr "სისტემა უსაფრთხო რეჟიმზე გადაერთო"
 
-#: js/ui/main.js:280
+#: js/ui/main.js:279
 msgid "Apps now have unrestricted access"
 msgstr "ახლა აპების წვდომა განუსაზღვრელია"
 
-#: js/ui/main.js:281 js/ui/overview.js:51
+#: js/ui/main.js:280 js/ui/overview.js:51
 msgid "Undo"
 msgstr "ბრძანების გაუქმება"
 
-#: js/ui/main.js:339
+#: js/ui/main.js:338
 msgid "Logged in as a privileged user"
 msgstr "შეხვედით, როგორც პრივილეგირებული მომხმარებელი"
 
-#: js/ui/main.js:340
+#: js/ui/main.js:339
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1630,11 +1701,11 @@ msgstr ""
 "სესიის პრივილეგირებული მომხმარებლით გაშვება უსაფრთხოების მიზნით თავიდან უნდა "
 "აირიდოთ. თუ ეს შესაძლებელია, ჩვეულებრივი მომხმარებლით შედით."
 
-#: js/ui/main.js:388
+#: js/ui/main.js:387
 msgid "Screen Lock disabled"
 msgstr "ეკრანის ჩაკეტვა გათიშულია"
 
-#: js/ui/main.js:389
+#: js/ui/main.js:388
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "ეკრანის ჩაკეტვას GNOME-ის ეკრანის მმართველი სჭირდება."
 
@@ -1753,11 +1824,11 @@ msgstr "გადატვირთვა…"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME -ს სჭირდება თქვენი ეკრანის ჩაკეტვა"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:670
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:669
 msgid "Unable to lock"
 msgstr "ჩაკეტვის შეცდომა"
 
-#: js/ui/screenShield.js:277 js/ui/screenShield.js:671
+#: js/ui/screenShield.js:277 js/ui/screenShield.js:670
 msgid "Lock was blocked by an app"
 msgstr "ჩაკეტვა დაბლოკილია აპის მიერ"
 
@@ -1812,11 +1883,11 @@ msgstr "ეკრანის ვიდეოჩანაწერი"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
-#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#. * "Screencast from 07-17-2013 10:00:46 PM"
 #: js/ui/screenshot.js:2003
 #, no-c-format
-msgid "Screencast from %d %t.webm"
-msgstr "ეკრანის ვიდეოჩანაწერი %d %t-დან.webm"
+msgid "Screencast from %d %t"
+msgstr "ეკრანის ვიდეოჩანაწერი %d %t-დან"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2049
@@ -1917,7 +1988,7 @@ msgstr "ტექსტის ჩვენება"
 msgid "Hide Text"
 msgstr "ტექსტის დამალვა"
 
-#: js/ui/shellEntry.js:174
+#: js/ui/shellEntry.js:176
 msgid "Caps lock is on."
 msgstr "CapsLock ჩართულია."
 
@@ -2023,24 +2094,24 @@ msgstr "დიდი ტექსტი"
 msgid "Auto Rotate"
 msgstr "ავტომატური მობრუნება"
 
-#: js/ui/status/backgroundApps.js:166
+#: js/ui/status/backgroundApps.js:156
 msgctxt "title"
 msgid "Background Apps"
 msgstr "ფონური აპები"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:171
 msgid "Apps known to be running without a window"
 msgstr "ცნობილი ფანჯრის გარეშე არსებული აპები"
 
-#: js/ui/status/backgroundApps.js:192
+#: js/ui/status/backgroundApps.js:182
 msgid "App Settings"
 msgstr "აპის მორგება"
 
-#: js/ui/status/backgroundApps.js:249
+#: js/ui/status/backgroundApps.js:239
 msgid "No Background Apps"
 msgstr "ფონური აპების გარეშე"
 
-#: js/ui/status/backgroundApps.js:251
+#: js/ui/status/backgroundApps.js:241
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2066,7 +2137,7 @@ msgstr "მაღალი"
 msgid "Keyboard"
 msgstr "კლავიატურა"
 
-#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:371
+#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
 msgid "Disconnect"
 msgstr "გათიშვა"
 
@@ -2074,7 +2145,7 @@ msgstr "გათიშვა"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1907
+#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1900
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-ის მორგება"
 
@@ -2149,104 +2220,104 @@ msgstr "წვდომის მინიჭება"
 msgid "Grant Access"
 msgstr "უარი წვდომაზე"
 
-#: js/ui/status/network.js:61
+#: js/ui/status/network.js:62
 msgid "<unknown>"
 msgstr "<უცნობი>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:365
+#: js/ui/status/network.js:354
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "გათიშვა %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:367
+#: js/ui/status/network.js:356
 #, javascript-format
 msgid "Connect to %s"
 msgstr "%s-სთან დაკავშირება"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1050
 msgid "Secure"
 msgstr "დაცული"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1050
 msgid "Not secure"
 msgstr "დაცული არაა"
 
-#: js/ui/status/network.js:1062
+#: js/ui/status/network.js:1051
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "სიგნალის სიძლიერე %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1064
+#: js/ui/status/network.js:1053
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1166
+#: js/ui/status/network.js:1155
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s Hotspot-ი"
 
-#: js/ui/status/network.js:1437
+#: js/ui/status/network.js:1426
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d მიერთებულია"
 
-#: js/ui/status/network.js:1535 js/ui/status/network.js:1551
+#: js/ui/status/network.js:1524 js/ui/status/network.js:1540
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1536
+#: js/ui/status/network.js:1525
 msgid "VPN Settings"
 msgstr "VPN-ის მორგება"
 
-#: js/ui/status/network.js:1792
+#: js/ui/status/network.js:1785
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1787
 msgid "All Networks"
 msgstr "ყველა ქსელი"
 
-#: js/ui/status/network.js:1891
+#: js/ui/status/network.js:1884
 msgid "Wired Connections"
 msgstr "მავთულიანი კავშირები"
 
-#: js/ui/status/network.js:1892
+#: js/ui/status/network.js:1885
 msgid "Wired Settings"
 msgstr "მავთულით მიერთების მორგება"
 
-#: js/ui/status/network.js:1906
+#: js/ui/status/network.js:1899
 msgid "Bluetooth Tethers"
 msgstr "ბლუთუზით მიბმა"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1913
+#: js/ui/status/network.js:1906
 msgid "Tether"
 msgstr "მიბმა"
 
-#: js/ui/status/network.js:1926
+#: js/ui/status/network.js:1919
 msgid "Mobile Connections"
 msgstr "მობილური კავშირები"
 
-#: js/ui/status/network.js:1928
+#: js/ui/status/network.js:1921
 msgid "Mobile Broadband Settings"
 msgstr "მობილური კავშირის მორგება"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1937
+#: js/ui/status/network.js:1930
 msgid "Mobile"
 msgstr "მობილური"
 
-#: js/ui/status/network.js:2041
+#: js/ui/status/network.js:2034
 msgid "Connection failed"
 msgstr "დაკავშირება ვერ მოხერხდა"
 
-#: js/ui/status/network.js:2042
+#: js/ui/status/network.js:2035
 msgid "Activation of network connection failed"
 msgstr "ქსელის კავშირის აქტივაციის შეცდომა"
 
@@ -2493,55 +2564,55 @@ msgstr "გადიდება"
 msgid "Move"
 msgstr "გადაადგილება"
 
-#: js/ui/windowMenu.js:79
+#: js/ui/windowMenu.js:80
 msgid "Resize"
 msgstr "ზომის შეცვლა"
 
-#: js/ui/windowMenu.js:99
+#: js/ui/windowMenu.js:101
 msgid "Move Titlebar Onscreen"
 msgstr "სათაურის ზოლის ეკრანზე გადატანა"
 
-#: js/ui/windowMenu.js:104
+#: js/ui/windowMenu.js:106
 msgid "Always on Top"
 msgstr "ყოველთვის ყველაზე ზემოთ"
 
-#: js/ui/windowMenu.js:123
+#: js/ui/windowMenu.js:125
 msgid "Always on Visible Workspace"
 msgstr "ყოველთვის ხილულ სამუშაო სივრცეში"
 
-#: js/ui/windowMenu.js:137
+#: js/ui/windowMenu.js:139
 msgid "Move to Workspace Left"
 msgstr "მარცხენა სამუშაო სივრცეში გადატანა"
 
-#: js/ui/windowMenu.js:143
+#: js/ui/windowMenu.js:145
 msgid "Move to Workspace Right"
 msgstr "მარჯვენა სამუშაო სივრცეში გადატანა"
 
-#: js/ui/windowMenu.js:149
+#: js/ui/windowMenu.js:151
 msgid "Move to Workspace Up"
 msgstr "ზედა სამუშაო სივრცეში გადატანა"
 
-#: js/ui/windowMenu.js:155
+#: js/ui/windowMenu.js:157
 msgid "Move to Workspace Down"
 msgstr "ქვედა სამუშაო სივრცეში გადატანა"
 
-#: js/ui/windowMenu.js:173
+#: js/ui/windowMenu.js:175
 msgid "Move to Monitor Up"
 msgstr "ეკრანის მაღლა ატანა"
 
-#: js/ui/windowMenu.js:182
+#: js/ui/windowMenu.js:184
 msgid "Move to Monitor Down"
 msgstr "ეკრანის დაბლა ჩამოტანა"
 
-#: js/ui/windowMenu.js:191
+#: js/ui/windowMenu.js:193
 msgid "Move to Monitor Left"
 msgstr "ეკრანის მარცხნივ გატანა"
 
-#: js/ui/windowMenu.js:200
+#: js/ui/windowMenu.js:202
 msgid "Move to Monitor Right"
 msgstr "ეკრანის მარჯვნივ გატანა"
 
-#: js/ui/windowMenu.js:208
+#: js/ui/windowMenu.js:210
 msgid "Close"
 msgstr "დახურვა"
 
