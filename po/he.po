@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-16 11:19+0000\n"
-"PO-Revision-Date: 2024-02-17 00:15+0200\n"
+"POT-Creation-Date: 2024-03-02 20:50+0000\n"
+"PO-Revision-Date: 2024-03-03 00:11+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew\n"
 "Language: he\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
 "2 : 3);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -261,7 +261,7 @@ msgstr ""
 msgid "History for command (Alt-F2) dialog"
 msgstr "History for command (Alt-F2) dialog"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
 #: data/org.gnome.shell.gschema.xml.in:78
 msgid "History for the looking glass dialog"
 msgstr "History for the looking glass dialog"
@@ -330,7 +330,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:145
 msgid "Layout of the app picker"
-msgstr "Layout of the app picker"
+msgstr "פריסת בורר היישומים"
 
 #: data/org.gnome.shell.gschema.xml.in:146
 msgid ""
@@ -401,80 +401,80 @@ msgstr "Keybinding to focus the active notification."
 
 #: data/org.gnome.shell.gschema.xml.in:215
 msgid "Switch to application 1"
-msgstr "Switch to application 1"
+msgstr "מעבר ליישום 1"
 
 #: data/org.gnome.shell.gschema.xml.in:219
 msgid "Switch to application 2"
-msgstr "Switch to application 2"
+msgstr "מעבר ליישום 2"
 
 #: data/org.gnome.shell.gschema.xml.in:223
 msgid "Switch to application 3"
-msgstr "Switch to application 3"
+msgstr "מעבר ליישום 3"
 
 #: data/org.gnome.shell.gschema.xml.in:227
 msgid "Switch to application 4"
-msgstr "Switch to application 4"
+msgstr "מעבר ליישום 4"
 
 #: data/org.gnome.shell.gschema.xml.in:231
 msgid "Switch to application 5"
-msgstr "Switch to application 5"
+msgstr "מעבר ליישום 5"
 
 #: data/org.gnome.shell.gschema.xml.in:235
 msgid "Switch to application 6"
-msgstr "Switch to application 6"
+msgstr "מעבר ליישום 6"
 
 #: data/org.gnome.shell.gschema.xml.in:239
 msgid "Switch to application 7"
-msgstr "Switch to application 7"
+msgstr "מעבר ליישום 7"
 
 #: data/org.gnome.shell.gschema.xml.in:243
 msgid "Switch to application 8"
-msgstr "Switch to application 8"
+msgstr "מעבר ליישום 8"
 
 #: data/org.gnome.shell.gschema.xml.in:247
 msgid "Switch to application 9"
-msgstr "Switch to application 9"
+msgstr "מעבר ליישום 9"
 
 #: data/org.gnome.shell.gschema.xml.in:251
 msgid "Open a new instance of application 1"
-msgstr "Open a new instance of application 1"
+msgstr "פתיחת מופע חדש של יישום 1"
 
 #: data/org.gnome.shell.gschema.xml.in:255
 msgid "Open a new instance of application 2"
-msgstr "Open a new instance of application 2"
+msgstr "פתיחת מופע חדש של יישום 2"
 
 #: data/org.gnome.shell.gschema.xml.in:259
 msgid "Open a new instance of application 3"
-msgstr "Open a new instance of application 3"
+msgstr "פתיחת מופע חדש של יישום 3"
 
 #: data/org.gnome.shell.gschema.xml.in:263
 msgid "Open a new instance of application 4"
-msgstr "Open a new instance of application 4"
+msgstr "פתיחת מופע חדש של יישום 4"
 
 #: data/org.gnome.shell.gschema.xml.in:267
 msgid "Open a new instance of application 5"
-msgstr "Open a new instance of application 5"
+msgstr "פתיחת מופע חדש של יישום 5"
 
 #: data/org.gnome.shell.gschema.xml.in:271
 msgid "Open a new instance of application 6"
-msgstr "Open a new instance of application 6"
+msgstr "פתיחת מופע חדש של יישום 6"
 
 #: data/org.gnome.shell.gschema.xml.in:275
 msgid "Open a new instance of application 7"
-msgstr "Open a new instance of application 7"
+msgstr "פתיחת מופע חדש של יישום 7"
 
 #: data/org.gnome.shell.gschema.xml.in:279
 msgid "Open a new instance of application 8"
-msgstr "Open a new instance of application 8"
+msgstr "פתיחת מופע חדש של יישום 8"
 
 #: data/org.gnome.shell.gschema.xml.in:283
 msgid "Open a new instance of application 9"
-msgstr "Open a new instance of application 9"
+msgstr "פתיחת מופע חדש של יישום 9"
 
 #: data/org.gnome.shell.gschema.xml.in:308
 #: data/org.gnome.shell.gschema.xml.in:335
 msgid "Limit switcher to current workspace."
-msgstr "Limit switcher to current workspace."
+msgstr "הגבלת המחליף למרחב העבודה הנוכחי."
 
 #: data/org.gnome.shell.gschema.xml.in:309
 msgid ""
@@ -486,7 +486,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:326
 msgid "The application icon mode."
-msgstr "The application icon mode."
+msgstr "היישום במצב סמל."
 
 #: data/org.gnome.shell.gschema.xml.in:327
 msgid ""
@@ -508,27 +508,27 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:346
 msgid "Locations"
-msgstr "Locations"
+msgstr "מקומות"
 
 #: data/org.gnome.shell.gschema.xml.in:347
 msgid "The locations to show in world clocks"
-msgstr "The locations to show in world clocks"
+msgstr "המקומות להצגה בשעוני העולם"
 
 #: data/org.gnome.shell.gschema.xml.in:357
 msgid "Automatic location"
-msgstr "Automatic location"
+msgstr "מיקום אוטומטית"
 
 #: data/org.gnome.shell.gschema.xml.in:358
 msgid "Whether to fetch the current location or not"
-msgstr "Whether to fetch the current location or not"
+msgstr "האם למשוך את המקום הנוכחי או לא"
 
 #: data/org.gnome.shell.gschema.xml.in:365
 msgid "Location"
-msgstr "Location"
+msgstr "מקום"
 
 #: data/org.gnome.shell.gschema.xml.in:366
 msgid "The location for which to show a forecast"
-msgstr "The location for which to show a forecast"
+msgstr "המקום להצגת תחזית עבורו"
 
 #. Keep in sync with subprojects/extensions-app
 #: data/org.gnome.Shell.Extensions.desktop.in.in:5
@@ -568,10 +568,11 @@ msgstr "עמוד הבית"
 msgid "Visit extension homepage"
 msgstr "לבקר באתר ההרחבה"
 
-#: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
-#: js/ui/components/networkAgent.js:114 js/ui/components/polkitAgent.js:146
-#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:278
-#: js/ui/shellMountOperation.js:380 js/ui/shellMountOperation.js:390
+#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
+#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
+#: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:380
+#: js/ui/shellMountOperation.js:390
 msgid "Cancel"
 msgstr "ביטול"
 
@@ -583,43 +584,108 @@ msgstr "ביטול"
 msgid "Password"
 msgstr "ססמה"
 
-#: js/gdm/loginDialog.js:324
+#: js/gdm/loginDialog.js:327
 msgid "Choose Session"
 msgstr "בחירת הפעלה"
 
-#: js/gdm/loginDialog.js:469
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:424
+#, javascript-format
+msgid ""
+"Remote login is not possible because a remote session is already running for "
+"%s. To login remotely, you must log out from the remote session or force "
+"stop it."
+msgstr ""
+"כניסה מרחוק אינה אפשרית כיוון שכבר יש הפעלה מרוחקת עבור %s. כדי להיכנס "
+"מרחוק, יש לצאת מההפעלה המרוחקת או לכפות את עצירתה."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:427
+#, javascript-format
+msgid ""
+"Login is not possible because a remote session is already running for %s. To "
+"login, you must log out from the remote session or force stop it."
+msgstr ""
+"כניסה אינה אפשרית כיוון שכבר יש הפעלה מרוחקת עבור %s. כדי להיכנס, יש לצאת "
+"מההפעלה המרוחקת או לכפות את עצירתה."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:430
+#, javascript-format
+msgid ""
+"Remote login is not possible because a local session is already running for "
+"%s. To login remotely, you must log out from the local session or force stop "
+"it."
+msgstr ""
+"כניסה מרחוק אינה אפשרית כיוון שכבר יש הפעלה מקומית עבור %s. כדי להיכנס "
+"מרחוק, יש לצאת מההפעלה המקומית או לכפות את עצירתה."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:433
+#, javascript-format
+msgid ""
+"Login is not possible because a session is already running for %s. To login, "
+"you must log out from the session or force stop it."
+msgstr ""
+"כניסה אינה אפשרית כיוון שכבר יש הפעלה עבור %s. כדי להיכנס, יש לצאת מההפעלה "
+"או לכפות את עצירתה."
+
+#: js/gdm/loginDialog.js:442
+msgid "Session Already Running"
+msgstr "ההפעלה כבר רצה"
+
+#: js/gdm/loginDialog.js:454
+msgid ""
+"Force stopping will quit any running apps and processes, and could result in "
+"data loss."
+msgstr "אילוץ העצירה יסגור יישום ותהליכים פעילים ויכול להוביל לאובדן נתונים."
+
+#: js/gdm/loginDialog.js:474
+msgid "Force Stop"
+msgstr "אילוץ עצירה"
+
+#: js/gdm/loginDialog.js:542
 msgid "Not listed?"
 msgstr "לא רשום?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:937
+#: js/gdm/loginDialog.js:1010
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(משתמש או %s לדוגמה)"
 
-#: js/gdm/loginDialog.js:942 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "שם משתמש"
 
-#: js/gdm/loginDialog.js:1266
+#: js/gdm/loginDialog.js:1081
+msgid "Stop conflicting session dialog closed"
+msgstr "חלונית עצירת הפעלה סותרת נסגרה"
+
+#: js/gdm/loginDialog.js:1082
+#, javascript-format
+msgid "Try to login again to start a session for user %s."
+msgstr "כדאי לנסות להיכנס שוב כדי להתחיל הפעלה למשתמש %s."
+
+#: js/gdm/loginDialog.js:1426
 msgid "Login Window"
 msgstr "חלון כניסה"
 
-#: js/gdm/util.js:402
+#: js/gdm/util.js:497
 msgid "Authentication error"
 msgstr "שגיאת אימות"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:584
+#: js/gdm/util.js:728
 msgid "(or swipe finger across reader)"
 msgstr "(או להחליק אצבע על הקורא)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:589
+#: js/gdm/util.js:733
 msgid "(or place finger on reader)"
 msgstr "(או לשים אצבע על הקורא)"
 
@@ -890,7 +956,7 @@ msgstr "לדחות"
 msgid "Allow"
 msgstr "לאפשר"
 
-#: js/ui/appDisplay.js:1776
+#: js/ui/appDisplay.js:1775
 msgid "Unnamed Folder"
 msgstr "תיקייה ללא שם"
 
@@ -1127,7 +1193,7 @@ msgid ""
 msgstr "לחלופין ניתן להתחבר על ידי לחיצה על כפתור ה־„WPS” בנתב שלך."
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
-#: js/ui/status/network.js:371 js/ui/status/network.js:455
+#: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "התחברות"
 
@@ -1572,7 +1638,7 @@ msgstr "להשאיר פועל"
 msgid "Turn On"
 msgstr "הפעלה"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:466
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
 msgid "Turn Off"
 msgstr "כיבוי"
 
@@ -1580,7 +1646,7 @@ msgstr "כיבוי"
 msgid "Leave Off"
 msgstr "להשאיר כבוי"
 
-#: js/ui/keyboard.js:225 js/ui/status/keyboard.js:899
+#: js/ui/keyboard.js:181 js/ui/status/keyboard.js:899
 msgid "Keyboard Settings"
 msgstr "הגדרות מקלדת"
 
@@ -1638,23 +1704,23 @@ msgstr "צפייה במקור"
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: js/ui/main.js:279
+#: js/ui/main.js:278
 msgid "System was put in unsafe mode"
 msgstr "המערכת הועברה למצב בלתי בטוח"
 
-#: js/ui/main.js:280
+#: js/ui/main.js:279
 msgid "Apps now have unrestricted access"
 msgstr "ליישומים יש עכשיו גישה בלתי מוגבלת"
 
-#: js/ui/main.js:281 js/ui/overview.js:51
+#: js/ui/main.js:280 js/ui/overview.js:51
 msgid "Undo"
 msgstr "ביטול"
 
-#: js/ui/main.js:339
+#: js/ui/main.js:338
 msgid "Logged in as a privileged user"
 msgstr "מחובר כמשתמש בעל הרשאות מיוחדות"
 
-#: js/ui/main.js:340
+#: js/ui/main.js:339
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1662,11 +1728,11 @@ msgstr ""
 "יש להימנע מהרצת הפעלה כמשתמש בעל הרשאות מיוחדות מסיבות אבטחה. אם אפשרי, יש "
 "להתחבר כמשתמש רגיל."
 
-#: js/ui/main.js:388
+#: js/ui/main.js:387
 msgid "Screen Lock disabled"
 msgstr "מסך נעילה מושבת"
 
-#: js/ui/main.js:389
+#: js/ui/main.js:388
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "מסך נעיל דורש הרצת מנהל תצוגה של GNOME."
 
@@ -1786,11 +1852,11 @@ msgstr "מופעל מחדש…"
 msgid "GNOME needs to lock the screen"
 msgstr "על GNOME לנעול את המסך"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:670
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:669
 msgid "Unable to lock"
 msgstr "לא ניתן לנעול"
 
-#: js/ui/screenShield.js:277 js/ui/screenShield.js:671
+#: js/ui/screenShield.js:277 js/ui/screenShield.js:670
 msgid "Lock was blocked by an app"
 msgstr "הנעילה נחסמה ע״י יישום"
 
@@ -1846,11 +1912,11 @@ msgstr "הקלטות מסך"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
-#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#. * "Screencast from 07-17-2013 10:00:46 PM"
 #: js/ui/screenshot.js:2003
 #, no-c-format
-msgid "Screencast from %d %t.webm"
-msgstr "הקלטת מסך מ־%d %t.webm"
+msgid "Screencast from %d %t"
+msgstr "הקלטת מסך מ־%d %t"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2049
@@ -1954,7 +2020,7 @@ msgstr "הצגת טקסט"
 msgid "Hide Text"
 msgstr "הסתרת טקסט"
 
-#: js/ui/shellEntry.js:174
+#: js/ui/shellEntry.js:176
 msgid "Caps lock is on."
 msgstr "מקש Caps Lock פועל."
 
@@ -2059,24 +2125,24 @@ msgstr "טקסט גדול"
 msgid "Auto Rotate"
 msgstr "סיבוב אוטומטי"
 
-#: js/ui/status/backgroundApps.js:166
+#: js/ui/status/backgroundApps.js:156
 msgctxt "title"
 msgid "Background Apps"
 msgstr "יישומים פועלים ברקע"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:171
 msgid "Apps known to be running without a window"
 msgstr "יישומים שפועלים ללא חלון"
 
-#: js/ui/status/backgroundApps.js:192
+#: js/ui/status/backgroundApps.js:182
 msgid "App Settings"
 msgstr "הגדרות יישום"
 
-#: js/ui/status/backgroundApps.js:249
+#: js/ui/status/backgroundApps.js:239
 msgid "No Background Apps"
 msgstr "אף יישום לא פועל ברקע"
 
-#: js/ui/status/backgroundApps.js:251
+#: js/ui/status/backgroundApps.js:241
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2105,7 +2171,7 @@ msgstr "גבוהה"
 msgid "Keyboard"
 msgstr "מקלדת"
 
-#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:371
+#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
 msgid "Disconnect"
 msgstr "ניתוק"
 
@@ -2113,7 +2179,7 @@ msgstr "ניתוק"
 msgid "Bluetooth"
 msgstr "בלוטות'"
 
-#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1907
+#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1900
 msgid "Bluetooth Settings"
 msgstr "הגדרות בלוטות׳"
 
@@ -2189,49 +2255,49 @@ msgstr "מניעת גישה"
 msgid "Grant Access"
 msgstr "אפשור גישה"
 
-#: js/ui/status/network.js:61
+#: js/ui/status/network.js:62
 msgid "<unknown>"
 msgstr "<לא ידוע>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:365
+#: js/ui/status/network.js:354
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "ניתוק %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:367
+#: js/ui/status/network.js:356
 #, javascript-format
 msgid "Connect to %s"
 msgstr "התחברות אל %s"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1050
 msgid "Secure"
 msgstr "מאובטחת"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1050
 msgid "Not secure"
 msgstr "לא מאובטחת"
 
-#: js/ui/status/network.js:1062
+#: js/ui/status/network.js:1051
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "עוצמת קליטה %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1064
+#: js/ui/status/network.js:1053
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1166
+#: js/ui/status/network.js:1155
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "נקודה חמה %s"
 
 # msgid_plural "%d Connected"
-#: js/ui/status/network.js:1437
+#: js/ui/status/network.js:1426
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
@@ -2240,57 +2306,57 @@ msgstr[1] "‫שניים התחברו"
 msgstr[2] "‫%d התחברו"
 msgstr[3] "‫‫%d התחברו"
 
-#: js/ui/status/network.js:1535 js/ui/status/network.js:1551
+#: js/ui/status/network.js:1524 js/ui/status/network.js:1540
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1536
+#: js/ui/status/network.js:1525
 msgid "VPN Settings"
 msgstr "הגדרות VPN"
 
-#: js/ui/status/network.js:1792
+#: js/ui/status/network.js:1785
 msgid "Wi–Fi"
 msgstr "רשת אלחוטית"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1787
 msgid "All Networks"
 msgstr "כל הרשתות"
 
-#: js/ui/status/network.js:1891
+#: js/ui/status/network.js:1884
 msgid "Wired Connections"
 msgstr "התחברויות קוויות"
 
-#: js/ui/status/network.js:1892
+#: js/ui/status/network.js:1885
 msgid "Wired Settings"
 msgstr "הגדרות רשת קווית"
 
-#: js/ui/status/network.js:1906
+#: js/ui/status/network.js:1899
 msgid "Bluetooth Tethers"
 msgstr "קישרת בלוטות׳"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1913
+#: js/ui/status/network.js:1906
 msgid "Tether"
 msgstr "קישרת"
 
-#: js/ui/status/network.js:1926
+#: js/ui/status/network.js:1919
 msgid "Mobile Connections"
 msgstr "התחברויות ניידות"
 
-#: js/ui/status/network.js:1928
+#: js/ui/status/network.js:1921
 msgid "Mobile Broadband Settings"
 msgstr "הגדרות פס־רחב נייד"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1937
+#: js/ui/status/network.js:1930
 msgid "Mobile"
 msgstr "נייד"
 
-#: js/ui/status/network.js:2041
+#: js/ui/status/network.js:2034
 msgid "Connection failed"
 msgstr "ההתחברות נכשלה"
 
-#: js/ui/status/network.js:2042
+#: js/ui/status/network.js:2035
 msgid "Activation of network connection failed"
 msgstr "הפעלת חיבור הרשת נכשלה"
 
@@ -2540,55 +2606,55 @@ msgstr "הגדלה"
 msgid "Move"
 msgstr "הזזה"
 
-#: js/ui/windowMenu.js:79
+#: js/ui/windowMenu.js:80
 msgid "Resize"
 msgstr "שינוי גודל"
 
-#: js/ui/windowMenu.js:99
+#: js/ui/windowMenu.js:101
 msgid "Move Titlebar Onscreen"
 msgstr "הזזת שורת הכותרת על המסך"
 
-#: js/ui/windowMenu.js:104
+#: js/ui/windowMenu.js:106
 msgid "Always on Top"
 msgstr "תמיד עליון"
 
-#: js/ui/windowMenu.js:123
+#: js/ui/windowMenu.js:125
 msgid "Always on Visible Workspace"
 msgstr "הצגה בכל מרחבי העבודה"
 
-#: js/ui/windowMenu.js:137
+#: js/ui/windowMenu.js:139
 msgid "Move to Workspace Left"
 msgstr "הזזה למרחב העבודה שמשמאל"
 
-#: js/ui/windowMenu.js:143
+#: js/ui/windowMenu.js:145
 msgid "Move to Workspace Right"
 msgstr "הזזה למרחב העבודה שמימין"
 
-#: js/ui/windowMenu.js:149
+#: js/ui/windowMenu.js:151
 msgid "Move to Workspace Up"
 msgstr "הזזה למרחב העבודה שמלמעלה"
 
-#: js/ui/windowMenu.js:155
+#: js/ui/windowMenu.js:157
 msgid "Move to Workspace Down"
 msgstr "הזזה למרחב העבודה שמלמטה"
 
-#: js/ui/windowMenu.js:173
+#: js/ui/windowMenu.js:175
 msgid "Move to Monitor Up"
 msgstr "הזה לצג שמלמעלה"
 
-#: js/ui/windowMenu.js:182
+#: js/ui/windowMenu.js:184
 msgid "Move to Monitor Down"
 msgstr "הזזה לצג שמלמטה"
 
-#: js/ui/windowMenu.js:191
+#: js/ui/windowMenu.js:193
 msgid "Move to Monitor Left"
 msgstr "הזזה לצג שמשמאל"
 
-#: js/ui/windowMenu.js:200
+#: js/ui/windowMenu.js:202
 msgid "Move to Monitor Right"
 msgstr "הזזה לצג שמימין"
 
-#: js/ui/windowMenu.js:208
+#: js/ui/windowMenu.js:210
 msgid "Close"
 msgstr "סגירה"
 
@@ -3210,7 +3276,7 @@ msgstr "לא"
 
 #: subprojects/extensions-tool/src/main.c:271
 msgid "State"
-msgstr "State"
+msgstr "מצב"
 
 #: subprojects/extensions-tool/src/main.c:309
 msgid "“version” takes no arguments"
