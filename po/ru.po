@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-11 22:55+0000\n"
-"PO-Revision-Date: 2024-02-12 13:25+0300\n"
+"POT-Creation-Date: 2024-02-16 11:19+0000\n"
+"PO-Revision-Date: 2024-02-16 17:24+0300\n"
 "Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: RU\n"
 "Language: ru\n"
@@ -116,22 +116,22 @@ msgid "Screenshots"
 msgstr "Снимки экрана"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:276
+#: data/org.gnome.shell.gschema.xml.in:287
 msgid "Take a screenshot interactively"
 msgstr "Сделать снимок экрана интерактивно"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:288
+#: data/org.gnome.shell.gschema.xml.in:299
 msgid "Take a screenshot"
 msgstr "Сделать снимок экрана"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:295
 msgid "Take a screenshot of a window"
 msgstr "Сделать снимок окна"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:280
+#: data/org.gnome.shell.gschema.xml.in:291
 msgid "Record a screencast interactively"
 msgstr "Сделать запись экрана интерактивно"
 
@@ -222,14 +222,32 @@ msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
 msgstr ""
-"Отключите все расширения, которые пользователь активировал, не затрагивая "
+"Отключает все расширения, которые пользователь активировал, не затрагивая "
 "настройку \"enabled-extension\"."
 
 #: data/org.gnome.shell.gschema.xml.in:45
+msgid "Allow extension installation"
+msgstr "Разрешить установку расширений"
+
+#: data/org.gnome.shell.gschema.xml.in:46
+msgid ""
+"Allow users to install extensions in their home folder. If disabled, the "
+"InstallRemoteExtension D-Bus method will fail, and extensions are only "
+"loaded from system directories on startup. It does not affect extensions "
+"that are already loaded, so a change only takes full effect on the next "
+"login."
+msgstr ""
+"Позволяет пользователям устанавливать расширения в свою домашнюю папку. Если "
+"отключено, метод InstallRemoteExtension D-Bus не сработает, и расширения "
+"будут загружаться только из системных каталогов при запуске. Это не влияет "
+"на уже загруженные расширения, поэтому изменения вступают в силу только при "
+"следующем входе в систему."
+
+#: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
 msgstr "Отключает проверку совместимости версий расширений"
 
-#: data/org.gnome.shell.gschema.xml.in:46
+#: data/org.gnome.shell.gschema.xml.in:57
 msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
@@ -240,11 +258,11 @@ msgstr ""
 "попробует загрузить все расширения вне зависимости от версии, которую они "
 "поддерживают."
 
-#: data/org.gnome.shell.gschema.xml.in:54
+#: data/org.gnome.shell.gschema.xml.in:65
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Список идентификаторов desktop-файлов для избранных приложений"
 
-#: data/org.gnome.shell.gschema.xml.in:55
+#: data/org.gnome.shell.gschema.xml.in:66
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -252,20 +270,20 @@ msgstr ""
 "Приложения, соответствующие этих идентификаторам, будут показаны в области "
 "избранных приложений."
 
-#: data/org.gnome.shell.gschema.xml.in:62
+#: data/org.gnome.shell.gschema.xml.in:73
 msgid "History for command (Alt-F2) dialog"
 msgstr "История команд диалогового окна (Alt-F2)"
 
 #. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
-#: data/org.gnome.shell.gschema.xml.in:67
+#: data/org.gnome.shell.gschema.xml.in:78
 msgid "History for the looking glass dialog"
 msgstr "История просмотра прозрачного диалогового окна"
 
-#: data/org.gnome.shell.gschema.xml.in:71
+#: data/org.gnome.shell.gschema.xml.in:82
 msgid "Always show the “Log Out” action in the system menu"
 msgstr "Всегда показывать в системном меню действие \"Выйти\""
 
-#: data/org.gnome.shell.gschema.xml.in:72
+#: data/org.gnome.shell.gschema.xml.in:83
 msgid ""
 "This key overrides the automatic hiding of the “Log out” action in the "
 "system menu for logged-in situations where there is a single, local, non-"
@@ -276,14 +294,14 @@ msgstr ""
 "несистемный пользователь и только один доступный тип сеанса (например, GNOME "
 "на Wayland)."
 
-#: data/org.gnome.shell.gschema.xml.in:81
+#: data/org.gnome.shell.gschema.xml.in:92
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Запоминать ли пароль для подключения зашифрованных или удалённых файловых "
 "систем"
 
-#: data/org.gnome.shell.gschema.xml.in:82
+#: data/org.gnome.shell.gschema.xml.in:93
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -295,11 +313,11 @@ msgstr ""
 "использования, будет установлен флажок \"Запомнить пароль\". Этот ключ "
 "устанавливает состояние по умолчанию для флажка."
 
-#: data/org.gnome.shell.gschema.xml.in:91
+#: data/org.gnome.shell.gschema.xml.in:102
 msgid "The last selected non-default power profile"
 msgstr "Последний выбранный профиль питания не по умолчанию"
 
-#: data/org.gnome.shell.gschema.xml.in:92
+#: data/org.gnome.shell.gschema.xml.in:103
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
 "toggling between two profiles, this key records the last selected non-"
@@ -309,11 +327,11 @@ msgstr ""
 "поддержку переключения между двумя профилями, этот ключ записывает последний "
 "выбранный не по умолчанию профиль."
 
-#: data/org.gnome.shell.gschema.xml.in:100
+#: data/org.gnome.shell.gschema.xml.in:111
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr "В последней версии диалог “Добро пожаловать в GNOME” был показан для"
 
-#: data/org.gnome.shell.gschema.xml.in:101
+#: data/org.gnome.shell.gschema.xml.in:112
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -326,11 +344,11 @@ msgstr ""
 "существуют. Это большое число может быть использовано для эффективного "
 "отключения диалога."
 
-#: data/org.gnome.shell.gschema.xml.in:134
+#: data/org.gnome.shell.gschema.xml.in:145
 msgid "Layout of the app picker"
 msgstr "Макет меню выбора приложений"
 
-#: data/org.gnome.shell.gschema.xml.in:135
+#: data/org.gnome.shell.gschema.xml.in:146
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -343,143 +361,143 @@ msgstr ""
 "настоящее время в качестве “data” хранятся следующие значения: • "
 "\"position\" - положение значка приложения на странице"
 
-#: data/org.gnome.shell.gschema.xml.in:154
-#: data/org.gnome.shell.gschema.xml.in:161
+#: data/org.gnome.shell.gschema.xml.in:165
+#: data/org.gnome.shell.gschema.xml.in:172
 msgid "Keybinding to shift between overview states"
 msgstr "Сочетание клавиш для переключения между состояниями обзора"
 
-#: data/org.gnome.shell.gschema.xml.in:155
+#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Сочетание клавиш для переключения между сеансом, меню выбора окон и сеткой "
 "приложений"
 
-#: data/org.gnome.shell.gschema.xml.in:162
+#: data/org.gnome.shell.gschema.xml.in:173
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "Сочетание клавиш для переключения между сеткой приложений, меню выбора окон "
 "и сеансом"
 
-#: data/org.gnome.shell.gschema.xml.in:168
+#: data/org.gnome.shell.gschema.xml.in:179
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Комбинация клавиш для перехода в режим просмотра приложений"
 
-#: data/org.gnome.shell.gschema.xml.in:169
+#: data/org.gnome.shell.gschema.xml.in:180
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Комбинация клавиш для перехода в режим просмотра приложений в меню \"Обзор\"."
 
-#: data/org.gnome.shell.gschema.xml.in:176
+#: data/org.gnome.shell.gschema.xml.in:187
 msgid "Keybinding to open the overview"
 msgstr "Комбинация клавиш для перехода в режим обзора"
 
-#: data/org.gnome.shell.gschema.xml.in:177
+#: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to open the Activities Overview."
 msgstr "Комбинация клавиш для перехода в режим обзора."
 
-#: data/org.gnome.shell.gschema.xml.in:183
+#: data/org.gnome.shell.gschema.xml.in:194
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Комбинация клавиш для отображения или скрытия списка уведомлений"
 
-#: data/org.gnome.shell.gschema.xml.in:184
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Комбинация клавиш для отображения или скрытия списка уведомлений."
 
-#: data/org.gnome.shell.gschema.xml.in:190
+#: data/org.gnome.shell.gschema.xml.in:201
 msgid "Keybinding to toggle the quick settings menu"
 msgstr "Комбинация клавиш для переключения меню быстрых настроек"
 
-#: data/org.gnome.shell.gschema.xml.in:191
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Keybinding to toggle the quick settings menu."
 msgstr "Комбинация клавиш для переключения меню быстрых настроек."
 
-#: data/org.gnome.shell.gschema.xml.in:197
+#: data/org.gnome.shell.gschema.xml.in:208
 msgid "Keybinding to focus the active notification"
 msgstr "Комбинация клавиш для перевода фокуса на текущее уведомление"
 
-#: data/org.gnome.shell.gschema.xml.in:198
+#: data/org.gnome.shell.gschema.xml.in:209
 msgid "Keybinding to focus the active notification."
 msgstr "Комбинация клавиш для перевода фокуса на текущее уведомление."
 
-#: data/org.gnome.shell.gschema.xml.in:204
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid "Switch to application 1"
 msgstr "Переключиться на приложение 1"
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:219
 msgid "Switch to application 2"
 msgstr "Переключиться на приложение 2"
 
-#: data/org.gnome.shell.gschema.xml.in:212
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Switch to application 3"
 msgstr "Переключиться на приложение 3"
 
-#: data/org.gnome.shell.gschema.xml.in:216
+#: data/org.gnome.shell.gschema.xml.in:227
 msgid "Switch to application 4"
 msgstr "Переключиться на приложение 4"
 
-#: data/org.gnome.shell.gschema.xml.in:220
+#: data/org.gnome.shell.gschema.xml.in:231
 msgid "Switch to application 5"
 msgstr "Переключиться на приложение 5"
 
-#: data/org.gnome.shell.gschema.xml.in:224
+#: data/org.gnome.shell.gschema.xml.in:235
 msgid "Switch to application 6"
 msgstr "Переключиться на приложение 6"
 
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:239
 msgid "Switch to application 7"
 msgstr "Переключиться на приложение 7"
 
-#: data/org.gnome.shell.gschema.xml.in:232
+#: data/org.gnome.shell.gschema.xml.in:243
 msgid "Switch to application 8"
 msgstr "Переключиться на приложение 8"
 
-#: data/org.gnome.shell.gschema.xml.in:236
+#: data/org.gnome.shell.gschema.xml.in:247
 msgid "Switch to application 9"
 msgstr "Переключиться на приложение 9"
 
-#: data/org.gnome.shell.gschema.xml.in:240
+#: data/org.gnome.shell.gschema.xml.in:251
 msgid "Open a new instance of application 1"
 msgstr "Открыть новый экземпляр приложения 1"
 
-#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:255
 msgid "Open a new instance of application 2"
 msgstr "Открыть новый экземпляр приложения 2"
 
-#: data/org.gnome.shell.gschema.xml.in:248
+#: data/org.gnome.shell.gschema.xml.in:259
 msgid "Open a new instance of application 3"
 msgstr "Открыть новый экземпляр приложения 3"
 
-#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:263
 msgid "Open a new instance of application 4"
 msgstr "Открыть новый экземпляр приложения 4"
 
-#: data/org.gnome.shell.gschema.xml.in:256
+#: data/org.gnome.shell.gschema.xml.in:267
 msgid "Open a new instance of application 5"
 msgstr "Открыть новый экземпляр приложения 5"
 
-#: data/org.gnome.shell.gschema.xml.in:260
+#: data/org.gnome.shell.gschema.xml.in:271
 msgid "Open a new instance of application 6"
 msgstr "Открыть новый экземпляр приложения 6"
 
-#: data/org.gnome.shell.gschema.xml.in:264
+#: data/org.gnome.shell.gschema.xml.in:275
 msgid "Open a new instance of application 7"
 msgstr "Открыть новый экземпляр приложения 7"
 
-#: data/org.gnome.shell.gschema.xml.in:268
+#: data/org.gnome.shell.gschema.xml.in:279
 msgid "Open a new instance of application 8"
 msgstr "Открыть новый экземпляр приложения 8"
 
-#: data/org.gnome.shell.gschema.xml.in:272
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid "Open a new instance of application 9"
 msgstr "Открыть новый экземпляр приложения 9"
 
-#: data/org.gnome.shell.gschema.xml.in:297
-#: data/org.gnome.shell.gschema.xml.in:324
+#: data/org.gnome.shell.gschema.xml.in:308
+#: data/org.gnome.shell.gschema.xml.in:335
 msgid "Limit switcher to current workspace."
 msgstr "Ограничить переключатель текущим рабочим столом."
 
-#: data/org.gnome.shell.gschema.xml.in:298
+#: data/org.gnome.shell.gschema.xml.in:309
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -488,11 +506,11 @@ msgstr ""
 "чьи окна находятся на текущем рабочем столе. Иначе все приложения будут "
 "включены."
 
-#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:326
 msgid "The application icon mode."
 msgstr "Режим значка приложения."
 
-#: data/org.gnome.shell.gschema.xml.in:316
+#: data/org.gnome.shell.gschema.xml.in:327
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -503,7 +521,7 @@ msgstr ""
 "only\" (показывать только значок приложения), \"both\" (показывать миниатюру "
 "и значок)."
 
-#: data/org.gnome.shell.gschema.xml.in:325
+#: data/org.gnome.shell.gschema.xml.in:336
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -511,27 +529,27 @@ msgstr ""
 "Если выбрано, то в переключателе будут показываться только окна из текущего "
 "рабочего стола. Иначе все окна будут включены."
 
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:346
 msgid "Locations"
 msgstr "Местоположения"
 
-#: data/org.gnome.shell.gschema.xml.in:336
+#: data/org.gnome.shell.gschema.xml.in:347
 msgid "The locations to show in world clocks"
 msgstr "Местоположения для отображения в мировых часах"
 
-#: data/org.gnome.shell.gschema.xml.in:346
+#: data/org.gnome.shell.gschema.xml.in:357
 msgid "Automatic location"
 msgstr "Автоматическое местоположение"
 
-#: data/org.gnome.shell.gschema.xml.in:347
+#: data/org.gnome.shell.gschema.xml.in:358
 msgid "Whether to fetch the current location or not"
 msgstr "Определяет получать местоположение или нет"
 
-#: data/org.gnome.shell.gschema.xml.in:354
+#: data/org.gnome.shell.gschema.xml.in:365
 msgid "Location"
 msgstr "Местоположение"
 
-#: data/org.gnome.shell.gschema.xml.in:355
+#: data/org.gnome.shell.gschema.xml.in:366
 msgid "The location for which to show a forecast"
 msgstr "Местоположение для которого отображается прогноз погоды"
 
@@ -575,7 +593,7 @@ msgstr "Посетить домашнюю страницу расширения"
 
 #: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
 #: js/ui/components/networkAgent.js:114 js/ui/components/polkitAgent.js:146
-#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:271
+#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:278
 #: js/ui/shellMountOperation.js:380 js/ui/shellMountOperation.js:390
 msgid "Cancel"
 msgstr "Отмена"
@@ -1075,6 +1093,11 @@ msgstr "Не беспокоить"
 msgid "Clear"
 msgstr "Очистить"
 
+#: js/ui/calendar.js:970
+msgctxt "action"
+msgid "Clear all notifications"
+msgstr "Очистить все уведомления"
+
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
 #, javascript-format
@@ -1481,24 +1504,24 @@ msgstr "%s (удалённый)"
 msgid "%s (console)"
 msgstr "%s (консоль)"
 
-#: js/ui/extensionDownloader.js:275
+#: js/ui/extensionDownloader.js:282
 msgid "Install"
 msgstr "Установить"
 
-#: js/ui/extensionDownloader.js:281
+#: js/ui/extensionDownloader.js:288
 msgid "Install Extension"
 msgstr "Установить расширение"
 
-#: js/ui/extensionDownloader.js:282
+#: js/ui/extensionDownloader.js:289
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Загрузить и установить расширение \"%s\" из extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:350
+#: js/ui/extensionSystem.js:353
 msgid "Extension Updates Available"
 msgstr "Доступны обновления расширений"
 
-#: js/ui/extensionSystem.js:351
+#: js/ui/extensionSystem.js:354
 msgid "Extension updates are ready to be installed."
 msgstr "Обновления расширений готовы к установке."
 
@@ -2364,11 +2387,11 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "Заблокировать экран"
 
-#: js/ui/status/thunderbolt.js:307
+#: js/ui/status/thunderbolt.js:306
 msgid "Unknown Thunderbolt device"
 msgstr "Неизвестное устройство Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:308
+#: js/ui/status/thunderbolt.js:307
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2377,21 +2400,21 @@ msgstr ""
 "снова подключите устройство, Чтобы начать использовать устройство, отключите "
 "и снова подключите его."
 
-#: js/ui/status/thunderbolt.js:311
+#: js/ui/status/thunderbolt.js:310
 msgid "Unauthorized Thunderbolt device"
 msgstr "Неавторизованное устройство Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:312
+#: js/ui/status/thunderbolt.js:311
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "Новое устройство было обнаружено и должно быть авторизовано администратором."
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:317
 msgid "Thunderbolt authorization error"
 msgstr "Ошибка авторизации Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:318
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Не удалось авторизовать устройство Thunderbolt: %s"
