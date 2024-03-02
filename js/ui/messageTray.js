@@ -411,10 +411,8 @@ export class Notification extends GObject.Object {
         if (params.clear)
             this.clearActions();
 
-        if (this.sound !== params.sound) {
+        if (this.sound !== params.sound)
             this.sound = params.sound;
-            this._soundPlayed = false;
-        }
 
         this.emit('updated', params.clear);
     }
@@ -495,13 +493,8 @@ export class Notification extends GObject.Object {
     }
 
     playSound() {
-        if (this._soundPlayed)
+        if (!this.source.policy.enableSound)
             return;
-
-        if (!this.source.policy.enableSound) {
-            this._soundPlayed = true;
-            return;
-        }
 
         this.sound?.play(this.title);
     }
