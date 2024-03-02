@@ -358,6 +358,25 @@ export class Notification extends GObject.Object {
 
         if (!this.datetime)
             this.datetime = GLib.DateTime.new_now_local();
+
+        // Automatically update the datetime property when the notification
+        // is updated.
+        this.connect('notify', (o, pspec) => {
+            if (pspec.name === 'acknowledged') {
+                // Don't update datetime property
+            } else if (pspec.name === 'datetime') {
+                if (this._updateDatetimeId)
+                    GLib.source_remove(this._updateDatetimeId);
+                delete this._updateDatetimeId;
+            } else if (!this._updateDatetimeId) {
+                this._updateDatetimeId =
+                    GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                        delete this._updateDatetimeId;
+                        this.datetime = GLib.DateTime.new_now_local();
+                        return GLib.SOURCE_REMOVE;
+                    });
+            }
+        });
     }
 
     // update:
