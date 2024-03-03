@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-02 20:50+0000\n"
-"PO-Revision-Date: 2024-03-02 23:10+0200\n"
+"POT-Creation-Date: 2024-03-03 01:44+0000\n"
+"PO-Revision-Date: 2024-03-03 20:44+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
@@ -132,7 +132,7 @@ msgstr "Зробити знімок вікна"
 msgid "Record a screencast interactively"
 msgstr "Записати з екрана інтерактивно"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1354
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
 msgid "System"
 msgstr "Система"
 
@@ -589,8 +589,8 @@ msgstr "Відвідати сторінку розширення"
 #: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
 #: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
-#: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:380
-#: js/ui/shellMountOperation.js:390
+#: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:384
+#: js/ui/shellMountOperation.js:394
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -598,7 +598,7 @@ msgstr "Скасувати"
 #: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
 #: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
 #: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:288
-#: js/ui/shellMountOperation.js:330
+#: js/ui/shellMountOperation.js:334
 msgid "Password"
 msgstr "Пароль"
 
@@ -614,9 +614,9 @@ msgid ""
 "%s. To login remotely, you must log out from the remote session or force "
 "stop it."
 msgstr ""
-"Віддалений вхід неможливий, оскільки для %s вже запущено віддалений сеанс."
-" Щоб увійти до системи віддалено, вам слід вийти з віддаленого сеансу або"
-" примусово його припинити."
+"Віддалений вхід неможливий, оскільки для %s вже запущено віддалений сеанс. "
+"Щоб увійти до системи віддалено, вам слід вийти з віддаленого сеансу або "
+"примусово його припинити."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:427
@@ -625,9 +625,8 @@ msgid ""
 "Login is not possible because a remote session is already running for %s. To "
 "login, you must log out from the remote session or force stop it."
 msgstr ""
-"Вхід неможливий, оскільки для %s вже запущено віддалений сеанс. Щоб увійти"
-" до системи, вам слід вийти з віддаленого сеансу або примусово його"
-" припинити."
+"Вхід неможливий, оскільки для %s вже запущено віддалений сеанс. Щоб увійти "
+"до системи, вам слід вийти з віддаленого сеансу або примусово його припинити."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:430
@@ -637,9 +636,9 @@ msgid ""
 "%s. To login remotely, you must log out from the local session or force stop "
 "it."
 msgstr ""
-"Віддалений вхід неможливий, оскільки для %s вже запущено локальний сеанс."
-" Щоб увійти до системи віддалено, вам слід вийти з локального сеансу або"
-" примусово його припинити."
+"Віддалений вхід неможливий, оскільки для %s вже запущено локальний сеанс. "
+"Щоб увійти до системи віддалено, вам слід вийти з локального сеансу або "
+"примусово його припинити."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:433
@@ -648,8 +647,8 @@ msgid ""
 "Login is not possible because a session is already running for %s. To login, "
 "you must log out from the session or force stop it."
 msgstr ""
-"Вхід неможливий, оскільки для %s вже запущено сеанс. Щоб увійти до системи,"
-" вам слід вийти з сеансу або примусово його припинити."
+"Вхід неможливий, оскільки для %s вже запущено сеанс. Щоб увійти до системи, "
+"вам слід вийти з сеансу або примусово його припинити."
 
 #: js/gdm/loginDialog.js:442
 msgid "Session Already Running"
@@ -660,11 +659,10 @@ msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss."
 msgstr ""
-"Примусове припинення сеансу призведе до завершення роботи усіх запущених у"
-" ньому програм і процесів, а отже, може призвести до втрати даних."
+"Примусове припинення сеансу призведе до завершення роботи усіх запущених у "
+"ньому програм і процесів, а отже, може призвести до втрати даних."
 
 #: js/gdm/loginDialog.js:474
-#| msgid "Force Quit"
 msgid "Force Stop"
 msgstr "Примусово зупинити"
 
@@ -1066,7 +1064,7 @@ msgid "Settings"
 msgstr "Параметри"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:38
+#: js/ui/calendar.js:39
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -1076,43 +1074,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:64
+#: js/ui/calendar.js:65
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Н"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:66
+#: js/ui/calendar.js:67
 msgctxt "grid monday"
 msgid "M"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:68
+#: js/ui/calendar.js:69
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "В"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:71
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "С"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:72
+#: js/ui/calendar.js:73
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Ч"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:74
+#: js/ui/calendar.js:75
 msgctxt "grid friday"
 msgid "F"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:77
 msgctxt "grid saturday"
 msgid "S"
 msgstr "С"
@@ -1123,7 +1121,7 @@ msgstr "С"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:427
+#: js/ui/calendar.js:428
 msgid "%OB"
 msgstr "%OB"
 
@@ -1136,41 +1134,41 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:437
+#: js/ui/calendar.js:438
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:499
+#: js/ui/calendar.js:500
 msgid "Previous month"
 msgstr "Попередній місяць"
 
-#: js/ui/calendar.js:517
+#: js/ui/calendar.js:518
 msgid "Next month"
 msgstr "Наступний місяць"
 
-#: js/ui/calendar.js:668
+#: js/ui/calendar.js:669
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:727
+#: js/ui/calendar.js:728
 msgid "Week %V"
 msgstr "Тиждень %V"
 
-#: js/ui/calendar.js:889
+#: js/ui/calendar.js:920
 msgid "No Notifications"
 msgstr "Немає сповіщень"
 
-#: js/ui/calendar.js:945
+#: js/ui/calendar.js:976
 msgid "Do Not Disturb"
 msgstr "Не турбувати"
 
-#: js/ui/calendar.js:966
+#: js/ui/calendar.js:997
 msgid "Clear"
 msgstr "Очистити"
 
-#: js/ui/calendar.js:970
+#: js/ui/calendar.js:1001
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Вилучити усі сповіщення"
@@ -1212,7 +1210,7 @@ msgstr "Неможливо розблокувати том"
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Наявна версія udisks не підтримує параметри PIM"
 
-#: js/ui/components/autorunManager.js:278
+#: js/ui/components/autorunManager.js:200
 #, javascript-format
 msgid "Open with %s"
 msgstr "Відкрити через %s"
@@ -1308,14 +1306,9 @@ msgstr "Автентифікувати"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:413
+#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:417
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Вибачте, це не спрацювало. Спробуйте ще."
-
-#: js/ui/components/telepathyClient.js:793
-#, javascript-format
-msgid "%s is now known as %s"
-msgstr "%s тепер відомий як %s"
 
 #: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:418
 msgid "Windows"
@@ -1599,11 +1592,11 @@ msgstr "Встановити розширення"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Звантажити і встановити «%s» з extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:353
+#: js/ui/extensionSystem.js:354
 msgid "Extension Updates Available"
 msgstr "Випущено оновлення розширень"
 
-#: js/ui/extensionSystem.js:354
+#: js/ui/extensionSystem.js:355
 msgid "Extension updates are ready to be installed."
 msgstr "Приготовано до встановлення оновлення розширень."
 
@@ -1742,23 +1735,23 @@ msgstr "Переглянути джерело"
 msgid "Web Page"
 msgstr "Веб-сторінка"
 
-#: js/ui/main.js:278
+#: js/ui/main.js:279
 msgid "System was put in unsafe mode"
 msgstr "Систему переведено у небезпечний режим"
 
-#: js/ui/main.js:279
+#: js/ui/main.js:280
 msgid "Apps now have unrestricted access"
 msgstr "Тепер програми мають необмежений доступ до даних"
 
-#: js/ui/main.js:280 js/ui/overview.js:51
+#: js/ui/main.js:283 js/ui/overview.js:54
 msgid "Undo"
 msgstr "Повернути"
 
-#: js/ui/main.js:338
+#: js/ui/main.js:340
 msgid "Logged in as a privileged user"
 msgstr "Увійшов як наділений користувач"
 
-#: js/ui/main.js:339
+#: js/ui/main.js:341
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1766,25 +1759,30 @@ msgstr ""
 "З міркувань безпеки слід уникати сеансів з наділеними правами. Користуйтесь "
 "звичайним сеансом."
 
-#: js/ui/main.js:387
+#: js/ui/main.js:389
 msgid "Screen Lock disabled"
 msgstr "Блокування екрана вимкнено"
 
-#: js/ui/main.js:388
+#: js/ui/main.js:390
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Блокування екрана потребує керування входом GNOME."
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:427
+#: js/ui/messageList.js:400
 msgid "Unknown App"
 msgstr "Невідома програма"
 
-#: js/ui/mpris.js:199
+#: js/ui/messageTray.js:328 js/ui/messageTray.js:330
+#| msgid "No Notifications"
+msgid "Notification sound"
+msgstr "Звук сповіщення"
+
+#: js/ui/mpris.js:198
 msgid "Unknown artist"
 msgstr "Невідомий виконавець"
 
-#: js/ui/mpris.js:209
+#: js/ui/mpris.js:208
 msgid "Unknown title"
 msgstr "Невідома назва"
 
@@ -1802,7 +1800,7 @@ msgstr "Програми"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:64
+#: js/ui/overview.js:67
 msgid "Overview"
 msgstr "Огляд"
 
@@ -1951,7 +1949,6 @@ msgstr "Трансляції з екрана"
 #. * "Screencast from 07-17-2013 10:00:46 PM"
 #: js/ui/screenshot.js:2003
 #, no-c-format
-#| msgid "Screencast from %d %t.webm"
 msgid "Screencast from %d %t"
 msgstr "Запис з екрана від %d %t"
 
@@ -1994,7 +1991,7 @@ msgstr "Натисніть тут, щоб переглянути відео."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2102 js/ui/screenshot.js:2343
+#: js/ui/screenshot.js:2102 js/ui/screenshot.js:2345
 msgid "Show in Files"
 msgstr "Показувати у «Файлах»"
 
@@ -2015,7 +2012,7 @@ msgstr "Знімок зроблено"
 msgid "You can paste the image from the clipboard."
 msgstr "Ви можете вставити зображення з буфера обміну даними."
 
-#: js/ui/screenshot.js:2392 js/ui/screenshot.js:2556
+#: js/ui/screenshot.js:2393 js/ui/screenshot.js:2557
 msgid "Screenshot taken"
 msgstr "Знімок зроблено"
 
@@ -2061,26 +2058,26 @@ msgstr "Сховати текст"
 msgid "Caps lock is on."
 msgstr "Caps lock активовано."
 
-#: js/ui/shellMountOperation.js:284
+#: js/ui/shellMountOperation.js:288
 msgid "Hidden Volume"
 msgstr "Прихований том"
 
-#: js/ui/shellMountOperation.js:287
+#: js/ui/shellMountOperation.js:291
 msgid "Windows System Volume"
 msgstr "Том системи Windows"
 
-#: js/ui/shellMountOperation.js:290
+#: js/ui/shellMountOperation.js:294
 msgid "Uses Keyfiles"
 msgstr "Використовує зашифровані файли"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:298
+#: js/ui/shellMountOperation.js:302
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr "Використайте <i>%s</i>, щоб розблокувати том."
 
-#: js/ui/shellMountOperation.js:302
+#: js/ui/shellMountOperation.js:306
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
@@ -2088,25 +2085,25 @@ msgstr ""
 "Вам знадобиться зовнішня допоміжна програма, подібна до програми <i>Диски</"
 "i> для розблоковування тому, де використано файли ключів."
 
-#: js/ui/shellMountOperation.js:310
+#: js/ui/shellMountOperation.js:314
 msgid "PIM Number"
 msgstr "Номер PIM"
 
-#: js/ui/shellMountOperation.js:369
+#: js/ui/shellMountOperation.js:373
 msgid "Remember Password"
 msgstr "Запам'ятати пароль"
 
-#: js/ui/shellMountOperation.js:384
+#: js/ui/shellMountOperation.js:388
 msgid "Unlock"
 msgstr "Розблокувати"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:398
+#: js/ui/shellMountOperation.js:402
 #, javascript-format
 msgid "Open %s"
 msgstr "Відкрити %s"
 
-#: js/ui/shellMountOperation.js:434
+#: js/ui/shellMountOperation.js:438
 msgid "The PIM must be a number or empty."
 msgstr "PIM має бути числом або порожній."
 
@@ -2390,11 +2387,11 @@ msgstr "параметри мобільної радіомережі"
 msgid "Mobile"
 msgstr "Мобільний"
 
-#: js/ui/status/network.js:2034
+#: js/ui/status/network.js:2035
 msgid "Connection failed"
 msgstr "Не вдалось з'єднатись"
 
-#: js/ui/status/network.js:2035
+#: js/ui/status/network.js:2036
 msgid "Activation of network connection failed"
 msgstr "Не вдалось увімкнути мережеве з'єднання"
 
@@ -2467,11 +2464,11 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "Заблокувати екран"
 
-#: js/ui/status/thunderbolt.js:306
+#: js/ui/status/thunderbolt.js:310
 msgid "Unknown Thunderbolt device"
 msgstr "Невідомий пристрій Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:307
+#: js/ui/status/thunderbolt.js:311
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2479,20 +2476,20 @@ msgstr ""
 "Виявлено новий пристрій протягом вашої відсутності. Будь ласка, "
 "перепід'єднайте пристрій для його використання."
 
-#: js/ui/status/thunderbolt.js:310
+#: js/ui/status/thunderbolt.js:314
 msgid "Unauthorized Thunderbolt device"
 msgstr "Незавірений пристрій Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:311
+#: js/ui/status/thunderbolt.js:315
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr "Виявлено новий пристрій, який потребує схвалення від адміністратора."
 
-#: js/ui/status/thunderbolt.js:317
+#: js/ui/status/thunderbolt.js:321
 msgid "Thunderbolt authorization error"
 msgstr "Помилка завірення Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:322
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Неможливо завірити пристрій Thunderbolt: %s"
@@ -3456,6 +3453,10 @@ msgstr[3] "%u вхід"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Системні звуки"
+
+#, javascript-format
+#~ msgid "%s is now known as %s"
+#~ msgstr "%s тепер відомий як %s"
 
 #~ msgid "Network Manager"
 #~ msgstr "Керування мережею"
