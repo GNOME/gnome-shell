@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-02 20:50+0000\n"
-"PO-Revision-Date: 2024-03-03 02:26+0100\n"
+"POT-Creation-Date: 2024-03-03 01:44+0000\n"
+"PO-Revision-Date: 2024-03-03 15:28+0100\n"
 "Last-Translator: Brage <bragefuglseth@gnome.org>\n"
 "Language-Team: \n"
 "Language: nb\n"
@@ -119,7 +119,7 @@ msgstr "Ta skjermbilde av vindu"
 msgid "Record a screencast interactively"
 msgstr "Ta skjermopptak interaktivt"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1354
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
 msgid "System"
 msgstr "System"
 
@@ -566,8 +566,8 @@ msgstr "Besøk hjemmesiden til utvidelsen"
 #: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
 #: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
-#: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:380
-#: js/ui/shellMountOperation.js:390
+#: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:384
+#: js/ui/shellMountOperation.js:394
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -575,7 +575,7 @@ msgstr "Avbryt"
 #: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
 #: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
 #: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:288
-#: js/ui/shellMountOperation.js:330
+#: js/ui/shellMountOperation.js:334
 msgid "Password"
 msgstr "Passord"
 
@@ -1022,7 +1022,7 @@ msgid "Settings"
 msgstr "Innstillinger"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:38
+#: js/ui/calendar.js:39
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -1032,43 +1032,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:64
+#: js/ui/calendar.js:65
 msgctxt "grid sunday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:66
+#: js/ui/calendar.js:67
 msgctxt "grid monday"
 msgid "M"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:68
+#: js/ui/calendar.js:69
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:71
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "O"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:72
+#: js/ui/calendar.js:73
 msgctxt "grid thursday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:74
+#: js/ui/calendar.js:75
 msgctxt "grid friday"
 msgid "F"
 msgstr "F"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:77
 msgctxt "grid saturday"
 msgid "S"
 msgstr "L"
@@ -1079,7 +1079,7 @@ msgstr "L"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:427
+#: js/ui/calendar.js:428
 msgid "%OB"
 msgstr "%OB"
 
@@ -1092,41 +1092,41 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:437
+#: js/ui/calendar.js:438
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:499
+#: js/ui/calendar.js:500
 msgid "Previous month"
 msgstr "Forrige måned"
 
-#: js/ui/calendar.js:517
+#: js/ui/calendar.js:518
 msgid "Next month"
 msgstr "Neste måned"
 
-#: js/ui/calendar.js:668
+#: js/ui/calendar.js:669
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:727
+#: js/ui/calendar.js:728
 msgid "Week %V"
 msgstr "Uke %V"
 
-#: js/ui/calendar.js:889
+#: js/ui/calendar.js:920
 msgid "No Notifications"
 msgstr "Ingen varslinger"
 
-#: js/ui/calendar.js:945
+#: js/ui/calendar.js:976
 msgid "Do Not Disturb"
 msgstr "Ikke forstyrr"
 
-#: js/ui/calendar.js:966
+#: js/ui/calendar.js:997
 msgid "Clear"
 msgstr "Fjern"
 
-#: js/ui/calendar.js:970
+#: js/ui/calendar.js:1001
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Fjern alle varslinger"
@@ -1168,7 +1168,7 @@ msgstr "Kan ikke låse opp område"
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Den installerte versjonen av udisks støtter ikke PIM-innstillingen"
 
-#: js/ui/components/autorunManager.js:278
+#: js/ui/components/autorunManager.js:200
 #, javascript-format
 msgid "Open with %s"
 msgstr "Åpne med %s"
@@ -1263,14 +1263,9 @@ msgstr "Autentiser"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:413
+#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:417
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Autentisering mislyktes. Prøv igjen."
-
-#: js/ui/components/telepathyClient.js:793
-#, javascript-format
-msgid "%s is now known as %s"
-msgstr "%s byttet navn til %s"
 
 #: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:418
 msgid "Windows"
@@ -1368,7 +1363,7 @@ msgstr "Været"
 
 #: js/ui/dateMenu.js:728
 msgid "Select weather location…"
-msgstr "Velg posisjon for værmelding…"
+msgstr "Velg posisjon…"
 
 #: js/ui/endSessionDialog.js:48
 #, javascript-format
@@ -1541,11 +1536,11 @@ msgstr "Installer utvidelse"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Last ned og installer «%s» fra extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:353
+#: js/ui/extensionSystem.js:354
 msgid "Extension Updates Available"
 msgstr "Utvidelser kan oppdateres"
 
-#: js/ui/extensionSystem.js:354
+#: js/ui/extensionSystem.js:355
 msgid "Extension updates are ready to be installed."
 msgstr "Oppdateringer av utvidelser er klare for installering."
 
@@ -1685,23 +1680,23 @@ msgstr "Se kilde"
 msgid "Web Page"
 msgstr "Nettside"
 
-#: js/ui/main.js:278
+#: js/ui/main.js:279
 msgid "System was put in unsafe mode"
 msgstr "System satt i usikret modus"
 
-#: js/ui/main.js:279
+#: js/ui/main.js:280
 msgid "Apps now have unrestricted access"
 msgstr "Apper har nå ubegrenset tilgang"
 
-#: js/ui/main.js:280 js/ui/overview.js:51
+#: js/ui/main.js:283 js/ui/overview.js:54
 msgid "Undo"
 msgstr "Angre"
 
-#: js/ui/main.js:338
+#: js/ui/main.js:340
 msgid "Logged in as a privileged user"
 msgstr "Logg inn som priviligert bruker"
 
-#: js/ui/main.js:339
+#: js/ui/main.js:341
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1709,25 +1704,29 @@ msgstr ""
 "Å være logget inn som priviligert bruker bør unngås av sikkerhetshensyn. "
 "Hvis mulig, bør du logge inn som vanlig bruker."
 
-#: js/ui/main.js:387
+#: js/ui/main.js:389
 msgid "Screen Lock disabled"
 msgstr "Kan ikke låse skjerm"
 
-#: js/ui/main.js:388
+#: js/ui/main.js:390
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Låsing av skjerm krever GNOME sin låseskjerm."
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:427
+#: js/ui/messageList.js:400
 msgid "Unknown App"
 msgstr "Ukjent app"
 
-#: js/ui/mpris.js:199
+#: js/ui/messageTray.js:328 js/ui/messageTray.js:330
+msgid "Notification sound"
+msgstr "Varslingslyd"
+
+#: js/ui/mpris.js:198
 msgid "Unknown artist"
 msgstr "Ukjent artist"
 
-#: js/ui/mpris.js:209
+#: js/ui/mpris.js:208
 msgid "Unknown title"
 msgstr "Ukjent tittel"
 
@@ -1745,7 +1744,7 @@ msgstr "Apper"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:64
+#: js/ui/overview.js:67
 msgid "Overview"
 msgstr "Oversiktsmodus"
 
@@ -1936,7 +1935,7 @@ msgstr "Trykk her for å se opptaket."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2102 js/ui/screenshot.js:2343
+#: js/ui/screenshot.js:2102 js/ui/screenshot.js:2345
 msgid "Show in Files"
 msgstr "Vis i Filer"
 
@@ -1957,7 +1956,7 @@ msgstr "Skjermbilde tatt"
 msgid "You can paste the image from the clipboard."
 msgstr "Bildet kan limes inn fra utklippstavlen."
 
-#: js/ui/screenshot.js:2392 js/ui/screenshot.js:2556
+#: js/ui/screenshot.js:2393 js/ui/screenshot.js:2557
 msgid "Screenshot taken"
 msgstr "Skjermbilde tatt"
 
@@ -2001,20 +2000,20 @@ msgstr "Skjul tekst"
 msgid "Caps lock is on."
 msgstr "Caps lock er på."
 
-#: js/ui/shellMountOperation.js:284
+#: js/ui/shellMountOperation.js:288
 msgid "Hidden Volume"
 msgstr "Skjult område"
 
-#: js/ui/shellMountOperation.js:287
+#: js/ui/shellMountOperation.js:291
 msgid "Windows System Volume"
 msgstr "Windows-område"
 
-#: js/ui/shellMountOperation.js:290
+#: js/ui/shellMountOperation.js:294
 msgid "Uses Keyfiles"
 msgstr "Bruker nøkkelfiler"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:298
+#: js/ui/shellMountOperation.js:302
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -2022,7 +2021,7 @@ msgstr ""
 "For å låse opp et område som bruker nøkkelfiler, bruk appen <i>%s</i> i "
 "stedet."
 
-#: js/ui/shellMountOperation.js:302
+#: js/ui/shellMountOperation.js:306
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
@@ -2030,25 +2029,25 @@ msgstr ""
 "For å låse opp et område som bruker nøkkelfiler, bruk et eksternt verktøy, "
 "som <i>Disker</i>."
 
-#: js/ui/shellMountOperation.js:310
+#: js/ui/shellMountOperation.js:314
 msgid "PIM Number"
 msgstr "PIM-nummer"
 
-#: js/ui/shellMountOperation.js:369
+#: js/ui/shellMountOperation.js:373
 msgid "Remember Password"
 msgstr "Husk passord"
 
-#: js/ui/shellMountOperation.js:384
+#: js/ui/shellMountOperation.js:388
 msgid "Unlock"
 msgstr "Lås opp"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:398
+#: js/ui/shellMountOperation.js:402
 #, javascript-format
 msgid "Open %s"
 msgstr "Åpne %s"
 
-#: js/ui/shellMountOperation.js:434
+#: js/ui/shellMountOperation.js:438
 msgid "The PIM must be a number or empty."
 msgstr "PIM-feltet må inneholde et tall eller holdes tomt."
 
@@ -2324,11 +2323,11 @@ msgstr "Bredbåndsinnstillinger"
 msgid "Mobile"
 msgstr "Mobil"
 
-#: js/ui/status/network.js:2034
+#: js/ui/status/network.js:2035
 msgid "Connection failed"
 msgstr "Tilkobling mislyktes"
 
-#: js/ui/status/network.js:2035
+#: js/ui/status/network.js:2036
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling mislyktes"
 
@@ -2401,30 +2400,30 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "Lås skjerm"
 
-#: js/ui/status/thunderbolt.js:306
+#: js/ui/status/thunderbolt.js:310
 msgid "Unknown Thunderbolt device"
 msgstr "Ukjent Thunderbolt-enhet"
 
-#: js/ui/status/thunderbolt.js:307
+#: js/ui/status/thunderbolt.js:311
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
 msgstr "En ny enhet ble oppdaget. Koble fra og til igjen for å bruke den."
 
-#: js/ui/status/thunderbolt.js:310
+#: js/ui/status/thunderbolt.js:314
 msgid "Unauthorized Thunderbolt device"
 msgstr "Ukjent Thunderbolt-enhet"
 
-#: js/ui/status/thunderbolt.js:311
+#: js/ui/status/thunderbolt.js:315
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr "En ny enhet ble oppdaget, og må godkjennes av en administrator."
 
-#: js/ui/status/thunderbolt.js:317
+#: js/ui/status/thunderbolt.js:321
 msgid "Thunderbolt authorization error"
 msgstr "Godkjenningsfeil"
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:322
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Kan ikke godkjenne Thunderbolt-enhet: %s"
@@ -3375,6 +3374,10 @@ msgstr[1] "%u innganger"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Systemlyder"
+
+#, javascript-format
+#~ msgid "%s is now known as %s"
+#~ msgstr "%s byttet navn til %s"
 
 #~ msgid "Network Manager"
 #~ msgstr "Nettverk"
