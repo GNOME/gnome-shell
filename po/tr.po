@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-02 20:50+0000\n"
-"PO-Revision-Date: 2024-03-03 04:14+0300\n"
-"Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
+"POT-Creation-Date: 2024-03-03 18:25+0000\n"
+"PO-Revision-Date: 2024-03-03 08:00+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -129,7 +129,7 @@ msgstr "Pencerenin ekran görüntüsünü al"
 msgid "Record a screencast interactively"
 msgstr "Etkileşimli olarak ekranı kaydet"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1354
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
 msgid "System"
 msgstr "Sistem"
 
@@ -553,7 +553,7 @@ msgstr "Uzantılar"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
-msgstr "Ağ Girişi"
+msgstr "Ağdan Oturum Açma"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
 #: subprojects/extensions-app/data/ui/extensions-window.ui:277
@@ -584,8 +584,8 @@ msgstr "Uzantı ana sayfasını ziyaret et"
 #: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
 #: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
-#: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:380
-#: js/ui/shellMountOperation.js:390
+#: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:384
+#: js/ui/shellMountOperation.js:394
 msgid "Cancel"
 msgstr "İptal"
 
@@ -593,7 +593,7 @@ msgstr "İptal"
 #: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
 #: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
 #: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:288
-#: js/ui/shellMountOperation.js:330
+#: js/ui/shellMountOperation.js:334
 msgid "Password"
 msgstr "Parola"
 
@@ -609,6 +609,8 @@ msgid ""
 "%s. To login remotely, you must log out from the remote session or force "
 "stop it."
 msgstr ""
+"%s uzak oturumu zaten çalıştığından uzaktan oturum açmak olanaksız. Uzaktan "
+"oturum açmak için uzak oturumu kapatmalı ya da durmaya zorlamalısınız."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:427
@@ -617,6 +619,8 @@ msgid ""
 "Login is not possible because a remote session is already running for %s. To "
 "login, you must log out from the remote session or force stop it."
 msgstr ""
+"%s uzak oturumu zaten çalıştığından oturum açmak olanaksız. Oturum açmak "
+"için uzak oturumu kapatmalı ya da durmaya zorlamalısınız."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:430
@@ -626,6 +630,8 @@ msgid ""
 "%s. To login remotely, you must log out from the local session or force stop "
 "it."
 msgstr ""
+"%s yerel oturumu zaten çalıştığından uzaktan oturum açmak olanaksız. Uzaktan "
+"oturum açmak için yerel oturumu kapatmalı ya da durmaya zorlamalısınız."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:433
@@ -634,6 +640,8 @@ msgid ""
 "Login is not possible because a session is already running for %s. To login, "
 "you must log out from the session or force stop it."
 msgstr ""
+"%s oturumu zaten çalıştığından oturum açmak olanaksız. Oturum açmak için "
+"oturumu kapatmalı ya da durmaya zorlamalısınız."
 
 #: js/gdm/loginDialog.js:442
 msgid "Session Already Running"
@@ -644,10 +652,12 @@ msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss."
 msgstr ""
+"Durmaya zorlamak, çalışan tüm uygulamaları ve süreçleri durduracağından "
+"veri yitirilebilir."
 
 #: js/gdm/loginDialog.js:474
 msgid "Force Stop"
-msgstr "Kapanmaya Zorla"
+msgstr "Durmaya Zorla"
 
 #: js/gdm/loginDialog.js:542
 msgid "Not listed?"
@@ -667,12 +677,12 @@ msgstr "Kullanıcı Adı"
 
 #: js/gdm/loginDialog.js:1081
 msgid "Stop conflicting session dialog closed"
-msgstr ""
+msgstr "Çakışan oturumu durdur iletişim kutusu kapatıldı"
 
 #: js/gdm/loginDialog.js:1082
 #, javascript-format
 msgid "Try to login again to start a session for user %s."
-msgstr "%s kullanıcısıyla oturum başlatmak için yeniden giriş yapmayı deneyin."
+msgstr "%s kullanıcısıyla oturum başlatmak için yeniden oturum açmayı deneyin."
 
 #: js/gdm/loginDialog.js:1426
 msgid "Login Window"
@@ -1026,7 +1036,7 @@ msgid "Settings"
 msgstr "Ayarlar"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:38
+#: js/ui/calendar.js:39
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -1036,43 +1046,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:64
+#: js/ui/calendar.js:65
 msgctxt "grid sunday"
 msgid "S"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:66
+#: js/ui/calendar.js:67
 msgctxt "grid monday"
 msgid "M"
 msgstr "Pt"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:68
+#: js/ui/calendar.js:69
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:71
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ç"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:72
+#: js/ui/calendar.js:73
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Pş"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:74
+#: js/ui/calendar.js:75
 msgctxt "grid friday"
 msgid "F"
 msgstr "C"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:77
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Ct"
@@ -1083,7 +1093,7 @@ msgstr "Ct"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:427
+#: js/ui/calendar.js:428
 msgid "%OB"
 msgstr "%OB"
 
@@ -1096,41 +1106,41 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:437
+#: js/ui/calendar.js:438
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:499
+#: js/ui/calendar.js:500
 msgid "Previous month"
 msgstr "Önceki ay"
 
-#: js/ui/calendar.js:517
+#: js/ui/calendar.js:518
 msgid "Next month"
 msgstr "Gelecek ay"
 
-#: js/ui/calendar.js:668
+#: js/ui/calendar.js:669
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:727
+#: js/ui/calendar.js:728
 msgid "Week %V"
 msgstr "%V. Hafta"
 
-#: js/ui/calendar.js:889
+#: js/ui/calendar.js:920
 msgid "No Notifications"
 msgstr "Bildirim Yok"
 
-#: js/ui/calendar.js:945
+#: js/ui/calendar.js:976
 msgid "Do Not Disturb"
 msgstr "Rahatsız Etme"
 
-#: js/ui/calendar.js:966
+#: js/ui/calendar.js:997
 msgid "Clear"
 msgstr "Temizle"
 
-#: js/ui/calendar.js:970
+#: js/ui/calendar.js:1001
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Tüm bildirimleri temizle"
@@ -1172,7 +1182,7 @@ msgstr "Bölümün kilidi açılamadı"
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Kurulu udisks sürümü PIM ayarını desteklemiyor"
 
-#: js/ui/components/autorunManager.js:278
+#: js/ui/components/autorunManager.js:200
 #, javascript-format
 msgid "Open with %s"
 msgstr "%s ile Aç"
@@ -1269,14 +1279,9 @@ msgstr "Doğrula"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:413
+#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:417
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Üzgünüz ama işe yaramadı. Lütfen yeniden deneyin."
-
-#: js/ui/components/telepathyClient.js:793
-#, javascript-format
-msgid "%s is now known as %s"
-msgstr "%s, şimdi %s olarak biliniyor"
 
 #: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:418
 msgid "Windows"
@@ -1540,11 +1545,11 @@ msgstr "Uzantı Kur"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "“%s” uzantısı extensions.gnome.org üstünden indirilip kurulsun mu?"
 
-#: js/ui/extensionSystem.js:353
+#: js/ui/extensionSystem.js:354
 msgid "Extension Updates Available"
 msgstr "Uzantı Güncellemeleri Var"
 
-#: js/ui/extensionSystem.js:354
+#: js/ui/extensionSystem.js:355
 msgid "Extension updates are ready to be installed."
 msgstr "Uzantı güncellemeleri kuruluma hazır."
 
@@ -1683,23 +1688,23 @@ msgstr "Kaynağı Görüntüle"
 msgid "Web Page"
 msgstr "Web Sayfası"
 
-#: js/ui/main.js:278
+#: js/ui/main.js:279
 msgid "System was put in unsafe mode"
 msgstr "Sistem güvensiz kipe sokuldu"
 
-#: js/ui/main.js:279
+#: js/ui/main.js:280
 msgid "Apps now have unrestricted access"
 msgstr "Şimdi uygulamalar sınırsız erişime sahip"
 
-#: js/ui/main.js:280 js/ui/overview.js:51
+#: js/ui/main.js:283 js/ui/overview.js:54
 msgid "Undo"
 msgstr "Geri Al"
 
-#: js/ui/main.js:338
+#: js/ui/main.js:340
 msgid "Logged in as a privileged user"
 msgstr "Yetkili kullanıcı olarak oturum açılmış"
 
-#: js/ui/main.js:339
+#: js/ui/main.js:341
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1708,25 +1713,29 @@ msgstr ""
 "kaçınılmalıdır. Eğer yapabiliyorsanız sıradan kullanıcı olarak oturum "
 "açmalısınız."
 
-#: js/ui/main.js:387
+#: js/ui/main.js:389
 msgid "Screen Lock disabled"
 msgstr "Ekran Kilidi devre dışı"
 
-#: js/ui/main.js:388
+#: js/ui/main.js:390
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Ekran Kilitleme, GNOME ekran yöneticisi gerektirir."
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:427
+#: js/ui/messageList.js:400
 msgid "Unknown App"
 msgstr "Bilinmeyen Uygulama"
 
-#: js/ui/mpris.js:199
+#: js/ui/messageTray.js:328 js/ui/messageTray.js:330
+msgid "Notification sound"
+msgstr "Bildirim sesi"
+
+#: js/ui/mpris.js:198
 msgid "Unknown artist"
 msgstr "Bilinmeyen sanatçı"
 
-#: js/ui/mpris.js:209
+#: js/ui/mpris.js:208
 msgid "Unknown title"
 msgstr "Bilinmeyen başlık"
 
@@ -1744,7 +1753,7 @@ msgstr "Uygulamalar"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:64
+#: js/ui/overview.js:67
 msgid "Overview"
 msgstr "Genel Görünüm"
 
@@ -1935,7 +1944,7 @@ msgstr "Videoyu görmek için buraya tıklayın."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2102 js/ui/screenshot.js:2343
+#: js/ui/screenshot.js:2102 js/ui/screenshot.js:2345
 msgid "Show in Files"
 msgstr "Dosyalar’da Göster"
 
@@ -1956,7 +1965,7 @@ msgstr "Ekran görüntüsü yakalandı"
 msgid "You can paste the image from the clipboard."
 msgstr "Resmi panodan yapıştırabilirsiniz."
 
-#: js/ui/screenshot.js:2392 js/ui/screenshot.js:2556
+#: js/ui/screenshot.js:2393 js/ui/screenshot.js:2557
 msgid "Screenshot taken"
 msgstr "Ekran görüntüsü alındı"
 
@@ -1999,20 +2008,20 @@ msgstr "Metni Gizle"
 msgid "Caps lock is on."
 msgstr "Caps lock açık."
 
-#: js/ui/shellMountOperation.js:284
+#: js/ui/shellMountOperation.js:288
 msgid "Hidden Volume"
 msgstr "Gizli Bölüm"
 
-#: js/ui/shellMountOperation.js:287
+#: js/ui/shellMountOperation.js:291
 msgid "Windows System Volume"
 msgstr "Windows Sistem Bölümü"
 
-#: js/ui/shellMountOperation.js:290
+#: js/ui/shellMountOperation.js:294
 msgid "Uses Keyfiles"
 msgstr "Anahtar Dosyaları Kullanır"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:298
+#: js/ui/shellMountOperation.js:302
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -2020,7 +2029,7 @@ msgstr ""
 "Anahtar dosyaları kullanan bölümün kilidini açmak için <i>%s</i> aracını "
 "kullanın."
 
-#: js/ui/shellMountOperation.js:302
+#: js/ui/shellMountOperation.js:306
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
@@ -2028,25 +2037,25 @@ msgstr ""
 "Anahtar dosyaları kullanan bölümün kilidini açmak için <i>Diskler</i> gibi "
 "dış araca gereksinirsiniz."
 
-#: js/ui/shellMountOperation.js:310
+#: js/ui/shellMountOperation.js:314
 msgid "PIM Number"
 msgstr "PIM Numarası"
 
-#: js/ui/shellMountOperation.js:369
+#: js/ui/shellMountOperation.js:373
 msgid "Remember Password"
 msgstr "Parolayı Anımsa"
 
-#: js/ui/shellMountOperation.js:384
+#: js/ui/shellMountOperation.js:388
 msgid "Unlock"
 msgstr "Kilit Aç"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:398
+#: js/ui/shellMountOperation.js:402
 #, javascript-format
 msgid "Open %s"
 msgstr "%s’i Aç"
 
-#: js/ui/shellMountOperation.js:434
+#: js/ui/shellMountOperation.js:438
 msgid "The PIM must be a number or empty."
 msgstr "PIM bir sayı veya boşluk olmalı."
 
@@ -2319,11 +2328,11 @@ msgstr "Mobil Geniş Bant Ayarları"
 msgid "Mobile"
 msgstr "Mobil"
 
-#: js/ui/status/network.js:2034
+#: js/ui/status/network.js:2035
 msgid "Connection failed"
 msgstr "Bağlantı başarısız"
 
-#: js/ui/status/network.js:2035
+#: js/ui/status/network.js:2036
 msgid "Activation of network connection failed"
 msgstr "Ağ bağlantısının etkinleşimi başarısız"
 
@@ -2396,11 +2405,11 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "Ekranı Kilitle"
 
-#: js/ui/status/thunderbolt.js:306
+#: js/ui/status/thunderbolt.js:310
 msgid "Unknown Thunderbolt device"
 msgstr "Bilinmeyen Thunderbolt aygıtı"
 
-#: js/ui/status/thunderbolt.js:307
+#: js/ui/status/thunderbolt.js:311
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2408,20 +2417,20 @@ msgstr ""
 "Siz uzaktayken yeni aygıt saptandı. Kullanmaya başlamadan önce aygıtın "
 "bağlantısını kesin ve yeniden bağlayın."
 
-#: js/ui/status/thunderbolt.js:310
+#: js/ui/status/thunderbolt.js:314
 msgid "Unauthorized Thunderbolt device"
 msgstr "Yetkisiz Thunderbolt aygıtı"
 
-#: js/ui/status/thunderbolt.js:311
+#: js/ui/status/thunderbolt.js:315
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr "Yeni aygıt saptandı ve yöneticice yetkilendirilmelidir."
 
-#: js/ui/status/thunderbolt.js:317
+#: js/ui/status/thunderbolt.js:321
 msgid "Thunderbolt authorization error"
 msgstr "Thunderbolt yetkilendirme hatası"
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:322
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Thunderbolt aygıtı yetkilendirilemedi: %s"
@@ -2689,15 +2698,15 @@ msgstr ""
 "GNOME Uzantılar; uzantıları güncellemeyi, uzantı tercihlerini yapılandırmayı "
 "ve istenmeyen uzantıları kaldırmayı veya devre dışı bırakmanızı sağlar."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Ana Pencere"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Kullanılabilir Güncellemeler"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Arama Görünümü"
 
@@ -2774,7 +2783,7 @@ msgstr ""
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
-msgstr[0] "%d uzantı sonraki girişte güncellenecek."
+msgstr[0] "%d uzantı sonraki oturum açılışında güncellenecek."
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:21
 msgid "Error Details"
@@ -2787,7 +2796,8 @@ msgstr "Güncelleme Ayrıntıları"
 #: subprojects/extensions-app/data/ui/extension-row.ui:71
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
-msgstr "Bu uzantının yeni sürümü hazır ve sonraki girişte yüklenecek."
+msgstr ""
+"Bu uzantının yeni sürümü hazır ve sonraki oturum açılışında yüklenecek."
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:107
 msgid "Extension Details"
@@ -2863,11 +2873,11 @@ msgstr "Yüklü Uzantı Yok"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:267
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
-"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a> adresine göz atın."
+"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a> adresine göz atın."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:278
 msgid ""
@@ -3367,3 +3377,6 @@ msgstr[0] "%u Girdi"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
+
+#~ msgid "%s is now known as %s"
+#~ msgstr "%s, şimdi %s olarak biliniyor"
