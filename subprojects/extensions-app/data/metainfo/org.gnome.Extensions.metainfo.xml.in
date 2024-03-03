@@ -49,6 +49,7 @@
   </description>
 
   <releases>
+    <release version="46.rc" date="2024-03-03" type="development"/>
     <release version="46.beta" date="2024-02-11" type="development">
       <description>
         <p>Remember window state.</p>

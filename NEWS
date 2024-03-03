@@ -1,3 +1,40 @@
+46.rc
+=====
+* Fix repainting drawing area [Florian; !3190]
+* Support locking down extension installation [Florian; !3180]
+* Fix auto-closing FDO notifications [Florian; !3204]
+* Ensure remote actions are activated with correct platform data [Julian; !3198]
+* FDO notifications: Support ActivationToken signal [Julian; !3199]
+* Delete selected text on backspace from on-screen keyboard [Sebastian; !2746]
+* Various on-screen keyboard improvements [Carlos; !3162]
+* Inform users of conflicting local/remote sessions on login [Joan; !3134]
+* screencasts: Use h264 encoding if available [Jonas; !3211]
+* Work around issue in NetworkManager's wireguard support [Jonas; !3219]
+* Allow expanding notifications in message list [Julian; !3173]
+* Fixed crash [Marco; !2267]
+* Misc. bug fixes and cleanups [Paul, Florian, Carlos, Julian, Bilal, Automeris,
+  Ray, Sam, Daniel, Sophie; !3186, !3187, !3028, !3188, !3189, !3191, !3192,
+  !3147, !3195, !3197, !3196, !2765, !3200, !3202, !3201, !3206, !3208, !3213,
+  !3207, !3214, !3215, !3216, !3209, !3217, !3221]
+
+Contributors:
+  Jonas Dreßler, Bilal Elmoussaoui, Carlos Garnacho, Sophie Herold, Sam Hewitt,
+  Paul Hollinsky, Sebastian Keller, Florian Müllner, Automeris naranja,
+  Julian Sparber, Ray Strode, Joan Torres, Marco Trevisan (Treviño),
+  Daniel van Vugt
+
+Translators:
+  Ekaterine Papava [ka], Danial Behzadi [fa], Marek Černocký [cs],
+  Sabri Ünal [tr], Artur S0 [ru], Yuri Chornoivan [uk], Fran Dieguez [gl],
+  Vasil Pupkin [be], Asier Sarasua Garmendia [eu], Yaron Shahrabani [he],
+  Daniel Rusek [cs], Brage Fuglseth [nb], Emin Tufan Çetin [tr],
+  Nathan Follens [nl], Aurimas Černius [lt], Matej Urbančič [sl],
+  Daniel Mustieles [es], Quique Serrano [ca], Irénée THIRION [fr],
+  Kukuh Syafaat [id], Luming Zh [zh_CN], Jordi Mas i Hernandez [ca],
+  Bruce Cowan [en_GB], Quentin PAGÈS [oc], Baurzhan Muftakhidinov [kk],
+  Rūdolfs Mazurs [lv], Chao-Hsiung Liao [zh_TW], Guillaume Bernard [fr],
+  Jürgen Benvenuti [de], Philipp Kiemle [de], Jiri Grönroos [fi]
+
 46.beta
 =======
 * Improve High Contrast styling
