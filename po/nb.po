@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-17 22:25+0000\n"
-"PO-Revision-Date: 2024-02-24 14:34+0100\n"
-"Last-Translator: Brage Fuglseth <bragefuglseth@gnome.org>\n"
+"POT-Creation-Date: 2024-03-02 20:50+0000\n"
+"PO-Revision-Date: 2024-03-03 01:00+0100\n"
+"Last-Translator: Brage <bragefuglseth@gnome.org>\n"
 "Language-Team: \n"
 "Language: nb\n"
 "MIME-Version: 1.0\n"
@@ -255,7 +255,7 @@ msgstr "Appene med disse ID-ene vil vises i favorittmenyen."
 msgid "History for command (Alt-F2) dialog"
 msgstr "Logg for kommandovindu (Alt+F2)"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
 #: data/org.gnome.shell.gschema.xml.in:78
 msgid "History for the looking glass dialog"
 msgstr "Logg for inspeksjonsverktøy"
@@ -523,7 +523,7 @@ msgstr "Sted"
 
 #: data/org.gnome.shell.gschema.xml.in:366
 msgid "The location for which to show a forecast"
-msgstr "Stedet værmelding vises for"
+msgstr "Posisjonen værmeldingen vises for"
 
 #. Keep in sync with subprojects/extensions-app
 #: data/org.gnome.Shell.Extensions.desktop.in.in:5
@@ -563,10 +563,11 @@ msgstr "Hjemmeside"
 msgid "Visit extension homepage"
 msgstr "Besøk hjemmesiden til utvidelsen"
 
-#: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
-#: js/ui/components/networkAgent.js:114 js/ui/components/polkitAgent.js:146
-#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:278
-#: js/ui/shellMountOperation.js:380 js/ui/shellMountOperation.js:390
+#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
+#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
+#: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:380
+#: js/ui/shellMountOperation.js:390
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -578,43 +579,111 @@ msgstr "Avbryt"
 msgid "Password"
 msgstr "Passord"
 
-#: js/gdm/loginDialog.js:324
+#: js/gdm/loginDialog.js:327
 msgid "Choose Session"
 msgstr "Velg økt"
 
-#: js/gdm/loginDialog.js:469
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:424
+#, javascript-format
+msgid ""
+"Remote login is not possible because a remote session is already running for "
+"%s. To login remotely, you must log out from the remote session or force "
+"stop it."
+msgstr ""
+"Fjerninnlogging er ikke mulig fordi %s allerede har en aktiv fjernøkt. For å "
+"logge inn eksternt, må du logge ut av den aktive fjernøkten eller avslutte "
+"den."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:427
+#, javascript-format
+msgid ""
+"Login is not possible because a remote session is already running for %s. To "
+"login, you must log out from the remote session or force stop it."
+msgstr ""
+"Innlogging er ikke mulig fordi %s allerede har en aktiv fjernøkt. For å "
+"logge inn, må du logge ut av fjernøkten eller avslutte den."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:430
+#, javascript-format
+msgid ""
+"Remote login is not possible because a local session is already running for "
+"%s. To login remotely, you must log out from the local session or force stop "
+"it."
+msgstr ""
+"Fjerninnlogging er ikke mulig fordi %s allerede har en aktiv økt. For å "
+"logge inn eksternt, må du logge ut av den aktive økten eller avslutte den."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:433
+#, javascript-format
+msgid ""
+"Login is not possible because a session is already running for %s. To login, "
+"you must log out from the session or force stop it."
+msgstr ""
+"Innlogging er ikke mulig fordi %s allerede har en aktiv økt. For å logge "
+"inn, må du logge ut av den aktive økten eller avslutte den."
+
+#: js/gdm/loginDialog.js:442
+msgid "Session Already Running"
+msgstr "Aktiv økt"
+
+#: js/gdm/loginDialog.js:454
+msgid ""
+"Force stopping will quit any running apps and processes, and could result in "
+"data loss."
+msgstr ""
+"Å gjøre dette vil avslutte alle åpne apper og prosesser, og kan føre til tap "
+"av data."
+
+#: js/gdm/loginDialog.js:474
+msgid "Force Stop"
+msgstr "Avslutt"
+
+#: js/gdm/loginDialog.js:542
 msgid "Not listed?"
 msgstr "Ikke på listen?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:937
+#: js/gdm/loginDialog.js:1010
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(f.eks. bruker eller %s)"
 
-#: js/gdm/loginDialog.js:942 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Brukernavn"
 
-#: js/gdm/loginDialog.js:1266
+#: js/gdm/loginDialog.js:1081
+msgid "Stop conflicting session dialog closed"
+msgstr "Vindu lukket"
+
+#: js/gdm/loginDialog.js:1082
+#, javascript-format
+msgid "Try to login again to start a session for user %s."
+msgstr "Prøv å logge inn igjen eller starte en økt med %s."
+
+#: js/gdm/loginDialog.js:1426
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
-#: js/gdm/util.js:402
+#: js/gdm/util.js:497
 msgid "Authentication error"
 msgstr "Autentiseringsfeil"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:584
+#: js/gdm/util.js:728
 msgid "(or swipe finger across reader)"
 msgstr "(eller sveip finger over leser)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:589
+#: js/gdm/util.js:733
 msgid "(or place finger on reader)"
 msgstr "(eller legg finger på leser)"
 
@@ -1110,7 +1179,7 @@ msgid ""
 msgstr "Du kan også koble til ved å trykke på «WPS»-knappen på ruteren din."
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
-#: js/ui/status/network.js:371 js/ui/status/network.js:455
+#: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "Koble til"
 
@@ -1295,11 +1364,11 @@ msgstr "Kan ikke laste inn værmelding"
 
 #: js/ui/dateMenu.js:726
 msgid "Weather"
-msgstr "Værmelding"
+msgstr "Været"
 
 #: js/ui/dateMenu.js:728
 msgid "Select weather location…"
-msgstr "Velg sted for værmelding…"
+msgstr "Velg posisjon for værmelding…"
 
 #: js/ui/endSessionDialog.js:48
 #, javascript-format
@@ -1550,7 +1619,7 @@ msgstr "Hold påslått"
 msgid "Turn On"
 msgstr "Slå på"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:466
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
 msgid "Turn Off"
 msgstr "Slå av"
 
@@ -1558,7 +1627,7 @@ msgstr "Slå av"
 msgid "Leave Off"
 msgstr "Hold avslått"
 
-#: js/ui/keyboard.js:225 js/ui/status/keyboard.js:899
+#: js/ui/keyboard.js:181 js/ui/status/keyboard.js:899
 msgid "Keyboard Settings"
 msgstr "Tastaturinnstillinger"
 
@@ -1822,11 +1891,11 @@ msgstr "Skjermopptak"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
-#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#. * "Screencast from 07-17-2013 10:00:46 PM"
 #: js/ui/screenshot.js:2003
 #, no-c-format
-msgid "Screencast from %d %t.webm"
-msgstr "Skjermopptak fra %d %t.webm"
+msgid "Screencast from %d %t"
+msgstr "Skjermopptak fra %d %t"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2049
@@ -2035,24 +2104,24 @@ msgstr "Stor tekst"
 msgid "Auto Rotate"
 msgstr "Automatisk rotering"
 
-#: js/ui/status/backgroundApps.js:166
+#: js/ui/status/backgroundApps.js:156
 msgctxt "title"
 msgid "Background Apps"
 msgstr "Apper i bakgrunnen"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:171
 msgid "Apps known to be running without a window"
 msgstr "Apper som er i aktivitet uten å være åpne"
 
-#: js/ui/status/backgroundApps.js:192
+#: js/ui/status/backgroundApps.js:182
 msgid "App Settings"
 msgstr "App-innstillinger"
 
-#: js/ui/status/backgroundApps.js:249
+#: js/ui/status/backgroundApps.js:239
 msgid "No Background Apps"
 msgstr "Ingen apper i bakgrunnen"
 
-#: js/ui/status/backgroundApps.js:251
+#: js/ui/status/backgroundApps.js:241
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2079,7 +2148,7 @@ msgstr "Sterkt"
 msgid "Keyboard"
 msgstr "Tastatur"
 
-#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:371
+#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
 msgid "Disconnect"
 msgstr "Koble fra"
 
@@ -2087,7 +2156,7 @@ msgstr "Koble fra"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1907
+#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1900
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-innstillinger"
 
@@ -2161,105 +2230,105 @@ msgstr "Avvis"
 msgid "Grant Access"
 msgstr "Tillat"
 
-#: js/ui/status/network.js:61
+#: js/ui/status/network.js:62
 msgid "<unknown>"
 msgstr "<ukjent>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:365
+#: js/ui/status/network.js:354
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Koble fra %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:367
+#: js/ui/status/network.js:356
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Koble til %s"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1050
 msgid "Secure"
 msgstr "Sikker"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1050
 msgid "Not secure"
 msgstr "Usikker"
 
-#: js/ui/status/network.js:1062
+#: js/ui/status/network.js:1051
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Signalstyrke %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1064
+#: js/ui/status/network.js:1053
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1166
+#: js/ui/status/network.js:1155
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s-tilgangspunkt"
 
-#: js/ui/status/network.js:1437
+#: js/ui/status/network.js:1426
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d tilkoblet"
 msgstr[1] "%d tilkoblet"
 
-#: js/ui/status/network.js:1535 js/ui/status/network.js:1551
+#: js/ui/status/network.js:1524 js/ui/status/network.js:1540
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1536
+#: js/ui/status/network.js:1525
 msgid "VPN Settings"
 msgstr "VPN-innstillinger"
 
-#: js/ui/status/network.js:1792
+#: js/ui/status/network.js:1785
 msgid "Wi–Fi"
 msgstr "Wi-Fi"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1787
 msgid "All Networks"
 msgstr "Alle nettverk"
 
-#: js/ui/status/network.js:1891
+#: js/ui/status/network.js:1884
 msgid "Wired Connections"
 msgstr "Kablede tilkoblinger"
 
-#: js/ui/status/network.js:1892
+#: js/ui/status/network.js:1885
 msgid "Wired Settings"
 msgstr "Kablet-innstillinger"
 
-#: js/ui/status/network.js:1906
+#: js/ui/status/network.js:1899
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth-nettverksdeling"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1913
+#: js/ui/status/network.js:1906
 msgid "Tether"
 msgstr "Nettverksdeling"
 
-#: js/ui/status/network.js:1926
+#: js/ui/status/network.js:1919
 msgid "Mobile Connections"
 msgstr "Mobiltilkobling"
 
-#: js/ui/status/network.js:1928
+#: js/ui/status/network.js:1921
 msgid "Mobile Broadband Settings"
 msgstr "Bredbåndsinnstillinger"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1937
+#: js/ui/status/network.js:1930
 msgid "Mobile"
 msgstr "Mobil"
 
-#: js/ui/status/network.js:2041
+#: js/ui/status/network.js:2034
 msgid "Connection failed"
 msgstr "Tilkobling mislyktes"
 
-#: js/ui/status/network.js:2042
+#: js/ui/status/network.js:2035
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling mislyktes"
 
@@ -2504,55 +2573,55 @@ msgstr "Maksimer"
 msgid "Move"
 msgstr "Flytt"
 
-#: js/ui/windowMenu.js:79
+#: js/ui/windowMenu.js:80
 msgid "Resize"
 msgstr "Endre størrelse"
 
-#: js/ui/windowMenu.js:99
+#: js/ui/windowMenu.js:101
 msgid "Move Titlebar Onscreen"
 msgstr "Flytt"
 
-#: js/ui/windowMenu.js:104
+#: js/ui/windowMenu.js:106
 msgid "Always on Top"
 msgstr "Alltid øverst"
 
-#: js/ui/windowMenu.js:123
+#: js/ui/windowMenu.js:125
 msgid "Always on Visible Workspace"
 msgstr "Alltid i synlig område"
 
-#: js/ui/windowMenu.js:137
+#: js/ui/windowMenu.js:139
 msgid "Move to Workspace Left"
 msgstr "Flytt til venstre område"
 
-#: js/ui/windowMenu.js:143
+#: js/ui/windowMenu.js:145
 msgid "Move to Workspace Right"
 msgstr "Flytt til høyre område"
 
-#: js/ui/windowMenu.js:149
+#: js/ui/windowMenu.js:151
 msgid "Move to Workspace Up"
 msgstr "Flytt til område over"
 
-#: js/ui/windowMenu.js:155
+#: js/ui/windowMenu.js:157
 msgid "Move to Workspace Down"
 msgstr "Flytt til område under"
 
-#: js/ui/windowMenu.js:173
+#: js/ui/windowMenu.js:175
 msgid "Move to Monitor Up"
 msgstr "Flytt til skjerm over"
 
-#: js/ui/windowMenu.js:182
+#: js/ui/windowMenu.js:184
 msgid "Move to Monitor Down"
 msgstr "Flytt til skjerm under"
 
-#: js/ui/windowMenu.js:191
+#: js/ui/windowMenu.js:193
 msgid "Move to Monitor Left"
 msgstr "Flytt til venstre skjerm"
 
-#: js/ui/windowMenu.js:200
+#: js/ui/windowMenu.js:202
 msgid "Move to Monitor Right"
 msgstr "Flytt til høyre skjerm"
 
-#: js/ui/windowMenu.js:208
+#: js/ui/windowMenu.js:210
 msgid "Close"
 msgstr "Lukk"
 
