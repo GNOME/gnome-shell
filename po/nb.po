@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
 "POT-Creation-Date: 2024-03-02 20:50+0000\n"
-"PO-Revision-Date: 2024-03-03 01:00+0100\n"
+"PO-Revision-Date: 2024-03-03 02:26+0100\n"
 "Last-Translator: Brage <bragefuglseth@gnome.org>\n"
 "Language-Team: \n"
 "Language: nb\n"
@@ -1108,7 +1108,7 @@ msgstr "Neste måned"
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
-msgstr "&d"
+msgstr "%d"
 
 #: js/ui/calendar.js:727
 msgid "Week %V"
