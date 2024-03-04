@@ -15,6 +15,7 @@
     <file>extensions/sharedInternals.js</file>
 
     <file>misc/animationUtils.js</file>
+    <file>misc/breakManager.js</file>
     <file>misc/config.js</file>
     <file>misc/dateUtils.js</file>
     <file>misc/dbusErrors.js</file>

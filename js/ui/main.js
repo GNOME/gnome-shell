@@ -8,6 +8,7 @@ import St from 'gi://St';
 
 import * as AccessDialog from './accessDialog.js';
 import * as AudioDeviceSelection from './audioDeviceSelection.js';
+import * as BreakManager from '../misc/breakManager.js';
 import * as Config from '../misc/config.js';
 import * as Components from './components.js';
 import * as CtrlAltTab from './ctrlAltTab.js';
@@ -89,6 +90,9 @@ export let inputMethod = null;
 export let introspectService = null;
 export let locatePointer = null;
 export let endSessionDialog = null;
+export let breakManager = null;
+export let screenTimeDBus = null;
+export let breakManagerDispatcher = null;
 
 let _startDate;
 let _defaultCssStylesheet = null;
@@ -243,6 +247,11 @@ async function _initializeUI() {
     componentManager = new Components.ComponentManager();
 
     introspectService = new Introspect.IntrospectService();
+
+    // Set up the global default break reminder manager and its D-Bus interface
+    breakManager = new BreakManager.BreakManager();
+    screenTimeDBus = new ShellDBus.ScreenTimeDBus(breakManager);
+    breakManagerDispatcher = new BreakManager.BreakDispatcher(breakManager);
 
     layoutManager.init();
     overview.init();

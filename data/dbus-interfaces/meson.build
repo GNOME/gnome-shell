@@ -4,6 +4,7 @@ dbus_interfaces = [
   'org.gnome.Shell.PadOsd.xml',
   'org.gnome.Shell.Screencast.xml',
   'org.gnome.Shell.Screenshot.xml',
+  'org.gnome.Shell.ScreenTime.xml',
   'org.gnome.ShellSearchProvider.xml',
   'org.gnome.ShellSearchProvider2.xml'
 ]

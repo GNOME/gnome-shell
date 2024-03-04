@@ -15,6 +15,7 @@ import {ControlsState} from './overviewControls.js';
 
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell');
 const ScreenSaverIface = loadInterfaceXML('org.gnome.ScreenSaver');
+const ScreenTimeIface = loadInterfaceXML('org.gnome.Shell.ScreenTime');
 
 export class GnomeShell {
     constructor() {
@@ -540,5 +541,32 @@ export class ScreenSaverDBus {
             return Math.floor((GLib.get_monotonic_time() - started) / 1000000);
         else
             return 0;
+    }
+}
+
+export class ScreenTimeDBus {
+    constructor(breakManager) {
+        this._manager = breakManager;
+
+        this._manager.connect('notify::state', this._onNotify.bind(this));
+        this._manager.connect('notify::last-break-end-time', this._onNotify.bind(this));
+
+        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreenTimeIface, this);
+        this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell/ScreenTime');
+    }
+
+    _onNotify() {
+        // We always want to notify the two properties together, as clients need
+        // both values to be useful. GJS will combine the two emissions for us.
+        this._dbusImpl.emit_property_changed('State', new GLib.Variant('u', this.State));
+        this._dbusImpl.emit_property_changed('LastBreakEndTime', new GLib.Variant('t', this.LastBreakEndTime));
+    }
+
+    get State() {
+        return this._manager.state;
+    }
+
+    get LastBreakEndTime() {
+        return this._manager.lastBreakEndTime;
     }
 }

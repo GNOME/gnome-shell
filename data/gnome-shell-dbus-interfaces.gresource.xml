@@ -51,6 +51,7 @@
     <file preprocess="xml-stripblanks">org.gnome.Shell.PortalHelper.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.Screencast.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.Screenshot.xml</file>
+    <file preprocess="xml-stripblanks">org.gnome.Shell.ScreenTime.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.Wacom.PadOsd.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.WeatherIntegration.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.xml</file>

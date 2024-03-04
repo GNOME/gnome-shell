@@ -1,0 +1,38 @@
+<!DOCTYPE node PUBLIC
+'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
+'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+<!--
+  SPDX-License-Identifier: GPL-3.0-or-later
+  SPDX-FileCopyrightText: 2024 GNOME Foundation, Inc.
+-->
+<node>
+
+  <!--
+      org.gnome.Shell.ScreenTime:
+      @short_description: Screen Time interface
+
+      The interface used to access Screen Time and Break Reminders usage data.
+  -->
+  <interface name="org.gnome.Shell.ScreenTime">
+
+    <!--
+        State:
+
+        The state of the break manager.
+         - 0: Break reminders are disabled.
+         - 1: Break reminders are enabled, user is active, no break is needed yet.
+         - 2: A break is needed and the user is taking it.
+         - 3: A break is needed but the user is still active.
+    -->
+    <property name="State" type="u" access="read"/>
+
+    <!--
+        LastBreakEndTime:
+
+        The time (in wall clock seconds since the Unix epoch) when the most
+        recent break ended. If there have been no breaks so far, zero is
+        returned.
+    -->
+    <property name="LastBreakEndTime" type="t" access="read"/>
+  </interface>
+</node>
