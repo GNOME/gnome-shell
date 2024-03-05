@@ -320,7 +320,7 @@ class DBusEventSource extends EventSourceBase {
             let event = new CalendarEvent(id, date, end, summary);
             /* It's a recurring event */
             if (!id.endsWith('\n')) {
-                const parentId = id.substr(0, id.lastIndexOf('\n') + 1);
+                const parentId = id.substring(0, id.lastIndexOf('\n') + 1);
                 if (!handledRemovals.has(parentId)) {
                     handledRemovals.add(parentId);
                     this._removeMatching(parentId);

@@ -107,7 +107,7 @@ class RunDialog extends ModalDialog.ModalDialog {
                 if (text.lastIndexOf(' ') === -1)
                     prefix = text;
                 else
-                    prefix = text.substr(text.lastIndexOf(' ') + 1);
+                    prefix = text.substring(text.lastIndexOf(' ') + 1);
                 let postfix = this._getCompletion(prefix);
                 if (postfix != null && postfix.length > 0) {
                     o.insert_text(postfix, -1);
@@ -143,7 +143,7 @@ class RunDialog extends ModalDialog.ModalDialog {
             }
             if (k === 0)
                 return '';
-            return s1.substr(0, k);
+            return s1.substring(0, k);
         }
 
         let paths = GLib.getenv('PATH').split(':');
@@ -172,7 +172,7 @@ class RunDialog extends ModalDialog.ModalDialog {
             return null;
 
         let common = results.reduce(_getCommon, null);
-        return common.substr(text.length);
+        return common.substring(text.length);
     }
 
     _getCompletion(text) {
