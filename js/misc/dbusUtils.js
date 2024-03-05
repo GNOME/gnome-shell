@@ -62,6 +62,6 @@ export function loadSubInterfaceXML(iface, ifaceFile) {
 
     return (
         xmlHeader +
-        xml.substr(ifaceStartIndex, ifaceEndIndex - ifaceStartIndex) +
+        xml.substring(ifaceStartIndex, ifaceEndIndex) +
         xmlFooter);
 }

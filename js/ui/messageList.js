@@ -57,7 +57,7 @@ class URLHighlighter extends St.Label {
         this.connect('style-changed', () => {
             let [hasColor, color] = this.get_theme_node().lookup_color('link-color', false);
             if (hasColor) {
-                let linkColor = color.to_string().substr(0, 7);
+                let linkColor = color.to_string().substring(0, 7);
                 if (linkColor !== this._linkColor) {
                     this._linkColor = linkColor;
                     this._highlightUrls();
@@ -143,11 +143,11 @@ class URLHighlighter extends St.Label {
         let pos = 0;
         for (let i = 0; i < urls.length; i++) {
             let url = urls[i];
-            let str = this._text.substr(pos, url.pos - pos);
+            let str = this._text.substring(pos, url.pos);
             markup += `${str}<span foreground="${this._linkColor}"><u>${url.url}</u></span>`;
             pos = url.pos + url.url.length;
         }
-        markup += this._text.substr(pos);
+        markup += this._text.substring(pos);
         this.clutter_text.set_markup(markup);
     }
 
