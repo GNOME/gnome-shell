@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-02-19 10:04+0000\n"
-"PO-Revision-Date: 2024-02-19 11:09+0100\n"
+"POT-Creation-Date: 2024-03-04 20:00+0000\n"
+"PO-Revision-Date: 2024-03-05 12:17+0100\n"
 "Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -122,7 +122,7 @@ msgstr "Zajemi zaslonsko sliko"
 msgid "Record a screencast interactively"
 msgstr "Posnemi zaslonski posnetek interaktivno"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1354
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
 msgid "System"
 msgstr "Sistem"
 
@@ -260,7 +260,7 @@ msgstr ""
 msgid "History for command (Alt-F2) dialog"
 msgstr "Zgodovina pogovornega okna ukazov (Alt-F2)"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
 #: data/org.gnome.shell.gschema.xml.in:78
 msgid "History for the looking glass dialog"
 msgstr "Zgodovina za pogovorno okno povečevala"
@@ -572,10 +572,11 @@ msgstr "Spletna stran"
 msgid "Visit extension homepage"
 msgstr "Odpri spletno stran razširitev"
 
-#: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
-#: js/ui/components/networkAgent.js:114 js/ui/components/polkitAgent.js:146
-#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:278
-#: js/ui/shellMountOperation.js:380 js/ui/shellMountOperation.js:390
+#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
+#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
+#: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:384
+#: js/ui/shellMountOperation.js:394
 msgid "Cancel"
 msgstr "Prekliči"
 
@@ -583,47 +584,117 @@ msgstr "Prekliči"
 #: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
 #: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
 #: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:288
-#: js/ui/shellMountOperation.js:330
+#: js/ui/shellMountOperation.js:334
 msgid "Password"
 msgstr "Geslo"
 
-#: js/gdm/loginDialog.js:324
+#: js/gdm/loginDialog.js:327
 msgid "Choose Session"
 msgstr "Izbor seje"
 
-#: js/gdm/loginDialog.js:469
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:424
+#, javascript-format
+msgid ""
+"Remote login is not possible because a remote session is already running for "
+"%s. To login remotely, you must log out from the remote session or force "
+"stop it."
+msgstr ""
+"Oddaljena prijava ni mogoča, ker se za %s oddaljena seja že izvaja. Če se "
+"želite vseeno prijaviti na daljavo, se morate najprej odjaviti iz oddaljene "
+"seje ali jo zaustaviti."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:427
+#, javascript-format
+msgid ""
+"Login is not possible because a remote session is already running for %s. To "
+"login, you must log out from the remote session or force stop it."
+msgstr ""
+"Prijava ni mogoča, ker se za %s oddaljena seja že izvaja. Če se želite "
+"vseeno prijaviti na daljavo, se morate najprej odjaviti iz oddaljene seje "
+"ali jo zaustaviti."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:430
+#, javascript-format
+msgid ""
+"Remote login is not possible because a local session is already running for "
+"%s. To login remotely, you must log out from the local session or force stop "
+"it."
+msgstr ""
+"Oddaljena prijava ni mogoča, ker se za %s krajevna seja že izvaja. Če se "
+"želite vseeno prijaviti na daljavo, se morate najprej odjaviti iz oddaljene "
+"seje ali jo zaustaviti."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:433
+#, javascript-format
+msgid ""
+"Login is not possible because a session is already running for %s. To login, "
+"you must log out from the session or force stop it."
+msgstr ""
+"Prijava ni mogoča, ker se za %s seja že izvaja. Če se želite prijaviti, se "
+"morate iz seje najprej odjaviti ali jo zaustaviti."
+
+#: js/gdm/loginDialog.js:442
+msgid "Session Already Running"
+msgstr "Seja že teče"
+
+#: js/gdm/loginDialog.js:454
+msgid ""
+"Force stopping will quit any running apps and processes, and could result in "
+"data loss."
+msgstr ""
+"Z vsiljeno zaustavitvijo se zaustavijo vsi zagnani procesi in programi, kar "
+"lahko povzroči izgubo podatkov."
+
+#: js/gdm/loginDialog.js:474
+msgid "Force Stop"
+msgstr "Vsili končanje"
+
+#: js/gdm/loginDialog.js:542
 msgid "Not listed?"
 msgstr "Ali vašega uporabniškega imena ni na seznamu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:937
+#: js/gdm/loginDialog.js:1010
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(na primer, uporabnika ali %s)"
 
-#: js/gdm/loginDialog.js:942 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Uporabniško ime"
 
-#: js/gdm/loginDialog.js:1266
+#: js/gdm/loginDialog.js:1081
+msgid "Stop conflicting session dialog closed"
+msgstr "Zaprto pogovorno okno za zaustavljanje seje v sporu"
+
+#: js/gdm/loginDialog.js:1082
+#, javascript-format
+msgid "Try to login again to start a session for user %s."
+msgstr "Poskusite se ponovno prijaviti in začeti sejo za uporabnika %s."
+
+#: js/gdm/loginDialog.js:1426
 msgid "Login Window"
 msgstr "Prijavno okno"
 
-#: js/gdm/util.js:402
+#: js/gdm/util.js:497
 msgid "Authentication error"
 msgstr "Napaka overitve"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:584
+#: js/gdm/util.js:728
 msgid "(or swipe finger across reader)"
 msgstr "(ali pa povlecite prst prek bralnika)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:589
+#: js/gdm/util.js:733
 msgid "(or place finger on reader)"
 msgstr "(ali pa povlecite prst po bralniku)"
 
@@ -979,7 +1050,7 @@ msgid "Settings"
 msgstr "Nastavitve"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:38
+#: js/ui/calendar.js:39
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -989,43 +1060,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:64
+#: js/ui/calendar.js:65
 msgctxt "grid sunday"
 msgid "S"
 msgstr "N"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:66
+#: js/ui/calendar.js:67
 msgctxt "grid monday"
 msgid "M"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:68
+#: js/ui/calendar.js:69
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:71
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:72
+#: js/ui/calendar.js:73
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Č"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:74
+#: js/ui/calendar.js:75
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:77
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -1036,7 +1107,7 @@ msgstr "S"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:427
+#: js/ui/calendar.js:428
 msgid "%OB"
 msgstr "%OB"
 
@@ -1049,41 +1120,41 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:437
+#: js/ui/calendar.js:438
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:499
+#: js/ui/calendar.js:500
 msgid "Previous month"
 msgstr "Predhodni mesec"
 
-#: js/ui/calendar.js:517
+#: js/ui/calendar.js:518
 msgid "Next month"
 msgstr "Naslednji mesec"
 
-#: js/ui/calendar.js:668
+#: js/ui/calendar.js:669
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:727
+#: js/ui/calendar.js:728
 msgid "Week %V"
 msgstr "Teden %V"
 
-#: js/ui/calendar.js:889
+#: js/ui/calendar.js:920
 msgid "No Notifications"
 msgstr "Ni obvestil"
 
-#: js/ui/calendar.js:945
+#: js/ui/calendar.js:976
 msgid "Do Not Disturb"
 msgstr "Ne moti"
 
-#: js/ui/calendar.js:966
+#: js/ui/calendar.js:997
 msgid "Clear"
 msgstr "Počisti"
 
-#: js/ui/calendar.js:970
+#: js/ui/calendar.js:1001
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Počisti vsa obvestila"
@@ -1126,7 +1197,7 @@ msgstr "Ni mogoče odkleniti nosilca"
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Nameščena različica udisks ne podpira nastavitev PIM"
 
-#: js/ui/components/autorunManager.js:278
+#: js/ui/components/autorunManager.js:200
 #, javascript-format
 msgid "Open with %s"
 msgstr "Odpri s programom %s"
@@ -1137,7 +1208,7 @@ msgid ""
 msgstr "Vzpostavitev povezave je mogoča tudi z gumbom »WPS« na usmerjevalniku."
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
-#: js/ui/status/network.js:371 js/ui/status/network.js:455
+#: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "Poveži"
 
@@ -1222,14 +1293,9 @@ msgstr "Overi"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:413
+#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:417
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Overitev je spodletela.. Poskusite znova."
-
-#: js/ui/components/telepathyClient.js:793
-#, javascript-format
-msgid "%s is now known as %s"
-msgstr "%s je sedaj znan kot v %s"
 
 #: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:418
 msgid "Windows"
@@ -1513,11 +1579,11 @@ msgstr "Namesti razširitev"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Ali želite prejeti in namestiti »%s« prek extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:353
+#: js/ui/extensionSystem.js:354
 msgid "Extension Updates Available"
 msgstr "Na voljo so posodobitve razširitev"
 
-#: js/ui/extensionSystem.js:354
+#: js/ui/extensionSystem.js:355
 msgid "Extension updates are ready to be installed."
 msgstr "Posodobitve razširitev so pripravljene na namestitev."
 
@@ -1591,7 +1657,7 @@ msgstr "Pusti omogočeno"
 msgid "Turn On"
 msgstr "Omogoči"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:466
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
 msgid "Turn Off"
 msgstr "Onemogoči"
 
@@ -1599,7 +1665,7 @@ msgstr "Onemogoči"
 msgid "Leave Off"
 msgstr "Pusti onemogočeno"
 
-#: js/ui/keyboard.js:225 js/ui/status/keyboard.js:899
+#: js/ui/keyboard.js:181 js/ui/status/keyboard.js:899
 msgid "Keyboard Settings"
 msgstr "Nastavitve tipkovnice"
 
@@ -1657,23 +1723,23 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: js/ui/main.js:278
+#: js/ui/main.js:279
 msgid "System was put in unsafe mode"
 msgstr "Sistem je v ne-varnem načinu"
 
-#: js/ui/main.js:279
+#: js/ui/main.js:280
 msgid "Apps now have unrestricted access"
 msgstr "Programi imajo zdaj neomejen dostop"
 
-#: js/ui/main.js:280 js/ui/overview.js:51
+#: js/ui/main.js:283 js/ui/overview.js:54
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: js/ui/main.js:338
+#: js/ui/main.js:340
 msgid "Logged in as a privileged user"
 msgstr "Zaznana je prijava s skrbniškimi dovoljenji"
 
-#: js/ui/main.js:339
+#: js/ui/main.js:341
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1681,26 +1747,30 @@ msgstr ""
 "Zagona seje s skrbniškim računom se je treba iz varnostnih razlogov "
 "izogibati. Priporočljivo je uporabljati običajen uporabniški račun."
 
-#: js/ui/main.js:387
+#: js/ui/main.js:389
 msgid "Screen Lock disabled"
 msgstr "Zaklep zaslona je onemogočen"
 
-#: js/ui/main.js:388
+#: js/ui/main.js:390
 msgid "Screen Locking requires the GNOME display manager."
 msgstr ""
 "Zaklepanje zaslona zahteva namestitev upravljalnika zaslona za okolje GNOME."
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:427
+#: js/ui/messageList.js:400
 msgid "Unknown App"
 msgstr "Neznan program"
 
-#: js/ui/mpris.js:199
+#: js/ui/messageTray.js:328 js/ui/messageTray.js:330
+msgid "Notification sound"
+msgstr "Zvok obvestila"
+
+#: js/ui/mpris.js:198
 msgid "Unknown artist"
 msgstr "Neznan izvajalec"
 
-#: js/ui/mpris.js:209
+#: js/ui/mpris.js:208
 msgid "Unknown title"
 msgstr "Neznan naslov"
 
@@ -1718,7 +1788,7 @@ msgstr "Programi"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:64
+#: js/ui/overview.js:67
 msgid "Overview"
 msgstr "Pregled"
 
@@ -1864,11 +1934,11 @@ msgstr "Zaslonski posnetek"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
-#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#. * "Screencast from 07-17-2013 10:00:46 PM"
 #: js/ui/screenshot.js:2003
 #, no-c-format
-msgid "Screencast from %d %t.webm"
-msgstr "Zaslonski posnetek %d %t.webm"
+msgid "Screencast from %d %t"
+msgstr "Zaslonski posnetek %d %t"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2049
@@ -1909,7 +1979,7 @@ msgstr "Kliknite za ogled posnetka."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2102 js/ui/screenshot.js:2343
+#: js/ui/screenshot.js:2102 js/ui/screenshot.js:2345
 msgid "Show in Files"
 msgstr "Pokaži v mapi"
 
@@ -1930,7 +2000,7 @@ msgstr "Zaslonska slika je zajeta"
 msgid "You can paste the image from the clipboard."
 msgstr "Prilepiti je mogoče sliko iz odložišča."
 
-#: js/ui/screenshot.js:2392 js/ui/screenshot.js:2556
+#: js/ui/screenshot.js:2393 js/ui/screenshot.js:2557
 msgid "Screenshot taken"
 msgstr "Zaslonska slika je zajeta"
 
@@ -1976,20 +2046,20 @@ msgstr "Skrij besedilo"
 msgid "Caps lock is on."
 msgstr "Vključena je tipka zaklepa velikosti črk."
 
-#: js/ui/shellMountOperation.js:284
+#: js/ui/shellMountOperation.js:288
 msgid "Hidden Volume"
 msgstr "Skrit razdelek"
 
-#: js/ui/shellMountOperation.js:287
+#: js/ui/shellMountOperation.js:291
 msgid "Windows System Volume"
 msgstr "Sistemska glasnost"
 
-#: js/ui/shellMountOperation.js:290
+#: js/ui/shellMountOperation.js:294
 msgid "Uses Keyfiles"
 msgstr "Uporablja nastavitvene datoteke"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:298
+#: js/ui/shellMountOperation.js:302
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -1997,7 +2067,7 @@ msgstr ""
 "Za odklepanje pogona, ki uporablja nastavitvene datoteke, uporabite orodje "
 "<i>%s</i>."
 
-#: js/ui/shellMountOperation.js:302
+#: js/ui/shellMountOperation.js:306
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
@@ -2005,25 +2075,25 @@ msgstr ""
 "Za odklepanje je treba uporabiti zunanje orodje, kot je program <i>Diski</"
 "i>, ki podpira uporabo ključnih datotek."
 
-#: js/ui/shellMountOperation.js:310
+#: js/ui/shellMountOperation.js:314
 msgid "PIM Number"
 msgstr "Koda PIM"
 
-#: js/ui/shellMountOperation.js:369
+#: js/ui/shellMountOperation.js:373
 msgid "Remember Password"
 msgstr "Zapomni si geslo"
 
-#: js/ui/shellMountOperation.js:384
+#: js/ui/shellMountOperation.js:388
 msgid "Unlock"
 msgstr "Odkleni"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:398
+#: js/ui/shellMountOperation.js:402
 #, javascript-format
 msgid "Open %s"
 msgstr "Odpri %s"
 
-#: js/ui/shellMountOperation.js:434
+#: js/ui/shellMountOperation.js:438
 msgid "The PIM must be a number or empty."
 msgstr "Vrednost PIM mora biti številka ali prazno polje."
 
@@ -2079,24 +2149,24 @@ msgstr "Veliko besedilo"
 msgid "Auto Rotate"
 msgstr "Samodejno zavrti"
 
-#: js/ui/status/backgroundApps.js:166
+#: js/ui/status/backgroundApps.js:156
 msgctxt "title"
 msgid "Background Apps"
 msgstr "Ozadnji programi"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:171
 msgid "Apps known to be running without a window"
 msgstr "Programi, ki se ne izvajajo v oknu"
 
-#: js/ui/status/backgroundApps.js:192
+#: js/ui/status/backgroundApps.js:182
 msgid "App Settings"
 msgstr "Nastavitve programa"
 
-#: js/ui/status/backgroundApps.js:249
+#: js/ui/status/backgroundApps.js:239
 msgid "No Background Apps"
 msgstr "Ni dejavnih ozadnjih programov"
 
-#: js/ui/status/backgroundApps.js:251
+#: js/ui/status/backgroundApps.js:241
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2125,7 +2195,7 @@ msgstr "Visoko"
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
-#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:371
+#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
 msgid "Disconnect"
 msgstr "Prekini povezavo"
 
@@ -2133,7 +2203,7 @@ msgstr "Prekini povezavo"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1907
+#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1900
 msgid "Bluetooth Settings"
 msgstr "Nastavitve za Bluetooth"
 
@@ -2211,48 +2281,48 @@ msgstr "Zavrni dostop"
 msgid "Grant Access"
 msgstr "Dovoli dostop"
 
-#: js/ui/status/network.js:61
+#: js/ui/status/network.js:62
 msgid "<unknown>"
 msgstr "<neznano>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:365
+#: js/ui/status/network.js:354
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Prekini povezavo %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:367
+#: js/ui/status/network.js:356
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Poveži z mestom %s"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1050
 msgid "Secure"
 msgstr "Povezava je varna"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1050
 msgid "Not secure"
 msgstr "Povezava ni varna"
 
-#: js/ui/status/network.js:1062
+#: js/ui/status/network.js:1051
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Moč signala %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1064
+#: js/ui/status/network.js:1053
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1166
+#: js/ui/status/network.js:1155
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Vroča točka %s"
 
-#: js/ui/status/network.js:1437
+#: js/ui/status/network.js:1426
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
@@ -2261,57 +2331,57 @@ msgstr[1] "%d povezana"
 msgstr[2] "%d povezani"
 msgstr[3] "%d povezane"
 
-#: js/ui/status/network.js:1535 js/ui/status/network.js:1551
+#: js/ui/status/network.js:1524 js/ui/status/network.js:1540
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1536
+#: js/ui/status/network.js:1525
 msgid "VPN Settings"
 msgstr "Nastavitve VPN"
 
-#: js/ui/status/network.js:1792
+#: js/ui/status/network.js:1785
 msgid "Wi–Fi"
 msgstr "Omrežje Wi-Fi"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1787
 msgid "All Networks"
 msgstr "Vsa omrežja"
 
-#: js/ui/status/network.js:1891
+#: js/ui/status/network.js:1884
 msgid "Wired Connections"
 msgstr "Žične povezave"
 
-#: js/ui/status/network.js:1892
+#: js/ui/status/network.js:1885
 msgid "Wired Settings"
 msgstr "Nastavitve žičnega omrežja"
 
-#: js/ui/status/network.js:1906
+#: js/ui/status/network.js:1899
 msgid "Bluetooth Tethers"
 msgstr "Internetna Bluetooth točka"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1913
+#: js/ui/status/network.js:1906
 msgid "Tether"
 msgstr "Bluetooth Internet"
 
-#: js/ui/status/network.js:1926
+#: js/ui/status/network.js:1919
 msgid "Mobile Connections"
 msgstr "Mobilne povezave"
 
-#: js/ui/status/network.js:1928
+#: js/ui/status/network.js:1921
 msgid "Mobile Broadband Settings"
 msgstr "Nastavitve mobilnega širokopasovnega dostopa"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1937
+#: js/ui/status/network.js:1930
 msgid "Mobile"
 msgstr "Mobilno omrečje"
 
-#: js/ui/status/network.js:2041
+#: js/ui/status/network.js:2035
 msgid "Connection failed"
 msgstr "Povezovanje je spodletelo"
 
-#: js/ui/status/network.js:2042
+#: js/ui/status/network.js:2036
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
@@ -2384,11 +2454,11 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
-#: js/ui/status/thunderbolt.js:306
+#: js/ui/status/thunderbolt.js:310
 msgid "Unknown Thunderbolt device"
 msgstr "Neznana naprava Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:307
+#: js/ui/status/thunderbolt.js:311
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2396,20 +2466,20 @@ msgstr ""
 "Med nedejavnostjo je bila zaznana nova. Odklopite napravo in jo znova "
 "priklopite za uporabo."
 
-#: js/ui/status/thunderbolt.js:310
+#: js/ui/status/thunderbolt.js:314
 msgid "Unauthorized Thunderbolt device"
 msgstr "Neznana naprava Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:311
+#: js/ui/status/thunderbolt.js:315
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr "Zaznana je nova naprava, ki jo mora overiti skrbnik sistema."
 
-#: js/ui/status/thunderbolt.js:317
+#: js/ui/status/thunderbolt.js:321
 msgid "Thunderbolt authorization error"
 msgstr "Napaka overitve naprave Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:322
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Naprave Thunderbolt ni mogoče overiti: %s"
@@ -2560,55 +2630,55 @@ msgstr "Razpni"
 msgid "Move"
 msgstr "Premakni"
 
-#: js/ui/windowMenu.js:79
+#: js/ui/windowMenu.js:80
 msgid "Resize"
 msgstr "Spremeni velikost"
 
-#: js/ui/windowMenu.js:99
+#: js/ui/windowMenu.js:101
 msgid "Move Titlebar Onscreen"
 msgstr "Premakni nazivno vrstico na zaslon"
 
-#: js/ui/windowMenu.js:104
+#: js/ui/windowMenu.js:106
 msgid "Always on Top"
 msgstr "Vedno na vrhu"
 
-#: js/ui/windowMenu.js:123
+#: js/ui/windowMenu.js:125
 msgid "Always on Visible Workspace"
 msgstr "Vedno na dejavni delovni površini"
 
-#: js/ui/windowMenu.js:137
+#: js/ui/windowMenu.js:139
 msgid "Move to Workspace Left"
 msgstr "Premakni na delovno površino na levi"
 
-#: js/ui/windowMenu.js:143
+#: js/ui/windowMenu.js:145
 msgid "Move to Workspace Right"
 msgstr "Premakni na delovno površino na desni"
 
-#: js/ui/windowMenu.js:149
+#: js/ui/windowMenu.js:151
 msgid "Move to Workspace Up"
 msgstr "Premakni na zgornjo delovno površino"
 
-#: js/ui/windowMenu.js:155
+#: js/ui/windowMenu.js:157
 msgid "Move to Workspace Down"
 msgstr "Premakni na spodnjo delovno površino"
 
-#: js/ui/windowMenu.js:173
+#: js/ui/windowMenu.js:175
 msgid "Move to Monitor Up"
 msgstr "Premakni na zaslon zgoraj"
 
-#: js/ui/windowMenu.js:182
+#: js/ui/windowMenu.js:184
 msgid "Move to Monitor Down"
 msgstr "Premakni na zaslon spodaj"
 
-#: js/ui/windowMenu.js:191
+#: js/ui/windowMenu.js:193
 msgid "Move to Monitor Left"
 msgstr "Premakni na zaslon levo"
 
-#: js/ui/windowMenu.js:200
+#: js/ui/windowMenu.js:202
 msgid "Move to Monitor Right"
 msgstr "Premakni na zaslon desno"
 
-#: js/ui/windowMenu.js:208
+#: js/ui/windowMenu.js:210
 msgid "Close"
 msgstr "Zapri"
 
@@ -2680,15 +2750,15 @@ msgstr ""
 "Program Razširitve GNOME omogoča nameščanje in posodabljanje razširitev, "
 "prilagajanje nastavitev in upravljanje njihovega delovanja."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Glavno okno"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Razpoložljive posodobitve"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Iskalni pogled"
 
@@ -3369,6 +3439,10 @@ msgstr[3] "%u dovodi naprave"
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
 
+#, javascript-format
+#~ msgid "%s is now known as %s"
+#~ msgstr "%s je sedaj znan kot v %s"
+
 #~ msgid "Network Manager"
 #~ msgstr "Upravljalnik omrežij"
 
@@ -3806,9 +3880,6 @@ msgstr "Sistemski zvoki"
 
 #~ msgid "Events"
 #~ msgstr "Dogodki"
-
-#~ msgid "Notifications"
-#~ msgstr "Obvestila"
 
 #~ msgid "Media"
 #~ msgstr "Nosilci"
