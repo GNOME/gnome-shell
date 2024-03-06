@@ -476,7 +476,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
     _stopAltCapture() {
         if (this._capturedEventId > 0) {
-            global.stage.disconnect(this._capturedEventId);
+            this.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
         }
         this._rebootButton = null;
