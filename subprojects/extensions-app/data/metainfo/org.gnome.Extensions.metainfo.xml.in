@@ -30,6 +30,11 @@
     <kudo>ModernToolkit</kudo>
   </kudos>
 
+  <branding>
+    <color type="primary" scheme_preference="light">#c5eeb2</color>
+    <color type="primary" scheme_preference="dark">#447637</color>
+  </branding>
+
   <requires>
     <display_length compare="ge">360</display_length>
   </requires>
