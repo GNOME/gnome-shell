@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 01:44+0000\n"
-"PO-Revision-Date: 2024-03-03 15:28+0100\n"
+"POT-Creation-Date: 2024-03-03 14:29+0000\n"
+"PO-Revision-Date: 2024-03-06 22:24+0100\n"
 "Last-Translator: Brage <bragefuglseth@gnome.org>\n"
 "Language-Team: \n"
 "Language: nb\n"
@@ -149,7 +149,7 @@ msgstr "GNOME Shell"
 
 #: data/org.gnome.Shell.desktop.in.in:5
 msgid "Window management and application launching"
-msgstr "Håndtering av vinduer og åpning av apper"
+msgstr "Styr systemet og åpne apper"
 
 #: data/org.gnome.shell.gschema.xml.in:6
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -210,7 +210,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:45
 msgid "Allow extension installation"
-msgstr "Tillat installasjon av utvidelser"
+msgstr "Tillat installering av utvidelser"
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid ""
@@ -510,12 +510,12 @@ msgstr "Stedene det skal vises verdensklokker for"
 
 #: data/org.gnome.shell.gschema.xml.in:357
 msgid "Automatic location"
-msgstr "Automatisk sted"
+msgstr "Automatisk posisjon"
 
 #: data/org.gnome.shell.gschema.xml.in:358
 msgid "Whether to fetch the current location or not"
 msgstr ""
-"Hvis denne innstillingen er på, vil nåværende sted oppdateres automatisk"
+"Hvis denne innstillingen er på, vil nåværende posisjon oppdateres automatisk"
 
 #: data/org.gnome.shell.gschema.xml.in:365
 msgid "Location"
@@ -756,7 +756,7 @@ msgstr "bytt bruker"
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:141
 msgid "lock orientation;unlock orientation;screen;rotation"
-msgstr "lås retning;lås opp retning;skjermretning;rotasjon"
+msgstr "lås retning;lås opp retning;skjermretning;rotasjon;orientering"
 
 #. Translators: The name of the screenshot UI action in search
 #: js/misc/systemActions.js:146
@@ -796,7 +796,7 @@ msgstr "Kjøring av «%s» mislyktes:"
 
 #: js/misc/dateUtils.js:69
 msgid "Just now"
-msgstr "Nettopp"
+msgstr "Nå"
 
 #: js/misc/dateUtils.js:72
 #, javascript-format
@@ -1003,7 +1003,7 @@ msgstr "Hodetelefoner"
 
 #: js/ui/audioDeviceSelection.js:76
 msgid "Headset"
-msgstr "Hodesett"
+msgstr "Hodetelefoner"
 
 #: js/ui/audioDeviceSelection.js:78 js/ui/status/volume.js:358
 msgid "Microphone"
@@ -1230,7 +1230,7 @@ msgstr "PIN-kode kreves"
 
 #: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:765
 msgid "PIN code is needed for the mobile broadband device"
-msgstr "PIN-kode kreves for mobil bredbåndsenhet"
+msgstr "PIN-kode kreves for bredbåndsenhet"
 
 #: js/ui/components/networkAgent.js:397
 msgid "PIN"
@@ -1380,15 +1380,15 @@ msgstr "Logg ut"
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s vil automatisk logges ut om %d sekund."
-msgstr[1] "%s vil automatisk logges ut om %d sekunder."
+msgstr[0] "%s vil logges ut automatisk om %d sekund."
+msgstr[1] "%s vil logges ut automatisk om %d sekunder."
 
 #: js/ui/endSessionDialog.js:58
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "Du vil automatisk logges ut om %d sekund."
-msgstr[1] "Du vil automatisk logges ut om %d sekunder."
+msgstr[0] "Du vil logges ut automatisk om %d sekund."
+msgstr[1] "Du vil logges ut automatisk om %d sekunder."
 
 #: js/ui/endSessionDialog.js:65
 msgctxt "button"
@@ -1409,8 +1409,8 @@ msgstr "Installer oppdateringer og slå av"
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Systemet vil automatisk slå seg av om %d sekund."
-msgstr[1] "Systemet vil automatisk slå seg av om %d sekunder."
+msgstr[0] "Systemet vil slå seg av automatisk om %d sekund."
+msgstr[1] "Systemet vil slå seg av automatisk om %d sekunder."
 
 #: js/ui/endSessionDialog.js:79 js/ui/endSessionDialog.js:98
 msgctxt "checkbox"
@@ -1436,8 +1436,8 @@ msgstr "Installer oppdateringer og  start på nytt"
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Systemet vil automatisk starte på nytt om %d sekund."
-msgstr[1] "Systemet vil automatisk starte på nytt om %d sekunder."
+msgstr[0] "Systemet vil starte på nytt automatisk om %d sekund."
+msgstr[1] "Systemet vil starte på nytt automatisk om %d sekunder."
 
 #: js/ui/endSessionDialog.js:102
 msgctxt "button"
@@ -1455,10 +1455,10 @@ msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] ""
-"Systemet vil automatisk starte på nytt og installere oppdateringer om %d "
+"Systemet vil starte på nytt og installere oppdateringer automatisk om %d "
 "sekund."
 msgstr[1] ""
-"Systemet vil automatisk starte på nytt og installere oppdateringer om %d "
+"Systemet vil starte på nytt og installere oppdateringer automatisk om %d "
 "sekunder."
 
 #: js/ui/endSessionDialog.js:120 js/ui/endSessionDialog.js:141
@@ -1746,7 +1746,7 @@ msgstr "Apper"
 #. activities. See also note for "Activities" string.
 #: js/ui/overview.js:67
 msgid "Overview"
-msgstr "Oversiktsmodus"
+msgstr "Oversikt"
 
 #: js/ui/padOsd.js:100
 msgid "New shortcut…"
