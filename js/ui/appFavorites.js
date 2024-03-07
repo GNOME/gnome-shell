@@ -1,10 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+import * as MessageTray from './messageTray.js';
 import Shell from 'gi://Shell';
 import * as ParentalControlsManager from '../misc/parentalControlsManager.js';
 import * as Signals from '../misc/signals.js';
-
-import * as Main from './main.js';
 
 // In alphabetical order
 const RENAMED_DESKTOP_IDS = {
@@ -161,13 +160,11 @@ class AppFavorites extends Signals.EventEmitter {
         if (!this._addFavorite(appId, pos))
             return;
 
-        let app = Shell.AppSystem.get_default().lookup_app(appId);
+        const app = Shell.AppSystem.get_default().lookup_app(appId);
 
-        let msg = _('%s has been pinned to the dash.').format(app.get_name());
-        Main.overview.setMessage(msg, {
-            forFeedback: true,
-            undoCallback: () => this._removeFavorite(appId),
-        });
+        this._showNotification(_('%s has been pinned to the dash.').format(app.get_name()),
+            null,
+            () => this._removeFavorite(appId));
     }
 
     addFavorite(appId) {
@@ -196,11 +193,22 @@ class AppFavorites extends Signals.EventEmitter {
         if (!this._removeFavorite(appId))
             return;
 
-        let msg = _('%s has been unpinned from the dash.').format(app.get_name());
-        Main.overview.setMessage(msg, {
+        this._showNotification(_('%s has been unpinned from the dash.').format(app.get_name()),
+            null,
+            () => this._addFavorite(appId, pos));
+    }
+
+    _showNotification(title, body, undoCallback) {
+        const source = MessageTray.getSystemSource();
+        const notification = new MessageTray.Notification({
+            source,
+            title,
+            body,
+            isTransient: true,
             forFeedback: true,
-            undoCallback: () => this._addFavorite(appId, pos),
         });
+        notification.addAction(_('Undo'), () => undoCallback());
+        source.addNotification(notification);
     }
 }
 
