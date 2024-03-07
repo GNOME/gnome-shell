@@ -1429,8 +1429,9 @@ export const Keyboard = GObject.registerClass({
             for (const group of groups) {
                 try {
                     keyboardModel = new KeyboardModel(group);
+                    break;
                 } catch (e) {
-                    // Ignore this error
+                    // Ignore this error and fall back to next model
                 }
             }
 
