@@ -541,13 +541,13 @@ export const Source = GObject.registerClass({
     _onNotificationDestroy(notification) {
         let index = this.notifications.indexOf(notification);
         if (index < 0)
-            return;
+            throw new Error('Notification was already removed previously');
 
         this.notifications.splice(index, 1);
         this.emit('notification-removed', notification);
         this.countUpdated();
 
-        if (this.notifications.length === 0)
+        if (!this._inDestruction && this.notifications.length === 0)
             this.destroy();
     }
 
@@ -555,8 +555,10 @@ export const Source = GObject.registerClass({
         if (this.notifications.includes(notification))
             return;
 
-        while (this.notifications.length >= MAX_NOTIFICATIONS_PER_SOURCE)
-            this.notifications.shift().destroy(NotificationDestroyedReason.EXPIRED);
+        while (this.notifications.length >= MAX_NOTIFICATIONS_PER_SOURCE) {
+            const [oldest] = this.notifications;
+            oldest.destroy(NotificationDestroyedReason.EXPIRED);
+        }
 
         notification.connect('destroy', this._onNotificationDestroy.bind(this));
         notification.connect('notify::acknowledged', () => {
@@ -573,11 +575,12 @@ export const Source = GObject.registerClass({
     }
 
     destroy(reason) {
-        let notifications = this.notifications;
-        this.notifications = [];
+        this._inDestruction = true;
 
-        for (let i = 0; i < notifications.length; i++)
-            notifications[i].destroy(reason);
+        while (this.notifications.length > 0) {
+            const [oldest] = this.notifications;
+            oldest.destroy(reason);
+        }
 
         this.emit('destroy', reason);
 
