@@ -16,9 +16,7 @@ export const ANIMATION_TIME = 250;
 import * as DND from './dnd.js';
 import * as LayoutManager from './layout.js';
 import * as Main from './main.js';
-import * as MessageTray from './messageTray.js';
 import * as OverviewControls from './overviewControls.js';
-import * as Params from '../misc/params.js';
 import * as SwipeTracker from './swipeTracker.js';
 import * as WindowManager from './windowManager.js';
 import * as WorkspaceThumbnail from './workspaceThumbnail.js';
@@ -26,36 +24,6 @@ import * as WorkspaceThumbnail from './workspaceThumbnail.js';
 const DND_WINDOW_SWITCH_TIMEOUT = 750;
 
 const OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
-
-class ShellInfo {
-    setMessage(title, options) {
-        options = Params.parse(options, {
-            undoCallback: null,
-            forFeedback: false,
-        });
-
-        const source = MessageTray.getSystemSource();
-        let undoCallback = options.undoCallback;
-        let forFeedback = options.forFeedback;
-
-        if (!this._notification) {
-            this._notification = new MessageTray.Notification({
-                source,
-                isTransient: true,
-                forFeedback,
-            });
-            this._notification.connect('destroy', () => delete this._notification);
-        }
-        this._notification.set({title});
-
-        this._notification.clearActions();
-
-        if (undoCallback)
-            this._notification.addAction(_('Undo'), () => undoCallback());
-
-        source.addNotification(this._notification);
-    }
-}
 
 const OverviewActor = GObject.registerClass(
 class OverviewActor extends St.BoxLayout {
@@ -252,8 +220,6 @@ export class Overview extends Signals.EventEmitter {
         this._overview._delegate = this;
         Main.layoutManager.overviewGroup.add_child(this._overview);
 
-        this._shellInfo = new ShellInfo();
-
         Main.layoutManager.connect('monitors-changed', this._relayout.bind(this));
         this._relayout();
 
@@ -273,18 +239,6 @@ export class Overview extends Signals.EventEmitter {
         swipeTracker.connect('update', this._gestureUpdate.bind(this));
         swipeTracker.connect('end', this._gestureEnd.bind(this));
         this._swipeTracker = swipeTracker;
-    }
-
-    //
-    // options:
-    //  - undoCallback (function): the callback to be called if undo support is needed
-    //  - forFeedback (boolean): whether the message is for direct feedback of a user action
-    //
-    setMessage(text, options) {
-        if (this.isDummy)
-            return;
-
-        this._shellInfo.setMessage(text, options);
     }
 
     _changeShownState(state) {
