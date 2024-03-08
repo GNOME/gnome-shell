@@ -582,7 +582,7 @@ export const Message = GObject.registerClass({
         if (this._useBodyMarkup === enable)
             return;
         this._useBodyMarkup = enable;
-        this.setBody(this._bodyText);
+        this.body = this._bodyText;
         this.notify('use-body-markup');
     }
 
