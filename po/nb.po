@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 14:29+0000\n"
-"PO-Revision-Date: 2024-03-06 22:24+0100\n"
+"POT-Creation-Date: 2024-03-06 21:26+0000\n"
+"PO-Revision-Date: 2024-03-11 22:21+0100\n"
 "Last-Translator: Brage <bragefuglseth@gnome.org>\n"
 "Language-Team: \n"
 "Language: nb\n"
@@ -995,7 +995,7 @@ msgstr "Velg lydenhet"
 
 #: js/ui/audioDeviceSelection.js:61 js/ui/status/volume.js:83
 msgid "Sound Settings"
-msgstr "Lydinnstillinger"
+msgstr "Innstillinger"
 
 #: js/ui/audioDeviceSelection.js:74
 msgid "Headphones"
@@ -1015,7 +1015,7 @@ msgstr "Bytt bakgrunn…"
 
 #: js/ui/backgroundMenu.js:17
 msgid "Display Settings"
-msgstr "Skjerminnstillinger"
+msgstr "Innstillinger"
 
 #: js/ui/backgroundMenu.js:18
 msgid "Settings"
@@ -1624,7 +1624,7 @@ msgstr "Hold avslått"
 
 #: js/ui/keyboard.js:181 js/ui/status/keyboard.js:899
 msgid "Keyboard Settings"
-msgstr "Tastaturinnstillinger"
+msgstr "Innstillinger"
 
 #: js/ui/lookingGlass.js:724
 msgid "No extensions installed"
@@ -2093,7 +2093,7 @@ msgstr "Musetaster"
 
 #: js/ui/status/accessibility.js:85
 msgid "Accessibility Settings"
-msgstr "Tilgjengelighetsinnstillinger"
+msgstr "Innstillinger"
 
 #: js/ui/status/accessibility.js:142
 msgid "Large Text"
@@ -2114,7 +2114,7 @@ msgstr "Apper som er i aktivitet uten å være åpne"
 
 #: js/ui/status/backgroundApps.js:182
 msgid "App Settings"
-msgstr "App-innstillinger"
+msgstr "Innstillinger"
 
 #: js/ui/status/backgroundApps.js:239
 msgid "No Background Apps"
@@ -2157,7 +2157,7 @@ msgstr "Bluetooth"
 
 #: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1900
 msgid "Bluetooth Settings"
-msgstr "Bluetooth-innstillinger"
+msgstr "Innstillinger"
 
 #: js/ui/status/bluetooth.js:335
 msgid "No available or connected devices"
@@ -2283,7 +2283,7 @@ msgstr "VPN"
 
 #: js/ui/status/network.js:1525
 msgid "VPN Settings"
-msgstr "VPN-innstillinger"
+msgstr "Innstillinger"
 
 #: js/ui/status/network.js:1785
 msgid "Wi–Fi"
@@ -2299,7 +2299,7 @@ msgstr "Kablede tilkoblinger"
 
 #: js/ui/status/network.js:1885
 msgid "Wired Settings"
-msgstr "Kablet-innstillinger"
+msgstr "Innstillinger"
 
 #: js/ui/status/network.js:1899
 msgid "Bluetooth Tethers"
@@ -2316,7 +2316,7 @@ msgstr "Mobiltilkobling"
 
 #: js/ui/status/network.js:1921
 msgid "Mobile Broadband Settings"
-msgstr "Bredbåndsinnstillinger"
+msgstr "Innstillinger"
 
 #. Translators: "Mobile" from "Mobile Broadband"
 #: js/ui/status/network.js:1930
@@ -2356,7 +2356,7 @@ msgstr "Strømmodus"
 
 #: js/ui/status/powerProfiles.js:73
 msgid "Power Settings"
-msgstr "Strøminnstillinger"
+msgstr "Innstillinger"
 
 #: js/ui/status/remoteAccess.js:76
 msgid "Stop Screencast"
@@ -2692,15 +2692,15 @@ msgstr ""
 "GNOME Utvidelser håndterer oppdatering og tilpassing av utvidelser, og lar "
 "deg fjerne eller slå av uønskede utvidelser."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Hovedvindu"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Tilgjengelige oppdateringer"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Søkeside"
 
@@ -3188,7 +3188,7 @@ msgstr "Kunne ikke åpne innstillinger for «%s»: %s\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:87
 msgid "Opens extension preferences"
-msgstr "Åpner innstillinger for utvidelse"
+msgstr "Åpner innstillinger til utvidelse"
 
 #: subprojects/extensions-tool/src/command-reset.c:58
 msgid "Reset an extension"
@@ -3304,7 +3304,7 @@ msgstr "Vis informasjon om utvidelse"
 
 #: subprojects/extensions-tool/src/main.c:344
 msgid "Open extension preferences"
-msgstr "Åpne innstillinger for utvidelse"
+msgstr "Åpne innstillinger til utvidelse"
 
 #: subprojects/extensions-tool/src/main.c:345
 msgid "Create extension"
