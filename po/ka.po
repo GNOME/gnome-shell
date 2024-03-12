@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 01:44+0000\n"
-"PO-Revision-Date: 2024-03-03 20:32+0100\n"
+"POT-Creation-Date: 2024-03-03 19:35+0000\n"
+"PO-Revision-Date: 2024-03-12 17:57+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -2484,7 +2484,7 @@ msgstr "გადაუსვით ბლოკის მოსახსნე�
 
 #: js/ui/unlockDialog.js:381
 msgid "Click or press a key to unlock"
-msgstr "ბლოკის მოსახსნელად წკაპი ან ღილაკს დააწექით"
+msgstr "ბლოკის მოსახსნელად დააწექით ნებისმიერ ღილაკს"
 
 #: js/ui/unlockDialog.js:564
 msgid "Unlock Window"
@@ -2683,15 +2683,15 @@ msgstr ""
 "GNOME-ის გაფართოებები დაკავებულია გაფართოებების განახლებით, მათი "
 "პარამეტრების მორგებით და არასასურველი გაფართოებების წაშლით ან გამორთვით."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "მთავარი ფანჯარა"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "ხელმისაწვდომი განახლებები"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "ძებნის ხედი"
 
