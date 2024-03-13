@@ -1074,19 +1074,20 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _notifyConflictingSessionDialogClosed(userName) {
-        const source = new MessageTray.SystemNotificationSource();
-        Main.messageTray.add(source);
+        const source = new MessageTray.getSystemSource();
 
-        this._conflictingSessionNotification = new MessageTray.Notification(source,
-            _('Stop conflicting session dialog closed'),
-            _('Try to login again to start a session for user %s.').format(userName));
-        this._conflictingSessionNotification.setUrgency(MessageTray.Urgency.CRITICAL);
-        this._conflictingSessionNotification.setTransient(true);
+        this._conflictingSessionNotification = new MessageTray.Notification({
+            source,
+            title: _('Stop conflicting session dialog closed'),
+            body: _('Try to login again to start a session for user %s.').format(userName),
+            urgency: MessageTray.Urgency.CRITICAL,
+            isTransient: true,
+        });
         this._conflictingSessionNotification.connect('destroy', () => {
             this._conflictingSessionNotification = null;
         });
 
-        source.showNotification(this._conflictingSessionNotification);
+        source.addNotification(this._conflictingSessionNotification);
     }
 
     _showConflictingSessionDialog(serviceName, conflictingSession) {
