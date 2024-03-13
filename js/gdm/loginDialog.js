@@ -1073,13 +1073,13 @@ export const LoginDialog = GObject.registerClass({
         }, this);
     }
 
-    _notifyConflictingSessionDialogClosed(userName) {
+    _notifyConflictingSessionDialogClosed() {
         const source = new MessageTray.getSystemSource();
 
         this._conflictingSessionNotification = new MessageTray.Notification({
             source,
-            title: _('Stop conflicting session dialog closed'),
-            body: _('Try to login again to start a session for user %s.').format(userName),
+            title: _('Login Attempt Timed Out'),
+            body: _('Login took too long, please try again'),
             urgency: MessageTray.Urgency.CRITICAL,
             isTransient: true,
         });
@@ -1112,7 +1112,7 @@ export const LoginDialog = GObject.registerClass({
         }, conflictingSessionDialog);
 
         const closeDialogTimeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, _CONFLICTING_SESSION_DIALOG_TIMEOUT, () => {
-            this._notifyConflictingSessionDialogClosed(this._user.get_user_name());
+            this._notifyConflictingSessionDialogClosed();
             conflictingSessionDialog.close();
             this._authPrompt.reset();
             return GLib.SOURCE_REMOVE;
