@@ -116,19 +116,16 @@
       color: $fg_color;
       background-color: transparentize($fg_color, .9);
       padding: 4px;
-      &:hover { background-color: transparentize($fg_color, .87);}
-      &:active { background-color: transparentize($fg_color, .84);}
+      &:hover { background-color: transparentize($fg_color, .81);}
+      &:active,
+      &:active:hover { background-color: transparentize($fg_color, .76);}
       &:insensitive { background-color: transparentize($fg_color, .93);}
     }
 
     .message-expand-button {
       padding: 6px;
-      background-color: transparentize($fg_color, 0.9);
-
       &:ltr { margin-right: $base_padding; }
       &:rtl { margin-left: $base_padding; }
-
-      &:hover { background-color: transparentize($fg_color, 0.8);}
     }
   }
 
