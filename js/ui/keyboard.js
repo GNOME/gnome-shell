@@ -2189,7 +2189,7 @@ class KeyboardController extends Signals.EventEmitter {
                         }
                         this._surroundingUpdateTimeoutId =
                             GLib.timeout_add(GLib.PRIORITY_DEFAULT, KEY_RELEASE_TIMEOUT, () => {
-                                func(text, cursor);
+                                func(text, cursor, cursor);
                                 this._surroundingUpdateTimeoutId = 0;
                                 return GLib.SOURCE_REMOVE;
                             });
