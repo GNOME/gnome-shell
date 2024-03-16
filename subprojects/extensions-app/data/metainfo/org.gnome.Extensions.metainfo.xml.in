@@ -54,17 +54,12 @@
   </description>
 
   <releases>
-    <release version="46.rc" date="2024-03-03" type="development"/>
-    <release version="46.beta" date="2024-02-11" type="development">
-      <description>
-        <p>Remember window state.</p>
-        <p>Use adaptive dialogs.</p>
-      </description>
-    </release>
-    <release version="46.alpha" date="2024-01-06" type="development">
+    <release version="46.0" date="2024-03-16">
       <description>
         <p>Streamline layout to be fully adaptive on mobile.</p>
         <p>Improve handling of extensions in error state.</p>
+        <p>Remember window state.</p>
+        <p>Use adaptive dialogs.</p>
       </description>
     </release>
   </releases>

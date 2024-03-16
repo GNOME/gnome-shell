@@ -1,3 +1,28 @@
+46.0
+====
+* Fix model selection in on-screen keyboard [Jonas; !3230]
+* Fix key getting stuck when raising screen shield [Jonas; !3231]
+* Fix notifications sometimes being empty [Julian; !3229]
+* Fix cursor visibilty when magnified [Sebastian; !3237]
+* Fixed crashes [Jonas, Sebastian; !3233, !3239]
+* Misc. bug fixes and cleanups [Carlos, Yotam, Aleksandr, Florian, Joan, Sam;
+  !3225, !3161, !3232, !3226, !3236, !3203, !3238]
+
+Contributors:
+  Yotam Bar-On, Jonas Dreßler, Carlos Garnacho, Sam Hewitt, Sebastian Keller,
+  Aleksandr Mezin, Florian Müllner, Julian Sparber, Joan Torres
+
+Translators:
+  Sabri Ünal [tr], Yuri Chornoivan [uk], Piotr Drąg [pl], Jiri Grönroos [fi],
+  Ekaterine Papava [ka], Aurimas Černius [lt], Yaron Shahrabani [he],
+  Daniel Mustieles [es], Asier Sarasua Garmendia [eu], Guillaume Bernard [fr],
+  Jordi Mas i Hernandez [ca], Matej Urbančič [sl], Bruce Cowan [en_GB],
+  Baurzhan Muftakhidinov [kk], Brage Fuglseth [nb], Andika Triwidada [id],
+  Quentin PAGÈS [oc], Rūdolfs Mazurs [lv], Anders Jonsson [sv],
+  Fran Dieguez [gl], Milo Casagrande [it], Balázs Úr [hu], Philipp Kiemle [de],
+  Artur S0 [ru], Changwoo Ryu [ko], Ask Hjorth Larsen [da],
+  Athmane MOKRAOUI [kab]
+
 46.rc
 =====
 * Fix repainting drawing area [Florian; !3190]
