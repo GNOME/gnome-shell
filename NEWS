@@ -1,3 +1,14 @@
+45.5
+====
+* Fix auto-closing FDO notifications [Florian; !3204]
+* Fix key getting stuck when raising screen shield [Jonas; !3231]
+* Fixed crash [Jonas; !3233]
+* Misc. bug fixes and cleanups [Florian, Bilal, Paul, Ray; !3176, !3178, !3186,
+  !2765, !3202, !3206]
+
+Contributors:
+  Jonas Dreßler, Bilal Elmoussaoui, Paul Hollinsky, Florian Müllner, Ray Strode
+
 45.4
 ====
 * Close mount notification when drive gets disconnected [Florian; !3089]
