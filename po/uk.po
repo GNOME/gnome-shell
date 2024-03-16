@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 01:44+0000\n"
-"PO-Revision-Date: 2024-03-03 20:44+0200\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-03-16 22:51+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
@@ -132,7 +132,7 @@ msgstr "Зробити знімок вікна"
 msgid "Record a screencast interactively"
 msgstr "Записати з екрана інтерактивно"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "Система"
 
@@ -683,16 +683,14 @@ msgid "Username"
 msgstr "Користувач"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr "Закрито вікно припинення конфліктного сеансу"
+msgid "Login Attempt Timed Out"
+msgstr "Перевищення часу очікування у спробі входу"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr ""
-"Спробуйте увійти до системи повторно, щоб розпочати сеанс для користувача %s."
+msgid "Login took too long, please try again"
+msgstr "Спроба входу тривала надто довго. Будь ласка, повторіть спробу"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Вікно входу"
 
@@ -1774,7 +1772,6 @@ msgid "Unknown App"
 msgstr "Невідома програма"
 
 #: js/ui/messageTray.js:328 js/ui/messageTray.js:330
-#| msgid "No Notifications"
 msgid "Notification sound"
 msgstr "Звук сповіщення"
 
@@ -2753,7 +2750,7 @@ msgstr "Керуйте вашими розширеннями GNOME"
 msgid "The GNOME Project"
 msgstr "Проєкт GNOME"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -2761,15 +2758,15 @@ msgstr ""
 "«Розширення» GNOME обробляють оновлення розширень, налаштовування параметрів "
 "розширень, а також вилучення та вимикання небажаних розширень."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Головне вікно"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Доступні оновлення"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Панель пошуку"
 
@@ -3424,13 +3421,13 @@ msgstr "Додати пункт до швидких параметрів"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Вимкнено"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3441,7 +3438,7 @@ msgstr[3] "%u вивід"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -3450,9 +3447,18 @@ msgstr[1] "%u входи"
 msgstr[2] "%u входів"
 msgstr[3] "%u вхід"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Системні звуки"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr "Закрито вікно припинення конфліктного сеансу"
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr ""
+#~ "Спробуйте увійти до системи повторно, щоб розпочати сеанс для користувача "
+#~ "%s."
 
 #, javascript-format
 #~ msgid "%s is now known as %s"
