@@ -1,3 +1,13 @@
+44.10
+=====
+* Fix auto-closing FDO notifications [Florian; !3204]
+* Fix key getting stuck when raising screen shield [Jonas; !3231]
+* Fixed crash [Jonas; !3233]
+* Misc. bug fixes and cleanups [Ray, Florian; !2765, !3202, !3206]
+
+Contributors:
+  Jonas Dreßler, Florian Müllner, Ray Strode
+
 44.9
 ====
 * Fix menu alignment in RTL locales [Florian; !3151]
