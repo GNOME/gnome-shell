@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 01:44+0000\n"
-"PO-Revision-Date: 2024-03-03 08:53+0330\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-03-16 20:26+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-DamnedLies-Scope: partial\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: data/50-gnome-shell-launchers.xml:6
@@ -119,7 +119,7 @@ msgstr "گرفتن نماگرفتی از یک پنچره"
 msgid "Record a screencast interactively"
 msgstr "ضبط کنش‌پذیر صفحه"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "سامانه"
 
@@ -639,15 +639,14 @@ msgid "Username"
 msgstr "نام‌کاربری"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr "گفت‌وگوی توقّف نشست متداخل بسته شد"
+msgid "Login Attempt Timed Out"
+msgstr "پایان مهلت زمانی تلاش برای ورود"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr "آزمودن ورود دوباره برای آغاز نشست کاربر %s."
+msgid "Login took too long, please try again"
+msgstr "ورود بیش از حد طول کشید. لطفاً دوباره تلاش کنید"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "پنجرهٔ ورود به سامانه"
 
@@ -2669,7 +2668,7 @@ msgstr "مدیریت افزونه‌های پوستهٔ گنوم"
 msgid "The GNOME Project"
 msgstr "پروژهٔ گنوم"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension preferences and "
 "removing or disabling unwanted extensions."
@@ -2677,15 +2676,15 @@ msgstr ""
 "افزونه‌های گنوم؛ به‌روز رسانی، پیکربندی، برداشتن یا از کار انداختن افزونه‌ها را مدیریت "
 "می‌کند."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "پنجرهٔ اصلی"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "به‌روز رسانی‌های موجود"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "نمای جست‌وجو"
 
@@ -3327,13 +3326,13 @@ msgstr "افزودن موردی به تنظیمات سریع"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "از کار افتاده"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3342,16 +3341,23 @@ msgstr[1] "%Iu خروجی"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%Iu ورودی"
 msgstr[1] "%Iu ورودی"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "صداهای سامانه"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr "گفت‌وگوی توقّف نشست متداخل بسته شد"
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr "آزمودن ورود دوباره برای آغاز نشست کاربر %s."
 
 # در این رشته از نویسه RLM استفاده شده است
 #, javascript-format
@@ -4443,9 +4449,6 @@ msgstr "صداهای سامانه"
 
 #~ msgid "%a %l:%M:%S %p"
 #~ msgstr "%a %OH:%OM:%OS"
-
-#~ msgid "Wrong password, please try again"
-#~ msgstr "گذرواژه‌ی نادرست، لطفا دوباره تلاش کنید"
 
 #~ msgid "%s is online."
 #~ msgstr "‏%s بر خط است."
