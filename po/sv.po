@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-08 20:03+0000\n"
-"PO-Revision-Date: 2024-03-09 14:03+0100\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-03-16 20:12+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -124,7 +124,7 @@ msgstr "Ta en skärmbild av ett fönster"
 msgid "Record a screencast interactively"
 msgstr "Spela in skärmen interaktivt"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "System"
 
@@ -670,15 +670,14 @@ msgid "Username"
 msgstr "Användarnamn"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr "Dialogrutan för att stoppa motstridig session stängdes"
+msgid "Login Attempt Timed Out"
+msgstr "Tidsgräns överskreds för inloggningsförsök"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr "Försök att logga in igen för att starta en session för användaren %s."
+msgid "Login took too long, please try again"
+msgstr "Inloggningen tog för lång tid, försök igen"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Inloggningsfönster"
 
@@ -2716,15 +2715,15 @@ msgstr ""
 "GNOME Tillägg hanterar uppdatering av tillägg, konfiguration av "
 "inställningar för tillägg samt att ta bort eller inaktivera oönskade tillägg."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:75
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Huvudfönster"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:79
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Tillgängliga uppdateringar"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:83
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Sökvy"
 
@@ -3381,13 +3380,13 @@ msgstr "Lägg till ett objekt till snabbinställningar"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Inaktiverad"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3396,16 +3395,24 @@ msgstr[1] "%u utgångar"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u ingång"
 msgstr[1] "%u ingångar"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Systemljud"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr "Dialogrutan för att stoppa motstridig session stängdes"
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr ""
+#~ "Försök att logga in igen för att starta en session för användaren %s."
 
 #, javascript-format
 #~ msgid "%s is now known as %s"
