@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 01:44+0000\n"
-"PO-Revision-Date: 2024-03-06 08:06+0500\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-03-16 23:15+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -119,7 +119,7 @@ msgstr "Терезе скриншотын түсіру"
 msgid "Record a screencast interactively"
 msgstr "Скринкастты интерактивті түрде жазу"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "Жүйе"
 
@@ -663,7 +663,7 @@ msgstr "Тізімде жоқсыз ба?"
 #: js/gdm/loginDialog.js:1010
 #, javascript-format
 msgid "(e.g., user or %s)"
-msgstr "(мыс., пайдаланушы не %s)"
+msgstr "(мыс., пайдаланушы немесе %s)"
 
 #: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
@@ -671,15 +671,14 @@ msgid "Username"
 msgstr "Пайдаланушы аты"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr "Қарамы-қайшылық туғызған сеансты тоқтату сұхбаты жабылды"
+msgid "Login Attempt Timed Out"
+msgstr "Жүйеге кіру талабының уақыты бітті"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr "%s пайдаланушысы үшін сеансты бастау үшін қайта кіріп көріңіз."
+msgid "Login took too long, please try again"
+msgstr "Жүйеге кіру талабы тым көп уақыт алды, қайталап көріңіз"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Жүйеге кіру терезесі"
 
@@ -2691,7 +2690,7 @@ msgstr "GNOME кеңейтулерін басқару"
 msgid "The GNOME Project"
 msgstr "GNOME жобасы"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -2699,15 +2698,15 @@ msgstr ""
 "GNOME кеңейтулері көмегімен кеңейтулерді жаңарту, баптау және оларды өшіру "
 "немесе сөндіруге болады."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Басты терезе"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Қолжетімді жаңартулар"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Іздеу көрінісі"
 
@@ -3353,13 +3352,13 @@ msgstr "Жылдам баптауларға жаңа элементті қосу
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Сөндірулі"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3367,15 +3366,22 @@ msgstr[0] "%u шығысы"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u кірісі"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Жүйелік дыбыстар"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr "Қарамы-қайшылық туғызған сеансты тоқтату сұхбаты жабылды"
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr "%s пайдаланушысы үшін сеансты бастау үшін қайта кіріп көріңіз."
 
 #, javascript-format
 #~ msgid "%s is now known as %s"
