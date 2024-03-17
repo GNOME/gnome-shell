@@ -49,9 +49,9 @@ $app_folder_size: 720px;
   background-color: $system_fg_color;
 
   @if $contrast == 'high' {
-    margin-bottom: 4px;
+    offset-y: 4px;
   } @else {
-    margin-bottom: 2px;
+    offset-y: 6px;
   }
 }
 

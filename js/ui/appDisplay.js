@@ -3014,7 +3014,7 @@ export const AppIcon = GObject.registerClass({
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.END,
         });
-        this._dot.translationY = 8;
+        this._dot.connect('style-changed', () => this._updateDotStyle());
         this._iconContainer.add_child(this._dot);
 
         this.label_actor = this.icon.label;
@@ -3057,6 +3057,11 @@ export const AppIcon = GObject.registerClass({
             GLib.source_remove(this._menuTimeoutId);
             this._menuTimeoutId = 0;
         }
+    }
+
+    _updateDotStyle() {
+        const themeNode = this._dot.get_theme_node();
+        this._dot.translationY = themeNode.get_length('offset-y');
     }
 
     _updateRunningStyle() {
