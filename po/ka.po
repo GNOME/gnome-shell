@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 19:35+0000\n"
-"PO-Revision-Date: 2024-03-12 17:57+0100\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-03-17 03:23+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -119,7 +119,7 @@ msgstr "ფანჯრის ანაბეჭდის გადაღებ�
 msgid "Record a screencast interactively"
 msgstr "ეკრანიდან ვიდეოს ჩაწერა"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "სისტემა"
 
@@ -664,15 +664,14 @@ msgid "Username"
 msgstr "მომხმარებლის სახელი"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr "კონფლიქტური სესიის გაჩერების დიალოგი დაიხურა"
+msgid "Login Attempt Timed Out"
+msgstr "შესვლის მცდელობის მოლოდინის ვადა ამოიწურა"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr "სცადეთ, თავიდან შეხვიდეთ, რომ დაიწყოთ სესია მომხმარებლისთვის %s."
+msgid "Login took too long, please try again"
+msgstr "შესვლას მეტისმეტად დიდხანს ცდილობდით. თავიდან სცადეთ"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "შესვლის ფანჯარა"
 
@@ -2675,7 +2674,7 @@ msgstr "GNOME-ის თქვენი გაფართოებების 
 msgid "The GNOME Project"
 msgstr "პროექტი \"GNOME\""
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -3336,13 +3335,13 @@ msgstr "სწრაფი მორგების მენიუში ელ
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "გამოირთო"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3350,15 +3349,22 @@ msgstr[0] "%u გამოტანა"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u შეტანა"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "სისტემური ხმები"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr "კონფლიქტური სესიის გაჩერების დიალოგი დაიხურა"
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr "სცადეთ, თავიდან შეხვიდეთ, რომ დაიწყოთ სესია მომხმარებლისთვის %s."
 
 #, javascript-format
 #~ msgid "%s is now known as %s"
