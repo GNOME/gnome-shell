@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 01:44+0000\n"
-"PO-Revision-Date: 2024-03-03 21:23+0200\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-03-17 12:14+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -140,7 +140,7 @@ msgstr "Ota kuvakaappaus ikkunasta"
 msgid "Record a screencast interactively"
 msgstr "Nauhoita näyttötallennevideo vuorovaikutteisesti"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "Järjestelmä"
 
@@ -677,15 +677,14 @@ msgid "Username"
 msgstr "Käyttäjätunnus"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr ""
+msgid "Login Attempt Timed Out"
+msgstr "Kirjautumisyritys aikakatkaistiin"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr "Yritä kirjautua uudelleen aloittaaksesi uuden istunnon käyttäjänä %s."
+msgid "Login took too long, please try again"
+msgstr "Kirjautuminen kesti liian kauan, yritä uudelleen"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Kirjautumisikkuna"
 
@@ -2715,7 +2714,7 @@ msgstr "Hallitse Gnome-laajennuksia"
 msgid "The GNOME Project"
 msgstr "Gnome-projekti"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -2724,15 +2723,15 @@ msgstr ""
 "niiden asetukset ja sen avulla voi poistaa laajennuksia käytöstä tai "
 "kokonaan järjestelmästä."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Pääikkuna"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Saatavilla olevat päivitykset"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Hakunäkymä"
 
@@ -3381,13 +3380,13 @@ msgstr "Lisää kohde pika-asetuksiin"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Ei käytössä"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3396,16 +3395,21 @@ msgstr[1] "%u ulostuloa"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u sisääntulo"
 msgstr[1] "%u sisääntuloa"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Järjestelmän äänet"
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr ""
+#~ "Yritä kirjautua uudelleen aloittaaksesi uuden istunnon käyttäjänä %s."
 
 #, javascript-format
 #~ msgid "%s is now known as %s"
@@ -4473,9 +4477,6 @@ msgstr "Järjestelmän äänet"
 
 #~ msgid "%a %l:%M:%S %p"
 #~ msgstr "%a %I.%M.%S %p"
-
-#~ msgid "Wrong password, please try again"
-#~ msgstr "Väärä salasana, yritä uudelleen"
 
 #~ msgid "%s is online."
 #~ msgstr "%s on linjoilla."
