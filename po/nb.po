@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-06 21:26+0000\n"
-"PO-Revision-Date: 2024-03-11 22:21+0100\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-03-17 19:23+0100\n"
 "Last-Translator: Brage <bragefuglseth@gnome.org>\n"
 "Language-Team: \n"
 "Language: nb\n"
@@ -119,7 +119,7 @@ msgstr "Ta skjermbilde av vindu"
 msgid "Record a screencast interactively"
 msgstr "Ta skjermopptak interaktivt"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "System"
 
@@ -659,15 +659,14 @@ msgid "Username"
 msgstr "Brukernavn"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr "Vindu lukket"
+msgid "Login Attempt Timed Out"
+msgstr "Innlogging mislyktes"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr "Prøv å logge inn igjen eller starte en økt med %s."
+msgid "Login took too long, please try again"
+msgstr "Innloggingen tok for lang tid, prøv igjen"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
@@ -995,7 +994,7 @@ msgstr "Velg lydenhet"
 
 #: js/ui/audioDeviceSelection.js:61 js/ui/status/volume.js:83
 msgid "Sound Settings"
-msgstr "Innstillinger"
+msgstr "Lydinnstillinger"
 
 #: js/ui/audioDeviceSelection.js:74
 msgid "Headphones"
@@ -1015,7 +1014,7 @@ msgstr "Bytt bakgrunn…"
 
 #: js/ui/backgroundMenu.js:17
 msgid "Display Settings"
-msgstr "Innstillinger"
+msgstr "Skjerminnstillinger"
 
 #: js/ui/backgroundMenu.js:18
 msgid "Settings"
@@ -1624,7 +1623,7 @@ msgstr "Hold avslått"
 
 #: js/ui/keyboard.js:181 js/ui/status/keyboard.js:899
 msgid "Keyboard Settings"
-msgstr "Innstillinger"
+msgstr "Tastaturinnstillinger"
 
 #: js/ui/lookingGlass.js:724
 msgid "No extensions installed"
@@ -2093,7 +2092,7 @@ msgstr "Musetaster"
 
 #: js/ui/status/accessibility.js:85
 msgid "Accessibility Settings"
-msgstr "Innstillinger"
+msgstr "Tilgjengelighetsinnstillinger"
 
 #: js/ui/status/accessibility.js:142
 msgid "Large Text"
@@ -2114,7 +2113,7 @@ msgstr "Apper som er i aktivitet uten å være åpne"
 
 #: js/ui/status/backgroundApps.js:182
 msgid "App Settings"
-msgstr "Innstillinger"
+msgstr "App-innstillinger"
 
 #: js/ui/status/backgroundApps.js:239
 msgid "No Background Apps"
@@ -2157,7 +2156,7 @@ msgstr "Bluetooth"
 
 #: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1900
 msgid "Bluetooth Settings"
-msgstr "Innstillinger"
+msgstr "Bluetooth-innstillinger"
 
 #: js/ui/status/bluetooth.js:335
 msgid "No available or connected devices"
@@ -2283,7 +2282,7 @@ msgstr "VPN"
 
 #: js/ui/status/network.js:1525
 msgid "VPN Settings"
-msgstr "Innstillinger"
+msgstr "VPN-innstillinger"
 
 #: js/ui/status/network.js:1785
 msgid "Wi–Fi"
@@ -2299,7 +2298,7 @@ msgstr "Kablede tilkoblinger"
 
 #: js/ui/status/network.js:1885
 msgid "Wired Settings"
-msgstr "Innstillinger"
+msgstr "Kabelinnstillinger"
 
 #: js/ui/status/network.js:1899
 msgid "Bluetooth Tethers"
@@ -2316,7 +2315,7 @@ msgstr "Mobiltilkobling"
 
 #: js/ui/status/network.js:1921
 msgid "Mobile Broadband Settings"
-msgstr "Innstillinger"
+msgstr "Bredbåndsinnstillinger"
 
 #. Translators: "Mobile" from "Mobile Broadband"
 #: js/ui/status/network.js:1930
@@ -2356,7 +2355,7 @@ msgstr "Strømmodus"
 
 #: js/ui/status/powerProfiles.js:73
 msgid "Power Settings"
-msgstr "Innstillinger"
+msgstr "Strøminnstillinger"
 
 #: js/ui/status/remoteAccess.js:76
 msgid "Stop Screencast"
@@ -2684,7 +2683,7 @@ msgstr "Hold styr på GNOME-utvidelsene dine"
 msgid "The GNOME Project"
 msgstr "GNOME"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -3349,13 +3348,13 @@ msgstr "Legg til en knapp i kontrollsenteret"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Slått av"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3364,16 +3363,23 @@ msgstr[1] "%u utganger"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u inngang"
 msgstr[1] "%u innganger"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Systemlyder"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr "Vindu lukket"
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr "Prøv å logge inn igjen eller starte en økt med %s."
 
 #, javascript-format
 #~ msgid "%s is now known as %s"
