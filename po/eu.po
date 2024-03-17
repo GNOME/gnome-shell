@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 01:44+0000\n"
-"PO-Revision-Date: 2024-03-04 12:15+0100\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-03-0417 12:15+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -122,7 +122,7 @@ msgstr "Atera leiho baten pantaila-argazkia"
 msgid "Record a screencast interactively"
 msgstr "Grabatu pantailaren bideo labur bat modu dinamikoan"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "Sistema"
 
@@ -600,15 +600,14 @@ msgid "Username"
 msgstr "Erabiltzaile-izena"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr "Gatazkan dauden saioak gelditzeko elkarrizketa-koadroa itxi da"
+msgid "Login Attempt Timed Out"
+msgstr "Saio-hasieraren denbora agortu da"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr "Saiatu saioa berriro hasten %s erabiltzailearentzako."
+msgid "Login took too long, please try again"
+msgstr "Saio-hasierak denbora gehiegi hartu du, saiatu berriro"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Saio-hasierako leihoa"
 
@@ -1276,11 +1275,11 @@ msgstr "Gertaerarik ez"
 
 #: js/ui/dateMenu.js:413
 msgid "Add world clocks…"
-msgstr "Gehitu munduko erlojuak…"
+msgstr "Gehitu munduko ordulariak…"
 
 #: js/ui/dateMenu.js:414
 msgid "World Clocks"
-msgstr "Munduko erlojuak"
+msgstr "Munduko ordulariak"
 
 #: js/ui/dateMenu.js:704
 msgid "Loading…"
@@ -2601,21 +2600,21 @@ msgstr "Kudeatu zure GNOME hedapenak"
 msgid "The GNOME Project"
 msgstr "GNOME proiektua"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
 msgstr "GNOME Hedapenak aplikazioak hedapenak eguneratzea, hedapenen hobespenak konfiguratzea eta gehiago nahi ez diren hedapenak kentzea edo desgaitzea ahalbidetzen du."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Leiho nagusia"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Eguneratze eskuragarriak"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Bilaketa-ikuspegia"
 
@@ -3243,13 +3242,13 @@ msgstr "Gehitu elementu bat ezarpen azkarrei"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Desgaituta"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3258,16 +3257,23 @@ msgstr[1] "%u irteera"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "Sarrera %u"
 msgstr[1] "%u sarrera"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Sistemaren soinuak"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr "Gatazkan dauden saioak gelditzeko elkarrizketa-koadroa itxi da"
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr "Saiatu saioa berriro hasten %s erabiltzailearentzako."
 
 #, javascript-format
 #~ msgid "%s is now known as %s"
