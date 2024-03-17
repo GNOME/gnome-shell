@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 01:44+0000\n"
-"PO-Revision-Date: 2024-03-04 11:50+0200\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-03-17 15:12+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew\n"
 "Language: he\n"
@@ -123,7 +123,7 @@ msgstr "צילום של חלון"
 msgid "Record a screencast interactively"
 msgstr "הסרטת המסך באופן הידודי"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "מערכת"
 
@@ -661,15 +661,14 @@ msgid "Username"
 msgstr "שם משתמש"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr "חלונית עצירת הפעלה סותרת נסגרה"
+msgid "Login Attempt Timed Out"
+msgstr "הזמן שהוקצב לניסיון הכניסה תם"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr "כדאי לנסות להיכנס שוב כדי להתחיל הפעלה למשתמש %s."
+msgid "Login took too long, please try again"
+msgstr "הכניסה למערכת ארכה זמן רב מדי, נא לנסות שוב"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "חלון כניסה"
 
@@ -2717,7 +2716,7 @@ msgstr "ניהול הרחבות GNOME שלך"
 msgid "The GNOME Project"
 msgstr "מיזם GNOME"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -2725,15 +2724,15 @@ msgstr ""
 "הרחבות GNOME מטפל בעדכון הרחבות, הגדרת אפשרויות של כל הרחבה, הסרה והשבתת "
 "הרחבות לא רצויות."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "חלון ראשי"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "עדכונים זמינים"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "תצוגת חיפוש"
 
@@ -3379,13 +3378,13 @@ msgstr "הוספת פריט להגדרות מהירות"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "מנוטרל"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3396,7 +3395,7 @@ msgstr[3] "‏‫%u ערוצי פלט"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -3405,9 +3404,16 @@ msgstr[1] "שני ערוצי קלט"
 msgstr[2] "‫%u ערוצי קלט"
 msgstr[3] "‏‫%u ערוצי קלט"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "צלילי מערכת"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr "חלונית עצירת הפעלה סותרת נסגרה"
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr "כדאי לנסות להיכנס שוב כדי להתחיל הפעלה למשתמש %s."
 
 #, javascript-format
 #~ msgid "%s is now known as %s"
@@ -4557,9 +4563,6 @@ msgstr "צלילי מערכת"
 
 #~ msgid "%a %l:%M:%S %p"
 #~ msgstr "%a %l:%M:%S %p"
-
-#~ msgid "Wrong password, please try again"
-#~ msgstr "ססמה שגויה, נא לנסות שוב"
 
 #~ msgid "%s is online."
 #~ msgstr "‏%s התחבר/ה."
