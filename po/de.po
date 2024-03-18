@@ -18,15 +18,15 @@
 # Tim Sabsch <tim@sabsch.com>, 2018-2020, 2022-2023.
 # Philipp Kiemle <philipp.kiemle@gmail.com>, 2020-2021, 2023-2024.
 # Jürgen Benvenuti <gastornis@posteo.org>, 2022-2024.
-# Christian Kirbach <christian.kirbach@gmail.com>, 2009-2022.
+# Christian Kirbach <christian.kirbach@gmail.com>, 2009-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-10 21:27+0000\n"
-"PO-Revision-Date: 2024-03-11 19:55+0100\n"
-"Last-Translator: Philipp Kiemle <philipp.kiemle@gmail.com>\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-03-16 23:05+0100\n"
+"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -137,7 +137,7 @@ msgstr "Ein Bildschirmfoto eines Fensters aufnehmen"
 msgid "Record a screencast interactively"
 msgstr "Eine Bildschirmaufzeichnung interaktiv aufnehmen"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "System"
 
@@ -703,18 +703,14 @@ msgid "Username"
 msgstr "Benutzername"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr ""
-"Die Dialog zum Beenden einer konfliktbehafteten Sitzung wurde geschlossen"
+msgid "Login Attempt Timed Out"
+msgstr "Der Anmeldeversuch ist abgelaufen"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr ""
-"Versuchen Sie, sich erneut anzumelden, um eine Sitzung für den Benutzer %s "
-"zu starten."
+msgid "Login took too long, please try again"
+msgstr "Die Anmeldung dauerte zu lange, bitte versuchen Sie es erneut"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Anmeldefenster"
 
@@ -2780,15 +2776,15 @@ msgstr ""
 "Konfigurieren der Voreinstellungen von Erweiterungen und dem Entfernen oder "
 "Deaktivieren nicht gewünschter Erweiterungen."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:75
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Hauptfenster"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:79
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Verfügbare Aktualisierungen"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:83
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Suchansicht"
 
@@ -2960,8 +2956,8 @@ msgstr "Keine installierten Erweiterungen"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:267
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "Besuchen Sie <a href=\"https://extensions.gnome.org\">extensions.gnome.org</"
 "a>, um Erweiterungen zu finden und hinzuzufügen."
@@ -3446,13 +3442,13 @@ msgstr "Einen Eintrag zu den Schnelleinstellungen hinzufügen"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Ausgeschaltet"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3461,16 +3457,26 @@ msgstr[1] "%u Ausgänge"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Eingang"
 msgstr[1] "%u Eingänge"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Systemklänge"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr ""
+#~ "Die Dialog zum Beenden einer konfliktbehafteten Sitzung wurde geschlossen"
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr ""
+#~ "Versuchen Sie, sich erneut anzumelden, um eine Sitzung für den Benutzer "
+#~ "%s zu starten."
 
 #~ msgid "%s is now known as %s"
 #~ msgstr "%s heißt jetzt %s"
