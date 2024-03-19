@@ -1107,6 +1107,7 @@ export const MessageTray = GObject.registerClass({
 
         this._banner = new Calendar.NotificationMessage(this._notification);
         this._banner.can_focus = false;
+        this._banner._header.expandButton.visible = false;
         this._banner.add_style_class_name('notification-banner');
 
         this._bannerBin.add_child(this._banner);
