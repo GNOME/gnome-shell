@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 01:44+0000\n"
-"PO-Revision-Date: 2024-03-10 16:50+0100\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-03-19 16:35+0100\n"
 "Last-Translator: Fran Dieguez <fran.dieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -132,7 +132,7 @@ msgstr "Tomar unha captura dunha xanela"
 msgid "Record a screencast interactively"
 msgstr "Gravar un vídeo da pantalla de forma interactiva"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "Sistema"
 
@@ -688,16 +688,14 @@ msgid "Username"
 msgstr "Nome de usuario"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr "Deter o diálogo de sesión conflitiva pechado"
+msgid "Login Attempt Timed Out"
+msgstr "Esgotouse o tempo de espera do intento de inicio de sesión"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr ""
-"Tente iniciar sesión de novo para comezar unha sesión para o usuario %s."
+msgid "Login took too long, please try again"
+msgstr "O inicio de sesión tardou demasiado, ténteo de novo"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Xanela de inicio de sesión"
 
@@ -2731,7 +2729,7 @@ msgstr "Xestione as súas extensións de GNOME"
 msgid "The GNOME Project"
 msgstr "O Proxecto GNOME"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -2739,15 +2737,15 @@ msgstr ""
 "Extensións de GNOME xestiona a actualización de extensions, a súa "
 "configuración, eliminación e a desactivación das extensións que non quere."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Xanela principal"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Actualizacións dispoñíbeis"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Vista de buscar"
 
@@ -3396,13 +3394,13 @@ msgstr "Engadir un elemento ás preferencias rápidas"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Desactivado"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3411,16 +3409,24 @@ msgstr[1] "%u saídas"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrada"
 msgstr[1] "%u entradas"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Sons do sistema"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr "Deter o diálogo de sesión conflitiva pechado"
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr ""
+#~ "Tente iniciar sesión de novo para comezar unha sesión para o usuario %s."
 
 #, javascript-format
 #~ msgid "%s is now known as %s"
