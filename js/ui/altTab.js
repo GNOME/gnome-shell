@@ -1050,7 +1050,7 @@ class WindowIcon extends St.BoxLayout {
     _createAppIcon(app, size) {
         let appIcon = app
             ? app.create_icon_texture(size)
-            : new St.Icon({icon_name: 'icon-missing', icon_size: size});
+            : new St.Icon({icon_name: 'application-x-executable', icon_size: size});
         appIcon.x_expand = appIcon.y_expand = true;
         appIcon.x_align = appIcon.y_align = Clutter.ActorAlign.END;
 
