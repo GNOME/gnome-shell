@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-08 20:03+0000\n"
-"PO-Revision-Date: 2024-03-10 17:28+0100\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-03-19 12:02+0100\n"
 "Last-Translator: Milo Casagrande <milo@milo.name>\n"
 "Language-Team: Italian <gnome-it-list@gnome.org>\n"
 "Language: it\n"
@@ -125,7 +125,7 @@ msgstr "Cattura una schermata di una finestra"
 msgid "Record a screencast interactively"
 msgstr "Registra un breve video dello schermo"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "Sistema"
 
@@ -688,15 +688,14 @@ msgid "Username"
 msgstr "Nome utente"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr "Finestra terminazione sessione in conflitto chiusa."
+msgid "Login Attempt Timed Out"
+msgstr "Tentativo di accesso scaduto"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr "Provare ad accedere per iniziare una nuova sessione per l'utente %s."
+msgid "Login took too long, please try again"
+msgstr "L'accesso ha richiesto troppo tempo, provare nuovamente"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Finestra di accesso"
 
@@ -2741,15 +2740,15 @@ msgstr ""
 "preferenze delle estensioni e la rimozione o la disabilitazione di "
 "estensioni indesiderate."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:75
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Finestra principale"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:79
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Aggiornamenti disponibili"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:83
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Vista di ricerca"
 
@@ -3401,13 +3400,13 @@ msgstr "Aggiunge un elemento alle impostazioni rapide"
 # (ndt) o disabilitata?
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Disabilitato"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3416,16 +3415,24 @@ msgstr[1] "%u uscite"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u ingresso"
 msgstr[1] "%u ingressi"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Audio di sistema"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr "Finestra terminazione sessione in conflitto chiusa."
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr ""
+#~ "Provare ad accedere per iniziare una nuova sessione per l'utente %s."
 
 #, javascript-format
 #~ msgid "%s is now known as %s"
