@@ -204,7 +204,7 @@ class FdoNotificationDaemon {
             title: summary,
             body,
             gicon,
-            bannerMarkup: true,
+            useBodyMarkup: true,
             sound: new MessageTray.Sound(soundFile, hints['sound-name']),
             acknowledged: false,
         });
