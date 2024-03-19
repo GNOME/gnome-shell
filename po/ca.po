@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
 "POT-Creation-Date: 2024-03-16 16:54+0000\n"
-"PO-Revision-Date: 2024-03-18 22:55+0100\n"
+"PO-Revision-Date: 2024-03-19 22:55+0100\n"
 "Last-Translator: Quique Serrano <qserrano@outlook.com>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -620,7 +620,7 @@ msgid ""
 "stop it."
 msgstr ""
 "L'inici de sessió remot no és possible perquè ja hi ha una sessió remota en "
-"execució de %s. Per poder accedir remotament cal que abans es tanqui la "
+"execució de %s. Per a poder accedir remotament cal que abans es tanqui la "
 "sessió remota o se'n forci l'aturada."
 
 #. Translators: is running for <username>
@@ -631,7 +631,7 @@ msgid ""
 "login, you must log out from the remote session or force stop it."
 msgstr ""
 "L'inici de sessió no és possible perquè hi ha una sessió remota en execució "
-"de %s. Per poder iniciar sessió, cal que abans es tanqui la sessió remota o "
+"de %s. Per a poder iniciar sessió, cal que abans es tanqui la sessió remota o "
 "se'n forci l'aturada."
 
 #. Translators: is running for <username>
@@ -643,7 +643,7 @@ msgid ""
 "it."
 msgstr ""
 "L'inici de sessió remot no és possible perquè hi ha una sessió local en "
-"execució de %s. Per poder accedir remotament cal que abans es tanqui la "
+"execució de %s. Per a poder accedir remotament cal que abans es tanqui la "
 "sessió local o se'n forci l'aturada."
 
 #. Translators: is running for <username>
@@ -654,7 +654,7 @@ msgid ""
 "you must log out from the session or force stop it."
 msgstr ""
 "L'inici de sessió no és possible perquè ja hi ha una sessió en execució de "
-"%s. Per poder iniciar sessió cal que abans es tanqui la sessió o se'n forci "
+"%s. Per a poder iniciar sessió cal que abans es tanqui la sessió o se'n forci "
 "l'aturada."
 
 #: js/gdm/loginDialog.js:442
@@ -1160,7 +1160,7 @@ msgstr "Neteja-ho"
 #: js/ui/calendar.js:1001
 msgctxt "action"
 msgid "Clear all notifications"
-msgstr "Esborra totes les notificació"
+msgstr "Esborra totes les notificacions"
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
