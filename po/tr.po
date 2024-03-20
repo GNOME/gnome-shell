@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 18:25+0000\n"
-"PO-Revision-Date: 2024-03-03 08:00+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"POT-Creation-Date: 2024-03-19 20:50+0000\n"
+"PO-Revision-Date: 2024-03-21 01:17+0300\n"
+"Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -129,7 +129,7 @@ msgstr "Pencerenin ekran görüntüsünü al"
 msgid "Record a screencast interactively"
 msgstr "Etkileşimli olarak ekranı kaydet"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "Sistem"
 
@@ -652,8 +652,8 @@ msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss."
 msgstr ""
-"Durmaya zorlamak, çalışan tüm uygulamaları ve süreçleri durduracağından "
-"veri yitirilebilir."
+"Durmaya zorlamak, çalışan tüm uygulamaları ve süreçleri durduracağından veri "
+"yitirilebilir."
 
 #: js/gdm/loginDialog.js:474
 msgid "Force Stop"
@@ -676,15 +676,14 @@ msgid "Username"
 msgstr "Kullanıcı Adı"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr "Çakışan oturumu durdur iletişim kutusu kapatıldı"
+msgid "Login Attempt Timed Out"
+msgstr "Oturum Açma Denemesi Zaman Aşımına Uğradı"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr "%s kullanıcısıyla oturum başlatmak için yeniden oturum açmayı deneyin."
+msgid "Login took too long, please try again"
+msgstr "Oturum açma çok uzun sürdü, lütfen yeniden deneyin"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Oturum Açma Penceresi"
 
@@ -2690,7 +2689,7 @@ msgstr "GNOME Uzantılarını Yönet"
 msgid "The GNOME Project"
 msgstr "GNOME Projesi"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -2873,11 +2872,11 @@ msgstr "Yüklü Uzantı Yok"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:267
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
-"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a> adresine göz atın."
+"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a> adresine göz atın."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:278
 msgid ""
@@ -3354,13 +3353,13 @@ msgstr "Hızlı ayarlara öge ekle"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Devre dışı"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3368,15 +3367,22 @@ msgstr[0] "%u Çıktı"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Girdi"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr "Çakışan oturumu durdur iletişim kutusu kapatıldı"
+
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr ""
+#~ "%s kullanıcısıyla oturum başlatmak için yeniden oturum açmayı deneyin."
 
 #~ msgid "%s is now known as %s"
 #~ msgstr "%s, şimdi %s olarak biliniyor"
