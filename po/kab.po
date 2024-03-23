@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 01:44+0000\n"
-"PO-Revision-Date: 2024-03-15 13:03+0100\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-03-23 16:06+0100\n"
 "Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Kabyle <>\n"
 "Language: kab\n"
@@ -22,65 +22,56 @@ msgstr ""
 "X-DL-Module: gnome-shell\n"
 "X-DL-Branch: main\n"
 "X-DL-Domain: po\n"
-"X-DL-State: None\n"
+"X-DL-State: Translating\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
 msgstr "Imsinḍen"
 
 #: data/50-gnome-shell-launchers.xml:10
-#, fuzzy
 #| msgid "Activate favorite application 1"
 msgid "Activate pinned app 1"
-msgstr "Rmed asnas anurif 1"
+msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:14
-#, fuzzy
 #| msgid "Activate favorite application 2"
 msgid "Activate pinned app 2"
-msgstr "Rmed asnas anurif 2"
+msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:18
-#, fuzzy
 #| msgid "Activate favorite application 3"
 msgid "Activate pinned app 3"
-msgstr "Rmed asnas anurif 3"
+msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:22
-#, fuzzy
 #| msgid "Activate favorite application 4"
 msgid "Activate pinned app 4"
-msgstr "Rmed asnas anurif 4"
+msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:26
-#, fuzzy
 #| msgid "Activate favorite application 5"
 msgid "Activate pinned app 5"
-msgstr "Rmed asnas anurif 5"
+msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:30
-#, fuzzy
 #| msgid "Activate favorite application 6"
 msgid "Activate pinned app 6"
-msgstr "Rmed asnas anurif 6"
+msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:34
-#, fuzzy
 #| msgid "Activate favorite application 7"
 msgid "Activate pinned app 7"
-msgstr "Rmed asnas anurif 7"
+msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:38
-#, fuzzy
 #| msgid "Activate favorite application 8"
 msgid "Activate pinned app 8"
-msgstr "Rmed asnas anurif 8"
+msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:42
-#, fuzzy
 #| msgid "Activate favorite application 9"
 msgid "Activate pinned app 9"
-msgstr "Rmed asnas anurif 9"
+msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:46
 msgid "Open new window of pinned app 1"
@@ -120,7 +111,6 @@ msgstr ""
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
 #: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2276
-#| msgid "Screenshot taken"
 msgid "Screenshots"
 msgstr "Tuṭṭfiwin n wegdil"
 
@@ -144,7 +134,7 @@ msgstr ""
 msgid "Record a screencast interactively"
 msgstr ""
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "Anagraw"
 
@@ -153,10 +143,9 @@ msgid "Show the notification list"
 msgstr "Sken tabdart n telɣut"
 
 #: data/50-gnome-shell-system.xml:12
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Open the quick settings menu"
-msgstr "Ldi umuɣ n usnas"
+msgstr "Ldi umuɣ arurad iɣewwaṛen n usnas"
 
 #: data/50-gnome-shell-system.xml:15
 msgid "Focus the active notification"
@@ -164,10 +153,9 @@ msgstr "Asaḍas ɣef telɣut turmidt"
 
 #: data/50-gnome-shell-system.xml:18
 msgid "Show the overview"
-msgstr "Sken agzul"
+msgstr "Sken-d agzul"
 
 #: data/50-gnome-shell-system.xml:21
-#| msgid "Show all applications"
 msgid "Show all apps"
 msgstr "Sken-d akk isnasen"
 
@@ -225,7 +213,6 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:45
-#| msgid "No extensions installed"
 msgid "Allow extension installation"
 msgstr ""
 
@@ -387,89 +374,80 @@ msgstr "Senfel s asnas 1"
 
 #: data/org.gnome.shell.gschema.xml.in:219
 msgid "Switch to application 2"
-msgstr "Senfel s asnas 2"
+msgstr "Senfel s asnas wis 2"
 
 #: data/org.gnome.shell.gschema.xml.in:223
 msgid "Switch to application 3"
-msgstr "Senfel s asnas 3"
+msgstr "Senfel s asnas wis 3"
 
 #: data/org.gnome.shell.gschema.xml.in:227
 msgid "Switch to application 4"
-msgstr "Senfel s asnas 4"
+msgstr "Senfel s asnas wis 4"
 
 #: data/org.gnome.shell.gschema.xml.in:231
 msgid "Switch to application 5"
-msgstr "Senfel s asnas 5"
+msgstr "Senfel s asnas wis 5"
 
 #: data/org.gnome.shell.gschema.xml.in:235
 msgid "Switch to application 6"
-msgstr "Senfel s asnas 6"
+msgstr "Senfel s asnas wis 6"
 
 #: data/org.gnome.shell.gschema.xml.in:239
 msgid "Switch to application 7"
-msgstr "Senfel s asnas 7"
+msgstr "Senfel s asnas wis 7"
 
 #: data/org.gnome.shell.gschema.xml.in:243
 msgid "Switch to application 8"
-msgstr "Senfel s asnas 8"
+msgstr "Senfel s asnas wis 8"
 
 #: data/org.gnome.shell.gschema.xml.in:247
 msgid "Switch to application 9"
-msgstr "Senfel s asnas 9"
+msgstr "Senfel s asnas wis 9"
 
 #: data/org.gnome.shell.gschema.xml.in:251
-#, fuzzy
 #| msgid "Switch to application 1"
 msgid "Open a new instance of application 1"
-msgstr "Senfel s asnas 1"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:255
-#, fuzzy
 #| msgid "Switch to application 2"
 msgid "Open a new instance of application 2"
-msgstr "Senfel s asnas 2"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:259
-#, fuzzy
 #| msgid "Switch to application 3"
 msgid "Open a new instance of application 3"
-msgstr "Senfel s asnas 3"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:263
-#, fuzzy
 #| msgid "Switch to application 4"
 msgid "Open a new instance of application 4"
-msgstr "Senfel s asnas 4"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:267
-#, fuzzy
 #| msgid "Switch to application 5"
 msgid "Open a new instance of application 5"
-msgstr "Senfel s asnas 5"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:271
-#, fuzzy
 #| msgid "Switch to application 6"
 msgid "Open a new instance of application 6"
-msgstr "Senfel s asnas 6"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:275
-#, fuzzy
 #| msgid "Switch to application 7"
 msgid "Open a new instance of application 7"
-msgstr "Senfel s asnas 7"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:279
-#, fuzzy
 #| msgid "Switch to application 8"
 msgid "Open a new instance of application 8"
-msgstr "Senfel s asnas 8"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:283
-#, fuzzy
 #| msgid "Switch to application 9"
 msgid "Open a new instance of application 9"
-msgstr "Senfel s asnas 9"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:308
 #: data/org.gnome.shell.gschema.xml.in:335
@@ -573,7 +551,7 @@ msgstr "Sefsex"
 #: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:288
 #: js/ui/shellMountOperation.js:334
 msgid "Password"
-msgstr "Awal ufir"
+msgstr "Awal n uɛeddi"
 
 #: js/gdm/loginDialog.js:327
 msgid "Choose Session"
@@ -624,7 +602,6 @@ msgid ""
 msgstr ""
 
 #: js/gdm/loginDialog.js:474
-#| msgid "Force Quit"
 msgid "Force Stop"
 msgstr "Ḥettem Aḥebbus"
 
@@ -637,7 +614,7 @@ msgstr "Ur d-yettwabder ara?"
 #: js/gdm/loginDialog.js:1010
 #, javascript-format
 msgid "(e.g., user or %s)"
-msgstr "(amedya, asesdac neɣ %s)"
+msgstr "(amedya, aseqdac neɣ %s)"
 
 #: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
@@ -645,15 +622,14 @@ msgid "Username"
 msgstr "Isem n useqdac"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
+msgid "Login Attempt Timed Out"
 msgstr ""
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
+msgid "Login took too long, please try again"
 msgstr ""
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Asfaylu n usesteb"
 
@@ -682,7 +658,7 @@ msgstr "Asnusay"
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:94
 msgid "power off;poweroff;shutdown;halt;stop"
-msgstr ""
+msgstr "asnusay;sens;ḥbes;halt;stop"
 
 #. Translators: The name of the restart action in search
 #: js/misc/systemActions.js:99
@@ -693,7 +669,7 @@ msgstr "Ales tanekra"
 #. Translators: A list of keywords that match the restart action, separated by semicolons
 #: js/misc/systemActions.js:102
 msgid "reboot;restart;"
-msgstr ""
+msgstr "ales tanekra;reboot"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:107
@@ -715,7 +691,7 @@ msgstr "Ffeɣ"
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:118
 msgid "logout;log out;sign off"
-msgstr ""
+msgstr "ffeɣ;tuffɣa;senser"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:123
@@ -746,7 +722,6 @@ msgstr ""
 
 #. Translators: The name of the screenshot UI action in search
 #: js/misc/systemActions.js:146
-#| msgid "Screenshot taken"
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Tuṭṭfa n wegdil"
@@ -932,28 +907,27 @@ msgid "Unnamed Folder"
 msgstr "Akaram war isem"
 
 #: js/ui/appFavorites.js:166
-#, fuzzy, javascript-format
+#, javascript-format
 #| msgid "%s has been added to your favorites."
 msgid "%s has been pinned to the dash."
-msgstr "%s yettwarna s inuraf-inek m."
+msgstr ""
 
 #: js/ui/appFavorites.js:199
-#, fuzzy, javascript-format
+#, javascript-format
 #| msgid "%s has been removed from your favorites."
 msgid "%s has been unpinned from the dash."
-msgstr "%s yettwakkes s inuraf-inek m."
+msgstr ""
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:51
 msgid "Open Windows"
-msgstr "Ldi asfaylu"
+msgstr "Ldi isfuyla"
 
 #: js/ui/appMenu.js:59
 msgid "New Window"
 msgstr "Asfaylu amaynut"
 
 #: js/ui/appMenu.js:86
-#| msgid "Show Details"
 msgid "App Details"
 msgstr "Talqayt n wesnas"
 
@@ -1053,13 +1027,13 @@ msgstr "Amh"
 #: js/ui/calendar.js:75
 msgctxt "grid friday"
 msgid "F"
-msgstr "Sem"
+msgstr "Sm"
 
 #. Translators: Calendar grid abbreviation for Saturday
 #: js/ui/calendar.js:77
 msgctxt "grid saturday"
 msgid "S"
-msgstr "Sed"
+msgstr "Sd"
 
 #. *
 #. * Translators: The header displaying just the month name
@@ -1100,7 +1074,7 @@ msgstr "%d"
 
 #: js/ui/calendar.js:728
 msgid "Week %V"
-msgstr "Amalas %V"
+msgstr "Amalas wis %V"
 
 #: js/ui/calendar.js:920
 msgid "No Notifications"
@@ -1115,7 +1089,6 @@ msgid "Clear"
 msgstr "Sfeḍ"
 
 #: js/ui/calendar.js:1001
-#| msgid "No Notifications"
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Sfeḍ akk ilɣa"
@@ -1259,7 +1232,6 @@ msgid "Windows"
 msgstr "Isfuyla"
 
 #: js/ui/dash.js:206 js/ui/dash.js:252
-#| msgid "Show Applications"
 msgid "Show Apps"
 msgstr "Sken-d isnasen"
 
@@ -1446,15 +1418,11 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: js/ui/endSessionDialog.js:120 js/ui/endSessionDialog.js:141
-#| msgctxt "title"
-#| msgid "Restart & Install Updates"
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "Ales asekker sakin sbedd ileqman"
 
 #: js/ui/endSessionDialog.js:122
-#| msgctxt "title"
-#| msgid "Install Updates & Power Off"
 msgctxt "button"
 msgid "Install & Power Off"
 msgstr "Sbedd ileqman sakin sens-it"
@@ -1462,7 +1430,7 @@ msgstr "Sbedd ileqman sakin sens-it"
 #: js/ui/endSessionDialog.js:123
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
-msgstr ""
+msgstr "Sens-it mi ara ttwasbedden yileqman"
 
 #: js/ui/endSessionDialog.js:130
 msgctxt "title"
@@ -1601,7 +1569,6 @@ msgid "Leave Off"
 msgstr ""
 
 #: js/ui/keyboard.js:181 js/ui/status/keyboard.js:899
-#| msgid "Network Settings"
 msgid "Keyboard Settings"
 msgstr "Iɣewwaṛen n unasiw"
 
@@ -1624,7 +1591,6 @@ msgid "Show Errors"
 msgstr "Sken tuccḍiwin"
 
 #: js/ui/lookingGlass.js:804
-#| msgid "Activities"
 msgid "Active"
 msgstr ""
 
@@ -1645,12 +1611,10 @@ msgid "Downloading"
 msgstr "Asider"
 
 #: js/ui/lookingGlass.js:815
-#| msgid "Settings"
 msgid "Deactivating"
 msgstr ""
 
 #: js/ui/lookingGlass.js:817
-#| msgid "Activities"
 msgid "Activating"
 msgstr ""
 
@@ -1695,13 +1659,10 @@ msgstr "Asekkeṛ n wegdil yesra amsefrak n ubeqeḍ n GNOME."
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
 #: js/ui/messageList.js:400
-#| msgctxt "program"
-#| msgid "Unknown"
 msgid "Unknown App"
 msgstr "Asnas arusin"
 
 #: js/ui/messageTray.js:328 js/ui/messageTray.js:330
-#| msgid "No Notifications"
 msgid "Notification sound"
 msgstr "Imesli n tilɣa"
 
@@ -1791,7 +1752,6 @@ msgid "Top Bar"
 msgstr "Afeggag n ufella"
 
 #: js/ui/quickSettings.js:187
-#| msgid "Open %s"
 msgid "Open menu"
 msgstr "Ldi umuɣ"
 
@@ -1824,7 +1784,6 @@ msgid "Lock was blocked by an app"
 msgstr ""
 
 #: js/ui/screenshot.js:1254
-#| msgid "Select Network"
 msgid "Selection"
 msgstr "Afran"
 
@@ -1833,18 +1792,14 @@ msgid "Area Selection"
 msgstr ""
 
 #: js/ui/screenshot.js:1269
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
 msgid "Screen"
 msgstr "Agdil"
 
 #: js/ui/screenshot.js:1279
-#| msgid "Screen Reader"
 msgid "Screen Selection"
 msgstr "Tafrant n wegdil"
 
 #: js/ui/screenshot.js:1284
-#| msgid "Windows"
 msgid "Window"
 msgstr "Asfaylu"
 
@@ -1854,13 +1809,10 @@ msgstr ""
 
 #. Translators: entry in the window right click menu.
 #: js/ui/screenshot.js:1319 js/ui/status/system.js:113 js/ui/windowMenu.js:30
-#| msgid "Screenshot taken"
 msgid "Take Screenshot"
 msgstr "Ṭṭef-d agdil"
 
 #: js/ui/screenshot.js:1335
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
 msgid "Record Screen"
 msgstr "Kles agdil"
 
@@ -1871,7 +1823,6 @@ msgid "Capture"
 msgstr "Ṭṭef"
 
 #: js/ui/screenshot.js:1374
-#| msgid "Show Errors"
 msgid "Show Pointer"
 msgstr ""
 
@@ -1891,7 +1842,6 @@ msgstr ""
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2049
-#| msgid "Screen Keyboard"
 msgid "Screencast recorded"
 msgstr ""
 
@@ -1919,7 +1869,6 @@ msgstr ""
 
 #. Translators: notification source name.
 #: js/ui/screenshot.js:2087 js/ui/screenshot.js:2329
-#| msgid "Screenshot taken"
 msgid "Screenshot"
 msgstr "Tuṭṭfiwin n ugdil"
 
@@ -1931,7 +1880,6 @@ msgstr ""
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
 #: js/ui/screenshot.js:2102 js/ui/screenshot.js:2345
-#| msgid "Show Details"
 msgid "Show in Files"
 msgstr "Sken-it-id deg yifuyla"
 
@@ -1939,13 +1887,11 @@ msgstr "Sken-it-id deg yifuyla"
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
 #: js/ui/screenshot.js:2289
 #, javascript-format
-#| msgid "Screenshot taken"
 msgid "Screenshot from %s"
 msgstr ""
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2335
-#| msgid "Screenshot taken"
 msgid "Screenshot captured"
 msgstr ""
 
@@ -2086,7 +2032,6 @@ msgid "Mouse Keys"
 msgstr "Tiqfallin n umumed"
 
 #: js/ui/status/accessibility.js:85
-#| msgid "Accessibility"
 msgid "Accessibility Settings"
 msgstr ""
 
@@ -2108,7 +2053,6 @@ msgid "Apps known to be running without a window"
 msgstr ""
 
 #: js/ui/status/backgroundApps.js:182
-#| msgid "Settings"
 msgid "App Settings"
 msgstr "Iɣewwaṛen n wesnas"
 
@@ -2124,12 +2068,10 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: js/ui/status/backlight.js:40
-#| msgid "Brightness"
 msgid "Keyboard Brightness"
 msgstr "Tifawit n unasiw"
 
 #: js/ui/status/backlight.js:80
-#| msgid "%s Off"
 msgid "Off"
 msgstr "Yensa"
 
@@ -2146,7 +2088,6 @@ msgid "Keyboard"
 msgstr "Anasiw"
 
 #: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
-#| msgid "Connect"
 msgid "Disconnect"
 msgstr "Senser tuqqna"
 
@@ -2235,14 +2176,12 @@ msgstr "<d arussin>"
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/network.js:354
 #, javascript-format
-#| msgid "Connect"
 msgid "Disconnect %s"
 msgstr "Senser tuqqna %s"
 
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/network.js:356
 #, javascript-format
-#| msgid "Connect"
 msgid "Connect to %s"
 msgstr "Qqen ɣer %s"
 
@@ -2273,8 +2212,6 @@ msgstr ""
 
 #: js/ui/status/network.js:1426
 #, javascript-format
-#| msgid "%d Connected"
-#| msgid_plural "%d Connected"
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d yeqqen"
@@ -2293,13 +2230,10 @@ msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
 #: js/ui/status/network.js:1787
-#| msgid "No Networks"
 msgid "All Networks"
 msgstr "Akk izeḍwan"
 
 #: js/ui/status/network.js:1884
-#| msgid "%d Connected"
-#| msgid_plural "%d Connected"
 msgid "Wired Connections"
 msgstr ""
 
@@ -2308,13 +2242,11 @@ msgid "Wired Settings"
 msgstr ""
 
 #: js/ui/status/network.js:1899
-#| msgid "Bluetooth Settings"
 msgid "Bluetooth Tethers"
 msgstr ""
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1906
-#| msgid "Weather"
 msgid "Tether"
 msgstr ""
 
@@ -2359,8 +2291,6 @@ msgid "Power Saver"
 msgstr ""
 
 #: js/ui/status/powerProfiles.js:41 js/ui/status/powerProfiles.js:71
-#| msgctxt "search-result"
-#| msgid "Power Off"
 msgid "Power Mode"
 msgstr ""
 
@@ -2369,14 +2299,10 @@ msgid "Power Settings"
 msgstr "Iɣewwaren usečči"
 
 #: js/ui/status/remoteAccess.js:76
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
 msgid "Stop Screencast"
 msgstr ""
 
 #: js/ui/status/remoteAccess.js:146
-#| msgctxt "search-result"
-#| msgid "Lock Screen Rotation"
 msgid "Stop Screen Sharing"
 msgstr ""
 
@@ -2385,8 +2311,6 @@ msgid "Airplane Mode"
 msgstr ""
 
 #: js/ui/status/system.js:170
-#| msgctxt "search-result"
-#| msgid "Power Off"
 msgid "Power Off Menu"
 msgstr ""
 
@@ -2412,8 +2336,6 @@ msgid "Switch User…"
 msgstr "Senfel aseqdac…"
 
 #: js/ui/status/system.js:244
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
 msgctxt "action"
 msgid "Lock Screen"
 msgstr "Sekkeṛ agdil"
@@ -2463,14 +2385,10 @@ msgid "Volume"
 msgstr "Ableɣ"
 
 #: js/ui/status/volume.js:304
-#| msgid "%u Output"
-#| msgid_plural "%u Outputs"
 msgid "Sound Output"
 msgstr "Imesli n tuffɣa"
 
 #: js/ui/status/volume.js:376
-#| msgid "%u Input"
-#| msgid_plural "%u Inputs"
 msgid "Sound Input"
 msgstr "Imesli n unekcum"
 
@@ -2526,7 +2444,6 @@ msgstr ""
 
 #: js/ui/welcomeDialog.js:49
 #, javascript-format
-#| msgid "GNOME Shell"
 msgid "GNOME %s"
 msgstr "GNOME %s"
 
@@ -2695,7 +2612,6 @@ msgid "Icon '%s' not present in theme %s"
 msgstr ""
 
 #: src/st/st-icon-theme.c:3454 src/st/st-icon-theme.c:3757
-#| msgid "Unable to lock"
 msgid "Failed to load icon"
 msgstr ""
 
@@ -2708,23 +2624,21 @@ msgstr ""
 msgid "The GNOME Project"
 msgstr "Asenfaṛ n GNOME"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
 msgstr ""
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
-#| msgid "Login Window"
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr ""
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr ""
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
-#| msgid "Search"
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr ""
 
@@ -2755,13 +2669,11 @@ msgstr ""
 
 #. translators: Details for an extension error
 #: subprojects/extensions-app/js/extensionManager.js:248
-#| msgid "Show Details"
 msgid "Error details:"
 msgstr "Talqayt n tuccḍa:"
 
 #: subprojects/extensions-app/js/extensionRow.js:82
 #, javascript-format
-#| msgid "Version"
 msgid "Version %s"
 msgstr "Lqem %s"
 
@@ -2777,12 +2689,10 @@ msgid ""
 msgstr ""
 
 #: subprojects/extensions-app/js/extensionsWindow.js:117
-#| msgid "Cancel"
 msgid "_Cancel"
 msgstr "Sefsex (_C)"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:118
-#| msgid "Remove"
 msgid "_Remove"
 msgstr "Kkes (_R)"
 
@@ -2802,7 +2712,6 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:21
-#| msgid "Show Details"
 msgid "Error Details"
 msgstr ""
 
@@ -2816,27 +2725,22 @@ msgid ""
 msgstr ""
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:107
-#| msgid "Extensions"
 msgid "Extension Details"
 msgstr "Talqayt n isiɣzaf"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:193
-#| msgid "Website"
 msgid "_Website"
 msgstr "Asmel _Web"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:220
-#| msgid "Settings"
 msgid "_Settings"
 msgstr "Iɣewwaṛen (_S)"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:247
-#| msgid "Remove"
 msgid "_Remove…"
 msgstr "Kkes (_R)"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:6
-#| msgid "Show Keyboard Layout"
 msgid "Keyboard Shortcuts"
 msgstr "Inegzumen n unasiw"
 
@@ -2849,17 +2753,14 @@ msgid "Main Menu"
 msgstr "Umuɣ agejdan"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:106
-#| msgid "Create extension"
 msgid "Search extensions"
 msgstr "Nadi ɣef isiɣzaf"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
-#| msgid "Extensions"
 msgid "_Extensions"
 msgstr "Isiɣzaf (_E)"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:143
-#| msgid "System Information"
 msgid "More Information"
 msgstr "Ugar n yisallen"
 
@@ -2870,28 +2771,24 @@ msgid ""
 msgstr ""
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:180
-#| msgid "Extensions"
 msgid "User Extensions"
-msgstr ""
+msgstr "Iseɣzaf n useqdac"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:200
-#| msgid "List extensions"
 msgid "System Extensions"
-msgstr ""
+msgstr "Iseɣzaf n unagraw"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:235
-#| msgid "Search"
 msgid "Search Results"
 msgstr "Igmaḍ n unadi"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:254
-#| msgid "No results."
 msgid "No Results Found"
 msgstr "Ulac igmad yettwafen"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:255
 msgid "Try a different search."
-msgstr ""
+msgstr "Ɛreḍ anadi-nniḍen."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:266
 msgid "No Installed Extensions"
@@ -2915,25 +2812,21 @@ msgid "General"
 msgstr "Amatu"
 
 #: subprojects/extensions-app/data/ui/help-overlay.ui:12
-#| msgid "Open %s"
 msgctxt "shortcut window"
 msgid "Open Menu"
 msgstr "Ldi umuɣ"
 
 #: subprojects/extensions-app/data/ui/help-overlay.ui:18
-#| msgid "Search"
 msgctxt "shortcut window"
 msgid "Toggle Search"
 msgstr ""
 
 #: subprojects/extensions-app/data/ui/help-overlay.ui:24
-#| msgid "Show Errors"
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
 msgstr "Sken-d inegzumen"
 
 #: subprojects/extensions-app/data/ui/help-overlay.ui:30
-#| msgid "Quit"
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Ffeɣ"
@@ -3135,12 +3028,10 @@ msgid "Show disabled extensions"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:152
-#| msgid "No extensions installed"
 msgid "Show extensions in active state"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:155
-#| msgid "No extensions installed"
 msgid "Show extensions in inactive state"
 msgstr ""
 
@@ -3267,7 +3158,6 @@ msgid "Yes"
 msgstr "Ih"
 
 #: subprojects/extensions-tool/src/main.c:268
-#| msgid "None"
 msgid "No"
 msgstr "Uhu"
 
@@ -3368,7 +3258,6 @@ msgid "Add an icon to the top bar"
 msgstr "Rnu tignit di tama n ufella n ufeggag"
 
 #: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
-#| msgid "Privacy Settings"
 msgid "Quick Settings Item"
 msgstr ""
 
@@ -3378,13 +3267,13 @@ msgstr ""
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Yensa"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3393,14 +3282,14 @@ msgstr[1] "%u n tuffɣiwin"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u n unekcum"
 msgstr[1] "%u n yinekcumen"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Imeslan n unagraw"
 
