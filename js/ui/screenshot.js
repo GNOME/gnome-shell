@@ -2106,7 +2106,7 @@ export const ScreenshotUI = GObject.registerClass({
         }
 
         // Translators: notification title.
-        this._showNotification(_('Screencast recorded'));
+        this._showNotification(_('Screencast Recorded'));
     }
 
     _screencastFailed(phase, error) {
@@ -2119,22 +2119,22 @@ export const ScreenshotUI = GObject.registerClass({
             delete this._screencastPath;
 
             // Translators: notification title.
-            this._showNotification(_('Screencast failed to start'));
+            this._showNotification(_('Screencast Failed to Start'));
             break;
 
         case ScreencastPhase.RECORDING:
             if (error.matches(ScreencastErrors, ScreencastError.OUT_OF_DISK_SPACE)) {
                 // Translators: notification title.
-                this._showNotification(_('Screencast ended: Out of disk space'));
+                this._showNotification(_('Screencast Failed: Out of Disk Space'));
             } else if (error.matches(ScreencastErrors, ScreencastError.SERVICE_CRASH)) {
                 // We can encourage user to try again on service crashes since the
                 // recorder will auto-blocklist the pipeline that crashed.
 
                 // Translators: notification title.
-                this._showNotification(_('Screencast ended unexpectedly, please try again'));
+                this._showNotification(_('Screencast Failed, Please Try Again'));
             } else {
                 // Translators: notification title.
-                this._showNotification(_('Screencast ended unexpectedly'));
+                this._showNotification(_('Screencast Failed'));
             }
 
             break;
@@ -2388,7 +2388,7 @@ function _storeScreenshot(bytes, pixbuf) {
     const notification = new MessageTray.Notification({
         source,
         // Translators: notification title.
-        title: _('Screenshot captured'),
+        title: _('Screenshot Captured'),
         // Translators: notification body when a screenshot was captured.
         body: _('You can paste the image from the clipboard'),
         datetime: time,
