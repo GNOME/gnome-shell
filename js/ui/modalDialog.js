@@ -191,12 +191,12 @@ export const ModalDialog = GObject.registerClass({
             this.destroy();
     }
 
-    close(timestamp) {
+    close() {
         if (this.state === State.CLOSED || this.state === State.CLOSING)
             return;
 
         this._setState(State.CLOSING);
-        this.popModal(timestamp);
+        this.popModal();
         this._savedKeyFocus = null;
 
         if (this._shouldFadeOut) {
