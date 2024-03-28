@@ -410,7 +410,7 @@ class WorldClocksSection extends St.Button {
 
         let layout = this._grid.layout_manager;
         const title = this._locations.length === 0
-            ? _('Add world clocks…')
+            ? _('Add World Clocks…')
             : _('World Clocks');
         const header = new St.Label({
             style_class: 'world-clocks-header',
@@ -711,9 +711,9 @@ class WeatherSection extends St.Button {
         }
 
         if (info.network_error())
-            this._setStatusLabel(_('Go online for weather information'));
+            this._setStatusLabel(_('Go Online for Weather Information'));
         else
-            this._setStatusLabel(_('Weather information is currently unavailable'));
+            this._setStatusLabel(_('Weather Information Unavailable'));
     }
 
     _sync() {
@@ -725,7 +725,7 @@ class WeatherSection extends St.Button {
         if (this._weatherClient.hasLocation)
             this._titleLabel.text = _('Weather');
         else
-            this._titleLabel.text = _('Select weather location…');
+            this._titleLabel.text = _('Select Weather Location…');
 
         if (this._weatherClient.hasLocation)
             this._titleLabel.remove_style_class_name('no-location');
