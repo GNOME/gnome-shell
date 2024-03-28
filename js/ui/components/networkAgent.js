@@ -145,14 +145,14 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
 
         if (valid) {
             this._agent.respond(this._requestId, Shell.NetworkAgentResponse.CONFIRMED);
-            this.close(global.get_current_time());
+            this.close();
         }
         // do nothing if not valid
     }
 
     cancel() {
         this._agent.respond(this._requestId, Shell.NetworkAgentResponse.USER_CANCELED);
-        this.close(global.get_current_time());
+        this.close();
     }
 
     _validateWpaPsk(secret) {
@@ -495,7 +495,7 @@ class VPNRequestHandler extends Signals.EventEmitter {
             this._agent.respond(this._requestId, Shell.NetworkAgentResponse.USER_CANCELED);
 
         if (this._newStylePlugin && this._shellDialog) {
-            this._shellDialog.close(global.get_current_time());
+            this._shellDialog.close();
             this._shellDialog.destroy();
         } else {
             try {
@@ -823,7 +823,7 @@ class NetworkAgent {
 
     _cancelRequest(agent, requestId) {
         if (this._dialogs[requestId]) {
-            this._dialogs[requestId].close(global.get_current_time());
+            this._dialogs[requestId].close();
             this._dialogs[requestId].destroy();
             delete this._dialogs[requestId];
         } else if (this._vpnRequests[requestId]) {
