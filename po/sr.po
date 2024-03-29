@@ -3,95 +3,132 @@
 # Copyright © 2010 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 # Translators:
-# Милош Поповић <gpopac@gmail.com>, 2010—2011.
 # Борисав Живановић <borisavzivanovic@gmail.com>, 2017—2018.
 # Марко М. Костић <marko.m.kostic@gmail.com>, 2016-2020.
 # Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011–2023.
+# Branko Grubic <bitlord0xff@gmail.com>, 2024.
+# Милош Поповић <gpopac@gmail.com>, 2010—20-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2023-10-19 08:01+0000\n"
-"PO-Revision-Date: 2023-10-24 06:04+0200\n"
-"Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
-"Language-Team: Serbian <gnome-sr@googlegroups.org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
+"POT-Creation-Date: 2024-03-21 23:37+0000\n"
+"PO-Revision-Date: 2024-03-29 14:34+0100\n"
+"Last-Translator: Милош Поповић <gpopac@gmail.com>\n"
+"Language-Team: Serbian <Serbian <gnome-sr@googlegroups.com>>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
-"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-Bookmarks: -1,167,-1,-1,-1,-1,-1,-1,-1,-1\n"
-"X-Generator: Poedit 3.4\n"
+"X-Generator: Gtranslator 45.3\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
 msgstr "Покретачи"
 
 #: data/50-gnome-shell-launchers.xml:10
-msgid "Activate favorite app 1"
+msgid "Activate pinned app 1"
 msgstr "Покрени омиљени програм 1"
 
 #: data/50-gnome-shell-launchers.xml:14
-msgid "Activate favorite app 2"
+msgid "Activate pinned app 2"
 msgstr "Покрени омиљени програм 2"
 
 #: data/50-gnome-shell-launchers.xml:18
-msgid "Activate favorite app 3"
+msgid "Activate pinned app 3"
 msgstr "Покрени омиљени програм 3"
 
 #: data/50-gnome-shell-launchers.xml:22
-msgid "Activate favorite app 4"
+msgid "Activate pinned app 4"
 msgstr "Покрени омиљени програм 4"
 
 #: data/50-gnome-shell-launchers.xml:26
-msgid "Activate favorite app 5"
+msgid "Activate pinned app 5"
 msgstr "Покрени омиљени програм 5"
 
 #: data/50-gnome-shell-launchers.xml:30
-msgid "Activate favorite app 6"
+msgid "Activate pinned app 6"
 msgstr "Покрени омиљени програм 6"
 
 #: data/50-gnome-shell-launchers.xml:34
-msgid "Activate favorite app 7"
+msgid "Activate pinned app 7"
 msgstr "Покрени омиљени програм 7"
 
 #: data/50-gnome-shell-launchers.xml:38
-msgid "Activate favorite app 8"
+msgid "Activate pinned app 8"
 msgstr "Покрени омиљени програм 8"
 
 #: data/50-gnome-shell-launchers.xml:42
-msgid "Activate favorite app 9"
+msgid "Activate pinned app 9"
 msgstr "Покрени омиљени програм 9"
 
+#: data/50-gnome-shell-launchers.xml:46
+msgid "Open new window of pinned app 1"
+msgstr "Отвори нови прозор омиљеног програма 1"
+
+#: data/50-gnome-shell-launchers.xml:50
+msgid "Open new window of pinned app 2"
+msgstr "Отвори нови прозор омиљеног програма 2"
+
+#: data/50-gnome-shell-launchers.xml:54
+msgid "Open new window of pinned app 3"
+msgstr "Отвори нови прозор омиљеног програма 3"
+
+#: data/50-gnome-shell-launchers.xml:58
+msgid "Open new window of pinned app 4"
+msgstr "Отвори нови прозор омиљеног програма 4"
+
+#: data/50-gnome-shell-launchers.xml:62
+msgid "Open new window of pinned app 5"
+msgstr "Отвори нови прозор омиљеног програма 5"
+
+#: data/50-gnome-shell-launchers.xml:66
+msgid "Open new window of pinned app 6"
+msgstr "Отвори нови прозор омиљеног програма 6"
+
+#: data/50-gnome-shell-launchers.xml:70
+msgid "Open new window of pinned app 7"
+msgstr "Отвори нови прозор омиљеног програма 8"
+
+#: data/50-gnome-shell-launchers.xml:74
+msgid "Open new window of pinned app 8"
+msgstr "Отвори нови прозор омиљеног програма 8"
+
+#: data/50-gnome-shell-launchers.xml:78
+msgid "Open new window of pinned app 9"
+msgstr "Отвори нови прозор омиљеног програма 9"
+
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2148
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2276
 msgid "Screenshots"
 msgstr "Снимци екрана"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:238
+#: data/org.gnome.shell.gschema.xml.in:287
 msgid "Take a screenshot interactively"
 msgstr "Направите интерактивни снимак екрана"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:250
+#: data/org.gnome.shell.gschema.xml.in:299
 msgid "Take a screenshot"
 msgstr "Направи снимак екрана"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:246
+#: data/org.gnome.shell.gschema.xml.in:295
 msgid "Take a screenshot of a window"
 msgstr "Направи снимак прозора"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:242
+#: data/org.gnome.shell.gschema.xml.in:291
 msgid "Record a screencast interactively"
 msgstr "Интерактивно сними видео екрана"
 
-#: data/50-gnome-shell-system.xml:6
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "Систем"
 
@@ -182,10 +219,28 @@ msgstr ""
 "„enabled-extension“."
 
 #: data/org.gnome.shell.gschema.xml.in:45
+msgid "Allow extension installation"
+msgstr "Дозволи инсталирање проширења"
+
+#: data/org.gnome.shell.gschema.xml.in:46
+msgid ""
+"Allow users to install extensions in their home folder. If disabled, the "
+"InstallRemoteExtension D-Bus method will fail, and extensions are only "
+"loaded from system directories on startup. It does not affect extensions "
+"that are already loaded, so a change only takes full effect on the next "
+"login."
+msgstr ""
+"Омогућава корисницима да инсталирају проширења у њихову личну фасциклу. Ако је "
+"искључено, InstallRemoteExtension Д-Бас метода неће успети и проширења ће "
+"бити учитана само из системске датотеке при покретању. Не утиче на проширења "
+"која су већ учитана, тако да ће промена бити примењена након следећег "
+"пријављивања."
+
+#: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
 msgstr "Искључује потврђивање сагласности издања проширења"
 
-#: data/org.gnome.shell.gschema.xml.in:46
+#: data/org.gnome.shell.gschema.xml.in:57
 msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
@@ -195,11 +250,11 @@ msgstr ""
 "покренуто издање. Укључивање ове опције ће искључити ову проверу и покушати "
 "да учита проширења без обзира на издања која тврде да подржавају."
 
-#: data/org.gnome.shell.gschema.xml.in:54
+#: data/org.gnome.shell.gschema.xml.in:65
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Списак ИБ датотека радне површине са омиљеним програмима"
 
-#: data/org.gnome.shell.gschema.xml.in:55
+#: data/org.gnome.shell.gschema.xml.in:66
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -207,35 +262,37 @@ msgstr ""
 "Програми који одговарају овим одредницама се приказују унутар области "
 "омиљених програмима."
 
-#: data/org.gnome.shell.gschema.xml.in:62
+#: data/org.gnome.shell.gschema.xml.in:73
 msgid "History for command (Alt-F2) dialog"
 msgstr "Историјат прозорчета (Alt-F2) наредби"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
-#: data/org.gnome.shell.gschema.xml.in:67
+#. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
+#: data/org.gnome.shell.gschema.xml.in:78
 msgid "History for the looking glass dialog"
 msgstr "Историјат прозорчета огледала"
 
-#: data/org.gnome.shell.gschema.xml.in:71
-msgid "Always show the “Log out” menu item in the user menu."
-msgstr "Увек приказује ставку изборника „Одјави ме“ у изборнику корисника."
+#: data/org.gnome.shell.gschema.xml.in:82
+msgid "Always show the “Log Out” action in the system menu"
+msgstr "Увек приказује ставку изборника „Одјави ме“ у системском изборнику."
 
-#: data/org.gnome.shell.gschema.xml.in:72
+#: data/org.gnome.shell.gschema.xml.in:83
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in single-"
-"user, single-session situations."
+"This key overrides the automatic hiding of the “Log out” action in the "
+"system menu for logged-in situations where there is a single, local, non-"
+"system user and only a single available session type (e.g. GNOME on Wayland)."
 msgstr ""
 "Овај кључ превазилази самостално скривање ставке изборника „Одјави ме“ у "
-"случају једног корисника, једне сесије."
+"случају једног локалног корисника, не системског корисника и само једине "
+"доступне врсте сесије (нпр. Гном на Вејланду)."
 
-#: data/org.gnome.shell.gschema.xml.in:79
+#: data/org.gnome.shell.gschema.xml.in:92
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Да ли ће бити запамћена лозинка за качење шифрованих или удаљених система "
 "датотека"
 
-#: data/org.gnome.shell.gschema.xml.in:80
+#: data/org.gnome.shell.gschema.xml.in:93
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -247,11 +304,11 @@ msgstr ""
 "присутно поље за избор „Запамти лозинку“. Овај кључ подешава основно стање "
 "поља за избор."
 
-#: data/org.gnome.shell.gschema.xml.in:89
+#: data/org.gnome.shell.gschema.xml.in:102
 msgid "The last selected non-default power profile"
 msgstr "Последње изабрани неподразумевани профил напајања"
 
-#: data/org.gnome.shell.gschema.xml.in:90
+#: data/org.gnome.shell.gschema.xml.in:103
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
 "toggling between two profiles, this key records the last selected non-"
@@ -261,11 +318,11 @@ msgstr ""
 "промену између два профила, овај кључ чува последње изабрани неподразумевани "
 "профил."
 
-#: data/org.gnome.shell.gschema.xml.in:98
+#: data/org.gnome.shell.gschema.xml.in:111
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr "Последње издање прозорчета „Добро дошли у Гном“ које је приказано"
 
-#: data/org.gnome.shell.gschema.xml.in:99
+#: data/org.gnome.shell.gschema.xml.in:112
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -277,11 +334,11 @@ msgstr ""
 "представља издања која још не постоје. Овај велики број се може искористити "
 "за ефективно онемогућавање прозорчета."
 
-#: data/org.gnome.shell.gschema.xml.in:132
+#: data/org.gnome.shell.gschema.xml.in:145
 msgid "Layout of the app picker"
 msgstr "Распоред бирача програма"
 
-#: data/org.gnome.shell.gschema.xml.in:133
+#: data/org.gnome.shell.gschema.xml.in:146
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -293,106 +350,142 @@ msgstr ""
 "“application id” → 'data'. Тренутно, следеће вредности се чувају као 'data': "
 "• “position”: положај иконице програма на страници"
 
-#: data/org.gnome.shell.gschema.xml.in:152
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:165
+#: data/org.gnome.shell.gschema.xml.in:172
 msgid "Keybinding to shift between overview states"
 msgstr "Пречица на тастатури за промену између стања прегледа"
 
-#: data/org.gnome.shell.gschema.xml.in:153
+#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Пречица на тастатури за промену између сесије, бирача прозора и мреже "
 "програма"
 
-#: data/org.gnome.shell.gschema.xml.in:160
+#: data/org.gnome.shell.gschema.xml.in:173
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "Пречица на тастатури за промену између мреже програма, бирача прозора и "
 "сесије"
 
-#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:179
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Пречица за отварање прегледа „Прикажи програме“"
 
-#: data/org.gnome.shell.gschema.xml.in:167
+#: data/org.gnome.shell.gschema.xml.in:180
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr "Пречица за отварање прегледа „Прикажи програме“ у прегледу активности."
 
-#: data/org.gnome.shell.gschema.xml.in:174
+#: data/org.gnome.shell.gschema.xml.in:187
 msgid "Keybinding to open the overview"
 msgstr "Пречица за отварање прегледа"
 
-#: data/org.gnome.shell.gschema.xml.in:175
+#: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to open the Activities Overview."
 msgstr "Пречица за отварање прегледа активности."
 
-#: data/org.gnome.shell.gschema.xml.in:181
+#: data/org.gnome.shell.gschema.xml.in:194
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Пречица за окидање видљивости списка обавештења"
 
-#: data/org.gnome.shell.gschema.xml.in:182
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Пречица за окидање видљивости списка обавештења."
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:201
 msgid "Keybinding to toggle the quick settings menu"
 msgstr "Пречица за промену стања приказа менија брзих подешавања"
 
-#: data/org.gnome.shell.gschema.xml.in:189
+#: data/org.gnome.shell.gschema.xml.in:202
 msgid "Keybinding to toggle the quick settings menu."
 msgstr "Пречица за промену стања приказа менија брзих подешавања."
 
-#: data/org.gnome.shell.gschema.xml.in:195
+#: data/org.gnome.shell.gschema.xml.in:208
 msgid "Keybinding to focus the active notification"
 msgstr "Пречица за постављање у жижу радног обавештења"
 
-#: data/org.gnome.shell.gschema.xml.in:196
+#: data/org.gnome.shell.gschema.xml.in:209
 msgid "Keybinding to focus the active notification."
 msgstr "Пречица за постављање у жижу радног обавештења."
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid "Switch to application 1"
 msgstr "Пребаци се на програм 1"
 
-#: data/org.gnome.shell.gschema.xml.in:206
+#: data/org.gnome.shell.gschema.xml.in:219
 msgid "Switch to application 2"
 msgstr "Пребаци се на програм 2"
 
-#: data/org.gnome.shell.gschema.xml.in:210
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Switch to application 3"
 msgstr "Пребаци се на програм 3"
 
-#: data/org.gnome.shell.gschema.xml.in:214
+#: data/org.gnome.shell.gschema.xml.in:227
 msgid "Switch to application 4"
 msgstr "Пребаци се на програм 4"
 
-#: data/org.gnome.shell.gschema.xml.in:218
+#: data/org.gnome.shell.gschema.xml.in:231
 msgid "Switch to application 5"
 msgstr "Пребаци се на програм 5"
 
-#: data/org.gnome.shell.gschema.xml.in:222
+#: data/org.gnome.shell.gschema.xml.in:235
 msgid "Switch to application 6"
 msgstr "Пребаци се на програм 6"
 
-#: data/org.gnome.shell.gschema.xml.in:226
+#: data/org.gnome.shell.gschema.xml.in:239
 msgid "Switch to application 7"
 msgstr "Пребаци се на програм 7"
 
-#: data/org.gnome.shell.gschema.xml.in:230
+#: data/org.gnome.shell.gschema.xml.in:243
 msgid "Switch to application 8"
 msgstr "Пребаци се на програм 8"
 
-#: data/org.gnome.shell.gschema.xml.in:234
+#: data/org.gnome.shell.gschema.xml.in:247
 msgid "Switch to application 9"
 msgstr "Пребаци се на програм 9"
 
+#: data/org.gnome.shell.gschema.xml.in:251
+msgid "Open a new instance of application 1"
+msgstr "Отвори нови примерак програма 1"
+
+#: data/org.gnome.shell.gschema.xml.in:255
+msgid "Open a new instance of application 2"
+msgstr "Отвори нови примерак програма 2"
+
 #: data/org.gnome.shell.gschema.xml.in:259
-#: data/org.gnome.shell.gschema.xml.in:286
+msgid "Open a new instance of application 3"
+msgstr "Отвори нови примерак програма 3"
+
+#: data/org.gnome.shell.gschema.xml.in:263
+msgid "Open a new instance of application 4"
+msgstr "Отвори нови примерак програма 4"
+
+#: data/org.gnome.shell.gschema.xml.in:267
+msgid "Open a new instance of application 5"
+msgstr "Отвори нови примерак програма 5"
+
+#: data/org.gnome.shell.gschema.xml.in:271
+msgid "Open a new instance of application 6"
+msgstr "Отвори нови примерак програма 6"
+
+#: data/org.gnome.shell.gschema.xml.in:275
+msgid "Open a new instance of application 7"
+msgstr "Отвори нови примерак програма 7"
+
+#: data/org.gnome.shell.gschema.xml.in:279
+msgid "Open a new instance of application 8"
+msgstr "Отвори нови примерак програма 8"
+
+#: data/org.gnome.shell.gschema.xml.in:283
+msgid "Open a new instance of application 9"
+msgstr "Отвори нови примерак програма 9"
+
+#: data/org.gnome.shell.gschema.xml.in:308
+#: data/org.gnome.shell.gschema.xml.in:335
 msgid "Limit switcher to current workspace."
 msgstr "Ограничава пребацивача на текући радни простор."
 
-#: data/org.gnome.shell.gschema.xml.in:260
+#: data/org.gnome.shell.gschema.xml.in:309
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -400,11 +493,11 @@ msgstr ""
 "Ако је изабрано, само програми који имају прозоре на текућем радном простору "
 "се приказују у пребацивачу. У супротном, сви програми су укључени."
 
-#: data/org.gnome.shell.gschema.xml.in:277
+#: data/org.gnome.shell.gschema.xml.in:326
 msgid "The application icon mode."
 msgstr "Режим иконице програма."
 
-#: data/org.gnome.shell.gschema.xml.in:278
+#: data/org.gnome.shell.gschema.xml.in:327
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -414,7 +507,7 @@ msgstr ""
 "„thumbnail-only“ (приказује сличицу прозора), „app-icon-only“ (приказује "
 "само иконицу програма) или „both“ (оба)."
 
-#: data/org.gnome.shell.gschema.xml.in:287
+#: data/org.gnome.shell.gschema.xml.in:336
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -422,27 +515,27 @@ msgstr ""
 "Ако је изабрано, само прозори са текућег радног простора се приказују у "
 "пребацивачу. У супротном, сви прозори су укључени."
 
-#: data/org.gnome.shell.gschema.xml.in:297
+#: data/org.gnome.shell.gschema.xml.in:346
 msgid "Locations"
 msgstr "Локације"
 
-#: data/org.gnome.shell.gschema.xml.in:298
+#: data/org.gnome.shell.gschema.xml.in:347
 msgid "The locations to show in world clocks"
 msgstr "Места која треба приказивати у светским сатовима"
 
-#: data/org.gnome.shell.gschema.xml.in:308
+#: data/org.gnome.shell.gschema.xml.in:357
 msgid "Automatic location"
 msgstr "Аутоматска локација"
 
-#: data/org.gnome.shell.gschema.xml.in:309
+#: data/org.gnome.shell.gschema.xml.in:358
 msgid "Whether to fetch the current location or not"
 msgstr "Да ли треба добавити тренутну локацију"
 
-#: data/org.gnome.shell.gschema.xml.in:316
+#: data/org.gnome.shell.gschema.xml.in:365
 msgid "Location"
 msgstr "Локација"
 
-#: data/org.gnome.shell.gschema.xml.in:317
+#: data/org.gnome.shell.gschema.xml.in:366
 msgid "The location for which to show a forecast"
 msgstr "Место за које треба приказати временску прогнозу"
 
@@ -450,9 +543,7 @@ msgstr "Место за које треба приказати временск�
 #: data/org.gnome.Shell.Extensions.desktop.in.in:5
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:218
-#: subprojects/extensions-app/data/ui/extensions-window.ui:18
-#: subprojects/extensions-app/data/ui/extensions-window.ui:82
+#: subprojects/extensions-app/data/ui/extensions-window.ui:57
 msgid "Extensions"
 msgstr "Проширења"
 
@@ -461,7 +552,7 @@ msgid "Network Login"
 msgstr "Мрежна пријава"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:143
+#: subprojects/extensions-app/data/ui/extensions-window.ui:277
 msgid "Something’s gone wrong"
 msgstr "Нешто је пошло наопако"
 
@@ -486,59 +577,127 @@ msgstr "Матична страна"
 msgid "Visit extension homepage"
 msgstr "Посети матичну страну проширењ"
 
-#: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
-#: js/ui/components/networkAgent.js:115 js/ui/components/polkitAgent.js:146
-#: js/ui/endSessionDialog.js:443 js/ui/extensionDownloader.js:256
-#: js/ui/shellMountOperation.js:387 js/ui/shellMountOperation.js:397
-#: subprojects/extensions-app/js/main.js:179
+#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
+#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
+#: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:384
+#: js/ui/shellMountOperation.js:394
 msgid "Cancel"
 msgstr "Откажи"
 
-#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:215
-#: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
-#: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
-#: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
-#: js/ui/shellMountOperation.js:337
+#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:214
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:288
+#: js/ui/shellMountOperation.js:334
 msgid "Password"
 msgstr "Лозинка"
 
-#: js/gdm/loginDialog.js:326
+#: js/gdm/loginDialog.js:327
 msgid "Choose Session"
 msgstr "Изабери сесију"
 
-#: js/gdm/loginDialog.js:471
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:424
+#, javascript-format
+msgid ""
+"Remote login is not possible because a remote session is already running for "
+"%s. To login remotely, you must log out from the remote session or force "
+"stop it."
+msgstr ""
+"Удаљена пријава није могућа пошто се удаљена сесија већ извршава за %s. За "
+"удаљену пријаву, морате се одјавити са постојеће сесије или је присилно "
+"зауставити."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:427
+#, javascript-format
+msgid ""
+"Login is not possible because a remote session is already running for %s. To "
+"login, you must log out from the remote session or force stop it."
+msgstr ""
+"Пријава није могућа пошто се удаљена сесија већ извршава за %s. За пријаву, "
+"морате се одјавити са постојеће сесије или је присилно зауставити."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:430
+#, javascript-format
+msgid ""
+"Remote login is not possible because a local session is already running for "
+"%s. To login remotely, you must log out from the local session or force stop "
+"it."
+msgstr ""
+"Удаљена пријава није могућа пошто се локална сесија већ извршава за %s. За "
+"удаљену пријаву, морате се одјавити са локалне сесије или је присилно "
+"зауставити."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:433
+#, javascript-format
+msgid ""
+"Login is not possible because a session is already running for %s. To login, "
+"you must log out from the session or force stop it."
+msgstr ""
+"Пријава није могућа пошто се сесија већ извршава за %s. За пријаву, морате "
+"се одјавити са постојеће сесије или је присилно зауставити."
+
+#: js/gdm/loginDialog.js:442
+msgid "Session Already Running"
+msgstr "Сесија се већ извршава"
+
+#: js/gdm/loginDialog.js:454
+msgid ""
+"Force stopping will quit any running apps and processes, and could result in "
+"data loss."
+msgstr ""
+"Присилно заустављање ће зауставити све покренуте програме и процесе, и може "
+"изазвати губитак података."
+
+#: js/gdm/loginDialog.js:474
+msgid "Force Stop"
+msgstr "Приморај излаз"
+
+#: js/gdm/loginDialog.js:542
 msgid "Not listed?"
 msgstr "Није на списку?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:941
+#: js/gdm/loginDialog.js:1010
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(нпр., корисник или %s)"
 
-#: js/gdm/loginDialog.js:946 js/ui/components/networkAgent.js:259
-#: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:328
+#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:258
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Корисник"
 
-#: js/gdm/loginDialog.js:1270
+#: js/gdm/loginDialog.js:1081
+msgid "Login Attempt Timed Out"
+msgstr "Истекло је време за покушај пријаве"
+
+#: js/gdm/loginDialog.js:1082
+msgid "Login took too long, please try again"
+msgstr "Пријава је предуго трајала, покушајте поново"
+
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Прозор за пријављивање"
 
-#: js/gdm/util.js:402
+#: js/gdm/util.js:497
 msgid "Authentication error"
 msgstr "Грешка потврђивања идентитета"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:584
+#: js/gdm/util.js:728
 msgid "(or swipe finger across reader)"
 msgstr "(или превуците прст преко читача)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:589
+#: js/gdm/util.js:733
 msgid "(or place finger on reader)"
 msgstr "(или поставите прст на читач)"
 
@@ -646,17 +805,17 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Закључај окретање екрана"
 
-#: js/misc/util.js:138
+#: js/misc/util.js:139
 msgid "Command not found"
 msgstr "Наредба није нађена"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:178
+#: js/misc/util.js:179
 msgid "Could not parse command:"
 msgstr "Не могу да обрадим наредбу:"
 
-#: js/misc/util.js:186
+#: js/misc/util.js:187
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Није успело извршавање „%s“:"
@@ -683,7 +842,7 @@ msgstr[1] "Пре %d сата"
 msgstr[2] "Пре %d сати"
 msgstr[3] "Пре један сат"
 
-#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:182
+#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:185
 msgid "Yesterday"
 msgstr "Јуче"
 
@@ -821,7 +980,7 @@ msgstr "Забрани"
 msgid "Allow"
 msgstr "Дозволи"
 
-#: js/ui/appDisplay.js:1777
+#: js/ui/appDisplay.js:1775
 msgid "Unnamed Folder"
 msgstr "Неименована фасцикла"
 
@@ -884,7 +1043,7 @@ msgstr "Слушалице"
 msgid "Headset"
 msgstr "Слушалице са микрофоном"
 
-#: js/ui/audioDeviceSelection.js:78 js/ui/status/volume.js:352
+#: js/ui/audioDeviceSelection.js:78 js/ui/status/volume.js:358
 msgid "Microphone"
 msgstr "Микрофон"
 
@@ -897,12 +1056,11 @@ msgid "Display Settings"
 msgstr "Подешавања приказа"
 
 #: js/ui/backgroundMenu.js:18
-#: subprojects/extensions-app/data/ui/extension-row.ui:122
 msgid "Settings"
 msgstr "Подешавања"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:40
+#: js/ui/calendar.js:39
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -912,43 +1070,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:66
+#: js/ui/calendar.js:65
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Н"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:68
+#: js/ui/calendar.js:67
 msgctxt "grid monday"
 msgid "M"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:69
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "У"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:72
+#: js/ui/calendar.js:71
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "С"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:74
+#: js/ui/calendar.js:73
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Ч"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:75
 msgctxt "grid friday"
 msgid "F"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:78
+#: js/ui/calendar.js:77
 msgctxt "grid saturday"
 msgid "S"
 msgstr "С"
@@ -959,7 +1117,7 @@ msgstr "С"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:429
+#: js/ui/calendar.js:428
 msgid "%OB"
 msgstr "%OB"
 
@@ -972,7 +1130,7 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:439
+#: js/ui/calendar.js:438
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
@@ -994,17 +1152,23 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "Седмица %V"
 
-#: js/ui/calendar.js:907
+#: js/ui/calendar.js:920
 msgid "No Notifications"
 msgstr "Без обавештења"
 
-#: js/ui/calendar.js:964
+#: js/ui/calendar.js:976
 msgid "Do Not Disturb"
 msgstr "Не узнемиравај"
 
-#: js/ui/calendar.js:985
+#: js/ui/calendar.js:997
 msgid "Clear"
 msgstr "Очисти"
+
+# msgid_plural "%d new notifications"
+#: js/ui/calendar.js:1001
+msgctxt "action"
+msgid "Clear all notifications"
+msgstr "Очисти сва обавештења"
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
@@ -1044,43 +1208,43 @@ msgstr "Не могу да откључам волумен"
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Инсталирано издање udisks-a не подржава ЛИЧ (PIM) подешавање"
 
-#: js/ui/components/autorunManager.js:319
+#: js/ui/components/autorunManager.js:200
 #, javascript-format
 msgid "Open with %s"
 msgstr "Отвори програмом %s"
 
-#: js/ui/components/networkAgent.js:97
+#: js/ui/components/networkAgent.js:96
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "Или можете повезати притиском на дугме „WPS“, на вашем рутеру."
 
-#: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:246
-#: js/ui/status/network.js:371 js/ui/status/network.js:455
+#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
+#: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "Повежи се"
 
-#: js/ui/components/networkAgent.js:224
+#: js/ui/components/networkAgent.js:223
 msgid "Key"
 msgstr "Кључ"
 
-#: js/ui/components/networkAgent.js:275 js/ui/components/networkAgent.js:314
+#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
 msgid "Private key password"
 msgstr "Лозинка приватног кључа"
 
-#: js/ui/components/networkAgent.js:308
+#: js/ui/components/networkAgent.js:307
 msgid "Identity"
 msgstr "Идентитет"
 
-#: js/ui/components/networkAgent.js:334
+#: js/ui/components/networkAgent.js:333
 msgid "Service"
 msgstr "Услуга"
 
-#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:408
-#: js/ui/components/networkAgent.js:753 js/ui/components/networkAgent.js:774
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
+#: js/ui/components/networkAgent.js:750 js/ui/components/networkAgent.js:771
 msgid "Authentication required"
 msgstr "Потребно је потврђивање идентитета"
 
-#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:754
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:751
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1088,42 +1252,38 @@ msgid ""
 msgstr ""
 "Потребне су лозинке или кључеви шифровања за приступ бежичној мрежи „%s“."
 
-#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:758
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:755
 msgid "Wired 802.1X authentication"
 msgstr "Потврђивање идентитета за жичану 802.1X везу"
 
-#: js/ui/components/networkAgent.js:380
+#: js/ui/components/networkAgent.js:379
 msgid "Network name"
 msgstr "Назив мреже"
 
-#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:762
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:759
 msgid "DSL authentication"
 msgstr "Потврђивање идентитета ДСЛ-а"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:764
 msgid "PIN code required"
 msgstr "Потребан је ПИН кôд"
 
-#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:768
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:765
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Потребан је ПИН код за повезивање мобилног широкопојасног уређаја"
 
-#: js/ui/components/networkAgent.js:398
+#: js/ui/components/networkAgent.js:397
 msgid "PIN"
 msgstr "ПИН"
 
-#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:759
-#: js/ui/components/networkAgent.js:763 js/ui/components/networkAgent.js:775
-#: js/ui/components/networkAgent.js:779
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:756
+#: js/ui/components/networkAgent.js:760 js/ui/components/networkAgent.js:772
+#: js/ui/components/networkAgent.js:776
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Потребна је лозинка за повезивање на „%s“."
 
-#: js/ui/components/networkAgent.js:742 js/ui/status/network.js:2040
-msgid "Network Manager"
-msgstr "Управник мреже"
-
-#: js/ui/components/networkAgent.js:778
+#: js/ui/components/networkAgent.js:775
 msgid "VPN password"
 msgstr "ВПН лозинка"
 
@@ -1143,16 +1303,11 @@ msgstr "Потврди идентитет"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:420
+#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:417
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Погрешили сте! Покушајте поново."
 
-#: js/ui/components/telepathyClient.js:831
-#, javascript-format
-msgid "%s is now known as %s"
-msgstr "„%s“ је сада познат као „%s“"
-
-#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:412
+#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:418
 msgid "Windows"
 msgstr "Прозори"
 
@@ -1161,7 +1316,7 @@ msgid "Show Apps"
 msgstr "Прикажи програме"
 
 #. Translators: this is the name of the dock/favorites area on
-#. the left of the overview
+#. the bottom of the overview
 #: js/ui/dash.js:410
 msgid "Dash"
 msgstr "Док"
@@ -1171,7 +1326,7 @@ msgstr "Док"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:98
+#: js/ui/dateMenu.js:101
 msgid "%B %-d %Y"
 msgstr "%-d. %B %Y."
 
@@ -1179,34 +1334,34 @@ msgstr "%-d. %B %Y."
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:105
+#: js/ui/dateMenu.js:108
 msgid "%A %B %e %Y"
 msgstr "%A, %e. %B %Y."
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:171
+#: js/ui/dateMenu.js:174
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-d. %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:174
+#: js/ui/dateMenu.js:177
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%-d. %B %Y."
 
-#: js/ui/dateMenu.js:180
+#: js/ui/dateMenu.js:183
 msgid "Today"
 msgstr "Данас"
 
-#: js/ui/dateMenu.js:184
+#: js/ui/dateMenu.js:187
 msgid "Tomorrow"
 msgstr "Сутра"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:215
+#: js/ui/dateMenu.js:218
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Цео дан"
@@ -1214,54 +1369,54 @@ msgstr "Цео дан"
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
 #.
-#: js/ui/dateMenu.js:237
+#: js/ui/dateMenu.js:240
 msgid "%m/%d"
 msgstr "%d.%m."
 
-#: js/ui/dateMenu.js:288
+#: js/ui/dateMenu.js:291
 msgid "No Events"
 msgstr "Без догађаја"
 
-#: js/ui/dateMenu.js:410
+#: js/ui/dateMenu.js:413
 msgid "Add world clocks…"
 msgstr "Светски сатови…"
 
-#: js/ui/dateMenu.js:411
+#: js/ui/dateMenu.js:414
 msgid "World Clocks"
 msgstr "Светски сатови"
 
-#: js/ui/dateMenu.js:695
+#: js/ui/dateMenu.js:704
 msgid "Loading…"
 msgstr "Учитавам…"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:714
 msgid "Go online for weather information"
 msgstr "Повежите се на мрежу за податке о времену"
 
-#: js/ui/dateMenu.js:707
+#: js/ui/dateMenu.js:716
 msgid "Weather information is currently unavailable"
 msgstr "Подаци о временској прогнози тренутно нису доступни"
 
-#: js/ui/dateMenu.js:717
+#: js/ui/dateMenu.js:726
 msgid "Weather"
 msgstr "Временска прогноза"
 
-#: js/ui/dateMenu.js:719
+#: js/ui/dateMenu.js:728
 msgid "Select weather location…"
 msgstr "Изаберите место временске прогнозе…"
 
-#: js/ui/endSessionDialog.js:46
+#: js/ui/endSessionDialog.js:48
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Одјави корисника „%s“"
 
-#: js/ui/endSessionDialog.js:47
+#: js/ui/endSessionDialog.js:49
 msgctxt "title"
 msgid "Log Out"
 msgstr "Одјави ме"
 
-#: js/ui/endSessionDialog.js:50
+#: js/ui/endSessionDialog.js:52
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -1270,7 +1425,7 @@ msgstr[1] "%s ће бити одјављен за %d секунде."
 msgstr[2] "%s ће бити одјављен за %d секунди."
 msgstr[3] "%s ће бити одјављен за %d секунду."
 
-#: js/ui/endSessionDialog.js:56
+#: js/ui/endSessionDialog.js:58
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
@@ -1279,22 +1434,22 @@ msgstr[1] "Бићете одјављени за %d секунде."
 msgstr[2] "Бићете одјављени за %d секунди."
 msgstr[3] "Бићете одјављени за %d секунду."
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:65
 msgctxt "button"
 msgid "Log Out"
 msgstr "Одјави"
 
-#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:176
+#: js/ui/endSessionDialog.js:71 js/ui/status/system.js:176
 msgctxt "title"
 msgid "Power Off"
 msgstr "Искључи"
 
-#: js/ui/endSessionDialog.js:70
+#: js/ui/endSessionDialog.js:72
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Инсталирај ажурирања и искључи"
 
-#: js/ui/endSessionDialog.js:73
+#: js/ui/endSessionDialog.js:75
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -1303,27 +1458,27 @@ msgstr[1] "Рачунар ће се искључити за %d секунде."
 msgstr[2] "Рачунар ће се искључити за %d секунди."
 msgstr[3] "Рачунар ће се искључити за %d секунду."
 
-#: js/ui/endSessionDialog.js:77 js/ui/endSessionDialog.js:96
+#: js/ui/endSessionDialog.js:79 js/ui/endSessionDialog.js:98
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Инсталирај ажурирања софтвера на чекању"
 
-#: js/ui/endSessionDialog.js:81
+#: js/ui/endSessionDialog.js:83
 msgctxt "button"
 msgid "Power Off"
 msgstr "Искључи"
 
-#: js/ui/endSessionDialog.js:88
+#: js/ui/endSessionDialog.js:90
 msgctxt "title"
 msgid "Restart"
 msgstr "Поново покрени"
 
-#: js/ui/endSessionDialog.js:89
+#: js/ui/endSessionDialog.js:91
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "Инсталирај ажурирања и поново покрени"
 
-#: js/ui/endSessionDialog.js:92
+#: js/ui/endSessionDialog.js:94
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -1332,17 +1487,17 @@ msgstr[1] "Систем ће се поново покренути за %d сек
 msgstr[2] "Систем ће се поново покренути за %d секунди."
 msgstr[3] "Систем ће се поново покренути за %d секунду."
 
-#: js/ui/endSessionDialog.js:100
+#: js/ui/endSessionDialog.js:102
 msgctxt "button"
 msgid "Restart"
 msgstr "Поново покрени"
 
-#: js/ui/endSessionDialog.js:108
+#: js/ui/endSessionDialog.js:110
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Поново покрени и инсталирај ажурирања"
 
-#: js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:113
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1356,22 +1511,24 @@ msgstr[2] ""
 msgstr[3] ""
 "Систем ће се сам поново покренути и инсталирати ажурирања за %d секунду."
 
-#: js/ui/endSessionDialog.js:118 js/ui/endSessionDialog.js:139
+# msgctxt "button"
+#: js/ui/endSessionDialog.js:120 js/ui/endSessionDialog.js:141
 msgctxt "button"
-msgid "Restart &amp; Install"
+msgid "Restart & Install"
 msgstr "Поново покрени и инсталирај"
 
-#: js/ui/endSessionDialog.js:120
+# msgctxt "button"
+#: js/ui/endSessionDialog.js:122
 msgctxt "button"
-msgid "Install &amp; Power Off"
+msgid "Install & Power Off"
 msgstr "Инсталирај и искључи"
 
-#: js/ui/endSessionDialog.js:121
+#: js/ui/endSessionDialog.js:123
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Искључи након инсталирања ажурирања"
 
-#: js/ui/endSessionDialog.js:128
+#: js/ui/endSessionDialog.js:130
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Поново покрени и инсталирај надоградњу"
@@ -1379,7 +1536,7 @@ msgstr "Поново покрени и инсталирај надоградњу
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:133
+#: js/ui/endSessionDialog.js:135
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1389,55 +1546,55 @@ msgstr ""
 "понекад може да потраје: проверите да ли сте направили резерву ваших важних "
 "података и да ли је рачунар прикључен на мрежно напајање."
 
-#: js/ui/endSessionDialog.js:289
+#: js/ui/endSessionDialog.js:284
 msgid "Low battery power: please plug in before installing updates."
 msgstr ""
 "Батерија је скоро празна, прикључите мрежно напајање пре инсталирања "
 "ажурирања."
 
-#: js/ui/endSessionDialog.js:298
+#: js/ui/endSessionDialog.js:293
 msgid "Some applications are busy or have unsaved work"
 msgstr "Неки програми су заузети или имају несачувани рад"
 
-#: js/ui/endSessionDialog.js:303
+#: js/ui/endSessionDialog.js:298
 msgid "Other users are logged in"
 msgstr "Други корисници су пријављени"
 
-#: js/ui/endSessionDialog.js:473
+#: js/ui/endSessionDialog.js:468
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Опције подизања"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:678
+#: js/ui/endSessionDialog.js:673
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (удаљено)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:681
+#: js/ui/endSessionDialog.js:676
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (љуска)"
 
-#: js/ui/extensionDownloader.js:260
+#: js/ui/extensionDownloader.js:282
 msgid "Install"
 msgstr "Инсталирај"
 
-#: js/ui/extensionDownloader.js:266
+#: js/ui/extensionDownloader.js:288
 msgid "Install Extension"
 msgstr "Инсталирај проширење"
 
-#: js/ui/extensionDownloader.js:267
+#: js/ui/extensionDownloader.js:289
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Да преузмем и да инсталирам „%s“ са „extensions.gnome.org“-а?"
 
-#: js/ui/extensionSystem.js:340
+#: js/ui/extensionSystem.js:354
 msgid "Extension Updates Available"
 msgstr "Доступна су ажурирања проширења"
 
-#: js/ui/extensionSystem.js:341
+#: js/ui/extensionSystem.js:355
 msgid "Extension updates are ready to be installed."
 msgstr "Ажурирања проширења су доступна за инсталирање."
 
@@ -1511,7 +1668,7 @@ msgstr "Остави укључено"
 msgid "Turn On"
 msgstr "Укључи"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:466
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
 msgid "Turn Off"
 msgstr "Искључи"
 
@@ -1519,83 +1676,81 @@ msgstr "Искључи"
 msgid "Leave Off"
 msgstr "Остави искључено"
 
-#: js/ui/keyboard.js:225 js/ui/status/keyboard.js:871
+#: js/ui/keyboard.js:181 js/ui/status/keyboard.js:899
 msgid "Keyboard Settings"
 msgstr "Подешавања тастатуре"
 
-#: js/ui/lookingGlass.js:725
+#: js/ui/lookingGlass.js:724
 msgid "No extensions installed"
 msgstr "Нису инсталирана проширења"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:786
+#: js/ui/lookingGlass.js:785
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s није објавио никакве грешке."
 
-#: js/ui/lookingGlass.js:792
+#: js/ui/lookingGlass.js:791
 msgid "Hide Errors"
 msgstr "Сакриј грешке"
 
-#: js/ui/lookingGlass.js:796 js/ui/lookingGlass.js:873
+#: js/ui/lookingGlass.js:795 js/ui/lookingGlass.js:872
 msgid "Show Errors"
 msgstr "Прикажите грешке"
 
-#: js/ui/lookingGlass.js:805
-msgid "Enabled"
-msgstr "Укључено"
+#: js/ui/lookingGlass.js:804
+msgid "Active"
+msgstr "Активна"
 
-#. translators:
-#. * The device has been disabled
-#: js/ui/lookingGlass.js:808 subprojects/gvc/gvc-mixer-control.c:1908
-msgid "Disabled"
-msgstr "Искључено"
+#: js/ui/lookingGlass.js:807
+msgid "Inactive"
+msgstr "Неактивна"
 
-#: js/ui/lookingGlass.js:810
+#: js/ui/lookingGlass.js:809
 msgid "Error"
 msgstr "Грешка"
 
-#: js/ui/lookingGlass.js:812
+#: js/ui/lookingGlass.js:811
 msgid "Out of date"
 msgstr "Изван датума"
 
-#: js/ui/lookingGlass.js:814
+#: js/ui/lookingGlass.js:813
 msgid "Downloading"
 msgstr "Преузимам"
 
-#: js/ui/lookingGlass.js:816
-msgid "Disabling"
-msgstr "Онемогућавам"
+#: js/ui/lookingGlass.js:815
+msgid "Deactivating"
+msgstr "Искључивање"
 
-#: js/ui/lookingGlass.js:818
-msgid "Enabling"
-msgstr "Омогућавам"
+#: js/ui/lookingGlass.js:817
+msgid "Activating"
+msgstr "Укључивање"
 
-#: js/ui/lookingGlass.js:851
+#: js/ui/lookingGlass.js:850
 msgid "View Source"
 msgstr "Прикажи код"
 
-#: js/ui/lookingGlass.js:862
+#: js/ui/lookingGlass.js:861
 msgid "Web Page"
 msgstr "Веб страница"
 
-#: js/ui/main.js:268
+#: js/ui/main.js:279
 msgid "System was put in unsafe mode"
 msgstr "Систем је постављен у небезбедан режим"
 
-#: js/ui/main.js:269
+#: js/ui/main.js:280
 msgid "Apps now have unrestricted access"
 msgstr "Програми сада имају неограничен приступ"
 
-#: js/ui/main.js:270 js/ui/overview.js:63
+#: js/ui/main.js:283 js/ui/overview.js:54
 msgid "Undo"
 msgstr "Опозови"
 
-#: js/ui/main.js:328
+#: js/ui/main.js:340
 msgid "Logged in as a privileged user"
 msgstr "Пријављен као повлашћен корисник"
 
-#: js/ui/main.js:329
+#: js/ui/main.js:341
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1603,23 +1758,30 @@ msgstr ""
 "Покретање сесије под повлашћеним корисничким налогом треба избегавати из "
 "безбедносних разлога. Ако је то могуће, пријавите се као обичан корисник."
 
-#: js/ui/main.js:377
+#: js/ui/main.js:389
 msgid "Screen Lock disabled"
 msgstr "Закључавање екрана онемогућено"
 
-#: js/ui/main.js:378
+#: js/ui/main.js:390
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Потребан је Гномов управник екрана за могућност закључавања екрана."
 
-#: js/ui/messageTray.js:1423
-msgid "System Information"
-msgstr "Подаци о систему"
+# msgctxt "program"
+#. Translators: this is the string displayed in the header when a message
+#. source doesn't have a name
+#: js/ui/messageList.js:400
+msgid "Unknown App"
+msgstr "Непознат програм"
 
-#: js/ui/mpris.js:205
+#: js/ui/messageTray.js:328 js/ui/messageTray.js:330
+msgid "Notification sound"
+msgstr "Звук обавештења"
+
+#: js/ui/mpris.js:198
 msgid "Unknown artist"
 msgstr "Непознат извођач"
 
-#: js/ui/mpris.js:215
+#: js/ui/mpris.js:208
 msgid "Unknown title"
 msgstr "Непознат наслов"
 
@@ -1627,17 +1789,17 @@ msgstr "Непознат наслов"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:336
+#: js/ui/overviewControls.js:342
 msgid "Type to search"
 msgstr "Упишите жељено"
 
-#: js/ui/overviewControls.js:400
+#: js/ui/overviewControls.js:406
 msgid "Apps"
 msgstr "Програми"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:76
+#: js/ui/overview.js:67
 msgid "Overview"
 msgstr "Преглед"
 
@@ -1691,12 +1853,12 @@ msgstr "Притисните неки тастер да изађете"
 msgid "Activities"
 msgstr "Активности"
 
-#: js/ui/panel.js:508
+#: js/ui/panel.js:506
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Систем"
 
-#: js/ui/panel.js:682
+#: js/ui/panel.js:680
 msgid "Top Bar"
 msgstr "Горња трака"
 
@@ -1724,127 +1886,144 @@ msgstr "Поновно покрећем…"
 msgid "GNOME needs to lock the screen"
 msgstr "Гном мора да закључа екран"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:674
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:669
 msgid "Unable to lock"
 msgstr "Не могу да закључам"
 
-#: js/ui/screenShield.js:277 js/ui/screenShield.js:675
+#: js/ui/screenShield.js:277 js/ui/screenShield.js:670
 msgid "Lock was blocked by an app"
 msgstr "Програм је блокирао закључавање"
 
-#: js/ui/screenshot.js:1192
+#: js/ui/screenshot.js:1254
 msgid "Selection"
 msgstr "Избор"
 
-#: js/ui/screenshot.js:1202
+#: js/ui/screenshot.js:1264
 msgid "Area Selection"
 msgstr "Избор области"
 
-#: js/ui/screenshot.js:1207
+#: js/ui/screenshot.js:1269
 msgid "Screen"
 msgstr "Екран"
 
-#: js/ui/screenshot.js:1217
+#: js/ui/screenshot.js:1279
 msgid "Screen Selection"
 msgstr "Избор екрана"
 
-#: js/ui/screenshot.js:1222
+#: js/ui/screenshot.js:1284
 msgid "Window"
 msgstr "Прозор"
 
-#: js/ui/screenshot.js:1232
+#: js/ui/screenshot.js:1294
 msgid "Window Selection"
 msgstr "Избор прозора"
 
 #. Translators: entry in the window right click menu.
-#: js/ui/screenshot.js:1257 js/ui/status/system.js:113 js/ui/windowMenu.js:30
+#: js/ui/screenshot.js:1319 js/ui/status/system.js:113 js/ui/windowMenu.js:30
 msgid "Take Screenshot"
 msgstr "Направи снимак екрана"
 
-#: js/ui/screenshot.js:1273
+#: js/ui/screenshot.js:1335
 msgid "Record Screen"
 msgstr "Сними екран"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1288
+#: js/ui/screenshot.js:1352
 msgid "Capture"
 msgstr "Усними"
 
-#: js/ui/screenshot.js:1310
+#: js/ui/screenshot.js:1374
 msgid "Show Pointer"
 msgstr "Покажи показивач"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1906
+#: js/ui/screenshot.js:1998
 msgid "Screencasts"
 msgstr "Видео снимци"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
-#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1911
+#. * "Screencast from 07-17-2013 10:00:46 PM"
+#: js/ui/screenshot.js:2003
 #, no-c-format
-msgid "Screencast from %d %t.webm"
+msgid "Screencast from %d %t"
 msgstr "Видео снимак направљен дана %d %t.webm"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1949
+#: js/ui/screenshot.js:2049
 msgid "Screencast recorded"
 msgstr "Видео снимак направљен"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1956
+#: js/ui/screenshot.js:2062
+msgid "Screencast failed to start"
+msgstr "Видео снимање неуспело"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2068
+msgid "Screencast ended: Out of disk space"
+msgstr "Снимање екрана је прекинуто: Нема слободног простора на диску"
+
+#. We can encourage user to try again on service crashes since the
+#. recorder will auto-blocklist the pipeline that crashed.
+#. Translators: notification title.
+#: js/ui/screenshot.js:2074
+msgid "Screencast ended unexpectedly, please try again"
+msgstr "Снимање екрана је прекинуто неочекивано, молим Вас покушајте поново"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2077
 msgid "Screencast ended unexpectedly"
 msgstr "Снимање екрана је прекинуто неочекивано"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1965 js/ui/screenshot.js:2201
+#: js/ui/screenshot.js:2087 js/ui/screenshot.js:2329
 msgid "Screenshot"
 msgstr "Снимак екрана"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1972
+#: js/ui/screenshot.js:2094
 msgid "Click here to view the video."
 msgstr "Кликните овде за преглед видеа."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1975 js/ui/screenshot.js:2215
+#: js/ui/screenshot.js:2102 js/ui/screenshot.js:2345
 msgid "Show in Files"
 msgstr "Прикажи у Датотекама"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2161
+#: js/ui/screenshot.js:2289
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Снимак екрана направљен дана %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2207
+#: js/ui/screenshot.js:2335
 msgid "Screenshot captured"
 msgstr "Снимак екрана направљен"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2209
+#: js/ui/screenshot.js:2337
 msgid "You can paste the image from the clipboard."
 msgstr "Можете убацити слику из оставе."
 
-#: js/ui/screenshot.js:2262 js/ui/screenshot.js:2426
+#: js/ui/screenshot.js:2393 js/ui/screenshot.js:2557
 msgid "Screenshot taken"
 msgstr "Направљен је снимак екрана"
 
-#: js/ui/search.js:818
+#: js/ui/search.js:831
 msgid "Searching…"
 msgstr "Тражим…"
 
-#: js/ui/search.js:820
+#: js/ui/search.js:833
 msgid "No results."
 msgstr "Нема одговарајућих резултата."
 
-#: js/ui/search.js:951
+#: js/ui/search.js:964
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1854,6 +2033,7 @@ msgstr[2] "Још %d"
 msgstr[3] "Још један"
 
 #: js/ui/searchController.js:89
+#: subprojects/extensions-app/data/ui/extensions-window.ui:73
 msgid "Search"
 msgstr "Тражи"
 
@@ -1873,24 +2053,24 @@ msgstr "Прикажи текст"
 msgid "Hide Text"
 msgstr "Сакриј текст"
 
-#: js/ui/shellEntry.js:174
+#: js/ui/shellEntry.js:176
 msgid "Caps lock is on."
 msgstr "Тастер за велика слова је притиснут."
 
-#: js/ui/shellMountOperation.js:291
+#: js/ui/shellMountOperation.js:288
 msgid "Hidden Volume"
 msgstr "Скривени волумен"
 
-#: js/ui/shellMountOperation.js:294
+#: js/ui/shellMountOperation.js:291
 msgid "Windows System Volume"
 msgstr "Виндоус системски волумен"
 
-#: js/ui/shellMountOperation.js:297
+#: js/ui/shellMountOperation.js:294
 msgid "Uses Keyfiles"
 msgstr "Користи кључ-датотеке"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:305
+#: js/ui/shellMountOperation.js:302
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -1898,7 +2078,7 @@ msgstr ""
 "Да бисте откључали волумен који користи кључ-датотеке, користите алатку "
 "<i>%s</i>."
 
-#: js/ui/shellMountOperation.js:309
+#: js/ui/shellMountOperation.js:306
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
@@ -1906,25 +2086,25 @@ msgstr ""
 "Потребан вам је спољни алат као што су то <i>Дискови</i> за откључавање "
 "волумена који користе кључ-датотеке."
 
-#: js/ui/shellMountOperation.js:317
+#: js/ui/shellMountOperation.js:314
 msgid "PIM Number"
 msgstr "ЛИЧ (PIM) број"
 
-#: js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:373
 msgid "Remember Password"
 msgstr "Запамти лозинку"
 
-#: js/ui/shellMountOperation.js:391
+#: js/ui/shellMountOperation.js:388
 msgid "Unlock"
 msgstr "Откључај"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:405
+#: js/ui/shellMountOperation.js:402
 #, javascript-format
 msgid "Open %s"
 msgstr "Отвори програмом %s"
 
-#: js/ui/shellMountOperation.js:441
+#: js/ui/shellMountOperation.js:438
 msgid "The PIM must be a number or empty."
 msgstr "ЛИЧ (PIM) мора бити број или празно."
 
@@ -1980,24 +2160,24 @@ msgstr "Велики текст"
 msgid "Auto Rotate"
 msgstr "Самостално ротирај"
 
-#: js/ui/status/backgroundApps.js:166
+#: js/ui/status/backgroundApps.js:156
 msgctxt "title"
 msgid "Background Apps"
 msgstr "Позадински програми"
 
-#: js/ui/status/backgroundApps.js:181
+#: js/ui/status/backgroundApps.js:171
 msgid "Apps known to be running without a window"
 msgstr "Програми без прозора, који раде у позадини"
 
-#: js/ui/status/backgroundApps.js:192
+#: js/ui/status/backgroundApps.js:182
 msgid "App Settings"
 msgstr "Подешавања програма"
 
-#: js/ui/status/backgroundApps.js:249
+#: js/ui/status/backgroundApps.js:239
 msgid "No Background Apps"
 msgstr "Нема позадинских програма"
 
-#: js/ui/status/backgroundApps.js:251
+#: js/ui/status/backgroundApps.js:241
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2022,11 +2202,11 @@ msgstr "Низак"
 msgid "High"
 msgstr "Висок"
 
-#: js/ui/status/backlight.js:148 js/ui/status/keyboard.js:853
+#: js/ui/status/backlight.js:148 js/ui/status/keyboard.js:881
 msgid "Keyboard"
 msgstr "Тастатура"
 
-#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:371
+#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
 msgid "Disconnect"
 msgstr "Откачи"
 
@@ -2034,7 +2214,7 @@ msgstr "Откачи"
 msgid "Bluetooth"
 msgstr "Блутут"
 
-#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1907
+#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1900
 msgid "Bluetooth Settings"
 msgstr "Подешавања Блутута"
 
@@ -2084,7 +2264,7 @@ msgstr "Секундарни клик"
 msgid "Dwell Click"
 msgstr "Дужи клик"
 
-#: js/ui/status/keyboard.js:870
+#: js/ui/status/keyboard.js:898
 msgid "Show Keyboard Layout"
 msgstr "Покажи распоред тастатуре"
 
@@ -2112,48 +2292,48 @@ msgstr "Забрани приступ"
 msgid "Grant Access"
 msgstr "Дозволи приступ"
 
-#: js/ui/status/network.js:61
+#: js/ui/status/network.js:62
 msgid "<unknown>"
 msgstr "<непознато>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:365
+#: js/ui/status/network.js:354
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Откачи %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:367
+#: js/ui/status/network.js:356
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Повежи %s"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1050
 msgid "Secure"
 msgstr "Безбедно"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1050
 msgid "Not secure"
 msgstr "Није безбедно"
 
-#: js/ui/status/network.js:1062
+#: js/ui/status/network.js:1051
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Јачина сигнала %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1064
+#: js/ui/status/network.js:1053
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1166
+#: js/ui/status/network.js:1155
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s хотспот"
 
-#: js/ui/status/network.js:1437
+#: js/ui/status/network.js:1426
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
@@ -2162,57 +2342,57 @@ msgstr[1] "%d повезана"
 msgstr[2] "%d повезаних"
 msgstr[3] "%d повезан"
 
-#: js/ui/status/network.js:1535 js/ui/status/network.js:1551
+#: js/ui/status/network.js:1524 js/ui/status/network.js:1540
 msgid "VPN"
 msgstr "ВПН"
 
-#: js/ui/status/network.js:1536
+#: js/ui/status/network.js:1525
 msgid "VPN Settings"
 msgstr "ВПН подешавања"
 
-#: js/ui/status/network.js:1792
+#: js/ui/status/network.js:1785
 msgid "Wi–Fi"
 msgstr "Бежична"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1787
 msgid "All Networks"
 msgstr "Све мреже"
 
-#: js/ui/status/network.js:1891
+#: js/ui/status/network.js:1884
 msgid "Wired Connections"
 msgstr "Жичане везе"
 
-#: js/ui/status/network.js:1892
+#: js/ui/status/network.js:1885
 msgid "Wired Settings"
 msgstr "Подешавања жичане везе"
 
-#: js/ui/status/network.js:1906
+#: js/ui/status/network.js:1899
 msgid "Bluetooth Tethers"
 msgstr "Досег Блутута"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1913
+#: js/ui/status/network.js:1906
 msgid "Tether"
 msgstr "Тетеровање"
 
-#: js/ui/status/network.js:1926
+#: js/ui/status/network.js:1919
 msgid "Mobile Connections"
 msgstr "Мобилне везе"
 
-#: js/ui/status/network.js:1928
+#: js/ui/status/network.js:1921
 msgid "Mobile Broadband Settings"
 msgstr "Подешавања мобилне широкопојасне везе"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1937
+#: js/ui/status/network.js:1930
 msgid "Mobile"
 msgstr "Мобилна"
 
-#: js/ui/status/network.js:2045
+#: js/ui/status/network.js:2035
 msgid "Connection failed"
 msgstr "Повезивање није успело"
 
-#: js/ui/status/network.js:2046
+#: js/ui/status/network.js:2036
 msgid "Activation of network connection failed"
 msgstr "Активирање мрежне везе није успело"
 
@@ -2272,7 +2452,7 @@ msgid "Power Off…"
 msgstr "Искључи…"
 
 #: js/ui/status/system.js:195
-#: subprojects/extensions-app/data/ui/extensions-window.ui:189
+#: subprojects/extensions-app/data/ui/extensions-window.ui:124
 msgid "Log Out…"
 msgstr "Одјава…"
 
@@ -2285,15 +2465,11 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "Закључај екран"
 
-#: js/ui/status/thunderbolt.js:259
-msgid "Thunderbolt"
-msgstr "Тандерболт"
-
-#: js/ui/status/thunderbolt.js:320
+#: js/ui/status/thunderbolt.js:310
 msgid "Unknown Thunderbolt device"
 msgstr "Непознат Тандерболт уређај"
 
-#: js/ui/status/thunderbolt.js:321
+#: js/ui/status/thunderbolt.js:311
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2301,46 +2477,46 @@ msgstr ""
 "Нови уређај је уочен док нисте били ту. Поново повежите уређај да бисте "
 "почели да га користите."
 
-#: js/ui/status/thunderbolt.js:324
+#: js/ui/status/thunderbolt.js:314
 msgid "Unauthorized Thunderbolt device"
 msgstr "Неовлашћени Тандерболт уређај"
 
-#: js/ui/status/thunderbolt.js:325
+#: js/ui/status/thunderbolt.js:315
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "Уочен је нови уређај и потребно је да администратор овласти његову употребу."
 
-#: js/ui/status/thunderbolt.js:331
+#: js/ui/status/thunderbolt.js:321
 msgid "Thunderbolt authorization error"
 msgstr "Грешка у овлашћивању Тандерболта"
 
-#: js/ui/status/thunderbolt.js:332
+#: js/ui/status/thunderbolt.js:322
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Не могу да овластим Тандерболт уређај: %s"
 
-#: js/ui/status/volume.js:214
+#: js/ui/status/volume.js:220
 msgid "Volume changed"
 msgstr "Промена јачине звука"
 
-#: js/ui/status/volume.js:227
+#: js/ui/status/volume.js:233
 msgid "Unmute"
 msgstr "Укључи тон"
 
-#: js/ui/status/volume.js:227
+#: js/ui/status/volume.js:233
 msgid "Mute"
 msgstr "Утишај"
 
-#: js/ui/status/volume.js:282
+#: js/ui/status/volume.js:288
 msgid "Volume"
 msgstr "Јачина звука"
 
-#: js/ui/status/volume.js:298
+#: js/ui/status/volume.js:304
 msgid "Sound Output"
 msgstr "Звучни излаз"
 
-#: js/ui/status/volume.js:370
+#: js/ui/status/volume.js:376
 msgid "Sound Input"
 msgstr "Звучни улаз"
 
@@ -2358,7 +2534,7 @@ msgstr "Пресликај"
 msgid "Join Displays"
 msgstr "Споји екране"
 
-#. Translators: this is for using only an external display.
+#. Translators: this is for using only external displays.
 #. * Try to keep it under around 15 characters.
 #.
 #: js/ui/switchMonitor.js:41
@@ -2374,40 +2550,45 @@ msgstr "Само уграђени"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:368
+#: js/ui/unlockDialog.js:374
 msgid "%A %B %-d"
 msgstr "%A, %-d. %B"
 
-#: js/ui/unlockDialog.js:374
+#: js/ui/unlockDialog.js:380
 msgid "Swipe up to unlock"
 msgstr "Превуци за откључавање"
 
-#: js/ui/unlockDialog.js:375
+#: js/ui/unlockDialog.js:381
 msgid "Click or press a key to unlock"
 msgstr "Кликни или притисни тастер за откључавање"
 
-#: js/ui/unlockDialog.js:558
+#: js/ui/unlockDialog.js:564
 msgid "Unlock Window"
 msgstr "Откључај прозор"
 
-#: js/ui/unlockDialog.js:567
+#: js/ui/unlockDialog.js:573
 msgid "Log in as another user"
 msgstr "Пријавите се као други корисник"
 
-#: js/ui/welcomeDialog.js:39
+#: js/ui/welcomeDialog.js:49
 #, javascript-format
-msgid "Welcome to GNOME %s"
-msgstr "Добро дошли у Гном %s"
+msgid "GNOME %s"
+msgstr "Гном %s"
 
-#: js/ui/welcomeDialog.js:40
+#: js/ui/welcomeDialog.js:53
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "Добро дошли у %s"
+
+#: js/ui/welcomeDialog.js:54
 msgid "If you want to learn your way around, check out the tour."
 msgstr "Ако желите да сазнате више о употреби, погледајте обилазак."
 
-#: js/ui/welcomeDialog.js:49
-msgid "No Thanks"
-msgstr "Не, хвала"
+#: js/ui/welcomeDialog.js:63
+msgid "Skip"
+msgstr "Прескочи"
 
-#: js/ui/welcomeDialog.js:54
+#: js/ui/welcomeDialog.js:68
 msgid "Take Tour"
 msgstr "Започни обилазак"
 
@@ -2461,59 +2642,59 @@ msgstr "Увећај"
 msgid "Move"
 msgstr "Премести"
 
-#: js/ui/windowMenu.js:79
+#: js/ui/windowMenu.js:80
 msgid "Resize"
 msgstr "Промени величину"
 
-#: js/ui/windowMenu.js:99
+#: js/ui/windowMenu.js:101
 msgid "Move Titlebar Onscreen"
 msgstr "Премести траку наслова на екран"
 
-#: js/ui/windowMenu.js:104
+#: js/ui/windowMenu.js:106
 msgid "Always on Top"
 msgstr "Држи изнад осталих"
 
-#: js/ui/windowMenu.js:123
+#: js/ui/windowMenu.js:125
 msgid "Always on Visible Workspace"
 msgstr "Прикажи на свим радним просторима"
 
-#: js/ui/windowMenu.js:137
+#: js/ui/windowMenu.js:139
 msgid "Move to Workspace Left"
 msgstr "Премести на леви радни простор"
 
-#: js/ui/windowMenu.js:143
+#: js/ui/windowMenu.js:145
 msgid "Move to Workspace Right"
 msgstr "Премести на десни радни простор"
 
-#: js/ui/windowMenu.js:149
+#: js/ui/windowMenu.js:151
 msgid "Move to Workspace Up"
 msgstr "Премести на радни простор горе"
 
-#: js/ui/windowMenu.js:155
+#: js/ui/windowMenu.js:157
 msgid "Move to Workspace Down"
 msgstr "Премести на радни простор доле"
 
-#: js/ui/windowMenu.js:173
+#: js/ui/windowMenu.js:175
 msgid "Move to Monitor Up"
 msgstr "Премести на горњи радни простор"
 
-#: js/ui/windowMenu.js:182
+#: js/ui/windowMenu.js:184
 msgid "Move to Monitor Down"
 msgstr "Премести на доњи радни простор"
 
-#: js/ui/windowMenu.js:191
+#: js/ui/windowMenu.js:193
 msgid "Move to Monitor Left"
 msgstr "Премести екран улево"
 
-#: js/ui/windowMenu.js:200
+#: js/ui/windowMenu.js:202
 msgid "Move to Monitor Right"
 msgstr "Премести екран удесно"
 
-#: js/ui/windowMenu.js:208
+#: js/ui/windowMenu.js:210
 msgid "Close"
 msgstr "Затвори"
 
-#: src/main.c:529 subprojects/extensions-tool/src/main.c:325
+#: src/main.c:529 subprojects/extensions-tool/src/main.c:336
 msgid "Print version"
 msgstr "Исписује издање"
 
@@ -2533,12 +2714,12 @@ msgstr "Исписује могуће режиме"
 msgid "Force animations to be enabled"
 msgstr "Насилно омогући анимације"
 
-#: src/shell-app.c:305
+#: src/shell-app.c:253
 msgctxt "program"
 msgid "Unknown"
 msgstr "Непознат"
 
-#: src/shell-app.c:556
+#: src/shell-app.c:504
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Нисам успео да покренем „%s“"
@@ -2568,12 +2749,12 @@ msgstr "Не могу да учитам иконицу"
 msgid "Manage your GNOME Extensions"
 msgstr "Подесите проширења Гнома"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:17
-#: subprojects/extensions-app/js/main.js:222
+#. developer_name tag deprecated with Appstream 1.0
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:19
 msgid "The GNOME Project"
 msgstr "Гном пројекат"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:36
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -2581,21 +2762,65 @@ msgstr ""
 "Гномова проширења руководе ажурирањем проширења, подешавањем поставки "
 "проширења и уклањањем или онемогућавањем проширења."
 
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
+msgid "Main Window"
+msgstr "Главни прозор"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
+msgid "Available Updates"
+msgstr "Доступна ажурирања"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
+msgid "Search View"
+msgstr "Преглед претраге"
+
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
 msgstr "Подесите проширења Гномове шкољке"
 
-#: subprojects/extensions-app/js/main.js:136
-#: subprojects/extensions-app/js/main.js:147
-msgid "No Matches"
-msgstr "Нема подударања"
+#: subprojects/extensions-app/js/extensionManager.js:237
+#, javascript-format
+msgid ""
+"The installed version of this extension (%s) is incompatible with the "
+"current version of GNOME (%s). The extension has been disabled."
+msgstr ""
+"Инсталиранo издање проширења (%s) није сагласно са тренутним издањем Гнома "
+"(%s). Проширење је искључено."
 
-#: subprojects/extensions-app/js/main.js:175
+#: subprojects/extensions-app/js/extensionManager.js:238
+#, javascript-format
+msgid ""
+"The installed version of this extension is incompatible with the current "
+"version of GNOME (%s). The extension has been disabled."
+msgstr ""
+"Инсталиранo издање проширењa не подудара се са тренутним издањем Гнома (%s). "
+"Проширење је искључено."
+
+#: subprojects/extensions-app/js/extensionManager.js:242
+msgid ""
+"An error has occurred in this extension. This could cause issues elsewhere "
+"in the system. It is recommended to turn the extension off until the error "
+"is resolved."
+msgstr ""
+"Дошло је до грешке у проширењу. Ово може проузроковати проблеме у остатку "
+"система. Препоручујемо искључивање проширења док грешка не буде решена."
+
+#. translators: Details for an extension error
+#: subprojects/extensions-app/js/extensionManager.js:248
+msgid "Error details:"
+msgstr "Детаљи грешке:"
+
+#: subprojects/extensions-app/js/extensionRow.js:82
+#, javascript-format
+msgid "Version %s"
+msgstr "Издање %s"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:113
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Уклонити „%s“?"
 
-#: subprojects/extensions-app/js/main.js:176
+#: subprojects/extensions-app/js/extensionsWindow.js:114
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2603,11 +2828,15 @@ msgstr ""
 "Уколико уклоните проширење, мораћете га поново преузети да бисте га поново "
 "омогућили"
 
-#: subprojects/extensions-app/js/main.js:180
-msgid "Remove"
-msgstr "Уклони"
+#: subprojects/extensions-app/js/extensionsWindow.js:117
+msgid "_Cancel"
+msgstr "_Откажи"
 
-#: subprojects/extensions-app/js/main.js:217
+#: subprojects/extensions-app/js/extensionsWindow.js:118
+msgid "_Remove"
+msgstr "_Уклони"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:158
 msgid "translator-credits"
 msgstr ""
 "Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
@@ -2616,7 +2845,7 @@ msgstr ""
 "Марко М. Костић <marko.m.kostic@gmail.com>\n"
 "https://гном.срб — превод Гнома на српски језик."
 
-#: subprojects/extensions-app/js/main.js:345
+#: subprojects/extensions-app/js/extensionsWindow.js:203
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -2625,49 +2854,94 @@ msgstr[1] "%d проширења биће ажурирана током след
 msgstr[2] "%d проширења биће ажурирана током следећег пријављивања."
 msgstr[3] "Једно проширење биће ажурирано током следећег пријављивања."
 
-#: subprojects/extensions-app/js/main.js:487
-msgid "The extension is incompatible with the current GNOME version"
-msgstr "Ово проширење није подударно са тренутним издањем Гнома"
+#: subprojects/extensions-app/data/ui/extension-row.ui:21
+msgid "Error Details"
+msgstr "Детаљи грешке"
 
-#: subprojects/extensions-app/js/main.js:490
-#: subprojects/extensions-app/data/ui/extension-row.ui:52
-msgid "The extension had an error"
-msgstr "Проширење садржи грешку"
+#: subprojects/extensions-app/data/ui/extension-row.ui:61
+msgid "Updates Details"
+msgstr "Детаљи ажурирања"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:62
-msgid "The extension can be updated"
-msgstr "Постоји ажурирање проширења"
+# msgid_plural "%d extensions will be updated on next login."
+#: subprojects/extensions-app/data/ui/extension-row.ui:71
+msgid ""
+"A new version of this extension is ready and will be loaded on next login."
+msgstr ""
+"Ново издање овог проширења је спремно и биће учитано на следећем пријваљивању."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:112
-msgid "Website"
-msgstr "Веб страница"
+#: subprojects/extensions-app/data/ui/extension-row.ui:107
+msgid "Extension Details"
+msgstr "Прикажи појединости проширења"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:134
-msgid "Remove…"
-msgstr "Уклони…"
+#: subprojects/extensions-app/data/ui/extension-row.ui:193
+msgid "_Website"
+msgstr "_Веб страница"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:220
+msgid "_Settings"
+msgstr "_Подешавања"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:247
+msgid "_Remove…"
+msgstr "_Уклони…"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:6
-msgid "Help"
-msgstr "Помоћ"
+msgid "Keyboard Shortcuts"
+msgstr "Пречице тастатуре"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:10
 msgid "About Extensions"
 msgstr "О Проширењима"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:83
+#: subprojects/extensions-app/data/ui/extensions-window.ui:64
+msgid "Main Menu"
+msgstr "Главни мени"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:106
+msgid "Search extensions"
+msgstr "Претражи проширења"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:134
+msgid "_Extensions"
+msgstr "П_роширења"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:143
+msgid "More Information"
+msgstr "Више информација"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:153
 msgid ""
-"Extensions can cause performance and stability issues. Disable extensions if "
-"you encounter problems with your system."
+"Extensions can cause performance and stability issues. It is recommended to "
+"disable all extensions if you experience problems with your system."
 msgstr ""
 "Проширења могу утицати на делотворност и стабилност. Онемогућите проширења "
 "уколико имате проблема са вашим системом."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:97
-msgid "Manually Installed"
-msgstr "Ручно инсталирана"
+#: subprojects/extensions-app/data/ui/extensions-window.ui:180
+msgid "User Extensions"
+msgstr "Корисникова проширења"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:98
-#: subprojects/extensions-app/data/ui/extensions-window.ui:133
+#: subprojects/extensions-app/data/ui/extensions-window.ui:200
+msgid "System Extensions"
+msgstr "Системска проширења"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:235
+msgid "Search Results"
+msgstr "Резултати претраге"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:254
+msgid "No Results Found"
+msgstr "Нема резултата"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:255
+msgid "Try a different search."
+msgstr "Покушајте другачију претрагу"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:266
+msgid "No Installed Extensions"
+msgstr "Неинсталирана проширења"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:267
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
@@ -2675,15 +2949,7 @@ msgstr ""
 "Да бисте пронашли и додали проширења, посетите страницу <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:111
-msgid "Built-In"
-msgstr "Уграђена"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:132
-msgid "No Installed Extensions"
-msgstr "Неинсталирана проширења"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:144
+#: subprojects/extensions-app/data/ui/extensions-window.ui:278
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -2691,9 +2957,30 @@ msgstr ""
 "Нажалост, није било могуће добавити списак инсталираних проширења. Проверите "
 "да ли сте пријављени у Гном и пробајте поново."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:174
-msgid "Extension Updates Ready"
-msgstr "Спремна су ажурирања проширења"
+#: subprojects/extensions-app/data/ui/help-overlay.ui:9
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Опште"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:12
+msgctxt "shortcut window"
+msgid "Open Menu"
+msgstr "Отвори мени"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:18
+msgctxt "shortcut window"
+msgid "Toggle Search"
+msgstr "Укључи претрагу"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:24
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Прикажи пречице"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:30
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "_Изађи"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:284
@@ -2711,7 +2998,7 @@ msgstr ""
 "На пример: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:382
-#: subprojects/extensions-tool/src/main.c:242
+#: subprojects/extensions-tool/src/main.c:243
 msgid "Name"
 msgstr "Назив"
 
@@ -2725,7 +3012,7 @@ msgstr ""
 "На пример: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:402
-#: subprojects/extensions-tool/src/main.c:245
+#: subprojects/extensions-tool/src/main.c:246
 msgid "Description"
 msgstr "Опис"
 
@@ -2767,7 +3054,7 @@ msgid "A short description of what the extension does"
 msgstr "Кратак опис онога што проширење ради"
 
 #: subprojects/extensions-tool/src/command-create.c:525
-#: subprojects/extensions-tool/src/command-pack.c:467
+#: subprojects/extensions-tool/src/command-pack.c:455
 msgid "DOMAIN"
 msgstr "ДОМЕН"
 
@@ -2776,7 +3063,7 @@ msgid "The gettext domain used by the extension"
 msgstr "Геттекст домен које користи проширење"
 
 #: subprojects/extensions-tool/src/command-create.c:529
-#: subprojects/extensions-tool/src/command-pack.c:460
+#: subprojects/extensions-tool/src/command-pack.c:448
 msgid "SCHEMA"
 msgstr "ШЕМА"
 
@@ -2805,7 +3092,7 @@ msgid "Create a new extension"
 msgstr "Направи ново проширење"
 
 #: subprojects/extensions-tool/src/command-create.c:570
-#: subprojects/extensions-tool/src/command-list.c:172
+#: subprojects/extensions-tool/src/command-list.c:190
 msgid "Unknown arguments"
 msgstr "Непознати аргументи"
 
@@ -2846,7 +3133,7 @@ msgid "Enable an extension"
 msgstr "Омогући проширење"
 
 #: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/command-list.c:66
 #: subprojects/extensions-tool/src/main.c:150
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "Нисам успео да се повежем на Гномову шкољку\n"
@@ -2881,80 +3168,88 @@ msgstr "Ниједан пакет проширења није наведен"
 msgid "More than one extension bundle specified"
 msgstr "Наведено је више од једног запакованог проширења"
 
-#: subprojects/extensions-tool/src/command-list.c:128
+#: subprojects/extensions-tool/src/command-list.c:140
 msgid "Show user-installed extensions"
 msgstr "Прикажи корисничка проширења"
 
-#: subprojects/extensions-tool/src/command-list.c:131
+#: subprojects/extensions-tool/src/command-list.c:143
 msgid "Show system-installed extensions"
 msgstr "Прикажи системска проширења"
 
-#: subprojects/extensions-tool/src/command-list.c:134
+#: subprojects/extensions-tool/src/command-list.c:146
 msgid "Show enabled extensions"
 msgstr "Прикажи омогућена проширења"
 
-#: subprojects/extensions-tool/src/command-list.c:137
+#: subprojects/extensions-tool/src/command-list.c:149
 msgid "Show disabled extensions"
 msgstr "Прикажи онемогућена проширења"
 
-#: subprojects/extensions-tool/src/command-list.c:140
+#: subprojects/extensions-tool/src/command-list.c:152
+msgid "Show extensions in active state"
+msgstr "Прикажи активна проширења"
+
+#: subprojects/extensions-tool/src/command-list.c:155
+msgid "Show extensions in inactive state"
+msgstr "Прикажи неактивна проширења"
+
+#: subprojects/extensions-tool/src/command-list.c:158
 msgid "Show extensions with preferences"
 msgstr "Прикажи проширења са поставкама"
 
-#: subprojects/extensions-tool/src/command-list.c:143
+#: subprojects/extensions-tool/src/command-list.c:161
 msgid "Show extensions with updates"
 msgstr "Прикажи проширења са ажурирањима"
 
-#: subprojects/extensions-tool/src/command-list.c:146
+#: subprojects/extensions-tool/src/command-list.c:164
 msgid "Print extension details"
 msgstr "Прикажи појединости проширења"
 
-#: subprojects/extensions-tool/src/command-list.c:154
+#: subprojects/extensions-tool/src/command-list.c:172
 msgid "List installed extensions"
 msgstr "Излистај инсталирана проширења"
 
-#: subprojects/extensions-tool/src/command-pack.c:456
+#: subprojects/extensions-tool/src/command-pack.c:444
 msgid "FILE"
 msgstr "ДАТОТЕКА"
 
-#: subprojects/extensions-tool/src/command-pack.c:457
+#: subprojects/extensions-tool/src/command-pack.c:445
 msgid "Additional source to include in the bundle"
 msgstr "Додатан извор који треба укључити у пакет"
 
-#: subprojects/extensions-tool/src/command-pack.c:461
+#: subprojects/extensions-tool/src/command-pack.c:449
 msgid "A GSettings schema that should be included"
 msgstr "Шема г-подешавања коју треба упаковати"
 
-#: subprojects/extensions-tool/src/command-pack.c:463
-#: subprojects/extensions-tool/src/command-pack.c:474
+#: subprojects/extensions-tool/src/command-pack.c:451
+#: subprojects/extensions-tool/src/command-pack.c:462
 msgid "DIRECTORY"
 msgstr "ДИРЕКТОРИЈУМ"
 
-#: subprojects/extensions-tool/src/command-pack.c:465
+#: subprojects/extensions-tool/src/command-pack.c:453
 msgid "The directory where translations are found"
 msgstr "Директоријум са преводима"
 
-#: subprojects/extensions-tool/src/command-pack.c:469
+#: subprojects/extensions-tool/src/command-pack.c:457
 msgid "The gettext domain to use for translations"
 msgstr "Геттекст домен који треба користити за преводе"
 
-#: subprojects/extensions-tool/src/command-pack.c:472
+#: subprojects/extensions-tool/src/command-pack.c:460
 msgid "Overwrite an existing pack"
 msgstr "Препиши постојећи пакет"
 
-#: subprojects/extensions-tool/src/command-pack.c:476
+#: subprojects/extensions-tool/src/command-pack.c:464
 msgid "The directory where the pack should be created"
 msgstr "Фасцикла где треба направити пакет"
 
-#: subprojects/extensions-tool/src/command-pack.c:478
+#: subprojects/extensions-tool/src/command-pack.c:466
 msgid "SOURCE_DIRECTORY"
 msgstr "ИЗВОРНИ_ДИРЕКТОРИЈУМ"
 
-#: subprojects/extensions-tool/src/command-pack.c:487
+#: subprojects/extensions-tool/src/command-pack.c:475
 msgid "Create an extension bundle"
 msgstr "Направи пакет са проширењем"
 
-#: subprojects/extensions-tool/src/command-pack.c:507
+#: subprojects/extensions-tool/src/command-pack.c:495
 msgid "More than one source directory specified"
 msgstr "Наведено је више изворних директоријума"
 
@@ -2993,98 +3288,112 @@ msgstr "Деинсталира проширење"
 msgid "Do not print error messages"
 msgstr "Не приказуј поруке са грешкама"
 
-#: subprojects/extensions-tool/src/main.c:248
+#: subprojects/extensions-tool/src/main.c:249
 msgid "Path"
 msgstr "Путања"
 
-#: subprojects/extensions-tool/src/main.c:251
+#: subprojects/extensions-tool/src/main.c:252
 msgid "URL"
 msgstr "Адреса"
 
-#: subprojects/extensions-tool/src/main.c:254
+#: subprojects/extensions-tool/src/main.c:255
 msgid "Original author"
 msgstr "Изворни творац"
 
-#: subprojects/extensions-tool/src/main.c:257
+#: subprojects/extensions-tool/src/main.c:261
+#: subprojects/extensions-tool/src/main.c:263
+#: subprojects/extensions-tool/src/main.c:265
 msgid "Version"
 msgstr "Издање"
 
-#: subprojects/extensions-tool/src/main.c:260
+#: subprojects/extensions-tool/src/main.c:268
+msgid "Enabled"
+msgstr "Укључено"
+
+#: subprojects/extensions-tool/src/main.c:268
+msgid "Yes"
+msgstr "Да"
+
+#: subprojects/extensions-tool/src/main.c:268
+msgid "No"
+msgstr "Не"
+
+#: subprojects/extensions-tool/src/main.c:271
 msgid "State"
 msgstr "Стaњe"
 
-#: subprojects/extensions-tool/src/main.c:298
+#: subprojects/extensions-tool/src/main.c:309
 msgid "“version” takes no arguments"
 msgstr "\"version\" не узима аргументе"
 
-#: subprojects/extensions-tool/src/main.c:300
-#: subprojects/extensions-tool/src/main.c:320
+#: subprojects/extensions-tool/src/main.c:311
+#: subprojects/extensions-tool/src/main.c:331
 msgid "Usage:"
 msgstr "Начин коришћења:"
 
-#: subprojects/extensions-tool/src/main.c:303
+#: subprojects/extensions-tool/src/main.c:314
 msgid "Print version information and exit."
 msgstr "Исписује податке о издању и излази."
 
-#: subprojects/extensions-tool/src/main.c:318
-#: subprojects/extensions-tool/src/main.c:321
+#: subprojects/extensions-tool/src/main.c:329
+#: subprojects/extensions-tool/src/main.c:332
 msgid "COMMAND"
 msgstr "НАРЕДБА"
 
-#: subprojects/extensions-tool/src/main.c:321
+#: subprojects/extensions-tool/src/main.c:332
 msgid "[ARGS…]"
 msgstr "[АРГУМЕНТИ…]"
 
-#: subprojects/extensions-tool/src/main.c:323
+#: subprojects/extensions-tool/src/main.c:334
 msgid "Commands:"
 msgstr "Наредбе:"
 
-#: subprojects/extensions-tool/src/main.c:324
+#: subprojects/extensions-tool/src/main.c:335
 msgid "Print help"
 msgstr "Прикажи помоћ"
 
-#: subprojects/extensions-tool/src/main.c:326
+#: subprojects/extensions-tool/src/main.c:337
 msgid "Enable extension"
 msgstr "Омогући проширење"
 
-#: subprojects/extensions-tool/src/main.c:327
+#: subprojects/extensions-tool/src/main.c:338
 msgid "Disable extension"
 msgstr "Онемогући проширење"
 
-#: subprojects/extensions-tool/src/main.c:328
+#: subprojects/extensions-tool/src/main.c:339
 msgid "Reset extension"
 msgstr "Поново постави проширење"
 
-#: subprojects/extensions-tool/src/main.c:329
+#: subprojects/extensions-tool/src/main.c:340
 msgid "Uninstall extension"
 msgstr "Деинсталирај проширење"
 
-#: subprojects/extensions-tool/src/main.c:330
+#: subprojects/extensions-tool/src/main.c:341
 msgid "List extensions"
 msgstr "Излистај проширење"
 
-#: subprojects/extensions-tool/src/main.c:331
-#: subprojects/extensions-tool/src/main.c:332
+#: subprojects/extensions-tool/src/main.c:342
+#: subprojects/extensions-tool/src/main.c:343
 msgid "Show extension info"
 msgstr "Прикажи податке о проширењу"
 
-#: subprojects/extensions-tool/src/main.c:333
+#: subprojects/extensions-tool/src/main.c:344
 msgid "Open extension preferences"
 msgstr "Отвори поставке проширења"
 
-#: subprojects/extensions-tool/src/main.c:334
+#: subprojects/extensions-tool/src/main.c:345
 msgid "Create extension"
 msgstr "Направи проширење"
 
-#: subprojects/extensions-tool/src/main.c:335
+#: subprojects/extensions-tool/src/main.c:346
 msgid "Package extension"
 msgstr "Запакуј проширење"
 
-#: subprojects/extensions-tool/src/main.c:336
+#: subprojects/extensions-tool/src/main.c:347
 msgid "Install extension bundle"
 msgstr "Инсталирај пакет проширења"
 
-#: subprojects/extensions-tool/src/main.c:338
+#: subprojects/extensions-tool/src/main.c:349
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Користи „%s“ за детаљнију помоћ.\n"
@@ -3114,8 +3423,14 @@ msgid "Add an item to quick settings"
 msgstr "Додај ставку у брза подешавања"
 
 #. translators:
+#. * The device has been disabled
+#: subprojects/gvc/gvc-mixer-control.c:1872
+msgid "Disabled"
+msgstr "Искључено"
+
+#. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3126,7 +3441,7 @@ msgstr[3] "%u излаз"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -3135,9 +3450,49 @@ msgstr[1] "%u улаза"
 msgstr[2] "%u улаза"
 msgstr[3] "%u улаз"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Системски звуци"
+
+#~ msgid "Network Manager"
+#~ msgstr "Управник мреже"
+
+#, javascript-format
+#~ msgid "%s is now known as %s"
+#~ msgstr "„%s“ је сада познат као „%s“"
+
+#~ msgid "Disabling"
+#~ msgstr "Онемогућавам"
+
+#~ msgid "Enabling"
+#~ msgstr "Омогућавам"
+
+#~ msgid "Thunderbolt"
+#~ msgstr "Тандерболт"
+
+#~ msgid "No Thanks"
+#~ msgstr "Не, хвала"
+
+#~ msgid "No Matches"
+#~ msgstr "Нема подударања"
+
+#~ msgid "The extension had an error"
+#~ msgstr "Проширење садржи грешку"
+
+#~ msgid "The extension can be updated"
+#~ msgstr "Постоји ажурирање проширења"
+
+#~ msgid "Help"
+#~ msgstr "Помоћ"
+
+#~ msgid "Manually Installed"
+#~ msgstr "Ручно инсталирана"
+
+#~ msgid "Built-In"
+#~ msgstr "Уграђена"
+
+#~ msgid "Extension Updates Ready"
+#~ msgstr "Спремна су ажурирања проширења"
 
 #~ msgid "Screenshot / Screencast"
 #~ msgstr "Снимак екрана / видео снимак"
@@ -3468,13 +3823,6 @@ msgstr "Системски звуци"
 #~ msgstr[2] "%d нових порука"
 #~ msgstr[3] "%d нова порука"
 
-#~ msgid "%d new notification"
-#~ msgid_plural "%d new notifications"
-#~ msgstr[0] "%d ново обавештење"
-#~ msgstr[1] "%d нова обавештења"
-#~ msgstr[2] "%d нових обавештења"
-#~ msgstr[3] "%d ново обавештење"
-
 #~ msgid "Account Settings"
 #~ msgstr "Подешавања налога"
 
@@ -3531,9 +3879,6 @@ msgstr "Системски звуци"
 
 #~ msgid "Events"
 #~ msgstr "Догађаји"
-
-#~ msgid "Notifications"
-#~ msgstr "Обавештења"
 
 #~ msgid "Media"
 #~ msgstr "Медији"
@@ -3752,9 +4097,6 @@ msgstr "Системски звуци"
 
 #~ msgid "Notification Settings"
 #~ msgstr "Поставке обавештења"
-
-#~ msgid "Tray Menu"
-#~ msgstr "Изборник фиоке"
 
 #~ msgid "No Messages"
 #~ msgstr "Нема порука"
