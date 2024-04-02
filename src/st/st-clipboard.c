@@ -302,6 +302,7 @@ st_clipboard_set_content (StClipboard     *clipboard,
   g_return_if_fail (ST_IS_CLIPBOARD (clipboard));
   g_return_if_fail (meta_selection != NULL);
   g_return_if_fail (bytes != NULL);
+  g_return_if_fail (mimetype != NULL);
 
   if (!convert_type (type, &selection_type))
     return;
