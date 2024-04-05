@@ -126,5 +126,5 @@ endif
 custom_target('compile-schemas',
   input: schema,
   output: 'gschemas.compiled',
-  command: [find_program('glib-compile-schemas'), data_builddir],
+  command: [find_program('glib-compile-schemas'), '--strict', data_builddir],
   build_by_default: true)
