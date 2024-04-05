@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-16 16:54+0000\n"
-"PO-Revision-Date: 2024-03-16 20:26+0330\n"
+"POT-Creation-Date: 2024-03-16 17:52+0000\n"
+"PO-Revision-Date: 2024-04-05 16:47+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -1417,7 +1417,7 @@ msgstr "راه‌اندازی دوباره"
 #: js/ui/endSessionDialog.js:91
 msgctxt "title"
 msgid "Install Updates & Restart"
-msgstr "نصب به‌روز رسانی‌ها و شروع دوباره"
+msgstr "نصب به‌روز رسانی‌ها و راه‌اندازی دوباره"
 
 #: js/ui/endSessionDialog.js:94
 #, javascript-format
@@ -1442,10 +1442,10 @@ msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] ""
-"سامانه پس از %Id ثانیه به طور خودکار دوباره راه‌اندازی می‌شود و به‌روز رسانی‌ها را نصب "
+"سامانه پس از %Id ثانیه به طور خودکار دوباره راه‌اندازی شده و به‌روز رسانی‌ها را نصب "
 "می‌کند."
 msgstr[1] ""
-"سامانه پس از %Id ثانیه به طور خودکار دوبارها راه‌اندازی می‌شود و به‌روز رسانی‌ها را نصب "
+"سامانه پس از %Id ثانیه به طور خودکار دوباره راه‌اندازی شده و به‌روز رسانی‌ها را نصب "
 "می‌کند."
 
 #: js/ui/endSessionDialog.js:120 js/ui/endSessionDialog.js:141
@@ -2363,7 +2363,7 @@ msgstr "تعلیق"
 
 #: js/ui/status/system.js:183
 msgid "Restart…"
-msgstr "شروع دوباره…"
+msgstr "راه‌اندازی دوباره…"
 
 #: js/ui/status/system.js:188
 msgid "Power Off…"
