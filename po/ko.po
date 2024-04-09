@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 01:44+0000\n"
-"PO-Revision-Date: 2024-03-10 19:10+0900\n"
+"POT-Creation-Date: 2024-03-16 16:54+0000\n"
+"PO-Revision-Date: 2024-04-08 22:00+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -133,7 +133,7 @@ msgstr "창의 스크린샷 찍기"
 msgid "Record a screencast interactively"
 msgstr "대화식으로 스크린캐스트 녹화"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
 msgid "System"
 msgstr "시스템"
 
@@ -231,7 +231,11 @@ msgid ""
 "loaded from system directories on startup. It does not affect extensions "
 "that are already loaded, so a change only takes full effect on the next "
 "login."
-msgstr "사용자가 홈 폴더에 확장 기능을 설치할 수 있게 허용합니다. 허용하지 않을 경우, InstallRemoteExtension D-Bus 메서드가 실패할 것이므로, 확장은 시작할 때 시스템 디렉터리에서만 읽어들입니다. 이 기능은 이미 읽어들인 확장 기능에는 적용되지 않으므로, 이 설정을 바꿔도 다음번 로그인할 때만 완전히 적용됩니다."
+msgstr ""
+"사용자가 홈 폴더에 확장 기능을 설치할 수 있게 허용합니다. 허용하지 않을 경"
+"우, InstallRemoteExtension D-Bus 메서드가 실패할 것이므로, 확장은 시작할 때 "
+"시스템 디렉터리에서만 읽어들입니다. 이 기능은 이미 읽어들인 확장 기능에는 적"
+"용되지 않으므로, 이 설정을 바꿔도 다음번 로그인할 때만 완전히 적용됩니다."
 
 #: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
@@ -275,7 +279,10 @@ msgid ""
 "This key overrides the automatic hiding of the “Log out” action in the "
 "system menu for logged-in situations where there is a single, local, non-"
 "system user and only a single available session type (e.g. GNOME on Wayland)."
-msgstr "단일 사용자, 로컬 사용자, 시스템 사용자가 아니고 단일 사용자만 가능한 세션 종류인 경우 (웨일랜드에서 그놈), 로그인한 상태에서 시스템 메뉴의 “로그아웃” 동작은 자동으로 감춰지는데, 이 키를 설정하면 이 기능을 바꿀 수 있습니다."
+msgstr ""
+"단일 사용자, 로컬 사용자, 시스템 사용자가 아니고 단일 사용자만 가능한 세션 종"
+"류인 경우 (웨일랜드에서 그놈), 로그인한 상태에서 시스템 메뉴의 “로그아웃” 동"
+"작은 자동으로 감춰지는데, 이 키를 설정하면 이 기능을 바꿀 수 있습니다."
 
 #: data/org.gnome.shell.gschema.xml.in:92
 msgid ""
@@ -590,7 +597,9 @@ msgid ""
 "Remote login is not possible because a remote session is already running for "
 "%s. To login remotely, you must log out from the remote session or force "
 "stop it."
-msgstr "원격 세션이 이미 %s에 대해 동작 중이므로 원격 로그인이 불가능합니다. 원격으로 로그인하려면 지금 원격 세션에서 로그아웃하거나 세션을 강제로 중지하십시오."
+msgstr ""
+"원격 세션이 이미 %s에 대해 동작 중이므로 원격 로그인이 불가능합니다. 원격으"
+"로 로그인하려면 지금 원격 세션에서 로그아웃하거나 세션을 강제로 중지하십시오."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:427
@@ -598,7 +607,9 @@ msgstr "원격 세션이 이미 %s에 대해 동작 중이므로 원격 로그�
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
 "login, you must log out from the remote session or force stop it."
-msgstr "원격 세션이 이미 %s에 대해 동작 중이므로 로그인이 불가능합니다. 로그인하려면 지금 원격 세션에서 로그아웃하거나 세션을 강제로 중지하십시오."
+msgstr ""
+"원격 세션이 이미 %s에 대해 동작 중이므로 로그인이 불가능합니다. 로그인하려면 "
+"지금 원격 세션에서 로그아웃하거나 세션을 강제로 중지하십시오."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:430
@@ -607,7 +618,9 @@ msgid ""
 "Remote login is not possible because a local session is already running for "
 "%s. To login remotely, you must log out from the local session or force stop "
 "it."
-msgstr "로컬 세션이 이미 %s에 대해 동작 중이므로 원격 로그인이 불가능합니다. 원격으로 로그인하려면 지금 로컬 세션에서 로그아웃하거나 세션을 강제로 중지하십시오."
+msgstr ""
+"로컬 세션이 이미 %s에 대해 동작 중이므로 원격 로그인이 불가능합니다. 원격으"
+"로 로그인하려면 지금 로컬 세션에서 로그아웃하거나 세션을 강제로 중지하십시오."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:433
@@ -615,7 +628,9 @@ msgstr "로컬 세션이 이미 %s에 대해 동작 중이므로 원격 로그�
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
 "you must log out from the session or force stop it."
-msgstr "로컬 세션이 이미 %s에 대해 동작 중이므로 로그인이 불가능합니다. 로그인하려면 지금 세션에서 로그아웃하거나 세션을 강제로 중지하십시오."
+msgstr ""
+"로컬 세션이 이미 %s에 대해 동작 중이므로 로그인이 불가능합니다. 로그인하려면 "
+"지금 세션에서 로그아웃하거나 세션을 강제로 중지하십시오."
 
 #: js/gdm/loginDialog.js:442
 msgid "Session Already Running"
@@ -625,7 +640,9 @@ msgstr "이미 동작 중인 세션"
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss."
-msgstr "강제로 중지하면 실행 중인 앱과 프로세스가 중지되므로, 데이터를 잃어버릴 수 있습니다."
+msgstr ""
+"강제로 중지하면 실행 중인 앱과 프로세스가 중지되므로, 데이터를 잃어버릴 수 있"
+"습니다."
 
 #: js/gdm/loginDialog.js:474
 msgid "Force Stop"
@@ -648,15 +665,14 @@ msgid "Username"
 msgstr "사용자 이름"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr "충돌 세션 중지 대화창 닫음"
+msgid "Login Attempt Timed Out"
+msgstr "로그인 시도 제한시간 초과"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr "사용자 %s에 대한 세션을 시작하려면 다시 로그인해 보십시오."
+msgid "Login took too long, please try again"
+msgstr "로그인이 너무 오래 걸렸습니다. 다시 해 보십시오"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "로그인 창"
 
@@ -2668,7 +2684,7 @@ msgstr "그놈 확장을 관리합니다"
 msgid "The GNOME Project"
 msgstr "그놈 프로젝트"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -2676,15 +2692,15 @@ msgstr ""
 "그놈 확장 관리자에서는 확장 기능의 업데이트, 확장 기능의 설정, 원하지 않는 확"
 "장 기능 제거 또는 사용 중지를 처리합니다."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "메인 창"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "사용 가능 업데이트"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "검색 보기"
 
@@ -2697,21 +2713,27 @@ msgstr "그놈 셸 확장을 설정합니다"
 msgid ""
 "The installed version of this extension (%s) is incompatible with the "
 "current version of GNOME (%s). The extension has been disabled."
-msgstr "이 확장 기능의 설치된 버전이 (%s) 현재 그놈 버전과 (%s) 호환되지 않습니다. 확장 기능을 사용하지 않습니다."
+msgstr ""
+"이 확장 기능의 설치된 버전이 (%s) 현재 그놈 버전과 (%s) 호환되지 않습니다. 확"
+"장 기능을 사용하지 않습니다."
 
 #: subprojects/extensions-app/js/extensionManager.js:238
 #, javascript-format
 msgid ""
 "The installed version of this extension is incompatible with the current "
 "version of GNOME (%s). The extension has been disabled."
-msgstr "이 확장 기능의 설치된 버전이 현재 그놈 버전과 (%s) 호환되지 않습니다. 확장 기능을 사용하지 않습니다."
+msgstr ""
+"이 확장 기능의 설치된 버전이 현재 그놈 버전과 (%s) 호환되지 않습니다. 확장 기"
+"능을 사용하지 않습니다."
 
 #: subprojects/extensions-app/js/extensionManager.js:242
 msgid ""
 "An error has occurred in this extension. This could cause issues elsewhere "
 "in the system. It is recommended to turn the extension off until the error "
 "is resolved."
-msgstr "이 확장 기능에서 오류가 발생했습니다. 시스템의 다른 곳에서 문제를 일으킬 수 있습니다. 오류가 해결될 때까지 확장 기능을 끄기를 권장합니다."
+msgstr ""
+"이 확장 기능에서 오류가 발생했습니다. 시스템의 다른 곳에서 문제를 일으킬 수 "
+"있습니다. 오류가 해결될 때까지 확장 기능을 끄기를 권장합니다."
 
 #. translators: Details for an extension error
 #: subprojects/extensions-app/js/extensionManager.js:248
@@ -2767,7 +2789,8 @@ msgstr "업데이트 자세히"
 #: subprojects/extensions-app/data/ui/extension-row.ui:71
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
-msgstr "이 확장 기능의 새 버전이 준비되었고, 다음 로그인에서 읽어들일 예정입니다."
+msgstr ""
+"이 확장 기능의 새 버전이 준비되었고, 다음 로그인에서 읽어들일 예정입니다."
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:107
 msgid "Extension Details"
@@ -2813,7 +2836,9 @@ msgstr "추가 정보"
 msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
-msgstr "확장 기능은 성능 저하 또는 안정성 문제를 일으킬 수 있습니다. 시스템에 문제를 발견하면 확장을 사용 중지하기를 권장합니다."
+msgstr ""
+"확장 기능은 성능 저하 또는 안정성 문제를 일으킬 수 있습니다. 시스템에 문제를 "
+"발견하면 확장을 사용 중지하기를 권장합니다."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:180
 msgid "User Extensions"
@@ -3325,13 +3350,13 @@ msgstr "빠른 설정에 항목을 추가합니다"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "사용 않음"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3339,12 +3364,19 @@ msgstr[0] "%u개 출력"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u개 입력"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "시스템 소리"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr "충돌 세션 중지 대화창 닫음"
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr "사용자 %s에 대한 세션을 시작하려면 다시 로그인해 보십시오."
