@@ -1,5 +1,13 @@
 .quick-settings {
   padding: $base_padding * 3;
+  &:ltr {
+    padding-right: $base_padding * 1.5;
+    &:scrolled { padding-right: $base_padding * 1.5 - 6px;}
+   }
+  &:rtl {
+    padding-left: $base_padding * 1.5;
+    &:scrolled { padding-left: $base_padding * 1.5 - 6px;}
+  }
   border-radius: $modal_radius * 2.25;
 
   .icon-button, .button {
@@ -10,6 +18,14 @@
 .quick-settings-grid {
   spacing-rows: $base_padding * 2;
   spacing-columns: $base_padding * 2;
+  &:ltr {
+    padding-right: $base_padding * 1.5;
+    &:scrolled { padding-right: $base_padding * 1.5 - 6px;}
+   }
+  &:rtl {
+    padding-left: $base_padding * 1.5;
+    &:scrolled { padding-left: $base_padding * 1.5 - 6px;}
+  }
 }
 
 .quick-toggle, .quick-toggle-has-menu {
@@ -158,6 +174,14 @@ $quick_toggle_checked_separator_color: if(
   border-radius: $base_border_radius * 3;
 
   margin: $base_padding * 2 0 0;
+  &:ltr {
+    margin-right: $base_padding * 1.5;
+    &:scrolled { margin-right: $base_padding * 1.5 - 6px;}
+  }
+  &:rtl {
+    margin-left: $base_padding * 1.5;
+    &:scrolled { margin-left: $base_padding * 1.5 - 6px;}
+  }
 
   .popup-menu-item > StIcon {
     -st-icon-style: symbolic;

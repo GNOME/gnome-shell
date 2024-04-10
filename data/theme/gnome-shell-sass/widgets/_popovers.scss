@@ -2,6 +2,9 @@
 
 $menu_bg_color: $bg_color;
 
+$bg_color_dimmed:  if($variant == 'light', st-mix($bg_color, #000, 0.6),  darken($bg_color, 8%));
+$border_color_dimmed:  if($variant == 'light', st-mix($outer_borders_color, #000, 0.6),  darken($outer_borders_color, 10%));
+
 $menuitem_bg_color:  if($variant == 'light', darken($menu_bg_color, 5%),  lighten($menu_bg_color, 5%));
 $menuitem_border_radius: $base_border_radius * 1.5;
 
@@ -30,6 +33,14 @@ $submenu_bg_color: if($variant == 'light', darken($menu_bg_color, 17%),  lighten
   border-radius: $modal_radius * 1.25;
   border: 1px solid $outer_borders_color;
   box-shadow: 0 2px 4px 0 $shadow_color;
+  // This must match value POPUP_ANIMATION_TIME of quckSettings.js
+  transition-duration: 400ms;
+  transition-type: ease-out-quad;
+}
+
+.popup-menu-content:expanded {
+  background-color: $bg_color_dimmed;
+  border: 1px solid $border_color_dimmed;
 }
 
 // menu items

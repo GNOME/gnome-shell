@@ -4,8 +4,6 @@ import Cogl from 'gi://Cogl';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Graphene from 'gi://Graphene';
-import Meta from 'gi://Meta';
 import Pango from 'gi://Pango';
 import St from 'gi://St';
 
@@ -502,6 +500,9 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
 
         const {animate = true} = params;
         const {opacity} = this.box;
+        if (this._openedSubMenu)
+            this._openedSubMenu.close(animate);
+
         const duration = animate
             ? POPUP_ANIMATION_TIME / 2
             : 0;
@@ -730,8 +731,12 @@ const QuickSettingsLayout = GObject.registerClass({
 
             y += rowNat + this.row_spacing;
 
-            if (row.some(c => c.menu?.actor.visible))
-                y += overlayHeight;
+            row.forEach(child => {
+                if (child.menu?.actor.visible) {
+                    const [, menuHeight] = child.menu.actor.get_preferred_height(-1);
+                    y += menuHeight;
+                }
+            });
         });
     }
 });
@@ -742,6 +747,17 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
 
         this.actor = new St.Widget({reactive: true, width: 0, height: 0});
         this.actor.add_child(this._boxPointer);
+
+        this.scroller = new St.ScrollView({
+            vscrollbar_policy: St.PolicyType.NEVER,
+            overlay_scrollbars: false,
+        });
+        this.scroller.add_style_class_name('vfade');
+        this._boxPointer.bin.set_child(this.box);
+        this._box = new St.Viewport();
+        this.box.add_child(this.scroller);
+        this.scroller.set_child(this._box);
+
         this.actor._delegate = this;
         // Undo superclass defaults
         this._boxPointer.set_keynav_flags(St.KeynavFlags.NONE);
@@ -753,10 +769,6 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
         Main.layoutManager.connectObject('system-modal-opened',
             () => this.close(), this);
 
-        this._dimEffect = new Clutter.BrightnessContrastEffect({
-            enabled: false,
-        });
-        this._boxPointer.add_effect_with_name('dim', this._dimEffect);
         this.box.add_style_class_name('quick-settings');
 
         // Overlay layer for menus
@@ -778,47 +790,13 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
                 nColumns,
             }),
         });
-        this.box.add_child(this._grid);
+        this._dimEffect = new Clutter.BrightnessContrastEffect({
+            enabled: false,
+        });
+        this._grid.add_effect_with_name('dim', this._dimEffect);
+        this._box.add_child(this._grid);
         this._grid.add_child(placeholder);
-
-        const xConstraint = new Clutter.BindConstraint({
-            coordinate: Clutter.BindCoordinate.X,
-            source: this._boxPointer,
-        });
-        const yConstraint = new Clutter.BindConstraint({
-            coordinate: Clutter.BindCoordinate.Y,
-            source: this._boxPointer,
-        });
-
-        // Pick up additional spacing from any intermediate actors
-        const updateOffset = (constraint, axis) => {
-            const laters = global.compositor.get_laters();
-            laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
-                const offset = this._grid.apply_relative_transform_to_point(
-                    this._boxPointer, new Graphene.Point3D());
-                constraint.offset = offset[axis];
-                return GLib.SOURCE_REMOVE;
-            });
-        };
-
-        this._grid.connect('notify::x', () => updateOffset(xConstraint, 'x'));
-        this.box.connect('notify::x', () => updateOffset(xConstraint, 'x'));
-        this._boxPointer.bin.connect('notify::x',
-            () => updateOffset(xConstraint, 'x'));
-
-        this._grid.connect('notify::y', () => updateOffset(yConstraint, 'y'));
-        this.box.connect('notify::y',  () => updateOffset(yConstraint, 'y'));
-        this._boxPointer.bin.connect('notify::y',
-            () => updateOffset(yConstraint, 'y'));
-
-        this._overlay.add_constraint(xConstraint);
-        this._overlay.add_constraint(yConstraint);
-        this._overlay.add_constraint(new Clutter.BindConstraint({
-            coordinate: Clutter.BindCoordinate.WIDTH,
-            source: this._grid,
-        }));
-
-        this.actor.add_child(this._overlay);
+        this._box.add_child(this._overlay);
     }
 
     addItem(item, colSpan = 1) {
@@ -837,16 +815,65 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
 
         if (item.menu) {
             this._overlay.add_child(item.menu.actor);
+            item.menu.actor.add_constraint(new Clutter.BindConstraint({
+                coordinate: Clutter.BindCoordinate.WIDTH,
+                source: this._grid,
+            }));
+
+            item.menu.actor.connect('scroll-event', (m, event) => {
+                this.scroller.vfunc_scroll_event(event);
+            });
+
+            item.menu.actor.connect('notify::height', () => {
+                this._applyScrollbar();
+            });
 
             item.menu.connect('open-state-changed', (m, isOpen) => {
                 this._setDimmed(isOpen);
                 this._activeMenu = isOpen ? item.menu : null;
+                this._applyScrollbar();
             });
         }
     }
 
     getFirstItem() {
         return this._grid.get_first_child();
+    }
+
+    _applyScrollbar() {
+        const maxHeight = this.actor.get_theme_node().get_max_height();
+        const rise = this._boxPointer.get_theme_node().get_length('-arrow-rise');
+
+        const [, preferredHeight] = this._boxPointer.get_preferred_height(-1);
+        const needsScrollbar = (preferredHeight > maxHeight - 2 * rise) && (maxHeight > 0);
+
+        this.scroller.vscrollbar_policy =
+            needsScrollbar ? St.PolicyType.ALWAYS : St.PolicyType.NEVER;
+
+        if (needsScrollbar) {
+            this.box.add_style_pseudo_class('scrolled');
+            this._grid.add_style_pseudo_class('scrolled');
+            this._activeMenu?.box.add_style_pseudo_class('scrolled');
+            this.scroller.get_children()[1].style = 'padding: 2px;';
+        } else {
+            this.box.remove_style_pseudo_class('scrolled');
+            this._grid.remove_style_pseudo_class('scrolled');
+            this._activeMenu?.box.remove_style_pseudo_class('scrolled');
+        }
+    }
+
+    open(animate) {
+        this.actor.show();
+        super.open(animate);
+
+
+        // It does not seem possible to compute the actual height available
+        // directly in the css, so let's do it here
+        const maxHeight = this.actor.get_theme_node().get_max_height();
+        const rise = this._boxPointer.get_theme_node().get_length('-arrow-rise');
+        this._boxPointer.bin.style = `max-height: ${maxHeight - 2 * rise}px;`;
+
+        this._applyScrollbar();
     }
 
     close(params = {}) {
@@ -858,6 +885,11 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
     }
 
     _setDimmed(dim) {
+        if (dim)
+            this.box.add_style_pseudo_class('expanded');
+        else
+            this.box.remove_style_pseudo_class('expanded');
+
         const val = 127 * (1 + (dim ? 1 : 0) * DIM_BRIGHTNESS);
         const color = new Cogl.Color({
             red: val,
@@ -866,7 +898,7 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
             alpha: 255,
         });
 
-        this._boxPointer.ease_property('@effects.dim.brightness', color, {
+        this._grid.ease_property('@effects.dim.brightness', color, {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: POPUP_ANIMATION_TIME,
             onStopped: () => (this._dimEffect.enabled = dim),
