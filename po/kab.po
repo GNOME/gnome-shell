@@ -8,68 +8,59 @@ msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-16 16:54+0000\n"
-"PO-Revision-Date: 2024-03-23 16:06+0100\n"
+"POT-Creation-Date: 2024-03-23 15:09+0000\n"
+"PO-Revision-Date: 2024-04-13 15:27+0100\n"
 "Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Kabyle <>\n"
 "Language: kab\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n>1\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
 "X-Generator: Gtranslator 41.0\n"
 "X-DL-Team: kab\n"
 "X-DL-Module: gnome-shell\n"
 "X-DL-Branch: main\n"
 "X-DL-Domain: po\n"
-"X-DL-State: Translating\n"
+"X-DL-State: None\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
 msgstr "Imsinḍen"
 
 #: data/50-gnome-shell-launchers.xml:10
-#| msgid "Activate favorite application 1"
 msgid "Activate pinned app 1"
 msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:14
-#| msgid "Activate favorite application 2"
 msgid "Activate pinned app 2"
 msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:18
-#| msgid "Activate favorite application 3"
 msgid "Activate pinned app 3"
 msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:22
-#| msgid "Activate favorite application 4"
 msgid "Activate pinned app 4"
 msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:26
-#| msgid "Activate favorite application 5"
 msgid "Activate pinned app 5"
 msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:30
-#| msgid "Activate favorite application 6"
 msgid "Activate pinned app 6"
 msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:34
-#| msgid "Activate favorite application 7"
 msgid "Activate pinned app 7"
 msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:38
-#| msgid "Activate favorite application 8"
 msgid "Activate pinned app 8"
 msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:42
-#| msgid "Activate favorite application 9"
 msgid "Activate pinned app 9"
 msgstr ""
 
@@ -143,7 +134,6 @@ msgid "Show the notification list"
 msgstr "Sken tabdart n telɣut"
 
 #: data/50-gnome-shell-system.xml:12
-#| msgid "Open the application menu"
 msgid "Open the quick settings menu"
 msgstr "Ldi umuɣ arurad iɣewwaṛen n usnas"
 
@@ -405,47 +395,38 @@ msgid "Switch to application 9"
 msgstr "Senfel s asnas wis 9"
 
 #: data/org.gnome.shell.gschema.xml.in:251
-#| msgid "Switch to application 1"
 msgid "Open a new instance of application 1"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:255
-#| msgid "Switch to application 2"
 msgid "Open a new instance of application 2"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:259
-#| msgid "Switch to application 3"
 msgid "Open a new instance of application 3"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:263
-#| msgid "Switch to application 4"
 msgid "Open a new instance of application 4"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:267
-#| msgid "Switch to application 5"
 msgid "Open a new instance of application 5"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:271
-#| msgid "Switch to application 6"
 msgid "Open a new instance of application 6"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:275
-#| msgid "Switch to application 7"
 msgid "Open a new instance of application 7"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:279
-#| msgid "Switch to application 8"
 msgid "Open a new instance of application 8"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:283
-#| msgid "Switch to application 9"
 msgid "Open a new instance of application 9"
 msgstr ""
 
@@ -908,13 +889,11 @@ msgstr "Akaram war isem"
 
 #: js/ui/appFavorites.js:166
 #, javascript-format
-#| msgid "%s has been added to your favorites."
 msgid "%s has been pinned to the dash."
 msgstr ""
 
 #: js/ui/appFavorites.js:199
 #, javascript-format
-#| msgid "%s has been removed from your favorites."
 msgid "%s has been unpinned from the dash."
 msgstr ""
 
@@ -1299,11 +1278,11 @@ msgstr "Ulac ineḍruyen"
 
 #: js/ui/dateMenu.js:413
 msgid "Add world clocks…"
-msgstr ""
+msgstr "Rnu timrilin n umaḍal…"
 
 #: js/ui/dateMenu.js:414
 msgid "World Clocks"
-msgstr ""
+msgstr "Timrilin n umaḍal"
 
 #: js/ui/dateMenu.js:704
 msgid "Loading…"
@@ -1435,7 +1414,7 @@ msgstr "Sens-it mi ara ttwasbedden yileqman"
 #: js/ui/endSessionDialog.js:130
 msgctxt "title"
 msgid "Restart & Install Upgrade"
-msgstr ""
+msgstr "Ales asekker sakin sbedd ileqman"
 
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
@@ -1457,7 +1436,7 @@ msgstr ""
 
 #: js/ui/endSessionDialog.js:298
 msgid "Other users are logged in"
-msgstr ""
+msgstr "Iseqdacen-nniḍen ttwaqqnen"
 
 #: js/ui/endSessionDialog.js:468
 msgctxt "button"
@@ -1519,11 +1498,11 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:34
 msgid "Slow Keys Turned On"
-msgstr ""
+msgstr "Tiqeffalin tiẓẓayanin ttwaremdent"
 
 #: js/ui/kbdA11yDialog.js:35
 msgid "Slow Keys Turned Off"
-msgstr ""
+msgstr "Tiqeffalin tiẓẓayanin ttwasensent"
 
 #: js/ui/kbdA11yDialog.js:36
 msgid ""
@@ -1533,11 +1512,11 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:42
 msgid "Sticky Keys Turned On"
-msgstr ""
+msgstr "Tiqeffalin timenzugin remdent"
 
 #: js/ui/kbdA11yDialog.js:43
 msgid "Sticky Keys Turned Off"
-msgstr ""
+msgstr "Tiqeffalin timenzugin xsint"
 
 #: js/ui/kbdA11yDialog.js:45
 msgid ""
@@ -1554,7 +1533,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:57
 msgid "Leave On"
-msgstr ""
+msgstr "Anef-as yermed"
 
 #: js/ui/kbdA11yDialog.js:57
 msgid "Turn On"
@@ -1566,7 +1545,7 @@ msgstr "Sens"
 
 #: js/ui/kbdA11yDialog.js:67
 msgid "Leave Off"
-msgstr ""
+msgstr "Anef-as yensa"
 
 #: js/ui/keyboard.js:181 js/ui/status/keyboard.js:899
 msgid "Keyboard Settings"
@@ -1888,7 +1867,7 @@ msgstr "Sken-it-id deg yifuyla"
 #: js/ui/screenshot.js:2289
 #, javascript-format
 msgid "Screenshot from %s"
-msgstr ""
+msgstr "Tuṭṭfa n ugdil seg %s"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2335
@@ -1942,7 +1921,7 @@ msgstr "Ffer aḍris"
 
 #: js/ui/shellEntry.js:176
 msgid "Caps lock is on."
-msgstr ""
+msgstr "Isekkilen imeqqranen remden."
 
 #: js/ui/shellMountOperation.js:288
 msgid "Hidden Volume"
@@ -2261,7 +2240,7 @@ msgstr ""
 #. Translators: "Mobile" from "Mobile Broadband"
 #: js/ui/status/network.js:1930
 msgid "Mobile"
-msgstr ""
+msgstr "Aziraz"
 
 #: js/ui/status/network.js:2035
 msgid "Connection failed"
@@ -2308,7 +2287,7 @@ msgstr ""
 
 #: js/ui/status/rfkill.js:101
 msgid "Airplane Mode"
-msgstr ""
+msgstr "Askar n temsrifegt"
 
 #: js/ui/status/system.js:170
 msgid "Power Off Menu"
@@ -2378,7 +2357,7 @@ msgstr ""
 
 #: js/ui/status/volume.js:233
 msgid "Mute"
-msgstr ""
+msgstr "Sgugem"
 
 #: js/ui/status/volume.js:288
 msgid "Volume"
@@ -2632,11 +2611,11 @@ msgstr ""
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
-msgstr ""
+msgstr "Asfaylu agejdan"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
-msgstr ""
+msgstr "Ileqman yellan"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
@@ -2890,7 +2869,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:521
 msgid "DESCRIPTION"
-msgstr ""
+msgstr "AGLAM"
 
 #: subprojects/extensions-tool/src/command-create.c:523
 msgid "A short description of what the extension does"
