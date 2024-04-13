@@ -2,6 +2,7 @@
 <interface>
   <template class="ExtensionRow" parent="AdwActionRow">
     <property name="activatable-widget">switch</property>
+    <property name="use-markup">false</property>
     <binding name="title">
       <lookup name="name" type="Extension">
         <lookup name="extension" type="ExtensionRow"/>
