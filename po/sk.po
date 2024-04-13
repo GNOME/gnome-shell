@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-16 16:54+0000\n"
-"PO-Revision-Date: 2024-03-30 10:18+0100\n"
-"Last-Translator: Dušan Kazik\n"
+"POT-Creation-Date: 2024-04-13 13:23+0000\n"
+"PO-Revision-Date: 2024-04-13 16:20+0200\n"
+"Last-Translator: Jose Riha\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
@@ -30,47 +30,38 @@ msgid "Launchers"
 msgstr "Spúšťače"
 
 #: data/50-gnome-shell-launchers.xml:10
-#| msgid "Activate favorite app 1"
 msgid "Activate pinned app 1"
 msgstr "Aktivovať pripnutú aplikáciu č. 1"
 
 #: data/50-gnome-shell-launchers.xml:14
-#| msgid "Activate favorite app 2"
 msgid "Activate pinned app 2"
 msgstr "Aktivovať pripnutú aplikáciu č. 2"
 
 #: data/50-gnome-shell-launchers.xml:18
-#| msgid "Activate favorite app 3"
 msgid "Activate pinned app 3"
 msgstr "Aktivovať pripnutú aplikáciu č. 3"
 
 #: data/50-gnome-shell-launchers.xml:22
-#| msgid "Activate favorite app 4"
 msgid "Activate pinned app 4"
 msgstr "Aktivovať pripnutú aplikáciu č. 4"
 
 #: data/50-gnome-shell-launchers.xml:26
-#| msgid "Activate favorite app 5"
 msgid "Activate pinned app 5"
 msgstr "Aktivovať pripnutú aplikáciu č. 5"
 
 #: data/50-gnome-shell-launchers.xml:30
-#| msgid "Activate favorite app 6"
 msgid "Activate pinned app 6"
 msgstr "Aktivovať pripnutú aplikáciu č. 6"
 
 #: data/50-gnome-shell-launchers.xml:34
-#| msgid "Activate favorite app 7"
 msgid "Activate pinned app 7"
 msgstr "Aktivovať pripnutú aplikáciu č. 7"
 
 #: data/50-gnome-shell-launchers.xml:38
-#| msgid "Activate favorite app 8"
 msgid "Activate pinned app 8"
 msgstr "Aktivovať pripnutú aplikáciu č. 8"
 
 #: data/50-gnome-shell-launchers.xml:42
-#| msgid "Activate favorite app 9"
 msgid "Activate pinned app 9"
 msgstr "Aktivovať pripnutú aplikáciu č. 9"
 
@@ -80,7 +71,7 @@ msgstr "Otvoriť nové okno pripnutej aplikácie č. 1"
 
 #: data/50-gnome-shell-launchers.xml:50
 msgid "Open new window of pinned app 2"
-msgstr "Otvoriť nové okno pripnutej aplikácie č. 2" 
+msgstr "Otvoriť nové okno pripnutej aplikácie č. 2"
 
 #: data/50-gnome-shell-launchers.xml:54
 msgid "Open new window of pinned app 3"
@@ -145,7 +136,6 @@ msgstr "Zobraziť zoznam s oznámeniami"
 
 # nazov klavesovej skratky
 #: data/50-gnome-shell-system.xml:12
-#| msgid "Open the app menu"
 msgid "Open the quick settings menu"
 msgstr "Otvoriť ponuku rýchlych nastavení"
 
@@ -236,7 +226,6 @@ msgstr ""
 "„enabled-extension“."
 
 #: data/org.gnome.shell.gschema.xml.in:45
-#| msgid "No extensions installed"
 msgid "Allow extension installation"
 msgstr "Povoliť inštalovanie rozšírení"
 
@@ -248,6 +237,10 @@ msgid ""
 "that are already loaded, so a change only takes full effect on the next "
 "login."
 msgstr ""
+"Povoliť používateľom inštalovať rozšírenia do ich domovského priečinka. Ak je vypnuté, "
+"metóda D-Bus InstallRemoteExtension skončí s chybou a rozšírenia sa budú pri spustení načítavať "
+"iba zo systémových adresárov. Nemá vplyv na už načítané rozšírenia, takže sa zmena naplno prejaví "
+"až pri ďalšom prihlásení."
 
 #: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
@@ -287,13 +280,11 @@ msgid "History for the looking glass dialog"
 msgstr "História dialógového okna integrovaného odlaďovača"
 
 #: data/org.gnome.shell.gschema.xml.in:82
-#| msgid "Always show the “Log out” menu item in the user menu."
 msgid "Always show the “Log Out” action in the system menu"
 msgstr "Vždy zobraziť položku „Odhlásiť sa“ v systémovej ponuke."
 
 # description
 #: data/org.gnome.shell.gschema.xml.in:83
-#, fuzzy
 #| msgid ""
 #| "This key overrides the automatic hiding of the “Log out” menu item in "
 #| "single-user, single-session situations."
@@ -302,8 +293,8 @@ msgid ""
 "system menu for logged-in situations where there is a single, local, non-"
 "system user and only a single available session type (e.g. GNOME on Wayland)."
 msgstr ""
-"Tento kľúč preváži automatické skrývanie položky „Odhlásiť sa“ v situáciách "
-"s jedným používateľom alebo jednou reláciou."
+"Tento kľúč vypína automatické skrývanie položky „Odhlásiť sa“ v systémovej ponuke v situáciách, "
+"kedy je prihlásený jeden miestny používateľ, ktorý nie je systémový a je dostupný iba jeden typ relácie (napr. GNOME vo Waylande)."
 
 # summary
 #: data/org.gnome.shell.gschema.xml.in:92
@@ -368,7 +359,7 @@ msgid ""
 "“application id” → 'data' pair. Currently, the following values are stored "
 "as 'data': • “position”: the position of the application icon in the page"
 msgstr ""
-"Rozloženie nástroja na výbe raplikácie. Každý záznam v poli je stránkou. "
+"Rozloženie nástroja na výber aplikácie. Každý záznam v poli je stránkou. "
 "Stránky sú uložené v poradí, v akom sú viditeľné v Shelli prostredia GNOME. "
 "Každá stránka obsahuje pár záznamov „application id“ → „údaje“. Momentálne "
 "sú nasledovné hodnoty uložené ako „údaje“: • “„pozícia“: pozícia ikony "
@@ -481,55 +472,46 @@ msgstr "Prepnúť na aplikáciu č. 9"
 
 # tooltip
 #: data/org.gnome.shell.gschema.xml.in:251
-#| msgid "Switch to application 1"
 msgid "Open a new instance of application 1"
 msgstr "Otvoriť novú inštanciu aplikácie č. 1"
 
 # tooltip
 #: data/org.gnome.shell.gschema.xml.in:255
-#| msgid "Switch to application 2"
 msgid "Open a new instance of application 2"
 msgstr "Otvoriť novú inštanciu aplikácie č. 2"
 
 # tooltip
 #: data/org.gnome.shell.gschema.xml.in:259
-#| msgid "Switch to application 3"
 msgid "Open a new instance of application 3"
 msgstr "Otvoriť novú inštanciu aplikácie č. 3"
 
 # tooltip
 #: data/org.gnome.shell.gschema.xml.in:263
-#| msgid "Switch to application 4"
 msgid "Open a new instance of application 4"
 msgstr "Otvoriť novú inštanciu aplikácie č. 4"
 
 # tooltip
 #: data/org.gnome.shell.gschema.xml.in:267
-#| msgid "Switch to application 5"
 msgid "Open a new instance of application 5"
 msgstr "Otvoriť novú inštanciu aplikácie č. 5"
 
 # tooltip
 #: data/org.gnome.shell.gschema.xml.in:271
-#| msgid "Switch to application 6"
 msgid "Open a new instance of application 6"
 msgstr "Otvoriť novú inštanciu aplikácie č. 6"
 
 # tooltip
 #: data/org.gnome.shell.gschema.xml.in:275
-#| msgid "Switch to application 7"
 msgid "Open a new instance of application 7"
 msgstr "Otvoriť novú inštanciu aplikácie č. 7"
 
 # tooltip
 #: data/org.gnome.shell.gschema.xml.in:279
-#| msgid "Switch to application 8"
 msgid "Open a new instance of application 8"
 msgstr "Otvoriť novú inštanciu aplikácie č. 8"
 
 # tooltip
 #: data/org.gnome.shell.gschema.xml.in:283
-#| msgid "Switch to application 9"
 msgid "Open a new instance of application 9"
 msgstr "Otvoriť novú inštanciu aplikácie č. 9"
 
@@ -662,6 +644,9 @@ msgid ""
 "%s. To login remotely, you must log out from the remote session or force "
 "stop it."
 msgstr ""
+"Vzdialené prihlásenie nie je možné, pretože pre používateľa %s je už spustená vzdialená "
+"relácia. Ak sa chcete prihlásiť na diaľku, musíte sa najprv z tejto vzdialenej relácie "
+"odhlásiť alebo vynútiť jej zastavenie."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:427
@@ -670,7 +655,10 @@ msgid ""
 "Login is not possible because a remote session is already running for %s. To "
 "login, you must log out from the remote session or force stop it."
 msgstr ""
-
+"Prihlásenie nie je možné, pretože pre používateľa %s je už spustená vzdialená relácia. "
+"Ak sa chcete prihlásiť, musíte sa najprv z tejto vzdialenej relácie odhlásiť alebo "
+"vynútiť jej zastavenie."
+ 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:430
 #, javascript-format
@@ -679,6 +667,8 @@ msgid ""
 "%s. To login remotely, you must log out from the local session or force stop "
 "it."
 msgstr ""
+"Vzdialené prihlásenie nie je možné, pretože pre používateľa %s je už spustená relácia. "
+"Ak sa chcete prihlásiť, musíte sa najprv z tejto relácie odhlásiť alebo vynútiť jej zastavenie."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:433
@@ -687,19 +677,21 @@ msgid ""
 "Login is not possible because a session is already running for %s. To login, "
 "you must log out from the session or force stop it."
 msgstr ""
+"Prihlásenie nie je možné, pretože pre používateľa %s je už spustená relácia. "
+"Ak sa chcete prihlásiť, musíte sa najprv z tejto relácie odhlásiť alebo vynútiť jej zastavenie."
 
 #: js/gdm/loginDialog.js:442
 msgid "Session Already Running"
-msgstr ""
+msgstr "Relácia už je spustená"
 
 #: js/gdm/loginDialog.js:454
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss."
 msgstr ""
+"Vynútené zastavenie ukončí všetky bežiace aplikácie a procesy a môže dôjsť ku strate údajov."
 
 #: js/gdm/loginDialog.js:474
-#| msgid "Force Quit"
 msgid "Force Stop"
 msgstr "Vynútiť zastavenie"
 
@@ -722,11 +714,11 @@ msgstr "Používateľské meno"
 
 #: js/gdm/loginDialog.js:1081
 msgid "Login Attempt Timed Out"
-msgstr ""
+msgstr "Časový limit pri pokuse o prihlásenie vypršal"
 
 #: js/gdm/loginDialog.js:1082
 msgid "Login took too long, please try again"
-msgstr ""
+msgstr "Prihlasovanie trvalo príliš dlho, skúste to prosím znovu"
 
 #: js/gdm/loginDialog.js:1427
 msgid "Login Window"
@@ -1204,8 +1196,6 @@ msgid "Clear"
 msgstr "Vymazať"
 
 #: js/ui/calendar.js:1001
-#| msgid "%d new notification"
-#| msgid_plural "%d new notifications"
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Vyčistiť všetky oznámenia"
@@ -1551,15 +1541,11 @@ msgstr[2] ""
 "Systém sa automaticky reštartuje a nainštaluje aktualizácie o %d sekundy."
 
 #: js/ui/endSessionDialog.js:120 js/ui/endSessionDialog.js:141
-#| msgctxt "button"
-#| msgid "Restart &amp; Install"
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "Reštartovať a inštalovať"
 
 #: js/ui/endSessionDialog.js:122
-#| msgctxt "button"
-#| msgid "Install &amp; Power Off"
 msgctxt "button"
 msgid "Install & Power Off"
 msgstr "Nainštalovať a vypnúť"
@@ -1745,7 +1731,6 @@ msgid "Show Errors"
 msgstr "Zobraziť chyby"
 
 #: js/ui/lookingGlass.js:804
-#| msgid "Activities"
 msgid "Active"
 msgstr "Aktívne"
 
@@ -1766,12 +1751,10 @@ msgid "Downloading"
 msgstr "Sťahuje sa"
 
 #: js/ui/lookingGlass.js:815
-#| msgid "Settings"
 msgid "Deactivating"
 msgstr "Deaktivujem"
 
 #: js/ui/lookingGlass.js:817
-#| msgid "Activities"
 msgid "Activating"
 msgstr "Aktivujem"
 
@@ -1820,13 +1803,10 @@ msgstr "Uzamykanie obrazovky vyžaduje správcu displejov prostredia GNOME."
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
 #: js/ui/messageList.js:400
-#| msgctxt "program"
-#| msgid "Unknown"
 msgid "Unknown App"
 msgstr "Neznáma aplikácia"
 
 #: js/ui/messageTray.js:328 js/ui/messageTray.js:330
-#| msgid "Notifications"
 msgid "Notification sound"
 msgstr "Zvuk oznámenia"
 
@@ -1979,8 +1959,6 @@ msgid "Take Screenshot"
 msgstr "Zachytiť snímku obrazovky"
 
 #: js/ui/screenshot.js:1335
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
 msgid "Record Screen"
 msgstr "Nahrať obrazovku"
 
@@ -2006,7 +1984,6 @@ msgstr "Záznamy obrazovky"
 #. * "Screencast from 07-17-2013 10:00:46 PM"
 #: js/ui/screenshot.js:2003
 #, no-c-format
-#| msgid "Screencast from %d %t.webm"
 msgid "Screencast from %d %t"
 msgstr "Záznam obrazovky zo dňa %d %t"
 
@@ -2017,13 +1994,11 @@ msgstr "Záznam obrazovky zaznamenaný"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2062
-#| msgid "Screencast recorded"
 msgid "Screencast failed to start"
 msgstr "Nepodarilo sa spustiť záznam obrazovky"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2068
-#| msgid "Screencast ended unexpectedly"
 msgid "Screencast ended: Out of disk space"
 msgstr "Záznam obrazovky skončil: došlo miesto na disku"
 
@@ -2031,7 +2006,6 @@ msgstr "Záznam obrazovky skončil: došlo miesto na disku"
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
 #: js/ui/screenshot.js:2074
-#| msgid "Screencast ended unexpectedly"
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "Záznam obrazovky neočakávane skončil, skúste to prosím znovu"
 
@@ -2634,13 +2608,11 @@ msgstr "Prihlásiť ako iný používateľ"
 
 #: js/ui/welcomeDialog.js:49
 #, javascript-format
-#| msgid "GNOME Shell"
 msgid "GNOME %s"
 msgstr "GNOME %s"
 
 #: js/ui/welcomeDialog.js:53
 #, javascript-format
-#| msgid "Welcome to GNOME %s"
 msgid "Welcome to %s"
 msgstr "Vitajte v %s"
 
@@ -2829,7 +2801,6 @@ msgstr ""
 "predvolieb rozšírení a odstraňovanie alebo zakázanie nechcených rozšírení."
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
-#| msgid "Login Window"
 msgid "Main Window"
 msgstr "Hlavné okno"
 
@@ -2838,30 +2809,29 @@ msgid "Available Updates"
 msgstr "Dostupné aktualizácie"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
-#, fuzzy
 #| msgid "Search"
 msgid "Search View"
-msgstr "Hľadať"
+msgstr "Zobrazenie vyhľadávania"
 
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
 msgstr "Nastavenie rozšírení pre Shell prostredia GNOME"
 
 #: subprojects/extensions-app/js/extensionManager.js:237
-#, fuzzy, javascript-format
+#, javascript-format
 #| msgid "The extension is incompatible with the current GNOME version"
 msgid ""
 "The installed version of this extension (%s) is incompatible with the "
 "current version of GNOME (%s). The extension has been disabled."
-msgstr "Rozšírenie nie je kompatibilné s aktuálnou verziou prostredia GNOME"
+msgstr "Nainštalovaná verzia tohto rozšírenia (%s) nie je kompatibilná s aktuálnou verziou GNOME (%s). Rozšírenie bolo vypnuté."
 
 #: subprojects/extensions-app/js/extensionManager.js:238
-#, fuzzy, javascript-format
+#, javascript-format
 #| msgid "The extension is incompatible with the current GNOME version"
 msgid ""
 "The installed version of this extension is incompatible with the current "
 "version of GNOME (%s). The extension has been disabled."
-msgstr "Rozšírenie nie je kompatibilné s aktuálnou verziou prostredia GNOME"
+msgstr "Nainštalovaná verzia tohto rozšírenia nie je kompatibilná s aktuálnou verziou prostredia GNOME (%s). Rozšírenie bolo vypnuté."
 
 #: subprojects/extensions-app/js/extensionManager.js:242
 msgid ""
@@ -2869,6 +2839,8 @@ msgid ""
 "in the system. It is recommended to turn the extension off until the error "
 "is resolved."
 msgstr ""
+"V tomto rozšírení nastala chyba. Toto by mohlo spôsobiť problémy inde v systéme. "
+"Kým nebude chyba opravená, odporúčame rozšírenie vypnúť."
 
 #. translators: Details for an extension error
 #: subprojects/extensions-app/js/extensionManager.js:248
@@ -2877,7 +2849,6 @@ msgstr "Podrobnosti o chybe:"
 
 #: subprojects/extensions-app/js/extensionRow.js:82
 #, javascript-format
-#| msgid "Version"
 msgid "Version %s"
 msgstr "Verzia %s"
 
@@ -2895,12 +2866,10 @@ msgstr ""
 "prevziať."
 
 #: subprojects/extensions-app/js/extensionsWindow.js:117
-#| msgid "Cancel"
 msgid "_Cancel"
 msgstr "_Zrušiť"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:118
-#| msgid "Remove"
 msgid "_Remove"
 msgstr "O_dstrániť"
 
@@ -2917,45 +2886,37 @@ msgstr[1] "%d rozšírenie bude aktualizované po najbližšom prihlásení."
 msgstr[2] "%d rozšírenia budú aktualizované po najbližšom prihlásení."
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:21
-#| msgid "App Details"
 msgid "Error Details"
 msgstr "Podrobnosti o chybe"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:61
-#| msgid "App Details"
 msgid "Updates Details"
 msgstr "Podrobnosti o aktualizácii"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:71
-#, fuzzy
 #| msgid "%d extension will be updated on next login."
 #| msgid_plural "%d extensions will be updated on next login."
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
-msgstr "%d rozšírení bude aktualizovaných po najbližšom prihlásení."
+msgstr "Nová verzia tohto rozšírenia je pripravená a načíta sa pri ďalšom prihlásení."
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:107
-#| msgid "Print extension details"
 msgid "Extension Details"
 msgstr "Podrobnosti o rozšírení"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:193
-#| msgid "Website"
 msgid "_Website"
 msgstr "_Webová stránka"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:220
-#| msgid "Settings"
 msgid "_Settings"
 msgstr "_Nastavenia"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:247
-#| msgid "Remove…"
 msgid "_Remove…"
 msgstr "O_dstrániť…"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:6
-#| msgid "Keyboard Settings"
 msgid "Keyboard Shortcuts"
 msgstr "Klávesové skratky"
 
@@ -2966,27 +2927,22 @@ msgstr "O aplikácii Rozšírenia"
 
 # MČ" zd sa mi to čudné. tuším som videl preklady „oznamovacia oblasť“, čo mi viac sedí. Toto je trošku akoby zavádzajúce, ale možno to s okolím ozrejmuje výsledok. Možno by som tam ponechal len „ponuka“ ak akolie jednoznačne naznačuje, že ide o „lištu správ“
 #: subprojects/extensions-app/data/ui/extensions-window.ui:64
-#| msgid "Tray Menu"
 msgid "Main Menu"
 msgstr "Hlavná ponuka"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:106
-#| msgid "Create extension"
 msgid "Search extensions"
 msgstr "Hľadať rozšírenia"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
-#| msgid "Extensions"
 msgid "_Extensions"
 msgstr "_Rozšírenia"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:143
-#| msgid "System Information"
 msgid "More Information"
 msgstr "Viac informácií"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:153
-#, fuzzy
 #| msgid ""
 #| "Extensions can cause performance and stability issues. Disable extensions "
 #| "if you encounter problems with your system."
@@ -2995,26 +2951,22 @@ msgid ""
 "disable all extensions if you experience problems with your system."
 msgstr ""
 "Rozšírenia môžu spôsobiť problémy s výkonom a stabilitou. Ak narazíte na "
-"problémy s vaším systémom, zakážte rozšírenia."
+"problémy s vaším systémom, všetky rozšírenia vypnite."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:180
-#| msgid "Extensions"
 msgid "User Extensions"
 msgstr "Používateľské rozšírenia"
 
 # summary
 #: subprojects/extensions-app/data/ui/extensions-window.ui:200
-#| msgid "List extensions"
 msgid "System Extensions"
 msgstr "Systémové rozšírenia"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:235
-#| msgid "Search"
 msgid "Search Results"
 msgstr "Výsledky hľadania"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:254
-#| msgid "No results."
 msgid "No Results Found"
 msgstr "Neboli nájdené žiadne výsledky"
 
@@ -3050,25 +3002,21 @@ msgid "General"
 msgstr "Všeobecné"
 
 #: subprojects/extensions-app/data/ui/help-overlay.ui:12
-#| msgid "Open menu"
 msgctxt "shortcut window"
 msgid "Open Menu"
 msgstr "Otvoriť ponuku"
 
 #: subprojects/extensions-app/data/ui/help-overlay.ui:18
-#| msgid "Search"
 msgctxt "shortcut window"
 msgid "Toggle Search"
 msgstr "Prepnúť hľadanie"
 
 #: subprojects/extensions-app/data/ui/help-overlay.ui:24
-#| msgid "Show Errors"
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
 msgstr "Zobraziť skratky"
 
 #: subprojects/extensions-app/data/ui/help-overlay.ui:30
-#| msgid "Quit"
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Ukončiť"
@@ -3150,10 +3098,9 @@ msgid "DOMAIN"
 msgstr "DOMÉNA"
 
 #: subprojects/extensions-tool/src/command-create.c:527
-#, fuzzy
 #| msgid "The gettext domain to use for translations"
 msgid "The gettext domain used by the extension"
-msgstr "Doména gettext použitá pre preklady"
+msgstr "Doména gettext používaná rozšírením"
 
 #: subprojects/extensions-tool/src/command-create.c:529
 #: subprojects/extensions-tool/src/command-pack.c:448
@@ -3161,10 +3108,9 @@ msgid "SCHEMA"
 msgstr "SCHÉMA"
 
 #: subprojects/extensions-tool/src/command-create.c:531
-#, fuzzy
 #| msgid "The template to use for the new extension"
 msgid "The GSettings schema used by the extension"
-msgstr "Šablóna použitá pre nové rozšírenie"
+msgstr "Schéma GSettings používaná rozšírením"
 
 #: subprojects/extensions-tool/src/command-create.c:534
 msgid "TEMPLATE"
@@ -3172,11 +3118,11 @@ msgstr "ŠABLÓNA"
 
 #: subprojects/extensions-tool/src/command-create.c:535
 msgid "The template to use for the new extension"
-msgstr "Šablóna použitá pre nové rozšírenie"
+msgstr "Šablóna, ktorá sa má použiť pre nové rozšírenie"
 
 #: subprojects/extensions-tool/src/command-create.c:538
 msgid "Include prefs.js template"
-msgstr ""
+msgstr "Pribaliť šáblónu prefs.js"
 
 #: subprojects/extensions-tool/src/command-create.c:544
 msgid "Enter extension information interactively"
@@ -3284,16 +3230,14 @@ msgid "Show disabled extensions"
 msgstr "Zobrazí vypnuté rozšírenia"
 
 #: subprojects/extensions-tool/src/command-list.c:152
-#, fuzzy
 #| msgid "Show extensions with updates"
 msgid "Show extensions in active state"
-msgstr "Zobrazí rozšírenia s aktualizáciami"
+msgstr "Zobrazí rozšírenia v aktívnom stave"
 
 #: subprojects/extensions-tool/src/command-list.c:155
-#, fuzzy
 #| msgid "Show extensions with updates"
 msgid "Show extensions in inactive state"
-msgstr "Zobrazí rozšírenia s aktualizáciami"
+msgstr "Zobrazí rozšírenia v neaktívnom stave"
 
 #: subprojects/extensions-tool/src/command-list.c:158
 msgid "Show extensions with preferences"
@@ -3422,7 +3366,6 @@ msgid "Yes"
 msgstr "Áno"
 
 #: subprojects/extensions-tool/src/main.c:268
-#| msgid "None"
 msgid "No"
 msgstr "Nie"
 
