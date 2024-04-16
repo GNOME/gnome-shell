@@ -806,7 +806,14 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this.emit('reset');
     }
 
-    _onVerificationComplete() {
+    _onVerificationComplete(_client, serviceName) {
+        const isCredentialManager = !!this._credentialManagers[serviceName];
+        const isForeground = this.serviceIsForeground(serviceName);
+        if (isCredentialManager && isForeground) {
+            this._credentialManagers[serviceName].token = null;
+            this._preemptingService = null;
+        }
+
         this.emit('verification-complete');
     }
 
