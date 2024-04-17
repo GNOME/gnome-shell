@@ -26,6 +26,9 @@
 #include "calendar-sources.h"
 #include "reminder-watcher.h"
 
+/* Snooze for 9 minutes */
+#define SNOOZE_TIME_SECS (60 * 9)
+
 struct _ReminderWatcher {
   EReminderWatcher parent;
 
@@ -122,6 +125,7 @@ reminder_watcher_notify_display (ReminderWatcher *rw,
   g_notification_set_body (notification, description);
   g_notification_set_icon (notification, icon);
 
+  g_notification_add_button_with_target (notification, _("Snooze"), "app.snooze-reminder", "s", notif_id);
   g_notification_add_button_with_target (notification, _("Dismiss"), "app.dismiss-reminder", "s", notif_id);
 
   g_application_send_notification (g_application_get_default (), notif_id, notification);
@@ -567,5 +571,32 @@ reminder_watcher_dismiss_by_id (EReminderWatcher *reminder_watcher,
    else
     {
       print_debug ("Dismiss: Cannot find reminder '%s'", id);
+    }
+}
+
+void
+reminder_watcher_snooze_by_id (EReminderWatcher *reminder_watcher,
+                               const char *id)
+{
+  EReminderData *rd;
+
+  g_return_if_fail (REMINDER_IS_WATCHER (reminder_watcher));
+  g_return_if_fail (id && *id);
+
+  rd = reminder_watcher_find_by_id (reminder_watcher, id);
+
+  if (rd != NULL)
+    {
+      print_debug ("Snooze: Going to snooze '%s'", reminder_watcher_get_rd_summary (rd));
+
+      g_application_withdraw_notification (g_application_get_default (), id);
+
+      e_reminder_watcher_snooze (reminder_watcher, rd, (g_get_real_time () / G_USEC_PER_SEC) + SNOOZE_TIME_SECS);
+
+      e_reminder_data_free (rd);
+    }
+   else
+    {
+      print_debug ("Snooze: Cannot find reminder '%s'", id);
     }
 }
