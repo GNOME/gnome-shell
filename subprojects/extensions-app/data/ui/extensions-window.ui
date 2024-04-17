@@ -248,9 +248,9 @@
                 <property name="name">noresults</property>
                 <property name="child">
                   <object class="AdwStatusPage">
-                    <property name="icon-name">org.gnome.Extensions-symbolic</property>
+                    <property name="icon-name">edit-find-symbolic</property>
                     <property name="title" translatable="yes">No Results Found</property>
-                    <property name="description" translatable="yes">Try a different search.</property>
+                    <property name="description" translatable="yes">Try a different search</property>
                   </object>
                 </property>
               </object>
