@@ -9,5 +9,12 @@
       <arg name="app_id" type="s" direction="in"/>
       <arg name="id" type="s" direction="in"/>
     </method>
+    <signal name="ActionInvoked">
+      <arg name="app_id" type="s"/>
+      <arg name="id" type="s"/>
+      <arg name="action" type="s"/>
+      <arg name="parameter" type="av"/>
+      <arg name="platform_data" type="a{sv}"/>
+    </signal>
   </interface>
 </node>

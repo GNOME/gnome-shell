@@ -456,15 +456,11 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
         });
     }
 
-    _activateAction(namespacedActionId, target) {
-        if (namespacedActionId) {
-            if (namespacedActionId.startsWith('app.')) {
-                let actionId = namespacedActionId.slice('app.'.length);
-                this.source.activateAction(actionId, target);
-            }
-        } else {
-            this.source.open();
-        }
+    _activateAction(actionId, target) {
+        if (actionId.startsWith('app.'))
+            this.source.activateAction(actionId.slice('app.'.length), target);
+        else
+            this.source.emitActionInvoked(this.id, actionId, target);
     }
 
     _onButtonClicked(button) {
@@ -473,7 +469,11 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
     }
 
     activate() {
-        this._activateAction(this._defaultAction, this._defaultActionTarget);
+        if (this._defaultAction)
+            this._activateAction(this._defaultAction, this._defaultActionTarget);
+        else
+            this.source.open();
+
         super.activate();
     }
 
@@ -486,7 +486,7 @@ function InvalidAppError() {}
 
 export const GtkNotificationDaemonAppSource = GObject.registerClass(
 class GtkNotificationDaemonAppSource extends MessageTray.Source {
-    constructor(appId) {
+    constructor(appId, dbusImpl) {
         if (!Gio.Application.id_is_valid(appId))
             throw new InvalidAppError();
 
@@ -502,6 +502,7 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
 
         this._appId = appId;
         this._app = app;
+        this._dbusImpl = dbusImpl;
 
         this._notifications = {};
         this._notificationPending = false;
@@ -515,6 +516,22 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
 
         Main.overview.hide();
         Main.panel.closeCalendar();
+    }
+
+    emitActionInvoked(notificationId, actionId, target) {
+        const context = global.create_app_launch_context(0, -1);
+        const info = this._app.get_app_info();
+        const token = context.get_startup_notify_id(info, []);
+
+        this._dbusImpl.emit_signal('ActionInvoked',
+            GLib.Variant.new('(sssava{sv})', [
+                this._appId,
+                notificationId,
+                actionId,
+                target ? [target] : [],
+                {'activation-token': GLib.Variant.new_string(token)},
+            ])
+        );
     }
 
     open() {
@@ -566,10 +583,10 @@ class GtkNotificationDaemon {
     constructor() {
         this._sources = {};
 
-        this._loadNotifications();
-
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GtkNotificationsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gtk/Notifications');
+
+        this._loadNotifications();
 
         Gio.DBus.session.own_name('org.gtk.Notifications', Gio.BusNameOwnerFlags.REPLACE, null, null);
     }
@@ -578,7 +595,7 @@ class GtkNotificationDaemon {
         if (this._sources[appId])
             return this._sources[appId];
 
-        let source = new GtkNotificationDaemonAppSource(appId);
+        const source = new GtkNotificationDaemonAppSource(appId, this._dbusImpl);
 
         source.connect('destroy', () => {
             delete this._sources[appId];
