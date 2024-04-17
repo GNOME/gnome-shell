@@ -136,12 +136,10 @@
                                 <property name="use-underline">true</property>
                                 <child type="suffix">
                                   <object class="GtkMenuButton">
+                                    <property name="tooltip-text" translatable="yes">More Information</property>
                                     <property name="valign">center</property>
                                     <property name="has-frame">false</property>
                                     <property name="icon-name">info-outline-symbolic</property>
-                                    <accessibility>
-                                      <property name="label" translatable="yes">More Information</property>
-                                    </accessibility>
                                     <property name="popover">
                                       <object class="GtkPopover" id="infoPopover">
                                         <property name="child">
