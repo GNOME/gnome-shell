@@ -835,6 +835,18 @@ on_client_disappeared_cb (CalendarSources *sources,
 }
 
 static void
+app_snooze_reminder_cb (GSimpleAction *action,
+                        GVariant *parameter,
+                        gpointer user_data)
+{
+  CalendarServerApp *app = user_data;
+
+  g_return_if_fail (CALENDAR_SERVER_IS_APP (app));
+
+  reminder_watcher_snooze_by_id (app->reminder_watcher, g_variant_get_string (parameter, NULL));
+}
+
+static void
 app_dismiss_reminder_cb (GSimpleAction *action,
                          GVariant *parameter,
                          gpointer user_data)
@@ -880,6 +892,7 @@ static void
 calendar_server_app_startup (GApplication *application)
 {
   const GActionEntry action_entries[] = {
+    { "snooze-reminder", app_snooze_reminder_cb, "s" },
     { "dismiss-reminder", app_dismiss_reminder_cb, "s" }
   };
 
