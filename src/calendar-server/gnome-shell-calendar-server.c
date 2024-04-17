@@ -1067,6 +1067,18 @@ stdin_channel_io_func (GIOChannel *source,
 }
 
 static void
+app_snooze_reminder_cb (GSimpleAction *action,
+                        GVariant *parameter,
+                        gpointer user_data)
+{
+  App *app = _global_app;
+
+  g_return_if_fail (app != NULL);
+
+  reminder_watcher_snooze_by_id (app->reminder_watcher, g_variant_get_string (parameter, NULL));
+}
+
+static void
 app_dismiss_reminder_cb (GSimpleAction *action,
                          GVariant *parameter,
                          gpointer user_data)
@@ -1088,6 +1100,7 @@ main (int    argc,
     {NULL }
   };
   const GActionEntry action_entries[] = {
+    { "snooze-reminder", app_snooze_reminder_cb, "s" },
     { "dismiss-reminder", app_dismiss_reminder_cb, "s" }
   };
   g_autoptr (GApplication) application = NULL;
