@@ -3,7 +3,7 @@
   <gresource prefix="/org/gnome/Extensions@profile@">
     <file alias="style.css">css/style.css</file>
 
-    <file preprocess="xml-stripblanks">icons/scalable/actions/info-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/info-outline-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/remove-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/settings-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/website-symbolic.svg</file>

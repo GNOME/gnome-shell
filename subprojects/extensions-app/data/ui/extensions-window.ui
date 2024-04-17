@@ -138,7 +138,7 @@
                                   <object class="GtkMenuButton">
                                     <property name="valign">center</property>
                                     <property name="has-frame">false</property>
-                                    <property name="icon-name">info-symbolic</property>
+                                    <property name="icon-name">info-outline-symbolic</property>
                                     <accessibility>
                                       <property name="label" translatable="yes">More Information</property>
                                     </accessibility>
