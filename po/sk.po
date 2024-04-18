@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-04-13 13:23+0000\n"
+"POT-Creation-Date: 2024-04-13 14:21+0000\n"
 "PO-Revision-Date: 2024-04-13 16:20+0200\n"
 "Last-Translator: Jose Riha\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
@@ -237,10 +237,11 @@ msgid ""
 "that are already loaded, so a change only takes full effect on the next "
 "login."
 msgstr ""
-"Povoliť používateľom inštalovať rozšírenia do ich domovského priečinka. Ak je vypnuté, "
-"metóda D-Bus InstallRemoteExtension skončí s chybou a rozšírenia sa budú pri spustení načítavať "
-"iba zo systémových adresárov. Nemá vplyv na už načítané rozšírenia, takže sa zmena naplno prejaví "
-"až pri ďalšom prihlásení."
+"Povoliť používateľom inštalovať rozšírenia do ich domovského priečinka. Ak "
+"je vypnuté, metóda D-Bus InstallRemoteExtension skončí s chybou a rozšírenia "
+"sa budú pri spustení načítavať iba zo systémových adresárov. Nemá vplyv na "
+"už načítané rozšírenia, takže sa zmena naplno prejaví až pri ďalšom "
+"prihlásení."
 
 #: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
@@ -285,16 +286,14 @@ msgstr "Vždy zobraziť položku „Odhlásiť sa“ v systémovej ponuke."
 
 # description
 #: data/org.gnome.shell.gschema.xml.in:83
-#| msgid ""
-#| "This key overrides the automatic hiding of the “Log out” menu item in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the “Log out” action in the "
 "system menu for logged-in situations where there is a single, local, non-"
 "system user and only a single available session type (e.g. GNOME on Wayland)."
 msgstr ""
-"Tento kľúč vypína automatické skrývanie položky „Odhlásiť sa“ v systémovej ponuke v situáciách, "
-"kedy je prihlásený jeden miestny používateľ, ktorý nie je systémový a je dostupný iba jeden typ relácie (napr. GNOME vo Waylande)."
+"Tento kľúč vypína automatické skrývanie položky „Odhlásiť sa“ v systémovej "
+"ponuke v situáciách, kedy je prihlásený jeden miestny používateľ, ktorý nie "
+"je systémový a je dostupný iba jeden typ relácie (napr. GNOME vo Waylande)."
 
 # summary
 #: data/org.gnome.shell.gschema.xml.in:92
@@ -644,9 +643,9 @@ msgid ""
 "%s. To login remotely, you must log out from the remote session or force "
 "stop it."
 msgstr ""
-"Vzdialené prihlásenie nie je možné, pretože pre používateľa %s je už spustená vzdialená "
-"relácia. Ak sa chcete prihlásiť na diaľku, musíte sa najprv z tejto vzdialenej relácie "
-"odhlásiť alebo vynútiť jej zastavenie."
+"Vzdialené prihlásenie nie je možné, pretože pre používateľa %s je už "
+"spustená vzdialená relácia. Ak sa chcete prihlásiť na diaľku, musíte sa "
+"najprv z tejto vzdialenej relácie odhlásiť alebo vynútiť jej zastavenie."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:427
@@ -655,10 +654,10 @@ msgid ""
 "Login is not possible because a remote session is already running for %s. To "
 "login, you must log out from the remote session or force stop it."
 msgstr ""
-"Prihlásenie nie je možné, pretože pre používateľa %s je už spustená vzdialená relácia. "
-"Ak sa chcete prihlásiť, musíte sa najprv z tejto vzdialenej relácie odhlásiť alebo "
-"vynútiť jej zastavenie."
- 
+"Prihlásenie nie je možné, pretože pre používateľa %s je už spustená "
+"vzdialená relácia. Ak sa chcete prihlásiť, musíte sa najprv z tejto "
+"vzdialenej relácie odhlásiť alebo vynútiť jej zastavenie."
+
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:430
 #, javascript-format
@@ -667,8 +666,9 @@ msgid ""
 "%s. To login remotely, you must log out from the local session or force stop "
 "it."
 msgstr ""
-"Vzdialené prihlásenie nie je možné, pretože pre používateľa %s je už spustená relácia. "
-"Ak sa chcete prihlásiť, musíte sa najprv z tejto relácie odhlásiť alebo vynútiť jej zastavenie."
+"Vzdialené prihlásenie nie je možné, pretože pre používateľa %s je už "
+"spustená relácia. Ak sa chcete prihlásiť, musíte sa najprv z tejto relácie "
+"odhlásiť alebo vynútiť jej zastavenie."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:433
@@ -678,7 +678,8 @@ msgid ""
 "you must log out from the session or force stop it."
 msgstr ""
 "Prihlásenie nie je možné, pretože pre používateľa %s je už spustená relácia. "
-"Ak sa chcete prihlásiť, musíte sa najprv z tejto relácie odhlásiť alebo vynútiť jej zastavenie."
+"Ak sa chcete prihlásiť, musíte sa najprv z tejto relácie odhlásiť alebo "
+"vynútiť jej zastavenie."
 
 #: js/gdm/loginDialog.js:442
 msgid "Session Already Running"
@@ -689,7 +690,8 @@ msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss."
 msgstr ""
-"Vynútené zastavenie ukončí všetky bežiace aplikácie a procesy a môže dôjsť ku strate údajov."
+"Vynútené zastavenie ukončí všetky bežiace aplikácie a procesy a môže dôjsť "
+"ku strate údajov."
 
 #: js/gdm/loginDialog.js:474
 msgid "Force Stop"
@@ -2347,11 +2349,11 @@ msgstr "Pripojiť k zariadeniu %s"
 
 #: js/ui/status/network.js:1050
 msgid "Secure"
-msgstr "Bezpečná"
+msgstr "Zabezpečená"
 
 #: js/ui/status/network.js:1050
 msgid "Not secure"
-msgstr "Nebezpečná"
+msgstr "Nezabezpečená"
 
 #: js/ui/status/network.js:1051
 #, javascript-format
@@ -2809,7 +2811,6 @@ msgid "Available Updates"
 msgstr "Dostupné aktualizácie"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
-#| msgid "Search"
 msgid "Search View"
 msgstr "Zobrazenie vyhľadávania"
 
@@ -2819,19 +2820,21 @@ msgstr "Nastavenie rozšírení pre Shell prostredia GNOME"
 
 #: subprojects/extensions-app/js/extensionManager.js:237
 #, javascript-format
-#| msgid "The extension is incompatible with the current GNOME version"
 msgid ""
 "The installed version of this extension (%s) is incompatible with the "
 "current version of GNOME (%s). The extension has been disabled."
-msgstr "Nainštalovaná verzia tohto rozšírenia (%s) nie je kompatibilná s aktuálnou verziou GNOME (%s). Rozšírenie bolo vypnuté."
+msgstr ""
+"Nainštalovaná verzia tohto rozšírenia (%s) nie je kompatibilná s aktuálnou "
+"verziou GNOME (%s). Rozšírenie bolo vypnuté."
 
 #: subprojects/extensions-app/js/extensionManager.js:238
 #, javascript-format
-#| msgid "The extension is incompatible with the current GNOME version"
 msgid ""
 "The installed version of this extension is incompatible with the current "
 "version of GNOME (%s). The extension has been disabled."
-msgstr "Nainštalovaná verzia tohto rozšírenia nie je kompatibilná s aktuálnou verziou prostredia GNOME (%s). Rozšírenie bolo vypnuté."
+msgstr ""
+"Nainštalovaná verzia tohto rozšírenia nie je kompatibilná s aktuálnou "
+"verziou prostredia GNOME (%s). Rozšírenie bolo vypnuté."
 
 #: subprojects/extensions-app/js/extensionManager.js:242
 msgid ""
@@ -2839,8 +2842,8 @@ msgid ""
 "in the system. It is recommended to turn the extension off until the error "
 "is resolved."
 msgstr ""
-"V tomto rozšírení nastala chyba. Toto by mohlo spôsobiť problémy inde v systéme. "
-"Kým nebude chyba opravená, odporúčame rozšírenie vypnúť."
+"V tomto rozšírení nastala chyba. Toto by mohlo spôsobiť problémy inde v "
+"systéme. Kým nebude chyba opravená, odporúčame rozšírenie vypnúť."
 
 #. translators: Details for an extension error
 #: subprojects/extensions-app/js/extensionManager.js:248
@@ -2894,11 +2897,10 @@ msgid "Updates Details"
 msgstr "Podrobnosti o aktualizácii"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:71
-#| msgid "%d extension will be updated on next login."
-#| msgid_plural "%d extensions will be updated on next login."
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
-msgstr "Nová verzia tohto rozšírenia je pripravená a načíta sa pri ďalšom prihlásení."
+msgstr ""
+"Nová verzia tohto rozšírenia je pripravená a načíta sa pri ďalšom prihlásení."
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:107
 msgid "Extension Details"
@@ -2943,9 +2945,6 @@ msgid "More Information"
 msgstr "Viac informácií"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:153
-#| msgid ""
-#| "Extensions can cause performance and stability issues. Disable extensions "
-#| "if you encounter problems with your system."
 msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
@@ -3098,7 +3097,6 @@ msgid "DOMAIN"
 msgstr "DOMÉNA"
 
 #: subprojects/extensions-tool/src/command-create.c:527
-#| msgid "The gettext domain to use for translations"
 msgid "The gettext domain used by the extension"
 msgstr "Doména gettext používaná rozšírením"
 
@@ -3108,7 +3106,6 @@ msgid "SCHEMA"
 msgstr "SCHÉMA"
 
 #: subprojects/extensions-tool/src/command-create.c:531
-#| msgid "The template to use for the new extension"
 msgid "The GSettings schema used by the extension"
 msgstr "Schéma GSettings používaná rozšírením"
 
@@ -3230,12 +3227,10 @@ msgid "Show disabled extensions"
 msgstr "Zobrazí vypnuté rozšírenia"
 
 #: subprojects/extensions-tool/src/command-list.c:152
-#| msgid "Show extensions with updates"
 msgid "Show extensions in active state"
 msgstr "Zobrazí rozšírenia v aktívnom stave"
 
 #: subprojects/extensions-tool/src/command-list.c:155
-#| msgid "Show extensions with updates"
 msgid "Show extensions in inactive state"
 msgstr "Zobrazí rozšírenia v neaktívnom stave"
 
