@@ -1,3 +1,30 @@
+46.1
+====
+* Improve notification of conflicting session [Joan; !3235]
+* Add shift level to Korean OSK layout [Carlos; !3222]
+* Fix markup support in notifications [Sebastian; !3247]
+* extensions-app: Fix empty rows with '&' in extension name [Florian; !3266]
+* extensions-app: Improve HIG compliance [Automeris; !3269, !3271]
+* Omit expand buttons in notification banners [Julian; !3249]
+* Misc. bug fixes and cleanups [dcz, Totto16, Sebastian, Florian;
+  !3262, !3253, !3260, !3234]
+
+Contributors:
+  dcz, Carlos Garnacho, Sebastian Keller, Robert Mader, Florian Müllner,
+  Automeris naranja, Julian Sparber, Joan Torres, Totto16, Sebastian Wick
+
+Translators:
+  Danial Behzadi [fa], Baurzhan Muftakhidinov [kk], Anders Jonsson [sv],
+  Aurimas Černius [lt], Yuri Chornoivan [uk], Daniel Rusek [cs],
+  Ekaterine Papava [ka], Asier Sarasua Garmendia [eu], Jiri Grönroos [fi],
+  Piotr Drąg [pl], Yaron Shahrabani [he], Brage Fuglseth [nb], A S Alam [pa],
+  Christian Kirbach [de], Milo Casagrande [it], Fran Dieguez [gl],
+  Jordi Mas i Hernandez [ca], Jordi Mas [ca], Sabri Ünal [tr],
+  Boyuan Yang [zh_CN], Athmane MOKRAOUI [kab], Vincent Chatelain [fr],
+  Милош Поповић [sr, sr@latin], Martin [sl], Nathan Follens [nl], Artur S0 [ru],
+  Juliano de Souza Camargo [pt_BR], Changwoo Ryu [ko], Jose Riha [sk],
+  Fabio Tomat [fur], Peter Vágner [sk], Andi Chandler [en_GB]
+
 46.0
 ====
 * Fix model selection in on-screen keyboard [Jonas; !3230]

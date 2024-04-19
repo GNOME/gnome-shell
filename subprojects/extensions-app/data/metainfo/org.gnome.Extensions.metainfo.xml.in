@@ -54,6 +54,12 @@
   </description>
 
   <releases>
+    <release version="46.1" date="2024-04-20">
+      <description>
+        <p>Make sure all icon-only buttons have tooltips.</p>
+        <p>Fix empty rows for extensions with &quot;&amp;&quot; in their name.</p>
+      </description>
+    </release>
     <release version="46.0" date="2024-03-16">
       <description>
         <p>Streamline layout to be fully adaptive on mobile.</p>
