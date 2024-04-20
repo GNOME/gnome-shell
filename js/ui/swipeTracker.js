@@ -126,7 +126,7 @@ const TouchpadSwipeGesture = GObject.registerClass({
         if (event.get_gesture_phase() === Clutter.TouchpadGesturePhase.BEGIN)
             this._state = TouchpadState.NONE;
 
-        if (event.get_touchpad_gesture_finger_count() !== GESTURE_FINGER_COUNT)
+        if (event.get_touchpad_gesture_finger_count() < GESTURE_FINGER_COUNT)
             return Clutter.EVENT_PROPAGATE;
 
         if ((this._allowedModes & Main.actionMode) === 0)
