@@ -1,3 +1,10 @@
+45.6
+====
+* Misc. bug fixes and cleanups [Florian; !3234]
+
+Contributors:
+  Florian Müllner
+
 45.5
 ====
 * Fix auto-closing FDO notifications [Florian; !3204]
