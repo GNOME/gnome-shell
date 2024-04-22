@@ -1,7 +1,7 @@
 # Copyright (C) 2010 THE gnome-shell'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Andika Triwidada <andika@gmail.com>, 2010-2014, 2017, 2022, 2023.
+# Andika Triwidada <andika@gmail.com>, 2010-2014, 2017, 2022-2024.
 # Dirgita <dirgitadevina@yahoo.co.id>, 2011, 2012, 2014.
 # Wibiharto <wibinem@yahoo.com>, 2011.
 # Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017-2024.
@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 01:44+0000\n"
-"PO-Revision-Date: 2024-03-07 13:43+0700\n"
+"POT-Creation-Date: 2024-04-21 15:07+0000\n"
+"PO-Revision-Date: 2024-04-22 18:07+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -125,7 +125,7 @@ msgstr "Ambil cuplikan layar dari suatu jendela"
 msgid "Record a screencast interactively"
 msgstr "Rekam screencast secara interaktif"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1294
 msgid "System"
 msgstr "Sistem"
 
@@ -553,7 +553,7 @@ msgid "Network Login"
 msgstr "Log Masuk Jaringan"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:277
+#: subprojects/extensions-app/data/ui/extensions-window.ui:275
 msgid "Something’s gone wrong"
 msgstr "Ada yang tidak beres"
 
@@ -677,15 +677,14 @@ msgid "Username"
 msgstr "Nama pengguna"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr "Dialog menghentikan sesi yang berkonflik ditutup"
+msgid "Login Attempt Timed Out"
+msgstr "Upaya Log Masuk Habis Waktu"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr "Cobalah log masuk lagi untuk memulai sesi bagi pengguna %s."
+msgid "Login took too long, please try again"
+msgstr "Log masuk terlalu lama, silakan coba lagi"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Jendela Log Masuk"
 
@@ -2692,7 +2691,7 @@ msgstr "Kelola Ekstensi GNOME Anda"
 msgid "The GNOME Project"
 msgstr "Proyek GNOME"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -2700,15 +2699,15 @@ msgstr ""
 "Ekstensi GNOME menangani pemutakhiran ekstensi, mengkonfigurasi preferensi "
 "ekstensi, dan menghapus atau menonaktifkan ekstensi yang tidak diinginkan."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
 msgid "Main Window"
 msgstr "Jendela Utama"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:80
 msgid "Available Updates"
 msgstr "Pemutakhiran yang Tersedia"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:84
 msgid "Search View"
 msgstr "Tampilan Pencarian"
 
@@ -2790,34 +2789,34 @@ msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d ekstensi akan diperbarui pada log masuk berikutnya."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:21
+#: subprojects/extensions-app/data/ui/extension-row.ui:22
 msgid "Error Details"
 msgstr "Detail Galat"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:61
+#: subprojects/extensions-app/data/ui/extension-row.ui:62
 msgid "Updates Details"
 msgstr "Detail Pemutakhiran"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:71
+#: subprojects/extensions-app/data/ui/extension-row.ui:72
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
 msgstr ""
 "Versi baru dari ekstensi ini telah siap dan akan dimuat pada log masuk "
 "berikutnya."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:107
+#: subprojects/extensions-app/data/ui/extension-row.ui:104
 msgid "Extension Details"
 msgstr "Detail Ekstensi"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:193
+#: subprojects/extensions-app/data/ui/extension-row.ui:192
 msgid "_Website"
 msgstr "Situs _Web"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:220
+#: subprojects/extensions-app/data/ui/extension-row.ui:219
 msgid "_Settings"
 msgstr "_Pengaturan"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:247
+#: subprojects/extensions-app/data/ui/extension-row.ui:246
 msgid "_Remove…"
 msgstr "_Hapus…"
 
@@ -2841,11 +2840,11 @@ msgstr "Cari ekstensi"
 msgid "_Extensions"
 msgstr "_Ekstensi"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:143
+#: subprojects/extensions-app/data/ui/extensions-window.ui:139
 msgid "More Information"
 msgstr "Informasi Lebih Lanjut"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:153
+#: subprojects/extensions-app/data/ui/extensions-window.ui:151
 msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
@@ -2853,31 +2852,31 @@ msgstr ""
 "Ekstensi dapat menyebabkan masalah kinerja dan stabilitas. Disarankan untuk "
 "menonaktifkan semua ekstensi jika Anda mengalami masalah dengan sistem Anda."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:180
+#: subprojects/extensions-app/data/ui/extensions-window.ui:178
 msgid "User Extensions"
 msgstr "Ekstensi Pengguna"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:200
+#: subprojects/extensions-app/data/ui/extensions-window.ui:198
 msgid "System Extensions"
 msgstr "Ekstensi Sistem"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:235
+#: subprojects/extensions-app/data/ui/extensions-window.ui:233
 msgid "Search Results"
 msgstr "Hasil Pencarian"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:254
+#: subprojects/extensions-app/data/ui/extensions-window.ui:252
 msgid "No Results Found"
 msgstr "Tak Ada Hasil yang Ditemukan"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:255
+#: subprojects/extensions-app/data/ui/extensions-window.ui:253
 msgid "Try a different search."
 msgstr "Cobalah pencarian lain."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:266
+#: subprojects/extensions-app/data/ui/extensions-window.ui:264
 msgid "No Installed Extensions"
 msgstr "Tidak Ada Ekstensi Terpasang"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:267
+#: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
@@ -2885,7 +2884,7 @@ msgstr ""
 "Untuk menemukan dan menambahkan ekstensi, kunjungi <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:278
+#: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -3361,13 +3360,13 @@ msgstr "Tambah butir ke pengaturan cepat"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3375,12 +3374,19 @@ msgstr[0] "%u Keluaran"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Masukan"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Suara Sistem"
+
+#~ msgid "Stop conflicting session dialog closed"
+#~ msgstr "Dialog menghentikan sesi yang berkonflik ditutup"
+
+#, javascript-format
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr "Cobalah log masuk lagi untuk memulai sesi bagi pengguna %s."
