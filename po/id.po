@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-04-21 15:07+0000\n"
-"PO-Revision-Date: 2024-04-22 18:07+0700\n"
+"POT-Creation-Date: 2024-04-22 11:09+0000\n"
+"PO-Revision-Date: 2024-04-22 18:09+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -1146,16 +1146,16 @@ msgstr "Bersihkan semua notifikasi"
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
 #, javascript-format
-msgid "“%s” is not responding."
-msgstr "\"%s\" tidak merespon."
+msgid "“%s” Is Not Responding"
+msgstr "\"%s\" Tidak Merespon"
 
 #: js/ui/closeDialog.js:45
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
-"quit entirely."
+"quit entirely"
 msgstr ""
 "Anda dapat memilih untuk menunggu sebentar untuk melanjutkan atau memaksa "
-"aplikasi keluar."
+"aplikasi keluar"
 
 #: js/ui/closeDialog.js:73
 msgid "Force Quit"
