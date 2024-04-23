@@ -104,6 +104,10 @@ class LoginManagerSystemd extends Signals.EventEmitter {
             this._sessionRemoved.bind(this));
     }
 
+    getCurrentUserProxy() {
+        return this._userProxy;
+    }
+
     async getCurrentSessionProxy() {
         if (this._currentSession)
             return this._currentSession;
@@ -218,6 +222,12 @@ class LoginManagerSystemd extends Signals.EventEmitter {
 }
 
 class LoginManagerDummy extends Signals.EventEmitter  {
+    getCurrentUserProxy() {
+        // we could return a DummyUser object that fakes whatever callers
+        // expect, but just never settling the promise should be safer
+        return new Promise(() => {});
+    }
+
     getCurrentSessionProxy() {
         // we could return a DummySession object that fakes whatever callers
         // expect (at the time of writing: connect() and connectSignal()
