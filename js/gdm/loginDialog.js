@@ -451,7 +451,7 @@ export const ConflictingSessionDialog = GObject.registerClass({
         banner.clutter_text.line_wrap = true;
 
         let warningBanner = new St.Label({
-            text: _('Force stopping will quit any running apps and processes, and could result in data loss.'),
+            text: _('Force stopping will quit any running apps and processes, and could result in data loss'),
             style_class: 'conflicting-session-dialog-desc-warning',
         });
         warningBanner.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;

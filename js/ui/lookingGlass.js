@@ -782,7 +782,7 @@ const Extensions = GObject.registerClass({
                     errorDisplay.add_child(new St.Label({text: errors[i]}));
             } else {
                 /* Translators: argument is an extension UUID. */
-                let message = _('%s has not emitted any errors.').format(extension.uuid);
+                let message = _('%s has not emitted any errors').format(extension.uuid);
                 errorDisplay.add_child(new St.Label({text: message}));
             }
 

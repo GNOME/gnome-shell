@@ -348,7 +348,7 @@ export const GeolocationDialog = GObject.registerClass({
         content.add_child(reasonLabel);
 
         let infoLabel = new St.Label({
-            text: _('Location access can be changed at any time from the privacy settings.'),
+            text: _('Location access can be changed at any time from the privacy settings'),
             style_class: 'message-dialog-description',
         });
         content.add_child(infoLabel);

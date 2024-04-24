@@ -49,14 +49,14 @@ const logoutDialogContent = {
     subject: C_('title', 'Log Out'),
     descriptionWithUser(user, seconds) {
         return ngettext(
-            '%s will be logged out automatically in %d second.',
-            '%s will be logged out automatically in %d seconds.',
+            '%s will be logged out automatically in %d second',
+            '%s will be logged out automatically in %d seconds',
             seconds).format(user, seconds);
     },
     description(seconds) {
         return ngettext(
-            'You will be logged out automatically in %d second.',
-            'You will be logged out automatically in %d seconds.',
+            'You will be logged out automatically in %d second',
+            'You will be logged out automatically in %d seconds',
             seconds).format(seconds);
     },
     showBatteryWarning: false,
@@ -72,8 +72,8 @@ const shutdownDialogContent = {
     subjectWithUpdates: C_('title', 'Install Updates & Power Off'),
     description(seconds) {
         return ngettext(
-            'The system will power off automatically in %d second.',
-            'The system will power off automatically in %d seconds.',
+            'The system will power off automatically in %d second',
+            'The system will power off automatically in %d seconds',
             seconds).format(seconds);
     },
     checkBoxText: C_('checkbox', 'Install pending software updates'),
@@ -91,8 +91,8 @@ const restartDialogContent = {
     subjectWithUpdates: C_('title', 'Install Updates & Restart'),
     description(seconds) {
         return ngettext(
-            'The system will restart automatically in %d second.',
-            'The system will restart automatically in %d seconds.',
+            'The system will restart automatically in %d second',
+            'The system will restart automatically in %d seconds',
             seconds).format(seconds);
     },
     checkBoxText: C_('checkbox', 'Install pending software updates'),
@@ -110,8 +110,8 @@ const restartUpdateDialogContent = {
     subject: C_('title', 'Restart & Install Updates'),
     description(seconds) {
         return ngettext(
-            'The system will automatically restart and install updates in %d second.',
-            'The system will automatically restart and install updates in %d seconds.',
+            'The system will automatically restart and install updates in %d second',
+            'The system will automatically restart and install updates in %d seconds',
             seconds).format(seconds);
     },
     showBatteryWarning: true,
@@ -281,7 +281,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         this._batteryWarning = new St.Label({
             style_class: 'end-session-dialog-battery-warning',
-            text: _('Low battery power: please plug in before installing updates.'),
+            text: _('Low battery power: please plug in before installing updates'),
         });
         this._batteryWarning.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._batteryWarning.clutter_text.line_wrap = true;

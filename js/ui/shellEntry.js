@@ -173,7 +173,7 @@ class CapsLockWarning extends St.Label {
             ...params,
         });
 
-        this.text = _('Caps lock is on.');
+        this.text = _('Caps lock is on');
 
         this.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this.clutter_text.line_wrap = true;

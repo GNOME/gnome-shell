@@ -830,7 +830,7 @@ export const SearchResultsView = GObject.registerClass({
             if (this.searchInProgress)
                 this._statusText.set_text(_('Searching…'));
             else
-                this._statusText.set_text(_('No results.'));
+                this._statusText.set_text(_('No results'));
         }
     }
 

@@ -78,7 +78,7 @@ export const InhibitShortcutsDialog = GObject.registerClass({
         if (restoreAccel) {
             let restoreLabel = new St.Label({
                 /* Translators: %s is a keyboard shortcut like "Super+x" */
-                text: _('You can restore shortcuts by pressing %s.').format(restoreAccel),
+                text: _('You can restore shortcuts by pressing %s').format(restoreAccel),
                 style_class: 'message-dialog-description',
             });
             restoreLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;

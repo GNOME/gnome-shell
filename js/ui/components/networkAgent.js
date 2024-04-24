@@ -93,7 +93,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
 
         if (flags & NM.SecretAgentGetSecretsFlags.WPS_PBC_ACTIVE) {
             let descriptionLabel = new St.Label({
-                text: _('Alternatively you can connect by pushing the “WPS” button on your router.'),
+                text: _('Alternatively you can connect by pushing the “WPS” button on your router'),
                 style_class: 'message-dialog-description',
             });
             descriptionLabel.clutter_text.line_wrap = true;
@@ -369,7 +369,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             wirelessSetting = this._connection.get_setting_wireless();
             ssid = NM.utils_ssid_to_utf8(wirelessSetting.get_ssid().get_data());
             content.title = _('Authentication required');
-            content.message = _('Passwords or encryption keys are required to access the wireless network “%s”.').format(ssid);
+            content.message = _('Passwords or encryption keys are required to access the wireless network “%s”').format(ssid);
             this._getWirelessSecrets(content.secrets, wirelessSetting);
             break;
         case '802-3-ethernet':
@@ -405,7 +405,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         case 'cdma':
         case 'bluetooth':
             content.title = _('Authentication required');
-            content.message = _('A password is required to connect to “%s”.').format(connectionSetting.get_id());
+            content.message = _('A password is required to connect to “%s”').format(connectionSetting.get_id());
             this._getMobileSecrets(content.secrets, connectionType);
             break;
         default:
@@ -748,16 +748,16 @@ class NetworkAgent {
             let wirelessSetting = connection.get_setting_wireless();
             let ssid = NM.utils_ssid_to_utf8(wirelessSetting.get_ssid().get_data());
             title = _('Authentication required');
-            body = _('Passwords or encryption keys are required to access the wireless network “%s”.').format(ssid);
+            body = _('Passwords or encryption keys are required to access the wireless network “%s”').format(ssid);
             break;
         }
         case '802-3-ethernet':
             title = _('Wired 802.1X authentication');
-            body = _('A password is required to connect to “%s”.').format(connection.get_id());
+            body = _('A password is required to connect to “%s”').format(connection.get_id());
             break;
         case 'pppoe':
             title = _('DSL authentication');
-            body = _('A password is required to connect to “%s”.').format(connection.get_id());
+            body = _('A password is required to connect to “%s”').format(connection.get_id());
             break;
         case 'gsm':
             if (hints.includes('pin')) {
@@ -769,11 +769,11 @@ class NetworkAgent {
         case 'cdma':
         case 'bluetooth':
             title = _('Authentication required');
-            body = _('A password is required to connect to “%s”.').format(connectionSetting.get_id());
+            body = _('A password is required to connect to “%s”').format(connectionSetting.get_id());
             break;
         case 'vpn':
             title = _('VPN password');
-            body = _('A password is required to connect to “%s”.').format(connectionSetting.get_id());
+            body = _('A password is required to connect to “%s”').format(connectionSetting.get_id());
             break;
         default:
             log(`Invalid connection type: ${connectionType}`);

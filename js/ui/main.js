@@ -387,7 +387,7 @@ async function _handleLockScreenWarning() {
 
         notify(
             _('Screen Lock disabled'),
-            _('Screen Locking requires the GNOME display manager.'));
+            _('Screen Locking requires the GNOME display manager'));
     }
 }
 

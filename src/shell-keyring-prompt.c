@@ -761,7 +761,7 @@ shell_keyring_prompt_complete (ShellKeyringPrompt *self)
           /* Do the passwords match? */
           if (!g_str_equal (password, confirm))
             {
-              gcr_prompt_set_warning (GCR_PROMPT (self), _("Passwords do not match."));
+              gcr_prompt_set_warning (GCR_PROMPT (self), _("Passwords do not match"));
               return FALSE;
           }
 
