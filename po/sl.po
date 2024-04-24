@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-04-21 15:06+0000\n"
-"PO-Revision-Date: 2024-04-21 17:47+0200\n"
+"POT-Creation-Date: 2024-04-24 13:17+0000\n"
+"PO-Revision-Date: 2024-04-24 16:15+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -644,7 +644,7 @@ msgstr "Seja že teče"
 #: js/gdm/loginDialog.js:454
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
-"data loss."
+"data loss"
 msgstr ""
 "Z vsiljeno zaustavitvijo se zaustavijo vsi zagnani procesi in programi, kar "
 "lahko povzroči izgubo podatkov."
@@ -1203,7 +1203,7 @@ msgstr "Odpri s programom %s"
 
 #: js/ui/components/networkAgent.js:96
 msgid ""
-"Alternatively you can connect by pushing the “WPS” button on your router."
+"Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr "Vzpostavitev povezave je mogoča tudi z gumbom »WPS« na usmerjevalniku."
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
@@ -1235,8 +1235,7 @@ msgstr "Zahtevana je overitev"
 #: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:751
 #, javascript-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"“%s”."
+"Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr ""
 "Za povezavo v brezžično omrežje »%s« je zahtevano geslo oziroma šifrirni "
 "ključ."
@@ -1269,7 +1268,7 @@ msgstr "Koda PIN"
 #: js/ui/components/networkAgent.js:760 js/ui/components/networkAgent.js:772
 #: js/ui/components/networkAgent.js:776
 #, javascript-format
-msgid "A password is required to connect to “%s”."
+msgid "A password is required to connect to “%s”"
 msgstr "Za povezavo z omrežjem »%s« je zahtevano geslo."
 
 #: js/ui/components/networkAgent.js:775
@@ -1367,7 +1366,7 @@ msgid "No Events"
 msgstr "Ni dogodkov"
 
 #: js/ui/dateMenu.js:413
-msgid "Add world clocks…"
+msgid "Add World Clocks…"
 msgstr "Dodaj svetovni čas …"
 
 #: js/ui/dateMenu.js:414
@@ -1379,11 +1378,11 @@ msgid "Loading…"
 msgstr "Poteka nalaganje …"
 
 #: js/ui/dateMenu.js:714
-msgid "Go online for weather information"
-msgstr "Preglej splet za podrobnosti o vremenu."
+msgid "Go Online for Weather Information"
+msgstr "Preglej splet za podrobnosti o vremenu"
 
 #: js/ui/dateMenu.js:716
-msgid "Weather information is currently unavailable"
+msgid "Weather Information Unavailable"
 msgstr "Podatki o vremenu trenutno niso na voljo."
 
 #: js/ui/dateMenu.js:726
@@ -1391,8 +1390,8 @@ msgid "Weather"
 msgstr "Vreme"
 
 #: js/ui/dateMenu.js:728
-msgid "Select weather location…"
-msgstr "Izbor kraja za vremensko napoved …"
+msgid "Select Weather Location…"
+msgstr "Izberi kraj z vremensko napovedjo …"
 
 #: js/ui/endSessionDialog.js:48
 #, javascript-format
@@ -1407,8 +1406,8 @@ msgstr "Odjava"
 
 #: js/ui/endSessionDialog.js:52
 #, javascript-format
-msgid "%s will be logged out automatically in %d second."
-msgid_plural "%s will be logged out automatically in %d seconds."
+msgid "%s will be logged out automatically in %d second"
+msgid_plural "%s will be logged out automatically in %d seconds"
 msgstr[0] "Uporabnik %s bo samodejno odjavljen čez %d sekund."
 msgstr[1] "Uporabnik %s bo samodejno odjavljen čez %d sekundo."
 msgstr[2] "Uporabnik %s bo samodejno odjavljen čez %d sekundi."
@@ -1416,12 +1415,12 @@ msgstr[3] "Uporabnik %s bo samodejno odjavljen čez %d sekunde."
 
 #: js/ui/endSessionDialog.js:58
 #, javascript-format
-msgid "You will be logged out automatically in %d second."
-msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "Uporabnik bo samodejno odjavljen čez %d sekund."
-msgstr[1] "Uporabnik bo samodejno odjavljen čez %d sekundo."
-msgstr[2] "Uporabnik bo samodejno odjavljen čez %d sekundi."
-msgstr[3] "Uporabnik bo samodejno odjavljen čez %d sekunde."
+msgid "You will be logged out automatically in %d second"
+msgid_plural "You will be logged out automatically in %d seconds"
+msgstr[0] "Samodejno boste odjavljeni čez %d sekund."
+msgstr[1] "Samodejno boste odjavljeni čez %d sekundo."
+msgstr[2] "Samodejno boste odjavljeni čez %d sekundi."
+msgstr[3] "Samodejno boste odjavljeni čez %d sekunde."
 
 #: js/ui/endSessionDialog.js:65
 msgctxt "button"
@@ -1440,8 +1439,8 @@ msgstr "Namesti posodobitve in ugasni računalnik"
 
 #: js/ui/endSessionDialog.js:75
 #, javascript-format
-msgid "The system will power off automatically in %d second."
-msgid_plural "The system will power off automatically in %d seconds."
+msgid "The system will power off automatically in %d second"
+msgid_plural "The system will power off automatically in %d seconds"
 msgstr[0] "Sistem se bo samodejno izklopil čez %d sekund."
 msgstr[1] "Sistem se bo samodejno izklopil čez %d sekundo."
 msgstr[2] "Sistem se bo samodejno izklopil čez %d sekundi."
@@ -1469,8 +1468,8 @@ msgstr "Namestitev posodobitev in ponoven zagon računalnika"
 
 #: js/ui/endSessionDialog.js:94
 #, javascript-format
-msgid "The system will restart automatically in %d second."
-msgid_plural "The system will restart automatically in %d seconds."
+msgid "The system will restart automatically in %d second"
+msgid_plural "The system will restart automatically in %d seconds"
 msgstr[0] "Sistem se bo samodejno ponovno zagnal čez %d sekund."
 msgstr[1] "Sistem se bo samodejno ponovno zagnal čez %d sekundo."
 msgstr[2] "Sistem se bo samodejno ponovno zagnal čez %d sekundi."
@@ -1488,9 +1487,9 @@ msgstr "Namesti posodobitve in ponovno zaženi"
 
 #: js/ui/endSessionDialog.js:113
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
-"The system will automatically restart and install updates in %d seconds."
+"The system will automatically restart and install updates in %d seconds"
 msgstr[0] ""
 "Sistem bo samodejno namestil pakete in se nato ponovno zagnal čez %d sekund."
 msgstr[1] ""
@@ -1534,10 +1533,10 @@ msgstr ""
 "računalnik priklopljen na električno omrežje."
 
 #: js/ui/endSessionDialog.js:284
-msgid "Low battery power: please plug in before installing updates."
+msgid "Low battery power: please plug in before installing updates"
 msgstr ""
-"Naprava deluje na bateriji: pred nameščanjem posodobitev jo je priporočljivo "
-"priključiti v omrežje."
+"Nizka napolnjenost bateriije: pred nameščanjem posodobitev je priporočljivo, "
+"da se priključite v el. omrežje."
 
 #: js/ui/endSessionDialog.js:293
 msgid "Some applications are busy or have unsaved work"
@@ -1583,7 +1582,7 @@ msgid "Extension Updates Available"
 msgstr "Na voljo so posodobitve razširitev"
 
 #: js/ui/extensionSystem.js:355
-msgid "Extension updates are ready to be installed."
+msgid "Extension updates are ready to be installed"
 msgstr "Posodobitve razširitev so pripravljene na namestitev."
 
 #: js/ui/inhibitShortcutsDialog.js:70
@@ -1603,8 +1602,8 @@ msgstr "Program poskuša onemogočiti tipkovne bližnjice"
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:81
 #, javascript-format
-msgid "You can restore shortcuts by pressing %s."
-msgstr "Tipkovne bližnjice je mogoče obnoviti s pritiskom na gumb %s."
+msgid "You can restore shortcuts by pressing %s"
+msgstr "Tipkovne bližnjice je mogoče obnoviti s pritiskom gumba %s."
 
 #: js/ui/kbdA11yDialog.js:34
 msgid "Slow Keys Turned On"
@@ -1675,8 +1674,8 @@ msgstr "Ni nameščenih razširitev"
 #. Translators: argument is an extension UUID.
 #: js/ui/lookingGlass.js:785
 #, javascript-format
-msgid "%s has not emitted any errors."
-msgstr "%s ni javil napak."
+msgid "%s has not emitted any errors"
+msgstr "%s ne javlja napak."
 
 #: js/ui/lookingGlass.js:791
 msgid "Hide Errors"
@@ -1751,7 +1750,7 @@ msgid "Screen Lock disabled"
 msgstr "Zaklep zaslona je onemogočen"
 
 #: js/ui/main.js:390
-msgid "Screen Locking requires the GNOME display manager."
+msgid "Screen Locking requires the GNOME display manager"
 msgstr ""
 "Zaklepanje zaslona zahteva namestitev upravljalnika zaslona za okolje GNOME."
 
@@ -2008,7 +2007,7 @@ msgid "Searching…"
 msgstr "Iskanje …"
 
 #: js/ui/search.js:833
-msgid "No results."
+msgid "No results"
 msgstr "Ni najdenih zadetkov."
 
 #: js/ui/search.js:964
@@ -2042,7 +2041,7 @@ msgid "Hide Text"
 msgstr "Skrij besedilo"
 
 #: js/ui/shellEntry.js:176
-msgid "Caps lock is on."
+msgid "Caps lock is on"
 msgstr "Vključena je tipka zaklepa velikosti črk."
 
 #: js/ui/shellMountOperation.js:288
@@ -2061,7 +2060,7 @@ msgstr "Uporablja nastavitvene datoteke"
 #: js/ui/shellMountOperation.js:302
 #, javascript-format
 msgid ""
-"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
 msgstr ""
 "Za odklepanje pogona, ki uporablja nastavitvene datoteke, uporabite orodje "
 "<i>%s</i>."
@@ -2069,7 +2068,7 @@ msgstr ""
 #: js/ui/shellMountOperation.js:306
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
-"keyfiles."
+"keyfiles"
 msgstr ""
 "Za odklepanje je treba uporabiti zunanje orodje, kot je program <i>Diski</"
 "i>, ki podpira uporabo ključnih datotek."
@@ -2093,7 +2092,7 @@ msgid "Open %s"
 msgstr "Odpri %s"
 
 #: js/ui/shellMountOperation.js:438
-msgid "The PIM must be a number or empty."
+msgid "The PIM must be a number or empty"
 msgstr "Vrednost PIM mora biti številka ali prazno polje."
 
 #: js/ui/status/accessibility.js:36
@@ -2267,7 +2266,7 @@ msgid "The app %s wants to access your location"
 msgstr "Program %s zahteva dostop do podatkov trenutnega mesta"
 
 #: js/ui/status/location.js:351
-msgid "Location access can be changed at any time from the privacy settings."
+msgid "Location access can be changed at any time from the privacy settings"
 msgstr ""
 "Dostop do trenutnega mesta je mogoče spremeniti kadarkoli med nastavitvami "
 "zasebnosti."
@@ -2471,7 +2470,7 @@ msgstr "Neznana naprava Thunderbolt"
 
 #: js/ui/status/thunderbolt.js:315
 msgid ""
-"New device has been detected and needs to be authorized by an administrator."
+"New device has been detected and needs to be authorized by an administrator"
 msgstr "Zaznana je nova naprava, ki jo mora overiti skrbnik sistema."
 
 #: js/ui/status/thunderbolt.js:321
@@ -2568,7 +2567,7 @@ msgid "Welcome to %s"
 msgstr "Dobrodošli v %s"
 
 #: js/ui/welcomeDialog.js:54
-msgid "If you want to learn your way around, check out the tour."
+msgid "If you want to learn your way around, check out the tour"
 msgstr "Če se hočete najprej na hitro razgledati po namizju, sledite vodiču."
 
 #: js/ui/welcomeDialog.js:63
@@ -2712,8 +2711,8 @@ msgid "Failed to launch “%s”"
 msgstr "Zaganjanje »%s« je spodletelo"
 
 #: src/shell-keyring-prompt.c:764
-msgid "Passwords do not match."
-msgstr "Gesli nista skladni!"
+msgid "Passwords do not match"
+msgstr "Gesli se ne ujemata"
 
 #: src/shell-keyring-prompt.c:772
 msgid "Password cannot be blank"
