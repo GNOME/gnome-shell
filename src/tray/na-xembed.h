@@ -51,6 +51,10 @@ void na_xembed_set_root_position (NaXembed *xembed,
 				  int       x,
 				  int       y);
 
+void na_xembed_get_root_position (NaXembed *xembed,
+				  int      *x,
+				  int      *y);
+
 void na_xembed_get_size (NaXembed *xembed,
 			 int      *width,
 			 int      *height);
