@@ -207,7 +207,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
     _onLoadFailedWithTlsErrors(view, failingURI, certificate, _errors) {
         this._secureMenu.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
         let uri = GLib.Uri.parse(failingURI, HTTP_URI_FLAGS);
-        this._webContext.allow_tls_certificate_for_host(certificate, uri.get_host());
+        this._networkSession.allow_tls_certificate_for_host(certificate, uri.get_host());
         this._webView.load_uri(failingURI);
         return true;
     }
