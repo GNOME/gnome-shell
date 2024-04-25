@@ -796,6 +796,19 @@ na_xembed_get_size (NaXembed *xembed,
     *height = priv->request_height;
 }
 
+void
+na_xembed_get_root_position (NaXembed *xembed,
+                             int      *x,
+                             int      *y)
+{
+  NaXembedPrivate *priv = na_xembed_get_instance_private (xembed);
+
+  if (x)
+    *x = priv->root_x;
+  if (y)
+    *y = priv->root_y;
+}
+
 static void
 get_pixel_details (unsigned long  pixel_mask,
                    int           *shift,

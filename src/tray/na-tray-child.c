@@ -267,6 +267,7 @@ na_tray_child_emulate_event (NaTrayChild *tray_child,
   Window xwindow, xrootwindow;
   ClutterEventType event_type = clutter_event_type (event);
   int width, height;
+  int root_x, root_y;
 
   g_return_if_fail (event_type == CLUTTER_BUTTON_RELEASE ||
                     event_type == CLUTTER_KEY_PRESS ||
@@ -283,6 +284,7 @@ na_tray_child_emulate_event (NaTrayChild *tray_child,
     }
 
   na_xembed_get_size (NA_XEMBED (tray_child), &width, &height);
+  na_xembed_get_root_position (NA_XEMBED (tray_child), &root_x, &root_y);
 
   mtk_x11_error_trap_push (xdisplay);
   xrootwindow = XDefaultRootWindow (xdisplay);
@@ -295,8 +297,8 @@ na_tray_child_emulate_event (NaTrayChild *tray_child,
   xcevent.time = clutter_event_get_time (event);
   xcevent.x = width / 2;
   xcevent.y = height / 2;
-  xcevent.x_root = xcevent.x;
-  xcevent.y_root = xcevent.y;
+  xcevent.x_root = root_x + xcevent.x;
+  xcevent.y_root = root_y + xcevent.y;
   xcevent.mode = NotifyNormal;
   xcevent.detail = NotifyNonlinear;
   xcevent.same_screen = True;
