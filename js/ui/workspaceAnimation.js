@@ -58,6 +58,9 @@ class WorkspaceGroup extends Clutter.Actor {
         if (!window.showing_on_its_workspace() || this._isDesktopWindow(window))
             return false;
 
+        if (window.is_override_redirect())
+            return false;
+
         if (!this._windowIsOnThisMonitor(window))
             return false;
 
