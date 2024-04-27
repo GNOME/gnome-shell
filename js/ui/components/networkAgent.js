@@ -2,6 +2,7 @@
 
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
+import GioUnix from 'gi://GioUnix';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import NM from 'gi://NM';
@@ -469,8 +470,8 @@ class VPNRequestHandler extends Signals.EventEmitter {
                     });
 
             this._childPid = pid;
-            this._stdin = new Gio.UnixOutputStream({fd: stdin, close_fd: true});
-            this._stdout = new Gio.UnixInputStream({fd: stdout, close_fd: true});
+            this._stdin = new GioUnix.OutputStream({fd: stdin, close_fd: true});
+            this._stdout = new GioUnix.InputStream({fd: stdout, close_fd: true});
             GLib.close(stderr);
             this._dataStdout = new Gio.DataInputStream({base_stream: this._stdout});
 

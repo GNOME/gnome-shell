@@ -2,6 +2,7 @@
 
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
+import GioUnix from 'gi://GioUnix';
 import * as Signals from './signals.js';
 
 import {loadInterfaceXML} from './fileUtils.js';
@@ -206,7 +207,7 @@ class LoginManagerSystemd extends Signals.EventEmitter {
             await this._proxy.call_with_unix_fd_list('Inhibit',
                 inVariant, 0, -1, null, cancellable);
         const [fd] = fdList.steal_fds();
-        return new Gio.UnixInputStream({fd});
+        return new GioUnix.InputStream({fd});
     }
 
     _prepareForSleep(proxy, sender, [aboutToSuspend]) {
