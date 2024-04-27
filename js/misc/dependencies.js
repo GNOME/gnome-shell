@@ -12,6 +12,7 @@ import 'gi://Gdk?version=4.0';
 import 'gi://Gdm?version=1.0';
 import 'gi://Geoclue?version=2.0';
 import 'gi://Gio?version=2.0';
+import 'gi://GioUnix?version=2.0';
 import 'gi://GDesktopEnums?version=3.0';
 import 'gi://GdkPixbuf?version=2.0';
 import 'gi://GnomeBG?version=4.0';
