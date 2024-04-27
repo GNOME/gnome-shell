@@ -13,17 +13,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-16 16:54+0000\n"
-"PO-Revision-Date: 2024-03-16 22:51+0200\n"
+"POT-Creation-Date: 2024-04-24 13:17+0000\n"
+"PO-Revision-Date: 2024-04-27 11:08+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
-"Language-Team: Ukrainian <none>\n"
+"Language-Team: Ukrainian\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
-"X-Generator: Lokalize 23.04.1\n"
+"X-Generator: Lokalize 23.04.3\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: uk\n"
 "X-DL-Module: gnome-shell\n"
@@ -132,7 +132,7 @@ msgstr "Зробити знімок вікна"
 msgid "Record a screencast interactively"
 msgstr "Записати з екрана інтерактивно"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1294
 msgid "System"
 msgstr "Система"
 
@@ -561,7 +561,7 @@ msgid "Network Login"
 msgstr "Мережевий вхід"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:277
+#: subprojects/extensions-app/data/ui/extensions-window.ui:275
 msgid "Something’s gone wrong"
 msgstr "Трапилась халепа"
 
@@ -655,12 +655,15 @@ msgid "Session Already Running"
 msgstr "Сеанс уже запущено"
 
 #: js/gdm/loginDialog.js:454
+#| msgid ""
+#| "Force stopping will quit any running apps and processes, and could result "
+#| "in data loss."
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
-"data loss."
+"data loss"
 msgstr ""
 "Примусове припинення сеансу призведе до завершення роботи усіх запущених у "
-"ньому програм і процесів, а отже, може призвести до втрати даних."
+"ньому програм і процесів, а отже, може призвести до втрати даних"
 
 #: js/gdm/loginDialog.js:474
 msgid "Force Stop"
@@ -1174,15 +1177,19 @@ msgstr "Вилучити усі сповіщення"
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
 #, javascript-format
-msgid "“%s” is not responding."
-msgstr "«%s» не відповідає."
+#| msgid "“%s” is not responding."
+msgid "“%s” Is Not Responding"
+msgstr "«%s» не відповідає"
 
 #: js/ui/closeDialog.js:45
+#| msgid ""
+#| "You may choose to wait a short while for it to continue or force the app "
+#| "to quit entirely."
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
-"quit entirely."
+"quit entirely"
 msgstr ""
-"Можете трошки зачекати відновлення активності або примусово закрити програму."
+"Можете трошки зачекати відновлення активності або примусово закрити програму"
 
 #: js/ui/closeDialog.js:73
 msgid "Force Quit"
@@ -1214,10 +1221,12 @@ msgid "Open with %s"
 msgstr "Відкрити через %s"
 
 #: js/ui/components/networkAgent.js:96
+#| msgid ""
+#| "Alternatively you can connect by pushing the “WPS” button on your router."
 msgid ""
-"Alternatively you can connect by pushing the “WPS” button on your router."
+"Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr ""
-"Також можете під'єднатися, натиснувши кнопку «WPS» на вашому маршрутизаторі."
+"Також можете під'єднатися, натиснувши кнопку «WPS» на вашому маршрутизаторі"
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
@@ -1247,11 +1256,12 @@ msgstr "Необхідна автентифікація"
 
 #: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:751
 #, javascript-format
+#| msgid ""
+#| "Passwords or encryption keys are required to access the wireless network "
+#| "“%s”."
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"“%s”."
-msgstr ""
-"Потрібно паролі або зашифровані ключі для доступу до радіомережі «%s»."
+"Passwords or encryption keys are required to access the wireless network “%s”"
+msgstr "Потрібно паролі або зашифровані ключі для доступу до радіомережі «%s»"
 
 #: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:755
 msgid "Wired 802.1X authentication"
@@ -1281,8 +1291,9 @@ msgstr "Пін-код"
 #: js/ui/components/networkAgent.js:760 js/ui/components/networkAgent.js:772
 #: js/ui/components/networkAgent.js:776
 #, javascript-format
-msgid "A password is required to connect to “%s”."
-msgstr "Пароль потрібен для з'єднання з «%s»."
+#| msgid "A password is required to connect to “%s”."
+msgid "A password is required to connect to “%s”"
+msgstr "Пароль потрібен для з'єднання з «%s»"
 
 #: js/ui/components/networkAgent.js:775
 msgid "VPN password"
@@ -1379,7 +1390,8 @@ msgid "No Events"
 msgstr "Немає подій"
 
 #: js/ui/dateMenu.js:413
-msgid "Add world clocks…"
+#| msgid "Add world clocks…"
+msgid "Add World Clocks…"
 msgstr "Додати світові годинники…"
 
 #: js/ui/dateMenu.js:414
@@ -1391,19 +1403,22 @@ msgid "Loading…"
 msgstr "Завантаження…"
 
 #: js/ui/dateMenu.js:714
-msgid "Go online for weather information"
+#| msgid "Go online for weather information"
+msgid "Go Online for Weather Information"
 msgstr "Увійти в мережу за прогнозом погоди"
 
 #: js/ui/dateMenu.js:716
-msgid "Weather information is currently unavailable"
-msgstr "Наразі інформації про погоду недоступна"
+#| msgid "Weather information is currently unavailable"
+msgid "Weather Information Unavailable"
+msgstr "Відомості щодо погоди недоступні"
 
 #: js/ui/dateMenu.js:726
 msgid "Weather"
 msgstr "Погода"
 
 #: js/ui/dateMenu.js:728
-msgid "Select weather location…"
+#| msgid "Select weather location…"
+msgid "Select Weather Location…"
 msgstr "Виберіть місцевість для погоди…"
 
 #: js/ui/endSessionDialog.js:48
@@ -1419,21 +1434,25 @@ msgstr "Завершити сеанс"
 
 #: js/ui/endSessionDialog.js:52
 #, javascript-format
-msgid "%s will be logged out automatically in %d second."
-msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s вийде автоматично через %d секунду."
-msgstr[1] "%s вийде автоматично через %d секунди."
-msgstr[2] "%s вийде автоматично через %d секунд."
-msgstr[3] "%s вийде автоматично через %d секунду."
+#| msgid "%s will be logged out automatically in %d second."
+#| msgid_plural "%s will be logged out automatically in %d seconds."
+msgid "%s will be logged out automatically in %d second"
+msgid_plural "%s will be logged out automatically in %d seconds"
+msgstr[0] "%s вийде автоматично через %d секунду"
+msgstr[1] "%s вийде автоматично через %d секунди"
+msgstr[2] "%s вийде автоматично через %d секунд"
+msgstr[3] "%s вийде автоматично через %d секунду"
 
 #: js/ui/endSessionDialog.js:58
 #, javascript-format
-msgid "You will be logged out automatically in %d second."
-msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "Вихід автоматично через %d секунду."
-msgstr[1] "Вихід автоматично через %d секунди."
-msgstr[2] "Вихід автоматично через %d секунд."
-msgstr[3] "Вихід автоматично через %d секунду."
+#| msgid "You will be logged out automatically in %d second."
+#| msgid_plural "You will be logged out automatically in %d seconds."
+msgid "You will be logged out automatically in %d second"
+msgid_plural "You will be logged out automatically in %d seconds"
+msgstr[0] "Вихід автоматично через %d секунду"
+msgstr[1] "Вихід автоматично через %d секунди"
+msgstr[2] "Вихід автоматично через %d секунд"
+msgstr[3] "Вихід автоматично через %d секунду"
 
 #: js/ui/endSessionDialog.js:65
 msgctxt "button"
@@ -1452,12 +1471,14 @@ msgstr "Установити оновлення і вимкнути"
 
 #: js/ui/endSessionDialog.js:75
 #, javascript-format
-msgid "The system will power off automatically in %d second."
-msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Система автоматично вимкнеться через %d секунду."
-msgstr[1] "Система автоматично вимкнеться через %d секунди."
-msgstr[2] "Система автоматично вимкнеться через %d секунд."
-msgstr[3] "Система автоматично вимкнеться через %d секунду."
+#| msgid "The system will power off automatically in %d second."
+#| msgid_plural "The system will power off automatically in %d seconds."
+msgid "The system will power off automatically in %d second"
+msgid_plural "The system will power off automatically in %d seconds"
+msgstr[0] "Система автоматично вимкнеться через %d секунду"
+msgstr[1] "Система автоматично вимкнеться через %d секунди"
+msgstr[2] "Система автоматично вимкнеться через %d секунд"
+msgstr[3] "Система автоматично вимкнеться через %d секунду"
 
 #: js/ui/endSessionDialog.js:79 js/ui/endSessionDialog.js:98
 msgctxt "checkbox"
@@ -1481,12 +1502,14 @@ msgstr "Установити оновлення і перезапустити"
 
 #: js/ui/endSessionDialog.js:94
 #, javascript-format
-msgid "The system will restart automatically in %d second."
-msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Система автоматично перезапуститься через %d секунду."
-msgstr[1] "Система автоматично перезапуститься через %d секунди."
-msgstr[2] "Система автоматично перезапуститься через %d секунд."
-msgstr[3] "Система автоматично перезапуститься через %d секунду."
+#| msgid "The system will restart automatically in %d second."
+#| msgid_plural "The system will restart automatically in %d seconds."
+msgid "The system will restart automatically in %d second"
+msgid_plural "The system will restart automatically in %d seconds"
+msgstr[0] "Система автоматично перезапуститься через %d секунду"
+msgstr[1] "Система автоматично перезапуститься через %d секунди"
+msgstr[2] "Система автоматично перезапуститься через %d секунд"
+msgstr[3] "Система автоматично перезапуститься через %d секунду"
 
 #: js/ui/endSessionDialog.js:102
 msgctxt "button"
@@ -1500,18 +1523,21 @@ msgstr "Перезапустити і встановити оновлення"
 
 #: js/ui/endSessionDialog.js:113
 #, javascript-format
-msgid ""
-"The system will automatically restart and install updates in %d second."
+#| msgid ""
+#| "The system will automatically restart and install updates in %d second."
+#| msgid_plural ""
+#| "The system will automatically restart and install updates in %d seconds."
+msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
-"The system will automatically restart and install updates in %d seconds."
+"The system will automatically restart and install updates in %d seconds"
 msgstr[0] ""
-"Система автоматично перезапуститься та встановить оновлення через %d секунду."
+"Система автоматично перезапуститься та встановить оновлення через %d секунду"
 msgstr[1] ""
-"Система автоматично перезапуститься та встановить оновлення через %d секунди."
+"Система автоматично перезапуститься та встановить оновлення через %d секунди"
 msgstr[2] ""
-"Система автоматично перезапуститься та встановить оновлення через %d секунд."
+"Система автоматично перезапуститься та встановить оновлення через %d секунд"
 msgstr[3] ""
-"Система автоматично перезапуститься та встановить оновлення через %d секунду."
+"Система автоматично перезапуститься та встановить оновлення через %d секунду"
 
 #: js/ui/endSessionDialog.js:120 js/ui/endSessionDialog.js:141
 msgctxt "button"
@@ -1547,10 +1573,11 @@ msgstr ""
 "живлення."
 
 #: js/ui/endSessionDialog.js:284
-msgid "Low battery power: please plug in before installing updates."
+#| msgid "Low battery power: please plug in before installing updates."
+msgid "Low battery power: please plug in before installing updates"
 msgstr ""
 "Низький рівень заряду батареї: під'єднайте до живлення перед установленням "
-"оновлень."
+"оновлень"
 
 #: js/ui/endSessionDialog.js:293
 msgid "Some applications are busy or have unsaved work"
@@ -1595,8 +1622,9 @@ msgid "Extension Updates Available"
 msgstr "Випущено оновлення розширень"
 
 #: js/ui/extensionSystem.js:355
-msgid "Extension updates are ready to be installed."
-msgstr "Приготовано до встановлення оновлення розширень."
+#| msgid "Extension updates are ready to be installed."
+msgid "Extension updates are ready to be installed"
+msgstr "Приготовано до встановлення оновлення розширень"
 
 #: js/ui/inhibitShortcutsDialog.js:70
 msgid "Allow inhibiting shortcuts"
@@ -1615,8 +1643,9 @@ msgstr "Програма бажає успадкувати скорочення"
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:81
 #, javascript-format
-msgid "You can restore shortcuts by pressing %s."
-msgstr "Можна відновити скорочення, натиснувши %s."
+#| msgid "You can restore shortcuts by pressing %s."
+msgid "You can restore shortcuts by pressing %s"
+msgstr "Можна відновити скорочення, натиснувши %s"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid "Slow Keys Turned On"
@@ -1686,8 +1715,9 @@ msgstr "Не встановлено розширення"
 #. Translators: argument is an extension UUID.
 #: js/ui/lookingGlass.js:785
 #, javascript-format
-msgid "%s has not emitted any errors."
-msgstr "%s не випустила жодної помилки. "
+#| msgid "%s has not emitted any errors."
+msgid "%s has not emitted any errors"
+msgstr "%s не випустила жодної помилки"
 
 #: js/ui/lookingGlass.js:791
 msgid "Hide Errors"
@@ -1762,8 +1792,9 @@ msgid "Screen Lock disabled"
 msgstr "Блокування екрана вимкнено"
 
 #: js/ui/main.js:390
-msgid "Screen Locking requires the GNOME display manager."
-msgstr "Блокування екрана потребує керування входом GNOME."
+#| msgid "Screen Locking requires the GNOME display manager."
+msgid "Screen Locking requires the GNOME display manager"
+msgstr "Блокування екрана потребує керування входом GNOME"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
@@ -2018,8 +2049,9 @@ msgid "Searching…"
 msgstr "Пошуки…"
 
 #: js/ui/search.js:833
-msgid "No results."
-msgstr "Безрезультатно."
+#| msgid "No results."
+msgid "No results"
+msgstr "Нічого не знайдено"
 
 #: js/ui/search.js:964
 #, javascript-format
@@ -2052,8 +2084,9 @@ msgid "Hide Text"
 msgstr "Сховати текст"
 
 #: js/ui/shellEntry.js:176
-msgid "Caps lock is on."
-msgstr "Caps lock активовано."
+#| msgid "Caps lock is on."
+msgid "Caps lock is on"
+msgstr "Caps lock активовано"
 
 #: js/ui/shellMountOperation.js:288
 msgid "Hidden Volume"
@@ -2070,17 +2103,22 @@ msgstr "Використовує зашифровані файли"
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:302
 #, javascript-format
+#| msgid ""
+#| "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgid ""
-"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
-msgstr "Використайте <i>%s</i>, щоб розблокувати том."
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
+msgstr "Використайте <i>%s</i>, щоб розблокувати том"
 
 #: js/ui/shellMountOperation.js:306
+#| msgid ""
+#| "You need an external utility like <i>Disks</i> to unlock a volume that "
+#| "uses keyfiles."
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
-"keyfiles."
+"keyfiles"
 msgstr ""
 "Вам знадобиться зовнішня допоміжна програма, подібна до програми <i>Диски</"
-"i> для розблоковування тому, де використано файли ключів."
+"i> для розблоковування тому, де використано файли ключів"
 
 #: js/ui/shellMountOperation.js:314
 msgid "PIM Number"
@@ -2101,8 +2139,9 @@ msgid "Open %s"
 msgstr "Відкрити %s"
 
 #: js/ui/shellMountOperation.js:438
-msgid "The PIM must be a number or empty."
-msgstr "PIM має бути числом або порожній."
+#| msgid "The PIM must be a number or empty."
+msgid "The PIM must be a number or empty"
+msgstr "PIM має бути числом або порожній"
 
 #: js/ui/status/accessibility.js:36
 msgid "Accessibility"
@@ -2275,10 +2314,12 @@ msgid "The app %s wants to access your location"
 msgstr "Програмі %s потрібен доступ до даних щодо місця вашого перебування"
 
 #: js/ui/status/location.js:351
-msgid "Location access can be changed at any time from the privacy settings."
+#| msgid ""
+#| "Location access can be changed at any time from the privacy settings."
+msgid "Location access can be changed at any time from the privacy settings"
 msgstr ""
 "Доступ до місця перебування можна змінити в будь-яку мить у параметрах "
-"конфіденційності."
+"конфіденційності"
 
 #: js/ui/status/location.js:359
 msgid "Deny Access"
@@ -2478,9 +2519,12 @@ msgid "Unauthorized Thunderbolt device"
 msgstr "Незавірений пристрій Thunderbolt"
 
 #: js/ui/status/thunderbolt.js:315
+#| msgid ""
+#| "New device has been detected and needs to be authorized by an "
+#| "administrator."
 msgid ""
-"New device has been detected and needs to be authorized by an administrator."
-msgstr "Виявлено новий пристрій, який потребує схвалення від адміністратора."
+"New device has been detected and needs to be authorized by an administrator"
+msgstr "Виявлено новий пристрій, який потребує схвалення від адміністратора"
 
 #: js/ui/status/thunderbolt.js:321
 msgid "Thunderbolt authorization error"
@@ -2576,9 +2620,10 @@ msgid "Welcome to %s"
 msgstr "Ласкаво просимо до %s"
 
 #: js/ui/welcomeDialog.js:54
-msgid "If you want to learn your way around, check out the tour."
+#| msgid "If you want to learn your way around, check out the tour."
+msgid "If you want to learn your way around, check out the tour"
 msgstr ""
-"Якщо хочете дізнатися більше про середовище, ознайомтеся із нашим туром."
+"Якщо хочете дізнатися більше про середовище, ознайомтеся із нашим туром"
 
 #: js/ui/welcomeDialog.js:63
 msgid "Skip"
@@ -2721,8 +2766,9 @@ msgid "Failed to launch “%s”"
 msgstr "Не вдалося запустити «%s»"
 
 #: src/shell-keyring-prompt.c:764
-msgid "Passwords do not match."
-msgstr "Пароль не збігається."
+#| msgid "Passwords do not match."
+msgid "Passwords do not match"
+msgstr "Пароль не збігається"
 
 #: src/shell-keyring-prompt.c:772
 msgid "Password cannot be blank"
@@ -2758,15 +2804,15 @@ msgstr ""
 "«Розширення» GNOME обробляють оновлення розширень, налаштовування параметрів "
 "розширень, а також вилучення та вимикання небажаних розширень."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
 msgid "Main Window"
 msgstr "Головне вікно"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:80
 msgid "Available Updates"
 msgstr "Доступні оновлення"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:84
 msgid "Search View"
 msgstr "Панель пошуку"
 
@@ -2849,34 +2895,34 @@ msgstr[1] "Під час наступного входу до системи б�
 msgstr[2] "Під час наступного входу до системи буде оновлено %d розширень."
 msgstr[3] "Під час наступного входу до системи буде оновлено одне розширення."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:21
+#: subprojects/extensions-app/data/ui/extension-row.ui:22
 msgid "Error Details"
 msgstr "Подробиці щодо помилки"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:61
+#: subprojects/extensions-app/data/ui/extension-row.ui:62
 msgid "Updates Details"
 msgstr "Подробиці щодо оновлень"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:71
+#: subprojects/extensions-app/data/ui/extension-row.ui:72
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
 msgstr ""
 "Приготовано нову версію цього розширення. Її буде завантажено під час "
 "наступного входу до системи."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:107
+#: subprojects/extensions-app/data/ui/extension-row.ui:104
 msgid "Extension Details"
 msgstr "Відомості щодо розширення"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:193
+#: subprojects/extensions-app/data/ui/extension-row.ui:192
 msgid "_Website"
 msgstr "_Сайт"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:220
+#: subprojects/extensions-app/data/ui/extension-row.ui:219
 msgid "_Settings"
 msgstr "П_араметри"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:247
+#: subprojects/extensions-app/data/ui/extension-row.ui:246
 msgid "_Remove…"
 msgstr "Ви_лучити…"
 
@@ -2900,11 +2946,11 @@ msgstr "Пошук розширень"
 msgid "_Extensions"
 msgstr "_Розширення"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:143
+#: subprojects/extensions-app/data/ui/extensions-window.ui:139
 msgid "More Information"
 msgstr "Докладніше"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:153
+#: subprojects/extensions-app/data/ui/extensions-window.ui:151
 msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
@@ -2913,31 +2959,31 @@ msgstr ""
 "Рекомендуємо вимкнути усі розширення, якщо у користуванні вашою системою "
 "виникають проблеми."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:180
+#: subprojects/extensions-app/data/ui/extensions-window.ui:178
 msgid "User Extensions"
 msgstr "Розширення користувача"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:200
+#: subprojects/extensions-app/data/ui/extensions-window.ui:198
 msgid "System Extensions"
 msgstr "Загальносистемні розширення"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:235
+#: subprojects/extensions-app/data/ui/extensions-window.ui:233
 msgid "Search Results"
 msgstr "Результати пошуку"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:254
+#: subprojects/extensions-app/data/ui/extensions-window.ui:252
 msgid "No Results Found"
 msgstr "Нічого не знайдено"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:255
+#: subprojects/extensions-app/data/ui/extensions-window.ui:253
 msgid "Try a different search."
 msgstr "Спробуйте інші критерії пошуку."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:266
+#: subprojects/extensions-app/data/ui/extensions-window.ui:264
 msgid "No Installed Extensions"
 msgstr "Розширення, які не встановлено"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:267
+#: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
@@ -2945,7 +2991,7 @@ msgstr ""
 "Щоб знайти і додати потрібні вам розширення, відвідайте <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:278
+#: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
