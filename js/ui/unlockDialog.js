@@ -366,7 +366,7 @@ class UnlockDialogClock extends St.BoxLayout {
     }
 
     _updateClock() {
-        this._time.text = this._wallClock.clock;
+        this._time.text = this._wallClock.clock.trim();
 
         let date = new Date();
         /* Translators: This is a time format for a date in
