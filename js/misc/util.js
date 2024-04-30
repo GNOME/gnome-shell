@@ -118,19 +118,12 @@ export function spawnApp(argv) {
  * this will throw an error.
  */
 export function trySpawn(argv) {
-    let success_, pid;
+    let pid;
     try {
         const launchContext = global.create_app_launch_context(0, -1);
-        [success_, pid] = GLib.spawn_async(
+        pid = Shell.util_spawn_async(
             null, argv, launchContext.get_environment(),
-            GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-            () => {
-                try {
-                    global.context.restore_rlimit_nofile();
-                } catch (err) {
-                }
-            }
-        );
+            GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD);
     } catch (err) {
         /* Rewrite the error in case of ENOENT */
         if (err.matches(GLib.SpawnError, GLib.SpawnError.NOENT)) {
