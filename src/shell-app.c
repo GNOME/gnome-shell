@@ -1236,9 +1236,8 @@ static void
 child_context_setup (gpointer user_data)
 {
   ShellGlobal *shell_global = user_data;
-  MetaContext *meta_context;
+  MetaContext *meta_context = shell_global_get_context (shell_global);
 
-  g_object_get (shell_global, "context", &meta_context, NULL);
   meta_context_restore_rlimit_nofile (meta_context, NULL);
 }
 
