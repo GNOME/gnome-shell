@@ -120,16 +120,9 @@ class IBusManager extends Signals.EventEmitter {
             const env = launchContext.get_environment();
             // Use DO_NOT_REAP_CHILD to avoid adouble-fork internally
             // since ibus-daemon refuses to start with init as its parent.
-            const [success_, pid] = GLib.spawn_async(
+            const pid = Shell.util_spawn_async(
                 null, cmdLine, env,
-                GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-                () => {
-                    try {
-                        global.context.restore_rlimit_nofile();
-                    } catch (err) {
-                    }
-                }
-            );
+                GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD);
             GLib.child_watch_add(
                 GLib.PRIORITY_DEFAULT,
                 pid,

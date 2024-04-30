@@ -456,18 +456,12 @@ class VPNRequestHandler extends Signals.EventEmitter {
 
         try {
             const launchContext = global.create_app_launch_context(0, -1);
-            let [success_, pid, stdin, stdout, stderr] =
-                GLib.spawn_async_with_pipes(
+            let [pid, stdin, stdout, stderr] =
+                Shell.util_spawn_async_with_pipes(
                     null, /* pwd */
                     argv,
                     launchContext.get_environment(),
-                    GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-                    () => {
-                        try {
-                            global.context.restore_rlimit_nofile();
-                        } catch (err) {
-                        }
-                    });
+                    GLib.SpawnFlags.DO_NOT_REAP_CHILD);
 
             this._childPid = pid;
             this._stdin = new Gio.UnixOutputStream({fd: stdin, close_fd: true});
