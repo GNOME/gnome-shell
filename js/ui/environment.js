@@ -345,6 +345,24 @@ if (slowdownEnv) {
         St.Settings.get().slow_down_factor = factor;
 }
 
+function wrapSpawnFunction(func) {
+    const originalFunc = GLib[func];
+    return function (workingDirectory, argv, envp, flags, childSetup, ...args) {
+        if (childSetup) {
+            logError(new Error(`Using child GLib.${func} with a GLib.SpawnChildSetupFunc ` +
+                'is unsafe and may dead-lock, thus it should never be used from JavaScript. ' +
+                `Shell.${func} can be used to perform default actions or an ` +
+                'async-signal-safe alternative should be used instead'));
+        }
+
+        return originalFunc(workingDirectory, argv, envp, flags, childSetup, ...args);
+    };
+}
+GLib.spawn_async = wrapSpawnFunction('spawn_async');
+GLib.spawn_async_with_pipes = wrapSpawnFunction('spawn_async_with_pipes');
+GLib.spawn_async_with_fds = wrapSpawnFunction('spawn_async_with_fds');
+GLib.spawn_async_with_pipes_and_fds = wrapSpawnFunction('spawn_async_with_pipes_and_fds');
+
 // OK, now things are initialized enough that we can import shell JS
 const Format = imports.format;
 
