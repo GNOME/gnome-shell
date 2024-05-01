@@ -115,9 +115,8 @@ xembed_send_message (NaXembed          *xembed,
 {
   NaXembedPrivate *priv = na_xembed_get_instance_private (xembed);
   Display *xdisplay = meta_x11_display_get_xdisplay (priv->x11_display);
-  XClientMessageEvent xclient;
+  XClientMessageEvent xclient = {0};
 
-  memset (&xclient, 0, sizeof (xclient));
   xclient.window = recipient;
   xclient.type = ClientMessage;
   xclient.message_type = priv->atom__XEMBED;
@@ -153,10 +152,9 @@ static void
 na_xembed_send_configure_event (NaXembed *xembed)
 {
   NaXembedPrivate *priv = na_xembed_get_instance_private (xembed);
-  XConfigureEvent xconfigure;
+  XConfigureEvent xconfigure = {0};
   Display *xdisplay = meta_x11_display_get_xdisplay (priv->x11_display);
 
-  memset (&xconfigure, 0, sizeof (xconfigure));
   xconfigure.type = ConfigureNotify;
 
   xconfigure.event = priv->plug_window;
