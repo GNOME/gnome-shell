@@ -260,9 +260,9 @@ na_tray_child_emulate_event (NaTrayChild *tray_child,
                              ClutterEvent *event)
 {
   MetaX11Display *x11_display;
-  XKeyEvent xkevent;
-  XButtonEvent xbevent;
-  XCrossingEvent xcevent;
+  XKeyEvent xkevent = {0};
+  XButtonEvent xbevent = {0};
+  XCrossingEvent xcevent = {0};
   Display *xdisplay;
   Window xwindow, xrootwindow;
   ClutterEventType event_type = clutter_event_type (event);
