@@ -35,6 +35,7 @@ struct _NaXembedClass
 
   void (* plug_added) (NaXembed *xembed);
   void (* plug_removed) (NaXembed *xembed);
+  void (* reconfigured) (NaXembed *xembed);
 };
 
 MetaX11Display * na_xembed_get_x11_display (NaXembed *xembed);

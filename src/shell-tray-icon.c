@@ -260,6 +260,10 @@ shell_tray_icon_set_child (ShellTrayIcon *tray_icon,
                       "window-created",
                       G_CALLBACK (shell_tray_icon_window_created_cb),
                       tray_icon);
+
+  g_signal_connect_object (tray_child, "reconfigured",
+                           G_CALLBACK (clutter_actor_queue_relayout),
+                           tray_icon, G_CONNECT_SWAPPED);
 }
 
 /*
