@@ -93,6 +93,7 @@ have_x11 = mutter_dep.get_variable('have_x11') == 'true'
 have_x11_client = mutter_dep.get_variable('have_x11_client') == 'true'
 if have_x11_client or have_x11
   x11_dep = dependency('x11')
+  xfixes_dep = dependency('xfixes')
 endif
 
 if not have_fonts
