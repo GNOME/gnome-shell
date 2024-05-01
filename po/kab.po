@@ -8,16 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-23 15:09+0000\n"
-"PO-Revision-Date: 2024-04-13 15:27+0100\n"
-"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
+"POT-Creation-Date: 2024-04-21 15:07+0000\n"
+"PO-Revision-Date: 2024-04-30 22:42+0200\n"
+"Last-Translator: sa\n"
 "Language-Team: Kabyle <>\n"
 "Language: kab\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
-"X-Generator: Gtranslator 41.0\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-DL-Team: kab\n"
 "X-DL-Module: gnome-shell\n"
 "X-DL-Branch: main\n"
@@ -30,75 +30,75 @@ msgstr "Imsinḍen"
 
 #: data/50-gnome-shell-launchers.xml:10
 msgid "Activate pinned app 1"
-msgstr ""
+msgstr "Rmed asnas anurif 1"
 
 #: data/50-gnome-shell-launchers.xml:14
 msgid "Activate pinned app 2"
-msgstr ""
+msgstr "Rmed asnas anurif 2"
 
 #: data/50-gnome-shell-launchers.xml:18
 msgid "Activate pinned app 3"
-msgstr ""
+msgstr "Rmed asnas anurif 3"
 
 #: data/50-gnome-shell-launchers.xml:22
 msgid "Activate pinned app 4"
-msgstr ""
+msgstr "Rmed asnas anurif 4"
 
 #: data/50-gnome-shell-launchers.xml:26
 msgid "Activate pinned app 5"
-msgstr ""
+msgstr "Rmed asnas anurif 5"
 
 #: data/50-gnome-shell-launchers.xml:30
 msgid "Activate pinned app 6"
-msgstr ""
+msgstr "Rmed asnas anurif 6"
 
 #: data/50-gnome-shell-launchers.xml:34
 msgid "Activate pinned app 7"
-msgstr ""
+msgstr "Rmed asnas anurif 7"
 
 #: data/50-gnome-shell-launchers.xml:38
 msgid "Activate pinned app 8"
-msgstr ""
+msgstr "Rmed asnas anurif 8"
 
 #: data/50-gnome-shell-launchers.xml:42
 msgid "Activate pinned app 9"
-msgstr ""
+msgstr "Rmed asnas anurif 9"
 
 #: data/50-gnome-shell-launchers.xml:46
 msgid "Open new window of pinned app 1"
-msgstr ""
+msgstr "Ldi asfaylu amaynut n usnas inetḍen 1"
 
 #: data/50-gnome-shell-launchers.xml:50
 msgid "Open new window of pinned app 2"
-msgstr ""
+msgstr "Ldi asfaylu amaynut n usnas inetḍen 2"
 
 #: data/50-gnome-shell-launchers.xml:54
 msgid "Open new window of pinned app 3"
-msgstr ""
+msgstr "Ldi asfaylu amaynut n usnas inetḍen 3"
 
 #: data/50-gnome-shell-launchers.xml:58
 msgid "Open new window of pinned app 4"
-msgstr ""
+msgstr "Ldi asfaylu amaynut n usnas inetḍen 4"
 
 #: data/50-gnome-shell-launchers.xml:62
 msgid "Open new window of pinned app 5"
-msgstr ""
+msgstr "Ldi asfaylu amaynut n usnas inetḍen 5"
 
 #: data/50-gnome-shell-launchers.xml:66
 msgid "Open new window of pinned app 6"
-msgstr ""
+msgstr "Ldi asfaylu amaynut n usnas inetḍen 6"
 
 #: data/50-gnome-shell-launchers.xml:70
 msgid "Open new window of pinned app 7"
-msgstr ""
+msgstr "Ldi asfaylu amaynut n usnas inetḍen 7"
 
 #: data/50-gnome-shell-launchers.xml:74
 msgid "Open new window of pinned app 8"
-msgstr ""
+msgstr "Ldi asfaylu amaynut n usnas inetḍen 8"
 
 #: data/50-gnome-shell-launchers.xml:78
 msgid "Open new window of pinned app 9"
-msgstr ""
+msgstr "Ldi asfaylu amaynut n usnas inetḍen 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
 #: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2276
@@ -108,24 +108,24 @@ msgstr "Tuṭṭfiwin n wegdil"
 #: data/50-gnome-shell-screenshots.xml:9
 #: data/org.gnome.shell.gschema.xml.in:287
 msgid "Take a screenshot interactively"
-msgstr ""
+msgstr "Ṭṭef agdil amyigew"
 
 #: data/50-gnome-shell-screenshots.xml:12
 #: data/org.gnome.shell.gschema.xml.in:299
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Eg tuṭṭfa n ugdil"
 
 #: data/50-gnome-shell-screenshots.xml:15
 #: data/org.gnome.shell.gschema.xml.in:295
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Eg tuṭṭfa n ugdil n usfaylu"
 
 #: data/50-gnome-shell-screenshots.xml:18
 #: data/org.gnome.shell.gschema.xml.in:291
 msgid "Record a screencast interactively"
 msgstr ""
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1294
 msgid "System"
 msgstr "Anagraw"
 
@@ -169,7 +169,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:16
 msgid "UUIDs of extensions to enable"
-msgstr ""
+msgstr "UUIDs i yisiɣzaf i urmad"
 
 #: data/org.gnome.shell.gschema.xml.in:17
 msgid ""
@@ -181,7 +181,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "UUIDs of extensions to force disabling"
-msgstr ""
+msgstr "UUIDs n yisiɣzaf i usensi n uḥettem"
 
 #: data/org.gnome.shell.gschema.xml.in:27
 msgid ""
@@ -201,10 +201,12 @@ msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
 msgstr ""
+"Sens akk isiɣzaf i yermed useqdac war aḥazi n uɣewwar \"asiɣzef-"
+"yettwaremden\"."
 
 #: data/org.gnome.shell.gschema.xml.in:45
 msgid "Allow extension installation"
-msgstr ""
+msgstr "Sireg asebded n usiɣzef"
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid ""
@@ -217,7 +219,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
-msgstr ""
+msgstr "Yesnusuy asentem n umtawa n lqem n usiɣzef"
 
 #: data/org.gnome.shell.gschema.xml.in:57
 msgid ""
@@ -228,26 +230,26 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:65
 msgid "List of desktop file IDs for favorite applications"
-msgstr ""
+msgstr "Tabdart n yifuyla n tnarit IDs i yisnasen ismenyafen"
 
 #: data/org.gnome.shell.gschema.xml.in:66
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
-msgstr ""
+msgstr "Isnasen yemtawan d yisulay-a ad ttwaskanen deg temnaḍt n yismenyafen."
 
 #: data/org.gnome.shell.gschema.xml.in:73
 msgid "History for command (Alt-F2) dialog"
-msgstr ""
+msgstr "Azray i udiwenni n tladna (Alt-F2)"
 
 #. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
 #: data/org.gnome.shell.gschema.xml.in:78
 msgid "History for the looking glass dialog"
-msgstr ""
+msgstr "Azray n udiwenni n lemri"
 
 #: data/org.gnome.shell.gschema.xml.in:82
 msgid "Always show the “Log Out” action in the system menu"
-msgstr ""
+msgstr "Sken yal tikkelt tigawt \"Ffeɣ\" deg wumuɣ n unagraw"
 
 #: data/org.gnome.shell.gschema.xml.in:83
 msgid ""
@@ -260,6 +262,8 @@ msgstr ""
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
+"Ma yella asmekti n wawal n uεeddi i userkeb n yinagrawen n yifuyla "
+"yettwawgelhen neɣ d anmeggag"
 
 #: data/org.gnome.shell.gschema.xml.in:93
 msgid ""
@@ -282,7 +286,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:111
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
-msgstr ""
+msgstr "Adiwenni n lqem aneqqaru \"Ansuf ɣer GNOME\" yettwaskan i"
 
 #: data/org.gnome.shell.gschema.xml.in:112
 msgid ""
@@ -294,7 +298,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:145
 msgid "Layout of the app picker"
-msgstr ""
+msgstr "Taneɣruft n umsefran n usnas"
 
 #: data/org.gnome.shell.gschema.xml.in:146
 msgid ""
@@ -396,39 +400,39 @@ msgstr "Senfel s asnas wis 9"
 
 #: data/org.gnome.shell.gschema.xml.in:251
 msgid "Open a new instance of application 1"
-msgstr ""
+msgstr "Ldi tummant tamaynut n usnas 1"
 
 #: data/org.gnome.shell.gschema.xml.in:255
 msgid "Open a new instance of application 2"
-msgstr ""
+msgstr "Ldi tummant tamaynut n usnas 2"
 
 #: data/org.gnome.shell.gschema.xml.in:259
 msgid "Open a new instance of application 3"
-msgstr ""
+msgstr "Ldi tummant tamaynut n usnas 3"
 
 #: data/org.gnome.shell.gschema.xml.in:263
 msgid "Open a new instance of application 4"
-msgstr ""
+msgstr "Ldi tummant tamaynut n usnas 4"
 
 #: data/org.gnome.shell.gschema.xml.in:267
 msgid "Open a new instance of application 5"
-msgstr ""
+msgstr "Ldi tummant tamaynut n usnas 5"
 
 #: data/org.gnome.shell.gschema.xml.in:271
 msgid "Open a new instance of application 6"
-msgstr ""
+msgstr "Ldi tummant tamaynut n usnas 6"
 
 #: data/org.gnome.shell.gschema.xml.in:275
 msgid "Open a new instance of application 7"
-msgstr ""
+msgstr "Ldi tummant tamaynut n usnas 7"
 
 #: data/org.gnome.shell.gschema.xml.in:279
 msgid "Open a new instance of application 8"
-msgstr ""
+msgstr "Ldi tummant tamaynut n usnas 8"
 
 #: data/org.gnome.shell.gschema.xml.in:283
 msgid "Open a new instance of application 9"
-msgstr ""
+msgstr "Ldi tummant tamaynut n usnas 9"
 
 #: data/org.gnome.shell.gschema.xml.in:308
 #: data/org.gnome.shell.gschema.xml.in:335
@@ -495,7 +499,7 @@ msgid "Network Login"
 msgstr "Tuqqna ɣer uẓeṭṭa"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:277
+#: subprojects/extensions-app/data/ui/extensions-window.ui:275
 msgid "Something’s gone wrong"
 msgstr "Yella wacu ur neddi ara"
 
@@ -574,7 +578,7 @@ msgstr ""
 
 #: js/gdm/loginDialog.js:442
 msgid "Session Already Running"
-msgstr ""
+msgstr "Tiɣimit tella tetteddu yakan"
 
 #: js/gdm/loginDialog.js:454
 msgid ""
@@ -890,12 +894,12 @@ msgstr "Akaram war isem"
 #: js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been pinned to the dash."
-msgstr ""
+msgstr "%s yettwarna ɣer tfelwit n usenqed."
 
 #: js/ui/appFavorites.js:199
 #, javascript-format
 msgid "%s has been unpinned from the dash."
-msgstr ""
+msgstr "%s yettwakkes seg tfelwit n usenqed."
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:51
@@ -916,7 +920,7 @@ msgstr "Ffeɣ"
 
 #: js/ui/appMenu.js:162 js/ui/dash.js:250
 msgid "Unpin"
-msgstr ""
+msgstr "Kkes asenteḍ"
 
 #: js/ui/appMenu.js:163
 msgid "Pin to Dash"
@@ -956,7 +960,7 @@ msgstr "Beddel agilal…"
 
 #: js/ui/backgroundMenu.js:17
 msgid "Display Settings"
-msgstr ""
+msgstr "Iɣewwaren n uskan"
 
 #: js/ui/backgroundMenu.js:18
 msgid "Settings"
@@ -1571,11 +1575,11 @@ msgstr "Sken tuccḍiwin"
 
 #: js/ui/lookingGlass.js:804
 msgid "Active"
-msgstr ""
+msgstr "Urmid"
 
 #: js/ui/lookingGlass.js:807
 msgid "Inactive"
-msgstr ""
+msgstr "Arurmid"
 
 #: js/ui/lookingGlass.js:809
 msgid "Error"
@@ -1591,11 +1595,11 @@ msgstr "Asider"
 
 #: js/ui/lookingGlass.js:815
 msgid "Deactivating"
-msgstr ""
+msgstr "Asensu"
 
 #: js/ui/lookingGlass.js:817
 msgid "Activating"
-msgstr ""
+msgstr "Armad"
 
 #: js/ui/lookingGlass.js:850
 msgid "View Source"
@@ -1603,7 +1607,7 @@ msgstr "Wali aɣbalu"
 
 #: js/ui/lookingGlass.js:861
 msgid "Web Page"
-msgstr ""
+msgstr "Asebter web"
 
 #: js/ui/main.js:279
 msgid "System was put in unsafe mode"
@@ -1681,11 +1685,11 @@ msgstr ""
 
 #: js/ui/padOsd.js:154
 msgid "Show on-screen help"
-msgstr ""
+msgstr "Sken tallalt ɣef ugdil"
 
 #: js/ui/padOsd.js:155
 msgid "Switch monitor"
-msgstr ""
+msgstr "Senfel asefrak"
 
 #: js/ui/padOsd.js:156
 msgid "Assign keystroke"
@@ -2056,11 +2060,11 @@ msgstr "Yensa"
 
 #: js/ui/status/backlight.js:81
 msgid "Low"
-msgstr ""
+msgstr "Yuder"
 
 #: js/ui/status/backlight.js:82
 msgid "High"
-msgstr ""
+msgstr "Ɛlay"
 
 #: js/ui/status/backlight.js:148 js/ui/status/keyboard.js:881
 msgid "Keyboard"
@@ -2262,12 +2266,12 @@ msgstr "Atwal"
 #: js/ui/status/powerProfiles.js:26
 msgctxt "Power profile"
 msgid "Balanced"
-msgstr ""
+msgstr "Yeεdel"
 
 #: js/ui/status/powerProfiles.js:31
 msgctxt "Power profile"
 msgid "Power Saver"
-msgstr ""
+msgstr "Aseklas iǧehden"
 
 #: js/ui/status/powerProfiles.js:41 js/ui/status/powerProfiles.js:71
 msgid "Power Mode"
@@ -2353,7 +2357,7 @@ msgstr ""
 
 #: js/ui/status/volume.js:233
 msgid "Unmute"
-msgstr ""
+msgstr "Kkes asgugem"
 
 #: js/ui/status/volume.js:233
 msgid "Mute"
@@ -2459,7 +2463,7 @@ msgstr ""
 
 #: js/ui/windowManager.js:84
 msgid "Keep Changes"
-msgstr ""
+msgstr "Ḥrez ibeddilen"
 
 #: js/ui/windowManager.js:104
 #, javascript-format
@@ -2493,7 +2497,7 @@ msgstr "Senkez"
 
 #: js/ui/windowMenu.js:80
 msgid "Resize"
-msgstr ""
+msgstr "Ales tisekta"
 
 #: js/ui/windowMenu.js:101
 msgid "Move Titlebar Onscreen"
@@ -2501,7 +2505,7 @@ msgstr ""
 
 #: js/ui/windowMenu.js:106
 msgid "Always on Top"
-msgstr ""
+msgstr "Yalas nnig"
 
 #: js/ui/windowMenu.js:125
 msgid "Always on Visible Workspace"
@@ -2583,16 +2587,16 @@ msgstr ""
 
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
-msgstr ""
+msgstr "Asesteb n udiwenni ur yettwaqbel ara sɣur useqdac"
 
 #: src/st/st-icon-theme.c:1865
 #, c-format
 msgid "Icon '%s' not present in theme %s"
-msgstr ""
+msgstr "Tignit '%s' ulac-itt deg usentel %s"
 
 #: src/st/st-icon-theme.c:3454 src/st/st-icon-theme.c:3757
 msgid "Failed to load icon"
-msgstr ""
+msgstr "Yecceḍ usali n tignit"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 msgid "Manage your GNOME Extensions"
@@ -2609,15 +2613,15 @@ msgid ""
 "preferences and removing or disabling unwanted extensions."
 msgstr ""
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
 msgid "Main Window"
 msgstr "Asfaylu agejdan"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:80
 msgid "Available Updates"
 msgstr "Ileqman yellan"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:84
 msgid "Search View"
 msgstr ""
 
@@ -2690,32 +2694,32 @@ msgid_plural "%d extensions will be updated on next login."
 msgstr[0] ""
 msgstr[1] ""
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:21
+#: subprojects/extensions-app/data/ui/extension-row.ui:22
 msgid "Error Details"
-msgstr ""
+msgstr "Talqayt n tuccḍa"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:61
+#: subprojects/extensions-app/data/ui/extension-row.ui:62
 msgid "Updates Details"
 msgstr ""
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:71
+#: subprojects/extensions-app/data/ui/extension-row.ui:72
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
 msgstr ""
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:107
+#: subprojects/extensions-app/data/ui/extension-row.ui:104
 msgid "Extension Details"
 msgstr "Talqayt n isiɣzaf"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:193
+#: subprojects/extensions-app/data/ui/extension-row.ui:192
 msgid "_Website"
 msgstr "Asmel _Web"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:220
+#: subprojects/extensions-app/data/ui/extension-row.ui:219
 msgid "_Settings"
 msgstr "Iɣewwaṛen (_S)"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:247
+#: subprojects/extensions-app/data/ui/extension-row.ui:246
 msgid "_Remove…"
 msgstr "Kkes (_R)"
 
@@ -2739,47 +2743,47 @@ msgstr "Nadi ɣef isiɣzaf"
 msgid "_Extensions"
 msgstr "Isiɣzaf (_E)"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:143
+#: subprojects/extensions-app/data/ui/extensions-window.ui:139
 msgid "More Information"
 msgstr "Ugar n yisallen"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:153
+#: subprojects/extensions-app/data/ui/extensions-window.ui:151
 msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
 msgstr ""
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:180
+#: subprojects/extensions-app/data/ui/extensions-window.ui:178
 msgid "User Extensions"
 msgstr "Iseɣzaf n useqdac"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:200
+#: subprojects/extensions-app/data/ui/extensions-window.ui:198
 msgid "System Extensions"
 msgstr "Iseɣzaf n unagraw"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:235
+#: subprojects/extensions-app/data/ui/extensions-window.ui:233
 msgid "Search Results"
 msgstr "Igmaḍ n unadi"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:254
+#: subprojects/extensions-app/data/ui/extensions-window.ui:252
 msgid "No Results Found"
 msgstr "Ulac igmad yettwafen"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:255
+#: subprojects/extensions-app/data/ui/extensions-window.ui:253
 msgid "Try a different search."
 msgstr "Ɛreḍ anadi-nniḍen."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:266
+#: subprojects/extensions-app/data/ui/extensions-window.ui:264
 msgid "No Installed Extensions"
 msgstr ""
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:267
+#: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
 msgstr ""
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:278
+#: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -3000,31 +3004,31 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:146
 msgid "Show enabled extensions"
-msgstr ""
+msgstr "Sken isiɣzaf urmiden"
 
 #: subprojects/extensions-tool/src/command-list.c:149
 msgid "Show disabled extensions"
-msgstr ""
+msgstr "Sken isiɣzaf yensan"
 
 #: subprojects/extensions-tool/src/command-list.c:152
 msgid "Show extensions in active state"
-msgstr ""
+msgstr "Sken isiɣzaf deg waddad urmid"
 
 #: subprojects/extensions-tool/src/command-list.c:155
 msgid "Show extensions in inactive state"
-msgstr ""
+msgstr "Sken isiɣzaf deg waddad arurmid"
 
 #: subprojects/extensions-tool/src/command-list.c:158
 msgid "Show extensions with preferences"
-msgstr ""
+msgstr "Sken isiɣzaf s yismenyifen"
 
 #: subprojects/extensions-tool/src/command-list.c:161
 msgid "Show extensions with updates"
-msgstr ""
+msgstr "Sken isiɣzaf s yileqman"
 
 #: subprojects/extensions-tool/src/command-list.c:164
 msgid "Print extension details"
-msgstr ""
+msgstr "Siggez talqayt n usiɣzef"
 
 #: subprojects/extensions-tool/src/command-list.c:172
 msgid "List installed extensions"
@@ -3065,11 +3069,11 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-pack.c:466
 msgid "SOURCE_DIRECTORY"
-msgstr ""
+msgstr "Aɣablu_Akaram"
 
 #: subprojects/extensions-tool/src/command-pack.c:475
 msgid "Create an extension bundle"
-msgstr ""
+msgstr "Rnu akemmus n yisiɣzaf"
 
 #: subprojects/extensions-tool/src/command-pack.c:495
 msgid "More than one source directory specified"
@@ -3078,37 +3082,37 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-prefs.c:47
 #, c-format
 msgid "Extension “%s” doesn't have preferences\n"
-msgstr ""
+msgstr "Asiɣzef \"%s\" ulac ɣer-s ismenyifen\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:62
 #, c-format
 msgid "Failed to open prefs for extension “%s”: %s\n"
-msgstr ""
+msgstr "Yecceḍ ulday n yismenyifen i usiɣzef \"%s\": %s\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:87
 msgid "Opens extension preferences"
-msgstr ""
+msgstr "Yettalday ismenyifen n usiɣzef"
 
 #: subprojects/extensions-tool/src/command-reset.c:58
 msgid "Reset an extension"
-msgstr ""
+msgstr "Wennez asiɣzef"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
 msgid "Cannot uninstall system extensions\n"
-msgstr ""
+msgstr "Yegguma ad issefsax asebded n yisiɣzaf n unagraw\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:64
 #, c-format
 msgid "Failed to uninstall “%s”\n"
-msgstr ""
+msgstr "Yeccḍ usefsex n usebded n \"%s\"\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:86
 msgid "Uninstall an extension"
-msgstr ""
+msgstr "Sefsex asebded n usiɣzef"
 
 #: subprojects/extensions-tool/src/main.c:76
 msgid "Do not print error messages"
-msgstr ""
+msgstr "Ur siggiz ara iznan s tuccḍiwin"
 
 #: subprojects/extensions-tool/src/main.c:249
 msgid "Path"
@@ -3120,7 +3124,7 @@ msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:255
 msgid "Original author"
-msgstr ""
+msgstr "Ameskar amezwaru"
 
 #: subprojects/extensions-tool/src/main.c:261
 #: subprojects/extensions-tool/src/main.c:263
@@ -3146,7 +3150,7 @@ msgstr "Addad"
 
 #: subprojects/extensions-tool/src/main.c:309
 msgid "“version” takes no arguments"
-msgstr ""
+msgstr "\"lqem\" ur yeṭṭif ara ifukal"
 
 #: subprojects/extensions-tool/src/main.c:311
 #: subprojects/extensions-tool/src/main.c:331
@@ -3155,16 +3159,16 @@ msgstr "Aseqdec:"
 
 #: subprojects/extensions-tool/src/main.c:314
 msgid "Print version information and exit."
-msgstr ""
+msgstr "Siggez talɣut n lqem syen ffeɣ."
 
 #: subprojects/extensions-tool/src/main.c:329
 #: subprojects/extensions-tool/src/main.c:332
 msgid "COMMAND"
-msgstr ""
+msgstr "COMMAND"
 
 #: subprojects/extensions-tool/src/main.c:332
 msgid "[ARGS…]"
-msgstr ""
+msgstr "[ARGS…]"
 
 #: subprojects/extensions-tool/src/main.c:334
 msgid "Commands:"
@@ -3213,7 +3217,7 @@ msgstr "Akemmus n usiɣzef"
 
 #: subprojects/extensions-tool/src/main.c:347
 msgid "Install extension bundle"
-msgstr ""
+msgstr "Sebded akemmus n yisiɣzaf"
 
 #: subprojects/extensions-tool/src/main.c:349
 #, c-format
@@ -3238,11 +3242,11 @@ msgstr "Rnu tignit di tama n ufella n ufeggag"
 
 #: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
 msgid "Quick Settings Item"
-msgstr ""
+msgstr "Aferdis n yiɣewwaren iruraden"
 
 #: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:5
 msgid "Add an item to quick settings"
-msgstr ""
+msgstr "Rnu aferdos ɣer yiɣewwaren iruraden"
 
 #. translators:
 #. * The device has been disabled
