@@ -91,6 +91,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (NaXembed, na_xembed, G_TYPE_OBJECT)
 enum {
   PLUG_ADDED,
   PLUG_REMOVED,
+  RECONFIGURED,
   LAST_SIGNAL
 };
 
@@ -548,6 +549,15 @@ xembed_filter_func (MetaX11Display *x11_display,
           }
         break;
       }
+    case ConfigureNotify:
+      {
+        XConfigureEvent *xce = &xevent->xconfigure;
+
+        if (xce->window == priv->socket_window)
+          g_signal_emit (xembed, signals[RECONFIGURED], 0);
+
+        break;
+      }
     case DestroyNotify:
       {
         XDestroyWindowEvent *xdwe = &xevent->xdestroywindow;
@@ -739,6 +749,14 @@ na_xembed_class_init (NaXembedClass *klass)
                   G_OBJECT_CLASS_TYPE (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (NaXembedClass, plug_removed),
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
+  signals[RECONFIGURED] =
+    g_signal_new ("reconfigured",
+                  G_OBJECT_CLASS_TYPE (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (NaXembedClass, reconfigured),
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
