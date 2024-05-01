@@ -892,10 +892,10 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         // If the login failed with the preauthenticated oVirt credentials
         // then discard the credentials and revert to default authentication
         // mechanism.
-        let foregroundService = Object.keys(this._credentialManagers).find(service =>
-            this.serviceIsForeground(service));
-        if (foregroundService) {
-            this._credentialManagers[foregroundService].token = null;
+        const isCredentialManager = !!this._credentialManagers[serviceName];
+        const isForeground = this.serviceIsForeground(serviceName);
+        if (isCredentialManager && isForeground) {
+            this._credentialManagers[serviceName].token = null;
             this._preemptingService = null;
             this._verificationFailed(serviceName, false);
             return;
@@ -909,7 +909,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         // if the password service fails, then cancel everything.
         // But if, e.g., fingerprint fails, still give
         // password authentication a chance to succeed
-        if (this.serviceIsForeground(serviceName))
+        if (isForeground)
             this._failCounter++;
 
         this._verificationFailed(serviceName, true);
