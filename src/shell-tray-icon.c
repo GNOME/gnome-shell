@@ -185,6 +185,10 @@ shell_tray_icon_allocate (ClutterActor          *actor,
 
   CLUTTER_ACTOR_CLASS (shell_tray_icon_parent_class)->allocate (actor, box);
 
+  na_xembed_set_available_size (NA_XEMBED (tray_icon->tray_child),
+                                roundf (clutter_actor_box_get_width (box)),
+                                roundf (clutter_actor_box_get_height (box)));
+
   /* Find the actor's new coordinates in terms of the stage.
    */
   clutter_actor_get_transformed_position (actor, &wx, &wy);

@@ -58,6 +58,10 @@ void na_xembed_get_size (NaXembed *xembed,
 			 int      *width,
 			 int      *height);
 
+void na_xembed_set_available_size (NaXembed *xembed,
+                                   int       width,
+                                   int       height);
+
 void na_xembed_set_background_color (NaXembed        *xembed,
                                      const CoglColor *color);
 
