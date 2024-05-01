@@ -36,6 +36,7 @@ struct _NaXembedPrivate
   MetaX11Display *x11_display;
   Window socket_window;
   Window plug_window;
+  Window old_parent;
 
   int root_x;
   int root_y;
@@ -139,7 +140,26 @@ na_xembed_end_embedding (NaXembed *xembed)
 {
   NaXembedPrivate *priv = na_xembed_get_instance_private (xembed);
 
+  if (priv->socket_window)
+    {
+      Display *xdisplay = meta_x11_display_get_xdisplay (priv->x11_display);
+
+      mtk_x11_error_trap_push (xdisplay);
+
+      if (priv->plug_window && priv->old_parent)
+        XReparentWindow (xdisplay,
+                         priv->plug_window,
+                         priv->old_parent,
+                         0, 0);
+
+      XDestroyWindow (xdisplay, priv->socket_window);
+      priv->socket_window = None;
+
+      mtk_x11_error_trap_pop (xdisplay);
+    }
+
   priv->plug_window = None;
+  priv->old_parent = None;
   priv->current_width = 0;
   priv->current_height = 0;
   priv->resize_count = 0;
@@ -413,6 +433,18 @@ na_xembed_add_window (NaXembed  *xembed,
                        &socket_attrs);
 
       XUnmapWindow (xdisplay, priv->plug_window); /* Shouldn't actually be necessary for XEMBED, but just in case */
+
+      if (!priv->old_parent)
+        {
+          g_autofree Window *children = NULL;
+          unsigned int n_children;
+          Window root;
+
+          if (!XQueryTree (xdisplay, priv->plug_window, &root, &priv->old_parent,
+                           &children, &n_children))
+            priv->old_parent = meta_x11_display_get_xroot (priv->x11_display);
+        }
+
       XReparentWindow (xdisplay,
                        priv->plug_window,
                        priv->socket_window,
@@ -563,10 +595,14 @@ xembed_filter_func (MetaX11Display *x11_display,
         /* Note that we get destroy notifies both from SubstructureNotify on
          * our window and StructureNotify on socket->plug_window
          */
+        if (priv->socket_window && xdwe->window == priv->socket_window)
+          priv->socket_window = None;
+
         if (priv->plug_window && (xdwe->window == priv->plug_window))
           {
             g_object_ref (xembed);
             g_signal_emit (xembed, signals[PLUG_REMOVED], 0);
+            priv->plug_window = None;
             na_xembed_end_embedding (xembed);
             g_object_unref (xembed);
           }
@@ -631,6 +667,7 @@ xembed_filter_func (MetaX11Display *x11_display,
           {
             g_object_ref (xembed);
             g_signal_emit (xembed, signals[PLUG_REMOVED], 0);
+            priv->old_parent = None;
             na_xembed_end_embedding (xembed);
             g_object_unref (xembed);
           }
@@ -696,7 +733,7 @@ na_xembed_finalize (GObject *object)
   if (priv->x11_display && priv->event_func_id)
     meta_x11_display_remove_event_func (priv->x11_display, priv->event_func_id);
 
-  if (priv->plug_window)
+  if (priv->plug_window || priv->socket_window)
     na_xembed_end_embedding (xembed);
 
   G_OBJECT_CLASS (na_xembed_parent_class)->finalize (object);
