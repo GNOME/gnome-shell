@@ -244,7 +244,7 @@ na_tray_manager_new (MetaX11Display *x11_display)
                        NULL);
 }
 
-static gboolean
+static void
 na_tray_manager_plug_removed (NaTrayChild   *tray_child,
                               NaTrayManager *manager)
 {
@@ -255,9 +255,6 @@ na_tray_manager_plug_removed (NaTrayChild   *tray_child,
   g_hash_table_remove (manager->children,
                        GINT_TO_POINTER (icon_window));
   g_signal_emit (manager, manager_signals[TRAY_ICON_REMOVED], 0, tray_child);
-
-  /* This destroys the socket. */
-  return FALSE;
 }
 
 static void
