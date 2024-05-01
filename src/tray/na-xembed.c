@@ -43,6 +43,8 @@ struct _NaXembedPrivate
   int request_height;
   int current_width;
   int current_height;
+  int available_width;
+  int available_height;
   int resize_count;
   int xembed_version;
 
@@ -141,6 +143,8 @@ na_xembed_end_embedding (NaXembed *xembed)
   priv->current_width = 0;
   priv->current_height = 0;
   priv->resize_count = 0;
+  priv->available_width = -1;
+  priv->available_height = -1;
   g_clear_handle_id (&priv->resize_id, g_source_remove);
 }
 
@@ -185,6 +189,11 @@ na_xembed_synchronize_size (NaXembed *xembed)
   y = priv->root_y;
   width = priv->request_width;
   height = priv->request_height;
+
+  if (priv->available_width >= 0)
+    width = priv->available_width;
+  if (priv->available_height >= 0)
+    height = priv->available_height;
 
   XMoveResizeWindow (xdisplay,
                      priv->socket_window,
@@ -745,6 +754,10 @@ na_xembed_class_init (NaXembedClass *klass)
 static void
 na_xembed_init (NaXembed *xembed)
 {
+  NaXembedPrivate *priv = na_xembed_get_instance_private (xembed);
+
+  priv->available_width = -1;
+  priv->available_height = -1;
 }
 
 void
@@ -807,6 +820,22 @@ na_xembed_get_size (NaXembed *xembed,
     *width = priv->request_width;
   if (height)
     *height = priv->request_height;
+}
+
+void
+na_xembed_set_available_size (NaXembed *xembed,
+                              int       width,
+                              int       height)
+{
+  NaXembedPrivate *priv = na_xembed_get_instance_private (xembed);
+
+  if (priv->available_width == width && priv->available_height == height)
+    return;
+
+  priv->available_width = width;
+  priv->available_height = height;
+
+  na_xembed_resize (xembed);
 }
 
 void
