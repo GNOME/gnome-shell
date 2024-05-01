@@ -239,6 +239,7 @@ shell_tray_icon_set_child (ShellTrayIcon *tray_icon,
   MetaDisplay *display = shell_global_get_display (shell_global_get ());
 
   g_return_if_fail (tray_icon != NULL);
+  g_return_if_fail (tray_icon->tray_child == NULL);
   g_return_if_fail (tray_child != NULL);
 
   /* We do all this now rather than computing it on the fly later,
