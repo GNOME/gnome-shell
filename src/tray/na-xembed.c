@@ -24,6 +24,7 @@
 #include "na-xembed.h"
 
 #include <mtk/mtk-x11.h>
+#include <X11/extensions/shape.h>
 #include <X11/extensions/Xfixes.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -362,6 +363,7 @@ na_xembed_add_window (NaXembed  *xembed,
     {
       XSetWindowAttributes socket_attrs;
       XWindowAttributes plug_attrs;
+      int shape_major, shape_minor;
       int result;
 
       result = XGetWindowAttributes (xdisplay, priv->plug_window, &plug_attrs);
@@ -407,6 +409,19 @@ na_xembed_add_window (NaXembed  *xembed,
                        priv->plug_window,
                        priv->socket_window,
                        0, 0);
+
+      /* Set an empty input shape on the window so that the socket does not
+       * get any input. Without this the tray may still get events and - for
+       * instance - show tooltips on hover which we don't want.
+       * This is the quickest way to achieve this, without having to deal these
+       * windows with specific code in mutter.
+       */
+      if (XShapeQueryExtension (xdisplay, &shape_major, &shape_minor))
+        {
+          XShapeSelectInput (xdisplay, priv->socket_window, NoEventMask);
+          XShapeCombineRectangles (xdisplay, priv->socket_window, ShapeInput,
+                                   0, 0, NULL, 0, ShapeSet, 0);
+        }
     }
 
   priv->have_size = FALSE;
