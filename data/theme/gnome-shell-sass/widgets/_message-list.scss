@@ -143,7 +143,6 @@
 
       // icon size and color
       icon-size: $base_icon_size * 3; // 48px
-      -st-icon-style: symbolic;
 
       &.message-themed-icon {
         border-radius: $forced_circular_radius; // is circular
