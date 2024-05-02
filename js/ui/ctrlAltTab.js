@@ -90,22 +90,14 @@ export class CtrlAltTabManager {
             let windows = display.get_tab_list(Meta.TabList.DOCKS,
                 activeWorkspace);
             let windowTracker = Shell.WindowTracker.get_default();
-            let textureCache = St.TextureCache.get_default();
             for (let i = 0; i < windows.length; i++) {
                 let icon = null;
                 let iconName = null;
                 if (windows[i].get_window_type() === Meta.WindowType.DESKTOP) {
                     iconName = 'shell-focus-desktop-symbolic';
                 } else {
-                    let app = windowTracker.get_window_app(windows[i]);
-                    if (app) {
-                        icon = app.create_icon_texture(POPUP_APPICON_SIZE);
-                    } else {
-                        icon = new St.Icon({
-                            gicon: textureCache.bind_cairo_surface_property(windows[i], 'icon'),
-                            icon_size: POPUP_APPICON_SIZE,
-                        });
-                    }
+                    const app = windowTracker.get_window_app(windows[i]);
+                    icon = app.create_icon_texture(POPUP_APPICON_SIZE);
                 }
 
                 items.push({
