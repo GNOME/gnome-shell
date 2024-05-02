@@ -478,6 +478,13 @@ export const Message = GObject.registerClass({
         });
         hbox.add_child(this._icon);
 
+        this._icon.connect('notify::is-symbolic', () => {
+            if (this._icon.is_symbolic)
+                this._icon.add_style_class_name('message-themed-icon');
+            else
+                this._icon.remove_style_class_name('message-themed-icon');
+        });
+
         const contentBox = new St.BoxLayout({
             style_class: 'message-content',
             vertical: true,
@@ -533,11 +540,6 @@ export const Message = GObject.registerClass({
 
     set icon(icon) {
         this._icon.gicon = icon;
-
-        if (icon instanceof Gio.ThemedIcon)
-            this._icon.add_style_class_name('message-themed-icon');
-        else
-            this._icon.remove_style_class_name('message-themed-icon');
 
         this._icon.visible = !!icon;
         this.notify('icon');
