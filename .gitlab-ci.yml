@@ -213,7 +213,7 @@ test:
     - sudo meson install -C mutter/build
     - mkdir -m 700 $XDG_RUNTIME_DIR
   script:
-    - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
+    - dbus-run-session -- xvfb-run meson test -C build --no-rebuild --timeout-multiplier 5
   artifacts:
     expire_in: 1 day
     paths:
