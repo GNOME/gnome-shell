@@ -348,14 +348,17 @@ if (slowdownEnv) {
 function wrapSpawnFunction(func) {
     const originalFunc = GLib[func];
     return function (workingDirectory, argv, envp, flags, childSetup, ...args) {
+        const commonArgs = [workingDirectory, argv, envp, flags];
         if (childSetup) {
             logError(new Error(`Using child GLib.${func} with a GLib.SpawnChildSetupFunc ` +
                 'is unsafe and may dead-lock, thus it should never be used from JavaScript. ' +
                 `Shell.${func} can be used to perform default actions or an ` +
                 'async-signal-safe alternative should be used instead'));
+            return originalFunc(...commonArgs, childSetup, ...args);
         }
 
-        return originalFunc(workingDirectory, argv, envp, flags, childSetup, ...args);
+        const retValue = Shell[`util_${func}`](...commonArgs, ...args);
+        return [true, ...Array.isArray(retValue) ? retValue : [retValue]];
     };
 }
 GLib.spawn_async = wrapSpawnFunction('spawn_async');
