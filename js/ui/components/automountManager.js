@@ -199,8 +199,11 @@ class AutomountManager {
                 e.message.includes('No key available to unlock device') ||     // udisks (no password)
                 // libblockdev wrong password opening LUKS device
                 e.message.includes('Failed to activate device: Incorrect passphrase') ||
-                // cryptsetup returns EINVAL in many cases, including wrong TCRYPT password/parameters
-                e.message.includes('Failed to load device\'s parameters: Invalid argument')) {
+                // cryptsetup returns EINVAL (< v2.5.0) or EPERM (>= v2.5.0)
+                // when the TCRYPT header can't be decrypted with the provided
+                // password/parameters.
+                e.message.includes('Failed to load device\'s parameters: Invalid argument') ||
+                e.message.includes('Failed to load device\'s parameters: Operation not permitted')) {
                 this._reaskPassword(volume);
             } else {
                 if (e.message.includes('Compiled against a version of libcryptsetup that does not support the VeraCrypt PIM setting')) {
