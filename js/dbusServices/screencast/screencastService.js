@@ -255,7 +255,7 @@ class Recorder extends Signals.EventEmitter {
                 });
 
             this._streamProxy = new ScreenCastStreamProxy(Gio.DBus.session,
-                'org.gnome.ScreenCast.Stream',
+                'org.gnome.Mutter.ScreenCast',
                 streamPath);
 
             this._streamProxy.connectSignal('PipeWireStreamAdded',
