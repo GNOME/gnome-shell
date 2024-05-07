@@ -574,7 +574,7 @@ export const SwipeTracker = GObject.registerClass({
     }
 
     _updatePanGesture(panGesture) {
-        const deltaVec = panGesture.get_delta();
+        const deltaVec = panGesture.get_delta_abs();
         const delta = this.orientation === Clutter.Orientation.HORIZONTAL
             ? -deltaVec.get_x()
             : -deltaVec.get_y();
