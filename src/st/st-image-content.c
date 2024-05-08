@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "st-image-content.h"
+#include "st-image-content-private.h"
 #include "st-private.h"
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -34,6 +34,7 @@ struct _StImageContentPrivate
 {
   int width;
   int height;
+  gboolean is_symbolic;
 };
 
 enum
@@ -345,4 +346,27 @@ st_image_content_new_with_preferred_size (int width,
                        "preferred-width", width,
                        "preferred-height", height,
                        NULL);
+}
+
+void
+st_image_content_set_is_symbolic (StImageContent *content,
+                                  gboolean        is_symbolic)
+{
+  StImageContentPrivate *priv;
+
+  g_return_if_fail (ST_IS_IMAGE_CONTENT (content));
+
+  priv = st_image_content_get_instance_private (content);
+  priv->is_symbolic = is_symbolic;
+}
+
+gboolean
+st_image_content_get_is_symbolic (StImageContent *content)
+{
+  StImageContentPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_IMAGE_CONTENT (content), FALSE);
+
+  priv = st_image_content_get_instance_private (content);
+  return priv->is_symbolic;
 }

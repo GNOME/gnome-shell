@@ -31,6 +31,7 @@
 #include "st-texture-cache.h"
 #include "st-theme-context.h"
 #include "st-private.h"
+#include "st-image-content-private.h"
 
 enum
 {
@@ -42,6 +43,8 @@ enum
   PROP_ICON_NAME,
   PROP_ICON_SIZE,
   PROP_FALLBACK_ICON_NAME,
+
+  PROP_IS_SYMBOLIC,
 
   N_PROPS
 };
@@ -62,6 +65,7 @@ struct _StIconPrivate
   GIcon           *fallback_gicon;
   gboolean         needs_update;
   gboolean         is_themed;
+  gboolean         is_symbolic;
 
   StIconColors     *colors;
 
@@ -153,6 +157,10 @@ st_icon_get_property (GObject    *gobject,
 
     case PROP_FALLBACK_ICON_NAME:
       g_value_set_string (value, st_icon_get_fallback_icon_name (icon));
+      break;
+
+    case PROP_IS_SYMBOLIC:
+      g_value_set_boolean (value, st_icon_get_is_symbolic (icon));
       break;
 
     default:
@@ -359,6 +367,18 @@ st_icon_class_init (StIconClass *klass)
                          NULL,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+  /**
+   * StIcon:symbolic:
+   *
+   * Whether the #StIcon is symbolic.
+   */
+  props[PROP_IS_SYMBOLIC] =
+    g_param_spec_boolean ("is-symbolic",
+                          "Is Symbolic",
+                          "Whether the icon is symbolic",
+                          FALSE,
+                          ST_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
+
   g_object_class_install_properties (object_class, N_PROPS, props);
 }
 
@@ -429,11 +449,32 @@ st_icon_update_shadow_pipeline (StIcon *icon)
 }
 
 static void
+st_icon_update_is_symbolic (StIcon *icon)
+{
+  StIconPrivate *priv = icon->priv;
+  gboolean is_symbolic = FALSE;
+  ClutterContent *content = NULL;
+
+  if (priv->icon_texture)
+    content = clutter_actor_get_content (priv->icon_texture);
+
+  if (ST_IS_IMAGE_CONTENT (content))
+    is_symbolic = st_image_content_get_is_symbolic (ST_IMAGE_CONTENT (content));
+
+  if (priv->is_symbolic != is_symbolic)
+    {
+      priv->is_symbolic = is_symbolic;
+      g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_IS_SYMBOLIC]);
+    }
+}
+
+static void
 on_content_changed (ClutterActor *actor,
                     GParamSpec   *pspec,
                     StIcon       *icon)
 {
   st_icon_clear_shadow_pipeline (icon);
+  st_icon_update_is_symbolic (icon);
 }
 
 static void
@@ -459,6 +500,7 @@ st_icon_finish_update (StIcon *icon)
       g_object_unref (priv->icon_texture);
 
       st_icon_clear_shadow_pipeline (icon);
+      st_icon_update_is_symbolic (icon);
 
       g_signal_connect_object (priv->icon_texture, "notify::content",
                                G_CALLBACK (on_content_changed), icon, 0);
@@ -878,4 +920,18 @@ st_icon_set_fallback_icon_name (StIcon      *icon,
   g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_FALLBACK_ICON_NAME]);
 
   g_object_thaw_notify (G_OBJECT (icon));
+}
+
+/**
+ * st_icon_get_is_symbolic:
+ * @icon: an #StIcon
+ *
+ * Returns: Whether the displayed icon is symbolic
+ */
+gboolean
+st_icon_get_is_symbolic (StIcon *icon)
+{
+  g_return_val_if_fail (ST_IS_ICON (icon), FALSE);
+
+  return icon->priv->is_symbolic;
 }

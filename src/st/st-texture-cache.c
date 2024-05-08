@@ -21,7 +21,7 @@
 
 #include "config.h"
 
-#include "st-image-content.h"
+#include "st-image-content-private.h"
 #include "st-texture-cache.h"
 #include "st-private.h"
 #include "st-settings.h"
@@ -723,6 +723,10 @@ finish_texture_load (AsyncTextureLoadData *data,
       if (!image)
         goto out;
     }
+
+  if (data->icon_info)
+    st_image_content_set_is_symbolic (ST_IMAGE_CONTENT (image),
+                                      st_icon_info_is_symbolic (data->icon_info));
 
   for (iter = data->actors; iter; iter = iter->next)
     {

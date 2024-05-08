@@ -76,6 +76,8 @@ gint         st_icon_get_icon_size (StIcon *icon);
 void         st_icon_set_icon_size (StIcon *icon,
                                     gint    size);
 
+gboolean     st_icon_get_is_symbolic (StIcon *icon);
+
 G_END_DECLS
 
 #endif /* _ST_ICON */
