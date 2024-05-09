@@ -10,6 +10,7 @@ import St from 'gi://St';
 
 import * as Main from './main.js';
 import * as MessageTray from './messageTray.js';
+import * as Mpris from './mpris.js';
 
 import * as Util from '../misc/util.js';
 import {formatTimeSpan} from '../misc/dateUtils.js';
@@ -741,6 +742,68 @@ class NotificationMessage extends Message {
     }
 });
 
+const MediaMessage = GObject.registerClass(
+class MediaMessage extends Message {
+    constructor(player) {
+        super(player.source);
+
+        this._player = player;
+        this.add_style_class_name('media-message');
+
+        this._prevButton = this.addMediaControl('media-skip-backward-symbolic',
+            () => {
+                this._player.previous();
+            });
+
+        this._playPauseButton = this.addMediaControl('',
+            () => {
+                this._player.playPause();
+            });
+
+        this._nextButton = this.addMediaControl('media-skip-forward-symbolic',
+            () => {
+                this._player.next();
+            });
+
+        this._player.connectObject('changed', this._update.bind(this), this);
+        this._update();
+    }
+
+    vfunc_clicked() {
+        this._player.raise();
+        Main.panel.closeCalendar();
+    }
+
+    _updateNavButton(button, sensitive) {
+        button.reactive = sensitive;
+    }
+
+    _update() {
+        let icon;
+        if (this._player.trackCoverUrl) {
+            const file = Gio.File.new_for_uri(this._player.trackCoverUrl);
+            icon = new Gio.FileIcon({file});
+        } else {
+            icon = new Gio.ThemedIcon({name: 'audio-x-generic-symbolic'});
+        }
+
+        this.set({
+            title: this._player.trackTitle,
+            body: this._player.trackArtists.join(', '),
+            icon,
+        });
+
+        let isPlaying = this._player.status === 'Playing';
+        let iconName = isPlaying
+            ? 'media-playback-pause-symbolic'
+            : 'media-playback-start-symbolic';
+        this._playPauseButton.child.icon_name = iconName;
+
+        this._updateNavButton(this._prevButton, this._player.canGoPrevious);
+        this._updateNavButton(this._nextButton, this._player.canGoNext);
+    }
+});
+
 export const MessageListSection = GObject.registerClass({
     Properties: {
         'can-clear': GObject.ParamSpec.boolean(
@@ -1011,5 +1074,45 @@ class NotificationSection extends MessageListSection {
                 message.notification.acknowledged = true;
         });
         super.vfunc_map();
+    }
+});
+
+export const MediaSection = GObject.registerClass(
+class MediaSection extends MessageListSection {
+    constructor() {
+        super();
+        this._players = new Map();
+        this._mediaSource = new Mpris.MprisSource();
+
+        this._mediaSource.connectObject(
+            'player-added', (_, player) => this._addPlayer(player),
+            'player-removed', (_, player) => this._removePlayer(player),
+            this);
+
+        this._mediaSource.players.forEach(player => {
+            this._addPlayer(player);
+        });
+    }
+
+    _addPlayer(player) {
+        if (this._players.has(player))
+            throw new Error('Player was already added previously');
+
+        const message = new MediaMessage(player);
+        this._players.set(player, message);
+        this.addMessage(message, true);
+    }
+
+    _removePlayer(player) {
+        const message = this._players.get(player);
+
+        if (message)
+            this.removeMessage(message, true);
+
+        this._players.delete(player);
+    }
+
+    get allowed() {
+        return !Main.sessionMode.isGreeter;
     }
 });

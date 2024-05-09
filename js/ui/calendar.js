@@ -7,7 +7,6 @@ import St from 'gi://St';
 
 import * as Main from './main.js';
 import * as MessageList from './messageList.js';
-import * as Mpris from './mpris.js';
 import * as PopupMenu from './popupMenu.js';
 import {ensureActorVisibleInScrollView} from '../misc/animationUtils.js';
 
@@ -877,7 +876,7 @@ class CalendarMessageList extends St.Widget {
             this);
         this._scrollView.child = this._sectionList;
 
-        this._mediaSection = new Mpris.MediaSection();
+        this._mediaSection = new MessageList.MediaSection();
         this._addSection(this._mediaSection);
 
         this._notificationSection = new MessageList.NotificationSection();
