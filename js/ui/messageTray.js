@@ -572,6 +572,7 @@ export const Source = GObject.registerClass({
 
         this.emit('notification-added', notification);
         this.emit('notification-request-banner', notification);
+        this.countUpdated();
     }
 
     destroy(reason) {
