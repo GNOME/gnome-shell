@@ -113,6 +113,8 @@ class PortalWindow extends Gtk.ApplicationWindow {
         super._init({
             application,
             title: _('Hotspot Login'),
+            default_width: 600,
+            default_height: 450,
         });
 
         const headerbar = new Gtk.HeaderBar();
@@ -153,7 +155,6 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this._syncUri();
 
         this.set_child(this._webView);
-        this.set_size_request(600, 450);
         this.maximize();
         this.present_with_time(timestamp);
 
