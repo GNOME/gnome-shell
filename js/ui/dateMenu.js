@@ -1000,5 +1000,7 @@ class DateMenuButton extends PanelMenu.Button {
         // but the corresponding app (clocks, weather); however we can consider
         // that display-specific settings, so re-use "allowSettings" here ...
         this._displaysSection.visible = Main.sessionMode.allowSettings;
+
+        this._messageList.visible = Main.sessionMode.hasNotifications && !Main.sessionMode.isGreeter;
     }
 });

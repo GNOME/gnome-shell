@@ -862,10 +862,6 @@ export const MessageListSection = GObject.registerClass({
         this.emit('message-focused', messageActor);
     }
 
-    get allowed() {
-        return true;
-    }
-
     addMessage(message, animate) {
         this.addMessageAtIndex(message, -1, animate);
     }
@@ -990,10 +986,6 @@ export const MessageListSection = GObject.registerClass({
         }
     }
 
-    _shouldShow() {
-        return !this.empty;
-    }
-
     _sync() {
         let messages = this._messages;
         let empty = messages.length === 0;
@@ -1009,7 +1001,7 @@ export const MessageListSection = GObject.registerClass({
             this.notify('can-clear');
         }
 
-        this.visible = this.allowed && this._shouldShow();
+        this.visible = !this.empty;
     }
 });
 
@@ -1024,11 +1016,6 @@ class NotificationSection extends MessageListSection {
         Main.messageTray.getSources().forEach(source => {
             this._sourceAdded(Main.messageTray, source);
         });
-    }
-
-    get allowed() {
-        return Main.sessionMode.hasNotifications &&
-               !Main.sessionMode.isGreeter;
     }
 
     _sourceAdded(tray, source) {
@@ -1110,9 +1097,5 @@ class MediaSection extends MessageListSection {
             this.removeMessage(message, true);
 
         this._players.delete(player);
-    }
-
-    get allowed() {
-        return !Main.sessionMode.isGreeter;
     }
 });

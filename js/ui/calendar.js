@@ -5,7 +5,6 @@ import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
-import * as Main from './main.js';
 import * as MessageList from './messageList.js';
 import * as PopupMenu from './popupMenu.js';
 import {ensureActorVisibleInScrollView} from '../misc/animationUtils.js';
@@ -881,8 +880,6 @@ class CalendarMessageList extends St.Widget {
 
         this._notificationSection = new MessageList.NotificationSection();
         this._addSection(this._notificationSection);
-
-        Main.sessionMode.connect('updated', this._sync.bind(this));
     }
 
     _addSection(section) {
@@ -899,10 +896,6 @@ class CalendarMessageList extends St.Widget {
 
     _sync() {
         let sections = this._sectionList.get_children();
-        let visible = sections.some(s => s.allowed);
-        this.visible = visible;
-        if (!visible)
-            return;
 
         let empty = sections.every(s => s.empty || !s.visible);
         this._placeholder.visible = empty;
