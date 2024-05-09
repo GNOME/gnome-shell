@@ -96,11 +96,13 @@ const NotificationsBox = GObject.registerClass({
         box.add_child(textBox);
 
         let title = new St.Label({
-            text: source.title,
             style_class: 'unlock-dialog-notification-label',
             x_expand: true,
             x_align: Clutter.ActorAlign.START,
         });
+        source.bind_property('title',
+            title, 'text',
+            GObject.BindingFlags.SYNC_CREATE);
         textBox.add_child(title);
 
         let count = source.unseenCount;
@@ -127,9 +129,13 @@ const NotificationsBox = GObject.registerClass({
         box.add_child(textBox);
 
         let title = new St.Label({
-            text: source.title.replace(/\n/g, ' '),
             style_class: 'unlock-dialog-notification-label',
         });
+        source.bind_property_full('title',
+            title, 'text',
+            GObject.BindingFlags.SYNC_CREATE,
+            (bind, sourceVal) => [true, sourceVal?.replace(/\n/g, ' ') ?? ''],
+            null);
         textBox.add_child(title);
 
         let visible = false;
