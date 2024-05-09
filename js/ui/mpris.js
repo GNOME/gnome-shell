@@ -1,7 +1,6 @@
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
-import * as Signals from '../misc/signals.js';
 
 import * as Main from './main.js';
 import * as MessageList from './messageList.js';
@@ -19,7 +18,7 @@ const MprisPlayerProxy = Gio.DBusProxy.makeProxyWrapper(MprisPlayerIface);
 
 const MPRIS_PLAYER_PREFIX = 'org.mpris.MediaPlayer2.';
 
-export const MediaMessage = GObject.registerClass(
+const MediaMessage = GObject.registerClass(
 class MediaMessage extends MessageList.Message {
     constructor(player) {
         super(player.source);
@@ -42,9 +41,7 @@ class MediaMessage extends MessageList.Message {
                 this._player.next();
             });
 
-        this._player.connectObject(
-            'changed', this._update.bind(this),
-            'closed', this.close.bind(this), this);
+        this._player.connectObject('changed', this._update.bind(this), this);
         this._update();
     }
 
@@ -83,7 +80,18 @@ class MediaMessage extends MessageList.Message {
     }
 });
 
-export class MprisPlayer extends Signals.EventEmitter {
+
+export const MprisPlayer = GObject.registerClass({
+    Properties: {
+        'can-play': GObject.ParamSpec.boolean(
+            'can-play', null, null,
+            GObject.ParamFlags.READABLE,
+            false),
+    },
+    Signals: {
+        'changed': {},
+    },
+}, class MprisPlayer extends GObject.Object {
     constructor(busName) {
         super();
 
@@ -94,12 +102,16 @@ export class MprisPlayer extends Signals.EventEmitter {
             '/org/mpris/MediaPlayer2',
             this._onPlayerProxyReady.bind(this));
 
-        this._visible = false;
+        this._canPlay = false;
         this._trackArtists = [];
         this._trackTitle = '';
         this._trackCoverUrl = '';
         this._busName = busName;
         this.source = new MessageList.Source();
+    }
+
+    get canPlay() {
+        return this._canPlay;
     }
 
     get status() {
@@ -157,8 +169,6 @@ export class MprisPlayer extends Signals.EventEmitter {
 
         this._playerProxy.disconnectObject(this);
         this._playerProxy = null;
-
-        this.emit('closed');
     }
 
     _onMprisProxyReady() {
@@ -176,7 +186,7 @@ export class MprisPlayer extends Signals.EventEmitter {
 
     _onPlayerProxyReady() {
         this._playerProxy.connectObject(
-            'g-properties-changed', () => this._updateState(), this);
+            'g-properties-changed', this._updateState.bind(this), this);
         this._updateState();
     }
 
@@ -230,22 +240,22 @@ export class MprisPlayer extends Signals.EventEmitter {
             icon: this._app?.get_icon() ?? null,
         });
 
-        this.emit('changed');
+        const canPlay = !!this._playerProxy.CanPlay;
 
-        let visible = this._playerProxy.CanPlay;
-
-        if (this._visible !== visible) {
-            this._visible = visible;
-            if (visible)
-                this.emit('show');
-            else
-                this.emit('hide');
+        if (this.canPlay !== canPlay) {
+            this._canPlay = canPlay;
+            this.notify('can-play');
         }
+        this.emit('changed');
     }
-}
+});
 
-export const MediaSection = GObject.registerClass(
-class MediaSection extends MessageList.MessageListSection {
+export const MprisSource = GObject.registerClass({
+    Signals: {
+        'player-added': {param_types: [MprisPlayer]},
+        'player-removed': {param_types: [MprisPlayer]},
+    },
+}, class MprisSource extends GObject.Object {
     _init() {
         super._init();
 
@@ -257,30 +267,24 @@ class MediaSection extends MessageList.MessageListSection {
             this._onProxyReady.bind(this));
     }
 
-    get allowed() {
-        return !Main.sessionMode.isGreeter;
+    get players() {
+        return [...this._players.values()];
     }
 
     _addPlayer(busName) {
-        if (this._players.get(busName))
+        if (this._players.has(busName))
             return;
 
-        let player = new MprisPlayer(busName);
-        let message = null;
-        player.connect('closed',
-            () => {
-                this._players.delete(busName);
-            });
-        player.connect('show', () => {
-            message = new MediaMessage(player);
-            this.addMessage(message, true);
-        });
-        player.connect('hide', () => {
-            this.removeMessage(message, true);
-            message = null;
-        });
-
+        const player = new MprisPlayer(busName);
         this._players.set(busName, player);
+
+        player.connectObject('notify::can-play',
+            () => {
+                if (player.canPlay)
+                    this.emit('player-added', player);
+                else
+                    this.emit('player-removed', player);
+            }, this);
     }
 
     async _onProxyReady() {
@@ -299,7 +303,56 @@ class MediaSection extends MessageList.MessageListSection {
         if (!name.startsWith(MPRIS_PLAYER_PREFIX))
             return;
 
-        if (newOwner && !oldOwner)
+        if (oldOwner) {
+            const player = this._players.get(name);
+            if (player) {
+                this._players.delete(name);
+                player.disconnectObject(this);
+                this.emit('player-removed', player);
+            }
+        }
+
+        if (newOwner)
             this._addPlayer(name);
+    }
+});
+
+export const MediaSection = GObject.registerClass(
+class MediaSection extends MessageList.MessageListSection {
+    constructor() {
+        super();
+        this._players = new Map();
+        this._mediaSource = new MprisSource();
+
+        this._mediaSource.connectObject(
+            'player-added', (_, player) => this._addPlayer(player),
+            'player-removed', (_, player) => this._removePlayer(player),
+            this);
+
+        this._mediaSource.players.forEach(player => {
+            this._addPlayer(player);
+        });
+    }
+
+    _addPlayer(player) {
+        if (this._players.has(player))
+            throw new Error('Player was already added previously');
+
+        const message = new MediaMessage(player);
+        this._players.set(player, message);
+        this.addMessage(message, true);
+    }
+
+    _removePlayer(player) {
+        const message = this._players.get(player);
+
+        if (message)
+            this.removeMessage(message, true);
+
+        this._players.delete(player);
+    }
+
+    get allowed() {
+        return !Main.sessionMode.isGreeter;
     }
 });
