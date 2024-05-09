@@ -10,6 +10,7 @@ import St from 'gi://St';
 
 import * as Main from './main.js';
 import * as MessageTray from './messageTray.js';
+import * as Mpris from './mpris.js';
 
 import * as Util from '../misc/util.js';
 import {formatTimeSpan} from '../misc/dateUtils.js';
@@ -813,6 +814,9 @@ export const MessageView = GObject.registerClass({
         'message-focused': {param_types: [Message]},
     },
 }, class MessageView extends St.BoxLayout {
+    _playerToMessage = new Map();
+    _mediaSource = new Mpris.MprisSource();
+
     constructor() {
         super({
             style_class: 'message-view',
@@ -820,6 +824,8 @@ export const MessageView = GObject.registerClass({
             x_expand: true,
             y_expand: true,
         });
+
+        this._setupMpris();
     }
 
     get empty() {
@@ -960,5 +966,28 @@ export const MessageView = GObject.registerClass({
                 });
             }
         }
+    }
+
+    _setupMpris() {
+        this._mediaSource.connectObject(
+            'player-added', (_, player) => this._addPlayer(player),
+            'player-removed', (_, player) => this._removePlayer(player),
+            this);
+
+        this._mediaSource.players.forEach(player => {
+            this._addPlayer(player);
+        });
+    }
+
+    _addPlayer(player) {
+        const message = new MediaMessage(player);
+        this._playerToMessage.set(player, message);
+        this._addMessageAtIndex(message, 0);
+    }
+
+    _removePlayer(player) {
+        const message = this._playerToMessage.get(player);
+        this._removeMessage(message);
+        this._playerToMessage.delete(player);
     }
 });
