@@ -65,6 +65,7 @@
     <file>us-extended.json</file>
     <file>vn.json</file>
     <file>za.json</file>
+    <file>za-extended.json</file>
     <file>emoji.json</file>
   </gresource>
 </gresources>
