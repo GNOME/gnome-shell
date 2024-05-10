@@ -7,7 +7,6 @@ import St from 'gi://St';
 
 import * as Main from './main.js';
 import * as MessageList from './messageList.js';
-import * as MessageTray from './messageTray.js';
 import * as Mpris from './mpris.js';
 import * as PopupMenu from './popupMenu.js';
 import {ensureActorVisibleInScrollView} from '../misc/animationUtils.js';
@@ -16,7 +15,6 @@ import {formatDateWithCFormatString} from '../misc/dateUtils.js';
 import {loadInterfaceXML} from '../misc/fileUtils.js';
 
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
-const MAX_NOTIFICATION_BUTTONS = 3;
 
 const NC_ = (context, str) => `${context}\u0004${str}`;
 
@@ -763,149 +761,6 @@ export const Calendar = GObject.registerClass({
     }
 });
 
-export const NotificationMessage = GObject.registerClass(
-class NotificationMessage extends MessageList.Message {
-    constructor(notification) {
-        super(notification.source);
-
-        this.notification = notification;
-
-        this.connect('close', () => {
-            this._closed = true;
-            if (this.notification)
-                this.notification.destroy(MessageTray.NotificationDestroyedReason.DISMISSED);
-        });
-        notification.connectObject(
-            'action-added', (_, action) => this._addAction(action),
-            'action-removed', (_, action) => this._removeAction(action),
-            'destroy', () => {
-                this.notification = null;
-                if (!this._closed)
-                    this.close();
-            }, this);
-
-        notification.bind_property('title',
-            this, 'title',
-            GObject.BindingFlags.SYNC_CREATE);
-        notification.bind_property('body',
-            this, 'body',
-            GObject.BindingFlags.SYNC_CREATE);
-        notification.bind_property('use-body-markup',
-            this, 'use-body-markup',
-            GObject.BindingFlags.SYNC_CREATE);
-        notification.bind_property('datetime',
-            this, 'datetime',
-            GObject.BindingFlags.SYNC_CREATE);
-        notification.bind_property('gicon',
-            this, 'icon',
-            GObject.BindingFlags.SYNC_CREATE);
-
-        this._actions = new Map();
-        this.notification.actions.forEach(action => {
-            this._addAction(action);
-        });
-    }
-
-    vfunc_clicked() {
-        this.notification.activate();
-    }
-
-    canClose() {
-        return true;
-    }
-
-    _addAction(action) {
-        if (!this._buttonBox) {
-            this._buttonBox = new St.BoxLayout({
-                x_expand: true,
-                style_class: 'notification-buttons-bin',
-            });
-            this.setActionArea(this._buttonBox);
-            global.focus_manager.add_group(this._buttonBox);
-        }
-
-        if (this._buttonBox.get_n_children() >= MAX_NOTIFICATION_BUTTONS)
-            return;
-
-        const button = new St.Button({
-            style_class: 'notification-button',
-            x_expand: true,
-            label: action.label,
-        });
-
-        button.connect('clicked', () => action.activate());
-
-        this._actions.set(action, button);
-        this._buttonBox.add_child(button);
-    }
-
-    _removeAction(action) {
-        this._actions.get(action)?.destroy();
-        this._actions.delete(action);
-    }
-});
-
-const NotificationSection = GObject.registerClass(
-class NotificationSection extends MessageList.MessageListSection {
-    _init() {
-        super._init();
-
-        this._nUrgent = 0;
-
-        Main.messageTray.connect('source-added', this._sourceAdded.bind(this));
-        Main.messageTray.getSources().forEach(source => {
-            this._sourceAdded(Main.messageTray, source);
-        });
-    }
-
-    get allowed() {
-        return Main.sessionMode.hasNotifications &&
-               !Main.sessionMode.isGreeter;
-    }
-
-    _sourceAdded(tray, source) {
-        source.connectObject('notification-added',
-            this._onNotificationAdded.bind(this), this);
-    }
-
-    _onNotificationAdded(source, notification) {
-        let message = new NotificationMessage(notification);
-
-        let isUrgent = notification.urgency === MessageTray.Urgency.CRITICAL;
-
-        notification.connectObject(
-            'destroy', () => {
-                if (isUrgent)
-                    this._nUrgent--;
-            },
-            'notify::datetime', () => {
-                // The datetime property changes whenever the notification is updated
-                this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.mapped);
-            }, this);
-
-        if (isUrgent) {
-            // Keep track of urgent notifications to keep them on top
-            this._nUrgent++;
-        } else if (this.mapped) {
-            // Only acknowledge non-urgent notifications in case it
-            // has important actions that are inaccessible when not
-            // shown as banner
-            notification.acknowledged = true;
-        }
-
-        let index = isUrgent ? 0 : this._nUrgent;
-        this.addMessageAtIndex(message, index, this.mapped);
-    }
-
-    vfunc_map() {
-        this._messages.forEach(message => {
-            if (message.notification.urgency !== MessageTray.Urgency.CRITICAL)
-                message.notification.acknowledged = true;
-        });
-        super.vfunc_map();
-    }
-});
-
 const Placeholder = GObject.registerClass(
 class Placeholder extends St.BoxLayout {
     _init() {
@@ -1025,7 +880,7 @@ class CalendarMessageList extends St.Widget {
         this._mediaSection = new Mpris.MediaSection();
         this._addSection(this._mediaSection);
 
-        this._notificationSection = new NotificationSection();
+        this._notificationSection = new MessageList.NotificationSection();
         this._addSection(this._notificationSection);
 
         Main.sessionMode.connect('updated', this._sync.bind(this));

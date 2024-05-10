@@ -6,7 +6,6 @@ import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
-import * as Calendar from './calendar.js';
 import * as GnomeSession from '../misc/gnomeSession.js';
 import * as Layout from './layout.js';
 import * as Main from './main.js';
@@ -1119,7 +1118,7 @@ export const MessageTray = GObject.registerClass({
             this.idleMonitor.add_user_active_watch(this._onIdleMonitorBecameActive.bind(this));
         }
 
-        this._banner = new Calendar.NotificationMessage(this._notification);
+        this._banner = new MessageList.NotificationMessage(this._notification);
         this._banner.can_focus = false;
         this._banner._header.expandButton.visible = false;
         this._banner.add_style_class_name('notification-banner');
