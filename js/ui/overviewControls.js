@@ -108,7 +108,7 @@ class ControlsManagerLayout extends Clutter.LayoutManager {
         return workspaceBox;
     }
 
-    _getAppDisplayBoxForState(state, box, searchHeight, dashHeight, appGridBox) {
+    _getAppDisplayBoxForState(state, box, searchHeight, dashHeight, workspacesBox) {
         const [width, height] = box.get_size();
         const {y1: startY} = this._workAreaBox;
         const appDisplayBox = new Clutter.ActorBox();
@@ -120,14 +120,14 @@ class ControlsManagerLayout extends Clutter.LayoutManager {
             break;
         case ControlsState.APP_GRID:
             appDisplayBox.set_origin(0,
-                startY + searchHeight + this._spacing + appGridBox.get_height() + this._spacing);
+                startY + searchHeight + this._spacing + workspacesBox.get_height() + this._spacing);
             break;
         }
 
         appDisplayBox.set_size(width,
             height -
             searchHeight - this._spacing -
-            appGridBox.get_height() - this._spacing -
+            workspacesBox.get_height() - this._spacing -
             dashHeight - this._spacing);
 
         return appDisplayBox;
