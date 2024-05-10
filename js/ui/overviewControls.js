@@ -120,7 +120,7 @@ class ControlsManagerLayout extends Clutter.LayoutManager {
             break;
         case ControlsState.APP_GRID:
             appDisplayBox.set_origin(0,
-                startY + searchHeight + this._spacing + appGridBox.get_height());
+                startY + searchHeight + this._spacing + appGridBox.get_height() + this._spacing);
             break;
         }
 
@@ -128,7 +128,7 @@ class ControlsManagerLayout extends Clutter.LayoutManager {
             height -
             searchHeight - this._spacing -
             appGridBox.get_height() - this._spacing -
-            dashHeight);
+            dashHeight - this._spacing);
 
         return appDisplayBox;
     }
