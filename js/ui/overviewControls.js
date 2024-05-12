@@ -561,7 +561,10 @@ class ControlsManager extends St.Widget {
             opacity: searchActive ? 0 : opacity,
             duration: animate ? SIDE_CONTROLS_ANIMATION_TIME : 0,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => (this._thumbnailsBox.visible = thumbnailsBoxVisible),
+            onComplete: () => {
+                this._thumbnailsBox.visible = thumbnailsBoxVisible;
+                this._thumbnailsBox.expandFraction = 0;
+            },
         };
 
         if (!searchActive) {
