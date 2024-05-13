@@ -133,6 +133,7 @@ export const WindowPreview = GObject.registerClass({
         const tracker = Shell.WindowTracker.get_default();
         const app = tracker.get_window_app(this.metaWindow);
         this._icon = app.create_icon_texture(ICON_SIZE);
+        this._icon.add_style_class_name('window-icon');
         this._icon.add_style_class_name('icon-dropshadow');
         this._icon.set({
             reactive: true,
