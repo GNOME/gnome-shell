@@ -204,11 +204,11 @@ export const PopupBaseMenuItem = GObject.registerClass({
         if (activeChanged) {
             this._active = active;
             if (active) {
-                this.add_style_class_name('selected');
+                this.add_style_pseudo_class('selected');
                 if (this.can_focus)
                     this.grab_key_focus();
             } else {
-                this.remove_style_class_name('selected');
+                this.remove_style_pseudo_class('selected');
                 // Remove the CSS active state if the user press the button and
                 // while holding moves to another menu item, so we don't paint all items.
                 // The correct behaviour would be to set the new item with the CSS
