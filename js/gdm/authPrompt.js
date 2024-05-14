@@ -134,8 +134,10 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     on_key_press_event(event) {
-        if (event.get_key_symbol() === Clutter.KEY_Escape)
+        if (event.get_key_symbol() === Clutter.KEY_Escape) {
             this.cancel();
+            return Clutter.EVENT_STOP;
+        }
         return Clutter.EVENT_PROPAGATE;
     }
 
