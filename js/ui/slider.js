@@ -20,6 +20,8 @@ export const Slider = GObject.registerClass({
             style_class: 'slider',
             can_focus: true,
             reactive: true,
+            track_hover: true,
+            hover: false,
             accessible_role: Atk.Role.SLIDER,
             x_expand: true,
         });
@@ -28,8 +30,6 @@ export const Slider = GObject.registerClass({
         this._dragging = false;
 
         this._handleRadius = 0;
-        this._handleBorderWidth = 0;
-        this._handleBorderColor = null;
 
         this._customAccessible.connect('get-minimum-increment', this._getMinimumIncrement.bind(this));
     }
@@ -39,11 +39,6 @@ export const Slider = GObject.registerClass({
 
         const themeNode = this.get_theme_node();
         this._handleRadius = themeNode.get_length('-slider-handle-radius');
-        this._handleBorderWidth =
-            themeNode.get_length('-slider-handle-border-width');
-        const [hasHandleColor, handleBorderColor] =
-            themeNode.lookup_color('-slider-handle-border-color', false);
-        this._handleBorderColor = hasHandleColor ? handleBorderColor : null;
     }
 
     vfunc_repaint() {
@@ -55,7 +50,7 @@ export const Slider = GObject.registerClass({
         let [width, height] = this.get_surface_size();
         const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
 
-        const ceiledHandleRadius = Math.ceil(this._handleRadius + this._handleBorderWidth);
+        const ceiledHandleRadius = Math.ceil(this._handleRadius);
         const handleY = height / 2;
 
         let handleX = ceiledHandleRadius +
@@ -67,23 +62,18 @@ export const Slider = GObject.registerClass({
         cr.setSourceColor(color);
         cr.arc(handleX, handleY, this._handleRadius, 0, 2 * Math.PI);
         cr.fillPreserve();
-        if (this._handleBorderColor && this._handleBorderWidth) {
-            cr.setSourceColor(this._handleBorderColor);
-            cr.setLineWidth(this._handleBorderWidth);
-            cr.stroke();
-        }
         cr.$dispose();
     }
 
     _getPreferredHeight() {
         const barHeight = super._getPreferredHeight();
-        const handleHeight = 2 * this._handleRadius + this._handleBorderWidth;
+        const handleHeight = 2 * this._handleRadius;
         return Math.max(barHeight, handleHeight);
     }
 
     _getPreferredWidth() {
         const barWidth = super._getPreferredWidth();
-        const handleWidth = 2 * this._handleRadius + this._handleBorderWidth;
+        const handleWidth = 2 * this._handleRadius;
         return Math.max(barWidth, handleWidth);
     }
 
