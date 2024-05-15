@@ -395,15 +395,16 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     _handleFingerprintError(e) {
         this._fingerprintReaderType = FingerprintReaderType.NONE;
 
-        if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-            return;
-        if (e.matches(Gio.DBusError, Gio.DBusError.SERVICE_UNKNOWN))
-            return;
-
-        if (Gio.DBusError.is_remote_error(e) &&
-            Gio.DBusError.get_remote_error(e) ===
-                'net.reactivated.Fprint.Error.NoSuchDevice')
-            return;
+        if (e instanceof GLib.Error) {
+            if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                return;
+            if (e.matches(Gio.DBusError, Gio.DBusError.SERVICE_UNKNOWN))
+                return;
+            if (Gio.DBusError.is_remote_error(e) &&
+                Gio.DBusError.get_remote_error(e) ===
+                    'net.reactivated.Fprint.Error.NoSuchDevice')
+                return;
+        }
 
         logError(e, 'Failed to interact with fprintd service');
     }
