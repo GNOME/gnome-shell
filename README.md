@@ -93,8 +93,12 @@ The following guidelines will help your change to be successfully merged:
  * Pay attention to the CI results. Merge requests cannot be merged until the
    CI passes.
 
+There's also a [small guide for newcomers][newcomers-contribution-guide] with
+a few more basic tips and tricks.
+
 [mr-handbook]: https://handbook.gnome.org/development/change-submission.html
 [commit-messages]: docs/commit-messages.md
+[newcomers-contribution-guide]: docs/newcomers-contribution-guide.md
 
 ## Documentation
 
