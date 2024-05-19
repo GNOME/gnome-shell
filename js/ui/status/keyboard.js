@@ -1101,7 +1101,7 @@ class InputSourceIndicator extends PanelMenu.Button {
 
         let description = xkbLayout;
         if (xkbVariant.length > 0)
-            description = `${description}\t${xkbVariant}`;
+            description = `${description}+${xkbVariant}`;
 
         Util.spawn(['tecla', description]);
     }
