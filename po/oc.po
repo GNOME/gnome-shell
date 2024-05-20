@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master oc\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-03 01:44+0000\n"
-"PO-Revision-Date: 2024-03-08 17:59+0100\n"
+"POT-Creation-Date: 2024-05-08 12:46+0000\n"
+"PO-Revision-Date: 2024-05-20 17:37+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.3\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-launchers.xml:6
@@ -120,7 +120,7 @@ msgstr "Prendre una captura d'ecran d'una fenèstra"
 msgid "Record a screencast interactively"
 msgstr "Enregistrar una vidèo d'ecran interactiu"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1290
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1294
 msgid "System"
 msgstr "Sistèma"
 
@@ -562,7 +562,7 @@ msgid "Network Login"
 msgstr "Identificacion ret"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:277
+#: subprojects/extensions-app/data/ui/extensions-window.ui:275
 msgid "Something’s gone wrong"
 msgstr "Quicòm a trucat"
 
@@ -589,17 +589,17 @@ msgid "Visit extension homepage"
 msgstr "Consultar la pagina de las extensions"
 
 #: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
-#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
+#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:115
 #: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
 #: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:384
 #: js/ui/shellMountOperation.js:394
 msgid "Cancel"
 msgstr "Anullar"
 
-#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
-#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:288
+#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:215
+#: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
+#: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
+#: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
 #: js/ui/shellMountOperation.js:334
 msgid "Password"
 msgstr "Senhal"
@@ -616,6 +616,9 @@ msgid ""
 "%s. To login remotely, you must log out from the remote session or force "
 "stop it."
 msgstr ""
+"La connexion a distància es pas possible pr’amor qu’una session distanta es "
+"ja en cors per %s. Per se connectar a distància, devètz vos desconnectar de "
+"la session distanta o forçar son arrèst."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:427
@@ -624,6 +627,9 @@ msgid ""
 "Login is not possible because a remote session is already running for %s. To "
 "login, you must log out from the remote session or force stop it."
 msgstr ""
+"La connexion es pas possible pr’amor qu’una session distanta es ja en cors "
+"per %s. Per se connectar, devètz vos desconnectar de la session distanta o "
+"forçar son arrèst."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:430
@@ -633,6 +639,9 @@ msgid ""
 "%s. To login remotely, you must log out from the local session or force stop "
 "it."
 msgstr ""
+"La connexion es pas possible pr’amor qu’una session locala es ja en cors per "
+"%s. Per se connectar a distància, devètz vos desconnectar de la session "
+"locala o forçar son arrèst."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:433
@@ -641,6 +650,8 @@ msgid ""
 "Login is not possible because a session is already running for %s. To login, "
 "you must log out from the session or force stop it."
 msgstr ""
+"La connexion es pas possible pr’amor qu’una session es ja en cors per %s. "
+"Per se connectar, devètz vos desconnectar de la session o forçar son arrèst."
 
 #: js/gdm/loginDialog.js:442
 msgid "Session Already Running"
@@ -651,6 +662,8 @@ msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss."
 msgstr ""
+"Forçar l’arrèst quitarà tota aplicacion en execucion e los processús e "
+"poiriá menar a de pèrda de donadas."
 
 #: js/gdm/loginDialog.js:474
 msgid "Force Stop"
@@ -667,22 +680,20 @@ msgstr "Absent de la lista ?"
 msgid "(e.g., user or %s)"
 msgstr "(per ex. utilizaire o %s)"
 
-#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:258
-#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
+#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:259
+#: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:328
 msgid "Username"
 msgstr "Nom d'utilizaire"
 
 #: js/gdm/loginDialog.js:1081
-msgid "Stop conflicting session dialog closed"
-msgstr ""
+msgid "Login Attempt Timed Out"
+msgstr "Ensag de connexion expirat"
 
 #: js/gdm/loginDialog.js:1082
-#, javascript-format
-msgid "Try to login again to start a session for user %s."
-msgstr ""
-"Ensajatz de vos connectar tornamai per aviar una session per l’utilizaire %s."
+msgid "Login took too long, please try again"
+msgstr "La connexion a pres tròp de temps, mercés de tornar ensajar"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1427
 msgid "Login Window"
 msgstr "Fenèstra de connexion"
 
@@ -1189,38 +1200,38 @@ msgstr "La version installada d’udisks pren pas en carga lo paramètre PIM"
 msgid "Open with %s"
 msgstr "Dobrir amb %s"
 
-#: js/ui/components/networkAgent.js:96
+#: js/ui/components/networkAgent.js:97
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "Autrament podètz quichatz lo boton « WPS » sul router."
 
-#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
+#: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "Se connectar"
 
-#: js/ui/components/networkAgent.js:223
+#: js/ui/components/networkAgent.js:224
 msgid "Key"
 msgstr "Clau"
 
-#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
+#: js/ui/components/networkAgent.js:275 js/ui/components/networkAgent.js:314
 msgid "Private key password"
 msgstr "Senhal de la clau privada"
 
-#: js/ui/components/networkAgent.js:307
+#: js/ui/components/networkAgent.js:308
 msgid "Identity"
 msgstr "Identitat"
 
-#: js/ui/components/networkAgent.js:333
+#: js/ui/components/networkAgent.js:334
 msgid "Service"
 msgstr "Servici"
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
-#: js/ui/components/networkAgent.js:750 js/ui/components/networkAgent.js:771
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:408
+#: js/ui/components/networkAgent.js:751 js/ui/components/networkAgent.js:772
 msgid "Authentication required"
 msgstr "Autentificacion necessària"
 
-#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:752
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1228,38 +1239,38 @@ msgid ""
 msgstr ""
 "Cal un senhal o una clau de chiframent per accedir a la ret sens fial « %s »."
 
-#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:755
+#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:756
 msgid "Wired 802.1X authentication"
 msgstr "Autentificacion filara 802.1X"
 
-#: js/ui/components/networkAgent.js:379
+#: js/ui/components/networkAgent.js:380
 msgid "Network name"
 msgstr "Nom de la ret"
 
-#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:760
 msgid "DSL authentication"
 msgstr "Autentificacion DSL"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:765
 msgid "PIN code required"
 msgstr "Còdi PIN requesit"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:765
+#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:766
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Un còdi PIN es necessari pels telefòns mobils de benda larga"
 
-#: js/ui/components/networkAgent.js:397
+#: js/ui/components/networkAgent.js:398
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:756
-#: js/ui/components/networkAgent.js:760 js/ui/components/networkAgent.js:772
-#: js/ui/components/networkAgent.js:776
+#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:757
+#: js/ui/components/networkAgent.js:761 js/ui/components/networkAgent.js:773
+#: js/ui/components/networkAgent.js:777
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Un senhal es requesit per se connectar a « %s »."
 
-#: js/ui/components/networkAgent.js:775
+#: js/ui/components/networkAgent.js:776
 msgid "VPN password"
 msgstr "Senhal del VPN"
 
@@ -2751,7 +2762,7 @@ msgstr "Gerir vòstras extensions GNOME"
 msgid "The GNOME Project"
 msgstr "Lo projècte GNOME"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:46
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -2760,15 +2771,15 @@ msgstr ""
 "preferéncias d'extensions e la supression o desactivacion de las extensions "
 "pas volguda."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
 msgid "Main Window"
 msgstr "Fenèstra principala"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:80
 msgid "Available Updates"
 msgstr "Mesas a jorn disponiblas"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:84
 msgid "Search View"
 msgstr "Vista recèrca"
 
@@ -2848,34 +2859,34 @@ msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d extension serà mesa a jorn a la connexion venenta."
 msgstr[1] "%d extensions seràn mesas a jorn a la connexion venenta."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:21
+#: subprojects/extensions-app/data/ui/extension-row.ui:22
 msgid "Error Details"
 msgstr "Detalhs de l’error"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:61
+#: subprojects/extensions-app/data/ui/extension-row.ui:62
 msgid "Updates Details"
 msgstr "Detalhs de la mesa a jorn"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:71
+#: subprojects/extensions-app/data/ui/extension-row.ui:72
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
 msgstr ""
 "Una version novèla d’aquesta extension es prèsta e cargada a la connexion "
 "venenta."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:107
+#: subprojects/extensions-app/data/ui/extension-row.ui:104
 msgid "Extension Details"
 msgstr "Detalhs de l’extension"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:193
+#: subprojects/extensions-app/data/ui/extension-row.ui:192
 msgid "_Website"
 msgstr "Site _Web"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:220
+#: subprojects/extensions-app/data/ui/extension-row.ui:219
 msgid "_Settings"
 msgstr "_Paramètres"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:247
+#: subprojects/extensions-app/data/ui/extension-row.ui:246
 msgid "_Remove…"
 msgstr "_Suprimir…"
 
@@ -2899,11 +2910,11 @@ msgstr "Cercar d’extensions"
 msgid "_Extensions"
 msgstr "_Extensions"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:143
+#: subprojects/extensions-app/data/ui/extensions-window.ui:139
 msgid "More Information"
 msgstr "Mai d'informacions"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:153
+#: subprojects/extensions-app/data/ui/extensions-window.ui:151
 msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
@@ -2912,31 +2923,31 @@ msgstr ""
 "recomandat de eesactivar totas las extensions se trobatz de problèmas ligats "
 "al sistèma."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:180
+#: subprojects/extensions-app/data/ui/extensions-window.ui:178
 msgid "User Extensions"
 msgstr "Extensions utilizaire"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:200
+#: subprojects/extensions-app/data/ui/extensions-window.ui:198
 msgid "System Extensions"
 msgstr "Extensions sistèma"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:235
+#: subprojects/extensions-app/data/ui/extensions-window.ui:233
 msgid "Search Results"
 msgstr "Resultats de la recèrca"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:254
+#: subprojects/extensions-app/data/ui/extensions-window.ui:252
 msgid "No Results Found"
 msgstr "Cap de resultat pas trobat"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:255
+#: subprojects/extensions-app/data/ui/extensions-window.ui:253
 msgid "Try a different search."
 msgstr "Ensajatz una autra recèrca."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:266
+#: subprojects/extensions-app/data/ui/extensions-window.ui:264
 msgid "No Installed Extensions"
 msgstr "Cap d’extension pas installada"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:267
+#: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
@@ -2944,7 +2955,7 @@ msgstr ""
 "Per trobar e apondre d’extensions, consultatz <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:278
+#: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -3421,13 +3432,13 @@ msgstr "Apondre lo menú rapid de parametratge"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Desactivat"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3436,16 +3447,21 @@ msgstr[1] "%u sortidas"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrada"
 msgstr[1] "%u entradas"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Sons sistèma"
+
+#~ msgid "Try to login again to start a session for user %s."
+#~ msgstr ""
+#~ "Ensajatz de vos connectar tornamai per aviar una session per l’utilizaire "
+#~ "%s."
 
 #~ msgid "%s is now known as %s"
 #~ msgstr "%s es ara conegut jol nom de %s"
