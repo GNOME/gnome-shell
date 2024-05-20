@@ -1266,7 +1266,7 @@ export const ThumbnailsBox = GObject.registerClass({
 
         // Compute the scale we'll need once everything is updated,
         // unless we are currently transitioning
-        if (this._expandFraction === 1) {
+        if (this._expandFraction === 0 || this._expandFraction === 1) {
             const [, natWidth] = this.get_preferred_width(-1);
             const [, natHeight] = this.get_preferred_height(natWidth);
             const totalSpacing = (nWorkspaces - 1) * spacing;
