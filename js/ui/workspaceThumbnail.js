@@ -1267,11 +1267,18 @@ export const ThumbnailsBox = GObject.registerClass({
         // Compute the scale we'll need once everything is updated,
         // unless we are currently transitioning
         if (this._expandFraction === 1) {
+            const [, natWidth] = this.get_preferred_width(-1);
+            const [, natHeight] = this.get_preferred_height(natWidth);
             const totalSpacing = (nWorkspaces - 1) * spacing;
             const availableWidth = (box.get_width() - totalSpacing) / nWorkspaces;
+            const availableHeight =
+                Math.min(natHeight, portholeHeight * this.maxThumbnailScale) -
+                themeNode.get_vertical_padding() -
+                themeNode.get_border_width(St.Side.TOP) -
+                themeNode.get_border_width(St.Side.BOTTOM);
 
             const hScale = availableWidth / portholeWidth;
-            const vScale = box.get_height() / portholeHeight;
+            const vScale = availableHeight / portholeHeight;
             const newScale = Math.min(hScale, vScale);
 
             if (newScale !== this._targetScale) {
