@@ -136,8 +136,6 @@ export class AccessDialogDBus {
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(AccessIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/freedesktop/portal/desktop');
-
-        Gio.DBus.session.own_name('org.gnome.Shell.Portal', Gio.BusNameOwnerFlags.REPLACE, null, null);
     }
 
     AccessDialogAsync(params, invocation) {
