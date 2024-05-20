@@ -94,3 +94,40 @@ $ dbus-run-session gnome-shell --wayland
 Some functionality is not available when running gnome-shell outside a GNOME
 session, including logout. To exit gnome-shell, bring up the run dialog with
 <kbd>Alt</kbd> <kbd>F2</kbd> and enter `debugexit`.
+
+## Running under valgrind with a full session
+
+Sometimes it is necessary to run gnome-shell under valgrind within a full GNOME
+session. This can be achieved by overriding the `ExecStart` command of the
+systemd service file used to launch gnome-shell with a drop-in config file.
+Starting gnome-shell under valgrind can also take some time which requires
+adjusting the timeouts of the service as well. This command can be used to
+create such a drop-in file for the current user:
+
+```sh
+$ systemctl --user edit org.gnome.Shell@wayland.service --drop-in valgrind
+```
+
+This opens an editor in which the following content has to be added:
+
+```ini
+[Service]
+ExecStart=
+ExecStart=/usr/bin/valgrind --log-file=/tmp/gs-valgrind.txt --enable-debuginfod=no --leak-check=full --show-leak-kinds=definite /usr/bin/gnome-shell
+TimeoutStartSec=300
+TimeoutStopSec=300
+```
+
+Then the next time when logging into a session as the current user, gnome-shell
+will be running under valgrind and create a log file under
+`/tmp/gs-valgrind.txt`.
+
+After ending the valgrind session and obtaining the log file, the drop-in file
+needs to be removed again before starting the next session. Otherwise the log
+will get overwritten. This can be done using following command from a VT:
+
+```sh
+$ systemctl --user revert org.gnome.Shell@wayland.service
+```
+
+For X11 sessions use `org.gnome.Shell@x11.service` in these commands instead.
