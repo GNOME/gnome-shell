@@ -97,12 +97,6 @@ export class WindowMenu extends PopupMenu.PopupMenu {
         if (!window.allows_resize())
             item.setSensitive(false);
 
-        if (!window.titlebar_is_onscreen() && type !== Meta.WindowType.DOCK && type !== Meta.WindowType.DESKTOP) {
-            this.addAction(_('Move Titlebar Onscreen'), () => {
-                window.shove_titlebar_onscreen();
-            });
-        }
-
         item = this.addAction(_('Always on Top'), () => {
             if (window.is_above())
                 window.unmake_above();
