@@ -222,6 +222,7 @@ class _Draggable extends Signals.EventEmitter {
 
     _grabDevice(actor, pointer, touchSequence) {
         this._grab = global.stage.grab(actor);
+        this._grab.activate();
         this._grabbedDevice = pointer;
         this._touchSequence = touchSequence;
     }

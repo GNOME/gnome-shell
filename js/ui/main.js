@@ -679,6 +679,7 @@ export function pushModal(actor, params = {}) {
     };
 
     let grab = global.stage.grab(actor);
+    grab.activate();
 
     if (modalCount === 0)
         Meta.disable_unredirect_for_display(global.display);

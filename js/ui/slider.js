@@ -91,6 +91,7 @@ export const Slider = GObject.registerClass({
         let sequence = event.get_event_sequence();
 
         this._grab = global.stage.grab(this);
+        this._grab.activate();
 
         this._grabbedDevice = device;
         this._grabbedSequence = sequence;

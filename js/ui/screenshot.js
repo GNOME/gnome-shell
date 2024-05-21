@@ -500,6 +500,7 @@ const UIAreaSelector = GObject.registerClass({
 
         if (this._dragButton) {
             this._dragGrab = global.stage.grab(this);
+            this._dragGrab.activate();
             this._dragSequence = sequence;
 
             this.emit('drag-started');

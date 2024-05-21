@@ -600,6 +600,7 @@ export const Inspector = GObject.registerClass({
         eventHandler.connect('motion-event', this._onMotionEvent.bind(this));
 
         this._grab = global.stage.grab(eventHandler);
+        this._grab.activate();
 
         // this._target is the actor currently shown by the inspector.
         // this._pointerTarget is the actor directly under the pointer.
