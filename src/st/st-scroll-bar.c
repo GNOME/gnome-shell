@@ -711,6 +711,7 @@ handle_button_press_event_cb (ClutterActor *actor,
 
   stage = clutter_actor_get_stage (actor);
   priv->grab = clutter_stage_grab (CLUTTER_STAGE (stage), priv->handle);
+  clutter_grab_activate (priv->grab);
   priv->grab_device = device;
   g_signal_emit (bar, signals[SCROLL_START], 0);
 
