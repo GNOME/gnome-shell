@@ -291,6 +291,7 @@ if get_option('tests')
   common_test_env = environment()
   common_test_env.set('GSETTINGS_SCHEMA_DIR', meson.project_build_root() / 'data')
   common_test_env.set('GSETTINGS_BACKEND', 'memory')
+  common_test_env.set('XDG_CURRENT_DESKTOP', '')
 
   add_test_setup('default',
     is_default: true,
