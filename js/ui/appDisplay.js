@@ -2805,49 +2805,10 @@ export const AppFolderDialog = GObject.registerClass({
     }
 
     vfunc_key_press_event(event) {
-        if (global.stage.get_key_focus() !== this)
-            return Clutter.EVENT_PROPAGATE;
+        if (global.focus_manager.navigate_from_event(event))
+            return Clutter.EVENT_STOP;
 
-        // Since we need to only grab focus on one item child when the user
-        // actually press a key we don't use navigate_focus when opening
-        // the popup.
-        // Instead of that, grab the focus on the AppFolderPopup actor
-        // and actually moves the focus to a child only when the user
-        // actually press a key.
-        // It should work with just grab_key_focus on the AppFolderPopup
-        // actor, but since the arrow keys are not wrapping_around the focus
-        // is not grabbed by a child when the widget that has the current focus
-        // is the same that is requesting focus, so to make it works with arrow
-        // keys we need to connect to the key-press-event and navigate_focus
-        // when that happens using TAB_FORWARD or TAB_BACKWARD instead of arrow
-        // keys
-
-        // Use TAB_FORWARD for down key and right key
-        // and TAB_BACKWARD for up key and left key on ltr
-        // languages
-        let direction;
-        let isLtr = Clutter.get_default_text_direction() === Clutter.TextDirection.LTR;
-        switch (event.get_key_symbol()) {
-        case Clutter.KEY_Down:
-            direction = St.DirectionType.TAB_FORWARD;
-            break;
-        case Clutter.KEY_Right:
-            direction = isLtr
-                ? St.DirectionType.TAB_FORWARD
-                : St.DirectionType.TAB_BACKWARD;
-            break;
-        case Clutter.KEY_Up:
-            direction = St.DirectionType.TAB_BACKWARD;
-            break;
-        case Clutter.KEY_Left:
-            direction = isLtr
-                ? St.DirectionType.TAB_BACKWARD
-                : St.DirectionType.TAB_FORWARD;
-            break;
-        default:
-            return Clutter.EVENT_PROPAGATE;
-        }
-        return this.navigate_focus(null, direction, false);
+        return Clutter.EVENT_PROPAGATE;
     }
 
     _setLighterBackground(lighter) {
