@@ -263,6 +263,23 @@ flatpak:
 nightly:
   extends: '.publish_nightly'
 
+distinfo:
+  stage: deploy
+  needs:
+    - build
+  script:
+    - .gitlab-ci/export-artifact-path build > dist.env
+  artifacts:
+    reports:
+      dotenv: dist.env
+    paths:
+      - build
+      - mutter
+      - subprojects/jasmine-gjs
+      - dist.env
+  rules:
+    - if: '$CI_COMMIT_TAG'
+
 dist:
   variables:
     XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
@@ -281,13 +298,16 @@ dist:
         - "**/meson.build"
         - meson/*
 
-
 dist-tarball:
   extends: dist
+  needs:
+    - distinfo
   artifacts:
     expose_as: 'Get tarball here'
     paths:
-      - build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz
+      - $TARBALL_ARTIFACT_PATH
+    reports:
+      dotenv: dist.env
   rules:
     - if: '$CI_COMMIT_TAG'
 
