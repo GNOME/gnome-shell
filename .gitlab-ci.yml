@@ -2,6 +2,8 @@ include:
   - remote: 'https://gitlab.gnome.org/GNOME/citemplates/raw/HEAD/flatpak/flatpak_ci_initiative.yml'
   - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/057b052e682d8e5a20c1eb2dd60d5b87d2b56856/templates/fedora.yml'
   - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/34f4ade99434043f88e164933f570301fd18b125/templates/ci-fairy.yml'
+  - project: 'Infrastructure/openshift-images/gnome-release-service'
+    file: '/ci-templates/release-module.yml'
 
 stages:
   - pre_review
@@ -308,6 +310,14 @@ dist-tarball:
       - $TARBALL_ARTIFACT_PATH
     reports:
       dotenv: dist.env
+  rules:
+    - if: '$CI_COMMIT_TAG'
+
+release-module:
+  stage: deploy
+  needs:
+    - dist-tarball
+  extends: .release-module
   rules:
     - if: '$CI_COMMIT_TAG'
 
