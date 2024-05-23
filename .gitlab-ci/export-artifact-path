@@ -1,0 +1,21 @@
+#!/usr/bin/gjs -m
+// SPDX-FileCopyrightText: 2024 Florian Müllner <fmuellner@gnome.org>
+//
+// SPDX-License-Identifier: GPL-2.0-or-later
+
+import Gio from 'gi://Gio';
+import {programArgs, programInvocationName, exit} from 'system';
+
+const [buildDir] = programArgs;
+if (!buildDir) {
+    printerr(`usage: ${programInvocationName} <build-dir>`);
+    exit(1);
+}
+
+const subprocess = Gio.Subprocess.new(
+    ['meson', 'introspect', '--projectinfo', buildDir],
+    Gio.SubprocessFlags.STDOUT_PIPE);
+const [, out] = subprocess.communicate_utf8(null, null);
+
+const {descriptive_name, version} = JSON.parse(out);
+print(`TARBALL_ARTIFACT_PATH=${buildDir}/meson-dist/${descriptive_name}-${version}.tar.xz`);
