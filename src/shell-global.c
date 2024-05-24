@@ -15,7 +15,6 @@
 #endif
 #include <locale.h>
 
-#include <X11/extensions/Xfixes.h>
 #include <gio/gio.h>
 #include <girepository.h>
 #include <meta/meta-backend.h>
@@ -26,8 +25,12 @@
 #include <meta/meta-cursor-tracker.h>
 #include <meta/meta-settings.h>
 #include <meta/meta-workspace-manager.h>
-#include <meta/meta-x11-display.h>
 #include <mtk/mtk.h>
+
+#ifdef HAVE_X11
+#include <meta/meta-x11-display.h>
+#include <X11/extensions/Xfixes.h>
+#endif
 
 #define GNOME_DESKTOP_USE_UNSTABLE_API
 #include <libgnome-desktop/gnome-systemd.h>
@@ -59,11 +62,14 @@ struct _ShellGlobal {
   MetaDisplay *meta_display;
   MetaCompositor *compositor;
   MetaWorkspaceManager *workspace_manager;
+#ifdef HAVE_X11
   Display *xdisplay;
 
-  char *session_mode;
 
   XserverRegion input_region;
+#endif
+
+  char *session_mode;
 
   GjsContext *js_context;
   MetaPlugin *plugin;
@@ -424,7 +430,7 @@ shell_global_init (ShellGlobal *global)
   path = g_strdup_printf ("%s/gnome-shell/runtime-state-%s.%s",
                           g_get_user_runtime_dir (),
                           byteorder_string,
-                          XDisplayName (NULL));
+                          g_getenv ("DISPLAY"));
   (void) g_mkdir_with_parents (path, 0700);
   global->runtime_state_path = g_file_new_for_path (path);
   g_free (path);
@@ -766,6 +772,7 @@ _shell_global_destroy_gjs_context (ShellGlobal *self)
   g_clear_object (&self->js_context);
 }
 
+#ifdef HAVE_X11
 static void
 sync_input_region (ShellGlobal *global)
 {
@@ -817,6 +824,7 @@ shell_global_set_stage_input_region (ShellGlobal *global,
 
   sync_input_region (global);
 }
+#endif
 
 /**
  * shell_global_get_context:
@@ -1009,12 +1017,14 @@ entry_cursor_func (StEntry  *entry,
                            use_ibeam ? META_CURSOR_IBEAM : META_CURSOR_DEFAULT);
 }
 
+#ifdef HAVE_X11
 static void
 on_x11_display_closed (MetaDisplay *display,
                        ShellGlobal *global)
 {
   g_signal_handlers_disconnect_by_data (global->stage, global);
 }
+#endif
 
 void
 _shell_global_set_plugin (ShellGlobal *global,
@@ -1042,11 +1052,13 @@ _shell_global_set_plugin (ShellGlobal *global,
 
   global->stage = CLUTTER_STAGE (meta_get_stage_for_display (display));
 
+#ifdef HAVE_X11
   if (!meta_is_wayland_compositor ())
     {
       MetaX11Display *x11_display = meta_display_get_x11_display (display);
       global->xdisplay = meta_x11_display_get_xdisplay (x11_display);
     }
+#endif
 
   st_entry_set_cursor_func (entry_cursor_func, global);
   st_clipboard_set_selection (meta_display_get_selection (display));
@@ -1080,9 +1092,11 @@ _shell_global_set_plugin (ShellGlobal *global,
                                "End of frame, possibly including swap time",
                                "");
 
+#ifdef HAVE_X11
   if (global->xdisplay)
     g_signal_connect_object (global->meta_display, "x11-display-closing",
                              G_CALLBACK (on_x11_display_closed), global, 0);
+#endif
 
   backend = meta_context_get_backend (shell_global_get_context (global));
   settings = meta_backend_get_settings (backend);
@@ -1192,10 +1206,10 @@ pre_exec_close_fds(void)
 /**
  * shell_global_reexec_self:
  * @global: A #ShellGlobal
- * 
- * Restart the current process.  Only intended for development purposes. 
+ *
+ * Restart the current process.  Only intended for development purposes.
  */
-void 
+void
 shell_global_reexec_self (ShellGlobal *global)
 {
   GPtrArray *arr;

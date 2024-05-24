@@ -42,3 +42,6 @@
 
 /* Define to 1 if the <elf.h> and <link.h> header file exist. */
 #mesondefine HAVE_EXE_INTROSPECTION
+
+/* Whether GNOME Shell is built with X11 support */
+#mesondefine HAVE_X11

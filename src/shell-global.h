@@ -28,8 +28,10 @@ MetaWorkspaceManager *shell_global_get_workspace_manager     (ShellGlobal *globa
 
 
 /* Input/event handling */
+#ifdef HAVE_X11
 void     shell_global_set_stage_input_region (ShellGlobal         *global,
                                               GSList              *rectangles);
+#endif
 
 void    shell_global_get_pointer             (ShellGlobal         *global,
                                               int                 *x,

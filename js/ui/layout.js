@@ -1111,7 +1111,7 @@ export const LayoutManager = GObject.registerClass({
             }
         }
 
-        if (wantsInputRegion)
+        if (!Meta.is_wayland_compositor() && wantsInputRegion)
             global.set_stage_input_region(rects);
 
         this._isPopupWindowVisible = isPopupMenuVisible;

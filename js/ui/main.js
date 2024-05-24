@@ -1039,7 +1039,8 @@ class AnimationsSettings {
         if (!backend.is_rendering_hardware_accelerated())
             return false;
 
-        if (Shell.util_has_x11_display_extension(
+        if (!Meta.is_wayland_compositor() &&
+            Shell.util_has_x11_display_extension(
             global.display, 'VNC-EXTENSION'))
             return false;
 

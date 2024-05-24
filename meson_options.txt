@@ -45,3 +45,9 @@ option('systemd',
   value: true,
   description: 'Enable systemd integration'
 )
+
+option('x11',
+  type: 'boolean',
+  value: true,
+  description: 'Enable X11 support'
+)

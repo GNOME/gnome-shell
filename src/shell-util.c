@@ -23,7 +23,9 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <meta/meta-context.h>
 #include <meta/display.h>
+#ifdef HAVE_X11
 #include <meta/meta-x11-display.h>
+#endif
 
 #include <locale.h>
 #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
@@ -782,6 +784,7 @@ shell_util_sd_notify (void)
  * If the corresponding X11 display provides the passed extension, return %TRUE,
  * otherwise %FALSE. If there is no X11 display, %FALSE is passed.
  */
+#ifdef HAVE_X11
 gboolean
 shell_util_has_x11_display_extension (MetaDisplay *display,
                                       const char  *extension)
@@ -797,6 +800,7 @@ shell_util_has_x11_display_extension (MetaDisplay *display,
   xdisplay = meta_x11_display_get_xdisplay (x11_display);
   return XQueryExtension (xdisplay, extension, &op, &event, &error);
 }
+#endif
 
 /**
  * shell_util_get_translated_folder_name:
