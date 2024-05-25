@@ -29,7 +29,6 @@ gtk_req = '>= 4.0'
 mutter_req = '>= 45.0'
 polkit_req = '>= 0.100'
 schemas_req = '>= 42.beta'
-startup_req = '>= 0.11'
 systemd_req = '>= 246'
 ibus_req = '>= 1.5.19'
 gnome_desktop_req = '>= 40'
@@ -75,7 +74,6 @@ atk_bridge_dep = dependency('atk-bridge-2.0')
 ecal_dep = dependency('libecal-2.0', version: ecal_req)
 eds_dep = dependency('libedataserver-1.2', version: eds_req)
 gcr_dep = dependency('gcr-4', version: gcr_req)
-gdk_x11_dep = dependency('gdk-x11-3.0')
 gdk_pixbuf_dep = dependency('gdk-pixbuf-2.0')
 gi_dep = dependency('gobject-introspection-1.0', version: gi_req)
 gio_dep = dependency('gio-2.0', version: gio_req)
@@ -89,7 +87,6 @@ cogl_dep = dependency(cogl_pc, version: mutter_req)
 cogl_pango_dep = dependency(cogl_pango_pc, version: mutter_req)
 mutter_dep = dependency(libmutter_pc, version: mutter_req)
 polkit_dep = dependency('polkit-agent-1', version: polkit_req)
-startup_dep = dependency('libstartup-notification-1.0', version: startup_req)
 ibus_dep = dependency('ibus-1.0', version: ibus_req)
 x11_dep = dependency('x11')
 schemas_dep = dependency('gsettings-desktop-schemas', version: schemas_req)
