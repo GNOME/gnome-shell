@@ -65,6 +65,7 @@ gnome_shell_deps = [
   gcr_dep,
   libsystemd_dep,
   libpipewire_dep,
+  x11_dep,
 ]
 
 gnome_shell_deps += nm_deps
