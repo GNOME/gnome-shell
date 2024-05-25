@@ -1,3 +1,33 @@
+46.2
+====
+* Fix size of workspace switcher OSD [Jakub; !3282]
+* Fix handling of invalid TLS certs in portal handler [Sebastian K.; !3284]
+* Exclude override-redirect windows from workspace animation [Marco; !3285]
+* Also center time on lock screen when using 12h format [pesader; !3290]
+* Use absolute tray icon position in root event coordinates [Marco; !3283]
+* Fix displaying info messages on login screen [Ray; !3298]
+* Correct expected bus name for streams [Simon; !3303]
+* Fix notifications on lock screen [Florian; !3308]
+* notifications: Only apply special styling to symbolic icons [Florian; !3296]
+* Fix number of search results with Large Text option [Sam; !3312]
+* Fix showing keyboard layouts with variants [Sebastian K.; !3324]
+* Tweak font sizes in calendar [Sam; !3313]
+* automountManager: Fix re-asking password for TCRYPT devices [segfault; !3300]
+* Fix stuck unlock prompt when animations are disabled [Florian; !3317]
+* Fix possible hang on startup during ibus-daemon launch [Marco; !3293]
+* Misc. bug fixes and cleanups [Sebastian W., Gabriel, Sebastian K., Florian,
+  Jonas, Sam, Ray; !3267, !3281, !3288, !3295, !3299, !3310, !3315, !3326,
+  !3321, !3319, !3329, !3331, !3245, !3340]
+
+Contributors:
+  Jonas Ådahl, Sam Hewitt, Sebastian Keller, Simon McVittie, Florian Müllner,
+  Gabriel Nagy, pesader, segfault, Jakub Steiner, Ray Strode,
+  Marco Trevisan (Treviño), Sebastian Wick
+
+Translators:
+  Andika Triwidada [id], Rachida SACI [kab], Hugo Carvalho [pt],
+  Scrambled 777 [hi], Jose Riha [sk], Balázs Úr [hu], Quentin PAGÈS [oc]
+
 46.1
 ====
 * Improve notification of conflicting session [Joan; !3235]
