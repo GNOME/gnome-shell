@@ -67,7 +67,6 @@ gnome_shell_deps = [
   mtk_dep,
   clutter_dep,
   cogl_pango_dep,
-  startup_dep,
   gi_dep,
   polkit_dep,
   gcr_dep,
