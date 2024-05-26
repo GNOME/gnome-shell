@@ -1,3 +1,21 @@
+45.7
+====
+* Fix handling of invalid TLS certs in portal handler [Sebastian K.; !3284]
+* Exclude override-redirect windows from workspace animation [Marco; !3285]
+* Also center time on lock screen when using 12h format [pesader; !3290]
+* Use absolute tray icon position in root event coordinates [Marco; !3283]
+* Correct expected bus name for streams [Simon; !3303]
+* Fix showing keyboard layouts with variants [Sebastian K.; !3324]
+* automountManager: Fix re-asking password for TCRYPT devices [segfault; !3300]
+* Fix stuck unlock prompt when animations are disabled [Florian; !3317]
+* Fix possible hang on startup during ibus-daemon launch [Marco; !3293]
+* Misc. bug fixes and cleanups [Sebastian W., Jonas; Florian; !3267, !3299,
+  !3321, !3329, !3331, !3340]
+
+Contributors:
+  Jonas Ådahl, Sebastian Keller, Simon McVittie, Florian Müllner, pesader,
+  segfault, Marco Trevisan (Treviño), Sebastian Wick
+
 45.6
 ====
 * Misc. bug fixes and cleanups [Florian; !3234]
