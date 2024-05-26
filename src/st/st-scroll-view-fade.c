@@ -66,23 +66,11 @@ enum {
 
 static GParamSpec *props[N_PROPS] = { NULL, };
 
-static CoglTexture *
-st_scroll_view_fade_create_texture (ClutterOffscreenEffect *effect,
-                                    gfloat                  min_width,
-                                    gfloat                  min_height)
-{
-  CoglContext *ctx =
-    clutter_backend_get_cogl_context (clutter_get_default_backend ());
-
-  return cogl_texture_2d_new_with_size (ctx, min_width, min_height);
-}
-
 static char *
 st_scroll_view_fade_get_static_shader_source (ClutterShaderEffect *effect)
 {
    return g_strdup (st_scroll_view_fade_glsl);
 }
-
 
 static void
 st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect,
@@ -384,7 +372,6 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
   shader_class->get_static_shader_source = st_scroll_view_fade_get_static_shader_source;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
-  offscreen_class->create_texture = st_scroll_view_fade_create_texture;
   offscreen_class->paint_target = st_scroll_view_fade_paint_target;
 
   /**
