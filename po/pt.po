@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-05-01 14:53+0000\n"
-"PO-Revision-Date: 2024-05-05 00:11+0100\n"
+"POT-Creation-Date: 2024-05-26 14:14+0000\n"
+"PO-Revision-Date: 2024-05-28 10:11+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 "X-Project-Style: gnome\n"
 "X-Language: pt_PT\n"
 "X-Source-Language: C\n"
@@ -132,7 +132,7 @@ msgstr "Tirar uma captura de ecrã de uma janela"
 msgid "Record a screencast interactively"
 msgstr "Gravar o ecrã de forma interativa"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1294
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1295
 msgid "System"
 msgstr "Sistema"
 
@@ -588,18 +588,18 @@ msgstr "Página inicial"
 msgid "Visit extension homepage"
 msgstr "Visitar a página inicial da extensão"
 
-#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
-#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
+#: js/gdm/authPrompt.js:153 js/gdm/loginDialog.js:466
+#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:115
 #: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
 #: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:384
 #: js/ui/shellMountOperation.js:394
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
-#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:288
+#: js/gdm/authPrompt.js:319 js/ui/components/networkAgent.js:215
+#: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
+#: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
+#: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
 #: js/ui/shellMountOperation.js:334
 msgid "Password"
 msgstr "Palavra-passe"
@@ -658,10 +658,10 @@ msgstr "Já existe uma sessão em curso"
 #: js/gdm/loginDialog.js:454
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
-"data loss."
+"data loss"
 msgstr ""
 "Forçar a saída vai obrigar a abandonar e encerrar qualquer aplicação ou "
-"processo em funcionamento, podendo originar perda de trabalho."
+"processo em funcionamento, podendo originar perda de trabalho"
 
 #: js/gdm/loginDialog.js:474
 msgid "Force Stop"
@@ -678,8 +678,8 @@ msgstr "Não está listado?"
 msgid "(e.g., user or %s)"
 msgstr "(por ex., utilizador ou %s)"
 
-#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:258
-#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
+#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:259
+#: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:328
 msgid "Username"
 msgstr "Utilizador"
 
@@ -696,19 +696,19 @@ msgstr ""
 msgid "Login Window"
 msgstr "Janela de acesso"
 
-#: js/gdm/util.js:497
+#: js/gdm/util.js:498
 msgid "Authentication error"
 msgstr "Erro de autenticação"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:728
+#: js/gdm/util.js:729
 msgid "(or swipe finger across reader)"
 msgstr "(ou passe o dedo pelo leitor)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:733
+#: js/gdm/util.js:734
 msgid "(or place finger on reader)"
 msgstr "(ou coloque o dedo no leitor)"
 
@@ -804,17 +804,17 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Bloquear rotação de ecrã"
 
-#: js/misc/util.js:139
+#: js/misc/util.js:132
 msgid "Command not found"
 msgstr "Comando não encontrado"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:179
+#: js/misc/util.js:172
 msgid "Could not parse command:"
 msgstr "Impossível analisar o comando:"
 
-#: js/misc/util.js:187
+#: js/misc/util.js:180
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Falha ao executar “%s”:"
@@ -967,7 +967,7 @@ msgstr "Negar"
 msgid "Allow"
 msgstr "Permitir"
 
-#: js/ui/appDisplay.js:1775
+#: js/ui/appDisplay.js:1770
 msgid "Unnamed Folder"
 msgstr "Pasta sem nome"
 
@@ -1159,16 +1159,16 @@ msgstr "Limpar todas as notificações"
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
 #, javascript-format
-msgid "“%s” is not responding."
-msgstr "“%s” não está a responder."
+msgid "“%s” Is Not Responding"
+msgstr "“%s” não está a responder"
 
 #: js/ui/closeDialog.js:45
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
-"quit entirely."
+"quit entirely"
 msgstr ""
 "Pode escolher entre esperar que a aplicação retome a execução ou forçar a "
-"aplicação a fechar totalmente."
+"aplicação a fechar totalmente"
 
 #: js/ui/closeDialog.js:73
 msgid "Force Quit"
@@ -1186,11 +1186,11 @@ msgstr "Dispositivo externo ligado"
 msgid "External drive disconnected"
 msgstr "Dispositivo externo desligado"
 
-#: js/ui/components/automountManager.js:207
+#: js/ui/components/automountManager.js:210
 msgid "Unable to unlock volume"
 msgstr "Impossível desbloquear o volume"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:211
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "A versão do udisks instalada não suporta a configuração do PIM"
 
@@ -1199,79 +1199,78 @@ msgstr "A versão do udisks instalada não suporta a configuração do PIM"
 msgid "Open with %s"
 msgstr "Abrir com %s"
 
-#: js/ui/components/networkAgent.js:96
+#: js/ui/components/networkAgent.js:97
 msgid ""
-"Alternatively you can connect by pushing the “WPS” button on your router."
+"Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr ""
-"Alternativamente, pode ligar premindo o botão “WPS” no encaminhador (router)."
+"Em alternativa, pode ligar premindo o botão “WPS” no encaminhador (router)"
 
-#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
+#: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "Ligar"
 
-#: js/ui/components/networkAgent.js:223
+#: js/ui/components/networkAgent.js:224
 msgid "Key"
 msgstr "Chave"
 
-#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
+#: js/ui/components/networkAgent.js:275 js/ui/components/networkAgent.js:314
 msgid "Private key password"
 msgstr "Palavra-passe da chave privada"
 
-#: js/ui/components/networkAgent.js:307
+#: js/ui/components/networkAgent.js:308
 msgid "Identity"
 msgstr "Identidade"
 
-#: js/ui/components/networkAgent.js:333
+#: js/ui/components/networkAgent.js:334
 msgid "Service"
 msgstr "Serviço"
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
-#: js/ui/components/networkAgent.js:750 js/ui/components/networkAgent.js:771
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:408
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
 msgid "Authentication required"
 msgstr "Autenticação necessária"
 
-#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:746
 #, javascript-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"“%s”."
+"Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr ""
 "São necessárias palavras-passe ou chaves de encriptação para aceder à rede "
-"sem fios “%s”."
+"sem fios “%s”"
 
-#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:755
+#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
 msgstr "Autenticação para 802.1X por cabo"
 
-#: js/ui/components/networkAgent.js:379
+#: js/ui/components/networkAgent.js:380
 msgid "Network name"
 msgstr "Nome da rede"
 
-#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:754
 msgid "DSL authentication"
 msgstr "Autenticação DSL"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:759
 msgid "PIN code required"
 msgstr "Necessário código PIN"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:765
+#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:760
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "É necessário o código PIN para o dispositivo de banda larga móvel"
 
-#: js/ui/components/networkAgent.js:397
+#: js/ui/components/networkAgent.js:398
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:756
-#: js/ui/components/networkAgent.js:760 js/ui/components/networkAgent.js:772
-#: js/ui/components/networkAgent.js:776
+#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
 #, javascript-format
-msgid "A password is required to connect to “%s”."
-msgstr "É necessária uma palavra-passe para se ligar a “%s”."
+msgid "A password is required to connect to “%s”"
+msgstr "É necessária uma palavra-passe para se ligar a “%s”"
 
-#: js/ui/components/networkAgent.js:775
+#: js/ui/components/networkAgent.js:770
 msgid "VPN password"
 msgstr "Palavra-passe da VPN"
 
@@ -1295,7 +1294,7 @@ msgstr "Autenticar"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Não funcionou. Tente novamente."
 
-#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:418
+#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:406
 msgid "Windows"
 msgstr "Janelas"
 
@@ -1366,7 +1365,7 @@ msgid "No Events"
 msgstr "Sem eventos"
 
 #: js/ui/dateMenu.js:413
-msgid "Add world clocks…"
+msgid "Add World Clocks…"
 msgstr "Adicionar relógios do mundo…"
 
 #: js/ui/dateMenu.js:414
@@ -1378,19 +1377,19 @@ msgid "Loading…"
 msgstr "A carregar…"
 
 #: js/ui/dateMenu.js:714
-msgid "Go online for weather information"
+msgid "Go Online for Weather Information"
 msgstr "Procurar informação meteorológica na rede"
 
 #: js/ui/dateMenu.js:716
-msgid "Weather information is currently unavailable"
-msgstr "Presentemente a informação meteorológica está indisponível"
+msgid "Weather Information Unavailable"
+msgstr "Informação meteorológica indisponível"
 
 #: js/ui/dateMenu.js:726
 msgid "Weather"
 msgstr "Meteorologia"
 
 #: js/ui/dateMenu.js:728
-msgid "Select weather location…"
+msgid "Select Weather Location…"
 msgstr "Selecione uma localização meteorológica…"
 
 #: js/ui/endSessionDialog.js:48
@@ -1406,17 +1405,17 @@ msgstr "Sair"
 
 #: js/ui/endSessionDialog.js:52
 #, javascript-format
-msgid "%s will be logged out automatically in %d second."
-msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "A sessão de %s terminará automaticamente dentro de %d segundo."
-msgstr[1] "A sessão de %s terminará automaticamente dentro de %d segundos."
+msgid "%s will be logged out automatically in %d second"
+msgid_plural "%s will be logged out automatically in %d seconds"
+msgstr[0] "A sessão de %s terminará automaticamente dentro de %d segundo"
+msgstr[1] "A sessão de %s terminará automaticamente dentro de %d segundos"
 
 #: js/ui/endSessionDialog.js:58
 #, javascript-format
-msgid "You will be logged out automatically in %d second."
-msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "A sua sessão terminará automaticamente dentro de %d segundo."
-msgstr[1] "A sua sessão terminará automaticamente dentro de %d segundos."
+msgid "You will be logged out automatically in %d second"
+msgid_plural "You will be logged out automatically in %d seconds"
+msgstr[0] "A sua sessão terminará automaticamente dentro de %d segundo"
+msgstr[1] "A sua sessão terminará automaticamente dentro de %d segundos"
 
 #: js/ui/endSessionDialog.js:65
 msgctxt "button"
@@ -1435,10 +1434,10 @@ msgstr "Instalar atualizações e desligar"
 
 #: js/ui/endSessionDialog.js:75
 #, javascript-format
-msgid "The system will power off automatically in %d second."
-msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "O sistema desligará automaticamente dentro de %d segundo."
-msgstr[1] "O sistema desligará automaticamente dentro de %d segundos."
+msgid "The system will power off automatically in %d second"
+msgid_plural "The system will power off automatically in %d seconds"
+msgstr[0] "O sistema desligará automaticamente dentro de %d segundo"
+msgstr[1] "O sistema desligará automaticamente dentro de %d segundos"
 
 #: js/ui/endSessionDialog.js:79 js/ui/endSessionDialog.js:98
 msgctxt "checkbox"
@@ -1462,10 +1461,10 @@ msgstr "Instalar atualizações e Reiniciar"
 
 #: js/ui/endSessionDialog.js:94
 #, javascript-format
-msgid "The system will restart automatically in %d second."
-msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "O sistema reiniciará automaticamente dentro de %d segundo."
-msgstr[1] "O sistema reiniciará automaticamente dentro de %d segundos."
+msgid "The system will restart automatically in %d second"
+msgid_plural "The system will restart automatically in %d seconds"
+msgstr[0] "O sistema reiniciará automaticamente dentro de %d segundo"
+msgstr[1] "O sistema reiniciará automaticamente dentro de %d segundos"
 
 #: js/ui/endSessionDialog.js:102
 msgctxt "button"
@@ -1479,15 +1478,15 @@ msgstr "Reiniciar e instalar atualizações"
 
 #: js/ui/endSessionDialog.js:113
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
-"The system will automatically restart and install updates in %d seconds."
+"The system will automatically restart and install updates in %d seconds"
 msgstr[0] ""
 "O sistema reiniciará automaticamente e instalará atualizações dentro de %d "
-"segundo."
+"segundo"
 msgstr[1] ""
 "O sistema reiniciará automaticamente e instalará atualizações dentro de %d "
-"segundos."
+"segundos"
 
 #: js/ui/endSessionDialog.js:120 js/ui/endSessionDialog.js:141
 msgctxt "button"
@@ -1523,8 +1522,8 @@ msgstr ""
 "computador está ligado à corrente."
 
 #: js/ui/endSessionDialog.js:284
-msgid "Low battery power: please plug in before installing updates."
-msgstr "Bateria descarregada: ligar à corrente antes de instalar atualizações."
+msgid "Low battery power: please plug in before installing updates"
+msgstr "Bateria descarregada: ligar à corrente antes de instalar atualizações"
 
 #: js/ui/endSessionDialog.js:293
 msgid "Some applications are busy or have unsaved work"
@@ -1569,8 +1568,8 @@ msgid "Extension Updates Available"
 msgstr "Há atualizações de extensões disponíveis"
 
 #: js/ui/extensionSystem.js:355
-msgid "Extension updates are ready to be installed."
-msgstr "As atualizações de extensões estão prontas para serem instaladas."
+msgid "Extension updates are ready to be installed"
+msgstr "As atualizações de extensões estão prontas a serem instaladas"
 
 #: js/ui/inhibitShortcutsDialog.js:70
 msgid "Allow inhibiting shortcuts"
@@ -1589,8 +1588,8 @@ msgstr "Uma aplicação pretende inibir atalhos"
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:81
 #, javascript-format
-msgid "You can restore shortcuts by pressing %s."
-msgstr "Pode restaurar os atalhos premindo %s."
+msgid "You can restore shortcuts by pressing %s"
+msgstr "Pode restaurar os atalhos premindo %s"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid "Slow Keys Turned On"
@@ -1662,8 +1661,8 @@ msgstr "Nenhuma extensão instalada"
 #. Translators: argument is an extension UUID.
 #: js/ui/lookingGlass.js:785
 #, javascript-format
-msgid "%s has not emitted any errors."
-msgstr "%s não emitiu qualquer erro."
+msgid "%s has not emitted any errors"
+msgstr "%s não emitiu qualquer erro"
 
 #: js/ui/lookingGlass.js:791
 msgid "Hide Errors"
@@ -1738,12 +1737,12 @@ msgid "Screen Lock disabled"
 msgstr "Bloqueio de ecrã desligado"
 
 #: js/ui/main.js:390
-msgid "Screen Locking requires the GNOME display manager."
-msgstr "O bloqueio de ecrã requer o gestor de exibição do GNOME."
+msgid "Screen Locking requires the GNOME display manager"
+msgstr "O bloqueio de ecrã requer o gestor de exibição do GNOME"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:400
+#: js/ui/messageList.js:374
 msgid "Unknown App"
 msgstr "Aplicação desconhecida"
 
@@ -1763,11 +1762,11 @@ msgstr "Titulo desconhecido"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:342
+#: js/ui/overviewControls.js:330
 msgid "Type to search"
 msgstr "Escreva para pesquisar"
 
-#: js/ui/overviewControls.js:406
+#: js/ui/overviewControls.js:394
 msgid "Apps"
 msgstr "Aplicações"
 
@@ -1994,8 +1993,8 @@ msgid "Searching…"
 msgstr "A procurar…"
 
 #: js/ui/search.js:833
-msgid "No results."
-msgstr "Nenhum resultado."
+msgid "No results"
+msgstr "Nenhum resultado"
 
 #: js/ui/search.js:964
 #, javascript-format
@@ -2026,8 +2025,8 @@ msgid "Hide Text"
 msgstr "Ocultar texto"
 
 #: js/ui/shellEntry.js:176
-msgid "Caps lock is on."
-msgstr "Maiúsculas ligadas."
+msgid "Caps lock is on"
+msgstr "O Caps Lock está ligado"
 
 #: js/ui/shellMountOperation.js:288
 msgid "Hidden Volume"
@@ -2045,18 +2044,18 @@ msgstr "Usa ficheiros-chave"
 #: js/ui/shellMountOperation.js:302
 #, javascript-format
 msgid ""
-"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
 msgstr ""
 "Para desbloquear um volume que utilize ficheiros-chave, use o utilitário "
-"<i>%s</i>."
+"<i>%s</i>"
 
 #: js/ui/shellMountOperation.js:306
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
-"keyfiles."
+"keyfiles"
 msgstr ""
 "É necessário um utilitário externo como o <i>Discos</i> para desbloquear um "
-"volume que use ficheiros-chave."
+"volume que use ficheiros-chave"
 
 #: js/ui/shellMountOperation.js:314
 msgid "PIM Number"
@@ -2077,8 +2076,8 @@ msgid "Open %s"
 msgstr "Abrir %s"
 
 #: js/ui/shellMountOperation.js:438
-msgid "The PIM must be a number or empty."
-msgstr "O PIM deve ser um número ou espaço em branco."
+msgid "The PIM must be a number or empty"
+msgstr "O PIM deve ser um número ou espaço em branco"
 
 #: js/ui/status/accessibility.js:36
 msgid "Accessibility"
@@ -2247,10 +2246,10 @@ msgid "The app %s wants to access your location"
 msgstr "A aplicação %s pretende usar a localização"
 
 #: js/ui/status/location.js:351
-msgid "Location access can be changed at any time from the privacy settings."
+msgid "Location access can be changed at any time from the privacy settings"
 msgstr ""
 "O acesso à localização pode ser alterado a qualquer altura a partir das "
-"definições de privacidade."
+"definições de privacidade"
 
 #: js/ui/status/location.js:359
 msgid "Deny Access"
@@ -2449,10 +2448,10 @@ msgstr "Dispositivo Thunderbolt não autorizado"
 
 #: js/ui/status/thunderbolt.js:315
 msgid ""
-"New device has been detected and needs to be authorized by an administrator."
+"New device has been detected and needs to be authorized by an administrator"
 msgstr ""
-"Um novo dispositivo foi detetado e precisa ser autorizado por um "
-"administrador."
+"Um novo dispositivo foi detetado e precisa de ser autorizado por um "
+"administrador"
 
 #: js/ui/status/thunderbolt.js:321
 msgid "Thunderbolt authorization error"
@@ -2517,23 +2516,23 @@ msgstr "Apenas interno"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:374
+#: js/ui/unlockDialog.js:380
 msgid "%A %B %-d"
 msgstr "%A, %d de %B"
 
-#: js/ui/unlockDialog.js:380
+#: js/ui/unlockDialog.js:386
 msgid "Swipe up to unlock"
 msgstr "Deslizar para desbloquear"
 
-#: js/ui/unlockDialog.js:381
+#: js/ui/unlockDialog.js:387
 msgid "Click or press a key to unlock"
 msgstr "Clicar ou premir uma tecla para desbloquear"
 
-#: js/ui/unlockDialog.js:564
+#: js/ui/unlockDialog.js:570
 msgid "Unlock Window"
 msgstr "Desbloquear janela"
 
-#: js/ui/unlockDialog.js:573
+#: js/ui/unlockDialog.js:579
 msgid "Log in as another user"
 msgstr "Iniciar sessão como outro utilizador"
 
@@ -2548,8 +2547,8 @@ msgid "Welcome to %s"
 msgstr "Bem-vindo ao %s"
 
 #: js/ui/welcomeDialog.js:54
-msgid "If you want to learn your way around, check out the tour."
-msgstr "Se quiser familiarizar-se, percorra a visita guiada."
+msgid "If you want to learn your way around, check out the tour"
+msgstr "Se quiser familiarizar-se, percorra a visita guiada"
 
 #: js/ui/welcomeDialog.js:63
 msgid "Skip"
@@ -2611,51 +2610,47 @@ msgstr "Mover"
 msgid "Resize"
 msgstr "Redimensionar"
 
-#: js/ui/windowMenu.js:101
-msgid "Move Titlebar Onscreen"
-msgstr "Mover barra de título no ecrã"
-
-#: js/ui/windowMenu.js:106
+#: js/ui/windowMenu.js:100
 msgid "Always on Top"
 msgstr "Sempre no topo"
 
-#: js/ui/windowMenu.js:125
+#: js/ui/windowMenu.js:119
 msgid "Always on Visible Workspace"
 msgstr "Sempre na área de trabalho visível"
 
-#: js/ui/windowMenu.js:139
+#: js/ui/windowMenu.js:133
 msgid "Move to Workspace Left"
 msgstr "Mover para a área de trabalho à esquerda"
 
-#: js/ui/windowMenu.js:145
+#: js/ui/windowMenu.js:139
 msgid "Move to Workspace Right"
 msgstr "Mover para a área de trabalho à direita"
 
-#: js/ui/windowMenu.js:151
+#: js/ui/windowMenu.js:145
 msgid "Move to Workspace Up"
 msgstr "Mover para a área de trabalho acima"
 
-#: js/ui/windowMenu.js:157
+#: js/ui/windowMenu.js:151
 msgid "Move to Workspace Down"
 msgstr "Mover para a área de trabalho abaixo"
 
-#: js/ui/windowMenu.js:175
+#: js/ui/windowMenu.js:169
 msgid "Move to Monitor Up"
 msgstr "Mover para o monitor acima"
 
-#: js/ui/windowMenu.js:184
+#: js/ui/windowMenu.js:178
 msgid "Move to Monitor Down"
 msgstr "Mover para o monitor abaixo"
 
-#: js/ui/windowMenu.js:193
+#: js/ui/windowMenu.js:187
 msgid "Move to Monitor Left"
 msgstr "Mover para o monitor à esquerda"
 
-#: js/ui/windowMenu.js:202
+#: js/ui/windowMenu.js:196
 msgid "Move to Monitor Right"
 msgstr "Mover para o monitor à direita"
 
-#: js/ui/windowMenu.js:210
+#: js/ui/windowMenu.js:204
 msgid "Close"
 msgstr "Fechar"
 
@@ -2691,8 +2686,8 @@ msgid "Failed to launch “%s”"
 msgstr "Falha ao iniciar “%s”"
 
 #: src/shell-keyring-prompt.c:764
-msgid "Passwords do not match."
-msgstr "As palavras-passe não coincidem."
+msgid "Passwords do not match"
+msgstr "As palavras-passe não coincidem"
 
 #: src/shell-keyring-prompt.c:772
 msgid "Password cannot be blank"
@@ -2904,8 +2899,8 @@ msgid "No Results Found"
 msgstr "Nenhum resultado"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:253
-msgid "Try a different search."
-msgstr "Tente uma nova pesquisa."
+msgid "Try a different search"
+msgstr "Tente uma nova pesquisa"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:264
 msgid "No Installed Extensions"
@@ -2940,7 +2935,7 @@ msgstr "Abrir menu"
 #: subprojects/extensions-app/data/ui/help-overlay.ui:18
 msgctxt "shortcut window"
 msgid "Toggle Search"
-msgstr "Activar Pesquisa"
+msgstr "Ativar Pesquisa"
 
 #: subprojects/extensions-app/data/ui/help-overlay.ui:24
 msgctxt "shortcut window"
@@ -3423,6 +3418,9 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Sons de sistema"
+
+#~ msgid "Move Titlebar Onscreen"
+#~ msgstr "Mover barra de título no ecrã"
 
 #~ msgid "Network Manager"
 #~ msgstr "Gestor de rede"
