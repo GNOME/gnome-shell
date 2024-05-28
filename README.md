@@ -125,7 +125,7 @@ a few more basic tips and tricks.
 [st-docs]: <https://gnome.pages.gitlab.gnome.org/gnome-shell/st/>
 [shell-docs]: <https://gnome.pages.gitlab.gnome.org/gnome-shell/shell/>
 [clutter-docs]: <https://mutter.gnome.org/clutter/>
-[meta-docs]: <https://mutter.gnome.org/clutter/>
+[meta-docs]: <https://mutter.gnome.org/meta/>
 [mutter-docs]: <https://mutter.gnome.org>
 
 ## License
