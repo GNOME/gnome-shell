@@ -18,7 +18,7 @@ export class ExtensionPreferences extends ExtensionBase {
      * Get the single widget that implements
      * the extension's preferences.
      *
-     * @returns {Gtk.Widget}
+     * @returns {Gtk.Widget|Promise<Gtk.Widget>}
      */
     getPreferencesWidget() {
         throw new GObject.NotImplementedError();
@@ -31,9 +31,10 @@ export class ExtensionPreferences extends ExtensionBase {
      * returned by getPreferencesWidget().
      *
      * @param {Adw.PreferencesWindow} window - the preferences window
+     * @returns {Promise<void>}
      */
-    fillPreferencesWindow(window) {
-        const widget = this.getPreferencesWidget();
+    async fillPreferencesWindow(window) {
+        const widget = await this.getPreferencesWidget();
         const page = this._wrapWidget(widget);
         window.add(page);
     }

@@ -38,7 +38,7 @@ export const ExtensionPrefsDialog = GObject.registerClass({
         const prefsObj = new prefsModule.default({...metadata, dir, path});
         this._extension.stateObj = prefsObj;
 
-        prefsObj.fillPreferencesWindow(this);
+        await prefsObj.fillPreferencesWindow(this);
 
         if (!this.visible_page)
             throw new Error('Extension did not provide any UI');
