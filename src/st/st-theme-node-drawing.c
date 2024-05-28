@@ -73,7 +73,7 @@ elliptical_arc (cairo_t *cr,
 }
 
 static CoglTexture *
-create_corner_material (StCornerSpec *corner)
+create_corner_pipeline (StCornerSpec *corner)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   CoglContext *ctx = clutter_backend_get_cogl_context (backend);
@@ -216,7 +216,7 @@ load_corner (StTextureCache  *cache,
              void            *datap,
              GError         **error)
 {
-  return create_corner_material ((StCornerSpec *) datap);
+  return create_corner_pipeline ((StCornerSpec *) datap);
 }
 
 /* To match the CSS specification, we want the border to look like it was
@@ -368,7 +368,7 @@ st_theme_node_lookup_corner (StThemeNode    *node,
                              StCorner        corner_id)
 {
   CoglTexture *texture = NULL;
-  CoglPipeline *material = NULL;
+  CoglPipeline *pipeline = NULL;
   char *key;
   StTextureCache *cache;
   StCornerSpec corner;
@@ -426,13 +426,13 @@ st_theme_node_lookup_corner (StThemeNode    *node,
 
   if (texture)
     {
-      material = _st_create_texture_pipeline (texture);
+      pipeline = _st_create_texture_pipeline (texture);
       g_object_unref (texture);
     }
 
   g_free (key);
 
-  return material;
+  return pipeline;
 }
 
 static void
@@ -1416,13 +1416,13 @@ st_theme_node_maybe_prerender_background (StThemeNodePaintState *state,
     }
   }
 
-  state->corner_material[ST_CORNER_TOPLEFT] =
+  state->corner_pipeline[ST_CORNER_TOPLEFT] =
     st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_TOPLEFT);
-  state->corner_material[ST_CORNER_TOPRIGHT] =
+  state->corner_pipeline[ST_CORNER_TOPRIGHT] =
     st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_TOPRIGHT);
-  state->corner_material[ST_CORNER_BOTTOMRIGHT] =
+  state->corner_pipeline[ST_CORNER_BOTTOMRIGHT] =
     st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_BOTTOMRIGHT);
-  state->corner_material[ST_CORNER_BOTTOMLEFT] =
+  state->corner_pipeline[ST_CORNER_BOTTOMLEFT] =
     st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_BOTTOMLEFT);
 
   /* Use cairo to prerender the node if there is a gradient, or
@@ -1670,8 +1670,8 @@ st_theme_node_update_resources (StThemeNodePaintState *state,
 }
 
 static void
-paint_material_with_opacity (ClutterPaintNode *node,
-                             CoglPipeline     *material,
+paint_pipeline_with_opacity (ClutterPaintNode *node,
+                             CoglPipeline     *pipeline,
                              ClutterActorBox  *box,
                              ClutterActorBox  *coords,
                              guint8            paint_opacity)
@@ -1682,9 +1682,9 @@ paint_material_with_opacity (ClutterPaintNode *node,
   cogl_color_init_from_4f (&color,
                            paint_opacity / 255.0, paint_opacity / 255.0,
                            paint_opacity / 255.0, paint_opacity / 255.0);
-  cogl_pipeline_set_color (material, &color);
+  cogl_pipeline_set_color (pipeline, &color);
 
-  pipeline_node = clutter_pipeline_node_new (material);
+  pipeline_node = clutter_pipeline_node_new (pipeline);
   clutter_paint_node_add_child (node, pipeline_node);
 
   if (coords)
@@ -1825,13 +1825,13 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
         {
           g_autoptr (ClutterPaintNode) corners_node = NULL;
 
-          if (state->corner_material[corner_id] == NULL)
+          if (state->corner_pipeline[corner_id] == NULL)
             continue;
 
-          cogl_pipeline_set_color (state->corner_material[corner_id], &pipeline_color);
+          cogl_pipeline_set_color (state->corner_pipeline[corner_id], &pipeline_color);
 
           corners_node =
-            clutter_pipeline_node_new (state->corner_material[corner_id]);
+            clutter_pipeline_node_new (state->corner_pipeline[corner_id]);
           clutter_paint_node_set_static_name (corners_node,
                                               "StThemeNode (CSS border corners)");
           clutter_paint_node_add_child (root, corners_node);
@@ -2816,7 +2816,7 @@ st_theme_node_paint (StThemeNode           *node,
                                                   &allocation,
                                                   &paint_box);
 
-          paint_material_with_opacity (root,
+          paint_pipeline_with_opacity (root,
                                        state->prerendered_pipeline,
                                        &paint_box,
                                        NULL,
@@ -2880,7 +2880,7 @@ st_theme_node_paint (StThemeNode           *node,
                                        &background_box,
                                        paint_opacity);
 
-      paint_material_with_opacity (root,
+      paint_pipeline_with_opacity (root,
                                    node->background_pipeline,
                                    &background_box,
                                    &texture_coords,
@@ -2899,7 +2899,7 @@ st_theme_node_paint_state_node_free_internal (StThemeNodePaintState *state,
   g_clear_object (&state->box_shadow_pipeline);
 
   for (corner_id = 0; corner_id < 4; corner_id++)
-    g_clear_object (&state->corner_material[corner_id]);
+    g_clear_object (&state->corner_pipeline[corner_id]);
 
   if (unref_node)
     st_theme_node_paint_state_set_node (state, NULL);
@@ -2948,7 +2948,7 @@ st_theme_node_paint_state_init (StThemeNodePaintState *state)
   state->prerendered_pipeline = NULL;
 
   for (corner_id = 0; corner_id < 4; corner_id++)
-    state->corner_material[corner_id] = NULL;
+    state->corner_pipeline[corner_id] = NULL;
 }
 
 void
@@ -2977,8 +2977,8 @@ st_theme_node_paint_state_copy (StThemeNodePaintState *state,
   if (other->prerendered_pipeline)
     state->prerendered_pipeline = g_object_ref (other->prerendered_pipeline);
   for (corner_id = 0; corner_id < 4; corner_id++)
-    if (other->corner_material[corner_id])
-      state->corner_material[corner_id] = g_object_ref (other->corner_material[corner_id]);
+    if (other->corner_pipeline[corner_id])
+      state->corner_pipeline[corner_id] = g_object_ref (other->corner_pipeline[corner_id]);
 }
 
 void
