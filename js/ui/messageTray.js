@@ -475,6 +475,11 @@ export class Notification extends GObject.Object {
 
     destroy(reason = NotificationDestroyedReason.DISMISSED) {
         this.emit('destroy', reason);
+
+        if (this._updateDatetimeId)
+            GLib.source_remove(this._updateDatetimeId);
+        delete this._updateDatetimeId;
+
         this.run_dispose();
     }
 }
