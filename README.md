@@ -121,7 +121,7 @@ The following guidelines will help your change to be successfully merged:
 [st-docs]: <https://gnome.pages.gitlab.gnome.org/gnome-shell/st/>
 [shell-docs]: <https://gnome.pages.gitlab.gnome.org/gnome-shell/shell/>
 [clutter-docs]: <https://mutter.gnome.org/clutter/>
-[meta-docs]: <https://mutter.gnome.org/clutter/>
+[meta-docs]: <https://mutter.gnome.org/meta/>
 [mutter-docs]: <https://mutter.gnome.org>
 
 ## License
