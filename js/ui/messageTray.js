@@ -439,6 +439,16 @@ export class Notification extends GObject.Object {
         });
         this._actions.push(action);
         this.emit('action-added', action);
+        return action;
+    }
+
+    removeAction(action) {
+        const index = this._actions.indexOf(action);
+        if (index < 0)
+            throw new Error('Action was already removed previously');
+
+        this._actions.splice(index, 1);
+        this.emit('action-removed', action);
     }
 
     clearActions() {
