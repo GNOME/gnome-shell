@@ -188,8 +188,6 @@ potfile_js_check:
 build:
   stage: build
   needs: ["check_commit_log"]
-  variables:
-    GIT_SUBMODULE_STRATEGY: normal
   before_script:
     - .gitlab-ci/checkout-mutter.sh
     - meson mutter mutter/build --prefix=/usr
@@ -208,7 +206,6 @@ test:
   stage: test
   needs: ["build"]
   variables:
-    GIT_SUBMODULE_STRATEGY: normal
     XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
     NO_AT_BRIDGE: "1"
   before_script:
@@ -232,8 +229,6 @@ test-coverity:
   needs: ["build"]
   stage: analyze
   allow_failure: true
-  variables:
-    GIT_SUBMODULE_STRATEGY: normal
   before_script:
     - sudo meson install -C mutter/build
   script:
@@ -286,7 +281,6 @@ dist:
   variables:
     XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
     NO_AT_BRIDGE: "1"
-    GIT_SUBMODULE_STRATEGY: normal
   stage: deploy
   needs: ["build"]
   before_script:
