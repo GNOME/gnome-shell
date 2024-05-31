@@ -873,7 +873,8 @@ shell_util_spawn_async_with_pipes_and_fds (const char          *working_director
   GPid child_pid = 0;
 
   if (!g_spawn_async_with_pipes_and_fds (working_directory, argv, envp, flags,
-                                         spawn_child_setup, shell_global,
+                                         spawn_child_setup,
+                                         shell_global_get_context (shell_global),
                                          stdin_fd, stdout_fd, stderr_fd,
                                          source_fds, target_fds, n_fds,
                                          &child_pid,
