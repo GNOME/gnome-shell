@@ -260,6 +260,8 @@ flatpak:
 
 nightly:
   extends: '.publish_nightly'
+  needs:
+    - flatpak
 
 distinfo:
   stage: deploy
