@@ -1362,6 +1362,92 @@ st_theme_node_prerender_background (StThemeNode *node,
   return texture;
 }
 
+static void
+st_theme_node_maybe_prerender_background (StThemeNodePaintState *state,
+                                          StThemeNode           *node,
+                                          float                  width,
+                                          float                  height,
+                                          float                  resource_scale)
+{
+  gboolean has_border;
+  gboolean has_border_radius;
+  gboolean has_inset_box_shadow;
+  gboolean has_large_corners;
+  StShadow *box_shadow_spec;
+
+  box_shadow_spec = st_theme_node_get_box_shadow (node);
+
+  has_inset_box_shadow = box_shadow_spec && box_shadow_spec->inset;
+
+  if (node->border_width[ST_SIDE_TOP] > 0 ||
+      node->border_width[ST_SIDE_LEFT] > 0 ||
+      node->border_width[ST_SIDE_RIGHT] > 0 ||
+      node->border_width[ST_SIDE_BOTTOM] > 0)
+    has_border = TRUE;
+  else
+    has_border = FALSE;
+
+  if (node->border_radius[ST_CORNER_TOPLEFT] > 0 ||
+      node->border_radius[ST_CORNER_TOPRIGHT] > 0 ||
+      node->border_radius[ST_CORNER_BOTTOMLEFT] > 0 ||
+      node->border_radius[ST_CORNER_BOTTOMRIGHT] > 0)
+    has_border_radius = TRUE;
+  else
+    has_border_radius = FALSE;
+
+  /* The cogl code pads each corner to the maximum border radius,
+   * which results in overlapping corner areas if the radius
+   * exceeds the actor's halfsize, causing rendering errors.
+   * Fall back to cairo in these cases. */
+  has_large_corners = FALSE;
+
+  if (has_border_radius) {
+    guint border_radius[4];
+    int corner;
+
+    st_theme_node_reduce_border_radius (node, width, height, border_radius);
+
+    for (corner = 0; corner < 4; corner ++) {
+      if (border_radius[corner] * 2 > height ||
+          border_radius[corner] * 2 > width) {
+        has_large_corners = TRUE;
+        break;
+      }
+    }
+  }
+
+  state->corner_material[ST_CORNER_TOPLEFT] =
+    st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_TOPLEFT);
+  state->corner_material[ST_CORNER_TOPRIGHT] =
+    st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_TOPRIGHT);
+  state->corner_material[ST_CORNER_BOTTOMRIGHT] =
+    st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_BOTTOMRIGHT);
+  state->corner_material[ST_CORNER_BOTTOMLEFT] =
+    st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_BOTTOMLEFT);
+
+  /* Use cairo to prerender the node if there is a gradient, or
+   * background image with borders and/or rounded corners,
+   * or large corners, since we can't do those things
+   * easily with cogl.
+   *
+   * FIXME: if we could figure out ahead of time that a
+   * background image won't overlap with the node borders,
+   * then we could use cogl for that case.
+   */
+  if ((node->background_gradient_type != ST_GRADIENT_NONE)
+      || (has_inset_box_shadow && (has_border || node->background_color.alpha > 0))
+      || (st_theme_node_get_background_image (node) && (has_border || has_border_radius))
+      || has_large_corners)
+    {
+      state->prerendered_texture = st_theme_node_prerender_background (node, width, height, resource_scale);
+
+      if (state->prerendered_texture)
+        state->prerendered_pipeline = _st_create_texture_pipeline (state->prerendered_texture);
+      else
+        state->prerendered_pipeline = NULL;
+    }
+}
+
 static void st_theme_node_paint_borders (StThemeNodePaintState *state,
                                          ClutterPaintNode      *node,
                                          const ClutterActorBox *box,
@@ -1487,10 +1573,7 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
                                 float                  height,
                                 float                  resource_scale)
 {
-  gboolean has_border;
-  gboolean has_border_radius;
   gboolean has_inset_box_shadow;
-  gboolean has_large_corners;
   StShadow *box_shadow_spec;
 
   g_return_if_fail (width > 0 && height > 0);
@@ -1512,72 +1595,7 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
   box_shadow_spec = st_theme_node_get_box_shadow (node);
   has_inset_box_shadow = box_shadow_spec && box_shadow_spec->inset;
 
-  if (node->border_width[ST_SIDE_TOP] > 0 ||
-      node->border_width[ST_SIDE_LEFT] > 0 ||
-      node->border_width[ST_SIDE_RIGHT] > 0 ||
-      node->border_width[ST_SIDE_BOTTOM] > 0)
-    has_border = TRUE;
-  else
-    has_border = FALSE;
-
-  if (node->border_radius[ST_CORNER_TOPLEFT] > 0 ||
-      node->border_radius[ST_CORNER_TOPRIGHT] > 0 ||
-      node->border_radius[ST_CORNER_BOTTOMLEFT] > 0 ||
-      node->border_radius[ST_CORNER_BOTTOMRIGHT] > 0)
-    has_border_radius = TRUE;
-  else
-    has_border_radius = FALSE;
-
-  /* The cogl code pads each corner to the maximum border radius,
-   * which results in overlapping corner areas if the radius
-   * exceeds the actor's halfsize, causing rendering errors.
-   * Fall back to cairo in these cases. */
-  has_large_corners = FALSE;
-
-  if (has_border_radius) {
-    guint border_radius[4];
-    int corner;
-
-    st_theme_node_reduce_border_radius (node, width, height, border_radius);
-
-    for (corner = 0; corner < 4; corner ++) {
-      if (border_radius[corner] * 2 > height ||
-          border_radius[corner] * 2 > width) {
-        has_large_corners = TRUE;
-        break;
-      }
-    }
-  }
-
-  state->corner_material[ST_CORNER_TOPLEFT] =
-    st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_TOPLEFT);
-  state->corner_material[ST_CORNER_TOPRIGHT] =
-    st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_TOPRIGHT);
-  state->corner_material[ST_CORNER_BOTTOMRIGHT] =
-    st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_BOTTOMRIGHT);
-  state->corner_material[ST_CORNER_BOTTOMLEFT] =
-    st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_BOTTOMLEFT);
-
-  /* Use cairo to prerender the node if there is a gradient, or
-   * background image with borders and/or rounded corners,
-   * or large corners, since we can't do those things
-   * easily with cogl.
-   *
-   * FIXME: if we could figure out ahead of time that a
-   * background image won't overlap with the node borders,
-   * then we could use cogl for that case.
-   */
-  if ((node->background_gradient_type != ST_GRADIENT_NONE)
-      || (has_inset_box_shadow && (has_border || node->background_color.alpha > 0))
-      || (st_theme_node_get_background_image (node) && (has_border || has_border_radius))
-      || has_large_corners)
-    state->prerendered_texture = st_theme_node_prerender_background (node, width, height,
-                                                                     resource_scale);
-
-  if (state->prerendered_texture)
-    state->prerendered_pipeline = _st_create_texture_pipeline (state->prerendered_texture);
-  else
-    state->prerendered_pipeline = NULL;
+  st_theme_node_maybe_prerender_background (state, node, width, height, resource_scale);
 
   if (box_shadow_spec && !has_inset_box_shadow)
     {
@@ -1616,14 +1634,12 @@ st_theme_node_update_resources (StThemeNodePaintState *state,
                                 float                  height,
                                 float                  resource_scale)
 {
-  gboolean had_prerendered_texture = FALSE;
   gboolean had_box_shadow = FALSE;
   StShadow *box_shadow_spec;
 
   g_return_if_fail (width > 0 && height > 0);
 
   /* Free handles we can't reuse */
-  had_prerendered_texture = (state->prerendered_texture != NULL);
   g_clear_object (&state->prerendered_texture);
 
   if (state->prerendered_pipeline != NULL)
@@ -1645,20 +1661,7 @@ st_theme_node_update_resources (StThemeNodePaintState *state,
 
   box_shadow_spec = st_theme_node_get_box_shadow (node);
 
-  if (had_prerendered_texture)
-    {
-      state->prerendered_texture = st_theme_node_prerender_background (node, width, height, resource_scale);
-      state->prerendered_pipeline = _st_create_texture_pipeline (state->prerendered_texture);
-    }
-  else
-    {
-      int corner_id;
-
-      for (corner_id = 0; corner_id < 4; corner_id++)
-        if (state->corner_material[corner_id] == NULL)
-          state->corner_material[corner_id] =
-            st_theme_node_lookup_corner (node, width, height, resource_scale, corner_id);
-    }
+  st_theme_node_maybe_prerender_background (state, node, width, height, resource_scale);
 
   if (had_box_shadow)
     state->box_shadow_pipeline = _st_create_shadow_pipeline (box_shadow_spec,
