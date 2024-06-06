@@ -257,8 +257,6 @@ flatpak:
     FLATPAK_MODULE: "gnome-extensions-app"
     APP_ID: "org.gnome.Extensions.Devel"
   extends: .flatpak
-  rules:
-    - when: never
 
 nightly:
   extends: '.publish_nightly'
