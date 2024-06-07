@@ -421,7 +421,7 @@ st_viewport_paint_node (ClutterActor        *actor,
       node = transform_node;
     }
 
-  st_widget_paint_background (ST_WIDGET (actor), node);
+  st_widget_paint_background (ST_WIDGET (actor), node, paint_context);
 }
 
 static void

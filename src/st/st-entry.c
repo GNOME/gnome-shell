@@ -823,7 +823,7 @@ st_entry_paint_node (ClutterActor        *actor,
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
 
-  st_widget_paint_background (ST_WIDGET (actor), node);
+  st_widget_paint_background (ST_WIDGET (actor), node, paint_context);
 
   if (priv->shadow_spec)
     {
@@ -842,7 +842,8 @@ st_entry_paint_node (ClutterActor        *actor,
           g_clear_object (&priv->text_shadow_pipeline);
 
           pipeline = _st_create_shadow_pipeline_from_actor (priv->shadow_spec,
-                                                            priv->entry);
+                                                            priv->entry,
+                                                            paint_context);
 
           priv->shadow_width = width;
           priv->shadow_height = height;

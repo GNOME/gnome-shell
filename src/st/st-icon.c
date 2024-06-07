@@ -78,7 +78,8 @@ G_DEFINE_TYPE_WITH_PRIVATE (StIcon, st_icon, ST_TYPE_WIDGET)
 
 static void st_icon_update               (StIcon *icon);
 static gboolean st_icon_update_icon_size (StIcon *icon);
-static void st_icon_update_shadow_pipeline (StIcon *icon);
+static void st_icon_update_shadow_pipeline (StIcon              *icon,
+                                            ClutterPaintContext *paint_context);
 static void st_icon_clear_shadow_pipeline (StIcon *icon);
 
 static GIcon *default_gicon = NULL;
@@ -207,11 +208,11 @@ st_icon_paint_node (ClutterActor        *actor,
   StIcon *icon = ST_ICON (actor);
   StIconPrivate *priv = icon->priv;
 
-  st_widget_paint_background (ST_WIDGET (actor), node);
+  st_widget_paint_background (ST_WIDGET (actor), node, paint_context);
 
   if (priv->icon_texture)
     {
-      st_icon_update_shadow_pipeline (icon);
+      st_icon_update_shadow_pipeline (icon, paint_context);
 
       if (priv->shadow_pipeline)
         {
@@ -416,7 +417,8 @@ st_icon_clear_shadow_pipeline (StIcon *icon)
 }
 
 static void
-st_icon_update_shadow_pipeline (StIcon *icon)
+st_icon_update_shadow_pipeline (StIcon              *icon,
+                                ClutterPaintContext *paint_context)
 {
   StIconPrivate *priv = icon->priv;
 
@@ -437,7 +439,8 @@ st_icon_update_shadow_pipeline (StIcon *icon)
 
           priv->shadow_pipeline =
             _st_create_shadow_pipeline_from_actor (priv->shadow_spec,
-                                                   priv->icon_texture);
+                                                   priv->icon_texture,
+                                                   paint_context);
 
           if (priv->shadow_pipeline)
             graphene_size_init (&priv->shadow_size, width, height);

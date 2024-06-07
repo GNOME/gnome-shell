@@ -418,8 +418,9 @@ st_widget_allocate (ClutterActor          *actor,
  * painting children.
  */
 void
-st_widget_paint_background (StWidget         *widget,
-                            ClutterPaintNode *node)
+st_widget_paint_background (StWidget            *widget,
+                            ClutterPaintNode    *node,
+                            ClutterPaintContext *paint_context)
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   StThemeNode *theme_node;
@@ -437,6 +438,7 @@ st_widget_paint_background (StWidget         *widget,
 
   if (priv->transition_animation)
     st_theme_node_transition_paint (priv->transition_animation,
+                                    paint_context,
                                     node,
                                     &allocation,
                                     opacity,
@@ -444,6 +446,7 @@ st_widget_paint_background (StWidget         *widget,
   else
     st_theme_node_paint (theme_node,
                          current_paint_state (widget),
+                         paint_context,
                          node,
                          &allocation,
                          opacity,
@@ -455,7 +458,7 @@ st_widget_paint_node (ClutterActor        *actor,
                       ClutterPaintNode    *node,
                       ClutterPaintContext *paint_context)
 {
-  st_widget_paint_background (ST_WIDGET (actor), node);
+  st_widget_paint_background (ST_WIDGET (actor), node, paint_context);
 }
 
 static void

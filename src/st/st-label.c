@@ -211,7 +211,7 @@ st_label_paint_node (ClutterActor        *actor,
 {
   StLabelPrivate *priv = ST_LABEL (actor)->priv;
 
-  st_widget_paint_background (ST_WIDGET (actor), node);
+  st_widget_paint_background (ST_WIDGET (actor), node, paint_context);
 
   if (priv->shadow_spec)
     {
@@ -237,7 +237,8 @@ st_label_paint_node (ClutterActor        *actor,
           priv->shadow_height = height;
           priv->text_shadow_pipeline =
             _st_create_shadow_pipeline_from_actor (priv->shadow_spec,
-                                                   priv->label);
+                                                   priv->label,
+                                                   paint_context);
         }
 
       if (priv->text_shadow_pipeline != NULL)

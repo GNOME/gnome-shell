@@ -1499,8 +1499,9 @@ st_theme_node_invalidate_background_image (StThemeNode *node)
 }
 
 static gboolean
-st_theme_node_load_background_image (StThemeNode *node,
-                                     gfloat       resource_scale)
+st_theme_node_load_background_image (StThemeNode         *node,
+                                     ClutterPaintContext *paint_context,
+                                     float                resource_scale)
 {
   if (node->background_texture == NULL)
     {
@@ -1528,6 +1529,7 @@ st_theme_node_load_background_image (StThemeNode *node,
       if (background_image_shadow_spec)
         {
           node->background_shadow_pipeline = _st_create_shadow_pipeline (background_image_shadow_spec,
+                                                                         paint_context,
                                                                          node->background_texture,
                                                                          resource_scale);
         }
@@ -1564,11 +1566,13 @@ st_theme_node_invalidate_resources_for_file (StThemeNode *node,
 }
 
 static void st_theme_node_compute_maximum_borders (StThemeNodePaintState *state);
-static void st_theme_node_prerender_shadow (StThemeNodePaintState *state);
+static void st_theme_node_prerender_shadow (StThemeNodePaintState *state,
+                                            ClutterPaintContext   *paint_context);
 
 static void
 st_theme_node_render_resources (StThemeNodePaintState *state,
                                 StThemeNode           *node,
+                                ClutterPaintContext   *paint_context,
                                 float                  width,
                                 float                  height,
                                 float                  resource_scale)
@@ -1603,14 +1607,16 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
 
       if (st_theme_node_load_border_image (node, resource_scale))
         state->box_shadow_pipeline = _st_create_shadow_pipeline (box_shadow_spec,
+                                                                 paint_context,
                                                                  node->border_slices_texture,
                                                                  state->resource_scale);
       else if (state->prerendered_texture != NULL)
         state->box_shadow_pipeline = _st_create_shadow_pipeline (box_shadow_spec,
+                                                                 paint_context,
                                                                  state->prerendered_texture,
                                                                  state->resource_scale);
       else
-        st_theme_node_prerender_shadow (state);
+        st_theme_node_prerender_shadow (state, paint_context);
     }
 
   /* If we don't have cached textures yet, check whether we can cache
@@ -1630,6 +1636,7 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
 static void
 st_theme_node_update_resources (StThemeNodePaintState *state,
                                 StThemeNode           *node,
+                                ClutterPaintContext   *paint_context,
                                 float                  width,
                                 float                  height,
                                 float                  resource_scale)
@@ -1665,6 +1672,7 @@ st_theme_node_update_resources (StThemeNodePaintState *state,
 
   if (had_box_shadow)
     state->box_shadow_pipeline = _st_create_shadow_pipeline (box_shadow_spec,
+                                                             paint_context,
                                                              state->prerendered_texture,
                                                              state->resource_scale);
 }
@@ -2411,7 +2419,8 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
 }
 
 static void
-st_theme_node_prerender_shadow (StThemeNodePaintState *state)
+st_theme_node_prerender_shadow (StThemeNodePaintState *state,
+                                ClutterPaintContext   *paint_context)
 {
   StThemeNode *node = state->node;
   CoglContext *ctx;
@@ -2436,7 +2445,8 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
   if (cogl_framebuffer_allocate (framebuffer, &error))
     {
       g_autoptr (ClutterPaintNode) root_node = NULL;
-      ClutterPaintContext *paint_context;
+      ClutterColorState *color_state;
+      ClutterPaintContext *nested_paint_context;
       CoglColor clear_color;
       ClutterActorBox box = { 0, 0, state->box_shadow_width, state->box_shadow_height};
 
@@ -2454,14 +2464,19 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
       st_theme_node_paint_borders (state, root_node, &box,
                                    ST_PAINT_BORDERS_MODE_SILHOUETTE, 0xff);
 
-      paint_context =
+      color_state = clutter_paint_context_get_color_state (paint_context);
+      nested_paint_context =
         clutter_paint_context_new_for_framebuffer (framebuffer,
                                                    NULL,
-                                                   CLUTTER_PAINT_FLAG_NONE);
-      clutter_paint_node_paint (root_node, paint_context);
-      clutter_paint_context_destroy (paint_context);
+                                                   CLUTTER_PAINT_FLAG_NONE,
+                                                   color_state);
+      clutter_paint_context_push_color_state (nested_paint_context, color_state);
+      clutter_paint_node_paint (root_node, nested_paint_context);
+      clutter_paint_context_pop_color_state (nested_paint_context);
+      clutter_paint_context_destroy (nested_paint_context);
 
       state->box_shadow_pipeline = _st_create_shadow_pipeline (st_theme_node_get_box_shadow (node),
+                                                               paint_context,
                                                                buffer, state->resource_scale);
     }
 
@@ -2719,6 +2734,7 @@ st_theme_node_needs_new_box_shadow_for_size (StThemeNodePaintState *state,
 void
 st_theme_node_paint (StThemeNode           *node,
                      StThemeNodePaintState *state,
+                     ClutterPaintContext   *paint_context,
                      ClutterPaintNode      *root,
                      const ClutterActorBox *box,
                      guint8                 paint_opacity,
@@ -2755,13 +2771,17 @@ st_theme_node_paint (StThemeNode           *node,
           fabsf (resource_scale - state->resource_scale) < FLT_EPSILON)
         st_theme_node_paint_state_copy (state, &node->cached_state);
       else
-        st_theme_node_render_resources (state, node, width, height, resource_scale);
+        st_theme_node_render_resources (state, node, paint_context,
+                                        width, height, resource_scale);
 
       node->rendered_once = TRUE;
     }
   else if (state->alloc_width != width || state->alloc_height != height ||
            fabsf (state->resource_scale - resource_scale) > FLT_EPSILON)
-    st_theme_node_update_resources (state, node, width, height, resource_scale);
+    {
+      st_theme_node_update_resources (state, node, paint_context,
+                                      width, height, resource_scale);
+    }
 
   /* Rough notes about the relationship of borders and backgrounds in CSS3;
    * see http://www.w3.org/TR/css3-background/ for more accurate details.
@@ -2834,7 +2854,7 @@ st_theme_node_paint (StThemeNode           *node,
   st_theme_node_paint_outline (node, root, box, paint_opacity);
 
   if (state->prerendered_pipeline == NULL &&
-      st_theme_node_load_background_image (node, resource_scale))
+      st_theme_node_load_background_image (node, paint_context, resource_scale))
     {
       ClutterActorBox background_box;
       ClutterActorBox texture_coords;

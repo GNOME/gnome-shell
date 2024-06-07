@@ -81,8 +81,9 @@ StShadowHelper *st_shadow_helper_new  (StShadow       *shadow);
 StShadowHelper *st_shadow_helper_copy (StShadowHelper *helper);
 void            st_shadow_helper_free (StShadowHelper *helper);
 
-void            st_shadow_helper_update (StShadowHelper *helper,
-                                         ClutterActor   *source);
+void            st_shadow_helper_update (StShadowHelper      *helper,
+                                         ClutterActor        *source,
+                                         ClutterPaintContext *paint_context);
 
 void            st_shadow_helper_paint (StShadowHelper   *helper,
                                         ClutterPaintNode *node,

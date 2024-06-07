@@ -244,6 +244,7 @@ st_theme_node_transition_get_paint_box (StThemeNodeTransition *transition,
 
 static gboolean
 setup_framebuffers (StThemeNodeTransition *transition,
+                    ClutterPaintContext   *paint_context,
                     ClutterPaintNode      *node,
                     const ClutterActorBox *allocation,
                     float                  resource_scale)
@@ -335,6 +336,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
   clutter_paint_node_add_child (node, old_layer_node);
 
   st_theme_node_paint (priv->old_theme_node, &priv->old_paint_state,
+                       paint_context,
                        old_layer_node, allocation, 255, resource_scale);
 
   new_layer_node = clutter_layer_node_new_to_framebuffer (priv->new_offscreen,
@@ -346,6 +348,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
                                  priv->offscreen_box.x2,
                                  priv->offscreen_box.y2, 0.0, 1.0);
   st_theme_node_paint (priv->new_theme_node, &priv->new_paint_state,
+                       paint_context,
                        new_layer_node, allocation, 255, resource_scale);
 
   g_clear_object (&noop_pipeline);
@@ -355,6 +358,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
 
 void
 st_theme_node_transition_paint (StThemeNodeTransition *transition,
+                                ClutterPaintContext   *paint_context,
                                 ClutterPaintNode      *node,
                                 ClutterActorBox       *allocation,
                                 guint8                 paint_opacity,
@@ -382,6 +386,7 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
       calculate_offscreen_box (transition, allocation);
       priv->needs_setup = clutter_actor_box_get_area (&priv->offscreen_box) == 0 ||
                           !setup_framebuffers (transition,
+                                               paint_context,
                                                node,
                                                allocation,
                                                resource_scale);

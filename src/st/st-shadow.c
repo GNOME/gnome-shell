@@ -218,12 +218,14 @@ st_shadow_helper_new (StShadow     *shadow)
  * st_shadow_helper_update:
  * @helper: a #StShadowHelper
  * @source: a #ClutterActor
+ * @paint_context: a #ClutterPaintContext
  *
  * Update @helper from @source.
  */
 void
-st_shadow_helper_update (StShadowHelper *helper,
-                         ClutterActor   *source)
+st_shadow_helper_update (StShadowHelper      *helper,
+                         ClutterActor        *source,
+                         ClutterPaintContext *paint_context)
 {
   gfloat width, height;
 
@@ -236,7 +238,9 @@ st_shadow_helper_update (StShadowHelper *helper,
       if (helper->pipeline)
         g_object_unref (helper->pipeline);
 
-      helper->pipeline = _st_create_shadow_pipeline_from_actor (helper->shadow, source);
+      helper->pipeline = _st_create_shadow_pipeline_from_actor (helper->shadow,
+                                                                source,
+                                                                paint_context);
       helper->width = width;
       helper->height = height;
     }
