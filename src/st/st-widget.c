@@ -451,8 +451,9 @@ st_widget_paint_background (StWidget         *widget,
 }
 
 static void
-st_widget_paint_node (ClutterActor     *actor,
-                      ClutterPaintNode *node)
+st_widget_paint_node (ClutterActor        *actor,
+                      ClutterPaintNode    *node,
+                      ClutterPaintContext *paint_context)
 {
   st_widget_paint_background (ST_WIDGET (actor), node);
 }

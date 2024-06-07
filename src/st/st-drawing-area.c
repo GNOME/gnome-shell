@@ -83,8 +83,9 @@ st_drawing_area_allocate (ClutterActor          *self,
 }
 
 static void
-st_drawing_area_paint_node (ClutterActor     *actor,
-                            ClutterPaintNode *root)
+st_drawing_area_paint_node (ClutterActor        *actor,
+                            ClutterPaintNode    *root,
+                            ClutterPaintContext *paint_context)
 {
   StDrawingArea *area = ST_DRAWING_AREA (actor);
   StDrawingAreaPrivate *priv = st_drawing_area_get_instance_private (area);

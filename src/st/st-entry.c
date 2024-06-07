@@ -817,8 +817,9 @@ st_entry_leave_event (ClutterActor *actor,
 }
 
 static void
-st_entry_paint_node (ClutterActor     *actor,
-                     ClutterPaintNode *node)
+st_entry_paint_node (ClutterActor        *actor,
+                     ClutterPaintNode    *node,
+                     ClutterPaintContext *paint_context)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
 

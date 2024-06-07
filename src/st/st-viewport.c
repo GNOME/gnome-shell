@@ -399,8 +399,9 @@ get_border_paint_offsets (StViewport *viewport,
 
 
 static void
-st_viewport_paint_node (ClutterActor     *actor,
-                        ClutterPaintNode *node)
+st_viewport_paint_node (ClutterActor        *actor,
+                        ClutterPaintNode    *node,
+                        ClutterPaintContext *paint_context)
 {
   StViewport *viewport = ST_VIEWPORT (actor);
   int x, y;

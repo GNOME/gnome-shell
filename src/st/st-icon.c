@@ -200,8 +200,9 @@ st_icon_dispose (GObject *gobject)
 }
 
 static void
-st_icon_paint_node (ClutterActor     *actor,
-                    ClutterPaintNode *node)
+st_icon_paint_node (ClutterActor        *actor,
+                    ClutterPaintNode    *node,
+                    ClutterPaintContext *paint_context)
 {
   StIcon *icon = ST_ICON (actor);
   StIconPrivate *priv = icon->priv;

@@ -205,8 +205,9 @@ st_label_dispose (GObject   *object)
 }
 
 static void
-st_label_paint_node (ClutterActor     *actor,
-                     ClutterPaintNode *node)
+st_label_paint_node (ClutterActor        *actor,
+                     ClutterPaintNode    *node,
+                     ClutterPaintContext *paint_context)
 {
   StLabelPrivate *priv = ST_LABEL (actor)->priv;
 
