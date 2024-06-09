@@ -172,8 +172,9 @@ stage {
 %entry_common {
   border-radius: $base_border_radius;
   padding: $base_padding * 1.5 $base_padding * 1.5;
-  selection-background-color: $selected_bg_color;
-  selected-color: $selected_fg_color;
+
+  selection-background-color: transparentize($selected_bg_color, 0.7);
+  selected-color: $fg_color;
 }
 
 %entry {
