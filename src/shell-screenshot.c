@@ -376,7 +376,6 @@ draw_cursor_image (cairo_surface_t *surface,
   MetaDisplay *display;
   MetaCursorTracker *tracker;
   cairo_surface_t *cursor_surface;
-  g_autoptr (MtkRegion) screenshot_region = NULL;
   cairo_t *cr;
   int x, y;
   int xhot, yhot;
@@ -390,12 +389,11 @@ draw_cursor_image (cairo_surface_t *surface,
   if (!texture)
     return;
 
-  screenshot_region = mtk_region_create_rectangle (&area);
   meta_cursor_tracker_get_pointer (tracker, &point, NULL);
   x = point.x;
   y = point.y;
 
-  if (!mtk_region_contains_point (screenshot_region, point.x, point.y))
+  if (!mtk_rectangle_contains_point (&area, point.x, point.y))
     return;
 
   meta_cursor_tracker_get_hot (tracker, &xhot, &yhot);
