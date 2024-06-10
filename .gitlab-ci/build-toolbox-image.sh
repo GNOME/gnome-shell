@@ -35,8 +35,12 @@ build_container() {
     abattis-cantarell-fonts # system font
     gnome-backgrounds # no blank background!
   )
+  local debug_packages=(
+    glib2 # makes gdb much more useful
+  )
   buildah run $build_cntr dnf config-manager --set-disabled '*-openh264'
   buildah run $build_cntr dnf install -y "${extra_packages[@]}"
+  buildah run $build_cntr dnf debuginfo-install -y "${debug_packages[@]}"
   buildah run $build_cntr dnf clean all
   buildah run $build_cntr rm -rf /var/lib/cache/dnf
 
