@@ -107,7 +107,7 @@ import * as LoginManager from '../misc/loginManager.js';
 import * as Main from './main.js';
 import * as Params from '../misc/params.js';
 
-const DEFAULT_BACKGROUND_COLOR = new Clutter.Color({red: 46, green: 52, blue: 54, alpha: 255});
+const DEFAULT_BACKGROUND_COLOR = new Clutter.Color({red: 40, green: 40, blue: 40, alpha: 255});
 
 const BACKGROUND_SCHEMA = 'org.gnome.desktop.background';
 const PRIMARY_COLOR_KEY = 'primary-color';
