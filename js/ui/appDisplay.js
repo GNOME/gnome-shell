@@ -54,8 +54,8 @@ const DRAG_PAGE_SWITCH_REPEAT_TIMEOUT = 1000;
 
 const DELAYED_MOVE_TIMEOUT = 200;
 
-const DIALOG_SHADE_NORMAL = Clutter.Color.from_pixel(0x000000cc);
-const DIALOG_SHADE_HIGHLIGHT = Clutter.Color.from_pixel(0x00000055);
+const DIALOG_SHADE_NORMAL = new Clutter.Color({red: 0, green: 0, blue: 0, alpha: 204});
+const DIALOG_SHADE_HIGHLIGHT = new Clutter.Color({red: 0, green: 0, blue: 0, alpha: 85});
 
 const DEFAULT_FOLDERS = {
     'Utilities': {
@@ -2732,7 +2732,7 @@ export const AppFolderDialog = GObject.registerClass({
             this.child.get_transformed_position();
 
         this.ease({
-            background_color: Clutter.Color.from_pixel(0x00000000),
+            background_color: new Clutter.Color({red: 0, green: 0, blue: 0, alpha: 0}),
             duration: FOLDER_DIALOG_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });

@@ -818,7 +818,12 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
 
     _setDimmed(dim) {
         const val = 127 * (1 + (dim ? 1 : 0) * DIM_BRIGHTNESS);
-        const color = Clutter.Color.new(val, val, val, 255);
+        const color = new Clutter.Color({
+            red: val,
+            green: val,
+            blue: val,
+            alpha: 255,
+        });
 
         this._boxPointer.ease_property('@effects.dim.brightness', color, {
             mode: Clutter.AnimationMode.LINEAR,
