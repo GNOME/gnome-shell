@@ -1951,19 +1951,43 @@ class CaptivePortalHandler extends Signals.EventEmitter {
 
         this._checkUri = checkUri;
         this._connectivityQueue = new Set();
+        this._notifications = new Map();
         this._portalHelperProxy = null;
     }
 
-    addConnection(path) {
-        if (this._connectivityQueue.has(path))
+    addConnection(name, path) {
+        if (this._connectivityQueue.has(path) || this._notifications.has(path))
             return;
 
-        this._launchPortalHelper(path).catch(logError);
+        const source = MessageTray.getSystemSource();
+
+        const notification = new MessageTray.Notification({
+            title: _('Sign Into Wi–Fi Network'),
+            body: name,
+            source,
+        });
+        notification.connect('activated',
+            () => this._onNotificationActivated(path));
+        notification.connect('destroy',
+            () => this._notifications.delete(path));
+        this._notifications.set(path, notification);
+        source.addNotification(notification);
     }
+
 
     removeConnection(path) {
         if (this._connectivityQueue.delete(path))
             this._portalHelperProxy?.CloseAsync(path);
+        this._notifications.get(path)?.destroy(
+            MessageTray.NotificationDestroyedReason.SOURCE_CLOSED);
+        this._notifications.delete(path);
+    }
+
+    _onNotificationActivated(path) {
+        this._launchPortalHelper(path).catch(logError);
+
+        Main.overview.hide();
+        Main.panel.closeCalendar();
     }
 
     _portalHelperDone(parameters) {
@@ -2014,6 +2038,10 @@ class CaptivePortalHandler extends Signals.EventEmitter {
         for (const item of this._connectivityQueue)
             this._portalHelperProxy?.CloseAsync(item);
         this._connectivityQueue.clear();
+
+        for (const n of this._notifications.values())
+            n.destroy(MessageTray.NotificationDestroyedReason.SOURCE_CLOSED);
+        this._notifications.clear();
     }
 }
 
@@ -2167,7 +2195,9 @@ class Indicator extends SystemIndicator {
         if (!isPortal || Main.sessionMode.isGreeter)
             return;
 
-        this._portalHandler.addConnection(this._mainConnection.get_path());
+        this._portalHandler.addConnection(
+            this._mainConnection.get_id(),
+            this._mainConnection.get_path());
     }
 
     _updateIcon() {
