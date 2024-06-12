@@ -21,7 +21,7 @@
     <name>The GNOME Project</name>
   </developer>
 
-  <translation type="gettext">gnome-extensions-app</translation>
+  <translation type="gettext">@package_name@</translation>
   <launchable type="desktop-id">@app_id@.desktop</launchable>
 
   <kudos>
