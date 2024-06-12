@@ -6,7 +6,7 @@ desktop_files = [
 ]
 service_files = []
 
-if have_networkmanager
+if have_portal_helper
   desktop_files += 'org.gnome.Shell.PortalHelper.desktop'
   service_files += 'org.gnome.Shell.PortalHelper.service'
 endif

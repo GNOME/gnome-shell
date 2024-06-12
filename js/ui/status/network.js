@@ -10,6 +10,7 @@ import Polkit from 'gi://Polkit';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
+import * as Config from '../../misc/config.js';
 import * as Main from '../main.js';
 import * as PopupMenu from '../popupMenu.js';
 import * as MessageTray from '../messageTray.js';
@@ -1984,7 +1985,13 @@ class CaptivePortalHandler extends Signals.EventEmitter {
     }
 
     _onNotificationActivated(path) {
-        this._launchPortalHelper(path).catch(logError);
+        const context = global.create_app_launch_context(
+            global.get_current_time(), -1);
+
+        if (Config.HAVE_PORTAL_HELPER)
+            this._launchPortalHelper(path, context).catch(logError);
+        else
+            Gio.AppInfo.launch_default_for_uri(this._checkUri, context);
 
         Main.overview.hide();
         Main.panel.closeCalendar();
@@ -2007,8 +2014,7 @@ class CaptivePortalHandler extends Signals.EventEmitter {
         }
     }
 
-    async _launchPortalHelper(path) {
-        const timestamp = global.get_current_time();
+    async _launchPortalHelper(path, context) {
         if (!this._portalHelperProxy) {
             this._portalHelperProxy = new Gio.DBusProxy({
                 g_connection: Gio.DBus.session,
@@ -2030,6 +2036,7 @@ class CaptivePortalHandler extends Signals.EventEmitter {
             }
         }
 
+        const {timestamp} = context;
         this._portalHelperProxy?.AuthenticateAsync(path, this._checkUri, timestamp).catch(logError);
         this._connectivityQueue.add(path);
     }

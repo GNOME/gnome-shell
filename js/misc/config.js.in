@@ -7,6 +7,8 @@ export const PACKAGE_NAME = '@PACKAGE_NAME@';
 export const PACKAGE_VERSION = '@PACKAGE_VERSION@';
 /* 1 if networkmanager is available, 0 otherwise */
 export const HAVE_NETWORKMANAGER = @HAVE_NETWORKMANAGER@;
+/* 1 if portal helper is enabled, 0 otherwise */
+export const HAVE_PORTAL_HELPER = @HAVE_PORTAL_HELPER@;
 /* gettext package */
 export const GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
 /* locale dir */

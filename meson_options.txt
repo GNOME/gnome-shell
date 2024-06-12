@@ -40,6 +40,12 @@ option('networkmanager',
   description: 'Enable NetworkManager support'
 )
 
+option('portal_helper',
+  type: 'boolean',
+  value: true,
+  description: 'Enable build-in network portal login'
+)
+
 option('systemd',
   type: 'boolean',
   value: true,

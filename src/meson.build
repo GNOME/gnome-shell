@@ -286,7 +286,7 @@ executable('gnome-shell', 'main.c',
   install: true
 )
 
-if have_networkmanager
+if have_portal_helper
   executable('gnome-shell-portal-helper',
     'gnome-shell-portal-helper.c', portal_resources,
     c_args: tools_cflags,

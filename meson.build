@@ -107,6 +107,11 @@ else
   have_networkmanager = false
 endif
 
+have_portal_helper = get_option('portal_helper')
+if have_portal_helper and not have_networkmanager
+  error('Portal helper requires networkmanager support')
+endif
+
 if get_option('camera_monitor')
   libpipewire_dep = dependency('libpipewire-0.3', version: pipewire_req)
   have_pipewire = true
