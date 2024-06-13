@@ -203,6 +203,7 @@ build:
     paths:
       - mutter
       - build
+      - subprojects/gvc
       - subprojects/jasmine-gjs
 
 test:
