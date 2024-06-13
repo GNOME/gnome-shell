@@ -42,7 +42,7 @@ workflow:
     - if: '$CI_COMMIT_TAG'
     - if: '$CI_COMMIT_BRANCH'
 
-.pipeline_guard: &pipeline_guard
+.pipeline-guard:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_TAG'
@@ -95,7 +95,8 @@ check_commit_log:
       else
         echo "Not a merge request" ;
       fi
-  <<: *pipeline_guard
+  rules:
+    - !reference [.pipeline-guard, rules]
   artifacts:
     expire_in: 1 week
     paths:
@@ -114,7 +115,8 @@ check-merge-request:
       else
         echo "Not a merge request" ;
       fi
-  <<: *pipeline_guard
+  rules:
+    - !reference [.pipeline-guard, rules]
   artifacts:
     expire_in: 1 week
     paths:
