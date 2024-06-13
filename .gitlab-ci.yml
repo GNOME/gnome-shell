@@ -275,9 +275,6 @@ distinfo:
     reports:
       dotenv: dist.env
     paths:
-      - build
-      - mutter
-      - subprojects/jasmine-gjs
       - dist.env
   rules:
     - if: '$CI_COMMIT_TAG'
@@ -302,6 +299,7 @@ dist:
 dist-tarball:
   extends: dist
   needs:
+    - build
     - distinfo
   artifacts:
     expose_as: 'Get tarball here'
