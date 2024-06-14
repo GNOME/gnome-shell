@@ -32,3 +32,5 @@ TimeoutStopSec=5
 
 # Lower down gnome-shell's OOM score to avoid being killed by OOM-killer too early
 OOMScoreAdjust=-1000
+
+Environment=G_MESSAGES_DEBUG=all SHELL_DEBUG=backtrace-warning,backtrace-segfaults
