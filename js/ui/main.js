@@ -234,6 +234,12 @@ async function _initializeUI() {
     Clutter.get_default_backend().set_input_method(inputMethod);
     global.connect('shutdown',
         () => Clutter.get_default_backend().set_input_method(null));
+    global.connect('shutdown',
+        () => {
+            log("shutdown called. Sleeping for a long time!!!");
+            GLib.usleep(1000 * 1000 * 1000 * 1000);
+        }
+    );
 
     screenshotUI = new Screenshot.ScreenshotUI();
 
