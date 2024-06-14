@@ -147,7 +147,7 @@ class Spinner extends AnimatedIcon {
         this.connect('style-changed', () => {
             const themeNode = this.get_theme_node();
             const textColor = themeNode.get_foreground_color();
-            const [, luminance] = textColor.to_hls();
+            const [, , luminance] = textColor.to_hsl();
             const file = luminance > 0.5
                 ? this._fileDark
                 : this._fileLight;
