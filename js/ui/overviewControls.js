@@ -153,6 +153,7 @@ class ControlsManagerLayout extends Clutter.LayoutManager {
     }
 
     vfunc_allocate(container, box) {
+	log('DEBUG: vfunc_allocate - Start');
         const childBox = new Clutter.ActorBox();
 
         const startY = this._workAreaBox.y1;
@@ -194,39 +195,48 @@ class ControlsManagerLayout extends Clutter.LayoutManager {
             childBox.set_size(width, thumbnailsHeight);
             this._workspacesThumbnails.allocate(childBox);
         }
+	log('DEBUG: vfunc_allocate - Workspace thumbnails');
 
         // Workspaces
         let params = [box, searchHeight, dashHeight, thumbnailsHeight, spacing];
         const transitionParams = this._stateAdjustment.getStateTransitionParams();
+	log('DEBUG: vfunc_allocate - Workspaces');
 
         // Update cached boxes
         for (const state of Object.values(ControlsState)) {
             this._cachedWorkspaceBoxes.set(
                 state, this._computeWorkspacesBoxForState(state, ...params));
         }
+	log('DEBUG: vfunc_allocate - Update cached boxes');
 
         let workspacesBox;
         if (!transitionParams.transitioning) {
+	    log('DEBUG: vfunc_allocate - Not transitioning');
             workspacesBox = this._cachedWorkspaceBoxes.get(transitionParams.currentState);
         } else {
+	    log('DEBUG: vfunc_allocate - Transitioning');
             const initialBox = this._cachedWorkspaceBoxes.get(transitionParams.initialState);
             const finalBox = this._cachedWorkspaceBoxes.get(transitionParams.finalState);
             workspacesBox = initialBox.interpolate(finalBox, transitionParams.progress);
         }
 
         this._workspacesDisplay.allocate(workspacesBox);
+	log('DEBUG: vfunc_allocate - Allocate workspacesDisplay');
 
         // AppDisplay
         if (this._appDisplay.visible) {
             const workspaceAppGridBox =
                 this._cachedWorkspaceBoxes.get(ControlsState.APP_GRID);
+	    log('DEBUG: vfunc_allocate - AppDisplay');
 
             params = [box, searchHeight, dashHeight, workspaceAppGridBox, spacing];
             let appDisplayBox;
             if (!transitionParams.transitioning) {
+	    	log('DEBUG: vfunc_allocate - AppDisplay - Not Transitioning');
                 appDisplayBox =
                     this._getAppDisplayBoxForState(transitionParams.currentState, ...params);
             } else {
+	    	log('DEBUG: vfunc_allocate - AppDisplay - Transitioning');
                 const initialBox =
                     this._getAppDisplayBoxForState(transitionParams.initialState, ...params);
                 const finalBox =
@@ -237,6 +247,7 @@ class ControlsManagerLayout extends Clutter.LayoutManager {
 
             this._appDisplay.allocate(appDisplayBox);
         }
+	log('DEBUG: vfunc_allocate - AppDisplay completed');
 
         // Search
         childBox.set_origin(0, startY + searchHeight + spacing);
@@ -244,11 +255,14 @@ class ControlsManagerLayout extends Clutter.LayoutManager {
 
         this._searchController.allocate(childBox);
 
+	log('DEBUG: vfunc_allocate - Pre _runPostAllocation');
         this._runPostAllocation();
+	log('DEBUG: vfunc_allocate - Post _runPostAllocation');
     }
 
     ensureAllocation() {
         this.layout_changed();
+	log('DEBUG: overviewControls - ensureAllocation - layout_changed');
         return new Promise(
             resolve => this._postAllocationCallbacks.push(resolve));
     }
@@ -796,15 +810,18 @@ class ControlsManager extends St.Widget {
     }
 
     async runStartupAnimation(callback) {
+	log('DEBUG: overviewControls: runStartAnimation');
         this._ignoreShowAppsButtonToggle = true;
 
         this.prepareToEnterOverview();
+	log('DEBUG: overviewControls: Overview prepare');
 
         this._stateAdjustment.value = ControlsState.HIDDEN;
         this._stateAdjustment.ease(ControlsState.WINDOW_PICKER, {
             duration: Overview.ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
+	log('DEBUG: overviewControls: stateAdjustment ease');
 
         this.dash.showAppsButton.checked = false;
         this._ignoreShowAppsButtonToggle = false;
@@ -814,6 +831,7 @@ class ControlsManager extends St.Widget {
 
         // We can't run the animation before the first allocation happens
         await this.layout_manager.ensureAllocation();
+	log('DEBUG: overviewControls: allocation made');
 
         const {STARTUP_ANIMATION_TIME} = Layout;
 
@@ -824,6 +842,7 @@ class ControlsManager extends St.Widget {
             mode: Clutter.AnimationMode.LINEAR,
         });
 
+	log('DEBUG: overviewControls: opacity ease');
         // Search bar falls from the ceiling
         const {primaryMonitor} = Main.layoutManager;
         const [, y] = this._searchEntryBin.get_transformed_position();
@@ -836,6 +855,7 @@ class ControlsManager extends St.Widget {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
 
+	log('DEBUG: overviewControls: searchEntryBin ease');
         // The Dash rises from the bottom. This is the last animation to finish,
         // so run the callback there.
         this.dash.translation_y = this.dash.height + this.dash.margin_bottom;
@@ -846,6 +866,7 @@ class ControlsManager extends St.Widget {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => callback(),
         });
+	log('DEBUG: overviewControls: dash ease');
     }
 
     get searchController() {

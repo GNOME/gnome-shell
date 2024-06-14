@@ -785,10 +785,14 @@ export const LayoutManager = GObject.registerClass({
     }
 
     _startupAnimationSession() {
+	log(`DEBUG: _startupAnimationSession: start`);
         const onStopped = () => this._startupAnimationComplete();
+	log(`DEBUG: _startupAnimationSession: completed`);
         if (Main.sessionMode.hasOverview) {
+	    log(`DEBUG: _startupAnimationSession: hasOverview`);
             Main.overview.runStartupAnimation(onStopped);
         } else {
+	    log(`DEBUG: _startupAnimationSession: uiGroup.ease`);
             this.uiGroup.ease({
                 scale_x: 1,
                 scale_y: 1,
@@ -801,22 +805,30 @@ export const LayoutManager = GObject.registerClass({
     }
 
     _startupAnimationComplete() {
+	log(`DEBUG: _startupAnimationComplete: start`);
         this._coverPane.destroy();
         this._coverPane = null;
+	log(`DEBUG: _startupAnimationComplete: destroy coverPane`);
 
         this._systemBackground.destroy();
         this._systemBackground = null;
+	log(`DEBUG: _startupAnimationComplete: destroy systemBackground`);
 
         this._startingUp = false;
 
         this.keyboardBox.show();
+	log(`DEBUG: _startupAnimationComplete: show keyboardBox`);
 
         if (!Main.sessionMode.isGreeter) {
+	    log(`DEBUG: _startupAnimationComplete: not greeter`);
             this._showSecondaryBackgrounds();
+	    log(`DEBUG: _startupAnimationComplete: finished showSecondaryBackgrounds`);
             global.window_group.remove_clip();
+	    log(`DEBUG: _startupAnimationComplete: finished remove clip`);
         }
 
         this._queueUpdateRegions();
+	log(`DEBUG: _startupAnimationComplete: finished queueUpdateRegions`);
 
         this.emit('startup-complete');
     }

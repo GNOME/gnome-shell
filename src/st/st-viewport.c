@@ -294,6 +294,7 @@ st_viewport_allocate (ClutterActor           *actor,
    * may not match the minimum sizes reported by the layout manager. When that
    * happens, the content box needs to be adjusted to match the reported minimum
    * sizes before being passed to clutter_layout_manager_allocate() */
+  g_print("DEBUG: clutter_layout_manager_allocate - st_viewport_allocate\n");
   clutter_actor_set_allocation (actor, box);
 
   content_box = viewport_box;

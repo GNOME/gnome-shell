@@ -667,26 +667,31 @@ export class Overview extends Signals.EventEmitter {
     }
 
     runStartupAnimation(callback) {
+	log(`DEBUG: runStartupAnimation - start`);
         Main.panel.style = 'transition-duration: 0ms;';
 
         this._shown = true;
         this._visible = true;
         this._visibleTarget = true;
         Main.layoutManager.showOverview();
+	log(`DEBUG: runStartupAnimation - showOverview`);
         // We should call this._syncGrab() here, but moved it to happen after
         // the animation because of a race in the xserver where the grab
         // fails when requested very early during startup.
 
         this._changeShownState(OverviewShownState.SHOWING);
+	log(`DEBUG: runStartupAnimation - changeShownState`);
 
         this._overview.runStartupAnimation(() => {
             // Overview got hidden during startup animation
             if (this._shownState !== OverviewShownState.SHOWING) {
+	        log(`DEBUG: runStartupAnimation - not shown state`);
                 callback();
                 return;
             }
 
             if (!this._syncGrab()) {
+	        log(`DEBUG: runStartupAnimation - not syncGrab`);
                 callback();
                 this.hide();
                 return;
@@ -694,6 +699,7 @@ export class Overview extends Signals.EventEmitter {
 
             Main.panel.style = null;
             this._changeShownState(OverviewShownState.SHOWN);
+	    log(`DEBUG: runStartupAnimation - callback`);
             callback();
         });
     }
