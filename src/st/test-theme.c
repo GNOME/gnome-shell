@@ -550,7 +550,7 @@ main (int argc, char **argv)
   /* meta_init() cds to $HOME */
   cwd = g_get_current_dir ();
 
-  context = meta_create_test_context (META_CONTEXT_TEST_TYPE_NESTED,
+  context = meta_create_test_context (META_CONTEXT_TEST_TYPE_TEST,
                                       META_CONTEXT_TEST_FLAG_NONE);
   if (!meta_context_configure (context, &argc, &argv, &error))
     g_error ("Failed to configure: %s", error->message);

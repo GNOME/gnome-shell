@@ -215,8 +215,9 @@ test:
   before_script:
     - sudo meson install -C mutter/build
     - mkdir -m 700 $XDG_RUNTIME_DIR
+    - mkdir -m 1777 /tmp/.X11-unix
   script:
-    - dbus-run-session -- xvfb-run meson test -C build --no-rebuild --timeout-multiplier 5
+    - dbus-run-session -- meson test -C build --no-rebuild --timeout-multiplier 5
   artifacts:
     expire_in: 1 day
     paths:
@@ -289,8 +290,9 @@ dist:
   before_script:
     - sudo meson install -C mutter/build
     - mkdir -m 700 $XDG_RUNTIME_DIR
+    - mkdir -m 1777 /tmp/.X11-unix
   script:
-    - dbus-run-session xvfb-run meson dist -C build --include-subprojects
+    - dbus-run-session meson dist -C build --include-subprojects
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
