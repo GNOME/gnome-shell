@@ -712,8 +712,8 @@ main (int argc, char **argv)
     {
       g_message ("Execution of main.js threw exception: %s", error->message);
       g_error_free (error);
-      g_message ("Sleeping 100 seconds to sabotage startup. Attempt to reproduce https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/62");
-      g_usleep (100 * G_USEC_PER_SEC);
+      g_warning ("WAT!! Sleeping 200 seconds to sabotage startup. Attempt to reproduce https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/62");
+      g_usleep (200 * G_USEC_PER_SEC);
       /* We just exit() here, since in a development environment you'll get the
        * error in your shell output, and it's way better than a busted WM,
        * which typically manifests as a white screen.
@@ -725,11 +725,12 @@ main (int argc, char **argv)
        * If there was a generic "hook into bug-buddy for non-C crashes"
        * infrastructure, here would be the place to put it.
        */
+      g_warning ("WAT!! Now exiting gnome-shell");
       g_object_unref (gjs_context);
       exit (1);
     }
 
-  g_message ("Shutting down GNOME Shell");
+  g_warning ("WAT!! Shutting down GNOME Shell");
   _shell_global_notify_shutdown (shell_global_get ());
   shell_profiler_shutdown ();
 
