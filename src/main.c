@@ -712,6 +712,8 @@ main (int argc, char **argv)
     {
       g_message ("Execution of main.js threw exception: %s", error->message);
       g_error_free (error);
+      g_message ("Sleeping 100 seconds to sabotage startup. Attempt to reproduce https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/62");
+      g_usleep (100 * G_USEC_PER_SEC);
       /* We just exit() here, since in a development environment you'll get the
        * error in your shell output, and it's way better than a busted WM,
        * which typically manifests as a white screen.
