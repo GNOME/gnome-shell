@@ -343,6 +343,7 @@ export const Switch = GObject.registerClass({
         super._init({
             style_class: 'toggle-switch',
             accessible_role: Atk.Role.CHECK_BOX,
+            track_hover: true,
         });
 
         const box = new St.BoxLayout({

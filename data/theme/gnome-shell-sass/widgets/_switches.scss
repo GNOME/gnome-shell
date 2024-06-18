@@ -11,8 +11,16 @@ $switch_handle_size: 20px;
 
   @if $contrast == 'high' {
     background: transparentize(if($variant == 'light', black, white), .7);
+
+    &:hover {
+      background: transparentize(if($variant == 'light', black, white), .6);
+    }
   } @else {
     background: transparentize(if($variant == 'light', black, white), .85);
+
+    &:hover {
+      background: transparentize(if($variant == 'light', black, white), .8);
+    }
   }
 
   StIcon {
@@ -32,6 +40,11 @@ $switch_handle_size: 20px;
   &:checked {
     background: $selected_bg_color;
     color: $selected_fg_color;
+
+    &:hover {
+      background-color: lighten($selected_bg_color, 5%);
+      color: lighten($selected_fg_color, 5%);
+    }
 
     .handle {
       background: white;
