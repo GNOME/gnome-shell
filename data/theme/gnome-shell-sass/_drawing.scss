@@ -160,7 +160,7 @@
   //                  - normal, focus, hover, active, checked, insensitive, default, undecorated
   // $c:            button bg color, derived from bg_color
   // $tc:           button text color, derived from fg_color
-  // $style:        button style, possible values: card, bubble, flat, default
+  // $style:        button style, possible values: card, notification, dialog, flat, default
   // $always_dark:  override the light theme check to use dark colors, true or false
   //
 
@@ -211,7 +211,7 @@
 
   // background color override for buttons that use transparency
   // styles: dialogs bubbles, lockscreen
-  @if $style == 'bubble' or $style == 'lockscreen' {
+  @if $style == 'dialog' or $style == 'lockscreen' {
     $button_bg_color: transparentize($tc, .9);
     $hover_button_bg_color: transparentize($tc, .87);
     $active_button_bg_color: transparentize($tc, .84);

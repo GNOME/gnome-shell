@@ -56,7 +56,10 @@ class Dialog extends St.Widget {
         this._dialog.add_child(this.contentLayout);
 
         this.buttonLayout = new St.Widget({
-            layout_manager: new Clutter.BoxLayout({homogeneous: true}),
+            layout_manager: new Clutter.BoxLayout({
+                spacing: 12,
+                homogeneous: true,
+            }),
         });
         this._dialog.add_child(this.buttonLayout);
     }
