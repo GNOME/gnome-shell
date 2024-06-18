@@ -439,6 +439,7 @@ export const Message = GObject.registerClass({
         vbox.add_child(hbox);
 
         this._actionBin = new St.Bin({
+            style_class: 'message-action-bin',
             layout_manager: new ScaleLayout(),
             visible: false,
         });

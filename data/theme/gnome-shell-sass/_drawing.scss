@@ -210,12 +210,21 @@
   }
 
   // background color override for buttons that use transparency
-  // styles: notification bubbles, lockscreen
+  // styles: dialogs bubbles, lockscreen
   @if $style == 'bubble' or $style == 'lockscreen' {
     $button_bg_color: transparentize($tc, .9);
     $hover_button_bg_color: transparentize($tc, .87);
     $active_button_bg_color: transparentize($tc, .84);
     $active_hover_button_bg_color: transparentize($tc, .81);
+  }
+
+  // background color overrides for notification style
+  @if $style == 'notification' {
+    $button_bg_color: transparentize($tc, .85);
+    $hover_button_bg_color: transparentize($tc, .7);
+    $insensitive_button_bg_color: transparentize($tc, .9);
+    $active_button_bg_color: transparentize($tc, .8);
+    $active_hover_button_bg_color: transparentize($tc, .8);
   }
 
   // flat style overrides
