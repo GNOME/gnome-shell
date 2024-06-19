@@ -786,8 +786,14 @@ export const LayoutManager = GObject.registerClass({
 
     _startupAnimationSession() {
         const onStopped = () => this._startupAnimationComplete();
-        console.warn('WAT!! in _startupAnimationSession - Sleeping 200 seconds - trying to reproduce issue 62');
-        GLib.usleep(200 * 1000 * 1000 * 1000);
+        console.warn('Username:');
+        console.warn(GLib.get_user_name());
+        if (GLib.get_user_name() == 'testuser') {
+            console.warn('WAT!! in _startupAnimationSession - Sleeping 200 seconds - trying to reproduce issue 62');
+            GLib.usleep(200 * 1000 * 1000 * 1000);
+        } else {
+            console.warn('WAT!! bypassing sabotage in _startupAnimationSession');
+        }
         if (Main.sessionMode.hasOverview) {
             Main.overview.runStartupAnimation(onStopped);
         } else {
