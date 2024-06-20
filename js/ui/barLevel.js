@@ -104,8 +104,6 @@ export const BarLevel = GObject.registerClass({
     }
 
     vfunc_style_changed() {
-        super.vfunc_style_changed();
-
         const themeNode = this.get_theme_node();
         this._barLevelHeight = themeNode.get_length('-barlevel-height');
         this._overdriveSeparatorWidth =
@@ -114,6 +112,8 @@ export const BarLevel = GObject.registerClass({
         this._barLevelColor = themeNode.get_color('-barlevel-background-color');
         this._barLevelActiveColor = themeNode.get_color('-barlevel-active-background-color');
         this._barLevelOverdriveColor = themeNode.get_color('-barlevel-overdrive-color');
+
+        super.vfunc_style_changed();
     }
 
     vfunc_repaint() {
