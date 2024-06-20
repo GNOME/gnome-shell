@@ -36,6 +36,7 @@ const SERIALIZED_PROPERTIES = [
     'hasPrefs',
     'hasUpdate',
     'canChange',
+    'sessionModes',
 ];
 
 /**
@@ -52,9 +53,7 @@ export function serializeExtension(extension) {
         obj[prop] = extension[prop];
     });
 
-    let res = {};
-    for (let key in obj) {
-        let val = obj[key];
+    function packValue(val) {
         let type;
         switch (typeof val) {
         case 'string':
@@ -66,13 +65,28 @@ export function serializeExtension(extension) {
         case 'boolean':
             type = 'b';
             break;
+        case 'object':
+            if (Array.isArray(val)) {
+                type = 'av';
+                val = val.map(v => packValue(v));
+            } else {
+                type = 'a{sv}';
+                let res = {};
+                for (let key in val) {
+                    let packed = packValue(val[key]);
+                    if (packed)
+                        res[key] = packed;
+                }
+                val = res;
+            }
+            break;
         default:
-            continue;
+            return null;
         }
-        res[key] = GLib.Variant.new(type, val);
+        return GLib.Variant.new(type, val);
     }
 
-    return res;
+    return packValue(obj).deepUnpack();
 }
 
 /**
@@ -84,7 +98,7 @@ export function serializeExtension(extension) {
 export function deserializeExtension(variant) {
     let res = {metadata: {}};
     for (let prop in variant) {
-        let val = variant[prop].unpack();
+        let val = variant[prop].recursiveUnpack();
         if (SERIALIZED_PROPERTIES.includes(prop))
             res[prop] = val;
         else
