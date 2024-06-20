@@ -9,7 +9,7 @@
   <project_license>GPL-2.0-or-later</project_license>
 
   <url type="homepage">https://apps.gnome.org/Extensions/</url>
-  <url type="bugtracker">https://gitlab.gnome.org/GNOME/gnome-shell/issues/new</url>
+  <url type="bugtracker">https://gitlab.gnome.org/GNOME/gnome-shell/issues</url>
   <url type="donation">https://www.gnome.org/donate/</url>
   <url type="translate">https://l10n.gnome.org/module/gnome-shell/</url>
   <url type="vcs-browser">https://gitlab.gnome.org/GNOME/gnome-shell/-/tree/HEAD/subprojects/extensions-app</url>
