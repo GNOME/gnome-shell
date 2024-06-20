@@ -440,6 +440,11 @@ class WorkspacesView extends WorkspacesViewBase {
         }
     }
 
+    _raiseActiveWorkspace() {
+        const activeWorkspace = this.getActiveWorkspace();
+        this.set_child_above_sibling(activeWorkspace, null);
+    }
+
     _updateWorkspaces() {
         let workspaceManager = global.workspace_manager;
         let newNumWorkspaces = workspaceManager.n_workspaces;
@@ -472,10 +477,12 @@ class WorkspacesView extends WorkspacesViewBase {
 
         this._updateWorkspacesState();
         this._updateVisibility();
+        this._raiseActiveWorkspace();
     }
 
     _activeWorkspaceChanged(_wm, _from, _to, _direction) {
         this._scrollToActive();
+        this._raiseActiveWorkspace();
     }
 
     _onDestroy() {
