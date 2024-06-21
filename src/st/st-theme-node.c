@@ -617,13 +617,17 @@ get_color_from_transparentize_term (StThemeNode *node,
                                     CRTerm      *term,
                                     CoglColor   *color)
 {
-  CRTerm *color_arg = term->ext_content.func_param;
-  CRTerm *amount_arg = color_arg->next;
+  CRTerm *color_arg, *amount_arg;
   CoglColor base_color;
   CRNum *amount_num;
   double amount;
 
-  if (!color_arg || !amount_arg)
+  color_arg = term->ext_content.func_param;
+  if (!color_arg)
+    return VALUE_NOT_FOUND;
+
+  amount_arg = color_arg->next;
+  if (!amount_arg)
     return VALUE_NOT_FOUND;
 
   if (get_color_from_term (node, color_arg, &base_color) != VALUE_FOUND)
@@ -656,14 +660,21 @@ get_color_from_mix_term (StThemeNode *node,
                          CRTerm      *term,
                          CoglColor   *color)
 {
-  CRTerm *color1_arg = term->ext_content.func_param;
-  CRTerm *color2_arg = color1_arg->next;
-  CRTerm *factor_arg = color2_arg->next;
+  CRTerm *color1_arg, *color2_arg, *factor_arg;
   CoglColor color1, color2;
   CRNum *factor_num;
   double factor;
 
-  if (!color1_arg || !color2_arg || !factor_arg)
+  color1_arg = term->ext_content.func_param;
+  if (!color1_arg)
+    return VALUE_NOT_FOUND;
+
+  color2_arg = color1_arg->next;
+  if (!color2_arg)
+    return VALUE_NOT_FOUND;
+
+  factor_arg = color2_arg->next;
+  if (!factor_arg)
     return VALUE_NOT_FOUND;
 
   if (get_color_from_term (node, color1_arg, &color1) != VALUE_FOUND ||
@@ -706,14 +717,18 @@ get_color_from_lighten_term (StThemeNode *node,
                              CRTerm      *term,
                              CoglColor   *color)
 {
-  CRTerm *color_arg = term->ext_content.func_param;
-  CRTerm *factor_arg = color_arg->next;
+  CRTerm *color_arg, *factor_arg;
   CoglColor base_color;
   CRNum *factor_num;
   double factor;
   float hue, luminance, saturation;
 
-  if (!color_arg || !factor_arg)
+  color_arg = term->ext_content.func_param;
+  if (!color_arg)
+    return VALUE_NOT_FOUND;
+
+  factor_arg = color_arg->next;
+  if (!factor_arg)
     return VALUE_NOT_FOUND;
 
   if (get_color_from_term (node, color_arg, &base_color) != VALUE_FOUND)
@@ -746,14 +761,18 @@ get_color_from_darken_term (StThemeNode *node,
                             CRTerm      *term,
                             CoglColor   *color)
 {
-  CRTerm *color_arg = term->ext_content.func_param;
-  CRTerm *factor_arg = color_arg->next;
+  CRTerm *color_arg, *factor_arg;
   CoglColor base_color;
   CRNum *factor_num;
   double factor;
   float hue, luminance, saturation;
 
-  if (!color_arg || !factor_arg)
+  color_arg = term->ext_content.func_param;
+  if (!color_arg)
+    return VALUE_NOT_FOUND;
+
+  factor_arg = color_arg->next;
+  if (!factor_arg)
     return VALUE_NOT_FOUND;
 
   if (get_color_from_term (node, color_arg, &base_color) != VALUE_FOUND)
