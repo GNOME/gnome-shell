@@ -1202,7 +1202,7 @@ class Workspace extends St.Widget {
 
         // We might have the window in our list already if it was on all workspaces and
         // now was moved to this workspace
-        if (this._lookupIndex(metaWin) !== -1)
+        if (this.containsMetaWindow(metaWin))
             return;
 
         if (!this._isMyWindow(metaWin))
