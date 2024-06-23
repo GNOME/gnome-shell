@@ -1089,16 +1089,11 @@ class Workspace extends St.Widget {
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._skipTaskbarSignals = new Map();
-        const windows = global.get_window_actors().map(a => a.meta_window)
-            .filter(this._isMyWindow, this);
-
-        // Create clones for windows that should be
-        // visible in the Overview
         this._windows = [];
-        for (let i = 0; i < windows.length; i++) {
-            if (this._isOverviewWindow(windows[i]))
-                this._addWindowClone(windows[i]);
-        }
+        this._layoutFrozenId = 0;
+
+        // DND requires this to be set
+        this._delegate = this;
 
         // Track window changes, but let the window tracker process them first
         this.metaWorkspace?.connectObject(
@@ -1109,10 +1104,10 @@ class Workspace extends St.Widget {
             'window-entered-monitor', this._windowEnteredMonitor.bind(this), GObject.ConnectFlags.AFTER,
             'window-left-monitor', this._windowLeftMonitor.bind(this), GObject.ConnectFlags.AFTER,
             this);
-        this._layoutFrozenId = 0;
 
-        // DND requires this to be set
-        this._delegate = this;
+        // Create clones for windows that should be
+        // visible in the Overview
+        global.get_window_actors().map(a => this._doAddWindow(a.meta_window));
     }
 
     _shouldLeaveOverview() {
