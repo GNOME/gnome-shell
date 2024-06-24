@@ -63,7 +63,9 @@ void              reminder_watcher_dismiss_by_id(EReminderWatcher *reminder_watc
                                                  const gchar *id);
 void              reminder_watcher_snooze_by_id (EReminderWatcher *reminder_watcher,
                                                  const gchar *id);
-
+void              reminder_watcher_open_in_app_by_id
+                                                (EReminderWatcher *reminder_watcher,
+                                                 const gchar *id);
 G_END_DECLS
 
 #endif /* REMINDER_WATCHER_H */
