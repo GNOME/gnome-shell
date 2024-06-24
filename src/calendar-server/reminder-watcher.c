@@ -125,6 +125,7 @@ reminder_watcher_notify_display (ReminderWatcher *rw,
   g_notification_set_body (notification, description);
   g_notification_set_icon (notification, icon);
 
+  g_notification_set_default_action_and_target (notification, "app.open-in-app", "s", notif_id);
   g_notification_add_button_with_target (notification, _("Snooze"), "app.snooze-reminder", "s", notif_id);
   g_notification_add_button_with_target (notification, _("Dismiss"), "app.dismiss-reminder", "s", notif_id);
 
@@ -599,4 +600,39 @@ reminder_watcher_snooze_by_id (EReminderWatcher *reminder_watcher,
     {
       print_debug ("Snooze: Cannot find reminder '%s'", id);
     }
+}
+
+void
+reminder_watcher_open_in_app_by_id (EReminderWatcher *reminder_watcher,
+                                    const char *id)
+{
+  g_autoptr(GAppInfo) app_info = NULL;
+  g_autoptr(GError) local_error = NULL;
+
+  app_info = g_app_info_get_default_for_type ("text/calendar", FALSE);
+  if (app_info == NULL)
+    {
+      GList *recommended;
+
+      print_debug ("OpenInApp: No default application for 'text/calendar' found");
+
+      recommended = g_app_info_get_recommended_for_type ("text/calendar");
+      if (recommended)
+        {
+          /* pick the last used, when there's no default app */
+          app_info = g_object_ref (recommended->data);
+
+          g_list_free_full (recommended, g_object_unref);
+        }
+       else
+        {
+          print_debug ("OpenInApp: No recommended application for 'text/calendar' found");
+          return;
+        }
+    }
+
+  if (g_app_info_launch_uris (app_info, NULL, NULL, &local_error))
+    print_debug ("OpenInApp: Launched '%s'", g_app_info_get_id (app_info));
+   else
+    print_debug ("OpenInApp: Failed to launch '%s': %s", g_app_info_get_id (app_info), local_error ? local_error->message : "Unknown error");
 }
