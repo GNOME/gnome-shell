@@ -859,6 +859,18 @@ app_dismiss_reminder_cb (GSimpleAction *action,
 }
 
 static void
+app_open_in_app_cb (GSimpleAction *action,
+                    GVariant *parameter,
+                    gpointer user_data)
+{
+  CalendarServerApp *app = user_data;
+
+  g_return_if_fail (CALENDAR_SERVER_IS_APP (app));
+
+  reminder_watcher_open_in_app_by_id (app->reminder_watcher, g_variant_get_string (parameter, NULL));
+}
+
+static void
 calendar_server_app_dispose (GObject *object)
 {
   CalendarServerApp *app = CALENDAR_SERVER_APP (object);
@@ -893,7 +905,8 @@ calendar_server_app_startup (GApplication *application)
 {
   const GActionEntry action_entries[] = {
     { "snooze-reminder", app_snooze_reminder_cb, "s" },
-    { "dismiss-reminder", app_dismiss_reminder_cb, "s" }
+    { "dismiss-reminder", app_dismiss_reminder_cb, "s" },
+    { "open-in-app", app_open_in_app_cb, "s" }
   };
 
   g_action_map_add_action_entries (G_ACTION_MAP (application), action_entries, G_N_ELEMENTS (action_entries), application);
