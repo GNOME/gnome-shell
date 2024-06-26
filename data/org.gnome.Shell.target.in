@@ -6,5 +6,4 @@ Requisite=gnome-session-initialized.target
 PartOf=gnome-session-initialized.target
 Before=gnome-session-initialized.target
 
-Wants=org.gnome.Shell@wayland.service
-Wants=org.gnome.Shell@x11.service
+Wants=@SUPPORTED_SESSIONS@

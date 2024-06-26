@@ -194,7 +194,7 @@ libst_dep = declare_dependency(link_with: libst,
   sources: st_enums[1]
 )
 
-if get_option('tests')
+if get_option('tests') and have_x11_client
   mutter_test_dep = dependency(libmutter_test_pc, version: mutter_req)
   test_theme = executable('test-theme',
     sources: 'test-theme.c',

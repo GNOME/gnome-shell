@@ -23,7 +23,9 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <meta/meta-context.h>
 #include <meta/display.h>
+#ifdef HAVE_X11_CLIENT
 #include <meta/meta-x11-display.h>
+#endif
 
 #include <locale.h>
 #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
@@ -786,6 +788,7 @@ gboolean
 shell_util_has_x11_display_extension (MetaDisplay *display,
                                       const char  *extension)
 {
+#ifdef HAVE_X11_CLIENT
   MetaX11Display *x11_display;
   Display *xdisplay;
   int op, event, error;
@@ -796,6 +799,9 @@ shell_util_has_x11_display_extension (MetaDisplay *display,
 
   xdisplay = meta_x11_display_get_xdisplay (x11_display);
   return XQueryExtension (xdisplay, extension, &op, &event, &error);
+#else
+  return FALSE;
+#endif
 }
 
 /**

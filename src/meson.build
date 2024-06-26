@@ -13,7 +13,9 @@ introspection_common = {
 subdir('calendar-server')
 subdir('hotplug-sniffer')
 subdir('st')
-subdir('tray')
+if have_x11_client
+  subdir('tray')
+endif
 
 script_data = configuration_data()
 script_data.set('bindir', bindir)
@@ -77,8 +79,11 @@ gnome_shell_deps = [
   gcr_dep,
   libsystemd_dep,
   libpipewire_dep,
-  x11_dep,
 ]
+
+if have_x11_client
+  gnome_shell_deps += x11_dep
+endif
 
 gnome_shell_deps += nm_deps
 
@@ -121,8 +126,6 @@ libshell_public_headers = [
   'shell-screenshot.h',
   'shell-square-bin.h',
   'shell-stack.h',
-  'shell-tray-icon.h',
-  'shell-tray-manager.h',
   'shell-util.h',
   'shell-window-preview.h',
   'shell-window-preview-layout.h',
@@ -130,6 +133,13 @@ libshell_public_headers = [
   'shell-wm.h',
   'shell-workspace-background.h'
 ]
+
+if have_x11_client
+  libshell_public_headers += [
+    'shell-tray-icon.h',
+    'shell-tray-manager.h',
+  ]
+endif
 
 if have_networkmanager
   libshell_public_headers += 'shell-network-agent.h'
@@ -140,10 +150,15 @@ libshell_private_headers = [
   'shell-app-cache-private.h',
   'shell-app-system-private.h',
   'shell-global-private.h',
-  'shell-tray-icon-private.h',
   'shell-window-tracker-private.h',
   'shell-wm-private.h'
 ]
+
+if have_x11_client
+  libshell_private_headers += [
+    'shell-tray-icon-private.h',
+  ]
+endif
 
 libshell_sources = [
   'gnome-shell-plugin.c',
@@ -166,8 +181,6 @@ libshell_sources = [
   'shell-secure-text-buffer.h',
   'shell-square-bin.c',
   'shell-stack.c',
-  'shell-tray-icon.c',
-  'shell-tray-manager.c',
   'shell-util.c',
   'shell-window-preview.c',
   'shell-window-preview-layout.c',
@@ -175,6 +188,13 @@ libshell_sources = [
   'shell-wm.c',
   'shell-workspace-background.c'
 ]
+
+if have_x11_client
+  libshell_sources += [
+    'shell-tray-icon.c',
+    'shell-tray-manager.c',
+  ]
+endif
 
 if have_networkmanager
   libshell_sources += 'shell-network-agent.c'
@@ -212,12 +232,17 @@ dbus_generated += gnome.gdbus_codegen('switcheroo-control',
 
 libshell_no_gir_sources += dbus_generated
 
+libshell_link_with = []
+if have_x11_client
+  libshell_link_with += [libtray]
+endif
+
 libshell = library('shell-' + mutter_api_version,
   sources: libshell_gir_sources + libshell_no_gir_sources,
   dependencies: gnome_shell_deps + [libshell_menu_dep, libst_dep, mutter_dep, gnome_desktop_dep, m_dep],
   include_directories: [conf_inc, st_inc, include_directories('tray')],
   c_args: gnome_shell_cflags,
-  link_with: [libtray],
+  link_with: libshell_link_with,
   build_rpath: mutter_typelibdir,
   install_rpath: install_rpath,
   install_dir: pkglibdir,

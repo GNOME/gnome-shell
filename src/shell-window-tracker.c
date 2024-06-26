@@ -6,11 +6,13 @@
 #include <stdlib.h>
 
 #include <meta/display.h>
-#include <meta/group.h>
 #include <meta/util.h>
 #include <meta/window.h>
 #include <meta/meta-workspace-manager.h>
 #include <meta/meta-startup-notification.h>
+#ifdef HAVE_X11_CLIENT
+#include <meta/meta-x11-group.h>
+#endif
 
 #include "shell-window-tracker-private.h"
 #include "shell-app-private.h"
@@ -303,10 +305,14 @@ static ShellApp*
 get_app_from_window_group (ShellWindowTracker  *tracker,
                            MetaWindow          *window)
 {
+#ifdef HAVE_X11_CLIENT
   ShellApp *result;
   GSList *group_windows;
   MetaGroup *group;
   GSList *iter;
+
+  if (meta_window_get_client_type (window) != META_WINDOW_CLIENT_TYPE_X11)
+    return NULL;
 
   group = meta_window_x11_get_group (window);
   if (group == NULL)
@@ -335,6 +341,9 @@ get_app_from_window_group (ShellWindowTracker  *tracker,
     g_object_ref (result);
 
   return result;
+#else
+  return NULL;
+#endif
 }
 
 /*
@@ -458,7 +467,7 @@ get_app_for_window (ShellWindowTracker    *tracker,
   /* If we didn't get a startup-notification match, see if we matched
    * any other windows in the group.
    */
-  if (result == NULL && meta_window_get_client_type (window) == META_WINDOW_CLIENT_TYPE_X11)
+  if (result == NULL)
     result = get_app_from_window_group (tracker, window);
 
   /* Our last resort - we create a fake app from the window */

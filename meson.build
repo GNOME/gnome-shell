@@ -87,9 +87,15 @@ cogl_pango_dep = dependency(cogl_pango_pc, version: mutter_req)
 mutter_dep = dependency(libmutter_pc, version: mutter_req)
 polkit_dep = dependency('polkit-agent-1', version: polkit_req)
 ibus_dep = dependency('ibus-1.0', version: ibus_req)
-x11_dep = dependency('x11')
 schemas_dep = dependency('gsettings-desktop-schemas', version: schemas_req)
 gnome_desktop_dep = dependency('gnome-desktop-4', version: gnome_desktop_req)
+
+have_x11 = mutter_dep.get_variable('have_x11') == 'true'
+have_x11_client = mutter_dep.get_variable('have_x11_client') == 'true'
+if have_x11_client or have_x11
+  x11_dep = dependency('x11')
+endif
+
 
 nm_deps = []
 if get_option('networkmanager')
@@ -145,6 +151,8 @@ cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
 cdata.set('HAVE_NETWORKMANAGER', have_networkmanager)
 cdata.set('HAVE_PIPEWIRE', have_pipewire)
 cdata.set('HAVE_SYSTEMD', have_systemd)
+cdata.set('HAVE_X11', have_x11)
+cdata.set('HAVE_X11_CLIENT', have_x11_client)
 
 cdata.set('HAVE_FDWALK', cc.has_function('fdwalk'))
 cdata.set('HAVE_MALLINFO', cc.has_function('mallinfo'))
@@ -300,7 +308,7 @@ subdir('src')
 subdir('po')
 subdir('data')
 
-if get_option('tests')
+if get_option('tests') and have_x11_client
   subdir('tests')
 endif
 
@@ -318,6 +326,8 @@ meson.add_dist_script('meson/generate-stylesheets.py')
 meson.add_dist_script('meson/check-version.py', meson.project_version(), 'NEWS')
 
 summary_options = {
+  'x11': have_x11,
+  'x11_client': have_x11_client,
   'camera_monitor': get_option('camera_monitor'),
   'networkmanager': get_option('networkmanager'),
   'systemd': get_option('systemd'),
