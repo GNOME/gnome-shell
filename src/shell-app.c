@@ -9,7 +9,6 @@
 #include <meta/display.h>
 #include <meta/meta-context.h>
 #include <meta/meta-workspace-manager.h>
-#include <meta/meta-x11-display.h>
 
 #include "shell-app-private.h"
 #include "shell-enum-types.h"
