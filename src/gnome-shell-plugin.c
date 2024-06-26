@@ -40,7 +40,6 @@
 #include <gjs/gjs.h>
 #include <meta/display.h>
 #include <meta/meta-plugin.h>
-#include <meta/meta-x11-display.h>
 #include <meta/util.h>
 #include <mtk/mtk.h>
 
