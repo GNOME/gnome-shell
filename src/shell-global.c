@@ -29,7 +29,6 @@
 
 #ifdef HAVE_X11
 #include <meta/meta-x11-display.h>
-#include <X11/extensions/Xfixes.h>
 #endif
 
 #define GNOME_DESKTOP_USE_UNSTABLE_API
@@ -62,12 +61,6 @@ struct _ShellGlobal {
   MetaDisplay *meta_display;
   MetaCompositor *compositor;
   MetaWorkspaceManager *workspace_manager;
-#ifdef HAVE_X11
-  Display *xdisplay;
-
-
-  XserverRegion input_region;
-#endif
 
   char *session_mode;
 
@@ -811,13 +804,8 @@ shell_global_set_stage_input_region (ShellGlobal *global,
       rects[i].height = rect->height;
     }
 
-  if (global->input_region)
-    XFixesDestroyRegion (global->xdisplay, global->input_region);
-
-  global->input_region = XFixesCreateRegion (global->xdisplay, rects, nrects);
+  meta_x11_display_set_stage_input_region (x11_display, rects, nrects);
   g_free (rects);
-
-  meta_x11_display_set_stage_input_region (x11_display, global->input_region);
 #endif
 }
 
@@ -1029,6 +1017,9 @@ _shell_global_set_plugin (ShellGlobal *global,
   MetaDisplay *display;
   MetaBackend *backend;
   MetaSettings *settings;
+#ifdef HAVE_X11
+  MetaX11Display *x11_display;
+#endif
 
   g_return_if_fail (SHELL_IS_GLOBAL (global));
   g_return_if_fail (global->plugin == NULL);
@@ -1046,14 +1037,6 @@ _shell_global_set_plugin (ShellGlobal *global,
   global->workspace_manager = meta_display_get_workspace_manager (display);
 
   global->stage = CLUTTER_STAGE (meta_get_stage_for_display (display));
-
-#ifdef HAVE_X11
-  if (!meta_is_wayland_compositor ())
-    {
-      MetaX11Display *x11_display = meta_display_get_x11_display (display);
-      global->xdisplay = meta_x11_display_get_xdisplay (x11_display);
-    }
-#endif
 
   st_entry_set_cursor_func (entry_cursor_func, global);
   st_clipboard_set_selection (meta_display_get_selection (display));
@@ -1088,7 +1071,8 @@ _shell_global_set_plugin (ShellGlobal *global,
                                "");
 
 #ifdef HAVE_X11
-  if (global->xdisplay)
+  x11_display = meta_display_get_x11_display (display);
+  if (x11_display && meta_x11_display_get_xdisplay (x11_display))
     g_signal_connect_object (global->meta_display, "x11-display-closing",
                              G_CALLBACK (on_x11_display_closed), global, 0);
 #endif
