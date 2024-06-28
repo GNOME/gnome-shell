@@ -572,6 +572,7 @@ init_signal_handlers (MetaContext *context)
     g_warning ("Failed to register SIGXFSZ handler: %s", g_strerror (errno));
 #endif
 
+  g_unix_signal_add (SIGINT, on_sigterm, context);
   g_unix_signal_add (SIGTERM, on_sigterm, context);
 }
 
