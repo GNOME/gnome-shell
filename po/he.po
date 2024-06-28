@@ -9,18 +9,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-16 16:54+0000\n"
-"PO-Revision-Date: 2024-03-17 15:12+0200\n"
-"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"POT-Creation-Date: 2024-05-26 14:14+0000\n"
+"PO-Revision-Date: 2024-06-28 10:31+0300\n"
+"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: Hebrew\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
-"2 : 3);\n"
+"2 : 3)\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Gtranslator 46.1\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -123,7 +123,7 @@ msgstr "צילום של חלון"
 msgid "Record a screencast interactively"
 msgstr "הסרטת המסך באופן הידודי"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1295
 msgid "System"
 msgstr "מערכת"
 
@@ -491,12 +491,12 @@ msgstr "היישום במצב סמל."
 #: data/org.gnome.shell.gschema.xml.in:327
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
 msgstr ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
 
 #: data/org.gnome.shell.gschema.xml.in:336
 msgid ""
@@ -543,7 +543,7 @@ msgid "Network Login"
 msgstr "חיבורי רשת"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:277
+#: subprojects/extensions-app/data/ui/extensions-window.ui:275
 msgid "Something’s gone wrong"
 msgstr "משהו השתבת"
 
@@ -568,18 +568,18 @@ msgstr "עמוד הבית"
 msgid "Visit extension homepage"
 msgstr "לבקר באתר ההרחבה"
 
-#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
-#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
+#: js/gdm/authPrompt.js:153 js/gdm/loginDialog.js:466
+#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:115
 #: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
 #: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:384
 #: js/ui/shellMountOperation.js:394
 msgid "Cancel"
 msgstr "ביטול"
 
-#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
-#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:288
+#: js/gdm/authPrompt.js:319 js/ui/components/networkAgent.js:215
+#: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
+#: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
+#: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
 #: js/ui/shellMountOperation.js:334
 msgid "Password"
 msgstr "ססמה"
@@ -637,8 +637,8 @@ msgstr "ההפעלה כבר רצה"
 #: js/gdm/loginDialog.js:454
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
-"data loss."
-msgstr "אילוץ העצירה יסגור יישום ותהליכים פעילים ויכול להוביל לאובדן נתונים."
+"data loss"
+msgstr "אילוץ העצירה יסגור יישומים ותהליכים פעילים ויכול להוביל לאבדן נתונים"
 
 #: js/gdm/loginDialog.js:474
 msgid "Force Stop"
@@ -655,8 +655,8 @@ msgstr "לא רשום?"
 msgid "(e.g., user or %s)"
 msgstr "(משתמש או %s לדוגמה)"
 
-#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:258
-#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
+#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:259
+#: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:328
 msgid "Username"
 msgstr "שם משתמש"
 
@@ -672,19 +672,19 @@ msgstr "הכניסה למערכת ארכה זמן רב מדי, נא לנסות �
 msgid "Login Window"
 msgstr "חלון כניסה"
 
-#: js/gdm/util.js:497
+#: js/gdm/util.js:498
 msgid "Authentication error"
 msgstr "שגיאת אימות"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:728
+#: js/gdm/util.js:729
 msgid "(or swipe finger across reader)"
 msgstr "(או להחליק אצבע על הקורא)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:733
+#: js/gdm/util.js:734
 msgid "(or place finger on reader)"
 msgstr "(או לשים אצבע על הקורא)"
 
@@ -780,17 +780,17 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "נעילת סיבוב מסך"
 
-#: js/misc/util.js:139
+#: js/misc/util.js:132
 msgid "Command not found"
 msgstr "הפקודה לא נמצאה"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:179
+#: js/misc/util.js:172
 msgid "Could not parse command:"
 msgstr "לא ניתן לפענח את הפקודה:"
 
-#: js/misc/util.js:187
+#: js/misc/util.js:180
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "ההרצה של „%s” נכשלה:"
@@ -955,7 +955,7 @@ msgstr "לדחות"
 msgid "Allow"
 msgstr "לאפשר"
 
-#: js/ui/appDisplay.js:1775
+#: js/ui/appDisplay.js:1770
 msgid "Unnamed Folder"
 msgstr "תיקייה ללא שם"
 
@@ -1148,14 +1148,14 @@ msgstr "לפנות את כל ההתראות"
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
 #, javascript-format
-msgid "“%s” is not responding."
-msgstr "‏„%s” לא מגיב."
+msgid "“%s” Is Not Responding"
+msgstr "‏„%s” לא מגיב"
 
 #: js/ui/closeDialog.js:45
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
-"quit entirely."
-msgstr "באפשרותך להמתין זמן קצר או לכפות על היישום להיסגר לחלוטין."
+"quit entirely"
+msgstr "באפשרותך להמתין זמן קצר או לכפות על היישום להיסגר לחלוטין"
 
 #: js/ui/closeDialog.js:73
 msgid "Force Quit"
@@ -1173,11 +1173,11 @@ msgstr "חובר כונן חיצוני"
 msgid "External drive disconnected"
 msgstr "נותק כונן חיצוני"
 
-#: js/ui/components/automountManager.js:207
+#: js/ui/components/automountManager.js:210
 msgid "Unable to unlock volume"
 msgstr "לא ניתן לנעול את העצמה"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:211
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "גרסת udisks המותקנת לא תומכת בהגדרת PIM"
 
@@ -1186,76 +1186,75 @@ msgstr "גרסת udisks המותקנת לא תומכת בהגדרת PIM"
 msgid "Open with %s"
 msgstr "פתיחה באמצעות %s"
 
-#: js/ui/components/networkAgent.js:96
+#: js/ui/components/networkAgent.js:97
 msgid ""
-"Alternatively you can connect by pushing the “WPS” button on your router."
-msgstr "לחלופין ניתן להתחבר על ידי לחיצה על כפתור ה־„WPS” בנתב שלך."
+"Alternatively you can connect by pushing the “WPS” button on your router"
+msgstr "לחלופין ניתן להתחבר על ידי לחיצה על כפתור ה־„WPS” בנתב שלך"
 
-#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
+#: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "התחברות"
 
-#: js/ui/components/networkAgent.js:223
+#: js/ui/components/networkAgent.js:224
 msgid "Key"
 msgstr "מפתח"
 
-#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
+#: js/ui/components/networkAgent.js:275 js/ui/components/networkAgent.js:314
 msgid "Private key password"
 msgstr "ססמת מפתח פרטי"
 
-#: js/ui/components/networkAgent.js:307
+#: js/ui/components/networkAgent.js:308
 msgid "Identity"
 msgstr "זהות"
 
-#: js/ui/components/networkAgent.js:333
+#: js/ui/components/networkAgent.js:334
 msgid "Service"
 msgstr "שירות"
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
-#: js/ui/components/networkAgent.js:750 js/ui/components/networkAgent.js:771
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:408
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
 msgid "Authentication required"
 msgstr "נדרש אימות"
 
-#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:746
 #, javascript-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"“%s”."
-msgstr "ססמאות או מפתחות הצפנה נדרשים כדי לגשת לרשת האלחוטית „%s”."
+"Passwords or encryption keys are required to access the wireless network “%s”"
+msgstr "ססמאות או מפתחות הצפנה נדרשים כדי לגשת לרשת האלחוטית „%s”"
 
-#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:755
+#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
 msgstr "אימות Wired 802.1X"
 
-#: js/ui/components/networkAgent.js:379
+#: js/ui/components/networkAgent.js:380
 msgid "Network name"
 msgstr "שם הרשת"
 
-#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:754
 msgid "DSL authentication"
 msgstr "אימות DSL"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:759
 msgid "PIN code required"
 msgstr "נדרש קוד PIN"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:765
+#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:760
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "נדרש קוד PIN עבור התקן החיבור האלחוטי בפס רחב"
 
-#: js/ui/components/networkAgent.js:397
+#: js/ui/components/networkAgent.js:398
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:756
-#: js/ui/components/networkAgent.js:760 js/ui/components/networkAgent.js:772
-#: js/ui/components/networkAgent.js:776
+#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
 #, javascript-format
-msgid "A password is required to connect to “%s”."
-msgstr "נדרשת ססמה כדי להתחבר אל „%s”."
+msgid "A password is required to connect to “%s”"
+msgstr "נדרשת ססמה כדי להתחבר אל „%s”"
 
-#: js/ui/components/networkAgent.js:775
+#: js/ui/components/networkAgent.js:770
 msgid "VPN password"
 msgstr "ססמת VPN"
 
@@ -1279,7 +1278,7 @@ msgstr "אימות"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "פעולה זו לא הצליחה, נא לנסות שוב. עמך הסליחה."
 
-#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:418
+#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:406
 msgid "Windows"
 msgstr "חלונות"
 
@@ -1350,7 +1349,7 @@ msgid "No Events"
 msgstr "אין אירועים"
 
 #: js/ui/dateMenu.js:413
-msgid "Add world clocks…"
+msgid "Add World Clocks…"
 msgstr "הוספת שעונים מהעולם…"
 
 #: js/ui/dateMenu.js:414
@@ -1362,11 +1361,11 @@ msgid "Loading…"
 msgstr "בטעינה…"
 
 #: js/ui/dateMenu.js:714
-msgid "Go online for weather information"
+msgid "Go Online for Weather Information"
 msgstr "יש להתחבר בשביל מידע על מזג האוויר"
 
 #: js/ui/dateMenu.js:716
-msgid "Weather information is currently unavailable"
+msgid "Weather Information Unavailable"
 msgstr "מידע על מזג האוויר לא זמין כרגע"
 
 #: js/ui/dateMenu.js:726
@@ -1374,7 +1373,7 @@ msgid "Weather"
 msgstr "מזג אוויר"
 
 #: js/ui/dateMenu.js:728
-msgid "Select weather location…"
+msgid "Select Weather Location…"
 msgstr "בחירת מיקום למזג אוויר…"
 
 #: js/ui/endSessionDialog.js:48
@@ -1390,21 +1389,23 @@ msgstr "יציאה"
 
 #: js/ui/endSessionDialog.js:52
 #, javascript-format
-msgid "%s will be logged out automatically in %d second."
-msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "המשתמש %s יצא אוטומטית בעוד שנייה."
-msgstr[1] "המשתמש %s יצא אוטומטית בעוד שתי שניות."
-msgstr[2] "המשתמש %s יצא אוטומטית בעוד %d שניות."
-msgstr[3] "‫המשתמש %s יצא אוטומטית בעוד %d שניות."
+# msgid_plural "%s will be logged out automatically in %d seconds."
+msgid "%s will be logged out automatically in %d second"
+msgid_plural "%s will be logged out automatically in %d seconds"
+msgstr[0] "המשתמש %s יצא אוטומטית בעוד שנייה"
+msgstr[1] "המשתמש %s יצא אוטומטית בעוד שתי שניות"
+msgstr[2] "המשתמש %s יצא אוטומטית בעוד %d שניות"
+msgstr[3] "‫המשתמש %s יצא אוטומטית בעוד %d שניות"
 
 #: js/ui/endSessionDialog.js:58
 #, javascript-format
-msgid "You will be logged out automatically in %d second."
-msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "המשתמש שלך יצא אוטומטית מהמערכת בעוד שנייה."
-msgstr[1] "‫המשתמש שלך יצא אוטומטית מהמערכת בעוד שתי שניות."
-msgstr[2] "‫‫המשתמש שלך יצא אוטומטית מהמערכת בעוד %d שניות."
-msgstr[3] "‫‫‫המשתמש שלך יצא אוטומטית מהמערכת בעוד %d שניות."
+# msgid_plural "You will be logged out automatically in %d seconds."
+msgid "You will be logged out automatically in %d second"
+msgid_plural "You will be logged out automatically in %d seconds"
+msgstr[0] "המשתמש שלך יצא אוטומטית מהמערכת בעוד שנייה"
+msgstr[1] "‫המשתמש שלך יצא אוטומטית מהמערכת בעוד שתי שניות"
+msgstr[2] "‫‫המשתמש שלך יצא אוטומטית מהמערכת בעוד %d שניות"
+msgstr[3] "‫‫‫המשתמש שלך יצא אוטומטית מהמערכת בעוד %d שניות"
 
 #: js/ui/endSessionDialog.js:65
 msgctxt "button"
@@ -1423,12 +1424,13 @@ msgstr "התקנת עדכונים וכיבוי"
 
 #: js/ui/endSessionDialog.js:75
 #, javascript-format
-msgid "The system will power off automatically in %d second."
-msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "המערכת תכבה אוטומטית בעוד שנייה."
-msgstr[1] "המערכת תכבה אוטומטית בעוד שתי שניות."
-msgstr[2] "המערכת תכבה אוטומטית בעוד %d שניות."
-msgstr[3] "‫המערכת תכבה אוטומטית בעוד %d שניות."
+# msgid_plural "The system will power off automatically in %d seconds."
+msgid "The system will power off automatically in %d second"
+msgid_plural "The system will power off automatically in %d seconds"
+msgstr[0] "המערכת תכבה אוטומטית בעוד שנייה"
+msgstr[1] "המערכת תכבה אוטומטית בעוד שתי שניות"
+msgstr[2] "המערכת תכבה אוטומטית בעוד %d שניות"
+msgstr[3] "‫המערכת תכבה אוטומטית בעוד %d שניות"
 
 #: js/ui/endSessionDialog.js:79 js/ui/endSessionDialog.js:98
 msgctxt "checkbox"
@@ -1452,12 +1454,13 @@ msgstr "התקנת עדכונים והפעלה מחדש"
 
 #: js/ui/endSessionDialog.js:94
 #, javascript-format
-msgid "The system will restart automatically in %d second."
-msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "המערכת תופעל אוטומטית מחדש בעוד שנייה."
-msgstr[1] "‫המערכת תופעל אוטומטית מחדש בעוד שתי שניות."
-msgstr[2] "המערכת תופעל אוטומטית מחדש בעוד %d שניות."
-msgstr[3] "‫המערכת תופעל אוטומטית מחדש בעוד %d שניות."
+# msgid_plural "The system will restart automatically in %d seconds."
+msgid "The system will restart automatically in %d second"
+msgid_plural "The system will restart automatically in %d seconds"
+msgstr[0] "המערכת תופעל אוטומטית מחדש בעוד שנייה"
+msgstr[1] "‫המערכת תופעל אוטומטית מחדש בעוד שתי שניות"
+msgstr[2] "המערכת תופעל אוטומטית מחדש בעוד %d שניות"
+msgstr[3] "‫המערכת תופעל אוטומטית מחדש בעוד %d שניות"
 
 #: js/ui/endSessionDialog.js:102
 msgctxt "button"
@@ -1471,13 +1474,15 @@ msgstr "הפעלה מחדש והתקנת עדכונים"
 
 #: js/ui/endSessionDialog.js:113
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+# msgid_plural ""
+# "The system will automatically restart and install updates in %d seconds."
+msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
-"The system will automatically restart and install updates in %d seconds."
-msgstr[0] "המערכת תופעל מחדש ותתקין עדכונים בעוד שנייה."
-msgstr[1] "המערכת תופעל מחדש ותקין עדכונים בעוד שתי שניות."
-msgstr[2] "המערכת תופעל מחדש ותקין עדכונים בעוד %d שניות."
-msgstr[3] "‫המערכת תופעל מחדש ותתקין עדכונים בעוד %d שניות."
+"The system will automatically restart and install updates in %d seconds"
+msgstr[0] "המערכת תופעל מחדש ותתקין עדכונים בעוד שנייה"
+msgstr[1] "המערכת תופעל מחדש ותתקין עדכונים בעוד שתי שניות"
+msgstr[2] "המערכת תופעל מחדש ותתקין עדכונים בעוד %d שניות"
+msgstr[3] "‫המערכת תופעל מחדש ותתקין עדכונים בעוד %d שניות"
 
 # msgctxt "button"
 #: js/ui/endSessionDialog.js:120 js/ui/endSessionDialog.js:141
@@ -1514,8 +1519,8 @@ msgstr ""
 "ושהמחשב מחובר למקור חשמל."
 
 #: js/ui/endSessionDialog.js:284
-msgid "Low battery power: please plug in before installing updates."
-msgstr "פועל על סוללה נמוכה: יש לחבר לחשמל לפני התקנת עדכונים."
+msgid "Low battery power: please plug in before installing updates"
+msgstr "פועל על סוללה נמוכה: יש לחבר לחשמל לפני התקנת עדכונים"
 
 #: js/ui/endSessionDialog.js:293
 msgid "Some applications are busy or have unsaved work"
@@ -1560,8 +1565,8 @@ msgid "Extension Updates Available"
 msgstr "עדכוני הרחבות זמינים"
 
 #: js/ui/extensionSystem.js:355
-msgid "Extension updates are ready to be installed."
-msgstr "עדכוני הרחבות מוכנים להתקנה."
+msgid "Extension updates are ready to be installed"
+msgstr "עדכוני הרחבות מוכנים להתקנה"
 
 #: js/ui/inhibitShortcutsDialog.js:70
 msgid "Allow inhibiting shortcuts"
@@ -1580,8 +1585,8 @@ msgstr "יישום רוצה למנוע צירופי מקשים"
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:81
 #, javascript-format
-msgid "You can restore shortcuts by pressing %s."
-msgstr "נתן לשחזר צירופי מקשים בהקשה על %s."
+msgid "You can restore shortcuts by pressing %s"
+msgstr "נתן לשחזר צירופי מקשים בהקשה על %s"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid "Slow Keys Turned On"
@@ -1651,8 +1656,8 @@ msgstr "לא מותקנות הרחבות"
 #. Translators: argument is an extension UUID.
 #: js/ui/lookingGlass.js:785
 #, javascript-format
-msgid "%s has not emitted any errors."
-msgstr "‏%s לא העלה שגיאות כלשהן."
+msgid "%s has not emitted any errors"
+msgstr "‏%s לא העלה שגיאות כלשהן"
 
 #: js/ui/lookingGlass.js:791
 msgid "Hide Errors"
@@ -1727,13 +1732,13 @@ msgid "Screen Lock disabled"
 msgstr "מסך נעילה מושבת"
 
 #: js/ui/main.js:390
-msgid "Screen Locking requires the GNOME display manager."
-msgstr "מסך נעיל דורש הרצת מנהל תצוגה של GNOME."
+msgid "Screen Locking requires the GNOME display manager"
+msgstr "מסך נעילה דורש הרצת מנהל תצוגה של GNOME"
 
 # msgctxt "program"
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:400
+#: js/ui/messageList.js:374
 msgid "Unknown App"
 msgstr "יישום לא ידוע"
 
@@ -1753,11 +1758,11 @@ msgstr "כותרת לא ידועה"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:342
+#: js/ui/overviewControls.js:330
 msgid "Type to search"
 msgstr "יש להקליד כדי לחפש"
 
-#: js/ui/overviewControls.js:406
+#: js/ui/overviewControls.js:394
 msgid "Apps"
 msgstr "יישומים"
 
@@ -1985,8 +1990,8 @@ msgid "Searching…"
 msgstr "בחיפוש…"
 
 #: js/ui/search.js:833
-msgid "No results."
-msgstr "אין תוצאות."
+msgid "No results"
+msgstr "אין תוצאות"
 
 #: js/ui/search.js:964
 #, javascript-format
@@ -2019,8 +2024,8 @@ msgid "Hide Text"
 msgstr "הסתרת טקסט"
 
 #: js/ui/shellEntry.js:176
-msgid "Caps lock is on."
-msgstr "מקש Caps Lock פועל."
+msgid "Caps lock is on"
+msgstr "מקש Caps Lock פועל"
 
 #: js/ui/shellMountOperation.js:288
 msgid "Hidden Volume"
@@ -2038,16 +2043,16 @@ msgstr "משתמש בקובצי מפתחות"
 #: js/ui/shellMountOperation.js:302
 #, javascript-format
 msgid ""
-"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
-msgstr "כדי לשחרר נעילה שמשתמשת בקובצי מפתחות יש להשתמש בכלי <i>%s</i> במקום."
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
+msgstr "כדי לשחרר נעילה שמשתמשת בקובצי מפתחות יש להשתמש בכלי <i>%s</i> במקום"
 
 #: js/ui/shellMountOperation.js:306
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
-"keyfiles."
+"keyfiles"
 msgstr ""
 "עליך להשתמש בכלים חיצוניים כמו <i>כוננים</i> כדי לשחרר נעילה שמשתמשת בקובצי "
-"מפתחות."
+"מפתחות"
 
 #: js/ui/shellMountOperation.js:314
 msgid "PIM Number"
@@ -2068,8 +2073,8 @@ msgid "Open %s"
 msgstr "פתיחה באמצעות %s"
 
 #: js/ui/shellMountOperation.js:438
-msgid "The PIM must be a number or empty."
-msgstr "ה־PIM חייב להיות ריק או מספר."
+msgid "The PIM must be a number or empty"
+msgstr "ה־PIM חייב להיות ריק או מספר"
 
 #: js/ui/status/accessibility.js:36
 msgid "Accessibility"
@@ -2242,8 +2247,8 @@ msgid "The app %s wants to access your location"
 msgstr "היישום %s רוצה גישה למיקום שלך"
 
 #: js/ui/status/location.js:351
-msgid "Location access can be changed at any time from the privacy settings."
-msgstr "ניתן לשנות בכל עת את הרשאות הגישה למיקום שלך מהגדרות הפרטיות."
+msgid "Location access can be changed at any time from the privacy settings"
+msgstr "ניתן לשנות בכל עת את הרשאות הגישה למיקום שלך מהגדרות הפרטיות"
 
 #: js/ui/status/location.js:359
 msgid "Deny Access"
@@ -2445,8 +2450,8 @@ msgstr "התקן Thunderbolt לא מאומת"
 
 #: js/ui/status/thunderbolt.js:315
 msgid ""
-"New device has been detected and needs to be authorized by an administrator."
-msgstr "התקן חדש זוהה וצריך לעבור אימות על ידי מנהל."
+"New device has been detected and needs to be authorized by an administrator"
+msgstr "התקן חדש זוהה וצריך לעבור אימות על ידי מנהל"
 
 #: js/ui/status/thunderbolt.js:321
 msgid "Thunderbolt authorization error"
@@ -2511,23 +2516,23 @@ msgstr "מובנה בלבד"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:374
+#: js/ui/unlockDialog.js:380
 msgid "%A %B %-d"
 msgstr "%A, %d ב%B"
 
-#: js/ui/unlockDialog.js:380
+#: js/ui/unlockDialog.js:386
 msgid "Swipe up to unlock"
 msgstr "יש להחליק למעלה כדי לשחרר"
 
-#: js/ui/unlockDialog.js:381
+#: js/ui/unlockDialog.js:387
 msgid "Click or press a key to unlock"
 msgstr "יש ללחוץ או להקיש כדי לשחרר"
 
-#: js/ui/unlockDialog.js:564
+#: js/ui/unlockDialog.js:570
 msgid "Unlock Window"
 msgstr "שחרור החלון"
 
-#: js/ui/unlockDialog.js:573
+#: js/ui/unlockDialog.js:579
 msgid "Log in as another user"
 msgstr "כניסה בתור משתמש אחר"
 
@@ -2542,8 +2547,8 @@ msgid "Welcome to %s"
 msgstr "ברוכים הבאים אל ‏‎%s‎‎"
 
 #: js/ui/welcomeDialog.js:54
-msgid "If you want to learn your way around, check out the tour."
-msgstr "אם ברצונך ללמוד ולהכיר את הסביבה שלך, כדאי להעיף מבט בסיור."
+msgid "If you want to learn your way around, check out the tour"
+msgstr "אם ברצונך ללמוד ולהכיר את הסביבה שלך, כדאי להעיף מבט בסיור"
 
 #: js/ui/welcomeDialog.js:63
 msgid "Skip"
@@ -2608,51 +2613,47 @@ msgstr "הזזה"
 msgid "Resize"
 msgstr "שינוי גודל"
 
-#: js/ui/windowMenu.js:101
-msgid "Move Titlebar Onscreen"
-msgstr "הזזת שורת הכותרת על המסך"
-
-#: js/ui/windowMenu.js:106
+#: js/ui/windowMenu.js:100
 msgid "Always on Top"
 msgstr "תמיד עליון"
 
-#: js/ui/windowMenu.js:125
+#: js/ui/windowMenu.js:119
 msgid "Always on Visible Workspace"
 msgstr "הצגה בכל מרחבי העבודה"
 
-#: js/ui/windowMenu.js:139
+#: js/ui/windowMenu.js:133
 msgid "Move to Workspace Left"
 msgstr "הזזה למרחב העבודה שמשמאל"
 
-#: js/ui/windowMenu.js:145
+#: js/ui/windowMenu.js:139
 msgid "Move to Workspace Right"
 msgstr "הזזה למרחב העבודה שמימין"
 
-#: js/ui/windowMenu.js:151
+#: js/ui/windowMenu.js:145
 msgid "Move to Workspace Up"
 msgstr "הזזה למרחב העבודה שמלמעלה"
 
-#: js/ui/windowMenu.js:157
+#: js/ui/windowMenu.js:151
 msgid "Move to Workspace Down"
 msgstr "הזזה למרחב העבודה שמלמטה"
 
-#: js/ui/windowMenu.js:175
+#: js/ui/windowMenu.js:169
 msgid "Move to Monitor Up"
 msgstr "הזה לצג שמלמעלה"
 
-#: js/ui/windowMenu.js:184
+#: js/ui/windowMenu.js:178
 msgid "Move to Monitor Down"
 msgstr "הזזה לצג שמלמטה"
 
-#: js/ui/windowMenu.js:193
+#: js/ui/windowMenu.js:187
 msgid "Move to Monitor Left"
 msgstr "הזזה לצג שמשמאל"
 
-#: js/ui/windowMenu.js:202
+#: js/ui/windowMenu.js:196
 msgid "Move to Monitor Right"
 msgstr "הזזה לצג שמימין"
 
-#: js/ui/windowMenu.js:210
+#: js/ui/windowMenu.js:204
 msgid "Close"
 msgstr "סגירה"
 
@@ -2687,8 +2688,8 @@ msgid "Failed to launch “%s”"
 msgstr "אירע כשל בטעינת „%s”"
 
 #: src/shell-keyring-prompt.c:764
-msgid "Passwords do not match."
-msgstr "הססמאות אינן תואמות."
+msgid "Passwords do not match"
+msgstr "הססמאות אינן תואמות"
 
 #: src/shell-keyring-prompt.c:772
 msgid "Password cannot be blank"
@@ -2724,15 +2725,15 @@ msgstr ""
 "הרחבות GNOME מטפל בעדכון הרחבות, הגדרת אפשרויות של כל הרחבה, הסרה והשבתת "
 "הרחבות לא רצויות."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
 msgid "Main Window"
 msgstr "חלון ראשי"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:80
 msgid "Available Updates"
 msgstr "עדכונים זמינים"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:84
 msgid "Search View"
 msgstr "תצוגת חיפוש"
 
@@ -2808,33 +2809,33 @@ msgstr[1] "שתי הרחבות תעודכנה בכניסה הבאה למערכת
 msgstr[2] "‏%d הרחבות תעודכנה בכניסה הבאה למערכת."
 msgstr[3] "‫‏%d הרחבות תעודכנה בכניסה הבאה למערכת."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:21
+#: subprojects/extensions-app/data/ui/extension-row.ui:22
 msgid "Error Details"
 msgstr "פרטי שגיאה"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:61
+#: subprojects/extensions-app/data/ui/extension-row.ui:62
 msgid "Updates Details"
 msgstr "פרטי עדכון"
 
 # msgid_plural "%d extensions will be updated on next login."
-#: subprojects/extensions-app/data/ui/extension-row.ui:71
+#: subprojects/extensions-app/data/ui/extension-row.ui:72
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
 msgstr "גרסה חדשה של הרחבה זו מוכנה ותיטען בכניסה הבאה למערכת."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:107
+#: subprojects/extensions-app/data/ui/extension-row.ui:104
 msgid "Extension Details"
 msgstr "פרטי הרחבה"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:193
+#: subprojects/extensions-app/data/ui/extension-row.ui:192
 msgid "_Website"
 msgstr "_אתר אינטרנט"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:220
+#: subprojects/extensions-app/data/ui/extension-row.ui:219
 msgid "_Settings"
 msgstr "ה_גדרות"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:247
+#: subprojects/extensions-app/data/ui/extension-row.ui:246
 msgid "_Remove…"
 msgstr "_הסרה…"
 
@@ -2858,11 +2859,11 @@ msgstr "חיפוש הרחבות"
 msgid "_Extensions"
 msgstr "ה_רחבות"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:143
+#: subprojects/extensions-app/data/ui/extensions-window.ui:139
 msgid "More Information"
 msgstr "מידע נוסף"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:153
+#: subprojects/extensions-app/data/ui/extensions-window.ui:151
 msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
@@ -2870,31 +2871,31 @@ msgstr ""
 "הרחבות עשויות לגרום לבעיות ביצועים ויציבות. מומלץ להשבית את כל ההרחבות במידה "
 "ונתקלת בבעיות במערכת שלך."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:180
+#: subprojects/extensions-app/data/ui/extensions-window.ui:178
 msgid "User Extensions"
 msgstr "הרחבות משתמש"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:200
+#: subprojects/extensions-app/data/ui/extensions-window.ui:198
 msgid "System Extensions"
 msgstr "הרחבות מערכת"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:235
+#: subprojects/extensions-app/data/ui/extensions-window.ui:233
 msgid "Search Results"
 msgstr "תוצאות חיפוש"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:254
+#: subprojects/extensions-app/data/ui/extensions-window.ui:252
 msgid "No Results Found"
 msgstr "לא נמצאו תוצאות"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:255
-msgid "Try a different search."
-msgstr "יש לנסות חיפוש שונה."
+#: subprojects/extensions-app/data/ui/extensions-window.ui:253
+msgid "Try a different search"
+msgstr "יש לנסות חיפוש שונה"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:266
+#: subprojects/extensions-app/data/ui/extensions-window.ui:264
 msgid "No Installed Extensions"
 msgstr "אין אף הרחבה מותקנת"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:267
+#: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
@@ -2902,7 +2903,7 @@ msgstr ""
 "על מנת למצוא ולהוסיף הרחבות, יש לבקר באתר <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:278
+#: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -3407,6 +3408,9 @@ msgstr[3] "‏‫%u ערוצי קלט"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "צלילי מערכת"
+
+#~ msgid "Move Titlebar Onscreen"
+#~ msgstr "הזזת שורת הכותרת על המסך"
 
 #~ msgid "Stop conflicting session dialog closed"
 #~ msgstr "חלונית עצירת הפעלה סותרת נסגרה"
