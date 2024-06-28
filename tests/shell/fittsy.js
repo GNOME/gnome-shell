@@ -4,6 +4,7 @@ import Clutter from 'gi://Clutter';
 import Shell from 'gi://Shell';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as Scripting from 'resource:///org/gnome/shell/ui/scripting.js';
 import {sleep} from 'resource:///org/gnome/shell/ui/scripting.js';
 
 const {Orientation, PickMode, TextDirection} = Clutter;
@@ -44,6 +45,8 @@ export async function run() {
     const bottomEdge = primaryMonitor.y + primaryMonitor.height - EPSILON;
     const leftEdge = primaryMonitor.x + EPSILON;
     const rightEdge = primaryMonitor.x + primaryMonitor.width - EPSILON;
+
+    await Scripting.waitLeisure();
 
     const showApps = Main.overview.dash.showAppsButton;
     console.debug('Checking that dash extends to bottom screen edge');
