@@ -37,6 +37,7 @@ import * as ScreenShield from './screenShield.js';
 import * as SessionMode from './sessionMode.js';
 import * as ShellDBus from './shellDBus.js';
 import * as ShellMountOperation from './shellMountOperation.js';
+import * as TimeLimitsManager from '../misc/timeLimitsManager.js';
 import * as WindowManager from './windowManager.js';
 import * as Magnifier from './magnifier.js';
 import * as XdndHandler from './xdndHandler.js';
@@ -93,6 +94,8 @@ export let endSessionDialog = null;
 export let breakManager = null;
 export let screenTimeDBus = null;
 export let breakManagerDispatcher = null;
+export let timeLimitsManager = null;
+export let timeLimitsDispatcher = null;
 
 let _startDate;
 let _defaultCssStylesheet = null;
@@ -250,8 +253,24 @@ async function _initializeUI() {
 
     // Set up the global default break reminder manager and its D-Bus interface
     breakManager = new BreakManager.BreakManager();
+    timeLimitsManager = new TimeLimitsManager.TimeLimitsManager();
     screenTimeDBus = new ShellDBus.ScreenTimeDBus(breakManager);
     breakManagerDispatcher = new BreakManager.BreakDispatcher(breakManager);
+    timeLimitsDispatcher = new TimeLimitsManager.TimeLimitsDispatcher(timeLimitsManager);
+
+    global.connect('shutdown', () => {
+        // Block shutdown until the session history file has been written
+        const loop = new GLib.MainLoop(null, false);
+        const source = GLib.idle_source_new();
+        source.set_callback(() => {
+            timeLimitsManager.shutdown()
+                .catch(e => console.warn(`Failed to stop time limits manager: ${e.message}`))
+                .finally(() => loop.quit());
+            return GLib.SOURCE_REMOVE;
+        });
+        source.attach(loop.get_context());
+        loop.run();
+    });
 
     layoutManager.init();
     overview.init();

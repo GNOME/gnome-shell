@@ -14,6 +14,7 @@ js/gdm/loginDialog.js
 js/gdm/util.js
 js/misc/breakManager.js
 js/misc/systemActions.js
+js/misc/timeLimitsManager.js
 js/misc/util.js
 js/misc/dateUtils.js
 js/portalHelper/main.js

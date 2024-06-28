@@ -29,6 +29,7 @@ unit_tests = [
     'markup',
     'params',
     'signalTracker',
+    'timeLimitsManager',
     'url',
     'versionCompare',
 ]
