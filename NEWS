@@ -1,3 +1,57 @@
+47.alpha
+========
+* Fix size of workspace switcher OSD [Jakub; !3282]
+* Fix handling of invalid TLS certs in portal handler [Sebastian K.; !3284]
+* Exclude override-redirect windows from workspace animation [Marco; !3285]
+* Also center time on lock screen when using 12h format [pesader; !3290]
+* Use absolute tray icon position in root event coordinates [Marco; !3283]
+* Fix displaying info messages on login screen [Ray; !3298]
+* Correct expected bus name for streams [Simon; !3303]
+* Fix notifications on lock screen [Florian; !3308]
+* notifications: Only apply special styling to symbolic icons [Florian; !3296]
+* Use three or more fingers for touchpad gestures [Gregor; !3275]
+* Fix number of search results with Large Text option [Sam H.; !3312]
+* Make overview spacings dynamic [Jonas D.; !3278]
+* Fix showing keyboard layouts with variants [Sebastian K.; !3324]
+* Tweak font sizes in calendar [Sam H.; !3313]
+* automountManager: Fix re-asking password for TCRYPT devices [segfault; !3300]
+* Port unit tests to jasmine [Sam S., Florian; !3164]
+* Fix stuck unlock prompt when animations are disabled [Florian; !3317]
+* Add extended on-screen keyboard layout for 'za' [Michael; !3309]
+* Fix possible hang on startup during ibus-daemon launch [Marco; !3293]
+* Allow fillPreferencesWindow() to be asyn [Leleat; !3348]
+* Fix on-screen keyboard when windows are unredirected [Carlos; !3356]
+* Switch to paint nodes [Georges; !1538]
+* Stop using SVG assets for checks and switches [Alice, Daniel; !2717]
+* Support accent color [Alice; !2715]
+* Fix rendering artifacts of some rounded borders [Jonas D.; !3354]
+* Fix overview animation glitch when windows overlap workspaces [Keyu; !3378]
+* Support building with X11-less mutter [Bilal; !3362]
+* Misc. bug fixes and cleanups [Monster, Sebastian W., Jamie, Florian, Gabriel,
+  pesader, Sebastian K., Automeris, Jonas Å., Sam H., Jonas D., Ray, Bilal,
+  Georges, Mister, Philip, Marco, Jakub, Jordan, Balló, Alessandro, Sundeep;
+  !3224, !3267, !3254, !3280, !3248, !3281, !3289, !3288, !3270, !3295, !3299,
+  !3310, !3315, !3322, !3326, !3321, !3319, !3329, !3327, !3314, !3320, !3331,
+  !3337, !3245, !3332, !3340, !3344, !3347, !3350, !3349, !3351, !3352, !3353,
+  !3355, !3358, !3357, !3359, !3307, !3323, !3365, !3366, !3367, !3369, !3370,
+  !3361, !3142, !3368, !3291, !3371, !3375, !3311, !3376, !3377, !3380, !3373,
+  !3385, !3386, !3396, !3398, !3403]
+
+Contributors:
+  Jonas Ådahl, Daniel Ruiz de Alegría, Alessandro Bono, Jonas Dreßler,
+  Bilal Elmoussaoui, Michael Evans, Carlos Garnacho, Jamie Gravendeel,
+  Balló György, Sam Hewitt, Sebastian Keller, Leleat, Simon McVittie,
+  Sundeep Mediratta, Alice Mikhaylenko, Monster, Florian Müllner, Gabriel Nagy,
+  Automeris naranja, Georges Basile Stavracas Neto, Gregor Niehl, pesader,
+  Jordan Petridis, segfault, Mister Smör, Sam Spilsbury, Jakub Steiner,
+  Ray Strode, Keyu Tao, Marco Trevisan (Treviño), Sebastian Wick,
+  Philip Withnall
+
+Translators:
+  Martin [sl], Andika Triwidada [id], Yuri Chornoivan [uk], Hugo Carvalho [pt],
+  Scrambled 777 [hi], Jose Riha [sk], Balázs Úr [hu], Quentin PAGÈS [oc],
+  Artur S0 [ru], Yosef Or Boczko [he]
+
 46.1
 ====
 * Improve notification of conflicting session [Joan; !3235]
