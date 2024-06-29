@@ -1,3 +1,21 @@
+46.3
+====
+* Fix rendering artifacts of some rounded borders [Jonas D.; !3354]
+* Fix overview animation glitch when windows overlap workspaces [Keyu; !3378]
+* Fix overview animation glitch when windows overlap workspaces [Sundeep; !3386]
+* Misc. bug fixes and cleanups [Bilal, Georges, Florian, Mister, Philip,
+  Jonas Å., Jonas D., Balló, Alessandro, Sam; !3344, !3347, !3350, !3349, !3351,
+  !3352, !3353, !3307, !3370, !3361, !3368, !3291, !3311, !3376, !3377, !3362,
+  !3398]
+
+Contributors:
+  Jonas Ådahl, Alessandro Bono, Jonas Dreßler, Bilal Elmoussaoui, Balló György,
+  Sam Hewitt, Sundeep Mediratta, Florian Müllner, Georges Basile Stavracas Neto,
+  Mister Smör, Keyu Tao, Philip Withnall
+
+Translators:
+  Jose Riha [sk]
+
 46.2
 ====
 * Fix size of workspace switcher OSD [Jakub; !3282]
