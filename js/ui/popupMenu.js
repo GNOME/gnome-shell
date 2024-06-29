@@ -344,6 +344,7 @@ export const Switch = GObject.registerClass({
         super._init({
             style_class: 'toggle-switch',
             accessible_role: Atk.Role.CHECK_BOX,
+            y_align: Clutter.ActorAlign.CENTER,
             track_hover: true,
             reactive: true,
         });
