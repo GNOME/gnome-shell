@@ -1,3 +1,17 @@
+45.8
+====
+* Fix rendering artifacts of some rounded borders [Jonas D.; !3354]
+* Fix overview animation glitch when windows overlap workspaces [Keyu; !3378]
+* Fix overview animation glitch when windows overlap workspaces [Sundeep; !3386]
+* Misc. bug fixes and cleanups [Florian, Bilal, Georges, Philip, Jonas Å.,
+  Jonas D., Alessandro; !3158, !3344, !3347, !3350, !3351, !3352, !3353,
+  !3307, !3370, !3291, !3376]
+
+Contributors:
+  Jonas Ådahl, Alessandro Bono, Jonas Dreßler, Bilal Elmoussaoui,
+  Sundeep Mediratta, Florian Müllner, Georges Basile Stavracas Neto, Keyu Tao,
+  Philip Withnall
+
 45.7
 ====
 * Fix handling of invalid TLS certs in portal handler [Sebastian K.; !3284]
