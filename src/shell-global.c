@@ -908,10 +908,11 @@ global_stage_before_paint (gpointer data)
 }
 
 static gboolean
-load_gl_symbol (const char  *name,
-                void       **func)
+load_gl_symbol (CoglRenderer *renderer,
+                const char   *name,
+                void        **func)
 {
-  *func = cogl_get_proc_address (name);
+  *func = cogl_renderer_get_proc_address (renderer, name);
   if (!*func)
     {
       g_warning ("failed to resolve required GL symbol \"%s\"\n", name);
@@ -928,6 +929,11 @@ global_stage_after_paint (ClutterStage     *stage,
 {
   /* At this point, we've finished all layout and painting, but haven't
    * actually flushed or swapped */
+
+  ClutterBackend *backend = clutter_get_default_backend ();
+  CoglContext *cogl_context = clutter_backend_get_cogl_context (backend);
+  CoglDisplay *cogl_display = cogl_context_get_display (cogl_context);
+  CoglRenderer *cogl_renderer = cogl_display_get_renderer (cogl_display);
 
   if (global->frame_timestamps && global->frame_finish_timestamp)
     {
@@ -946,9 +952,9 @@ global_stage_after_paint (ClutterStage     *stage,
       static void (*finish) (void);
 
       if (!finish)
-        load_gl_symbol ("glFinish", (void **)&finish);
+        load_gl_symbol (cogl_renderer, "glFinish", (void **)&finish);
 
-      cogl_flush ();
+      cogl_context_flush (cogl_context);
       finish ();
 
       shell_perf_log_event (shell_perf_log_get_default (),
