@@ -1,3 +1,10 @@
+45.8.1
+======
+* Fix including gvc source in tarball [Florian; !3164]
+
+Contributors:
+  Florian Müllner
+
 45.8
 ====
 * Fix rendering artifacts of some rounded borders [Jonas D.; !3354]
