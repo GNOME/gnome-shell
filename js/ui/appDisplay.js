@@ -2667,6 +2667,7 @@ export const AppFolderDialog = GObject.registerClass({
 
         this._maybeUpdateFolderName();
         this._switchActor(this._entry, this._folderNameLabel);
+        this.navigate_focus(this, St.DirectionType.TAB_FORWARD, false);
     }
 
     _showFolderEntry() {
