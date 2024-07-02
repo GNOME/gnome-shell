@@ -2899,6 +2899,7 @@ export const AppFolderDialog = GObject.registerClass({
 
         this._isOpen = this._grabHelper.grab({
             actor: this,
+            focus: this._editButton,
             onUngrab: () => this.popdown(),
         });
 
