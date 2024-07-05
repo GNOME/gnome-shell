@@ -13,10 +13,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master.hi\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-04-21 15:07+0000\n"
-"PO-Revision-Date: 2024-04-26 00:03+0530\n"
+"POT-Creation-Date: 2024-05-27 20:45+0000\n"
+"PO-Revision-Date: 2024-06-25 15:37+0530\n"
 "Last-Translator: Scrambled777 <weblate.scrambled777@simplelogin.com>\n"
-"Language-Team: Hindi\n"
+"Language-Team: Hindi <indlinux-hindi@lists.sourceforge.net>\n"
 "Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -66,39 +66,39 @@ msgstr "पिन किया गया ऐप 9 को सक्रिय क�
 
 #: data/50-gnome-shell-launchers.xml:46
 msgid "Open new window of pinned app 1"
-msgstr "पिन किए गए ऐप 1 की नई विंडो खोलें"
+msgstr "पिन किए गए ऐप 1 की नई खिड़की खोलें"
 
 #: data/50-gnome-shell-launchers.xml:50
 msgid "Open new window of pinned app 2"
-msgstr "पिन किए गए ऐप 2 की नई विंडो खोलें"
+msgstr "पिन किए गए ऐप 2 की नई खिड़की खोलें"
 
 #: data/50-gnome-shell-launchers.xml:54
 msgid "Open new window of pinned app 3"
-msgstr "पिन किए गए ऐप 3 की नई विंडो खोलें"
+msgstr "पिन किए गए ऐप 3 की नई खिड़की खोलें"
 
 #: data/50-gnome-shell-launchers.xml:58
 msgid "Open new window of pinned app 4"
-msgstr "पिन किए गए ऐप 4 की नई विंडो खोलें"
+msgstr "पिन किए गए ऐप 4 की नई खिड़की खोलें"
 
 #: data/50-gnome-shell-launchers.xml:62
 msgid "Open new window of pinned app 5"
-msgstr "पिन किए गए ऐप 5 की नई विंडो खोलें"
+msgstr "पिन किए गए ऐप 5 की नई खिड़की खोलें"
 
 #: data/50-gnome-shell-launchers.xml:66
 msgid "Open new window of pinned app 6"
-msgstr "पिन किए गए ऐप 6 की नई विंडो खोलें"
+msgstr "पिन किए गए ऐप 6 की नई खिड़की खोलें"
 
 #: data/50-gnome-shell-launchers.xml:70
 msgid "Open new window of pinned app 7"
-msgstr "पिन किए गए ऐप 7 की नई विंडो खोलें"
+msgstr "पिन किए गए ऐप 7 की नई खिड़की खोलें"
 
 #: data/50-gnome-shell-launchers.xml:74
 msgid "Open new window of pinned app 8"
-msgstr "पिन किए गए ऐप 8 की नई विंडो खोलें"
+msgstr "पिन किए गए ऐप 8 की नई खिड़की खोलें"
 
 #: data/50-gnome-shell-launchers.xml:78
 msgid "Open new window of pinned app 9"
-msgstr "पिन किए गए ऐप 9 की नई विंडो खोलें"
+msgstr "पिन किए गए ऐप 9 की नई खिड़की खोलें"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
 #: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2276
@@ -118,16 +118,16 @@ msgstr "स्क्रीनशॉट लें"
 #: data/50-gnome-shell-screenshots.xml:15
 #: data/org.gnome.shell.gschema.xml.in:295
 msgid "Take a screenshot of a window"
-msgstr "एक विंडो का स्क्रीनशॉट लें"
+msgstr "एक खिड़की का स्क्रीनशॉट लें"
 
 #: data/50-gnome-shell-screenshots.xml:18
 #: data/org.gnome.shell.gschema.xml.in:291
 msgid "Record a screencast interactively"
 msgstr "परस्पर रूप से स्क्रीनकास्ट रिकॉर्ड करें"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1294
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1295
 msgid "System"
-msgstr "तंत्र"
+msgstr "सिस्टम"
 
 #: data/50-gnome-shell-system.xml:9
 msgid "Show the notification list"
@@ -143,7 +143,7 @@ msgstr "सक्रिय अधिसूचना को फोकस कर�
 
 #: data/50-gnome-shell-system.xml:18
 msgid "Show the overview"
-msgstr "सारांश दिखाएं"
+msgstr "अवलोकन दिखाएं"
 
 #: data/50-gnome-shell-system.xml:21
 msgid "Show all apps"
@@ -155,7 +155,7 @@ msgstr "गनोम शैल"
 
 #: data/org.gnome.Shell.desktop.in.in:5
 msgid "Window management and application launching"
-msgstr "विंडो प्रबंधन और अनुप्रयोग लॉन्चिंग"
+msgstr "खिड़की प्रबंधन और अनुप्रयोग लॉन्चिंग"
 
 #: data/org.gnome.shell.gschema.xml.in:6
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -166,7 +166,7 @@ msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
-"Alt-F2 डायलॉग का उपयोग करके आंतरिक डिबगिंग और निगरानी उपकरण तक पहुँच प्रदान करें।"
+"Alt-F2 डायलॉग का उपयोग करके आंतरिक डिबगिंग और निगरानी उपकरण तक पहुंच प्रदान करें।"
 
 #: data/org.gnome.shell.gschema.xml.in:16
 msgid "UUIDs of extensions to enable"
@@ -266,7 +266,7 @@ msgstr "'लुकिंग ग्लास' डायलॉग के लिए
 
 #: data/org.gnome.shell.gschema.xml.in:82
 msgid "Always show the “Log Out” action in the system menu"
-msgstr "सिस्टम मेनू में हमेशा \"लॉग आउट\" क्रिया दिखाएं"
+msgstr "सिस्टम मेनू में हमेशा “लॉग आउट” कार्रवाई दिखाएं"
 
 #: data/org.gnome.shell.gschema.xml.in:83
 msgid ""
@@ -274,14 +274,14 @@ msgid ""
 "system menu for logged-in situations where there is a single, local, non-"
 "system user and only a single available session type (e.g. GNOME on Wayland)."
 msgstr ""
-"यह कुंजी लॉग-इन स्थितियों के लिए सिस्टम मेनू में “लॉग आउट” क्रिया के स्वचालित छिपाने को "
+"यह कुंजी लॉग-इन स्थितियों के लिए सिस्टम मेनू में “लॉग आउट” कार्रवाई के स्वचालित छिपाने को "
 "ओवरराइड करती है जहां एकल, स्थानीय, गैर-सिस्टम उपयोक्ता और केवल एक ही उपलब्ध सत्र "
-"प्रकार होता है (उदाहरण के लिए वेलैंड पर गनोम)।"
+"प्रकार होता है (उदाहरणार्थ वायलैंड पर गनोम)।"
 
 #: data/org.gnome.shell.gschema.xml.in:92
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr "यदि इनक्रिपटेड या दूरस्थ फाइलतंत्र के लिए पासवर्ड याद रखें जाएं या नहीं"
+msgstr "यदि कूटलेखित या दूरस्थ फाइलतंत्र के लिए पासवर्ड याद रखें जाएं या नहीं"
 
 #: data/org.gnome.shell.gschema.xml.in:93
 msgid ""
@@ -290,13 +290,13 @@ msgid ""
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
-"शैल एक पासवर्ड का निवेदन करेगी जब कोई एनक्रिप्टेड उपकरण या दूरस्थ फाइलतंत्र माउंट किया "
-"जाता है। यदि पासवर् को भविष्य के उपयोग के लिए सहेजा जा सकता है तो 'पासवर्ड याद रखें' "
-"चेक बक्सा मौजूद रहेगा। यह कुँजी चेक बक्से की स्थिति को निर्धारित करती है।"
+"जब कोई एन्क्रिप्टेड डिवाइस या रिमोट फ़ाइल सिस्टम माउंट किया जाता है, तो शैल पासवर्ड का "
+"अनुरोध करेगा। यदि पासवर्ड को भविष्य के उपयोग के लिए सहेजा जा सकता है, तो “पासवर्ड याद "
+"रखें\"” चेकबॉक्स मौजूद होगा। यह कुंजी चेकबॉक्स की तयशुदा स्थिति निर्धारित करती है।"
 
 #: data/org.gnome.shell.gschema.xml.in:102
 msgid "The last selected non-default power profile"
-msgstr "अंतिम चुना गया गैर-डिफ़ॉल्ट पावर रूपरेखा"
+msgstr "अंतिम चुना गया गैर-तयशुदा पावर रूपरेखा"
 
 #: data/org.gnome.shell.gschema.xml.in:103
 msgid ""
@@ -304,8 +304,8 @@ msgid ""
 "toggling between two profiles, this key records the last selected non-"
 "default profile."
 msgstr ""
-"कुछ तंत्र दो से अधिक पावर रूपरेखाओं का समर्थन करते हैं। अभी भी दो रुपरेखाओं के बीच टॉगलिंग "
-"का समर्थन करने के लिए, यह कुंजी अंतिम चुने गैर-डिफ़ॉल्ट रूपरेखा को याद रखती है।"
+"कुछ सिस्टम दो से अधिक पावर रूपरेखाओं का समर्थन करते हैं। अभी भी दो रुपरेखाओं के बीच टॉगलिंग "
+"का समर्थन करने के लिए, यह कुंजी अंतिम चुने गैर-तयशुदा रूपरेखा को याद रखती है।"
 
 #: data/org.gnome.shell.gschema.xml.in:111
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
@@ -346,11 +346,11 @@ msgstr "सारांश की स्थितियों के बीच �
 
 #: data/org.gnome.shell.gschema.xml.in:166
 msgid "Keybinding to shift between session, window picker and app grid"
-msgstr "सत्र, विंडो चयनकर्ता और ऐप ग्रिड के बीच बदलने के लिए कीबाइंडिंग"
+msgstr "सत्र, खिड़की चयनकर्ता और ऐप ग्रिड के बीच बदलने के लिए कीबाइंडिंग"
 
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid "Keybinding to shift between app grid, window picker and session"
-msgstr "ऐप ग्रिड, विंडो चयनकर्ता और सत्र के बीच बदलने के लिए कीबाइंडिंग"
+msgstr "ऐप ग्रिड, खिड़की चयनकर्ता और सत्र के बीच बदलने के लिए कीबाइंडिंग"
 
 #: data/org.gnome.shell.gschema.xml.in:179
 msgid "Keybinding to open the “Show Applications” view"
@@ -431,51 +431,51 @@ msgstr "अनुप्रयोग 9 पर जाएं"
 
 #: data/org.gnome.shell.gschema.xml.in:251
 msgid "Open a new instance of application 1"
-msgstr "अनुप्रयोग 1 का एक नया इंस्टेंस खोलें"
+msgstr "अनुप्रयोग 1 का एक नया इंस्टैंस खोलें"
 
 #: data/org.gnome.shell.gschema.xml.in:255
 msgid "Open a new instance of application 2"
-msgstr "अनुप्रयोग 2 का एक नया इंस्टेंस खोलें"
+msgstr "अनुप्रयोग 2 का एक नया इंस्टैंस खोलें"
 
 #: data/org.gnome.shell.gschema.xml.in:259
 msgid "Open a new instance of application 3"
-msgstr "अनुप्रयोग 3 का एक नया इंस्टेंस खोलें"
+msgstr "अनुप्रयोग 3 का एक नया इंस्टैंस खोलें"
 
 #: data/org.gnome.shell.gschema.xml.in:263
 msgid "Open a new instance of application 4"
-msgstr "अनुप्रयोग 4 का एक नया इंस्टेंस खोलें"
+msgstr "अनुप्रयोग 4 का एक नया इंस्टैंस खोलें"
 
 #: data/org.gnome.shell.gschema.xml.in:267
 msgid "Open a new instance of application 5"
-msgstr "अनुप्रयोग 5 का एक नया इंस्टेंस खोलें"
+msgstr "अनुप्रयोग 5 का एक नया इंस्टैंस खोलें"
 
 #: data/org.gnome.shell.gschema.xml.in:271
 msgid "Open a new instance of application 6"
-msgstr "अनुप्रयोग 6 का एक नया इंस्टेंस खोलें"
+msgstr "अनुप्रयोग 6 का एक नया इंस्टैंस खोलें"
 
 #: data/org.gnome.shell.gschema.xml.in:275
 msgid "Open a new instance of application 7"
-msgstr "अनुप्रयोग 7 का एक नया इंस्टेंस खोलें"
+msgstr "अनुप्रयोग 7 का एक नया इंस्टैंस खोलें"
 
 #: data/org.gnome.shell.gschema.xml.in:279
 msgid "Open a new instance of application 8"
-msgstr "अनुप्रयोग 8 का एक नया इंस्टेंस खोलें"
+msgstr "अनुप्रयोग 8 का एक नया इंस्टैंस खोलें"
 
 #: data/org.gnome.shell.gschema.xml.in:283
 msgid "Open a new instance of application 9"
-msgstr "अनुप्रयोग 9 का एक नया इंस्टेंस खोलें"
+msgstr "अनुप्रयोग 9 का एक नया इंस्टैंस खोलें"
 
 #: data/org.gnome.shell.gschema.xml.in:308
 #: data/org.gnome.shell.gschema.xml.in:335
 msgid "Limit switcher to current workspace."
-msgstr "मौजूदा कार्यस्थान में स्विचर सीमित करें।"
+msgstr "स्विचर को वर्तमान कार्यस्थान तक सीमित करें।"
 
 #: data/org.gnome.shell.gschema.xml.in:309
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
 msgstr ""
-"यदि सही है, तो जिन अनुप्रयोग की सक्रिय कार्यस्थान पर विंडो है, वे स्विचर में दिखेंगी। "
+"यदि सही है, तो जिन अनुप्रयोग की सक्रिय कार्यस्थान पर खिड़की है, वे स्विचर में दिखेंगी। "
 "अन्यथा, सभी अनुप्रयोग शामिल किए जाएंगे।"
 
 #: data/org.gnome.shell.gschema.xml.in:326
@@ -497,8 +497,8 @@ msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
 msgstr ""
-"यदि सही है, तो मौजूदा कार्यस्थान में उपस्थित विंडो इस स्विचर में दिखेगीं। अन्यथा, सभी विंडो "
-"शामिल की जाएंगी।"
+"यदि सही है, तो मौजूदा कार्यस्थान में उपस्थित खिड़की इस स्विचर में दिखेगीं। अन्यथा, सभी "
+"खिड़की शामिल की जाएंगी।"
 
 #: data/org.gnome.shell.gschema.xml.in:346
 msgid "Locations"
@@ -556,24 +556,24 @@ msgstr "तकनीकी जानकारी"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:90
 msgid "Homepage"
-msgstr "होमपेज (गृहपृष्ट)"
+msgstr "गृहपृष्ट"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:91
 msgid "Visit extension homepage"
-msgstr "एक्सटेंशन के होमपेज पर जाएं"
+msgstr "एक्सटेंशन के गृहपृष्ट पर जाएं"
 
-#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
-#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
+#: js/gdm/authPrompt.js:153 js/gdm/loginDialog.js:466
+#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:115
 #: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
 #: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:384
 #: js/ui/shellMountOperation.js:394
 msgid "Cancel"
-msgstr "रद्द"
+msgstr "रद्द करें"
 
-#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
-#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:288
+#: js/gdm/authPrompt.js:319 js/ui/components/networkAgent.js:215
+#: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
+#: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
+#: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
 #: js/ui/shellMountOperation.js:334
 msgid "Password"
 msgstr "पासवर्ड"
@@ -649,10 +649,10 @@ msgstr "सूचीबद्ध नहीं?"
 #: js/gdm/loginDialog.js:1010
 #, javascript-format
 msgid "(e.g., user or %s)"
-msgstr "(उदाहरण के लिए, उपयोक्ता या %s)"
+msgstr "(उउदाहरणार्थ, उपयोक्ता या %s)"
 
-#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:258
-#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
+#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:259
+#: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:328
 msgid "Username"
 msgstr "उपयोक्तानाम"
 
@@ -666,21 +666,21 @@ msgstr "लॉगिन करने में बहुत अधिक सम�
 
 #: js/gdm/loginDialog.js:1427
 msgid "Login Window"
-msgstr "लॉगिन विंडो"
+msgstr "लॉगिन खिड़की"
 
-#: js/gdm/util.js:497
+#: js/gdm/util.js:498
 msgid "Authentication error"
 msgstr "प्रमाणीकरण त्रुटि"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:728
+#: js/gdm/util.js:729
 msgid "(or swipe finger across reader)"
 msgstr "(या सेंसर पर उंगली स्वाइप करें)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:733
+#: js/gdm/util.js:734
 msgid "(or place finger on reader)"
 msgstr "(या सेंसर पर उंगली रखें)"
 
@@ -693,7 +693,7 @@ msgstr "बंद करें"
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:94
 msgid "power off;poweroff;shutdown;halt;stop"
-msgstr "बंद;शटडाउन;रोकें;बंद करें;विराम;power off;poweroff;shutdown;halt;stop;"
+msgstr "बंद;शटडाउन;रोकें;बंद करें;विराम;"
 
 #. Translators: The name of the restart action in search
 #: js/misc/systemActions.js:99
@@ -704,7 +704,7 @@ msgstr "पुनर्प्रारंभ करें"
 #. Translators: A list of keywords that match the restart action, separated by semicolons
 #: js/misc/systemActions.js:102
 msgid "reboot;restart;"
-msgstr "reboot;restart;रिबूट;पुनर्प्रारंभ;रिस्टार्ट;रीस्टार्ट;रीबूट;फिर चालू;"
+msgstr "रिबूट;पुनर्प्रारंभ;रिस्टार्ट;रीस्टार्ट;रीबूट;फिर चालू;"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:107
@@ -715,7 +715,7 @@ msgstr "स्क्रीन पर ताला लगाएं"
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:110
 msgid "lock screen"
-msgstr "ताला;स्क्रीन;लोक;lock screen;"
+msgstr "लॉक स्क्रीन"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:115
@@ -726,7 +726,7 @@ msgstr "लॉग आउट"
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:118
 msgid "logout;log out;sign off"
-msgstr "logout;log out;sign off;लॉग आउट;साइन ऑफ़;साइन ऑफ;साइन ओफ़;साइन ओफ;"
+msgstr "लॉगआउट;साइनऑफ;"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:123
@@ -753,9 +753,7 @@ msgstr "उपयोक्ता बदलें"
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:141
 msgid "lock orientation;unlock orientation;screen;rotation"
-msgstr ""
-"स्क्रीन रोटेशन मुक्त;स्क्रीन रोटेशन प्रतिबंधित;लोक ओरिएंटेशन;लोक ऑरिएंटेशन;स्क्रीन;lock "
-"orientation;unlock orientation;screen;rotation;"
+msgstr "स्क्रीन रोटेशन मुक्त;स्क्रीन रोटेशन प्रतिबंधित;लोक ओरिएंटेशन;लोक ऑरिएंटेशन;स्क्रीन;"
 
 #. Translators: The name of the screenshot UI action in search
 #: js/misc/systemActions.js:146
@@ -766,31 +764,29 @@ msgstr "स्क्रीनशॉट लें"
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
 #: js/misc/systemActions.js:149
 msgid "screenshot;screencast;snip;capture;record"
-msgstr ""
-"screenshot;screencast;snip;capture;record;स्क्रीनशॉट;चित्र;रिकोर्ड,रिकॉर्ड,कैप्चर;"
-"स्निप;रेकार्ड"
+msgstr "स्क्रीनशॉट;चित्र;रिकोर्ड,रिकॉर्ड,कैप्चर;स्निप;रेकार्ड;"
 
 #: js/misc/systemActions.js:249
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
-msgstr "स्क्रीन रोटेशन मुक्त"
+msgstr "स्क्रीन घुमाव अनलॉक करें"
 
 #: js/misc/systemActions.js:250
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
-msgstr "स्क्रीन रोटेशन प्रतिबंधित"
+msgstr "स्क्रीन घुमाव लॉक करें"
 
-#: js/misc/util.js:139
+#: js/misc/util.js:132
 msgid "Command not found"
 msgstr "कमांड नहीं मिला"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:179
+#: js/misc/util.js:172
 msgid "Could not parse command:"
-msgstr "कमांड को पार्स नहीं किया जा सका:"
+msgstr "कमांड का विश्लेषण नहीं किया जा सका:"
 
-#: js/misc/util.js:187
+#: js/misc/util.js:180
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "“%s” का निष्पादन विफल:"
@@ -815,7 +811,7 @@ msgstr[1] "%d घंटे पहले"
 
 #: js/misc/dateUtils.js:85 js/ui/dateMenu.js:185
 msgid "Yesterday"
-msgstr "बीते कल"
+msgstr "बिता कल"
 
 #: js/misc/dateUtils.js:88
 #, javascript-format
@@ -960,11 +956,11 @@ msgstr "%s को डेश में पसंदीदा क्षेत्�
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:51
 msgid "Open Windows"
-msgstr "खुली विंडोज़"
+msgstr "खुली खिड़कियां"
 
 #: js/ui/appMenu.js:59
 msgid "New Window"
-msgstr "नई विंडो"
+msgstr "नई खिड़की"
 
 #: js/ui/appMenu.js:86
 msgid "App Details"
@@ -989,7 +985,7 @@ msgstr "एकीकृत ग्राफिक्स कार्ड का �
 
 #: js/ui/appMenu.js:181
 msgid "Launch using Discrete Graphics Card"
-msgstr "अलग ग्राफिक्स कार्ड का उपयोग कर खोलें"
+msgstr "पृथक ग्राफ़िक्स कार्ड का उपयोग करके शुरू करें"
 
 #: js/ui/audioDeviceSelection.js:46
 msgid "Select Audio Device"
@@ -1017,7 +1013,7 @@ msgstr "पृष्ठभूमि बदलें…"
 
 #: js/ui/backgroundMenu.js:17
 msgid "Display Settings"
-msgstr "डिस्पले सेटिंग"
+msgstr "डिस्प्ले सेटिंग"
 
 #: js/ui/backgroundMenu.js:18
 msgid "Settings"
@@ -1126,12 +1122,12 @@ msgstr "आकुल न करें"
 
 #: js/ui/calendar.js:997
 msgid "Clear"
-msgstr "खाली करें"
+msgstr "साफ़ करें"
 
 #: js/ui/calendar.js:1001
 msgctxt "action"
 msgid "Clear all notifications"
-msgstr "कोई अधिसूचना नहीं"
+msgstr "सभी अधिसूचनाएं साफ़ करें"
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
@@ -1157,18 +1153,18 @@ msgstr "प्रतीक्षा करें"
 
 #: js/ui/components/automountManager.js:84
 msgid "External drive connected"
-msgstr "बाहरी ड्राइव कनेक्टेड है"
+msgstr "बाहरी ड्राइव जोड़ा गया"
 
 #: js/ui/components/automountManager.js:96
 msgid "External drive disconnected"
-msgstr "बाहरी ड्राइव डिसकनेक्टेड है"
+msgstr "बाहरी ड्राइव निकला गया"
 
 # Here, volume does not refer to sound, rather refers to volumes of a disk. Comment left by Hemish
-#: js/ui/components/automountManager.js:207
+#: js/ui/components/automountManager.js:210
 msgid "Unable to unlock volume"
 msgstr "वॉल्यूम को खोलने में अक्षम"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:211
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "संस्थापित udisks संस्करण PIM सेटिंग का समर्थन नहीं करता है"
 
@@ -1177,76 +1173,76 @@ msgstr "संस्थापित udisks संस्करण PIM सेट�
 msgid "Open with %s"
 msgstr "%s के साथ खोलें"
 
-#: js/ui/components/networkAgent.js:96
+#: js/ui/components/networkAgent.js:97
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
-msgstr "वैकल्पिक रूप से आप अपने राउटर पर \"WPS\" बटन दबाकर कनेक्ट कर सकते हैं।"
+msgstr "वैकल्पिक रूप से आप अपने राउटर पर \"WPS\" बटन दबाकर जुड़ सकते हैं।"
 
-#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
+#: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
-msgstr "संबंध जोङें"
+msgstr "जुड़ें"
 
-#: js/ui/components/networkAgent.js:223
+#: js/ui/components/networkAgent.js:224
 msgid "Key"
 msgstr "कुंजी"
 
-#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
+#: js/ui/components/networkAgent.js:275 js/ui/components/networkAgent.js:314
 msgid "Private key password"
 msgstr "निजी कुंजी पासवर्ड"
 
-#: js/ui/components/networkAgent.js:307
+#: js/ui/components/networkAgent.js:308
 msgid "Identity"
 msgstr "पहचान"
 
-#: js/ui/components/networkAgent.js:333
+#: js/ui/components/networkAgent.js:334
 msgid "Service"
 msgstr "सेवा"
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
-#: js/ui/components/networkAgent.js:750 js/ui/components/networkAgent.js:771
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:408
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
 msgid "Authentication required"
 msgstr "प्रमाणीकरण आवश्यक"
 
-#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:746
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr "पासवर्ड या इनक्रिपशन कुंजी बेतार नेटवर्क “%s” की पहुँच के लिए जरूरी है।"
+msgstr "वायरलेस नेटवर्क “%s” तक पहुंचने के लिए पासवर्ड या कूटलेखन कुंजी की आवश्यकता होती है।"
 
-#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:755
+#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
 msgstr "तारयुक्त 802.1X प्रमानीकरण"
 
-#: js/ui/components/networkAgent.js:379
+#: js/ui/components/networkAgent.js:380
 msgid "Network name"
 msgstr "नेटवर्क नाम"
 
-#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:754
 msgid "DSL authentication"
 msgstr "DSL सत्यापन"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:759
 msgid "PIN code required"
-msgstr "पिन कोड ज़रूरी"
+msgstr "पिन कोड आवश्यक"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:765
+#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:760
 msgid "PIN code is needed for the mobile broadband device"
-msgstr "PIN कोड मोबाइल ब्रॉडबैंड डिवाइस के लिए आवश्यक है"
+msgstr "मोबाइल ब्रॉडबैंड डिवाइस के लिए पिन कोड आवश्यक है"
 
-#: js/ui/components/networkAgent.js:397
+#: js/ui/components/networkAgent.js:398
 msgid "PIN"
 msgstr "पिन"
 
-#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:756
-#: js/ui/components/networkAgent.js:760 js/ui/components/networkAgent.js:772
-#: js/ui/components/networkAgent.js:776
+#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
 #, javascript-format
 msgid "A password is required to connect to “%s”."
-msgstr "“%s” में कनेक्ट होने के लिए एक पासवर्ड की आवश्यकता है।"
+msgstr "“%s” से जुड़ने के लिए पासवर्ड की आवश्यकता है।"
 
-#: js/ui/components/networkAgent.js:775
+#: js/ui/components/networkAgent.js:770
 msgid "VPN password"
 msgstr "VPN पासवर्ड"
 
@@ -1256,11 +1252,11 @@ msgstr "सत्यापन आवश्यक"
 
 #: js/ui/components/polkitAgent.js:86
 msgid "Administrator"
-msgstr "एडमिनिस्ट्रेटर"
+msgstr "प्रशासक"
 
 #: js/ui/components/polkitAgent.js:151
 msgid "Authenticate"
-msgstr "सत्यापित करें"
+msgstr "प्रमाणित करें"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
@@ -1272,11 +1268,11 @@ msgstr "माफ करें, वह काम नहीं किया। �
 
 #: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:418
 msgid "Windows"
-msgstr "विंडोज़"
+msgstr "खिड़कियां"
 
 #: js/ui/dash.js:206 js/ui/dash.js:252
 msgid "Show Apps"
-msgstr "एप दिखाएं"
+msgstr "ऐप्स दिखाएं"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the bottom of the overview
@@ -1291,7 +1287,7 @@ msgstr "डैश"
 #.
 #: js/ui/dateMenu.js:101
 msgid "%B %-d %Y"
-msgstr "%B %d, %Y"
+msgstr "%-d %B %Y"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
@@ -1299,19 +1295,19 @@ msgstr "%B %d, %Y"
 #.
 #: js/ui/dateMenu.js:108
 msgid "%A %B %e %Y"
-msgstr "%A %B %e %Y"
+msgstr "%A %e %B, %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/dateMenu.js:174
 msgctxt "calendar heading"
 msgid "%B %-d"
-msgstr "%B %-d"
+msgstr "%-d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: js/ui/dateMenu.js:177
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
-msgstr "%B %-d %Y"
+msgstr "%-d %B %Y"
 
 #: js/ui/dateMenu.js:183
 msgid "Today"
@@ -1342,7 +1338,7 @@ msgstr "कोई कार्यक्रम नहीं"
 
 #: js/ui/dateMenu.js:413
 msgid "Add world clocks…"
-msgstr "विश्व घड़ियां जोङें…"
+msgstr "विश्व घड़ियां जोड़ें…"
 
 #: js/ui/dateMenu.js:414
 msgid "World Clocks"
@@ -1412,7 +1408,7 @@ msgstr "अद्यतन संस्थापित करें और ब�
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "यह तंत्र %d सेकेंड में स्वतः बंद हो जाएगा।"
+msgstr[0] "यह सिस्टम %d सेकेंड में स्वतः बंद हो जाएगा।"
 msgstr[1] "यह तंत्र %d सेकेंडों में स्वतः बंद हो जाएगा।"
 
 #: js/ui/endSessionDialog.js:79 js/ui/endSessionDialog.js:98
@@ -1439,25 +1435,25 @@ msgstr "अद्यतन संस्थापित करें और ब�
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "यह तंत्र %d सेकेंड में स्वतः फिर आरंभ हो जाएगा।"
+msgstr[0] "यह सिस्टम %d सेकेंड में स्वतः फिर आरंभ हो जाएगा।"
 msgstr[1] "यह तंत्र %d सेकेंडों में स्वतः फिर आरंभ हो जाएगा।"
 
 #: js/ui/endSessionDialog.js:102
 msgctxt "button"
 msgid "Restart"
-msgstr "फिर आरंभ करें"
+msgstr "पुनः प्रारंभ करें"
 
 #: js/ui/endSessionDialog.js:110
 msgctxt "title"
 msgid "Restart & Install Updates"
-msgstr "अद्यतन संस्थापित करें और फिर आरंभ करें"
+msgstr "पुनः आरंभ करें और अद्यतन स्थापित करें"
 
 #: js/ui/endSessionDialog.js:113
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] "यह तंत्र %d सेकेंड में स्वतः फिर आरंभ हो जाएगा और अद्यतन संस्थापित करेगा।"
+msgstr[0] "यह सिस्टम %d सेकेंड में स्वतः फिर आरंभ हो जाएगा और अद्यतन संस्थापित करेगा।"
 msgstr[1] "यह तंत्र %d सेकेंड में स्वतः फिर आरंभ हो जाएगा और अद्यतन संस्थापित करेगा।"
 
 #: js/ui/endSessionDialog.js:120 js/ui/endSessionDialog.js:141
@@ -1679,7 +1675,7 @@ msgstr "वेब पृष्ठ"
 
 #: js/ui/main.js:279
 msgid "System was put in unsafe mode"
-msgstr "तंत्र को असुरक्षित मोड में डाला गया था"
+msgstr "सिस्टम को असुरक्षित मोड में डाला गया था"
 
 #: js/ui/main.js:280
 msgid "Apps now have unrestricted access"
@@ -1707,7 +1703,7 @@ msgstr "स्क्रीन लॉक अक्षम"
 
 #: js/ui/main.js:390
 msgid "Screen Locking requires the GNOME display manager."
-msgstr "स्क्रीन लॉकिंग के लिए गनोम डिस्पले प्रबंधक की आवश्यकता है।"
+msgstr "स्क्रीन लॉकिंग के लिए गनोम डिस्प्ले प्रबंधक की आवश्यकता है।"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
@@ -1771,7 +1767,7 @@ msgstr "सम्पन्न"
 
 #: js/ui/padOsd.js:728
 msgid "Edit…"
-msgstr "बदलें…"
+msgstr "संपादित करें…"
 
 #: js/ui/padOsd.js:775
 msgid "None"
@@ -1798,7 +1794,7 @@ msgstr "गतिविधियां"
 #: js/ui/panel.js:506
 msgctxt "System menu in the top bar"
 msgid "System"
-msgstr "तंत्र"
+msgstr "सिस्टम"
 
 #: js/ui/panel.js:680
 msgid "Top Bar"
@@ -1806,7 +1802,7 @@ msgstr "शीर्ष पट्टी"
 
 #: js/ui/quickSettings.js:187
 msgid "Open menu"
-msgstr "मेन्यू खोलें"
+msgstr "मेनू खोलें"
 
 #: js/ui/runDialog.js:63
 msgid "Run a Command"
@@ -1854,11 +1850,11 @@ msgstr "स्क्रीन चयन"
 
 #: js/ui/screenshot.js:1284
 msgid "Window"
-msgstr "विंडो"
+msgstr "खिड़की"
 
 #: js/ui/screenshot.js:1294
 msgid "Window Selection"
-msgstr "विंडो चयन"
+msgstr "खिड़की चयन"
 
 #. Translators: entry in the window right click menu.
 #: js/ui/screenshot.js:1319 js/ui/status/system.js:113 js/ui/windowMenu.js:30
@@ -1951,7 +1947,7 @@ msgstr "स्क्रीनशॉट लिया गया"
 #. Translators: notification body when a screenshot was captured.
 #: js/ui/screenshot.js:2337
 msgid "You can paste the image from the clipboard."
-msgstr "आप क्लिपबोर्ड से इमेज पेस्ट कर सकते हैं।"
+msgstr "आप क्लिपबोर्ड से छवि चिपका सकते हैं।"
 
 #: js/ui/screenshot.js:2393 js/ui/screenshot.js:2557
 msgid "Screenshot taken"
@@ -1975,7 +1971,7 @@ msgstr[1] "%d और"
 #: js/ui/searchController.js:89
 #: subprojects/extensions-app/data/ui/extensions-window.ui:73
 msgid "Search"
-msgstr "ढूँढें"
+msgstr "खोजें"
 
 #: js/ui/shellEntry.js:23
 msgid "Copy"
@@ -1983,7 +1979,7 @@ msgstr "कॉपी करें"
 
 #: js/ui/shellEntry.js:28
 msgid "Paste"
-msgstr "पेस्ट करें"
+msgstr "चिपकाएं"
 
 #: js/ui/shellEntry.js:80
 msgid "Show Text"
@@ -1999,7 +1995,7 @@ msgstr "कैप्स लॉक ऑन है।"
 
 #: js/ui/shellMountOperation.js:288
 msgid "Hidden Volume"
-msgstr "छिपा हुआ वॉल्यूम"
+msgstr "छिपी वॉल्यूम"
 
 #: js/ui/shellMountOperation.js:291
 msgid "Windows System Volume"
@@ -2106,7 +2102,7 @@ msgstr "पृष्ठभूमि ऐप्स"
 
 #: js/ui/status/backgroundApps.js:171
 msgid "Apps known to be running without a window"
-msgstr "ज्ञात ऐप्स बिना विंडो के चल रहे हैं"
+msgstr "ज्ञात ऐप्स बिना खिड़की के चल रहे हैं"
 
 #: js/ui/status/backgroundApps.js:182
 msgid "App Settings"
@@ -2177,7 +2173,7 @@ msgstr "चमकीलापन"
 
 #: js/ui/status/darkMode.js:12
 msgid "Dark Style"
-msgstr "डार्क शैली"
+msgstr "गहरी शैली"
 
 #: js/ui/status/dwellClick.js:15
 msgid "Single Click"
@@ -2185,7 +2181,7 @@ msgstr "एकल क्लिक"
 
 #: js/ui/status/dwellClick.js:20
 msgid "Double Click"
-msgstr "द्वैध क्लिक"
+msgstr "दोहरा क्लिक"
 
 #: js/ui/status/dwellClick.js:25
 msgid "Drag"
@@ -2234,7 +2230,7 @@ msgstr "<unknown>"
 #: js/ui/status/network.js:354
 #, javascript-format
 msgid "Disconnect %s"
-msgstr "%s को डिस्कनेक्ट करें"
+msgstr "%s को निकालें"
 
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/network.js:356
@@ -2292,7 +2288,7 @@ msgstr "सभी नेटवर्क"
 
 #: js/ui/status/network.js:1884
 msgid "Wired Connections"
-msgstr "तारयुक्त कनेक्शन्स"
+msgstr "तारयुक्त कनेक्शन"
 
 #: js/ui/status/network.js:1885
 msgid "Wired Settings"
@@ -2309,7 +2305,7 @@ msgstr "टीथर"
 
 #: js/ui/status/network.js:1919
 msgid "Mobile Connections"
-msgstr "मोबाइल संबंध"
+msgstr "मोबाइल कनेक्शन"
 
 #: js/ui/status/network.js:1921
 msgid "Mobile Broadband Settings"
@@ -2322,11 +2318,11 @@ msgstr "मोबाइल"
 
 #: js/ui/status/network.js:2035
 msgid "Connection failed"
-msgstr "संबंध विफल"
+msgstr "कनेक्शन विफल"
 
 #: js/ui/status/network.js:2036
 msgid "Activation of network connection failed"
-msgstr "नेटवर्क कनेक्शन को सक्रिय करना विफल हुआ"
+msgstr "नेटवर्क कनेक्शन को सक्रिय करना विफल"
 
 #: js/ui/status/nightLight.js:21
 msgid "Night Light"
@@ -2336,7 +2332,7 @@ msgstr "रात्रि प्रकाश"
 #: js/ui/status/powerProfiles.js:21
 msgctxt "Power profile"
 msgid "Performance"
-msgstr "परफ़ॉर्मेंस"
+msgstr "प्रदर्शन"
 
 #: js/ui/status/powerProfiles.js:26
 msgctxt "Power profile"
@@ -2350,7 +2346,7 @@ msgstr "ऊर्जा बचत"
 
 #: js/ui/status/powerProfiles.js:41 js/ui/status/powerProfiles.js:71
 msgid "Power Mode"
-msgstr "पावर स्थिति"
+msgstr "ऊर्जा मोड"
 
 #: js/ui/status/powerProfiles.js:73
 msgid "Power Settings"
@@ -2362,15 +2358,15 @@ msgstr "स्क्रीनकास्ट रोकें"
 
 #: js/ui/status/remoteAccess.js:146
 msgid "Stop Screen Sharing"
-msgstr "स्क्रीन साझा करनी बंद करें"
+msgstr "स्क्रीन शेयरिंग रोकें"
 
 #: js/ui/status/rfkill.js:101
 msgid "Airplane Mode"
-msgstr "हवाई जहाज़ मोड"
+msgstr "विमान मोड"
 
 #: js/ui/status/system.js:170
 msgid "Power Off Menu"
-msgstr "पावर ऑफ़ मेन्यू"
+msgstr "पावर ऑफ मेनू"
 
 #: js/ui/status/system.js:178
 msgid "Suspend"
@@ -2408,7 +2404,7 @@ msgid ""
 "reconnect the device to start using it."
 msgstr ""
 "आपके अनुपस्थिति के दौरान एक नया उपकरण पाया गया। इसका उपयोग शुरू करने के लिए कृपया "
-"डिस्कनेक्ट करें और फिर से कनेक्ट करें।"
+"डिस्कनेक्ट करें और पुनः जुड़ें।"
 
 #: js/ui/status/thunderbolt.js:314
 msgid "Unauthorized Thunderbolt device"
@@ -2421,7 +2417,7 @@ msgstr "नया उपकरण पाया गया है और इसे
 
 #: js/ui/status/thunderbolt.js:321
 msgid "Thunderbolt authorization error"
-msgstr "थंडरबोल्ट  के प्राधिकरण में त्रुटि"
+msgstr "थंडरबोल्ट प्राधिकरण त्रुटि"
 
 #: js/ui/status/thunderbolt.js:322
 #, javascript-format
@@ -2458,14 +2454,14 @@ msgstr "ध्वनि इनपुट"
 #.
 #: js/ui/switchMonitor.js:22
 msgid "Mirror"
-msgstr "प्रतिरूप"
+msgstr "मिरर"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
 #.
 #: js/ui/switchMonitor.js:31
 msgid "Join Displays"
-msgstr "डिस्प्ले जोङें"
+msgstr "डिस्प्ले जोड़ें"
 
 #. Translators: this is for using only external displays.
 #. * Try to keep it under around 15 characters.
@@ -2483,23 +2479,23 @@ msgstr "केवल अंतर्निर्मित"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:374
-msgid "%A %B %-d"
-msgstr "%A %B %-d"
-
 #: js/ui/unlockDialog.js:380
+msgid "%A %B %-d"
+msgstr "%A %-d %B"
+
+#: js/ui/unlockDialog.js:386
 msgid "Swipe up to unlock"
 msgstr "खोलने के लिए ऊपर स्वाइप करें"
 
-#: js/ui/unlockDialog.js:381
+#: js/ui/unlockDialog.js:387
 msgid "Click or press a key to unlock"
 msgstr "खोलने के लिए एक कुंजी दबाएं या क्लिक करें"
 
-#: js/ui/unlockDialog.js:564
+#: js/ui/unlockDialog.js:570
 msgid "Unlock Window"
-msgstr "विंडो खोलें"
+msgstr "खिड़की खोलें"
 
-#: js/ui/unlockDialog.js:573
+#: js/ui/unlockDialog.js:579
 msgid "Log in as another user"
 msgstr "अन्य उपयोक्ता के रूप में लॉगिन करें"
 
@@ -2560,7 +2556,7 @@ msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:42
 msgid "Hide"
-msgstr "छिपाएं"
+msgstr "छुपाएं"
 
 #: js/ui/windowMenu.js:49
 msgid "Restore"
@@ -2654,7 +2650,7 @@ msgstr "अज्ञात"
 #: src/shell-app.c:504
 #, c-format
 msgid "Failed to launch “%s”"
-msgstr "“%s” लॉन्च करने में विफल"
+msgstr "“%s” शुरू करने में विफल"
 
 #: src/shell-keyring-prompt.c:764
 msgid "Passwords do not match."
@@ -2662,7 +2658,7 @@ msgstr "पासवर्ड मेल नहीं खाते।"
 
 #: src/shell-keyring-prompt.c:772
 msgid "Password cannot be blank"
-msgstr "पासवर्ड खाली नहीं हो सकता है"
+msgstr "पासवर्ड खाली नहीं हो सकता"
 
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
@@ -2684,7 +2680,7 @@ msgstr "अपने गनोम एक्सटेंशन प्रबंध
 #. developer_name tag deprecated with Appstream 1.0
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:19
 msgid "The GNOME Project"
-msgstr "GNOME परियोजना"
+msgstr "गनोम परियोजना"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
 msgid ""
@@ -2694,15 +2690,15 @@ msgstr ""
 "'गनोम एक्सटेंशन्स' एक्सटेंशन को अद्यतन करने, एक्सटेंशन वरीयताओं को विन्यस्त करने और अवांछित "
 "एक्सटेंशन को हटाने या अक्षम करने का काम संभालता है।"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
 msgid "Main Window"
-msgstr "मुख्य विंडो"
+msgstr "मुख्य खिड़की"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:80
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:81
 msgid "Available Updates"
 msgstr "उपलब्ध अद्यतन"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:84
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:85
 msgid "Search View"
 msgstr "खोज दृश्य"
 
@@ -2716,8 +2712,8 @@ msgid ""
 "The installed version of this extension (%s) is incompatible with the "
 "current version of GNOME (%s). The extension has been disabled."
 msgstr ""
-"इस एक्सटेंशन का स्थापित संस्करण (%s) GNOME (%s) के वर्तमान संस्करण के साथ असंगत है। "
-"एक्सटेंशन अक्षम कर दिया गया है।"
+"इस एक्सटेंशन (%s) का स्थापित संस्करण गनोम (%s) के वर्तमान संस्करण के साथ असंगत है। एक्सटेंशन "
+"को अक्षम कर दिया गया है।"
 
 #: subprojects/extensions-app/js/extensionManager.js:238
 #, javascript-format
@@ -2725,8 +2721,8 @@ msgid ""
 "The installed version of this extension is incompatible with the current "
 "version of GNOME (%s). The extension has been disabled."
 msgstr ""
-"इस एक्सटेंशन का स्थापित संस्करण GNOME (%s) के वर्तमान संस्करण के साथ असंगत है। एक्सटेंशन "
-"अक्षम कर दिया गया है।"
+"इस एक्सटेंशन का स्थापित संस्करण गनोम (%s) के वर्तमान संस्करण के साथ असंगत है। एक्सटेंशन अक्षम "
+"कर दिया गया है।"
 
 #: subprojects/extensions-app/js/extensionManager.js:242
 msgid ""
@@ -2762,7 +2758,7 @@ msgstr ""
 
 #: subprojects/extensions-app/js/extensionsWindow.js:117
 msgid "_Cancel"
-msgstr "रद्द (_C)"
+msgstr "रद्द करें (_C)"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:118
 msgid "_Remove"
@@ -3275,7 +3271,7 @@ msgstr "कमांड:"
 
 #: subprojects/extensions-tool/src/main.c:335
 msgid "Print help"
-msgstr "मदद मुद्रित करें"
+msgstr "सहायता छापें"
 
 #: subprojects/extensions-tool/src/main.c:337
 msgid "Enable extension"
@@ -3373,56 +3369,4 @@ msgstr[1] "%u इनपुट"
 
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
-msgstr "तंत्र ध्वनियां"
-
-#~ msgid "Network Manager"
-#~ msgstr "नेटवर्क प्रबंधक"
-
-#, javascript-format
-#~ msgid "%s is now known as %s"
-#~ msgstr "%s अब %s रूप में जाना जाता है"
-
-#~ msgid "Disabling"
-#~ msgstr "अक्षम किया जा रहा है"
-
-#~ msgid "Enabling"
-#~ msgstr "सक्षम किया जा रहा है"
-
-#~ msgid "Screenshot / Screencast"
-#~ msgstr "स्क्रीनशॉट / स्क्रीनकॉस्ट"
-
-#~ msgid "Power Profiles"
-#~ msgstr "पावर रूपरेखाएँ"
-
-#, javascript-format
-#~ msgid "%d %%"
-#~ msgstr "%d %%"
-
-#~ msgid "Thunderbolt"
-#~ msgstr "थंडरबोल्ट"
-
-#~ msgid "No Thanks"
-#~ msgstr "जी नहीं, धन्यवाद"
-
-#~ msgid "No Matches"
-#~ msgstr "कोई मेल नहीं"
-
-#~ msgid "The extension had an error"
-#~ msgstr "एक्सटेंशन में त्रुटि हुई"
-
-#~ msgid "The extension can be updated"
-#~ msgstr "एक्सटेंशन को अपडेट किया जा सकता है"
-
-#~ msgid "Help"
-#~ msgstr "मदद"
-
-# I did not want to directly use English word 'manually' in translation. But the closes translation to 'manually' was 'हाथ से' which did not look good. 'इच्छा से' indicates that the extension is installed by choice of user, thus manually installed.
-# Comment left by Hemish
-#~ msgid "Manually Installed"
-#~ msgstr "इच्छा से स्थापित की गई"
-
-#~ msgid "Built-In"
-#~ msgstr "अंतर्निर्मित"
-
-#~ msgid "Extension Updates Ready"
-#~ msgstr "एक्सटेंशन अपडेट तैयार हैं"
+msgstr "सिस्टम ध्वनियां"
