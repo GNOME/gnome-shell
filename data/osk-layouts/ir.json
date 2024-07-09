@@ -22,16 +22,12 @@
           },
           {
             "strings": [
-              "ق",
-              "ڨ"
+              "ق"
             ]
           },
           {
             "strings": [
-              "ف",
-              "ڤ",
-              "ڢ",
-              "ڥ"
+              "ف"
             ]
           },
           {
@@ -47,7 +43,7 @@
           {
             "strings": [
               "ه",
-              "ه‍"
+              "ة"
             ]
           },
           {
@@ -62,21 +58,25 @@
           },
           {
             "strings": [
-              "ج",
+              "ج"
+            ]
+          },
+          {
+            "strings": [
               "چ"
             ]
           },
           {
             "action": "delete",
             "iconName": "edit-clear-symbolic",
-            "width": 1.5
+            "width": 1
           }
         ],
         [
           {
+            "leftOffset": 0.5,
             "strings": [
-              "ش",
-              "ڜ"
+              "ش"
             ]
           },
           {
@@ -86,24 +86,18 @@
           },
           {
             "strings": [
-              "ي",
-              "ئ",
-              "ى"
+              "ی",
+              "ئ"
             ]
           },
           {
             "strings": [
-              "ب",
-              "پ"
+              "ب"
             ]
           },
           {
             "strings": [
-              "ل",
-              "لا",
-              "لأ",
-              "لإ",
-              "لآ"
+              "ل"
             ]
           },
           {
@@ -133,14 +127,13 @@
           },
           {
             "strings": [
-              "ك",
-              "گ",
-              "ک"
+              "ک",
+              "ك"
             ]
           },
           {
             "strings": [
-              "ط"
+              "گ"
             ]
           },
           {
@@ -151,19 +144,24 @@
         ],
         [
           {
-            "leftOffset": 1,
+            "leftOffset": 1.5,
             "strings": [
-              "ذ"
+              "ظ"
             ]
           },
           {
             "strings": [
-              "ء"
+              "ط"
             ]
           },
           {
             "strings": [
-              "ؤ"
+              "ژ"
+            ]
+          },
+          {
+            "strings": [
+              "ز"
             ]
           },
           {
@@ -173,13 +171,12 @@
           },
           {
             "strings": [
-              "ى",
-              "ئ"
+              "ذ"
             ]
           },
           {
             "strings": [
-              "ة"
+              "د"
             ]
           },
           {
@@ -189,25 +186,14 @@
           },
           {
             "strings": [
-              "ز",
-              "ژ"
-            ]
-          },
-          {
-            "strings": [
-              "ظ"
-            ]
-          },
-          {
-            "strings": [
-              "د"
+              "پ"
             ]
           }
         ],
         [
           {
             "action": "levelSwitch",
-            "label": "?123",
+            "label": "۱۲۳؟",
             "level": "opt",
             "width": 1.5
           },
@@ -220,7 +206,7 @@
             "strings": [
               " "
             ],
-            "width": 6
+            "width": 5.5
           },
           {
             "strings": [
@@ -242,6 +228,10 @@
               ")",
               "("
             ]
+          },
+          {
+            "iconName": "keyboard-zwnj-symbolic",
+            "keyval": "0x100200c"
           },
           {
             "action": "emoji",
@@ -475,7 +465,7 @@
         [
           {
             "action": "levelSwitch",
-            "label": "ABC",
+            "label": "الف‌ب‌پ",
             "level": "default",
             "width": 1.5
           },
@@ -672,7 +662,7 @@
         [
           {
             "action": "levelSwitch",
-            "label": "?123",
+            "label": "۱۲۳؟",
             "level": "opt",
             "width": 1.5
           },
@@ -713,7 +703,7 @@
           },
           {
             "action": "levelSwitch",
-            "label": "?123",
+            "label": "۱۲۳؟",
             "level": "opt",
             "width": 3
           }
@@ -721,7 +711,7 @@
         [
           {
             "action": "levelSwitch",
-            "label": "ABC",
+            "label": "الف‌ب‌پ",
             "level": "default",
             "width": 1.5
           },
