@@ -10,6 +10,7 @@ import * as CheckBox from './checkBox.js';
 import * as Dialog from './dialog.js';
 import * as ModalDialog from './modalDialog.js';
 
+import {DBusSenderChecker} from '../misc/util.js';
 import {loadInterfaceXML} from '../misc/fileUtils.js';
 
 const RequestIface = loadInterfaceXML('org.freedesktop.impl.portal.Request');
@@ -21,6 +22,11 @@ const DialogResponse = {
     CANCEL: 1,
     CLOSED: 2,
 };
+
+const ALLOWED_SENDERS = [
+    'org.gnome.RemoteDesktop.Handover',
+    'org.freedesktop.impl.portal.desktop.gnome',
+];
 
 const AccessDialog = GObject.registerClass(
 class AccessDialog extends ModalDialog.ModalDialog {
@@ -133,12 +139,20 @@ export class AccessDialogDBus {
         this._accessDialog = null;
 
         this._windowTracker = Shell.WindowTracker.get_default();
+        this._senderChecker = new DBusSenderChecker(ALLOWED_SENDERS);
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(AccessIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/freedesktop/portal/desktop');
     }
 
-    AccessDialogAsync(params, invocation) {
+    async AccessDialogAsync(params, invocation) {
+        try {
+            await this._senderChecker.checkInvocation(invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+            return;
+        }
+
         if (this._accessDialog) {
             invocation.return_error_literal(
                 Gio.DBusError,
