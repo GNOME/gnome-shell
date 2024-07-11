@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-05-17 22:06+0000\n"
-"PO-Revision-Date: 2024-05-27 22:43+0200\n"
+"POT-Creation-Date: 2024-07-05 17:13+0000\n"
+"PO-Revision-Date: 2024-07-11 23:15+0200\n"
 "Last-Translator: Jose Riha\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -126,7 +126,7 @@ msgstr "Zachytenie snímky obrazovky okna"
 msgid "Record a screencast interactively"
 msgstr "Interaktívny záznam obrazovky"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1294
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1300
 msgid "System"
 msgstr "Systém"
 
@@ -390,7 +390,7 @@ msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Klávesová skratka na otvorenie pohľadu „Zobraziť aplikácie“ v prehľade "
-"aktivít."
+"činností."
 
 #: data/org.gnome.shell.gschema.xml.in:187
 msgid "Keybinding to open the overview"
@@ -398,7 +398,7 @@ msgstr "Klávesová skratka na otvorenie prehľadu"
 
 #: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to open the Activities Overview."
-msgstr "Klávesová skratka na otvorenie prehľadu aktivít."
+msgstr "Klávesová skratka na otvorenie prehľadu činností."
 
 #: data/org.gnome.shell.gschema.xml.in:194
 msgid "Keybinding to toggle the visibility of the notification list"
@@ -536,8 +536,8 @@ msgstr "Režim ikonizácie aplikácií."
 #: data/org.gnome.shell.gschema.xml.in:327
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
 msgstr ""
 "Konfiguruje, ako sa majú zobraziť okná v prepínači. Platné možnosti sú "
 "„thumbnail-only“ (zobrazí miniatúru okna), „app-icon-only“ (zobrazí iba "
@@ -614,7 +614,7 @@ msgstr "Domovská stránka"
 msgid "Visit extension homepage"
 msgstr "Navštíviť domovskú stránku rozšírenia"
 
-#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
+#: js/gdm/authPrompt.js:153 js/gdm/loginDialog.js:466
 #: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:115
 #: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
 #: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:384
@@ -622,7 +622,7 @@ msgstr "Navštíviť domovskú stránku rozšírenia"
 msgid "Cancel"
 msgstr "Zrušiť"
 
-#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:215
+#: js/gdm/authPrompt.js:319 js/ui/components/networkAgent.js:215
 #: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
 #: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
 #: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
@@ -726,19 +726,19 @@ msgstr "Prihlasovanie trvalo príliš dlho, skúste to prosím znovu"
 msgid "Login Window"
 msgstr "Prihlasovacie okno"
 
-#: js/gdm/util.js:497
+#: js/gdm/util.js:498
 msgid "Authentication error"
 msgstr "Chyba pri overovaní totožnosti"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:728
+#: js/gdm/util.js:729
 msgid "(or swipe finger across reader)"
 msgstr "(alebo prejdite prstom po čítačke)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:733
+#: js/gdm/util.js:734
 msgid "(or place finger on reader)"
 msgstr "(alebo priložte prst na čítačku)"
 
@@ -837,17 +837,17 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Uzamknúť otočenie obrazovky"
 
-#: js/misc/util.js:139
+#: js/misc/util.js:132
 msgid "Command not found"
 msgstr "Príkaz nebol nájdený"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:179
+#: js/misc/util.js:172
 msgid "Could not parse command:"
 msgstr "Nepodarilo sa analyzovať príkaz:"
 
-#: js/misc/util.js:187
+#: js/misc/util.js:180
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Spustenie „%s“ zlyhalo:"
@@ -1232,11 +1232,11 @@ msgstr "Externá jednotka bola pripojená"
 msgid "External drive disconnected"
 msgstr "Externá jednotka bola odpojená"
 
-#: js/ui/components/automountManager.js:207
+#: js/ui/components/automountManager.js:210
 msgid "Unable to unlock volume"
 msgstr "Nepodarilo sa odomknúť zväzok"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:211
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Nainštalovaná verzia programu udisks nepodporuje nastavenie PIM"
 
@@ -1274,11 +1274,11 @@ msgid "Service"
 msgstr "Služba"
 
 #: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:408
-#: js/ui/components/networkAgent.js:751 js/ui/components/networkAgent.js:772
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
 msgid "Authentication required"
 msgstr "Požaduje sa overenie totožnosti"
 
-#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:752
+#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:746
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1287,7 +1287,7 @@ msgstr ""
 "Na prístup do bezdrôtovej siete „%s“ sú vyžadované heslá alebo šifrovacie "
 "kľúče."
 
-#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:756
+#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
 msgstr "Overenie totožnosti k drôtovej sieti 802.1X"
 
@@ -1295,15 +1295,15 @@ msgstr "Overenie totožnosti k drôtovej sieti 802.1X"
 msgid "Network name"
 msgstr "Názov siete"
 
-#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:760
+#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:754
 msgid "DSL authentication"
 msgstr "Overenie totožnosti k DSL"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:765
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:759
 msgid "PIN code required"
 msgstr "Požaduje sa kód PIN"
 
-#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:766
+#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:760
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Pre zariadenie mobilnej širokopásmovej siete je potrebný kód PIN"
 
@@ -1311,14 +1311,14 @@ msgstr "Pre zariadenie mobilnej širokopásmovej siete je potrebný kód PIN"
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:757
-#: js/ui/components/networkAgent.js:761 js/ui/components/networkAgent.js:773
-#: js/ui/components/networkAgent.js:777
+#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Na pripojenie k „%s“ sa požaduje heslo."
 
-#: js/ui/components/networkAgent.js:776
+#: js/ui/components/networkAgent.js:770
 msgid "VPN password"
 msgstr "Heslo siete VPN"
 
@@ -1887,7 +1887,7 @@ msgstr "Stlačte akýkoľvek kláves na skončenie"
 #. in your language, you can use the word for "Overview".
 #: js/ui/panel.js:425
 msgid "Activities"
-msgstr "Aktivity"
+msgstr "Činnosti"
 
 #: js/ui/panel.js:506
 msgctxt "System menu in the top bar"
@@ -2588,23 +2588,23 @@ msgstr "Iba vstavaný"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:374
+#: js/ui/unlockDialog.js:380
 msgid "%A %B %-d"
 msgstr "%A, %e. %B"
 
-#: js/ui/unlockDialog.js:380
+#: js/ui/unlockDialog.js:386
 msgid "Swipe up to unlock"
 msgstr "Odomknete potiahnutím nahor"
 
-#: js/ui/unlockDialog.js:381
+#: js/ui/unlockDialog.js:387
 msgid "Click or press a key to unlock"
 msgstr "Odomknete kliknutím alebo stlačením klávesy"
 
-#: js/ui/unlockDialog.js:564
+#: js/ui/unlockDialog.js:570
 msgid "Unlock Window"
 msgstr "Odomykacie okno"
 
-#: js/ui/unlockDialog.js:573
+#: js/ui/unlockDialog.js:579
 msgid "Log in as another user"
 msgstr "Prihlásiť ako iný používateľ"
 
@@ -2753,12 +2753,12 @@ msgstr "Zoznam možných režimov"
 msgid "Force animations to be enabled"
 msgstr "Vynúti zapnutie animácií"
 
-#: src/shell-app.c:253
+#: src/shell-app.c:252
 msgctxt "program"
 msgid "Unknown"
 msgstr "Neznámy"
 
-#: src/shell-app.c:504
+#: src/shell-app.c:503
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Zlyhalo spustenie „%s“"
@@ -2802,15 +2802,15 @@ msgstr ""
 "Rozšírenia prostredia GNOME spravujú aktualizácie rozšírení, konfiguráciu "
 "predvolieb rozšírení a odstraňovanie alebo zakázanie nechcených rozšírení."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:79
 msgid "Main Window"
 msgstr "Hlavné okno"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:80
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:83
 msgid "Available Updates"
 msgstr "Dostupné aktualizácie"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:84
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:87
 msgid "Search View"
 msgstr "Zobrazenie vyhľadávania"
 
@@ -4191,11 +4191,11 @@ msgstr "Systémové zvuky"
 #~ msgstr ""
 #~ "Konfiguruje maximálnu úroveň presnosti určenia polohy, ktorú aplikácie "
 #~ "môžu získať. Povolené sú voľby 'off' (zakáže sledovanie polohy), "
-#~ "'country' (krajina), 'city' (mesto), 'neighborhood' (okolie), "
-#~ "'street' (ulica), 'exact' (presne, pri čom je štandardne požadované "
-#~ "použitie prijímača GPS). Uvedomte si, že toto nastavenie ovplyvňuje "
-#~ "povolenia GeoClue a aplikácie môžu tiež získať údaje o polohe použitím "
-#~ "sieťových prostriedkov (aj keď prinajlepšom s presnosťou na ulicu)."
+#~ "'country' (krajina), 'city' (mesto), 'neighborhood' (okolie), 'street' "
+#~ "(ulica), 'exact' (presne, pri čom je štandardne požadované použitie "
+#~ "prijímača GPS). Uvedomte si, že toto nastavenie ovplyvňuje povolenia "
+#~ "GeoClue a aplikácie môžu tiež získať údaje o polohe použitím sieťových "
+#~ "prostriedkov (aj keď prinajlepšom s presnosťou na ulicu)."
 
 #~ msgid "Arrangement of buttons on the titlebar"
 #~ msgstr "Usporiadanie tlačidiel na titulku okna"
