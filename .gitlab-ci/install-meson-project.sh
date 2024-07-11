@@ -12,6 +12,7 @@ usage() {
 	  -Dkey=val      Option to pass on to meson
 	  --subdir       Build subdirectory instead of whole project
 	  --prepare      Script to run before build
+	  --libdir       Setup the project with a different libdir
 
 	  -h, --help     Display this help
 
@@ -23,6 +24,7 @@ TEMP=$(getopt \
   --options='D:h' \
   --longoptions='subdir:' \
   --longoptions='prepare:' \
+  --longoptions='libdir:' \
   --longoptions='help' \
   -- "$@")
 
@@ -47,6 +49,11 @@ while true; do
 
     --prepare)
       PREPARE=$2
+      shift 2
+    ;;
+
+    --libdir)
+      MESON_OPTIONS+=( --libdir=$2 )
       shift 2
     ;;
 
