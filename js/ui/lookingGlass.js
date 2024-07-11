@@ -333,7 +333,7 @@ class Result extends St.BoxLayout {
 const WindowList = GObject.registerClass({
 }, class WindowList extends St.BoxLayout {
     _init(lookingGlass) {
-        super._init({name: 'Windows', vertical: true, style: 'spacing: 8px'});
+        super._init({name: 'LookingGlassWindows', vertical: true});
         let tracker = Shell.WindowTracker.get_default();
         this._updateId = Main.initializeDeferredWork(this, this._updateWindowList.bind(this));
         global.display.connect('window-created', this._updateWindowList.bind(this));
@@ -356,17 +356,22 @@ const WindowList = GObject.registerClass({
                 metaWindow.connect('unmanaged', this._updateWindowList.bind(this));
                 metaWindow._lookingGlassManaged = true;
             }
-            let box = new St.BoxLayout({vertical: true});
+            let box = new St.BoxLayout({vertical: true, style_class: 'lg-window'});
             this.add_child(box);
+
+            let header = new St.BoxLayout({vertical: true, style_class: 'lg-window-name'});
+            box.add_child(header);
+
             let windowLink = new ObjLink(this._lookingGlass, metaWindow, metaWindow.title);
-            box.add_child(windowLink);
-            let propsBox = new St.BoxLayout({vertical: true, style: 'padding-left: 6px;'});
+            header.add_child(windowLink);
+
+            let propsBox = new St.BoxLayout({vertical: true, style_class: 'lg-window-props-box'});
             box.add_child(propsBox);
             propsBox.add_child(new St.Label({text: `wmclass: ${metaWindow.get_wm_class()}`}));
             let app = tracker.get_window_app(metaWindow);
             if (app != null && !app.is_window_backed()) {
                 let icon = app.create_icon_texture(22);
-                let propBox = new St.BoxLayout({style: 'spacing: 6px; '});
+                let propBox = new St.BoxLayout({style_class: 'lg-window-props'});
                 propsBox.add_child(propBox);
                 propBox.add_child(new St.Label({text: 'app: '}));
                 let appLink = new ObjLink(this._lookingGlass, app, app.get_id());
@@ -435,7 +440,7 @@ class ObjInspector extends St.ScrollView {
         }
 
         button = new St.Button({
-            style_class: 'window-close',
+            style_class: 'lg-obj-inspector-close-button',
             icon_name: 'window-close-symbolic',
         });
         button.connect('clicked', this.close.bind(this));
@@ -716,7 +721,7 @@ export const Inspector = GObject.registerClass({
 const Extensions = GObject.registerClass({
 }, class Extensions extends St.BoxLayout {
     _init(lookingGlass) {
-        super._init({vertical: true, name: 'lookingGlassExtensions'});
+        super._init({vertical: true, name: 'LookingGlassExtensions'});
 
         this._lookingGlass = lookingGlass;
         this._noExtensions = new St.Label({
@@ -890,7 +895,7 @@ const ActorLink = GObject.registerClass({
     _init(actor) {
         this._arrow = new St.Icon({
             icon_name: 'pan-end-symbolic',
-            icon_size: 8,
+            icon_size: 12,
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
             pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
@@ -938,7 +943,7 @@ const ActorLink = GObject.registerClass({
 const ActorTreeViewer = GObject.registerClass(
 class ActorTreeViewer extends St.BoxLayout {
     _init(lookingGlass) {
-        super._init();
+        super._init({name: 'LookingGlassActors'});
 
         this._lookingGlass = lookingGlass;
         this._actorData = new Map();
@@ -1221,7 +1226,7 @@ const DebugFlags = GObject.registerClass(
 class DebugFlags extends St.BoxLayout {
     _init() {
         super._init({
-            name: 'lookingGlassDebugFlags',
+            name: 'LookingGlassDebugFlags',
             vertical: true,
             x_align: Clutter.ActorAlign.CENTER,
         });
@@ -1357,11 +1362,11 @@ class LookingGlass extends St.BoxLayout {
         toolbar.add_child(emptyBox);
         toolbar.add_child(notebook.tabControls);
 
-        this._evalBox = new St.BoxLayout({name: 'EvalBox', vertical: true});
+        this._evalBox = new St.BoxLayout({name: 'LookingGlassEvaluator', vertical: true});
         notebook.appendPage('Evaluator', this._evalBox);
 
         this._resultsArea = new St.BoxLayout({
-            name: 'ResultsArea',
+            style_class: 'evaluator-results',
             vertical: true,
             y_expand: true,
         });
