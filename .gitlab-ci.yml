@@ -54,7 +54,7 @@ workflow:
 .gnome-shell.fedora:
   variables:
     FDO_DISTRIBUTION_VERSION: 40
-    FDO_DISTRIBUTION_TAG: '2024-02-23.0'
+    FDO_DISTRIBUTION_TAG: '2024-07-11.0'
     FDO_DISTRIBUTION_PACKAGES:
       gjs
       nodejs
