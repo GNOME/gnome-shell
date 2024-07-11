@@ -387,6 +387,8 @@ const ObjInspector = GObject.registerClass(
 class ObjInspector extends St.ScrollView {
     _init(lookingGlass) {
         super._init({
+            name: 'LookingGlassPropertyInspector',
+            style_class: 'lg-dialog',
             pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
         });
 
@@ -396,8 +398,6 @@ class ObjInspector extends St.ScrollView {
         this._parentList = [];
 
         this._container = new St.BoxLayout({
-            name: 'LookingGlassPropertyInspector',
-            style_class: 'lg-dialog',
             vertical: true,
             x_expand: true,
             y_expand: true,
