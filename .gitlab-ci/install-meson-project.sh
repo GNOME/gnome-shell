@@ -13,6 +13,7 @@ usage() {
 	  --subdir       Build subdirectory instead of whole project
 	  --prepare      Script to run before build
 	  --libdir       Setup the project with a different libdir
+	  --destdir      Install the project to an additional destdir
 
 	  -h, --help     Display this help
 
@@ -25,6 +26,7 @@ TEMP=$(getopt \
   --longoptions='subdir:' \
   --longoptions='prepare:' \
   --longoptions='libdir:' \
+  --longoptions='destdir:' \
   --longoptions='help' \
   -- "$@")
 
@@ -34,6 +36,7 @@ unset TEMP
 MESON_OPTIONS=()
 SUBDIR=.
 PREPARE=:
+DESTDIR=""
 
 while true; do
   case "$1" in
@@ -54,6 +57,11 @@ while true; do
 
     --libdir)
       MESON_OPTIONS+=( --libdir=$2 )
+      shift 2
+    ;;
+
+    --destdir)
+      DESTDIR=$2
       shift 2
     ;;
 
@@ -85,5 +93,11 @@ git clone --depth 1 "$REPO_URL" -b "$COMMIT" "$CHECKOUT_DIR"
 pushd "$CHECKOUT_DIR/$SUBDIR"
 sh -c "$PREPARE"
 meson setup --prefix=/usr _build "${MESON_OPTIONS[@]}"
+
+# Install it to an additional directory e.g., system extension directory
+if [ -n "${DESTDIR}" ]; then
+    sudo meson install -C _build --destdir=$DESTDIR
+fi
+
 sudo meson install -C _build
 popd
