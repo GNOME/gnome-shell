@@ -1998,9 +1998,9 @@ export const ScreenshotUI = GObject.registerClass({
                     _('Screencasts'),
                     /* Translators: this is a filename used for screencast
                      * recording, where "%d" and "%t" date and time, e.g.
-                     * "Screencast from 07-17-2013 10:00:46 PM" */
+                     * "Screencast From 07-17-2013 10:00:46 PM" */
                     /* xgettext:no-c-format */
-                    _('Screencast from %d %t'),
+                    _('Screencast From %d %t'),
                 ]),
                 {'draw-cursor': new GLib.Variant('b', drawCursor)});
 
@@ -2286,7 +2286,7 @@ function _storeScreenshot(bytes, pixbuf) {
         const timestamp = time.format('%Y-%m-%d %H-%M-%S');
         // Translators: this is the name of the file that the screenshot is
         // saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-        const name = _('Screenshot from %s').format(timestamp);
+        const name = _('Screenshot From %s').format(timestamp);
 
         // If the target file already exists, try appending a suffix with an
         // increasing number to it.
