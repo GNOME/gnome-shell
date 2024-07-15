@@ -1374,6 +1374,7 @@ st_theme_node_maybe_prerender_background (StThemeNodePaintState *state,
   gboolean has_inset_box_shadow;
   gboolean has_large_corners;
   StShadow *box_shadow_spec;
+  StCorner corner_id;
 
   box_shadow_spec = st_theme_node_get_box_shadow (node);
 
@@ -1415,6 +1416,9 @@ st_theme_node_maybe_prerender_background (StThemeNodePaintState *state,
       }
     }
   }
+
+  for (corner_id = 0; corner_id < 4; corner_id++)
+    g_clear_object (&state->corner_pipeline[corner_id]);
 
   state->corner_pipeline[ST_CORNER_TOPLEFT] =
     st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_TOPLEFT);
