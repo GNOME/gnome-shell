@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-19 20:50+0000\n"
-"PO-Revision-Date: 2024-03-21 01:17+0300\n"
+"POT-Creation-Date: 2024-04-29 17:19+0000\n"
+"PO-Revision-Date: 2024-05-06 05:38+0300\n"
 "Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -129,7 +129,7 @@ msgstr "Pencerenin ekran görüntüsünü al"
 msgid "Record a screencast interactively"
 msgstr "Etkileşimli olarak ekranı kaydet"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1294
 msgid "System"
 msgstr "Sistem"
 
@@ -556,7 +556,7 @@ msgid "Network Login"
 msgstr "Ağdan Oturum Açma"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:277
+#: subprojects/extensions-app/data/ui/extensions-window.ui:275
 msgid "Something’s gone wrong"
 msgstr "Bir şeyler ters gitti"
 
@@ -582,17 +582,17 @@ msgid "Visit extension homepage"
 msgstr "Uzantı ana sayfasını ziyaret et"
 
 #: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
-#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
+#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:115
 #: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
 #: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:384
 #: js/ui/shellMountOperation.js:394
 msgid "Cancel"
 msgstr "İptal"
 
-#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
-#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:288
+#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:215
+#: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
+#: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
+#: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
 #: js/ui/shellMountOperation.js:334
 msgid "Password"
 msgstr "Parola"
@@ -650,10 +650,10 @@ msgstr "Oturum Zaten Çalışıyor"
 #: js/gdm/loginDialog.js:454
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
-"data loss."
+"data loss"
 msgstr ""
 "Durmaya zorlamak, çalışan tüm uygulamaları ve süreçleri durduracağından veri "
-"yitirilebilir."
+"yitirilebilir"
 
 #: js/gdm/loginDialog.js:474
 msgid "Force Stop"
@@ -670,8 +670,8 @@ msgstr "Listede yok mu?"
 msgid "(e.g., user or %s)"
 msgstr "(örneğin, kullanıcı veya %s)"
 
-#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:258
-#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
+#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:259
+#: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:328
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
@@ -1147,15 +1147,15 @@ msgstr "Tüm bildirimleri temizle"
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
 #, javascript-format
-msgid "“%s” is not responding."
-msgstr "“%s” yanıtlamıyor."
+msgid "“%s” Is Not Responding"
+msgstr "“%s” Yanıtlamıyor"
 
 #: js/ui/closeDialog.js:45
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
-"quit entirely."
+"quit entirely"
 msgstr ""
-"Sürmesini bekleyebilir ya da uygulamayı tümüyle kapanmaya zorlayabilirsiniz."
+"Sürmesini bekleyebilir ya da uygulamayı tümüyle kapanmaya zorlayabilirsiniz"
 
 #: js/ui/closeDialog.js:73
 msgid "Force Quit"
@@ -1186,79 +1186,78 @@ msgstr "Kurulu udisks sürümü PIM ayarını desteklemiyor"
 msgid "Open with %s"
 msgstr "%s ile Aç"
 
-#: js/ui/components/networkAgent.js:96
+#: js/ui/components/networkAgent.js:97
 msgid ""
-"Alternatively you can connect by pushing the “WPS” button on your router."
+"Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr ""
 "Diğer seçenek olarak, yönlendiricinizde “WPS” düğmesini kullanarak "
-"bağlayabilirsiniz."
+"bağlayabilirsiniz"
 
-#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
+#: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "Bağlan"
 
-#: js/ui/components/networkAgent.js:223
+#: js/ui/components/networkAgent.js:224
 msgid "Key"
 msgstr "Anahtar"
 
-#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
+#: js/ui/components/networkAgent.js:275 js/ui/components/networkAgent.js:314
 msgid "Private key password"
 msgstr "Özel anahtar parolası"
 
-#: js/ui/components/networkAgent.js:307
+#: js/ui/components/networkAgent.js:308
 msgid "Identity"
 msgstr "Kimlik"
 
-#: js/ui/components/networkAgent.js:333
+#: js/ui/components/networkAgent.js:334
 msgid "Service"
 msgstr "Hizmet"
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
-#: js/ui/components/networkAgent.js:750 js/ui/components/networkAgent.js:771
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:408
+#: js/ui/components/networkAgent.js:751 js/ui/components/networkAgent.js:772
 msgid "Authentication required"
 msgstr "Kimlik doğrulaması gerekli"
 
-#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:752
 #, javascript-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"“%s”."
+"Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr ""
-"“%s” kablosuz ağına erişmek için parola veya şifreleme anahtarları gerekiyor."
+"“%s” kablosuz ağına erişmek için parola ya da şifreleme anahtarları gerekiyor"
 
-#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:755
+#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:756
 msgid "Wired 802.1X authentication"
 msgstr "Kablolu 802.1X kimlik doğrulaması"
 
-#: js/ui/components/networkAgent.js:379
+#: js/ui/components/networkAgent.js:380
 msgid "Network name"
 msgstr "Ağ adı"
 
-#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:760
 msgid "DSL authentication"
 msgstr "DSL kimlik doğrulama"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:765
 msgid "PIN code required"
 msgstr "PIN kodu gerekli"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:765
+#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:766
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Mobil geniş bant aygıtı için PIN kodu gerekli"
 
-#: js/ui/components/networkAgent.js:397
+#: js/ui/components/networkAgent.js:398
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:756
-#: js/ui/components/networkAgent.js:760 js/ui/components/networkAgent.js:772
-#: js/ui/components/networkAgent.js:776
+#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:757
+#: js/ui/components/networkAgent.js:761 js/ui/components/networkAgent.js:773
+#: js/ui/components/networkAgent.js:777
 #, javascript-format
-msgid "A password is required to connect to “%s”."
-msgstr "“%s”e bağlanmak için parola gerekli."
+msgid "A password is required to connect to “%s”"
+msgstr "“%s”e bağlanmak için parola gerekli"
 
-#: js/ui/components/networkAgent.js:775
+#: js/ui/components/networkAgent.js:776
 msgid "VPN password"
 msgstr "VPN parolası"
 
@@ -1353,8 +1352,8 @@ msgid "No Events"
 msgstr "Olay Yok"
 
 #: js/ui/dateMenu.js:413
-msgid "Add world clocks…"
-msgstr "Dünya saatleri ekle…"
+msgid "Add World Clocks…"
+msgstr "Dünya Saatleri Ekle…"
 
 #: js/ui/dateMenu.js:414
 msgid "World Clocks"
@@ -1365,20 +1364,20 @@ msgid "Loading…"
 msgstr "Yükleniyor…"
 
 #: js/ui/dateMenu.js:714
-msgid "Go online for weather information"
-msgstr "Hava durumu bilgisi için çevrim içi olun"
+msgid "Go Online for Weather Information"
+msgstr "Hava Durumu Bilgisi İçin Çevrim İçi Olun"
 
 #: js/ui/dateMenu.js:716
-msgid "Weather information is currently unavailable"
-msgstr "Hava durumu bilgisi şu anda kullanılabilir değil"
+msgid "Weather Information Unavailable"
+msgstr "Hava Durumu Bilgisi Kullanılamıyor"
 
 #: js/ui/dateMenu.js:726
 msgid "Weather"
 msgstr "Hava Durumu"
 
 #: js/ui/dateMenu.js:728
-msgid "Select weather location…"
-msgstr "Hava durumu konumu seç…"
+msgid "Select Weather Location…"
+msgstr "Hava Durumu Konumu Seç…"
 
 #: js/ui/endSessionDialog.js:48
 #, javascript-format
@@ -1393,15 +1392,15 @@ msgstr "Oturumu Kapat"
 
 #: js/ui/endSessionDialog.js:52
 #, javascript-format
-msgid "%s will be logged out automatically in %d second."
-msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s oturumu %d saniyede kendiliğinden kapatılacak."
+msgid "%s will be logged out automatically in %d second"
+msgid_plural "%s will be logged out automatically in %d seconds"
+msgstr[0] "%s oturumu %d saniyede kendiliğinden kapatılacak"
 
 #: js/ui/endSessionDialog.js:58
 #, javascript-format
-msgid "You will be logged out automatically in %d second."
-msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "%d saniyede oturumunuz kendiliğinden kapatılacak."
+msgid "You will be logged out automatically in %d second"
+msgid_plural "You will be logged out automatically in %d seconds"
+msgstr[0] "Oturumunuz %d saniyede kendiliğinden kapatılacak"
 
 #: js/ui/endSessionDialog.js:65
 msgctxt "button"
@@ -1420,9 +1419,9 @@ msgstr "Güncellemeleri Kur ve Gücü Kapat"
 
 #: js/ui/endSessionDialog.js:75
 #, javascript-format
-msgid "The system will power off automatically in %d second."
-msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Sistem %d saniyede kendiliğinden kapanacak."
+msgid "The system will power off automatically in %d second"
+msgid_plural "The system will power off automatically in %d seconds"
+msgstr[0] "Sistem %d saniyede kendiliğinden kapatılacak"
 
 #: js/ui/endSessionDialog.js:79 js/ui/endSessionDialog.js:98
 msgctxt "checkbox"
@@ -1446,9 +1445,9 @@ msgstr "Güncellemeleri Kur ve Yeniden Başlat"
 
 #: js/ui/endSessionDialog.js:94
 #, javascript-format
-msgid "The system will restart automatically in %d second."
-msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Sistem %d saniyede kendiliğinden yeniden başlayacak."
+msgid "The system will restart automatically in %d second"
+msgid_plural "The system will restart automatically in %d seconds"
+msgstr[0] "Sistem %d saniyede kendiliğinden yeniden başlayacak"
 
 #: js/ui/endSessionDialog.js:102
 msgctxt "button"
@@ -1462,12 +1461,11 @@ msgstr "Yeniden Başlat ve Güncellemeleri Kur"
 
 #: js/ui/endSessionDialog.js:113
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
-"The system will automatically restart and install updates in %d seconds."
+"The system will automatically restart and install updates in %d seconds"
 msgstr[0] ""
-"Sistem %d saniyede kendiliğinden yeniden başlayacak ve güncellemeleri "
-"kuracak."
+"Sistem %d saniyede kendiliğinden yeniden başlayacak ve güncellemeleri kuracak"
 
 #: js/ui/endSessionDialog.js:120 js/ui/endSessionDialog.js:141
 msgctxt "button"
@@ -1503,8 +1501,8 @@ msgstr ""
 "olduğundan emin olun."
 
 #: js/ui/endSessionDialog.js:284
-msgid "Low battery power: please plug in before installing updates."
-msgstr "Düşük pil gücü: lütfen güncellemeleri kurmadan önce fişi takın."
+msgid "Low battery power: please plug in before installing updates"
+msgstr "Düşük pil gücü: lütfen güncellemeleri kurmadan önce fişi takın"
 
 #: js/ui/endSessionDialog.js:293
 msgid "Some applications are busy or have unsaved work"
@@ -1549,8 +1547,8 @@ msgid "Extension Updates Available"
 msgstr "Uzantı Güncellemeleri Var"
 
 #: js/ui/extensionSystem.js:355
-msgid "Extension updates are ready to be installed."
-msgstr "Uzantı güncellemeleri kuruluma hazır."
+msgid "Extension updates are ready to be installed"
+msgstr "Uzantı güncellemeleri kuruluma hazır"
 
 #: js/ui/inhibitShortcutsDialog.js:70
 msgid "Allow inhibiting shortcuts"
@@ -1569,8 +1567,8 @@ msgstr "Bir uygulama, kısayolları baskılamak istiyor"
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:81
 #, javascript-format
-msgid "You can restore shortcuts by pressing %s."
-msgstr "%s kısayoluyla, kısayolları geri yükleyebilirsiniz."
+msgid "You can restore shortcuts by pressing %s"
+msgstr "%s kısayoluyla, kısayolları geri yükleyebilirsiniz"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid "Slow Keys Turned On"
@@ -1640,8 +1638,8 @@ msgstr "Kurulu uzantı yok"
 #. Translators: argument is an extension UUID.
 #: js/ui/lookingGlass.js:785
 #, javascript-format
-msgid "%s has not emitted any errors."
-msgstr "%s, herhangi bir hata vermedi."
+msgid "%s has not emitted any errors"
+msgstr "%s, herhangi bir hata vermedi"
 
 #: js/ui/lookingGlass.js:791
 msgid "Hide Errors"
@@ -1717,8 +1715,8 @@ msgid "Screen Lock disabled"
 msgstr "Ekran Kilidi devre dışı"
 
 #: js/ui/main.js:390
-msgid "Screen Locking requires the GNOME display manager."
-msgstr "Ekran Kilitleme, GNOME ekran yöneticisi gerektirir."
+msgid "Screen Locking requires the GNOME display manager"
+msgstr "Ekran Kilitleme, GNOME ekran yöneticisi gerektirir"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
@@ -1973,8 +1971,8 @@ msgid "Searching…"
 msgstr "Aranıyor…"
 
 #: js/ui/search.js:833
-msgid "No results."
-msgstr "Sonuç yok."
+msgid "No results"
+msgstr "Sonuç yok"
 
 #: js/ui/search.js:964
 #, javascript-format
@@ -2004,8 +2002,8 @@ msgid "Hide Text"
 msgstr "Metni Gizle"
 
 #: js/ui/shellEntry.js:176
-msgid "Caps lock is on."
-msgstr "Caps lock açık."
+msgid "Caps lock is on"
+msgstr "Caps lock açık"
 
 #: js/ui/shellMountOperation.js:288
 msgid "Hidden Volume"
@@ -2023,18 +2021,18 @@ msgstr "Anahtar Dosyaları Kullanır"
 #: js/ui/shellMountOperation.js:302
 #, javascript-format
 msgid ""
-"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
 msgstr ""
 "Anahtar dosyaları kullanan bölümün kilidini açmak için <i>%s</i> aracını "
-"kullanın."
+"kullanın"
 
 #: js/ui/shellMountOperation.js:306
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
-"keyfiles."
+"keyfiles"
 msgstr ""
 "Anahtar dosyaları kullanan bölümün kilidini açmak için <i>Diskler</i> gibi "
-"dış araca gereksinirsiniz."
+"dış araca gereksinirsiniz"
 
 #: js/ui/shellMountOperation.js:314
 msgid "PIM Number"
@@ -2055,8 +2053,8 @@ msgid "Open %s"
 msgstr "%s’i Aç"
 
 #: js/ui/shellMountOperation.js:438
-msgid "The PIM must be a number or empty."
-msgstr "PIM bir sayı veya boşluk olmalı."
+msgid "The PIM must be a number or empty"
+msgstr "PIM bir sayı ya da boşluk olmalı"
 
 #: js/ui/status/accessibility.js:36
 msgid "Accessibility"
@@ -2223,8 +2221,8 @@ msgid "The app %s wants to access your location"
 msgstr "%s uygulaması konumunuza erişmek istiyor"
 
 #: js/ui/status/location.js:351
-msgid "Location access can be changed at any time from the privacy settings."
-msgstr "Konum erişimi, gizlilik ayarlarından her zaman değiştirilebilir."
+msgid "Location access can be changed at any time from the privacy settings"
+msgstr "Konum erişimi, gizlilik ayarlarından her zaman değiştirilebilir"
 
 #: js/ui/status/location.js:359
 msgid "Deny Access"
@@ -2422,8 +2420,8 @@ msgstr "Yetkisiz Thunderbolt aygıtı"
 
 #: js/ui/status/thunderbolt.js:315
 msgid ""
-"New device has been detected and needs to be authorized by an administrator."
-msgstr "Yeni aygıt saptandı ve yöneticice yetkilendirilmelidir."
+"New device has been detected and needs to be authorized by an administrator"
+msgstr "Yeni aygıt saptandı ve yöneticice yetkilendirilmelidir"
 
 #: js/ui/status/thunderbolt.js:321
 msgid "Thunderbolt authorization error"
@@ -2519,8 +2517,8 @@ msgid "Welcome to %s"
 msgstr "%s’a Hoş Geldiniz"
 
 #: js/ui/welcomeDialog.js:54
-msgid "If you want to learn your way around, check out the tour."
-msgstr "Eğer yolu öğrenmek istiyorsanız, gezintiye çıkın."
+msgid "If you want to learn your way around, check out the tour"
+msgstr "Eğer yolu öğrenmek istiyorsanız, gezintiye çıkın"
 
 #: js/ui/welcomeDialog.js:63
 msgid "Skip"
@@ -2660,8 +2658,8 @@ msgid "Failed to launch “%s”"
 msgstr "“%s” başlatılamadı"
 
 #: src/shell-keyring-prompt.c:764
-msgid "Passwords do not match."
-msgstr "Parolalar eşleşmiyor."
+msgid "Passwords do not match"
+msgstr "Parolalar eşleşmiyor"
 
 #: src/shell-keyring-prompt.c:772
 msgid "Password cannot be blank"
@@ -2697,15 +2695,15 @@ msgstr ""
 "GNOME Uzantılar; uzantıları güncellemeyi, uzantı tercihlerini yapılandırmayı "
 "ve istenmeyen uzantıları kaldırmayı veya devre dışı bırakmanızı sağlar."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
 msgid "Main Window"
 msgstr "Ana Pencere"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:80
 msgid "Available Updates"
 msgstr "Kullanılabilir Güncellemeler"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:84
 msgid "Search View"
 msgstr "Arama Görünümü"
 
@@ -2784,33 +2782,33 @@ msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d uzantı sonraki oturum açılışında güncellenecek."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:21
+#: subprojects/extensions-app/data/ui/extension-row.ui:22
 msgid "Error Details"
 msgstr "Hata Ayrıntıları"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:61
+#: subprojects/extensions-app/data/ui/extension-row.ui:62
 msgid "Updates Details"
 msgstr "Güncelleme Ayrıntıları"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:71
+#: subprojects/extensions-app/data/ui/extension-row.ui:72
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
 msgstr ""
 "Bu uzantının yeni sürümü hazır ve sonraki oturum açılışında yüklenecek."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:107
+#: subprojects/extensions-app/data/ui/extension-row.ui:104
 msgid "Extension Details"
 msgstr "Uzantı Ayrıntıları"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:193
+#: subprojects/extensions-app/data/ui/extension-row.ui:192
 msgid "_Website"
 msgstr "_Web Sitesi"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:220
+#: subprojects/extensions-app/data/ui/extension-row.ui:219
 msgid "_Settings"
 msgstr "_Ayarlar"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:247
+#: subprojects/extensions-app/data/ui/extension-row.ui:246
 msgid "_Remove…"
 msgstr "_Kaldır…"
 
@@ -2834,11 +2832,11 @@ msgstr "Uzantı ara"
 msgid "_Extensions"
 msgstr "_Uzantılar"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:143
+#: subprojects/extensions-app/data/ui/extensions-window.ui:139
 msgid "More Information"
 msgstr "Daha Çok Bilgi"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:153
+#: subprojects/extensions-app/data/ui/extensions-window.ui:151
 msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
@@ -2846,31 +2844,31 @@ msgstr ""
 "Uzantılar başarım ve kararlılık sorunlarına neden olabilir. Sisteminizde "
 "sorun yaşarsanız tüm uzantıları devre dışı bırakmanız önerilir."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:180
+#: subprojects/extensions-app/data/ui/extensions-window.ui:178
 msgid "User Extensions"
 msgstr "Kullanıcı Uzantıları"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:200
+#: subprojects/extensions-app/data/ui/extensions-window.ui:198
 msgid "System Extensions"
 msgstr "Sistem Uzantıları"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:235
+#: subprojects/extensions-app/data/ui/extensions-window.ui:233
 msgid "Search Results"
 msgstr "Arama Sonuçları"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:254
+#: subprojects/extensions-app/data/ui/extensions-window.ui:252
 msgid "No Results Found"
 msgstr "Sonuç Bulunamadı"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:255
-msgid "Try a different search."
-msgstr "Başka arama deneyin."
+#: subprojects/extensions-app/data/ui/extensions-window.ui:253
+msgid "Try a different search"
+msgstr "Başka arama deneyin"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:266
+#: subprojects/extensions-app/data/ui/extensions-window.ui:264
 msgid "No Installed Extensions"
 msgstr "Yüklü Uzantı Yok"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:267
+#: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
@@ -2878,7 +2876,7 @@ msgstr ""
 "Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a> adresine göz atın."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:278
+#: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
