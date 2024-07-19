@@ -853,7 +853,7 @@ class ControlsManager extends St.Widget {
             delay: STARTUP_ANIMATION_TIME,
             duration: STARTUP_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => callback(),
+            onStopped: () => callback(),
         });
     }
 
