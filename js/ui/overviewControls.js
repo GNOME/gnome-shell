@@ -797,7 +797,7 @@ class ControlsManager extends St.Widget {
         this._stateAdjustment.gestureInProgress = false;
     }
 
-    async runStartupAnimation(callback) {
+    async runStartupAnimation() {
         this._ignoreShowAppsButtonToggle = true;
 
         this.prepareToEnterOverview();
@@ -839,14 +839,16 @@ class ControlsManager extends St.Widget {
         });
 
         // The Dash rises from the bottom. This is the last animation to finish,
-        // so run the callback there.
+        // so resolve the promise there.
         this.dash.translation_y = this.dash.height + this.dash.margin_bottom;
-        this.dash.ease({
-            translation_y: 0,
-            delay: STARTUP_ANIMATION_TIME,
-            duration: STARTUP_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onStopped: () => callback(),
+        return new Promise(resolve => {
+            this.dash.ease({
+                translation_y: 0,
+                delay: STARTUP_ANIMATION_TIME,
+                duration: STARTUP_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onStopped: () => resolve(),
+            });
         });
     }
 

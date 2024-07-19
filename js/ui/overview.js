@@ -90,8 +90,8 @@ class OverviewActor extends St.BoxLayout {
         this._controls.animateFromOverview(callback);
     }
 
-    runStartupAnimation(callback) {
-        this._controls.runStartupAnimation(callback);
+    async runStartupAnimation() {
+        await this._controls.runStartupAnimation();
     }
 
     get dash() {
@@ -666,7 +666,7 @@ export class Overview extends Signals.EventEmitter {
         this._overview.controls.appDisplay.selectApp(id);
     }
 
-    runStartupAnimation(callback) {
+    async runStartupAnimation() {
         Main.panel.style = 'transition-duration: 0ms;';
 
         this._shown = true;
@@ -679,23 +679,19 @@ export class Overview extends Signals.EventEmitter {
 
         this._changeShownState(OverviewShownState.SHOWING);
 
-        this._overview.runStartupAnimation(() => {
-            // Overview got hidden during startup animation
-            if (this._shownState !== OverviewShownState.SHOWING) {
-                callback();
-                return;
-            }
+        await this._overview.runStartupAnimation();
 
-            if (!this._syncGrab()) {
-                callback();
-                this.hide();
-                return;
-            }
+        // Overview got hidden during startup animation
+        if (this._shownState !== OverviewShownState.SHOWING)
+            return;
 
-            Main.panel.style = null;
-            this._changeShownState(OverviewShownState.SHOWN);
-            callback();
-        });
+        if (!this._syncGrab()) {
+            this.hide();
+            return;
+        }
+
+        Main.panel.style = null;
+        this._changeShownState(OverviewShownState.SHOWN);
     }
 
     getShowAppsButton() {

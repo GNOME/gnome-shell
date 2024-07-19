@@ -763,39 +763,47 @@ export const LayoutManager = GObject.registerClass({
         else
             this.emit('startup-prepared');
 
-        this._startupAnimation();
-    }
-
-    _startupAnimation() {
-        if (Meta.is_restart())
+        try {
+            await this._startupAnimation();
+        } finally {
             this._startupAnimationComplete();
-        else if (Main.sessionMode.isGreeter)
-            this._startupAnimationGreeter();
-        else
-            this._startupAnimationSession();
+        }
     }
 
-    _startupAnimationGreeter() {
-        this.panelBox.ease({
-            translation_y: 0,
-            duration: STARTUP_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onStopped: () => this._startupAnimationComplete(),
+    async _startupAnimation() {
+        if (Meta.is_restart())
+            return;
+
+        if (Main.sessionMode.isGreeter)
+            await this._startupAnimationGreeter();
+        else
+            await this._startupAnimationSession();
+    }
+
+    async _startupAnimationGreeter() {
+        await new Promise(resolve => {
+            this.panelBox.ease({
+                translation_y: 0,
+                duration: STARTUP_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onStopped: () => resolve(),
+            });
         });
     }
 
-    _startupAnimationSession() {
-        const onStopped = () => this._startupAnimationComplete();
+    async _startupAnimationSession() {
         if (Main.sessionMode.hasOverview) {
-            Main.overview.runStartupAnimation(onStopped);
+            await Main.overview.runStartupAnimation();
         } else {
-            this.uiGroup.ease({
-                scale_x: 1,
-                scale_y: 1,
-                opacity: 255,
-                duration: STARTUP_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped,
+            await new Promise(resolve => {
+                this.uiGroup.ease({
+                    scale_x: 1,
+                    scale_y: 1,
+                    opacity: 255,
+                    duration: STARTUP_ANIMATION_TIME,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    onStopped: () => resolve(),
+                });
             });
         }
     }
