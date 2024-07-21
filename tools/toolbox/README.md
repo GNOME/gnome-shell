@@ -7,6 +7,8 @@ install software on the host.
 It is suitable for gnome-shell development, and we maintain a number of scripts
 to make its use easier and more convenient.
 
+When things go wrong, please check out the [troubleshooting section][troubleshooting] in the [GNOME Project Handbook][handbook].
+
 ## create-toolbox.sh
 Create a new toolbox for gnome-shell development.
 
@@ -59,3 +61,5 @@ Run the script with `--help` to see all available options.
 [mutter]: https://gitlab.gnome.org/GNOME/mutter
 [builder]: https://apps.gnome.org/Builder/
 [meson]: https://mesonbuild.com
+[handbook]: https://handbook.gnome.org/
+[troubleshooting]: https://handbook.gnome.org/development/toolbx.html#when-things-go-wrong
