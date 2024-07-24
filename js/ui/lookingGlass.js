@@ -1222,6 +1222,25 @@ class UnsafeModeDebugFlag extends DebugFlag {
     }
 });
 
+const DebugControlExportedDebugFlag = GObject.registerClass(
+class DebugControlExportedDebugFlag extends DebugFlag {
+    _init() {
+        super._init('debug-control');
+    }
+
+    _isEnabled() {
+        return global.context.get_debug_control().exported;
+    }
+
+    _enable() {
+        global.context.get_debug_control().exported = true;
+    }
+
+    _disable() {
+        global.context.get_debug_control().exported = false;
+    }
+});
+
 const DebugFlags = GObject.registerClass(
 class DebugFlags extends St.BoxLayout {
     _init() {
@@ -1251,9 +1270,12 @@ class DebugFlags extends St.BoxLayout {
         for (const flagName of this._getFlagNames(Meta.DebugTopic))
             this.add_child(new MutterTopicDebugFlag(flagName));
 
+        // General / Context
+        this._addHeader('General');
         // MetaContext::unsafe-mode
-        this._addHeader('MetaContext');
         this.add_child(new UnsafeModeDebugFlag());
+        // DebugControl::exported
+        this.add_child(new DebugControlExportedDebugFlag());
     }
 
     _addHeader(title) {
