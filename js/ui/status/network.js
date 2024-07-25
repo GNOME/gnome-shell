@@ -936,8 +936,8 @@ const WirelessNetwork = GObject.registerClass({
 
     canAutoconnect() {
         const canAutoconnect =
-            this._securityTypes !== NM.UtilsSecurityType.WPA_ENTERPRISE &&
-            this._securityTypes !== NM.UtilsSecurityType.WPA2_ENTERPRISE;
+            this._securityType !== NM.UtilsSecurityType.WPA_ENTERPRISE &&
+            this._securityType !== NM.UtilsSecurityType.WPA2_ENTERPRISE;
         return canAutoconnect;
     }
 
