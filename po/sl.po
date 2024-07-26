@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-07-19 18:56+0000\n"
-"PO-Revision-Date: 2024-07-19 22:40+0200\n"
+"POT-Creation-Date: 2024-07-26 10:18+0000\n"
+"PO-Revision-Date: 2024-07-26 13:35+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -1217,7 +1217,7 @@ msgid ""
 msgstr "Vzpostavitev povezave je mogoča tudi z gumbom »WPS« na usmerjevalniku."
 
 #: js/ui/components/networkAgent.js:109 js/ui/status/bluetooth.js:246
-#: js/ui/status/network.js:360 js/ui/status/network.js:444
+#: js/ui/status/network.js:362 js/ui/status/network.js:446
 msgid "Connect"
 msgstr "Poveži"
 
@@ -1665,7 +1665,7 @@ msgstr "Pusti omogočeno"
 msgid "Turn On"
 msgstr "Omogoči"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:457
 msgid "Turn Off"
 msgstr "Onemogoči"
 
@@ -2203,7 +2203,7 @@ msgstr "Visoko"
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
-#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
+#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:362
 msgid "Disconnect"
 msgstr "Prekini povezavo"
 
@@ -2211,7 +2211,7 @@ msgstr "Prekini povezavo"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1900
+#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1902
 msgid "Bluetooth Settings"
 msgstr "Nastavitve za Bluetooth"
 
@@ -2289,48 +2289,48 @@ msgstr "Zavrni dostop"
 msgid "Grant Access"
 msgstr "Dovoli dostop"
 
-#: js/ui/status/network.js:62
+#: js/ui/status/network.js:64
 msgid "<unknown>"
 msgstr "<neznano>"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:354
+#: js/ui/status/network.js:356
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Prekini povezavo %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:356
+#: js/ui/status/network.js:358
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Poveži z mestom %s"
 
-#: js/ui/status/network.js:1050
+#: js/ui/status/network.js:1052
 msgid "Secure"
 msgstr "Povezava je varna"
 
-#: js/ui/status/network.js:1050
+#: js/ui/status/network.js:1052
 msgid "Not secure"
 msgstr "Povezava ni varna"
 
-#: js/ui/status/network.js:1051
+#: js/ui/status/network.js:1053
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Moč signala %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1053
+#: js/ui/status/network.js:1055
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1155
+#: js/ui/status/network.js:1157
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Vroča točka %s"
 
-#: js/ui/status/network.js:1426
+#: js/ui/status/network.js:1428
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
@@ -2339,57 +2339,61 @@ msgstr[1] "%d povezana"
 msgstr[2] "%d povezani"
 msgstr[3] "%d povezane"
 
-#: js/ui/status/network.js:1524 js/ui/status/network.js:1540
+#: js/ui/status/network.js:1526 js/ui/status/network.js:1542
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1525
+#: js/ui/status/network.js:1527
 msgid "VPN Settings"
 msgstr "Nastavitve VPN"
 
-#: js/ui/status/network.js:1785
+#: js/ui/status/network.js:1787
 msgid "Wi–Fi"
 msgstr "Omrežje Wi-Fi"
 
-#: js/ui/status/network.js:1787
+#: js/ui/status/network.js:1789
 msgid "All Networks"
 msgstr "Vsa omrežja"
 
-#: js/ui/status/network.js:1884
+#: js/ui/status/network.js:1886
 msgid "Wired Connections"
 msgstr "Žične povezave"
 
-#: js/ui/status/network.js:1885
+#: js/ui/status/network.js:1887
 msgid "Wired Settings"
 msgstr "Nastavitve žičnega omrežja"
 
-#: js/ui/status/network.js:1899
+#: js/ui/status/network.js:1901
 msgid "Bluetooth Tethers"
 msgstr "Internetna Bluetooth točka"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1906
+#: js/ui/status/network.js:1908
 msgid "Tether"
 msgstr "Bluetooth Internet"
 
-#: js/ui/status/network.js:1919
+#: js/ui/status/network.js:1921
 msgid "Mobile Connections"
 msgstr "Mobilne povezave"
 
-#: js/ui/status/network.js:1921
+#: js/ui/status/network.js:1923
 msgid "Mobile Broadband Settings"
 msgstr "Nastavitve mobilnega širokopasovnega dostopa"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1930
+#: js/ui/status/network.js:1932
 msgid "Mobile"
 msgstr "Mobilno omrečje"
 
-#: js/ui/status/network.js:2035
+#: js/ui/status/network.js:1966
+msgid "Sign Into Wi–Fi Network"
+msgstr "Prijavi v brezžično omrežje"
+
+#: js/ui/status/network.js:2153
 msgid "Connection failed"
 msgstr "Povezovanje je spodletelo"
 
-#: js/ui/status/network.js:2036
+#: js/ui/status/network.js:2154
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
