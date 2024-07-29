@@ -967,20 +967,18 @@ class NotificationSection extends MessageListSection {
     }
 
     _sourceAdded(tray, source) {
-        source.connectObject('notification-added',
-            this._onNotificationAdded.bind(this), this);
+        source.connectObject(
+            'notification-added', this._onNotificationAdded.bind(this),
+            'notification-removed', this._onNotificationRemoved.bind(this),
+            this);
     }
 
     _onNotificationAdded(source, notification) {
         let message = new NotificationMessage(notification);
 
-        let isUrgent = notification.urgency === MessageTray.Urgency.CRITICAL;
+        const isUrgent = notification.urgency === MessageTray.Urgency.CRITICAL;
 
         notification.connectObject(
-            'destroy', () => {
-                if (isUrgent)
-                    this._nUrgent--;
-            },
             'notify::datetime', () => {
                 // The datetime property changes whenever the notification is updated
                 this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.mapped);
@@ -996,8 +994,13 @@ class NotificationSection extends MessageListSection {
             notification.acknowledged = true;
         }
 
-        let index = isUrgent ? 0 : this._nUrgent;
+        const index = isUrgent ? 0 : this._nUrgent;
         this.addMessageAtIndex(message, index, this.mapped);
+    }
+
+    _onNotificationRemoved(source_, notification) {
+        if (notification.urgency === MessageTray.Urgency.CRITICAL)
+            this._nUrgent--;
     }
 
     vfunc_map() {
