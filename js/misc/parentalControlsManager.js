@@ -1,4 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 //
 // Copyright (C) 2018, 2019, 2020 Endless Mobile, Inc.
 //

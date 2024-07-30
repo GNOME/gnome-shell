@@ -1,5 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-
 // READ THIS FIRST
 // Background handling is a maze of objects, both objects in this file, and
 // also objects inside Mutter. They all have a role.

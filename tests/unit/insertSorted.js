@@ -1,5 +1,3 @@
-/* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
-
 // Test cases for Util.insertSorted
 
 // Needed so that Util can bring some UI stuff

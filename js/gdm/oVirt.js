@@ -1,5 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-
 import Gio from 'gi://Gio';
 import * as Credential from './credentialManager.js';
 

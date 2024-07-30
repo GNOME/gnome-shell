@@ -1,4 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 const pkg = imports.package;
 
 /* The name of this package (not localized) */

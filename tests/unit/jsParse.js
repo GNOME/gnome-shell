@@ -1,5 +1,3 @@
-/* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
-
 import 'resource:///org/gnome/shell/ui/environment.js';
 
 import * as JsParse from 'resource:///org/gnome/shell/misc/jsParse.js';

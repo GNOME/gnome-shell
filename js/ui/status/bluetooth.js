@@ -1,4 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 import 'gi://GnomeBluetooth?version=3.0';
 
 import Gio from 'gi://Gio';

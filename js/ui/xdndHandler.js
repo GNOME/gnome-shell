@@ -1,5 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-
 import Clutter from 'gi://Clutter';
 import * as Signals from '../misc/signals.js';
 

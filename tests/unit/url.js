@@ -1,5 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-
 // Test cases for MessageTray URLification
 
 import 'resource:///org/gnome/shell/ui/environment.js';

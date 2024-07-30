@@ -1,4 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /*
  * Copyright 2010-2016 Red Hat, Inc
  *

@@ -1,4 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 // Test cases for version comparison
 
 import 'resource:///org/gnome/shell/ui/environment.js';

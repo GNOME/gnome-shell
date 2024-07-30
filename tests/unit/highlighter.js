@@ -1,5 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-
 // Test cases for SearchResult description match highlighter
 
 import Pango from 'gi://Pango';

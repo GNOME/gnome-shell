@@ -1,5 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-
 import 'resource:///org/gnome/shell/ui/environment.js';
 import GObject from 'gi://GObject';
 

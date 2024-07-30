@@ -1,5 +1,3 @@
-/* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
-
 const AsyncFunction = async function () {}.constructor;
 
 /**

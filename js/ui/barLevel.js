@@ -1,5 +1,3 @@
-/* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
-
 import Atk from 'gi://Atk';
 import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';

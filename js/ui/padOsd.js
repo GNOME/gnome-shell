@@ -1,5 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-
 import Atk from 'gi://Atk';
 import Clutter from 'gi://Clutter';
 import GDesktopEnums from 'gi://GDesktopEnums';

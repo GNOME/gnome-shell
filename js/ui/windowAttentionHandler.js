@@ -1,5 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-
 import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
 

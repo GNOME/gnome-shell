@@ -1,5 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-
 import * as MessageTray from './messageTray.js';
 import Shell from 'gi://Shell';
 import * as ParentalControlsManager from '../misc/parentalControlsManager.js';

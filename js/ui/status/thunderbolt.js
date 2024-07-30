@@ -1,5 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-
 // the following is a modified version of bolt/contrib/js/client.js
 
 import Gio from 'gi://Gio';

@@ -1,5 +1,3 @@
-// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-
 import Adw from 'gi://Adw?version=1';
 import Gdk from 'gi://Gdk?version=4.0';
 import Gio from 'gi://Gio';
