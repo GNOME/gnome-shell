@@ -2105,12 +2105,18 @@ class KeyboardController extends Signals.EventEmitter {
         Main.inputMethod.commit(str);
     }
 
-    set oskCompletion(enabled) {
+    async _setOskCompletion(enabled) {
         if (this._oskCompletionEnabled === enabled)
             return;
 
         this._oskCompletionEnabled =
-            IBusManager.getIBusManager().setCompletionEnabled(enabled, () => Main.inputMethod.update());
+            await IBusManager.getIBusManager().setCompletionEnabled(enabled);
+
+        Main.inputMethod.update();
+    }
+
+    set oskCompletion(enabled) {
+        this._setOskCompletion(enabled);
     }
 
     keyvalPress(keyval) {

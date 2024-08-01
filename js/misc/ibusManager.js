@@ -275,15 +275,12 @@ class IBusManager extends Signals.EventEmitter {
         return this._engines.get(id);
     }
 
-    async _setEngine(id, callback) {
+    async _setEngine(id) {
         // Send id even if id == this._currentEngineName
         // because 'properties-registered' signal can be emitted
         // while this._ibusSources == null on a lock screen.
-        if (!this._ready) {
-            if (callback)
-                callback();
+        if (!this._ready)
             return;
-        }
 
         try {
             await this._ibus.set_global_engine_async(id,
@@ -293,12 +290,9 @@ class IBusManager extends Signals.EventEmitter {
             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 logError(e);
         }
-
-        if (callback)
-            callback();
     }
 
-    async setEngine(id, callback) {
+    async setEngine(id) {
         if (this._oskCompletion)
             this._preOskEngine = id;
 
@@ -307,9 +301,9 @@ class IBusManager extends Signals.EventEmitter {
             return;
 
         if (this._oskCompletion)
-            this.setCompletionEnabled(false, callback);
+            await this.setCompletionEnabled(false);
         else
-            await this._setEngine(id, callback);
+            await this._setEngine(id);
     }
 
     preloadEngines(ids) {
@@ -339,7 +333,7 @@ class IBusManager extends Signals.EventEmitter {
                 });
     }
 
-    setCompletionEnabled(enabled, callback) {
+    async setCompletionEnabled(enabled) {
         /* Needs typing-booster available */
         if (enabled && !this._engines.has(TYPING_BOOSTER_ENGINE))
             return false;
@@ -354,9 +348,9 @@ class IBusManager extends Signals.EventEmitter {
 
         if (enabled) {
             this._preOskEngine = this._currentEngineName;
-            this._setEngine(TYPING_BOOSTER_ENGINE, callback);
+            await this._setEngine(TYPING_BOOSTER_ENGINE);
         } else if (this._preOskEngine) {
-            this._setEngine(this._preOskEngine, callback);
+            await this._setEngine(this._preOskEngine);
             delete this._preOskEngine;
         }
         return true;
