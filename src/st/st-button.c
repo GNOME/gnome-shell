@@ -477,6 +477,7 @@ st_button_class_init (StButtonClass *klass)
   gobject_class->get_property = st_button_get_property;
   gobject_class->finalize = st_button_finalize;
 
+  actor_class->get_accessible_type = st_button_accessible_get_type;
   actor_class->button_press_event = st_button_button_press;
   actor_class->button_release_event = st_button_button_release;
   actor_class->key_press_event = st_button_key_press;
@@ -487,7 +488,6 @@ st_button_class_init (StButtonClass *klass)
   actor_class->touch_event = st_button_touch_event;
 
   widget_class->style_changed = st_button_style_changed;
-  widget_class->get_accessible_type = st_button_accessible_get_type;
 
   /**
    * StButton:label:

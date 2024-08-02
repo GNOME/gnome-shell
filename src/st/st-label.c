@@ -274,6 +274,7 @@ st_label_class_init (StLabelClass *klass)
   gobject_class->get_property = st_label_get_property;
   gobject_class->dispose = st_label_dispose;
 
+  actor_class->get_accessible_type = st_label_accessible_get_type;
   actor_class->paint_node = st_label_paint_node;
   actor_class->allocate = st_label_allocate;
   actor_class->get_preferred_width = st_label_get_preferred_width;
@@ -281,7 +282,6 @@ st_label_class_init (StLabelClass *klass)
   actor_class->resource_scale_changed = st_label_resource_scale_changed;
 
   widget_class->style_changed = st_label_style_changed;
-  widget_class->get_accessible_type = st_label_accessible_get_type;
 
   /**
    * StLabel:clutter-text:

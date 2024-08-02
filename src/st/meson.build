@@ -215,7 +215,6 @@ libst_gir = gnome.generate_gir(libst,
   namespace: 'St',
   includes: [
     'Clutter-' + mutter_api_version,
-    'Cally-' + mutter_api_version,
     'GdkPixbuf-2.0',
     'Meta-' + mutter_api_version],
   dependencies: [mutter_dep, gdk_pixbuf_dep],

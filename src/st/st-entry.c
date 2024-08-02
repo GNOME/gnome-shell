@@ -889,6 +889,7 @@ st_entry_class_init (StEntryClass *klass)
   gobject_class->get_property = st_entry_get_property;
   gobject_class->dispose = st_entry_dispose;
 
+  actor_class->get_accessible_type = st_entry_accessible_get_type;
   actor_class->get_preferred_width = st_entry_get_preferred_width;
   actor_class->get_preferred_height = st_entry_get_preferred_height;
   actor_class->allocate = st_entry_allocate;
@@ -904,7 +905,6 @@ st_entry_class_init (StEntryClass *klass)
 
   widget_class->style_changed = st_entry_style_changed;
   widget_class->navigate_focus = st_entry_navigate_focus;
-  widget_class->get_accessible_type = st_entry_accessible_get_type;
 
   /**
    * StEntry:clutter-text:

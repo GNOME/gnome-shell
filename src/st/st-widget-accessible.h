@@ -28,7 +28,7 @@
 G_BEGIN_DECLS
 
 #include <st/st-widget.h>
-#include <cally/cally.h>
+#include <clutter/clutter.h>
 
 #define ST_TYPE_WIDGET_ACCESSIBLE st_widget_accessible_get_type ()
 
@@ -58,7 +58,7 @@ typedef struct _StWidgetAccessiblePrivate  StWidgetAccessiblePrivate;
 
 struct _StWidgetAccessible
 {
-  CallyActor parent;
+  ClutterActorAccessible parent;
 
   /*< private >*/
   StWidgetAccessiblePrivate *priv;
@@ -66,7 +66,7 @@ struct _StWidgetAccessible
 
 struct _StWidgetAccessibleClass
 {
-  CallyActorClass parent_class;
+  ClutterActorAccessibleClass parent_class;
 };
 
 GType st_widget_accessible_get_type (void) G_GNUC_CONST;
