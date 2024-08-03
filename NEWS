@@ -1,3 +1,13 @@
+45.9
+====
+* Fix keyboard navigation in app folders [sorelz; !3338]
+* Fix connecting to WPA2 enterprise networks [Tuomas; !3426]
+* Misc. bug fixes and cleanups [Martin, Florian; !3390, !3432]
+
+Contributors:
+  Martin Abente Lahaye, Florian Müllner, Tuomas Nurmi, sorelz
+
+
 45.8.1
 ======
 * Fix including gvc source in tarball [Florian; !3164]
