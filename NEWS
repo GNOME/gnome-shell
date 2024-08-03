@@ -1,3 +1,20 @@
+46.4
+====
+* Fix glitches in looking glass [Florian; !3413, !3414]
+* Improve Persian on-screen keyboard layout [Sohrab; !3409]
+* Make overview startup notification more reliable [Will; !3422, !3428]
+* Fix keyboard navigation in app folders [sorelz; !3338]
+* Fix connecting to WPA2 enterprise networks [Tuomas; !3426]
+* Misc. bug fixes and cleanups [Florian, Martin; !3411, !3390, !3415, !3432]
+
+Contributors:
+  Sohrab Behdani, Martin Abente Lahaye, Florian Müllner, Tuomas Nurmi, sorelz,
+  Will Thompson
+
+Translators:
+  Scrambled 777 [hi], Jose Riha [sk], Chao-Hsiung Liao [zh_TW],
+  Daniel Rusek [cs]
+
 46.3.1
 ======
 * Fix including gvc source in tarball [Florian; !3164]
