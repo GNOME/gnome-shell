@@ -1,3 +1,29 @@
+47.beta
+=======
+* Use hardware encoding for screen recordings if possible [Jonas D.; !2080]
+* Allow notification portal to always use GTK protocol [Julian; !3382]
+* Improve Persian on-screen keyboard layout [Sohrab; !3409]
+* Build and publish GNOME OS systemd-sysext extensions [Martin; !3390]
+* Make overview startup notification more reliable [Will; !3422, !3428]
+* Fix keyboard navigation in app folders [sorelz; !3338]
+* Support exporting DebugControl service from looking glass [Sebastian; !3425]
+* Use low-power pipeline in screen recorder if possible [José; !3416]
+* Show notification when detecting captive portal [Florian; !3408]
+* Fix connecting to WPA2 enterprise networks [Tuomas; !3426]
+* Use unlinked rounded buttons in notifications and dialogs [Sam; !3383, !3427]
+* Misc. bug fixes and cleanups [Jonas Å., Florian, Sam, Bilal, kramo, Julian,
+  sorelz, Sebastian; !3363, !3411, !3413, !3414, !3412, !3402, !3423, !3420,
+  !3415, !3410, !3168, !3387, !3424, !3432, !3431, !3430]
+
+Contributors:
+  Jonas Ådahl, Sohrab Behdani, Jonas Dreßler, Bilal Elmoussaoui, Sam Hewitt,
+  kramo, Martin Abente Lahaye, Florian Müllner, Tuomas Nurmi, José Relvas,
+  sorelz, Julian Sparber, Will Thompson, Sebastian Wick
+
+Translators:
+  Ekaterine Papava [ka], Scrambled 777 [hi], Sabri Ünal [tr], Martin [sl],
+  Chao-Hsiung Liao [zh_TW], Daniel Rusek [cs], Emin Tufan Çetin [tr]
+
 47.alpha
 ========
 * Fix size of workspace switcher OSD [Jakub; !3282]
