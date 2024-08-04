@@ -294,16 +294,21 @@ class IBusManager extends Signals.EventEmitter {
 
     async setEngine(id) {
         if (this._oskCompletion)
-            this._preOskEngine = id;
-
-        const isXkb = id.startsWith('xkb:');
-        if (this._oskCompletion && isXkb)
-            return;
-
-        if (this._oskCompletion)
-            await this.setCompletionEnabled(false);
+            await this._maybeUpdateCompletion(id);
         else
             await this._setEngine(id);
+    }
+
+    async _maybeUpdateCompletion(id) {
+        if (!this._oskCompletion)
+            return;
+
+        this._preOskEngine = id;
+        const isXkb = id.startsWith('xkb:');
+
+        /* Non xkb engines conflict with completion */
+        if (!isXkb)
+            await this.setCompletionEnabled(false);
     }
 
     preloadEngines(ids) {
