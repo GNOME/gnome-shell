@@ -333,6 +333,11 @@ class IBusManager extends Signals.EventEmitter {
                 });
     }
 
+    /**
+     * @param {boolean} enabled - whether completion should be enabled
+     *
+     * @returns {boolean} - whether completion are enabled
+     */
     async setCompletionEnabled(enabled) {
         /* Needs typing-booster available */
         if (enabled && !this._engines.has(TYPING_BOOSTER_ENGINE))
@@ -342,7 +347,7 @@ class IBusManager extends Signals.EventEmitter {
             return false;
 
         if (this._oskCompletion === enabled)
-            return true;
+            return enabled;
 
         this._oskCompletion = enabled;
 
@@ -353,6 +358,6 @@ class IBusManager extends Signals.EventEmitter {
             await this._setEngine(this._preOskEngine);
             delete this._preOskEngine;
         }
-        return true;
+        return this._oskCompletion;
     }
 }
