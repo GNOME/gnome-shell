@@ -73,10 +73,4 @@ its dependencies to build from tarballs.</description>
       <gnome:userid>gbsneto</gnome:userid>
     </foaf:Person>
   </maintainer>
-  <maintainer>
-    <foaf:Person>
-      <foaf:name>Marge Bot</foaf:name>
-      <gnome:userid>marge-bot</gnome:userid>
-    </foaf:Person>
-  </maintainer>
 </Project>
