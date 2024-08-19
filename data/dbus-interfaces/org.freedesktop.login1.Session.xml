@@ -5,6 +5,7 @@
     <property name="Active" type="b" access="read"/>
     <property name="Class" type="s" access="read"/>
     <property name="Id" type="s" access="read"/>
+    <property name="Name" type="s" access="read"/>
     <property name="Remote" type="b" access="read"/>
     <property name="State" type="s" access="read"/>
     <property name="Type" type="s" access="read"/>
