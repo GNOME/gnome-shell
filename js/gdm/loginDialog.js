@@ -1163,15 +1163,20 @@ export const LoginDialog = GObject.registerClass({
     }
 
     async _onSessionOpened(client, serviceName, sessionId) {
-        if (sessionId) {
-            const conflictingSession = await this._findConflictingSession(sessionId);
-            if (conflictingSession) {
-                this._showConflictingSessionDialog(serviceName, conflictingSession);
-                return;
+        try {
+            if (sessionId) {
+                const conflictingSession = await this._findConflictingSession(sessionId);
+                if (conflictingSession) {
+                    this._showConflictingSessionDialog(serviceName, conflictingSession);
+                    return;
+                }
             }
-        }
 
-        this._authPrompt.finish(() => this._startSession(serviceName));
+            this._authPrompt.finish(() => this._startSession(serviceName));
+        } catch (error) {
+            logError(error, `Failed to start session '${sessionId}'`);
+            this._authPrompt.reset();
+        }
     }
 
     _waitForItemForUser(userName) {
