@@ -72,7 +72,7 @@ workflow:
                  'C Development Tools and Libraries' &&
 
       ./.gitlab-ci/install-meson-project.sh \
-        https://gitlab.gnome.org/fmuellner/gjs-ci-tools.git \
+        https://gitlab.gnome.org/World/javascript/gjs-ci-tools.git \
         main &&
 
       ./.gitlab-ci/install-meson-project.sh \
