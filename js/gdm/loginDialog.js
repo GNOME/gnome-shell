@@ -414,9 +414,10 @@ export const ConflictingSessionDialog = GObject.registerClass({
         'force-stop': {},
     },
 }, class ConflictingSessionDialog extends ModalDialog.ModalDialog {
-    _init(conflictingSession, greeterSession, userName) {
+    _init(conflictingSession, greeterSession) {
         super._init();
 
+        const userName = conflictingSession.Name;
         let bannerText;
         if (greeterSession.Remote && conflictingSession.Remote)
             /* Translators: is running for <username> */
@@ -1091,8 +1092,7 @@ export const LoginDialog = GObject.registerClass({
 
     _showConflictingSessionDialog(serviceName, conflictingSession) {
         let conflictingSessionDialog = new ConflictingSessionDialog(conflictingSession,
-            this._greeterSessionProxy,
-            this._user.get_user_name());
+            this._greeterSessionProxy);
 
         conflictingSessionDialog.connect('cancel', () => {
             this._authPrompt.reset();
