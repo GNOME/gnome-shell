@@ -76,7 +76,7 @@ export const AuthPrompt = GObject.registerClass({
         else if (this._mode === AuthPromptMode.UNLOCK_OR_LOG_IN)
             reauthenticationOnly = false;
 
-        this._userVerifier = new GdmUtil.ShellUserVerifier(this._gdmClient, {reauthenticationOnly});
+        this._userVerifier = this._createUserVerifier(this._gdmClient, {reauthenticationOnly});
 
         this._userVerifier.connect('ask-question', this._onAskQuestion.bind(this));
         this._userVerifier.connect('show-message', this._onShowMessage.bind(this));
@@ -124,6 +124,10 @@ export const AuthPrompt = GObject.registerClass({
         this._message.clutter_text.line_wrap = true;
         this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this.add_child(this._message);
+    }
+
+    _createUserVerifier(gdmClient, params) {
+        return new GdmUtil.ShellUserVerifier(gdmClient, params);
     }
 
     _onDestroy() {
