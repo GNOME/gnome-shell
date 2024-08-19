@@ -6,8 +6,8 @@
     <property name="Class" type="s" access="read"/>
     <property name="Id" type="s" access="read"/>
     <property name="Remote" type="b" access="read"/>
-    <property name="Type" type="s" access="read"/>
     <property name="State" type="s" access="read"/>
+    <property name="Type" type="s" access="read"/>
     <method name="SetLockedHint">
       <arg type="b" direction="in"/>
     </method>
