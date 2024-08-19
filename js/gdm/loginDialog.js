@@ -1138,15 +1138,15 @@ export const LoginDialog = GObject.registerClass({
         });
     }
 
-    async _findConflictingSession(ignoreSessionId) {
-        const userName = this._user.get_user_name();
+    async _findConflictingSession(startingSessionId) {
         const loginManager = LoginManager.getLoginManager();
         const sessions = await loginManager.listSessions();
+        const [, , startingSessionOwner, ,] = sessions.find(([id, , , ,]) => id === startingSessionId);
         for (const session of sessions.map(([id, , user, , path]) => ({id, user, path}))) {
-            if (ignoreSessionId === session.id)
+            if (startingSessionId === session.id)
                 continue;
 
-            if (userName !== session.user)
+            if (startingSessionOwner !== session.user)
                 continue;
 
             const sessionProxy = loginManager.getSession(session.path);
