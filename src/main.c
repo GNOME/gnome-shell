@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <cogl-pango/cogl-pango.h>
 #include <clutter/clutter.h>
 #include <glib-unix.h>
 #include <glib/gi18n-lib.h>
@@ -235,20 +234,6 @@ shell_introspection_init (void)
 #ifdef HAVE_EXE_INTROSPECTION
   maybe_add_rpath_introspection_paths ();
 #endif
-}
-
-static void
-shell_fonts_init (void)
-{
-  CoglPangoFontMap *fontmap;
-
-  /* Disable text mipmapping; it causes problems on pre-GEM Intel
-   * drivers and we should just be rendering text at the right
-   * size rather than scaling it. If we do effects where we dynamically
-   * zoom labels, then we might want to reconsider.
-   */
-  fontmap = COGL_PANGO_FONT_MAP (clutter_get_font_map ());
-  cogl_pango_font_map_set_use_mipmapping (fontmap, FALSE);
 }
 
 static void
@@ -683,7 +668,6 @@ main (int argc, char **argv)
   shell_a11y_init ();
   shell_perf_log_init ();
   shell_introspection_init ();
-  shell_fonts_init ();
 
   g_log_set_writer_func (default_log_writer, NULL, NULL);
 
