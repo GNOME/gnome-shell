@@ -543,6 +543,7 @@ main (int argc, char **argv)
   MetaBackend *backend;
   StTheme *theme;
   StThemeContext *theme_context;
+  ClutterContext *clutter_context;
   PangoFontDescription *font_desc;
   GFile *file;
   g_autofree char *cwd = NULL;
@@ -562,14 +563,16 @@ main (int argc, char **argv)
     g_error ("chdir('%s') failed: %s", cwd, g_strerror (errno));
 
   /* Make sure our assumptions about resolution are correct */
-  g_object_set (clutter_settings_get_default (), "font-dpi", -1, NULL);
+  backend = meta_context_get_backend (context);
+  stage = meta_backend_get_stage (backend);
+  clutter_context = clutter_actor_get_context (stage);
+  g_object_set (clutter_context_get_settings (clutter_context),
+                "font-dpi", -1, NULL);
 
   file = g_file_new_for_path ("test-theme.css");
   theme = st_theme_new (file, NULL, NULL);
   g_object_unref (file);
 
-  backend = meta_context_get_backend (context);
-  stage = meta_backend_get_stage (backend);
   theme_context = st_theme_context_get_for_stage (CLUTTER_STAGE (stage));
   st_theme_context_set_theme (theme_context, theme);
 
