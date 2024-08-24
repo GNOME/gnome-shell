@@ -935,12 +935,7 @@ export const Dash = GObject.registerClass({
         if (!this._dragPlaceholder)
             return DND.DragMotionResult.NO_DROP;
 
-        let srcIsFavorite = favPos !== -1;
-
-        if (srcIsFavorite)
-            return DND.DragMotionResult.MOVE_DROP;
-
-        return DND.DragMotionResult.COPY_DROP;
+        return DND.DragMotionResult.MOVE_DROP;
     }
 
     // Draggable target interface
