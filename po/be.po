@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-08-20 16:33+0000\n"
-"PO-Revision-Date: 2024-08-21 16:14+0300\n"
+"POT-Creation-Date: 2024-08-21 13:15+0000\n"
+"PO-Revision-Date: 2024-08-27 22:56+0300\n"
 "Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -2137,7 +2137,7 @@ msgstr "Праграмы ў фоне"
 
 #: js/ui/status/backgroundApps.js:171
 msgid "Apps known to be running without a window"
-msgstr "Вядомыя праграмы, якія будуць выконваюцца без акна"
+msgstr "Вядомыя праграмы, якія выконваюцца без акна"
 
 #: js/ui/status/backgroundApps.js:182
 msgid "App Settings"
