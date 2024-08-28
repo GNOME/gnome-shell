@@ -132,12 +132,8 @@ else
 endif
 
 if get_option('man')
-  if fs.exists('man/gnome-shell.1')
-    install_man('man/gnome-shell.1')
-  else
-    a2x = find_program('a2x')
-    subdir('man')
-  endif
+  a2x = find_program('a2x')
+  subdir('man')
 endif
 
 mutter_typelibdir = mutter_dep.get_variable('typelibdir')
@@ -326,7 +322,6 @@ gnome.post_install(
   gtk_update_icon_cache: true
 )
 
-meson.add_dist_script('meson/generate-manpages.py')
 meson.add_dist_script('meson/generate-stylesheets.py')
 meson.add_dist_script('meson/check-version.py', meson.project_version(), 'NEWS')
 

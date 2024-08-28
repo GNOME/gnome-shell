@@ -47,12 +47,8 @@ if bash_completion.found()
 endif
 
 if get_option('man')
-  if fs.exists('man/gnome-extensions.1')
-    install_man('man/gnome-extensions.1')
-  else
-    a2x = find_program('a2x')
-    subdir('man')
-  endif
+  a2x = find_program('a2x')
+  subdir('man')
 endif
 
 if not meson.is_subproject()
