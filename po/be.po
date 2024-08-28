@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-08-21 13:15+0000\n"
-"PO-Revision-Date: 2024-08-27 22:56+0300\n"
+"POT-Creation-Date: 2024-08-27 19:58+0000\n"
+"PO-Revision-Date: 2024-08-29 00:32+0300\n"
 "Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -1892,7 +1892,7 @@ msgstr "Выбар акна"
 #. Translators: entry in the window right click menu.
 #: js/ui/screenshot.js:1317 js/ui/status/system.js:111 js/ui/windowMenu.js:28
 msgid "Take Screenshot"
-msgstr "Зрабіць экранны здымак"
+msgstr "Зрабіць здымак экрана"
 
 #: js/ui/screenshot.js:1333
 msgid "Record Screen"
@@ -2226,7 +2226,7 @@ msgstr "Перацягванне"
 
 #: js/ui/status/dwellClick.js:30
 msgid "Secondary Click"
-msgstr "Націсканне правай кнопкай"
+msgstr "Націсканне другой кнопкай"
 
 #: js/ui/status/dwellClick.js:39
 msgid "Dwell Click"
@@ -2659,23 +2659,23 @@ msgstr "Перамясціць на манітор правей"
 msgid "Close"
 msgstr "Закрыць"
 
-#: src/main.c:527 subprojects/extensions-tool/src/main.c:336
+#: src/main.c:512 subprojects/extensions-tool/src/main.c:336
 msgid "Print version"
 msgstr "Вывесці нумар версіі"
 
-#: src/main.c:533
+#: src/main.c:518
 msgid "Mode used by GDM for login screen"
 msgstr "Рэжым, які выкарыстоўвае GDM для экрана ўваходу"
 
-#: src/main.c:539
+#: src/main.c:524
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Выкарыстоўваць вызначаны рэжым, напрыклад, «gdm» для экрана ўваходу"
 
-#: src/main.c:545
+#: src/main.c:530
 msgid "List possible modes"
 msgstr "Спіс магчымых рэжымаў"
 
-#: src/main.c:551
+#: src/main.c:536
 msgid "Force animations to be enabled"
 msgstr "Прымусовае ўключэнне анімацыі"
 
