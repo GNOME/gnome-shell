@@ -29,3 +29,5 @@ sudo meson install -C mutter/build
 
 # Ensure that any other dependency missing in GNOME OS is installed and bundled
 # here as it was done with mutter:
+
+pip install --root-user-action ignore docutils
