@@ -1,7 +1,8 @@
 custom_target('man page',
-  input: ['gnome-shell.txt', 'stylesheet.xsl'],
+  input: 'gnome-shell.txt',
   output: 'gnome-shell.1',
-  command: [a2x, '-D', '@OUTDIR@', '--xsl-file', '@INPUT1@', '-f' ,'manpage', '@INPUT0@'],
+  command: [rst2man, '--syntax-highlight=none', '@INPUT@'],
+  capture: true,
   install_dir: mandir + '/man1',
   install: true
 )

@@ -1,17 +1,17 @@
-GNOME-SHELL(1)
-=============
-:man manual: User Commands
-:man source: GNOME-SHELL
-:doctype: manpage
-:date: December 2020
+===========
+gnome-shell
+===========
 
-NAME
-----
-gnome-shell - Graphical shell for the GNOME desktop
+-------------------------------------
+Graphical shell for the GNOME desktop
+-------------------------------------
+
+:Manual section: 1
+:Manual group: User Commands
 
 SYNOPSIS
 --------
-*gnome-shell* ['OPTION'...]
+**gnome-shell** [*OPTION*...]
 
 DESCRIPTION
 -----------
@@ -27,53 +27,69 @@ It is started in the window manager phase of the session.
 
 OPTIONS
 -------
-*--wayland*::
-Run as a wayland compositor
+``--wayland``
 
-*--display-server*::
-Run as a full display server, rather than nested
+  Run as a wayland compositor
 
-*--nested*::
-Run as a nested compositor
+``--display-server``
 
-*--no-x11*::
-Run wayland compositor without starting Xwayland
+  Run as a full display server, rather than nested
 
-*--x11*::
-Run with X11 backend
+``--nested``
 
-*--wayland-display*='DISPLAY'::
-Wayland display name to use
+  Run as a nested compositor
 
-*-d*, *--display*='DISPLAY'::
-X display to use
+``--no-x11``
 
-*-r*, *--replace*::
-Replace the running window manager
+  Run wayland compositor without starting Xwayland
 
-*--sm-disable*::
-Disable connection to the session manager
+``--x11``
 
-*--sm-client-id*='ID'::
-Specify session management 'ID'
+  Run with X11 backend
 
-*--sm-save-file*='FILE'::
-Initialize session from 'FILE'
+``--wayland-display``\ =\ *DISPLAY*
 
-*--sync*::
-Make X calls synchronous
+  Wayland display name to use
 
-*--mode*='MODE'::
-Use a specific mode, e.g. "gdm" for login screen
+``-d``, ``--display``\ =\ *DISPLAY*
 
-*--list-modes*::
-List possible modes and exit
+  X display to use
 
-*--version*::
-Print version and exit
+``-r``, ``--replace``
 
-*--help*::
-Display help and exit
+  Replace the running window manager
+
+``--sm-disable``
+
+  Disable connection to the session manager
+
+``--sm-client-id``\ =\ *ID*
+
+  Specify session management *ID*
+
+``--sm-save-file``\ =\ *FILE*
+
+  Initialize session from *FILE*
+
+``--sync``
+
+  Make X calls synchronous
+
+``--mode=MODE``
+
+  Use a specific mode, e.g. "gdm" for login screen
+
+``--list-modes``
+
+  List possible modes and exit
+
+``--version``
+
+  Print version and exit
+
+``--help``
+
+  Display help and exit
 
 FILES
 -----

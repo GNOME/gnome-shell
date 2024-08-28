@@ -132,7 +132,7 @@ else
 endif
 
 if get_option('man')
-  a2x = find_program('a2x')
+  rst2man = find_program('rst2man')
   subdir('man')
 endif
 
