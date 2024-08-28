@@ -43,10 +43,6 @@ if get_option('extensions_tool')
   )
 endif
 
-install_data('gnome-shell-extension-prefs',
-  install_dir: bindir
-)
-
 typelib_cflags = [
   '-DMUTTER_TYPELIB_DIR="@0@"'.format(mutter_typelibdir),
   '-DSHELL_TYPELIB_DIR="@0@"'.format(pkglibdir),
