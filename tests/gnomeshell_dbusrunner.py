@@ -82,8 +82,8 @@ class MockParentalControls:
 
 class GnomeShellDBusRunner(MutterDBusRunner):
     @classmethod
-    def setUpClass(klass, enable_kvm, launch):
-        MutterDBusRunner.setUpClass(enable_kvm, launch)
+    def setUpClass(klass, **kargs):
+        MutterDBusRunner.setUpClass(**kargs)
 
         klass.add_template_dir(os.path.join(os.path.dirname(__file__),
                                             'dbusmock-templates'))
