@@ -1,5 +1,5 @@
 custom_target('man page',
-  input: 'gnome-shell.txt',
+  input: 'gnome-shell.rst',
   output: 'gnome-shell.1',
   command: [rst2man, '--syntax-highlight=none', '@INPUT@'],
   capture: true,
