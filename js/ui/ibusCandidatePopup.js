@@ -1,6 +1,7 @@
 import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
 import IBus from 'gi://IBus';
+import Mtk from 'gi://Mtk';
 import St from 'gi://St';
 
 import * as BoxPointer from './boxpointer.js';
@@ -203,14 +204,29 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
             return;
 
         panelService.connect('set-cursor-location', (ps, x, y, w, h) => {
-            this._setDummyCursorGeometry(x, y, w, h);
+            const focusWindow = global.display.focus_window;
+            let rect = new Mtk.Rectangle({x, y, width: w, height: h});
+            if (!global.stage.key_focus && focusWindow)
+                rect = focusWindow.protocol_to_stage_rect(rect);
+            this._setDummyCursorGeometry(
+                rect.x,
+                rect.y,
+                rect.width,
+                rect.height);
         });
         try {
             panelService.connect('set-cursor-location-relative', (ps, x, y, w, h) => {
-                if (!global.display.focus_window)
+                const focusWindow = global.display.focus_window;
+                if (!focusWindow)
                     return;
-                let window = global.display.focus_window.get_compositor_private();
-                this._setDummyCursorGeometry(window.x + x, window.y + y, w, h);
+                let rect = new Mtk.Rectangle({x, y, width: w, height: h});
+                rect = focusWindow.protocol_to_stage_rect(rect);
+                const windowActor = focusWindow.get_compositor_private();
+                this._setDummyCursorGeometry(
+                    windowActor.x + rect.x,
+                    windowActor.y + rect.y,
+                    rect.w,
+                    rect.h);
             });
         } catch (e) {
             // Only recent IBus versions have support for this signal
