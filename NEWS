@@ -1,3 +1,27 @@
+47.rc
+=====
+* Fix smartcard logins [Alessandro; !3448]
+* Mark drag to dash as move operation [Daniel; !3453]
+* Use rst2man to generate man pages [Florian; !3454]
+* Fix glitch when quick settings menu animation is interrupted [Dylan; !2481]
+* Plugged leak [Jonas; !3421]
+* Misc. bug fixes and cleanups [Bilal, Florian, Sophie, Jonas; Martin; !3433,
+  !3441, !3443, !3447, !3450, !3451, !3449, !3455, !3456, !3452, !3458, !3459]
+
+Contributors:
+  Jonas Ådahl, Alessandro Bono, Bilal Elmoussaoui, Sophie Herold,
+  Martin Abente Lahaye, Dylan McCall, Florian Müllner, Daniel Sheeler
+
+Translators:
+  Balázs Úr [hu], Yosef Or Boczko [he], Giannis Antypas [el],
+  Daniel Șerbănescu [ro], Jordi Mas [ca], Ekaterine Papava [ka],
+  Asier Sarasua Garmendia [eu], Artur S0 [ru], Vasil Pupkin [be],
+  Rafael Fontenelle [pt_BR], Jordi Mas i Hernandez [ca], Yuri Chornoivan [uk],
+  Luming Zh [zh_CN], Jose Riha [sk], Jiri Grönroos [fi], Jürgen Benvenuti [de],
+  Brage Fuglseth [nb], Daniel Rusek [cs], Danial Behzadi [fa],
+  Quentin PAGÈS [oc], Changwoo Ryu [ko], Hugo Carvalho [pt], Piotr Drąg [pl],
+  Andika Triwidada [id], Baurzhan Muftakhidinov [kk], Sabri Ünal [tr]
+
 47.beta
 =======
 * Use hardware encoding for screen recordings if possible [Jonas D.; !2080]
