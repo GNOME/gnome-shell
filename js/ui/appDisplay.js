@@ -3032,13 +3032,6 @@ export const AppIcon = GObject.registerClass({
             this._dot.hide();
     }
 
-    vfunc_leave_event(event) {
-        const ret = super.vfunc_leave_event(event);
-
-        this.fake_release();
-        return ret;
-    }
-
     vfunc_clicked(button) {
         this.activate(button);
     }
