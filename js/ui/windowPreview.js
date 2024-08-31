@@ -623,12 +623,20 @@ export const WindowPreview = GObject.registerClass({
         // with a new one on the target workspace.
         const parent = this.get_parent();
         if (parent !== null) {
-            if (this._overlayShown)
+            if (this._overlayShown) {
                 parent.set_child_above_sibling(this, null);
-            else if (this._stackAbove === null)
+            } else if (this._stackAbove === null) {
                 parent.set_child_below_sibling(this, null);
-            else if (!this._stackAbove._overlayShown)
+            } else if (!this._stackAbove._overlayShown) {
                 parent.set_child_above_sibling(this, this._stackAbove);
+            } else {
+                // This window shall still be above this._stackAbove._stackAbove
+                const above = this._stackAbove._stackAbove;
+                if (above === null)
+                    parent.set_child_below_sibling(this, null);
+                else
+                    parent.set_child_above_sibling(this, above);
+            }
         }
     }
 
