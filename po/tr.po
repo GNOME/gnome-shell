@@ -10,14 +10,14 @@
 # Gökhan Gurbetoğlu <ggurbet@gmail.com>, 2014.
 # Muhammet Kara <muhammetk@gmail.com>, 2011-2017.
 # Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017, 2018.
-# Sabri Ünal <libreajans@gmail.com>, 2014, 2019, 2020, 2023, 2024.
+# Sabri Ünal <yakushabb@gmail.com>, 2014, 2019, 2020, 2023, 2024.
 # Emin Tufan Çetin <etcetin@gmail.com>, 2017-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-07-30 18:30+0000\n"
+"POT-Creation-Date: 2024-08-21 13:15+0000\n"
 "PO-Revision-Date: 2024-08-01 08:00+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
@@ -581,7 +581,7 @@ msgstr "Ana Sayfa"
 msgid "Visit extension homepage"
 msgstr "Uzantı ana sayfasını ziyaret et"
 
-#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:465
+#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
 #: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:113
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -602,7 +602,7 @@ msgid "Choose Session"
 msgstr "Oturum Seç"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:423
+#: js/gdm/loginDialog.js:424
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -613,7 +613,7 @@ msgstr ""
 "oturum açmak için uzak oturumu kapatmalı ya da durmaya zorlamalısınız."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:426
+#: js/gdm/loginDialog.js:427
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -623,7 +623,7 @@ msgstr ""
 "için uzak oturumu kapatmalı ya da durmaya zorlamalısınız."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:429
+#: js/gdm/loginDialog.js:430
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -634,7 +634,7 @@ msgstr ""
 "oturum açmak için yerel oturumu kapatmalı ya da durmaya zorlamalısınız."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:432
+#: js/gdm/loginDialog.js:433
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -643,11 +643,11 @@ msgstr ""
 "%s oturumu zaten çalıştığından oturum açmak olanaksız. Oturum açmak için "
 "oturumu kapatmalı ya da durmaya zorlamalısınız."
 
-#: js/gdm/loginDialog.js:441
+#: js/gdm/loginDialog.js:442
 msgid "Session Already Running"
 msgstr "Oturum Zaten Çalışıyor"
 
-#: js/gdm/loginDialog.js:453
+#: js/gdm/loginDialog.js:454
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -655,35 +655,35 @@ msgstr ""
 "Durmaya zorlamak, çalışan tüm uygulamaları ve süreçleri durduracağından veri "
 "yitirilebilir"
 
-#: js/gdm/loginDialog.js:473
+#: js/gdm/loginDialog.js:474
 msgid "Force Stop"
 msgstr "Durmaya Zorla"
 
-#: js/gdm/loginDialog.js:541
+#: js/gdm/loginDialog.js:542
 msgid "Not listed?"
 msgstr "Listede yok mu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1009
+#: js/gdm/loginDialog.js:1010
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(örneğin, kullanıcı veya %s)"
 
-#: js/gdm/loginDialog.js:1014 js/ui/components/networkAgent.js:257
+#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:257
 #: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:326
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
-#: js/gdm/loginDialog.js:1080
+#: js/gdm/loginDialog.js:1081
 msgid "Login Attempt Timed Out"
 msgstr "Oturum Açma Denemesi Zaman Aşımına Uğradı"
 
-#: js/gdm/loginDialog.js:1081
+#: js/gdm/loginDialog.js:1082
 msgid "Login took too long, please try again"
 msgstr "Oturum açma çok uzun sürdü, lütfen yeniden deneyin"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1431
 msgid "Login Window"
 msgstr "Oturum Açma Penceresi"
 
@@ -2637,23 +2637,23 @@ msgstr "Sağdaki Monitöre Taşı"
 msgid "Close"
 msgstr "Kapat"
 
-#: src/main.c:529 subprojects/extensions-tool/src/main.c:336
+#: src/main.c:527 subprojects/extensions-tool/src/main.c:336
 msgid "Print version"
 msgstr "Sürümü yazdır"
 
-#: src/main.c:535
+#: src/main.c:533
 msgid "Mode used by GDM for login screen"
 msgstr "Oturum açma ekranında GDM tarafından kullanılan kip"
 
-#: src/main.c:541
+#: src/main.c:539
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Oturum açma ekranı için -“gdm” gibi- özel kip kullan"
 
-#: src/main.c:547
+#: src/main.c:545
 msgid "List possible modes"
 msgstr "Olası kipleri listele"
 
-#: src/main.c:553
+#: src/main.c:551
 msgid "Force animations to be enabled"
 msgstr "Canlandırmaları etkinleştirilmeye zorla"
 
@@ -2705,15 +2705,15 @@ msgstr ""
 "GNOME Uzantılar; uzantıları güncellemeyi, uzantı tercihlerini yapılandırmayı "
 "ve istenmeyen uzantıları kaldırmayı veya devre dışı bırakmanızı sağlar."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:63
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:64
 msgid "Main Window"
 msgstr "Ana Pencere"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:67
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
 msgid "Available Updates"
 msgstr "Kullanılabilir Güncellemeler"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:71
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
 msgid "Search View"
 msgstr "Arama Görünümü"
 
@@ -2784,7 +2784,7 @@ msgid "translator-credits"
 msgstr ""
 "Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Muhammet Kara <muhammetk@gmail.com>\n"
-"Sabri Ünal <libreajans@gmail.com>"
+"Sabri Ünal <yakushabb@gmail.com>"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:203
 #, javascript-format
@@ -3384,16 +3384,3 @@ msgstr[0] "%u Girdi"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
-
-#~ msgid "Move Titlebar Onscreen"
-#~ msgstr "Başlık Çubuğunu Ekranda Taşı"
-
-#~ msgid "Stop conflicting session dialog closed"
-#~ msgstr "Çakışan oturumu durdur iletişim kutusu kapatıldı"
-
-#~ msgid "Try to login again to start a session for user %s."
-#~ msgstr ""
-#~ "%s kullanıcısıyla oturum başlatmak için yeniden oturum açmayı deneyin."
-
-#~ msgid "%s is now known as %s"
-#~ msgstr "%s, şimdi %s olarak biliniyor"
