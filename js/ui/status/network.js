@@ -949,6 +949,15 @@ const WirelessNetwork = GObject.registerClass({
                 this._getDeviceDBusPath(), ap.get_path());
         } else {
             conn = new NM.SimpleConnection();
+            const permission = Polkit.Permission.new_sync('org.freedesktop.NetworkManager.settings.modify.system', null, null);
+            let allowedToShare = false;
+            if (permission)
+                allowedToShare = permission.get_allowed();
+            if (!allowedToShare) {
+                const setting = new NM.SettingConnection();
+                setting.add_permission('user', GLib.get_user_name(), null);
+                conn.add_setting(setting);
+            }
             this._device.client.add_and_activate_connection_async(
                 conn, this._device, ap.get_path(), null, null);
         }
