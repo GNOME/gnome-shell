@@ -30,7 +30,13 @@ export class ServiceImplementation {
             (c, name, owner) => (this._shellName = owner),
             () => {
                 this._shellName = null;
-                this.emit('shutdown');
+
+                // For auto-shutdown services, delay shutting
+                // down in case the shell reappears
+                if (this._autoShutdown)
+                    this._queueShutdownCheck();
+                else
+                    this.emit('shutdown');
             });
 
         this._hasSignals = this._dbusImpl.get_info().signals.length > 0;
@@ -104,7 +110,7 @@ export class ServiceImplementation {
         if (GLib.getenv('SHELL_DBUS_PERSIST'))
             return;
 
-        if (this._holdCount > 0)
+        if (this._shellName && this._holdCount > 0)
             return;
 
         this.emit('shutdown');
