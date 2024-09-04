@@ -69,12 +69,12 @@ gnome_shell_deps = [
   gjs_dep,
   mtk_dep,
   clutter_dep,
-  cogl_pango_dep,
   gi_dep,
   polkit_dep,
   gcr_dep,
   libsystemd_dep,
   libpipewire_dep,
+  pango_dep,
 ]
 
 if have_x11_client
