@@ -90,6 +90,12 @@ function _getPropertyTarget(actor, propName) {
 }
 
 function _easeActor(actor, params) {
+    params = {
+        repeatCount: 0,
+        autoReverse: false,
+        ...params,
+    };
+
     actor.save_easing_state();
 
     if (params.duration !== undefined)
@@ -100,14 +106,10 @@ function _easeActor(actor, params) {
         actor.set_easing_delay(params.delay);
     delete params.delay;
 
-    let repeatCount = 0;
-    if (params.repeatCount !== undefined)
-        repeatCount = params.repeatCount;
+    const repeatCount = params.repeatCount;
     delete params.repeatCount;
 
-    let autoReverse = false;
-    if (params.autoReverse !== undefined)
-        autoReverse = params.autoReverse;
+    const autoReverse = params.autoReverse;
     delete params.autoReverse;
 
     // repeatCount doesn't include the initial iteration
@@ -157,6 +159,12 @@ function _easeActor(actor, params) {
 }
 
 function _easeActorProperty(actor, propName, target, params) {
+    params = {
+        repeatCount: 0,
+        autoReverse: false,
+        ...params,
+    };
+
     // Avoid pointless difference with ease()
     if (params.mode)
         params.progress_mode = params.mode;
@@ -166,14 +174,10 @@ function _easeActorProperty(actor, propName, target, params) {
         params.duration = adjustAnimationTime(params.duration);
     let duration = Math.floor(params.duration || 0);
 
-    let repeatCount = 0;
-    if (params.repeatCount !== undefined)
-        repeatCount = params.repeatCount;
+    const repeatCount = params.repeatCount;
     delete params.repeatCount;
 
-    let autoReverse = false;
-    if (params.autoReverse !== undefined)
-        autoReverse = params.autoReverse;
+    const autoReverse = params.autoReverse;
     delete params.autoReverse;
 
     // repeatCount doesn't include the initial iteration
