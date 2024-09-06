@@ -174,6 +174,9 @@ function _easeActorProperty(actor, propName, target, params) {
         params.duration = adjustAnimationTime(params.duration);
     let duration = Math.floor(params.duration || 0);
 
+    if (params.delay)
+        params.delay = adjustAnimationTime(params.delay);
+
     const repeatCount = params.repeatCount;
     delete params.repeatCount;
 
