@@ -864,7 +864,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _handlePendingMessages() {
-        if (!this.hasPendingMessage)
+        if (!this.hasPendingMessages)
             return Promise.resolve();
 
         const cancellable = this._cancellable;
