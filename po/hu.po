@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-08-04 14:10+0000\n"
-"PO-Revision-Date: 2024-08-06 17:16+0200\n"
+"POT-Creation-Date: 2024-09-02 08:28+0000\n"
+"PO-Revision-Date: 2024-09-10 22:52+0200\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <openscope at fsf dot hu>\n"
 "Language: hu\n"
@@ -583,7 +583,7 @@ msgstr "Honlap"
 msgid "Visit extension homepage"
 msgstr "A kiterjesztés honlapjának megtekintése"
 
-#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:465
+#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
 #: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:113
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -604,7 +604,7 @@ msgid "Choose Session"
 msgstr "Válasszon munkamenetet"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:423
+#: js/gdm/loginDialog.js:424
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -616,7 +616,7 @@ msgstr ""
 "munkamenetből, vagy kényszerítetten le kell állítania."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:426
+#: js/gdm/loginDialog.js:427
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -627,7 +627,7 @@ msgstr ""
 "munkamenetből, vagy kényszerítetten le kell állítania."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:429
+#: js/gdm/loginDialog.js:430
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -639,7 +639,7 @@ msgstr ""
 "munkamenetből, vagy kényszerítetten le kell állítania."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:432
+#: js/gdm/loginDialog.js:433
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -649,11 +649,11 @@ msgstr ""
 "felhasználónál. A bejelentkezéshez ki kell lépnie a munkamenetből, vagy "
 "kényszerítetten le kell állítania."
 
-#: js/gdm/loginDialog.js:441
+#: js/gdm/loginDialog.js:442
 msgid "Session Already Running"
 msgstr "Egy munkamenet már fut"
 
-#: js/gdm/loginDialog.js:453
+#: js/gdm/loginDialog.js:454
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -661,35 +661,35 @@ msgstr ""
 "A kényszerített leállítás kilépteti az összes futó alkalmazást és "
 "folyamatot, és adatvesztést eredményezhet"
 
-#: js/gdm/loginDialog.js:473
+#: js/gdm/loginDialog.js:474
 msgid "Force Stop"
 msgstr "Kényszerített leállítás"
 
-#: js/gdm/loginDialog.js:541
+#: js/gdm/loginDialog.js:542
 msgid "Not listed?"
 msgstr "Nincs a listán?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1009
+#: js/gdm/loginDialog.js:1010
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(például: felhasználó vagy %s)"
 
-#: js/gdm/loginDialog.js:1014 js/ui/components/networkAgent.js:257
+#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:257
 #: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:326
 msgid "Username"
 msgstr "Felhasználónév"
 
-#: js/gdm/loginDialog.js:1080
+#: js/gdm/loginDialog.js:1081
 msgid "Login Attempt Timed Out"
 msgstr "A bejelentkezési kísérlet túllépte az időkorlátot"
 
-#: js/gdm/loginDialog.js:1081
+#: js/gdm/loginDialog.js:1082
 msgid "Login took too long, please try again"
 msgstr "A bejelentkezés túl sokáig tartott, próbálja újra"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1431
 msgid "Login Window"
 msgstr "Bejelentkezési ablak"
 
@@ -1026,11 +1026,11 @@ msgstr "Hangbeállítások"
 
 #: js/ui/audioDeviceSelection.js:74
 msgid "Headphones"
-msgstr "Fülhallgató"
+msgstr "Fejhallgató"
 
 #: js/ui/audioDeviceSelection.js:76
 msgid "Headset"
-msgstr "Fejhallgató"
+msgstr "Mikrofonos fejhallgató"
 
 #: js/ui/audioDeviceSelection.js:78 js/ui/status/volume.js:356
 msgid "Microphone"
@@ -1199,8 +1199,6 @@ msgstr "A telepített udisks verzió nem támogatja a PIM beállítást"
 #. Translators: %s is the name of a partition on a external drive
 #: js/ui/components/autorunManager.js:189
 #, javascript-format
-#| msgid "%d connected"
-#| msgid_plural "%d connected"
 msgid "“%s” connected"
 msgstr "„%s” kapcsolódva"
 
@@ -1934,7 +1932,6 @@ msgstr "Képernyőfelvételek"
 #. * "Screencast From 07-17-2013 10:00:46 PM"
 #: js/ui/screenshot.js:2001
 #, no-c-format
-#| msgid "Screencast from %d %t"
 msgid "Screencast From %d %t"
 msgstr "Képernyőfelvétel %d %t"
 
@@ -1985,7 +1982,6 @@ msgstr "Megjelenítés a fájlokban"
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
 #: js/ui/screenshot.js:2287
 #, javascript-format
-#| msgid "Screenshot from %s"
 msgid "Screenshot From %s"
 msgstr "Képernyőkép %s"
 
@@ -2671,24 +2667,24 @@ msgstr "Áthelyezés a jobb oldali kijelzőre"
 msgid "Close"
 msgstr "Bezárás"
 
-#: src/main.c:529 subprojects/extensions-tool/src/main.c:336
+#: src/main.c:512 subprojects/extensions-tool/src/main.c:336
 msgid "Print version"
 msgstr "Verzió kiírása"
 
-#: src/main.c:535
+#: src/main.c:518
 msgid "Mode used by GDM for login screen"
 msgstr "A GDM által a bejelentkezési képernyőhöz használt mód"
 
-#: src/main.c:541
+#: src/main.c:524
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Használjon egy adott módot, például a „gdm”-et a bejelentkező képernyőn"
 
-#: src/main.c:547
+#: src/main.c:530
 msgid "List possible modes"
 msgstr "Lehetséges módok listázása"
 
-#: src/main.c:553
+#: src/main.c:536
 msgid "Force animations to be enabled"
 msgstr "Animációk engedélyezésének kényszerítése"
 
@@ -2741,15 +2737,15 @@ msgstr ""
 "kiterjesztésbeállítások konfigurálást és a nem kívánatos kiterjesztések "
 "eltávolítását vagy letiltását."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:64
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:65
 msgid "Main Window"
 msgstr "Főablak"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
 msgid "Available Updates"
 msgstr "Elérhető frissítések"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
 msgid "Search View"
 msgstr "Keresési nézet"
 
@@ -3426,3 +3422,4 @@ msgstr[1] "%u bemenet"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Rendszerhangok"
+
