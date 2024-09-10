@@ -1,25 +1,25 @@
 # Hungarian translation for gnome-shell.
-# Copyright 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023 Free Software Foundation, Inc.
+# Copyright 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
 # Lukács Bence <lukacs.bence1 at gmail dot com>, 2012.
 # Balázs Meskó <mesko.balazs at fsf dot hu>, 2014, 2019, 2020, 2021.
-# Balázs Úr <ur.balazs at fsf dot hu>, 2012, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2012, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2024-01-07 08:34+0000\n"
-"PO-Revision-Date: 2024-01-11 14:55+0100\n"
-"Last-Translator: Meskó Balázs <mesko.balazs@fsf.hu>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
+"POT-Creation-Date: 2024-08-04 14:11+0000\n"
+"PO-Revision-Date: 2024-09-10 22:53+0200\n"
+"Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <openscope at fsf dot hu>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Lokalize 23.08.4\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -412,8 +412,8 @@ msgstr "Az alkalmazás ikon mód."
 #: data/org.gnome.shell.gschema.xml.in:278
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
 msgstr ""
 "Az ablakok megjelenésének beállítása a váltóban. Lehetséges értékek: "
 "„thumbnail-only” (az ablak bélyegképének megjelenítése), „app-icon-only” (az "
@@ -491,19 +491,19 @@ msgstr "Honlap"
 msgid "Visit extension homepage"
 msgstr "A kiterjesztés honlapjának megtekintése"
 
-#: js/gdm/authPrompt.js:151 js/ui/audioDeviceSelection.js:66
+#: js/gdm/authPrompt.js:153 js/ui/audioDeviceSelection.js:66
 #: js/ui/components/networkAgent.js:115 js/ui/components/polkitAgent.js:146
 #: js/ui/endSessionDialog.js:436 js/ui/extensionDownloader.js:256
-#: js/ui/shellMountOperation.js:387 js/ui/shellMountOperation.js:397
+#: js/ui/shellMountOperation.js:396 js/ui/shellMountOperation.js:406
 #: subprojects/extensions-app/js/main.js:179
 msgid "Cancel"
 msgstr "Mégse"
 
-#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:215
+#: js/gdm/authPrompt.js:319 js/ui/components/networkAgent.js:215
 #: js/ui/components/networkAgent.js:235 js/ui/components/networkAgent.js:267
 #: js/ui/components/networkAgent.js:300 js/ui/components/networkAgent.js:339
 #: js/ui/components/networkAgent.js:352 js/ui/components/polkitAgent.js:288
-#: js/ui/shellMountOperation.js:337
+#: js/ui/shellMountOperation.js:346
 msgid "Password"
 msgstr "Jelszó"
 
@@ -639,17 +639,17 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Képernyőforgatás zárolása"
 
-#: js/misc/util.js:139
+#: js/misc/util.js:132
 msgid "Command not found"
 msgstr "A parancs nem található"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:179
+#: js/misc/util.js:172
 msgid "Could not parse command:"
 msgstr "A parancs nem dolgozható fel:"
 
-#: js/misc/util.js:187
+#: js/misc/util.js:180
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "„%s” végrehajtása meghiúsult:"
@@ -860,11 +860,11 @@ msgstr "Hangbeállítások"
 
 #: js/ui/audioDeviceSelection.js:74
 msgid "Headphones"
-msgstr "Fülhallgató"
+msgstr "Fejhallgató"
 
 #: js/ui/audioDeviceSelection.js:76
 msgid "Headset"
-msgstr "Fejhallgató"
+msgstr "Mikrofonos fejhallgató"
 
 #: js/ui/audioDeviceSelection.js:78 js/ui/status/volume.js:358
 msgid "Microphone"
@@ -1018,11 +1018,11 @@ msgstr "Külső meghajtó csatlakoztatva"
 msgid "External drive disconnected"
 msgstr "Külső meghajtó leválasztva"
 
-#: js/ui/components/automountManager.js:207
+#: js/ui/components/automountManager.js:210
 msgid "Unable to unlock volume"
 msgstr "Nem lehet feloldani a kötetet"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:211
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "A telepített udisks verzió nem támogatja a PIM beállítást"
 
@@ -1058,11 +1058,11 @@ msgid "Service"
 msgstr "Szolgáltatás"
 
 #: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:408
-#: js/ui/components/networkAgent.js:754 js/ui/components/networkAgent.js:775
+#: js/ui/components/networkAgent.js:748 js/ui/components/networkAgent.js:769
 msgid "Authentication required"
 msgstr "Hitelesítés szükséges"
 
-#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:755
+#: js/ui/components/networkAgent.js:373 js/ui/components/networkAgent.js:749
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1071,7 +1071,7 @@ msgstr ""
 "Jelszavak vagy titkosítási kulcsok szükségesek a(z) „%s” vezeték nélküli "
 "hálózat eléréséhez."
 
-#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:377 js/ui/components/networkAgent.js:753
 msgid "Wired 802.1X authentication"
 msgstr "Vezetékes 802.1X hitelesítés"
 
@@ -1079,15 +1079,15 @@ msgstr "Vezetékes 802.1X hitelesítés"
 msgid "Network name"
 msgstr "Hálózat neve"
 
-#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:763
+#: js/ui/components/networkAgent.js:388 js/ui/components/networkAgent.js:757
 msgid "DSL authentication"
 msgstr "DSL hitelesítés"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:768
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:762
 msgid "PIN code required"
 msgstr "PIN kód szükséges"
 
-#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:769
+#: js/ui/components/networkAgent.js:396 js/ui/components/networkAgent.js:763
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN kód szükséges a mobil széles sávú eszközhöz"
 
@@ -1095,18 +1095,18 @@ msgstr "PIN kód szükséges a mobil széles sávú eszközhöz"
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:760
-#: js/ui/components/networkAgent.js:764 js/ui/components/networkAgent.js:776
-#: js/ui/components/networkAgent.js:780
+#: js/ui/components/networkAgent.js:409 js/ui/components/networkAgent.js:754
+#: js/ui/components/networkAgent.js:758 js/ui/components/networkAgent.js:770
+#: js/ui/components/networkAgent.js:774
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Jelszó szükséges a kapcsolódáshoz a következőhöz: „%s”."
 
-#: js/ui/components/networkAgent.js:743 js/ui/status/network.js:2040
+#: js/ui/components/networkAgent.js:737 js/ui/status/network.js:2040
 msgid "Network Manager"
 msgstr "Hálózatkezelő"
 
-#: js/ui/components/networkAgent.js:779
+#: js/ui/components/networkAgent.js:773
 msgid "VPN password"
 msgstr "VPN jelszó"
 
@@ -1126,7 +1126,7 @@ msgstr "Hitelesítés"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:420
+#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:429
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Elnézést, ez nem sikerült. Próbálja újra."
 
@@ -1522,7 +1522,7 @@ msgstr "Engedélyezve"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:808 subprojects/gvc/gvc-mixer-control.c:1908
+#: js/ui/lookingGlass.js:808 subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Tiltva"
 
@@ -1586,7 +1586,7 @@ msgstr "Képernyőzárolás letiltva"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "A képernyőzároláshoz a GNOME kijelzőkezelő szükséges."
 
-#: js/ui/messageTray.js:1417
+#: js/ui/messageTray.js:1422
 msgid "System Information"
 msgstr "Rendszerinformációk"
 
@@ -1850,20 +1850,20 @@ msgstr "Szöveg elrejtése"
 msgid "Caps lock is on."
 msgstr "A Caps Lock be van kapcsolva."
 
-#: js/ui/shellMountOperation.js:291
+#: js/ui/shellMountOperation.js:300
 msgid "Hidden Volume"
 msgstr "Rejtett kötet"
 
-#: js/ui/shellMountOperation.js:294
+#: js/ui/shellMountOperation.js:303
 msgid "Windows System Volume"
 msgstr "Windows rendszerkötet"
 
-#: js/ui/shellMountOperation.js:297
+#: js/ui/shellMountOperation.js:306
 msgid "Uses Keyfiles"
 msgstr "Kulcsfájlokat használ"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:305
+#: js/ui/shellMountOperation.js:314
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -1871,7 +1871,7 @@ msgstr ""
 "A kulcsfájlokat használó kötetek feloldásához használja inkább a(z) <i>%s</"
 "i> segédprogramot."
 
-#: js/ui/shellMountOperation.js:309
+#: js/ui/shellMountOperation.js:318
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles."
@@ -1879,25 +1879,25 @@ msgstr ""
 "Külső segédprogramra, például a <i>Lemezekre</i> van szüksége egy "
 "kulcsfájlokat használó kötet feloldásához."
 
-#: js/ui/shellMountOperation.js:317
+#: js/ui/shellMountOperation.js:326
 msgid "PIM Number"
 msgstr "PIM-szám"
 
-#: js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:385
 msgid "Remember Password"
 msgstr "Jelszó megjegyzése"
 
-#: js/ui/shellMountOperation.js:391
+#: js/ui/shellMountOperation.js:400
 msgid "Unlock"
 msgstr "Feloldás"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:405
+#: js/ui/shellMountOperation.js:414
 #, javascript-format
 msgid "Open %s"
 msgstr "%s megnyitása"
 
-#: js/ui/shellMountOperation.js:441
+#: js/ui/shellMountOperation.js:450
 msgid "The PIM must be a number or empty."
 msgstr "A PIM-nek számnak vagy üresnek kell lennie."
 
@@ -3080,7 +3080,7 @@ msgstr "Elem hozzáadása a gyors beállításokhoz"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3089,17 +3089,18 @@ msgstr[1] "%u kimenet"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u bemenet"
 msgstr[1] "%u bemenet"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Rendszerhangok"
 
 #, javascript-format
 #~ msgid "%d %%"
 #~ msgstr "%d %%"
+
