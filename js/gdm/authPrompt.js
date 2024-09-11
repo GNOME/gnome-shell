@@ -144,6 +144,16 @@ export const AuthPrompt = GObject.registerClass({
         'verification-complete': {},
         'loading': {param_types: [GObject.TYPE_BOOLEAN]},
     },
+    Properties: {
+        'verification-status': GObject.ParamSpec.uint(
+            'verification-status', 'verification-status', 'verification-status',
+            GObject.ParamFlags.READWRITE,
+            AuthPromptStatus.NOT_VERIFYING, AuthPromptStatus.VERIFICATION_IN_PROGRESS, 0),
+        'prompt-step': GObject.ParamSpec.uint(
+            'prompt-step', 'prompt-step', 'prompt-step',
+            GObject.ParamFlags.READWRITE,
+            0, GLib.MAXUINT32, 0),
+    },
 }, class AuthPrompt extends St.BoxLayout {
     _init(gdmClient, mode) {
         super._init({
@@ -160,7 +170,8 @@ export const AuthPrompt = GObject.registerClass({
         this._mode = mode;
         this._defaultButtonWellActor = null;
         this._cancelledRetries = 0;
-        this._promptStep = 0;
+
+        this.connect('notify::prompt-step', () => this._updateCancelButton());
 
         let reauthenticationOnly;
         if (this._mode === AuthPromptMode.UNLOCK_ONLY)
@@ -416,7 +427,7 @@ export const AuthPrompt = GObject.registerClass({
         if (this._mode === AuthPromptMode.UNLOCK_OR_LOG_IN)
             return;
 
-        const cancelVisible = this._promptStep > 1;
+        const cancelVisible = this.promptStep > 1;
         this.cancelButton.opacity = cancelVisible ? 255 : 0;
         this.cancelButton.reactive = cancelVisible;
     }
@@ -503,8 +514,7 @@ export const AuthPrompt = GObject.registerClass({
             this.clear();
 
         this._queryingService = serviceName;
-        this._promptStep++;
-        this._updateCancelButton();
+        this.promptStep++;
 
         const preemptiveAnswer = this._preemptiveAnswer;
         this._clearPreemptiveState();
@@ -531,8 +541,7 @@ export const AuthPrompt = GObject.registerClass({
             this.clear();
 
         this._queryingService = serviceName;
-        this._promptStep++;
-        this._updateCancelButton();
+        this.promptStep++;
 
         this._clearPreemptiveState();
 
@@ -569,7 +578,7 @@ export const AuthPrompt = GObject.registerClass({
             this.clear();
 
         this._queryingService = serviceName;
-        this._promptStep++;
+        this.promptStep++;
 
         this._clearPreemptiveState();
 
@@ -590,8 +599,7 @@ export const AuthPrompt = GObject.registerClass({
             this.clear();
 
         this._queryingService = serviceName;
-        this._promptStep++;
-        this._updateCancelButton();
+        this.promptStep++;
 
         this._webLoginParams = {message, url, code, buttons};
 
@@ -898,12 +906,10 @@ export const AuthPrompt = GObject.registerClass({
         if (invalidStatus.includes(this.verificationStatus))
             return false;
 
-        const oldPromptStep = this._promptStep;
-        this._promptStep = 0;
+        const oldPromptStep = this.promptStep;
+        this.promptStep = 0;
         if (!this._userVerifier.selectMechanism(mechanism))
-            this._promptStep = oldPromptStep;
-
-        this._updateCancelButton();
+            this.promptStep = oldPromptStep;
 
         return true;
     }
@@ -918,8 +924,7 @@ export const AuthPrompt = GObject.registerClass({
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         if (oldStatus !== AuthPromptStatus.VERIFICATION_IN_PROGRESS)
             this._preemptiveAnswer = null;
-        this._promptStep = 0;
-        this._updateCancelButton();
+        this.promptStep = 0;
 
         if (softReset)
             this._userVerifier?.cancel();
@@ -1030,7 +1035,7 @@ export const AuthPrompt = GObject.registerClass({
             return;
 
         // If we're in a multi-step flow (step > 1), go back to step 1 instead of full reset
-        if (this._promptStep > 1) {
+        if (this.promptStep > 1) {
             this.reset({softReset: true});
             return;
         }
