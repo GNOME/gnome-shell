@@ -143,6 +143,12 @@ export const AuthPrompt = GObject.registerClass({
         'verification-complete': {},
         'loading': {param_types: [GObject.TYPE_BOOLEAN]},
     },
+    Properties: {
+        'verification-status': GObject.ParamSpec.uint(
+            'verification-status', 'verification-status', 'verification-status',
+            GObject.ParamFlags.READWRITE,
+            AuthPromptStatus.NOT_VERIFYING, AuthPromptStatus.VERIFICATION_IN_PROGRESS, 0),
+    },
 }, class AuthPrompt extends St.BoxLayout {
     _init(gdmClient, mode) {
         super._init({

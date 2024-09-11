@@ -436,6 +436,8 @@ export const LoginDialog = GObject.registerClass({
         this._authPrompt.connect('verification-complete', this._onVerificationComplete.bind(this));
         this._authPrompt.connect('loading', this._onLoading.bind(this));
         this._authPrompt.connect('mechanisms-changed', this._onMechanismsChanged.bind(this));
+        this._authPrompt.connectObject('notify::verification-status',
+            () => this._updateCancelButton(), this);
         this._authPrompt.hide();
         this.add_child(this._authPrompt);
 
@@ -1116,9 +1118,7 @@ export const LoginDialog = GObject.registerClass({
                 this._updateSessions();
                 this._authPrompt.clear();
                 this._authPrompt.begin({userName: answer});
-                this._updateCancelButton();
             });
-        this._updateCancelButton();
 
         this._authMenuButton.updateVisibility({visible: false});
         this._showPrompt();
