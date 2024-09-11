@@ -7,6 +7,7 @@ import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import Shell from 'gi://Shell';
+import Pango from 'gi://Pango';
 import St from 'gi://St';
 import {Spinner} from '../ui/animation.js';
 import * as ModalDialog from '../ui/modalDialog.js';
@@ -90,6 +91,10 @@ class WebLoginPrompt extends St.BoxLayout {
             text: message,
             style_class: 'web-login-title-label',
         });
+        this._urlTitleLabel.clutterText.set({
+            lineWrap: true,
+            ellipsize: Pango.EllipsizeMode.NONE,
+        });
         this.add_child(this._urlTitleLabel);
 
         this._qrCode = new QrCode({iconSize, url});
@@ -126,6 +131,9 @@ class WebLoginPrompt extends St.BoxLayout {
     _formatURLForDisplay(url) {
         const http = 'http://';
         const https = 'https://';
+
+        if (url.endsWith('/'))
+            url = url.substring(0, url.length - 1);
 
         if (url.startsWith(http))
             return url.substring(http.length);
