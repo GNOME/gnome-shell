@@ -46,7 +46,7 @@ $app_folder_size: 720px;
   height: 5px;
   width: 5px;
   border-radius:5px;
-  background-color: $system_fg_color;
+  background-color: st-lighten(-st-accent-color, 15%);
   offset-y: 6px;
 }
 

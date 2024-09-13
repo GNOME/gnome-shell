@@ -930,14 +930,19 @@ class ProviderInfo extends St.Button {
             style_class: 'list-search-provider-details',
             vertical: true,
             x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
         });
 
         const nameLabel = new St.Label({
             text: provider.appInfo.get_name(),
+            style_class: 'list-search-provider-details-name',
             x_align: Clutter.ActorAlign.START,
         });
 
-        this._moreLabel = new St.Label({x_align: Clutter.ActorAlign.START});
+        this._moreLabel = new St.Label({
+            style_class: 'list-search-provider-details-more',
+            x_align: Clutter.ActorAlign.START,
+        });
 
         detailsBox.add_child(nameLabel);
         detailsBox.add_child(this._moreLabel);

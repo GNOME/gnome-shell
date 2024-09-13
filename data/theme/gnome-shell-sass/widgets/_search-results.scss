@@ -68,7 +68,14 @@
     // provider labels
     .list-search-provider-details {
       width: 120px;
-      color: $system_fg_color;
+
+      .list-search-provider-details-name {
+        font-weight: bold;
+      }
+      .list-search-provider-details-more {
+        @extend %smaller;
+        color: $link_color;
+      }
     }
   }
 }
