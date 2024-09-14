@@ -1,3 +1,21 @@
+47.0
+====
+* Fix new wifi connections for restricted users [Thore; !3462]
+* Do not disable required animations [Alessandro; !2986]
+* Fix showing pending PAM messages on login screen [Marco; !3466]
+* Misc. bug fixes and cleanups [Alessandro, Balló, Sundeep, Martin, Peter,
+  Florian; !3446, !3374, !3439, !3464, !3465]
+
+Contributors:
+  Alessandro Bono, Balló György, Peter Hutterer, Martin Abente Lahaye,
+  Sundeep Mediratta, Florian Müllner, Thore Sommer, Marco Trevisan (Treviño)
+
+Translators:
+  Aefgh Threenine [th], Irénée THIRION [fr], twlvnn kraftwerk [bg],
+  Alexander Shopov [bg], Daniel Mustieles [es], Aurimas Černius [lt],
+  Fran Dieguez [gl], Anders Jonsson [sv], Andi Chandler [en_GB],
+  Ask Hjorth Larsen [da], Rūdolfs Mazurs [lv], Balázs Úr [hu]
+
 47.rc
 =====
 * Fix smartcard logins [Alessandro; !3448]

@@ -55,9 +55,7 @@
   </description>
 
   <releases>
-    <release version="47.rc" date="2024-08-31" type="development"/>
-    <release version="47.beta" date="2024-08-03" type="development"/>
-    <release version="47.alpha" date="2024-06-29" type="development"/>
+    <release version="47.0" date="2024-09-14"/>
   </releases>
 
   <screenshots>
