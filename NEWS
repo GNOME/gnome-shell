@@ -1,3 +1,21 @@
+46.5
+====
+* Fix smartcard logins [Alessandro; !3448]
+* Fix glitch when quick settings menu animation is interrupted [Dylan; !2481]
+* Fix new wifi connections for restricted users [Thore; !3462]
+* Do not disable required animations [Alessandro; !2986]
+* Fix showing pending PAM messages on login screen [Marco; !3466]
+* Plugged leak [Jonas; !3421]
+* Misc. bug fixes and cleanups [Sophie, Florian; !3443, !3449]
+
+Contributors:
+  Jonas Ådahl, Alessandro Bono, Sophie Herold, Dylan McCall, Florian Müllner,
+  Thore Sommer, Marco Trevisan (Treviño)
+
+Translators:
+  Giannis Antypas [el], Daniel Șerbănescu [ro], Vasil Pupkin [be],
+  twlvnn kraftwerk [bg], Balázs Úr [hu], Aefgh Threenine [th]
+
 46.4
 ====
 * Fix glitches in looking glass [Florian; !3413, !3414]
