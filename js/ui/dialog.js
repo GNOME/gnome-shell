@@ -56,6 +56,7 @@ class Dialog extends St.Widget {
         this._dialog.add_child(this.contentLayout);
 
         this.buttonLayout = new St.Widget({
+            style_class: 'modal-dialog-button-box',
             layout_manager: new Clutter.BoxLayout({
                 spacing: 12,
                 homogeneous: true,
@@ -124,7 +125,7 @@ class Dialog extends St.Widget {
             keys = [];
 
         let button = new St.Button({
-            style_class: 'modal-dialog-linked-button',
+            style_class: 'modal-dialog-button',
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             reactive: true,
             can_focus: true,

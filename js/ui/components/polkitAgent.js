@@ -21,7 +21,7 @@ const DialogMode = {
     CONFIRM: 1,
 };
 
-const DIALOG_ICON_SIZE = 64;
+const DIALOG_ICON_SIZE = 96;
 
 const DELAYED_RESET_TIMEOUT = 200;
 
