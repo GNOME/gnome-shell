@@ -988,7 +988,7 @@ class RestartMessage extends ModalDialog.ModalDialog {
     _init(message) {
         super._init({
             shellReactive: true,
-            styleClass: 'restart-message headline',
+            styleClass: 'restart-message',
             shouldFadeIn: false,
             destroyOnClose: true,
         });
