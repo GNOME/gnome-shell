@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-09-14 21:44+0000\n"
-"PO-Revision-Date: 2024-09-12 13:23+0700\n"
+"POT-Creation-Date: 2024-09-16 15:09+0000\n"
+"PO-Revision-Date: 2024-09-18 01:36+0700\n"
 "Last-Translator: Atirut Wattanamongkol <atirut.wattanamongkol@gmail.com>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "Language: th\n"
@@ -105,12 +105,12 @@ msgstr "เปิดหน้าต่างใหม่ของแอปที
 #. Translators: name of the folder under ~/Pictures for screenshots.
 #: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2276
 msgid "Screenshots"
-msgstr "จับภาพหน้าจอ"
+msgstr "ภาพหน้าจอ"
 
 #: data/50-gnome-shell-screenshots.xml:9
 #: data/org.gnome.shell.gschema.xml.in:287
 msgid "Take a screenshot interactively"
-msgstr "บันทึกภาพหน้าจอแบบอินเทอร์แอคทีฟ"
+msgstr "บันทึกภาพหน้าจอแบบโต้ตอบ"
 
 #: data/50-gnome-shell-screenshots.xml:12
 #: data/org.gnome.shell.gschema.xml.in:299
@@ -141,7 +141,7 @@ msgstr "เปิดเมนูตั้งค่าด่วน"
 
 #: data/50-gnome-shell-system.xml:15
 msgid "Focus the active notification"
-msgstr "โฟกัสที่รายการแจ้งเตือนที่ใช้งาน"
+msgstr "โฟกัสที่รายการแจ้งเตือนที่แสดงอยู่"
 
 #: data/50-gnome-shell-system.xml:18
 msgid "Show the overview"
@@ -698,7 +698,7 @@ msgstr "ล็อกหน้าจอ"
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:110
 msgid "lock screen"
-msgstr "ล็อคหน้าจอ"
+msgstr "ล็อกหน้าจอ"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:115
@@ -851,7 +851,7 @@ msgstr "%-d %B %H∶%M น."
 #: js/misc/dateUtils.js:179
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
-msgstr "%-d %B %Y %H∶%M น."
+msgstr "%-d %B %EY %H∶%M น."
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
@@ -888,7 +888,7 @@ msgstr "%-d %B %l:%M น. %p"
 #: js/misc/dateUtils.js:208
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%-d %B %Y %l:%M น. %p"
+msgstr "%-d %B %EY %l:%M น. %p"
 
 #: js/portalHelper/main.js:98
 msgid "Your connection seems to be secure"
@@ -953,7 +953,7 @@ msgstr "เลิกปักหมุด"
 
 #: js/ui/appMenu.js:163
 msgid "Pin to Dash"
-msgstr "ปักหมุดไว้บนแดช"
+msgstr "ปักหมุดไว้ที่แดช"
 
 #: js/ui/appMenu.js:180
 msgid "Launch using Integrated Graphics Card"
@@ -1068,7 +1068,7 @@ msgstr "%OB"
 #.
 #: js/ui/calendar.js:438
 msgid "%OB %Y"
-msgstr "%OB %Y"
+msgstr "%OB %EY"
 
 #: js/ui/calendar.js:500
 msgid "Previous month"
@@ -1260,7 +1260,7 @@ msgstr "แดช"
 #.
 #: js/ui/dateMenu.js:101
 msgid "%B %-d %Y"
-msgstr "%-d %B %Y"
+msgstr "%-d %B %EY"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
@@ -1268,7 +1268,7 @@ msgstr "%-d %B %Y"
 #.
 #: js/ui/dateMenu.js:108
 msgid "%A %B %e %Y"
-msgstr "วัน%Aที่ %e %B %Y"
+msgstr "วัน%Aที่ %e %B %EY"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/dateMenu.js:174
@@ -1280,7 +1280,7 @@ msgstr "%-d %B"
 #: js/ui/dateMenu.js:177
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
-msgstr "%-d %B %Y"
+msgstr "%-d %B %EY"
 
 #: js/ui/dateMenu.js:183
 msgid "Today"
@@ -1778,18 +1778,16 @@ msgid "Press ESC to close"
 msgstr "กด ESC เพื่อปิด"
 
 #: js/ui/runDialog.js:243
-#, fuzzy
 msgid "Restart is not available on Wayland"
-msgstr "ไม่มีการเข้ารหัสลับให้ใช้งาน"
+msgstr "ไม่สามารถเริ่มใหม่ได้บน Wayland"
 
 #: js/ui/runDialog.js:248
-#, fuzzy
 msgid "Restarting…"
-msgstr "กำลังเปิดเครื่องใหม่…"
+msgstr "กำลังเริ่มใหม่…"
 
 #: js/ui/screenShield.js:235
 msgid "GNOME needs to lock the screen"
-msgstr "GNOME จำเป็นต้องล็อคหน้าจอ"
+msgstr "GNOME จำเป็นต้องล็อกหน้าจอ"
 
 #: js/ui/screenShield.js:276 js/ui/screenShield.js:669
 msgid "Unable to lock"
@@ -1797,7 +1795,7 @@ msgstr "ไม่สามารถล็อกได้"
 
 #: js/ui/screenShield.js:277 js/ui/screenShield.js:670
 msgid "Lock was blocked by an app"
-msgstr ""
+msgstr "การล็อกถูกบล็อกโดยแอป"
 
 #: js/ui/screenshot.js:1254
 msgid "Selection"
@@ -1826,7 +1824,7 @@ msgstr "เลือกหน้าต่าง"
 #. Translators: entry in the window right click menu.
 #: js/ui/screenshot.js:1319 js/ui/status/system.js:113 js/ui/windowMenu.js:30
 msgid "Take Screenshot"
-msgstr "ถ่ายภาพหน้าจอ"
+msgstr "ถ่ายภาพหน้าต่าง"
 
 #: js/ui/screenshot.js:1335
 msgid "Record Screen"
@@ -2061,7 +2059,7 @@ msgstr "หมุนอัตโนมัติ"
 #: js/ui/status/backgroundApps.js:156
 msgctxt "title"
 msgid "Background Apps"
-msgstr "แอปในพื้นหลัง"
+msgstr "แอปในเบื้องหลัง"
 
 #: js/ui/status/backgroundApps.js:171
 msgid "Apps known to be running without a window"
@@ -2073,13 +2071,13 @@ msgstr "ตั้งค่าแอป"
 
 #: js/ui/status/backgroundApps.js:239
 msgid "No Background Apps"
-msgstr "ไม่มีแอปในพื้นหลัง"
+msgstr "ไม่มีแอปในเบื้องหลัง"
 
 #: js/ui/status/backgroundApps.js:241
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
-msgstr[0] "มีแอปในพื้นหลัง %d ตัว"
+msgstr[0] "มีแอปในเบื้องหลัง %d แอป"
 
 #: js/ui/status/backlight.js:40
 msgid "Keyboard Brightness"
@@ -2466,7 +2464,7 @@ msgstr "ยินดีต้อนรับสู่ %s"
 
 #: js/ui/welcomeDialog.js:54
 msgid "If you want to learn your way around, check out the tour."
-msgstr ""
+msgstr "หากคุณต้องการเรียนรู้วิธีใช้งาน โปรดดูทัวร์"
 
 #: js/ui/welcomeDialog.js:63
 msgid "Skip"
@@ -2474,7 +2472,7 @@ msgstr "ข้าม"
 
 #: js/ui/welcomeDialog.js:68
 msgid "Take Tour"
-msgstr "สำรวจ"
+msgstr "เริ่มทัวร์"
 
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
