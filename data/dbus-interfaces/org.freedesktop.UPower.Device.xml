@@ -7,5 +7,6 @@
     <property name="TimeToFull" type="x" access="read"/>
     <property name="IsPresent" type="b" access="read"/>
     <property name="IconName" type="s" access="read"/>
+    <property name="ChargeThresholdEnabled" type="b" access="read"/>
   </interface>
 </node>

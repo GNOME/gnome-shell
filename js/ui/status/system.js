@@ -74,8 +74,15 @@ const PowerToggle = GObject.registerClass({
             return;
 
         // The icons
-        let chargingState = this._proxy.State === UPower.DeviceState.CHARGING
-            ? '-charging' : '';
+        let chargingState;
+        if (this._proxy.State === UPower.DeviceState.CHARGING)
+            chargingState = '-charging';
+        else if (this._proxy.State === UPower.DeviceState.PENDING_CHARGE &&
+                 this._proxy.ChargeThresholdEnabled)
+            chargingState = '-plugged-in';
+        else
+            chargingState = '';
+
         let fillLevel = 10 * Math.floor(this._proxy.Percentage / 10);
         const charged =
             this._proxy.State === UPower.DeviceState.FULLY_CHARGED ||
