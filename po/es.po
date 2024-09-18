@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-08-06 15:18+0000\n"
+"POT-Creation-Date: 2024-09-17 18:40+0000\n"
 "PO-Revision-Date: 2024-09-02 11:42+0200\n"
 "Last-Translator: Daniel Mustieles García <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
@@ -510,12 +510,12 @@ msgstr "El modo de icono de la aplicación."
 #: data/org.gnome.shell.gschema.xml.in:327
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
 msgstr ""
 "Configura cómo se muestran las ventanas en el selector. Los valore posibles "
-"son «thumbnail-only» (muestra una miniatura de la ventana), «app-icon-"
-"only» (sólo muestra el icono de la aplicación) «both»."
+"son «thumbnail-only» (muestra una miniatura de la ventana), «app-icon-only» "
+"(sólo muestra el icono de la aplicación) «both»."
 
 #: data/org.gnome.shell.gschema.xml.in:336
 msgid ""
@@ -587,7 +587,7 @@ msgstr "Página web"
 msgid "Visit extension homepage"
 msgstr "Visitar la página web de la extensión"
 
-#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:465
+#: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:466
 #: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:113
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -595,7 +595,7 @@ msgstr "Visitar la página web de la extensión"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:213
+#: js/gdm/authPrompt.js:321 js/ui/components/networkAgent.js:213
 #: js/ui/components/networkAgent.js:233 js/ui/components/networkAgent.js:265
 #: js/ui/components/networkAgent.js:298 js/ui/components/networkAgent.js:337
 #: js/ui/components/networkAgent.js:350 js/ui/components/polkitAgent.js:286
@@ -608,7 +608,7 @@ msgid "Choose Session"
 msgstr "Elegir sesión"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:423
+#: js/gdm/loginDialog.js:424
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -620,7 +620,7 @@ msgstr ""
 "sesión remota o forzar el cierre."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:426
+#: js/gdm/loginDialog.js:427
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -631,7 +631,7 @@ msgstr ""
 "o forzar el cierre."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:429
+#: js/gdm/loginDialog.js:430
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -643,7 +643,7 @@ msgstr ""
 "sesión local o forzar el cierre."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:432
+#: js/gdm/loginDialog.js:433
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -652,11 +652,11 @@ msgstr ""
 "El inicio de sesión no es posible porque ya hay una sesión el ejecución para "
 "%s. Para iniciar sesión debe cerrar primero la sesión o forzar el cierre."
 
-#: js/gdm/loginDialog.js:441
+#: js/gdm/loginDialog.js:442
 msgid "Session Already Running"
 msgstr "Sesión en ejecución actualmente"
 
-#: js/gdm/loginDialog.js:453
+#: js/gdm/loginDialog.js:454
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -664,35 +664,35 @@ msgstr ""
 "Forzar la detención saldrá de cualquier aplicación o proceso en ejecución y "
 "puede provocar pérdida de datos"
 
-#: js/gdm/loginDialog.js:473
+#: js/gdm/loginDialog.js:474
 msgid "Force Stop"
 msgstr "Forzar detención"
 
-#: js/gdm/loginDialog.js:541
+#: js/gdm/loginDialog.js:542
 msgid "Not listed?"
 msgstr "¿No está en la lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1009
+#: js/gdm/loginDialog.js:1010
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ej., usuario o %s)"
 
-#: js/gdm/loginDialog.js:1014 js/ui/components/networkAgent.js:257
+#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:257
 #: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:326
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: js/gdm/loginDialog.js:1080
+#: js/gdm/loginDialog.js:1081
 msgid "Login Attempt Timed Out"
 msgstr "Ha expirado el intento de inicio de sesión"
 
-#: js/gdm/loginDialog.js:1081
+#: js/gdm/loginDialog.js:1082
 msgid "Login took too long, please try again"
 msgstr "El inicio de sesión ha tardado demasiado, inténtelo de nuevo"
 
-#: js/gdm/loginDialog.js:1426
+#: js/gdm/loginDialog.js:1431
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
@@ -1420,8 +1420,8 @@ msgstr "Cerrar la sesión"
 #, javascript-format
 msgid "%s will be logged out automatically in %d second"
 msgid_plural "%s will be logged out automatically in %d seconds"
-msgstr[0] "se cerrará automáticamente la sesión de %s en %d segundo"
-msgstr[1] "se cerrará automáticamente la sesión de %s en %d segundos"
+msgstr[0] "Se cerrará automáticamente la sesión de %s en %d segundo"
+msgstr[1] "Se cerrará automáticamente la sesión de %s en %d segundos"
 
 #: js/ui/endSessionDialog.js:57
 #, javascript-format
@@ -2196,7 +2196,7 @@ msgstr "Desconectar"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:287 js/ui/status/network.js:1900
+#: js/ui/status/bluetooth.js:287 js/ui/status/network.js:1909
 msgid "Bluetooth Settings"
 msgstr "Configuración de Bluetooth"
 
@@ -2288,93 +2288,93 @@ msgstr "Desconectar %s"
 msgid "Connect to %s"
 msgstr "Conectar a %s"
 
-#: js/ui/status/network.js:1050
+#: js/ui/status/network.js:1059
 msgid "Secure"
 msgstr "Segura"
 
-#: js/ui/status/network.js:1050
+#: js/ui/status/network.js:1059
 msgid "Not secure"
 msgstr "No segura"
 
-#: js/ui/status/network.js:1051
+#: js/ui/status/network.js:1060
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Fuerza de la señal %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1053
+#: js/ui/status/network.js:1062
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1155
+#: js/ui/status/network.js:1164
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Punto de acceso %s"
 
-#: js/ui/status/network.js:1426
+#: js/ui/status/network.js:1435
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d conectado"
 msgstr[1] "%d conectados"
 
-#: js/ui/status/network.js:1524 js/ui/status/network.js:1540
+#: js/ui/status/network.js:1533 js/ui/status/network.js:1549
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1525
+#: js/ui/status/network.js:1534
 msgid "VPN Settings"
 msgstr "Configuración de VPN"
 
-#: js/ui/status/network.js:1785
+#: js/ui/status/network.js:1794
 msgid "Wi–Fi"
 msgstr "Inalámbrica"
 
-#: js/ui/status/network.js:1787
+#: js/ui/status/network.js:1796
 msgid "All Networks"
 msgstr "Todas las redes"
 
-#: js/ui/status/network.js:1884
+#: js/ui/status/network.js:1893
 msgid "Wired Connections"
 msgstr "Conexiones cableadas"
 
-#: js/ui/status/network.js:1885
+#: js/ui/status/network.js:1894
 msgid "Wired Settings"
 msgstr "Configuración de red cableada"
 
-#: js/ui/status/network.js:1899
+#: js/ui/status/network.js:1908
 msgid "Bluetooth Tethers"
 msgstr "Conexiones Bluetooth compartidas"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1906
+#: js/ui/status/network.js:1915
 msgid "Tether"
 msgstr "Compartir conexión"
 
-#: js/ui/status/network.js:1919
+#: js/ui/status/network.js:1928
 msgid "Mobile Connections"
 msgstr "Conexiones móviles"
 
-#: js/ui/status/network.js:1921
+#: js/ui/status/network.js:1930
 msgid "Mobile Broadband Settings"
 msgstr "Configuración de banda ancha móvil"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1930
+#: js/ui/status/network.js:1939
 msgid "Mobile"
 msgstr "Móvil"
 
-#: js/ui/status/network.js:1964
+#: js/ui/status/network.js:1973
 msgid "Sign Into Wi–Fi Network"
 msgstr "Iniciar sesión en la red Wi-Fi"
 
-#: js/ui/status/network.js:2151
+#: js/ui/status/network.js:2160
 msgid "Connection failed"
 msgstr "Falló la conexión"
 
-#: js/ui/status/network.js:2152
+#: js/ui/status/network.js:2161
 msgid "Activation of network connection failed"
 msgstr "Falló la activación de la conexión de red"
 
@@ -2670,25 +2670,25 @@ msgstr "Mover a la pantalla de la derecha"
 msgid "Close"
 msgstr "Cerrar"
 
-#: src/main.c:529 subprojects/extensions-tool/src/main.c:336
+#: src/main.c:512 subprojects/extensions-tool/src/main.c:336
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: src/main.c:535
+#: src/main.c:518
 msgid "Mode used by GDM for login screen"
 msgstr "Modo usado por GDM para la pantalla de inicio"
 
-#: src/main.c:541
+#: src/main.c:524
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Usar un modo específico, por ejemplo, «gdm» para la pantalla de inicio de "
 "sesión"
 
-#: src/main.c:547
+#: src/main.c:530
 msgid "List possible modes"
 msgstr "Listar los modos posibles"
 
-#: src/main.c:553
+#: src/main.c:536
 msgid "Force animations to be enabled"
 msgstr "Forzar animaciones para activar"
 
@@ -2728,11 +2728,11 @@ msgid "Manage your GNOME Extensions"
 msgstr "Gestionar sus extensiones de GNOME Shell"
 
 #. developer_name tag deprecated with Appstream 1.0
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:19
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:20
 msgid "The GNOME Project"
 msgstr "El Proyecto GNOME"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:52
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -4137,11 +4137,11 @@ msgstr "Sonidos del sistema"
 #~ msgstr ""
 #~ "Configura el nivel máximo de precisión de la ubicación que se permite ver "
 #~ "a las aplicaciones. Las opciones válidas son «off» (desactivar el rastreo "
-#~ "de la ubicación), «country», «city», «neighborhood», «street», y "
-#~ "«exact» (normalmente necesita un receptor GPS). Tenga en cuenta que esto "
-#~ "sólo controla lo que GeoClue permitirá ver a las aplicaciones y lo que "
-#~ "pueden encontrar sobre la ubicación de usuario usando los recursos de la "
-#~ "red (aunque con precisión a nivel de la calle, en el mejor de los casos)."
+#~ "de la ubicación), «country», «city», «neighborhood», «street», y «exact» "
+#~ "(normalmente necesita un receptor GPS). Tenga en cuenta que esto sólo "
+#~ "controla lo que GeoClue permitirá ver a las aplicaciones y lo que pueden "
+#~ "encontrar sobre la ubicación de usuario usando los recursos de la red "
+#~ "(aunque con precisión a nivel de la calle, en el mejor de los casos)."
 
 #~ msgid "Arrangement of buttons on the titlebar"
 #~ msgstr "Orden de los botones en la barra de título"
@@ -4721,15 +4721,14 @@ msgstr "Sonidos del sistema"
 #~ msgstr ""
 #~ "Determina la posición de la imagen magnificada del ratón dentro de la "
 #~ "vista magnificada y cómo reacciona al movimiento del ratón del sistema. "
-#~ "Los valores son «none» (ninguno): sin seguimiento del ratón; "
-#~ "«centered» (centrado): la imagen del ratón se muestra en el centro de la "
-#~ "región ampliada (que también representa el punto bajo el ratón del "
-#~ "sistema) y el contenido magnificado se desliza según se mueve el ratón "
-#~ "del sistema; «proporcional»: la posición del ratón magnificado en la "
-#~ "región de ampliación es proporcionalmente la misma que la posición del "
-#~ "ratón del sistema en el ratón; «push» (empujar): cuando el ratón "
-#~ "magnificado cruza un límite de la región de ampliación, el contenido se "
-#~ "desliza en la vista."
+#~ "Los valores son «none» (ninguno): sin seguimiento del ratón; «centered» "
+#~ "(centrado): la imagen del ratón se muestra en el centro de la región "
+#~ "ampliada (que también representa el punto bajo el ratón del sistema) y el "
+#~ "contenido magnificado se desliza según se mueve el ratón del sistema; "
+#~ "«proporcional»: la posición del ratón magnificado en la región de "
+#~ "ampliación es proporcionalmente la misma que la posición del ratón del "
+#~ "sistema en el ratón; «push» (empujar): cuando el ratón magnificado cruza "
+#~ "un límite de la región de ampliación, el contenido se desliza en la vista."
 
 #~ msgid ""
 #~ "Determines the transparency of the crosshairs, from fully opaque to fully "
