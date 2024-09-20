@@ -334,6 +334,7 @@ export const QuickSlider = GObject.registerClass({
             can_focus: true,
             x_expand: false,
             y_expand: true,
+            accessible_name: _('Open menu'),
         });
         box.add_child(this._menuButton);
 
