@@ -17,7 +17,7 @@ import * as Layout from './layout.js';
 
 import {loadInterfaceXML} from '../misc/fileUtils.js';
 
-const ACTIVE_COLOR = '#729fcf';
+const ACTIVE_COLOR = 'st-lighten(-st-accent-color, 15%)';
 
 const LTR = 0;
 const RTL = 1;
