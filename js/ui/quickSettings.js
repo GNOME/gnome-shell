@@ -294,6 +294,9 @@ export const QuickSlider = GObject.registerClass({
         this.bind_property('icon-reactive',
             this._iconButton, 'reactive',
             GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('icon-reactive',
+            this._iconButton, 'can-focus',
+            GObject.BindingFlags.SYNC_CREATE);
         this.bind_property('icon-label',
             this._iconButton, 'accessible-name',
             GObject.BindingFlags.SYNC_CREATE);
