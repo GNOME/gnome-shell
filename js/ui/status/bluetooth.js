@@ -247,12 +247,23 @@ class BluetoothDeviceItem extends PopupMenu.PopupBaseMenuItem {
 
         this.connect('destroy', () => (this._spinner = null));
         this.connect('activate', () => this._toggleConnected().catch(logError));
+        this._device.connect('notify::alias', () => this._updateAccessibleName());
+        this._device.connect('notify::connected', () => this._updateAccessibleName());
+        this._updateAccessibleName();
     }
 
     async _toggleConnected() {
         this._spinner.play();
         await this._client.toggleDevice(this._device);
         this._spinner?.stop();
+    }
+
+    _updateAccessibleName() {
+        this.accessible_name = this._device.connected
+            // Translators: %s is a device name like "MyPhone"
+            ? _('Disconnect %s').format(this._device.alias)
+            // Translators: %s is a device name like "MyPhone"
+            : _('Connect to %s').format(this._device.alias);
     }
 });
 
