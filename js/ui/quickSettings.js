@@ -103,6 +103,7 @@ export const QuickToggle = GObject.registerClass({
             x_align: Clutter.ActorAlign.START,
             x_expand: true,
         });
+        this.get_accessible().add_relationship(Atk.RelationType.DESCRIBED_BY, this._subtitle.get_accessible());
 
         const titleBox = new St.BoxLayout({
             y_align: Clutter.ActorAlign.CENTER,
