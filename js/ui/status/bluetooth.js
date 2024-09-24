@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 import 'gi://GnomeBluetooth?version=3.0';
 
+import Atk from 'gi://Atk';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GnomeBluetooth from 'gi://GnomeBluetooth';
@@ -336,9 +337,19 @@ class BluetoothToggle extends QuickMenuToggle {
             : _('Turn on Bluetooth to connect to devices');
     }
 
+    _updatePlaceholderRelation() {
+        const accel = this.get_accessible();
+        const placeholderAccel = this._placeholderItem.get_accessible();
+        if (this._deviceSection.actor.visible)
+            accel.remove_relationship(Atk.RelationType.DESCRIBED_BY, placeholderAccel);
+        else
+            accel.add_relationship(Atk.RelationType.DESCRIBED_BY, placeholderAccel);
+    }
+
     _updateDeviceVisibility() {
         this._deviceSection.actor.visible =
             [...this._deviceItems.values()].some(item => item.visible);
+        this._updatePlaceholderRelation();
     }
 
     _getSortedDevices() {
