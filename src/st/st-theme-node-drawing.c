@@ -909,6 +909,7 @@ static void
 paint_inset_box_shadow_to_cairo_context (StThemeNode     *node,
                                          StShadow        *shadow_spec,
                                          float            resource_scale,
+                                         const guint      outer_radius[4],
                                          cairo_t         *cr,
                                          cairo_path_t    *shadow_outline)
 {
@@ -952,10 +953,6 @@ paint_inset_box_shadow_to_cairo_context (StThemeNode     *node,
       int surface_width = ceil ((shrunk_extents_x2 - surface_x) * resource_scale);
       int surface_height = ceil ((shrunk_extents_y2 - surface_y) * resource_scale);
 
-      /* Center of the original path */
-      double x_center = (extents_x1 + extents_x2) / 2;
-      double y_center = (extents_y1 + extents_y2) / 2;
-
       cairo_pattern_t *pattern;
       cairo_t *temp_cr;
       cairo_matrix_t matrix;
@@ -970,14 +967,67 @@ paint_inset_box_shadow_to_cairo_context (StThemeNode     *node,
       /* Shadow offset */
       cairo_translate (temp_cr, shadow_spec->xoffset, shadow_spec->yoffset);
 
-      /* Scale the path around the center to match the shrunk bounds */
-      cairo_translate (temp_cr, x_center, y_center);
-      cairo_scale (temp_cr,
-                   (shrunk_extents_x2 - shrunk_extents_x1) / (extents_x2 - extents_x1),
-                   (shrunk_extents_y2 - shrunk_extents_y1) / (extents_y2 - extents_y1));
-      cairo_translate (temp_cr, - x_center, - y_center);
+      cairo_new_path (temp_cr);
 
-      cairo_append_path (temp_cr, shadow_outline);
+      int inner_radius;
+
+      inner_radius = MAX (0, outer_radius[ST_CORNER_TOPLEFT] - shadow_spec->spread);
+      if (inner_radius > 0)
+        {
+          cairo_arc (temp_cr,
+                     shrunk_extents_x1 + inner_radius,
+                     shrunk_extents_y1 + inner_radius,
+                     inner_radius,
+                     M_PI, 3 * M_PI / 2);
+        }
+
+      inner_radius = MAX (0, outer_radius[ST_CORNER_TOPRIGHT] - shadow_spec->spread);
+
+      cairo_line_to (temp_cr,
+                     shrunk_extents_x2 - inner_radius,
+                     shrunk_extents_y1);
+
+      if (inner_radius > 0)
+        {
+          cairo_arc (temp_cr,
+                     shrunk_extents_x2 - inner_radius,
+                     shrunk_extents_y1 + inner_radius,
+                     inner_radius,
+                     3 * M_PI / 2, 0);
+        }
+
+      inner_radius = MAX (0, outer_radius[ST_CORNER_BOTTOMRIGHT] - shadow_spec->spread);
+
+      cairo_line_to (temp_cr,
+                     shrunk_extents_x2,
+                     shrunk_extents_y2 - inner_radius);
+
+      if (inner_radius > 0)
+        {
+          cairo_arc (temp_cr,
+                     shrunk_extents_x2 - inner_radius,
+                     shrunk_extents_y2 - inner_radius,
+                     inner_radius,
+                     0, M_PI / 2);
+        }
+
+      inner_radius = MAX (0, outer_radius[ST_CORNER_BOTTOMLEFT] - shadow_spec->spread);
+
+      cairo_line_to (temp_cr,
+                     shrunk_extents_x1 + inner_radius,
+                     shrunk_extents_y2);
+
+      if (inner_radius > 0)
+        {
+          cairo_arc (temp_cr,
+                     shrunk_extents_x1 + inner_radius,
+                     shrunk_extents_y2 - inner_radius,
+                     inner_radius,
+                     M_PI / 2, M_PI);
+        }
+
+      cairo_close_path (temp_cr);
+
       cairo_fill (temp_cr);
       cairo_destroy (temp_cr);
 
@@ -1330,6 +1380,7 @@ st_theme_node_prerender_background (StThemeNode *node,
       paint_inset_box_shadow_to_cairo_context (node,
                                                box_shadow_spec,
                                                resource_scale,
+                                               radius,
                                                cr,
                                                interior_path ? interior_path
                                                              : outline_path);
