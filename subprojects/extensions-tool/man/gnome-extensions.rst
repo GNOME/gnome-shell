@@ -201,8 +201,7 @@ COMMANDS
 
     ``--schema``\ =\ *SCHEMA*
 
-      A GSettings schema that should be compiled and
-      included
+      A GSettings schema that should be included
 
     ``--podir``\ =\ *PODIR*
 
