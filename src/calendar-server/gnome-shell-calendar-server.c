@@ -44,7 +44,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
 #define BUS_NAME "org.gnome.Shell.CalendarServer"
 
-static const gchar introspection_xml[] =
+static const char introspection_xml[] =
   "<node>"
   "  <interface name='org.gnome.Shell.CalendarServer'>"
   "    <method name='SetTimeRange'>"
@@ -81,10 +81,10 @@ static GOptionEntry  opt_entries[] = {
  * neither may contain '\n', so we can safely use it to
  * create a unique ID from the triple
  */
-static gchar *
-create_event_id (const gchar *source_uid,
-                 const gchar *comp_uid,
-                 const gchar *comp_rid)
+static char *
+create_event_id (const char *source_uid,
+                 const char *comp_uid,
+                 const char *comp_rid)
 {
   return g_strconcat (
     source_uid ? source_uid : "",
@@ -103,8 +103,8 @@ typedef struct
 
 typedef struct
 {
-  gchar  *id;
-  gchar  *summary;
+  char  *id;
+  char  *summary;
   time_t  start_time;
   time_t  end_time;
 } CalendarAppointment;
@@ -321,10 +321,10 @@ struct _CalendarServerApp
 
   EReminderWatcher *reminder_watcher;
 
-  gchar *timezone_location;
+  char *timezone_location;
 
   GSList *notify_appointments; /* CalendarAppointment *, for EventsAdded */
-  GSList *notify_ids; /* gchar *, for EventsRemoved */
+  GSList *notify_ids; /* char *, for EventsRemoved */
 
   GSList *live_views;
 };
@@ -422,7 +422,7 @@ app_notify_events_removed (CalendarServerApp *app)
   g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
   for (link = ids; link; link = g_slist_next (link))
     {
-      const gchar *id = link->data;
+      const char *id = link->data;
 
       g_variant_builder_add (&builder, "s", id);
     }
@@ -460,7 +460,7 @@ app_process_added_modified_objects (CalendarServerApp *app,
     {
       ECalComponent *comp;
       ICalComponent *icomp = link->data;
-      const gchar *uid;
+      const char *uid;
       gboolean fallback = FALSE;
 
       if (!icomp)
@@ -569,7 +569,7 @@ on_objects_removed (ECalClientView *view,
   CalendarServerApp *app = user_data;
   ECalClient *client;
   GSList *link;
-  const gchar *source_uid;
+  const char *source_uid;
 
   client = e_cal_client_view_ref_client (view);
   source_uid = e_source_get_uid (e_client_get_source (E_CLIENT (client)));
@@ -608,7 +608,7 @@ app_start_view (CalendarServerApp *app,
   g_autofree char *since_iso8601 = NULL;
   g_autofree char *until_iso8601 = NULL;
   g_autofree char *query = NULL;
-  const gchar *tz_location;
+  const char *tz_location;
   ECalClientView *view = NULL;
   g_autoptr (GError) error = NULL;
 
@@ -748,7 +748,7 @@ on_client_appeared_cb (CalendarSources *sources,
   CalendarServerApp *app = user_data;
   ECalClientView *view;
   GSList *link;
-  const gchar *source_uid;
+  const char *source_uid;
 
   source_uid = e_source_get_uid (e_client_get_source (E_CLIENT (client)));
 
@@ -786,7 +786,7 @@ on_client_appeared_cb (CalendarSources *sources,
 
 static void
 on_client_disappeared_cb (CalendarSources *sources,
-                          const gchar *source_uid,
+                          const char *source_uid,
                           gpointer user_data)
 {
   CalendarServerApp *app = user_data;
@@ -967,10 +967,10 @@ calendar_server_app_init (CalendarServerApp *app)
 
 static void
 handle_method_call (GDBusConnection       *connection,
-                    const gchar           *sender,
-                    const gchar           *object_path,
-                    const gchar           *interface_name,
-                    const gchar           *method_name,
+                    const char           *sender,
+                    const char           *object_path,
+                    const char           *interface_name,
+                    const char           *method_name,
                     GVariant              *parameters,
                     GDBusMethodInvocation *invocation,
                     gpointer               user_data)
@@ -1051,10 +1051,10 @@ handle_method_call (GDBusConnection       *connection,
 
 static GVariant *
 handle_get_property (GDBusConnection *connection,
-                     const gchar     *sender,
-                     const gchar     *object_path,
-                     const gchar     *interface_name,
-                     const gchar     *property_name,
+                     const char     *sender,
+                     const char     *object_path,
+                     const char     *interface_name,
+                     const char     *property_name,
                      GError         **error,
                      gpointer         user_data)
 {
@@ -1119,7 +1119,7 @@ stdin_channel_io_func (GIOChannel *source,
   if (condition & G_IO_HUP)
     {
       g_debug ("gnome-shell-calendar-server[%d]: Got HUP on stdin - exiting\n",
-               (gint) getpid ());
+               (int) getpid ());
       g_application_quit (application);
     }
   else
@@ -1136,7 +1136,7 @@ main (int    argc,
   g_autoptr (GApplication) application = NULL;
   g_autoptr (GError) error = NULL;
   GOptionContext *opt_context;
-  gint ret;
+  int ret;
   GIOChannel *stdin_channel;
   GApplicationFlags flags;
 
