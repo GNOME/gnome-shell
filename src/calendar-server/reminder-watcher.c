@@ -42,7 +42,7 @@ struct _ReminderWatcher {
 
 G_DEFINE_TYPE (ReminderWatcher, reminder_watcher, E_TYPE_REMINDER_WATCHER)
 
-static const gchar *
+static const char *
 reminder_watcher_get_rd_summary (const EReminderData *rd)
 {
   if (!rd)
@@ -61,7 +61,7 @@ reminder_watcher_notify_audio (ReminderWatcher *rw,
   return FALSE;
 }
 
-static gchar *
+static char *
 reminder_watcher_build_notif_id (const EReminderData *rd)
 {
   GString *string;
@@ -110,8 +110,8 @@ reminder_watcher_notify_display (ReminderWatcher *rw,
 {
   g_autoptr(GNotification) notification = NULL;
   g_autoptr(GIcon) icon = NULL;
-  g_autofree gchar *description = NULL;
-  g_autofree gchar *notif_id = NULL;
+  g_autofree char *description = NULL;
+  g_autofree char *notif_id = NULL;
 
   g_return_val_if_fail (rw != NULL, FALSE);
   g_return_val_if_fail (rd != NULL, FALSE);
@@ -149,10 +149,10 @@ reminder_watcher_notify_email (ReminderWatcher *rw,
 
 static gboolean
 reminder_watcher_is_blessed_program (GSettings *settings,
-                                     const gchar *url)
+                                     const char *url)
 {
-  gchar **list;
-  gint ii;
+  char **list;
+  int ii;
   gboolean found = FALSE;
 
   g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
@@ -172,8 +172,8 @@ reminder_watcher_is_blessed_program (GSettings *settings,
 
 static gboolean
 reminder_watcher_can_procedure (ReminderWatcher *rw,
-                                const gchar *cmd,
-                                const gchar *url)
+                                const char *cmd,
+                                const char *url)
 {
   return reminder_watcher_is_blessed_program (rw->settings, url);
 }
@@ -186,8 +186,8 @@ reminder_watcher_notify_procedure (ReminderWatcher *rw,
   ECalComponentText *description;
   ICalAttach *attach = NULL;
   GSList *attachments;
-  const gchar *url;
-  gchar *cmd;
+  const char *url;
+  char *cmd;
   gboolean result = FALSE;
 
   g_return_val_if_fail (rw != NULL, FALSE);
@@ -218,12 +218,12 @@ reminder_watcher_notify_procedure (ReminderWatcher *rw,
   if (description && e_cal_component_text_get_value (description))
     cmd = g_strconcat (url, " ", e_cal_component_text_get_value (description), NULL);
   else
-    cmd = (gchar *) url;
+    cmd = (char *) url;
 
   if (reminder_watcher_can_procedure (rw, cmd, url))
     result = g_spawn_command_line_async (cmd, NULL);
 
-  if (cmd != (gchar *) url)
+  if (cmd != (char *) url)
     g_free (cmd);
 
   /* Fall back to display notification if we got an error */
@@ -413,7 +413,7 @@ static EClient *
 reminder_watcher_cal_client_connect_sync (EReminderWatcher *watcher,
                                           ESource *source,
                                           ECalClientSourceType source_type,
-                                          guint32 wait_for_connected_seconds,
+                                          unsigned int wait_for_connected_seconds,
                                           GCancellable *cancellable,
                                           GError **error)
 {
@@ -427,7 +427,7 @@ static void
 reminder_watcher_cal_client_connect (EReminderWatcher *watcher,
                                      ESource *source,
                                      ECalClientSourceType source_type,
-                                     guint32 wait_for_connected_seconds,
+                                     unsigned int wait_for_connected_seconds,
                                      GCancellable *cancellable,
                                      GAsyncReadyCallback callback,
                                      gpointer user_data)
@@ -519,7 +519,7 @@ reminder_watcher_dismiss_done_cb (GObject *source_object,
 
 static EReminderData *
 reminder_watcher_find_by_id (EReminderWatcher *reminder_watcher,
-			     const gchar *id)
+			     const char *id)
 {
   EReminderData *res = NULL;
   GSList *past, *link;
@@ -529,18 +529,15 @@ reminder_watcher_find_by_id (EReminderWatcher *reminder_watcher,
   for (link = past; link; link = g_slist_next (link))
     {
       EReminderData *rd = link->data;
-      gchar *rd_id;
+      g_autofree char *rd_id = NULL;
 
       rd_id = reminder_watcher_build_notif_id (rd);
 
       if (g_strcmp0 (rd_id, id) == 0)
         {
           res = g_steal_pointer (&link->data);
-          g_free (rd_id);
           break;
         }
-
-      g_free (rd_id);
     }
 
   g_slist_free_full (past, e_reminder_data_free);
