@@ -43,7 +43,7 @@ export class ExtensionManager extends Signals.EventEmitter {
             () => this._reloadExtensionStylesheets());
 
         Main.sessionMode.connect('updated', () => {
-            this._sessionUpdated();
+            this._sessionUpdated().catch(logError);
         });
     }
 
@@ -73,7 +73,7 @@ export class ExtensionManager extends Signals.EventEmitter {
         this._installExtensionUpdates();
         this._sessionUpdated().then(() => {
             ExtensionDownloader.checkForUpdates();
-        });
+        }).catch(logError);
 
         GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, UPDATE_CHECK_TIMEOUT, () => {
             ExtensionDownloader.checkForUpdates();
