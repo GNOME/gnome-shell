@@ -37,9 +37,28 @@ find_toplevel() {
   done
 }
 
-needs_reconfigure() {
-  [[ ${#MESON_OPTIONS[*]} > 0 ]] &&
-  [[ -d $BUILD_DIR ]]
+setup_command() {
+  if [[ ${#MESON_OPTIONS[*]} > 0 && -d $BUILD_DIR ]]; then
+    RECONFIGURE=--reconfigure
+  fi
+
+  echo -n "meson setup --prefix=/usr $RECONFIGURE $WIPE ${MESON_OPTIONS[*]} $BUILD_DIR"
+}
+
+compile_command() {
+  echo -n "meson compile -C $BUILD_DIR"
+}
+
+install_command() {
+  echo -n "sudo meson install -C $BUILD_DIR"
+}
+
+dist_command() {
+  if [[ $RUN_DIST ]]; then
+    echo -n "meson dist -C $BUILD_DIR --include-subprojects"
+  else
+    echo -n :
+  fi
 }
 
 # load defaults
@@ -100,16 +119,12 @@ while true; do
   esac
 done
 
+BUILD_DIR=build-$TOOLBOX
+
 find_toplevel
 
-BUILD_DIR=build-$TOOLBOX
-[[ $RUN_DIST ]] && DIST="meson dist -C $BUILD_DIR --include-subprojects" || DIST=:
-
-needs_reconfigure && RECONFIGURE=--reconfigure
-
 toolbox run --container $TOOLBOX sh -c "
-  meson setup --prefix=/usr $RECONFIGURE $WIPE ${MESON_OPTIONS[*]} $BUILD_DIR &&
-  meson compile -C $BUILD_DIR &&
-  sudo meson install -C $BUILD_DIR &&
-  $DIST
-"
+  $(setup_command) &&
+  $(compile_command) &&
+  $(install_command) &&
+  $(dist_command)"
