@@ -13,7 +13,8 @@ usage() {
 	  --subdir=DIR       Build subdirectory instead of whole project
 	  --prepare=SCRIPT   Script to run before build
 	  --libdir=DIR       Setup the project with a different libdir
-	  --destdir=DIR      Install the project to an additional destdir
+	  --destdir=DIR      Install the project to DIR, can be used
+	                     several times to install to multiple destdirs
 
 	  -h, --help         Display this help
 
@@ -36,7 +37,7 @@ unset TEMP
 MESON_OPTIONS=()
 SUBDIR=.
 PREPARE=:
-DESTDIR=""
+DESTDIRS=()
 
 while true; do
   case "$1" in
@@ -61,7 +62,7 @@ while true; do
     ;;
 
     --destdir)
-      DESTDIR=$2
+      DESTDIRS+=( $2 )
       shift 2
     ;;
 
@@ -85,6 +86,8 @@ fi
 REPO_URL="$1"
 COMMIT="$2"
 
+[[ ${#DESTDIRS[@]} == 0 ]] && DESTDIRS+=( / )
+
 CHECKOUT_DIR=$(mktemp --directory)
 trap "rm -rf $CHECKOUT_DIR" EXIT
 
@@ -94,10 +97,11 @@ pushd "$CHECKOUT_DIR/$SUBDIR"
 sh -c "$PREPARE"
 meson setup --prefix=/usr _build "${MESON_OPTIONS[@]}"
 
-# Install it to an additional directory e.g., system extension directory
-if [ -n "${DESTDIR}" ]; then
-    sudo meson install -C _build --destdir=$DESTDIR
-fi
-
-sudo meson install -C _build
+# Install it to all specified dest dirs
+for destdir in "${DESTDIRS[@]}"; do
+    # don't use --destdir when installing to root,
+    # so post-install hooks are run
+    [[ $destdir == / ]] && destdir=
+    sudo meson install -C _build ${destdir:+--destdir=$destdir}
+done
 popd
