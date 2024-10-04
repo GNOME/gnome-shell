@@ -18,6 +18,7 @@ usage() {
 	  --dist                  Run meson dist
 	  --reconfigure           Reconfigure the project
 	  --wipe                  Wipe build directory and reconfigure
+	  --sysext                Install to separate target suitable for systemd-sysext
 
 	  -h, --help              Display this help
 
@@ -50,10 +51,11 @@ compile_command() {
 }
 
 install_command() {
-  if [[ $RUN_DIST ]]; then
-    echo -n :
+  local destdir=${BUILD_SYSEXT:+/var/lib/extensions/$TOOLBOX}
+  if [[ $destdir || ! $RUN_DIST ]]; then
+    echo -n "sudo meson install -C $BUILD_DIR ${destdir:+--destdir=$destdir}"
   else
-    echo -n "sudo meson install -C $BUILD_DIR"
+    echo -n :
   fi
 }
 
@@ -76,6 +78,7 @@ TEMP=$(getopt \
   --longoptions 'dist' \
   --longoptions 'reconfigure' \
   --longoptions 'wipe' \
+  --longoptions 'sysext' \
   --longoptions 'help' \
   -- "$@") || die "Run $(basename $0) --help to see available options"
 
@@ -103,6 +106,11 @@ while true; do
 
     --wipe)
       WIPE=--wipe
+      shift
+    ;;
+
+    --sysext)
+      BUILD_SYSEXT=1
       shift
     ;;
 
