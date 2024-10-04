@@ -8,6 +8,7 @@ import * as Config from '../misc/config.js';
 
 export class ExtensionBase {
     #gettextDomain;
+    #console;
 
     /**
      * Look up an extension by URL (usually 'import.meta.url')
@@ -108,6 +109,15 @@ export class ExtensionBase {
             throw new Error(`Schema ${schema} could not be found for extension ${this.uuid}. Please check your installation`);
 
         return new Gio.Settings({settings_schema: schemaObj});
+    }
+
+    /**
+     * @returns {Console}
+     */
+    getLogger() {
+        if (!this.#console)
+            this.#console = new Console(this);
+        return this.#console;
     }
 
     /**
@@ -269,5 +279,70 @@ export class GettextWrapper {
              */
             pgettext: this.#pgettext.bind(this),
         };
+    }
+}
+
+class Console {
+    #extension;
+
+    constructor(ext) {
+        this.#extension = ext;
+    }
+
+    #prefixArgs(first, ...args) {
+        return [`[${this.#extension.metadata.name}] ${first}`, ...args];
+    }
+
+    log(...args) {
+        globalThis.console.log(...this.#prefixArgs(...args));
+    }
+
+    warn(...args) {
+        globalThis.console.warn(...this.#prefixArgs(...args));
+    }
+
+    error(...args) {
+        globalThis.console.error(...this.#prefixArgs(...args));
+    }
+
+    info(...args) {
+        globalThis.console.info(...this.#prefixArgs(...args));
+    }
+
+    debug(...args) {
+        globalThis.console.debug(...this.#prefixArgs(...args));
+    }
+
+    assert(condition, ...args) {
+        if (condition)
+            return;
+
+        const message = 'Assertion failed';
+
+        if (args.length === 0)
+            args.push(message);
+
+        if (typeof args[0] !== 'string') {
+            args.unshift(message);
+        } else {
+            const first = args.shift();
+            args.unshift(`${message}: ${first}`);
+        }
+        globalThis.console.error(...this.#prefixArgs(...args));
+    }
+
+    trace(...args) {
+        if (args.length === 0)
+            args = ['Trace'];
+
+        globalThis.console.trace(...this.#prefixArgs(...args));
+    }
+
+    group(...args) {
+        globalThis.console.group(...this.#prefixArgs(...args));
+    }
+
+    groupEnd() {
+        globalThis.console.groupEnd();
     }
 }
