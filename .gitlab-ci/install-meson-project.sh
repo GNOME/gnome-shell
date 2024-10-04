@@ -9,13 +9,13 @@ usage() {
 	Check out and install a meson project
 
 	Options:
-	  -Dkey=val      Option to pass on to meson
-	  --subdir       Build subdirectory instead of whole project
-	  --prepare      Script to run before build
-	  --libdir       Setup the project with a different libdir
-	  --destdir      Install the project to an additional destdir
+	  -Dkey=val          Option to pass on to meson
+	  --subdir=DIR       Build subdirectory instead of whole project
+	  --prepare=SCRIPT   Script to run before build
+	  --libdir=DIR       Setup the project with a different libdir
+	  --destdir=DIR      Install the project to an additional destdir
 
-	  -h, --help     Display this help
+	  -h, --help         Display this help
 
 	EOF
 }
