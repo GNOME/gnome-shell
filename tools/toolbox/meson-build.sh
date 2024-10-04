@@ -50,7 +50,11 @@ compile_command() {
 }
 
 install_command() {
-  echo -n "sudo meson install -C $BUILD_DIR"
+  if [[ $RUN_DIST ]]; then
+    echo -n :
+  else
+    echo -n "sudo meson install -C $BUILD_DIR"
+  fi
 }
 
 dist_command() {
