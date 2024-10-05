@@ -798,7 +798,7 @@ class MediaMessage extends Message {
     }
 });
 
-export const MessageListSection = GObject.registerClass({
+export const MessageView = GObject.registerClass({
     Properties: {
         'can-clear': GObject.ParamSpec.boolean(
             'can-clear', null, null,
@@ -814,17 +814,17 @@ export const MessageListSection = GObject.registerClass({
         'empty-changed': {},
         'message-focused': {param_types: [Message.$gtype]},
     },
-}, class MessageListSection extends St.BoxLayout {
-    _init() {
-        super._init({
-            style_class: 'message-list-section',
+}, class MessageView extends St.BoxLayout {
+    constructor() {
+        super({
+            style_class: 'message-view',
             clip_to_allocation: true,
             orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
         });
 
         this._list = new St.BoxLayout({
-            style_class: 'message-list-section-list',
+            style_class: 'message-view-list',
             orientation: Clutter.Orientation.VERTICAL,
         });
         this.add_child(this._list);
