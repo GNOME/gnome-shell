@@ -5,7 +5,6 @@ import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
-import * as MessageList from './messageList.js';
 import * as PopupMenu from './popupMenu.js';
 import {ensureActorVisibleInScrollView} from '../misc/animationUtils.js';
 
@@ -874,12 +873,6 @@ class CalendarMessageList extends St.Widget {
             'child-removed', this._sync.bind(this),
             this);
         this._scrollView.child = this._sectionList;
-
-        this._mediaSection = new MessageList.MediaSection();
-        this._addSection(this._mediaSection);
-
-        this._notificationSection = new MessageList.NotificationSection();
-        this._addSection(this._notificationSection);
     }
 
     _addSection(section) {

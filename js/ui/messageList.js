@@ -10,7 +10,6 @@ import St from 'gi://St';
 
 import * as Main from './main.js';
 import * as MessageTray from './messageTray.js';
-import * as Mpris from './mpris.js';
 
 import * as Util from '../misc/util.js';
 import {formatTimeSpan} from '../misc/dateUtils.js';
@@ -997,100 +996,5 @@ export const MessageListSection = GObject.registerClass({
         }
 
         this.visible = !this.empty;
-    }
-});
-
-export const NotificationSection = GObject.registerClass(
-class NotificationSection extends MessageListSection {
-    _init() {
-        super._init();
-
-        this._nUrgent = 0;
-
-        Main.messageTray.connect('source-added', this._sourceAdded.bind(this));
-        Main.messageTray.getSources().forEach(source => {
-            this._sourceAdded(Main.messageTray, source);
-        });
-    }
-
-    _sourceAdded(tray, source) {
-        source.connectObject(
-            'notification-added', this._onNotificationAdded.bind(this),
-            'notification-removed', this._onNotificationRemoved.bind(this),
-            this);
-    }
-
-    _onNotificationAdded(source, notification) {
-        let message = new NotificationMessage(notification);
-
-        const isUrgent = notification.urgency === MessageTray.Urgency.CRITICAL;
-
-        notification.connectObject(
-            'notify::datetime', () => {
-                // The datetime property changes whenever the notification is updated
-                this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.mapped);
-            }, this);
-
-        if (isUrgent) {
-            // Keep track of urgent notifications to keep them on top
-            this._nUrgent++;
-        } else if (this.mapped) {
-            // Only acknowledge non-urgent notifications in case it
-            // has important actions that are inaccessible when not
-            // shown as banner
-            notification.acknowledged = true;
-        }
-
-        const index = isUrgent ? 0 : this._nUrgent;
-        this.addMessageAtIndex(message, index, this.mapped);
-    }
-
-    _onNotificationRemoved(source_, notification) {
-        if (notification.urgency === MessageTray.Urgency.CRITICAL)
-            this._nUrgent--;
-    }
-
-    vfunc_map() {
-        this._messages.forEach(message => {
-            if (message.notification.urgency !== MessageTray.Urgency.CRITICAL)
-                message.notification.acknowledged = true;
-        });
-        super.vfunc_map();
-    }
-});
-
-export const MediaSection = GObject.registerClass(
-class MediaSection extends MessageListSection {
-    constructor() {
-        super();
-        this._players = new Map();
-        this._mediaSource = new Mpris.MprisSource();
-
-        this._mediaSource.connectObject(
-            'player-added', (_, player) => this._addPlayer(player),
-            'player-removed', (_, player) => this._removePlayer(player),
-            this);
-
-        this._mediaSource.players.forEach(player => {
-            this._addPlayer(player);
-        });
-    }
-
-    _addPlayer(player) {
-        if (this._players.has(player))
-            throw new Error('Player was already added previously');
-
-        const message = new MediaMessage(player);
-        this._players.set(player, message);
-        this.addMessage(message, true);
-    }
-
-    _removePlayer(player) {
-        const message = this._players.get(player);
-
-        if (message)
-            this.removeMessage(message, true);
-
-        this._players.delete(player);
     }
 });
