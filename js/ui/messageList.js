@@ -408,7 +408,9 @@ export const Message = GObject.registerClass({
             GLib.DateTime),
     },
     Signals: {
-        'close': {},
+        'close': {
+            flags: GObject.SignalFlags.RUN_LAST,
+        },
         'expanded': {},
         'unexpanded': {},
     },
@@ -664,11 +666,6 @@ class NotificationMessage extends Message {
 
         this.notification = notification;
 
-        this.connect('close', () => {
-            this._closed = true;
-            if (this.notification)
-                this.notification.destroy(MessageTray.NotificationDestroyedReason.DISMISSED);
-        });
         notification.connectObject(
             'action-added', (_, action) => this._addAction(action),
             'action-removed', (_, action) => this._removeAction(action),
@@ -698,6 +695,11 @@ class NotificationMessage extends Message {
         this.notification.actions.forEach(action => {
             this._addAction(action);
         });
+    }
+
+    on_close() {
+        this._closed = true;
+        this.notification?.destroy(MessageTray.NotificationDestroyedReason.DISMISSED);
     }
 
     vfunc_clicked() {
