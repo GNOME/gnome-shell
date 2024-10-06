@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-09-20 18:35+0000\n"
-"PO-Revision-Date: 2024-10-06 14:59+0100\n"
+"POT-Creation-Date: 2024-10-06 14:00+0000\n"
+"PO-Revision-Date: 2024-10-06 16:30+0100\n"
 "Last-Translator: ButterflyOfFire <butterflyoffire@protonmail.com>\n"
 "Language-Team: Kabyle\n"
 "Language: kab\n"
@@ -813,7 +813,7 @@ msgstr "%A, %H∶%M"
 #: js/misc/dateUtils.js:173
 #, no-c-format
 msgid "%B %-d, %H∶%M"
-msgstr "%-d %B %Y, %H∶%M"
+msgstr "%-d %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
@@ -1756,7 +1756,7 @@ msgstr "Anagraw"
 msgid "Top Bar"
 msgstr "Afeggag n ufella"
 
-#: js/ui/quickSettings.js:188 js/ui/quickSettings.js:337
+#: js/ui/quickSettings.js:189 js/ui/quickSettings.js:341
 msgid "Open menu"
 msgstr "Ldi umuɣ"
 
