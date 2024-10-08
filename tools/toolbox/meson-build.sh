@@ -52,6 +52,12 @@ compile_command() {
 
 install_command() {
   local destdir=${BUILD_SYSEXT:+/var/lib/extensions/$TOOLBOX}
+
+  local install_deps=.gitlab-ci/install-common-dependencies.sh
+  if [[ $BUILD_SYSEXT && -x $install_deps ]]; then
+    echo -n "$install_deps --destdir $destdir && "
+  fi
+
   if [[ $destdir || ! $RUN_DIST ]]; then
     echo -n "sudo meson install -C $BUILD_DIR ${destdir:+--destdir=$destdir}"
   else
