@@ -1,5 +1,7 @@
 data/.osk-layout-workbench
 po/gnome-shell.pot
+subprojects/gvc
+subprojects/jasmine-gjs
 *~
 *.patch
 *.sw?
