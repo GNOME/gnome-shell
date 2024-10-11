@@ -503,7 +503,8 @@ export class InputSourceManager extends Signals.EventEmitter {
         // E.g. Focusing on a password entry in a popup in Xorg Firefox
         // will emit 'set-content-type' signal.
         // https://gitlab.gnome.org/GNOME/gnome-shell/issues/391
-        if (!this._reloading)
+        const holdKeyboard = !this._reloading;
+        if (holdKeyboard)
             KeyboardManager.holdKeyboard();
         this._keyboardManager.apply(is.xkbId);
 
@@ -520,7 +521,7 @@ export class InputSourceManager extends Signals.EventEmitter {
             engine = 'xkb:us::eng';
 
         this._ibusManager.setEngine(engine).then(() => {
-            if (!this._reloading)
+            if (holdKeyboard)
                 KeyboardManager.releaseKeyboard();
         });
 
