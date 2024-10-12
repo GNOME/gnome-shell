@@ -430,7 +430,7 @@ const SystemActions = GObject.registerClass({
         if (Main.screenShield)
             Main.screenShield.lock(false);
 
-        Clutter.threads_add_repaint_func_full(Clutter.RepaintFlags.POST_PAINT, () => {
+        Clutter.threads_add_repaint_func(Clutter.RepaintFlags.POST_PAINT, () => {
             Gdm.goto_login_session_sync(null);
             return false;
         });
