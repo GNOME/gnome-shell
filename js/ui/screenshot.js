@@ -1422,7 +1422,7 @@ export const ScreenshotUI = GObject.registerClass({
             new Gio.Settings({schema_id: 'org.gnome.shell.keybindings'}),
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT | Meta.KeyBindingFlags.PER_WINDOW,
             restrictedModes,
-            async (_display, window, _binding) => {
+            async (_display, window, _event, _binding) => {
                 try {
                     const actor = window.get_compositor_private();
                     const content = actor.paint_to_content(null);

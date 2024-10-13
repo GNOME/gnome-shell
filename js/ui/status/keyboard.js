@@ -426,7 +426,7 @@ export class InputSourceManager extends Signals.EventEmitter {
         return true;
     }
 
-    _switchInputSource(display, window, binding) {
+    _switchInputSource(display, window, event, binding) {
         if (this._mruSources.length < 2)
             return;
 

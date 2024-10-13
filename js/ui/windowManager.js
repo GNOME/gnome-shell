@@ -1665,7 +1665,7 @@ export class WindowManager {
         this._windowMenuManager.showWindowMenuForWindow(window, menu, rect);
     }
 
-    _startSwitcher(display, window, binding) {
+    _startSwitcher(display, window, event, binding) {
         let constructor = null;
         switch (binding.get_name()) {
         case 'switch-applications':
@@ -1704,7 +1704,7 @@ export class WindowManager {
             tabPopup.destroy();
     }
 
-    _startA11ySwitcher(display, window, binding) {
+    _startA11ySwitcher(display, window, event, binding) {
         Main.ctrlAltTabManager.popup(binding.is_reversed(), binding.get_name(), binding.get_mask());
     }
 
@@ -1720,7 +1720,7 @@ export class WindowManager {
         return apps[n];
     }
 
-    _switchToApplication(display, window, binding) {
+    _switchToApplication(display, window, event, binding) {
         const [, , , target] = binding.get_name().split('-');
         const app = this._getNthFavoriteApp(target - 1);
         if (app) {
@@ -1729,7 +1729,7 @@ export class WindowManager {
         }
     }
 
-    _openNewApplicationWindow(display, window, binding) {
+    _openNewApplicationWindow(display, window, event, binding) {
         const [, , , , target] = binding.get_name().split('-');
         const app = this._getNthFavoriteApp(target - 1);
         if (app)
@@ -1744,7 +1744,7 @@ export class WindowManager {
         Main.panel.toggleQuickSettings();
     }
 
-    _showWorkspaceSwitcher(display, window, binding) {
+    _showWorkspaceSwitcher(display, window, event, binding) {
         let workspaceManager = display.get_workspace_manager();
 
         if (!Main.sessionMode.hasWorkspaces)
