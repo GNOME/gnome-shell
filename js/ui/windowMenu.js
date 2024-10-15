@@ -25,7 +25,7 @@ export class WindowMenu extends PopupMenu.PopupMenu {
         let item;
 
         // Translators: entry in the window right click menu.
-        item = this.addAction(_('Take Screenshot'), async () => {
+        item = this.addAction(C_('window-menu', 'Take Screenshot'), async () => {
             try {
                 const actor = window.get_compositor_private();
                 const content = actor.paint_to_content(null);
