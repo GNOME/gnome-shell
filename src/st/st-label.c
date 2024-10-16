@@ -69,7 +69,10 @@ struct _StLabelPrivate
 
 G_DEFINE_TYPE_WITH_PRIVATE (StLabel, st_label, ST_TYPE_WIDGET);
 
-static GType st_label_accessible_get_type (void) G_GNUC_CONST;
+G_DECLARE_FINAL_TYPE (StLabelAccessible,
+                      st_label_accessible,
+                      ST, LABEL_ACCESSIBLE,
+                      StWidgetAccessible)
 
 static void
 st_label_set_property (GObject      *gobject,
@@ -439,45 +442,16 @@ st_label_get_clutter_text (StLabel *label)
 
 #define ST_TYPE_LABEL_ACCESSIBLE st_label_accessible_get_type ()
 
-#define ST_LABEL_ACCESSIBLE(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  ST_TYPE_LABEL_ACCESSIBLE, StLabelAccessible))
-
-#define ST_IS_LABEL_ACCESSIBLE(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  ST_TYPE_LABEL_ACCESSIBLE))
-
-#define ST_LABEL_ACCESSIBLE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  ST_TYPE_LABEL_ACCESSIBLE, StLabelAccessibleClass))
-
-#define ST_IS_LABEL_ACCESSIBLE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  ST_TYPE_LABEL_ACCESSIBLE))
-
-#define ST_LABEL_ACCESSIBLE_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  ST_TYPE_LABEL_ACCESSIBLE, StLabelAccessibleClass))
-
-typedef struct _StLabelAccessible  StLabelAccessible;
-typedef struct _StLabelAccessibleClass  StLabelAccessibleClass;
-
-struct _StLabelAccessible
-{
-  StWidgetAccessible parent;
-};
-
-struct _StLabelAccessibleClass
-{
-  StWidgetAccessibleClass parent_class;
-};
-
 /* AtkObject */
 static void          st_label_accessible_initialize (AtkObject *obj,
                                                      gpointer   data);
 static const gchar * st_label_accessible_get_name   (AtkObject *obj);
 
-G_DEFINE_TYPE (StLabelAccessible, st_label_accessible, ST_TYPE_WIDGET_ACCESSIBLE)
+typedef struct _StLabelAccessible {
+  StWidgetAccessible parent_class;
+} StLabelAccessible;
+
+G_DEFINE_FINAL_TYPE (StLabelAccessible, st_label_accessible, ST_TYPE_WIDGET_ACCESSIBLE)
 
 static void
 st_label_accessible_class_init (StLabelAccessibleClass *klass)
