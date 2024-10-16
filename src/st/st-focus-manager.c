@@ -25,9 +25,7 @@
  * #StFocusManager handles keyboard focus for all actors on the stage.
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <clutter/clutter.h>
 

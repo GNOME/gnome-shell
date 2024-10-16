@@ -30,9 +30,7 @@
  * #StGenericAccessible is an #StWidgetAccessible
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include "st-generic-accessible.h"
 

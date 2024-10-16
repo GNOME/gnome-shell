@@ -28,9 +28,7 @@
  * #StBin inherits from #StWidget, so it is fully themable.
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <clutter/clutter.h>
 
