@@ -138,21 +138,21 @@ export const NotificationPolicy = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
         'enable': GObject.ParamSpec.boolean(
-            'enable', 'enable', 'enable', GObject.ParamFlags.READABLE, true),
+            'enable', null, null, GObject.ParamFlags.READABLE, true),
         'enable-sound': GObject.ParamSpec.boolean(
-            'enable-sound', 'enable-sound', 'enable-sound',
+            'enable-sound', null, null,
             GObject.ParamFlags.READABLE, true),
         'show-banners': GObject.ParamSpec.boolean(
-            'show-banners', 'show-banners', 'show-banners',
+            'show-banners', null, null,
             GObject.ParamFlags.READABLE, true),
         'force-expanded': GObject.ParamSpec.boolean(
-            'force-expanded', 'force-expanded', 'force-expanded',
+            'force-expanded', null, null,
             GObject.ParamFlags.READABLE, false),
         'show-in-lock-screen': GObject.ParamSpec.boolean(
-            'show-in-lock-screen', 'show-in-lock-screen', 'show-in-lock-screen',
+            'show-in-lock-screen', null, null,
             GObject.ParamFlags.READABLE, false),
         'details-in-lock-screen': GObject.ParamSpec.boolean(
-            'details-in-lock-screen', 'details-in-lock-screen', 'details-in-lock-screen',
+            'details-in-lock-screen', null, null,
             GObject.ParamFlags.READABLE, false),
     },
 }, class NotificationPolicy extends GObject.Object {
@@ -485,11 +485,11 @@ export class Notification extends GObject.Object {
 export const Source = GObject.registerClass({
     Properties: {
         'count': GObject.ParamSpec.int(
-            'count', 'count', 'count',
+            'count', null, null,
             GObject.ParamFlags.READABLE,
             0, GLib.MAXINT32, 0),
         'policy': GObject.ParamSpec.object(
-            'policy', 'policy', 'policy',
+            'policy', null, null,
             GObject.ParamFlags.READWRITE,
             NotificationPolicy.$gtype),
     },
@@ -608,63 +608,63 @@ SignalTracker.registerDestroyableType(Source);
 GObject.registerClass({
     Properties: {
         'source': GObject.ParamSpec.object(
-            'source', 'source', 'source',
+            'source', null, null,
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Source),
         'title': GObject.ParamSpec.string(
-            'title', 'title', 'title',
+            'title', null, null,
             GObject.ParamFlags.READWRITE,
             null),
         'body': GObject.ParamSpec.string(
-            'body', 'body', 'body',
+            'body', null, null,
             GObject.ParamFlags.READWRITE,
             null),
         'use-body-markup': GObject.ParamSpec.boolean(
-            'use-body-markup', 'use-body-markup', 'use-body-markup',
+            'use-body-markup', null, null,
             GObject.ParamFlags.READWRITE,
             false),
         'gicon': GObject.ParamSpec.object(
-            'gicon', 'gicon', 'gicon',
+            'gicon', null, null,
             GObject.ParamFlags.READWRITE,
             Gio.Icon),
         'icon-name': GObject.ParamSpec.string(
-            'icon-name', 'icon-name', 'icon-name',
+            'icon-name', null, null,
             GObject.ParamFlags.READWRITE,
             null),
         'sound': GObject.ParamSpec.object(
-            'sound', 'sound', 'sound',
+            'sound', null, null,
             GObject.ParamFlags.READWRITE,
             Sound),
         'datetime': GObject.ParamSpec.boxed(
-            'datetime', 'datetime', 'datetime',
+            'datetime', null, null,
             GObject.ParamFlags.READWRITE,
             GLib.DateTime),
         // Unfortunately we can't register new enum types in GJS
         // See: https://gitlab.gnome.org/GNOME/gjs/-/issues/573
         'privacy-scope': GObject.ParamSpec.int(
-            'privacy-scope', 'privacy-scope', 'privacy-scope',
+            'privacy-scope', null, null,
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXINT32,
             PrivacyScope.User),
         'urgency': GObject.ParamSpec.int(
-            'urgency', 'urgency', 'urgency',
+            'urgency', null, null,
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXINT32,
             Urgency.NORMAL),
         'acknowledged': GObject.ParamSpec.boolean(
-            'acknowledged', 'acknowledged', 'acknowledged',
+            'acknowledged', null, null,
             GObject.ParamFlags.READWRITE,
             false),
         'resident': GObject.ParamSpec.boolean(
-            'resident', 'resident', 'resident',
+            'resident', null, null,
             GObject.ParamFlags.READWRITE,
             false),
         'for-feedback': GObject.ParamSpec.boolean(
-            'for-feedback', 'for-feedback', 'for-feedback',
+            'for-feedback', null, null,
             GObject.ParamFlags.READWRITE,
             false),
         'is-transient': GObject.ParamSpec.boolean(
-            'is-transient', 'is-transient', 'is-transient',
+            'is-transient', null, null,
             GObject.ParamFlags.READWRITE,
             false),
     },

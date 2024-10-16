@@ -151,9 +151,7 @@ shew_external_window_class_init (ShewExternalWindowClass *klass)
 
   g_object_class_install_property (object_class,
                                    PROP_DISPLAY,
-                                   g_param_spec_object ("display",
-                                                        "GdkDisplay",
-                                                        "The GdkDisplay instance",
+                                   g_param_spec_object ("display", NULL, NULL,
                                                         GDK_TYPE_DISPLAY,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |

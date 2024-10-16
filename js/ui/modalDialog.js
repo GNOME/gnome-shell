@@ -25,7 +25,7 @@ export const State = {
 export const ModalDialog = GObject.registerClass({
     Properties: {
         'state': GObject.ParamSpec.int(
-            'state', 'Dialog state', 'state',
+            'state', null, null,
             GObject.ParamFlags.READABLE,
             Math.min(...Object.values(State)),
             Math.max(...Object.values(State)),

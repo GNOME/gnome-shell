@@ -89,11 +89,11 @@ const EventHistory = class {
 const TouchpadSwipeGesture = GObject.registerClass({
     Properties: {
         'enabled': GObject.ParamSpec.boolean(
-            'enabled', 'enabled', 'enabled',
+            'enabled', null, null,
             GObject.ParamFlags.READWRITE,
             true),
         'orientation': GObject.ParamSpec.enum(
-            'orientation', 'orientation', 'orientation',
+            'orientation', null, null,
             GObject.ParamFlags.READWRITE,
             Clutter.Orientation, Clutter.Orientation.HORIZONTAL),
     },
@@ -211,11 +211,11 @@ const TouchpadSwipeGesture = GObject.registerClass({
 const TouchSwipeGesture = GObject.registerClass({
     Properties: {
         'distance': GObject.ParamSpec.double(
-            'distance', 'distance', 'distance',
+            'distance', null, null,
             GObject.ParamFlags.READWRITE,
             0, Infinity, 0),
         'orientation': GObject.ParamSpec.enum(
-            'orientation', 'orientation', 'orientation',
+            'orientation', null, null,
             GObject.ParamFlags.READWRITE,
             Clutter.Orientation, Clutter.Orientation.HORIZONTAL),
     },
@@ -302,15 +302,15 @@ const TouchSwipeGesture = GObject.registerClass({
 const ScrollGesture = GObject.registerClass({
     Properties: {
         'enabled': GObject.ParamSpec.boolean(
-            'enabled', 'enabled', 'enabled',
+            'enabled', null, null,
             GObject.ParamFlags.READWRITE,
             true),
         'orientation': GObject.ParamSpec.enum(
-            'orientation', 'orientation', 'orientation',
+            'orientation', null, null,
             GObject.ParamFlags.READWRITE,
             Clutter.Orientation, Clutter.Orientation.HORIZONTAL),
         'scroll-modifiers': GObject.ParamSpec.flags(
-            'scroll-modifiers', 'scroll-modifiers', 'scroll-modifiers',
+            'scroll-modifiers', null, null,
             GObject.ParamFlags.READWRITE,
             Clutter.ModifierType, 0),
     },
@@ -430,23 +430,23 @@ const ScrollGesture = GObject.registerClass({
 export const SwipeTracker = GObject.registerClass({
     Properties: {
         'enabled': GObject.ParamSpec.boolean(
-            'enabled', 'enabled', 'enabled',
+            'enabled', null, null,
             GObject.ParamFlags.READWRITE,
             true),
         'orientation': GObject.ParamSpec.enum(
-            'orientation', 'orientation', 'orientation',
+            'orientation', null, null,
             GObject.ParamFlags.READWRITE,
             Clutter.Orientation, Clutter.Orientation.HORIZONTAL),
         'distance': GObject.ParamSpec.double(
-            'distance', 'distance', 'distance',
+            'distance', null, null,
             GObject.ParamFlags.READWRITE,
             0, Infinity, 0),
         'allow-long-swipes': GObject.ParamSpec.boolean(
-            'allow-long-swipes', 'allow-long-swipes', 'allow-long-swipes',
+            'allow-long-swipes', null, null,
             GObject.ParamFlags.READWRITE,
             false),
         'scroll-modifiers': GObject.ParamSpec.flags(
-            'scroll-modifiers', 'scroll-modifiers', 'scroll-modifiers',
+            'scroll-modifiers', null, null,
             GObject.ParamFlags.READWRITE,
             Clutter.ModifierType, 0),
     },

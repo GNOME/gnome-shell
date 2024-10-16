@@ -912,9 +912,7 @@ st_entry_class_init (StEntryClass *klass)
    * The internal #ClutterText actor supporting the #StEntry.
    */
   props[PROP_CLUTTER_TEXT] =
-    g_param_spec_object ("clutter-text",
-                         "Clutter Text",
-                         "Internal ClutterText actor",
+    g_param_spec_object ("clutter-text", NULL, NULL,
                          CLUTTER_TYPE_TEXT,
                          ST_PARAM_READABLE);
 
@@ -924,9 +922,7 @@ st_entry_class_init (StEntryClass *klass)
    * The #ClutterActor acting as the primary icon at the start of the #StEntry.
    */
   props[PROP_PRIMARY_ICON] =
-    g_param_spec_object ("primary-icon",
-                         "Primary Icon",
-                         "Primary Icon actor",
+    g_param_spec_object ("primary-icon", NULL, NULL,
                          CLUTTER_TYPE_ACTOR,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -936,9 +932,7 @@ st_entry_class_init (StEntryClass *klass)
    * The #ClutterActor acting as the secondary icon at the end of the #StEntry.
    */
   props[PROP_SECONDARY_ICON] =
-    g_param_spec_object ("secondary-icon",
-                         "Secondary Icon",
-                         "Secondary Icon actor",
+    g_param_spec_object ("secondary-icon", NULL, NULL,
                          CLUTTER_TYPE_ACTOR,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -949,10 +943,7 @@ st_entry_class_init (StEntryClass *klass)
    * will replace the actor of #StEntry::hint-actor.
    */
   props[PROP_HINT_TEXT] =
-    g_param_spec_string ("hint-text",
-                         "Hint Text",
-                         "Text to display when the entry is not focused "
-                         "and the text property is empty",
+    g_param_spec_string ("hint-text", NULL, NULL,
                          NULL,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -963,10 +954,7 @@ st_entry_class_init (StEntryClass *klass)
    * this will replace the actor displaying #StEntry:hint-text.
    */
   props[PROP_HINT_ACTOR] =
-    g_param_spec_object ("hint-actor",
-                         "Hint Actor",
-                         "An actor to display when the entry is not focused "
-                         "and the text property is empty",
+    g_param_spec_object ("hint-actor", NULL, NULL,
                          CLUTTER_TYPE_ACTOR,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -976,9 +964,7 @@ st_entry_class_init (StEntryClass *klass)
    * The current text value of the #StEntry.
    */
   props[PROP_TEXT] =
-    g_param_spec_string ("text",
-                         "Text",
-                         "Text of the entry",
+    g_param_spec_string ("text", NULL, NULL,
                          NULL,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -989,9 +975,7 @@ st_entry_class_init (StEntryClass *klass)
    * input methods to decide which keys should be presented to the user.
    */
   props[PROP_INPUT_PURPOSE] =
-    g_param_spec_enum ("input-purpose",
-                       "Purpose",
-                       "Purpose of the text field",
+    g_param_spec_enum ("input-purpose", NULL, NULL,
                        CLUTTER_TYPE_INPUT_CONTENT_PURPOSE,
                        CLUTTER_INPUT_CONTENT_PURPOSE_NORMAL,
                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
@@ -1004,9 +988,7 @@ st_entry_class_init (StEntryClass *klass)
    * behaviour.
    */
   props[PROP_INPUT_HINTS] =
-    g_param_spec_flags ("input-hints",
-                        "hints",
-                        "Hints for the text field behaviour",
+    g_param_spec_flags ("input-hints", NULL, NULL,
                         CLUTTER_TYPE_INPUT_CONTENT_HINT_FLAGS,
                         0,
                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);

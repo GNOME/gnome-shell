@@ -874,9 +874,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
    * The horizontal #StScrollBar for the #StScrollView.
    */
   props[PROP_HSCROLL] =
-    g_param_spec_object ("hscroll",
-                         "StScrollBar",
-                         "Horizontal scroll indicator",
+    g_param_spec_object ("hscroll", NULL, NULL,
                          ST_TYPE_SCROLL_BAR,
                          ST_PARAM_READABLE | G_PARAM_DEPRECATED);
 
@@ -886,9 +884,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
    * The vertical #StScrollBar for the #StScrollView.
    */
   props[PROP_VSCROLL] =
-    g_param_spec_object ("vscroll",
-                         "StScrollBar",
-                         "Vertical scroll indicator",
+    g_param_spec_object ("vscroll", NULL, NULL,
                          ST_TYPE_SCROLL_BAR,
                          ST_PARAM_READABLE | G_PARAM_DEPRECATED);
 
@@ -898,9 +894,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
    * The horizontal #StAdjustment for the #StScrollView.
    */
   props[PROP_HADJUSTMENT] =
-    g_param_spec_object ("hadjustment",
-                         "StAdjustment",
-                         "Horizontal scroll adjustment",
+    g_param_spec_object ("hadjustment", NULL, NULL,
                          ST_TYPE_ADJUSTMENT,
                          ST_PARAM_READABLE);
 
@@ -910,9 +904,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
    * The vertical #StAdjustment for the #StScrollView.
    */
   props[PROP_VADJUSTMENT] =
-    g_param_spec_object ("vadjustment",
-                         "StAdjustment",
-                         "Vertical scroll adjustment",
+    g_param_spec_object ("vadjustment", NULL, NULL,
                          ST_TYPE_ADJUSTMENT,
                          ST_PARAM_READABLE);
 
@@ -922,9 +914,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
    * The #StPolicyType for when to show the vertical #StScrollBar.
    */
   props[PROP_VSCROLLBAR_POLICY] =
-    g_param_spec_enum ("vscrollbar-policy",
-                       "Vertical Scrollbar Policy",
-                       "When the vertical scrollbar is displayed",
+    g_param_spec_enum ("vscrollbar-policy", NULL, NULL,
                        ST_TYPE_POLICY_TYPE,
                        ST_POLICY_AUTOMATIC,
                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
@@ -935,9 +925,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
    * The #StPolicyType for when to show the horizontal #StScrollBar.
    */
   props[PROP_HSCROLLBAR_POLICY] =
-    g_param_spec_enum ("hscrollbar-policy",
-                       "Horizontal Scrollbar Policy",
-                       "When the horizontal scrollbar is displayed",
+    g_param_spec_enum ("hscrollbar-policy", NULL, NULL,
                        ST_TYPE_POLICY_TYPE,
                        ST_POLICY_NEVER,
                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
@@ -948,9 +936,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
    * Whether the horizontal #StScrollBar is visible.
    */
   props[PROP_HSCROLLBAR_VISIBLE] =
-    g_param_spec_boolean ("hscrollbar-visible",
-                          "Horizontal Scrollbar Visibility",
-                          "Whether the horizontal scrollbar is visible",
+    g_param_spec_boolean ("hscrollbar-visible", NULL, NULL,
                           TRUE,
                           ST_PARAM_READABLE);
 
@@ -960,9 +946,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
    * Whether the vertical #StScrollBar is visible.
    */
   props[PROP_VSCROLLBAR_VISIBLE] =
-    g_param_spec_boolean ("vscrollbar-visible",
-                          "Vertical Scrollbar Visibility",
-                          "Whether the vertical scrollbar is visible",
+    g_param_spec_boolean ("vscrollbar-visible", NULL, NULL,
                           TRUE,
                           ST_PARAM_READABLE);
 
@@ -972,9 +956,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
    * Whether to enable automatic mouse wheel scrolling.
    */
   props[PROP_MOUSE_SCROLL] =
-    g_param_spec_boolean ("enable-mouse-scrolling",
-                          "Enable Mouse Scrolling",
-                          "Enable automatic mouse wheel scrolling",
+    g_param_spec_boolean ("enable-mouse-scrolling", NULL, NULL,
                           TRUE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -984,9 +966,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
    * Whether scrollbars are painted on top of the content.
    */
   props[PROP_OVERLAY_SCROLLBARS] =
-    g_param_spec_boolean ("overlay-scrollbars",
-                          "Use Overlay Scrollbars",
-                          "Overlay scrollbars over the content",
+    g_param_spec_boolean ("overlay-scrollbars", NULL, NULL,
                           FALSE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 

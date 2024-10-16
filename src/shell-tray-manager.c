@@ -173,9 +173,7 @@ shell_tray_manager_class_init (ShellTrayManagerClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_BG_COLOR,
-                                   g_param_spec_boxed ("bg-color",
-                                                       "BG Color",
-                                                       "Background color (only if we don't have transparency)",
+                                   g_param_spec_boxed ("bg-color", NULL, NULL,
                                                        COGL_TYPE_COLOR,
                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }

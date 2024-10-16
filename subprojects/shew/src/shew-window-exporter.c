@@ -212,9 +212,7 @@ shew_window_exporter_class_init (ShewWindowExporterClass *klass)
 
   g_object_class_install_property (object_class,
                                    PROP_WINDOW,
-                                   g_param_spec_object ("window",
-                                                        "GtkWindow",
-                                                        "The GtkWindow to export",
+                                   g_param_spec_object ("window", NULL, NULL,
                                                         GTK_TYPE_WINDOW,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |

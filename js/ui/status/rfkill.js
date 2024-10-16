@@ -15,15 +15,15 @@ const rfkillManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(RfkillManagerInterfa
 const RfkillManager = GObject.registerClass({
     Properties: {
         'airplane-mode': GObject.ParamSpec.boolean(
-            'airplane-mode', '', '',
+            'airplane-mode', null, null,
             GObject.ParamFlags.READWRITE,
             false),
         'hw-airplane-mode': GObject.ParamSpec.boolean(
-            'hw-airplane-mode', '', '',
+            'hw-airplane-mode', null, null,
             GObject.ParamFlags.READABLE,
             false),
         'show-airplane-mode': GObject.ParamSpec.boolean(
-            'show-airplane-mode', '', '',
+            'show-airplane-mode', null, null,
             GObject.ParamFlags.READABLE,
             false),
     },

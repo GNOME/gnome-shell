@@ -151,7 +151,7 @@ const SearchResultsBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
         'focus-child': GObject.ParamSpec.object(
-            'focus-child', 'focus-child', 'focus-child',
+            'focus-child', null, null,
             GObject.ParamFlags.READABLE,
             Clutter.Actor.$gtype),
     },
@@ -339,7 +339,7 @@ class ListSearchResults extends SearchResultsBase {
 
 const GridSearchResultsLayout = GObject.registerClass({
     Properties: {
-        'spacing': GObject.ParamSpec.int('spacing', 'Spacing', 'Spacing',
+        'spacing': GObject.ParamSpec.int('spacing', null, null,
             GObject.ParamFlags.READWRITE, 0, GLib.MAXINT32, 0),
     },
 }, class GridSearchResultsLayout extends Clutter.LayoutManager {

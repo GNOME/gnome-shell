@@ -550,156 +550,112 @@ shell_global_class_init (ShellGlobalClass *klass)
                     G_TYPE_NONE, 0);
 
   props[PROP_SESSION_MODE] =
-    g_param_spec_string ("session-mode",
-                         "Session Mode",
-                         "The session mode to use",
+    g_param_spec_string ("session-mode", NULL, NULL,
                          "user",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   props[PROP_SCREEN_WIDTH] =
-    g_param_spec_int ("screen-width",
-                      "Screen Width",
-                      "Screen width, in pixels",
+    g_param_spec_int ("screen-width", NULL, NULL,
                       0, G_MAXINT, 1,
                       G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_SCREEN_HEIGHT] =
-    g_param_spec_int ("screen-height",
-                      "Screen Height",
-                      "Screen height, in pixels",
+    g_param_spec_int ("screen-height", NULL, NULL,
                       0, G_MAXINT, 1,
                       G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_BACKEND] =
-    g_param_spec_object ("backend",
-                         "Backend",
-                         "MetaBackend object",
+    g_param_spec_object ("backend", NULL, NULL,
                          META_TYPE_BACKEND,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_CONTEXT] =
-    g_param_spec_object ("context",
-                         "Context",
-                         "MetaContext object",
+    g_param_spec_object ("context", NULL, NULL,
                          META_TYPE_CONTEXT,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_DISPLAY] =
-    g_param_spec_object ("display",
-                         "Display",
-                         "Metacity display object for the shell",
+    g_param_spec_object ("display", NULL, NULL,
                          META_TYPE_DISPLAY,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_COMPOSITOR] =
-    g_param_spec_object ("compositor",
-                         "Compositor",
-                         "MetaCompositor object",
+    g_param_spec_object ("compositor", NULL, NULL,
                          META_TYPE_COMPOSITOR,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_WORKSPACE_MANAGER] =
-    g_param_spec_object ("workspace-manager",
-                         "Workspace manager",
-                         "Workspace manager",
+    g_param_spec_object ("workspace-manager", NULL, NULL,
                          META_TYPE_WORKSPACE_MANAGER,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_STAGE] =
-    g_param_spec_object ("stage",
-                         "Stage",
-                         "Stage holding the desktop scene graph",
+    g_param_spec_object ("stage", NULL, NULL,
                          CLUTTER_TYPE_ACTOR,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_WINDOW_GROUP] =
-    g_param_spec_object ("window-group",
-                         "Window Group",
-                         "Actor holding window actors",
+    g_param_spec_object ("window-group", NULL, NULL,
                          CLUTTER_TYPE_ACTOR,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_TOP_WINDOW_GROUP] =
-    g_param_spec_object ("top-window-group",
-                         "Top Window Group",
-                         "Actor holding override-redirect windows",
+    g_param_spec_object ("top-window-group", NULL, NULL,
                          CLUTTER_TYPE_ACTOR,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_WINDOW_MANAGER] =
-    g_param_spec_object ("window-manager",
-                         "Window Manager",
-                         "Window management interface",
+    g_param_spec_object ("window-manager", NULL, NULL,
                          SHELL_TYPE_WM,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_SETTINGS] =
-    g_param_spec_object ("settings",
-                         "Settings",
-                         "GSettings instance for gnome-shell configuration",
+    g_param_spec_object ("settings", NULL, NULL,
                          G_TYPE_SETTINGS,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_DATADIR] =
-    g_param_spec_string ("datadir",
-                         "Data directory",
-                         "Directory containing gnome-shell data files",
+    g_param_spec_string ("datadir", NULL, NULL,
                          NULL,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_IMAGEDIR] =
-    g_param_spec_string ("imagedir",
-                         "Image directory",
-                         "Directory containing gnome-shell image files",
+    g_param_spec_string ("imagedir", NULL, NULL,
                          NULL,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_USERDATADIR] =
-    g_param_spec_string ("userdatadir",
-                         "User data directory",
-                         "Directory containing gnome-shell user data",
+    g_param_spec_string ("userdatadir", NULL, NULL,
                          NULL,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_FOCUS_MANAGER] =
-    g_param_spec_object ("focus-manager",
-                         "Focus manager",
-                         "The shell's StFocusManager",
+    g_param_spec_object ("focus-manager", NULL, NULL,
                          ST_TYPE_FOCUS_MANAGER,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_FRAME_TIMESTAMPS] =
-    g_param_spec_boolean ("frame-timestamps",
-                          "Frame Timestamps",
-                          "Whether to log frame timestamps in the performance log",
+    g_param_spec_boolean ("frame-timestamps", NULL, NULL,
                           FALSE,
                           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   props[PROP_FRAME_FINISH_TIMESTAMP] =
-    g_param_spec_boolean ("frame-finish-timestamp",
-                          "Frame Finish Timestamps",
-                          "Whether at the end of a frame to call glFinish and log paintCompletedTimestamp",
+    g_param_spec_boolean ("frame-finish-timestamp", NULL, NULL,
                           FALSE,
                           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   props[PROP_SWITCHEROO_CONTROL] =
-    g_param_spec_object ("switcheroo-control",
-                         "switcheroo-control",
-                         "D-Bus Proxy for switcheroo-control daemon",
+    g_param_spec_object ("switcheroo-control", NULL, NULL,
                          G_TYPE_DBUS_PROXY,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_FORCE_ANIMATIONS] =
-    g_param_spec_boolean ("force-animations",
-                          "force-animations",
-                          "Force animations to be enabled",
+    g_param_spec_boolean ("force-animations", NULL, NULL,
                           FALSE,
                           G_PARAM_READWRITE  | G_PARAM_CONSTRUCT| G_PARAM_STATIC_STRINGS);
 
   props[PROP_AUTOMATION_SCRIPT] =
-    g_param_spec_object ("automation-script",
-                         "automation-script",
-                         "Automation script to run after startup",
+    g_param_spec_object ("automation-script", NULL, NULL,
                          G_TYPE_FILE,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 

@@ -65,11 +65,11 @@ export function arrowIcon(side) {
 export const PopupBaseMenuItem = GObject.registerClass({
     Properties: {
         'active': GObject.ParamSpec.boolean(
-            'active', 'active', 'active',
+            'active', null, null,
             GObject.ParamFlags.READWRITE,
             false),
         'sensitive': GObject.ParamSpec.boolean(
-            'sensitive', 'sensitive', 'sensitive',
+            'sensitive', null, null,
             GObject.ParamFlags.READWRITE,
             true),
     },
@@ -330,7 +330,7 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
 export const Switch = GObject.registerClass({
     Properties: {
         'state': GObject.ParamSpec.boolean(
-            'state', 'state', 'state',
+            'state', null, null,
             GObject.ParamFlags.READWRITE,
             false),
     },

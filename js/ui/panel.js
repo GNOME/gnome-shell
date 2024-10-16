@@ -260,11 +260,11 @@ const AppMenuButton = GObject.registerClass({
 
 const WorkspaceDot = GObject.registerClass({
     Properties: {
-        'expansion': GObject.ParamSpec.double('expansion', '', '',
+        'expansion': GObject.ParamSpec.double('expansion', null, null,
             GObject.ParamFlags.READWRITE,
             0.0, 1.0, 0.0),
         'width-multiplier': GObject.ParamSpec.double(
-            'width-multiplier', '', '',
+            'width-multiplier', null, null,
             GObject.ParamFlags.READWRITE,
             1.0, 10.0, 1.0),
     },

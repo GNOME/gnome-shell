@@ -587,7 +587,7 @@ class FocusTracker extends Signals.EventEmitter {
 const EmojiPager = GObject.registerClass({
     Properties: {
         'delta': GObject.ParamSpec.int(
-            'delta', 'delta', 'delta',
+            'delta', null, null,
             GObject.ParamFlags.READWRITE,
             GLib.MININT32, GLib.MAXINT32, 0),
     },

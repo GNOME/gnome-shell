@@ -26,7 +26,7 @@ function getTermsForSearchString(searchString) {
 export const SearchController = GObject.registerClass({
     Properties: {
         'search-active': GObject.ParamSpec.boolean(
-            'search-active', 'search-active', 'search-active',
+            'search-active', null, null,
             GObject.ParamFlags.READABLE,
             false),
     },

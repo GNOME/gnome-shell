@@ -719,9 +719,7 @@ na_xembed_class_init (NaXembedClass *klass)
                   G_TYPE_NONE, 0);
 
   props[PROP_X11_DISPLAY] =
-    g_param_spec_object ("x11-display",
-                         "x11-display",
-                         "x11-display",
+    g_param_spec_object ("x11-display", NULL, NULL,
                          META_TYPE_X11_DISPLAY,
                          G_PARAM_READWRITE |
                          G_PARAM_CONSTRUCT_ONLY);

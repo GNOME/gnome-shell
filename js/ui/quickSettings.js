@@ -22,7 +22,7 @@ const MENU_BUTTON_BRIGHTNESS = 0.1;
 export const QuickSettingsItem = GObject.registerClass({
     Properties: {
         'has-menu': GObject.ParamSpec.boolean(
-            'has-menu', 'has-menu', 'has-menu',
+            'has-menu', null, null,
             GObject.ParamFlags.READWRITE |
             GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
@@ -43,14 +43,14 @@ export const QuickSettingsItem = GObject.registerClass({
 
 export const QuickToggle = GObject.registerClass({
     Properties: {
-        'title': GObject.ParamSpec.string('title', '', '',
+        'title': GObject.ParamSpec.string('title', null, null,
             GObject.ParamFlags.READWRITE,
             null),
-        'subtitle': GObject.ParamSpec.string('subtitle', '', '',
+        'subtitle': GObject.ParamSpec.string('subtitle', null, null,
             GObject.ParamFlags.READWRITE,
             null),
         'icon-name': GObject.ParamSpec.override('icon-name', St.Button),
-        'gicon': GObject.ParamSpec.object('gicon', '', '',
+        'gicon': GObject.ParamSpec.object('gicon', null, null,
             GObject.ParamFlags.READWRITE,
             Gio.Icon),
     },
@@ -145,18 +145,18 @@ export const QuickToggle = GObject.registerClass({
 
 export const QuickMenuToggle = GObject.registerClass({
     Properties: {
-        'title': GObject.ParamSpec.string('title', '', '',
+        'title': GObject.ParamSpec.string('title', null, null,
             GObject.ParamFlags.READWRITE,
             null),
-        'subtitle': GObject.ParamSpec.string('subtitle', '', '',
+        'subtitle': GObject.ParamSpec.string('subtitle', null, null,
             GObject.ParamFlags.READWRITE,
             null),
         'icon-name': GObject.ParamSpec.override('icon-name', St.Button),
-        'gicon': GObject.ParamSpec.object('gicon', '', '',
+        'gicon': GObject.ParamSpec.object('gicon', null, null,
             GObject.ParamFlags.READWRITE,
             Gio.Icon),
         'menu-enabled': GObject.ParamSpec.boolean(
-            'menu-enabled', '', '',
+            'menu-enabled', null, null,
             GObject.ParamFlags.READWRITE,
             true),
     },
@@ -237,19 +237,19 @@ export const QuickMenuToggle = GObject.registerClass({
 export const QuickSlider = GObject.registerClass({
     Properties: {
         'icon-name': GObject.ParamSpec.override('icon-name', St.Button),
-        'gicon': GObject.ParamSpec.object('gicon', '', '',
+        'gicon': GObject.ParamSpec.object('gicon', null, null,
             GObject.ParamFlags.READWRITE,
             Gio.Icon),
         'icon-reactive': GObject.ParamSpec.boolean(
-            'icon-reactive', '', '',
+            'icon-reactive', null, null,
             GObject.ParamFlags.READWRITE,
             false),
         'icon-label': GObject.ParamSpec.string(
-            'icon-label', '', '',
+            'icon-label', null, null,
             GObject.ParamFlags.READWRITE,
             ''),
         'menu-enabled': GObject.ParamSpec.boolean(
-            'menu-enabled', '', '',
+            'menu-enabled', null, null,
             GObject.ParamFlags.READWRITE,
             false),
     },
@@ -522,7 +522,7 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
 const QuickSettingsLayoutMeta = GObject.registerClass({
     Properties: {
         'column-span': GObject.ParamSpec.int(
-            'column-span', '', '',
+            'column-span', null, null,
             GObject.ParamFlags.READWRITE,
             1, GLib.MAXINT32, 1),
     },
@@ -531,15 +531,15 @@ const QuickSettingsLayoutMeta = GObject.registerClass({
 const QuickSettingsLayout = GObject.registerClass({
     Properties: {
         'row-spacing': GObject.ParamSpec.int(
-            'row-spacing', 'row-spacing', 'row-spacing',
+            'row-spacing', null, null,
             GObject.ParamFlags.READWRITE,
             0, GLib.MAXINT32, 0),
         'column-spacing': GObject.ParamSpec.int(
-            'column-spacing', 'column-spacing', 'column-spacing',
+            'column-spacing', null, null,
             GObject.ParamFlags.READWRITE,
             0, GLib.MAXINT32, 0),
         'n-columns': GObject.ParamSpec.int(
-            'n-columns', 'n-columns', 'n-columns',
+            'n-columns', null, null,
             GObject.ParamFlags.READWRITE,
             1, GLib.MAXINT32, 1),
     },

@@ -401,11 +401,11 @@ function animateAllocation(actor, box) {
 export const WorkspaceLayout = GObject.registerClass({
     Properties: {
         'spacing': GObject.ParamSpec.double(
-            'spacing', 'Spacing', 'Spacing',
+            'spacing', null, null,
             GObject.ParamFlags.READWRITE,
             0, Infinity, 20),
         'layout-frozen': GObject.ParamSpec.boolean(
-            'layout-frozen', 'Layout frozen', 'Layout frozen',
+            'layout-frozen', null, null,
             GObject.ParamFlags.READWRITE,
             false),
     },

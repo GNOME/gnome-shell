@@ -537,9 +537,7 @@ shell_mime_sniffer_class_init (ShellMimeSnifferClass *klass)
   oclass->set_property = shell_mime_sniffer_set_property;
 
   properties[PROP_FILE] =
-    g_param_spec_object ("file",
-                         "File",
-                         "The loaded file",
+    g_param_spec_object ("file", NULL, NULL,
                          G_TYPE_FILE,
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 

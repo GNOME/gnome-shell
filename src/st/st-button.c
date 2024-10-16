@@ -495,9 +495,7 @@ st_button_class_init (StButtonClass *klass)
    * The label of the #StButton.
    */
   props[PROP_LABEL] =
-    g_param_spec_string ("label",
-                         "Label",
-                         "Label of the button",
+    g_param_spec_string ("label", NULL, NULL,
                          NULL,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -507,9 +505,7 @@ st_button_class_init (StButtonClass *klass)
    * The icon name of the #StButton.
    */
   props[PROP_ICON_NAME] =
-    g_param_spec_string ("icon-name",
-                         "Icon name",
-                         "Icon name of the button",
+    g_param_spec_string ("icon-name", NULL, NULL,
                          NULL,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -519,9 +515,7 @@ st_button_class_init (StButtonClass *klass)
    * Which buttons will trigger the #StButton::clicked signal.
    */
   props[PROP_BUTTON_MASK] =
-    g_param_spec_flags ("button-mask",
-                        "Button mask",
-                        "Which buttons trigger the 'clicked' signal",
+    g_param_spec_flags ("button-mask", NULL, NULL,
                         ST_TYPE_BUTTON_MASK, ST_BUTTON_ONE,
                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -531,9 +525,7 @@ st_button_class_init (StButtonClass *klass)
    * Whether the #StButton is operating in toggle mode (on/off).
    */
   props[PROP_TOGGLE_MODE] =
-    g_param_spec_boolean ("toggle-mode",
-                          "Toggle Mode",
-                          "Enable or disable toggling",
+    g_param_spec_boolean ("toggle-mode", NULL, NULL,
                           FALSE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -547,9 +539,7 @@ st_button_class_init (StButtonClass *klass)
    * pseudo-class set.
    */
   props[PROP_CHECKED] =
-    g_param_spec_boolean ("checked",
-                          "Checked",
-                          "Indicates if a toggle button is \"on\" or \"off\"",
+    g_param_spec_boolean ("checked", NULL, NULL,
                           FALSE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -560,9 +550,7 @@ st_button_class_init (StButtonClass *klass)
    * #StButton is being actively pressed, rather than just in the "on" state.
    */
   props[PROP_PRESSED] =
-    g_param_spec_boolean ("pressed",
-                          "Pressed",
-                          "Indicates if the button is pressed in",
+    g_param_spec_boolean ("pressed", NULL, NULL,
                           FALSE,
                           ST_PARAM_READABLE);
 

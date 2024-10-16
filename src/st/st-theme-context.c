@@ -157,9 +157,7 @@ st_theme_context_class_init (StThemeContextClass *klass)
    * The scaling factor used for HiDPI scaling.
    */
   props[PROP_SCALE_FACTOR] =
-    g_param_spec_int ("scale-factor",
-                      "Scale factor",
-                      "Integer scale factor used for HiDPI scaling",
+    g_param_spec_int ("scale-factor", NULL, NULL,
                       0, G_MAXINT, 1,
                       ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 

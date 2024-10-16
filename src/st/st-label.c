@@ -289,9 +289,7 @@ st_label_class_init (StLabelClass *klass)
    * The internal #ClutterText actor supporting the label
    */
   props[PROP_CLUTTER_TEXT] =
-      g_param_spec_object ("clutter-text",
-                           "Clutter Text",
-                           "Internal ClutterText actor",
+      g_param_spec_object ("clutter-text", NULL, NULL,
                            CLUTTER_TYPE_TEXT,
                            ST_PARAM_READABLE);
 
@@ -301,9 +299,7 @@ st_label_class_init (StLabelClass *klass)
    * The current text being display in the #StLabel.
    */
   props[PROP_TEXT] =
-      g_param_spec_string ("text",
-                           "Text",
-                           "Text of the label",
+      g_param_spec_string ("text", NULL, NULL,
                            NULL,
                            ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 

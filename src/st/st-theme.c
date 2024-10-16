@@ -133,9 +133,7 @@ st_theme_class_init (StThemeClass *klass)
    */
   g_object_class_install_property (object_class,
                                    PROP_APPLICATION_STYLESHEET,
-                                   g_param_spec_object ("application-stylesheet",
-                                                        "Application Stylesheet",
-                                                        "Stylesheet with application-specific styling",
+                                   g_param_spec_object ("application-stylesheet", NULL, NULL,
                                                         G_TYPE_FILE,
                                                         ST_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
@@ -147,9 +145,7 @@ st_theme_class_init (StThemeClass *klass)
    */
   g_object_class_install_property (object_class,
                                    PROP_THEME_STYLESHEET,
-                                   g_param_spec_object ("theme-stylesheet",
-                                                        "Theme Stylesheet",
-                                                        "Stylesheet with theme-specific styling",
+                                   g_param_spec_object ("theme-stylesheet", NULL, NULL,
                                                         G_TYPE_FILE,
                                                         ST_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
@@ -161,9 +157,7 @@ st_theme_class_init (StThemeClass *klass)
    */
   g_object_class_install_property (object_class,
                                    PROP_DEFAULT_STYLESHEET,
-                                   g_param_spec_object ("default-stylesheet",
-                                                        "Default Stylesheet",
-                                                        "Stylesheet with global default styling",
+                                   g_param_spec_object ("default-stylesheet", NULL, NULL,
                                                         G_TYPE_FILE,
                                                         ST_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 

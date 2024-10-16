@@ -151,9 +151,7 @@ st_password_entry_class_init (StPasswordEntryClass *klass)
    *
    * Whether the text in the entry is masked for privacy.
    */
-  props[PROP_PASSWORD_VISIBLE] = g_param_spec_boolean ("password-visible",
-                                                       "Password visible",
-                                                       "Whether the text in the entry is masked or not",
+  props[PROP_PASSWORD_VISIBLE] = g_param_spec_boolean ("password-visible", NULL, NULL,
                                                        FALSE,
                                                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -163,9 +161,7 @@ st_password_entry_class_init (StPasswordEntryClass *klass)
    * Whether to display an icon button to toggle the masking enabled by the
    * #StPasswordEntry:password-visible property.
    */
-  props[PROP_SHOW_PEEK_ICON] = g_param_spec_boolean ("show-peek-icon",
-                                                     "Show peek icon",
-                                                     "Whether to show the password peek icon",
+  props[PROP_SHOW_PEEK_ICON] = g_param_spec_boolean ("show-peek-icon", NULL, NULL,
                                                      TRUE,
                                                      ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 

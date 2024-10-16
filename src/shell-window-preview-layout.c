@@ -337,9 +337,7 @@ shell_window_preview_layout_class_init (ShellWindowPreviewLayoutClass *klass)
    * ShellWindowPreviewLayout:bounding-box:
    */
   obj_props[PROP_BOUNDING_BOX] =
-    g_param_spec_boxed ("bounding-box",
-                        "Bounding Box",
-                        "Bounding Box",
+    g_param_spec_boxed ("bounding-box", NULL, NULL,
                         CLUTTER_TYPE_ACTOR_BOX,
                         G_PARAM_READABLE |
                         G_PARAM_STATIC_STRINGS);
