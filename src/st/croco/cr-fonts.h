@@ -23,8 +23,7 @@
  * See COPYRIGHTS file for copyright information.
  */
 
-#ifndef __CR_FONTS_H__
-#define __CR_FONTS_H__
+#pragma once
 
 #include "cr-utils.h"
 #include "cr-num.h"
@@ -311,5 +310,3 @@ const gchar * cr_font_variant_to_string (enum CRFontVariant a_code) ;
 const gchar * cr_font_stretch_to_string (enum CRFontStretch a_code) ;
 
 G_END_DECLS
-
-#endif

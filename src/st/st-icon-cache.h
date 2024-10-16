@@ -14,8 +14,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef __ST_ICON_CACHE_H__
-#define __ST_ICON_CACHE_H__
+#pragma once
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
@@ -45,5 +44,3 @@ GdkPixbuf * st_icon_cache_get_icon (StIconCache *cache,
 
 StIconCache *st_icon_cache_ref (StIconCache *cache);
 void st_icon_cache_unref (StIconCache *cache);
-
-#endif /* __ST_ICON_CACHE_H__ */

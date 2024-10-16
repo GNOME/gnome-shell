@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ST_IMAGE_CONTENT_H__
-#define __ST_IMAGE_CONTENT_H__
+#pragma once
 
 #include <clutter/clutter.h>
 
@@ -29,5 +28,3 @@ G_DECLARE_FINAL_TYPE (StImageContent, st_image_content,
 
 ClutterContent *st_image_content_new_with_preferred_size (int width,
                                                           int height);
-
-#endif /* __ST_IMAGE_CONTENT_H__ */

@@ -19,8 +19,7 @@
  * See COPYRIGHTS file for copyrights information.
  */
 
-#ifndef __CR_PROP_LIST_H__
-#define __CR_PROP_LIST_H__
+#pragma once
 
 #include "cr-utils.h"
 #include "cr-declaration.h"
@@ -76,5 +75,3 @@ CRPropList * cr_prop_list_unlink (CRPropList *a_this,
 void cr_prop_list_destroy (CRPropList *a_this) ;
 
 G_END_DECLS
-
-#endif /*__CR_PROP_LIST_H__*/

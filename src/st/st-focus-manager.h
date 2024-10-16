@@ -22,8 +22,7 @@
 #error "Only <st/st.h> can be included directly.h"
 #endif
 
-#ifndef __ST_FOCUS_MANAGER_H__
-#define __ST_FOCUS_MANAGER_H__
+#pragma once
 
 #include <st/st-types.h>
 #include <st/st-widget.h>
@@ -61,5 +60,3 @@ gboolean        st_focus_manager_navigate_from_event (StFocusManager *manager,
                                                       ClutterEvent   *event);
 
 G_END_DECLS
-
-#endif /* __ST_FOCUS_MANAGER_H__ */

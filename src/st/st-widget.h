@@ -25,8 +25,7 @@
 #error "Only <st/st.h> can be included directly.h"
 #endif
 
-#ifndef __ST_WIDGET_H__
-#define __ST_WIDGET_H__
+#pragma once
 
 #include <clutter/clutter.h>
 #include <st/st-types.h>
@@ -163,5 +162,3 @@ const gchar *         st_widget_get_accessible_name      (StWidget    *widget);
 void                  st_widget_set_accessible           (StWidget    *widget,
                                                           AtkObject   *accessible);
 G_END_DECLS
-
-#endif /* __ST_WIDGET_H__ */

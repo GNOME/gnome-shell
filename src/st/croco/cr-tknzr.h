@@ -27,8 +27,7 @@
  *class.
  */
 
-#ifndef __CR_TKNZR_H__
-#define __CR_TKNZR_H__
+#pragma once
 
 #include "cr-utils.h"
 #include "cr-input.h"
@@ -111,5 +110,3 @@ enum CRStatus cr_tknzr_get_input (CRTknzr *a_this, CRInput **a_input) ;
 void cr_tknzr_destroy (CRTknzr *a_this) ;
 	
 G_END_DECLS
-
-#endif /*__CR_TKZNR_H__*/

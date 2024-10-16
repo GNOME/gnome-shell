@@ -22,8 +22,7 @@
 #error "Only <st/st.h> can be included directly.h"
 #endif
 
-#ifndef __ST_BUTTON_H__
-#define __ST_BUTTON_H__
+#pragma once
 
 G_BEGIN_DECLS
 
@@ -81,5 +80,3 @@ void         st_button_set_button_mask (StButton     *button,
 StButtonMask st_button_get_button_mask (StButton     *button);
 
 G_END_DECLS
-
-#endif /* __ST_BUTTON_H__ */

@@ -20,8 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ST_THEME_NODE_H__
-#define __ST_THEME_NODE_H__
+#pragma once
 
 #include <clutter/clutter.h>
 #include "st-border-image.h"
@@ -364,5 +363,3 @@ void st_theme_node_paint_state_set_node (StThemeNodePaintState *state,
                                          StThemeNode           *node);
 
 G_END_DECLS
-
-#endif /* __ST_THEME_NODE_H__ */

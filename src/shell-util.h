@@ -1,7 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-#ifndef __SHELL_UTIL_H__
-#define __SHELL_UTIL_H__
+#pragma once
 
 #include <gio/gio.h>
 #include <clutter/clutter.h>
@@ -120,5 +119,3 @@ GPid shell_util_spawn_async (const char          *working_directory,
                              GError             **error);
 
 G_END_DECLS
-
-#endif /* __SHELL_UTIL_H__ */

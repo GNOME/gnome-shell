@@ -25,8 +25,7 @@
 #error "Only <st/st.h> can be included directly.h"
 #endif
 
-#ifndef _ST_ICON
-#define _ST_ICON
+#pragma once
 
 #include <glib-object.h>
 #include <gio/gio.h>
@@ -79,6 +78,4 @@ void         st_icon_set_icon_size (StIcon *icon,
 gboolean     st_icon_get_is_symbolic (StIcon *icon);
 
 G_END_DECLS
-
-#endif /* _ST_ICON */
 

@@ -22,8 +22,7 @@
  */
 
 
-#ifndef __CR_SEL_H__
-#define __CR_SEL_H__
+#pragma once
 
 #include <stdio.h>
 #include <glib.h>
@@ -125,6 +124,3 @@ enum CRStatus cr_simple_sel_compute_specificity (CRSimpleSel *a_this) ;
 void cr_simple_sel_destroy (CRSimpleSel *a_this) ;
 
 G_END_DECLS
-
-
-#endif /*__CR_SIMPLE_SEL_H__*/

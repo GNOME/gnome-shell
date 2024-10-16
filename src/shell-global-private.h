@@ -1,6 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __SHELL_GLOBAL_PRIVATE_H__
-#define __SHELL_GLOBAL_PRIVATE_H__
+#pragma once
 
 #include "shell-global.h"
 
@@ -22,5 +21,3 @@ ShellAppCache * shell_global_get_app_cache (ShellGlobal *global);
 void _shell_global_locate_pointer (ShellGlobal  *global);
 
 void _shell_global_notify_shutdown (ShellGlobal *global);
-
-#endif /* __SHELL_GLOBAL_PRIVATE_H__ */

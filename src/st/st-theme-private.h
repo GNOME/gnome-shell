@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ST_THEME_PRIVATE_H__
-#define __ST_THEME_PRIVATE_H__
+#pragma once
 
 #include "croco/libcroco.h"
 #include "st-theme.h"
@@ -37,5 +36,3 @@ GFile *_st_theme_resolve_url (StTheme      *theme,
 CRDeclaration *_st_theme_parse_declaration_list (const char *str);
 
 G_END_DECLS
-
-#endif /* __ST_THEME_PRIVATE_H__ */

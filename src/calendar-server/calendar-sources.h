@@ -21,8 +21,7 @@
  *     Christian Kellner  <gicmo@xatom.net>
  */
 
-#ifndef __CALENDAR_SOURCES_H__
-#define __CALENDAR_SOURCES_H__
+#pragma once
 
 #include <glib-object.h>
 
@@ -60,5 +59,3 @@ void            print_debug                          (const gchar *str,
                                                       ...) G_GNUC_PRINTF (1, 2);
 
 G_END_DECLS
-
-#endif /* __CALENDAR_SOURCES_H__ */

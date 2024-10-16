@@ -22,8 +22,7 @@
 #error "Only <st/st.h> can be included directly.h"
 #endif
 
-#ifndef _ST_BOX_LAYOUT_H
-#define _ST_BOX_LAYOUT_H
+#pragma once
 
 #include <st/st-widget.h>
 #include <st/st-viewport.h>
@@ -61,5 +60,3 @@ void     st_box_layout_set_pack_start (StBoxLayout *box,
 gboolean st_box_layout_get_pack_start (StBoxLayout *box);
 
 G_END_DECLS
-
-#endif /* _ST_BOX_LAYOUT_H */

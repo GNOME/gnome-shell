@@ -22,8 +22,7 @@
 #error "Only <st/st.h> can be included directly.h"
 #endif
 
-#ifndef __ST_WIDGET_ACCESSIBLE_H__
-#define __ST_WIDGET_ACCESSIBLE_H__
+#pragma once
 
 G_BEGIN_DECLS
 
@@ -72,5 +71,3 @@ struct _StWidgetAccessibleClass
 GType st_widget_accessible_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
-
-#endif /* __ST_WIDGET_ACCESSIBLE_H__ */

@@ -1,6 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __ST_ICON_COLORS__
-#define __ST_ICON_COLORS__
+#pragma once
 
 #include <clutter/clutter.h>
 
@@ -37,5 +36,3 @@ gboolean      st_icon_colors_equal (StIconColors *colors,
                                     StIconColors *other);
 
 G_END_DECLS
-
-#endif /* __ST_ICON_COLORS__ */

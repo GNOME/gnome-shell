@@ -20,8 +20,7 @@
  * See the COPYRIGHTS file for copyright information.
  */
 
-#ifndef __CR_DOC_HANDLER_H__
-#define __CR_DOC_HANDLER_H__
+#pragma once
 
 /**
  *@file
@@ -294,5 +293,3 @@ gboolean cr_doc_handler_unref (CRDocHandler *a_this) ;
 void cr_doc_handler_destroy (CRDocHandler *a_this) ;
 
 G_END_DECLS
-
-#endif /*__CR_DOC_HANDLER_H__*/

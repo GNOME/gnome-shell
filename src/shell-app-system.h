@@ -1,6 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __SHELL_APP_SYSTEM_H__
-#define __SHELL_APP_SYSTEM_H__
+#pragma once
 
 #include <gio/gio.h>
 #include <clutter/clutter.h>
@@ -28,5 +27,3 @@ GSList         *shell_app_system_get_running               (ShellAppSystem  *sel
 char         ***shell_app_system_search                    (const char *search_string);
 
 GList          *shell_app_system_get_installed             (ShellAppSystem  *self);
-
-#endif /* __SHELL_APP_SYSTEM_H__ */

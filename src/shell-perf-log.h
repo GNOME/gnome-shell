@@ -1,6 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __SHELL_PERF_LOG_H__
-#define __SHELL_PERF_LOG_H__
+#pragma once
 
 #include <glib-object.h>
 #include <gio/gio.h>
@@ -71,5 +70,3 @@ gboolean shell_perf_log_dump_log    (ShellPerfLog   *perf_log,
                                      GError        **error);
 
 G_END_DECLS
-
-#endif /* __SHELL_PERF_LOG_H__ */

@@ -1,7 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-#ifndef __SHELL_TRAY_MANAGER_H__
-#define __SHELL_TRAY_MANAGER_H__
+#pragma once
 
 #include <clutter/clutter.h>
 #include "st.h"
@@ -18,5 +17,3 @@ void              shell_tray_manager_manage_screen (ShellTrayManager *manager,
 void              shell_tray_manager_unmanage_screen (ShellTrayManager *manager);
 
 G_END_DECLS
-
-#endif /* __SHELL_TRAY_MANAGER_H__ */

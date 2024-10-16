@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ST_BORDER_IMAGE_H__
-#define __ST_BORDER_IMAGE_H__
+#pragma once
 
 #include <glib-object.h>
 #include <gio/gio.h>
@@ -50,5 +49,3 @@ gboolean st_border_image_equal (StBorderImage *image,
                                 StBorderImage *other);
 
 G_END_DECLS
-
-#endif /* __ST_BORDER_IMAGE_H__ */

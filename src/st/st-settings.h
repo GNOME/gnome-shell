@@ -21,8 +21,7 @@
 #error "Only <st/st.h> can be included directly.h"
 #endif
 
-#ifndef __ST_SETTINGS_H__
-#define __ST_SETTINGS_H__
+#pragma once
 
 #include <glib-object.h>
 #include <gdesktop-enums.h>
@@ -45,5 +44,3 @@ void st_settings_inhibit_animations (StSettings *settings);
 void st_settings_uninhibit_animations (StSettings *settings);
 
 G_END_DECLS
-
-#endif /* __ST_SETTINGS_H__ */

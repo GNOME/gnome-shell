@@ -18,8 +18,7 @@
  * USA
  */
 
-#ifndef __LIBCROCO_H__
-#define __LIBCROCO_H__
+#pragma once
 
 #include "libcroco-config.h"
 
@@ -38,5 +37,3 @@
 #include "cr-om-parser.h"
 #include "cr-prop-list.h"
 #include "cr-string.h"
-
-#endif /*__LIBCROCO_H__*/

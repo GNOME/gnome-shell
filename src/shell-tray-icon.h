@@ -1,6 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __SHELL_TRAY_ICON_H__
-#define __SHELL_TRAY_ICON_H__
+#pragma once
 
 #include <clutter/clutter.h>
 
@@ -10,5 +9,3 @@ G_DECLARE_FINAL_TYPE (ShellTrayIcon, shell_tray_icon,
 
 void shell_tray_icon_click (ShellTrayIcon *icon,
                             ClutterEvent  *event);
-
-#endif /* __SHELL_TRAY_ICON_H__ */

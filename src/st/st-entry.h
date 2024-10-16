@@ -21,8 +21,7 @@
 #error "Only <st/st.h> can be included directly.h"
 #endif
 
-#ifndef __ST_ENTRY_H__
-#define __ST_ENTRY_H__
+#pragma once
 
 G_BEGIN_DECLS
 
@@ -76,4 +75,3 @@ void            st_entry_set_cursor_func    (StEntryCursorFunc func,
 
 G_END_DECLS
 
-#endif /* __ST_ENTRY_H__ */
