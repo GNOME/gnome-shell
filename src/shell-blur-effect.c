@@ -775,23 +775,17 @@ shell_blur_effect_class_init (ShellBlurEffectClass *klass)
   effect_class->paint_node = shell_blur_effect_paint_node;
 
   properties[PROP_RADIUS] =
-    g_param_spec_int ("radius",
-                      "Radius",
-                      "Radius in pixels",
+    g_param_spec_int ("radius", NULL, NULL,
                       0, G_MAXINT, 0,
                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   properties[PROP_BRIGHTNESS] =
-    g_param_spec_float ("brightness",
-                        "Brightness",
-                        "Brightness",
+    g_param_spec_float ("brightness", NULL, NULL,
                         0.f, 1.f, 1.f,
                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   properties[PROP_MODE] =
-    g_param_spec_enum ("mode",
-                       "Blur mode",
-                       "Blur mode",
+    g_param_spec_enum ("mode", NULL, NULL,
                        SHELL_TYPE_BLUR_MODE,
                        SHELL_BLUR_MODE_ACTOR,
                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);

@@ -121,9 +121,7 @@ st_scrollable_default_init (StScrollableInterface *g_iface)
        * ]|
        */
       g_object_interface_install_property (g_iface,
-                                           g_param_spec_object ("hadjustment",
-                                                                "StAdjustment",
-                                                                "Horizontal adjustment",
+                                           g_param_spec_object ("hadjustment", NULL, NULL,
                                                                 ST_TYPE_ADJUSTMENT,
                                                                 ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY));
 
@@ -139,9 +137,7 @@ st_scrollable_default_init (StScrollableInterface *g_iface)
        * property in JavaScript code.
        */
       g_object_interface_install_property (g_iface,
-                                           g_param_spec_object ("vadjustment",
-                                                                "StAdjustment",
-                                                                "Vertical adjustment",
+                                           g_param_spec_object ("vadjustment", NULL, NULL,
                                                                 ST_TYPE_ADJUSTMENT,
                                                                 ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY));
 

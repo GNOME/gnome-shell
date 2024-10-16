@@ -417,9 +417,7 @@ shell_camera_monitor_class_init (ShellCameraMonitorClass *klass)
   object_class->get_property = shell_camera_monitor_get_property;
 
   obj_props[PROP_CAMERAS_IN_USE] =
-    g_param_spec_boolean ("cameras-in-use",
-                          "Cameras in use",
-                          "Whether any camera is currently used by an app",
+    g_param_spec_boolean ("cameras-in-use", NULL, NULL,
                           FALSE,
                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 

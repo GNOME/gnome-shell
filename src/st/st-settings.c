@@ -226,9 +226,7 @@ st_settings_class_init (StSettingsClass *klass)
    *
    * Whether animations are enabled.
    */
-  props[PROP_ENABLE_ANIMATIONS] = g_param_spec_boolean ("enable-animations",
-                                                        "Enable animations",
-                                                        "Enable animations",
+  props[PROP_ENABLE_ANIMATIONS] = g_param_spec_boolean ("enable-animations", NULL, NULL,
                                                         TRUE,
                                                         ST_PARAM_READABLE);
 
@@ -238,9 +236,7 @@ st_settings_class_init (StSettingsClass *klass)
    * Whether pasting from the `PRIMARY` selection is supported (eg. middle-click
    * paste).
    */
-  props[PROP_PRIMARY_PASTE] = g_param_spec_boolean ("primary-paste",
-                                                    "Primary paste",
-                                                    "Primary paste",
+  props[PROP_PRIMARY_PASTE] = g_param_spec_boolean ("primary-paste", NULL, NULL,
                                                     TRUE,
                                                     ST_PARAM_READABLE);
 
@@ -249,9 +245,7 @@ st_settings_class_init (StSettingsClass *klass)
    *
    * The threshold before a drag operation begins.
    */
-  props[PROP_DRAG_THRESHOLD] = g_param_spec_int ("drag-threshold",
-                                                 "Drag threshold",
-                                                 "Drag threshold",
+  props[PROP_DRAG_THRESHOLD] = g_param_spec_int ("drag-threshold", NULL, NULL,
                                                  0, G_MAXINT, 8,
                                                  ST_PARAM_READABLE);
 
@@ -260,9 +254,7 @@ st_settings_class_init (StSettingsClass *klass)
    *
    * The current font name.
    */
-  props[PROP_FONT_NAME] = g_param_spec_string ("font-name",
-                                               "font name",
-                                               "font name",
+  props[PROP_FONT_NAME] = g_param_spec_string ("font-name", NULL, NULL,
                                                "",
                                                ST_PARAM_READABLE);
 
@@ -271,9 +263,7 @@ st_settings_class_init (StSettingsClass *klass)
    *
    * Whether the accessibility high contrast mode is enabled.
    */
-  props[PROP_HIGH_CONTRAST] = g_param_spec_boolean ("high-contrast",
-                                                    "High contrast",
-                                                    "High contrast",
+  props[PROP_HIGH_CONTRAST] = g_param_spec_boolean ("high-contrast", NULL, NULL,
                                                     FALSE,
                                                     ST_PARAM_READABLE);
 
@@ -282,9 +272,7 @@ st_settings_class_init (StSettingsClass *klass)
    *
    * The current GTK icon theme
    */
-  props[PROP_GTK_ICON_THEME] = g_param_spec_string ("gtk-icon-theme",
-                                                    "GTK Icon Theme",
-                                                    "GTK Icon Theme",
+  props[PROP_GTK_ICON_THEME] = g_param_spec_string ("gtk-icon-theme", NULL, NULL,
                                                     "",
                                                     ST_PARAM_READABLE);
 
@@ -293,9 +281,7 @@ st_settings_class_init (StSettingsClass *klass)
    *
    * The preferred color-scheme
    */
-  props[PROP_COLOR_SCHEME] = g_param_spec_enum ("color-scheme",
-                                                "Color scheme",
-                                                "Color scheme",
+  props[PROP_COLOR_SCHEME] = g_param_spec_enum ("color-scheme", NULL, NULL,
                                                 ST_TYPE_SYSTEM_COLOR_SCHEME,
                                                 ST_SYSTEM_COLOR_SCHEME_DEFAULT,
                                                 ST_PARAM_READABLE);
@@ -305,9 +291,7 @@ st_settings_class_init (StSettingsClass *klass)
    *
    * The current accent color.
    */
-  props[PROP_ACCENT_COLOR] = g_param_spec_enum ("accent-color",
-                                                "accent color",
-                                                "accent color",
+  props[PROP_ACCENT_COLOR] = g_param_spec_enum ("accent-color", NULL, NULL,
                                                 ST_TYPE_SYSTEM_ACCENT_COLOR,
                                                 ST_SYSTEM_ACCENT_COLOR_BLUE,
                                                 ST_PARAM_READABLE);
@@ -317,9 +301,7 @@ st_settings_class_init (StSettingsClass *klass)
    *
    * Whether the accessibility magnifier is active.
    */
-  props[PROP_MAGNIFIER_ACTIVE] = g_param_spec_boolean("magnifier-active",
-                                                      "Magnifier is active",
-                                                      "Whether the a11y magnifier is active",
+  props[PROP_MAGNIFIER_ACTIVE] = g_param_spec_boolean("magnifier-active", NULL, NULL,
                                                       FALSE,
                                                       ST_PARAM_READABLE);
 
@@ -328,9 +310,7 @@ st_settings_class_init (StSettingsClass *klass)
    *
    * The slow-down factor applied to all animation durations.
    */
-  props[PROP_SLOW_DOWN_FACTOR] = g_param_spec_double("slow-down-factor",
-                                                      "Slow down factor",
-                                                      "Factor applied to all animation durations",
+  props[PROP_SLOW_DOWN_FACTOR] = g_param_spec_double("slow-down-factor", NULL, NULL,
                                                       EPSILON, G_MAXDOUBLE, 1.0,
                                                       ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -339,9 +319,7 @@ st_settings_class_init (StSettingsClass *klass)
    *
    *  Whether password showing can be locked down
    */
-  props[PROP_DISABLE_SHOW_PASSWORD] = g_param_spec_boolean("disable-show-password",
-                                                           "'Show Password' is disabled",
-                                                           "Whether user can request to see their password",
+  props[PROP_DISABLE_SHOW_PASSWORD] = g_param_spec_boolean("disable-show-password", NULL, NULL,
                                                            FALSE,
                                                            ST_PARAM_READABLE);
 

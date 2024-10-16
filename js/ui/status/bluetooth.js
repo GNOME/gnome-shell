@@ -27,13 +27,13 @@ const STATE_CHANGE_FAILED_TIMEOUT_MS = 30 * 1000;
 
 const BtClient = GObject.registerClass({
     Properties: {
-        'available': GObject.ParamSpec.boolean('available', '', '',
+        'available': GObject.ParamSpec.boolean('available', null, null,
             GObject.ParamFlags.READABLE,
             false),
-        'active': GObject.ParamSpec.boolean('active', '', '',
+        'active': GObject.ParamSpec.boolean('active', null, null,
             GObject.ParamFlags.READABLE,
             false),
-        'adapter-state': GObject.ParamSpec.enum('adapter-state', '', '',
+        'adapter-state': GObject.ParamSpec.enum('adapter-state', null, null,
             GObject.ParamFlags.READABLE,
             AdapterState, AdapterState.ABSENT),
     },

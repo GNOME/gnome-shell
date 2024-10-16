@@ -586,9 +586,7 @@ st_viewport_class_init (StViewportClass *klass)
   actor_class->pick = st_viewport_pick;
 
   props[PROP_CLIP_TO_VIEW] =
-    g_param_spec_boolean ("clip-to-view",
-                          "Clip to view",
-                          "Clip to view",
+    g_param_spec_boolean ("clip-to-view", NULL, NULL,
                           TRUE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 

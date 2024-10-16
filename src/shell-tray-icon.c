@@ -208,23 +208,17 @@ shell_tray_icon_class_init (ShellTrayIconClass *klass)
 
   g_object_class_install_property (object_class,
                                    PROP_PID,
-                                   g_param_spec_uint ("pid",
-                                                      "PID",
-                                                      "The PID of the icon's application",
+                                   g_param_spec_uint ("pid", NULL, NULL,
                                                       0, G_MAXUINT, 0,
                                                       G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (object_class,
                                    PROP_TITLE,
-                                   g_param_spec_string ("title",
-                                                        "Title",
-                                                        "The icon's window title",
+                                   g_param_spec_string ("title", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (object_class,
                                    PROP_WM_CLASS,
-                                   g_param_spec_string ("wm-class",
-                                                        "WM Class",
-                                                        "The icon's window WM_CLASS",
+                                   g_param_spec_string ("wm-class", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 }

@@ -159,12 +159,12 @@ class Dialog extends St.Widget {
 export const MessageDialogContent = GObject.registerClass({
     Properties: {
         'title': GObject.ParamSpec.string(
-            'title', 'title', 'title',
+            'title', null, null,
             GObject.ParamFlags.READWRITE |
             GObject.ParamFlags.CONSTRUCT,
             null),
         'description': GObject.ParamSpec.string(
-            'description', 'description', 'description',
+            'description', null, null,
             GObject.ParamFlags.READWRITE |
             GObject.ParamFlags.CONSTRUCT,
             null),
@@ -251,7 +251,7 @@ export const MessageDialogContent = GObject.registerClass({
 export const ListSection = GObject.registerClass({
     Properties: {
         'title': GObject.ParamSpec.string(
-            'title', 'title', 'title',
+            'title', null, null,
             GObject.ParamFlags.READWRITE |
             GObject.ParamFlags.CONSTRUCT,
             null),
@@ -295,16 +295,16 @@ export const ListSection = GObject.registerClass({
 export const ListSectionItem = GObject.registerClass({
     Properties: {
         'icon-actor':  GObject.ParamSpec.object(
-            'icon-actor', 'icon-actor', 'Icon actor',
+            'icon-actor', null, null,
             GObject.ParamFlags.READWRITE,
             Clutter.Actor.$gtype),
         'title': GObject.ParamSpec.string(
-            'title', 'title', 'title',
+            'title', null, null,
             GObject.ParamFlags.READWRITE |
             GObject.ParamFlags.CONSTRUCT,
             null),
         'description': GObject.ParamSpec.string(
-            'description', 'description', 'description',
+            'description', null, null,
             GObject.ParamFlags.READWRITE |
             GObject.ParamFlags.CONSTRUCT,
             null),

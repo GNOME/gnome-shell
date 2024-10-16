@@ -380,9 +380,7 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
    * The margins widths that are faded.
    */
   props[PROP_FADE_MARGINS] =
-    g_param_spec_boxed ("fade-margins",
-                        "Fade margins",
-                        "The margin widths that are faded",
+    g_param_spec_boxed ("fade-margins", NULL, NULL,
                         CLUTTER_TYPE_MARGIN,
                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -392,9 +390,7 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
    * Whether the faded area should extend to the edges of the #StScrollViewFade.
    */
   props[PROP_FADE_EDGES] =
-    g_param_spec_boolean ("fade-edges",
-                          "Fade Edges",
-                          "Whether the faded area should extend to the edges",
+    g_param_spec_boolean ("fade-edges", NULL, NULL,
                           FALSE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -404,9 +400,7 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
    * Whether faded edges should extend beyond the faded area of the #StScrollViewFade.
    */
   props[PROP_EXTEND_FADE_AREA] =
-    g_param_spec_boolean ("extend-fade-area",
-                          "Extend Fade Area",
-                          "Whether faded edges should extend beyond the faded area",
+    g_param_spec_boolean ("extend-fade-area", NULL, NULL,
                           FALSE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 

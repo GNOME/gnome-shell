@@ -159,16 +159,16 @@ class ItemSorter {
 
 const NMMenuItem = GObject.registerClass({
     Properties: {
-        'radio-mode': GObject.ParamSpec.boolean('radio-mode', '', '',
+        'radio-mode': GObject.ParamSpec.boolean('radio-mode', null, null,
             GObject.ParamFlags.READWRITE,
             false),
-        'is-active': GObject.ParamSpec.boolean('is-active', '', '',
+        'is-active': GObject.ParamSpec.boolean('is-active', null, null,
             GObject.ParamFlags.READABLE,
             false),
-        'name': GObject.ParamSpec.string('name', '', '',
+        'name': GObject.ParamSpec.string('name', null, null,
             GObject.ParamFlags.READWRITE,
             ''),
-        'icon-name': GObject.ParamSpec.string('icon-name', '', '',
+        'icon-name': GObject.ParamSpec.string('icon-name', null, null,
             GObject.ParamFlags.READWRITE,
             ''),
     },
@@ -219,7 +219,7 @@ const NMMenuItem = GObject.registerClass({
  */
 const NMSectionItem = GObject.registerClass({
     Properties: {
-        'use-submenu': GObject.ParamSpec.boolean('use-submenu', '', '',
+        'use-submenu': GObject.ParamSpec.boolean('use-submenu', null, null,
             GObject.ParamFlags.READWRITE,
             false),
     },
@@ -398,7 +398,7 @@ class NMConnectionItem extends NMMenuItem {
 
 const NMDeviceConnectionItem = GObject.registerClass({
     Properties: {
-        'device-name': GObject.ParamSpec.string('device-name', '', '',
+        'device-name': GObject.ParamSpec.string('device-name', null, null,
             GObject.ParamFlags.READWRITE,
             ''),
     },
@@ -421,7 +421,7 @@ const NMDeviceConnectionItem = GObject.registerClass({
 
 const NMDeviceItem = GObject.registerClass({
     Properties: {
-        'single-device-mode': GObject.ParamSpec.boolean('single-device-mode', '', '',
+        'single-device-mode': GObject.ParamSpec.boolean('single-device-mode', null, null,
             GObject.ParamFlags.READWRITE,
             false),
     },
@@ -735,23 +735,23 @@ class NMBluetoothDeviceItem extends NMDeviceItem {
 const WirelessNetwork = GObject.registerClass({
     Properties: {
         'name': GObject.ParamSpec.string(
-            'name', '', '',
+            'name', null, null,
             GObject.ParamFlags.READABLE,
             ''),
         'icon-name': GObject.ParamSpec.string(
-            'icon-name', '', '',
+            'icon-name', null, null,
             GObject.ParamFlags.READABLE,
             ''),
         'secure': GObject.ParamSpec.boolean(
-            'secure', '', '',
+            'secure', null, null,
             GObject.ParamFlags.READABLE,
             false),
         'is-active': GObject.ParamSpec.boolean(
-            'is-active', '', '',
+            'is-active', null, null,
             GObject.ParamFlags.READABLE,
             false),
         'signal-strength': GObject.ParamSpec.uint(
-            'signal-strength', '', '',
+            'signal-strength', null, null,
             GObject.ParamFlags.READABLE,
             0),
     },
@@ -1065,10 +1065,10 @@ class NMWirelessNetworkItem extends PopupMenu.PopupBaseMenuItem {
 
 const NMWirelessDeviceItem = GObject.registerClass({
     Properties: {
-        'is-hotspot': GObject.ParamSpec.boolean('is-hotspot', '', '',
+        'is-hotspot': GObject.ParamSpec.boolean('is-hotspot', null, null,
             GObject.ParamFlags.READABLE,
             false),
-        'single-device-mode': GObject.ParamSpec.boolean('single-device-mode', '', '',
+        'single-device-mode': GObject.ParamSpec.boolean('single-device-mode', null, null,
             GObject.ParamFlags.READWRITE,
             false),
     },

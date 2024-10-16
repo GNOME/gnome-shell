@@ -10,7 +10,7 @@ const SUCCESS_ZOOM_OUT_DURATION = 150;
 const PieTimer = GObject.registerClass({
     Properties: {
         'angle': GObject.ParamSpec.double(
-            'angle', 'angle', 'angle',
+            'angle', null, null,
             GObject.ParamFlags.READWRITE,
             0, 2 * Math.PI, 0),
     },

@@ -165,9 +165,7 @@ shell_window_preview_class_init (ShellWindowPreviewClass *klass)
    * ShellWindowPreview:window-container:
    */
   obj_props[PROP_WINDOW_CONTAINER] =
-    g_param_spec_object ("window-container",
-                         "window-container",
-                         "window-container",
+    g_param_spec_object ("window-container", NULL, NULL,
                          CLUTTER_TYPE_ACTOR,
                          G_PARAM_READWRITE |
                          G_PARAM_EXPLICIT_NOTIFY |

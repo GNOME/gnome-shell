@@ -183,10 +183,7 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
    * internal layout for #StBoxLayout.
    */
   props[PROP_VERTICAL] =
-    g_param_spec_boolean ("vertical",
-                          "Vertical",
-                          "Whether the layout should be vertical, rather"
-                          "than horizontal",
+    g_param_spec_boolean ("vertical", NULL, NULL,
                           FALSE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -197,9 +194,7 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
    * internal layout for #StBoxLayout.
    */
   props[PROP_PACK_START] =
-    g_param_spec_boolean ("pack-start",
-                          "Pack Start",
-                          "Whether to pack items at the start of the box",
+    g_param_spec_boolean ("pack-start", NULL, NULL,
                           FALSE,
                           ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
 

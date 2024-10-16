@@ -329,7 +329,7 @@ st_adjustment_class_init (StAdjustmentClass *klass)
    * monitor should drive the animation.
    */
   props[PROP_ACTOR] =
-    g_param_spec_object ("actor", "Actor", "Actor",
+    g_param_spec_object ("actor", NULL, NULL,
                          CLUTTER_TYPE_ACTOR,
                          ST_PARAM_READWRITE |
                          G_PARAM_EXPLICIT_NOTIFY);
@@ -340,7 +340,7 @@ st_adjustment_class_init (StAdjustmentClass *klass)
    * The minimum value of the adjustment.
    */
   props[PROP_LOWER] =
-    g_param_spec_double ("lower", "Lower", "Lower bound",
+    g_param_spec_double ("lower", NULL, NULL,
                          -G_MAXDOUBLE,  G_MAXDOUBLE, 0.0,
                          ST_PARAM_READWRITE |
                          G_PARAM_CONSTRUCT |
@@ -355,7 +355,7 @@ st_adjustment_class_init (StAdjustmentClass *klass)
    * #StAdjustment:page-size is non-zero.
    */
   props[PROP_UPPER] =
-    g_param_spec_double ("upper", "Upper", "Upper bound",
+    g_param_spec_double ("upper", NULL, NULL,
                          -G_MAXDOUBLE, G_MAXDOUBLE, 0.0,
                          ST_PARAM_READWRITE |
                          G_PARAM_CONSTRUCT |
@@ -367,7 +367,7 @@ st_adjustment_class_init (StAdjustmentClass *klass)
    * The value of the adjustment.
    */
   props[PROP_VALUE] =
-    g_param_spec_double ("value", "Value", "Current value",
+    g_param_spec_double ("value", NULL, NULL,
                          -G_MAXDOUBLE, G_MAXDOUBLE, 0.0,
                          ST_PARAM_READWRITE |
                          G_PARAM_CONSTRUCT |
@@ -379,7 +379,7 @@ st_adjustment_class_init (StAdjustmentClass *klass)
    * The step increment of the adjustment.
    */
   props[PROP_STEP_INC] =
-    g_param_spec_double ("step-increment", "Step Increment", "Step increment",
+    g_param_spec_double ("step-increment", NULL, NULL,
                          0.0, G_MAXDOUBLE, 0.0,
                          ST_PARAM_READWRITE |
                          G_PARAM_CONSTRUCT |
@@ -391,7 +391,7 @@ st_adjustment_class_init (StAdjustmentClass *klass)
    * The page increment of the adjustment.
    */
   props[PROP_PAGE_INC] =
-    g_param_spec_double ("page-increment", "Page Increment", "Page increment",
+    g_param_spec_double ("page-increment", NULL, NULL,
                          0.0, G_MAXDOUBLE, 0.0,
                          ST_PARAM_READWRITE |
                          G_PARAM_CONSTRUCT |
@@ -406,7 +406,7 @@ st_adjustment_class_init (StAdjustmentClass *klass)
    * adjustment is used for a simple scalar value.
    */
   props[PROP_PAGE_SIZE] =
-    g_param_spec_double ("page-size", "Page Size", "Page size",
+    g_param_spec_double ("page-size", NULL, NULL,
                          0.0, G_MAXDOUBLE, 0.0,
                          ST_PARAM_READWRITE |
                          G_PARAM_CONSTRUCT |

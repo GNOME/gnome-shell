@@ -95,11 +95,11 @@ export const EventSourceBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
         'has-calendars': GObject.ParamSpec.boolean(
-            'has-calendars', 'has-calendars', 'has-calendars',
+            'has-calendars', null, null,
             GObject.ParamFlags.READABLE,
             false),
         'is-loading': GObject.ParamSpec.boolean(
-            'is-loading', 'is-loading', 'is-loading',
+            'is-loading', null, null,
             GObject.ParamFlags.READABLE,
             false),
     },

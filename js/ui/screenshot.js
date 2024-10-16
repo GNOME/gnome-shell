@@ -1061,9 +1061,7 @@ const ScreencastPhase = {
 export const ScreenshotUI = GObject.registerClass({
     Properties: {
         'screencast-in-progress': GObject.ParamSpec.boolean(
-            'screencast-in-progress',
-            'screencast-in-progress',
-            'screencast-in-progress',
+            'screencast-in-progress', null, null,
             GObject.ParamFlags.READABLE,
             false),
     },
@@ -2873,19 +2871,19 @@ class SelectArea extends St.Widget {
 const RecolorEffect = GObject.registerClass({
     Properties: {
         color: GObject.ParamSpec.boxed(
-            'color', 'color', 'replacement color',
+            'color', null, null,
             GObject.ParamFlags.WRITABLE,
             Cogl.Color.$gtype),
         chroma: GObject.ParamSpec.boxed(
-            'chroma', 'chroma', 'color to replace',
+            'chroma', null, null,
             GObject.ParamFlags.WRITABLE,
             Cogl.Color.$gtype),
         threshold: GObject.ParamSpec.float(
-            'threshold', 'threshold', 'threshold',
+            'threshold', null, null,
             GObject.ParamFlags.WRITABLE,
             0.0, 1.0, 0.0),
         smoothing: GObject.ParamSpec.float(
-            'smoothing', 'smoothing', 'smoothing',
+            'smoothing', null, null,
             GObject.ParamFlags.WRITABLE,
             0.0, 1.0, 0.0),
     },
