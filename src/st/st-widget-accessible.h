@@ -31,43 +31,18 @@ G_BEGIN_DECLS
 
 #define ST_TYPE_WIDGET_ACCESSIBLE st_widget_accessible_get_type ()
 
-#define ST_WIDGET_ACCESSIBLE(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  ST_TYPE_WIDGET_ACCESSIBLE, StWidgetAccessible))
+G_DECLARE_DERIVABLE_TYPE (StWidgetAccessible,
+                          st_widget_accessible,
+                          ST, WIDGET_ACCESSIBLE,
+                          ClutterActorAccessible)
 
-#define ST_IS_WIDGET_ACCESSIBLE(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  ST_TYPE_WIDGET_ACCESSIBLE))
-
-#define ST_WIDGET_ACCESSIBLE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  ST_TYPE_WIDGET_ACCESSIBLE, StWidgetAccessibleClass))
-
-#define ST_IS_WIDGET_ACCESSIBLE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  ST_TYPE_WIDGET_ACCESSIBLE))
-
-#define ST_WIDGET_ACCESSIBLE_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  ST_TYPE_WIDGET_ACCESSIBLE, StWidgetAccessibleClass))
-
-typedef struct _StWidgetAccessible  StWidgetAccessible;
 typedef struct _StWidgetAccessibleClass  StWidgetAccessibleClass;
-typedef struct _StWidgetAccessiblePrivate  StWidgetAccessiblePrivate;
 
-struct _StWidgetAccessible
-{
-  ClutterActorAccessible parent;
-
-  /*< private >*/
-  StWidgetAccessiblePrivate *priv;
-};
 
 struct _StWidgetAccessibleClass
 {
   ClutterActorAccessibleClass parent_class;
 };
 
-GType st_widget_accessible_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS

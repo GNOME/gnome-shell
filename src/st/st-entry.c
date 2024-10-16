@@ -114,7 +114,10 @@ static guint entry_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE_WITH_PRIVATE (StEntry, st_entry, ST_TYPE_WIDGET);
 
-static GType st_entry_accessible_get_type (void) G_GNUC_CONST;
+G_DECLARE_FINAL_TYPE (StEntryAccessible,
+                      st_entry_accessible,
+                      ST, ENTRY_ACCESSIBLE,
+                      StWidgetAccessible)
 
 static void
 st_entry_set_property (GObject      *gobject,
@@ -1508,26 +1511,14 @@ st_entry_get_hint_actor (StEntry *entry)
 /******************************************************************************/
 
 #define ST_TYPE_ENTRY_ACCESSIBLE         (st_entry_accessible_get_type ())
-#define ST_ENTRY_ACCESSIBLE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), ST_TYPE_ENTRY_ACCESSIBLE, StEntryAccessible))
-#define ST_IS_ENTRY_ACCESSIBLE(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), ST_TYPE_ENTRY_ACCESSIBLE))
-#define ST_ENTRY_ACCESSIBLE_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST ((c),    ST_TYPE_ENTRY_ACCESSIBLE, StEntryAccessibleClass))
-#define ST_IS_ENTRY_ACCESSIBLE_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE ((c),    ST_TYPE_ENTRY_ACCESSIBLE))
-#define ST_ENTRY_ACCESSIBLE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o),  ST_TYPE_ENTRY_ACCESSIBLE, StEntryAccessibleClass))
 
-typedef struct _StEntryAccessible  StEntryAccessible;
-typedef struct _StEntryAccessibleClass  StEntryAccessibleClass;
 
-struct _StEntryAccessible
+typedef struct _StEntryAccessible
 {
   StWidgetAccessible parent;
-};
+} StEntryAccessible;
 
-struct _StEntryAccessibleClass
-{
-  StWidgetAccessibleClass parent_class;
-};
-
-G_DEFINE_TYPE (StEntryAccessible, st_entry_accessible, ST_TYPE_WIDGET_ACCESSIBLE)
+G_DEFINE_FINAL_TYPE (StEntryAccessible, st_entry_accessible, ST_TYPE_WIDGET_ACCESSIBLE)
 
 static void
 st_entry_accessible_init (StEntryAccessible *self)

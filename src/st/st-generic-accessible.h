@@ -29,30 +29,11 @@
 G_BEGIN_DECLS
 
 #define ST_TYPE_GENERIC_ACCESSIBLE                 (st_generic_accessible_get_type ())
-#define ST_GENERIC_ACCESSIBLE(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_GENERIC_ACCESSIBLE, StGenericAccessible))
-#define ST_GENERIC_ACCESSIBLE_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), ST_TYPE_GENERIC_ACCESSIBLE, StGenericAccessibleClass))
-#define ST_IS_GENERIC_ACCESSIBLE(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ST_TYPE_GENERIC_ACCESSIBLE))
-#define ST_IS_GENERIC_ACCESSIBLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), ST_TYPE_GENERIC_ACCESSIBLE))
-#define ST_GENERIC_ACCESSIBLE_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), ST_TYPE_GENERIC_ACCESSIBLE, StGenericAccessibleClass))
 
-typedef struct _StGenericAccessible        StGenericAccessible;
-typedef struct _StGenericAccessibleClass   StGenericAccessibleClass;
-
-typedef struct _StGenericAccessiblePrivate StGenericAccessiblePrivate;
-
-struct _StGenericAccessible
-{
-    StWidgetAccessible parent;
-
-    StGenericAccessiblePrivate *priv;
-};
-
-struct _StGenericAccessibleClass
-{
-    StWidgetAccessibleClass parent_class;
-};
-
-GType       st_generic_accessible_get_type         (void) G_GNUC_CONST;
+G_DECLARE_FINAL_TYPE (StGenericAccessible,
+                      st_generic_accessible,
+                      ST, GENERIC_ACCESSIBLE,
+                      StWidgetAccessible)
 
 AtkObject*  st_generic_accessible_new_for_actor (ClutterActor *actor);
 

@@ -36,11 +36,16 @@
 
 static void atk_value_iface_init (AtkValueIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE(StGenericAccessible,
-                        st_generic_accessible,
-                        ST_TYPE_WIDGET_ACCESSIBLE,
-                        G_IMPLEMENT_INTERFACE (ATK_TYPE_VALUE,
-                                               atk_value_iface_init));
+typedef struct _StGenericAccessible
+{
+  StWidgetAccessible parent_class;
+} StGenericAccessible;
+
+G_DEFINE_FINAL_TYPE_WITH_CODE (StGenericAccessible,
+                               st_generic_accessible,
+                               ST_TYPE_WIDGET_ACCESSIBLE,
+                               G_IMPLEMENT_INTERFACE (ATK_TYPE_VALUE,
+                                                      atk_value_iface_init));
 /* Signals */
 enum
 {

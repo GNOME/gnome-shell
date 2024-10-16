@@ -2453,7 +2453,7 @@ static AtkStateSet *st_widget_accessible_ref_state_set (AtkObject *obj);
 static void         st_widget_accessible_initialize    (AtkObject *obj,
                                                         gpointer   data);
 
-struct _StWidgetAccessiblePrivate
+typedef struct _StWidgetAccessiblePrivate
 {
   /* Cached values (used to avoid extra notifications) */
   gboolean selected;
@@ -2463,7 +2463,7 @@ struct _StWidgetAccessiblePrivate
    * relationships between this object and the label
    */
   AtkObject *current_label;
-};
+} StWidgetAccessiblePrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (StWidgetAccessible, st_widget_accessible, CLUTTER_TYPE_ACTOR_ACCESSIBLE)
 
@@ -2482,21 +2482,16 @@ st_widget_accessible_class_init (StWidgetAccessibleClass *klass)
 static void
 st_widget_accessible_init (StWidgetAccessible *self)
 {
-  StWidgetAccessiblePrivate *priv = st_widget_accessible_get_instance_private (self);
-
-  self->priv = priv;
 }
 
 static void
 st_widget_accessible_dispose (GObject *gobject)
 {
   StWidgetAccessible *self = ST_WIDGET_ACCESSIBLE (gobject);
+  StWidgetAccessiblePrivate *priv =
+    st_widget_accessible_get_instance_private (self);
 
-  if (self->priv->current_label)
-    {
-      g_object_unref (self->priv->current_label);
-      self->priv->current_label = NULL;
-    }
+  g_clear_object (&priv->current_label);
 
   G_OBJECT_CLASS (st_widget_accessible_parent_class)->dispose (gobject);
 }
@@ -2524,6 +2519,7 @@ st_widget_accessible_ref_state_set (AtkObject *obj)
   StWidget *widget = NULL;
   StWidgetPrivate *widget_priv;
   StWidgetAccessible *self = NULL;
+  StWidgetAccessiblePrivate *priv;
 
   result = ATK_OBJECT_CLASS (st_widget_accessible_parent_class)->ref_state_set (obj);
 
@@ -2534,15 +2530,16 @@ st_widget_accessible_ref_state_set (AtkObject *obj)
 
   widget = ST_WIDGET (actor);
   self = ST_WIDGET_ACCESSIBLE (obj);
+  priv = st_widget_accessible_get_instance_private (self);
   widget_priv = st_widget_get_instance_private (widget);
 
   /* priv->selected should be properly updated on the
    * ATK_STATE_SELECTED notification callbacks
    */
-  if (self->priv->selected)
+  if (priv->selected)
     atk_state_set_add_state (result, ATK_STATE_SELECTED);
 
-  if (self->priv->checked)
+  if (priv->checked)
     atk_state_set_add_state (result, ATK_STATE_CHECKED);
 
   /* On clutter there isn't any tip to know if a actor is focusable or
@@ -2596,7 +2593,7 @@ check_pseudo_class (StWidget *widget)
   if (!accessible)
     return;
 
-  priv = ST_WIDGET_ACCESSIBLE (accessible)->priv;
+  priv = st_widget_accessible_get_instance_private (ST_WIDGET_ACCESSIBLE (accessible));
   found = st_widget_has_style_pseudo_class (widget,
                                             "selected");
 
@@ -2631,7 +2628,7 @@ check_labels (StWidget *widget)
   if (!accessible)
     return;
 
-  priv = ST_WIDGET_ACCESSIBLE (accessible)->priv;
+  priv = st_widget_accessible_get_instance_private (ST_WIDGET_ACCESSIBLE (accessible));
 
   /* We only call this method at startup, and when the label changes,
    * so it is fine to remove the previous relationships if we have the

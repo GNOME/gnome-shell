@@ -89,7 +89,10 @@ static guint button_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE_WITH_PRIVATE (StButton, st_button, ST_TYPE_BIN);
 
-static GType st_button_accessible_get_type (void) G_GNUC_CONST;
+G_DECLARE_FINAL_TYPE (StButtonAccessible,
+                      st_button_accessible,
+                      ST, BUTTON_ACCESSIBLE,
+                      StWidgetAccessible)
 
 static void
 st_button_update_label_style (StButton *button)
@@ -909,44 +912,17 @@ st_button_fake_release (StButton *button)
 
 #define ST_TYPE_BUTTON_ACCESSIBLE st_button_accessible_get_type ()
 
-#define ST_BUTTON_ACCESSIBLE(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  ST_TYPE_BUTTON_ACCESSIBLE, StButtonAccessible))
-
-#define ST_IS_BUTTON_ACCESSIBLE(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  ST_TYPE_BUTTON_ACCESSIBLE))
-
-#define ST_BUTTON_ACCESSIBLE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  ST_TYPE_BUTTON_ACCESSIBLE, StButtonAccessibleClass))
-
-#define ST_IS_BUTTON_ACCESSIBLE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  ST_TYPE_BUTTON_ACCESSIBLE))
-
-#define ST_BUTTON_ACCESSIBLE_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  ST_TYPE_BUTTON_ACCESSIBLE, StButtonAccessibleClass))
-
-typedef struct _StButtonAccessible  StButtonAccessible;
-typedef struct _StButtonAccessibleClass  StButtonAccessibleClass;
-
-struct _StButtonAccessible
+typedef struct _StButtonAccessible
 {
   StWidgetAccessible parent;
-};
+} StButtonAccessible;
 
-struct _StButtonAccessibleClass
-{
-  StWidgetAccessibleClass parent_class;
-};
 
 /* AtkObject */
 static void          st_button_accessible_initialize (AtkObject *obj,
                                                       gpointer   data);
 
-G_DEFINE_TYPE (StButtonAccessible, st_button_accessible, ST_TYPE_WIDGET_ACCESSIBLE)
+G_DEFINE_FINAL_TYPE (StButtonAccessible, st_button_accessible, ST_TYPE_WIDGET_ACCESSIBLE)
 
 static const gchar *
 st_button_accessible_get_name (AtkObject *obj)
