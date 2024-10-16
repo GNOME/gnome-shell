@@ -34,9 +34,7 @@
  * - `indeterminate`: the widget is showing the hint text or actor
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <math.h>
 

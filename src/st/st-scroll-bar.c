@@ -28,9 +28,7 @@
  * the step or page amount, or by manually dragging the handle.
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <math.h>
 #include <clutter/clutter.h>

@@ -27,9 +27,7 @@
  * and transitions effects between states.
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <stdlib.h>
 #include <string.h>
