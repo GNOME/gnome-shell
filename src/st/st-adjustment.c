@@ -26,9 +26,7 @@
  * minimum and maximum, together with step and page increments and a page size.
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
