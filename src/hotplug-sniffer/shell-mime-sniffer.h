@@ -19,8 +19,7 @@
  *
  */
 
-#ifndef __SHELL_MIME_SNIFFER_H__
-#define __SHELL_MIME_SNIFFER_H__
+#pragma once
 
 #include <glib-object.h>
 #include <gio/gio.h>
@@ -42,5 +41,3 @@ gchar ** shell_mime_sniffer_sniff_finish (ShellMimeSniffer *self,
                                           GError **error);
 
 G_END_DECLS
-
-#endif /* __SHELL_MIME_SNIFFER_H__ */

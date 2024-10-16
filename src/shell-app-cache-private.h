@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __SHELL_APP_CACHE_PRIVATE_H__
-#define __SHELL_APP_CACHE_PRIVATE_H__
+
+#pragma once
 
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
@@ -15,5 +15,3 @@ GDesktopAppInfo *shell_app_cache_get_info         (ShellAppCache *cache,
                                                    const char    *id);
 char            *shell_app_cache_translate_folder (ShellAppCache *cache,
                                                    const char    *name);
-
-#endif /* __SHELL_APP_CACHE_PRIVATE_H__ */

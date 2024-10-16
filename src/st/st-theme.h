@@ -17,8 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef __ST_THEME_H__
-#define __ST_THEME_H__
+#pragma once
 
 #include <glib-object.h>
 
@@ -47,5 +46,3 @@ void      st_theme_unload_stylesheet      (StTheme *theme, GFile *file);
 GSList   *st_theme_get_custom_stylesheets (StTheme *theme);
 
 G_END_DECLS
-
-#endif /* __ST_THEME_H__ */

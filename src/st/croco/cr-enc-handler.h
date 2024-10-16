@@ -30,8 +30,7 @@
  *
  */
 
-#ifndef __CR_ENC_HANDLER_H__
-#define __CR_ENC_HANDLER_H__
+#pragma once
 
 #include "cr-utils.h"
 
@@ -90,5 +89,3 @@ cr_enc_handler_convert_input (CREncHandler *a_this,
                               gulong *a_out_len) ;
 
 G_END_DECLS
-
-#endif /*__CR_ENC_HANDLER_H__*/

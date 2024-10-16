@@ -1,6 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __SHELL_GLSL_EFFECT_H__
-#define __SHELL_GLSL_EFFECT_H__
+#pragma once
 
 #include "st.h"
 
@@ -57,5 +56,3 @@ void shell_glsl_effect_set_uniform_matrix   (ShellGLSLEffect *effect,
                                              int              dimensions,
                                              int              total_count,
                                              const float     *value);
-
-#endif /* __SHELL_GLSL_EFFECT_H__ */

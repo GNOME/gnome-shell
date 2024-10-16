@@ -1,7 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-#ifndef __HOTPLUG_MIMETYPES_H__
-#define __HOTPLUG_MIMETYPES_H__
+#pragma once
 
 #include <glib.h>
 
@@ -137,5 +136,3 @@ G_GNUC_UNUSED static const gchar *audio_mimetypes[] = {
   "audio/x-xm",
   NULL
 };
-
-#endif /* __HOTPLUG_MIMETYPES_H__ */

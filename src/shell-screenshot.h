@@ -1,6 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __SHELL_SCREENSHOT_H__
-#define __SHELL_SCREENSHOT_H__
+#pragma once
 
 #include <mtk/mtk.h>
 
@@ -88,5 +87,3 @@ void shell_screenshot_composite_to_stream (CoglTexture         *texture,
                                            gpointer             user_data);
 GdkPixbuf *shell_screenshot_composite_to_stream_finish (GAsyncResult  *result,
                                                         GError       **error);
-
-#endif /* ___SHELL_SCREENSHOT_H__ */

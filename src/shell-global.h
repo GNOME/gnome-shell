@@ -1,6 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __SHELL_GLOBAL_H__
-#define __SHELL_GLOBAL_H__
+#pragma once
 
 #include <clutter/clutter.h>
 #include <glib-object.h>
@@ -100,5 +99,3 @@ ShellAppSystem *     shell_global_get_app_system     (ShellGlobal *global);
 ShellAppUsage *      shell_global_get_app_usage      (ShellGlobal *global);
 
 G_END_DECLS
-
-#endif /* __SHELL_GLOBAL_H__ */

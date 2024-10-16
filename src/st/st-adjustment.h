@@ -22,8 +22,7 @@
 #error "Only <st/st.h> can be included directly.h"
 #endif
 
-#ifndef __ST_ADJUSTMENT_H__
-#define __ST_ADJUSTMENT_H__
+#pragma once
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
@@ -88,5 +87,3 @@ void                st_adjustment_remove_transition (StAdjustment      *adjustme
                                                      const char        *name);
 
 G_END_DECLS
-
-#endif /* __ST_ADJUSTMENT_H__ */

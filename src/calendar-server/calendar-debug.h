@@ -18,8 +18,7 @@
  *     Mark McLoughlin  <mark@skynet.ie>
  */
 
-#ifndef __CALENDAR_DEBUG_H__
-#define __CALENDAR_DEBUG_H__
+#pragma once
 
 #include <glib.h>
 
@@ -46,5 +45,3 @@ G_BEGIN_DECLS
 #endif /* CALENDAR_ENABLE_DEBUG */
 
 G_END_DECLS
-
-#endif /* __CALENDAR_DEBUG_H__ */

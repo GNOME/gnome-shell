@@ -21,8 +21,7 @@
  * See COPYRIGHTS file for copyrights information.
  */
 
-#ifndef __CR_PARSER_H__
-#define  __CR_PARSER_H__
+#pragma once
 
 #include <glib.h>
 #include "cr-input.h"
@@ -124,5 +123,3 @@ enum CRStatus cr_parser_parse_font_face (CRParser *a_this) ;
 void cr_parser_destroy (CRParser *a_this) ;
         
 G_END_DECLS
-
-#endif /*__CR_PARSER_H__*/

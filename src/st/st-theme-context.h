@@ -19,8 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ST_THEME_CONTEXT_H__
-#define __ST_THEME_CONTEXT_H__
+#pragma once
 
 #include <clutter/clutter.h>
 #include <pango/pango.h>
@@ -65,5 +64,3 @@ StThemeNode *               st_theme_context_intern_node      (StThemeContext   
 int st_theme_context_get_scale_factor (StThemeContext *context);
 
 G_END_DECLS
-
-#endif /* __ST_THEME_CONTEXT_H__ */

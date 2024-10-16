@@ -28,8 +28,7 @@
 #include "cr-num.h"
 #include "cr-string.h"
 
-#ifndef __CR_TERM_H__
-#define __CR_TERM_H__
+#pragma once
 
 G_BEGIN_DECLS
 
@@ -186,5 +185,3 @@ gboolean cr_term_unref (CRTerm *a_this) ;
 void cr_term_destroy (CRTerm * a_term) ;
 
 G_END_DECLS
-
-#endif /*__CR_TERM_H__*/

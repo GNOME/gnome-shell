@@ -1,5 +1,4 @@
-#ifndef __SHELL_WORKSPACE_BACKGROUND_H__
-#define __SHELL_WORKSPACE_BACKGROUND_H__
+#pragma once
 
 #include <st/st.h>
 
@@ -10,5 +9,3 @@ G_DECLARE_FINAL_TYPE (ShellWorkspaceBackground, shell_workspace_background,
                       SHELL, WORKSPACE_BACKGROUND, StWidget)
 
 G_END_DECLS
-
-#endif /* __SHELL_WORKSPACE_BACKGROUND_H__ */

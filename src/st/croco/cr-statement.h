@@ -27,8 +27,7 @@
 #include "cr-selector.h"
 #include "cr-declaration.h"
 
-#ifndef __CR_STATEMENT_H__
-#define __CR_STATEMENT_H__
+#pragma once
 
 G_BEGIN_DECLS
 
@@ -436,5 +435,3 @@ void
 cr_statement_destroy (CRStatement *a_this) ;
 
 G_END_DECLS
-
-#endif /*__CR_STATEMENT_H__*/

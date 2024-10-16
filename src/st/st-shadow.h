@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ST_SHADOW__
-#define __ST_SHADOW__
+#pragma once
 
 #include <clutter/clutter.h>
 
@@ -91,5 +90,3 @@ void            st_shadow_helper_paint (StShadowHelper   *helper,
                                         uint8_t           paint_opacity);
 
 G_END_DECLS
-
-#endif /* __ST_SHADOW__ */

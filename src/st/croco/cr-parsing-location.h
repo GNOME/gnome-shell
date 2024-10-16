@@ -21,8 +21,7 @@
  * See the COPYRIGHTS file for copyright information.
  */
 
-#ifndef __CR_PARSING_LOCATION_H__
-#define __CR_PARSING_LOCATION_H__
+#pragma once
 
 #include "cr-utils.h"
 
@@ -67,4 +66,3 @@ void cr_parsing_location_destroy (CRParsingLocation *a_this) ;
 
 
 G_END_DECLS
-#endif

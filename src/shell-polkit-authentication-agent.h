@@ -32,4 +32,3 @@ void                            shell_polkit_authentication_agent_register (Shel
 void                            shell_polkit_authentication_agent_unregister (ShellPolkitAuthenticationAgent *agent);
 
 G_END_DECLS
-

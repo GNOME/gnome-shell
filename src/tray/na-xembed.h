@@ -18,8 +18,7 @@
  * Author: Carlos Garnacho <carlosg@gnome.org>
  */
 
-#ifndef NA_XEMBED_H
-#define NA_XEMBED_H
+#pragma once
 
 #include <meta/meta-x11-display.h>
 #include <glib-object.h>
@@ -63,5 +62,3 @@ void na_xembed_set_background_color (NaXembed        *xembed,
                                      const CoglColor *color);
 
 G_END_DECLS
-
-#endif /* NA_XEMBED_H */

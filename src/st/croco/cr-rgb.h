@@ -20,8 +20,7 @@
  * see COPYRIGHTS file for copyright information.
  */
 
-#ifndef __CR_RGB_H__
-#define __CR_RGB_H__
+#pragma once
 
 #include <stdio.h>
 #include <glib.h>
@@ -80,5 +79,3 @@ void cr_rgb_dump (CRRgb const *a_this, FILE *a_fp) ;
 void cr_rgb_destroy (CRRgb *a_this) ;
 
 G_END_DECLS
-
-#endif /*__CR_RGB_H__*/

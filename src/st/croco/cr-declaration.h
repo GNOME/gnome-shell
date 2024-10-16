@@ -20,8 +20,7 @@
  * See the COPYRIGHTS file for copyright information.
  */
 
-#ifndef __CR_DECLARATION_H__
-#define __CR_DECLARATION_H__
+#pragma once
 
 #include <stdio.h>
 #include "cr-utils.h"
@@ -132,5 +131,3 @@ gboolean cr_declaration_unref (CRDeclaration *a_this) ;
 void cr_declaration_destroy (CRDeclaration *a_this) ;
 
 G_END_DECLS
-
-#endif /*__CR_DECLARATION_H__*/
