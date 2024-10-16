@@ -533,7 +533,7 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
    * The #StAdjustment controlling the #StScrollBar.
    */
   props[PROP_ADJUSTMENT] =
-    g_param_spec_object ("adjustment", "Adjustment", "The adjustment",
+    g_param_spec_object ("adjustment", NULL, NULL,
                          ST_TYPE_ADJUSTMENT,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -543,9 +543,7 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
    * Whether the #StScrollBar is vertical. If %FALSE it is horizontal.
    */
   props[PROP_VERTICAL] =
-    g_param_spec_boolean ("vertical",
-                          "Vertical Orientation",
-                          "Vertical Orientation",
+    g_param_spec_boolean ("vertical", NULL, NULL,
                           FALSE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 

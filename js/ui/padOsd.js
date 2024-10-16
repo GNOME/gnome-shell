@@ -293,15 +293,15 @@ const ActionEditor = GObject.registerClass({
 const PadDiagram = GObject.registerClass({
     Properties: {
         'left-handed': GObject.ParamSpec.boolean(
-            'left-handed', 'left-handed', 'Left handed',
+            'left-handed', null, null,
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
         'image': GObject.ParamSpec.string(
-            'image', 'image', 'Image',
+            'image',  null, null,
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             null),
         'editor-actor': GObject.ParamSpec.object(
-            'editor-actor', 'editor-actor', 'Editor actor',
+            'editor-actor', null, null,
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Clutter.Actor.$gtype),
     },

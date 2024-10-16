@@ -8,15 +8,15 @@ import St from 'gi://St';
 export const BarLevel = GObject.registerClass({
     Properties: {
         'value': GObject.ParamSpec.double(
-            'value', 'value', 'value',
+            'value', null, null,
             GObject.ParamFlags.READWRITE,
             0, 2, 0),
         'maximum-value': GObject.ParamSpec.double(
-            'maximum-value', 'maximum-value', 'maximum-value',
+            'maximum-value', null, null,
             GObject.ParamFlags.READWRITE,
             1, 2, 1),
         'overdrive-start': GObject.ParamSpec.double(
-            'overdrive-start', 'overdrive-start', 'overdrive-start',
+            'overdrive-start', null, null,
             GObject.ParamFlags.READWRITE,
             1, 2, 1),
     },

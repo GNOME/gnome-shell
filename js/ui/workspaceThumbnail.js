@@ -226,11 +226,11 @@ export const ThumbnailState = {
 export const WorkspaceThumbnail = GObject.registerClass({
     Properties: {
         'collapse-fraction': GObject.ParamSpec.double(
-            'collapse-fraction', 'collapse-fraction', 'collapse-fraction',
+            'collapse-fraction', null, null,
             GObject.ParamFlags.READWRITE,
             0, 1, 0),
         'slide-position': GObject.ParamSpec.double(
-            'slide-position', 'slide-position', 'slide-position',
+            'slide-position', null, null,
             GObject.ParamFlags.READWRITE,
             0, 1, 0),
     },
@@ -576,15 +576,15 @@ export const WorkspaceThumbnail = GObject.registerClass({
 export const ThumbnailsBox = GObject.registerClass({
     Properties: {
         'expand-fraction': GObject.ParamSpec.double(
-            'expand-fraction', 'expand-fraction', 'expand-fraction',
+            'expand-fraction', null, null,
             GObject.ParamFlags.READWRITE,
             0, 1, 1),
         'scale': GObject.ParamSpec.double(
-            'scale', 'scale', 'scale',
+            'scale', null, null,
             GObject.ParamFlags.READWRITE,
             0, Infinity, 0),
         'should-show': GObject.ParamSpec.boolean(
-            'should-show', 'should-show', 'should-show',
+            'should-show', null, null,
             GObject.ParamFlags.READABLE,
             true),
     },

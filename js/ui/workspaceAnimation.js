@@ -151,7 +151,7 @@ class WorkspaceGroup extends Clutter.Actor {
 export const MonitorGroup = GObject.registerClass({
     Properties: {
         'progress': GObject.ParamSpec.double(
-            'progress', 'progress', 'progress',
+            'progress', null, null,
             GObject.ParamFlags.READWRITE,
             -Infinity, Infinity, 0),
     },

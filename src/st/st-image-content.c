@@ -133,16 +133,12 @@ st_image_content_class_init (StImageContentClass *klass)
   object_class->get_property = st_image_content_get_property;
   object_class->set_property = st_image_content_set_property;
 
-  pspec = g_param_spec_int ("preferred-width",
-                            "Preferred Width",
-                            "Preferred Width of the Content when painted",
+  pspec = g_param_spec_int ("preferred-width", NULL, NULL,
                              -1, G_MAXINT, -1,
                              G_PARAM_CONSTRUCT_ONLY | ST_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_PREFERRED_WIDTH, pspec);
 
-  pspec = g_param_spec_int ("preferred-height",
-                            "Preferred Height",
-                            "Preferred Height of the Content when painted",
+  pspec = g_param_spec_int ("preferred-height", NULL, NULL,
                              -1, G_MAXINT, -1,
                              G_PARAM_CONSTRUCT_ONLY | ST_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_PREFERRED_HEIGHT, pspec);

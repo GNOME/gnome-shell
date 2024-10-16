@@ -108,11 +108,11 @@ const ModemBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
         'operator-name': GObject.ParamSpec.string(
-            'operator-name', 'operator-name', 'operator-name',
+            'operator-name', null, null,
             GObject.ParamFlags.READABLE,
             null),
         'signal-quality': GObject.ParamSpec.int(
-            'signal-quality', 'signal-quality', 'signal-quality',
+            'signal-quality', null, null,
             GObject.ParamFlags.READABLE,
             0, 100, 0),
     },
@@ -236,7 +236,7 @@ const BroadbandModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModemCdm
 export const BroadbandModem = GObject.registerClass({
     Properties: {
         'capabilities': GObject.ParamSpec.flags(
-            'capabilities', 'capabilities', 'capabilities',
+            'capabilities', null, null,
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             NM.DeviceModemCapabilities.$gtype,
             NM.DeviceModemCapabilities.NONE),

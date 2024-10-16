@@ -28,7 +28,7 @@ const SHOW_BATTERY_PERCENTAGE = 'show-battery-percentage';
 
 const PowerToggle = GObject.registerClass({
     Properties: {
-        'fallback-icon-name': GObject.ParamSpec.string('fallback-icon-name', '', '',
+        'fallback-icon-name': GObject.ParamSpec.string('fallback-icon-name', null, null,
             GObject.ParamFlags.READWRITE,
             ''),
     },

@@ -103,9 +103,7 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
   gobject_class->finalize = shell_window_tracker_finalize;
 
   props[PROP_FOCUS_APP] =
-    g_param_spec_object ("focus-app",
-                         "Focus App",
-                         "Focused application",
+    g_param_spec_object ("focus-app", NULL, NULL,
                          SHELL_TYPE_APP,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 

@@ -59,15 +59,15 @@ export function getGeoclueAgent() {
 const GeoclueAgent = GObject.registerClass({
     Properties: {
         'enabled': GObject.ParamSpec.boolean(
-            'enabled', 'Enabled', 'Enabled',
+            'enabled', null, null,
             GObject.ParamFlags.READWRITE,
             false),
         'in-use': GObject.ParamSpec.boolean(
-            'in-use', 'In use', 'In use',
+            'in-use', null, null,
             GObject.ParamFlags.READABLE,
             false),
         'max-accuracy-level': GObject.ParamSpec.int(
-            'max-accuracy-level', 'Max accuracy level', 'Max accuracy level',
+            'max-accuracy-level', null, null,
             GObject.ParamFlags.READABLE,
             0, 8, 0),
     },

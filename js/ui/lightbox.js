@@ -31,11 +31,11 @@ cogl_color_out.a += (rand(position) - 0.5) / 100.0;                        \n';
 const RadialShaderEffect = GObject.registerClass({
     Properties: {
         'brightness': GObject.ParamSpec.float(
-            'brightness', 'brightness', 'brightness',
+            'brightness', null, null,
             GObject.ParamFlags.READWRITE,
             0, 1, 1),
         'sharpness': GObject.ParamSpec.float(
-            'sharpness', 'sharpness', 'sharpness',
+            'sharpness', null, null,
             GObject.ParamFlags.READWRITE,
             0, 1, 0),
     },
@@ -91,7 +91,7 @@ const RadialShaderEffect = GObject.registerClass({
 export const Lightbox = GObject.registerClass({
     Properties: {
         'active': GObject.ParamSpec.boolean(
-            'active', 'active', 'active', GObject.ParamFlags.READABLE, false),
+            'active', null, null, GObject.ParamFlags.READABLE, false),
     },
 }, class Lightbox extends St.Bin {
     /**

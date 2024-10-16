@@ -218,7 +218,7 @@ class ScaleLayout extends Clutter.BinLayout {
 const LabelExpanderLayout = GObject.registerClass({
     Properties: {
         'expansion': GObject.ParamSpec.double(
-            'expansion', 'Expansion', 'Expansion',
+            'expansion', null, null,
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
             0, 1, 0),
     },
@@ -275,15 +275,15 @@ const LabelExpanderLayout = GObject.registerClass({
 export const Source = GObject.registerClass({
     Properties: {
         'title': GObject.ParamSpec.string(
-            'title', 'title', 'title',
+            'title', null, null,
             GObject.ParamFlags.READWRITE,
             null),
         'icon': GObject.ParamSpec.object(
-            'icon', 'icon', 'icon',
+            'icon', null, null,
             GObject.ParamFlags.READWRITE,
             Gio.Icon),
         'icon-name': GObject.ParamSpec.string(
-            'icon-name', 'icon-name', 'icon-name',
+            'icon-name', null, null,
             GObject.ParamFlags.READWRITE,
             null),
     },
@@ -412,23 +412,23 @@ class MessageHeader extends St.BoxLayout {
 export const Message = GObject.registerClass({
     Properties: {
         'title': GObject.ParamSpec.string(
-            'title', 'title', 'title',
+            'title', null, null,
             GObject.ParamFlags.READWRITE,
             null),
         'body': GObject.ParamSpec.string(
-            'body', 'body', 'body',
+            'body', null, null,
             GObject.ParamFlags.READWRITE,
             null),
         'use-body-markup': GObject.ParamSpec.boolean(
-            'use-body-markup', 'use-body-markup', 'use-body-markup',
+            'use-body-markup', null, null,
             GObject.ParamFlags.READWRITE,
             false),
         'icon': GObject.ParamSpec.object(
-            'icon', 'icon', 'icon',
+            'icon', null, null,
             GObject.ParamFlags.READWRITE,
             Gio.Icon),
         'datetime': GObject.ParamSpec.boxed(
-            'datetime', 'datetime', 'datetime',
+            'datetime', null, null,
             GObject.ParamFlags.READWRITE,
             GLib.DateTime),
     },
@@ -684,11 +684,11 @@ export const Message = GObject.registerClass({
 export const MessageListSection = GObject.registerClass({
     Properties: {
         'can-clear': GObject.ParamSpec.boolean(
-            'can-clear', 'can-clear', 'can-clear',
+            'can-clear', null, null,
             GObject.ParamFlags.READABLE,
             false),
         'empty': GObject.ParamSpec.boolean(
-            'empty', 'empty', 'empty',
+            'empty', null, null,
             GObject.ParamFlags.READABLE,
             true),
     },

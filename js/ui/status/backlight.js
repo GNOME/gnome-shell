@@ -22,7 +22,7 @@ const BrightnessProxy = Gio.DBusProxy.makeProxyWrapper(BrightnessInterface);
 const SliderItem = GObject.registerClass({
     Properties: {
         'value': GObject.ParamSpec.int(
-            'value', '', '',
+            'value', null, null,
             GObject.ParamFlags.READWRITE,
             0, 100, 0),
     },
@@ -61,11 +61,11 @@ const SliderItem = GObject.registerClass({
 const DiscreteItem = GObject.registerClass({
     Properties: {
         'value': GObject.ParamSpec.int(
-            'value', '', '',
+            'value', null, null,
             GObject.ParamFlags.READWRITE,
             0, 100, 0),
         'n-levels': GObject.ParamSpec.int(
-            'n-levels', '', '',
+            'n-levels', null, null,
             GObject.ParamFlags.READWRITE,
             1, 3, 1),
     },

@@ -311,9 +311,7 @@ st_icon_class_init (StIconClass *klass)
    * The #GIcon being displayed by this #StIcon.
    */
   props[PROP_GICON] =
-    g_param_spec_object ("gicon",
-                         "GIcon",
-                         "The GIcon shown by this icon actor",
+    g_param_spec_object ("gicon", NULL, NULL,
                          G_TYPE_ICON,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -323,9 +321,7 @@ st_icon_class_init (StIconClass *klass)
    * The fallback #GIcon to display if #StIcon:gicon fails to load.
    */
   props[PROP_FALLBACK_GICON] =
-    g_param_spec_object ("fallback-gicon",
-                         "Fallback GIcon",
-                         "The fallback GIcon shown if the normal icon fails to load",
+    g_param_spec_object ("fallback-gicon", NULL, NULL,
                          G_TYPE_ICON,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -335,9 +331,7 @@ st_icon_class_init (StIconClass *klass)
    * The name of the icon if the icon being displayed is a #GThemedIcon.
    */
   props[PROP_ICON_NAME] =
-    g_param_spec_string ("icon-name",
-                         "Icon name",
-                         "An icon name",
+    g_param_spec_string ("icon-name", NULL, NULL,
                          NULL,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -348,9 +342,7 @@ st_icon_class_init (StIconClass *klass)
    * from the current style.
    */
   props[PROP_ICON_SIZE] =
-    g_param_spec_int ("icon-size",
-                      "Icon size",
-                      "The size if the icon, if positive. Otherwise the size will be derived from the current style",
+    g_param_spec_int ("icon-size", NULL, NULL,
                       -1, G_MAXINT, -1,
                       ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -361,9 +353,7 @@ st_icon_class_init (StIconClass *klass)
    * for details.
    */
   props[PROP_FALLBACK_ICON_NAME] =
-    g_param_spec_string ("fallback-icon-name",
-                         "Fallback icon name",
-                         "A fallback icon name",
+    g_param_spec_string ("fallback-icon-name", NULL, NULL,
                          NULL,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -373,9 +363,7 @@ st_icon_class_init (StIconClass *klass)
    * Whether the #StIcon is symbolic.
    */
   props[PROP_IS_SYMBOLIC] =
-    g_param_spec_boolean ("is-symbolic",
-                          "Is Symbolic",
-                          "Whether the icon is symbolic",
+    g_param_spec_boolean ("is-symbolic", NULL, NULL,
                           FALSE,
                           ST_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
 

@@ -160,7 +160,7 @@ function _findBestFolderName(apps) {
 export const AppGrid = GObject.registerClass({
     Properties: {
         'indicators-padding': GObject.ParamSpec.boxed('indicators-padding',
-            'Indicators padding', 'Indicators padding',
+            null, null,
             GObject.ParamFlags.READWRITE,
             Clutter.Margin.$gtype),
     },
@@ -490,7 +490,7 @@ var BaseAppView = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
         'gesture-modes': GObject.ParamSpec.flags(
-            'gesture-modes', 'gesture-modes', 'gesture-modes',
+            'gesture-modes', null, null,
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Shell.ActionMode, Shell.ActionMode.OVERVIEW),
     },

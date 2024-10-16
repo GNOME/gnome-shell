@@ -670,8 +670,7 @@ gtk_action_muxer_class_init (GObjectClass *class)
   accel_signal = g_signal_new ("primary-accel-changed", GTK_TYPE_ACTION_MUXER, G_SIGNAL_RUN_LAST,
                                0, NULL, NULL, NULL, G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_STRING);
 
-  properties[PROP_PARENT] = g_param_spec_object ("parent", "Parent",
-                                                 "The parent muxer",
+  properties[PROP_PARENT] = g_param_spec_object ("parent", NULL, NULL,
                                                  GTK_TYPE_ACTION_MUXER,
                                                  G_PARAM_READWRITE |
                                                  G_PARAM_STATIC_STRINGS);

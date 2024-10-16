@@ -195,7 +195,7 @@ shell_workspace_background_class_init (ShellWorkspaceBackgroundClass *klass)
    * ShellWorkspaceBackground:monitor-index:
    */
   obj_props[PROP_MONITOR_INDEX] =
-    g_param_spec_int ("monitor-index", "", "",
+    g_param_spec_int ("monitor-index", NULL, NULL,
                       0, G_MAXINT, 0,
                       G_PARAM_READWRITE |
                       G_PARAM_CONSTRUCT_ONLY |
@@ -206,7 +206,7 @@ shell_workspace_background_class_init (ShellWorkspaceBackgroundClass *klass)
    * ShellWorkspaceBackground:state-adjustment-value:
    */
   obj_props[PROP_STATE_ADJUSTMENT_VALUE] =
-    g_param_spec_double ("state-adjustment-value", "", "",
+    g_param_spec_double ("state-adjustment-value", NULL, NULL,
                          -G_MAXDOUBLE, G_MAXDOUBLE, 0.0,
                          G_PARAM_READWRITE |
                          G_PARAM_STATIC_STRINGS |

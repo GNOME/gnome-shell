@@ -273,7 +273,7 @@ class ControlsManagerLayout extends Clutter.LayoutManager {
 export const OverviewAdjustment = GObject.registerClass({
     Properties: {
         'gesture-in-progress': GObject.ParamSpec.boolean(
-            'gesture-in-progress', 'Gesture in progress', 'Gesture in progress',
+            'gesture-in-progress', null, null,
             GObject.ParamFlags.READWRITE,
             false),
     },

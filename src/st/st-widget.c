@@ -921,9 +921,7 @@ st_widget_class_init (StWidgetClass *klass)
    * "focus".
    */
   props[PROP_PSEUDO_CLASS] =
-    g_param_spec_string ("pseudo-class",
-                         "Pseudo Class",
-                         "Pseudo class for styling",
+    g_param_spec_string ("pseudo-class", NULL, NULL,
                          "",
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -933,9 +931,7 @@ st_widget_class_init (StWidgetClass *klass)
    * The style-class of the actor for use in styling.
    */
   props[PROP_STYLE_CLASS] =
-    g_param_spec_string ("style-class",
-                         "Style Class",
-                         "Style class for styling",
+    g_param_spec_string ("style-class", NULL, NULL,
                          "",
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -946,9 +942,7 @@ st_widget_class_init (StWidgetClass *klass)
    * CSS properties.
    */
   props[PROP_STYLE] =
-     g_param_spec_string ("style",
-                          "Style",
-                          "Inline style string",
+     g_param_spec_string ("style", NULL, NULL,
                           "",
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -962,9 +956,7 @@ st_widget_class_init (StWidgetClass *klass)
    * widget.
    */
   props[PROP_TRACK_HOVER] =
-     g_param_spec_boolean ("track-hover",
-                           "Track hover",
-                           "Determines whether the widget tracks hover state",
+     g_param_spec_boolean ("track-hover", NULL, NULL,
                            FALSE,
                            ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -976,9 +968,7 @@ st_widget_class_init (StWidgetClass *klass)
    * adjust it manually in any case.
    */
   props[PROP_HOVER] =
-     g_param_spec_boolean ("hover",
-                           "Hover",
-                           "Whether the pointer is hovering over the widget",
+     g_param_spec_boolean ("hover", NULL, NULL,
                            FALSE,
                            ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -988,9 +978,7 @@ st_widget_class_init (StWidgetClass *klass)
    * Whether or not the widget can be focused via keyboard navigation.
    */
   props[PROP_CAN_FOCUS] =
-     g_param_spec_boolean ("can-focus",
-                           "Can focus",
-                           "Whether the widget can be focused via keyboard navigation",
+     g_param_spec_boolean ("can-focus", NULL, NULL,
                            FALSE,
                            ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -1000,9 +988,7 @@ st_widget_class_init (StWidgetClass *klass)
    * An actor that labels this widget.
    */
   props[PROP_LABEL_ACTOR] =
-     g_param_spec_object ("label-actor",
-                          "Label",
-                          "Label that identifies this widget",
+     g_param_spec_object ("label-actor", NULL, NULL,
                           CLUTTER_TYPE_ACTOR,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 

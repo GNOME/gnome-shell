@@ -21,7 +21,7 @@ class Object1 {
 class GObject1 extends GObject.Object {
     static [GObject.properties] = {
         'plonked': GObject.ParamSpec.boolean(
-            'plonked', '', '',
+            'plonked', null, null,
             GObject.ParamFlags.READWRITE,
             false),
     };

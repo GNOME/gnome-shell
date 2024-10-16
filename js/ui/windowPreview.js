@@ -31,7 +31,7 @@ const ICON_TITLE_SPACING = 6;
 export const WindowPreview = GObject.registerClass({
     Properties: {
         'overlay-enabled': GObject.ParamSpec.boolean(
-            'overlay-enabled', 'overlay-enabled', 'overlay-enabled',
+            'overlay-enabled', null, null,
             GObject.ParamFlags.READWRITE,
             true),
     },
