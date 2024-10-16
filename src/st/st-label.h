@@ -21,8 +21,7 @@
 #error "Only <st/st.h> can be included directly.h"
 #endif
 
-#ifndef __ST_LABEL_H__
-#define __ST_LABEL_H__
+#pragma once
 
 G_BEGIN_DECLS
 
@@ -55,4 +54,3 @@ ClutterActor * st_label_get_clutter_text (StLabel     *label);
 
 G_END_DECLS
 
-#endif /* __ST_LABEL_H__ */

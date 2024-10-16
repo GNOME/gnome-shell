@@ -20,8 +20,7 @@
    Author: Stef Walter <stef@thewalter.net>
 */
 
-#ifndef __SHELL_KEYRING_PROMPT_H__
-#define __SHELL_KEYRING_PROMPT_H__
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -53,5 +52,3 @@ gboolean             shell_keyring_prompt_complete             (ShellKeyringProm
 void                 shell_keyring_prompt_cancel               (ShellKeyringPrompt *self);
 
 G_END_DECLS
-
-#endif /* __SHELL_KEYRING_PROMPT_H__ */

@@ -18,8 +18,7 @@
  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __NA_TRAY_CHILD_H__
-#define __NA_TRAY_CHILD_H__
+#pragma once
 
 #include "na-xembed.h"
 
@@ -41,5 +40,3 @@ void na_tray_child_emulate_event (NaTrayChild *tray_child,
 				  ClutterEvent *event);
 
 G_END_DECLS
-
-#endif /* __NA_TRAY_CHILD_H__ */

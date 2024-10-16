@@ -19,8 +19,7 @@
  * Used to be: eggtraymanager.h
  */
 
-#ifndef __NA_TRAY_MANAGER_H__
-#define __NA_TRAY_MANAGER_H__
+#pragma once
 
 #include <clutter/clutter.h>
 
@@ -42,5 +41,3 @@ void na_tray_manager_set_colors (NaTrayManager *manager,
                                  CoglColor     *success);
 
 G_END_DECLS
-
-#endif /* __NA_TRAY_MANAGER_H__ */

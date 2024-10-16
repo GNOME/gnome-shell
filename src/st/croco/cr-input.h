@@ -21,8 +21,7 @@
  * See the COPYRIGHTS file for copyrights information.
  */
 
-#ifndef __CR_INPUT_SRC_H__
-#define __CR_INPUT_SRC_H__
+#pragma once
 
 
 #include <glib.h>
@@ -169,6 +168,3 @@ enum CRStatus
 cr_input_end_of_input (CRInput const *a_this, gboolean *a_end_of_input) ;
 
 G_END_DECLS
-
-#endif /*__CR_INPUT_SRC_H__*/
-

@@ -25,8 +25,7 @@
  *$Id$
  */
 
-#ifndef __CR_CASCADE_H__
-#define __CR_CASCADE_H__
+#pragma once
 
 #include "cr-stylesheet.h"
 
@@ -70,5 +69,3 @@ void cr_cascade_unref (CRCascade *a_this) ;
 void cr_cascade_destroy (CRCascade *a_this) ;
 
 G_END_DECLS
-
-#endif /*__CR_CASCADE_H__*/

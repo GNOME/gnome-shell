@@ -28,8 +28,7 @@
  *of the #CRNum class.
  */
 
-#ifndef __CR_NUM_H__
-#define __CR_NUM_H__
+#pragma once
 
 #include <glib.h>
 #include "cr-utils.h"
@@ -122,6 +121,3 @@ cr_num_destroy (CRNum *a_this) ;
 
 
 G_END_DECLS
-
-
-#endif /*__CR_NUM_H__*/

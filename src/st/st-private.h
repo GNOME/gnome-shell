@@ -20,8 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ST_PRIVATE_H__
-#define __ST_PRIVATE_H__
+#pragma once
 
 #include <glib.h>
 #include <cairo.h>
@@ -73,5 +72,3 @@ void _st_paint_shadow_with_opacity (StShadow         *shadow_spec,
                                     CoglPipeline     *shadow_pipeline,
                                     ClutterActorBox  *box,
                                     guint8            paint_opacity);
-
-#endif /* __ST_PRIVATE_H__ */

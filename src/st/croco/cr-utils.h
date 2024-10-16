@@ -21,8 +21,7 @@
  * Look at file COPYRIGHTS for copyright information
  */
 
-#ifndef __CR_DEFS_H__
-#define __CR_DEFS_H__
+#pragma once
 
 #include <stdio.h>
 #include <glib.h>
@@ -242,5 +241,3 @@ GList *
 cr_utils_dup_glist_of_cr_string (GList const * a_list_of_strings) ;
 
 G_END_DECLS
-
-#endif /*__CR_DEFS_H__*/

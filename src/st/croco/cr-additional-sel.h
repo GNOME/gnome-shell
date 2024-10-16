@@ -21,9 +21,7 @@
  * See the COPYRIGHTS file for copyright information.
  */
 
-
-#ifndef __CR_ADD_SEL_H__
-#define __CR_ADD_SEL_H__
+#pragma once
 
 #include <stdio.h>
 #include <glib.h>
@@ -94,5 +92,3 @@ void cr_additional_sel_dump (CRAdditionalSel const *a_this, FILE *a_fp) ;
 void cr_additional_sel_destroy (CRAdditionalSel *a_this) ;
 
 G_END_DECLS
-
-#endif /*__CR_ADD_SEL_H*/

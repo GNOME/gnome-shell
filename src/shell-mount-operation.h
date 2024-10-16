@@ -19,8 +19,7 @@
  *
  */
 
-#ifndef __SHELL_MOUNT_OPERATION_H__
-#define __SHELL_MOUNT_OPERATION_H__
+#pragma once
 
 #include <gio/gio.h>
 
@@ -37,5 +36,3 @@ gchar ** shell_mount_operation_get_show_processes_choices (ShellMountOperation *
 gchar * shell_mount_operation_get_show_processes_message (ShellMountOperation *self);
 
 G_END_DECLS
-
-#endif /* __SHELL_MOUNT_OPERATION_H__ */

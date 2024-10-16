@@ -1,6 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __SHELL_WM_PRIVATE_H__
-#define __SHELL_WM_PRIVATE_H__
+#pragma once
 
 #include "shell-wm.h"
 #include <mtk/mtk.h>
@@ -60,5 +59,3 @@ MetaInhibitShortcutsDialog * _shell_wm_create_inhibit_shortcuts_dialog (ShellWM 
                                                                         MetaWindow  *window);
 
 G_END_DECLS
-
-#endif /* __SHELL_WM_PRIVATE_H__ */

@@ -25,8 +25,7 @@
  *$Id$
  */
 
-#ifndef __CR_OM_PARSER_H__
-#define __CR_OM_PARSER_H__
+#pragma once
 
 #include "cr-parser.h"
 #include "cr-cascade.h"
@@ -94,5 +93,3 @@ enum CRStatus cr_om_parser_simply_parse_paths_to_cascade (const guchar *a_author
 void cr_om_parser_destroy (CROMParser *a_this) ;
 
 G_END_DECLS
-
-#endif /*__CR_OM_PARSER_H__*/

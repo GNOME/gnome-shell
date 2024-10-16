@@ -17,8 +17,7 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
-#ifndef __GTK_ACTION_MUXER_H__
-#define __GTK_ACTION_MUXER_H__
+#pragma once
 
 #include <gio/gio.h>
 
@@ -60,5 +59,3 @@ gchar *                 gtk_print_action_and_target                     (const g
                                                                          GVariant       *target);
 
 G_END_DECLS
-
-#endif /* __GTK_ACTION_MUXER_H__ */

@@ -1,6 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __SHELL_WINDOW_TRACKER_H__
-#define __SHELL_WINDOW_TRACKER_H__
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -25,5 +24,3 @@ ShellApp *shell_window_tracker_get_app_from_pid (ShellWindowTracker *tracker, in
 GSList *shell_window_tracker_get_startup_sequences (ShellWindowTracker *tracker);
 
 G_END_DECLS
-
-#endif /* __SHELL_WINDOW_TRACKER_H__ */

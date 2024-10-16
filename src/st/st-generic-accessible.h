@@ -21,8 +21,7 @@
 #error "Only <st/st.h> can be included directly.h"
 #endif
 
-#ifndef __ST_GENERIC_ACCESSIBLE_H__
-#define __ST_GENERIC_ACCESSIBLE_H__
+#pragma once
 
 #include <clutter/clutter.h>
 #include <st/st-widget-accessible.h>
@@ -58,5 +57,3 @@ GType       st_generic_accessible_get_type         (void) G_GNUC_CONST;
 AtkObject*  st_generic_accessible_new_for_actor (ClutterActor *actor);
 
 G_END_DECLS
-
-#endif /* __ST_GENERIC_ACCESSIBLE_H__ */

@@ -1,6 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __SHELL_APP_PRIVATE_H__
-#define __SHELL_APP_PRIVATE_H__
+#pragma once
 
 #include "shell-app.h"
 #include "shell-app-system.h"
@@ -20,5 +19,3 @@ void _shell_app_add_window (ShellApp *app, MetaWindow *window);
 void _shell_app_remove_window (ShellApp *app, MetaWindow *window);
 
 G_END_DECLS
-
-#endif /* __SHELL_APP_PRIVATE_H__ */

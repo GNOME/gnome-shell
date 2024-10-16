@@ -1,6 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-#ifndef __SHELL_NETWORK_AGENT_H__
-#define __SHELL_NETWORK_AGENT_H__
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -69,5 +68,3 @@ NMVpnPluginInfo   *shell_network_agent_search_vpn_plugin_finish (ShellNetworkAge
 #define SHELL_KEYRING_SK_TAG "setting-key"
 
 G_END_DECLS
-
-#endif /* __SHELL_NETWORK_AGENT_H__ */
