@@ -115,6 +115,10 @@
 
   .prompt-dialog-password-layout {
     spacing: $base_margin * 2;
+
+    .prompt-dialog-password-entry {
+      width: 20em;
+    }
   }
 
   .prompt-dialog-error-label,
