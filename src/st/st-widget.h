@@ -147,9 +147,4 @@ void                  st_widget_paint_background          (StWidget            *
 /* debug methods */
 char  *st_describe_actor       (ClutterActor *actor);
 
-/* accessibility methods */
-void                  st_widget_add_accessible_state     (StWidget    *widget,
-                                                          AtkStateType state);
-void                  st_widget_remove_accessible_state  (StWidget    *widget,
-                                                          AtkStateType state);
 G_END_DECLS
