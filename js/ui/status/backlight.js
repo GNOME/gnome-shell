@@ -158,6 +158,8 @@ class KeyboardBrightnessToggle extends QuickMenuToggle {
             menuButtonAccessibleName: _('Open keyboard brightness menu'),
         });
 
+        this._savedBrightness = 100;
+
         this._proxy = new BrightnessProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
             (proxy, error) => {
                 if (error)
@@ -168,7 +170,7 @@ class KeyboardBrightnessToggle extends QuickMenuToggle {
             });
 
         this.connect('clicked', () => {
-            this._proxy.Brightness = this.checked ? 0 : 100;
+            this._proxy.Brightness = this.checked ? 0 : this._savedBrightness;
         });
 
         this._sliderItem = new SliderItem();
@@ -209,6 +211,9 @@ class KeyboardBrightnessToggle extends QuickMenuToggle {
             return;
 
         this.checked = brightness > 0;
+        if (this.checked)
+            this._savedBrightness = brightness;
+
         const useSlider = this._proxy.Steps >= 4;
 
         this._sliderItem.block_signal_handler(this._sliderItemChangedId);
