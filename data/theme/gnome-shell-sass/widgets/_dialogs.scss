@@ -106,7 +106,6 @@
 
     .prompt-dialog-password-entry {
       width: auto;
-      padding: $base_padding * 2 $base_padding * 1.5;
       // 4px (spacing) + 16px (spinner-width)
       &:ltr { margin-left: $base_margin+$base_icon_size; }
       &:rtl { margin-right: $base_margin+$base_icon_size; }
@@ -119,6 +118,7 @@
 
   .prompt-dialog-password-entry {
     width: 20em;
+    padding: $base_padding * 2 $base_padding * 1.5;
   }
 
   .prompt-dialog-error-label,
