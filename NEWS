@@ -1,3 +1,24 @@
+47.1
+====
+* Improve quick settings accessibility [Lukáš; !3477, !3481, !3484, !3485]
+* Use accent color in tablet configuration UI [Alice; !3480]
+* Improve accuracy of inset box shadows [Daniel; !3488]
+* Fix `PopupSwitchMenuItem::toggled` passing wrong state [Andrew; !3493]
+* Consider text direction when handling arrow keys in sliders [Sundeep; !3500]
+* Fix layout issues with new dialog style [Sam; !3473]
+* Fix uneven padding in notification headers [Sam; !3486]
+* Fixed crash [Florian; #7912]
+* Misc. cleanups and bug fixes [Florian, Marco, Bilal; !3478, !3479, !3490,
+  !3495, !3499, !3504, !3505, !3507, !3508, !3506, !3511, !3514]
+
+Contributors:
+  Bilal Elmoussaoui, Sam Hewitt, Sundeep Mediratta, Alice Mikhaylenko,
+  Florian Müllner, Marco Trevisan (Treviño), Lukáš Tyrychtr, Daniel van Vugt,
+  Andrew Zaech
+
+Translators:
+  Aefgh Threenine [th], Daniel Mustieles [es]
+
 47.0
 ====
 * Fix new wifi connections for restricted users [Thore; !3462]
