@@ -1,3 +1,20 @@
+46.6
+====
+* Improve quick settings accessibility [Lukáš; !3481, !3484, !3485]
+* Improve accuracy of inset box shadows [Daniel; !3488]
+* Consider text direction when handling arrow keys in sliders [Sundeep; !3500]
+* Misc. bug fixes and cleanups [Alessandro, Marco, Florian, Bilal; !3446, !3495,
+  !3504, !3505, !3507, !3508]
+
+Contributors:
+  Alessandro Bono, Bilal Elmoussaoui, Sundeep Mediratta, Florian Müllner,
+  Marco Trevisan (Treviño), Lukáš Tyrychtr, Daniel van Vugt,
+  Bogi Napoleon Wennerström
+
+Translators:
+  Atirut Wattanamongkol [th], Aefgh Threenine [th], Mahdi Hasan [bn],
+  Bogi Napoleon Wennerström [fo]
+
 46.5
 ====
 * Fix smartcard logins [Alessandro; !3448]
