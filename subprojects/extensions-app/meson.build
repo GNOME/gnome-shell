@@ -1,7 +1,7 @@
 project('gnome-extensions-app',
   version: '46.6',
   meson_version: '>= 0.58.0',
-  license: 'GPLv2+'
+  license: 'GPL-2.0-or-later',
 )
 
 if get_option('profile') == 'development'
