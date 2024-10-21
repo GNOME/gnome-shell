@@ -864,10 +864,7 @@ class ZoomRegion {
         if (!focusWindow)
             return null;
 
-        let windowRect = focusWindow.get_frame_rect();
-        if (!focusWindow.is_client_decorated())
-            windowRect = focusWindow.frame_rect_to_client_rect(windowRect);
-
+        const windowRect = focusWindow.get_client_content_rect();
         const scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         const screenSpaceExtents = new Atspi.Rect({
             x: windowRect.x + (scaleFactor * extents.x),
