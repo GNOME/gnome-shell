@@ -13,8 +13,9 @@ typedef union  _ShellPerfStatisticValue ShellPerfStatisticValue;
 typedef struct _ShellPerfBlock ShellPerfBlock;
 
 /**
- * SECTION:shell-perf-log
- * @short_description: Event recorder for performance measurement
+ * ShellPerfLog:
+ *
+ * Event recorder for performance measurement
  *
  * ShellPerfLog provides a way for different parts of the code to
  * record information for subsequent analysis and interactive

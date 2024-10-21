@@ -20,10 +20,10 @@
  */
 
 /**
- * SECTION:shell-invert-lightness-effect
- * @short_description: A colorization effect where lightness is inverted but
+ * ShellInvertLightnessEffect:
+ *
+ * A colorization effect where lightness is inverted but
  * color is not.
- * @see_also: #ClutterEffect, #ClutterOffscreenEffect
  *
  * #ShellInvertLightnessEffect is a sub-class of #ClutterEffect that enhances
  * the appearance of a clutter actor.  Specifically it inverts the lightness

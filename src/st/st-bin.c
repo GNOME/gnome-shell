@@ -19,13 +19,12 @@
  */
 
 /**
- * SECTION:st-bin
- * @short_description: a simple container with one actor
+ * StBin:
+ *
+ * A simple container with one actor.
  *
  * #StBin is a simple container capable of having only one
  * #ClutterActor as a child.
- *
- * #StBin inherits from #StWidget, so it is fully themable.
  */
 
 #include "config.h"

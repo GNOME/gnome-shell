@@ -25,8 +25,9 @@
 #include "shell-enum-types.h"
 
 /**
- * SECTION:shell-blur-effect
- * @short_description: Blur effect for actors
+ * ShellBlurEffect:
+ *
+ * Blur effect for actors
  *
  * #ShellBlurEffect is a blur implementation based on Clutter. It also has
  * an optional brightness property.

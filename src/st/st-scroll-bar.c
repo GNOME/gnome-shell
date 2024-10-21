@@ -21,8 +21,9 @@
  */
 
 /**
- * SECTION:st-scroll-bar
- * @short_description: a user interface element to control scrollable areas.
+ * StScrollBar:
+ *
+ * A user interface element to control scrollable areas.
  *
  * The #StScrollBar allows users to scroll scrollable actors, either by
  * the step or page amount, or by manually dragging the handle.

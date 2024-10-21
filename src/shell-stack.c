@@ -1,8 +1,9 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /**
- * SECTION:shell-stack
- * @short_description: Pure "Z-axis" container class
+ * ShellStack:
+ *
+ * Pure "Z-axis" container class
  *
  * A #ShellStack draws its children on top of each other,
  * aligned to the top left.  It will be sized in width/height

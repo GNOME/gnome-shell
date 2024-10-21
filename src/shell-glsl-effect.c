@@ -1,8 +1,9 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /**
- * SECTION:shell-glsl-effect
- * @short_description: An offscreen effect using GLSL
+ * ShellGLSLEffect:
+ *
+ * An offscreen effect using GLSL
  *
  * A #ShellGLSLEffect is a #ClutterOffscreenEffect that allows
  * running custom GLSL to the vertex and fragment stages of the
