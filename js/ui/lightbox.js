@@ -1,4 +1,5 @@
 import Clutter from 'gi://Clutter';
+import Cogl from 'gi://Cogl';
 import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
@@ -52,7 +53,7 @@ const RadialShaderEffect = GObject.registerClass({
     }
 
     vfunc_build_pipeline() {
-        this.add_glsl_snippet(Shell.SnippetHook.FRAGMENT,
+        this.add_glsl_snippet(Cogl.SnippetHook.FRAGMENT,
             VIGNETTE_DECLARATIONS, VIGNETTE_CODE, true);
     }
 

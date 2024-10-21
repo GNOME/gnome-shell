@@ -2993,7 +2993,7 @@ const RecolorEffect = GObject.registerClass({
             cogl_color_out.rgb =                                    \n
               mix(recolor_color, cogl_color_out.rgb, blend);        \n`;
 
-        this.add_glsl_snippet(Shell.SnippetHook.FRAGMENT, decl, src, false);
+        this.add_glsl_snippet(Cogl.SnippetHook.FRAGMENT, decl, src, false);
     }
 });
 
