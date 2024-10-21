@@ -35,8 +35,9 @@
  */
 
 /**
- * SECTION:st-box-layout
- * @short_description: a layout container arranging children in a single line
+ * StBoxLayout:
+ *
+ * Layout container arranging children in a single line.
  *
  * The #StBoxLayout arranges its children along a single line, where each
  * child can be allocated either its preferred size or larger if the expand
@@ -44,7 +45,6 @@
  * than its requested size. If the fill option is not set, but the expand option
  * is enabled, then the position of the actor within the available space can
  * be determined by the alignment child property.
- *
  */
 
 #include <stdlib.h>

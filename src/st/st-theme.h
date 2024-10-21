@@ -26,8 +26,9 @@
 G_BEGIN_DECLS
 
 /**
- * SECTION:st-theme
- * @short_description: a set of stylesheets
+ * StTheme:
+ *
+ * A set of stylesheets
  *
  * #StTheme holds a set of stylesheets. (The "cascade" of the name
  * Cascading Stylesheets.) A #StTheme can be set to apply to all the actors

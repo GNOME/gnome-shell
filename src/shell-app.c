@@ -57,8 +57,9 @@ typedef struct {
 } ShellAppRunningState;
 
 /**
- * SECTION:shell-app
- * @short_description: Object representing an application
+ * ShellApp:
+ *
+ * Object representing an application
  *
  * This object wraps a #GDesktopAppInfo, providing methods and signals
  * primarily useful for running applications.

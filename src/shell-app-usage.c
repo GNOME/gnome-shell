@@ -24,8 +24,9 @@
  */
 
 /**
- * SECTION:shell-app-usage
- * @short_description: Track application usage/state data
+ * ShellAppUsage:
+ *
+ *Track application usage/state data
  *
  * This class maintains some usage and state statistics for
  * applications by keeping track of the approximate time an application's

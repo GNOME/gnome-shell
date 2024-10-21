@@ -36,8 +36,9 @@
  */
 
 /**
- * SECTION:st-viewport
- * @short_description: a scrollable container
+ * StViewport:
+ *
+ * Scrollable container
  *
  * The #StViewport is a generic #StScrollable implementation.
  *

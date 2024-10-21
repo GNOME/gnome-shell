@@ -25,8 +25,9 @@
 G_DEFINE_INTERFACE (StScrollable, st_scrollable, G_TYPE_OBJECT)
 
 /**
- * SECTION:st-scrollable
- * @short_description: A #ClutterActor that can be scrolled
+ * StScrollable:
+ *
+ * A #ClutterActor that can be scrolled
  *
  * The #StScrollable interface is exposed by actors that support scrolling.
  *
@@ -96,7 +97,7 @@ st_scrollable_default_init (StScrollableInterface *g_iface)
        *
        * JavaScript code may override this as demonstrated below:
        *
-       * |[<!-- language="JavaScript" -->
+       * ```js
        * export const MyScrollable = GObject.registerClass({
        *     Properties: {
        *         'hadjustment': GObject.ParamSpec.override(
@@ -118,7 +119,7 @@ st_scrollable_default_init (StScrollableInterface *g_iface)
        *         this.notify('hadjustment');
        *     }
        * });
-       * ]|
+       * ```
        */
       g_object_interface_install_property (g_iface,
                                            g_param_spec_object ("hadjustment", NULL, NULL,

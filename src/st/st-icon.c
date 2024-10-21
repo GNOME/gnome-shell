@@ -19,8 +19,9 @@
  */
 
 /**
- * SECTION:st-icon
- * @short_description: a simple styled icon actor
+ * StIcon:
+ *
+ * A simple styled icon actor
  *
  * #StIcon is a simple styled texture actor that displays an image from
  * a stylesheet.

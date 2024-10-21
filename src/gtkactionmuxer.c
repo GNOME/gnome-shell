@@ -29,8 +29,9 @@
 #include <string.h>
 
 /**
- * SECTION:gtkactionmuxer
- * @short_description: Aggregate and monitor several action groups
+ * GtkActionMuxer:
+ *
+ * Aggregate and monitor several action groups
  *
  * #GtkActionMuxer is a #GActionGroup and #GtkActionObservable that is
  * capable of containing other #GActionGroup instances.

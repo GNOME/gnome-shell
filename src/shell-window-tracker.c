@@ -27,8 +27,9 @@
  */
 
 /**
- * SECTION:shell-window-tracker
- * @short_description: Associate windows with applications
+ * ShellWindowTracker:
+ *
+ * Associate windows with applications
  *
  * Maintains a mapping from windows to applications (.desktop file ids).
  * It currently implements this with some heuristics on the WM_CLASS X11

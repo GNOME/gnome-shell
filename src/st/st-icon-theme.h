@@ -54,7 +54,7 @@ G_DECLARE_FINAL_TYPE (StIconTheme, st_icon_theme, ST, ICON_THEME, GObject)
  * @ST_ICON_LOOKUP_DIR_RTL: Try to load a variant of the icon for right-to-left
  *   text direction.
  *
- * Used to specify options for st_icon_theme_lookup_icon()
+ * Used to specify options for [method@St.IconTheme.lookup_icon]
  */
 typedef enum
 {

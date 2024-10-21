@@ -33,12 +33,6 @@ G_DECLARE_FINAL_TYPE (StClipboard, st_clipboard, ST, CLIPBOARD, GObject)
 
 typedef struct _StClipboard StClipboard;
 
-/**
- * StClipboard:
- *
- * The contents of this structure is private and should only be accessed using
- * the provided API.
- */
 struct _StClipboard
 {
   /*< private >*/

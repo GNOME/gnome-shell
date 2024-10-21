@@ -7,9 +7,9 @@
 #include "shell-global-private.h"
 
 /**
- * SECTION:shell-app-cache
- * @title: ShellAppCache
- * @short_description: application information cache
+ * ShellAppCache:
+ *
+ * Application information cache
  *
  * The #ShellAppCache is responsible for caching information about #GAppInfo
  * to ensure that the compositor thread never needs to perform disk reads to
