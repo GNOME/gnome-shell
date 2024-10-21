@@ -48,7 +48,6 @@ schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 servicedir = join_paths(datadir, 'dbus-1', 'services')
 
 gjs = find_program('gjs')
-appstream_util = find_program('appstream-util', required: false)
 appstreamcli = find_program('appstreamcli', required: false)
 desktop_file_validate = find_program('desktop-file-validate', required: false)
 
