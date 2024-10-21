@@ -1,7 +1,7 @@
 project('gnome-shell', 'c',
   version: '47.0',
   meson_version: '>= 1.1.0',
-  license: 'GPLv2+'
+  license: 'GPL-2.0-or-later',
 )
 
 split_version = meson.project_version().split('.')
