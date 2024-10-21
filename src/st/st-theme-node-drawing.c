@@ -972,6 +972,11 @@ paint_inset_box_shadow_to_cairo_context (StThemeNode     *node,
       int inner_radius;
 
       inner_radius = MAX (0, outer_radius[ST_CORNER_TOPLEFT] - shadow_spec->spread);
+
+      cairo_line_to (temp_cr,
+                     shrunk_extents_x1,
+                     shrunk_extents_y1 + inner_radius);
+
       if (inner_radius > 0)
         {
           cairo_arc (temp_cr,
