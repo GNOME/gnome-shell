@@ -210,20 +210,6 @@ gnome_shell_plugin_confirm_display_change (MetaPlugin *plugin)
   _shell_wm_confirm_display_change (get_shell_wm ());
 }
 
-static const MetaPluginInfo *
-gnome_shell_plugin_plugin_info (MetaPlugin *plugin)
-{
-  static const MetaPluginInfo info = {
-    .name = "GNOME Shell",
-    .version = "0.1",
-    .author = "Various",
-    .license = "GPLv2+",
-    .description = "Provides GNOME Shell core functionality"
-  };
-
-  return &info;
-}
-
 static MetaCloseDialog *
 gnome_shell_plugin_create_close_dialog (MetaPlugin *plugin,
                                         MetaWindow *window)
@@ -271,8 +257,6 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
   plugin_class->keybinding_filter = gnome_shell_plugin_keybinding_filter;
 
   plugin_class->confirm_display_change = gnome_shell_plugin_confirm_display_change;
-
-  plugin_class->plugin_info       = gnome_shell_plugin_plugin_info;
 
   plugin_class->create_close_dialog = gnome_shell_plugin_create_close_dialog;
   plugin_class->create_inhibit_shortcuts_dialog = gnome_shell_plugin_create_inhibit_shortcuts_dialog;
