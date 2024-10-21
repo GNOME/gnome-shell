@@ -1,7 +1,7 @@
 project('shew', 'c',
   version: '47.1',
   meson_version: '>= 0.58.0',
-  license: 'LGPLv2+',
+  license: 'LGPL-2.1-or-later',
 )
 
 assert(meson.is_subproject(), 'This project is only intended to be used as a subproject!')

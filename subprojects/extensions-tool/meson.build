@@ -1,7 +1,7 @@
 project('gnome-extensions-tool', 'c',
   version: '47.1',
   meson_version: '>= 0.58.0',
-  license: 'GPLv2+'
+  license: 'GPL-2.0-or-later',
 )
 
 gio_req = '>= 2.56.0'
