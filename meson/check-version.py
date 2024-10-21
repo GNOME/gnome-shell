@@ -2,7 +2,8 @@
 
 import os, sys
 from pathlib import Path
-import argparse, subprocess
+from xml.etree.ElementTree import ElementTree
+import argparse
 
 def check_version(version, file, type='news'):
     if type == 'news':
@@ -12,8 +13,11 @@ def check_version(version, file, type='news'):
         if not ok:
             raise Exception("{} does not start with {}".format(file, version))
     elif type == 'metainfo':
-        subprocess.run(['appstream-util', 'validate-version', file, version],
-                       check=True)
+        query = './releases/release[@version="{}"]'.format(version)
+        ok = ElementTree(file=file).find(query) is not None
+        print("{}: {}".format(file, "OK" if ok else "FAILED"))
+        if not ok:
+            raise Exception("{} does not contain release {}".format(file, version))
     else:
         raise Exception('Not implemented')
 
