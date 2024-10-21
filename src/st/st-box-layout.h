@@ -35,12 +35,6 @@ G_DECLARE_FINAL_TYPE (StBoxLayout, st_box_layout, ST, BOX_LAYOUT, StViewport)
 typedef struct _StBoxLayout StBoxLayout;
 typedef struct _StBoxLayoutPrivate StBoxLayoutPrivate;
 
-/**
- * StBoxLayout:
- *
- * The contents of this structure are private and should only be accessed
- * through the public API.
- */
 struct _StBoxLayout
 {
   /*< private >*/

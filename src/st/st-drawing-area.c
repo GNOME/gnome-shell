@@ -19,16 +19,17 @@
  */
 
 /**
- * SECTION:st-drawing-area
- * @short_description: A dynamically-sized Cairo drawing area
+ * StDrawingArea:
+ *
+ * A dynamically-sized Cairo drawing area
  *
  * #StDrawingArea allows drawing via Cairo; the primary difference is that
- * it is dynamically sized. To use, connect to the #StDrawingArea::repaint
+ * it is dynamically sized. To use, connect to the [signal@St.DrawingArea::repaint]
  * signal, and inside the signal handler, call
- * st_drawing_area_get_context() to get the Cairo context to draw to.  The
- * #StDrawingArea::repaint signal will be emitted by default when the area is
+ * [method@St.DrawingArea.get_context] to get the Cairo context to draw to.  The
+ * [signal@St.DrawingArea::repaint] signal will be emitted by default when the area is
  * resized or the CSS style changes; you can use the
- * st_drawing_area_queue_repaint() as well.
+ * [method@St.DrawingArea.queue_repaint] as well.
  */
 
 #include "st-drawing-area.h"
@@ -278,7 +279,7 @@ st_drawing_area_emit_repaint (StDrawingArea *area)
  * st_drawing_area_queue_repaint:
  * @area: the #StDrawingArea
  *
- * Will cause the actor to emit a #StDrawingArea::repaint signal before it is
+ * Will cause the actor to emit a [signal@St.DrawingArea::repaint] signal before it is
  * next drawn to the scene. Useful if some parameters for the area being
  * drawn other than the size or style have changed. Note that
  * clutter_actor_queue_redraw() will simply result in the same
@@ -307,13 +308,13 @@ st_drawing_area_queue_repaint (StDrawingArea *area)
  * @area: the #StDrawingArea
  *
  * Gets the Cairo context to paint to. This function must only be called
- * from a signal handler or virtual function for the #StDrawingArea::repaint
+ * from a signal handler or virtual function for the [signal@St.DrawingArea::repaint]
  * signal.
  *
  * JavaScript code must call the special dispose function before returning from
  * the signal handler or virtual function to avoid leaking memory:
  *
- * |[<!-- language="JavaScript" -->
+ * ```js
  * function onRepaint(area) {
  *     let cr = area.get_context();
  *
@@ -324,7 +325,7 @@ st_drawing_area_queue_repaint (StDrawingArea *area)
  *
  * let area = new St.DrawingArea();
  * area.connect('repaint', onRepaint);
- * ]|
+ * ```
  *
  * Returns: (transfer none): the Cairo context for the paint operation
  */

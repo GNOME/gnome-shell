@@ -27,16 +27,6 @@ G_DEFINE_BOXED_TYPE (StShadow, st_shadow, st_shadow_ref, st_shadow_unref)
 G_DEFINE_BOXED_TYPE (StShadowHelper, st_shadow_helper, st_shadow_helper_copy, st_shadow_helper_free)
 
 /**
- * SECTION: st-shadow
- * @short_description: Boxed type for -st-shadow attributes
- *
- * #StShadow is a boxed type for storing attributes of the -st-shadow
- * property, modelled liberally after the CSS3 box-shadow property.
- * See http://www.css3.info/preview/box-shadow/
- *
- */
-
-/**
  * st_shadow_new:
  * @color: shadow's color
  * @xoffset: horizontal offset
@@ -178,9 +168,9 @@ st_shadow_get_box (StShadow              *shadow,
 }
 
 /**
- * SECTION: st-shadow-helper
+ * StShadowHelper:
  *
- * An helper for implementing a drop shadow on a actor.
+ * A helper for implementing a drop shadow on a actor.
  * The actor is expected to recreate the helper whenever its contents
  * or size change. Then, it would call st_shadow_helper_paint() inside
  * its paint() virtual function.

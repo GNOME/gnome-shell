@@ -21,8 +21,9 @@
  */
 
 /**
- * SECTION:st-scroll-view
- * @short_description: a container for scrollable children
+ * StScrollView:
+ *
+ * Container for scrollable children
  *
  * #StScrollView is a single child container for actors that implement
  * #StScrollable. It provides scrollbars around the edge of the child to

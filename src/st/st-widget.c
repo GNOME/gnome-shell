@@ -89,11 +89,12 @@ struct _StWidgetPrivate
 };
 
 /**
- * SECTION:st-widget
- * @short_description: Base class for stylable actors
+ * StWidget:
+ *
+ * Base class for stylable actors
  *
  * #StWidget is a simple abstract class on top of #ClutterActor. It
- * provides basic themeing properties.
+ * provides basic theming properties.
  *
  * Actors in the St library should subclass #StWidget if they plan
  * to obey to a certain #StStyle.
@@ -3039,7 +3040,7 @@ check_labels (StWidgetAccessible *widget_accessible,
  *
  * Gets a list of the focusable children of @widget, in "Tab"
  * order. By default, this returns all visible
- * (as in clutter_actor_is_visible()) children of @widget.
+ * (as in [method@Clutter.Actor.is_visible]) children of @widget.
  *
  * Returns: (element-type Clutter.Actor) (transfer container):
  *   @widget's focusable children

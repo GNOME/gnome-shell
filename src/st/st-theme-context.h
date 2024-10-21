@@ -28,8 +28,9 @@
 G_BEGIN_DECLS
 
 /**
- * SECTION:st-theme-context
- * @short_description: holds global information about a tree of styled objects
+ * StThemeContext:
+ *
+ * Holds global information about a tree of styled objects
  *
  * #StThemeContext is responsible for managing information global to a tree of styled objects,
  * such as the set of stylesheets or the default font. In normal usage, a #StThemeContext

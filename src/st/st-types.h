@@ -26,13 +26,6 @@
 
 G_BEGIN_DECLS
 
-/**
- * SECTION:st-types
- * @short_description: type definitions used throughout St
- *
- * Common types for StWidgets.
- */
-
 typedef enum {
   ST_BACKGROUND_SIZE_AUTO,
   ST_BACKGROUND_SIZE_CONTAIN,

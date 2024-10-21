@@ -4,8 +4,9 @@
 #include <mtk/mtk.h>
 
 /**
- * SECTION:shell-screenshot
- * @short_description: Grabs screenshots of areas and/or windows
+ * ShellScreenshot:
+ *
+ * Grabs screenshots of areas and/or windows
  *
  * The #ShellScreenshot object is used to take screenshots of screen
  * areas or windows and write them out as png files.

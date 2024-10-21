@@ -20,8 +20,9 @@
  */
 
 /**
- * SECTION:st-button
- * @short_description: Button widget
+ * StButton:
+ *
+ * Button widget
  *
  * A button widget with support for either a text label or icon, toggle mode
  * and transitions effects between states.

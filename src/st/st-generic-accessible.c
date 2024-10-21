@@ -18,9 +18,9 @@
  */
 
 /**
- * SECTION:st-generic-accessible
- * @short_description: An accessible class with signals for
- * implementing specific Atk interfaces
+ * StGenericAccessible:
+ *
+ * An accessible class with signals for implementing specific Atk interfaces
  *
  * #StGenericAccessible is mainly a workaround for the current lack of
  * of a proper support for GValue at javascript. See bug#703412 for

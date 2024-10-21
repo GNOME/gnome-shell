@@ -20,8 +20,9 @@
  */
 
 /**
- * SECTION:st-entry
- * @short_description: Widget for displaying text
+ * StEntry:
+ *
+ * Widget for displaying text
  *
  * #StEntry is a simple widget for displaying text. It derives from
  * #StWidget to add extra style and placement functionality over

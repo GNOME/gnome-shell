@@ -32,12 +32,6 @@ G_DECLARE_FINAL_TYPE (StLabel, st_label, ST, LABEL, StWidget)
 
 typedef struct _StLabelPrivate       StLabelPrivate;
 
-/**
- * StLabel:
- *
- * The contents of this structure is private and should only be accessed using
- * the provided API.
- */
 struct _StLabel
 {
   /*< private >*/

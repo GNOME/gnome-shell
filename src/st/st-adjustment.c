@@ -19,8 +19,9 @@
  */
 
 /**
- * SECTION:st-adjustment
- * @short_description: A GObject representing an adjustable bounded value
+ * StAdjustment:
+ *
+ * An adjustable bounded value.
  *
  * The #StAdjustment object represents a range of values bounded between a
  * minimum and maximum, together with step and page increments and a page size.
@@ -526,7 +527,7 @@ st_adjustment_set_value (StAdjustment *adjustment,
  * @upper: the upper value
  *
  * Set #StAdjustment:value to a value clamped between @lower and @upper. The
- * clamping described by st_adjustment_set_value() still applies.
+ * clamping described by [method@St.Adjustment.set_value] still applies.
  */
 void
 st_adjustment_clamp_page (StAdjustment *adjustment,
@@ -569,14 +570,14 @@ st_adjustment_clamp_page (StAdjustment *adjustment,
  * Sets the minimum value of the adjustment.
  *
  * When setting multiple adjustment properties via their individual
- * setters, multiple #GObject::notify and #StAdjustment::changed
+ * setters, multiple #GObject::notify and [signal@St.Adjustment::changed]
  * signals will be emitted. However, it’s possible to compress the
- * #GObject::notify and #StAdjustment::changed signals into one of each
+ * #GObject::notify and [signal@St.Adjustment::changed] signals into one of each
  * by calling g_object_freeze_notify() and g_object_thaw_notify() around the
  * calls to the individual setters.
  *
- * Alternatively, st_adjustment_set_values() can be used to compress
- * #GObject::notify and #StAdjustment::changed emissions.
+ * Alternatively, [method@St.Adjustment.set_values] can be used to compress
+ * #GObject::notify and [signal@St.Adjustment::changed] emissions.
  */
 static gboolean
 st_adjustment_set_lower (StAdjustment *adjustment,
@@ -610,7 +611,7 @@ st_adjustment_set_lower (StAdjustment *adjustment,
  * Note that values will be restricted by `upper - page-size`
  * if the page-size property is nonzero.
  *
- * See st_adjustment_set_lower() about how to compress multiple
+ * See [method@St.Adjustment.set_lower] about how to compress multiple
  * signal emissions when setting multiple adjustment properties.
  *
  * Returns: %TRUE if the value was changed
@@ -644,7 +645,7 @@ st_adjustment_set_upper (StAdjustment *adjustment,
  *
  * Sets the step increment of the adjustment.
  *
- * See st_adjustment_set_lower() about how to compress multiple
+ * See [method@St.Adjustment.set_lower] about how to compress multiple
  * signal emissions when setting multiple adjustment properties.
  *
  * Returns: %TRUE if the value was changed
@@ -674,7 +675,7 @@ st_adjustment_set_step_increment (StAdjustment *adjustment,
  *
  * Sets the page increment of the adjustment.
  *
- * See st_adjustment_set_lower() about how to compress multiple
+ * See [method@St.Adjustment.set_lower] about how to compress multiple
  * signal emissions when setting multiple adjustment properties.
  *
  * Returns: %TRUE if the value was changed
@@ -704,7 +705,7 @@ st_adjustment_set_page_increment (StAdjustment *adjustment,
  *
  * Sets the page size of the adjustment.
  *
- * See st_adjustment_set_lower() about how to compress multiple
+ * See [method@St.Adjustment.set_lower] about how to compress multiple
  * signal emissions when setting multiple adjustment properties.
  *
  * Returns: %TRUE if the value was changed
@@ -744,9 +745,9 @@ st_adjustment_set_page_size (StAdjustment *adjustment,
  * Sets all properties of the adjustment at once.
  *
  * Use this function to avoid multiple emissions of the #GObject::notify and
- * #StAdjustment::changed signals. See st_adjustment_set_lower() for an
+ * [signal@St.Adjustment::changed] signals. See st_adjustment_set_lower() for an
  * alternative way of compressing multiple emissions of #GObject::notify and
- * #StAdjustmet::changed into one of each.
+ * [signal@St.Adjustment::changed] into one of each.
  */
 void
 st_adjustment_set_values (StAdjustment *adjustment,
@@ -827,7 +828,7 @@ st_adjustment_get_values (StAdjustment *adjustment,
  *   or similar.
  *
  * Adjusts the adjustment using delta values from a scroll event.
- * You should use this instead of using st_adjustment_set_value()
+ * You should use this instead of using [method@St.Adjustment.set_value]
  * as this method will tweak the values directly using the same
  * math as GTK+, to ensure that scrolling is consistent across
  * the environment.
@@ -910,7 +911,7 @@ on_transition_stopped (ClutterTransition *transition,
  * @name: a transition name
  *
  * Get the #ClutterTransition for @name previously added with
- * st_adjustment_add_transition() or %NULL if not found.
+ * [method@St.Adjustment.add_transition] or %NULL if not found.
  *
  * Returns: (transfer none) (nullable): a #ClutterTransition
  */
@@ -942,7 +943,7 @@ st_adjustment_get_transition (StAdjustment *adjustment,
  * @transition: a #ClutterTransition
  *
  * Add a #ClutterTransition for the adjustment. If the transition stops, it will
- * be automatically removed if #ClutterTransition:remove-on-complete is %TRUE.
+ * be automatically removed if [property@Clutter.Transition:remove-on-complete] is %TRUE.
  */
 void
 st_adjustment_add_transition (StAdjustment      *adjustment,
@@ -989,7 +990,7 @@ st_adjustment_add_transition (StAdjustment      *adjustment,
  * @adjustment: a #StAdjustment
  * @name: the name of the transition to remove
  *
- * Remove a #ClutterTransition previously added by st_adjustment_add_transtion()
+ * Remove a #ClutterTransition previously added by [method@St.Adjustment.add_transition]
  * with @name.
  */
 void
