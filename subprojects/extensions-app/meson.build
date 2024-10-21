@@ -69,12 +69,10 @@ if not meson.is_subproject()
     gtk_update_icon_cache: true
   )
 
-  if appstream_util.found()
-    meson.add_dist_script('build-aux/meson/check-version.py',
-      meson.project_version(),
-      '--type=metainfo',
-      'data/metainfo/org.gnome.Extensions.metainfo.xml.in')
-  endif
+  meson.add_dist_script('build-aux/meson/check-version.py',
+    meson.project_version(),
+    '--type=metainfo',
+    'data/metainfo/org.gnome.Extensions.metainfo.xml.in')
 
   summary_dirs = {
     'prefix': get_option('prefix'),
