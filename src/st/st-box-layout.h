@@ -49,8 +49,4 @@ void     st_box_layout_set_vertical   (StBoxLayout *box,
                                        gboolean     vertical);
 gboolean st_box_layout_get_vertical   (StBoxLayout *box);
 
-void     st_box_layout_set_pack_start (StBoxLayout *box,
-                                       gboolean     pack_start);
-gboolean st_box_layout_get_pack_start (StBoxLayout *box);
-
 G_END_DECLS
