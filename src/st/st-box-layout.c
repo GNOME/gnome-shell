@@ -59,7 +59,6 @@ enum {
   PROP_0,
 
   PROP_VERTICAL,
-  PROP_PACK_START,
 
   N_PROPS
 };
@@ -92,10 +91,6 @@ st_box_layout_get_property (GObject    *object,
       g_value_set_boolean (value, orientation == CLUTTER_ORIENTATION_VERTICAL);
       break;
 
-    case PROP_PACK_START:
-      g_value_set_boolean (value, FALSE);
-      break;
-
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
@@ -113,9 +108,6 @@ st_box_layout_set_property (GObject      *object,
     {
     case PROP_VERTICAL:
       st_box_layout_set_vertical (box, g_value_get_boolean (value));
-      break;
-
-    case PROP_PACK_START:
       break;
 
     default:
@@ -186,17 +178,6 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
     g_param_spec_boolean ("vertical", NULL, NULL,
                           FALSE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
-
-  /**
-   * StBoxLayout:pack-start:
-   *
-   * A convenience property for the #ClutterBoxLayout:pack-start property of the
-   * internal layout for #StBoxLayout.
-   */
-  props[PROP_PACK_START] =
-    g_param_spec_boolean ("pack-start", NULL, NULL,
-                          FALSE,
-                          ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 
@@ -271,30 +252,4 @@ st_box_layout_get_vertical (StBoxLayout *box)
   layout = clutter_actor_get_layout_manager (CLUTTER_ACTOR (box));
   orientation = clutter_box_layout_get_orientation (CLUTTER_BOX_LAYOUT (layout));
   return orientation == CLUTTER_ORIENTATION_VERTICAL;
-}
-
-/**
- * st_box_layout_set_pack_start:
- * @box: A #StBoxLayout
- * @pack_start: %TRUE if the layout should use pack-start
- *
- * Deprecated: No longer has any effect
- */
-void
-st_box_layout_set_pack_start (StBoxLayout *box,
-                              gboolean     pack_start)
-{
-}
-
-/**
- * st_box_layout_get_pack_start:
- * @box: A #StBoxLayout
- *
- * Returns: the value of the #StBoxLayout:pack-start property,
- *   always %FALSE
- */
-gboolean
-st_box_layout_get_pack_start (StBoxLayout *box)
-{
-  return FALSE;
 }
