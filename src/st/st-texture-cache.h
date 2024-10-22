@@ -36,15 +36,6 @@
 G_DECLARE_FINAL_TYPE (StTextureCache, st_texture_cache,
                       ST, TEXTURE_CACHE, GObject)
 
-typedef struct _StTextureCachePrivate StTextureCachePrivate;
-
-struct _StTextureCache
-{
-  GObject parent;
-
-  StTextureCachePrivate *priv;
-};
-
 typedef enum {
   ST_TEXTURE_CACHE_POLICY_NONE,
   ST_TEXTURE_CACHE_POLICY_FOREVER
