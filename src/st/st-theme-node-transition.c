@@ -29,15 +29,9 @@ enum {
   LAST_SIGNAL
 };
 
-typedef struct _StThemeNodeTransitionPrivate StThemeNodeTransitionPrivate;
-
-struct _StThemeNodeTransition {
+typedef struct _StThemeNodeTransition {
   GObject parent;
 
-  StThemeNodeTransitionPrivate *priv;
-};
-
-struct _StThemeNodeTransitionPrivate {
   StThemeNode *old_theme_node;
   StThemeNode *new_theme_node;
 
@@ -61,11 +55,11 @@ struct _StThemeNodeTransitionPrivate {
   ClutterActorBox offscreen_box;
 
   gboolean needs_setup;
-};
+} StThemeNodeTransition;
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (StThemeNodeTransition, st_theme_node_transition, G_TYPE_OBJECT);
+G_DEFINE_FINAL_TYPE (StThemeNodeTransition, st_theme_node_transition, G_TYPE_OBJECT);
 
 
 static void
@@ -98,24 +92,24 @@ st_theme_node_transition_new (ClutterActor          *actor,
 
   transition = g_object_new (ST_TYPE_THEME_NODE_TRANSITION, NULL);
 
-  transition->priv->old_theme_node = g_object_ref (from_node);
-  transition->priv->new_theme_node = g_object_ref (to_node);
+  transition->old_theme_node = g_object_ref (from_node);
+  transition->new_theme_node = g_object_ref (to_node);
 
-  st_theme_node_paint_state_copy (&transition->priv->old_paint_state,
+  st_theme_node_paint_state_copy (&transition->old_paint_state,
                                   old_paint_state);
 
-  transition->priv->timeline = clutter_timeline_new_for_actor (actor, duration);
+  transition->timeline = clutter_timeline_new_for_actor (actor, duration);
 
-  transition->priv->timeline_completed_id =
-    g_signal_connect (transition->priv->timeline, "completed",
+  transition->timeline_completed_id =
+    g_signal_connect (transition->timeline, "completed",
                       G_CALLBACK (on_timeline_completed), transition);
-  transition->priv->timeline_new_frame_id =
-    g_signal_connect (transition->priv->timeline, "new-frame",
+  transition->timeline_new_frame_id =
+    g_signal_connect (transition->timeline, "new-frame",
                       G_CALLBACK (on_timeline_new_frame), transition);
 
-  clutter_timeline_set_progress_mode (transition->priv->timeline, CLUTTER_EASE_IN_OUT_QUAD);
+  clutter_timeline_set_progress_mode (transition->timeline, CLUTTER_EASE_IN_OUT_QUAD);
 
-  clutter_timeline_start (transition->priv->timeline);
+  clutter_timeline_start (transition->timeline);
 
   return transition;
 }
@@ -127,24 +121,22 @@ st_theme_node_transition_new (ClutterActor          *actor,
 StThemeNodePaintState *
 st_theme_node_transition_get_new_paint_state (StThemeNodeTransition *transition)
 {
-  return &transition->priv->new_paint_state;
+  return &transition->new_paint_state;
 }
 
 void
 st_theme_node_transition_update (StThemeNodeTransition *transition,
                                  StThemeNode           *new_node)
 {
-  StThemeNodeTransitionPrivate *priv;
   StThemeNode *old_node;
   ClutterTimelineDirection direction;
 
   g_return_if_fail (ST_IS_THEME_NODE_TRANSITION (transition));
   g_return_if_fail (ST_IS_THEME_NODE (new_node));
 
-  priv = transition->priv;
-  direction = clutter_timeline_get_direction (priv->timeline);
-  old_node = (direction == CLUTTER_TIMELINE_FORWARD) ? priv->old_theme_node
-                                                     : priv->new_theme_node;
+  direction = clutter_timeline_get_direction (transition->timeline);
+  old_node = (direction == CLUTTER_TIMELINE_FORWARD) ? transition->old_theme_node
+                                                     : transition->new_theme_node;
 
   /* If the update is the reversal of the current transition,
    * we reverse the timeline.
@@ -163,44 +155,44 @@ st_theme_node_transition_update (StThemeNodeTransition *transition,
         StThemeNodePaintState tmp;
 
         st_theme_node_paint_state_init (&tmp);
-        st_theme_node_paint_state_copy (&tmp, &priv->old_paint_state);
-        st_theme_node_paint_state_copy (&priv->old_paint_state, &priv->new_paint_state);
-        st_theme_node_paint_state_copy (&priv->new_paint_state, &tmp);
+        st_theme_node_paint_state_copy (&tmp, &transition->old_paint_state);
+        st_theme_node_paint_state_copy (&transition->old_paint_state, &transition->new_paint_state);
+        st_theme_node_paint_state_copy (&transition->new_paint_state, &tmp);
         st_theme_node_paint_state_free (&tmp);
       }
 
-      if (clutter_timeline_get_elapsed_time (priv->timeline) > 0)
+      if (clutter_timeline_get_elapsed_time (transition->timeline) > 0)
         {
           if (direction == CLUTTER_TIMELINE_FORWARD)
-            clutter_timeline_set_direction (priv->timeline,
+            clutter_timeline_set_direction (transition->timeline,
                                             CLUTTER_TIMELINE_BACKWARD);
           else
-            clutter_timeline_set_direction (priv->timeline,
+            clutter_timeline_set_direction (transition->timeline,
                                             CLUTTER_TIMELINE_FORWARD);
         }
       else
         {
-          clutter_timeline_stop (priv->timeline);
+          clutter_timeline_stop (transition->timeline);
           g_signal_emit (transition, signals[COMPLETED], 0);
         }
     }
   else
     {
-      if (clutter_timeline_get_elapsed_time (priv->timeline) > 0)
+      if (clutter_timeline_get_elapsed_time (transition->timeline) > 0)
         {
-          clutter_timeline_stop (priv->timeline);
+          clutter_timeline_stop (transition->timeline);
           g_signal_emit (transition, signals[COMPLETED], 0);
         }
       else
         {
           guint new_duration = st_theme_node_get_transition_duration (new_node);
 
-          clutter_timeline_set_duration (priv->timeline, new_duration);
+          clutter_timeline_set_duration (transition->timeline, new_duration);
 
-          g_object_unref (priv->new_theme_node);
-          priv->new_theme_node = g_object_ref (new_node);
+          g_object_unref (transition->new_theme_node);
+          transition->new_theme_node = g_object_ref (new_node);
 
-          st_theme_node_paint_state_invalidate (&priv->new_paint_state);
+          st_theme_node_paint_state_invalidate (&transition->new_paint_state);
         }
     }
 }
@@ -214,10 +206,10 @@ calculate_offscreen_box (StThemeNodeTransition *transition,
   st_theme_node_transition_get_paint_box (transition,
                                           allocation,
                                           &paint_box);
-  transition->priv->offscreen_box.x1 = paint_box.x1 - allocation->x1;
-  transition->priv->offscreen_box.y1 = paint_box.y1 - allocation->y1;
-  transition->priv->offscreen_box.x2 = paint_box.x2 - allocation->x1;
-  transition->priv->offscreen_box.y2 = paint_box.y2 - allocation->y1;
+  transition->offscreen_box.x1 = paint_box.x1 - allocation->x1;
+  transition->offscreen_box.y1 = paint_box.y1 - allocation->y1;
+  transition->offscreen_box.x2 = paint_box.x2 - allocation->x1;
+  transition->offscreen_box.y2 = paint_box.y2 - allocation->y1;
 }
 
 void
@@ -225,14 +217,13 @@ st_theme_node_transition_get_paint_box (StThemeNodeTransition *transition,
                                         const ClutterActorBox *allocation,
                                         ClutterActorBox       *paint_box)
 {
-  StThemeNodeTransitionPrivate *priv = transition->priv;
   ClutterActorBox old_node_box, new_node_box;
 
-  st_theme_node_get_paint_box (priv->old_theme_node,
+  st_theme_node_get_paint_box (transition->old_theme_node,
                                allocation,
                                &old_node_box);
 
-  st_theme_node_get_paint_box (priv->new_theme_node,
+  st_theme_node_get_paint_box (transition->new_theme_node,
                                allocation,
                                &new_node_box);
 
@@ -249,7 +240,6 @@ setup_framebuffers (StThemeNodeTransition *transition,
                     const ClutterActorBox *allocation,
                     float                  resource_scale)
 {
-  StThemeNodeTransitionPrivate *priv = transition->priv;
   g_autoptr (ClutterPaintNode) old_layer_node = NULL;
   g_autoptr (ClutterPaintNode) new_layer_node = NULL;
   CoglPipeline *noop_pipeline;
@@ -261,43 +251,43 @@ setup_framebuffers (StThemeNodeTransition *transition,
   static CoglPipeline *pipeline_template = NULL;
 
   ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
-  width  = ceilf ((priv->offscreen_box.x2 - priv->offscreen_box.x1) * resource_scale);
-  height = ceilf ((priv->offscreen_box.y2 - priv->offscreen_box.y1) * resource_scale);
+  width  = ceilf ((transition->offscreen_box.x2 - transition->offscreen_box.x1) * resource_scale);
+  height = ceilf ((transition->offscreen_box.y2 - transition->offscreen_box.y1) * resource_scale);
 
   g_return_val_if_fail (width  > 0, FALSE);
   g_return_val_if_fail (height > 0, FALSE);
 
-  g_clear_object (&priv->old_texture);
-  priv->old_texture = cogl_texture_2d_new_with_size (ctx, width, height);
+  g_clear_object (&transition->old_texture);
+  transition->old_texture = cogl_texture_2d_new_with_size (ctx, width, height);
 
-  g_clear_object (&priv->new_texture);
-  priv->new_texture = cogl_texture_2d_new_with_size (ctx, width, height);
+  g_clear_object (&transition->new_texture);
+  transition->new_texture = cogl_texture_2d_new_with_size (ctx, width, height);
 
-  if (priv->old_texture == NULL)
+  if (transition->old_texture == NULL)
     return FALSE;
 
-  if (priv->new_texture == NULL)
+  if (transition->new_texture == NULL)
     return FALSE;
 
-  g_clear_object (&priv->old_offscreen);
-  priv->old_offscreen = COGL_FRAMEBUFFER (cogl_offscreen_new_with_texture (priv->old_texture));
-  if (!cogl_framebuffer_allocate (priv->old_offscreen, &catch_error))
+  g_clear_object (&transition->old_offscreen);
+  transition->old_offscreen = COGL_FRAMEBUFFER (cogl_offscreen_new_with_texture (transition->old_texture));
+  if (!cogl_framebuffer_allocate (transition->old_offscreen, &catch_error))
     {
       g_error_free (catch_error);
-      g_clear_object (&priv->old_offscreen);
+      g_clear_object (&transition->old_offscreen);
       return FALSE;
     }
 
-  g_clear_object (&priv->new_offscreen);
-  priv->new_offscreen = COGL_FRAMEBUFFER (cogl_offscreen_new_with_texture (priv->new_texture));
-  if (!cogl_framebuffer_allocate (priv->new_offscreen, &catch_error))
+  g_clear_object (&transition->new_offscreen);
+  transition->new_offscreen = COGL_FRAMEBUFFER (cogl_offscreen_new_with_texture (transition->new_texture));
+  if (!cogl_framebuffer_allocate (transition->new_offscreen, &catch_error))
     {
       g_error_free (catch_error);
-      g_clear_object (&priv->new_offscreen);
+      g_clear_object (&transition->new_offscreen);
       return FALSE;
     }
 
-  if (priv->pipeline == NULL)
+  if (transition->pipeline == NULL)
     {
       if (G_UNLIKELY (pipeline_template == NULL))
         {
@@ -318,36 +308,36 @@ setup_framebuffers (StThemeNodeTransition *transition,
                                                             "PRIMARY)",
                                            NULL);
         }
-      priv->pipeline = cogl_pipeline_copy (pipeline_template);
+      transition->pipeline = cogl_pipeline_copy (pipeline_template);
     }
 
-  cogl_pipeline_set_layer_texture (priv->pipeline, 0, priv->new_texture);
-  cogl_pipeline_set_layer_texture (priv->pipeline, 1, priv->old_texture);
+  cogl_pipeline_set_layer_texture (transition->pipeline, 0, transition->new_texture);
+  cogl_pipeline_set_layer_texture (transition->pipeline, 1, transition->old_texture);
 
   noop_pipeline = cogl_pipeline_new (ctx);
-  cogl_framebuffer_orthographic (priv->old_offscreen,
-                                 priv->offscreen_box.x1,
-                                 priv->offscreen_box.y1,
-                                 priv->offscreen_box.x2,
-                                 priv->offscreen_box.y2, 0.0, 1.0);
+  cogl_framebuffer_orthographic (transition->old_offscreen,
+                                 transition->offscreen_box.x1,
+                                 transition->offscreen_box.y1,
+                                 transition->offscreen_box.x2,
+                                 transition->offscreen_box.y2, 0.0, 1.0);
 
-  old_layer_node = clutter_layer_node_new_to_framebuffer (priv->old_offscreen,
+  old_layer_node = clutter_layer_node_new_to_framebuffer (transition->old_offscreen,
                                                           noop_pipeline);
   clutter_paint_node_add_child (node, old_layer_node);
 
-  st_theme_node_paint (priv->old_theme_node, &priv->old_paint_state,
+  st_theme_node_paint (transition->old_theme_node, &transition->old_paint_state,
                        paint_context,
                        old_layer_node, allocation, 255, resource_scale);
 
-  new_layer_node = clutter_layer_node_new_to_framebuffer (priv->new_offscreen,
+  new_layer_node = clutter_layer_node_new_to_framebuffer (transition->new_offscreen,
                                                           noop_pipeline);
   clutter_paint_node_add_child (node, new_layer_node);
-  cogl_framebuffer_orthographic (priv->new_offscreen,
-                                 priv->offscreen_box.x1,
-                                 priv->offscreen_box.y1,
-                                 priv->offscreen_box.x2,
-                                 priv->offscreen_box.y2, 0.0, 1.0);
-  st_theme_node_paint (priv->new_theme_node, &priv->new_paint_state,
+  cogl_framebuffer_orthographic (transition->new_offscreen,
+                                 transition->offscreen_box.x1,
+                                 transition->offscreen_box.y1,
+                                 transition->offscreen_box.x2,
+                                 transition->offscreen_box.y2, 0.0, 1.0);
+  st_theme_node_paint (transition->new_theme_node, &transition->new_paint_state,
                        paint_context,
                        new_layer_node, allocation, 255, resource_scale);
 
@@ -364,7 +354,6 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
                                 guint8                 paint_opacity,
                                 float                  resource_scale)
 {
-  StThemeNodeTransitionPrivate *priv = transition->priv;
   g_autoptr (ClutterPaintNode) pipeline_node = NULL;
 
   CoglColor constant, pipeline_color;
@@ -373,41 +362,41 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
     0.0, 0.0, 1.0, 1.0,
   };
 
-  g_return_if_fail (ST_IS_THEME_NODE (priv->old_theme_node));
-  g_return_if_fail (ST_IS_THEME_NODE (priv->new_theme_node));
+  g_return_if_fail (ST_IS_THEME_NODE (transition->old_theme_node));
+  g_return_if_fail (ST_IS_THEME_NODE (transition->new_theme_node));
 
-  if (!clutter_actor_box_equal (allocation, &priv->last_allocation))
-    priv->needs_setup = TRUE;
+  if (!clutter_actor_box_equal (allocation, &transition->last_allocation))
+    transition->needs_setup = TRUE;
 
-  if (priv->needs_setup)
+  if (transition->needs_setup)
     {
-      priv->last_allocation = *allocation;
+      transition->last_allocation = *allocation;
 
       calculate_offscreen_box (transition, allocation);
-      priv->needs_setup = clutter_actor_box_get_area (&priv->offscreen_box) == 0 ||
-                          !setup_framebuffers (transition,
-                                               paint_context,
-                                               node,
-                                               allocation,
-                                               resource_scale);
+      transition->needs_setup = clutter_actor_box_get_area (&transition->offscreen_box) == 0 ||
+                                !setup_framebuffers (transition,
+                                                     paint_context,
+                                                     node,
+                                                     allocation,
+                                                     resource_scale);
 
-      if (priv->needs_setup) /* setting up framebuffers failed */
+      if (transition->needs_setup) /* setting up framebuffers failed */
         return;
     }
 
   cogl_color_init_from_4f (&constant, 0., 0., 0.,
-                           clutter_timeline_get_progress (priv->timeline));
-  cogl_pipeline_set_layer_combine_constant (priv->pipeline, 1, &constant);
+                           clutter_timeline_get_progress (transition->timeline));
+  cogl_pipeline_set_layer_combine_constant (transition->pipeline, 1, &constant);
 
   cogl_color_init_from_4f (&pipeline_color,
                            paint_opacity / 255.0, paint_opacity / 255.0,
                            paint_opacity / 255.0, paint_opacity / 255.0);
-  cogl_pipeline_set_color (priv->pipeline, &pipeline_color);
+  cogl_pipeline_set_color (transition->pipeline, &pipeline_color);
 
-  pipeline_node = clutter_pipeline_node_new (priv->pipeline);
+  pipeline_node = clutter_pipeline_node_new (transition->pipeline);
   clutter_paint_node_add_child (node, pipeline_node);
   clutter_paint_node_add_multitexture_rectangle (pipeline_node,
-                                                 &priv->offscreen_box,
+                                                 &transition->offscreen_box,
                                                  tex_coords,
                                                  8);
 }
@@ -415,32 +404,32 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
 static void
 st_theme_node_transition_dispose (GObject *object)
 {
-  StThemeNodeTransitionPrivate *priv = ST_THEME_NODE_TRANSITION (object)->priv;
+  StThemeNodeTransition *self = ST_THEME_NODE_TRANSITION (object);
 
-  g_clear_object (&priv->old_theme_node);
-  g_clear_object (&priv->new_theme_node);
+  g_clear_object (&self->old_theme_node);
+  g_clear_object (&self->new_theme_node);
 
-  g_clear_object (&priv->old_texture);
-  g_clear_object (&priv->new_texture);
+  g_clear_object (&self->old_texture);
+  g_clear_object (&self->new_texture);
 
-  g_clear_object (&priv->old_offscreen);
-  g_clear_object (&priv->new_offscreen);
+  g_clear_object (&self->old_offscreen);
+  g_clear_object (&self->new_offscreen);
 
-  g_clear_object (&priv->pipeline);
+  g_clear_object (&self->pipeline);
 
-  if (priv->timeline)
+  if (self->timeline)
     {
-      g_clear_signal_handler (&priv->timeline_completed_id, priv->timeline);
-      g_clear_signal_handler (&priv->timeline_new_frame_id, priv->timeline);
+      g_clear_signal_handler (&self->timeline_completed_id, self->timeline);
+      g_clear_signal_handler (&self->timeline_new_frame_id, self->timeline);
 
-      g_clear_object (&priv->timeline);
+      g_clear_object (&self->timeline);
     }
 
-  priv->timeline_completed_id = 0;
-  priv->timeline_new_frame_id = 0;
+  self->timeline_completed_id = 0;
+  self->timeline_new_frame_id = 0;
 
-  st_theme_node_paint_state_free (&priv->old_paint_state);
-  st_theme_node_paint_state_free (&priv->new_paint_state);
+  st_theme_node_paint_state_free (&self->old_paint_state);
+  st_theme_node_paint_state_free (&self->new_paint_state);
 
   G_OBJECT_CLASS (st_theme_node_transition_parent_class)->dispose (object);
 }
@@ -448,21 +437,19 @@ st_theme_node_transition_dispose (GObject *object)
 static void
 st_theme_node_transition_init (StThemeNodeTransition *transition)
 {
-  transition->priv = st_theme_node_transition_get_instance_private (transition);
+  transition->old_theme_node = NULL;
+  transition->new_theme_node = NULL;
 
-  transition->priv->old_theme_node = NULL;
-  transition->priv->new_theme_node = NULL;
+  transition->old_texture = NULL;
+  transition->new_texture = NULL;
 
-  transition->priv->old_texture = NULL;
-  transition->priv->new_texture = NULL;
+  transition->old_offscreen = NULL;
+  transition->new_offscreen = NULL;
 
-  transition->priv->old_offscreen = NULL;
-  transition->priv->new_offscreen = NULL;
+  st_theme_node_paint_state_init (&transition->old_paint_state);
+  st_theme_node_paint_state_init (&transition->new_paint_state);
 
-  st_theme_node_paint_state_init (&transition->priv->old_paint_state);
-  st_theme_node_paint_state_init (&transition->priv->new_paint_state);
-
-  transition->priv->needs_setup = TRUE;
+  transition->needs_setup = TRUE;
 }
 
 static void
