@@ -46,16 +46,10 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-typedef struct _ShellAppSystemPrivate ShellAppSystemPrivate;
-
-struct _ShellAppSystem
+typedef struct _ShellAppSystem
 {
   GObject parent;
 
-  ShellAppSystemPrivate *priv;
-};
-
-struct _ShellAppSystemPrivate {
   GHashTable *running_apps;
   GHashTable *id_to_app;
   GHashTable *startup_wm_class_to_id;
@@ -63,11 +57,11 @@ struct _ShellAppSystemPrivate {
 
   guint rescan_icons_timeout_id;
   guint n_rescan_retries;
-};
+} ShellAppSystem;
 
 static void shell_app_system_finalize (GObject *object);
 
-G_DEFINE_TYPE_WITH_PRIVATE (ShellAppSystem, shell_app_system, G_TYPE_OBJECT);
+G_DEFINE_FINAL_TYPE (ShellAppSystem, shell_app_system, G_TYPE_OBJECT);
 
 static void shell_app_system_class_init(ShellAppSystemClass *klass)
 {
@@ -113,12 +107,11 @@ startup_wm_class_is_exact_match (const char *id,
 static void
 scan_startup_wm_class_to_id (ShellAppSystem *self)
 {
-  ShellAppSystemPrivate *priv = self->priv;
   g_autoptr(GPtrArray) no_show_ids = NULL;
   const GList *l;
   GList *all;
 
-  g_hash_table_remove_all (priv->startup_wm_class_to_id);
+  g_hash_table_remove_all (self->startup_wm_class_to_id);
 
   all = shell_app_cache_get_all (shell_app_cache_get_default ());
   no_show_ids = g_ptr_array_new ();
@@ -141,7 +134,7 @@ scan_startup_wm_class_to_id (ShellAppSystem *self)
 
       /* In case multiple .desktop files set the same StartupWMClass, prefer
        * the one where ID and StartupWMClass match */
-      old_id = g_hash_table_lookup (priv->startup_wm_class_to_id, startup_wm_class);
+      old_id = g_hash_table_lookup (self->startup_wm_class_to_id, startup_wm_class);
 
       if (old_id && startup_wm_class_is_exact_match (id, startup_wm_class))
         old_id = NULL;
@@ -152,7 +145,7 @@ scan_startup_wm_class_to_id (ShellAppSystem *self)
         old_id = NULL;
 
       if (!old_id)
-        g_hash_table_insert (priv->startup_wm_class_to_id,
+        g_hash_table_insert (self->startup_wm_class_to_id,
                              g_strdup (startup_wm_class), g_strdup (id));
     }
 }
@@ -244,23 +237,21 @@ retrack_window (gpointer data,
 static gboolean
 rescan_icon_theme_cb (gpointer user_data)
 {
-  ShellAppSystemPrivate *priv;
   ShellAppSystem *self;
   StTextureCache *texture_cache;
   gboolean rescanned;
 
   self = (ShellAppSystem *) user_data;
-  priv = self->priv;
 
   texture_cache = st_texture_cache_get_default ();
   rescanned = st_texture_cache_rescan_icon_theme (texture_cache);
 
-  priv->n_rescan_retries++;
+  self->n_rescan_retries++;
 
-  if (rescanned || priv->n_rescan_retries >= MAX_RESCAN_RETRIES)
+  if (rescanned || self->n_rescan_retries >= MAX_RESCAN_RETRIES)
     {
-      priv->n_rescan_retries = 0;
-      priv->rescan_icons_timeout_id = 0;
+      self->n_rescan_retries = 0;
+      self->rescan_icons_timeout_id = 0;
       return G_SOURCE_REMOVE;
     }
 
@@ -270,14 +261,12 @@ rescan_icon_theme_cb (gpointer user_data)
 static void
 rescan_icon_theme (ShellAppSystem *self)
 {
-  ShellAppSystemPrivate *priv = self->priv;
+  self->n_rescan_retries = 0;
 
-  priv->n_rescan_retries = 0;
-
-  if (priv->rescan_icons_timeout_id > 0)
+  if (self->rescan_icons_timeout_id > 0)
     return;
 
-  priv->rescan_icons_timeout_id = g_timeout_add (RESCAN_TIMEOUT_MS,
+  self->rescan_icons_timeout_id = g_timeout_add (RESCAN_TIMEOUT_MS,
                                                  rescan_icon_theme_cb,
                                                  self);
 }
@@ -291,8 +280,8 @@ installed_changed (ShellAppCache  *cache,
   rescan_icon_theme (self);
   scan_startup_wm_class_to_id (self);
 
-  g_hash_table_foreach_remove (self->priv->id_to_app, stale_app_remove_func, NULL);
-  g_hash_table_foreach (self->priv->running_apps, collect_stale_windows, windows);
+  g_hash_table_foreach_remove (self->id_to_app, stale_app_remove_func, NULL);
+  g_hash_table_foreach (self->running_apps, collect_stale_windows, windows);
 
   g_ptr_array_foreach (windows, retrack_window, NULL);
   g_ptr_array_free (windows, TRUE);
@@ -303,17 +292,14 @@ installed_changed (ShellAppCache  *cache,
 static void
 shell_app_system_init (ShellAppSystem *self)
 {
-  ShellAppSystemPrivate *priv;
   ShellAppCache *cache;
 
-  self->priv = priv = shell_app_system_get_instance_private (self);
-
-  priv->running_apps = g_hash_table_new_full (NULL, NULL, (GDestroyNotify) g_object_unref, NULL);
-  priv->id_to_app = g_hash_table_new_full (g_str_hash, g_str_equal,
+  self->running_apps = g_hash_table_new_full (NULL, NULL, (GDestroyNotify) g_object_unref, NULL);
+  self->id_to_app = g_hash_table_new_full (g_str_hash, g_str_equal,
                                            NULL,
                                            (GDestroyNotify)g_object_unref);
 
-  priv->startup_wm_class_to_id = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+  self->startup_wm_class_to_id = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
   cache = shell_app_cache_get_default ();
   g_signal_connect (cache, "changed", G_CALLBACK (installed_changed), self);
@@ -324,13 +310,12 @@ static void
 shell_app_system_finalize (GObject *object)
 {
   ShellAppSystem *self = SHELL_APP_SYSTEM (object);
-  ShellAppSystemPrivate *priv = self->priv;
 
-  g_hash_table_destroy (priv->running_apps);
-  g_hash_table_destroy (priv->id_to_app);
-  g_hash_table_destroy (priv->startup_wm_class_to_id);
-  g_list_free_full (priv->installed_apps, g_object_unref);
-  g_clear_handle_id (&priv->rescan_icons_timeout_id, g_source_remove);
+  g_hash_table_destroy (self->running_apps);
+  g_hash_table_destroy (self->id_to_app);
+  g_hash_table_destroy (self->startup_wm_class_to_id);
+  g_list_free_full (self->installed_apps, g_object_unref);
+  g_clear_handle_id (&self->rescan_icons_timeout_id, g_source_remove);
 
   G_OBJECT_CLASS (shell_app_system_parent_class)->finalize (object);
 }
@@ -357,11 +342,10 @@ ShellApp *
 shell_app_system_lookup_app (ShellAppSystem   *self,
                              const char       *id)
 {
-  ShellAppSystemPrivate *priv = self->priv;
   ShellApp *app;
   GDesktopAppInfo *info;
 
-  app = g_hash_table_lookup (priv->id_to_app, id);
+  app = g_hash_table_lookup (self->id_to_app, id);
   if (app)
     return app;
 
@@ -370,7 +354,7 @@ shell_app_system_lookup_app (ShellAppSystem   *self,
     return NULL;
 
   app = _shell_app_new (info);
-  g_hash_table_insert (priv->id_to_app, (char *) shell_app_get_id (app), app);
+  g_hash_table_insert (self->id_to_app, (char *) shell_app_get_id (app), app);
   return app;
 }
 
@@ -478,7 +462,7 @@ shell_app_system_lookup_startup_wmclass (ShellAppSystem *system,
   if (wmclass == NULL)
     return NULL;
 
-  id = g_hash_table_lookup (system->priv->startup_wm_class_to_id, wmclass);
+  id = g_hash_table_lookup (system->startup_wm_class_to_id, wmclass);
   if (id == NULL)
     return NULL;
 
@@ -494,12 +478,12 @@ _shell_app_system_notify_app_state_changed (ShellAppSystem *self,
   switch (state)
     {
     case SHELL_APP_STATE_RUNNING:
-      g_hash_table_insert (self->priv->running_apps, g_object_ref (app), NULL);
+      g_hash_table_insert (self->running_apps, g_object_ref (app), NULL);
       break;
     case SHELL_APP_STATE_STARTING:
       break;
     case SHELL_APP_STATE_STOPPED:
-      g_hash_table_remove (self->priv->running_apps, app);
+      g_hash_table_remove (self->running_apps, app);
       break;
     default:
       g_warn_if_reached();
@@ -524,7 +508,7 @@ shell_app_system_get_running (ShellAppSystem *self)
   GSList *ret;
   GHashTableIter iter;
 
-  g_hash_table_iter_init (&iter, self->priv->running_apps);
+  g_hash_table_iter_init (&iter, self->running_apps);
 
   ret = NULL;
   while (g_hash_table_iter_next (&iter, &key, &value))
