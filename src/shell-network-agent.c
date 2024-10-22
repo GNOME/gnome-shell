@@ -51,12 +51,15 @@ typedef struct {
   GVariantBuilder                   builder_vpn;
 } ShellAgentRequest;
 
-struct _ShellNetworkAgentPrivate {
+typedef struct _ShellNetworkAgent
+{
+  NMSecretAgentOld parent_instance;
+
   /* <gchar *request_id, ShellAgentRequest *request> */
   GHashTable *requests;
-};
+} ShellNetworkAgent;
 
-G_DEFINE_TYPE_WITH_PRIVATE (ShellNetworkAgent, shell_network_agent, NM_TYPE_SECRET_AGENT_OLD)
+G_DEFINE_FINAL_TYPE (ShellNetworkAgent, shell_network_agent, NM_TYPE_SECRET_AGENT_OLD)
 
 static const SecretSchema network_agent_schema = {
     "org.freedesktop.NetworkManager.Connection",
@@ -102,24 +105,21 @@ shell_agent_request_cancel (ShellAgentRequest *request)
 
   g_signal_emit (self, signals[SIGNAL_CANCEL_REQUEST], 0, request->request_id);
 
-  g_hash_table_remove (self->priv->requests, request->request_id);
+  g_hash_table_remove (self->requests, request->request_id);
   g_error_free (error);
 }
 
 static void
 shell_network_agent_init (ShellNetworkAgent *agent)
 {
-  ShellNetworkAgentPrivate *priv;
-
-  priv = agent->priv = shell_network_agent_get_instance_private (agent);
-  priv->requests = g_hash_table_new_full (g_str_hash, g_str_equal,
-					  g_free, shell_agent_request_free);
+  agent->requests = g_hash_table_new_full (g_str_hash, g_str_equal,
+					                                 g_free, shell_agent_request_free);
 }
 
 static void
 shell_network_agent_finalize (GObject *object)
 {
-  ShellNetworkAgentPrivate *priv = SHELL_NETWORK_AGENT (object)->priv;
+  ShellNetworkAgent *self = SHELL_NETWORK_AGENT (object);
   GError *error;
   GHashTableIter iter;
   gpointer key;
@@ -129,7 +129,7 @@ shell_network_agent_finalize (GObject *object)
                        NM_SECRET_AGENT_ERROR_AGENT_CANCELED,
                        "The secret agent is going away");
 
-  g_hash_table_iter_init (&iter, priv->requests);
+  g_hash_table_iter_init (&iter, self->requests);
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
       ShellAgentRequest *request = value;
@@ -140,7 +140,7 @@ shell_network_agent_finalize (GObject *object)
                          request->callback_data);
     }
 
-  g_hash_table_destroy (priv->requests);
+  g_hash_table_destroy (self->requests);
   g_error_free (error);
 
   G_OBJECT_CLASS (shell_network_agent_parent_class)->finalize (object);
@@ -238,7 +238,6 @@ get_secrets_keyring_cb (GObject            *source,
 {
   ShellAgentRequest *closure;
   ShellNetworkAgent *self;
-  ShellNetworkAgentPrivate *priv;
   GError *secret_error = NULL;
   GError *error = NULL;
   GList *items;
@@ -257,7 +256,6 @@ get_secrets_keyring_cb (GObject            *source,
 
   closure = user_data;
   self = closure->self;
-  priv  = self->priv;
 
   if (secret_error != NULL)
     {
@@ -333,7 +331,7 @@ get_secrets_keyring_cb (GObject            *source,
                      closure->callback_data);
 
  out:
-  g_hash_table_remove (priv->requests, closure->request_id);
+  g_hash_table_remove (self->requests, closure->request_id);
   g_clear_error (&error);
 }
 
@@ -353,7 +351,7 @@ shell_network_agent_get_secrets (NMSecretAgentOld                 *agent,
   char *request_id;
 
   request_id = g_strdup_printf ("%s/%s", connection_path, setting_name);
-  if ((request = g_hash_table_lookup (self->priv->requests, request_id)) != NULL)
+  if ((request = g_hash_table_lookup (self->requests, request_id)) != NULL)
     {
       /* We already have a request pending for this (connection, setting)
        * Cancel it before starting the new one.
@@ -373,7 +371,7 @@ shell_network_agent_get_secrets (NMSecretAgentOld                 *agent,
   request->callback_data = callback_data;
 
   request->request_id = request_id;
-  g_hash_table_replace (self->priv->requests, request->request_id, request);
+  g_hash_table_replace (self->requests, request->request_id, request);
 
   g_variant_builder_init (&request->builder_vpn, G_VARIANT_TYPE ("a{ss}"));
 
@@ -404,13 +402,11 @@ shell_network_agent_add_vpn_secret (ShellNetworkAgent *self,
                                     gchar             *setting_key,
                                     gchar             *setting_value)
 {
-  ShellNetworkAgentPrivate *priv;
   ShellAgentRequest *request;
 
   g_return_if_fail (SHELL_IS_NETWORK_AGENT (self));
 
-  priv = self->priv;
-  request = g_hash_table_lookup (priv->requests, request_id);
+  request = g_hash_table_lookup (self->requests, request_id);
   g_return_if_fail (request != NULL);
 
   g_variant_builder_add (&request->builder_vpn, "{ss}", setting_key, setting_value);
@@ -422,13 +418,11 @@ shell_network_agent_set_password (ShellNetworkAgent *self,
                                   gchar             *setting_key,
                                   gchar             *setting_value)
 {
-  ShellNetworkAgentPrivate *priv;
   ShellAgentRequest *request;
 
   g_return_if_fail (SHELL_IS_NETWORK_AGENT (self));
 
-  priv = self->priv;
-  request = g_hash_table_lookup (priv->requests, request_id);
+  request = g_hash_table_lookup (self->requests, request_id);
   g_return_if_fail (request != NULL);
 
   g_variant_dict_insert (request->entries, setting_key, "s", setting_value);
@@ -439,15 +433,13 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
                              gchar                     *request_id,
                              ShellNetworkAgentResponse  response)
 {
-  ShellNetworkAgentPrivate *priv;
   ShellAgentRequest *request;
   GVariantBuilder builder_connection;
   GVariant *vpn_secrets, *setting;
 
   g_return_if_fail (SHELL_IS_NETWORK_AGENT (self));
 
-  priv = self->priv;
-  request = g_hash_table_lookup (priv->requests, request_id);
+  request = g_hash_table_lookup (self->requests, request_id);
   g_return_if_fail (request != NULL);
 
   if (response == SHELL_NETWORK_AGENT_USER_CANCELED)
@@ -458,7 +450,7 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
 
       request->callback (NM_SECRET_AGENT_OLD (self), request->connection, NULL, error, request->callback_data);
       g_error_free (error);
-      g_hash_table_remove (priv->requests, request_id);
+      g_hash_table_remove (self->requests, request_id);
       return;
     }
 
@@ -470,7 +462,7 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
 
       request->callback (NM_SECRET_AGENT_OLD (self), request->connection, NULL, error, request->callback_data);
       g_error_free (error);
-      g_hash_table_remove (priv->requests, request_id);
+      g_hash_table_remove (self->requests, request_id);
       return;
     }
 
@@ -504,7 +496,7 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
                      g_variant_builder_end (&builder_connection), NULL,
                      request->callback_data);
 
-  g_hash_table_remove (priv->requests, request_id);
+  g_hash_table_remove (self->requests, request_id);
 }
 
 static void
@@ -570,12 +562,11 @@ shell_network_agent_cancel_get_secrets (NMSecretAgentOld *agent,
                                         const gchar      *setting_name)
 {
   ShellNetworkAgent *self = SHELL_NETWORK_AGENT (agent);
-  ShellNetworkAgentPrivate *priv = self->priv;
   gchar *request_id;
   ShellAgentRequest *request;
 
   request_id = g_strdup_printf ("%s/%s", connection_path, setting_name);
-  request = g_hash_table_lookup (priv->requests, request_id);
+  request = g_hash_table_lookup (self->requests, request_id);
   g_free (request_id);
 
   if (!request)
