@@ -12,22 +12,16 @@
 #include "shell-tray-icon-private.h"
 #include "shell-global.h"
 
-typedef struct _ShellTrayManagerPrivate ShellTrayManagerPrivate;
-
-struct _ShellTrayManager
+typedef struct _ShellTrayManager
 {
   GObject parent_instance;
 
-  ShellTrayManagerPrivate *priv;
-};
-
-struct _ShellTrayManagerPrivate {
   NaTrayManager *na_manager;
   CoglColor bg_color;
 
   GHashTable *icons;
   StWidget *theme_widget;
-};
+} ShellTrayManager;
 
 typedef struct {
   ShellTrayManager *manager;
@@ -49,7 +43,7 @@ enum
   LAST_SIGNAL
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (ShellTrayManager, shell_tray_manager, G_TYPE_OBJECT);
+G_DEFINE_FINAL_TYPE (ShellTrayManager, shell_tray_manager, G_TYPE_OBJECT);
 
 static guint shell_tray_manager_signals [LAST_SIGNAL] = { 0 };
 
@@ -93,9 +87,9 @@ shell_tray_manager_set_property(GObject         *object,
       {
         CoglColor *color = g_value_get_boxed (value);
         if (color)
-          manager->priv->bg_color = *color;
+          manager->bg_color = *color;
         else
-          manager->priv->bg_color = default_color;
+          manager->bg_color = default_color;
       }
       break;
     default:
@@ -115,7 +109,7 @@ shell_tray_manager_get_property(GObject         *object,
   switch (prop_id)
     {
     case PROP_BG_COLOR:
-      g_value_set_boxed (value, &manager->priv->bg_color);
+      g_value_set_boxed (value, &manager->bg_color);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -126,9 +120,7 @@ shell_tray_manager_get_property(GObject         *object,
 static void
 shell_tray_manager_init (ShellTrayManager *manager)
 {
-  manager->priv = shell_tray_manager_get_instance_private (manager);
-
-  manager->priv->bg_color = default_color;
+  manager->bg_color = default_color;
 }
 
 static void
@@ -190,28 +182,28 @@ shell_tray_manager_ensure_resources (ShellTrayManager *manager)
   MetaDisplay *display;
   MetaX11Display *x11_display;
 
-  if (manager->priv->na_manager != NULL)
+  if (manager->na_manager != NULL)
     return;
 
-  manager->priv->icons = g_hash_table_new_full (NULL, NULL,
-                                                NULL, free_tray_icon);
+  manager->icons = g_hash_table_new_full (NULL, NULL,
+                                          NULL, free_tray_icon);
 
   display = shell_global_get_display (shell_global_get ());
   x11_display = meta_display_get_x11_display (display);
 
-  manager->priv->na_manager = na_tray_manager_new (x11_display);
+  manager->na_manager = na_tray_manager_new (x11_display);
 
-  g_signal_connect (manager->priv->na_manager, "tray-icon-added",
+  g_signal_connect (manager->na_manager, "tray-icon-added",
                     G_CALLBACK (na_tray_icon_added), manager);
-  g_signal_connect (manager->priv->na_manager, "tray-icon-removed",
+  g_signal_connect (manager->na_manager, "tray-icon-removed",
                     G_CALLBACK (na_tray_icon_removed), manager);
 }
 
 static void
 shell_tray_manager_release_resources (ShellTrayManager *manager)
 {
-  g_clear_object (&manager->priv->na_manager);
-  g_clear_pointer (&manager->priv->icons, g_hash_table_destroy);
+  g_clear_object (&manager->na_manager);
+  g_clear_pointer (&manager->icons, g_hash_table_destroy);
 }
 
 static void
@@ -222,12 +214,12 @@ shell_tray_manager_style_changed (StWidget *theme_widget,
   StThemeNode *theme_node;
   StIconColors *icon_colors;
 
-  if (manager->priv->na_manager == NULL)
+  if (manager->na_manager == NULL)
     return;
 
   theme_node = st_widget_get_theme_node (theme_widget);
   icon_colors = st_theme_node_get_icon_colors (theme_node);
-  na_tray_manager_set_colors (manager->priv->na_manager,
+  na_tray_manager_set_colors (manager->na_manager,
                               &icon_colors->foreground, &icon_colors->warning,
                               &icon_colors->error, &icon_colors->success);
 }
@@ -236,7 +228,7 @@ static void
 shell_tray_manager_manage_screen_internal (ShellTrayManager *manager)
 {
   shell_tray_manager_ensure_resources (manager);
-  na_tray_manager_manage (manager->priv->na_manager);
+  na_tray_manager_manage (manager->na_manager);
 }
 
 void
@@ -245,7 +237,7 @@ shell_tray_manager_manage_screen (ShellTrayManager *manager,
 {
   MetaDisplay *display = shell_global_get_display (shell_global_get ());
 
-  g_set_weak_pointer (&manager->priv->theme_widget, theme_widget);
+  g_set_weak_pointer (&manager->theme_widget, theme_widget);
 
   if (meta_display_get_x11_display (display) != NULL)
     shell_tray_manager_manage_screen_internal (manager);
@@ -270,13 +262,13 @@ shell_tray_manager_unmanage_screen (ShellTrayManager *manager)
 
   g_signal_handlers_disconnect_by_data (display, manager);
 
-  if (manager->priv->theme_widget != NULL)
+  if (manager->theme_widget != NULL)
     {
-      g_signal_handlers_disconnect_by_func (manager->priv->theme_widget,
+      g_signal_handlers_disconnect_by_func (manager->theme_widget,
                                             G_CALLBACK (shell_tray_manager_style_changed),
                                             manager);
     }
-  g_set_weak_pointer (&manager->priv->theme_widget, NULL);
+  g_set_weak_pointer (&manager->theme_widget, NULL);
 
   shell_tray_manager_release_resources (manager);
 }
@@ -289,13 +281,13 @@ on_plug_added (NaTrayChild      *tray_child,
 
   g_signal_handlers_disconnect_by_func (tray_child, on_plug_added, manager);
 
-  child = g_hash_table_lookup (manager->priv->icons, tray_child);
+  child = g_hash_table_lookup (manager->icons, tray_child);
 
   child->actor = shell_tray_icon_new (tray_child);
   g_object_ref_sink (child->actor);
 
   na_xembed_set_background_color (NA_XEMBED (tray_child),
-                                  &manager->priv->bg_color);
+                                  &manager->bg_color);
 
   g_signal_emit (manager, shell_tray_manager_signals[TRAY_ICON_ADDED], 0,
                  child->actor);
@@ -313,7 +305,7 @@ na_tray_icon_added (NaTrayManager *na_manager,
   child->manager = manager;
   child->tray_child = tray_child;
 
-  g_hash_table_insert (manager->priv->icons, tray_child, child);
+  g_hash_table_insert (manager->icons, tray_child, child);
 
   g_signal_connect (tray_child, "plug-added",
                     G_CALLBACK (on_plug_added), manager);
@@ -327,7 +319,7 @@ na_tray_icon_removed (NaTrayManager *na_manager,
   ShellTrayManager *manager = user_data;
   ShellTrayManagerChild *child;
 
-  child = g_hash_table_lookup (manager->priv->icons, tray_child);
+  child = g_hash_table_lookup (manager->icons, tray_child);
   g_return_if_fail (child != NULL);
 
   if (child->actor != NULL)
@@ -340,5 +332,5 @@ na_tray_icon_removed (NaTrayManager *na_manager,
                      child->actor);
     }
 
-  g_hash_table_remove (manager->priv->icons, tray_child);
+  g_hash_table_remove (manager->icons, tray_child);
 }
