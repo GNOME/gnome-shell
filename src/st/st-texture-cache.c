@@ -34,8 +34,10 @@
 #define CACHE_PREFIX_FILE "file:"
 #define CACHE_PREFIX_FILE_FOR_CAIRO "file-for-cairo:"
 
-struct _StTextureCachePrivate
+typedef struct _StTextureCache
 {
+  GObject parent;
+
   StIconTheme *icon_theme;
 
   /* Things that were loaded with a cache policy != NONE */
@@ -51,7 +53,7 @@ struct _StTextureCachePrivate
   GHashTable *file_monitors; /* char * -> GFileMonitor * */
 
   GCancellable *cancellable;
-};
+} StTextureCache;
 
 static void st_texture_cache_dispose (GObject *object);
 static void st_texture_cache_finalize (GObject *object);
@@ -65,7 +67,7 @@ enum
 };
 
 static guint signals[LAST_SIGNAL] = { 0, };
-G_DEFINE_TYPE(StTextureCache, st_texture_cache, G_TYPE_OBJECT);
+G_DEFINE_FINAL_TYPE (StTextureCache, st_texture_cache, G_TYPE_OBJECT);
 
 /* We want to preserve the aspect ratio by default, also the default
  * pipeline for an empty texture is full opacity white, which we
@@ -137,7 +139,7 @@ st_texture_cache_evict_icons (StTextureCache *cache)
   gpointer key;
   gpointer value;
 
-  g_hash_table_iter_init (&iter, cache->priv->keyed_cache);
+  g_hash_table_iter_init (&iter, cache->keyed_cache);
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
       const char *cache_key = key;
@@ -162,28 +164,26 @@ on_icon_theme_changed (StIconTheme    *icon_theme,
 static void
 st_texture_cache_init (StTextureCache *self)
 {
-  self->priv = g_new0 (StTextureCachePrivate, 1);
-
-  self->priv->icon_theme = st_icon_theme_new ();
-  st_icon_theme_add_resource_path (self->priv->icon_theme,
+  self->icon_theme = st_icon_theme_new ();
+  st_icon_theme_add_resource_path (self->icon_theme,
                                    "/org/gnome/shell/icons");
-  g_signal_connect (self->priv->icon_theme, "changed",
+  g_signal_connect (self->icon_theme, "changed",
                     G_CALLBACK (on_icon_theme_changed), self);
 
-  self->priv->keyed_cache = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                   g_free, g_object_unref);
-  self->priv->keyed_surface_cache = g_hash_table_new_full (g_str_hash,
-                                                           g_str_equal,
-                                                           g_free,
-                                                           (GDestroyNotify) cairo_surface_destroy);
-  self->priv->used_scales = g_hash_table_new_full (g_double_hash, g_double_equal,
-                                                   g_free, NULL);
-  self->priv->outstanding_requests = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                            g_free, NULL);
-  self->priv->file_monitors = g_hash_table_new_full (g_file_hash, (GEqualFunc) g_file_equal,
-                                                     g_object_unref, g_object_unref);
+  self->keyed_cache = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                             g_free, g_object_unref);
+  self->keyed_surface_cache = g_hash_table_new_full (g_str_hash,
+                                                     g_str_equal,
+                                                     g_free,
+                                                     (GDestroyNotify) cairo_surface_destroy);
+  self->used_scales = g_hash_table_new_full (g_double_hash, g_double_equal,
+                                             g_free, NULL);
+  self->outstanding_requests = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                      g_free, NULL);
+  self->file_monitors = g_hash_table_new_full (g_file_hash, (GEqualFunc) g_file_equal,
+                                               g_object_unref, g_object_unref);
 
-  self->priv->cancellable = g_cancellable_new ();
+  self->cancellable = g_cancellable_new ();
 }
 
 static void
@@ -191,16 +191,16 @@ st_texture_cache_dispose (GObject *object)
 {
   StTextureCache *self = (StTextureCache*)object;
 
-  g_cancellable_cancel (self->priv->cancellable);
+  g_cancellable_cancel (self->cancellable);
 
-  g_clear_object (&self->priv->icon_theme);
-  g_clear_object (&self->priv->cancellable);
+  g_clear_object (&self->icon_theme);
+  g_clear_object (&self->cancellable);
 
-  g_clear_pointer (&self->priv->keyed_cache, g_hash_table_destroy);
-  g_clear_pointer (&self->priv->keyed_surface_cache, g_hash_table_destroy);
-  g_clear_pointer (&self->priv->used_scales, g_hash_table_destroy);
-  g_clear_pointer (&self->priv->outstanding_requests, g_hash_table_destroy);
-  g_clear_pointer (&self->priv->file_monitors, g_hash_table_destroy);
+  g_clear_pointer (&self->keyed_cache, g_hash_table_destroy);
+  g_clear_pointer (&self->keyed_surface_cache, g_hash_table_destroy);
+  g_clear_pointer (&self->used_scales, g_hash_table_destroy);
+  g_clear_pointer (&self->outstanding_requests, g_hash_table_destroy);
+  g_clear_pointer (&self->file_monitors, g_hash_table_destroy);
 
   G_OBJECT_CLASS (st_texture_cache_parent_class)->dispose (object);
 }
@@ -687,7 +687,7 @@ finish_texture_load (AsyncTextureLoadData *data,
 
   cache = data->cache;
 
-  g_hash_table_remove (cache->priv->outstanding_requests, data->key);
+  g_hash_table_remove (cache->outstanding_requests, data->key);
 
   if (pixbuf == NULL)
     goto out;
@@ -696,7 +696,7 @@ finish_texture_load (AsyncTextureLoadData *data,
     {
       gpointer orig_key = NULL, value = NULL;
 
-      if (!g_hash_table_lookup_extended (cache->priv->keyed_cache, data->key,
+      if (!g_hash_table_lookup_extended (cache->keyed_cache, data->key,
                                          &orig_key, &value))
         {
           image = pixbuf_to_st_content_image (pixbuf,
@@ -706,7 +706,7 @@ finish_texture_load (AsyncTextureLoadData *data,
           if (!image)
             goto out;
 
-          g_hash_table_insert (cache->priv->keyed_cache, g_strdup (data->key),
+          g_hash_table_insert (cache->keyed_cache, g_strdup (data->key),
                                g_object_ref (image));
         }
       else
@@ -789,13 +789,13 @@ load_texture_async (StTextureCache       *cache,
         {
           st_icon_info_load_symbolic_async (data->icon_info,
                                             data->colors,
-                                            cache->priv->cancellable,
+                                            cache->cancellable,
                                             on_symbolic_icon_loaded, data);
         }
       else
         {
           st_icon_info_load_icon_async (data->icon_info,
-                                        cache->priv->cancellable,
+                                        cache->cancellable,
                                         on_icon_loaded, data);
         }
     }
@@ -887,12 +887,12 @@ st_texture_cache_load (StTextureCache       *cache,
 {
   CoglTexture *texture;
 
-  texture = g_hash_table_lookup (cache->priv->keyed_cache, key);
+  texture = g_hash_table_lookup (cache->keyed_cache, key);
   if (!texture)
     {
       texture = load (cache, key, data, error);
       if (texture && policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
-        g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), texture);
+        g_hash_table_insert (cache->keyed_cache, g_strdup (key), texture);
     }
 
   if (texture && policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
@@ -926,7 +926,7 @@ ensure_request (StTextureCache        *cache,
   AsyncTextureLoadData *pending;
   gboolean had_pending;
 
-  image = g_hash_table_lookup (cache->priv->keyed_cache, key);
+  image = g_hash_table_lookup (cache->keyed_cache, key);
 
   if (image != NULL)
     {
@@ -935,7 +935,7 @@ ensure_request (StTextureCache        *cache,
       return TRUE;
     }
 
-  pending = g_hash_table_lookup (cache->priv->outstanding_requests, key);
+  pending = g_hash_table_lookup (cache->outstanding_requests, key);
   had_pending = pending != NULL;
 
   if (pending == NULL)
@@ -943,7 +943,7 @@ ensure_request (StTextureCache        *cache,
       /* Not cached and no pending request, create it */
       *request = g_new0 (AsyncTextureLoadData, 1);
       if (policy != ST_TEXTURE_CACHE_POLICY_NONE)
-        g_hash_table_insert (cache->priv->outstanding_requests, g_strdup (key), *request);
+        g_hash_table_insert (cache->outstanding_requests, g_strdup (key), *request);
     }
   else
    *request = pending;
@@ -1018,7 +1018,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
     }
 
   /* Do theme lookups in the main thread to avoid thread-unsafety */
-  theme = cache->priv->icon_theme;
+  theme = cache->icon_theme;
 
   lookup_flags = 0;
 
@@ -1071,7 +1071,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
                                                       lookup_flags);
       if (info == NULL)
         {
-          g_hash_table_remove (cache->priv->outstanding_requests, key);
+          g_hash_table_remove (cache->outstanding_requests, key);
           texture_load_data_free (request);
           g_object_unref (actor);
           return NULL;
@@ -1158,16 +1158,16 @@ file_changed_cb (GFileMonitor      *monitor,
     return;
 
   file_hash = g_file_hash (file);
-  scales = g_hash_table_get_keys (cache->priv->used_scales);
+  scales = g_hash_table_get_keys (cache->used_scales);
 
   key = g_strdup_printf (CACHE_PREFIX_FILE "%u", file_hash);
-  g_hash_table_remove (cache->priv->keyed_cache, key);
-  hash_table_remove_with_scales (cache->priv->keyed_cache, scales, key);
+  g_hash_table_remove (cache->keyed_cache, key);
+  hash_table_remove_with_scales (cache->keyed_cache, scales, key);
   g_free (key);
 
   key = g_strdup_printf (CACHE_PREFIX_FILE_FOR_CAIRO "%u", file_hash);
-  g_hash_table_remove (cache->priv->keyed_surface_cache, key);
-  hash_table_remove_with_scales (cache->priv->keyed_surface_cache, scales, key);
+  g_hash_table_remove (cache->keyed_surface_cache, key);
+  hash_table_remove_with_scales (cache->keyed_surface_cache, scales, key);
   g_free (key);
 
   g_signal_emit (cache, signals[TEXTURE_FILE_CHANGED], 0, file);
@@ -1177,21 +1177,19 @@ static void
 ensure_monitor_for_file (StTextureCache *cache,
                          GFile          *file)
 {
-  StTextureCachePrivate *priv = cache->priv;
-
   /* No point in trying to monitor files that are part of a
    * GResource, since it does not support file monitoring.
    */
   if (g_file_has_uri_scheme (file, "resource"))
     return;
 
-  if (g_hash_table_lookup (priv->file_monitors, file) == NULL)
+  if (g_hash_table_lookup (cache->file_monitors, file) == NULL)
     {
       GFileMonitor *monitor = g_file_monitor_file (file, G_FILE_MONITOR_NONE,
                                                    NULL, NULL);
       g_signal_connect (monitor, "changed",
                         G_CALLBACK (file_changed_cb), cache);
-      g_hash_table_insert (priv->file_monitors, g_object_ref (file), monitor);
+      g_hash_table_insert (cache->file_monitors, g_object_ref (file), monitor);
     }
 }
 
@@ -1494,7 +1492,7 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
   key = g_strdup_printf (CACHE_PREFIX_FILE "%u%f", g_file_hash (file), resource_scale);
 
   texdata = NULL;
-  image = g_hash_table_lookup (cache->priv->keyed_cache, key);
+  image = g_hash_table_lookup (cache->keyed_cache, key);
 
   if (image == NULL)
     {
@@ -1513,8 +1511,8 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
 
       if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
         {
-          g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), image);
-          hash_table_insert_scale (cache->priv->used_scales, (double)resource_scale);
+          g_hash_table_insert (cache->keyed_cache, g_strdup (key), image);
+          hash_table_insert_scale (cache->used_scales, (double)resource_scale);
         }
     }
 
@@ -1547,7 +1545,7 @@ st_texture_cache_load_file_sync_to_cairo_surface (StTextureCache        *cache,
 
   key = g_strdup_printf (CACHE_PREFIX_FILE_FOR_CAIRO "%u%f", g_file_hash (file), resource_scale);
 
-  surface = g_hash_table_lookup (cache->priv->keyed_surface_cache, key);
+  surface = g_hash_table_lookup (cache->keyed_surface_cache, key);
 
   if (surface == NULL)
     {
@@ -1562,9 +1560,9 @@ st_texture_cache_load_file_sync_to_cairo_surface (StTextureCache        *cache,
       if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
         {
           cairo_surface_reference (surface);
-          g_hash_table_insert (cache->priv->keyed_surface_cache,
+          g_hash_table_insert (cache->keyed_surface_cache,
                                g_strdup (key), surface);
-          hash_table_insert_scale (cache->priv->used_scales, (double)resource_scale);
+          hash_table_insert_scale (cache->used_scales, (double)resource_scale);
         }
     }
   else
@@ -1676,7 +1674,5 @@ st_texture_cache_get_default (void)
 gboolean
 st_texture_cache_rescan_icon_theme (StTextureCache *cache)
 {
-  StTextureCachePrivate *priv = cache->priv;
-
-  return st_icon_theme_rescan_if_needed (priv->icon_theme);
+  return st_icon_theme_rescan_if_needed (cache->icon_theme);
 }
