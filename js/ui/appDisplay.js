@@ -58,8 +58,7 @@ const DIALOG_SHADE_HIGHLIGHT = new Cogl.Color({red: 0, green: 0, blue: 0, alpha:
 
 const DEFAULT_FOLDERS = {
     'Utilities': {
-        name: 'X-GNOME-Utilities.directory',
-        categories: ['X-GNOME-Utilities'],
+        name: 'X-GNOME-Shell-Utilities.directory',
         apps: [
             'gnome-abrt.desktop',
             'gnome-system-log.desktop',
@@ -1446,7 +1445,8 @@ class AppDisplay extends BaseAppView {
             });
             child.set_string('name', name);
             child.set_boolean('translate', true);
-            child.set_strv('categories', categories);
+            if (categories)
+                child.set_strv('categories', categories);
             if (apps)
                 child.set_strv('apps', apps);
         }
