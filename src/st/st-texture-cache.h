@@ -25,8 +25,9 @@
 #error "Only <st/st.h> can be included directly.h"
 #endif
 
-#include <gio/gio.h>
+#include <cairo.h>
 #include <clutter/clutter.h>
+#include <gio/gio.h>
 
 #include <st/st-types.h>
 #include <st/st-theme-node.h>
