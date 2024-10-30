@@ -15,6 +15,8 @@
 #include <cogl/cogl.h>
 #include "shell-glsl-effect.h"
 
+#include "shell-global.h"
+
 typedef struct _ShellGLSLEffectPrivate ShellGLSLEffectPrivate;
 struct _ShellGLSLEffectPrivate
 {
@@ -104,8 +106,6 @@ shell_glsl_effect_constructed (GObject *object)
   ShellGLSLEffect *self;
   ShellGLSLEffectClass *klass;
   ShellGLSLEffectPrivate *priv;
-  CoglContext *ctx =
-    clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
   G_OBJECT_CLASS (shell_glsl_effect_parent_class)->constructed (object);
 
@@ -119,6 +119,10 @@ shell_glsl_effect_constructed (GObject *object)
 
   if (G_UNLIKELY (klass->base_pipeline == NULL))
     {
+      ShellGlobal *global = shell_global_get ();
+      ClutterBackend *backend = shell_global_get_clutter_backend (global);
+      CoglContext *ctx = clutter_backend_get_cogl_context (backend);
+
       klass->base_pipeline = cogl_pipeline_new (ctx);
       cogl_pipeline_set_blend (klass->base_pipeline, "RGB = ADD (SRC_COLOR * (SRC_COLOR[A]), DST_COLOR * (1-SRC_COLOR[A]))", NULL);
 

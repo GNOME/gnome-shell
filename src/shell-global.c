@@ -61,6 +61,7 @@ struct _ShellGlobal {
   MetaDisplay *meta_display;
   MetaCompositor *compositor;
   MetaWorkspaceManager *workspace_manager;
+  ClutterBackend *clutter_backend;
 
   char *session_mode;
 
@@ -106,6 +107,7 @@ enum {
   PROP_DISPLAY,
   PROP_COMPOSITOR,
   PROP_WORKSPACE_MANAGER,
+  PROP_CLUTTER_BACKEND,
   PROP_SCREEN_WIDTH,
   PROP_SCREEN_HEIGHT,
   PROP_STAGE,
@@ -288,6 +290,8 @@ shell_global_get_property(GObject         *object,
     case PROP_WORKSPACE_MANAGER:
       g_value_set_object (value, global->workspace_manager);
       break;
+    case PROP_CLUTTER_BACKEND:
+      g_value_set_object (value, global->clutter_backend);
     case PROP_SCREEN_WIDTH:
       {
         int width, height;
@@ -589,6 +593,11 @@ shell_global_class_init (ShellGlobalClass *klass)
                          META_TYPE_WORKSPACE_MANAGER,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
+  props[PROP_CLUTTER_BACKEND] =
+    g_param_spec_object ("clutter-backend", NULL, NULL,
+                         CLUTTER_TYPE_BACKEND,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+
   props[PROP_STAGE] =
     g_param_spec_object ("stage", NULL, NULL,
                          CLUTTER_TYPE_ACTOR,
@@ -766,6 +775,17 @@ shell_global_set_stage_input_region (ShellGlobal *global,
 }
 
 /**
+ * shell_global_get_clutter_backend:
+ *
+ * Return value: (transfer none): The #ClutterBackend
+ */
+ClutterBackend *
+shell_global_get_clutter_backend (ShellGlobal *global)
+{
+  return global->clutter_backend;
+}
+
+/**
  * shell_global_get_context:
  *
  * Return value: (transfer none): The #MetaContext
@@ -885,8 +905,7 @@ global_stage_after_paint (ClutterStage     *stage,
 {
   /* At this point, we've finished all layout and painting, but haven't
    * actually flushed or swapped */
-
-  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackend *backend = shell_global_get_clutter_backend (global);
   CoglContext *cogl_context = clutter_backend_get_cogl_context (backend);
   CoglDisplay *cogl_display = cogl_context_get_display (cogl_context);
   CoglRenderer *cogl_renderer = cogl_display_get_renderer (cogl_display);
@@ -975,6 +994,7 @@ void
 _shell_global_set_plugin (ShellGlobal *global,
                           MetaPlugin  *plugin)
 {
+  ClutterContext *clutter_context;
   MetaContext *context;
   MetaDisplay *display;
   MetaBackend *backend;
@@ -999,6 +1019,8 @@ _shell_global_set_plugin (ShellGlobal *global,
   global->workspace_manager = meta_display_get_workspace_manager (display);
 
   global->stage = CLUTTER_STAGE (meta_get_stage_for_display (display));
+  clutter_context = clutter_actor_get_context (CLUTTER_ACTOR (global->stage));
+  global->clutter_backend = clutter_context_get_backend (clutter_context);
 
   st_entry_set_cursor_func (entry_cursor_func, global);
   st_clipboard_set_selection (meta_display_get_selection (display));

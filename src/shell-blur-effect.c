@@ -21,6 +21,7 @@
 #include <mtk/mtk.h>
 
 #include "shell-blur-effect.h"
+#include "shell-global.h"
 
 #include "shell-enum-types.h"
 
@@ -107,8 +108,9 @@ create_base_pipeline (void)
 
   if (G_UNLIKELY (base_pipeline == NULL))
     {
-      CoglContext *ctx =
-        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      ShellGlobal *global = shell_global_get ();
+      ClutterBackend *backend = shell_global_get_clutter_backend (global);
+      CoglContext *ctx = clutter_backend_get_cogl_context (backend);
 
       base_pipeline = cogl_pipeline_new (ctx);
       cogl_pipeline_set_layer_null_texture (base_pipeline, 0);
@@ -187,8 +189,9 @@ update_fbo (FramebufferData *data,
             unsigned int     height,
             float            downscale_factor)
 {
-  CoglContext *ctx =
-    clutter_backend_get_cogl_context (clutter_get_default_backend ());
+  ShellGlobal *global = shell_global_get ();
+  ClutterBackend *backend = shell_global_get_clutter_backend (global);
+  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
 
   g_clear_object (&data->texture);
   g_clear_object (&data->framebuffer);

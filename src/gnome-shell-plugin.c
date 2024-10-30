@@ -56,8 +56,6 @@ struct _GnomeShellPlugin
 {
   MetaPlugin parent;
 
-  CoglContext *cogl_context;
-
   ShellGlobal *global;
 };
 
@@ -67,10 +65,6 @@ static void
 gnome_shell_plugin_start (MetaPlugin *plugin)
 {
   GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
-  ClutterBackend *backend;
-
-  backend = clutter_get_default_backend ();
-  shell_plugin->cogl_context = clutter_backend_get_cogl_context (backend);
 
   shell_plugin->global = shell_global_get ();
   _shell_global_set_plugin (shell_plugin->global, META_PLUGIN (shell_plugin));

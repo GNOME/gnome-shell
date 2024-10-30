@@ -347,7 +347,8 @@ class UnlockDialogClock extends St.BoxLayout {
         this._wallClock = new GnomeDesktop.WallClock({time_only: true});
         this._wallClock.connect('notify::clock', this._updateClock.bind(this));
 
-        this._seat = Clutter.get_default_backend().get_default_seat();
+        const backend = this.get_context().get_backend();
+        this._seat = backend.get_default_seat();
         this._seat.connectObject('notify::touch-mode',
             this._updateHint.bind(this), this);
 
