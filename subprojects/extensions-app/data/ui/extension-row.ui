@@ -10,6 +10,7 @@
     </binding>
     <child type="suffix">
       <object class="GtkMenuButton" id="errorButton">
+        <property name="tooltip-text" translatable="yes">Error Details</property>
         <property name="valign">center</property>
         <property name="has-frame">false</property>
         <property name="icon-name">dialog-error-symbolic</property>
@@ -18,9 +19,6 @@
             <lookup name="extension" type="ExtensionRow"/>
           </lookup>
         </binding>
-        <accessibility>
-          <property name="label" translatable="yes">Error Details</property>
-        </accessibility>
         <property name="popover">
           <object class="GtkPopover" id="errorPopover">
             <property name="child">
@@ -50,6 +48,7 @@
     </child>
     <child type="suffix">
       <object class="GtkMenuButton" id="updatesButton">
+        <property name="tooltip-text" translatable="yes">Updates Details</property>
         <property name="valign">center</property>
         <property name="has-frame">false</property>
         <property name="icon-name">software-update-available-symbolic</property>
@@ -58,9 +57,6 @@
             <lookup name="extension" type="ExtensionRow"/>
           </lookup>
         </binding>
-        <accessibility>
-          <property name="label" translatable="yes">Updates Details</property>
-        </accessibility>
         <property name="popover">
           <object class="GtkPopover" id="updatesPopover">
             <property name="child">
