@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-10-18 06:24+0000\n"
-"PO-Revision-Date: 2024-10-19 10:07+0700\n"
+"POT-Creation-Date: 2024-10-27 22:36+0000\n"
+"PO-Revision-Date: 2024-11-02 15:38+0700\n"
 "Last-Translator: Atirut Wattanamongkol <atirut.wattanamongkol@gmail.com>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "Language: th\n"
@@ -223,7 +223,7 @@ msgid ""
 "this option will disable this check and try to load all extensions regardless of the versions they "
 "claim to support."
 msgstr ""
-"GNOME เชลล์จะโหลดเฉพาะส่วนขยายที่อ้างว่ารองรับรุ่นที่ใช้อยู่ปัจจุบันเท่านั้น "
+"เชลล์ GNOME จะโหลดเฉพาะส่วนขยายที่อ้างว่ารองรับรุ่นที่ใช้อยู่ปัจจุบันเท่านั้น "
 "การเปิดใช้งานตัวเลือกนี้จะปิดการตรวจสอบนี้และพยายามโหลดส่วนขยายทั้งหมดโดยไม่คำนึงถึงรุ่นที่ส่วนขยายเหล่านั้นอ้างว่ารองรับ"
 
 #: data/org.gnome.shell.gschema.xml.in:65
@@ -244,9 +244,8 @@ msgid "History for the looking glass dialog"
 msgstr "ประวัติคำสั่งของกล่องโต้ตอบ looking glass"
 
 #: data/org.gnome.shell.gschema.xml.in:82
-#, fuzzy
 msgid "Always show the “Log Out” action in the system menu"
-msgstr "แสดงรายการเมนู “ออกจากระบบ” เสมอในเมนูผู้ใช้"
+msgstr "แสดงรายการ “ออกจากระบบ” ในเมนูระบบเสมอ"
 
 #: data/org.gnome.shell.gschema.xml.in:83
 #, fuzzy
@@ -538,7 +537,7 @@ msgstr "รหัสผ่าน"
 
 #: js/gdm/loginDialog.js:326
 msgid "Choose Session"
-msgstr "เลือกวาระ"
+msgstr "เลือกเซสชัน"
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:424
@@ -1065,7 +1064,7 @@ msgstr "ไม่มีการแจ้งเตือน"
 
 #: js/ui/calendar.js:974
 msgid "Do Not Disturb"
-msgstr "อย่ารบกวน"
+msgstr "ห้ามรบกวน"
 
 #: js/ui/calendar.js:995
 msgid "Clear"
@@ -1084,7 +1083,7 @@ msgstr "“%s” ไม่ตอบสนอง"
 
 #: js/ui/closeDialog.js:43
 msgid "You may choose to wait a short while for it to continue or force the app to quit entirely"
-msgstr "คุณสามารถเลือกรอสักครู่จนกว่าแอปจะกลับมาตอบสนองได้ หรือจะบังคับปิดแอปไปเลยก็ได้"
+msgstr "คุณสามารถเลือกที่จะรอสักครู่เพื่อให้แอปดำเนินการต่อ หรือจะบังคับให้แอปปิดไปเลยก็ได้"
 
 #: js/ui/closeDialog.js:71
 msgid "Force Quit"
@@ -1104,7 +1103,7 @@ msgstr "ไดรฟ์ภายนอกไม่ได้เชื่อมต
 
 #: js/ui/components/automountManager.js:208
 msgid "Unable to unlock volume"
-msgstr "ไม่สามารถปลดล็อกระดับเสียงได้"
+msgstr "ไม่สามารถปลดล็อกโวลุมได้"
 
 #: js/ui/components/automountManager.js:209
 msgid "The installed udisks version does not support the PIM setting"
@@ -1473,11 +1472,11 @@ msgstr "ติดตั้งส่วนขยาย"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "จะดาวน์โหลดและติดตั้ง “%s” จาก extensions.gnome.org หรือไม่?"
 
-#: js/ui/extensionSystem.js:354
+#: js/ui/extensionSystem.js:352
 msgid "Extension Updates Available"
 msgstr "มีรายการอัปเดตส่วนขยาย"
 
-#: js/ui/extensionSystem.js:355
+#: js/ui/extensionSystem.js:353
 msgid "Extension updates are ready to be installed"
 msgstr "มีรายการอัปเดตส่วนขยายที่พร้อมให้ติดตั้งแล้ว"
 
@@ -1741,7 +1740,7 @@ msgstr "เปิดเมนู"
 
 #: js/ui/runDialog.js:61
 msgid "Run a Command"
-msgstr "เรียกคำสั่ง"
+msgstr "เรียกใช้คำสั่ง"
 
 #: js/ui/runDialog.js:76
 msgid "Press ESC to close"
@@ -1791,13 +1790,14 @@ msgstr "หน้าต่าง"
 msgid "Window Selection"
 msgstr "เลือกหน้าต่าง"
 
-#: js/ui/screenshot.js:1315 js/ui/status/system.js:111
+#. Translators: entry in the window right click menu.
+#: js/ui/screenshot.js:1315 js/ui/status/system.js:111 js/ui/windowMenu.js:28
 msgid "Take Screenshot"
-msgstr "ถ่ายภาพหน้าต่าง"
+msgstr "ถ่ายภาพ"
 
 #: js/ui/screenshot.js:1331
 msgid "Record Screen"
-msgstr "บันทึกหน้าจอ"
+msgstr "บันทึก"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
@@ -1927,11 +1927,11 @@ msgstr "Caps lock เปิดอยู่"
 
 #: js/ui/shellMountOperation.js:286
 msgid "Hidden Volume"
-msgstr ""
+msgstr "โวลุมซ่อน"
 
 #: js/ui/shellMountOperation.js:289
 msgid "Windows System Volume"
-msgstr ""
+msgstr "โวลุมระบบ Windows"
 
 #: js/ui/shellMountOperation.js:292
 msgid "Uses Keyfiles"
@@ -1941,11 +1941,11 @@ msgstr "ใช้ไฟล์กุญแจ"
 #: js/ui/shellMountOperation.js:300
 #, javascript-format
 msgid "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
-msgstr ""
+msgstr "หากต้องการปลดล็อกไดรฟ์ที่ใช้ไฟล์กุญแจ ให้ใช้เครื่องมือ <i>%s</i> แทน"
 
 #: js/ui/shellMountOperation.js:304
 msgid "You need an external utility like <i>Disks</i> to unlock a volume that uses keyfiles"
-msgstr ""
+msgstr "คุณต้องใช้เครื่องมือภายนอกเช่น <i>ดิสก์</i> เพื่อปลดล็อกไดรฟ์ที่ใช้ไฟล์กุญแจ"
 
 #: js/ui/shellMountOperation.js:312
 msgid "PIM Number"
@@ -2068,36 +2068,24 @@ msgstr "แป้นพิมพ์"
 msgid "Disconnect"
 msgstr "ตัดการเชื่อมต่อ"
 
-#. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:265 js/ui/status/network.js:354
-#, javascript-format
-msgid "Disconnect %s"
-msgstr "ตัดการเชื่อมต่อกับ %s"
-
-#. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:356
-#, javascript-format
-msgid "Connect to %s"
-msgstr "เชื่อมต่อกับ %s"
-
-#: js/ui/status/bluetooth.js:274 js/ui/status/bluetooth.js:276
+#: js/ui/status/bluetooth.js:263 js/ui/status/bluetooth.js:265
 msgid "Bluetooth"
 msgstr "บลูทูธ"
 
-#: js/ui/status/bluetooth.js:299 js/ui/status/network.js:1909
+#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1909
 msgid "Bluetooth Settings"
 msgstr "ตั้งค่าบลูทูธ"
 
-#: js/ui/status/bluetooth.js:346
+#: js/ui/status/bluetooth.js:335
 msgid "No available or connected devices"
 msgstr "ไม่มีอุปกรณ์ที่ใช้งานได้หรือที่เชื่อมต่ออยู่"
 
-#: js/ui/status/bluetooth.js:347
+#: js/ui/status/bluetooth.js:336
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "เปิดบลูทูธเพื่อเชื่อมต่อกับอุปกรณ์ต่างๆ"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:411
+#: js/ui/status/bluetooth.js:400
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2160,6 +2148,18 @@ msgstr "อนุญาตการเข้าถึง"
 #: js/ui/status/network.js:62
 msgid "<unknown>"
 msgstr "<ไม่ทราบ>"
+
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:354
+#, javascript-format
+msgid "Disconnect %s"
+msgstr "ตัดการเชื่อมต่อกับ %s"
+
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:356
+#, javascript-format
+msgid "Connect to %s"
+msgstr "เชื่อมต่อกับ %s"
 
 #: js/ui/status/network.js:1059
 msgid "Secure"
@@ -2431,7 +2431,7 @@ msgstr "ยินดีต้อนรับสู่ %s"
 
 #: js/ui/welcomeDialog.js:52
 msgid "If you want to learn your way around, check out the tour"
-msgstr ""
+msgstr "หากต้องการเรียนรู้วิธีใช้งาน โปรดดูทัวร์"
 
 #: js/ui/welcomeDialog.js:61
 msgid "Skip"
@@ -2471,14 +2471,6 @@ msgstr[0] "จะคืนค่าการตั้งค่าใน %d ว�
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
-
-#. Translators: entry in the window right click menu.
-#: js/ui/windowMenu.js:28
-#, fuzzy
-#| msgid "Take Screenshot"
-msgctxt "window-menu"
-msgid "Take Screenshot"
-msgstr "ถ่ายภาพหน้าต่าง"
 
 #: js/ui/windowMenu.js:40
 msgid "Hide"
@@ -2610,17 +2602,17 @@ msgid ""
 "disabling unwanted extensions."
 msgstr ""
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:64
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:65
 #, fuzzy
 msgid "Main Window"
 msgstr "หน้าต่างเข้าระบบ"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
 #, fuzzy
 msgid "Available Updates"
 msgstr "อยู่"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
 #, fuzzy
 msgid "Search View"
 msgstr "ค้นหา"
