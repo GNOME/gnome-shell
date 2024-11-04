@@ -70,7 +70,7 @@ const DEFAULT_FOLDERS = {
             'org.gnome.DiskUtility.desktop',
             'org.gnome.Evince.desktop',
             'org.gnome.FileRoller.desktop',
-            'org.gnome.fonts.desktop',
+            'org.gnome.font-viewer.desktop',
             'org.gnome.Loupe.desktop',
             'org.gnome.seahorse.Application.desktop',
             'org.gnome.tweaks.desktop',
