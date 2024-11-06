@@ -3494,9 +3494,9 @@ load_icon_thread  (GTask        *task,
  * st_icon_info_load_icon_async:
  * @icon_info: a #StIconInfo
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call when the
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback to call when the
  *     request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously load, render and scale an icon previously looked up
  * from the icon theme using [method@St.IconTheme.lookup_icon].
@@ -4039,9 +4039,9 @@ load_symbolic_icon_thread (GTask        *task,
  *     success colors of the icon
  * @cancellable: (allow-none): optional #GCancellable object,
  *     %NULL to ignore
- * @callback: (scope async): a #GAsyncReadyCallback to call when the
+ * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback to call when the
  *     request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @user_data: the data to pass to callback function
  *
  * Asynchronously load, render and scale a symbolic icon previously looked up
  * from the icon theme using [method@St.IconTheme.lookup_icon].
