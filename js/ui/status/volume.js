@@ -346,6 +346,7 @@ class OutputStreamSlider extends StreamSlider {
 
         this._hasHeadphones = hasHeadphones;
         this._updateIcon();
+        this.showOSD();
     }
 
     _updateIcon() {
