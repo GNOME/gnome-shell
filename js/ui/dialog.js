@@ -175,6 +175,9 @@ export const MessageDialogContent = GObject.registerClass({
         this._title = new St.Label({style_class: 'message-dialog-title'});
         this._description = new St.Label({style_class: 'message-dialog-description'});
 
+        this._title.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._title.clutter_text.line_wrap = true;
+
         this._description.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._description.clutter_text.line_wrap = true;
 
