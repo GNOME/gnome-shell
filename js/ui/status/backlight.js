@@ -55,6 +55,14 @@ const SliderItem = GObject.registerClass({
 
         this.notify('value');
     }
+
+    vfunc_key_press_event(event) {
+        const key = event.get_key_symbol();
+        if (key === Clutter.KEY_Left || key === Clutter.KEY_Right)
+            return this._slider.vfunc_key_press_event(event);
+        else
+            return super.vfunc_key_press_event(event);
+    }
 });
 
 const DiscreteItem = GObject.registerClass({
@@ -163,6 +171,10 @@ class KeyboardBrightnessToggle extends QuickMenuToggle {
 
         this._sliderItem = new SliderItem();
         this.menu.box.add_child(this._sliderItem);
+        const sliderAccessible = this._sliderItem._slider.get_accessible();
+        sliderAccessible.set_parent(this.menu.box.get_accessible());
+        this._sliderItem.set_accessible(sliderAccessible);
+
 
         this._discreteItem = new DiscreteItem();
         this.menu.box.add_child(this._discreteItem);
