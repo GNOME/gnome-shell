@@ -60,13 +60,11 @@ const DEFAULT_FOLDERS = {
     'Utilities': {
         name: 'X-GNOME-Shell-Utilities.directory',
         apps: [
-            'gnome-abrt.desktop',
-            'gnome-system-log.desktop',
+            'org.freedesktop.GnomeAbrt.desktop',
             'nm-connection-editor.desktop',
             'org.gnome.baobab.desktop',
             'org.gnome.Connections.desktop',
             'org.gnome.DejaDup.desktop',
-            'org.gnome.Dictionary.desktop',
             'org.gnome.DiskUtility.desktop',
             'org.gnome.Evince.desktop',
             'org.gnome.FileRoller.desktop',
@@ -75,7 +73,6 @@ const DEFAULT_FOLDERS = {
             'org.gnome.seahorse.Application.desktop',
             'org.gnome.tweaks.desktop',
             'org.gnome.Usage.desktop',
-            'vinagre.desktop',
         ],
     },
     'YaST': {
