@@ -34,7 +34,7 @@ endforeach
 
 i18n.merge_file(
   input: 'X-GNOME-Shell-Utilities.directory.desktop.in',
-  output: '@BASENAME@',
+  output: '@BASENAME@'.replace('.desktop', ''),
   po_dir: po_dir,
   install: true,
   install_dir: join_paths(datadir, 'desktop-directories'),
