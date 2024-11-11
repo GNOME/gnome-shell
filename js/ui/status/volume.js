@@ -344,9 +344,11 @@ class OutputStreamSlider extends StreamSlider {
         if (hasHeadphones === this._hasHeadphones)
             return;
 
+        const initializing = this._hasHeadphones === undefined;
         this._hasHeadphones = hasHeadphones;
         this._updateIcon();
-        this.showOSD();
+        if (!initializing)
+            this.showOSD();
     }
 
     _updateIcon() {
