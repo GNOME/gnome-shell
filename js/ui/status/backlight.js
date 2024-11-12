@@ -133,6 +133,10 @@ const DiscreteItem = GObject.registerClass({
         this._levelButtons.set(key, box);
     }
 
+    vfunc_key_press_event(event) {
+        return global.focus_manager.navigate_from_event(event);
+    }
+
     _syncLevels() {
         this._levelButtons.get('off').visible = this.nLevels > 0;
         this._levelButtons.get('high').visible = this.nLevels > 1;
