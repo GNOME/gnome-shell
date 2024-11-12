@@ -23,6 +23,8 @@
 #pragma once
 
 #include <clutter/clutter.h>
+#include <pango/pango.h>
+
 #include "st-border-image.h"
 #include "st-icon-colors.h"
 #include "st-shadow.h"

@@ -24,6 +24,7 @@
 #pragma once
 
 #include <clutter/clutter.h>
+#include <clutter/clutter-pango.h>
 
 G_BEGIN_DECLS
 
