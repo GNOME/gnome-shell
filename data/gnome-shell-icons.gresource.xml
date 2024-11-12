@@ -40,6 +40,8 @@
     <file preprocess="xml-stripblanks">scalable/actions/shell-focus-windows-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/background-app-ghost-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/check-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">scalable/status/face-auth-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">scalable/status/fingerprint-auth-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/keyboard-brightness-high-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/keyboard-brightness-medium-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/keyboard-brightness-off-symbolic.svg</file>
@@ -53,6 +55,7 @@
     <file preprocess="xml-stripblanks">scalable/status/osk-layout-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/osk-shift-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/osk-zwnj-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">scalable/status/passkey-auth-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/screen-privacy-disabled-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/screen-privacy-symbolic.svg</file>
     <file preprocess="xml-stripblanks">scalable/status/switch-off-symbolic.svg</file>
