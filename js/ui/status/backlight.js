@@ -106,17 +106,23 @@ const DiscreteItem = GObject.registerClass({
         return 100 * Math.min(keyIndex, this.nLevels - 1) / (this.nLevels - 1);
     }
 
-    _addLevelButton(key, label, iconName) {
+    _addLevelButton(key, labelText, iconName) {
         const box = new St.BoxLayout({
             style_class: 'keyboard-brightness-level',
             vertical: true,
             x_expand: true,
         });
 
+        const label = new St.Label({
+            text: labelText,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+
         box.button = new St.Button({
             styleClass: 'icon-button',
             canFocus: true,
             iconName,
+            labelActor: label,
         });
         box.add_child(box.button);
 
@@ -124,10 +130,7 @@ const DiscreteItem = GObject.registerClass({
             this.value = this._levelToValue(key);
         });
 
-        box.add_child(new St.Label({
-            text: label,
-            x_align: Clutter.ActorAlign.CENTER,
-        }));
+        box.add_child(label);
 
         this.add_child(box);
         this._levelButtons.set(key, box);
