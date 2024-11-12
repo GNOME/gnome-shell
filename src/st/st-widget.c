@@ -30,6 +30,7 @@
 #include <math.h>
 
 #include <clutter/clutter.h>
+#include <clutter/clutter-pango.h>
 
 #include "st-widget.h"
 
