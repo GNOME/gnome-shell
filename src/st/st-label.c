@@ -38,6 +38,7 @@
 #include <glib.h>
 
 #include <clutter/clutter.h>
+#include <clutter/clutter-pango.h>
 
 #include "st-label.h"
 #include "st-private.h"
