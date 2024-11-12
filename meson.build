@@ -90,10 +90,15 @@ schemas_dep = dependency('gsettings-desktop-schemas', version: schemas_req)
 gnome_desktop_dep = dependency('gnome-desktop-4', version: gnome_desktop_req)
 pango_dep = dependency('pango', version: pango_req)
 
+have_fonts = mutter_dep.get_variable('have_fonts') == 'true'
 have_x11 = mutter_dep.get_variable('have_x11') == 'true'
 have_x11_client = mutter_dep.get_variable('have_x11_client') == 'true'
 if have_x11_client or have_x11
   x11_dep = dependency('x11')
+endif
+
+if not have_fonts
+  error('Shell requires mutter to be built with fonts rendering support')
 endif
 
 

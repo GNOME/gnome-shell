@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <clutter/clutter-pango.h>
+
 #include "st-private.h"
 #include "st-password-entry.h"
 #include "st-icon.h"

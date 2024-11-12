@@ -17,6 +17,8 @@
 
 #include "st-spinner-content.h"
 
+#include <cairo.h>
+
 #include <st-widget.h>
 
 #define MIN_RADIUS 8

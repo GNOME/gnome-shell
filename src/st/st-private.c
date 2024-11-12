@@ -22,6 +22,8 @@
 #include <math.h>
 #include <string.h>
 
+#include <clutter/clutter-pango.h>
+
 #include "st-private.h"
 #include "st-image-content.h"
 
