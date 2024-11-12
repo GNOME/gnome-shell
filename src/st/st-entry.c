@@ -45,6 +45,7 @@
 #include <glib.h>
 
 #include <clutter/clutter.h>
+#include <clutter/clutter-pango.h>
 
 #include "st-entry.h"
 

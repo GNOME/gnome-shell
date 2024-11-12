@@ -19,6 +19,8 @@
  */
 
 #include <clutter/clutter.h>
+#include <clutter/clutter-pango.h>
+
 #include "st-theme.h"
 #include "st-theme-context.h"
 #include "st-label.h"
