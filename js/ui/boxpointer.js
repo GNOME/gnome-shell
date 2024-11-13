@@ -53,9 +53,9 @@ export const BoxPointer = GObject.registerClass({
 
         this.connect('notify::visible', () => {
             if (this.visible)
-                Meta.disable_unredirect_for_display(global.display);
+                global.display.disable_unredirect();
             else
-                Meta.enable_unredirect_for_display(global.display);
+                global.display.enable_unredirect();
         });
     }
 

@@ -679,7 +679,7 @@ export function pushModal(actor, params = {}) {
     let grab = global.stage.grab(actor);
 
     if (modalCount === 0)
-        Meta.disable_unredirect_for_display(global.display);
+        global.display.disable_unredirect();
 
     modalCount += 1;
     let actorDestroyId = actor.connect('destroy', () => {
@@ -773,7 +773,7 @@ export function popModal(grab) {
         return;
 
     layoutManager.modalEnded();
-    Meta.enable_unredirect_for_display(global.display);
+    global.display.enable_unredirect();
     actionMode = Shell.ActionMode.NORMAL;
 }
 

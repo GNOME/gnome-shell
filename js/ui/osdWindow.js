@@ -93,7 +93,7 @@ class OsdWindow extends Clutter.Actor {
             return;
 
         if (!this.visible) {
-            Meta.disable_unredirect_for_display(global.display);
+            global.display.disable_unredirect();
             super.show();
             this.opacity = 0;
             this.get_parent().set_child_above_sibling(this, null);
@@ -128,7 +128,7 @@ class OsdWindow extends Clutter.Actor {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this._reset();
-                Meta.enable_unredirect_for_display(global.display);
+                global.display.enable_unredirect();
             },
         });
         return GLib.SOURCE_REMOVE;

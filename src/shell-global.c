@@ -308,10 +308,10 @@ shell_global_get_property(GObject         *object,
       g_value_set_object (value, global->stage);
       break;
     case PROP_WINDOW_GROUP:
-      g_value_set_object (value, meta_get_window_group_for_display (global->meta_display));
+      g_value_set_object (value, meta_display_get_window_group (global->meta_display));
       break;
     case PROP_TOP_WINDOW_GROUP:
-      g_value_set_object (value, meta_get_top_window_group_for_display (global->meta_display));
+      g_value_set_object (value, meta_display_get_top_window_group (global->meta_display));
       break;
     case PROP_WINDOW_MANAGER:
       g_value_set_object (value, global->wm);
@@ -824,7 +824,7 @@ shell_global_get_window_actors (ShellGlobal *global)
 
   g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
 
-  for (l = meta_get_window_actors (global->meta_display); l; l = l->next)
+  for (l = meta_display_get_window_actors (global->meta_display); l; l = l->next)
     if (!meta_window_actor_is_destroyed (l->data))
       filtered = g_list_prepend (filtered, l->data);
 
@@ -998,7 +998,7 @@ _shell_global_set_plugin (ShellGlobal *global,
   global->backend = meta_context_get_backend (context);
   global->workspace_manager = meta_display_get_workspace_manager (display);
 
-  global->stage = CLUTTER_STAGE (meta_get_stage_for_display (display));
+  global->stage = CLUTTER_STAGE (meta_display_get_stage (display));
 
   st_entry_set_cursor_func (entry_cursor_func, global);
   st_clipboard_set_selection (meta_display_get_selection (display));
@@ -1286,7 +1286,7 @@ shell_global_get_pointer (ShellGlobal         *global,
   MetaCursorTracker *tracker;
   graphene_point_t point;
 
-  tracker = meta_cursor_tracker_get_for_display (global->meta_display);
+  tracker = meta_display_get_cursor_tracker (global->meta_display);
   meta_cursor_tracker_get_pointer (tracker, &point, &raw_mods);
 
   if (x)

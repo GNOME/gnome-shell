@@ -1786,7 +1786,7 @@ export const Keyboard = GObject.registerClass({
     }
 
     _animateShow() {
-        Meta.disable_unredirect_for_display(global.display);
+        global.display.disable_unredirect();
 
         if (this._focusWindow)
             this._animateWindow(this._focusWindow, true);
@@ -1842,7 +1842,7 @@ export const Keyboard = GObject.registerClass({
 
     _animateHideComplete() {
         Main.layoutManager.keyboardBox.hide();
-        Meta.enable_unredirect_for_display(global.display);
+        global.display.enable_unredirect();
     }
 
     gestureProgress(delta) {

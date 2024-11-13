@@ -383,7 +383,7 @@ draw_cursor_image (cairo_surface_t *surface,
   graphene_point_t point;
 
   display = shell_global_get_display (shell_global_get ());
-  tracker = meta_cursor_tracker_get_for_display (display);
+  tracker = meta_display_get_cursor_tracker (display);
   texture = meta_cursor_tracker_get_sprite (tracker);
 
   if (!texture)
@@ -510,7 +510,7 @@ grab_screenshot_content (ShellScreenshot *screenshot,
       return;
     }
 
-  tracker = meta_cursor_tracker_get_for_display (display);
+  tracker = meta_display_get_cursor_tracker (display);
   cursor_texture = meta_cursor_tracker_get_sprite (tracker);
 
   // If the cursor is invisible, the texture is NULL.
@@ -693,7 +693,7 @@ on_after_paint (ClutterStage     *stage,
   g_signal_emit (screenshot, signals[SCREENSHOT_TAKEN], 0,
                  (MtkRectangle *) &priv->screenshot_area);
 
-  meta_enable_unredirect_for_display (display);
+  meta_display_enable_unredirect (display);
 }
 
 /**
@@ -760,7 +760,7 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
       MetaDisplay *display = shell_global_get_display (priv->global);
       ClutterStage *stage = shell_global_get_stage (priv->global);
 
-      meta_disable_unredirect_for_display (display);
+      meta_display_disable_unredirect (display);
       clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
       priv->flags = flags;
       priv->mode = SHELL_SCREENSHOT_SCREEN;
@@ -810,7 +810,7 @@ screenshot_stage_to_content_on_after_paint (ClutterStage     *stage,
                                         screenshot_stage_to_content_on_after_paint,
                                         result);
 
-  meta_enable_unredirect_for_display (display);
+  meta_display_enable_unredirect (display);
 
   grab_screenshot_content (screenshot, result);
 }
@@ -850,7 +850,7 @@ shell_screenshot_screenshot_stage_to_content (ShellScreenshot     *screenshot,
       MetaDisplay *display = shell_global_get_display (priv->global);
       ClutterStage *stage = shell_global_get_stage (priv->global);
 
-      meta_disable_unredirect_for_display (display);
+      meta_display_disable_unredirect (display);
       clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
       g_signal_connect (stage, "after-paint",
                         G_CALLBACK (screenshot_stage_to_content_on_after_paint),
@@ -993,7 +993,7 @@ shell_screenshot_screenshot_area (ShellScreenshot     *screenshot,
       MetaDisplay *display = shell_global_get_display (priv->global);
       ClutterStage *stage = shell_global_get_stage (priv->global);
 
-      meta_disable_unredirect_for_display (display);
+      meta_display_disable_unredirect (display);
       clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
       priv->flags = SHELL_SCREENSHOT_FLAG_NONE;
       priv->mode = SHELL_SCREENSHOT_AREA;
