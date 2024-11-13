@@ -1140,7 +1140,7 @@ class ClutterDebugFlag extends DebugFlag {
     }
 
     _isEnabled() {
-        const enabledFlags = Meta.get_clutter_debug_flags();
+        const enabledFlags = Clutter.get_debug_flags();
         return !!(enabledFlags[this._argPos] & this._enumValue);
     }
 
@@ -1151,11 +1151,11 @@ class ClutterDebugFlag extends DebugFlag {
     }
 
     _enable() {
-        Meta.add_clutter_debug_flags(...this._getArgs());
+        Clutter.add_debug_flags(...this._getArgs());
     }
 
     _disable() {
-        Meta.remove_clutter_debug_flags(...this._getArgs());
+        Clutter.remove_debug_flags(...this._getArgs());
     }
 });
 
