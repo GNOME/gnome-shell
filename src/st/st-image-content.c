@@ -25,13 +25,8 @@
 
 struct _StImageContent
 {
-  /*< private >*/
   ClutterImage parent_instance;
-};
 
-typedef struct _StImageContentPrivate StImageContentPrivate;
-struct _StImageContentPrivate
-{
   int width;
   int height;
   gboolean is_symbolic;
@@ -48,14 +43,13 @@ static void clutter_content_interface_init (ClutterContentInterface *iface);
 static void g_icon_interface_init (GIconIface *iface);
 static void g_loadable_icon_interface_init (GLoadableIconIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (StImageContent, st_image_content, CLUTTER_TYPE_IMAGE,
-                         G_ADD_PRIVATE (StImageContent)
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTENT,
-                                                clutter_content_interface_init)
-                         G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
-                                                g_icon_interface_init)
-                         G_IMPLEMENT_INTERFACE (G_TYPE_LOADABLE_ICON,
-                                                g_loadable_icon_interface_init))
+G_DEFINE_FINAL_TYPE_WITH_CODE (StImageContent, st_image_content, CLUTTER_TYPE_IMAGE,
+                               G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTENT,
+                                                      clutter_content_interface_init)
+                               G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
+                                                      g_icon_interface_init)
+                               G_IMPLEMENT_INTERFACE (G_TYPE_LOADABLE_ICON,
+                                                      g_loadable_icon_interface_init))
 
 static void
 st_image_content_init (StImageContent *self)
@@ -66,11 +60,10 @@ static void
 st_image_content_constructed (GObject *object)
 {
   StImageContent *self = ST_IMAGE_CONTENT (object);
-  StImageContentPrivate *priv = st_image_content_get_instance_private (self);
 
-  if (priv->width < 0 || priv->height < 0)
+  if (self->width < 0 || self->height < 0)
     g_warning ("StImageContent initialized with invalid preferred size: %dx%d\n",
-               priv->width, priv->height);
+               self->width, self->height);
 }
 
 static void
@@ -80,16 +73,15 @@ st_image_content_get_property (GObject    *object,
                                GParamSpec *pspec)
 {
   StImageContent *self = ST_IMAGE_CONTENT (object);
-  StImageContentPrivate *priv = st_image_content_get_instance_private (self);
 
   switch (prop_id)
     {
     case PROP_PREFERRED_WIDTH:
-      g_value_set_int (value, priv->width);
+      g_value_set_int (value, self->width);
       break;
 
     case PROP_PREFERRED_HEIGHT:
-      g_value_set_int (value, priv->height);
+      g_value_set_int (value, self->height);
       break;
 
     default:
@@ -105,16 +97,15 @@ st_image_content_set_property (GObject      *object,
                                GParamSpec   *pspec)
 {
   StImageContent *self = ST_IMAGE_CONTENT (object);
-  StImageContentPrivate *priv = st_image_content_get_instance_private (self);
 
   switch (prop_id)
     {
     case PROP_PREFERRED_WIDTH:
-      priv->width = g_value_get_int (value);
+      self->width = g_value_get_int (value);
       break;
 
     case PROP_PREFERRED_HEIGHT:
-      priv->height = g_value_get_int (value);
+      self->height = g_value_get_int (value);
       break;
 
     default:
@@ -150,7 +141,6 @@ st_image_content_get_preferred_size (ClutterContent *content,
                                      float          *height)
 {
   StImageContent *self = ST_IMAGE_CONTENT (content);
-  StImageContentPrivate *priv = st_image_content_get_instance_private (self);
   CoglTexture *texture;
 
   texture = clutter_image_get_texture (CLUTTER_IMAGE (content));
@@ -158,14 +148,14 @@ st_image_content_get_preferred_size (ClutterContent *content,
   if (texture == NULL)
     return FALSE;
 
-  g_assert_cmpint (priv->width, >, -1);
-  g_assert_cmpint (priv->height, >, -1);
+  g_assert_cmpint (self->width, >, -1);
+  g_assert_cmpint (self->height, >, -1);
 
   if (width != NULL)
-    *width = (float) priv->width;
+    *width = (float) self->width;
 
   if (height != NULL)
-    *height = (float) priv->height;
+    *height = (float) self->height;
 
   return TRUE;
 }
@@ -348,21 +338,15 @@ void
 st_image_content_set_is_symbolic (StImageContent *content,
                                   gboolean        is_symbolic)
 {
-  StImageContentPrivate *priv;
-
   g_return_if_fail (ST_IS_IMAGE_CONTENT (content));
 
-  priv = st_image_content_get_instance_private (content);
-  priv->is_symbolic = is_symbolic;
+  content->is_symbolic = is_symbolic;
 }
 
 gboolean
 st_image_content_get_is_symbolic (StImageContent *content)
 {
-  StImageContentPrivate *priv;
-
   g_return_val_if_fail (ST_IS_IMAGE_CONTENT (content), FALSE);
 
-  priv = st_image_content_get_instance_private (content);
-  return priv->is_symbolic;
+  return content->is_symbolic;
 }
