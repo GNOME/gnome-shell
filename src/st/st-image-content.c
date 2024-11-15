@@ -25,7 +25,9 @@
 
 struct _StImageContent
 {
-  ClutterImage parent_instance;
+  GObject parent_instance;
+
+  CoglTexture *texture;
 
   int width;
   int height;
@@ -43,7 +45,7 @@ static void clutter_content_interface_init (ClutterContentInterface *iface);
 static void g_icon_interface_init (GIconIface *iface);
 static void g_loadable_icon_interface_init (GLoadableIconIface *iface);
 
-G_DEFINE_FINAL_TYPE_WITH_CODE (StImageContent, st_image_content, CLUTTER_TYPE_IMAGE,
+G_DEFINE_FINAL_TYPE_WITH_CODE (StImageContent, st_image_content, G_TYPE_OBJECT,
                                G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTENT,
                                                       clutter_content_interface_init)
                                G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
@@ -115,6 +117,16 @@ st_image_content_set_property (GObject      *object,
 }
 
 static void
+st_image_content_finalize (GObject *gobject)
+{
+  StImageContent *content = ST_IMAGE_CONTENT (gobject);
+
+  g_clear_object (&content->texture);
+
+  G_OBJECT_CLASS (st_image_content_parent_class)->finalize (gobject);
+}
+
+static void
 st_image_content_class_init (StImageContentClass *klass)
 {
   GParamSpec *pspec;
@@ -123,6 +135,7 @@ st_image_content_class_init (StImageContentClass *klass)
   object_class->constructed = st_image_content_constructed;
   object_class->get_property = st_image_content_get_property;
   object_class->set_property = st_image_content_set_property;
+  object_class->finalize = st_image_content_finalize;
 
   pspec = g_param_spec_int ("preferred-width", NULL, NULL,
                              -1, G_MAXINT, -1,
@@ -141,11 +154,8 @@ st_image_content_get_preferred_size (ClutterContent *content,
                                      float          *height)
 {
   StImageContent *self = ST_IMAGE_CONTENT (content);
-  CoglTexture *texture;
 
-  texture = clutter_image_get_texture (CLUTTER_IMAGE (content));
-
-  if (texture == NULL)
+  if (self->texture == NULL)
     return FALSE;
 
   g_assert_cmpint (self->width, >, -1);
@@ -167,7 +177,7 @@ pixbuf_from_image (StImageContent *image)
   int width, height, rowstride;
   uint8_t *data;
 
-  texture = clutter_image_get_texture (CLUTTER_IMAGE (image));
+  texture = st_image_content_get_texture (image);
   if (!texture || !cogl_texture_is_get_data_supported (texture))
     return NULL;
 
@@ -185,9 +195,28 @@ pixbuf_from_image (StImageContent *image)
 }
 
 static void
+st_image_content_paint_content (ClutterContent      *content,
+                                ClutterActor        *actor,
+                                ClutterPaintNode    *root,
+                                ClutterPaintContext *paint_context)
+{
+  StImageContent *image_content = ST_IMAGE_CONTENT (content);
+  ClutterPaintNode *node;
+
+  if (image_content->texture == NULL)
+    return;
+
+  node = clutter_actor_create_texture_paint_node (actor, image_content->texture);
+  clutter_paint_node_set_static_name (node, "Image Content");
+  clutter_paint_node_add_child (root, node);
+  clutter_paint_node_unref (node);
+}
+
+static void
 clutter_content_interface_init (ClutterContentInterface *iface)
 {
   iface->get_preferred_size = st_image_content_get_preferred_size;
+  iface->paint_content = st_image_content_paint_content;
 }
 
 static guint
@@ -318,9 +347,6 @@ g_loadable_icon_interface_init (GLoadableIconIface *iface)
  *
  * Creates a new #StImageContent, a simple content for sized images.
  *
- * See #ClutterImage for setting the actual image to display or #StIcon for
- * displaying icons.
- *
  * Returns: (transfer full): the newly created #StImageContent content
  *   Use g_object_unref() when done.
  */
@@ -349,4 +375,199 @@ st_image_content_get_is_symbolic (StImageContent *content)
   g_return_val_if_fail (ST_IS_IMAGE_CONTENT (content), FALSE);
 
   return content->is_symbolic;
+}
+
+static CoglTexture *
+create_texture_from_data (unsigned int      width,
+                          unsigned int      height,
+                          CoglPixelFormat   pixel_format,
+                          unsigned int      row_stride,
+                          const uint8_t    *data,
+                          GError          **error)
+{
+  ClutterBackend *backend = clutter_get_default_backend ();
+  CoglContext *cogl_context = clutter_backend_get_cogl_context (backend);
+  CoglTexture *texture_2d;
+
+  texture_2d = cogl_texture_2d_new_from_data (cogl_context,
+                                              width,
+                                              height,
+                                              pixel_format,
+                                              row_stride,
+                                              data,
+                                              error);
+
+  return texture_2d;
+}
+
+static void
+update_image_size (StImageContent *self)
+{
+  int width, height;
+
+  if (self->texture == NULL)
+    return;
+
+  width = cogl_texture_get_width (self->texture);
+  height = cogl_texture_get_height (self->texture);
+
+  if (self->width == width &&
+      self->height == height)
+    return;
+
+  self->width = width;
+  self->height = height;
+
+  clutter_content_invalidate_size (CLUTTER_CONTENT (self));
+}
+
+/**
+ * st_image_content_set_data:
+ * @content: a #StImageContentImage
+ * @data: (array): the image data, as an array of bytes
+ * @pixel_format: the Cogl pixel format of the image data
+ * @width: the width of the image data
+ * @height: the height of the image data
+ * @row_stride: the length of each row inside @data
+ * @error: return location for a #GError, or %NULL
+ *
+ * Sets the image data to be displayed by @content.
+ *
+ * If the image data was successfully loaded, the @content will be invalidated.
+ *
+ * In case of error, the @error value will be set, and this function will
+ * return %FALSE.
+ *
+ * The image data is copied in texture memory.
+ *
+ * The image data is expected to be a linear array of RGBA or RGB pixel data;
+ * how to retrieve that data is left to platform specific image loaders. For
+ * instance, if you use the GdkPixbuf library:
+ *
+ * ```c
+ *   StImageContent *content =
+ *     st_image_content_new_with_preferred_size ();
+ *   GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
+ *
+ *   st_image_content_set_data (content,
+ *                              gdk_pixbuf_get_pixels (pixbuf),
+ *                              gdk_pixbuf_get_has_alpha (pixbuf)
+ *                                ? COGL_PIXEL_FORMAT_RGBA_8888
+ *                                : COGL_PIXEL_FORMAT_RGB_888,
+ *                              gdk_pixbuf_get_width (pixbuf),
+ *                              gdk_pixbuf_get_height (pixbuf),
+ *                              gdk_pixbuf_get_rowstride (pixbuf),
+ *                              &error);
+ *
+ *   g_object_unref (pixbuf);
+ * ```
+ *
+ * Return value: %TRUE if the image data was successfully loaded,
+ *   and %FALSE otherwise.
+ */
+gboolean
+st_image_content_set_data (StImageContent   *content,
+                           const guint8     *data,
+                           CoglPixelFormat   pixel_format,
+                           guint             width,
+                           guint             height,
+                           guint             row_stride,
+                           GError          **error)
+{
+  g_return_val_if_fail (ST_IS_IMAGE_CONTENT (content), FALSE);
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  if (content->texture != NULL)
+    g_object_unref (content->texture);
+
+  content->texture = create_texture_from_data (width,
+                                               height,
+                                               pixel_format,
+                                               row_stride,
+                                               data,
+                                               error);
+
+  if (content->texture == NULL)
+    return FALSE;
+
+  clutter_content_invalidate (CLUTTER_CONTENT (content));
+  update_image_size (content);
+
+  return TRUE;
+}
+
+/**
+ * st_image_content_set_bytes:
+ * @content: a #StImageContent
+ * @data: the image data, as a #GBytes
+ * @pixel_format: the Cogl pixel format of the image data
+ * @width: the width of the image data
+ * @height: the height of the image data
+ * @row_stride: the length of each row inside @data
+ * @error: return location for a #GError, or %NULL
+ *
+ * Sets the image data stored inside a #GBytes to be displayed by @content.
+ *
+ * If the image data was successfully loaded, the @content will be invalidated.
+ *
+ * In case of error, the @error value will be set, and this function will
+ * return %FALSE.
+ *
+ * The image data contained inside the #GBytes is copied in texture memory,
+ * and no additional reference is acquired on the @data.
+ *
+ * Return value: %TRUE if the image data was successfully loaded,
+ *   and %FALSE otherwise.
+ */
+gboolean
+st_image_content_set_bytes (StImageContent   *content,
+                            GBytes           *data,
+                            CoglPixelFormat   pixel_format,
+                            guint             width,
+                            guint             height,
+                            guint             row_stride,
+                            GError          **error)
+{
+
+  g_return_val_if_fail (ST_IS_IMAGE_CONTENT (content), FALSE);
+  g_return_val_if_fail (data != NULL, FALSE);
+
+
+  if (content->texture != NULL)
+    g_object_unref (content->texture);
+
+  content->texture = create_texture_from_data (width,
+                                               height,
+                                               pixel_format,
+                                               row_stride,
+                                               g_bytes_get_data (data, NULL),
+                                               error);
+
+  if (content->texture == NULL)
+    return FALSE;
+
+  clutter_content_invalidate (CLUTTER_CONTENT (content));
+  update_image_size (content);
+
+  return TRUE;
+}
+
+/**
+ * st_image_content_get_texture:
+ * @content: a #StcontentContent
+ *
+ * Retrieves a pointer to the Cogl texture used by @content.
+ *
+ * If you change the contents of the returned Cogl texture you will need
+ * to manually invalidate the @content with [method@Clutter.Content.invalidate]
+ * in order to update the actors using @content as their content.
+ *
+ * Return value: (transfer none): a pointer to the Cogl texture, or %NULL
+ */
+CoglTexture *
+st_image_content_get_texture (StImageContent *content)
+{
+  g_return_val_if_fail (ST_IS_IMAGE_CONTENT (content), NULL);
+
+  return content->texture;
 }

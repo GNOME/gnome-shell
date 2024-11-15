@@ -39,7 +39,7 @@ struct _StTextureCachePrivate
   StIconTheme *icon_theme;
 
   /* Things that were loaded with a cache policy != NONE */
-  GHashTable *keyed_cache; /* char * -> ClutterImage* */
+  GHashTable *keyed_cache; /* char * -> StImageContent* */
   GHashTable *keyed_surface_cache; /* char * -> cairo_surface_t* */
 
   GHashTable *used_scales; /* Set: double */
@@ -85,7 +85,7 @@ static void
 set_content_from_image (ClutterActor   *actor,
                         ClutterContent *image)
 {
-  g_assert (image && CLUTTER_IS_IMAGE (image));
+  g_assert (image && ST_IS_IMAGE_CONTENT (image));
 
   clutter_actor_set_content (actor, image);
   clutter_actor_set_opacity (actor, 255);
@@ -523,14 +523,14 @@ pixbuf_to_st_content_image (GdkPixbuf *pixbuf,
     }
 
   image = st_image_content_new_with_preferred_size (width, height);
-  clutter_image_set_data (CLUTTER_IMAGE (image),
-                          gdk_pixbuf_get_pixels (pixbuf),
-                          gdk_pixbuf_get_has_alpha (pixbuf) ?
-                            COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
-                          gdk_pixbuf_get_width (pixbuf),
-                          gdk_pixbuf_get_height (pixbuf),
-                          gdk_pixbuf_get_rowstride (pixbuf),
-                          &error);
+  st_image_content_set_data (ST_IMAGE_CONTENT (image),
+                             gdk_pixbuf_get_pixels (pixbuf),
+                             gdk_pixbuf_get_has_alpha (pixbuf) ?
+                               COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
+                             gdk_pixbuf_get_width (pixbuf),
+                             gdk_pixbuf_get_height (pixbuf),
+                             gdk_pixbuf_get_rowstride (pixbuf),
+                             &error);
 
   if (error)
     {
@@ -824,14 +824,14 @@ st_texture_cache_load_surface (ClutterContent  **image,
       if (*image == NULL)
         *image = st_image_content_new_with_preferred_size (size, size);
 
-      clutter_image_set_data (CLUTTER_IMAGE (*image),
-                              cairo_image_surface_get_data (surface),
-                              cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32 ?
-                              COGL_PIXEL_FORMAT_BGRA_8888 : COGL_PIXEL_FORMAT_BGR_888,
-                              width,
-                              height,
-                              cairo_image_surface_get_stride (surface),
-                              &error);
+  st_image_content_set_data (ST_IMAGE_CONTENT (image),
+                             cairo_image_surface_get_data (surface),
+                             cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32 ?
+                             COGL_PIXEL_FORMAT_BGRA_8888 : COGL_PIXEL_FORMAT_BGR_888,
+                             width,
+                             height,
+                             cairo_image_surface_get_stride (surface),
+                             &error);
 
       if (error)
         g_warning ("Failed to allocate texture: %s", error->message);
@@ -1519,9 +1519,9 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
     }
 
   /* Because the texture is loaded synchronously, we won't call
-   * clutter_image_set_data(), so it's safe to use the texture
-   * of ClutterImage here. */
-  texdata = clutter_image_get_texture (CLUTTER_IMAGE (image));
+   * st_image_content_set_data(), so it's safe to use the texture
+   * of StImageContent here. */
+  texdata = st_image_content_get_texture (ST_IMAGE_CONTENT (image));
   g_object_ref (texdata);
 
   ensure_monitor_for_file (cache, file);

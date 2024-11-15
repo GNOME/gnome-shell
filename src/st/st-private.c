@@ -23,6 +23,7 @@
 #include <string.h>
 
 #include "st-private.h"
+#include "st-image-content.h"
 
 /**
  * _st_actor_get_preferred_width:
@@ -528,11 +529,11 @@ _st_create_shadow_pipeline_from_actor (StShadow            *shadow_spec,
   height = ceilf (height * resource_scale);
 
   image = clutter_actor_get_content (actor);
-  if (image && CLUTTER_IS_IMAGE (image))
+  if (image && ST_IS_IMAGE_CONTENT (image))
     {
       CoglTexture *texture;
 
-      texture = clutter_image_get_texture (CLUTTER_IMAGE (image));
+      texture = st_image_content_get_texture (ST_IMAGE_CONTENT (image));
       if (texture &&
           cogl_texture_get_width (texture) == width &&
           cogl_texture_get_height (texture) == height)
