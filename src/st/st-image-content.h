@@ -24,7 +24,25 @@
 
 #define ST_TYPE_IMAGE_CONTENT (st_image_content_get_type ())
 G_DECLARE_FINAL_TYPE (StImageContent, st_image_content,
-                      ST, IMAGE_CONTENT, ClutterImage)
+                      ST, IMAGE_CONTENT, GObject)
 
 ClutterContent *st_image_content_new_with_preferred_size (int width,
                                                           int height);
+
+gboolean st_image_content_set_data (StImageContent  *content,
+                                    const guint8    *data,
+                                    CoglPixelFormat  pixel_format,
+                                    guint            width,
+                                    guint            height,
+                                    guint            row_stride,
+                                    GError         **error);
+
+gboolean st_image_content_set_bytes (StImageContent  *content,
+                                     GBytes          *data,
+                                     CoglPixelFormat  pixel_format,
+                                     guint            width,
+                                     guint            height,
+                                     guint            row_stride,
+                                     GError         **error);
+
+CoglTexture * st_image_content_get_texture (StImageContent *content);
