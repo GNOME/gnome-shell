@@ -610,9 +610,9 @@ export function loadTheme() {
 
 /**
  * @param {string} msg A message
- * @param {string} details Additional information
+ * @param {string=} details Additional information
  */
-export function notify(msg, details) {
+export function notify(msg, details = null) {
     const source = MessageTray.getSystemSource();
     const notification = new MessageTray.Notification({
         source,
