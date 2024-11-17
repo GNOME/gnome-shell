@@ -1514,7 +1514,7 @@ export const Keyboard = GObject.registerClass({
                 });
             }
 
-            if (key.action !== null) {
+            if (key.action) {
                 button.connect('released', () => {
                     if (key.action === 'hide') {
                         this.close(true);
