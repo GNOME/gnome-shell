@@ -1243,7 +1243,7 @@ export const Keyboard = GObject.registerClass({
     _onFocusPositionChanged(focusTracker) {
         let rect = focusTracker.getCurrentRect();
         this.setCursorLocation(focusTracker.currentWindow, rect.x, rect.y, rect.width, rect.height);
-        this._updateLevelFromHints();
+        this._updateLevelFromHints(true);
     }
 
     _onDestroy() {
@@ -1320,10 +1320,10 @@ export const Keyboard = GObject.registerClass({
 
     _onContentHintsChanged(controller, contentHint) {
         this._contentHint = contentHint;
-        this._updateLevelFromHints();
+        this._updateLevelFromHints(false);
     }
 
-    _updateLevelFromHints() {
+    _updateLevelFromHints(userInputHappened) {
         // If the latch is enabled, avoid level changes
         if (this._latched)
             return;
@@ -1338,10 +1338,15 @@ export const Keyboard = GObject.registerClass({
 
         if ((this._contentHint & Clutter.InputContentHintFlags.UPPERCASE) !== 0) {
             this._setActiveLevel('shift');
-        } else if (!this._surroundingTextId &&
-                   (this._contentHint &
-                    (Clutter.InputContentHintFlags.AUTO_CAPITALIZATION |
-                     Clutter.InputContentHintFlags.TITLECASE)) !== 0) {
+            return;
+        }
+
+        if ((this._contentHint &
+             (Clutter.InputContentHintFlags.AUTO_CAPITALIZATION |
+              Clutter.InputContentHintFlags.TITLECASE)) !== 0) {
+            if (this._surroundingTextId)
+                return;
+
             this._surroundingTextId =
                 Main.inputMethod.connect('surrounding-text-set', () => {
                     const [text, cursor] = Main.inputMethod.getSurroundingText();
@@ -1369,7 +1374,11 @@ export const Keyboard = GObject.registerClass({
                     this._surroundingTextId = 0;
                 });
             Main.inputMethod.request_surrounding();
+            return;
         }
+
+        if (userInputHappened && this._currentPage === this._layers['shift'])
+            this._setActiveLevel('default');
     }
 
     _onKeyFocusChanged() {
@@ -1495,6 +1504,7 @@ export const Keyboard = GObject.registerClass({
                 button.connect('released', () => {
                     if (key.action === 'hide') {
                         this.close(true);
+                        this._updateLevelFromHints(true);
                     } else if (key.action === 'languageMenu') {
                         this._popupLanguageMenu(button);
                     } else if (key.action === 'emoji') {
@@ -1504,6 +1514,7 @@ export const Keyboard = GObject.registerClass({
                     } else if (key.action === 'delete') {
                         this._keyboardController.toggleDelete(true);
                         this._keyboardController.toggleDelete(false);
+                        this._updateLevelFromHints(true);
                     } else if (!this._longPressed && key.action === 'levelSwitch') {
                         this._setActiveLevel(key.level);
                         this._setLatched(
@@ -1517,18 +1528,13 @@ export const Keyboard = GObject.registerClass({
                 button.connect('keyval', (_actor, keyval) => {
                     this._keyboardController.keyvalPress(keyval);
                     this._keyboardController.keyvalRelease(keyval);
+                    this._updateLevelFromHints(true);
                 });
             } else {
                 button.connect('commit', (_actor, str) => {
                     this._keyboardController.commit(str, this._modifiers).then(() => {
                         this._disableAllModifiers();
-                        if (layout.mode === 'default' ||
-                            (layout.mode === 'latched' && !this._latched)) {
-                            if (this._contentHint !== 0)
-                                this._updateLevelFromHints();
-                            else
-                                this._setActiveLevel('default');
-                        }
+                        this._updateLevelFromHints(true);
                     }).catch(console.error);
                 });
             }
