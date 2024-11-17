@@ -1491,28 +1491,6 @@ export const Keyboard = GObject.registerClass({
                 keyval: key.keyval,
             }, strings);
 
-            if (key.keyval) {
-                button.connect('keyval', (_actor, keyval) => {
-                    this._keyboardController.keyvalPress(keyval);
-                    this._keyboardController.keyvalRelease(keyval);
-                });
-            }
-
-            if (key.action !== 'modifier') {
-                button.connect('commit', (_actor, str) => {
-                    this._keyboardController.commit(str, this._modifiers).then(() => {
-                        this._disableAllModifiers();
-                        if (layout.mode === 'default' ||
-                            (layout.mode === 'latched' && !this._latched)) {
-                            if (this._contentHint !== 0)
-                                this._updateLevelFromHints();
-                            else
-                                this._setActiveLevel('default');
-                        }
-                    }).catch(console.error);
-                });
-            }
-
             if (key.action) {
                 button.connect('released', () => {
                     if (key.action === 'hide') {
@@ -1534,6 +1512,24 @@ export const Keyboard = GObject.registerClass({
                     }
 
                     this._longPressed = false;
+                });
+            } else if (key.keyval) {
+                button.connect('keyval', (_actor, keyval) => {
+                    this._keyboardController.keyvalPress(keyval);
+                    this._keyboardController.keyvalRelease(keyval);
+                });
+            } else {
+                button.connect('commit', (_actor, str) => {
+                    this._keyboardController.commit(str, this._modifiers).then(() => {
+                        this._disableAllModifiers();
+                        if (layout.mode === 'default' ||
+                            (layout.mode === 'latched' && !this._latched)) {
+                            if (this._contentHint !== 0)
+                                this._updateLevelFromHints();
+                            else
+                                this._setActiveLevel('default');
+                        }
+                    }).catch(console.error);
                 });
             }
 
