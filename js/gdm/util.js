@@ -897,6 +897,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             let mechanismsList = [];
             if (enabled && available) {
                 mechanismsList.push({
+                    iconName: definition.iconName,
                     id: definition.mechanismId,
                     name: definition.mechanismName,
                     role: definition.role,
