@@ -357,6 +357,9 @@
     &:insensitive { @include button(insensitive, $tc:$fg, $c:$bg, $always_dark: $system);}
   } @else {
     @include button(normal, $tc:$fg, $c:$bg, $style: flat, $always_dark: $system);
+    // override the mixin to have the flat button always be transparent
+    // fixes issue with overlapping tiles
+    background-color: transparent;
     &:focus { @include button(focus, $tc:$fg, $c:$bg, $style: flat, $always_dark: $system);}
     &:hover { @include button(hover, $tc:$fg, $c:$bg, $style: flat, $always_dark: $system);}
     &:active { @include button(active, $tc:$fg, $c:$bg, $style: flat, $always_dark: $system);}
