@@ -567,6 +567,7 @@ export const LoginDialog = GObject.registerClass({
         this.add_child(this._menuButtonBox);
 
         this._createAuthMenuButton();
+        this._createAuthIndicatorButton();
 
         this._a11yMenuButton = new A11yMenuButton();
         this._menuButtonBox.add_child(this._a11yMenuButton);
@@ -635,6 +636,16 @@ export const LoginDialog = GObject.registerClass({
                 this._greeter.call_select_session_sync(item.id, null);
         });
         this._menuButtonBox.add_child(this._authMenuButton);
+    }
+
+    _createAuthIndicatorButton() {
+        this._authIndicatorButton = new AuthMenuButton.AuthMenuButton({
+            title: _('Background Authentication Methods'),
+            readOnly: true,
+        });
+        this._authIndicatorButton.updateSensitivity(false);
+
+        this._menuButtonBox.add_child(this._authIndicatorButton);
     }
 
     _getBannerAllocation(dialogBox) {
@@ -999,12 +1010,13 @@ export const LoginDialog = GObject.registerClass({
         this._updateLogoTexture(this._textureCache, this._logoFile);
     }
 
-    _onPrompted() {
-        const showSessionMenu = this._shouldShowSessionMenuButton();
-
-        this._authMenuButton.updateSensitivity(showSessionMenu);
-        this._authMenuButton.visible = showSessionMenu;
+    _onPrompted(authPrompt, serviceName) {
         this._showPrompt();
+
+        const items = this._authIndicatorButton.getItems({serviceName});
+
+        if (items.length > 0)
+            this._authIndicatorButton.updateSensitivity(this._shouldShowAuthMenus());
     }
 
     _ensureGreeterProxy() {
@@ -1023,7 +1035,6 @@ export const LoginDialog = GObject.registerClass({
 
     _onReset(authPrompt, beginRequest) {
         this._ensureGreeterProxy();
-        this._authMenuButton.updateSensitivity(true);
 
         const previousUser = this._user;
         this._user = null;
@@ -1050,11 +1061,12 @@ export const LoginDialog = GObject.registerClass({
     _onMechanismsChanged(authPrompt, serviceName) {
         const mechanisms = Array.from(authPrompt.mechanisms.get(serviceName));
         const activeMechanism = this._authMenuButton.getActiveItem({sectionName: _PRIMARY_LOGIN_METHOD_SECTION_NAME});
-
         this._authMenuButton.clearItems({
             sectionName: _PRIMARY_LOGIN_METHOD_SECTION_NAME,
             serviceName,
         });
+
+        this._authIndicatorButton.clearItems({ serviceName });
 
         if (mechanisms.length === 0)
             return;
@@ -1063,7 +1075,7 @@ export const LoginDialog = GObject.registerClass({
 
         mechanisms.sort((a, b) => a.name.localeCompare(b.name));
 
-        for (const {role, protocol, id, name, selectable} of mechanisms) {
+        for (const {role, protocol, id, name, selectable, iconName} of mechanisms) {
             if (selectable) {
                 const mechanism = {serviceName, protocol, id, name, role};
                 this._authMenuButton.addItem({
@@ -1076,8 +1088,19 @@ export const LoginDialog = GObject.registerClass({
 
                 if (wasActive || (!activeMechanism && isDefault))
                     this._authMenuButton.setActiveItem(mechanism);
+            } else {
+                const mechanism = {serviceName, id, name, role, iconName};
+                this._authIndicatorButton.addItem(mechanism);
             }
         }
+
+        const showAuthMenus = this._shouldShowAuthMenus();
+        this._authMenuButton.updateSensitivity(showAuthMenus);
+
+        // For background services, we don't want to show the indicators menu until the PAM service makes motions
+        // so we don't get flicker when first showing the prompt
+        if (!showAuthMenus)
+            this._authIndicatorButton.updateSensitivity(false);
     }
 
     _onDefaultSessionChanged(client, sessionId) {
@@ -1087,7 +1110,7 @@ export const LoginDialog = GObject.registerClass({
         });
     }
 
-    _shouldShowSessionMenuButton() {
+    _shouldShowAuthMenus() {
         const visibleStatuses = [
             AuthPrompt.AuthPromptStatus.VERIFYING,
             AuthPrompt.AuthPromptStatus.VERIFICATION_FAILED,
@@ -1460,6 +1483,7 @@ export const LoginDialog = GObject.registerClass({
         this._authPrompt.begin(params);
 
         this._authMenuButton.updateSensitivity(true);
+        this._authIndicatorButton.updateSensitivity(true);
     }
 
     _setUserListExpanded(expanded) {
@@ -1491,6 +1515,7 @@ export const LoginDialog = GObject.registerClass({
         this._switchUserButton.hide();
         this._authMenuButton.clearItems({ sectionName: _PRIMARY_LOGIN_METHOD_SECTION_NAME });
         this._authMenuButton.updateSensitivity(false);
+        this._authIndicatorButton.updateSensitivity(false);
         this._setUserListExpanded(true);
         this._notListedButton.show();
         this._userList.grab_key_focus();
