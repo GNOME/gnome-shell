@@ -1,8 +1,8 @@
 // Named Colors
 
 // base colors
-$_base_color_dark: desaturate($dark_4, 100%);
-$_base_color_light: desaturate($light_2, 100%);
+$_base_color_dark: #222226;
+$_base_color_light: #fafafb;
 
 // colors for destructive elements
 $destructive_bg_color: if($variant == 'light', $red_3, $red_4);
