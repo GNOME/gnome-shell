@@ -372,23 +372,15 @@
 }
 
 // styling for all menuitems in popovers
-@mixin menuitem($bg, $style: flat) {
+@mixin menuitem($bg) {
 
   // extend common styles
   @extend %menuitem;
 
-  @if $style == 'flat' {
-    @include button(undecorated);
-  } @else {
-    @include button(normal, $c:$bg);
-  }
-  &:hover {
-    @include button(hover, $c:$bg);
-  }
-  &:active {@include button(active, $c:$bg);}
-  &:selected,
-  &:checked {@include button(checked, $c:$bg);}
-  &:insensitive {@include button(insensitive, $c:$bg);}
+  @include button(undecorated, $c:$bg, $style: flat);
+  &:active { @include button(active, $c:$bg, $style: flat);}
+  &:hover, &:selected, &:checked { @include button(hover, $c:$bg, $style: flat);}
+  &:insensitive { @include button(insensitive, $c:$bg, $style: flat);}
 }
 
 // Panel menu/button drawing function
