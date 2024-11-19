@@ -275,7 +275,7 @@ const Key = GObject.registerClass({
         this._boxPointer.setPosition(this.keyButton, 0.5);
 
         // Adds style to existing keyboard style to avoid repetition
-        this._boxPointer.add_style_class_name('keyboard-subkeys');
+        this._boxPointer.add_style_class_name('keyboard-subkeys-boxpointer');
         this._getExtendedKeys();
         this.keyButton._extendedKeys = this._extendedKeyboard;
     }
