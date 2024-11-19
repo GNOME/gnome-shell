@@ -17,7 +17,6 @@ import {PopupAnimation} from './boxpointer.js';
 
 const DIM_BRIGHTNESS = -0.4;
 const POPUP_ANIMATION_TIME = 400;
-const MENU_BUTTON_BRIGHTNESS = 0.1;
 
 export const QuickSettingsItem = GObject.registerClass({
     Properties: {
@@ -167,7 +166,7 @@ export const QuickMenuToggle = GObject.registerClass({
             hasMenu: true,
         });
 
-        this.add_style_class_name('quick-menu-toggle');
+        this.add_style_class_name('quick-toggle-has-menu');
 
         this._box = new St.BoxLayout({x_expand: true});
         this.set_child(this._box);
@@ -177,17 +176,13 @@ export const QuickMenuToggle = GObject.registerClass({
         });
         this._box.add_child(contents);
 
-        // Use an effect to lighten the menu button a bit, so we don't
-        // have to define two full sets of button styles (normal/default)
-        // with slightly different colors
-        const menuHighlight = new Clutter.BrightnessContrastEffect();
-        menuHighlight.set_brightness(MENU_BUTTON_BRIGHTNESS);
+        let separator = new St.Widget({style_class: 'quick-toggle-separator'});
+        this._box.add_child(separator);
 
         this._menuButton = new St.Button({
-            style_class: 'quick-toggle-arrow icon-button',
+            style_class: 'quick-toggle-menu-button icon-button',
             child: new St.Icon({icon_name: 'go-next-symbolic'}),
             accessible_name: _('Open menu'),
-            effect: menuHighlight,
             can_focus: true,
             x_expand: false,
             y_expand: true,
