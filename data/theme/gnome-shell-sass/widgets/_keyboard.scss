@@ -91,7 +91,7 @@ $default_key_bg_color: if($variant=='light', darken($key_bg_color, 11%), darken(
   }
 
   // size of icons on keys
-  StIcon { icon-size: $medium_icon_size; }
+  StIcon { icon-size: $medium_scalable_icon_size; }
 }
 
 // long press on a key popup
