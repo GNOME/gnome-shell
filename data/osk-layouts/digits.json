@@ -22,7 +22,7 @@
           },
           {
             "action": "delete",
-            "iconName": "edit-clear-symbolic"
+            "iconName": "osk-delete-symbolic"
           }
         ],
         [
@@ -42,7 +42,7 @@
             ]
           },
           {
-            "iconName": "keyboard-enter-symbolic",
+            "iconName": "osk-enter-symbolic",
             "keyval": "0xff0d",
             "height": 2
           }
@@ -73,7 +73,7 @@
           },
           {
             "action": "hide",
-            "iconName": "keyboard-hide-symbolic"
+            "iconName": "osk-hide-symbolic"
           }
         ]
       ]

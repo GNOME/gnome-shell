@@ -1017,7 +1017,7 @@ const EmojiSelection = GObject.registerClass({
             section.button = key;
         }
 
-        key = new Key({iconName: 'keyboard-hide-symbolic'});
+        key = new Key({iconName: 'osk-hide-symbolic'});
         key.keyButton.add_style_class_name('default-key');
         key.keyButton.add_style_class_name('hide-key');
         key.connect('released', () => {
@@ -1519,7 +1519,7 @@ export const Keyboard = GObject.registerClass({
                         this._setActiveLevel(key.level);
                         this._setLatched(
                             key.level === 1 &&
-                                key.iconName === 'keyboard-caps-lock-symbolic');
+                                key.iconName === 'osk-caps-lock-symbolic');
                     }
 
                     this._longPressed = false;
@@ -1540,7 +1540,7 @@ export const Keyboard = GObject.registerClass({
             }
 
             if (key.action === 'levelSwitch' &&
-                key.iconName === 'keyboard-shift-symbolic') {
+                key.iconName === 'osk-shift-symbolic') {
                 layout.shiftKeys.push(button);
                 if (key.level === 'shift') {
                     button.connect('long-press', () => {
@@ -1623,7 +1623,7 @@ export const Keyboard = GObject.registerClass({
             let key = layout.shiftKeys[i];
             key.setLatched(latched);
             key.iconName = latched
-                ? 'keyboard-caps-lock-symbolic' : 'keyboard-shift-symbolic';
+                ? 'osk-caps-lock-symbolic' : 'osk-shift-symbolic';
         }
     }
 
