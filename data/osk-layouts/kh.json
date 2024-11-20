@@ -80,7 +80,7 @@
           },
           {
             "action": "delete",
-            "iconName": "edit-clear-symbolic",
+            "iconName": "osk-delete-symbolic",
             "width": 1.5
           }
         ],
@@ -151,7 +151,7 @@
             ]
           },
           {
-            "iconName": "keyboard-enter-symbolic",
+            "iconName": "osk-enter-symbolic",
             "keyval": "0xff0d",
             "width": 1.5
           }
@@ -299,7 +299,7 @@
           },
           {
             "action": "emoji",
-            "iconName": "face-smile-symbolic",
+            "iconName": "osk-emoji-picker-symbolic",
             "width": 1.5
           },
           {
@@ -310,12 +310,12 @@
           },
           {
             "action": "languageMenu",
-            "iconName": "keyboard-layout-symbolic",
+            "iconName": "osk-layout-symbolic",
             "width": 1.5
           },
           {
             "action": "hide",
-            "iconName": "keyboard-hide-symbolic",
+            "iconName": "osk-hide-symbolic",
             "width": 2
           }
         ]
@@ -393,7 +393,7 @@
           },
           {
             "action": "delete",
-            "iconName": "edit-clear-symbolic",
+            "iconName": "osk-delete-symbolic",
             "width": 1.5
           }
         ],
@@ -463,7 +463,7 @@
             ]
           },
           {
-            "iconName": "keyboard-enter-symbolic",
+            "iconName": "osk-enter-symbolic",
             "keyval": "0xff0d",
             "width": 2
           }
@@ -566,15 +566,15 @@
           },
           {
             "action": "emoji",
-            "iconName": "face-smile-symbolic"
+            "iconName": "osk-emoji-picker-symbolic"
           },
           {
             "action": "languageMenu",
-            "iconName": "keyboard-layout-symbolic"
+            "iconName": "osk-layout-symbolic"
           },
           {
             "action": "hide",
-            "iconName": "keyboard-hide-symbolic"
+            "iconName": "osk-hide-symbolic"
           }
         ]
       ]
@@ -643,7 +643,7 @@
           },
           {
             "action": "delete",
-            "iconName": "edit-clear-symbolic",
+            "iconName": "osk-delete-symbolic",
             "width": 1.5
           }
         ],
@@ -704,7 +704,7 @@
             ]
           },
           {
-            "iconName": "keyboard-enter-symbolic",
+            "iconName": "osk-enter-symbolic",
             "keyval": "0xff0d",
             "width": 2
           }
@@ -800,15 +800,15 @@
           },
           {
             "action": "emoji",
-            "iconName": "face-smile-symbolic"
+            "iconName": "osk-emoji-picker-symbolic"
           },
           {
             "action": "languageMenu",
-            "iconName": "keyboard-layout-symbolic"
+            "iconName": "osk-layout-symbolic"
           },
           {
             "action": "hide",
-            "iconName": "keyboard-hide-symbolic"
+            "iconName": "osk-hide-symbolic"
           }
         ]
       ]
