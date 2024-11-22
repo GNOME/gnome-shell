@@ -873,11 +873,18 @@ export const LoginDialog = GObject.registerClass({
         this._authPrompt.cancelButton.visible = cancelVisible;
     }
 
-    _updateBanner() {
-        let enabled = this._settings.get_boolean(GdmUtil.BANNER_MESSAGE_KEY);
-        let text = this._settings.get_string(GdmUtil.BANNER_MESSAGE_TEXT_KEY);
+    _getBannerText() {
+        const enabled = this._settings.get_boolean(GdmUtil.BANNER_MESSAGE_KEY);
+        if (!enabled)
+            return null;
 
-        if (enabled && text) {
+        return this._settings.get_string(GdmUtil.BANNER_MESSAGE_TEXT_KEY);
+    }
+
+    _updateBanner() {
+        const text = this._getBannerText();
+
+        if (text) {
             this._bannerLabel.set_text(text);
             this._bannerLabel.show();
         } else {
