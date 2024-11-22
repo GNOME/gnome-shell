@@ -505,9 +505,9 @@ export const LoginDialog = GObject.registerClass({
         this._settings = new Gio.Settings({schema_id: GdmUtil.LOGIN_SCREEN_SCHEMA});
 
         this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_KEY}`,
-            this._updateBanner.bind(this));
+            () => this._updateBanner().catch(logError));
         this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_TEXT_KEY}`,
-            this._updateBanner.bind(this));
+            () => this._updateBanner().catch(logError));
         this._settings.connect(`changed::${GdmUtil.DISABLE_USER_LIST_KEY}`,
             this._updateDisableUserList.bind(this));
         this._settings.connect(`changed::${GdmUtil.LOGO_KEY}`,
@@ -576,7 +576,7 @@ export const LoginDialog = GObject.registerClass({
         this._bannerLabel.clutter_text.line_wrap = true;
         this._bannerLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         bannerBox.add_child(this._bannerLabel);
-        this._updateBanner();
+        this._updateBanner().catch(logError);
 
         this._sessionMenuButton = new SessionMenuButton();
         this._sessionMenuButton.connect('session-activated',
@@ -873,16 +873,19 @@ export const LoginDialog = GObject.registerClass({
         this._authPrompt.cancelButton.visible = cancelVisible;
     }
 
-    _getBannerText() {
+    async _getBannerText() {
         const enabled = this._settings.get_boolean(GdmUtil.BANNER_MESSAGE_KEY);
         if (!enabled)
             return null;
 
+        // placeholder
+        await false;
+
         return this._settings.get_string(GdmUtil.BANNER_MESSAGE_TEXT_KEY);
     }
 
-    _updateBanner() {
-        const text = this._getBannerText();
+    async _updateBanner() {
+        const text = await this._getBannerText();
 
         if (text) {
             this._bannerLabel.set_text(text);
