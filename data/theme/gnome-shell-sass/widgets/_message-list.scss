@@ -11,10 +11,10 @@
   &:rtl {margin-right: 0; margin-left: $base_margin; padding-left: $base_padding; border-left-width: 1px; }
 
   .message-list-placeholder {
-    @extend %title_2;
-    color: transparentize($fg_color, .75);
+    @extend %title_3;
+    color: transparentize($fg_color, .55);
     @if $contrast == 'high' {
-      color: transparentize($fg_color, .5);
+      color: $fg_color;
     }
     // icon size and color
     > StIcon {
