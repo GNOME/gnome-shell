@@ -46,6 +46,8 @@ const _SCROLL_ANIMATION_TIME = 500;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _CONFLICTING_SESSION_DIALOG_TIMEOUT = 60;
 
+Gio._promisify(Gio.File.prototype, 'load_contents_async');
+
 export const UserListItem = GObject.registerClass({
     Signals: {'activate': {}},
 }, class UserListItem extends St.Button {
@@ -508,6 +510,16 @@ export const LoginDialog = GObject.registerClass({
             () => this._updateBanner().catch(logError));
         this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_TEXT_KEY}`,
             () => this._updateBanner().catch(logError));
+        this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_SOURCE_KEY}`,
+            () => {
+                if (this._updateBannerMessageFile())
+                    this._updateBanner().catch(logError);
+            });
+        this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_PATH_KEY}`,
+            () => {
+                if (this._updateBannerMessageFile())
+                    this._updateBanner().catch(logError);
+            });
         this._settings.connect(`changed::${GdmUtil.DISABLE_USER_LIST_KEY}`,
             this._updateDisableUserList.bind(this));
         this._settings.connect(`changed::${GdmUtil.LOGO_KEY}`,
@@ -576,6 +588,8 @@ export const LoginDialog = GObject.registerClass({
         this._bannerLabel.clutter_text.line_wrap = true;
         this._bannerLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         bannerBox.add_child(this._bannerLabel);
+
+        this._updateBannerMessageFile();
         this._updateBanner().catch(logError);
 
         this._sessionMenuButton = new SessionMenuButton();
@@ -873,13 +887,48 @@ export const LoginDialog = GObject.registerClass({
         this._authPrompt.cancelButton.visible = cancelVisible;
     }
 
+    _updateBannerMessageFile() {
+        const path = this._settings.get_string(GdmUtil.BANNER_MESSAGE_SOURCE_KEY) === 'file'
+            ? this._settings.get_string(GdmUtil.BANNER_MESSAGE_PATH_KEY)
+            : null;
+        const file = path
+            ? Gio.File.new_for_path(path)
+            : null;
+
+        if (!file && !this._bannerMessageFile)
+            return false;
+
+        if (file && this._bannerMessageFile && this._bannerMessageFile.equal(file))
+            return false;
+
+        this._bannerMessageMonitor?.disconnectObject(this);
+        this._bannerMessageMonitor = null;
+
+        this._bannerMessageFile = file;
+
+        if (file) {
+            this._bannerMessageMonitor = file.monitor_file(Gio.FileMonitorFlags.NONE, null);
+            this._bannerMessageMonitor.connectObject(
+                'changed', () => this._updateBanner().catch(logError), this);
+        }
+
+        return true;
+    }
+
     async _getBannerText() {
         const enabled = this._settings.get_boolean(GdmUtil.BANNER_MESSAGE_KEY);
         if (!enabled)
             return null;
 
-        // placeholder
-        await false;
+        if (this._bannerMessageFile) {
+            try {
+                const [contents] = await this._bannerMessageFile.load_contents_async(null);
+                return new TextDecoder().decode(contents);
+            } catch (e) {
+                console.error(`Failed to read banner from ${this._bannerMessageFile.get_path()}: ${e.message}`);
+                return null;
+            }
+        }
 
         return this._settings.get_string(GdmUtil.BANNER_MESSAGE_TEXT_KEY);
     }
