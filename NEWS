@@ -1,3 +1,15 @@
+46.7
+====
+* Fix graphical artifacts in partially-rounded buttons [Sebastian; #7996]
+* Improve accessibility of keyboard backlight quick settings toggle
+  [Lukáš, Florian; !3538, !3545]
+* Misc. bug fixes and cleanups [Florian, Bilal, Daniel, Jonas; !3520, !3518,
+  !3521, !3535, !3532, !3549, !3548, !3286, !3539]
+
+Contributors:
+  Jonas Dreßler, Bilal Elmoussaoui, Sebastian Keller, Florian Müllner,
+  Daniel Rusek, Lukáš Tyrychtr
+
 46.6
 ====
 * Improve quick settings accessibility [Lukáš; !3481, !3484, !3485]
