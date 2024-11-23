@@ -1,3 +1,21 @@
+47.2
+====
+* Fix graphical artifacts in partially-rounded buttons [Sebastian; #7996]
+* Fix caret tracking in magnifier [Bilal; !3522]
+* Improve accessibility of keyboard backlight quick settings toggle
+  [Lukáš, Florian; !3538, !3545]
+* Fix resetting non-caps shift key in on-screen keyboard [Jonas; !3286]
+* Misc. bug fixes and cleanups [Florian, Bilal, Automeris, Daniel, Jonas;
+  !3520, !3518, !3521, !3529, !3535, !3532, !3540, !3549, !3548, !3539]
+
+Contributors:
+  Jonas Dreßler, Bilal Elmoussaoui, Sebastian Keller, Florian Müllner,
+  Automeris naranja, Daniel Rusek, Lukáš Tyrychtr
+
+Translators:
+  Aefgh Threenine [th], Fabio Tomat [fur], Nathan Follens [nl],
+  Марко Костић [sr]
+
 47.1
 ====
 * Improve quick settings accessibility [Lukáš; !3477, !3481, !3484, !3485]
