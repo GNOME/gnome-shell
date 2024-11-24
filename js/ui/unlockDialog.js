@@ -588,7 +588,7 @@ export const UnlockDialog = GObject.registerClass({
             opacity: 0,
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.END,
-            icon_name: 'system-users-symbolic',
+            label: _('Switch User…')
         });
         this._otherUserButton.set_pivot_point(0.5, 0.5);
         this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
