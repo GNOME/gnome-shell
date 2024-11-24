@@ -39,6 +39,13 @@ $_gdm_dialog_width: 25em;
   &.cancel-button {
     padding: $base_padding * 1.5;
   }
+
+  &.switch-user-button {
+    margin-left: $base_padding * 3;
+    margin-bottom: $base_padding * 3;
+    padding-left: $base_padding * 3.75;
+    padding-right: $base_padding * 3.75;
+  }
 }
 
 .login-dialog-button-box {

@@ -464,9 +464,9 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
 
             const textDirection = this._switchUserButton.get_text_direction();
             if (textDirection === Clutter.TextDirection.RTL)
-                actorBox.x1 = box.x1 + natWidth;
+                actorBox.x1 = box.x2 - natWidth;
             else
-                actorBox.x1 = box.x2 - (natWidth * 2);
+                actorBox.x1 = box.x1 + natWidth;
 
             actorBox.y1 = box.y2 - (natHeight * 2);
             actorBox.x2 = actorBox.x1 + natWidth;
