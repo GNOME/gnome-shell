@@ -464,9 +464,9 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
 
             const textDirection = this._switchUserButton.get_text_direction();
             if (textDirection === Clutter.TextDirection.RTL)
-                actorBox.x1 = box.x1 + natWidth;
+                actorBox.x1 = box.x2 - natWidth;
             else
-                actorBox.x1 = box.x2 - (natWidth * 2);
+                actorBox.x1 = box.x1 + natWidth;
 
             actorBox.y1 = box.y2 - (natHeight * 2);
             actorBox.x2 = actorBox.x1 + natWidth;
@@ -588,7 +588,7 @@ export const UnlockDialog = GObject.registerClass({
             opacity: 0,
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.END,
-            icon_name: 'system-users-symbolic',
+            label: _('Switch User…')
         });
         this._otherUserButton.set_pivot_point(0.5, 0.5);
         this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
@@ -767,6 +767,7 @@ export const UnlockDialog = GObject.registerClass({
             reactive: progress > 0,
             can_focus: progress > 0,
         });
+        this._updateUserSwitchVisibility();
 
         const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
 
@@ -871,7 +872,8 @@ export const UnlockDialog = GObject.registerClass({
         this._otherUserButton.visible = this._userManager.can_switch() &&
             this._userManager.has_multiple_users &&
             this._screenSaverSettings.get_boolean('user-switch-enabled') &&
-            !this._lockdownSettings.get_boolean('disable-user-switching');
+            !this._lockdownSettings.get_boolean('disable-user-switching') &&
+            this._promptBox.visible;
     }
 
     cancel() {
