@@ -767,6 +767,7 @@ export const UnlockDialog = GObject.registerClass({
             reactive: progress > 0,
             can_focus: progress > 0,
         });
+        this._updateUserSwitchVisibility();
 
         const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
 
@@ -871,7 +872,8 @@ export const UnlockDialog = GObject.registerClass({
         this._otherUserButton.visible = this._userManager.can_switch() &&
             this._userManager.has_multiple_users &&
             this._screenSaverSettings.get_boolean('user-switch-enabled') &&
-            !this._lockdownSettings.get_boolean('disable-user-switching');
+            !this._lockdownSettings.get_boolean('disable-user-switching') &&
+            this._promptBox.visible;
     }
 
     cancel() {
