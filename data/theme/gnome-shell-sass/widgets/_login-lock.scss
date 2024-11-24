@@ -21,14 +21,31 @@ $_gdm_dialog_width: 25em;
 // GDM Login Dialog
 // uses dark grey system styles
 .login-dialog {
-  .login-dialog-prompt-entry {
+  .login-dialog-button-box {
     @extend %system_entry;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: $base_padding * 2.25;
+    spacing: 0px;
+  }
+  .login-dialog-prompt-entry {
+    background-color: transparent;
+     &:focus {
+         box-shadow: none !important;
+     }
+     padding-left: 0px;
+     padding-right: 0px;
+  }
+  .login-dialog-prompt-entry-separator {
+    font-size: 2em;
+    padding: 0px;
+    color: transparentize($_gdm_fg, 0.90);
   }
 }
 
 // buttons on login screen
 .login-dialog-button {
-
+  &.next-button,
   &.cancel-button,
   &.switch-user-button,
   &.login-dialog-session-list-button {
@@ -36,8 +53,11 @@ $_gdm_dialog_width: 25em;
     @extend %system_button;
   }
 
+  &.next-button,
   &.cancel-button {
-    padding: $base_padding * 1.5;
+    background: none !important;
+    border: none !important;
+    padding: 0px !important;
   }
 
   &.switch-user-button {
@@ -197,8 +217,27 @@ $_gdm_dialog_width: 25em;
 .unlock-dialog {
   background-color: transparent;
 
-  .login-dialog-prompt-entry {
+  .login-dialog-button-box {
     @extend %lockscreen_entry;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: $base_padding * 2.25;
+    spacing: 0px;
+  }
+
+  .login-dialog-prompt-entry {
+    background-color: transparent;
+     &:focus {
+         box-shadow: none !important;
+     }
+     padding-left: 0px;
+     padding-right: 0px;
+  }
+
+  .login-dialog-prompt-entry-separator {
+    font-size: 2em;
+    padding: 0px;
+    color: transparentize($_gdm_fg, 0.90);
   }
 
   .button,
