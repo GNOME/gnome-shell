@@ -642,6 +642,19 @@ export const LoginDialog = GObject.registerClass({
         this._updateBannerMessageFile();
         this._updateBanner().catch(logError);
 
+        this._switchUserButton = new St.Button({
+            style_class: 'login-dialog-button switch-user-button',
+            accessible_name: _('Log in as another user'),
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.END,
+            label: _('Switch User…')
+        });
+        this._switchUserButton.connect('clicked', () => this._authPrompt.cancel());
+        this._switchUserButton.set_pivot_point(0.5, 0.5);
+        this.add_child(this._switchUserButton);
+        this._switchUserButton.hide();
+
         this._sessionMenuButton = new SessionMenuButton();
         this._sessionMenuButton.connect('session-activated',
             (list, sessionId) => {
@@ -706,6 +719,25 @@ export const LoginDialog = GObject.registerClass({
         let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
 
         actorBox.x1 = Math.floor(centerX - natWidth / 2);
+        actorBox.y1 = dialogBox.y2 - natHeight;
+        actorBox.x2 = actorBox.x1 + natWidth;
+        actorBox.y2 = actorBox.y1 + natHeight;
+
+        return actorBox;
+    }
+
+    _getSwitchUserButtonAllocation(dialogBox) {
+        let actorBox = new Clutter.ActorBox();
+
+        let [, , natWidth, natHeight] =
+            this._switchUserButton.get_preferred_size();
+
+        const textDirection = this._switchUserButton.get_text_direction();
+        if (textDirection === Clutter.TextDirection.RTL)
+            actorBox.x1 = dialogBox.x2 - natWidth;
+        else
+            actorBox.x1 = dialogBox.x1;
+
         actorBox.y1 = dialogBox.y2 - natHeight;
         actorBox.x2 = actorBox.x1 + natWidth;
         actorBox.y2 = actorBox.y1 + natHeight;
@@ -805,6 +837,10 @@ export const LoginDialog = GObject.registerClass({
             logoAllocation = this._getLogoBinAllocation(dialogBox);
             logoHeight = logoAllocation.y2 - logoAllocation.y1;
         }
+
+        let switchUserButtonAllocation = null;
+        if (this._switchUserButton.visible)
+            switchUserButtonAllocation = this._getSwitchUserButtonAllocation(dialogBox);
 
         let a11yMenuButtonAllocation = null;
         let a11yButtonWidth = 0;
@@ -916,6 +952,9 @@ export const LoginDialog = GObject.registerClass({
         if (logoAllocation)
             this._logoBin.allocate(logoAllocation);
 
+        if (switchUserButtonAllocation)
+            this._switchUserButton.allocate(switchUserButtonAllocation);
+
         if (a11yMenuButtonAllocation)
             this._a11yMenuButton.allocate(a11yMenuButtonAllocation);
 
@@ -954,20 +993,6 @@ export const LoginDialog = GObject.registerClass({
             if (this._disableUserList && this._timedLoginUserListHold)
                 this._timedLoginUserListHold.release();
         }
-    }
-
-    _updateCancelButton() {
-        let cancelVisible;
-
-        // Hide the cancel button if the user list is disabled and we're asking for
-        // a username
-        if (this._authPrompt.verificationStatus === AuthPrompt.AuthPromptStatus.NOT_VERIFYING &&
-            this._disableUserList)
-            cancelVisible = false;
-        else
-            cancelVisible = true;
-
-        this._authPrompt.cancelButton.visible = cancelVisible;
     }
 
     _updateBannerMessageFile() {
@@ -1143,6 +1168,16 @@ export const LoginDialog = GObject.registerClass({
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
         this._fadeInBannerView();
+
+        if (!this._disableUserList) {
+            this._switchUserButton.opacity = 0;
+            this._switchUserButton.show();
+            this._switchUserButton.ease({
+                opacity: 255,
+                duration: _FADE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+        }
     }
 
     _showRealmLoginHint(realmManager, hint) {
@@ -1175,14 +1210,16 @@ export const LoginDialog = GObject.registerClass({
                 this._user = this._userManager.get_user(answer);
                 this._authPrompt.clear();
                 this._beginVerification({userName: answer});
-                this._updateCancelButton();
+                this._authPrompt.cancelButton.hide();
+                this._switchUserButton.show();
             });
-        this._updateCancelButton();
 
         this._sessionMenuButton.updateSensitivity(false);
         this._authPrompt.updateSensitivity(true);
         this._authPrompt.showNextButton(false);
         this._showPrompt();
+        this._authPrompt.cancelButton.show();
+        this._switchUserButton.hide();
     }
 
     _bindOpacity() {
@@ -1503,6 +1540,7 @@ export const LoginDialog = GObject.registerClass({
         this._ensureUserListLoaded();
         this._authPrompt.hide();
         this._hideBannerView();
+        this._switchUserButton.hide();
         this._sessionMenuButton.close();
         this._sessionMenuButton.hide();
         this._setUserListExpanded(true);
@@ -1524,7 +1562,7 @@ export const LoginDialog = GObject.registerClass({
     _onUserListActivated(activatedItem) {
         this._user = activatedItem.user;
 
-        this._updateCancelButton();
+        this._authPrompt.cancelButton.hide();
 
         if (this._conflictingSessionNotification)
             this._conflictingSessionNotification.destroy();
