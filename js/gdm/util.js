@@ -326,6 +326,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._pendingJSONRequests = 0;
         this._pendingMechanisms.clear();
         this._publishedMechanisms.clear();
+        this._unavailableServices.clear();
         if (this._userVerifier) {
             this._disconnectSignals();
             this._userVerifier.run_dispose();
