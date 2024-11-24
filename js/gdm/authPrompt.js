@@ -167,6 +167,21 @@ export const AuthPrompt = GObject.registerClass({
             this.cancelButton.opacity = 0;
         this._mainBox.add_child(this.cancelButton);
 
+        if (this._hasCancelButton) {
+            this._leftSeparator = new St.Label({
+                layout_manager: new Clutter.BinLayout(),
+                style_class: 'login-dialog-prompt-entry-separator',
+                text: '│',
+                x_align: Clutter.ActorAlign.CENTER,
+                y_align: Clutter.ActorAlign.CENTER,
+                x_expand: false,
+            });
+            this._mainBox.add_child(this._leftSeparator);
+            this.cancelButton.connect('notify::visible', () => {
+                this._leftSeparator.visible = this.cancelButton.visible;
+            });
+        }
+
         this._authList = new AuthList.AuthList();
         this._authList.set({
             visible: false,
@@ -218,6 +233,8 @@ export const AuthPrompt = GObject.registerClass({
             entry.clutter_text.connect('text-changed', () => {
                 if (!this._userVerifier.hasPendingMessages)
                     this._fadeOutMessage();
+
+                this._updateNextButtonSensitivity(entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING);
             });
 
             entry.clutter_text.connect('activate', () => {
@@ -225,21 +242,46 @@ export const AuthPrompt = GObject.registerClass({
                 if (entry.reactive)
                     this._activateNext(shouldSpin);
             });
+
+            entry.clutter_text.connect('key-focus-in', () => this._mainBox.add_style_pseudo_class('focus'));
+            entry.clutter_text.connect('key-focus-out', () => this._mainBox.remove_style_pseudo_class('focus'));
         });
+
+        this._rightSeparator = new St.Label({
+            layout_manager: new Clutter.BinLayout(),
+            style_class: 'login-dialog-prompt-entry-separator',
+            text: '│',
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+            x_expand: false,
+        });
+        this._mainBox.add_child(this._rightSeparator);
 
         this._defaultButtonWell = new St.Widget({
             layout_manager: new Clutter.BinLayout(),
             x_align: Clutter.ActorAlign.END,
-            y_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.FILL,
         });
-        this._defaultButtonWell.add_constraint(new Clutter.BindConstraint({
-            source: this.cancelButton,
-            coordinate: Clutter.BindCoordinate.WIDTH,
-        }));
         this._mainBox.add_child(this._defaultButtonWell);
+
+        this._nextButton = new St.Button({
+            style_class: 'login-dialog-button next-button',
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            reactive: true,
+            can_focus: true,
+            icon_name: 'go-next-symbolic',
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.END,
+        });
+        this._nextButton.connect('clicked', () => this._entry.clutter_text.activate());
+        this._nextButton.add_style_pseudo_class('default');
+        this._defaultButtonWell.add_child(this._nextButton);
 
         this._spinner = new Animation.Spinner(DEFAULT_BUTTON_WELL_ICON_SIZE);
         this._defaultButtonWell.add_child(this._spinner);
+
+        this.setActorInDefaultButtonWell(this._nextButton, false);
+        this._updateNextButtonSensitivity(this._entry.text.length > 0);
     }
 
     showTimedLoginIndicator(time) {
@@ -395,7 +437,6 @@ export const AuthPrompt = GObject.registerClass({
         }
 
         this.updateSensitivity(canRetry);
-        this.setActorInDefaultButtonWell(null);
 
         if (!canRetry)
             this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
@@ -404,8 +445,7 @@ export const AuthPrompt = GObject.registerClass({
             wiggle(this._entry);
     }
 
-    _onVerificationComplete() {
-        this.setActorInDefaultButtonWell(null);
+    _onVerificationComplete(userVerifier) {
         this.verificationStatus = AuthPromptStatus.VERIFICATION_SUCCEEDED;
         this.cancelButton.reactive = false;
         this.cancelButton.can_focus = false;
@@ -468,7 +508,14 @@ export const AuthPrompt = GObject.registerClass({
 
             if (!animate) {
                 actor.opacity = 255;
+                this._rightSeparator.opacity = 255;
             } else {
+                this._rightSeparator.ease({
+                    opacity: 255,
+                    duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
+                    delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
+                    mode: Clutter.AnimationMode.LINEAR,
+                });
                 actor.ease({
                     opacity: 255,
                     duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
@@ -476,17 +523,23 @@ export const AuthPrompt = GObject.registerClass({
                     mode: Clutter.AnimationMode.LINEAR,
                 });
             }
+        } else {
+            this._rightSeparator.opacity = 0;
         }
 
         this._defaultButtonWellActor = actor;
     }
 
     startSpinning() {
-        this.setActorInDefaultButtonWell(this._spinner, true);
+        this.setActorInDefaultButtonWell(this._spinner, false);
     }
 
     stopSpinning() {
         this.setActorInDefaultButtonWell(null, false);
+    }
+
+    showNextButton(show) {
+        this.setActorInDefaultButtonWell(show? this._nextButton : null, false);
     }
 
     clear() {
@@ -580,7 +633,14 @@ export const AuthPrompt = GObject.registerClass({
         wiggle(this._message, wiggleParameters);
     }
 
+    _updateNextButtonSensitivity(sensitive) {
+        this._nextButton.reactive = sensitive;
+        this._nextButton.can_focus = sensitive;
+    }
+
     updateSensitivity(sensitive) {
+        this._updateNextButtonSensitivity(sensitive && (this._entry.text.length > 0 && this.verificationStatus == AuthPromptStatus.VERIFYING));
+
         if (this._entry.reactive === sensitive)
             return;
 
@@ -597,7 +657,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     vfunc_hide() {
-        this.setActorInDefaultButtonWell(null, true);
+        this.setActorInDefaultButtonWell(null, false);
         super.vfunc_hide();
         this._message.opacity = 0;
 
@@ -678,6 +738,7 @@ export const AuthPrompt = GObject.registerClass({
             hold: null,
         });
 
+        this.setActorInDefaultButtonWell(this._nextButton, false);
         this.updateSensitivity(false);
 
         let hold = params.hold;
