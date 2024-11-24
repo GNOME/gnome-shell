@@ -194,6 +194,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _clearUserVerifier() {
+        this._unavailableServices.clear();
         if (this._userVerifier) {
             this._disconnectSignals();
             this._userVerifier.run_dispose();
