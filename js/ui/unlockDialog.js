@@ -450,7 +450,8 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         const [width, height] = box.get_size();
 
         const tenthOfHeight = height / 10.0;
-        const thirdOfHeight = height / 3.0;
+        const quarterOfHeight = height / 4.0;
+        const centerY = height / 2.0;
 
         const [, , stackWidth, stackHeight] =
             this._stack.get_preferred_size();
@@ -476,9 +477,16 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         this._notifications.allocate(actorBox);
 
         // Authentication Box
-        const stackY = Math.min(
-            thirdOfHeight,
-            height - stackHeight - maxNotificationsHeight);
+        let stackY;
+        if (this._activePage === this._clock) {
+            stackY = Math.min(
+                Math.floor(centerY - stackHeight / 2.0),
+                height - stackHeight - maxNotificationsHeight);
+        } else {
+            stackY = Math.min(
+                quarterOfHeight,
+                height - stackHeight - maxNotificationsHeight);
+        }
 
         actorBox.x1 = columnX1;
         actorBox.y1 = stackY;
@@ -838,7 +846,7 @@ export const UnlockDialog = GObject.registerClass({
 
     _onReset(authPrompt, beginRequest) {
         let userName;
-        if (beginRequest === AuthPrompt.BeginRequestType.PROVIDE_USERNAME) {
+        if (beginRequest !== AuthPrompt.BeginRequestType.DONT_PROVIDE_USERNAME) {
             this._authPrompt.setUser(this._user);
             userName = this._userName;
         } else {
@@ -888,8 +896,8 @@ export const UnlockDialog = GObject.registerClass({
     }
 
     _otherUserClicked() {
-        Gdm.goto_login_session_sync(null);
-
+        this._authPrompt.connectObject('destroy', () =>
+            Gdm.goto_login_session_sync(null));
         this._authPrompt.cancel();
     }
 
