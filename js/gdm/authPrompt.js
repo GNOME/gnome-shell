@@ -2,6 +2,7 @@ import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import Atk from 'gi://Atk';
 import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
 import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
@@ -16,7 +17,6 @@ import * as UserWidget from '../ui/userWidget.js';
 import {wiggle} from '../misc/animationUtils.js';
 
 const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
-const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
 const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 
 const MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
@@ -52,6 +52,7 @@ export const AuthPrompt = GObject.registerClass({
         'prompted': {},
         'reset': {param_types: [GObject.TYPE_UINT]},
         'verification-complete': {},
+        'loading': {param_types: [GObject.TYPE_BOOLEAN]},
     },
 }, class AuthPrompt extends St.BoxLayout {
     _init(gdmClient, mode) {
@@ -147,9 +148,11 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     _initInputRow() {
-        this._mainBox = new St.BoxLayout({
+        this._mainBox = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
             style_class: 'login-dialog-button-box',
-            orientation: Clutter.Orientation.HORIZONTAL,
+            x_expand: true,
+            y_expand: false,
         });
         this.add_child(this._mainBox);
 
@@ -159,10 +162,17 @@ export const AuthPrompt = GObject.registerClass({
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             reactive: this._hasCancelButton,
             can_focus: this._hasCancelButton,
+            x_expand: true,
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.CENTER,
             icon_name: 'go-previous-symbolic',
         });
+        this.cancelButton.add_constraint(new Clutter.AlignConstraint({
+            source: this._mainBox,
+            align_axis: Clutter.AlignAxis.X_AXIS,
+            pivot_point: new Graphene.Point({x: 1, y: 0}),
+        }));
+
         if (this._hasCancelButton)
             this.cancelButton.connect('clicked', () => this.cancel());
         else
@@ -190,10 +200,20 @@ export const AuthPrompt = GObject.registerClass({
         });
         this._mainBox.add_child(this._authList);
 
+        this._entryArea = new St.Widget({
+            style_class: 'login-dialog-prompt-entry-area',
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+            y_expand: true,
+            visible: false,
+        });
+        this._mainBox.add_child(this._entryArea);
+
         const entryParams = {
             style_class: 'login-dialog-prompt-entry',
             can_focus: true,
             x_expand: true,
+            y_expand: true,
         };
 
         this._entry = null;
@@ -205,8 +225,7 @@ export const AuthPrompt = GObject.registerClass({
         ShellEntry.addContextMenu(this._passwordEntry, {actionMode: Shell.ActionMode.NONE});
 
         this._entry = this._passwordEntry;
-        this._mainBox.add_child(this._entry);
-        this._entry.grab_key_focus();
+        this._entryArea.add_child(this._entry);
         this._inactiveEntry = this._textEntry;
 
         this._timedLoginIndicator = new St.Bin({
@@ -222,26 +241,33 @@ export const AuthPrompt = GObject.registerClass({
                     this._fadeOutMessage();
             });
 
-            entry.clutter_text.connect('activate', () => {
-                const shouldSpin = entry === this._passwordEntry;
-                if (entry.reactive)
-                    this._activateNext(shouldSpin);
-            });
+            entry.clutter_text.connect('activate', () => this._activateNext());
         });
 
         this._defaultButtonWell = new St.Widget({
             layout_manager: new Clutter.BinLayout(),
+            style_class: 'login-dialog-default-button-well',
+            x_expand: true,
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.CENTER,
         });
-        this._defaultButtonWell.add_constraint(new Clutter.BindConstraint({
-            source: this.cancelButton,
-            coordinate: Clutter.BindCoordinate.WIDTH,
-        }));
-        this._mainBox.add_child(this._defaultButtonWell);
+        this._entryArea.add_child(this._defaultButtonWell);
+
+        this._nextButton = new St.Button({
+            style_class: 'login-dialog-button next-button',
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            reactive: true,
+            can_focus: false,
+            icon_name: 'go-next-symbolic',
+        });
+        this._nextButton.connect('clicked', () => this._activateNext());
+        this._nextButton.add_style_pseudo_class('default');
+        this._defaultButtonWell.add_child(this._nextButton);
 
         this._spinner = new Animation.Spinner(DEFAULT_BUTTON_WELL_ICON_SIZE);
         this._defaultButtonWell.add_child(this._spinner);
+
+        this.setActorInDefaultButtonWell(this._nextButton);
     }
 
     showTimedLoginIndicator(time) {
@@ -278,11 +304,14 @@ export const AuthPrompt = GObject.registerClass({
         this._timedLoginIndicator.scale_x = 0.;
     }
 
-    _activateNext(shouldSpin) {
+    _activateNext() {
+        if (!this._entry.reactive)
+            return;
+
         this.verificationStatus = AuthPromptStatus.VERIFICATION_IN_PROGRESS;
         this.updateSensitivity(false);
 
-        if (shouldSpin)
+        if (this._entry === this._passwordEntry)
             this.startSpinning();
 
         if (this._queryingService)
@@ -305,7 +334,7 @@ export const AuthPrompt = GObject.registerClass({
         }
 
         if (newEntry) {
-            this._mainBox.replace_child(this._entry, newEntry);
+            this._entryArea.replace_child(this._entry, newEntry);
             this._entry = newEntry;
             this._inactiveEntry = inactiveEntry;
 
@@ -337,7 +366,6 @@ export const AuthPrompt = GObject.registerClass({
         else
             this.setQuestion(question.replace(/[:：] *$/, '').trim());
 
-        this.updateSensitivity(true);
         this.emit('prompted');
     }
 
@@ -395,29 +423,35 @@ export const AuthPrompt = GObject.registerClass({
         }
 
         this.setMessage(message, type, wiggleParameters);
+
+        // If we're showing a message and no auth widget is currently visible,
+        // show the entry area to allow getting a preemptive answer
+        if (message &&
+            !this._entryArea.visible &&
+            !this._authList.visible)
+            this._fadeInElement(this._entryArea);
+
         this.emit('prompted');
     }
 
     _onVerificationFailed(userVerifier, serviceName, canRetry) {
         const wasQueryingService = this._queryingService === serviceName;
 
-        if (wasQueryingService) {
+        if (wasQueryingService)
             this._queryingService = null;
-            this.clear();
-        }
 
         this.updateSensitivity(canRetry);
-        this.setActorInDefaultButtonWell(null);
+        this.stopSpinning();
 
         if (!canRetry)
             this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
 
         if (wasQueryingService)
-            wiggle(this._entry);
+            wiggle(this._entryArea);
     }
 
     _onVerificationComplete() {
-        this.setActorInDefaultButtonWell(null);
+        this.stopSpinning(true);
         this.verificationStatus = AuthPromptStatus.VERIFICATION_SUCCEEDED;
 
         this._mainBox.reactive = false;
@@ -437,79 +471,68 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     setActorInDefaultButtonWell(actor, animate) {
-        if (!this._defaultButtonWellActor &&
-            !actor)
+        if (!this._defaultButtonWellActor && !actor)
             return;
 
         const oldActor = this._defaultButtonWellActor;
+        const wasSpinner = oldActor === this._spinner;
 
         if (oldActor)
             oldActor.remove_all_transitions();
 
-        let wasSpinner;
-        if (oldActor === this._spinner)
-            wasSpinner = true;
-        else
-            wasSpinner = false;
-
-        let isSpinner;
         if (actor === this._spinner)
-            isSpinner = true;
-        else
-            isSpinner = false;
+            this._spinner.play();
 
-        if (this._defaultButtonWellActor !== actor && oldActor) {
-            if (!animate) {
+        if (!animate) {
+            if (oldActor) {
                 oldActor.opacity = 0;
-
-                if (wasSpinner) {
-                    if (this._spinner)
-                        this._spinner.stop();
-                }
-            } else {
-                oldActor.ease({
-                    opacity: 0,
-                    duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
-                    delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
-                    mode: Clutter.AnimationMode.LINEAR,
-                    onComplete: () => {
-                        if (wasSpinner) {
-                            if (this._spinner)
-                                this._spinner.stop();
-                        }
-                    },
-                });
+                if (wasSpinner)
+                    this._spinner.stop();
             }
+            if (actor)
+                actor.opacity = 255;
+
+            this._defaultButtonWellActor = actor;
+            return;
         }
 
+        if (oldActor) {
+            oldActor.opacity = 255;
+            oldActor.ease({
+                opacity: 0,
+                duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.LINEAR,
+                onComplete: () => {
+                    if (wasSpinner)
+                        this._spinner.stop();
+                },
+            });
+        }
         if (actor) {
-            if (isSpinner)
-                this._spinner.play();
-
-            if (!animate) {
-                actor.opacity = 255;
-            } else {
-                actor.ease({
-                    opacity: 255,
-                    duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
-                    delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
-                    mode: Clutter.AnimationMode.LINEAR,
-                });
-            }
+            actor.opacity = 0;
+            actor.ease({
+                opacity: 255,
+                duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
+                delay: oldActor ? DEFAULT_BUTTON_WELL_ANIMATION_TIME : 0,
+                mode: Clutter.AnimationMode.LINEAR,
+            });
         }
 
         this._defaultButtonWellActor = actor;
     }
 
     startSpinning() {
+        this.emit('loading', true);
         this.setActorInDefaultButtonWell(this._spinner, true);
     }
 
-    stopSpinning() {
-        this.setActorInDefaultButtonWell(null, false);
+    stopSpinning(animate) {
+        this.emit('loading', false);
+        this.setActorInDefaultButtonWell(this._nextButton, animate);
     }
 
     clear() {
+        this._entryArea.hide();
         this._entry.text = '';
         this._inactiveEntry.text = '';
         this.stopSpinning();
@@ -525,8 +548,8 @@ export const AuthPrompt = GObject.registerClass({
         this._entry.hint_text = question;
 
         this._authList.hide();
-        this._entry.show();
-        this._entry.grab_key_focus();
+
+        this._fadeInElement(this._entryArea);
     }
 
     _fadeInElement(element) {
@@ -551,7 +574,7 @@ export const AuthPrompt = GObject.registerClass({
             this._authList.addItem(key, text);
         }
 
-        this._entry.hide();
+        this._entryArea.hide();
         if (this._message.text === '')
             this._message.hide();
         this._fadeInElement(this._authList);
@@ -616,6 +639,9 @@ export const AuthPrompt = GObject.registerClass({
         if (authWidget.reactive === sensitive)
             return;
 
+        if (authWidget === this._entry)
+            this._nextButton.reactive = sensitive;
+
         authWidget.reactive = sensitive;
 
         if (sensitive) {
@@ -629,7 +655,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     vfunc_hide() {
-        this.setActorInDefaultButtonWell(null, true);
+        this.stopSpinning();
         super.vfunc_hide();
         this._message.opacity = 0;
 
