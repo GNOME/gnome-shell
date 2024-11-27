@@ -1,7 +1,6 @@
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Gio from 'gi://Gio';
 import St from 'gi://St';
 
 import * as Params from '../misc/params.js';
@@ -130,48 +129,29 @@ class AnimatedIcon extends Animation {
 });
 
 export const Spinner = GObject.registerClass(
-class Spinner extends AnimatedIcon {
-    _init(size, params) {
+class Spinner extends St.Widget {
+    constructor(size, params) {
         params = Params.parse(params, {
             animate: false,
             hideOnStop: false,
         });
-        this._fileDark = Gio.File.new_for_uri(
-            'resource:///org/gnome/shell/theme/process-working-dark.svg');
-        this._fileLight = Gio.File.new_for_uri(
-            'resource:///org/gnome/shell/theme/process-working-light.svg');
-        super._init(this._fileDark, size);
-
-        this.connect('style-changed', () => {
-            const themeNode = this.get_theme_node();
-            const textColor = themeNode.get_foreground_color();
-            const [, , luminance] = textColor.to_hsl();
-            const file = luminance > 0.5
-                ? this._fileDark
-                : this._fileLight;
-            if (file !== this._file) {
-                this._file = file;
-                this._loadFile();
-            }
+        super({
+            width: size,
+            height: size,
+            opacity: 0,
         });
 
-        this.opacity = 0;
         this._animate = params.animate;
         this._hideOnStop = params.hideOnStop;
         this.visible = !this._hideOnStop;
     }
 
-    _onDestroy() {
-        this._animate = false;
-        super._onDestroy();
-    }
-
     play() {
         this.remove_all_transitions();
+        this.set_content(new St.SpinnerContent());
         this.show();
 
         if (this._animate) {
-            super.play();
             this.ease({
                 opacity: 255,
                 delay: SPINNER_ANIMATION_DELAY,
@@ -180,7 +160,6 @@ class Spinner extends AnimatedIcon {
             });
         } else {
             this.opacity = 255;
-            super.play();
         }
     }
 
@@ -193,14 +172,14 @@ class Spinner extends AnimatedIcon {
                 duration: SPINNER_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.LINEAR,
                 onComplete: () => {
-                    super.stop();
+                    this.set_content(null);
                     if (this._hideOnStop)
                         this.hide();
                 },
             });
         } else {
             this.opacity = 0;
-            super.stop();
+            this.set_content(null);
 
             if (this._hideOnStop)
                 this.hide();
