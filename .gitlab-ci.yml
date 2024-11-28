@@ -12,6 +12,11 @@ include:
         -Dextensions-tool:bash_completion=disabled
 
 build-sysext:
+  # FIXME: Temporarily allow this to fail, as it is basically impossible for it
+  # to run successfully while GitLab is broken, due to the number of sequential
+  # git clone operations it does.
+  # See https://discourse.gnome.org/t/scheduled-maintenance-gitlab-gitlab-pages-04th-of-december-2024-at-2-pm-utc/25271
+  allow_failure: true
   tags:
     - x86_64_v3
   before_script:
