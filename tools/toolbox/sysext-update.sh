@@ -62,7 +62,9 @@ install_command() {
 }
 
 sysext_merge_command() {
-  echo -n systemd-sysext refresh
+  #echo -n systemd-sysext refresh
+  # workaround for https://github.com/systemd/systemd/issues/34387
+  echo -n systemctl restart systemd-sysext.service
 }
 
 compile_schemas_command() {
