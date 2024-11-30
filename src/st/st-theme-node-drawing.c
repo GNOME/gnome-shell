@@ -2516,23 +2516,23 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state,
                               state->resource_scale,
                               state->resource_scale, 1);
 
+      color_state = clutter_paint_context_get_color_state (paint_context);
+
       cogl_color_init_from_4f (&clear_color, 0, 0, 0, 0);
       root_node = clutter_root_node_new (framebuffer,
+                                         color_state,
                                          &clear_color,
                                          COGL_BUFFER_BIT_COLOR);
 
       st_theme_node_paint_borders (state, root_node, &box,
                                    ST_PAINT_BORDERS_MODE_SILHOUETTE, 0xff);
 
-      color_state = clutter_paint_context_get_color_state (paint_context);
       nested_paint_context =
         clutter_paint_context_new_for_framebuffer (framebuffer,
                                                    NULL,
                                                    CLUTTER_PAINT_FLAG_NONE,
                                                    color_state);
-      clutter_paint_context_push_color_state (nested_paint_context, color_state);
       clutter_paint_node_paint (root_node, nested_paint_context);
-      clutter_paint_context_pop_color_state (nested_paint_context);
       clutter_paint_context_destroy (nested_paint_context);
 
       state->box_shadow_pipeline = _st_create_shadow_pipeline (st_theme_node_get_box_shadow (node),
