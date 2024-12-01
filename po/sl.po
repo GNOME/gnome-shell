@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-11-04 20:13+0000\n"
-"PO-Revision-Date: 2024-11-05 14:57+0100\n"
+"POT-Creation-Date: 2024-11-29 06:28+0000\n"
+"PO-Revision-Date: 2024-12-01 10:24+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -122,7 +122,7 @@ msgstr "Zajemi zaslonsko sliko"
 msgid "Record a screencast interactively"
 msgstr "Posnemi zaslonski posnetek interaktivno"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1298
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1308
 msgid "System"
 msgstr "Sistem"
 
@@ -701,6 +701,209 @@ msgstr "(ali pa povlecite prst prek bralnika)"
 msgid "(or place finger on reader)"
 msgstr "(ali pa povlecite prst po bralniku)"
 
+#: js/misc/breakManager.js:765
+msgid "Break complete sound"
+msgstr "Zvok ob koncu odmora"
+
+#: js/misc/breakManager.js:957
+#, javascript-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d sekund"
+msgstr[1] "%d sekundo"
+msgstr[2] "%d sekundi"
+msgstr[3] "%d sekunde"
+
+#: js/misc/breakManager.js:963
+#, javascript-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d minut"
+msgstr[1] "%d minuto"
+msgstr[2] "%d minuti"
+msgstr[3] "%d minute"
+
+#: js/misc/breakManager.js:969
+#, javascript-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] "%d ure"
+msgstr[1] "%d uro"
+msgstr[2] "%d uri"
+msgstr[3] "%d ure"
+
+#: js/misc/breakManager.js:975
+#, javascript-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "%d dni"
+msgstr[1] "%d dan"
+msgstr[2] "%d dneva"
+msgstr[3] "%d dni"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1058
+#, javascript-format
+msgid "It will be time for a break in %s"
+msgid_plural "It will be time for a break in %s"
+msgstr[0] "Čas za odmor bo čez %s"
+msgstr[1] "Čas za odmor bo čez %s"
+msgstr[2] "Čas za odmor bo čez %s"
+msgstr[3] "Čas za odmor bo čez %s"
+
+#: js/misc/breakManager.js:1066
+msgid "Movement Break Soon"
+msgstr "Odmor z razgibavanjem bo kmalu"
+
+#: js/misc/breakManager.js:1069
+msgid "Eyesight Break Soon"
+msgstr "Odmor za vid bo kmalu"
+
+#: js/misc/breakManager.js:1072
+msgid "Break Soon"
+msgstr "Odmor bo kmalu"
+
+#: js/misc/breakManager.js:1116
+msgid "Movement Break in Progress"
+msgstr "Premor z gibanjem je v teku"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1119
+#, javascript-format
+msgid "Continue moving around for %s"
+msgid_plural "Continue moving around for %s"
+msgstr[0] "Nadaljujte z gibanjem še %s"
+msgstr[1] "Nadaljujte z gibanjem še %s"
+msgstr[2] "Nadaljujte z gibanjem še %s"
+msgstr[3] "Nadaljujte z gibanjem še %s"
+
+#: js/misc/breakManager.js:1125
+msgid "Eyesight Break in Progress"
+msgstr "Odmor za vid je v teku"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1128
+#, javascript-format
+msgid "Continue looking away for %s"
+msgid_plural "Continue looking away for %s"
+msgstr[0] "Še naprej glejte stran %s"
+msgstr[1] "Še naprej glejte stran %s"
+msgstr[2] "Še naprej glejte stran %s"
+msgstr[3] "Še naprej glejte stran %s"
+
+#: js/misc/breakManager.js:1134
+msgid "Break in Progress"
+msgstr "Odmor je v teku"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1137
+#, javascript-format
+msgid "%s left in your break"
+msgid_plural "%s left in your break"
+msgstr[0] "Na voljo je še %s za odmor"
+msgstr[1] "Na voljo je še %s za odmor"
+msgstr[2] "Na voljo je še %s za odmor"
+msgstr[3] "Na voljo je še %s za odmor"
+
+#: js/misc/breakManager.js:1176
+msgid "Time for a Movement Break"
+msgstr "Čas je za odmor z gibanjem"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1179
+#, javascript-format
+msgid "Take a break from the device and move around for %s"
+msgid_plural "Take a break from the device and move around for %s"
+msgstr[0] "Vzemite si odmor od naprave in se gibajte %s"
+msgstr[1] "Vzemite si odmor od naprave in se gibajte %s"
+msgstr[2] "Vzemite si odmor od naprave in se gibajte %s"
+msgstr[3] "Vzemite si odmor od naprave in se gibajte %s"
+
+#: js/misc/breakManager.js:1185
+msgid "Time for an Eyesight Break"
+msgstr "Čas je za odmor vida"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1188
+#, javascript-format
+msgid ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgid_plural ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgstr[0] ""
+"Vzemite si odmor od zaslona. Glejte v daljavo vsaj 6 metrov najmanj %s"
+msgstr[1] ""
+"Vzemite si odmor od zaslona. Glejte v daljavo vsaj 6 metrov najmanj %s"
+msgstr[2] ""
+"Vzemite si odmor od zaslona. Glejte v daljavo vsaj 6 metrov najmanj %s"
+msgstr[3] ""
+"Vzemite si odmor od zaslona. Glejte v daljavo vsaj 6 metrov najmanj %s"
+
+#: js/misc/breakManager.js:1194
+msgid "Time for a Break"
+msgstr "Čas je za odmor"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1197
+#, javascript-format
+msgid "It’s time to take a break. Get away from the device for %s!"
+msgid_plural "It’s time to take a break. Get away from the device for %s!"
+msgstr[0] "Čas je za odmor. Pojdite stran od naprave za %s!"
+msgstr[1] "Čas je za odmor. Pojdite stran od naprave za %s!"
+msgstr[2] "Čas je za odmor. Pojdite stran od naprave za %s!"
+msgstr[3] "Čas je za odmor. Pojdite stran od naprave za %s!"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1219
+#, javascript-format
+msgid "You were due to take a break %s ago"
+msgid_plural "You were due to take a break %s ago"
+msgstr[0] "Odmor bi si morali privoščiti pred %s"
+msgstr[1] "Odmor bi si morali privoščiti pred %s"
+msgstr[2] "Odmor bi si morali privoščiti pred %s"
+msgstr[3] "Odmor bi si morali privoščiti pred %s"
+
+#: js/misc/breakManager.js:1225
+msgid "Break Overdue"
+msgstr "Odmor bi se že moral pričeti"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1239
+#, javascript-format
+msgid "There is %s remaining in your break"
+msgid_plural "There are %s remaining in your break"
+msgstr[0] "Na voljo je še %s za odmor"
+msgstr[1] "Na voljo je še %s za odmor"
+msgstr[2] "Na voljo je še %s za odmor"
+msgstr[3] "Na voljo je še %s za odmor"
+
+#: js/misc/breakManager.js:1245
+msgid "Break Interrupted"
+msgstr "Odmor prekinjen"
+
+#: js/misc/breakManager.js:1316
+msgid "Delay"
+msgstr "Zakasnitev"
+
+#: js/misc/breakManager.js:1337 js/ui/welcomeDialog.js:61
+msgid "Skip"
+msgstr "Preskoči"
+
+#: js/misc/breakManager.js:1358
+msgid "Take"
+msgstr "Vzemi odmor"
+
+#. Translators: This is a notification to warn the user that a
+#. screen time break will start shortly.
+#: js/misc/breakManager.js:1421
+#, javascript-format
+msgid "Break in %d second"
+msgid_plural "Break in %d seconds"
+msgstr[0] "Odmor čez %d sekund"
+msgstr[1] "Odmor čez %d sekundo"
+msgstr[2] "Odmor čez %d sekundi"
+msgstr[3] "Odmor čez %d sekunde"
+
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:91
 msgctxt "search-result"
@@ -712,7 +915,7 @@ msgstr "Izklopi"
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr ""
 "power off;poweroff;shutdown;halt;stop;restart;shutdown;izklop;ugasni;ponovni "
-"zagon;reboot;zaustavi"
+"zagon;reboot;zaustavi;"
 
 #. Translators: The name of the restart action in search
 #: js/misc/systemActions.js:99
@@ -734,7 +937,7 @@ msgstr "Zakleni zaslon"
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:110
 msgid "lock screen"
-msgstr "zaklep zaslona"
+msgstr "zaklep zaslona;"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:115
@@ -745,7 +948,7 @@ msgstr "Odjava"
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:118
 msgid "logout;log out;sign off"
-msgstr "odjava;izpis;izklop;logout"
+msgstr "odjava;izpis;izklop;logout;"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:123
@@ -756,7 +959,7 @@ msgstr "V pripravljenost"
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
 #: js/misc/systemActions.js:126
 msgid "suspend;sleep"
-msgstr "v pripravljenost;v mirovanje"
+msgstr "v pripravljenost;v mirovanje;v mirovanju;"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:131
@@ -767,7 +970,7 @@ msgstr "Preklop uporabnika"
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
 #: js/misc/systemActions.js:134
 msgid "switch user"
-msgstr "preklop uporabnika"
+msgstr "preklop uporabnika;"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:141
@@ -786,7 +989,7 @@ msgstr "Zajemi zaslonsko sliko"
 msgid "screenshot;screencast;snip;capture;record"
 msgstr ""
 "zaslon;zaslonska slika;zaslonski posnetek;slika;posnetek;zajem;zapis;"
-"screenshot;screen;monitor"
+"screenshot;screen;monitor;"
 
 #: js/misc/systemActions.js:249
 msgctxt "search-result"
@@ -973,7 +1176,7 @@ msgstr "Zavrni"
 msgid "Allow"
 msgstr "Dovoli"
 
-#: js/ui/appDisplay.js:1769
+#: js/ui/appDisplay.js:1766
 msgid "Unnamed Folder"
 msgstr "Neimenovana mapa"
 
@@ -987,7 +1190,7 @@ msgstr "Program »%s« je dodan med pripete programe."
 msgid "%s has been unpinned from the dash."
 msgstr "Program »%s« je odstranjen iz pripetih programov."
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:281
+#: js/ui/appFavorites.js:208 js/ui/main.js:290
 msgid "Undo"
 msgstr "Razveljavi"
 
@@ -1040,7 +1243,7 @@ msgstr "Slušalke"
 msgid "Headset"
 msgstr "Slušalka"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:356
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:366
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1739,19 +1942,19 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: js/ui/main.js:277
+#: js/ui/main.js:286
 msgid "System was put in unsafe mode"
 msgstr "Sistem je v ne-varnem načinu"
 
-#: js/ui/main.js:278
+#: js/ui/main.js:287
 msgid "Apps now have unrestricted access"
 msgstr "Programi imajo zdaj neomejen dostop"
 
-#: js/ui/main.js:338
+#: js/ui/main.js:347
 msgid "Logged in as a privileged user"
 msgstr "Zaznana je prijava s skrbniškimi dovoljenji"
 
-#: js/ui/main.js:339
+#: js/ui/main.js:348
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1759,11 +1962,11 @@ msgstr ""
 "Zagona seje s skrbniškim računom se je treba iz varnostnih razlogov "
 "izogibati. Priporočljivo je uporabljati običajen uporabniški račun."
 
-#: js/ui/main.js:387
+#: js/ui/main.js:396
 msgid "Screen Lock disabled"
 msgstr "Zaklep zaslona je onemogočen"
 
-#: js/ui/main.js:388
+#: js/ui/main.js:397
 msgid "Screen Locking requires the GNOME display manager"
 msgstr ""
 "Zaklepanje zaslona zahteva namestitev upravljalnika zaslona za okolje GNOME."
@@ -2190,19 +2393,19 @@ msgstr[3] "%d ozadnji programi"
 msgid "Keyboard Brightness"
 msgstr "Svetlost tipkovnice"
 
-#: js/ui/status/backlight.js:79
+#: js/ui/status/backlight.js:87
 msgid "Off"
 msgstr "Nepovezano"
 
-#: js/ui/status/backlight.js:80
+#: js/ui/status/backlight.js:88
 msgid "Low"
 msgstr "Nizko"
 
-#: js/ui/status/backlight.js:81
+#: js/ui/status/backlight.js:89
 msgid "High"
 msgstr "Visoko"
 
-#: js/ui/status/backlight.js:147 js/ui/status/keyboard.js:881
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:881
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
@@ -2511,15 +2714,15 @@ msgstr "Povrni glasnost"
 msgid "Mute"
 msgstr "Utišaj"
 
-#: js/ui/status/volume.js:286
+#: js/ui/status/volume.js:293
 msgid "Volume"
 msgstr "Glasnost"
 
-#: js/ui/status/volume.js:302
+#: js/ui/status/volume.js:309
 msgid "Sound Output"
 msgstr "Odvod zvoka"
 
-#: js/ui/status/volume.js:374
+#: js/ui/status/volume.js:384
 msgid "Sound Input"
 msgstr "Dovod zvoka"
 
@@ -2586,10 +2789,6 @@ msgstr "Dobrodošli v %s"
 #: js/ui/welcomeDialog.js:52
 msgid "If you want to learn your way around, check out the tour"
 msgstr "Če se hočete najprej na hitro razgledati po namizju, sledite vodiču."
-
-#: js/ui/welcomeDialog.js:61
-msgid "Skip"
-msgstr "Preskoči"
 
 #: js/ui/welcomeDialog.js:66
 msgid "Take Tour"
@@ -2855,34 +3054,34 @@ msgstr[1] "Ob naslednji prijavi bo posodobljena %d razširitev."
 msgstr[2] "Ob naslednji prijavi bosta posodobljeni %d razširitvi."
 msgstr[3] "Ob naslednji prijavi bodo posodobljene %d razširitve."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:22
+#: subprojects/extensions-app/data/ui/extension-row.ui:13
 msgid "Error Details"
 msgstr "Podrobnosti napake"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:62
+#: subprojects/extensions-app/data/ui/extension-row.ui:51
 msgid "Updates Details"
 msgstr "Podrobnosti posodobitve"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:72
+#: subprojects/extensions-app/data/ui/extension-row.ui:68
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
 msgstr ""
 "Nova različica razširitve je pripravljena in bo naložena ob naslednji "
 "prijavi."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:104
+#: subprojects/extensions-app/data/ui/extension-row.ui:100
 msgid "Extension Details"
 msgstr "Podrobnosti razširitve"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:192
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "_Website"
 msgstr "_Spletna stran"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:219
+#: subprojects/extensions-app/data/ui/extension-row.ui:215
 msgid "_Settings"
 msgstr "_Nastavitve"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:246
+#: subprojects/extensions-app/data/ui/extension-row.ui:242
 msgid "_Remove…"
 msgstr "_Odstrani …"
 
