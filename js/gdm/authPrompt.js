@@ -49,7 +49,7 @@ export const AuthPrompt = GObject.registerClass({
         'cancelled': {},
         'failed': {},
         'next': {},
-        'prompted': {},
+        'prompted': {param_types: [GObject.TYPE_STRING]},
         'reset': {param_types: [GObject.TYPE_UINT]},
     },
 }, class AuthPrompt extends St.BoxLayout {
@@ -337,7 +337,7 @@ export const AuthPrompt = GObject.registerClass({
             this.setQuestion(question.replace(/[:：] *$/, '').trim());
 
         this.updateSensitivity(true);
-        this.emit('prompted');
+        this.emit('prompted', serviceName);
     }
 
     _onShowChoiceList(userVerifier, serviceName, promptMessage, choiceList) {
@@ -351,7 +351,7 @@ export const AuthPrompt = GObject.registerClass({
 
         this.setChoiceList(promptMessage, choiceList);
         this.updateSensitivity(true);
-        this.emit('prompted');
+        this.emit('prompted', serviceName);
     }
 
     _onCredentialManagerAuthenticated() {
@@ -394,7 +394,7 @@ export const AuthPrompt = GObject.registerClass({
         }
 
         this.setMessage(message, type, wiggleParameters);
-        this.emit('prompted');
+        this.emit('prompted', serviceName);
     }
 
     _onVerificationFailed(userVerifier, serviceName, canRetry) {
