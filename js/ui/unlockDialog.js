@@ -423,10 +423,23 @@ class UnlockDialogClock extends St.BoxLayout {
         this._date.text = formatDateWithCFormatString(date, dateFormat);
     }
 
+    selectAuthRole(roleName) {
+        this._selectedAuthRole = roleName;
+        this._updateHint();
+    }
+
     _updateHint() {
-        this._hint.text = this._seat.touch_mode
-            ? _('Swipe up to unlock')
-            : _('Click or press a key to unlock');
+        const selectedAuthRole = this._selectedAuthRole;
+        let text;
+
+        if (selectedAuthRole === GdmConstants.SMARTCARD_ROLE_NAME)
+            text = _('Insert smartcard');
+        else if (this._seat.touch_mode)
+            text = _('Swipe up');
+        else
+            text = _('Click or press a key');
+
+        this._hint.text = text;
     }
 
     _onDestroy() {
@@ -766,6 +779,8 @@ export const UnlockDialog = GObject.registerClass({
         }
 
         this._selectedAuthMechanism = authMechanism;
+
+        this._clock.selectAuthRole(authMechanism?.role);
     }
 
     _createBackground(monitorIndex) {
