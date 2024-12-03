@@ -390,8 +390,8 @@ class UnlockDialogClock extends St.BoxLayout {
 
     _updateHint() {
         this._hint.text = this._seat.touch_mode
-            ? _('Swipe up to unlock')
-            : _('Click or press a key to unlock');
+            ? _('Swipe up')
+            : _('Click or press a key');
     }
 
     _onDestroy() {
