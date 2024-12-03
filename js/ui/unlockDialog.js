@@ -421,9 +421,17 @@ class UnlockDialogClock extends St.BoxLayout {
     }
 
     _updateHint() {
-        this._hint.text = this._seat.touch_mode
-            ? _('Swipe up to unlock')
-            : _('Click or press a key to unlock');
+        const authMechanism = this._selectedAuthMechanism;
+        let text;
+
+        if (authMechanism?.role === GdmConst.SMARTCARD_ROLE_NAME)
+            text = _('Insert smartcard');
+        else if (this._seat.touch_mode)
+            text = _('Swipe up');
+        else
+            text = _('Click or press a key');
+
+        this._hint.text = text;
     }
 
     _onDestroy() {
