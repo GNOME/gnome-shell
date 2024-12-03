@@ -17,6 +17,7 @@ import * as SwipeTracker from './swipeTracker.js';
 import {formatDateWithCFormatString} from '../misc/dateUtils.js';
 import * as AuthMenuButton from '../gdm/authMenuButton.js';
 import * as AuthPrompt from '../gdm/authPrompt.js';
+import * as GdmUtil from '../gdm/util.js';
 
 const PRIMARY_UNLOCK_METHOD_SECTION_NAME = _('Primary Unlock Method');
 
@@ -389,6 +390,13 @@ class UnlockDialogClock extends St.BoxLayout {
     }
 
     _updateHint() {
+        const authMechanism = this._authPrompt?.getForegroundMechanism();
+
+        if (authMechanism?.role === GdmUtil.SMARTCARD_ROLE_NAME) {
+            this._hint.text = _('Insert smartcard');
+            return;
+        }
+
         this._hint.text = this._seat.touch_mode
             ? _('Swipe up')
             : _('Click or press a key');
