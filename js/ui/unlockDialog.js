@@ -17,6 +17,7 @@ import * as SwipeTracker from './swipeTracker.js';
 import {formatDateWithCFormatString} from '../misc/dateUtils.js';
 import * as AuthMenuButton from '../gdm/authMenuButton.js';
 import * as AuthPrompt from '../gdm/authPrompt.js';
+import * as GdmConst from '../gdm/const.js';
 import {AuthPromptStatus} from '../gdm/authPrompt.js';
 import {MprisSource} from './mpris.js';
 import {MediaMessage} from './messageList.js';
@@ -419,6 +420,13 @@ class UnlockDialogClock extends St.BoxLayout {
     }
 
     _updateHint() {
+        const authMechanism = this._selectedAuthMechanism;
+
+        if (authMechanism?.role === GdmConst.SMARTCARD_ROLE_NAME) {
+            this._hint.text = _('Insert smartcard');
+            return;
+        }
+
         this._hint.text = this._seat.touch_mode
             ? _('Swipe up')
             : _('Click or press a key');
