@@ -597,6 +597,7 @@ grab_window_screenshot (ShellScreenshot     *screenshot,
   MetaDisplay *display = shell_global_get_display (priv->global);
   MetaWindow *window = meta_display_get_focus_window (display);
   ClutterActor *window_actor;
+  CoglTexture *window_image;
   gfloat actor_x, actor_y;
   MtkRectangle rect;
 
@@ -610,16 +611,23 @@ grab_window_screenshot (ShellScreenshot     *screenshot,
 
   priv->screenshot_area = rect;
 
-  priv->image = meta_window_actor_get_image (META_WINDOW_ACTOR (window_actor),
-                                             NULL);
+  window_image = meta_window_actor_get_image (META_WINDOW_ACTOR (window_actor),
+                                              NULL);
 
-  if (!priv->image)
+  if (!window_image)
     {
       g_task_report_new_error (screenshot, on_screenshot_written, result, NULL,
                                G_IO_ERROR, G_IO_ERROR_FAILED,
                                "Capturing window failed");
       return;
     }
+
+  priv->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                            cogl_texture_get_width (window_image),
+                                            cogl_texture_get_height (window_image));
+  cogl_texture_get_data (window_image, COGL_PIXEL_FORMAT_CAIRO_ARGB32_COMPAT,
+                         cairo_image_surface_get_stride (priv->image),
+                         cairo_image_surface_get_data (priv->image));
 
   priv->datetime = g_date_time_new_now_local ();
 
