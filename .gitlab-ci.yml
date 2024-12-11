@@ -3,8 +3,6 @@ include:
     file: 'flatpak/flatpak_ci_initiative.yml'
   - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/057b052e682d8e5a20c1eb2dd60d5b87d2b56856/templates/fedora.yml'
   - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/bc70242ffb8402243e934659ecc1a2d1c89eca2b/templates/ci-fairy.yml'
-  - project: 'Infrastructure/openshift-images/gnome-release-service'
-    file: '/ci-templates/release-module.yml'
   - component: gitlab.gnome.org/GNOME/citemplates/gnomeos-build-sysext@1.0.0-alpha.1
     inputs:
       meson-options:
@@ -279,20 +277,6 @@ nightly:
   needs:
     - flatpak
 
-distinfo:
-  stage: deploy
-  needs:
-    - build
-  script:
-    - .gitlab-ci/export-artifact-path build > dist.env
-  artifacts:
-    reports:
-      dotenv: dist.env
-    paths:
-      - dist.env
-  rules:
-    - if: '$CI_COMMIT_TAG'
-
 dist:
   variables:
     XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
@@ -311,17 +295,15 @@ dist:
         - "**/meson.build"
         - meson/*
 
+
 dist-tarball:
   extends: dist
   needs:
     - build
-    - distinfo
   artifacts:
     expose_as: 'Get tarball here'
     paths:
-      - $TARBALL_ARTIFACT_PATH
-    reports:
-      dotenv: dist.env
+      - build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz
   rules:
     - if: '$CI_COMMIT_TAG'
 
