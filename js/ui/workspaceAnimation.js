@@ -373,11 +373,11 @@ export class WorkspaceAnimationController {
             switchData.monitors.push(group);
         }
 
-        Meta.disable_unredirect_for_display(global.display);
+        global.compositor.disable_unredirect();
     }
 
     _finishWorkspaceSwitch(switchData) {
-        Meta.enable_unredirect_for_display(global.display);
+        global.compositor.enable_unredirect();
 
         this._switchData = null;
 

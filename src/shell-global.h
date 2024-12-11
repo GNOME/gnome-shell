@@ -16,7 +16,7 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (ShellGlobal, shell_global, SHELL, GLOBAL, GObject)
 
 ShellGlobal          *shell_global_get                       (void);
-
+MetaBackend          *shell_global_get_backend               (ShellGlobal *global);
 MetaContext          *shell_global_get_context               (ShellGlobal *global);
 ClutterStage         *shell_global_get_stage                 (ShellGlobal *global);
 MetaDisplay          *shell_global_get_display               (ShellGlobal *global);

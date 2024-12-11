@@ -4,6 +4,7 @@
 #include <cogl/cogl.h>
 #include <meta/display.h>
 #include <meta/util.h>
+#include <meta/meta-backend.h>
 #include <meta/meta-plugin.h>
 #include <meta/meta-cursor-tracker.h>
 #include <st/st.h>
@@ -360,6 +361,7 @@ draw_cursor_image (cairo_surface_t *surface,
   int width, height;
   int stride;
   guint8 *data;
+  MetaBackend *backend;
   MetaDisplay *display;
   MetaCursorTracker *tracker;
   cairo_surface_t *cursor_surface;
@@ -370,7 +372,8 @@ draw_cursor_image (cairo_surface_t *surface,
   graphene_point_t point;
 
   display = shell_global_get_display (shell_global_get ());
-  tracker = meta_cursor_tracker_get_for_display (display);
+  backend = shell_global_get_backend (shell_global_get ());
+  tracker = meta_backend_get_cursor_tracker (backend);
   texture = meta_cursor_tracker_get_sprite (tracker);
 
   if (!texture)
@@ -455,6 +458,7 @@ grab_screenshot_content (ShellScreenshot *screenshot,
                          GTask           *result)
 {
   MetaDisplay *display;
+  MetaBackend *backend;
   int width, height;
   MtkRectangle screenshot_rect;
   ClutterStage *stage;
@@ -469,6 +473,7 @@ grab_screenshot_content (ShellScreenshot *screenshot,
   int cursor_hot_x, cursor_hot_y;
 
   display = shell_global_get_display (screenshot->global);
+  backend = shell_global_get_backend (screenshot->global);
   meta_display_get_size (display, &width, &height);
   screenshot_rect = (MtkRectangle) {
       .x = 0,
@@ -495,7 +500,7 @@ grab_screenshot_content (ShellScreenshot *screenshot,
       return;
     }
 
-  tracker = meta_cursor_tracker_get_for_display (display);
+  tracker = meta_backend_get_cursor_tracker (backend);
   cursor_texture = meta_cursor_tracker_get_sprite (tracker);
 
   // If the cursor is invisible, the texture is NULL.
@@ -650,6 +655,7 @@ on_after_paint (ClutterStage     *stage,
 {
   ShellScreenshot *screenshot = g_task_get_task_data (result);
   MetaDisplay *display = shell_global_get_display (screenshot->global);
+  MetaCompositor *compositor = meta_display_get_compositor (display);
   GTask *task;
 
   g_signal_handlers_disconnect_by_func (stage, on_after_paint, result);
@@ -674,7 +680,7 @@ on_after_paint (ClutterStage     *stage,
   g_signal_emit (screenshot, signals[SCREENSHOT_TAKEN], 0,
                  (MtkRectangle *) &screenshot->screenshot_area);
 
-  meta_enable_unredirect_for_display (display);
+  meta_compositor_enable_unredirect (compositor);
 }
 
 /**
@@ -737,8 +743,9 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
     {
       MetaDisplay *display = shell_global_get_display (screenshot->global);
       ClutterStage *stage = shell_global_get_stage (screenshot->global);
+      MetaCompositor *compositor = meta_display_get_compositor (display);
 
-      meta_disable_unredirect_for_display (display);
+      meta_compositor_disable_unredirect (compositor);
       clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
       screenshot->flags = flags;
       screenshot->mode = SHELL_SCREENSHOT_SCREEN;
@@ -782,12 +789,13 @@ screenshot_stage_to_content_on_after_paint (ClutterStage     *stage,
 {
   ShellScreenshot *screenshot = g_task_get_task_data (result);
   MetaDisplay *display = shell_global_get_display (screenshot->global);
+  MetaCompositor *compositor = meta_display_get_compositor (display);
 
   g_signal_handlers_disconnect_by_func (stage,
                                         screenshot_stage_to_content_on_after_paint,
                                         result);
 
-  meta_enable_unredirect_for_display (display);
+  meta_compositor_enable_unredirect (compositor);
 
   grab_screenshot_content (screenshot, result);
 }
@@ -822,9 +830,10 @@ shell_screenshot_screenshot_stage_to_content (ShellScreenshot     *screenshot,
   else
     {
       MetaDisplay *display = shell_global_get_display (screenshot->global);
+      MetaCompositor *compositor = meta_display_get_compositor (display);
       ClutterStage *stage = shell_global_get_stage (screenshot->global);
 
-      meta_disable_unredirect_for_display (display);
+      meta_compositor_disable_unredirect (compositor);
       clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
       g_signal_connect (stage, "after-paint",
                         G_CALLBACK (screenshot_stage_to_content_on_after_paint),
@@ -961,9 +970,10 @@ shell_screenshot_screenshot_area (ShellScreenshot     *screenshot,
   else
     {
       MetaDisplay *display = shell_global_get_display (screenshot->global);
+      MetaCompositor *compositor = meta_display_get_compositor (display);
       ClutterStage *stage = shell_global_get_stage (screenshot->global);
 
-      meta_disable_unredirect_for_display (display);
+      meta_compositor_disable_unredirect (compositor);
       clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
       screenshot->flags = SHELL_SCREENSHOT_FLAG_NONE;
       screenshot->mode = SHELL_SCREENSHOT_AREA;

@@ -249,9 +249,9 @@ export class Overview extends Signals.EventEmitter {
         }
 
         if (this._shownState === OverviewShownState.HIDDEN)
-            Meta.disable_unredirect_for_display(global.display);
+            global.compositor.disable_unredirect();
         else if (state === OverviewShownState.HIDDEN)
-            Meta.enable_unredirect_for_display(global.display);
+            global.compositor.enable_unredirect();
 
         this._shownState = state;
         this.emit(OVERVIEW_SHOWN_TRANSITIONS[state].signal);

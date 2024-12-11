@@ -1,7 +1,6 @@
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Meta from 'gi://Meta';
 import St from 'gi://St';
 
 import * as BarLevel from './barLevel.js';
@@ -93,7 +92,7 @@ class OsdWindow extends Clutter.Actor {
             return;
 
         if (!this.visible) {
-            Meta.disable_unredirect_for_display(global.display);
+            global.compositor.disable_unredirect();
             super.show();
             this.opacity = 0;
             this.get_parent().set_child_above_sibling(this, null);
@@ -128,7 +127,7 @@ class OsdWindow extends Clutter.Actor {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this._reset();
-                Meta.enable_unredirect_for_display(global.display);
+                global.compositor.enable_unredirect();
             },
         });
         return GLib.SOURCE_REMOVE;

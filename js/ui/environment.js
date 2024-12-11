@@ -126,11 +126,11 @@ function _easeActor(actor, params) {
     delete params.mode;
 
     const prepare = () => {
-        Meta.disable_unredirect_for_display(global.display);
+        global.compositor.disable_unredirect();
         global.begin_work();
     };
     const cleanup = () => {
-        Meta.enable_unredirect_for_display(global.display);
+        global.compositor.enable_unredirect();
         global.end_work();
     };
     let callback = _makeEaseCallback(params, cleanup);
@@ -202,11 +202,11 @@ function _easeActorProperty(actor, propName, target, params) {
         duration = 0;
 
     const prepare = () => {
-        Meta.disable_unredirect_for_display(global.display);
+        global.compositor.disable_unredirect();
         global.begin_work();
     };
     const cleanup = () => {
-        Meta.enable_unredirect_for_display(global.display);
+        global.compositor.enable_unredirect();
         global.end_work();
     };
     let callback = _makeEaseCallback(params, cleanup);

@@ -1,7 +1,6 @@
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
-import Meta from 'gi://Meta';
 import St from 'gi://St';
 
 
@@ -29,9 +28,9 @@ class OsdMonitorLabel extends St.Widget {
         Main.uiGroup.set_child_above_sibling(this, null);
         this._position();
 
-        Meta.disable_unredirect_for_display(global.display);
+        global.compositor.disable_unredirect();
         this.connect('destroy', () => {
-            Meta.enable_unredirect_for_display(global.display);
+            global.compositor.enable_unredirect();
         });
     }
 

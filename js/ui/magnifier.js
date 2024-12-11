@@ -5,7 +5,6 @@ import GDesktopEnums from 'gi://GDesktopEnums';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 import * as Signals from '../misc/signals.js';
@@ -100,8 +99,7 @@ export class Magnifier extends Signals.EventEmitter {
         this._zoomRegions = [];
 
         // Create small clutter tree for the magnified mouse.
-        let cursorTracker = Meta.CursorTracker.get_for_display(global.display);
-        this._cursorTracker = cursorTracker;
+        this._cursorTracker = global.backend.get_cursor_tracker();
 
         this._mouseSprite = new Clutter.Actor({request_mode: Clutter.RequestMode.CONTENT_SIZE});
         this._mouseSprite.content = new MouseSpriteContent();
@@ -188,12 +186,12 @@ export class Magnifier extends Signals.EventEmitter {
             this._updateMouseSprite();
             this._cursorTracker.connectObject(
                 'cursor-changed', this._updateMouseSprite.bind(this), this);
-            Meta.disable_unredirect_for_display(global.display);
+            global.display.disable_unredirect();
             this.startTrackingMouse();
         } else {
             this._cursorTracker.disconnectObject(this);
             this._mouseSprite.content.texture = null;
-            Meta.enable_unredirect_for_display(global.display);
+            global.display.enable_unredirect();
             this.stopTrackingMouse();
         }
 

@@ -147,7 +147,7 @@ export const CloseDialog = GObject.registerClass({
         if (this._dialog != null)
             return;
 
-        Meta.disable_unredirect_for_display(global.display);
+        global.compositor.disable_unredirect();
 
         this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, ALIVE_TIMEOUT,
             () => {
@@ -182,7 +182,7 @@ export const CloseDialog = GObject.registerClass({
         if (this._dialog == null)
             return;
 
-        Meta.enable_unredirect_for_display(global.display);
+        global.compositor.enable_unredirect();
 
         GLib.source_remove(this._timeoutId);
         this._timeoutId = 0;

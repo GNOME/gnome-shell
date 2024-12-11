@@ -1,6 +1,5 @@
 import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
-import Meta from 'gi://Meta';
 import St from 'gi://St';
 
 import * as Main from './main.js';
@@ -53,9 +52,9 @@ export const BoxPointer = GObject.registerClass({
 
         this.connect('notify::visible', () => {
             if (this.visible)
-                Meta.disable_unredirect_for_display(global.display);
+                global.compositor.disable_unredirect();
             else
-                Meta.enable_unredirect_for_display(global.display);
+                global.compositor.enable_unredirect();
         });
     }
 

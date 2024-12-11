@@ -137,7 +137,7 @@ export class ScreenShield extends Signals.EventEmitter {
         this._shortLightbox.connect('notify::active', this._onShortLightbox.bind(this));
 
         this.idleMonitor = global.backend.get_core_idle_monitor();
-        this._cursorTracker = Meta.CursorTracker.get_for_display(global.display);
+        this._cursorTracker = global.backend.get_cursor_tracker();
 
         this._syncInhibitor();
     }

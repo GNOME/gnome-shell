@@ -1130,7 +1130,7 @@ export const MessageTray = GObject.registerClass({
         this._bannerBin.y = -this._banner.height;
         this.show();
 
-        Meta.disable_unredirect_for_display(global.display);
+        global.compositor.disable_unredirect();
         this._updateShowingNotification();
 
         let [x, y] = global.get_pointer();
@@ -1267,7 +1267,7 @@ export const MessageTray = GObject.registerClass({
 
         this._pointerInNotification = false;
         this._notificationRemoved = false;
-        Meta.enable_unredirect_for_display(global.display);
+        global.compositor.enable_unredirect();
 
         this._banner.destroy();
         this._banner = null;
