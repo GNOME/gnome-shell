@@ -3,8 +3,11 @@ include:
     file: 'flatpak/flatpak_ci_initiative.yml'
   - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/057b052e682d8e5a20c1eb2dd60d5b87d2b56856/templates/fedora.yml'
   - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/bc70242ffb8402243e934659ecc1a2d1c89eca2b/templates/ci-fairy.yml'
-  - project: 'Infrastructure/openshift-images/gnome-release-service'
-    file: '/ci-templates/release-module.yml'
+  - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
+    inputs:
+      job-stage: deploy
+      dist-job-name: "dist-tarball"
+      tarball-artifact-path: $TARBALL_ARTIFACT_PATH
 
 stages:
   - pre_review
@@ -35,6 +38,7 @@ variables:
   BUNDLE: "extensions-git.flatpak"
   LINT_LOG: "eslint-report.xml"
   LINT_MR_LOG: "eslint-mr-report.xml"
+  TARBALL_ARTIFACT_PATH: build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz
 
 workflow:
   rules:
@@ -281,23 +285,16 @@ dist:
         - "**/meson.build"
         - meson/*
 
-
 dist-tarball:
   extends: dist
   needs:
     - build
   artifacts:
     expose_as: 'Get tarball here'
+    name: "${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
     paths:
-      - build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz
-  rules:
-    - if: '$CI_COMMIT_TAG'
-
-release-module:
-  stage: deploy
-  needs:
-    - dist-tarball
-  extends: .release-module
+      - $TARBALL_ARTIFACT_PATH
   rules:
     - if: '$CI_COMMIT_TAG'
 
