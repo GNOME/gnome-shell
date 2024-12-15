@@ -107,10 +107,13 @@ class ATIndicator extends PanelMenu.Button {
 
     _buildItemExtended(string, initialValue, writable, onSet) {
         let widget = new PopupMenu.PopupSwitchMenuItem(string, initialValue);
+
+        widget._switchToggledId = 0;
+
         if (!writable) {
             widget.reactive = false;
         } else {
-            widget.connect('toggled', item => {
+            widget._switchToggledId = widget.connect('toggled', item => {
                 onSet(item.state);
             });
         }
@@ -152,7 +155,12 @@ class ATIndicator extends PanelMenu.Button {
         settings.connect(`changed::${KEY_TEXT_SCALING_FACTOR}`, () => {
             factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
             let active = factor > 1.0;
+
+            if (widget._switchToggledId)
+                widget.block_signal_handler(widget._switchToggledId);
             widget.setToggleState(active);
+            if (widget._switchToggledId)
+                widget.unblock_signal_handler(widget._switchToggledId);
 
             this._queueSyncMenuVisibility();
         });
