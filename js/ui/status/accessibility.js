@@ -122,7 +122,7 @@ class ATIndicator extends PanelMenu.Button {
         const widget =
             new PopupMenu.PopupSwitchMenuItem(_('Large Text'), factor > 1.0);
 
-        widget.connect('toggled', item => {
+        const toggledId = widget.connect('toggled', item => {
             if (item.state)
                 settings.set_double(KEY_TEXT_SCALING_FACTOR, DPI_FACTOR_LARGE);
             else
@@ -132,7 +132,10 @@ class ATIndicator extends PanelMenu.Button {
         settings.connect(`changed::${KEY_TEXT_SCALING_FACTOR}`, () => {
             factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
             let active = factor > 1.0;
+
+            widget.block_signal_handler(toggledId);
             widget.setToggleState(active);
+            widget.unblock_signal_handler(toggledId);
 
             this._queueSyncMenuVisibility();
         });
