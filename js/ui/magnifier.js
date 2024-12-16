@@ -186,12 +186,12 @@ export class Magnifier extends Signals.EventEmitter {
             this._updateMouseSprite();
             this._cursorTracker.connectObject(
                 'cursor-changed', this._updateMouseSprite.bind(this), this);
-            global.display.disable_unredirect();
+            global.compositor.disable_unredirect();
             this.startTrackingMouse();
         } else {
             this._cursorTracker.disconnectObject(this);
             this._mouseSprite.content.texture = null;
-            global.display.enable_unredirect();
+            global.compositor.enable_unredirect();
             this.stopTrackingMouse();
         }
 
