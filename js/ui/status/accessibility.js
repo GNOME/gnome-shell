@@ -118,17 +118,12 @@ class ATIndicator extends PanelMenu.Button {
     }
 
     _buildItem(string, schema, key) {
-        let settings = new Gio.Settings({schema_id: schema});
-        let widget = this._buildItemExtended(string,
-            settings.get_boolean(key),
-            settings.is_writable(key),
-            enabled => settings.set_boolean(key, enabled));
+        const settings = new Gio.Settings({schema_id: schema});
+        const widget = new PopupMenu.PopupSwitchMenuItem(string, false);
+        settings.bind(key, widget, 'state', Gio.SettingsBindFlags.DEFAULT);
 
-        settings.connect(`changed::${key}`, () => {
-            widget.setToggleState(settings.get_boolean(key));
-
-            this._queueSyncMenuVisibility();
-        });
+        widget.connect('toggled',
+            () => this._queueSyncMenuVisibility());
 
         return widget;
     }
