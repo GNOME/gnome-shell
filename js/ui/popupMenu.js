@@ -547,7 +547,7 @@ export const PopupSwitchMenuItem = GObject.registerClass({
         this.bind_property('reactive', this._switch, 'reactive', GObject.BindingFlags.SYNC_CREATE);
 
         this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
-        this.checkAccessibleState();
+        this._checkAccessibleState();
         this.label_actor = this.label;
 
         this.add_child(this.label);
@@ -578,7 +578,7 @@ export const PopupSwitchMenuItem = GObject.registerClass({
             this.reactive = true;
             this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         }
-        this.checkAccessibleState();
+        this._checkAccessibleState();
     }
 
     activate(event) {
@@ -604,15 +604,15 @@ export const PopupSwitchMenuItem = GObject.registerClass({
 
     setToggleState(state) {
         this._switch.state = state;
-        this.checkAccessibleState();
+        this._checkAccessibleState();
     }
 
     _onToggled() {
         this.emit('toggled', this._switch.state);
-        this.checkAccessibleState();
+        this._checkAccessibleState();
     }
 
-    checkAccessibleState() {
+    _checkAccessibleState() {
         switch (this.accessible_role) {
         case Atk.Role.CHECK_MENU_ITEM:
             if (this._switch.state)
