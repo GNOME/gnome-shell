@@ -531,6 +531,12 @@ export const Switch = GObject.registerClass({
 });
 
 export const PopupSwitchMenuItem = GObject.registerClass({
+    Properties: {
+        'state': GObject.ParamSpec.boolean(
+            'state', null, null,
+            GObject.ParamFlags.READWRITE,
+            false),
+    },
     Signals: {'toggled': {param_types: [GObject.TYPE_BOOLEAN]}},
 }, class PopupSwitchMenuItem extends PopupBaseMenuItem {
     _init(text, active, params) {
@@ -602,12 +608,20 @@ export const PopupSwitchMenuItem = GObject.registerClass({
         return this._switch.state;
     }
 
+    set state(state) {
+        if (this._switch.state === state)
+            return;
+
+        this._switch.set({state});
+    }
+
     setToggleState(state) {
-        this._switch.state = state;
+        this.set({state});
     }
 
     _onToggled() {
         this.emit('toggled', this._switch.state);
+        this.notify('state');
         this._checkAccessibleState();
     }
 
