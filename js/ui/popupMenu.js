@@ -604,7 +604,6 @@ export const PopupSwitchMenuItem = GObject.registerClass({
 
     setToggleState(state) {
         this._switch.state = state;
-        this._checkAccessibleState();
     }
 
     _onToggled() {
