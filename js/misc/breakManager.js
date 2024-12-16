@@ -25,7 +25,6 @@ import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
@@ -1394,13 +1393,13 @@ class OsdBreakCountdownLabel extends St.Widget {
         this._updateState();
         this._position();
 
-        Meta.disable_unredirect_for_display(global.display);
+        global.compositor.disable_unredirect();
         this.connect('destroy', () => {
             if (this._timerId !== 0)
                 GLib.source_remove(this._timerId);
             this._timerId = 0;
 
-            Meta.enable_unredirect_for_display(global.display);
+            global.compositor.enable_unredirect();
         });
     }
 
