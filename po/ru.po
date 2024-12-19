@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-11-05 13:57+0000\n"
-"PO-Revision-Date: 2024-11-08 14:33+0300\n"
+"POT-Creation-Date: 2024-11-29 06:28+0000\n"
+"PO-Revision-Date: 2024-12-02 18:01+0300\n"
 "Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: RU\n"
 "Language: ru\n"
@@ -135,7 +135,7 @@ msgstr "Сделать снимок окна"
 msgid "Record a screencast interactively"
 msgstr "Сделать запись экрана интерактивно"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1298
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1308
 msgid "System"
 msgstr "Система"
 
@@ -721,6 +721,191 @@ msgstr "(или проведите пальцем по считывающему 
 msgid "(or place finger on reader)"
 msgstr "(или поместите палец на считывающее устройство)"
 
+#: js/misc/breakManager.js:765
+msgid "Break complete sound"
+msgstr "Звук завершения перерыва"
+
+#: js/misc/breakManager.js:957
+#, javascript-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d секунду"
+msgstr[1] "%d секунды"
+msgstr[2] "%d секунд"
+
+#: js/misc/breakManager.js:963
+#, javascript-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d минуту"
+msgstr[1] "%d минуты"
+msgstr[2] "%d минут"
+
+#: js/misc/breakManager.js:969
+#, javascript-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] "%d час"
+msgstr[1] "%d часа"
+msgstr[2] "%d часов"
+
+#: js/misc/breakManager.js:975
+#, javascript-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "%d день"
+msgstr[1] "%d дня"
+msgstr[2] "%d дней"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1058
+#, javascript-format
+msgid "It will be time for a break in %s"
+msgid_plural "It will be time for a break in %s"
+msgstr[0] "Через %s наступит время для перерыва"
+msgstr[1] "Через %s наступит время для перерыва"
+msgstr[2] "Через %s наступит время для перерыва"
+
+#: js/misc/breakManager.js:1066
+msgid "Movement Break Soon"
+msgstr "Скоро перерыв для подвижности"
+
+#: js/misc/breakManager.js:1069
+msgid "Eyesight Break Soon"
+msgstr "Скоро перерыв для зрения"
+
+#: js/misc/breakManager.js:1072
+msgid "Break Soon"
+msgstr "Скоро перерыв"
+
+#: js/misc/breakManager.js:1116
+msgid "Movement Break in Progress"
+msgstr "Идет перерыв для подвижности"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1119
+#, javascript-format
+msgid "Continue moving around for %s"
+msgid_plural "Continue moving around for %s"
+msgstr[0] "Продолжайте двигаться %s"
+msgstr[1] "Продолжайте двигаться %s"
+msgstr[2] "Продолжайте двигаться %s"
+
+#: js/misc/breakManager.js:1125
+msgid "Eyesight Break in Progress"
+msgstr "Идет перерыв для зрения"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1128
+#, javascript-format
+msgid "Continue looking away for %s"
+msgid_plural "Continue looking away for %s"
+msgstr[0] "Продолжайте не смотреть в экран %s"
+msgstr[1] "Продолжайте не смотреть в экран %s"
+msgstr[2] "Продолжайте не смотреть в экран %s"
+
+#: js/misc/breakManager.js:1134
+msgid "Break in Progress"
+msgstr "Идет перерыв"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1137
+#, javascript-format
+msgid "%s left in your break"
+msgid_plural "%s left in your break"
+msgstr[0] "Продолжайте отдыхать %s"
+msgstr[1] "Продолжайте отдыхать %s"
+msgstr[2] "Продолжайте отдыхать %s"
+
+#: js/misc/breakManager.js:1176
+msgid "Time for a Movement Break"
+msgstr "Время перерыва для подвижности"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1179
+#, javascript-format
+msgid "Take a break from the device and move around for %s"
+msgid_plural "Take a break from the device and move around for %s"
+msgstr[0] "Отдохните от устройства и подвигайтесь %s"
+msgstr[1] "Отдохните от устройства и подвигайтесь %s"
+msgstr[2] "Отдохните от устройства и подвигайтесь %s"
+
+#: js/misc/breakManager.js:1185
+msgid "Time for an Eyesight Break"
+msgstr "Время перерыва для зрения"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1188
+#, javascript-format
+msgid ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgid_plural ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgstr[0] "Отдохните от экрана. Посмотрите на расстояние не менее 6 метров, по крайней мере, %s"
+msgstr[1] "Отдохните от экрана. Посмотрите на расстояние не менее 6 метров, по крайней мере, %s"
+msgstr[2] "Отдохните от экрана. Посмотрите на расстояние не менее 6 метров, по крайней мере, %s"
+
+#: js/misc/breakManager.js:1194
+msgid "Time for a Break"
+msgstr "Время перерыва"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1197
+#, javascript-format
+msgid "It’s time to take a break. Get away from the device for %s!"
+msgid_plural "It’s time to take a break. Get away from the device for %s!"
+msgstr[0] "Пришло время сделать перерыв. Отвлекитесь от устройства на %s!"
+msgstr[1] "Пришло время сделать перерыв. Отвлекитесь от устройства на %s!"
+msgstr[2] "Пришло время сделать перерыв. Отвлекитесь от устройства на %s!"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1219
+#, javascript-format
+msgid "You were due to take a break %s ago"
+msgid_plural "You were due to take a break %s ago"
+msgstr[0] "Вы должны были сделать перерыв %s назад"
+msgstr[1] "Вы должны были сделать перерыв %s назад"
+msgstr[2] "Вы должны были сделать перерыв %s назад"
+
+#: js/misc/breakManager.js:1225
+msgid "Break Overdue"
+msgstr "Перерыв просрочен"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1239
+#, javascript-format
+msgid "There is %s remaining in your break"
+msgid_plural "There are %s remaining in your break"
+msgstr[0] "До конца перерыва осталась %s"
+msgstr[1] "До конца перерыва осталось %s"
+msgstr[2] "До конца перерыва осталось %s"
+
+#: js/misc/breakManager.js:1245
+msgid "Break Interrupted"
+msgstr "Перерыв прерван"
+
+#: js/misc/breakManager.js:1316
+msgid "Delay"
+msgstr "Отложить"
+
+#: js/misc/breakManager.js:1337 js/ui/welcomeDialog.js:61
+msgid "Skip"
+msgstr "Пропустить"
+
+#: js/misc/breakManager.js:1358
+msgid "Take"
+msgstr "Сделать"
+
+#. Translators: This is a notification to warn the user that a
+#. screen time break will start shortly.
+#: js/misc/breakManager.js:1421
+#, javascript-format
+msgid "Break in %d second"
+msgid_plural "Break in %d seconds"
+msgstr[0] "Перерыв через %d секунду"
+msgstr[1] "Перерыв через %d секунды"
+msgstr[2] "Перерыв через %d секунд"
+
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:91
 msgctxt "search-result"
@@ -984,7 +1169,7 @@ msgstr "Отказать"
 msgid "Allow"
 msgstr "Разрешить"
 
-#: js/ui/appDisplay.js:1769
+#: js/ui/appDisplay.js:1766
 msgid "Unnamed Folder"
 msgstr "Безымянная папка"
 
@@ -998,7 +1183,7 @@ msgstr "Приложение \"%s\" было закреплено на пане�
 msgid "%s has been unpinned from the dash."
 msgstr "Приложение \"%s\" было откреплено от панели приложений."
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:281
+#: js/ui/appFavorites.js:208 js/ui/main.js:290
 msgid "Undo"
 msgstr "Отменить"
 
@@ -1051,7 +1236,7 @@ msgstr "Наушники"
 msgid "Headset"
 msgstr "Гарнитура"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:356
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:366
 msgid "Microphone"
 msgstr "Микрофон"
 
@@ -1746,19 +1931,19 @@ msgstr "Показать код"
 msgid "Web Page"
 msgstr "Веб-страница"
 
-#: js/ui/main.js:277
+#: js/ui/main.js:286
 msgid "System was put in unsafe mode"
 msgstr "Система была переведена в небезопасный режим"
 
-#: js/ui/main.js:278
+#: js/ui/main.js:287
 msgid "Apps now have unrestricted access"
 msgstr "Приложения теперь имеют неограниченный доступ"
 
-#: js/ui/main.js:338
+#: js/ui/main.js:347
 msgid "Logged in as a privileged user"
 msgstr "Авторизован как привилегированный пользователь"
 
-#: js/ui/main.js:339
+#: js/ui/main.js:348
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1767,11 +1952,11 @@ msgstr ""
 "привилегированного пользователя. Если это возможно, вам следует войти от "
 "имени обычного пользователя."
 
-#: js/ui/main.js:387
+#: js/ui/main.js:396
 msgid "Screen Lock disabled"
 msgstr "Блокировка экрана отключена"
 
-#: js/ui/main.js:388
+#: js/ui/main.js:397
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "Для блокировки экрана требуется дисплейный менеджер GNOME"
 
@@ -2195,19 +2380,19 @@ msgstr[2] "%d фоновых приложений"
 msgid "Keyboard Brightness"
 msgstr "Подсветка клавиатуры"
 
-#: js/ui/status/backlight.js:79
+#: js/ui/status/backlight.js:87
 msgid "Off"
 msgstr "Выкл"
 
-#: js/ui/status/backlight.js:80
+#: js/ui/status/backlight.js:88
 msgid "Low"
 msgstr "Низкая"
 
-#: js/ui/status/backlight.js:81
+#: js/ui/status/backlight.js:89
 msgid "High"
 msgstr "Высокая"
 
-#: js/ui/status/backlight.js:147 js/ui/status/keyboard.js:881
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:881
 msgid "Keyboard"
 msgstr "Клавиатура"
 
@@ -2517,15 +2702,15 @@ msgstr "Включить звук"
 msgid "Mute"
 msgstr "Выключить звук"
 
-#: js/ui/status/volume.js:286
+#: js/ui/status/volume.js:293
 msgid "Volume"
 msgstr "Громкость"
 
-#: js/ui/status/volume.js:302
+#: js/ui/status/volume.js:309
 msgid "Sound Output"
 msgstr "Звуковой выход"
 
-#: js/ui/status/volume.js:374
+#: js/ui/status/volume.js:384
 msgid "Sound Input"
 msgstr "Звуковой вход"
 
@@ -2592,10 +2777,6 @@ msgstr "Добро пожаловать в %s"
 #: js/ui/welcomeDialog.js:52
 msgid "If you want to learn your way around, check out the tour"
 msgstr "Для знакомства с возможностями пройдите ознакомительный тур"
-
-#: js/ui/welcomeDialog.js:61
-msgid "Skip"
-msgstr "Пропустить"
 
 #: js/ui/welcomeDialog.js:66
 msgid "Take Tour"
@@ -2864,34 +3045,34 @@ msgstr[0] "%d расширение будет обновлено при след
 msgstr[1] "%d расширения будет обновлено при следующем входе в систему."
 msgstr[2] "%d расширений будет обновлено при следующем входе в систему."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:22
+#: subprojects/extensions-app/data/ui/extension-row.ui:13
 msgid "Error Details"
 msgstr "Сведения об ошибке"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:62
+#: subprojects/extensions-app/data/ui/extension-row.ui:51
 msgid "Updates Details"
 msgstr "Сведения об обновлениях"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:72
+#: subprojects/extensions-app/data/ui/extension-row.ui:68
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
 msgstr ""
 "Новая версия этого расширения уже готова и будет загружена при следующем "
 "входе в систему."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:104
+#: subprojects/extensions-app/data/ui/extension-row.ui:100
 msgid "Extension Details"
 msgstr "Сведения о расширении"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:192
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "_Website"
 msgstr "_Веб-сайт"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:219
+#: subprojects/extensions-app/data/ui/extension-row.ui:215
 msgid "_Settings"
 msgstr "_Настройки"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:246
+#: subprojects/extensions-app/data/ui/extension-row.ui:242
 msgid "_Remove…"
 msgstr "У_далить…"
 
