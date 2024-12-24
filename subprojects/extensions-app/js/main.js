@@ -41,6 +41,7 @@ class Application extends Adw.Application {
             }]);
 
         this.set_accels_for_action('app.quit', ['<Primary>q']);
+        this.set_accels_for_action('window.close', ['<Primary>w']);
 
         this._extensionManager = new ExtensionManager();
 
