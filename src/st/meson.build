@@ -158,7 +158,7 @@ st_enums = gnome.mkenums_simple('st-enum-types',
 
 st_gir_sources = st_sources + st_headers + st_enums
 
-data_to_c = find_program(meson.project_source_root() + '/src/data-to-c.pl')
+data_to_c = find_program(meson.project_source_root() + '/src/data-to-c.py')
 
 glsl_sources = custom_target('scroll-view-fade-glsl',
   input: ['st-scroll-view-fade.glsl'],

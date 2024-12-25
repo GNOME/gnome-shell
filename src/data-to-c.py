@@ -1,6 +1,6 @@
-#!/usr/bin/env perl
+#!/usr/bin/env python3
 
-# Copyright © 2011 Red Hat, Inc
+# Copyright © 2024 Red Hat, Inc
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -15,23 +15,16 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
-# Author: Kalev Lember <kalevlember@gmail.com>
+# Author: Alberto Ruiz <aruiz@redhat.com>
 
+import sys
 
-if (@ARGV != 2) {
-    die "Usage: data-to-c.pl <filename> <variable>\n";
-}
+if len(sys.argv) != 3:
+    print(f"Usage: {sys.argv[0]} <filename> <variable>", file=sys.stderr)
+    sys.exit(1)
 
-$file = $ARGV[0];
-
-open (FILE, $file) || die "Cannot open $file: $!\n";
-
-printf ("const char %s[] = \"", $ARGV[1]);
-while (my $line = <FILE>) {
-    foreach my $c (split //, $line) {
-        printf ("\\x%02x", ord ($c));
-    }
-}
-print "\";\n";
-
-close (FILE);
+with open(sys.argv[1], "rb") as srcfile:
+    print(f'const char {sys.argv[2]}[] = "', end="")
+    while (val := srcfile.read(1)):
+        print(f"\\x{val.hex()}", end="")
+    print('";')
