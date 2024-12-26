@@ -70,6 +70,7 @@ const DEFAULT_FOLDERS = {
             'org.gnome.FileRoller.desktop',
             'org.gnome.font-viewer.desktop',
             'org.gnome.Loupe.desktop',
+            'org.freedesktop.MalcontentControl.desktop',
             'org.gnome.seahorse.Application.desktop',
             'org.gnome.tweaks.desktop',
             'org.gnome.Usage.desktop',
