@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-10-19 03:11+0000\n"
-"PO-Revision-Date: 2024-10-22 16:20+0300\n"
+"POT-Creation-Date: 2024-11-29 06:28+0000\n"
+"PO-Revision-Date: 2024-12-28 12:03+0300\n"
 "Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -119,7 +119,7 @@ msgstr "Зрабіць здымак акна"
 msgid "Record a screencast interactively"
 msgstr "Зрабіць запіс экрана інтэрактыўна"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1298
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1308
 msgid "System"
 msgstr "Сістэма"
 
@@ -541,6 +541,10 @@ msgstr "Пашырэнні"
 msgid "Network Login"
 msgstr "Сеткавы ўваход"
 
+#: data/X-GNOME-Shell-Utilities.directory.desktop.in:3
+msgid "Utilities"
+msgstr "Утыліты"
+
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
 #: subprojects/extensions-app/data/ui/extensions-window.ui:275
 msgid "Something’s gone wrong"
@@ -688,6 +692,197 @@ msgstr "(або правядзіце пальцам па чытальніку)"
 #: js/gdm/util.js:732
 msgid "(or place finger on reader)"
 msgstr "(або прыкладзіце палец да чытальніка)"
+
+#: js/misc/breakManager.js:765
+msgid "Break complete sound"
+msgstr "Гук заканчэння перапынку"
+
+#: js/misc/breakManager.js:957
+#, javascript-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d секунду"
+msgstr[1] "%d секунды"
+msgstr[2] "%d секунд"
+
+#: js/misc/breakManager.js:963
+#, javascript-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d хвіліну"
+msgstr[1] "%d хвіліны"
+msgstr[2] "%d хвілін"
+
+#: js/misc/breakManager.js:969
+#, javascript-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] "%d гадзіну"
+msgstr[1] "%d гадзіны"
+msgstr[2] "%d гадзін"
+
+#: js/misc/breakManager.js:975
+#, javascript-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "%d дзень"
+msgstr[1] "%d дні"
+msgstr[2] "%d дзён"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1058
+#, javascript-format
+msgid "It will be time for a break in %s"
+msgid_plural "It will be time for a break in %s"
+msgstr[0] "Праз %s настане час перапынку"
+msgstr[1] "It will be time for a break in %s"
+msgstr[2] "It will be time for a break in %s"
+
+#: js/misc/breakManager.js:1066
+msgid "Movement Break Soon"
+msgstr "Хутка перапынак для руху"
+
+#: js/misc/breakManager.js:1069
+msgid "Eyesight Break Soon"
+msgstr "Хутка перапынак для вачэй"
+
+#: js/misc/breakManager.js:1072
+msgid "Break Soon"
+msgstr "Хутка перапынак"
+
+#: js/misc/breakManager.js:1116
+msgid "Movement Break in Progress"
+msgstr "Ідзе перапынак для руху"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1119
+#, javascript-format
+msgid "Continue moving around for %s"
+msgid_plural "Continue moving around for %s"
+msgstr[0] "Пахадзіце %s, каб размяць ногі"
+msgstr[1] "Пахадзіце %s, каб размяць ногі"
+msgstr[2] "Пахадзіце %s, каб размяць ногі"
+
+#: js/misc/breakManager.js:1125
+msgid "Eyesight Break in Progress"
+msgstr "Ідзе перапынак для вачэй"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1128
+#, javascript-format
+msgid "Continue looking away for %s"
+msgid_plural "Continue looking away for %s"
+msgstr[0] "Перавядзіце позірк з экрана на %s"
+msgstr[1] "Перавядзіце позірк з экрана на %s"
+msgstr[2] "Перавядзіце позірк з экрана на %s"
+
+#: js/misc/breakManager.js:1134
+msgid "Break in Progress"
+msgstr "Ідзе перапынак"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1137
+#, javascript-format
+msgid "%s left in your break"
+msgid_plural "%s left in your break"
+msgstr[0] "Адпачніце %s"
+msgstr[1] "Адпачніце %s"
+msgstr[2] "Адпачніце %s"
+
+#: js/misc/breakManager.js:1176
+msgid "Time for a Movement Break"
+msgstr "Час перапынку для руху"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1179
+#, javascript-format
+msgid "Take a break from the device and move around for %s"
+msgid_plural "Take a break from the device and move around for %s"
+msgstr[0] "Прыпыніце працу за прыладай і пахадзіце %s, каб размяць ногі"
+msgstr[1] "Прыпыніце працу за прыладай і пахадзіце %s, каб размяць ногі"
+msgstr[2] "Прыпыніце працу за прыладай і пахадзіце %s, каб размяць ногі"
+
+#: js/misc/breakManager.js:1185
+msgid "Time for an Eyesight Break"
+msgstr "Час перапынку для вачэй"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1188
+#, javascript-format
+msgid ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgid_plural ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgstr[0] ""
+"Перавядзіце позірк з экрана і глядзіце прынамсі %s на аб'ект у шасці ці "
+"болей метрах ад вас"
+msgstr[1] ""
+"Перавядзіце позірк з экрана і глядзіце прынамсі %s на аб'ект у шасці ці "
+"болей метрах ад вас"
+msgstr[2] ""
+"Перавядзіце позірк з экрана і глядзіце прынамсі %s на аб'ект у шасці ці "
+"болей метрах ад вас"
+
+#: js/misc/breakManager.js:1194
+msgid "Time for a Break"
+msgstr "Час перапынку"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1197
+#, javascript-format
+msgid "It’s time to take a break. Get away from the device for %s!"
+msgid_plural "It’s time to take a break. Get away from the device for %s!"
+msgstr[0] "Час адпачыць. Прыпыніце працу з прыладай на %s."
+msgstr[1] "Час адпачыць. Прыпыніце працу з прыладай на %s."
+msgstr[2] "Час адпачыць. Прыпыніце працу з прыладай на %s."
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1219
+#, javascript-format
+msgid "You were due to take a break %s ago"
+msgid_plural "You were due to take a break %s ago"
+msgstr[0] "Вы былі павінны зрабіць перапынак %s таму"
+msgstr[1] "Вы былі павінны зрабіць перапынак %s таму"
+msgstr[2] "Вы былі павінны зрабіць перапынак %s таму"
+
+#: js/misc/breakManager.js:1225
+msgid "Break Overdue"
+msgstr "Перапынак не зроблены"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1239
+#, javascript-format
+msgid "There is %s remaining in your break"
+msgid_plural "There are %s remaining in your break"
+msgstr[0] "Перапынак скончыцца праз %s"
+msgstr[1] "Да канца перапынку %s"
+msgstr[2] "Да канца перапынку %s"
+
+#: js/misc/breakManager.js:1245
+msgid "Break Interrupted"
+msgstr "Перапынак перарваны"
+
+#: js/misc/breakManager.js:1316
+msgid "Delay"
+msgstr "Адкласці"
+
+#: js/misc/breakManager.js:1337 js/ui/welcomeDialog.js:61
+msgid "Skip"
+msgstr "Прапусціць"
+
+#: js/misc/breakManager.js:1358
+msgid "Take"
+msgstr "Зрабіць"
+
+#. Translators: This is a notification to warn the user that a
+#. screen time break will start shortly.
+#: js/misc/breakManager.js:1421
+#, javascript-format
+msgid "Break in %d second"
+msgid_plural "Break in %d seconds"
+msgstr[0] "Перапынак праз %d секунду"
+msgstr[1] "Перапынак праз %d секунды"
+msgstr[2] "Перапынак праз %d секунд"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:91
@@ -953,7 +1148,7 @@ msgstr "Забараніць"
 msgid "Allow"
 msgstr "Дазволіць"
 
-#: js/ui/appDisplay.js:1769
+#: js/ui/appDisplay.js:1766
 msgid "Unnamed Folder"
 msgstr "Неназваная папка"
 
@@ -967,7 +1162,7 @@ msgstr "%s замацавана на панэлі праграм."
 msgid "%s has been unpinned from the dash."
 msgstr "%s адмацавана ад панэлі праграм."
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:281
+#: js/ui/appFavorites.js:208 js/ui/main.js:290
 msgid "Undo"
 msgstr "Адрабіць"
 
@@ -1020,7 +1215,7 @@ msgstr "Навушнікі"
 msgid "Headset"
 msgstr "Гарнітура"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:356
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:366
 msgid "Microphone"
 msgstr "Мікрафон"
 
@@ -1710,19 +1905,19 @@ msgstr "Зыходны код"
 msgid "Web Page"
 msgstr "Вэб-старонка"
 
-#: js/ui/main.js:277
+#: js/ui/main.js:286
 msgid "System was put in unsafe mode"
 msgstr "Сістэма пераведзена ў небяспечны рэжым"
 
-#: js/ui/main.js:278
+#: js/ui/main.js:287
 msgid "Apps now have unrestricted access"
 msgstr "Цяпер праграмы маюць неабмежаваны доступ"
 
-#: js/ui/main.js:338
+#: js/ui/main.js:347
 msgid "Logged in as a privileged user"
 msgstr "Увайшоў як прывілеяваны карыстальнік"
 
-#: js/ui/main.js:339
+#: js/ui/main.js:348
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1730,11 +1925,11 @@ msgstr ""
 "У мэтах бяспекі неабходна пазбягаць запуску сеанса ў якасці прывілеяванага "
 "карыстальніка. Калі магчыма, увайдзіце як звычайны карыстальнік."
 
-#: js/ui/main.js:387
+#: js/ui/main.js:396
 msgid "Screen Lock disabled"
 msgstr "Блакіраванне экрана адключана"
 
-#: js/ui/main.js:388
+#: js/ui/main.js:397
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "Для блакіравання экрана патрабуецца GNOME display manager"
 
@@ -2158,19 +2353,19 @@ msgstr[2] "%d праграм у фоне"
 msgid "Keyboard Brightness"
 msgstr "Яркасць падсветкі клавіятуры"
 
-#: js/ui/status/backlight.js:79
+#: js/ui/status/backlight.js:87
 msgid "Off"
 msgstr "Выключана"
 
-#: js/ui/status/backlight.js:80
+#: js/ui/status/backlight.js:88
 msgid "Low"
 msgstr "Нізкая"
 
-#: js/ui/status/backlight.js:81
+#: js/ui/status/backlight.js:89
 msgid "High"
 msgstr "Высокая"
 
-#: js/ui/status/backlight.js:147 js/ui/status/keyboard.js:881
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:881
 msgid "Keyboard"
 msgstr "Клавіятура"
 
@@ -2476,15 +2671,15 @@ msgstr "Уключыць гук"
 msgid "Mute"
 msgstr "Адключыць гук"
 
-#: js/ui/status/volume.js:286
+#: js/ui/status/volume.js:293
 msgid "Volume"
 msgstr "Гучнасць"
 
-#: js/ui/status/volume.js:302
+#: js/ui/status/volume.js:309
 msgid "Sound Output"
 msgstr "Аўдыявыхад"
 
-#: js/ui/status/volume.js:374
+#: js/ui/status/volume.js:384
 msgid "Sound Input"
 msgstr "Аўдыяўваход"
 
@@ -2552,10 +2747,6 @@ msgstr "Вітаем у %s"
 msgid "If you want to learn your way around, check out the tour"
 msgstr ""
 "Калі хочаце азнаёміцца з новымі магчымасцямі, прапануем вам кароткі агляд"
-
-#: js/ui/welcomeDialog.js:61
-msgid "Skip"
-msgstr "Прапусціць"
 
 #: js/ui/welcomeDialog.js:66
 msgid "Take Tour"
@@ -2684,12 +2875,12 @@ msgstr "Спіс магчымых рэжымаў"
 msgid "Force animations to be enabled"
 msgstr "Прымусовае ўключэнне анімацыі"
 
-#: src/shell-app.c:252
+#: src/shell-app.c:253
 msgctxt "program"
 msgid "Unknown"
 msgstr "Невядомая"
 
-#: src/shell-app.c:503
+#: src/shell-app.c:504
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Не ўдалося запусціць «%s»"
@@ -2706,12 +2897,12 @@ msgstr "Пароль не можа быць пустым"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Праверкі сапраўднасці адхілена карыстальнікам"
 
-#: src/st/st-icon-theme.c:1865
+#: src/st/st-icon-theme.c:1859
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "Значок «%s» адсутнічае ў тэме %s"
 
-#: src/st/st-icon-theme.c:3454 src/st/st-icon-theme.c:3757
+#: src/st/st-icon-theme.c:3452 src/st/st-icon-theme.c:3755
 msgid "Failed to load icon"
 msgstr "Не ўдалося загрузіць значок"
 
@@ -2822,34 +3013,34 @@ msgstr[0] "Падчас наступнага ўваходу ў сістэму а
 msgstr[1] "Падчас наступнага ўваходу ў сістэму абновіцца %d пашырэнні."
 msgstr[2] "Падчас наступнага ўваходу ў сістэму абновіцца %d пашырэнняў."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:22
+#: subprojects/extensions-app/data/ui/extension-row.ui:13
 msgid "Error Details"
 msgstr "Падрабязнасці памылкі"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:62
+#: subprojects/extensions-app/data/ui/extension-row.ui:51
 msgid "Updates Details"
 msgstr "Падрабязнасці абнаўлення"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:72
+#: subprojects/extensions-app/data/ui/extension-row.ui:68
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
 msgstr ""
 "Новая версія пашырэння гатова да выкарыстання, яна будзе загружана падчас "
 "наступнага ўваходу ў сістэму."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:104
+#: subprojects/extensions-app/data/ui/extension-row.ui:100
 msgid "Extension Details"
 msgstr "Звесткі аб пашырэнні"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:192
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "_Website"
 msgstr "_Вэб-сайт"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:219
+#: subprojects/extensions-app/data/ui/extension-row.ui:215
 msgid "_Settings"
 msgstr "_Налады"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:246
+#: subprojects/extensions-app/data/ui/extension-row.ui:242
 msgid "_Remove…"
 msgstr "_Выдаліць…"
 
