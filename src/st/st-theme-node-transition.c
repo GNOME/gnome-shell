@@ -291,8 +291,6 @@ setup_framebuffers (StThemeNodeTransition *transition,
     {
       if (G_UNLIKELY (pipeline_template == NULL))
         {
-          CoglContext *ctx =
-            clutter_backend_get_cogl_context (clutter_get_default_backend ());
           pipeline_template = cogl_pipeline_new (ctx);
 
           cogl_pipeline_set_layer_combine (pipeline_template, 0,
