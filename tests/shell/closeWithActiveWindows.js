@@ -12,7 +12,7 @@ export async function run() {
     /* Make created windows remain visible during exit. */
     await Scripting.disableHelperAutoExit();
 
-    const seat = Clutter.get_default_backend().get_default_seat();
+    const seat = global.stage.context.get_backend().get_default_seat();
     const virtualDevice_ =
         seat.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
 

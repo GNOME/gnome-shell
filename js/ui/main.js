@@ -236,9 +236,9 @@ async function _initializeUI() {
         screenShield = new ScreenShield.ScreenShield();
 
     inputMethod = new InputMethod.InputMethod();
-    Clutter.get_default_backend().set_input_method(inputMethod);
+    global.stage.context.get_backend().set_input_method(inputMethod);
     global.connect('shutdown',
-        () => Clutter.get_default_backend().set_input_method(null));
+        () => global.stage.context.get_backend().set_input_method(null));
 
     screenshotUI = new Screenshot.ScreenshotUI();
 

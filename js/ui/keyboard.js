@@ -1059,7 +1059,7 @@ export class KeyboardManager extends Signals.EventEmitter {
         this._a11yApplicationsSettings = new Gio.Settings({schema_id: A11Y_APPLICATIONS_SCHEMA});
         this._a11yApplicationsSettings.connect('changed', this._syncEnabled.bind(this));
 
-        this._seat = Clutter.get_default_backend().get_default_seat();
+        this._seat = global.stage.context.get_backend().get_default_seat();
         this._seat.connect('notify::touch-mode', this._syncEnabled.bind(this));
 
         this._lastDevice = null;
@@ -1984,7 +1984,7 @@ class KeyboardController extends Signals.EventEmitter {
     constructor() {
         super();
 
-        let seat = Clutter.get_default_backend().get_default_seat();
+        let seat = global.stage.context.get_backend().get_default_seat();
         this._virtualDevice = seat.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
 
         this._inputSourceManager = InputSourceManager.getInputSourceManager();

@@ -950,7 +950,7 @@ export class PadOsdService extends Signals.EventEmitter {
 
     ShowAsync(params, invocation) {
         let [deviceNode, editionMode] = params;
-        let seat = Clutter.get_default_backend().get_default_seat();
+        const seat = global.stage.context.get_backend().get_default_seat();
         let devices = seat.list_devices();
         let padDevice = null;
 

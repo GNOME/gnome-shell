@@ -116,7 +116,13 @@ shell_invert_lightness_effect_init (ShellInvertLightnessEffect *self)
   if (G_UNLIKELY (klass->base_pipeline == NULL))
     {
       CoglSnippet *snippet;
-      CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      ShellGlobal *global = shell_global_get ();
+      ClutterStage *stage = shell_global_get_stage (global);
+      ClutterContext *clutter_context =
+        clutter_actor_get_context (CLUTTER_ACTOR (stage));
+      ClutterBackend *backend =
+        clutter_context_get_backend (clutter_context);
+      CoglContext *ctx = clutter_backend_get_cogl_context (backend);
 
       klass->base_pipeline = cogl_pipeline_new (ctx);
 

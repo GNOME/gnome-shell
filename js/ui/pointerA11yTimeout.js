@@ -110,7 +110,7 @@ const PieTimer = GObject.registerClass({
 
 export class PointerA11yTimeout {
     constructor() {
-        let seat = Clutter.get_default_backend().get_default_seat();
+        const seat = global.stage.context.get_backend().get_default_seat();
 
         seat.connect('ptr-a11y-timeout-started', (o, device, type, timeout) => {
             let [x, y] = global.get_pointer();
