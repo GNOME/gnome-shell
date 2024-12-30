@@ -223,8 +223,7 @@ _st_create_texture_pipeline (CoglTexture *src_texture)
      pipeline ancestry instead of resorting to the shader cache. */
   if (G_UNLIKELY (texture_pipeline_template == NULL))
     {
-      CoglContext *ctx =
-        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      CoglContext *ctx = cogl_texture_get_context (src_texture);
 
       texture_pipeline_template = cogl_pipeline_new (ctx);
       cogl_pipeline_set_layer_null_texture (texture_pipeline_template, 0);
@@ -384,12 +383,11 @@ _st_create_shadow_pipeline (StShadow            *shadow_spec,
                             CoglTexture         *src_texture,
                             float                resource_scale)
 {
-  ClutterBackend *backend = clutter_get_default_backend ();
-  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
   g_autoptr (ClutterPaintNode) texture_node = NULL;
   g_autoptr (ClutterPaintNode) blur_node = NULL;
   g_autoptr (CoglOffscreen) offscreen = NULL;
   g_autoptr (GError) error = NULL;
+  CoglContext *cogl_context;
   ClutterPaintContext *nested_paint_context;
   ClutterColorState *color_state;
   CoglFramebuffer *fb;
@@ -413,10 +411,11 @@ _st_create_shadow_pipeline (StShadow            *shadow_spec,
 
   src_width = cogl_texture_get_width (src_texture);
   src_height = cogl_texture_get_height (src_texture);
+  cogl_context = cogl_texture_get_context (src_texture);
   dst_width = src_width + 2 * sampling_radius;
   dst_height = src_height + 2 * sampling_radius;
 
-  texture = cogl_texture_2d_new_with_size (ctx, dst_width, dst_height);
+  texture = cogl_texture_2d_new_with_size (cogl_context, dst_width, dst_height);
   if (!texture)
     return NULL;
 
@@ -440,7 +439,7 @@ _st_create_shadow_pipeline (StShadow            *shadow_spec,
                                     });
 
   /* Texture */
-  texture_pipeline = cogl_context_get_named_pipeline (ctx,
+  texture_pipeline = cogl_context_get_named_pipeline (cogl_context,
                                                       &texture_pipeline_key);
 
   if (G_UNLIKELY (texture_pipeline == NULL))
@@ -452,11 +451,11 @@ _st_create_shadow_pipeline (StShadow            *shadow_spec,
                                   "if (cogl_color_out.a > 0.0)\n"
                                   "  cogl_color_out.a = 1.0;");
 
-      texture_pipeline = cogl_pipeline_new (ctx);
+      texture_pipeline = cogl_pipeline_new (cogl_context);
       cogl_pipeline_add_snippet (texture_pipeline, snippet);
       g_object_unref (snippet);
 
-      cogl_context_set_named_pipeline (ctx,
+      cogl_context_set_named_pipeline (cogl_context,
                                        &texture_pipeline_key,
                                        texture_pipeline);
     }
@@ -488,7 +487,7 @@ _st_create_shadow_pipeline (StShadow            *shadow_spec,
 
   if (G_UNLIKELY (shadow_pipeline_template == NULL))
     {
-      shadow_pipeline_template = cogl_pipeline_new (ctx);
+      shadow_pipeline_template = cogl_pipeline_new (cogl_context);
 
       /* We set up the pipeline to blend the shadow texture with the combine
        * constant, but defer setting the latter until painting, so that we can
@@ -552,13 +551,17 @@ _st_create_shadow_pipeline_from_actor (StShadow            *shadow_spec,
       g_autoptr(CoglTexture) buffer = NULL;
       CoglOffscreen *offscreen;
       CoglFramebuffer *fb;
-      CoglContext *ctx;
+      ClutterBackend *backend;
+      ClutterContext *context;
+      CoglContext *cogl_context;
       CoglColor clear_color;
       GError *catch_error = NULL;
       float x, y;
 
-      ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
-      buffer = cogl_texture_2d_new_with_size (ctx, width, height);
+      context = clutter_actor_get_context (actor);
+      backend = clutter_context_get_backend (context);
+      cogl_context = clutter_backend_get_cogl_context (backend);
+      buffer = cogl_texture_2d_new_with_size (cogl_context, width, height);
 
       if (buffer == NULL)
         return NULL;

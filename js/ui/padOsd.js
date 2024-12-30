@@ -640,7 +640,8 @@ export const PadOsd = GObject.registerClass({
         this._editionMode = editionMode;
         this._padChooser = null;
 
-        let seat = Clutter.get_default_backend().get_default_seat();
+        const backend = this.get_context().get_backend();
+        const seat = backend.get_default_seat();
         seat.connectObject(
             'device-added', (_seat, device) => {
                 if (device.get_device_type() === Clutter.InputDeviceType.PAD_DEVICE &&

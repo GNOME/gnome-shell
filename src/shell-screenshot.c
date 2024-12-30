@@ -516,8 +516,7 @@ grab_screenshot_content (ShellScreenshot *screenshot,
       // Copy the texture to prevent it from changing shortly after.
       width = cogl_texture_get_width (cursor_texture);
       height = cogl_texture_get_height (cursor_texture);
-
-      ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      ctx = cogl_texture_get_context (cursor_texture);
 
       texture = cogl_texture_2d_new_with_size (ctx, width, height);
       offscreen = cogl_offscreen_new_with_texture (texture);
@@ -1266,7 +1265,7 @@ shell_screenshot_composite_to_stream (CoglTexture         *texture,
       height = cogl_texture_get_height (texture);
     }
 
-  ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
+  ctx = cogl_texture_get_context (texture);
   sub_texture = cogl_sub_texture_new (ctx, texture, x, y, width, height);
 
   surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,

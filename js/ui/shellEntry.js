@@ -176,7 +176,8 @@ class CapsLockWarning extends St.Label {
         this.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this.clutter_text.line_wrap = true;
 
-        let seat = Clutter.get_default_backend().get_default_seat();
+        const backend = this.get_context().get_backend();
+        const seat = backend.get_default_seat();
         this._keymap = seat.get_keymap();
 
         this.connect('notify::mapped', () => {
