@@ -404,7 +404,13 @@ st_widget_paint_background (StWidget            *widget,
   ClutterActorBox allocation;
   float resource_scale;
   guint8 opacity;
+  ClutterContext *clutter_context;
+  ClutterBackend *clutter_backend;
+  CoglContext *cogl_context;
 
+  clutter_context = clutter_actor_get_context (CLUTTER_ACTOR (widget));
+  clutter_backend = clutter_context_get_backend (clutter_context);
+  cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   resource_scale = clutter_actor_get_resource_scale (CLUTTER_ACTOR (widget));
 
   theme_node = st_widget_get_theme_node (widget);
@@ -415,6 +421,7 @@ st_widget_paint_background (StWidget            *widget,
 
   if (priv->transition_animation)
     st_theme_node_transition_paint (priv->transition_animation,
+                                    cogl_context,
                                     paint_context,
                                     node,
                                     &allocation,
@@ -423,6 +430,7 @@ st_widget_paint_background (StWidget            *widget,
   else
     st_theme_node_paint (theme_node,
                          current_paint_state (widget),
+                         cogl_context,
                          paint_context,
                          node,
                          &allocation,
