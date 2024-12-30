@@ -39,6 +39,8 @@
 
 #include <cogl/cogl.h>
 
+#include "shell-global.h"
+
 struct _ShellInvertLightnessEffect
 {
   ClutterOffscreenEffect parent_instance;
@@ -114,8 +116,7 @@ shell_invert_lightness_effect_init (ShellInvertLightnessEffect *self)
   if (G_UNLIKELY (klass->base_pipeline == NULL))
     {
       CoglSnippet *snippet;
-      CoglContext *ctx =
-        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+      CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
       klass->base_pipeline = cogl_pipeline_new (ctx);
 

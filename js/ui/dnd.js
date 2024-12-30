@@ -365,7 +365,8 @@ class _Draggable extends Signals.EventEmitter {
                 device = event.get_device();
 
             if (device === undefined) {
-                let seat = Clutter.get_default_backend().get_default_seat();
+                const backend = this.actor.get_context().get_backend();
+                const seat = backend.get_default_seat();
                 device = seat.get_pointer();
             }
         }

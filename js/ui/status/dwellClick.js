@@ -48,7 +48,8 @@ class DwellClickIndicator extends PanelMenu.Button {
         this._a11ySettings.connect(`changed::${KEY_DWELL_CLICK_ENABLED}`, this._syncMenuVisibility.bind(this));
         this._a11ySettings.connect(`changed::${KEY_DWELL_MODE}`, this._syncMenuVisibility.bind(this));
 
-        this._seat = Clutter.get_default_backend().get_default_seat();
+        const backend = this.get_context().get_backend();
+        this._seat = backend.get_default_seat();
         this._seat.connect('ptr-a11y-dwell-click-type-changed', this._updateClickType.bind(this));
 
         this._addDwellAction(DWELL_CLICK_MODES.primary);

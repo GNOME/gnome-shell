@@ -107,6 +107,8 @@ export class Magnifier extends Signals.EventEmitter {
         this._cursorRoot = new Clutter.Actor();
         this._cursorRoot.add_child(this._mouseSprite);
 
+        const backend = this._cursorRoot.get_context().get_backend();
+        this._seat = backend.get_default_seat();
         // Create the first ZoomRegion and initialize it according to the
         // magnification settings.
 
@@ -130,10 +132,8 @@ export class Magnifier extends Signals.EventEmitter {
      * Show the system mouse pointer.
      */
     showSystemCursor() {
-        const seat = Clutter.get_default_backend().get_default_seat();
-
         if (this._cursorUnfocusInhibited) {
-            seat.uninhibit_unfocus();
+            this._seat.uninhibit_unfocus();
             this._cursorUnfocusInhibited = false;
         }
 
@@ -150,10 +150,8 @@ export class Magnifier extends Signals.EventEmitter {
      * Hide the system mouse pointer.
      */
     hideSystemCursor() {
-        const seat = Clutter.get_default_backend().get_default_seat();
-
         if (!this._cursorUnfocusInhibited) {
-            seat.inhibit_unfocus();
+            this._seat.inhibit_unfocus();
             this._cursorUnfocusInhibited = true;
         }
 

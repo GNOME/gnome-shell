@@ -203,9 +203,10 @@ st_drawing_area_emit_repaint (StDrawingArea *area)
 
   if (priv->buffer == NULL)
     {
-      CoglContext *ctx;
+      ClutterContext *context = clutter_actor_get_context (CLUTTER_ACTOR (area));
+      ClutterBackend *backend = clutter_context_get_backend (context);
+      CoglContext *ctx= clutter_backend_get_cogl_context (backend);
 
-      ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
       priv->buffer = cogl_bitmap_new_with_size (ctx,
                                                 real_width,
                                                 real_height,
