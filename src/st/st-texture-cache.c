@@ -293,6 +293,7 @@ typedef struct {
   StIconInfo *icon_info;
   StIconColors *colors;
   GFile *file;
+  CoglContext *cogl_context;
 } AsyncTextureLoadData;
 
 static void
@@ -487,11 +488,12 @@ load_pixbuf_async_finish (StTextureCache *cache, GAsyncResult *result, GError **
 }
 
 static ClutterContent *
-pixbuf_to_st_content_image (GdkPixbuf *pixbuf,
-                            int        width,
-                            int        height,
-                            int        paint_scale,
-                            float      resource_scale)
+pixbuf_to_st_content_image (GdkPixbuf   *pixbuf,
+                            CoglContext *context,
+                            int          width,
+                            int          height,
+                            int          paint_scale,
+                            float        resource_scale)
 {
   ClutterContent *image;
   g_autoptr(GError) error = NULL;
@@ -700,6 +702,7 @@ finish_texture_load (AsyncTextureLoadData *data,
                                          &orig_key, &value))
         {
           image = pixbuf_to_st_content_image (pixbuf,
+                                              data->cogl_context,
                                               data->width, data->height,
                                               data->paint_scale,
                                               data->resource_scale);
@@ -717,6 +720,7 @@ finish_texture_load (AsyncTextureLoadData *data,
   else
     {
       image = pixbuf_to_st_content_image (pixbuf,
+                                          data->cogl_context,
                                           data->width, data->height,
                                           data->paint_scale,
                                           data->resource_scale);
@@ -1065,6 +1069,8 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
     {
       /* Else, make a new request */
       StIconInfo *info;
+      ClutterContext *context = clutter_actor_get_context (actor);
+      ClutterBackend *clutter_backend = clutter_context_get_backend (context);
 
       info = st_icon_theme_lookup_by_gicon_for_scale (theme, icon,
                                                       size, scale,
@@ -1086,6 +1092,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
       request->width = request->height = size;
       request->paint_scale = paint_scale;
       request->resource_scale = resource_scale;
+      request->cogl_context = clutter_backend_get_cogl_context (clutter_backend);
 
       load_texture_async (cache, request);
     }
@@ -1100,12 +1107,19 @@ load_from_pixbuf (GdkPixbuf *pixbuf,
 {
   g_autoptr(ClutterContent) image = NULL;
   ClutterActor *actor;
-
-  image = pixbuf_to_st_content_image (pixbuf, -1, -1, paint_scale, resource_scale);
+  ClutterContext *context;
+  ClutterBackend *backend;
+  CoglContext *cogl_context;
 
   actor = g_object_new (CLUTTER_TYPE_ACTOR,
                         "request-mode", CLUTTER_REQUEST_CONTENT_SIZE,
                         NULL);
+
+  context = clutter_actor_get_context (actor);
+  backend = clutter_context_get_backend (context);
+  cogl_context = clutter_backend_get_cogl_context (backend);
+  image = pixbuf_to_st_content_image (pixbuf, cogl_context, -1, -1,
+                                      paint_scale, resource_scale);
   clutter_actor_set_content (actor, image);
 
   return actor;
@@ -1454,6 +1468,8 @@ st_texture_cache_load_file_async (StTextureCache *cache,
     }
   else
     {
+      ClutterContext *context = clutter_actor_get_context (actor);
+      ClutterBackend *clutter_backend = clutter_context_get_backend (context);
       /* Else, make a new request */
 
       request->cache = cache;
@@ -1465,6 +1481,7 @@ st_texture_cache_load_file_async (StTextureCache *cache,
       request->height = available_height;
       request->paint_scale = paint_scale;
       request->resource_scale = resource_scale;
+      request->cogl_context = clutter_backend_get_cogl_context (clutter_backend);
 
       load_texture_async (cache, request);
     }
@@ -1477,6 +1494,7 @@ st_texture_cache_load_file_async (StTextureCache *cache,
 static CoglTexture *
 st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
                                                  StTextureCachePolicy policy,
+                                                 CoglContext    *context,
                                                  GFile          *file,
                                                  int             available_width,
                                                  int             available_height,
@@ -1501,7 +1519,7 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
       if (!pixbuf)
         goto out;
 
-      image = pixbuf_to_st_content_image (pixbuf,
+      image = pixbuf_to_st_content_image (pixbuf, context,
                                           available_height, available_width,
                                           paint_scale, resource_scale);
       g_object_unref (pixbuf);
@@ -1578,6 +1596,7 @@ out:
 /**
  * st_texture_cache_load_file_to_cogl_texture: (skip)
  * @cache: A #StTextureCache
+ * @context: A #CoglContext
  * @file: A #GFile in supported image format
  * @paint_scale: Scale factor of the display
  * @resource_scale: Resource scale factor
@@ -1590,6 +1609,7 @@ out:
  */
 CoglTexture *
 st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
+                                            CoglContext    *context,
                                             GFile          *file,
                                             gint            paint_scale,
                                             gfloat          resource_scale)
@@ -1598,6 +1618,7 @@ st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
   GError *error = NULL;
 
   texture = st_texture_cache_load_file_sync_to_cogl_texture (cache, ST_TEXTURE_CACHE_POLICY_FOREVER,
+                                                             context,
                                                              file, -1, -1, paint_scale, resource_scale,
                                                              &error);
 

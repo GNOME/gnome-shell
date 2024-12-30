@@ -73,6 +73,7 @@ ClutterActor *st_texture_cache_load_file_async (StTextureCache    *cache,
                                                 gfloat             resource_scale);
 
 CoglTexture     *st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
+                                                             CoglContext    *context,
                                                              GFile          *file,
                                                              gint            paint_scale,
                                                              gfloat          resource_scale);

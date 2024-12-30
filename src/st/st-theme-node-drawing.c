@@ -42,6 +42,11 @@
  ****/
 
 typedef struct {
+  /*
+   * The context here is not really part of the corner
+   * definition per se, but is used for the drawing part.
+  */
+  CoglContext   *cogl_context;
   CoglColor      color;
   CoglColor      border_color_1;
   CoglColor      border_color_2;
@@ -75,8 +80,6 @@ elliptical_arc (cairo_t *cr,
 static CoglTexture *
 create_corner_pipeline (StCornerSpec *corner)
 {
-  ClutterBackend *backend = clutter_get_default_backend ();
-  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
   GError *error = NULL;
   CoglTexture *texture;
   cairo_t *cr;
@@ -180,7 +183,7 @@ create_corner_pipeline (StCornerSpec *corner)
 
   cairo_surface_destroy (surface);
 
-  texture = cogl_texture_2d_new_from_data (ctx, size, size,
+  texture = cogl_texture_2d_new_from_data (corner->cogl_context, size, size,
                                            COGL_PIXEL_FORMAT_CAIRO_ARGB32_COMPAT,
                                            rowstride,
                                            data,
@@ -362,6 +365,7 @@ st_theme_node_get_corner_border_widths (StThemeNode *node,
 
 static CoglPipeline *
 st_theme_node_lookup_corner (StThemeNode    *node,
+                             CoglContext    *cogl_context,
                              float           width,
                              float           height,
                              float           resource_scale,
@@ -384,6 +388,7 @@ st_theme_node_lookup_corner (StThemeNode    *node,
   corner.radius = radius[corner_id];
   corner.color = node->background_color;
   corner.resource_scale = resource_scale;
+  corner.cogl_context = cogl_context;
   st_theme_node_get_corner_border_widths (node, corner_id,
                                           &corner.border_width_1,
                                           &corner.border_width_2);
@@ -1064,12 +1069,11 @@ paint_inset_box_shadow_to_cairo_context (StThemeNode     *node,
  */
 static CoglTexture *
 st_theme_node_prerender_background (StThemeNode *node,
+                                    CoglContext *ctx,
                                     float        actor_width,
                                     float        actor_height,
                                     float        resource_scale)
 {
-  ClutterBackend *backend = clutter_get_default_backend ();
-  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
   GError *error = NULL;
   StBorderImage *border_image;
   CoglTexture *texture;
@@ -1421,6 +1425,7 @@ st_theme_node_prerender_background (StThemeNode *node,
 static void
 st_theme_node_maybe_prerender_background (StThemeNodePaintState *state,
                                           StThemeNode           *node,
+                                          CoglContext           *cogl_context,
                                           float                  width,
                                           float                  height,
                                           float                  resource_scale)
@@ -1477,13 +1482,21 @@ st_theme_node_maybe_prerender_background (StThemeNodePaintState *state,
     g_clear_object (&state->corner_pipeline[corner_id]);
 
   state->corner_pipeline[ST_CORNER_TOPLEFT] =
-    st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_TOPLEFT);
+    st_theme_node_lookup_corner (node, cogl_context,
+                                 width, height, resource_scale,
+                                 ST_CORNER_TOPLEFT);
   state->corner_pipeline[ST_CORNER_TOPRIGHT] =
-    st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_TOPRIGHT);
+    st_theme_node_lookup_corner (node, cogl_context,
+                                 width, height, resource_scale,
+                                 ST_CORNER_TOPRIGHT);
   state->corner_pipeline[ST_CORNER_BOTTOMRIGHT] =
-    st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_BOTTOMRIGHT);
+    st_theme_node_lookup_corner (node, cogl_context,
+                                 width, height, resource_scale,
+                                 ST_CORNER_BOTTOMRIGHT);
   state->corner_pipeline[ST_CORNER_BOTTOMLEFT] =
-    st_theme_node_lookup_corner (node, width, height, resource_scale, ST_CORNER_BOTTOMLEFT);
+    st_theme_node_lookup_corner (node, cogl_context,
+                                 width, height, resource_scale,
+                                 ST_CORNER_BOTTOMLEFT);
 
   /* Use cairo to prerender the node if there is a gradient, or
    * background image with borders and/or rounded corners,
@@ -1499,7 +1512,9 @@ st_theme_node_maybe_prerender_background (StThemeNodePaintState *state,
       || (st_theme_node_get_background_image (node) && (has_border || has_border_radius))
       || has_large_corners)
     {
-      state->prerendered_texture = st_theme_node_prerender_background (node, width, height, resource_scale);
+      state->prerendered_texture = st_theme_node_prerender_background (node, cogl_context,
+                                                                       width, height,
+                                                                       resource_scale);
 
       if (state->prerendered_texture)
         state->prerendered_pipeline = _st_create_texture_pipeline (state->prerendered_texture);
@@ -1523,6 +1538,7 @@ st_theme_node_invalidate_border_image (StThemeNode *node)
 
 static gboolean
 st_theme_node_load_border_image (StThemeNode *node,
+                                 CoglContext *cogl_context,
                                  gfloat       resource_scale)
 {
   if (node->border_slices_texture == NULL)
@@ -1537,6 +1553,7 @@ st_theme_node_load_border_image (StThemeNode *node,
       file = st_border_image_get_file (border_image);
 
       node->border_slices_texture = st_texture_cache_load_file_to_cogl_texture (st_texture_cache_get_default (),
+                                                                                cogl_context,
                                                                                 file,
                                                                                 node->cached_scale_factor,
                                                                                 resource_scale);
@@ -1560,6 +1577,7 @@ st_theme_node_invalidate_background_image (StThemeNode *node)
 
 static gboolean
 st_theme_node_load_background_image (StThemeNode         *node,
+                                     CoglContext         *cogl_context,
                                      ClutterPaintContext *paint_context,
                                      float                resource_scale)
 {
@@ -1574,6 +1592,7 @@ st_theme_node_load_background_image (StThemeNode         *node,
 
       background_image_shadow_spec = st_theme_node_get_background_image_shadow (node);
       node->background_texture = st_texture_cache_load_file_to_cogl_texture (st_texture_cache_get_default (),
+                                                                             cogl_context,
                                                                              background_image,
                                                                              node->cached_scale_factor,
                                                                              resource_scale);
@@ -1627,11 +1646,13 @@ st_theme_node_invalidate_resources_for_file (StThemeNode *node,
 
 static void st_theme_node_compute_maximum_borders (StThemeNodePaintState *state);
 static void st_theme_node_prerender_shadow (StThemeNodePaintState *state,
+                                            CoglContext           *cogl_context,
                                             ClutterPaintContext   *paint_context);
 
 static void
 st_theme_node_render_resources (StThemeNodePaintState *state,
                                 StThemeNode           *node,
+                                CoglContext           *cogl_context,
                                 ClutterPaintContext   *paint_context,
                                 float                  width,
                                 float                  height,
@@ -1659,13 +1680,14 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
   box_shadow_spec = st_theme_node_get_box_shadow (node);
   has_inset_box_shadow = box_shadow_spec && box_shadow_spec->inset;
 
-  st_theme_node_maybe_prerender_background (state, node, width, height, resource_scale);
+  st_theme_node_maybe_prerender_background (state, node, cogl_context,
+                                            width, height, resource_scale);
 
   if (box_shadow_spec && !has_inset_box_shadow)
     {
       st_theme_node_compute_maximum_borders (state);
 
-      if (st_theme_node_load_border_image (node, resource_scale))
+      if (st_theme_node_load_border_image (node, cogl_context, resource_scale))
         state->box_shadow_pipeline = _st_create_shadow_pipeline (box_shadow_spec,
                                                                  paint_context,
                                                                  node->border_slices_texture,
@@ -1676,7 +1698,7 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
                                                                  state->prerendered_texture,
                                                                  state->resource_scale);
       else
-        st_theme_node_prerender_shadow (state, paint_context);
+        st_theme_node_prerender_shadow (state, cogl_context, paint_context);
     }
 
   /* If we don't have cached textures yet, check whether we can cache
@@ -1696,6 +1718,7 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
 static void
 st_theme_node_update_resources (StThemeNodePaintState *state,
                                 StThemeNode           *node,
+                                CoglContext           *cogl_context,
                                 ClutterPaintContext   *paint_context,
                                 float                  width,
                                 float                  height,
@@ -1728,7 +1751,8 @@ st_theme_node_update_resources (StThemeNodePaintState *state,
 
   box_shadow_spec = st_theme_node_get_box_shadow (node);
 
-  st_theme_node_maybe_prerender_background (state, node, width, height, resource_scale);
+  st_theme_node_maybe_prerender_background (state, node, cogl_context,
+                                            width, height, resource_scale);
 
   if (had_box_shadow)
     state->box_shadow_pipeline = _st_create_shadow_pipeline (box_shadow_spec,
@@ -2480,17 +2504,15 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
 
 static void
 st_theme_node_prerender_shadow (StThemeNodePaintState *state,
+                                CoglContext           *ctx,
                                 ClutterPaintContext   *paint_context)
 {
   StThemeNode *node = state->node;
-  CoglContext *ctx;
   int fb_width, fb_height;
   CoglTexture *buffer;
   CoglOffscreen *offscreen = NULL;
   CoglFramebuffer *framebuffer;
   GError *error = NULL;
-
-  ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
   /* Render offscreen */
   fb_width = ceilf (state->box_shadow_width * state->resource_scale);
@@ -2794,6 +2816,7 @@ st_theme_node_needs_new_box_shadow_for_size (StThemeNodePaintState *state,
 void
 st_theme_node_paint (StThemeNode           *node,
                      StThemeNodePaintState *state,
+                     CoglContext           *cogl_context,
                      ClutterPaintContext   *paint_context,
                      ClutterPaintNode      *root,
                      const ClutterActorBox *box,
@@ -2831,7 +2854,7 @@ st_theme_node_paint (StThemeNode           *node,
           fabsf (resource_scale - state->resource_scale) < FLT_EPSILON)
         st_theme_node_paint_state_copy (state, &node->cached_state);
       else
-        st_theme_node_render_resources (state, node, paint_context,
+        st_theme_node_render_resources (state, node, cogl_context, paint_context,
                                         width, height, resource_scale);
 
       node->rendered_once = TRUE;
@@ -2839,7 +2862,7 @@ st_theme_node_paint (StThemeNode           *node,
   else if (state->alloc_width != width || state->alloc_height != height ||
            fabsf (state->resource_scale - resource_scale) > FLT_EPSILON)
     {
-      st_theme_node_update_resources (state, node, paint_context,
+      st_theme_node_update_resources (state, node, cogl_context, paint_context,
                                       width, height, resource_scale);
     }
 
@@ -2886,7 +2909,7 @@ st_theme_node_paint (StThemeNode           *node,
     }
 
   if (state->prerendered_pipeline != NULL ||
-      st_theme_node_load_border_image (node, resource_scale))
+      st_theme_node_load_border_image (node, cogl_context, resource_scale))
     {
       if (state->prerendered_pipeline != NULL)
         {
@@ -2914,7 +2937,7 @@ st_theme_node_paint (StThemeNode           *node,
   st_theme_node_paint_outline (node, root, box, paint_opacity);
 
   if (state->prerendered_pipeline == NULL &&
-      st_theme_node_load_background_image (node, paint_context, resource_scale))
+      st_theme_node_load_background_image (node, cogl_context, paint_context, resource_scale))
     {
       ClutterActorBox background_box;
       ClutterActorBox texture_coords;
