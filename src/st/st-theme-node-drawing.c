@@ -1540,6 +1540,8 @@ st_theme_node_load_border_image (StThemeNode *node,
     {
       StBorderImage *border_image;
       GFile *file;
+      ClutterBackend *backend = st_theme_context_get_clutter_backend (node->context);
+      CoglContext *cogl_context = clutter_backend_get_cogl_context (backend);
 
       border_image = st_theme_node_get_border_image (node);
       if (border_image == NULL)
@@ -1548,6 +1550,7 @@ st_theme_node_load_border_image (StThemeNode *node,
       file = st_border_image_get_file (border_image);
 
       node->border_slices_texture = st_texture_cache_load_file_to_cogl_texture (st_texture_cache_get_default (),
+                                                                                cogl_context,
                                                                                 file,
                                                                                 node->cached_scale_factor,
                                                                                 resource_scale);
@@ -1578,6 +1581,8 @@ st_theme_node_load_background_image (StThemeNode         *node,
     {
       GFile *background_image;
       StShadow *background_image_shadow_spec;
+      ClutterBackend *backend = st_theme_context_get_clutter_backend (node->context);
+      CoglContext *cogl_context = clutter_backend_get_cogl_context (backend);
 
       background_image = st_theme_node_get_background_image (node);
       if (background_image == NULL)
@@ -1585,6 +1590,7 @@ st_theme_node_load_background_image (StThemeNode         *node,
 
       background_image_shadow_spec = st_theme_node_get_background_image_shadow (node);
       node->background_texture = st_texture_cache_load_file_to_cogl_texture (st_texture_cache_get_default (),
+                                                                             cogl_context,
                                                                              background_image,
                                                                              node->cached_scale_factor,
                                                                              resource_scale);

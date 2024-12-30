@@ -30,6 +30,7 @@ ClutterContent *st_image_content_new_with_preferred_size (int width,
                                                           int height);
 
 gboolean st_image_content_set_data (StImageContent  *content,
+                                    CoglContext     *cogl_context,
                                     const guint8    *data,
                                     CoglPixelFormat  pixel_format,
                                     guint            width,
@@ -38,6 +39,7 @@ gboolean st_image_content_set_data (StImageContent  *content,
                                     GError         **error);
 
 gboolean st_image_content_set_bytes (StImageContent  *content,
+                                     CoglContext     *cogl_context,
                                      GBytes          *data,
                                      CoglPixelFormat  pixel_format,
                                      guint            width,

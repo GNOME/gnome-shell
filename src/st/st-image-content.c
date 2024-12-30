@@ -377,28 +377,6 @@ st_image_content_get_is_symbolic (StImageContent *content)
   return content->is_symbolic;
 }
 
-static CoglTexture *
-create_texture_from_data (unsigned int      width,
-                          unsigned int      height,
-                          CoglPixelFormat   pixel_format,
-                          unsigned int      row_stride,
-                          const uint8_t    *data,
-                          GError          **error)
-{
-  ClutterBackend *backend = clutter_get_default_backend ();
-  CoglContext *cogl_context = clutter_backend_get_cogl_context (backend);
-  CoglTexture *texture_2d;
-
-  texture_2d = cogl_texture_2d_new_from_data (cogl_context,
-                                              width,
-                                              height,
-                                              pixel_format,
-                                              row_stride,
-                                              data,
-                                              error);
-
-  return texture_2d;
-}
 
 static void
 update_image_size (StImageContent *self)
@@ -424,6 +402,7 @@ update_image_size (StImageContent *self)
 /**
  * st_image_content_set_data:
  * @content: a #StImageContentImage
+ * @cogl_context: The context to use
  * @data: (array): the image data, as an array of bytes
  * @pixel_format: the Cogl pixel format of the image data
  * @width: the width of the image data
@@ -467,6 +446,7 @@ update_image_size (StImageContent *self)
  */
 gboolean
 st_image_content_set_data (StImageContent   *content,
+                           CoglContext      *cogl_context,
                            const guint8     *data,
                            CoglPixelFormat   pixel_format,
                            guint             width,
@@ -480,12 +460,13 @@ st_image_content_set_data (StImageContent   *content,
   if (content->texture != NULL)
     g_object_unref (content->texture);
 
-  content->texture = create_texture_from_data (width,
-                                               height,
-                                               pixel_format,
-                                               row_stride,
-                                               data,
-                                               error);
+  content->texture = cogl_texture_2d_new_from_data (cogl_context,
+                                                    width,
+                                                    height,
+                                                    pixel_format,
+                                                    row_stride,
+                                                    data,
+                                                    error);
 
   if (content->texture == NULL)
     return FALSE;
@@ -499,6 +480,7 @@ st_image_content_set_data (StImageContent   *content,
 /**
  * st_image_content_set_bytes:
  * @content: a #StImageContent
+ * @cogl_context: The context to use
  * @data: the image data, as a #GBytes
  * @pixel_format: the Cogl pixel format of the image data
  * @width: the width of the image data
@@ -521,6 +503,7 @@ st_image_content_set_data (StImageContent   *content,
  */
 gboolean
 st_image_content_set_bytes (StImageContent   *content,
+                            CoglContext      *cogl_context,
                             GBytes           *data,
                             CoglPixelFormat   pixel_format,
                             guint             width,
@@ -536,12 +519,13 @@ st_image_content_set_bytes (StImageContent   *content,
   if (content->texture != NULL)
     g_object_unref (content->texture);
 
-  content->texture = create_texture_from_data (width,
-                                               height,
-                                               pixel_format,
-                                               row_stride,
-                                               g_bytes_get_data (data, NULL),
-                                               error);
+  content->texture = cogl_texture_2d_new_from_data (cogl_context,
+                                                    width,
+                                                    height,
+                                                    pixel_format,
+                                                    row_stride,
+                                                    g_bytes_get_data (data, NULL),
+                                                    error);
 
   if (content->texture == NULL)
     return FALSE;
