@@ -43,6 +43,8 @@
 struct _StThemeContext {
   GObject parent;
 
+  ClutterBackend *clutter_backend;
+
   PangoFontDescription *font;
   CoglColor accent_color;
   CoglColor accent_fg_color;
@@ -124,7 +126,7 @@ st_theme_context_finalize (GObject *object)
   g_signal_handlers_disconnect_by_func (st_texture_cache_get_default (),
                                        (gpointer) on_icon_theme_changed,
                                        context);
-  g_signal_handlers_disconnect_by_func (clutter_get_default_backend (),
+  g_signal_handlers_disconnect_by_func (context->clutter_backend,
                                         (gpointer) st_theme_context_changed,
                                         context);
 
@@ -196,7 +198,7 @@ st_theme_context_init (StThemeContext *context)
                     "icon-theme-changed",
                     G_CALLBACK (on_icon_theme_changed),
                     context);
-  g_signal_connect_swapped (clutter_get_default_backend (),
+  g_signal_connect_swapped (context->clutter_backend,
                             "resolution-changed",
                             G_CALLBACK (st_theme_context_changed),
                             context);
@@ -258,11 +260,12 @@ st_theme_context_get_property (GObject    *object,
  * Returns: (transfer full): a new #StThemeContext
  */
 StThemeContext *
-st_theme_context_new (void)
+st_theme_context_new (ClutterBackend *backend)
 {
   StThemeContext *context;
 
   context = g_object_new (ST_TYPE_THEME_CONTEXT, NULL);
+  context->clutter_backend = backend;
 
   return context;
 }
@@ -399,6 +402,8 @@ StThemeContext *
 st_theme_context_get_for_stage (ClutterStage *stage)
 {
   StThemeContext *context;
+  ClutterContext *clutter_context;
+  ClutterBackend *backend;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
 
@@ -406,7 +411,9 @@ st_theme_context_get_for_stage (ClutterStage *stage)
   if (context)
     return context;
 
-  context = st_theme_context_new ();
+  clutter_context = clutter_actor_get_context (CLUTTER_ACTOR (stage));
+  backend = clutter_context_get_backend (clutter_context);
+  context = st_theme_context_new (backend);
   g_object_set_data (G_OBJECT (stage), "st-theme-context", context);
   g_signal_connect (stage, "destroy",
                     G_CALLBACK (on_stage_destroy), NULL);
@@ -589,4 +596,16 @@ st_theme_context_get_scale_factor (StThemeContext *context)
   g_return_val_if_fail (ST_IS_THEME_CONTEXT (context), -1);
 
   return context->scale_factor;
+}
+
+/**
+ * st_theme_context_get_clutter_backend:
+ * @context: a #StThemeContext
+ *
+ * Returns: (transfer none): The ClutterBackend associated to `context`
+ */
+ClutterBackend *
+st_theme_context_get_clutter_backend (StThemeContext *context)
+{
+  return context->clutter_backend;
 }
