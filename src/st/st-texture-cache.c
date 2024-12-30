@@ -807,64 +807,6 @@ load_texture_async (StTextureCache       *cache,
     g_assert_not_reached ();
 }
 
-static void
-st_texture_cache_load_surface (ClutterContent  **image,
-                               cairo_surface_t  *surface)
-{
-  g_return_if_fail (image != NULL);
-
-  if (surface != NULL &&
-      cairo_surface_get_type (surface) == CAIRO_SURFACE_TYPE_IMAGE &&
-      (cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32 ||
-       cairo_image_surface_get_format (surface) == CAIRO_FORMAT_RGB24))
-    {
-      g_autoptr(GError) error = NULL;
-      int width, height, size;
-
-      width = cairo_image_surface_get_width (surface);
-      height = cairo_image_surface_get_width (surface);
-      size = MAX(width, height);
-
-      if (*image == NULL)
-        *image = st_image_content_new_with_preferred_size (size, size);
-
-  st_image_content_set_data (ST_IMAGE_CONTENT (image),
-                             cairo_image_surface_get_data (surface),
-                             cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32 ?
-                             COGL_PIXEL_FORMAT_BGRA_8888 : COGL_PIXEL_FORMAT_BGR_888,
-                             width,
-                             height,
-                             cairo_image_surface_get_stride (surface),
-                             &error);
-
-      if (error)
-        g_warning ("Failed to allocate texture: %s", error->message);
-    }
-  else if (*image == NULL)
-    {
-      *image = st_image_content_new_with_preferred_size (0, 0);
-    }
-}
-
-/**
- * st_texture_cache_load_cairo_surface_to_gicon:
- * @cache: A #StTextureCache
- * @surface: A #cairo_surface_t
- *
- * Create a #GIcon from @surface.
- *
- * Returns: (transfer full): A new #GIcon
- */
-GIcon *
-st_texture_cache_load_cairo_surface_to_gicon (StTextureCache  *cache,
-                                              cairo_surface_t *surface)
-{
-  ClutterContent *image = NULL;
-  st_texture_cache_load_surface (&image, surface);
-
-  return G_ICON (image);
-}
-
 /**
  * st_texture_cache_load: (skip)
  * @cache: A #StTextureCache
