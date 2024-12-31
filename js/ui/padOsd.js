@@ -357,6 +357,12 @@ const PadDiagram = GObject.registerClass({
                 !this._addLabel(Meta.PadFeatureType.STRIP, i, Meta.PadDirection.DOWN))
                 break;
         }
+
+        for (i = 0; ; i++) {
+            if (!this._addLabel(Meta.PadFeatureType.DIAL, i, Meta.PadDirection.CW) ||
+                !this._addLabel(Meta.PadFeatureType.DIAL, i, Meta.PadDirection.CCW))
+                break;
+        }
     }
 
     _wrappingSvgHeader() {
@@ -527,11 +533,21 @@ const PadDiagram = GObject.registerClass({
         return [labelName, leaderName];
     }
 
+    _getDialLabels(number, dir) {
+        let numStr = number > 0 ? (number + 1).toString() : '';
+        let dirStr = dir === Meta.PadDirection.CW ? 'CW' : 'CCW';
+        const labelName = `LabelDial${numStr}${dirStr}`;
+        const leaderName = `LeaderDial${numStr}${dirStr}`;
+        return [labelName, leaderName];
+    }
+
     _getLabelCoords(action, idx, dir) {
         if (action === Meta.PadFeatureType.RING)
             return this._getItemLabelCoords(...this._getRingLabels(idx, dir));
         else if (action === Meta.PadFeatureType.STRIP)
             return this._getItemLabelCoords(...this._getStripLabels(idx, dir));
+        else if (action === Meta.PadFeatureType.DIAL)
+            return this._getItemLabelCoords(...this._getDialLabels(idx, dir));
         else
             return this._getItemLabelCoords(...this._getButtonLabels(idx));
     }
@@ -766,7 +782,8 @@ export const PadOsd = GObject.registerClass({
 
     _getActionText(type, number, dir) {
         let str;
-        if (type === Meta.PadFeatureType.RING || type === Meta.PadFeatureType.STRIP)
+        if (type === Meta.PadFeatureType.RING || type === Meta.PadFeatureType.STRIP ||
+            type === Meta.PadFeatureType.DIAL)
             str = global.display.get_pad_feature_label(this.padDevice, type, dir, number);
         else
             str = global.display.get_pad_button_label(this.padDevice, number);
@@ -820,6 +837,12 @@ export const PadOsd = GObject.registerClass({
                 let [retval_, number, mode] = event.get_pad_details();
                 this._startRingActionEdition(number, Meta.PadDirection.CCW, mode);
             }
+        } else if (event.get_source_device() === this.padDevice &&
+                   event.type() === Clutter.EventType.PAD_DIAL) {
+            if (this._editionMode) {
+                let [retval_, number, mode] = event.get_pad_details();
+                this._startDialActionEdition(number, Meta.PadDirection.CCW, mode);
+            }
         }
 
         // If the event comes from another pad in the same group,
@@ -870,7 +893,8 @@ export const PadOsd = GObject.registerClass({
 
             const hasNextAction =
                 type === Meta.PadFeatureType.RING && dir === Meta.PadDirection.CCW ||
-                type === Meta.PadFeatureType.STRIP && dir === Meta.PadDirection.UP;
+                type === Meta.PadFeatureType.STRIP && dir === Meta.PadDirection.UP ||
+                type === Meta.PadFeatureType.DIAL && dir === Meta.PadDirection.CCW;
 
             this._padDiagram.stopEdition(str);
             this._editedAction = null;
@@ -879,6 +903,8 @@ export const PadOsd = GObject.registerClass({
             if (hasNextAction) {
                 if (type === Meta.PadFeatureType.RING)
                     this._startRingActionEdition(number, Meta.PadDirection.CW, mode);
+                else if (type === Meta.PadFeatureType.DIAL)
+                    this._startDialActionEdition(number, Meta.PadDirection.CW, mode);
                 else
                     this._startStripActionEdition(number, Meta.PadDirection.DOWN, mode);
             }
@@ -918,6 +944,12 @@ export const PadOsd = GObject.registerClass({
         let ch = String.fromCharCode('A'.charCodeAt() + strip);
         const key = `strip${ch}-${dir === Meta.PadDirection.UP ? 'up' : 'down'}-mode-${mode}`;
         this._startActionEdition(key, Meta.PadFeatureType.STRIP, strip, dir, mode);
+    }
+
+    _startDialActionEdition(dial, dir, mode) {
+        let ch = String.fromCharCode('A'.charCodeAt() + dial);
+        const key = `dial${ch}-${dir === Meta.PadDirection.CCW ? 'ccw' : 'cw'}-mode-${mode}`;
+        this._startActionEdition(key, Meta.PadFeatureType.DIAL, dial, dir, mode);
     }
 
     setEditionMode(editionMode) {
