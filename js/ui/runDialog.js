@@ -82,6 +82,7 @@ class RunDialog extends ModalDialog.ModalDialog {
         content.add_child(this._descriptionLabel);
 
         this._commandError = false;
+        this._pressedKey = null;
 
         this._pathCompleter = new Gio.FilenameCompleter();
 
@@ -120,8 +121,19 @@ class RunDialog extends ModalDialog.ModalDialog {
         });
     }
 
+    vfunc_key_press_event(event) {
+        this._pressedKey = event.get_key_symbol();
+    }
+
     vfunc_key_release_event(event) {
-        if (event.get_key_symbol() === Clutter.KEY_Escape) {
+        const pressedKey = this._pressedKey;
+        this._pressedKey = null;
+
+        const key = event.get_key_symbol();
+        if (key !== pressedKey)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (key === Clutter.KEY_Escape) {
             this.close();
             return Clutter.EVENT_STOP;
         }
