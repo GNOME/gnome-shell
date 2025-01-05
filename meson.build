@@ -29,7 +29,6 @@ mutter_req = '>= 47.0'
 polkit_req = '>= 0.100'
 schemas_req = '>= 47.beta'
 systemd_req = '>= 246'
-ibus_req = '>= 1.5.19'
 gnome_desktop_req = '>= 40'
 pipewire_req = '>= 0.3.49'
 pango_req = '>= 1.46.0'
@@ -85,7 +84,6 @@ mtk_dep = dependency(mtk_pc, version: mutter_req)
 cogl_dep = dependency(cogl_pc, version: mutter_req)
 mutter_dep = dependency(libmutter_pc, version: mutter_req)
 polkit_dep = dependency('polkit-agent-1', version: polkit_req)
-ibus_dep = dependency('ibus-1.0', version: ibus_req)
 schemas_dep = dependency('gsettings-desktop-schemas', version: schemas_req)
 gnome_desktop_dep = dependency('gnome-desktop-4', version: gnome_desktop_req)
 pango_dep = dependency('pango', version: pango_req)
