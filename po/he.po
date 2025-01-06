@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-11-05 13:57+0000\n"
-"PO-Revision-Date: 2024-11-25 10:43+0200\n"
+"POT-Creation-Date: 2024-11-29 06:28+0000\n"
+"PO-Revision-Date: 2025-01-06 14:17+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew\n"
 "Language: he\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
 "2 : 3);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.5\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -123,7 +123,7 @@ msgstr "צילום של חלון"
 msgid "Record a screencast interactively"
 msgstr "הסרטת המסך באופן הידודי"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1298
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1308
 msgid "System"
 msgstr "מערכת"
 
@@ -692,6 +692,205 @@ msgstr "(או להחליק אצבע על הקורא)"
 msgid "(or place finger on reader)"
 msgstr "(או לשים אצבע על הקורא)"
 
+#: js/misc/breakManager.js:765
+msgid "Break complete sound"
+msgstr "צליל סיום הפסקה"
+
+#: js/misc/breakManager.js:957
+#, javascript-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "שנייה"
+msgstr[1] "שתי שניות"
+msgstr[2] "%d שניות"
+msgstr[3] "%d שניות"
+
+#: js/misc/breakManager.js:963
+#, javascript-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "דקה"
+msgstr[1] "שתי דקות"
+msgstr[2] "%d דקות"
+msgstr[3] "%d דקות"
+
+#: js/misc/breakManager.js:969
+#, javascript-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] "שעה"
+msgstr[1] "שעתיים"
+msgstr[2] "%d שעות"
+msgstr[3] "%d שעות"
+
+#: js/misc/breakManager.js:975
+#, javascript-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "יום"
+msgstr[1] "יומיים"
+msgstr[2] "%d ימים"
+msgstr[3] "%d ימים"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1058
+#, javascript-format
+msgid "It will be time for a break in %s"
+msgid_plural "It will be time for a break in %s"
+msgstr[0] "הזמן לצאת להפסקה יגיע בעוד %s"
+msgstr[1] "הזמן לצאת להפסקה יגיע בעוד %s"
+msgstr[2] "הזמן לצאת להפסקה יגיע בעוד %s"
+msgstr[3] "הזמן לצאת להפסקה יגיע בעוד %s"
+
+#: js/misc/breakManager.js:1066
+msgid "Movement Break Soon"
+msgstr "הפסקת תנועה בקרוב"
+
+#: js/misc/breakManager.js:1069
+msgid "Eyesight Break Soon"
+msgstr "הפסקת מבט בקרוב"
+
+#: js/misc/breakManager.js:1072
+msgid "Break Soon"
+msgstr "הפסקה בקרוב"
+
+#: js/misc/breakManager.js:1116
+msgid "Movement Break in Progress"
+msgstr "בהפסקת תנועה"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1119
+#, javascript-format
+msgid "Continue moving around for %s"
+msgid_plural "Continue moving around for %s"
+msgstr[0] "להמשיך לנוע סביב למשך %s"
+msgstr[1] "להמשיך לנוע סביב למשך %s"
+msgstr[2] "להמשיך לנוע סביב למשך %s"
+msgstr[3] "להמשיך לנוע סביב למשך %s"
+
+#: js/misc/breakManager.js:1125
+msgid "Eyesight Break in Progress"
+msgstr "בהפסקת תנועה"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1128
+#, javascript-format
+msgid "Continue looking away for %s"
+msgid_plural "Continue looking away for %s"
+msgstr[0] "להמשיך להסיט את המבט למשך %s"
+msgstr[1] "להמשיך להסיט את המבט למשך %s"
+msgstr[2] "להמשיך להסיט את המבט למשך %s"
+msgstr[3] "להמשיך להסיט את המבט למשך %s"
+
+#: js/misc/breakManager.js:1134
+msgid "Break in Progress"
+msgstr "בזמן הפסקה"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1137
+#, javascript-format
+msgid "%s left in your break"
+msgid_plural "%s left in your break"
+msgstr[0] "נותרה %s להפסקה שלך"
+msgstr[1] "נותרו %s להפסקה שלך"
+msgstr[2] "נותרו %s להפסקה שלך"
+msgstr[3] "נותרו %s להפסקה שלך"
+
+#: js/misc/breakManager.js:1176
+msgid "Time for a Movement Break"
+msgstr "הגיע הזמן להפסקת תנועה"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1179
+#, javascript-format
+msgid "Take a break from the device and move around for %s"
+msgid_plural "Take a break from the device and move around for %s"
+msgstr[0] "נא לצאת להפסקה מהמכשיר ולנוע במרחב למשך %s"
+msgstr[1] "נא לצאת להפסקה מהמכשיר ולנוע במרחב למשך %s"
+msgstr[2] "נא לצאת להפסקה מהמכשיר ולנוע במרחב למשך %s"
+msgstr[3] "נא לצאת להפסקה מהמכשיר ולנוע במרחב למשך %s"
+
+#: js/misc/breakManager.js:1185
+msgid "Time for an Eyesight Break"
+msgstr "הגיע הזמן להפסקת מבט"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1188
+#, javascript-format
+msgid ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgid_plural ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgstr[0] "נא לצאת להפסקה מהמסך. להביט למרחק של 6 מטרים לפחות למשך %s לפחות"
+msgstr[1] "נא לצאת להפסקה מהמסך. להביט למרחק של 6 מטרים לפחות למשך %s לפחות"
+msgstr[2] "נא לצאת להפסקה מהמסך. להביט למרחק של 6 מטרים לפחות למשך %s לפחות"
+msgstr[3] "נא לצאת להפסקה מהמסך. להביט למרחק של 6 מטרים לפחות למשך %s לפחות"
+
+#: js/misc/breakManager.js:1194
+msgid "Time for a Break"
+msgstr "הגיע הזמן להפסקה"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1197
+#, javascript-format
+msgid "It’s time to take a break. Get away from the device for %s!"
+msgid_plural "It’s time to take a break. Get away from the device for %s!"
+msgstr[0] "הגיע הזמן לצאת להפסקה. להתרחק מהמכשיר למשך %s!"
+msgstr[1] "הגיע הזמן לצאת להפסקה. להתרחק מהמכשיר למשך %s!"
+msgstr[2] "הגיע הזמן לצאת להפסקה. להתרחק מהמכשיר למשך %s!"
+msgstr[3] "הגיע הזמן לצאת להפסקה. להתרחק מהמכשיר למשך %s!"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1219
+#, javascript-format
+msgid "You were due to take a break %s ago"
+msgid_plural "You were due to take a break %s ago"
+msgstr[0] "איחרת לצאת להפסקה לפני %s"
+msgstr[1] "איחרת לצאת להפסקה לפני %s"
+msgstr[2] "איחרת לצאת להפסקה לפני %s"
+msgstr[3] "איחרת לצאת להפסקה לפני %s"
+
+#: js/misc/breakManager.js:1225
+msgid "Break Overdue"
+msgstr "ההפסקה חלפה"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1239
+#, javascript-format
+msgid "There is %s remaining in your break"
+msgid_plural "There are %s remaining in your break"
+msgstr[0] "נותרה %s להפסקה שלך"
+msgstr[1] "נותרו %s להפסקה שלך"
+msgstr[2] "נותרו %s להפסקה שלך"
+msgstr[3] "נותרו %s להפסקה שלך"
+
+#: js/misc/breakManager.js:1245
+msgid "Break Interrupted"
+msgstr "ההפסקה נקטעה"
+
+#: js/misc/breakManager.js:1316
+msgid "Delay"
+msgstr "השהיה"
+
+#: js/misc/breakManager.js:1337 js/ui/welcomeDialog.js:61
+msgid "Skip"
+msgstr "דילוג"
+
+#: js/misc/breakManager.js:1358
+msgid "Take"
+msgstr "לקחת"
+
+#. Translators: This is a notification to warn the user that a
+#. screen time break will start shortly.
+#: js/misc/breakManager.js:1421
+#, javascript-format
+msgid "Break in %d second"
+msgid_plural "Break in %d seconds"
+msgstr[0] "הפסקה בעוד שנייה"
+msgstr[1] "הפסקה בעוד שתי שניות"
+msgstr[2] "הפסקה בעוד %d שניות"
+msgstr[3] "הפסקה בעוד %d שניות"
+
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:91
 msgctxt "search-result"
@@ -959,7 +1158,7 @@ msgstr "לדחות"
 msgid "Allow"
 msgstr "לאפשר"
 
-#: js/ui/appDisplay.js:1769
+#: js/ui/appDisplay.js:1766
 msgid "Unnamed Folder"
 msgstr "תיקייה ללא שם"
 
@@ -973,7 +1172,7 @@ msgstr "‏%s הוצמד לחלונית היישומים."
 msgid "%s has been unpinned from the dash."
 msgstr "‏%s הוסר מחלונית היישומים."
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:281
+#: js/ui/appFavorites.js:208 js/ui/main.js:290
 msgid "Undo"
 msgstr "ביטול"
 
@@ -1026,7 +1225,7 @@ msgstr "אזניות"
 msgid "Headset"
 msgstr "אזניות עם מיקרופון"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:356
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:366
 msgid "Microphone"
 msgstr "מיקרופון"
 
@@ -1723,19 +1922,19 @@ msgstr "צפייה במקור"
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: js/ui/main.js:277
+#: js/ui/main.js:286
 msgid "System was put in unsafe mode"
 msgstr "המערכת הועברה למצב בלתי בטוח"
 
-#: js/ui/main.js:278
+#: js/ui/main.js:287
 msgid "Apps now have unrestricted access"
 msgstr "ליישומים יש עכשיו גישה בלתי מוגבלת"
 
-#: js/ui/main.js:338
+#: js/ui/main.js:347
 msgid "Logged in as a privileged user"
 msgstr "מחובר כמשתמש בעל הרשאות מיוחדות"
 
-#: js/ui/main.js:339
+#: js/ui/main.js:348
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1743,11 +1942,11 @@ msgstr ""
 "יש להימנע מהרצת הפעלה כמשתמש בעל הרשאות מיוחדות מסיבות אבטחה. אם אפשרי, יש "
 "להתחבר כמשתמש רגיל."
 
-#: js/ui/main.js:387
+#: js/ui/main.js:396
 msgid "Screen Lock disabled"
 msgstr "מסך נעילה מושבת"
 
-#: js/ui/main.js:388
+#: js/ui/main.js:397
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "מסך נעילה דורש הרצת מנהל תצוגה של GNOME"
 
@@ -2173,19 +2372,19 @@ msgstr[3] "‏%d יישומים פועלים ברקע"
 msgid "Keyboard Brightness"
 msgstr "בהירות מקלדת"
 
-#: js/ui/status/backlight.js:79
+#: js/ui/status/backlight.js:87
 msgid "Off"
 msgstr "כבוי"
 
-#: js/ui/status/backlight.js:80
+#: js/ui/status/backlight.js:88
 msgid "Low"
 msgstr "נמוכה"
 
-#: js/ui/status/backlight.js:81
+#: js/ui/status/backlight.js:89
 msgid "High"
 msgstr "גבוהה"
 
-#: js/ui/status/backlight.js:147 js/ui/status/keyboard.js:881
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:881
 msgid "Keyboard"
 msgstr "מקלדת"
 
@@ -2493,15 +2692,15 @@ msgstr "ביטול ההשתקה"
 msgid "Mute"
 msgstr "השתקה"
 
-#: js/ui/status/volume.js:286
+#: js/ui/status/volume.js:293
 msgid "Volume"
 msgstr "עצמה"
 
-#: js/ui/status/volume.js:302
+#: js/ui/status/volume.js:309
 msgid "Sound Output"
 msgstr "פלט שמע"
 
-#: js/ui/status/volume.js:374
+#: js/ui/status/volume.js:384
 msgid "Sound Input"
 msgstr "קלט שמע"
 
@@ -2568,10 +2767,6 @@ msgstr "ברוכים הבאים אל ‏‎%s‎‎"
 #: js/ui/welcomeDialog.js:52
 msgid "If you want to learn your way around, check out the tour"
 msgstr "אם ברצונך ללמוד ולהכיר את הסביבה שלך, כדאי להעיף מבט בסיור"
-
-#: js/ui/welcomeDialog.js:61
-msgid "Skip"
-msgstr "דילוג"
 
 #: js/ui/welcomeDialog.js:66
 msgid "Take Tour"
@@ -2834,33 +3029,33 @@ msgstr[1] "שתי הרחבות תעודכנה בכניסה הבאה למערכת
 msgstr[2] "‏%d הרחבות תעודכנה בכניסה הבאה למערכת."
 msgstr[3] "‫‏%d הרחבות תעודכנה בכניסה הבאה למערכת."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:22
+#: subprojects/extensions-app/data/ui/extension-row.ui:13
 msgid "Error Details"
 msgstr "פרטי שגיאה"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:62
+#: subprojects/extensions-app/data/ui/extension-row.ui:51
 msgid "Updates Details"
 msgstr "פרטי עדכון"
 
 # msgid_plural "%d extensions will be updated on next login."
-#: subprojects/extensions-app/data/ui/extension-row.ui:72
+#: subprojects/extensions-app/data/ui/extension-row.ui:68
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
 msgstr "גרסה חדשה של הרחבה זו מוכנה ותיטען בכניסה הבאה למערכת."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:104
+#: subprojects/extensions-app/data/ui/extension-row.ui:100
 msgid "Extension Details"
 msgstr "פרטי הרחבה"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:192
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "_Website"
 msgstr "_אתר אינטרנט"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:219
+#: subprojects/extensions-app/data/ui/extension-row.ui:215
 msgid "_Settings"
 msgstr "ה_גדרות"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:246
+#: subprojects/extensions-app/data/ui/extension-row.ui:242
 msgid "_Remove…"
 msgstr "_הסרה…"
 
@@ -3739,9 +3934,6 @@ msgstr "צלילי מערכת"
 
 #~ msgid "Add to Favorites"
 #~ msgstr "הוספה למועדפים"
-
-#~ msgid "Screen Recording in Progress"
-#~ msgstr "המסך מוקלט"
 
 #~ msgid "Stop"
 #~ msgstr "עצירה"
@@ -4869,9 +5061,6 @@ msgstr "צלילי מערכת"
 
 #~ msgid "Clock Preferences"
 #~ msgstr "העדפות השעון"
-
-#~ msgid "Show seco_nds"
-#~ msgstr "הצגת ש_ניות"
 
 #~ msgid "_12 hour format"
 #~ msgstr "מבנה _12 שעות"
