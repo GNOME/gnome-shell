@@ -1298,7 +1298,7 @@ export function getSystemSource() {
     if (!systemNotificationSource) {
         systemNotificationSource = new Source({
             title: _('System'),
-            iconName: 'emblem-system-symbolic',
+            iconName: 'cog-wheel-symbolic',
         });
 
         systemNotificationSource.connect('destroy', () => {

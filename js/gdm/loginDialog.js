@@ -320,7 +320,7 @@ const SessionMenuButton = GObject.registerClass({
     _init() {
         let button = new St.Button({
             style_class: 'login-dialog-button login-dialog-session-list-button',
-            icon_name: 'emblem-system-symbolic',
+            icon_name: 'cog-wheel-symbolic',
             reactive: true,
             track_hover: true,
             can_focus: true,
