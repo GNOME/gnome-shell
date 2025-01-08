@@ -42,7 +42,6 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (StThemeContext, st_theme_context,
                       ST, THEME_CONTEXT, GObject)
 
-StThemeContext *st_theme_context_new           (void);
 StThemeContext *st_theme_context_get_for_stage (ClutterStage *stage);
 
 void                        st_theme_context_set_theme        (StThemeContext             *context,

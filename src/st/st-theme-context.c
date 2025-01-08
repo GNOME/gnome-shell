@@ -247,26 +247,6 @@ st_theme_context_get_property (GObject    *object,
     }
 }
 
-/**
- * st_theme_context_new:
- *
- * Create a new theme context not associated with any #ClutterStage.
- * This can be useful in testing scenarios, or if using StThemeContext
- * with something other than #ClutterActor objects, but you generally
- * should use st_theme_context_get_for_stage() instead.
- *
- * Returns: (transfer full): a new #StThemeContext
- */
-StThemeContext *
-st_theme_context_new (void)
-{
-  StThemeContext *context;
-
-  context = g_object_new (ST_TYPE_THEME_CONTEXT, NULL);
-
-  return context;
-}
-
 static PangoFontDescription *
 get_interface_font_description (void)
 {
@@ -406,7 +386,8 @@ st_theme_context_get_for_stage (ClutterStage *stage)
   if (context)
     return context;
 
-  context = st_theme_context_new ();
+  context = g_object_new (ST_TYPE_THEME_CONTEXT, NULL);
+
   g_object_set_data (G_OBJECT (stage), "st-theme-context", context);
   g_signal_connect (stage, "destroy",
                     G_CALLBACK (on_stage_destroy), NULL);
