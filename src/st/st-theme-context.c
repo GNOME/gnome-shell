@@ -577,3 +577,17 @@ st_theme_context_get_scale_factor (StThemeContext *context)
 
   return context->scale_factor;
 }
+
+/**
+ * st_theme_context_get_resolution:
+ * @context: a #StThemeContext
+ *
+ * Returns: The font resolution
+ */
+double
+st_theme_context_get_resolution (StThemeContext *context)
+{
+  g_return_val_if_fail (ST_IS_THEME_CONTEXT (context), -1);
+
+  return clutter_backend_get_resolution (context->clutter_backend);
+}
