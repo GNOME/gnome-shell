@@ -526,6 +526,7 @@ pixbuf_to_st_content_image (GdkPixbuf   *pixbuf,
 
   image = st_image_content_new_with_preferred_size (width, height);
   st_image_content_set_data (ST_IMAGE_CONTENT (image),
+                             context,
                              gdk_pixbuf_get_pixels (pixbuf),
                              gdk_pixbuf_get_has_alpha (pixbuf) ?
                                COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
