@@ -539,7 +539,7 @@ export const AuthPrompt = GObject.registerClass({
 
     _onForegroundMechanismChanged() {
         if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
-            this.reset({beginRequestType: BeginRequestType.REUSE_USERNAME});
+            this.reset({ beginRequestType: BeginRequestType.REUSE_USERNAME });
     }
 
     _onShowMessage(_userVerifier, serviceName, message, type) {
