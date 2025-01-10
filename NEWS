@@ -1,3 +1,16 @@
+47.3
+====
+* Fix Escape handling in run dialog [Florian; !3585]
+* Fix custom text-scaling-factor getting reset [Matthijs; !3574]
+* Tweak ibus candidate popover appearance [AuralRay; !3584]
+* Misc. bug fixes and cleanups [Florian, Bilal, Michel, Bartłomiej, Alberto,
+  AsciiWolf, Jakub; !3563, !3547, !3573, !3525, !3572, !3580, !3578, !3576,
+  !3579, !3589, !3587, !3593]
+
+Contributors:
+  AsciiWolf, AuralRay, Michel Dänzer, Bilal Elmoussaoui, Florian Müllner,
+  Bartłomiej Piotrowski, Alberto Ruiz, Jakub Steiner, Matthijs Velsink
+
 47.2
 ====
 * Fix graphical artifacts in partially-rounded buttons [Sebastian; #7996]
