@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# ButterflyOfFire <butterflyoffire@protonmail.com>, 2024.
+# ButterflyOfFire <butterflyoffire@protonmail.com>, 2024-2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-10-06 15:31+0000\n"
-"PO-Revision-Date: 2024-10-07 09:39+0100\n"
+"POT-Creation-Date: 2024-11-29 06:28+0000\n"
+"PO-Revision-Date: 2025-01-11 10:37+0100\n"
 "Last-Translator: ButterflyOfFire <butterflyoffire@protonmail.com>\n"
 "Language-Team: Kabyle\n"
 "Language: kab\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
-"X-Generator: Gtranslator 47.0\n"
+"X-Generator: Gtranslator 47.1\n"
 "X-DL-Team: kab\n"
 "X-DL-Module: gnome-shell\n"
 "X-DL-Branch: main\n"
@@ -102,7 +102,7 @@ msgid "Open new window of pinned app 9"
 msgstr ""
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2274
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2272
 msgid "Screenshots"
 msgstr "Tuṭṭfiwin n wegdil"
 
@@ -126,7 +126,7 @@ msgstr "Ddem tuṭṭfa n ugdil n usfaylu"
 msgid "Record a screencast interactively"
 msgstr ""
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1298
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1308
 msgid "System"
 msgstr "Anagraw"
 
@@ -495,6 +495,12 @@ msgstr "Isiɣzaf"
 msgid "Network Login"
 msgstr "Tuqqna ɣer uẓeṭṭa"
 
+#: data/X-GNOME-Shell-Utilities.directory.desktop.in:3
+#, fuzzy
+#| msgid "Activities"
+msgid "Utilities"
+msgstr "Irmuden"
+
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
 #: subprojects/extensions-app/data/ui/extensions-window.ui:275
 msgid "Something’s gone wrong"
@@ -520,7 +526,7 @@ msgid "Visit extension homepage"
 msgstr "Rzu s asmel n useɣzef"
 
 #: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:466
-#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:113
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:113
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
 #: js/ui/shellMountOperation.js:392
@@ -630,6 +636,183 @@ msgstr ""
 #: js/gdm/util.js:732
 msgid "(or place finger on reader)"
 msgstr ""
+
+#: js/misc/breakManager.js:765
+msgid "Break complete sound"
+msgstr ""
+
+#: js/misc/breakManager.js:957
+#, javascript-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/misc/breakManager.js:963
+#, fuzzy, javascript-format
+#| msgid "%d minute ago"
+#| msgid_plural "%d minutes ago"
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d n tesdidt aya"
+msgstr[1] "%d n tesdatin aya"
+
+#: js/misc/breakManager.js:969
+#, fuzzy, javascript-format
+#| msgid "%d hour ago"
+#| msgid_plural "%d hours ago"
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] "%d n usrag aya"
+msgstr[1] "%d n yisragen aya"
+
+#: js/misc/breakManager.js:975
+#, fuzzy, javascript-format
+#| msgid "%d day ago"
+#| msgid_plural "%d days ago"
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "%d n wass aya"
+msgstr[1] "%d n wussan aya"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1058
+#, javascript-format
+msgid "It will be time for a break in %s"
+msgid_plural "It will be time for a break in %s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/misc/breakManager.js:1066
+msgid "Movement Break Soon"
+msgstr ""
+
+#: js/misc/breakManager.js:1069
+msgid "Eyesight Break Soon"
+msgstr ""
+
+#: js/misc/breakManager.js:1072
+msgid "Break Soon"
+msgstr ""
+
+#: js/misc/breakManager.js:1116
+msgid "Movement Break in Progress"
+msgstr ""
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1119
+#, javascript-format
+msgid "Continue moving around for %s"
+msgid_plural "Continue moving around for %s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/misc/breakManager.js:1125
+msgid "Eyesight Break in Progress"
+msgstr ""
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1128
+#, javascript-format
+msgid "Continue looking away for %s"
+msgid_plural "Continue looking away for %s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/misc/breakManager.js:1134
+msgid "Break in Progress"
+msgstr ""
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1137
+#, javascript-format
+msgid "%s left in your break"
+msgid_plural "%s left in your break"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/misc/breakManager.js:1176
+msgid "Time for a Movement Break"
+msgstr ""
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1179
+#, javascript-format
+msgid "Take a break from the device and move around for %s"
+msgid_plural "Take a break from the device and move around for %s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/misc/breakManager.js:1185
+msgid "Time for an Eyesight Break"
+msgstr ""
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1188
+#, javascript-format
+msgid ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgid_plural ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/misc/breakManager.js:1194
+msgid "Time for a Break"
+msgstr ""
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1197
+#, javascript-format
+msgid "It’s time to take a break. Get away from the device for %s!"
+msgid_plural "It’s time to take a break. Get away from the device for %s!"
+msgstr[0] ""
+msgstr[1] ""
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1219
+#, javascript-format
+msgid "You were due to take a break %s ago"
+msgid_plural "You were due to take a break %s ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/misc/breakManager.js:1225
+msgid "Break Overdue"
+msgstr ""
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1239
+#, javascript-format
+msgid "There is %s remaining in your break"
+msgid_plural "There are %s remaining in your break"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/misc/breakManager.js:1245
+msgid "Break Interrupted"
+msgstr ""
+
+#: js/misc/breakManager.js:1316
+msgid "Delay"
+msgstr ""
+
+#: js/misc/breakManager.js:1337 js/ui/welcomeDialog.js:61
+msgid "Skip"
+msgstr "Zgel"
+
+#: js/misc/breakManager.js:1358
+msgid "Take"
+msgstr ""
+
+#. Translators: This is a notification to warn the user that a
+#. screen time break will start shortly.
+#: js/misc/breakManager.js:1421
+#, javascript-format
+msgid "Break in %d second"
+msgid_plural "Break in %d seconds"
+msgstr[0] ""
+msgstr[1] ""
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:91
@@ -884,7 +1067,7 @@ msgstr "Aggi"
 msgid "Allow"
 msgstr "Sireg"
 
-#: js/ui/appDisplay.js:1769
+#: js/ui/appDisplay.js:1766
 msgid "Unnamed Folder"
 msgstr "Akaram war isem"
 
@@ -898,7 +1081,7 @@ msgstr ""
 msgid "%s has been unpinned from the dash."
 msgstr ""
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:281
+#: js/ui/appFavorites.js:208 js/ui/main.js:290
 msgid "Undo"
 msgstr "Sefsex"
 
@@ -939,19 +1122,19 @@ msgstr ""
 msgid "Select Audio Device"
 msgstr "Fren ibenk ameslaw"
 
-#: js/ui/audioDeviceSelection.js:61 js/ui/status/volume.js:81
+#: js/ui/audioDeviceSelection.js:67 js/ui/status/volume.js:81
 msgid "Sound Settings"
 msgstr "Iɣewwaren n yimesli"
 
-#: js/ui/audioDeviceSelection.js:74
+#: js/ui/audioDeviceSelection.js:75
 msgid "Headphones"
 msgstr "Isawaḍen n uqerru"
 
-#: js/ui/audioDeviceSelection.js:76
+#: js/ui/audioDeviceSelection.js:77
 msgid "Headset"
 msgstr "Kask"
 
-#: js/ui/audioDeviceSelection.js:78 js/ui/status/volume.js:356
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:366
 msgid "Microphone"
 msgstr "Asawaḍ"
 
@@ -1133,7 +1316,7 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr ""
 
-#: js/ui/components/networkAgent.js:107 js/ui/status/bluetooth.js:245
+#: js/ui/components/networkAgent.js:107 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "Qqen"
@@ -1498,11 +1681,11 @@ msgstr "Sbedd asiɣzaf"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr ""
 
-#: js/ui/extensionSystem.js:352
+#: js/ui/extensionSystem.js:354
 msgid "Extension Updates Available"
 msgstr ""
 
-#: js/ui/extensionSystem.js:353
+#: js/ui/extensionSystem.js:355
 msgid "Extension updates are ready to be installed"
 msgstr ""
 
@@ -1577,7 +1760,7 @@ msgstr "Sens"
 msgid "Leave Off"
 msgstr "Anef-as yensa"
 
-#: js/ui/keyboard.js:180 js/ui/status/keyboard.js:897
+#: js/ui/keyboard.js:180 js/ui/status/keyboard.js:899
 msgid "Keyboard Settings"
 msgstr "Iɣewwaṛen n unasiw"
 
@@ -1635,29 +1818,29 @@ msgstr "Wali aɣbalu"
 msgid "Web Page"
 msgstr "Asebtar Web"
 
-#: js/ui/main.js:277
+#: js/ui/main.js:286
 msgid "System was put in unsafe mode"
 msgstr ""
 
-#: js/ui/main.js:278
+#: js/ui/main.js:287
 msgid "Apps now have unrestricted access"
 msgstr ""
 
-#: js/ui/main.js:338
+#: js/ui/main.js:347
 msgid "Logged in as a privileged user"
 msgstr ""
 
-#: js/ui/main.js:339
+#: js/ui/main.js:348
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
 msgstr ""
 
-#: js/ui/main.js:387
+#: js/ui/main.js:396
 msgid "Screen Lock disabled"
 msgstr "Asekkeṛ n wegdil yensa"
 
-#: js/ui/main.js:388
+#: js/ui/main.js:397
 #, fuzzy
 #| msgid "Screen Locking requires the GNOME display manager."
 msgid "Screen Locking requires the GNOME display manager"
@@ -1790,124 +1973,123 @@ msgstr "Ulamek asekkeṛ"
 msgid "Lock was blocked by an app"
 msgstr ""
 
-#: js/ui/screenshot.js:1252
+#: js/ui/screenshot.js:1250
 msgid "Selection"
 msgstr "Afran"
 
-#: js/ui/screenshot.js:1262
+#: js/ui/screenshot.js:1260
 msgid "Area Selection"
 msgstr ""
 
-#: js/ui/screenshot.js:1267
+#: js/ui/screenshot.js:1265
 msgid "Screen"
 msgstr "Agdil"
 
-#: js/ui/screenshot.js:1277
+#: js/ui/screenshot.js:1275
 msgid "Screen Selection"
 msgstr "Tafrant n wegdil"
 
-#: js/ui/screenshot.js:1282
+#: js/ui/screenshot.js:1280
 msgid "Window"
 msgstr "Asfaylu"
 
-#: js/ui/screenshot.js:1292
+#: js/ui/screenshot.js:1290
 msgid "Window Selection"
 msgstr "Afran n usfaylu"
 
-#. Translators: entry in the window right click menu.
-#: js/ui/screenshot.js:1317 js/ui/status/system.js:111 js/ui/windowMenu.js:28
+#: js/ui/screenshot.js:1315 js/ui/status/system.js:111
 msgid "Take Screenshot"
 msgstr "Ṭṭef-d agdil"
 
-#: js/ui/screenshot.js:1333
+#: js/ui/screenshot.js:1331
 msgid "Record Screen"
 msgstr "Kles agdil"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1350
+#: js/ui/screenshot.js:1348
 msgid "Capture"
 msgstr "Ṭṭef"
 
-#: js/ui/screenshot.js:1372
+#: js/ui/screenshot.js:1370
 msgid "Show Pointer"
 msgstr ""
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1996
+#: js/ui/screenshot.js:1994
 msgid "Screencasts"
 msgstr ""
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2001
+#: js/ui/screenshot.js:1999
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Tuṭṭfa n ugdil seg %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2047
+#: js/ui/screenshot.js:2045
 msgid "Screencast recorded"
 msgstr ""
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2060
+#: js/ui/screenshot.js:2058
 msgid "Screencast failed to start"
 msgstr ""
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2066
+#: js/ui/screenshot.js:2064
 msgid "Screencast ended: Out of disk space"
 msgstr ""
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2072
+#: js/ui/screenshot.js:2070
 msgid "Screencast ended unexpectedly, please try again"
 msgstr ""
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2075
+#: js/ui/screenshot.js:2073
 msgid "Screencast ended unexpectedly"
 msgstr ""
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:2085 js/ui/screenshot.js:2327
+#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2325
 msgid "Screenshot"
 msgstr "Tuṭṭfiwin n ugdil"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2090
 msgid "Click here to view the video."
 msgstr ""
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2100 js/ui/screenshot.js:2343
+#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2341
 msgid "Show in Files"
 msgstr "Sken-it-id deg yifuyla"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2287
+#: js/ui/screenshot.js:2285
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Tuṭṭfa n ugdil seg %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2333
+#: js/ui/screenshot.js:2331
 msgid "Screenshot captured"
 msgstr ""
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2335
+#: js/ui/screenshot.js:2333
 msgid "You can paste the image from the clipboard."
 msgstr ""
 
-#: js/ui/screenshot.js:2391 js/ui/screenshot.js:2555
+#: js/ui/screenshot.js:2389 js/ui/screenshot.js:2553
 msgid "Screenshot taken"
 msgstr "Tuṭṭfa n ugdil tedda"
 
@@ -2078,44 +2260,56 @@ msgstr[1] ""
 msgid "Keyboard Brightness"
 msgstr "Tifawit n unasiw"
 
-#: js/ui/status/backlight.js:79
+#: js/ui/status/backlight.js:87
 msgid "Off"
 msgstr "Tensa"
 
-#: js/ui/status/backlight.js:80
+#: js/ui/status/backlight.js:88
 msgid "Low"
 msgstr "Tamecṭuḥt"
 
-#: js/ui/status/backlight.js:81
+#: js/ui/status/backlight.js:89
 msgid "High"
 msgstr "Tameqrant"
 
-#: js/ui/status/backlight.js:147 js/ui/status/keyboard.js:879
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:881
 msgid "Keyboard"
 msgstr "Anasiw"
 
-#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:360
+#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
 msgid "Disconnect"
 msgstr "Senser tuqqna"
 
-#: js/ui/status/bluetooth.js:262 js/ui/status/bluetooth.js:264
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/bluetooth.js:265 js/ui/status/network.js:354
+#, javascript-format
+msgid "Disconnect %s"
+msgstr "Senser tuqqna %s"
+
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:356
+#, javascript-format
+msgid "Connect to %s"
+msgstr "Qqen ɣer %s"
+
+#: js/ui/status/bluetooth.js:274 js/ui/status/bluetooth.js:276
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:287 js/ui/status/network.js:1909
+#: js/ui/status/bluetooth.js:299 js/ui/status/network.js:1909
 msgid "Bluetooth Settings"
 msgstr "Iɣewwaṛen n Bluetooth"
 
-#: js/ui/status/bluetooth.js:334
+#: js/ui/status/bluetooth.js:346
 msgid "No available or connected devices"
 msgstr ""
 
-#: js/ui/status/bluetooth.js:335
+#: js/ui/status/bluetooth.js:347
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Cεel Bluetooth akken ad teqqneḍ ɣer yibenkan"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:389
+#: js/ui/status/bluetooth.js:411
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2150,7 +2344,7 @@ msgstr "Asiti wis sin"
 msgid "Dwell Click"
 msgstr ""
 
-#: js/ui/status/keyboard.js:896
+#: js/ui/status/keyboard.js:898
 msgid "Show Keyboard Layout"
 msgstr "Sken taneɣruft n unasiw"
 
@@ -2179,18 +2373,6 @@ msgstr "Mudd tasiregt"
 #: js/ui/status/network.js:62
 msgid "<unknown>"
 msgstr "<d arussin>"
-
-#. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:354
-#, javascript-format
-msgid "Disconnect %s"
-msgstr "Senser tuqqna %s"
-
-#. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:356
-#, javascript-format
-msgid "Connect to %s"
-msgstr "Qqen ɣer %s"
 
 #: js/ui/status/network.js:1059
 msgid "Secure"
@@ -2391,15 +2573,15 @@ msgstr ""
 msgid "Mute"
 msgstr "Sgugem"
 
-#: js/ui/status/volume.js:286
+#: js/ui/status/volume.js:293
 msgid "Volume"
 msgstr "Ableɣ"
 
-#: js/ui/status/volume.js:302
+#: js/ui/status/volume.js:309
 msgid "Sound Output"
 msgstr "Imesli n tuffɣa"
 
-#: js/ui/status/volume.js:374
+#: js/ui/status/volume.js:384
 msgid "Sound Input"
 msgstr "Imesli n unekcum"
 
@@ -2467,10 +2649,6 @@ msgstr "Ansuf ɣer %s"
 msgid "If you want to learn your way around, check out the tour"
 msgstr ""
 
-#: js/ui/welcomeDialog.js:61
-msgid "Skip"
-msgstr "Zgel"
-
 #: js/ui/welcomeDialog.js:66
 msgid "Take Tour"
 msgstr ""
@@ -2506,6 +2684,14 @@ msgstr[1] ""
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
+
+#. Translators: entry in the window right click menu.
+#: js/ui/windowMenu.js:28
+#, fuzzy
+#| msgid "Take Screenshot"
+msgctxt "window-menu"
+msgid "Take Screenshot"
+msgstr "Ṭṭef-d agdil"
 
 #: js/ui/windowMenu.js:40
 msgid "Hide"
@@ -2591,21 +2777,21 @@ msgstr ""
 msgid "Force animations to be enabled"
 msgstr ""
 
-#: src/shell-app.c:252
+#: src/shell-app.c:253
 msgctxt "program"
 msgid "Unknown"
 msgstr "Arusin"
 
-#: src/shell-app.c:503
+#: src/shell-app.c:504
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Ur izmir ara ad yekker “%s”"
 
-#: src/shell-keyring-prompt.c:764
+#: src/shell-keyring-prompt.c:752
 msgid "Passwords do not match"
 msgstr "Awalen uffiren mgarraden"
 
-#: src/shell-keyring-prompt.c:772
+#: src/shell-keyring-prompt.c:760
 msgid "Password cannot be blank"
 msgstr ""
 
@@ -2613,12 +2799,12 @@ msgstr ""
 msgid "Authentication dialog was dismissed by the user"
 msgstr ""
 
-#: src/st/st-icon-theme.c:1865
+#: src/st/st-icon-theme.c:1859
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr ""
 
-#: src/st/st-icon-theme.c:3454 src/st/st-icon-theme.c:3757
+#: src/st/st-icon-theme.c:3452 src/st/st-icon-theme.c:3755
 msgid "Failed to load icon"
 msgstr ""
 
@@ -2718,32 +2904,32 @@ msgid_plural "%d extensions will be updated on next login."
 msgstr[0] ""
 msgstr[1] ""
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:22
+#: subprojects/extensions-app/data/ui/extension-row.ui:13
 msgid "Error Details"
 msgstr ""
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:62
+#: subprojects/extensions-app/data/ui/extension-row.ui:51
 msgid "Updates Details"
 msgstr ""
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:72
+#: subprojects/extensions-app/data/ui/extension-row.ui:68
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
 msgstr ""
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:104
+#: subprojects/extensions-app/data/ui/extension-row.ui:100
 msgid "Extension Details"
 msgstr "Talqayt n isiɣzaf"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:192
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "_Website"
 msgstr "Asmel _Web"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:219
+#: subprojects/extensions-app/data/ui/extension-row.ui:215
 msgid "_Settings"
 msgstr "Iɣewwaṛen (_S)"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:246
+#: subprojects/extensions-app/data/ui/extension-row.ui:242
 msgid "_Remove…"
 msgstr "Kkes (_R)"
 
