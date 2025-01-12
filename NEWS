@@ -1,3 +1,58 @@
+48.alpha
+========
+* Improve quick settings accessibility [Lukáš; !3477, !3481, !3484, !3485]
+* Use accent color in tablet configuration UI [Alice; !3480]
+* Improve accuracy of inset box shadows [Daniel; !3488]
+* Fix `PopupSwitchMenuItem::toggled` passing wrong state [Andrew; !3493]
+* Consider text direction when handling arrow keys in sliders [Sundeep; !3500]
+* Fix layout issues with new dialog style [Sam; !3473]
+* Fix uneven padding in notification headers [Sam; !3486]
+* Fix graphical artifacts in partially-rounded buttons [Sebastian; #7996]
+* Do not depend on gnome-menus for folder translations [Pablo; !3526]
+* Fix caret tracking in magnifier [Bilal; !3522]
+* Show OSD notification for headphone connection [Sundeep; !3531]
+* Improve accessibility of keyboard backlight quick settings toggle
+  [Lukáš, Florian; !3538, !3545]
+* Fix resetting non-caps shift key in on-screen keyboard [Jonas; !3286]
+* Improve contrast of notification placeholder [Sam; !3557]
+* Add support for screen time / health breaks [Philip; !3251]
+* Add sysext support to toolbox tooling [Florian; !3498]
+* Modernize spinner [Florian; !3565]
+* extensions-app: Allow closing with ctrl+w [Maximiliano; !3577]
+* Fix Escape handling in run dialog [Florian; !3585]
+* Fix custom text-scaling-factor getting reset [Matthijs; !3574]
+* Tweak ibus candidate popover appearance [AuralRay; !3584]
+* Add convenience logging API for extensions [Florian; !3586]
+* Improve on-screen keyboard appearance [Sam; !3555, !3553]
+* Tweak quick settings appearance [Sam; !3554]
+* Add support for screen time limits [Philip; !3397]
+* Fixed crash [Florian; !3476]
+* Misc. bug fixes and cleanups [Florian, Robert, Bilal, Marco, Guacamolie,
+  Automeris, Daniel, Jonas, Georges, Michel, Bartłomiej, Alberto, AsciiWolf,
+  Jakub, Sam; !3478, !3479, !3482, !3490, !3099, !3494, !3495, !3497, !3499,
+  !3504, !3503, !3502, !3505, !3507, !3508, !3506, !3379, !3511, !3514, !3515,
+  !3519, !3520, !3518, !3521, !3524, !3527, !3501, !3529, !3535, !3532, !3542,
+  !3540, !3543, !3541, !3549, !3548, !3539, !3563, !3567, !3569, !3570, !3547,
+  !3573, !3525, !3546, !3575, !3572, !3544, !3580, !3578, !3576, !3579, !3589,
+  !3587, !3552, !3593]
+
+Contributors:
+  AsciiWolf, AuralRay, Georges Basile Stavracas Neto, Pablo Correa Gómez,
+  Jonas Dreßler, Michel Dänzer, Bilal Elmoussaoui, Guacamolie, Sam Hewitt,
+  Sebastian Keller, Robert Mader, Sundeep Mediratta, Alice Mikhaylenko,
+  Florian Müllner, Bogi Napoleon Wennerström, Automeris naranja,
+  Bartłomiej Piotrowski, Alberto Ruiz, Daniel Rusek, Maximiliano Sandoval,
+  Jakub Steiner, Marco Trevisan (Treviño), Lukáš Tyrychtr, Daniel van Vugt,
+  Matthijs Velsink, Philip Withnall, Andrew Zaech
+
+Translators:
+  Aefgh Threenine [th], Daniel Mustieles [es], Mahdi Hasan [bn],
+  Brage Fuglseth [nb], Athmane MOKRAOUI [kab], Fabio Tomat [fur],
+  Bogi Napoleon Wennerström [fo], Martin [sl], Emilio Sepúlveda [ia],
+  Vasil Pupkin [be], Nathan Follens [nl], Artur S0 [ru],
+  Марко Костић [sr], Yaron Shahrabani [he], Cas Pascal [vi],
+  Sabri Ünal [tr]
+
 47.0
 ====
 * Fix new wifi connections for restricted users [Thore; !3462]
