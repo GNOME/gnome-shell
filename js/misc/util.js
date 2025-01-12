@@ -160,17 +160,7 @@ export function trySpawn(argv) {
  * fails, this will throw an error.
  */
 export function trySpawnCommandLine(commandLine) {
-    let success_, argv;
-
-    try {
-        [success_, argv] = GLib.shell_parse_argv(commandLine);
-    } catch (err) {
-        // Replace "Error invoking GLib.shell_parse_argv: " with
-        // something nicer
-        err.message = err.message.replace(/[^:]*: /, `${_('Could not parse command:')}\n`);
-        throw err;
-    }
-
+    const [, argv] = GLib.shell_parse_argv(commandLine);
     trySpawn(argv);
 }
 
