@@ -1,3 +1,14 @@
+46.8
+====
+* Fix Escape handling in run dialog [Florian; !3585]
+* Fixed crash [Alessandro; !3571]
+* Misc. bug fixes and cleanups [Bilal, Bartłomiej, Alberto, Jakub, Florian;
+  !3573, !3580, !3578, !3589, !3587, !3593]
+
+Contributors:
+  Alessandro Astone, Bilal Elmoussaoui, Florian Müllner,
+  Bartłomiej Piotrowski, Alberto Ruiz, Jakub Steiner
+
 46.7
 ====
 * Fix graphical artifacts in partially-rounded buttons [Sebastian; #7996]
