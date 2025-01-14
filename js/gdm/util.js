@@ -667,6 +667,13 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             'smartcard-removed', () => this._checkForSmartcard(), this);
     }
 
+    getSmartcardServiceName() {
+        if (this._getSwitchableServiceForRole(Const.SMARTCARD_ROLE_NAME))
+            return SWITCHABLE_AUTH_SERVICE_NAME;
+
+        return SMARTCARD_SERVICE_NAME;
+    }
+
     _checkForSmartcard() {
         let smartcardDetected;
 
@@ -680,10 +687,18 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         if (smartcardDetected !== this.smartcardDetected) {
             this.smartcardDetected = smartcardDetected;
 
-            if (this.smartcardDetected)
-                this.setForegroundService(SMARTCARD_SERVICE_NAME);
-            else if (this._preemptingService === SMARTCARD_SERVICE_NAME)
-                this.setForegroundService(null);
+            const smartcardService = this.getSmartcardServiceName();
+
+            // FIXME: It doesn't seem like pam_sss sends JSON if no username
+            // is specified. Need to fix that before we can act on smartcard
+            // insertion events with switchable auth. See also this message in
+            // gdm/authPrompt.js
+            if (smartcardService !== SWITCHABLE_AUTH_SERVICE_NAME) {
+                if (this.smartcardDetected)
+                    this.setForegroundService(smartcardService);
+                else if (this._preemptingService === smartcardService)
+                    this.setForegroundService(null);
+            }
 
             this.emit('smartcard-status-changed');
         }
@@ -867,7 +882,14 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 return true;
         }
 
-        return this.serviceIsForeground(SMARTCARD_SERVICE_NAME);
+        const foregroundMechanism = this.getForegroundMechanism();
+        if (foregroundMechanism?.role === Const.SMARTCARD_ROLE_NAME)
+            return true;
+
+        if (!this.smartcardDetected)
+            return this.serviceIsForeground(SMARTCARD_SERVICE_NAME);
+
+        return this.serviceIsForeground(this.getSmartcardServiceName());
     }
 
     serviceIsDefault(serviceName) {

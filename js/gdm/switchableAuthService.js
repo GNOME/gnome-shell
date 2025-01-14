@@ -26,6 +26,7 @@ export class SwitchableAuthService extends AuthService {
     getSupportedRoles() {
         return [
             Const.PASSWORD_ROLE_NAME,
+            Const.SMARTCARD_ROLE_NAME,
             Const.WEB_LOGIN_ROLE_NAME,
         ];
     }
@@ -76,6 +77,7 @@ export class SwitchableAuthService extends AuthService {
     handlesMechanism(mechanism) {
         switch (mechanism.role) {
         case Const.PASSWORD_ROLE_NAME:
+        case Const.SMARTCARD_ROLE_NAME:
         case Const.WEB_LOGIN_ROLE_NAME:
             return true;
         default:
@@ -87,6 +89,8 @@ export class SwitchableAuthService extends AuthService {
         switch (mechanism.role) {
         case Const.PASSWORD_ROLE_NAME:
             return this._startPasswordLogin(mechanism);
+        case Const.SMARTCARD_ROLE_NAME:
+            return this._startSmartcardLogin(mechanism);
         case Const.WEB_LOGIN_ROLE_NAME:
             return this._startWebLogin(mechanism);
         default:
@@ -101,10 +105,20 @@ export class SwitchableAuthService extends AuthService {
         return true;
     }
 
+    _startSmartcardLogin(mechanism) {
+        const {pin_prompt: pinPrompt} = mechanism;
+
+        this.emit('ask-question', pinPrompt, true);
+        return true;
+    }
+
     handleQueryAnswer(role, answer) {
         switch (role) {
         case Const.PASSWORD_ROLE_NAME:
             this.emit('mechanism-response', role, {password: answer});
+            break;
+        case Const.SMARTCARD_ROLE_NAME:
+            this.emit('mechanism-response', role, {pin: answer});
             break;
         default:
             throw GObject.NotImplementedError(`handleQueryAnswer: ${role}`);
