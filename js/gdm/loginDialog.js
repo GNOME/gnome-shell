@@ -873,7 +873,7 @@ export const LoginDialog = GObject.registerClass({
             this._disableUserList = disableUserList;
 
             if (this._authPrompt.verificationStatus === AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
-                this._authPrompt.reset();
+                this._authPrompt.reset({ beginRequestType: AuthPrompt.BeginRequestType.PROVIDE_USERNAME });
 
             if (this._disableUserList && this._timedLoginUserListHold)
                 this._timedLoginUserListHold.release();
