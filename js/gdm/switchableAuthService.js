@@ -32,6 +32,7 @@ export class SwitchableAuthService extends AuthService {
     }
 
     handleProtocolRequest(_version, json) {
+        log(`RAY: incoming json request ${json}`);
         this.emit('service-request');
 
         let requestObject;
