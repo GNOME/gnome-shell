@@ -9,6 +9,7 @@ import St from 'gi://St';
 import * as Animation from '../ui/animation.js';
 import * as AuthList from './authList.js';
 import * as Batch from './batch.js';
+import * as Const from './const.js';
 import * as GdmUtil from './util.js';
 import * as MessageTray from '../ui/messageTray.js';
 import * as Params from '../misc/params.js';

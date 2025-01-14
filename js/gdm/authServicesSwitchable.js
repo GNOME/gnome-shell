@@ -15,10 +15,12 @@ export const AuthServicesSwitchable = GObject.registerClass({
 }, class AuthServicesSwitchable extends AuthServices {
     static SupportedRoles = [
         Const.PASSWORD_ROLE_NAME,
+        Const.SMARTCARD_ROLE_NAME,
         Const.WEB_LOGIN_ROLE_NAME,
     ];
     static RoleToService = {
         [Const.PASSWORD_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
+        [Const.SMARTCARD_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
         [Const.WEB_LOGIN_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
     };
 
@@ -26,6 +28,20 @@ export const AuthServicesSwitchable = GObject.registerClass({
         super._init(params);
 
         this._mechanismsStatus = MechanismsStatus.WAITING;
+    }
+
+    _handleSelectChoice(serviceName, key) {
+        if (serviceName !== this._selectedMechanism?.serviceName)
+            return;
+
+        switch (this._selectedMechanism.role) {
+        case Const.SMARTCARD_ROLE_NAME:
+            this._selectedSmartcard =
+                    this._selectedMechanism.certs.find(({ id }) => id === key);
+            const pinPrompt = this._selectedSmartcard.pin_prompt;
+            this.emit('ask-question', serviceName, pinPrompt, true);
+            break;
+        }
     }
 
     _handleAnswerQuery(serviceName, answer) {
@@ -38,6 +54,10 @@ export const AuthServicesSwitchable = GObject.registerClass({
             response = this._formatResponse(this._selectedMechanism, answer);
             this._sendResponse(response);
             break;
+        case Const.SMARTCARD_ROLE_NAME:
+            response = this._formatResponse(this._selectedSmartcard, answer);
+            this._sendResponse(response);
+            break;
         }
     }
 
@@ -45,6 +65,9 @@ export const AuthServicesSwitchable = GObject.registerClass({
         switch (this._selectedMechanism?.role) {
         case Const.PASSWORD_ROLE_NAME:
             this._startPasswordLogin();
+            break;
+        case Const.SMARTCARD_ROLE_NAME:
+            this._startSmartcardLogin();
             break;
         case Const.WEB_LOGIN_ROLE_NAME:
             this._startWebLogin();
@@ -74,6 +97,7 @@ export const AuthServicesSwitchable = GObject.registerClass({
         this._priorityList = null;
         this._enabledMechanisms = null;
         this._selectedMechanism = null;
+        this._selectedSmartcard = null;
     }
 
     _handleOnCustomJSONRequest(_serviceName, _protocol, _version, json) {
@@ -101,6 +125,8 @@ export const AuthServicesSwitchable = GObject.registerClass({
     }
 
     _handleUpdateEnabledMechanisms() {
+        this._reformatSmartcardMechanism(this._mechanisms);
+
         this._enabledMechanisms.push(...Object.keys(this._mechanisms)
             .map(id => ({
                 serviceName: Const.SWITCHABLE_AUTH_SERVICE_NAME,
@@ -119,6 +145,12 @@ export const AuthServicesSwitchable = GObject.registerClass({
         this.selectMechanism(selectedMechanism);
 
         this._savedMechanism = null;
+    }
+
+    _handleSmartcardChanged() {
+        this._savedMechanism = this._selectedMechanism;
+        this._mechanismsStatus = MechanismsStatus.WAITING;
+        this.emit('reset', { softReset: true, reuseEntryText: true });
     }
 
     _handleOnInfo(serviceName, info) {
@@ -186,12 +218,15 @@ export const AuthServicesSwitchable = GObject.registerClass({
     }
 
     _formatResponse(mechanism, answer) {
-        const { role, id } = mechanism;
+        const { role, id, name, module_name, key_id, label } = mechanism;
 
         let response
         switch (role) {
         case Const.PASSWORD_ROLE_NAME:
             response = { password: answer };
+            break;
+        case Const.SMARTCARD_ROLE_NAME:
+            response = { pin: answer, name, module_name, key_id, label };
             break;
         case Const.WEB_LOGIN_ROLE_NAME:
             response = {};
@@ -215,6 +250,27 @@ export const AuthServicesSwitchable = GObject.registerClass({
             serviceName, JSON.stringify(response), this._cancellable, null);
     }
 
+    _reformatSmartcardMechanism(mechanisms) {
+        const certs = Object.keys(mechanisms)
+            .map(id => ({ id, ...mechanisms[id] }))
+            .filter((cert) => cert.role === Const.SMARTCARD_ROLE_NAME);
+
+        for (const cert of certs)
+            delete mechanisms[cert.id];
+
+        const selectPrompt = certs.length > 0 ?
+            'Select Identity' :
+            'Insert Smartcard';
+
+        mechanisms['smartcard'] = {
+            role: Const.SMARTCARD_ROLE_NAME,
+            name: 'Smartcard',
+            selectable: true,
+            selectPrompt,
+            certs,
+        };
+    }
+
     _eventExpected() {
         // If legacy PAM messages are received before receiving json PAM
         // messages informing about mechanisms, then pam_unix is being
@@ -233,6 +289,26 @@ export const AuthServicesSwitchable = GObject.registerClass({
         const { serviceName, prompt } = this._selectedMechanism;
 
         this.emit('ask-question', serviceName, prompt, true);
+    }
+
+    _startSmartcardLogin() {
+        const {
+            serviceName,
+            selectPrompt,
+            certs,
+        } = this._selectedMechanism;
+
+        if (certs.length === 1) {
+            this._selectedSmartcard = certs[0];
+            this.emit('ask-question', serviceName, certs[0].pin_prompt, true);
+            return;
+        }
+
+        const choiceList = {};
+        for (const cert of certs)
+            choiceList[cert.id] = cert.cert_instruction;
+
+        this.emit('show-choice-list', serviceName, selectPrompt, choiceList);
     }
 
     _startWebLogin() {
