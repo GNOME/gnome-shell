@@ -16,11 +16,13 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
     static SupportedRoles = [
         Const.PASSWORD_ROLE_NAME,
+        Const.SMARTCARD_ROLE_NAME,
         Const.WEB_LOGIN_ROLE_NAME,
     ];
 
     static RoleToService = {
         [Const.PASSWORD_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
+        [Const.SMARTCARD_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
         [Const.WEB_LOGIN_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
     };
 
@@ -32,6 +34,18 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         super(params);
 
         this._mechanismsStatus = MechanismsStatus.WAITING;
+    }
+
+    _handleSelectChoice(serviceName, key) {
+        if (serviceName !== this._selectedMechanism?.serviceName)
+            return;
+
+        if (this._selectedMechanism.role === Const.SMARTCARD_ROLE_NAME) {
+            const certificates = this._selectedMechanism.certificates;
+            const cert = certificates.find(c => c.keyId === key);
+            this._selectedSmartcard = cert;
+            this.emit('ask-question', serviceName, cert.pinPrompt, true);
+        }
     }
 
     async _handleAnswerQuery(serviceName, answer) {
@@ -50,6 +64,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         let response;
         switch (this._selectedMechanism.role) {
         case Const.PASSWORD_ROLE_NAME:
+        case Const.SMARTCARD_ROLE_NAME:
             response = this._formatResponse(answer);
             this._sendResponse(response);
             break;
@@ -60,6 +75,9 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         switch (this._selectedMechanism?.role) {
         case Const.PASSWORD_ROLE_NAME:
             this._startPasswordLogin();
+            break;
+        case Const.SMARTCARD_ROLE_NAME:
+            this._startSmartcardLogin();
             break;
         case Const.WEB_LOGIN_ROLE_NAME:
             this._startWebLogin();
@@ -98,6 +116,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         this._priorityList = null;
         this._enabledMechanisms = null;
         this._selectedMechanism = null;
+        this._selectedSmartcard = null;
 
         this._resettingPassword = false;
 
@@ -176,6 +195,14 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             });
     }
 
+    _handleSmartcardChanged() {
+        if (!this._selectedMechanism ||
+            !this._enabledMechanisms.some(({role}) => role === Const.SMARTCARD_ROLE_NAME))
+            return;
+
+        this.emit('reset', {softReset: true, reuseEntryText: true});
+    }
+
     _handleOnInfo(serviceName, info) {
         if (!this._eventExpected())
             return;
@@ -244,6 +271,11 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             response = {password: answer};
             break;
         }
+        case Const.SMARTCARD_ROLE_NAME: {
+            const {tokenName, moduleName, keyId, label} = this._selectedSmartcard;
+            response = {pin: answer, tokenName, moduleName, keyId, label};
+            break;
+        }
         case Const.WEB_LOGIN_ROLE_NAME: {
             response = {};
             break;
@@ -285,6 +317,44 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         const {serviceName, prompt} = this._selectedMechanism;
 
         this.emit('ask-question', serviceName, prompt, true);
+    }
+
+    _startSmartcardLogin() {
+        const {serviceName, certificates} = this._selectedMechanism;
+
+        if (certificates.length === 1) {
+            this._selectedSmartcard = certificates[0];
+            this.emit('ask-question', serviceName, certificates[0].pinPrompt, true);
+            return;
+        }
+
+        const choiceList = {};
+        for (const cert of certificates)
+            choiceList[cert.keyId] = this._parseCertInstruction(cert.certInstruction);
+
+        const prompt = certificates.length === 0
+            ? _('Insert Smartcard')
+            : _('Select Identity');
+
+        this.emit('show-choice-list', serviceName, prompt, choiceList);
+    }
+
+    _parseCertInstruction(certInstruction) {
+        // Currently sssd can't split cert data in a more granular way
+        // so it's parsed manually here
+        const [description, subject] = certInstruction.split('\n');
+
+        const fields = subject?.split(',').map(f => f.trim()) ?? [];
+        const commonName = fields.find(f => f.startsWith('CN='))?.substring(3);
+        const organization = fields.find(f => f.startsWith('O='))?.substring(2);
+
+        return {
+            title: commonName,
+            subtitle: description,
+            iconName: organization ? 'vcard-symbolic' : null,
+            iconTitle: organization ? _('Organization') : null,
+            iconSubtitle: organization,
+        };
     }
 
     _startWebLogin() {
