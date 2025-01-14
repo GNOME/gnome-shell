@@ -1001,6 +1001,7 @@ export const LoginDialog = GObject.registerClass({
     _onReset(authPrompt, beginRequest) {
         this._resetGreeterProxy();
 
+        log(`RAY: LOGIN DIALOG Resetting`);
         const previousUser = this._user;
         this._user = null;
 
@@ -1009,16 +1010,20 @@ export const LoginDialog = GObject.registerClass({
             this._nextSignalId = 0;
         }
 
+        log(`RAY: Resetting`);
         if (previousUser && beginRequest === AuthPrompt.BeginRequestType.REUSE_USERNAME) {
+           log(`RAY: begin verification`);
             this._user = previousUser;
             this._authPrompt.setUser(this._user);
             this._beginVerification({userName: previousUser.get_user_name()});
         } else if (beginRequest === AuthPrompt.BeginRequestType.PROVIDE_USERNAME) {
+           log(`RAY: show user list`);
             if (!this._disableUserList)
                 this._showUserList();
             else
                 this._hideUserListAskForUsernameAndBeginVerification();
         } else {
+           log(`RAY: hide user list and begin verification`);
             this._hideUserListAndBeginVerification();
         }
     }
@@ -1041,6 +1046,7 @@ export const LoginDialog = GObject.registerClass({
         mechanisms.sort((a, b) => a.name.localeCompare(b.name));
 
         for (const {role, id, name, selectable, iconName} of mechanisms) {
+            log(`RAYY: ${serviceName} added mechanism: ${name} ${role}`);
             if (selectable) {
                 const mechanism = {serviceName, id, name, role};
                 this._authMenuButton.addItem({
@@ -1050,6 +1056,8 @@ export const LoginDialog = GObject.registerClass({
 
                 const wasActive = activeMechanism?.id === id;
                 const isDefault = id === defaultId;
+
+                log(`RAY: ${serviceName} wasActive: ${wasActive} isDefault: ${isDefault} ${JSON.stringify(activeMechanism)}`);
 
                 if (wasActive || (!activeMechanism && isDefault))
                     this._authMenuButton.setActiveItem(mechanism);
@@ -1477,7 +1485,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _hideUserList() {
-        this._authMenuButton.clearItems({ sectionName: _PRIMARY_LOGIN_METHOD_SECTION_NAME });
+        //this._authMenuButton.clearItems({ sectionName: _PRIMARY_LOGIN_METHOD_SECTION_NAME });
         this._setUserListExpanded(false);
         if (this._userSelectionBox.visible)
             GdmUtil.cloneAndFadeOutActor(this._userSelectionBox);
@@ -1489,6 +1497,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _hideUserListAndBeginVerification() {
+        log(`RAY hiding user list and beginning verification`);
         this._hideUserList();
         this._beginVerification();
     }

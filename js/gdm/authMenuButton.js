@@ -275,6 +275,7 @@ export const AuthMenuButton = GObject.registerClass({
     }
 
     clearItems(searchCriteria = {}) {
+        log(`RAY: clearItems: ${JSON.stringify(searchCriteria)} ${JSON.stringify([...this._activeItems])}`);
         const sections = this.getSections();
 
         this._findItems(searchCriteria).forEach(itemKey => {
@@ -412,6 +413,7 @@ export const AuthMenuButton = GObject.registerClass({
     }
 
     getActiveItem(searchCriteria = {}) {
+        log(`RAY: getActiveItem: ${JSON.stringify(searchCriteria)} ${JSON.stringify([...this._activeItems])}`);
         const activeKeys = this._findItems(searchCriteria)
             .filter(key => this._activeItems.has(key));
 

@@ -524,6 +524,7 @@ export const AuthPrompt = GObject.registerClass({
         if (!mechanismsList)
             return;
 
+        log(`RAY: select smartcard certificate`);
         // For now just return the first one found.
         // In the future provide a dialog with a list for the user to choose from
         const smartcardMechanism = mechanismsList.find(
@@ -544,6 +545,7 @@ export const AuthPrompt = GObject.registerClass({
             this.smartcardDetected ? SWITCHABLE_AUTH_SERVICE_NAME:
             SMARTCARD_SERVICE_NAME;
 
+        log(`RAY: smartcard status changed: ${this.smartcardDetected}`);
         // Most of the time we want to reset if the user inserts or removes
         // a smartcard. Smartcard insertion "preempts" what the user was
         // doing, and smartcard removal aborts the preemption.
@@ -890,6 +892,7 @@ export const AuthPrompt = GObject.registerClass({
         this.cancelButton.can_focus = this._hasCancelButton;
         this._preemptiveAnswer = null;
 
+        log(`RAY: reset: ${oldStatus} ${this.verificationStatus} ${beginRequestType} ${queryingService}`);
         if (this._userVerifier)
             this._userVerifier.cancel();
 
@@ -925,6 +928,7 @@ export const AuthPrompt = GObject.registerClass({
             }
         }
 
+        log(`RAY: emit reset: ${oldStatus} ${this.verificationStatus} ${beginRequestType} ${queryingService}`);
         this.emit('reset', beginRequestType);
     }
 
@@ -941,6 +945,8 @@ export const AuthPrompt = GObject.registerClass({
             userName: null,
             hold: null,
         });
+
+        log(`RAY: Beginning verification`);
 
         this.hideLoginFailedNotification();
         this.updateSensitivity(false);

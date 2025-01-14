@@ -313,6 +313,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     async replyWithJSON(serviceName, json) {
+        log(`RAY: replyWithJSON: ${serviceName} ${json}`);
         try {
             await this._handlePendingMessages();
             this._userVerifierCustomJSON.call_reply(serviceName, json, this._cancellable, null);
@@ -548,6 +549,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     _checkForSmartcard() {
         let smartcardDetected;
+
+        log(`RAY: checking for smartcard`);
 
         if (!this._settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY))
             smartcardDetected = false;
@@ -909,6 +912,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _onMechanismsListChanged(serviceName, mechanismsList) {
+        log(`RAY: mechanisms list changed: ${JSON.stringify([...mechanismsList])}`);
         /* Start all non-selectable (background) mechanisms and the foreground
          * mechanism. Note for discrete auth (e.g. not the non-switchable services),
          * the foreground mechanism is already started explicitly in beginVerification
@@ -927,7 +931,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 continue;
 
             if (this._shouldStartBackgroundService(serviceName))
-                this._startService(serviceName);
+                this._startService(serviceName).catch(logError);
 
             if (serviceName === SWITCHABLE_AUTH_SERVICE_NAME)
                 this._startMechanismFromUnifiedService(mechanism);
@@ -941,7 +945,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this.connect('mechanisms-list-changed',
                 (_, ...args) => this._onMechanismsListChanged(...args));
 
-        this._startService(foregroundService);
+        this._startService(foregroundService).catch(logError);
         this._generateMechanismsFromDiscreteServices();
     }
 
@@ -1046,6 +1050,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 return true;
 
             if (!mapping.selectable) {
+                log(`RAY: Filtering ${JSON.stringify(mechanism)} because it is not selectable`);
                 if (filterFunc)
                     filterFunc(mechanism);
                 return false;
@@ -1053,8 +1058,10 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
             const enabled = this._settings.get_boolean(mapping.setting);
 
-            if (!enabled && filterFunc)
+            if (!enabled && filterFunc) {
+                log(`RAY: Filtering ${JSON.stringify(mechanism)} because it is not enabled`);
                 filterFunc(mechanism);
+            }
 
             return enabled;
         });
@@ -1096,6 +1103,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             if (selectable === undefined)
                 selectable = true;
 
+            log(`RAY: Adding mechanism ${JSON.stringify(mechanisms[id])}`);
             mechanismsList.push({id, name, role, serviceName, selectable});
         }
 
@@ -1128,6 +1136,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 return;
             }
 
+            log (`RAY: incoming json request ${json}`);
             this._handleAuthMechanismsRequest(serviceName, requestObject);
         }
     }
@@ -1278,7 +1287,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     _retry(serviceName) {
         this._hold = new Batch.Hold();
         this._connectSignals();
-        this._startService(serviceName);
+        this._startService(serviceName).catch(logError);
     }
 
     _canRetry() {
