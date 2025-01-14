@@ -568,6 +568,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     _reportInitError(where, error, serviceName) {
         logError(error, where);
         this._hold.release();
+        this._hold = null;
 
         this._queueMessage(serviceName, _('Authentication error'), MessageType.ERROR);
         this._failCounter++;
@@ -613,6 +614,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._connectSignals();
         this._beginVerification();
         this._hold.release();
+        this._hold = null;
     }
 
     async _getUserVerifier() {
@@ -632,6 +634,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._connectSignals();
         this._beginVerification();
         this._hold.release();
+        this._hold = null;
     }
 
     _connectSignals() {
@@ -828,6 +831,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 logError(e,
                     `Failed to start ${serviceName} for ${this._userName}`);
                 this._hold.release();
+                this._hold = null;
                 return;
             }
             this._reportInitError(
@@ -838,6 +842,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             return;
         }
         this._hold.release();
+        this._hold = null;
     }
 
     async _maybeStartFingerprintVerification() {
