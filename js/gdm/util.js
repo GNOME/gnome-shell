@@ -682,7 +682,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     _reportInitError(where, error, serviceName) {
         logError(error, where);
-        this._hold.release();
+        this._hold?.release();
+        this._hold = null;
 
         this._queueMessage(serviceName, _('Authentication error'), MessageType.ERROR);
         this._failCounter++;
@@ -727,7 +728,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this.reauthenticating = true;
         this._connectSignals();
         this._beginVerification();
-        this._hold.release();
+        this._hold?.release();
+        this._hold = null;
     }
 
     async _getUserVerifier() {
@@ -746,7 +748,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         this._connectSignals();
         this._beginVerification();
-        this._hold.release();
+        this._hold?.release();
+        this._hold = null;
     }
 
     _connectSignals() {
@@ -930,7 +933,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     async _startService(serviceName) {
         this._activeServices.add(serviceName);
-        this._hold.acquire();
+        this._hold?.acquire();
         try {
             this._activeServices.add(serviceName);
             if (this._userName) {
@@ -947,7 +950,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             if (!this.serviceIsForeground(serviceName)) {
                 logError(e,
                     `Failed to start ${serviceName} for ${this._userName}`);
-                this._hold.release();
+                this._hold?.release();
+                this._hold = null;
                 return;
             }
             this._reportInitError(
@@ -957,7 +961,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 e, serviceName);
             return;
         }
-        this._hold.release();
+        this._hold?.release();
+        this._hold = null;
     }
 
     async _maybeStartFingerprintVerification() {
