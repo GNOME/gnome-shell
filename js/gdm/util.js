@@ -55,6 +55,7 @@ const AUTH_SELECTION_COMPLETION_STATUS = 'Ok';
 
 const SWITCHABLE_AUTH_SUPPORTED_ROLES = [
     PASSWORD_ROLE_NAME,
+    SMARTCARD_ROLE_NAME,
     WEB_LOGIN_ROLE_NAME,
 ];
 
@@ -301,6 +302,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             await this._handlePendingMessages();
             if (this._pendingMechanisms.has(PASSWORD_ROLE_NAME))
                 this._replyWithAuthSelectionResponse(serviceName, PASSWORD_ROLE_NAME, {password: answer});
+            else if (this._pendingMechanisms.has(SMARTCARD_ROLE_NAME))
+                this._replyWithAuthSelectionResponse(serviceName, SMARTCARD_ROLE_NAME, {pin: answer});
             else
                 this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
         } catch (e) {
@@ -556,10 +559,19 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         if (smartcardDetected !== this.smartcardDetected) {
             this.smartcardDetected = smartcardDetected;
 
-            if (this.smartcardDetected)
-                this.setForegroundService(SMARTCARD_SERVICE_NAME);
-            else if (this._preemptingService === SMARTCARD_SERVICE_NAME)
-                this.setForegroundService(null);
+            const smartcardService = SWITCHABLE_AUTH_SUPPORTED_ROLES.includes(SMARTCARD_ROLE_NAME)?
+                SWITCHABLE_AUTH_SERVICE_NAME: SMARTCARD_SERVICE_NAME;
+
+            // FIXME: It doesn't seem like pam_sss sends JSON if no username
+            // is specified. Need to fix that before we can act on smartcard
+            // insertion events with switchable auth. See also this message in
+            // gdm/authPrompt.js
+            if (smartcardService !== SWITCHABLE_AUTH_SERVICE_NAME) {
+                if (this.smartcardDetected)
+                    this.setForegroundService(smartcardService);
+                else if (this._preemptingService === smartcardService)
+                    this.setForegroundService(null);
+            }
 
             this.emit('smartcard-status-changed');
         }
@@ -730,7 +742,16 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 return true;
         }
 
-        return this.serviceIsForeground(SMARTCARD_SERVICE_NAME);
+        const foregroundMechanism = this.getForegroundMechanism();
+        if (foregroundMechanism?.role === SMARTCARD_ROLE_NAME)
+            return true;
+
+        const smartcardService =
+            SWITCHABLE_AUTH_SUPPORTED_ROLES.includes(SMARTCARD_ROLE_NAME) &&
+            this.smartcardDetected ? SWITCHABLE_AUTH_SERVICE_NAME:
+            SMARTCARD_SERVICE_NAME;
+
+        return this.serviceIsForeground(smartcardService);
     }
 
     serviceIsDefault(serviceName) {
@@ -860,6 +881,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         const roleHandlers = {
             [WEB_LOGIN_ROLE_NAME]: this._startWebLogin,
             [PASSWORD_ROLE_NAME]: this._startPasswordLogin,
+            [SMARTCARD_ROLE_NAME]: this._startSmartcardLogin,
         };
 
         const handler = roleHandlers[mechanism.role];
@@ -945,6 +967,21 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         this._pendingMechanisms.set(role, mechanismId);
         this.emit('ask-question', serviceName, prompt, true);
+    }
+
+    _startSmartcardLogin(serviceName, mechanismId) {
+        const mechanisms = this._publishedMechanisms.get(serviceName);
+
+        if (!mechanisms)
+            return;
+
+        if (!mechanisms[mechanismId])
+            return;
+
+        const {pin_prompt, init_instruction, role} = mechanisms[mechanismId];
+
+        this._pendingMechanisms.set(role, mechanismId);
+        this.emit('ask-question', serviceName, pin_prompt, true);
     }
 
     async _replyWithAuthSelectionResponse(serviceName, role, response) {

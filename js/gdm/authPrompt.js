@@ -91,6 +91,7 @@ export const AuthPrompt = GObject.registerClass({
         this._userVerifier.connect('verification-failed', this._onVerificationFailed.bind(this));
         this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
         this._userVerifier.connect('reset', this._onReset.bind(this));
+        this._userVerifier.connect('select-smartcard-certificate', this._onSelectSmartcardCertificate.bind(this));
         this._userVerifier.connect('smartcard-status-changed', this._onSmartcardStatusChanged.bind(this));
         this._userVerifier.connect('credential-manager-authenticated', this._onCredentialManagerAuthenticated.bind(this));
         this.smartcardDetected = this._userVerifier.smartcardDetected;
@@ -517,8 +518,31 @@ export const AuthPrompt = GObject.registerClass({
             this.reset();
     }
 
+    _onSelectSmartcardCertificate(userVerifier, serviceName) {
+        const mechanismsList = this.mechanisms.get(serviceName);
+
+        if (!mechanismsList)
+            return;
+
+        // For now just return the first one found.
+        // In the future provide a dialog with a list for the user to choose from
+        const smartcardMechanism = mechanismsList.find(
+            mechanism => mechanism.role === GdmUtil.SMARTCARD_ROLE_NAME
+        );
+
+        if (!smartcardMechanism)
+            return;
+
+        this.setForegroundMechanism(smartcardMechanism);
+    }
+
     _onSmartcardStatusChanged() {
         this.smartcardDetected = this._userVerifier.smartcardDetected;
+
+        const smartcardService =
+            SWITCHABLE_AUTH_SUPPORTED_ROLES.includes(SMARTCARD_ROLE_NAME) &&
+            this.smartcardDetected ? SWITCHABLE_AUTH_SERVICE_NAME:
+            SMARTCARD_SERVICE_NAME;
 
         // Most of the time we want to reset if the user inserts or removes
         // a smartcard. Smartcard insertion "preempts" what the user was
@@ -527,10 +551,17 @@ export const AuthPrompt = GObject.registerClass({
         //                        with a smartcard
         //                     2) Don't reset if we've already succeeded at verification and
         //                        the user is getting logged in.
-        if (this._userVerifier.serviceIsDefault(GdmUtil.SMARTCARD_SERVICE_NAME) &&
+        if (this._userVerifier.serviceIsDefault(smartcardService) &&
             (this.verificationStatus === AuthPromptStatus.VERIFYING ||
              this.verificationStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS) &&
             this.smartcardDetected)
+            return;
+
+        // FIXME: It doesn't seem like pam_sss sends JSON if no username
+        // is specified. Need to fix that before we can act on smartcard
+        // insertion events with switchable auth. See also this message in
+        // gdm/util.js
+        if (smartcardService === SWITCHABLE_AUTH_SERVICE_NAME)
             return;
 
         if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
