@@ -1,7 +1,7 @@
 [wrap-git]
 directory=jasmine-gjs
 url=https://github.com/ptomato/jasmine-gjs.git
-revision=c6aa28b3a3b16a3abb53e32825d83f836a2fed42
+revision=856465dddbd92e82e574891e1ebc79e17d7b708a
 
 [provide]
 program_names = jasmine
