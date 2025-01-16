@@ -25,6 +25,7 @@ export class GnomeShell {
         this._senderChecker = new DBusSenderChecker([
             'org.gnome.Settings',
             'org.gnome.SettingsDaemon.MediaKeys',
+            'org.freedesktop.impl.portal.desktop.gnome',
         ]);
 
         this._extensionsService = new GnomeShellExtensions();
