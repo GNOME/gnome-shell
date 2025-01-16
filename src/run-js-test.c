@@ -37,7 +37,7 @@
 #include "shell-global-private.h"
 
 int
-main(int argc, char **argv)
+main (int argc, char **argv)
 {
   GOptionContext *context;
   GError *error = NULL;
@@ -64,15 +64,17 @@ main(int argc, char **argv)
   /* prepare command line arguments */
   if (!gjs_context_define_string_array (js_context, "ARGV",
                                         argc - 2, (const char**)argv + 2,
-                                        &error)) {
-    g_printerr ("Failed to defined ARGV: %s", error->message);
-    exit (1);
-  }
+                                        &error))
+    {
+      g_printerr ("Failed to defined ARGV: %s", error->message);
+      exit (1);
+    }
 
-  if (argc < 2) {
-    g_printerr ("Missing filename");
-    exit(1);
-  }
+  if (argc < 2)
+    {
+      g_printerr ("Missing filename");
+      exit (1);
+    }
 
   filename = argv[1];
   title = g_filename_display_basename (filename);
@@ -82,11 +84,12 @@ main(int argc, char **argv)
   error = NULL;
 
   /* evaluate the script */
-  bool success = gjs_context_eval_module_file(js_context, filename, &code, &error);
-  if (!success) {
-    g_printerr ("%s\n", error->message);
-    exit (1);
-  }
+  bool success = gjs_context_eval_module_file (js_context, filename, &code, &error);
+  if (!success)
+    {
+      g_printerr ("%s\n", error->message);
+      exit (1);
+    }
 
   gjs_context_gc (js_context);
   gjs_context_gc (js_context);
