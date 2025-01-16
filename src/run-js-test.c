@@ -69,13 +69,13 @@ main (int argc, char **argv)
                                         argc - 2, (const char**)argv + 2,
                                         &error))
     {
-      g_printerr ("Failed to defined ARGV: %s", error->message);
+      g_printerr ("Failed to defined ARGV: %s\n", error->message);
       exit (1);
     }
 
   if (argc < 2)
     {
-      g_printerr ("Missing filename");
+      g_printerr ("Missing filename\n");
       exit (1);
     }
 
