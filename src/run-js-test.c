@@ -64,18 +64,18 @@ main (int argc, char **argv)
   g_irepository_prepend_search_path (MUTTER_TYPELIB_DIR);
   g_irepository_prepend_search_path (SHELL_TYPELIB_DIR);
 
+  if (argc < 2)
+    {
+      g_printerr ("Missing filename\n");
+      exit (1);
+    }
+
   /* prepare command line arguments */
   if (!gjs_context_define_string_array (js_context, "ARGV",
                                         argc - 2, (const char**)argv + 2,
                                         &error))
     {
       g_printerr ("Failed to defined ARGV: %s\n", error->message);
-      exit (1);
-    }
-
-  if (argc < 2)
-    {
-      g_printerr ("Missing filename\n");
       exit (1);
     }
 
