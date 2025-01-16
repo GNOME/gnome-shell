@@ -36,6 +36,18 @@
 #include "shell-global.h"
 #include "shell-global-private.h"
 
+static int
+eval_module (GjsContext  *js_context,
+             const char  *filename,
+             GError     **error)
+{
+  uint8_t code;
+  bool success = gjs_context_eval_module_file (js_context, filename, &code, error);
+  if (!success)
+    code = 1;
+  return code;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -77,13 +89,9 @@ main (int argc, char **argv)
   title = g_filename_display_basename (filename);
   g_set_prgname (title);
 
-  /* evaluate the script */
-  bool success = gjs_context_eval_module_file (js_context, filename, &code, &error);
-  if (!success)
-    {
-      g_printerr ("%s\n", error->message);
-      exit (1);
-    }
+  code = eval_module (js_context, filename, &error);
+  if (error)
+    g_printerr ("%s\n", error->message);
 
   gjs_context_gc (js_context);
   gjs_context_gc (js_context);
