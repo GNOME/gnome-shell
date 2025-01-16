@@ -40,11 +40,11 @@ int
 main (int argc, char **argv)
 {
   GOptionContext *context;
-  GError *error = NULL;
+  g_autoptr (GError) error = NULL;
   ShellGlobal *global;
   GjsContext *js_context;
   const char *filename;
-  char *title;
+  g_autofree char *title = NULL;;
   uint8_t code;
 
   context = g_option_context_new (NULL);
@@ -82,9 +82,6 @@ main (int argc, char **argv)
   filename = argv[1];
   title = g_filename_display_basename (filename);
   g_set_prgname (title);
-  g_free (title);
-
-  error = NULL;
 
   /* evaluate the script */
   bool success = gjs_context_eval_module_file (js_context, filename, &code, &error);
