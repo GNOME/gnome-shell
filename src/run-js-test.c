@@ -41,10 +41,20 @@ eval_module (GjsContext  *js_context,
              const char  *filename,
              GError     **error)
 {
+  g_autoptr (GFile) file = NULL;
+  g_autofree char *uri = NULL;
   uint8_t code;
-  bool success = gjs_context_eval_module_file (js_context, filename, &code, error);
-  if (!success)
-    code = 1;
+
+  file = g_file_new_for_commandline_arg (filename);
+  uri = g_file_get_uri (file);
+
+  if (!gjs_context_register_module (js_context, uri, uri, error))
+    return 1;
+
+  if (!gjs_context_eval_module (js_context, uri, &code, error))
+    {
+      /* nothing, but avoid G_GNUC_WARN_UNUSED_RESULT compiler warnings */
+    }
   return code;
 }
 
