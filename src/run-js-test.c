@@ -71,13 +71,7 @@ main (int argc, char **argv)
     }
 
   /* prepare command line arguments */
-  if (!gjs_context_define_string_array (js_context, "ARGV",
-                                        argc - 2, (const char**)argv + 2,
-                                        &error))
-    {
-      g_printerr ("Failed to defined ARGV: %s\n", error->message);
-      exit (1);
-    }
+  gjs_context_set_argv (js_context, argc - 2, (const char**)argv + 2);
 
   filename = argv[1];
   title = g_filename_display_basename (filename);
