@@ -41,6 +41,7 @@ eval_module (GjsContext  *js_context,
              const char  *filename,
              GError     **error)
 {
+  g_autoptr (GError) local_error = NULL;
   g_autoptr (GFile) file = NULL;
   g_autofree char *uri = NULL;
   uint8_t code;
@@ -51,9 +52,10 @@ eval_module (GjsContext  *js_context,
   if (!gjs_context_register_module (js_context, uri, uri, error))
     return 1;
 
-  if (!gjs_context_eval_module (js_context, uri, &code, error))
+  if (!gjs_context_eval_module (js_context, uri, &code, &local_error))
     {
-      /* nothing, but avoid G_GNUC_WARN_UNUSED_RESULT compiler warnings */
+      if (!g_error_matches (local_error, GJS_ERROR, GJS_ERROR_SYSTEM_EXIT))
+        g_propagate_error (error, g_steal_pointer (&local_error));
     }
   return code;
 }
