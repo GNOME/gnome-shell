@@ -40,6 +40,10 @@
       <arg name="action" type="u"/>
       <arg name="parameters" type="a{sv}"/>
     </signal>
+    <signal name="AcceleratorDeactivated">
+      <arg name="action" type="u"/>
+      <arg name="parameters" type="a{sv}"/>
+    </signal>
     <property name="Mode" type="s" access="read"/>
     <property name="OverviewActive" type="b" access="readwrite"/>
     <property name="ShellVersion" type="s" access="read"/>

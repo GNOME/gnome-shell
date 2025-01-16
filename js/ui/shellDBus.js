@@ -37,6 +37,10 @@ export class GnomeShell {
             (display, action, device, timestamp) => {
                 this._emitAcceleratorActivated(action, device, timestamp);
             });
+        global.display.connect('accelerator-deactivated',
+            (display, action, device, timestamp) => {
+                this._emitAcceleratorDeactivated(action, device, timestamp);
+            });
 
         this._cachedOverviewVisible = false;
         Main.overview.connect('showing',
