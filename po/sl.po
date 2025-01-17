@@ -3,23 +3,24 @@
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Matej Urbančič <mateju@src.gnome.org>, 2009–2024.
+# Martin Srebotnjak <miles@filmsi.net>, 2024,2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-11-29 06:28+0000\n"
-"PO-Revision-Date: 2024-12-01 10:24+0100\n"
+"POT-Creation-Date: 2025-01-15 03:49+0000\n"
+"PO-Revision-Date: 2025-01-17 11:39+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
-"%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
+"n%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -701,11 +702,11 @@ msgstr "(ali pa povlecite prst prek bralnika)"
 msgid "(or place finger on reader)"
 msgstr "(ali pa povlecite prst po bralniku)"
 
-#: js/misc/breakManager.js:765
+#: js/misc/breakManager.js:764
 msgid "Break complete sound"
 msgstr "Zvok ob koncu odmora"
 
-#: js/misc/breakManager.js:957
+#: js/misc/breakManager.js:956
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
@@ -714,7 +715,7 @@ msgstr[1] "%d sekundo"
 msgstr[2] "%d sekundi"
 msgstr[3] "%d sekunde"
 
-#: js/misc/breakManager.js:963
+#: js/misc/breakManager.js:962
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
@@ -723,7 +724,7 @@ msgstr[1] "%d minuto"
 msgstr[2] "%d minuti"
 msgstr[3] "%d minute"
 
-#: js/misc/breakManager.js:969
+#: js/misc/breakManager.js:968
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -732,7 +733,7 @@ msgstr[1] "%d uro"
 msgstr[2] "%d uri"
 msgstr[3] "%d ure"
 
-#: js/misc/breakManager.js:975
+#: js/misc/breakManager.js:974
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -742,7 +743,7 @@ msgstr[2] "%d dneva"
 msgstr[3] "%d dni"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1058
+#: js/misc/breakManager.js:1057
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
@@ -751,24 +752,24 @@ msgstr[1] "Čas za odmor bo čez %s"
 msgstr[2] "Čas za odmor bo čez %s"
 msgstr[3] "Čas za odmor bo čez %s"
 
-#: js/misc/breakManager.js:1066
+#: js/misc/breakManager.js:1065
 msgid "Movement Break Soon"
 msgstr "Odmor z razgibavanjem bo kmalu"
 
-#: js/misc/breakManager.js:1069
+#: js/misc/breakManager.js:1068
 msgid "Eyesight Break Soon"
 msgstr "Odmor za vid bo kmalu"
 
-#: js/misc/breakManager.js:1072
+#: js/misc/breakManager.js:1071
 msgid "Break Soon"
 msgstr "Odmor bo kmalu"
 
-#: js/misc/breakManager.js:1116
+#: js/misc/breakManager.js:1115
 msgid "Movement Break in Progress"
 msgstr "Premor z gibanjem je v teku"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1119
+#: js/misc/breakManager.js:1118
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
@@ -777,12 +778,12 @@ msgstr[1] "Nadaljujte z gibanjem še %s"
 msgstr[2] "Nadaljujte z gibanjem še %s"
 msgstr[3] "Nadaljujte z gibanjem še %s"
 
-#: js/misc/breakManager.js:1125
+#: js/misc/breakManager.js:1124
 msgid "Eyesight Break in Progress"
 msgstr "Odmor za vid je v teku"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1128
+#: js/misc/breakManager.js:1127
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
@@ -791,12 +792,12 @@ msgstr[1] "Še naprej glejte stran %s"
 msgstr[2] "Še naprej glejte stran %s"
 msgstr[3] "Še naprej glejte stran %s"
 
-#: js/misc/breakManager.js:1134
+#: js/misc/breakManager.js:1133
 msgid "Break in Progress"
 msgstr "Odmor je v teku"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1137
+#: js/misc/breakManager.js:1136
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
@@ -805,12 +806,12 @@ msgstr[1] "Na voljo je še %s za odmor"
 msgstr[2] "Na voljo je še %s za odmor"
 msgstr[3] "Na voljo je še %s za odmor"
 
-#: js/misc/breakManager.js:1176
+#: js/misc/breakManager.js:1175
 msgid "Time for a Movement Break"
 msgstr "Čas je za odmor z gibanjem"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1179
+#: js/misc/breakManager.js:1178
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
@@ -819,12 +820,12 @@ msgstr[1] "Vzemite si odmor od naprave in se gibajte %s"
 msgstr[2] "Vzemite si odmor od naprave in se gibajte %s"
 msgstr[3] "Vzemite si odmor od naprave in se gibajte %s"
 
-#: js/misc/breakManager.js:1185
+#: js/misc/breakManager.js:1184
 msgid "Time for an Eyesight Break"
 msgstr "Čas je za odmor vida"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1188
+#: js/misc/breakManager.js:1187
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -839,12 +840,12 @@ msgstr[2] ""
 msgstr[3] ""
 "Vzemite si odmor od zaslona. Glejte v daljavo vsaj 6 metrov najmanj %s"
 
-#: js/misc/breakManager.js:1194
+#: js/misc/breakManager.js:1193
 msgid "Time for a Break"
 msgstr "Čas je za odmor"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1197
+#: js/misc/breakManager.js:1196
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -854,7 +855,7 @@ msgstr[2] "Čas je za odmor. Pojdite stran od naprave za %s!"
 msgstr[3] "Čas je za odmor. Pojdite stran od naprave za %s!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1219
+#: js/misc/breakManager.js:1218
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
@@ -863,12 +864,12 @@ msgstr[1] "Odmor bi si morali privoščiti pred %s"
 msgstr[2] "Odmor bi si morali privoščiti pred %s"
 msgstr[3] "Odmor bi si morali privoščiti pred %s"
 
-#: js/misc/breakManager.js:1225
+#: js/misc/breakManager.js:1224
 msgid "Break Overdue"
 msgstr "Odmor bi se že moral pričeti"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1239
+#: js/misc/breakManager.js:1238
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
@@ -877,25 +878,25 @@ msgstr[1] "Na voljo je še %s za odmor"
 msgstr[2] "Na voljo je še %s za odmor"
 msgstr[3] "Na voljo je še %s za odmor"
 
-#: js/misc/breakManager.js:1245
+#: js/misc/breakManager.js:1244
 msgid "Break Interrupted"
 msgstr "Odmor prekinjen"
 
-#: js/misc/breakManager.js:1316
+#: js/misc/breakManager.js:1315
 msgid "Delay"
 msgstr "Zakasnitev"
 
-#: js/misc/breakManager.js:1337 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1336 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Preskoči"
 
-#: js/misc/breakManager.js:1358
+#: js/misc/breakManager.js:1357
 msgid "Take"
 msgstr "Vzemi odmor"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1421
+#: js/misc/breakManager.js:1420
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -1001,17 +1002,32 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Vrtenje zaklepanja zaslona"
 
+#: js/misc/timeLimitsManager.js:974
+#, javascript-format
+msgid "Screen Time Limit in %d Minute"
+msgid_plural "Screen Time Limit in %d Minutes"
+msgstr[0] "Omejitev časa pred zaslonom poteče čez %d minut"
+msgstr[1] "Omejitev časa pred zaslonom poteče čez %d minuto"
+msgstr[2] "Omejitev časa pred zaslonom poteče čez %d minuti"
+msgstr[3] "Omejitev časa pred zaslonom poteče čez %d minute"
+
+#: js/misc/timeLimitsManager.js:981
+msgid "Your screen time limit is approaching"
+msgstr "Omejitev časa pred zaslonom se približuje"
+
+#: js/misc/timeLimitsManager.js:995
+msgid "Screen Time Limit Reached"
+msgstr "Dosežena omejitev časa pred zaslonom"
+
+#: js/misc/timeLimitsManager.js:996
+msgid "It’s time to stop using the device"
+msgstr "Čas je, da prenehate uporabljati napravo"
+
 #: js/misc/util.js:130
 msgid "Command not found"
 msgstr "Ukaz ni mogoče najti"
 
-#. Replace "Error invoking GLib.shell_parse_argv: " with
-#. something nicer
-#: js/misc/util.js:170
-msgid "Could not parse command:"
-msgstr "Ukaza ni mogoče razčleniti:"
-
-#: js/misc/util.js:178
+#: js/misc/util.js:168
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Izvedba »%s« je spodletela:"
@@ -1176,7 +1192,7 @@ msgstr "Zavrni"
 msgid "Allow"
 msgstr "Dovoli"
 
-#: js/ui/appDisplay.js:1766
+#: js/ui/appDisplay.js:1767
 msgid "Unnamed Folder"
 msgstr "Neimenovana mapa"
 
@@ -1190,7 +1206,7 @@ msgstr "Program »%s« je dodan med pripete programe."
 msgid "%s has been unpinned from the dash."
 msgstr "Program »%s« je odstranjen iz pripetih programov."
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:290
+#: js/ui/appFavorites.js:208 js/ui/main.js:309
 msgid "Undo"
 msgstr "Razveljavi"
 
@@ -1942,19 +1958,19 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: js/ui/main.js:286
+#: js/ui/main.js:305
 msgid "System was put in unsafe mode"
 msgstr "Sistem je v ne-varnem načinu"
 
-#: js/ui/main.js:287
+#: js/ui/main.js:306
 msgid "Apps now have unrestricted access"
 msgstr "Programi imajo zdaj neomejen dostop"
 
-#: js/ui/main.js:347
+#: js/ui/main.js:366
 msgid "Logged in as a privileged user"
 msgstr "Zaznana je prijava s skrbniškimi dovoljenji"
 
-#: js/ui/main.js:348
+#: js/ui/main.js:367
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1962,11 +1978,11 @@ msgstr ""
 "Zagona seje s skrbniškim računom se je treba iz varnostnih razlogov "
 "izogibati. Priporočljivo je uporabljati običajen uporabniški račun."
 
-#: js/ui/main.js:396
+#: js/ui/main.js:415
 msgid "Screen Lock disabled"
 msgstr "Zaklep zaslona je onemogočen"
 
-#: js/ui/main.js:397
+#: js/ui/main.js:416
 msgid "Screen Locking requires the GNOME display manager"
 msgstr ""
 "Zaklepanje zaslona zahteva namestitev upravljalnika zaslona za okolje GNOME."
@@ -2066,7 +2082,7 @@ msgstr "Sistem"
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
-#: js/ui/quickSettings.js:189 js/ui/quickSettings.js:341
+#: js/ui/quickSettings.js:185 js/ui/quickSettings.js:336
 msgid "Open menu"
 msgstr "Odpri meni"
 
@@ -2078,11 +2094,11 @@ msgstr "Zaženi ukaz"
 msgid "Press ESC to close"
 msgstr "Pritisnite tipko Esc za končanje"
 
-#: js/ui/runDialog.js:241
+#: js/ui/runDialog.js:253
 msgid "Restart is not available on Wayland"
 msgstr "Na sistemu Wayland je na voljo ponovni zagon"
 
-#: js/ui/runDialog.js:246
+#: js/ui/runDialog.js:258
 msgid "Restarting…"
 msgstr "Poteka ponovno zaganjanje …"
 
@@ -2355,7 +2371,7 @@ msgstr "Miškine tipke"
 msgid "Accessibility Settings"
 msgstr "Nastavitve dostopnosti"
 
-#: js/ui/status/accessibility.js:140
+#: js/ui/status/accessibility.js:123
 msgid "Large Text"
 msgstr "Veliko besedilo"
 
@@ -2966,15 +2982,15 @@ msgstr ""
 "Program Razširitve GNOME omogoča nameščanje in posodabljanje razširitev, "
 "prilagajanje nastavitev in upravljanje njihovega delovanja."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:64
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
 msgid "Main Window"
 msgstr "Glavno okno"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
 msgid "Available Updates"
 msgstr "Razpoložljive posodobitve"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
 msgid "Search View"
 msgstr "Iskalni pogled"
 
@@ -3143,8 +3159,8 @@ msgstr "Ni nameščenih razširitev"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "Za iskanje in dodajanje razširitev obiščite spletne strani <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
