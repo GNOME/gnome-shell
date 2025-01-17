@@ -678,9 +678,13 @@ class Panel extends St.Widget {
             _('Top Bar'), 'shell-focus-top-bar-symbolic',
             {sortGroup: CtrlAltTab.SortGroup.TOP});
 
-        Main.sessionMode.connect('updated', this._updatePanel.bind(this));
+        Main.sessionMode.connectObject('updated',
+            this._updatePanel.bind(this),
+            this);
 
-        global.display.connect('workareas-changed', () => this.queue_relayout());
+        global.display.connectObject('workareas-changed',
+            () => this.queue_relayout(),
+            this);
         this._updatePanel();
     }
 
