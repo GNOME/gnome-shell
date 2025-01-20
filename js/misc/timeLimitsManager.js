@@ -967,6 +967,9 @@ class TimeLimitsNotificationSource extends GObject.Object {
             console.debug(`TimeLimitsNotificationSource: ${remainingSecs}s left before limit is reached`);
 
             if (remainingSecs > LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS) {
+                this._notification?.destroy();
+                this._notification = null;
+
                 // Schedule to show a notification when the upcoming notification
                 // time is reached.
                 this._scheduleUpdateState(remainingSecs - LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS);
