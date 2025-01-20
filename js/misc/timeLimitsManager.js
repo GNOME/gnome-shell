@@ -915,7 +915,7 @@ class TimeLimitsNotificationSource extends GObject.Object {
         }
 
         if (this._notification === null) {
-            this._notification = new TimeLimitsNotification(this._source);
+            this._notification = new TimeLimitsNotification(this._source, this._app);
             this._notification.connect('destroy', () => (this._notification = null));
         }
 
@@ -1018,10 +1018,17 @@ class TimeLimitsNotificationSource extends GObject.Object {
 
 const TimeLimitsNotification = GObject.registerClass(
 class TimeLimitsNotification extends MessageTray.Notification {
-    constructor(source) {
+    constructor(source, app) {
         super({
             source,
             resident: true,
         });
+
+        this._app = app;
+    }
+
+    activate() {
+        this._app.activate();
+        super.activate();
     }
 });
