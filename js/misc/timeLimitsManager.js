@@ -666,6 +666,8 @@ export const TimeLimitsManager = GObject.registerClass({
             // Schedule an update for when the limit will be reset again.
             this._scheduleUpdateState(startOfTomorrowSecs - nowSecs);
         } else if (this._userState === UserState.ACTIVE) {
+            newState = TimeLimitsState.ACTIVE;
+
             // Schedule an update for when we expect the limit will be reached.
             this._scheduleUpdateState(dailyLimitSecs - activeTimeTodaySecs);
         } else {

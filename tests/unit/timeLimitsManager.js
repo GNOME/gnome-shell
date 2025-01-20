@@ -720,6 +720,42 @@ describe('Time limits manager', () => {
         harness.run();
     });
 
+    it('resets usage if the time limit is changed', () => {
+        const harness = new TestHarness({
+            'org.gnome.desktop.screen-time-limits': {
+                'enabled': true,
+                'daily-limit-seconds': 4 * 60 * 60,
+            },
+        });
+        harness.initializeMockClock('2024-06-01T10:00:00Z');
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+
+        // Run until the limit is reached.
+        harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+        harness.expectProperties('2024-06-01T15:00:00Z', timeLimitsManager, {
+            'state': TimeLimitsState.LIMIT_REACHED,
+            'dailyLimitTime': TestHarness.timeStrToSecs('2024-06-01T14:00:00Z'),
+        });
+
+        // Increase the limit.
+        harness.addSettingsChangeEvent('2024-06-01T15:10:00Z',
+            'org.gnome.desktop.screen-time-limits', 'daily-limit-seconds', 8 * 60 * 60);
+        harness.expectProperties('2024-06-01T15:10:01Z', timeLimitsManager, {
+            'state': TimeLimitsState.ACTIVE,
+            'dailyLimitTime': TestHarness.timeStrToSecs('2024-06-01T18:00:00Z'),
+        });
+
+        // The new limit should be reached eventually
+        harness.expectProperties('2024-06-01T18:00:01Z', timeLimitsManager, {
+            'state': TimeLimitsState.LIMIT_REACHED,
+            'dailyLimitTime': TestHarness.timeStrToSecs('2024-06-01T18:00:00Z'),
+        });
+
+        harness.shutdownManager('2024-06-01T18:10:00Z', timeLimitsManager);
+
+        harness.run();
+    });
+
     it('tracks usage correctly from an existing history file', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
