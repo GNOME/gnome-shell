@@ -35,6 +35,14 @@ unit_tests = [
 ]
 
 foreach test : unit_tests
+  local_test_env = unit_testenv
+
+  # The time limits tests hard-code UTC to keep the code brief, so must be run
+  # in UTC
+  if test == 'timeLimitsManager'
+    local_test_env.set('TZ', 'UTC')
+  endif
+
   test(test, jasmine,
     args: [
       '--module',
@@ -44,7 +52,7 @@ foreach test : unit_tests
       'unit/@0@.js'.format(test),
     ],
     suite: 'unit',
-    env: unit_testenv,
+    env: local_test_env,
     protocol: 'tap',
     workdir: meson.current_source_dir())
 endforeach
