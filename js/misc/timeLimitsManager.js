@@ -36,7 +36,7 @@ import * as MessageTray from '../ui/messageTray.js';
 export const HISTORY_THRESHOLD_SECONDS = 14 * 7 * 24 * 60 * 60;  // maximum time history entries are kept
 const LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS = 10 * 60;  // notify the user 10min before their limit is reached
 const GRAYSCALE_FADE_TIME_SECONDS = 3;
-const GRAYSCALE_SATURATION = 0.0;  // saturation ([0.0, 1.0]) when grayscale mode is activated, 1.0 means full color
+const GRAYSCALE_SATURATION = 1.0;  // saturation ([0.0, 1.0]) when grayscale mode is activated, 1.0 means full desaturation
 
 /** @enum {number} */
 export const TimeLimitsState = {
@@ -839,9 +839,10 @@ class TimeLimitsDispatcher extends GObject.Object {
             this._ensureEnabled();
 
             if (this._manager.grayscaleEnabled) {
+                this._desaturationEffect.factor = 0.0;
                 this._desaturationEffect.set_enabled(true);
                 Main.layoutManager.uiGroup.ease_property(
-                    '@effects.desaturate.factor', 1.0 - GRAYSCALE_SATURATION,
+                    '@effects.desaturate.factor', GRAYSCALE_SATURATION,
                     {
                         duration: GRAYSCALE_FADE_TIME_SECONDS * 1000 || 0,
                         mode: Clutter.AnimationMode.EASE_OUT_QUAD,
