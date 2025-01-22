@@ -429,12 +429,12 @@ st_label_set_text (StLabel     *label,
  * Returns: (transfer none): the #ClutterText used by #StLabel. The actor
  * is owned by the #StLabel and should not be destroyed by the application.
  */
-ClutterActor*
+ClutterText *
 st_label_get_clutter_text (StLabel *label)
 {
   g_return_val_if_fail (ST_LABEL (label), NULL);
 
-  return label->priv->label;
+  return CLUTTER_TEXT (label->priv->label);
 }
 
 

@@ -1165,12 +1165,16 @@ st_entry_set_text (StEntry     *entry,
  *
  * Returns: (transfer none): the #ClutterText used by @entry
  */
-ClutterActor*
+ClutterText *
 st_entry_get_clutter_text (StEntry *entry)
 {
+  StEntryPrivate *priv;
+
   g_return_val_if_fail (ST_ENTRY (entry), NULL);
 
-  return ((StEntryPrivate *)ST_ENTRY_PRIV (entry))->entry;
+  priv = st_entry_get_instance_private (entry);
+
+  return CLUTTER_TEXT (priv->entry);
 }
 
 /**
