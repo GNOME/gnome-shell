@@ -587,7 +587,7 @@ shell_global_class_init (ShellGlobalClass *klass)
 
   props[PROP_STAGE] =
     g_param_spec_object ("stage", NULL, NULL,
-                         CLUTTER_TYPE_ACTOR,
+                         CLUTTER_TYPE_STAGE,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_WINDOW_GROUP] =
