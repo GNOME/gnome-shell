@@ -153,14 +153,7 @@ shell_workspace_background_set_property (GObject      *gobject,
   switch (property_id)
     {
     case PROP_MONITOR_INDEX:
-      {
-        int new_value = g_value_get_int (value);
-        if (self->monitor_index != new_value)
-        {
-          self->monitor_index = new_value;
-          g_object_notify_by_pspec (gobject, obj_props[PROP_MONITOR_INDEX]);
-        }
-      }
+      self->monitor_index = g_value_get_int (value);
       break;
 
     case PROP_STATE_ADJUSTMENT_VALUE:
@@ -199,8 +192,7 @@ shell_workspace_background_class_init (ShellWorkspaceBackgroundClass *klass)
                       0, G_MAXINT, 0,
                       G_PARAM_READWRITE |
                       G_PARAM_CONSTRUCT_ONLY |
-                      G_PARAM_STATIC_STRINGS |
-                      G_PARAM_EXPLICIT_NOTIFY);
+                      G_PARAM_STATIC_STRINGS);
 
   /**
    * ShellWorkspaceBackground:state-adjustment-value:
