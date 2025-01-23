@@ -99,18 +99,6 @@ static void st_theme_context_get_property (GObject      *object,
                                            GValue       *value,
                                            GParamSpec   *pspec);
 
-static void
-st_theme_context_set_scale_factor (StThemeContext *context,
-                                   int             scale_factor)
-{
-  if (scale_factor == context->scale_factor)
-    return;
-
-  context->scale_factor = scale_factor;
-  g_object_notify_by_pspec (G_OBJECT (context), props[PROP_SCALE_FACTOR]);
-  st_theme_context_changed (context);
-}
-
 
 static void
 st_theme_context_finalize (GObject *object)
@@ -576,6 +564,27 @@ st_theme_context_get_scale_factor (StThemeContext *context)
   g_return_val_if_fail (ST_IS_THEME_CONTEXT (context), -1);
 
   return context->scale_factor;
+}
+
+/**
+ * st_theme_context_set_scale_factor:
+ * @context: a #StThemeContext
+ * @factor: the new factor
+ *
+ * Set the new scale factor of @context.
+ */
+void
+st_theme_context_set_scale_factor (StThemeContext *context,
+                                   int             scale_factor)
+{
+  g_return_if_fail (ST_IS_THEME_CONTEXT (context));
+
+  if (scale_factor == context->scale_factor)
+    return;
+
+  context->scale_factor = scale_factor;
+  g_object_notify_by_pspec (G_OBJECT (context), props[PROP_SCALE_FACTOR]);
+  st_theme_context_changed (context);
 }
 
 /**

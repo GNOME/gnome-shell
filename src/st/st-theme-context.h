@@ -62,6 +62,8 @@ StThemeNode *               st_theme_context_intern_node      (StThemeContext   
                                                                StThemeNode                *node);
 
 int st_theme_context_get_scale_factor (StThemeContext *context);
+void st_theme_context_set_scale_factor (StThemeContext *context,
+                                        int             factor);
 
 double st_theme_context_get_resolution (StThemeContext *context);
 
