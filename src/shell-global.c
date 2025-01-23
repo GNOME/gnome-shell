@@ -114,7 +114,6 @@ enum {
   PROP_WINDOW_MANAGER,
   PROP_SETTINGS,
   PROP_DATADIR,
-  PROP_IMAGEDIR,
   PROP_USERDATADIR,
   PROP_FOCUS_MANAGER,
   PROP_FRAME_TIMESTAMPS,
@@ -321,9 +320,6 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_DATADIR:
       g_value_set_string (value, global->datadir);
-      break;
-    case PROP_IMAGEDIR:
-      g_value_set_string (value, global->imagedir);
       break;
     case PROP_USERDATADIR:
       g_value_set_string (value, global->userdatadir);
@@ -616,11 +612,6 @@ shell_global_class_init (ShellGlobalClass *klass)
 
   props[PROP_DATADIR] =
     g_param_spec_string ("datadir", NULL, NULL,
-                         NULL,
-                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
-
-  props[PROP_IMAGEDIR] =
-    g_param_spec_string ("imagedir", NULL, NULL,
                          NULL,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
