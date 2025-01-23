@@ -238,7 +238,7 @@ endif
 libshell = library('shell-' + mutter_api_version,
   sources: libshell_gir_sources + libshell_no_gir_sources,
   dependencies: gnome_shell_deps + [libshell_menu_dep, libst_dep, mutter_dep, gnome_desktop_dep, m_dep],
-  include_directories: [conf_inc, st_inc, include_directories('tray')],
+  include_directories: [conf_inc, include_directories('tray')],
   c_args: gnome_shell_cflags,
   link_with: libshell_link_with,
   build_rpath: mutter_typelibdir,
@@ -247,7 +247,11 @@ libshell = library('shell-' + mutter_api_version,
   install: true
 )
 
-libshell_dep = declare_dependency(link_with: libshell)
+libshell_dep = declare_dependency(
+  link_with: libshell,
+  dependencies: [libst_dep, mutter_dep],
+  include_directories: [include_directories('tray')],
+)
 
 libshell_gir_includes = [
   'Clutter-@0@'.format(mutter_api_version),
@@ -278,7 +282,7 @@ libshell_gir = gnome.generate_gir(libshell,
 executable('gnome-shell', 'main.c',
   c_args: gnome_shell_cflags + typelib_cflags,
   dependencies: gnome_shell_deps + [libshell_dep, libst_dep, mutter_dep],
-  include_directories: [conf_inc, st_inc, include_directories('tray')],
+  include_directories: [conf_inc],
   build_rpath: mutter_typelibdir,
   install_rpath: install_rpath,
   install: true
@@ -303,9 +307,8 @@ executable('gnome-shell-perf-helper', 'shell-perf-helper.c', js_resources,
 )
 
 run_test = executable('run-js-test', 'run-js-test.c',
-  dependencies: [mutter_dep, mtk_dep, gdk_pixbuf_dep, gio_dep, gi_dep, gjs_dep],
+  dependencies: [gio_dep, gi_dep, gjs_dep, libshell_dep],
   c_args: typelib_cflags,
   include_directories: [conf_inc],
-  link_with: libshell,
   build_rpath: mutter_typelibdir,
 )
