@@ -893,7 +893,7 @@ st_widget_class_init (StWidgetClass *klass)
   klass->get_focus_chain = st_widget_real_get_focus_chain;
 
   /**
-   * StWidget:pseudo-class:
+   * StWidget:pseudo-class: (getter get_style_pseudo_class) (setter set_style_pseudo_class):
    *
    * The pseudo-class of the actor. Typical values include "hover", "active",
    * "focus".
@@ -904,7 +904,7 @@ st_widget_class_init (StWidgetClass *klass)
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * StWidget:style-class:
+   * StWidget:style-class: (getter get_style_class_name) (setter set_style_class_name):
    *
    * The style-class of the actor for use in styling.
    */

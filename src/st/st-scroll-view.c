@@ -924,7 +924,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                           ST_PARAM_READABLE);
 
   /**
-   * StScrollView:enable-mouse-scrolling:
+   * StScrollView:enable-mouse-scrolling: (getter get_mouse_scrolling) (setter set_mouse_scrolling):
    *
    * Whether to enable automatic mouse wheel scrolling.
    */
