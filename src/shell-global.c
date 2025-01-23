@@ -643,7 +643,7 @@ shell_global_class_init (ShellGlobalClass *klass)
   props[PROP_FORCE_ANIMATIONS] =
     g_param_spec_boolean ("force-animations", NULL, NULL,
                           FALSE,
-                          G_PARAM_READWRITE  | G_PARAM_CONSTRUCT| G_PARAM_STATIC_STRINGS);
+                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_AUTOMATION_SCRIPT] =
     g_param_spec_object ("automation-script", NULL, NULL,
