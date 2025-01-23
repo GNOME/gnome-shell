@@ -69,8 +69,6 @@ enum {
 static guint signals[LAST_SIGNAL] = { 0 };
 
 static void shell_window_tracker_finalize (GObject *object);
-static void set_focus_app (ShellWindowTracker  *tracker,
-                           ShellApp            *new_focus_app);
 static void on_focus_window_changed (MetaDisplay *display, GParamSpec *spec, ShellWindowTracker *tracker);
 
 static void track_window (ShellWindowTracker *tracker, MetaWindow *window);
@@ -501,7 +499,8 @@ update_focus_app (ShellWindowTracker *self)
       shell_app_update_app_actions (new_focus_app, new_focus_win);
     }
 
-  set_focus_app (self, new_focus_app);
+  if (g_set_object (&self->focus_app, new_focus_app))
+    g_object_notify_by_pspec (G_OBJECT (self), props[PROP_FOCUS_APP]);
 
   g_clear_object (&new_focus_app);
 }
@@ -756,24 +755,6 @@ shell_window_tracker_get_app_from_pid (ShellWindowTracker *tracker,
   g_slist_free (running);
 
   return result;
-}
-
-static void
-set_focus_app (ShellWindowTracker  *tracker,
-               ShellApp            *new_focus_app)
-{
-  if (new_focus_app == tracker->focus_app)
-    return;
-
-  if (tracker->focus_app != NULL)
-    g_object_unref (tracker->focus_app);
-
-  tracker->focus_app = new_focus_app;
-
-  if (tracker->focus_app != NULL)
-    g_object_ref (tracker->focus_app);
-
-  g_object_notify_by_pspec (G_OBJECT (tracker), props[PROP_FOCUS_APP]);
 }
 
 static void
