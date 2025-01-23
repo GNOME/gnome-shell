@@ -46,4 +46,8 @@ gboolean  st_theme_load_stylesheet        (StTheme *theme, GFile *file, GError *
 void      st_theme_unload_stylesheet      (StTheme *theme, GFile *file);
 GSList   *st_theme_get_custom_stylesheets (StTheme *theme);
 
+GFile * st_theme_get_application_stylesheet (StTheme *theme);
+GFile * st_theme_get_theme_stylesheet (StTheme *theme);
+GFile * st_theme_get_default_stylesheet (StTheme *theme);
+
 G_END_DECLS

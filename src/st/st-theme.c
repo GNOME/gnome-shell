@@ -1097,3 +1097,42 @@ _st_theme_resolve_url (StTheme      *theme,
 
   return resource;
 }
+
+/**
+ * st_theme_get_application_stylesheet:
+ *
+ * Returns: (transfer none): the stylesheet
+ */
+GFile *
+st_theme_get_application_stylesheet (StTheme *theme)
+{
+  g_return_val_if_fail (ST_IS_THEME (theme), NULL);
+
+  return theme->application_stylesheet;
+}
+
+/**
+ * st_theme_get_theme_stylesheet:
+ *
+ * Returns: (transfer none): the stylesheet
+ */
+GFile *
+st_theme_get_theme_stylesheet (StTheme *theme)
+{
+  g_return_val_if_fail (ST_IS_THEME (theme), NULL);
+
+  return theme->theme_stylesheet;
+}
+
+/**
+ * st_theme_get_default_stylesheet:
+ *
+ * Returns: (transfer none): the stylesheet
+ */
+GFile *
+st_theme_get_default_stylesheet (StTheme *theme)
+{
+  g_return_val_if_fail (ST_IS_THEME (theme), NULL);
+
+  return theme->default_stylesheet;
+}

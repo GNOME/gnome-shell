@@ -174,12 +174,15 @@ st_viewport_scrollable_interface_init (StScrollableInterface *iface)
   iface->get_adjustments = scrollable_get_adjustments;
 }
 
-static void
+void
 st_viewport_set_clip_to_view (StViewport *viewport,
                               gboolean    clip_to_view)
 {
-  StViewportPrivate *priv =
-    st_viewport_get_instance_private (viewport);
+  StViewportPrivate *priv;
+
+  g_return_if_fail (ST_IS_VIEWPORT (viewport));
+
+  priv = st_viewport_get_instance_private (viewport);
 
   if (!!priv->clip_to_view != !!clip_to_view)
     {
@@ -187,6 +190,17 @@ st_viewport_set_clip_to_view (StViewport *viewport,
       clutter_actor_queue_redraw (CLUTTER_ACTOR (viewport));
       g_object_notify_by_pspec (G_OBJECT (viewport), props[PROP_CLIP_TO_VIEW]);
     }
+}
+
+gboolean
+st_viewport_get_clip_to_view (StViewport *viewport)
+{
+  StViewportPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_VIEWPORT (viewport), FALSE);
+
+  priv = st_viewport_get_instance_private (viewport);
+  return priv->clip_to_view;
 }
 
 static void

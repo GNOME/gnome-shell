@@ -82,17 +82,6 @@ G_DEFINE_TYPE (StSettings, st_settings, G_TYPE_OBJECT)
 
 #define EPSILON (1e-10)
 
-static void
-st_settings_set_slow_down_factor (StSettings *settings,
-                                  double      factor)
-{
-  if (fabs (settings->slow_down_factor - factor) < EPSILON)
-    return;
-
-  settings->slow_down_factor = factor;
-  g_object_notify_by_pspec (G_OBJECT (settings), props[PROP_SLOW_DOWN_FACTOR]);
-}
-
 static gboolean
 get_enable_animations (StSettings *settings)
 {
@@ -100,6 +89,107 @@ get_enable_animations (StSettings *settings)
     return FALSE;
   else
     return settings->enable_animations;
+}
+
+gboolean
+st_settings_get_enable_animations (StSettings *settings)
+{
+  g_return_val_if_fail (ST_IS_SETTINGS (settings), FALSE);
+
+  return get_enable_animations (settings);
+}
+
+gboolean
+st_settings_get_primary_paste (StSettings *settings)
+{
+  g_return_val_if_fail (ST_IS_SETTINGS (settings), FALSE);
+
+  return settings->primary_paste;
+}
+
+int
+st_settings_get_drag_threshold (StSettings *settings)
+{
+  g_return_val_if_fail (ST_IS_SETTINGS (settings), -1);
+
+  return settings->drag_threshold;
+}
+
+const char *
+st_settings_get_font_name (StSettings *settings)
+{
+  g_return_val_if_fail (ST_IS_SETTINGS (settings), NULL);
+
+  return settings->font_name;
+}
+
+const char *
+st_settings_get_gtk_icon_theme (StSettings *settings)
+{
+  g_return_val_if_fail (ST_IS_SETTINGS (settings), NULL);
+
+  return settings->gtk_icon_theme;
+}
+
+StSystemColorScheme
+st_settings_get_color_scheme (StSettings *settings)
+{
+  g_return_val_if_fail (ST_IS_SETTINGS (settings), ST_SYSTEM_COLOR_SCHEME_DEFAULT);
+
+  return settings->color_scheme;
+}
+
+StSystemAccentColor
+st_settings_get_accent_color (StSettings *settings)
+{
+  g_return_val_if_fail (ST_IS_SETTINGS (settings), ST_SYSTEM_ACCENT_COLOR_BLUE);
+
+  return settings->accent_color;
+}
+
+gboolean
+st_settings_get_high_contrast (StSettings *settings)
+{
+  g_return_val_if_fail (ST_IS_SETTINGS (settings), FALSE);
+
+  return settings->high_contrast;
+}
+
+gboolean
+st_settings_get_magnifier_active (StSettings *settings)
+{
+  g_return_val_if_fail (ST_IS_SETTINGS (settings), FALSE);
+
+  return settings->magnifier_active;
+}
+
+gboolean
+st_settings_get_disable_show_password (StSettings *settings)
+{
+  g_return_val_if_fail (ST_IS_SETTINGS (settings), FALSE);
+
+  return settings->disable_show_password;
+}
+
+double
+st_settings_get_slow_down_factor (StSettings *settings)
+{
+  g_return_val_if_fail (ST_SETTINGS (settings), -1);
+
+  return settings->slow_down_factor;
+}
+
+void
+st_settings_set_slow_down_factor (StSettings *settings,
+                                  double      factor)
+{
+  g_return_if_fail (ST_IS_SETTINGS (settings));
+
+  if (fabs (settings->slow_down_factor - factor) < EPSILON)
+    return;
+
+  settings->slow_down_factor = factor;
+  g_object_notify_by_pspec (G_OBJECT (settings), props[PROP_SLOW_DOWN_FACTOR]);
 }
 
 void

@@ -1427,3 +1427,25 @@ st_scroll_view_get_bar_offsets (StScrollView *scroll,
                                           : 0.;
     }
 }
+
+gboolean
+st_scroll_view_get_hscrollbar_visible (StScrollView *scroll)
+{
+  StScrollViewPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_SCROLL_VIEW (scroll), FALSE);
+
+  priv = st_scroll_view_get_instance_private (scroll);
+  return priv->hscrollbar_visible;
+}
+
+gboolean
+st_scroll_view_get_vscrollbar_visible (StScrollView *scroll)
+{
+  StScrollViewPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_SCROLL_VIEW (scroll), FALSE);
+
+  priv = st_scroll_view_get_instance_private (scroll);
+  return priv->vscrollbar_visible;
+}

@@ -37,4 +37,8 @@ struct _StViewportClass
   StWidgetClass parent_class;
 };
 
+void st_viewport_set_clip_to_view (StViewport *viewport,
+                                   gboolean    clip_to_view);
+gboolean st_viewport_get_clip_to_view (StViewport *viewport);
+
 G_END_DECLS

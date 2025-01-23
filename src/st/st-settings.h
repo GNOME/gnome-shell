@@ -55,4 +55,21 @@ void st_settings_inhibit_animations (StSettings *settings);
 
 void st_settings_uninhibit_animations (StSettings *settings);
 
+gboolean st_settings_get_enable_animations (StSettings *settings);
+gboolean st_settings_get_primary_paste (StSettings *settings);
+int st_settings_get_drag_threshold (StSettings *settings);
+
+const char * st_settings_get_font_name (StSettings *settings);
+const char * st_settings_get_gtk_icon_theme (StSettings *settings);
+StSystemColorScheme st_settings_get_color_scheme (StSettings *settings);
+StSystemAccentColor st_settings_get_accent_color (StSettings *settings);
+gboolean st_settings_get_high_contrast (StSettings *settings);
+
+gboolean st_settings_get_magnifier_active (StSettings *settings);
+gboolean st_settings_get_disable_show_password (StSettings *settings);
+
+double st_settings_get_slow_down_factor (StSettings *settings);
+void st_settings_set_slow_down_factor (StSettings *settings,
+                                       double      factor);
+
 G_END_DECLS

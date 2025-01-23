@@ -449,7 +449,7 @@ st_button_get_property (GObject    *gobject,
       g_value_set_boolean (value, priv->is_checked);
       break;
     case PROP_PRESSED:
-      g_value_set_boolean (value, priv->pressed != 0 || priv->press_sequence != NULL);
+      g_value_set_boolean (value, st_button_get_pressed (ST_BUTTON (gobject)));
       break;
 
 
@@ -877,6 +877,25 @@ st_button_set_checked (StButton *button,
     st_widget_remove_style_pseudo_class (ST_WIDGET (button), "checked");
 
   g_object_notify_by_pspec (G_OBJECT (button), props[PROP_CHECKED]);
+}
+
+/**
+ * st_button_get_pressed:
+ * @button: a #StButton
+ *
+ * Get the #StButton:pressed property of a #StButton
+ *
+ * Returns: %TRUE if the button is pressed, or %FALSE if not
+ */
+gboolean
+st_button_get_pressed (StButton *button)
+{
+  StButtonPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_BUTTON (button), FALSE);
+
+  priv = st_button_get_instance_private (button);
+  return priv->pressed != 0 || priv->press_sequence != NULL;
 }
 
 /**

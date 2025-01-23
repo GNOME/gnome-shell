@@ -29,6 +29,14 @@ G_DECLARE_FINAL_TYPE (StImageContent, st_image_content,
 ClutterContent *st_image_content_new_with_preferred_size (int width,
                                                           int height);
 
+void st_image_content_set_preferred_width (StImageContent *content,
+                                           int             width);
+int  st_image_content_get_preferred_width (StImageContent *content);
+
+void st_image_content_set_preferred_height (StImageContent *content,
+                                            int             height);
+int  st_image_content_get_preferred_height (StImageContent *content);
+
 gboolean st_image_content_set_data (StImageContent  *content,
                                     CoglContext     *cogl_context,
                                     const guint8    *data,

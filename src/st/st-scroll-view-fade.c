@@ -253,10 +253,12 @@ st_scroll_view_fade_dispose (GObject *gobject)
   G_OBJECT_CLASS (st_scroll_view_fade_parent_class)->dispose (gobject);
 }
 
-static void
-st_scroll_view_set_fade_margins (StScrollViewFade *self,
-                                 ClutterMargin    *fade_margins)
+void
+st_scroll_view_fade_set_fade_margins (StScrollViewFade *self,
+                                      ClutterMargin    *fade_margins)
 {
+  g_return_if_fail (ST_IS_SCROLL_VIEW_FADE (self));
+
   if (self->fade_margins.left == fade_margins->left &&
       self->fade_margins.right == fade_margins->right &&
       self->fade_margins.top == fade_margins->top &&
@@ -271,10 +273,25 @@ st_scroll_view_set_fade_margins (StScrollViewFade *self,
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_FADE_MARGINS]);
 }
 
-static void
+/**
+ * st_scroll_view_fade_get_fade_margins:
+ *
+ * Returns: (transfer none): The fade margins
+ */
+ClutterMargin *
+st_scroll_view_fade_get_fade_margins (StScrollViewFade *self)
+{
+  g_return_val_if_fail (ST_IS_SCROLL_VIEW_FADE (self), NULL);
+
+  return &self->fade_margins;
+}
+
+void
 st_scroll_view_fade_set_fade_edges (StScrollViewFade *self,
                                     gboolean          fade_edges)
 {
+  g_return_if_fail (ST_IS_SCROLL_VIEW_FADE (self));
+
   if (self->fade_edges == fade_edges)
     return;
 
@@ -289,10 +306,20 @@ st_scroll_view_fade_set_fade_edges (StScrollViewFade *self,
   g_object_thaw_notify (G_OBJECT (self));
 }
 
-static void
+gboolean
+st_scroll_view_fade_get_fade_edges (StScrollViewFade *self)
+{
+  g_return_val_if_fail (ST_IS_SCROLL_VIEW_FADE (self), FALSE);
+
+  return self->fade_edges;
+}
+
+void
 st_scroll_view_fade_set_extend_fade_area (StScrollViewFade *self,
                                           gboolean          extend_fade_area)
 {
+  g_return_if_fail (ST_IS_SCROLL_VIEW_FADE (self));
+
   if (self->extend_fade_area == extend_fade_area)
     return;
 
@@ -302,6 +329,14 @@ st_scroll_view_fade_set_extend_fade_area (StScrollViewFade *self,
     clutter_actor_queue_redraw (self->actor);
 
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_EXTEND_FADE_AREA]);
+}
+
+gboolean
+st_scroll_view_fade_get_extend_fade_area (StScrollViewFade *self)
+{
+  g_return_val_if_fail (ST_IS_SCROLL_VIEW_FADE (self), FALSE);
+
+  return self->extend_fade_area;
 }
 
 static void
@@ -315,7 +350,7 @@ st_scroll_view_fade_set_property (GObject *object,
   switch (prop_id)
     {
     case PROP_FADE_MARGINS:
-      st_scroll_view_set_fade_margins (self, g_value_get_boxed (value));
+      st_scroll_view_fade_set_fade_margins (self, g_value_get_boxed (value));
       break;
     case PROP_FADE_EDGES:
       st_scroll_view_fade_set_fade_edges (self, g_value_get_boolean (value));
