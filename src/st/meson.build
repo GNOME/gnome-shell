@@ -179,19 +179,33 @@ st_cflags = [
   '-DPACKAGE_DATA_DIR="@0@"'.format(pkgdatadir)
 ]
 
+st_deps = [
+  mtk_dep,
+  clutter_dep,
+  mutter_dep,
+  gdk_pixbuf_dep,
+]
+
 # Currently meson requires a shared library for building girs
 libst = shared_library('st-' + mutter_api_version,
   sources: st_gir_sources + st_nogir_sources + croco_sources,
   c_args: st_cflags,
-  dependencies: [mtk_dep, clutter_dep, mutter_dep, libxml_dep, gdk_pixbuf_dep, m_dep, schemas_dep],
+  dependencies: st_deps + [
+    libxml_dep,
+    m_dep,
+    schemas_dep,
+  ],
   build_rpath: mutter_typelibdir,
   install_rpath: mutter_typelibdir,
   install_dir: pkglibdir,
   install: true
 )
 
-libst_dep = declare_dependency(link_with: libst,
-  sources: st_enums[1]
+libst_dep = declare_dependency(
+  link_with: libst,
+  sources: st_enums[1],
+  dependencies: st_deps,
+  include_directories: [st_inc],
 )
 
 if get_option('tests') and have_x11_client
