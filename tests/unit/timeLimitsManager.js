@@ -585,7 +585,8 @@ describe('Time limits manager', () => {
     it('can be disabled via GSettings', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
-                'enabled': false,
+                'history-enabled': false,
+                'daily-limit-enabled': false,
                 'daily-limit-seconds': 4 * 60 * 60,
             },
         });
@@ -608,7 +609,8 @@ describe('Time limits manager', () => {
     it('can be toggled on and off via GSettings', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
-                'enabled': true,
+                'history-enabled': true,
+                'daily-limit-enabled': true,
                 'daily-limit-seconds': 4 * 60 * 60,
             },
         });
@@ -617,7 +619,7 @@ describe('Time limits manager', () => {
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.addSettingsChangeEvent('2024-06-01T11:00:00Z',
-            'org.gnome.desktop.screen-time-limits', 'enabled', false);
+            'org.gnome.desktop.screen-time-limits', 'history-enabled', false);
         harness.expectProperties('2024-06-01T11:00:01Z', timeLimitsManager, {
             'state': TimeLimitsState.DISABLED,
             'dailyLimitTime': 0,
@@ -626,13 +628,13 @@ describe('Time limits manager', () => {
         // Test that toggling it on and off fast is handled OK
         for (var i = 0; i < 3; i++) {
             harness.addSettingsChangeEvent('2024-06-01T11:00:02Z',
-                'org.gnome.desktop.screen-time-limits', 'enabled', true);
+                'org.gnome.desktop.screen-time-limits', 'history-enabled', true);
             harness.addSettingsChangeEvent('2024-06-01T11:00:02Z',
-                'org.gnome.desktop.screen-time-limits', 'enabled', false);
+                'org.gnome.desktop.screen-time-limits', 'history-enabled', false);
         }
 
         harness.addSettingsChangeEvent('2024-06-01T11:00:03Z',
-            'org.gnome.desktop.screen-time-limits', 'enabled', true);
+            'org.gnome.desktop.screen-time-limits', 'history-enabled', true);
         harness.expectState('2024-06-01T11:00:04Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.shutdownManager('2024-06-01T15:10:00Z', timeLimitsManager);
 
@@ -642,7 +644,8 @@ describe('Time limits manager', () => {
     it('tracks a single day’s usage', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
-                'enabled': true,
+                'history-enabled': true,
+                'daily-limit-enabled': true,
                 'daily-limit-seconds': 4 * 60 * 60,
             },
         });
@@ -663,7 +666,8 @@ describe('Time limits manager', () => {
     it('tracks a single day’s usage early in the morning', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
-                'enabled': true,
+                'history-enabled': true,
+                'daily-limit-enabled': true,
                 'daily-limit-seconds': 1 * 60 * 60,
             },
         });
@@ -684,7 +688,8 @@ describe('Time limits manager', () => {
     it('resets usage at the end of the day', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
-                'enabled': true,
+                'history-enabled': true,
+                'daily-limit-enabled': true,
                 'daily-limit-seconds': 4 * 60 * 60,
             },
         });
@@ -723,7 +728,8 @@ describe('Time limits manager', () => {
     it('resets usage if the time limit is changed', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
-                'enabled': true,
+                'history-enabled': true,
+                'daily-limit-enabled': true,
                 'daily-limit-seconds': 4 * 60 * 60,
             },
         });
@@ -759,7 +765,8 @@ describe('Time limits manager', () => {
     it('tracks usage correctly from an existing history file', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
-                'enabled': true,
+                'history-enabled': true,
+                'daily-limit-enabled': true,
                 'daily-limit-seconds': 4 * 60 * 60,
             },
         }, JSON.stringify([
@@ -804,7 +811,8 @@ describe('Time limits manager', () => {
     it('immediately limits usage from an existing history file', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
-                'enabled': true,
+                'history-enabled': true,
+                'daily-limit-enabled': true,
                 'daily-limit-seconds': 4 * 60 * 60,
             },
         }, JSON.stringify([
@@ -853,7 +861,8 @@ describe('Time limits manager', () => {
         it(`ignores invalid history file syntax (test case ${idx + 1})`, () => {
             const harness = new TestHarness({
                 'org.gnome.desktop.screen-time-limits': {
-                    'enabled': true,
+                    'history-enabled': true,
+                    'daily-limit-enabled': true,
                     'daily-limit-seconds': 4 * 60 * 60,
                 },
             }, invalidHistoryFileContents);
@@ -875,7 +884,8 @@ describe('Time limits manager', () => {
     it('expires old entries from an existing history file', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
-                'enabled': true,
+                'history-enabled': true,
+                'daily-limit-enabled': true,
                 'daily-limit-seconds': 4 * 60 * 60,
             },
         }, JSON.stringify([
@@ -951,7 +961,8 @@ describe('Time limits manager', () => {
     it('expires future entries from an existing history file', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
-                'enabled': true,
+                'history-enabled': true,
+                'daily-limit-enabled': true,
                 'daily-limit-seconds': 4 * 60 * 60,
             },
         }, JSON.stringify([
@@ -985,7 +996,8 @@ describe('Time limits manager', () => {
     it('doesn’t count usage across time change events forwards', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
-                'enabled': true,
+                'history-enabled': true,
+                'daily-limit-enabled': true,
                 'daily-limit-seconds': 4 * 60 * 60,
             },
         });
@@ -1021,7 +1033,8 @@ describe('Time limits manager', () => {
     it('doesn’t count usage across time change events backwards', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
-                'enabled': true,
+                'history-enabled': true,
+                'daily-limit-enabled': true,
                 'daily-limit-seconds': 4 * 60 * 60,
             },
         });

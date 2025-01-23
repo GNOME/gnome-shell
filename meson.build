@@ -27,7 +27,7 @@ gjs_req = '>= 1.73.1'
 gtk_req = '>= 4.0'
 mutter_req = '>= 48.alpha'
 polkit_req = '>= 0.100'
-schemas_req = '>= 48.alpha'
+schemas_req = '>= 48.alpha'  # actually requires commit 9d55553, just after alpha
 systemd_req = '>= 246'
 gnome_desktop_req = '>= 40'
 pipewire_req = '>= 0.3.49'

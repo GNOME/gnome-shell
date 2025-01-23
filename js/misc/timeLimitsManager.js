@@ -168,7 +168,7 @@ export const TimeLimitsManager = GObject.registerClass({
     }
 
     _updateSettings() {
-        if (!this._screenTimeLimitSettings.get_boolean('enabled')) {
+        if (!this._screenTimeLimitSettings.get_boolean('history-enabled')) {
             if (this._state !== TimeLimitsState.DISABLED) {
                 this._stopStateMachine().catch(
                     e => console.warn(`Failed to stop state machine: ${e.message}`));
