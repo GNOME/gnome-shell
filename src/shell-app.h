@@ -33,6 +33,8 @@ const char *shell_app_get_name (ShellApp *app);
 const char *shell_app_get_description (ShellApp *app);
 gboolean shell_app_is_window_backed (ShellApp *app);
 
+GActionGroup * shell_app_get_action_group (ShellApp *app);
+
 void shell_app_activate_window (ShellApp *app, MetaWindow *window, guint32 timestamp);
 
 void shell_app_activate (ShellApp      *app);

@@ -137,8 +137,7 @@ shell_app_get_property (GObject    *gobject,
       g_value_set_object (value, shell_app_get_icon (app));
       break;
     case PROP_ACTION_GROUP:
-      if (app->running_state)
-        g_value_set_object (value, app->running_state->muxer);
+      g_value_set_object (value, shell_app_get_action_group (app));
       break;
     case PROP_APP_INFO:
       if (app->info)
@@ -209,6 +208,21 @@ shell_app_get_icon (ShellApp *app)
     app->fallback_icon = g_themed_icon_new ("application-x-executable");
 
   return app->fallback_icon;
+}
+
+/**
+ * shell_app_get_action_group:
+ *
+ * Return value: (transfer none) (nullable):
+ */
+GActionGroup *
+shell_app_get_action_group (ShellApp *app)
+{
+  g_return_val_if_fail (SHELL_IS_APP (app), NULL);
+
+  if (app->running_state)
+    return G_ACTION_GROUP (app->running_state->muxer);
+  return NULL;
 }
 
 /**

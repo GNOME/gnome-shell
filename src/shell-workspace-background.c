@@ -34,6 +34,8 @@ struct _ShellWorkspaceBackground
 
 G_DEFINE_TYPE (ShellWorkspaceBackground, shell_workspace_background, ST_TYPE_WIDGET);
 
+#define EPSILON (1e-10)
+
 static void
 on_workareas_changed (ShellWorkspaceBackground *self)
 {
@@ -157,14 +159,7 @@ shell_workspace_background_set_property (GObject      *gobject,
       break;
 
     case PROP_STATE_ADJUSTMENT_VALUE:
-      {
-        double new_value = g_value_get_double (value);
-        if (self->state_adjustment_value != new_value)
-        {
-          self->state_adjustment_value = new_value;
-          g_object_notify_by_pspec (gobject, obj_props[PROP_STATE_ADJUSTMENT_VALUE]);
-        }
-      }
+      shell_workspace_background_set_state_adjustment_value (self, g_value_get_double (value));
       break;
 
     default:
@@ -216,4 +211,33 @@ shell_workspace_background_init (ShellWorkspaceBackground *self)
   g_signal_connect_object (display, "workareas-changed",
                            G_CALLBACK (on_workareas_changed),
                            self, G_CONNECT_SWAPPED);
+}
+
+int
+shell_workspace_background_get_monitor_index (ShellWorkspaceBackground *self)
+{
+  g_return_val_if_fail (SHELL_IS_WORKSPACE_BACKGROUND (self), -1);
+
+  return self->monitor_index;
+}
+
+double
+shell_workspace_background_get_state_adjustment_value (ShellWorkspaceBackground *self)
+{
+  g_return_val_if_fail (SHELL_IS_WORKSPACE_BACKGROUND (self), -1);
+
+  return self->state_adjustment_value;
+}
+
+void
+shell_workspace_background_set_state_adjustment_value (ShellWorkspaceBackground *self,
+                                                       double                    value)
+{
+  g_return_if_fail (SHELL_IS_WORKSPACE_BACKGROUND (self));
+
+  if (fabs (self->state_adjustment_value - value) < EPSILON)
+    return;
+
+  self->state_adjustment_value = value;
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_STATE_ADJUSTMENT_VALUE]);
 }

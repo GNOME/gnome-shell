@@ -29,4 +29,6 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (ShellCameraMonitor, shell_camera_monitor,
                       SHELL, CAMERA_MONITOR, GObject)
 
+gboolean shell_camera_monitor_get_cameras_in_use (ShellCameraMonitor *monitor);
+
 G_END_DECLS

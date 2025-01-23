@@ -456,3 +456,10 @@ error:
     g_message ("Failed to start camera monitor");
 #endif
 }
+
+gboolean
+shell_camera_monitor_get_cameras_in_use (ShellCameraMonitor *monitor)
+{
+  g_return_val_if_fail (SHELL_IS_CAMERA_MONITOR (monitor), FALSE);
+  return monitor->cameras_in_use;
+}

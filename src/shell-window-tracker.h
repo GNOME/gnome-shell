@@ -21,6 +21,8 @@ ShellApp *shell_window_tracker_get_window_app (ShellWindowTracker *tracker, Meta
 
 ShellApp *shell_window_tracker_get_app_from_pid (ShellWindowTracker *tracker, int pid);
 
+ShellApp *shell_window_tracker_get_focus_app (ShellWindowTracker *tracker);
+
 GSList *shell_window_tracker_get_startup_sequences (ShellWindowTracker *tracker);
 
 G_END_DECLS

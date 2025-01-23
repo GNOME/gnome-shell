@@ -257,17 +257,16 @@ shell_keyring_prompt_get_property (GObject    *obj,
     g_value_set_string (value, self->cancel_label);
     break;
   case PROP_PASSWORD_VISIBLE:
-    g_value_set_boolean (value, self->mode == PROMPTING_FOR_PASSWORD);
+    g_value_set_boolean (value, shell_keyring_prompt_get_password_visible (self));
     break;
   case PROP_CONFIRM_VISIBLE:
-    g_value_set_boolean (value, self->password_new &&
-                                self->mode == PROMPTING_FOR_PASSWORD);
+    g_value_set_boolean (value, shell_keyring_prompt_get_confirm_visible (self));
     break;
   case PROP_WARNING_VISIBLE:
-    g_value_set_boolean (value, self->warning && self->warning[0]);
+    g_value_set_boolean (value, shell_keyring_prompt_get_warning_visible (self));
     break;
   case PROP_CHOICE_VISIBLE:
-    g_value_set_boolean (value, self->choice_label && self->choice_label[0]);
+    g_value_set_boolean (value, shell_keyring_prompt_get_choice_visible (self));
     break;
   case PROP_PASSWORD_ACTOR:
     g_value_set_object (value, shell_keyring_prompt_get_password_actor (self));
@@ -539,6 +538,34 @@ ShellKeyringPrompt *
 shell_keyring_prompt_new (void)
 {
 	return g_object_new (SHELL_TYPE_KEYRING_PROMPT, NULL);
+}
+
+gboolean
+shell_keyring_prompt_get_password_visible (ShellKeyringPrompt *self)
+{
+  g_return_val_if_fail (SHELL_IS_KEYRING_PROMPT (self), FALSE);
+  return self->mode == PROMPTING_FOR_PASSWORD;
+}
+
+gboolean
+shell_keyring_prompt_get_confirm_visible (ShellKeyringPrompt *self)
+{
+  g_return_val_if_fail (SHELL_IS_KEYRING_PROMPT (self), FALSE);
+  return self->password_new && self->mode == PROMPTING_FOR_PASSWORD;
+}
+
+gboolean
+shell_keyring_prompt_get_warning_visible (ShellKeyringPrompt *self)
+{
+  g_return_val_if_fail (SHELL_IS_KEYRING_PROMPT (self), FALSE);
+  return self->warning && self->warning[0];
+}
+
+gboolean
+shell_keyring_prompt_get_choice_visible (ShellKeyringPrompt *self)
+{
+  g_return_val_if_fail (SHELL_IS_KEYRING_PROMPT (self), FALSE);
+  return self->choice_label && self->choice_label[0];
 }
 
 /**

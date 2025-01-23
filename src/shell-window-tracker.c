@@ -713,6 +713,18 @@ shell_window_tracker_get_window_app (ShellWindowTracker *tracker,
   return app;
 }
 
+/**
+ * shell_window_tracker_get_focus_app:
+ *
+ * Returns: (transfer none) (nullable):
+ */
+ShellApp *
+shell_window_tracker_get_focus_app (ShellWindowTracker *tracker)
+{
+  g_return_val_if_fail (SHELL_IS_WINDOW_TRACKER (tracker), NULL);
+  return tracker->focus_app;
+}
+
 
 /**
  * shell_window_tracker_get_app_from_pid:

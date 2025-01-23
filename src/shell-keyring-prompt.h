@@ -37,6 +37,11 @@ G_DECLARE_FINAL_TYPE (ShellKeyringPrompt, shell_keyring_prompt,
 
 ShellKeyringPrompt * shell_keyring_prompt_new                  (void);
 
+gboolean shell_keyring_prompt_get_password_visible (ShellKeyringPrompt *self);
+gboolean shell_keyring_prompt_get_confirm_visible (ShellKeyringPrompt *self);
+gboolean shell_keyring_prompt_get_warning_visible (ShellKeyringPrompt *self);
+gboolean shell_keyring_prompt_get_choice_visible (ShellKeyringPrompt *self);
+
 ClutterText *        shell_keyring_prompt_get_password_actor   (ShellKeyringPrompt *self);
 
 void                 shell_keyring_prompt_set_password_actor   (ShellKeyringPrompt *self,

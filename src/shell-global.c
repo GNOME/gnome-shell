@@ -44,9 +44,7 @@
 #include "shell-window-tracker.h"
 #include "shell-app-usage.h"
 #include "shell-app-cache-private.h"
-#include "shell-wm.h"
 #include "shell-util.h"
-#include "st.h"
 #include "switcheroo-control.h"
 
 static ShellGlobal *the_object = NULL;
@@ -226,29 +224,13 @@ shell_global_set_property(GObject         *object,
       global->session_mode = g_ascii_strdown (g_value_get_string (value), -1);
       break;
     case PROP_FRAME_TIMESTAMPS:
-      {
-        gboolean enable = g_value_get_boolean (value);
-
-        if (global->frame_timestamps != enable)
-          {
-            global->frame_timestamps = enable;
-            g_object_notify_by_pspec (object, props[PROP_FRAME_TIMESTAMPS]);
-          }
-      }
+      shell_global_set_frame_timestamps (global, g_value_get_boolean (value));
       break;
     case PROP_FRAME_FINISH_TIMESTAMP:
-      {
-        gboolean enable = g_value_get_boolean (value);
-
-        if (global->frame_finish_timestamp != enable)
-          {
-            global->frame_finish_timestamp = enable;
-            g_object_notify_by_pspec (object, props[PROP_FRAME_FINISH_TIMESTAMP]);
-          }
-      }
+      shell_global_set_frame_finish_timestamp (global, g_value_get_boolean (value));
       break;
     case PROP_FORCE_ANIMATIONS:
-      global->force_animations = g_value_get_boolean (value);
+      shell_global_set_force_animations (global, g_value_get_boolean (value));
       break;
     case PROP_AUTOMATION_SCRIPT:
       g_set_object (&global->automation_script, g_value_get_object (value));
@@ -288,20 +270,11 @@ shell_global_get_property(GObject         *object,
       g_value_set_object (value, global->workspace_manager);
       break;
     case PROP_SCREEN_WIDTH:
-      {
-        int width, height;
-
-        meta_display_get_size (global->meta_display, &width, &height);
-        g_value_set_int (value, width);
-      }
+      g_value_set_int (value, shell_global_get_screen_width (global));
+      break;
       break;
     case PROP_SCREEN_HEIGHT:
-      {
-        int width, height;
-
-        meta_display_get_size (global->meta_display, &width, &height);
-        g_value_set_int (value, height);
-      }
+      g_value_set_int (value, shell_global_get_screen_height (global));
       break;
     case PROP_STAGE:
       g_value_set_object (value, global->stage);
@@ -643,7 +616,7 @@ shell_global_class_init (ShellGlobalClass *klass)
   props[PROP_FORCE_ANIMATIONS] =
     g_param_spec_boolean ("force-animations", NULL, NULL,
                           FALSE,
-                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   props[PROP_AUTOMATION_SCRIPT] =
     g_param_spec_object ("automation-script", NULL, NULL,
@@ -768,6 +741,17 @@ shell_global_get_backend (ShellGlobal *global)
 }
 
 /**
+ * shell_global_get_compositor:
+ *
+ * Return value: (transfer none): The #MetaCompositor
+ */
+MetaCompositor *
+shell_global_get_compositor (ShellGlobal *global)
+{
+  return global->compositor;
+}
+
+/**
  * shell_global_get_context:
  *
  * Return value: (transfer none): The #MetaContext
@@ -812,6 +796,28 @@ shell_global_get_workspace_manager (ShellGlobal  *global)
 }
 
 /**
+ * shell_global_get_window_manager:
+ *
+ * Return value: (transfer none): The default #ShellWM
+ */
+ShellWM *
+shell_global_get_window_manager (ShellGlobal  *global)
+{
+  return global->wm;
+}
+
+/**
+ * shell_global_get_focus_manager:
+ *
+ * Return value: (transfer none): The default #StFocusManager
+ */
+StFocusManager *
+shell_global_get_focus_manager (ShellGlobal  *global)
+{
+  return global->focus_manager;
+}
+
+/**
  * shell_global_get_window_actors:
  *
  * Gets the list of #MetaWindowActor for the plugin's screen
@@ -831,6 +837,46 @@ shell_global_get_window_actors (ShellGlobal *global)
       filtered = g_list_prepend (filtered, l->data);
 
   return g_list_reverse (filtered);
+}
+
+/**
+ * shell_global_get_window_group:
+ *
+ * Return value: (transfer none):
+ */
+ClutterActor *
+shell_global_get_window_group (ShellGlobal *global)
+{
+  return meta_compositor_get_window_group (global->compositor);
+}
+
+/**
+ * shell_global_get_top_window_group:
+ *
+ * Return value: (transfer none):
+ */
+ClutterActor *
+shell_global_get_top_window_group (ShellGlobal *global)
+{
+  return meta_compositor_get_top_window_group (global->compositor);
+}
+
+int
+shell_global_get_screen_width (ShellGlobal *global)
+{
+  int width;
+
+  meta_display_get_size (global->meta_display, &width, NULL);
+  return width;
+}
+
+int
+shell_global_get_screen_height (ShellGlobal *global)
+{
+  int height;
+
+  meta_display_get_size (global->meta_display, NULL, &height);
+  return height;
 }
 
 static void
@@ -1578,6 +1624,46 @@ shell_global_get_session_mode (ShellGlobal *global)
   return global->session_mode;
 }
 
+gboolean
+shell_global_get_force_animations (ShellGlobal *global)
+{
+  return global->force_animations;
+}
+
+void
+shell_global_set_force_animations (ShellGlobal *global,
+                                   gboolean     force)
+{
+  if (force == global->force_animations)
+    return;
+
+  global->force_animations = force;
+  g_object_notify_by_pspec (G_OBJECT (global), props[PROP_FORCE_ANIMATIONS]);
+}
+
+const char *
+shell_global_get_datadir (ShellGlobal *global)
+{
+  return global->datadir;
+}
+
+const char *
+shell_global_get_userdatadir (ShellGlobal *global)
+{
+  return global->userdatadir;
+}
+
+/**
+ * shell_global_get_automation_script:
+ *
+ * Return value: (transfer none):
+ */
+GFile *
+shell_global_get_automation_script (ShellGlobal *global)
+{
+  return global->automation_script;
+}
+
 static void
 delete_variant_cb (GObject      *object,
                    GAsyncResult *result,
@@ -1887,4 +1973,38 @@ shell_global_get_app_usage (ShellGlobal *global)
   if (!global->app_usage)
     global->app_usage = g_object_new (SHELL_TYPE_APP_USAGE, NULL);
   return global->app_usage;
+}
+
+gboolean
+shell_global_get_frame_timestamps (ShellGlobal *global)
+{
+  return global->frame_timestamps;
+}
+
+void
+shell_global_set_frame_timestamps (ShellGlobal *global,
+                                   gboolean     enable)
+{
+  if (global->frame_timestamps != enable)
+    {
+      global->frame_timestamps = enable;
+      g_object_notify_by_pspec (G_OBJECT (global), props[PROP_FRAME_TIMESTAMPS]);
+    }
+}
+
+gboolean
+shell_global_get_frame_finish_timestamp (ShellGlobal *global)
+{
+  return global->frame_finish_timestamp;
+}
+
+void
+shell_global_set_frame_finish_timestamp (ShellGlobal *global,
+                                         gboolean     enable)
+{
+  if (global->frame_finish_timestamp != enable)
+    {
+      global->frame_finish_timestamp = enable;
+      g_object_notify_by_pspec (G_OBJECT (global), props[PROP_FRAME_FINISH_TIMESTAMP]);
+    }
 }

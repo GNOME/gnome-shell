@@ -346,6 +346,22 @@ shell_window_preview_layout_class_init (ShellWindowPreviewLayoutClass *klass)
 }
 
 /**
+ * shell_window_preview_layout_get_bounding_box:
+ *
+ * Returns: (transfer none):
+ */
+ClutterActorBox *
+shell_window_preview_layout_get_bounding_box (ShellWindowPreviewLayout *self)
+{
+  ShellWindowPreviewLayoutPrivate *priv;
+
+  g_return_val_if_fail (SHELL_IS_WINDOW_PREVIEW_LAYOUT (self), NULL);
+
+  priv = shell_window_preview_layout_get_instance_private (self);
+  return &priv->bounding_box;
+}
+
+/**
  * shell_window_preview_layout_add_window:
  * @self: a #ShellWindowPreviewLayout
  * @window: the #MetaWindow

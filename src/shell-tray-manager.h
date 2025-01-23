@@ -16,4 +16,6 @@ void              shell_tray_manager_manage_screen (ShellTrayManager *manager,
                                                     StWidget         *theme_widget);
 void              shell_tray_manager_unmanage_screen (ShellTrayManager *manager);
 
+CoglColor * shell_tray_manager_get_bg_color (ShellTrayManager *manager);
+
 G_END_DECLS

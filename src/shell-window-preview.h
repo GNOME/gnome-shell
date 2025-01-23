@@ -8,4 +8,6 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (ShellWindowPreview, shell_window_preview,
                       SHELL, WINDOW_PREVIEW, StWidget)
 
+ClutterActor * shell_window_preview_get_window_container (ShellWindowPreview *preview);
+
 G_END_DECLS

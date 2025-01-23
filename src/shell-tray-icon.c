@@ -273,6 +273,30 @@ shell_tray_icon_new (NaTrayChild *tray_child)
   return CLUTTER_ACTOR (tray_icon);
 }
 
+pid_t
+shell_tray_icon_get_pid (ShellTrayIcon *icon)
+{
+  g_return_val_if_fail (SHELL_IS_TRAY_ICON (icon), -1);
+
+  return icon->pid;
+}
+
+const char *
+shell_tray_icon_get_title (ShellTrayIcon *icon)
+{
+  g_return_val_if_fail (SHELL_IS_TRAY_ICON (icon), NULL);
+
+  return icon->title;
+}
+
+const char *
+shell_tray_icon_get_wm_class (ShellTrayIcon *icon)
+{
+  g_return_val_if_fail (SHELL_IS_TRAY_ICON (icon), NULL);
+
+  return icon->wm_class;
+}
+
 /**
  * shell_tray_icon_click:
  * @icon: a #ShellTrayIcon

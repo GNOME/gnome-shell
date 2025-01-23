@@ -8,4 +8,10 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (ShellWorkspaceBackground, shell_workspace_background,
                       SHELL, WORKSPACE_BACKGROUND, StWidget)
 
+int shell_workspace_background_get_monitor_index (ShellWorkspaceBackground *bg);
+
+double shell_workspace_background_get_state_adjustment_value (ShellWorkspaceBackground *bg);
+void   shell_workspace_background_set_state_adjustment_value (ShellWorkspaceBackground *bg,
+                                                              double                    value);
+
 G_END_DECLS

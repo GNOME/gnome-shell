@@ -19,6 +19,8 @@ struct _ShellWindowPreviewLayout
   ShellWindowPreviewLayoutPrivate *priv;
 };
 
+ClutterActorBox * shell_window_preview_layout_get_bounding_box (ShellWindowPreviewLayout *self);
+
 ClutterActor * shell_window_preview_layout_add_window (ShellWindowPreviewLayout  *self,
                                                        MetaWindow *window);
 

@@ -176,6 +176,18 @@ shell_tray_manager_new (void)
   return g_object_new (SHELL_TYPE_TRAY_MANAGER, NULL);
 }
 
+/**
+ * shell_tray_manager_get_bg_color:
+ *
+ * Returns: (transfer none):
+ */
+CoglColor *
+shell_tray_manager_get_bg_color (ShellTrayManager *manager)
+{
+  g_return_val_if_fail (SHELL_IS_TRAY_MANAGER (manager), NULL);
+  return &manager->bg_color;
+}
+
 static void
 shell_tray_manager_ensure_resources (ShellTrayManager *manager)
 {
