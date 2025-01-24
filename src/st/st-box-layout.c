@@ -244,10 +244,7 @@ st_box_layout_set_vertical (StBoxLayout *box,
                          : CLUTTER_ORIENTATION_HORIZONTAL;
 
   if (clutter_box_layout_get_orientation (CLUTTER_BOX_LAYOUT (layout)) != orientation)
-    {
-      clutter_box_layout_set_orientation (CLUTTER_BOX_LAYOUT (layout), orientation);
-      g_object_notify_by_pspec (G_OBJECT (box), props[PROP_VERTICAL]);
-    }
+    clutter_box_layout_set_orientation (CLUTTER_BOX_LAYOUT (layout), orientation);
 }
 
 /**
