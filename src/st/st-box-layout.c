@@ -116,7 +116,9 @@ st_box_layout_set_property (GObject      *object,
       st_box_layout_set_orientation (box, g_value_get_enum (value));
       break;
     case PROP_VERTICAL:
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       st_box_layout_set_vertical (box, g_value_get_boolean (value));
+G_GNUC_END_IGNORE_DEPRECATIONS
       break;
 
     default:
@@ -197,7 +199,7 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
   props[PROP_VERTICAL] =
     g_param_spec_boolean ("vertical", NULL, NULL,
                           FALSE,
-                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY | G_PARAM_DEPRECATED);
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 
