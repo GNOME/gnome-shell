@@ -139,15 +139,12 @@ st_box_layout_style_changed (StWidget *self)
 }
 
 static void
-layout_notify (GObject    *object,
-               GParamSpec *pspec,
-               gpointer    user_data)
+on_layout_orientation_changed (GObject    *object,
+                               GParamSpec *pspec,
+                               gpointer    user_data)
 {
-  GObject *self = user_data;
-  const char *prop_name = g_param_spec_get_name (pspec);
-
-  if (g_object_class_find_property (G_OBJECT_GET_CLASS (self), prop_name))
-    g_object_notify (self, prop_name);
+  GObject *box = user_data;
+  g_object_notify_by_pspec (box, props[PROP_VERTICAL]);
 }
 
 static void
@@ -161,7 +158,8 @@ on_layout_manager_notify (GObject    *object,
   if (layout == NULL)
     return;
 
-  g_signal_connect (layout, "notify", G_CALLBACK (layout_notify), object);
+  g_signal_connect (layout, "notify::orientation",
+                    G_CALLBACK (on_layout_orientation_changed), object);
 }
 
 static void
