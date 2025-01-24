@@ -40,9 +40,10 @@ const GRAYSCALE_SATURATION = 1.0;  // saturation ([0.0, 1.0]) when grayscale mod
 
 /** @enum {number} */
 export const TimeLimitsState = {
-    /* screen time limits are disabled */
+    /* screen time limit history is disabled */
     DISABLED: 0,
-    /* screen time limits are enabled, but the limit has not been hit yet */
+    /* screen time limit history recording is enabled, but limits are disabled or
+     * the limit has not been hit yet */
     ACTIVE: 1,
     /* limit has been reached */
     LIMIT_REACHED: 2,
@@ -79,7 +80,7 @@ function userStateToString(userState) {
 /**
  * A manager class which tracks total active/inactive time for a user, and
  * signals when the user has reached their daily time limit for actively using
- * the device.
+ * the device, if limits are enabled.
  *
  * Active/Inactive time is based off the total time the user account has spent
  * logged in to at least one active session, not idle (and not locked, but
@@ -107,6 +108,10 @@ export const TimeLimitsManager = GObject.registerClass({
             'daily-limit-time', null, null,
             GObject.ParamFlags.READABLE,
             0, GLib.MAX_UINT64, 0),
+        'daily-limit-enabled': GObject.ParamSpec.boolean(
+            'daily-limit-enabled', null, null,
+            GObject.ParamFlags.READABLE,
+            true),
         'grayscale-enabled': GObject.ParamSpec.boolean(
             'grayscale-enabled', null, null,
             GObject.ParamFlags.READABLE,
@@ -151,6 +156,7 @@ export const TimeLimitsManager = GObject.registerClass({
         this._screenTimeLimitSettings.connectObject(
             'changed', () => this._updateSettings(),
             'changed::daily-limit-seconds', () => this.notify('daily-limit-time'),
+            'changed::daily-limit-enabled', () => this.notify('daily-limit-enabled'),
             'changed::grayscale', () => this.notify('grayscale-enabled'),
             this);
 
@@ -612,6 +618,9 @@ export const TimeLimitsManager = GObject.registerClass({
      * @returns {number}
      */
     _calculateDailyLimitReachedAtSecs(nowSecs, dailyLimitSecs, startOfTodaySecs) {
+        console.assert(this.dailyLimitEnabled,
+            'Daily limit reached-at time only makes sense if limits are enabled');
+
         // NOTE: This might return -1.
         const firstTransitionTodayIdx = this._stateTransitions.findIndex(e => e['wallTimeSecs'] >= startOfTodaySecs);
 
@@ -656,11 +665,13 @@ export const TimeLimitsManager = GObject.registerClass({
         // Work out how much time the user has spent at the screen today.
         const activeTimeTodaySecs = this._calculateActiveTimeTodaySecs(nowSecs, startOfTodaySecs);
         const dailyLimitSecs = this._screenTimeLimitSettings.get_uint('daily-limit-seconds');
+        const dailyLimitEnabled = this._screenTimeLimitSettings.get_boolean('daily-limit-enabled');
 
+        const dailyLimitDebug = dailyLimitEnabled ? `${dailyLimitSecs}s` : 'disabled';
         console.debug('TimeLimitsManager: Active time today: ' +
-            `${activeTimeTodaySecs}s, daily limit ${dailyLimitSecs}s`);
+            `${activeTimeTodaySecs}s, daily limit ${dailyLimitDebug}`);
 
-        if (activeTimeTodaySecs >= dailyLimitSecs) {
+        if (dailyLimitEnabled && activeTimeTodaySecs >= dailyLimitSecs) {
             newState = TimeLimitsState.LIMIT_REACHED;
 
             // Schedule an update for when the limit will be reset again.
@@ -669,7 +680,8 @@ export const TimeLimitsManager = GObject.registerClass({
             newState = TimeLimitsState.ACTIVE;
 
             // Schedule an update for when we expect the limit will be reached.
-            this._scheduleUpdateState(dailyLimitSecs - activeTimeTodaySecs);
+            if (dailyLimitEnabled)
+                this._scheduleUpdateState(dailyLimitSecs - activeTimeTodaySecs);
         } else {
             // User is inactive, so no point scheduling anything until they become
             // active again.
@@ -728,6 +740,9 @@ export const TimeLimitsManager = GObject.registerClass({
         case TimeLimitsState.DISABLED:
             return 0;
         case TimeLimitsState.ACTIVE: {
+            if (!this.dailyLimitEnabled)
+                return 0;
+
             const nowSecs = this.getCurrentTime();
             const [startOfTodaySecs] = this._getStartOfTodaySecs(nowSecs);
             const activeTimeTodaySecs = this._calculateActiveTimeTodaySecs(nowSecs, startOfTodaySecs);
@@ -758,6 +773,18 @@ export const TimeLimitsManager = GObject.registerClass({
     }
 
     /**
+     * Whether the daily limit is enabled.
+     *
+     * If false, screen usage information is recorded, but no limit is enforced.
+     * reached.
+     *
+     * @type {boolean}
+     */
+    get dailyLimitEnabled() {
+        return this._screenTimeLimitSettings.get_boolean('daily-limit-enabled');
+    }
+
+    /**
      * Whether the screen should be made grayscale once the daily limit is
      * reached.
      *
@@ -782,13 +809,15 @@ class TimeLimitsDispatcher extends GObject.Object {
         this._manager = manager;
         this._manager.connectObject(
             'notify::state', this._onStateChanged.bind(this),
+            'notify::daily-limit-enabled', this._onStateChanged.bind(this),
             'notify::grayscale-enabled', this._onStateChanged.bind(this),
             this);
 
         this._notificationSource = null;
         this._desaturationEffect = null;
 
-        if (this._manager.state === TimeLimitsState.DISABLED)
+        if (this._manager.state === TimeLimitsState.DISABLED ||
+            !this._manager.dailyLimitEnabled)
             this._ensureDisabled();
         else
             this._ensureEnabled();
@@ -829,8 +858,12 @@ class TimeLimitsDispatcher extends GObject.Object {
             break;
 
         case TimeLimitsState.ACTIVE: {
-            this._ensureEnabled();
-            this._desaturationEffect.set_enabled(false);
+            if (this._manager.dailyLimitEnabled) {
+                this._ensureEnabled();
+                this._desaturationEffect.set_enabled(false);
+            } else {
+                this._ensureDisabled();
+            }
 
             break;
         }
@@ -880,6 +913,7 @@ class TimeLimitsNotificationSource extends GObject.Object {
         this._manager = manager;
         this._manager.connectObject(
             'notify::state', this._onStateChanged.bind(this),
+            'notify::daily-limit-enabled', this._onStateChanged.bind(this),
             'notify::daily-limit-time', this._onStateChanged.bind(this),
             this);
 
@@ -961,6 +995,12 @@ class TimeLimitsNotificationSource extends GObject.Object {
             break;
 
         case TimeLimitsState.ACTIVE: {
+            // Remove active notifications if limits have been disabled.
+            if (!this._manager.dailyLimitEnabled) {
+                this.destroy();
+                break;
+            }
+
             // Work out when the time limit will be, and display some warnings
             // that it’s impending.
             const limitDueTime = this._manager.dailyLimitTime;

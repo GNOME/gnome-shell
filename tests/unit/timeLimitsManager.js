@@ -63,6 +63,7 @@ class TestHarness {
         this._settings = settings;
         this._settingsChangedCallback = null;
         this._settingsChangedDailyLimitSecondsCallback = null;
+        this._settingsChangedDailyLimitEnabledCallback = null;
         this._settingsChangedGrayscaleCallback = null;
 
         // These two emulate relevant bits of the o.fdo.login1.User API
@@ -446,12 +447,14 @@ class TestHarness {
                         const [
                             changedStr, changedCallback,
                             changedDailyLimitSecondsStr, changedDailyLimitSecondsCallback,
+                            changedDailyLimitEnabledStr, changedDailyLimitEnabledCallback,
                             changedGrayscaleStr, changedGrayscaleCallback,
                             obj,
                         ] = args;
 
                         if (changedStr !== 'changed' ||
                             changedDailyLimitSecondsStr !== 'changed::daily-limit-seconds' ||
+                            changedDailyLimitEnabledStr !== 'changed::daily-limit-enabled' ||
                             changedGrayscaleStr !== 'changed::grayscale' ||
                             typeof obj !== 'object')
                             fail('Gio.Settings.connectObject() not called in expected way');
@@ -460,6 +463,7 @@ class TestHarness {
 
                         this._settingsChangedCallback = changedCallback;
                         this._settingsChangedDailyLimitSecondsCallback = changedDailyLimitSecondsCallback;
+                        this._settingsChangedDailyLimitEnabledCallback = changedDailyLimitEnabledCallback;
                         this._settingsChangedGrayscaleCallback = changedGrayscaleCallback;
                     },
                     get_boolean: key => {
@@ -514,6 +518,9 @@ class TestHarness {
             if (event.key === 'daily-limit-seconds' &&
                 this._settingsChangedDailyLimitSecondsCallback)
                 this._settingsChangedDailyLimitSecondsCallback(event.key);
+            if (event.key === 'daily-limit-enabled' &&
+                this._settingsChangedDailyLimitEnabledCallback)
+                this._settingsChangedDailyLimitEnabledCallback(event.key);
             if (event.key === 'grayscale' &&
                 this._settingsChangedGrayscaleCallback)
                 this._settingsChangedGrayscaleCallback(event.key);
