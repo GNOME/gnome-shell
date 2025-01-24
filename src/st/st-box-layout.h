@@ -45,6 +45,10 @@ struct _StBoxLayout
 
 StWidget *st_box_layout_new (void);
 
+ClutterOrientation st_box_layout_get_orientation (StBoxLayout *box);
+void st_box_layout_set_orientation (StBoxLayout        *box,
+                                    ClutterOrientation  orientation);
+
 void     st_box_layout_set_vertical   (StBoxLayout *box,
                                        gboolean     vertical);
 gboolean st_box_layout_get_vertical   (StBoxLayout *box);

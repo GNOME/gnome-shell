@@ -58,6 +58,7 @@
 enum {
   PROP_0,
 
+  PROP_ORIENTATION,
   PROP_VERTICAL,
 
   N_PROPS
@@ -85,6 +86,11 @@ st_box_layout_get_property (GObject    *object,
 
   switch (property_id)
     {
+    case PROP_ORIENTATION:
+      layout = clutter_actor_get_layout_manager (CLUTTER_ACTOR (object));
+      orientation = clutter_box_layout_get_orientation (CLUTTER_BOX_LAYOUT (layout));
+      g_value_set_enum (value, orientation);
+      break;
     case PROP_VERTICAL:
       layout = clutter_actor_get_layout_manager (CLUTTER_ACTOR (object));
       orientation = clutter_box_layout_get_orientation (CLUTTER_BOX_LAYOUT (layout));
@@ -106,6 +112,9 @@ st_box_layout_set_property (GObject      *object,
 
   switch (property_id)
     {
+    case PROP_ORIENTATION:
+      st_box_layout_set_orientation (box, g_value_get_enum (value));
+      break;
     case PROP_VERTICAL:
       st_box_layout_set_vertical (box, g_value_get_boolean (value));
       break;
@@ -136,6 +145,7 @@ on_layout_orientation_changed (GObject    *object,
                                gpointer    user_data)
 {
   GObject *box = user_data;
+  g_object_notify_by_pspec (box, props[PROP_ORIENTATION]);
   g_object_notify_by_pspec (box, props[PROP_VERTICAL]);
 }
 
@@ -165,6 +175,18 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
   object_class->set_property = st_box_layout_set_property;
 
   widget_class->style_changed = st_box_layout_style_changed;
+
+  /**
+   * StBoxLayout:orientation:
+   *
+   * The orientation of the #StBoxLayout, either horizontal or
+   * vertical
+   */
+  props[PROP_ORIENTATION] =
+    g_param_spec_enum ("orientation", NULL, NULL,
+                       CLUTTER_TYPE_ORIENTATION,
+                       CLUTTER_ORIENTATION_HORIZONTAL,
+                       ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StBoxLayout:vertical:
@@ -205,6 +227,47 @@ st_box_layout_new (void)
 }
 
 /**
+ * st_box_layout_set_orientation:
+ * @box: A #StBoxLayout
+ * @orientation: the orientation of the #StBoxLayout
+ *
+ * Set the value of the #StBoxLayout:orientation property
+ */
+void
+st_box_layout_set_orientation (StBoxLayout        *box,
+                               ClutterOrientation  orientation)
+{
+  ClutterLayoutManager *layout;
+
+  g_return_if_fail (ST_IS_BOX_LAYOUT (box));
+
+  layout = clutter_actor_get_layout_manager (CLUTTER_ACTOR (box));
+
+  if (clutter_box_layout_get_orientation (CLUTTER_BOX_LAYOUT (layout)) != orientation)
+    clutter_box_layout_set_orientation (CLUTTER_BOX_LAYOUT (layout), orientation);
+}
+
+/**
+ * st_box_layout_get_orientation:
+ * @box: A #StBoxLayout
+ *
+ * Get the value of the #StBoxLayout:orientation property.
+ *
+ * Returns: the orientation
+ */
+ClutterOrientation
+st_box_layout_get_orientation (StBoxLayout *box)
+{
+  ClutterLayoutManager *layout;
+
+  g_return_val_if_fail (ST_IS_BOX_LAYOUT (box),
+                        CLUTTER_ORIENTATION_HORIZONTAL);
+
+  layout = clutter_actor_get_layout_manager (CLUTTER_ACTOR (box));
+  return clutter_box_layout_get_orientation (CLUTTER_BOX_LAYOUT (layout));
+}
+
+/**
  * st_box_layout_set_vertical:
  * @box: A #StBoxLayout
  * @vertical: %TRUE if the layout should be vertical
@@ -215,17 +278,13 @@ void
 st_box_layout_set_vertical (StBoxLayout *box,
                             gboolean     vertical)
 {
-  ClutterLayoutManager *layout;
   ClutterOrientation orientation;
 
   g_return_if_fail (ST_IS_BOX_LAYOUT (box));
 
-  layout = clutter_actor_get_layout_manager (CLUTTER_ACTOR (box));
   orientation = vertical ? CLUTTER_ORIENTATION_VERTICAL
                          : CLUTTER_ORIENTATION_HORIZONTAL;
-
-  if (clutter_box_layout_get_orientation (CLUTTER_BOX_LAYOUT (layout)) != orientation)
-    clutter_box_layout_set_orientation (CLUTTER_BOX_LAYOUT (layout), orientation);
+  st_box_layout_set_orientation (box, orientation);
 }
 
 /**
@@ -239,12 +298,10 @@ st_box_layout_set_vertical (StBoxLayout *box,
 gboolean
 st_box_layout_get_vertical (StBoxLayout *box)
 {
-  ClutterLayoutManager *layout;
   ClutterOrientation orientation;
 
   g_return_val_if_fail (ST_IS_BOX_LAYOUT (box), FALSE);
 
-  layout = clutter_actor_get_layout_manager (CLUTTER_ACTOR (box));
-  orientation = clutter_box_layout_get_orientation (CLUTTER_BOX_LAYOUT (layout));
+  orientation = st_box_layout_get_orientation (box);
   return orientation == CLUTTER_ORIENTATION_VERTICAL;
 }
