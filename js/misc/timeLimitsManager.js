@@ -281,16 +281,24 @@ export const TimeLimitsManager = GObject.registerClass({
         this._lastStateChangeTimeSecs = 0;
         this.notify('state');
 
-        // Add a fake transition to show the shutdown.
-        if (this._userState !== UserState.INACTIVE) {
-            const nowSecs = this.getCurrentTime();
-            this._addTransition(UserState.ACTIVE, UserState.INACTIVE, nowSecs);
-        }
+        if (this._screenTimeLimitSettings.get_boolean('history-enabled')) {
+            // Add a fake transition to show the shutdown.
+            if (this._userState !== UserState.INACTIVE) {
+                const nowSecs = this.getCurrentTime();
+                this._addTransition(UserState.ACTIVE, UserState.INACTIVE, nowSecs);
+            }
 
-        try {
-            await this._storeTransitions();
-        } catch (e) {
-            console.warn(`Failed to store screen time limits data: ${e.message}`);
+            try {
+                await this._storeTransitions();
+            } catch (e) {
+                console.warn(`Failed to store screen time limits data: ${e.message}`);
+            }
+        } else {
+            try {
+                await this._deleteTransitions();
+            } catch (e) {
+                console.warn(`Failed to delete screen time limits data: ${e.message}`);
+            }
         }
 
         // Make sure no async operations are still pending.
@@ -528,6 +536,19 @@ export const TimeLimitsManager = GObject.registerClass({
             await file.replace_contents(
                 JSON.stringify(this._stateTransitions), null, false,
                 Gio.FileCreateFlags.PRIVATE, this._cancellable);
+        }
+    }
+
+    async _deleteTransitions() {
+        const file = this._historyFile;
+
+        console.debug(`TimeLimitsManager: Deleting screen time limits data in ‘${file.peek_path()}’`);
+
+        try {
+            await file.delete(this._cancellable);
+        } catch (e) {
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+                throw e;
         }
     }
 
