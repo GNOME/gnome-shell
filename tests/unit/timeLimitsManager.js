@@ -692,6 +692,39 @@ describe('Time limits manager', () => {
         harness.run();
     });
 
+    it('tracks a single day’s usage with limits disabled', () => {
+        const harness = new TestHarness({
+            'org.gnome.desktop.screen-time-limits': {
+                'history-enabled': true,
+                'daily-limit-enabled': true,
+                'daily-limit-seconds': 4 * 60 * 60,
+            },
+        });
+        harness.initializeMockClock('2024-06-01T10:00:00Z');
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+
+        harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+        harness.expectProperties('2024-06-01T13:59:59Z', timeLimitsManager, {
+            'state': TimeLimitsState.ACTIVE,
+            'dailyLimitTime': TestHarness.timeStrToSecs('2024-06-01T14:00:00Z'),
+        });
+        harness.expectState('2024-06-01T14:00:01Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
+
+        // Now disable limits and the state should change back to ACTIVE:
+        harness.addSettingsChangeEvent('2024-06-01T14:10:00Z',
+            'org.gnome.desktop.screen-time-limits', 'daily-limit-enabled', false);
+        harness.expectState('2024-06-01T14:10:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+
+        // And try enabling it again:
+        harness.addSettingsChangeEvent('2024-06-01T14:20:00Z',
+            'org.gnome.desktop.screen-time-limits', 'daily-limit-enabled', true);
+        harness.expectState('2024-06-01T14:20:01Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
+
+        harness.shutdownManager('2024-06-01T14:30:00Z', timeLimitsManager);
+
+        harness.run();
+    });
+
     it('resets usage at the end of the day', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
@@ -996,6 +1029,91 @@ describe('Time limits manager', () => {
             'dailyLimitTime': TestHarness.timeStrToSecs('2024-06-01T14:00:00Z'),
         });
         harness.shutdownManager('2024-06-01T10:10:00Z', timeLimitsManager);
+
+        harness.run();
+    });
+
+    it('removes an existing history file when history is disabled', () => {
+        const harness = new TestHarness({
+            'org.gnome.desktop.screen-time-limits': {
+                'history-enabled': true,
+                'daily-limit-enabled': true,
+                'daily-limit-seconds': 4 * 60 * 60,
+            },
+        }, JSON.stringify([
+            {
+                'oldState': UserState.INACTIVE,
+                'newState': UserState.ACTIVE,
+                'wallTimeSecs': TestHarness.timeStrToSecs('2024-06-01T08:30:00Z'),
+            },
+            {
+                'oldState': UserState.ACTIVE,
+                'newState': UserState.INACTIVE,
+                'wallTimeSecs': TestHarness.timeStrToSecs('2024-06-01T09:30:00Z'),
+            },
+        ]));
+        harness.initializeMockClock('2024-06-01T10:00:00Z');
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+
+        harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+        harness.addSettingsChangeEvent('2024-06-01T10:00:02Z',
+            'org.gnome.desktop.screen-time-limits', 'history-enabled', false);
+        harness.expectState('2024-06-01T10:00:03Z', timeLimitsManager, TimeLimitsState.DISABLED);
+        harness.addAssertionEvent('2024-06-01T10:00:04Z', () => {
+            expect(harness.mockHistoryFile.query_exists(null))
+                .withContext('History file is deleted')
+                .toEqual(false);
+        });
+        harness.shutdownManager('2024-06-01T10:10:00Z', timeLimitsManager);
+
+        harness.run();
+    });
+
+    it('removes an existing history file when history is disabled after limit is reached', () => {
+        const harness = new TestHarness({
+            'org.gnome.desktop.screen-time-limits': {
+                'history-enabled': true,
+                'daily-limit-enabled': true,
+                'daily-limit-seconds': 4 * 60 * 60,
+            },
+        }, JSON.stringify([
+            {
+                'oldState': UserState.INACTIVE,
+                'newState': UserState.ACTIVE,
+                'wallTimeSecs': TestHarness.timeStrToSecs('2024-06-01T08:30:00Z'),
+            },
+            {
+                'oldState': UserState.ACTIVE,
+                'newState': UserState.INACTIVE,
+                'wallTimeSecs': TestHarness.timeStrToSecs('2024-06-01T09:30:00Z'),
+            },
+        ]));
+        harness.initializeMockClock('2024-06-01T10:00:00Z');
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+
+        harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+        harness.expectState('2024-06-01T14:00:01Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
+
+        // Disable history storage and the history file should be removed and
+        // the state changed to DISABLED:
+        harness.addSettingsChangeEvent('2024-06-01T14:00:02Z',
+            'org.gnome.desktop.screen-time-limits', 'history-enabled', false);
+        harness.expectState('2024-06-01T14:00:03Z', timeLimitsManager, TimeLimitsState.DISABLED);
+        harness.addAssertionEvent('2024-06-01T14:00:04Z', () => {
+            expect(harness.mockHistoryFile.query_exists(null))
+                .withContext('History file is deleted')
+                .toEqual(false);
+        });
+
+        // Re-enable history storage and things should start afresh:
+        harness.addSettingsChangeEvent('2024-06-01T14:10:02Z',
+            'org.gnome.desktop.screen-time-limits', 'history-enabled', true);
+        harness.expectProperties('2024-06-01T14:10:03Z', timeLimitsManager, {
+            'state': TimeLimitsState.ACTIVE,
+            'dailyLimitTime': TestHarness.timeStrToSecs('2024-06-01T18:10:02Z'),
+        });
+
+        harness.shutdownManager('2024-06-01T14:20:00Z', timeLimitsManager);
 
         harness.run();
     });
