@@ -60,22 +60,23 @@ const DEFAULT_FOLDERS = {
     'Utilities': {
         name: 'X-GNOME-Shell-Utilities.directory',
         apps: [
-            'org.freedesktop.GnomeAbrt.desktop',
-            'nm-connection-editor.desktop',
-            'org.gnome.baobab.desktop',
-            'org.gnome.Characters.desktop',
-            'org.gnome.Connections.desktop',
-            'org.gnome.DejaDup.desktop',
-            'org.gnome.DiskUtility.desktop',
-            'org.gnome.Evince.desktop',
-            'org.gnome.FileRoller.desktop',
-            'org.gnome.font-viewer.desktop',
-            'org.gnome.Logs.desktop',
-            'org.gnome.Loupe.desktop',
-            'org.freedesktop.MalcontentControl.desktop',
-            'org.gnome.seahorse.Application.desktop',
-            'org.gnome.tweaks.desktop',
-            'org.gnome.Usage.desktop',
+            // Sorted by name as shown in menus, not filename
+            'nm-connection-editor.desktop', // Advanced Network Configuration
+            'org.gnome.DejaDup.desktop', // Backups
+            'org.gnome.Characters.desktop', // Characters
+            'org.gnome.Connections.desktop', // Connections
+            'org.gnome.DiskUtility.desktop', // Disks
+            'org.gnome.baobab.desktop', // Disk Usage Analyzer
+            'org.gnome.Evince.desktop', // Document Viewer
+            'org.gnome.FileRoller.desktop', // File Roller
+            'org.gnome.font-viewer.desktop', // Fonts
+            'org.gnome.Loupe.desktop', // Image Viewer
+            'org.gnome.Logs.desktop', // Logs
+            'org.freedesktop.MalcontentControl.desktop', // Parental Controls
+            'org.gnome.seahorse.Application.desktop', // Passwords and Keys
+            'org.freedesktop.GnomeAbrt.desktop', // Problem Reporting
+            'org.gnome.tweaks.desktop', // Tweaks
+            'org.gnome.Usage.desktop', // Usage
         ],
     },
     'YaST': {
