@@ -98,8 +98,6 @@ enum {
   PROP_0,
 
   PROP_CHILD,
-  PROP_HSCROLL,
-  PROP_VSCROLL,
   PROP_HADJUSTMENT,
   PROP_VADJUSTMENT,
   PROP_HSCROLLBAR_POLICY,
@@ -127,12 +125,6 @@ st_scroll_view_get_property (GObject    *object,
     {
     case PROP_CHILD:
       g_value_set_object (value, priv->child);
-      break;
-    case PROP_HSCROLL:
-      g_value_set_object (value, priv->hscroll);
-      break;
-    case PROP_VSCROLL:
-      g_value_set_object (value, priv->vscroll);
       break;
     case PROP_HADJUSTMENT:
       g_value_set_object (value, priv->hadjustment);
@@ -870,26 +862,6 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
-   * StScrollView:hscroll:
-   *
-   * The horizontal #StScrollBar for the #StScrollView.
-   */
-  props[PROP_HSCROLL] =
-    g_param_spec_object ("hscroll", NULL, NULL,
-                         ST_TYPE_SCROLL_BAR,
-                         ST_PARAM_READABLE | G_PARAM_DEPRECATED);
-
-  /**
-   * StScrollView:vscroll:
-   *
-   * The vertical #StScrollBar for the #StScrollView.
-   */
-  props[PROP_VSCROLL] =
-    g_param_spec_object ("vscroll", NULL, NULL,
-                         ST_TYPE_SCROLL_BAR,
-                         ST_PARAM_READABLE | G_PARAM_DEPRECATED);
-
-  /**
    * StScrollView:hadjustment:
    *
    * The horizontal #StAdjustment for the #StScrollView.
@@ -1136,46 +1108,6 @@ st_scroll_view_set_child (StScrollView *scroll,
                              CLUTTER_ACTOR (child));
 
   g_object_thaw_notify (G_OBJECT (scroll));
-}
-
-/**
- * st_scroll_view_get_hscroll_bar:
- * @scroll: a #StScrollView
- *
- * Gets the horizontal #StScrollBar of the #StScrollView.
- *
- * Returns: (transfer none): the horizontal scrollbar
- */
-ClutterActor *
-st_scroll_view_get_hscroll_bar (StScrollView *scroll)
-{
-  StScrollViewPrivate *priv;
-
-  g_return_val_if_fail (ST_IS_SCROLL_VIEW (scroll), NULL);
-
-  priv = st_scroll_view_get_instance_private (scroll);
-
-  return priv->hscroll;
-}
-
-/**
- * st_scroll_view_get_vscroll_bar:
- * @scroll: a #StScrollView
- *
- * Gets the vertical scrollbar of the #StScrollView.
- *
- * Returns: (transfer none): the vertical #StScrollBar
- */
-ClutterActor *
-st_scroll_view_get_vscroll_bar (StScrollView *scroll)
-{
-  StScrollViewPrivate *priv;
-
-  g_return_val_if_fail (ST_IS_SCROLL_VIEW (scroll), NULL);
-
-  priv = st_scroll_view_get_instance_private (scroll);
-
-  return priv->vscroll;
 }
 
 /**
