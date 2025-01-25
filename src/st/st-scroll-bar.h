@@ -47,4 +47,8 @@ void          st_scroll_bar_set_adjustment (StScrollBar  *bar,
                                             StAdjustment *adjustment);
 StAdjustment *st_scroll_bar_get_adjustment (StScrollBar  *bar);
 
+void               st_scroll_bar_set_orientation (StScrollBar        *bar,
+                                                  ClutterOrientation  orientation);
+ClutterOrientation st_scroll_bar_get_orientation (StScrollBar *bar);
+
 G_END_DECLS
