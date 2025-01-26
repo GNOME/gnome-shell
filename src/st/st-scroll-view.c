@@ -1017,7 +1017,7 @@ st_scroll_view_init (StScrollView *self)
                                     NULL);
   scrollbar = g_object_new (ST_TYPE_SCROLL_BAR,
                             "adjustment", priv->hadjustment,
-                            "vertical", FALSE,
+                            "orientation", CLUTTER_ORIENTATION_HORIZONTAL,
                             NULL);
   g_set_weak_pointer (&priv->hscroll, scrollbar);
 
@@ -1026,7 +1026,7 @@ st_scroll_view_init (StScrollView *self)
                                     NULL);
   scrollbar = g_object_new (ST_TYPE_SCROLL_BAR,
                             "adjustment", priv->vadjustment,
-                            "vertical", TRUE,
+                            "orientation", CLUTTER_ORIENTATION_VERTICAL,
                             NULL);
   g_set_weak_pointer (&priv->vscroll, scrollbar);
 
