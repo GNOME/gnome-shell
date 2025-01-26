@@ -44,16 +44,6 @@ typedef enum {
 
 StTextureCache* st_texture_cache_get_default (void);
 
-ClutterActor *
-st_texture_cache_load_sliced_image (StTextureCache *cache,
-                                    GFile          *file,
-                                    gint            grid_width,
-                                    gint            grid_height,
-                                    gint            paint_scale,
-                                    gfloat          resource_scale,
-                                    GFunc           load_callback,
-                                    gpointer        user_data);
-
 ClutterActor *st_texture_cache_load_gicon (StTextureCache *cache,
                                            StThemeNode    *theme_node,
                                            GIcon          *icon,
