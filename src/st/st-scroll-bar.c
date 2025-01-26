@@ -79,7 +79,6 @@ enum
 
   PROP_ADJUSTMENT,
   PROP_ORIENTATION,
-  PROP_VERTICAL,
 
   N_PROPS
 };
@@ -140,16 +139,6 @@ st_scroll_bar_set_orientation (StScrollBar        *bar,
 }
 
 static void
-st_scroll_bar_set_vertical (StScrollBar *bar,
-                            gboolean     vertical)
-{
-  st_scroll_bar_set_orientation (bar,
-                                 vertical ? CLUTTER_ORIENTATION_VERTICAL
-                                          : CLUTTER_ORIENTATION_HORIZONTAL);
-  g_object_notify_by_pspec (G_OBJECT (bar), props[PROP_VERTICAL]);
-}
-
-static void
 st_scroll_bar_get_property (GObject    *gobject,
                             guint       prop_id,
                             GValue     *value,
@@ -165,10 +154,6 @@ st_scroll_bar_get_property (GObject    *gobject,
 
     case PROP_ORIENTATION:
       g_value_set_enum (value, priv->orientation);
-      break;
-
-    case PROP_VERTICAL:
-      g_value_set_boolean (value, priv->orientation == CLUTTER_ORIENTATION_VERTICAL);
       break;
 
     default:
@@ -193,10 +178,6 @@ st_scroll_bar_set_property (GObject      *gobject,
 
     case PROP_ORIENTATION:
       st_scroll_bar_set_orientation (bar, g_value_get_enum (value));
-      break;
-
-    case PROP_VERTICAL:
-      st_scroll_bar_set_vertical (bar, g_value_get_boolean (value));
       break;
 
     default:
@@ -580,16 +561,6 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
                        CLUTTER_TYPE_ORIENTATION,
                        CLUTTER_ORIENTATION_HORIZONTAL,
                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
-
-  /**
-   * StScrollBar:vertical:
-   *
-   * Whether the #StScrollBar is vertical. If %FALSE it is horizontal.
-   */
-  props[PROP_VERTICAL] =
-    g_param_spec_boolean ("vertical", NULL, NULL,
-                          FALSE,
-                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 
