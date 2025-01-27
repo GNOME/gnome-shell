@@ -148,14 +148,31 @@ class URLHighlighter extends St.Label {
     }
 });
 
-const ScaleLayout = GObject.registerClass(
-class ScaleLayout extends Clutter.BinLayout {
-    _init(params) {
-        this._container = null;
-        super._init(params);
+const ScaleLayout = GObject.registerClass({
+    Properties: {
+        'scaling-enabled': GObject.ParamSpec.boolean(
+            'scaling-enabled', null, null,
+            GObject.ParamFlags.READWRITE,
+            true),
+    },
+}, class ScaleLayout extends Clutter.BinLayout {
+    _container = null;
+    _scalingEnabled = true;
+
+    get scalingEnabled() {
+        return this._scalingEnabled;
     }
 
-    _connectContainer(container) {
+    set scalingEnabled(value) {
+        if (this._scalingEnabled === value)
+            return;
+
+        this._scalingEnabled = value;
+        this.notify('scaling-enabled');
+        this.layout_changed();
+    }
+
+    vfunc_set_container(container) {
         if (this._container === container)
             return;
 
@@ -171,23 +188,29 @@ class ScaleLayout extends Clutter.BinLayout {
     }
 
     vfunc_get_preferred_width(container, forHeight) {
-        this._connectContainer(container);
+        const [min, nat] = super.vfunc_get_preferred_width(container, forHeight);
 
-        let [min, nat] = super.vfunc_get_preferred_width(container, forHeight);
-        return [
-            Math.floor(min * container.scale_x),
-            Math.floor(nat * container.scale_x),
-        ];
+        if (this._scalingEnabled) {
+            return [
+                Math.floor(min * container.scale_x),
+                Math.floor(nat * container.scale_x),
+            ];
+        } else {
+            return [min, nat];
+        }
     }
 
     vfunc_get_preferred_height(container, forWidth) {
-        this._connectContainer(container);
+        const [min, nat] = super.vfunc_get_preferred_height(container, forWidth);
 
-        let [min, nat] = super.vfunc_get_preferred_height(container, forWidth);
-        return [
-            Math.floor(min * container.scale_y),
-            Math.floor(nat * container.scale_y),
-        ];
+        if (this._scalingEnabled) {
+            return [
+                Math.floor(min * container.scale_y),
+                Math.floor(nat * container.scale_y),
+            ];
+        } else {
+            return [min, nat];
+        }
     }
 });
 
