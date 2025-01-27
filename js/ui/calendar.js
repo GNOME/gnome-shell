@@ -5,6 +5,7 @@ import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
+import * as MessageList from './messageList.js';
 import * as PopupMenu from './popupMenu.js';
 import {ensureActorVisibleInScrollView} from '../misc/animationUtils.js';
 
@@ -797,8 +798,8 @@ class DoNotDisturbSwitch extends PopupMenu.Switch {
 
 export const CalendarMessageList = GObject.registerClass(
 class CalendarMessageList extends St.Widget {
-    _init() {
-        super._init({
+    constructor() {
+        super({
             style_class: 'message-list',
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
@@ -815,10 +816,13 @@ class CalendarMessageList extends St.Widget {
         });
         this.add_child(box);
 
+        this._messageView = new MessageList.MessageView();
+
         this._scrollView = new St.ScrollView({
             style_class: 'vfade',
             overlay_scrollbars: true,
             x_expand: true, y_expand: true,
+            child: this._messageView,
         });
         box.add_child(this._scrollView);
 
@@ -854,7 +858,7 @@ class CalendarMessageList extends St.Widget {
             accessible_name: C_('action', 'Clear all notifications'),
         });
         this._clearButton.connect('clicked', () => {
-            this._sectionList.get_children().forEach(s => s.clear());
+            this._messageView.clear();
         });
         hbox.add_child(this._clearButton);
 
@@ -862,38 +866,16 @@ class CalendarMessageList extends St.Widget {
             this._clearButton, 'visible',
             GObject.BindingFlags.INVERT_BOOLEAN);
 
-        this._sectionList = new St.BoxLayout({
-            style_class: 'message-list-sections',
-            orientation: Clutter.Orientation.VERTICAL,
-            x_expand: true,
-            y_expand: true,
-        });
-        this._sectionList.connectObject(
-            'child-added', this._sync.bind(this),
-            'child-removed', this._sync.bind(this),
-            this);
-        this._scrollView.child = this._sectionList;
-    }
-
-    _addSection(section) {
-        section.connectObject(
-            'notify::visible', this._sync.bind(this),
-            'notify::empty', this._sync.bind(this),
-            'notify::can-clear', this._sync.bind(this),
-            'destroy', () => this._sectionList.remove_child(section),
+        this._messageView.connectObject(
             'message-focused', (_s, messageActor) => {
                 ensureActorVisibleInScrollView(this._scrollView, messageActor);
             }, this);
-        this._sectionList.add_child(section);
-    }
 
-    _sync() {
-        let sections = this._sectionList.get_children();
-
-        let empty = sections.every(s => s.empty || !s.visible);
-        this._placeholder.visible = empty;
-
-        let canClear = sections.some(s => s.canClear && s.visible);
-        this._clearButton.reactive = canClear;
+        this._messageView.bind_property('empty',
+            this._placeholder, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._messageView.bind_property('can-clear',
+            this._clearButton, 'reactive',
+            GObject.BindingFlags.SYNC_CREATE);
     }
 });
