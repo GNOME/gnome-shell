@@ -627,7 +627,7 @@ export const PadOsd = GObject.registerClass({
     _init(padDevice, settings, imagePath, editionMode, monitorIndex) {
         super._init({
             style_class: 'pad-osd-window',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
             y_expand: true,
             reactive: true,
@@ -678,7 +678,7 @@ export const PadOsd = GObject.registerClass({
 
         this._titleBox = new St.BoxLayout({
             style_class: 'pad-osd-title-box',
-            vertical: false,
+            orientation: Clutter.Orientation.HORIZONTAL,
             x_expand: false,
             x_align: Clutter.ActorAlign.CENTER,
         });
@@ -686,7 +686,7 @@ export const PadOsd = GObject.registerClass({
 
         const labelBox = new St.BoxLayout({
             style_class: 'pad-osd-title-menu-box',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
         this._titleBox.add_child(labelBox);
 

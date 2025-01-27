@@ -392,7 +392,7 @@ export const SwitcherList = GObject.registerClass({
 
         this._list = new St.BoxLayout({
             style_class: 'switcher-list-item-container',
-            vertical: false,
+            orientation: Clutter.Orientation.HORIZONTAL,
             x_expand: true,
             y_expand: true,
         });

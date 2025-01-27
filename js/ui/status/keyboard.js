@@ -121,7 +121,9 @@ class InputSourceSwitcher extends SwitcherPopup.SwitcherList {
     }
 
     _addIcon(item) {
-        let box = new St.BoxLayout({vertical: true});
+        const box = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+        });
 
         const symbol = new St.Bin({
             style_class: 'input-source-switcher-symbol',

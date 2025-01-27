@@ -31,7 +31,7 @@ class OverviewActor extends St.BoxLayout {
             /* Translators: This is the main view to select
                 activities. See also note for "Activities" string. */
             accessible_name: _('Overview'),
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
 
         this.add_constraint(new LayoutManager.MonitorConstraint({primary: true}));

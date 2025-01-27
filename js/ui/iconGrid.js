@@ -74,7 +74,7 @@ class BaseIcon extends Shell.SquareBin {
         super._init({style_class: styleClass});
 
         this._box = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
             y_expand: true,
         });

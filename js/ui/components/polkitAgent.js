@@ -64,7 +64,7 @@ const AuthenticationDialog = GObject.registerClass({
 
         let userBox = new St.BoxLayout({
             style_class: 'polkit-dialog-user-layout',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
         bodyContent.add_child(userBox);
 
@@ -87,7 +87,7 @@ const AuthenticationDialog = GObject.registerClass({
 
         let passwordBox = new St.BoxLayout({
             style_class: 'prompt-dialog-password-layout',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
 
         this._passwordEntry = new St.PasswordEntry({
@@ -104,7 +104,7 @@ const AuthenticationDialog = GObject.registerClass({
             GObject.BindingFlags.SYNC_CREATE);
         passwordBox.add_child(this._passwordEntry);
 
-        let warningBox = new St.BoxLayout({vertical: true});
+        let warningBox = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL});
 
         let capsLockWarning = new ShellEntry.CapsLockWarning();
         this._passwordEntry.bind_property('visible',

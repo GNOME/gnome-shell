@@ -610,7 +610,7 @@ var BaseAppView = GObject.registerClass({
         scrollContainer._delegate = this;
 
         this._box = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
             y_expand: true,
         });
@@ -2527,7 +2527,7 @@ export const AppFolderDialog = GObject.registerClass({
             y_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
 
         this.child = new St.Bin({

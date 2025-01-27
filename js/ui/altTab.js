@@ -667,7 +667,7 @@ class AppIcon extends St.BoxLayout {
     _init(app) {
         super._init({
             style_class: 'alt-tab-app',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
 
         this.app = app;
@@ -919,7 +919,7 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
         for (let i = 0; i < windows.length; i++) {
             const box = new St.BoxLayout({
                 style_class: 'thumbnail-box',
-                vertical: true,
+                orientation: Clutter.Orientation.VERTICAL,
             });
 
             let bin = new St.Bin({style_class: 'thumbnail'});
@@ -1001,7 +1001,7 @@ class WindowIcon extends St.BoxLayout {
     _init(window, mode) {
         super._init({
             style_class: 'alt-tab-app',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
 
         this.window = window;

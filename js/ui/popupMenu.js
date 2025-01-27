@@ -688,7 +688,7 @@ export class PopupMenuBase extends Signals.EventEmitter {
         this._parent = null;
 
         this.box = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
             y_expand: true,
         });

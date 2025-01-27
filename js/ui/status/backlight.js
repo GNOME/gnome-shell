@@ -109,7 +109,7 @@ const DiscreteItem = GObject.registerClass({
     _addLevelButton(key, labelText, iconName) {
         const box = new St.BoxLayout({
             style_class: 'keyboard-brightness-level',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
         });
 

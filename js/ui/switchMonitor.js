@@ -102,7 +102,7 @@ class SwitchMonitorSwitcher extends SwitcherPopup.SwitcherList {
     _addIcon(item) {
         const box = new St.BoxLayout({
             style_class: 'alt-tab-app',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
 
         const icon = new St.Icon({

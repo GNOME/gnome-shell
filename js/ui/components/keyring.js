@@ -31,7 +31,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
 
         let passwordBox = new St.BoxLayout({
             style_class: 'prompt-dialog-password-layout',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
 
         this._passwordEntry = new St.PasswordEntry({
@@ -59,7 +59,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         this.prompt.set_password_actor(this._passwordEntry.clutter_text);
         this.prompt.set_confirm_actor(this._confirmEntry.clutter_text);
 
-        let warningBox = new St.BoxLayout({vertical: true});
+        let warningBox = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL});
 
         let capsLockWarning = new ShellEntry.CapsLockWarning();
         let syncCapsLockWarningVisibility = () => {

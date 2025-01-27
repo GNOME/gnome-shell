@@ -909,7 +909,10 @@ class NotificationSection extends MessageList.MessageListSection {
 const Placeholder = GObject.registerClass(
 class Placeholder extends St.BoxLayout {
     _init() {
-        super._init({style_class: 'message-list-placeholder', vertical: true});
+        super._init({
+            style_class: 'message-list-placeholder',
+            orientation: Clutter.Orientation.VERTICAL,
+        });
         this._date = new Date();
 
         this._icon = new St.Icon({icon_name: 'no-notifications-symbolic'});
@@ -954,7 +957,7 @@ class CalendarMessageList extends St.Widget {
         this.add_child(this._placeholder);
 
         let box = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
             y_expand: true,
         });
@@ -1009,7 +1012,7 @@ class CalendarMessageList extends St.Widget {
 
         this._sectionList = new St.BoxLayout({
             style_class: 'message-list-sections',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
             y_expand: true,
         });

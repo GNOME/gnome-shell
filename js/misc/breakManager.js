@@ -1378,7 +1378,7 @@ class OsdBreakCountdownLabel extends St.Widget {
         });
 
         this._box = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
         this.add_child(this._box);
 

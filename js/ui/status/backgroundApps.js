@@ -49,7 +49,7 @@ const BackgroundAppMenuItem = GObject.registerClass({
         this.app = app;
 
         const box = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.CENTER,

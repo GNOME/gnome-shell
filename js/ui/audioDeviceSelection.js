@@ -98,7 +98,7 @@ const AudioDeviceSelectionDialog = GObject.registerClass({
     _addDevice(device) {
         const box = new St.BoxLayout({
             style_class: 'audio-selection-device-box',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
         box.connect('notify::height', () => {
             const laters = global.compositor.get_laters();

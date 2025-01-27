@@ -29,7 +29,7 @@ const CandidateArea = GObject.registerClass({
 }, class CandidateArea extends St.BoxLayout {
     _init() {
         super._init({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             reactive: true,
             visible: false,
         });
@@ -158,7 +158,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
 
         const box = new St.BoxLayout({
             style_class: 'candidate-popup-content',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
         this.bin.set_child(box);
 

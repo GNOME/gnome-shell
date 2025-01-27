@@ -14,7 +14,7 @@ class OsdMonitorLabel extends St.Widget {
         this._monitor = monitor;
 
         this._box = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
         this.add_child(this._box);
 

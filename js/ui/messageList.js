@@ -425,7 +425,7 @@ export const Message = GObject.registerClass({
         this._useBodyMarkup = false;
 
         let vbox = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
         });
         this.set_child(vbox);
@@ -462,7 +462,7 @@ export const Message = GObject.registerClass({
 
         const contentBox = new St.BoxLayout({
             style_class: 'message-content',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
         });
         hbox.add_child(contentBox);
@@ -677,13 +677,13 @@ export const MessageListSection = GObject.registerClass({
         super._init({
             style_class: 'message-list-section',
             clip_to_allocation: true,
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
         });
 
         this._list = new St.BoxLayout({
             style_class: 'message-list-section-list',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
         this.add_child(this._list);
 

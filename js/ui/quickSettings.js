@@ -109,7 +109,7 @@ export const QuickToggle = GObject.registerClass({
             y_align: Clutter.ActorAlign.CENTER,
             x_align: Clutter.ActorAlign.START,
             x_expand: true,
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
         titleBox.add_child(this._title);
         titleBox.add_child(this._subtitle);

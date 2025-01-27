@@ -55,7 +55,7 @@ export const AuthPrompt = GObject.registerClass({
     _init(gdmClient, mode) {
         super._init({
             style_class: 'login-dialog-prompt-layout',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
             reactive: true,
@@ -146,7 +146,7 @@ export const AuthPrompt = GObject.registerClass({
     _initInputRow() {
         this._mainBox = new St.BoxLayout({
             style_class: 'login-dialog-button-box',
-            vertical: false,
+            orientation: Clutter.Orientation.HORIZONTAL,
         });
         this.add_child(this._mainBox);
 

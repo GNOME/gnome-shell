@@ -51,7 +51,7 @@ export const UserListItem = GObject.registerClass({
 }, class UserListItem extends St.Button {
     _init(user) {
         let layout = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
         });
         super._init({
@@ -174,7 +174,7 @@ const UserList = GObject.registerClass({
         });
 
         this._box = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             style_class: 'login-dialog-user-list',
             pseudo_class: 'expanded',
         });
@@ -434,7 +434,7 @@ export const ConflictingSessionDialog = GObject.registerClass({
 
         let textLayout = new St.BoxLayout({
             style_class: 'conflicting-session-dialog-content',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
         });
 
@@ -521,7 +521,7 @@ export const LoginDialog = GObject.registerClass({
             style_class: 'login-dialog-user-selection-box',
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             visible: false,
         });
         this.add_child(this._userSelectionBox);
@@ -558,7 +558,9 @@ export const LoginDialog = GObject.registerClass({
 
         this._userSelectionBox.add_child(this._notListedButton);
 
-        const bannerBox = new St.BoxLayout({vertical: true});
+        const bannerBox = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+        });
 
         this._bannerView = new St.ScrollView({
             style_class: 'login-dialog-banner-view',

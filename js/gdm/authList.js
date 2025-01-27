@@ -74,7 +74,7 @@ export const AuthList = GObject.registerClass({
 }, class AuthList extends St.BoxLayout {
     _init() {
         super._init({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             style_class: 'login-dialog-auth-list-layout',
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.CENTER,
@@ -84,7 +84,7 @@ export const AuthList = GObject.registerClass({
         this.add_child(this.label);
 
         this._box = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             style_class: 'login-dialog-auth-list',
             pseudo_class: 'expanded',
         });

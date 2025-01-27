@@ -172,7 +172,7 @@ class CtrlAltTabSwitcher extends SwitcherPopup.SwitcherList {
     _addIcon(item) {
         const box = new St.BoxLayout({
             style_class: 'alt-tab-app',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
 
         let icon = item.iconActor;

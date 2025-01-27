@@ -277,7 +277,7 @@ export const LayoutManager = GObject.registerClass({
 
         this.panelBox = new St.BoxLayout({
             name: 'panelBox',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
         this.addChrome(this.panelBox, {
             affectsStruts: true,

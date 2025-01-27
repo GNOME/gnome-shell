@@ -350,7 +350,7 @@ const ShellMountPasswordDialog = GObject.registerClass({
         }
         curGridRow += 1;
 
-        let warningBox = new St.BoxLayout({vertical: true});
+        let warningBox = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL});
 
         let capsLockWarning = new ShellEntry.CapsLockWarning();
         warningBox.add_child(capsLockWarning);

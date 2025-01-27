@@ -35,12 +35,12 @@ const NotificationsBox = GObject.registerClass({
 }, class NotificationsBox extends St.BoxLayout {
     _init() {
         super._init({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             name: 'unlockDialogNotifications',
         });
 
         this._notificationBox = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             style_class: 'unlock-dialog-notifications-container',
         });
 
@@ -123,7 +123,9 @@ const NotificationsBox = GObject.registerClass({
         source.bind_property('icon', iconActor, 'gicon', GObject.BindingFlags.SYNC_CREATE);
         box.add_child(iconActor);
 
-        let textBox = new St.BoxLayout({vertical: true});
+        const textBox = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+        });
         box.add_child(textBox);
 
         let title = new St.Label({
@@ -324,7 +326,10 @@ const NotificationsBox = GObject.registerClass({
 const Clock = GObject.registerClass(
 class UnlockDialogClock extends St.BoxLayout {
     _init() {
-        super._init({style_class: 'unlock-dialog-clock', vertical: true});
+        super._init({
+            style_class: 'unlock-dialog-clock',
+            orientation: Clutter.Orientation.VERTICAL,
+        });
 
         this._time = new St.Label({
             style_class: 'unlock-dialog-clock-time',
@@ -554,7 +559,9 @@ export const UnlockDialog = GObject.registerClass({
         // Authentication & Clock stack
         this._stack = new Shell.Stack();
 
-        this._promptBox = new St.BoxLayout({vertical: true});
+        this._promptBox = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+        });
         this._promptBox.set_pivot_point(0.5, 0.5);
         this._promptBox.hide();
         this._stack.add_child(this._promptBox);

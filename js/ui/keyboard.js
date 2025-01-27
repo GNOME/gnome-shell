@@ -124,7 +124,7 @@ class Suggestions extends St.BoxLayout {
     _init() {
         super._init({
             style_class: 'word-suggestions',
-            vertical: false,
+            orientation: Clutter.Orientation.HORIZONTAL,
             x_align: Clutter.ActorAlign.CENTER,
         });
         this.show();
@@ -434,7 +434,7 @@ const Key = GObject.registerClass({
     _getExtendedKeys() {
         this._extendedKeyboard = new St.BoxLayout({
             style_class: 'key-container',
-            vertical: false,
+            orientation: Clutter.Orientation.HORIZONTAL,
         });
         for (let i = 0; i < this._extendedKeys.length; ++i) {
             let extendedKey = this._extendedKeys[i];
@@ -1185,7 +1185,7 @@ export const Keyboard = GObject.registerClass({
             // the locale setting in order to avoid flipping the
             // keyboard on RTL locales.
             text_direction: Clutter.TextDirection.LTR,
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
         this._focusInExtendedKeys = false;
         this._emojiActive = false;

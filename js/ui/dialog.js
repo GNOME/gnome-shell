@@ -39,7 +39,7 @@ class Dialog extends St.Widget {
             style_class: 'modal-dialog',
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
 
         // modal dialogs are fixed width and grow vertically; set the request
@@ -49,7 +49,7 @@ class Dialog extends St.Widget {
         this._dialog.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
 
         this.contentLayout = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             style_class: 'modal-dialog-content-box',
             y_expand: true,
         });
@@ -184,7 +184,7 @@ export const MessageDialogContent = GObject.registerClass({
         super._init({
             style_class: 'message-dialog-content',
             x_expand: true,
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             ...params,
         });
 
@@ -266,7 +266,7 @@ export const ListSection = GObject.registerClass({
 
         this.list = new St.BoxLayout({
             style_class: 'dialog-list-box',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
         });
 
         this._listScrollView = new St.ScrollView({
@@ -277,7 +277,7 @@ export const ListSection = GObject.registerClass({
         super._init({
             style_class: 'dialog-list',
             x_expand: true,
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             ...params,
         });
 
@@ -318,7 +318,7 @@ export const ListSectionItem = GObject.registerClass({
         this._iconActorBin = new St.Bin();
 
         let textLayout = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
         });

@@ -136,7 +136,7 @@ const Notebook = GObject.registerClass({
 }, class Notebook extends St.BoxLayout {
     _init() {
         super._init({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             y_expand: true,
         });
 
@@ -308,7 +308,7 @@ class ObjLink extends St.Button {
 const Result = GObject.registerClass(
 class Result extends St.BoxLayout {
     _init(lookingGlass, command, o, index) {
-        super._init({vertical: true});
+        super._init({orientation: Clutter.Orientation.VERTICAL});
 
         this.index = index;
         this.o = o;
@@ -331,7 +331,10 @@ class Result extends St.BoxLayout {
 const WindowList = GObject.registerClass({
 }, class WindowList extends St.BoxLayout {
     _init(lookingGlass) {
-        super._init({name: 'LookingGlassWindows', vertical: true});
+        super._init({
+            name: 'LookingGlassWindows',
+            orientation: Clutter.Orientation.VERTICAL,
+        });
         let tracker = Shell.WindowTracker.get_default();
         this._updateId = Main.initializeDeferredWork(this, this._updateWindowList.bind(this));
         global.display.connect('window-created', this._updateWindowList.bind(this));
@@ -354,16 +357,25 @@ const WindowList = GObject.registerClass({
                 metaWindow.connect('unmanaged', this._updateWindowList.bind(this));
                 metaWindow._lookingGlassManaged = true;
             }
-            let box = new St.BoxLayout({vertical: true, style_class: 'lg-window'});
+            const box = new St.BoxLayout({
+                orientation: Clutter.Orientation.VERTICAL,
+                style_class: 'lg-window',
+            });
             this.add_child(box);
 
-            let header = new St.BoxLayout({vertical: true, style_class: 'lg-window-name'});
+            const header = new St.BoxLayout({
+                orientation: Clutter.Orientation.VERTICAL,
+                style_class: 'lg-window-name',
+            });
             box.add_child(header);
 
             let windowLink = new ObjLink(this._lookingGlass, metaWindow, metaWindow.title);
             header.add_child(windowLink);
 
-            let propsBox = new St.BoxLayout({vertical: true, style_class: 'lg-window-props-box'});
+            const propsBox = new St.BoxLayout({
+                orientation: Clutter.Orientation.VERTICAL,
+                style_class: 'lg-window-props-box',
+            });
             box.add_child(propsBox);
             propsBox.add_child(new St.Label({text: `wmclass: ${metaWindow.get_wm_class()}`}));
             let app = tracker.get_window_app(metaWindow);
@@ -401,7 +413,7 @@ class ObjInspector extends St.ScrollView {
         this._parentList = [];
 
         this._container = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
             y_expand: true,
         });
@@ -589,7 +601,7 @@ export const Inspector = GObject.registerClass({
 
         const eventHandler = new St.BoxLayout({
             name: 'LookingGlassDialog',
-            vertical: false,
+            orientation: Clutter.Orientation.HORIZONTAL,
             reactive: true,
         });
         this._eventHandler = eventHandler;
@@ -719,7 +731,10 @@ export const Inspector = GObject.registerClass({
 const Extensions = GObject.registerClass({
 }, class Extensions extends St.BoxLayout {
     _init(lookingGlass) {
-        super._init({vertical: true, name: 'LookingGlassExtensions'});
+        super._init({
+            orientation: Clutter.Orientation.VERTICAL,
+            name: 'LookingGlassExtensions',
+        });
 
         this._lookingGlass = lookingGlass;
         this._noExtensions = new St.Label({
@@ -728,7 +743,7 @@ const Extensions = GObject.registerClass({
         });
         this._numExtensions = 0;
         this._extensionsList = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             style_class: 'lg-extensions-list',
         });
         this._extensionsList.add_child(this._noExtensions);
@@ -779,7 +794,9 @@ const Extensions = GObject.registerClass({
 
         if (shouldShow) {
             let errors = extension.errors;
-            let errorDisplay = new St.BoxLayout({vertical: true});
+            const errorDisplay = new St.BoxLayout({
+                orientation: Clutter.Orientation.VERTICAL,
+            });
             if (errors && errors.length) {
                 for (let i = 0; i < errors.length; i++)
                     errorDisplay.add_child(new St.Label({text: errors[i]}));
@@ -823,7 +840,10 @@ const Extensions = GObject.registerClass({
     }
 
     _createExtensionDisplay(extension) {
-        let box = new St.BoxLayout({style_class: 'lg-extension', vertical: true});
+        const box = new St.BoxLayout({
+            style_class: 'lg-extension',
+            orientation: Clutter.Orientation.VERTICAL,
+        });
         box._extension = extension;
         let name = new St.Label({
             style_class: 'lg-extension-name',
@@ -1003,9 +1023,11 @@ class ActorTreeViewer extends St.BoxLayout {
             this._lookingGlass.inspectObject(actor, button);
         });
 
-        const mainContainer = new St.BoxLayout({vertical: true});
+        const mainContainer = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+        });
         const childrenContainer = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             style: 'padding: 0 0 0 18px',
         });
 
@@ -1244,7 +1266,7 @@ class DebugFlags extends St.BoxLayout {
     _init() {
         super._init({
             name: 'LookingGlassDebugFlags',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             x_align: Clutter.ActorAlign.CENTER,
         });
 
@@ -1305,7 +1327,7 @@ class LookingGlass extends St.BoxLayout {
         super._init({
             name: 'LookingGlassDialog',
             style_class: 'lg-dialog',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             visible: false,
             reactive: true,
         });
@@ -1382,12 +1404,15 @@ class LookingGlass extends St.BoxLayout {
         toolbar.add_child(emptyBox);
         toolbar.add_child(notebook.tabControls);
 
-        this._evalBox = new St.BoxLayout({name: 'LookingGlassEvaluator', vertical: true});
+        this._evalBox = new St.BoxLayout({
+            name: 'LookingGlassEvaluator',
+            orientation: Clutter.Orientation.VERTICAL,
+        });
         notebook.appendPage('Evaluator', this._evalBox);
 
         this._resultsArea = new St.BoxLayout({
             style_class: 'evaluator-results',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             y_expand: true,
         });
         this._evalBox.add_child(this._resultsArea);

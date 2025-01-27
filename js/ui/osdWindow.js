@@ -34,7 +34,7 @@ class OsdWindow extends Clutter.Actor {
         this._hbox.add_child(this._icon);
 
         this._vbox = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._hbox.add_child(this._vbox);

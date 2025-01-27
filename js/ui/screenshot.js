@@ -38,7 +38,7 @@ class IconLabelButton extends St.Button {
         super._init(params);
 
         this._container = new St.BoxLayout({
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             style_class: 'icon-label-button-container',
         });
         this.set_child(this._container);
@@ -1185,7 +1185,7 @@ export const ScreenshotUI = GObject.registerClass({
             style_class: 'screenshot-ui-panel',
             y_align: Clutter.ActorAlign.END,
             y_expand: true,
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             offscreen_redirect: Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY,
         });
         this._primaryMonitorBin.add_child(this._panel);
