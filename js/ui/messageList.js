@@ -810,152 +810,134 @@ export const MessageView = GObject.registerClass({
             true),
     },
     Signals: {
-        'can-clear-changed': {},
-        'empty-changed': {},
-        'message-focused': {param_types: [Message.$gtype]},
+        'message-focused': {param_types: [Message]},
     },
 }, class MessageView extends St.BoxLayout {
     constructor() {
         super({
             style_class: 'message-view',
-            clip_to_allocation: true,
             orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
+            y_expand: true,
         });
-
-        this._list = new St.BoxLayout({
-            style_class: 'message-view-list',
-            orientation: Clutter.Orientation.VERTICAL,
-        });
-        this.add_child(this._list);
-
-        this._list.connect('child-added', this._sync.bind(this));
-        this._list.connect('child-removed', this._sync.bind(this));
-
-        Main.sessionMode.connectObject(
-            'updated', () => this._sync(), this);
-
-        this._empty = true;
-        this._canClear = false;
-        this._sync();
     }
 
     get empty() {
-        return this._empty;
+        return this.get_first_child() === null;
     }
 
     get canClear() {
-        return this._canClear;
+        return this._messages.some(msg => msg.canClose());
     }
 
     get _messages() {
-        return this._list.get_children().map(i => i.child);
+        return this.get_children().map(item => item.child);
     }
 
     _onKeyFocusIn(messageActor) {
         this.emit('message-focused', messageActor);
     }
 
-    addMessage(message, animate) {
-        this.addMessageAtIndex(message, -1, animate);
-    }
-
-    addMessageAtIndex(message, index, animate) {
+    _addMessageAtIndex(message, index) {
         if (this._messages.includes(message))
             throw new Error('Message was already added previously');
 
-        let listItem = new St.Bin({
+        const wasEmpty = this.empty;
+        const couldClear = this.canClear;
+
+        const item = new St.Bin({
             child: message,
+            canFocus: false,
             layout_manager: new ScaleLayout(),
             pivot_point: new Graphene.Point({x: .5, y: .5}),
+            scale_x: 0,
+            scale_y: 0,
         });
-        listItem._connectionsIds = [];
 
-        listItem._connectionsIds.push(message.connect('key-focus-in',
-            this._onKeyFocusIn.bind(this)));
-        listItem._connectionsIds.push(message.connect('close', () => {
-            this.removeMessage(message, true);
-        }));
-        listItem._connectionsIds.push(message.connect('destroy', () => {
-            listItem._connectionsIds.forEach(id => message.disconnect(id));
-            listItem.destroy();
-        }));
+        message.connect('key-focus-in', this._onKeyFocusIn.bind(this));
 
-        this._list.insert_child_at_index(listItem, index);
+        this.insert_child_at_index(item, index);
 
-        const duration = animate ? MESSAGE_ANIMATION_TIME : 0;
-        listItem.set({scale_x: 0, scale_y: 0});
-        listItem.ease({
+        if (wasEmpty !== this.empty)
+            this.notify('empty');
+
+        if (couldClear !== this.canClear)
+            this.notify('can-clear');
+
+        item.ease({
             scale_x: 1,
             scale_y: 1,
-            duration,
+            duration: MESSAGE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
-    moveMessage(message, index, animate) {
-        if (!this._messages.includes(message))
+    _moveMessage(message, index) {
+        const messages = this._messages;
+        if (!messages.includes(message))
             throw new Error('Impossible to move untracked message');
 
-        let listItem = message.get_parent();
-
-        if (!animate) {
-            this._list.set_child_at_index(listItem, index);
+        if (messages[index] === message)
             return;
-        }
 
-        let onComplete = () => {
-            this._list.set_child_at_index(listItem, index);
-            listItem.ease({
-                scale_x: 1,
-                scale_y: 1,
-                duration: MESSAGE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        };
-        listItem.ease({
+        const item = message.get_parent();
+
+        item.ease({
             scale_x: 0,
             scale_y: 0,
             duration: MESSAGE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete,
+            onComplete: () => {
+                this.set_child_at_index(item, index);
+                item.ease({
+                    scale_x: 1,
+                    scale_y: 1,
+                    duration: MESSAGE_ANIMATION_TIME,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                });
+            },
         });
     }
 
-    removeMessage(message, animate) {
+    _removeMessage(message) {
         const messages = this._messages;
 
         if (!messages.includes(message))
             throw new Error('Impossible to remove untracked message');
 
-        let listItem = message.get_parent();
-        listItem._connectionsIds.forEach(id => message.disconnect(id));
+        const item = message.get_parent();
 
-        let nextMessage = null;
-
-        if (message.has_key_focus()) {
-            const index = messages.indexOf(message);
-            nextMessage =
-                messages[index + 1] ||
-                messages[index - 1] ||
-                this._list;
-        }
-
-        const duration = animate ? MESSAGE_ANIMATION_TIME : 0;
-        listItem.ease({
+        item.ease({
             scale_x: 0,
             scale_y: 0,
-            duration,
+            duration: MESSAGE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
-                listItem.destroy();
-                nextMessage?.grab_key_focus();
+                const wasEmpty = this.empty;
+                const couldClear = this.canClear;
+
+                if (message.has_key_focus()) {
+                    const index = messages.indexOf(message);
+                    const nextMessage =
+                        messages[index + 1] ||
+                        messages[index - 1] ||
+                        this;
+                    nextMessage?.grab_key_focus();
+                }
+
+                item.destroy();
+
+                if (wasEmpty !== this.empty)
+                    this.notify('empty');
+
+                if (couldClear !== this.canClear)
+                    this.notify('can-clear');
             },
         });
     }
 
     clear() {
-        let messages = this._messages.filter(msg => msg.canClose());
+        const messages = this._messages.filter(msg => msg.canClose());
 
         // If there are few messages, letting them all zoom out looks OK
         if (messages.length < 2) {
@@ -965,11 +947,11 @@ export const MessageView = GObject.registerClass({
         } else {
             // Otherwise we slide them out one by one, and then zoom them
             // out "off-screen" in the end to smoothly shrink the parent
-            let delay = MESSAGE_ANIMATION_TIME / Math.max(messages.length, 5);
+            const delay = MESSAGE_ANIMATION_TIME / Math.max(messages.length, 5);
             for (let i = 0; i < messages.length; i++) {
-                let message = messages[i];
+                const message = messages[i];
                 message.get_parent().ease({
-                    translation_x: this._list.width,
+                    translation_x: this.width,
                     opacity: 0,
                     duration: MESSAGE_ANIMATION_TIME,
                     delay: i * delay,
@@ -978,23 +960,5 @@ export const MessageView = GObject.registerClass({
                 });
             }
         }
-    }
-
-    _sync() {
-        let messages = this._messages;
-        let empty = messages.length === 0;
-
-        if (this._empty !== empty) {
-            this._empty = empty;
-            this.notify('empty');
-        }
-
-        let canClear = messages.some(m => m.canClose());
-        if (this._canClear !== canClear) {
-            this._canClear = canClear;
-            this.notify('can-clear');
-        }
-
-        this.visible = !this.empty;
     }
 });

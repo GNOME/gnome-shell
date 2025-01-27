@@ -25,17 +25,14 @@
   }
 }
 
-.message-list-sections {
+.message-view {
   // to account for scrollbar
   &:ltr {margin-right: $base_margin * 3; }
   &:rtl {margin-left: $base_margin * 3;}
 
-  spacing: $base_padding * 2;
-}
-
-.message-view,
-.message-view-list {
-  spacing: $base_padding * 2;
+  .message {
+    margin-bottom: $base_padding * 2 !important;
+  }
 }
 
 // do-not-disturb + clear button
