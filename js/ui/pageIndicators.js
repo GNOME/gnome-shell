@@ -15,7 +15,7 @@ export const PageIndicators = GObject.registerClass({
         let vertical = orientation === Clutter.Orientation.VERTICAL;
         super._init({
             style_class: 'page-indicators',
-            vertical,
+            orientation,
             x_expand: true, y_expand: true,
             x_align: vertical ? Clutter.ActorAlign.END : Clutter.ActorAlign.CENTER,
             y_align: vertical ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.END,

@@ -179,7 +179,7 @@ class UserWidget extends St.BoxLayout {
 
         super._init({
             styleClass,
-            vertical,
+            orientation,
             xAlign,
         });
 
