@@ -100,13 +100,13 @@ const CandidateArea = GObject.registerClass({
         this._orientation = orientation;
 
         if (this._orientation === IBus.Orientation.HORIZONTAL) {
-            this.vertical = false;
+            this.orientation = Clutter.Orientation.HORIZONTAL;
             this.remove_style_class_name('vertical');
             this.add_style_class_name('horizontal');
             this._previousButton.icon_name = 'go-previous-symbolic';
             this._nextButton.icon_name = 'go-next-symbolic';
         } else {                // VERTICAL || SYSTEM
-            this.vertical = true;
+            this.orientation = Clutter.Orientation.VERTICAL;
             this.add_style_class_name('vertical');
             this.remove_style_class_name('horizontal');
             this._previousButton.icon_name = 'go-up-symbolic';
