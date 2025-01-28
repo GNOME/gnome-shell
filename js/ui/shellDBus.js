@@ -276,7 +276,7 @@ export class GnomeShell {
         invocation.return_value(null);
     }
 
-    _emitAcceleratorActivated(action, device, timestamp) {
+    _emitAcceleratorSignal(signal, action, device, timestamp) {
         let destination = this._grabbedAccelerators.get(action);
         if (!destination)
             return;
@@ -296,8 +296,18 @@ export class GnomeShell {
             destination,
             this._dbusImpl.get_object_path(),
             info?.name ?? null,
-            'AcceleratorActivated',
+            signal,
             GLib.Variant.new('(ua{sv})', [action, params]));
+    }
+
+    _emitAcceleratorActivated(action, device, timestamp) {
+        this._emitAcceleratorSignal(
+            'AcceleratorActivated', action, device, timestamp);
+    }
+
+    _emitAcceleratorDeactivated(action, device, timestamp) {
+        this._emitAcceleratorSignal(
+            'AcceleratorDeactivated', action, device, timestamp);
     }
 
     _grabAcceleratorForSender(accelerator, modeFlags, grabFlags, sender) {
