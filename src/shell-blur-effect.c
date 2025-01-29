@@ -854,7 +854,7 @@ shell_blur_effect_set_radius (ShellBlurEffect *self,
 float
 shell_blur_effect_get_brightness (ShellBlurEffect *self)
 {
-  g_return_val_if_fail (SHELL_IS_BLUR_EFFECT (self), FALSE);
+  g_return_val_if_fail (SHELL_IS_BLUR_EFFECT (self), -1);
 
   return self->brightness;
 }
@@ -880,7 +880,7 @@ shell_blur_effect_set_brightness (ShellBlurEffect *self,
 ShellBlurMode
 shell_blur_effect_get_mode (ShellBlurEffect *self)
 {
-  g_return_val_if_fail (SHELL_IS_BLUR_EFFECT (self), -1);
+  g_return_val_if_fail (SHELL_IS_BLUR_EFFECT (self), SHELL_BLUR_MODE_ACTOR);
 
   return self->mode;
 }

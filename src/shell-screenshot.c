@@ -868,11 +868,11 @@ shell_screenshot_screenshot_stage_to_content_finish (ShellScreenshot   *screensh
 {
   ClutterContent *content;
 
-  g_return_val_if_fail (SHELL_IS_SCREENSHOT (screenshot), FALSE);
-  g_return_val_if_fail (G_IS_TASK (result), FALSE);
+  g_return_val_if_fail (SHELL_IS_SCREENSHOT (screenshot), NULL);
+  g_return_val_if_fail (G_IS_TASK (result), NULL);
   g_return_val_if_fail (g_async_result_is_tagged (result,
                                                   shell_screenshot_screenshot_stage_to_content),
-                        FALSE);
+                        NULL);
 
   content = g_task_propagate_pointer (G_TASK (result), error);
   if (!content)
@@ -1344,10 +1344,10 @@ GdkPixbuf *
 shell_screenshot_composite_to_stream_finish (GAsyncResult  *result,
                                              GError       **error)
 {
-  g_return_val_if_fail (G_IS_TASK (result), FALSE);
+  g_return_val_if_fail (G_IS_TASK (result), NULL);
   g_return_val_if_fail (g_async_result_is_tagged (result,
                                                   shell_screenshot_composite_to_stream),
-                        FALSE);
+                        NULL);
 
   return g_task_propagate_pointer (G_TASK (result), error);
 }
