@@ -189,6 +189,10 @@ export const QuickMenuToggle = GObject.registerClass({
         });
         this._box.add_child(this._menuButton);
 
+        this._menuButton.bind_property('visible',
+            separator, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+
         this.bind_property('toggle-mode',
             contents, 'toggle-mode',
             GObject.BindingFlags.SYNC_CREATE);
