@@ -355,21 +355,21 @@ const UIAreaSelector = GObject.registerClass({
             else if (y - bottomY >= 0 && y - bottomY <= threshold)
                 return Meta.Cursor.SW_RESIZE;
             else if (topY - y < 0 && y - bottomY < 0)
-                return Meta.Cursor.WEST_RESIZE;
+                return Meta.Cursor.W_RESIZE;
         } else if (x - rightX >= 0 && x - rightX <= threshold) {
             if (topY - y >= 0 && topY - y <= threshold)
                 return Meta.Cursor.NE_RESIZE;
             else if (y - bottomY >= 0 && y - bottomY <= threshold)
                 return Meta.Cursor.SE_RESIZE;
             else if (topY - y < 0 && y - bottomY < 0)
-                return Meta.Cursor.EAST_RESIZE;
+                return Meta.Cursor.E_RESIZE;
         } else if (leftX - x < 0 && x - rightX < 0) {
             if (topY - y >= 0 && topY - y <= threshold)
-                return Meta.Cursor.NORTH_RESIZE;
+                return Meta.Cursor.N_RESIZE;
             else if (y - bottomY >= 0 && y - bottomY <= threshold)
-                return Meta.Cursor.SOUTH_RESIZE;
+                return Meta.Cursor.S_RESIZE;
             else if (topY - y < 0 && y - bottomY < 0)
-                return Meta.Cursor.MOVE_OR_RESIZE_WINDOW;
+                return Meta.Cursor.MOVE;
         }
 
         return Meta.Cursor.CROSSHAIR;
@@ -461,7 +461,7 @@ const UIAreaSelector = GObject.registerClass({
 
             // For moving, start X and Y are the top left corner, while
             // last X and Y are the bottom right corner.
-            if (cursor === Meta.Cursor.MOVE_OR_RESIZE_WINDOW) {
+            if (cursor === Meta.Cursor.MOVE) {
                 this._startX = leftX;
                 this._startY = topY;
                 this._lastX = rightX;
@@ -471,25 +471,25 @@ const UIAreaSelector = GObject.registerClass({
             // Start X and Y are set to the stationary sides, while last X
             // and Y are set to the moving sides.
             if (cursor === Meta.Cursor.NW_RESIZE ||
-                cursor === Meta.Cursor.WEST_RESIZE ||
+                cursor === Meta.Cursor.W_RESIZE ||
                 cursor === Meta.Cursor.SW_RESIZE) {
                 this._startX = rightX;
                 this._lastX = leftX;
             }
             if (cursor === Meta.Cursor.NE_RESIZE ||
-                cursor === Meta.Cursor.EAST_RESIZE ||
+                cursor === Meta.Cursor.E_RESIZE ||
                 cursor === Meta.Cursor.SE_RESIZE) {
                 this._startX = leftX;
                 this._lastX = rightX;
             }
             if (cursor === Meta.Cursor.NW_RESIZE ||
-                cursor === Meta.Cursor.NORTH_RESIZE ||
+                cursor === Meta.Cursor.N_RESIZE ||
                 cursor === Meta.Cursor.NE_RESIZE) {
                 this._startY = bottomY;
                 this._lastY = topY;
             }
             if (cursor === Meta.Cursor.SW_RESIZE ||
-                cursor === Meta.Cursor.SOUTH_RESIZE ||
+                cursor === Meta.Cursor.S_RESIZE ||
                 cursor === Meta.Cursor.SE_RESIZE) {
                 this._startY = topY;
                 this._lastY = bottomY;
@@ -542,7 +542,7 @@ const UIAreaSelector = GObject.registerClass({
             let dx = Math.round(x - this._dragStartX);
             let dy = Math.round(y - this._dragStartY);
 
-            if (this._dragCursor === Meta.Cursor.MOVE_OR_RESIZE_WINDOW) {
+            if (this._dragCursor === Meta.Cursor.MOVE) {
                 const [,, selectionWidth, selectionHeight] = this.getGeometry();
 
                 let newStartX = this._startX + dx;
@@ -584,11 +584,11 @@ const UIAreaSelector = GObject.registerClass({
                 this._lastX = newLastX;
                 this._lastY = newLastY;
             } else {
-                if (this._dragCursor === Meta.Cursor.WEST_RESIZE ||
-                    this._dragCursor === Meta.Cursor.EAST_RESIZE)
+                if (this._dragCursor === Meta.Cursor.W_RESIZE ||
+                    this._dragCursor === Meta.Cursor.E_RESIZE)
                     dy = 0;
-                if (this._dragCursor === Meta.Cursor.NORTH_RESIZE ||
-                    this._dragCursor === Meta.Cursor.SOUTH_RESIZE)
+                if (this._dragCursor === Meta.Cursor.N_RESIZE ||
+                    this._dragCursor === Meta.Cursor.S_RESIZE)
                     dx = 0;
 
                 // Make sure last X and Y are clamped between 0 and size - 1,
@@ -619,16 +619,16 @@ const UIAreaSelector = GObject.registerClass({
                         this._dragCursor = Meta.Cursor.NE_RESIZE;
                     else if (this._dragCursor === Meta.Cursor.SW_RESIZE)
                         this._dragCursor = Meta.Cursor.SE_RESIZE;
-                    else if (this._dragCursor === Meta.Cursor.WEST_RESIZE)
-                        this._dragCursor = Meta.Cursor.EAST_RESIZE;
+                    else if (this._dragCursor === Meta.Cursor.W_RESIZE)
+                        this._dragCursor = Meta.Cursor.E_RESIZE;
                 } else {
                     // eslint-disable-next-line no-lonely-if
                     if (this._dragCursor === Meta.Cursor.NE_RESIZE)
                         this._dragCursor = Meta.Cursor.NW_RESIZE;
                     else if (this._dragCursor === Meta.Cursor.SE_RESIZE)
                         this._dragCursor = Meta.Cursor.SW_RESIZE;
-                    else if (this._dragCursor === Meta.Cursor.EAST_RESIZE)
-                        this._dragCursor = Meta.Cursor.WEST_RESIZE;
+                    else if (this._dragCursor === Meta.Cursor.E_RESIZE)
+                        this._dragCursor = Meta.Cursor.W_RESIZE;
                 }
 
                 if (this._lastY > this._startY) {
@@ -636,16 +636,16 @@ const UIAreaSelector = GObject.registerClass({
                         this._dragCursor = Meta.Cursor.SW_RESIZE;
                     else if (this._dragCursor === Meta.Cursor.NE_RESIZE)
                         this._dragCursor = Meta.Cursor.SE_RESIZE;
-                    else if (this._dragCursor === Meta.Cursor.NORTH_RESIZE)
-                        this._dragCursor = Meta.Cursor.SOUTH_RESIZE;
+                    else if (this._dragCursor === Meta.Cursor.N_RESIZE)
+                        this._dragCursor = Meta.Cursor.S_RESIZE;
                 } else {
                     // eslint-disable-next-line no-lonely-if
                     if (this._dragCursor === Meta.Cursor.SW_RESIZE)
                         this._dragCursor = Meta.Cursor.NW_RESIZE;
                     else if (this._dragCursor === Meta.Cursor.SE_RESIZE)
                         this._dragCursor = Meta.Cursor.NE_RESIZE;
-                    else if (this._dragCursor === Meta.Cursor.SOUTH_RESIZE)
-                        this._dragCursor = Meta.Cursor.NORTH_RESIZE;
+                    else if (this._dragCursor === Meta.Cursor.S_RESIZE)
+                        this._dragCursor = Meta.Cursor.N_RESIZE;
                 }
 
                 global.display.set_cursor(this._dragCursor);
@@ -3047,7 +3047,7 @@ class PickPixel extends St.Widget {
     }
 
     async pickAsync() {
-        global.display.set_cursor(Meta.Cursor.BLANK);
+        global.display.set_cursor(Meta.Cursor.NONE);
         Main.uiGroup.set_child_above_sibling(this, null);
         this.show();
 

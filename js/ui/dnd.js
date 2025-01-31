@@ -31,9 +31,9 @@ const DragState = {
 };
 
 const DRAG_CURSOR_MAP = {
-    0: Meta.Cursor.DND_UNSUPPORTED_TARGET,
-    1: Meta.Cursor.DND_COPY,
-    2: Meta.Cursor.DND_MOVE,
+    0: Meta.Cursor.NO_DROP,
+    1: Meta.Cursor.COPY,
+    2: Meta.Cursor.MOVE,
 };
 
 export const DragDropResult = {
@@ -386,7 +386,7 @@ class _Draggable extends Signals.EventEmitter {
             this._ungrabActor();
 
         this._grabEvents(device, sequence);
-        global.display.set_cursor(Meta.Cursor.DND_IN_DRAG);
+        global.display.set_cursor(Meta.Cursor.NO_DROP);
 
         this._dragX = this._dragStartX = stageX;
         this._dragY = this._dragStartY = stageY;
@@ -628,7 +628,7 @@ class _Draggable extends Signals.EventEmitter {
             }
             target = target.get_parent();
         }
-        global.display.set_cursor(Meta.Cursor.DND_IN_DRAG);
+        global.display.set_cursor(Meta.Cursor.NO_DROP);
         return GLib.SOURCE_REMOVE;
     }
 

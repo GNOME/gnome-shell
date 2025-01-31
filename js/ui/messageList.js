@@ -92,7 +92,7 @@ class URLHighlighter extends St.Label {
 
         const urlId = this._findUrlAtPos(event);
         if (urlId !== -1 && !this._cursorChanged) {
-            global.display.set_cursor(Meta.Cursor.POINTING_HAND);
+            global.display.set_cursor(Meta.Cursor.POINTER);
             this._cursorChanged = true;
         } else if (urlId === -1) {
             global.display.set_cursor(Meta.Cursor.DEFAULT);

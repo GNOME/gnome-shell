@@ -1007,7 +1007,7 @@ entry_cursor_func (StEntry  *entry,
   ShellGlobal *global = user_data;
 
   meta_display_set_cursor (global->meta_display,
-                           use_ibeam ? META_CURSOR_IBEAM : META_CURSOR_DEFAULT);
+                           use_ibeam ? META_CURSOR_TEXT : META_CURSOR_DEFAULT);
 }
 
 #ifdef HAVE_X11
