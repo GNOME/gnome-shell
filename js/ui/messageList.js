@@ -703,7 +703,7 @@ class NotificationMessage extends Message {
     }
 
     vfunc_clicked() {
-        this.notification.activate();
+        this.notification?.activate();
     }
 
     canClose() {
