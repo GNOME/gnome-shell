@@ -277,7 +277,7 @@ const LabelExpanderLayout = GObject.registerClass({
             ];
         }
 
-        return [min, nat];
+        return [Math.floor(min), Math.floor(nat)];
     }
 });
 
