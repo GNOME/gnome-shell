@@ -1,3 +1,16 @@
+47.4
+====
+* Fix overlapping tiles in app grid on hover [Sam; !3551]
+* Fix default user avatar with light style [Sam; !3596]
+* Fixed crash [Florian; !3619]
+* Misc. bug fixes and cleanups [Daniel, Florian; !3601, !3613, !3615, !3599]
+
+Contributors:
+  Sam Hewitt, Florian Müllner, Daniel van Vugt
+
+Translators:
+  Rafael Fontenelle [pt_BR], Philipp Kiemle [de]
+
 47.3
 ====
 * Fix Escape handling in run dialog [Florian; !3585]
