@@ -1029,6 +1029,9 @@ export const MessageView = GObject.registerClass({
 }, class MessageView extends St.BoxLayout {
     messages = [];
 
+    _notificationSourceToGroup = new Map();
+    _nUrgent = 0;
+
     _playerToMessage = new Map();
     _mediaSource = new Mpris.MprisSource();
 
@@ -1041,6 +1044,7 @@ export const MessageView = GObject.registerClass({
         });
 
         this._setupMpris();
+        this._setupNotifications();
     }
 
     get empty() {
@@ -1211,5 +1215,55 @@ export const MessageView = GObject.registerClass({
         const message = this._playerToMessage.get(player);
         this._removeMessage(message);
         this._playerToMessage.delete(player);
+    }
+
+    _setupNotifications() {
+        Main.messageTray.connectObject(
+            'source-added', (_, source) => this._addNotificationSource(source),
+            'source-removed', (_, source) => this._removeNotificationSource(source),
+            this);
+
+        Main.messageTray.getSources().forEach(source => {
+            this._addNotificationSource(source);
+        });
+    }
+
+    _addNotificationSource(source) {
+        const group = new NotificationMessageGroup(source);
+
+        this._notificationSourceToGroup.set(source, group);
+
+        group.connectObject(
+            'notify::focus-child', () => this._onKeyFocusIn(group.focusChild),
+            'notify::has-urgent', () => {
+                if (group.hasUrgent)
+                    this._nUrgent++;
+                else
+                    this._nUrgent--;
+
+                const index = this._playerToMessage.size + (group.hasUrgent ? 0 : this._nUrgent);
+                this._moveMessage(group, index);
+            },
+            'notification-added', () => {
+                const index = this._playerToMessage.size + (group.hasUrgent ? 0 : this._nUrgent);
+                this._moveMessage(group, index);
+            }, this);
+
+        if (group.hasUrgent)
+            this._nUrgent++;
+
+        const index = this._playerToMessage.size + (group.hasUrgent ? 0 : this._nUrgent);
+        this._addMessageAtIndex(group, index);
+    }
+
+    _removeNotificationSource(source) {
+        const group = this._notificationSourceToGroup.get(source);
+
+        this._removeMessage(group);
+
+        if (group.hasUrgent)
+            this._nUrgent--;
+
+        this._notificationSourceToGroup.delete(source);
     }
 });
