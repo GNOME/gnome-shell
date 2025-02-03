@@ -69,6 +69,17 @@
       margin: 0 $base_margin;
     }
   }
+
+  // close button
+  .message-collapse-button {
+    @extend .icon-button;
+    color: $fg_color;
+    background-color: transparentize($fg_color, 0.8);
+    padding: 4px !important;
+    border: 4px transparent solid;
+    &:hover {background-color: transparentize($fg_color, 0.7);}
+    &:active {background-color: transparentize($fg_color, 0.8);}
+  }
 }
 
 // message bubbles
@@ -77,6 +88,19 @@
   padding: $base_padding;
   margin: 0;
   border-radius: $modal_radius;
+
+  background-color: if($variant == 'light', $card_bg_color, lighten($card_bg_color, 5%));
+
+  &:second-in-stack {
+    background-color: if($variant == 'light', darken($card_bg_color, 4%), darken($card_bg_color, 1%));
+    box-shadow: 0 1px 1px 0 $card_shadow_color;
+  }
+
+  &:lower-in-stack {
+    background-color: if($variant == 'light', darken($card_bg_color, 7%), darken($card_bg_color, 4%));
+    box-shadow: none;
+    border-color: if($variant == 'light', darken($card_bg_color, 10%), transparent); // a not ideal workaround for light theme
+  }
 
   // message header
   .message-header {

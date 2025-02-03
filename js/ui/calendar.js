@@ -878,4 +878,28 @@ class CalendarMessageList extends St.Widget {
             this._clearButton, 'reactive',
             GObject.BindingFlags.SYNC_CREATE);
     }
+
+    maybeCollapseMessageGroupForEvent(event) {
+        if (!this._messageView.expandedGroup)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (event.type() === Clutter.EventType.KEY_PRESS &&
+            event.get_key_symbol() === Clutter.KEY_Escape) {
+            this._messageView.collapse();
+            return Clutter.EVENT_STOP;
+        }
+
+        const targetActor = global.stage.get_event_actor(event);
+        const onScrollbar =
+            this._scrollView.contains(targetActor) &&
+            !this._messageView.contains(targetActor);
+
+        if ((event.type() === Clutter.EventType.BUTTON_PRESS ||
+            event.type() === Clutter.EventType.TOUCH_BEGIN) &&
+            !this._messageView.expandedGroup.contains(targetActor) &&
+            !onScrollbar)
+            this._messageView.collapse();
+
+        return Clutter.EVENT_PROPAGATE;
+    }
 });

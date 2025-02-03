@@ -920,6 +920,18 @@ class DateMenuButton extends PanelMenu.Button {
         this._messageList = new Calendar.CalendarMessageList();
         hbox.add_child(this._messageList);
 
+        // Collapse notification groups when the user clicks outside of the expanded group
+        this.menu.actor.connectObject(
+            'captured-event::button', (_, event) => {
+                return this._messageList.maybeCollapseMessageGroupForEvent(event);
+            },
+            'captured-event::touch', (_, event) => {
+                return this._messageList.maybeCollapseMessageGroupForEvent(event);
+            },
+            'captured-event::key', (_, event) => {
+                return this._messageList.maybeCollapseMessageGroupForEvent(event);
+            });
+
         // Fill up the second column
         const boxLayout = new CalendarColumnLayout([this._calendar, this._date]);
         const vbox = new St.Widget({

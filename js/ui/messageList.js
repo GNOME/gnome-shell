@@ -20,6 +20,13 @@ const MESSAGE_ANIMATION_TIME = 100;
 
 const DEFAULT_EXPAND_LINES = 6;
 
+const GROUP_EXPENSION_TIME = 200;
+const MAX_VISIBLE_STACKED_MESSAGES = 3;
+const ADDITIONAL_BOTTOM_MARGIN_EXPANDED_GROUP = 15;
+const WIDTH_OFFSET_STACKED = 6;
+const HEIGHT_OFFSET_STACKED = 10;
+const HEIGHT_OFFSET_REDUCTION_STACKED = 1.4;
+
 export const URLHighlighter = GObject.registerClass(
 class URLHighlighter extends St.Label {
     _init(text = '', lineWrap, allowMarkup) {
@@ -824,6 +831,10 @@ class MediaMessage extends Message {
 
 const NotificationMessageGroup = GObject.registerClass({
     Properties: {
+        'expanded': GObject.ParamSpec.boolean(
+            'expanded', null, null,
+            GObject.ParamFlags.READABLE,
+            false),
         'has-urgent': GObject.ParamSpec.boolean(
             'has-urgent', null, null,
             GObject.ParamFlags.READWRITE,
@@ -835,26 +846,40 @@ const NotificationMessageGroup = GObject.registerClass({
     },
     Signals: {
         'notification-added': {},
+        'expand-toggle-requested': {},
     },
 }, class NotificationMessageGroup extends St.Widget {
     constructor(source) {
+        const action =  new Clutter.ClickAction();
+
+        // A widget that covers stacked messages so that they don't receive events
+        const cover = new St.Widget({
+            name: 'cover',
+            reactive: true,
+        });
+
         const header = new St.BoxLayout({
             style_class: 'message-group-header',
             x_expand: true,
+            visible: false,
         });
 
         super({
             style_class: 'message-notification-group',
             x_expand: true,
-            layout_manager: new Clutter.BoxLayout({
-                orientation: Clutter.Orientation.VERTICAL,
-            }),
+            layout_manager: new MessageGroupExpanderLayout(cover, header),
+            actions: action,
             reactive: true,
         });
 
+        // The cover is always the second child to prevent interaction
+        // with stacked messages when collapsed.
+        this._cover = cover;
+        // The headerBox will always be the last child
         this._headerBox = header;
 
         this.source = source;
+        this._expanded = false;
         this._notificationToMessage = new Map();
         this._nUrgent = 0;
         this._focusChild = null;
@@ -871,7 +896,21 @@ const NotificationMessageGroup = GObject.registerClass({
 
         this._headerBox.add_child(titleLabel);
 
+        this._unexpandButton = new St.Button({
+            style_class: 'message-collapse-button',
+            icon_name: 'group-collapse-symbolic',
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.CENTER,
+            x_expand: true,
+            y_expand: true,
+        });
+
+        this._unexpandButton.connect('clicked', () => this.emit('expand-toggle-requested'));
+        action.connect('clicked', () => this.emit('expand-toggle-requested'));
+
+        this._headerBox.add_child(this._unexpandButton);
         this.add_child(this._headerBox);
+        this.add_child(this._cover);
 
         source.connectObject(
             'notification-added', (_, notification) => this._addNotification(notification),
@@ -881,6 +920,11 @@ const NotificationMessageGroup = GObject.registerClass({
         source.notifications.forEach(notification => {
             this._addNotification(notification);
         });
+    }
+
+    get expanded() {
+        // Consider this group to be expanded when it has only one message
+        return this._expanded || this._notificationToMessage.size === 1;
     }
 
     get hasUrgent() {
@@ -896,6 +940,95 @@ const NotificationMessageGroup = GObject.registerClass({
 
     get focusChild() {
         return this._focusChild;
+    }
+
+    async expand() {
+        if (this._expanded)
+            return;
+
+        this._headerBox.show();
+        this._expanded = true;
+        this._updateStackedMessagesFade();
+        this.notify('expanded');
+        this._cover.hide();
+
+        await new Promise((resolve, _) => {
+            this.ease_property('@layout.expansion', 1, {
+                progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                duration: GROUP_EXPENSION_TIME,
+                onComplete: () => resolve(),
+            });
+        });
+    }
+
+    async collapse() {
+        if (!this._expanded)
+            return;
+
+        this._notificationToMessage.forEach(message => message.unexpand(true));
+
+        // Give focus to the fully visible message
+        if (this.focusChild?.has_key_focus())
+            this.get_first_child().child.grab_key_focus();
+
+        this._expanded = false;
+        this.notify('expanded');
+        this._cover.show();
+        this._updateStackedMessagesFade();
+
+        await new Promise((resolve, _) => {
+            this.ease_property('@layout.expansion', 0, {
+                progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                duration: GROUP_EXPENSION_TIME,
+                onComplete: () => resolve(),
+            });
+        });
+
+        this._headerBox.hide();
+    }
+
+    // Ensure that the cover is still below the top most message
+    _ensureCoverPosition() {
+        // If the group doesn't have any messages,
+        // don't move the cover before the headerBox
+        if (this.get_n_children() > 2)
+            this.set_child_at_index(this._cover, 1);
+    }
+
+    _updateStackedMessagesFade() {
+        const pseudoClasses = ['second-in-stack', 'lower-in-stack'];
+
+        // The group doesn't have any messages
+        if (this.get_n_children() < 3)
+            return;
+
+        const [top, cover, ...stack] = this.get_children();
+        const header = stack.pop();
+
+        console.assert(cover === this._cover,
+            'Cover has expected stack position');
+        console.assert(header === this._headerBox,
+            'Header has expected stack position');
+
+        // A message may have moved so we need to remove the classes from all messages
+        const messages = [top, ...stack];
+        messages.forEach(item => {
+            pseudoClasses.forEach(name => {
+                item.child.remove_style_pseudo_class(name);
+            });
+        });
+
+        if (!this.expanded && stack.length > 0) {
+            const stackTop = stack.shift();
+            stackTop.child.add_style_pseudo_class(pseudoClasses[0]);
+
+            // Use the same class for the third message and all messages
+            // after that, since they won't be visible anyways
+            stack.forEach(item => {
+                const message = item.child;
+                message.add_style_pseudo_class(pseudoClasses[1]);
+            });
+        }
     }
 
     canClose() {
@@ -929,6 +1062,7 @@ const NotificationMessageGroup = GObject.registerClass({
         if (isUrgent)
             this._nUrgent++;
 
+        const wasExpanded = this.expanded;
         const item = new St.Bin({
             child: message,
             canFocus: false,
@@ -938,10 +1072,36 @@ const NotificationMessageGroup = GObject.registerClass({
             scale_y: 0,
         });
 
-        message.connectObject('key-focus-in', this._onKeyFocusIn.bind(this), this);
+        message.connectObject(
+            'key-focus-in', this._onKeyFocusIn.bind(this),
+            'expanded', () => {
+                if (!this.expanded)
+                    this.emit('expand-toggle-requested');
+            },
+            'close', () => {
+                // If the group is collapsed and one notification is closed, close the entire group
+                if (!this.expanded) {
+                    GObject.signal_stop_emission_by_name(message, 'close');
+                    this.close();
+                }
+            },
+            'clicked', () => {
+                if (!this.expanded) {
+                    GObject.signal_stop_emission_by_name(message, 'clicked');
+                    this.emit('expand-toggle-requested');
+                }
+            }, this);
 
         let index = isUrgent ? 0 : this._nUrgent;
+        // If we add a child below the top child we need to adjust index to skip the cover child
+        if (index > 0)
+            index += 1;
+
         this.insert_child_at_index(item, index);
+        this._ensureCoverPosition();
+        this._updateStackedMessagesFade();
+
+        item.layout_manager.scalingEnabled = this._expanded;
 
         // The first message doesn't need to be animated since the entire group is animated
         if (this._notificationToMessage.size > 1) {
@@ -954,6 +1114,9 @@ const NotificationMessageGroup = GObject.registerClass({
         } else {
             item.set_scale(1.0, 1.0);
         }
+
+        if (wasExpanded !== this.expanded)
+            this.notify('expanded');
 
         if (oldHasUrgent !== this.hasUrgent)
             this.notify('has-urgent');
@@ -969,6 +1132,8 @@ const NotificationMessageGroup = GObject.registerClass({
 
         message.disconnectObject(this);
 
+        item.layout_manager.scalingEnabled = this._expanded;
+
         item.ease({
             scale_x: 0,
             scale_y: 0,
@@ -977,8 +1142,27 @@ const NotificationMessageGroup = GObject.registerClass({
             onComplete: () => {
                 item.destroy();
                 this._notificationToMessage.delete(notification);
+                this._ensureCoverPosition();
+                this._updateStackedMessagesFade();
+
+                if (this._notificationToMessage.size === 1)
+                    this.emit('expand-toggle-requested');
             },
         });
+    }
+
+    vfunc_paint(paintContext) {
+        // Invert the paint order, so that messages are collapsed with the
+        // newest message (the first child) on top of the stack
+        for (const child of this.get_children().reverse())
+            child.paint(paintContext);
+    }
+
+    vfunc_pick(pickContext) {
+        // Invert the pick order, so that messages are collapsed with the
+        // newest message (the first child) on top of the stack
+        for (const child of this.get_children().reverse())
+            child.pick(pickContext);
     }
 
     vfunc_map() {
@@ -987,6 +1171,13 @@ const NotificationMessageGroup = GObject.registerClass({
             notification.acknowledged = true;
         });
         super.vfunc_map();
+    }
+
+    vfunc_get_focus_chain() {
+        if (this.expanded)
+            return this.get_children();
+        else
+            return [this.get_first_child()];
     }
 
     _moveMessage(message, index) {
@@ -1000,7 +1191,13 @@ const NotificationMessageGroup = GObject.registerClass({
             duration: MESSAGE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
+                // If we add a child below the top child we need to adjust index to skip the cover child
+                if (index > 0)
+                    index += 1;
+
                 this.set_child_at_index(item, index);
+                this._ensureCoverPosition();
+                this._updateStackedMessagesFade();
                 item.ease({
                     scale_x: 1,
                     scale_y: 1,
@@ -1008,6 +1205,235 @@ const NotificationMessageGroup = GObject.registerClass({
                     mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 });
             },
+        });
+    }
+
+    close() {
+        // If the group is closed, close all messages in this group
+        this._notificationToMessage.forEach(message => {
+            message.disconnectObject(this);
+            message.close();
+        });
+    }
+});
+
+const MessageGroupExpanderLayout = GObject.registerClass({
+    Properties: {
+        'expansion': GObject.ParamSpec.double(
+            'expansion', null, null,
+            GObject.ParamFlags.READWRITE,
+            0, 1, 0),
+    },
+}, class MessageGroupExpanderLayout extends Clutter.LayoutManager {
+    constructor(cover, header) {
+        super();
+
+        this._cover = cover;
+        this._header = header;
+        this._expansion = 0;
+    }
+
+    get expansion() {
+        return this._expansion;
+    }
+
+    set expansion(v) {
+        v = Math.clamp(v, 0, 1);
+
+        if (v === this._expansion)
+            return;
+        this._expansion = v;
+        this.notify('expansion');
+
+        this.layout_changed();
+    }
+
+    getExpandedHeight(container, forWidth) {
+        let [minExpanded, natExpanded] = [0, 0];
+
+        container.get_children().forEach(child => {
+            // We don't need to measure the cover
+            if (child === this._cover)
+                return;
+
+            const [minChild, natChild] = child.get_preferred_height(forWidth);
+            minExpanded += minChild;
+            natExpanded += natChild;
+        });
+
+        // Add additional spacing after an expanded group
+        minExpanded += ADDITIONAL_BOTTOM_MARGIN_EXPANDED_GROUP;
+        natExpanded += ADDITIONAL_BOTTOM_MARGIN_EXPANDED_GROUP;
+
+        return [minExpanded, natExpanded];
+    }
+
+    vfunc_get_preferred_width(container, forHeight) {
+        return container.get_children().reduce((acc, child) => {
+            // We don't need to measure the cover
+            if (child === this._cover)
+                return [0, 0];
+
+            if (!child.visible)
+                return acc;
+
+            const [minChild, natChild] = child.get_preferred_width(forHeight);
+
+            return [
+                Math.max(minChild, acc[0]),
+                Math.max(natChild, acc[1]),
+            ];
+        }, [0, 0]);
+    }
+
+    vfunc_get_preferred_height(container, forWidth) {
+        let offset = HEIGHT_OFFSET_STACKED;
+        let [min, nat] = [0, 0];
+        let visibleCount = MAX_VISIBLE_STACKED_MESSAGES;
+
+        for (const child of container.get_children()) {
+            // We don't need to measure the cover and the header is behind the stacked messages
+            if (child === this._cover || child === this._header)
+                continue;
+
+            if (!child.visible)
+                continue;
+
+            // The first message is always fully shown
+            if (min === 0 || nat === 0) {
+                [min, nat] = child.get_preferred_height(forWidth);
+            } else {
+                min += offset;
+                nat += offset;
+                offset /= HEIGHT_OFFSET_REDUCTION_STACKED;
+            }
+
+            visibleCount--;
+
+            if (visibleCount === 0)
+                break;
+        }
+
+        const [minExpanded, natExpanded] = this.getExpandedHeight(container, forWidth);
+
+        [min, nat] = [
+            min + this._expansion * (minExpanded - min),
+            nat + this._expansion * (natExpanded - nat),
+        ];
+
+        return [min, nat];
+    }
+
+    vfunc_allocate(container, box) {
+        const childWidth = box.x2 - box.x1;
+        let fullY2 = box.y2;
+
+        if (this._cover.visible)
+            this._cover.allocate(box);
+
+        if (this._header.visible) {
+            const [min, nat_] = this._header.get_preferred_height(childWidth);
+            box.y2 = box.y1 + min;
+            this._header.allocate(box);
+            box.y1 += this._expansion * (box.y2 - box.y1);
+        }
+
+        // The group doesn't have any messages
+        if (container.get_n_children() < 3)
+            return;
+
+        let heightOffset = HEIGHT_OFFSET_STACKED;
+        const [top, cover, ...stack] = container.get_children();
+        const header = stack.pop();
+
+        console.assert(cover === this._cover,
+            'Cover has expected stack position');
+        console.assert(header === this._header,
+            'Header has expected stack position');
+
+        if (top) {
+            const [min, nat_] = top.get_preferred_height(childWidth);
+            // The first message is always fully shown
+            box.y2 = box.y1 + min;
+            top.allocate(box);
+        }
+
+        stack.forEach(child => {
+            const [min, nat_] = child.get_preferred_height(childWidth);
+
+            // Reduce width of children when collapsed
+            const widthOffset = (1.0 - this._expansion) * WIDTH_OFFSET_STACKED;
+            box.x1 += widthOffset;
+            box.x2 -= widthOffset;
+
+            // Stack children with a small reveal when collapsed
+            box.y2 += heightOffset + this._expansion * (min - heightOffset);
+            // Ensure messages are not placed outside the widget
+            if (box.y2 > fullY2)
+                box.y2 = fullY2;
+            else
+                heightOffset /= HEIGHT_OFFSET_REDUCTION_STACKED;
+            box.y1 = box.y2 - min;
+
+            child.allocate(box);
+        });
+    }
+});
+
+const MessageViewLayout = GObject.registerClass({
+}, class MessageViewLayout extends Clutter.LayoutManager {
+    constructor(overlay) {
+        super();
+        this._overlay = overlay;
+    }
+
+    vfunc_get_preferred_width(container, forHeight) {
+        const [min, nat] = container.get_children().reduce((acc, child) => {
+            const [minChild, natChild] = child.get_preferred_width(forHeight);
+
+            return [
+                Math.max(minChild, acc[0]),
+                Math.max(natChild, acc[1]),
+            ];
+        }, [0, 0]);
+
+        return [
+            min,
+            nat,
+        ];
+    }
+
+    vfunc_get_preferred_height(container, forWidth) {
+        let [min, nat] = [0, 0];
+
+        container.get_children().forEach(child => {
+            const [minChild, natChild] = child.get_preferred_height(forWidth);
+
+            min += minChild;
+            nat += natChild;
+        });
+
+        return [
+            min,
+            nat,
+        ];
+    }
+
+    vfunc_allocate(container, box) {
+        if (this._overlay?.visible)
+            this._overlay.allocate(box);
+
+        const width = box.x2 - box.x1;
+        // We need to use the order in messages since the children order is
+        // the render order and the expanded group needs to be the top most child
+        // and the overlay the child below it.
+        container.messages.forEach(message => {
+            const child = message.get_parent();
+
+            const [min, _] = child.get_preferred_height(width);
+            box.y2 = box.y1 + min;
+            child.allocate(box);
+            box.y1 = box.y2;
         });
     }
 });
@@ -1022,11 +1448,15 @@ export const MessageView = GObject.registerClass({
             'empty', null, null,
             GObject.ParamFlags.READABLE,
             true),
+        'expanded-group': GObject.ParamSpec.object(
+            'expanded-group', null, null,
+            GObject.ParamFlags.READABLE,
+            Clutter.Actor),
     },
     Signals: {
         'message-focused': {param_types: [Message]},
     },
-}, class MessageView extends St.BoxLayout {
+}, class MessageView extends St.Viewport {
     messages = [];
 
     _notificationSourceToGroup = new Map();
@@ -1036,12 +1466,25 @@ export const MessageView = GObject.registerClass({
     _mediaSource = new Mpris.MprisSource();
 
     constructor() {
+        // Add an overlay that will be placed below the expanded group message
+        // to block interaction with other messages.
+        // Unfortunately there isn't a much better way to block
+        // interaction with widgets for this use-case.
+        const overlay = new Clutter.Actor({
+            reactive: true,
+            name: 'overlay',
+            visible: false,
+        });
+
         super({
             style_class: 'message-view',
-            orientation: Clutter.Orientation.VERTICAL,
+            layout_manager: new MessageViewLayout(overlay),
             x_expand: true,
             y_expand: true,
         });
+
+        this._overlay = overlay;
+        this.add_child(this._overlay);
 
         this._setupMpris();
         this._setupNotifications();
@@ -1057,6 +1500,13 @@ export const MessageView = GObject.registerClass({
 
     _onKeyFocusIn(messageActor) {
         this.emit('message-focused', messageActor);
+    }
+
+    vfunc_get_focus_chain() {
+        if (this.expandedGroup)
+            return [this.expandedGroup];
+        else
+            return this.messages.filter(m => m.visible).map(m => m.get_parent());
     }
 
     _addMessageAtIndex(message, index) {
@@ -1084,7 +1534,7 @@ export const MessageView = GObject.registerClass({
                 this.messages.splice(indexLocal, 1);
         });
 
-        this.insert_child_at_index(item, index);
+        this.add_child(item);
         this.messages.splice(index, 0, message);
 
         if (wasEmpty !== this.empty)
@@ -1116,7 +1566,6 @@ export const MessageView = GObject.registerClass({
             duration: MESSAGE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
-                this.set_child_at_index(item, index);
                 this.messages.splice(this.messages.indexOf(message), 1);
                 this.messages.splice(index, 0, message);
                 this.queue_relayout();
@@ -1235,6 +1684,12 @@ export const MessageView = GObject.registerClass({
 
         group.connectObject(
             'notify::focus-child', () => this._onKeyFocusIn(group.focusChild),
+            'expand-toggle-requested', () => {
+                if (group.expanded)
+                    this._setExpandedGroup(null).catch(logError);
+                else
+                    this._setExpandedGroup(group).catch(logError);
+            },
             'notify::has-urgent', () => {
                 if (group.hasUrgent)
                     this._nUrgent++;
@@ -1265,5 +1720,37 @@ export const MessageView = GObject.registerClass({
             this._nUrgent--;
 
         this._notificationSourceToGroup.delete(source);
+    }
+
+    get expandedGroup() {
+        return this._expandedGroup;
+    }
+
+    async _setExpandedGroup(group) {
+        const prevGroup = this._expandedGroup;
+
+        if (prevGroup === group)
+            return;
+
+        this._expandedGroup = group;
+        this.notify('expanded-group');
+
+        // Collapse the previously expanded group
+        await prevGroup?.collapse();
+
+        if (group) {
+            // Make sure that the overlay is the child below the expanded group
+            this.set_child_above_sibling(group.get_parent(), null);
+            this.set_child_below_sibling(this._overlay, group.get_parent());
+            this._overlay.show();
+            await group.expand();
+        } else {
+            this._overlay.hide();
+        }
+    }
+
+    // Collapse expanded notification group
+    collapse() {
+        this._setExpandedGroup(null).catch(logError);
     }
 });
