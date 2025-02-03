@@ -822,6 +822,196 @@ class MediaMessage extends Message {
     }
 });
 
+const NotificationMessageGroup = GObject.registerClass({
+    Properties: {
+        'has-urgent': GObject.ParamSpec.boolean(
+            'has-urgent', null, null,
+            GObject.ParamFlags.READWRITE,
+            false),
+        'focus-child': GObject.ParamSpec.object(
+            'focus-child', null, null,
+            GObject.ParamFlags.READABLE,
+            Message),
+    },
+    Signals: {
+        'notification-added': {},
+    },
+}, class NotificationMessageGroup extends St.Widget {
+    constructor(source) {
+        const header = new St.BoxLayout({
+            style_class: 'message-group-header',
+            x_expand: true,
+        });
+
+        super({
+            style_class: 'message-notification-group',
+            x_expand: true,
+            layout_manager: new Clutter.BoxLayout({
+                orientation: Clutter.Orientation.VERTICAL,
+            }),
+            reactive: true,
+        });
+
+        this._headerBox = header;
+
+        this.source = source;
+        this._notificationToMessage = new Map();
+        this._nUrgent = 0;
+        this._focusChild = null;
+
+        const titleLabel = new St.Label({
+            style_class: 'message-group-title',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        source.bind_property('title',
+            titleLabel,
+            'text',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this._headerBox.add_child(titleLabel);
+
+        this.add_child(this._headerBox);
+
+        source.connectObject(
+            'notification-added', (_, notification) => this._addNotification(notification),
+            'notification-removed', (_, notification) => this._removeNotification(notification),
+            this);
+
+        source.notifications.forEach(notification => {
+            this._addNotification(notification);
+        });
+    }
+
+    get hasUrgent() {
+        return this._nUrgent > 0;
+    }
+
+    _onKeyFocusIn(actor) {
+        if (this._focusChild === actor)
+            return;
+        this._focusChild = actor;
+        this.notify('focus-child');
+    }
+
+    get focusChild() {
+        return this._focusChild;
+    }
+
+    canClose() {
+        return true;
+    }
+
+    _addNotification(notification) {
+        const message = new NotificationMessage(notification);
+
+        this._notificationToMessage.set(notification, message);
+
+        notification.connectObject(
+            'notify::urgency', () => {
+                const isUrgent = notification.urgency === MessageTray.Urgency.CRITICAL;
+                const oldHasUrgent = this.hasUrgent;
+
+                if (isUrgent)
+                    this._nUrgent++;
+                else
+                    this._nUrgent--;
+
+                const index = isUrgent ? 0 : this._nUrgent;
+                this._moveMessage(message, index);
+                if (oldHasUrgent !== this.hasUrgent)
+                    this.notify('has-urgent');
+            }, message);
+
+        const isUrgent = notification.urgency === MessageTray.Urgency.CRITICAL;
+        const oldHasUrgent = this.hasUrgent;
+
+        if (isUrgent)
+            this._nUrgent++;
+
+        const item = new St.Bin({
+            child: message,
+            canFocus: false,
+            layout_manager: new ScaleLayout(),
+            pivot_point: new Graphene.Point({x: .5, y: .5}),
+            scale_x: 0,
+            scale_y: 0,
+        });
+
+        message.connectObject('key-focus-in', this._onKeyFocusIn.bind(this), this);
+
+        let index = isUrgent ? 0 : this._nUrgent;
+        this.insert_child_at_index(item, index);
+
+        // The first message doesn't need to be animated since the entire group is animated
+        if (this._notificationToMessage.size > 1) {
+            item.ease({
+                scale_x: 1,
+                scale_y: 1,
+                duration: MESSAGE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+        } else {
+            item.set_scale(1.0, 1.0);
+        }
+
+        if (oldHasUrgent !== this.hasUrgent)
+            this.notify('has-urgent');
+        this.emit('notification-added');
+    }
+
+    _removeNotification(notification) {
+        const message = this._notificationToMessage.get(notification);
+        const item = message.get_parent();
+
+        if (notification.urgency === MessageTray.Urgency.CRITICAL)
+            this._nUrgent--;
+
+        message.disconnectObject(this);
+
+        item.ease({
+            scale_x: 0,
+            scale_y: 0,
+            duration: MESSAGE_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                item.destroy();
+                this._notificationToMessage.delete(notification);
+            },
+        });
+    }
+
+    vfunc_map() {
+        // Acknowledge all notifications once they are mapped
+        this._notificationToMessage.forEach((_, notification) => {
+            notification.acknowledged = true;
+        });
+        super.vfunc_map();
+    }
+
+    _moveMessage(message, index) {
+        if (this.get_child_at_index(index) === message)
+            return;
+
+        const item = message.get_parent();
+        item.ease({
+            scale_x: 0,
+            scale_y: 0,
+            duration: MESSAGE_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this.set_child_at_index(item, index);
+                item.ease({
+                    scale_x: 1,
+                    scale_y: 1,
+                    duration: MESSAGE_ANIMATION_TIME,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                });
+            },
+        });
+    }
+});
+
 export const MessageView = GObject.registerClass({
     Properties: {
         'can-clear': GObject.ParamSpec.boolean(

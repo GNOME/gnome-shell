@@ -58,6 +58,19 @@
   }
 }
 
+// message notification group
+.message-notification-group {
+  spacing: $base_padding * 2;
+
+  .message-group-header {
+    padding: $base_padding;
+    .message-group-title {
+      @extend %title_2;
+      margin: 0 $base_margin;
+    }
+  }
+}
+
 // message bubbles
 .message {
   @extend %card;
