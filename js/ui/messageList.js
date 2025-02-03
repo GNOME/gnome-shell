@@ -837,6 +837,8 @@ export const MessageView = GObject.registerClass({
         'message-focused': {param_types: [Message]},
     },
 }, class MessageView extends St.BoxLayout {
+    messages = [];
+
     _playerToMessage = new Map();
     _mediaSource = new Mpris.MprisSource();
 
@@ -852,15 +854,11 @@ export const MessageView = GObject.registerClass({
     }
 
     get empty() {
-        return this.get_first_child() === null;
+        return this.messages.length === 0;
     }
 
     get canClear() {
-        return this._messages.some(msg => msg.canClose());
-    }
-
-    get _messages() {
-        return this.get_children().map(item => item.child);
+        return this.messages.some(msg => msg.canClose());
     }
 
     _onKeyFocusIn(messageActor) {
@@ -868,7 +866,7 @@ export const MessageView = GObject.registerClass({
     }
 
     _addMessageAtIndex(message, index) {
-        if (this._messages.includes(message))
+        if (this.messages.includes(message))
             throw new Error('Message was already added previously');
 
         const wasEmpty = this.empty;
@@ -884,8 +882,16 @@ export const MessageView = GObject.registerClass({
         });
 
         message.connect('key-focus-in', this._onKeyFocusIn.bind(this));
+        // Make sure that the messages array is updated even when
+        // _removeMessage() isn't called.
+        message.connect('destroy', () => {
+            const indexLocal = this.messages.indexOf(message);
+            if (indexLocal >= 0)
+                this.messages.splice(indexLocal, 1);
+        });
 
         this.insert_child_at_index(item, index);
+        this.messages.splice(index, 0, message);
 
         if (wasEmpty !== this.empty)
             this.notify('empty');
@@ -902,11 +908,10 @@ export const MessageView = GObject.registerClass({
     }
 
     _moveMessage(message, index) {
-        const messages = this._messages;
-        if (!messages.includes(message))
+        if (!this.messages.includes(message))
             throw new Error('Impossible to move untracked message');
 
-        if (messages[index] === message)
+        if (this.messages[index] === message)
             return;
 
         const item = message.get_parent();
@@ -918,6 +923,9 @@ export const MessageView = GObject.registerClass({
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this.set_child_at_index(item, index);
+                this.messages.splice(this.messages.indexOf(message), 1);
+                this.messages.splice(index, 0, message);
+                this.queue_relayout();
                 item.ease({
                     scale_x: 1,
                     scale_y: 1,
@@ -929,7 +937,7 @@ export const MessageView = GObject.registerClass({
     }
 
     _removeMessage(message) {
-        const messages = this._messages;
+        const messages = this.messages;
 
         if (!messages.includes(message))
             throw new Error('Impossible to remove untracked message');
@@ -944,16 +952,17 @@ export const MessageView = GObject.registerClass({
             onComplete: () => {
                 const wasEmpty = this.empty;
                 const couldClear = this.canClear;
-
+                const index = this.messages.indexOf(message);
                 if (message.has_key_focus()) {
-                    const index = messages.indexOf(message);
                     const nextMessage =
-                        messages[index + 1] ||
-                        messages[index - 1] ||
+                        this.messages[index + 1] ||
+                        this.messages[index - 1] ||
                         this;
                     nextMessage?.grab_key_focus();
                 }
 
+                // The message is removed from the messages array in the
+                // destroy signal handler
                 item.destroy();
 
                 if (wasEmpty !== this.empty)
@@ -966,7 +975,7 @@ export const MessageView = GObject.registerClass({
     }
 
     clear() {
-        const messages = this._messages.filter(msg => msg.canClose());
+        const messages = this.messages.filter(msg => msg.canClose());
 
         // If there are few messages, letting them all zoom out looks OK
         if (messages.length < 2) {
