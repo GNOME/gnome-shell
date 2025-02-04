@@ -1,5 +1,5 @@
 project('gnome-shell', 'c',
-  version: '48.alpha',
+  version: '48.beta',
   meson_version: '>= 1.1.0',
   license: 'GPL-2.0-or-later',
 )
@@ -25,9 +25,9 @@ gio_req = '>= 2.79.2'
 gi_req = '>= 1.49.1'
 gjs_req = '>= 1.73.1'
 gtk_req = '>= 4.0'
-mutter_req = '>= 48.alpha'
+mutter_req = '>= 48.beta'
 polkit_req = '>= 0.100'
-schemas_req = '>= 48.alpha'  # actually requires commit 9d55553, just after alpha
+schemas_req = '>= 48.beta'
 systemd_req = '>= 246'
 gnome_desktop_req = '>= 40'
 pipewire_req = '>= 0.3.49'

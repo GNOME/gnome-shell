@@ -1,3 +1,25 @@
+48.beta
+=======
+* Fix overlapping tiles in app grid on hover [Sam; !3551]
+* Improve screen time limit support
+  [Philip, Florian; !3597, !3603, !3604, !3606]
+* Fix default user avatar with light stsyle [Sam; !3596]
+* Transition to new BoxLayout.orientation property
+  [Florian, Carlos; !3614, !3618]
+* Allow tracking screen time history with no limit set [Philip; !3610]
+* Fix Extensions app losing state after shell restart [Florian; !3463]
+* Support loading login banner message from file [Florian; !3558]
+* Misc. bug fixes and cleanups [Florian, Daniel, Bilal, Philip, Adam, Carlos,
+  Julian; !3600, !3601, !3528, !3510, !3605, !3607, !3609, !3613, !3615, !3598,
+  !3617, !3599, !3612, !3621, !3619, !3429, !3627]
+
+Contributors:
+  Bilal Elmoussaoui, Carlos Garnacho, Sam Hewitt, Florian Müllner,
+  Julian Sparber, Daniel van Vugt, Adam Williamson, Philip Withnall
+
+Translators:
+  Rafael Fontenelle [pt_BR], Artur S0 [ru], Quentin PAGÈS [oc],
+  Emilio Sepúlveda [ia], Martin [sl], Philipp Kiemle [de]
 48.alpha
 ========
 * Improve quick settings accessibility [Lukáš; !3477, !3481, !3484, !3485]
