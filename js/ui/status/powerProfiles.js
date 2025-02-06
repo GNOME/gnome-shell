@@ -8,10 +8,10 @@ import * as PopupMenu from '../popupMenu.js';
 
 import {loadInterfaceXML} from '../../misc/fileUtils.js';
 
-const BUS_NAME = 'net.hadess.PowerProfiles';
-const OBJECT_PATH = '/net/hadess/PowerProfiles';
+const BUS_NAME = 'org.freedesktop.UPower.PowerProfiles';
+const OBJECT_PATH = '/org/freedesktop/UPower/PowerProfiles';
 
-const PowerProfilesIface = loadInterfaceXML('net.hadess.PowerProfiles');
+const PowerProfilesIface = loadInterfaceXML('org.freedesktop.UPower.PowerProfiles');
 const PowerProfilesProxy = Gio.DBusProxy.makeProxyWrapper(PowerProfilesIface);
 
 const PROFILE_PARAMS = {
