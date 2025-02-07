@@ -100,6 +100,14 @@ install_data(keybinding_files, install_dir: keysdir)
 
 schemaconf = configuration_data()
 schemaconf.set('GETTEXT_PACKAGE', meson.project_name())
+schemaconf.set('DASH_APPS', run_command(
+  generate_app_list, 'default-apps/dash.txt',
+  check: true,
+).stdout())
+schemaconf.set('APP_GRID_APPS', run_command(
+  generate_app_list, '--pages', 'default-apps/app-grid.txt',
+  check: true,
+).stdout())
 schema = configure_file(
   input: 'org.gnome.shell.gschema.xml.in',
   output: 'org.gnome.shell.gschema.xml',

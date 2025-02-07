@@ -24,6 +24,8 @@ import * as SystemActions from '../misc/systemActions.js';
 
 import * as Main from './main.js';
 
+import {UTILITIES_FOLDER_APPS} from '../misc/config.js';
+
 const MENU_POPUP_TIMEOUT = 600;
 const POPDOWN_DIALOG_TIMEOUT = 500;
 
@@ -59,25 +61,7 @@ const DIALOG_SHADE_HIGHLIGHT = new Cogl.Color({red: 0, green: 0, blue: 0, alpha:
 const DEFAULT_FOLDERS = {
     'Utilities': {
         name: 'X-GNOME-Shell-Utilities.directory',
-        apps: [
-            // Sorted by name as shown in menus, not filename
-            'nm-connection-editor.desktop', // Advanced Network Configuration
-            'org.gnome.DejaDup.desktop', // Backups
-            'org.gnome.Characters.desktop', // Characters
-            'org.gnome.Connections.desktop', // Connections
-            'org.gnome.DiskUtility.desktop', // Disks
-            'org.gnome.baobab.desktop', // Disk Usage Analyzer
-            'org.gnome.Evince.desktop', // Document Viewer
-            'org.gnome.FileRoller.desktop', // File Roller
-            'org.gnome.font-viewer.desktop', // Fonts
-            'org.gnome.Loupe.desktop', // Image Viewer
-            'org.gnome.Logs.desktop', // Logs
-            'org.freedesktop.MalcontentControl.desktop', // Parental Controls
-            'org.gnome.seahorse.Application.desktop', // Passwords and Keys
-            'org.freedesktop.GnomeAbrt.desktop', // Problem Reporting
-            'org.gnome.tweaks.desktop', // Tweaks
-            'org.gnome.Usage.desktop', // Usage
-        ],
+        apps: UTILITIES_FOLDER_APPS,
     },
     'YaST': {
         name: 'suse-yast.directory',

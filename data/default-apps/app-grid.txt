@@ -1,0 +1,21 @@
+org.gnome.Geary.desktop
+org.gnome.Contacts.desktop
+org.gnome.Weather.desktop
+org.gnome.clocks.desktop
+org.gnome.Maps.desktop
+org.gnome.Books.desktop
+org.gnome.Photos.desktop
+org.gnome.Totem.desktop
+org.gnome.Calculator.desktop
+org.gnome.gedit.desktop
+simple-scan.desktop
+org.gnome.Settings.desktop
+org.gnome.SystemMonitor.desktop
+org.gnome.Boxes.desktop
+org.gnome.Terminal.desktop
+Utilities # folder
+org.gnome.Characters.desktop
+yelp.desktop
+org.gnome.Screenshot.desktop
+org.gnome.Cheese.desktop
+org.gnome.font-viewer.desktop

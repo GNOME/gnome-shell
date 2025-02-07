@@ -142,6 +142,7 @@ endif
 mutter_typelibdir = mutter_dep.get_variable('typelibdir')
 python = find_program('python3')
 gjs = find_program('gjs')
+generate_app_list = find_program('meson/generate-app-list.py')
 
 cc = meson.get_compiler('c')
 
