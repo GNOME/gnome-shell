@@ -1418,12 +1418,16 @@ class AppDisplay extends BaseAppView {
         if (this._folderSettings.get_strv('folder-children').length > 0)
             return;
 
+        const appSys = Shell.AppSystem.get_default();
         const folders = Object.keys(DEFAULT_FOLDERS);
         this._folderSettings.set_strv('folder-children', folders);
 
         const {path} = this._folderSettings;
         for (const folder of folders) {
             const {name, categories, apps} = DEFAULT_FOLDERS[folder];
+            const filteredApps = apps
+                ? apps.filter(id => appSys.lookup_app(id) != null)
+                : [];
             const child = new Gio.Settings({
                 schema_id: 'org.gnome.desktop.app-folders.folder',
                 path: `${path}folders/${folder}/`,
@@ -1432,8 +1436,8 @@ class AppDisplay extends BaseAppView {
             child.set_boolean('translate', true);
             if (categories)
                 child.set_strv('categories', categories);
-            if (apps)
-                child.set_strv('apps', apps);
+            if (filteredApps.length > 0)
+                child.set_strv('apps', filteredApps);
         }
     }
 
