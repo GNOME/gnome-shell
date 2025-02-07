@@ -21,7 +21,7 @@ build-sysext:
     - .gitlab-ci/install-gnomeos-sysext-dependencies.sh $CI_PROJECT_DIR/extension
 
 stages:
-  - pre_review
+  - pre-review
   - prep
   - review
   - build
@@ -97,10 +97,10 @@ workflow:
         https://gitlab.gnome.org/GNOME/gnome-shell.git \
         main
 
-check_commit_log:
+check-commit-log:
   extends:
     - .fdo.ci-fairy
-  stage: pre_review
+  stage: pre-review
   variables:
     GIT_DEPTH: "100"
   script:
@@ -122,7 +122,7 @@ check_commit_log:
 check-merge-request:
   extends:
     - .fdo.ci-fairy
-  stage: pre_review
+  stage: pre-review
   script:
     - if [[ x"$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" != "x" ]] ;
       then
@@ -145,7 +145,7 @@ build-fedora-container:
     - .gnome-shell.fedora
   stage: prep
 
-js_check:
+js-check:
   extends:
       - .fdo.distribution-image@fedora
       - .gnome-shell.fedora
@@ -184,7 +184,7 @@ eslint-doc:
         - .eslintrc.yml
         - lint/*
 
-potfile_c_check:
+potfile-c-check:
   extends:
     - .fdo.distribution-image@fedora
     - .gnome-shell.fedora
@@ -192,7 +192,7 @@ potfile_c_check:
   script:
     - ./.gitlab-ci/check-potfiles.sh
 
-potfile_js_check:
+potfile-js-check:
   extends:
     - .fdo.distribution-image@fedora
     - .gnome-shell.fedora
@@ -205,7 +205,7 @@ potfile_js_check:
 
 build:
   stage: build
-  needs: ["check_commit_log"]
+  needs: ["check-commit-log"]
   before_script:
     - .gitlab-ci/checkout-mutter.sh
     - meson mutter mutter/build --prefix=/usr
@@ -268,7 +268,7 @@ test-coverity:
 
 flatpak:
   stage: build
-  needs: ["check_commit_log"]
+  needs: ["check-commit-log"]
   variables:
     SUBPROJECT: "subprojects/extensions-app"
     # Your manifest path
