@@ -2308,10 +2308,12 @@ function _storeScreenshot(bytes, pixbuf) {
     // Create a St.ImageContent icon for the notification. We want
     // St.ImageContent specifically because it preserves the aspect ratio when
     // shown in a notification.
+    const coglContext = global.stage.context.get_backend().get_cogl_context();
     const pixels = pixbuf.read_pixel_bytes();
     const content =
         St.ImageContent.new_with_preferred_size(pixbuf.width, pixbuf.height);
     content.set_bytes(
+        coglContext,
         pixels,
         Cogl.PixelFormat.RGBA_8888,
         pixbuf.width,
