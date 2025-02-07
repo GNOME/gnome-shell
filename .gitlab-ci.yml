@@ -1,5 +1,7 @@
 include:
   - project: 'GNOME/citemplates'
+    file: 'templates/default-rules.yml'
+  - project: 'GNOME/citemplates'
     file: 'flatpak/flatpak_ci_initiative.yml'
   - project: 'Infrastructure/freedesktop-ci-templates'
     file: 'templates/fedora.yml'
@@ -36,16 +38,6 @@ stages:
 
 default:
   image: $MUTTER_CI_IMAGE
-  # Cancel jobs if newer commits are pushed to the branch
-  interruptible: true
-  # Auto-retry jobs in case of infra failures
-  retry:
-    max: 1
-    when:
-      - 'runner_system_failure'
-      - 'stuck_or_timeout_failure'
-      - 'scheduler_failure'
-      - 'api_failure'
 
 variables:
   MUTTER_CI_IMAGE: registry.gitlab.gnome.org/gnome/mutter/fedora/41:x86_64-2025-02-04.1
@@ -54,14 +46,6 @@ variables:
   LINT_LOG: "eslint-report.xml"
   LINT_MR_LOG: "eslint-mr-report.xml"
   TARBALL_ARTIFACT_PATH: build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz
-
-workflow:
-  rules:
-    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"'
-      when: never
-    - if: '$CI_MERGE_REQUEST_IID'
-    - if: '$CI_COMMIT_TAG'
-    - if: '$CI_COMMIT_BRANCH'
 
 .pipeline-guard:
   rules:
