@@ -15,14 +15,20 @@ class Spinner extends St.Widget {
             hideOnStop: false,
         });
         super({
-            width: size,
-            height: size,
             opacity: 0,
         });
 
+        this._size = size;
         this._animate = params.animate;
         this._hideOnStop = params.hideOnStop;
         this.visible = !this._hideOnStop;
+    }
+
+    vfunc_map() {
+        const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
+        const logicalSize = this._size * scaleFactor;
+        this.set_size(logicalSize, logicalSize);
+        super.vfunc_map();
     }
 
     play() {
