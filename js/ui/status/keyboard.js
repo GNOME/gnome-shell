@@ -1104,35 +1104,6 @@ class InputSourceIndicator extends PanelMenu.Button {
     _showLayout() {
         Main.overview.hide();
 
-        let source = this._inputSourceManager.currentSource;
-        let xkbLayout = '';
-        let xkbVariant = '';
-
-        if (source.type === INPUT_SOURCE_TYPE_XKB) {
-            [, , , xkbLayout, xkbVariant] = KeyboardManager.getXkbInfo().get_layout_info(source.id);
-        } else if (source.type === INPUT_SOURCE_TYPE_IBUS) {
-            let engineDesc = IBusManager.getIBusManager().getEngineDesc(source.id);
-            if (engineDesc) {
-                xkbLayout = engineDesc.get_layout();
-                xkbVariant = engineDesc.get_layout_variant();
-            }
-
-            // The `default` layout from ibus engine means to
-            // use the current keyboard layout.
-            if (xkbLayout === 'default') {
-                const current = this._inputSourceManager.keyboardManager.currentLayout;
-                xkbLayout = current.layout;
-                xkbVariant = current.variant;
-            }
-        }
-
-        if (!xkbLayout || xkbLayout.length === 0)
-            return;
-
-        let description = xkbLayout;
-        if (xkbVariant.length > 0)
-            description = `${description}+${xkbVariant}`;
-
-        Util.spawn(['tecla', description]);
+        Util.spawn(['tecla']);
     }
 });
