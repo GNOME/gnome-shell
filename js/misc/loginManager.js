@@ -143,8 +143,8 @@ class LoginManagerSystemd extends Signals.EventEmitter {
 
         try {
             const [objectPath] = await this._proxy.GetSessionAsync(sessionId);
-            this._currentSession = new SystemdLoginSession(Gio.DBus.system,
-                'org.freedesktop.login1', objectPath);
+            this._currentSession = await SystemdLoginSession.newAsync(
+                Gio.DBus.system, 'org.freedesktop.login1', objectPath);
             return this._currentSession;
         } catch (error) {
             logError(error, 'Could not get a proxy for the current session');
