@@ -1,6 +1,7 @@
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 import GioUnix from 'gi://GioUnix';
+import Shell from 'gi://Shell';
 import * as Signals from './signals.js';
 
 import {loadInterfaceXML} from './fileUtils.js';
@@ -95,17 +96,26 @@ class LoginManagerSystemd extends Signals.EventEmitter {
         this._proxy = new SystemdLoginManager(Gio.DBus.system,
             'org.freedesktop.login1',
             '/org/freedesktop/login1');
-        this._userProxy = new SystemdLoginUser(Gio.DBus.system,
-            'org.freedesktop.login1',
-            '/org/freedesktop/login1/user/self');
         this._proxy.connectSignal('PrepareForSleep',
             this._prepareForSleep.bind(this));
         this._proxy.connectSignal('SessionRemoved',
             this._sessionRemoved.bind(this));
     }
 
-    getCurrentUserProxy() {
-        return this._userProxy;
+    async getCurrentUserProxy() {
+        if (this._userProxy)
+            return this._userProxy;
+
+        const uid = Shell.util_get_uid();
+        try {
+            const [objectPath] = await this._proxy.GetUserAsync(uid);
+            this._userProxy = await SystemdLoginUser.newAsync(
+                Gio.DBus.system, 'org.freedesktop.login1', objectPath);
+            return this._userProxy;
+        } catch (error) {
+            logError(error, `Could not get a proxy for user ${uid}`);
+            return null;
+        }
     }
 
     async getCurrentSessionProxy() {
@@ -115,14 +125,15 @@ class LoginManagerSystemd extends Signals.EventEmitter {
         let sessionId = GLib.getenv('XDG_SESSION_ID');
         if (!sessionId) {
             log('Unset XDG_SESSION_ID, getCurrentSessionProxy() called outside a user session. Asking logind directly.');
-            let [session, objectPath] = this._userProxy.Display;
+            const userProxy = await this.getCurrentUserProxy();
+            let [session, objectPath] = userProxy.Display;
             if (session) {
                 log(`Will monitor session ${session}`);
                 sessionId = session;
             } else {
                 log('Failed to find "Display" session; are we the greeter?');
 
-                for ([session, objectPath] of this._userProxy.Sessions) {
+                for ([session, objectPath] of userProxy.Sessions) {
                     let sessionProxy = new SystemdLoginSession(Gio.DBus.system,
                         'org.freedesktop.login1',
                         objectPath);

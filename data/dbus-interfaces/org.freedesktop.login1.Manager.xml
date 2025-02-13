@@ -17,6 +17,10 @@
       <arg type="s" direction="in"/>
       <arg type="o" direction="out"/>
     </method>
+    <method name="GetUser">
+      <arg type="u" direction="in"/>
+      <arg type="o" direction="out"/>
+    </method>
     <method name="ListSessions">
       <arg name="sessions" type="a(susso)" direction="out"/>
     </method>
