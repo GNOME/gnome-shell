@@ -974,8 +974,12 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _shouldShowSessionMenuButton() {
-        if (this._authPrompt.verificationStatus !== AuthPrompt.AuthPromptStatus.VERIFYING &&
-            this._authPrompt.verificationStatus !== AuthPrompt.AuthPromptStatus.VERIFICATION_FAILED)
+        const visibleStatuses = [
+            AuthPrompt.AuthPromptStatus.VERIFYING,
+            AuthPrompt.AuthPromptStatus.VERIFICATION_FAILED,
+            AuthPrompt.AuthPromptStatus.VERIFICATION_IN_PROGRESS,
+        ];
+        if (!visibleStatuses.includes(this._authPrompt.verificationStatus))
             return false;
 
         if (this._user && this._user.is_loaded && this._user.is_logged_in())
