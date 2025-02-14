@@ -1,6 +1,6 @@
 # Turkish translation of gnome-shell
 # Copyright (C) 2009, 2011 the Free Software Foundation, Inc.
-# Copyright (C) 2012-2024 gnome-shell'S COPYRIGHT HOLDER
+# Copyright (C) 2012-2025 gnome-shell'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Baris Cicek <baris@teamforce.name.tr>, 2009.
@@ -10,16 +10,16 @@
 # Gökhan Gurbetoğlu <ggurbet@gmail.com>, 2014.
 # Muhammet Kara <muhammetk@gmail.com>, 2011-2017.
 # Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017, 2018.
-# Sabri Ünal <yakushabb@gmail.com>, 2014, 2019, 2020, 2023, 2024.
+# Sabri Ünal <yakushabb@gmail.com>, 2014, 2019, 2020, 2023-2025.
 # Emin Tufan Çetin <etcetin@gmail.com>, 2017-2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-01-10 18:27+0000\n"
-"PO-Revision-Date: 2025-01-11 08:00+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"POT-Creation-Date: 2025-02-06 08:40+0000\n"
+"PO-Revision-Date: 2025-02-09 16:31+0300\n"
+"Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -129,7 +129,7 @@ msgstr "Pencerenin ekran görüntüsünü al"
 msgid "Record a screencast interactively"
 msgstr "Etkileşimli olarak ekranı kaydet"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1308
+#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1307
 msgid "System"
 msgstr "Sistem"
 
@@ -503,8 +503,8 @@ msgstr "Uygulama simge kipi."
 #: data/org.gnome.shell.gschema.xml.in:327
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
-"(shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
+"only” (shows only the application icon) or “both”."
 msgstr ""
 "Pencerelerin değiştiricideki gösterim biçimini yapılandırır. Uygun "
 "olasılıklar; “thumbnail-only” (pencerenin küçük resmini gösterir), “app-icon-"
@@ -585,7 +585,7 @@ msgstr "Ana Sayfa"
 msgid "Visit extension homepage"
 msgstr "Uzantı ana sayfasını ziyaret et"
 
-#: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:466
+#: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:113
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -601,12 +601,12 @@ msgstr "İptal"
 msgid "Password"
 msgstr "Parola"
 
-#: js/gdm/loginDialog.js:326
+#: js/gdm/loginDialog.js:328
 msgid "Choose Session"
 msgstr "Oturum Seç"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:424
+#: js/gdm/loginDialog.js:426
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -617,7 +617,7 @@ msgstr ""
 "oturum açmak için uzak oturumu kapatmalı ya da durmaya zorlamalısınız."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:427
+#: js/gdm/loginDialog.js:429
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -627,7 +627,7 @@ msgstr ""
 "için uzak oturumu kapatmalı ya da durmaya zorlamalısınız."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:430
+#: js/gdm/loginDialog.js:432
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -638,7 +638,7 @@ msgstr ""
 "oturum açmak için yerel oturumu kapatmalı ya da durmaya zorlamalısınız."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:433
+#: js/gdm/loginDialog.js:435
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -647,11 +647,11 @@ msgstr ""
 "%s oturumu zaten çalıştığından oturum açmak olanaksız. Oturum açmak için "
 "oturumu kapatmalı ya da durmaya zorlamalısınız."
 
-#: js/gdm/loginDialog.js:442
+#: js/gdm/loginDialog.js:444
 msgid "Session Already Running"
 msgstr "Oturum Zaten Çalışıyor"
 
-#: js/gdm/loginDialog.js:454
+#: js/gdm/loginDialog.js:456
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -659,51 +659,51 @@ msgstr ""
 "Durmaya zorlamak, çalışan tüm uygulamaları ve süreçleri durduracağından veri "
 "yitirilebilir"
 
-#: js/gdm/loginDialog.js:474
+#: js/gdm/loginDialog.js:476
 msgid "Force Stop"
 msgstr "Durmaya Zorla"
 
-#: js/gdm/loginDialog.js:542
+#: js/gdm/loginDialog.js:554
 msgid "Not listed?"
 msgstr "Listede yok mu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1010
+#: js/gdm/loginDialog.js:1071
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(örneğin, kullanıcı veya %s)"
 
-#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:257
+#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:257
 #: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:326
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
-#: js/gdm/loginDialog.js:1081
+#: js/gdm/loginDialog.js:1142
 msgid "Login Attempt Timed Out"
 msgstr "Oturum Açma Denemesi Zaman Aşımına Uğradı"
 
-#: js/gdm/loginDialog.js:1082
+#: js/gdm/loginDialog.js:1143
 msgid "Login took too long, please try again"
 msgstr "Oturum açma çok uzun sürdü, lütfen yeniden deneyin"
 
-#: js/gdm/loginDialog.js:1431
+#: js/gdm/loginDialog.js:1492
 msgid "Login Window"
 msgstr "Oturum Açma Penceresi"
 
-#: js/gdm/util.js:496
+#: js/gdm/util.js:498
 msgid "Authentication error"
 msgstr "Kimlik doğrulama hatası"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:727
+#: js/gdm/util.js:729
 msgid "(or swipe finger across reader)"
 msgstr "(ya da parmağı okuyucuda kaydır)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:732
+#: js/gdm/util.js:734
 msgid "(or place finger on reader)"
 msgstr "(ya da parmağı okuyucuya yerleştir)"
 
@@ -959,17 +959,29 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Ekran Döndürmeyi Kilitle"
 
+#: js/misc/timeLimitsManager.js:1043
+#, javascript-format
+msgid "Screen Time Limit in %d Minute"
+msgid_plural "Screen Time Limit in %d Minutes"
+msgstr[0] "%d Dakika İçinde Ekran Süresi Sınırı"
+
+#: js/misc/timeLimitsManager.js:1050
+msgid "Your screen time limit is approaching"
+msgstr "Ekran süresi sınırınız yaklaşıyor"
+
+#: js/misc/timeLimitsManager.js:1064
+msgid "Screen Time Limit Reached"
+msgstr "Ekran Süresi Sınırına Ulaşıldı"
+
+#: js/misc/timeLimitsManager.js:1065
+msgid "It’s time to stop using the device"
+msgstr "Aygıtı kullanmayı bırakmanın zamanı geldi"
+
 #: js/misc/util.js:130
 msgid "Command not found"
 msgstr "Komut bulunamadı"
 
-#. Replace "Error invoking GLib.shell_parse_argv: " with
-#. something nicer
-#: js/misc/util.js:170
-msgid "Could not parse command:"
-msgstr "Komut işlenemedi:"
-
-#: js/misc/util.js:178
+#: js/misc/util.js:168
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "“%s” çalıştırılması başarısız:"
@@ -1117,7 +1129,7 @@ msgstr "Reddet"
 msgid "Allow"
 msgstr "İzin Ver"
 
-#: js/ui/appDisplay.js:1767
+#: js/ui/appDisplay.js:1770
 msgid "Unnamed Folder"
 msgstr "Adsız Klasör"
 
@@ -1131,7 +1143,7 @@ msgstr "%s, konsola iliştirildi."
 msgid "%s has been unpinned from the dash."
 msgstr "%s, konsoldan çıkarıldı."
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:290
+#: js/ui/appFavorites.js:208 js/ui/main.js:309
 msgid "Undo"
 msgstr "Geri Al"
 
@@ -1201,7 +1213,7 @@ msgid "Settings"
 msgstr "Ayarlar"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:37
+#: js/ui/calendar.js:33
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -1211,43 +1223,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:63
+#: js/ui/calendar.js:59
 msgctxt "grid sunday"
 msgid "S"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:65
+#: js/ui/calendar.js:61
 msgctxt "grid monday"
 msgid "M"
 msgstr "Pt"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:67
+#: js/ui/calendar.js:63
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:69
+#: js/ui/calendar.js:65
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ç"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:67
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Pş"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:73
+#: js/ui/calendar.js:69
 msgctxt "grid friday"
 msgid "F"
 msgstr "C"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:75
+#: js/ui/calendar.js:71
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Ct"
@@ -1258,7 +1270,7 @@ msgstr "Ct"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:426
+#: js/ui/calendar.js:422
 msgid "%OB"
 msgstr "%OB"
 
@@ -1271,41 +1283,41 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:436
+#: js/ui/calendar.js:432
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:498
+#: js/ui/calendar.js:494
 msgid "Previous month"
 msgstr "Önceki ay"
 
-#: js/ui/calendar.js:516
+#: js/ui/calendar.js:512
 msgid "Next month"
 msgstr "Gelecek ay"
 
-#: js/ui/calendar.js:667
+#: js/ui/calendar.js:663
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:726
+#: js/ui/calendar.js:722
 msgid "Week %V"
 msgstr "%V. Hafta"
 
-#: js/ui/calendar.js:918
+#: js/ui/calendar.js:774
 msgid "No Notifications"
 msgstr "Bildirim Yok"
 
-#: js/ui/calendar.js:974
+#: js/ui/calendar.js:830
 msgid "Do Not Disturb"
 msgstr "Rahatsız Etme"
 
-#: js/ui/calendar.js:995
+#: js/ui/calendar.js:851
 msgid "Clear"
 msgstr "Temizle"
 
-#: js/ui/calendar.js:999
+#: js/ui/calendar.js:855
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Tüm bildirimleri temizle"
@@ -1803,77 +1815,77 @@ msgstr "Kapat"
 msgid "Leave Off"
 msgstr "Kapalı Bırak"
 
-#: js/ui/keyboard.js:180 js/ui/status/keyboard.js:899
+#: js/ui/keyboard.js:180 js/ui/status/keyboard.js:901
 msgid "Keyboard Settings"
 msgstr "Klavye Ayarları"
 
-#: js/ui/lookingGlass.js:727
+#: js/ui/lookingGlass.js:742
 msgid "No extensions installed"
 msgstr "Kurulu uzantı yok"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:788
+#: js/ui/lookingGlass.js:805
 #, javascript-format
 msgid "%s has not emitted any errors"
 msgstr "%s, herhangi bir hata vermedi"
 
-#: js/ui/lookingGlass.js:794
+#: js/ui/lookingGlass.js:811
 msgid "Hide Errors"
 msgstr "Hataları Gizle"
 
-#: js/ui/lookingGlass.js:798 js/ui/lookingGlass.js:875
+#: js/ui/lookingGlass.js:815 js/ui/lookingGlass.js:895
 msgid "Show Errors"
 msgstr "Hataları Göster"
 
-#: js/ui/lookingGlass.js:807
+#: js/ui/lookingGlass.js:824
 msgid "Active"
 msgstr "Etkin"
 
-#: js/ui/lookingGlass.js:810
+#: js/ui/lookingGlass.js:827
 msgid "Inactive"
 msgstr "Devre Dışı"
 
-#: js/ui/lookingGlass.js:812
+#: js/ui/lookingGlass.js:829
 msgid "Error"
 msgstr "Hata"
 
-#: js/ui/lookingGlass.js:814
+#: js/ui/lookingGlass.js:831
 msgid "Out of date"
 msgstr "Güncel Değil"
 
-#: js/ui/lookingGlass.js:816
+#: js/ui/lookingGlass.js:833
 msgid "Downloading"
 msgstr "İndiriliyor"
 
-#: js/ui/lookingGlass.js:818
+#: js/ui/lookingGlass.js:835
 msgid "Deactivating"
 msgstr "Devre Dışı Bırakılıyor"
 
-#: js/ui/lookingGlass.js:820
+#: js/ui/lookingGlass.js:837
 msgid "Activating"
 msgstr "Etkinleştiriliyor"
 
-#: js/ui/lookingGlass.js:853
+#: js/ui/lookingGlass.js:873
 msgid "View Source"
 msgstr "Kaynağı Görüntüle"
 
-#: js/ui/lookingGlass.js:864
+#: js/ui/lookingGlass.js:884
 msgid "Web Page"
 msgstr "Web Sayfası"
 
-#: js/ui/main.js:286
+#: js/ui/main.js:305
 msgid "System was put in unsafe mode"
 msgstr "Sistem güvensiz kipe sokuldu"
 
-#: js/ui/main.js:287
+#: js/ui/main.js:306
 msgid "Apps now have unrestricted access"
 msgstr "Şimdi uygulamaların sınırsız erişimi var"
 
-#: js/ui/main.js:347
+#: js/ui/main.js:366
 msgid "Logged in as a privileged user"
 msgstr "Yetkili kullanıcı olarak oturum açılmış"
 
-#: js/ui/main.js:348
+#: js/ui/main.js:367
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1882,29 +1894,29 @@ msgstr ""
 "kaçınılmalıdır. Eğer yapabiliyorsanız sıradan kullanıcı olarak oturum "
 "açmalısınız."
 
-#: js/ui/main.js:396
+#: js/ui/main.js:415
 msgid "Screen Lock disabled"
 msgstr "Ekran Kilidi devre dışı"
 
-#: js/ui/main.js:397
+#: js/ui/main.js:416
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "Ekran Kilitleme, GNOME ekran yöneticisi gerektirir"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:374
+#: js/ui/messageList.js:376
 msgid "Unknown App"
 msgstr "Bilinmeyen Uygulama"
 
-#: js/ui/messageTray.js:326 js/ui/messageTray.js:328
+#: js/ui/messageTray.js:325 js/ui/messageTray.js:327
 msgid "Notification sound"
 msgstr "Bildirim sesi"
 
-#: js/ui/mpris.js:198
+#: js/ui/mpris.js:144
 msgid "Unknown artist"
 msgstr "Bilinmeyen sanatçı"
 
-#: js/ui/mpris.js:208
+#: js/ui/mpris.js:154
 msgid "Unknown title"
 msgstr "Bilinmeyen başlık"
 
@@ -1950,23 +1962,23 @@ msgstr "Tuş vuruşu ata"
 msgid "Done"
 msgstr "Bitti"
 
-#: js/ui/padOsd.js:726
+#: js/ui/padOsd.js:727
 msgid "Edit…"
 msgstr "Düzenle…"
 
-#: js/ui/padOsd.js:773
+#: js/ui/padOsd.js:774
 msgid "None"
 msgstr "Yok"
 
-#: js/ui/padOsd.js:844
+#: js/ui/padOsd.js:845
 msgid "Press a button to configure"
 msgstr "Yapılandırmak için düğmeye bas"
 
-#: js/ui/padOsd.js:845
+#: js/ui/padOsd.js:846
 msgid "Press Esc to exit"
 msgstr "Çıkmak için Esc’ye bas"
 
-#: js/ui/padOsd.js:848
+#: js/ui/padOsd.js:849
 msgid "Press any key to exit"
 msgstr "Çıkmak için herhangi bir tuşa bas"
 
@@ -1985,7 +1997,7 @@ msgstr "Sistem"
 msgid "Top Bar"
 msgstr "Tepe Çubuğu"
 
-#: js/ui/quickSettings.js:185 js/ui/quickSettings.js:336
+#: js/ui/quickSettings.js:185 js/ui/quickSettings.js:340
 msgid "Open menu"
 msgstr "Menüyü aç"
 
@@ -2137,15 +2149,15 @@ msgstr "Resmi panodan yapıştırabilirsiniz."
 msgid "Screenshot taken"
 msgstr "Ekran görüntüsü alındı"
 
-#: js/ui/search.js:829
+#: js/ui/search.js:832
 msgid "Searching…"
 msgstr "Aranıyor…"
 
-#: js/ui/search.js:831
+#: js/ui/search.js:834
 msgid "No results"
 msgstr "Sonuç yok"
 
-#: js/ui/search.js:962
+#: js/ui/search.js:965
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2318,7 +2330,7 @@ msgstr "Düşük"
 msgid "High"
 msgstr "Yüksek"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:881
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:883
 msgid "Keyboard"
 msgstr "Klavye"
 
@@ -2389,7 +2401,7 @@ msgstr "İkincil Tık"
 msgid "Dwell Click"
 msgstr "Durağan Tık"
 
-#: js/ui/status/keyboard.js:898
+#: js/ui/status/keyboard.js:900
 msgid "Show Keyboard Layout"
 msgstr "Klavye Düzenini Göster"
 
@@ -2661,23 +2673,23 @@ msgstr "Yalnızca İç"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:378
+#: js/ui/unlockDialog.js:384
 msgid "%A %B %-d"
 msgstr "%A, %-d %B"
 
-#: js/ui/unlockDialog.js:384
+#: js/ui/unlockDialog.js:390
 msgid "Swipe up to unlock"
 msgstr "Kilidi açmak için yukarı kaydır"
 
-#: js/ui/unlockDialog.js:385
+#: js/ui/unlockDialog.js:391
 msgid "Click or press a key to unlock"
 msgstr "Kilidi açmak için tıklayın ya da bir tuşa basın"
 
-#: js/ui/unlockDialog.js:568
+#: js/ui/unlockDialog.js:576
 msgid "Unlock Window"
 msgstr "Kilit Açma Penceresi"
 
-#: js/ui/unlockDialog.js:577
+#: js/ui/unlockDialog.js:585
 msgid "Log in as another user"
 msgstr "Başka kullanıcı olarak oturum aç"
 
@@ -2868,15 +2880,15 @@ msgstr ""
 "GNOME Uzantılar; uzantıları güncellemeyi, uzantı tercihlerini yapılandırmayı "
 "ve istenmeyen uzantıları kaldırmayı veya devre dışı bırakmanızı sağlar."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:64
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
 msgid "Main Window"
 msgstr "Ana Pencere"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
 msgid "Available Updates"
 msgstr "Kullanılabilir Güncellemeler"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
 msgid "Search View"
 msgstr "Arama Görünümü"
 
@@ -3043,11 +3055,11 @@ msgstr "Yüklü Uzantı Yok"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
-"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a> adresine göz atın."
+"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a> adresine göz atın."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
