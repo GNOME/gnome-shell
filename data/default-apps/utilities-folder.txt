@@ -13,5 +13,6 @@ org.gnome.Logs.desktop                    # Logs
 org.freedesktop.MalcontentControl.desktop # Parental Controls
 org.gnome.seahorse.Application.desktop    # Passwords and Keys
 org.freedesktop.GnomeAbrt.desktop         # Problem Reporting
+org.gnome.Sysprof.desktop                 # Sysprof
 org.gnome.tweaks.desktop                  # Tweaks
 org.gnome.Usage.desktop                   # Usage
