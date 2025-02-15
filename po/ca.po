@@ -2299,7 +2299,7 @@ msgstr "Accessibilitat"
 
 #: js/ui/status/accessibility.js:44
 msgid "High Contrast"
-msgstr "Alt contrast"
+msgstr "Contrast alt"
 
 #: js/ui/status/accessibility.js:47
 msgid "Zoom"
