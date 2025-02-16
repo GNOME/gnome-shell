@@ -32,6 +32,7 @@ build_container() {
     gnome-console # can't do without *some* terminal
     flatpak-spawn # run host commands
     flatpak # for host apps
+    nautilus # FileChooser portal
     abattis-cantarell-fonts # system font
     gnome-backgrounds # no blank background!
   )
