@@ -202,11 +202,11 @@ msgid ""
 "methods on org.gnome.Shell. This key takes precedence over the “enabled-"
 "extensions” setting."
 msgstr ""
-"Les extensions del GNOME Shell tenen un identificador universal. Aquesta "
-"clau conté una llista de les extensions que s'han de carregar. Qualsevol "
-"extensió que s'hagi de carregar ha de ser a la llista. Podeu modificar "
-"aquesta llista amb els mètodes de D-Bus «EnableExtension» (activa una "
-"extensió) i «DisableExtension» (desactiva una extensió) a org.gnome.Shell."
+"Les extensions del GNOME Shell tenen una propietat UUID. Aquesta "
+"clau conté una llista de les extensions que s'han d'inhabilitar, "
+"fins i tot si es carreguen com a part del mode actual."
+"Podeu modificar aquesta llista amb els mètodes de D-Bus «EnableExtension» (activa "
+"una extensió) i «DisableExtension» (desactiva una extensió) a org.gnome.Shell."
 "Aquesta clau té preferència sobre el paràmetre «enabled-extensions»."
 
 #: data/org.gnome.shell.gschema.xml.in:37
@@ -274,7 +274,7 @@ msgstr "Historial de les ordres utilitzades en el diàleg de l'Alt+F2"
 #. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
 #: data/org.gnome.shell.gschema.xml.in:80
 msgid "History for the looking glass dialog"
-msgstr "Historial del depurador del GNOME Shell"
+msgstr "Historial del diàleg del depurador"
 
 #: data/org.gnome.shell.gschema.xml.in:84
 msgid "Always show the “Log Out” action in the system menu"
@@ -363,18 +363,18 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:145
 #: data/org.gnome.shell.gschema.xml.in:152
 msgid "Keybinding to shift between overview states"
-msgstr "Vinculació de tecla per a desplaçar entre els estats de resum"
+msgstr "Vinculació de tecles per a desplaçar entre els estats de resum"
 
 #: data/org.gnome.shell.gschema.xml.in:146
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
-"Vinculació de tecla per a desplaçar entre sessió, selector de finestres i "
+"Vinculació de tecles per a desplaçar entre sessió, selector de finestres i "
 "graella d'aplicacions"
 
 #: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
-"Vinculació de tecla per a desplaçar entre la graella d'aplicació, el "
+"Vinculació de tecles per a desplaçar entre la graella d'aplicació, el "
 "selector de finestres i la sessió"
 
 #: data/org.gnome.shell.gschema.xml.in:159
@@ -390,11 +390,11 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:167
 msgid "Keybinding to open the overview"
-msgstr "Vinculació per a obrir la vista general"
+msgstr "Vinculació de tecles per a obrir la vista general"
 
 #: data/org.gnome.shell.gschema.xml.in:168
 msgid "Keybinding to open the Activities Overview."
-msgstr "Vinculació per a obrir la vista general d'activitats."
+msgstr "Vinculació de tecles per a obrir la vista general d'activitats."
 
 #: data/org.gnome.shell.gschema.xml.in:174
 msgid "Keybinding to toggle the visibility of the notification list"
@@ -404,7 +404,7 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:175
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr ""
-"La vinculació per a commutar la visibilitat de la llista de notificacions."
+"La vinculació de tecles per a commutar la visibilitat de la llista de notificacions."
 
 #: data/org.gnome.shell.gschema.xml.in:181
 msgid "Keybinding to toggle the quick settings menu"
@@ -416,7 +416,7 @@ msgstr "Vinculació de tecles per a commutar el menú de configuració ràpida."
 
 #: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to focus the active notification"
-msgstr "Vinculació per a posar el focus a la notificació activa"
+msgstr "Vinculació de tecles per a posar el focus a la notificació activa"
 
 #: data/org.gnome.shell.gschema.xml.in:189
 msgid "Keybinding to focus the active notification."
