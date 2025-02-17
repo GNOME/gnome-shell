@@ -25,6 +25,7 @@
     <file>extensions/extension.js</file>
     <file>extensions/sharedInternals.js</file>
 
+    <file>misc/asyncMutex.js</file>
     <file>misc/animationUtils.js</file>
     <file>misc/breakManager.js</file>
     <file>misc/brightnessManager.js</file>
