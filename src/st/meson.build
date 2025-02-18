@@ -221,7 +221,8 @@ if get_option('tests') and have_x11_client
     link_with: libst
   )
 
-  test('CSS styling support', test_theme,
+  test('css-styling', test_theme,
+    suite: 'st',
     workdir: meson.current_source_dir(),
   )
 endif
