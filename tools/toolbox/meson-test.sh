@@ -105,4 +105,4 @@ find_toplevel
 BUILD_DIR=build-$TOOLBOX
 
 toolbox run --container $TOOLBOX \
-  meson test -C $BUILD_DIR ${MESON_ARGS[*]} $@
+  meson test -C $BUILD_DIR ${MESON_ARGS[*]} "$@"
