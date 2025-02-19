@@ -227,12 +227,29 @@ class LoginManagerSystemd extends Signals.EventEmitter {
         this.emit('prepare-for-sleep', aboutToSuspend);
     }
 
+    /**
+     * Whether the machine is preparing to sleep.
+     *
+     * This is true between paired emissions of `prepare-for-sleep`.
+     *
+     * @type {boolean}
+     */
+    get preparingForSleep() {
+        return this._proxy.PreparingForSleep;
+    }
+
     _sessionRemoved(proxy, sender, [sessionId]) {
         this.emit('session-removed', sessionId);
     }
 }
 
 class LoginManagerDummy extends Signals.EventEmitter  {
+    constructor() {
+        super();
+
+        this._preparingForSleep = false;
+    }
+
     getCurrentUserProxy() {
         // we could return a DummyUser object that fakes whatever callers
         // expect, but just never settling the promise should be safer
@@ -272,8 +289,14 @@ class LoginManagerDummy extends Signals.EventEmitter  {
     }
 
     suspend() {
+        this._preparingForSleep = true;
         this.emit('prepare-for-sleep', true);
+        this._preparingForSleep = false;
         this.emit('prepare-for-sleep', false);
+    }
+
+    get preparingForSleep() {
+        return this._preparingForSleep;
     }
 
     /* eslint-disable-next-line require-await */
