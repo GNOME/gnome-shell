@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 //
-// Copyright 2024 GNOME Foundation, Inc.
+// Copyright 2024, 2025 GNOME Foundation, Inc.
 //
 // This is a GNOME Shell component to support screen time limits and statistics.
 //
@@ -84,13 +84,15 @@ function userStateToString(userState) {
  *
  * Active/Inactive time is based off the total time the user account has spent
  * logged in to at least one active session, not idle (and not locked, but
- * that’s a subset of idle time).
+ * that’s a subset of idle time), and not suspended.
  * This corresponds to the `active` state from sd_uid_get_state()
  * (https://www.freedesktop.org/software/systemd/man/latest/sd_uid_get_state.html),
  * plus `IdleHint` from
- * https://www.freedesktop.org/software/systemd/man/latest/org.freedesktop.login1.html#User%20Objects.
+ * https://www.freedesktop.org/software/systemd/man/latest/org.freedesktop.login1.html#User%20Objects,
+ * plus `PreparingForSleep` from
+ *.https://www.freedesktop.org/software/systemd/man/latest/org.freedesktop.login1.html#The%20Manager%20Object.
  * ‘Inactive’ time corresponds to all the other states from sd_uid_get_state(),
- * or if `IdleHint` is true.
+ * or if `IdleHint` is true or if `PreparingForSleep` is true.
  *
  * All times within the class are handled in terms of wall/real clock time,
  * rather than monotonic time. This is because it’s necessary to continue
@@ -121,7 +123,7 @@ export const TimeLimitsManager = GObject.registerClass({
         'daily-limit-reached': {},
     },
 }, class TimeLimitsManager extends GObject.Object {
-    constructor(historyFile, clock, loginUserFactory, settingsFactory) {
+    constructor(historyFile, clock, loginManagerFactory, loginUserFactory, settingsFactory) {
         super();
 
         // Allow these few bits of global state to be overridden for unit testing
@@ -143,6 +145,9 @@ export const TimeLimitsManager = GObject.registerClass({
                 return timeChangeSource.attach(null);
             },
         };
+        this._loginManagerFactory = loginManagerFactory ?? {
+            new: LoginManager.getLoginManager,
+        };
         this._loginUserFactory = loginUserFactory ?? {
             newAsync: () => {
                 const loginManager = LoginManager.getLoginManager();
@@ -163,6 +168,7 @@ export const TimeLimitsManager = GObject.registerClass({
         this._state = TimeLimitsState.DISABLED;
         this._stateTransitions = [];
         this._cancellable = null;
+        this._loginManager = null;
         this._loginUser = null;
         this._lastStateChangeTimeSecs = 0;
         this._timerId = 0;
@@ -252,6 +258,13 @@ export const TimeLimitsManager = GObject.registerClass({
         }
 
         // Start listening for notifications to the user’s state.
+        this._loginManager = this._loginManagerFactory.new();
+        this._loginManager.connectObject(
+            'prepare-for-sleep',
+            () => this._updateUserState(true).catch(
+                e => console.warn(`Failed to update user state: ${e.message}`)),
+            this);
+
         this._loginUser = await this._loginUserFactory.newAsync();
         this._loginUser.connectObject(
             'g-properties-changed',
@@ -276,6 +289,9 @@ export const TimeLimitsManager = GObject.registerClass({
 
         this._loginUser?.disconnectObject(this);
         this._loginUser = null;
+
+        this._loginManager?.disconnectObject(this);
+        this._loginManager = null;
 
         this._state = TimeLimitsState.DISABLED;
         this._lastStateChangeTimeSecs = 0;
@@ -360,7 +376,9 @@ export const TimeLimitsManager = GObject.registerClass({
     }
 
     _calculateUserStateFromLogind() {
-        const isActive = this._loginUser.State === 'active' && !this._loginUser.IdleHint;
+        const isActive = this._loginUser.State === 'active' &&
+            !this._loginUser.IdleHint &&
+            !this._loginManager.preparingForSleep;
         return isActive ? UserState.ACTIVE : UserState.INACTIVE;
     }
 

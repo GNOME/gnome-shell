@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 //
-// Copyright 2024 GNOME Foundation, Inc.
+// Copyright 2024, 2025 GNOME Foundation, Inc.
 //
 // This is a GNOME Shell component to support screen time limits and statistics.
 //
@@ -73,6 +73,9 @@ class TestHarness {
 
         this._loginUserPropertiesChangedCallback = null;
 
+        this._currentPreparingForSleepState = false;
+        this._loginManagerPrepareForSleepCallback = null;
+
         // Create a fake history file containing the given contents. Or, if no
         // contents are given, reserve a distinct new history file name but then
         // delete it so it doesn’t exist for the manager.
@@ -87,6 +90,28 @@ class TestHarness {
 
         // And a mock D-Bus proxy for logind.
         const harness = this;
+
+        class MockLoginManager {
+            connectObject(signalName, callback, unusedObject) {
+                if (signalName === 'prepare-for-sleep') {
+                    if (harness._loginManagerPrepareForSleepCallback !== null)
+                        fail('Duplicate prepare-for-sleep connection');
+                    harness._loginManagerPrepareForSleepCallback = callback;
+                } else {
+                    // No-op for mock purposes
+                }
+            }
+
+            disconnectObject(unused) {
+                // Very simple implementation for mock purposes
+                harness._loginManagerPrepareForSleepCallback = null;
+            }
+
+            get preparingForSleep() {
+                return harness._currentPreparingForSleepState;
+            }
+        }
+
         class MockLoginUser {
             connectObject(signalName, callback, unusedObject) {
                 if (signalName === 'g-properties-changed') {
@@ -112,6 +137,7 @@ class TestHarness {
             }
         }
 
+        this._mockLoginManager = new MockLoginManager();
         this._mockLoginUser = new MockLoginUser();
     }
 
@@ -220,6 +246,34 @@ class TestHarness {
             time: TestHarness.timeStrToSecs(timeStr),
             newTime: TestHarness.timeStrToSecs(newTimeStr),
             callback,
+        });
+    }
+
+    /**
+     * Add a pair of sleep and resume events to the event queue. This simulates
+     * the machine being asleep (suspended) and then resumed after a period of
+     * time. No other events should be inserted into the queue between these
+     * two.
+     *
+     * This simulates the [D-Bus API for logind](https://www.freedesktop.org/software/systemd/man/latest/org.freedesktop.login1.html#The%20Manager%20Object)
+     * notifying to prepare for sleep at date/time `timeStr`, then sleeping,
+     * then notifying that the machine has resumed from sleep at date/time
+     * `timeStr` plus `duration` (in seconds).
+     *
+     * @param {string} timeStr Date/Time the prepare-for-sleep event happens,
+     *    in ISO 8601 format.
+     * @param {number} duration Duration of the sleep/suspend period, in seconds
+     */
+    addSleepAndResumeEvent(timeStr, duration) {
+        this._insertEvent({
+            type: 'preparing-for-sleep-state-change',
+            time: TestHarness.timeStrToSecs(timeStr),
+            newPreparingForSleepState: true,
+        });
+        this._insertEvent({
+            type: 'preparing-for-sleep-state-change',
+            time: TestHarness.timeStrToSecs(timeStr) + duration,
+            newPreparingForSleepState: false,
         });
     }
 
@@ -409,6 +463,24 @@ class TestHarness {
     }
 
     /**
+     * Get a mock login manager factory for use in the `TimeLimitsManager` under
+     * test. This is an object providing a constructor for the objects returned
+     * by `LoginManager.getLoginManager()`. This is roughly a wrapper around the
+     * [`org.freedesktop.login1.Manager` D-Bus API](https://www.freedesktop.org/software/systemd/man/latest/org.freedesktop.login1.html#The%20Manager%20Object).
+     * Each constructor returns a basic implementation of the manager which uses
+     * the current state from `TestHarness`.
+     *
+     * This has an extra layer of indirection to match `mockSettingsFactory`.
+     */
+    get mockLoginManagerFactory() {
+        return {
+            new: () => {
+                return this._mockLoginManager;
+            },
+        };
+    }
+
+    /**
      * Get a mock login user factory for use in the `TimeLimitsManager` under
      * test. This is an object providing constructors for `LoginUser` objects,
      * which are proxies around the
@@ -502,6 +574,12 @@ class TestHarness {
 
             if (this._timeChangeNotify)
                 this._timeChangeNotify();
+            break;
+        case 'preparing-for-sleep-state-change':
+            this._currentPreparingForSleepState = event.newPreparingForSleepState;
+
+            if (this._loginManagerPrepareForSleepCallback)
+                this._loginManagerPrepareForSleepCallback(this._currentPreparingForSleepState);
             break;
         case 'login-user-state-change':
             this._currentUserState = event.newUserState;
@@ -598,7 +676,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.DISABLED);
         harness.expectState('2024-06-01T15:00:00Z', timeLimitsManager, TimeLimitsState.DISABLED);
@@ -622,7 +700,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.addSettingsChangeEvent('2024-06-01T11:00:00Z',
@@ -657,7 +735,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.expectProperties('2024-06-01T13:59:59Z', timeLimitsManager, {
@@ -679,7 +757,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T00:30:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         harness.expectState('2024-06-01T00:30:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.expectProperties('2024-06-01T01:29:59Z', timeLimitsManager, {
@@ -701,7 +779,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.expectProperties('2024-06-01T13:59:59Z', timeLimitsManager, {
@@ -734,7 +812,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.expectProperties('2024-06-01T15:00:00Z', timeLimitsManager, {
@@ -774,7 +852,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         // Run until the limit is reached.
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
@@ -832,7 +910,7 @@ describe('Time limits manager', () => {
             },
         ]));
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         // The existing history file (above) lists two active periods,
         // 07:30–08:00 and 08:30–09:30 that morning. So the user should have
@@ -868,7 +946,7 @@ describe('Time limits manager', () => {
             },
         ]));
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         // The existing history file (above) lists one active period,
         // 04:30–08:50 that morning. So the user should have no time left today.
@@ -907,7 +985,7 @@ describe('Time limits manager', () => {
                 },
             }, invalidHistoryFileContents);
             harness.initializeMockClock('2024-06-01T10:00:00Z');
-            const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+            const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
             // The existing history file (above) is invalid or a no-op and
             // should be ignored.
@@ -953,7 +1031,7 @@ describe('Time limits manager', () => {
             },
         ]));
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         // The existing history file (above) lists two active periods,
         // one of which is a long time ago and the other is ‘this’ morning in
@@ -1018,7 +1096,7 @@ describe('Time limits manager', () => {
             },
         ]));
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         // The existing history file (above) lists one active period,
         // 04:30–08:50 that morning IN THE YEAR 3000. This could have resulted
@@ -1053,7 +1131,7 @@ describe('Time limits manager', () => {
             },
         ]));
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.addSettingsChangeEvent('2024-06-01T10:00:02Z',
@@ -1089,7 +1167,7 @@ describe('Time limits manager', () => {
             },
         ]));
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.expectState('2024-06-01T14:00:01Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
@@ -1127,7 +1205,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         // Use up 2h of the daily limit.
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
@@ -1164,7 +1242,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
 
         // Use up 2h of the daily limit.
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
@@ -1188,6 +1266,36 @@ describe('Time limits manager', () => {
 
             harness.shutdownManager('2024-06-01T11:10:00Z', timeLimitsManager);
         });
+
+        harness.run();
+    });
+
+    it('doesn’t count usage when asleep/suspended', () => {
+        const harness = new TestHarness({
+            'org.gnome.desktop.screen-time-limits': {
+                'history-enabled': true,
+                'daily-limit-enabled': true,
+                'daily-limit-seconds': 4 * 60 * 60,
+            },
+        });
+        harness.initializeMockClock('2024-06-01T10:00:00Z');
+        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+
+        // Use up 2h of the daily limit.
+        harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+        harness.expectProperties('2024-06-01T12:00:00Z', timeLimitsManager, {
+            'state': TimeLimitsState.ACTIVE,
+            'dailyLimitTime': TestHarness.timeStrToSecs('2024-06-01T14:00:00Z'),
+        });
+
+        // Sleep for 3h and that shouldn’t use up limit time.
+        harness.addSleepAndResumeEvent('2024-06-01T12:00:01Z', 3 * 60 * 60);
+        harness.expectProperties('2024-06-01T15:00:02Z', timeLimitsManager, {
+            'state': TimeLimitsState.ACTIVE,
+            'dailyLimitTime': TestHarness.timeStrToSecs('2024-06-01T17:00:00Z'),
+        });
+
+        harness.shutdownManager('2024-06-01T15:20:00Z', timeLimitsManager);
 
         harness.run();
     });
