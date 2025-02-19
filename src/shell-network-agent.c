@@ -27,6 +27,17 @@
 
 #include "shell-network-agent.h"
 
+enum
+{
+  PROP_0,
+
+  PROP_FORCE_ALWAYS_ASK,
+
+  N_PROPS
+};
+
+static GParamSpec *props[N_PROPS] = { NULL, };
+
 enum {
   SIGNAL_NEW_REQUEST,
   SIGNAL_CANCEL_REQUEST,
@@ -57,6 +68,7 @@ typedef struct _ShellNetworkAgent
 
   /* <gchar *request_id, ShellAgentRequest *request> */
   GHashTable *requests;
+  gboolean force_always_ask;
 } ShellNetworkAgent;
 
 G_DEFINE_FINAL_TYPE (ShellNetworkAgent, shell_network_agent, NM_TYPE_SECRET_AGENT_OLD)
@@ -377,7 +389,7 @@ shell_network_agent_get_secrets (NMSecretAgentOld                 *agent,
 
   if ((flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_REQUEST_NEW) ||
       ((flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_ALLOW_INTERACTION)
-       && is_connection_always_ask (request->connection)))
+       && (self->force_always_ask || is_connection_always_ask (request->connection))))
     {
       request->entries = g_variant_dict_new (NULL);
       request_secrets_from_ui (request);
@@ -849,18 +861,67 @@ shell_network_agent_delete_secrets (NMSecretAgentOld                  *agent,
                          NULL);
 }
 
+static void
+shell_network_agent_set_property (GObject      *object,
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
+{
+  ShellNetworkAgent *self = SHELL_NETWORK_AGENT (object);
+
+  switch (prop_id)
+    {
+    case PROP_FORCE_ALWAYS_ASK:
+      self->force_always_ask = g_value_get_boolean (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+shell_network_agent_get_property (GObject    *object,
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
+{
+  ShellNetworkAgent *self = SHELL_NETWORK_AGENT (object);
+
+  switch (prop_id)
+    {
+    case PROP_FORCE_ALWAYS_ASK:
+      g_value_set_boolean (value, self->force_always_ask);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
 void
 shell_network_agent_class_init (ShellNetworkAgentClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   NMSecretAgentOldClass *agent_class = NM_SECRET_AGENT_OLD_CLASS (klass);
 
+  gobject_class->set_property = shell_network_agent_set_property;
+  gobject_class->get_property = shell_network_agent_get_property;
   gobject_class->finalize = shell_network_agent_finalize;
 
   agent_class->get_secrets = shell_network_agent_get_secrets;
   agent_class->cancel_get_secrets = shell_network_agent_cancel_get_secrets;
   agent_class->save_secrets = shell_network_agent_save_secrets;
   agent_class->delete_secrets = shell_network_agent_delete_secrets;
+
+  props[PROP_FORCE_ALWAYS_ASK] =
+     g_param_spec_boolean ("force-always-ask", NULL, NULL,
+                           FALSE,
+                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  g_object_class_install_properties (gobject_class, N_PROPS, props);
 
   signals[SIGNAL_NEW_REQUEST] = g_signal_new ("new-request",
 					      G_TYPE_FROM_CLASS (klass),
