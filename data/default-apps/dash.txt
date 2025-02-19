@@ -1,6 +1,6 @@
 org.gnome.Epiphany.desktop
 org.gnome.Calendar.desktop
-org.gnome.Music.desktop
 gnome.Nautilus.desktop
 org.gnome.Software.desktop
 org.gnome.TextEditor.desktop
+org.gnome.Calculator.desktop
