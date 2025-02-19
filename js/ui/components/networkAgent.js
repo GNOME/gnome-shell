@@ -12,6 +12,7 @@ import St from 'gi://St';
 import * as Signals from '../../misc/signals.js';
 
 import * as Dialog from '../dialog.js';
+import * as Main from '../main.js';
 import * as MessageTray from '../messageTray.js';
 import * as ModalDialog from '../modalDialog.js';
 import * as ShellEntry from '../shellEntry.js';
@@ -678,6 +679,7 @@ class NetworkAgent {
             identifier: 'org.gnome.Shell.NetworkAgent',
             capabilities: NM.SecretAgentCapabilities.VPN_HINTS,
             auto_register: false,
+            force_always_ask: Main.sessionMode.isGreeter,
         });
 
         this._dialogs = { };
