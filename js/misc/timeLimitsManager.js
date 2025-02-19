@@ -88,7 +88,7 @@ function userStateToString(userState) {
  * This corresponds to the `active` state from sd_uid_get_state()
  * (https://www.freedesktop.org/software/systemd/man/latest/sd_uid_get_state.html),
  * plus `IdleHint` from
- * https://www.freedesktop.org/software/systemd/man/latest/org.freedesktop.login1.html#User Objects.
+ * https://www.freedesktop.org/software/systemd/man/latest/org.freedesktop.login1.html#User%20Objects.
  * ‘Inactive’ time corresponds to all the other states from sd_uid_get_state(),
  * or if `IdleHint` is true.
  *
