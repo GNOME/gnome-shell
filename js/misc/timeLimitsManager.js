@@ -169,6 +169,7 @@ export const TimeLimitsManager = GObject.registerClass({
         this._stateTransitions = [];
         this._cancellable = null;
         this._loginManager = null;
+        this._inhibitor = null;
         this._loginUser = null;
         this._lastStateChangeTimeSecs = 0;
         this._timerId = 0;
@@ -257,12 +258,16 @@ export const TimeLimitsManager = GObject.registerClass({
             this._timeChangeId = 0;
         }
 
-        // Start listening for notifications to the user’s state.
+        // Start listening for notifications to the user’s state. Listening to
+        // the prepare-for-sleep signal requires taking a delay inhibitor to
+        // avoid races.
         this._loginManager = this._loginManagerFactory.new();
+        await this._ensureInhibitor();
         this._loginManager.connectObject(
             'prepare-for-sleep',
-            () => this._updateUserState(true).catch(
-                e => console.warn(`Failed to update user state: ${e.message}`)),
+            (unused, preparingForSleep) => {
+                this._onPrepareForSleep(preparingForSleep).catch(logError);
+            },
             this);
 
         this._loginUser = await this._loginUserFactory.newAsync();
@@ -289,6 +294,8 @@ export const TimeLimitsManager = GObject.registerClass({
 
         this._loginUser?.disconnectObject(this);
         this._loginUser = null;
+
+        this._releaseInhibitor();
 
         this._loginManager?.disconnectObject(this);
         this._loginManager = null;
@@ -320,6 +327,40 @@ export const TimeLimitsManager = GObject.registerClass({
         // Make sure no async operations are still pending.
         this._cancellable?.cancel();
         this._cancellable = null;
+    }
+
+    async _ensureInhibitor() {
+        if (this._inhibitor)
+            return;
+
+        try {
+            this._inhibitor = await this._loginManager.inhibit(
+                _('GNOME needs to save screen time data'), this._cancellable);
+        } catch (e) {
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                console.warn('Failed to inhibit suspend: %s'.format(e.message));
+        }
+    }
+
+    _releaseInhibitor() {
+        this._inhibitor?.close(null);
+        this._inhibitor = null;
+    }
+
+    async _onPrepareForSleep(preparingForSleep) {
+        // Just come back from sleep, so take another inhibitor.
+        if (!preparingForSleep)
+            this._ensureInhibitor();
+
+        try {
+            await this._updateUserState(true);
+        } catch (e) {
+            console.warn(`Failed to update user state: ${e.message}`);
+        }
+
+        // Release the inhibitor if we’re preparing to sleep.
+        if (preparingForSleep)
+            this._releaseInhibitor();
     }
 
     /** Shut down the state machine and write out the state file. */

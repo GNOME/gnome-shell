@@ -91,6 +91,12 @@ class TestHarness {
         // And a mock D-Bus proxy for logind.
         const harness = this;
 
+        class MockInhibitor {
+            close(unusedCancellable) {
+                // No-op for mock purposes
+            }
+        }
+
         class MockLoginManager {
             connectObject(signalName, callback, unusedObject) {
                 if (signalName === 'prepare-for-sleep') {
@@ -105,6 +111,12 @@ class TestHarness {
             disconnectObject(unused) {
                 // Very simple implementation for mock purposes
                 harness._loginManagerPrepareForSleepCallback = null;
+            }
+
+            /* eslint-disable-next-line require-await */
+            async inhibit(unusedReason, unusedCancellable) {
+                // Basically a no-op for mock purposes
+                return new MockInhibitor();
             }
 
             get preparingForSleep() {
@@ -578,8 +590,10 @@ class TestHarness {
         case 'preparing-for-sleep-state-change':
             this._currentPreparingForSleepState = event.newPreparingForSleepState;
 
-            if (this._loginManagerPrepareForSleepCallback)
-                this._loginManagerPrepareForSleepCallback(this._currentPreparingForSleepState);
+            if (this._loginManagerPrepareForSleepCallback) {
+                this._loginManagerPrepareForSleepCallback(
+                    this._mockLoginManager, this._currentPreparingForSleepState);
+            }
             break;
         case 'login-user-state-change':
             this._currentUserState = event.newUserState;
