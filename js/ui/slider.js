@@ -48,11 +48,10 @@ export const Slider = GObject.registerClass({
         let [width, height] = this.get_surface_size();
         const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
 
-        const ceiledHandleRadius = Math.ceil(this._handleRadius);
         const handleY = height / 2;
 
-        let handleX = ceiledHandleRadius +
-            (width - 2 * ceiledHandleRadius) * this._value / this._maxValue;
+        let handleX = this._handleRadius +
+            (width - 2 * this._handleRadius) * this._value / this._maxValue;
         if (rtl)
             handleX = width - handleX;
 
