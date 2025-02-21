@@ -1,6 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
  * Copyright 2024 Red Hat, Inc
+ * Copyright 2024-2025 Canonical Ltd
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -18,6 +19,7 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  *
  * Author: Ray Strode <rstrode@redhat.com>
+ *         Marco Trevisan <marco.trevisan@canonical.com>
  */
 
 #include <clutter/clutter.h>
@@ -39,39 +41,25 @@ typedef struct _ShellQrCodeGeneratorPrivate  ShellQrCodeGeneratorPrivate;
 struct _ShellQrCodeGenerator
 {
   GObject parent_instance;
-
-  ShellQrCodeGeneratorPrivate *priv;
 };
 
 struct _ShellQrCodeGeneratorPrivate
 {
-  char *url;
   size_t width;
   size_t height;
-  GTask *image_task;
   GTask *icon_task;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (ShellQrCodeGenerator, shell_qr_code_generator, G_TYPE_OBJECT);
 
 static void
-shell_qr_code_generator_dispose (GObject *object)
-{
-  ShellQrCodeGenerator *self = SHELL_QR_CODE_GENERATOR (object);
-  g_clear_pointer (&self->priv->url, g_free);
-}
-
-static void
 shell_qr_code_generator_class_init (ShellQrCodeGeneratorClass *qr_code_generator_class)
 {
-  GObjectClass *gobject_class = (GObjectClass *) qr_code_generator_class;
-  gobject_class->dispose = shell_qr_code_generator_dispose;
 }
 
 static void
 shell_qr_code_generator_init (ShellQrCodeGenerator *qr_code_generator)
 {
-  qr_code_generator->priv = shell_qr_code_generator_get_instance_private (qr_code_generator);
 }
 
 static guint8 *
@@ -152,11 +140,14 @@ qr_code_generator_thread (GTask        *task,
                           gpointer      task_data,
                           GCancellable *cancellable)
 {
-  ShellQrCodeGenerator *self = task_data;
   g_autoptr (GError) error = NULL;
+  ShellQrCodeGenerator *self = g_task_get_source_object (task);
+  ShellQrCodeGeneratorPrivate *priv =
+    shell_qr_code_generator_get_instance_private (self);
+  char *uri = task_data;
   g_autofree guint8 *pixel_data = NULL;
 
-  pixel_data = generate_icon (self->priv->url, self->priv->width, self->priv->height, &error);
+  pixel_data = generate_icon (uri, priv->width, priv->height, &error);
 
   if (error != NULL)
     g_task_return_error (task, g_steal_pointer (&error));
@@ -169,6 +160,9 @@ on_image_task_complete (ShellQrCodeGenerator *self,
                         GAsyncResult         *result,
                         gpointer              user_data)
 {
+  ShellQrCodeGeneratorPrivate *priv =
+    shell_qr_code_generator_get_instance_private (self);
+  g_autoptr (GTask) icon_task = g_steal_pointer (&priv->icon_task);
   ShellGlobal *global = shell_global_get ();
   ClutterStage *stage = shell_global_get_stage (global);
   ClutterContext *clutter_context =
@@ -183,27 +177,26 @@ on_image_task_complete (ShellQrCodeGenerator *self,
   pixel_data = g_task_propagate_pointer (G_TASK (result), &error);
   if (error != NULL)
     {
-      g_task_return_error (self->priv->icon_task, g_steal_pointer (&error));
+      g_task_return_error (icon_task, g_steal_pointer (&error));
       return;
     }
 
-  content = st_image_content_new_with_preferred_size (self->priv->width,
-                                                      self->priv->height);
+  content = st_image_content_new_with_preferred_size (priv->width,
+                                                      priv->height);
   if (!st_image_content_set_data (ST_IMAGE_CONTENT (content),
                                   ctx,
                                   pixel_data,
                                   COGL_PIXEL_FORMAT_RGB_888,
-                                  self->priv->width,
-                                  self->priv->height,
-                                  self->priv->width * BYTES_PER_RGB_888,
+                                  priv->width,
+                                  priv->height,
+                                  priv->width * BYTES_PER_RGB_888,
                                   &error))
     {
-      g_task_return_error (self->priv->icon_task, g_steal_pointer (&error));
+      g_task_return_error (icon_task, g_steal_pointer (&error));
       return;
     }
 
-  g_task_return_pointer (self->priv->icon_task, g_steal_pointer (&content), g_object_unref);
-  g_clear_object (&self->priv->image_task);
+  g_task_return_pointer (icon_task, g_steal_pointer (&content), g_object_unref);
 }
 
 /**
@@ -228,11 +221,11 @@ shell_qr_code_generator_generate_qr_code (ShellQrCodeGenerator *self,
                                           GAsyncReadyCallback   callback,
                                           gpointer              user_data)
 {
-  ShellQrCodeGeneratorPrivate *priv;
+  g_autoptr (GTask) image_task = NULL;
+  ShellQrCodeGeneratorPrivate *priv =
+    shell_qr_code_generator_get_instance_private (self);
 
   g_return_if_fail (SHELL_IS_QR_CODE_GENERATOR (self));
-
-  priv = self->priv;
 
   if (!url || *url == '\0')
     {
@@ -247,7 +240,7 @@ shell_qr_code_generator_generate_qr_code (ShellQrCodeGenerator *self,
       return;
     }
 
-  if (priv->url != NULL)
+  if (priv->icon_task != NULL)
     {
       if (callback)
         g_task_report_new_error (self,
@@ -261,18 +254,16 @@ shell_qr_code_generator_generate_qr_code (ShellQrCodeGenerator *self,
       return;
     }
 
-  priv->url = g_strdup (url);
   priv->width = width;
   priv->height = height;
 
   priv->icon_task = g_task_new (self, NULL, callback, user_data);
   g_task_set_source_tag (priv->icon_task, shell_qr_code_generator_generate_qr_code);
-  g_task_set_task_data (priv->icon_task, self, NULL);
 
-  priv->image_task = g_task_new (self, NULL, (GAsyncReadyCallback) on_image_task_complete, NULL);
-  g_task_set_source_tag (priv->image_task, on_image_task_complete);
-  g_task_set_task_data (priv->image_task, self, NULL);
-  g_task_run_in_thread (priv->image_task, qr_code_generator_thread);
+  image_task = g_task_new (self, NULL, (GAsyncReadyCallback) on_image_task_complete, NULL);
+  g_task_set_source_tag (image_task, on_image_task_complete);
+  g_task_set_task_data (image_task, g_strdup (url), g_free);
+  g_task_run_in_thread (image_task, qr_code_generator_thread);
 }
 
 /**
@@ -297,8 +288,6 @@ shell_qr_code_generator_generate_qr_code_finish (ShellQrCodeGenerator   *self,
   g_return_val_if_fail (g_async_result_is_tagged (result,
                                                   shell_qr_code_generator_generate_qr_code),
                         NULL);
-
-  g_clear_pointer (&self->priv->url, g_free);
 
   return g_task_propagate_pointer (G_TASK (result), error);
 }
