@@ -66,8 +66,26 @@ class QrCode extends St.Bin {
             this._iconSize * scaleFactor,
             this._iconSize * scaleFactor);
 
-        this.child.gicon = await this._qrCodeGenerator.generate_qr_code(
-            this._url, this._iconSize, this._iconSize, null);
+        this._cancellable?.cancel();
+        const cancellable = new Gio.Cancellable();
+        let destroyId = this.connect('destroy', () => {
+            cancellable.cancel();
+            destroyId = 0;
+        });
+
+        try {
+            this._cancellable = cancellable;
+            this.child.gicon = await this._qrCodeGenerator.generate_qr_code(
+                this._url, this._iconSize, this._iconSize, cancellable);
+        } catch (e) {
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                logError(e);
+        }
+
+        if (destroyId) {
+            this.disconnect(destroyId);
+            this._cancellable = null;
+        }
     }
 });
 
