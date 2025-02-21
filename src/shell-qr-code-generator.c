@@ -9,6 +9,7 @@
 
 #include <qrencode.h>
 
+#include "shell-global.h"
 #include "shell-qr-code-generator.h"
 
 #define BYTES_PER_RGB_888 3
@@ -148,6 +149,13 @@ on_image_task_complete (ShellQrCodeGenerator *self,
                         GAsyncResult         *result,
                         gpointer              user_data)
 {
+  ShellGlobal *global = shell_global_get ();
+  ClutterStage *stage = shell_global_get_stage (global);
+  ClutterContext *clutter_context =
+    clutter_actor_get_context (CLUTTER_ACTOR (stage));
+  ClutterBackend *backend =
+    clutter_context_get_backend (clutter_context);
+  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
   guint8 *pixel_data;
   g_autoptr (ClutterContent) content = NULL;
   g_autoptr (GError) error = NULL;
@@ -161,14 +169,16 @@ on_image_task_complete (ShellQrCodeGenerator *self,
       return;
     }
 
-  content = st_image_content_new_with_preferred_size (self->priv->width, self->priv->height);
-  data_set = clutter_image_set_data (CLUTTER_IMAGE (content),
-                                     pixel_data,
-                                     COGL_PIXEL_FORMAT_RGB_888,
-                                     self->priv->width,
-                                     self->priv->height,
-                                     self->priv->width * BYTES_PER_RGB_888,
-                                     &error);
+  content = st_image_content_new_with_preferred_size (self->priv->width,
+                                                      self->priv->height);
+  data_set = st_image_content_set_data (ST_IMAGE_CONTENT (content),
+                                        ctx,
+                                        pixel_data,
+                                        COGL_PIXEL_FORMAT_RGB_888,
+                                        self->priv->width,
+                                        self->priv->height,
+                                        self->priv->width * BYTES_PER_RGB_888,
+                                        &error);
 
   if (!data_set)
     {
