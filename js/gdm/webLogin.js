@@ -48,15 +48,35 @@ class QrCode extends St.Bin {
     vfunc_style_changed() {
         super.vfunc_style_changed();
 
+        let changed = false;
         const node = this.child.get_theme_node();
         const [found, iconSize] = node.lookup_length('icon-size', false);
 
-        if (!found)
+        if (found) {
+            const themeContext = St.ThemeContext.get_for_stage(global.stage);
+            const newIconSize = iconSize / themeContext.scaleFactor;
+            if (this._iconSize !== newIconSize) {
+                this._iconSize = newIconSize;
+                changed = true;
+            }
+        }
+
+        const bgColor = node.get_background_color();
+        const fgColor = node.get_foreground_color();
+
+        if (!this._bgColor?.equal(bgColor)) {
+            this._bgColor = bgColor;
+            changed = true;
+        }
+
+        if (!this._fgColor?.equal(fgColor)) {
+            this._fgColor = fgColor;
+            changed = true;
+        }
+
+        if (!changed)
             return;
 
-        const themeContext = St.ThemeContext.get_for_stage(global.stage);
-
-        this._iconSize = iconSize / themeContext.scaleFactor;
         this.update().catch(logError);
     }
 
@@ -76,8 +96,8 @@ class QrCode extends St.Bin {
         try {
             this._cancellable = cancellable;
             this.child.gicon = await this._qrCodeGenerator.generate_qr_code(
-                this._url, this._iconSize, this._iconSize, null, null,
-                cancellable);
+                this._url, this._iconSize, this._iconSize,
+                this._bgColor, this._fgColor, cancellable);
         } catch (e) {
             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 logError(e);

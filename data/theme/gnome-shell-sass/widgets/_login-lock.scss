@@ -520,8 +520,9 @@ $_gdm_dialog_width: 25em;
 
 // QR Code
 .qr-code {
-  background: black;
   border-radius: $base_border_radius * .5;
-  border-color: white;
   border-width: 1em;
+  background-color: $_gdm_fg;
+  border-color: $_gdm_fg;
+  color: $_gdm_bg;
 }
