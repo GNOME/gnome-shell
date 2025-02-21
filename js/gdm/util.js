@@ -880,7 +880,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._maybeStartFingerprintVerification().catch(logError);
     }
 
-    _startMechanismFromUnifiedService(mechanism) {
+    _startMechanismFromSwitchableService(mechanism) {
         const roleHandlers = {
             [WEB_LOGIN_ROLE_NAME]: this._startWebLogin,
             [PASSWORD_ROLE_NAME]: this._startPasswordLogin,
@@ -919,7 +919,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
          */
         if (this._foregroundMechanism?.serviceName === SWITCHABLE_AUTH_SERVICE_NAME &&
             serviceName === this._foregroundMechanism?.serviceName)
-            this._startMechanismFromUnifiedService(this._foregroundMechanism);
+            this._startMechanismFromSwitchableService(this._foregroundMechanism);
 
         if (this._unavailableServices.has(serviceName))
             return;
@@ -934,7 +934,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 this._startService(serviceName).catch(logError);
 
             if (serviceName === SWITCHABLE_AUTH_SERVICE_NAME)
-                this._startMechanismFromUnifiedService(mechanism);
+                this._startMechanismFromSwitchableService(mechanism);
         }
     }
 
@@ -1228,18 +1228,21 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _generateMechanismsFromDiscreteServices() {
-        // Unified auth doesn't support all authentication mechanisms (e.g. fingerprint) and also sometimes switchable auth
-        // isn't available at all. Fill in the gaps in coverage with mechanisms synthesized from non-switchable authentication
-        // services.
-        const switchableAuthAvailable = this._activeServices.has(SWITCHABLE_AUTH_SERVICE_NAME) && !this._unavailableServices.has(SWITCHABLE_AUTH_SERVICE_NAME);
+        // Switchable auth doesn't support all authentication mechanisms
+        // (e.g. fingerprint) and also sometimes switchable auth isn't
+        // available at all. Fill in the gaps in coverage with mechanisms
+        // synthesized from non-switchable authentication services.
+        const switchableAuthAvailable = this._activeServices.has(SWITCHABLE_AUTH_SERVICE_NAME) &&
+            !this._unavailableServices.has(SWITCHABLE_AUTH_SERVICE_NAME);
 
         for (const definition of DiscreteServiceMechanismDefinitions) {
             const enabled = this._settings.get_boolean(definition.setting);
             const available = !this._activeServices.has(definition.serviceName) && !this._unavailableServices.has(definition.serviceName);
-            const supportedByUnifiedAuth = switchableAuthAvailable && SWITCHABLE_AUTH_SUPPORTED_ROLES.includes(definition.role);
+            const supportedBySwitchableAuth = switchableAuthAvailable &&
+                SWITCHABLE_AUTH_SUPPORTED_ROLES.includes(definition.role);
 
             const mechanismsList = [];
-            if (enabled && available && !supportedByUnifiedAuth) {
+            if (enabled && available && !supportedBySwitchableAuth) {
                 mechanismsList.push({
                     iconName: definition.iconName,
                     id: definition.mechanismId,
