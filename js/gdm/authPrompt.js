@@ -510,7 +510,7 @@ export const AuthPrompt = GObject.registerClass({
             this._spinner.stop();
 
         this.updateSensitivity(true);
-        this.emit('prompted');
+        this.emit('prompted', serviceName);
     }
 
     _onCredentialManagerAuthenticated() {
