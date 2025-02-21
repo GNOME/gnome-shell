@@ -68,8 +68,6 @@ class QrCode extends St.Bin {
 
         this.child.gicon = await this._qrCodeGenerator.generate_qr_code(
             this._url, this._iconSize, this._iconSize);
-
-        this.style = null;
     }
 });
 
