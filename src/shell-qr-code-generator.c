@@ -74,6 +74,7 @@ static guint8 *
 generate_icon (const char   *url,
                size_t        width,
                size_t        height,
+               GCancellable *cancellable,
                GError      **error)
 {
   QRcode *qrcode;
@@ -90,6 +91,9 @@ generate_icon (const char   *url,
   size_t row, symbol, symbol_x, symbol_y;
 
   qrcode = QRcode_encodeString (url, 1, QR_ECLEVEL_L, QR_MODE_8, 1);
+
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
+    return NULL;
 
   if (!qrcode)
     {
@@ -137,6 +141,9 @@ generate_icon (const char   *url,
                 }
             }
         }
+
+      if (g_cancellable_set_error_if_cancelled (cancellable, error))
+        return NULL;
     }
 
   return g_steal_pointer (&pixel_data);
@@ -152,12 +159,15 @@ qr_code_generator_thread (GTask        *task,
   g_autoptr (GError) error = NULL;
   g_autofree guint8 *pixel_data = NULL;
 
-  pixel_data = generate_icon (data->uri, data->width, data->height, &error);
+  if (g_task_return_error_if_cancelled (task))
+    return;
+
+  pixel_data = generate_icon (data->uri, data->width, data->height, cancellable, &error);
 
   if (error != NULL)
     g_task_return_error (task, g_steal_pointer (&error));
   else
-    g_task_return_pointer (task, g_steal_pointer (&pixel_data), NULL);
+    g_task_return_pointer (task, g_steal_pointer (&pixel_data), g_free);
 }
 
 static void
@@ -210,6 +220,7 @@ on_image_task_complete (ShellQrCodeGenerator *self,
  * @url: the URL of which generate the qr code
  * @width: The width of the qrcode
  * @height: The height of the qrcode
+ * @cancellable: (nullable): A #GCancellable to cancel the operation
  * @callback: (scope async): function to call returning success or failure
  *   of the async grabbing
  * @user_data: the data to pass to callback function
@@ -223,6 +234,7 @@ shell_qr_code_generator_generate_qr_code (ShellQrCodeGenerator *self,
                                           const char           *url,
                                           size_t                width,
                                           size_t                height,
+                                          GCancellable         *cancellable,
                                           GAsyncReadyCallback   callback,
                                           gpointer              user_data)
 {
@@ -249,13 +261,15 @@ shell_qr_code_generator_generate_qr_code (ShellQrCodeGenerator *self,
   data->width = width;
   data->height = height;
 
-  data->icon_task = g_task_new (self, NULL, callback, user_data);
+  data->icon_task = g_task_new (self, cancellable, callback, user_data);
   g_task_set_source_tag (data->icon_task, shell_qr_code_generator_generate_qr_code);
 
-  image_task = g_task_new (self, NULL, (GAsyncReadyCallback) on_image_task_complete, NULL);
+  image_task = g_task_new (self, cancellable,
+                           (GAsyncReadyCallback) on_image_task_complete, NULL);
   g_task_set_source_tag (image_task, on_image_task_complete);
   g_task_set_task_data (image_task, g_steal_pointer (&data),
                         (GDestroyNotify) qr_code_generation_data_free);
+  g_task_set_return_on_cancel (image_task, TRUE);
   g_task_run_in_thread (image_task, qr_code_generator_thread);
 }
 
