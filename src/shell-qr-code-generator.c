@@ -1,4 +1,24 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+/*
+ * Copyright 2024 Red Hat, Inc
+ *
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author: Ray Strode <rstrode@redhat.com>
+ */
 
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
@@ -159,7 +179,6 @@ on_image_task_complete (ShellQrCodeGenerator *self,
   guint8 *pixel_data;
   g_autoptr (ClutterContent) content = NULL;
   g_autoptr (GError) error = NULL;
-  gboolean data_set;
 
   pixel_data = g_task_propagate_pointer (G_TASK (result), &error);
 
@@ -171,16 +190,14 @@ on_image_task_complete (ShellQrCodeGenerator *self,
 
   content = st_image_content_new_with_preferred_size (self->priv->width,
                                                       self->priv->height);
-  data_set = st_image_content_set_data (ST_IMAGE_CONTENT (content),
-                                        ctx,
-                                        pixel_data,
-                                        COGL_PIXEL_FORMAT_RGB_888,
-                                        self->priv->width,
-                                        self->priv->height,
-                                        self->priv->width * BYTES_PER_RGB_888,
-                                        &error);
-
-  if (!data_set)
+  if (!st_image_content_set_data (ST_IMAGE_CONTENT (content),
+                                  ctx,
+                                  pixel_data,
+                                  COGL_PIXEL_FORMAT_RGB_888,
+                                  self->priv->width,
+                                  self->priv->height,
+                                  self->priv->width * BYTES_PER_RGB_888,
+                                  &error))
     {
       g_task_return_error (self->priv->icon_task, error);
       return;
@@ -191,13 +208,18 @@ on_image_task_complete (ShellQrCodeGenerator *self,
 }
 
 /**
- * shell_qr_code_generator_generator_qr_code:
- * @qr_code_generator: the #ShellQrCodeGenerator
- * @stream: The stream for the QR code generator
+ * shell_qr_code_generator_generate_qr_code:
+ * @self: the #ShellQrCodeGenerator
+ * @url: the URL of which generate the qr code
+ * @width: The width of the qrcode
+ * @height: The height of the qrcode
  * @callback: (scope async): function to call returning success or failure
- * of the async grabbing
+ *   of the async grabbing
  * @user_data: the data to pass to callback function
  *
+ * Generates the QrCode asynchronously.
+ *
+ * Use shell_qr_code_generator_generate_qr_code_finish() to complete it.
  */
 void
 shell_qr_code_generator_generate_qr_code (ShellQrCodeGenerator *self,
@@ -256,13 +278,14 @@ shell_qr_code_generator_generate_qr_code (ShellQrCodeGenerator *self,
 
 /**
  * shell_qr_code_generator_generate_qr_code_finish:
+ * @self: the #ShellQrCodeGenerator
  * @result: the #GAsyncResult that was provided to the callback
  * @error: #GError for error reporting
  *
- * Finish the asynchronous operation started by shell_qr_code_generator_generate_qr_code()
- * and obtain its result.
+ * Finish the asynchronous operation started by
+ * shell_qr_code_generator_generate_qr_code() and obtain its result.
  *
- * Returns: (transfer full):  a #GIcon of the QR code
+ * Returns: (transfer full): a #GIcon of the QR code
  *
  */
 GIcon *
