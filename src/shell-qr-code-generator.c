@@ -152,14 +152,14 @@ qr_code_generator_thread (GTask        *task,
                           gpointer      task_data,
                           GCancellable *cancellable)
 {
-  GError *error = NULL;
   ShellQrCodeGenerator *self = task_data;
+  g_autoptr (GError) error = NULL;
   g_autofree guint8 *pixel_data = NULL;
 
   pixel_data = generate_icon (self->priv->url, self->priv->width, self->priv->height, &error);
 
   if (error != NULL)
-    g_task_return_error (task, error);
+    g_task_return_error (task, g_steal_pointer (&error));
   else
     g_task_return_pointer (task, g_steal_pointer (&pixel_data), NULL);
 }
@@ -183,7 +183,7 @@ on_image_task_complete (ShellQrCodeGenerator *self,
   pixel_data = g_task_propagate_pointer (G_TASK (result), &error);
   if (error != NULL)
     {
-      g_task_return_error (self->priv->icon_task, error);
+      g_task_return_error (self->priv->icon_task, g_steal_pointer (&error));
       return;
     }
 
@@ -198,7 +198,7 @@ on_image_task_complete (ShellQrCodeGenerator *self,
                                   self->priv->width * BYTES_PER_RGB_888,
                                   &error))
     {
-      g_task_return_error (self->priv->icon_task, error);
+      g_task_return_error (self->priv->icon_task, g_steal_pointer (&error));
       return;
     }
 
