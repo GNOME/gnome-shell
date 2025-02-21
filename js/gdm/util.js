@@ -1099,9 +1099,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             if (!name || !role)
                 continue;
 
-            let selectable = mechanisms[id].selectable;
-            if (selectable === undefined)
-                selectable = true;
+            const selectable = mechanisms[id].selectable ?? true;
 
             log(`RAY: Adding mechanism ${JSON.stringify(mechanisms[id])}`);
             mechanismsList.push({id, name, role, serviceName, selectable});
