@@ -176,12 +176,11 @@ on_image_task_complete (ShellQrCodeGenerator *self,
   ClutterBackend *backend =
     clutter_context_get_backend (clutter_context);
   CoglContext *ctx = clutter_backend_get_cogl_context (backend);
-  guint8 *pixel_data;
+  g_autofree guint8 *pixel_data = NULL;
   g_autoptr (ClutterContent) content = NULL;
   g_autoptr (GError) error = NULL;
 
   pixel_data = g_task_propagate_pointer (G_TASK (result), &error);
-
   if (error != NULL)
     {
       g_task_return_error (self->priv->icon_task, error);
