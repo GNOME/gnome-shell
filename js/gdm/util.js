@@ -800,9 +800,9 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     _isDiscreteServiceEnabled(definition) {
         switch (definition.serviceName) {
-        case PASSWORD_AUTHENTICATION_KEY:
+        case PASSWORD_SERVICE_NAME:
             return this._settings.get_boolean(definition.setting);
-        case FINGERPRINT_AUTHENTICATION_KEY:
+        case FINGERPRINT_SERVICE_NAME:
             return this._fingerprintReaderType !== FingerprintReaderType.NONE;
         case SMARTCARD_SERVICE_NAME:
             return !!this._smartcardManager;
@@ -816,7 +816,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             return SWITCHABLE_AUTH_SERVICE_NAME;
 
         const definition = DiscreteServiceMechanismDefinitions.find(
-            def => this._isDiscreteServiceEnabled(def.setting));
+            def => this._isDiscreteServiceEnabled(def));
         return definition?.serviceName ?? null;
     }
 
