@@ -541,9 +541,9 @@ export const AuthPrompt = GObject.registerClass({
         this.smartcardDetected = this._userVerifier.smartcardDetected;
 
         const smartcardService =
-            SWITCHABLE_AUTH_SUPPORTED_ROLES.includes(SMARTCARD_ROLE_NAME) &&
-            this.smartcardDetected ? SWITCHABLE_AUTH_SERVICE_NAME:
-            SMARTCARD_SERVICE_NAME;
+            GdmUtil.SWITCHABLE_AUTH_SUPPORTED_ROLES.includes(GdmUtil.SMARTCARD_ROLE_NAME) &&
+            this.smartcardDetected ? GdmUtil.SWITCHABLE_AUTH_SERVICE_NAME:
+            GdmUtil.SMARTCARD_SERVICE_NAME;
 
         log(`RAY: smartcard status changed: ${this.smartcardDetected}`);
         // Most of the time we want to reset if the user inserts or removes
@@ -563,7 +563,7 @@ export const AuthPrompt = GObject.registerClass({
         // is specified. Need to fix that before we can act on smartcard
         // insertion events with switchable auth. See also this message in
         // gdm/util.js
-        if (smartcardService === SWITCHABLE_AUTH_SERVICE_NAME)
+        if (smartcardService === GdmUtil.SWITCHABLE_AUTH_SERVICE_NAME)
             return;
 
         if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
