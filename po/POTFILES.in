@@ -12,6 +12,7 @@ js/dbusServices/extensions/ui/extension-error-page.ui
 js/gdm/authPrompt.js
 js/gdm/loginDialog.js
 js/gdm/util.js
+js/gdm/webLogin.js
 js/misc/breakManager.js
 js/misc/systemActions.js
 js/misc/timeLimitsManager.js
