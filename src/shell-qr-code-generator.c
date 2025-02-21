@@ -297,6 +297,9 @@ shell_qr_code_generator_generate_qr_code_finish (ShellQrCodeGenerator   *self,
   g_return_val_if_fail (g_async_result_is_tagged (result,
                                                   shell_qr_code_generator_generate_qr_code),
                         NULL);
+
+  g_clear_pointer (&self->priv->url, g_free);
+
   return g_task_propagate_pointer (G_TASK (result), error);
 }
 
