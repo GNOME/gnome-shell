@@ -862,12 +862,11 @@ export const AuthPrompt = GObject.registerClass({
 
         this._loginFailedNotification = new MessageTray.Notification({
             source,
+            iconName: 'dialog-password-symbolic',
             title: _('Login Failed'),
             body: _('Please try again'),
             isTransient: true,
         });
-
-        this._loginFailedNotification.iconName = 'dialog-password-symbolic';
 
         source.addNotification(this._loginFailedNotification);
     }
