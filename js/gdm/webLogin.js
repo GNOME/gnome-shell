@@ -76,7 +76,8 @@ class QrCode extends St.Bin {
         try {
             this._cancellable = cancellable;
             this.child.gicon = await this._qrCodeGenerator.generate_qr_code(
-                this._url, this._iconSize, this._iconSize, cancellable);
+                this._url, this._iconSize, this._iconSize, null, null,
+                cancellable);
         } catch (e) {
             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 logError(e);

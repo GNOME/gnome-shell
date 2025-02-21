@@ -35,7 +35,10 @@
 #include "shell-global.h"
 #include "shell-qr-code-generator.h"
 
-#define BYTES_PER_RGB_888 3
+#define BYTES_PER_R8G8B8 3
+#define BYTES_PER_R8G8B8A8 4
+#define BYTES_PER_FORMAT(format) \
+  ((format) == COGL_PIXEL_FORMAT_RGB_888 ? BYTES_PER_R8G8B8 : BYTES_PER_R8G8B8A8)
 
 struct _ShellQrCodeGenerator
 {
@@ -47,6 +50,8 @@ typedef struct
   char *uri;
   size_t width;
   size_t height;
+  CoglColor *bg_color;
+  CoglColor *fg_color;
   GTask *icon_task;
 } QrCodeGenerationData;
 
@@ -54,6 +59,8 @@ static void
 qr_code_generation_data_free (QrCodeGenerationData *data)
 {
   g_clear_object (&data->icon_task);
+  g_clear_pointer (&data->bg_color, cogl_color_free);
+  g_clear_pointer (&data->fg_color, cogl_color_free);
   g_free (data->uri);
   g_free (data);
 }
@@ -71,17 +78,42 @@ shell_qr_code_generator_init (ShellQrCodeGenerator *qr_code_generator)
 }
 
 static guint8 *
-generate_icon (const char   *url,
-               size_t        width,
-               size_t        height,
-               GCancellable *cancellable,
-               GError      **error)
+colored_pixel (const CoglColor *color,
+               CoglPixelFormat  pixel_format)
 {
+  guint8 *pixel = g_new (guint8, BYTES_PER_FORMAT (pixel_format));
+
+  g_return_val_if_fail (pixel_format == COGL_PIXEL_FORMAT_RGB_888 ||
+                        pixel_format == COGL_PIXEL_FORMAT_RGBA_8888, NULL);
+
+  pixel[0] = color->red;
+  pixel[1] = color->green;
+  pixel[2] = color->blue;
+
+  if (pixel_format == COGL_PIXEL_FORMAT_RGBA_8888)
+    pixel[3] = color->alpha;
+
+  return pixel;
+}
+
+static guint8 *
+generate_icon (const char       *url,
+               size_t            width,
+               size_t            height,
+               const CoglColor  *bg_color,
+               const CoglColor  *fg_color,
+               GCancellable     *cancellable,
+               CoglPixelFormat  *out_pixel_format,
+               GError          **error)
+{
+  static const CoglColor white_color = COGL_COLOR_INIT (255, 255, 255, 255);
+  static const CoglColor black_color = COGL_COLOR_INIT (0, 0, 0, 255);
   QRcode *qrcode;
   g_autofree guint8 *pixel_data = NULL;
-  guint8 white_pixel[BYTES_PER_RGB_888] = {255, 255, 255};
-  guint8 black_pixel[BYTES_PER_RGB_888] = {0, 0, 0};
-  size_t pixel_size = sizeof (white_pixel);
+  g_autofree guint8 *bg_pixel = NULL;
+  g_autofree guint8 *fg_pixel = NULL;
+  CoglPixelFormat pixel_format;
+  size_t pixel_size;
   size_t symbol_size;
   size_t symbols_per_row, number_of_rows;
   size_t code_width;
@@ -89,6 +121,8 @@ generate_icon (const char   *url,
   size_t offset_x;
   size_t offset_y;
   size_t row, symbol, symbol_x, symbol_y;
+
+  g_assert (out_pixel_format);
 
   qrcode = QRcode_encodeString (url, 1, QR_ECLEVEL_L, QR_MODE_8, 1);
 
@@ -105,6 +139,18 @@ generate_icon (const char   *url,
       return NULL;
     }
 
+  if (!bg_color)
+    bg_color = &white_color;
+
+  if (!fg_color)
+    fg_color = &black_color;
+
+  if (bg_color->alpha == 255 && fg_color->alpha == 255)
+    pixel_format = COGL_PIXEL_FORMAT_RGB_888;
+  else
+    pixel_format = COGL_PIXEL_FORMAT_RGBA_8888;
+
+  pixel_size = BYTES_PER_FORMAT (pixel_format);
   symbols_per_row = qrcode->width;
   number_of_rows = qrcode->width;
 
@@ -114,7 +160,10 @@ generate_icon (const char   *url,
   offset_x = (width - code_width) / 2;
   offset_y = (height - code_height) / 2;
 
-  pixel_data = calloc (height, width * BYTES_PER_RGB_888);
+  bg_pixel = colored_pixel (bg_color, pixel_format);
+  fg_pixel = colored_pixel (fg_color, pixel_format);
+
+  pixel_data = calloc (height, width * pixel_size);
 
   for (row = 0; row < number_of_rows; row++)
     {
@@ -123,9 +172,9 @@ generate_icon (const char   *url,
           guint8 *pixel;
 
           if (qrcode->data[row * symbols_per_row + symbol] & 1)
-            pixel = black_pixel;
+            pixel = fg_pixel;
           else
-            pixel = white_pixel;
+            pixel = bg_pixel;
 
           for (symbol_y = 0; symbol_y < symbol_size; symbol_y++)
             {
@@ -146,8 +195,25 @@ generate_icon (const char   *url,
         return NULL;
     }
 
+  *out_pixel_format = pixel_format;
+
   return g_steal_pointer (&pixel_data);
 }
+
+typedef struct
+{
+  CoglPixelFormat pixel_format;
+  guint8 *pixel_data;
+} QrCodeData;
+
+static void
+qr_code_data_free (QrCodeData *qrcode_data)
+{
+  g_free (qrcode_data->pixel_data);
+  g_free (qrcode_data);
+}
+
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (QrCodeData, qr_code_data_free);
 
 static void
 qr_code_generator_thread (GTask        *task,
@@ -157,17 +223,29 @@ qr_code_generator_thread (GTask        *task,
 {
   QrCodeGenerationData *data = task_data;
   g_autoptr (GError) error = NULL;
+  g_autoptr (QrCodeData) qr_code_data = NULL;
   g_autofree guint8 *pixel_data = NULL;
+  CoglPixelFormat pixel_format = COGL_PIXEL_FORMAT_RGB_888;
 
   if (g_task_return_error_if_cancelled (task))
     return;
 
-  pixel_data = generate_icon (data->uri, data->width, data->height, cancellable, &error);
+  pixel_data = generate_icon (data->uri, data->width, data->height,
+                              data->bg_color, data->fg_color,
+                              cancellable, &pixel_format, &error);
 
   if (error != NULL)
-    g_task_return_error (task, g_steal_pointer (&error));
-  else
-    g_task_return_pointer (task, g_steal_pointer (&pixel_data), g_free);
+    {
+      g_task_return_error (task, g_steal_pointer (&error));
+      return;
+    }
+
+  qr_code_data = g_new (QrCodeData, 1);
+  qr_code_data->pixel_data = g_steal_pointer (&pixel_data);
+  qr_code_data->pixel_format = pixel_format;
+
+  g_task_return_pointer (task, g_steal_pointer (&qr_code_data),
+                         (GDestroyNotify) qr_code_data_free);
 }
 
 static void
@@ -185,11 +263,11 @@ on_image_task_complete (ShellQrCodeGenerator *self,
   GTask *image_task = G_TASK (result);
   QrCodeGenerationData *data = g_task_get_task_data (image_task);
   g_autoptr (GTask) icon_task = g_steal_pointer (&data->icon_task);
-  g_autofree guint8 *pixel_data = NULL;
+  g_autoptr (QrCodeData) qrcode_data = NULL;
   g_autoptr (ClutterContent) content = NULL;
   g_autoptr (GError) error = NULL;
 
-  pixel_data = g_task_propagate_pointer (image_task, &error);
+  qrcode_data = g_task_propagate_pointer (image_task, &error);
   if (error != NULL)
     {
       g_task_return_error (icon_task, g_steal_pointer (&error));
@@ -200,11 +278,12 @@ on_image_task_complete (ShellQrCodeGenerator *self,
                                                       data->height);
   if (!st_image_content_set_data (ST_IMAGE_CONTENT (content),
                                   ctx,
-                                  pixel_data,
-                                  COGL_PIXEL_FORMAT_RGB_888,
+                                  qrcode_data->pixel_data,
+                                  qrcode_data->pixel_format,
                                   data->width,
                                   data->height,
-                                  data->width * BYTES_PER_RGB_888,
+                                  data->width *
+                                  BYTES_PER_FORMAT (qrcode_data->pixel_format),
                                   &error))
     {
       g_task_return_error (icon_task, g_steal_pointer (&error));
@@ -220,6 +299,10 @@ on_image_task_complete (ShellQrCodeGenerator *self,
  * @url: the URL of which generate the qr code
  * @width: The width of the qrcode
  * @height: The height of the qrcode
+ * @bg_color: (nullable): The background color of the code
+ *   or %NULL to use default (white)
+ * @fg_color: (nullable): The foreground color of the code
+ *   or %NULL to use default (black)
  * @cancellable: (nullable): A #GCancellable to cancel the operation
  * @callback: (scope async): function to call returning success or failure
  *   of the async grabbing
@@ -234,6 +317,8 @@ shell_qr_code_generator_generate_qr_code (ShellQrCodeGenerator *self,
                                           const char           *url,
                                           size_t                width,
                                           size_t                height,
+                                          const CoglColor      *bg_color,
+                                          const CoglColor      *fg_color,
                                           GCancellable         *cancellable,
                                           GAsyncReadyCallback   callback,
                                           gpointer              user_data)
@@ -258,6 +343,8 @@ shell_qr_code_generator_generate_qr_code (ShellQrCodeGenerator *self,
 
   data = g_new0 (QrCodeGenerationData, 1);
   data->uri = g_strdup (url);
+  data->bg_color = cogl_color_copy (bg_color);
+  data->fg_color = cogl_color_copy (fg_color);
   data->width = width;
   data->height = height;
 

@@ -24,6 +24,7 @@
 
 #include <glib.h>
 #include <gio/gio.h>
+#include <cogl/cogl.h>
 
 /**
  * SECTION:shell-qr-code-generator
@@ -42,6 +43,8 @@ void    shell_qr_code_generator_generate_qr_code         (ShellQrCodeGenerator  
                                                           const char             *url,
                                                           size_t                  width,
                                                           size_t                  height,
+                                                          const CoglColor        *bg_color,
+                                                          const CoglColor        *fg_color,
                                                           GCancellable           *cancellable,
                                                           GAsyncReadyCallback     callback,
                                                           gpointer                user_data);
