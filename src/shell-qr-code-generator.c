@@ -31,26 +31,34 @@
 
 #include <qrencode.h>
 
+#include "glib.h"
 #include "shell-global.h"
 #include "shell-qr-code-generator.h"
 
 #define BYTES_PER_RGB_888 3
-
-typedef struct _ShellQrCodeGeneratorPrivate  ShellQrCodeGeneratorPrivate;
 
 struct _ShellQrCodeGenerator
 {
   GObject parent_instance;
 };
 
-struct _ShellQrCodeGeneratorPrivate
+typedef struct
 {
+  char *uri;
   size_t width;
   size_t height;
   GTask *icon_task;
-};
+} QrCodeGenerationData;
 
-G_DEFINE_TYPE_WITH_PRIVATE (ShellQrCodeGenerator, shell_qr_code_generator, G_TYPE_OBJECT);
+static void
+qr_code_generation_data_free (QrCodeGenerationData *data)
+{
+  g_clear_object (&data->icon_task);
+  g_free (data->uri);
+  g_free (data);
+}
+
+G_DEFINE_TYPE (ShellQrCodeGenerator, shell_qr_code_generator, G_TYPE_OBJECT);
 
 static void
 shell_qr_code_generator_class_init (ShellQrCodeGeneratorClass *qr_code_generator_class)
@@ -140,14 +148,11 @@ qr_code_generator_thread (GTask        *task,
                           gpointer      task_data,
                           GCancellable *cancellable)
 {
+  QrCodeGenerationData *data = task_data;
   g_autoptr (GError) error = NULL;
-  ShellQrCodeGenerator *self = g_task_get_source_object (task);
-  ShellQrCodeGeneratorPrivate *priv =
-    shell_qr_code_generator_get_instance_private (self);
-  char *uri = task_data;
   g_autofree guint8 *pixel_data = NULL;
 
-  pixel_data = generate_icon (uri, priv->width, priv->height, &error);
+  pixel_data = generate_icon (data->uri, data->width, data->height, &error);
 
   if (error != NULL)
     g_task_return_error (task, g_steal_pointer (&error));
@@ -160,9 +165,6 @@ on_image_task_complete (ShellQrCodeGenerator *self,
                         GAsyncResult         *result,
                         gpointer              user_data)
 {
-  ShellQrCodeGeneratorPrivate *priv =
-    shell_qr_code_generator_get_instance_private (self);
-  g_autoptr (GTask) icon_task = g_steal_pointer (&priv->icon_task);
   ShellGlobal *global = shell_global_get ();
   ClutterStage *stage = shell_global_get_stage (global);
   ClutterContext *clutter_context =
@@ -170,26 +172,29 @@ on_image_task_complete (ShellQrCodeGenerator *self,
   ClutterBackend *backend =
     clutter_context_get_backend (clutter_context);
   CoglContext *ctx = clutter_backend_get_cogl_context (backend);
+  GTask *image_task = G_TASK (result);
+  QrCodeGenerationData *data = g_task_get_task_data (image_task);
+  g_autoptr (GTask) icon_task = g_steal_pointer (&data->icon_task);
   g_autofree guint8 *pixel_data = NULL;
   g_autoptr (ClutterContent) content = NULL;
   g_autoptr (GError) error = NULL;
 
-  pixel_data = g_task_propagate_pointer (G_TASK (result), &error);
+  pixel_data = g_task_propagate_pointer (image_task, &error);
   if (error != NULL)
     {
       g_task_return_error (icon_task, g_steal_pointer (&error));
       return;
     }
 
-  content = st_image_content_new_with_preferred_size (priv->width,
-                                                      priv->height);
+  content = st_image_content_new_with_preferred_size (data->width,
+                                                      data->height);
   if (!st_image_content_set_data (ST_IMAGE_CONTENT (content),
                                   ctx,
                                   pixel_data,
                                   COGL_PIXEL_FORMAT_RGB_888,
-                                  priv->width,
-                                  priv->height,
-                                  priv->width * BYTES_PER_RGB_888,
+                                  data->width,
+                                  data->height,
+                                  data->width * BYTES_PER_RGB_888,
                                   &error))
     {
       g_task_return_error (icon_task, g_steal_pointer (&error));
@@ -222,8 +227,7 @@ shell_qr_code_generator_generate_qr_code (ShellQrCodeGenerator *self,
                                           gpointer              user_data)
 {
   g_autoptr (GTask) image_task = NULL;
-  ShellQrCodeGeneratorPrivate *priv =
-    shell_qr_code_generator_get_instance_private (self);
+  QrCodeGenerationData *data;
 
   g_return_if_fail (SHELL_IS_QR_CODE_GENERATOR (self));
 
@@ -240,29 +244,18 @@ shell_qr_code_generator_generate_qr_code (ShellQrCodeGenerator *self,
       return;
     }
 
-  if (priv->icon_task != NULL)
-    {
-      if (callback)
-        g_task_report_new_error (self,
-                                 callback,
-                                 user_data,
-                                 shell_qr_code_generator_generate_qr_code,
-                                 G_IO_ERROR,
-                                 G_IO_ERROR_PENDING,
-                                 "Only one QR code generator operation at a time "
-                                 "is permitted");
-      return;
-    }
+  data = g_new0 (QrCodeGenerationData, 1);
+  data->uri = g_strdup (url);
+  data->width = width;
+  data->height = height;
 
-  priv->width = width;
-  priv->height = height;
-
-  priv->icon_task = g_task_new (self, NULL, callback, user_data);
-  g_task_set_source_tag (priv->icon_task, shell_qr_code_generator_generate_qr_code);
+  data->icon_task = g_task_new (self, NULL, callback, user_data);
+  g_task_set_source_tag (data->icon_task, shell_qr_code_generator_generate_qr_code);
 
   image_task = g_task_new (self, NULL, (GAsyncReadyCallback) on_image_task_complete, NULL);
   g_task_set_source_tag (image_task, on_image_task_complete);
-  g_task_set_task_data (image_task, g_strdup (url), g_free);
+  g_task_set_task_data (image_task, g_steal_pointer (&data),
+                        (GDestroyNotify) qr_code_generation_data_free);
   g_task_run_in_thread (image_task, qr_code_generator_thread);
 }
 
