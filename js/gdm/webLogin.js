@@ -41,28 +41,27 @@ class QrCode extends St.Bin {
             style_class: 'qr-code',
         });
 
-        themeContext.connectObject('notify::scale-factor', this.update.bind(this), this);
-
-        this.update();
+        themeContext.connectObject('notify::scale-factor',
+            () => this.update().catch(logError), this);
     }
 
     vfunc_style_changed() {
         super.vfunc_style_changed();
 
-        let node = this.get_theme_node();
-        let [found, iconSize] = node.lookup_length('icon-size', false);
+        const node = this.child.get_theme_node();
+        const [found, iconSize] = node.lookup_length('icon-size', false);
 
         if (!found)
             return;
 
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        const themeContext = St.ThemeContext.get_for_stage(global.stage);
 
         this._iconSize = iconSize / themeContext.scaleFactor;
         this.update().catch(logError);
     }
 
     async update() {
-        let {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
+        const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
         this.set_size(
             this._iconSize * scaleFactor,
             this._iconSize * scaleFactor);
