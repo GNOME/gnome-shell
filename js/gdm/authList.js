@@ -31,7 +31,7 @@ const AuthListItem = GObject.registerClass({
             text,
             style_class: 'login-dialog-auth-list-label',
             y_align: Clutter.ActorAlign.CENTER,
-            x_expand: false,
+            x_expand: true,
         });
 
         super._init({

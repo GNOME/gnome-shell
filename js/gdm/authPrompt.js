@@ -169,6 +169,8 @@ export const AuthPrompt = GObject.registerClass({
         this._authList = new AuthList.AuthList();
         this._authList.set({
             visible: false,
+            x_align: Clutter.ActorAlign.FILL,
+            x_expand: true,
         });
         this._authList.connect('activate', (list, key) => {
             this._authList.reactive = false;
