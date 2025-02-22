@@ -588,6 +588,15 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._queueMessage(serviceName, _('Authentication error'), MessageType.ERROR);
         this._failCounter++;
         this._verificationFailed(serviceName, false);
+
+        if (error instanceof GLib.Error &&
+            Gio.DBusError.is_remote_error(error) &&
+            Gio.DBusError.get_remote_error(error) ===
+            'org.gnome.DisplayManager.SessionWorker.Error.ServiceUnavailable') {
+            this._unavailableServices.add(serviceName);
+            this._updateDefaultService();
+            return;
+        }
     }
 
     _getClientExtensionProxies() {
