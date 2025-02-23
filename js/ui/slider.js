@@ -36,7 +36,8 @@ export const Slider = GObject.registerClass({
         super.vfunc_style_changed();
 
         const themeNode = this.get_theme_node();
-        this._handleRadius = themeNode.get_length('-slider-handle-radius');
+        this._handleRadius =
+            Math.round(2 * themeNode.get_length('-slider-handle-radius')) / 2;
     }
 
     vfunc_repaint() {
