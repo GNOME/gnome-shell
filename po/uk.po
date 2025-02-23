@@ -7,22 +7,22 @@
 # Maxim V. Dziumanenko <dziumanenko@gmail.com>, 2010.
 # Daniel Korostil <ted.korostiled@gmail.com>, 2013, 2014, 2015, 2016, 2017.
 # Danylo Korostil <ted.korostiled@gmail.com>, 2020.
-# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022, 2023, 2024.
+# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022, 2023, 2024, 2025.
 # Olexander Movchan <olexander-movchan@ukr.net>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-02-13 20:14+0000\n"
-"PO-Revision-Date: 2024-08-23 12:30+0300\n"
+"POT-Creation-Date: 2025-02-23 20:09+0000\n"
+"PO-Revision-Date: 2025-02-23 22:12+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : "
-"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
 "X-Generator: Lokalize 23.04.3\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: uk\n"
@@ -561,10 +561,8 @@ msgid "Network Login"
 msgstr "Мережевий вхід"
 
 #: data/X-GNOME-Shell-Utilities.directory.desktop.in:3
-#, fuzzy
-#| msgid "Activities"
 msgid "Utilities"
-msgstr "Діяльність"
+msgstr "Інструменти"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
 #: subprojects/extensions-app/data/ui/extensions-window.ui:275
@@ -718,135 +716,125 @@ msgstr "(або розташуйте палець на зчитувачі)"
 
 #: js/misc/breakManager.js:764
 msgid "Break complete sound"
-msgstr ""
+msgstr "Звук завершення перерви"
 
 #: js/misc/breakManager.js:956
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%d секунда"
+msgstr[1] "%d секунди"
+msgstr[2] "%d секунд"
+msgstr[3] "%d секунда"
 
 #: js/misc/breakManager.js:962
-#, fuzzy, javascript-format
-#| msgid "%d minute ago"
-#| msgid_plural "%d minutes ago"
+#, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
-msgstr[0] "%d хвилина тому"
-msgstr[1] "%d хвилини тому"
-msgstr[2] "%d хвилин тому"
-msgstr[3] "%d хвилина тому"
+msgstr[0] "%d хвилина"
+msgstr[1] "%d хвилини"
+msgstr[2] "%d хвилин"
+msgstr[3] "%d хвилина"
 
 #: js/misc/breakManager.js:968
-#, fuzzy, javascript-format
-#| msgid "%d hour ago"
-#| msgid_plural "%d hours ago"
+#, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
-msgstr[0] "%d година тому"
-msgstr[1] "%d години тому"
-msgstr[2] "%d годин тому"
-msgstr[3] "%d година тому"
+msgstr[0] "%d година"
+msgstr[1] "%d години"
+msgstr[2] "%d годин"
+msgstr[3] "%d година"
 
 #: js/misc/breakManager.js:974
-#, fuzzy, javascript-format
-#| msgid "%d day ago"
-#| msgid_plural "%d days ago"
+#, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
-msgstr[0] "%d день тому"
-msgstr[1] "%d дні тому"
-msgstr[2] "%d днів тому"
-msgstr[3] "%d день тому"
+msgstr[0] "%d день"
+msgstr[1] "%d дні"
+msgstr[2] "%d днів"
+msgstr[3] "%d день"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1057
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "За %s слід перервати роботу"
+msgstr[1] "За %s слід перервати роботу"
+msgstr[2] "За %s слід перервати роботу"
+msgstr[3] "За %s слід перервати роботу"
 
 #: js/misc/breakManager.js:1065
 msgid "Movement Break Soon"
-msgstr ""
+msgstr "Невдовзі рухома перерва"
 
 #: js/misc/breakManager.js:1068
 msgid "Eyesight Break Soon"
-msgstr ""
+msgstr "Невдовзі візуальна перерва"
 
 #: js/misc/breakManager.js:1071
 msgid "Break Soon"
-msgstr ""
+msgstr "Невдовзі перерва"
 
 #: js/misc/breakManager.js:1115
-#, fuzzy
-#| msgid "Screen Recording in Progress"
 msgid "Movement Break in Progress"
-msgstr "Виконуємо запис з екрана"
+msgstr "Триває рухома перерва"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1118
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Продовжуйте рухатися ще приблизно %s"
+msgstr[1] "Продовжуйте рухатися ще приблизно %s"
+msgstr[2] "Продовжуйте рухатися ще приблизно %s"
+msgstr[3] "Продовжуйте рухатися ще приблизно %s"
 
 #: js/misc/breakManager.js:1124
 msgid "Eyesight Break in Progress"
-msgstr ""
+msgstr "Триває візуальна перерва"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1127
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Продовжуйте дивитися у віддаль протягом ще %s"
+msgstr[1] "Продовжуйте дивитися у віддаль протягом ще %s"
+msgstr[2] "Продовжуйте дивитися у віддаль протягом ще %s"
+msgstr[3] "Продовжуйте дивитися у віддаль протягом ще %s"
 
 #: js/misc/breakManager.js:1133
-#, fuzzy
-#| msgid "Screen Recording in Progress"
 msgid "Break in Progress"
-msgstr "Виконуємо запис з екрана"
+msgstr "Триває перерва"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1136
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Лишилося %s перерви"
+msgstr[1] "Лишилося %s перерви"
+msgstr[2] "Лишилося %s перерви"
+msgstr[3] "Лишилося %s перерви"
 
 #: js/misc/breakManager.js:1175
 msgid "Time for a Movement Break"
-msgstr ""
+msgstr "Час для рухомої перерви"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1178
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Припиніть користування пристроєм і походіть принаймні %s"
+msgstr[1] "Припиніть користування пристроєм і походіть принаймні %s"
+msgstr[2] "Припиніть користування пристроєм і походіть принаймні %s"
+msgstr[3] "Припиніть користування пристроєм і походіть принаймні %s"
 
 #: js/misc/breakManager.js:1184
 msgid "Time for an Eyesight Break"
-msgstr ""
+msgstr "Час для візуальної перерви"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1187
@@ -856,13 +844,21 @@ msgid ""
 msgid_plural ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
 msgstr[0] ""
+"Зробіть перерву — не користуйтеся екраном. Зосередьте погляд на чомусь на "
+"віддалі понад 6 метрів протягом принаймні %s"
 msgstr[1] ""
+"Зробіть перерву — не користуйтеся екраном. Зосередьте погляд на чомусь на "
+"віддалі понад 6 метрів протягом принаймні %s"
 msgstr[2] ""
+"Зробіть перерву — не користуйтеся екраном. Зосередьте погляд на чомусь на "
+"віддалі понад 6 метрів протягом принаймні %s"
 msgstr[3] ""
+"Зробіть перерву — не користуйтеся екраном. Зосередьте погляд на чомусь на "
+"віддалі понад 6 метрів протягом принаймні %s"
 
 #: js/misc/breakManager.js:1193
 msgid "Time for a Break"
-msgstr ""
+msgstr "Час для перерви"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1196
@@ -870,51 +866,53 @@ msgstr ""
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
 msgstr[0] ""
+"Час зробити перерву. Утримайтесь від користування пристроєм протягом %s!"
 msgstr[1] ""
+"Час зробити перерву. Утримайтесь від користування пристроєм протягом %s!"
 msgstr[2] ""
+"Час зробити перерву. Утримайтесь від користування пристроєм протягом %s!"
 msgstr[3] ""
+"Час зробити перерву. Утримайтесь від користування пристроєм протягом %s!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1218
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Вам слід було зробити перерву %s тому"
+msgstr[1] "Вам слід було зробити перерву %s тому"
+msgstr[2] "Вам слід було зробити перерву %s тому"
+msgstr[3] "Вам слід було зробити перерву %s тому"
 
 #: js/misc/breakManager.js:1224
 msgid "Break Overdue"
-msgstr ""
+msgstr "Прострочено перерву"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1238
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Вашу перерву буде завершено за %s"
+msgstr[1] "Вашу перерву буде завершено за %s"
+msgstr[2] "Вашу перерву буде завершено за %s"
+msgstr[3] "Вашу перерву буде завершено за %s"
 
 #: js/misc/breakManager.js:1244
 msgid "Break Interrupted"
-msgstr ""
+msgstr "Перерву перервано"
 
 #: js/misc/breakManager.js:1315
 msgid "Delay"
-msgstr ""
+msgstr "Затримка"
 
 #: js/misc/breakManager.js:1336 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Пропустити"
 
 #: js/misc/breakManager.js:1357
-#, fuzzy
-#| msgid "Take Tour"
 msgid "Take"
-msgstr "Здійснити тур"
+msgstr "Взяти"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
@@ -922,10 +920,10 @@ msgstr "Здійснити тур"
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Перерва за %d секунду"
+msgstr[1] "Перерва за %d секунди"
+msgstr[2] "Перерва за %d секунд"
+msgstr[3] "Перерва за %d секунду"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:91
@@ -1028,22 +1026,22 @@ msgstr "Заблокувати обертання екрана"
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Граничного часу роботи за дисплеєм буде досягнуто за %d хвилину"
+msgstr[1] "Граничного часу роботи за дисплеєм буде досягнуто за %d хвилини"
+msgstr[2] "Граничного часу роботи за дисплеєм буде досягнуто за %d хвилин"
+msgstr[3] "Граничного часу роботи за дисплеєм буде досягнуто за %d хвилину"
 
 #: js/misc/timeLimitsManager.js:1050
 msgid "Your screen time limit is approaching"
-msgstr ""
+msgstr "Наближається граничний час роботи за дисплеєм"
 
 #: js/misc/timeLimitsManager.js:1064
 msgid "Screen Time Limit Reached"
-msgstr ""
+msgstr "Досягнуто граничного часу роботи за дисплеєм"
 
 #: js/misc/timeLimitsManager.js:1065
 msgid "It’s time to stop using the device"
-msgstr ""
+msgstr "Час припинити користування пристроєм"
 
 #: js/misc/util.js:130
 msgid "Command not found"
@@ -1665,19 +1663,19 @@ msgstr "Завершити сеанс"
 #, javascript-format
 msgid "%s will be logged out automatically in %d second"
 msgid_plural "%s will be logged out automatically in %d seconds"
-msgstr[0] "%s вийде автоматично за %d секунду"
-msgstr[1] "%s вийде автоматично за %d секунди"
-msgstr[2] "%s вийде автоматично за %d секунд"
-msgstr[3] "%s вийде автоматично за %d секунду"
+msgstr[0] "%s вийде автоматично через %d секунду"
+msgstr[1] "%s вийде автоматично через %d секунди"
+msgstr[2] "%s вийде автоматично через %d секунд"
+msgstr[3] "%s вийде автоматично через %d секунду"
 
 #: js/ui/endSessionDialog.js:57
 #, javascript-format
 msgid "You will be logged out automatically in %d second"
 msgid_plural "You will be logged out automatically in %d seconds"
-msgstr[0] "Вихід автоматично за %d секунду"
-msgstr[1] "Вихід автоматично за %d секунди"
-msgstr[2] "Вихід автоматично за %d секунд"
-msgstr[3] "Вихід автоматично за %d секунду"
+msgstr[0] "Вихід автоматично через %d секунду"
+msgstr[1] "Вихід автоматично через %d секунди"
+msgstr[2] "Вихід автоматично через %d секунд"
+msgstr[3] "Вихід автоматично через %d секунду"
 
 #: js/ui/endSessionDialog.js:64
 msgctxt "button"
@@ -1698,10 +1696,10 @@ msgstr "Установити оновлення і вимкнути"
 #, javascript-format
 msgid "The system will power off automatically in %d second"
 msgid_plural "The system will power off automatically in %d seconds"
-msgstr[0] "Система автоматично вимкнеться за %d секунду"
-msgstr[1] "Система автоматично вимкнеться за %d секунди"
-msgstr[2] "Система автоматично вимкнеться за %d секунд"
-msgstr[3] "Система автоматично вимкнеться за %d секунду"
+msgstr[0] "Система автоматично вимкнеться через %d секунду"
+msgstr[1] "Система автоматично вимкнеться через %d секунди"
+msgstr[2] "Система автоматично вимкнеться через %d секунд"
+msgstr[3] "Система автоматично вимкнеться через %d секунду"
 
 #: js/ui/endSessionDialog.js:78 js/ui/endSessionDialog.js:97
 msgctxt "checkbox"
@@ -1727,10 +1725,10 @@ msgstr "Установити оновлення і перезапустити"
 #, javascript-format
 msgid "The system will restart automatically in %d second"
 msgid_plural "The system will restart automatically in %d seconds"
-msgstr[0] "Система автоматично перезапуститься за %d секунду"
-msgstr[1] "Система автоматично перезапуститься за %d секунди"
-msgstr[2] "Система автоматично перезапуститься за %d секунд"
-msgstr[3] "Система автоматично перезапуститься за %d секунду"
+msgstr[0] "Система автоматично перезапуститься через %d секунду"
+msgstr[1] "Система автоматично перезапуститься через %d секунди"
+msgstr[2] "Система автоматично перезапуститься через %d секунд"
+msgstr[3] "Система автоматично перезапуститься через %d секунду"
 
 #: js/ui/endSessionDialog.js:101
 msgctxt "button"
@@ -1748,13 +1746,13 @@ msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds"
 msgstr[0] ""
-"Система автоматично перезапуститься та встановить оновлення за %d секунду"
+"Система автоматично перезапуститься та встановить оновлення через %d секунду"
 msgstr[1] ""
-"Система автоматично перезапуститься та встановить оновлення за %d секунди"
+"Система автоматично перезапуститься та встановить оновлення через %d секунди"
 msgstr[2] ""
-"Система автоматично перезапуститься та встановить оновлення за %d секунд"
+"Система автоматично перезапуститься та встановить оновлення через %d секунд"
 msgstr[3] ""
-"Система автоматично перезапуститься та встановить оновлення за %d секунду"
+"Система автоматично перезапуститься та встановить оновлення через %d секунду"
 
 #: js/ui/endSessionDialog.js:119 js/ui/endSessionDialog.js:140
 msgctxt "button"
@@ -2848,10 +2846,10 @@ msgstr "Зберегти зміни"
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
-msgstr[0] "Зміни параметрів буде повернуто за %d секунду"
-msgstr[1] "Зміни параметрів буде повернуто за %d секунди"
-msgstr[2] "Зміни параметрів буде повернуто за %d секунд"
-msgstr[3] "Зміни параметрів буде повернуто за %d секунду"
+msgstr[0] "Зміни параметрів буде повернуто через %d секунду"
+msgstr[1] "Зміни параметрів буде повернуто через %d секунди"
+msgstr[2] "Зміни параметрів буде повернуто через %d секунд"
+msgstr[3] "Зміни параметрів буде повернуто через %d секунду"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
@@ -2862,8 +2860,6 @@ msgstr "%d × %d"
 
 #. Translators: entry in the window right click menu.
 #: js/ui/windowMenu.js:28
-#, fuzzy
-#| msgid "Take Screenshot"
 msgctxt "window-menu"
 msgid "Take Screenshot"
 msgstr "Зробити знімок"
