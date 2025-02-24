@@ -82,9 +82,8 @@ class QrCode extends St.Bin {
 
     async update() {
         const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
-        this.set_size(
-            this._iconSize * scaleFactor,
-            this._iconSize * scaleFactor);
+        const iconSize = this._iconSize * scaleFactor;
+        this.set_size(iconSize, iconSize);
 
         this._cancellable?.cancel();
         const cancellable = new Gio.Cancellable();
@@ -96,7 +95,7 @@ class QrCode extends St.Bin {
         try {
             this._cancellable = cancellable;
             this.child.gicon = await this._qrCodeGenerator.generate_qr_code(
-                this._url, this._iconSize, this._iconSize,
+                this._url, iconSize, iconSize,
                 this._bgColor, this._fgColor, cancellable);
         } catch (e) {
             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
