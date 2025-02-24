@@ -24,7 +24,7 @@ import * as SystemActions from '../misc/systemActions.js';
 
 import * as Main from './main.js';
 
-import {UTILITIES_FOLDER_APPS} from '../misc/config.js';
+import * as Config from '../misc/config.js';
 
 const MENU_POPUP_TIMEOUT = 600;
 const POPDOWN_DIALOG_TIMEOUT = 500;
@@ -59,9 +59,13 @@ const DIALOG_SHADE_NORMAL = new Cogl.Color({red: 0, green: 0, blue: 0, alpha: 20
 const DIALOG_SHADE_HIGHLIGHT = new Cogl.Color({red: 0, green: 0, blue: 0, alpha: 85});
 
 const DEFAULT_FOLDERS = {
+    'System': {
+        name: 'X-GNOME-Shell-System.directory',
+        apps: Config.SYSTEM_FOLDER_APPS,
+    },
     'Utilities': {
         name: 'X-GNOME-Shell-Utilities.directory',
-        apps: UTILITIES_FOLDER_APPS,
+        apps: Config.UTILITIES_FOLDER_APPS,
     },
     'YaST': {
         name: 'suse-yast.directory',

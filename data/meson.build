@@ -32,15 +32,20 @@ foreach desktop_file : desktop_files
   )
 endforeach
 
-desktop_directory = 'X-GNOME-Shell-Utilities.directory'
-i18n.merge_file(
-  input: f'@desktop_directory@.desktop.in',
-  output: desktop_directory,
-  po_dir: po_dir,
-  install: true,
-  install_dir: join_paths(datadir, 'desktop-directories'),
-  type: 'desktop',
-)
+desktop_directories = [
+  'X-GNOME-Shell-Utilities.directory',
+  'X-GNOME-Shell-System.directory',
+]
+foreach desktop_directory : desktop_directories
+  i18n.merge_file(
+    input: f'@desktop_directory@.desktop.in',
+    output: desktop_directory,
+    po_dir: po_dir,
+    install: true,
+    install_dir: join_paths(datadir, 'desktop-directories'),
+    type: 'desktop',
+  )
+endforeach
 
 serviceconf = configuration_data()
 serviceconf.set('libexecdir', libexecdir)

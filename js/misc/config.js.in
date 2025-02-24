@@ -22,3 +22,4 @@ export const HAVE_BLUETOOTH = pkg.checkSymbol('GnomeBluetooth', '3.0',
     'Client.default_adapter_state');
 
 export const UTILITIES_FOLDER_APPS = @UTILS_FOLDER_APPS@;
+export const SYSTEM_FOLDER_APPS = @SYSTEM_FOLDER_APPS@;

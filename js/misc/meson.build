@@ -9,6 +9,10 @@ jsconf.set('UTILS_FOLDER_APPS', run_command(
   generate_app_list, '../../data/default-apps/utilities-folder.txt',
   check: true,
 ).stdout())
+jsconf.set('SYSTEM_FOLDER_APPS', run_command(
+  generate_app_list, '../../data/default-apps/system-folder.txt',
+  check: true,
+).stdout())
 jsconf.set('datadir', datadir)
 jsconf.set('libexecdir', libexecdir)
 

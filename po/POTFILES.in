@@ -7,6 +7,7 @@ data/org.gnome.Shell.desktop.in.in
 data/org.gnome.shell.gschema.xml.in
 data/org.gnome.Shell.Extensions.desktop.in.in
 data/org.gnome.Shell.PortalHelper.desktop.in.in
+data/X-GNOME-Shell-System.directory.desktop.in
 data/X-GNOME-Shell-Utilities.directory.desktop.in
 js/dbusServices/extensions/ui/extension-error-page.ui
 js/gdm/authPrompt.js
