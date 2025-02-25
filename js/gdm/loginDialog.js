@@ -454,7 +454,7 @@ export const LoginDialog = GObject.registerClass({
         this._authPrompt = new AuthPrompt.AuthPrompt(this._gdmClient, AuthPrompt.AuthPromptMode.UNLOCK_OR_LOG_IN);
         this._authPrompt.connect('prompted', this._onPrompted.bind(this));
         this._authPrompt.connect('reset', this._onReset.bind(this));
-        this._authPrompt.connect('mechanisms-changed', this._onMechanismsChanged.bind(this));
+        this._authPrompt.connect('mechanisms-changed', (...args) => this._onMechanismsChanged(...args));
         this._authPrompt.hide();
         this.add_child(this._authPrompt);
 

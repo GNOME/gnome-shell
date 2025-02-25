@@ -82,8 +82,8 @@ export const AuthPrompt = GObject.registerClass({
         this._userVerifier.connect('ask-question', this._onAskQuestion.bind(this));
         this._userVerifier.connect('show-message', this._onShowMessage.bind(this));
         this._userVerifier.connect('show-choice-list', this._onShowChoiceList.bind(this));
-        this._userVerifier.connect('mechanisms-list-changed', this._onAuthMechanismsListChanged.bind(this));
-        this._userVerifier.connect('foreground-mechanism-changed', this._onForegroundMechanismChanged.bind(this));
+        this._userVerifier.connect('mechanisms-list-changed', (...args) => this._onAuthMechanismsListChanged(...args));
+        this._userVerifier.connect('foreground-mechanism-changed', (...args) => this._onForegroundMechanismChanged(...args));
         this._userVerifier.connect('web-login', this._onWebLogin.bind(this));
         this._userVerifier.connect('web-login-time-out', this._onWebLoginTimeOut.bind(this));
         this._userVerifier.connect('verification-failed', this._onVerificationFailed.bind(this));
