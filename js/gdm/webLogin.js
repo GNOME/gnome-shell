@@ -244,7 +244,7 @@ export const WebLoginDialog = GObject.registerClass({
             action: () => this.cancel(),
             label: _('Cancel'),
             key: Clutter.KEY_Escape,
-            any: !buttons?.some(b => b.default),
+            default: !buttons?.some(b => b.default),
         });
 
         buttons?.forEach(b => {
