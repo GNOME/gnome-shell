@@ -252,7 +252,7 @@ export const WebLoginDialog = GObject.registerClass({
         this.clearButtons();
 
         this._cancelButton = this.addButton({
-            action: this.cancel.bind(this),
+            action: () => this.cancel(),
             label: _('Cancel'),
             key: Clutter.KEY_Escape,
         });
