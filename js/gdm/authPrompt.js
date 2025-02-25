@@ -81,11 +81,13 @@ export const AuthPrompt = GObject.registerClass({
 
         this._userVerifier.connect('ask-question', this._onAskQuestion.bind(this));
         this._userVerifier.connect('show-message', this._onShowMessage.bind(this));
+        this._userVerifier.connect('show-failed-notification', () => this.showLoginFailedNotification());
         this._userVerifier.connect('show-choice-list', this._onShowChoiceList.bind(this));
         this._userVerifier.connect('mechanisms-list-changed', (...args) => this._onAuthMechanismsListChanged(...args));
         this._userVerifier.connect('foreground-mechanism-changed', (...args) => this._onForegroundMechanismChanged(...args));
         this._userVerifier.connect('web-login', (...args) => this._onWebLogin(...args));
         this._userVerifier.connect('web-login-time-out', (_, serviceName) => this._onWebLoginTimeOut(serviceName));
+        this._userVerifier.connect('web-login-close', () => this._closeWebLoginDialog());
         this._userVerifier.connect('verification-failed', this._onVerificationFailed.bind(this));
         this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
         this._userVerifier.connect('reset', this._onReset.bind(this));
@@ -408,7 +410,7 @@ export const AuthPrompt = GObject.registerClass({
         this.emit('mechanisms-changed', serviceName);
     }
 
-    _onWebLogin(userVerifier, serviceName, introMessage, linkMessage, uri, code) {
+    _onWebLogin(userVerifier, serviceName, introMessage, linkMessage, uri, code, buttons) {
         const introAlreadyUp = this._queryingService === serviceName;
 
         if (this._queryingService)
@@ -435,14 +437,16 @@ export const AuthPrompt = GObject.registerClass({
                 if (this._webLoginTimedOut)
                     this._refreshWebLogin(serviceName);
                 else
-                    this._openWebLoginDialog(userVerifier, serviceName, linkMessage, uri, code);
+                    this._openWebLoginDialog(userVerifier, serviceName,
+                        linkMessage, uri, code, buttons);
             });
             this._webLoginPromptWell.add_child(this._webLoginIntro);
             this._webLoginPromptWell.visible = true;
 
             this.updateSensitivity(true);
         } else {
-            this._openWebLoginDialog(userVerifier, serviceName, linkMessage, uri, code);
+            this._openWebLoginDialog(userVerifier, serviceName, linkMessage,
+                    uri, code, buttons);
         }
 
         this._webLoginTimedOut = false;
@@ -473,7 +477,7 @@ export const AuthPrompt = GObject.registerClass({
         this._webLoginDialog = null;
     }
 
-    _openWebLoginDialog(userVerifier, serviceName, message, url, code) {
+    _openWebLoginDialog(userVerifier, serviceName, message, url, code, buttons) {
         if (this._queryingService)
             this.clear();
 
@@ -483,25 +487,11 @@ export const AuthPrompt = GObject.registerClass({
 
         this._webLoginPromptWell.remove_all_children();
 
-        this._webLoginDialog = new WebLogin.WebLoginDialog({message, url, code});
+        this._webLoginDialog = new WebLogin.WebLoginDialog({message, url, code, buttons});
         this._webLoginDialog.open(global.get_current_time());
         this._webLoginDialog.connect('cancel', () => {
             if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
                 this.reset();
-        });
-        this._webLoginDialog.connect('done', () => {
-            userVerifier.connectObject(
-                `service-request::${serviceName}`, this._closeWebLoginDialog.bind(this),
-
-                'verification-complete', this._closeWebLoginDialog.bind(this),
-
-                'verification-failed', () => {
-                    this._closeWebLoginDialog();
-                    this.showLoginFailedNotification();
-                    this.reset();
-                },
-                this);
-            userVerifier.webLoginDone(serviceName);
         });
 
         if (this._spinner)

@@ -185,7 +185,6 @@ class WebLoginPrompt extends St.BoxLayout {
 export const WebLoginDialog = GObject.registerClass({
     Signals: {
         'cancel': {},
-        'done': {},
     },
 }, class WebLoginDialog extends ModalDialog.ModalDialog {
     _init(params) {
@@ -193,6 +192,7 @@ export const WebLoginDialog = GObject.registerClass({
             message: null,
             url: null,
             code: null,
+            buttons: [],
         });
 
         super._init({
@@ -208,7 +208,7 @@ export const WebLoginDialog = GObject.registerClass({
         this.contentLayout.reactive = false;
         this.contentLayout.can_focus = false;
         this.contentLayout.add_child(this._webLoginPrompt);
-        this._updateButtons();
+        this._updateButtons(params.buttons);
 
         this._contentOverlay = new St.Widget({
             layout_manager: new Clutter.BinLayout(),
@@ -237,30 +237,34 @@ export const WebLoginDialog = GObject.registerClass({
         this._spinnerFrame.add_child(this._spinner);
     }
 
-    done() {
-        this._doneButton.reactive = false;
-        this._doneButton.can_focus = false;
-
-        this._contentOverlay.show();
-        global.stage.set_key_focus(this.dialogLayout);
-        this._spinner.play();
-
-        this.emit('done');
-    }
-
-    _updateButtons() {
+    _updateButtons(buttons) {
         this.clearButtons();
 
         this._cancelButton = this.addButton({
             action: () => this.cancel(),
             label: _('Cancel'),
             key: Clutter.KEY_Escape,
+            any: !buttons?.some(b => b.default),
         });
 
-        this._doneButton = this.addButton({
-            action: this.done.bind(this),
-            default: true,
-            label: _('Done'),
+        buttons?.forEach(b => {
+            let button;
+
+            if (b.needsLoading) {
+                const { action } = b;
+                b.action = () => {
+                    button.reactive = false;
+                    button.canFocus = false;
+
+                    this._contentOverlay.show();
+                    global.stage.set_key_focus(this.dialogLayout);
+                    this._spinner.play();
+
+                    action();
+                }
+            }
+
+            button = this.addButton(b);
         });
     }
 

@@ -1017,10 +1017,15 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         if (!mechanisms)
             return;
 
-        if (!mechanisms[mechanismId])
+        const mechanism = mechanisms[mechanismId];
+        if (!mechanism)
             return;
 
-        const {init_prompt: initPrompt, link_prompt: linkPrompt, uri, code, role, timeout} = mechanisms[mechanismId];
+        const {
+            init_prompt: initPrompt,
+            link_prompt: linkPrompt,
+            uri, code, role, timeout,
+        } = mechanism;
 
         if (!linkPrompt || !uri)
             return;
@@ -1034,8 +1039,45 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 });
         }
 
+        // FIXME: This must only happen when using the `AUTH_MECHANISM_PROTOCOL`
+        // so it should be handled in the specific protocol implementation.
+        let buttons = mechanism.buttons;
+        if (!buttons) {
+            buttons = [{
+                action: () => {
+                    const trackerObject = {};
+
+                    this.connectObject(
+                        `service-request::${serviceName}`, () => {
+                            this.disconnectObject(trackerObject);
+                            this.emit('web-login-close');
+                        },
+
+                        'verification-complete', () => {
+                            this.disconnectObject(trackerObject);
+                            this.emit('web-login-close');
+                        },
+
+                        'verification-failed', () => {
+                            this.disconnectObject(trackerObject);
+                            this.emit('web-login-close');
+                            this.emit('show-failed-notification');
+                            this.emit('reset');
+                        },
+                        trackerObject);
+
+                    this._clearWebLoginTimeout();
+                    this._replyWithAuthSelectionResponse(serviceName,
+                        WEB_LOGIN_ROLE_NAME, {});
+                },
+                default: true,
+                needsLoading: true,
+                label: _('Done'),
+            }];
+        }
+
         this._pendingMechanisms.set(role, mechanismId);
-        this.emit('web-login', serviceName, initPrompt, linkPrompt, uri, code);
+        this.emit('web-login', serviceName, initPrompt, linkPrompt, uri, code, buttons);
     }
 
     _clearWebLoginTimeout() {
@@ -1043,11 +1085,6 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             GLib.source_remove(this._webLoginTimeoutId);
             this._webLoginTimeoutId = 0;
         }
-    }
-
-    webLoginDone(serviceName) {
-        this._clearWebLoginTimeout();
-        this._replyWithAuthSelectionResponse(serviceName, WEB_LOGIN_ROLE_NAME, {});
     }
 
     _filterAuthMechanisms(mechanismsList, filterFunc) {
