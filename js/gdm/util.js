@@ -595,7 +595,6 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             'org.gnome.DisplayManager.SessionWorker.Error.ServiceUnavailable') {
             this._unavailableServices.add(serviceName);
             this._updateDefaultService();
-            return;
         }
     }
 
