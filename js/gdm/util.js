@@ -967,30 +967,22 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _startPasswordLogin(serviceName, mechanismId) {
-        const mechanisms = this._publishedMechanisms.get(serviceName);
-
-        if (!mechanisms)
+        const mechanism = this._getPublishedMechanismById(serviceName, mechanismId);
+        if (!mechanism)
             return;
 
-        if (!mechanisms[mechanismId])
-            return;
-
-        const {prompt, role} = mechanisms[mechanismId];
+        const {prompt, role} = mechanism;
 
         this._pendingMechanisms.set(role, mechanismId);
         this.emit('ask-question', serviceName, prompt, true);
     }
 
     _startSmartcardLogin(serviceName, mechanismId) {
-        const mechanisms = this._publishedMechanisms.get(serviceName);
-
-        if (!mechanisms)
+        const mechanism = this._getPublishedMechanismById(serviceName, mechanismId);
+        if (!mechanism)
             return;
 
-        if (!mechanisms[mechanismId])
-            return;
-
-        const {pin_prompt, init_instruction, role} = mechanisms[mechanismId];
+        const {pin_prompt, init_instruction, role} = mechanism;
 
         this._pendingMechanisms.set(role, mechanismId);
         this.emit('ask-question', serviceName, pin_prompt, true);
@@ -1011,12 +1003,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _startWebLogin(serviceName, mechanismId) {
-        const mechanisms = this._publishedMechanisms.get(serviceName);
-
-        if (!mechanisms)
-            return;
-
-        const mechanism = mechanisms[mechanismId];
+        const mechanism = this._getPublishedMechanismById(serviceName, mechanismId);
         if (!mechanism)
             return;
 
@@ -1157,6 +1144,15 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._publishedMechanisms.set(serviceName, mechanisms);
 
         this.emit('mechanisms-list-changed', serviceName, mechanismsList);
+    }
+
+    _getPublishedMechanismById(serviceName, mechanismId) {
+        const mechanisms = this._publishedMechanisms.get(serviceName);
+
+        if (!mechanisms)
+            return;
+
+        return mechanisms[mechanismId] ?? null;
     }
 
     _handleAuthMechanismsRequest(serviceName, requestObject) {
