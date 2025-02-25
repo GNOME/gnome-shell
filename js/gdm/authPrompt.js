@@ -89,7 +89,7 @@ export const AuthPrompt = GObject.registerClass({
         this._userVerifier.connect('verification-failed', this._onVerificationFailed.bind(this));
         this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
         this._userVerifier.connect('reset', this._onReset.bind(this));
-        this._userVerifier.connect('select-smartcard-certificate', this._onSelectSmartcardCertificate.bind(this));
+        this._userVerifier.connect('select-smartcard-certificate', (...args) => this._onSelectSmartcardCertificate(...args));
         this._userVerifier.connect('smartcard-status-changed', this._onSmartcardStatusChanged.bind(this));
         this._userVerifier.connect('credential-manager-authenticated', this._onCredentialManagerAuthenticated.bind(this));
         this.smartcardDetected = this._userVerifier.smartcardDetected;
