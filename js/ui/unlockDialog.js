@@ -775,7 +775,7 @@ export const UnlockDialog = GObject.registerClass({
             this._authPrompt.connect('failed', this._fail.bind(this));
             this._authPrompt.connect('cancelled', this._fail.bind(this));
             this._authPrompt.connect('reset', this._onReset.bind(this));
-            this._authPrompt.connect('mechanisms-changed', this._onMechanismsChanged.bind(this));
+            this._authPrompt.connect('mechanisms-changed', (...args) => this._onMechanismsChanged(...args));
             this._promptBox.add_child(this._authPrompt);
         }
 
