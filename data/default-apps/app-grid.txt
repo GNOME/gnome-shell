@@ -7,7 +7,7 @@ org.gnome.Music.desktop
 org.gnome.SimpleScan.desktop
 org.gnome.Settings.desktop
 org.gnome.Boxes.desktop
-org.gnome.Totem.desktop
+org.gnome.Showtime.desktop
 org.gnome.Snapshot.desktop
 org.gnome.Characters.desktop
 Utilities # folder
