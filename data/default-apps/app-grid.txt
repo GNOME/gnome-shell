@@ -12,6 +12,6 @@ org.gnome.Snapshot.desktop
 org.gnome.Characters.desktop
 Utilities # folder
 System # folder
-org.gnome.Console
-org.gnome.Tour
+org.gnome.Console.desktop
+org.gnome.Tour.desktop
 yelp.desktop
