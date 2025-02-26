@@ -895,9 +895,23 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             [SMARTCARD_ROLE_NAME]: this._startSmartcardLogin,
         };
 
-        const handler = roleHandlers[mechanism.role];
-        if (handler)
-            handler.call(this, mechanism.serviceName, mechanism.id);
+        const { serviceName, role, id: mechanismId } = mechanism;
+        const publishedMechanism = this._getPublishedMechanismById(
+            serviceName, mechanismId);
+        if (!publishedMechanism)
+            return;
+
+        const handler = roleHandlers[role];
+        if (!handler)
+            return;
+
+        try {
+            this._pendingMechanisms.set(role, mechanismId);
+            handler.call(this, serviceName, publishedMechanism);
+        } catch (e) {
+            this._pendingMechanisms.delete(role);
+            logError(e);
+        }
     }
 
     _shouldStartBackgroundService(serviceName) {
@@ -966,25 +980,15 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this.emit('show-choice-list', serviceName, promptMessage, list.deepUnpack());
     }
 
-    _startPasswordLogin(serviceName, mechanismId) {
-        const mechanism = this._getPublishedMechanismById(serviceName, mechanismId);
-        if (!mechanism)
-            return;
-
+    _startPasswordLogin(serviceName, mechanism) {
         const {prompt, role} = mechanism;
 
-        this._pendingMechanisms.set(role, mechanismId);
         this.emit('ask-question', serviceName, prompt, true);
     }
 
-    _startSmartcardLogin(serviceName, mechanismId) {
-        const mechanism = this._getPublishedMechanismById(serviceName, mechanismId);
-        if (!mechanism)
-            return;
-
+    _startSmartcardLogin(serviceName, mechanism) {
         const {pin_prompt, init_instruction, role} = mechanism;
 
-        this._pendingMechanisms.set(role, mechanismId);
         this.emit('ask-question', serviceName, pin_prompt, true);
     }
 
@@ -1002,11 +1006,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         await this.replyWithJSON(serviceName, JSON.stringify(reply));
     }
 
-    _startWebLogin(serviceName, mechanismId) {
-        const mechanism = this._getPublishedMechanismById(serviceName, mechanismId);
-        if (!mechanism)
-            return;
-
+    _startWebLogin(serviceName, mechanism) {
         const {
             init_prompt: initPrompt,
             link_prompt: linkPrompt,
@@ -1062,7 +1062,6 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             }];
         }
 
-        this._pendingMechanisms.set(role, mechanismId);
         this.emit('web-login', serviceName, initPrompt, linkPrompt, uri, code, buttons);
     }
 
