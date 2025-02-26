@@ -1,7 +1,7 @@
 # Sorted by name as shown in menus, not filename
 org.gnome.Decibels.desktop                # Audio Player
 org.gnome.Connections.desktop             # Connections
-org.gnome.Evince.desktop                  # Document Viewer
+org.gnome.Papers.desktop                  # Document Viewer
 org.gnome.FileRoller.desktop              # File Roller
 org.gnome.font-viewer.desktop             # Fonts
 org.gnome.Loupe.desktop                   # Image Viewer
