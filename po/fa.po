@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-02-13 20:14+0000\n"
-"PO-Revision-Date: 2025-02-23 20:55+0330\n"
+"POT-Creation-Date: 2025-03-03 15:21+0000\n"
+"PO-Revision-Date: 2025-03-03 18:55+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -119,7 +119,8 @@ msgstr "گرفتن نماگرفتی از یک پنچره"
 msgid "Record a screencast interactively"
 msgstr "ضبط کنش‌پذیر صفحه"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1307
+#: data/50-gnome-shell-system.xml:6 data/X-GNOME-Shell-System.directory.desktop.in:3
+#: js/ui/messageTray.js:1307
 msgid "System"
 msgstr "سامانه"
 
@@ -552,16 +553,16 @@ msgid "Visit extension homepage"
 msgstr "مشاهدهٔ صفحهٔ خانگی افزونه"
 
 #: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468 js/ui/audioDeviceSelection.js:60
-#: js/ui/components/networkAgent.js:113 js/ui/components/polkitAgent.js:144
+#: js/ui/components/networkAgent.js:114 js/ui/components/polkitAgent.js:144
 #: js/ui/endSessionDialog.js:437 js/ui/extensionDownloader.js:276
 #: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
 msgid "Cancel"
 msgstr "لغو"
 
-#: js/gdm/authPrompt.js:321 js/ui/components/networkAgent.js:213
-#: js/ui/components/networkAgent.js:233 js/ui/components/networkAgent.js:265
-#: js/ui/components/networkAgent.js:298 js/ui/components/networkAgent.js:337
-#: js/ui/components/networkAgent.js:350 js/ui/components/polkitAgent.js:286
+#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
 #: js/ui/shellMountOperation.js:332
 msgid "Password"
 msgstr "گذرواژه"
@@ -637,8 +638,8 @@ msgstr "فهرست نشده؟"
 msgid "(e.g., user or %s)"
 msgstr "(برای مثال، کاربر یا %s)"
 
-#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:257
-#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:326
+#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "نام‌کاربری"
 
@@ -933,22 +934,26 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "قفل چرخش صفحه"
 
-#: js/misc/timeLimitsManager.js:1043
+#: js/misc/timeLimitsManager.js:338
+msgid "GNOME needs to save screen time data"
+msgstr "لازم است گنوم داده‌های زمانی صفحه را ذخیره کند"
+
+#: js/misc/timeLimitsManager.js:1102
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "محدودیت زمان نمایش در %Id دقیقه"
 msgstr[1] "محدودیت زمان نمایش در %Id دقیقه"
 
-#: js/misc/timeLimitsManager.js:1050
+#: js/misc/timeLimitsManager.js:1109
 msgid "Your screen time limit is approaching"
 msgstr "محدودیت زمان نمایشتان نزدیک است"
 
-#: js/misc/timeLimitsManager.js:1064
+#: js/misc/timeLimitsManager.js:1123
 msgid "Screen Time Limit Reached"
 msgstr "رسیدن به محدودیت زمان نمایش"
 
-#: js/misc/timeLimitsManager.js:1065
+#: js/misc/timeLimitsManager.js:1124
 msgid "It’s time to stop using the device"
 msgstr "زمان پایان استفاده از افزاره است"
 
@@ -1119,7 +1124,7 @@ msgstr "رد کردن"
 msgid "Allow"
 msgstr "اجازه دادن"
 
-#: js/ui/appDisplay.js:1758
+#: js/ui/appDisplay.js:1762
 msgid "Unnamed Folder"
 msgstr "پوشهٔ بی‌نام"
 
@@ -1365,73 +1370,73 @@ msgstr "اکنون دیسک می‌تواند استفاده شود"
 msgid "Open with %s"
 msgstr "گشودن با %s"
 
-#: js/ui/components/networkAgent.js:95
+#: js/ui/components/networkAgent.js:96
 msgid "Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr "همچنین می‌توانید با فشردن دکمهٔ WPS روی مسیریابتان وصل شوید"
 
-#: js/ui/components/networkAgent.js:107 js/ui/status/bluetooth.js:246
+#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "اتّصال"
 
-#: js/ui/components/networkAgent.js:222
+#: js/ui/components/networkAgent.js:223
 msgid "Key"
 msgstr "کلید"
 
-#: js/ui/components/networkAgent.js:273 js/ui/components/networkAgent.js:312
+#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
 msgid "Private key password"
 msgstr "گذرواژهٔ کلید خصوصی"
 
-#: js/ui/components/networkAgent.js:306
+#: js/ui/components/networkAgent.js:307
 msgid "Identity"
 msgstr "شناسه"
 
-#: js/ui/components/networkAgent.js:332
+#: js/ui/components/networkAgent.js:333
 msgid "Service"
 msgstr "خدمت"
 
-#: js/ui/components/networkAgent.js:370 js/ui/components/networkAgent.js:406
-#: js/ui/components/networkAgent.js:743 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
 msgid "Authentication required"
 msgstr "نیاز به تأیید هویت است"
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:744
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
 #, javascript-format
 msgid "Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr "برای دسترسی به شبکهٔ بی‌سیم «%s» نیاز به گذرواژه یا کلیدهای رمزنگاری است"
 
-#: js/ui/components/networkAgent.js:375 js/ui/components/networkAgent.js:748
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
 msgstr "تأیید هویت 802.1X سیمی"
 
-#: js/ui/components/networkAgent.js:378
+#: js/ui/components/networkAgent.js:379
 msgid "Network name"
 msgstr "نام شبکه"
 
-#: js/ui/components/networkAgent.js:386 js/ui/components/networkAgent.js:752
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
 msgid "DSL authentication"
 msgstr "تأیید هویت DSL"
 
-#: js/ui/components/networkAgent.js:393 js/ui/components/networkAgent.js:757
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
 msgid "PIN code required"
 msgstr "رمز پین لازم است"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:758
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "رمز پین برای دستگاه پهن‌باند همراه لازم است"
 
-#: js/ui/components/networkAgent.js:396
+#: js/ui/components/networkAgent.js:397
 msgid "PIN"
 msgstr "پین"
 
-#: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:749
-#: js/ui/components/networkAgent.js:753 js/ui/components/networkAgent.js:765
-#: js/ui/components/networkAgent.js:769
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
 #, javascript-format
 msgid "A password is required to connect to “%s”"
 msgstr "برای وصل شدن به «%s» نیاز به گذرواژه است"
 
-#: js/ui/components/networkAgent.js:768
+#: js/ui/components/networkAgent.js:770
 msgid "VPN password"
 msgstr "گذرواژهٔ وی‌پی‌ان"
 
