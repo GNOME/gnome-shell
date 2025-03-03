@@ -1224,9 +1224,9 @@ class BreakNotificationSource extends GObject.Object {
                     title: _('Break Overdue'),
                     body: bodyText,
                     sound: null,
-                    allowDelay: false,
+                    allowDelay: true,
                     allowSkip: false,
-                    allowTake: false,
+                    allowTake: true,
                 });
 
                 this._scheduleUpdateState(updateTimeoutSeconds);
