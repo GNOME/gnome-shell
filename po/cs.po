@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-02-13 20:14+0000\n"
-"PO-Revision-Date: 2025-02-28 23:42+0100\n"
+"POT-Creation-Date: 2025-03-03 17:44+0000\n"
+"PO-Revision-Date: 2025-03-03 21:22+0100\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -131,7 +131,8 @@ msgstr "Pořídit snímek okna"
 msgid "Record a screencast interactively"
 msgstr "Zaznamenat dění na obrazovce interaktivně"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1307
+#: data/50-gnome-shell-system.xml:6
+#: data/X-GNOME-Shell-System.directory.desktop.in:3 js/ui/messageTray.js:1307
 msgid "System"
 msgstr "Systém"
 
@@ -583,17 +584,17 @@ msgid "Visit extension homepage"
 msgstr "Navštívit domovskou stránku rozšíření"
 
 #: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:113
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
 #: js/ui/shellMountOperation.js:392
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: js/gdm/authPrompt.js:321 js/ui/components/networkAgent.js:213
-#: js/ui/components/networkAgent.js:233 js/ui/components/networkAgent.js:265
-#: js/ui/components/networkAgent.js:298 js/ui/components/networkAgent.js:337
-#: js/ui/components/networkAgent.js:350 js/ui/components/polkitAgent.js:286
+#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
 #: js/ui/shellMountOperation.js:332
 msgid "Password"
 msgstr "Heslo"
@@ -674,8 +675,8 @@ msgstr "Nejste na seznamu?"
 msgid "(e.g., user or %s)"
 msgstr "(např. uživatel nebo %s)"
 
-#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:257
-#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:326
+#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Uživatelské jméno"
 
@@ -1005,7 +1006,11 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Zamknout otočení obrazovky"
 
-#: js/misc/timeLimitsManager.js:1043
+#: js/misc/timeLimitsManager.js:338
+msgid "GNOME needs to save screen time data"
+msgstr "GNOME potřebuje uložit údaje o čase stráveném u obrazovky"
+
+#: js/misc/timeLimitsManager.js:1102
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
@@ -1013,15 +1018,15 @@ msgstr[0] "Limit času stráveného u obrazovky za %d minutu"
 msgstr[1] "Limit času stráveného u obrazovky za %d minuty"
 msgstr[2] "Limit času stráveného u obrazovky za %d minut"
 
-#: js/misc/timeLimitsManager.js:1050
+#: js/misc/timeLimitsManager.js:1109
 msgid "Your screen time limit is approaching"
 msgstr "Blíží se váš limit času stráveného u obrazovky"
 
-#: js/misc/timeLimitsManager.js:1064
+#: js/misc/timeLimitsManager.js:1123
 msgid "Screen Time Limit Reached"
 msgstr "Dosažen limit času stráveného u obrazovky"
 
-#: js/misc/timeLimitsManager.js:1065
+#: js/misc/timeLimitsManager.js:1124
 msgid "It’s time to stop using the device"
 msgstr "Je čas přestat zařízení používat"
 
@@ -1188,7 +1193,7 @@ msgstr "Zamítnout"
 msgid "Allow"
 msgstr "Povolit"
 
-#: js/ui/appDisplay.js:1758
+#: js/ui/appDisplay.js:1762
 msgid "Unnamed Folder"
 msgstr "Nepojmenovaná složka"
 
@@ -1434,77 +1439,77 @@ msgstr "Disk lze nyní používat"
 msgid "Open with %s"
 msgstr "Otevřít pomocí %s"
 
-#: js/ui/components/networkAgent.js:95
+#: js/ui/components/networkAgent.js:96
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr ""
 "Případně se můžete připojit zmáčknutím tlačítka „WPS“ na svém směrovači"
 
-#: js/ui/components/networkAgent.js:107 js/ui/status/bluetooth.js:246
+#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "Připojit"
 
-#: js/ui/components/networkAgent.js:222
+#: js/ui/components/networkAgent.js:223
 msgid "Key"
 msgstr "Klíč"
 
-#: js/ui/components/networkAgent.js:273 js/ui/components/networkAgent.js:312
+#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
 msgid "Private key password"
 msgstr "Heslo soukromého klíče"
 
-#: js/ui/components/networkAgent.js:306
+#: js/ui/components/networkAgent.js:307
 msgid "Identity"
 msgstr "Identita"
 
-#: js/ui/components/networkAgent.js:332
+#: js/ui/components/networkAgent.js:333
 msgid "Service"
 msgstr "Služba"
 
-#: js/ui/components/networkAgent.js:370 js/ui/components/networkAgent.js:406
-#: js/ui/components/networkAgent.js:743 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
 msgid "Authentication required"
 msgstr "Vyžaduje ověření"
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:744
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr ""
 "Pro přístup k bezdrátové síti „%s“ jsou vyžadována hesla nebo šifrovací klíče"
 
-#: js/ui/components/networkAgent.js:375 js/ui/components/networkAgent.js:748
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
 msgstr "Ověření připojení po drátu 802.1X"
 
-#: js/ui/components/networkAgent.js:378
+#: js/ui/components/networkAgent.js:379
 msgid "Network name"
 msgstr "Název sítě"
 
-#: js/ui/components/networkAgent.js:386 js/ui/components/networkAgent.js:752
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
 msgid "DSL authentication"
 msgstr "Ověření DSL"
 
-#: js/ui/components/networkAgent.js:393 js/ui/components/networkAgent.js:757
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
 msgid "PIN code required"
 msgstr "Požadován kód PIN"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:758
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Pro mobilní širokopásmové zařízení je vyžadován kód PIN"
 
-#: js/ui/components/networkAgent.js:396
+#: js/ui/components/networkAgent.js:397
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:749
-#: js/ui/components/networkAgent.js:753 js/ui/components/networkAgent.js:765
-#: js/ui/components/networkAgent.js:769
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
 #, javascript-format
 msgid "A password is required to connect to “%s”"
 msgstr "Pro připojení k „%s“ je vyžadováno heslo"
 
-#: js/ui/components/networkAgent.js:768
+#: js/ui/components/networkAgent.js:770
 msgid "VPN password"
 msgstr "Heslo k VPN"
 
@@ -2974,15 +2979,15 @@ msgstr ""
 "Aplikace Rozšíření GNOME umožňuje aktualizaci a nastavení předvoleb "
 "rozšíření a odstranění nebo vypnutí nechtěných rozšíření."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Hlavní okno"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Dostupné aktualizace"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Zobrazení vyhledávání"
 
