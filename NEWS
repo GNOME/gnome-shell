@@ -1,3 +1,29 @@
+48.rc
+=====
+* Fix integer scaling for spinner [Daniel v. V.; !3634]
+* Group notifications by app [Julian; !3012]
+* Fix tracking inactive time for screen time limits [Florian; !3636]
+* Fix occasional stacking glitch during overview transition [Keyu; !3460]
+* Reorganize default dash/grid/folder apps [Florian, Allan; !3642]
+* Handle suspend/resume when tracking screen time [Philip; !3643]
+* Misc. bug fixes and cleanups [Marco, Florian, Sebastian, Daniel R.,
+  Alessandro; !3629, !3630, !3631] !3620, !3637, !3635, !3632, !3616, !3633,
+  !3639, !3649, !3646, !3647, !3651]
+
+Contributors:
+  Alessandro Astone, Allan Day, Florian Müllner, Daniel Rusek, Julian Sparber,
+  Keyu Tao, Marco Trevisan (Treviño), Daniel van Vugt, Sebastian Wick,
+  Philip Withnall
+
+Translators:
+  Cheng-Chia Tseng [zh_TW], Jordi Mas i Hernandez [ca], Sabri Ünal [tr],
+  Jordi Mas [ca], Aurimas Černius [lt], Piotr Drąg [pl], Aefgh Threenine [th],
+  Ekaterine Papava [ka], Andika Triwidada [id], Daniel Rusek [cs],
+  Danial Behzadi [fa], Yuri Chornoivan [uk], Asier Sarasua Garmendia [eu],
+  Yosef Or Boczko [he], twlvnn kraftwerk [bg], Quentin PAGÈS [oc],
+  Luming Zh [zh_CN], Jiri Grönroos [fi], Hugo Carvalho [pt], Fran Dieguez [gl],
+  A S Alam [pa], Brage Fuglseth [nb], Giannis Antypas [el]
+
 48.beta
 =======
 * Fix overlapping tiles in app grid on hover [Sam; !3551]
