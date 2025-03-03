@@ -1,19 +1,18 @@
 # Bulgarian translation of gnome-shell po-file.
-# Copyright (C) 2010, 2011, 2012, 2013, 2014 Free Software Foundation, Inc.
-# Copyright (C) 2015, 2016, 2017 Free Software Foundation, Inc.
-# Copyright (C) 2021, 2022, 2023 Alexander Shopov.
+# Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017 Free Software Foundation, Inc.
+# Copyright (C) 2021, 2022, 2023, 2025 Alexander Shopov.
 # Copyright (C) 2024, 2025 twlvnn kraftwerk.
 # This file is distributed under the same license as the gnome-shell package.
 # Ivaylo Valkov <ivaylo@e-valkov.org>, 2010, 2011, 2012, 2013, 2014.
-# Alexander Shopov <ash@kambanaria.org>, 2012, 2015, 2016, 2017, 2021, 2022, 2023.
+# Alexander Shopov <ash@kambanaria.org>, 2012, 2015, 2016, 2017, 2021, 2022, 2023, 2025.
 # twlvnn kraftwerk <kraft_werk@tutanota.com>, 2024, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-02-24 15:04+0000\n"
-"PO-Revision-Date: 2025-02-24 19:12+0100\n"
+"POT-Creation-Date: 2025-03-03 18:49+0000\n"
+"PO-Revision-Date: 2025-03-03 21:11+0100\n"
 "Last-Translator: twlvnn kraftwerk <kraft_werk@tutanota.com>\n"
 "Language-Team: Bulgarian <dict-notifications@fsa-bg.org>\n"
 "Language: bg\n"
@@ -124,7 +123,8 @@ msgstr "Снимка на прозорец"
 msgid "Record a screencast interactively"
 msgstr "Интерактивен запис на екрана"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1307
+#: data/50-gnome-shell-system.xml:6
+#: data/X-GNOME-Shell-System.directory.desktop.in:3 js/ui/messageTray.js:1307
 msgid "System"
 msgstr "Системни"
 
@@ -585,17 +585,17 @@ msgid "Visit extension homepage"
 msgstr "Към уеб страницата на разширението"
 
 #: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:113
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
 #: js/ui/shellMountOperation.js:392
 msgid "Cancel"
 msgstr "Отказване"
 
-#: js/gdm/authPrompt.js:321 js/ui/components/networkAgent.js:213
-#: js/ui/components/networkAgent.js:233 js/ui/components/networkAgent.js:265
-#: js/ui/components/networkAgent.js:298 js/ui/components/networkAgent.js:337
-#: js/ui/components/networkAgent.js:350 js/ui/components/polkitAgent.js:286
+#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
 #: js/ui/shellMountOperation.js:332
 msgid "Password"
 msgstr "Парола"
@@ -676,8 +676,8 @@ msgstr "Липсва в списъка?"
 msgid "(e.g., user or %s)"
 msgstr "(напр. потребител или %s)"
 
-#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:257
-#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:326
+#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Потребител"
 
@@ -976,22 +976,26 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Завъртане на екрана, когато е заключен"
 
-#: js/misc/timeLimitsManager.js:1043
+#: js/misc/timeLimitsManager.js:338
+msgid "GNOME needs to save screen time data"
+msgstr "GNOME трябва да проследява времето пред екрана"
+
+#: js/misc/timeLimitsManager.js:1102
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "Ограничаване на времето пред екрана след %d минута"
 msgstr[1] "Ограничаване на времето пред екрана след %d минута"
 
-#: js/misc/timeLimitsManager.js:1050
+#: js/misc/timeLimitsManager.js:1109
 msgid "Your screen time limit is approaching"
 msgstr "Вашето ограничение пред екрана наближава"
 
-#: js/misc/timeLimitsManager.js:1064
+#: js/misc/timeLimitsManager.js:1123
 msgid "Screen Time Limit Reached"
 msgstr "Достигнато е ограничението на времето пред екрана"
 
-#: js/misc/timeLimitsManager.js:1065
+#: js/misc/timeLimitsManager.js:1124
 msgid "It’s time to stop using the device"
 msgstr "Време е да спрете да използвате устройството"
 
@@ -1152,7 +1156,7 @@ msgstr "Забраняване"
 msgid "Allow"
 msgstr "Позволяване"
 
-#: js/ui/appDisplay.js:1758
+#: js/ui/appDisplay.js:1762
 msgid "Unnamed Folder"
 msgstr "Папка без име"
 
@@ -1400,38 +1404,38 @@ msgstr "Дискът може вече да се ползва"
 msgid "Open with %s"
 msgstr "Отваряне с „%s“"
 
-#: js/ui/components/networkAgent.js:95
+#: js/ui/components/networkAgent.js:96
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr "Може да се свържете и като натиснете бутона „WPS“ на рутъра"
 
-#: js/ui/components/networkAgent.js:107 js/ui/status/bluetooth.js:246
+#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "Свързване"
 
-#: js/ui/components/networkAgent.js:222
+#: js/ui/components/networkAgent.js:223
 msgid "Key"
 msgstr "Ключ"
 
-#: js/ui/components/networkAgent.js:273 js/ui/components/networkAgent.js:312
+#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
 msgid "Private key password"
 msgstr "Парола за частния ключ"
 
-#: js/ui/components/networkAgent.js:306
+#: js/ui/components/networkAgent.js:307
 msgid "Identity"
 msgstr "Самоличност"
 
-#: js/ui/components/networkAgent.js:332
+#: js/ui/components/networkAgent.js:333
 msgid "Service"
 msgstr "Услуга"
 
-#: js/ui/components/networkAgent.js:370 js/ui/components/networkAgent.js:406
-#: js/ui/components/networkAgent.js:743 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
 msgid "Authentication required"
 msgstr "Изисква се удостоверяване"
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:744
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
@@ -1439,38 +1443,38 @@ msgstr ""
 "За достъп до безжичната мрежа „%s“ са необходими пароли или криптирани "
 "ключове"
 
-#: js/ui/components/networkAgent.js:375 js/ui/components/networkAgent.js:748
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
 msgstr "Жична идентификация 802.1Х"
 
-#: js/ui/components/networkAgent.js:378
+#: js/ui/components/networkAgent.js:379
 msgid "Network name"
 msgstr "Име на мрежа"
 
-#: js/ui/components/networkAgent.js:386 js/ui/components/networkAgent.js:752
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
 msgid "DSL authentication"
 msgstr "Удостоверяване за DSL"
 
-#: js/ui/components/networkAgent.js:393 js/ui/components/networkAgent.js:757
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
 msgid "PIN code required"
 msgstr "Необходим е ПИН"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:758
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Мобилното устройство изисква ПИН"
 
-#: js/ui/components/networkAgent.js:396
+#: js/ui/components/networkAgent.js:397
 msgid "PIN"
 msgstr "ПИН"
 
-#: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:749
-#: js/ui/components/networkAgent.js:753 js/ui/components/networkAgent.js:765
-#: js/ui/components/networkAgent.js:769
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
 #, javascript-format
 msgid "A password is required to connect to “%s”"
 msgstr "За свързване към „%s“ се изисква парола"
 
-#: js/ui/components/networkAgent.js:768
+#: js/ui/components/networkAgent.js:770
 msgid "VPN password"
 msgstr "Парола за ВЧМ"
 
@@ -2925,15 +2929,15 @@ msgstr ""
 "С „Разширенията на GNOME“ може да променяте настройките им, да инсталирате "
 "нови, да деинсталирате или изключвате нежеланите разширения."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Основен прозорец"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Налични обновления"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Изглед за търсене"
 
