@@ -1,3 +1,14 @@
+47.5
+====
+* Fix occasional stacking glitch during overview transition [Keyu; !3460]
+* Misc. bug fixes and cleanups [Florian, Alessandro; !3630, !3646]
+
+Contributors:
+  Alessandro Astone, Florian Müllner, Keyu Tao
+
+Translators:
+  Cheng-Chia Tseng [zh_TW], Aefgh Threenine [th]
+
 47.4
 ====
 * Fix overlapping tiles in app grid on hover [Sam; !3551]
