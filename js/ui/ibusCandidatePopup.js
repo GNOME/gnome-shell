@@ -225,8 +225,8 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
                 this._setDummyCursorGeometry(
                     windowActor.x + rect.x,
                     windowActor.y + rect.y,
-                    rect.w,
-                    rect.h);
+                    rect.width,
+                    rect.height);
             });
         } catch (e) {
             // Only recent IBus versions have support for this signal
