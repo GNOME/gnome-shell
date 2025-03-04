@@ -182,7 +182,7 @@
       &.message-themed-icon {
         border-radius: $forced_circular_radius;
         background-color: transparentize($fg_color, .93);
-        icon-size: $scalable_icon_size;
+        icon-size: $base_icon_size;
         min-width: $base_icon_size * 3;
         min-height: $base_icon_size * 3;
       }
