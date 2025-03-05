@@ -957,7 +957,7 @@ class TimeLimitsDispatcher extends GObject.Object {
                 Main.layoutManager.uiGroup.ease_property(
                     '@effects.desaturate.factor', GRAYSCALE_SATURATION,
                     {
-                        duration: GRAYSCALE_FADE_TIME_SECONDS * 1000 || 0,
+                        duration: GRAYSCALE_FADE_TIME_SECONDS * 1000,
                         mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                     });
             } else {
