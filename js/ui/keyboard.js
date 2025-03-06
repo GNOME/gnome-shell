@@ -227,7 +227,7 @@ const Key = GObject.registerClass({
     },
 }, class Key extends St.BoxLayout {
     _init(params, extendedKeys = []) {
-        const {label, iconName, commitString, keyval} = {keyval: 0, ...params};
+        const {label, iconName, commitString, keyval, hasAction} = {keyval: 0, ...params};
         super._init({style_class: 'key-container'});
 
         this._keyval = parseInt(keyval, 16);
@@ -243,6 +243,7 @@ const Key = GObject.registerClass({
         this._extendedKeyboard = null;
         this._pressTimeoutId = 0;
         this._capturedPress = false;
+        this._hasAction = hasAction;
     }
 
     get iconName() {
@@ -316,8 +317,8 @@ const Key = GObject.registerClass({
                 this.emit('keyval', this._keyval);
             else if (commitString)
                 this.emit('commit', commitString);
-            else
-                console.error('Need keyval or commitString');
+            else if (!this._hasAction)
+                console.error('Need keyval, commitString or an action');
         }
 
         this.emit('released');
@@ -1002,7 +1003,7 @@ const EmojiSelection = GObject.registerClass({
 
         row.appendRow();
 
-        key = new Key({label: 'ABC'}, []);
+        key = new Key({label: 'ABC', hasAction: true}, []);
         key.keyButton.add_style_class_name('default-key');
         key.connect('released', () => this.emit('toggle'));
         row.appendKey(key, 1.5);
@@ -1017,7 +1018,7 @@ const EmojiSelection = GObject.registerClass({
             section.button = key;
         }
 
-        key = new Key({iconName: 'osk-hide-symbolic'});
+        key = new Key({iconName: 'osk-hide-symbolic', hasAction: true});
         key.keyButton.add_style_class_name('default-key');
         key.keyButton.add_style_class_name('hide-key');
         key.connect('released', () => {
@@ -1498,6 +1499,7 @@ export const Keyboard = GObject.registerClass({
                 label: key.label,
                 iconName: key.iconName,
                 keyval: key.keyval,
+                hasAction: !!key.action,
             }, strings);
 
             if (key.action) {
