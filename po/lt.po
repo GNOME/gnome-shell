@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-02-13 20:14+0000\n"
-"PO-Revision-Date: 2025-02-21 22:17+0200\n"
+"POT-Creation-Date: 2025-03-05 12:21+0000\n"
+"PO-Revision-Date: 2025-03-08 22:13+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -124,7 +124,8 @@ msgstr "Padaryti lango nuotrauką"
 msgid "Record a screencast interactively"
 msgstr "Interaktyviai įrašyti ekrano vaizdą"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1307
+#: data/50-gnome-shell-system.xml:6
+#: data/X-GNOME-Shell-System.directory.desktop.in:3 js/ui/messageTray.js:1307
 msgid "System"
 msgstr "Sistema"
 
@@ -583,17 +584,17 @@ msgid "Visit extension homepage"
 msgstr "Aplankyti plėtinio namų tinklalapį"
 
 #: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:113
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
 #: js/ui/shellMountOperation.js:392
 msgid "Cancel"
 msgstr "Atsisakyti"
 
-#: js/gdm/authPrompt.js:321 js/ui/components/networkAgent.js:213
-#: js/ui/components/networkAgent.js:233 js/ui/components/networkAgent.js:265
-#: js/ui/components/networkAgent.js:298 js/ui/components/networkAgent.js:337
-#: js/ui/components/networkAgent.js:350 js/ui/components/polkitAgent.js:286
+#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
 #: js/ui/shellMountOperation.js:332
 msgid "Password"
 msgstr "Slaptažodis"
@@ -674,8 +675,8 @@ msgstr "Nėra sąraše?"
 msgid "(e.g., user or %s)"
 msgstr "(pvz., naudotojas arba %s)"
 
-#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:257
-#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:326
+#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Naudotojo vardas"
 
@@ -707,11 +708,11 @@ msgstr "(arba perbraukite pirštu per skaitytuvą)"
 msgid "(or place finger on reader)"
 msgstr "(arba padėkite pirštą ant skaitytuvo)"
 
-#: js/misc/breakManager.js:764
+#: js/misc/breakManager.js:765
 msgid "Break complete sound"
 msgstr "Pertraukėlės pabaigos garsas"
 
-#: js/misc/breakManager.js:956
+#: js/misc/breakManager.js:982
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
@@ -719,7 +720,7 @@ msgstr[0] "%d sekundė"
 msgstr[1] "%d sekundės"
 msgstr[2] "%d sekundžių"
 
-#: js/misc/breakManager.js:962
+#: js/misc/breakManager.js:988
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
@@ -727,7 +728,7 @@ msgstr[0] "%d minutė"
 msgstr[1] "%d minutės"
 msgstr[2] "%d minučių"
 
-#: js/misc/breakManager.js:968
+#: js/misc/breakManager.js:994
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -735,7 +736,7 @@ msgstr[0] "%d valanda"
 msgstr[1] "%d valandos"
 msgstr[2] "%d valandų"
 
-#: js/misc/breakManager.js:974
+#: js/misc/breakManager.js:1000
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -744,7 +745,7 @@ msgstr[1] "%d dienos"
 msgstr[2] "Prieš %d dienų"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1057
+#: js/misc/breakManager.js:1083
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
@@ -752,24 +753,24 @@ msgstr[0] "Pertraukėlė po %s"
 msgstr[1] "Pertraukėlė po %s"
 msgstr[2] "Pertraukėlė po %s"
 
-#: js/misc/breakManager.js:1065
+#: js/misc/breakManager.js:1091
 msgid "Movement Break Soon"
 msgstr "Greitai reikės pajudėti"
 
-#: js/misc/breakManager.js:1068
+#: js/misc/breakManager.js:1094
 msgid "Eyesight Break Soon"
 msgstr "Greitai pertraukėlė akims"
 
-#: js/misc/breakManager.js:1071
+#: js/misc/breakManager.js:1097
 msgid "Break Soon"
 msgstr "Greitai pertraukėlė"
 
-#: js/misc/breakManager.js:1115
+#: js/misc/breakManager.js:1141
 msgid "Movement Break in Progress"
 msgstr "Dabar pajudėjimo pertraukėlė"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1118
+#: js/misc/breakManager.js:1144
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
@@ -777,12 +778,12 @@ msgstr[0] "Judėkite toliau dar %s"
 msgstr[1] "Judėkite toliau dar %s"
 msgstr[2] "Judėkite toliau dar %s"
 
-#: js/misc/breakManager.js:1124
+#: js/misc/breakManager.js:1150
 msgid "Eyesight Break in Progress"
 msgstr "Dabar pertraukėlė akims"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1127
+#: js/misc/breakManager.js:1153
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
@@ -790,12 +791,12 @@ msgstr[0] "Žiūrėkite kitur dar %s"
 msgstr[1] "Žiūrėkite kitur dar %s"
 msgstr[2] "Žiūrėkite kitur dar %s"
 
-#: js/misc/breakManager.js:1133
+#: js/misc/breakManager.js:1159
 msgid "Break in Progress"
 msgstr "Dabar pertraukėlė"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1136
+#: js/misc/breakManager.js:1162
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
@@ -803,12 +804,12 @@ msgstr[0] "Pertraukėlei liko %s"
 msgstr[1] "Pertraukėlei liko %s"
 msgstr[2] "Pertraukėlei liko %s"
 
-#: js/misc/breakManager.js:1175
+#: js/misc/breakManager.js:1201
 msgid "Time for a Movement Break"
 msgstr "Laikas pajudėjimo pertraukėlei"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1178
+#: js/misc/breakManager.js:1204
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
@@ -816,12 +817,12 @@ msgstr[0] "Atsitraukite, pertraukėlės laikas: %s"
 msgstr[1] "Atsitraukite, pertraukėlės laikas: %s"
 msgstr[2] "Atsitraukite, pertraukėlės laikas: %s"
 
-#: js/misc/breakManager.js:1184
+#: js/misc/breakManager.js:1210
 msgid "Time for an Eyesight Break"
 msgstr "Laikas akių pertraukėlei"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1187
+#: js/misc/breakManager.js:1213
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -831,21 +832,21 @@ msgstr[0] "Pertraukėlė nuo ekrano. Žiūrėkite bent 6 metrų atstumu, laikas:
 msgstr[1] "Pertraukėlė nuo ekrano. Žiūrėkite bent 6 metrų atstumu, laikas: %s"
 msgstr[2] "Pertraukėlė nuo ekrano. Žiūrėkite bent 6 metrų atstumu, laikas: %s"
 
-#: js/misc/breakManager.js:1193
+#: js/misc/breakManager.js:1219
 msgid "Time for a Break"
 msgstr "Laikas pertraukėlei"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1196
+#: js/misc/breakManager.js:1222
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
-msgstr[0] "Laikas pertraukėlei. Atsitraukite nuo įrenginio, laikas: %s"
-msgstr[1] "Laikas pertraukėlei. Atsitraukite nuo įrenginio, laikas: %s"
-msgstr[2] "Laikas pertraukėlei. Atsitraukite nuo įrenginio, laikas: %s"
+msgstr[0] "Laikas pertraukėlei. Atsitraukite nuo įrenginio, laikas: %s!"
+msgstr[1] "Laikas pertraukėlei. Atsitraukite nuo įrenginio, laikas: %s!"
+msgstr[2] "Laikas pertraukėlei. Atsitraukite nuo įrenginio, laikas: %s!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1218
+#: js/misc/breakManager.js:1244
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
@@ -853,12 +854,12 @@ msgstr[0] "Reikėjo padaryti pertraukėlę prieš %s"
 msgstr[1] "Reikėjo padaryti pertraukėlę prieš %s"
 msgstr[2] "Reikėjo padaryti pertraukėlę prieš %s"
 
-#: js/misc/breakManager.js:1224
+#: js/misc/breakManager.js:1250
 msgid "Break Overdue"
 msgstr "Pavėluota pertraukėlė"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1238
+#: js/misc/breakManager.js:1264
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
@@ -866,25 +867,25 @@ msgstr[0] "Pertraukėlei liko: %s"
 msgstr[1] "Pertraukėlei liko: %s"
 msgstr[2] "Pertraukėlei liko: %s"
 
-#: js/misc/breakManager.js:1244
+#: js/misc/breakManager.js:1270
 msgid "Break Interrupted"
 msgstr "Pertraukėlė pertraukta"
 
-#: js/misc/breakManager.js:1315
+#: js/misc/breakManager.js:1341
 msgid "Delay"
 msgstr "Delsa"
 
-#: js/misc/breakManager.js:1336 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1362 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Praleisti"
 
-#: js/misc/breakManager.js:1357
+#: js/misc/breakManager.js:1383
 msgid "Take"
 msgstr "Atlikti"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1420
+#: js/misc/breakManager.js:1446
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -984,7 +985,11 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Užrakinti ekrano orientaciją"
 
-#: js/misc/timeLimitsManager.js:1043
+#: js/misc/timeLimitsManager.js:338
+msgid "GNOME needs to save screen time data"
+msgstr "GNOME aplinkai reikia įrašyti ekrano laiko duomenis"
+
+#: js/misc/timeLimitsManager.js:1102
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
@@ -992,15 +997,15 @@ msgstr[0] "Ekrano laiko riba po %d minutės"
 msgstr[1] "Ekrano laiko riba po %d minučių"
 msgstr[2] "Ekrano laiko riba po %d minučių"
 
-#: js/misc/timeLimitsManager.js:1050
+#: js/misc/timeLimitsManager.js:1109
 msgid "Your screen time limit is approaching"
 msgstr "Artėja jūsų ekrano laiko riba"
 
-#: js/misc/timeLimitsManager.js:1064
+#: js/misc/timeLimitsManager.js:1123
 msgid "Screen Time Limit Reached"
 msgstr "Pasiekta ekrano laiko riba"
 
-#: js/misc/timeLimitsManager.js:1065
+#: js/misc/timeLimitsManager.js:1124
 msgid "It’s time to stop using the device"
 msgstr "Laikas nustoti naudoti įrenginį"
 
@@ -1167,7 +1172,7 @@ msgstr "Neleisti"
 msgid "Allow"
 msgstr "Leisti"
 
-#: js/ui/appDisplay.js:1758
+#: js/ui/appDisplay.js:1762
 msgid "Unnamed Folder"
 msgstr "Nepavadintas aplankas"
 
@@ -1413,39 +1418,39 @@ msgstr "Diską dabar galima naudoti"
 msgid "Open with %s"
 msgstr "Atverti su %s"
 
-#: js/ui/components/networkAgent.js:95
+#: js/ui/components/networkAgent.js:96
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr ""
 "Taip pat galite prisijungti paspausdami „WPS“ mygtuką savo maršrutizatoriuje"
 
-#: js/ui/components/networkAgent.js:107 js/ui/status/bluetooth.js:246
+#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "Prisijungti"
 
-#: js/ui/components/networkAgent.js:222
+#: js/ui/components/networkAgent.js:223
 msgid "Key"
 msgstr "Raktas"
 
-#: js/ui/components/networkAgent.js:273 js/ui/components/networkAgent.js:312
+#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
 msgid "Private key password"
 msgstr "Privataus rakto slaptažodis"
 
-#: js/ui/components/networkAgent.js:306
+#: js/ui/components/networkAgent.js:307
 msgid "Identity"
 msgstr "Tapatybė"
 
-#: js/ui/components/networkAgent.js:332
+#: js/ui/components/networkAgent.js:333
 msgid "Service"
 msgstr "Tarnyba"
 
-#: js/ui/components/networkAgent.js:370 js/ui/components/networkAgent.js:406
-#: js/ui/components/networkAgent.js:743 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
 msgid "Authentication required"
 msgstr "Reikia patvirtinti tapatybę"
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:744
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
@@ -1453,38 +1458,38 @@ msgstr ""
 "Slaptažodžiai arba šifravimo raktai yra būtini priėjimui prie belaidžio "
 "tinklo „%s“"
 
-#: js/ui/components/networkAgent.js:375 js/ui/components/networkAgent.js:748
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
 msgstr "Laidinis 802.1X tapatybės patvirtinimas"
 
-#: js/ui/components/networkAgent.js:378
+#: js/ui/components/networkAgent.js:379
 msgid "Network name"
 msgstr "Tinklo vardas"
 
-#: js/ui/components/networkAgent.js:386 js/ui/components/networkAgent.js:752
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
 msgid "DSL authentication"
 msgstr "DSL tapatybės patvirtinimas"
 
-#: js/ui/components/networkAgent.js:393 js/ui/components/networkAgent.js:757
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
 msgid "PIN code required"
 msgstr "Reikalingas PIN kodas"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:758
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Reikalingas PIN kodas mobiliajam plačiajuosčiam įrenginiui"
 
-#: js/ui/components/networkAgent.js:396
+#: js/ui/components/networkAgent.js:397
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:749
-#: js/ui/components/networkAgent.js:753 js/ui/components/networkAgent.js:765
-#: js/ui/components/networkAgent.js:769
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
 #, javascript-format
 msgid "A password is required to connect to “%s”"
 msgstr "Būtinas slaptažodis norint prisijungti prie „%s“"
 
-#: js/ui/components/networkAgent.js:768
+#: js/ui/components/networkAgent.js:770
 msgid "VPN password"
 msgstr "VPN slaptažodis"
 
@@ -2941,15 +2946,15 @@ msgstr ""
 "GNOME Plėtiniai atnaujina plėtinius, konfigūruoja jų nustatymus bei šalina "
 "arba išjungia nepageidaujamus plėtinius."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Pagrindinis langas"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Prieinami atnaujinimai"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Paieškos rodinys"
 
