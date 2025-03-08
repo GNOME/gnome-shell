@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-02-26 16:22+0000\n"
-"PO-Revision-Date: 2025-02-27 23:39+0100\n"
+"POT-Creation-Date: 2025-03-05 12:21+0000\n"
+"PO-Revision-Date: 2025-03-08 17:32+0100\n"
 "Last-Translator: Fran Dieguez <fran.dieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -185,14 +185,14 @@ msgstr "UUIDs das extensións a activar"
 
 #: data/org.gnome.shell.gschema.xml.in:17
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions "
-"which should be loaded. Any extension that wants to be loaded needs to be "
-"in this list. You can also manipulate this list with the EnableExtension "
-"and DisableExtension D-Bus methods on org.gnome.Shell."
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"As extensións do GNOME Shell teñen unha propiedade UUID; esta chave lista "
-"as extensións que deberían cargarse. Calquera extensión que queira ser "
-"cargada debe estar nesta lista. Pode modificar esta lista cos métodos "
+"As extensións do GNOME Shell teñen unha propiedade UUID; esta chave lista as "
+"extensións que deberían cargarse. Calquera extensión que queira ser cargada "
+"debe estar nesta lista. Pode modificar esta lista cos métodos "
 "EnableExtension e DisableExtension de D-Bus en org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:26
@@ -201,17 +201,17 @@ msgstr "UUIDs das extensións para forzar a súa desactivación"
 
 #: data/org.gnome.shell.gschema.xml.in:27
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions "
-"which should be disabled, even if loaded as part of the current mode. You "
-"can also manipulate this list with the EnableExtension and DisableExtension "
-"D-Bus methods on org.gnome.Shell. This key takes precedence over the "
-"“enabled-extensions” setting."
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be disabled, even if loaded as part of the current mode. You can also "
+"manipulate this list with the EnableExtension and DisableExtension D-Bus "
+"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
+"extensions” setting."
 msgstr ""
-"As extensións do GNOME Shell teñen unha propiedade UUID; esta chave lista "
-"as extensións que deberían cargarse, incluso se se cargan como parte do "
-"modo actual. Tamén pode manipular esta lista cos métodos de D-Bus "
-"EnableExtension e DisableExtension en org.gnome.Shell. Esta chave toma "
-"precedencia sobre a configuración «enabled-extensions»."
+"As extensións do GNOME Shell teñen unha propiedade UUID; esta chave lista as "
+"extensións que deberían cargarse, incluso se se cargan como parte do modo "
+"actual. Tamén pode manipular esta lista cos métodos de D-Bus EnableExtension "
+"e DisableExtension en org.gnome.Shell. Esta chave toma precedencia sobre a "
+"configuración «enabled-extensions»."
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -264,8 +264,8 @@ msgstr "Lista de ID de ficheiros de escritorio para as aplicacións preferidas"
 
 #: data/org.gnome.shell.gschema.xml.in:68
 msgid ""
-"The applications corresponding to these identifiers will be displayed in "
-"the favorites area."
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
 msgstr ""
 "As aplicacións que corresponden a estes identificadores mostraranse na área "
 "de preferidos."
@@ -274,9 +274,7 @@ msgstr ""
 msgid "History for command (Alt-F2) dialog"
 msgstr "Historial do diálogo de ordes (Alt-F2)"
 
-#. Translators: looking glass is a debugger and inspector tool, see
-#. https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-
-#. glass.md
+#. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
 #: data/org.gnome.shell.gschema.xml.in:80
 msgid "History for the looking glass dialog"
 msgstr "Historial do diálogo de «looking glass»"
@@ -289,19 +287,18 @@ msgstr "Mostrar sempre o elemento de menú «Saír da sesión» no menú de usua
 msgid ""
 "This key overrides the automatic hiding of the “Log out” action in the "
 "system menu for logged-in situations where there is a single, local, non-"
-"system user and only a single available session type (e.g. GNOME on "
-"Wayland)."
+"system user and only a single available session type (e.g. GNOME on Wayland)."
 msgstr ""
-"Esta chave sobrescribe a ocultación automática do elemento de menú da "
-"acción «Saír da sesión» en situacións con un usuario único, local e non do "
-"sistema ou un único tipo de sesión dispoñíbel (p.ex. GNOME en Wayland)"
+"Esta chave sobrescribe a ocultación automática do elemento de menú da acción "
+"«Saír da sesión» en situacións con un usuario único, local e non do sistema "
+"ou un único tipo de sesión dispoñíbel (p.ex. GNOME en Wayland)"
 
 #: data/org.gnome.shell.gschema.xml.in:94
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
-"Indica se se debe lembrar o contrasinal para montar os sistemas de "
-"ficheiros cifrados ou remotos"
+"Indica se se debe lembrar o contrasinal para montar os sistemas de ficheiros "
+"cifrados ou remotos"
 
 #: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
@@ -311,8 +308,8 @@ msgid ""
 "state of the checkbox."
 msgstr ""
 "O shell non solicitará o contrasinal cando un dispositivo cifrado ou un "
-"sistema de ficheiros remoto se monta. Se o contrasinal se pode gardar para "
-"o futuro aparecerá a opción «Lembrar contrasinal» Esta chave estabelece o "
+"sistema de ficheiros remoto se monta. Se o contrasinal se pode gardar para o "
+"futuro aparecerá a opción «Lembrar contrasinal» Esta chave estabelece o "
 "estado por omisión da opción."
 
 #: data/org.gnome.shell.gschema.xml.in:104
@@ -321,9 +318,9 @@ msgstr "O último perfil de enerxía seleccionado non predeterminado"
 
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
-"Some systems support more than two power profiles. In order to still "
-"support toggling between two profiles, this key records the last selected "
-"non-default profile."
+"Some systems support more than two power profiles. In order to still support "
+"toggling between two profiles, this key records the last selected non-"
+"default profile."
 msgstr ""
 "Algúns sistemas admiten máis dun perfil de enerxía. Para continuar a "
 "compatibilidade de trocar entre os dous perfiles esta chave rexistra o "
@@ -335,10 +332,10 @@ msgstr "A última versión do diálogo de «Benvida a GNOME» mostrouse para"
 
 #: data/org.gnome.shell.gschema.xml.in:114
 msgid ""
-"This key determines for which version the “Welcome to GNOME” dialog was "
-"last shown. An empty string represents the oldest possible version, and a "
-"huge number will represent versions that do not exist yet. This huge number "
-"can be used to effectively disable the dialog."
+"This key determines for which version the “Welcome to GNOME” dialog was last "
+"shown. An empty string represents the oldest possible version, and a huge "
+"number will represent versions that do not exist yet. This huge number can "
+"be used to effectively disable the dialog."
 msgstr ""
 "Esta chave determina para que versión do diálogo de «Benvida de GNOME» se "
 "mostrou por última vez. Unha cadea baleira representa unha versión antiga "
@@ -356,11 +353,10 @@ msgid ""
 "“application id” → 'data' pair. Currently, the following values are stored "
 "as 'data': • “position”: the position of the application icon in the page"
 msgstr ""
-"Disposición do selector de aplicacións. Cada entrada no array é unha "
-"páxina. As páxinas están almacenadas na orde na que aparecen no Shell de "
-"GNOME. Cada páxina contén un par «id de aplicación» → «datos». Actualmente, "
-"gárdanse os seguintes valores: • «position»: A posición da icona da "
-"aplicación na páxina"
+"Disposición do selector de aplicacións. Cada entrada no array é unha páxina. "
+"As páxinas están almacenadas na orde na que aparecen no Shell de GNOME. Cada "
+"páxina contén un par «id de aplicación» → «datos». Actualmente, gárdanse os "
+"seguintes valores: • «position»: A posición da icona da aplicación na páxina"
 
 #: data/org.gnome.shell.gschema.xml.in:145
 #: data/org.gnome.shell.gschema.xml.in:152
@@ -370,8 +366,8 @@ msgstr "Combinación de teclas para cambiar entre os estados da vista"
 #: data/org.gnome.shell.gschema.xml.in:146
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
-"Combinación de teclas para cambiar entre a sesión, o selector de xanelas e "
-"a grade de aplicacións"
+"Combinación de teclas para cambiar entre a sesión, o selector de xanelas e a "
+"grade de aplicacións"
 
 #: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to shift between app grid, window picker and session"
@@ -623,9 +619,9 @@ msgstr "Escolla unha sesión"
 #: js/gdm/loginDialog.js:426
 #, javascript-format
 msgid ""
-"Remote login is not possible because a remote session is already running "
-"for %s. To login remotely, you must log out from the remote session or "
-"force stop it."
+"Remote login is not possible because a remote session is already running for "
+"%s. To login remotely, you must log out from the remote session or force "
+"stop it."
 msgstr ""
 "O inicio de sesión remoto non é posíbel porque xa hai unha sesión remota "
 "executándose para %s. Para iniciar sesión de forma remota debe pechar a "
@@ -635,20 +631,20 @@ msgstr ""
 #: js/gdm/loginDialog.js:429
 #, javascript-format
 msgid ""
-"Login is not possible because a remote session is already running for %s. "
-"To login, you must log out from the remote session or force stop it."
+"Login is not possible because a remote session is already running for %s. To "
+"login, you must log out from the remote session or force stop it."
 msgstr ""
-"O inicio de sesión non é posíbel porque a sesión remota xa está "
-"executándose para %s. Para iniciar sesión debe pechar a sesión da sesión "
-"remota ou pechala de forma forzada."
+"O inicio de sesión non é posíbel porque a sesión remota xa está executándose "
+"para %s. Para iniciar sesión debe pechar a sesión da sesión remota ou "
+"pechala de forma forzada."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:432
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
-"%s. To login remotely, you must log out from the local session or force "
-"stop it."
+"%s. To login remotely, you must log out from the local session or force stop "
+"it."
 msgstr ""
 "O inicio de sesión remoto non é posíbel porque xa hai unha sesión local en "
 "execución para %s. Para iniciar sesión de forma remota debe pechar a sesión "
@@ -658,8 +654,8 @@ msgstr ""
 #: js/gdm/loginDialog.js:435
 #, javascript-format
 msgid ""
-"Login is not possible because a session is already running for %s. To "
-"login, you must log out from the session or force stop it."
+"Login is not possible because a session is already running for %s. To login, "
+"you must log out from the session or force stop it."
 msgstr ""
 "Non é posíbel iniciar sesión porque a sesión xa está en execución para %s. "
 "Para iniciar sesión debe pechala antes ou detela de forma forzada."
@@ -670,8 +666,8 @@ msgstr "A sesión xa está en execución"
 
 #: js/gdm/loginDialog.js:456
 msgid ""
-"Force stopping will quit any running apps and processes, and could result "
-"in data loss"
+"Force stopping will quit any running apps and processes, and could result in "
+"data loss"
 msgstr ""
 "Deter forzosamente pechará as aplicacións e procesos en execución e podería "
 "resultar en perda de datos"
@@ -719,124 +715,117 @@ msgid "(or swipe finger across reader)"
 msgstr "(ou pase o dedo sobre o lector)"
 
 #. Translators: this message is shown below the password entry field
-#. to indicate the user can place their finger on the fingerprint reader
-#. instead
+#. to indicate the user can place their finger on the fingerprint reader instead
 #: js/gdm/util.js:734
 msgid "(or place finger on reader)"
 msgstr "(ou pouse o dedo sobre o lector)"
 
-#: js/misc/breakManager.js:764
+#: js/misc/breakManager.js:765
 msgid "Break complete sound"
 msgstr "Son da descanso completo"
 
-#: js/misc/breakManager.js:956
+#: js/misc/breakManager.js:982
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d segundo"
 msgstr[1] "%d segundos"
 
-#: js/misc/breakManager.js:962
+#: js/misc/breakManager.js:988
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d minuto"
 msgstr[1] "%d minutos"
 
-#: js/misc/breakManager.js:968
+#: js/misc/breakManager.js:994
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d hora"
 msgstr[1] "%d horas"
 
-#: js/misc/breakManager.js:974
+#: js/misc/breakManager.js:1000
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] "%d día"
 msgstr[1] "%d días"
 
-#. %s will be replaced with a string that describes a time interval, such as
-#. “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1057
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1083
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "En %s deberá tomarse un descanso"
 msgstr[1] "En %s deberá tomarse un descanso"
 
-#: js/misc/breakManager.js:1065
+#: js/misc/breakManager.js:1091
 msgid "Movement Break Soon"
 msgstr "Descanso para moverse pronto"
 
-#: js/misc/breakManager.js:1068
+#: js/misc/breakManager.js:1094
 msgid "Eyesight Break Soon"
 msgstr "Descanso para descansar a vista pronto"
 
-#: js/misc/breakManager.js:1071
+#: js/misc/breakManager.js:1097
 msgid "Break Soon"
 msgstr "Descanso en breves momentos"
 
-#: js/misc/breakManager.js:1115
+#: js/misc/breakManager.js:1141
 msgid "Movement Break in Progress"
 msgstr "Descanso para moverse en curso"
 
-#. %s will be replaced with a string that describes a time interval, such as
-#. “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1118
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1144
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "Continúe movéndose por %s"
 msgstr[1] "Continúe movéndose por %s"
 
-#: js/misc/breakManager.js:1124
+#: js/misc/breakManager.js:1150
 msgid "Eyesight Break in Progress"
 msgstr "Descanso para descansar a vista en curso"
 
-#. %s will be replaced with a string that describes a time interval, such as
-#. “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1127
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1153
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "Continúe mirando para outro lado para %s"
 msgstr[1] "Continúe mirando para outro lado para %s"
 
-#: js/misc/breakManager.js:1133
+#: js/misc/breakManager.js:1159
 msgid "Break in Progress"
 msgstr "Descanso en curso"
 
-#. %s will be replaced with a string that describes a time interval, such as
-#. “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1136
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1162
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "Falta %s do seu descanso"
 msgstr[1] "Faltan %s do seu descanso"
 
-#: js/misc/breakManager.js:1175
+#: js/misc/breakManager.js:1201
 msgid "Time for a Movement Break"
 msgstr "Hora de descansar para moverse"
 
-#. %s will be replaced with a string that describes a time interval, such as
-#. “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1178
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1204
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "Tómese un descanso do dispositivo e móvase durante %s"
 msgstr[1] "Tómese un descanso do dispositivo e móvase durante %s"
 
-#: js/misc/breakManager.js:1184
+#: js/misc/breakManager.js:1210
 msgid "Time for an Eyesight Break"
 msgstr "Hora de parar para descansar a vista"
 
-#. %s will be replaced with a string that describes a time interval, such as
-#. “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1187
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1213
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -849,60 +838,57 @@ msgstr[1] ""
 "Faga un descanso da pantalla. Mire polo menos a 6 metros de distancia "
 "durante polo menos %s"
 
-#: js/misc/breakManager.js:1193
+#: js/misc/breakManager.js:1219
 msgid "Time for a Break"
 msgstr "Hora de parar"
 
-#. %s will be replaced with a string that describes a time interval, such as
-#. “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1196
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1222
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
 msgstr[0] "É hora de facer un descanso. Abandona o dispositivo durante %s!"
 msgstr[1] "É hora de facer un descanso. Abandona o dispositivo durante %s!"
 
-#. %s will be replaced with a string that describes a time interval, such as
-#. “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1218
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1244
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] "Debías tomarte un descanso fai %s"
 msgstr[1] "Debías tomarte un descanso fai %s"
 
-#: js/misc/breakManager.js:1224
+#: js/misc/breakManager.js:1250
 msgid "Break Overdue"
 msgstr "Descanso vencido"
 
-#. %s will be replaced with a string that describes a time interval, such as
-#. “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1238
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1264
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "Falta %s do seu descanso"
 msgstr[1] "Faltan %s do seu descanso"
 
-#: js/misc/breakManager.js:1244
+#: js/misc/breakManager.js:1270
 msgid "Break Interrupted"
 msgstr "Descanso interrompido"
 
-#: js/misc/breakManager.js:1315
+#: js/misc/breakManager.js:1341
 msgid "Delay"
 msgstr "Atraso"
 
-#: js/misc/breakManager.js:1336 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1362 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Omitir"
 
-#: js/misc/breakManager.js:1357
+#: js/misc/breakManager.js:1383
 msgid "Take"
 msgstr "Tomar"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1420
+#: js/misc/breakManager.js:1446
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -915,8 +901,7 @@ msgctxt "search-result"
 msgid "Power Off"
 msgstr "Apagar"
 
-#. Translators: A list of keywords that match the power-off action, separated
-#. by semicolons
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:94
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "apagar;reiniciar;deter;parar"
@@ -927,8 +912,7 @@ msgctxt "search-result"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#. Translators: A list of keywords that match the restart action, separated by
-#. semicolons
+#. Translators: A list of keywords that match the restart action, separated by semicolons
 #: js/misc/systemActions.js:102
 msgid "reboot;restart;"
 msgstr "reiniciar;"
@@ -939,8 +923,7 @@ msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Bloquear a pantalla"
 
-#. Translators: A list of keywords that match the lock screen action,
-#. separated by semicolons
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:110
 msgid "lock screen"
 msgstr "bloquear pantalla;bloquear"
@@ -951,8 +934,7 @@ msgctxt "search-result"
 msgid "Log Out"
 msgstr "Saír da sesión"
 
-#. Translators: A list of keywords that match the logout action, separated by
-#. semicolons
+#. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:118
 msgid "logout;log out;sign off"
 msgstr "pechar a sesión;desloguearse;saír da sesión"
@@ -963,8 +945,7 @@ msgctxt "search-result"
 msgid "Suspend"
 msgstr "Suspender"
 
-#. Translators: A list of keywords that match the suspend action, separated by
-#. semicolons
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
 #: js/misc/systemActions.js:126
 msgid "suspend;sleep"
 msgstr "suspender;durmir"
@@ -975,14 +956,12 @@ msgctxt "search-result"
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#. Translators: A list of keywords that match the switch user action,
-#. separated by semicolons
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
 #: js/misc/systemActions.js:134
 msgid "switch user"
 msgstr "cambiar de usuario"
 
-#. Translators: A list of keywords that match the lock orientation action,
-#. separated by semicolons
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:141
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "bloquear orientación;desbloquear orientación;pantalla;rotación"
@@ -993,8 +972,7 @@ msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Tomar unha captura"
 
-#. Translators: A list of keywords that match the screenshot UI action,
-#. separated by semicolons
+#. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
 #: js/misc/systemActions.js:149
 msgid "screenshot;screencast;snip;capture;record"
 msgstr "captura;gravación de pantalla;recorte;capturar;gravar"
@@ -1009,22 +987,26 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Bloquear a rotación de pantalla"
 
-#: js/misc/timeLimitsManager.js:1043
+#: js/misc/timeLimitsManager.js:338
+msgid "GNOME needs to save screen time data"
+msgstr "GNOME precisa gardar os datos de tempo de pantalla"
+
+#: js/misc/timeLimitsManager.js:1102
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "Límite de tempo de pantalla en %d minuto"
 msgstr[1] "Límite de tempo de pantalla en %d minutos"
 
-#: js/misc/timeLimitsManager.js:1050
+#: js/misc/timeLimitsManager.js:1109
 msgid "Your screen time limit is approaching"
 msgstr "Achégase o seu límite de tempo de pantalla"
 
-#: js/misc/timeLimitsManager.js:1064
+#: js/misc/timeLimitsManager.js:1123
 msgid "Screen Time Limit Reached"
 msgstr "Alcanzouse o límite de tempo de pantalla"
 
-#: js/misc/timeLimitsManager.js:1065
+#: js/misc/timeLimitsManager.js:1124
 msgid "It’s time to stop using the device"
 msgstr "É hora de deixar de usar o dispositivo"
 
@@ -1269,8 +1251,7 @@ msgstr "Preferencias da pantalla"
 msgid "Settings"
 msgstr "Preferencias"
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
-#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:33
 msgctxt "calendar-no-work"
 msgid "06"
@@ -1280,6 +1261,7 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
+#.
 #: js/ui/calendar.js:59
 msgctxt "grid sunday"
 msgid "S"
@@ -1326,6 +1308,7 @@ msgstr "S"
 #. * standalone, when this is a month of the current year.
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
+#.
 #: js/ui/calendar.js:422
 msgid "%OB"
 msgstr "%OB"
@@ -1338,6 +1321,7 @@ msgstr "%OB"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
+#.
 #: js/ui/calendar.js:432
 msgid "%OB %Y"
 msgstr "%B de %Y"
@@ -1465,8 +1449,7 @@ msgstr "Requírese autenticación"
 #: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
 #, javascript-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"“%s”"
+"Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr ""
 "Requírense contrasinais ou chaves de cifrado para acceder á rede sen fíos "
 "«%s»"
@@ -1544,6 +1527,7 @@ msgstr "Taboleiro"
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
+#.
 #: js/ui/dateMenu.js:99
 msgid "%B %-d %Y"
 msgstr "%e de %B de %Y"
@@ -1551,19 +1535,18 @@ msgstr "%e de %B de %Y"
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
+#.
 #: js/ui/dateMenu.js:106
 msgid "%A %B %e %Y"
 msgstr "%A, %e de %B de %Y"
 
-#. Translators: Shown on calendar heading when selected day occurs on current
-#. year
+#. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/dateMenu.js:172
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%e de %B de %Y"
 
-#. Translators: Shown on calendar heading when selected day occurs on
-#. different year
+#. Translators: Shown on calendar heading when selected day occurs on different year
 #: js/ui/dateMenu.js:175
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
@@ -1579,6 +1562,7 @@ msgstr "Mañá"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
+#.
 #: js/ui/dateMenu.js:216
 msgctxt "event list time"
 msgid "All Day"
@@ -1586,6 +1570,7 @@ msgstr "Todo o día"
 
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
+#.
 #: js/ui/dateMenu.js:238
 msgid "%m/%d"
 msgstr "%d/%m"
@@ -1748,8 +1733,8 @@ msgid ""
 "time: ensure that you have backed up and that the computer is plugged in."
 msgstr ""
 "%s %s instalarase despois do reinicio. A instalación de anovacións pode "
-"levar algún tempo: asegúrese que ten unha copia de respaldo dos seus datos "
-"e que o seu computador está enchufado."
+"levar algún tempo: asegúrese que ten unha copia de respaldo dos seus datos e "
+"que o seu computador está enchufado."
 
 #: js/ui/endSessionDialog.js:283
 msgid "Low battery power: please plug in before installing updates"
@@ -1833,8 +1818,8 @@ msgstr "Teclas lentas desactivadas"
 
 #: js/ui/kbdA11yDialog.js:36
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for "
-"the Slow Keys feature, which affects the way your keyboard works."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
 msgstr ""
 "Acabas de manter a tecla Maiús durante 8 segundos. Isto é un atallo para a "
 "característica de Teclas lentas, o cal afecta á forma na que funciona o "
@@ -2284,8 +2269,8 @@ msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles"
 msgstr ""
-"Precisa dunha utilidade externa como <i>Discos</i> para desbloquear o "
-"volume que usa ficheiros de chave"
+"Precisa dunha utilidade externa como <i>Discos</i> para desbloquear o volume "
+"que usa ficheiros de chave"
 
 #: js/ui/shellMountOperation.js:312
 msgid "PIM Number"
@@ -2518,9 +2503,7 @@ msgstr "Non segura"
 msgid "Signal strength %s%%"
 msgstr "Intensidade de sinal %s%%"
 
-#. translators: The first placeholder is the network name, the second and
-#. indication whether it is secure, and the last the signal strength
-#. indication
+#. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
 #: js/ui/status/network.js:1062
 #, javascript-format
 msgid "%s, %s, %s"
@@ -2723,24 +2706,28 @@ msgstr "Entrada de son"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
+#.
 #: js/ui/switchMonitor.js:20
 msgid "Mirror"
 msgstr "Espello"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
+#.
 #: js/ui/switchMonitor.js:29
 msgid "Join Displays"
 msgstr "Unir pantallas"
 
 #. Translators: this is for using only external displays.
 #. * Try to keep it under around 15 characters.
+#.
 #: js/ui/switchMonitor.js:39
 msgid "External Only"
 msgstr "Só a externa"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
+#.
 #: js/ui/switchMonitor.js:47
 msgid "Built-in Only"
 msgstr "Só a interna"
@@ -2957,15 +2944,15 @@ msgstr ""
 "Extensións de GNOME xestiona a actualización de extensions, a súa "
 "configuración, eliminación e a desactivación das extensións que non quere."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Xanela principal"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Actualizacións dispoñíbeis"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Vista de buscar"
 
@@ -2979,8 +2966,8 @@ msgid ""
 "The installed version of this extension (%s) is incompatible with the "
 "current version of GNOME (%s). The extension has been disabled."
 msgstr ""
-"A versión instalada desta extensión (%s) non é compatíbel coa versión "
-"actual de GNOME (%s). A extensión desactivouse."
+"A versión instalada desta extensión (%s) non é compatíbel coa versión actual "
+"de GNOME (%s). A extensión desactivouse."
 
 #: subprojects/extensions-app/js/extensionManager.js:238
 #, javascript-format
@@ -3102,8 +3089,7 @@ msgid ""
 "disable all extensions if you experience problems with your system."
 msgstr ""
 "As extensións poden causar problemas de rendemento e estabilidade. "
-"Recoméndase desactivar todas as extensións se atopa problemas no seu "
-"sistema."
+"Recoméndase desactivar todas as extensións se atopa problemas no seu sistema."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:178
 msgid "User Extensions"
@@ -3142,8 +3128,8 @@ msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
 msgstr ""
-"Desculpe, non foi posíbel obter a lista das extensións instaladas. "
-"Asegúrese que está nunha sesión en GNOME e ténteo de novo."
+"Desculpe, non foi posíbel obter a lista das extensións instaladas. Asegúrese "
+"que está nunha sesión en GNOME e ténteo de novo."
 
 #: subprojects/extensions-app/data/ui/help-overlay.ui:9
 msgctxt "shortcut window"
