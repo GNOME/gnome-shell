@@ -31,6 +31,9 @@ export const InputMethod = GObject.registerClass({
         this._preeditAnchor = 0;
         this._preeditVisible = false;
         this._hidePanelId = 0;
+        this._surroundingText = null;
+        this._surroundingTextCursor = null;
+        this._surroundingTextAnchor = null;
         this._ibus = IBus.Bus.new_async();
         this._ibus.connect('connected', this._onConnected.bind(this));
         this._ibus.connect('disconnected', this._clear.bind(this));
@@ -50,7 +53,10 @@ export const InputMethod = GObject.registerClass({
     }
 
     _updateCapabilities() {
-        let caps = IBus.Capabilite.PREEDIT_TEXT | IBus.Capabilite.FOCUS | IBus.Capabilite.SURROUNDING_TEXT;
+        let caps = IBus.Capabilite.PREEDIT_TEXT | IBus.Capabilite.FOCUS;
+
+        if (this._surroundingText !== null)
+            caps |= IBus.Capabilite.SURROUNDING_TEXT;
 
         if (Main.keyboard.visible)
             caps |= IBus.Capabilite.OSK;
@@ -124,6 +130,12 @@ export const InputMethod = GObject.registerClass({
     }
 
     _onDeleteSurroundingText(_context, offset, nchars) {
+        if (this._surroundingText === null) {
+            log('input-method engines should not call ' +
+                'the delete-surrounding-text API in case ' +
+                'the input context has no SURROUNDING_TEXT capability.');
+            return;
+        }
         try {
             this.delete_surrounding(offset, nchars);
         } catch {
@@ -241,6 +253,13 @@ export const InputMethod = GObject.registerClass({
     }
 
     vfunc_set_surrounding(text, cursor, anchor) {
+        // If the previous input context supports the surrounding-text feature.
+        const prevHasSurrounding = this._surroundingText !== null;
+        // If the current input context supports the surrounding-text feature.
+        const nowHasSurrounding = text !== null;
+        // If the SURROUNDING_TEXT capability is changed.
+        const updateCapabilities = prevHasSurrounding !== nowHasSurrounding;
+
         this._surroundingText = text;
         this._surroundingTextCursor = cursor;
         this._surroundingTextAnchor = anchor;
@@ -250,6 +269,11 @@ export const InputMethod = GObject.registerClass({
             return;
 
         let ibusText = IBus.Text.new_from_string(text);
+
+        if (updateCapabilities)
+            this._updateCapabilities();
+
+        // Call context.set_surrounding_text() after context.set_capabilities().
         this._context.set_surrounding_text(ibusText, cursor, anchor);
     }
 
