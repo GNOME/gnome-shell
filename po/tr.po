@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-02-06 08:40+0000\n"
-"PO-Revision-Date: 2025-02-09 16:31+0300\n"
-"Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
+"POT-Creation-Date: 2025-03-05 12:21+0000\n"
+"PO-Revision-Date: 2025-03-09 08:00+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -110,26 +110,27 @@ msgid "Screenshots"
 msgstr "Ekran Görüntüleri"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:287
+#: data/org.gnome.shell.gschema.xml.in:267
 msgid "Take a screenshot interactively"
 msgstr "Etkileşimli olarak ekran görüntüsü al"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:299
+#: data/org.gnome.shell.gschema.xml.in:279
 msgid "Take a screenshot"
 msgstr "Ekran görüntüsü al"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:295
+#: data/org.gnome.shell.gschema.xml.in:275
 msgid "Take a screenshot of a window"
 msgstr "Pencerenin ekran görüntüsünü al"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:291
+#: data/org.gnome.shell.gschema.xml.in:271
 msgid "Record a screencast interactively"
 msgstr "Etkileşimli olarak ekranı kaydet"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1307
+#: data/50-gnome-shell-system.xml:6
+#: data/X-GNOME-Shell-System.directory.desktop.in:3 js/ui/messageTray.js:1307
 msgid "System"
 msgstr "Sistem"
 
@@ -253,30 +254,30 @@ msgstr ""
 "bırakacak ve desteklendiği ileri sürülen sürümleri dikkate almaksızın, tüm "
 "uygulamaları yüklemeye çalışacaktır."
 
-#: data/org.gnome.shell.gschema.xml.in:65
+#: data/org.gnome.shell.gschema.xml.in:67
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Gözde uygulamalar için masa üstü dosyalarının ID listesi"
 
-#: data/org.gnome.shell.gschema.xml.in:66
+#: data/org.gnome.shell.gschema.xml.in:68
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr "Bu tanımlayıcıdaki uygulamalar gözdeler bölümünde gösterilecek."
 
-#: data/org.gnome.shell.gschema.xml.in:73
+#: data/org.gnome.shell.gschema.xml.in:75
 msgid "History for command (Alt-F2) dialog"
 msgstr "Komut kutucuğu (Alt-F2) geçmişi"
 
 #. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
-#: data/org.gnome.shell.gschema.xml.in:78
+#: data/org.gnome.shell.gschema.xml.in:80
 msgid "History for the looking glass dialog"
 msgstr "Ayna iletişim penceresinin geçmişi"
 
-#: data/org.gnome.shell.gschema.xml.in:82
+#: data/org.gnome.shell.gschema.xml.in:84
 msgid "Always show the “Log Out” action in the system menu"
 msgstr "Sistem menüsünde “Oturumu Kapat” eylemini hep göster."
 
-#: data/org.gnome.shell.gschema.xml.in:83
+#: data/org.gnome.shell.gschema.xml.in:85
 msgid ""
 "This key overrides the automatic hiding of the “Log out” action in the "
 "system menu for logged-in situations where there is a single, local, non-"
@@ -286,13 +287,13 @@ msgstr ""
 "türünde (örn. Wayland üzerinde GNOME) oturum açıldığında sistem menüsündeki "
 "“Oturumu Kapat” eyleminin kendiliğinden gizlenmesini önler."
 
-#: data/org.gnome.shell.gschema.xml.in:92
+#: data/org.gnome.shell.gschema.xml.in:94
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Şifreli ya da uzak dosya sistemlerini bağlamak için parolanın anımsanması"
 
-#: data/org.gnome.shell.gschema.xml.in:93
+#: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -304,11 +305,11 @@ msgstr ""
 "“Parolayı Anımsa” onay kutusu sunulacak. Bu anahtar, onay kutusunun "
 "öntanımlı durumunu belirler."
 
-#: data/org.gnome.shell.gschema.xml.in:102
+#: data/org.gnome.shell.gschema.xml.in:104
 msgid "The last selected non-default power profile"
 msgstr "En son seçilen öntanımlı olmayan güç profili"
 
-#: data/org.gnome.shell.gschema.xml.in:103
+#: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
 "toggling between two profiles, this key records the last selected non-"
@@ -318,13 +319,13 @@ msgstr ""
 "geçişi destekleyebilmek için bu anahtar, en son seçilen öntanımlı olmayan "
 "profili kaydeder."
 
-#: data/org.gnome.shell.gschema.xml.in:111
+#: data/org.gnome.shell.gschema.xml.in:113
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr ""
 "“GNOME’a Hoş Geldiniz” iletişim penceresinin en son hangi sürüm için "
 "gösterildiği"
 
-#: data/org.gnome.shell.gschema.xml.in:112
+#: data/org.gnome.shell.gschema.xml.in:114
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -336,11 +337,11 @@ msgstr ""
 "ve büyük sayı henüz var olmayan sürümlere karşılık gelir. Bu büyük sayı, "
 "iletişim penceresini devre dışı bırakmada da kullanılabilir."
 
-#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:125
 msgid "Layout of the app picker"
 msgstr "Uygulama seçicinin düzeni"
 
-#: data/org.gnome.shell.gschema.xml.in:146
+#: data/org.gnome.shell.gschema.xml.in:126
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -352,142 +353,142 @@ msgstr ""
 "'data' çifti içerir. Şimdilik şu değerler 'data' olarak depolanır: • "
 "“position”: sayfadaki uygulama simgesinin konumu"
 
-#: data/org.gnome.shell.gschema.xml.in:165
-#: data/org.gnome.shell.gschema.xml.in:172
+#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:152
 msgid "Keybinding to shift between overview states"
 msgstr "Genel görünüm durumları arası geçiş için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:146
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Oturum, pencere seçici ve uygulama ızgarası arası geçiş için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "Uygulama ızgarası, pencere seçici ve oturum arası geçiş için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:159
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "“Uygulamaları Göster” görünümünü açmak için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:180
+#: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Etkinlikler Genel Görünümünün “Uygulamaları Göster” görünümünü açmak için "
 "klavye kısayolu."
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid "Keybinding to open the overview"
 msgstr "Genel görünümü açmak için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:168
 msgid "Keybinding to open the Activities Overview."
 msgstr "Etkinlikler Genel Görünümünü açmak için klavye kısayolu."
 
-#: data/org.gnome.shell.gschema.xml.in:194
+#: data/org.gnome.shell.gschema.xml.in:174
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Bildirim listesinin görünürlüğünü değiştirmek için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:195
+#: data/org.gnome.shell.gschema.xml.in:175
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Bildirim listesinin görünürlüğünü değiştirmek için klavye kısayolu."
 
-#: data/org.gnome.shell.gschema.xml.in:201
+#: data/org.gnome.shell.gschema.xml.in:181
 msgid "Keybinding to toggle the quick settings menu"
 msgstr "Hızlı ayarlar menüsünü açmak/kapatmak için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:182
 msgid "Keybinding to toggle the quick settings menu."
 msgstr "Hızlı ayarlar menüsünü açmak/kapatmak için klavye kısayolu."
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to focus the active notification"
 msgstr "Etkin bildirime odaklanmak için klavye kısayolu"
 
-#: data/org.gnome.shell.gschema.xml.in:209
+#: data/org.gnome.shell.gschema.xml.in:189
 msgid "Keybinding to focus the active notification."
 msgstr "Etkin bildirime odaklanmak için klavye kısayolu."
 
-#: data/org.gnome.shell.gschema.xml.in:215
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Switch to application 1"
 msgstr "Uygulama 1ʼe geç"
 
-#: data/org.gnome.shell.gschema.xml.in:219
+#: data/org.gnome.shell.gschema.xml.in:199
 msgid "Switch to application 2"
 msgstr "Uygulama 2ʼye geç"
 
-#: data/org.gnome.shell.gschema.xml.in:223
+#: data/org.gnome.shell.gschema.xml.in:203
 msgid "Switch to application 3"
 msgstr "Uygulama 3ʼe geç"
 
-#: data/org.gnome.shell.gschema.xml.in:227
+#: data/org.gnome.shell.gschema.xml.in:207
 msgid "Switch to application 4"
 msgstr "Uygulama 4ʼe geç"
 
-#: data/org.gnome.shell.gschema.xml.in:231
+#: data/org.gnome.shell.gschema.xml.in:211
 msgid "Switch to application 5"
 msgstr "Uygulama 5ʼe geç"
 
-#: data/org.gnome.shell.gschema.xml.in:235
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid "Switch to application 6"
 msgstr "Uygulama 6ʼya geç"
 
-#: data/org.gnome.shell.gschema.xml.in:239
+#: data/org.gnome.shell.gschema.xml.in:219
 msgid "Switch to application 7"
 msgstr "Uygulama 7ʼye geç"
 
-#: data/org.gnome.shell.gschema.xml.in:243
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Switch to application 8"
 msgstr "Uygulama 8ʼe geç"
 
-#: data/org.gnome.shell.gschema.xml.in:247
+#: data/org.gnome.shell.gschema.xml.in:227
 msgid "Switch to application 9"
 msgstr "Uygulama 9ʼa geç"
 
-#: data/org.gnome.shell.gschema.xml.in:251
+#: data/org.gnome.shell.gschema.xml.in:231
 msgid "Open a new instance of application 1"
 msgstr "1. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:255
+#: data/org.gnome.shell.gschema.xml.in:235
 msgid "Open a new instance of application 2"
 msgstr "2. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:239
 msgid "Open a new instance of application 3"
 msgstr "3. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:263
+#: data/org.gnome.shell.gschema.xml.in:243
 msgid "Open a new instance of application 4"
 msgstr "4. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:247
 msgid "Open a new instance of application 5"
 msgstr "5. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:271
+#: data/org.gnome.shell.gschema.xml.in:251
 msgid "Open a new instance of application 6"
 msgstr "6. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:275
+#: data/org.gnome.shell.gschema.xml.in:255
 msgid "Open a new instance of application 7"
 msgstr "7. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:279
+#: data/org.gnome.shell.gschema.xml.in:259
 msgid "Open a new instance of application 8"
 msgstr "8. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:263
 msgid "Open a new instance of application 9"
 msgstr "9. uygulamanın yeni örneğini aç"
 
-#: data/org.gnome.shell.gschema.xml.in:308
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:288
+#: data/org.gnome.shell.gschema.xml.in:315
 msgid "Limit switcher to current workspace."
 msgstr "Geçiş menüsünü geçerli çalışma alanıyla sınırla."
 
-#: data/org.gnome.shell.gschema.xml.in:309
+#: data/org.gnome.shell.gschema.xml.in:289
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -496,22 +497,22 @@ msgstr ""
 "uygulamalar geçiş menüsünde gösterilir. Aksi halde, tüm uygulamalar "
 "görünecektir."
 
-#: data/org.gnome.shell.gschema.xml.in:326
+#: data/org.gnome.shell.gschema.xml.in:306
 msgid "The application icon mode."
 msgstr "Uygulama simge kipi."
 
-#: data/org.gnome.shell.gschema.xml.in:327
+#: data/org.gnome.shell.gschema.xml.in:307
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
 msgstr ""
 "Pencerelerin değiştiricideki gösterim biçimini yapılandırır. Uygun "
 "olasılıklar; “thumbnail-only” (pencerenin küçük resmini gösterir), “app-icon-"
 "only” (yalnızca uygulama simgesini gösterir) ya da “both” (her ikisi) "
 "değerleridir."
 
-#: data/org.gnome.shell.gschema.xml.in:336
+#: data/org.gnome.shell.gschema.xml.in:316
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -519,27 +520,27 @@ msgstr ""
 "Eğer bu seçenek etkinse, yalnızca geçerli çalışma alanındaki pencereler "
 "geçiş menüsünde gösterilir. Aksi halde, tüm pencereler görünecektir."
 
-#: data/org.gnome.shell.gschema.xml.in:346
+#: data/org.gnome.shell.gschema.xml.in:326
 msgid "Locations"
 msgstr "Konumlar"
 
-#: data/org.gnome.shell.gschema.xml.in:347
+#: data/org.gnome.shell.gschema.xml.in:327
 msgid "The locations to show in world clocks"
 msgstr "Dünya saatlerinde gösterilecek konumlar"
 
-#: data/org.gnome.shell.gschema.xml.in:357
+#: data/org.gnome.shell.gschema.xml.in:337
 msgid "Automatic location"
 msgstr "Kendiliğinden konumlama"
 
-#: data/org.gnome.shell.gschema.xml.in:358
+#: data/org.gnome.shell.gschema.xml.in:338
 msgid "Whether to fetch the current location or not"
 msgstr "Geçerli konumun getirilip getirilmeyeceğini belirler"
 
-#: data/org.gnome.shell.gschema.xml.in:365
+#: data/org.gnome.shell.gschema.xml.in:345
 msgid "Location"
 msgstr "Konum"
 
-#: data/org.gnome.shell.gschema.xml.in:366
+#: data/org.gnome.shell.gschema.xml.in:346
 msgid "The location for which to show a forecast"
 msgstr "Hava durumunun gösterileceği konum"
 
@@ -586,17 +587,17 @@ msgid "Visit extension homepage"
 msgstr "Uzantı ana sayfasını ziyaret et"
 
 #: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:113
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
 #: js/ui/shellMountOperation.js:392
 msgid "Cancel"
 msgstr "İptal"
 
-#: js/gdm/authPrompt.js:321 js/ui/components/networkAgent.js:213
-#: js/ui/components/networkAgent.js:233 js/ui/components/networkAgent.js:265
-#: js/ui/components/networkAgent.js:298 js/ui/components/networkAgent.js:337
-#: js/ui/components/networkAgent.js:350 js/ui/components/polkitAgent.js:286
+#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
 #: js/ui/shellMountOperation.js:332
 msgid "Password"
 msgstr "Parola"
@@ -674,8 +675,8 @@ msgstr "Listede yok mu?"
 msgid "(e.g., user or %s)"
 msgstr "(örneğin, kullanıcı veya %s)"
 
-#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:257
-#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:326
+#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
@@ -707,104 +708,104 @@ msgstr "(ya da parmağı okuyucuda kaydır)"
 msgid "(or place finger on reader)"
 msgstr "(ya da parmağı okuyucuya yerleştir)"
 
-#: js/misc/breakManager.js:764
+#: js/misc/breakManager.js:765
 msgid "Break complete sound"
 msgstr "Mola tamamlanma sesi"
 
-#: js/misc/breakManager.js:956
+#: js/misc/breakManager.js:982
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d saniye"
 
-#: js/misc/breakManager.js:962
+#: js/misc/breakManager.js:988
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d dakika"
 
-#: js/misc/breakManager.js:968
+#: js/misc/breakManager.js:994
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d saat"
 
-#: js/misc/breakManager.js:974
+#: js/misc/breakManager.js:1000
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] "%d gün"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1057
+#: js/misc/breakManager.js:1083
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "Molaya kalan süre: %s"
 
-#: js/misc/breakManager.js:1065
+#: js/misc/breakManager.js:1091
 msgid "Movement Break Soon"
 msgstr "Kımıldama Molası Yakında"
 
-#: js/misc/breakManager.js:1068
+#: js/misc/breakManager.js:1094
 msgid "Eyesight Break Soon"
 msgstr "Göz Dinlendirme Molası Yakında"
 
-#: js/misc/breakManager.js:1071
+#: js/misc/breakManager.js:1097
 msgid "Break Soon"
 msgstr "Mola Yakında"
 
-#: js/misc/breakManager.js:1115
+#: js/misc/breakManager.js:1141
 msgid "Movement Break in Progress"
 msgstr "Kımıldama Molası Sürüyor"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1118
+#: js/misc/breakManager.js:1144
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "%s boyunca kımıldayın"
 
-#: js/misc/breakManager.js:1124
+#: js/misc/breakManager.js:1150
 msgid "Eyesight Break in Progress"
 msgstr "Göz Dinlendirme Molası Sürüyor"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1127
+#: js/misc/breakManager.js:1153
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "%s çevrenize bakın"
 
-#: js/misc/breakManager.js:1133
+#: js/misc/breakManager.js:1159
 msgid "Break in Progress"
 msgstr "Mola Sürüyor"
 
 # 3 dakika 45 saniye molanız kaldı
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1136
+#: js/misc/breakManager.js:1162
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "%s molanız kaldı"
 
-#: js/misc/breakManager.js:1175
+#: js/misc/breakManager.js:1201
 msgid "Time for a Movement Break"
 msgstr "Kımıldama Molası Zamanı"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1178
+#: js/misc/breakManager.js:1204
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "Aygıtınızdan uzaklaşın ve %s boyunca kımıldayın"
 
-#: js/misc/breakManager.js:1184
+#: js/misc/breakManager.js:1210
 msgid "Time for an Eyesight Break"
 msgstr "Göz Dinlendirme Molası Zamanı"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1187
+#: js/misc/breakManager.js:1213
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -812,54 +813,54 @@ msgid_plural ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
 msgstr[0] "Ekrana ara verin. En az %s boyunca en az 6 metre uzağa bakın"
 
-#: js/misc/breakManager.js:1193
+#: js/misc/breakManager.js:1219
 msgid "Time for a Break"
 msgstr "Mola Zamanı"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1196
+#: js/misc/breakManager.js:1222
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
 msgstr[0] "Mola zamanı. %s aygıttan uzaklaşın!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1218
+#: js/misc/breakManager.js:1244
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] "%s önce mola vermeliydiniz"
 
-#: js/misc/breakManager.js:1224
+#: js/misc/breakManager.js:1250
 msgid "Break Overdue"
 msgstr "Mola Gecikti"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1238
+#: js/misc/breakManager.js:1264
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "%s daha molanız var"
 
-#: js/misc/breakManager.js:1244
+#: js/misc/breakManager.js:1270
 msgid "Break Interrupted"
 msgstr "Mola Yarıda Kesildi"
 
-#: js/misc/breakManager.js:1315
+#: js/misc/breakManager.js:1341
 msgid "Delay"
 msgstr "Geciktir"
 
-#: js/misc/breakManager.js:1336 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1362 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Atla"
 
-#: js/misc/breakManager.js:1357
+#: js/misc/breakManager.js:1383
 msgid "Take"
 msgstr "Al"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1420
+#: js/misc/breakManager.js:1446
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -959,21 +960,25 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Ekran Döndürmeyi Kilitle"
 
-#: js/misc/timeLimitsManager.js:1043
+#: js/misc/timeLimitsManager.js:338
+msgid "GNOME needs to save screen time data"
+msgstr "GNOME’un ekran süresi verisini kaydetmesi gerekiyor"
+
+#: js/misc/timeLimitsManager.js:1102
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "%d Dakika İçinde Ekran Süresi Sınırı"
 
-#: js/misc/timeLimitsManager.js:1050
+#: js/misc/timeLimitsManager.js:1109
 msgid "Your screen time limit is approaching"
 msgstr "Ekran süresi sınırınız yaklaşıyor"
 
-#: js/misc/timeLimitsManager.js:1064
+#: js/misc/timeLimitsManager.js:1123
 msgid "Screen Time Limit Reached"
 msgstr "Ekran Süresi Sınırına Ulaşıldı"
 
-#: js/misc/timeLimitsManager.js:1065
+#: js/misc/timeLimitsManager.js:1124
 msgid "It’s time to stop using the device"
 msgstr "Aygıtı kullanmayı bırakmanın zamanı geldi"
 
@@ -1129,7 +1134,7 @@ msgstr "Reddet"
 msgid "Allow"
 msgstr "İzin Ver"
 
-#: js/ui/appDisplay.js:1770
+#: js/ui/appDisplay.js:1762
 msgid "Unnamed Folder"
 msgstr "Adsız Klasör"
 
@@ -1309,15 +1314,15 @@ msgstr "%V. Hafta"
 msgid "No Notifications"
 msgstr "Bildirim Yok"
 
-#: js/ui/calendar.js:830
+#: js/ui/calendar.js:832
 msgid "Do Not Disturb"
 msgstr "Rahatsız Etme"
 
-#: js/ui/calendar.js:851
+#: js/ui/calendar.js:853
 msgid "Clear"
 msgstr "Temizle"
 
-#: js/ui/calendar.js:855
+#: js/ui/calendar.js:857
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Tüm bildirimleri temizle"
@@ -1374,78 +1379,78 @@ msgstr "Disk artık kullanılabilir"
 msgid "Open with %s"
 msgstr "%s ile Aç"
 
-#: js/ui/components/networkAgent.js:95
+#: js/ui/components/networkAgent.js:96
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr ""
 "Diğer seçenek olarak, yönlendiricinizde “WPS” düğmesini kullanarak "
 "bağlayabilirsiniz"
 
-#: js/ui/components/networkAgent.js:107 js/ui/status/bluetooth.js:246
+#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "Bağlan"
 
-#: js/ui/components/networkAgent.js:222
+#: js/ui/components/networkAgent.js:223
 msgid "Key"
 msgstr "Anahtar"
 
-#: js/ui/components/networkAgent.js:273 js/ui/components/networkAgent.js:312
+#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
 msgid "Private key password"
 msgstr "Özel anahtar parolası"
 
-#: js/ui/components/networkAgent.js:306
+#: js/ui/components/networkAgent.js:307
 msgid "Identity"
 msgstr "Kimlik"
 
-#: js/ui/components/networkAgent.js:332
+#: js/ui/components/networkAgent.js:333
 msgid "Service"
 msgstr "Hizmet"
 
-#: js/ui/components/networkAgent.js:370 js/ui/components/networkAgent.js:406
-#: js/ui/components/networkAgent.js:743 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
 msgid "Authentication required"
 msgstr "Kimlik doğrulaması gerekli"
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:744
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr ""
 "“%s” kablosuz ağına erişmek için parola ya da şifreleme anahtarları gerekiyor"
 
-#: js/ui/components/networkAgent.js:375 js/ui/components/networkAgent.js:748
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
 msgstr "Kablolu 802.1X kimlik doğrulaması"
 
-#: js/ui/components/networkAgent.js:378
+#: js/ui/components/networkAgent.js:379
 msgid "Network name"
 msgstr "Ağ adı"
 
-#: js/ui/components/networkAgent.js:386 js/ui/components/networkAgent.js:752
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
 msgid "DSL authentication"
 msgstr "DSL kimlik doğrulama"
 
-#: js/ui/components/networkAgent.js:393 js/ui/components/networkAgent.js:757
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
 msgid "PIN code required"
 msgstr "PIN kodu gerekli"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:758
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Mobil geniş bant aygıtı için PIN kodu gerekli"
 
-#: js/ui/components/networkAgent.js:396
+#: js/ui/components/networkAgent.js:397
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:749
-#: js/ui/components/networkAgent.js:753 js/ui/components/networkAgent.js:765
-#: js/ui/components/networkAgent.js:769
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
 #, javascript-format
 msgid "A password is required to connect to “%s”"
 msgstr "“%s”e bağlanmak için parola gerekli"
 
-#: js/ui/components/networkAgent.js:768
+#: js/ui/components/networkAgent.js:770
 msgid "VPN password"
 msgstr "VPN parolası"
 
@@ -1904,7 +1909,7 @@ msgstr "Ekran Kilitleme, GNOME ekran yöneticisi gerektirir"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:376
+#: js/ui/messageList.js:409
 msgid "Unknown App"
 msgstr "Bilinmeyen Uygulama"
 
@@ -2113,7 +2118,7 @@ msgid "Screencast ended unexpectedly"
 msgstr "Ekran kaydı beklenmedik biçimde bitti"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2325
+#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2327
 msgid "Screenshot"
 msgstr "Ekran Görüntüsü"
 
@@ -2124,7 +2129,7 @@ msgstr "Videoyu görmek için buraya tıklayın."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2341
+#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2343
 msgid "Show in Files"
 msgstr "Dosyalar’da Göster"
 
@@ -2136,16 +2141,16 @@ msgid "Screenshot From %s"
 msgstr "Ekran Görüntüsü %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2331
+#: js/ui/screenshot.js:2333
 msgid "Screenshot captured"
 msgstr "Ekran görüntüsü yakalandı"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2333
+#: js/ui/screenshot.js:2335
 msgid "You can paste the image from the clipboard."
 msgstr "Resmi panodan yapıştırabilirsiniz."
 
-#: js/ui/screenshot.js:2389 js/ui/screenshot.js:2553
+#: js/ui/screenshot.js:2391 js/ui/screenshot.js:2555
 msgid "Screenshot taken"
 msgstr "Ekran görüntüsü alındı"
 
@@ -2832,21 +2837,21 @@ msgstr "Olası kipleri listele"
 msgid "Force animations to be enabled"
 msgstr "Canlandırmaları etkinleştirilmeye zorla"
 
-#: src/shell-app.c:253
+#: src/shell-app.c:267
 msgctxt "program"
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: src/shell-app.c:504
+#: src/shell-app.c:518
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "“%s” başlatılamadı"
 
-#: src/shell-keyring-prompt.c:752
+#: src/shell-keyring-prompt.c:779
 msgid "Passwords do not match"
 msgstr "Parolalar eşleşmiyor"
 
-#: src/shell-keyring-prompt.c:760
+#: src/shell-keyring-prompt.c:787
 msgid "Password cannot be blank"
 msgstr "Parola boş bırakılamaz"
 
@@ -2880,15 +2885,15 @@ msgstr ""
 "GNOME Uzantılar; uzantıları güncellemeyi, uzantı tercihlerini yapılandırmayı "
 "ve istenmeyen uzantıları kaldırmayı veya devre dışı bırakmanızı sağlar."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Ana Pencere"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Kullanılabilir Güncellemeler"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Arama Görünümü"
 
@@ -3055,11 +3060,11 @@ msgstr "Yüklü Uzantı Yok"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
-"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a> adresine göz atın."
+"Uzantı bulmak ve eklemek için <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a> adresine göz atın."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
