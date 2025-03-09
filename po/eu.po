@@ -11,8 +11,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-02-13 20:14+0000\n"
-"PO-Revision-Date: 2025-02-23 12:15+0100\n"
+"POT-Creation-Date: 2025-03-05 12:21+0000\n"
+"PO-Revision-Date: 2025-03-09 12:15+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -123,7 +123,8 @@ msgstr "Atera leiho baten pantaila-argazkia"
 msgid "Record a screencast interactively"
 msgstr "Grabatu pantailaren bideo labur bat modu dinamikoan"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1307
+#: data/50-gnome-shell-system.xml:6
+#: data/X-GNOME-Shell-System.directory.desktop.in:3 js/ui/messageTray.js:1307
 msgid "System"
 msgstr "Sistema"
 
@@ -521,17 +522,17 @@ msgid "Visit extension homepage"
 msgstr "Bisitatu hedapenaren webgunea"
 
 #: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:113
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
 #: js/ui/shellMountOperation.js:392
 msgid "Cancel"
 msgstr "Utzi"
 
-#: js/gdm/authPrompt.js:321 js/ui/components/networkAgent.js:213
-#: js/ui/components/networkAgent.js:233 js/ui/components/networkAgent.js:265
-#: js/ui/components/networkAgent.js:298 js/ui/components/networkAgent.js:337
-#: js/ui/components/networkAgent.js:350 js/ui/components/polkitAgent.js:286
+#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
 #: js/ui/shellMountOperation.js:332
 msgid "Password"
 msgstr "Pasahitza"
@@ -599,8 +600,8 @@ msgstr "Ez zaude zerrendan?"
 msgid "(e.g., user or %s)"
 msgstr "(adib., erabiltzailea edo %s)"
 
-#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:257
-#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:326
+#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Erabiltzaile-izena"
 
@@ -632,112 +633,112 @@ msgstr "(edo lerratu hatza irakurlean zehar)"
 msgid "(or place finger on reader)"
 msgstr "(edo kokatu hatza irakurlean)"
 
-#: js/misc/breakManager.js:764
+#: js/misc/breakManager.js:765
 msgid "Break complete sound"
 msgstr "Eten-amaieraren soinua"
 
-#: js/misc/breakManager.js:956
+#: js/misc/breakManager.js:982
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "segundo %d"
 msgstr[1] "%d segundo"
 
-#: js/misc/breakManager.js:962
+#: js/misc/breakManager.js:988
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "minutu %d"
-msgstr[1] "duela %d minutu"
+msgstr[1] "%d minutu"
 
-#: js/misc/breakManager.js:968
+#: js/misc/breakManager.js:994
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "ordu %d"
-msgstr[1] "duela %d ordu"
+msgstr[1] "%d ordu"
 
-#: js/misc/breakManager.js:974
+#: js/misc/breakManager.js:1000
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] "Egun %d"
-msgstr[1] "duela %d egun"
+msgstr[1] "%d egun"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1057
+#: js/misc/breakManager.js:1083
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "Eten baterako unea: %s"
 msgstr[1] "Eten baterako unea: %s"
 
-#: js/misc/breakManager.js:1065
+#: js/misc/breakManager.js:1091
 msgid "Movement Break Soon"
 msgstr "Mugitzeko etena laster"
 
-#: js/misc/breakManager.js:1068
+#: js/misc/breakManager.js:1094
 msgid "Eyesight Break Soon"
 msgstr "Ikusmena deskantsatzeko etena laster"
 
-#: js/misc/breakManager.js:1071
+#: js/misc/breakManager.js:1097
 msgid "Break Soon"
 msgstr "Etena laster"
 
-#: js/misc/breakManager.js:1115
+#: js/misc/breakManager.js:1141
 msgid "Movement Break in Progress"
 msgstr "Mugitzeko etena abian"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1118
+#: js/misc/breakManager.js:1144
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "Jarraitu mugitzen: %s"
 msgstr[1] "Jarraitu mugitzen: %s"
 
-#: js/misc/breakManager.js:1124
+#: js/misc/breakManager.js:1150
 msgid "Eyesight Break in Progress"
 msgstr "Ikusmena deskantsatzeko etena abian"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1127
+#: js/misc/breakManager.js:1153
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "Jarraitu beste toki batera begiratzen: %s"
 msgstr[1] "Jarraitu beste toki batera begiratzen: %s"
 
-#: js/misc/breakManager.js:1133
+#: js/misc/breakManager.js:1159
 msgid "Break in Progress"
 msgstr "Etena abian"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1136
+#: js/misc/breakManager.js:1162
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "%s etena amaitzeko"
 msgstr[1] "%s etena amaitzeko"
 
-#: js/misc/breakManager.js:1175
+#: js/misc/breakManager.js:1201
 msgid "Time for a Movement Break"
 msgstr "Mugitzeko etenaren ordua"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1178
+#: js/misc/breakManager.js:1204
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "Hartu atseden eta mugitu denbora batez: %s"
 msgstr[1] "Hartu atseden eta mugitu denbora batez: %s"
 
-#: js/misc/breakManager.js:1184
+#: js/misc/breakManager.js:1210
 msgid "Time for an Eyesight Break"
 msgstr "Ikusmena deskantsatzeko etenaren ordua"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1187
+#: js/misc/breakManager.js:1213
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -746,12 +747,12 @@ msgid_plural ""
 msgstr[0] "Hartu atseden, begiratu gutxienez 6 metroko distantziara: %s"
 msgstr[1] "Hartu atseden, begiratu gutxienez 6 metroko distantziara: %s"
 
-#: js/misc/breakManager.js:1193
+#: js/misc/breakManager.js:1219
 msgid "Time for a Break"
 msgstr "Etenaren ordua"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1196
+#: js/misc/breakManager.js:1222
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -759,44 +760,44 @@ msgstr[0] "Etenaren ordua da, urrundu gailutik: %s"
 msgstr[1] "Etenaren ordua da, urrundu gailutik: %s"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1218
+#: js/misc/breakManager.js:1244
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] "Etena egin behar zenuen duela %s"
 msgstr[1] "Etena egin behar zenuen duela %s"
 
-#: js/misc/breakManager.js:1224
+#: js/misc/breakManager.js:1250
 msgid "Break Overdue"
 msgstr "Etena atzeratuta"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1238
+#: js/misc/breakManager.js:1264
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "%s falta da etena amaitzeko"
 msgstr[1] "%s falta da etena amaitzeko"
 
-#: js/misc/breakManager.js:1244
+#: js/misc/breakManager.js:1270
 msgid "Break Interrupted"
 msgstr "Etena eten da"
 
-#: js/misc/breakManager.js:1315
+#: js/misc/breakManager.js:1341
 msgid "Delay"
 msgstr "Atzerapena"
 
-#: js/misc/breakManager.js:1336 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1362 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Saltatu"
 
-#: js/misc/breakManager.js:1357
+#: js/misc/breakManager.js:1383
 msgid "Take"
 msgstr "Hartu"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1420
+#: js/misc/breakManager.js:1446
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -895,22 +896,26 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Pantailaren blokeoaren biraketa"
 
-#: js/misc/timeLimitsManager.js:1043
+#: js/misc/timeLimitsManager.js:338
+msgid "GNOME needs to save screen time data"
+msgstr "GNOMEk pantaila-denboraren datuak gorde behar ditu"
+
+#: js/misc/timeLimitsManager.js:1102
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "Pantaila-denboraren muga minutu %dean"
 msgstr[1] "Pantaila-denboraren muga %d minututan"
 
-#: js/misc/timeLimitsManager.js:1050
+#: js/misc/timeLimitsManager.js:1109
 msgid "Your screen time limit is approaching"
 msgstr "Pantaila-denboraren muga iristen ari da"
 
-#: js/misc/timeLimitsManager.js:1064
+#: js/misc/timeLimitsManager.js:1123
 msgid "Screen Time Limit Reached"
 msgstr "Pantaila-denboraren muga iritsi da"
 
-#: js/misc/timeLimitsManager.js:1065
+#: js/misc/timeLimitsManager.js:1124
 msgid "It’s time to stop using the device"
 msgstr "Gailua erabiltzeari uzteko ordua da"
 
@@ -921,7 +926,7 @@ msgstr "Ez da komandoa aurkitu"
 #: js/misc/util.js:168
 #, javascript-format
 msgid "Execution of “%s” failed:"
-msgstr "Huts egin du '%s' exekutatzean:"
+msgstr "Huts egin du '%s' exekutatzeak:"
 
 #: js/misc/dateUtils.js:69
 msgid "Just now"
@@ -1069,7 +1074,7 @@ msgstr "Ukatu"
 msgid "Allow"
 msgstr "Baimendu"
 
-#: js/ui/appDisplay.js:1758
+#: js/ui/appDisplay.js:1762
 msgid "Unnamed Folder"
 msgstr "Izenik gabeko karpeta"
 
@@ -1190,7 +1195,7 @@ msgstr "A"
 #: js/ui/calendar.js:67
 msgctxt "grid thursday"
 msgid "T"
-msgstr "O"
+msgstr "A"
 
 #. Translators: Calendar grid abbreviation for Friday
 #: js/ui/calendar.js:69
@@ -1202,7 +1207,7 @@ msgstr "O"
 #: js/ui/calendar.js:71
 msgctxt "grid saturday"
 msgid "S"
-msgstr "L"
+msgstr "I"
 
 #. *
 #. * Translators: The header displaying just the month name
@@ -1313,75 +1318,75 @@ msgstr "Diskoa erabili daiteke"
 msgid "Open with %s"
 msgstr "Ireki honekin: %s"
 
-#: js/ui/components/networkAgent.js:95
+#: js/ui/components/networkAgent.js:96
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr "Bestela, zure routerreko \"WPS\" botoia sakatuta konektatu zaitezke"
 
-#: js/ui/components/networkAgent.js:107 js/ui/status/bluetooth.js:246
+#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "Konektatu"
 
-#: js/ui/components/networkAgent.js:222
+#: js/ui/components/networkAgent.js:223
 msgid "Key"
 msgstr "Gakoa"
 
-#: js/ui/components/networkAgent.js:273 js/ui/components/networkAgent.js:312
+#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
 msgid "Private key password"
 msgstr "Gako pribatuaren pasahitza"
 
-#: js/ui/components/networkAgent.js:306
+#: js/ui/components/networkAgent.js:307
 msgid "Identity"
 msgstr "Identitatea"
 
-#: js/ui/components/networkAgent.js:332
+#: js/ui/components/networkAgent.js:333
 msgid "Service"
 msgstr "Zerbitzua"
 
-#: js/ui/components/networkAgent.js:370 js/ui/components/networkAgent.js:406
-#: js/ui/components/networkAgent.js:743 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
 msgid "Authentication required"
 msgstr "Autentifikazioa behar da"
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:744
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr "Pasahitzak edo zifratze-gakoak behar dira haririk gabeko “%s” sarera sartzeko"
 
-#: js/ui/components/networkAgent.js:375 js/ui/components/networkAgent.js:748
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
 msgstr "Haridun 802.1X autentifikazioa"
 
-#: js/ui/components/networkAgent.js:378
+#: js/ui/components/networkAgent.js:379
 msgid "Network name"
 msgstr "Sarearen izena"
 
-#: js/ui/components/networkAgent.js:386 js/ui/components/networkAgent.js:752
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
 msgid "DSL authentication"
 msgstr "DSL autentifikazioa"
 
-#: js/ui/components/networkAgent.js:393 js/ui/components/networkAgent.js:757
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
 msgid "PIN code required"
 msgstr "PIN kodea behar da"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:758
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN kodea behar da banda zabal mugikorreko gailuarentzako"
 
-#: js/ui/components/networkAgent.js:396
+#: js/ui/components/networkAgent.js:397
 msgid "PIN"
 msgstr "PINa"
 
-#: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:749
-#: js/ui/components/networkAgent.js:753 js/ui/components/networkAgent.js:765
-#: js/ui/components/networkAgent.js:769
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
 #, javascript-format
 msgid "A password is required to connect to “%s”"
 msgstr "Pasahitza behar da '%s' sarearekin konektatzeko"
 
-#: js/ui/components/networkAgent.js:768
+#: js/ui/components/networkAgent.js:770
 msgid "VPN password"
 msgstr "VPN pasahitza"
 
@@ -2805,15 +2810,15 @@ msgid ""
 "preferences and removing or disabling unwanted extensions."
 msgstr "GNOME Hedapenak aplikazioak hedapenak eguneratzea, hedapenen hobespenak konfiguratzea eta gehiago nahi ez diren hedapenak kentzea edo desgaitzea ahalbidetzen du."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Leiho nagusia"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Eguneratze eskuragarriak"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Bilaketa-ikuspegia"
 
@@ -2873,7 +2878,7 @@ msgstr "_Kendu"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:158
 msgid "translator-credits"
-msgstr "translator-credits"
+msgstr "Asier Sarasua Garmendia <asiersarasua@ni.eus>"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:203
 #, javascript-format
