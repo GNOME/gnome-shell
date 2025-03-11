@@ -2115,6 +2115,9 @@ export const ScreenshotUI = GObject.registerClass({
                     logError(err, 'Error opening screencast');
                 }
             });
+
+            Main.overview.hide();
+            Main.panel.closeCalendar();
         }
 
         Main.messageTray.add(source);
@@ -2359,6 +2362,9 @@ function _storeScreenshot(bytes, pixbuf) {
             } catch (err) {
                 logError(err, 'Error opening screenshot');
             }
+
+            Main.overview.hide();
+            Main.panel.closeCalendar();
         });
     }
 
