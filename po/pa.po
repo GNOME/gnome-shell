@@ -6,16 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-02-26 16:22+0000\n"
-"PO-Revision-Date: 2025-03-01 11:42-0600\n"
-"Last-Translator: A S Alam <aman@punlinux.org>\n"
-"Language-Team: pa\n"
+"POT-Creation-Date: 2025-03-10 20:47+0000\n"
+"PO-Revision-Date: 2025-03-14 16:52-0500\n"
+"Last-Translator: A S Alam <aalam@punlinux.org>\n"
+"Language-Team: Punjabi <kde-i18n-doc@kde.org>\n"
 "Language: pa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.12.2\n"
+"X-Generator: Lokalize 24.12.3\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -556,7 +556,6 @@ msgid "Network Login"
 msgstr "ਨੈੱਟਵਰਕ ਲਾਗਇਨ"
 
 #: data/X-GNOME-Shell-Utilities.directory.desktop.in:3
-#| msgid "Activities"
 msgid "Utilities"
 msgstr "ਸਹੂਲਤਾਂ"
 
@@ -658,9 +657,6 @@ msgid "Session Already Running"
 msgstr "ਸ਼ੈਸ਼ਨ ਪਹਿਲਾਂ ਹੀ ਚੱਲ ਰਿਹਾ ਹੈ"
 
 #: js/gdm/loginDialog.js:456
-#| msgid ""
-#| "Force stopping will quit any running apps and processes, and could result "
-#| "in data loss."
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -716,119 +712,112 @@ msgstr "(ਜਾਂ ਰੀਡਰ ਉੱਤੇ ਉਂਗਲ ਘਸਾਓ)"
 msgid "(or place finger on reader)"
 msgstr "(ਜਾਂ ਰੀਡਰ ਉੱਤੇ ਉਂਗਲ ਰੱਖੋ)"
 
-#: js/misc/breakManager.js:764
+#: js/misc/breakManager.js:765
 msgid "Break complete sound"
 msgstr "ਬਰੇਕ ਪੂਰੀ ਹੋਣ ਲਈ ਆਵਾਜ਼"
 
-#: js/misc/breakManager.js:956
+#: js/misc/breakManager.js:982
 #, javascript-format
-#| msgid "Show seco_nds"
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d ਸਕਿੰਟ"
 msgstr[1] "%d ਸਕਿੰਟ"
 
-#: js/misc/breakManager.js:962
+#: js/misc/breakManager.js:988
 #, javascript-format
-#| msgid "%d minute ago"
-#| msgid_plural "%d minutes ago"
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d ਮਿੰਟ"
 msgstr[1] "%d ਮਿੰਟ"
 
-#: js/misc/breakManager.js:968
+#: js/misc/breakManager.js:994
 #, javascript-format
-#| msgid "%d hour ago"
-#| msgid_plural "%d hours ago"
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d ਘੰਟਾ"
 msgstr[1] "%d ਘੰਟੇ"
 
-#: js/misc/breakManager.js:974
+#: js/misc/breakManager.js:1000
 #, javascript-format
-#| msgid "%d day ago"
-#| msgid_plural "%d days ago"
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] "%d ਦਿਨ"
 msgstr[1] "%d ਦਿਨ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1057
+#: js/misc/breakManager.js:1083
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "%s ਵਿੱਚ ਬਰੇਕ ਲੈਣ ਦਾ ਸਮਾਂ ਹੋਵੇਗਾ"
 msgstr[1] "%s ਵਿੱਚ ਬਰੇਕ ਲੈਣ ਦਾ ਸਮਾਂ ਹੋਵੇਗਾ"
 
-#: js/misc/breakManager.js:1065
+#: js/misc/breakManager.js:1091
 msgid "Movement Break Soon"
 msgstr "ਸਰੀਰਿਕ ਹਿਲਜੁਲ ਲਈ ਬਰੇਕ ਛੇਤੀ ਹੀ"
 
-#: js/misc/breakManager.js:1068
+#: js/misc/breakManager.js:1094
 msgid "Eyesight Break Soon"
 msgstr "ਅੱਖ ਲਈ ਬਰੇਕ ਛੇਤੀ ਹੀ"
 
-#: js/misc/breakManager.js:1071
+#: js/misc/breakManager.js:1097
 msgid "Break Soon"
 msgstr "ਬਰੇਕ ਛੇਤੀ ਹੀ"
 
-#: js/misc/breakManager.js:1115
+#: js/misc/breakManager.js:1141
 msgid "Movement Break in Progress"
 msgstr "ਸਰੀਰਿਕ ਹਿਲਜੁਲ ਬਰੇਕ ਜਾਰੀ ਹੈ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1118
+#: js/misc/breakManager.js:1144
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "%s ਲਈ ਆਸੇ ਪਾਸੇ ਘੁੰਮਣਾ ਜਾਰੀ ਰੱਖੋ"
 msgstr[1] "%s ਲਈ ਆਸੇ ਪਾਸੇ ਘੁੰਮਣਾ ਜਾਰੀ ਰੱਖੋ"
 
-#: js/misc/breakManager.js:1124
+#: js/misc/breakManager.js:1150
 msgid "Eyesight Break in Progress"
 msgstr "ਅੱਖਾਂ ਲਈ ਬਰੇਕ ਜਾਰੀ ਹੈ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1127
+#: js/misc/breakManager.js:1153
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "%s ਲਈ ਲਗਾਤਾਰ ਦੂਰ ਵੇਖਣਾ ਜਾਰੀ ਰੱਖੋ"
 msgstr[1] "%s ਲਈ ਲਗਾਤਾਰ ਦੂਰ ਵੇਖਣਾ ਜਾਰੀ ਰੱਖੋ"
 
-#: js/misc/breakManager.js:1133
+#: js/misc/breakManager.js:1159
 msgid "Break in Progress"
 msgstr "ਬਰੇਕ ਚੱਲ ਰਹੀ ਹੈ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1136
+#: js/misc/breakManager.js:1162
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "ਤੁਹਾਡੀ ਬਰੇਕ ਲਈ %s ਬਾਕੀ ਹੈ"
 msgstr[1] "ਤੁਹਾਡੀ ਬਰੇਕ ਲਈ %s ਬਾਕੀ ਹਨ"
 
-#: js/misc/breakManager.js:1175
+#: js/misc/breakManager.js:1201
 msgid "Time for a Movement Break"
 msgstr "ਸਰੀਰਿਕ ਹਿਲਜੁਲ ਬਰੇਕ ਦਾ ਸਮਾਂ ਹੈ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1178
+#: js/misc/breakManager.js:1204
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "ਡਿਵਾਈਸ ਤੋਂ ਬਰੇਕ ਲਵੋ ਅਤੇ %s ਲਈ ਆਸੇ ਪਾਸੇ ਜਾਓ"
 msgstr[1] "ਡਿਵਾਈਸ ਤੋਂ ਬਰੇਕ ਲਵੋ ਅਤੇ %s ਲਈ ਆਸੇ ਪਾਸੇ ਜਾਓ"
 
-#: js/misc/breakManager.js:1184
+#: js/misc/breakManager.js:1210
 msgid "Time for an Eyesight Break"
 msgstr "ਅੱਖਾਂ ਦੀ ਬਰੇਕ ਲਈ ਸਮਾਂ ਹੈ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1187
+#: js/misc/breakManager.js:1213
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -837,12 +826,12 @@ msgid_plural ""
 msgstr[0] "ਸਕਰੀਨ ਤੋਂ ਬਰੇਕ ਲਵੋ। ਘੱਟੋ-ਘੱਟ %s ਲਈ 6 ਮੀਟਰ ਦੂਰ ਵੇਖੋ"
 msgstr[1] "ਸਕਰੀਨ ਤੋਂ ਬਰੇਕ ਲਵੋ। ਘੱਟੋ-ਘੱਟ %s ਲਈ 6 ਮੀਟਰ ਦੂਰ ਵੇਖੋ"
 
-#: js/misc/breakManager.js:1193
+#: js/misc/breakManager.js:1219
 msgid "Time for a Break"
 msgstr "ਬਰੇਕ ਲਈ ਸਮਾਂ ਹੈ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1196
+#: js/misc/breakManager.js:1222
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -850,45 +839,44 @@ msgstr[0] "ਇਹ ਬਰੇਕ ਲੈਣ ਦਾ ਸਮਾਂ ਹੈ। %s ਲਈ
 msgstr[1] "ਇਹ ਬਰੇਕ ਲੈਣ ਦਾ ਸਮਾਂ ਹੈ। %s ਲਈ ਡਿਵਾਈਸ ਨੂੰ ਛੱਡੋ!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1218
+#: js/misc/breakManager.js:1244
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] "ਤੁਸੀਂ %s ਪਹਿਲਾਂ ਬਰੇਕ ਲੈਣੀ ਸੀ"
 msgstr[1] "ਤੁਸੀਂ %s ਪਹਿਲਾਂ ਬਰੇਕ ਲੈਣੀ ਸੀ"
 
-#: js/misc/breakManager.js:1224
+#: js/misc/breakManager.js:1250
 msgid "Break Overdue"
 msgstr "ਬਰੇਕ ਲੈਣ ਵਾਲੀ ਰਹਿੰਦੀ ਹੈ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1238
+#: js/misc/breakManager.js:1264
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "ਤੁਹਾਡੀ ਬਰੇਕ ਲਈ %s ਬਾਕੀ ਰਹਿੰਦਾ ਹੈ"
 msgstr[1] "ਤੁਹਾਡੀ ਬਰੇਕ ਲਈ %s ਬਾਕੀ ਰਹਿੰਦੇ ਹਨ"
 
-#: js/misc/breakManager.js:1244
+#: js/misc/breakManager.js:1270
 msgid "Break Interrupted"
 msgstr "ਬਰੇਕ 'ਚ ਰੁਕਾਵਟ ਪਾਈ"
 
-#: js/misc/breakManager.js:1315
+#: js/misc/breakManager.js:1341
 msgid "Delay"
 msgstr "ਦੇਰੀ"
 
-#: js/misc/breakManager.js:1336 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1362 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "ਛੱਡੋ"
 
-#: js/misc/breakManager.js:1357
-#| msgid "Take Tour"
+#: js/misc/breakManager.js:1383
 msgid "Take"
 msgstr "ਲਵੋ"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1420
+#: js/misc/breakManager.js:1446
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -987,22 +975,27 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "ਸਕਰੀਨ ਘੁੰਮਾਉਣਾ ਲਾਕ ਹੈ"
 
-#: js/misc/timeLimitsManager.js:1043
+#: js/misc/timeLimitsManager.js:338
+#| msgid "GNOME needs to lock the screen"
+msgid "GNOME needs to save screen time data"
+msgstr "ਗਨੋਮ ਨੂੰ ਸਕਰੀਨ ਸਮਾਂ ਡਾਟੇ ਨੂੰ ਸੰਭਾਲਣ ਦੀ ਲੋੜ ਹੈ"
+
+#: js/misc/timeLimitsManager.js:1102
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "ਸਕਰੀਨ ਸਮਾਂ ਲਿਮਟ %d ਮਿੰਟ ਵਿੱਚ ਹੈ"
 msgstr[1] "ਸਕਰੀਨ ਸਮਾਂ ਲਿਮਟ %d ਮਿੰਟਾਂ ਵਿੱਚ ਹੈ"
 
-#: js/misc/timeLimitsManager.js:1050
+#: js/misc/timeLimitsManager.js:1109
 msgid "Your screen time limit is approaching"
 msgstr "ਤੁਹਾਡੇ ਸਕਰੀਨ ਸਮੇਂ ਦੀ ਲਿਮਟ ਅੱਪੜੀ ਹੈ"
 
-#: js/misc/timeLimitsManager.js:1064
+#: js/misc/timeLimitsManager.js:1123
 msgid "Screen Time Limit Reached"
 msgstr "ਸਕਰੀਨ ਸਮਾਂ ਲਿਮਟ ਪੂਰੀ ਹੋਈ"
 
-#: js/misc/timeLimitsManager.js:1065
+#: js/misc/timeLimitsManager.js:1124
 msgid "It’s time to stop using the device"
 msgstr "ਹੁਣ ਡਿਵਾਈਸ ਨੂੰ ਵਰਤਣਾ ਰੋਕਣ ਦਾ ਸਮਾਂ ਹੈ"
 
@@ -1360,14 +1353,10 @@ msgstr "ਸਭ ਸੂਚਨਾਵਾਂ ਨੂੰ ਮਿਟਾਓ"
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:42
 #, javascript-format
-#| msgid "“%s” is not responding."
 msgid "“%s” Is Not Responding"
 msgstr "“%s” ਜਵਾਬ ਨਹੀਂ ਦਿੰਦਾ ਹੈ"
 
 #: js/ui/closeDialog.js:43
-#| msgid ""
-#| "You may choose to wait a short while for it to continue or force the app "
-#| "to quit entirely."
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
 "quit entirely"
@@ -1401,8 +1390,6 @@ msgstr "ਇੰਸਟਾਲ ਕੀਤਾ udisks ਵਰਜ਼ਨ PIM ਸੈਟਿੰ�
 #. Translators: %s is the name of a partition on a external drive
 #: js/ui/components/autorunManager.js:189
 #, javascript-format
-#| msgid "%d connected"
-#| msgid_plural "%d connected"
 msgid "“%s” connected"
 msgstr "“%s” ਕਨੈਕਟ ਹੈ"
 
@@ -1416,8 +1403,6 @@ msgid "Open with %s"
 msgstr "%s ਨਾਲ ਖੋਲ੍ਹੋ"
 
 #: js/ui/components/networkAgent.js:96
-#| msgid ""
-#| "Alternatively you can connect by pushing the “WPS” button on your router."
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr ""
@@ -1451,9 +1436,6 @@ msgstr "ਪਰਮਾਣੀਕਰਣ ਚਾਹੀਦਾ ਹੈ"
 
 #: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
 #, javascript-format
-#| msgid ""
-#| "Passwords or encryption keys are required to access the wireless network "
-#| "“%s”."
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr "ਬੇਤਾਰ ਨੈੱਟਵਰਕ “%s” ਵਰਤਣ ਲਈ ਪਾਸਵਰਡ ਜਾਂ ਇੰਕ੍ਰਿਪਸ਼ਨ ਕੁੰਜੀਆਂ ਦੀ ਲੋੜ ਹੈ"
@@ -1486,7 +1468,6 @@ msgstr "ਪਿੰਨ"
 #: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
 #: js/ui/components/networkAgent.js:771
 #, javascript-format
-#| msgid "A password is required to connect to “%s”."
 msgid "A password is required to connect to “%s”"
 msgstr "“%s” ਨਾਲ ਕਨੈਕਟ ਹੋਣ ਲਈ ਪਾਸਵਰਡ ਦੀ ਲੋੜ ਹੈ"
 
@@ -1585,7 +1566,6 @@ msgid "No Events"
 msgstr "ਕੋਈ ਘਟਨਾ ਨਹੀਂ"
 
 #: js/ui/dateMenu.js:411
-#| msgid "Add world clocks…"
 msgid "Add World Clocks…"
 msgstr "…ਸੰਸਾਰ ਘੜੀਆਂ ਨੂੰ ਜੋੜੋ"
 
@@ -1598,12 +1578,10 @@ msgid "Loading…"
 msgstr "…ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
 #: js/ui/dateMenu.js:712
-#| msgid "Go online for weather information"
 msgid "Go Online for Weather Information"
 msgstr "ਮੌਸਮ ਦੀ ਜਾਣਕਾਰੀ ਲਈ ਆਨਲਾਈਨ ਜਾਓ"
 
 #: js/ui/dateMenu.js:714
-#| msgid "Weather information is currently unavailable"
 msgid "Weather Information Unavailable"
 msgstr "ਮੌਸਮ ਦੀ ਜਾਣਕਾਰੀ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ"
 
@@ -1612,7 +1590,6 @@ msgid "Weather"
 msgstr "ਮੌਸਮ"
 
 #: js/ui/dateMenu.js:726
-#| msgid "Select weather location…"
 msgid "Select Weather Location…"
 msgstr "…ਮੌਸਮ ਦੇ ਟਿਕਾਣਾ ਨੂੰ ਚੁਣੋ"
 
@@ -1629,8 +1606,6 @@ msgstr "ਲਾਗਆਉਟ"
 
 #: js/ui/endSessionDialog.js:51
 #, javascript-format
-#| msgid "%s will be logged out automatically in %d second."
-#| msgid_plural "%s will be logged out automatically in %d seconds."
 msgid "%s will be logged out automatically in %d second"
 msgid_plural "%s will be logged out automatically in %d seconds"
 msgstr[0] "%s ਨੂੰ %d ਸਕਿੰਟ ਵਿੱਚ ਆਪਣੇ-ਆਪ ਹੀ ਲਾਗ ਆਉਟ ਕੀਤਾ ਜਾਵੇਗਾ"
@@ -1638,8 +1613,6 @@ msgstr[1] "%s ਨੂੰ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਆਪਣੇ-ਆ�
 
 #: js/ui/endSessionDialog.js:57
 #, javascript-format
-#| msgid "You will be logged out automatically in %d second."
-#| msgid_plural "You will be logged out automatically in %d seconds."
 msgid "You will be logged out automatically in %d second"
 msgid_plural "You will be logged out automatically in %d seconds"
 msgstr[0] "ਤੁਹਾਨੂੰ %d ਸਕਿੰਟ ਵਿੱਚ ਆਪਣੇ-ਆਪ ਹੀ ਲਾਗਆਉਟ ਕਰ ਦਿੱਤਾ ਜਾਵੇਗਾ"
@@ -1662,8 +1635,6 @@ msgstr "ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰੋ ਅਤੇ ਬੰਦ ਕ�
 
 #: js/ui/endSessionDialog.js:74
 #, javascript-format
-#| msgid "The system will power off automatically in %d second."
-#| msgid_plural "The system will power off automatically in %d seconds."
 msgid "The system will power off automatically in %d second"
 msgid_plural "The system will power off automatically in %d seconds"
 msgstr[0] "ਸਿਸਟਮ ਨੂੰ ਆਪਣੇ-ਆਪ ਹੀ %d ਸਕਿੰਟ ਵਿੱਚ ਬੰਦ ਕੀਤਾ ਜਾਵੇਗਾ"
@@ -1691,8 +1662,6 @@ msgstr "ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰੋ ਅਤੇ ਮੁੜ-ਚ�
 
 #: js/ui/endSessionDialog.js:93
 #, javascript-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will restart automatically in %d second"
 msgid_plural "The system will restart automatically in %d seconds"
 msgstr[0] "ਸਿਸਟਮ ਨੂੰ ਆਪਣੇ-ਆਪ ਹੀ %d ਸਕਿੰਟ ਵਿੱਚ ਮੁੜ-ਚਾਲੂ ਕੀਤਾ ਜਾਵੇਗਾ"
@@ -1710,10 +1679,6 @@ msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ ਤੇ ਅੱਪਡੇਟ ਇੰਸਟ�
 
 #: js/ui/endSessionDialog.js:112
 #, javascript-format
-#| msgid ""
-#| "The system will automatically restart and install updates in %d second."
-#| msgid_plural ""
-#| "The system will automatically restart and install updates in %d seconds."
 msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds"
@@ -1756,7 +1721,6 @@ msgstr ""
 "ਹੈ: ਪੱਕਾ ਕਰੋ ਕਿ ਤੁਸੀਂ ਬੈਕਅੱਪ ਲੈ ਲਿਆ ਹੈ ਅਤੇ ਕੰਪਿਊਟਰ ਦਾ ਪਲੱਗ ਲੱਗਾ ਹੈ।"
 
 #: js/ui/endSessionDialog.js:283
-#| msgid "Low battery power: please plug in before installing updates."
 msgid "Low battery power: please plug in before installing updates"
 msgstr "ਬੈਟਰੀ ਊਰਜਾ ਘੱਟ ਹੈ: ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਪਲੱਗ ਲਾਓ ਜੀ"
 
@@ -1803,7 +1767,6 @@ msgid "Extension Updates Available"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅੱਪਡੇਟ ਉਪਲਬਧ ਹਨ"
 
 #: js/ui/extensionSystem.js:355
-#| msgid "Extension updates are ready to be installed."
 msgid "Extension updates are ready to be installed"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰਨ ਲਈ ਤਿਆਰ ਹਨ"
 
@@ -1824,7 +1787,6 @@ msgstr "ਐਪ ਸ਼ਾਰਟਕੱਟਾਂ ਲਈ ਰੁਕਾਵਟ ਚਾ�
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:81
 #, javascript-format
-#| msgid "You can restore shortcuts by pressing %s."
 msgid "You can restore shortcuts by pressing %s"
 msgstr "ਤੁਸੀਂ ਸ਼ਾਰਟਕੱਟਾਂ ਨੂੰ %s ਦਬਾ ਕੇ ਬਹਾਲ ਕਰ ਸਕਦੇ ਹੋ"
 
@@ -1900,7 +1862,6 @@ msgstr "ਕੋਈ ਇਕਸਟੈਨਸ਼ਨ ਇੰਸਟਾਲ ਨਹੀਂ �
 #. Translators: argument is an extension UUID.
 #: js/ui/lookingGlass.js:805
 #, javascript-format
-#| msgid "%s has not emitted any errors."
 msgid "%s has not emitted any errors"
 msgstr "%s ਨੇ ਕੋਈ ਗਲਤੀ ਨਹੀਂ ਦਿੱਤੀ"
 
@@ -1974,7 +1935,6 @@ msgid "Screen Lock disabled"
 msgstr "ਸਕਰੀਨ ਲਾਕ ਅਸਮਰੱਥ ਹੈ"
 
 #: js/ui/main.js:416
-#| msgid "Screen Locking requires the GNOME display manager."
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "ਸਕਰੀਨ ਲਾਕ ਕਰਨ ਲਈ ਗਨੋਮ ਡਿਸਪਲੇਅ ਮੈਨੇਜਰ ਚਾਹੀਦਾ ਹੈ"
 
@@ -2158,7 +2118,6 @@ msgstr "ਸਕਰੀਨਕਾਸਟ"
 #. * "Screencast From 07-17-2013 10:00:46 PM"
 #: js/ui/screenshot.js:1999
 #, no-c-format
-#| msgid "Screencast from %d %t"
 msgid "Screencast From %d %t"
 msgstr "%d %t ਤੋਂ ਸਕਰੀਨਕਾਸਟ"
 
@@ -2209,7 +2168,6 @@ msgstr "ਫ਼ਾਇਲਾਂ ਵਿੱਚ ਵੇਖੋ"
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
 #: js/ui/screenshot.js:2285
 #, javascript-format
-#| msgid "Screenshot from %s"
 msgid "Screenshot From %s"
 msgstr "%s ਤੋਂ ਸਕਰੀਨਸ਼ਾਟ"
 
@@ -2232,7 +2190,6 @@ msgid "Searching…"
 msgstr "…ਖੋਜ ਜਾਰੀ ਹੈ"
 
 #: js/ui/search.js:834
-#| msgid "No results."
 msgid "No results"
 msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ"
 
@@ -2265,7 +2222,6 @@ msgid "Hide Text"
 msgstr "ਟੈਕਸਟ ਓਹਲੇ"
 
 #: js/ui/shellEntry.js:174
-#| msgid "Caps lock is on."
 msgid "Caps lock is on"
 msgstr "ਕੈਪਸ ਲਾਕ ਚਾਲੂ ਹੈ"
 
@@ -2284,17 +2240,12 @@ msgstr "ਕੁੰਜੀ-ਫਾਇਲਾਂ ਵਰਤਦਾ ਹੈ"
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:300
 #, javascript-format
-#| msgid ""
-#| "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
 msgstr ""
 "ਵਾਲੀਅਮ, ਜੋ ਕਿ keyfiles ਵਰਤਦਾ ਹੈ, ਨੂੰ ਅਣ-ਲਾਕ ਕਰਨ ਲਈ <i>%s</i> ਸਹੂਲਤ ਨੂੰ ਵਰਤੋਂ"
 
 #: js/ui/shellMountOperation.js:304
-#| msgid ""
-#| "You need an external utility like <i>Disks</i> to unlock a volume that "
-#| "uses keyfiles."
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles"
@@ -2322,7 +2273,6 @@ msgid "Open %s"
 msgstr "%s ਨੂੰ ਖੋਲ੍ਹੋ"
 
 #: js/ui/shellMountOperation.js:436
-#| msgid "The PIM must be a number or empty."
 msgid "The PIM must be a number or empty"
 msgstr "PIM ਨੰਬਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ ਜਾਂ ਖਾਲੀ ਨਹੀਂ ਹੈ"
 
@@ -2505,8 +2455,6 @@ msgid "The app %s wants to access your location"
 msgstr "ਐਪ %s ਨੂੰ ਆਪਣੇ ਟਿਕਾਣੇ ਲਈ ਪਹੁੰਚ ਚਾਹੁੰਦੀ ਹੈ"
 
 #: js/ui/status/location.js:349
-#| msgid ""
-#| "Location access can be changed at any time from the privacy settings."
 msgid "Location access can be changed at any time from the privacy settings"
 msgstr ""
 "ਟਿਕਾਣਾ ਪਹੁੰਚ ਨੂੰ ਪਰਦੇਦਾਰੀ ਸੈਟਿੰਗਾਂ ਵਿੱਚੋਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਬਦਲਿਆ ਜਾ ਸਕਦਾ ਹੈ"
@@ -2602,7 +2550,6 @@ msgid "Mobile"
 msgstr "ਮੋਬਾਈਲ"
 
 #: js/ui/status/network.js:1973
-#| msgid "Wi-Fi Networks"
 msgid "Sign Into Wi–Fi Network"
 msgstr "ਵਾਈ-ਫਾਈ ਨੈੱਟਵਰਕ ਲਈ ਸਾਈਨ ਇਨ ਕਰੋ"
 
@@ -2701,9 +2648,6 @@ msgid "Unauthorized Thunderbolt device"
 msgstr "ਨਾ-ਪ੍ਰਮਾਣਿਤ ਕੀਤਾ ਥੰਡਰਬੋਲਟ ਯੰਤਰ"
 
 #: js/ui/status/thunderbolt.js:313
-#| msgid ""
-#| "New device has been detected and needs to be authorized by an "
-#| "administrator."
 msgid ""
 "New device has been detected and needs to be authorized by an administrator"
 msgstr ""
@@ -2804,7 +2748,6 @@ msgid "Welcome to %s"
 msgstr "%s ਲਈ ਜੀ ਆਇਆਂ ਨੂੰ"
 
 #: js/ui/welcomeDialog.js:52
-#| msgid "If you want to learn your way around, check out the tour."
 msgid "If you want to learn your way around, check out the tour"
 msgstr "ਜੇ ਤੁਸੀਂ ਕੁਝ ਜਾਣਕਾਰੀ ਹਾਸਲ ਕਰਨੀ ਚਾਹੁੰਦੇ ਹੋ ਤਾਂ ਟੂਰ ਲਵੋ"
 
@@ -2846,7 +2789,6 @@ msgstr "%d × %d"
 
 #. Translators: entry in the window right click menu.
 #: js/ui/windowMenu.js:28
-#| msgid "Take Screenshot"
 msgctxt "window-menu"
 msgid "Take Screenshot"
 msgstr "ਸਕਰੀਨਸ਼ਾਟ ਲਵੋ"
@@ -2946,7 +2888,6 @@ msgid "Failed to launch “%s”"
 msgstr "“%s” ਚਲਾਉਣ ਲਈ ਫੇਲ੍ਹ"
 
 #: src/shell-keyring-prompt.c:779
-#| msgid "Passwords do not match."
 msgid "Passwords do not match"
 msgstr "ਪਾਸਵਰਡ ਮਿਲਦੇ ਨਹੀਂ ਹਨ"
 
@@ -2985,15 +2926,15 @@ msgstr ""
 "ੇਲੋੜੀਆਂ "
 "ਇਕਸਟੈਨਸ਼ਨਾਂ ਹਟਾਉਣ ਜਾਂ ਅਸਮਰੱਥ ਕਰਨ ਦੇ ਕੰਮ ਆਉਂਦੀਆਂ ਹਨ।"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "ਮੁੱਖ ਵਿੰਡੋ"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "ਅੱਪਡੇਟ ਮੌਜੂਦ ਹਨ"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "ਖੋਜ ਝਲਕ"
 
@@ -3156,7 +3097,6 @@ msgid "No Results Found"
 msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਲੱਭਾ"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:253
-#| msgid "Try a different search."
 msgid "Try a different search"
 msgstr "ਵੱਖਰੀ ਖੋਜ ਨਾਲ ਕੋਸ਼ਿਸ਼ ਕਰੋ"
 
