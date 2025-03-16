@@ -1,3 +1,26 @@
+48.0
+====
+* Fix ibus candidate popup position [Peng; !3659]
+* breakManager: Allow break to be taken or delayed when overdue [Philip; !3656]
+* Fix audio selection dialog in light style [Laria; !3665]
+* Misc. bug fixes and cleanups [Philip, Simon, Daniel, Florian, Jonas; !3655,
+  !3662, !3664, !3669, !3667, !3670]
+
+Contributors:
+  Laria Carolin Chabowski, Simon McVittie, Florian Müllner, Daniel van Vugt,
+  Philip Withnall, Peng Wu, Jonas Ådahl
+
+Translators:
+  Yuri Chornoivan [uk], Alexander Shopov [bg], Daniel Rusek [cs],
+  Luming Zh [zh_CN], Changwoo Ryu [ko], Artur S0 [ru], Ekaterine Papava [ka],
+  Martin [sl], Daniel Mustieles [es], Artur Miranda [pt_BR], Hugo Carvalho [pt],
+  Piotr Drąg [pl], Balázs Úr [hu], Vasil Pupkin [be], Quentin PAGÈS [oc],
+  Jordi Mas i Hernandez [ca], Fran Dieguez [gl], Aurimas Černius [lt],
+  Ask Hjorth Larsen [da], Asier Saratsua Garmendia [eu], Anders Jonsson [sv],
+  Sabri Ünal [tr], Yosef Or Boczko [he], Andika Triwidada [id],
+  Brage Fuglseth [nb], A S Alam [pa], Bruce Cowan [en_GB], Cas Pascal [vi],
+  Irénée THIRION [fr]
+
 48.rc
 =====
 * Fix integer scaling for spinner [Daniel v. V.; !3634]

@@ -55,9 +55,7 @@
   </description>
 
   <releases>
-    <release version="48.rc" type="development" date="2025-03-02"/>
-    <release version="48.beta" type="development" date="2025-02-04"/>
-    <release version="48.alpha" type="development" date="2025-01-13">
+    <release version="48.0" date="2025-03-16">
       <description>
         <p>Allow closing window with shortcut</p>
       </description>
