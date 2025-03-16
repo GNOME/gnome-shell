@@ -3,12 +3,12 @@ include:
     file: 'templates/default-rules.yml'
   - project: 'GNOME/citemplates'
     file: 'flatpak/flatpak_ci_initiative.yml'
-  - project: 'Infrastructure/freedesktop-ci-templates'
+  - project: 'alatiera/freedesktop-ci-templates'
     file: 'templates/fedora.yml'
-    ref: '057b052e682d8e5a20c1eb2dd60d5b87d2b56856'
-  - project: 'Infrastructure/freedesktop-ci-templates'
+    ref: 'alatiera/cbuild-hardcoded'
+  - project: 'alatiera/freedesktop-ci-templates'
     file: 'templates/ci-fairy.yml'
-    ref: 'bc70242ffb8402243e934659ecc1a2d1c89eca2b'
+    ref: 'alatiera/cbuild-hardcoded'
   - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
     inputs:
       job-stage: deploy
