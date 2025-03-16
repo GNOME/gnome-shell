@@ -127,9 +127,14 @@ check-merge-request:
     reports:
       junit: check-merge-request-report.xml
 
+.dummy-container-build:
+  script:
+    - echo Dummy container build
+
 build-fedora-container:
   extends:
-    - .fdo.container-build@fedora@x86_64
+    #- .fdo.container-build@fedora@x86_64
+    - .dummy-container-build
     - .gnome-shell.fedora
   stage: prep
 
