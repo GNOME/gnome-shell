@@ -248,8 +248,10 @@ class BluetoothDeviceItem extends PopupMenu.PopupBaseMenuItem {
 
         this.connect('destroy', () => (this._spinner = null));
         this.connect('activate', () => this._toggleConnected().catch(logError));
-        this._device.connect('notify::alias', () => this._updateAccessibleName());
-        this._device.connect('notify::connected', () => this._updateAccessibleName());
+        this._device.connectObject(
+            'notify::alias', () => this._updateAccessibleName(),
+            'notify::connected', () => this._updateAccessibleName(),
+            this);
         this._updateAccessibleName();
     }
 
