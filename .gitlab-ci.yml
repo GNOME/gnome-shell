@@ -25,6 +25,7 @@ build-sysext:
     - x86_64_v3
   before_script:
     - .gitlab-ci/install-gnomeos-sysext-dependencies.sh $CI_PROJECT_DIR/extension
+  when: manual
 
 stages:
   - pre-review
