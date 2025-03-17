@@ -1,0 +1,3715 @@
+# Ihar Hrachyshka <ihar.hrachyshka@gmail.com>, 2011, 2013, 2014.
+# Kasia Bondarava <kasia.bondarava@gmail.com>, 2012.
+# Yuras Shumovich <shumovichy@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell.master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
+"POT-Creation-Date: 2025-03-16 14:35+0000\n"
+"PO-Revision-Date: 2025-03-08 00:26+0300\n"
+"Last-Translator: Kanviertar Tradycyjny\n"
+"Language-Team: i18n@mova.org <i18n@mova.org>\n"
+"Language: be@latin\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Poedit 3.5\n"
+"X-Project-Style: gnome\n"
+
+#: data/50-gnome-shell-launchers.xml:6
+msgid "Launchers"
+msgstr "Zapusk prahram"
+
+#: data/50-gnome-shell-launchers.xml:10
+msgid "Activate pinned app 1"
+msgstr "Aktyvavać prymacavanuju prahramu 1"
+
+#: data/50-gnome-shell-launchers.xml:14
+msgid "Activate pinned app 2"
+msgstr "Aktyvavać prymacavanuju prahramu 2"
+
+#: data/50-gnome-shell-launchers.xml:18
+msgid "Activate pinned app 3"
+msgstr "Aktyvavać prymacavanuju prahramu 3"
+
+#: data/50-gnome-shell-launchers.xml:22
+msgid "Activate pinned app 4"
+msgstr "Aktyvavać prymacavanuju prahramu 4"
+
+#: data/50-gnome-shell-launchers.xml:26
+msgid "Activate pinned app 5"
+msgstr "Aktyvavać prymacavanuju prahramu 5"
+
+#: data/50-gnome-shell-launchers.xml:30
+msgid "Activate pinned app 6"
+msgstr "Aktyvavać prymacavanuju prahramu 6"
+
+#: data/50-gnome-shell-launchers.xml:34
+msgid "Activate pinned app 7"
+msgstr "Aktyvavać prymacavanuju prahramu 7"
+
+#: data/50-gnome-shell-launchers.xml:38
+msgid "Activate pinned app 8"
+msgstr "Aktyvavać prymacavanuju prahramu 8"
+
+#: data/50-gnome-shell-launchers.xml:42
+msgid "Activate pinned app 9"
+msgstr "Aktyvavać prymacavanuju prahramu 9"
+
+#: data/50-gnome-shell-launchers.xml:46
+msgid "Open new window of pinned app 1"
+msgstr "Adkryć novaje akno prymacavanaj prahramy 1"
+
+#: data/50-gnome-shell-launchers.xml:50
+msgid "Open new window of pinned app 2"
+msgstr "Adkryć novaje akno prymacavanaj prahramy 2"
+
+#: data/50-gnome-shell-launchers.xml:54
+msgid "Open new window of pinned app 3"
+msgstr "Adkryć novaje akno prymacavanaj prahramy 3"
+
+#: data/50-gnome-shell-launchers.xml:58
+msgid "Open new window of pinned app 4"
+msgstr "Adkryć novaje akno prymacavanaj prahramy 4"
+
+#: data/50-gnome-shell-launchers.xml:62
+msgid "Open new window of pinned app 5"
+msgstr "Adkryć novaje akno prymacavanaj prahramy 5"
+
+#: data/50-gnome-shell-launchers.xml:66
+msgid "Open new window of pinned app 6"
+msgstr "Adkryć novaje akno prymacavanaj prahramy 6"
+
+#: data/50-gnome-shell-launchers.xml:70
+msgid "Open new window of pinned app 7"
+msgstr "Adkryć novaje akno prymacavanaj prahramy 7"
+
+#: data/50-gnome-shell-launchers.xml:74
+msgid "Open new window of pinned app 8"
+msgstr "Adkryć novaje akno prymacavanaj prahramy 8"
+
+#: data/50-gnome-shell-launchers.xml:78
+msgid "Open new window of pinned app 9"
+msgstr "Adkryć novaje akno prymacavanaj prahramy 9"
+
+#. Translators: name of the folder under ~/Pictures for screenshots.
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2275
+msgid "Screenshots"
+msgstr "Zdymki ekrana"
+
+#: data/50-gnome-shell-screenshots.xml:9
+#: data/org.gnome.shell.gschema.xml.in:267
+msgid "Take a screenshot interactively"
+msgstr "Zrabić zdymak ekrana interaktyŭna"
+
+#: data/50-gnome-shell-screenshots.xml:12
+#: data/org.gnome.shell.gschema.xml.in:279
+msgid "Take a screenshot"
+msgstr "Zrabić zdymak ekrana"
+
+#: data/50-gnome-shell-screenshots.xml:15
+#: data/org.gnome.shell.gschema.xml.in:275
+msgid "Take a screenshot of a window"
+msgstr "Zrabić zdymak akna"
+
+#: data/50-gnome-shell-screenshots.xml:18
+#: data/org.gnome.shell.gschema.xml.in:271
+msgid "Record a screencast interactively"
+msgstr "Zrabić zapis ekrana interaktyŭna"
+
+#: data/50-gnome-shell-system.xml:6
+#: data/X-GNOME-Shell-System.directory.desktop.in:3 js/ui/messageTray.js:1307
+msgid "System"
+msgstr "Sistema"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "Pakazać spis apaviaščenniaŭ"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Open the quick settings menu"
+msgstr "Adkryć mieniu chutkich naład"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Focus the active notification"
+msgstr "Pieraniesci fokus na aktyŭnaje apaviaščennie"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show the overview"
+msgstr "Pakazać ahlad"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Show all apps"
+msgstr "Pakazać usie prahramy"
+
+#: data/org.gnome.Shell.desktop.in.in:4
+msgid "GNOME Shell"
+msgstr "Abałonka GNOME"
+
+#: data/org.gnome.Shell.desktop.in.in:5
+msgid "Window management and application launching"
+msgstr "Kiravannie voknami i zapusk prahram"
+
+#: data/org.gnome.shell.gschema.xml.in:6
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Uklučyć unutranyja instrumienty z Alt-F2 dla raspracoŭščykaŭ i tesciroŭščykaŭ"
+
+#: data/org.gnome.shell.gschema.xml.in:9
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Dazvalaje dostup da ŭnutranych instrumientaŭ adładki i nazirannia praz "
+"dyjałohavaje akno Alt-F2."
+
+#: data/org.gnome.shell.gschema.xml.in:16
+msgid "UUIDs of extensions to enable"
+msgstr "UUID pašyrenniaŭ, jakija treba ŭklučyć"
+
+#: data/org.gnome.shell.gschema.xml.in:17
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
+msgstr ""
+"Pašyrenni abałonki GNOME majuć ułascivasć UUID; u hetym klučy pieraličany "
+"pašyrenni, jakija nieabchodna zahruzić. Usie pašyrenni, jakija vy chočacie "
+"zahruzić, treba ŭpisać u hety spis. Spisam taksama možna kiravać mietadami "
+"DBus EnableExtension i DisableExtension u org.gnome.Shell."
+
+#: data/org.gnome.shell.gschema.xml.in:26
+msgid "UUIDs of extensions to force disabling"
+msgstr "UUID pašyrenniaŭ, jakija treba prymusova adklučyć"
+
+#: data/org.gnome.shell.gschema.xml.in:27
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be disabled, even if loaded as part of the current mode. You can also "
+"manipulate this list with the EnableExtension and DisableExtension D-Bus "
+"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
+"extensions” setting."
+msgstr ""
+"Pašyrenni abałonki GNOME majuć ułascivasć UUID; u hetym klučy pieraličany "
+"pašyrenni, jakija nieabchodna adklučyć, navat kali jany zahruzilisia jak častka "
+"biahučaha režymu. Spisam taksama možna kiravać mietadami DBus EnableExtension "
+"i DisableExtension u org.gnome.Shell. Pryjarytet hetaha kluča vyšejšy za "
+"značennie nałady «enabled-extensions»."
+
+#: data/org.gnome.shell.gschema.xml.in:37
+msgid "Disable user extensions"
+msgstr "Adklučyć pašyrenni karystalnika"
+
+#: data/org.gnome.shell.gschema.xml.in:38
+msgid ""
+"Disable all extensions the user has enabled without affecting the “enabled-"
+"extension” setting."
+msgstr ""
+"Adklučyć usie pašyrenni, jakija ŭklučyŭ karystalnik biez zmianiennia nałady "
+"«enabled-extension»."
+
+#: data/org.gnome.shell.gschema.xml.in:45
+msgid "Allow extension installation"
+msgstr "Dazvolić ustalavannie pašyrenniaŭ"
+
+#: data/org.gnome.shell.gschema.xml.in:46
+msgid ""
+"Allow users to install extensions in their home folder. If disabled, the "
+"InstallRemoteExtension D-Bus method will fail, and extensions are only "
+"loaded from system directories on startup. It does not affect extensions "
+"that are already loaded, so a change only takes full effect on the next "
+"login."
+msgstr ""
+"Dazvolić karystalnikam ustaloŭvać pašyrenni ŭ svaju chatniuju papku. Kali "
+"adklučana, mietad D-Bus InstallRemoteExtension nie spracuje i, pry zapusku "
+"pašyrenni buduć zahružacca tolki z sistemnych katałohaŭ. Nie ŭpłyvaje na ŭžo "
+"zahružanyja pašyrenni, tamu zmieny ŭžyvajucca tolki padčas nastupnaha ŭvachodu "
+"ŭ sistemu."
+
+#: data/org.gnome.shell.gschema.xml.in:56
+msgid "Disables the validation of extension version compatibility"
+msgstr "Adklučaje pravierku sumiaščalnasci viersij pašyrenniaŭ"
+
+#: data/org.gnome.shell.gschema.xml.in:57
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+"Abałonka GNOME zapuskaje tolki pašyrenni, dla jakich zajaŭlena padtrymka jaje "
+"biahučaj viersii. Hety paramietr adklučyć pravierku sumiaščalnasci i abałonka "
+"pasprabuje zahruzić usie pašyrenni niezaležna ad zajaŭlenaj padtrymki."
+
+#: data/org.gnome.shell.gschema.xml.in:67
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Spis identyfikataraŭ fajłaŭ dla abranych prahram"
+
+#: data/org.gnome.shell.gschema.xml.in:68
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr "Prahramy z adpaviednymi identyfikatarami buduć pakazany ŭ abranym."
+
+#: data/org.gnome.shell.gschema.xml.in:75
+msgid "History for command (Alt-F2) dialog"
+msgstr "Historyja kamand dyjałohavaha akna (Alt-F2)"
+
+#. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
+#: data/org.gnome.shell.gschema.xml.in:80
+msgid "History for the looking glass dialog"
+msgstr "Historyja dyjałohavaha akna Looking Glass"
+
+#: data/org.gnome.shell.gschema.xml.in:84
+msgid "Always show the “Log Out” action in the system menu"
+msgstr "Zaŭsiody pakazvać elemient «Vyjsci» ŭ mieniu sistemy"
+
+#: data/org.gnome.shell.gschema.xml.in:85
+msgid ""
+"This key overrides the automatic hiding of the “Log out” action in the "
+"system menu for logged-in situations where there is a single, local, non-"
+"system user and only a single available session type (e.g. GNOME on Wayland)."
+msgstr ""
+"Hety kluč pieravyznačaje aŭtamatyčnaje chavannie elemienta «Vyjsci» ŭ mieniu "
+"sistemy, dla vypadkaŭ z adnym (łakalnym, nie sistemnym) karystalnikam i "
+"adnym typam sieansa (napr. GNOME na Wayland)."
+
+#: data/org.gnome.shell.gschema.xml.in:94
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"Ci zapaminać parol dla padklučennia zašyfravanych i addalenych fajłavych sistem"
+
+#: data/org.gnome.shell.gschema.xml.in:95
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"“Remember Password” checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"Abałonka zapytvaje parol pry padklučenni zašyfravanaj pryłady abo addalenaj "
+"fajłavaj sistemy. Kali parol mahčyma zachavać na budučyniu, budzie pakazany "
+"pieraklučalnik «Zapomnić parol». Hety kluč vyznačaje pradvyznačany stan dla "
+"pieraklučalnika."
+
+#: data/org.gnome.shell.gschema.xml.in:104
+msgid "The last selected non-default power profile"
+msgstr "Apošni vybrany niestandartny profil elektrasiłkavannia"
+
+#: data/org.gnome.shell.gschema.xml.in:105
+msgid ""
+"Some systems support more than two power profiles. In order to still support "
+"toggling between two profiles, this key records the last selected non-"
+"default profile."
+msgstr ""
+"Niekatoryja sistemy padtrymlivajuć bolš za dva profili elektrasiłkavannia. Kab "
+"zachavać padtrymku pieraklučennia pamiž dvuma profilami, hety kluč zapisvaje "
+"apošni vybrany niestandartny profil."
+
+#: data/org.gnome.shell.gschema.xml.in:113
+msgid "The last version the “Welcome to GNOME” dialog was shown for"
+msgstr "Apošniaja viersija dyjałohu «Vitajem u GNOME» była pakazana dla"
+
+#: data/org.gnome.shell.gschema.xml.in:114
+msgid ""
+"This key determines for which version the “Welcome to GNOME” dialog was last "
+"shown. An empty string represents the oldest possible version, and a huge "
+"number will represent versions that do not exist yet. This huge number can "
+"be used to effectively disable the dialog."
+msgstr ""
+"Hety kluč vyznačaje dla jakoj viersii ŭ apošni raz pakazvaŭsia dyjałoh «Vitajem u "
+"GNOME». Pusty radok aznačaje samuju staruju z mahčymych viersij, a zanadta vialiki "
+"numar budzie imitavać nieisnujučuju viersiju. Možna vykarystać zanadta vialiki "
+"numar viersii, kab adklučyć dyjałohavaje akno."
+
+#: data/org.gnome.shell.gschema.xml.in:125
+msgid "Layout of the app picker"
+msgstr "Makiet dla srodku vybaru prahram"
+
+#: data/org.gnome.shell.gschema.xml.in:126
+msgid ""
+"Layout of the app picker. Each entry in the array is a page. Pages are "
+"stored in the order they appear in GNOME Shell. Each page contains an "
+"“application id” → data pair. Currently, the following values are stored "
+"as data: • “position”: the position of the application icon in the page"
+msgstr ""
+"Makiet dla srodku vybaru prahram. Kožny zapis u masivie - heta staronka. "
+"Staronki zachoŭvajucca ŭ paradku zjaŭlennia ŭ abałoncy GNOME. Kožnaja staronka "
+"zmiaščaje paru «id prahramy» → «danyja». Zaraz jak «danyja» zachoŭvajucca nastupnyja "
+"značenni: • «position» – pazicyja značka prahramy na staroncy"
+
+#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:152
+msgid "Keybinding to shift between overview states"
+msgstr "Spałučennie kłaviš, kab pieraklučacca pamiž stanami mieniu ahlad"
+
+#: data/org.gnome.shell.gschema.xml.in:146
+msgid "Keybinding to shift between session, window picker and app grid"
+msgstr ""
+"Spałučennie kłaviš, kab pieraklučacca pamiž siesijaj, vybaram akon i sietkaj "
+"prahram"
+
+#: data/org.gnome.shell.gschema.xml.in:153
+msgid "Keybinding to shift between app grid, window picker and session"
+msgstr ""
+"Spałučennie kłaviš, kab pieraklučacca pamiž sietkaj prahram, vybaram akon i "
+"siesijaj"
+
+#: data/org.gnome.shell.gschema.xml.in:159
+msgid "Keybinding to open the “Show Applications” view"
+msgstr "Spałučennie kłaviš, kab adkryć «Pakazać prahramy»"
+
+#: data/org.gnome.shell.gschema.xml.in:160
+msgid ""
+"Keybinding to open the “Show Applications” view of the Activities Overview."
+msgstr ""
+"Spałučennie kłaviš, kab adkryć «Pakazać prahramy» ŭ mieniu ahlad dziejnasci."
+
+#: data/org.gnome.shell.gschema.xml.in:167
+msgid "Keybinding to open the overview"
+msgstr "Spałučennie kłaviš, kab adkryć mieniu ahlad"
+
+#: data/org.gnome.shell.gschema.xml.in:168
+msgid "Keybinding to open the Activities Overview."
+msgstr "Spałučennie kłaviš, kab adkryć mieniu ahlad dziejnasci."
+
+#: data/org.gnome.shell.gschema.xml.in:174
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr "Spałučennie kłaviš, kab pieraklučyć bačnasć spisa apaviaščenniaŭ"
+
+#: data/org.gnome.shell.gschema.xml.in:175
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr "Spałučennie kłaviš, kab pieraklučyć bačnasć spisa apaviaščenniaŭ."
+
+#: data/org.gnome.shell.gschema.xml.in:181
+msgid "Keybinding to toggle the quick settings menu"
+msgstr "Spałučennie kłaviš, kab pieraklučyć bačnasć mieniu chutkich naład"
+
+#: data/org.gnome.shell.gschema.xml.in:182
+msgid "Keybinding to toggle the quick settings menu."
+msgstr "Spałučennie kłaviš, kab pieraklučyć bačnasć mieniu chutkich naład."
+
+#: data/org.gnome.shell.gschema.xml.in:188
+msgid "Keybinding to focus the active notification"
+msgstr "Spałučennie kłaviš, kab pieraniesci fokus na aktyŭnaje apaviaščennie"
+
+#: data/org.gnome.shell.gschema.xml.in:189
+msgid "Keybinding to focus the active notification."
+msgstr "Spałučennie kłaviš, kab pieraniesci fokus na aktyŭnaje apaviaščennie."
+
+#: data/org.gnome.shell.gschema.xml.in:195
+msgid "Switch to application 1"
+msgstr "Pieraklučycca na prahramu 1"
+
+#: data/org.gnome.shell.gschema.xml.in:199
+msgid "Switch to application 2"
+msgstr "Pieraklučycca na prahramu 2"
+
+#: data/org.gnome.shell.gschema.xml.in:203
+msgid "Switch to application 3"
+msgstr "Pieraklučycca na prahramu 3"
+
+#: data/org.gnome.shell.gschema.xml.in:207
+msgid "Switch to application 4"
+msgstr "Pieraklučycca na prahramu 4"
+
+#: data/org.gnome.shell.gschema.xml.in:211
+msgid "Switch to application 5"
+msgstr "Pieraklučycca na prahramu 5"
+
+#: data/org.gnome.shell.gschema.xml.in:215
+msgid "Switch to application 6"
+msgstr "Pieraklučycca na prahramu 6"
+
+#: data/org.gnome.shell.gschema.xml.in:219
+msgid "Switch to application 7"
+msgstr "Pieraklučycca na prahramu 7"
+
+#: data/org.gnome.shell.gschema.xml.in:223
+msgid "Switch to application 8"
+msgstr "Pieraklučycca na prahramu 8"
+
+#: data/org.gnome.shell.gschema.xml.in:227
+msgid "Switch to application 9"
+msgstr "Pieraklučycca na prahramu 9"
+
+#: data/org.gnome.shell.gschema.xml.in:231
+msgid "Open a new instance of application 1"
+msgstr "Adkryć novy ekzemplar prahramy 1"
+
+#: data/org.gnome.shell.gschema.xml.in:235
+msgid "Open a new instance of application 2"
+msgstr "Adkryć novy ekzemplar prahramy 2"
+
+#: data/org.gnome.shell.gschema.xml.in:239
+msgid "Open a new instance of application 3"
+msgstr "Adkryć novy ekzemplar prahramy 3"
+
+#: data/org.gnome.shell.gschema.xml.in:243
+msgid "Open a new instance of application 4"
+msgstr "Adkryć novy ekzemplar prahramy 4"
+
+#: data/org.gnome.shell.gschema.xml.in:247
+msgid "Open a new instance of application 5"
+msgstr "Adkryć novy ekzemplar prahramy 5"
+
+#: data/org.gnome.shell.gschema.xml.in:251
+msgid "Open a new instance of application 6"
+msgstr "Adkryć novy ekzemplar prahramy 6"
+
+#: data/org.gnome.shell.gschema.xml.in:255
+msgid "Open a new instance of application 7"
+msgstr "Adkryć novy ekzemplar prahramy 7"
+
+#: data/org.gnome.shell.gschema.xml.in:259
+msgid "Open a new instance of application 8"
+msgstr "Adkryć novy ekzemplar prahramy 8"
+
+#: data/org.gnome.shell.gschema.xml.in:263
+msgid "Open a new instance of application 9"
+msgstr "Adkryć novy ekzemplar prahramy 9"
+
+#: data/org.gnome.shell.gschema.xml.in:288
+#: data/org.gnome.shell.gschema.xml.in:315
+msgid "Limit switcher to current workspace."
+msgstr "Abmiežavać pieraklučalnik biahučaj pracoŭnaj prastoraj."
+
+#: data/org.gnome.shell.gschema.xml.in:289
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+"Kali aktyŭnaja, u pieraklučalniku pakazvajucca tolki prahramy z biahučaj "
+"pracoŭnaj prastory. Inačaj – pakazvajucca ŭsie prahramy."
+
+#: data/org.gnome.shell.gschema.xml.in:306
+msgid "The application icon mode."
+msgstr "Režym značkoŭ prahram."
+
+#: data/org.gnome.shell.gschema.xml.in:307
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
+msgstr ""
+"Vyznačaje jak pakazvajucca vokny ŭ pieraklučalniku. Mahčymyja značenni: "
+"«thumbnail-only» (pakazvać minijaciury voknaŭ), «app-icon-only» (pakazvać "
+"tolki znački prahram) i «both» (pakazvać minijaciury i znački)."
+
+#: data/org.gnome.shell.gschema.xml.in:316
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+"Kali aktyŭnaja, u pieraklučalniku pakazvajucca tolki vokny z biahučaj "
+"pracoŭnaj prastory. Inačaj – pakazvajucca ŭsie vokny."
+
+#: data/org.gnome.shell.gschema.xml.in:326
+msgid "Locations"
+msgstr "Miescaznachodžanni"
+
+#: data/org.gnome.shell.gschema.xml.in:327
+msgid "The locations to show in world clocks"
+msgstr "Miescaznachodžannie ŭ susvietnych hadzinnikach"
+
+#: data/org.gnome.shell.gschema.xml.in:337
+msgid "Automatic location"
+msgstr "Aŭtamatyčna vyznačać miescaznachodžannie"
+
+#: data/org.gnome.shell.gschema.xml.in:338
+msgid "Whether to fetch the current location or not"
+msgstr "Ci atrymlivać biahučaje miescaznachodžannie"
+
+#: data/org.gnome.shell.gschema.xml.in:345
+msgid "Location"
+msgstr "Miescaznachodžannie"
+
+#: data/org.gnome.shell.gschema.xml.in:346
+msgid "The location for which to show a forecast"
+msgstr "Miescaznachodžannie dla jakoha pakazvajecca nadvorje"
+
+#. Keep in sync with subprojects/extensions-app
+#: data/org.gnome.Shell.Extensions.desktop.in.in:5
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/data/ui/extensions-window.ui:57
+msgid "Extensions"
+msgstr "Pašyrenni"
+
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+msgid "Network Login"
+msgstr "Sietkavy ŭvachod"
+
+#: data/X-GNOME-Shell-Utilities.directory.desktop.in:3
+msgid "Utilities"
+msgstr "Utylity"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:15
+#: subprojects/extensions-app/data/ui/extensions-window.ui:275
+msgid "Somethings gone wrong"
+msgstr "Niešta pajšło nie tak"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:23
+msgid ""
+"Were very sorry, but theres been a problem: the settings for this "
+"extension cant be displayed. We recommend that you report the issue to the "
+"extension authors."
+msgstr ""
+"Na žal, uznikła prablema: niemahčyma pakazać nałady hetaha pašyrennia. My "
+"raim vam paviedamić ab prablemie aŭtaram pašyrennia."
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:48
+msgid "Technical Details"
+msgstr "Techničnyja padrabiaznasci"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:90
+msgid "Homepage"
+msgstr "Chatniaja staronka"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:91
+msgid "Visit extension homepage"
+msgstr "Naviedać chatniuju staronku pašyrennia"
+
+#: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
+#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
+#: js/ui/shellMountOperation.js:392
+msgid "Cancel"
+msgstr "Skasavać"
+
+#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
+#: js/ui/shellMountOperation.js:332
+msgid "Password"
+msgstr "Parol"
+
+#: js/gdm/loginDialog.js:328
+msgid "Choose Session"
+msgstr "Vybrać sieans"
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:426
+#, javascript-format
+msgid ""
+"Remote login is not possible because a remote session is already running for "
+"%s. To login remotely, you must log out from the remote session or force "
+"stop it."
+msgstr ""
+"Addaleny ŭvachod niemahčymy, tamu što ŭžo zapuščany addaleny sieans dla %s. Dla "
+"addalenaha ŭvachodu ŭ sistemu, patrabujecca z jaho vyjsci abo prymusova spynić."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:429
+#, javascript-format
+msgid ""
+"Login is not possible because a remote session is already running for %s. To "
+"login, you must log out from the remote session or force stop it."
+msgstr ""
+"Uvachod u sistemu niemahčymy, tamu što ŭžo zapuščany addaleny sieans dla %s. "
+"Kab uvajsci ŭ sistemu, patrabujecca z jaho vyjsci abo prymusova spynić."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:432
+#, javascript-format
+msgid ""
+"Remote login is not possible because a local session is already running for "
+"%s. To login remotely, you must log out from the local session or force stop "
+"it."
+msgstr ""
+"Addaleny ŭvachod niemahčymy, tamu što ŭžo zapuščany łakalny sieans dla %s. Dla "
+"addalenaha ŭvachodu ŭ sistemu, patrabujecca z jaho vyjsci abo prymusova spynić."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:435
+#, javascript-format
+msgid ""
+"Login is not possible because a session is already running for %s. To login, "
+"you must log out from the session or force stop it."
+msgstr ""
+"Uvachod u sistemu niemahčymy, tamu što sieans dla %s užo zapuščany. Dla ŭvachodu "
+"ŭ sistemu, patrabujecca z jaho vyjsci abo prymusova spynić."
+
+#: js/gdm/loginDialog.js:444
+msgid "Session Already Running"
+msgstr "Sieans užo zapuščany"
+
+#: js/gdm/loginDialog.js:456
+msgid ""
+"Force stopping will quit any running apps and processes, and could result in "
+"data loss"
+msgstr ""
+"Prymusovaje spyniennie pryviadzie da zaviaršennia zapuščanych prahram i pracesaŭ, a "
+"taksama moža pryviesci da straty danych"
+
+#: js/gdm/loginDialog.js:476
+msgid "Force Stop"
+msgstr "Prymusova spynić"
+
+#: js/gdm/loginDialog.js:554
+msgid "Not listed?"
+msgstr "Niama ŭ spisie?"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: js/gdm/loginDialog.js:1071
+#, javascript-format
+msgid "(e.g., user or %s)"
+msgstr "(napr. karystalnik ci %s)"
+
+#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
+msgid "Username"
+msgstr "Imia karystalnika"
+
+#: js/gdm/loginDialog.js:1142
+msgid "Login Attempt Timed Out"
+msgstr "Skončyŭsia termin čakannia ŭvachodu ŭ sistemu"
+
+#: js/gdm/loginDialog.js:1143
+msgid "Login took too long, please try again"
+msgstr "Uvachod u sistemu zaniaŭ zanadta šmat času, paŭtarycie sprobu"
+
+#: js/gdm/loginDialog.js:1492
+msgid "Login Window"
+msgstr "Akno ŭvachodu ŭ sistemu"
+
+#: js/gdm/util.js:498
+msgid "Authentication error"
+msgstr "Pamyłka pravierki sapraŭdnasci"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/util.js:729
+msgid "(or swipe finger across reader)"
+msgstr "(abo praviadzicie palcam pa čytalniku)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/util.js:734
+msgid "(or place finger on reader)"
+msgstr "(abo prykładzicie palec da čytalnika)"
+
+#: js/misc/breakManager.js:765
+msgid "Break complete sound"
+msgstr "Huk zakančennia pierapynku"
+
+#: js/misc/breakManager.js:982
+#, javascript-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d siekundu"
+msgstr[1] "%d siekundy"
+msgstr[2] "%d siekund"
+
+#: js/misc/breakManager.js:988
+#, javascript-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d chvilinu"
+msgstr[1] "%d chviliny"
+msgstr[2] "%d chvilin"
+
+#: js/misc/breakManager.js:994
+#, javascript-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] "%d hadzinu"
+msgstr[1] "%d hadziny"
+msgstr[2] "%d hadzin"
+
+#: js/misc/breakManager.js:1000
+#, javascript-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "%d dzień"
+msgstr[1] "%d dni"
+msgstr[2] "%d dzion"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1083
+#, javascript-format
+msgid "It will be time for a break in %s"
+msgid_plural "It will be time for a break in %s"
+msgstr[0] "Praz %s nastanie čas pierapynku"
+msgstr[1] "It will be time for a break in %s"
+msgstr[2] "It will be time for a break in %s"
+
+#: js/misc/breakManager.js:1091
+msgid "Movement Break Soon"
+msgstr "Chutka pierapynak dla ruchu"
+
+#: js/misc/breakManager.js:1094
+msgid "Eyesight Break Soon"
+msgstr "Chutka pierapynak dla vačej"
+
+#: js/misc/breakManager.js:1097
+msgid "Break Soon"
+msgstr "Chutka pierapynak"
+
+#: js/misc/breakManager.js:1141
+msgid "Movement Break in Progress"
+msgstr "Idzie pierapynak dla ruchu"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1144
+#, javascript-format
+msgid "Continue moving around for %s"
+msgid_plural "Continue moving around for %s"
+msgstr[0] "Pachadzicie %s, kab razmiać nohi"
+msgstr[1] "Pachadzicie %s, kab razmiać nohi"
+msgstr[2] "Pachadzicie %s, kab razmiać nohi"
+
+#: js/misc/breakManager.js:1150
+msgid "Eyesight Break in Progress"
+msgstr "Idzie pierapynak dla vačej"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1153
+#, javascript-format
+msgid "Continue looking away for %s"
+msgid_plural "Continue looking away for %s"
+msgstr[0] "Pieraviadzicie pozirk z ekrana na %s"
+msgstr[1] "Pieraviadzicie pozirk z ekrana na %s"
+msgstr[2] "Pieraviadzicie pozirk z ekrana na %s"
+
+#: js/misc/breakManager.js:1159
+msgid "Break in Progress"
+msgstr "Idzie pierapynak"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1162
+#, javascript-format
+msgid "%s left in your break"
+msgid_plural "%s left in your break"
+msgstr[0] "Adpačnicie %s"
+msgstr[1] "Adpačnicie %s"
+msgstr[2] "Adpačnicie %s"
+
+#: js/misc/breakManager.js:1201
+msgid "Time for a Movement Break"
+msgstr "Čas pierapynku dla ruchu"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1204
+#, javascript-format
+msgid "Take a break from the device and move around for %s"
+msgid_plural "Take a break from the device and move around for %s"
+msgstr[0] "Prypynicie pracu za pryładaj i pachadzicie %s, kab razmiać nohi"
+msgstr[1] "Prypynicie pracu za pryładaj i pachadzicie %s, kab razmiać nohi"
+msgstr[2] "Prypynicie pracu za pryładaj i pachadzicie %s, kab razmiać nohi"
+
+#: js/misc/breakManager.js:1210
+msgid "Time for an Eyesight Break"
+msgstr "Čas pierapynku dla vačej"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1213
+#, javascript-format
+msgid ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgid_plural ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgstr[0] ""
+"Pieraviadzicie pozirk z ekrana i hladzicie prynamsi %s na abjekt u šasci ci "
+"bolej mietrach ad vas"
+msgstr[1] ""
+"Pieraviadzicie pozirk z ekrana i hladzicie prynamsi %s na abjekt u šasci ci "
+"bolej mietrach ad vas"
+msgstr[2] ""
+"Pieraviadzicie pozirk z ekrana i hladzicie prynamsi %s na abjekt u šasci ci "
+"bolej mietrach ad vas"
+
+#: js/misc/breakManager.js:1219
+msgid "Time for a Break"
+msgstr "Čas pierapynku"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1222
+#, javascript-format
+msgid "Its time to take a break. Get away from the device for %s!"
+msgid_plural "Its time to take a break. Get away from the device for %s!"
+msgstr[0] "Čas adpačyć. Prypynicie pracu z pryładaj na %s."
+msgstr[1] "Čas adpačyć. Prypynicie pracu z pryładaj na %s."
+msgstr[2] "Čas adpačyć. Prypynicie pracu z pryładaj na %s."
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1244
+#, javascript-format
+msgid "You were due to take a break %s ago"
+msgid_plural "You were due to take a break %s ago"
+msgstr[0] "Vy byli pavinny zrabić pierapynak %s tamu"
+msgstr[1] "Vy byli pavinny zrabić pierapynak %s tamu"
+msgstr[2] "Vy byli pavinny zrabić pierapynak %s tamu"
+
+#: js/misc/breakManager.js:1250
+msgid "Break Overdue"
+msgstr "Pierapynak nie zrobleny"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1264
+#, javascript-format
+msgid "There is %s remaining in your break"
+msgid_plural "There are %s remaining in your break"
+msgstr[0] "Pierapynak skončycca praz %s"
+msgstr[1] "Da kanca pierapynku %s"
+msgstr[2] "Da kanca pierapynku %s"
+
+#: js/misc/breakManager.js:1270
+msgid "Break Interrupted"
+msgstr "Pierapynak pierarvany"
+
+#: js/misc/breakManager.js:1341
+msgid "Delay"
+msgstr "Adkłasci"
+
+#: js/misc/breakManager.js:1362 js/ui/welcomeDialog.js:61
+msgid "Skip"
+msgstr "Prapuscić"
+
+#: js/misc/breakManager.js:1383
+msgid "Take"
+msgstr "Zrabić"
+
+#. Translators: This is a notification to warn the user that a
+#. screen time break will start shortly.
+#: js/misc/breakManager.js:1446
+#, javascript-format
+msgid "Break in %d second"
+msgid_plural "Break in %d seconds"
+msgstr[0] "Pierapynak praz %d siekundu"
+msgstr[1] "Pierapynak praz %d siekundy"
+msgstr[2] "Pierapynak praz %d siekund"
+
+#. Translators: The name of the power-off action in search
+#: js/misc/systemActions.js:91
+msgctxt "search-result"
+msgid "Power Off"
+msgstr "Vyklučyć"
+
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#: js/misc/systemActions.js:94
+msgid "power off;poweroff;shutdown;halt;stop"
+msgstr ""
+"power off;poweroff;shutdown;halt;stop;vyklučyć;spynić;prypynić;zaviaršyć"
+
+#. Translators: The name of the restart action in search
+#: js/misc/systemActions.js:99
+msgctxt "search-result"
+msgid "Restart"
+msgstr "Pierazapuscić"
+
+#. Translators: A list of keywords that match the restart action, separated by semicolons
+#: js/misc/systemActions.js:102
+msgid "reboot;restart;"
+msgstr "reboot;restart;pierazapuscić;pierazapusk;pierazahruzić;"
+
+#. Translators: The name of the lock screen action in search
+#: js/misc/systemActions.js:107
+msgctxt "search-result"
+msgid "Lock Screen"
+msgstr "Zabłakiravać ekran"
+
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#: js/misc/systemActions.js:110
+msgid "lock screen"
+msgstr "zabłakiravać ekran"
+
+#. Translators: The name of the logout action in search
+#: js/misc/systemActions.js:115
+msgctxt "search-result"
+msgid "Log Out"
+msgstr "Zaviaršyć sieans"
+
+#. Translators: A list of keywords that match the logout action, separated by semicolons
+#: js/misc/systemActions.js:118
+msgid "logout;log out;sign off"
+msgstr "logout;log out;vyjsci;zaviaršyć sieans"
+
+#. Translators: The name of the suspend action in search
+#: js/misc/systemActions.js:123
+msgctxt "search-result"
+msgid "Suspend"
+msgstr "Prypynić pracu"
+
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#: js/misc/systemActions.js:126
+msgid "suspend;sleep"
+msgstr "suspend;prypynić;zasnuć;son"
+
+#. Translators: The name of the switch user action in search
+#: js/misc/systemActions.js:131
+msgctxt "search-result"
+msgid "Switch User"
+msgstr "Zmianić karystalnika"
+
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#: js/misc/systemActions.js:134
+msgid "switch user"
+msgstr "zmianić karystalnika"
+
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#: js/misc/systemActions.js:141
+msgid "lock orientation;unlock orientation;screen;rotation"
+msgstr ""
+"lock orientation;rotation;zabłakiravać aryjentacyju; razbłakiravać;ekran;"
+"pavarot"
+
+#. Translators: The name of the screenshot UI action in search
+#: js/misc/systemActions.js:146
+msgctxt "search-result"
+msgid "Take a Screenshot"
+msgstr "Zrabić zdymak ekrana"
+
+#. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
+#: js/misc/systemActions.js:149
+msgid "screenshot;screencast;snip;capture;record"
+msgstr "screenshot;capture;zdymak;zapis;ekrana;ekranny zdymak;nažnicy;zachop"
+
+#: js/misc/systemActions.js:249
+msgctxt "search-result"
+msgid "Unlock Screen Rotation"
+msgstr "Razbłakiravać pavarot ekrana"
+
+#: js/misc/systemActions.js:250
+msgctxt "search-result"
+msgid "Lock Screen Rotation"
+msgstr "Zabłakiravać pavarot ekrana"
+
+#: js/misc/timeLimitsManager.js:338
+msgid "GNOME needs to save screen time data"
+msgstr "GNOME patrabuje zachavać danyja ekrannaha času"
+
+#: js/misc/timeLimitsManager.js:1102
+#, javascript-format
+msgid "Screen Time Limit in %d Minute"
+msgid_plural "Screen Time Limit in %d Minutes"
+msgstr[0] "Abmiežavannie ekrannaha času ŭ %d chvilinu"
+msgstr[1] "Abmiežavannie ekrannaha času ŭ %d chviliny"
+msgstr[2] "Abmiežavannie ekrannaha času ŭ %d chvilin"
+
+#: js/misc/timeLimitsManager.js:1109
+msgid "Your screen time limit is approaching"
+msgstr "Chutka budzie dasiahnuta abmiežavannie ekrannaha času"
+
+#: js/misc/timeLimitsManager.js:1123
+msgid "Screen Time Limit Reached"
+msgstr "Dasiahnuta abmiežavannie ekrannaha času"
+
+#: js/misc/timeLimitsManager.js:1124
+msgid "Its time to stop using the device"
+msgstr "Čas spynić vykarystannie pryłady"
+
+#: js/misc/util.js:130
+msgid "Command not found"
+msgstr "Kamanda nie znojdziena"
+
+#: js/misc/util.js:168
+#, javascript-format
+msgid "Execution of “%s” failed:"
+msgstr "Nie ŭdałosia vykanać «%s»:"
+
+#: js/misc/dateUtils.js:69
+msgid "Just now"
+msgstr "Tolki što"
+
+#: js/misc/dateUtils.js:72
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d chvilinu tamu"
+msgstr[1] "%d chviliny tamu"
+msgstr[2] "%d chvilin tamu"
+
+#: js/misc/dateUtils.js:79
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d hadzinu tamu"
+msgstr[1] "%d hadziny tamu"
+msgstr[2] "%d hadzin tamu"
+
+#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:183
+msgid "Yesterday"
+msgstr "Učora"
+
+#: js/misc/dateUtils.js:88
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d dzień tamu"
+msgstr[1] "%d dni tamu"
+msgstr[2] "%d dzion tamu"
+
+#: js/misc/dateUtils.js:95
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d tydzień tamu"
+msgstr[1] "%d tydni tamu"
+msgstr[2] "%d tydniaŭ tamu"
+
+#: js/misc/dateUtils.js:102
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "%d miesiac tamu"
+msgstr[1] "%d miesiacy tamu"
+msgstr[2] "%d miesiacaŭ tamu"
+
+#: js/misc/dateUtils.js:108
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "%d hod tamu"
+msgstr[1] "%d hady tamu"
+msgstr[2] "%d hadoŭ tamu"
+
+#. Translators: Time in 24h format
+#: js/misc/dateUtils.js:155
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30"
+#: js/misc/dateUtils.js:161
+#, no-c-format
+msgid "Yesterday, %H∶%M"
+msgstr "Učora, %H:%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30"
+#: js/misc/dateUtils.js:167
+#, no-c-format
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30"
+#: js/misc/dateUtils.js:173
+#, no-c-format
+msgid "%B %-d, %H∶%M"
+msgstr "%-d %B, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30"
+#: js/misc/dateUtils.js:179
+#, no-c-format
+msgid "%B %-d %Y, %H∶%M"
+msgstr "%-d %B %Y, %H∶%M"
+
+#. Show only the time if date is on today
+#. eslint-disable-line no-lonely-if
+#. Translators: Time in 12h format
+#: js/misc/dateUtils.js:184
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
+#: js/misc/dateUtils.js:190
+#, no-c-format
+msgid "Yesterday, %l∶%M %p"
+msgstr "Učora, %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm"
+#: js/misc/dateUtils.js:196
+#, no-c-format
+msgid "%A, %l∶%M %p"
+msgstr "%A, %-l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm"
+#: js/misc/dateUtils.js:202
+#, no-c-format
+msgid "%B %-d, %l∶%M %p"
+msgstr "%-d %B, %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"
+#: js/misc/dateUtils.js:208
+#, no-c-format
+msgid "%B %-d %Y, %l∶%M %p"
+msgstr "%-d %B %Y, %l∶%M %p"
+
+#: js/portalHelper/main.js:98
+msgid "Your connection seems to be secure"
+msgstr "Złučennie vyhladaje biaspiečnym"
+
+#: js/portalHelper/main.js:104
+msgid ""
+"Your connection to this hotspot login is not secure. Passwords or other "
+"information you enter on this page can be viewed by people nearby."
+msgstr ""
+"Złučennie z hetym chot-spotam nie biaspiečnaje. Ludzi vakoł mohuć atrymać paroli "
+"abo inšuju infarmacyju, jakuju vy ŭvodzicie na staroncy."
+
+#: js/portalHelper/main.js:115
+msgid "Hotspot Login"
+msgstr "Uvachod u chot-spot"
+
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options[modal] || true;
+#: js/ui/accessDialog.js:51 js/ui/inhibitShortcutsDialog.js:92
+msgid "Deny"
+msgstr "Zabaranić"
+
+#: js/ui/accessDialog.js:52 js/ui/inhibitShortcutsDialog.js:101
+msgid "Allow"
+msgstr "Dazvolić"
+
+#: js/ui/appDisplay.js:1762
+msgid "Unnamed Folder"
+msgstr "Nienazvanaja papka"
+
+#: js/ui/appFavorites.js:163
+#, javascript-format
+msgid "%s has been pinned to the dash."
+msgstr "%s zamacavana na paneli prahram."
+
+#: js/ui/appFavorites.js:194
+#, javascript-format
+msgid "%s has been unpinned from the dash."
+msgstr "%s admacavana ad paneli prahram."
+
+#: js/ui/appFavorites.js:208 js/ui/main.js:309
+msgid "Undo"
+msgstr "Adrabić"
+
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appMenu.js:49
+msgid "Open Windows"
+msgstr "Adkrytyja vokny"
+
+#: js/ui/appMenu.js:57
+msgid "New Window"
+msgstr "Novaje akno"
+
+#: js/ui/appMenu.js:84
+msgid "App Details"
+msgstr "Padrabiaznasci prahramy"
+
+#: js/ui/appMenu.js:100
+msgid "Quit"
+msgstr "Vyjsci"
+
+#: js/ui/appMenu.js:160 js/ui/dash.js:248
+msgid "Unpin"
+msgstr "Admacavać"
+
+#: js/ui/appMenu.js:161
+msgid "Pin to Dash"
+msgstr "Zamacavać na paneli prahram"
+
+#: js/ui/appMenu.js:178
+msgid "Launch using Integrated Graphics Card"
+msgstr "Zapuscić z vykarystanniem intehravanaj videakarty"
+
+#: js/ui/appMenu.js:179
+msgid "Launch using Discrete Graphics Card"
+msgstr "Zapuscić z vykarystanniem dyskretnaj videakarty"
+
+#: js/ui/audioDeviceSelection.js:46
+msgid "Select Audio Device"
+msgstr "Vybierycie aŭdyjapryładu"
+
+#: js/ui/audioDeviceSelection.js:67 js/ui/status/volume.js:81
+msgid "Sound Settings"
+msgstr "Nałady huku"
+
+#: js/ui/audioDeviceSelection.js:75
+msgid "Headphones"
+msgstr "Navušniki"
+
+#: js/ui/audioDeviceSelection.js:77
+msgid "Headset"
+msgstr "Harnitura"
+
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:366
+msgid "Microphone"
+msgstr "Mikrafon"
+
+#: js/ui/backgroundMenu.js:13
+msgid "Change Background…"
+msgstr "Zmianić fon…"
+
+#: js/ui/backgroundMenu.js:15
+msgid "Display Settings"
+msgstr "Nałady dyspłeja"
+
+#: js/ui/backgroundMenu.js:16
+msgid "Settings"
+msgstr "Nałady"
+
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: js/ui/calendar.js:33
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: js/ui/calendar.js:59
+msgctxt "grid sunday"
+msgid "S"
+msgstr "N"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: js/ui/calendar.js:61
+msgctxt "grid monday"
+msgid "M"
+msgstr "P"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: js/ui/calendar.js:63
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "A"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: js/ui/calendar.js:65
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "S"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: js/ui/calendar.js:67
+msgctxt "grid thursday"
+msgid "T"
+msgstr "Č"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: js/ui/calendar.js:69
+msgctxt "grid friday"
+msgid "F"
+msgstr "P"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: js/ui/calendar.js:71
+msgctxt "grid saturday"
+msgid "S"
+msgstr "S"
+
+#. *
+#. * Translators: The header displaying just the month name
+#. * standalone, when this is a month of the current year.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not change it.
+#.
+#: js/ui/calendar.js:422
+msgid "%OB"
+msgstr "%OB"
+
+#. *
+#. * Translators: The header displaying the month name and the year
+#. * number, when this is a month of a different year.  You can
+#. * reorder the format specifiers or add other modifications
+#. * according to the requirements of your language.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not use the old "%B" here unless you
+#. * absolutely know what you are doing.
+#.
+#: js/ui/calendar.js:432
+msgid "%OB %Y"
+msgstr "%OB %Y"
+
+#: js/ui/calendar.js:494
+msgid "Previous month"
+msgstr "Papiaredni miesiac"
+
+#: js/ui/calendar.js:512
+msgid "Next month"
+msgstr "Nastupny miesiac"
+
+#: js/ui/calendar.js:663
+#, no-javascript-format
+msgctxt "date day number format"
+msgid "%d"
+msgstr "%-d"
+
+#: js/ui/calendar.js:722
+msgid "Week %V"
+msgstr "Tydzień %V"
+
+#: js/ui/calendar.js:774
+msgid "No Notifications"
+msgstr "Niama apaviaščenniaŭ"
+
+#: js/ui/calendar.js:832
+msgid "Do Not Disturb"
+msgstr "Nie turbavać"
+
+#: js/ui/calendar.js:853
+msgid "Clear"
+msgstr "Ačyscić"
+
+#: js/ui/calendar.js:857
+msgctxt "action"
+msgid "Clear all notifications"
+msgstr "Ačyscić usie apaviaščenni"
+
+#. Translators: %s is an application name
+#: js/ui/closeDialog.js:42
+#, javascript-format
+msgid "“%s” Is Not Responding"
+msgstr "«%s» nie adkazvaje"
+
+#: js/ui/closeDialog.js:43
+msgid ""
+"You may choose to wait a short while for it to continue or force the app to "
+"quit entirely"
+msgstr "Vy možacie pačakać adkazu abo prymusova zaviaršyć pracu prahramy"
+
+#: js/ui/closeDialog.js:71
+msgid "Force Quit"
+msgstr "Prymusova zaviaršyć"
+
+#: js/ui/closeDialog.js:76
+msgid "Wait"
+msgstr "Pačakać"
+
+#: js/ui/components/automountManager.js:82
+msgid "External drive connected"
+msgstr "Padłučany zniešni dysk"
+
+#: js/ui/components/automountManager.js:94
+msgid "External drive disconnected"
+msgstr "Adłučany zniešni dysk"
+
+#: js/ui/components/automountManager.js:208
+msgid "Unable to unlock volume"
+msgstr "Niemahčyma razbłakiravać tom"
+
+#: js/ui/components/automountManager.js:209
+msgid "The installed udisks version does not support the PIM setting"
+msgstr "Ustalavanaja viersija udisks nie padtrymlivaje nałady PIM"
+
+#. Translators: %s is the name of a partition on a external drive
+#: js/ui/components/autorunManager.js:189
+#, javascript-format
+msgid "“%s” connected"
+msgstr "«%s» padłučany"
+
+#: js/ui/components/autorunManager.js:190
+msgid "Disk can now be used"
+msgstr "Ciapier dysk možna vykarystoŭvać"
+
+#: js/ui/components/autorunManager.js:202
+#, javascript-format
+msgid "Open with %s"
+msgstr "Adkryć praz %s"
+
+#: js/ui/components/networkAgent.js:96
+msgid ""
+"Alternatively you can connect by pushing the “WPS” button on your router"
+msgstr "Taksama možna złučycca, nacisnuŭšy knopku «WPS» na maršrutyzatary"
+
+#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
+#: js/ui/status/network.js:360 js/ui/status/network.js:444
+msgid "Connect"
+msgstr "Złučycca"
+
+#: js/ui/components/networkAgent.js:223
+msgid "Key"
+msgstr "Kluč"
+
+#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
+msgid "Private key password"
+msgstr "Parol pryvatnaha kluča"
+
+#: js/ui/components/networkAgent.js:307
+msgid "Identity"
+msgstr "Identyčnasć"
+
+#: js/ui/components/networkAgent.js:333
+msgid "Service"
+msgstr "Servis"
+
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
+msgid "Authentication required"
+msgstr "Patrabujecca pravierka sapraŭdnasci"
+
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
+#, javascript-format
+msgid ""
+"Passwords or encryption keys are required to access the wireless network “%s”"
+msgstr ""
+"Dla dostupu da biespravadnoj sietki «%s» patrabujecca parol abo kluč šyfravannia"
+
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
+msgid "Wired 802.1X authentication"
+msgstr "Pravadny dostup, pravierka sapraŭdnasci 802.1X"
+
+#: js/ui/components/networkAgent.js:379
+msgid "Network name"
+msgstr "Nazva sietki"
+
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
+msgid "DSL authentication"
+msgstr "DSL-aŭtentyfikacyja"
+
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
+msgid "PIN code required"
+msgstr "Patrabujecca PIN-kod"
+
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "Pryładzie šyrokapałosnaj mabilnaj sietki patrabujecca PIN-kod"
+
+#: js/ui/components/networkAgent.js:397
+msgid "PIN"
+msgstr "PIN"
+
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
+#, javascript-format
+msgid "A password is required to connect to “%s”"
+msgstr "Kab złučycca z «%s», patrabujecca parol"
+
+#: js/ui/components/networkAgent.js:770
+msgid "VPN password"
+msgstr "Parol VPN"
+
+#: js/ui/components/polkitAgent.js:44
+msgid "Authentication Required"
+msgstr "Patrabujecca pravierka sapraŭdnasci"
+
+#: js/ui/components/polkitAgent.js:84
+msgid "Administrator"
+msgstr "Administratar"
+
+#: js/ui/components/polkitAgent.js:149
+msgid "Authenticate"
+msgstr "Pacvierdzić"
+
+#. Translators: "that didnt work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:415
+msgid "Sorry, that didnt work. Please try again."
+msgstr "Nie ŭdałosia pacvierdzić sapraŭdnasć. Paŭtarycie sprobu."
+
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:404
+msgid "Windows"
+msgstr "Vokny"
+
+#: js/ui/dash.js:204 js/ui/dash.js:250
+msgid "Show Apps"
+msgstr "Pakazać prahramy"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the bottom of the overview
+#: js/ui/dash.js:408
+msgid "Dash"
+msgstr "Panel prahram"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the top bar (e.g.,
+#. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
+#. * "February 17 2015".
+#.
+#: js/ui/dateMenu.js:99
+msgid "%B %-d %Y"
+msgstr "%-d %B %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#.
+#: js/ui/dateMenu.js:106
+msgid "%A %B %e %Y"
+msgstr "%A, %e %B %Y"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: js/ui/dateMenu.js:172
+msgctxt "calendar heading"
+msgid "%B %-d"
+msgstr "%-d %B"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: js/ui/dateMenu.js:175
+msgctxt "calendar heading"
+msgid "%B %-d %Y"
+msgstr "%-d %B %Y"
+
+#: js/ui/dateMenu.js:181
+msgid "Today"
+msgstr "Sionnia"
+
+#: js/ui/dateMenu.js:185
+msgid "Tomorrow"
+msgstr "Zaŭtra"
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: js/ui/dateMenu.js:216
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Uvieś dzień"
+
+#. Translators: Shown in calendar event list as the start/end of events
+#. * that only show day and month
+#.
+#: js/ui/dateMenu.js:238
+msgid "%m/%d"
+msgstr "%d/%m"
+
+#: js/ui/dateMenu.js:289
+msgid "No Events"
+msgstr "Niama padziej"
+
+#: js/ui/dateMenu.js:411
+msgid "Add World Clocks…"
+msgstr "Dadać susvietnyja hadzinniki…"
+
+#: js/ui/dateMenu.js:412
+msgid "World Clocks"
+msgstr "Susvietnyja hadzinniki"
+
+#: js/ui/dateMenu.js:702
+msgid "Loading…"
+msgstr "Zahruzka…"
+
+#: js/ui/dateMenu.js:712
+msgid "Go Online for Weather Information"
+msgstr "Złučyciesia z internetam, kab atrymać zviestki pra nadvorje"
+
+#: js/ui/dateMenu.js:714
+msgid "Weather Information Unavailable"
+msgstr "Zviestki pra nadvorje zaraz niedastupny"
+
+#: js/ui/dateMenu.js:724
+msgid "Weather"
+msgstr "Nadvorje"
+
+#: js/ui/dateMenu.js:726
+msgid "Select Weather Location…"
+msgstr "Vybrać miescaznachodžannie…"
+
+#: js/ui/endSessionDialog.js:47
+#, javascript-format
+msgctxt "title"
+msgid "Log Out %s"
+msgstr "Zaviaršennie sieansa %s"
+
+#: js/ui/endSessionDialog.js:48
+msgctxt "title"
+msgid "Log Out"
+msgstr "Zaviaršennie sieansa"
+
+#: js/ui/endSessionDialog.js:51
+#, javascript-format
+msgid "%s will be logged out automatically in %d second"
+msgid_plural "%s will be logged out automatically in %d seconds"
+msgstr[0] "Sieans karystalnika %s aŭtamatyčna zavieršycca praz %d siekundu"
+msgstr[1] "Sieans karystalnika %s aŭtamatyčna zavieršycca praz %d siekundy"
+msgstr[2] "Sieans karystalnika %s aŭtamatyčna zavieršycca praz %d siekund"
+
+#: js/ui/endSessionDialog.js:57
+#, javascript-format
+msgid "You will be logged out automatically in %d second"
+msgid_plural "You will be logged out automatically in %d seconds"
+msgstr[0] "Vaš sieans aŭtamatyčna zavieršycca praz %d siekundu"
+msgstr[1] "Vaš sieans aŭtamatyčna zavieršycca praz %d siekundy"
+msgstr[2] "Vaš sieans aŭtamatyčna zavieršycca praz %d siekund"
+
+#: js/ui/endSessionDialog.js:64
+msgctxt "button"
+msgid "Log Out"
+msgstr "Vyjsci"
+
+#: js/ui/endSessionDialog.js:70 js/ui/status/system.js:174
+msgctxt "title"
+msgid "Power Off"
+msgstr "Vyklučennie kampjutara"
+
+#: js/ui/endSessionDialog.js:71
+msgctxt "title"
+msgid "Install Updates & Power Off"
+msgstr "Ustalavać abnaŭlenni i vyklučyć kampjutar"
+
+#: js/ui/endSessionDialog.js:74
+#, javascript-format
+msgid "The system will power off automatically in %d second"
+msgid_plural "The system will power off automatically in %d seconds"
+msgstr[0] "Sistema aŭtamatyčna vyklučycca praz %d siekundu"
+msgstr[1] "Sistema aŭtamatyčna vyklučycca praz %d siekundy"
+msgstr[2] "Sistema aŭtamatyčna vyklučycca praz %d siekund"
+
+#: js/ui/endSessionDialog.js:78 js/ui/endSessionDialog.js:97
+msgctxt "checkbox"
+msgid "Install pending software updates"
+msgstr "Ustalavać adkładzienyja abnaŭlenni PZ"
+
+#: js/ui/endSessionDialog.js:82
+msgctxt "button"
+msgid "Power Off"
+msgstr "Vyklučyć"
+
+#: js/ui/endSessionDialog.js:89
+msgctxt "title"
+msgid "Restart"
+msgstr "Pierazapusk"
+
+#: js/ui/endSessionDialog.js:90
+msgctxt "title"
+msgid "Install Updates & Restart"
+msgstr "Ustalavać abnaŭlenni i pierazapuscić"
+
+#: js/ui/endSessionDialog.js:93
+#, javascript-format
+msgid "The system will restart automatically in %d second"
+msgid_plural "The system will restart automatically in %d seconds"
+msgstr[0] "Sistema aŭtamatyčna pierazapuscicca praz %d siekundu"
+msgstr[1] "Sistema aŭtamatyčna pierazapuscicca praz %d siekundy"
+msgstr[2] "Sistema aŭtamatyčna pierazapuscicca praz %d siekund"
+
+#: js/ui/endSessionDialog.js:101
+msgctxt "button"
+msgid "Restart"
+msgstr "Pierazapuscić"
+
+#: js/ui/endSessionDialog.js:109
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "Pierazapuscić i ŭstalavać abnaŭlenni"
+
+#: js/ui/endSessionDialog.js:112
+#, javascript-format
+msgid "The system will automatically restart and install updates in %d second"
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds"
+msgstr[0] ""
+"Sistema aŭtamatyčna pierazapuscicca i ŭstaluje abnaŭlenni praz %d siekundu"
+msgstr[1] ""
+"Sistema aŭtamatyčna pierazapuscicca i ŭstaluje abnaŭlenni praz %d siekundy"
+msgstr[2] ""
+"Sistema aŭtamatyčna pierazapuscicca i ŭstaluje abnaŭlenni praz %d siekund"
+
+#: js/ui/endSessionDialog.js:119 js/ui/endSessionDialog.js:140
+msgctxt "button"
+msgid "Restart & Install"
+msgstr "Pierazapuscić i ŭstalavać"
+
+#: js/ui/endSessionDialog.js:121
+msgctxt "button"
+msgid "Install & Power Off"
+msgstr "Ustalavać i vyklučyć kampjutar"
+
+#: js/ui/endSessionDialog.js:122
+msgctxt "checkbox"
+msgid "Power off after updates are installed"
+msgstr "Vyklučyć kampjutar pasla ŭstalavannia abnaŭlenniaŭ"
+
+#: js/ui/endSessionDialog.js:129
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "Pierazapuscić i ŭstalavać abnaŭlennie"
+
+#. Translators: This is the text displayed for system upgrades in the
+#. shut down dialog. First %s gets replaced with the distro name and
+#. second %s with the distro version to upgrade to
+#: js/ui/endSessionDialog.js:134
+#, javascript-format
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
+msgstr ""
+"%s %s budzie ŭstalavana pasla pierazapusku. Abnaŭlennie moža zaniać šmat času, "
+"pierakanajciesia, što vy majecie reziervovuju kopiju, a kampjutar pracuje ad "
+"elektrasietki."
+
+#: js/ui/endSessionDialog.js:283
+msgid "Low battery power: please plug in before installing updates"
+msgstr ""
+"Nizki zarad akumulatara. Padklučycie zaradnuju pryładu pierad ustalavanniem "
+"abnaŭlenniaŭ"
+
+#: js/ui/endSessionDialog.js:292
+msgid "Some applications are busy or have unsaved work"
+msgstr "Niekatoryja prahramy zaniaty abo majuć niezachavanyja vyniki pracy"
+
+#: js/ui/endSessionDialog.js:297
+msgid "Other users are logged in"
+msgstr "Inšyja karystalniki nie zaviaršyli sieans"
+
+#: js/ui/endSessionDialog.js:467
+msgctxt "button"
+msgid "Boot Options"
+msgstr "Paramietry zapusku"
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: js/ui/endSessionDialog.js:672
+#, javascript-format
+msgid "%s (remote)"
+msgstr "%s (addaleny sieans)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: js/ui/endSessionDialog.js:675
+#, javascript-format
+msgid "%s (console)"
+msgstr "%s (kansol)"
+
+#: js/ui/extensionDownloader.js:280
+msgid "Install"
+msgstr "Ustalavać"
+
+#: js/ui/extensionDownloader.js:286
+msgid "Install Extension"
+msgstr "Ustalavać pašyrennie"
+
+#: js/ui/extensionDownloader.js:287
+#, javascript-format
+msgid "Download and install “%s” from extensions.gnome.org?"
+msgstr "Spampavać i ŭstalavać «%s» z extensions.gnome.org?"
+
+#: js/ui/extensionSystem.js:354
+msgid "Extension Updates Available"
+msgstr "Dastupny abnaŭlenni pašyrenniaŭ"
+
+#: js/ui/extensionSystem.js:355
+msgid "Extension updates are ready to be installed"
+msgstr "Abnaŭlenni pašyrenniaŭ hatovyja da ŭstalavannia"
+
+#: js/ui/inhibitShortcutsDialog.js:70
+msgid "Allow inhibiting shortcuts"
+msgstr "Dazvolić błakiravannie spałučenniaŭ kłaviš"
+
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:73
+#, javascript-format
+msgid "The app %s wants to inhibit shortcuts"
+msgstr "Prahrama %s sprabuje zabłakiravać spałučenni kłaviš"
+
+#: js/ui/inhibitShortcutsDialog.js:74
+msgid "An app wants to inhibit shortcuts"
+msgstr "Prahrama sprabuje zabłakiravać spałučenni kłaviš"
+
+#. Translators: %s is a keyboard shortcut like "Super+x"
+#: js/ui/inhibitShortcutsDialog.js:81
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s"
+msgstr "Kab adnavić spałučenni kłaviš, nacisnicie %s"
+
+#: js/ui/kbdA11yDialog.js:34
+msgid "Slow Keys Turned On"
+msgstr "Pavolnyja kłavišy ŭklučany"
+
+#: js/ui/kbdA11yDialog.js:35
+msgid "Slow Keys Turned Off"
+msgstr "Pavolnyja kłavišy vyklučany"
+
+#: js/ui/kbdA11yDialog.js:36
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Vy na praciahu vaśmi siekund utrymlivali kłavišu Shift nacisnutaj. Heta "
+"spałučennie kłaviš uklučaje funkcyju «pavolnyja kłavišy», jakaja ŭpłyvaje na pracu "
+"kłavijatury."
+
+#: js/ui/kbdA11yDialog.js:42
+msgid "Sticky Keys Turned On"
+msgstr "Lipkija kłavišy ŭklučany"
+
+#: js/ui/kbdA11yDialog.js:43
+msgid "Sticky Keys Turned Off"
+msgstr "Lipkija kłavišy vyklučany"
+
+#: js/ui/kbdA11yDialog.js:45
+msgid ""
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Vy nacisnuli kłavišu Shift piać razoŭ zapar. Heta spałučenni kłaviš uklučaje "
+"funkcyju «lipkija kłavišy», jakaja ŭpłyvaje na pracu kłavijatury."
+
+#: js/ui/kbdA11yDialog.js:47
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"Vy nacisnuli dzvie kłavišy adnačasova abo kłavišu Shift piać razoŭ zapar. "
+"Heta dziejannie vyklučaje funkcyju «lipkija kłavišy», jakaja ŭpłyvaje na pracu "
+"kłavijatury."
+
+#: js/ui/kbdA11yDialog.js:57
+msgid "Leave On"
+msgstr "Pakinuć uklučanaj"
+
+#: js/ui/kbdA11yDialog.js:57
+msgid "Turn On"
+msgstr "Uklučyć"
+
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
+msgid "Turn Off"
+msgstr "Vyklučyć"
+
+#: js/ui/kbdA11yDialog.js:67
+msgid "Leave Off"
+msgstr "Pakinuć vyklučanaj"
+
+#: js/ui/keyboard.js:180 js/ui/status/keyboard.js:901
+msgid "Keyboard Settings"
+msgstr "Nałady kłavijatury"
+
+#: js/ui/lookingGlass.js:742
+msgid "No extensions installed"
+msgstr "Niama ŭstalavanych pašyrenniaŭ"
+
+#. Translators: argument is an extension UUID.
+#: js/ui/lookingGlass.js:805
+#, javascript-format
+msgid "%s has not emitted any errors"
+msgstr "%s nie hienieruje nijakich pamyłak"
+
+#: js/ui/lookingGlass.js:811
+msgid "Hide Errors"
+msgstr "Schavać pamyłki"
+
+#: js/ui/lookingGlass.js:815 js/ui/lookingGlass.js:895
+msgid "Show Errors"
+msgstr "Pakazać pamyłki"
+
+#: js/ui/lookingGlass.js:824
+msgid "Active"
+msgstr "Aktyŭna"
+
+#: js/ui/lookingGlass.js:827
+msgid "Inactive"
+msgstr "Nieaktyŭna"
+
+#: js/ui/lookingGlass.js:829
+msgid "Error"
+msgstr "Pamyłka"
+
+#: js/ui/lookingGlass.js:831
+msgid "Out of date"
+msgstr "Sastareła"
+
+#: js/ui/lookingGlass.js:833
+msgid "Downloading"
+msgstr "Spampoŭvannie"
+
+#: js/ui/lookingGlass.js:835
+msgid "Deactivating"
+msgstr "Deaktyvacyja"
+
+#: js/ui/lookingGlass.js:837
+msgid "Activating"
+msgstr "Aktyvacyja"
+
+#: js/ui/lookingGlass.js:873
+msgid "View Source"
+msgstr "Zychodny kod"
+
+#: js/ui/lookingGlass.js:884
+msgid "Web Page"
+msgstr "Veb-staronka"
+
+#: js/ui/main.js:305
+msgid "System was put in unsafe mode"
+msgstr "Sistema pieraviedziena ŭ niebiaspiečny režym"
+
+#: js/ui/main.js:306
+msgid "Apps now have unrestricted access"
+msgstr "Ciapier prahramy majuć nieabmiežavany dostup"
+
+#: js/ui/main.js:366
+msgid "Logged in as a privileged user"
+msgstr "Uvajšoŭ jak pryvilejavany karystalnik"
+
+#: js/ui/main.js:367
+msgid ""
+"Running a session as a privileged user should be avoided for security "
+"reasons. If possible, you should log in as a normal user."
+msgstr ""
+"U metach biaspieki nieabchodna pazbiahać zapusku sieansa ŭ jakasci pryvilejavanaha "
+"karystalnika. Kali mahčyma, uvajdzicie jak zvyčajny karystalnik."
+
+#: js/ui/main.js:415
+msgid "Screen Lock disabled"
+msgstr "Błakiravannie ekrana adklučana"
+
+#: js/ui/main.js:416
+msgid "Screen Locking requires the GNOME display manager"
+msgstr "Dla błakiravannia ekrana patrabujecca GNOME display manager"
+
+#. Translators: this is the string displayed in the header when a message
+#. source doesnt have a name
+#: js/ui/messageList.js:409
+msgid "Unknown App"
+msgstr "Nieviadomaja prahrama"
+
+#: js/ui/messageTray.js:325 js/ui/messageTray.js:327
+msgid "Notification sound"
+msgstr "Huk apaviaščennia"
+
+#: js/ui/mpris.js:144
+msgid "Unknown artist"
+msgstr "Nieviadomy vykanaŭca"
+
+#: js/ui/mpris.js:154
+msgid "Unknown title"
+msgstr "Nieviadomaja nazva"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overviewControls.js:328
+msgid "Type to search"
+msgstr "Uviadzicie pošukavy zapyt"
+
+#: js/ui/overviewControls.js:392
+msgid "Apps"
+msgstr "Prahramy"
+
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
+#: js/ui/overview.js:33
+msgid "Overview"
+msgstr "Ahlad"
+
+#: js/ui/padOsd.js:98
+msgid "New shortcut…"
+msgstr "Novaje spałučenni kłaviš…"
+
+#: js/ui/padOsd.js:151
+msgid "App defined"
+msgstr "Prahrama vyznačana"
+
+#: js/ui/padOsd.js:152
+msgid "Show on-screen help"
+msgstr "Pakazvać daviedku na ekranie"
+
+#: js/ui/padOsd.js:153
+msgid "Switch monitor"
+msgstr "Pieraklučyć manitor"
+
+#: js/ui/padOsd.js:154
+msgid "Assign keystroke"
+msgstr "Pryznačyć kłavišu"
+
+#: js/ui/padOsd.js:223
+msgid "Done"
+msgstr "Hatova"
+
+#: js/ui/padOsd.js:727
+msgid "Edit…"
+msgstr "Redahavać…"
+
+#: js/ui/padOsd.js:774
+msgid "None"
+msgstr "Niama"
+
+#: js/ui/padOsd.js:845
+msgid "Press a button to configure"
+msgstr "Nacisnicie knopku, kab naładzić"
+
+#: js/ui/padOsd.js:846
+msgid "Press Esc to exit"
+msgstr "Nacisnicie Esc, kab vyjsci"
+
+#: js/ui/padOsd.js:849
+msgid "Press any key to exit"
+msgstr "Nacisnicie lubuju kłavišu, kab vyjsci"
+
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: js/ui/panel.js:423
+msgid "Activities"
+msgstr "Dziejnasć"
+
+#: js/ui/panel.js:504
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "Sistema"
+
+#: js/ui/panel.js:678
+msgid "Top Bar"
+msgstr "Vierchniaja panel"
+
+#: js/ui/quickSettings.js:185 js/ui/quickSettings.js:340
+msgid "Open menu"
+msgstr "Adkryć mieniu"
+
+#: js/ui/runDialog.js:61
+msgid "Run a Command"
+msgstr "Vykanać kamandu"
+
+#: js/ui/runDialog.js:76
+msgid "Press ESC to close"
+msgstr "Nacisnicie ESC, kab vyjsci"
+
+#: js/ui/runDialog.js:253
+msgid "Restart is not available on Wayland"
+msgstr "Pierazapusk niedastupny na Wayland"
+
+#: js/ui/runDialog.js:258
+msgid "Restarting…"
+msgstr "Pierazapusk…"
+
+#: js/ui/screenShield.js:233
+msgid "GNOME needs to lock the screen"
+msgstr "GNOME patrabuje zabłakiravać ekran"
+
+#: js/ui/screenShield.js:274 js/ui/screenShield.js:667
+msgid "Unable to lock"
+msgstr "Nie ŭdałosia zabłakiravać"
+
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:668
+msgid "Lock was blocked by an app"
+msgstr "Błakiravannie spyniena prahramaj"
+
+#: js/ui/screenshot.js:1250
+msgid "Selection"
+msgstr "Vyłučennie"
+
+#: js/ui/screenshot.js:1260
+msgid "Area Selection"
+msgstr "Vyłučennie vobłasci"
+
+#: js/ui/screenshot.js:1265
+msgid "Screen"
+msgstr "Ekran"
+
+#: js/ui/screenshot.js:1275
+msgid "Screen Selection"
+msgstr "Vybar ekrana"
+
+#: js/ui/screenshot.js:1280
+msgid "Window"
+msgstr "Akno"
+
+#: js/ui/screenshot.js:1290
+msgid "Window Selection"
+msgstr "Vybar akna"
+
+#: js/ui/screenshot.js:1315 js/ui/status/system.js:111
+msgid "Take Screenshot"
+msgstr "Zrabić zdymak ekrana"
+
+#: js/ui/screenshot.js:1331
+msgid "Record Screen"
+msgstr "Zapis videa z ekrana"
+
+#. Translators: since this string refers to an action,
+#. it needs to be phrased as a verb.
+#: js/ui/screenshot.js:1348
+msgid "Capture"
+msgstr "Zniać"
+
+#: js/ui/screenshot.js:1370
+msgid "Show Pointer"
+msgstr "Pakazvać ukazalnik myšy"
+
+#. Translators: this is the folder where recorded
+#. screencasts are stored.
+#: js/ui/screenshot.js:1994
+msgid "Screencasts"
+msgstr "Zapisy ekrana"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast From 07-17-2013 10:00:46 PM"
+#: js/ui/screenshot.js:1999
+#, no-c-format
+msgid "Screencast From %d %t"
+msgstr "Zapis ekrana ad %d %t"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2045
+msgid "Screencast recorded"
+msgstr "Zapis ekrana zrobleny"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2058
+msgid "Screencast failed to start"
+msgstr "Nie ŭdałosia pačać zapis videa z ekrana"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2064
+msgid "Screencast ended: Out of disk space"
+msgstr "Zapis ekrana zavieršany. Skončyłasia miesca na dysku"
+
+#. We can encourage user to try again on service crashes since the
+#. recorder will auto-blocklist the pipeline that crashed.
+#. Translators: notification title.
+#: js/ui/screenshot.js:2070
+msgid "Screencast ended unexpectedly, please try again"
+msgstr "Zapis ekrana niečakana zaviaršyŭsia, paŭtarycie sprobu"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2073
+msgid "Screencast ended unexpectedly"
+msgstr "Zapis ekrana niečakana zaviaršyŭsia"
+
+#. Translators: notification source name.
+#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2330
+msgid "Screenshot"
+msgstr "Zdymak ekrana"
+
+#. Translators: notification body when a screencast was recorded.
+#: js/ui/screenshot.js:2090
+msgid "Click here to view the video."
+msgstr "Nacisnicie siudy, kab prahladzieć videa."
+
+#. Translators: button on the screencast notification.
+#. Translators: button on the screenshot notification.
+#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2346
+msgid "Show in Files"
+msgstr "Pakazać praz «Fajły»"
+
+#. Translators: this is the name of the file that the screenshot is
+#. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
+#: js/ui/screenshot.js:2288
+#, javascript-format
+msgid "Screenshot From %s"
+msgstr "Zdymak ekrana ad %s"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2336
+msgid "Screenshot captured"
+msgstr "Zdymak ekrana zachopleny"
+
+#. Translators: notification body when a screenshot was captured.
+#: js/ui/screenshot.js:2338
+msgid "You can paste the image from the clipboard."
+msgstr "Vy možacie ŭstavić vyjavu z bufiera abmienu."
+
+#: js/ui/screenshot.js:2397 js/ui/screenshot.js:2561
+msgid "Screenshot taken"
+msgstr "Zdymak ekrana atrymany"
+
+#: js/ui/search.js:832
+msgid "Searching…"
+msgstr "Pošuk…"
+
+#: js/ui/search.js:834
+msgid "No results"
+msgstr "Ničoha nie znojdziena"
+
+#: js/ui/search.js:965
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "Jašče %d"
+msgstr[1] "Jašče %d"
+msgstr[2] "Jašče %d"
+
+#: js/ui/searchController.js:87
+#: subprojects/extensions-app/data/ui/extensions-window.ui:73
+msgid "Search"
+msgstr "Pošuk"
+
+#: js/ui/shellEntry.js:21
+msgid "Copy"
+msgstr "Kapijavać"
+
+#: js/ui/shellEntry.js:26
+msgid "Paste"
+msgstr "Ustavić"
+
+#: js/ui/shellEntry.js:78
+msgid "Show Text"
+msgstr "Pakazać tekst"
+
+#: js/ui/shellEntry.js:80
+msgid "Hide Text"
+msgstr "Schavać tekst"
+
+#: js/ui/shellEntry.js:174
+msgid "Caps lock is on"
+msgstr "Caps lock uklučany"
+
+#: js/ui/shellMountOperation.js:286
+msgid "Hidden Volume"
+msgstr "Schavany tom"
+
+#: js/ui/shellMountOperation.js:289
+msgid "Windows System Volume"
+msgstr "Sistemny tom Windows"
+
+#: js/ui/shellMountOperation.js:292
+msgid "Uses Keyfiles"
+msgstr "Vykarystoŭvaje fajły-klučy"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:300
+#, javascript-format
+msgid ""
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
+msgstr ""
+"Kab razbłakiravać tom, jaki vykarystoŭvaje fajły-klučy, skarystajciesia zamiest "
+"ich utylitaj <i>%s</i>"
+
+#: js/ui/shellMountOperation.js:304
+msgid ""
+"You need an external utility like <i>Disks</i> to unlock a volume that uses "
+"keyfiles"
+msgstr ""
+"Kab razbłakiravać tom, jaki vykarystoŭvaje fajły-klučy, patrabujecca zniešniaja "
+"ŭtylita, naprykład <i>Dyski</i>"
+
+#: js/ui/shellMountOperation.js:312
+msgid "PIM Number"
+msgstr "Numar PIM"
+
+#: js/ui/shellMountOperation.js:371
+msgid "Remember Password"
+msgstr "Zapomnić parol"
+
+#: js/ui/shellMountOperation.js:386
+msgid "Unlock"
+msgstr "Razbłakiravać"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:400
+#, javascript-format
+msgid "Open %s"
+msgstr "Adkryć %s"
+
+#: js/ui/shellMountOperation.js:436
+msgid "The PIM must be a number or empty"
+msgstr "PIM pavinien być ličbavym abo pustym"
+
+#: js/ui/status/accessibility.js:34
+msgid "Accessibility"
+msgstr "Spiecyjalnyja mahčymasci"
+
+#: js/ui/status/accessibility.js:44
+msgid "High Contrast"
+msgstr "Vysokaja kantrasnasć"
+
+#: js/ui/status/accessibility.js:47
+msgid "Zoom"
+msgstr "Maštabavannie"
+
+#: js/ui/status/accessibility.js:54
+msgid "Screen Reader"
+msgstr "Čytannie z ekrana"
+
+#: js/ui/status/accessibility.js:58
+msgid "Screen Keyboard"
+msgstr "Ekrannaja kłavijatura"
+
+#: js/ui/status/accessibility.js:62
+msgid "Visual Alerts"
+msgstr "Vizualnyja sihnały"
+
+#: js/ui/status/accessibility.js:66
+msgid "Sticky Keys"
+msgstr "Lipkija kłavišy"
+
+#: js/ui/status/accessibility.js:70
+msgid "Slow Keys"
+msgstr "Pavolnyja kłavišy"
+
+#: js/ui/status/accessibility.js:74
+msgid "Bounce Keys"
+msgstr "Pruhkija kłavišy"
+
+#: js/ui/status/accessibility.js:78
+msgid "Mouse Keys"
+msgstr "Kiravannie ŭkazalnikam myšy"
+
+#: js/ui/status/accessibility.js:83
+msgid "Accessibility Settings"
+msgstr "Nałady spiecyjalnych mahčymasciej"
+
+#: js/ui/status/accessibility.js:123
+msgid "Large Text"
+msgstr "Vialiki tekst"
+
+#: js/ui/status/autoRotate.js:14
+msgid "Auto Rotate"
+msgstr "Aŭtapavarot"
+
+#: js/ui/status/backgroundApps.js:156
+msgctxt "title"
+msgid "Background Apps"
+msgstr "Prahramy ŭ fonie"
+
+#: js/ui/status/backgroundApps.js:171
+msgid "Apps known to be running without a window"
+msgstr "Viadomyja prahramy, jakija vykonvajucca biez akna"
+
+#: js/ui/status/backgroundApps.js:182
+msgid "App Settings"
+msgstr "Nałady prahram"
+
+#: js/ui/status/backgroundApps.js:239
+msgid "No Background Apps"
+msgstr "Niama prahram u fonie"
+
+#: js/ui/status/backgroundApps.js:241
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%d prahrama ŭ fonie"
+msgstr[1] "%d prahramy ŭ fonie"
+msgstr[2] "%d prahram u fonie"
+
+#: js/ui/status/backlight.js:39
+msgid "Keyboard Brightness"
+msgstr "Jarkasć padsvietki kłavijatury"
+
+#: js/ui/status/backlight.js:87
+msgid "Off"
+msgstr "Vyklučana"
+
+#: js/ui/status/backlight.js:88
+msgid "Low"
+msgstr "Nizkaja"
+
+#: js/ui/status/backlight.js:89
+msgid "High"
+msgstr "Vysokaja"
+
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:883
+msgid "Keyboard"
+msgstr "Kłavijatura"
+
+#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
+msgid "Disconnect"
+msgstr "Adłučycca"
+
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:354
+#, javascript-format
+msgid "Disconnect %s"
+msgstr "Adłučycca ad %s"
+
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/bluetooth.js:269 js/ui/status/network.js:356
+#, javascript-format
+msgid "Connect to %s"
+msgstr "Złučycca z %s"
+
+#: js/ui/status/bluetooth.js:276 js/ui/status/bluetooth.js:278
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1909
+msgid "Bluetooth Settings"
+msgstr "Nałady Bluetooth"
+
+#: js/ui/status/bluetooth.js:348
+msgid "No available or connected devices"
+msgstr "Niama dastupnych abo padłučanych pryład"
+
+#: js/ui/status/bluetooth.js:349
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "Uklučycie Bluetooth, kab padłučycca da pryład"
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:413
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "Padłučana %d"
+msgstr[1] "Padłučana %d"
+msgstr[2] "Padłučana %d"
+
+#: js/ui/status/brightness.js:32
+msgid "Brightness"
+msgstr "Jarkasć"
+
+#: js/ui/status/darkMode.js:12
+msgid "Dark Style"
+msgstr "Ciomny styl"
+
+#: js/ui/status/dwellClick.js:15
+msgid "Single Click"
+msgstr "Adzinarnaje naciskannie"
+
+#: js/ui/status/dwellClick.js:20
+msgid "Double Click"
+msgstr "Padvojnaje naciskannie"
+
+#: js/ui/status/dwellClick.js:25
+msgid "Drag"
+msgstr "Pieraciahvannie"
+
+#: js/ui/status/dwellClick.js:30
+msgid "Secondary Click"
+msgstr "Naciskannie druhoj knopkaj"
+
+#: js/ui/status/dwellClick.js:39
+msgid "Dwell Click"
+msgstr "Naciskannie pry spynienni ŭkazalnika"
+
+#: js/ui/status/keyboard.js:900
+msgid "Show Keyboard Layout"
+msgstr "Pakazać raskładku kłavijatury"
+
+#: js/ui/status/location.js:337
+msgid "Allow location access"
+msgstr "Dazvolić dostup da miescaznachodžannia"
+
+#. Translators: %s is an application name
+#: js/ui/status/location.js:339
+#, javascript-format
+msgid "The app %s wants to access your location"
+msgstr "Prahrama %s sprabuje atrymać dostup da vašaha miescaznachodžannia"
+
+#: js/ui/status/location.js:349
+msgid "Location access can be changed at any time from the privacy settings"
+msgstr ""
+"Dostup da miescaznachodžannie zaŭsiody možna zmianić praz nałady pryvatnasci"
+
+#: js/ui/status/location.js:357
+msgid "Deny Access"
+msgstr "Zabaranić dostup"
+
+#: js/ui/status/location.js:362
+msgid "Grant Access"
+msgstr "Dazvolić dostup"
+
+#: js/ui/status/network.js:62
+msgid "<unknown>"
+msgstr "<nieviadoma>"
+
+#: js/ui/status/network.js:1059
+msgid "Secure"
+msgstr "Biaspiečnaja"
+
+#: js/ui/status/network.js:1059
+msgid "Not secure"
+msgstr "Niebiaspiečnaja"
+
+#: js/ui/status/network.js:1060
+#, javascript-format
+msgid "Signal strength %s%%"
+msgstr "Siła sihnału %s%%"
+
+#. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
+#: js/ui/status/network.js:1062
+#, javascript-format
+msgid "%s, %s, %s"
+msgstr "%s, %s, %s"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1164
+#, javascript-format
+msgid "%s Hotspot"
+msgstr "Chot-spot %s"
+
+#: js/ui/status/network.js:1435
+#, javascript-format
+msgid "%d connected"
+msgid_plural "%d connected"
+msgstr[0] "Padłučana %d"
+msgstr[1] "Padłučana %d"
+msgstr[2] "Padłučana %d"
+
+#: js/ui/status/network.js:1533 js/ui/status/network.js:1549
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1534
+msgid "VPN Settings"
+msgstr "Nałady VPN"
+
+#: js/ui/status/network.js:1794
+msgid "Wi–Fi"
+msgstr "Wi–Fi"
+
+#: js/ui/status/network.js:1796
+msgid "All Networks"
+msgstr "Usie sietki"
+
+#: js/ui/status/network.js:1893
+msgid "Wired Connections"
+msgstr "Pravadnyja złučenni"
+
+#: js/ui/status/network.js:1894
+msgid "Wired Settings"
+msgstr "Nałady pravadnoha złučennia"
+
+#: js/ui/status/network.js:1908
+msgid "Bluetooth Tethers"
+msgstr "Bluetooth Tethers"
+
+#. Translators: "Tether" from "Bluetooth Tether"
+#: js/ui/status/network.js:1915
+msgid "Tether"
+msgstr "Tether"
+
+#: js/ui/status/network.js:1928
+msgid "Mobile Connections"
+msgstr "Mabilnyja złučenni"
+
+#: js/ui/status/network.js:1930
+msgid "Mobile Broadband Settings"
+msgstr "Nałady mabilnaha złučennia"
+
+#. Translators: "Mobile" from "Mobile Broadband"
+#: js/ui/status/network.js:1939
+msgid "Mobile"
+msgstr "Mabilny"
+
+#: js/ui/status/network.js:1973
+msgid "Sign Into Wi–Fi Network"
+msgstr "Uvachod u sietku Wi–Fi"
+
+#: js/ui/status/network.js:2160
+msgid "Connection failed"
+msgstr "Nie ŭdałosia złučycca"
+
+#: js/ui/status/network.js:2161
+msgid "Activation of network connection failed"
+msgstr "Nie ŭdałosia aktyvavać sietkavaje złučennie"
+
+#: js/ui/status/nightLight.js:19
+msgid "Night Light"
+msgstr "Načnoje sviatło"
+
+#: js/ui/status/powerProfiles.js:19
+msgctxt "Power profile"
+msgid "Performance"
+msgstr "Pradukcyjnasć"
+
+#: js/ui/status/powerProfiles.js:24
+msgctxt "Power profile"
+msgid "Balanced"
+msgstr "Zbałansavany"
+
+#: js/ui/status/powerProfiles.js:29
+msgctxt "Power profile"
+msgid "Power Saver"
+msgstr "Enierhazbieražennie"
+
+#: js/ui/status/powerProfiles.js:39 js/ui/status/powerProfiles.js:69
+msgid "Power Mode"
+msgstr "Režym siłkavannia"
+
+#: js/ui/status/powerProfiles.js:71
+msgid "Power Settings"
+msgstr "Nałady siłkavannia"
+
+#: js/ui/status/remoteAccess.js:74
+msgid "Stop Screencast"
+msgstr "Spynić zapis ekrana"
+
+#: js/ui/status/remoteAccess.js:144
+msgid "Stop Screen Sharing"
+msgstr "Spynić supolny dostup da ekrana"
+
+#: js/ui/status/rfkill.js:99
+msgid "Airplane Mode"
+msgstr "Režym palotu"
+
+#: js/ui/status/system.js:168
+msgid "Power Off Menu"
+msgstr "Mieniu vyklučennia"
+
+#: js/ui/status/system.js:176
+msgid "Suspend"
+msgstr "Prypynić pracu"
+
+#: js/ui/status/system.js:181
+msgid "Restart…"
+msgstr "Pierazapusk…"
+
+#: js/ui/status/system.js:186
+msgid "Power Off…"
+msgstr "Vyklučyć…"
+
+#: js/ui/status/system.js:193
+#: subprojects/extensions-app/data/ui/extensions-window.ui:124
+msgid "Log Out…"
+msgstr "Vyjsci…"
+
+#: js/ui/status/system.js:198
+msgid "Switch User…"
+msgstr "Zmianić karystalnika…"
+
+#: js/ui/status/system.js:242
+msgctxt "action"
+msgid "Lock Screen"
+msgstr "Zabłakiravać ekran"
+
+#: js/ui/status/thunderbolt.js:308
+msgid "Unknown Thunderbolt device"
+msgstr "Nieviadomaja pryłada Thunderbolt"
+
+#: js/ui/status/thunderbolt.js:309
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr ""
+"Padčas vašaj adsutnasci była vyjaŭlena novaja pryłada. Kab pačać joj "
+"karystacca, adłučycie i znoŭ padłučycie pryładu."
+
+#: js/ui/status/thunderbolt.js:312
+msgid "Unauthorized Thunderbolt device"
+msgstr "Niesankcyjanavanaja pryłada Thunderbolt"
+
+#: js/ui/status/thunderbolt.js:313
+msgid ""
+"New device has been detected and needs to be authorized by an administrator"
+msgstr "Vyjaŭlena novaja pryłada. Patrabujecca aŭtaryzacyja ad administratara"
+
+#: js/ui/status/thunderbolt.js:319
+msgid "Thunderbolt authorization error"
+msgstr "Pamyłka aŭtaryzacyi Thunderbolt"
+
+#: js/ui/status/thunderbolt.js:320
+#, javascript-format
+msgid "Could not authorize the Thunderbolt device: %s"
+msgstr "Nie ŭdałosia aŭtaryzavać pryładu Thunderbolt: %s"
+
+#: js/ui/status/volume.js:218
+msgid "Volume changed"
+msgstr "Hučnasć zmieniena"
+
+#: js/ui/status/volume.js:231
+msgid "Unmute"
+msgstr "Uklučyć huk"
+
+#: js/ui/status/volume.js:231
+msgid "Mute"
+msgstr "Adklučyć huk"
+
+#: js/ui/status/volume.js:293
+msgid "Volume"
+msgstr "Hučnasć"
+
+#: js/ui/status/volume.js:309
+msgid "Sound Output"
+msgstr "Aŭdyjavychad"
+
+#: js/ui/status/volume.js:384
+msgid "Sound Input"
+msgstr "Aŭdyjaŭvachod"
+
+#. Translators: this is for display mirroring i.e. cloning.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:20
+msgid "Mirror"
+msgstr "Adlustravannie"
+
+#. Translators: this is for the desktop spanning displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:29
+msgid "Join Displays"
+msgstr "Abjadnać dyspłei"
+
+#. Translators: this is for using only external displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:39
+msgid "External Only"
+msgstr "Tolki zniešni"
+
+#. Translators: this is for using only the laptop display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:47
+msgid "Built-in Only"
+msgstr "Tolki ŭbudavany"
+
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/unlockDialog.js:384
+msgid "%A %B %-d"
+msgstr "%A, %-d %B"
+
+#: js/ui/unlockDialog.js:390
+msgid "Swipe up to unlock"
+msgstr "Praviadzicie palcam, kab razbłakiravać"
+
+#: js/ui/unlockDialog.js:391
+msgid "Click or press a key to unlock"
+msgstr "Kab razbłakiravać, nacisnicie knopku myšy ci kłavijatury"
+
+#: js/ui/unlockDialog.js:576
+msgid "Unlock Window"
+msgstr "Razbłakiravać akno"
+
+#: js/ui/unlockDialog.js:585
+msgid "Log in as another user"
+msgstr "Uvajsci jak inšy karystalnik"
+
+#: js/ui/welcomeDialog.js:47
+#, javascript-format
+msgid "GNOME %s"
+msgstr "GNOME %s"
+
+#: js/ui/welcomeDialog.js:51
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "Vitajem u %s"
+
+#: js/ui/welcomeDialog.js:52
+msgid "If you want to learn your way around, check out the tour"
+msgstr ""
+"Kali chočacie aznajomicca z novymi mahčymasciami, prapanujem vam karotki ahlad"
+
+#: js/ui/welcomeDialog.js:66
+msgid "Take Tour"
+msgstr "Aznajomicca"
+
+#: js/ui/windowAttentionHandler.js:18
+#, javascript-format
+msgid "“%s” is ready"
+msgstr "«%s» hatova"
+
+#. Translators: This string should be shorter than 30 characters
+#: js/ui/windowManager.js:68
+msgid "Keep these display settings?"
+msgstr "Zachavać hetyja nałady dyspłeja?"
+
+#: js/ui/windowManager.js:78
+msgid "Revert Settings"
+msgstr "Skinuć zmieny naład"
+
+#: js/ui/windowManager.js:83
+msgid "Keep Changes"
+msgstr "Zachavać zmieny"
+
+#: js/ui/windowManager.js:103
+#, javascript-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "Zmieny naład buduć skinuty praz %d siekundu"
+msgstr[1] "Zmieny naład buduć skinuty praz %d siekundy"
+msgstr[2] "Zmieny naład buduć skinuty praz %d siekund"
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
+#: js/ui/windowManager.js:500
+#, javascript-format
+msgid "%d × %d"
+msgstr "%d × %d"
+
+#. Translators: entry in the window right click menu.
+#: js/ui/windowMenu.js:28
+msgctxt "window-menu"
+msgid "Take Screenshot"
+msgstr "Zrabić zdymak ekrana"
+
+#: js/ui/windowMenu.js:40
+msgid "Hide"
+msgstr "Schavać"
+
+#: js/ui/windowMenu.js:47
+msgid "Restore"
+msgstr "Adnavić"
+
+#: js/ui/windowMenu.js:51
+msgid "Maximize"
+msgstr "Razharnuć"
+
+#: js/ui/windowMenu.js:58
+msgid "Move"
+msgstr "Pieramiascić"
+
+#: js/ui/windowMenu.js:78
+msgid "Resize"
+msgstr "Zmianić pamier"
+
+#: js/ui/windowMenu.js:98
+msgid "Always on Top"
+msgstr "Zaŭsiody zvierchu"
+
+#: js/ui/windowMenu.js:117
+msgid "Always on Visible Workspace"
+msgstr "Zaŭsiody na bačnaj pracoŭnaj prastory"
+
+#: js/ui/windowMenu.js:131
+msgid "Move to Workspace Left"
+msgstr "Pieramiascić na pracoŭnuju prastoru laviej"
+
+#: js/ui/windowMenu.js:137
+msgid "Move to Workspace Right"
+msgstr "Pieramiascić na pracoŭnuju prastoru praviej"
+
+#: js/ui/windowMenu.js:143
+msgid "Move to Workspace Up"
+msgstr "Pieramiascić na pracoŭnuju prastoru vyšej"
+
+#: js/ui/windowMenu.js:149
+msgid "Move to Workspace Down"
+msgstr "Pieramiascić na pracoŭnuju prastoru nižej"
+
+#: js/ui/windowMenu.js:167
+msgid "Move to Monitor Up"
+msgstr "Pieramiascić na manitor vyšej"
+
+#: js/ui/windowMenu.js:176
+msgid "Move to Monitor Down"
+msgstr "Pieramiascić na manitor nižej"
+
+#: js/ui/windowMenu.js:185
+msgid "Move to Monitor Left"
+msgstr "Pieramiascić na manitor laviej"
+
+#: js/ui/windowMenu.js:194
+msgid "Move to Monitor Right"
+msgstr "Pieramiascić na manitor praviej"
+
+#: js/ui/windowMenu.js:202
+msgid "Close"
+msgstr "Zakryć"
+
+#: src/main.c:512 subprojects/extensions-tool/src/main.c:336
+msgid "Print version"
+msgstr "Vyviesci numar viersii"
+
+#: src/main.c:518
+msgid "Mode used by GDM for login screen"
+msgstr "Režym, jaki vykarystoŭvaje GDM dla ekrana ŭvachodu"
+
+#: src/main.c:524
+msgid "Use a specific mode, e.g. “gdm” for login screen"
+msgstr "Vykarystoŭvać vyznačany režym, naprykład, «gdm» dla ekrana ŭvachodu"
+
+#: src/main.c:530
+msgid "List possible modes"
+msgstr "Spis mahčymych režymaŭ"
+
+#: src/main.c:536
+msgid "Force animations to be enabled"
+msgstr "Prymusovaje ŭklučennie animacyi"
+
+#: src/shell-app.c:267
+msgctxt "program"
+msgid "Unknown"
+msgstr "Nieviadomaja"
+
+#: src/shell-app.c:518
+#, c-format
+msgid "Failed to launch “%s”"
+msgstr "Nie ŭdałosia zapuscić «%s»"
+
+#: src/shell-keyring-prompt.c:779
+msgid "Passwords do not match"
+msgstr "Paroli nie supadajuć"
+
+#: src/shell-keyring-prompt.c:787
+msgid "Password cannot be blank"
+msgstr "Parol nie moža być pustym"
+
+#: src/shell-polkit-authentication-agent.c:344
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Pravierki sapraŭdnasci adchilena karystalnikam"
+
+#: src/st/st-icon-theme.c:1859
+#, c-format
+msgid "Icon %s not present in theme %s"
+msgstr "Značok «%s» adsutničaje ŭ temie %s"
+
+#: src/st/st-icon-theme.c:3452 src/st/st-icon-theme.c:3755
+msgid "Failed to load icon"
+msgstr "Nie ŭdałosia zahruzić značok"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
+msgid "Manage your GNOME Extensions"
+msgstr "Kiravannie pašyrenniami GNOME"
+
+#. developer_name tag deprecated with Appstream 1.0
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:20
+msgid "The GNOME Project"
+msgstr "Prajekt GNOME"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:52
+msgid ""
+"GNOME Extensions handles updating extensions, configuring extension "
+"preferences and removing or disabling unwanted extensions."
+msgstr ""
+"Pašyrenni GNOME ažycciaŭlajuć abnaŭlennie i zmianiennie paramietraŭ pašyrenniaŭ, "
+"vydalennie abo adklučennie niepažadanych pašyrenniaŭ."
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
+msgid "Main Window"
+msgstr "Hałoŭnaje akno"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
+msgid "Available Updates"
+msgstr "Dastupny abnaŭlenni"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
+msgid "Search View"
+msgstr "Pošuk"
+
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
+msgid "Configure GNOME Shell Extensions"
+msgstr "Naładzić pašyrenni abałonki GNOME"
+
+#: subprojects/extensions-app/js/extensionManager.js:237
+#, javascript-format
+msgid ""
+"The installed version of this extension (%s) is incompatible with the "
+"current version of GNOME (%s). The extension has been disabled."
+msgstr ""
+"Ustalavanaja viersija pašyrennia (%s) niesumiaščalnaja z biahučaj viersijaj GNOME "
+"(%s). Pašyrennie adklučana."
+
+#: subprojects/extensions-app/js/extensionManager.js:238
+#, javascript-format
+msgid ""
+"The installed version of this extension is incompatible with the current "
+"version of GNOME (%s). The extension has been disabled."
+msgstr ""
+"Ustalavanaja viersija pašyrennia niesumiaščalnaja z biahučaj viersijaj GNOME (%s). "
+"Pašyrennie adklučana."
+
+#: subprojects/extensions-app/js/extensionManager.js:242
+msgid ""
+"An error has occurred in this extension. This could cause issues elsewhere "
+"in the system. It is recommended to turn the extension off until the error "
+"is resolved."
+msgstr ""
+"U hetym pašyrenni adbyłasia pamyłka, što moža pryviesci da prablem u inšych "
+"častkach sistemy. Pakul pamyłka nie budzie vypraŭlena, rekamiendujecca adklučyć "
+"pašyrennie."
+
+#. translators: Details for an extension error
+#: subprojects/extensions-app/js/extensionManager.js:248
+msgid "Error details:"
+msgstr "Padrabiaznasci pamyłki:"
+
+#: subprojects/extensions-app/js/extensionRow.js:82
+#, javascript-format
+msgid "Version %s"
+msgstr "Viersija %s"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:113
+#, javascript-format
+msgid "Remove “%s”?"
+msgstr "Vydalić «%s»?"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:114
+msgid ""
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
+msgstr ""
+"Kali vydalić pašyrennie i potym uklučyć jaho znoŭ, spatrebicca paŭtornaje "
+"spampoŭvannie"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:117
+msgid "_Cancel"
+msgstr "_Skasavać"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:118
+msgid "_Remove"
+msgstr "_Vydalić"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:158
+msgid "translator-credits"
+msgstr ""
+"Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
+"Kasia Bondarava <kasia.bondarava@gmail.com>\n"
+"Yuras Shumovich <shumovichy@gmail.com>"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:203
+#, javascript-format
+msgid "%d extension will be updated on next login."
+msgid_plural "%d extensions will be updated on next login."
+msgstr[0] "Padčas nastupnaha ŭvachodu ŭ sistemu abnovicca %d pašyrennie."
+msgstr[1] "Padčas nastupnaha ŭvachodu ŭ sistemu abnovicca %d pašyrenni."
+msgstr[2] "Padčas nastupnaha ŭvachodu ŭ sistemu abnovicca %d pašyrenniaŭ."
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:13
+msgid "Error Details"
+msgstr "Padrabiaznasci pamyłki"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:51
+msgid "Updates Details"
+msgstr "Padrabiaznasci abnaŭlennia"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:68
+msgid ""
+"A new version of this extension is ready and will be loaded on next login."
+msgstr ""
+"Novaja viersija pašyrennia hatova da vykarystannia, jana budzie zahružana padčas "
+"nastupnaha ŭvachodu ŭ sistemu."
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:100
+msgid "Extension Details"
+msgstr "Zviestki ab pašyrenni"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
+msgid "_Website"
+msgstr "_Veb-sajt"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:215
+msgid "_Settings"
+msgstr "_Nałady"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:242
+msgid "_Remove…"
+msgstr "_Vydalić…"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:6
+msgid "Keyboard Shortcuts"
+msgstr "Spałučenni kłaviš"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:10
+msgid "About Extensions"
+msgstr "Pra pašyrenni"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:64
+msgid "Main Menu"
+msgstr "Hałoŭnaje mieniu"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:106
+msgid "Search extensions"
+msgstr "Pošuk pašyrenniaŭ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:134
+msgid "_Extensions"
+msgstr "_Pašyrenni"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:139
+msgid "More Information"
+msgstr "Dadatkovyja zviestki"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:151
+msgid ""
+"Extensions can cause performance and stability issues. It is recommended to "
+"disable all extensions if you experience problems with your system."
+msgstr ""
+"Pašyrenni mohuć vyklikać prablemy z pradukcyjnasciu i stabilnasciu. "
+"Rekamiendujecca adklučyć usie pašyrenni, kali vy sutyknulisia z prablemami ŭ "
+"svajoj sistemie."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:178
+msgid "User Extensions"
+msgstr "Pašyrenni karystalnika"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:198
+msgid "System Extensions"
+msgstr "Sistemnyja pašyrenni"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:233
+msgid "Search Results"
+msgstr "Vyniki pošuku"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:252
+msgid "No Results Found"
+msgstr "Ničoha nie znojdziena"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:253
+msgid "Try a different search"
+msgstr "Pasprabujcie zmianić pošukavy zapyt"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:264
+msgid "No Installed Extensions"
+msgstr "Niama ŭstalavanych pašyrenniaŭ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:265
+msgid ""
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
+msgstr ""
+"Kab znajsci i dadać pašyrenni, naviedajcie <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:276
+msgid ""
+"Were very sorry, but it was not possible to get the list of installed "
+"extensions. Make sure you are logged into GNOME and try again."
+msgstr ""
+"Na žal, niemahčyma atrymać spis ustalavanych pašyrenniaŭ. Praviercie, ci "
+"ŭvajšli vy ŭ GNOME i paŭtarycie sprobu."
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:9
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Ahulnyja"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:12
+msgctxt "shortcut window"
+msgid "Open Menu"
+msgstr "Adkryć mieniu"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:18
+msgctxt "shortcut window"
+msgid "Toggle Search"
+msgstr "Pošuk"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:24
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Pakazać spałučenni kłaviš"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:30
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Vyjsci"
+
+#. Translators: a file path to an extension directory
+#: subprojects/extensions-tool/src/command-create.c:284
+#, c-format
+msgid "The new extension was successfully created in %s.\n"
+msgstr "Novaje pašyrennie stvorana ŭ %s.\n"
+
+#: subprojects/extensions-tool/src/command-create.c:376
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"Nazva — karotkaja (lepš za ŭsio apisalnaja) fraza ci słova.\n"
+"Prykłady: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:382
+#: subprojects/extensions-tool/src/main.c:243
+msgid "Name"
+msgstr "Nazva"
+
+#: subprojects/extensions-tool/src/command-create.c:396
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"Apisannie — tłumačennie adnym skazam, što robić vaša pašyrennie.\n"
+"Prykłady: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:402
+#: subprojects/extensions-tool/src/main.c:246
+msgid "Description"
+msgstr "Apisannie"
+
+#: subprojects/extensions-tool/src/command-create.c:416
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+"UUID — usieahulny ŭnikalny identyfikatar vašaha pašyrennia.\n"
+"Jon pavinien mieć farmat adrasa elektronnaj pošty (nazva@jankupala.pryklad."
+"com)\n"
+
+#: subprojects/extensions-tool/src/command-create.c:443
+msgid "Choose one of the available templates:\n"
+msgstr "Vybierycie adzin z dastupnych šabłonaŭ:\n"
+
+#: subprojects/extensions-tool/src/command-create.c:457
+msgid "Template"
+msgstr "Šabłon"
+
+#: subprojects/extensions-tool/src/command-create.c:515
+msgid "The unique identifier of the new extension"
+msgstr "Unikalny identyfikatar novaha pašyrennia"
+
+#: subprojects/extensions-tool/src/command-create.c:518
+msgid "NAME"
+msgstr "NAZVA"
+
+#: subprojects/extensions-tool/src/command-create.c:519
+msgid "The user-visible name of the new extension"
+msgstr "Nazva novaha pašyrennia, jakuju bačyć karystalnik"
+
+#: subprojects/extensions-tool/src/command-create.c:521
+msgid "DESCRIPTION"
+msgstr "APISANNIE"
+
+#: subprojects/extensions-tool/src/command-create.c:523
+msgid "A short description of what the extension does"
+msgstr "Karotkaje apisannie, što robić pašyrennie"
+
+#: subprojects/extensions-tool/src/command-create.c:525
+#: subprojects/extensions-tool/src/command-pack.c:455
+msgid "DOMAIN"
+msgstr "DAMIEN"
+
+#: subprojects/extensions-tool/src/command-create.c:527
+msgid "The gettext domain used by the extension"
+msgstr "Damien gettext, jaki vykarystoŭvajecca pašyrenniem"
+
+#: subprojects/extensions-tool/src/command-create.c:529
+#: subprojects/extensions-tool/src/command-pack.c:448
+msgid "SCHEMA"
+msgstr "SCHIEMA"
+
+#: subprojects/extensions-tool/src/command-create.c:531
+msgid "The GSettings schema used by the extension"
+msgstr "Schiema GSettings, jakaja vykarystoŭvajecca pašyrenniem"
+
+#: subprojects/extensions-tool/src/command-create.c:534
+msgid "TEMPLATE"
+msgstr "ŠABŁON"
+
+#: subprojects/extensions-tool/src/command-create.c:535
+msgid "The template to use for the new extension"
+msgstr "Šabłon dla novych pašyrenniaŭ"
+
+#: subprojects/extensions-tool/src/command-create.c:538
+msgid "Include prefs.js template"
+msgstr "Uklučyć šabłon prefs.js"
+
+#: subprojects/extensions-tool/src/command-create.c:544
+msgid "Enter extension information interactively"
+msgstr "Interaktyŭny ŭvod infarmacyi ab pašyrenni"
+
+#: subprojects/extensions-tool/src/command-create.c:552
+msgid "Create a new extension"
+msgstr "Stvaryć novaje pašyrennie"
+
+#: subprojects/extensions-tool/src/command-create.c:570
+#: subprojects/extensions-tool/src/command-list.c:190
+msgid "Unknown arguments"
+msgstr "Nieviadomyja arhumienty"
+
+#: subprojects/extensions-tool/src/command-create.c:595
+msgid "UUID, name and description are required"
+msgstr "Patrabujecca UUID, nazva i apisannie"
+
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
+#, c-format
+msgid "Extension “%s” does not exist\n"
+msgstr "Pašyrennie «%s» nie isnuje\n"
+
+#: subprojects/extensions-tool/src/command-disable.c:98
+msgid "Disable an extension"
+msgstr "Adklučyć pašyrennie"
+
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
+#: subprojects/extensions-tool/src/command-info.c:103
+#: subprojects/extensions-tool/src/command-prefs.c:105
+#: subprojects/extensions-tool/src/command-reset.c:76
+#: subprojects/extensions-tool/src/command-uninstall.c:104
+msgid "No UUID given"
+msgstr "UUID nie ŭkazany"
+
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
+#: subprojects/extensions-tool/src/command-info.c:108
+#: subprojects/extensions-tool/src/command-prefs.c:110
+#: subprojects/extensions-tool/src/command-reset.c:81
+#: subprojects/extensions-tool/src/command-uninstall.c:109
+msgid "More than one UUID given"
+msgstr "Ukazana bolš za adzin UUID"
+
+#: subprojects/extensions-tool/src/command-enable.c:98
+msgid "Enable an extension"
+msgstr "Uklučyć pašyrennie"
+
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:66
+#: subprojects/extensions-tool/src/main.c:150
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "Nie ŭdałosia złučycca z abałonkaj GNOME\n"
+
+#: subprojects/extensions-tool/src/command-info.c:59
+#: subprojects/extensions-tool/src/main.c:159
+#, c-format
+msgid "Extension “%s” doesnt exist\n"
+msgstr "Pašyrennie «%s» nie isnuje\n"
+
+#: subprojects/extensions-tool/src/command-info.c:85
+msgid "Show extensions info"
+msgstr "Pakazać zviestki ab pašyrenni"
+
+#: subprojects/extensions-tool/src/command-install.c:190
+msgid "Overwrite an existing extension"
+msgstr "Pierazapisać isnujučaje pašyrennie"
+
+#: subprojects/extensions-tool/src/command-install.c:192
+msgid "EXTENSION_BUNDLE"
+msgstr "PAKIET_PAŠYRENNIA"
+
+#: subprojects/extensions-tool/src/command-install.c:201
+msgid "Install an extension bundle"
+msgstr "Ustalavać pakiet pašyrennia"
+
+#: subprojects/extensions-tool/src/command-install.c:219
+msgid "No extension bundle specified"
+msgstr "Nie ŭkazany pakiet pašyrennia"
+
+#: subprojects/extensions-tool/src/command-install.c:225
+msgid "More than one extension bundle specified"
+msgstr "Ukazana bolš za adzin pakiet pašyrennia"
+
+#: subprojects/extensions-tool/src/command-list.c:140
+msgid "Show user-installed extensions"
+msgstr "Pakazać pašyrenni ŭstalavanyja karystalnikam"
+
+#: subprojects/extensions-tool/src/command-list.c:143
+msgid "Show system-installed extensions"
+msgstr "Pakazać pašyrenni ŭstalavanyja sistemaj"
+
+#: subprojects/extensions-tool/src/command-list.c:146
+msgid "Show enabled extensions"
+msgstr "Pakazać uklučanyja pašyrenni"
+
+#: subprojects/extensions-tool/src/command-list.c:149
+msgid "Show disabled extensions"
+msgstr "Pakazać adklučanyja pašyrenni"
+
+#: subprojects/extensions-tool/src/command-list.c:152
+msgid "Show extensions in active state"
+msgstr "Pakazać aktyŭnyja pašyrenni"
+
+#: subprojects/extensions-tool/src/command-list.c:155
+msgid "Show extensions in inactive state"
+msgstr "Pakazać nieaktyŭnyja pašyrenni"
+
+#: subprojects/extensions-tool/src/command-list.c:158
+msgid "Show extensions with preferences"
+msgstr "Pakazać pašyrenni z paramietrami"
+
+#: subprojects/extensions-tool/src/command-list.c:161
+msgid "Show extensions with updates"
+msgstr "Pakazać pašyrenni z abnaŭlenniami"
+
+#: subprojects/extensions-tool/src/command-list.c:164
+msgid "Print extension details"
+msgstr "Vyviesci zviestki ab pašyrenni"
+
+#: subprojects/extensions-tool/src/command-list.c:172
+msgid "List installed extensions"
+msgstr "Spis ustalavanych pašyrenniaŭ"
+
+#: subprojects/extensions-tool/src/command-pack.c:444
+msgid "FILE"
+msgstr "FAJŁ"
+
+#: subprojects/extensions-tool/src/command-pack.c:445
+msgid "Additional source to include in the bundle"
+msgstr "Dadatkovaja krynica dla ŭklučennia ŭ pakiet"
+
+#: subprojects/extensions-tool/src/command-pack.c:449
+msgid "A GSettings schema that should be included"
+msgstr "Schiema GSettings jakuju treba ŭklučyć"
+
+#: subprojects/extensions-tool/src/command-pack.c:451
+#: subprojects/extensions-tool/src/command-pack.c:462
+msgid "DIRECTORY"
+msgstr "KATAŁOH"
+
+#: subprojects/extensions-tool/src/command-pack.c:453
+msgid "The directory where translations are found"
+msgstr "Katałoh, u jakim znachodziacca pierakłady"
+
+#: subprojects/extensions-tool/src/command-pack.c:457
+msgid "The gettext domain to use for translations"
+msgstr "Damien gettext, jaki vykarystoŭvajecca dla pierakładu"
+
+#: subprojects/extensions-tool/src/command-pack.c:460
+msgid "Overwrite an existing pack"
+msgstr "Pierazapisać isnujučy pakiet"
+
+#: subprojects/extensions-tool/src/command-pack.c:464
+msgid "The directory where the pack should be created"
+msgstr "Katałoh, u jakim budzie stvorany pakiet"
+
+#: subprojects/extensions-tool/src/command-pack.c:466
+msgid "SOURCE_DIRECTORY"
+msgstr "ZYCHODNY_KATAŁOH"
+
+#: subprojects/extensions-tool/src/command-pack.c:475
+msgid "Create an extension bundle"
+msgstr "Stvaryć pakiet pašyrennia"
+
+#: subprojects/extensions-tool/src/command-pack.c:495
+msgid "More than one source directory specified"
+msgstr "Ukazana bolš za adzin zychodny katałoh"
+
+#: subprojects/extensions-tool/src/command-prefs.c:47
+#, c-format
+msgid "Extension “%s” doesnt have preferences\n"
+msgstr "U pašyrennia «%s» niama paramietraŭ\n"
+
+#: subprojects/extensions-tool/src/command-prefs.c:62
+#, c-format
+msgid "Failed to open prefs for extension “%s”: %s\n"
+msgstr "Nie ŭdałosia adkryć paramietry pašyrennia «%s»: %s\n"
+
+#: subprojects/extensions-tool/src/command-prefs.c:87
+msgid "Opens extension preferences"
+msgstr "Adkryvaje paramietry pašyrennia"
+
+#: subprojects/extensions-tool/src/command-reset.c:58
+msgid "Reset an extension"
+msgstr "Skinuć pašyrennie"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:49
+msgid "Cannot uninstall system extensions\n"
+msgstr "Nielha vydalać sistemnyja pašyrenni\n"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:64
+#, c-format
+msgid "Failed to uninstall “%s”\n"
+msgstr "Nie ŭdałosia vydalić «%s»\n"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:86
+msgid "Uninstall an extension"
+msgstr "Vydalić pašyrennie"
+
+#: subprojects/extensions-tool/src/main.c:76
+msgid "Do not print error messages"
+msgstr "Nie vyvodzić paviedamlenni pra pamyłki"
+
+#: subprojects/extensions-tool/src/main.c:249
+msgid "Path"
+msgstr "Šlach"
+
+#: subprojects/extensions-tool/src/main.c:252
+msgid "URL"
+msgstr "URL-adras"
+
+#: subprojects/extensions-tool/src/main.c:255
+msgid "Original author"
+msgstr "Pieršy aŭtar"
+
+#: subprojects/extensions-tool/src/main.c:261
+#: subprojects/extensions-tool/src/main.c:263
+#: subprojects/extensions-tool/src/main.c:265
+msgid "Version"
+msgstr "Viersija"
+
+#: subprojects/extensions-tool/src/main.c:268
+msgid "Enabled"
+msgstr "Uklučana"
+
+#: subprojects/extensions-tool/src/main.c:268
+msgid "Yes"
+msgstr "Tak"
+
+#: subprojects/extensions-tool/src/main.c:268
+msgid "No"
+msgstr "Nie"
+
+#: subprojects/extensions-tool/src/main.c:271
+msgid "State"
+msgstr "Stan"
+
+#: subprojects/extensions-tool/src/main.c:309
+msgid "“version” takes no arguments"
+msgstr "«version» nie prymaje arhumientaŭ"
+
+#: subprojects/extensions-tool/src/main.c:311
+#: subprojects/extensions-tool/src/main.c:331
+msgid "Usage:"
+msgstr "Vykarystannie:"
+
+#: subprojects/extensions-tool/src/main.c:314
+msgid "Print version information and exit."
+msgstr "Vyviesci zviestki pra viersiju i vyjsci."
+
+#: subprojects/extensions-tool/src/main.c:329
+#: subprojects/extensions-tool/src/main.c:332
+msgid "COMMAND"
+msgstr "KAMANDA"
+
+#: subprojects/extensions-tool/src/main.c:332
+msgid "[ARGS…]"
+msgstr "[ARHUMIENTY…]"
+
+#: subprojects/extensions-tool/src/main.c:334
+msgid "Commands:"
+msgstr "Kamandy:"
+
+#: subprojects/extensions-tool/src/main.c:335
+msgid "Print help"
+msgstr "Vyviesci daviedku"
+
+#: subprojects/extensions-tool/src/main.c:337
+msgid "Enable extension"
+msgstr "Uklučyć pašyrennie"
+
+#: subprojects/extensions-tool/src/main.c:338
+msgid "Disable extension"
+msgstr "Adklučyć pašyrennie"
+
+#: subprojects/extensions-tool/src/main.c:339
+msgid "Reset extension"
+msgstr "Skinuć pašyrennie"
+
+#: subprojects/extensions-tool/src/main.c:340
+msgid "Uninstall extension"
+msgstr "Vydalić pašyrennie"
+
+#: subprojects/extensions-tool/src/main.c:341
+msgid "List extensions"
+msgstr "Spis pašyrenniaŭ"
+
+#: subprojects/extensions-tool/src/main.c:342
+#: subprojects/extensions-tool/src/main.c:343
+msgid "Show extension info"
+msgstr "Pakazać zviestki ab pašyrenni"
+
+#: subprojects/extensions-tool/src/main.c:344
+msgid "Open extension preferences"
+msgstr "Adkryć paramietry pašyrennia"
+
+#: subprojects/extensions-tool/src/main.c:345
+msgid "Create extension"
+msgstr "Stvaryć pašyrennie"
+
+#: subprojects/extensions-tool/src/main.c:346
+msgid "Package extension"
+msgstr "Zapakavać pašyrennie"
+
+#: subprojects/extensions-tool/src/main.c:347
+msgid "Install extension bundle"
+msgstr "Ustalavać pakiet pašyrennia"
+
+#: subprojects/extensions-tool/src/main.c:349
+#, c-format
+msgid "Use “%s” to get detailed help.\n"
+msgstr "Vykarystoŭvajcie «%s», kab atrymać padrabiaznuju daviedku.\n"
+
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
+msgid "Plain"
+msgstr "Prosty"
+
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
+msgid "An empty extension"
+msgstr "Pustoje pašyrennie"
+
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
+msgid "Indicator"
+msgstr "Indykatar"
+
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
+msgid "Add an icon to the top bar"
+msgstr "Dadać značok u vierchniuju panel"
+
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
+msgid "Quick Settings Item"
+msgstr "Elemient chutkich naład"
+
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:5
+msgid "Add an item to quick settings"
+msgstr "Dadać elemient u chutkija nałady"
+
+#. translators:
+#. * The device has been disabled
+#: subprojects/gvc/gvc-mixer-control.c:1872
+msgid "Disabled"
+msgstr "Vyklučana"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1879
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u vychad"
+msgstr[1] "%u vychady"
+msgstr[2] "%u vychadaŭ"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1889
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u aŭdyjaŭvachod"
+msgstr[1] "%u aŭdyjaŭvachody"
+msgstr[2] "%u aŭdyjaŭvachodaŭ"
+
+#: subprojects/gvc/gvc-mixer-control.c:2872
+msgid "System Sounds"
+msgstr "Sistemnyja huki"
+
+#~ msgid "Could not parse command:"
+#~ msgstr "Nie ŭdałosia razabrać kamandu:"
+
+#~ msgid "Move Titlebar Onscreen"
+#~ msgstr "Pieramiascić panel zahałoŭka na ekran"
+
+#, javascript-format
+#~ msgid "%s is now known as %s"
+#~ msgstr "%s zmianiŭ imia na %s"
+
+#~ msgid "Network Manager"
+#~ msgstr "Mieniedžar sietak"
+
+#~ msgid "System Information"
+#~ msgstr "Sistemnaja infarmacyja"
+
+#~ msgid "Thunderbolt"
+#~ msgstr "Thunderbolt"
+
+#~ msgid "Disabling"
+#~ msgstr "Adklučennie"
+
+#~ msgid "Enabling"
+#~ msgstr "Uklučennie"
+
+#, javascript-format
+#~ msgid "%d %%"
+#~ msgstr "%d %%"
+
+#~ msgid "No Thanks"
+#~ msgstr "Nie, dziakuj"
+
+#~ msgid "No Matches"
+#~ msgstr "Niama supadzienniaŭ"
+
+#~ msgid "The extension had an error"
+#~ msgstr "Pašyrennie zmiaščaje pamyłku"
+
+#~ msgid "The extension can be updated"
+#~ msgstr "Pašyrennie moža być abnoŭlena"
+
+#~ msgid "Help"
+#~ msgstr "Daviedka"
+
+#~ msgid "Manually Installed"
+#~ msgstr "Ustalavanyja ŭručnuju"
+
+#~ msgid "Built-In"
+#~ msgstr "Ubudavanyja"
+
+#~ msgid "Extension Updates Ready"
+#~ msgstr "Dastupny abnaŭlenni pašyrenniaŭ"
+
+#~ msgid "Open the app menu"
+#~ msgstr "Adkryć mieniu prahram"
+
+#~ msgid "Keybinding to open the application menu"
+#~ msgstr "Spałučennie kłaviš, kab adkryć mieniu aktyŭnaj prahramy"
+
+#~ msgid "Keybinding to open the application menu."
+#~ msgstr "Spałučennie kłaviš, kab adkryć mieniu aktyŭnaj prahramy."
+
+#~ msgid "Screenshot / Screencast"
+#~ msgstr "Zdymak ekrana / Zapis ekrana"
+
+#~ msgid "Power Profiles"
+#~ msgstr "Profili siłkavannia"
+
+#~ msgid "Evolution Calendar"
+#~ msgstr "Kalandar Evolution"
+
+#~ msgid "Applications"
+#~ msgstr "Prahramy"
+
+#, javascript-format
+#~ msgid "Unable to start %s"
+#~ msgstr "Nie ŭdałosia zapuscić %s"
+
+#, javascript-format
+#~ msgid "Couldnt find the %s application"
+#~ msgstr "Nie ŭdałosia znajsci prahramu %s"
