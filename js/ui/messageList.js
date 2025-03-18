@@ -832,7 +832,7 @@ class MediaMessage extends Message {
     }
 });
 
-const NotificationMessageGroup = GObject.registerClass({
+export const NotificationMessageGroup = GObject.registerClass({
     Properties: {
         'expanded': GObject.ParamSpec.boolean(
             'expanded', null, null,
