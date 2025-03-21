@@ -63,10 +63,12 @@ check_foreign_xid (GdkDisplay *display,
 #ifdef GDK_WINDOWING_X11
   XWindowAttributes attrs;
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gdk_x11_display_error_trap_push (display);
   result = XGetWindowAttributes (GDK_DISPLAY_XDISPLAY (display), xid, &attrs);
   if (gdk_x11_display_error_trap_pop (display))
     return FALSE;
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
 #endif
   return result;
@@ -116,9 +118,11 @@ shew_external_window_x11_set_parent_of (ShewExternalWindow *external_window,
     SHEW_EXTERNAL_WINDOW_X11 (external_window);
 
 #ifdef GDK_WINDOWING_X11
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   XSetTransientForHint (GDK_SURFACE_XDISPLAY (child_surface),
                         GDK_SURFACE_XID (child_surface),
                         external_window_x11->foreign_xid);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 #endif
 }
 
