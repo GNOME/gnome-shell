@@ -91,7 +91,9 @@ shew_window_exporter_export (ShewWindowExporter  *exporter,
   if (GDK_IS_X11_DISPLAY (gtk_widget_get_display (widget)))
     {
       GdkSurface *s = gtk_native_get_surface (GTK_NATIVE (widget));
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       guint32 xid = (guint32) gdk_x11_surface_get_xid (s);
+      G_GNUC_END_IGNORE_DEPRECATIONS
 
       g_task_return_pointer (task, g_strdup_printf ("x11:%x", xid), g_free);
     }
