@@ -93,6 +93,8 @@ class LoginManagerSystemd extends Signals.EventEmitter {
     constructor() {
         super();
 
+        this._preparingForSleep = false;
+
         this._proxy = new SystemdLoginManager(Gio.DBus.system,
             'org.freedesktop.login1',
             '/org/freedesktop/login1');
@@ -224,6 +226,7 @@ class LoginManagerSystemd extends Signals.EventEmitter {
     }
 
     _prepareForSleep(proxy, sender, [aboutToSuspend]) {
+        this._preparingForSleep = aboutToSuspend;
         this.emit('prepare-for-sleep', aboutToSuspend);
     }
 
@@ -235,7 +238,7 @@ class LoginManagerSystemd extends Signals.EventEmitter {
      * @type {boolean}
      */
     get preparingForSleep() {
-        return this._proxy.PreparingForSleep;
+        return this._preparingForSleep;
     }
 
     _sessionRemoved(proxy, sender, [sessionId]) {
