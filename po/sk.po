@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-03-16 14:35+0000\n"
+"POT-Creation-Date: 2025-03-25 21:30+0000\n"
 "PO-Revision-Date: 2025-03-25 22:27+0100\n"
 "Last-Translator: Jose Riha <jose1711@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
@@ -106,24 +106,28 @@ msgstr "Otvoriť nové okno pripnutej aplikácie č. 9"
 msgid "Screenshots"
 msgstr "Snímky obrazovky"
 
-#: data/50-gnome-shell-screenshots.xml:9 data/org.gnome.shell.gschema.xml.in:267
+#: data/50-gnome-shell-screenshots.xml:9
+#: data/org.gnome.shell.gschema.xml.in:267
 msgid "Take a screenshot interactively"
 msgstr "Interaktívne zachytávanie snímkov obrazovky"
 
-#: data/50-gnome-shell-screenshots.xml:12 data/org.gnome.shell.gschema.xml.in:279
+#: data/50-gnome-shell-screenshots.xml:12
+#: data/org.gnome.shell.gschema.xml.in:279
 msgid "Take a screenshot"
 msgstr "Zachytenie snímky obrazovky"
 
-#: data/50-gnome-shell-screenshots.xml:15 data/org.gnome.shell.gschema.xml.in:275
+#: data/50-gnome-shell-screenshots.xml:15
+#: data/org.gnome.shell.gschema.xml.in:275
 msgid "Take a screenshot of a window"
 msgstr "Zachytenie snímky obrazovky okna"
 
-#: data/50-gnome-shell-screenshots.xml:18 data/org.gnome.shell.gschema.xml.in:271
+#: data/50-gnome-shell-screenshots.xml:18
+#: data/org.gnome.shell.gschema.xml.in:271
 msgid "Record a screencast interactively"
 msgstr "Interaktívny záznam obrazovky"
 
-#: data/50-gnome-shell-system.xml:6 data/X-GNOME-Shell-System.directory.desktop.in:3
-#: js/ui/messageTray.js:1307
+#: data/50-gnome-shell-system.xml:6
+#: data/X-GNOME-Shell-System.directory.desktop.in:3 js/ui/messageTray.js:1307
 msgid "System"
 msgstr "Systém"
 
@@ -162,15 +166,16 @@ msgstr "Správa okien a spúšťanie aplikácií"
 #: data/org.gnome.shell.gschema.xml.in:6
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
-"Povoliť vnútorné nástroje užitočné pre vývojárov a testerov z dialógového okna "
-"Alt-F2"
+"Povoliť vnútorné nástroje užitočné pre vývojárov a testerov z dialógového "
+"okna Alt-F2"
 
 #: data/org.gnome.shell.gschema.xml.in:9
 msgid ""
-"Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
 msgstr ""
-"Umožňuje prístup k vnútorným ladiacim a sledovacím nástrojom pomocou dialógového "
-"okna Alt-F2."
+"Umožňuje prístup k vnútorným ladiacim a sledovacím nástrojom pomocou "
+"dialógového okna Alt-F2."
 
 #: data/org.gnome.shell.gschema.xml.in:16
 msgid "UUIDs of extensions to enable"
@@ -179,14 +184,15 @@ msgstr "Vlastnosť UUID rozšírení určených na povolenie"
 #: data/org.gnome.shell.gschema.xml.in:17
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this list. "
-"You can also manipulate this list with the EnableExtension and DisableExtension D-"
-"Bus methods on org.gnome.Shell."
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"Rozšírenia pre Shell prostredia GNOME majú vlastnosť UUID; tento kľúč obsahuje "
-"zoznam rozšírení, ktoré by mali byť načítané. Každé rozšírenie, ktoré je potrebné "
-"načítať, musí byť v tomto zozname. Tento zoznam môžete upraviť aj ručne pomocou "
-"metód DBus EnableExtension a DisableExtension v org.gnome.Shell."
+"Rozšírenia pre Shell prostredia GNOME majú vlastnosť UUID; tento kľúč "
+"obsahuje zoznam rozšírení, ktoré by mali byť načítané. Každé rozšírenie, "
+"ktoré je potrebné načítať, musí byť v tomto zozname. Tento zoznam môžete "
+"upraviť aj ručne pomocou metód DBus EnableExtension a DisableExtension v org."
+"gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "UUIDs of extensions to force disabling"
@@ -196,15 +202,15 @@ msgstr "Vlastnosť UUID rozšírení určených na nútené vypnutie"
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be disabled, even if loaded as part of the current mode. You can also "
-"manipulate this list with the EnableExtension and DisableExtension D-Bus methods "
-"on org.gnome.Shell. This key takes precedence over the “enabled-extensions” "
-"setting."
+"manipulate this list with the EnableExtension and DisableExtension D-Bus "
+"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
+"extensions” setting."
 msgstr ""
-"Rozšírenia pre prostredie GNOME Shell majú vlastnosť UUID; tento kľúč obsahuje "
-"zoznam rozšírení, ktoré by mali byť zakázané, aj keď sú načítané ako súčasť "
-"aktuálneho režimu. Tento zoznam môžete upraviť aj ručne pomocou metód D-Bus "
-"EnableExtension a DisableExtension v org.gnome.Shell. Tento kľúč má prednosť pred "
-"nastavením „enabled-extensions“."
+"Rozšírenia pre prostredie GNOME Shell majú vlastnosť UUID; tento kľúč "
+"obsahuje zoznam rozšírení, ktoré by mali byť zakázané, aj keď sú načítané "
+"ako súčasť aktuálneho režimu. Tento zoznam môžete upraviť aj ručne pomocou "
+"metód D-Bus EnableExtension a DisableExtension v org.gnome.Shell. Tento kľúč "
+"má prednosť pred nastavením „enabled-extensions“."
 
 # summary
 #: data/org.gnome.shell.gschema.xml.in:37
@@ -217,8 +223,8 @@ msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
 msgstr ""
-"Zakáže všetky rozšírenia povolené požívateľom bez vplyvu na nastavenie „enabled-"
-"extension“."
+"Zakáže všetky rozšírenia povolené požívateľom bez vplyvu na nastavenie "
+"„enabled-extension“."
 
 #: data/org.gnome.shell.gschema.xml.in:45
 msgid "Allow extension installation"
@@ -227,14 +233,16 @@ msgstr "Povoliť inštalovanie rozšírení"
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid ""
 "Allow users to install extensions in their home folder. If disabled, the "
-"InstallRemoteExtension D-Bus method will fail, and extensions are only loaded "
-"from system directories on startup. It does not affect extensions that are "
-"already loaded, so a change only takes full effect on the next login."
+"InstallRemoteExtension D-Bus method will fail, and extensions are only "
+"loaded from system directories on startup. It does not affect extensions "
+"that are already loaded, so a change only takes full effect on the next "
+"login."
 msgstr ""
-"Povoliť používateľom inštalovať rozšírenia do ich domovského priečinka. Ak je "
-"vypnuté, metóda D-Bus InstallRemoteExtension skončí s chybou a rozšírenia sa budú "
-"pri spustení načítavať iba zo systémových adresárov. Nemá vplyv na už načítané "
-"rozšírenia, takže sa zmena naplno prejaví až pri ďalšom prihlásení."
+"Povoliť používateľom inštalovať rozšírenia do ich domovského priečinka. Ak "
+"je vypnuté, metóda D-Bus InstallRemoteExtension skončí s chybou a rozšírenia "
+"sa budú pri spustení načítavať iba zo systémových adresárov. Nemá vplyv na "
+"už načítané rozšírenia, takže sa zmena naplno prejaví až pri ďalšom "
+"prihlásení."
 
 #: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
@@ -242,14 +250,14 @@ msgstr "Zakáže kontrolu kompatibility verzií rozšírení"
 
 #: data/org.gnome.shell.gschema.xml.in:57
 msgid ""
-"GNOME Shell will only load extensions that claim to support the current running "
-"version. Enabling this option will disable this check and try to load all "
-"extensions regardless of the versions they claim to support."
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
 msgstr ""
-"Shell prostredia GNOME načíta len rozšírenia, ktoré deklarujú podporu pre práve "
-"spustenú verziu prostredia. Povolením tejto voľby zakážete túto kontrolu a "
-"umožníte načítanie všetkých rozšírení bez ohľadu na to, pre ktorú verziu "
-"prostredia deklarujú podporu."
+"Shell prostredia GNOME načíta len rozšírenia, ktoré deklarujú podporu pre "
+"práve spustenú verziu prostredia. Povolením tejto voľby zakážete túto "
+"kontrolu a umožníte načítanie všetkých rozšírení bez ohľadu na to, pre ktorú "
+"verziu prostredia deklarujú podporu."
 
 #: data/org.gnome.shell.gschema.xml.in:67
 msgid "List of desktop file IDs for favorite applications"
@@ -260,8 +268,8 @@ msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
-"Aplikácie zodpovedajúce týmto identifikátorom budú zobrazené medzi obľúbenými "
-"aplikáciami."
+"Aplikácie zodpovedajúce týmto identifikátorom budú zobrazené medzi "
+"obľúbenými aplikáciami."
 
 #: data/org.gnome.shell.gschema.xml.in:75
 msgid "History for command (Alt-F2) dialog"
@@ -280,32 +288,34 @@ msgstr "Vždy zobraziť položku „Odhlásiť sa“ v systémovej ponuke"
 # description
 #: data/org.gnome.shell.gschema.xml.in:85
 msgid ""
-"This key overrides the automatic hiding of the “Log out” action in the system "
-"menu for logged-in situations where there is a single, local, non-system user and "
-"only a single available session type (e.g. GNOME on Wayland)."
+"This key overrides the automatic hiding of the “Log out” action in the "
+"system menu for logged-in situations where there is a single, local, non-"
+"system user and only a single available session type (e.g. GNOME on Wayland)."
 msgstr ""
-"Tento kľúč vypína automatické skrývanie položky „Odhlásiť sa“ v systémovej ponuke "
-"v situáciách, kedy je prihlásený jeden miestny používateľ, ktorý nie je systémový "
-"a je dostupný iba jeden typ relácie (napr. GNOME vo Waylande)."
+"Tento kľúč vypína automatické skrývanie položky „Odhlásiť sa“ v systémovej "
+"ponuke v situáciách, kedy je prihlásený jeden miestny používateľ, ktorý nie "
+"je systémový a je dostupný iba jeden typ relácie (napr. GNOME vo Waylande)."
 
 # summary
 #: data/org.gnome.shell.gschema.xml.in:94
-msgid "Whether to remember password for mounting encrypted or remote filesystems"
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
-"Určiť, či bude zapamätané heslo pre pripojenie zašifrovaných alebo prenosných "
-"súborových systémov"
+"Určiť, či bude zapamätané heslo pre pripojenie zašifrovaných alebo "
+"prenosných súborových systémov"
 
 # description
 #: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
-"The shell will request a password when an encrypted device or a remote filesystem "
-"is mounted. If the password can be saved for future use a “Remember Password” "
-"checkbox will be present. This key sets the default state of the checkbox."
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"“Remember Password” checkbox will be present. This key sets the default "
+"state of the checkbox."
 msgstr ""
 "Shell bude po pripojení zašifrovaného alebo prenosného súborového systému "
-"požadovať heslo. Ak bude možné toto heslo uložiť pre neskoršie použitie, zobrazí "
-"sa zaškrtávacie pole „Zapamätať heslo“. Tento kľúč nastaví predvolený stav "
-"zaškrtávacieho poľa."
+"požadovať heslo. Ak bude možné toto heslo uložiť pre neskoršie použitie, "
+"zobrazí sa zaškrtávacie pole „Zapamätať heslo“. Tento kľúč nastaví "
+"predvolený stav zaškrtávacieho poľa."
 
 #: data/org.gnome.shell.gschema.xml.in:104
 msgid "The last selected non-default power profile"
@@ -314,28 +324,29 @@ msgstr "Naposledy vybraný profil napájania iný ako predvolený"
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
-"toggling between two profiles, this key records the last selected non-default "
-"profile."
+"toggling between two profiles, this key records the last selected non-"
+"default profile."
 msgstr ""
-"Niektoré systémy podporujú viac ako dva profily napájania. Kvôli pretrvávajúcej "
-"podpore prepínania medzi dvoma profilmi, tento kľúč zaznamenáva naposledy vybraný "
-"profil, ktorý je odlišný od predvoleného."
+"Niektoré systémy podporujú viac ako dva profily napájania. Kvôli "
+"pretrvávajúcej podpore prepínania medzi dvoma profilmi, tento kľúč "
+"zaznamenáva naposledy vybraný profil, ktorý je odlišný od predvoleného."
 
 #: data/org.gnome.shell.gschema.xml.in:113
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
-msgstr "Posledná verzia, pre ktorú sa zobrazilo dialógové okno „Vitajte v GNOME“"
+msgstr ""
+"Posledná verzia, pre ktorú sa zobrazilo dialógové okno „Vitajte v GNOME“"
 
 #: data/org.gnome.shell.gschema.xml.in:114
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
-"shown. An empty string represents the oldest possible version, and a huge number "
-"will represent versions that do not exist yet. This huge number can be used to "
-"effectively disable the dialog."
+"shown. An empty string represents the oldest possible version, and a huge "
+"number will represent versions that do not exist yet. This huge number can "
+"be used to effectively disable the dialog."
 msgstr ""
 "Tento klúč určuje, pre ktorú verziu sa naposledy zobrazilo dialógové okno "
-"„Vitajte v GNOME“. Prázdny reťazec predstavuje najstaršiu možnú verziu a veľké "
-"číslo bude predstavovať verzie, ktoré zatiaľ neexistujú. Toto veľké číslo je "
-"možné použiť na efektívne deaktivovanie dialógového okna."
+"„Vitajte v GNOME“. Prázdny reťazec predstavuje najstaršiu možnú verziu a "
+"veľké číslo bude predstavovať verzie, ktoré zatiaľ neexistujú. Toto veľké "
+"číslo je možné použiť na efektívne deaktivovanie dialógového okna."
 
 #: data/org.gnome.shell.gschema.xml.in:125
 msgid "Layout of the app picker"
@@ -343,39 +354,44 @@ msgstr "Rozloženie nástroja na výber aplikácie"
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid ""
-"Layout of the app picker. Each entry in the array is a page. Pages are stored in "
-"the order they appear in GNOME Shell. Each page contains an “application id” → "
-"'data' pair. Currently, the following values are stored as 'data': • “position”: "
-"the position of the application icon in the page"
+"Layout of the app picker. Each entry in the array is a page. Pages are "
+"stored in the order they appear in GNOME Shell. Each page contains an "
+"“application id” → 'data' pair. Currently, the following values are stored "
+"as 'data': • “position”: the position of the application icon in the page"
 msgstr ""
-"Rozloženie nástroja na výber aplikácie. Každý záznam v poli je stránkou. Stránky "
-"sú uložené v poradí, v akom sú viditeľné v Shelli prostredia GNOME. Každá stránka "
-"obsahuje pár záznamov „application id“ → „údaje“. Momentálne sú nasledovné "
-"hodnoty uložené ako „údaje“: • “„pozícia“: pozícia ikony aplikácie na stránke"
+"Rozloženie nástroja na výber aplikácie. Každý záznam v poli je stránkou. "
+"Stránky sú uložené v poradí, v akom sú viditeľné v Shelli prostredia GNOME. "
+"Každá stránka obsahuje pár záznamov „application id“ → „údaje“. Momentálne "
+"sú nasledovné hodnoty uložené ako „údaje“: • “„pozícia“: pozícia ikony "
+"aplikácie na stránke"
 
-#: data/org.gnome.shell.gschema.xml.in:145 data/org.gnome.shell.gschema.xml.in:152
+#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:152
 msgid "Keybinding to shift between overview states"
 msgstr "Kombinácia kláves na prepínanie medzi stavmi prehľadu"
 
 #: data/org.gnome.shell.gschema.xml.in:146
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
-"Klávesová skratka na prepínanie medzi sedením, výberom okna a mriežkou aplikácií"
+"Klávesová skratka na prepínanie medzi sedením, výberom okna a mriežkou "
+"aplikácií"
 
 #: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
-"Klávesová skratka slúži na prepínanie medzi mriežkou aplikácií, výberom okna a "
-"sedením"
+"Klávesová skratka slúži na prepínanie medzi mriežkou aplikácií, výberom okna "
+"a sedením"
 
 #: data/org.gnome.shell.gschema.xml.in:159
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Klávesová skratka na otvorenie pohľadu „Zobraziť aplikácie“"
 
 #: data/org.gnome.shell.gschema.xml.in:160
-msgid "Keybinding to open the “Show Applications” view of the Activities Overview."
+msgid ""
+"Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
-"Klávesová skratka na otvorenie pohľadu „Zobraziť aplikácie“ v prehľade aktivít."
+"Klávesová skratka na otvorenie pohľadu „Zobraziť aplikácie“ v prehľade "
+"aktivít."
 
 #: data/org.gnome.shell.gschema.xml.in:167
 msgid "Keybinding to open the overview"
@@ -500,18 +516,19 @@ msgid "Open a new instance of application 9"
 msgstr "Otvoriť novú inštanciu aplikácie č. 9"
 
 # summary
-#: data/org.gnome.shell.gschema.xml.in:288 data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:288
+#: data/org.gnome.shell.gschema.xml.in:315
 msgid "Limit switcher to current workspace."
 msgstr "Obmedziť prepínač na aktuálny pracovný priestor."
 
 # desc
 #: data/org.gnome.shell.gschema.xml.in:289
 msgid ""
-"If true, only applications that have windows on the current workspace are shown "
-"in the switcher. Otherwise, all applications are included."
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
 msgstr ""
-"Ak je true, iba aplikácie, ktoré majú okná na aktuálnom pracovnom priestore budú "
-"zobrazené v prepínači. Inak budú zahrnuté všetky aplikácie."
+"Ak je true, iba aplikácie, ktoré majú okná na aktuálnom pracovnom priestore "
+"budú zobrazené v prepínači. Inak budú zahrnuté všetky aplikácie."
 
 #: data/org.gnome.shell.gschema.xml.in:306
 msgid "The application icon mode."
@@ -519,13 +536,13 @@ msgstr "Režim ikonizácie aplikácií."
 
 #: data/org.gnome.shell.gschema.xml.in:307
 msgid ""
-"Configures how the windows are shown in the switcher. Valid possibilities are "
-"“thumbnail-only” (shows a thumbnail of the window), “app-icon-only” (shows only "
-"the application icon) or “both”."
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
 msgstr ""
-"Konfiguruje, ako sa majú zobraziť okná v prepínači. Platné možnosti sú „thumbnail-"
-"only“ (zobrazí miniatúru okna), „app-icon-only“ (zobrazí iba ikonu aplikácie) "
-"alebo „both“ (zobrazí oboje)."
+"Konfiguruje, ako sa majú zobraziť okná v prepínači. Platné možnosti sú "
+"„thumbnail-only“ (zobrazí miniatúru okna), „app-icon-only“ (zobrazí iba "
+"ikonu aplikácie) alebo „both“ (zobrazí oboje)."
 
 # desc
 #: data/org.gnome.shell.gschema.xml.in:316
@@ -573,7 +590,6 @@ msgid "Network Login"
 msgstr "Sieťové prihlásenie"
 
 #: data/X-GNOME-Shell-Utilities.directory.desktop.in:3
-#| msgid "Activities"
 msgid "Utilities"
 msgstr "Pomôcky"
 
@@ -584,9 +600,9 @@ msgstr "Niečo sa pokazilo"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:23
 msgid ""
-"We’re very sorry, but there’s been a problem: the settings for this extension "
-"can’t be displayed. We recommend that you report the issue to the extension "
-"authors."
+"We’re very sorry, but there’s been a problem: the settings for this "
+"extension can’t be displayed. We recommend that you report the issue to the "
+"extension authors."
 msgstr ""
 "Ospravedlňujeme sa, ale vyskytol sa problém: Nastavenia tohoto rozšírenia sa "
 "nedajú zobraziť. Odporúčame vám nahlásiť problém autorom rozšírenia."
@@ -628,12 +644,13 @@ msgstr "Vybrať reláciu"
 #: js/gdm/loginDialog.js:426
 #, javascript-format
 msgid ""
-"Remote login is not possible because a remote session is already running for %s. "
-"To login remotely, you must log out from the remote session or force stop it."
+"Remote login is not possible because a remote session is already running for "
+"%s. To login remotely, you must log out from the remote session or force "
+"stop it."
 msgstr ""
-"Vzdialené prihlásenie nie je možné, pretože pre používateľa %s je už spustená "
-"vzdialená relácia. Ak sa chcete prihlásiť na diaľku, musíte sa najprv z tejto "
-"vzdialenej relácie odhlásiť alebo vynútiť jej zastavenie."
+"Vzdialené prihlásenie nie je možné, pretože pre používateľa %s je už "
+"spustená vzdialená relácia. Ak sa chcete prihlásiť na diaľku, musíte sa "
+"najprv z tejto vzdialenej relácie odhlásiť alebo vynútiť jej zastavenie."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:429
@@ -642,31 +659,32 @@ msgid ""
 "Login is not possible because a remote session is already running for %s. To "
 "login, you must log out from the remote session or force stop it."
 msgstr ""
-"Prihlásenie nie je možné, pretože pre používateľa %s je už spustená vzdialená "
-"relácia. Ak sa chcete prihlásiť, musíte sa najprv z tejto vzdialenej relácie "
-"odhlásiť alebo vynútiť jej zastavenie."
+"Prihlásenie nie je možné, pretože pre používateľa %s je už spustená "
+"vzdialená relácia. Ak sa chcete prihlásiť, musíte sa najprv z tejto "
+"vzdialenej relácie odhlásiť alebo vynútiť jej zastavenie."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:432
 #, javascript-format
 msgid ""
-"Remote login is not possible because a local session is already running for %s. "
-"To login remotely, you must log out from the local session or force stop it."
+"Remote login is not possible because a local session is already running for "
+"%s. To login remotely, you must log out from the local session or force stop "
+"it."
 msgstr ""
-"Vzdialené prihlásenie nie je možné, pretože pre používateľa %s je už spustená "
-"relácia. Ak sa chcete prihlásiť, musíte sa najprv z tejto relácie odhlásiť alebo "
-"vynútiť jej zastavenie."
+"Vzdialené prihlásenie nie je možné, pretože pre používateľa %s je už "
+"spustená relácia. Ak sa chcete prihlásiť, musíte sa najprv z tejto relácie "
+"odhlásiť alebo vynútiť jej zastavenie."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:435
 #, javascript-format
 msgid ""
-"Login is not possible because a session is already running for %s. To login, you "
-"must log out from the session or force stop it."
+"Login is not possible because a session is already running for %s. To login, "
+"you must log out from the session or force stop it."
 msgstr ""
-"Prihlásenie nie je možné, pretože pre používateľa %s je už spustená relácia. Ak "
-"sa chcete prihlásiť, musíte sa najprv z tejto relácie odhlásiť alebo vynútiť jej "
-"zastavenie."
+"Prihlásenie nie je možné, pretože pre používateľa %s je už spustená relácia. "
+"Ak sa chcete prihlásiť, musíte sa najprv z tejto relácie odhlásiť alebo "
+"vynútiť jej zastavenie."
 
 #: js/gdm/loginDialog.js:444
 msgid "Session Already Running"
@@ -674,11 +692,11 @@ msgstr "Relácia už je spustená"
 
 #: js/gdm/loginDialog.js:456
 msgid ""
-"Force stopping will quit any running apps and processes, and could result in data "
-"loss"
+"Force stopping will quit any running apps and processes, and could result in "
+"data loss"
 msgstr ""
-"Vynútené zastavenie ukončí všetky bežiace aplikácie a procesy a môže dôjsť ku "
-"strate údajov"
+"Vynútené zastavenie ukončí všetky bežiace aplikácie a procesy a môže dôjsť "
+"ku strate údajov"
 
 #: js/gdm/loginDialog.js:476
 msgid "Force Stop"
@@ -743,8 +761,6 @@ msgstr[2] "%d sekundy"
 
 #: js/misc/breakManager.js:988
 #, javascript-format
-#| msgid "%d minute ago"
-#| msgid_plural "%d minutes ago"
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d minút"
@@ -753,8 +769,6 @@ msgstr[2] "%d minúty"
 
 #: js/misc/breakManager.js:994
 #, javascript-format
-#| msgid "%d hour ago"
-#| msgid_plural "%d hours ago"
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d hodín"
@@ -763,8 +777,6 @@ msgstr[2] "%d hodiny"
 
 #: js/misc/breakManager.js:1000
 #, javascript-format
-#| msgid "%d day ago"
-#| msgid_plural "%d days ago"
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] "%d dní"
@@ -851,18 +863,19 @@ msgstr "Čas na prestávku s odpočinkom pre oči"
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1213
 #, javascript-format
-msgid "Take a break from the screen. Look at least 6 meters away for at least %s"
+msgid ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
 msgid_plural ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
 msgstr[0] ""
-"Odpočiňte si od používania obrazovky. Pozerajte sa zo vzdialenosti aspoň 6 metrov "
-"po dobu %s"
+"Odpočiňte si od používania obrazovky. Pozerajte sa zo vzdialenosti aspoň 6 "
+"metrov po dobu %s"
 msgstr[1] ""
-"Odpočiňte si od používania obrazovky. Pozerajte sa zo vzdialenosti aspoň 6 metrov "
-"po dobu %s"
+"Odpočiňte si od používania obrazovky. Pozerajte sa zo vzdialenosti aspoň 6 "
+"metrov po dobu %s"
 msgstr[2] ""
-"Odpočiňte si od používania obrazovky. Pozerajte sa zo vzdialenosti aspoň 6 metrov "
-"po dobu %s"
+"Odpočiňte si od používania obrazovky. Pozerajte sa zo vzdialenosti aspoň 6 "
+"metrov po dobu %s"
 
 #: js/misc/breakManager.js:1219
 msgid "Time for a Break"
@@ -912,9 +925,8 @@ msgid "Skip"
 msgstr "Preskočiť"
 
 #: js/misc/breakManager.js:1383
-#| msgid "Take Tour"
 msgid "Take"
-msgstr "Zúčastniť sa"
+msgstr "Dať si prestávku"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
@@ -1022,9 +1034,9 @@ msgid "Lock Screen Rotation"
 msgstr "Uzamknúť otočenie obrazovky"
 
 #: js/misc/timeLimitsManager.js:338
-#| msgid "GNOME needs to lock the screen"
 msgid "GNOME needs to save screen time data"
-msgstr "Prostredie GNOME potrebuje uložiť údaje o čase strávenom pred obrazovkou"
+msgstr ""
+"Prostredie GNOME potrebuje uložiť údaje o čase strávenom pred obrazovkou"
 
 #: js/misc/timeLimitsManager.js:1102
 #, javascript-format
@@ -1196,8 +1208,8 @@ msgid ""
 "information you enter on this page can be viewed by people nearby."
 msgstr ""
 "Vaše pripojenie s prihlásením k tomuto aktívnemu bodu nie je bezpečné. Heslá "
-"alebo iné informácie, ktoré ste zadali na tejto stránke môžu byť zobrazené ľuďmi "
-"vo vašom okolí."
+"alebo iné informácie, ktoré ste zadali na tejto stránke môžu byť zobrazené "
+"ľuďmi vo vašom okolí."
 
 #: js/portalHelper/main.js:115
 msgid "Hotspot Login"
@@ -1417,11 +1429,11 @@ msgstr "Aplikácia „%s“ neodpovedá"
 
 #: js/ui/closeDialog.js:43
 msgid ""
-"You may choose to wait a short while for it to continue or force the app to quit "
-"entirely"
+"You may choose to wait a short while for it to continue or force the app to "
+"quit entirely"
 msgstr ""
-"Môžete chvíľu počkať na pokračovanie aplikácie, alebo vynútiť úplné ukončenie "
-"aplikácie"
+"Môžete chvíľu počkať na pokračovanie aplikácie, alebo vynútiť úplné "
+"ukončenie aplikácie"
 
 #: js/ui/closeDialog.js:71
 msgid "Force Quit"
@@ -1464,7 +1476,8 @@ msgid "Open with %s"
 msgstr "Otvoriť pomocou aplikácie %s"
 
 #: js/ui/components/networkAgent.js:96
-msgid "Alternatively you can connect by pushing the “WPS” button on your router"
+msgid ""
+"Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr "Pripojiť sa môžete taktiež stlačením tlačidla „WPS“ na vašom smerovači"
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
@@ -1498,7 +1511,8 @@ msgstr "Požaduje sa overenie totožnosti"
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr ""
-"Na prístup do bezdrôtovej siete „%s“ sú vyžadované heslá alebo šifrovacie kľúče"
+"Na prístup do bezdrôtovej siete „%s“ sú vyžadované heslá alebo šifrovacie "
+"kľúče"
 
 #: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
@@ -1748,9 +1762,12 @@ msgstr "Reštart a inštalácia aktualizácií"
 msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds"
-msgstr[0] "Systém sa automaticky reštartuje a nainštaluje aktualizácie o %d sekúnd"
-msgstr[1] "Systém sa automaticky reštartuje a nainštaluje aktualizácie o %d sekundu"
-msgstr[2] "Systém sa automaticky reštartuje a nainštaluje aktualizácie o %d sekundy"
+msgstr[0] ""
+"Systém sa automaticky reštartuje a nainštaluje aktualizácie o %d sekúnd"
+msgstr[1] ""
+"Systém sa automaticky reštartuje a nainštaluje aktualizácie o %d sekundu"
+msgstr[2] ""
+"Systém sa automaticky reštartuje a nainštaluje aktualizácie o %d sekundy"
 
 #: js/ui/endSessionDialog.js:119 js/ui/endSessionDialog.js:140
 msgctxt "button"
@@ -1778,16 +1795,17 @@ msgstr "Reštart a inštalácia inovácie"
 #: js/ui/endSessionDialog.js:134
 #, javascript-format
 msgid ""
-"%s %s will be installed after restart. Upgrade installation can take a long time: "
-"ensure that you have backed up and that the computer is plugged in."
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
 msgstr ""
-"Operačný systém %s %s bude nainštalovaný po reštarte. Inštalácia inovácie môže "
-"trvať dlhšiu dobu: uistite sa, že máte vytvorenú zálohu, a že počítač je "
-"pripojený k zdroju napájania."
+"Operačný systém %s %s bude nainštalovaný po reštarte. Inštalácia inovácie "
+"môže trvať dlhšiu dobu: uistite sa, že máte vytvorenú zálohu, a že počítač "
+"je pripojený k zdroju napájania."
 
 #: js/ui/endSessionDialog.js:283
 msgid "Low battery power: please plug in before installing updates"
-msgstr "Batéria je vybitá: pred inštaláciou aktualizácií pripojte napájací zdroj"
+msgstr ""
+"Batéria je vybitá: pred inštaláciou aktualizácií pripojte napájací zdroj"
 
 #: js/ui/endSessionDialog.js:292
 msgid "Some applications are busy or have unsaved work"
@@ -1869,11 +1887,11 @@ msgstr "Pomalé klávesy vypnuté"
 
 #: js/ui/kbdA11yDialog.js:36
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the Slow "
-"Keys feature, which affects the way your keyboard works."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
 msgstr ""
-"Práve ste podržali stlačenú klávesu Shift po dobu 8 sekúnd. Je to skratka funkcie "
-"Pomalé klávesy, ktorá mení spôsob fungovania vašej klávesnice."
+"Práve ste podržali stlačenú klávesu Shift po dobu 8 sekúnd. Je to skratka "
+"funkcie Pomalé klávesy, ktorá mení spôsob fungovania vašej klávesnice."
 
 # z gnome control center
 #: js/ui/kbdA11yDialog.js:42
@@ -1887,20 +1905,21 @@ msgstr "Lepkavé klávesy vypnuté"
 
 #: js/ui/kbdA11yDialog.js:45
 msgid ""
-"You just pressed the Shift key 5 times in a row. This is the shortcut for the "
-"Sticky Keys feature, which affects the way your keyboard works."
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
 msgstr ""
-"Práve ste stlačili klávesu Shift 5krát za sebou. je to skratka funkcie Lepkavé "
-"klávesy, ktorá mení spôsob fungovania vašej klávesnice."
+"Práve ste stlačili klávesu Shift 5krát za sebou. je to skratka funkcie "
+"Lepkavé klávesy, ktorá mení spôsob fungovania vašej klávesnice."
 
 #: js/ui/kbdA11yDialog.js:47
 msgid ""
-"You just pressed two keys at once, or pressed the Shift key 5 times in a row. "
-"This turns off the Sticky Keys feature, which affects the way your keyboard works."
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
 msgstr ""
-"Práve ste stlačili dve klávesy naraz, alebo ste stlačili klávesu Shift 5krát za "
-"sebou. Tým sa vypne funkcia Lepkavé klávesy, ktorá mení spôsob fungovania vašej "
-"klávesnice."
+"Práve ste stlačili dve klávesy naraz, alebo ste stlačili klávesu Shift 5krát "
+"za sebou. Tým sa vypne funkcia Lepkavé klávesy, ktorá mení spôsob fungovania "
+"vašej klávesnice."
 
 #: js/ui/kbdA11yDialog.js:57
 msgid "Leave On"
@@ -1991,12 +2010,12 @@ msgstr "Prihlásený ako privilegovaný používateľ"
 
 #: js/ui/main.js:367
 msgid ""
-"Running a session as a privileged user should be avoided for security reasons. If "
-"possible, you should log in as a normal user."
+"Running a session as a privileged user should be avoided for security "
+"reasons. If possible, you should log in as a normal user."
 msgstr ""
-"Spusteniu relácie pod privilegovaným používateľom by sa malo z bezpečnostných "
-"dôvodov zabrániť. Ak je to možné, mali by ste sa prihlásiť ako normálny "
-"používateľ."
+"Spusteniu relácie pod privilegovaným používateľom by sa malo z "
+"bezpečnostných dôvodov zabrániť. Ak je to možné, mali by ste sa prihlásiť "
+"ako normálny používateľ."
 
 #: js/ui/main.js:415
 msgid "Screen Lock disabled"
@@ -2312,7 +2331,8 @@ msgstr "Využíva kľúčové súbory"
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:300
 #, javascript-format
-msgid "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
+msgid ""
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
 msgstr "Na odomknutie zväzku s kľúčovými súbormi použite nástroj <i>%s</i>"
 
 #: js/ui/shellMountOperation.js:304
@@ -2320,8 +2340,8 @@ msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles"
 msgstr ""
-"Na odomknutie zväzku, ktorá využíva kľúčové súbory potrebujete externú aplikáciu "
-"ako <i>Disky</i>"
+"Na odomknutie zväzku, ktorá využíva kľúčové súbory potrebujete externú "
+"aplikáciu ako <i>Disky</i>"
 
 #: js/ui/shellMountOperation.js:312
 msgid "PIM Number"
@@ -2715,18 +2735,19 @@ msgstr "Neznáme zariadenie Thunderbolt"
 
 #: js/ui/status/thunderbolt.js:309
 msgid ""
-"New device has been detected while you were away. Please disconnect and reconnect "
-"the device to start using it."
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
 msgstr ""
-"Počas vašej neprítomnosti bolo zistené nové zariadenie. Prosím, odpojte a znovu "
-"pripojte zariadenie, aby ste ho mohli začať používať."
+"Počas vašej neprítomnosti bolo zistené nové zariadenie. Prosím, odpojte a "
+"znovu pripojte zariadenie, aby ste ho mohli začať používať."
 
 #: js/ui/status/thunderbolt.js:312
 msgid "Unauthorized Thunderbolt device"
 msgstr "Zariadenie Thunderbolt s neoverenou totožnosťou"
 
 #: js/ui/status/thunderbolt.js:313
-msgid "New device has been detected and needs to be authorized by an administrator"
+msgid ""
+"New device has been detected and needs to be authorized by an administrator"
 msgstr "Bolo zistené nové zariadenie a vyžaduje overenie totožnosti od správcu"
 
 #: js/ui/status/thunderbolt.js:319
@@ -2867,7 +2888,6 @@ msgstr "%d × %d"
 
 #. Translators: entry in the window right click menu.
 #: js/ui/windowMenu.js:28
-#| msgid "Take Screenshot"
 msgctxt "window-menu"
 msgid "Take Screenshot"
 msgstr "Zachytiť snímku obrazovky"
@@ -2999,8 +3019,8 @@ msgstr "Projekt GNOME"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:52
 msgid ""
-"GNOME Extensions handles updating extensions, configuring extension preferences "
-"and removing or disabling unwanted extensions."
+"GNOME Extensions handles updating extensions, configuring extension "
+"preferences and removing or disabling unwanted extensions."
 msgstr ""
 "Rozšírenia prostredia GNOME spravujú aktualizácie rozšírení, konfiguráciu "
 "predvolieb rozšírení a odstraňovanie alebo zakázanie nechcených rozšírení."
@@ -3024,8 +3044,8 @@ msgstr "Nastavenie rozšírení pre Shell prostredia GNOME"
 #: subprojects/extensions-app/js/extensionManager.js:237
 #, javascript-format
 msgid ""
-"The installed version of this extension (%s) is incompatible with the current "
-"version of GNOME (%s). The extension has been disabled."
+"The installed version of this extension (%s) is incompatible with the "
+"current version of GNOME (%s). The extension has been disabled."
 msgstr ""
 "Nainštalovaná verzia tohto rozšírenia (%s) nie je kompatibilná s aktuálnou "
 "verziou GNOME (%s). Rozšírenie bolo vypnuté."
@@ -3033,19 +3053,20 @@ msgstr ""
 #: subprojects/extensions-app/js/extensionManager.js:238
 #, javascript-format
 msgid ""
-"The installed version of this extension is incompatible with the current version "
-"of GNOME (%s). The extension has been disabled."
+"The installed version of this extension is incompatible with the current "
+"version of GNOME (%s). The extension has been disabled."
 msgstr ""
-"Nainštalovaná verzia tohto rozšírenia nie je kompatibilná s aktuálnou verziou "
-"prostredia GNOME (%s). Rozšírenie bolo vypnuté."
+"Nainštalovaná verzia tohto rozšírenia nie je kompatibilná s aktuálnou "
+"verziou prostredia GNOME (%s). Rozšírenie bolo vypnuté."
 
 #: subprojects/extensions-app/js/extensionManager.js:242
 msgid ""
-"An error has occurred in this extension. This could cause issues elsewhere in the "
-"system. It is recommended to turn the extension off until the error is resolved."
+"An error has occurred in this extension. This could cause issues elsewhere "
+"in the system. It is recommended to turn the extension off until the error "
+"is resolved."
 msgstr ""
-"V tomto rozšírení nastala chyba. Toto by mohlo spôsobiť problémy inde v systéme. "
-"Kým nebude chyba opravená, odporúčame rozšírenie vypnúť."
+"V tomto rozšírení nastala chyba. Toto by mohlo spôsobiť problémy inde v "
+"systéme. Kým nebude chyba opravená, odporúčame rozšírenie vypnúť."
 
 #. translators: Details for an extension error
 #: subprojects/extensions-app/js/extensionManager.js:248
@@ -3064,8 +3085,8 @@ msgstr "Odstrániť rozšírenie „%s“?"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:114
 msgid ""
-"If you remove the extension, you need to return to download it if you want to "
-"enable it again"
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
 msgstr ""
 "Ak odstránite rozšírenie, budete ho musieť pre jeho opätovné povolenie znovu "
 "prevziať"
@@ -3101,7 +3122,8 @@ msgid "Updates Details"
 msgstr "Podrobnosti o aktualizácii"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:68
-msgid "A new version of this extension is ready and will be loaded on next login."
+msgid ""
+"A new version of this extension is ready and will be loaded on next login."
 msgstr ""
 "Nová verzia tohto rozšírenia je pripravená a načíta sa pri ďalšom prihlásení."
 
@@ -3152,8 +3174,8 @@ msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
 msgstr ""
-"Rozšírenia môžu spôsobiť problémy s výkonom a stabilitou. Ak narazíte na problémy "
-"s vaším systémom, všetky rozšírenia vypnite."
+"Rozšírenia môžu spôsobiť problémy s výkonom a stabilitou. Ak narazíte na "
+"problémy s vaším systémom, všetky rozšírenia vypnite."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:178
 msgid "User Extensions"
@@ -3183,8 +3205,8 @@ msgstr "Žiadne nainštalované rozšírenia"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
-"To find and add extensions, visit <a href=\"https://"
-"extensions.gnome.org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "Ak chcete nájsť a pridať rozšírenia, navštívte adresu <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
@@ -3194,8 +3216,9 @@ msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
 msgstr ""
-"Ospravedlňujeme sa, ale nebolo možné získať zoznam nainštalovaných rozšírení. "
-"Uistite sa, že ste prihlásený do prostredia GNOME a skúste to znovu."
+"Ospravedlňujeme sa, ale nebolo možné získať zoznam nainštalovaných "
+"rozšírení. Uistite sa, že ste prihlásený do prostredia GNOME a skúste to "
+"znovu."
 
 #: subprojects/extensions-app/data/ui/help-overlay.ui:9
 msgctxt "shortcut window"
@@ -3259,8 +3282,8 @@ msgstr "Popis"
 #: subprojects/extensions-tool/src/command-create.c:416
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address "
-"(clicktofocus@janedoe.example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
 msgstr ""
 "UUID je globálne unikátny identifikátor pre Vaše rozšírenie.\n"
 "Má by vo formáte emailovej adresy (clicktofocus@janedoe.example.com)\n"
@@ -3761,12 +3784,15 @@ msgstr "Systémové zvuky"
 #~ msgid "Attach modal dialog to the parent window"
 #~ msgstr "Pripojiť modálne dialógové okno k rodičovskému oknu"
 
-#~ msgid "This key overrides the key in org.gnome.mutter when running GNOME Shell."
+#~ msgid ""
+#~ "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 #~ msgstr ""
-#~ "Tento kľúč preváži kľúč v org.gnome.mutter po spustení Shellu prostredia GNOME."
+#~ "Tento kľúč preváži kľúč v org.gnome.mutter po spustení Shellu prostredia "
+#~ "GNOME."
 
 #~ msgid "Enable edge tiling when dropping windows on screen edges"
-#~ msgstr "Povoliť natiahnutie k okraju pri pustení okien na okrajoch obrazovky"
+#~ msgstr ""
+#~ "Povoliť natiahnutie k okraju pri pustení okien na okrajoch obrazovky"
 
 #~ msgid "Workspaces are managed dynamically"
 #~ msgstr "Pracovné priestory sú spravované dynamicky"
@@ -3776,7 +3802,8 @@ msgstr "Systémové zvuky"
 
 # summary
 #~ msgid "Delay focus changes in mouse mode until the pointer stops moving"
-#~ msgstr "Oneskoriť pohyb zamerania v režime myši, až kým sa ukazovateľ nezastaví"
+#~ msgstr ""
+#~ "Oneskoriť pohyb zamerania v režime myši, až kým sa ukazovateľ nezastaví"
 
 #~ msgid "Region & Language Settings"
 #~ msgstr "Nastavenia oblasti a jazyka"
@@ -3795,14 +3822,16 @@ msgstr "Systémové zvuky"
 #~ msgid "Evolution Calendar"
 #~ msgstr "Kalendár Evolution"
 
-#~ msgid "Whether the default Bluetooth adapter had set up devices associated to it"
-#~ msgstr "Či má predvolený Bluetooth adaptér nastaviť jemu priradené zariadenia"
+#~ msgid ""
+#~ "Whether the default Bluetooth adapter had set up devices associated to it"
+#~ msgstr ""
+#~ "Či má predvolený Bluetooth adaptér nastaviť jemu priradené zariadenia"
 
 #~ msgid ""
 #~ "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-#~ "powered, or if there were devices set up associated with the default adapter. "
-#~ "This will be reset if the default adapter is ever seen not to have devices "
-#~ "associated to it."
+#~ "powered, or if there were devices set up associated with the default "
+#~ "adapter. This will be reset if the default adapter is ever seen not to "
+#~ "have devices associated to it."
 #~ msgstr ""
 #~ "Shell zobrazí položku Bluetooth v ponuke iba vtedy, ak je zapnutý adaptér "
 #~ "Bluetooth, alebo ak boli zariadenia nastavené a priradené predvolenému "
@@ -3975,20 +4004,20 @@ msgstr "Systémové zvuky"
 #~ msgstr "Upozornenie"
 
 #~ msgid ""
-#~ "Extensions can cause system issues, including performance problems. If you "
-#~ "encounter problems with your system, it is recommended to disable all "
+#~ "Extensions can cause system issues, including performance problems. If "
+#~ "you encounter problems with your system, it is recommended to disable all "
 #~ "extensions."
 #~ msgstr ""
-#~ "Rozšírenia môžu spôsobiť problémy so systémom, vrátane problémov s výkonom. Ak "
-#~ "sa stretnete s problémami s vaším systémom, odporúča sa zakázať všetky "
-#~ "rozšírenia."
+#~ "Rozšírenia môžu spôsobiť problémy so systémom, vrátane problémov s "
+#~ "výkonom. Ak sa stretnete s problémami s vaším systémom, odporúča sa "
+#~ "zakázať všetky rozšírenia."
 
 #~ msgid "Enable introspection API"
 #~ msgstr "Povoliť sebapozorovacie API"
 
 #~ msgid ""
-#~ "Enables a D-Bus API that allows to introspect the application state of the "
-#~ "shell."
+#~ "Enables a D-Bus API that allows to introspect the application state of "
+#~ "the shell."
 #~ msgstr ""
 #~ "Povolí D-Bus API, ktoré umožní sebapozorovanie stavu aplikácie prostredia "
 #~ "shell."
@@ -4098,10 +4127,11 @@ msgstr "Systémové zvuky"
 
 # summary
 #~ msgid ""
-#~ "Keybinding that pauses and resumes all running tweens, for debugging purposes"
+#~ "Keybinding that pauses and resumes all running tweens, for debugging "
+#~ "purposes"
 #~ msgstr ""
-#~ "Klávesová skratka, ktorá pozastaví a znovu spustí všetky animácie(tween), pre "
-#~ "ladiace účely"
+#~ "Klávesová skratka, ktorá pozastaví a znovu spustí všetky animácie(tween), "
+#~ "pre ladiace účely"
 
 #~ msgid "Which keyboard to use"
 #~ msgstr "Ktorú klávesnicu používať"
@@ -4279,7 +4309,8 @@ msgstr "Systémové zvuky"
 #~ msgid "This account is already connected to the server"
 #~ msgstr "Tento účet je už pripojený k serveru"
 
-#~ msgid "Connection has been replaced by a new connection using the same resource"
+#~ msgid ""
+#~ "Connection has been replaced by a new connection using the same resource"
 #~ msgstr "Pripojenie bolo nahradené novým, ktoré používa rovnaký zdroj"
 
 #~ msgid "The account already exists on the server"
@@ -4298,11 +4329,11 @@ msgstr "Systémové zvuky"
 #~ "kryptograficky slabý"
 
 #~ msgid ""
-#~ "The length of the server certificate, or the depth of the server certificate "
-#~ "chain, exceed the limits imposed by the cryptography library"
+#~ "The length of the server certificate, or the depth of the server "
+#~ "certificate chain, exceed the limits imposed by the cryptography library"
 #~ msgstr ""
-#~ "Dĺžka certifikátu servera, alebo hĺbka reťazca certifikátu servera presahuje "
-#~ "limit stanovený kryptografickou knižnicou."
+#~ "Dĺžka certifikátu servera, alebo hĺbka reťazca certifikátu servera "
+#~ "presahuje limit stanovený kryptografickou knižnicou."
 
 #~ msgid "Internal error"
 #~ msgstr "Vnútorná chyba"
@@ -4378,30 +4409,31 @@ msgstr "Systémové zvuky"
 #~ msgstr "Maximálna úroveň presnosti určenia polohy."
 
 #~ msgid ""
-#~ "Configures the maximum level of location accuracy applications are allowed to "
-#~ "see. Valid options are 'off' (disable location tracking), 'country', 'city', "
-#~ "'neighborhood', 'street', and 'exact' (typically requires GPS receiver). "
-#~ "Please keep in mind that this only controls what GeoClue will allow "
-#~ "applications to see and they can find user's location on their own using "
-#~ "network resources (albeit with street-level accuracy at best)."
+#~ "Configures the maximum level of location accuracy applications are "
+#~ "allowed to see. Valid options are 'off' (disable location tracking), "
+#~ "'country', 'city', 'neighborhood', 'street', and 'exact' (typically "
+#~ "requires GPS receiver). Please keep in mind that this only controls what "
+#~ "GeoClue will allow applications to see and they can find user's location "
+#~ "on their own using network resources (albeit with street-level accuracy "
+#~ "at best)."
 #~ msgstr ""
-#~ "Konfiguruje maximálnu úroveň presnosti určenia polohy, ktorú aplikácie môžu "
-#~ "získať. Povolené sú voľby 'off' (zakáže sledovanie polohy), 'country' "
-#~ "(krajina), 'city' (mesto), 'neighborhood' (okolie), 'street' (ulica), 'exact' "
-#~ "(presne, pri čom je štandardne požadované použitie prijímača GPS). Uvedomte "
-#~ "si, že toto nastavenie ovplyvňuje povolenia GeoClue a aplikácie môžu tiež "
-#~ "získať údaje o polohe použitím sieťových prostriedkov (aj keď prinajlepšom s "
-#~ "presnosťou na ulicu)."
+#~ "Konfiguruje maximálnu úroveň presnosti určenia polohy, ktorú aplikácie "
+#~ "môžu získať. Povolené sú voľby 'off' (zakáže sledovanie polohy), "
+#~ "'country' (krajina), 'city' (mesto), 'neighborhood' (okolie), 'street' "
+#~ "(ulica), 'exact' (presne, pri čom je štandardne požadované použitie "
+#~ "prijímača GPS). Uvedomte si, že toto nastavenie ovplyvňuje povolenia "
+#~ "GeoClue a aplikácie môžu tiež získať údaje o polohe použitím sieťových "
+#~ "prostriedkov (aj keď prinajlepšom s presnosťou na ulicu)."
 
 #~ msgid "Arrangement of buttons on the titlebar"
 #~ msgstr "Usporiadanie tlačidiel na titulku okna"
 
 #~ msgid ""
-#~ "This key overrides the key in org.gnome.desktop.wm.preferences when running "
-#~ "GNOME Shell."
+#~ "This key overrides the key in org.gnome.desktop.wm.preferences when "
+#~ "running GNOME Shell."
 #~ msgstr ""
-#~ "Tento kľúč preváži kľúč v org.gnome.desktop.wm.preferences po spustení Shellu "
-#~ "prostredia GNOME."
+#~ "Tento kľúč preváži kľúč v org.gnome.desktop.wm.preferences po spustení "
+#~ "Shellu prostredia GNOME."
 
 #~ msgid "Select an extension to configure using the combobox above."
 #~ msgstr "Použitím ponuky vyberte rozšírenie na nastavenie"
