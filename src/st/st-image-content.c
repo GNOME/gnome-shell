@@ -425,28 +425,6 @@ st_image_content_get_is_symbolic (StImageContent *content)
   return content->is_symbolic;
 }
 
-
-static void
-update_image_size (StImageContent *self)
-{
-  int width, height;
-
-  if (self->texture == NULL)
-    return;
-
-  width = cogl_texture_get_width (self->texture);
-  height = cogl_texture_get_height (self->texture);
-
-  if (self->width == width &&
-      self->height == height)
-    return;
-
-  self->width = width;
-  self->height = height;
-
-  clutter_content_invalidate_size (CLUTTER_CONTENT (self));
-}
-
 /**
  * st_image_content_set_data:
  * @content: a #StImageContentImage
@@ -502,11 +480,19 @@ st_image_content_set_data (StImageContent   *content,
                            guint             row_stride,
                            GError          **error)
 {
+  int old_width = 0;
+  int old_height = 0;
+
   g_return_val_if_fail (ST_IS_IMAGE_CONTENT (content), FALSE);
   g_return_val_if_fail (data != NULL, FALSE);
 
   if (content->texture != NULL)
-    g_object_unref (content->texture);
+    {
+      old_width = cogl_texture_get_width (content->texture);
+      old_height = cogl_texture_get_height (content->texture);
+
+      g_object_unref (content->texture);
+    }
 
   content->texture = cogl_texture_2d_new_from_data (cogl_context,
                                                     width,
@@ -520,7 +506,9 @@ st_image_content_set_data (StImageContent   *content,
     return FALSE;
 
   clutter_content_invalidate (CLUTTER_CONTENT (content));
-  update_image_size (content);
+
+  if (old_width != width || old_height != height)
+    clutter_content_invalidate_size (CLUTTER_CONTENT (content));
 
   return TRUE;
 }
@@ -560,12 +548,19 @@ st_image_content_set_bytes (StImageContent   *content,
                             GError          **error)
 {
 
+  int old_width = 0;
+  int old_height = 0;
+
   g_return_val_if_fail (ST_IS_IMAGE_CONTENT (content), FALSE);
   g_return_val_if_fail (data != NULL, FALSE);
 
-
   if (content->texture != NULL)
-    g_object_unref (content->texture);
+    {
+      old_width = cogl_texture_get_width (content->texture);
+      old_height = cogl_texture_get_height (content->texture);
+
+      g_object_unref (content->texture);
+    }
 
   content->texture = cogl_texture_2d_new_from_data (cogl_context,
                                                     width,
@@ -579,7 +574,9 @@ st_image_content_set_bytes (StImageContent   *content,
     return FALSE;
 
   clutter_content_invalidate (CLUTTER_CONTENT (content));
-  update_image_size (content);
+
+  if (old_width != width || old_height != height)
+    clutter_content_invalidate_size (CLUTTER_CONTENT (content));
 
   return TRUE;
 }
