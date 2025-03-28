@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-03-23 21:03+0000\n"
-"PO-Revision-Date: 2025-03-27 17:40+0800\n"
+"POT-Creation-Date: 2025-03-27 09:41+0000\n"
+"PO-Revision-Date: 2025-03-28 13:28+0800\n"
 "Last-Translator: Cheng-Chia Tseng <zerngjia@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <http://darkbear.mercusysddns.com/"
 "projects/gnome-45/gnome-shell-po-ui-main/zh_Hant/>\n"
@@ -110,12 +110,12 @@ msgstr "啟動螢幕快照工具"
 #: data/50-gnome-shell-screenshots.xml:12
 #: data/org.gnome.shell.gschema.xml.in:279
 msgid "Take a screenshot"
-msgstr "擷取螢幕快照"
+msgstr "擷取螢幕畫面"
 
 #: data/50-gnome-shell-screenshots.xml:15
 #: data/org.gnome.shell.gschema.xml.in:275
 msgid "Take a screenshot of a window"
-msgstr "擷取視窗畫面快照"
+msgstr "擷取視窗畫面"
 
 #: data/50-gnome-shell-screenshots.xml:18
 #: data/org.gnome.shell.gschema.xml.in:271
@@ -906,7 +906,7 @@ msgstr ""
 #: js/misc/systemActions.js:146
 msgctxt "search-result"
 msgid "Take a Screenshot"
-msgstr "擷取螢幕快照"
+msgstr "擷取螢幕畫面"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
 #: js/misc/systemActions.js:149
@@ -2016,7 +2016,7 @@ msgstr "擷取視窗"
 
 #: js/ui/screenshot.js:1315 js/ui/status/system.js:111
 msgid "Take Screenshot"
-msgstr "擷取螢幕快照"
+msgstr "擷取螢幕畫面"
 
 #: js/ui/screenshot.js:1331
 msgid "Record Screen"
@@ -2099,7 +2099,7 @@ msgstr "螢幕快照 %s"
 #. Translators: notification title.
 #: js/ui/screenshot.js:2336
 msgid "Screenshot captured"
-msgstr "已擷取螢幕快照"
+msgstr "已擷取螢幕畫面"
 
 #. Translators: notification body when a screenshot was captured.
 #: js/ui/screenshot.js:2338
@@ -2108,7 +2108,7 @@ msgstr "您可以自剪貼簿中貼上螢幕快照。"
 
 #: js/ui/screenshot.js:2397 js/ui/screenshot.js:2561
 msgid "Screenshot taken"
-msgstr "已擷取螢幕快照"
+msgstr "已擷取螢幕畫面"
 
 #: js/ui/search.js:832
 msgid "Searching…"
