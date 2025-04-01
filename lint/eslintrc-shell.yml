@@ -12,6 +12,12 @@ rules:
     - mode: minimum
       beforeColon: false
       afterColon: true
+  no-unused-vars:
+    - error
+    # Vars use a suffix _ instead of a prefix because of file-scope private vars
+    - varsIgnorePattern: (^unused|_$)
+      argsIgnorePattern: ^(unused|_)
+      caughtErrors: all
   prefer-arrow-callback: error
   jsdoc/require-param-description: off
   jsdoc/require-jsdoc:
