@@ -499,7 +499,7 @@ export const LoginDialog = GObject.registerClass({
 
         try {
             this._gdmClient.set_enabled_extensions([Gdm.UserVerifierChoiceList.interface_info().name]);
-        } catch (e) {
+        } catch {
         }
 
         this._settings = new Gio.Settings({schema_id: GdmUtil.LOGIN_SCREEN_SCHEMA});

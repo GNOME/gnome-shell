@@ -199,7 +199,7 @@ export async function getPropertyNamesFromExpression(expr, commandHeader = '') {
             const lines = expr.split('\n');
             lines.push(`return ${lines.pop()}`);
             obj = await AsyncFunction(commandHeader + lines.join(';'))();
-        } catch (e) {
+        } catch {
             return [];
         }
     } else {

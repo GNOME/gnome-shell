@@ -190,7 +190,7 @@ export class AudioDeviceSelectionDBus {
         let dialog;
         try {
             dialog = new AudioDeviceSelectionDialog(devices);
-        } catch (e) {
+        } catch {
             invocation.return_value(null);
             return;
         }

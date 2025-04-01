@@ -271,7 +271,7 @@ const SearchResultsBase = GObject.registerClass({
                 this._setMoreCount(this.provider.canLaunchSearch ? moreCount : 0);
                 this.show();
                 callback();
-            } catch (e) {
+            } catch {
                 this._clearResultDisplay();
                 callback();
             }

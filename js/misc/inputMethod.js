@@ -126,7 +126,7 @@ export const InputMethod = GObject.registerClass({
     _onDeleteSurroundingText(_context, offset, nchars) {
         try {
             this.delete_surrounding(offset, nchars);
-        } catch (e) {
+        } catch {
             // We may get out of bounds for negative offset on older mutter
             this.delete_surrounding(0, nchars + offset);
         }
@@ -357,7 +357,7 @@ export const InputMethod = GObject.registerClass({
             await this._context.process_key_event_async(
                 keyval, 0, IBus.ModifierType.RELEASE_MASK, -1, null);
             return true;
-        } catch (e) {
+        } catch {
             return false;
         }
     }

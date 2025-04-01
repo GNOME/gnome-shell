@@ -47,7 +47,7 @@ export function canLock() {
 
         let version = result.deepUnpack()[0].deepUnpack();
         return haveSystemd() && versionCompare('3.5.91', version);
-    } catch (e) {
+    } catch {
         return false;
     }
 }
@@ -155,7 +155,7 @@ class LoginManagerSystemd extends Signals.EventEmitter {
             const [result] = await this._proxy.CanSuspendAsync();
             needsAuth = result === 'challenge';
             canSuspend = needsAuth || result === 'yes';
-        } catch (error) {
+        } catch {
             canSuspend = false;
             needsAuth = false;
         }
@@ -169,7 +169,7 @@ class LoginManagerSystemd extends Signals.EventEmitter {
             const [result] = await this._proxy.CanRebootToBootLoaderMenuAsync();
             needsAuth = result === 'challenge';
             canRebootToBootLoaderMenu = needsAuth || result === 'yes';
-        } catch (error) {
+        } catch {
             canRebootToBootLoaderMenu = false;
             needsAuth = false;
         }
@@ -185,7 +185,7 @@ class LoginManagerSystemd extends Signals.EventEmitter {
         try {
             const [sessions] = await this._proxy.ListSessionsAsync();
             return sessions;
-        } catch (e) {
+        } catch {
             return [];
         }
     }

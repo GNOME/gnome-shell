@@ -425,7 +425,7 @@ class AuthenticationAgent extends Shell.PolkitAuthenticationAgent {
     enable() {
         try {
             this.register();
-        } catch (e) {
+        } catch {
             log('Failed to register AuthenticationAgent');
         }
     }
@@ -433,7 +433,7 @@ class AuthenticationAgent extends Shell.PolkitAuthenticationAgent {
     disable() {
         try {
             this.unregister();
-        } catch (e) {
+        } catch {
             log('Failed to unregister AuthenticationAgent');
         }
     }

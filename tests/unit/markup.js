@@ -19,7 +19,7 @@ describe('fixMarkup()', () => {
                 function isMarkupValid(markup) {
                     try {
                         Pango.parse_markup(markup, -1, '');
-                    } catch (e) {
+                    } catch {
                         return false;
                     }
                     return true;

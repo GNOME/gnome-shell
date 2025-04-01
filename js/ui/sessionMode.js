@@ -112,7 +112,7 @@ function _loadMode(file, info) {
         [success_, fileContent] = file.load_contents(null);
         const decoder = new TextDecoder();
         newMode = JSON.parse(decoder.decode(fileContent));
-    } catch (e) {
+    } catch {
         return;
     }
 

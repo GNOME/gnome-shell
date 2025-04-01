@@ -54,7 +54,7 @@ class AutomountManager {
             const [inhibited] =
                 await this._session.IsInhibitedAsync(GNOME_SESSION_AUTOMOUNT_INHIBIT);
             this._inhibited = inhibited;
-        } catch (e) {}
+        } catch {}
     }
 
     _startupMountAll() {

@@ -29,7 +29,7 @@ export function* collectFromDatadirs(subdir, includeUserDir) {
         try {
             fileEnum = dir.enumerate_children('standard::name,standard::type',
                 Gio.FileQueryInfoFlags.NONE, null);
-        } catch (e) {
+        } catch {
             fileEnum = null;
         }
         if (fileEnum != null) {

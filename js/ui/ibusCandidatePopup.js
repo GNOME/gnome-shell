@@ -228,7 +228,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
                     rect.w,
                     rect.h);
             });
-        } catch (e) {
+        } catch {
             // Only recent IBus versions have support for this signal
             // which is used for wayland clients. In order to work
             // with older IBus versions we can silently ignore the

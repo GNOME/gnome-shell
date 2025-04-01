@@ -123,7 +123,7 @@ const BackgroundAppMenuItem = GObject.registerClass({
 
         try {
             await this.app.activate_action('quit', null, 0, -1, null);
-        } catch (_error) {
+        } catch {
             try {
                 const appId = this.app.get_id().replace(/\.desktop$/, '');
                 Util.trySpawn(['flatpak', 'kill', appId]);

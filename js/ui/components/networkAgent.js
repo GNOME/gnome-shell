@@ -494,7 +494,7 @@ class VPNRequestHandler extends Signals.EventEmitter {
         } else {
             try {
                 this._stdin.write('QUIT\n\n', null);
-            } catch (e) { /* ignore broken pipe errors */ }
+            } catch { /* ignore broken pipe errors */ }
         }
 
         this.destroy();
@@ -544,7 +544,7 @@ class VPNRequestHandler extends Signals.EventEmitter {
             if (line === '' && this._previousLine === '') {
                 try {
                     this._stdin.write('QUIT\n\n', null);
-                } catch (e) { /* ignore broken pipe errors */ }
+                } catch { /* ignore broken pipe errors */ }
             } else {
                 this._agent.add_vpn_secret(this._requestId, this._previousLine, line);
                 this._previousLine = undefined;

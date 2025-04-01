@@ -493,7 +493,7 @@ export const UnlockDialog = GObject.registerClass({
             this._gdmClient.set_enabled_extensions([
                 Gdm.UserVerifierChoiceList.interface_info().name,
             ]);
-        } catch (e) {
+        } catch {
         }
 
         this._adjustment = new St.Adjustment({

@@ -18,7 +18,7 @@ function loadInterfaceXML(iface) {
     try {
         let [ok_, bytes] = f.load_contents(null);
         return new TextDecoder().decode(bytes);
-    } catch (e) {
+    } catch {
         console.error(`Failed to load D-Bus interface ${iface}`);
     }
 

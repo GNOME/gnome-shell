@@ -87,7 +87,7 @@ class IBusManager extends Signals.EventEmitter {
             this._ibusIsSystemdService =
                 await Shell.util_systemd_unit_exists(
                     IBUS_SYSTEMD_SERVICE, null);
-        } catch (e) {
+        } catch {
             this._ibusIsSystemdService = false;
         }
 
@@ -216,7 +216,7 @@ class IBusManager extends Signals.EventEmitter {
             // confusing users. We thus don't use it in that case.
             _checkIBusVersion(1, 5, 10);
             this._panelService.connect('set-content-type', this._setContentType.bind(this));
-        } catch (e) {
+        } catch {
         }
         this._updateReadiness();
 
@@ -225,7 +225,7 @@ class IBusManager extends Signals.EventEmitter {
             const engine =
                 await this._ibus.get_global_engine_async(-1, this._cancellable);
             this._engineChanged(this._ibus, engine.get_name());
-        } catch (e) {
+        } catch {
         }
     }
 
