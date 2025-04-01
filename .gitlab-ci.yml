@@ -57,8 +57,8 @@ variables:
 
 .gnome-shell.fedora:
   variables:
-    FDO_DISTRIBUTION_VERSION: 41
-    FDO_DISTRIBUTION_TAG: '2024-10-18.0'
+    FDO_DISTRIBUTION_VERSION: 42
+    FDO_DISTRIBUTION_TAG: '2025-04-01.0'
     FDO_DISTRIBUTION_PACKAGES:
       gjs
       nodejs
