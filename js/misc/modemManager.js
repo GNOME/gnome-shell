@@ -171,7 +171,7 @@ class ModemGsm extends ModemBase {
             ]);
             this._setOperatorName(_findProviderForMccMnc(name, code));
             this._setSignalQuality(quality);
-        } catch (err) {
+        } catch {
             // it will return an error if the device is not connected
             this._setSignalQuality(0);
         }
@@ -199,7 +199,7 @@ class ModemCdma extends ModemBase {
         try {
             const [quality] = await this._proxy.GetSignalQualityAsync();
             this._setSignalQuality(quality);
-        } catch (err) {
+        } catch {
             // it will return an error if the device is not connected
             this._setSignalQuality(0);
         }
@@ -210,7 +210,7 @@ class ModemCdma extends ModemBase {
             const [bandClass_, band_, sid] =
                 await this._proxy.GetServingSystemAsync();
             this._setOperatorName(_findProviderForSid(sid));
-        } catch (err) {
+        } catch {
             // it will return an error if the device is not connected
             this._setOperatorName(null);
         }

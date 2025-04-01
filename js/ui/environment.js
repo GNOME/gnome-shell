@@ -348,7 +348,7 @@ Object.prototype.toString = function () {
             return base.replace(/\]$/, ` delegate for ${this.actor.toString().substring(1)}`);
         else
             return base;
-    } catch (e) {
+    } catch {
         return base;
     }
 };

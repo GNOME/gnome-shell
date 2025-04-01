@@ -467,7 +467,7 @@ class ObjInspector extends St.ScrollView {
                 try {
                     let prop = obj[propName];
                     link = new ObjLink(this._lookingGlass, prop);
-                } catch (e) {
+                } catch {
                     link = new St.Label({text: '<error>'});
                 }
                 let box = new St.BoxLayout();
@@ -1589,7 +1589,7 @@ class LookingGlass extends St.BoxLayout {
     getResult(idx) {
         try {
             return this._resultsArea.get_child_at_index(idx - this._offset).o;
-        } catch (e) {
+        } catch {
             throw new Error(`Unknown result at index ${idx}`);
         }
     }

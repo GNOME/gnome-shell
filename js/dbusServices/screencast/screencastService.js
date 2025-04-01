@@ -313,7 +313,7 @@ class Recorder extends Signals.EventEmitter {
             // non-pipeline-related failures.
             this._updateServiceCrashBlocklist(
                 [...this._blocklistFromPreviousCrashes, pipelineConfig.id]);
-        } catch (error) {
+        } catch {
             this._tryNextPipeline();
             return;
         }

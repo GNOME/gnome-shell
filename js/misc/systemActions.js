@@ -340,7 +340,7 @@ const SystemActions = GObject.registerClass({
         try {
             const [canShutdown] = await this._session.CanShutdownAsync();
             this._canHavePowerOff = canShutdown;
-        } catch (e) {
+        } catch {
             this._canHavePowerOff = false;
         }
         this._updatePowerOff();

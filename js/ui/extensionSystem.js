@@ -667,7 +667,7 @@ export class ExtensionManager extends Signals.EventEmitter {
             try {
                 FileUtils.recursivelyDeleteDir(extensionDir, false);
                 FileUtils.recursivelyMoveDir(dir, extensionDir);
-            } catch (e) {
+            } catch {
                 log(`Failed to install extension updates for ${uuid}`);
             } finally {
                 FileUtils.recursivelyDeleteDir(dir, true);

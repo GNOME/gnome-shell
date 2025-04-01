@@ -1439,7 +1439,7 @@ export const Keyboard = GObject.registerClass({
                 try {
                     keyboardModel = new KeyboardModel(group);
                     break;
-                } catch (e) {
+                } catch {
                     // Ignore this error and fall back to next model
                 }
             }

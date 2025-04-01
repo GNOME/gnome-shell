@@ -1512,7 +1512,7 @@ class AppDisplay extends BaseAppView {
         this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
                 appInfo.get_id(); // catch invalid file encodings
-            } catch (e) {
+            } catch {
                 return false;
             }
             return !this._appFavorites.isFavorite(appInfo.get_id()) &&
@@ -1737,7 +1737,7 @@ class AppDisplay extends BaseAppView {
                 schema_id: 'org.gnome.desktop.app-folders.folder',
                 path: newFolderPath,
             });
-        } catch (e) {
+        } catch {
             log('Error creating new folder');
             return false;
         }

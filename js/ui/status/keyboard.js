@@ -226,7 +226,7 @@ class InputSourceSystemSettings extends InputSourceSettings {
                 new GLib.Variant('(s)', [this._BUS_IFACE]),
                 null, Gio.DBusCallFlags.NONE, -1, null);
             [props] = result.deepUnpack();
-        } catch (e) {
+        } catch {
             log(`Could not get properties from ${this._BUS_NAME}`);
             return;
         }

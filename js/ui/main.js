@@ -154,7 +154,7 @@ export async function start() {
             // toString() can throw
             if (msg)
                 args.unshift(`${msg}:`);
-        } catch (e) {}
+        } catch {}
 
         console.error(...args);
     };

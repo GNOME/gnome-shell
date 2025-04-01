@@ -2126,7 +2126,7 @@ class Indicator extends SystemIndicator {
                 const state = await this._client.check_connectivity_async(null);
                 if (state >= NM.ConnectivityState.FULL)
                     this._portalHandler.removeConnection(path);
-            } catch (e) { }
+            } catch {}
         });
 
         this._client.connectObject(

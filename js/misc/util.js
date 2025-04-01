@@ -193,7 +193,7 @@ export function fixMarkup(text, allowMarkup) {
         try {
             Pango.parse_markup(_text, -1, '');
             return _text;
-        } catch (e) {}
+        } catch {}
     }
 
     // !allowMarkup, or invalid markup
