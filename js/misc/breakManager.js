@@ -180,10 +180,15 @@ export const BreakManager = GObject.registerClass({
             }
         }
 
+        this.freeze_notify();
         this.notify('next-break-due-time');
 
         if (this._state === BreakState.DISABLED)
             this._startStateMachine();
+        else
+            this._updateState(currentTime);
+
+        this.thaw_notify();
 
         return true;
     }
