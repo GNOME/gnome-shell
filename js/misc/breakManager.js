@@ -1278,8 +1278,11 @@ class BreakNotificationSource extends GObject.Object {
                 this._scheduleUpdateState(updateTimeoutSeconds);
             }
 
-            this._notification.urgency = this._urgencyForBreakType(this._manager.currentBreakType);
-            this._source.addNotification(this._notification);
+            if (this._notification) {
+                this._notification.urgency = this._urgencyForBreakType(this._manager.currentBreakType);
+                this._source.addNotification(this._notification);
+            }
+
             break;
         }
 
