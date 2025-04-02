@@ -1,0 +1,3588 @@
+# Uzbek (Latin) translation for gnome-shell.
+# Copyright (C) 2025 gnome-shell's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
+# Baxrom Raxmatov <magdiyevbahrom@gmail.com>,  2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell main\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
+"POT-Creation-Date: 2025-03-31 14:45+0000\n"
+"PO-Revision-Date: 2025-04-02 17:34+0500\n"
+"Last-Translator: \n"
+"Language-Team: Uzbek (Latin) <uz@li.org>\n"
+"Language: uz\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;;\n"
+"X-Generator: Poedit 3.5\n"
+
+#: data/50-gnome-shell-launchers.xml:6
+msgid "Launchers"
+msgstr "Ishga tushiruvchilar"
+
+#: data/50-gnome-shell-launchers.xml:10
+msgid "Activate pinned app 1"
+msgstr "Qattiqlangan ilovani faollashtiring 1"
+
+#: data/50-gnome-shell-launchers.xml:14
+msgid "Activate pinned app 2"
+msgstr "Qattiqlangan ilovani faollashtiring 2"
+
+#: data/50-gnome-shell-launchers.xml:18
+msgid "Activate pinned app 3"
+msgstr "Qattiqlangan ilovani faollashtiring 3"
+
+#: data/50-gnome-shell-launchers.xml:22
+msgid "Activate pinned app 4"
+msgstr "Qattiqlangan ilovani faollashtiring 4"
+
+#: data/50-gnome-shell-launchers.xml:26
+msgid "Activate pinned app 5"
+msgstr "Qattiqlangan ilovani faollashtiring 5"
+
+#: data/50-gnome-shell-launchers.xml:30
+msgid "Activate pinned app 6"
+msgstr "Qattiqlangan ilovani faollashtiring 4"
+
+#: data/50-gnome-shell-launchers.xml:34
+msgid "Activate pinned app 7"
+msgstr "Qattiqlangan ilovani faollashtiring 7"
+
+#: data/50-gnome-shell-launchers.xml:38
+msgid "Activate pinned app 8"
+msgstr "Qattiqlangan ilovani faollashtiring 8"
+
+#: data/50-gnome-shell-launchers.xml:42
+msgid "Activate pinned app 9"
+msgstr "Qattiqlangan ilovani faollashtiring 9"
+
+#: data/50-gnome-shell-launchers.xml:46
+msgid "Open new window of pinned app 1"
+msgstr "Qattiqlangan ilovaning yangi oynasini oching 1"
+
+#: data/50-gnome-shell-launchers.xml:50
+msgid "Open new window of pinned app 2"
+msgstr "Qattiqlangan ilovaning yangi oynasini oching 2"
+
+#: data/50-gnome-shell-launchers.xml:54
+msgid "Open new window of pinned app 3"
+msgstr "Qattiqlangan ilovaning yangi oynasini oching 3"
+
+#: data/50-gnome-shell-launchers.xml:58
+msgid "Open new window of pinned app 4"
+msgstr "Qattiqlangan ilovaning yangi oynasini oching 4"
+
+#: data/50-gnome-shell-launchers.xml:62
+msgid "Open new window of pinned app 5"
+msgstr "Qattiqlangan ilovaning yangi oynasini oching 5"
+
+#: data/50-gnome-shell-launchers.xml:66
+msgid "Open new window of pinned app 6"
+msgstr "Qattiqlangan ilovaning yangi oynasini oching 6"
+
+#: data/50-gnome-shell-launchers.xml:70
+msgid "Open new window of pinned app 7"
+msgstr "Qattiqlangan ilovaning yangi oynasini oching 7"
+
+#: data/50-gnome-shell-launchers.xml:74
+msgid "Open new window of pinned app 8"
+msgstr "Qattiqlangan ilovaning yangi oynasini oching 8"
+
+#: data/50-gnome-shell-launchers.xml:78
+msgid "Open new window of pinned app 9"
+msgstr "Qattiqlangan ilovaning yangi oynasini oching 9"
+
+#. Translators: name of the folder under ~/Pictures for screenshots.
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2275
+msgid "Screenshots"
+msgstr "Skrinshotlar"
+
+#: data/50-gnome-shell-screenshots.xml:9
+#: data/org.gnome.shell.gschema.xml.in:267
+msgid "Take a screenshot interactively"
+msgstr "Interaktiv tarzda skrinshot oling"
+
+#: data/50-gnome-shell-screenshots.xml:12
+#: data/org.gnome.shell.gschema.xml.in:279
+msgid "Take a screenshot"
+msgstr "Skrinshot oling"
+
+#: data/50-gnome-shell-screenshots.xml:15
+#: data/org.gnome.shell.gschema.xml.in:275
+msgid "Take a screenshot of a window"
+msgstr "Oynaning skrinshotini oling"
+
+#: data/50-gnome-shell-screenshots.xml:18
+#: data/org.gnome.shell.gschema.xml.in:271
+msgid "Record a screencast interactively"
+msgstr "Skrinshotni interaktiv tarzda yozib oling"
+
+#: data/50-gnome-shell-system.xml:6
+#: data/X-GNOME-Shell-System.directory.desktop.in:3 js/ui/messageTray.js:1307
+msgid "System"
+msgstr "Tizim"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "Bildirishnomalar ro'yxatini ko'rsatish"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Open the quick settings menu"
+msgstr "Tez sozlamalar menyusini oching"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Focus the active notification"
+msgstr "Faol bildirishnomaga e'tibor qarating"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show the overview"
+msgstr "Umumiy ko'rinishni ko'rsatish"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Show all apps"
+msgstr "Barcha ilovalarni ko'rsatish"
+
+#: data/org.gnome.Shell.desktop.in.in:4
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: data/org.gnome.Shell.desktop.in.in:5
+msgid "Window management and application launching"
+msgstr "Oyna boshqaruvi va ilovalarni ishga tushirish"
+
+#: data/org.gnome.shell.gschema.xml.in:6
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Alt-F2-dan ishlab chiquvchilar va testerlar uchun foydali ichki vositalarni "
+"yoqing"
+
+#: data/org.gnome.shell.gschema.xml.in:9
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Alt-F2 dialog oynasi yordamida ichki disk raskadrovka va monitoring "
+"vositalariga kirishga ruxsat beradi."
+
+#: data/org.gnome.shell.gschema.xml.in:16
+msgid "UUIDs of extensions to enable"
+msgstr "Yoqish uchun kengaytmalarning UUIDlari"
+
+#: data/org.gnome.shell.gschema.xml.in:17
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
+msgstr ""
+"GNOME Shell kengaytmalari UUID xususiyatiga ega; bu kalit yuklanishi kerak "
+"bo'lgan kengaytmalarni ko'rsatadi. Yuklanmoqchi bo'lgan har qanday kengaytma "
+"ushbu ro'yxatda bo'lishi kerak. Siz ushbu roʻyxatni org.gnome.Shell "
+"saytidagi EnableExtension va DisableExtension D-Bus usullari bilan ham "
+"oʻzgartirishingiz mumkin."
+
+#: data/org.gnome.shell.gschema.xml.in:26
+msgid "UUIDs of extensions to force disabling"
+msgstr "Majburiy o‘chirib qo‘yish uchun kengaytmalarning UUIDlari"
+
+#: data/org.gnome.shell.gschema.xml.in:27
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be disabled, even if loaded as part of the current mode. You can also "
+"manipulate this list with the EnableExtension and DisableExtension D-Bus "
+"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
+"extensions” setting."
+msgstr ""
+"GNOME Shell kengaytmalari UUID xususiyatiga ega; Ushbu kalit joriy rejimning "
+"bir qismi sifatida yuklangan bo'lsa ham o'chirib qo'yilishi kerak bo'lgan "
+"kengaytmalarni sanab o'tadi. Siz ushbu roʻyxatni org.gnome.Shell saytidagi "
+"EnableExtension va DisableExtension D-Bus usullari bilan ham "
+"oʻzgartirishingiz mumkin. Ushbu kalit \"yoqilgan kengaytmalar\" sozlamasidan "
+"ustun turadi."
+
+#: data/org.gnome.shell.gschema.xml.in:37
+msgid "Disable user extensions"
+msgstr "Foydalanuvchi kengaytmalarini o'chirib qo'ying"
+
+#: data/org.gnome.shell.gschema.xml.in:38
+msgid ""
+"Disable all extensions the user has enabled without affecting the “enabled-"
+"extension” setting."
+msgstr ""
+"Foydalanuvchi tomonidan yoqilgan barcha kengaytmalarni \"yoqilgan "
+"kengaytma\" sozlamasiga ta'sir qilmasdan o'chirib qo'ying."
+
+#: data/org.gnome.shell.gschema.xml.in:45
+msgid "Allow extension installation"
+msgstr "Kengaytmani o'rnatishga ruxsat bering"
+
+#: data/org.gnome.shell.gschema.xml.in:46
+msgid ""
+"Allow users to install extensions in their home folder. If disabled, the "
+"InstallRemoteExtension D-Bus method will fail, and extensions are only "
+"loaded from system directories on startup. It does not affect extensions "
+"that are already loaded, so a change only takes full effect on the next "
+"login."
+msgstr ""
+"Foydalanuvchilarga kengaytmalarni uy papkasiga o'rnatishga ruxsat bering. "
+"Agar o'chirilgan bo'lsa, InstallRemoteExtension D-Bus usuli muvaffaqiyatsiz "
+"bo'ladi va kengaytmalar faqat ishga tushirilganda tizim kataloglaridan "
+"yuklanadi. Bu allaqachon yuklangan kengaytmalarga ta'sir qilmaydi, shuning "
+"uchun o'zgartirish faqat keyingi kirishda to'liq kuchga kiradi."
+
+#: data/org.gnome.shell.gschema.xml.in:56
+msgid "Disables the validation of extension version compatibility"
+msgstr "Kengaytma versiyasi mosligini tekshirishni o'chiradi"
+
+#: data/org.gnome.shell.gschema.xml.in:57
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+"GNOME Shell faqat joriy ishlayotgan versiyani qo'llab-quvvatlaydigan "
+"kengaytmalarni yuklaydi. Ushbu parametr yoqilsa, bu tekshirish oʻchiriladi "
+"va ular qoʻllab-quvvatlagan versiyalaridan qatʼi nazar, barcha "
+"kengaytmalarni yuklashga harakat qiladi."
+
+#: data/org.gnome.shell.gschema.xml.in:67
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Sevimli ilovalar uchun ish stoli fayl identifikatorlari ro'yxati"
+
+#: data/org.gnome.shell.gschema.xml.in:68
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Ushbu identifikatorlarga mos keladigan ilovalar sevimlilar maydonida "
+"ko'rsatiladi."
+
+#: data/org.gnome.shell.gschema.xml.in:75
+msgid "History for command (Alt-F2) dialog"
+msgstr "Buyruqlar tarixi (Alt-F2) dialog oynasi"
+
+#. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
+#: data/org.gnome.shell.gschema.xml.in:80
+msgid "History for the looking glass dialog"
+msgstr "Oynali dialog uchun tarix"
+
+#: data/org.gnome.shell.gschema.xml.in:84
+msgid "Always show the “Log Out” action in the system menu"
+msgstr "Tizim menyusida har doim \"Chiqish\" amalini ko'rsating"
+
+#: data/org.gnome.shell.gschema.xml.in:85
+msgid ""
+"This key overrides the automatic hiding of the “Log out” action in the "
+"system menu for logged-in situations where there is a single, local, non-"
+"system user and only a single available session type (e.g. GNOME on Wayland)."
+msgstr ""
+"Bu kalit tizimga kirgan holatlar uchun tizim menyusidagi “Chiqish” amalini "
+"avtomatik yashirishni bekor qiladi, bunda bitta mahalliy, tizimdan tashqari "
+"foydalanuvchi va faqat bitta mavjud sessiya turi (masalan, Waylanddagi "
+"GNOME)."
+
+#: data/org.gnome.shell.gschema.xml.in:94
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"Shifrlangan yoki masofaviy fayl tizimlarini o'rnatish uchun parolni eslab "
+"qolish kerakmi"
+
+#: data/org.gnome.shell.gschema.xml.in:95
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"“Remember Password” checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"Shifrlangan qurilma yoki masofaviy fayl tizimi o'rnatilganda qobiq parol "
+"so'raydi. Agar parol kelajakda foydalanish uchun saqlanishi mumkin bo'lsa, "
+"\"Parolni eslab qolish\" katagiga belgi qo'yiladi. Ushbu kalit tasdiqlash "
+"qutisining standart holatini o'rnatadi."
+
+#: data/org.gnome.shell.gschema.xml.in:104
+msgid "The last selected non-default power profile"
+msgstr "Oxirgi tanlangan standart bo'lmagan quvvat rejimi"
+
+#: data/org.gnome.shell.gschema.xml.in:105
+msgid ""
+"Some systems support more than two power profiles. In order to still support "
+"toggling between two profiles, this key records the last selected non-"
+"default profile."
+msgstr ""
+"Ba'zi tizimlar ikkitadan ortiq quvvat rejimini qo'llab-quvvatlaydi. Ikki "
+"profil o'rtasida almashishni qo'llab-quvvatlash uchun bu kalit oxirgi "
+"tanlangan standart bo'lmagan profilni yozib oladi."
+
+#: data/org.gnome.shell.gschema.xml.in:113
+msgid "The last version the “Welcome to GNOME” dialog was shown for"
+msgstr ""
+"“GNOME’ga xush kelibsiz” muloqot oynasining oxirgi versiyasi ko‘rsatilgan"
+
+#: data/org.gnome.shell.gschema.xml.in:114
+msgid ""
+"This key determines for which version the “Welcome to GNOME” dialog was last "
+"shown. An empty string represents the oldest possible version, and a huge "
+"number will represent versions that do not exist yet. This huge number can "
+"be used to effectively disable the dialog."
+msgstr ""
+"Bu kalit “GNOME’ga xush kelibsiz” muloqot oynasi oxirgi marta qaysi "
+"versiyada ko‘rsatilganligini aniqlaydi. Bo'sh satr mumkin bo'lgan eng "
+"qadimgi versiyani ifodalaydi va juda katta raqam hali mavjud bo'lmagan "
+"versiyalarni ifodalaydi. Ushbu katta raqam dialogni samarali o'chirish uchun "
+"ishlatilishi mumkin."
+
+#: data/org.gnome.shell.gschema.xml.in:125
+msgid "Layout of the app picker"
+msgstr "Ilova tanlagichining tartibi"
+
+#: data/org.gnome.shell.gschema.xml.in:126
+msgid ""
+"Layout of the app picker. Each entry in the array is a page. Pages are "
+"stored in the order they appear in GNOME Shell. Each page contains an "
+"“application id” → 'data' pair. Currently, the following values are stored "
+"as 'data': • “position”: the position of the application icon in the page"
+msgstr ""
+"Ilova tanlagichining tartibi. Massivdagi har bir yozuv sahifadir. Sahifalar "
+"GNOME Shell-da paydo bo'ladigan tartibda saqlanadi. Har bir sahifada “ilova "
+"identifikatori” → “maʼlumotlar” juftligi mavjud. Hozirda quyidagi qiymatlar "
+"“maʼlumotlar” sifatida saqlanadi: • “pozitsiya”: sahifadagi ilova "
+"belgisining oʻrni"
+
+#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:152
+msgid "Keybinding to shift between overview states"
+msgstr "Umumiy koʻrinish holatlari oʻrtasida oʻtish uchun tugmalar birikmasi"
+
+#: data/org.gnome.shell.gschema.xml.in:146
+msgid "Keybinding to shift between session, window picker and app grid"
+msgstr ""
+"Seans, oyna tanlash va ilovalar to'plami o'rtasida siljish uchun tugmalar "
+"birikmasi"
+
+#: data/org.gnome.shell.gschema.xml.in:153
+msgid "Keybinding to shift between app grid, window picker and session"
+msgstr ""
+"Ilovalar tarmog'i, oyna tanlash va seans o'rtasida siljish uchun tugmalar "
+"birikmasi"
+
+#: data/org.gnome.shell.gschema.xml.in:159
+msgid "Keybinding to open the “Show Applications” view"
+msgstr ""
+"\"Ilovalarni ko'rsatish\" ko'rinishini ochish uchun tugmachalarni bog'lash"
+
+#: data/org.gnome.shell.gschema.xml.in:160
+msgid ""
+"Keybinding to open the “Show Applications” view of the Activities Overview."
+msgstr ""
+"Faoliyatlar umumiy koʻrinishining “Ilovalarni koʻrsatish” koʻrinishini "
+"ochish uchun tugmalar birikmasi."
+
+#: data/org.gnome.shell.gschema.xml.in:167
+msgid "Keybinding to open the overview"
+msgstr "Umumiy koʻrinishni ochish uchun tugmalar birikmasi"
+
+#: data/org.gnome.shell.gschema.xml.in:168
+msgid "Keybinding to open the Activities Overview."
+msgstr "Faoliyatlar koʻrinishini ochish uchun tugmalar birikmasi."
+
+#: data/org.gnome.shell.gschema.xml.in:174
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr ""
+"Bildirishnomalar roʻyxatining koʻrinishini oʻzgartirish uchun tugmalar "
+"birikmasi"
+
+#: data/org.gnome.shell.gschema.xml.in:175
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr ""
+"Bildirishnomalar roʻyxatining koʻrinishini almashtirish uchun tugmalar "
+"birikmasi."
+
+#: data/org.gnome.shell.gschema.xml.in:181
+msgid "Keybinding to toggle the quick settings menu"
+msgstr "Tez sozlamalar menyusini almashtirish uchun tugmalar birikmasi"
+
+#: data/org.gnome.shell.gschema.xml.in:182
+msgid "Keybinding to toggle the quick settings menu."
+msgstr "Tez sozlamalar menyusini almashtirish uchun tugmalar birikmasi."
+
+#: data/org.gnome.shell.gschema.xml.in:188
+msgid "Keybinding to focus the active notification"
+msgstr "Faol bildirishnomani fokuslash uchun tugmalar birikmasi"
+
+#: data/org.gnome.shell.gschema.xml.in:189
+msgid "Keybinding to focus the active notification."
+msgstr "Faol bildirishnomani fokuslash uchun tugmalar birikmasi."
+
+#: data/org.gnome.shell.gschema.xml.in:195
+msgid "Switch to application 1"
+msgstr "1-ilovaga o'tish"
+
+#: data/org.gnome.shell.gschema.xml.in:199
+msgid "Switch to application 2"
+msgstr "2-ilovaga o'tish"
+
+#: data/org.gnome.shell.gschema.xml.in:203
+msgid "Switch to application 3"
+msgstr "3-ilovaga o'tish"
+
+#: data/org.gnome.shell.gschema.xml.in:207
+msgid "Switch to application 4"
+msgstr "4-ilovaga o'tish"
+
+#: data/org.gnome.shell.gschema.xml.in:211
+msgid "Switch to application 5"
+msgstr "5-ilovaga o'tish"
+
+#: data/org.gnome.shell.gschema.xml.in:215
+msgid "Switch to application 6"
+msgstr "6-ilovaga o'tish"
+
+#: data/org.gnome.shell.gschema.xml.in:219
+msgid "Switch to application 7"
+msgstr "7-ilovaga o'tish"
+
+#: data/org.gnome.shell.gschema.xml.in:223
+msgid "Switch to application 8"
+msgstr "8-ilovaga o'tish"
+
+#: data/org.gnome.shell.gschema.xml.in:227
+msgid "Switch to application 9"
+msgstr "9-ilovaga o'tish"
+
+#: data/org.gnome.shell.gschema.xml.in:231
+msgid "Open a new instance of application 1"
+msgstr "Ilovaning yangi nusxasini oching 1"
+
+#: data/org.gnome.shell.gschema.xml.in:235
+msgid "Open a new instance of application 2"
+msgstr "2-ilovaning yangi nusxasini oching"
+
+#: data/org.gnome.shell.gschema.xml.in:239
+msgid "Open a new instance of application 3"
+msgstr "3-ilovaning yangi nusxasini oching"
+
+#: data/org.gnome.shell.gschema.xml.in:243
+msgid "Open a new instance of application 4"
+msgstr "4-ilovaning yangi nusxasini oching"
+
+#: data/org.gnome.shell.gschema.xml.in:247
+msgid "Open a new instance of application 5"
+msgstr "5-ilovaning yangi nusxasini oching"
+
+#: data/org.gnome.shell.gschema.xml.in:251
+msgid "Open a new instance of application 6"
+msgstr "6-ilovaning yangi nusxasini oching"
+
+#: data/org.gnome.shell.gschema.xml.in:255
+msgid "Open a new instance of application 7"
+msgstr "7-ilovaning yangi nusxasini oching"
+
+#: data/org.gnome.shell.gschema.xml.in:259
+msgid "Open a new instance of application 8"
+msgstr "8-ilovaning yangi nusxasini oching"
+
+#: data/org.gnome.shell.gschema.xml.in:263
+msgid "Open a new instance of application 9"
+msgstr "9-ilovaning yangi nusxasini oching"
+
+#: data/org.gnome.shell.gschema.xml.in:288
+#: data/org.gnome.shell.gschema.xml.in:315
+msgid "Limit switcher to current workspace."
+msgstr "Joriy ish maydoniga almashtirgichni cheklang."
+
+#: data/org.gnome.shell.gschema.xml.in:289
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+"Agar rost bo'lsa, almashtirgichda faqat joriy ish maydonida oynalari bo'lgan "
+"ilovalar ko'rsatiladi. Aks holda, barcha ilovalar kiritilgan."
+
+#: data/org.gnome.shell.gschema.xml.in:306
+msgid "The application icon mode."
+msgstr "Ilova belgisi rejimi."
+
+#: data/org.gnome.shell.gschema.xml.in:307
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
+msgstr ""
+"O'zgartirgichda oynalar qanday ko'rsatilishini sozlaydi. To'g'ri "
+"imkoniyatlar \"faqat eskiz\" (oynaning eskizini ko'rsatadi), \"faqat ilova "
+"belgisi\" (faqat ilova belgisini ko'rsatadi) yoki \"ikkalasi\"."
+
+#: data/org.gnome.shell.gschema.xml.in:316
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+"Agar rost boʻlsa, almashtirgichda faqat joriy ish maydoni oynalari "
+"koʻrsatiladi. Aks holda, barcha oynalar kiritilgan."
+
+#: data/org.gnome.shell.gschema.xml.in:326
+msgid "Locations"
+msgstr "Joylar"
+
+#: data/org.gnome.shell.gschema.xml.in:327
+msgid "The locations to show in world clocks"
+msgstr "Dunyo soatlarida ko'rsatiladigan joylar"
+
+#: data/org.gnome.shell.gschema.xml.in:337
+msgid "Automatic location"
+msgstr "Avtomatik joylashuv"
+
+#: data/org.gnome.shell.gschema.xml.in:338
+msgid "Whether to fetch the current location or not"
+msgstr "Joriy joylashuvni olish kerakmi yoki yo'qmi"
+
+#: data/org.gnome.shell.gschema.xml.in:345
+msgid "Location"
+msgstr "Joylashuvi"
+
+#: data/org.gnome.shell.gschema.xml.in:346
+msgid "The location for which to show a forecast"
+msgstr "Prognoz ko'rsatiladigan joy"
+
+#. Keep in sync with subprojects/extensions-app
+#: data/org.gnome.Shell.Extensions.desktop.in.in:5
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/data/ui/extensions-window.ui:57
+msgid "Extensions"
+msgstr "Kengaytmalar"
+
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+msgid "Network Login"
+msgstr "Tarmoqqa kirish"
+
+#: data/X-GNOME-Shell-Utilities.directory.desktop.in:3
+msgid "Utilities"
+msgstr "Utilitalar"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:15
+#: subprojects/extensions-app/data/ui/extensions-window.ui:275
+msgid "Something’s gone wrong"
+msgstr "Nimadir xato ketdi"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:23
+msgid ""
+"We’re very sorry, but there’s been a problem: the settings for this "
+"extension can’t be displayed. We recommend that you report the issue to the "
+"extension authors."
+msgstr ""
+"Kechirasiz, lekin muammo yuzaga keldi: bu kengaytma sozlamalarini ko‘rsatib "
+"bo‘lmaydi. Muammo haqida kengaytma mualliflariga xabar berishingizni tavsiya "
+"qilamiz."
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:48
+msgid "Technical Details"
+msgstr "Texnik tafsilotlar"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:90
+msgid "Homepage"
+msgstr "Bosh sahifa"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:91
+msgid "Visit extension homepage"
+msgstr "Kengaytma bosh sahifasiga tashrif buyuring"
+
+#: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
+#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
+#: js/ui/shellMountOperation.js:392
+msgid "Cancel"
+msgstr "Bekor qilish"
+
+#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
+#: js/ui/shellMountOperation.js:332
+msgid "Password"
+msgstr "Parol"
+
+#: js/gdm/loginDialog.js:328
+msgid "Choose Session"
+msgstr "Sessiyani tanlang"
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:426
+#, javascript-format
+msgid ""
+"Remote login is not possible because a remote session is already running for "
+"%s. To login remotely, you must log out from the remote session or force "
+"stop it."
+msgstr ""
+"Masofaviy tizimga kirish imkonsiz, chunki %s uchun masofaviy seans "
+"allaqachon ishlamoqda. Masofaviy tizimga kirish uchun siz masofaviy seansdan "
+"chiqishingiz yoki uni majburan to'xtatishingiz kerak."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:429
+#, javascript-format
+msgid ""
+"Login is not possible because a remote session is already running for %s. To "
+"login, you must log out from the remote session or force stop it."
+msgstr ""
+"Kirish mumkin emas, chunki %s uchun masofaviy seans allaqachon ishlamoqda. "
+"Tizimga kirish uchun siz masofaviy seansdan chiqishingiz yoki uni majburan "
+"to'xtatishingiz kerak."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:432
+#, javascript-format
+msgid ""
+"Remote login is not possible because a local session is already running for "
+"%s. To login remotely, you must log out from the local session or force stop "
+"it."
+msgstr ""
+"Masofaviy tizimga kirish imkonsiz, chunki %s uchun mahalliy seans allaqachon "
+"ishlamoqda. Masofadan kirish uchun siz mahalliy seansdan chiqishingiz yoki "
+"uni majburan to'xtatishingiz kerak."
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:435
+#, javascript-format
+msgid ""
+"Login is not possible because a session is already running for %s. To login, "
+"you must log out from the session or force stop it."
+msgstr ""
+"Kirish mumkin emas, chunki %s uchun seans allaqachon ishlamoqda. Tizimga "
+"kirish uchun siz sessiyadan chiqishingiz yoki uni majburan to'xtatishingiz "
+"kerak."
+
+#: js/gdm/loginDialog.js:444
+msgid "Session Already Running"
+msgstr "Seans allaqachon ishlamoqda"
+
+#: js/gdm/loginDialog.js:456
+msgid ""
+"Force stopping will quit any running apps and processes, and could result in "
+"data loss"
+msgstr ""
+"Majburiy to‘xtatish har qanday ishlayotgan ilova va jarayonlarni to‘xtatadi "
+"va ma’lumotlar yo‘qolishiga olib kelishi mumkin"
+
+#: js/gdm/loginDialog.js:476
+msgid "Force Stop"
+msgstr "Majburiy toʻxtatish"
+
+#: js/gdm/loginDialog.js:554
+msgid "Not listed?"
+msgstr "Ro'yxatga kiritilmaganmi?"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: js/gdm/loginDialog.js:1071
+#, javascript-format
+msgid "(e.g., user or %s)"
+msgstr "(masalan, foydalanuvchi yoki %s)"
+
+#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
+msgid "Username"
+msgstr "Foydalanuvchi nomi"
+
+#: js/gdm/loginDialog.js:1142
+msgid "Login Attempt Timed Out"
+msgstr "Kirish urinish vaqti tugadi"
+
+#: js/gdm/loginDialog.js:1143
+msgid "Login took too long, please try again"
+msgstr "Kirish juda uzoq davom etdi, qayta urinib ko'ring"
+
+#: js/gdm/loginDialog.js:1492
+msgid "Login Window"
+msgstr "Kirish oynasi"
+
+#: js/gdm/util.js:498
+msgid "Authentication error"
+msgstr "Autentifikatsiya xatosi"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/util.js:729
+msgid "(or swipe finger across reader)"
+msgstr "(yoki barmog'ingizni o'quvchi bo'ylab suring)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/util.js:734
+msgid "(or place finger on reader)"
+msgstr "(yoki barmog'ingizni o'quvchiga qo'ying)"
+
+#: js/misc/breakManager.js:765
+#, fuzzy
+msgid "Break complete sound"
+msgstr "To'liq ovozni buzing"
+
+#: js/misc/breakManager.js:982
+#, fuzzy, javascript-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d soniya"
+
+#: js/misc/breakManager.js:988
+#, javascript-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d daqiqa"
+
+#: js/misc/breakManager.js:994
+#, javascript-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] "%d soat"
+
+#: js/misc/breakManager.js:1000
+#, javascript-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "%d kun"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1083
+#, javascript-format
+msgid "It will be time for a break in %s"
+msgid_plural "It will be time for a break in %s"
+msgstr[0] "Tanaffus vaqti: %s"
+
+#: js/misc/breakManager.js:1091
+msgid "Movement Break Soon"
+msgstr "Tez orada harakat tanaffus"
+
+#: js/misc/breakManager.js:1094
+msgid "Eyesight Break Soon"
+msgstr "Tez orada ko'rish buzilishi"
+
+#: js/misc/breakManager.js:1097
+msgid "Break Soon"
+msgstr "Tez orada tanaffus"
+
+#: js/misc/breakManager.js:1141
+msgid "Movement Break in Progress"
+msgstr "Harakatning uzilishi davom etmoqda"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1144
+#, javascript-format
+msgid "Continue moving around for %s"
+msgid_plural "Continue moving around for %s"
+msgstr[0] "%s atrofida harakatlanishda davom eting"
+
+#: js/misc/breakManager.js:1150
+msgid "Eyesight Break in Progress"
+msgstr "Ko‘rish buzilishi davom etmoqda"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1153
+#, javascript-format
+msgid "Continue looking away for %s"
+msgid_plural "Continue looking away for %s"
+msgstr[0] "%s ga qarashda davom eting"
+
+#: js/misc/breakManager.js:1159
+msgid "Break in Progress"
+msgstr "Tanaffus davom etmoqda"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1162
+#, javascript-format
+msgid "%s left in your break"
+msgid_plural "%s left in your break"
+msgstr[0] "Tanaffusda %s qoldi"
+
+#: js/misc/breakManager.js:1201
+msgid "Time for a Movement Break"
+msgstr "Harakat tanaffus vaqti"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1204
+#, javascript-format
+msgid "Take a break from the device and move around for %s"
+msgid_plural "Take a break from the device and move around for %s"
+msgstr[0] "Qurilmada tanaffus qiling va %s atrofida harakatlaning"
+
+#: js/misc/breakManager.js:1210
+msgid "Time for an Eyesight Break"
+msgstr "Ko'rish uchun tanaffus vaqti"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1213
+#, javascript-format
+msgid ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgid_plural ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgstr[0] "Ekrandan dam oling. Kamida 6 metr masofani kamida %s qidiring"
+
+#: js/misc/breakManager.js:1219
+msgid "Time for a Break"
+msgstr "Tanaffus vaqti"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1222
+#, javascript-format
+msgid "It’s time to take a break. Get away from the device for %s!"
+msgid_plural "It’s time to take a break. Get away from the device for %s!"
+msgstr[0] "Tanaffus qilish vaqti keldi. %s uchun qurilmadan uzoqroq turing!"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1244
+#, javascript-format
+msgid "You were due to take a break %s ago"
+msgid_plural "You were due to take a break %s ago"
+msgstr[0] "Siz %s oldin tanaffus qilishingiz kerak edi"
+
+#: js/misc/breakManager.js:1250
+msgid "Break Overdue"
+msgstr "Kechiktirilgan tanaffus"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1264
+#, javascript-format
+msgid "There is %s remaining in your break"
+msgid_plural "There are %s remaining in your break"
+msgstr[0] "Tanaffusga %s ta qoldi"
+
+#: js/misc/breakManager.js:1270
+msgid "Break Interrupted"
+msgstr "Tanaffus uzildi"
+
+#: js/misc/breakManager.js:1341
+msgid "Delay"
+msgstr "Kechiktirish"
+
+#: js/misc/breakManager.js:1362 js/ui/welcomeDialog.js:61
+msgid "Skip"
+msgstr "Oʻtkazib yuborish"
+
+#: js/misc/breakManager.js:1383
+msgid "Take"
+msgstr "Istalgan vaqtda ekranni suratga oling"
+
+#. Translators: This is a notification to warn the user that a
+#. screen time break will start shortly.
+#: js/misc/breakManager.js:1446
+#, javascript-format
+msgid "Break in %d second"
+msgid_plural "Break in %d seconds"
+msgstr[0] "%d soniyada tanaffus"
+
+#. Translators: The name of the power-off action in search
+#: js/misc/systemActions.js:91
+msgctxt "search-result"
+msgid "Power Off"
+msgstr "O’chirish"
+
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#: js/misc/systemActions.js:94
+msgid "power off;poweroff;shutdown;halt;stop"
+msgstr ""
+"quvvatni o'chirish; quvvatni o'chirish; o'chirish; to'xtatish; to'xtatish"
+
+#. Translators: The name of the restart action in search
+#: js/misc/systemActions.js:99
+msgctxt "search-result"
+msgid "Restart"
+msgstr "Qayta ishga tushirish"
+
+#. Translators: A list of keywords that match the restart action, separated by semicolons
+#: js/misc/systemActions.js:102
+msgid "reboot;restart;"
+msgstr "qayta ishga tushirish; qayta ishga tushirish;"
+
+#. Translators: The name of the lock screen action in search
+#: js/misc/systemActions.js:107
+msgctxt "search-result"
+msgid "Lock Screen"
+msgstr "Ekranni qulflash"
+
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#: js/misc/systemActions.js:110
+msgid "lock screen"
+msgstr "ekranni qulflash"
+
+#. Translators: The name of the logout action in search
+#: js/misc/systemActions.js:115
+msgctxt "search-result"
+msgid "Log Out"
+msgstr "Chiqish"
+
+#. Translators: A list of keywords that match the logout action, separated by semicolons
+#: js/misc/systemActions.js:118
+msgid "logout;log out;sign off"
+msgstr "chiqish; chiqish; chiqish"
+
+#. Translators: The name of the suspend action in search
+#: js/misc/systemActions.js:123
+msgctxt "search-result"
+msgid "Suspend"
+msgstr "To'xtatib turish"
+
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#: js/misc/systemActions.js:126
+msgid "suspend;sleep"
+msgstr "to'xtatib turish; uxlash"
+
+#. Translators: The name of the switch user action in search
+#: js/misc/systemActions.js:131
+msgctxt "search-result"
+msgid "Switch User"
+msgstr "Foydalanuvchini almashtirish"
+
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#: js/misc/systemActions.js:134
+msgid "switch user"
+msgstr "foydalanuvchini almashtirish"
+
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#: js/misc/systemActions.js:141
+msgid "lock orientation;unlock orientation;screen;rotation"
+msgstr "qulf yo'nalishi; qulfni ochish yo'nalishi; ekran; aylanish"
+
+#. Translators: The name of the screenshot UI action in search
+#: js/misc/systemActions.js:146
+msgctxt "search-result"
+msgid "Take a Screenshot"
+msgstr "Skrinshot oling"
+
+#. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
+#: js/misc/systemActions.js:149
+msgid "screenshot;screencast;snip;capture;record"
+msgstr "skrinshot; skrinshot; snip; suratga olish; yozib olish"
+
+#: js/misc/systemActions.js:249
+msgctxt "search-result"
+msgid "Unlock Screen Rotation"
+msgstr "Ekranni aylantirishni qulfdan chiqarish"
+
+#: js/misc/systemActions.js:250
+msgctxt "search-result"
+msgid "Lock Screen Rotation"
+msgstr "Ekranni aylantirish"
+
+#: js/misc/timeLimitsManager.js:338
+msgid "GNOME needs to save screen time data"
+msgstr "GNOME ekran vaqti maʼlumotlarini tejashi kerak"
+
+#: js/misc/timeLimitsManager.js:1102
+#, javascript-format
+msgid "Screen Time Limit in %d Minute"
+msgid_plural "Screen Time Limit in %d Minutes"
+msgstr[0] "Ekran vaqti chegarasi %d daqiqada"
+
+#: js/misc/timeLimitsManager.js:1109
+msgid "Your screen time limit is approaching"
+msgstr "Foydalanish muddati yaqinlashmoqda"
+
+#: js/misc/timeLimitsManager.js:1123
+msgid "Screen Time Limit Reached"
+msgstr "Ekran vaqti chegarasiga yetdi"
+
+#: js/misc/timeLimitsManager.js:1124
+msgid "It’s time to stop using the device"
+msgstr "Qurilmadan foydalanishni to'xtatish vaqti keldi"
+
+#: js/misc/util.js:130
+msgid "Command not found"
+msgstr "Buyruq topilmadi"
+
+#: js/misc/util.js:168
+#, javascript-format
+msgid "Execution of “%s” failed:"
+msgstr "“%s” bajarilmadi:"
+
+#: js/misc/dateUtils.js:69
+msgid "Just now"
+msgstr "Hozirgina"
+
+#: js/misc/dateUtils.js:72
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d daqiqa oldin"
+
+#: js/misc/dateUtils.js:79
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d soat oldin"
+
+#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:183
+msgid "Yesterday"
+msgstr "Kecha"
+
+#: js/misc/dateUtils.js:88
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d kun oldin"
+
+#: js/misc/dateUtils.js:95
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d hafta oldin"
+
+#: js/misc/dateUtils.js:102
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "%d oy oldin"
+
+#: js/misc/dateUtils.js:108
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "%d yil oldin"
+
+#. Translators: Time in 24h format
+#: js/misc/dateUtils.js:155
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30"
+#: js/misc/dateUtils.js:161
+#, no-c-format
+msgid "Yesterday, %H∶%M"
+msgstr "Kecha, %H∶%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30"
+#: js/misc/dateUtils.js:167
+#, no-c-format
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30"
+#: js/misc/dateUtils.js:173
+#, no-c-format
+msgid "%B %-d, %H∶%M"
+msgstr "%B %-d, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30"
+#: js/misc/dateUtils.js:179
+#, no-c-format
+msgid "%B %-d %Y, %H∶%M"
+msgstr "%B %-d %Y, %H∶%M"
+
+#. Show only the time if date is on today
+#. eslint-disable-line no-lonely-if
+#. Translators: Time in 12h format
+#: js/misc/dateUtils.js:184
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
+#: js/misc/dateUtils.js:190
+#, no-c-format
+msgid "Yesterday, %l∶%M %p"
+msgstr "Kecha %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm"
+#: js/misc/dateUtils.js:196
+#, no-c-format
+msgid "%A, %l∶%M %p"
+msgstr "%a %l:%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm"
+#: js/misc/dateUtils.js:202
+#, no-c-format
+msgid "%B %-d, %l∶%M %p"
+msgstr "%b %d %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"
+#: js/misc/dateUtils.js:208
+#, no-c-format
+msgid "%B %-d %Y, %l∶%M %p"
+msgstr "%B %-d %Y, %l∶%M %p"
+
+#: js/portalHelper/main.js:98
+msgid "Your connection seems to be secure"
+msgstr "Ulanishingiz xavfsiz ko'rinadi"
+
+#: js/portalHelper/main.js:104
+msgid ""
+"Your connection to this hotspot login is not secure. Passwords or other "
+"information you enter on this page can be viewed by people nearby."
+msgstr ""
+"Ushbu hotspot loginga ulanishingiz xavfsiz emas. Ushbu sahifaga kiritgan "
+"parollar yoki boshqa maʼlumotlarni yaqin atrofdagi odamlar koʻrishi mumkin."
+
+#: js/portalHelper/main.js:115
+msgid "Hotspot Login"
+msgstr "Hotspotga kirish"
+
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: js/ui/accessDialog.js:51 js/ui/inhibitShortcutsDialog.js:92
+msgid "Deny"
+msgstr "Rad etish"
+
+#: js/ui/accessDialog.js:52 js/ui/inhibitShortcutsDialog.js:101
+msgid "Allow"
+msgstr "Ruxsat bering"
+
+#: js/ui/appDisplay.js:1762
+msgid "Unnamed Folder"
+msgstr "Nomsiz jild"
+
+#: js/ui/appFavorites.js:163
+#, javascript-format
+msgid "%s has been pinned to the dash."
+msgstr "%s chiziqchaga mahkamlangan."
+
+#: js/ui/appFavorites.js:194
+#, javascript-format
+msgid "%s has been unpinned from the dash."
+msgstr "%s chiziqchadan olib tashlandi."
+
+#: js/ui/appFavorites.js:208 js/ui/main.js:309
+msgid "Undo"
+msgstr "Oldingi buyruqni bekor qilish"
+
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appMenu.js:49
+msgid "Open Windows"
+msgstr "Windows-ni oching"
+
+#: js/ui/appMenu.js:57
+msgid "New Window"
+msgstr "Yangi oyna"
+
+#: js/ui/appMenu.js:84
+msgid "App Details"
+msgstr "Ilova _Tafsilotlari"
+
+#: js/ui/appMenu.js:100
+msgid "Quit"
+msgstr "Chiqish"
+
+#: js/ui/appMenu.js:160 js/ui/dash.js:248
+msgid "Unpin"
+msgstr "Yechish"
+
+#: js/ui/appMenu.js:161
+msgid "Pin to Dash"
+msgstr "Dash-ga mahkamlang"
+
+#: js/ui/appMenu.js:178
+msgid "Launch using Integrated Graphics Card"
+msgstr "O'rnatilgan grafik karta yordamida ishga tushiring"
+
+#: js/ui/appMenu.js:179
+msgid "Launch using Discrete Graphics Card"
+msgstr "Diskret grafik karta yordamida ishga tushiring"
+
+#: js/ui/audioDeviceSelection.js:46
+msgid "Select Audio Device"
+msgstr "Audio qurilmani tanlang"
+
+#: js/ui/audioDeviceSelection.js:67 js/ui/status/volume.js:81
+msgid "Sound Settings"
+msgstr "Ovoz sozlamalari"
+
+#: js/ui/audioDeviceSelection.js:75
+msgid "Headphones"
+msgstr "Naushniklar"
+
+#: js/ui/audioDeviceSelection.js:77
+msgid "Headset"
+msgstr "Eshitish vositasi"
+
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:366
+msgid "Microphone"
+msgstr "Mikrofon"
+
+#: js/ui/backgroundMenu.js:13
+msgid "Change Background…"
+msgstr "Fonni oʻzgartirish…"
+
+#: js/ui/backgroundMenu.js:15
+msgid "Display Settings"
+msgstr "Displey sozlamalari"
+
+#: js/ui/backgroundMenu.js:16
+msgid "Settings"
+msgstr "Sozlamalar"
+
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: js/ui/calendar.js:33
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: js/ui/calendar.js:59
+msgctxt "grid sunday"
+msgid "S"
+msgstr "YA"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: js/ui/calendar.js:61
+msgctxt "grid monday"
+msgid "M"
+msgstr "DU"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: js/ui/calendar.js:63
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "SE"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: js/ui/calendar.js:65
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "CH"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: js/ui/calendar.js:67
+msgctxt "grid thursday"
+msgid "T"
+msgstr "PA"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: js/ui/calendar.js:69
+msgctxt "grid friday"
+msgid "F"
+msgstr "JU"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: js/ui/calendar.js:71
+msgctxt "grid saturday"
+msgid "S"
+msgstr "SH"
+
+#. *
+#. * Translators: The header displaying just the month name
+#. * standalone, when this is a month of the current year.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not change it.
+#.
+#: js/ui/calendar.js:422
+msgid "%OB"
+msgstr "%OB"
+
+#. *
+#. * Translators: The header displaying the month name and the year
+#. * number, when this is a month of a different year.  You can
+#. * reorder the format specifiers or add other modifications
+#. * according to the requirements of your language.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not use the old "%B" here unless you
+#. * absolutely know what you are doing.
+#.
+#: js/ui/calendar.js:432
+msgid "%OB %Y"
+msgstr "%OB %Y"
+
+#: js/ui/calendar.js:494
+msgid "Previous month"
+msgstr "Oldingi oy"
+
+#: js/ui/calendar.js:512
+msgid "Next month"
+msgstr "Keyingi oy"
+
+#: js/ui/calendar.js:663
+#, no-javascript-format
+msgctxt "date day number format"
+msgid "%d"
+msgstr "%d"
+
+#: js/ui/calendar.js:722
+msgid "Week %V"
+msgstr "Hafta %V"
+
+#: js/ui/calendar.js:774
+msgid "No Notifications"
+msgstr "_Bildirishnomalar"
+
+#: js/ui/calendar.js:832
+msgid "Do Not Disturb"
+msgstr "Bezovta qilinmasin"
+
+#: js/ui/calendar.js:853
+msgid "Clear"
+msgstr "Tozalash"
+
+#: js/ui/calendar.js:857
+msgctxt "action"
+msgid "Clear all notifications"
+msgstr "Barcha bildirishnomalarni tozalang"
+
+#. Translators: %s is an application name
+#: js/ui/closeDialog.js:42
+#, javascript-format
+msgid "“%s” Is Not Responding"
+msgstr "“%s” javob bermayapti"
+
+#: js/ui/closeDialog.js:43
+msgid ""
+"You may choose to wait a short while for it to continue or force the app to "
+"quit entirely"
+msgstr ""
+"Davom etish uchun biroz kutishingiz yoki ilovani butunlay oʻchirishga majbur "
+"qilishingiz mumkin"
+
+#: js/ui/closeDialog.js:71
+msgid "Force Quit"
+msgstr "Majburiy chiqish"
+
+#: js/ui/closeDialog.js:76
+msgid "Wait"
+msgstr "Kutib turing"
+
+#: js/ui/components/automountManager.js:82
+msgid "External drive connected"
+msgstr "Tashqi disk ulangan"
+
+#: js/ui/components/automountManager.js:94
+msgid "External drive disconnected"
+msgstr "Tashqi disk uzildi"
+
+#: js/ui/components/automountManager.js:208
+msgid "Unable to unlock volume"
+msgstr "Ovoz balandligini ochib bo‘lmadi"
+
+#: js/ui/components/automountManager.js:209
+msgid "The installed udisks version does not support the PIM setting"
+msgstr "O'rnatilgan udisks versiyasi PIM sozlamalarini qo'llab-quvvatlamaydi"
+
+#. Translators: %s is the name of a partition on a external drive
+#: js/ui/components/autorunManager.js:189
+#, javascript-format
+msgid "“%s” connected"
+msgstr "“%s” ulandi"
+
+#: js/ui/components/autorunManager.js:190
+msgid "Disk can now be used"
+msgstr "Endi diskdan foydalanish mumkin"
+
+#: js/ui/components/autorunManager.js:202
+#, javascript-format
+msgid "Open with %s"
+msgstr "%s bilan ochish"
+
+#: js/ui/components/networkAgent.js:96
+msgid ""
+"Alternatively you can connect by pushing the “WPS” button on your router"
+msgstr ""
+"Shu bilan bir qatorda, routeringizdagi “WPS” tugmasini bosib ulanishingiz "
+"mumkin"
+
+#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
+#: js/ui/status/network.js:360 js/ui/status/network.js:444
+msgid "Connect"
+msgstr "Ulanish"
+
+#: js/ui/components/networkAgent.js:223
+msgid "Key"
+msgstr "Kalit"
+
+#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
+msgid "Private key password"
+msgstr "Shaxsiy kalit parol"
+
+#: js/ui/components/networkAgent.js:307
+msgid "Identity"
+msgstr "Identifikatsiya"
+
+#: js/ui/components/networkAgent.js:333
+msgid "Service"
+msgstr "Xizmat"
+
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
+msgid "Authentication required"
+msgstr "Autentifikatsiya talab qilinadi"
+
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
+#, javascript-format
+msgid ""
+"Passwords or encryption keys are required to access the wireless network “%s”"
+msgstr ""
+"“%s” simsiz tarmoqqa kirish uchun parollar yoki shifrlash kalitlari talab "
+"qilinadi"
+
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
+msgid "Wired 802.1X authentication"
+msgstr "Simli 802.1X autentifikatsiyasi"
+
+#: js/ui/components/networkAgent.js:379
+msgid "Network name"
+msgstr "Tarmoq nomi"
+
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
+msgid "DSL authentication"
+msgstr "DSL autentifikatsiyasi"
+
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
+msgid "PIN code required"
+msgstr "PIN kod talab qilinadi"
+
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "Mobil keng polosali qurilma uchun PIN kod kerak"
+
+#: js/ui/components/networkAgent.js:397
+msgid "PIN"
+msgstr "PIN-kod"
+
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
+#, javascript-format
+msgid "A password is required to connect to “%s”"
+msgstr "“%s”ga ulanish uchun parol talab qilinadi"
+
+#: js/ui/components/networkAgent.js:770
+msgid "VPN password"
+msgstr "VPN paroli"
+
+#: js/ui/components/polkitAgent.js:44
+msgid "Authentication Required"
+msgstr "Autentifikatsiya talab qilinadi"
+
+#: js/ui/components/polkitAgent.js:84
+msgid "Administrator"
+msgstr "Administrator"
+
+#: js/ui/components/polkitAgent.js:149
+msgid "Authenticate"
+msgstr "Autentifikatsiya"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:415
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "Kechirasiz, bu ishlamadi. Iltimos, qayta urinib koʻring."
+
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:404
+msgid "Windows"
+msgstr "Windows"
+
+#: js/ui/dash.js:204 js/ui/dash.js:250
+msgid "Show Apps"
+msgstr "Ilovalarni ko'rsatish"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the bottom of the overview
+#: js/ui/dash.js:408
+msgid "Dash"
+msgstr "Dash"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the top bar (e.g.,
+#. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
+#. * "February 17 2015".
+#.
+#: js/ui/dateMenu.js:99
+msgid "%B %-d %Y"
+msgstr "%b %d %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#.
+#: js/ui/dateMenu.js:106
+msgid "%A %B %e %Y"
+msgstr "%A %B %e %Y"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: js/ui/dateMenu.js:172
+msgctxt "calendar heading"
+msgid "%B %-d"
+msgstr "%A %B %d"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: js/ui/dateMenu.js:175
+msgctxt "calendar heading"
+msgid "%B %-d %Y"
+msgstr "%b %d %Y"
+
+#: js/ui/dateMenu.js:181
+msgid "Today"
+msgstr "Bugun"
+
+#: js/ui/dateMenu.js:185
+msgid "Tomorrow"
+msgstr "Ertaga"
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: js/ui/dateMenu.js:216
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Kun bo'yi"
+
+#. Translators: Shown in calendar event list as the start/end of events
+#. * that only show day and month
+#.
+#: js/ui/dateMenu.js:238
+msgid "%m/%d"
+msgstr "%m/%d"
+
+#: js/ui/dateMenu.js:289
+msgid "No Events"
+msgstr "Tadbir yo’q"
+
+#: js/ui/dateMenu.js:411
+msgid "Add World Clocks…"
+msgstr "Jahon soatlarini qo‘shish…"
+
+#: js/ui/dateMenu.js:412
+msgid "World Clocks"
+msgstr "Jahon soatlari"
+
+#: js/ui/dateMenu.js:702
+msgid "Loading…"
+msgstr "Yuklanmoqda…"
+
+#: js/ui/dateMenu.js:712
+msgid "Go Online for Weather Information"
+msgstr "Ob-havo ma'lumotlarini olish uchun Internetga kiring"
+
+#: js/ui/dateMenu.js:714
+msgid "Weather Information Unavailable"
+msgstr "Ob-havo ma'lumoti mavjud emas"
+
+#: js/ui/dateMenu.js:724
+msgid "Weather"
+msgstr "Ob-havo"
+
+#: js/ui/dateMenu.js:726
+msgid "Select Weather Location…"
+msgstr "Ob-havo joylashuvini tanlang…"
+
+#: js/ui/endSessionDialog.js:47
+#, javascript-format
+msgctxt "title"
+msgid "Log Out %s"
+msgstr "Chiqish %s"
+
+#: js/ui/endSessionDialog.js:48
+msgctxt "title"
+msgid "Log Out"
+msgstr "Chiqish"
+
+#: js/ui/endSessionDialog.js:51
+#, javascript-format
+msgid "%s will be logged out automatically in %d second"
+msgid_plural "%s will be logged out automatically in %d seconds"
+msgstr[0] "%s %d soniyadan so‘ng avtomatik ravishda chiqadi"
+
+#: js/ui/endSessionDialog.js:57
+#, javascript-format
+msgid "You will be logged out automatically in %d second"
+msgid_plural "You will be logged out automatically in %d seconds"
+msgstr[0] "Siz %d soniyadan keyin avtomatik ravishda chiqasiz"
+
+#: js/ui/endSessionDialog.js:64
+msgctxt "button"
+msgid "Log Out"
+msgstr "Chiqish"
+
+#: js/ui/endSessionDialog.js:70 js/ui/status/system.js:174
+msgctxt "title"
+msgid "Power Off"
+msgstr "O’chirish"
+
+#: js/ui/endSessionDialog.js:71
+msgctxt "title"
+msgid "Install Updates & Power Off"
+msgstr "Yangilanishlarni o'rnating va o'chiring"
+
+#: js/ui/endSessionDialog.js:74
+#, javascript-format
+msgid "The system will power off automatically in %d second"
+msgid_plural "The system will power off automatically in %d seconds"
+msgstr[0] "Tizim %d soniyada avtomatik ravishda oʻchadi"
+
+#: js/ui/endSessionDialog.js:78 js/ui/endSessionDialog.js:97
+msgctxt "checkbox"
+msgid "Install pending software updates"
+msgstr "Kutilayotgan dasturiy ta'minot yangilanishlarini o'rnating"
+
+#: js/ui/endSessionDialog.js:82
+msgctxt "button"
+msgid "Power Off"
+msgstr "O’chirish"
+
+#: js/ui/endSessionDialog.js:89
+msgctxt "title"
+msgid "Restart"
+msgstr "Qayta ishga tushirish"
+
+#: js/ui/endSessionDialog.js:90
+msgctxt "title"
+msgid "Install Updates & Restart"
+msgstr "Yangilanishlarni o'rnating va qayta ishga tushiring"
+
+#: js/ui/endSessionDialog.js:93
+#, javascript-format
+msgid "The system will restart automatically in %d second"
+msgid_plural "The system will restart automatically in %d seconds"
+msgstr[0] "Tizim %d soniyadan keyin avtomatik ravishda qayta ishga tushadi"
+
+#: js/ui/endSessionDialog.js:101
+msgctxt "button"
+msgid "Restart"
+msgstr "Qayta ishga tushirish"
+
+#: js/ui/endSessionDialog.js:109
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "Yangilanishlarni qayta ishga tushiring va o'rnating"
+
+#: js/ui/endSessionDialog.js:112
+#, javascript-format
+msgid "The system will automatically restart and install updates in %d second"
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds"
+msgstr[0] ""
+"Tizim avtomatik ravishda qayta ishga tushadi va yangilanishlarni %d soniyada "
+"oʻrnatadi"
+
+#: js/ui/endSessionDialog.js:119 js/ui/endSessionDialog.js:140
+msgctxt "button"
+msgid "Restart & Install"
+msgstr "Qayta ishga tushirish va o'rnatish"
+
+#: js/ui/endSessionDialog.js:121
+msgctxt "button"
+msgid "Install & Power Off"
+msgstr "Oʻrnatish va oʻchirish"
+
+#: js/ui/endSessionDialog.js:122
+msgctxt "checkbox"
+msgid "Power off after updates are installed"
+msgstr "Yangilanishlar o'rnatilgandan keyin quvvatni o'chiring"
+
+#: js/ui/endSessionDialog.js:129
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "Yangilashni qayta ishga tushiring va o'rnating"
+
+#. Translators: This is the text displayed for system upgrades in the
+#. shut down dialog. First %s gets replaced with the distro name and
+#. second %s with the distro version to upgrade to
+#: js/ui/endSessionDialog.js:134
+#, javascript-format
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
+msgstr ""
+"%s %s qayta ishga tushirilgandan keyin oʻrnatiladi. Yangilanishni o'rnatish "
+"uzoq vaqt talab qilishi mumkin: zaxira nusxasini yaratganingizga va "
+"kompyuterning elektr tarmog'iga ulanganligiga ishonch hosil qiling."
+
+#: js/ui/endSessionDialog.js:283
+msgid "Low battery power: please plug in before installing updates"
+msgstr ""
+"Batareya quvvati kam: yangilanishlarni o‘rnatishdan oldin quvvatlang, iltimos"
+
+#: js/ui/endSessionDialog.js:292
+msgid "Some applications are busy or have unsaved work"
+msgstr "Ba'zi ilovalar band yoki saqlanmagan ishlarga ega"
+
+#: js/ui/endSessionDialog.js:297
+msgid "Other users are logged in"
+msgstr "Boshqa foydalanuvchilar tizimga kirishgan"
+
+#: js/ui/endSessionDialog.js:467
+msgctxt "button"
+msgid "Boot Options"
+msgstr "Yuklash parametrlari"
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: js/ui/endSessionDialog.js:672
+#, javascript-format
+msgid "%s (remote)"
+msgstr "%s (masofaviy)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: js/ui/endSessionDialog.js:675
+#, javascript-format
+msgid "%s (console)"
+msgstr "%s (konsol)"
+
+#: js/ui/extensionDownloader.js:280
+msgid "Install"
+msgstr "O'rnatish"
+
+#: js/ui/extensionDownloader.js:286
+msgid "Install Extension"
+msgstr "Kengaytmani o'rnatish"
+
+#: js/ui/extensionDownloader.js:287
+#, fuzzy, javascript-format
+msgid "Download and install “%s” from extensions.gnome.org?"
+msgstr "extensions.gnome.org saytidan “%s” yuklab olib o‘rnatilsinmi?"
+
+#: js/ui/extensionSystem.js:354
+msgid "Extension Updates Available"
+msgstr "Kengaytma yangilanishlari mavjud"
+
+#: js/ui/extensionSystem.js:355
+msgid "Extension updates are ready to be installed"
+msgstr "Kengaytma yangilanishlari o'rnatishga tayyor"
+
+#: js/ui/inhibitShortcutsDialog.js:70
+msgid "Allow inhibiting shortcuts"
+msgstr "Yorliqlarni taqiqlashga ruxsat bering"
+
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:73
+#, javascript-format
+msgid "The app %s wants to inhibit shortcuts"
+msgstr "%s ilovasi yorliqlarni taqiqlamoqchi"
+
+#: js/ui/inhibitShortcutsDialog.js:74
+msgid "An app wants to inhibit shortcuts"
+msgstr "Ilova yorliqlarni taqiqlamoqchi"
+
+#. Translators: %s is a keyboard shortcut like "Super+x"
+#: js/ui/inhibitShortcutsDialog.js:81
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s"
+msgstr "%s tugmasini bosish orqali yorliqlarni tiklashingiz mumkin"
+
+#: js/ui/kbdA11yDialog.js:34
+msgid "Slow Keys Turned On"
+msgstr "Sekin tugmalar yoqilgan"
+
+#: js/ui/kbdA11yDialog.js:35
+msgid "Slow Keys Turned Off"
+msgstr "Sekin tugmalar o'chirilgan"
+
+#: js/ui/kbdA11yDialog.js:36
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Shift tugmachasini 8 soniya bosib turdingiz. Bu sekin tugmalar funksiyasi "
+"uchun yorliq boʻlib, u klaviaturaning ishlashiga taʼsir qiladi."
+
+#: js/ui/kbdA11yDialog.js:42
+msgid "Sticky Keys Turned On"
+msgstr "Yopishqoq tugmalar yoqilgan"
+
+#: js/ui/kbdA11yDialog.js:43
+msgid "Sticky Keys Turned Off"
+msgstr "Yopishqoq tugmalar o'chirilgan"
+
+#: js/ui/kbdA11yDialog.js:45
+msgid ""
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Siz shunchaki Shift tugmasini ketma-ket 5 marta bosdingiz. Bu klaviaturaning "
+"ishlashiga ta'sir qiluvchi Yopishqoq tugmalar funksiyasi uchun yorliqdir."
+
+#: js/ui/kbdA11yDialog.js:47
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"Siz bir vaqtning o'zida ikkita tugmachani bosdingiz yoki Shift tugmachasini "
+"ketma-ket 5 marta bosdingiz. Bu klaviaturaning ishlashiga ta'sir qiluvchi "
+"Yopishqoq tugmalar funksiyasini o'chiradi."
+
+#: js/ui/kbdA11yDialog.js:57
+msgid "Leave On"
+msgstr "Qoldirish"
+
+#: js/ui/kbdA11yDialog.js:57
+msgid "Turn On"
+msgstr "Yoqish; ishga tushirish"
+
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
+msgid "Turn Off"
+msgstr "O'chirib qo'yish"
+
+#: js/ui/kbdA11yDialog.js:67
+msgid "Leave Off"
+msgstr "O'chirish"
+
+#: js/ui/keyboard.js:180 js/ui/status/keyboard.js:901
+msgid "Keyboard Settings"
+msgstr "Klaviatura sozlamalari"
+
+#: js/ui/lookingGlass.js:742
+msgid "No extensions installed"
+msgstr "Kengaytmalar oʻrnatilmagan"
+
+#. Translators: argument is an extension UUID.
+#: js/ui/lookingGlass.js:805
+#, javascript-format
+msgid "%s has not emitted any errors"
+msgstr "%s hech qanday xatolik chiqarmadi"
+
+#: js/ui/lookingGlass.js:811
+msgid "Hide Errors"
+msgstr "Xatolarni yashirish"
+
+#: js/ui/lookingGlass.js:815 js/ui/lookingGlass.js:895
+msgid "Show Errors"
+msgstr "Xatolarni ko'rsatish"
+
+#: js/ui/lookingGlass.js:824
+msgid "Active"
+msgstr "Aktiv"
+
+#: js/ui/lookingGlass.js:827
+msgid "Inactive"
+msgstr "Aktiv emas"
+
+#: js/ui/lookingGlass.js:829
+msgid "Error"
+msgstr "Xatolik"
+
+#: js/ui/lookingGlass.js:831
+msgid "Out of date"
+msgstr "Yangilash talab qilinadi"
+
+#: js/ui/lookingGlass.js:833
+msgid "Downloading"
+msgstr "Yuklab olinmoqda"
+
+#: js/ui/lookingGlass.js:835
+msgid "Deactivating"
+msgstr "Faollashtiruvchi"
+
+#: js/ui/lookingGlass.js:837
+msgid "Activating"
+msgstr "Faollashtirilmoqda"
+
+#: js/ui/lookingGlass.js:873
+msgid "View Source"
+msgstr "Manbani ko'rish"
+
+#: js/ui/lookingGlass.js:884
+msgid "Web Page"
+msgstr "Veb sahifa"
+
+#: js/ui/main.js:305
+msgid "System was put in unsafe mode"
+msgstr "Tizim xavfli rejimga o'tkazildi"
+
+#: js/ui/main.js:306
+msgid "Apps now have unrestricted access"
+msgstr "Ilovalar endi cheklanmagan kirish huquqiga ega"
+
+#: js/ui/main.js:366
+msgid "Logged in as a privileged user"
+msgstr "Imtiyozli foydalanuvchi sifatida tizimga kirgan"
+
+#: js/ui/main.js:367
+msgid ""
+"Running a session as a privileged user should be avoided for security "
+"reasons. If possible, you should log in as a normal user."
+msgstr ""
+"Xavfsizlik nuqtai nazaridan seansni imtiyozli foydalanuvchi sifatida ishga "
+"tushirishdan qochish kerak. Iloji bo'lsa, oddiy foydalanuvchi sifatida "
+"tizimga kirishingiz kerak."
+
+#: js/ui/main.js:415
+msgid "Screen Lock disabled"
+msgstr "Ekran qulfi o‘chirilgan"
+
+#: js/ui/main.js:416
+msgid "Screen Locking requires the GNOME display manager"
+msgstr "Ekranni qulflash GNOME displey menejerini talab qiladi"
+
+#. Translators: this is the string displayed in the header when a message
+#. source doesn't have a name
+#: js/ui/messageList.js:409
+msgid "Unknown App"
+msgstr "Noma'lum ilova"
+
+#: js/ui/messageTray.js:325 js/ui/messageTray.js:327
+msgid "Notification sound"
+msgstr "Bildirishnoma ovozi"
+
+#: js/ui/mpris.js:144
+msgid "Unknown artist"
+msgstr "Noma'lum rassom"
+
+#: js/ui/mpris.js:154
+msgid "Unknown title"
+msgstr "Noma'lum sarlavha"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overviewControls.js:328
+msgid "Type to search"
+msgstr "Qidirish uchun yozing"
+
+#: js/ui/overviewControls.js:392
+msgid "Apps"
+msgstr "Ilovalar"
+
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
+#: js/ui/overview.js:33
+msgid "Overview"
+msgstr "Umumiy nuqtai"
+
+#: js/ui/padOsd.js:98
+msgid "New shortcut…"
+msgstr "Yangi yorliq…"
+
+#: js/ui/padOsd.js:151
+msgid "App defined"
+msgstr "Ilova aniqlandi"
+
+#: js/ui/padOsd.js:152
+msgid "Show on-screen help"
+msgstr "Ekrandagi yordamni ko'rsatish"
+
+#: js/ui/padOsd.js:153
+msgid "Switch monitor"
+msgstr "Monitorni almashtirish"
+
+#: js/ui/padOsd.js:154
+msgid "Assign keystroke"
+msgstr "Klaviatura bosishni tayinlang"
+
+#: js/ui/padOsd.js:223
+msgid "Done"
+msgstr "Bajarildi"
+
+#: js/ui/padOsd.js:727
+msgid "Edit…"
+msgstr "Tahrirlash…"
+
+#: js/ui/padOsd.js:774
+msgid "None"
+msgstr "Hech biri"
+
+#: js/ui/padOsd.js:845
+msgid "Press a button to configure"
+msgstr "Sozlash uchun tugmani bosing"
+
+#: js/ui/padOsd.js:846
+msgid "Press Esc to exit"
+msgstr "Chiqish uchun Esc tugmasini bosing"
+
+#: js/ui/padOsd.js:849
+msgid "Press any key to exit"
+msgstr "Chiqish uchun istalgan tugmani bosing"
+
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: js/ui/panel.js:423
+msgid "Activities"
+msgstr "Faoliyatlar"
+
+#: js/ui/panel.js:504
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "Sistema"
+
+#: js/ui/panel.js:678
+msgid "Top Bar"
+msgstr "Yuqori bar"
+
+#: js/ui/quickSettings.js:185 js/ui/quickSettings.js:340
+msgid "Open menu"
+msgstr "Menyuni ochish"
+
+#: js/ui/runDialog.js:61
+msgid "Run a Command"
+msgstr "Buyruqni ishga tushirish"
+
+#: js/ui/runDialog.js:76
+msgid "Press ESC to close"
+msgstr "Yopish uchun ESC tugmasini bosing"
+
+#: js/ui/runDialog.js:253
+msgid "Restart is not available on Wayland"
+msgstr "Qayta ishga tushirish Waylandda mavjud emas"
+
+#: js/ui/runDialog.js:258
+msgid "Restarting…"
+msgstr "Qayta ishga tushirilmoqda…"
+
+#: js/ui/screenShield.js:233
+msgid "GNOME needs to lock the screen"
+msgstr "GNOME ekranni qulflashi kerak"
+
+#: js/ui/screenShield.js:274 js/ui/screenShield.js:667
+msgid "Unable to lock"
+msgstr "Bloklash imkonsiz"
+
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:668
+msgid "Lock was blocked by an app"
+msgstr "Bloklash ilova tomonidan bloklangan"
+
+#: js/ui/screenshot.js:1250
+msgid "Selection"
+msgstr "Tanlash rejimi"
+
+#: js/ui/screenshot.js:1260
+msgid "Area Selection"
+msgstr "Hududni tanlash"
+
+#: js/ui/screenshot.js:1265
+msgid "Screen"
+msgstr "Ekran"
+
+#: js/ui/screenshot.js:1275
+msgid "Screen Selection"
+msgstr "Ekranni tanlash"
+
+#: js/ui/screenshot.js:1280
+msgid "Window"
+msgstr "Oyna"
+
+#: js/ui/screenshot.js:1290
+msgid "Window Selection"
+msgstr "Oyna tanlash"
+
+#: js/ui/screenshot.js:1315 js/ui/status/system.js:111
+msgid "Take Screenshot"
+msgstr "Skrinshot oling"
+
+#: js/ui/screenshot.js:1331
+msgid "Record Screen"
+msgstr "Yozib olish ekrani"
+
+#. Translators: since this string refers to an action,
+#. it needs to be phrased as a verb.
+#: js/ui/screenshot.js:1348
+msgid "Capture"
+msgstr "Qo‘lga olish"
+
+#: js/ui/screenshot.js:1370
+msgid "Show Pointer"
+msgstr "Pointerni ko'rsatish"
+
+#. Translators: this is the folder where recorded
+#. screencasts are stored.
+#: js/ui/screenshot.js:1994
+msgid "Screencasts"
+msgstr "Ekran tasvirlari"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast From 07-17-2013 10:00:46 PM"
+#: js/ui/screenshot.js:1999
+#, no-c-format
+msgid "Screencast From %d %t"
+msgstr "Skrinshot: %d %t"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2045
+msgid "Screencast recorded"
+msgstr "Skrinshot yozib olingan"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2058
+msgid "Screencast failed to start"
+msgstr "Skrinshot boshlanmadi"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2064
+msgid "Screencast ended: Out of disk space"
+msgstr "Skrinshot tugadi: Diskda joy qolmadi"
+
+#. We can encourage user to try again on service crashes since the
+#. recorder will auto-blocklist the pipeline that crashed.
+#. Translators: notification title.
+#: js/ui/screenshot.js:2070
+msgid "Screencast ended unexpectedly, please try again"
+msgstr "Skrinshot kutilmaganda tugadi, qayta urinib koʻring"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2073
+msgid "Screencast ended unexpectedly"
+msgstr "Skrinshot kutilmaganda tugadi"
+
+#. Translators: notification source name.
+#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2330
+msgid "Screenshot"
+msgstr "Skrinshot"
+
+#. Translators: notification body when a screencast was recorded.
+#: js/ui/screenshot.js:2090
+msgid "Click here to view the video."
+msgstr "Videoni ko‘rish uchun shu yerni bosing."
+
+#. Translators: button on the screencast notification.
+#. Translators: button on the screenshot notification.
+#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2346
+msgid "Show in Files"
+msgstr "Fayllarda ko'rsatish"
+
+#. Translators: this is the name of the file that the screenshot is
+#. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
+#: js/ui/screenshot.js:2288
+#, javascript-format
+msgid "Screenshot From %s"
+msgstr "Skrinshot: %s"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2336
+msgid "Screenshot captured"
+msgstr "Skrinshot olindi"
+
+#. Translators: notification body when a screenshot was captured.
+#: js/ui/screenshot.js:2338
+msgid "You can paste the image from the clipboard."
+msgstr "Tasvirni vaqtinchalik xotiradan joylashtirishingiz mumkin."
+
+#: js/ui/screenshot.js:2397 js/ui/screenshot.js:2561
+msgid "Screenshot taken"
+msgstr "Skrinshot olingan"
+
+#: js/ui/search.js:832
+msgid "Searching…"
+msgstr "Qidirilmoqda…"
+
+#: js/ui/search.js:834
+msgid "No results"
+msgstr "Natija yo'q"
+
+#: js/ui/search.js:965
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "yana %d ta"
+
+#: js/ui/searchController.js:87
+#: subprojects/extensions-app/data/ui/extensions-window.ui:73
+msgid "Search"
+msgstr "Qidiruv"
+
+#: js/ui/shellEntry.js:21
+msgid "Copy"
+msgstr "Nusxalash"
+
+#: js/ui/shellEntry.js:26
+msgid "Paste"
+msgstr "Qo'yish"
+
+#: js/ui/shellEntry.js:78
+msgid "Show Text"
+msgstr "Matnni ko'rsatish"
+
+#: js/ui/shellEntry.js:80
+msgid "Hide Text"
+msgstr "Matnni yashirish"
+
+#: js/ui/shellEntry.js:174
+msgid "Caps lock is on"
+msgstr "Caps lock yoqilgan"
+
+#: js/ui/shellMountOperation.js:286
+msgid "Hidden Volume"
+msgstr "Yashirin ovoz balandligi"
+
+#: js/ui/shellMountOperation.js:289
+msgid "Windows System Volume"
+msgstr "Windows tizimi ovozi"
+
+#: js/ui/shellMountOperation.js:292
+msgid "Uses Keyfiles"
+msgstr "Kalit fayllardan foydalanadi"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:300
+#, javascript-format
+msgid ""
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
+msgstr ""
+"Kalit fayllardan foydalanadigan tovushni qulfdan chiqarish uchun uning "
+"oʻrniga <i>%s</i> yordam dasturidan foydalaning"
+
+#: js/ui/shellMountOperation.js:304
+msgid ""
+"You need an external utility like <i>Disks</i> to unlock a volume that uses "
+"keyfiles"
+msgstr ""
+"Kalit fayllardan foydalanadigan tovushni qulfdan chiqarish uchun sizga "
+"<i>Disklar</i> kabi tashqi yordamchi dastur kerak"
+
+#: js/ui/shellMountOperation.js:312
+msgid "PIM Number"
+msgstr "PIM raqami"
+
+#: js/ui/shellMountOperation.js:371
+msgid "Remember Password"
+msgstr "Parolni eslab qolish"
+
+#: js/ui/shellMountOperation.js:386
+msgid "Unlock"
+msgstr "Qulfni ochish"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:400
+#, javascript-format
+msgid "Open %s"
+msgstr "%s oching"
+
+#: js/ui/shellMountOperation.js:436
+msgid "The PIM must be a number or empty"
+msgstr "PIM raqam yoki bo'sh bo'lishi kerak"
+
+#: js/ui/status/accessibility.js:34
+msgid "Accessibility"
+msgstr "Foydalanish imkoniyati"
+
+#: js/ui/status/accessibility.js:44
+msgid "High Contrast"
+msgstr "Yuqori kontrast"
+
+#: js/ui/status/accessibility.js:47
+msgid "Zoom"
+msgstr "Kattalashtirish"
+
+#: js/ui/status/accessibility.js:54
+msgid "Screen Reader"
+msgstr "Ekran o'quvchi"
+
+#: js/ui/status/accessibility.js:58
+msgid "Screen Keyboard"
+msgstr "Ekran klaviaturasi"
+
+#: js/ui/status/accessibility.js:62
+msgid "Visual Alerts"
+msgstr "Vizual ogohlantirishlar"
+
+#: js/ui/status/accessibility.js:66
+msgid "Sticky Keys"
+msgstr "Yopishqoq kalitlar"
+
+#: js/ui/status/accessibility.js:70
+msgid "Slow Keys"
+msgstr "Sekin tugmalar"
+
+#: js/ui/status/accessibility.js:74
+msgid "Bounce Keys"
+msgstr "Bounce kalitlari"
+
+#: js/ui/status/accessibility.js:78
+msgid "Mouse Keys"
+msgstr "Sichqoncha tugmachalari"
+
+#: js/ui/status/accessibility.js:83
+msgid "Accessibility Settings"
+msgstr "Maxsus imkoniyatlar sozlamalari"
+
+#: js/ui/status/accessibility.js:123
+msgid "Large Text"
+msgstr "Katta matn"
+
+#: js/ui/status/autoRotate.js:14
+msgid "Auto Rotate"
+msgstr "Avtomatik aylantirish"
+
+#: js/ui/status/backgroundApps.js:156
+msgctxt "title"
+msgid "Background Apps"
+msgstr "Fon ilovalari"
+
+#: js/ui/status/backgroundApps.js:171
+msgid "Apps known to be running without a window"
+msgstr "Ilovalar oynasiz ishlayotgani ma'lum"
+
+#: js/ui/status/backgroundApps.js:182
+msgid "App Settings"
+msgstr "Ilova sozlamalari"
+
+#: js/ui/status/backgroundApps.js:239
+msgid "No Background Apps"
+msgstr "Fon ilovalari yo'q"
+
+#: js/ui/status/backgroundApps.js:241
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%d Fon ilovasi"
+
+#: js/ui/status/backlight.js:39
+msgid "Keyboard Brightness"
+msgstr "Klaviatura yorqinligi"
+
+#: js/ui/status/backlight.js:87
+msgid "Off"
+msgstr "O'chirilgan"
+
+#: js/ui/status/backlight.js:88
+msgid "Low"
+msgstr "Past"
+
+#: js/ui/status/backlight.js:89
+msgid "High"
+msgstr "Yuqori"
+
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:883
+msgid "Keyboard"
+msgstr "Klaviatura"
+
+#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
+msgid "Disconnect"
+msgstr "Uzing"
+
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:354
+#, javascript-format
+msgid "Disconnect %s"
+msgstr "%s aloqasini uzing"
+
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/bluetooth.js:269 js/ui/status/network.js:356
+#, javascript-format
+msgid "Connect to %s"
+msgstr "%s ga ulaning"
+
+#: js/ui/status/bluetooth.js:276 js/ui/status/bluetooth.js:278
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1909
+msgid "Bluetooth Settings"
+msgstr "Bluetooth sozlamalari"
+
+#: js/ui/status/bluetooth.js:348
+msgid "No available or connected devices"
+msgstr "Mavjud yoki ulangan qurilmalar yo'q"
+
+#: js/ui/status/bluetooth.js:349
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "Qurilmalarga ulanish uchun Bluetooth-ni yoqing"
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:413
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d Ulandi"
+
+#: js/ui/status/brightness.js:32
+msgid "Brightness"
+msgstr "Yorqinlik"
+
+#: js/ui/status/darkMode.js:12
+msgid "Dark Style"
+msgstr "Qorong'u uslub"
+
+#: js/ui/status/dwellClick.js:15
+msgid "Single Click"
+msgstr "Bir marta bosish"
+
+#: js/ui/status/dwellClick.js:20
+msgid "Double Click"
+msgstr "Ikki marta bosing"
+
+#: js/ui/status/dwellClick.js:25
+msgid "Drag"
+msgstr "Tortib o’tkazish"
+
+#: js/ui/status/dwellClick.js:30
+msgid "Secondary Click"
+msgstr "Ikkilamchi bosing"
+
+#: js/ui/status/dwellClick.js:39
+msgid "Dwell Click"
+msgstr "Dwell bosing"
+
+#: js/ui/status/keyboard.js:900
+msgid "Show Keyboard Layout"
+msgstr "Klaviatura tartibini ko'rsatish"
+
+#: js/ui/status/location.js:337
+msgid "Allow location access"
+msgstr "Joylashuvga ruxsat berish"
+
+#. Translators: %s is an application name
+#: js/ui/status/location.js:339
+#, javascript-format
+msgid "The app %s wants to access your location"
+msgstr "%s ilovasi joylashuvingizga kirishni xohlaydi"
+
+#: js/ui/status/location.js:349
+msgid "Location access can be changed at any time from the privacy settings"
+msgstr ""
+"Joylashuvga kirish huquqini istalgan vaqtda maxfiylik sozlamalaridan "
+"oʻzgartirish mumkin"
+
+#: js/ui/status/location.js:357
+msgid "Deny Access"
+msgstr "Kirishni rad etish"
+
+#: js/ui/status/location.js:362
+msgid "Grant Access"
+msgstr "Ruxsat berish"
+
+#: js/ui/status/network.js:62
+msgid "<unknown>"
+msgstr "noma’lum turi"
+
+#: js/ui/status/network.js:1059
+msgid "Secure"
+msgstr "Xavfsiz"
+
+#: js/ui/status/network.js:1059
+msgid "Not secure"
+msgstr "Xavfsiz emas"
+
+#: js/ui/status/network.js:1060
+#, javascript-format
+msgid "Signal strength %s%%"
+msgstr "Signal kuchi %s%%"
+
+#. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
+#: js/ui/status/network.js:1062
+#, javascript-format
+msgid "%s, %s, %s"
+msgstr "%s,%s,%s"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1164
+#, javascript-format
+msgid "%s Hotspot"
+msgstr "%s Hotspot"
+
+#: js/ui/status/network.js:1435
+#, javascript-format
+msgid "%d connected"
+msgid_plural "%d connected"
+msgstr[0] "%d ulandi"
+
+#: js/ui/status/network.js:1533 js/ui/status/network.js:1549
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1534
+msgid "VPN Settings"
+msgstr "VPN sozlamalari"
+
+#: js/ui/status/network.js:1794
+msgid "Wi–Fi"
+msgstr "Wi-fi"
+
+#: js/ui/status/network.js:1796
+msgid "All Networks"
+msgstr "Barcha tarmoqlar"
+
+#: js/ui/status/network.js:1893
+msgid "Wired Connections"
+msgstr "Simli ulanishlar"
+
+#: js/ui/status/network.js:1894
+msgid "Wired Settings"
+msgstr "Simli sozlamalar"
+
+#: js/ui/status/network.js:1908
+#, fuzzy
+msgid "Bluetooth Tethers"
+msgstr "Bluetooth ulagichlari"
+
+#. Translators: "Tether" from "Bluetooth Tether"
+#: js/ui/status/network.js:1915
+msgid "Tether"
+msgstr ""
+
+#: js/ui/status/network.js:1928
+msgid "Mobile Connections"
+msgstr "Mobil ulanishlar"
+
+#: js/ui/status/network.js:1930
+msgid "Mobile Broadband Settings"
+msgstr "Keng polosali mobil moslamalar"
+
+#. Translators: "Mobile" from "Mobile Broadband"
+#: js/ui/status/network.js:1939
+msgid "Mobile"
+msgstr "Mobil"
+
+#: js/ui/status/network.js:1973
+msgid "Sign Into Wi–Fi Network"
+msgstr "Wi-Fi tarmog'iga kiring"
+
+#: js/ui/status/network.js:2160
+msgid "Connection failed"
+msgstr "Ulanish amalga oshmadi"
+
+#: js/ui/status/network.js:2161
+msgid "Activation of network connection failed"
+msgstr "Tarmoq ulanishini faollashtirish amalga oshmadi"
+
+#: js/ui/status/nightLight.js:19
+msgid "Night Light"
+msgstr "Tungi yorug'lik"
+
+#: js/ui/status/powerProfiles.js:19
+msgctxt "Power profile"
+msgid "Performance"
+msgstr "Ishlash"
+
+#: js/ui/status/powerProfiles.js:24
+msgctxt "Power profile"
+msgid "Balanced"
+msgstr "Balanslangan"
+
+#: js/ui/status/powerProfiles.js:29
+msgctxt "Power profile"
+msgid "Power Saver"
+msgstr "Quvvat tejash"
+
+#: js/ui/status/powerProfiles.js:39 js/ui/status/powerProfiles.js:69
+msgid "Power Mode"
+msgstr "Quvvat rejimi"
+
+#: js/ui/status/powerProfiles.js:71
+msgid "Power Settings"
+msgstr "Quvvat sozlamalari"
+
+#: js/ui/status/remoteAccess.js:74
+msgid "Stop Screencast"
+msgstr "Skrinshotni to'xtatish"
+
+#: js/ui/status/remoteAccess.js:144
+msgid "Stop Screen Sharing"
+msgstr "Ekran almashishni to'xtatish"
+
+#: js/ui/status/rfkill.js:99
+msgid "Airplane Mode"
+msgstr "Samolyot rejimi"
+
+#: js/ui/status/system.js:168
+msgid "Power Off Menu"
+msgstr "Quvvatni o'chirish menyusi"
+
+#: js/ui/status/system.js:176
+msgid "Suspend"
+msgstr "To'xtatib turish"
+
+#: js/ui/status/system.js:181
+msgid "Restart…"
+msgstr "Qayta ishga tushirish…"
+
+#: js/ui/status/system.js:186
+msgid "Power Off…"
+msgstr "O’chirish…"
+
+#: js/ui/status/system.js:193
+#: subprojects/extensions-app/data/ui/extensions-window.ui:124
+msgid "Log Out…"
+msgstr "Chiqish…"
+
+#: js/ui/status/system.js:198
+msgid "Switch User…"
+msgstr "Foydalanuvchini almashtirish…"
+
+#: js/ui/status/system.js:242
+msgctxt "action"
+msgid "Lock Screen"
+msgstr "Ekranni qulflash"
+
+#: js/ui/status/thunderbolt.js:308
+msgid "Unknown Thunderbolt device"
+msgstr "Noma'lum Thunderbolt qurilmasi"
+
+#: js/ui/status/thunderbolt.js:309
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr ""
+"Siz yo‘q bo‘lganingizda yangi qurilma aniqlandi. Iltimos, foydalanishni "
+"boshlash uchun qurilmani uzing va qayta ulang."
+
+#: js/ui/status/thunderbolt.js:312
+msgid "Unauthorized Thunderbolt device"
+msgstr "Ruxsatsiz Thunderbolt qurilmasi"
+
+#: js/ui/status/thunderbolt.js:313
+msgid ""
+"New device has been detected and needs to be authorized by an administrator"
+msgstr ""
+"Yangi qurilma aniqlandi va unga administrator tomonidan ruxsat berilishi "
+"kerak"
+
+#: js/ui/status/thunderbolt.js:319
+msgid "Thunderbolt authorization error"
+msgstr "Thunderbolt avtorizatsiya xatosi"
+
+#: js/ui/status/thunderbolt.js:320
+#, javascript-format
+msgid "Could not authorize the Thunderbolt device: %s"
+msgstr "Thunderbolt qurilmasiga ruxsat berilmadi: %s"
+
+#: js/ui/status/volume.js:218
+msgid "Volume changed"
+msgstr "Ovoz o'zgartirildi"
+
+#: js/ui/status/volume.js:231
+msgid "Unmute"
+msgstr "Ovozni yoqish"
+
+#: js/ui/status/volume.js:231
+msgid "Mute"
+msgstr "Ovozsiz"
+
+#: js/ui/status/volume.js:293
+msgid "Volume"
+msgstr "Ovoz balandligi"
+
+#: js/ui/status/volume.js:309
+msgid "Sound Output"
+msgstr "Ovoz chiqishi"
+
+#: js/ui/status/volume.js:384
+msgid "Sound Input"
+msgstr "Ovoz kiritish"
+
+#. Translators: this is for display mirroring i.e. cloning.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:20
+msgid "Mirror"
+msgstr "Oyna"
+
+#. Translators: this is for the desktop spanning displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:29
+msgid "Join Displays"
+msgstr "Displeylarga qo'shilish"
+
+#. Translators: this is for using only external displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:39
+msgid "External Only"
+msgstr "Faqat tashqi"
+
+#. Translators: this is for using only the laptop display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:47
+msgid "Built-in Only"
+msgstr "Faqat o'rnatilgan"
+
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/unlockDialog.js:384
+msgid "%A %B %-d"
+msgstr "%A %B %d"
+
+#: js/ui/unlockDialog.js:390
+msgid "Swipe up to unlock"
+msgstr "Qulfni ochish uchun tepaga suring"
+
+#: js/ui/unlockDialog.js:391
+msgid "Click or press a key to unlock"
+msgstr "Qulfni ochish uchun tugmani bosing yoki bosing"
+
+#: js/ui/unlockDialog.js:576
+msgid "Unlock Window"
+msgstr "Oyna qulfini ochish"
+
+#: js/ui/unlockDialog.js:585
+msgid "Log in as another user"
+msgstr "Boshqa foydalanuvchi sifatida tizimga kiring"
+
+#: js/ui/welcomeDialog.js:47
+#, javascript-format
+msgid "GNOME %s"
+msgstr "GNOME %s"
+
+#: js/ui/welcomeDialog.js:51
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "%s ga xush kelibsiz"
+
+#: js/ui/welcomeDialog.js:52
+msgid "If you want to learn your way around, check out the tour"
+msgstr ""
+"Agar siz o'z yo'lingizni o'rganmoqchi bo'lsangiz, ekskursiyani tekshiring"
+
+#: js/ui/welcomeDialog.js:66
+msgid "Take Tour"
+msgstr "Sayohat qiling"
+
+#: js/ui/windowAttentionHandler.js:18
+#, javascript-format
+msgid "“%s” is ready"
+msgstr "“%s” tayyor"
+
+#. Translators: This string should be shorter than 30 characters
+#: js/ui/windowManager.js:68
+msgid "Keep these display settings?"
+msgstr "Ushbu displey sozlamalari saqlanib qolsinmi?"
+
+#: js/ui/windowManager.js:78
+msgid "Revert Settings"
+msgstr "Sozlamalarni qaytarish"
+
+#: js/ui/windowManager.js:83
+msgid "Keep Changes"
+msgstr "O'zgarishlarni saqlang"
+
+#: js/ui/windowManager.js:103
+#, javascript-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "Sozlamalar oʻzgarishlari %d soniyadan keyin tiklanadi"
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
+#: js/ui/windowManager.js:500
+#, javascript-format
+msgid "%d × %d"
+msgstr "%d × %d"
+
+#. Translators: entry in the window right click menu.
+#: js/ui/windowMenu.js:28
+msgctxt "window-menu"
+msgid "Take Screenshot"
+msgstr "Skrinshot oling"
+
+#: js/ui/windowMenu.js:40
+msgid "Hide"
+msgstr "Yashirish"
+
+#: js/ui/windowMenu.js:47
+msgid "Restore"
+msgstr "Qayta tiklash"
+
+#: js/ui/windowMenu.js:51
+msgid "Maximize"
+msgstr "Maksimallashtirish"
+
+#: js/ui/windowMenu.js:58
+msgid "Move"
+msgstr "Ko'chirish"
+
+#: js/ui/windowMenu.js:78
+msgid "Resize"
+msgstr "Oʻlchamini oʻzgartirish"
+
+#: js/ui/windowMenu.js:98
+msgid "Always on Top"
+msgstr "Har doim tepada"
+
+#: js/ui/windowMenu.js:117
+msgid "Always on Visible Workspace"
+msgstr "Har doim koʻrinadigan ish oʻrnida"
+
+#: js/ui/windowMenu.js:131
+msgid "Move to Workspace Left"
+msgstr "Ish maydoni chapga o'ting"
+
+#: js/ui/windowMenu.js:137
+msgid "Move to Workspace Right"
+msgstr "Ish maydoniga oʻngga oʻting"
+
+#: js/ui/windowMenu.js:143
+msgid "Move to Workspace Up"
+msgstr "Ish maydonini tepasiga o'ting"
+
+#: js/ui/windowMenu.js:149
+msgid "Move to Workspace Down"
+msgstr "Ish maydonini pastga siljiting"
+
+#: js/ui/windowMenu.js:167
+msgid "Move to Monitor Up"
+msgstr "Monitor yuqoriga siljiting"
+
+#: js/ui/windowMenu.js:176
+msgid "Move to Monitor Down"
+msgstr "Monitor pastga siljiting"
+
+#: js/ui/windowMenu.js:185
+msgid "Move to Monitor Left"
+msgstr "Monitor chapga siljiting"
+
+#: js/ui/windowMenu.js:194
+msgid "Move to Monitor Right"
+msgstr "Monitorning o'ng tomoniga siljiting"
+
+#: js/ui/windowMenu.js:202
+msgid "Close"
+msgstr "Yopish"
+
+#: src/main.c:512 subprojects/extensions-tool/src/main.c:336
+msgid "Print version"
+msgstr "Chop etish versiyasi"
+
+#: src/main.c:518
+msgid "Mode used by GDM for login screen"
+msgstr "Kirish ekrani uchun GDM tomonidan foydalaniladigan rejim"
+
+#: src/main.c:524
+msgid "Use a specific mode, e.g. “gdm” for login screen"
+msgstr "Muayyan rejimdan foydalaning, masalan. Kirish ekrani uchun \"gdm\""
+
+#: src/main.c:530
+msgid "List possible modes"
+msgstr "Mumkin rejimlarni sanab o'ting"
+
+#: src/main.c:536
+msgid "Force animations to be enabled"
+msgstr "Animatsiyalarni yoqish uchun majburlash"
+
+#: src/shell-app.c:267
+msgctxt "program"
+msgid "Unknown"
+msgstr "Noma'lum"
+
+#: src/shell-app.c:518
+#, c-format
+msgid "Failed to launch “%s”"
+msgstr "“%s” ishga tushmadi"
+
+#: src/shell-keyring-prompt.c:779
+msgid "Passwords do not match"
+msgstr "Parollar mos kelmaydi"
+
+#: src/shell-keyring-prompt.c:787
+msgid "Password cannot be blank"
+msgstr "Parol bo'sh bo'lishi mumkin emas"
+
+#: src/shell-polkit-authentication-agent.c:344
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Autentifikatsiya dialogi foydalanuvchi tomonidan oʻchirildi"
+
+#: src/st/st-icon-theme.c:1859
+#, c-format
+msgid "Icon '%s' not present in theme %s"
+msgstr "“%s” belgisi %s mavzusida mavjud emas"
+
+#: src/st/st-icon-theme.c:3452 src/st/st-icon-theme.c:3755
+msgid "Failed to load icon"
+msgstr "Belgini yuklab bo‘lmadi"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
+msgid "Manage your GNOME Extensions"
+msgstr "GNOME kengaytmalaringizni boshqaring"
+
+#. developer_name tag deprecated with Appstream 1.0
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:20
+msgid "The GNOME Project"
+msgstr "GNOME loyihasi"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:52
+msgid ""
+"GNOME Extensions handles updating extensions, configuring extension "
+"preferences and removing or disabling unwanted extensions."
+msgstr ""
+"GNOME kengaytmalari kengaytmalarni yangilash, kengaytma afzalliklarini "
+"sozlash va keraksiz kengaytmalarni o'chirish yoki o'chirish bilan "
+"shug'ullanadi."
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
+msgid "Main Window"
+msgstr "Asosiy oyna maksimal darajada ochilishi kerak"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
+msgid "Available Updates"
+msgstr "Mavjud yangilanishlar"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
+msgid "Search View"
+msgstr "Qidiruv ko'rinishi"
+
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
+msgid "Configure GNOME Shell Extensions"
+msgstr "GNOME Shell kengaytmalarini sozlang"
+
+#: subprojects/extensions-app/js/extensionManager.js:237
+#, javascript-format
+msgid ""
+"The installed version of this extension (%s) is incompatible with the "
+"current version of GNOME (%s). The extension has been disabled."
+msgstr ""
+"Ushbu kengaytmaning oʻrnatilgan versiyasi (%s) joriy GNOME versiyasiga (%s) "
+"mos kelmaydi. Kengaytma o'chirilgan."
+
+#: subprojects/extensions-app/js/extensionManager.js:238
+#, javascript-format
+msgid ""
+"The installed version of this extension is incompatible with the current "
+"version of GNOME (%s). The extension has been disabled."
+msgstr ""
+"Ushbu kengaytmaning oʻrnatilgan versiyasi joriy GNOME (%s) versiyasiga mos "
+"kelmaydi. Kengaytma o'chirilgan."
+
+#: subprojects/extensions-app/js/extensionManager.js:242
+msgid ""
+"An error has occurred in this extension. This could cause issues elsewhere "
+"in the system. It is recommended to turn the extension off until the error "
+"is resolved."
+msgstr ""
+"Ushbu kengaytmada xatolik yuz berdi. Bu tizimning boshqa joylarida "
+"muammolarga olib kelishi mumkin. Xato hal qilinmaguncha kengaytmani o'chirib "
+"qo'yish tavsiya etiladi."
+
+#. translators: Details for an extension error
+#: subprojects/extensions-app/js/extensionManager.js:248
+msgid "Error details:"
+msgstr "Xato tafsilotlari:"
+
+#: subprojects/extensions-app/js/extensionRow.js:82
+#, javascript-format
+msgid "Version %s"
+msgstr "Versiya %s"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:113
+#, javascript-format
+msgid "Remove “%s”?"
+msgstr "“%s” olib tashlansinmi?"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:114
+msgid ""
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
+msgstr ""
+"Agar kengaytmani olib tashlasangiz, uni qayta yoqishni istasangiz, uni "
+"yuklab olish uchun qaytishingiz kerak"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:117
+msgid "_Cancel"
+msgstr "_Bekor qilish"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:118
+msgid "_Remove"
+msgstr "_O’chirish"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:158
+msgid "translator-credits"
+msgstr "Baxrom Raxmatov <magdiyevbahrom@gmail.com>"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:203
+#, javascript-format
+msgid "%d extension will be updated on next login."
+msgid_plural "%d extensions will be updated on next login."
+msgstr[0] "%d kengaytmasi keyingi kirishda yangilanadi."
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:13
+msgid "Error Details"
+msgstr "Xato tafsilotlari"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:51
+msgid "Updates Details"
+msgstr "Yangilanish tafsilotlari"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:68
+msgid ""
+"A new version of this extension is ready and will be loaded on next login."
+msgstr ""
+"Ushbu kengaytmaning yangi versiyasi tayyor va keyingi kirishda yuklanadi."
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:100
+msgid "Extension Details"
+msgstr "Kengaytma tafsilotlari"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
+msgid "_Website"
+msgstr "_Veb-sayt"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:215
+msgid "_Settings"
+msgstr "_Sozlamalar"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:242
+msgid "_Remove…"
+msgstr "_Oʻchirish…"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:6
+msgid "Keyboard Shortcuts"
+msgstr "Klaviatura yorliqlari"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:10
+msgid "About Extensions"
+msgstr "Kengaytmalar haqida"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:64
+msgid "Main Menu"
+msgstr "Asosiy menyu"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:106
+msgid "Search extensions"
+msgstr "Kengaytmalarni qidirish"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:134
+msgid "_Extensions"
+msgstr "_Kengaytmalar"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:139
+msgid "More Information"
+msgstr "Batafsil"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:151
+msgid ""
+"Extensions can cause performance and stability issues. It is recommended to "
+"disable all extensions if you experience problems with your system."
+msgstr ""
+"Kengaytmalar ishlash va barqarorlik muammolariga olib kelishi mumkin. Agar "
+"tizimingizda muammolarga duch kelsangiz, barcha kengaytmalarni o'chirib "
+"qo'yish tavsiya etiladi."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:178
+msgid "User Extensions"
+msgstr "Foydalanuvchi kengaytmalari"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:198
+msgid "System Extensions"
+msgstr "Tizim kengaytmalari"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:233
+msgid "Search Results"
+msgstr "Izlash Natijalari"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:252
+msgid "No Results Found"
+msgstr "Hech qanday natija topilmadi"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:253
+msgid "Try a different search"
+msgstr "Boshqa qidiruvni sinab ko'ring"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:264
+msgid "No Installed Extensions"
+msgstr "O'rnatilgan kengaytmalar yo'q"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:265
+msgid ""
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
+msgstr ""
+"Kengaytmalarni topish va qo'shish uchun <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a> saytiga tashrif buyuring."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:276
+msgid ""
+"We’re very sorry, but it was not possible to get the list of installed "
+"extensions. Make sure you are logged into GNOME and try again."
+msgstr ""
+"Kechirasiz, lekin oʻrnatilgan kengaytmalar roʻyxatini olishning iloji "
+"boʻlmadi. GNOME-ga kirganingizga ishonch hosil qiling va qayta urinib "
+"ko'ring."
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:9
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Umumiy"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:12
+msgctxt "shortcut window"
+msgid "Open Menu"
+msgstr "Menyuni ochish"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:18
+msgctxt "shortcut window"
+msgid "Toggle Search"
+msgstr "Qidiruvni almashtirish"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:24
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Yorliqlarni ko’rsatish"
+
+#: subprojects/extensions-app/data/ui/help-overlay.ui:30
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Chiqish"
+
+#. Translators: a file path to an extension directory
+#: subprojects/extensions-tool/src/command-create.c:284
+#, c-format
+msgid "The new extension was successfully created in %s.\n"
+msgstr "Yangi kengaytma %s da muvaffaqiyatli yaratildi.\n"
+
+#: subprojects/extensions-tool/src/command-create.c:376
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"Ism juda qisqa (ideal tavsiflovchi) qator bo'lishi kerak.\n"
+"Misollar: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:382
+#: subprojects/extensions-tool/src/main.c:243
+msgid "Name"
+msgstr "Ism"
+
+#: subprojects/extensions-tool/src/command-create.c:396
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"Tavsif kengaytmangiz nima qilishini bir jumladan iborat tushuntirishdir.\n"
+"Misollar: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:402
+#: subprojects/extensions-tool/src/main.c:246
+msgid "Description"
+msgstr "Ta'rif"
+
+#: subprojects/extensions-tool/src/command-create.c:416
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+"UUID kengaytmangiz uchun global noyob identifikatordir.\n"
+"Bu elektron pochta manzili formatida bo'lishi kerak (clicktofocus@janedoe."
+"example.com)\n"
+
+#: subprojects/extensions-tool/src/command-create.c:443
+msgid "Choose one of the available templates:\n"
+msgstr "Mavjud shablonlardan birini tanlang:\n"
+
+#: subprojects/extensions-tool/src/command-create.c:457
+msgid "Template"
+msgstr "Shablon"
+
+#: subprojects/extensions-tool/src/command-create.c:515
+msgid "The unique identifier of the new extension"
+msgstr "Yangi kengaytmaning noyob identifikatori"
+
+#: subprojects/extensions-tool/src/command-create.c:518
+#, fuzzy
+msgid "NAME"
+msgstr "NAME"
+
+#: subprojects/extensions-tool/src/command-create.c:519
+msgid "The user-visible name of the new extension"
+msgstr "Yangi kengaytmaning foydalanuvchiga ko'rinadigan nomi"
+
+#: subprojects/extensions-tool/src/command-create.c:521
+msgid "DESCRIPTION"
+msgstr "TAVSIF"
+
+#: subprojects/extensions-tool/src/command-create.c:523
+msgid "A short description of what the extension does"
+msgstr "Kengaytma nima qilishining qisqacha tavsifi"
+
+#: subprojects/extensions-tool/src/command-create.c:525
+#: subprojects/extensions-tool/src/command-pack.c:455
+msgid "DOMAIN"
+msgstr "DOMAIN"
+
+#: subprojects/extensions-tool/src/command-create.c:527
+msgid "The gettext domain used by the extension"
+msgstr "Kengaytma tomonidan ishlatiladigan gettext domeni"
+
+#: subprojects/extensions-tool/src/command-create.c:529
+#: subprojects/extensions-tool/src/command-pack.c:448
+msgid "SCHEMA"
+msgstr "SHEMA"
+
+#: subprojects/extensions-tool/src/command-create.c:531
+msgid "The GSettings schema used by the extension"
+msgstr "Kengaytma tomonidan ishlatiladigan GSettings sxemasi"
+
+#: subprojects/extensions-tool/src/command-create.c:534
+#, fuzzy
+msgid "TEMPLATE"
+msgstr "TEMPLATE"
+
+#: subprojects/extensions-tool/src/command-create.c:535
+msgid "The template to use for the new extension"
+msgstr "Yangi kengaytma uchun ishlatiladigan shablon"
+
+#: subprojects/extensions-tool/src/command-create.c:538
+msgid "Include prefs.js template"
+msgstr "Prefs.js shablonini qo'shing"
+
+#: subprojects/extensions-tool/src/command-create.c:544
+msgid "Enter extension information interactively"
+msgstr "Kengaytma ma'lumotlarini interaktiv tarzda kiriting"
+
+#: subprojects/extensions-tool/src/command-create.c:552
+msgid "Create a new extension"
+msgstr "Yangi kengaytma yarating"
+
+#: subprojects/extensions-tool/src/command-create.c:570
+#: subprojects/extensions-tool/src/command-list.c:190
+msgid "Unknown arguments"
+msgstr "Noma'lum argumentlar"
+
+#: subprojects/extensions-tool/src/command-create.c:595
+msgid "UUID, name and description are required"
+msgstr "UUID, ism va tavsif talab qilinadi"
+
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
+#, c-format
+msgid "Extension “%s” does not exist\n"
+msgstr "“%s” kengaytmasi mavjud emas\n"
+
+#: subprojects/extensions-tool/src/command-disable.c:98
+msgid "Disable an extension"
+msgstr "Kengaytmani o'chirib qo'ying"
+
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
+#: subprojects/extensions-tool/src/command-info.c:103
+#: subprojects/extensions-tool/src/command-prefs.c:105
+#: subprojects/extensions-tool/src/command-reset.c:76
+#: subprojects/extensions-tool/src/command-uninstall.c:104
+msgid "No UUID given"
+msgstr "UUID berilmagan"
+
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
+#: subprojects/extensions-tool/src/command-info.c:108
+#: subprojects/extensions-tool/src/command-prefs.c:110
+#: subprojects/extensions-tool/src/command-reset.c:81
+#: subprojects/extensions-tool/src/command-uninstall.c:109
+msgid "More than one UUID given"
+msgstr "Bir nechta UUID berilgan"
+
+#: subprojects/extensions-tool/src/command-enable.c:98
+msgid "Enable an extension"
+msgstr "Kengaytmani yoqing"
+
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:66
+#: subprojects/extensions-tool/src/main.c:150
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "GNOME Shell’ga ulanib bo‘lmadi\n"
+
+#: subprojects/extensions-tool/src/command-info.c:59
+#: subprojects/extensions-tool/src/main.c:159
+#, c-format
+msgid "Extension “%s” doesn't exist\n"
+msgstr "“%s” kengaytmasi mavjud emas\n"
+
+#: subprojects/extensions-tool/src/command-info.c:85
+msgid "Show extensions info"
+msgstr "Kengaytmalar maʼlumotlarini koʻrsatish"
+
+#: subprojects/extensions-tool/src/command-install.c:190
+msgid "Overwrite an existing extension"
+msgstr "Mavjud kengaytmani qayta yozing"
+
+#: subprojects/extensions-tool/src/command-install.c:192
+msgid "EXTENSION_BUNDLE"
+msgstr "EXTENSION_BUNDLE"
+
+#: subprojects/extensions-tool/src/command-install.c:201
+msgid "Install an extension bundle"
+msgstr "Kengaytma to'plamini o'rnating"
+
+#: subprojects/extensions-tool/src/command-install.c:219
+msgid "No extension bundle specified"
+msgstr "Kengaytma toʻplami belgilanmagan"
+
+#: subprojects/extensions-tool/src/command-install.c:225
+msgid "More than one extension bundle specified"
+msgstr "Bir nechta kengaytmalar toʻplami koʻrsatilgan"
+
+#: subprojects/extensions-tool/src/command-list.c:140
+msgid "Show user-installed extensions"
+msgstr "Foydalanuvchi tomonidan o'rnatilgan kengaytmalarni ko'rsatish"
+
+#: subprojects/extensions-tool/src/command-list.c:143
+msgid "Show system-installed extensions"
+msgstr "Tizimda o'rnatilgan kengaytmalarni ko'rsatish"
+
+#: subprojects/extensions-tool/src/command-list.c:146
+msgid "Show enabled extensions"
+msgstr "Yoqilgan kengaytmalarni ko'rsatish"
+
+#: subprojects/extensions-tool/src/command-list.c:149
+msgid "Show disabled extensions"
+msgstr "O'chirilgan kengaytmalarni ko'rsatish"
+
+#: subprojects/extensions-tool/src/command-list.c:152
+msgid "Show extensions in active state"
+msgstr "Kengaytmalarni faol holatda ko'rsatish"
+
+#: subprojects/extensions-tool/src/command-list.c:155
+msgid "Show extensions in inactive state"
+msgstr "Kengaytmalarni nofaol holatda ko'rsatish"
+
+#: subprojects/extensions-tool/src/command-list.c:158
+msgid "Show extensions with preferences"
+msgstr "Kengaytmalarni afzalliklari bilan ko'rsatish"
+
+#: subprojects/extensions-tool/src/command-list.c:161
+msgid "Show extensions with updates"
+msgstr "Kengaytmalarni yangilanishlar bilan ko'rsatish"
+
+#: subprojects/extensions-tool/src/command-list.c:164
+msgid "Print extension details"
+msgstr "Kengaytma tafsilotlarini chop eting"
+
+#: subprojects/extensions-tool/src/command-list.c:172
+msgid "List installed extensions"
+msgstr "O'rnatilgan kengaytmalar ro'yxati"
+
+#: subprojects/extensions-tool/src/command-pack.c:444
+#, fuzzy
+msgid "FILE"
+msgstr "FILE"
+
+#: subprojects/extensions-tool/src/command-pack.c:445
+msgid "Additional source to include in the bundle"
+msgstr "To'plamga qo'shiladigan qo'shimcha manba"
+
+#: subprojects/extensions-tool/src/command-pack.c:449
+msgid "A GSettings schema that should be included"
+msgstr "Qo'shilishi kerak bo'lgan GSettings sxemasi"
+
+#: subprojects/extensions-tool/src/command-pack.c:451
+#: subprojects/extensions-tool/src/command-pack.c:462
+msgid "DIRECTORY"
+msgstr "Katalog"
+
+#: subprojects/extensions-tool/src/command-pack.c:453
+msgid "The directory where translations are found"
+msgstr "Tarjimalar topiladigan katalog"
+
+#: subprojects/extensions-tool/src/command-pack.c:457
+msgid "The gettext domain to use for translations"
+msgstr "Tarjimalar uchun foydalanish uchun gettext domeni"
+
+#: subprojects/extensions-tool/src/command-pack.c:460
+msgid "Overwrite an existing pack"
+msgstr "Mavjud paketning ustiga yozing"
+
+#: subprojects/extensions-tool/src/command-pack.c:464
+msgid "The directory where the pack should be created"
+msgstr "Paket yaratilishi kerak bo'lgan katalog"
+
+#: subprojects/extensions-tool/src/command-pack.c:466
+msgid "SOURCE_DIRECTORY"
+msgstr "SOURCE_DIRECTORY"
+
+#: subprojects/extensions-tool/src/command-pack.c:475
+msgid "Create an extension bundle"
+msgstr "Kengaytma to'plamini yarating"
+
+#: subprojects/extensions-tool/src/command-pack.c:495
+msgid "More than one source directory specified"
+msgstr "Bir nechta manba katalogi ko'rsatilgan"
+
+#: subprojects/extensions-tool/src/command-prefs.c:47
+#, c-format
+msgid "Extension “%s” doesn't have preferences\n"
+msgstr "“%s” kengaytmasi sozlamalarga ega emas\n"
+
+#: subprojects/extensions-tool/src/command-prefs.c:62
+#, c-format
+msgid "Failed to open prefs for extension “%s”: %s\n"
+msgstr "“%s” kengaytmasi uchun parametrlarni ochib bo‘lmadi: %s\n"
+
+#: subprojects/extensions-tool/src/command-prefs.c:87
+msgid "Opens extension preferences"
+msgstr "Kengaytma sozlamalarini ochadi"
+
+#: subprojects/extensions-tool/src/command-reset.c:58
+msgid "Reset an extension"
+msgstr "Kengaytmani tiklash"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:49
+msgid "Cannot uninstall system extensions\n"
+msgstr "Tizim kengaytmalarini oʻchirib boʻlmadi\n"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:64
+#, c-format
+msgid "Failed to uninstall “%s”\n"
+msgstr "“%s” o‘chirib tashlanmadi\n"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:86
+msgid "Uninstall an extension"
+msgstr "Kengaytmani olib tashlang"
+
+#: subprojects/extensions-tool/src/main.c:76
+msgid "Do not print error messages"
+msgstr "Xato xabarlarini chop qilmang"
+
+#: subprojects/extensions-tool/src/main.c:249
+msgid "Path"
+msgstr "Yo'l"
+
+#: subprojects/extensions-tool/src/main.c:252
+msgid "URL"
+msgstr "URL"
+
+#: subprojects/extensions-tool/src/main.c:255
+msgid "Original author"
+msgstr "Asl muallif"
+
+#: subprojects/extensions-tool/src/main.c:261
+#: subprojects/extensions-tool/src/main.c:263
+#: subprojects/extensions-tool/src/main.c:265
+msgid "Version"
+msgstr "Versiya"
+
+#: subprojects/extensions-tool/src/main.c:268
+msgid "Enabled"
+msgstr "Yoqilgan"
+
+#: subprojects/extensions-tool/src/main.c:268
+msgid "Yes"
+msgstr "Xa"
+
+#: subprojects/extensions-tool/src/main.c:268
+msgid "No"
+msgstr "Yo'q"
+
+#: subprojects/extensions-tool/src/main.c:271
+msgid "State"
+msgstr "Holat"
+
+#: subprojects/extensions-tool/src/main.c:309
+msgid "“version” takes no arguments"
+msgstr "\"versiya\" hech qanday argument talab qilmaydi"
+
+#: subprojects/extensions-tool/src/main.c:311
+#: subprojects/extensions-tool/src/main.c:331
+msgid "Usage:"
+msgstr "Foydalanish:"
+
+#: subprojects/extensions-tool/src/main.c:314
+msgid "Print version information and exit."
+msgstr "Versiya ma’lumotlarini chop eting va chiqing."
+
+#: subprojects/extensions-tool/src/main.c:329
+#: subprojects/extensions-tool/src/main.c:332
+msgid "COMMAND"
+msgstr "COMMAND"
+
+#: subprojects/extensions-tool/src/main.c:332
+msgid "[ARGS…]"
+msgstr "[ARGS…]"
+
+#: subprojects/extensions-tool/src/main.c:334
+msgid "Commands:"
+msgstr "Buyruqlar:"
+
+#: subprojects/extensions-tool/src/main.c:335
+msgid "Print help"
+msgstr "Chop etish bo'yicha yordam"
+
+#: subprojects/extensions-tool/src/main.c:337
+msgid "Enable extension"
+msgstr "Kengaytmani yoqish"
+
+#: subprojects/extensions-tool/src/main.c:338
+msgid "Disable extension"
+msgstr "Kengaytmani o'chiring"
+
+#: subprojects/extensions-tool/src/main.c:339
+msgid "Reset extension"
+msgstr "Kengaytmani tiklash"
+
+#: subprojects/extensions-tool/src/main.c:340
+msgid "Uninstall extension"
+msgstr "Kengaytmani olib tashlash"
+
+#: subprojects/extensions-tool/src/main.c:341
+msgid "List extensions"
+msgstr "Ro'yxat kengaytmalari"
+
+#: subprojects/extensions-tool/src/main.c:342
+#: subprojects/extensions-tool/src/main.c:343
+msgid "Show extension info"
+msgstr "Kengaytma maʼlumotlarini koʻrsatish"
+
+#: subprojects/extensions-tool/src/main.c:344
+msgid "Open extension preferences"
+msgstr "Kengaytma sozlamalarini oching"
+
+#: subprojects/extensions-tool/src/main.c:345
+msgid "Create extension"
+msgstr "Kengaytma yarating"
+
+#: subprojects/extensions-tool/src/main.c:346
+msgid "Package extension"
+msgstr "Paket kengaytmasi"
+
+#: subprojects/extensions-tool/src/main.c:347
+msgid "Install extension bundle"
+msgstr "Kengaytma to'plamini o'rnating"
+
+#: subprojects/extensions-tool/src/main.c:349
+#, c-format
+msgid "Use “%s” to get detailed help.\n"
+msgstr "Batafsil yordam olish uchun “%s” dan foydalaning.\n"
+
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
+msgid "Plain"
+msgstr "Oddiy matn"
+
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
+msgid "An empty extension"
+msgstr "Bo'sh kengaytma"
+
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
+msgid "Indicator"
+msgstr "Ko'rsatkich"
+
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
+msgid "Add an icon to the top bar"
+msgstr "Yuqori panelga belgi qo'shing"
+
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
+msgid "Quick Settings Item"
+msgstr "Tez sozlamalar elementi"
+
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:5
+msgid "Add an item to quick settings"
+msgstr "Tez sozlamalarga element qo'shing"
+
+#. translators:
+#. * The device has been disabled
+#: subprojects/gvc/gvc-mixer-control.c:1872
+msgid "Disabled"
+msgstr "O’chirilgan"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1879
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u Chiqish"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1889
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u kiritish"
+
+#: subprojects/gvc/gvc-mixer-control.c:2872
+msgid "System Sounds"
+msgstr "Tizim tovushlari"
