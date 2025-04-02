@@ -866,13 +866,6 @@ class BreakDispatcher extends GObject.Object {
     _brightnessEffectOn() {
         // the effect value is in the range [0, 255] with 127 as the ‘no change’ mid-point
         const startVal = 127;
-        const startColor = new Cogl.Color({
-            red: startVal,
-            green: startVal,
-            blue: startVal,
-            alpha: 255,
-        });
-
         const finishVal = 127 * BRIGHTNESS_FACTOR;
         const finishColor = new Cogl.Color({
             red: finishVal,
@@ -881,7 +874,7 @@ class BreakDispatcher extends GObject.Object {
             alpha: 255,
         });
 
-        this._brightnessEffect.brightness = startColor;
+        this._brightnessEffect.set_brightness(startVal);
         this._brightnessEffect.set_enabled(true);
 
         Main.layoutManager.uiGroup.ease_property(
