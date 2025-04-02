@@ -950,7 +950,7 @@ class BreakNotificationSource extends GObject.Object {
         }
 
         if (this._notification === null) {
-            this._notification = new BreakNotification(this._source, this._manager);
+            this._notification = new BreakNotification(this._source, this._manager, this._app);
             this._notification.connect('destroy', () => (this._notification = null));
         }
 
@@ -1306,18 +1306,24 @@ const BreakNotification = GObject.registerClass({
             false),
     },
 }, class BreakNotification extends MessageTray.Notification {
-    constructor(source, manager) {
+    constructor(source, manager, app) {
         super({
             source,
             resident: true,
         });
 
         this._manager = manager;
+        this._app = app;
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._delayAction = null;
         this._skipAction = null;
         this._takeAction = null;
+    }
+
+    activate() {
+        this._app.activate();
+        super.activate();
     }
 
     _onDestroy(_notification, destroyedReason) {
