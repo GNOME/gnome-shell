@@ -1100,6 +1100,7 @@ class BreakNotificationSource extends GObject.Object {
                                 title: titleText,
                                 body: bodyText,
                                 sound: null,
+                                urgency: this._urgencyForBreakType(nextBreakType),
                                 allowDelay: true,
                                 allowSkip: true,
                                 allowTake: false,
@@ -1228,10 +1229,12 @@ class BreakNotificationSource extends GObject.Object {
                     title: titleText,
                     body: bodyText,
                     sound: null,
+                    urgency: this._urgencyForBreakType(nextBreakType),
                     allowDelay: true,
                     allowSkip: false,
                     allowTake: true,
                 });
+                this._source.addNotification(this._notification);
 
                 this._scheduleUpdateState(BREAK_OVERDUE_TIME_SECONDS);
             } else if (breakDueAgo >= BREAK_OVERDUE_TIME_SECONDS &&
@@ -1248,10 +1251,12 @@ class BreakNotificationSource extends GObject.Object {
                     title: _('Break Overdue'),
                     body: bodyText,
                     sound: null,
+                    urgency: this._urgencyForBreakType(nextBreakType),
                     allowDelay: true,
                     allowSkip: false,
                     allowTake: true,
                 });
+                this._source.addNotification(this._notification);
 
                 this._scheduleUpdateState(updateTimeoutSeconds);
             } else if (this._previousState === BreakState.IN_BREAK) {
@@ -1268,17 +1273,14 @@ class BreakNotificationSource extends GObject.Object {
                     title: _('Break Interrupted'),
                     body: bodyText,
                     sound: null,
+                    urgency: this._urgencyForBreakType(nextBreakType),
                     allowDelay: false,
                     allowSkip: false,
                     allowTake: false,
                 });
+                this._source.addNotification(this._notification);
 
                 this._scheduleUpdateState(updateTimeoutSeconds);
-            }
-
-            if (this._notification) {
-                this._notification.urgency = this._urgencyForBreakType(this._manager.currentBreakType);
-                this._source.addNotification(this._notification);
             }
 
             break;
