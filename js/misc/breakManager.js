@@ -1190,11 +1190,11 @@ class BreakNotificationSource extends GObject.Object {
             if ((this._previousState === BreakState.ACTIVE ||
                  this._previousState === BreakState.DISABLED) &&
                 breakDueAgo < BREAK_OVERDUE_TIME_SECONDS) {
-                const durationSecs = this._manager.getDurationForBreakType(this._manager.currentBreakType);
+                const durationSecs = this._manager.getDurationForBreakType(nextBreakType);
                 const [durationText, durationValue, unused] = this._formatTimeSpan(durationSecs);
 
                 let titleText, bodyText;
-                switch (this._manager.currentBreakType) {
+                switch (nextBreakType) {
                 case 'movement':
                     titleText = _('Time for a Movement Break');
                     bodyText = Gettext.ngettext(
@@ -1255,7 +1255,7 @@ class BreakNotificationSource extends GObject.Object {
 
                 this._scheduleUpdateState(updateTimeoutSeconds);
             } else if (this._previousState === BreakState.IN_BREAK) {
-                const durationSecs = this._manager.getDurationForBreakType(this._manager.currentBreakType);
+                const durationSecs = this._manager.getDurationForBreakType(nextBreakType);
                 const [countdownText, countdownValue, updateTimeoutSeconds] = this._formatTimeSpan(durationSecs - breakDueAgo);
                 const bodyText = Gettext.ngettext(
                     /* %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour” */
