@@ -28,6 +28,10 @@ class Application extends Adw.Application {
 
     vfunc_activate() {
         this._extensionManager.checkForUpdates();
+
+        if (!this._window)
+            this._window = new ExtensionsWindow({application: this});
+
         this._window.present();
     }
 
@@ -37,14 +41,12 @@ class Application extends Adw.Application {
         this.add_action_entries(
             [{
                 name: 'quit',
-                activate: () => this._window.close(),
+                activate: () => this._window?.close(),
             }]);
 
         this.set_accels_for_action('app.quit', ['<Primary>q']);
 
         this._extensionManager = new ExtensionManager();
-
-        this._window = new ExtensionsWindow({application: this});
     }
 });
 
