@@ -812,7 +812,7 @@ class CalendarMessageList extends St.Widget {
             label: _('Clear'),
             can_focus: true,
             x_expand: true,
-            x_align: Clutter.ActorAlign.END,
+            x_align: Clutter.ActorAlign.START,
             accessible_name: C_('action', 'Clear all notifications'),
         });
         this._clearButton.connect('clicked', () => {
