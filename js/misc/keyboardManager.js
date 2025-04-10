@@ -55,7 +55,7 @@ class KeyboardManager {
         this._currentKeymap = null;
     }
 
-    _applyLayoutGroup(group) {
+    async _applyLayoutGroup(group) {
         let options = this._buildOptionsString();
         let [layouts, variants] = this._buildGroupStrings(group);
         let model = this._xkbModel;
@@ -68,11 +68,16 @@ class KeyboardManager {
             return;
 
         this._currentKeymap = {layouts, variants, options, model};
-        global.backend.set_keymap(layouts, variants, options, model);
+        await global.backend.set_keymap_async(layouts, variants, options, model, null);
     }
 
-    _applyLayoutGroupIndex(idx) {
-        global.backend.lock_layout_group(idx);
+    async _applyLayoutGroupIndex(idx) {
+        await global.backend.set_keymap_layout_group_async(idx, null);
+    }
+
+    async _doApply(info) {
+        await this._applyLayoutGroup(info.group);
+        await this._applyLayoutGroupIndex(info.groupIndex);
     }
 
     apply(id) {
@@ -82,10 +87,9 @@ class KeyboardManager {
 
         if (this._current && this._current.group === info.group) {
             if (this._current.groupIndex !== info.groupIndex)
-                this._applyLayoutGroupIndex(info.groupIndex);
+                this._applyLayoutGroupIndex(info.groupIndex).catch(logError);
         } else {
-            this._applyLayoutGroup(info.group);
-            this._applyLayoutGroupIndex(info.groupIndex);
+            this._doApply(info).catch(logError);
         }
 
         this._current = info;
@@ -95,8 +99,7 @@ class KeyboardManager {
         if (!this._current)
             return;
 
-        this._applyLayoutGroup(this._current.group);
-        this._applyLayoutGroupIndex(this._current.groupIndex);
+        this._doApply(this._current).catch(logError);
     }
 
     setUserLayouts(ids) {
