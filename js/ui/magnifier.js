@@ -1284,7 +1284,7 @@ class ZoomRegion {
         this._clearScrollContentsTimer();
         this._scrollContentsTimerId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, POINTER_REST_TIME, () => {
             this._followingCursor = false;
-            if (this._xDelayed !== null && this._yDelayed !== null) {
+            if (this._xDelayed != null && this._yDelayed != null) {
                 this._scrollContentsToDelayed(this._xDelayed, this._yDelayed);
                 this._xDelayed = null;
                 this._yDelayed = null;
