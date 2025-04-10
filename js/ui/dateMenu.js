@@ -744,6 +744,7 @@ class MessagesIndicator extends St.Icon {
     _init() {
         super._init({
             style_class: 'messages-indicator',
+            icon_name: 'message-indicator-symbolic',
             visible: false,
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
@@ -792,11 +793,8 @@ class MessagesIndicator extends St.Icon {
     }
 
     _sync() {
-        let doNotDisturb = !this._settings.get_boolean('show-banners');
-        this.icon_name = doNotDisturb
-            ? 'notifications-disabled-symbolic'
-            : 'message-indicator-symbolic';
-        this.visible = doNotDisturb || this._count > 0;
+        const doNotDisturb = !this._settings.get_boolean('show-banners');
+        this.visible = !doNotDisturb && this._count > 0;
     }
 });
 
