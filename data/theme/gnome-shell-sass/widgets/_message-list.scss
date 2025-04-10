@@ -46,20 +46,6 @@
   padding-bottom: $base_padding;
   spacing: $base_padding;
   @extend %heading;
-
-  .dnd-button {
-    // We need this because the focus outline isn't inset like for the buttons
-    // so the dnd button would grow when it gets focus if we didn't change only
-    // its color when focusing.
-    border-width: 2px;
-    border-color: transparent;
-    border-radius: 32px;
-    border-style: solid;
-
-    &:focus {
-      border-color: st-transparentize(-st-accent-color, 0.4);
-    }
-  }
 }
 
 // message notification group

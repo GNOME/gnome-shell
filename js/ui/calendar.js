@@ -6,7 +6,6 @@ import Shell from 'gi://Shell';
 import St from 'gi://St';
 
 import * as MessageList from './messageList.js';
-import * as PopupMenu from './popupMenu.js';
 import {ensureActorVisibleInScrollView} from '../misc/animationUtils.js';
 
 import {formatDateWithCFormatString} from '../misc/dateUtils.js';
@@ -776,26 +775,6 @@ class Placeholder extends St.BoxLayout {
     }
 });
 
-const DoNotDisturbSwitch = GObject.registerClass(
-class DoNotDisturbSwitch extends PopupMenu.Switch {
-    _init() {
-        this._settings = new Gio.Settings({
-            schema_id: 'org.gnome.desktop.notifications',
-        });
-
-        super._init(this._settings.get_boolean('show-banners'));
-
-        this._settings.bind('show-banners',
-            this, 'state',
-            Gio.SettingsBindFlags.INVERT_BOOLEAN);
-
-        this.connect('destroy', () => {
-            Gio.Settings.unbind(this, 'state');
-            this._settings = null;
-        });
-    }
-});
-
 export const CalendarMessageList = GObject.registerClass(
 class CalendarMessageList extends St.Widget {
     constructor() {
@@ -827,26 +806,6 @@ class CalendarMessageList extends St.Widget {
 
         let hbox = new St.BoxLayout({style_class: 'message-list-controls'});
         box.add_child(hbox);
-
-        const dndLabel = new St.Label({
-            text: _('Do Not Disturb'),
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-        hbox.add_child(dndLabel);
-
-        this._dndSwitch = new DoNotDisturbSwitch();
-        this._dndButton = new St.Button({
-            style_class: 'dnd-button',
-            can_focus: true,
-            toggle_mode: true,
-            child: this._dndSwitch,
-            label_actor: dndLabel,
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-        this._dndSwitch.bind_property('state',
-            this._dndButton, 'checked',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE);
-        hbox.add_child(this._dndButton);
 
         this._clearButton = new St.Button({
             style_class: 'message-list-clear-button button',
