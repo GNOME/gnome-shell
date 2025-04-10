@@ -44,6 +44,10 @@
   padding-bottom: $base_padding;
   spacing: $base_padding;
   @extend %heading;
+
+  .message-list-clear-button {
+    border-radius: $forced_circular_radius;
+  }
 }
 
 // message notification group
