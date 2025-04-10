@@ -146,6 +146,7 @@
     <file>ui/status/brightness.js</file>
     <file>ui/status/camera.js</file>
     <file>ui/status/darkMode.js</file>
+    <file>ui/status/doNotDisturb.js</file>
     <file>ui/status/dwellClick.js</file>
     <file>ui/status/keyboard.js</file>
     <file>ui/status/location.js</file>
