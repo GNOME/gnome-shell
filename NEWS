@@ -1,3 +1,22 @@
+48.1
+====
+* Fix glitch in sliders when close to maximum [Sebastian; !3648]
+* Fix detecting suspend/resume for time tracking [Sebastian; !3679]
+* Fix wrongly sized images with fractional scaling [Jonas; !3680]
+* Fix frozen cursor when using magnifier in push mode [Jerome; !3688]
+* Fix session button on login screen after wrong password [Florian; !3638]
+* Misc. bug fixes and cleanups [Florian, Philip, Balló, Andy; !3673,
+  !3675, !3685, !3676, !3689, !3687, !3641, !3694, !3684, !3672]
+
+Contributors:
+  Jerome Brenier, Jonas Dreßler, Balló György, Andy Holmes, Sebastian Keller,
+  Florian Müllner, Vasil Pupkin, Baxrom Raxmatov, Philip Withnall
+
+Translators:
+  Vasil Pupkin [be@latin], Daniel Mustieles [es], Antonio Marin [ro],
+  Danial Behzadi [fa], Jose Riha [sk], Cheng-Chia Tseng [zh_TW],
+  Danial Behzadi [fa], Jose Riha [sk], Cheng-Chia Tseng [zh_TW],
+
 48.0
 ====
 * Fix ibus candidate popup position [Peng; !3659]
