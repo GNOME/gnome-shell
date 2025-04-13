@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-11-29 06:28+0000\n"
-"PO-Revision-Date: 2025-01-11 10:37+0100\n"
+"POT-Creation-Date: 2025-04-12 18:22+0000\n"
+"PO-Revision-Date: 2025-04-13 08:11+0100\n"
 "Last-Translator: ButterflyOfFire <butterflyoffire@protonmail.com>\n"
 "Language-Team: Kabyle\n"
 "Language: kab\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
-"X-Generator: Gtranslator 47.1\n"
+"X-Generator: Gtranslator 48.0\n"
 "X-DL-Team: kab\n"
 "X-DL-Module: gnome-shell\n"
 "X-DL-Branch: main\n"
@@ -102,31 +102,32 @@ msgid "Open new window of pinned app 9"
 msgstr ""
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2272
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2275
 msgid "Screenshots"
 msgstr "Tuṭṭfiwin n wegdil"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:287
+#: data/org.gnome.shell.gschema.xml.in:267
 msgid "Take a screenshot interactively"
 msgstr ""
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:299
+#: data/org.gnome.shell.gschema.xml.in:279
 msgid "Take a screenshot"
 msgstr "Ṭṭef agdil"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:295
+#: data/org.gnome.shell.gschema.xml.in:275
 msgid "Take a screenshot of a window"
 msgstr "Ddem tuṭṭfa n ugdil n usfaylu"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:291
+#: data/org.gnome.shell.gschema.xml.in:271
 msgid "Record a screencast interactively"
 msgstr ""
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1308
+#: data/50-gnome-shell-system.xml:6
+#: data/X-GNOME-Shell-System.directory.desktop.in:3 js/ui/messageTray.js:1307
 msgid "System"
 msgstr "Anagraw"
 
@@ -227,42 +228,42 @@ msgid ""
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:65
+#: data/org.gnome.shell.gschema.xml.in:67
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:66
+#: data/org.gnome.shell.gschema.xml.in:68
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:73
+#: data/org.gnome.shell.gschema.xml.in:75
 msgid "History for command (Alt-F2) dialog"
 msgstr ""
 
 #. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
-#: data/org.gnome.shell.gschema.xml.in:78
+#: data/org.gnome.shell.gschema.xml.in:80
 msgid "History for the looking glass dialog"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:82
+#: data/org.gnome.shell.gschema.xml.in:84
 msgid "Always show the “Log Out” action in the system menu"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:83
+#: data/org.gnome.shell.gschema.xml.in:85
 msgid ""
 "This key overrides the automatic hiding of the “Log out” action in the "
 "system menu for logged-in situations where there is a single, local, non-"
 "system user and only a single available session type (e.g. GNOME on Wayland)."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:92
+#: data/org.gnome.shell.gschema.xml.in:94
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:93
+#: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -270,22 +271,22 @@ msgid ""
 "state of the checkbox."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:102
+#: data/org.gnome.shell.gschema.xml.in:104
 msgid "The last selected non-default power profile"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:103
+#: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
 "toggling between two profiles, this key records the last selected non-"
 "default profile."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:111
+#: data/org.gnome.shell.gschema.xml.in:113
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:112
+#: data/org.gnome.shell.gschema.xml.in:114
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -293,11 +294,11 @@ msgid ""
 "be used to effectively disable the dialog."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:125
 msgid "Layout of the app picker"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:146
+#: data/org.gnome.shell.gschema.xml.in:126
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -305,181 +306,181 @@ msgid ""
 "as 'data': • “position”: the position of the application icon in the page"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:165
-#: data/org.gnome.shell.gschema.xml.in:172
+#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:152
 msgid "Keybinding to shift between overview states"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:146
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:159
 msgid "Keybinding to open the “Show Applications” view"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:180
+#: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid "Keybinding to open the overview"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:168
 msgid "Keybinding to open the Activities Overview."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:194
+#: data/org.gnome.shell.gschema.xml.in:174
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:195
+#: data/org.gnome.shell.gschema.xml.in:175
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:201
+#: data/org.gnome.shell.gschema.xml.in:181
 msgid "Keybinding to toggle the quick settings menu"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:182
 msgid "Keybinding to toggle the quick settings menu."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to focus the active notification"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:209
+#: data/org.gnome.shell.gschema.xml.in:189
 msgid "Keybinding to focus the active notification."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:215
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Switch to application 1"
 msgstr "Senfel s asnas 1"
 
-#: data/org.gnome.shell.gschema.xml.in:219
+#: data/org.gnome.shell.gschema.xml.in:199
 msgid "Switch to application 2"
 msgstr "Senfel s asnas wis 2"
 
-#: data/org.gnome.shell.gschema.xml.in:223
+#: data/org.gnome.shell.gschema.xml.in:203
 msgid "Switch to application 3"
 msgstr "Senfel s asnas wis 3"
 
-#: data/org.gnome.shell.gschema.xml.in:227
+#: data/org.gnome.shell.gschema.xml.in:207
 msgid "Switch to application 4"
 msgstr "Senfel s asnas wis 4"
 
-#: data/org.gnome.shell.gschema.xml.in:231
+#: data/org.gnome.shell.gschema.xml.in:211
 msgid "Switch to application 5"
 msgstr "Senfel s asnas wis 5"
 
-#: data/org.gnome.shell.gschema.xml.in:235
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid "Switch to application 6"
 msgstr "Senfel s asnas wis 6"
 
-#: data/org.gnome.shell.gschema.xml.in:239
+#: data/org.gnome.shell.gschema.xml.in:219
 msgid "Switch to application 7"
 msgstr "Senfel s asnas wis 7"
 
-#: data/org.gnome.shell.gschema.xml.in:243
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Switch to application 8"
 msgstr "Senfel s asnas wis 8"
 
-#: data/org.gnome.shell.gschema.xml.in:247
+#: data/org.gnome.shell.gschema.xml.in:227
 msgid "Switch to application 9"
 msgstr "Senfel s asnas wis 9"
 
-#: data/org.gnome.shell.gschema.xml.in:251
+#: data/org.gnome.shell.gschema.xml.in:231
 msgid "Open a new instance of application 1"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:255
+#: data/org.gnome.shell.gschema.xml.in:235
 msgid "Open a new instance of application 2"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:239
 msgid "Open a new instance of application 3"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:263
+#: data/org.gnome.shell.gschema.xml.in:243
 msgid "Open a new instance of application 4"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:247
 msgid "Open a new instance of application 5"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:271
+#: data/org.gnome.shell.gschema.xml.in:251
 msgid "Open a new instance of application 6"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:275
+#: data/org.gnome.shell.gschema.xml.in:255
 msgid "Open a new instance of application 7"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:279
+#: data/org.gnome.shell.gschema.xml.in:259
 msgid "Open a new instance of application 8"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:263
 msgid "Open a new instance of application 9"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:308
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:288
+#: data/org.gnome.shell.gschema.xml.in:315
 msgid "Limit switcher to current workspace."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:309
+#: data/org.gnome.shell.gschema.xml.in:289
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:326
+#: data/org.gnome.shell.gschema.xml.in:306
 msgid "The application icon mode."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:327
+#: data/org.gnome.shell.gschema.xml.in:307
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
 "(shows only the application icon) or “both”."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:336
+#: data/org.gnome.shell.gschema.xml.in:316
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:346
+#: data/org.gnome.shell.gschema.xml.in:326
 msgid "Locations"
 msgstr "Adigen"
 
-#: data/org.gnome.shell.gschema.xml.in:347
+#: data/org.gnome.shell.gschema.xml.in:327
 msgid "The locations to show in world clocks"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:357
+#: data/org.gnome.shell.gschema.xml.in:337
 msgid "Automatic location"
 msgstr "Adeg s wudem awurman"
 
-#: data/org.gnome.shell.gschema.xml.in:358
+#: data/org.gnome.shell.gschema.xml.in:338
 msgid "Whether to fetch the current location or not"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:365
+#: data/org.gnome.shell.gschema.xml.in:345
 msgid "Location"
 msgstr "Adig"
 
-#: data/org.gnome.shell.gschema.xml.in:366
+#: data/org.gnome.shell.gschema.xml.in:346
 msgid "The location for which to show a forecast"
 msgstr ""
 
@@ -496,10 +497,8 @@ msgid "Network Login"
 msgstr "Tuqqna ɣer uẓeṭṭa"
 
 #: data/X-GNOME-Shell-Utilities.directory.desktop.in:3
-#, fuzzy
-#| msgid "Activities"
 msgid "Utilities"
-msgstr "Irmuden"
+msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
 #: subprojects/extensions-app/data/ui/extensions-window.ui:275
@@ -525,28 +524,28 @@ msgstr "Asebter agejdan"
 msgid "Visit extension homepage"
 msgstr "Rzu s asmel n useɣzef"
 
-#: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:466
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:113
+#: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
 #: js/ui/shellMountOperation.js:392
 msgid "Cancel"
 msgstr "Sefsex"
 
-#: js/gdm/authPrompt.js:321 js/ui/components/networkAgent.js:213
-#: js/ui/components/networkAgent.js:233 js/ui/components/networkAgent.js:265
-#: js/ui/components/networkAgent.js:298 js/ui/components/networkAgent.js:337
-#: js/ui/components/networkAgent.js:350 js/ui/components/polkitAgent.js:286
+#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
 #: js/ui/shellMountOperation.js:332
 msgid "Password"
 msgstr "Awal n uɛeddi"
 
-#: js/gdm/loginDialog.js:326
+#: js/gdm/loginDialog.js:328
 msgid "Choose Session"
 msgstr "Fren tiɣimit"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:424
+#: js/gdm/loginDialog.js:426
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -555,7 +554,7 @@ msgid ""
 msgstr ""
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:427
+#: js/gdm/loginDialog.js:429
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -563,7 +562,7 @@ msgid ""
 msgstr ""
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:430
+#: js/gdm/loginDialog.js:432
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -572,183 +571,177 @@ msgid ""
 msgstr ""
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:433
+#: js/gdm/loginDialog.js:435
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
 "you must log out from the session or force stop it."
 msgstr ""
 
-#: js/gdm/loginDialog.js:442
+#: js/gdm/loginDialog.js:444
 msgid "Session Already Running"
 msgstr ""
 
-#: js/gdm/loginDialog.js:454
+#: js/gdm/loginDialog.js:456
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
 msgstr ""
 
-#: js/gdm/loginDialog.js:474
+#: js/gdm/loginDialog.js:476
 msgid "Force Stop"
 msgstr "Ḥettem Aḥebbus"
 
-#: js/gdm/loginDialog.js:542
+#: js/gdm/loginDialog.js:554
 msgid "Not listed?"
 msgstr "Ur d-yettwabder ara?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1010
+#: js/gdm/loginDialog.js:1075
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(amedya, aseqdac neɣ %s)"
 
-#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:257
-#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:326
+#: js/gdm/loginDialog.js:1080 js/ui/components/networkAgent.js:258
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Isem n useqdac"
 
-#: js/gdm/loginDialog.js:1081
+#: js/gdm/loginDialog.js:1146
 msgid "Login Attempt Timed Out"
 msgstr ""
 
-#: js/gdm/loginDialog.js:1082
+#: js/gdm/loginDialog.js:1147
 msgid "Login took too long, please try again"
 msgstr ""
 
-#: js/gdm/loginDialog.js:1431
+#: js/gdm/loginDialog.js:1496
 msgid "Login Window"
 msgstr "Asfaylu n usesteb"
 
-#: js/gdm/util.js:496
+#: js/gdm/util.js:498
 msgid "Authentication error"
 msgstr "Tuccḍa deg usesteb"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:727
+#: js/gdm/util.js:729
 msgid "(or swipe finger across reader)"
 msgstr ""
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:732
+#: js/gdm/util.js:734
 msgid "(or place finger on reader)"
 msgstr ""
 
-#: js/misc/breakManager.js:765
+#: js/misc/breakManager.js:770
 msgid "Break complete sound"
 msgstr ""
 
-#: js/misc/breakManager.js:957
+#: js/misc/breakManager.js:980
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/misc/breakManager.js:963
-#, fuzzy, javascript-format
-#| msgid "%d minute ago"
-#| msgid_plural "%d minutes ago"
+#: js/misc/breakManager.js:986
+#, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
-msgstr[0] "%d n tesdidt aya"
-msgstr[1] "%d n tesdatin aya"
+msgstr[0] "%d n tesdidt"
+msgstr[1] "%d n tesdatin"
 
-#: js/misc/breakManager.js:969
-#, fuzzy, javascript-format
-#| msgid "%d hour ago"
-#| msgid_plural "%d hours ago"
+#: js/misc/breakManager.js:992
+#, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
-msgstr[0] "%d n usrag aya"
-msgstr[1] "%d n yisragen aya"
+msgstr[0] "%d n usrag"
+msgstr[1] "%d n yesragen"
 
-#: js/misc/breakManager.js:975
-#, fuzzy, javascript-format
-#| msgid "%d day ago"
-#| msgid_plural "%d days ago"
+#: js/misc/breakManager.js:998
+#, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
-msgstr[0] "%d n wass aya"
-msgstr[1] "%d n wussan aya"
+msgstr[0] "%d n wass"
+msgstr[1] "%d n wussan"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1058
+#: js/misc/breakManager.js:1081
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/misc/breakManager.js:1066
+#: js/misc/breakManager.js:1089
 msgid "Movement Break Soon"
 msgstr ""
 
-#: js/misc/breakManager.js:1069
+#: js/misc/breakManager.js:1092
 msgid "Eyesight Break Soon"
 msgstr ""
 
-#: js/misc/breakManager.js:1072
+#: js/misc/breakManager.js:1095
 msgid "Break Soon"
 msgstr ""
 
-#: js/misc/breakManager.js:1116
+#: js/misc/breakManager.js:1140
 msgid "Movement Break in Progress"
 msgstr ""
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1119
+#: js/misc/breakManager.js:1143
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/misc/breakManager.js:1125
+#: js/misc/breakManager.js:1149
 msgid "Eyesight Break in Progress"
 msgstr ""
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1128
+#: js/misc/breakManager.js:1152
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/misc/breakManager.js:1134
+#: js/misc/breakManager.js:1158
 msgid "Break in Progress"
 msgstr ""
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1137
+#: js/misc/breakManager.js:1161
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/misc/breakManager.js:1176
+#: js/misc/breakManager.js:1200
 msgid "Time for a Movement Break"
 msgstr ""
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1179
+#: js/misc/breakManager.js:1203
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/misc/breakManager.js:1185
+#: js/misc/breakManager.js:1209
 msgid "Time for an Eyesight Break"
 msgstr ""
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1188
+#: js/misc/breakManager.js:1212
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -757,12 +750,12 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/misc/breakManager.js:1194
+#: js/misc/breakManager.js:1218
 msgid "Time for a Break"
 msgstr ""
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1197
+#: js/misc/breakManager.js:1221
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -770,44 +763,44 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1219
+#: js/misc/breakManager.js:1245
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/misc/breakManager.js:1225
+#: js/misc/breakManager.js:1251
 msgid "Break Overdue"
 msgstr ""
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1239
+#: js/misc/breakManager.js:1267
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/misc/breakManager.js:1245
+#: js/misc/breakManager.js:1273
 msgid "Break Interrupted"
 msgstr ""
 
-#: js/misc/breakManager.js:1316
+#: js/misc/breakManager.js:1350
 msgid "Delay"
 msgstr ""
 
-#: js/misc/breakManager.js:1337 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1371 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Zgel"
 
-#: js/misc/breakManager.js:1358
+#: js/misc/breakManager.js:1392
 msgid "Take"
 msgstr ""
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1421
+#: js/misc/breakManager.js:1455
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -829,12 +822,12 @@ msgstr "asnusay;sens;ḥbes;sexsi;stop"
 #: js/misc/systemActions.js:99
 msgctxt "search-result"
 msgid "Restart"
-msgstr "Ales asenker"
+msgstr "Ales asekker"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
 #: js/misc/systemActions.js:102
 msgid "reboot;restart;"
-msgstr "ales asenker;reboot"
+msgstr "ales asenker;asekker;reboot"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:107
@@ -906,17 +899,34 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Sekkeṛ tuzzya n ugdil"
 
+#: js/misc/timeLimitsManager.js:338
+msgid "GNOME needs to save screen time data"
+msgstr ""
+
+#: js/misc/timeLimitsManager.js:1102
+#, javascript-format
+msgid "Screen Time Limit in %d Minute"
+msgid_plural "Screen Time Limit in %d Minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/misc/timeLimitsManager.js:1109
+msgid "Your screen time limit is approaching"
+msgstr ""
+
+#: js/misc/timeLimitsManager.js:1123
+msgid "Screen Time Limit Reached"
+msgstr ""
+
+#: js/misc/timeLimitsManager.js:1124
+msgid "It’s time to stop using the device"
+msgstr ""
+
 #: js/misc/util.js:130
 msgid "Command not found"
 msgstr "Ulac taladna"
 
-#. Replace "Error invoking GLib.shell_parse_argv: " with
-#. something nicer
-#: js/misc/util.js:170
-msgid "Could not parse command:"
-msgstr ""
-
-#: js/misc/util.js:178
+#: js/misc/util.js:168
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr ""
@@ -937,11 +947,11 @@ msgstr[1] "%d n tesdatin aya"
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d n usrag aya"
-msgstr[1] "%d n yisragen aya"
+msgstr[1] "%d n yesragen aya"
 
 #: js/misc/dateUtils.js:85 js/ui/dateMenu.js:183
 msgid "Yesterday"
-msgstr "Iḍeli"
+msgstr "Iḍelli"
 
 #: js/misc/dateUtils.js:88
 #, javascript-format
@@ -1067,7 +1077,7 @@ msgstr "Aggi"
 msgid "Allow"
 msgstr "Sireg"
 
-#: js/ui/appDisplay.js:1766
+#: js/ui/appDisplay.js:1762
 msgid "Unnamed Folder"
 msgstr "Akaram war isem"
 
@@ -1081,7 +1091,7 @@ msgstr ""
 msgid "%s has been unpinned from the dash."
 msgstr ""
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:290
+#: js/ui/appFavorites.js:208 js/ui/main.js:309
 msgid "Undo"
 msgstr "Sefsex"
 
@@ -1104,7 +1114,7 @@ msgstr "Ffeɣ"
 
 #: js/ui/appMenu.js:160 js/ui/dash.js:248
 msgid "Unpin"
-msgstr ""
+msgstr "Kkes anṭaḍ"
 
 #: js/ui/appMenu.js:161
 msgid "Pin to Dash"
@@ -1151,7 +1161,7 @@ msgid "Settings"
 msgstr "Iɣewwaṛen"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:37
+#: js/ui/calendar.js:33
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -1161,43 +1171,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:63
+#: js/ui/calendar.js:59
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Ac"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:65
+#: js/ui/calendar.js:61
 msgctxt "grid monday"
 msgid "M"
 msgstr "Ar"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:67
+#: js/ui/calendar.js:63
 msgctxt "grid tuesday"
 msgid "T"
-msgstr "Am"
+msgstr "Ar"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:69
+#: js/ui/calendar.js:65
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ah"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:67
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Amh"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:73
+#: js/ui/calendar.js:69
 msgctxt "grid friday"
 msgid "F"
 msgstr "Sm"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:75
+#: js/ui/calendar.js:71
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Sd"
@@ -1208,7 +1218,7 @@ msgstr "Sd"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:426
+#: js/ui/calendar.js:422
 msgid "%OB"
 msgstr "%OB"
 
@@ -1221,41 +1231,41 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:436
+#: js/ui/calendar.js:432
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:498
+#: js/ui/calendar.js:494
 msgid "Previous month"
 msgstr "Ayyur yezrin"
 
-#: js/ui/calendar.js:516
+#: js/ui/calendar.js:512
 msgid "Next month"
 msgstr "Ayyur d-itteddun"
 
-#: js/ui/calendar.js:667
+#: js/ui/calendar.js:663
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:726
+#: js/ui/calendar.js:722
 msgid "Week %V"
 msgstr "Amalas wis %V"
 
-#: js/ui/calendar.js:918
+#: js/ui/calendar.js:774
 msgid "No Notifications"
 msgstr "Ulac tilɣa"
 
-#: js/ui/calendar.js:974
+#: js/ui/calendar.js:832
 msgid "Do Not Disturb"
 msgstr "Ur ttcewwil ara"
 
-#: js/ui/calendar.js:995
+#: js/ui/calendar.js:853
 msgid "Clear"
 msgstr "Sfeḍ"
 
-#: js/ui/calendar.js:999
+#: js/ui/calendar.js:857
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Sfeḍ akk ilɣa"
@@ -1311,75 +1321,75 @@ msgstr ""
 msgid "Open with %s"
 msgstr "Ldi s %s"
 
-#: js/ui/components/networkAgent.js:95
+#: js/ui/components/networkAgent.js:96
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr ""
 
-#: js/ui/components/networkAgent.js:107 js/ui/status/bluetooth.js:246
+#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
 msgid "Connect"
 msgstr "Qqen"
 
-#: js/ui/components/networkAgent.js:222
+#: js/ui/components/networkAgent.js:223
 msgid "Key"
 msgstr "Tasarutt"
 
-#: js/ui/components/networkAgent.js:273 js/ui/components/networkAgent.js:312
+#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
 msgid "Private key password"
 msgstr ""
 
-#: js/ui/components/networkAgent.js:306
+#: js/ui/components/networkAgent.js:307
 msgid "Identity"
 msgstr "Tamagit"
 
-#: js/ui/components/networkAgent.js:332
+#: js/ui/components/networkAgent.js:333
 msgid "Service"
 msgstr "Ameẓlu"
 
-#: js/ui/components/networkAgent.js:370 js/ui/components/networkAgent.js:406
-#: js/ui/components/networkAgent.js:743 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
 msgid "Authentication required"
 msgstr "Illaq usesteb"
 
-#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:744
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr ""
 
-#: js/ui/components/networkAgent.js:375 js/ui/components/networkAgent.js:748
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
 msgstr ""
 
-#: js/ui/components/networkAgent.js:378
+#: js/ui/components/networkAgent.js:379
 msgid "Network name"
-msgstr "Isem n uzeḍḍa"
+msgstr "Isem n uzeṭṭa"
 
-#: js/ui/components/networkAgent.js:386 js/ui/components/networkAgent.js:752
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
 msgid "DSL authentication"
 msgstr "Asesteb DSL"
 
-#: js/ui/components/networkAgent.js:393 js/ui/components/networkAgent.js:757
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
 msgid "PIN code required"
 msgstr "Tangalt PIN tettwasra"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:758
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
 msgid "PIN code is needed for the mobile broadband device"
 msgstr ""
 
-#: js/ui/components/networkAgent.js:396
+#: js/ui/components/networkAgent.js:397
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:749
-#: js/ui/components/networkAgent.js:753 js/ui/components/networkAgent.js:765
-#: js/ui/components/networkAgent.js:769
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
 #, javascript-format
 msgid "A password is required to connect to “%s”"
 msgstr "Awal n uɛeddi yettwasra i tuqqna ɣer “%s”"
 
-#: js/ui/components/networkAgent.js:768
+#: js/ui/components/networkAgent.js:770
 msgid "VPN password"
 msgstr "Awal n uɛeddi VPN"
 
@@ -1486,10 +1496,8 @@ msgid "Loading…"
 msgstr "Asali…"
 
 #: js/ui/dateMenu.js:712
-#, fuzzy
-#| msgid "More Information"
 msgid "Go Online for Weather Information"
-msgstr "Ugar n yisallen"
+msgstr "Ddu ɣer Internet i yisalan n tegnawt"
 
 #: js/ui/dateMenu.js:714
 msgid "Weather Information Unavailable"
@@ -1500,10 +1508,8 @@ msgid "Weather"
 msgstr "Tignewt"
 
 #: js/ui/dateMenu.js:726
-#, fuzzy
-#| msgid "Select weather location…"
 msgid "Select Weather Location…"
-msgstr "Fren adeg n tegnawt…"
+msgstr "Fren adig n tegnawt…"
 
 #: js/ui/endSessionDialog.js:47
 #, javascript-format
@@ -1517,22 +1523,18 @@ msgid "Log Out"
 msgstr "Mdel Tiɣimit"
 
 #: js/ui/endSessionDialog.js:51
-#, fuzzy, javascript-format
-#| msgid "The system will power off automatically in %d second."
-#| msgid_plural "The system will power off automatically in %d seconds."
+#, javascript-format
 msgid "%s will be logged out automatically in %d second"
 msgid_plural "%s will be logged out automatically in %d seconds"
-msgstr[0] "Anagraw ad yexsi s wudem awurman di %d n tasint."
-msgstr[1] "Anagraw ad yexsi s wudem awurman di %d n tasinin."
+msgstr[0] "%s ad yeffeɣ s wudem awurman deg %d n tasint"
+msgstr[1] "%s ad yeffeɣ s wudem awurman deg %d n tasinin"
 
 #: js/ui/endSessionDialog.js:57
-#, fuzzy, javascript-format
-#| msgid "The system will power off automatically in %d second."
-#| msgid_plural "The system will power off automatically in %d seconds."
+#, javascript-format
 msgid "You will be logged out automatically in %d second"
 msgid_plural "You will be logged out automatically in %d seconds"
-msgstr[0] "Anagraw ad yexsi s wudem awurman di %d n tasint."
-msgstr[1] "Anagraw ad yexsi s wudem awurman di %d n tasinin."
+msgstr[0] "Ad sensereḍ tuqqna s wudem awurman deg %d n tasint"
+msgstr[1] "Ad sensereḍ tuqqna s wudem awurman deg %d n tasinin"
 
 #: js/ui/endSessionDialog.js:64
 msgctxt "button"
@@ -1550,13 +1552,11 @@ msgid "Install Updates & Power Off"
 msgstr "Sbedd ileqman sakin sens aselkim"
 
 #: js/ui/endSessionDialog.js:74
-#, fuzzy, javascript-format
-#| msgid "The system will power off automatically in %d second."
-#| msgid_plural "The system will power off automatically in %d seconds."
+#, javascript-format
 msgid "The system will power off automatically in %d second"
 msgid_plural "The system will power off automatically in %d seconds"
-msgstr[0] "Anagraw ad yexsi s wudem awurman di %d n tasint."
-msgstr[1] "Anagraw ad yexsi s wudem awurman di %d n tasinin."
+msgstr[0] "Anagraw ad yexsi s wudem awurman di %d n tasint"
+msgstr[1] "Anagraw ad yexsi s wudem awurman di %d n tasinin"
 
 #: js/ui/endSessionDialog.js:78 js/ui/endSessionDialog.js:97
 msgctxt "checkbox"
@@ -1571,7 +1571,7 @@ msgstr "Sexsi"
 #: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Restart"
-msgstr "Ales asenker"
+msgstr "Ales asekker"
 
 #: js/ui/endSessionDialog.js:90
 msgctxt "title"
@@ -1579,18 +1579,16 @@ msgid "Install Updates & Restart"
 msgstr "Asbeddi n ileqman sakin talsa usekker n uselkim"
 
 #: js/ui/endSessionDialog.js:93
-#, fuzzy, javascript-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
+#, javascript-format
 msgid "The system will restart automatically in %d second"
 msgid_plural "The system will restart automatically in %d seconds"
-msgstr[0] "Anagraw ad yales tanekra s wudem awurman di %d n tasint."
-msgstr[1] "Anagraw ad yales tanekra s wudem awurman di %d n tasinin."
+msgstr[0] "Anagraw ad yales asekker s wudem awurman di %d n tasint"
+msgstr[1] "Anagraw ad yales asekker s wudem awurman di %d n tasinin"
 
 #: js/ui/endSessionDialog.js:101
 msgctxt "button"
 msgid "Restart"
-msgstr "Ales asenker"
+msgstr "Ales asekker"
 
 #: js/ui/endSessionDialog.js:109
 msgctxt "title"
@@ -1598,14 +1596,12 @@ msgid "Restart & Install Updates"
 msgstr "Ales asekker sakin sbedd ileqman"
 
 #: js/ui/endSessionDialog.js:112
-#, fuzzy, javascript-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
+#, javascript-format
 msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds"
-msgstr[0] "Anagraw ad yales tanekra s wudem awurman di %d n tasint."
-msgstr[1] "Anagraw ad yales tanekra s wudem awurman di %d n tasinin."
+msgstr[0] "Anagraw ad yales asekker s wudem awurman di %d n tasint"
+msgstr[1] "Anagraw ad yales asekker s wudem awurman di %d n tasinin"
 
 #: js/ui/endSessionDialog.js:119 js/ui/endSessionDialog.js:140
 msgctxt "button"
@@ -1760,107 +1756,105 @@ msgstr "Sens"
 msgid "Leave Off"
 msgstr "Anef-as yensa"
 
-#: js/ui/keyboard.js:180 js/ui/status/keyboard.js:899
+#: js/ui/keyboard.js:180 js/ui/status/keyboard.js:901
 msgid "Keyboard Settings"
 msgstr "Iɣewwaṛen n unasiw"
 
-#: js/ui/lookingGlass.js:727
+#: js/ui/lookingGlass.js:742
 msgid "No extensions installed"
 msgstr "Ulac iseɣzaf yettwasbedden"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:788
+#: js/ui/lookingGlass.js:805
 #, javascript-format
 msgid "%s has not emitted any errors"
 msgstr ""
 
-#: js/ui/lookingGlass.js:794
+#: js/ui/lookingGlass.js:811
 msgid "Hide Errors"
 msgstr "Ffer tuccḍiwin"
 
-#: js/ui/lookingGlass.js:798 js/ui/lookingGlass.js:875
+#: js/ui/lookingGlass.js:815 js/ui/lookingGlass.js:895
 msgid "Show Errors"
 msgstr "Sken tuccḍiwin"
 
-#: js/ui/lookingGlass.js:807
+#: js/ui/lookingGlass.js:824
 msgid "Active"
 msgstr ""
 
-#: js/ui/lookingGlass.js:810
+#: js/ui/lookingGlass.js:827
 msgid "Inactive"
 msgstr ""
 
-#: js/ui/lookingGlass.js:812
+#: js/ui/lookingGlass.js:829
 msgid "Error"
 msgstr "Tuccḍa"
 
-#: js/ui/lookingGlass.js:814
+#: js/ui/lookingGlass.js:831
 msgid "Out of date"
 msgstr "Yezri"
 
-#: js/ui/lookingGlass.js:816
+#: js/ui/lookingGlass.js:833
 msgid "Downloading"
 msgstr "Asider"
 
-#: js/ui/lookingGlass.js:818
+#: js/ui/lookingGlass.js:835
 msgid "Deactivating"
 msgstr ""
 
-#: js/ui/lookingGlass.js:820
+#: js/ui/lookingGlass.js:837
 msgid "Activating"
 msgstr ""
 
-#: js/ui/lookingGlass.js:853
+#: js/ui/lookingGlass.js:873
 msgid "View Source"
 msgstr "Wali aɣbalu"
 
-#: js/ui/lookingGlass.js:864
+#: js/ui/lookingGlass.js:884
 msgid "Web Page"
 msgstr "Asebtar Web"
 
-#: js/ui/main.js:286
+#: js/ui/main.js:305
 msgid "System was put in unsafe mode"
 msgstr ""
 
-#: js/ui/main.js:287
+#: js/ui/main.js:306
 msgid "Apps now have unrestricted access"
 msgstr ""
 
-#: js/ui/main.js:347
+#: js/ui/main.js:366
 msgid "Logged in as a privileged user"
 msgstr ""
 
-#: js/ui/main.js:348
+#: js/ui/main.js:367
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
 msgstr ""
 
-#: js/ui/main.js:396
+#: js/ui/main.js:415
 msgid "Screen Lock disabled"
 msgstr "Asekkeṛ n wegdil yensa"
 
-#: js/ui/main.js:397
-#, fuzzy
-#| msgid "Screen Locking requires the GNOME display manager."
+#: js/ui/main.js:416
 msgid "Screen Locking requires the GNOME display manager"
-msgstr "Asekkeṛ n wegdil yesra amsefrak n ubeqeḍ n GNOME."
+msgstr "Asekkeṛ n wegdil yesra amsefrak n ubeqeḍ n GNOME"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:374
+#: js/ui/messageList.js:409
 msgid "Unknown App"
 msgstr "Asnas arussin"
 
-#: js/ui/messageTray.js:326 js/ui/messageTray.js:328
+#: js/ui/messageTray.js:325 js/ui/messageTray.js:327
 msgid "Notification sound"
 msgstr "Imesli n tilɣa"
 
-#: js/ui/mpris.js:198
+#: js/ui/mpris.js:144
 msgid "Unknown artist"
 msgstr "Anaẓur arussin"
 
-#: js/ui/mpris.js:208
+#: js/ui/mpris.js:154
 msgid "Unknown title"
 msgstr "Azwel arussin"
 
@@ -1906,23 +1900,23 @@ msgstr ""
 msgid "Done"
 msgstr "Immed"
 
-#: js/ui/padOsd.js:726
+#: js/ui/padOsd.js:727
 msgid "Edit…"
 msgstr "Ẓreg…"
 
-#: js/ui/padOsd.js:773
+#: js/ui/padOsd.js:774
 msgid "None"
 msgstr "Ulac"
 
-#: js/ui/padOsd.js:844
+#: js/ui/padOsd.js:845
 msgid "Press a button to configure"
 msgstr "Ssed taqeffalt iwakken ad tsewleḍ"
 
-#: js/ui/padOsd.js:845
+#: js/ui/padOsd.js:846
 msgid "Press Esc to exit"
 msgstr "Ssed taqeffalt ESC iwakken ad teffɣeḍ"
 
-#: js/ui/padOsd.js:848
+#: js/ui/padOsd.js:849
 msgid "Press any key to exit"
 msgstr "Ssed taqeffalt menwala iwakken ad teffɣeḍ"
 
@@ -1941,7 +1935,7 @@ msgstr "Anagraw"
 msgid "Top Bar"
 msgstr "Afeggag n ufella"
 
-#: js/ui/quickSettings.js:189 js/ui/quickSettings.js:341
+#: js/ui/quickSettings.js:185 js/ui/quickSettings.js:340
 msgid "Open menu"
 msgstr "Ldi umuɣ"
 
@@ -1953,13 +1947,13 @@ msgstr ""
 msgid "Press ESC to close"
 msgstr "Ssed taqeffalt ESC iwakken ad tmedleḍ"
 
-#: js/ui/runDialog.js:241
+#: js/ui/runDialog.js:253
 msgid "Restart is not available on Wayland"
 msgstr ""
 
-#: js/ui/runDialog.js:246
+#: js/ui/runDialog.js:258
 msgid "Restarting…"
-msgstr "Tulsa n tnekra…"
+msgstr "Tulsa n usekker…"
 
 #: js/ui/screenShield.js:233
 msgid "GNOME needs to lock the screen"
@@ -2057,51 +2051,51 @@ msgid "Screencast ended unexpectedly"
 msgstr ""
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2325
+#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2330
 msgid "Screenshot"
 msgstr "Tuṭṭfiwin n ugdil"
 
 #. Translators: notification body when a screencast was recorded.
 #: js/ui/screenshot.js:2090
 msgid "Click here to view the video."
-msgstr ""
+msgstr "Tekki da akken ad twaliḍ tavidyut-nni."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2341
+#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2346
 msgid "Show in Files"
-msgstr "Sken-it-id deg yifuyla"
+msgstr "Sken-it-id deg ifuyla"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2285
+#: js/ui/screenshot.js:2288
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Tuṭṭfa n ugdil seg %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2331
+#: js/ui/screenshot.js:2336
 msgid "Screenshot captured"
 msgstr ""
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2333
+#: js/ui/screenshot.js:2338
 msgid "You can paste the image from the clipboard."
 msgstr ""
 
-#: js/ui/screenshot.js:2389 js/ui/screenshot.js:2553
+#: js/ui/screenshot.js:2397 js/ui/screenshot.js:2561
 msgid "Screenshot taken"
 msgstr "Tuṭṭfa n ugdil tedda"
 
-#: js/ui/search.js:829
+#: js/ui/search.js:832
 msgid "Searching…"
 msgstr "Anadi…"
 
-#: js/ui/search.js:831
+#: js/ui/search.js:834
 msgid "No results"
 msgstr "Ulac igmaḍ"
 
-#: js/ui/search.js:962
+#: js/ui/search.js:965
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2224,7 +2218,7 @@ msgstr "Tiqfallin n umumed"
 msgid "Accessibility Settings"
 msgstr ""
 
-#: js/ui/status/accessibility.js:140
+#: js/ui/status/accessibility.js:123
 msgid "Large Text"
 msgstr "Aḍris ahrawan"
 
@@ -2235,7 +2229,7 @@ msgstr "Tuzzya tawurmant"
 #: js/ui/status/backgroundApps.js:156
 msgctxt "title"
 msgid "Background Apps"
-msgstr ""
+msgstr "Isnasen deg ugilal"
 
 #: js/ui/status/backgroundApps.js:171
 msgid "Apps known to be running without a window"
@@ -2272,7 +2266,7 @@ msgstr "Tamecṭuḥt"
 msgid "High"
 msgstr "Tameqrant"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:881
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:883
 msgid "Keyboard"
 msgstr "Anasiw"
 
@@ -2281,35 +2275,35 @@ msgid "Disconnect"
 msgstr "Senser tuqqna"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:265 js/ui/status/network.js:354
+#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:354
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Senser tuqqna %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:356
+#: js/ui/status/bluetooth.js:269 js/ui/status/network.js:356
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Qqen ɣer %s"
 
-#: js/ui/status/bluetooth.js:274 js/ui/status/bluetooth.js:276
+#: js/ui/status/bluetooth.js:276 js/ui/status/bluetooth.js:278
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:299 js/ui/status/network.js:1909
+#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1909
 msgid "Bluetooth Settings"
 msgstr "Iɣewwaṛen n Bluetooth"
 
-#: js/ui/status/bluetooth.js:346
+#: js/ui/status/bluetooth.js:348
 msgid "No available or connected devices"
 msgstr ""
 
-#: js/ui/status/bluetooth.js:347
+#: js/ui/status/bluetooth.js:349
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Cεel Bluetooth akken ad teqqneḍ ɣer yibenkan"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:411
+#: js/ui/status/bluetooth.js:413
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2344,7 +2338,7 @@ msgstr "Asiti wis sin"
 msgid "Dwell Click"
 msgstr ""
 
-#: js/ui/status/keyboard.js:898
+#: js/ui/status/keyboard.js:900
 msgid "Show Keyboard Layout"
 msgstr "Sken taneɣruft n unasiw"
 
@@ -2513,7 +2507,7 @@ msgstr "Ḥbes di leεḍil"
 
 #: js/ui/status/system.js:181
 msgid "Restart…"
-msgstr "Ales asenker…"
+msgstr "Ales asekker…"
 
 #: js/ui/status/system.js:186
 msgid "Power Off…"
@@ -2567,7 +2561,7 @@ msgstr ""
 
 #: js/ui/status/volume.js:231
 msgid "Unmute"
-msgstr ""
+msgstr "Kkes asgugem"
 
 #: js/ui/status/volume.js:231
 msgid "Mute"
@@ -2615,23 +2609,23 @@ msgstr ""
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:378
+#: js/ui/unlockDialog.js:384
 msgid "%A %B %-d"
 msgstr "%A %-d %B"
 
-#: js/ui/unlockDialog.js:384
+#: js/ui/unlockDialog.js:390
 msgid "Swipe up to unlock"
 msgstr ""
 
-#: js/ui/unlockDialog.js:385
+#: js/ui/unlockDialog.js:391
 msgid "Click or press a key to unlock"
-msgstr ""
+msgstr "Sit neɣ tekki ɣef kra n tqeffalt akken ad teldiḍ"
 
-#: js/ui/unlockDialog.js:568
+#: js/ui/unlockDialog.js:576
 msgid "Unlock Window"
-msgstr ""
+msgstr "Serreḥ i wesfaylu"
 
-#: js/ui/unlockDialog.js:577
+#: js/ui/unlockDialog.js:585
 msgid "Log in as another user"
 msgstr ""
 
@@ -2687,8 +2681,6 @@ msgstr "%d × %d"
 
 #. Translators: entry in the window right click menu.
 #: js/ui/windowMenu.js:28
-#, fuzzy
-#| msgid "Take Screenshot"
 msgctxt "window-menu"
 msgid "Take Screenshot"
 msgstr "Ṭṭef-d agdil"
@@ -2777,21 +2769,21 @@ msgstr ""
 msgid "Force animations to be enabled"
 msgstr ""
 
-#: src/shell-app.c:253
+#: src/shell-app.c:267
 msgctxt "program"
 msgid "Unknown"
 msgstr "Arusin"
 
-#: src/shell-app.c:504
+#: src/shell-app.c:518
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Ur izmir ara ad yekker “%s”"
 
-#: src/shell-keyring-prompt.c:752
+#: src/shell-keyring-prompt.c:779
 msgid "Passwords do not match"
 msgstr "Awalen uffiren mgarraden"
 
-#: src/shell-keyring-prompt.c:760
+#: src/shell-keyring-prompt.c:787
 msgid "Password cannot be blank"
 msgstr ""
 
@@ -2823,15 +2815,15 @@ msgid ""
 "preferences and removing or disabling unwanted extensions."
 msgstr ""
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:64
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
 msgid "Main Window"
 msgstr "Asfaylu agejdan"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
 msgid "Available Updates"
 msgstr "Ileqman yellan"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
 msgid "Search View"
 msgstr ""
 
@@ -3485,107 +3477,3 @@ msgstr[1] "%u n yinekcumen"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Imeslan n unagraw"
-
-#~ msgid "Remove from Favorites"
-#~ msgstr "Kkes seg yinurifen"
-
-#~ msgid "Add to Favorites"
-#~ msgstr "Rnu s inurifen"
-
-#~ msgid "Network Manager"
-#~ msgstr "Amsefrak n uzeḍḍa"
-
-#~ msgid "Region & Language Settings"
-#~ msgstr "Iɣewwaren n tutlayt akked tmennaḍt"
-
-#~ msgid "Applications"
-#~ msgstr "Isnasen"
-
-#, javascript-format
-#~ msgid "Unable to start %s"
-#~ msgstr "Ulamek asekker n %s"
-
-#, javascript-format
-#~ msgid "Couldn’t find the %s application"
-#~ msgstr "Ur d-nufi ara asnas %s"
-
-#~ msgid "Bluetooth Off"
-#~ msgstr "Bluetooth yensa"
-
-#~ msgid "Bluetooth On"
-#~ msgstr "Bluetooth yermed"
-
-#~ msgid "Disable"
-#~ msgstr "Assensi"
-
-#~ msgid "Enable"
-#~ msgstr "Rmed"
-
-#, javascript-format
-#~ msgid "%s Disabled"
-#~ msgstr "%s yensa"
-
-#~ msgid "Connect to Internet"
-#~ msgstr "Yeqqen ɣer internet"
-
-#~ msgid "Wi-Fi is Off"
-#~ msgstr "Wi-Fi yensa"
-
-#~ msgid "Turn On Wi-Fi"
-#~ msgstr "Sermed Wi-Fi"
-
-#~ msgid "Select a network"
-#~ msgstr "Fren azeḍḍa"
-
-#~ msgid "Wi-Fi Settings"
-#~ msgstr "Iɣewwaren n Wi-Fi"
-
-#, javascript-format
-#~ msgid "%s Not Connected"
-#~ msgstr "%s ur yeqqin ara"
-
-#~ msgid "connecting…"
-#~ msgstr "la yetteqqen…"
-
-#~ msgid "authentication required"
-#~ msgstr "illaq usesteb"
-
-#~ msgid "connection failed"
-#~ msgstr "tuqqna ur teddi ara"
-
-#~ msgid "VPN Off"
-#~ msgstr "VPN yensa"
-
-#~ msgid "Resume"
-#~ msgstr "Kemmel"
-
-#, javascript-format
-#~ msgid "%d %%"
-#~ msgstr "%d %%"
-
-#~ msgid "Turn off"
-#~ msgstr "Sens"
-
-#~ msgid "Lock"
-#~ msgstr "Sekkeṛ"
-
-#~ msgid "Log Out"
-#~ msgstr "Ffeɣ"
-
-#~ msgid "No Thanks"
-#~ msgstr "Ala tanemmirt"
-
-#~ msgid "Author"
-#~ msgstr "Auteur"
-
-#~ msgid "Help"
-#~ msgstr "Tallelt"
-
-#~ msgid "Warning"
-#~ msgstr "Alɣu"
-
-#~ msgid "Failed to connect to GNOME Shell"
-#~ msgstr "Tecceḍ tuqqna ɣer GNOME Shell"
-
-#~ msgid "Minimize"
-#~ msgstr "Semẓi"
