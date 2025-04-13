@@ -1,8 +1,9 @@
 include:
   - project: 'GNOME/citemplates'
     file: 'templates/default-rules.yml'
-  - project: 'GNOME/citemplates'
-    file: 'flatpak/flatpak_ci_initiative.yml'
+  - project: "alatiera/citemplates"
+    file: "flatpak/flatpak_ci_initiative.yml"
+    ref: alatiera/print-paths
   - project: 'Infrastructure/freedesktop-ci-templates'
     file: 'templates/fedora.yml'
     ref: '057b052e682d8e5a20c1eb2dd60d5b87d2b56856'
