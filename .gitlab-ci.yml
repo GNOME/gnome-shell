@@ -40,7 +40,7 @@ default:
   image: $MUTTER_CI_IMAGE
 
 variables:
-  MUTTER_CI_IMAGE: registry.gitlab.gnome.org/gnome/mutter/fedora/42:x86_64-2025-03-31.0
+  MUTTER_CI_IMAGE: registry.gitlab.gnome.org/gnome/mutter/fedora/42:x86_64-2025-04-08.0
   FDO_UPSTREAM_REPO: GNOME/gnome-shell
   BUNDLE: "extensions-git.flatpak"
   LINT_LOG: "eslint-report.xml"
