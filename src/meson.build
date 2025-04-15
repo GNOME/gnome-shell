@@ -4,9 +4,9 @@ service_data = configuration_data()
 service_data.set('libexecdir', libexecdir)
 
 introspection_common = {
-  'install_dir_gir': pkgdatadir,
+  'install_gir': false,
+  'install_typelib': true,
   'install_dir_typelib': pkglibdir,
-  'install': true,
   'fatal_warnings': get_option('werror'),
 }
 
