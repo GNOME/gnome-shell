@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-03-05 12:21+0000\n"
+"POT-Creation-Date: 2025-04-16 19:31+0000\n"
 "PO-Revision-Date: 2025-03-03 19:27-0300\n"
 "Last-Translator: Artur Miranda <artcamir12@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <https://br.gnome.org/traducao>\n"
@@ -121,7 +121,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Abrir nova janela do aplicativo fixado 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2272
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2275
 msgid "Screenshots"
 msgstr "Capturas de tela"
 
@@ -707,25 +707,25 @@ msgstr "Não está na lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1071
+#: js/gdm/loginDialog.js:1075
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ex.: usuário ou %s)"
 
-#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1080 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Nome de usuário"
 
-#: js/gdm/loginDialog.js:1142
+#: js/gdm/loginDialog.js:1146
 msgid "Login Attempt Timed Out"
 msgstr "A tentativa de início de seção expirou"
 
-#: js/gdm/loginDialog.js:1143
+#: js/gdm/loginDialog.js:1147
 msgid "Login took too long, please try again"
 msgstr "O início de seção demorou muito. Tente novamente"
 
-#: js/gdm/loginDialog.js:1492
+#: js/gdm/loginDialog.js:1496
 msgid "Login Window"
 msgstr "Janela de início de seção"
 
@@ -745,32 +745,32 @@ msgstr "(ou deslize o dedo pelo leitor de impressão digital)"
 msgid "(or place finger on reader)"
 msgstr "(ou coloque o dedo no leitor de impressão digital)"
 
-#: js/misc/breakManager.js:765
+#: js/misc/breakManager.js:770
 msgid "Break complete sound"
 msgstr "Som de pausa concluída"
 
-#: js/misc/breakManager.js:982
+#: js/misc/breakManager.js:980
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d segundo"
 msgstr[1] "%d segundos"
 
-#: js/misc/breakManager.js:988
+#: js/misc/breakManager.js:986
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d minuto"
 msgstr[1] "%d minutos"
 
-#: js/misc/breakManager.js:994
+#: js/misc/breakManager.js:992
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d hora"
 msgstr[1] "%d horas"
 
-#: js/misc/breakManager.js:1000
+#: js/misc/breakManager.js:998
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -778,79 +778,79 @@ msgstr[0] "%d dia"
 msgstr[1] "%d dias"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1083
+#: js/misc/breakManager.js:1081
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "Será hora de uma pausa em %s"
 msgstr[1] "Será hora de uma pausa em %s"
 
-#: js/misc/breakManager.js:1091
+#: js/misc/breakManager.js:1089
 msgid "Movement Break Soon"
 msgstr "Pausa para os movimentos em breve"
 
-#: js/misc/breakManager.js:1094
+#: js/misc/breakManager.js:1092
 msgid "Eyesight Break Soon"
 msgstr "Pausa para a visão em breve"
 
-#: js/misc/breakManager.js:1097
+#: js/misc/breakManager.js:1095
 msgid "Break Soon"
 msgstr "Pausa em breve"
 
-#: js/misc/breakManager.js:1141
+#: js/misc/breakManager.js:1140
 msgid "Movement Break in Progress"
 msgstr "Pausa para os movimentos em progresso"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1144
+#: js/misc/breakManager.js:1143
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "Continue se movendo por %s"
 msgstr[1] "Continue se movendo por %s"
 
-#: js/misc/breakManager.js:1150
+#: js/misc/breakManager.js:1149
 msgid "Eyesight Break in Progress"
 msgstr "Pausa para a visão em progresso"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1153
+#: js/misc/breakManager.js:1152
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "Continue olhando para outra coisa por %s"
 msgstr[1] "Continue olhando para outra coisa por %s"
 
-#: js/misc/breakManager.js:1159
+#: js/misc/breakManager.js:1158
 msgid "Break in Progress"
 msgstr "Pausa em progresso"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1162
+#: js/misc/breakManager.js:1161
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "%s restante da sua pausa"
 msgstr[1] "%s restantes da sua pausa"
 
-#: js/misc/breakManager.js:1201
+#: js/misc/breakManager.js:1200
 msgid "Time for a Movement Break"
 msgstr "Hora de uma pausa para os movimentos"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1204
+#: js/misc/breakManager.js:1203
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "Faça uma pausa do dispositivo e mova-se por %s"
 msgstr[1] "Faça uma pausa do dispositivo e mova-se por %s"
 
-#: js/misc/breakManager.js:1210
+#: js/misc/breakManager.js:1209
 msgid "Time for an Eyesight Break"
 msgstr "Hora de uma pausa para a visão"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1213
+#: js/misc/breakManager.js:1212
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -863,12 +863,12 @@ msgstr[1] ""
 "Faça uma pausa da tela. Olhe para uma distância de pelo menos 6 metros por "
 "pelo menos %s"
 
-#: js/misc/breakManager.js:1219
+#: js/misc/breakManager.js:1218
 msgid "Time for a Break"
 msgstr "Hora de uma pausa"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1222
+#: js/misc/breakManager.js:1221
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -876,44 +876,44 @@ msgstr[0] "É hora de fazer uma pausa. Saia do dispositivo por %s!"
 msgstr[1] "É hora de fazer uma pausa. Saia do dispositivo por %s!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1244
+#: js/misc/breakManager.js:1245
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] "Você deveria ter feito uma pausa %s atrás"
 msgstr[1] "Você deveria ter feito uma pausa %s atrás"
 
-#: js/misc/breakManager.js:1250
+#: js/misc/breakManager.js:1251
 msgid "Break Overdue"
 msgstr "Pausa atrasada"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1264
+#: js/misc/breakManager.js:1267
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "%s restante da sua pausa"
 msgstr[1] "%s restantes da sua pausa"
 
-#: js/misc/breakManager.js:1270
+#: js/misc/breakManager.js:1273
 msgid "Break Interrupted"
 msgstr "Pausa interrompida"
 
-#: js/misc/breakManager.js:1341
+#: js/misc/breakManager.js:1350
 msgid "Delay"
 msgstr "Adiar"
 
-#: js/misc/breakManager.js:1362 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1371 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Pular"
 
-#: js/misc/breakManager.js:1383
+#: js/misc/breakManager.js:1392
 msgid "Take"
 msgstr "Fazer"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1446
+#: js/misc/breakManager.js:1455
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -1399,7 +1399,7 @@ msgid ""
 "quit entirely"
 msgstr ""
 "Você pode optar por esperar um pouco para ver se o aplicativo continua ou "
-"pode forçar que o aplicativo seja fechado completamente"
+"pode forçar para que o aplicativo seja fechado completamente"
 
 #: js/ui/closeDialog.js:71
 msgid "Force Quit"
@@ -2081,15 +2081,15 @@ msgstr "Abrir menu"
 msgid "Run a Command"
 msgstr "Executar um comando"
 
-#: js/ui/runDialog.js:76
+#: js/ui/runDialog.js:77
 msgid "Press ESC to close"
 msgstr "Pressione Esc para fechar"
 
-#: js/ui/runDialog.js:253
+#: js/ui/runDialog.js:254
 msgid "Restart is not available on Wayland"
 msgstr "Reinício não está disponível no Wayland"
 
-#: js/ui/runDialog.js:258
+#: js/ui/runDialog.js:259
 msgid "Restarting…"
 msgstr "Reiniciando…"
 
@@ -2189,7 +2189,7 @@ msgid "Screencast ended unexpectedly"
 msgstr "A gravação de tela foi finalizada inesperadamente"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2327
+#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2330
 msgid "Screenshot"
 msgstr "Captura de tela"
 
@@ -2200,28 +2200,28 @@ msgstr "Clique aqui para ver o vídeo."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2343
+#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2346
 msgid "Show in Files"
 msgstr "Mostrar em Arquivos"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2285
+#: js/ui/screenshot.js:2288
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Captura de tela de %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2333
+#: js/ui/screenshot.js:2336
 msgid "Screenshot captured"
 msgstr "Captura de tela obtida"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2335
+#: js/ui/screenshot.js:2338
 msgid "You can paste the image from the clipboard."
 msgstr "Você pode colar a imagem a partir da área de transferência."
 
-#: js/ui/screenshot.js:2391 js/ui/screenshot.js:2555
+#: js/ui/screenshot.js:2397 js/ui/screenshot.js:2561
 msgid "Screenshot taken"
 msgstr "Captura de tela obtida"
 
@@ -2417,35 +2417,35 @@ msgid "Disconnect"
 msgstr "Desconectar"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:265 js/ui/status/network.js:354
+#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:354
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Desconectar %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:356
+#: js/ui/status/bluetooth.js:269 js/ui/status/network.js:356
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Conectar a %s"
 
-#: js/ui/status/bluetooth.js:274 js/ui/status/bluetooth.js:276
+#: js/ui/status/bluetooth.js:276 js/ui/status/bluetooth.js:278
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:299 js/ui/status/network.js:1909
+#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1909
 msgid "Bluetooth Settings"
 msgstr "Configurações de Bluetooth"
 
-#: js/ui/status/bluetooth.js:346
+#: js/ui/status/bluetooth.js:348
 msgid "No available or connected devices"
 msgstr "Nenhum dispositivo disponível ou conectado"
 
-#: js/ui/status/bluetooth.js:347
+#: js/ui/status/bluetooth.js:349
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Ative o Bluetooth para se conectar a dispositivos"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:411
+#: js/ui/status/bluetooth.js:413
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2969,15 +2969,15 @@ msgstr ""
 "Extensões do GNOME lida com a atualização, configuração e preferências das "
 "extensões, e também remove ou desabilita as extensões indesejadas."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
 msgid "Main Window"
 msgstr "Janela principal"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
 msgid "Available Updates"
 msgstr "Atualizações disponíveis"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
 msgid "Search View"
 msgstr "Visualização da pesquisa"
 
