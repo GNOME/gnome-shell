@@ -1273,14 +1273,11 @@ class Workspace extends St.Widget {
 
     // check for maximized windows on the workspace
     hasMaximizedWindows() {
-        for (let i = 0; i < this._windows.length; i++) {
-            let metaWindow = this._windows[i].metaWindow;
-            if (metaWindow.showing_on_its_workspace() &&
-                metaWindow.maximized_horizontally &&
-                metaWindow.maximized_vertically)
-                return true;
-        }
-        return false;
+        return this._windows.some(w => {
+            const {metaWindow} = w;
+            return metaWindow.showing_on_its_workspace() &&
+                   metaWindow.is_maximized();
+        });
     }
 
     _clearSkipTaskbarSignals() {
