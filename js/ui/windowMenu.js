@@ -43,13 +43,13 @@ export class WindowMenu extends PopupMenu.PopupMenu {
         if (!window.can_minimize())
             item.setSensitive(false);
 
-        if (window.get_maximized()) {
+        if (window.is_maximized()) {
             item = this.addAction(_('Restore'), () => {
-                window.unmaximize(Meta.MaximizeFlags.BOTH);
+                window.unmaximize();
             });
         } else {
             item = this.addAction(_('Maximize'), () => {
-                window.maximize(Meta.MaximizeFlags.BOTH);
+                window.maximize();
             });
         }
         if (!window.can_maximize())
@@ -103,7 +103,7 @@ export class WindowMenu extends PopupMenu.PopupMenu {
         });
         if (window.is_above())
             item.setOrnament(PopupMenu.Ornament.CHECK);
-        if (window.get_maximized() === Meta.MaximizeFlags.BOTH ||
+        if (window.is_maximized() ||
             type === Meta.WindowType.DOCK ||
             type === Meta.WindowType.DESKTOP ||
             type === Meta.WindowType.SPLASHSCREEN)
