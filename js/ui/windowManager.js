@@ -22,7 +22,6 @@ import * as SwitchMonitor from './switchMonitor.js';
 import * as IBusManager from '../misc/ibusManager.js';
 import * as WorkspaceAnimation from './workspaceAnimation.js';
 
-import {loadInterfaceXML} from '../misc/fileUtils.js';
 import * as Main from './main.js';
 
 export const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
@@ -42,12 +41,6 @@ const UNDIM_TIME = 250;
 const ONE_SECOND = 1000; // in ms
 
 const MIN_NUM_WORKSPACES = 2;
-
-const GSD_WACOM_BUS_NAME = 'org.gnome.SettingsDaemon.Wacom';
-const GSD_WACOM_OBJECT_PATH = '/org/gnome/SettingsDaemon/Wacom';
-
-const GsdWacomIface = loadInterfaceXML('org.gnome.SettingsDaemon.Wacom');
-const GsdWacomProxy = Gio.DBusProxy.makeProxyWrapper(GsdWacomIface);
 
 const WINDOW_DIMMER_EFFECT_NAME = 'gnome-shell-window-dimmer';
 
@@ -895,26 +888,6 @@ export class WindowManager {
         global.display.connect('show-osd', (display, monitorIndex, iconName, label) => {
             let icon = Gio.Icon.new_for_string(iconName);
             Main.osdWindowManager.show(monitorIndex, icon, label, null);
-        });
-
-        this._gsdWacomProxy = new GsdWacomProxy(Gio.DBus.session,
-            GSD_WACOM_BUS_NAME, GSD_WACOM_OBJECT_PATH,
-            (proxy, error) => {
-                if (error)
-                    log(error.message);
-            });
-
-        global.display.connect('pad-mode-switch', (display, pad, _group, _mode) => {
-            let labels = [];
-
-            // FIXME: Fix num buttons
-            for (let i = 0; i < 50; i++) {
-                let str = display.get_pad_action_label(pad, Meta.PadActionType.BUTTON, i);
-                labels.push(str ?? '');
-            }
-
-            this._gsdWacomProxy?.SetOLEDLabelsAsync(
-                pad.get_device_node(), labels).catch(logError);
         });
 
         global.display.connect('init-xserver', (display, task) => {
