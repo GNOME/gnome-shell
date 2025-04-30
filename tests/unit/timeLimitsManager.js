@@ -283,6 +283,12 @@ class TestHarness {
             newPreparingForSleepState: true,
         });
         this._insertEvent({
+            type: 'time-change',
+            time: TestHarness.timeStrToSecs(timeStr) + 1,
+            newTime: TestHarness.timeStrToSecs(timeStr) + duration - 1,
+            callback: null,
+        });
+        this._insertEvent({
             type: 'preparing-for-sleep-state-change',
             time: TestHarness.timeStrToSecs(timeStr) + duration,
             newPreparingForSleepState: false,
@@ -1307,6 +1313,19 @@ describe('Time limits manager', () => {
         harness.expectProperties('2024-06-01T15:00:02Z', timeLimitsManager, {
             'state': TimeLimitsState.ACTIVE,
             'dailyLimitTime': TestHarness.timeStrToSecs('2024-06-01T17:00:00Z'),
+        });
+
+        // Ensure the suspend event caused a state change to inactive and its
+        // time was not adjusted due to offset changes on resume
+        harness.addAssertionEvent('2024-06-01T15:00:02Z', () => {
+            const [, historyContents] = harness.mockHistoryFile.load_contents(null);
+            expect(JSON.parse(new TextDecoder().decode(historyContents)))
+                .withContext('History file contents')
+                .toContain({
+                    'oldState': UserState.ACTIVE,
+                    'newState': UserState.INACTIVE,
+                    'wallTimeSecs': TestHarness.timeStrToSecs('2024-06-01T12:00:01Z'),
+                });
         });
 
         harness.shutdownManager('2024-06-01T15:20:00Z', timeLimitsManager);

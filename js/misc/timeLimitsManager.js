@@ -175,6 +175,7 @@ export const TimeLimitsManager = GObject.registerClass({
         this._timerId = 0;
         this._timeChangeId = 0;
         this._clockOffsetSecs = 0;
+        this._ignoreClockOffsetChanges = false;
 
         // Start tracking timings
         this._updateSettings();
@@ -231,6 +232,9 @@ export const TimeLimitsManager = GObject.registerClass({
         this._clockOffsetSecs = this._getClockOffset();
         try {
             this._timeChangeId = this._clock.timeChangeNotify(() => {
+                if (this._ignoreClockOffsetChanges)
+                    return GLib.SOURCE_CONTINUE;
+
                 const newClockOffsetSecs = this._getClockOffset();
                 const oldClockOffsetSecs = this._clockOffsetSecs;
 
@@ -348,9 +352,14 @@ export const TimeLimitsManager = GObject.registerClass({
     }
 
     async _onPrepareForSleep(preparingForSleep) {
-        // Just come back from sleep, so take another inhibitor.
-        if (!preparingForSleep)
+        // Just come back from sleep, so take another inhibitor. Also update
+        // the clock offset to account for the monotonic clock not advancing
+        // during sleep.
+        if (!preparingForSleep) {
             this._ensureInhibitor();
+            this._clockOffsetSecs = this._getClockOffset();
+            this._ignoreClockOffsetChanges = false;
+        }
 
         try {
             await this._updateUserState(true);
@@ -358,9 +367,14 @@ export const TimeLimitsManager = GObject.registerClass({
             console.warn(`Failed to update user state: ${e.message}`);
         }
 
-        // Release the inhibitor if we’re preparing to sleep.
-        if (preparingForSleep)
+        // Release the inhibitor if we’re preparing to sleep. Also avoid
+        // adjusting the time due to offset changes caused by the monotonic
+        // clock not advancing during sleep until we have updated the current
+        // offset to account for this.
+        if (preparingForSleep) {
+            this._ignoreClockOffsetChanges = true;
             this._releaseInhibitor();
+        }
     }
 
     /** Shut down the state machine and write out the state file. */
