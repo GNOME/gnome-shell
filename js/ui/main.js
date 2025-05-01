@@ -329,6 +329,8 @@ async function _initializeUI() {
     extensionManager = new ExtensionSystem.ExtensionManager();
     extensionManager.init();
 
+    LoginManager.registerSessionWithGDM();
+
     if (sessionMode.isGreeter && screenShield) {
         layoutManager.connect('startup-prepared', () => {
             screenShield.showDialog();
@@ -374,8 +376,6 @@ async function _initializeUI() {
         if (sessionMode.currentMode !== 'gdm' &&
             sessionMode.currentMode !== 'initial-setup')
             _handleLockScreenWarning();
-
-        LoginManager.registerSessionWithGDM();
 
         if (perfModule) {
             let perfOutput = GLib.getenv('SHELL_PERF_OUTPUT');
