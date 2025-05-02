@@ -4,7 +4,7 @@
 # Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2010.
 # Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>, 2011.
 # Hideki Yamane <henrich@debian.org>, 2011.
-# Takayuki KUSANO <https://bsky.app/profile/tkusano.jp>, 2011, 2012, 2025.
+# Kusano Takayuki <https://bsky.app/profile/tkusano.jp>, 2011, 2012, 2025.
 # Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2011-2017.
 # Takanori MATSUURA <t.matsuu@gmail.com>, 2012.
 # Yoji TOYODA <bsyamato@sea.plala.or.jp>, 2013.
@@ -12,20 +12,22 @@
 # IWAI, Masaharu <iwaim.sub@gmail.com>, 2015.
 # sicklylife <translation@sicklylife.jp>, 2019-2020, 2022.
 # 小山田 純 <oyamadajun@outlook.jp>, 2022-2024.
+# Seiji Iizuka <seiji@iizuka.dev>, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-04-22 12:44+0000\n"
-"PO-Revision-Date: 2025-04-27 18:05+0900\n"
-"Last-Translator: 小山田 純 <oyamadajun@outlook.jp>\n"
+"POT-Creation-Date: 2025-04-27 09:07+0000\n"
+"PO-Revision-Date: 2025-05-02 09:57+0900\n"
+"Last-Translator: Seiji Iizuka <seiji@iizuka.dev>\n"
 "Language-Team: Japanese <https://l10n.gnome.org/teams/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Gtranslator 48.0\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -103,10 +105,11 @@ msgstr "ピン留めされたアプリ 8 を新しいウィンドウで開く"
 msgid "Open new window of pinned app 9"
 msgstr "ピン留めされたアプリ 9 を新しいウィンドウで開く"
 
+# スクショが保存されるディレクトリです。英語のままとします (Kusano)
 #. Translators: name of the folder under ~/Pictures for screenshots.
 #: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2275
 msgid "Screenshots"
-msgstr "スクリーンショット"
+msgstr "Screenshots"
 
 #: data/50-gnome-shell-screenshots.xml:9
 #: data/org.gnome.shell.gschema.xml.in:267
@@ -194,7 +197,6 @@ msgid "UUIDs of extensions to force disabling"
 msgstr "強制的に無効にする拡張機能の UUID"
 
 #: data/org.gnome.shell.gschema.xml.in:27
-#, fuzzy
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be disabled, even if loaded as part of the current mode. You can also "
@@ -202,11 +204,11 @@ msgid ""
 "methods on org.gnome.Shell. This key takes precedence over the “enabled-"
 "extensions” setting."
 msgstr ""
-"GNOME Shell の拡張機能には UUID プロパティがあり、このキーは、現在のモードの"
-"一部としてロードされる場合でも無効化したい拡張機能の UUID のリストです。この"
-"リストは org.gnome.Shell の EnableExtensions や DisableExtensions といった "
-"DBus メソッドでも操作できます。このキーは“enabled-extensions”の設定より優先さ"
-"れます。"
+"GNOME Shell の拡張機能には UUID プロパティがありますが、このキーは、現在の"
+"モードの一部としてロードされる場合でも無効する必要がある拡張機能のリストで"
+"す。このリストは org.gnome.Shell の EnableExtensions や DisableExtensions と"
+"いった DBus メソッドでも操作できます。このキーは“enabled-extensions”の設定よ"
+"り優先されます。"
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -221,9 +223,8 @@ msgstr ""
 "には影響しません。"
 
 #: data/org.gnome.shell.gschema.xml.in:45
-#, fuzzy
 msgid "Allow extension installation"
-msgstr "機能拡張はインストールされていません"
+msgstr "拡張機能のインストールを許可"
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid ""
@@ -233,6 +234,10 @@ msgid ""
 "that are already loaded, so a change only takes full effect on the next "
 "login."
 msgstr ""
+"ユーザーがホームディレクトリに拡張機能をインストールすることを許可します。無"
+"効にすると、InstallRemoteExtension D-Bus メソッドが失敗し、起動時にシステム"
+"ディレクトリからのみ拡張機能が読み込まれます。既に読み込み済みの拡張機能には"
+"影響せず、次回のログイン時にのみ変更が効果を持ちます。"
 
 #: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
@@ -268,19 +273,19 @@ msgid "History for the looking glass dialog"
 msgstr "looking glass ダイアログの履歴"
 
 #: data/org.gnome.shell.gschema.xml.in:84
-#, fuzzy
 msgid "Always show the “Log Out” action in the system menu"
-msgstr "ユーザーメニューに「ログアウト」を常に表示する"
+msgstr "システムメニューに「ログアウト」を常に表示する"
 
 #: data/org.gnome.shell.gschema.xml.in:85
-#, fuzzy
 msgid ""
 "This key overrides the automatic hiding of the “Log out” action in the "
 "system menu for logged-in situations where there is a single, local, non-"
 "system user and only a single available session type (e.g. GNOME on Wayland)."
 msgstr ""
-"このキーは、単一ユーザー、単一セッション状況で「ログアウト」メニューアイテム"
-"を自動的に非表示にする機能よりも優先します。"
+"このキーは、単一の、ローカルで、非システムなユーザーがいて、使用可能なセッ"
+"ションのタイプが1つだけである場合 (例: Wayland 上の GNOME)、ログイン中の状況"
+"でシステムメニューの「ログアウト」アクションが自動的に非表示になるのを無効に"
+"します。"
 
 #: data/org.gnome.shell.gschema.xml.in:94
 msgid ""
@@ -303,7 +308,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:104
 msgid "The last selected non-default power profile"
-msgstr ""
+msgstr "最後に選択されたデフォルトではない電源プロファイル"
 
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
@@ -311,6 +316,9 @@ msgid ""
 "toggling between two profiles, this key records the last selected non-"
 "default profile."
 msgstr ""
+"システムによっては2つより多くの電源プロファイルを持っています。2つのプロファ"
+"イルの間で切り替えるようにするには、このキーで最後に選択したデフォルトのプロ"
+"ファイルを記録するようにします。"
 
 #: data/org.gnome.shell.gschema.xml.in:113
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
@@ -330,7 +338,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:125
 msgid "Layout of the app picker"
-msgstr ""
+msgstr "アプリ一覧のレイアウト"
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid ""
@@ -339,6 +347,10 @@ msgid ""
 "“application id” → 'data' pair. Currently, the following values are stored "
 "as 'data': • “position”: the position of the application icon in the page"
 msgstr ""
+"アプリ一覧のレイアウト。配列中の各エントリはページです。ページはGNOMEシェル中"
+"に現れる順番で保存されます。各ページは“アプリID” → 'データ'のペアを含んでいま"
+"す。現在、以下の値が'データ'として保存されます: • “position”: ページ中のアプ"
+"リのアイコンの位置"
 
 #: data/org.gnome.shell.gschema.xml.in:145
 #: data/org.gnome.shell.gschema.xml.in:152
@@ -486,8 +498,8 @@ msgstr "アプリアイコンモード"
 #: data/org.gnome.shell.gschema.xml.in:307
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
 msgstr ""
 "ウィンドウスイッチャーでのウィンドウの表示方法を設定します。指定可能な値"
 "は、“thumbnail-only”(ウィンドウのサムネイルを表示)、“app-icon-only”(アプリの"
@@ -538,9 +550,8 @@ msgid "Network Login"
 msgstr "ネットワークログイン"
 
 #: data/X-GNOME-Shell-Utilities.directory.desktop.in:3
-#, fuzzy
 msgid "Utilities"
-msgstr "アクティビティ"
+msgstr "ユーティリティ"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:15
 #: subprojects/extensions-app/data/ui/extensions-window.ui:275
@@ -596,6 +607,9 @@ msgid ""
 "%s. To login remotely, you must log out from the remote session or force "
 "stop it."
 msgstr ""
+"既に %s がリモートセッションを動作させているため、リモートログインできませ"
+"ん。リモートログインするには、リモートセッションからログアウトするか、強制的"
+"にそれを停止する必要があります。"
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:429
@@ -604,6 +618,9 @@ msgid ""
 "Login is not possible because a remote session is already running for %s. To "
 "login, you must log out from the remote session or force stop it."
 msgstr ""
+"既に %s がリモートセッションを動作させているため、ログインできません。ログイ"
+"ンするには、リモートセッションからログアウトするか、強制的にそれを停止する必"
+"要があります。"
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:432
@@ -613,6 +630,9 @@ msgid ""
 "%s. To login remotely, you must log out from the local session or force stop "
 "it."
 msgstr ""
+"既に %s がローカルセッションを動作させているため、リモートログインできませ"
+"ん。リモートログインするには、ローカルセッションからログアウトするか、強制的"
+"にそれを停止する必要があります。"
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:435
@@ -621,21 +641,25 @@ msgid ""
 "Login is not possible because a session is already running for %s. To login, "
 "you must log out from the session or force stop it."
 msgstr ""
+"既に %s がセッションを動作させているため、ログインできません。ログインするた"
+"めには、セッションからログアウトするか、強制的にそれを停止する必要がありま"
+"す。"
 
 #: js/gdm/loginDialog.js:444
 msgid "Session Already Running"
-msgstr ""
+msgstr "セッションが既に動作中"
 
 #: js/gdm/loginDialog.js:456
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
 msgstr ""
+"強制的に停止すると、動作中のどんなアプリやプロセスでも終了し、データを失って"
+"しまうことになるかもしれません"
 
 #: js/gdm/loginDialog.js:476
-#, fuzzy
 msgid "Force Stop"
-msgstr "強制終了"
+msgstr "強制停止"
 
 #: js/gdm/loginDialog.js:554
 msgid "Not listed?"
@@ -655,11 +679,11 @@ msgstr "ユーザー名"
 
 #: js/gdm/loginDialog.js:1146
 msgid "Login Attempt Timed Out"
-msgstr ""
+msgstr "ログイン試行がタイムアウト"
 
 #: js/gdm/loginDialog.js:1147
 msgid "Login took too long, please try again"
-msgstr ""
+msgstr "ログインに時間がかかりすぎました。再度試してください"
 
 #: js/gdm/loginDialog.js:1496
 msgid "Login Window"
@@ -683,98 +707,98 @@ msgstr "(または指紋リーダーに指を置く)"
 
 #: js/misc/breakManager.js:770
 msgid "Break complete sound"
-msgstr ""
+msgstr "休憩完了音"
 
 #: js/misc/breakManager.js:980
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
-msgstr[0] ""
+msgstr[0] "%d 秒"
 
 #: js/misc/breakManager.js:986
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
-msgstr[0] "%d 分前"
+msgstr[0] "%d 分"
 
 #: js/misc/breakManager.js:992
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
-msgstr[0] "%d 時間前"
+msgstr[0] "%d 時間"
 
 #: js/misc/breakManager.js:998
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
-msgstr[0] "%d 日前"
+msgstr[0] "%d 日"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1081
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
-msgstr[0] ""
+msgstr[0] "%s で休憩の時間になります"
 
 #: js/misc/breakManager.js:1089
 msgid "Movement Break Soon"
-msgstr ""
+msgstr "運動の休憩"
 
 #: js/misc/breakManager.js:1092
 msgid "Eyesight Break Soon"
-msgstr ""
+msgstr "目の休憩"
 
 #: js/misc/breakManager.js:1095
 msgid "Break Soon"
-msgstr ""
+msgstr "すぐに休憩"
 
 #: js/misc/breakManager.js:1140
 msgid "Movement Break in Progress"
-msgstr ""
+msgstr "運動の休憩中"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1143
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
-msgstr[0] ""
+msgstr[0] "%s 動き続けます"
 
 #: js/misc/breakManager.js:1149
 msgid "Eyesight Break in Progress"
-msgstr ""
+msgstr "目の休憩中"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1152
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
-msgstr[0] ""
+msgstr[0] "%s 見回します"
 
 #: js/misc/breakManager.js:1158
 msgid "Break in Progress"
-msgstr ""
+msgstr "休憩中"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1161
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
-msgstr[0] ""
+msgstr[0] "あと %s 休憩"
 
 #: js/misc/breakManager.js:1200
 msgid "Time for a Movement Break"
-msgstr ""
+msgstr "運動休憩の時間"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1203
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
-msgstr[0] ""
+msgstr[0] "デバイスから離れ、%s 運動してください"
 
 #: js/misc/breakManager.js:1209
 msgid "Time for an Eyesight Break"
-msgstr ""
+msgstr "目の休憩の時間"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1212
@@ -784,52 +808,52 @@ msgid ""
 msgid_plural ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
 msgstr[0] ""
+"画面から目を離し、少なくとも %s 、6メートルは離れたところを見てください"
 
 #: js/misc/breakManager.js:1218
 msgid "Time for a Break"
-msgstr ""
+msgstr "休憩の時間"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1221
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
-msgstr[0] ""
+msgstr[0] "休憩の時間です。%s デバイスから離れてください。"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1245
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
-msgstr[0] ""
+msgstr[0] "%s 前に休憩をとる予定でした"
 
 #: js/misc/breakManager.js:1251
 msgid "Break Overdue"
-msgstr ""
+msgstr "遅れた休憩"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1267
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
-msgstr[0] ""
+msgstr[0] "休憩はあと %s 残っています"
 
 #: js/misc/breakManager.js:1273
 msgid "Break Interrupted"
-msgstr ""
+msgstr "休憩を中断"
 
 #: js/misc/breakManager.js:1350
 msgid "Delay"
-msgstr ""
+msgstr "遅らせる"
 
 #: js/misc/breakManager.js:1371 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "スキップ"
 
 #: js/misc/breakManager.js:1392
-#, fuzzy
 msgid "Take"
-msgstr "“ツアー”を始める"
+msgstr "休憩する"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
@@ -837,7 +861,7 @@ msgstr "“ツアー”を始める"
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
-msgstr[0] ""
+msgstr[0] "%d 秒で休憩"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:91
@@ -909,6 +933,8 @@ msgstr "switch user;ユーザー切り替え"
 #: js/misc/systemActions.js:141
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
+"ロックの向き;ロック解除の向き;スクリーン;回転;lock orientation;unlock "
+"orientation;screen;rotation"
 
 #. Translators: The name of the screenshot UI action in search
 #: js/misc/systemActions.js:146
@@ -934,27 +960,26 @@ msgid "Lock Screen Rotation"
 msgstr "画面の回転をロック"
 
 #: js/misc/timeLimitsManager.js:338
-#, fuzzy
 msgid "GNOME needs to save screen time data"
-msgstr "画面をロックする必要があります"
+msgstr "GNOME はスクリーンタイムのデータを保存する必要があります"
 
 #: js/misc/timeLimitsManager.js:1102
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
-msgstr[0] ""
+msgstr[0] "%d 分でスクリーンタイムのリミット"
 
 #: js/misc/timeLimitsManager.js:1109
 msgid "Your screen time limit is approaching"
-msgstr ""
+msgstr "スクリーンタイムのリミットが近づいています"
 
 #: js/misc/timeLimitsManager.js:1123
 msgid "Screen Time Limit Reached"
-msgstr ""
+msgstr "スクリーンタイムのリミットとなりました"
 
 #: js/misc/timeLimitsManager.js:1124
 msgid "It’s time to stop using the device"
-msgstr ""
+msgstr "デバイスの使用を止める時間です"
 
 #: js/misc/util.js:130
 msgid "Command not found"
@@ -1304,16 +1329,17 @@ msgstr "すべての通知を消去する"
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:42
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "“%s” Is Not Responding"
-msgstr "“%s”の応答がありません。"
+msgstr "“%s”の応答がありません"
 
 #: js/ui/closeDialog.js:43
-#, fuzzy
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
 "quit entirely"
-msgstr "もうしばらく応答を待ちますか? それともアプリを強制的に終了しますか?"
+msgstr ""
+"もうしばらく応答を待って継続するか、アプリを強制的に完全に終了するかを選択し"
+"なくてはなりません"
 
 #: js/ui/closeDialog.js:71
 msgid "Force Quit"
@@ -1348,7 +1374,7 @@ msgstr "%s が接続"
 
 #: js/ui/components/autorunManager.js:190
 msgid "Disk can now be used"
-msgstr ""
+msgstr "ディスクが使用可能になりました"
 
 #: js/ui/components/autorunManager.js:202
 #, javascript-format
@@ -1356,10 +1382,9 @@ msgid "Open with %s"
 msgstr "%s で開く"
 
 #: js/ui/components/networkAgent.js:96
-#, fuzzy
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router"
-msgstr "または、ルーターの“WPS”ボタンを押して接続する方法もあります。"
+msgstr "または、ルーターの“WPS”ボタンを押して接続する方法もあります"
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
@@ -1388,11 +1413,10 @@ msgid "Authentication required"
 msgstr "認証が必要です"
 
 #: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
-#, fuzzy, javascript-format
+#, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
-msgstr ""
-"無線ネットワーク“%s”にアクセスするにはパスワードか暗号化キーが必要です。"
+msgstr "無線ネットワーク“%s”にアクセスするにはパスワードか暗号化キーが必要です"
 
 #: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
@@ -1421,9 +1445,9 @@ msgstr "PIN"
 #: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
 #: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
 #: js/ui/components/networkAgent.js:771
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "A password is required to connect to “%s”"
-msgstr "“%s”への接続にはパスワードが必要です。"
+msgstr "“%s”への接続にはパスワードが必要です"
 
 #: js/ui/components/networkAgent.js:770
 msgid "VPN password"
@@ -1513,14 +1537,13 @@ msgstr "終日"
 #.
 #: js/ui/dateMenu.js:238
 msgid "%m/%d"
-msgstr ""
+msgstr "%m月%d日"
 
 #: js/ui/dateMenu.js:289
 msgid "No Events"
 msgstr "イベントなし"
 
 #: js/ui/dateMenu.js:411
-#, fuzzy
 msgid "Add World Clocks…"
 msgstr "世界時計を追加…"
 
@@ -1533,21 +1556,18 @@ msgid "Loading…"
 msgstr "読み込み中…"
 
 #: js/ui/dateMenu.js:712
-#, fuzzy
 msgid "Go Online for Weather Information"
-msgstr "気象情報取得のためにネットワークに接続してください"
+msgstr "気象情報取得のためにオンラインにしてください"
 
 #: js/ui/dateMenu.js:714
-#, fuzzy
 msgid "Weather Information Unavailable"
-msgstr "気象情報を取得できません"
+msgstr "気象情報が利用できません"
 
 #: js/ui/dateMenu.js:724
 msgid "Weather"
 msgstr "天気"
 
 #: js/ui/dateMenu.js:726
-#, fuzzy
 msgid "Select Weather Location…"
 msgstr "天気の場所を選択…"
 
@@ -1563,16 +1583,16 @@ msgid "Log Out"
 msgstr "ログアウト"
 
 #: js/ui/endSessionDialog.js:51
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s will be logged out automatically in %d second"
 msgid_plural "%s will be logged out automatically in %d seconds"
-msgstr[0] "%s は %d 秒後に自動的にログアウトします。"
+msgstr[0] "%s は %d 秒後に自動的にログアウトします"
 
 #: js/ui/endSessionDialog.js:57
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "You will be logged out automatically in %d second"
 msgid_plural "You will be logged out automatically in %d seconds"
-msgstr[0] "%d 秒後に自動的にログアウトします。"
+msgstr[0] "%d 秒後に自動的にログアウトします"
 
 #: js/ui/endSessionDialog.js:64
 msgctxt "button"
@@ -1590,10 +1610,10 @@ msgid "Install Updates & Power Off"
 msgstr "アップデートをインストールして電源オフ"
 
 #: js/ui/endSessionDialog.js:74
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The system will power off automatically in %d second"
 msgid_plural "The system will power off automatically in %d seconds"
-msgstr[0] "%d 秒後に自動的にシステムの電源を切ります。"
+msgstr[0] "%d 秒後に自動的にシステムの電源を切ります"
 
 #: js/ui/endSessionDialog.js:78 js/ui/endSessionDialog.js:97
 msgctxt "checkbox"
@@ -1616,10 +1636,10 @@ msgid "Install Updates & Restart"
 msgstr "アップデートをインストールして再起動"
 
 #: js/ui/endSessionDialog.js:93
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The system will restart automatically in %d second"
 msgid_plural "The system will restart automatically in %d seconds"
-msgstr[0] "%d 秒後にシステムを再起動します。"
+msgstr[0] "%d 秒後にシステムを再起動します"
 
 #: js/ui/endSessionDialog.js:101
 msgctxt "button"
@@ -1632,11 +1652,11 @@ msgid "Restart & Install Updates"
 msgstr "再起動してアップデートをインストール"
 
 #: js/ui/endSessionDialog.js:112
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds"
-msgstr[0] "%d 秒後にシステムを再起動してアップデートをインストールします。"
+msgstr[0] "%d 秒後にシステムを再起動してアップデートをインストールします"
 
 #: js/ui/endSessionDialog.js:119 js/ui/endSessionDialog.js:140
 msgctxt "button"
@@ -1672,10 +1692,9 @@ msgstr ""
 "ター本体は電源につないでください。"
 
 #: js/ui/endSessionDialog.js:283
-#, fuzzy
 msgid "Low battery power: please plug in before installing updates"
 msgstr ""
-"バッテリー低下: アップデートをインストールする前に電源に接続してください。"
+"バッテリー低下: アップデートをインストールする前に電源に接続してください"
 
 #: js/ui/endSessionDialog.js:292
 msgid "Some applications are busy or have unsaved work"
@@ -1720,9 +1739,8 @@ msgid "Extension Updates Available"
 msgstr "拡張機能のアップデートが利用可能です"
 
 #: js/ui/extensionSystem.js:355
-#, fuzzy
 msgid "Extension updates are ready to be installed"
-msgstr "拡張機能のアップデートをインストールする準備ができました。"
+msgstr "拡張機能のアップデートをインストールする準備ができました"
 
 #: js/ui/inhibitShortcutsDialog.js:70
 msgid "Allow inhibiting shortcuts"
@@ -1740,9 +1758,9 @@ msgstr "アプリがショートカットを置き換えることを要求して
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:81
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "You can restore shortcuts by pressing %s"
-msgstr "%s を押してショートカットを復元できます。"
+msgstr "%s を押してショートカットを復元できます"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid "Slow Keys Turned On"
@@ -1807,13 +1825,13 @@ msgstr "キーボード設定"
 
 #: js/ui/lookingGlass.js:742
 msgid "No extensions installed"
-msgstr "機能拡張はインストールされていません"
+msgstr "拡張機能はインストールされていません"
 
 #. Translators: argument is an extension UUID.
 #: js/ui/lookingGlass.js:805
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s has not emitted any errors"
-msgstr "%s は何もエラーを出力していません。"
+msgstr "%s は何もエラーを出力していません"
 
 #: js/ui/lookingGlass.js:811
 msgid "Hide Errors"
@@ -1829,7 +1847,7 @@ msgstr "アクティブ"
 
 #: js/ui/lookingGlass.js:827
 msgid "Inactive"
-msgstr ""
+msgstr "非アクティブ"
 
 #: js/ui/lookingGlass.js:829
 msgid "Error"
@@ -1845,11 +1863,11 @@ msgstr "ダウンロード中"
 
 #: js/ui/lookingGlass.js:835
 msgid "Deactivating"
-msgstr ""
+msgstr "アクティベイト停止中"
 
 #: js/ui/lookingGlass.js:837
 msgid "Activating"
-msgstr ""
+msgstr "アクティベイト中"
 
 #: js/ui/lookingGlass.js:873
 msgid "View Source"
@@ -1884,9 +1902,8 @@ msgid "Screen Lock disabled"
 msgstr "画面ロックが無効です"
 
 #: js/ui/main.js:416
-#, fuzzy
 msgid "Screen Locking requires the GNOME display manager"
-msgstr "画面ロックには GNOME ディスプレイマネージャーが必要です。"
+msgstr "画面ロックには GNOME ディスプレイマネージャーが必要です"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
@@ -1895,9 +1912,8 @@ msgid "Unknown App"
 msgstr "不明なアプリ"
 
 #: js/ui/messageTray.js:325 js/ui/messageTray.js:327
-#, fuzzy
 msgid "Notification sound"
-msgstr "通知なし"
+msgstr "通知音"
 
 #: js/ui/mpris.js:144
 msgid "Unknown artist"
@@ -2058,6 +2074,7 @@ msgstr "撮影"
 msgid "Show Pointer"
 msgstr "ポインターを表示"
 
+# 画面の録画が保存されるディレクトリです。英語のままにします (Kusano)
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
 #: js/ui/screenshot.js:1994
@@ -2069,9 +2086,9 @@ msgstr "Screencasts"
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
 #: js/ui/screenshot.js:1999
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Screencast From %d %t"
-msgstr "Screencast from %d %t.webm"
+msgstr "Screencast from %d %t"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2045
@@ -2120,7 +2137,7 @@ msgstr "“ファイル”で表示"
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
 #: js/ui/screenshot.js:2288
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Screenshot From %s"
 msgstr "Screenshot from %s"
 
@@ -2143,9 +2160,8 @@ msgid "Searching…"
 msgstr "検索中…"
 
 #: js/ui/search.js:834
-#, fuzzy
 msgid "No results"
-msgstr "一致するものがありません。"
+msgstr "一致するものがありません"
 
 #: js/ui/search.js:965
 #, javascript-format
@@ -2175,9 +2191,8 @@ msgid "Hide Text"
 msgstr "文字を非表示"
 
 #: js/ui/shellEntry.js:174
-#, fuzzy
 msgid "Caps lock is on"
-msgstr "Caps Lock がオンになっています。"
+msgstr "Caps Lock がオンになっています"
 
 #: js/ui/shellMountOperation.js:286
 msgid "Hidden Volume"
@@ -2193,15 +2208,14 @@ msgstr "キーファイルを使用する"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:300
-#, fuzzy, javascript-format
+#, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
 msgstr ""
-"キーファイルを使用するボリュームのロック解除には <i>%s</i> ユーティリティを使"
-"用します。"
+"キーファイルを使用するボリュームのロック解除には <i>%s</i> ユーティリティを代"
+"わりに使用します"
 
 #: js/ui/shellMountOperation.js:304
-#, fuzzy
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles"
@@ -2228,7 +2242,6 @@ msgid "Open %s"
 msgstr "%s を開く"
 
 #: js/ui/shellMountOperation.js:436
-#, fuzzy
 msgid "The PIM must be a number or empty"
 msgstr "PIM は数字か空である必要があります。"
 
@@ -2409,7 +2422,6 @@ msgid "The app %s wants to access your location"
 msgstr "アプリ %s が位置情報へのアクセスを要求しています"
 
 #: js/ui/status/location.js:349
-#, fuzzy
 msgid "Location access can be changed at any time from the privacy settings"
 msgstr ""
 "位置情報のアクセス許可設定は、プライバシー設定からいつでも変更できます。"
@@ -2504,9 +2516,8 @@ msgid "Mobile"
 msgstr "モバイル"
 
 #: js/ui/status/network.js:1973
-#, fuzzy
 msgid "Sign Into Wi–Fi Network"
-msgstr "Wi-Fi ネットワーク"
+msgstr "Wi-Fi ネットワークへサインイン"
 
 #: js/ui/status/network.js:2160
 msgid "Connection failed"
@@ -2602,10 +2613,9 @@ msgid "Unauthorized Thunderbolt device"
 msgstr "認証していない Thunderbolt デバイス"
 
 #: js/ui/status/thunderbolt.js:313
-#, fuzzy
 msgid ""
 "New device has been detected and needs to be authorized by an administrator"
-msgstr "新しいデバイスを検出しました。管理者の認証が必要です。"
+msgstr "新しいデバイスを検出、管理者の認証が必要です"
 
 #: js/ui/status/thunderbolt.js:319
 msgid "Thunderbolt authorization error"
@@ -2701,9 +2711,8 @@ msgid "Welcome to %s"
 msgstr "%s へようこそ"
 
 #: js/ui/welcomeDialog.js:52
-#, fuzzy
 msgid "If you want to learn your way around, check out the tour"
-msgstr "“ツアー”アプリで詳しく知ることができます。"
+msgstr "“ツアー”アプリで詳しく知ることができます"
 
 #: js/ui/welcomeDialog.js:66
 msgid "Take Tour"
@@ -2742,10 +2751,9 @@ msgstr "%d × %d"
 
 #. Translators: entry in the window right click menu.
 #: js/ui/windowMenu.js:28
-#, fuzzy
 msgctxt "window-menu"
 msgid "Take Screenshot"
-msgstr "スクリーンショット"
+msgstr "スクリーンショットを撮る"
 
 #: js/ui/windowMenu.js:40
 msgid "Hide"
@@ -2842,9 +2850,8 @@ msgid "Failed to launch “%s”"
 msgstr "“%s”の起動に失敗しました"
 
 #: src/shell-keyring-prompt.c:779
-#, fuzzy
 msgid "Passwords do not match"
-msgstr "パスワードが一致しません。"
+msgstr "パスワードが一致しません"
 
 #: src/shell-keyring-prompt.c:787
 msgid "Password cannot be blank"
@@ -2857,7 +2864,7 @@ msgstr "認証ダイアログはユーザーに拒否されました"
 #: src/st/st-icon-theme.c:1859
 #, c-format
 msgid "Icon '%s' not present in theme %s"
-msgstr ""
+msgstr "アイコン「%s」はテーマ %s にありません"
 
 #: src/st/st-icon-theme.c:3452 src/st/st-icon-theme.c:3755
 msgid "Failed to load icon"
@@ -2897,18 +2904,22 @@ msgid "Configure GNOME Shell Extensions"
 msgstr "GNOME Shell 拡張機能の設定を行います"
 
 #: subprojects/extensions-app/js/extensionManager.js:237
-#, fuzzy, javascript-format
+#, javascript-format
 msgid ""
 "The installed version of this extension (%s) is incompatible with the "
 "current version of GNOME (%s). The extension has been disabled."
-msgstr "現在の GNOME のバージョンと互換性のない拡張機能です"
+msgstr ""
+"この拡張 (%s) のインストールされているバージョンはGNOMEの現在のバージョン "
+"(%s) と互換性がありません。拡張機能を無効にしました。"
 
 #: subprojects/extensions-app/js/extensionManager.js:238
-#, fuzzy, javascript-format
+#, javascript-format
 msgid ""
 "The installed version of this extension is incompatible with the current "
 "version of GNOME (%s). The extension has been disabled."
-msgstr "現在の GNOME のバージョンと互換性のない拡張機能です"
+msgstr ""
+"この拡張のインストールされているバージョンはGNOMEの現在のバージョン (%s) と互"
+"換性がありません。拡張機能を無効にしました。"
 
 #: subprojects/extensions-app/js/extensionManager.js:242
 msgid ""
@@ -2916,6 +2927,8 @@ msgid ""
 "in the system. It is recommended to turn the extension off until the error "
 "is resolved."
 msgstr ""
+"この拡張でエラーが発生しました。システムのあちこちで問題を引き起こす可能性が"
+"あります。エラーが解決するまで、拡張をオフにすることをおすすめします。"
 
 #. translators: Details for an extension error
 #: subprojects/extensions-app/js/extensionManager.js:248
@@ -2959,8 +2972,17 @@ msgstr ""
 "Nishio Futoshi <fut_nis@d3.dion.ne.jp>\n"
 "sicklylife <translation@sicklylife.jp>\n"
 "Takanori MATSUURA <t.matsuu@gmail.com>\n"
-"Takayuki KUSANO <https://bsky.app/profile/tkusano.jp>\n"
-"Yoji TOYODA <bsyamato@sea.plala.or.jp>"
+"Kusano Takayuki <https://bsky.app/profile/tkusano.jp>\n"
+"Yoji TOYODA <bsyamato@sea.plala.or.jp>\n"
+"Seiji Iizuka <seiji@iizuka.dev>\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Jiro Matsuzawa https://launchpad.net/~jmatsuzawa\n"
+"  Mitsuya Shibata https://launchpad.net/~cosmos-door\n"
+"  Shinichirou Yamada https://launchpad.net/~yamada-strong-yamada-nice-64bit\n"
+"  Shushi Kurose https://launchpad.net/~kuromabo\n"
+"  id:sicklylife https://launchpad.net/~sicklylife\n"
+"  sujiniku https://launchpad.net/~sujinikusityuu"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:203
 #, javascript-format
@@ -2982,9 +3004,8 @@ msgid ""
 msgstr "拡張機能の新バージョンが準備完了で、次回ログイン時に読み込まれます。"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:100
-#, fuzzy
 msgid "Extension Details"
-msgstr "拡張機能の詳細を表示する"
+msgstr "拡張機能の詳細"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "_Website"
@@ -3027,6 +3048,8 @@ msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
 msgstr ""
+"拡張機能はパフォーマンスや安定性に問題を引き起こす可能性があります。システム"
+"で問題に遭遇した場合はすべての拡張機能を無効化するのをおすすめします。"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:178
 msgid "User Extensions"
@@ -3054,11 +3077,11 @@ msgstr "インストールされた拡張機能はありません"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://"
+"extensions.gnome.org\">extensions.gnome.org</a>."
 msgstr ""
-"拡張機能の検索や追加は <a href=\"https://extensions.gnome.org\">extensions."
-"gnome.org</a> で行うことができます。"
+"拡張機能の検索や追加は <a href=\"https://"
+"extensions.gnome.org\">extensions.gnome.org</a> で行うことができます。"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
@@ -3097,7 +3120,7 @@ msgstr "終了"
 #: subprojects/extensions-tool/src/command-create.c:284
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
-msgstr ""
+msgstr "新しい拡張機能 %s に作成されました。\n"
 
 #: subprojects/extensions-tool/src/command-create.c:376
 #, c-format
@@ -3105,6 +3128,8 @@ msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
 "Examples are: %s"
 msgstr ""
+"名前はとても短い (理想的には説明的な) 文字列でなければなりません。\n"
+"たとえば: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:382
 #: subprojects/extensions-tool/src/main.c:243
@@ -3117,6 +3142,8 @@ msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
 "Examples are: %s"
 msgstr ""
+"説明は拡張機能がすることを一文で表すものです。\n"
+"たとえば: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:402
 #: subprojects/extensions-tool/src/main.c:246
@@ -3126,13 +3153,15 @@ msgstr "説明"
 #: subprojects/extensions-tool/src/command-create.c:416
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
+"This should be in the format of an email address "
+"(clicktofocus@janedoe.example.com)\n"
 msgstr ""
+"UUIDはグローバルにユニークな拡張機能のための識別子です。\n"
+"メールアドレスの形式であるべきです (clicktofocus@janedoe.example.comn)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:443
 msgid "Choose one of the available templates:\n"
-msgstr ""
+msgstr "利用可能なテンプレートから1つ選択:\n"
 
 #: subprojects/extensions-tool/src/command-create.c:457
 msgid "Template"
@@ -3140,57 +3169,57 @@ msgstr "テンプレート"
 
 #: subprojects/extensions-tool/src/command-create.c:515
 msgid "The unique identifier of the new extension"
-msgstr ""
+msgstr "新しい拡張機能のユニークな識別子"
 
 #: subprojects/extensions-tool/src/command-create.c:518
 msgid "NAME"
-msgstr ""
+msgstr "名前"
 
 #: subprojects/extensions-tool/src/command-create.c:519
 msgid "The user-visible name of the new extension"
-msgstr ""
+msgstr "新しい拡張機能のユーザーに見える名前"
 
 #: subprojects/extensions-tool/src/command-create.c:521
 msgid "DESCRIPTION"
-msgstr ""
+msgstr "説明"
 
 #: subprojects/extensions-tool/src/command-create.c:523
 msgid "A short description of what the extension does"
-msgstr ""
+msgstr "この拡張機能が何をするかの短い説明"
 
 #: subprojects/extensions-tool/src/command-create.c:525
 #: subprojects/extensions-tool/src/command-pack.c:455
 msgid "DOMAIN"
-msgstr ""
+msgstr "ドメイン"
 
 #: subprojects/extensions-tool/src/command-create.c:527
 msgid "The gettext domain used by the extension"
-msgstr ""
+msgstr "拡張機能で使用される gettext のドメイン"
 
 #: subprojects/extensions-tool/src/command-create.c:529
 #: subprojects/extensions-tool/src/command-pack.c:448
 msgid "SCHEMA"
-msgstr ""
+msgstr "スキーマ"
 
 #: subprojects/extensions-tool/src/command-create.c:531
 msgid "The GSettings schema used by the extension"
-msgstr ""
+msgstr "拡張機能で使用される GSettings のスキーマ"
 
 #: subprojects/extensions-tool/src/command-create.c:534
 msgid "TEMPLATE"
-msgstr ""
+msgstr "テンプレート"
 
 #: subprojects/extensions-tool/src/command-create.c:535
 msgid "The template to use for the new extension"
-msgstr ""
+msgstr "新しい拡張機能で使用されるテンプレート"
 
 #: subprojects/extensions-tool/src/command-create.c:538
 msgid "Include prefs.js template"
-msgstr ""
+msgstr "prefs.js のテンプレートを含む"
 
 #: subprojects/extensions-tool/src/command-create.c:544
 msgid "Enter extension information interactively"
-msgstr ""
+msgstr "拡張機能の情報を対話的に入力"
 
 #: subprojects/extensions-tool/src/command-create.c:552
 msgid "Create a new extension"
@@ -3203,7 +3232,7 @@ msgstr "不明な引数です"
 
 #: subprojects/extensions-tool/src/command-create.c:595
 msgid "UUID, name and description are required"
-msgstr ""
+msgstr "UUID、名前、そして説明が必要です"
 
 #: subprojects/extensions-tool/src/command-disable.c:62
 #: subprojects/extensions-tool/src/command-enable.c:62
@@ -3222,7 +3251,7 @@ msgstr "拡張機能を無効にします"
 #: subprojects/extensions-tool/src/command-reset.c:76
 #: subprojects/extensions-tool/src/command-uninstall.c:104
 msgid "No UUID given"
-msgstr ""
+msgstr "UUID が与えられていません"
 
 #: subprojects/extensions-tool/src/command-disable.c:121
 #: subprojects/extensions-tool/src/command-enable.c:121
@@ -3231,7 +3260,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-reset.c:81
 #: subprojects/extensions-tool/src/command-uninstall.c:109
 msgid "More than one UUID given"
-msgstr ""
+msgstr "1つより多くの UUID が与えられています"
 
 #: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
@@ -3259,19 +3288,19 @@ msgstr "既存の拡張機能を上書きする"
 
 #: subprojects/extensions-tool/src/command-install.c:192
 msgid "EXTENSION_BUNDLE"
-msgstr ""
+msgstr "拡張機能バンドル"
 
 #: subprojects/extensions-tool/src/command-install.c:201
 msgid "Install an extension bundle"
-msgstr ""
+msgstr "拡張機能バンドルをインストールします"
 
 #: subprojects/extensions-tool/src/command-install.c:219
 msgid "No extension bundle specified"
-msgstr ""
+msgstr "拡張機能バンドルが指定されていません"
 
 #: subprojects/extensions-tool/src/command-install.c:225
 msgid "More than one extension bundle specified"
-msgstr ""
+msgstr "1つより多くの拡張機能バンドルが指定されています"
 
 #: subprojects/extensions-tool/src/command-list.c:140
 msgid "Show user-installed extensions"
@@ -3290,14 +3319,12 @@ msgid "Show disabled extensions"
 msgstr "無効化された拡張機能を表示する"
 
 #: subprojects/extensions-tool/src/command-list.c:152
-#, fuzzy
 msgid "Show extensions in active state"
-msgstr "アップデートがある拡張機能を表示する"
+msgstr "アクティブな状態の拡張機能を表示する"
 
 #: subprojects/extensions-tool/src/command-list.c:155
-#, fuzzy
 msgid "Show extensions in inactive state"
-msgstr "アップデートがある拡張機能を表示する"
+msgstr "無効な状態の拡張機能を表示する"
 
 #: subprojects/extensions-tool/src/command-list.c:158
 msgid "Show extensions with preferences"
@@ -3317,44 +3344,44 @@ msgstr "インストールされた拡張機能一覧を表示します"
 
 #: subprojects/extensions-tool/src/command-pack.c:444
 msgid "FILE"
-msgstr ""
+msgstr "ファイル"
 
 #: subprojects/extensions-tool/src/command-pack.c:445
 msgid "Additional source to include in the bundle"
-msgstr ""
+msgstr "バンドルに含まれる追加のソース"
 
 #: subprojects/extensions-tool/src/command-pack.c:449
 msgid "A GSettings schema that should be included"
-msgstr ""
+msgstr "含むべき GSettins スキーマ"
 
 #: subprojects/extensions-tool/src/command-pack.c:451
 #: subprojects/extensions-tool/src/command-pack.c:462
 msgid "DIRECTORY"
-msgstr ""
+msgstr "ディレクトリ"
 
 #: subprojects/extensions-tool/src/command-pack.c:453
 msgid "The directory where translations are found"
-msgstr ""
+msgstr "翻訳のあるディレクトリ"
 
 #: subprojects/extensions-tool/src/command-pack.c:457
 msgid "The gettext domain to use for translations"
-msgstr ""
+msgstr "翻訳に使用する gettext のドメイン"
 
 #: subprojects/extensions-tool/src/command-pack.c:460
 msgid "Overwrite an existing pack"
-msgstr ""
+msgstr "既存のパックを上書きする"
 
 #: subprojects/extensions-tool/src/command-pack.c:464
 msgid "The directory where the pack should be created"
-msgstr ""
+msgstr "パックが作成されるディレクトリ"
 
 #: subprojects/extensions-tool/src/command-pack.c:466
 msgid "SOURCE_DIRECTORY"
-msgstr ""
+msgstr "ソースディレクトリ"
 
 #: subprojects/extensions-tool/src/command-pack.c:475
 msgid "Create an extension bundle"
-msgstr ""
+msgstr "拡張機能バンドルを作成します"
 
 #: subprojects/extensions-tool/src/command-pack.c:495
 msgid "More than one source directory specified"
@@ -3368,7 +3395,7 @@ msgstr "“%s”拡張機能には設定がありません\n"
 #: subprojects/extensions-tool/src/command-prefs.c:62
 #, c-format
 msgid "Failed to open prefs for extension “%s”: %s\n"
-msgstr ""
+msgstr "拡張機能 “%s” の設定を開けません: %s\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:87
 msgid "Opens extension preferences"
@@ -3393,7 +3420,7 @@ msgstr "拡張機能をアンインストールします"
 
 #: subprojects/extensions-tool/src/main.c:76
 msgid "Do not print error messages"
-msgstr ""
+msgstr "エラーメッセージを出力しない"
 
 #: subprojects/extensions-tool/src/main.c:249
 msgid "Path"
@@ -3445,7 +3472,7 @@ msgstr "バージョン情報を表示して終了します。"
 #: subprojects/extensions-tool/src/main.c:329
 #: subprojects/extensions-tool/src/main.c:332
 msgid "COMMAND"
-msgstr ""
+msgstr "コマンド"
 
 #: subprojects/extensions-tool/src/main.c:332
 msgid "[ARGS…]"
@@ -3494,11 +3521,11 @@ msgstr "拡張機能を作成する"
 
 #: subprojects/extensions-tool/src/main.c:346
 msgid "Package extension"
-msgstr ""
+msgstr "拡張機能バンドルを作成する"
 
 #: subprojects/extensions-tool/src/main.c:347
 msgid "Install extension bundle"
-msgstr ""
+msgstr "拡張機能バンドルをインストールする"
 
 #: subprojects/extensions-tool/src/main.c:349
 #, c-format
@@ -3507,11 +3534,11 @@ msgstr "“%s”を使用すると詳細なヘルプが表示されます。\n"
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
 msgid "Plain"
-msgstr ""
+msgstr "プレーン"
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
 msgid "An empty extension"
-msgstr ""
+msgstr "空の拡張機能"
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
 msgid "Indicator"
@@ -3527,7 +3554,7 @@ msgstr "クイック設定アイテム"
 
 #: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:5
 msgid "Add an item to quick settings"
-msgstr ""
+msgstr "クイック設定にアイテムを追加"
 
 #. translators:
 #. * The device has been disabled
