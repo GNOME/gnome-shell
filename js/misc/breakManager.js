@@ -26,6 +26,7 @@ import Cogl from 'gi://Cogl';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
@@ -194,7 +195,10 @@ export const BreakManager = GObject.registerClass({
     }
 
     _startStateMachine() {
-        this._idleWatchId = this._idleMonitor.add_idle_watch(MIN_BREAK_LENGTH_SECONDS * 1000, this._onIdleWatch.bind(this));
+        this._idleWatchId = this._idleMonitor.add_idle_watch_full(
+            MIN_BREAK_LENGTH_SECONDS * 1000,
+            this._onIdleWatch.bind(this),
+            Meta.IdleMonitorWatchFlags.UNINHIBITABLE | Meta.IdleMonitorWatchFlags.START_NOW);
 
         this._state = BreakState.ACTIVE;
         this._currentBreakType = null;
