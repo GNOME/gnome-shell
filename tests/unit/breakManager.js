@@ -209,7 +209,7 @@ class TestHarness {
     // simulated clock and event queue.
     get mockIdleMonitor() {
         return {
-            add_idle_watch: (waitMsec, callback) => {
+            add_idle_watch_full: (waitMsec, callback, _flags) => {
                 console.assert(this._idleWatch === null);
                 this._idleWatch = {
                     waitMsec,
