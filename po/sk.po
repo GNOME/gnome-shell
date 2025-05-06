@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-03-25 21:30+0000\n"
-"PO-Revision-Date: 2025-03-25 22:27+0100\n"
+"POT-Creation-Date: 2025-05-05 17:52+0000\n"
+"PO-Revision-Date: 2025-05-06 21:17+0200\n"
 "Last-Translator: Jose Riha <jose1711@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -709,25 +709,25 @@ msgstr "Nie ste v zozname?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1071
+#: js/gdm/loginDialog.js:1075
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(napr., používateľ alebo %s)"
 
-#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1080 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Používateľské meno"
 
-#: js/gdm/loginDialog.js:1142
+#: js/gdm/loginDialog.js:1146
 msgid "Login Attempt Timed Out"
 msgstr "Časový limit pri pokuse o prihlásenie vypršal"
 
-#: js/gdm/loginDialog.js:1143
+#: js/gdm/loginDialog.js:1147
 msgid "Login took too long, please try again"
 msgstr "Prihlasovanie trvalo príliš dlho, skúste to prosím znovu"
 
-#: js/gdm/loginDialog.js:1492
+#: js/gdm/loginDialog.js:1496
 msgid "Login Window"
 msgstr "Prihlasovacie okno"
 
@@ -747,44 +747,44 @@ msgstr "(alebo prejdite prstom po čítačke)"
 msgid "(or place finger on reader)"
 msgstr "(alebo priložte prst na čítačku)"
 
-#: js/misc/breakManager.js:765
+#: js/misc/breakManager.js:770
 msgid "Break complete sound"
 msgstr "Zvuk dokončenia prestávky"
 
-#: js/misc/breakManager.js:982
+#: js/misc/breakManager.js:980
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
-msgstr[0] "%d sekúnd"
-msgstr[1] "%d sekunda"
-msgstr[2] "%d sekundy"
+msgstr[0] "%d sekundami"
+msgstr[1] "%d sekundou"
+msgstr[2] "%d sekundami"
 
-#: js/misc/breakManager.js:988
+#: js/misc/breakManager.js:986
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
-msgstr[0] "%d minút"
-msgstr[1] "%d minúta"
-msgstr[2] "%d minúty"
+msgstr[0] "%d minútami"
+msgstr[1] "%d minútou"
+msgstr[2] "%d minútami"
 
-#: js/misc/breakManager.js:994
+#: js/misc/breakManager.js:992
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
-msgstr[0] "%d hodín"
-msgstr[1] "%d hodina"
-msgstr[2] "%d hodiny"
+msgstr[0] "%d hodinami"
+msgstr[1] "%d hodinou"
+msgstr[2] "%d hodinami"
 
-#: js/misc/breakManager.js:1000
+#: js/misc/breakManager.js:998
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
-msgstr[0] "%d dní"
-msgstr[1] "%d deň"
-msgstr[2] "%d dni"
+msgstr[0] "%d dňami"
+msgstr[1] "%d dňom"
+msgstr[2] "%d dňami"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1083
+#: js/misc/breakManager.js:1081
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
@@ -792,24 +792,24 @@ msgstr[0] "Za %s bude čas na prestávku"
 msgstr[1] "Za %s bude čas na prestávku"
 msgstr[2] "Za %s bude čas na prestávku"
 
-#: js/misc/breakManager.js:1091
+#: js/misc/breakManager.js:1089
 msgid "Movement Break Soon"
 msgstr "Blíži sa prestávka na pohyb"
 
-#: js/misc/breakManager.js:1094
+#: js/misc/breakManager.js:1092
 msgid "Eyesight Break Soon"
 msgstr "Blíži sa prestávka s odpočinkom pre oči"
 
-#: js/misc/breakManager.js:1097
+#: js/misc/breakManager.js:1095
 msgid "Break Soon"
 msgstr "Blíži sa prestávka"
 
-#: js/misc/breakManager.js:1141
+#: js/misc/breakManager.js:1140
 msgid "Movement Break in Progress"
 msgstr "Prebieha prestávka na pohyb"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1144
+#: js/misc/breakManager.js:1143
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
@@ -817,12 +817,12 @@ msgstr[0] "Pokračujte v pohybe počas %s"
 msgstr[1] "Pokračujte v pohybe počas %s"
 msgstr[2] "Pokračujte v pohybe počas %s"
 
-#: js/misc/breakManager.js:1150
+#: js/misc/breakManager.js:1149
 msgid "Eyesight Break in Progress"
 msgstr "Prebieha prestávka s odpočinkom pre oči"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1153
+#: js/misc/breakManager.js:1152
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
@@ -830,12 +830,12 @@ msgstr[0] "Pokračujte v pozeraní sa inam po dobu %s"
 msgstr[1] "Pokračujte v pozeraní sa inam po dobu %s"
 msgstr[2] "Pokračujte v pozeraní sa inam po dobu %s"
 
-#: js/misc/breakManager.js:1159
+#: js/misc/breakManager.js:1158
 msgid "Break in Progress"
 msgstr "Prebieha prestávka"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1162
+#: js/misc/breakManager.js:1161
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
@@ -843,12 +843,12 @@ msgstr[0] "Do konca prestávky zostávajú %s"
 msgstr[1] "Do konca prestávky zostáva %s"
 msgstr[2] "Do konca prestávky zostávajú %s"
 
-#: js/misc/breakManager.js:1201
+#: js/misc/breakManager.js:1200
 msgid "Time for a Movement Break"
 msgstr "Čas na prestávku na pohyb"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1204
+#: js/misc/breakManager.js:1203
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
@@ -856,12 +856,12 @@ msgstr[0] "Dajte si prestávku od používania zariadenia a hýbte sa po dobu %s
 msgstr[1] "Dajte si prestávku od používania zariadenia a hýbte sa po dobu %s"
 msgstr[2] "Dajte si prestávku od používania zariadenia a hýbte sa po dobu %s"
 
-#: js/misc/breakManager.js:1210
+#: js/misc/breakManager.js:1209
 msgid "Time for an Eyesight Break"
 msgstr "Čas na prestávku s odpočinkom pre oči"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1213
+#: js/misc/breakManager.js:1212
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -877,12 +877,12 @@ msgstr[2] ""
 "Odpočiňte si od používania obrazovky. Pozerajte sa zo vzdialenosti aspoň 6 "
 "metrov po dobu %s"
 
-#: js/misc/breakManager.js:1219
+#: js/misc/breakManager.js:1218
 msgid "Time for a Break"
 msgstr "Čas na prestávku"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1222
+#: js/misc/breakManager.js:1221
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -891,7 +891,7 @@ msgstr[1] "Je čas na prestávku. Odíďte od zariadenia na %s!"
 msgstr[2] "Je čas na prestávku. Odíďte od zariadenia na %s!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1244
+#: js/misc/breakManager.js:1245
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
@@ -899,12 +899,12 @@ msgstr[0] "Pred %s ste si mali dať prestávku!"
 msgstr[1] "Pred %s ste si mali dať prestávku!"
 msgstr[2] "Pred %s ste si mali dať prestávku!"
 
-#: js/misc/breakManager.js:1250
+#: js/misc/breakManager.js:1251
 msgid "Break Overdue"
 msgstr "Oneskorená prestávka"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1264
+#: js/misc/breakManager.js:1267
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
@@ -912,25 +912,25 @@ msgstr[0] "Do konca vašej prestávky zostáva %s"
 msgstr[1] "Do konca vašej prestávky zostáva %s"
 msgstr[2] "Do konca vašej prestávky zostávajú %s"
 
-#: js/misc/breakManager.js:1270
+#: js/misc/breakManager.js:1273
 msgid "Break Interrupted"
 msgstr "Prestávka prerušená"
 
-#: js/misc/breakManager.js:1341
+#: js/misc/breakManager.js:1350
 msgid "Delay"
 msgstr "Posunúť"
 
-#: js/misc/breakManager.js:1362 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1371 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Preskočiť"
 
-#: js/misc/breakManager.js:1383
+#: js/misc/breakManager.js:1392
 msgid "Take"
 msgstr "Dať si prestávku"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1446
+#: js/misc/breakManager.js:1455
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -1033,12 +1033,12 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Uzamknúť otočenie obrazovky"
 
-#: js/misc/timeLimitsManager.js:338
+#: js/misc/timeLimitsManager.js:342
 msgid "GNOME needs to save screen time data"
 msgstr ""
 "Prostredie GNOME potrebuje uložiť údaje o čase strávenom pred obrazovkou"
 
-#: js/misc/timeLimitsManager.js:1102
+#: js/misc/timeLimitsManager.js:1116
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
@@ -1046,15 +1046,15 @@ msgstr[0] "Limit času stráveného pred obrazovkou za %d minút"
 msgstr[1] "Limit času stráveného pred obrazovkou za %d minútu"
 msgstr[2] "Limit času stráveného pred obrazovkou za %d minúty"
 
-#: js/misc/timeLimitsManager.js:1109
+#: js/misc/timeLimitsManager.js:1123
 msgid "Your screen time limit is approaching"
 msgstr "Blíži sa váš limit času stráveného pred obrazovkou"
 
-#: js/misc/timeLimitsManager.js:1123
+#: js/misc/timeLimitsManager.js:1137
 msgid "Screen Time Limit Reached"
 msgstr "Bol dostiahnutý limit času stráveného pred obrazovkou"
 
-#: js/misc/timeLimitsManager.js:1124
+#: js/misc/timeLimitsManager.js:1138
 msgid "It’s time to stop using the device"
 msgstr "Je čas prestať zariadenie používať"
 
@@ -2130,15 +2130,15 @@ msgstr "Otvoriť ponuku"
 msgid "Run a Command"
 msgstr "Spustenie príkazu"
 
-#: js/ui/runDialog.js:76
+#: js/ui/runDialog.js:77
 msgid "Press ESC to close"
 msgstr "Stlačte kláves ESC na zavretie"
 
-#: js/ui/runDialog.js:253
+#: js/ui/runDialog.js:254
 msgid "Restart is not available on Wayland"
 msgstr "Reštart nie je dostupný s protokolom Wayland"
 
-#: js/ui/runDialog.js:258
+#: js/ui/runDialog.js:259
 msgid "Restarting…"
 msgstr "Reštartuje sa…"
 
@@ -3025,15 +3025,15 @@ msgstr ""
 "Rozšírenia prostredia GNOME spravujú aktualizácie rozšírení, konfiguráciu "
 "predvolieb rozšírení a odstraňovanie alebo zakázanie nechcených rozšírení."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
 msgid "Main Window"
 msgstr "Hlavné okno"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
 msgid "Available Updates"
 msgstr "Dostupné aktualizácie"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
 msgid "Search View"
 msgstr "Zobrazenie vyhľadávania"
 
