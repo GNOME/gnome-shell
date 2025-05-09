@@ -1323,6 +1323,16 @@ const NMVpnConnectionItem = GObject.registerClass({
         this.bind_property('is-active',
             this._switch, 'state',
             GObject.BindingFlags.SYNC_CREATE);
+
+        // Switch handle is reactive, so events don't propagate to the item;
+        // activate it manually in that case
+        this._switch.connect('notify::state', () => {
+            if (this.is_active === this._switch.state)
+                return;
+
+            this.activate();
+        });
+
         this.bind_property('name',
             this._label, 'text',
             GObject.BindingFlags.SYNC_CREATE);
