@@ -19,6 +19,7 @@ sources = [
   'command-prefs.c',
   'command-reset.c',
   'command-uninstall.c',
+  'command-upload.c',
   'main.c'
 ]
 
@@ -32,6 +33,6 @@ resources = gnome.compile_resources('resources',
 
 executable('gnome-extensions',
   sources, resources,
-  dependencies: [gio_dep, gio_unix_dep, autoar_dep, json_dep],
+  dependencies: [gio_dep, gio_unix_dep, autoar_dep, json_dep, soup_dep],
   install: true
 )

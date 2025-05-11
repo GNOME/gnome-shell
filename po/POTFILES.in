@@ -111,6 +111,7 @@ subprojects/extensions-tool/src/command-pack.c
 subprojects/extensions-tool/src/command-prefs.c
 subprojects/extensions-tool/src/command-reset.c
 subprojects/extensions-tool/src/command-uninstall.c
+subprojects/extensions-tool/src/command-upload.c
 subprojects/extensions-tool/src/main.c
 subprojects/extensions-tool/src/templates/00-plain.desktop.in
 subprojects/extensions-tool/src/templates/indicator.desktop.in

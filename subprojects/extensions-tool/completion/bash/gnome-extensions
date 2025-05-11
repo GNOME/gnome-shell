@@ -5,7 +5,7 @@
 ################################################################################
 
 __gnome_extensions() {
-  local commands="version enable disable reset info install show list create pack prefs uninstall"
+  local commands="version enable disable reset info install show list create pack prefs uninstall upload"
   local COMMAND=${COMP_WORDS[1]}
 
   _init_completion -s || return
@@ -68,7 +68,7 @@ __gnome_extensions() {
           ;;
       esac
       ;;
-    install)
+    install|upload)
       if [[ $cur != -* ]]
       then
           _filedir zip

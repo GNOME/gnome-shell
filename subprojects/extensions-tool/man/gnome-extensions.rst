@@ -25,6 +25,7 @@ SYNOPSIS
 |  **gnome-extensions** pack [*OPTION*...]
 |  **gnome-extensions** install [*OPTION*...] *PACK*
 |  **gnome-extensions** uninstall *UUID*
+|  **gnome-extensions** upload [*OPTION*...] *PACK*...
 
 DESCRIPTION
 -----------
@@ -242,6 +243,33 @@ COMMANDS
 ``uninstall`` *UUID*
 
   Uninstalls the extension identified by *UUID*.
+
+``upload`` [*OPTION*...] *PACK*...
+
+  Upload one or more extension packs to https://extensions.gnome.org.
+
+  If login credentials are required, they can be entered interactively
+  when prompted. This is generally preferred over the ``--password``
+  or ``--password-file`` options, which risk exposing the password in
+  logs, the environment or filesystem (depending on how it was provided).
+
+  **Options**
+
+    ``--accept-tos``
+
+      Accept the terms of service at https://extensions.gnome.org/upload/
+
+    ``--user``\ =\ *USER*
+
+      Username to log into https://extensions.gnome.org
+
+    ``--password``\ =\ *PASSWORD*
+
+      Password to log into https://extensions.gnome.org
+
+    ``--password-file``\ =\ *FILE*
+
+      File to read https://extensions.gnome.org password from
 
 
 EXIT STATUS

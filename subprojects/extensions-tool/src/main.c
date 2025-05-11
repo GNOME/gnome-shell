@@ -420,6 +420,8 @@ main (int argc, char *argv[])
     return handle_install (argc, argv, do_help);
   else if (g_str_equal (command, "uninstall"))
     return handle_uninstall (argc, argv, do_help);
+  else if (g_str_equal (command, "upload"))
+    return handle_upload (argc, argv, do_help);
   else
     usage ();
 
