@@ -49,6 +49,14 @@ should_run_nested() {
   [[ "$XDG_SESSION_TYPE" != "tty" ]] && [[ ! "$HEADLESS" ]]
 }
 
+has_devkit() {
+  toolbox --container $TOOLBOX run gnome-shell --help | grep -q -- --devkit
+}
+
+has_nested() {
+  toolbox --container $TOOLBOX run gnome-shell --help | grep -q -- --nested
+}
+
 # load defaults
 . $CONFIG_FILE
 TOOLBOX=$DEFAULT_TOOLBOX
@@ -147,15 +155,25 @@ while true; do
   esac
 done
 
+FORCE_DISPLAY=1
 if should_run_nested; then
-  SHELL_ARGS+=( --nested )
+  if has_devkit; then
+    SHELL_ARGS+=( --devkit )
+    FORCE_DISPLAY=0
+  elif has_nested; then
+    SHELL_ARGS+=( --nested )
+  else
+    die Mutter has to be built with devkit or x11 support
+  fi
 else
   SHELL_ARGS+=( --wayland )
 fi
 
-display=toolbox-wayland-$RANDOM
-SHELL_ENV+=(WAYLAND_DISPLAY=$display)
-SHELL_ARGS+=(--wayland-display=$display)
+if [ $FORCE_DISPLAY -gt 0 ]; then
+  display=toolbox-wayland-$RANDOM
+  SHELL_ENV+=(WAYLAND_DISPLAY=$display)
+  SHELL_ARGS+=(--wayland-display=$display)
+fi
 
 toolbox --container $TOOLBOX run \
   env "${SHELL_ENV[@]}" dbus-run-session $GDB gnome-shell "${SHELL_ARGS[@]}"
