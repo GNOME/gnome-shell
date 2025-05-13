@@ -2505,7 +2505,7 @@ export const AppFolderDialog = GObject.registerClass({
             const actor =
                 global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
 
-            if (actor === this)
+            if (!this._viewBox.contains(actor))
                 this.popdown();
         });
         this.add_action(clickAction);
