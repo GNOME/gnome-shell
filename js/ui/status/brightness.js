@@ -1,15 +1,6 @@
-import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 
 import {QuickSlider, SystemIndicator} from '../quickSettings.js';
-
-import {loadInterfaceXML} from '../../misc/fileUtils.js';
-
-const BUS_NAME = 'org.gnome.SettingsDaemon.Power';
-const OBJECT_PATH = '/org/gnome/SettingsDaemon/Power';
-
-const BrightnessInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Power.Screen');
-const BrightnessProxy = Gio.DBusProxy.makeProxyWrapper(BrightnessInterface);
 
 const BrightnessItem = GObject.registerClass(
 class BrightnessItem extends QuickSlider {
@@ -18,23 +9,19 @@ class BrightnessItem extends QuickSlider {
             iconName: 'display-brightness-symbolic',
         });
 
-        this._proxy = new BrightnessProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
-            (proxy, error) => {
-                if (error)
-                    console.error(error.message);
-                else
-                    this._proxy.connect('g-properties-changed', () => this._sync());
-                this._sync();
-            });
+        this.slider.accessible_name = _('Brightness');
+
+        const monitorManager = global.backend.get_monitor_manager();
+        monitorManager.connectObject('monitors-changed',
+            this._monitorsChanged.bind(this), this);
+        this._monitorsChanged();
 
         this._sliderChangedId = this.slider.connect('notify::value',
             this._sliderChanged.bind(this));
-        this.slider.accessible_name = _('Brightness');
     }
 
     _sliderChanged() {
-        const percent = this.slider.value * 100;
-        this._proxy.Brightness = percent;
+        this._setBrightness(this.slider.value);
     }
 
     _changeSlider(value) {
@@ -43,12 +30,49 @@ class BrightnessItem extends QuickSlider {
         this.slider.unblock_signal_handler(this._sliderChangedId);
     }
 
-    _sync() {
-        const brightness = this._proxy.Brightness;
-        const visible = Number.isInteger(brightness) && brightness >= 0;
-        this.visible = visible;
-        if (visible)
-            this._changeSlider(this._proxy.Brightness / 100.0);
+    _setBrightness(brightness) {
+        this._primaryBacklight?.block_signal_handler(this._brightnessChangedId);
+        this._monitors.forEach(monitor => {
+            const backlight = monitor.get_backlight();
+            const {brightnessMin: min, brightnessMax: max} = backlight;
+            backlight.brightness = min + ((max - min) * brightness);
+        });
+        this._primaryBacklight?.unblock_signal_handler(this._brightnessChangedId);
+
+        this._changeSlider(brightness);
+    }
+
+    _primaryBacklightChanged() {
+        const {brightness, brightnessMin: min, brightnessMax: max} =
+            this._primaryBacklight;
+        const target = (brightness - min) / (max - min);
+        this._setBrightness(target);
+    }
+
+    _setPrimaryBacklight(backlight) {
+        if (this._primaryBacklight) {
+            this._primaryBacklight.disconnect(this._brightnessChangedId);
+            this._brightnessChangedId = 0;
+        }
+
+        this._primaryBacklight = backlight;
+        this.visible = !!backlight;
+
+        if (this._primaryBacklight) {
+            this._brightnessChangedId =
+                this._primaryBacklight.connect('notify::brightness',
+                    this._primaryBacklightChanged.bind(this));
+            this._primaryBacklightChanged();
+        }
+    }
+
+    _monitorsChanged() {
+        this._monitors = global.backend.get_monitor_manager()
+            .get_monitors()
+            .filter(m => m.get_backlight() && m.is_active());
+        const primary = this._monitors.find(m => m.is_primary()) ||
+                        this._monitors[0];
+        this._setPrimaryBacklight(primary?.get_backlight());
     }
 });
 
