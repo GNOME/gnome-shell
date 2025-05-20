@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-05-10 17:43+0000\n"
-"PO-Revision-Date: 2025-05-16 16:01+0200\n"
+"POT-Creation-Date: 2025-05-16 14:19+0000\n"
+"PO-Revision-Date: 2025-05-20 11:50+0200\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -1006,12 +1006,12 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Blochează rotația ecranului"
 
-#: js/misc/timeLimitsManager.js:342
+#: js/misc/timeLimitsManager.js:338
 msgid "GNOME needs to save screen time data"
 msgstr ""
 "GNOME trebuie să înregistreze datele privind timpul de utilizare a ecranului"
 
-#: js/misc/timeLimitsManager.js:1116
+#: js/misc/timeLimitsManager.js:1102
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
@@ -1019,15 +1019,15 @@ msgstr[0] "Limită de utilizare a ecranului peste %d minut"
 msgstr[1] "Limită de utilizare a ecranului peste %d minute"
 msgstr[2] "Limită de utilizare a ecranului peste %d de minute"
 
-#: js/misc/timeLimitsManager.js:1123
+#: js/misc/timeLimitsManager.js:1109
 msgid "Your screen time limit is approaching"
 msgstr "Limita de utilizare a ecranului se apropie"
 
-#: js/misc/timeLimitsManager.js:1137
+#: js/misc/timeLimitsManager.js:1123
 msgid "Screen Time Limit Reached"
 msgstr "Limita de utilizare a ecranului a fost atinsă"
 
-#: js/misc/timeLimitsManager.js:1138
+#: js/misc/timeLimitsManager.js:1124
 msgid "It’s time to stop using the device"
 msgstr "Este timpul să nu mai folosești aparatul"
 
@@ -2075,7 +2075,7 @@ msgstr "Sistem"
 
 #: js/ui/panel.js:678
 msgid "Top Bar"
-msgstr "Parte de sus"
+msgstr "Bara de sus"
 
 #: js/ui/quickSettings.js:185 js/ui/quickSettings.js:340
 msgid "Open menu"
@@ -2085,15 +2085,15 @@ msgstr "Deschide opțiunile"
 msgid "Run a Command"
 msgstr "Execută o comandă"
 
-#: js/ui/runDialog.js:77
+#: js/ui/runDialog.js:76
 msgid "Press ESC to close"
 msgstr "Apasă ESC pentru a închide"
 
-#: js/ui/runDialog.js:254
+#: js/ui/runDialog.js:253
 msgid "Restart is not available on Wayland"
 msgstr "Repornirea nu este disponibilă în Wayland"
 
-#: js/ui/runDialog.js:259
+#: js/ui/runDialog.js:258
 msgid "Restarting…"
 msgstr "Se repornește…"
 
@@ -3624,7 +3624,7 @@ msgstr "Indicator"
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
 msgid "Add an icon to the top bar"
-msgstr "Adaugă un simbol în partea de sus"
+msgstr "Adaugă un simbol în bara de sus"
 
 #: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
 msgid "Quick Settings Item"
