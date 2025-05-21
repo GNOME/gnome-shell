@@ -320,15 +320,6 @@ Clutter.Actor.prototype[Symbol.iterator] = function* () {
 Clutter.Actor.prototype.toString = function () {
     return St.describe_actor(this);
 };
-// Deprecation warning for former JS classes turned into an actor subclass
-Object.defineProperty(Clutter.Actor.prototype, 'actor', {
-    get() {
-        let klass = this.constructor.name;
-        let {stack} = new Error();
-        log(`Usage of object.actor is deprecated for ${klass}\n${stack}`);
-        return this;
-    },
-});
 
 Meta.Rectangle = function (params = {}) {
     console.warn('Meta.Rectangle is deprecated, use Mtk.Rectangle instead');
