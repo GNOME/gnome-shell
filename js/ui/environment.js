@@ -11,7 +11,6 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
-import Mtk from 'gi://Mtk';
 import Polkit from 'gi://Polkit';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
@@ -319,11 +318,6 @@ Clutter.Actor.prototype[Symbol.iterator] = function* () {
 
 Clutter.Actor.prototype.toString = function () {
     return St.describe_actor(this);
-};
-
-Meta.Rectangle = function (params = {}) {
-    console.warn('Meta.Rectangle is deprecated, use Mtk.Rectangle instead');
-    return new Mtk.Rectangle(params);
 };
 
 Gio.File.prototype.touch_async = function (callback) {
