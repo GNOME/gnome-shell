@@ -1262,8 +1262,8 @@ class BreakNotificationSource extends GObject.Object {
             } else if (this._previousState === BreakState.IN_BREAK) {
                 const durationSecs = this._manager.getDurationForBreakType(nextBreakType);
                 const [countdownText, countdownValue, updateTimeoutSeconds] = this._formatTimeSpan(durationSecs - breakDueAgo);
+                /* Translators: %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour” */
                 const bodyText = Gettext.ngettext(
-                    /* %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour” */
                     'There is %s remaining in your break',
                     'There are %s remaining in your break',
                     countdownValue
@@ -1347,6 +1347,7 @@ const BreakNotification = GObject.registerClass({
             return;
 
         if (allowDelay) {
+            /* Translators: As in "Delay the break" */
             this._delayAction = this.addAction(_('Delay'), this._onDelayAction.bind(this));
         } else {
             this.removeAction(this._delayAction);
@@ -1368,6 +1369,7 @@ const BreakNotification = GObject.registerClass({
             return;
 
         if (allowSkip) {
+            /* Translators: As in "Skip the break" */
             this._skipAction = this.addAction(_('Skip'), this._onSkipAction.bind(this));
         } else {
             this.removeAction(this._skipAction);
@@ -1389,6 +1391,7 @@ const BreakNotification = GObject.registerClass({
             return;
 
         if (allowTake) {
+            /* Translators: As in "Take the break" */
             this._takeAction = this.addAction(_('Take'), this._onTakeAction.bind(this));
         } else {
             this.removeAction(this._takeAction);
