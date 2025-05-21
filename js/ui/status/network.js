@@ -1970,7 +1970,7 @@ class CaptivePortalHandler extends Signals.EventEmitter {
         const source = MessageTray.getSystemSource();
 
         const notification = new MessageTray.Notification({
-            title: _('Sign Into Wi–Fi Network'),
+            title: _('Sign In to Network'),
             body: name,
             source,
         });
