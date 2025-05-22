@@ -97,9 +97,6 @@ class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
                 const clipboard = self.get_display().get_clipboard();
                 clipboard.set(self._errorMarkdown);
             });
-        this.install_action('page.show-url',
-            null,
-            self => Gtk.show_uri(self.get_root(), self._url, Gdk.CURRENT_TIME));
     }
 
     constructor(extension, error) {
@@ -109,14 +106,22 @@ class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
 
         const {uuid, name, url} = extension.metadata;
 
-        this._url = url;
-
-        this.action_set_enabled('page.show-url', this._url !== '');
-
-        const label =
+        let label =
             /* Translators: %s is an extension name */
             _('Unable to display the settings for “%s”.')
                 .format(GLib.markup_escape_text(name, -1));
+
+        if (url) {
+            /* Translators: Link label in the phrase "Information about this
+               problem may be available on the extension website" */
+            const linkLabel = _('extension website');
+
+            label += ' ';
+            /* Translators: %s is "extension website" */
+            label += _('Information about this problem may be available on the %s.')
+                .format(`<a href="${url}">${linkLabel}</a>`);
+        }
+
         this._descriptionLabel.set({label});
 
         this._gesture = new Gtk.GestureClick({

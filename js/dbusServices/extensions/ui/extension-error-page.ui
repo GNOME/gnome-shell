@@ -72,21 +72,6 @@
                                     <property name="tooltip-text" translatable="yes">Copy Error</property>
                                   </object>
                                 </child>
-                                <child>
-                                  <object class="GtkButton" id="homeButton">
-                                    <property name="visible"
-                                              bind-source="homeButton"
-                                              bind-property="sensitive"
-                                              bind-flags="sync-create"/>
-                                    <property name="hexpand">True</property>
-                                    <property name="halign">end</property>
-                                    <property name="label" translatable="yes">Homepage</property>
-                                    <property name="tooltip-text" translatable="yes">Visit extension homepage</property>
-                                    <property name="receives-default">True</property>
-                                    <property name="has-frame">False</property>
-                                    <property name="action-name">page.show-url</property>
-                                  </object>
-                                </child>
                               </object>
                             </child>
                           </object>
