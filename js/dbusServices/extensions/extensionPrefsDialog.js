@@ -1,6 +1,4 @@
 import Adw from 'gi://Adw?version=1';
-import Gdk from 'gi://Gdk?version=4.0';
-import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk?version=4.0';
@@ -99,8 +97,6 @@ class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
     constructor(extension, error) {
         super();
 
-        this._addCustomStylesheet();
-
         const {uuid, name, url} = extension.metadata;
 
         let label =
@@ -133,18 +129,5 @@ class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
             '',
         ];
         this._errorMarkdown = lines.join('\n');
-    }
-
-    _addCustomStylesheet() {
-        let provider = new Gtk.CssProvider();
-        let uri = 'resource:///org/gnome/Shell/Extensions/css/application.css';
-        try {
-            provider.load_from_file(Gio.File.new_for_uri(uri));
-        } catch (e) {
-            logError(e, 'Failed to add application style');
-        }
-        Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(),
-            provider,
-            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     }
 }
