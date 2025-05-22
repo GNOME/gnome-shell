@@ -5,6 +5,8 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk?version=4.0';
 
+import {gettext as _} from 'gettext';
+
 import {formatError} from './misc/errorUtils.js';
 
 export class ExtensionPrefsDialog extends Adw.PreferencesWindow {
@@ -68,6 +70,7 @@ export class ExtensionPrefsDialog extends Adw.PreferencesWindow {
         while (this.visible_page)
             this.remove(this.visible_page);
 
+        this.set_title(_('Extension Error'));
         this.add(new ExtensionPrefsErrorPage(this._extension, e));
     }
 }
