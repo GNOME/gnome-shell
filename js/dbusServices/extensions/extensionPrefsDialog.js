@@ -82,9 +82,6 @@ class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
 
     static [Gtk.internalChildren] = [
         'descriptionLabel',
-        'expander',
-        'expanderArrow',
-        'revealer',
         'errorView',
     ];
 
@@ -124,26 +121,6 @@ class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
 
         this._descriptionLabel.set({label});
 
-        this._gesture = new Gtk.GestureClick({
-            button: 0,
-            exclusive: true,
-        });
-        this._expander.add_controller(this._gesture);
-
-        this._gesture.connect('released', (gesture, nPress) => {
-            if (nPress === 1)
-                this._revealer.reveal_child = !this._revealer.reveal_child;
-        });
-
-        this._revealer.connect('notify::reveal-child', () => {
-            this._expanderArrow.icon_name = this._revealer.reveal_child
-                ? 'pan-down-symbolic'
-                : 'pan-end-symbolic';
-            this._syncExpandedStyle();
-        });
-        this._revealer.connect('notify::child-revealed',
-            () => this._syncExpandedStyle());
-
         const formattedError = formatError(error);
         this._errorView.buffer.text = formattedError;
 
@@ -156,13 +133,6 @@ class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
             '',
         ];
         this._errorMarkdown = lines.join('\n');
-    }
-
-    _syncExpandedStyle() {
-        if (this._revealer.reveal_child)
-            this._expander.add_css_class('expanded');
-        else if (!this._revealer.child_revealed)
-            this._expander.remove_css_class('expanded');
     }
 
     _addCustomStylesheet() {
