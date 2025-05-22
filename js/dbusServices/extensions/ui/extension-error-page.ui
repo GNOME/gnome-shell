@@ -11,10 +11,10 @@
             <property name="orientation">vertical</property>
             <property name="spacing">12</property>
             <child>
-              <object class="GtkLabel">
-                <property name="label" translatable="yes">We’re very sorry, but there’s been a problem: the settings for this extension can’t be displayed. We recommend that you report the issue to the extension authors.</property>
+              <object class="GtkLabel" id="descriptionLabel">
                 <property name="justify">center</property>
                 <property name="wrap">True</property>
+                <property name="use-markup">True</property>
               </object>
             </child>
             <child>

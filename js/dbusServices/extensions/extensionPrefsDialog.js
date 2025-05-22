@@ -81,6 +81,7 @@ class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
         'resource:///org/gnome/Shell/Extensions/ui/extension-error-page.ui';
 
     static [Gtk.internalChildren] = [
+        'descriptionLabel',
         'expander',
         'expanderArrow',
         'revealer',
@@ -106,10 +107,17 @@ class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
 
         this._addCustomStylesheet();
 
-        this._uuid = extension.uuid;
-        this._url = extension.metadata.url || '';
+        const {uuid, name, url} = extension.metadata;
+
+        this._url = url;
 
         this.action_set_enabled('page.show-url', this._url !== '');
+
+        const label =
+            /* Translators: %s is an extension name */
+            _('Unable to display the settings for “%s”.')
+                .format(GLib.markup_escape_text(name, -1));
+        this._descriptionLabel.set({label});
 
         this._gesture = new Gtk.GestureClick({
             button: 0,
@@ -136,7 +144,7 @@ class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
 
         // markdown for pasting in gitlab issues
         let lines = [
-            `The settings of extension ${this._uuid} had an error:`,
+            `The settings of extension ${uuid} had an error:`,
             '```',
             formattedError.replace(/\n$/, ''),  // remove trailing newline
             '```',
