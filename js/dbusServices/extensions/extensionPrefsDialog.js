@@ -13,8 +13,8 @@ export const ExtensionPrefsDialog = GObject.registerClass({
         'loaded': {},
     },
 }, class ExtensionPrefsDialog extends Adw.PreferencesWindow {
-    _init(extension) {
-        super._init({
+    constructor(extension) {
+        super({
             title: extension.metadata.name,
             search_enabled: false,
         });
@@ -94,8 +94,8 @@ const ExtensionPrefsErrorPage = GObject.registerClass({
         return klass;
     }
 
-    _init(extension, error) {
-        super._init();
+    constructor(extension, error) {
+        super();
 
         this._addCustomStylesheet();
 
