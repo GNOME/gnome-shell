@@ -1,5 +1,3 @@
-.error-page preferencespage { margin: 30px; }
-
 .expander { padding: 12px; }
 .expander.expanded { border: 0 solid @borders; border-bottom-width: 1px; }
 .expander-toolbar {

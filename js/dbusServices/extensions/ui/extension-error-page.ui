@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="ExtensionPrefsErrorPage" parent="AdwPreferencesPage">
-    <style>
-      <class name="error-page"/>
-    </style>
     <child>
       <object class="AdwPreferencesGroup">
         <child>
