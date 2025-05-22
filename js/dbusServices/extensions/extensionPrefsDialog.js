@@ -7,12 +7,16 @@ import Gtk from 'gi://Gtk?version=4.0';
 
 import {formatError} from './misc/errorUtils.js';
 
-export const ExtensionPrefsDialog = GObject.registerClass({
-    GTypeName: 'ExtensionPrefsDialog',
-    Signals: {
+export class ExtensionPrefsDialog extends Adw.PreferencesWindow {
+    static [GObject.GTypeName] = 'ExtensionPrefsDialog';
+    static [GObject.signals] = {
         'loaded': {},
-    },
-}, class ExtensionPrefsDialog extends Adw.PreferencesWindow {
+    };
+
+    static {
+        GObject.registerClass(this);
+    }
+
     constructor(extension) {
         super({
             title: extension.metadata.name,
@@ -66,32 +70,32 @@ export const ExtensionPrefsDialog = GObject.registerClass({
 
         this.add(new ExtensionPrefsErrorPage(this._extension, e));
     }
-});
+}
 
-const ExtensionPrefsErrorPage = GObject.registerClass({
-    GTypeName: 'ExtensionPrefsErrorPage',
-    Template: 'resource:///org/gnome/Shell/Extensions/ui/extension-error-page.ui',
-    InternalChildren: [
+class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
+    static [GObject.GTypeName] = 'ExtensionPrefsErrorPage';
+    static [Gtk.template] =
+        'resource:///org/gnome/Shell/Extensions/ui/extension-error-page.ui';
+
+    static [Gtk.internalChildren] = [
         'expander',
         'expanderArrow',
         'revealer',
         'errorView',
-    ],
-}, class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
-    static _classInit(klass) {
-        super._classInit(klass);
+    ];
 
-        klass.install_action('page.copy-error',
+    static {
+        GObject.registerClass(this);
+
+        this.install_action('page.copy-error',
             null,
             self => {
                 const clipboard = self.get_display().get_clipboard();
                 clipboard.set(self._errorMarkdown);
             });
-        klass.install_action('page.show-url',
+        this.install_action('page.show-url',
             null,
             self => Gtk.show_uri(self.get_root(), self._url, Gdk.CURRENT_TIME));
-
-        return klass;
     }
 
     constructor(extension, error) {
@@ -157,4 +161,4 @@ const ExtensionPrefsErrorPage = GObject.registerClass({
             provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     }
-});
+}
