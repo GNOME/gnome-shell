@@ -75,6 +75,8 @@ struct _StWidgetPrivate
   gulong texture_file_changed_id;
   guint update_child_styles_id;
 
+  int enter_count;
+
   ClutterActor *label_actor;
 
   StWidget *last_visible_child;
@@ -673,6 +675,8 @@ st_widget_enter (ClutterActor *actor,
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (ST_WIDGET (actor));
 
+  priv->enter_count++;
+
   if (priv->track_hover)
     {
       ClutterStage *stage;
@@ -704,6 +708,8 @@ st_widget_leave (ClutterActor *actor,
                  ClutterEvent *event)
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (ST_WIDGET (actor));
+
+  priv->enter_count--;
 
   if (priv->track_hover)
     {
@@ -1836,26 +1842,12 @@ st_widget_set_hover (StWidget *widget,
 void
 st_widget_sync_hover (StWidget *widget)
 {
-  ClutterContext *context;
-  ClutterBackend *backend;
-  ClutterInputDevice *pointer;
-  ClutterActor *stage;
-  ClutterActor *pointer_actor;
-  ClutterSeat *seat;
+  StWidgetPrivate *priv;
 
-  stage = clutter_actor_get_stage (CLUTTER_ACTOR (widget));
-  if (!stage)
-    return;
+  g_return_if_fail (ST_IS_WIDGET (widget));
 
-  context  = clutter_actor_get_context (CLUTTER_ACTOR (widget));
-  backend = clutter_context_get_backend (context);
-  seat = clutter_backend_get_default_seat (backend);
-  pointer = clutter_seat_get_pointer (seat);
-  pointer_actor = clutter_stage_get_device_actor (CLUTTER_STAGE (stage), pointer, NULL);
-  if (pointer_actor && clutter_actor_get_reactive (CLUTTER_ACTOR (widget)))
-    st_widget_set_hover (widget, clutter_actor_contains (CLUTTER_ACTOR (widget), pointer_actor));
-  else
-    st_widget_set_hover (widget, FALSE);
+  priv = st_widget_get_instance_private (widget);
+  st_widget_set_hover (widget, priv->enter_count > 0);
 }
 
 /**
