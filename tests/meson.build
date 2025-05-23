@@ -41,7 +41,7 @@ unit_tests = {
 foreach test, extra_args : unit_tests
   local_test_env = unit_testenv
   foreach var, value : extra_args.get('env', {})
-    local_test_env.append(var, value)
+    local_test_env.set(var, value)
   endforeach
 
   test(test, jasmine,
