@@ -656,7 +656,7 @@ export class ExtensionManager extends Signals.EventEmitter {
         if (!this.updatesSupported)
             return;
 
-        for (const {dir, info} of FileUtils.collectFromDatadirs('extension-updates', true)) {
+        for (const {file: dir, info} of FileUtils.collectFromDatadirs('extension-updates', true)) {
             let fileType = info.get_file_type();
             if (fileType !== Gio.FileType.DIRECTORY)
                 continue;
@@ -707,7 +707,7 @@ export class ExtensionManager extends Signals.EventEmitter {
 
         const includeUserDir = global.settings.get_boolean('allow-extension-installation');
         const extensionFiles = [...FileUtils.collectFromDatadirs('extensions', includeUserDir)];
-        const extensionObjects = extensionFiles.map(({dir, info}) => {
+        const extensionObjects = extensionFiles.map(({file: dir, info}) => {
             let fileType = info.get_file_type();
             if (fileType !== Gio.FileType.DIRECTORY)
                 return null;
