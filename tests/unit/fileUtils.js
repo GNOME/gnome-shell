@@ -77,6 +77,16 @@ describe('recursivelyDeleteDir()', () => {
         expect(() => recursivelyDeleteDir(dir, true)).not.toThrow();
         expect(dir.query_exists(null)).toBeFalse();
     });
+
+    it('handles symlinks', () => {
+        touchFile(dir, 'file');
+
+        const link = dir.get_child('link');
+        link.make_symbolic_link('file', null);
+
+        expect(() => recursivelyDeleteDir(dir, true)).not.toThrow();
+        expect(dir.query_exists(null)).toBeFalse();
+    });
 });
 
 describe('recursivelyMoveDir()', () => {
@@ -122,5 +132,16 @@ describe('recursivelyMoveDir()', () => {
         const dstSubdir = dstDir.get_child('subdir');
         expect(dstSubdir.query_exists(null)).toBeTrue();
         expect(dstSubdir.get_child('file').query_exists(null)).toBeTrue();
+    });
+
+    it('handles symlinks', () => {
+        touchFile(srcDir, 'file');
+
+        const link = srcDir.get_child('link');
+        link.make_symbolic_link('file', null);
+
+        expect(() => recursivelyMoveDir(srcDir, dstDir)).not.toThrow();
+        expect(dstDir.query_exists(null)).toBeTrue();
+        expect(dstDir.get_child('link').query_exists(null)).toBeTrue();
     });
 });
