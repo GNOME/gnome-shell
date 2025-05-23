@@ -222,9 +222,6 @@ const UserList = GObject.registerClass({
             this._box.add_style_pseudo_class('expanded');
         else
             this._box.remove_style_pseudo_class('expanded');
-
-        for (const item of this._items.values())
-            item.sync_hover();
     }
 
     scrollToItem(item) {
