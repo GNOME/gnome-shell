@@ -55,6 +55,7 @@
   </description>
 
   <releases>
+    <release version="47.7" date="2025-05-25"/>
     <release version="47.6" date="2025-04-13"/>
     <release version="47.5" date="2025-03-03"/>
     <release version="47.4" date="2025-02-03"/>
