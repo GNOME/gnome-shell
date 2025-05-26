@@ -1,4 +1,3 @@
-import Clutter from 'gi://Clutter';
 import Meta from 'gi://Meta';
 import St from 'gi://St';
 
@@ -56,19 +55,13 @@ export class WindowMenu extends PopupMenu.PopupMenu {
             item.setSensitive(false);
 
         item = this.addAction(_('Move'), event => {
-            const device = event.get_device();
-            const seat = device.get_seat();
-            const deviceType = device.get_device_type();
-            const pointer =
-                deviceType === Clutter.InputDeviceType.POINTER_DEVICE ||
-                deviceType === Clutter.InputDeviceType.TABLET_DEVICE ||
-                deviceType === Clutter.InputDeviceType.PEN_DEVICE ||
-                deviceType === Clutter.InputDeviceType.ERASER_DEVICE
-                    ? device : seat.get_pointer();
+            const backend = global.stage.get_context().get_backend();
+            const sprite = backend.get_sprite(global.stage, event) ||
+                backend.get_pointer_sprite(global.stage);
 
             window.begin_grab_op(
                 Meta.GrabOp.KEYBOARD_MOVING,
-                pointer, null,
+                sprite,
                 event.get_time(),
                 null);
         });
@@ -76,19 +69,13 @@ export class WindowMenu extends PopupMenu.PopupMenu {
             item.setSensitive(false);
 
         item = this.addAction(_('Resize'), event => {
-            const device = event.get_device();
-            const seat = device.get_seat();
-            const deviceType = device.get_device_type();
-            const pointer =
-                deviceType === Clutter.InputDeviceType.POINTER_DEVICE ||
-                deviceType === Clutter.InputDeviceType.TABLET_DEVICE ||
-                deviceType === Clutter.InputDeviceType.PEN_DEVICE ||
-                deviceType === Clutter.InputDeviceType.ERASER_DEVICE
-                    ? device : seat.get_pointer();
+            const backend = global.stage.get_context().get_backend();
+            const sprite = backend.get_sprite(global.stage, event) ||
+                backend.get_pointer_sprite(global.stage);
 
             window.begin_grab_op(
                 Meta.GrabOp.KEYBOARD_RESIZING_UNKNOWN,
-                pointer, null,
+                sprite,
                 event.get_time(),
                 null);
         });
