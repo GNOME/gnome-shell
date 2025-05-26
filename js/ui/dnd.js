@@ -115,7 +115,7 @@ class _Draggable extends Signals.EventEmitter {
         this._dragCancellable = true;
     }
 
-    _grabEvents(device, touchSequence) {
+    _grabEvents(sprite) {
         const grab = Main.pushModal(_getEventHandlerActor());
         if ((grab.get_seat_state() & Clutter.GrabState.POINTER) === 0) {
             Main.popModal(grab);
@@ -123,15 +123,13 @@ class _Draggable extends Signals.EventEmitter {
         }
 
         this._grab = grab;
-        this._grabbedDevice = device;
-        this._grabbedEventSequence = touchSequence;
+        this._sprite = sprite;
     }
 
     _ungrabEvents() {
         Main.popModal(this._grab);
         this._grab = null;
-        this._grabbedDevice = null;
-        this._grabbedEventSequence = null;
+        this._sprite = null;
     }
 
     _gestureRecognized() {
@@ -140,13 +138,13 @@ class _Draggable extends Signals.EventEmitter {
 
         const triggeringEvent = this._dndGesture.get_drag_triggering_event();
         const [stageX, stageY] = triggeringEvent.get_coords();
-        const device = triggeringEvent.get_device();
-        const sequence = triggeringEvent.get_event_sequence();
+        const backend = this.actor.get_context().get_backend();
+        const sprite = backend.get_sprite(global.stage, triggeringEvent);
         const time = triggeringEvent.get_time();
 
         currentDraggable = this;
 
-        this._grabEvents(device, sequence);
+        this._grabEvents(sprite);
         if (!this._grab)
             return;
 
@@ -578,12 +576,9 @@ class _Draggable extends Signals.EventEmitter {
             return Clutter.EVENT_PROPAGATE;
         }
 
-        if (event.get_device() !== this._grabbedDevice)
-            return Clutter.EVENT_PROPAGATE;
-
-        const sequence = event.get_event_sequence();
-        if (this._grabbedEventSequence &&
-            sequence?.get_slot() !== this._grabbedEventSequence.get_slot())
+        const backend = actor.get_context().get_backend();
+        const sprite = backend.get_sprite(global.stage, event);
+        if (sprite !== this._sprite)
             return Clutter.EVENT_PROPAGATE;
 
         if (event.type() === Clutter.EventType.BUTTON_RELEASE ||
