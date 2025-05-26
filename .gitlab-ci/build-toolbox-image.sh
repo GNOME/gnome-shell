@@ -2,6 +2,7 @@
 # vi: sw=2 ts=4
 
 set -e
+set -x
 
 die() {
   echo "$@" >&2
