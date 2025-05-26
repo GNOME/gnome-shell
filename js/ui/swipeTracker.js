@@ -358,7 +358,7 @@ const ScrollGesture = GObject.registerClass({
             return false;
 
         if (!this._began && this.scrollModifiers !== 0 &&
-            (event.get_state() & this.scrollModifiers) === 0)
+            (event.get_state() & this.scrollModifiers) !== this.scrollModifiers)
             return false;
 
         return true;
