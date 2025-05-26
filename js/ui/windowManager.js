@@ -883,7 +883,8 @@ export class WindowManager {
             if (this._workspaceAnimation.canHandleScrollEvent(event))
                 return Clutter.EVENT_PROPAGATE;
 
-            if ((event.get_state() & global.display.compositor_modifiers) === 0)
+            const {compositorModifiers} = global.display;
+            if ((event.get_state() & compositorModifiers) !== compositorModifiers)
                 return Clutter.EVENT_PROPAGATE;
 
             return this.handleWorkspaceScroll(event);
