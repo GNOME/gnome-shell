@@ -19,7 +19,7 @@ build_container() {
   echo Building $TOOLBOX_IMAGE from $MUTTER_CI_IMAGE
 
   local buildah_commit="buildah commit --format docker"
-  local buildah_run="buildah run --isolation chroot"
+  local buildah_run="buildah run --isolation chroot --user root"
   local buildah_from="buildah from --isolation chroot"
 
   local build_cntr=$($buildah_from $MUTTER_CI_IMAGE)
