@@ -337,3 +337,14 @@ build-toolbox:
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PROJECT_NAMESPACE == "GNOME"'
     - if: '$CI_COMMIT_BRANCH =~ /^gnome-[0-9-]+$/ && $CI_PROJECT_NAMESPACE == "GNOME"'
+
+rebuild-toolbox:
+  image: quay.io/freedesktop.org/ci-templates:container-build-base-2021-07-29.0
+  stage: deploy
+  needs: []
+  variables:
+    FORCE_REBUILD: "1"
+  script:
+    - .gitlab-ci/build-toolbox-image.sh $MUTTER_CI_IMAGE main
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "rebuild-image" && $CI_PROJECT_NAMESPACE == "GNOME"'
