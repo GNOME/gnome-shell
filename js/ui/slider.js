@@ -85,13 +85,11 @@ export const Slider = GObject.registerClass({
 
         this._dragging = true;
 
-        let device = event.get_device();
-        let sequence = event.get_event_sequence();
-
         this._grab = global.stage.grab(this);
 
-        this._grabbedDevice = device;
-        this._grabbedSequence = sequence;
+        const backend = global.stage.get_context().get_backend();
+        const sprite = backend.get_sprite(global.stage, event);
+        this._sprite = sprite;
 
         // We need to emit 'drag-begin' before moving the handle to make
         // sure that no 'notify::value' signal is emitted before this one.
@@ -115,8 +113,6 @@ export const Slider = GObject.registerClass({
                 this._grab = null;
             }
 
-            this._grabbedSequence = null;
-            this._grabbedDevice = null;
             this._dragging = false;
 
             this.emit('drag-end');
@@ -124,22 +120,25 @@ export const Slider = GObject.registerClass({
         return Clutter.EVENT_STOP;
     }
 
-    vfunc_button_release_event() {
-        if (this._dragging && !this._grabbedSequence)
+    vfunc_button_release_event(event) {
+        const backend = global.stage.get_context().get_backend();
+        const sprite = backend.get_sprite(global.stage, event);
+
+        if (this._dragging && this._sprite === sprite)
             return this._endDragging();
 
         return Clutter.EVENT_PROPAGATE;
     }
 
     vfunc_touch_event(event) {
-        let sequence = event.get_event_sequence();
+        const backend = global.stage.get_context().get_backend();
+        const sprite = backend.get_pointer_sprite(global.stage);
 
         if (!this._dragging &&
             event.type() === Clutter.EventType.TOUCH_BEGIN) {
             this.startDragging(event);
             return Clutter.EVENT_STOP;
-        } else if (this._grabbedSequence &&
-                   sequence.get_slot() === this._grabbedSequence.get_slot()) {
+        } else if (this._sprite === sprite) {
             if (event.type() === Clutter.EventType.TOUCH_UPDATE)
                 return this._motionEvent(this, event);
             else if (event.type() === Clutter.EventType.TOUCH_END)
@@ -178,7 +177,10 @@ export const Slider = GObject.registerClass({
     }
 
     vfunc_motion_event(event) {
-        if (this._dragging && !this._grabbedSequence)
+        const backend = global.stage.get_context().get_backend();
+        const sprite = backend.get_sprite(global.stage, event);
+
+        if (this._dragging && this._sprite === sprite)
             return this._motionEvent(this, event);
 
         return Clutter.EVENT_PROPAGATE;
