@@ -546,6 +546,9 @@ class Panel extends St.Widget {
         if (Main.modalCount > 0)
             return Clutter.EVENT_PROPAGATE;
 
+        const backend = global.stage.get_context().get_backend();
+        const sprite = backend.get_sprite(global.stage, event);
+
         const targetActor = global.stage.get_event_actor(event);
         if (targetActor !== this)
             return Clutter.EVENT_PROPAGATE;
@@ -559,8 +562,7 @@ class Panel extends St.Widget {
         const positionHint = new Graphene.Point({x, y});
         return dragWindow.begin_grab_op(
             Meta.GrabOp.MOVING,
-            event.get_device(),
-            event.get_event_sequence(),
+            sprite,
             event.get_time(),
             positionHint) ? Clutter.EVENT_STOP : Clutter.EVENT_PROPAGATE;
     }
