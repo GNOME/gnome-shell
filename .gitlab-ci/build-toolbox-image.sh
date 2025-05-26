@@ -40,9 +40,9 @@ build_container() {
   local debug_packages=(
     glib2 # makes gdb much more useful
   )
-  buildah run $build_cntr "sh -c" "dnf config-manager setopt '*-openh264.enabled=0'"
-  buildah run $build_cntr "sh -c" "dnf install -y \"${extra_packages[@]}\""
-  buildah run $build_cntr "sh -c" "dnf debuginfo-install -y \"${debug_packages[@]}\""
+  buildah run $build_cntr sh -c "dnf config-manager setopt '*-openh264.enabled=0'"
+  buildah run $build_cntr sh -c "dnf install -y ${extra_packages[*]}"
+  buildah run $build_cntr sh -c "dnf debuginfo-install -y ${debug_packages[*]}"
   buildah run $build_cntr dnf clean all
   buildah run $build_cntr rm -rf /var/lib/cache/dnf
 
