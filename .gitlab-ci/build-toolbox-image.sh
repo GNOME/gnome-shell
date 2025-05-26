@@ -40,11 +40,11 @@ build_container() {
   local debug_packages=(
     glib2 # makes gdb much more useful
   )
-  buildah run $build_cntr sh -c "dnf config-manager setopt '*-openh264.enabled=0'"
-  buildah run $build_cntr sh -c "dnf install -y ${extra_packages[*]}"
-  buildah run $build_cntr sh -c "dnf debuginfo-install -y ${debug_packages[*]}"
-  buildah run $build_cntr dnf clean all
-  buildah run $build_cntr rm -rf /var/lib/cache/dnf
+  buildah run --user root $build_cntr sh -c "dnf config-manager setopt '*-openh264.enabled=0'"
+  buildah run --user root $build_cntr sh -c "dnf install -y --setopt=install_weak_deps=False ${extra_packages[*]}"
+  buildah run --user root $build_cntr sh -c "dnf debuginfo-install -y ${debug_packages[*]}"
+  buildah run --user root $build_cntr dnf clean all
+  buildah run --user root $build_cntr rm -rf /var/lib/cache/dnf
 
   # disable gnome-keyring activation:
   # it either asks for unlocking the login keyring on startup, or it detects
