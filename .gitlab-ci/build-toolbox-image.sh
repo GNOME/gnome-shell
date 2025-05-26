@@ -45,6 +45,10 @@ build_container() {
   buildah run $build_cntr dnf clean all
   buildah run $build_cntr rm -rf /var/lib/cache/dnf
 
+  # somehow the sysusers trigger from the flatpak package messes up the
+  # permissions of /etc/passwd to be only readable by root
+  buildah run $build_cntr chmod 644 /etc/passwd
+
   # disable gnome-keyring activation:
   # it either asks for unlocking the login keyring on startup, or it detects
   # the running host daemon and doesn't export the object on the bus, which
