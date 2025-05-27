@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-05-15 14:22+0000\n"
-"PO-Revision-Date: 2025-05-16 09:58-0400\n"
+"POT-Creation-Date: 2025-05-24 17:42+0000\n"
+"PO-Revision-Date: 2025-05-26 21:10-0400\n"
 "Last-Translator: Emilio Sepúlveda <emism.translations@gmail.com>\n"
 "Language-Team: Interlingua <softinterlingua@gmail.com>\n"
 "Language: ia\n"
@@ -34,35 +34,35 @@ msgstr "Activar application fixate 1"
 
 #: data/50-gnome-shell-launchers.xml:14
 msgid "Activate pinned app 2"
-msgstr ""
+msgstr "Activar application fixate 2"
 
 #: data/50-gnome-shell-launchers.xml:18
 msgid "Activate pinned app 3"
-msgstr ""
+msgstr "Activar application fixate 3"
 
 #: data/50-gnome-shell-launchers.xml:22
 msgid "Activate pinned app 4"
-msgstr ""
+msgstr "Activar application fixate 4"
 
 #: data/50-gnome-shell-launchers.xml:26
 msgid "Activate pinned app 5"
-msgstr ""
+msgstr "Activar application fixate 5"
 
 #: data/50-gnome-shell-launchers.xml:30
 msgid "Activate pinned app 6"
-msgstr ""
+msgstr "Activar application fixate 6"
 
 #: data/50-gnome-shell-launchers.xml:34
 msgid "Activate pinned app 7"
-msgstr ""
+msgstr "Activar application fixate 7"
 
 #: data/50-gnome-shell-launchers.xml:38
 msgid "Activate pinned app 8"
-msgstr ""
+msgstr "Activar application fixate 8"
 
 #: data/50-gnome-shell-launchers.xml:42
 msgid "Activate pinned app 9"
-msgstr ""
+msgstr "Activar application fixate 9"
 
 #: data/50-gnome-shell-launchers.xml:46
 msgid "Open new window of pinned app 1"
@@ -70,35 +70,35 @@ msgstr "Aperir nove fenestra de application fixate 1"
 
 #: data/50-gnome-shell-launchers.xml:50
 msgid "Open new window of pinned app 2"
-msgstr ""
+msgstr "Aperir nove fenestra de application fixate 2"
 
 #: data/50-gnome-shell-launchers.xml:54
 msgid "Open new window of pinned app 3"
-msgstr ""
+msgstr "Aperir nove fenestra de application fixate 3"
 
 #: data/50-gnome-shell-launchers.xml:58
 msgid "Open new window of pinned app 4"
-msgstr ""
+msgstr "Aperir nove fenestra de application fixate 4"
 
 #: data/50-gnome-shell-launchers.xml:62
 msgid "Open new window of pinned app 5"
-msgstr ""
+msgstr "Aperir nove fenestra de application fixate 5"
 
 #: data/50-gnome-shell-launchers.xml:66
 msgid "Open new window of pinned app 6"
-msgstr ""
+msgstr "Aperir nove fenestra de application fixate 6"
 
 #: data/50-gnome-shell-launchers.xml:70
 msgid "Open new window of pinned app 7"
-msgstr ""
+msgstr "Aperir nove fenestra de application fixate 7"
 
 #: data/50-gnome-shell-launchers.xml:74
 msgid "Open new window of pinned app 8"
-msgstr ""
+msgstr "Aperir nove fenestra de application fixate 8"
 
 #: data/50-gnome-shell-launchers.xml:78
 msgid "Open new window of pinned app 9"
-msgstr ""
+msgstr "Aperir nove fenestra de application fixate 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
 #: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2275
@@ -218,6 +218,8 @@ msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
 msgstr ""
+"Disactiva tote le extensiones activate per le usator sin affectar le "
+"parametro “enabled-extension”."
 
 #: data/org.gnome.shell.gschema.xml.in:45
 msgid "Allow extension installation"
@@ -231,10 +233,15 @@ msgid ""
 "that are already loaded, so a change only takes full effect on the next "
 "login."
 msgstr ""
+"Permitte al usatores installar extensiones in lor dossier de initio. Si es "
+"disactivate, le methodo D-Bus InstallRemoteExtension D-Bus fallera, e le "
+"extensiones es solmente cargate ab directorios de systema al initio. Il non "
+"affecta le extensiones jam cargate, assi un cambiamento solmente facera "
+"effecto sur le sequente initio de session."
 
 #: data/org.gnome.shell.gschema.xml.in:56
 msgid "Disables the validation of extension version compatibility"
-msgstr ""
+msgstr "Disactiva le validation del compatibilitate de version del extension"
 
 #: data/org.gnome.shell.gschema.xml.in:57
 msgid ""
@@ -242,6 +249,10 @@ msgid ""
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
+"GNOME Shell solmente cargara extensiones que recognosce supportar le version "
+"actual in execution. Activar iste option disactivara iste verification e "
+"tentara le cargamento de tote le extensiones indifferentemente del versiones "
+"que illes recognosce supportar."
 
 #: data/org.gnome.shell.gschema.xml.in:67
 msgid "List of desktop file IDs for favorite applications"
@@ -314,6 +325,7 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:113
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr ""
+"Le ultime version que le dialogo “Benvenite a GNOME” ha essite monstrate"
 
 #: data/org.gnome.shell.gschema.xml.in:114
 msgid ""
@@ -337,34 +349,30 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:145
 #: data/org.gnome.shell.gschema.xml.in:152
-#, fuzzy
-#| msgid "Keybinding to open the overview"
 msgid "Keybinding to shift between overview states"
-msgstr "Association de claves pro aperir le panorama"
+msgstr "Association de claves pro cambiar inter statos de panorama"
 
 #: data/org.gnome.shell.gschema.xml.in:146
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
+"Association de claves pro cambiar inter le session, le selector de fenestras "
+"e le grillia de application"
 
 #: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
+"Association de claves pro cambiar inter le grillia de application, le "
+"selector de fenestras e le session"
 
 #: data/org.gnome.shell.gschema.xml.in:159
-#, fuzzy
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the “Show Applications” view"
-msgstr "Association de claves pro aperir le vista \"Monstrar applicationes\""
+msgstr "Association de claves pro aperir le vista “Monstrar applicationes”"
 
 #: data/org.gnome.shell.gschema.xml.in:160
-#, fuzzy
-#| msgid ""
-#| "Keybinding to open the \"Show Applications\" view of the Activities "
-#| "Overview."
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
-"Association de claves pro aperir le vista \"Monstrar applicationes\" del "
+"Association de claves pro aperir le vista “Monstrar applicationes” del "
 "panorama de activitates."
 
 #: data/org.gnome.shell.gschema.xml.in:167
@@ -376,30 +384,24 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "Association de claves pro aperir le panorama de activitates"
 
 #: data/org.gnome.shell.gschema.xml.in:174
-#, fuzzy
-#| msgid "Keybinding to toggle the visibility of the message tray"
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr ""
-"Association de claves pro commutar le visibilitate del tiratorio de messages"
+"Association de claves pro commutar le visibilitate del lista de "
+"notificationes"
 
 #: data/org.gnome.shell.gschema.xml.in:175
-#, fuzzy
-#| msgid "Keybinding to toggle the visibility of the message tray."
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr ""
-"Association de claves pro commutar le visibilitate del tiratorio de messages."
+"Association de claves pro commutar le visibilitate del lista de "
+"notificationes."
 
 #: data/org.gnome.shell.gschema.xml.in:181
-#, fuzzy
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to toggle the quick settings menu"
-msgstr "Association de claves pro aperir le menu de applicationes"
+msgstr "Association de claves pro commutar le menu de parametros rapide"
 
 #: data/org.gnome.shell.gschema.xml.in:182
-#, fuzzy
-#| msgid "Keybinding to open the application menu."
 msgid "Keybinding to toggle the quick settings menu."
-msgstr "Association de claves pro aperir le menu de applicationes."
+msgstr "Association de claves pro commutar le menu de parametros rapide."
 
 #: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to focus the active notification"
@@ -491,32 +493,32 @@ msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
 msgstr ""
+"Si es activate, solmente le applicationes que ha fenestras sur le spatio de "
+"travalio actual es monstrate in le cambiator. Alteremente, tote le "
+"applicationes es includite."
 
 #: data/org.gnome.shell.gschema.xml.in:306
 msgid "The application icon mode."
 msgstr "Le modo de icone in le selector de applicationes."
 
 #: data/org.gnome.shell.gschema.xml.in:307
-#, fuzzy
-#| msgid ""
-#| "Configures how the windows are shown in the switcher. Valid possibilities "
-#| "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-only' "
-#| "(shows only the application icon) or 'both'."
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
 "(shows only the application icon) or “both”."
 msgstr ""
-"Le configuration del maniera como le fenestras es monstrate in le selector. "
-"Le possibilitates valide es 'thumbnail-only' (monstrar un miniatura del "
-"fenestra), 'app-icon-only' (monstrar solmente un icone del application) o "
-"'both' (monstrar tote le duo)."
+"Le configuration del maniera como le fenestras es monstrate in le cambiator. "
+"Le possibilitates valide es “thumbnail-only” (monstrar un miniatura del "
+"fenestra), “app-icon-only” (monstrar solmente un icone del application) o "
+"“both” (ambes)."
 
 #: data/org.gnome.shell.gschema.xml.in:316
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
 msgstr ""
+"Si es activate, solmente le fenestras ab le spatio de travalio actual es "
+"monstrate in le cambiator. Alteremente, tote le fenestras es includite."
 
 #: data/org.gnome.shell.gschema.xml.in:326
 msgid "Locations"
@@ -540,7 +542,7 @@ msgstr "Localisation"
 
 #: data/org.gnome.shell.gschema.xml.in:346
 msgid "The location for which to show a forecast"
-msgstr ""
+msgstr "Le location pro le qual monstrar un prognostico"
 
 #. Keep in sync with subprojects/extensions-app
 #: data/org.gnome.Shell.Extensions.desktop.in.in:5
@@ -569,6 +571,9 @@ msgid ""
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
 msgstr ""
+"Nos lo regretta, ma il habeva un problema: le parametros pro iste extension "
+"non pote esser monstrate. Nos te recommenda signalar le incidente al autores "
+"del extension."
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:48
 msgid "Technical Details"
@@ -610,6 +615,9 @@ msgid ""
 "%s. To login remotely, you must log out from the remote session or force "
 "stop it."
 msgstr ""
+"Le initio de session remote non es possibile proque un session remote pro %s "
+"jam es in execution. Pro initiar session remotemente, tu debe clauder le "
+"altere session remote o fortiar su stoppamento."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:429
@@ -618,6 +626,9 @@ msgid ""
 "Login is not possible because a remote session is already running for %s. To "
 "login, you must log out from the remote session or force stop it."
 msgstr ""
+"Le initio de session non es possibile proque un session remote pro %s jam es "
+"in execution. Pro initiar session, tu debe clauder le session remote o "
+"fortiar su stoppamento."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:432
@@ -627,6 +638,9 @@ msgid ""
 "%s. To login remotely, you must log out from the local session or force stop "
 "it."
 msgstr ""
+"Le initio de session remote non es possibile proque un session local pro %s "
+"jam es in execution. Pro initiar session remotemente, tu debe clauder le "
+"session local o fortiar su stoppamento."
 
 #. Translators: is running for <username>
 #: js/gdm/loginDialog.js:435
@@ -635,6 +649,9 @@ msgid ""
 "Login is not possible because a session is already running for %s. To login, "
 "you must log out from the session or force stop it."
 msgstr ""
+"Le initio de session non es possibile proque un session pro %s  jam es in "
+"execution. Pro initiar session, tu debe clauder le session o fortiar su "
+"stoppamento."
 
 #: js/gdm/loginDialog.js:444
 msgid "Session Already Running"
@@ -645,10 +662,12 @@ msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
 msgstr ""
+"Fortiar le stoppamento quitara tote le applicationes e processos in "
+"execution, e poterea resultar in perdita de datos."
 
 #: js/gdm/loginDialog.js:476
 msgid "Force Stop"
-msgstr ""
+msgstr "Fortiar stoppamento"
 
 #: js/gdm/loginDialog.js:554
 msgid "Not listed?"
@@ -731,24 +750,24 @@ msgstr[1] "%d dies"
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Essera momento de un pausa in %s"
+msgstr[1] "Essera momento de un pausa %s"
 
 #: js/misc/breakManager.js:1089
 msgid "Movement Break Soon"
-msgstr ""
+msgstr "Tosto un pausa de movimento"
 
 #: js/misc/breakManager.js:1092
 msgid "Eyesight Break Soon"
-msgstr ""
+msgstr "Tosto un pausa visual"
 
 #: js/misc/breakManager.js:1095
 msgid "Break Soon"
-msgstr ""
+msgstr "Tosto un pausa"
 
 #: js/misc/breakManager.js:1140
 msgid "Movement Break in Progress"
-msgstr ""
+msgstr "Pausa de movimento in progresso"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1143
@@ -760,7 +779,7 @@ msgstr[1] ""
 
 #: js/misc/breakManager.js:1149
 msgid "Eyesight Break in Progress"
-msgstr ""
+msgstr "Pausa visual in progresso"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1152
@@ -772,7 +791,7 @@ msgstr[1] ""
 
 #: js/misc/breakManager.js:1158
 msgid "Break in Progress"
-msgstr ""
+msgstr "Pausa in progresso"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1161
@@ -784,7 +803,7 @@ msgstr[1] ""
 
 #: js/misc/breakManager.js:1200
 msgid "Time for a Movement Break"
-msgstr ""
+msgstr "Momento de un pausa de movimento"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1203
@@ -796,7 +815,7 @@ msgstr[1] ""
 
 #: js/misc/breakManager.js:1209
 msgid "Time for an Eyesight Break"
-msgstr ""
+msgstr "Momento de un pausa visual"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1212
@@ -810,7 +829,7 @@ msgstr[1] ""
 
 #: js/misc/breakManager.js:1218
 msgid "Time for a Break"
-msgstr ""
+msgstr "Monento de un pausa"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1221
@@ -832,7 +851,6 @@ msgstr[1] ""
 msgid "Break Overdue"
 msgstr ""
 
-#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1267
 #, javascript-format
 msgid "There is %s remaining in your break"
@@ -842,23 +860,26 @@ msgstr[1] ""
 
 #: js/misc/breakManager.js:1273
 msgid "Break Interrupted"
-msgstr ""
+msgstr "Pausa interrumpite"
 
-#: js/misc/breakManager.js:1350
+#. Translators: As in "Delay the break"
+#: js/misc/breakManager.js:1351
 msgid "Delay"
-msgstr ""
+msgstr "Postponer"
 
-#: js/misc/breakManager.js:1371 js/ui/welcomeDialog.js:61
+#. Translators: As in "Skip the break"
+#: js/misc/breakManager.js:1373 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Saltar"
 
-#: js/misc/breakManager.js:1392
+#. Translators: As in "Take the break"
+#: js/misc/breakManager.js:1395
 msgid "Take"
-msgstr ""
+msgstr "Prender"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1455
+#: js/misc/breakManager.js:1458
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -911,18 +932,14 @@ msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:123
-#, fuzzy
-#| msgid "Suspend"
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Suspender"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
 #: js/misc/systemActions.js:126
-#, fuzzy
-#| msgid "Suspend"
 msgid "suspend;sleep"
-msgstr "Suspender"
+msgstr "suspender;"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:131
@@ -954,18 +971,16 @@ msgstr ""
 #: js/misc/systemActions.js:249
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
-msgstr ""
+msgstr "Disblocar rotation de schermo"
 
 #: js/misc/systemActions.js:250
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
-msgstr ""
+msgstr "Blocar rotation de schermo"
 
 #: js/misc/timeLimitsManager.js:342
-#, fuzzy
-#| msgid "GNOME needs to lock the screen"
 msgid "GNOME needs to save screen time data"
-msgstr "GNOME necessita blocar le schermo"
+msgstr "GNOME necessita salvar datos de tempore de schermo"
 
 #: js/misc/timeLimitsManager.js:1116
 #, javascript-format
@@ -984,7 +999,7 @@ msgstr ""
 
 #: js/misc/timeLimitsManager.js:1138
 msgid "It’s time to stop using the device"
-msgstr "Es hora de detener le uso de iste dispositivo"
+msgstr "Es hora de stoppar le uso de iste dispositivo"
 
 #: js/misc/util.js:130
 msgid "Command not found"
@@ -1021,29 +1036,29 @@ msgstr "Heri"
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d die retro"
+msgstr[1] "%d dies retro"
 
 #: js/misc/dateUtils.js:95
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d septimana retro"
+msgstr[1] "%d septimanas retro"
 
 #: js/misc/dateUtils.js:102
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d mense retro"
+msgstr[1] "%d menses retro"
 
 #: js/misc/dateUtils.js:108
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d anno retro"
+msgstr[1] "%d annos retro"
 
 #. Translators: Time in 24h format
 #: js/misc/dateUtils.js:155
@@ -1060,10 +1075,9 @@ msgstr "Heri, %H:%M"
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
 #: js/misc/dateUtils.js:167
-#, fuzzy, no-c-format
-#| msgid "%A, %B %d"
+#, no-c-format
 msgid "%A, %H∶%M"
-msgstr "%A, %d de %B"
+msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
@@ -1071,7 +1085,7 @@ msgstr "%A, %d de %B"
 #: js/misc/dateUtils.js:173
 #, no-c-format
 msgid "%B %-d, %H∶%M"
-msgstr ""
+msgstr "%-d de %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
@@ -1079,29 +1093,28 @@ msgstr ""
 #: js/misc/dateUtils.js:179
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
-msgstr ""
+msgstr "%-d de %B %Y, %H∶%M"
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
 #: js/misc/dateUtils.js:184
 msgid "%l∶%M %p"
-msgstr ""
+msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: js/misc/dateUtils.js:190
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
-msgstr ""
+msgstr "Heri, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/dateUtils.js:196
-#, fuzzy, no-c-format
-#| msgid "%A, %B %d"
+#, no-c-format
 msgid "%A, %l∶%M %p"
-msgstr "%A, %d de %B"
+msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
@@ -1109,7 +1122,7 @@ msgstr "%A, %d de %B"
 #: js/misc/dateUtils.js:202
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
-msgstr ""
+msgstr " %-d de %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
@@ -1117,11 +1130,11 @@ msgstr ""
 #: js/misc/dateUtils.js:208
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
-msgstr ""
+msgstr "%-d de %B %Y, %l∶%M %p"
 
 #: js/portalHelper/main.js:98
 msgid "Your connection seems to be secure"
-msgstr ""
+msgstr "Tu connexion pare esser secur"
 
 #: js/portalHelper/main.js:104
 msgid ""
@@ -1141,7 +1154,7 @@ msgstr ""
 
 #: js/ui/accessDialog.js:52 js/ui/inhibitShortcutsDialog.js:101
 msgid "Allow"
-msgstr ""
+msgstr "Permitter"
 
 #: js/ui/appDisplay.js:1762
 msgid "Unnamed Folder"
@@ -1232,7 +1245,7 @@ msgstr "Configurationes"
 #: js/ui/calendar.js:33
 msgctxt "calendar-no-work"
 msgid "06"
-msgstr ""
+msgstr "06"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -1288,7 +1301,7 @@ msgstr "S"
 #.
 #: js/ui/calendar.js:422
 msgid "%OB"
-msgstr ""
+msgstr "%OB"
 
 #. *
 #. * Translators: The header displaying the month name and the year
@@ -1327,7 +1340,7 @@ msgstr "Sin notificationes"
 
 #: js/ui/calendar.js:832
 msgid "Do Not Disturb"
-msgstr ""
+msgstr "Non disturbar"
 
 #: js/ui/calendar.js:853
 msgid "Clear"
@@ -1342,7 +1355,7 @@ msgstr "Rader tote le notificationes"
 #: js/ui/closeDialog.js:42
 #, javascript-format
 msgid "“%s” Is Not Responding"
-msgstr ""
+msgstr "“%s” non responde"
 
 #: js/ui/closeDialog.js:43
 msgid ""
@@ -1352,7 +1365,7 @@ msgstr ""
 
 #: js/ui/closeDialog.js:71
 msgid "Force Quit"
-msgstr ""
+msgstr "Fortiar quitar"
 
 #: js/ui/closeDialog.js:76
 msgid "Wait"
@@ -1503,39 +1516,28 @@ msgstr "Tabuliero"
 #. * "February 17 2015".
 #.
 #: js/ui/dateMenu.js:99
-#, fuzzy
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %d, %Y"
 msgid "%B %-d %Y"
-msgstr "%A, le %d de %B %Y"
+msgstr "le %-d de %B %Y"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
 #: js/ui/dateMenu.js:106
-#, fuzzy
-#| msgid "%A %B %e, %Y"
 msgid "%A %B %e %Y"
-msgstr "%A, %e de %B %Y"
+msgstr "%A %e de %B %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/dateMenu.js:172
-#, fuzzy
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %d"
 msgctxt "calendar heading"
 msgid "%B %-d"
-msgstr "%A, le %d de %B"
+msgstr " %-d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: js/ui/dateMenu.js:175
-#, fuzzy
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %d, %Y"
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
-msgstr "%A, le %d de %B %Y"
+msgstr "le %-d de %B %Y"
 
 #: js/ui/dateMenu.js:181
 msgid "Today"
@@ -1558,7 +1560,7 @@ msgstr "Jornata"
 #.
 #: js/ui/dateMenu.js:238
 msgid "%m/%d"
-msgstr ""
+msgstr "%d/%m"
 
 #: js/ui/dateMenu.js:289
 msgid "No Events"
@@ -1578,7 +1580,7 @@ msgstr "Cargante…"
 
 #: js/ui/dateMenu.js:712
 msgid "Go Online for Weather Information"
-msgstr "Vader in linea pro information de tempore"
+msgstr "Vader in linea pro information de tempore  ¿ "
 
 #: js/ui/dateMenu.js:714
 msgid "Weather Information Unavailable"
@@ -2403,7 +2405,7 @@ msgstr "Connecter a %s"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1909
+#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1919
 msgid "Bluetooth Settings"
 msgstr "Configurationes de Bluetooth"
 
@@ -2511,76 +2513,76 @@ msgstr ""
 msgid "%s Hotspot"
 msgstr ""
 
-#: js/ui/status/network.js:1435
+#: js/ui/status/network.js:1445
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d connectite"
 msgstr[1] "%d connectite"
 
-#: js/ui/status/network.js:1533 js/ui/status/network.js:1549
+#: js/ui/status/network.js:1543 js/ui/status/network.js:1559
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1534
+#: js/ui/status/network.js:1544
 msgid "VPN Settings"
 msgstr "Parametros de VPN"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1804
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1796
+#: js/ui/status/network.js:1806
 msgid "All Networks"
 msgstr "Tote le retes"
 
-#: js/ui/status/network.js:1893
+#: js/ui/status/network.js:1903
 #, fuzzy
 #| msgid "Connection"
 msgid "Wired Connections"
 msgstr "Connexion"
 
-#: js/ui/status/network.js:1894
+#: js/ui/status/network.js:1904
 #, fuzzy
 #| msgid "Settings"
 msgid "Wired Settings"
 msgstr "Parametros"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1918
 #, fuzzy
 #| msgid "Bluetooth Settings"
 msgid "Bluetooth Tethers"
 msgstr "Parametros Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1915
+#: js/ui/status/network.js:1925
 msgid "Tether"
 msgstr ""
 
-#: js/ui/status/network.js:1928
+#: js/ui/status/network.js:1938
 msgid "Mobile Connections"
 msgstr "Connexiones mobile"
 
-#: js/ui/status/network.js:1930
+#: js/ui/status/network.js:1940
 #, fuzzy
 #| msgid "Mobile broadband"
 msgid "Mobile Broadband Settings"
 msgstr "Banda large mobile"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1939
+#: js/ui/status/network.js:1949
 msgid "Mobile"
 msgstr "Mobile"
 
-#: js/ui/status/network.js:1973
+#: js/ui/status/network.js:1983
 msgid "Sign Into Wi–Fi Network"
 msgstr "Initiar session in le rete Wi-Fi"
 
-#: js/ui/status/network.js:2160
+#: js/ui/status/network.js:2170
 msgid "Connection failed"
 msgstr "Falleva le connexion"
 
-#: js/ui/status/network.js:2161
+#: js/ui/status/network.js:2171
 msgid "Activation of network connection failed"
 msgstr "Falleva le activation del connexion de rete"
 
