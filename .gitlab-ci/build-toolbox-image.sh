@@ -46,6 +46,8 @@ build_container() {
   buildah run --user root $build_cntr dnf clean all
   buildah run --user root $build_cntr rm -rf /var/lib/cache/dnf
 
+  buildah run $build_cntr ls -l /etc/passwd
+
   # disable gnome-keyring activation:
   # it either asks for unlocking the login keyring on startup, or it detects
   # the running host daemon and doesn't export the object on the bus, which
