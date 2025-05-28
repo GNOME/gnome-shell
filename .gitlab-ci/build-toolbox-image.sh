@@ -19,10 +19,11 @@ check_image_base() {
 build_container() {
   echo Building $TOOLBOX_IMAGE from $MUTTER_CI_IMAGE
 
-  export BUILDAH_ISOLATION=chroot
-  export BUILDAH_FORMAT=docker
+  local buildah_commit="buildah commit --format docker"
+  local buildah_run="buildah run --isolation chroot --user root"
+  local buildah_from="buildah from --isolation chroot"
 
-  local build_cntr=$(buildah from $MUTTER_CI_IMAGE)
+  local build_cntr=$($buildah_from $MUTTER_CI_IMAGE)
   local build_mnt=$(buildah mount $build_cntr)
 
   [[ -n "$build_mnt" && -n "$build_cntr" ]] || die "Failed to mount the container"
@@ -40,19 +41,19 @@ build_container() {
   local debug_packages=(
     glib2 # makes gdb much more useful
   )
-  buildah run --user root $build_cntr bash -c "dnf config-manager setopt '*-openh264.enabled=0'"
-  buildah run --user root $build_cntr bash -c "dnf install -y --setopt=install_weak_deps=False ${extra_packages[*]}"
-  buildah run --user root $build_cntr bash -c "dnf debuginfo-install -y ${debug_packages[*]}"
-  buildah run --user root $build_cntr dnf clean all
-  buildah run --user root $build_cntr rm -rf /var/lib/cache/dnf
+  $buildah_run $build_cntr bash -c "dnf config-manager setopt '*-openh264.enabled=0'"
+  $buildah_run $build_cntr bash -c "dnf install -y --setopt=install_weak_deps=False ${extra_packages[*]}"
+  $buildah_run $build_cntr bash -c "dnf debuginfo-install -y ${debug_packages[*]}"
+  $buildah_run $build_cntr dnf clean all
+  $buildah_run $build_cntr rm -rf /var/lib/cache/dnf
 
-  buildah run $build_cntr ls -l /etc/passwd
+  $buildah_run $build_cntr ls -l /etc/passwd
 
   # disable gnome-keyring activation:
   # it either asks for unlocking the login keyring on startup, or it detects
   # the running host daemon and doesn't export the object on the bus, which
   # blocks the activating service until it hits the timeout
-  buildah run $build_cntr rm /usr/share/dbus-1/services/org.freedesktop.secrets.service
+  $buildah_run $build_cntr rm /usr/share/dbus-1/services/org.freedesktop.secrets.service
 
   local srcdir=$(realpath $(dirname $0))
   buildah copy --chmod 755 $build_cntr $srcdir/install-meson-project.sh /usr/libexec
