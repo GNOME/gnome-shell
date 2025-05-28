@@ -152,60 +152,60 @@ export function formatTime(time, params) {
         // Show only the time if date is on today
         if (daysAgo < 1 || params.timeOnly)
             /* Translators: Time in 24h format */
-            format = N_('%H\u2236%M');
+            format = N_('%H:%M');
         // Show the word "Yesterday" and time if date is on yesterday
         else if (daysAgo < 2)
             /* Translators: this is the word "Yesterday" followed by a
              time string in 24h format. i.e. "Yesterday, 14:30" */
             // xgettext:no-c-format
-            format = N_('Yesterday, %H\u2236%M');
+            format = N_('Yesterday, %H:%M');
         // Show a week day and time if date is in the last week
         else if (daysAgo < 7)
             /* Translators: this is the week day name followed by a time
              string in 24h format. i.e. "Monday, 14:30" */
             // xgettext:no-c-format
-            format = N_('%A, %H\u2236%M');
+            format = N_('%A, %H:%M');
         else if (date.get_year() === now.get_year())
             /* Translators: this is the month name and day number
              followed by a time string in 24h format.
              i.e. "May 25, 14:30" */
             // xgettext:no-c-format
-            format = N_('%B %-d, %H\u2236%M');
+            format = N_('%B %-d, %H:%M');
         else
             /* Translators: this is the month name, day number, year
              number followed by a time string in 24h format.
              i.e. "May 25 2012, 14:30" */
             // xgettext:no-c-format
-            format = N_('%B %-d %Y, %H\u2236%M');
+            format = N_('%B %-d %Y, %H:%M');
     } else {
         // Show only the time if date is on today
         if (daysAgo < 1 || params.timeOnly) // eslint-disable-line no-lonely-if
             /* Translators: Time in 12h format */
-            format = N_('%l\u2236%M %p');
+            format = N_('%l:%M %p');
         // Show the word "Yesterday" and time if date is on yesterday
         else if (daysAgo < 2)
             /* Translators: this is the word "Yesterday" followed by a
              time string in 12h format. i.e. "Yesterday, 2:30 pm" */
             // xgettext:no-c-format
-            format = N_('Yesterday, %l\u2236%M %p');
+            format = N_('Yesterday, %l:%M %p');
         // Show a week day and time if date is in the last week
         else if (daysAgo < 7)
             /* Translators: this is the week day name followed by a time
              string in 12h format. i.e. "Monday, 2:30 pm" */
             // xgettext:no-c-format
-            format = N_('%A, %l\u2236%M %p');
+            format = N_('%A, %l:%M %p');
         else if (date.get_year() === now.get_year())
             /* Translators: this is the month name and day number
              followed by a time string in 12h format.
              i.e. "May 25, 2:30 pm" */
             // xgettext:no-c-format
-            format = N_('%B %-d, %l\u2236%M %p');
+            format = N_('%B %-d, %l:%M %p');
         else
             /* Translators: this is the month name, day number, year
              number followed by a time string in 12h format.
              i.e. "May 25 2012, 2:30 pm"*/
             // xgettext:no-c-format
-            format = N_('%B %-d %Y, %l\u2236%M %p');
+            format = N_('%B %-d %Y, %l:%M %p');
     }
 
     // Time in short 12h format, without the equivalent of "AM" or "PM"; used
@@ -213,9 +213,7 @@ export function formatTime(time, params) {
     if (!params.ampm)
         format = format.replace(/\s*%p/g, '');
 
-    let formattedTime = date.format(Shell.util_translate_time_string(format));
-    // prepend LTR-mark to colon/ratio to force a text direction on times
-    return formattedTime.replace(/([:\u2236])/g, '\u200e$1');
+    return date.format(Shell.util_translate_time_string(format));
 }
 
 /**
