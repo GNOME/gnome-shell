@@ -500,7 +500,7 @@ class WorldClocksSection extends St.Button {
         const prefix = offsetCurrentTz >= 0 ? '+' : '-';
         const text = offsetMinutes === 0
             ? `${prefix}${offsetHours}`
-            : `${prefix}${offsetHours}\u2236${offsetMinutes}`;
+            : `${prefix}${offsetHours}:${offsetMinutes}`;
         return text;
     }
 
