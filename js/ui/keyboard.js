@@ -1658,7 +1658,8 @@ export const Keyboard = GObject.registerClass({
 
     _updateKeys() {
         const group = this._keyboardController.getCurrentGroup();
-        this._updateLayout(group, this._purpose);
+        const {purpose} = this._keyboardController;
+        this._updateLayout(group, purpose);
         this._setActiveLevel('default');
     }
 
