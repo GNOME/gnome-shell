@@ -1305,18 +1305,13 @@ export const Keyboard = GObject.registerClass({
         this._keyboardController.connectObject(
             'group-changed', this._onGroupChanged.bind(this),
             'panel-state', this._onKeyboardStateChanged.bind(this),
-            'purpose-changed', this._onPurposeChanged.bind(this),
+            'purpose-changed', () => this._updateKeys(),
             'content-hints-changed', this._onContentHintsChanged.bind(this),
             this);
         global.stage.connectObject('notify::key-focus',
             this._onKeyFocusChanged.bind(this), this);
 
         this._relayout();
-    }
-
-    _onPurposeChanged(controller, purpose) {
-        this._purpose = purpose;
-        this._updateKeys();
     }
 
     _onContentHintsChanged(controller, contentHint) {
