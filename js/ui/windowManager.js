@@ -1695,7 +1695,7 @@ export class WindowManager {
         if (!constructor)
             return;
 
-        /* prevent a corner case where both popups show up at once */
+        /* prevent a corner case where both tab and workspace switcher popups show up at once */
         if (this._workspaceSwitcherPopup != null)
             this._workspaceSwitcherPopup.destroy();
 
