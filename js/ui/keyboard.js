@@ -1994,11 +1994,16 @@ class KeyboardController extends Signals.EventEmitter {
             'current-source-changed', this._onSourceChanged.bind(this),
             'sources-changed', this._onSourcesModified.bind(this), this);
         this._currentSource = this._inputSourceManager.currentSource;
+        this._purpose = Main.inputMethod.contentPurpose;
 
         Main.inputMethod.connectObject(
             'notify::content-purpose', this._onPurposeHintsChanged.bind(this),
             'notify::content-hints', this._onContentHintsChanged.bind(this),
             'input-panel-state', (o, state) => this.emit('panel-state', state), this);
+    }
+
+    get purpose() {
+        return this._purpose;
     }
 
     destroy() {
