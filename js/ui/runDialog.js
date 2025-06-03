@@ -62,9 +62,11 @@ class RunDialog extends ModalDialog.ModalDialog {
 
         let content = new Dialog.MessageDialogContent({title});
         this.contentLayout.add_child(content);
+        const [labelActor] = content;
 
         let entry = new St.Entry({
             style_class: 'run-dialog-entry',
+            labelActor,
             can_focus: true,
         });
         ShellEntry.addContextMenu(entry);
