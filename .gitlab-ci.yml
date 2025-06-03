@@ -14,7 +14,7 @@ include:
       job-stage: deploy
       dist-job-name: "dist-tarball"
       tarball-artifact-path: $TARBALL_ARTIFACT_PATH
-  - component: gitlab.gnome.org/GNOME/citemplates/gnomeos-build-sysext@1.0.0-alpha.1
+  - component: "gitlab.gnome.org/GNOME/citemplates/gnomeos-build-sysext@25.5"
     inputs:
       meson-options:
         -Dextensions_app=false
