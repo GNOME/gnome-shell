@@ -9,7 +9,7 @@ include:
   - project: 'Infrastructure/freedesktop-ci-templates'
     file: 'templates/ci-fairy.yml'
     ref: 'bc70242ffb8402243e934659ecc1a2d1c89eca2b'
-  - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
+  - component: "gitlab.gnome.org/GNOME/citemplates/release-service@25.5"
     inputs:
       job-stage: deploy
       dist-job-name: "dist-tarball"
