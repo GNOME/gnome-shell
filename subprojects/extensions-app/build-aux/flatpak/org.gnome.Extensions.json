@@ -28,6 +28,12 @@
           "path": "../../../.."
         },
         {
+          "type": "git",
+          "url": "https://gitlab.gnome.org/GNOME/libshew.git",
+          "dest": "subprojects/extensions-app/subprojects/libshew",
+          "branch": "main"
+        },
+        {
           "type": "shell",
           "commands": [
               "subprojects/extensions-app/generate-translations.sh"

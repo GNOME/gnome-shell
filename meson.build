@@ -261,15 +261,11 @@ libgvc = subproject('gvc',
 )
 libgvc_gir = libgvc.get_variable('libgvc_gir')
 
-libshew = subproject('shew',
+libshew = dependency('libshew',
   default_options: [
     'package_name=@0@'.format(meson.project_name()),
   ]
 )
-
-libshew_version = libshew.get_variable('package_version')
-assert(libshew_version == meson.project_version(),
-  'shew version does not match project version')
 
 if get_option('extensions_tool')
   extension_tool = subproject('extensions-tool',
