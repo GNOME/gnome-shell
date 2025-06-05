@@ -142,7 +142,7 @@ endif
 mutter_typelibdir = mutter_dep.get_variable('typelibdir')
 python = find_program('python3')
 gjs = find_program('gjs')
-generate_app_list = find_program('meson/generate-app-list.py')
+generate_app_list = find_program('build-aux/generate-app-list.py')
 
 cc = meson.get_compiler('c')
 
@@ -331,8 +331,8 @@ gnome.post_install(
   gtk_update_icon_cache: true
 )
 
-meson.add_dist_script('meson/generate-stylesheets.py')
-meson.add_dist_script('meson/check-version.py', meson.project_version(), 'NEWS')
+meson.add_dist_script('build-aux/generate-stylesheets.py')
+meson.add_dist_script('build-aux/check-version.py', meson.project_version(), 'NEWS')
 
 summary_options = {
   'x11': have_x11,

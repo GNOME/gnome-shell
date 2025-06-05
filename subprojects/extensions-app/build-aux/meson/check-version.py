@@ -1,1 +1,1 @@
-../../../../meson/check-version.py
+../../../../build-aux/check-version.py
