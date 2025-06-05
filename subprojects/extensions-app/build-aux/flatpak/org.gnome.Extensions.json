@@ -24,8 +24,8 @@
       "config-opts": ["-Dprofile=development"],
       "sources": [
         {
-          "type": "git",
-          "url": "https://gitlab.gnome.org/GNOME/gnome-shell.git"
+          "type": "dir",
+          "path": "../../../.."
         },
         {
           "type": "shell",
