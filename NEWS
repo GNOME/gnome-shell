@@ -1,3 +1,30 @@
+49.alpha.0
+==========
+* Only enable surrounding-text IM capability when needed [Takao; !3666]
+* Fix launching command from terminal in run dialog [Balló; !3683]
+* Ignore offset changes caused by suspend for screen time [Sebastian K.; !3707]
+* Fix app folders sometimes not closing after outside clicks [Damien; !3713]
+* Check all modifiers for modifier-scroll [Florian; !3725]
+* Notify gnome-session when we're ready [Adrian; !3730]
+* Support running shell via --devkit [Florian; !3731]
+* Fix visibility of emoji key in on-screen-keyboard [Carlos; !3733]
+* Stop using ratio character for time [Florian; !3732]
+* Port to new MetaBacklight API [Sebastian W.; !3715]
+* Fixed crash [Florian; !3721]
+* Misc. bug fixes and cleanups [Philipp, Alynx, Florian, fossdd, Jordan;
+  !3716, !3711, !3700, !3718, !3728, !3735, !3737, !3727, !3699, !3704,
+  !3690, !3740, !3741, ]
+
+Contributors:
+  Jonas Ådahl, fossdd, Takao Fujiwara, Carlos Garnacho, Balló György,
+  Sebastian Keller, Philipp Kiemle, Florian Müllner, Jordan Petridis,
+  Damien Tournoud, Adrian Vovk, Alynx Zhou, Sebastian Wick
+
+Translators:
+  Juliano de Souza Camargo [pt_BR], Vasil Pupkin [be], Jun Oyamada [ja],
+  Rūdolfs Mazurs [lv], Takayuki KUSANO [ja], Philipp Kiemle [de],
+  Jose Riha [sk], Antonio Marin [ro], Emilio Sepúlveda [ia], Fabio Tomat [fur]
+
 48.1
 ====
 * Fix glitch in sliders when close to maximum [Sebastian; !3648]
