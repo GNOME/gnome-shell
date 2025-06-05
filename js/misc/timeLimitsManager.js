@@ -455,7 +455,8 @@ export const TimeLimitsManager = GObject.registerClass({
         }
     }
 
-    _addTransition(oldState, newState, wallTimeSecs, recalculateState = true) {
+    _addTransition(oldState, newState, wallTimeSecs,
+        {recalculateState = true} = {}) {
         this._stateTransitions.push({
             oldState,
             newState,
@@ -542,8 +543,9 @@ export const TimeLimitsManager = GObject.registerClass({
             this._addTransition(
                 entry['oldState'],
                 entry['newState'],
-                entry['wallTimeSecs'],
-                i === history.length - 1);
+                entry['wallTimeSecs'], {
+                    recalculateState: i === history.length - 1,
+                });
             previousWallTimeSecs = entry['wallTimeSecs'];
         }
 
