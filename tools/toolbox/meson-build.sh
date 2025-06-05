@@ -137,7 +137,7 @@ while true; do
   esac
 done
 
-BUILD_DIR=build-$TOOLBOX
+BUILD_DIR=_build-$TOOLBOX
 
 find_toplevel
 
