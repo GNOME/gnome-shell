@@ -40,11 +40,15 @@ import * as ModalDialog from '../ui/modalDialog.js';
 import * as PopupMenu from '../ui/popupMenu.js';
 import * as Realmd from './realmd.js';
 import * as UserWidget from '../ui/userWidget.js';
+import {QuickSettingsMenu} from '../ui/quickSettings.js';
+import * as A11y from '../ui/status/accessibility.js';
 
 const _FADE_ANIMATION_TIME = 250;
 const _SCROLL_ANIMATION_TIME = 500;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _CONFLICTING_SESSION_DIALOG_TIMEOUT = 60;
+
+const N_A11Y_MENU_COLUMNS = 2;
 
 Gio._promisify(Gio.File.prototype, 'load_contents_async');
 
@@ -410,6 +414,51 @@ const SessionMenuButton = GObject.registerClass({
     }
 });
 
+const A11yMenuButton = GObject.registerClass(
+class A11yMenuButton extends St.Button {
+    constructor() {
+        super({
+            style_class: 'login-dialog-button a11y-button',
+            icon_name: 'org.gnome.Settings-accessibility-symbolic',
+            accessible_name: _('Accessibility'),
+            accessible_role: Atk.Role.MENU,
+            can_focus: true,
+        });
+
+        this._menu = new QuickSettingsMenu(this, N_A11Y_MENU_COLUMNS);
+
+        this._menu.addItem(new A11y.HighContrastToggle());
+        this._menu.addItem(new A11y.MagnifierToggle());
+        this._menu.addItem(new A11y.LargeTextToggle());
+        this._menu.addItem(new A11y.ScreenReaderToggle());
+        this._menu.addItem(new A11y.ScreenKeyboardToggle());
+        this._menu.addItem(new A11y.VisualBellToggle());
+        this._menu.addItem(new A11y.StickyKeysToggle());
+        this._menu.addItem(new A11y.SlowKeysToggle());
+        this._menu.addItem(new A11y.BounceKeysToggle());
+        this._menu.addItem(new A11y.MouseKeysToggle());
+
+        Main.uiGroup.add_child(this._menu.actor);
+        this._menu.actor.hide();
+
+        this._menu.connect('open-state-changed', (menu, isOpen) => {
+            if (isOpen)
+                this.add_style_pseudo_class('active');
+            else
+                this.remove_style_pseudo_class('active');
+        });
+        this._menu.actor.connect('key-press-event',
+            (o, ev) => global.focus_manager.navigate_from_event(ev));
+
+        this._manager = new PopupMenu.PopupMenuManager(this,
+            {actionMode: Shell.ActionMode.NONE});
+        this._manager.addMenu(this._menu);
+
+        this.connect('clicked', () => this._menu.toggle());
+        this.connect('destroy', () => this._menu.destroy());
+    }
+});
+
 export const ConflictingSessionDialog = GObject.registerClass({
     Signals: {
         'cancel': {},
@@ -601,6 +650,9 @@ export const LoginDialog = GObject.registerClass({
         this._sessionMenuButton.show();
         this.add_child(this._sessionMenuButton);
 
+        this._a11yMenuButton = new A11yMenuButton();
+        this.add_child(this._a11yMenuButton);
+
         this._logoBin = new St.Widget({
             style_class: 'login-dialog-logo-bin',
             x_align: Clutter.ActorAlign.CENTER,
@@ -660,15 +712,35 @@ export const LoginDialog = GObject.registerClass({
         return actorBox;
     }
 
-    _getSessionMenuButtonAllocation(dialogBox) {
+    _getA11yMenuButtonAllocation(dialogBox) {
         let actorBox = new Clutter.ActorBox();
 
-        let [, , natWidth, natHeight] = this._sessionMenuButton.get_preferred_size();
+        let [, , natWidth, natHeight] = this._a11yMenuButton.get_preferred_size();
 
         if (this.get_text_direction() === Clutter.TextDirection.RTL)
             actorBox.x1 = dialogBox.x1 + natWidth;
         else
             actorBox.x1 = dialogBox.x2 - (natWidth * 2);
+
+        actorBox.y1 = dialogBox.y2 - (natHeight * 2);
+        actorBox.x2 = actorBox.x1 + natWidth;
+        actorBox.y2 = actorBox.y1 + natHeight;
+
+        return actorBox;
+    }
+
+    _getSessionMenuButtonAllocation(dialogBox, a11yButtonWidth) {
+        const actorBox = new Clutter.ActorBox();
+
+        // Use half the button width as spacing
+        const offset = a11yButtonWidth + Math.round(a11yButtonWidth / 2);
+
+        let [, , natWidth, natHeight] = this._a11yMenuButton.get_preferred_size();
+
+        if (this.get_text_direction() === Clutter.TextDirection.RTL)
+            actorBox.x1 = dialogBox.x1 + offset + natWidth;
+        else
+            actorBox.x1 = dialogBox.x2 - offset - (natWidth * 2);
 
         actorBox.y1 = dialogBox.y2 - (natHeight * 2);
         actorBox.x2 = actorBox.x1 + natWidth;
@@ -733,9 +805,16 @@ export const LoginDialog = GObject.registerClass({
             logoHeight = logoAllocation.y2 - logoAllocation.y1;
         }
 
+        let a11yMenuButtonAllocation = null;
+        let a11yButtonWidth = 0;
+        if (this._a11yMenuButton.visible) {
+            a11yMenuButtonAllocation = this._getA11yMenuButtonAllocation(dialogBox);
+            a11yButtonWidth = a11yMenuButtonAllocation.get_width();
+        }
+
         let sessionMenuButtonAllocation = null;
         if (this._sessionMenuButton.visible)
-            sessionMenuButtonAllocation = this._getSessionMenuButtonAllocation(dialogBox);
+            sessionMenuButtonAllocation = this._getSessionMenuButtonAllocation(dialogBox, a11yButtonWidth);
 
         // Then figure out if we're overly constrained and need to
         // try a different layout, or if we have what extra space we
@@ -835,6 +914,9 @@ export const LoginDialog = GObject.registerClass({
 
         if (logoAllocation)
             this._logoBin.allocate(logoAllocation);
+
+        if (a11yMenuButtonAllocation)
+            this._a11yMenuButton.allocate(a11yMenuButtonAllocation);
 
         if (sessionMenuButtonAllocation)
             this._sessionMenuButton.allocate(sessionMenuButtonAllocation);
