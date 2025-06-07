@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-05-27 01:12+0000\n"
-"PO-Revision-Date: 2025-05-27 07:37-0400\n"
+"POT-Creation-Date: 2025-06-05 20:46+0000\n"
+"PO-Revision-Date: 2025-06-06 21:17-0400\n"
 "Last-Translator: Emilio Sepúlveda <emism.translations@gmail.com>\n"
 "Language-Team: Interlingua <softinterlingua@gmail.com>\n"
 "Language: ia\n"
@@ -982,22 +982,22 @@ msgstr "Blocar rotation de schermo"
 msgid "GNOME needs to save screen time data"
 msgstr "GNOME necessita salvar datos de tempore de schermo"
 
-#: js/misc/timeLimitsManager.js:1116
+#: js/misc/timeLimitsManager.js:1123
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/misc/timeLimitsManager.js:1123
+#: js/misc/timeLimitsManager.js:1130
 msgid "Your screen time limit is approaching"
 msgstr ""
 
-#: js/misc/timeLimitsManager.js:1137
+#: js/misc/timeLimitsManager.js:1144
 msgid "Screen Time Limit Reached"
 msgstr ""
 
-#: js/misc/timeLimitsManager.js:1138
+#: js/misc/timeLimitsManager.js:1145
 msgid "It’s time to stop using the device"
 msgstr "Es hora de stoppar le uso de iste dispositivo"
 
@@ -1062,77 +1062,75 @@ msgstr[1] "%d annos retro"
 
 #. Translators: Time in 24h format
 #: js/misc/dateUtils.js:155
-msgid "%H∶%M"
-msgstr "%H∶%M"
+msgid "%H:%M"
+msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
 #: js/misc/dateUtils.js:161
 #, no-c-format
-msgid "Yesterday, %H∶%M"
+msgid "Yesterday, %H:%M"
 msgstr "Heri, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
 #: js/misc/dateUtils.js:167
 #, no-c-format
-msgid "%A, %H∶%M"
-msgstr "%A, %H∶%M"
+msgid "%A, %H:%M"
+msgstr "%A, %H:%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
 #: js/misc/dateUtils.js:173
 #, no-c-format
-msgid "%B %-d, %H∶%M"
-msgstr "%-d de %B, %H∶%M"
+msgid "%B %-d, %H:%M"
+msgstr " %-d de %B, %H:%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/dateUtils.js:179
 #, no-c-format
-msgid "%B %-d %Y, %H∶%M"
-msgstr ""
-"%-d de %B %Y, %H∶%M\n"
-"-"
+msgid "%B %-d %Y, %H:%M"
+msgstr "%-d de %B %Y, %H:%M"
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
 #: js/misc/dateUtils.js:184
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: js/misc/dateUtils.js:190
 #, no-c-format
-msgid "Yesterday, %l∶%M %p"
-msgstr "Heri, %l∶%M %p"
+msgid "Yesterday, %l:%M %p"
+msgstr "Heri, %l:%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/dateUtils.js:196
 #, no-c-format
-msgid "%A, %l∶%M %p"
-msgstr "%A, %l∶%M %p"
+msgid "%A, %l:%M %p"
+msgstr "%A, %l:%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/dateUtils.js:202
 #, no-c-format
-msgid "%B %-d, %l∶%M %p"
-msgstr " %-d de %B, %l∶%M %p"
+msgid "%B %-d, %l:%M %p"
+msgstr " %-d de %B, %l:%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/dateUtils.js:208
 #, no-c-format
-msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%-d de %B %Y, %l∶%M %p"
+msgid "%B %-d %Y, %l:%M %p"
+msgstr "%-d de %B %Y, %l:%M %p"
 
 #: js/portalHelper/main.js:98
 msgid "Your connection seems to be secure"
@@ -1152,7 +1150,7 @@ msgstr ""
 #. let modal = options['modal'] || true;
 #: js/ui/accessDialog.js:51 js/ui/inhibitShortcutsDialog.js:92
 msgid "Deny"
-msgstr ""
+msgstr "Denegar"
 
 #: js/ui/accessDialog.js:52 js/ui/inhibitShortcutsDialog.js:101
 msgid "Allow"
@@ -1408,6 +1406,7 @@ msgstr "Aperir con %s"
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router"
 msgstr ""
+"Alternativemente tu pote connecter te al premer le button “WPS” sur tu router"
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
@@ -1608,22 +1607,18 @@ msgid "Log Out"
 msgstr "Clauder le session"
 
 #: js/ui/endSessionDialog.js:51
-#, fuzzy, javascript-format
-#| msgid "%s will be logged out automatically in %d second."
-#| msgid_plural "%s will be logged out automatically in %d seconds."
+#, javascript-format
 msgid "%s will be logged out automatically in %d second"
 msgid_plural "%s will be logged out automatically in %d seconds"
-msgstr[0] "Le session de %s sera terminate automaticamente in %d secunda."
-msgstr[1] "Le session de %s sera terminate automaticamente in %d secundas."
+msgstr[0] "Le session de %s essera claudite automaticamente in %d secunda"
+msgstr[1] "Le session de %s essera claudite automaticamente in %d secundas"
 
 #: js/ui/endSessionDialog.js:57
-#, fuzzy, javascript-format
-#| msgid "You will be logged out automatically in %d second."
-#| msgid_plural "You will be logged out automatically in %d seconds."
+#, javascript-format
 msgid "You will be logged out automatically in %d second"
 msgid_plural "You will be logged out automatically in %d seconds"
-msgstr[0] "Le session sera terminate automaticamente in %d secunda."
-msgstr[1] "Le session sera terminate automaticamente in %d secundas."
+msgstr[0] "Tu session essera claudite automaticamente in %d secunda"
+msgstr[1] "Tu session essera claudite automaticamente in %d secundas"
 
 #: js/ui/endSessionDialog.js:64
 msgctxt "button"
@@ -1739,7 +1734,7 @@ msgstr "Altere usatores son connectite."
 #: js/ui/endSessionDialog.js:467
 msgctxt "button"
 msgid "Boot Options"
-msgstr ""
+msgstr "Optiones de initio"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: js/ui/endSessionDialog.js:672
@@ -1920,23 +1915,23 @@ msgstr ""
 msgid "Apps now have unrestricted access"
 msgstr "Le applicationes ora ha accesso sin restrictiones"
 
-#: js/ui/main.js:366
+#: js/ui/main.js:367
 #, fuzzy
 #| msgid "Log in as another user"
 msgid "Logged in as a privileged user"
 msgstr "Initiar session como altere usator"
 
-#: js/ui/main.js:367
+#: js/ui/main.js:368
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
 msgstr ""
 
-#: js/ui/main.js:415
+#: js/ui/main.js:430
 msgid "Screen Lock disabled"
 msgstr ""
 
-#: js/ui/main.js:416
+#: js/ui/main.js:431
 msgid "Screen Locking requires the GNOME display manager"
 msgstr ""
 
@@ -2008,7 +2003,7 @@ msgstr "Editar…"
 
 #: js/ui/padOsd.js:774
 msgid "None"
-msgstr ""
+msgstr "Nulle"
 
 #: js/ui/padOsd.js:845
 msgid "Press a button to configure"
@@ -2054,10 +2049,8 @@ msgid "Restart is not available on Wayland"
 msgstr "Le reinitio non es disponibile sur Wayland"
 
 #: js/ui/runDialog.js:259
-#, fuzzy
-#| msgid "Estimating…"
 msgid "Restarting…"
-msgstr "Estimation…"
+msgstr "In reinitio…"
 
 #: js/ui/screenShield.js:233
 msgid "GNOME needs to lock the screen"
@@ -2077,7 +2070,7 @@ msgstr "Selection"
 
 #: js/ui/screenshot.js:1260
 msgid "Area Selection"
-msgstr ""
+msgstr "Selection de area"
 
 #: js/ui/screenshot.js:1265
 msgid "Screen"
@@ -2107,13 +2100,11 @@ msgstr "Registrar schermo"
 #. it needs to be phrased as a verb.
 #: js/ui/screenshot.js:1348
 msgid "Capture"
-msgstr ""
+msgstr "Capturar"
 
 #: js/ui/screenshot.js:1370
-#, fuzzy
-#| msgid "Show Errors"
 msgid "Show Pointer"
-msgstr "Monstrar errores"
+msgstr "Monstrar punctator"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
@@ -2234,19 +2225,19 @@ msgstr "Monstrar texto"
 
 #: js/ui/shellEntry.js:80
 msgid "Hide Text"
-msgstr "Occultar texto"
+msgstr "Celar texto"
 
 #: js/ui/shellEntry.js:174
 msgid "Caps lock is on"
-msgstr ""
+msgstr "FixMaj es activate"
 
 #: js/ui/shellMountOperation.js:286
 msgid "Hidden Volume"
-msgstr "Volumine occultate"
+msgstr "Volumine celate"
 
 #: js/ui/shellMountOperation.js:289
 msgid "Windows System Volume"
-msgstr ""
+msgstr "Volumine de systema de Windows"
 
 #: js/ui/shellMountOperation.js:292
 #, fuzzy
@@ -2430,7 +2421,7 @@ msgid_plural "%d Connected"
 msgstr[0] "Connecter"
 msgstr[1] "Connecter"
 
-#: js/ui/status/brightness.js:32
+#: js/ui/status/brightness.js:12
 msgid "Brightness"
 msgstr ""
 
@@ -2463,16 +2454,14 @@ msgid "Show Keyboard Layout"
 msgstr "Monstrar le disposition de claviero"
 
 #: js/ui/status/location.js:337
-#, fuzzy
-#| msgid "Always grant access"
 msgid "Allow location access"
-msgstr "Conceder accesso sempre"
+msgstr "Permitter accesso al localisation"
 
 #. Translators: %s is an application name
 #: js/ui/status/location.js:339
 #, javascript-format
 msgid "The app %s wants to access your location"
-msgstr ""
+msgstr "Le application %s vole acceder tu localisation"
 
 #: js/ui/status/location.js:349
 msgid "Location access can be changed at any time from the privacy settings"
@@ -2480,7 +2469,7 @@ msgstr ""
 
 #: js/ui/status/location.js:357
 msgid "Deny Access"
-msgstr ""
+msgstr "Denegar accesso"
 
 #: js/ui/status/location.js:362
 msgid "Grant Access"
@@ -2566,10 +2555,8 @@ msgid "Mobile Connections"
 msgstr "Connexiones mobile"
 
 #: js/ui/status/network.js:1940
-#, fuzzy
-#| msgid "Mobile broadband"
 msgid "Mobile Broadband Settings"
-msgstr "Banda large mobile"
+msgstr "Parametros de banda large mobile"
 
 #. Translators: "Mobile" from "Mobile Broadband"
 #: js/ui/status/network.js:1949
@@ -2791,7 +2778,7 @@ msgstr "“%s” es preste"
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:68
 msgid "Keep these display settings?"
-msgstr ""
+msgstr "Mantener iste parametros de schermo?"
 
 #: js/ui/windowManager.js:78
 msgid "Revert Settings"
@@ -2918,10 +2905,8 @@ msgid "Failed to launch “%s”"
 msgstr "Falleva le lanceamento de “%s”"
 
 #: src/shell-keyring-prompt.c:779
-#, fuzzy
-#| msgid "Passwords do not match."
 msgid "Passwords do not match"
-msgstr "Le contrasignos non corresponde."
+msgstr "Le contrasignos non corresponde"
 
 #: src/shell-keyring-prompt.c:787
 msgid "Password cannot be blank"
@@ -2929,12 +2914,12 @@ msgstr "Le contrasigno non pote esser vacue"
 
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
-msgstr "Le dialogo de authentication era dimittite per le usator"
+msgstr "Le dialogo de authentication esseva claudite per le usator"
 
 #: src/st/st-icon-theme.c:1859
 #, c-format
 msgid "Icon '%s' not present in theme %s"
-msgstr ""
+msgstr "Icone '%s' non presente in le thema %s"
 
 #: src/st/st-icon-theme.c:3452 src/st/st-icon-theme.c:3755
 msgid "Failed to load icon"
@@ -3025,7 +3010,7 @@ msgstr "_Remover"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:158
 msgid "translator-credits"
-msgstr ""
+msgstr "Emilio Sepúlveda <emism.translations@gmail.com>"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:203
 #, javascript-format
@@ -3121,15 +3106,19 @@ msgstr "Necun extensiones installate"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
-"To find and add extensions, visit <a href=\"https://"
-"extensions.gnome.org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
+"Pro trovar e adder extensiones, visita <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
 msgstr ""
+"Nos lo regretta, ma non esseva possibile de obtener le lista del extensiones "
+"installate. Assecura te de initiar session in GNOME e tentar de novo."
 
 #: subprojects/extensions-app/data/ui/help-overlay.ui:9
 msgctxt "shortcut window"
@@ -3189,8 +3178,8 @@ msgstr "Description"
 #: subprojects/extensions-tool/src/command-create.c:416
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address "
-"(clicktofocus@janedoe.example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:443
@@ -3207,7 +3196,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:518
 msgid "NAME"
-msgstr ""
+msgstr "NOMINE"
 
 #: subprojects/extensions-tool/src/command-create.c:519
 msgid "The user-visible name of the new extension"
@@ -3215,7 +3204,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:521
 msgid "DESCRIPTION"
-msgstr ""
+msgstr "DESCRIPTION"
 
 #: subprojects/extensions-tool/src/command-create.c:523
 msgid "A short description of what the extension does"
@@ -3224,7 +3213,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:525
 #: subprojects/extensions-tool/src/command-pack.c:455
 msgid "DOMAIN"
-msgstr ""
+msgstr "DOMINIO"
 
 #: subprojects/extensions-tool/src/command-create.c:527
 msgid "The gettext domain used by the extension"
@@ -3249,11 +3238,11 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:538
 msgid "Include prefs.js template"
-msgstr ""
+msgstr "Includer patrono prefs.js"
 
 #: subprojects/extensions-tool/src/command-create.c:544
 msgid "Enter extension information interactively"
-msgstr ""
+msgstr "Inserer information de extension interactivemente"
 
 #: subprojects/extensions-tool/src/command-create.c:552
 msgid "Create a new extension"
@@ -3262,11 +3251,11 @@ msgstr "Crear un nove extension"
 #: subprojects/extensions-tool/src/command-create.c:570
 #: subprojects/extensions-tool/src/command-list.c:190
 msgid "Unknown arguments"
-msgstr "Argumentos non cognoscite"
+msgstr "Argumentos incognite"
 
 #: subprojects/extensions-tool/src/command-create.c:595
 msgid "UUID, name and description are required"
-msgstr ""
+msgstr "Le UUID, nomine e description es requirite"
 
 #: subprojects/extensions-tool/src/command-disable.c:62
 #: subprojects/extensions-tool/src/command-enable.c:62
@@ -3276,7 +3265,7 @@ msgstr "Le extension “%s” non existe\n"
 
 #: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
-msgstr "Dishabilitar un extension"
+msgstr "Disactivar un extension"
 
 #: subprojects/extensions-tool/src/command-disable.c:116
 #: subprojects/extensions-tool/src/command-enable.c:116
@@ -3285,7 +3274,7 @@ msgstr "Dishabilitar un extension"
 #: subprojects/extensions-tool/src/command-reset.c:76
 #: subprojects/extensions-tool/src/command-uninstall.c:104
 msgid "No UUID given"
-msgstr ""
+msgstr "Nulle UUID assignate"
 
 #: subprojects/extensions-tool/src/command-disable.c:121
 #: subprojects/extensions-tool/src/command-enable.c:121
@@ -3294,7 +3283,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-reset.c:81
 #: subprojects/extensions-tool/src/command-uninstall.c:109
 msgid "More than one UUID given"
-msgstr ""
+msgstr "Plus de un UUID assignate"
 
 #: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
@@ -3539,10 +3528,8 @@ msgid "Uninstall extension"
 msgstr "Disinstallar extension"
 
 #: subprojects/extensions-tool/src/main.c:341
-#, fuzzy
-#| msgid "Extension"
 msgid "List extensions"
-msgstr "Extension"
+msgstr "Listar extensiones"
 
 #: subprojects/extensions-tool/src/main.c:342
 #: subprojects/extensions-tool/src/main.c:343
@@ -3580,7 +3567,7 @@ msgstr "Un extension vacue"
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
 msgid "Indicator"
-msgstr ""
+msgstr "Indicator"
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
 msgid "Add an icon to the top bar"
@@ -3621,6 +3608,9 @@ msgstr[1] "%u ingressos"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Sonos de systema"
+
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
 
 #~ msgid "Could not parse command:"
 #~ msgstr "Impossibile de analysar le commando:"
