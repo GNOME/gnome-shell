@@ -59,7 +59,7 @@ const _modes = {
         panel: {
             left: [],
             center: ['dateMenu'],
-            right: ['dwellClick', 'a11y', 'keyboard', 'quickSettings'],
+            right: ['dwellClick', 'keyboard', 'quickSettings'],
         },
         panelStyle: 'login-screen',
     },
