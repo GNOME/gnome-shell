@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-03-05 12:21+0000\n"
-"PO-Revision-Date: 2025-03-05 14:47+0100\n"
+"POT-Creation-Date: 2025-06-08 05:28+0000\n"
+"PO-Revision-Date: 2025-06-08 09:13+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -99,7 +99,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Odpri novo okno pripetega programa 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2272
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2275
 msgid "Screenshots"
 msgstr "Zaslonske slike"
 
@@ -665,25 +665,25 @@ msgstr "Ali vašega uporabniškega imena ni na seznamu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1071
+#: js/gdm/loginDialog.js:1075
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(na primer, uporabnika ali %s)"
 
-#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1080 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Uporabniško ime"
 
-#: js/gdm/loginDialog.js:1142
+#: js/gdm/loginDialog.js:1146
 msgid "Login Attempt Timed Out"
 msgstr "Poskus prijave je časovno potekel"
 
-#: js/gdm/loginDialog.js:1143
+#: js/gdm/loginDialog.js:1147
 msgid "Login took too long, please try again"
 msgstr "Prijava je trajala predolgo, poskusite znova"
 
-#: js/gdm/loginDialog.js:1492
+#: js/gdm/loginDialog.js:1496
 msgid "Login Window"
 msgstr "Prijavno okno"
 
@@ -703,11 +703,11 @@ msgstr "(ali pa povlecite prst prek bralnika)"
 msgid "(or place finger on reader)"
 msgstr "(ali pa povlecite prst po bralniku)"
 
-#: js/misc/breakManager.js:765
+#: js/misc/breakManager.js:770
 msgid "Break complete sound"
 msgstr "Zvok ob koncu odmora"
 
-#: js/misc/breakManager.js:982
+#: js/misc/breakManager.js:980
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
@@ -716,7 +716,7 @@ msgstr[1] "%d sekundo"
 msgstr[2] "%d sekundi"
 msgstr[3] "%d sekunde"
 
-#: js/misc/breakManager.js:988
+#: js/misc/breakManager.js:986
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
@@ -725,7 +725,7 @@ msgstr[1] "%d minuto"
 msgstr[2] "%d minuti"
 msgstr[3] "%d minute"
 
-#: js/misc/breakManager.js:994
+#: js/misc/breakManager.js:992
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -734,7 +734,7 @@ msgstr[1] "%d uro"
 msgstr[2] "%d uri"
 msgstr[3] "%d ure"
 
-#: js/misc/breakManager.js:1000
+#: js/misc/breakManager.js:998
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -744,7 +744,7 @@ msgstr[2] "%d dneva"
 msgstr[3] "%d dni"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1083
+#: js/misc/breakManager.js:1081
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
@@ -753,24 +753,24 @@ msgstr[1] "Čas za odmor bo čez %s"
 msgstr[2] "Čas za odmor bo čez %s"
 msgstr[3] "Čas za odmor bo čez %s"
 
-#: js/misc/breakManager.js:1091
+#: js/misc/breakManager.js:1089
 msgid "Movement Break Soon"
 msgstr "Odmor z razgibavanjem bo kmalu"
 
-#: js/misc/breakManager.js:1094
+#: js/misc/breakManager.js:1092
 msgid "Eyesight Break Soon"
 msgstr "Odmor za vid bo kmalu"
 
-#: js/misc/breakManager.js:1097
+#: js/misc/breakManager.js:1095
 msgid "Break Soon"
 msgstr "Odmor bo kmalu"
 
-#: js/misc/breakManager.js:1141
+#: js/misc/breakManager.js:1140
 msgid "Movement Break in Progress"
 msgstr "Premor z gibanjem je v teku"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1144
+#: js/misc/breakManager.js:1143
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
@@ -779,12 +779,12 @@ msgstr[1] "Nadaljujte z gibanjem še %s"
 msgstr[2] "Nadaljujte z gibanjem še %s"
 msgstr[3] "Nadaljujte z gibanjem še %s"
 
-#: js/misc/breakManager.js:1150
+#: js/misc/breakManager.js:1149
 msgid "Eyesight Break in Progress"
 msgstr "Odmor za vid je v teku"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1153
+#: js/misc/breakManager.js:1152
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
@@ -793,12 +793,12 @@ msgstr[1] "Še naprej glejte stran %s"
 msgstr[2] "Še naprej glejte stran %s"
 msgstr[3] "Še naprej glejte stran %s"
 
-#: js/misc/breakManager.js:1159
+#: js/misc/breakManager.js:1158
 msgid "Break in Progress"
 msgstr "Odmor je v teku"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1162
+#: js/misc/breakManager.js:1161
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
@@ -807,12 +807,12 @@ msgstr[1] "Na voljo je še %s za odmor"
 msgstr[2] "Na voljo je še %s za odmor"
 msgstr[3] "Na voljo je še %s za odmor"
 
-#: js/misc/breakManager.js:1201
+#: js/misc/breakManager.js:1200
 msgid "Time for a Movement Break"
 msgstr "Čas je za odmor z gibanjem"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1204
+#: js/misc/breakManager.js:1203
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
@@ -821,12 +821,12 @@ msgstr[1] "Vzemite si odmor od naprave in se gibajte %s"
 msgstr[2] "Vzemite si odmor od naprave in se gibajte %s"
 msgstr[3] "Vzemite si odmor od naprave in se gibajte %s"
 
-#: js/misc/breakManager.js:1210
+#: js/misc/breakManager.js:1209
 msgid "Time for an Eyesight Break"
 msgstr "Čas je za odmor vida"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1213
+#: js/misc/breakManager.js:1212
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -841,12 +841,12 @@ msgstr[2] ""
 msgstr[3] ""
 "Vzemite si odmor od zaslona. Glejte v daljavo vsaj 6 metrov najmanj %s"
 
-#: js/misc/breakManager.js:1219
+#: js/misc/breakManager.js:1218
 msgid "Time for a Break"
 msgstr "Čas je za odmor"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1222
+#: js/misc/breakManager.js:1221
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -856,7 +856,7 @@ msgstr[2] "Čas je za odmor. Pojdite stran od naprave za %s!"
 msgstr[3] "Čas je za odmor. Pojdite stran od naprave za %s!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1244
+#: js/misc/breakManager.js:1245
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
@@ -865,12 +865,11 @@ msgstr[1] "Odmor bi si morali privoščiti pred %s"
 msgstr[2] "Odmor bi si morali privoščiti pred %s"
 msgstr[3] "Odmor bi si morali privoščiti pred %s"
 
-#: js/misc/breakManager.js:1250
+#: js/misc/breakManager.js:1251
 msgid "Break Overdue"
 msgstr "Odmor bi se že moral pričeti"
 
-#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1264
+#: js/misc/breakManager.js:1267
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
@@ -879,25 +878,28 @@ msgstr[1] "Na voljo je še %s za odmor"
 msgstr[2] "Na voljo je še %s za odmor"
 msgstr[3] "Na voljo je še %s za odmor"
 
-#: js/misc/breakManager.js:1270
+#: js/misc/breakManager.js:1273
 msgid "Break Interrupted"
 msgstr "Odmor prekinjen"
 
-#: js/misc/breakManager.js:1341
+#. Translators: As in "Delay the break"
+#: js/misc/breakManager.js:1351
 msgid "Delay"
 msgstr "Zakasnitev"
 
-#: js/misc/breakManager.js:1362 js/ui/welcomeDialog.js:61
+#. Translators: As in "Skip the break"
+#: js/misc/breakManager.js:1373 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Preskoči"
 
-#: js/misc/breakManager.js:1383
+#. Translators: As in "Take the break"
+#: js/misc/breakManager.js:1395
 msgid "Take"
 msgstr "Vzemi odmor"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1446
+#: js/misc/breakManager.js:1458
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -1003,11 +1005,11 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Vrtenje zaklepanja zaslona"
 
-#: js/misc/timeLimitsManager.js:338
+#: js/misc/timeLimitsManager.js:342
 msgid "GNOME needs to save screen time data"
 msgstr "GNOME mora shraniti podatke o času pred zaslonom"
 
-#: js/misc/timeLimitsManager.js:1102
+#: js/misc/timeLimitsManager.js:1123
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
@@ -1016,15 +1018,15 @@ msgstr[1] "Omejitev časa pred zaslonom poteče čez %d minuto"
 msgstr[2] "Omejitev časa pred zaslonom poteče čez %d minuti"
 msgstr[3] "Omejitev časa pred zaslonom poteče čez %d minute"
 
-#: js/misc/timeLimitsManager.js:1109
+#: js/misc/timeLimitsManager.js:1130
 msgid "Your screen time limit is approaching"
 msgstr "Omejitev časa pred zaslonom se približuje"
 
-#: js/misc/timeLimitsManager.js:1123
+#: js/misc/timeLimitsManager.js:1144
 msgid "Screen Time Limit Reached"
 msgstr "Dosežena omejitev časa pred zaslonom"
 
-#: js/misc/timeLimitsManager.js:1124
+#: js/misc/timeLimitsManager.js:1145
 msgid "It’s time to stop using the device"
 msgstr "Čas je, da prenehate uporabljati napravo"
 
@@ -1101,21 +1103,21 @@ msgstr[3] "Pred %d leti"
 
 #. Translators: Time in 24h format
 #: js/misc/dateUtils.js:155
-msgid "%H∶%M"
-msgstr "%H∶%M"
+msgid "%H:%M"
+msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
 #: js/misc/dateUtils.js:161
 #, no-c-format
-msgid "Yesterday, %H∶%M"
+msgid "Yesterday, %H:%M"
 msgstr "Včeraj, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
 #: js/misc/dateUtils.js:167
 #, no-c-format
-msgid "%A, %H∶%M"
+msgid "%A, %H:%M"
 msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
@@ -1123,36 +1125,36 @@ msgstr "%A, %H∶%M"
 #. i.e. "May 25, 14:30"
 #: js/misc/dateUtils.js:173
 #, no-c-format
-msgid "%B %-d, %H∶%M"
-msgstr "%d %B, %H∶%M"
+msgid "%B %-d, %H:%M"
+msgstr "%b. %d %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/dateUtils.js:179
 #, no-c-format
-msgid "%B %-d %Y, %H∶%M"
+msgid "%B %-d %Y, %H:%M"
 msgstr "%d. %B %Y, %H∶%M"
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
 #: js/misc/dateUtils.js:184
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: js/misc/dateUtils.js:190
 #, no-c-format
-msgid "Yesterday, %l∶%M %p"
+msgid "Yesterday, %l:%M %p"
 msgstr "Včeraj, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/dateUtils.js:196
 #, no-c-format
-msgid "%A, %l∶%M %p"
+msgid "%A, %l:%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
@@ -1160,16 +1162,16 @@ msgstr "%A, %l∶%M %p"
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/dateUtils.js:202
 #, no-c-format
-msgid "%B %-d, %l∶%M %p"
-msgstr "%d. %B, %l∶%M %p"
+msgid "%B %-d, %l:%M %p"
+msgstr "%d. %m. %H.%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/dateUtils.js:208
 #, no-c-format
-msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%d. %B %Y, %l∶%M %p"
+msgid "%B %-d %Y, %l:%M %p"
+msgstr "%d. %m %Y, %l∶%M %p"
 
 #: js/portalHelper/main.js:98
 msgid "Your connection seems to be secure"
@@ -1971,11 +1973,11 @@ msgstr "Sistem je v ne-varnem načinu"
 msgid "Apps now have unrestricted access"
 msgstr "Programi imajo zdaj neomejen dostop"
 
-#: js/ui/main.js:366
+#: js/ui/main.js:367
 msgid "Logged in as a privileged user"
 msgstr "Zaznana je prijava s skrbniškimi dovoljenji"
 
-#: js/ui/main.js:367
+#: js/ui/main.js:368
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1983,11 +1985,11 @@ msgstr ""
 "Zagona seje s skrbniškim računom se je treba iz varnostnih razlogov "
 "izogibati. Priporočljivo je uporabljati običajen uporabniški račun."
 
-#: js/ui/main.js:415
+#: js/ui/main.js:430
 msgid "Screen Lock disabled"
 msgstr "Zaklep zaslona je onemogočen"
 
-#: js/ui/main.js:416
+#: js/ui/main.js:431
 msgid "Screen Locking requires the GNOME display manager"
 msgstr ""
 "Zaklepanje zaslona zahteva namestitev upravljalnika zaslona za okolje GNOME."
@@ -2095,15 +2097,15 @@ msgstr "Odpri meni"
 msgid "Run a Command"
 msgstr "Zaženi ukaz"
 
-#: js/ui/runDialog.js:76
+#: js/ui/runDialog.js:77
 msgid "Press ESC to close"
 msgstr "Pritisnite tipko Esc za končanje"
 
-#: js/ui/runDialog.js:253
+#: js/ui/runDialog.js:254
 msgid "Restart is not available on Wayland"
 msgstr "Na sistemu Wayland je na voljo ponovni zagon"
 
-#: js/ui/runDialog.js:258
+#: js/ui/runDialog.js:259
 msgid "Restarting…"
 msgstr "Poteka ponovno zaganjanje …"
 
@@ -2203,7 +2205,7 @@ msgid "Screencast ended unexpectedly"
 msgstr "Zajem zaslona je nepričakovano končan"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2327
+#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2330
 msgid "Screenshot"
 msgstr "Zaslonska slika"
 
@@ -2214,28 +2216,28 @@ msgstr "Kliknite za ogled posnetka."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2343
+#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2346
 msgid "Show in Files"
 msgstr "Pokaži v mapi"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2285
+#: js/ui/screenshot.js:2288
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Zaslonski posnetek %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2333
+#: js/ui/screenshot.js:2336
 msgid "Screenshot captured"
 msgstr "Zaslonska slika je zajeta"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2335
+#: js/ui/screenshot.js:2338
 msgid "You can paste the image from the clipboard."
 msgstr "Prilepiti je mogoče sliko iz odložišča."
 
-#: js/ui/screenshot.js:2391 js/ui/screenshot.js:2555
+#: js/ui/screenshot.js:2397 js/ui/screenshot.js:2561
 msgid "Screenshot taken"
 msgstr "Zaslonska slika je zajeta"
 
@@ -2435,35 +2437,35 @@ msgid "Disconnect"
 msgstr "Prekini povezavo"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:265 js/ui/status/network.js:354
+#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:354
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Prekini povezavo %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:356
+#: js/ui/status/bluetooth.js:269 js/ui/status/network.js:356
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Poveži z mestom %s"
 
-#: js/ui/status/bluetooth.js:274 js/ui/status/bluetooth.js:276
+#: js/ui/status/bluetooth.js:276 js/ui/status/bluetooth.js:278
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:299 js/ui/status/network.js:1909
+#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1919
 msgid "Bluetooth Settings"
 msgstr "Nastavitve za Bluetooth"
 
-#: js/ui/status/bluetooth.js:346
+#: js/ui/status/bluetooth.js:348
 msgid "No available or connected devices"
 msgstr "Ni razpoložljivih oziroma povezanih naprav"
 
-#: js/ui/status/bluetooth.js:347
+#: js/ui/status/bluetooth.js:349
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Vklopi Bluetooth za povezovanje naprav"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:411
+#: js/ui/status/bluetooth.js:413
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2472,7 +2474,7 @@ msgstr[1] "%d povezano"
 msgstr[2] "%d povezano"
 msgstr[3] "%d povezano"
 
-#: js/ui/status/brightness.js:32
+#: js/ui/status/brightness.js:12
 msgid "Brightness"
 msgstr "Svetlost"
 
@@ -2557,7 +2559,7 @@ msgstr "%s, %s, %s"
 msgid "%s Hotspot"
 msgstr "Vroča točka %s"
 
-#: js/ui/status/network.js:1435
+#: js/ui/status/network.js:1445
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
@@ -2566,61 +2568,61 @@ msgstr[1] "%d povezana"
 msgstr[2] "%d povezani"
 msgstr[3] "%d povezane"
 
-#: js/ui/status/network.js:1533 js/ui/status/network.js:1549
+#: js/ui/status/network.js:1543 js/ui/status/network.js:1559
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1534
+#: js/ui/status/network.js:1544
 msgid "VPN Settings"
 msgstr "Nastavitve VPN"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1804
 msgid "Wi–Fi"
 msgstr "Omrežje Wi-Fi"
 
-#: js/ui/status/network.js:1796
+#: js/ui/status/network.js:1806
 msgid "All Networks"
 msgstr "Vsa omrežja"
 
-#: js/ui/status/network.js:1893
+#: js/ui/status/network.js:1903
 msgid "Wired Connections"
 msgstr "Žične povezave"
 
-#: js/ui/status/network.js:1894
+#: js/ui/status/network.js:1904
 msgid "Wired Settings"
 msgstr "Nastavitve žičnega omrežja"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1918
 msgid "Bluetooth Tethers"
 msgstr "Internetna Bluetooth točka"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1915
+#: js/ui/status/network.js:1925
 msgid "Tether"
 msgstr "Bluetooth Internet"
 
-#: js/ui/status/network.js:1928
+#: js/ui/status/network.js:1938
 msgid "Mobile Connections"
 msgstr "Mobilne povezave"
 
-#: js/ui/status/network.js:1930
+#: js/ui/status/network.js:1940
 msgid "Mobile Broadband Settings"
 msgstr "Nastavitve mobilnega širokopasovnega dostopa"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1939
+#: js/ui/status/network.js:1949
 msgid "Mobile"
 msgstr "Mobilno omrečje"
 
-#: js/ui/status/network.js:1973
+#: js/ui/status/network.js:1983
 msgid "Sign Into Wi–Fi Network"
 msgstr "Prijavi v brezžično omrežje"
 
-#: js/ui/status/network.js:2160
+#: js/ui/status/network.js:2170
 msgid "Connection failed"
 msgstr "Povezovanje je spodletelo"
 
-#: js/ui/status/network.js:2161
+#: js/ui/status/network.js:2171
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
