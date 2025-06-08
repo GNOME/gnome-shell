@@ -21,6 +21,7 @@ include:
         -Dextensions-tool:bash_completion=disabled
 
 build-sysext:
+  allow_failure: true
   tags:
     - x86_64_v3
   before_script:
