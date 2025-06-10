@@ -142,8 +142,7 @@ eslint:
   variables:
     LINT_LOG: "eslint-report.xml"
   script:
-    - export NODE_PATH=$(npm root -g)
-    - ./.gitlab-ci/run-eslint --output-file ${LINT_LOG} --format junit --stdout
+    - ./tools/run-eslint.sh --output-file ${LINT_LOG} --format junit --stdout
   artifacts:
     reports:
       junit: ${LINT_LOG}
