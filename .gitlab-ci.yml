@@ -157,12 +157,6 @@ eslint-doc:
   script:
     - export NODE_PATH=$(npm root -g)
     - ./.gitlab-ci/eslint-coding-style.sh
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-      changes:
-        - HACKING.md
-        - .eslintrc.yml
-        - lint/*
 
 potfile-c-check:
   extends:
