@@ -82,10 +82,11 @@ check-commit-log:
   stage: pre-review
   variables:
     GIT_DEPTH: "100"
+    JUNIT_REPORT: commit-message-junit-report.xml
   script:
     - if [[ x"$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" != "x" ]] ;
       then
-        ci-fairy check-commits --junit-xml=commit-message-junit-report.xml ;
+        ci-fairy check-commits --junit-xml=$JUNIT_REPORT ;
       else
         echo "Not a merge request" ;
       fi
@@ -94,16 +95,18 @@ check-commit-log:
   artifacts:
     expire_in: 1 week
     reports:
-      junit: commit-message-junit-report.xml
+      junit: $JUNIT_REPORT
 
 check-merge-request:
   extends:
     - .fdo.ci-fairy
   stage: pre-review
+  variables:
+    JUNIT_REPORT: check-merge-request-report.xml
   script:
     - if [[ x"$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" != "x" ]] ;
       then
-        ci-fairy check-merge-request --require-allow-collaboration --junit-xml=check-merge-request-report.xml ;
+        ci-fairy check-merge-request --require-allow-collaboration --junit-xml=$JUNIT_REPORT ;
       else
         echo "Not a merge request" ;
       fi
@@ -112,7 +115,7 @@ check-merge-request:
   artifacts:
     expire_in: 1 week
     reports:
-      junit: check-merge-request-report.xml
+      junit: $JUNIT_REPORT
 
 build-fedora-container:
   extends:
