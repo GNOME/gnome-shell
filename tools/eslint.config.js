@@ -77,5 +77,13 @@ export default defineConfig([
                 N_: 'readonly',
             },
         },
+    }, {
+        // doc snippets, disable rules that depend on wider context
+        files: ['tmp.*/*.js'],
+        rules:  {
+            'no-undef': 'off',
+            'no-unused-vars': 'off',
+            'no-invalid-this': 'off',
+        },
     },
 ]);
