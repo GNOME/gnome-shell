@@ -35,9 +35,6 @@ default:
 
 variables:
   MUTTER_CI_IMAGE: registry.gitlab.gnome.org/gnome/mutter/fedora/42:x86_64-2025-06-05.umockdev
-  FDO_UPSTREAM_REPO: GNOME/gnome-shell
-  BUNDLE: "extensions-git.flatpak"
-  LINT_LOG: "eslint-report.xml"
   TARBALL_ARTIFACT_PATH: build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz
 
 .pipeline-guard:
@@ -50,6 +47,7 @@ variables:
 
 .gnome-shell.fedora:
   variables:
+    FDO_UPSTREAM_REPO: GNOME/gnome-shell
     FDO_DISTRIBUTION_VERSION: 42
     FDO_DISTRIBUTION_TAG: '2025-04-01.0'
     FDO_DISTRIBUTION_PACKAGES:
@@ -142,6 +140,8 @@ eslint:
     - .fdo.distribution-image@fedora
     - .gnome-shell.fedora
   stage: review
+  variables:
+    LINT_LOG: "eslint-report.xml"
   script:
     - export NODE_PATH=$(npm root -g)
     - ./.gitlab-ci/run-eslint --output-file ${LINT_LOG} --format junit --stdout
@@ -264,6 +264,7 @@ flatpak:
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
     FLATPAK_MODULE: "gnome-extensions-app"
     APP_ID: "org.gnome.Extensions.Devel"
+    BUNDLE: "extensions-git.flatpak"
   extends: .flatpak
 
 nightly:
