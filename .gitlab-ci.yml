@@ -93,8 +93,6 @@ check-commit-log:
     - !reference [.pipeline-guard, rules]
   artifacts:
     expire_in: 1 week
-    paths:
-      - commit-message-junit-report.xml
     reports:
       junit: commit-message-junit-report.xml
 
@@ -113,8 +111,6 @@ check-merge-request:
     - !reference [.pipeline-guard, rules]
   artifacts:
     expire_in: 1 week
-    paths:
-      - check-merge-request-report.xml
     reports:
       junit: check-merge-request-report.xml
 
