@@ -153,9 +153,14 @@ eslint-doc:
     - .fdo.distribution-image@fedora
     - .gnome-shell.fedora
   stage: review
+  variables:
+    LINT_LOG: "eslint-docs-report.xml"
   script:
-    - export NODE_PATH=$(npm root -g)
-    - ./.gitlab-ci/eslint-coding-style.sh
+    - ./.gitlab-ci/eslint-coding-style.sh --output-file ${LINT_LOG} --format junit --stdout
+  artifacts:
+    reports:
+      junit: ${LINT_LOG}
+    when: always
 
 potfile-c-check:
   extends:

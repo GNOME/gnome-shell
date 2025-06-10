@@ -37,7 +37,5 @@ input_file, output_dir = sys.argv[1:]
 extract_js_snippets(input_file, output_dir)
 EOF
 
-eslint \
-  --rule 'no-undef: off' \
-  --rule 'no-unused-vars: off' \
-  --rule 'no-invalid-this: off' $OUTDIR/*.js
+echo Checking coding style of coding style docs
+tools/run-eslint.sh "$@" $OUTDIR
