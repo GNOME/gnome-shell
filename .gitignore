@@ -9,3 +9,4 @@ subprojects/libshew
 .buildconfig
 .eslintcache
 .vscode
+node_modules

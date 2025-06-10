@@ -1,0 +1,4 @@
+# SPDX-FileCopyrightText: No rights reserved
+# SPDX-License-Identifier: CC0-1.0
+
+package-lock.json -diff
