@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-06-05 20:46+0000\n"
-"PO-Revision-Date: 2025-06-06 21:17-0400\n"
+"POT-Creation-Date: 2025-06-09 19:46+0000\n"
+"PO-Revision-Date: 2025-06-10 10:31-0400\n"
 "Last-Translator: Emilio Sepúlveda <emism.translations@gmail.com>\n"
 "Language-Team: Interlingua <softinterlingua@gmail.com>\n"
 "Language: ia\n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-DL-Branch: main\n"
 "X-DL-Domain: po\n"
 "X-DL-State: Translating\n"
-"X-Generator: Gtranslator 48.0\n"
+"X-Generator: Gtranslator 47.1\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -294,12 +294,6 @@ msgstr ""
 "Si memorar le contrasigno pro montar le systemas de files cryptate o remote"
 
 #: data/org.gnome.shell.gschema.xml.in:95
-#, fuzzy
-#| msgid ""
-#| "The shell will request a password when an encrypted device or a remote "
-#| "filesystem is mounted. If the password can be saved for future use a "
-#| "'Remember Password' checkbox will be present. This key sets the default "
-#| "state of the checkbox."
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -308,12 +302,12 @@ msgid ""
 msgstr ""
 "Le shell demandara un contrasigno pro montar un dispositivo cifrate o un "
 "systema de files remote. Si le contrasigno pote ser retenite pro uso futur "
-"un quadrato de selection 'Memorar le contrasigno' sera monstrate. Iste clave "
+"un quadrato de ion 'Memorar le contrasigno' sera monstrate. Iste clave "
 "defini le stato predefinite del quadrato de selection."
 
 #: data/org.gnome.shell.gschema.xml.in:104
 msgid "The last selected non-default power profile"
-msgstr ""
+msgstr "Le ultime profilo de energia non-predefinite seligite"
 
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
@@ -1203,11 +1197,11 @@ msgstr ""
 
 #: js/ui/appMenu.js:178
 msgid "Launch using Integrated Graphics Card"
-msgstr ""
+msgstr "Lancear usante carta de graphicos incorporate"
 
 #: js/ui/appMenu.js:179
 msgid "Launch using Discrete Graphics Card"
-msgstr ""
+msgstr "Lancear usante carta de graphicos discrete"
 
 #: js/ui/audioDeviceSelection.js:46
 msgid "Select Audio Device"
@@ -1636,13 +1630,11 @@ msgid "Install Updates & Power Off"
 msgstr "Installar actualisationes e extinguer"
 
 #: js/ui/endSessionDialog.js:74
-#, fuzzy, javascript-format
-#| msgid "The system will power off automatically in %d second."
-#| msgid_plural "The system will power off automatically in %d seconds."
+#, javascript-format
 msgid "The system will power off automatically in %d second"
 msgid_plural "The system will power off automatically in %d seconds"
-msgstr[0] "Le systema se extinguera automaticamente in %d secunda."
-msgstr[1] "Le systema se extinguera automaticamente in %d secundas."
+msgstr[0] "Le systema se extinguera automaticamente in %d secunda"
+msgstr[1] "Le systema se extinguera automaticamente in %d secundas"
 
 #: js/ui/endSessionDialog.js:78 js/ui/endSessionDialog.js:97
 msgctxt "checkbox"
@@ -1838,11 +1830,11 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:57
 msgid "Turn On"
-msgstr ""
+msgstr "Activar"
 
 #: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
 msgid "Turn Off"
-msgstr ""
+msgstr "Disactivar"
 
 #: js/ui/kbdA11yDialog.js:67
 msgid "Leave Off"
@@ -1858,10 +1850,9 @@ msgstr "Necun extensiones installate"
 
 #. Translators: argument is an extension UUID.
 #: js/ui/lookingGlass.js:805
-#, fuzzy, javascript-format
-#| msgid "%s has not emitted any errors."
+#, javascript-format
 msgid "%s has not emitted any errors"
-msgstr "%s non ha emittite alicun errores."
+msgstr "%s non ha emittite alicun errores"
 
 #: js/ui/lookingGlass.js:811
 msgid "Hide Errors"
@@ -1909,27 +1900,28 @@ msgstr "Pagina web"
 
 #: js/ui/main.js:305
 msgid "System was put in unsafe mode"
-msgstr ""
+msgstr "Le systema ha essite placiate in modo insecur"
 
 #: js/ui/main.js:306
 msgid "Apps now have unrestricted access"
 msgstr "Le applicationes ora ha accesso sin restrictiones"
 
 #: js/ui/main.js:367
-#, fuzzy
-#| msgid "Log in as another user"
 msgid "Logged in as a privileged user"
-msgstr "Initiar session como altere usator"
+msgstr "Session initiate como usator privilegiate"
 
 #: js/ui/main.js:368
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
 msgstr ""
+"Executar un session como usator privilegiate deberea esser evitate pro "
+"motivos de securitate. Si possibile, tu deberea initiar session como usator "
+"normal."
 
 #: js/ui/main.js:430
 msgid "Screen Lock disabled"
-msgstr ""
+msgstr "Blocada de schermo disactivate"
 
 #: js/ui/main.js:431
 msgid "Screen Locking requires the GNOME display manager"
@@ -1939,7 +1931,7 @@ msgstr ""
 #. source doesn't have a name
 #: js/ui/messageList.js:409
 msgid "Unknown App"
-msgstr "Application non cognoscite"
+msgstr "Application incognite"
 
 #: js/ui/messageTray.js:325 js/ui/messageTray.js:327
 msgid "Notification sound"
@@ -1947,11 +1939,11 @@ msgstr "Sono de notification"
 
 #: js/ui/mpris.js:144
 msgid "Unknown artist"
-msgstr "Artista non cognoscite"
+msgstr "Artista incognite"
 
 #: js/ui/mpris.js:154
 msgid "Unknown title"
-msgstr "Titulo non cognoscite"
+msgstr "Titulo incognite"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1973,7 +1965,7 @@ msgstr "Panorama"
 
 #: js/ui/padOsd.js:98
 msgid "New shortcut…"
-msgstr "Nove commando curte…"
+msgstr "Nove via breve…"
 
 #: js/ui/padOsd.js:151
 msgid "App defined"
@@ -1997,23 +1989,23 @@ msgstr ""
 msgid "Done"
 msgstr "Facite"
 
-#: js/ui/padOsd.js:727
+#: js/ui/padOsd.js:743
 msgid "Edit…"
-msgstr "Editar…"
+msgstr "Modificar…"
 
-#: js/ui/padOsd.js:774
+#: js/ui/padOsd.js:791
 msgid "None"
 msgstr "Nulle"
 
-#: js/ui/padOsd.js:845
+#: js/ui/padOsd.js:868
 msgid "Press a button to configure"
 msgstr "Preme un button pro configurar"
 
-#: js/ui/padOsd.js:846
+#: js/ui/padOsd.js:869
 msgid "Press Esc to exit"
 msgstr "Preme Esc pro exir"
 
-#: js/ui/padOsd.js:849
+#: js/ui/padOsd.js:872
 msgid "Press any key to exit"
 msgstr "Preme qualcunque clave pro exir"
 
@@ -2407,19 +2399,16 @@ msgid "No available or connected devices"
 msgstr "Necun dispositivos disponibile o connectite"
 
 #: js/ui/status/bluetooth.js:349
-#, fuzzy
-#| msgid "Unable to connect to %s"
 msgid "Turn on Bluetooth to connect to devices"
-msgstr "Impossibile de connecter a %s"
+msgstr "Activa Bluetooth de connecter te al dispositivos"
 
 #. Translators: This is the number of connected bluetooth devices
 #: js/ui/status/bluetooth.js:413
-#, fuzzy, javascript-format
-#| msgid "Connect"
+#, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
-msgstr[0] "Connecter"
-msgstr[1] "Connecter"
+msgstr[0] "%d connectite"
+msgstr[1] "%d connectite"
 
 #: js/ui/status/brightness.js:12
 msgid "Brightness"
@@ -2439,7 +2428,7 @@ msgstr ""
 
 #: js/ui/status/dwellClick.js:25
 msgid "Drag"
-msgstr ""
+msgstr "Traher"
 
 #: js/ui/status/dwellClick.js:30
 msgid "Secondary Click"
@@ -2477,7 +2466,7 @@ msgstr "Conceder accesso"
 
 #: js/ui/status/network.js:62
 msgid "<unknown>"
-msgstr "<non cognoscite>"
+msgstr "<incognite>"
 
 #: js/ui/status/network.js:1059
 msgid "Secure"
@@ -2564,8 +2553,8 @@ msgid "Mobile"
 msgstr "Mobile"
 
 #: js/ui/status/network.js:1983
-msgid "Sign Into Wi–Fi Network"
-msgstr "Initiar session in le rete Wi-Fi"
+msgid "Sign in to Network"
+msgstr "Initiar session in le rete"
 
 #: js/ui/status/network.js:2170
 msgid "Connection failed"
@@ -2577,7 +2566,7 @@ msgstr "Falleva le activation del connexion de rete"
 
 #: js/ui/status/nightLight.js:19
 msgid "Night Light"
-msgstr "Luce de nocte"
+msgstr "Lumine de nocte"
 
 #: js/ui/status/powerProfiles.js:19
 msgctxt "Power profile"
@@ -2800,7 +2789,7 @@ msgstr[1] ""
 #: js/ui/windowManager.js:500
 #, javascript-format
 msgid "%d × %d"
-msgstr ""
+msgstr "%d × %d"
 
 #. Translators: entry in the window right click menu.
 #: js/ui/windowMenu.js:28
@@ -2818,7 +2807,7 @@ msgstr "Restaurar"
 
 #: js/ui/windowMenu.js:51
 msgid "Maximize"
-msgstr ""
+msgstr "Maximisar"
 
 #: js/ui/windowMenu.js:58
 msgid "Move"
@@ -2826,7 +2815,7 @@ msgstr "Displaciar"
 
 #: js/ui/windowMenu.js:78
 msgid "Resize"
-msgstr ""
+msgstr "Redimensionar"
 
 #: js/ui/windowMenu.js:98
 msgid "Always on Top"
@@ -2834,7 +2823,7 @@ msgstr "Sempre visibile"
 
 #: js/ui/windowMenu.js:117
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Sempre sur le spatio de travalio visibile"
 
 #: js/ui/windowMenu.js:131
 msgid "Move to Workspace Left"
@@ -2881,10 +2870,8 @@ msgid "Mode used by GDM for login screen"
 msgstr "Modo usate per GDM pro le schermo de accesso"
 
 #: src/main.c:524
-#, fuzzy
-#| msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgid "Use a specific mode, e.g. “gdm” for login screen"
-msgstr "Usar un modo specific, per ex. \"gdm\" pro le schermo de accesso"
+msgstr "Usar un modo specific, per ex. “gdm” pro le schermo de accesso"
 
 #: src/main.c:530
 msgid "List possible modes"
@@ -2940,15 +2927,15 @@ msgid ""
 "preferences and removing or disabling unwanted extensions."
 msgstr ""
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Fenestra principal"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Actualisationes disponibile"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Vista de recerca"
 
@@ -3052,7 +3039,7 @@ msgstr "_Remover…"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:6
 msgid "Keyboard Shortcuts"
-msgstr "Commandos curte de claviero"
+msgstr "Vias breve de claviero"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:10
 msgid "About Extensions"
@@ -3064,7 +3051,7 @@ msgstr "Menu principal"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:106
 msgid "Search extensions"
-msgstr "Cercar extensiones"
+msgstr "Cerca extensiones"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid "_Extensions"
@@ -3138,7 +3125,7 @@ msgstr "Commutar cerca"
 #: subprojects/extensions-app/data/ui/help-overlay.ui:24
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
-msgstr "Monstrar commandos curte"
+msgstr "Monstrar vias breve"
 
 #: subprojects/extensions-app/data/ui/help-overlay.ui:30
 msgctxt "shortcut window"
@@ -3188,7 +3175,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:457
 msgid "Template"
-msgstr ""
+msgstr "Modello"
 
 #: subprojects/extensions-tool/src/command-create.c:515
 msgid "The unique identifier of the new extension"
@@ -3365,7 +3352,7 @@ msgstr "Imprimer detalios de extension"
 
 #: subprojects/extensions-tool/src/command-list.c:172
 msgid "List installed extensions"
-msgstr ""
+msgstr "Listar extensiones installate"
 
 #: subprojects/extensions-tool/src/command-pack.c:444
 msgid "FILE"
