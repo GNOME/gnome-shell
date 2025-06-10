@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "ci-run-eslint": "git+https://gitlab.gnome.org/World/javascript/ci-run-eslint.git",
-    "eslint-plugin-jsdoc": "^48.11.0"
+    "eslint-config-gnome": "git+https://gitlab.gnome.org/World/javascript/eslint-config-gnome.git"
   }
 }
