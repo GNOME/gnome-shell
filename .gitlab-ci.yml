@@ -20,13 +20,6 @@ include:
         -Dextensions_app=false
         -Dextensions-tool:bash_completion=disabled
 
-build-sysext:
-  allow_failure: true
-  tags:
-    - x86_64_v3
-  before_script:
-    - .gitlab-ci/install-gnomeos-sysext-dependencies.sh $CI_PROJECT_DIR/extension
-
 stages:
   - pre-review
   - prep
@@ -190,6 +183,13 @@ potfile-js-check:
   artifacts:
     reports:
       junit: gjs-check-potfiles.junit.xml
+
+build-sysext:
+  allow_failure: true
+  tags:
+    - x86_64_v3
+  before_script:
+    - .gitlab-ci/install-gnomeos-sysext-dependencies.sh $CI_PROJECT_DIR/extension
 
 build:
   stage: build
