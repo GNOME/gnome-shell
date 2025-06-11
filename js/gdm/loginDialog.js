@@ -990,10 +990,10 @@ export const LoginDialog = GObject.registerClass({
         this._showPrompt();
     }
 
-    _resetGreeterProxy() {
+    _ensureGreeterProxy() {
         if (GLib.getenv('GDM_GREETER_TEST') !== '1') {
             if (this._greeter)
-                this._greeter.run_dispose();
+                return;
 
             this._greeter = this._gdmClient.get_greeter_sync(null);
 
@@ -1005,7 +1005,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _onReset(authPrompt, beginRequest) {
-        this._resetGreeterProxy();
+        this._ensureGreeterProxy();
         this._sessionMenuButton.updateSensitivity(true);
 
         const previousUser = this._user;
