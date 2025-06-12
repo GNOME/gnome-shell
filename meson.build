@@ -1,6 +1,6 @@
 project('gnome-shell', 'c',
   version: '47.7',
-  meson_version: '>= 0.58.0',
+  meson_version: '>= 1.3.0',
   license: 'GPL-2.0-or-later',
 )
 
@@ -158,7 +158,10 @@ cdata.set('HAVE_MALLINFO', cc.has_function('mallinfo'))
 cdata.set('HAVE_MALLINFO2', cc.has_function('mallinfo2'))
 cdata.set('HAVE_SYS_RESOURCE_H', cc.has_header('sys/resource.h'))
 cdata.set('HAVE_EXE_INTROSPECTION',
-  cc.has_header('elf.h') and cc.has_header('link.h'))
+  cc.has_header('elf.h') and
+  cc.has_header('link.h') and
+  cc.has_define('__GLIBC__', prefix: '#include <link.h>')
+)
 cdata.set('HAVE__NL_TIME_FIRST_WEEKDAY',
   cc.has_header_symbol('langinfo.h', '_NL_TIME_FIRST_WEEKDAY')
 )
