@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-06-08 05:28+0000\n"
-"PO-Revision-Date: 2025-06-08 09:13+0200\n"
+"POT-Creation-Date: 2025-06-12 12:05+0000\n"
+"PO-Revision-Date: 2025-06-13 08:55+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -1203,17 +1203,17 @@ msgstr "Dovoli"
 msgid "Unnamed Folder"
 msgstr "Neimenovana mapa"
 
-#: js/ui/appFavorites.js:163
+#: js/ui/appFavorites.js:89
 #, javascript-format
 msgid "%s has been pinned to the dash."
 msgstr "Program »%s« je dodan med pripete programe."
 
-#: js/ui/appFavorites.js:194
+#: js/ui/appFavorites.js:120
 #, javascript-format
 msgid "%s has been unpinned from the dash."
 msgstr "Program »%s« je odstranjen iz pripetih programov."
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:309
+#: js/ui/appFavorites.js:134 js/ui/main.js:309
 msgid "Undo"
 msgstr "Razveljavi"
 
@@ -2054,23 +2054,23 @@ msgstr "Dodeli tipkovno bližnjico"
 msgid "Done"
 msgstr "Končano"
 
-#: js/ui/padOsd.js:727
+#: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "Uredi …"
 
-#: js/ui/padOsd.js:774
+#: js/ui/padOsd.js:791
 msgid "None"
 msgstr "Brez"
 
-#: js/ui/padOsd.js:845
+#: js/ui/padOsd.js:868
 msgid "Press a button to configure"
 msgstr "Pritisnite gumb za nastavitev"
 
-#: js/ui/padOsd.js:846
+#: js/ui/padOsd.js:869
 msgid "Press Esc to exit"
 msgstr "Pritisnite tipko Esc za končanje"
 
-#: js/ui/padOsd.js:849
+#: js/ui/padOsd.js:872
 msgid "Press any key to exit"
 msgstr "Pritisnite katerokoli tipko za končanje"
 
@@ -2615,8 +2615,8 @@ msgid "Mobile"
 msgstr "Mobilno omrečje"
 
 #: js/ui/status/network.js:1983
-msgid "Sign Into Wi–Fi Network"
-msgstr "Prijavi v brezžično omrežje"
+msgid "Sign in to Network"
+msgstr "Prijavi v omrežje"
 
 #: js/ui/status/network.js:2170
 msgid "Connection failed"
