@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-04-16 19:40+0000\n"
-"PO-Revision-Date: 2025-04-20 18:12+0300\n"
+"POT-Creation-Date: 2025-06-12 12:05+0000\n"
+"PO-Revision-Date: 2025-06-15 16:18+0300\n"
 "Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.5\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-launchers.xml:6
@@ -850,7 +850,6 @@ msgstr[2] "Вы былі павінны зрабіць перапынак %s т�
 msgid "Break Overdue"
 msgstr "Перапынак не зроблены"
 
-#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1267
 #, javascript-format
 msgid "There is %s remaining in your break"
@@ -863,21 +862,24 @@ msgstr[2] "Да канца перапынку %s"
 msgid "Break Interrupted"
 msgstr "Перапынак перарваны"
 
-#: js/misc/breakManager.js:1350
+#. Translators: As in "Delay the break"
+#: js/misc/breakManager.js:1351
 msgid "Delay"
 msgstr "Адкласці"
 
-#: js/misc/breakManager.js:1371 js/ui/welcomeDialog.js:61
+#. Translators: As in "Skip the break"
+#: js/misc/breakManager.js:1373 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Прапусціць"
 
-#: js/misc/breakManager.js:1392
+#. Translators: As in "Take the break"
+#: js/misc/breakManager.js:1395
 msgid "Take"
 msgstr "Зрабіць"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1455
+#: js/misc/breakManager.js:1458
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -956,8 +958,8 @@ msgstr "змяніць карыстальніка"
 #: js/misc/systemActions.js:141
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
-"lock orientation;rotation;заблакіраваць арыентацыю; "
-"разблакіраваць;экран;паварот"
+"lock orientation;rotation;заблакіраваць арыентацыю; разблакіраваць;экран;"
+"паварот"
 
 #. Translators: The name of the screenshot UI action in search
 #: js/misc/systemActions.js:146
@@ -980,11 +982,11 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Заблакіраваць паварот экрана"
 
-#: js/misc/timeLimitsManager.js:338
+#: js/misc/timeLimitsManager.js:342
 msgid "GNOME needs to save screen time data"
 msgstr "GNOME патрабуе захаваць даныя экраннага часу"
 
-#: js/misc/timeLimitsManager.js:1102
+#: js/misc/timeLimitsManager.js:1123
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
@@ -992,15 +994,15 @@ msgstr[0] "Абмежаванне экраннага часу ў %d хвілін
 msgstr[1] "Абмежаванне экраннага часу ў %d хвіліны"
 msgstr[2] "Абмежаванне экраннага часу ў %d хвілін"
 
-#: js/misc/timeLimitsManager.js:1109
+#: js/misc/timeLimitsManager.js:1130
 msgid "Your screen time limit is approaching"
 msgstr "Хутка будзе дасягнута абмежаванне экраннага часу"
 
-#: js/misc/timeLimitsManager.js:1123
+#: js/misc/timeLimitsManager.js:1144
 msgid "Screen Time Limit Reached"
 msgstr "Дасягнута абмежаванне экраннага часу"
 
-#: js/misc/timeLimitsManager.js:1124
+#: js/misc/timeLimitsManager.js:1145
 msgid "It’s time to stop using the device"
 msgstr "Час спыніць выкарыстанне прылады"
 
@@ -1071,75 +1073,75 @@ msgstr[2] "%d гадоў таму"
 
 #. Translators: Time in 24h format
 #: js/misc/dateUtils.js:155
-msgid "%H∶%M"
-msgstr "%H∶%M"
+msgid "%H:%M"
+msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
 #: js/misc/dateUtils.js:161
 #, no-c-format
-msgid "Yesterday, %H∶%M"
+msgid "Yesterday, %H:%M"
 msgstr "Учора, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
 #: js/misc/dateUtils.js:167
 #, no-c-format
-msgid "%A, %H∶%M"
-msgstr "%A, %H∶%M"
+msgid "%A, %H:%M"
+msgstr "%A, %H:%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
 #: js/misc/dateUtils.js:173
 #, no-c-format
-msgid "%B %-d, %H∶%M"
-msgstr "%-d %B, %H∶%M"
+msgid "%B %-d, %H:%M"
+msgstr "%-d %B, %H:%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/dateUtils.js:179
 #, no-c-format
-msgid "%B %-d %Y, %H∶%M"
-msgstr "%-d %B %Y, %H∶%M"
+msgid "%B %-d %Y, %H:%M"
+msgstr "%-d %B %Y, %H:%M"
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
 #: js/misc/dateUtils.js:184
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: js/misc/dateUtils.js:190
 #, no-c-format
-msgid "Yesterday, %l∶%M %p"
-msgstr "Учора, %l∶%M %p"
+msgid "Yesterday, %l:%M %p"
+msgstr "Учора, %l:%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/dateUtils.js:196
 #, no-c-format
-msgid "%A, %l∶%M %p"
-msgstr "%A, %-l∶%M %p"
+msgid "%A, %l:%M %p"
+msgstr "%A, %-l:%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/dateUtils.js:202
 #, no-c-format
-msgid "%B %-d, %l∶%M %p"
-msgstr "%-d %B, %l∶%M %p"
+msgid "%B %-d, %l:%M %p"
+msgstr "%-d %B, %l:%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/dateUtils.js:208
 #, no-c-format
-msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%-d %B %Y, %l∶%M %p"
+msgid "%B %-d %Y, %l:%M %p"
+msgstr "%-d %B %Y, %l:%M %p"
 
 #: js/portalHelper/main.js:98
 msgid "Your connection seems to be secure"
@@ -1171,17 +1173,17 @@ msgstr "Дазволіць"
 msgid "Unnamed Folder"
 msgstr "Неназваная папка"
 
-#: js/ui/appFavorites.js:163
+#: js/ui/appFavorites.js:89
 #, javascript-format
 msgid "%s has been pinned to the dash."
 msgstr "%s замацавана на панэлі праграм."
 
-#: js/ui/appFavorites.js:194
+#: js/ui/appFavorites.js:120
 #, javascript-format
 msgid "%s has been unpinned from the dash."
 msgstr "%s адмацавана ад панэлі праграм."
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:309
+#: js/ui/appFavorites.js:134 js/ui/main.js:309
 msgid "Undo"
 msgstr "Адрабіць"
 
@@ -1932,11 +1934,11 @@ msgstr "Сістэма пераведзена ў небяспечны рэжым
 msgid "Apps now have unrestricted access"
 msgstr "Цяпер праграмы маюць неабмежаваны доступ"
 
-#: js/ui/main.js:366
+#: js/ui/main.js:367
 msgid "Logged in as a privileged user"
 msgstr "Увайшоў як прывілеяваны карыстальнік"
 
-#: js/ui/main.js:367
+#: js/ui/main.js:368
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1944,11 +1946,11 @@ msgstr ""
 "У мэтах бяспекі неабходна пазбягаць запуску сеанса ў якасці прывілеяванага "
 "карыстальніка. Калі магчыма, увайдзіце як звычайны карыстальнік."
 
-#: js/ui/main.js:415
+#: js/ui/main.js:430
 msgid "Screen Lock disabled"
 msgstr "Блакіраванне экрана адключана"
 
-#: js/ui/main.js:416
+#: js/ui/main.js:431
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "Для блакіравання экрана патрабуецца GNOME display manager"
 
@@ -2012,23 +2014,23 @@ msgstr "Прызначыць клавішу"
 msgid "Done"
 msgstr "Гатова"
 
-#: js/ui/padOsd.js:727
+#: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "Рэдагаваць…"
 
-#: js/ui/padOsd.js:774
+#: js/ui/padOsd.js:791
 msgid "None"
 msgstr "Няма"
 
-#: js/ui/padOsd.js:845
+#: js/ui/padOsd.js:868
 msgid "Press a button to configure"
 msgstr "Націсніце кнопку, каб наладзіць"
 
-#: js/ui/padOsd.js:846
+#: js/ui/padOsd.js:869
 msgid "Press Esc to exit"
 msgstr "Націсніце Esc, каб выйсці"
 
-#: js/ui/padOsd.js:849
+#: js/ui/padOsd.js:872
 msgid "Press any key to exit"
 msgstr "Націсніце любую клавішу, каб выйсці"
 
@@ -2408,7 +2410,7 @@ msgstr "Злучыцца з %s"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1909
+#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1919
 msgid "Bluetooth Settings"
 msgstr "Налады Bluetooth"
 
@@ -2429,7 +2431,7 @@ msgstr[0] "Падлучана %d"
 msgstr[1] "Падлучана %d"
 msgstr[2] "Падлучана %d"
 
-#: js/ui/status/brightness.js:32
+#: js/ui/status/brightness.js:12
 msgid "Brightness"
 msgstr "Яркасць"
 
@@ -2513,7 +2515,7 @@ msgstr "%s, %s, %s"
 msgid "%s Hotspot"
 msgstr "Хот-спот %s"
 
-#: js/ui/status/network.js:1435
+#: js/ui/status/network.js:1445
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
@@ -2521,61 +2523,61 @@ msgstr[0] "Падлучана %d"
 msgstr[1] "Падлучана %d"
 msgstr[2] "Падлучана %d"
 
-#: js/ui/status/network.js:1533 js/ui/status/network.js:1549
+#: js/ui/status/network.js:1543 js/ui/status/network.js:1559
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1534
+#: js/ui/status/network.js:1544
 msgid "VPN Settings"
 msgstr "Налады VPN"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1804
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1796
+#: js/ui/status/network.js:1806
 msgid "All Networks"
 msgstr "Усе сеткі"
 
-#: js/ui/status/network.js:1893
+#: js/ui/status/network.js:1903
 msgid "Wired Connections"
 msgstr "Правадныя злучэнні"
 
-#: js/ui/status/network.js:1894
+#: js/ui/status/network.js:1904
 msgid "Wired Settings"
 msgstr "Налады праваднога злучэння"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1918
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth Tethers"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1915
+#: js/ui/status/network.js:1925
 msgid "Tether"
 msgstr "Tether"
 
-#: js/ui/status/network.js:1928
+#: js/ui/status/network.js:1938
 msgid "Mobile Connections"
 msgstr "Мабільныя злучэнні"
 
-#: js/ui/status/network.js:1930
+#: js/ui/status/network.js:1940
 msgid "Mobile Broadband Settings"
 msgstr "Налады мабільнага злучэння"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1939
+#: js/ui/status/network.js:1949
 msgid "Mobile"
 msgstr "Мабільны"
 
-#: js/ui/status/network.js:1973
-msgid "Sign Into Wi–Fi Network"
-msgstr "Уваход у сетку Wi–Fi"
+#: js/ui/status/network.js:1983
+msgid "Sign in to Network"
+msgstr "Уваход у сетку"
 
-#: js/ui/status/network.js:2160
+#: js/ui/status/network.js:2170
 msgid "Connection failed"
 msgstr "Не ўдалося злучыцца"
 
-#: js/ui/status/network.js:2161
+#: js/ui/status/network.js:2171
 msgid "Activation of network connection failed"
 msgstr "Не ўдалося актываваць сеткавае злучэнне"
 
@@ -2943,15 +2945,15 @@ msgstr ""
 "Пашырэнні GNOME ажыццяўляюць абнаўленне і змяненне параметраў пашырэнняў, "
 "выдаленне або адключэнне непажаданых пашырэнняў."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Галоўнае акно"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Даступны абнаўленні"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Пошук"
 
@@ -3123,11 +3125,11 @@ msgstr "Няма ўсталяваных пашырэнняў"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
-"To find and add extensions, visit <a href=\"https://"
-"extensions.gnome.org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
-"Каб знайсці і дадаць пашырэнні, наведайце <a href=\"https://"
-"extensions.gnome.org\">extensions.gnome.org</a>."
+"Каб знайсці і дадаць пашырэнні, наведайце <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
@@ -3199,12 +3201,12 @@ msgstr "Апісанне"
 #: subprojects/extensions-tool/src/command-create.c:416
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address "
-"(clicktofocus@janedoe.example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
 msgstr ""
 "UUID — усеагульны ўнікальны ідэнтыфікатар вашага пашырэння.\n"
-"Ён павінен мець фармат адраса электроннай пошты "
-"(nazva@jankupala.pryklad.com)\n"
+"Ён павінен мець фармат адраса электроннай пошты (nazva@jankupala.pryklad."
+"com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:443
 msgid "Choose one of the available templates:\n"
@@ -3593,7 +3595,7 @@ msgstr "Індыкатар"
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
 msgid "Add an icon to the top bar"
-msgstr "Дадаць значок у верхнюю панэль"
+msgstr "Дадаць значок на верхнюю панэль"
 
 #: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
 msgid "Quick Settings Item"
@@ -3632,6 +3634,9 @@ msgstr[2] "%u аўдыяўваходаў"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Сістэмныя гукі"
+
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
 
 #~ msgid "Could not parse command:"
 #~ msgstr "Не ўдалося разабраць каманду:"
