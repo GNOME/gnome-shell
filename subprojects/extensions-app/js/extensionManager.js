@@ -3,7 +3,7 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
 import {
-    ExtensionState, ExtensionType, deserializeExtension
+    ExtensionState, ExtensionType, deserializeExtension,
 }  from './misc/extensionUtils.js';
 
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell.Extensions');

@@ -30,6 +30,7 @@ rules:
     - error
     - arrays: always-multiline
       objects: always-multiline
+      imports: always-multiline
       functions: never
   comma-spacing:
     - error

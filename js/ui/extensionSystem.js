@@ -9,7 +9,7 @@ import * as Config from '../misc/config.js';
 import * as ExtensionDownloader from './extensionDownloader.js';
 import {formatError} from '../misc/errorUtils.js';
 import {
-    ExtensionState, ExtensionType, loadExtensionMetadata
+    ExtensionState, ExtensionType, loadExtensionMetadata,
 } from '../misc/extensionUtils.js';
 import * as FileUtils from '../misc/fileUtils.js';
 import * as Main from './main.js';
