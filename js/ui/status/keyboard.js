@@ -996,6 +996,12 @@ class InputSourceIndicator extends PanelMenu.Button {
         }
     }
 
+    _getGraphemeClusters(text = '') {
+        const segmenter = new Intl.Segmenter(undefined, {granularity: 'grapheme'});
+        const segments = [...segmenter.segment(text)].map(o => o.segment);
+        return segments;
+    }
+
     _buildPropSubMenu(menu, props) {
         if (!props)
             return;
@@ -1019,7 +1025,8 @@ class InputSourceIndicator extends PanelMenu.Button {
                 let currentSource = this._inputSourceManager.currentSource;
                 if (currentSource) {
                     let indicatorLabel = this._indicatorLabels[currentSource.index];
-                    if (text && text.length > 0 && text.length < 3)
+                    const graphemeClusters = this._getGraphemeClusters(text);
+                    if (graphemeClusters.length > 0 && graphemeClusters.length < 3)
                         indicatorLabel.set_text(text);
                 }
             }
