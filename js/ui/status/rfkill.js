@@ -43,7 +43,6 @@ const RfkillManager = GObject.registerClass({
             .catch(e => console.error(e.message));
     }
 
-    /* eslint-disable camelcase */
     get airplane_mode() {
         return this._proxy.AirplaneMode;
     }
@@ -59,7 +58,6 @@ const RfkillManager = GObject.registerClass({
     get show_airplane_mode() {
         return this._proxy.HasAirplaneMode && this._proxy.ShouldShowAirplaneMode;
     }
-    /* eslint-enable camelcase */
 
     _changed(proxy, properties) {
         for (const prop in properties.deepUnpack()) {

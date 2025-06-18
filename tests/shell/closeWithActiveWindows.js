@@ -7,8 +7,6 @@ import * as Scripting from 'resource:///org/gnome/shell/ui/scripting.js';
 
 /** Run test. */
 export async function run() {
-    /* eslint-disable no-await-in-loop */
-
     /* Make created windows remain visible during exit. */
     await Scripting.disableHelperAutoExit();
 
@@ -29,6 +27,4 @@ export async function run() {
     await Scripting.waitTestWindows();
     await Scripting.waitLeisure();
     await Scripting.sleep(1000);
-
-    /* eslint-enable no-await-in-loop */
 }
