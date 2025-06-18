@@ -1,4 +1,4 @@
 [wrap-git]
 url=https://gitlab.gnome.org/GNOME/libshew.git
-revision=HEAD
+revision=ed782477cb5164320ae4f731d49bc5d475ab2a52
 depth=1
