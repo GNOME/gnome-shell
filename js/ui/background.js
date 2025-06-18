@@ -661,7 +661,6 @@ class Animation extends GnomeBG.BGSlideShow {
         this.loaded = false;
     }
 
-    // eslint-disable-next-line camelcase
     load_async(cancellable, callback) {
         super.load_async(cancellable, () => {
             this.loaded = true;

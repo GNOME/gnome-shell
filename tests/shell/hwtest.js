@@ -97,7 +97,7 @@ function extractBootTimestamp() {
     let result = null;
 
     let datastream = Gio.DataInputStream.new(sp.get_stdout_pipe());
-    while (true) { // eslint-disable-line no-constant-condition
+    while (true) {
         let [line, length_] = datastream.read_line_utf8(null);
         if (line === null)
             break;
@@ -143,7 +143,6 @@ export async function run() {
     await Scripting.sleep(1000);
 
     Scripting.scriptEvent('applicationsShowStart');
-    // eslint-disable-next-line require-atomic-updates
     Main.overview.dash.showAppsButton.checked = true;
 
     await Scripting.waitLeisure();
