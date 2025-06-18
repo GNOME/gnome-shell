@@ -682,7 +682,6 @@ class AppIcon extends St.BoxLayout {
         this.add_child(this.label);
     }
 
-    // eslint-disable-next-line camelcase
     set_size(size) {
         this.icon = this.app.create_icon_texture(size);
         this._iconBin.child = this.icon;

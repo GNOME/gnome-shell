@@ -96,12 +96,10 @@ export async function run() {
 
     Scripting.scriptEvent('applicationsShowStart');
     console.debug('Showing applications');
-    // eslint-disable-next-line require-atomic-updates
     Main.overview.dash.showAppsButton.checked = true;
     await Scripting.waitLeisure();
     Scripting.scriptEvent('applicationsShowDone');
     console.debug('Hiding applications');
-    // eslint-disable-next-line require-atomic-updates
     Main.overview.dash.showAppsButton.checked = false;
     await Scripting.waitLeisure();
 

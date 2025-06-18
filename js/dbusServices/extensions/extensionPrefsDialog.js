@@ -46,7 +46,6 @@ export const ExtensionPrefsDialog = GObject.registerClass({
         this.set_titlebar(w);
     }
 
-    // eslint-disable-next-line camelcase
     set_titlebar() {
         // intercept fatal libadwaita error, show error page instead
         GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
