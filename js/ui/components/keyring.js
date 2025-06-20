@@ -173,7 +173,12 @@ class KeyringDialog extends ModalDialog.ModalDialog {
 
     _onContinueButton() {
         this._updateSensitivity(false);
-        this.prompt.complete();
+        if (this.prompt.complete())
+            return;
+        // Allow user to correct it when passwords mismatch.
+        this._updateSensitivity(true);
+        if (this.prompt.password_visible)
+            this._passwordEntry.grab_key_focus();
     }
 
     _onCancelButton() {
