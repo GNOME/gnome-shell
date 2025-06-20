@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-06-12 12:05+0000\n"
-"PO-Revision-Date: 2025-06-13 08:55+0200\n"
+"POT-Creation-Date: 2025-06-20 16:50+0000\n"
+"PO-Revision-Date: 2025-06-20 21:59+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -591,6 +591,7 @@ msgstr "Prekliči"
 #: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
 #: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
 #: js/ui/shellMountOperation.js:332
+#: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
 msgstr "Geslo"
 
@@ -672,6 +673,7 @@ msgstr "(na primer, uporabnika ali %s)"
 
 #: js/gdm/loginDialog.js:1080 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
+#: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Uporabniško ime"
 
@@ -2097,15 +2099,15 @@ msgstr "Odpri meni"
 msgid "Run a Command"
 msgstr "Zaženi ukaz"
 
-#: js/ui/runDialog.js:77
+#: js/ui/runDialog.js:79
 msgid "Press ESC to close"
 msgstr "Pritisnite tipko Esc za končanje"
 
-#: js/ui/runDialog.js:254
+#: js/ui/runDialog.js:256
 msgid "Restart is not available on Wayland"
 msgstr "Na sistemu Wayland je na voljo ponovni zagon"
 
-#: js/ui/runDialog.js:259
+#: js/ui/runDialog.js:261
 msgid "Restarting…"
 msgstr "Poteka ponovno zaganjanje …"
 
@@ -3433,6 +3435,7 @@ msgid "List installed extensions"
 msgstr "Izpiše seznam nameščenih razširitev"
 
 #: subprojects/extensions-tool/src/command-pack.c:444
+#: subprojects/extensions-tool/src/command-upload.c:427
 msgid "FILE"
 msgstr "DATOTEKA"
 
@@ -3507,6 +3510,57 @@ msgstr "Odstranjevanje namestitve »%s« je spodletelo\n"
 #: subprojects/extensions-tool/src/command-uninstall.c:86
 msgid "Uninstall an extension"
 msgstr "Odstrani razširitev"
+
+#: subprojects/extensions-tool/src/command-upload.c:226
+msgid "Login to extensions.gnome.org\n"
+msgstr "Prijava v extensions.gnome.org\n"
+
+#: subprojects/extensions-tool/src/command-upload.c:256
+msgid "Warning! Password will be echoed"
+msgstr "Opozorilo! Geslo bo odmevalo"
+
+#: subprojects/extensions-tool/src/command-upload.c:419
+msgid "USERNAME"
+msgstr "UPORABNIŠKO_IME"
+
+#: subprojects/extensions-tool/src/command-upload.c:421
+msgid "Username to log into https://extensions.gnome.org"
+msgstr "Uporabniško ime za prijavo v https://extensions.gnome.org"
+
+#: subprojects/extensions-tool/src/command-upload.c:423
+msgid "PASSWORD"
+msgstr "GESLO"
+
+#: subprojects/extensions-tool/src/command-upload.c:425
+msgid "Password to log into https://extensions.gnome.org"
+msgstr "Geslo za prijavo v https://extensions.gnome.org"
+
+#: subprojects/extensions-tool/src/command-upload.c:429
+msgid ""
+"Read https://extensions.gnome.org password from file, use \"-\" for stdin"
+msgstr ""
+"Preberite https://extensions.gnome.org geslo iz datoteke, uporabite »-« za "
+"stdin"
+
+#: subprojects/extensions-tool/src/command-upload.c:432
+msgid "Accept the terms of service at https://extensions.gnome.org/upload/"
+msgstr "Sprejmite pogoje storitve na https://extensions.gnome.org/upload/"
+
+#: subprojects/extensions-tool/src/command-upload.c:443
+msgid "Upload new extension versions"
+msgstr "Naložite nove različice razširitev"
+
+#: subprojects/extensions-tool/src/command-upload.c:461
+msgid "Only one of --password and --password-file can be used"
+msgstr "Uporabite lahko samo eno izmed --password in --password-file"
+
+#: subprojects/extensions-tool/src/command-upload.c:467
+msgid "You must accept the terms of service to upload extensions"
+msgstr "Če želite naložiti razširitve, morate sprejeti pogoje storitve"
+
+#: subprojects/extensions-tool/src/command-upload.c:473
+msgid "No files given"
+msgstr "Ni podanih datotek"
 
 #: subprojects/extensions-tool/src/main.c:76
 msgid "Do not print error messages"
