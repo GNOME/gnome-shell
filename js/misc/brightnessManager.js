@@ -5,6 +5,8 @@ import * as Main from '../ui/main.js';
 
 const SCALE_VALUE_CHANGE_EPSILON = 0.001;
 
+const POWER_SCHEMA = 'org.gnome.settings-daemon.plugins.power';
+
 export const BrightnessManager = GObject.registerClass({
     Signals: {
         'changed': {},
@@ -16,10 +18,36 @@ export const BrightnessManager = GObject.registerClass({
         this._globalScale = null;
         this._monitorScales = new Map();
 
+        // This is still being used in the power plugin for the keyboard backlight
+        // so we just use that setting here
+        const powerSettings = new Gio.Settings({schema_id: POWER_SCHEMA});
+        this._dimmingTarget = powerSettings.get_int('idle-brightness') / 100;
+        this._dimmingEnabled = false;
+
+        this._abTarget = -1.0;
+
         const monitorManager = global.backend.get_monitor_manager();
         monitorManager.connectObject('monitors-changed',
             this._monitorsChanged.bind(this), this);
         this._monitorsChanged();
+    }
+
+    get dimming() {
+        return this._dimmingEnabled;
+    }
+
+    set dimming(enable) {
+        this._dimmingEnabled = enable;
+        this._sync();
+    }
+
+    get autoBrightnessTarget() {
+        return this._abTarget;
+    }
+
+    set autoBrightnessTarget(target) {
+        this._abTarget = target;
+        this._sync();
     }
 
     get globalScale() {
@@ -81,8 +109,13 @@ export const BrightnessManager = GObject.registerClass({
         this._inhibitUpdates = true;
 
         // Handle changed backlights
-        for (const scale of this._monitorScales.values())
-            scale.syncWithBacklight();
+        for (const scale of this._monitorScales.values()) {
+            if (scale.syncWithBacklight()) {
+                // disable dimming for all if we have a single system initiated
+                // backlight change
+                this._dimmingEnabled = false;
+            }
+        }
 
         // Find scales which have been changed (and reset _scaleChanged)
         const changedScales = [...this._monitorScales.values()].filter(s => {
@@ -124,9 +157,18 @@ export const BrightnessManager = GObject.registerClass({
                 this._showOSD(this._monitorScales.values());
         }
 
+        // ensure we lock the global scale when auto brightness is in control
+        this._globalScale.locked = this._abTarget >= 0.0;
+
         // Update the actual backlight according to the new monitor brightnesses
-        for (const scale of this._monitorScales.values())
-            scale.setBacklight(scale.value);
+        // and other factors, such as dimming.
+        for (const scale of this._monitorScales.values()) {
+            const max = this._dimmingEnabled ? this._dimmingTarget : 1.0;
+            const target = this._abTarget >= 0.0 ? this._abTarget : scale.value;
+            const brightness = Math.min(max, target);
+
+            scale.setBacklight(brightness);
+        }
 
         this._inhibitUpdates = false;
     }
@@ -152,11 +194,16 @@ export const BrightnessScale = GObject.registerClass({
             'value', null, null,
             GObject.ParamFlags.READWRITE,
             0, 1.0, 1.0),
+        'locked': GObject.ParamSpec.boolean(
+            'locked', null, null,
+            GObject.ParamFlags.READWRITE,
+            false),
     },
 }, class BrightnessScale extends GObject.Object {
     constructor(name, value) {
         super({
             value,
+            locked: false,
         });
 
         this._name = name;
@@ -172,6 +219,17 @@ export const BrightnessScale = GObject.registerClass({
 
     set value(value) {
         this._setValue(value);
+    }
+
+    get locked() {
+        return this._locked;
+    }
+
+    set locked(locked) {
+        if (this._locked === locked)
+            return;
+        this._locked = locked;
+        this.notify('locked');
     }
 
     _setValue(value) {

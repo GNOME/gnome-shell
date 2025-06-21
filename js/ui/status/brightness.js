@@ -16,6 +16,13 @@ class BrightnessItem extends QuickSlider {
 
         this._manager = Main.brightnessManager;
         this._manager.connectObject('changed',
+            this._onManagerChanged.bind(this), this);
+        this._onManagerChanged();
+    }
+
+    _onManagerChanged() {
+        this._manager.globalScale?.disconnectObject(this);
+        this._manager.globalScale?.connectObject('notify::locked',
             this._sync.bind(this), this);
         this._sync();
     }
@@ -23,7 +30,7 @@ class BrightnessItem extends QuickSlider {
     _sync() {
         const {globalScale} = this._manager;
         this.set({
-            visible: !!globalScale,
+            visible: globalScale && !globalScale.locked,
         });
 
         if (!this.visible)
