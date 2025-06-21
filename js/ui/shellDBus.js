@@ -14,6 +14,7 @@ import {DBusSenderChecker} from '../misc/util.js';
 import {ControlsState} from './overviewControls.js';
 
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell');
+const GnomeShellExtensionsIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 const ScreenSaverIface = loadInterfaceXML('org.gnome.ScreenSaver');
 const ScreenTimeIface = loadInterfaceXML('org.gnome.Shell.ScreenTime');
 
@@ -409,8 +410,6 @@ export class GnomeShell {
         return Config.PACKAGE_VERSION;
     }
 }
-
-const GnomeShellExtensionsIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 
 class GnomeShellExtensions {
     constructor() {
