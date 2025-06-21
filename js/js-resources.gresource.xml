@@ -16,6 +16,7 @@
 
     <file>misc/animationUtils.js</file>
     <file>misc/breakManager.js</file>
+    <file>misc/brightnessManager.js</file>
     <file>misc/config.js</file>
     <file>misc/dateUtils.js</file>
     <file>misc/dbusErrors.js</file>
