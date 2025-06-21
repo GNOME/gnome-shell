@@ -1,10 +1,14 @@
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
 
 import * as Main from '../ui/main.js';
 
+const SCALE_VALUE_STEP = 0.1;
 const SCALE_VALUE_CHANGE_EPSILON = 0.001;
 
+const KEYBINDING_SCHEMA = 'org.gnome.shell.keybindings';
 const POWER_SCHEMA = 'org.gnome.settings-daemon.plugins.power';
 
 export const BrightnessManager = GObject.registerClass({
@@ -25,6 +29,48 @@ export const BrightnessManager = GObject.registerClass({
         this._dimmingEnabled = false;
 
         this._abTarget = -1.0;
+
+        Main.wm.addKeybinding(
+            'screen-brightness-up',
+            new Gio.Settings({schema_id: KEYBINDING_SCHEMA}),
+            Meta.KeyBindingFlags.NONE,
+            Shell.ActionMode.ALL,
+            this._screenBrightnessUp.bind(this));
+
+        Main.wm.addKeybinding(
+            'screen-brightness-up-monitor',
+            new Gio.Settings({schema_id: KEYBINDING_SCHEMA}),
+            Meta.KeyBindingFlags.NONE,
+            Shell.ActionMode.ALL,
+            this._screenBrightnessUpCurrentMonitor.bind(this));
+
+        Main.wm.addKeybinding(
+            'screen-brightness-down',
+            new Gio.Settings({schema_id: KEYBINDING_SCHEMA}),
+            Meta.KeyBindingFlags.NONE,
+            Shell.ActionMode.ALL,
+            this._screenBrightnessDown.bind(this));
+
+        Main.wm.addKeybinding(
+            'screen-brightness-down-monitor',
+            new Gio.Settings({schema_id: KEYBINDING_SCHEMA}),
+            Meta.KeyBindingFlags.NONE,
+            Shell.ActionMode.ALL,
+            this._screenBrightnessDownCurrentMonitor.bind(this));
+
+        Main.wm.addKeybinding(
+            'screen-brightness-cycle',
+            new Gio.Settings({schema_id: KEYBINDING_SCHEMA}),
+            Meta.KeyBindingFlags.NONE,
+            Shell.ActionMode.ALL,
+            this._screenBrightnessCycle.bind(this));
+
+        Main.wm.addKeybinding(
+            'screen-brightness-cycle-monitor',
+            new Gio.Settings({schema_id: KEYBINDING_SCHEMA}),
+            Meta.KeyBindingFlags.NONE,
+            Shell.ActionMode.ALL,
+            this._screenBrightnessCycleCurrentMonitor.bind(this));
 
         const monitorManager = global.backend.get_monitor_manager();
         monitorManager.connectObject('monitors-changed',
@@ -56,6 +102,33 @@ export const BrightnessManager = GObject.registerClass({
 
     get scales() {
         return [...this._monitorScales.values()];
+    }
+
+    _screenBrightnessUp() {
+        this._globalScale?.stepUp();
+    }
+
+    _screenBrightnessUpCurrentMonitor() {
+        const monitor = global.backend.get_current_logical_monitor();
+        this._monitorScales.get(monitor)?.stepUp();
+    }
+
+    _screenBrightnessDown() {
+        this._globalScale?.stepDown();
+    }
+
+    _screenBrightnessDownCurrentMonitor() {
+        const monitor = global.backend.get_current_logical_monitor();
+        this._monitorScales.get(monitor)?.stepDown();
+    }
+
+    _screenBrightnessCycle() {
+        this._globalScale?.cycleUp();
+    }
+
+    _screenBrightnessCycleCurrentMonitor() {
+        const monitor = global.backend.get_current_logical_monitor();
+        this._monitorScales.get(monitor)?.cycleUp();
     }
 
     _monitorsChanged() {
@@ -230,6 +303,21 @@ export const BrightnessScale = GObject.registerClass({
             return;
         this._locked = locked;
         this.notify('locked');
+    }
+
+    stepUp() {
+        this._setValue(Math.min(1.0, this._brightness + SCALE_VALUE_STEP));
+    }
+
+    stepDown() {
+        this._setValue(Math.max(0.0, this._brightness - SCALE_VALUE_STEP));
+    }
+
+    cycleUp() {
+        if (Math.abs(1.0 - this._brightness) < SCALE_VALUE_CHANGE_EPSILON)
+            this._setValue(0.0);
+        else
+            this.stepUp();
     }
 
     _setValue(value) {

@@ -278,6 +278,30 @@
       <default>["&lt;Shift&gt;Print"]</default>
       <summary>Take a screenshot</summary>
     </key>
+    <key name="screen-brightness-up" type="as">
+      <default>['XF86MonBrightnessUp']</default>
+      <summary>Screen brightness up</summary>
+    </key>
+    <key name="screen-brightness-up-monitor" type="as">
+      <default>['&lt;Shift&gt;XF86MonBrightnessUp']</default>
+      <summary>Screen brightness up on current monitor</summary>
+    </key>
+    <key name="screen-brightness-down" type="as">
+      <default>['XF86MonBrightnessDown']</default>
+      <summary>Screen brightness down</summary>
+    </key>
+    <key name="screen-brightness-down-monitor" type="as">
+      <default>['&lt;Shift&gt;XF86MonBrightnessDown']</default>
+      <summary>Screen brightness down on current monitor</summary>
+    </key>
+    <key name="screen-brightness-cycle" type="as">
+      <default>['XF86MonBrightnessCycle']</default>
+      <summary>Screen brightness cycle</summary>
+    </key>
+    <key name="screen-brightness-cycle-monitor" type="as">
+      <default>['&lt;Shift&gt;XF86MonBrightnessCycle']</default>
+      <summary>Screen brightness cycle on current monitor</summary>
+    </key>
   </schema>
 
   <schema id="org.gnome.shell.app-switcher"
