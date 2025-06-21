@@ -5,4 +5,4 @@ org.gnome.Evince.desktop                  # Document Viewer
 org.gnome.FileRoller.desktop              # File Roller
 org.gnome.font-viewer.desktop             # Fonts
 org.gnome.Loupe.desktop                   # Image Viewer
-org.gnome.seahorse.Application.desktop    # Passwords and Keys
+org.gnome.Seahorse.desktop                # Passwords and Keys
