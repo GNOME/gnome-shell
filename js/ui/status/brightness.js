@@ -1,9 +1,38 @@
+import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
+import St from 'gi://St';
 
 import {QuickSlider, SystemIndicator} from '../quickSettings.js';
 import * as Main from '../main.js';
+import * as PopupMenu from '../popupMenu.js';
+import {Slider} from '../slider.js';
 
 const BRIGHTNESS_NAME = _('Brightness');
+
+class BrightnessSliderMenu extends PopupMenu.PopupMenuSection {
+    addSlider(scale) {
+        const text = new PopupMenu.PopupMenuItem(scale.name, {reactive: false});
+        this.addMenuItem(text);
+
+        const slider = new Slider(0);
+        slider.accessible_name = scale.name;
+
+        const sliderBin = new St.Bin({
+            style_class: 'slider-bin',
+            child: slider,
+            reactive: true,
+            can_focus: true,
+            x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        const sliderMenuItem = new PopupMenu.PopupBaseMenuItem({reactive: false});
+        sliderMenuItem.add_child(sliderBin);
+        this.addMenuItem(sliderMenuItem);
+
+        return slider;
+    }
+}
 
 const BrightnessItem = GObject.registerClass(
 class BrightnessItem extends QuickSlider {
@@ -13,6 +42,10 @@ class BrightnessItem extends QuickSlider {
         });
 
         this.slider.accessible_name = BRIGHTNESS_NAME;
+
+        this.menu.setHeader('display-brightness-symbolic', BRIGHTNESS_NAME);
+        this._monitorBrightnessSection = new BrightnessSliderMenu();
+        this.menu.addMenuItem(this._monitorBrightnessSection);
 
         this._manager = Main.brightnessManager;
         this._manager.connectObject('changed',
@@ -31,12 +64,19 @@ class BrightnessItem extends QuickSlider {
         const {globalScale} = this._manager;
         this.set({
             visible: globalScale && !globalScale.locked,
+            menuEnabled: this._manager.scales.length > 1,
         });
 
         if (!this.visible)
             return;
 
+        this._monitorBrightnessSection.removeAll();
+
         this._connectSlider(this.slider, globalScale);
+        for (const scale of this._manager.scales) {
+            const slider = this._monitorBrightnessSection.addSlider(scale);
+            this._connectSlider(slider, scale);
+        }
     }
 
     _connectSlider(slider, scale) {
