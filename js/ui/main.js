@@ -98,6 +98,7 @@ export let breakManagerDispatcher = null;
 export let timeLimitsManager = null;
 export let timeLimitsDispatcher = null;
 export let brightnessManager = null;
+export let brightnessDBus = null;
 
 let _startDate;
 let _defaultCssStylesheet = null;
@@ -261,6 +262,7 @@ async function _initializeUI() {
     timeLimitsDispatcher = new TimeLimitsManager.TimeLimitsDispatcher(timeLimitsManager);
 
     brightnessManager = new BrightnessManager.BrightnessManager();
+    brightnessDBus = new ShellDBus.BrightnessDBus(brightnessManager);
 
     global.connect('shutdown', () => {
         // Block shutdown until the session history file has been written
