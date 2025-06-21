@@ -4,7 +4,7 @@ org.gnome.Weather.desktop
 org.gnome.clocks.desktop
 org.gnome.Maps.desktop
 org.gnome.Music.desktop
-simple-scan.desktop
+org.gnome.SimpleScan.desktop
 org.gnome.Settings.desktop
 org.gnome.Boxes.desktop
 org.gnome.Totem.desktop
