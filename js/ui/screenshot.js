@@ -2436,7 +2436,6 @@ export class ScreenshotService {
             'org.gnome.SettingsDaemon.MediaKeys',
             'org.freedesktop.impl.portal.desktop.gtk',
             'org.freedesktop.impl.portal.desktop.gnome',
-            'org.gnome.Screenshot',
         ]);
 
         this._lockdownSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.lockdown'});
