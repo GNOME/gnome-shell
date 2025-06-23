@@ -14,4 +14,4 @@ Utilities # folder
 System # folder
 org.gnome.Console.desktop
 org.gnome.Tour.desktop
-yelp.desktop
+org.gnome.Yelp.desktop
