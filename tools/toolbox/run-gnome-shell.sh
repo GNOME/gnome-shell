@@ -64,6 +64,13 @@ TOOLBOX=$DEFAULT_TOOLBOX
 SHELL_ENV=(XDG_CURRENT_DESKTOP=GNOME)
 SHELL_ARGS=()
 
+# Some host OSes (like NixOS) have a weird $XDG_DATA_DIRS environment variable
+# that breaks GSettings schemas. Make sure it is set to something sensible.
+if [[ ! :$XDG_DATA_DIRS: =~ :/usr/share/?: ]]
+then
+  SHELL_ENV+=(XDG_DATA_DIRS=$XDG_DATA_DIRS:/usr/share/)
+fi
+
 TEMP=$(getopt \
  --name $(basename $0) \
  --options '20t:vh' \
