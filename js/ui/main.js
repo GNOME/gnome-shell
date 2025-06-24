@@ -816,7 +816,6 @@ export function popModal(grab) {
     if (modalCount > 0)
         return;
 
-    layoutManager.modalEnded();
     global.compositor.enable_unredirect();
     actionMode = Shell.ActionMode.NORMAL;
 }

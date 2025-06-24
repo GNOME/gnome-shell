@@ -646,42 +646,6 @@ finish_screenshot (ShellScreenshot  *screenshot,
   return TRUE;
 }
 
-static void
-on_after_paint (ClutterStage     *stage,
-                ClutterStageView *view,
-                ClutterFrame     *frame,
-                GTask            *result)
-{
-  ShellScreenshot *screenshot = g_task_get_task_data (result);
-  MetaDisplay *display = shell_global_get_display (screenshot->global);
-  MetaCompositor *compositor = meta_display_get_compositor (display);
-  GTask *task;
-
-  g_signal_handlers_disconnect_by_func (stage, on_after_paint, result);
-
-  if (screenshot->mode == SHELL_SCREENSHOT_AREA)
-    {
-      do_grab_screenshot (screenshot,
-                          screenshot->screenshot_area.x,
-                          screenshot->screenshot_area.y,
-                          screenshot->screenshot_area.width,
-                          screenshot->screenshot_area.height,
-                          screenshot->flags);
-
-      task = g_task_new (screenshot, NULL, on_screenshot_written, result);
-      g_task_run_in_thread (task, write_screenshot_thread);
-    }
-  else
-    {
-      grab_screenshot (screenshot, screenshot->flags, result);
-    }
-
-  g_signal_emit (screenshot, signals[SCREENSHOT_TAKEN], 0,
-                 (MtkRectangle *) &screenshot->screenshot_area);
-
-  meta_compositor_enable_unredirect (compositor);
-}
-
 /**
  * shell_screenshot_screenshot:
  * @screenshot: the #ShellScreenshot
@@ -731,26 +695,10 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
   if (include_cursor)
     flags |= SHELL_SCREENSHOT_FLAG_INCLUDE_CURSOR;
 
-  if (meta_is_wayland_compositor ())
-    {
-      grab_screenshot (screenshot, flags, result);
+  grab_screenshot (screenshot, flags, result);
 
-      g_signal_emit (screenshot, signals[SCREENSHOT_TAKEN], 0,
-                     (MtkRectangle *) &screenshot->screenshot_area);
-    }
-  else
-    {
-      MetaDisplay *display = shell_global_get_display (screenshot->global);
-      ClutterStage *stage = shell_global_get_stage (screenshot->global);
-      MetaCompositor *compositor = meta_display_get_compositor (display);
-
-      meta_compositor_disable_unredirect (compositor);
-      clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-      screenshot->flags = flags;
-      screenshot->mode = SHELL_SCREENSHOT_SCREEN;
-      g_signal_connect (stage, "after-paint",
-                        G_CALLBACK (on_after_paint), result);
-    }
+  g_signal_emit (screenshot, signals[SCREENSHOT_TAKEN], 0,
+                  (MtkRectangle *) &screenshot->screenshot_area);
 }
 
 /**
@@ -780,25 +728,6 @@ shell_screenshot_screenshot_finish (ShellScreenshot  *screenshot,
   return finish_screenshot (screenshot, result, area, error);
 }
 
-static void
-screenshot_stage_to_content_on_after_paint (ClutterStage     *stage,
-                                            ClutterStageView *view,
-                                            ClutterFrame     *frame,
-                                            GTask            *result)
-{
-  ShellScreenshot *screenshot = g_task_get_task_data (result);
-  MetaDisplay *display = shell_global_get_display (screenshot->global);
-  MetaCompositor *compositor = meta_display_get_compositor (display);
-
-  g_signal_handlers_disconnect_by_func (stage,
-                                        screenshot_stage_to_content_on_after_paint,
-                                        result);
-
-  meta_compositor_enable_unredirect (compositor);
-
-  grab_screenshot_content (screenshot, result);
-}
-
 /**
  * shell_screenshot_screenshot_stage_to_content:
  * @screenshot: the #ShellScreenshot
@@ -822,22 +751,7 @@ shell_screenshot_screenshot_stage_to_content (ShellScreenshot     *screenshot,
   g_task_set_source_tag (result, shell_screenshot_screenshot_stage_to_content);
   g_task_set_task_data (result, screenshot, NULL);
 
-  if (meta_is_wayland_compositor ())
-    {
-      grab_screenshot_content (screenshot, result);
-    }
-  else
-    {
-      MetaDisplay *display = shell_global_get_display (screenshot->global);
-      MetaCompositor *compositor = meta_display_get_compositor (display);
-      ClutterStage *stage = shell_global_get_stage (screenshot->global);
-
-      meta_compositor_disable_unredirect (compositor);
-      clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-      g_signal_connect (stage, "after-paint",
-                        G_CALLBACK (screenshot_stage_to_content_on_after_paint),
-                        result);
-    }
+  grab_screenshot_content (screenshot, result);
 }
 
 /**
@@ -950,35 +864,18 @@ shell_screenshot_screenshot_area (ShellScreenshot     *screenshot,
   screenshot->screenshot_area.width = width;
   screenshot->screenshot_area.height = height;
 
+  do_grab_screenshot (screenshot,
+                      screenshot->screenshot_area.x,
+                      screenshot->screenshot_area.y,
+                      screenshot->screenshot_area.width,
+                      screenshot->screenshot_area.height,
+                      SHELL_SCREENSHOT_FLAG_NONE);
 
-  if (meta_is_wayland_compositor ())
-    {
-      do_grab_screenshot (screenshot,
-                          screenshot->screenshot_area.x,
-                          screenshot->screenshot_area.y,
-                          screenshot->screenshot_area.width,
-                          screenshot->screenshot_area.height,
-                          SHELL_SCREENSHOT_FLAG_NONE);
+  g_signal_emit (screenshot, signals[SCREENSHOT_TAKEN], 0,
+                  (MtkRectangle *) &screenshot->screenshot_area);
 
-      g_signal_emit (screenshot, signals[SCREENSHOT_TAKEN], 0,
-                     (MtkRectangle *) &screenshot->screenshot_area);
-
-      task = g_task_new (screenshot, NULL, on_screenshot_written, result);
-      g_task_run_in_thread (task, write_screenshot_thread);
-    }
-  else
-    {
-      MetaDisplay *display = shell_global_get_display (screenshot->global);
-      MetaCompositor *compositor = meta_display_get_compositor (display);
-      ClutterStage *stage = shell_global_get_stage (screenshot->global);
-
-      meta_compositor_disable_unredirect (compositor);
-      clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-      screenshot->flags = SHELL_SCREENSHOT_FLAG_NONE;
-      screenshot->mode = SHELL_SCREENSHOT_AREA;
-      g_signal_connect (stage, "after-paint",
-                        G_CALLBACK (on_after_paint), result);
-    }
+  task = g_task_new (screenshot, NULL, on_screenshot_written, result);
+  g_task_run_in_thread (task, write_screenshot_thread);
 }
 
 /**

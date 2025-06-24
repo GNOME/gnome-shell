@@ -82,7 +82,7 @@ shell_dbus_acquire_name (GDBusProxy  *bus,
 }
 
 static void
-shell_dbus_init (gboolean replace)
+shell_dbus_init (void)
 {
   GDBusConnection *session;
   GDBusProxy *bus;
@@ -113,8 +113,6 @@ shell_dbus_init (gboolean replace)
     }
 
   request_name_flags = G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
-  if (replace)
-    request_name_flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
 
   shell_dbus_acquire_name (bus,
                            request_name_flags,
@@ -665,7 +663,7 @@ main (int argc, char **argv)
 
   shell_init_debug (g_getenv ("SHELL_DEBUG"));
 
-  shell_dbus_init (meta_context_is_replacing (context));
+  shell_dbus_init ();
   shell_a11y_init ();
   shell_perf_log_init ();
   shell_introspection_init ();
@@ -674,8 +672,7 @@ main (int argc, char **argv)
 
   shell_profiler_init ();
 
-  if (meta_context_get_compositor_type (context) == META_COMPOSITOR_TYPE_WAYLAND)
-    meta_context_raise_rlimit_nofile (context, NULL);
+  meta_context_raise_rlimit_nofile (context, NULL);
 
   if (!meta_context_start (context, &error))
     {

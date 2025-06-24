@@ -328,9 +328,6 @@ export const LayoutManager = GObject.registerClass({
             this._updateHotCorners.bind(this));
 
         // Need to update struts on new workspaces when they are added
-        let workspaceManager = global.workspace_manager;
-        workspaceManager.connect('notify::n-workspaces',
-            this._queueUpdateRegions.bind(this));
 
         let display = global.display;
         display.connect('restacked',
@@ -377,7 +374,6 @@ export const LayoutManager = GObject.registerClass({
 
     _sessionUpdated() {
         this._updateVisibility();
-        this._queueUpdateRegions();
     }
 
     _updateMonitors() {
@@ -606,7 +602,6 @@ export const LayoutManager = GObject.registerClass({
         this._updateBackgrounds();
         this._updateFullscreen();
         this._updateVisibility();
-        this._queueUpdateRegions();
 
         this.emit('monitors-changed');
     }
@@ -724,15 +719,7 @@ export const LayoutManager = GObject.registerClass({
         });
         this.addChrome(this._coverPane);
 
-        // Force an update of the regions before we scale the UI group to
-        // get the correct allocation for the struts.
-        // Do this even when we don't animate on restart, so that maximized
-        // windows restore to the right size.
-        this._updateRegions();
-
-        if (Meta.is_restart()) {
-            // On restart, we don't do an animation.
-        } else if (Main.sessionMode.isGreeter) {
+        if (Main.sessionMode.isGreeter) {
             this.panelBox.translation_y = -this.panelBox.height;
         } else {
             this.keyboardBox.hide();
@@ -769,9 +756,6 @@ export const LayoutManager = GObject.registerClass({
     }
 
     async _startupAnimation() {
-        if (Meta.is_restart())
-            return;
-
         if (Main.sessionMode.isGreeter)
             await this._startupAnimationGreeter();
         else
@@ -821,8 +805,6 @@ export const LayoutManager = GObject.registerClass({
             this._showSecondaryBackgrounds();
             global.window_group.remove_clip();
         }
-
-        this._queueUpdateRegions();
 
         this.emit('startup-complete');
     }
@@ -942,15 +924,12 @@ export const LayoutManager = GObject.registerClass({
         let actorData = Params.parse(params, defaultParams);
         actorData.actor = actor;
         actor.connectObject(
-            'notify::visible', this._queueUpdateRegions.bind(this),
-            'notify::allocation', this._queueUpdateRegions.bind(this),
             'destroy', this._untrackActor.bind(this), this);
         // Note that destroying actor will unset its parent, so we don't
         // need to connect to 'destroy' too.
 
         this._trackedActors.push(actorData);
         this._updateActorVisibility(actorData);
-        this._queueUpdateRegions();
     }
 
     _untrackActor(actor) {
@@ -961,8 +940,6 @@ export const LayoutManager = GObject.registerClass({
 
         this._trackedActors.splice(i, 1);
         actor.disconnectObject(this);
-
-        this._queueUpdateRegions();
     }
 
     _updateActorVisibility(actorData) {
@@ -1008,17 +985,8 @@ export const LayoutManager = GObject.registerClass({
         return null;
     }
 
-    _queueUpdateRegions() {
-        if (!this._updateRegionIdle) {
-            const laters = global.compositor.get_laters();
-            this._updateRegionIdle = laters.add(
-                Meta.LaterType.BEFORE_REDRAW, this._updateRegions.bind(this));
-        }
-    }
-
     _updateFullscreen() {
         this._updateVisibility();
-        this._queueUpdateRegions();
     }
 
     _windowsRestacked() {
@@ -1027,114 +995,8 @@ export const LayoutManager = GObject.registerClass({
         if (this._isPopupWindowVisible !== global.top_window_group.get_children().some(isPopupMetaWindow))
             changed = true;
 
-        if (changed) {
+        if (changed)
             this._updateVisibility();
-            this._queueUpdateRegions();
-        }
-    }
-
-    _updateRegions() {
-        if (this._updateRegionIdle) {
-            const laters = global.compositor.get_laters();
-            laters.remove(this._updateRegionIdle);
-            delete this._updateRegionIdle;
-        }
-
-        let rects = [], struts = [], i;
-        let isPopupMenuVisible = global.top_window_group.get_children().some(isPopupMetaWindow);
-        const wantsInputRegion =
-            !this._startingUp &&
-            !isPopupMenuVisible &&
-            Main.modalCount === 0 &&
-            !Meta.is_wayland_compositor();
-
-        for (i = 0; i < this._trackedActors.length; i++) {
-            let actorData = this._trackedActors[i];
-            if (!(actorData.affectsInputRegion && wantsInputRegion) && !actorData.affectsStruts)
-                continue;
-
-            let [x, y] = actorData.actor.get_transformed_position();
-            let [w, h] = actorData.actor.get_transformed_size();
-            x = Math.round(x);
-            y = Math.round(y);
-            w = Math.round(w);
-            h = Math.round(h);
-
-            if (actorData.affectsInputRegion && wantsInputRegion && actorData.actor.get_paint_visibility())
-                rects.push(new Mtk.Rectangle({x, y, width: w, height: h}));
-
-            let monitor = null;
-            if (actorData.affectsStruts)
-                monitor = this.findMonitorForActor(actorData.actor);
-
-            if (monitor) {
-                // Limit struts to the size of the screen
-                let x1 = Math.max(x, 0);
-                let x2 = Math.min(x + w, global.screen_width);
-                let y1 = Math.max(y, 0);
-                let y2 = Math.min(y + h, global.screen_height);
-
-                // Metacity wants to know what side of the monitor the
-                // strut is considered to be attached to. First, we find
-                // the monitor that contains the strut. If the actor is
-                // only touching one edge, or is touching the entire
-                // border of that monitor, then it's obvious which side
-                // to call it. If it's in a corner, we pick a side
-                // arbitrarily. If it doesn't touch any edges, or it
-                // spans the width/height across the middle of the
-                // screen, then we don't create a strut for it at all.
-
-                let side;
-                if (x1 <= monitor.x && x2 >= monitor.x + monitor.width) {
-                    if (y1 <= monitor.y)
-                        side = Meta.Side.TOP;
-                    else if (y2 >= monitor.y + monitor.height)
-                        side = Meta.Side.BOTTOM;
-                    else
-                        continue;
-                } else if (y1 <= monitor.y && y2 >= monitor.y + monitor.height) {
-                    if (x1 <= monitor.x)
-                        side = Meta.Side.LEFT;
-                    else if (x2 >= monitor.x + monitor.width)
-                        side = Meta.Side.RIGHT;
-                    else
-                        continue;
-                } else if (x1 <= monitor.x) {
-                    side = Meta.Side.LEFT;
-                } else if (y1 <= monitor.y) {
-                    side = Meta.Side.TOP;
-                } else if (x2 >= monitor.x + monitor.width) {
-                    side = Meta.Side.RIGHT;
-                } else if (y2 >= monitor.y + monitor.height) {
-                    side = Meta.Side.BOTTOM;
-                } else {
-                    continue;
-                }
-
-                const strutRect = new Mtk.Rectangle({x: x1, y: y1, width: x2 - x1, height: y2 - y1});
-                let strut = new Meta.Strut({rect: strutRect, side});
-                struts.push(strut);
-            }
-        }
-
-        if (wantsInputRegion)
-            global.set_stage_input_region(rects);
-
-        this._isPopupWindowVisible = isPopupMenuVisible;
-
-        let workspaceManager = global.workspace_manager;
-        for (let w = 0; w < workspaceManager.n_workspaces; w++) {
-            let workspace = workspaceManager.get_workspace_by_index(w);
-            workspace.set_builtin_struts(struts);
-        }
-
-        return GLib.SOURCE_REMOVE;
-    }
-
-    modalEnded() {
-        // We don't update the stage input region while in a modal,
-        // so queue an update now.
-        this._queueUpdateRegions();
     }
 });
 
