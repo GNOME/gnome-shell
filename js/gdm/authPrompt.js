@@ -1,5 +1,6 @@
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
+import Atk from 'gi://Atk';
 import GObject from 'gi://GObject';
 import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
@@ -569,6 +570,7 @@ export const AuthPrompt = GObject.registerClass({
             this._message.remove_all_transitions();
             this._message.text = message;
             this._message.opacity = 255;
+            this.get_accessible().emit('notification', message, Atk.Live.ASSERTIVE);
         } else {
             this._message.opacity = 0;
         }
