@@ -123,7 +123,7 @@ out:
       else
         msg = "Invalid token";
 
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, msg);
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "%s", msg);
 
       return NULL;
     }
@@ -291,7 +291,7 @@ session_get_login_token (SoupSession  *session,
       const char *detail = response_get_detail (response);
 
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   detail ? detail : soup_status_get_phrase (status));
+                   "%s", detail ? detail : soup_status_get_phrase (status));
       return NULL;
     }
 
@@ -354,7 +354,7 @@ session_upload_file (SoupSession  *session,
       const char *detail = response_get_detail (response);
 
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   detail ? detail : soup_status_get_phrase (status));
+                   "%s", detail ? detail : soup_status_get_phrase (status));
       return FALSE;
     }
 
