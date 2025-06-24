@@ -132,6 +132,7 @@ class EventsSection extends St.Button {
             style_class: 'events-title',
         });
         this.child.add_child(this._title);
+        this.labelActor = this._title;
 
         this._eventsList = new St.BoxLayout({
             style_class: 'events-list',
@@ -567,6 +568,7 @@ class WeatherSection extends St.Button {
         });
         titleBox.add_child(this._titleLabel);
         box.add_child(titleBox);
+        this.labelActor = this._titleLabel;
 
         this._titleLocation = new St.Label({
             style_class: 'weather-header location',
