@@ -47,6 +47,7 @@
 
   .message-list-clear-button {
     border-radius: $forced_circular_radius;
+    margin-bottom: 3px; /* eyeballing the concentricity of the popover and clear buttons */
   }
 }
 
