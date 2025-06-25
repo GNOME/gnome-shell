@@ -369,11 +369,21 @@ export class ScreenShield extends Signals.EventEmitter {
     }
 
     _showPointer() {
-        this._cursorTracker.set_pointer_visible(true);
+        if (this._cursorVisibleInhibited) {
+            this._cursorTracker.uninhibit_cursor_visibility();
+            this._cursorVisibleInhibited = false;
+        }
 
         if (this._motionId) {
             global.stage.disconnect(this._motionId);
             this._motionId = 0;
+        }
+    }
+
+    _hidePointer() {
+        if (!this._cursorVisibleInhibited) {
+            this._cursorTracker.inhibit_cursor_visibility();
+            this._cursorVisibleInhibited = true;
         }
     }
 
@@ -384,7 +394,7 @@ export class ScreenShield extends Signals.EventEmitter {
 
             return Clutter.EVENT_PROPAGATE;
         });
-        this._cursorTracker.set_pointer_visible(false);
+        this._hidePointer();
     }
 
     _hideLockScreen(animate) {

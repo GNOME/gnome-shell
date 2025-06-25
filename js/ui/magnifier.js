@@ -137,11 +137,9 @@ export class Magnifier extends Signals.EventEmitter {
             this._cursorUnfocusInhibited = false;
         }
 
-        if (this._cursorVisibilityChangedId) {
-            this._cursorTracker.disconnect(this._cursorVisibilityChangedId);
-            delete this._cursorVisibilityChangedId;
-
-            this._cursorTracker.set_pointer_visible(true);
+        if (this._cursorVisibleInhibited) {
+            this._cursorTracker.uninhibit_cursor_visibility();
+            this._cursorVisibleInhibited = false;
         }
     }
 
@@ -155,12 +153,9 @@ export class Magnifier extends Signals.EventEmitter {
             this._cursorUnfocusInhibited = true;
         }
 
-        if (!this._cursorVisibilityChangedId) {
-            this._cursorTracker.set_pointer_visible(false);
-            this._cursorVisibilityChangedId = this._cursorTracker.connect('visibility-changed', () => {
-                if (this._cursorTracker.get_pointer_visible())
-                    this._cursorTracker.set_pointer_visible(false);
-            });
+        if (!this._cursorVisibleInhibited) {
+            this._cursorTracker.inhibit_cursor_visibility();
+            this._cursorVisibleInhibited = true;
         }
     }
 
