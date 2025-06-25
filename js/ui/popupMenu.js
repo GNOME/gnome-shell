@@ -308,6 +308,7 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
         this.label = new St.Label({text: text || ''});
         this.add_child(this.label);
         this.label_actor = this.label;
+        this.accessible_role = Atk.Role.SEPARATOR;
 
         this.label.connect('notify::text',
             this._syncVisibility.bind(this));
