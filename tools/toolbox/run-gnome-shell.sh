@@ -162,11 +162,9 @@ while true; do
   esac
 done
 
-FORCE_DISPLAY=1
 if should_run_nested; then
   if has_devkit; then
     SHELL_ARGS+=( --devkit )
-    FORCE_DISPLAY=0
   elif has_nested; then
     SHELL_ARGS+=( --nested )
   else
@@ -174,12 +172,6 @@ if should_run_nested; then
   fi
 else
   SHELL_ARGS+=( --wayland )
-fi
-
-if [ $FORCE_DISPLAY -gt 0 ]; then
-  display=toolbox-wayland-$RANDOM
-  SHELL_ENV+=(WAYLAND_DISPLAY=$display)
-  SHELL_ARGS+=(--wayland-display=$display)
 fi
 
 toolbox --container $TOOLBOX run \
