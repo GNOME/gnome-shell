@@ -31,6 +31,11 @@ const PROFILE_PARAMS = {
     },
 };
 
+const FALLBACK_PARAMS = {
+    name: C_('Power profile', 'Custom'),
+    iconName: 'gnome-power-manager-symbolic',
+};
+
 const LAST_PROFILE_KEY = 'last-selected-power-profile';
 
 const PowerProfilesToggle = GObject.registerClass(
@@ -82,6 +87,9 @@ class PowerProfilesToggle extends QuickMenuToggle {
             .map(p => p.Profile.unpack())
             .reverse();
         for (const profile of profiles) {
+            if (!PROFILE_PARAMS[profile])
+                continue;
+
             const {name, iconName} = PROFILE_PARAMS[profile];
             if (!name)
                 continue;
@@ -110,7 +118,7 @@ class PowerProfilesToggle extends QuickMenuToggle {
                 : PopupMenu.Ornament.NONE);
         }
 
-        const {name: subtitle, iconName} = PROFILE_PARAMS[activeProfile];
+        const {name: subtitle, iconName} = PROFILE_PARAMS[activeProfile] ?? FALLBACK_PARAMS;
         this.set({subtitle, iconName});
 
         this.checked = activeProfile !== 'balanced';
