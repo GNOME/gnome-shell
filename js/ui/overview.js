@@ -358,6 +358,9 @@ export class Overview extends Signals.EventEmitter {
     }
 
     _gestureUpdate(tracker, progress) {
+        if (progress === 0)
+            return;
+
         if (!this._shown) {
             this._shown = true;
             this._visible = true;
