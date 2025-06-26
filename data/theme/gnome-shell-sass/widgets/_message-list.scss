@@ -34,6 +34,8 @@
 
   .message {
     margin-bottom: $base_padding * 2 !important;
+    // manually adjust radius to account for popover corners
+    border-radius: $modal_radius + 2px;
   }
 }
 
