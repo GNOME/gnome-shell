@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-03-03 17:44+0000\n"
-"PO-Revision-Date: 2025-03-03 21:05+0300\n"
+"POT-Creation-Date: 2025-06-25 14:00+0000\n"
+"PO-Revision-Date: 2025-06-26 13:10+0300\n"
 "Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: RU\n"
 "Language: ru\n"
@@ -31,7 +31,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
 # Запуск приложений, как другой вариант
 #: data/50-gnome-shell-launchers.xml:6
@@ -111,7 +111,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Открыть новое окно закрепленного приложения 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2272
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2275
 msgid "Screenshots"
 msgstr "Снимки экрана"
 
@@ -193,8 +193,8 @@ msgid ""
 msgstr ""
 "У расширений GNOME Shell есть свойство UUID; в этом ключе перечислены "
 "расширения, которые должны быть загружены. Этим списком также можно "
-"управлять через методы DBus EnableExtension и DisableExtension сервиса org."
-"gnome.Shell."
+"управлять через методы DBus EnableExtension и DisableExtension сервиса "
+"org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "UUIDs of extensions to force disabling"
@@ -596,7 +596,7 @@ msgstr "Домашняя страница"
 msgid "Visit extension homepage"
 msgstr "Посетить домашнюю страницу расширения"
 
-#: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
+#: js/gdm/authPrompt.js:156 js/gdm/loginDialog.js:468
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -604,11 +604,12 @@ msgstr "Посетить домашнюю страницу расширения"
 msgid "Cancel"
 msgstr "Отменить"
 
-#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
+#: js/gdm/authPrompt.js:324 js/ui/components/networkAgent.js:214
 #: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
 #: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
 #: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
 #: js/ui/shellMountOperation.js:332
+#: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
 msgstr "Пароль"
 
@@ -684,25 +685,26 @@ msgstr "Нет в списке?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1071
+#: js/gdm/loginDialog.js:1075
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(например, пользователь или %s)"
 
-#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1080 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
+#: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: js/gdm/loginDialog.js:1142
+#: js/gdm/loginDialog.js:1146
 msgid "Login Attempt Timed Out"
 msgstr "Попытка входа в систему не удалась"
 
-#: js/gdm/loginDialog.js:1143
+#: js/gdm/loginDialog.js:1147
 msgid "Login took too long, please try again"
 msgstr "Вход в систему занял слишком много времени, попробуйте еще раз"
 
-#: js/gdm/loginDialog.js:1492
+#: js/gdm/loginDialog.js:1496
 msgid "Login Window"
 msgstr "Окно входа в систему"
 
@@ -722,11 +724,11 @@ msgstr "(или проведите пальцем по считывающему 
 msgid "(or place finger on reader)"
 msgstr "(или поместите палец на считывающее устройство)"
 
-#: js/misc/breakManager.js:764
+#: js/misc/breakManager.js:770
 msgid "Break complete sound"
 msgstr "Звук завершения перерыва"
 
-#: js/misc/breakManager.js:956
+#: js/misc/breakManager.js:980
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
@@ -734,7 +736,7 @@ msgstr[0] "%d секунду"
 msgstr[1] "%d секунды"
 msgstr[2] "%d секунд"
 
-#: js/misc/breakManager.js:962
+#: js/misc/breakManager.js:986
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
@@ -742,7 +744,7 @@ msgstr[0] "%d минуту"
 msgstr[1] "%d минуты"
 msgstr[2] "%d минут"
 
-#: js/misc/breakManager.js:968
+#: js/misc/breakManager.js:992
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -750,7 +752,7 @@ msgstr[0] "%d час"
 msgstr[1] "%d часа"
 msgstr[2] "%d часов"
 
-#: js/misc/breakManager.js:974
+#: js/misc/breakManager.js:998
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -759,7 +761,7 @@ msgstr[1] "%d дня"
 msgstr[2] "%d дней"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1057
+#: js/misc/breakManager.js:1081
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
@@ -767,24 +769,24 @@ msgstr[0] "Через %s наступит время для перерыва"
 msgstr[1] "Через %s наступит время для перерыва"
 msgstr[2] "Через %s наступит время для перерыва"
 
-#: js/misc/breakManager.js:1065
+#: js/misc/breakManager.js:1089
 msgid "Movement Break Soon"
 msgstr "Скоро перерыв для подвижности"
 
-#: js/misc/breakManager.js:1068
+#: js/misc/breakManager.js:1092
 msgid "Eyesight Break Soon"
 msgstr "Скоро перерыв для зрения"
 
-#: js/misc/breakManager.js:1071
+#: js/misc/breakManager.js:1095
 msgid "Break Soon"
 msgstr "Скоро перерыв"
 
-#: js/misc/breakManager.js:1115
+#: js/misc/breakManager.js:1140
 msgid "Movement Break in Progress"
 msgstr "Идет перерыв для подвижности"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1118
+#: js/misc/breakManager.js:1143
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
@@ -792,12 +794,12 @@ msgstr[0] "Продолжайте двигаться %s"
 msgstr[1] "Продолжайте двигаться %s"
 msgstr[2] "Продолжайте двигаться %s"
 
-#: js/misc/breakManager.js:1124
+#: js/misc/breakManager.js:1149
 msgid "Eyesight Break in Progress"
 msgstr "Идет перерыв для зрения"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1127
+#: js/misc/breakManager.js:1152
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
@@ -805,12 +807,12 @@ msgstr[0] "Продолжайте не смотреть в экран %s"
 msgstr[1] "Продолжайте не смотреть в экран %s"
 msgstr[2] "Продолжайте не смотреть в экран %s"
 
-#: js/misc/breakManager.js:1133
+#: js/misc/breakManager.js:1158
 msgid "Break in Progress"
 msgstr "Идет перерыв"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1136
+#: js/misc/breakManager.js:1161
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
@@ -818,12 +820,12 @@ msgstr[0] "Продолжайте отдыхать %s"
 msgstr[1] "Продолжайте отдыхать %s"
 msgstr[2] "Продолжайте отдыхать %s"
 
-#: js/misc/breakManager.js:1175
+#: js/misc/breakManager.js:1200
 msgid "Time for a Movement Break"
 msgstr "Время перерыва для подвижности"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1178
+#: js/misc/breakManager.js:1203
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
@@ -831,12 +833,12 @@ msgstr[0] "Отдохните от устройства и подвигайте�
 msgstr[1] "Отдохните от устройства и подвигайтесь %s"
 msgstr[2] "Отдохните от устройства и подвигайтесь %s"
 
-#: js/misc/breakManager.js:1184
+#: js/misc/breakManager.js:1209
 msgid "Time for an Eyesight Break"
 msgstr "Время перерыва для зрения"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1187
+#: js/misc/breakManager.js:1212
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -852,12 +854,12 @@ msgstr[2] ""
 "Отдохните от экрана. Посмотрите на расстояние не менее 6 метров, по крайней "
 "мере, %s"
 
-#: js/misc/breakManager.js:1193
+#: js/misc/breakManager.js:1218
 msgid "Time for a Break"
 msgstr "Время перерыва"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1196
+#: js/misc/breakManager.js:1221
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -866,7 +868,7 @@ msgstr[1] "Пришло время сделать перерыв. Отвлеки
 msgstr[2] "Пришло время сделать перерыв. Отвлекитесь от устройства на %s!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1218
+#: js/misc/breakManager.js:1245
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
@@ -874,12 +876,11 @@ msgstr[0] "Вы должны были сделать перерыв %s наза�
 msgstr[1] "Вы должны были сделать перерыв %s назад"
 msgstr[2] "Вы должны были сделать перерыв %s назад"
 
-#: js/misc/breakManager.js:1224
+#: js/misc/breakManager.js:1251
 msgid "Break Overdue"
 msgstr "Перерыв просрочен"
 
-#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1238
+#: js/misc/breakManager.js:1267
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
@@ -887,25 +888,28 @@ msgstr[0] "До конца перерыва осталась %s"
 msgstr[1] "До конца перерыва осталось %s"
 msgstr[2] "До конца перерыва осталось %s"
 
-#: js/misc/breakManager.js:1244
+#: js/misc/breakManager.js:1273
 msgid "Break Interrupted"
 msgstr "Перерыв прерван"
 
-#: js/misc/breakManager.js:1315
+#. Translators: As in "Delay the break"
+#: js/misc/breakManager.js:1351
 msgid "Delay"
 msgstr "Отложить"
 
-#: js/misc/breakManager.js:1336 js/ui/welcomeDialog.js:61
+#. Translators: As in "Skip the break"
+#: js/misc/breakManager.js:1373 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Пропустить"
 
-#: js/misc/breakManager.js:1357
+#. Translators: As in "Take the break"
+#: js/misc/breakManager.js:1395
 msgid "Take"
 msgstr "Сделать"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1420
+#: js/misc/breakManager.js:1458
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -1005,11 +1009,11 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Заблокировать ориентацию экрана"
 
-#: js/misc/timeLimitsManager.js:338
+#: js/misc/timeLimitsManager.js:342
 msgid "GNOME needs to save screen time data"
 msgstr "GNOME необходимо сохранить данные экранного времени"
 
-#: js/misc/timeLimitsManager.js:1102
+#: js/misc/timeLimitsManager.js:1123
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
@@ -1017,15 +1021,15 @@ msgstr[0] "Ограничение экранного времени в %d мин
 msgstr[1] "Ограничение экранного времени в %d минуты"
 msgstr[2] "Ограничение экранного времени в %d минут"
 
-#: js/misc/timeLimitsManager.js:1109
+#: js/misc/timeLimitsManager.js:1130
 msgid "Your screen time limit is approaching"
 msgstr "Приближается ограничение вашего экранного времени"
 
-#: js/misc/timeLimitsManager.js:1123
+#: js/misc/timeLimitsManager.js:1144
 msgid "Screen Time Limit Reached"
 msgstr "Достигнуто ограничение экранного времени"
 
-#: js/misc/timeLimitsManager.js:1124
+#: js/misc/timeLimitsManager.js:1145
 msgid "It’s time to stop using the device"
 msgstr "Пора прекратить использование устройства"
 
@@ -1058,7 +1062,7 @@ msgstr[0] "%d час назад"
 msgstr[1] "%d часа назад"
 msgstr[2] "%d часов назад"
 
-#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:183
+#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:184
 msgid "Yesterday"
 msgstr "Вчера"
 
@@ -1096,76 +1100,75 @@ msgstr[2] "%d лет назад"
 
 #. Translators: Time in 24h format
 #: js/misc/dateUtils.js:155
-msgid "%H∶%M"
-msgstr "%H∶%M"
+msgid "%H:%M"
+msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
 #: js/misc/dateUtils.js:161
 #, no-c-format
-msgid "Yesterday, %H∶%M"
-msgstr "Вчера, %H∶%M"
+msgid "Yesterday, %H:%M"
+msgstr "Вчера, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
 #: js/misc/dateUtils.js:167
 #, no-c-format
-msgid "%A, %H∶%M"
-msgstr "%A, %H∶%M"
+msgid "%A, %H:%M"
+msgstr "%A, %H:%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
 #: js/misc/dateUtils.js:173
 #, no-c-format
-msgid "%B %-d, %H∶%M"
-msgstr "%-d %B, %H∶%M"
+msgid "%B %-d, %H:%M"
+msgstr "%-d %B, %H:%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/dateUtils.js:179
 #, no-c-format
-msgid "%B %-d %Y, %H∶%M"
-msgstr "%-d %B %Y, %H∶%M"
+msgid "%B %-d %Y, %H:%M"
+msgstr "%-d %B %Y, %H:%M"
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
 #: js/misc/dateUtils.js:184
-msgid "%l∶%M %p"
-msgstr "%-l∶%M %p"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: js/misc/dateUtils.js:190
 #, no-c-format
-msgid "Yesterday, %l∶%M %p"
-msgstr "Вчера, %-l∶%M %p"
+msgid "Yesterday, %l:%M %p"
+msgstr "Вчера, %l:%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/dateUtils.js:196
 #, no-c-format
-msgid "%A, %l∶%M %p"
-msgstr "%A, %-l∶%M %p"
+msgid "%A, %l:%M %p"
+msgstr "%A, %l:%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/dateUtils.js:202
 #, no-c-format
-msgid "%B %-d, %l∶%M %p"
-msgstr "%-d %B, %l∶%M %p"
+msgid "%B %-d, %l:%M %p"
+msgstr "%-d %B, %l:%M %p"
 
-# fix даты
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/dateUtils.js:208
 #, no-c-format
-msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%-d %B %Y, %l∶%M %p"
+msgid "%B %-d %Y, %l:%M %p"
+msgstr "%-d %B %Y, %l:%M %p"
 
 #: js/portalHelper/main.js:98
 msgid "Your connection seems to be secure"
@@ -1198,17 +1201,17 @@ msgstr "Разрешить"
 msgid "Unnamed Folder"
 msgstr "Безымянная папка"
 
-#: js/ui/appFavorites.js:163
+#: js/ui/appFavorites.js:89
 #, javascript-format
 msgid "%s has been pinned to the dash."
 msgstr "Приложение \"%s\" было закреплено на панели приложений."
 
-#: js/ui/appFavorites.js:194
+#: js/ui/appFavorites.js:120
 #, javascript-format
 msgid "%s has been unpinned from the dash."
 msgstr "Приложение \"%s\" было откреплено от панели приложений."
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:309
+#: js/ui/appFavorites.js:134 js/ui/main.js:309
 msgid "Undo"
 msgstr "Отменить"
 
@@ -1567,29 +1570,29 @@ msgid "%A %B %e %Y"
 msgstr "%A, %-d %B %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:172
+#: js/ui/dateMenu.js:173
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-d %B %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:175
+#: js/ui/dateMenu.js:176
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%-d %B %Y"
 
-#: js/ui/dateMenu.js:181
+#: js/ui/dateMenu.js:182
 msgid "Today"
 msgstr "Сегодня"
 
-#: js/ui/dateMenu.js:185
+#: js/ui/dateMenu.js:186
 msgid "Tomorrow"
 msgstr "Завтра"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:216
+#: js/ui/dateMenu.js:217
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Весь день"
@@ -1597,39 +1600,39 @@ msgstr "Весь день"
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
 #.
-#: js/ui/dateMenu.js:238
+#: js/ui/dateMenu.js:239
 msgid "%m/%d"
 msgstr "%d/%m"
 
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:290
 msgid "No Events"
 msgstr "Событий нет"
 
-#: js/ui/dateMenu.js:411
+#: js/ui/dateMenu.js:412
 msgid "Add World Clocks…"
 msgstr "Добавить мировые часы…"
 
-#: js/ui/dateMenu.js:412
+#: js/ui/dateMenu.js:413
 msgid "World Clocks"
 msgstr "Мировые часы"
 
-#: js/ui/dateMenu.js:702
+#: js/ui/dateMenu.js:704
 msgid "Loading…"
 msgstr "Загрузка…"
 
-#: js/ui/dateMenu.js:712
+#: js/ui/dateMenu.js:714
 msgid "Go Online for Weather Information"
 msgstr "Подключите интернет для получения информации о погоде"
 
-#: js/ui/dateMenu.js:714
+#: js/ui/dateMenu.js:716
 msgid "Weather Information Unavailable"
 msgstr "Информация о погоде недоступна"
 
-#: js/ui/dateMenu.js:724
+#: js/ui/dateMenu.js:726
 msgid "Weather"
 msgstr "Погода"
 
-#: js/ui/dateMenu.js:726
+#: js/ui/dateMenu.js:728
 msgid "Select Weather Location…"
 msgstr "Выберите ваше местоположение…"
 
@@ -1964,11 +1967,11 @@ msgstr "Система была переведена в небезопасный
 msgid "Apps now have unrestricted access"
 msgstr "Приложения теперь имеют неограниченный доступ"
 
-#: js/ui/main.js:366
+#: js/ui/main.js:367
 msgid "Logged in as a privileged user"
 msgstr "Авторизован как привилегированный пользователь"
 
-#: js/ui/main.js:367
+#: js/ui/main.js:368
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1977,11 +1980,11 @@ msgstr ""
 "привилегированного пользователя. Если это возможно, вам следует войти от "
 "имени обычного пользователя."
 
-#: js/ui/main.js:415
+#: js/ui/main.js:430
 msgid "Screen Lock disabled"
 msgstr "Блокировка экрана отключена"
 
-#: js/ui/main.js:416
+#: js/ui/main.js:431
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "Для блокировки экрана требуется дисплейный менеджер GNOME"
 
@@ -2045,23 +2048,23 @@ msgstr "Назначение клавиш"
 msgid "Done"
 msgstr "Готово"
 
-#: js/ui/padOsd.js:727
+#: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "Правка…"
 
-#: js/ui/padOsd.js:774
+#: js/ui/padOsd.js:791
 msgid "None"
 msgstr "Нет"
 
-#: js/ui/padOsd.js:845
+#: js/ui/padOsd.js:868
 msgid "Press a button to configure"
 msgstr "Нажмите кнопку для настройки"
 
-#: js/ui/padOsd.js:846
+#: js/ui/padOsd.js:869
 msgid "Press Esc to exit"
 msgstr "Нажмите Esc для выхода"
 
-#: js/ui/padOsd.js:849
+#: js/ui/padOsd.js:872
 msgid "Press any key to exit"
 msgstr "Нажмите любую клавишу для выхода"
 
@@ -2088,15 +2091,15 @@ msgstr "Открыть меню"
 msgid "Run a Command"
 msgstr "Выполнить команду"
 
-#: js/ui/runDialog.js:76
+#: js/ui/runDialog.js:79
 msgid "Press ESC to close"
 msgstr "Нажмите Esc чтобы закрыть"
 
-#: js/ui/runDialog.js:253
+#: js/ui/runDialog.js:256
 msgid "Restart is not available on Wayland"
 msgstr "Перезапуск не доступен при использовании Wayland"
 
-#: js/ui/runDialog.js:258
+#: js/ui/runDialog.js:261
 msgid "Restarting…"
 msgstr "Перезапуск…"
 
@@ -2104,11 +2107,11 @@ msgstr "Перезапуск…"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME необходимо заблокировать экран"
 
-#: js/ui/screenShield.js:274 js/ui/screenShield.js:667
+#: js/ui/screenShield.js:274 js/ui/screenShield.js:677
 msgid "Unable to lock"
 msgstr "Не удалось заблокировать"
 
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:668
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:678
 msgid "Lock was blocked by an app"
 msgstr "Блокировке помешало приложение"
 
@@ -2196,7 +2199,7 @@ msgid "Screencast ended unexpectedly"
 msgstr "Запись экрана неожиданно завершилась"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2327
+#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2330
 msgid "Screenshot"
 msgstr "Снимок экрана"
 
@@ -2207,28 +2210,28 @@ msgstr "Нажмите здесь, чтобы посмотреть видео."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2343
+#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2346
 msgid "Show in Files"
 msgstr "Показать в Файлах"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2285
+#: js/ui/screenshot.js:2288
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Снимок экрана от %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2333
+#: js/ui/screenshot.js:2336
 msgid "Screenshot captured"
 msgstr "Снимок экрана сделан"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2335
+#: js/ui/screenshot.js:2338
 msgid "You can paste the image from the clipboard."
 msgstr "Вы можете вставить изображение из буфера обмена."
 
-#: js/ui/screenshot.js:2391 js/ui/screenshot.js:2555
+#: js/ui/screenshot.js:2397 js/ui/screenshot.js:2561
 msgid "Screenshot taken"
 msgstr "Сделан снимок экрана"
 
@@ -2426,35 +2429,35 @@ msgid "Disconnect"
 msgstr "Отключить"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:265 js/ui/status/network.js:354
+#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:354
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Отключиться от \"%s\""
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:356
+#: js/ui/status/bluetooth.js:269 js/ui/status/network.js:356
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Подключиться к \"%s\""
 
-#: js/ui/status/bluetooth.js:274 js/ui/status/bluetooth.js:276
+#: js/ui/status/bluetooth.js:276 js/ui/status/bluetooth.js:278
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:299 js/ui/status/network.js:1909
+#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1919
 msgid "Bluetooth Settings"
 msgstr "Настройки Bluetooth"
 
-#: js/ui/status/bluetooth.js:346
+#: js/ui/status/bluetooth.js:348
 msgid "No available or connected devices"
 msgstr "Нет доступных или подключенных устройств"
 
-#: js/ui/status/bluetooth.js:347
+#: js/ui/status/bluetooth.js:349
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Включите Bluetooth для подключения к устройствам"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:411
+#: js/ui/status/bluetooth.js:413
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2462,7 +2465,7 @@ msgstr[0] "%d подключено"
 msgstr[1] "%d подключено"
 msgstr[2] "%d подключено"
 
-#: js/ui/status/brightness.js:32
+#: js/ui/status/brightness.js:12
 msgid "Brightness"
 msgstr "Яркость"
 
@@ -2547,7 +2550,7 @@ msgstr "%s, %s, %s"
 msgid "%s Hotspot"
 msgstr "Точка доступа \"%s\""
 
-#: js/ui/status/network.js:1435
+#: js/ui/status/network.js:1445
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
@@ -2555,61 +2558,61 @@ msgstr[0] "Подключено %d"
 msgstr[1] "Подключено %d"
 msgstr[2] "Подключено %d"
 
-#: js/ui/status/network.js:1533 js/ui/status/network.js:1549
+#: js/ui/status/network.js:1543 js/ui/status/network.js:1559
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1534
+#: js/ui/status/network.js:1544
 msgid "VPN Settings"
 msgstr "Настройки VPN"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1804
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1796
+#: js/ui/status/network.js:1806
 msgid "All Networks"
 msgstr "Все сети"
 
-#: js/ui/status/network.js:1893
+#: js/ui/status/network.js:1903
 msgid "Wired Connections"
 msgstr "Проводные подключения"
 
-#: js/ui/status/network.js:1894
+#: js/ui/status/network.js:1904
 msgid "Wired Settings"
 msgstr "Настройки подключения"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1918
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth модемы"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1915
+#: js/ui/status/network.js:1925
 msgid "Tether"
 msgstr "Модем"
 
-#: js/ui/status/network.js:1928
+#: js/ui/status/network.js:1938
 msgid "Mobile Connections"
 msgstr "Мобильные подключения"
 
-#: js/ui/status/network.js:1930
+#: js/ui/status/network.js:1940
 msgid "Mobile Broadband Settings"
 msgstr "Настройки мобильной связи"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1939
+#: js/ui/status/network.js:1949
 msgid "Mobile"
 msgstr "Мобильная"
 
-#: js/ui/status/network.js:1973
-msgid "Sign Into Wi–Fi Network"
-msgstr "Вход в сеть Wi-Fi"
+#: js/ui/status/network.js:1983
+msgid "Sign in to Network"
+msgstr "Вход в сеть"
 
-#: js/ui/status/network.js:2160
+#: js/ui/status/network.js:2170
 msgid "Connection failed"
 msgstr "Сбой подключения"
 
-#: js/ui/status/network.js:2161
+#: js/ui/status/network.js:2171
 msgid "Activation of network connection failed"
 msgstr "Не удалось активировать сетевое подключение"
 
@@ -2632,11 +2635,16 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Энергосберегающий"
 
-#: js/ui/status/powerProfiles.js:39 js/ui/status/powerProfiles.js:69
+#: js/ui/status/powerProfiles.js:35
+msgctxt "Power profile"
+msgid "Custom"
+msgstr "Пользовательский"
+
+#: js/ui/status/powerProfiles.js:44 js/ui/status/powerProfiles.js:74
 msgid "Power Mode"
 msgstr "Режим питания"
 
-#: js/ui/status/powerProfiles.js:71
+#: js/ui/status/powerProfiles.js:76
 msgid "Power Settings"
 msgstr "Настройки питания"
 
@@ -3160,11 +3168,11 @@ msgstr "Нет установленных расширений"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://"
+"extensions.gnome.org\">extensions.gnome.org</a>."
 msgstr ""
-"Чтобы найти и добавить расширения, посетите <a href=\"https://extensions."
-"gnome.org\">extensions.gnome.org</a>."
+"Чтобы найти и добавить расширения, посетите <a href=\"https://"
+"extensions.gnome.org\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
@@ -3236,12 +3244,12 @@ msgstr "Описание"
 #: subprojects/extensions-tool/src/command-create.c:416
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
+"This should be in the format of an email address "
+"(clicktofocus@janedoe.example.com)\n"
 msgstr ""
 "UUID — это глобально уникальный идентификатор для вашего расширения.\n"
-"Он должен быть в формате адреса электронной почты (clicktofocus@janedoe."
-"example.com)\n"
+"Он должен быть в формате адреса электронной почты "
+"(clicktofocus@janedoe.example.com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:443
 msgid "Choose one of the available templates:\n"
@@ -3427,6 +3435,7 @@ msgid "List installed extensions"
 msgstr "Показать установленные расширения"
 
 #: subprojects/extensions-tool/src/command-pack.c:444
+#: subprojects/extensions-tool/src/command-upload.c:427
 msgid "FILE"
 msgstr "ФАЙЛ"
 
@@ -3501,6 +3510,60 @@ msgstr "Не удалось удалить \"%s\"\n"
 #: subprojects/extensions-tool/src/command-uninstall.c:86
 msgid "Uninstall an extension"
 msgstr "Удалить расширение"
+
+#: subprojects/extensions-tool/src/command-upload.c:226
+msgid "Login to extensions.gnome.org\n"
+msgstr "Войти в extensions.gnome.org\n"
+
+#: subprojects/extensions-tool/src/command-upload.c:256
+msgid "Warning! Password will be echoed"
+msgstr "Внимание! Пароль будет выведен на экран"
+
+#: subprojects/extensions-tool/src/command-upload.c:419
+msgid "USERNAME"
+msgstr "ИМЯ ПОЛЬЗОВАТЕЛЯ"
+
+#: subprojects/extensions-tool/src/command-upload.c:421
+msgid "Username to log into https://extensions.gnome.org"
+msgstr "Имя пользователя для входа в https://extensions.gnome.org"
+
+#: subprojects/extensions-tool/src/command-upload.c:423
+msgid "PASSWORD"
+msgstr "ПАРОЛЬ"
+
+#: subprojects/extensions-tool/src/command-upload.c:425
+msgid "Password to log into https://extensions.gnome.org"
+msgstr "Пароль для входа в https://extensions.gnome.org"
+
+#: subprojects/extensions-tool/src/command-upload.c:429
+msgid ""
+"Read https://extensions.gnome.org password from file, use \"-\" for stdin"
+msgstr ""
+"Прочитать пароль для https://extensions.gnome.org из файла, используйте "
+"символ «-» для стандартного ввода"
+
+#: subprojects/extensions-tool/src/command-upload.c:432
+msgid "Accept the terms of service at https://extensions.gnome.org/upload/"
+msgstr ""
+"Принять условия предоставления услуг https://extensions.gnome.org/upload/"
+
+#: subprojects/extensions-tool/src/command-upload.c:443
+msgid "Upload new extension versions"
+msgstr "Выгрузить новые версии расширений"
+
+#: subprojects/extensions-tool/src/command-upload.c:461
+msgid "Only one of --password and --password-file can be used"
+msgstr ""
+"Можно использовать только один из параметров --password и --password-file"
+
+#: subprojects/extensions-tool/src/command-upload.c:467
+msgid "You must accept the terms of service to upload extensions"
+msgstr ""
+"Вы должны принять условия предоставления услуг, чтобы выгружать расширения"
+
+#: subprojects/extensions-tool/src/command-upload.c:473
+msgid "No files given"
+msgstr "Файлы не указаны"
 
 #: subprojects/extensions-tool/src/main.c:76
 msgid "Do not print error messages"
@@ -3669,6 +3732,9 @@ msgstr[2] "%u входов"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Системные звуки"
+
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
 
 #~ msgid "Could not parse command:"
 #~ msgstr "Не удалось разобрать команду:"
