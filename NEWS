@@ -1,3 +1,29 @@
+49.alpha.1
+==========
+* Add support for pad dials [Joshua; !3583]
+* Show workspace switcher OSD on all monitors [Oscar; !3734]
+* Add missing accessibility labels in various components
+  [Florian, Sergio; !3736, !3765, !3769, !3773, !3179]
+* Add "gnome-extensions upload" command [Florian; !3712]
+* Allow users to correct keyring password after failure [Alynx; !3757]
+* Handle unknown power-profiles in quick settings [Morgan; !3774]
+* Move do-not-disturb into quick settings [Florian, Jakub; !3691]
+* Add dedicated accessibility menu on login screen [Florian; !3744]
+* Misc. bug fixes and cleanups [Michael, Florian, Joan, Daniel v. V., Jordan,
+  Daniel R., Thomas, Sebastian, Sam, Carlos; !3717, !3745, !3747, !3749, !3743,
+  !3738, !3753, !3748, !3755, !3754, !3758, !3650, !3759, !3764, !3761, !3772,
+  !3775, !3776, !3777, !3706, !3756, !3760]
+
+Contributors:
+  Thomas Booker, Michael Catanzaro, Sergio Costas Rodriguez, Mike FABIAN,
+  Carlos Garnacho, Sam Hewitt, Joshua, Morgan, Florian Müllner,
+  Jordan Petridis, Daniel Rusek, Oscar Sommerer, Jakub Steiner,
+  Joan Torres López, Daniel van Vugt, Sebastian Wick, Alynx Zhou
+
+Translators:
+  Martin [sl], Emilio Sepúlveda [ia], Emin Tufan Çetin [tr],
+  Vasil Pupkin [be], Jordi Mas [ca], Artur S0 [ru]
+
 49.alpha.0
 ==========
 * Only enable surrounding-text IM capability when needed [Takao; !3666]
