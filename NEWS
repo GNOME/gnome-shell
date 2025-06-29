@@ -1,3 +1,21 @@
+48.3
+====
+* Check all modifiers for modifier-scroll [Florian; !3725]
+* Fix visibility of emoji key in on-screen-keyboard [Carlos; !3733]
+* Add missing accessibility labels in various components
+  [Florian, Sergio; !3736, !3765, !3769, !3773, !3179]
+* Allow users to correct keyring password after failure [Alynx; !3757]
+* Misc. bug fixes and cleanups [fossdd, Jordan, Florian, Joan, Mike, Daniel;
+  !3728, !3735, !3740, !3739, !3745, !3749, !3753, !3748, !3777, !3756]
+
+Contributors:
+  Sergio Costas Rodriguez, Mike FABIAN, fossdd, Carlos Garnacho,
+  Florian Müllner, Jordan Petridis, Joan Torres López, Daniel van Vugt,
+  Alynx Zhou
+
+Translators:
+  Fabio Tomat [fur], Takayuki Kusano [ja]
+
 48.2
 ====
 * Only enable surrounding-text IM capability when needed [Takao; !3666]
