@@ -370,25 +370,30 @@ export class ScreenShield extends Signals.EventEmitter {
 
     _showPointer() {
         if (this._cursorVisibleInhibited) {
+            const seat = global.stage.context.get_backend().get_default_seat();
             this._cursorTracker.uninhibit_cursor_visibility();
+            seat.uninhibit_unfocus();
             this._cursorVisibleInhibited = false;
         }
 
         if (this._motionId) {
-            global.stage.disconnect(this._motionId);
+            this._lockDialogGroup.disconnect(this._motionId);
             this._motionId = 0;
         }
     }
 
     _hidePointer() {
         if (!this._cursorVisibleInhibited) {
+            const seat = global.stage.context.get_backend().get_default_seat();
+            seat.inhibit_unfocus();
             this._cursorTracker.inhibit_cursor_visibility();
             this._cursorVisibleInhibited = true;
         }
     }
 
     _hidePointerUntilMotion() {
-        this._motionId = global.stage.connect('captured-event', (stage, event) => {
+        const eventActor = this._lockDialogGroup;
+        this._motionId = eventActor.connect('captured-event', (_, event) => {
             if (event.type() === Clutter.EventType.MOTION)
                 this._showPointer();
 
