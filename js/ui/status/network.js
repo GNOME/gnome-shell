@@ -500,7 +500,8 @@ const NMDeviceItem = GObject.registerClass({
     }
 
     _syncConnections() {
-        const available = this._device.get_available_connections();
+        const available = this._device.get_available_connections().filter(
+            c => c.get_id() != null);
         const removed = [...this._connectionItems.keys()]
             .filter(conn => !available.includes(conn));
 
