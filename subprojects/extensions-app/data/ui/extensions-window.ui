@@ -121,7 +121,7 @@
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="AdwBanner" id="updatesBanner">
-                        <property name="button-label" translatable="yes">Log Out…</property>
+                        <property name="button-label" translatable="yes">_Log Out…</property>
                         <property name="action-name">win.logout</property>
                       </object>
                     </child>
