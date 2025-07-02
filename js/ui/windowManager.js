@@ -887,7 +887,7 @@ export class WindowManager {
         global.display.connect('show-pad-osd', this._showPadOsd.bind(this));
         global.display.connect('show-osd', (display, monitorIndex, iconName, label) => {
             let icon = Gio.Icon.new_for_string(iconName);
-            Main.osdWindowManager.show(monitorIndex, icon, label, null);
+            Main.osdWindowManager.showOne(monitorIndex, icon, label);
         });
 
         global.display.connect('init-xserver', (display, task) => {

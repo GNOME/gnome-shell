@@ -135,17 +135,18 @@ export class GnomeShell {
             icon: serializedIcon,
         } = params;
 
-        let monitorIndex = -1;
-        if (connector) {
-            const monitorManager = global.backend.get_monitor_manager();
-            monitorIndex = monitorManager.get_monitor_for_connector(connector);
-        }
-
         let icon = null;
         if (serializedIcon)
             icon = Gio.Icon.new_for_string(serializedIcon);
 
-        Main.osdWindowManager.show(monitorIndex, icon, label, level, maxLevel);
+        if (connector) {
+            const monitorManager = global.backend.get_monitor_manager();
+            const monitorIndex =
+                monitorManager.get_monitor_for_connector(connector);
+            Main.osdWindowManager.showOne(monitorIndex, icon, label, level, maxLevel);
+        } else {
+            Main.osdWindowManager.showAll(icon, label, level, maxLevel);
+        }
         invocation.return_value(null);
     }
 

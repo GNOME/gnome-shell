@@ -171,18 +171,26 @@ export class OsdWindowManager {
         this._osdWindows[monitorIndex].show();
     }
 
-    show(monitorIndex, icon, label, level, maxLevel) {
-        if (monitorIndex !== -1) {
-            for (let i = 0; i < this._osdWindows.length; i++) {
-                if (i === monitorIndex)
-                    this._showOsdWindow(i, icon, label, level, maxLevel);
-                else
-                    this._osdWindows[i].cancel();
-            }
-        } else {
-            for (let i = 0; i < this._osdWindows.length; i++)
+    show(icon, label, levels) {
+        for (let i = 0; i < this._osdWindows.length; i++) {
+            if (levels[i]) {
+                const {level, maxLevel = -1} = levels[i];
                 this._showOsdWindow(i, icon, label, level, maxLevel);
+            } else {
+                this._osdWindows[i].cancel();
+            }
         }
+    }
+
+    showOne(monitorIndex, icon, label, level, maxLevel) {
+        this.show(icon, label, {
+            [monitorIndex]: {level, maxLevel},
+        });
+    }
+
+    showAll(icon, label, level, maxLevel) {
+        for (let i = 0; i < this._osdWindows.length; i++)
+            this._showOsdWindow(i, icon, label, level, maxLevel);
     }
 
     hideAll() {
