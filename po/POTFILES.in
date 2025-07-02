@@ -101,7 +101,7 @@ subprojects/extensions-app/js/extensionRow.js
 subprojects/extensions-app/js/extensionsWindow.js
 subprojects/extensions-app/data/ui/extension-row.ui
 subprojects/extensions-app/data/ui/extensions-window.ui
-subprojects/extensions-app/data/ui/help-overlay.ui
+subprojects/extensions-app/data/ui/shortcuts-dialog.ui
 subprojects/extensions-tool/src/command-create.c
 subprojects/extensions-tool/src/command-disable.c
 subprojects/extensions-tool/src/command-enable.c

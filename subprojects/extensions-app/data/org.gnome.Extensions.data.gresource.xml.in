@@ -8,7 +8,7 @@
     <file preprocess="xml-stripblanks">icons/scalable/actions/settings-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/website-symbolic.svg</file>
 
-    <file alias="gtk/help-overlay.ui">ui/help-overlay.ui</file>
+    <file alias="shortcuts-dialog.ui">ui/shortcuts-dialog.ui</file>
   </gresource>
 
   <gresource prefix="/org/gnome/Extensions">
