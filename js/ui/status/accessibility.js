@@ -153,7 +153,7 @@ class HighContrastToggle extends QuickToggle {
     constructor() {
         super({
             title: _('High Contrast'),
-            iconName: 'high-contrast-symbolic',
+            iconName: 'org.gnome.Settings-accessibility-high-contrast-symbolic',
             toggleMode: true,
         });
 
@@ -185,7 +185,7 @@ class LargeTextToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Large Text'),
-            iconName: 'font-x-generic-symbolic',
+            iconName: 'org.gnome.Settings-accessibility-large-text-symbolic',
             toggleMode: true,
         });
 
@@ -221,7 +221,7 @@ class ScreenReaderToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Screen Reader'),
-            iconName: 'audio-speakers-symbolic',
+            iconName: 'org.gnome.Settings-accessibility-screen-reader-symbolic',
             toggleMode: true,
         });
 
@@ -253,7 +253,7 @@ class VisualBellToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Visual Alerts'),
-            iconName: 'dialog-information-symbolic',
+            iconName: 'org.gnome.Settings-accessibility-visual-alerts-symbolic',
             toggleMode: true,
         });
 
@@ -269,7 +269,7 @@ class StickyKeysToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Sticky Keys'),
-            iconName: 'preferences-desktop-keyboard-shortcuts-symbolic',
+            iconName: 'org.gnome.Settings-accessibility-keyboard-keys-symbolic',
             toggleMode: true,
         });
 
@@ -285,7 +285,7 @@ class SlowKeysToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Slow Keys'),
-            iconName: 'preferences-desktop-keyboard-shortcuts-symbolic',
+            iconName: 'org.gnome.Settings-accessibility-keyboard-keys-symbolic',
             toggleMode: true,
         });
 
@@ -301,7 +301,7 @@ class BounceKeysToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Bounce Keys'),
-            iconName: 'preferences-desktop-keyboard-shortcuts-symbolic',
+            iconName: 'org.gnome.Settings-accessibility-keyboard-keys-symbolic',
             toggleMode: true,
         });
 
@@ -317,7 +317,7 @@ class MouseKeysToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Mouse Keys'),
-            iconName: 'preferences-desktop-keyboard-shortcuts-symbolic',
+            iconName: 'org.gnome.Settings-accessibility-mouse-keys-symbolic',
             toggleMode: true,
         });
 
