@@ -36,7 +36,7 @@ class ATIndicator extends PanelMenu.Button {
 
         this.add_child(new St.Icon({
             style_class: 'system-status-icon',
-            icon_name: 'org.gnome.Settings-accessibility-symbolic',
+            icon_name: 'accessibility-menu-symbolic',
         }));
 
         this._a11ySettings = new Gio.Settings({schema_id: A11Y_SCHEMA});
@@ -153,7 +153,7 @@ class HighContrastToggle extends QuickToggle {
     constructor() {
         super({
             title: _('High Contrast'),
-            iconName: 'high-contrast-symbolic',
+            iconName: 'accessibility-high-contrast-symbolic',
             toggleMode: true,
         });
 
@@ -169,7 +169,7 @@ class MagnifierToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Zoom'),
-            iconName: 'org.gnome.Settings-accessibility-zoom-symbolic',
+            iconName: 'accessibility-zoom-symbolic',
             toggleMode: true,
         });
 
@@ -185,7 +185,7 @@ class LargeTextToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Large Text'),
-            iconName: 'font-x-generic-symbolic',
+            iconName: 'accessibility-large-text-symbolic',
             toggleMode: true,
         });
 
@@ -221,7 +221,7 @@ class ScreenReaderToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Screen Reader'),
-            iconName: 'audio-speakers-symbolic',
+            iconName: 'accessibility-screen-reader-symbolic',
             toggleMode: true,
         });
 
@@ -237,7 +237,7 @@ class ScreenKeyboardToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Screen Keyboard'),
-            iconName: 'org.gnome.Settings-keyboard-symbolic',
+            iconName: 'input-keyboard-symbolic',
             toggleMode: true,
         });
 
@@ -253,7 +253,7 @@ class VisualBellToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Visual Alerts'),
-            iconName: 'dialog-information-symbolic',
+            iconName: 'accessibility-visual-alerts-symbolic',
             toggleMode: true,
         });
 
@@ -269,7 +269,7 @@ class StickyKeysToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Sticky Keys'),
-            iconName: 'preferences-desktop-keyboard-shortcuts-symbolic',
+            iconName: 'accessibility-keyboard-keys-symbolic',
             toggleMode: true,
         });
 
@@ -285,7 +285,7 @@ class SlowKeysToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Slow Keys'),
-            iconName: 'preferences-desktop-keyboard-shortcuts-symbolic',
+            iconName: 'accessibility-keyboard-keys-symbolic',
             toggleMode: true,
         });
 
@@ -301,7 +301,7 @@ class BounceKeysToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Bounce Keys'),
-            iconName: 'preferences-desktop-keyboard-shortcuts-symbolic',
+            iconName: 'accessibility-keyboard-keys-symbolic',
             toggleMode: true,
         });
 
@@ -317,7 +317,7 @@ class MouseKeysToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Mouse Keys'),
-            iconName: 'preferences-desktop-keyboard-shortcuts-symbolic',
+            iconName: 'accessibility-mouse-keys-symbolic',
             toggleMode: true,
         });
 
