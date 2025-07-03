@@ -35,6 +35,8 @@ $_gdm_dialog_width: 25em;
   &.login-dialog-session-list-button {
     @extend .icon-button;
     @extend %system_button;
+
+    padding: to_em(16px);
   }
 
   &.cancel-button {
