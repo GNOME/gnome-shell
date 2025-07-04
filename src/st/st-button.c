@@ -114,18 +114,11 @@ static void
 st_button_style_changed (StWidget *widget)
 {
   StButton *button = ST_BUTTON (widget);
-  StButtonClass *button_class = ST_BUTTON_GET_CLASS (button);
 
   ST_WIDGET_CLASS (st_button_parent_class)->style_changed (widget);
 
   /* update the label styling */
   st_button_update_label_style (button);
-
-  /* run a transition if applicable */
-  if (button_class->transition)
-    {
-      button_class->transition (button);
-    }
 }
 
 static void
