@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-07-03 18:22+0000\n"
-"PO-Revision-Date: 2025-07-05 21:45-0400\n"
+"POT-Creation-Date: 2025-07-06 01:49+0000\n"
+"PO-Revision-Date: 2025-07-07 06:57-0400\n"
 "Last-Translator: Emilio Sepúlveda <emism.translations@gmail.com>\n"
 "Language-Team: Interlingua <softinterlingua@gmail.com>\n"
 "Language: ia\n"
@@ -21,7 +21,7 @@ msgstr ""
 "X-DL-Module: gnome-shell\n"
 "X-DL-Branch: main\n"
 "X-DL-Domain: po\n"
-"X-DL-State: None\n"
+"X-DL-State: Translating\n"
 "X-Generator: Gtranslator 48.0\n"
 
 #: data/50-gnome-shell-launchers.xml:6
@@ -2573,12 +2573,12 @@ msgstr "Lumine de nocte"
 #: js/ui/status/powerProfiles.js:19
 msgctxt "Power profile"
 msgid "Performance"
-msgstr ""
+msgstr "Rendimento"
 
 #: js/ui/status/powerProfiles.js:24
 msgctxt "Power profile"
 msgid "Balanced"
-msgstr ""
+msgstr "Balanciate"
 
 #: js/ui/status/powerProfiles.js:29
 msgctxt "Power profile"
@@ -2712,14 +2712,14 @@ msgstr ""
 #.
 #: js/ui/switchMonitor.js:39
 msgid "External Only"
-msgstr ""
+msgstr "Solmente externe"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
 #.
 #: js/ui/switchMonitor.js:47
 msgid "Built-in Only"
-msgstr ""
+msgstr "Solmente incorporate"
 
 #. Translators: This is a time format for a date in
 #. long format
@@ -2829,19 +2829,19 @@ msgstr "Sempre sur le spatio de travalio visibile"
 
 #: js/ui/windowMenu.js:131
 msgid "Move to Workspace Left"
-msgstr ""
+msgstr "Displaciar al spatio de travalio al sinistra"
 
 #: js/ui/windowMenu.js:137
 msgid "Move to Workspace Right"
-msgstr ""
+msgstr "Displaciar al spatio de travalio al dextra"
 
 #: js/ui/windowMenu.js:143
 msgid "Move to Workspace Up"
-msgstr ""
+msgstr "Displaciar al spatio de travalio in alto"
 
 #: js/ui/windowMenu.js:149
 msgid "Move to Workspace Down"
-msgstr ""
+msgstr "Displaciar al spatio de travalio in basso"
 
 #: js/ui/windowMenu.js:167
 msgid "Move to Monitor Up"
@@ -2951,6 +2951,8 @@ msgid ""
 "The installed version of this extension (%s) is incompatible with the "
 "current version of GNOME (%s). The extension has been disabled."
 msgstr ""
+"Le version installate de iste extension (%s) es incompatibile con le version "
+"actual de GNOME (%s). Le extension ha essite disactivate."
 
 #: subprojects/extensions-app/js/extensionManager.js:238
 #, javascript-format
@@ -2958,6 +2960,8 @@ msgid ""
 "The installed version of this extension is incompatible with the current "
 "version of GNOME (%s). The extension has been disabled."
 msgstr ""
+"Le version installate de iste extension es incompatibile con le version "
+"actual de GNOME (%s). Le extension ha essite disactivate."
 
 #: subprojects/extensions-app/js/extensionManager.js:242
 msgid ""
@@ -3215,19 +3219,19 @@ msgstr "Le dominio gettext usate per le extension"
 #: subprojects/extensions-tool/src/command-create.c:529
 #: subprojects/extensions-tool/src/command-pack.c:448
 msgid "SCHEMA"
-msgstr ""
+msgstr "SCHEMA"
 
 #: subprojects/extensions-tool/src/command-create.c:531
 msgid "The GSettings schema used by the extension"
-msgstr ""
+msgstr "Le schema de GSettings usate per le extension"
 
 #: subprojects/extensions-tool/src/command-create.c:534
 msgid "TEMPLATE"
-msgstr ""
+msgstr "PATRONO"
 
 #: subprojects/extensions-tool/src/command-create.c:535
 msgid "The template to use for the new extension"
-msgstr ""
+msgstr "Le patrono a usar pro le nove extension"
 
 #: subprojects/extensions-tool/src/command-create.c:538
 msgid "Include prefs.js template"
@@ -3304,11 +3308,11 @@ msgstr "Superscriber un extension existente"
 
 #: subprojects/extensions-tool/src/command-install.c:192
 msgid "EXTENSION_BUNDLE"
-msgstr ""
+msgstr "PACCHETTO_EXTENSION"
 
 #: subprojects/extensions-tool/src/command-install.c:201
 msgid "Install an extension bundle"
-msgstr ""
+msgstr "Installar un pacchetto de extension"
 
 #: subprojects/extensions-tool/src/command-install.c:219
 #, fuzzy
@@ -3318,7 +3322,7 @@ msgstr "Necun extensiones installate"
 
 #: subprojects/extensions-tool/src/command-install.c:225
 msgid "More than one extension bundle specified"
-msgstr ""
+msgstr "Plus de un pacchetto de extension specificate"
 
 #: subprojects/extensions-tool/src/command-list.c:140
 msgid "Show user-installed extensions"
@@ -3363,7 +3367,7 @@ msgstr "Listar extensiones installate"
 #: subprojects/extensions-tool/src/command-pack.c:444
 #: subprojects/extensions-tool/src/command-upload.c:427
 msgid "FILE"
-msgstr ""
+msgstr "FILE"
 
 #: subprojects/extensions-tool/src/command-pack.c:445
 msgid "Additional source to include in the bundle"
@@ -3400,21 +3404,21 @@ msgstr "DIRECTORIO_FONTE"
 
 #: subprojects/extensions-tool/src/command-pack.c:475
 msgid "Create an extension bundle"
-msgstr ""
+msgstr "Crear un pacchetto de extension"
 
 #: subprojects/extensions-tool/src/command-pack.c:495
 msgid "More than one source directory specified"
-msgstr ""
+msgstr "Plus de un directorio fonte specificate"
 
 #: subprojects/extensions-tool/src/command-prefs.c:47
 #, c-format
 msgid "Extension “%s” doesn't have preferences\n"
-msgstr ""
+msgstr "Le extension “%s” non ha preferentias\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:62
 #, c-format
 msgid "Failed to open prefs for extension “%s”: %s\n"
-msgstr ""
+msgstr "Falleva le apertura del preferentias pro le extension “%s”: %s\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:87
 msgid "Opens extension preferences"
@@ -3457,7 +3461,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-upload.c:423
 msgid "PASSWORD"
-msgstr ""
+msgstr "CONTRASIGNO"
 
 #: subprojects/extensions-tool/src/command-upload.c:425
 msgid "Password to log into https://extensions.gnome.org"
@@ -3597,7 +3601,7 @@ msgstr "Crear un pacchetto de extension"
 
 #: subprojects/extensions-tool/src/main.c:347
 msgid "Install extension bundle"
-msgstr ""
+msgstr "Installa pacchetto de extension"
 
 #: subprojects/extensions-tool/src/main.c:349
 #, c-format
