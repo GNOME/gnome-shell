@@ -641,6 +641,11 @@ export const LoginDialog = GObject.registerClass({
         this._updateBannerMessageFile();
         this._updateBanner().catch(logError);
 
+        this._bottomButtonGroup = new St.BoxLayout({
+            style_class: 'login-dialog-bottom-button-group',
+        });
+        this.add_child(this._bottomButtonGroup);
+
         this._sessionMenuButton = new SessionMenuButton();
         this._sessionMenuButton.connect('session-activated',
             (list, sessionId) => {
@@ -648,10 +653,10 @@ export const LoginDialog = GObject.registerClass({
             });
         this._sessionMenuButton.opacity = 0;
         this._sessionMenuButton.show();
-        this.add_child(this._sessionMenuButton);
+        this._bottomButtonGroup.add_child(this._sessionMenuButton);
 
         this._a11yMenuButton = new A11yMenuButton();
-        this.add_child(this._a11yMenuButton);
+        this._bottomButtonGroup.add_child(this._a11yMenuButton);
 
         this._logoBin = new St.Widget({
             style_class: 'login-dialog-logo-bin',
@@ -712,37 +717,17 @@ export const LoginDialog = GObject.registerClass({
         return actorBox;
     }
 
-    _getA11yMenuButtonAllocation(dialogBox) {
+    _getBottomButtonGroupAllocation(dialogBox) {
         let actorBox = new Clutter.ActorBox();
 
-        let [, , natWidth, natHeight] = this._a11yMenuButton.get_preferred_size();
+        const [, , natWidth, natHeight] = this._bottomButtonGroup.get_preferred_size();
 
         if (this.get_text_direction() === Clutter.TextDirection.RTL)
-            actorBox.x1 = dialogBox.x1 + natWidth;
+            actorBox.x1 = dialogBox.x1;
         else
-            actorBox.x1 = dialogBox.x2 - (natWidth * 2);
+            actorBox.x1 = dialogBox.x2 - natWidth;
 
-        actorBox.y1 = dialogBox.y2 - (natHeight * 2);
-        actorBox.x2 = actorBox.x1 + natWidth;
-        actorBox.y2 = actorBox.y1 + natHeight;
-
-        return actorBox;
-    }
-
-    _getSessionMenuButtonAllocation(dialogBox, a11yButtonWidth) {
-        const actorBox = new Clutter.ActorBox();
-
-        // Use half the button width as spacing
-        const offset = a11yButtonWidth + Math.round(a11yButtonWidth / 2);
-
-        let [, , natWidth, natHeight] = this._a11yMenuButton.get_preferred_size();
-
-        if (this.get_text_direction() === Clutter.TextDirection.RTL)
-            actorBox.x1 = dialogBox.x1 + offset + natWidth;
-        else
-            actorBox.x1 = dialogBox.x2 - offset - (natWidth * 2);
-
-        actorBox.y1 = dialogBox.y2 - (natHeight * 2);
+        actorBox.y1 = dialogBox.y2 - natHeight;
         actorBox.x2 = actorBox.x1 + natWidth;
         actorBox.y2 = actorBox.y1 + natHeight;
 
@@ -805,16 +790,9 @@ export const LoginDialog = GObject.registerClass({
             logoHeight = logoAllocation.y2 - logoAllocation.y1;
         }
 
-        let a11yMenuButtonAllocation = null;
-        let a11yButtonWidth = 0;
-        if (this._a11yMenuButton.visible) {
-            a11yMenuButtonAllocation = this._getA11yMenuButtonAllocation(dialogBox);
-            a11yButtonWidth = a11yMenuButtonAllocation.get_width();
-        }
-
-        let sessionMenuButtonAllocation = null;
-        if (this._sessionMenuButton.visible)
-            sessionMenuButtonAllocation = this._getSessionMenuButtonAllocation(dialogBox, a11yButtonWidth);
+        let bottomButtonGroupAllocation = null;
+        if (this._bottomButtonGroup.visible)
+            bottomButtonGroupAllocation = this._getBottomButtonGroupAllocation(dialogBox);
 
         // Then figure out if we're overly constrained and need to
         // try a different layout, or if we have what extra space we
@@ -915,11 +893,8 @@ export const LoginDialog = GObject.registerClass({
         if (logoAllocation)
             this._logoBin.allocate(logoAllocation);
 
-        if (a11yMenuButtonAllocation)
-            this._a11yMenuButton.allocate(a11yMenuButtonAllocation);
-
-        if (sessionMenuButtonAllocation)
-            this._sessionMenuButton.allocate(sessionMenuButtonAllocation);
+        if (bottomButtonGroupAllocation)
+            this._bottomButtonGroup.allocate(bottomButtonGroupAllocation);
     }
 
     _ensureUserListLoaded() {
