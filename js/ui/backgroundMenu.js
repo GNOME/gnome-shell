@@ -44,21 +44,20 @@ export function addBackgroundMenu(actor, layoutManager) {
         if (actor._backgroundMenu.isOpen)
             return;
 
-        const coords = longPressGesture.get_coords();
-        const point = new Graphene.Point3D({x: coords.x, y: coords.y});
-        const transformedPoint = actor.apply_transform_to_point(point);
-        openMenu(transformedPoint.x, transformedPoint.y);
+        const {x, y} = longPressGesture.get_coords_abs();
+        openMenu(x, y);
     });
     actor.add_action(longPressGesture);
 
-    const clickAction = new Clutter.ClickAction();
-    clickAction.connect('clicked', action => {
-        if (action.get_button() === 3) {
-            let [x, y] = action.get_coords();
-            openMenu(x, y);
-        }
+    const clickGesture = new Clutter.ClickGesture({
+        required_button: Clutter.BUTTON_SECONDARY,
+        recognize_on_press: true,
     });
-    actor.add_action(clickAction);
+    clickGesture.connect('recognize', () => {
+        const {x, y} = clickGesture.get_coords_abs();
+        openMenu(x, y);
+    });
+    actor.add_action(clickGesture);
 
     actor.connect('destroy', () => {
         actor._backgroundMenu.destroy();

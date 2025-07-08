@@ -2495,16 +2495,14 @@ export const AppFolderDialog = GObject.registerClass({
 
         this.add_constraint(new Layout.MonitorConstraint({primary: true}));
 
-        const clickAction = new Clutter.ClickAction();
-        clickAction.connect('clicked', () => {
-            const [x, y] = clickAction.get_coords();
-            const actor =
-                global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
-
-            if (!this._viewBox.contains(actor))
-                this.popdown();
+        const clickGesture = new Clutter.ClickGesture();
+        clickGesture.connect('may-recognize', () => {
+            const coords = clickGesture.get_coords_abs();
+            const [, x, y] = this.child.transform_stage_point(coords.x, coords.y);
+            return !this._viewBox.allocation.contains(x, y);
         });
-        this.add_action(clickAction);
+        clickGesture.connect('recognize', () => this.popdown());
+        this.add_action(clickGesture);
 
         this._source = source;
         this._folder = folder;

@@ -93,10 +93,10 @@ export const WindowClone = GObject.registerClass({
             this);
         this.inDrag = false;
 
-        const clickAction = new Clutter.ClickAction();
-        clickAction.connect('clicked',
+        const clickGesture = new Clutter.ClickGesture();
+        clickGesture.connect('recognize',
             () => this.emit('selected', Clutter.get_current_event_time()));
-        this._draggable.addClickAction(clickAction);
+        this.add_action(clickGesture);
 
         let iter = win => {
             let actor = win.get_compositor_private();
@@ -631,13 +631,14 @@ export const ThumbnailsBox = GObject.registerClass({
 
         this._thumbnails = [];
 
-        const clickAction = new Clutter.ClickAction();
-        clickAction.connect('clicked', () => {
+        const clickGesture = new Clutter.ClickGesture();
+        clickGesture.connect('recognize', () => {
+            const coords = clickGesture.get_coords();
             this._activateThumbnailAtPoint(
-                ...clickAction.get_coords(),
+                coords.x, coords.y,
                 Clutter.get_current_event_time());
         });
-        this.add_action(clickAction);
+        this.add_action(clickGesture);
 
         Main.overview.connectObject(
             'showing', () => this._createThumbnails(),
@@ -719,9 +720,7 @@ export const ThumbnailsBox = GObject.registerClass({
         this.queue_relayout();
     }
 
-    _activateThumbnailAtPoint(stageX, stageY, time) {
-        const [r_, x] = this.transform_stage_point(stageX, stageY);
-
+    _activateThumbnailAtPoint(x, y, time) {
         const thumbnail = this._thumbnails.find(t => x >= t.x && x <= t.x + t.width);
         if (thumbnail)
             thumbnail.activate(time);

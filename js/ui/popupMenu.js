@@ -103,18 +103,18 @@ export const PopupBaseMenuItem = GObject.registerClass({
         this._activatable = params.reactive && params.activate;
         this._sensitive = true;
 
-        this._clickAction = new Clutter.ClickAction({
+        this._clickGesture = new Clutter.ClickGesture({
             enabled: this._activatable,
         });
-        this._clickAction.connect('clicked',
+        this._clickGesture.connect('recognize',
             () => this.activate(Clutter.get_current_event()));
-        this._clickAction.connect('notify::pressed', () => {
-            if (this._clickAction.pressed)
+        this._clickGesture.connect('notify::pressed', () => {
+            if (this._clickGesture.pressed)
                 this.add_style_pseudo_class('active');
             else
                 this.remove_style_pseudo_class('active');
         });
-        this.add_action(this._clickAction);
+        this.add_action(this._clickGesture);
 
         if (!this._activatable)
             this.add_style_class_name('popup-inactive-menu-item');

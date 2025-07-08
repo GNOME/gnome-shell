@@ -3036,13 +3036,15 @@ class PickPixel extends St.Widget {
         });
         this.add_constraint(constraint);
 
-        const action = new Clutter.ClickAction();
-        action.connect('clicked', async () => {
-            await this._pickColor(...action.get_coords());
+        const clickGesture = new Clutter.ClickGesture();
+        clickGesture.connect('recognize', async () => {
+            const {x, y} = clickGesture.get_coords_abs();
+
+            await this._pickColor(x, y);
             this._result = this._color;
             this._grabHelper.ungrab();
         });
-        this.add_action(action);
+        this.add_action(clickGesture);
 
         this._recolorEffect = new RecolorEffect({
             chroma: new Cogl.Color({

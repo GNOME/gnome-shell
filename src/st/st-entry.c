@@ -1338,11 +1338,11 @@ st_entry_get_input_hints (StEntry *entry)
 }
 
 static void
-_st_entry_icon_clicked_cb (ClutterClickAction *action,
-                           ClutterActor       *actor,
-                           StEntry            *entry)
+icon_click_gesture_recognize_cb (ClutterClickGesture *gesture,
+                                 StEntry             *entry)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
+  ClutterActor *actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (gesture));
 
   if (!clutter_actor_get_reactive (CLUTTER_ACTOR (entry)))
     return;
@@ -1367,17 +1367,17 @@ _st_entry_set_icon (StEntry       *entry,
 
   if (new_icon)
     {
-      ClutterAction *action;
+      ClutterAction *click_gesture;
 
       *icon = g_object_ref (new_icon);
 
       clutter_actor_set_reactive (*icon, TRUE);
       clutter_actor_add_child (CLUTTER_ACTOR (entry), *icon);
 
-      action = clutter_click_action_new ();
-      clutter_actor_add_action_with_name (*icon, "entry-icon-action", action);
-      g_signal_connect (action, "clicked",
-                        G_CALLBACK (_st_entry_icon_clicked_cb), entry);
+      click_gesture = clutter_click_gesture_new ();
+      clutter_actor_add_action_with_name (*icon, "entry-icon-click-gesture", click_gesture);
+      g_signal_connect (click_gesture, "recognize",
+                        G_CALLBACK (icon_click_gesture_recognize_cb), entry);
     }
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (entry));
