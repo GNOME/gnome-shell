@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-07-06 01:49+0000\n"
-"PO-Revision-Date: 2025-07-07 06:57-0400\n"
+"POT-Creation-Date: 2025-07-07 14:51+0000\n"
+"PO-Revision-Date: 2025-07-08 08:41-0400\n"
 "Last-Translator: Emilio Sepúlveda <emism.translations@gmail.com>\n"
 "Language-Team: Interlingua <softinterlingua@gmail.com>\n"
 "Language: ia\n"
@@ -798,8 +798,8 @@ msgstr "Pausa in progresso"
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s remanente in tu pausa"
+msgstr[1] "%s remanente in tu pausa"
 
 #: js/misc/breakManager.js:1200
 msgid "Time for a Movement Break"
@@ -855,8 +855,8 @@ msgstr ""
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Il ha %s remanente in tu pausa"
+msgstr[1] "Il ha %s remanente in tu pausa"
 
 #: js/misc/breakManager.js:1273
 msgid "Break Interrupted"
@@ -883,8 +883,8 @@ msgstr "Prender"
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Pausa in %d secunda"
+msgstr[1] "Pausa in %d secundas"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:91
@@ -895,7 +895,7 @@ msgstr "Extinguer"
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:94
 msgid "power off;poweroff;shutdown;halt;stop"
-msgstr ""
+msgstr "extinguer;arrestar;stoppar"
 
 #. Translators: The name of the restart action in search
 #: js/misc/systemActions.js:99
@@ -928,7 +928,7 @@ msgstr "Finir le session"
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:118
 msgid "logout;log out;sign off"
-msgstr ""
+msgstr "clauder session; finir session"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:123
@@ -1219,11 +1219,11 @@ msgstr "Configurationes de sono"
 
 #: js/ui/audioDeviceSelection.js:75
 msgid "Headphones"
-msgstr ""
+msgstr "Auriculares"
 
 #: js/ui/audioDeviceSelection.js:77
 msgid "Headset"
-msgstr ""
+msgstr "Bonetto auricular"
 
 #: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:366
 msgid "Microphone"
@@ -1314,7 +1314,7 @@ msgstr "%OB"
 #.
 #: js/ui/calendar.js:431
 msgid "%OB %Y"
-msgstr ""
+msgstr "%OB %Y"
 
 #: js/ui/calendar.js:493
 msgid "Previous month"
@@ -2410,7 +2410,7 @@ msgstr[1] "%d connectite"
 
 #: js/ui/status/brightness.js:12
 msgid "Brightness"
-msgstr ""
+msgstr "Brillantia"
 
 #: js/ui/status/darkMode.js:12
 msgid "Dark Style"
