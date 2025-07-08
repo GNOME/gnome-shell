@@ -186,7 +186,7 @@ const UserList = GObject.registerClass({
         });
 
         this.child = this._box;
-        this._items = {};
+        this._items = new Map();
     }
 
     vfunc_key_focus_in() {
@@ -195,7 +195,7 @@ const UserList = GObject.registerClass({
     }
 
     _moveFocusToItems() {
-        let hasItems = Object.keys(this._items).length > 0;
+        const hasItems = this._items.size > 0;
 
         if (!hasItems)
             return;
@@ -223,10 +223,8 @@ const UserList = GObject.registerClass({
         else
             this._box.remove_style_pseudo_class('expanded');
 
-        for (let userName in this._items) {
-            let item = this._items[userName];
+        for (const item of this._items.values())
             item.sync_hover();
-        }
     }
 
     scrollToItem(item) {
@@ -252,7 +250,7 @@ const UserList = GObject.registerClass({
     }
 
     getItemFromUserName(userName) {
-        let item = this._items[userName];
+        const item = this._items.get(userName);
 
         if (!item)
             return null;
@@ -261,7 +259,7 @@ const UserList = GObject.registerClass({
     }
 
     containsUser(user) {
-        return this._items[user.get_user_name()] != null;
+        return this._items.has(user.get_user_name());
     }
 
     addUser(user) {
@@ -284,7 +282,7 @@ const UserList = GObject.registerClass({
         let item = new UserListItem(user);
         this._box.add_child(item);
 
-        this._items[userName] = item;
+        this._items.set(userName, item);
 
         item.connect('activate', this._onItemActivated.bind(this));
 
@@ -305,17 +303,17 @@ const UserList = GObject.registerClass({
         if (!userName)
             return;
 
-        let item = this._items[userName];
+        const item = this._items.get(userName);
 
         if (!item)
             return;
 
         item.destroy();
-        delete this._items[userName];
+        this._items.delete(userName);
     }
 
     numItems() {
-        return Object.keys(this._items).length;
+        return this._items.size;
     }
 });
 
@@ -355,7 +353,7 @@ const SessionMenuButton = GObject.registerClass({
 
         this._button.connect('clicked', () => this._menu.toggle());
 
-        this._items = {};
+        this._items = new Map();
         this._activeSessionId = null;
         this._populate();
     }
@@ -368,12 +366,11 @@ const SessionMenuButton = GObject.registerClass({
     }
 
     _updateOrnament() {
-        let itemIds = Object.keys(this._items);
-        for (let i = 0; i < itemIds.length; i++) {
-            if (itemIds[i] === this._activeSessionId)
-                this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.DOT);
+        for (const itemId of this._items.keys()) {
+            if (itemId === this._activeSessionId)
+                this._items.get(itemId).setOrnament(PopupMenu.Ornament.DOT);
             else
-                this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.NO_DOT);
+                this._items.get(itemId).setOrnament(PopupMenu.Ornament.NO_DOT);
         }
     }
 
@@ -404,7 +401,7 @@ const SessionMenuButton = GObject.registerClass({
             let id = ids[i];
             let item = new PopupMenu.PopupMenuItem(sessionName);
             this._menu.addMenuItem(item);
-            this._items[id] = item;
+            this._items.set(id, item);
 
             item.connect('activate', () => {
                 this.setActiveSession(id);
