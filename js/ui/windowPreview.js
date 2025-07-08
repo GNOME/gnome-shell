@@ -115,15 +115,13 @@ export const WindowPreview = GObject.registerClass({
             this);
         this.inDrag = false;
 
-        let clickAction = new Clutter.ClickAction();
-        clickAction.connect('clicked', () => this._activate());
-        clickAction.connect('long-press', (action, actor, state) => {
-            if (state === Clutter.LongPressState.ACTIVATE)
-                this.showOverlay(true);
-            return true;
-        });
+        const clickGesture = new Clutter.ClickGesture();
+        clickGesture.connect('recognize', () => this._activate());
+        this.add_action(clickGesture);
 
-        this._draggable.addClickAction(clickAction);
+        const longPressGesture = new Clutter.LongPressGesture();
+        longPressGesture.connect('recognize', () => this.showOverlay(true));
+        this.add_action(longPressGesture);
 
         this._overlayEnabled = true;
         this._overlayShown = false;
