@@ -116,7 +116,7 @@ class ItemSorter {
     }
 
     _sortByName(one, two) {
-        return GLib.utf8_collate(one.name, two.name);
+        return GLib.utf8_collate(one.name ?? '', two.name ?? '');
     }
 
     _sortByMru(one, two) {
