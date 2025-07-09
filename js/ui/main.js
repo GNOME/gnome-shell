@@ -319,7 +319,6 @@ async function _initializeUI() {
     GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
         Shell.util_sd_notify();
         global.context.notify_ready();
-        _notifyGnomeSessionReady();
         return GLib.SOURCE_REMOVE;
     });
 
@@ -382,20 +381,6 @@ async function _initializeUI() {
             Scripting.runPerfScript(perfModule, perfOutput);
         }
     });
-}
-
-async function _notifyGnomeSessionReady() {
-    try {
-        let params = GLib.Variant.new('(ss)', ['org.gnome.Shell.desktop', '']);
-        await Gio.DBus.session.call(
-            'org.gnome.SessionManager',
-            '/org/gnome/SessionManager',
-            'org.gnome.SessionManager',
-            'RegisterClient', params, null,
-            Gio.DBusCallFlags.NONE, -1, null);
-    } catch (e) {
-        log(`Error notifying gnome-session that we're ready: ${e.message}`);
-    }
 }
 
 function _handleShowWelcomeScreen() {
