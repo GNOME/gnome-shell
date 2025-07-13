@@ -68,6 +68,22 @@ export const SwitcherPopup = GObject.registerClass({
             coordinate: Clutter.BindCoordinate.ALL,
         }));
 
+        const longPressGesture = new Clutter.LongPressGesture({
+            long_press_duration_ms: 0,
+        });
+        longPressGesture.connect('may-recognize', () => {
+            const coords = longPressGesture.get_coords_abs();
+            const actorAtCoords =
+                global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, coords.x, coords.y);
+
+            return !this._switcherList?.contains(actorAtCoords);
+        });
+        longPressGesture.connect('recognize', () => {
+            // User clicked outside
+            this.fadeAndDestroy();
+        });
+        this.add_action(longPressGesture);
+
         // Initially disable hover so we ignore the enter-event if
         // the switcher appears underneath the current pointer location
         this._disableHover();
@@ -221,12 +237,6 @@ export const SwitcherPopup = GObject.registerClass({
         }
 
         return Clutter.EVENT_STOP;
-    }
-
-    vfunc_button_press_event() {
-        /* We clicked outside */
-        this.fadeAndDestroy();
-        return Clutter.EVENT_PROPAGATE;
     }
 
     _scrollHandler(direction) {
