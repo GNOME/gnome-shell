@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-06-09 19:46+0000\n"
-"PO-Revision-Date: 2025-06-11 08:00+0300\n"
+"POT-Creation-Date: 2025-07-12 19:17+0000\n"
+"PO-Revision-Date: 2025-07-13 08:00+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -586,7 +586,7 @@ msgstr "Ana Sayfa"
 msgid "Visit extension homepage"
 msgstr "Uzantı ana sayfasını ziyaret et"
 
-#: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
+#: js/gdm/authPrompt.js:156 js/gdm/loginDialog.js:517
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -594,20 +594,25 @@ msgstr "Uzantı ana sayfasını ziyaret et"
 msgid "Cancel"
 msgstr "İptal"
 
-#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
+#: js/gdm/authPrompt.js:324 js/ui/components/networkAgent.js:214
 #: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
 #: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
 #: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
 #: js/ui/shellMountOperation.js:332
+#: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
 msgstr "Parola"
 
-#: js/gdm/loginDialog.js:328
+#: js/gdm/loginDialog.js:332
 msgid "Choose Session"
 msgstr "Oturum Seç"
 
+#: js/gdm/loginDialog.js:423 js/ui/status/accessibility.js:35
+msgid "Accessibility"
+msgstr "Erişilebilirlik"
+
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:426
+#: js/gdm/loginDialog.js:475
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -618,7 +623,7 @@ msgstr ""
 "oturum açmak için uzak oturumu kapatmalı ya da durmaya zorlamalısınız."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:429
+#: js/gdm/loginDialog.js:478
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -628,7 +633,7 @@ msgstr ""
 "için uzak oturumu kapatmalı ya da durmaya zorlamalısınız."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:432
+#: js/gdm/loginDialog.js:481
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -639,7 +644,7 @@ msgstr ""
 "oturum açmak için yerel oturumu kapatmalı ya da durmaya zorlamalısınız."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:435
+#: js/gdm/loginDialog.js:484
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -648,11 +653,11 @@ msgstr ""
 "%s oturumu zaten çalıştığından oturum açmak olanaksız. Oturum açmak için "
 "oturumu kapatmalı ya da durmaya zorlamalısınız."
 
-#: js/gdm/loginDialog.js:444
+#: js/gdm/loginDialog.js:493
 msgid "Session Already Running"
 msgstr "Oturum Zaten Çalışıyor"
 
-#: js/gdm/loginDialog.js:456
+#: js/gdm/loginDialog.js:505
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -660,35 +665,36 @@ msgstr ""
 "Durmaya zorlamak, çalışan tüm uygulamaları ve süreçleri durduracağından veri "
 "yitirilebilir"
 
-#: js/gdm/loginDialog.js:476
+#: js/gdm/loginDialog.js:525
 msgid "Force Stop"
 msgstr "Durmaya Zorla"
 
-#: js/gdm/loginDialog.js:554
+#: js/gdm/loginDialog.js:603
 msgid "Not listed?"
 msgstr "Listede yok mu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1075
+#: js/gdm/loginDialog.js:1157
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(örneğin, kullanıcı veya %s)"
 
-#: js/gdm/loginDialog.js:1080 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1162 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
+#: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
-#: js/gdm/loginDialog.js:1146
+#: js/gdm/loginDialog.js:1228
 msgid "Login Attempt Timed Out"
 msgstr "Oturum Açma Denemesi Zaman Aşımına Uğradı"
 
-#: js/gdm/loginDialog.js:1147
+#: js/gdm/loginDialog.js:1229
 msgid "Login took too long, please try again"
 msgstr "Oturum açma çok uzun sürdü, lütfen yeniden deneyin"
 
-#: js/gdm/loginDialog.js:1496
+#: js/gdm/loginDialog.js:1578
 msgid "Login Window"
 msgstr "Oturum Açma Penceresi"
 
@@ -1009,7 +1015,7 @@ msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d saat önce"
 
-#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:183
+#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:184
 msgid "Yesterday"
 msgstr "Dün"
 
@@ -1140,17 +1146,17 @@ msgstr "İzin Ver"
 msgid "Unnamed Folder"
 msgstr "Adsız Klasör"
 
-#: js/ui/appFavorites.js:163
+#: js/ui/appFavorites.js:89
 #, javascript-format
 msgid "%s has been pinned to the dash."
 msgstr "%s, konsola iliştirildi."
 
-#: js/ui/appFavorites.js:194
+#: js/ui/appFavorites.js:120
 #, javascript-format
 msgid "%s has been unpinned from the dash."
 msgstr "%s, konsoldan çıkarıldı."
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:309
+#: js/ui/appFavorites.js:134 js/ui/main.js:309
 msgid "Undo"
 msgstr "Geri Al"
 
@@ -1220,7 +1226,7 @@ msgid "Settings"
 msgstr "Ayarlar"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:33
+#: js/ui/calendar.js:32
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -1230,43 +1236,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:59
+#: js/ui/calendar.js:58
 msgctxt "grid sunday"
 msgid "S"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:61
+#: js/ui/calendar.js:60
 msgctxt "grid monday"
 msgid "M"
 msgstr "Pt"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:63
+#: js/ui/calendar.js:62
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:65
+#: js/ui/calendar.js:64
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ç"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:67
+#: js/ui/calendar.js:66
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Pş"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:69
+#: js/ui/calendar.js:68
 msgctxt "grid friday"
 msgid "F"
 msgstr "C"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:70
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Ct"
@@ -1277,7 +1283,7 @@ msgstr "Ct"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:422
+#: js/ui/calendar.js:421
 msgid "%OB"
 msgstr "%OB"
 
@@ -1290,41 +1296,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:432
+#: js/ui/calendar.js:431
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:494
+#: js/ui/calendar.js:493
 msgid "Previous month"
 msgstr "Önceki ay"
 
-#: js/ui/calendar.js:512
+#: js/ui/calendar.js:511
 msgid "Next month"
 msgstr "Gelecek ay"
 
-#: js/ui/calendar.js:663
+#: js/ui/calendar.js:662
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:722
+#: js/ui/calendar.js:721
 msgid "Week %V"
 msgstr "%V. Hafta"
 
-#: js/ui/calendar.js:774
+#: js/ui/calendar.js:773
 msgid "No Notifications"
 msgstr "Bildirim Yok"
 
-#: js/ui/calendar.js:832
-msgid "Do Not Disturb"
-msgstr "Rahatsız Etme"
-
-#: js/ui/calendar.js:853
+#: js/ui/calendar.js:812
 msgid "Clear"
 msgstr "Temizle"
 
-#: js/ui/calendar.js:857
+#: js/ui/calendar.js:816
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Tüm bildirimleri temizle"
@@ -1508,29 +1510,29 @@ msgid "%A %B %e %Y"
 msgstr "%e %B %Y %A"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:172
+#: js/ui/dateMenu.js:173
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:175
+#: js/ui/dateMenu.js:176
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%-d %B %Y"
 
-#: js/ui/dateMenu.js:181
+#: js/ui/dateMenu.js:182
 msgid "Today"
 msgstr "Bugün"
 
-#: js/ui/dateMenu.js:185
+#: js/ui/dateMenu.js:186
 msgid "Tomorrow"
 msgstr "Yarın"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:216
+#: js/ui/dateMenu.js:217
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Tüm Gün"
@@ -1538,39 +1540,39 @@ msgstr "Tüm Gün"
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
 #.
-#: js/ui/dateMenu.js:238
+#: js/ui/dateMenu.js:239
 msgid "%m/%d"
 msgstr "%d/%m"
 
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:290
 msgid "No Events"
 msgstr "Olay Yok"
 
-#: js/ui/dateMenu.js:411
+#: js/ui/dateMenu.js:412
 msgid "Add World Clocks…"
 msgstr "Dünya Saatleri Ekle…"
 
-#: js/ui/dateMenu.js:412
+#: js/ui/dateMenu.js:413
 msgid "World Clocks"
 msgstr "Dünya Saatleri"
 
-#: js/ui/dateMenu.js:702
+#: js/ui/dateMenu.js:704
 msgid "Loading…"
 msgstr "Yükleniyor…"
 
-#: js/ui/dateMenu.js:712
+#: js/ui/dateMenu.js:714
 msgid "Go Online for Weather Information"
 msgstr "Hava Durumu Bilgisi İçin Çevrim İçi Olun"
 
-#: js/ui/dateMenu.js:714
+#: js/ui/dateMenu.js:716
 msgid "Weather Information Unavailable"
 msgstr "Hava Durumu Bilgisi Kullanılamıyor"
 
-#: js/ui/dateMenu.js:724
+#: js/ui/dateMenu.js:726
 msgid "Weather"
 msgstr "Hava Durumu"
 
-#: js/ui/dateMenu.js:726
+#: js/ui/dateMenu.js:728
 msgid "Select Weather Location…"
 msgstr "Hava Durumu Konumu Seç…"
 
@@ -1991,16 +1993,16 @@ msgstr "Çıkmak için herhangi bir tuşa bas"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:423
+#: js/ui/panel.js:424
 msgid "Activities"
 msgstr "Etkinlikler"
 
-#: js/ui/panel.js:504
+#: js/ui/panel.js:505
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:678
+#: js/ui/panel.js:682
 msgid "Top Bar"
 msgstr "Tepe Çubuğu"
 
@@ -2012,15 +2014,15 @@ msgstr "Menüyü aç"
 msgid "Run a Command"
 msgstr "Komut Çalıştır"
 
-#: js/ui/runDialog.js:77
+#: js/ui/runDialog.js:79
 msgid "Press ESC to close"
 msgstr "Çıkmak için ESC’ye bas"
 
-#: js/ui/runDialog.js:254
+#: js/ui/runDialog.js:256
 msgid "Restart is not available on Wayland"
 msgstr "Wayland’de yeniden başlatma kullanılabilir değil"
 
-#: js/ui/runDialog.js:259
+#: js/ui/runDialog.js:261
 msgid "Restarting…"
 msgstr "Yeniden başlatılıyor…"
 
@@ -2028,11 +2030,11 @@ msgstr "Yeniden başlatılıyor…"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME’un ekranı kilitlemesi gerekiyor"
 
-#: js/ui/screenShield.js:274 js/ui/screenShield.js:667
+#: js/ui/screenShield.js:274 js/ui/screenShield.js:682
 msgid "Unable to lock"
 msgstr "Kilitlenemedi"
 
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:668
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:683
 msgid "Lock was blocked by an app"
 msgstr "Kilitleme bir uygulamaca engellendi"
 
@@ -2152,7 +2154,7 @@ msgstr "Ekran görüntüsü yakalandı"
 msgid "You can paste the image from the clipboard."
 msgstr "Resmi panodan yapıştırabilirsiniz."
 
-#: js/ui/screenshot.js:2397 js/ui/screenshot.js:2561
+#: js/ui/screenshot.js:2397 js/ui/screenshot.js:2559
 msgid "Screenshot taken"
 msgstr "Ekran görüntüsü alındı"
 
@@ -2246,51 +2248,47 @@ msgstr "%s’i Aç"
 msgid "The PIM must be a number or empty"
 msgstr "PIM bir sayı ya da boşluk olmalı"
 
-#: js/ui/status/accessibility.js:34
-msgid "Accessibility"
-msgstr "Erişilebilirlik"
-
-#: js/ui/status/accessibility.js:44
+#: js/ui/status/accessibility.js:45 js/ui/status/accessibility.js:155
 msgid "High Contrast"
 msgstr "Yüksek Karşıtlık"
 
-#: js/ui/status/accessibility.js:47
+#: js/ui/status/accessibility.js:48 js/ui/status/accessibility.js:171
 msgid "Zoom"
 msgstr "Yakınlaştırma"
 
-#: js/ui/status/accessibility.js:54
+#: js/ui/status/accessibility.js:55 js/ui/status/accessibility.js:223
 msgid "Screen Reader"
 msgstr "Ekran Okuyucu"
 
-#: js/ui/status/accessibility.js:58
+#: js/ui/status/accessibility.js:59 js/ui/status/accessibility.js:239
 msgid "Screen Keyboard"
 msgstr "Ekran Klavyesi"
 
-#: js/ui/status/accessibility.js:62
+#: js/ui/status/accessibility.js:63 js/ui/status/accessibility.js:255
 msgid "Visual Alerts"
 msgstr "Görsel Uyarılar"
 
-#: js/ui/status/accessibility.js:66
+#: js/ui/status/accessibility.js:67 js/ui/status/accessibility.js:271
 msgid "Sticky Keys"
 msgstr "Yapışkan Tuşlar"
 
-#: js/ui/status/accessibility.js:70
+#: js/ui/status/accessibility.js:71 js/ui/status/accessibility.js:287
 msgid "Slow Keys"
 msgstr "Yavaş Tuşlar"
 
-#: js/ui/status/accessibility.js:74
+#: js/ui/status/accessibility.js:75 js/ui/status/accessibility.js:303
 msgid "Bounce Keys"
 msgstr "Zıplayan Tuşlar"
 
-#: js/ui/status/accessibility.js:78
+#: js/ui/status/accessibility.js:79 js/ui/status/accessibility.js:319
 msgid "Mouse Keys"
 msgstr "Fare Tuşları"
 
-#: js/ui/status/accessibility.js:83
+#: js/ui/status/accessibility.js:84
 msgid "Accessibility Settings"
 msgstr "Erişilebilirlik Ayarları"
 
-#: js/ui/status/accessibility.js:123
+#: js/ui/status/accessibility.js:124 js/ui/status/accessibility.js:187
 msgid "Large Text"
 msgstr "Büyük Yazı"
 
@@ -2361,7 +2359,7 @@ msgstr "Bağlan: %s"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1919
+#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1920
 msgid "Bluetooth Settings"
 msgstr "Bluetooth Ayarları"
 
@@ -2387,6 +2385,10 @@ msgstr "Parlaklık"
 #: js/ui/status/darkMode.js:12
 msgid "Dark Style"
 msgstr "Koyu Biçem"
+
+#: js/ui/status/doNotDisturb.js:10
+msgid "Do Not Disturb"
+msgstr "Rahatsız Etme"
 
 #: js/ui/status/dwellClick.js:15
 msgid "Single Click"
@@ -2438,92 +2440,92 @@ msgstr "Erişime İzin Ver"
 msgid "<unknown>"
 msgstr "<bilinmeyen>"
 
-#: js/ui/status/network.js:1059
+#: js/ui/status/network.js:1060
 msgid "Secure"
 msgstr "Güvenli"
 
-#: js/ui/status/network.js:1059
+#: js/ui/status/network.js:1060
 msgid "Not secure"
 msgstr "Güvensiz"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "%%%s sinyal gücü"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1062
+#: js/ui/status/network.js:1063
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1164
+#: js/ui/status/network.js:1165
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s Erişim Noktası"
 
-#: js/ui/status/network.js:1445
+#: js/ui/status/network.js:1446
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d bağlı"
 
-#: js/ui/status/network.js:1543 js/ui/status/network.js:1559
+#: js/ui/status/network.js:1544 js/ui/status/network.js:1560
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1544
+#: js/ui/status/network.js:1545
 msgid "VPN Settings"
 msgstr "VPN Ayarları"
 
-#: js/ui/status/network.js:1804
+#: js/ui/status/network.js:1805
 msgid "Wi–Fi"
 msgstr "Kablosuz"
 
-#: js/ui/status/network.js:1806
+#: js/ui/status/network.js:1807
 msgid "All Networks"
 msgstr "Tüm Ağlar"
 
-#: js/ui/status/network.js:1903
+#: js/ui/status/network.js:1904
 msgid "Wired Connections"
 msgstr "Kablolu Bağlantılar"
 
-#: js/ui/status/network.js:1904
+#: js/ui/status/network.js:1905
 msgid "Wired Settings"
 msgstr "Kablolu Ayarları"
 
-#: js/ui/status/network.js:1918
+#: js/ui/status/network.js:1919
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth İnternet"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1925
+#: js/ui/status/network.js:1926
 msgid "Tether"
 msgstr "İnternet Paylaşımı"
 
-#: js/ui/status/network.js:1938
+#: js/ui/status/network.js:1939
 msgid "Mobile Connections"
 msgstr "Mobil Bağlantılar"
 
-#: js/ui/status/network.js:1940
+#: js/ui/status/network.js:1941
 msgid "Mobile Broadband Settings"
 msgstr "Mobil Geniş Bant Ayarları"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1949
+#: js/ui/status/network.js:1950
 msgid "Mobile"
 msgstr "Mobil"
 
-#: js/ui/status/network.js:1983
+#: js/ui/status/network.js:1984
 msgid "Sign in to Network"
 msgstr "Ağa Giriş Yap"
 
-#: js/ui/status/network.js:2170
+#: js/ui/status/network.js:2171
 msgid "Connection failed"
 msgstr "Bağlantı başarısız"
 
-#: js/ui/status/network.js:2171
+#: js/ui/status/network.js:2172
 msgid "Activation of network connection failed"
 msgstr "Ağ bağlantısının etkinleşimi başarısız"
 
@@ -2546,11 +2548,16 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Güç Tutumu"
 
-#: js/ui/status/powerProfiles.js:39 js/ui/status/powerProfiles.js:69
+#: js/ui/status/powerProfiles.js:35
+msgctxt "Power profile"
+msgid "Custom"
+msgstr "Özel"
+
+#: js/ui/status/powerProfiles.js:44 js/ui/status/powerProfiles.js:74
 msgid "Power Mode"
 msgstr "Güç Kipi"
 
-#: js/ui/status/powerProfiles.js:71
+#: js/ui/status/powerProfiles.js:76
 msgid "Power Settings"
 msgstr "Güç Ayarları"
 
@@ -2562,7 +2569,7 @@ msgstr "Ekran Kaydını Durdur"
 msgid "Stop Screen Sharing"
 msgstr "Ekran Paylaşımını Durdur"
 
-#: js/ui/status/rfkill.js:99
+#: js/ui/status/rfkill.js:97
 msgid "Airplane Mode"
 msgstr "Uçak Kipi"
 
@@ -2583,7 +2590,6 @@ msgid "Power Off…"
 msgstr "Gücü Kapat…"
 
 #: js/ui/status/system.js:193
-#: subprojects/extensions-app/data/ui/extensions-window.ui:124
 msgid "Log Out…"
 msgstr "Oturumu Kapat…"
 
@@ -2724,19 +2730,19 @@ msgid "“%s” is ready"
 msgstr "“%s” hazır"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:68
+#: js/ui/windowManager.js:61
 msgid "Keep these display settings?"
 msgstr "Bu görüntü ayarları saklansın mı?"
 
-#: js/ui/windowManager.js:78
+#: js/ui/windowManager.js:71
 msgid "Revert Settings"
 msgstr "Ayarları Eskisine Döndür"
 
-#: js/ui/windowManager.js:83
+#: js/ui/windowManager.js:76
 msgid "Keep Changes"
 msgstr "Değişiklikleri Sakla"
 
-#: js/ui/windowManager.js:103
+#: js/ui/windowManager.js:96
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2744,7 +2750,7 @@ msgstr[0] "Ayarlardaki değişiklikler %d saniyede eskisine döndürülecek"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:500
+#: js/ui/windowManager.js:493
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2887,15 +2893,15 @@ msgstr ""
 "GNOME Uzantılar; uzantıları güncellemeyi, uzantı tercihlerini yapılandırmayı "
 "ve istenmeyen uzantıları kaldırmayı veya devre dışı bırakmanızı sağlar."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:71
 msgid "Main Window"
 msgstr "Ana Pencere"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:75
 msgid "Available Updates"
 msgstr "Kullanılabilir Güncellemeler"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:79
 msgid "Search View"
 msgstr "Arama Görünümü"
 
@@ -2965,8 +2971,8 @@ msgstr "_Kaldır"
 msgid "translator-credits"
 msgstr ""
 "Emin Tufan Çetin <etcetin@gmail.com>\n"
-"Muhammet Kara <muhammetk@gmail.com>\n"
-"Sabri Ünal <yakushabb@gmail.com>"
+"Sabri Ünal <yakushabb@gmail.com>\n"
+"Muhammet Kara <muhammetk@gmail.com>"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:203
 #, javascript-format
@@ -3019,6 +3025,10 @@ msgstr "Ana Menü"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:106
 msgid "Search extensions"
 msgstr "Uzantı ara"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:124
+msgid "_Log Out…"
+msgstr "_Oturumu Kapat…"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid "_Extensions"
@@ -3328,6 +3338,7 @@ msgid "List installed extensions"
 msgstr "Kurulu uzantıları listele"
 
 #: subprojects/extensions-tool/src/command-pack.c:444
+#: subprojects/extensions-tool/src/command-upload.c:427
 msgid "FILE"
 msgstr "DOSYA"
 
@@ -3402,6 +3413,56 @@ msgstr "“%s” kaldırılamadı\n"
 #: subprojects/extensions-tool/src/command-uninstall.c:86
 msgid "Uninstall an extension"
 msgstr "Uzantı kaldır"
+
+#: subprojects/extensions-tool/src/command-upload.c:226
+msgid "Login to extensions.gnome.org\n"
+msgstr "Gir: extensions.gnome.org\n"
+
+#: subprojects/extensions-tool/src/command-upload.c:256
+msgid "Warning! Password will be echoed"
+msgstr "Uyarı! Parola gösterilecek"
+
+#: subprojects/extensions-tool/src/command-upload.c:419
+msgid "USERNAME"
+msgstr "KULLANICI ADI"
+
+#: subprojects/extensions-tool/src/command-upload.c:421
+msgid "Username to log into https://extensions.gnome.org"
+msgstr "https://extensions.gnome.org girişi için kullanıcı adı"
+
+#: subprojects/extensions-tool/src/command-upload.c:423
+msgid "PASSWORD"
+msgstr "PAROLA"
+
+#: subprojects/extensions-tool/src/command-upload.c:425
+msgid "Password to log into https://extensions.gnome.org"
+msgstr "https://extensions.gnome.org girişi için parola"
+
+#: subprojects/extensions-tool/src/command-upload.c:429
+msgid ""
+"Read https://extensions.gnome.org password from file, use \"-\" for stdin"
+msgstr ""
+"https://extensions.gnome.org parolasını dosyadan oku, stdin için \"-\" kullan"
+
+#: subprojects/extensions-tool/src/command-upload.c:432
+msgid "Accept the terms of service at https://extensions.gnome.org/upload/"
+msgstr "https://extensions.gnome.org/upload/ adresindeki hizmet koşullarını kabul et"
+
+#: subprojects/extensions-tool/src/command-upload.c:443
+msgid "Upload new extension versions"
+msgstr "Yeni uzantı sürümleri yükle"
+
+#: subprojects/extensions-tool/src/command-upload.c:461
+msgid "Only one of --password and --password-file can be used"
+msgstr "Ya --password ya da --password-file kullanılabilir"
+
+#: subprojects/extensions-tool/src/command-upload.c:467
+msgid "You must accept the terms of service to upload extensions"
+msgstr "Uzantıları yüklemek için hizmet koşullarını kabul etmelisiniz"
+
+#: subprojects/extensions-tool/src/command-upload.c:473
+msgid "No files given"
+msgstr "Verilen dosya yok"
 
 #: subprojects/extensions-tool/src/main.c:76
 msgid "Do not print error messages"
