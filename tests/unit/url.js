@@ -54,6 +54,14 @@ describe('findUrls()', () => {
             output: [{url: 'www.gnome.org/scheme-less', pos: 10}],
         },
         {
+            input: 'This is a gnome.org/scheme-less test without www.',
+            output: [{url: 'gnome.org/scheme-less', pos: 10}],
+        },
+        {
+            input: 'This is a status.gnome.org/scheme-less test.',
+            output: [{url: 'status.gnome.org/scheme-less', pos: 10}],
+        },
+        {
             input: 'This is a http://www.gnome.org:99/port test.',
             output: [{url: 'http://www.gnome.org:99/port', pos: 10}],
         },
@@ -102,6 +110,18 @@ describe('findUrls()', () => {
         },
         {
             input: 'This is surely@not.a/url test.',
+            output: [],
+        },
+        {
+            input: 'This is not..aa/url test.',
+            output: [],
+        },
+        {
+            input: 'This is ..not/a-url test.',
+            output: [],
+        },
+        {
+            input: 'This is .absolutely.not/a-url test.',
             output: [],
         },
     ];
