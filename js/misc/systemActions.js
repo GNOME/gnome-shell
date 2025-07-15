@@ -12,10 +12,12 @@ import * as Screenshot from '../ui/screenshot.js';
 
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
+const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
 const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
 const DISABLE_LOG_OUT_KEY = 'disable-log-out';
 const DISABLE_RESTART_KEY = 'disable-restart-buttons';
+const RESTART_ENABLED_KEY = 'restart-enabled';
 const ALWAYS_SHOW_LOG_OUT_KEY = 'always-show-log-out';
 
 const POWER_OFF_ACTION_ID        = 'power-off';
@@ -153,6 +155,7 @@ const SystemActions = GObject.registerClass({
         this._loginScreenSettings = new Gio.Settings({schema_id: LOGIN_SCREEN_SCHEMA});
         this._lockdownSettings = new Gio.Settings({schema_id: LOCKDOWN_SCHEMA});
         this._orientationSettings = new Gio.Settings({schema_id: 'org.gnome.settings-daemon.peripherals.touchscreen'});
+        this._screenSaverSettings = new Gio.Settings({schema_id: SCREENSAVER_SCHEMA});
 
         this._session = new GnomeSession.SessionManager();
         this._loginManager = LoginManager.getLoginManager();
@@ -180,6 +183,9 @@ const SystemActions = GObject.registerClass({
             () => this._updateLockScreen());
 
         this._lockdownSettings.connect(`changed::${DISABLE_LOG_OUT_KEY}`,
+            () => this._updateHaveShutdown());
+
+        this._screenSaverSettings.connect(`changed::${RESTART_ENABLED_KEY}`,
             () => this._updateHaveShutdown());
 
         this.forceUpdate();
@@ -347,7 +353,8 @@ const SystemActions = GObject.registerClass({
     }
 
     _updatePowerOff() {
-        let disabled = Main.sessionMode.isLocked ||
+        let disabled = (Main.sessionMode.isLocked &&
+                        !this._screenSaverSettings.get_boolean(RESTART_ENABLED_KEY)) ||
                        (Main.sessionMode.isGreeter &&
                         this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
         this._actions.get(POWER_OFF_ACTION_ID).available = this._canHavePowerOff && !disabled;
