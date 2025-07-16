@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-07-07 14:51+0000\n"
-"PO-Revision-Date: 2025-07-08 08:41-0400\n"
+"POT-Creation-Date: 2025-07-15 14:22+0000\n"
+"PO-Revision-Date: 2025-07-16 13:01-0400\n"
 "Last-Translator: Emilio Sepúlveda <emism.translations@gmail.com>\n"
 "Language-Team: Interlingua <softinterlingua@gmail.com>\n"
 "Language: ia\n"
@@ -674,26 +674,26 @@ msgstr "Esque le nomine non es in le lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1157
+#: js/gdm/loginDialog.js:1132
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(per ex., usator o %s)"
 
-#: js/gdm/loginDialog.js:1162 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1137 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Nomine de usator"
 
-#: js/gdm/loginDialog.js:1228
+#: js/gdm/loginDialog.js:1203
 msgid "Login Attempt Timed Out"
 msgstr ""
 
-#: js/gdm/loginDialog.js:1229
+#: js/gdm/loginDialog.js:1204
 msgid "Login took too long, please try again"
 msgstr ""
 
-#: js/gdm/loginDialog.js:1578
+#: js/gdm/loginDialog.js:1553
 msgid "Login Window"
 msgstr "Fenestra de connexion"
 
@@ -829,7 +829,7 @@ msgstr[1] ""
 
 #: js/misc/breakManager.js:1218
 msgid "Time for a Break"
-msgstr "Monento de un pausa"
+msgstr "Momento de un pausa"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1221
@@ -887,93 +887,93 @@ msgstr[0] "Pausa in %d secunda"
 msgstr[1] "Pausa in %d secundas"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:91
+#: js/misc/systemActions.js:93
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Extinguer"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:96
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "extinguer;arrestar;stoppar"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:99
+#: js/misc/systemActions.js:101
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Reinitiar"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:104
 msgid "reboot;restart;"
 msgstr "reinitiar;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:107
+#: js/misc/systemActions.js:109
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Blocar schermo"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:112
 msgid "lock screen"
 msgstr "blocar schermo"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:115
+#: js/misc/systemActions.js:117
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Finir le session"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:120
 msgid "logout;log out;sign off"
 msgstr "clauder session; finir session"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:123
+#: js/misc/systemActions.js:125
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Suspender"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:128
 msgid "suspend;sleep"
 msgstr "suspender;"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:131
+#: js/misc/systemActions.js:133
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Cambiar usator"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:136
 msgid "switch user"
 msgstr "cambiar usator"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:141
+#: js/misc/systemActions.js:143
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 
 #. Translators: The name of the screenshot UI action in search
-#: js/misc/systemActions.js:146
+#: js/misc/systemActions.js:148
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Prender un captura de schermo"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
-#: js/misc/systemActions.js:149
+#: js/misc/systemActions.js:151
 msgid "screenshot;screencast;snip;capture;record"
 msgstr ""
 
-#: js/misc/systemActions.js:249
+#: js/misc/systemActions.js:255
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Disblocar rotation de schermo"
 
-#: js/misc/systemActions.js:250
+#: js/misc/systemActions.js:256
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Blocar rotation de schermo"
@@ -2388,7 +2388,7 @@ msgstr "Connecter a %s"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1919
+#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1920
 msgid "Bluetooth Settings"
 msgstr "Configurationes de Bluetooth"
 
@@ -2470,99 +2470,99 @@ msgstr "Conceder accesso"
 msgid "<unknown>"
 msgstr "<incognite>"
 
-#: js/ui/status/network.js:1059
+#: js/ui/status/network.js:1060
 msgid "Secure"
 msgstr "Secur"
 
-#: js/ui/status/network.js:1059
+#: js/ui/status/network.js:1060
 msgid "Not secure"
 msgstr "Non secur"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr ""
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1062
+#: js/ui/status/network.js:1063
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr ""
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1164
+#: js/ui/status/network.js:1165
 #, javascript-format
 msgid "%s Hotspot"
 msgstr ""
 
-#: js/ui/status/network.js:1445
+#: js/ui/status/network.js:1446
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d connectite"
 msgstr[1] "%d connectite"
 
-#: js/ui/status/network.js:1543 js/ui/status/network.js:1559
+#: js/ui/status/network.js:1544 js/ui/status/network.js:1560
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1544
+#: js/ui/status/network.js:1545
 msgid "VPN Settings"
 msgstr "Parametros de VPN"
 
-#: js/ui/status/network.js:1804
+#: js/ui/status/network.js:1805
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1806
+#: js/ui/status/network.js:1807
 msgid "All Networks"
 msgstr "Tote le retes"
 
-#: js/ui/status/network.js:1903
+#: js/ui/status/network.js:1904
 #, fuzzy
 #| msgid "Connection"
 msgid "Wired Connections"
 msgstr "Connexion"
 
-#: js/ui/status/network.js:1904
+#: js/ui/status/network.js:1905
 #, fuzzy
 #| msgid "Settings"
 msgid "Wired Settings"
 msgstr "Parametros"
 
-#: js/ui/status/network.js:1918
+#: js/ui/status/network.js:1919
 #, fuzzy
 #| msgid "Bluetooth Settings"
 msgid "Bluetooth Tethers"
 msgstr "Parametros Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1925
+#: js/ui/status/network.js:1926
 msgid "Tether"
 msgstr ""
 
-#: js/ui/status/network.js:1938
+#: js/ui/status/network.js:1939
 msgid "Mobile Connections"
 msgstr "Connexiones mobile"
 
-#: js/ui/status/network.js:1940
+#: js/ui/status/network.js:1941
 msgid "Mobile Broadband Settings"
 msgstr "Parametros de banda large mobile"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1949
+#: js/ui/status/network.js:1950
 msgid "Mobile"
 msgstr "Mobile"
 
-#: js/ui/status/network.js:1983
+#: js/ui/status/network.js:1984
 msgid "Sign in to Network"
 msgstr "Initiar session in le rete"
 
-#: js/ui/status/network.js:2170
+#: js/ui/status/network.js:2171
 msgid "Connection failed"
 msgstr "Falleva le connexion"
 
-#: js/ui/status/network.js:2171
+#: js/ui/status/network.js:2172
 msgid "Activation of network connection failed"
 msgstr "Falleva le activation del connexion de rete"
 
@@ -3117,27 +3117,27 @@ msgstr ""
 "Nos lo regretta, ma non esseva possibile de obtener le lista del extensiones "
 "installate. Assecura te de initiar session in GNOME e tentar de novo."
 
-#: subprojects/extensions-app/data/ui/help-overlay.ui:9
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:6
 msgctxt "shortcut window"
 msgid "General"
 msgstr "General"
 
-#: subprojects/extensions-app/data/ui/help-overlay.ui:12
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:9
 msgctxt "shortcut window"
 msgid "Open Menu"
 msgstr "Aperir le menu"
 
-#: subprojects/extensions-app/data/ui/help-overlay.ui:18
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:15
 msgctxt "shortcut window"
 msgid "Toggle Search"
 msgstr "Commutar cerca"
 
-#: subprojects/extensions-app/data/ui/help-overlay.ui:24
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:21
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
 msgstr "Monstrar vias breve"
 
-#: subprojects/extensions-app/data/ui/help-overlay.ui:30
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:27
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Quitar"
@@ -3181,7 +3181,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:443
 msgid "Choose one of the available templates:\n"
-msgstr ""
+msgstr "Selige un del modellos disponibile:\n"
 
 #: subprojects/extensions-tool/src/command-create.c:457
 msgid "Template"
@@ -3189,7 +3189,7 @@ msgstr "Modello"
 
 #: subprojects/extensions-tool/src/command-create.c:515
 msgid "The unique identifier of the new extension"
-msgstr ""
+msgstr "Le identificator unic del nove extension"
 
 #: subprojects/extensions-tool/src/command-create.c:518
 msgid "NAME"
@@ -3197,7 +3197,7 @@ msgstr "NOMINE"
 
 #: subprojects/extensions-tool/src/command-create.c:519
 msgid "The user-visible name of the new extension"
-msgstr ""
+msgstr "Le nomine visibile al usator del nove extension"
 
 #: subprojects/extensions-tool/src/command-create.c:521
 msgid "DESCRIPTION"
@@ -3205,7 +3205,7 @@ msgstr "DESCRIPTION"
 
 #: subprojects/extensions-tool/src/command-create.c:523
 msgid "A short description of what the extension does"
-msgstr ""
+msgstr "Un description curte de lo que le extension face"
 
 #: subprojects/extensions-tool/src/command-create.c:525
 #: subprojects/extensions-tool/src/command-pack.c:455
@@ -3315,10 +3315,8 @@ msgid "Install an extension bundle"
 msgstr "Installar un pacchetto de extension"
 
 #: subprojects/extensions-tool/src/command-install.c:219
-#, fuzzy
-#| msgid "No extensions installed"
 msgid "No extension bundle specified"
-msgstr "Necun extensiones installate"
+msgstr "Necun pacchetto de extension specificate"
 
 #: subprojects/extensions-tool/src/command-install.c:225
 msgid "More than one extension bundle specified"
@@ -3371,7 +3369,7 @@ msgstr "FILE"
 
 #: subprojects/extensions-tool/src/command-pack.c:445
 msgid "Additional source to include in the bundle"
-msgstr ""
+msgstr "Fonte additional a includer in le pacchetto"
 
 #: subprojects/extensions-tool/src/command-pack.c:449
 msgid "A GSettings schema that should be included"
@@ -3442,10 +3440,8 @@ msgid "Uninstall an extension"
 msgstr "Disinstallar un extension"
 
 #: subprojects/extensions-tool/src/command-upload.c:226
-#, fuzzy
-#| msgid "List extensions"
 msgid "Login to extensions.gnome.org\n"
-msgstr "Listar extensiones"
+msgstr "Initiar session in extensions.gnome.org\n"
 
 #: subprojects/extensions-tool/src/command-upload.c:256
 msgid "Warning! Password will be echoed"
@@ -3457,7 +3453,7 @@ msgstr "NOMINE DE USATOR"
 
 #: subprojects/extensions-tool/src/command-upload.c:421
 msgid "Username to log into https://extensions.gnome.org"
-msgstr ""
+msgstr "Nomine de usator pro initiar session in https://extensions.gnome.org"
 
 #: subprojects/extensions-tool/src/command-upload.c:423
 msgid "PASSWORD"
@@ -3465,7 +3461,7 @@ msgstr "CONTRASIGNO"
 
 #: subprojects/extensions-tool/src/command-upload.c:425
 msgid "Password to log into https://extensions.gnome.org"
-msgstr ""
+msgstr "Contrasigno pro initiar session in https://extensions.gnome.org"
 
 #: subprojects/extensions-tool/src/command-upload.c:429
 msgid ""
@@ -3475,20 +3471,19 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-upload.c:432
 msgid "Accept the terms of service at https://extensions.gnome.org/upload/"
 msgstr ""
+"Accepta le conditiones de servicio in https://extensions.gnome.org/upload/"
 
 #: subprojects/extensions-tool/src/command-upload.c:443
-#, fuzzy
-#| msgid "Allow extension installation"
 msgid "Upload new extension versions"
-msgstr "Permitter le installation de extensiones"
+msgstr "Incargar nove versiones de extension"
 
 #: subprojects/extensions-tool/src/command-upload.c:461
 msgid "Only one of --password and --password-file can be used"
-msgstr ""
+msgstr "Solmente un --password e un --password-file pote esser usate"
 
 #: subprojects/extensions-tool/src/command-upload.c:467
 msgid "You must accept the terms of service to upload extensions"
-msgstr ""
+msgstr "Tu debe acceptar le conditiones de servicio pro incargar extensiones"
 
 #: subprojects/extensions-tool/src/command-upload.c:473
 msgid "No files given"
