@@ -21,9 +21,8 @@ libmutter_test_pc = 'libmutter-test-' + mutter_api_version
 ecal_req = '>= 3.33.1'
 eds_req = '>= 3.33.1'
 gcr_req = '>= 3.90.0'
-gio_req = '>= 2.79.2'
-gi_req = '>= 1.49.1'
-gjs_req = '>= 1.81.2'
+gio_req = '>= 2.85.1'
+gjs_req = '>= 1.85.1'
 gtk_req = '>= 4.0'
 mutter_req = '>= 49.beta'
 polkit_req = '>= 0.100'
@@ -73,7 +72,7 @@ ecal_dep = dependency('libecal-2.0', version: ecal_req)
 eds_dep = dependency('libedataserver-1.2', version: eds_req)
 gcr_dep = dependency('gcr-4', version: gcr_req)
 gdk_pixbuf_dep = dependency('gdk-pixbuf-2.0')
-gi_dep = dependency('gobject-introspection-1.0', version: gi_req)
+gi_dep = dependency('girepository-2.0', version: gio_req)
 gio_dep = dependency('gio-2.0', version: gio_req)
 gio_unix_dep = dependency('gio-unix-2.0', version: gio_req)
 gjs_dep = dependency('gjs-1.0', version: gjs_req)

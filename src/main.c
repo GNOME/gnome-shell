@@ -13,7 +13,7 @@
 #include <clutter/clutter.h>
 #include <glib-unix.h>
 #include <glib/gi18n-lib.h>
-#include <girepository.h>
+#include <girepository/girepository.h>
 #include <meta/meta-context.h>
 #include <meta/meta-plugin.h>
 #include <meta/prefs.h>
@@ -133,7 +133,7 @@ shell_dbus_init (gboolean replace)
 
 #ifdef HAVE_EXE_INTROSPECTION
 static void
-maybe_add_rpath_introspection_paths (void)
+maybe_add_rpath_introspection_paths (GIRepository *repo)
 {
   ElfW (Dyn) *dyn;
   ElfW (Dyn) *rpath = NULL;
@@ -210,8 +210,8 @@ maybe_add_rpath_introspection_paths (void)
       g_debug ("Prepending RPATH directory '%s' "
                "to introsepciton library search path",
                rpath_dir->str);
-      g_irepository_prepend_search_path (rpath_dir->str);
-      g_irepository_prepend_library_path (rpath_dir->str);
+      gi_repository_prepend_search_path (repo, rpath_dir->str);
+      gi_repository_prepend_library_path (repo, rpath_dir->str);
     }
 }
 #endif /* HAVE_EXE_INTROSPECTION */
@@ -219,20 +219,23 @@ maybe_add_rpath_introspection_paths (void)
 static void
 shell_introspection_init (void)
 {
+  g_autoptr (GIRepository) repo = NULL;
 
-  g_irepository_prepend_search_path (MUTTER_TYPELIB_DIR);
-  g_irepository_prepend_search_path (SHELL_TYPELIB_DIR);
+  repo = gi_repository_dup_default ();
+
+  gi_repository_prepend_search_path (repo, MUTTER_TYPELIB_DIR);
+  gi_repository_prepend_search_path (repo, SHELL_TYPELIB_DIR);
 
   /* We need to explicitly add the directories where the private libraries are
    * installed to the GIR's library path, so that they can be found at runtime
    * when linking using DT_RUNPATH (instead of DT_RPATH), which is the default
    * for some linkers (e.g. gold) and in some distros (e.g. Debian).
    */
-  g_irepository_prepend_library_path (MUTTER_TYPELIB_DIR);
-  g_irepository_prepend_library_path (GNOME_SHELL_PKGLIBDIR);
+  gi_repository_prepend_library_path (repo, MUTTER_TYPELIB_DIR);
+  gi_repository_prepend_library_path (repo, GNOME_SHELL_PKGLIBDIR);
 
 #ifdef HAVE_EXE_INTROSPECTION
-  maybe_add_rpath_introspection_paths ();
+  maybe_add_rpath_introspection_paths (repo);
 #endif
 }
 
@@ -611,7 +614,7 @@ main (int argc, char **argv)
   context = meta_create_context (WM_NAME);
   meta_context_add_option_entries (context, gnome_shell_options,
                                    GETTEXT_PACKAGE);
-  meta_context_add_option_group (context, g_irepository_get_option_group ());
+  meta_context_add_option_group (context, gi_repository_get_option_group ());
 
   session_mode = (char *) g_getenv ("GNOME_SHELL_SESSION_MODE");
 

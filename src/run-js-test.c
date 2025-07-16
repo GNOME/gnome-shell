@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <girepository.h>
+#include <girepository/girepository.h>
 #include <gjs/gjs.h>
 
 #include "shell-global.h"
@@ -64,6 +64,7 @@ int
 main (int argc, char **argv)
 {
   GOptionContext *context;
+  g_autoptr (GIRepository) repo = NULL;
   g_autoptr (GError) error = NULL;
   ShellGlobal *global;
   GjsContext *js_context;
@@ -85,8 +86,10 @@ main (int argc, char **argv)
   global = shell_global_get ();
   js_context = _shell_global_get_gjs_context (global);
 
-  g_irepository_prepend_search_path (MUTTER_TYPELIB_DIR);
-  g_irepository_prepend_search_path (SHELL_TYPELIB_DIR);
+  repo = gi_repository_dup_default ();
+
+  gi_repository_prepend_search_path (repo, MUTTER_TYPELIB_DIR);
+  gi_repository_prepend_search_path (repo, SHELL_TYPELIB_DIR);
 
   if (argc < 2)
     {
