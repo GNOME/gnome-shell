@@ -1350,7 +1350,7 @@ export const ScreenshotUI = GObject.registerClass({
             visible: false,
         }));
         this._captureButton.connect('clicked',
-            this._onCaptureButtonClicked.bind(this));
+            () => this._onCaptureButtonClicked().catch(logError));
         this._bottomRowContainer.add_child(this._captureButton);
 
         this._showPointerButtonContainer = new St.BoxLayout({
@@ -1872,9 +1872,13 @@ export const ScreenshotUI = GObject.registerClass({
         return [x, y, w, h];
     }
 
-    _onCaptureButtonClicked() {
+    async _onCaptureButtonClicked() {
         if (this._shotButton.checked) {
-            this._saveScreenshot().catch(logError);
+            try {
+                await this._saveScreenshot();
+            } catch (e) {
+                logError(e);
+            }
             this.close();
         } else {
             // Screencast closes the UI on its own.
@@ -2142,7 +2146,7 @@ export const ScreenshotUI = GObject.registerClass({
             symbol === Clutter.KEY_KP_Enter || symbol === Clutter.KEY_ISO_Enter ||
             ((event.get_state() & Clutter.ModifierType.CONTROL_MASK) &&
              (symbol === Clutter.KEY_c || symbol === Clutter.KEY_C))) {
-            this._onCaptureButtonClicked();
+            this._onCaptureButtonClicked().catch(logError);
             return Clutter.EVENT_STOP;
         }
 
