@@ -2105,7 +2105,7 @@ export const ScreenshotUI = GObject.registerClass({
             source,
             title,
             // Translators: notification body when a screencast was recorded.
-            body: this._screencastPath ? _('Click here to view the video.') : '',
+            body: this._screencastPath ? _('Click here to view the video') : '',
             isTransient: true,
         });
 
@@ -2348,7 +2348,7 @@ function _storeScreenshot(bytes, pixbuf) {
         // Translators: notification title.
         title: _('Screenshot captured'),
         // Translators: notification body when a screenshot was captured.
-        body: _('You can paste the image from the clipboard.'),
+        body: _('You can paste the image from the clipboard'),
         datetime: time,
         gicon: content,
         isTransient: true,
