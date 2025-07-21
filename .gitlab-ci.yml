@@ -34,7 +34,7 @@ default:
   image: $MUTTER_CI_IMAGE
 
 variables:
-  MUTTER_CI_IMAGE: registry.gitlab.gnome.org/gnome/mutter/fedora/42:x86_64-2025-07-14.0
+  MUTTER_CI_IMAGE: registry.gitlab.gnome.org/gnome/mutter/fedora/42:x86_64-2025-07-21.0
   TARBALL_ARTIFACT_PATH: build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz
 
 .pipeline-guard:
