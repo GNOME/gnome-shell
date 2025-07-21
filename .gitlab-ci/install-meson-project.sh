@@ -102,6 +102,11 @@ for destdir in "${DESTDIRS[@]}"; do
     # don't use --destdir when installing to root,
     # so post-install hooks are run
     [[ $destdir == / ]] && destdir=
+
+    # also install dependencies when installing to a separate distdir
+    install_deps=.gitlab-ci/install-common-dependencies.sh
+    [[ "$destdir" && -x $install_deps ]] && $install_deps --destdir $destdir
+
     sudo meson install -C _build ${destdir:+--destdir=$destdir}
 done
 popd
