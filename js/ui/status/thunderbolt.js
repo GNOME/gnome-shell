@@ -139,7 +139,6 @@ class AuthRobot extends Signals.EventEmitter {
     }
 
     close() {
-        this.disconnectAll();
         this._client = null;
     }
 
@@ -224,12 +223,14 @@ class Indicator extends SystemIndicator {
         this._indicator.icon_name = 'thunderbolt-symbolic';
 
         this._client = new Client();
-        this._client.connect('probing-changed', this._onProbing.bind(this));
+        this._client.connectObject(
+            'probing-changed', this._onProbing.bind(this), this);
 
         this._robot =  new AuthRobot(this._client);
-
-        this._robot.connect('enroll-device', this._onEnrollDevice.bind(this));
-        this._robot.connect('enroll-failed', this._onEnrollFailed.bind(this));
+        this._robot.connectObject(
+            'enroll-device', this._onEnrollDevice.bind(this),
+            'enroll-failed', this._onEnrollFailed.bind(this),
+            this);
 
         this.connect('destroy', () => this._onDestroy());
 
