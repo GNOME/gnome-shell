@@ -231,6 +231,8 @@ class Indicator extends SystemIndicator {
         this._robot.connect('enroll-device', this._onEnrollDevice.bind(this));
         this._robot.connect('enroll-failed', this._onEnrollFailed.bind(this));
 
+        this.connect('destroy', () => this._onDestroy());
+
         Main.sessionMode.connect('updated', this._sync.bind(this));
         this._sync();
 
