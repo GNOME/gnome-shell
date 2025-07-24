@@ -127,8 +127,15 @@ static guint signals[LAST_SIGNAL] = { 0, };
 G_DEFINE_TYPE_WITH_PRIVATE (StWidget, st_widget, CLUTTER_TYPE_ACTOR);
 #define ST_WIDGET_PRIVATE(w) ((StWidgetPrivate *)st_widget_get_instance_private (w))
 
-static void st_widget_recompute_style (StWidget    *widget,
-                                       StThemeNode *old_theme_node);
+typedef enum {
+  STYLE_CHANGE_FLAGS_NONE = 0,
+  STYLE_CHANGE_FLAGS_NO_TRANSITIONS = 1 << 0,
+} StyleChangeFlags;
+
+static void st_widget_recompute_style (StWidget         *widget,
+                                       StThemeNode      *old_theme_node,
+                                       StyleChangeFlags  flags);
+
 static gboolean st_widget_real_navigate_focus (StWidget         *widget,
                                                ClutterActor     *from,
                                                StDirectionType   direction);
@@ -476,7 +483,12 @@ st_widget_unmap (ClutterActor *actor)
 }
 
 static void
-notify_children_of_style_change (ClutterActor *self)
+st_widget_style_changed_internal (StWidget         *widget,
+                                  StyleChangeFlags  flags);
+
+static void
+notify_children_of_style_change (ClutterActor     *self,
+                                 StyleChangeFlags  flags)
 {
   ClutterActorIter iter;
   ClutterActor *actor;
@@ -485,9 +497,9 @@ notify_children_of_style_change (ClutterActor *self)
   while (clutter_actor_iter_next (&iter, &actor))
     {
       if (ST_IS_WIDGET (actor))
-        st_widget_style_changed (ST_WIDGET (actor));
+        st_widget_style_changed_internal (ST_WIDGET (actor), flags);
       else
-        notify_children_of_style_change (actor);
+        notify_children_of_style_change (actor, flags);
     }
 }
 
@@ -497,8 +509,9 @@ st_widget_real_style_changed (StWidget *self)
   clutter_actor_queue_redraw ((ClutterActor *) self);
 }
 
-void
-st_widget_style_changed (StWidget *widget)
+static void
+st_widget_style_changed_internal (StWidget         *widget,
+                                  StyleChangeFlags  flags)
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   StThemeNode *old_theme_node = NULL;
@@ -512,22 +525,28 @@ st_widget_style_changed (StWidget *widget)
 
   /* update the style only if we are mapped */
   if (clutter_actor_is_mapped (CLUTTER_ACTOR (widget)))
-    st_widget_recompute_style (widget, old_theme_node);
+    st_widget_recompute_style (widget, old_theme_node, flags);
 
   /* Descend through all children. If the actor is not mapped,
    * children will clear their theme node without recomputing style.
    */
-  notify_children_of_style_change (CLUTTER_ACTOR (widget));
+  notify_children_of_style_change (CLUTTER_ACTOR (widget), flags);
 
   if (old_theme_node)
     g_object_unref (old_theme_node);
+}
+
+void
+st_widget_style_changed (StWidget *widget)
+{
+  st_widget_style_changed_internal (widget, STYLE_CHANGE_FLAGS_NONE);
 }
 
 static void
 on_theme_context_changed (StThemeContext *context,
                           ClutterStage   *stage)
 {
-  notify_children_of_style_change (CLUTTER_ACTOR (stage));
+  notify_children_of_style_change (CLUTTER_ACTOR (stage), STYLE_CHANGE_FLAGS_NO_TRANSITIONS);
 }
 
 static StThemeNode *
@@ -1627,8 +1646,9 @@ on_transition_completed (StThemeNodeTransition *transition,
 }
 
 static void
-st_widget_recompute_style (StWidget    *widget,
-                           StThemeNode *old_theme_node)
+st_widget_recompute_style (StWidget         *widget,
+                           StThemeNode      *old_theme_node,
+                           StyleChangeFlags  flags)
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   StThemeNode *new_theme_node = st_widget_get_theme_node (widget);
@@ -1650,7 +1670,9 @@ st_widget_recompute_style (StWidget    *widget,
   if (!geometry_equal)
     clutter_actor_queue_relayout ((ClutterActor *) widget);
 
-  transition_duration = st_theme_node_get_transition_duration (new_theme_node);
+  transition_duration = (flags & STYLE_CHANGE_FLAGS_NO_TRANSITIONS) != 0
+    ? 0
+    : st_theme_node_get_transition_duration (new_theme_node);
 
   paint_equal = st_theme_node_paint_equal (old_theme_node, new_theme_node);
 
@@ -1725,8 +1747,8 @@ st_widget_ensure_style (StWidget *widget)
 
   if (priv->is_style_dirty)
     {
-      st_widget_recompute_style (widget, NULL);
-      notify_children_of_style_change (CLUTTER_ACTOR (widget));
+      st_widget_recompute_style (widget, NULL, STYLE_CHANGE_FLAGS_NONE);
+      notify_children_of_style_change (CLUTTER_ACTOR (widget), STYLE_CHANGE_FLAGS_NONE);
     }
 }
 
