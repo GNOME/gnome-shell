@@ -345,10 +345,23 @@ static void
 st_theme_context_changed (StThemeContext *context)
 {
   StThemeNode *old_root = context->root_node;
+  g_autoptr (GPtrArray) old_nodes = NULL;
+
   context->root_node = NULL;
-  g_hash_table_remove_all (context->nodes);
+  old_nodes = g_hash_table_steal_all_keys (context->nodes);
 
   g_signal_emit (context, signals[CHANGED], 0);
+
+  /* Force a run of the dispose() vfuncs of theme nodes so that their references
+   * into the theme CSS data get cleared. While theme nodes might outlive this
+   * function (in case buggy user code is holding a reference to them), the theme
+   * CSS data definitely gets freed after this function returns.
+   *
+   * Note that we can't do this before emitting ::changed because during the
+   * signal emission, StWidget needs to access the theme nodes (and therefore the
+   * theme CSS data) for its old/new theme node comparisons.
+   */
+  g_ptr_array_foreach (old_nodes, (GFunc) g_object_run_dispose, NULL);
 
   if (old_root)
     g_object_unref (old_root);
