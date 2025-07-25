@@ -24,12 +24,17 @@
 
 #define EDGE_THRESHOLD 20
 #define DRAG_DISTANCE 80
+#define CANCEL_THRESHOLD 100
+#define CANCEL_TIMEOUT_MS 200
 
 struct _ShellEdgeDragGesture
 {
   ClutterGesture parent;
 
   StSide side;
+
+  unsigned int cancel_timeout_point;
+  guint cancel_timeout_id;
 };
 
 enum
@@ -129,11 +134,11 @@ exceeds_cancel_threshold (ShellEdgeDragGesture *self,
     {
     case ST_SIDE_LEFT:
     case ST_SIDE_RIGHT:
-      return distance_y > distance_x;
+      return distance_y > CANCEL_THRESHOLD;
 
     case ST_SIDE_TOP:
     case ST_SIDE_BOTTOM:
-      return distance_x > distance_y;
+      return distance_x > CANCEL_THRESHOLD;
     }
 
   g_assert_not_reached ();
@@ -189,6 +194,18 @@ shell_edge_drag_gesture_should_handle_sequence (ClutterGesture     *gesture,
   return FALSE;
 }
 
+static gboolean
+on_cancel_timeout (gpointer data)
+{
+  ShellEdgeDragGesture *self = data;
+
+  if (is_near_monitor_edge (self, self->cancel_timeout_point))
+    clutter_gesture_set_state (CLUTTER_GESTURE (self), CLUTTER_GESTURE_STATE_CANCELLED);
+
+  self->cancel_timeout_id = 0;
+  return G_SOURCE_REMOVE;
+}
+
 static void
 shell_edge_drag_gesture_point_began (ClutterGesture *gesture,
                                      unsigned int    point)
@@ -202,6 +219,11 @@ shell_edge_drag_gesture_point_began (ClutterGesture *gesture,
       clutter_gesture_set_state (gesture, CLUTTER_GESTURE_STATE_CANCELLED);
       return;
     }
+
+  self->cancel_timeout_point = point;
+
+  g_assert (self->cancel_timeout_id == 0);
+  self->cancel_timeout_id = g_timeout_add (CANCEL_TIMEOUT_MS, on_cancel_timeout, self);
 }
 
 static void
@@ -210,17 +232,14 @@ shell_edge_drag_gesture_point_moved (ClutterGesture *gesture,
 {
   ShellEdgeDragGesture *self = SHELL_EDGE_DRAG_GESTURE (gesture);
 
-  if (clutter_gesture_get_state (gesture) == CLUTTER_GESTURE_STATE_POSSIBLE &&
-      is_near_monitor_edge (self, point))
-    return;
-
   if (exceeds_cancel_threshold (self, point))
     {
       clutter_gesture_set_state (gesture, CLUTTER_GESTURE_STATE_CANCELLED);
       return;
     }
 
-  if (clutter_gesture_get_state (gesture) == CLUTTER_GESTURE_STATE_POSSIBLE)
+  if (clutter_gesture_get_state (gesture) == CLUTTER_GESTURE_STATE_POSSIBLE &&
+      !is_near_monitor_edge (self, point))
     clutter_gesture_set_state (gesture, CLUTTER_GESTURE_STATE_RECOGNIZING);
 
   if (clutter_gesture_get_state (gesture) == CLUTTER_GESTURE_STATE_RECOGNIZING)
@@ -261,6 +280,18 @@ shell_edge_drag_gesture_point_ended (ClutterGesture *gesture,
                                      unsigned int    point)
 {
   clutter_gesture_set_state (gesture, CLUTTER_GESTURE_STATE_CANCELLED);
+}
+
+static void
+shell_edge_drag_gesture_state_changed (ClutterGesture      *gesture,
+                                       ClutterGestureState  old_state,
+                                       ClutterGestureState  new_state)
+{
+  ShellEdgeDragGesture *self = SHELL_EDGE_DRAG_GESTURE (gesture);
+
+  if (new_state == CLUTTER_GESTURE_STATE_CANCELLED ||
+      new_state == CLUTTER_GESTURE_STATE_COMPLETED)
+    g_clear_handle_id (&self->cancel_timeout_id, g_source_remove);
 }
 
 static void
@@ -319,6 +350,7 @@ shell_edge_drag_gesture_class_init (ShellEdgeDragGestureClass *klass)
   gesture_class->point_began = shell_edge_drag_gesture_point_began;
   gesture_class->point_moved = shell_edge_drag_gesture_point_moved;
   gesture_class->point_ended = shell_edge_drag_gesture_point_ended;
+  gesture_class->state_changed = shell_edge_drag_gesture_state_changed;
 
   gobject_class->set_property = shell_edge_drag_gesture_set_property;
   gobject_class->get_property = shell_edge_drag_gesture_get_property;
