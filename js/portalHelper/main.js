@@ -109,7 +109,7 @@ class PortalSecurityButton extends Gtk.MenuButton {
 
 const PortalWindow = GObject.registerClass(
 class PortalWindow extends Gtk.ApplicationWindow {
-    _init(application, url, timestamp, doneCallback) {
+    _init(application, url, timestamp, statusChangedCallback) {
         super._init({
             application,
             title: _('Hotspot Login'),
@@ -132,7 +132,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this._uri = GLib.Uri.parse(url, HTTP_URI_FLAGS);
         this._everSeenRedirect = false;
         this._originalUrl = url;
-        this._doneCallback = doneCallback;
+        this._statusChangedCallback = statusChangedCallback;
         this._lastRecheck = 0;
         this._recheckAtExit = false;
 
@@ -181,9 +181,9 @@ class PortalWindow extends Gtk.ApplicationWindow {
 
     vfunc_close_request() {
         if (this._recheckAtExit)
-            this._doneCallback(PortalHelperResult.RECHECK);
+            this._statusChangedCallback(PortalHelperResult.RECHECK);
         else
-            this._doneCallback(PortalHelperResult.CANCELLED);
+            this._statusChangedCallback(PortalHelperResult.CANCELLED);
         return false;
     }
 
@@ -242,7 +242,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
             if (uri.get_host() === CONNECTIVITY_CHECK_HOST && this._everSeenRedirect) {
                 // Yay, we got to gnome!
                 decision.ignore();
-                this._doneCallback(PortalHelperResult.COMPLETED);
+                this._statusChangedCallback(PortalHelperResult.COMPLETED);
                 return true;
             } else if (uri.get_host() !== CONNECTIVITY_CHECK_HOST) {
                 this._everSeenRedirect = true;
@@ -268,7 +268,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
         if (shouldRecheck) {
             this._lastRecheck = now;
             this._recheckAtExit = false;
-            this._doneCallback(PortalHelperResult.RECHECK);
+            this._statusChangedCallback(PortalHelperResult.RECHECK);
         } else {
             this._recheckAtExit = true;
         }
@@ -358,7 +358,7 @@ class WebPortalHelper extends Adw.Application {
             return;
 
         top.window = new PortalWindow(this, top.url, top.timestamp, result => {
-            this._dbusImpl.emit_signal('Done', new GLib.Variant('(ou)', [top.connection, result]));
+            this._dbusImpl.emit_signal('StatusChanged', new GLib.Variant('(ou)', [top.connection, result]));
         });
     }
 });
