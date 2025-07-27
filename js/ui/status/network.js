@@ -2015,7 +2015,7 @@ class CaptivePortalHandler extends Signals.EventEmitter {
         Main.panel.closeCalendar();
     }
 
-    _portalHelperDone(parameters) {
+    _portalHelperStatusChanged(parameters) {
         const [path, result] = parameters;
 
         if (result === PortalHelperResult.CANCELLED) {
@@ -2041,9 +2041,9 @@ class CaptivePortalHandler extends Signals.EventEmitter {
                 g_interface_name: PortalHelperInfo.name,
                 g_interface_info: PortalHelperInfo,
             });
-            this._portalHelperProxy.connectSignal('Done',
+            this._portalHelperProxy.connectSignal('StatusChanged',
                 (proxy, emitter, params) => {
-                    this._portalHelperDone(params);
+                    this._portalHelperStatusChanged(params);
                 });
 
             try {
