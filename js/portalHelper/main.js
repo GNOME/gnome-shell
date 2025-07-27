@@ -238,6 +238,9 @@ class PortalWindow extends Gtk.ApplicationWindow {
             return true;
         }
 
+        if (type !== WebKit.PolicyDecisionType.NAVIGATION_ACTION)
+            return false;
+
         const uri = GLib.Uri.parse(request.get_uri(), HTTP_URI_FLAGS);
 
         if (uri.get_host() !== this._uri.get_host() && this._originalUrlWasGnome) {
