@@ -11,7 +11,7 @@
     <method name="Refresh">
       <arg name="connection" type="o" direction="in"/>
     </method>
-    <signal name="Done">
+    <signal name="StatusChanged">
       <arg type="o" name="connection"/>
       <arg type="u" name="result"/>
     </signal>
