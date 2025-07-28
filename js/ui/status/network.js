@@ -2209,6 +2209,9 @@ class Indicator extends SystemIndicator {
             return;
         }
 
+        if (Main.sessionMode.isGreeter)
+            return;
+
         let isPortal = this._client.connectivity === NM.ConnectivityState.PORTAL;
         // For testing, allow interpreting any value != FULL as PORTAL, because
         // LIMITED (no upstream route after the default gateway) is easy to obtain
@@ -2217,12 +2220,14 @@ class Indicator extends SystemIndicator {
         // (but in general we should only prompt a portal if we know there is a portal)
         if (GLib.getenv('GNOME_SHELL_CONNECTIVITY_TEST') != null)
             isPortal ||= this._client.connectivity < NM.ConnectivityState.FULL;
-        if (!isPortal || Main.sessionMode.isGreeter)
-            return;
 
-        this._portalHandler.addConnection(
-            this._mainConnection.get_id(),
-            this._mainConnection.get_path());
+        if (isPortal) {
+            this._portalHandler.addConnection(
+                this._mainConnection.get_id(),
+                this._mainConnection.get_path());
+        } else {
+            this._portalHandler.clear();
+        }
     }
 
     _updateIcon() {
