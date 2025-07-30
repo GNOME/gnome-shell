@@ -208,7 +208,7 @@ export const BarLevel = GObject.registerClass({
                 cr.lineTo(Math.ceil(endX), (height - this._barLevelHeight) / 2);
             }
             cr.lineTo(endX, (height - this._barLevelHeight) / 2);
-            cr.fillPreserve();
+            cr.fill();
         }
 
         /* draw overdrive separator */
