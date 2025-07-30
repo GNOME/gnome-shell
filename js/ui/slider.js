@@ -59,7 +59,7 @@ export const Slider = GObject.registerClass({
         let color = themeNode.get_foreground_color();
         cr.setSourceColor(color);
         cr.arc(handleX, handleY, this._handleRadius, 0, 2 * Math.PI);
-        cr.fillPreserve();
+        cr.fill();
         cr.$dispose();
     }
 
