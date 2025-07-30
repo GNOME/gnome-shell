@@ -156,7 +156,6 @@ export const BarLevel = GObject.registerClass({
         cr.lineTo(endX, (height - this._barLevelHeight) / 2);
         cr.lineTo(xcArcEnd, (height - this._barLevelHeight) / 2);
         cr.setSourceColor(this._barLevelColor);
-        cr.fillPreserve();
         cr.fill();
 
         /* normal progress bar */
@@ -173,7 +172,6 @@ export const BarLevel = GObject.registerClass({
         cr.lineTo(xcArcStart, (height + this._barLevelHeight) / 2);
         if (this._value > 0)
             cr.setSourceColor(this._barLevelActiveColor);
-        cr.fillPreserve();
         cr.fill();
 
         /* overdrive progress barLevel */
@@ -188,7 +186,6 @@ export const BarLevel = GObject.registerClass({
             cr.lineTo(x, (height + this._barLevelHeight) / 2);
             cr.lineTo(x, (height - this._barLevelHeight) / 2);
             cr.setSourceColor(this._barLevelOverdriveColor);
-            cr.fillPreserve();
             cr.fill();
         }
 
