@@ -370,6 +370,7 @@ export const SwipeTracker = GObject.registerClass({
             allowDrag: true,
             allowScroll: true,
             phase: Clutter.EventPhase.BUBBLE,
+            name: 'SwipeTracker',
         });
 
         super._init();
@@ -402,7 +403,7 @@ export const SwipeTracker = GObject.registerClass({
                     ? Clutter.PanAxis.X : Clutter.PanAxis.Y,
             ],
             null);
-        actor.add_action_full('SwipeTracker', params.phase, this._panGesture);
+        actor.add_action_full(params.name, params.phase, this._panGesture);
 
         this._touchpadGesture = new TouchpadSwipeGesture(allowedModes);
         this._touchpadGesture.connect('begin', this._beginTouchpadGesture.bind(this));
