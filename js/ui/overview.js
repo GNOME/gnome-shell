@@ -231,7 +231,11 @@ export class Overview extends Signals.EventEmitter {
         const swipeTracker = new SwipeTracker.SwipeTracker(global.stage,
             Clutter.Orientation.VERTICAL,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
-            {allowDrag: false, allowScroll: false});
+            {
+                allowDrag: false,
+                allowScroll: false,
+                phase: Clutter.EventPhase.CAPTURE,
+            });
         swipeTracker.orientation = Clutter.Orientation.VERTICAL;
         swipeTracker.connect('begin', this._gestureBegin.bind(this));
         swipeTracker.connect('update', this._gestureUpdate.bind(this));

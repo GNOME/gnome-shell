@@ -329,7 +329,10 @@ export class WorkspaceAnimationController {
         const swipeTracker = new SwipeTracker.SwipeTracker(global.stage,
             Clutter.Orientation.HORIZONTAL,
             Shell.ActionMode.NORMAL,
-            {allowDrag: false});
+            {
+                allowDrag: false,
+                phase: Clutter.EventPhase.CAPTURE,
+            });
         swipeTracker.connect('begin', this._switchWorkspaceBegin.bind(this));
         swipeTracker.connect('update', this._switchWorkspaceUpdate.bind(this));
         swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
