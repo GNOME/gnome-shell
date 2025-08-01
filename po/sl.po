@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-07-26 09:42+0000\n"
-"PO-Revision-Date: 2025-07-26 17:15+0200\n"
+"POT-Creation-Date: 2025-08-01 09:04+0000\n"
+"PO-Revision-Date: 2025-08-01 12:44+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -544,31 +544,36 @@ msgstr "Omrežna prijava"
 msgid "Utilities"
 msgstr "Pripomočki"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:275
-msgid "Something’s gone wrong"
-msgstr "Prišlo je do nepričakovane napake"
+#: js/dbusServices/extensions/extensionPrefsDialog.js:71
+msgid "Extension Error"
+msgstr "Napaka razširitve"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:23
-msgid ""
-"We’re very sorry, but there’s been a problem: the settings for this "
-"extension can’t be displayed. We recommend that you report the issue to the "
-"extension authors."
-msgstr ""
-"Prišlo je do napake: nastavitev za to razširitev ni mogoče prikazati. "
-"Priporočljivo je poslati poročilo o hrošču razvijalcem programa."
+#. Translators: %s is an extension name
+#: js/dbusServices/extensions/extensionPrefsDialog.js:104
+#, javascript-format
+msgid "Unable to display the settings for “%s”."
+msgstr "Nastavitev za »%s« ni mogoče prikazati."
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:48
-msgid "Technical Details"
-msgstr "Tehnične podrobnosti"
+#. Translators: Link label in the phrase "Information about this
+#. problem may be available on the extension website"
+#: js/dbusServices/extensions/extensionPrefsDialog.js:110
+msgid "extension website"
+msgstr "spletno mesto za razširitev"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:90
-msgid "Homepage"
-msgstr "Spletna stran"
+#. Translators: %s is "extension website"
+#: js/dbusServices/extensions/extensionPrefsDialog.js:114
+#, javascript-format
+msgid "Information about this problem may be available on the %s."
+msgstr "Informacije o tej težavi so morda na voljo na %s."
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:91
-msgid "Visit extension homepage"
-msgstr "Odpri spletno stran razširitev"
+#: js/dbusServices/extensions/ui/extension-error-page.ui:19
+#: subprojects/extensions-app/data/ui/extension-row.ui:13
+msgid "Error Details"
+msgstr "Podrobnosti napake"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:26
+msgid "Copy Error"
+msgstr "Kopiraj napako"
 
 #: js/gdm/authPrompt.js:156 js/gdm/loginDialog.js:514
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
@@ -1232,7 +1237,7 @@ msgstr "Podrobnosti programa"
 msgid "Quit"
 msgstr "Končaj"
 
-#: js/ui/appMenu.js:160 js/ui/dash.js:248
+#: js/ui/appMenu.js:160 js/ui/dash.js:245
 msgid "Unpin"
 msgstr "Odpni"
 
@@ -1537,13 +1542,13 @@ msgstr "Overitev je spodletela.. Poskusite znova."
 msgid "Windows"
 msgstr "Okna"
 
-#: js/ui/dash.js:204 js/ui/dash.js:250
+#: js/ui/dash.js:201 js/ui/dash.js:247
 msgid "Show Apps"
 msgstr "Pokaži programe"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the bottom of the overview
-#: js/ui/dash.js:408
+#: js/ui/dash.js:405
 msgid "Dash"
 msgstr "Pregledna plošča"
 
@@ -2070,16 +2075,16 @@ msgstr "Pritisnite katerokoli tipko za končanje"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:424
+#: js/ui/panel.js:208
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: js/ui/panel.js:505
+#: js/ui/panel.js:289
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:682
+#: js/ui/panel.js:465
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -2693,11 +2698,11 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
-#: js/ui/status/thunderbolt.js:308
+#: js/ui/status/thunderbolt.js:311
 msgid "Unknown Thunderbolt device"
 msgstr "Neznana naprava Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:309
+#: js/ui/status/thunderbolt.js:312
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2705,20 +2710,20 @@ msgstr ""
 "Med nedejavnostjo je bila zaznana nova. Odklopite napravo in jo znova "
 "priklopite za uporabo."
 
-#: js/ui/status/thunderbolt.js:312
+#: js/ui/status/thunderbolt.js:315
 msgid "Unauthorized Thunderbolt device"
 msgstr "Neznana naprava Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:313
+#: js/ui/status/thunderbolt.js:316
 msgid ""
 "New device has been detected and needs to be authorized by an administrator"
 msgstr "Zaznana je nova naprava, ki jo mora overiti skrbnik sistema."
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:322
 msgid "Thunderbolt authorization error"
 msgstr "Napaka overitve naprave Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:320
+#: js/ui/status/thunderbolt.js:323
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Naprave Thunderbolt ni mogoče overiti: %s"
@@ -3075,10 +3080,6 @@ msgstr[1] "Ob naslednji prijavi bo posodobljena %d razširitev."
 msgstr[2] "Ob naslednji prijavi bosta posodobljeni %d razširitvi."
 msgstr[3] "Ob naslednji prijavi bodo posodobljene %d razširitve."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:13
-msgid "Error Details"
-msgstr "Podrobnosti napake"
-
 #: subprojects/extensions-app/data/ui/extension-row.ui:51
 msgid "Updates Details"
 msgstr "Podrobnosti posodobitve"
@@ -3173,6 +3174,10 @@ msgid ""
 msgstr ""
 "Za iskanje in dodajanje razširitev obiščite spletne strani <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:275
+msgid "Something’s gone wrong"
+msgstr "Prišlo je do nepričakovane napake"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
