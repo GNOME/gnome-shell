@@ -1,3 +1,4 @@
+# Sorted by name as shown in menus, not filename
 nm-connection-editor.desktop              # Advanced Network Configuration
 org.gnome.DejaDup.desktop                 # Backups
 org.gnome.baobab.desktop                  # Disk Usage Analyzer
@@ -5,6 +6,6 @@ org.gnome.DiskUtility.desktop             # Disks
 org.gnome.Logs.desktop                    # Logs
 org.freedesktop.MalcontentControl.desktop # Parental Controls
 org.freedesktop.GnomeAbrt.desktop         # Problem Reporting
-org.gnome.tweaks.desktop                  # Tweaks
 org.gnome.Sysprof.desktop                 # Sysprof
 org.gnome.SystemMonitor.desktop           # System Monitor
+org.gnome.tweaks.desktop                  # Tweaks
