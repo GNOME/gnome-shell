@@ -306,15 +306,15 @@ export const BrightnessScale = GObject.registerClass({
     }
 
     stepUp() {
-        this._setValue(Math.min(1.0, this._brightness + SCALE_VALUE_STEP));
+        this._setValue(Math.min(1.0, this._value + SCALE_VALUE_STEP));
     }
 
     stepDown() {
-        this._setValue(Math.max(0.0, this._brightness - SCALE_VALUE_STEP));
+        this._setValue(Math.max(0.0, this._value - SCALE_VALUE_STEP));
     }
 
     cycleUp() {
-        if (Math.abs(1.0 - this._brightness) < SCALE_VALUE_CHANGE_EPSILON)
+        if (Math.abs(1.0 - this._value) < SCALE_VALUE_CHANGE_EPSILON)
             this._setValue(0.0);
         else
             this.stepUp();
