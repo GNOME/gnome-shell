@@ -1,3 +1,31 @@
+49.beta
+=======
+* Fix showing pointer on motion on lock screen [Carlos; !3781]
+* Replace Evince with Papers in Utilities folder [AsciiWolf; !3611]
+* Improve keyboard navigation in Extensions app [Automeris; !3786]
+* Use new libadwaita ShortcutsDialog in extensions app [Florian; !3788]
+* Optionally allow restart/shutdown on lock screen [Joan; !3797]
+* Fix taking interactive screenshots via D-Bus [Florian; !3803]
+* Improve icon assets in accessibility menu on login screen [Sam; !3791]
+* Group screenshot/screencast notifications [Julian; !3210]
+* Fix pointer scaling glitches in magnifier [Marco; !475]
+* Fix drawing glitch in sliders in RTL locales [Sebastian K., Khalid; !3817]
+* Overhaul UI for extension pref errors [Florian; !3750]
+* Show per-monitor brightness sliders in quick settings [Sebastian W.; !3751]
+* Misc. bug fixes and cleanups [Florian, Marco, Sebastian K., Adrian, Mike,
+  Jonas, Daniel; !3792, !3785, !3794, !3798, !3799, !3804, !3806, !3805,
+  !3807, !3815, !3816, !3746, !3796, !3762]
+
+Contributors:
+  Khalid Abu Shawarib, AsciiWolf, Jonas Dreßler, Mike FABIAN, Carlos Garnacho,
+  Sam Hewitt, Sebastian Keller, Florian Müllner, Automeris naranja,
+  Daniel Rusek, Julian Sparber, Joan Torres Lopez, Marco Trevisan (Treviño),
+  Adrian Vovk, Sebastian Wick
+
+Translators:
+  Aefgh Threenine [th], Martin [sl], Emilio Sepúlveda [ia],
+  Emin Tufan Çetin [tr], Antonio Marin [ro], Fran Diéguez [gl]
+
 49.alpha.1
 ==========
 * Add support for pad dials [Joshua; !3583]
