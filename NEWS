@@ -1,3 +1,18 @@
+48.4
+====
+* Fix taking interactive screenshots via D-Bus [Florian; !3803]
+* Fix pointer scaling glitches in magnifier [Marco; !475]
+* Fix drawing glitch in sliders in RTL locales [Sebastian, Khalid; !3817]
+* Misc. bug fixes and cleanups [Marco, Sebastian, Florian, Mike, Jonas; !3785,
+  !3798, !3799, !3816, !3796, !3750]
+
+Contributors:
+  Khalid Abu Shawarib, Jonas Dreßler, Mike FABIAN, Sebastian Keller,
+  Florian Müllner, Marco Trevisan (Treviño)
+
+Translators:
+  Aefgh Threenine [th]
+
 48.3
 ====
 * Check all modifiers for modifier-scroll [Florian; !3725]
