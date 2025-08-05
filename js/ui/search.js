@@ -14,10 +14,12 @@ import * as RemoteSearch from './remoteSearch.js';
 import {ensureActorVisibleInScrollView} from '../misc/animationUtils.js';
 
 import {Highlighter} from '../misc/util.js';
+import {Spinner} from './animation.js';
 
 const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 
 const MAX_LIST_SEARCH_RESULTS_ROWS = 5;
+const SEARCH_SPINNER_SIZE = 64;
 
 const MaxWidthBox = GObject.registerClass(
 class MaxWidthBox extends St.BoxLayout {
@@ -586,16 +588,23 @@ export const SearchResultsView = GObject.registerClass({
 
         this.add_child(this._scrollView);
 
-        this._statusText = new St.Label({
-            style_class: 'search-statustext',
+        this._statusContainer = new St.BoxLayout({
+            style_class: 'search-statusbox',
+            orientation: Clutter.Orientation.VERTICAL,
+            x_expand: true,
+            y_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
         });
-        this._statusBin = new St.Bin({
-            y_expand: true,
-            child: this._statusText,
-        });
-        this.add_child(this._statusBin);
+
+        this._statusSpinner = new Spinner(SEARCH_SPINNER_SIZE);
+
+        this._statusText = new St.Label({style_class: 'search-statustext'});
+
+        this._statusContainer.add_child(this._statusSpinner);
+        this._statusContainer.add_child(this._statusText);
+
+        this.add_child(this._statusContainer);
 
         this._highlightDefault = false;
         this._defaultResult = null;
@@ -825,13 +834,16 @@ export const SearchResultsView = GObject.registerClass({
         });
 
         this._scrollView.visible = haveResults;
-        this._statusBin.visible = !haveResults;
+        this._statusContainer.visible = !haveResults;
 
         if (!haveResults) {
-            if (this.searchInProgress)
-                this._statusText.set_text(_('Searching…'));
-            else
+            if (this.searchInProgress) {
+                this._statusSpinner.play();
+                this._statusText.set_text(_('Searching'));
+            } else {
+                this._statusSpinner.stop();
                 this._statusText.set_text(_('No results'));
+            }
         }
     }
 
