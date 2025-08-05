@@ -307,6 +307,7 @@ class OutputStreamSlider extends StreamSlider {
         ];
 
         this.menu.setHeader('audio-headphones-symbolic', _('Sound Output'));
+        this.menuButtonAccessibleName = _('Open sound output menu');
     }
 
     _connectStream(stream) {
@@ -382,6 +383,7 @@ class InputStreamSlider extends StreamSlider {
         ];
 
         this.menu.setHeader('audio-input-microphone-symbolic', _('Sound Input'));
+        this.menuButtonAccessibleName = _('Open sound input menu');
     }
 
     _connectStream(stream) {

@@ -39,6 +39,7 @@ class BrightnessItem extends QuickSlider {
     _init() {
         super._init({
             iconName: 'display-brightness-symbolic',
+            menuButtonAccessibleName: _('Open brightness menu'),
         });
 
         this.slider.accessible_name = BRIGHTNESS_NAME;
