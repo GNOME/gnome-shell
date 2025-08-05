@@ -5,7 +5,7 @@ import Shell from 'gi://Shell';
 
 import * as Main from '../ui/main.js';
 
-const SCALE_VALUE_N_STEPS = 10;
+const SCALE_VALUE_N_STEPS = 20;
 const SCALE_VALUE_CHANGE_EPSILON = 0.001;
 
 const KEYBINDING_SCHEMA = 'org.gnome.shell.keybindings';
