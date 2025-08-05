@@ -5,7 +5,7 @@ import Shell from 'gi://Shell';
 
 import * as Main from '../ui/main.js';
 
-const SCALE_VALUE_STEP = 0.1;
+const SCALE_VALUE_N_STEPS = 10;
 const SCALE_VALUE_CHANGE_EPSILON = 0.001;
 
 const KEYBINDING_SCHEMA = 'org.gnome.shell.keybindings';
@@ -273,12 +273,13 @@ export const BrightnessScale = GObject.registerClass({
             false),
     },
 }, class BrightnessScale extends GObject.Object {
-    constructor(name, value = 1.0) {
+    constructor(name, value = 1.0, nSteps = SCALE_VALUE_N_STEPS) {
         super();
 
         this._name = name;
         this._value = value;
         this._locked = false;
+        this._nSteps = nSteps;
     }
 
     get name() {
@@ -304,12 +305,16 @@ export const BrightnessScale = GObject.registerClass({
         this.notify('locked');
     }
 
+    get nSteps() {
+        return this._nSteps;
+    }
+
     stepUp() {
-        this._setValue(Math.min(1.0, this._value + SCALE_VALUE_STEP));
+        this._setValue(Math.min(1.0, this._value + (1.0 / this._nSteps)));
     }
 
     stepDown() {
-        this._setValue(Math.max(0.0, this._value - SCALE_VALUE_STEP));
+        this._setValue(Math.max(0.0, this._value - (1.0 / this._nSteps)));
     }
 
     cycleUp() {
