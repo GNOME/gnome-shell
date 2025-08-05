@@ -273,7 +273,10 @@ class BluetoothDeviceItem extends PopupMenu.PopupBaseMenuItem {
 const BluetoothToggle = GObject.registerClass(
 class BluetoothToggle extends QuickMenuToggle {
     _init(client) {
-        super._init({title: _('Bluetooth')});
+        super._init({
+            title: _('Bluetooth'),
+            menuButtonAccessibleName: _('Open Bluetooth menu'),
+        });
 
         this.menu.setHeader('bluetooth-active-symbolic', _('Bluetooth'));
 

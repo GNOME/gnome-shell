@@ -1542,6 +1542,7 @@ class NMVpnToggle extends NMToggle {
         super();
 
         this.menu.setHeader('network-vpn-symbolic', _('VPN'));
+        this.menuButtonAccessibleName = _('Open VPN menu');
         this.menu.addSettingsAction(_('VPN Settings'),
             'gnome-network-panel.desktop');
     }
@@ -1803,6 +1804,7 @@ class NMWirelessToggle extends NMDeviceToggle {
         });
 
         this.menu.setHeader('network-wireless-symbolic', _('Wi–Fi'));
+        this.menuButtonAccessibleName = _('Open Wi–Fi menu');
         this.menu.addHeaderSuffix(this._scanningSpinner);
         this.menu.addSettingsAction(_('All Networks'),
             'gnome-wifi-panel.desktop');
@@ -1902,6 +1904,7 @@ class NMWiredToggle extends NMDeviceToggle {
         super(NM.DeviceType.ETHERNET);
 
         this.menu.setHeader('network-wired-symbolic', _('Wired Connections'));
+        this.menuButtonAccessibleName = _('Open wired connections menu');
         this.menu.addSettingsAction(_('Wired Settings'),
             'gnome-network-panel.desktop');
     }
@@ -1917,6 +1920,7 @@ class NMBluetoothToggle extends NMDeviceToggle {
         super(NM.DeviceType.BT);
 
         this.menu.setHeader('network-cellular-symbolic', _('Bluetooth Tethers'));
+        this.menuButtonAccessibleName = _('Open Bluetooth tethers menu');
         this.menu.addSettingsAction(_('Bluetooth Settings'),
             'gnome-network-panel.desktop');
     }
@@ -1937,6 +1941,7 @@ class NMModemToggle extends NMDeviceToggle {
         super(NM.DeviceType.MODEM);
 
         this.menu.setHeader('network-cellular-symbolic', _('Mobile Connections'));
+        this.menuButtonAccessibleName = _('Open mobile connections menu');
 
         const settingsLabel = _('Mobile Broadband Settings');
         this._wwanSettings = this.menu.addSettingsAction(settingsLabel,

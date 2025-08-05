@@ -41,7 +41,10 @@ const LAST_PROFILE_KEY = 'last-selected-power-profile';
 const PowerProfilesToggle = GObject.registerClass(
 class PowerProfilesToggle extends QuickMenuToggle {
     _init() {
-        super._init({title: _('Power Mode')});
+        super._init({
+            title: _('Power Mode'),
+            menuButtonAccessibleName: _('Open power profiles menu'),
+        });
 
         this._profileItems = new Map();
 

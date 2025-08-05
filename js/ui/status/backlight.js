@@ -161,6 +161,7 @@ class KeyboardBrightnessToggle extends QuickMenuToggle {
         super._init({
             title: _('Keyboard'),
             iconName: 'display-brightness-symbolic',
+            menuButtonAccessibleName: _('Open keyboard brightness menu'),
         });
 
         this._proxy = new BrightnessProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
