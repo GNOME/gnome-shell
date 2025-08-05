@@ -273,13 +273,12 @@ export const BrightnessScale = GObject.registerClass({
             false),
     },
 }, class BrightnessScale extends GObject.Object {
-    constructor(name, value) {
-        super({
-            value,
-            locked: false,
-        });
+    constructor(name, value = 1.0) {
+        super();
 
         this._name = name;
+        this._value = value;
+        this._locked = false;
     }
 
     get name() {
@@ -334,7 +333,7 @@ const MonitorBrightnessScale = GObject.registerClass({
         'backlights-changed': {},
     },
 }, class MonitorBrightnessScale extends BrightnessScale {
-    constructor(monitor, value) {
+    constructor(monitor, value = 1.0) {
         const name = monitor.get_monitors()[0].get_display_name();
 
         super(name, value);
