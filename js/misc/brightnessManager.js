@@ -161,7 +161,12 @@ export const BrightnessManager = GObject.registerClass({
         if (monitors.length === 0) {
             this._globalScale = null;
         } else if (!this._globalScale) {
-            this._globalScale = new BrightnessScale(_('Brightness'), 1.0);
+            // Handle scales with just a few steps
+            const maxSteps = Math.max(...[...this._monitorScales.values()]
+                .map(s => s.nSteps));
+            const nSteps = Math.min(maxSteps, SCALE_VALUE_N_STEPS);
+
+            this._globalScale = new BrightnessScale(_('Brightness'), 1.0, nSteps);
             this._globalScale.connect('notify::value', () => {
                 if (this._inhibitUpdates)
                     return;
@@ -341,7 +346,16 @@ const MonitorBrightnessScale = GObject.registerClass({
     constructor(monitor, value = 1.0) {
         const name = monitor.get_monitors()[0].get_display_name();
 
-        super(name, value);
+        // Handle backlights with just a few steps
+        const maxSteps = Math.max(...monitor.get_monitors()
+            .filter(m => m.get_backlight() && m.is_active())
+            .map(m => {
+                const b = m.get_backlight();
+                return b.brightnessMax - b.brightnessMin;
+            }));
+        const nSteps = Math.min(maxSteps, SCALE_VALUE_N_STEPS);
+
+        super(name, value, nSteps);
 
         this._monitor = monitor;
         this._currentBacklightBrightness = -1;
