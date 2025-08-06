@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-03-27 09:41+0000\n"
-"PO-Revision-Date: 2025-03-28 13:28+0800\n"
-"Last-Translator: Cheng-Chia Tseng <zerngjia@gmail.com>\n"
+"POT-Creation-Date: 2025-08-03 18:53+0000\n"
+"PO-Revision-Date: 2025-08-06 10:47+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <http://darkbear.mercusysddns.com/"
 "projects/gnome-45/gnome-shell-po-ui-main/zh_Hant/>\n"
 "Language: zh_TW\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -98,7 +98,7 @@ msgid "Open new window of pinned app 9"
 msgstr "開啟自選程式 9 的新視窗"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2275
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2279
 msgid "Screenshots"
 msgstr "螢幕快照"
 
@@ -123,7 +123,7 @@ msgid "Record a screencast interactively"
 msgstr "啟動螢幕錄影工具"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:3 js/ui/messageTray.js:1307
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1307
 msgid "System"
 msgstr "系統"
 
@@ -147,11 +147,11 @@ msgstr "顯示概覽畫面"
 msgid "Show all apps"
 msgstr "顯示所有程式"
 
-#: data/org.gnome.Shell.desktop.in.in:4
+#: data/org.gnome.Shell.desktop.in.in:3
 msgid "GNOME Shell"
 msgstr "GNOME Shell"
 
-#: data/org.gnome.Shell.desktop.in.in:5
+#: data/org.gnome.Shell.desktop.in.in:4
 msgid "Window management and application launching"
 msgstr "兼具視窗管理器與應用程式啟動器的使用者介面"
 
@@ -511,27 +511,27 @@ msgid "The location for which to show a forecast"
 msgstr "顯示預報的位置"
 
 #. Keep in sync with subprojects/extensions-app
-#: data/org.gnome.Shell.Extensions.desktop.in.in:5
+#: data/org.gnome.Shell.Extensions.desktop.in.in:4
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:3
 #: subprojects/extensions-app/data/ui/extensions-window.ui:57
 msgid "Extensions"
 msgstr "擴充套件"
 
-#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:2
 msgid "Network Login"
 msgstr "網路登入"
 
-#: data/X-GNOME-Shell-Utilities.directory.desktop.in:3
+#: data/X-GNOME-Shell-Utilities.directory.desktop.in:2
 msgid "Utilities"
 msgstr "公用程式"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:15
+#: js/dbusServices/extensions/ui/extension-error-page.ui:12
 #: subprojects/extensions-app/data/ui/extensions-window.ui:275
 msgid "Something’s gone wrong"
 msgstr "有些地方出錯了"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:23
+#: js/dbusServices/extensions/ui/extension-error-page.ui:20
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -540,19 +540,19 @@ msgstr ""
 "我們非常抱歉發生這個問題：無法顯示該擴充套件的設定畫面；建議將此問題回報給擴"
 "充套件的作者。"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:48
+#: js/dbusServices/extensions/ui/extension-error-page.ui:45
 msgid "Technical Details"
 msgstr "技術細節"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:90
+#: js/dbusServices/extensions/ui/extension-error-page.ui:87
 msgid "Homepage"
 msgstr "首頁"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:91
+#: js/dbusServices/extensions/ui/extension-error-page.ui:88
 msgid "Visit extension homepage"
 msgstr "造訪擴充套件首頁"
 
-#: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
+#: js/gdm/authPrompt.js:156 js/gdm/loginDialog.js:465
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -560,7 +560,7 @@ msgstr "造訪擴充套件首頁"
 msgid "Cancel"
 msgstr "取消"
 
-#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
+#: js/gdm/authPrompt.js:324 js/ui/components/networkAgent.js:214
 #: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
 #: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
 #: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
@@ -568,12 +568,12 @@ msgstr "取消"
 msgid "Password"
 msgstr "密碼"
 
-#: js/gdm/loginDialog.js:328
+#: js/gdm/loginDialog.js:326
 msgid "Choose Session"
 msgstr "選擇作業階段"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:426
+#: js/gdm/loginDialog.js:423
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -584,7 +584,7 @@ msgstr ""
 "作業階段中登出或強制停止它。"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:429
+#: js/gdm/loginDialog.js:426
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -594,7 +594,7 @@ msgstr ""
 "中登出或強制停止它。"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:432
+#: js/gdm/loginDialog.js:429
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -605,7 +605,7 @@ msgstr ""
 "作業階段登出或強制停止它。"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:435
+#: js/gdm/loginDialog.js:432
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -614,45 +614,45 @@ msgstr ""
 "無法登入，因為 %s 的作業階段已在運行。要登入，您必須從作業階段中登出或強制停"
 "止它。"
 
-#: js/gdm/loginDialog.js:444
+#: js/gdm/loginDialog.js:441
 msgid "Session Already Running"
 msgstr "作業階段已在執行中"
 
-#: js/gdm/loginDialog.js:456
+#: js/gdm/loginDialog.js:453
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
 msgstr "強制停止將退出任何正在運行的程式和程序，並可能導致資料遺失"
 
-#: js/gdm/loginDialog.js:476
+#: js/gdm/loginDialog.js:473
 msgid "Force Stop"
 msgstr "強制停止"
 
-#: js/gdm/loginDialog.js:554
+#: js/gdm/loginDialog.js:551
 msgid "Not listed?"
 msgstr "沒有列出來？"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1071
+#: js/gdm/loginDialog.js:1072
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "（例如： user 或 %s）"
 
-#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1077 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "使用者名稱"
 
-#: js/gdm/loginDialog.js:1142
+#: js/gdm/loginDialog.js:1143
 msgid "Login Attempt Timed Out"
 msgstr "登入嘗試逾時"
 
-#: js/gdm/loginDialog.js:1143
+#: js/gdm/loginDialog.js:1144
 msgid "Login took too long, please try again"
 msgstr "登入時間過長，請再試一次"
 
-#: js/gdm/loginDialog.js:1492
+#: js/gdm/loginDialog.js:1493
 msgid "Login Window"
 msgstr "登入視窗"
 
@@ -672,103 +672,103 @@ msgstr "（或是將手指掃過指紋辨識器）"
 msgid "(or place finger on reader)"
 msgstr "（或是將手指置於指紋辨識器上）"
 
-#: js/misc/breakManager.js:765
+#: js/misc/breakManager.js:770
 msgid "Break complete sound"
 msgstr "休息結束聲"
 
-#: js/misc/breakManager.js:982
+#: js/misc/breakManager.js:980
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d 秒"
 
-#: js/misc/breakManager.js:988
+#: js/misc/breakManager.js:986
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d 分鐘"
 
-#: js/misc/breakManager.js:994
+#: js/misc/breakManager.js:992
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d 小時"
 
-#: js/misc/breakManager.js:1000
+#: js/misc/breakManager.js:998
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] "%d 天"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1083
+#: js/misc/breakManager.js:1081
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "%s 後休息"
 
-#: js/misc/breakManager.js:1091
+#: js/misc/breakManager.js:1089
 msgid "Movement Break Soon"
 msgstr "即將休息活動身體"
 
-#: js/misc/breakManager.js:1094
+#: js/misc/breakManager.js:1092
 msgid "Eyesight Break Soon"
 msgstr "即將休息保健視力"
 
-#: js/misc/breakManager.js:1097
+#: js/misc/breakManager.js:1095
 msgid "Break Soon"
 msgstr "即將休息"
 
-#: js/misc/breakManager.js:1141
+#: js/misc/breakManager.js:1140
 msgid "Movement Break in Progress"
 msgstr "休息活動身體中"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1144
+#: js/misc/breakManager.js:1143
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "繼續活動身體 %s"
 
-#: js/misc/breakManager.js:1150
+#: js/misc/breakManager.js:1149
 msgid "Eyesight Break in Progress"
 msgstr "休息保健視力中"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1153
+#: js/misc/breakManager.js:1152
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "繼續看看別處 %s"
 
-#: js/misc/breakManager.js:1159
+#: js/misc/breakManager.js:1158
 msgid "Break in Progress"
 msgstr "休息中"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1162
+#: js/misc/breakManager.js:1161
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "您的休息時間還有 %s"
 
-#: js/misc/breakManager.js:1201
+#: js/misc/breakManager.js:1200
 msgid "Time for a Movement Break"
 msgstr "身體活動休息時間"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1204
+#: js/misc/breakManager.js:1203
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "離開裝置休息一下，並活動身體 %s"
 
-#: js/misc/breakManager.js:1210
+#: js/misc/breakManager.js:1209
 msgid "Time for an Eyesight Break"
 msgstr "視力保健休息時間"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1213
+#: js/misc/breakManager.js:1212
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -776,54 +776,56 @@ msgid_plural ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
 msgstr[0] "離開螢幕休息一下。看至少 6 公尺外的地方，至少 %s"
 
-#: js/misc/breakManager.js:1219
+#: js/misc/breakManager.js:1218
 msgid "Time for a Break"
 msgstr "休息時間"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1222
+#: js/misc/breakManager.js:1221
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
 msgstr[0] "是時候該休息一下囉。請離開裝置 %s！"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1244
+#: js/misc/breakManager.js:1245
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] "您 %s前就該休息囉"
 
-#: js/misc/breakManager.js:1250
+#: js/misc/breakManager.js:1251
 msgid "Break Overdue"
 msgstr "超時休息"
 
-#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1264
+#: js/misc/breakManager.js:1267
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "您的休息時間還有 %s"
 
-#: js/misc/breakManager.js:1270
+#: js/misc/breakManager.js:1273
 msgid "Break Interrupted"
 msgstr "休息中斷"
 
-#: js/misc/breakManager.js:1341
+#. Translators: As in "Delay the break"
+#: js/misc/breakManager.js:1351
 msgid "Delay"
 msgstr "延遲"
 
-#: js/misc/breakManager.js:1362 js/ui/welcomeDialog.js:61
+#. Translators: As in "Skip the break"
+#: js/misc/breakManager.js:1373 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "略過"
 
-#: js/misc/breakManager.js:1383
+#. Translators: As in "Take the break"
+#: js/misc/breakManager.js:1395
 msgid "Take"
 msgstr "休息"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1446
+#: js/misc/breakManager.js:1458
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -924,25 +926,25 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "鎖定螢幕旋轉"
 
-#: js/misc/timeLimitsManager.js:338
+#: js/misc/timeLimitsManager.js:342
 msgid "GNOME needs to save screen time data"
 msgstr "GNOME 需要儲存螢幕使用時間資料"
 
-#: js/misc/timeLimitsManager.js:1102
+#: js/misc/timeLimitsManager.js:1123
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "螢幕使用時間限制還有 %d 分鐘"
 
-#: js/misc/timeLimitsManager.js:1109
+#: js/misc/timeLimitsManager.js:1130
 msgid "Your screen time limit is approaching"
 msgstr "您的螢幕使用時間限制快到囉"
 
-#: js/misc/timeLimitsManager.js:1123
+#: js/misc/timeLimitsManager.js:1144
 msgid "Screen Time Limit Reached"
 msgstr "已達螢幕使用時間限制"
 
-#: js/misc/timeLimitsManager.js:1124
+#: js/misc/timeLimitsManager.js:1145
 msgid "It’s time to stop using the device"
 msgstr "是時候該停止使用這個裝置囉"
 
@@ -971,7 +973,7 @@ msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 小時前"
 
-#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:183
+#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:184
 msgid "Yesterday"
 msgstr "昨天"
 
@@ -1465,29 +1467,29 @@ msgid "%A %B %e %Y"
 msgstr "%Y年%-m月%-d日 %A"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:172
+#: js/ui/dateMenu.js:173
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-m月%-d日"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:175
+#: js/ui/dateMenu.js:176
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%Y年%-m月%-d日"
 
-#: js/ui/dateMenu.js:181
+#: js/ui/dateMenu.js:182
 msgid "Today"
 msgstr "今天"
 
-#: js/ui/dateMenu.js:185
+#: js/ui/dateMenu.js:186
 msgid "Tomorrow"
 msgstr "明天"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:216
+#: js/ui/dateMenu.js:217
 msgctxt "event list time"
 msgid "All Day"
 msgstr "全天"
@@ -1495,39 +1497,39 @@ msgstr "全天"
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
 #.
-#: js/ui/dateMenu.js:238
+#: js/ui/dateMenu.js:239
 msgid "%m/%d"
 msgstr "%m/%d"
 
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:290
 msgid "No Events"
 msgstr "沒有行程"
 
-#: js/ui/dateMenu.js:411
+#: js/ui/dateMenu.js:412
 msgid "Add World Clocks…"
 msgstr "加入世界時鐘…"
 
-#: js/ui/dateMenu.js:412
+#: js/ui/dateMenu.js:413
 msgid "World Clocks"
 msgstr "世界時鐘"
 
-#: js/ui/dateMenu.js:702
+#: js/ui/dateMenu.js:704
 msgid "Loading…"
 msgstr "正在載入…"
 
-#: js/ui/dateMenu.js:712
+#: js/ui/dateMenu.js:714
 msgid "Go Online for Weather Information"
 msgstr "連上網路取得天氣資訊"
 
-#: js/ui/dateMenu.js:714
+#: js/ui/dateMenu.js:716
 msgid "Weather Information Unavailable"
 msgstr "無法取得天氣資訊"
 
-#: js/ui/dateMenu.js:724
+#: js/ui/dateMenu.js:726
 msgid "Weather"
 msgstr "天氣"
 
-#: js/ui/dateMenu.js:726
+#: js/ui/dateMenu.js:728
 msgid "Select Weather Location…"
 msgstr "選取天氣位置…"
 
@@ -1621,12 +1623,12 @@ msgstr[0] "系統會在 %d 秒後重新啟動並安裝更新"
 #: js/ui/endSessionDialog.js:119 js/ui/endSessionDialog.js:140
 msgctxt "button"
 msgid "Restart & Install"
-msgstr "重新啟動 & 安裝"
+msgstr "重新啟動並安裝"
 
 #: js/ui/endSessionDialog.js:121
 msgctxt "button"
 msgid "Install & Power Off"
-msgstr "安裝 & 關機"
+msgstr "安裝並關機"
 
 #: js/ui/endSessionDialog.js:122
 msgctxt "checkbox"
@@ -1966,15 +1968,15 @@ msgstr "開啟選單"
 msgid "Run a Command"
 msgstr "執行命令"
 
-#: js/ui/runDialog.js:76
+#: js/ui/runDialog.js:79
 msgid "Press ESC to close"
 msgstr "按下 ESC 鍵關閉"
 
-#: js/ui/runDialog.js:253
+#: js/ui/runDialog.js:256
 msgid "Restart is not available on Wayland"
 msgstr "使用《Wayland》時無法重新啟動"
 
-#: js/ui/runDialog.js:258
+#: js/ui/runDialog.js:261
 msgid "Restarting…"
 msgstr "重新啟動…"
 
@@ -2034,79 +2036,79 @@ msgstr "顯示滑鼠指標"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1994
+#: js/ui/screenshot.js:1998
 msgid "Screencasts"
 msgstr "螢幕錄影"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:1999
+#: js/ui/screenshot.js:2003
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "螢幕錄影 %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2045
+#: js/ui/screenshot.js:2049
 msgid "Screencast recorded"
 msgstr "已錄製螢幕錄影"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2058
+#: js/ui/screenshot.js:2062
 msgid "Screencast failed to start"
 msgstr "螢幕錄影無法啟動"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2064
+#: js/ui/screenshot.js:2068
 msgid "Screencast ended: Out of disk space"
 msgstr "螢幕錄影中止：磁碟空間不足"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2070
+#: js/ui/screenshot.js:2074
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "螢幕錄影未預期的結束，請再試一次"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2073
+#: js/ui/screenshot.js:2077
 msgid "Screencast ended unexpectedly"
 msgstr "螢幕錄影未預期的結束"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2330
+#: js/ui/screenshot.js:2087 js/ui/screenshot.js:2334
 msgid "Screenshot"
 msgstr "螢幕快照"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2090
+#: js/ui/screenshot.js:2094
 msgid "Click here to view the video."
 msgstr "點擊此處檢視影片。"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2346
+#: js/ui/screenshot.js:2102 js/ui/screenshot.js:2350
 msgid "Show in Files"
 msgstr "使用《檔案》開啟"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2288
+#: js/ui/screenshot.js:2292
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "螢幕快照 %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2336
+#: js/ui/screenshot.js:2340
 msgid "Screenshot captured"
 msgstr "已擷取螢幕畫面"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2338
+#: js/ui/screenshot.js:2342
 msgid "You can paste the image from the clipboard."
 msgstr "您可以自剪貼簿中貼上螢幕快照。"
 
-#: js/ui/screenshot.js:2397 js/ui/screenshot.js:2561
+#: js/ui/screenshot.js:2401 js/ui/screenshot.js:2565
 msgid "Screenshot taken"
 msgstr "已擷取螢幕畫面"
 
@@ -2311,7 +2313,7 @@ msgstr "連線至「%s」"
 msgid "Bluetooth"
 msgstr "藍牙"
 
-#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1909
+#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1920
 msgid "Bluetooth Settings"
 msgstr "藍牙設定值"
 
@@ -2388,92 +2390,92 @@ msgstr "允許存取"
 msgid "<unknown>"
 msgstr "<未知>"
 
-#: js/ui/status/network.js:1059
+#: js/ui/status/network.js:1060
 msgid "Secure"
 msgstr "安全"
 
-#: js/ui/status/network.js:1059
+#: js/ui/status/network.js:1060
 msgid "Not secure"
 msgstr "不安全"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "訊號強度 %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1062
+#: js/ui/status/network.js:1063
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s，%s，%s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1164
+#: js/ui/status/network.js:1165
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s熱點"
 
-#: js/ui/status/network.js:1435
+#: js/ui/status/network.js:1446
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "已連線 %d 個"
 
-#: js/ui/status/network.js:1533 js/ui/status/network.js:1549
+#: js/ui/status/network.js:1544 js/ui/status/network.js:1560
 msgid "VPN"
 msgstr "VPN 網路"
 
-#: js/ui/status/network.js:1534
+#: js/ui/status/network.js:1545
 msgid "VPN Settings"
 msgstr "VPN 設定值"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1805
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1796
+#: js/ui/status/network.js:1807
 msgid "All Networks"
 msgstr "所有的網路"
 
-#: js/ui/status/network.js:1893
+#: js/ui/status/network.js:1904
 msgid "Wired Connections"
 msgstr "有線網路連線"
 
-#: js/ui/status/network.js:1894
+#: js/ui/status/network.js:1905
 msgid "Wired Settings"
 msgstr "有線網路設定值"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1919
 msgid "Bluetooth Tethers"
 msgstr "藍牙分享網路"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1915
+#: js/ui/status/network.js:1926
 msgid "Tether"
 msgstr "分享網路"
 
-#: js/ui/status/network.js:1928
+#: js/ui/status/network.js:1939
 msgid "Mobile Connections"
 msgstr "行動網路連線"
 
-#: js/ui/status/network.js:1930
+#: js/ui/status/network.js:1941
 msgid "Mobile Broadband Settings"
 msgstr "行動寬頻設定值"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1939
+#: js/ui/status/network.js:1950
 msgid "Mobile"
 msgstr "行動網路"
 
-#: js/ui/status/network.js:1973
+#: js/ui/status/network.js:1984
 msgid "Sign Into Wi–Fi Network"
 msgstr "登入 Wi-Fi 網路"
 
-#: js/ui/status/network.js:2160
+#: js/ui/status/network.js:2171
 msgid "Connection failed"
 msgstr "連線失敗"
 
-#: js/ui/status/network.js:2161
+#: js/ui/status/network.js:2172
 msgid "Activation of network connection failed"
 msgstr "啟動網路連線失敗"
 
@@ -2512,7 +2514,7 @@ msgstr "停止螢幕錄影"
 msgid "Stop Screen Sharing"
 msgstr "停止螢幕分享"
 
-#: js/ui/status/rfkill.js:99
+#: js/ui/status/rfkill.js:97
 msgid "Airplane Mode"
 msgstr "飛航模式"
 
@@ -2546,30 +2548,30 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "鎖定螢幕"
 
-#: js/ui/status/thunderbolt.js:308
+#: js/ui/status/thunderbolt.js:311
 msgid "Unknown Thunderbolt device"
 msgstr "未知的 Thunderbolt 裝置"
 
-#: js/ui/status/thunderbolt.js:309
+#: js/ui/status/thunderbolt.js:312
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
 msgstr "您離開後有偵測到新裝置。請中斷並重新連接該裝置便能開始使用。"
 
-#: js/ui/status/thunderbolt.js:312
+#: js/ui/status/thunderbolt.js:315
 msgid "Unauthorized Thunderbolt device"
 msgstr "未經授權的 Thunderbolt 裝置"
 
-#: js/ui/status/thunderbolt.js:313
+#: js/ui/status/thunderbolt.js:316
 msgid ""
 "New device has been detected and needs to be authorized by an administrator"
 msgstr "偵測到新裝置，需由系統管理員授權"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:322
 msgid "Thunderbolt authorization error"
 msgstr "Thunderbolt 授權錯誤"
 
-#: js/ui/status/thunderbolt.js:320
+#: js/ui/status/thunderbolt.js:323
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "無法授權該 Thunderbolt 裝置：%s"
@@ -2835,19 +2837,19 @@ msgstr ""
 "《GNOME 擴充套件》能管理擴充套件更新、調整擴充套件偏好設定、移除或停用不想用"
 "的擴充套件等。"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
 msgid "Main Window"
 msgstr "主視窗"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
 msgid "Available Updates"
 msgstr "可用的更新"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:80
 msgid "Search View"
 msgstr "搜尋檢視"
 
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:6
 msgid "Configure GNOME Shell Extensions"
 msgstr "設定《GNOME Shell》的擴充套件"
 
@@ -3006,11 +3008,11 @@ msgstr "沒有已安裝的擴充套件"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://"
+"extensions.gnome.org\">extensions.gnome.org</a>."
 msgstr ""
-"要尋找並加入擴充套件，可以造訪 <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>。"
+"要尋找並加入擴充套件，可以造訪 <a href=\"https://"
+"extensions.gnome.org\">extensions.gnome.org</a>。"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
@@ -3082,8 +3084,8 @@ msgstr "描述"
 #: subprojects/extensions-tool/src/command-create.c:416
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
+"This should be in the format of an email address "
+"(clicktofocus@janedoe.example.com)\n"
 msgstr ""
 "UUID 是您擴充套件的全域唯一識別碼。\n"
 "格式應該要像電子信箱位址 (clicktofocus@janedoe.example.com)\n"
@@ -3461,27 +3463,27 @@ msgstr "安裝擴充套件組"
 msgid "Use “%s” to get detailed help.\n"
 msgstr "使用「%s」以取得詳細說明。\n"
 
-#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:3
 msgid "Plain"
 msgstr "空白"
 
-#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
 msgid "An empty extension"
 msgstr "空白的擴充套件"
 
-#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:3
 msgid "Indicator"
 msgstr "指示器"
 
-#: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
 msgid "Add an icon to the top bar"
 msgstr "在頂端列加入一個圖示"
 
-#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:3
 msgid "Quick Settings Item"
 msgstr "快速設定項目"
 
-#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:5
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
 msgid "Add an item to quick settings"
 msgstr "將項目加入快速設定"
 
