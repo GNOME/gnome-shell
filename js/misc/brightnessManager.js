@@ -140,18 +140,6 @@ export const BrightnessManager = GObject.registerClass({
                     .some(m => m.get_backlight() && m.is_active());
             });
 
-        if (monitors.length === 0) {
-            this._globalScale = null;
-        } else if (!this._globalScale) {
-            this._globalScale = new BrightnessScale(_('Brightness'), 1.0);
-            this._globalScale.connect('notify::value', () => {
-                if (this._inhibitUpdates)
-                    return;
-                this._globalScaleChanged = true;
-                this._sync();
-            });
-        }
-
         this._monitorScales.clear();
 
         for (const monitor of monitors) {
@@ -168,6 +156,18 @@ export const BrightnessManager = GObject.registerClass({
                 }, this);
 
             this._monitorScales.set(monitor, scale);
+        }
+
+        if (monitors.length === 0) {
+            this._globalScale = null;
+        } else if (!this._globalScale) {
+            this._globalScale = new BrightnessScale(_('Brightness'), 1.0);
+            this._globalScale.connect('notify::value', () => {
+                if (this._inhibitUpdates)
+                    return;
+                this._globalScaleChanged = true;
+                this._sync();
+            });
         }
 
         if (this._globalScale)
