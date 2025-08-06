@@ -431,7 +431,7 @@ handle_upload (int argc, char *argv[], gboolean do_help)
       .arg = G_OPTION_ARG_NONE, .arg_data = &tos_accepted,
       .description = _("Accept the terms of service at https://extensions.gnome.org/upload/") },
     { .long_name = G_OPTION_REMAINING,
-      .arg_description = "FILE…",
+      .arg_description = _("FILE…"),
       .arg = G_OPTION_ARG_FILENAME_ARRAY, .arg_data = &filenames },
     { NULL }
   };
