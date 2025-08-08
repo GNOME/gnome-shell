@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-08-03 08:20+0000\n"
-"PO-Revision-Date: 2025-08-03 16:59+0200\n"
+"POT-Creation-Date: 2025-08-08 21:46+0000\n"
+"PO-Revision-Date: 2025-08-09 00:32+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -935,7 +935,7 @@ msgstr[1] "Odmor čez %d sekundo"
 msgstr[2] "Odmor čez %d sekundi"
 msgstr[3] "Odmor čez %d sekunde"
 
-#: js/misc/brightnessManager.js:146 js/ui/status/brightness.js:10
+#: js/misc/brightnessManager.js:169 js/ui/status/brightness.js:10
 msgid "Brightness"
 msgstr "Svetlost"
 
@@ -2268,15 +2268,15 @@ msgstr "Prilepite lahko sliko iz odložišča."
 msgid "Screenshot taken"
 msgstr "Zaslonska slika je zajeta"
 
-#: js/ui/search.js:832
-msgid "Searching…"
-msgstr "Iskanje …"
+#: js/ui/search.js:842
+msgid "Searching"
+msgstr "Poteka iskanje"
 
-#: js/ui/search.js:834
+#: js/ui/search.js:845
 msgid "No results"
 msgstr "Ni najdenih zadetkov."
 
-#: js/ui/search.js:965
+#: js/ui/search.js:977
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2806,23 +2806,23 @@ msgstr "Le vgrajeno"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:384
+#: js/ui/unlockDialog.js:413
 msgid "%A %B %-d"
 msgstr "%A %B %-d"
 
-#: js/ui/unlockDialog.js:390
+#: js/ui/unlockDialog.js:419
 msgid "Swipe up to unlock"
 msgstr "Povlecite navzgor za odklepanje"
 
-#: js/ui/unlockDialog.js:391
+#: js/ui/unlockDialog.js:420
 msgid "Click or press a key to unlock"
 msgstr "Kliknite, ali pa pritisnite poljubno tipko za prikaz prijavnega okna"
 
-#: js/ui/unlockDialog.js:576
+#: js/ui/unlockDialog.js:605
 msgid "Unlock Window"
 msgstr "Odkleni okno"
 
-#: js/ui/unlockDialog.js:585
+#: js/ui/unlockDialog.js:614
 msgid "Log in as another user"
 msgstr "Prijavi z drugim uporabniškim imenom"
 
@@ -2948,23 +2948,23 @@ msgstr "Premakni na zaslon desno"
 msgid "Close"
 msgstr "Zapri"
 
-#: src/main.c:512 subprojects/extensions-tool/src/main.c:336
+#: src/main.c:515 subprojects/extensions-tool/src/main.c:336
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: src/main.c:518
+#: src/main.c:521
 msgid "Mode used by GDM for login screen"
 msgstr "Način, uporabljen v upravljalniku GDM kot prijavni zaslon"
 
-#: src/main.c:524
+#: src/main.c:527
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Uporabi poseben način, na primer »gdm« za prijavni zaslon"
 
-#: src/main.c:530
+#: src/main.c:533
 msgid "List possible modes"
 msgstr "Seznam mogočih načinov"
 
-#: src/main.c:536
+#: src/main.c:539
 msgid "Force animations to be enabled"
 msgstr "Vsili omogočanje animacij"
 
@@ -3016,15 +3016,15 @@ msgstr ""
 "Program Razširitve GNOME omogoča nameščanje in posodabljanje razširitev, "
 "prilagajanje nastavitev in upravljanje njihovega delovanja."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:71
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
 msgid "Main Window"
 msgstr "Glavno okno"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:75
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:81
 msgid "Available Updates"
 msgstr "Razpoložljive posodobitve"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:79
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:85
 msgid "Search View"
 msgstr "Iskalni pogled"
 
@@ -3574,6 +3574,10 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-upload.c:432
 msgid "Accept the terms of service at https://extensions.gnome.org/upload/"
 msgstr "Sprejmite pogoje storitve na https://extensions.gnome.org/upload/"
+
+#: subprojects/extensions-tool/src/command-upload.c:434
+msgid "FILE…"
+msgstr "DATOTEKA…"
 
 #: subprojects/extensions-tool/src/command-upload.c:443
 msgid "Upload new extension versions"
