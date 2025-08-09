@@ -279,6 +279,13 @@ dist:
     - mkdir -m 1777 /tmp/.X11-unix
   script:
     - dbus-run-session meson dist -C build --include-subprojects
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - build/meson-logs/testlog.txt
+    reports:
+      junit: build/meson-logs/testlog.junit.xml
+    when: on_failure
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
