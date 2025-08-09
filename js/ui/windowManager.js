@@ -149,7 +149,7 @@ class WindowDimmer extends Clutter.BrightnessContrastEffect {
         });
 
         this.actor.ease_property(`@effects.${this.name}.brightness`, color, {
-            mode: Clutter.AnimationMode.LINEAR,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: (dimmed ? DIM_TIME : UNDIM_TIME) * (animate ? 1 : 0),
             onStopped: () => this._syncEnabled(dimmed),
         });

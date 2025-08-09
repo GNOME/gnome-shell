@@ -74,7 +74,7 @@ export class Ripples {
             delay,
             duration,
             animationRequired,
-            mode: Clutter.AnimationMode.LINEAR,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => (ripple.visible = false),
         });
     }

@@ -167,12 +167,14 @@ export const CloseDialog = GObject.registerClass({
         global.connectObject(
             'shutdown', () => this._onWait(), this._dialog);
 
-        this._dialog._dialog.scale_y = 0;
         this._dialog._dialog.set_pivot_point(0.5, 0.5);
+        this._dialog._dialog.scale_x = 0.8;
+        this._dialog._dialog.scale_y = 0.8;
 
         this._dialog._dialog.ease({
+            scale_x: 1,
             scale_y: 1,
-            mode: Clutter.AnimationMode.LINEAR,
+            mode: Clutter.AnimationMode.EASE_OUT_BACK,
             duration: DIALOG_TRANSITION_TIME,
             onComplete: this._onFocusChanged.bind(this),
         });
@@ -198,8 +200,10 @@ export const CloseDialog = GObject.registerClass({
 
         dialog.makeInactive();
         dialog._dialog.ease({
-            scale_y: 0,
-            mode: Clutter.AnimationMode.LINEAR,
+            opacity: 0,
+            scale_x: 0.8,
+            scale_y: 0.8,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: DIALOG_TRANSITION_TIME,
             onComplete: () => dialog.destroy(),
         });

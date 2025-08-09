@@ -821,7 +821,7 @@ class ControlsManager extends St.Widget {
         this.ease({
             opacity: 255,
             duration: STARTUP_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.LINEAR,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
 
         // Search bar falls from the ceiling

@@ -835,7 +835,7 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
         });
 
         this._boxPointer.ease_property('@effects.dim.brightness', color, {
-            mode: Clutter.AnimationMode.LINEAR,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: POPUP_ANIMATION_TIME,
             onStopped: () => (this._dimEffect.enabled = dim),
         });

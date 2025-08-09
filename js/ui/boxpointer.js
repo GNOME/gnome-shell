@@ -91,18 +91,25 @@ export const BoxPointer = GObject.registerClass({
         this.show();
 
         if (animate & PopupAnimation.SLIDE) {
+            this.scale_x = 0.96;
+            this.scale_y = 0.96;
+
             switch (this._arrowSide) {
             case St.Side.TOP:
                 this.translation_y = -rise;
+                this.set_pivot_point(0.5, 0);
                 break;
             case St.Side.BOTTOM:
                 this.translation_y = rise;
+                this.set_pivot_point(0.5, 1);
                 break;
             case St.Side.LEFT:
                 this.translation_x = -rise;
+                this.set_pivot_point(0, 0.5);
                 break;
             case St.Side.RIGHT:
                 this.translation_x = rise;
+                this.set_pivot_point(1, 0.5);
                 break;
             }
         }
@@ -111,8 +118,10 @@ export const BoxPointer = GObject.registerClass({
             opacity: 255,
             translation_x: 0,
             translation_y: 0,
+            scale_x: 1,
+            scale_y: 1,
             duration: animationTime,
-            mode: Clutter.AnimationMode.LINEAR,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this._muteInput = false;
                 if (onComplete)
@@ -127,24 +136,33 @@ export const BoxPointer = GObject.registerClass({
 
         let translationX = 0;
         let translationY = 0;
+        let scaleX = 1;
+        let scaleY = 1;
         let themeNode = this.get_theme_node();
         let rise = themeNode.get_length('-arrow-rise');
         let fade = animate & PopupAnimation.FADE;
         let animationTime = animate & PopupAnimation.FULL ? POPUP_ANIMATION_TIME : 0;
 
         if (animate & PopupAnimation.SLIDE) {
+            scaleX = 0.96;
+            scaleY = 0.96;
+
             switch (this._arrowSide) {
             case St.Side.TOP:
-                translationY = rise;
+                translationY = -rise;
+                this.set_pivot_point(0.5, 0);
                 break;
             case St.Side.BOTTOM:
-                translationY = -rise;
+                translationY = rise;
+                this.set_pivot_point(0.5, 1);
                 break;
             case St.Side.LEFT:
-                translationX = rise;
+                translationX = -rise;
+                this.set_pivot_point(0, 0.5);
                 break;
             case St.Side.RIGHT:
-                translationX = -rise;
+                translationX = rise;
+                this.set_pivot_point(1, 0.5);
                 break;
             }
         }
@@ -157,8 +175,10 @@ export const BoxPointer = GObject.registerClass({
             opacity: fade ? 0 : 255,
             translation_x: translationX,
             translation_y: translationY,
+            scale_x: scaleX,
+            scale_y: scaleY,
             duration: animationTime,
-            mode: Clutter.AnimationMode.LINEAR,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this.hide();
                 this.opacity = 0;

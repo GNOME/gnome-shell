@@ -2700,7 +2700,7 @@ export const AppFolderDialog = GObject.registerClass({
             scale_y: 1,
             opacity: 255,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            mode: Clutter.AnimationMode.EASE_OUT_EXPO,
         });
 
         this._needsZoomAndFade = false;
@@ -2732,13 +2732,18 @@ export const AppFolderDialog = GObject.registerClass({
         });
 
         this.child.ease({
+            opacity: 0,
+            duration: FOLDER_DIALOG_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
+        this.child.ease({
             translation_x: sourceX - dialogX,
             translation_y: sourceY - dialogY,
             scale_x: this._source.width / this.child.width,
             scale_y: this._source.height / this.child.height,
-            opacity: 0,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            mode: Clutter.AnimationMode.EASE_OUT_EXPO,
             onComplete: () => {
                 this.child.set({
                     translation_x: 0,

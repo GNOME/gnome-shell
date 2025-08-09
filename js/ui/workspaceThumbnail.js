@@ -1102,7 +1102,7 @@ export const ThumbnailsBox = GObject.registerClass({
 
             thumbnail.ease_property('slide-position', 1, {
                 duration: SLIDE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.LINEAR,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     this._setThumbnailState(thumbnail, ThumbnailState.ANIMATED_OUT);
                     this._queueUpdateStates();
