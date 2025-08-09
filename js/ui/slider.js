@@ -161,10 +161,11 @@ export const Slider = GObject.registerClass({
         } else if (direction === Clutter.ScrollDirection.UP) {
             delta = SLIDER_SCROLL_STEP;
         } else if (direction === Clutter.ScrollDirection.SMOOTH) {
-            let [, dy] = event.get_scroll_delta();
-            // Even though the slider is horizontal, use dy to match
-            // the UP/DOWN above.
-            delta = -dy * SLIDER_SCROLL_STEP;
+            let [dx] = event.get_scroll_delta();
+            delta = dx * SLIDER_SCROLL_STEP;
+            // Match physical direction
+            if (event.get_scroll_flags() & Clutter.ScrollFlags.INVERTED)
+                delta *= -1;
         }
 
         this.value = Math.min(Math.max(0, this._value + delta), this._maxValue);
