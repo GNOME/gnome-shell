@@ -1,3 +1,19 @@
+49.beta.1
+=========
+* Port to gjs-1.85/girepository-2.0 [Florian; !3801]
+* Change brightness scale stepUp/stepDown to 5% [Sebastian; !3826]
+* Animate "Searching..." [Piotr; !3827]
+* Show media controls on lock screen  [Florian; !3306]
+* Misc. bug fixes and cleanups [Daniel, AsciiWolf, Michael, Florian; !3821,!3813, !3825]
+
+Contributors:
+  AsciiWolf, Michael Catanzaro, Rafael Fontenelle, Piotr Marendowski,
+  Florian Müllner, Daniel Rusek, Sebastian Wick
+
+Translators:
+  Fran Diéguez [gl], Martin [sl], Rafael Fontenelle [pt_BR],
+  Cheng-Chia Tseng [zh_TW], Artur S0 [ru]
+
 49.beta
 =======
 * Fix showing pointer on motion on lock screen [Carlos; !3781]
