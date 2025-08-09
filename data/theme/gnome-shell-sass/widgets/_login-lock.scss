@@ -256,7 +256,7 @@ $_gdm_dialog_width: 25em;
 
 // Notifications
 #unlockDialogNotifications {
-  StButton#vhandle, StButton#hhandle {
+  > .vhandle, > .hhandle {
     background-color: transparentize($bg_color,0.7);
     &:hover, &:focus { background-color: transparentize($bg_color,0.5); }
     &:active { background-color: st-transparentize(-st-accent-color,0.5); }

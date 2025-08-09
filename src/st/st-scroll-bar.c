@@ -129,11 +129,10 @@ st_scroll_bar_set_orientation (StScrollBar        *bar,
   priv->orientation = orientation;
 
   if (priv->orientation == CLUTTER_ORIENTATION_VERTICAL)
-    clutter_actor_set_name (CLUTTER_ACTOR (priv->handle),
-                        "vhandle");
+    st_widget_set_style_class_name (ST_WIDGET (priv->handle), "vhandle");
   else
-    clutter_actor_set_name (CLUTTER_ACTOR (priv->handle),
-                        "hhandle");
+    st_widget_set_style_class_name (ST_WIDGET (priv->handle), "hhandle");
+
   clutter_actor_queue_relayout (CLUTTER_ACTOR (bar));
   g_object_notify_by_pspec (G_OBJECT (bar), props[PROP_ORIENTATION]);
 }
@@ -943,8 +942,10 @@ st_scroll_bar_init (StScrollBar *self)
   g_signal_connect (priv->trough, "leave-event",
                     G_CALLBACK (trough_leave_event_cb), self);
 
-  priv->handle = (ClutterActor *) st_button_new ();
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->handle), "hhandle");
+  priv->handle = (ClutterActor *) g_object_new (ST_TYPE_WIDGET, NULL);
+  st_widget_set_track_hover (ST_WIDGET (priv->handle), TRUE);
+
+  st_widget_set_style_class_name (ST_WIDGET (priv->handle), "hhandle");
   clutter_actor_add_child (CLUTTER_ACTOR (self),
                            CLUTTER_ACTOR (priv->handle));
   g_signal_connect (priv->handle, "button-press-event",
