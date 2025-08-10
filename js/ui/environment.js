@@ -347,8 +347,20 @@ if (!GioUnix.DesktopAppInfo.prototype.has_key) {
         return GioUnix.DesktopAppInfo.has_key(this, key);
     };
 
+    GioUnix.DesktopAppInfo.prototype.get_boolean = function (key) {
+        return GioUnix.DesktopAppInfo.get_boolean(this, key);
+    };
+
     GioUnix.DesktopAppInfo.prototype.get_categories = function () {
         return GioUnix.DesktopAppInfo.get_categories(this);
+    };
+
+    GioUnix.DesktopAppInfo.prototype.list_actions = function () {
+        return GioUnix.DesktopAppInfo.list_actions(this);
+    };
+
+    GioUnix.DesktopAppInfo.prototype.get_action_name = function (name) {
+        return GioUnix.DesktopAppInfo.get_action_name(this, name);
     };
 }
 
