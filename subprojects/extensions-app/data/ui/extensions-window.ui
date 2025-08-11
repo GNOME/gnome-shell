@@ -180,17 +180,6 @@
                                       bind-source="userListModel"
                                       bind-property="n-items"
                                       bind-flags="sync-create"/>
-                            <child>
-                              <object class="GtkListBox" id="userList">
-                                <property name="selection-mode">none</property>
-                                <accessibility>
-                                  <relation name="labelled-by">userGroup</relation>
-                                </accessibility>
-                                <style>
-                                  <class name="boxed-list"/>
-                                </style>
-                              </object>
-                            </child>
                           </object>
                         </child>
                         <child>
@@ -200,17 +189,6 @@
                                       bind-source="systemListModel"
                                       bind-property="n-items"
                                       bind-flags="sync-create"/>
-                            <child>
-                              <object class="GtkListBox" id="systemList">
-                                <property name="selection-mode">none</property>
-                                <accessibility>
-                                  <relation name="labelled-by">systemGroup</relation>
-                                </accessibility>
-                                <style>
-                                  <class name="boxed-list"/>
-                                </style>
-                              </object>
-                            </child>
                           </object>
                         </child>
                       </object>
@@ -225,18 +203,10 @@
                 <property name="child">
                   <object class="AdwPreferencesPage">
                     <child>
-                      <object class="AdwPreferencesGroup">
-                        <child>
-                          <object class="GtkListBox" id="searchList">
-                            <property name="selection-mode">none</property>
-                            <accessibility>
-                              <property name="label" translatable="yes">Search Results</property>
-                            </accessibility>
-                            <style>
-                              <class name="boxed-list"/>
-                            </style>
-                          </object>
-                        </child>
+                      <object class="AdwPreferencesGroup" id="searchGroup">
+                        <accessibility>
+                          <property name="label" translatable="yes">Search Results</property>
+                        </accessibility>
                       </object>
                     </child>
                   </object>

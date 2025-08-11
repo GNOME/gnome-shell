@@ -24,10 +24,8 @@ export const ExtensionsWindow = GObject.registerClass({
         'systemListModel',
         'searchListModel',
         'userGroup',
-        'userList',
         'systemGroup',
-        'systemList',
-        'searchList',
+        'searchGroup',
         'mainStack',
         'searchBar',
         'searchEntry',
@@ -80,10 +78,7 @@ export const ExtensionsWindow = GObject.registerClass({
         this._searchListModel.connect('notify::n-items',
             () => this._syncVisiblePage());
 
-        this._userList.connect('row-activated', (_list, row) => row.activate());
         this._userGroup.connect('notify::visible', () => this._syncVisiblePage());
-
-        this._systemList.connect('row-activated', (_list, row) => row.activate());
         this._systemGroup.connect('notify::visible', () => this._syncVisiblePage());
 
         const {extensionManager} = this.application;
@@ -97,11 +92,11 @@ export const ExtensionsWindow = GObject.registerClass({
 
         this._sortModel.model = extensionManager.extensions;
 
-        this._userList.bind_model(this._userListModel,
+        this._userGroup.bind_model(this._userListModel,
             extension => new ExtensionRow(extension));
-        this._systemList.bind_model(this._systemListModel,
+        this._systemGroup.bind_model(this._systemListModel,
             extension => new ExtensionRow(extension));
-        this._searchList.bind_model(this._searchListModel,
+        this._searchGroup.bind_model(this._searchListModel,
             extension => new ExtensionRow(extension));
 
         extensionManager.connect('extensions-loaded',
