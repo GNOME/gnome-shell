@@ -571,16 +571,6 @@ export class ExtensionManager extends Signals.EventEmitter {
                 this.emit('extension-state-changed', extension);
         }
 
-        // Find and enable all the newly enabled extensions: UUIDs found in the
-        // new setting, but not in the old one.
-        const extensionsToEnable = newEnabledExtensions
-            .filter(uuid => !this._enabledExtensions.includes(uuid) &&
-                             this._extensionSupportsSessionMode(uuid));
-        for (const uuid of extensionsToEnable) {
-            // eslint-disable-next-line no-await-in-loop
-            await this._callExtensionEnable(uuid);
-        }
-
         // Find and disable all the newly disabled extensions: UUIDs found in the
         // old setting, but not in the new one.
         const extensionsToDisable = this._extensionOrder
@@ -592,6 +582,16 @@ export class ExtensionManager extends Signals.EventEmitter {
         for (const uuid of extensionsToDisable) {
             // eslint-disable-next-line no-await-in-loop
             await this._callExtensionDisable(uuid);
+        }
+
+        // Find and enable all the newly enabled extensions: UUIDs found in the
+        // new setting, but not in the old one.
+        const extensionsToEnable = newEnabledExtensions
+            .filter(uuid => !this._enabledExtensions.includes(uuid) &&
+                             this._extensionSupportsSessionMode(uuid));
+        for (const uuid of extensionsToEnable) {
+            // eslint-disable-next-line no-await-in-loop
+            await this._callExtensionEnable(uuid);
         }
 
         this._enabledExtensions = newEnabledExtensions;
