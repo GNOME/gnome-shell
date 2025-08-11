@@ -64,8 +64,8 @@ function ssidToLabel(ssid) {
 }
 
 function launchSettingsPanel(panel, ...args) {
-    const param = new GLib.Variant('(sav)',
-        [panel, args.map(s => new GLib.Variant('s', s))]);
+    const param = new GLib.Variant('av',
+        [new GLib.Variant('(sav)', [panel, args.map(s => new GLib.Variant('s', s))])]);
 
     const app = Shell.AppSystem.get_default()
         .lookup_app('org.gnome.Settings.desktop');
