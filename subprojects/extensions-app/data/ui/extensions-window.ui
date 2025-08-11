@@ -117,80 +117,75 @@
               <object class="GtkStackPage">
                 <property name="name">main</property>
                 <property name="child">
-                  <object class="GtkBox">
-                    <property name="orientation">vertical</property>
-                    <child>
+                  <object class="AdwPreferencesPage">
+                    <property name="banner">
                       <object class="AdwBanner" id="updatesBanner">
                         <property name="button-label" translatable="yes">_Log Out…</property>
                         <property name="action-name">win.logout</property>
                       </object>
-                    </child>
+                    </property>
                     <child>
-                      <object class="AdwPreferencesPage">
+                      <object class="AdwPreferencesGroup">
                         <child>
-                          <object class="AdwPreferencesGroup">
-                            <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">_Extensions</property>
-                                <property name="activatable-widget">enabledSwitch</property>
-                                <property name="use-underline">true</property>
-                                <child type="suffix">
-                                  <object class="GtkMenuButton">
-                                    <property name="tooltip-text" translatable="yes">More Information</property>
-                                    <property name="valign">center</property>
-                                    <property name="has-frame">false</property>
-                                    <property name="icon-name">info-outline-symbolic</property>
-                                    <property name="popover">
-                                      <object class="GtkPopover" id="infoPopover">
+                          <object class="AdwActionRow">
+                            <property name="title" translatable="yes">_Extensions</property>
+                            <property name="activatable-widget">enabledSwitch</property>
+                            <property name="use-underline">true</property>
+                            <child type="suffix">
+                              <object class="GtkMenuButton">
+                                <property name="tooltip-text" translatable="yes">More Information</property>
+                                <property name="valign">center</property>
+                                <property name="has-frame">false</property>
+                                <property name="icon-name">info-outline-symbolic</property>
+                                <property name="popover">
+                                  <object class="GtkPopover" id="infoPopover">
+                                    <property name="child">
+                                      <object class="AdwClamp">
+                                        <property name="maximum-size">350</property>
+                                        <property name="tightening-threshold">350</property>
                                         <property name="child">
-                                          <object class="AdwClamp">
-                                            <property name="maximum-size">350</property>
-                                            <property name="tightening-threshold">350</property>
-                                            <property name="child">
-                                              <object class="GtkLabel">
-                                                <property name="label" translatable="yes">Extensions can cause performance and stability issues. It is recommended to disable all extensions if you experience problems with your system.</property>
-                                                <property name="wrap">true</property>
-                                                <!-- Hack to make the screen reader read the label -->
-                                                <property name="selectable"
-                                                          bind-source="infoPopover"
-                                                          bind-property="visible"
-                                                          bind-flags="invert-boolean|sync-create"/>
-                                              </object>
-                                            </property>
+                                          <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Extensions can cause performance and stability issues. It is recommended to disable all extensions if you experience problems with your system.</property>
+                                            <property name="wrap">true</property>
+                                            <!-- Hack to make the screen reader read the label -->
+                                            <property name="selectable"
+                                                      bind-source="infoPopover"
+                                                      bind-property="visible"
+                                                      bind-flags="invert-boolean|sync-create"/>
                                           </object>
                                         </property>
                                       </object>
                                     </property>
                                   </object>
-                                </child>
-                                <child type="suffix">
-                                  <object class="GtkSwitch" id="enabledSwitch">
-                                    <property name="action-name">win.user-extensions-enabled</property>
-                                    <property name="valign">center</property>
-                                  </object>
-                                </child>
+                                </property>
+                              </object>
+                            </child>
+                            <child type="suffix">
+                              <object class="GtkSwitch" id="enabledSwitch">
+                                <property name="action-name">win.user-extensions-enabled</property>
+                                <property name="valign">center</property>
                               </object>
                             </child>
                           </object>
                         </child>
-                        <child>
-                          <object class="AdwPreferencesGroup" id="userGroup">
-                            <property name="title" translatable="yes">User Extensions</property>
-                            <property name="visible"
-                                      bind-source="userListModel"
-                                      bind-property="n-items"
-                                      bind-flags="sync-create"/>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="AdwPreferencesGroup" id="systemGroup">
-                            <property name="title" translatable="yes">System Extensions</property>
-                            <property name="visible"
-                                      bind-source="systemListModel"
-                                      bind-property="n-items"
-                                      bind-flags="sync-create"/>
-                          </object>
-                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwPreferencesGroup" id="userGroup">
+                        <property name="title" translatable="yes">User Extensions</property>
+                        <property name="visible"
+                                  bind-source="userListModel"
+                                  bind-property="n-items"
+                                  bind-flags="sync-create"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwPreferencesGroup" id="systemGroup">
+                        <property name="title" translatable="yes">System Extensions</property>
+                        <property name="visible"
+                                  bind-source="systemListModel"
+                                  bind-property="n-items"
+                                  bind-flags="sync-create"/>
                       </object>
                     </child>
                   </object>
