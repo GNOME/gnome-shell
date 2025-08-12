@@ -3,7 +3,7 @@
 #include "config.h"
 
 #include <clutter/clutter.h>
-#include <girepository.h>
+#include <girepository/girepository.h>
 #include <meta/display.h>
 
 #include "shell-tray-manager.h"

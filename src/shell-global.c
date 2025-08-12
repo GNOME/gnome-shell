@@ -16,7 +16,7 @@
 #include <locale.h>
 
 #include <gio/gio.h>
-#include <girepository.h>
+#include <girepository/girepository.h>
 #include <meta/meta-backend.h>
 #include <meta/meta-context.h>
 #include <meta/display.h>
