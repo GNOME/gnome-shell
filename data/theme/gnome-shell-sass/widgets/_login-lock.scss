@@ -274,7 +274,7 @@ $_gdm_dialog_width: 25em;
     padding-bottom: 0;
   }
 
-  .notification,
+  .message,
   .unlock-dialog-notification-source {
     padding: $base_margin * 3 $base_margin * 4;
     border: none;
@@ -283,6 +283,7 @@ $_gdm_dialog_width: 25em;
     border-radius: $modal_radius;
 
     &.critical { background-color: transparentize($_gdm_fg,0.8) }
+    &:active { background-color: transparentize($_gdm_fg,0.9); }
   }
 }
 
