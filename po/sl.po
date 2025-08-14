@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-08-08 21:46+0000\n"
-"PO-Revision-Date: 2025-08-09 00:32+0200\n"
+"POT-Creation-Date: 2025-08-14 14:14+0000\n"
+"PO-Revision-Date: 2025-08-14 17:25+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -124,7 +124,7 @@ msgid "Record a screencast interactively"
 msgstr "Posnemi zaslonski posnetek interaktivno"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1307
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1312
 msgid "System"
 msgstr "Sistem"
 
@@ -1297,7 +1297,7 @@ msgstr "Slušalke"
 msgid "Headset"
 msgstr "Slušalka"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:366
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:367
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -2116,7 +2116,7 @@ msgstr "Sistem"
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
-#: js/ui/quickSettings.js:185 js/ui/quickSettings.js:340
+#: js/ui/quickSettings.js:164 js/ui/quickSettings.js:263
 msgid "Open menu"
 msgstr "Odpri meni"
 
@@ -2455,6 +2455,10 @@ msgstr "Visoko"
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
+#: js/ui/status/backlight.js:164
+msgid "Open keyboard brightness menu"
+msgstr "Odpri meni svetlost tipkovnice"
+
 #: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
 msgid "Disconnect"
 msgstr "Prekini povezavo"
@@ -2471,24 +2475,28 @@ msgstr "Prekini povezavo %s"
 msgid "Connect to %s"
 msgstr "Poveži z mestom %s"
 
-#: js/ui/status/bluetooth.js:276 js/ui/status/bluetooth.js:278
+#: js/ui/status/bluetooth.js:277 js/ui/status/bluetooth.js:281
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1920
+#: js/ui/status/bluetooth.js:278
+msgid "Open Bluetooth menu"
+msgstr "Odpri meni Bluetooth"
+
+#: js/ui/status/bluetooth.js:304 js/ui/status/network.js:1924
 msgid "Bluetooth Settings"
 msgstr "Nastavitve za Bluetooth"
 
-#: js/ui/status/bluetooth.js:348
+#: js/ui/status/bluetooth.js:351
 msgid "No available or connected devices"
 msgstr "Ni razpoložljivih oziroma povezanih naprav"
 
-#: js/ui/status/bluetooth.js:349
+#: js/ui/status/bluetooth.js:352
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Vklopi Bluetooth za povezovanje naprav"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:413
+#: js/ui/status/bluetooth.js:416
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2496,6 +2504,10 @@ msgstr[0] "%d povezano"
 msgstr[1] "%d povezano"
 msgstr[2] "%d povezano"
 msgstr[3] "%d povezano"
+
+#: js/ui/status/brightness.js:42
+msgid "Open brightness menu"
+msgstr "Odpri meni svetlost"
 
 #: js/ui/status/darkMode.js:12
 msgid "Dark Style"
@@ -2591,61 +2603,81 @@ msgstr[1] "%d povezana"
 msgstr[2] "%d povezani"
 msgstr[3] "%d povezane"
 
-#: js/ui/status/network.js:1544 js/ui/status/network.js:1560
+#: js/ui/status/network.js:1544 js/ui/status/network.js:1561
 msgid "VPN"
 msgstr "VPN"
 
 #: js/ui/status/network.js:1545
+msgid "Open VPN menu"
+msgstr "Odpri meni VPN"
+
+#: js/ui/status/network.js:1546
 msgid "VPN Settings"
 msgstr "Nastavitve VPN"
 
-#: js/ui/status/network.js:1805
+#: js/ui/status/network.js:1806
 msgid "Wi–Fi"
 msgstr "Omrežje Wi-Fi"
 
 #: js/ui/status/network.js:1807
+msgid "Open Wi–Fi menu"
+msgstr "Odpri meni Wi-Fi"
+
+#: js/ui/status/network.js:1809
 msgid "All Networks"
 msgstr "Vsa omrežja"
 
-#: js/ui/status/network.js:1904
+#: js/ui/status/network.js:1906
 msgid "Wired Connections"
 msgstr "Žične povezave"
 
-#: js/ui/status/network.js:1905
+#: js/ui/status/network.js:1907
+msgid "Open wired connections menu"
+msgstr "Odpri meni žičnih povezav"
+
+#: js/ui/status/network.js:1908
 msgid "Wired Settings"
 msgstr "Nastavitve žičnega omrežja"
 
-#: js/ui/status/network.js:1919
+#: js/ui/status/network.js:1922
 msgid "Bluetooth Tethers"
 msgstr "Internetna Bluetooth točka"
 
+#: js/ui/status/network.js:1923
+msgid "Open Bluetooth tethers menu"
+msgstr "Odpri meni deljene točke Bluetooth"
+
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1926
+#: js/ui/status/network.js:1930
 msgid "Tether"
 msgstr "Bluetooth Internet"
 
-#: js/ui/status/network.js:1939
+#: js/ui/status/network.js:1943
 msgid "Mobile Connections"
 msgstr "Mobilne povezave"
 
-#: js/ui/status/network.js:1941
+#: js/ui/status/network.js:1944
+msgid "Open mobile connections menu"
+msgstr "Odpri meni mobilne povezave"
+
+#: js/ui/status/network.js:1946
 msgid "Mobile Broadband Settings"
 msgstr "Nastavitve mobilnega širokopasovnega dostopa"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1950
+#: js/ui/status/network.js:1955
 msgid "Mobile"
 msgstr "Mobilno omrečje"
 
-#: js/ui/status/network.js:1984
+#: js/ui/status/network.js:1989
 msgid "Sign in to Network"
 msgstr "Prijavi v omrežje"
 
-#: js/ui/status/network.js:2171
+#: js/ui/status/network.js:2176
 msgid "Connection failed"
 msgstr "Povezovanje je spodletelo"
 
-#: js/ui/status/network.js:2172
+#: js/ui/status/network.js:2177
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
@@ -2673,11 +2705,15 @@ msgctxt "Power profile"
 msgid "Custom"
 msgstr "Po meri"
 
-#: js/ui/status/powerProfiles.js:44 js/ui/status/powerProfiles.js:74
+#: js/ui/status/powerProfiles.js:45 js/ui/status/powerProfiles.js:77
 msgid "Power Mode"
 msgstr "Način delovanja"
 
-#: js/ui/status/powerProfiles.js:76
+#: js/ui/status/powerProfiles.js:46
+msgid "Open power profiles menu"
+msgstr "Odpri meni profilov napajanja"
+
+#: js/ui/status/powerProfiles.js:79
 msgid "Power Settings"
 msgstr "Upravljanje napajanja"
 
@@ -2772,9 +2808,17 @@ msgstr "Glasnost"
 msgid "Sound Output"
 msgstr "Odvod zvoka"
 
-#: js/ui/status/volume.js:384
+#: js/ui/status/volume.js:310
+msgid "Open sound output menu"
+msgstr "Odpri meni zvočnega izhoda"
+
+#: js/ui/status/volume.js:385
 msgid "Sound Input"
 msgstr "Dovod zvoka"
+
+#: js/ui/status/volume.js:386
+msgid "Open sound input menu"
+msgstr "Odpri meni za zvočni vhod"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
@@ -3016,15 +3060,15 @@ msgstr ""
 "Program Razširitve GNOME omogoča nameščanje in posodabljanje razširitev, "
 "prilagajanje nastavitev in upravljanje njihovega delovanja."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Main Window"
 msgstr "Glavno okno"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:81
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:82
 msgid "Available Updates"
 msgstr "Razpoložljive posodobitve"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:85
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:86
 msgid "Search View"
 msgstr "Iskalni pogled"
 
@@ -3070,12 +3114,12 @@ msgstr "Podrobnosti napake:"
 msgid "Version %s"
 msgstr "Različica %s"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:113
+#: subprojects/extensions-app/js/extensionsWindow.js:108
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Ali želite odstraniti »%s«?"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:114
+#: subprojects/extensions-app/js/extensionsWindow.js:109
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -3083,19 +3127,19 @@ msgstr ""
 "Če razširitev odstranite, jo je treba pred ponovno namestitvijo najprej "
 "prejeti iz omrežja."
 
-#: subprojects/extensions-app/js/extensionsWindow.js:117
+#: subprojects/extensions-app/js/extensionsWindow.js:112
 msgid "_Cancel"
 msgstr "_Prekliči"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:118
+#: subprojects/extensions-app/js/extensionsWindow.js:113
 msgid "_Remove"
 msgstr "_Odstrani"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:158
+#: subprojects/extensions-app/js/extensionsWindow.js:153
 msgid "translator-credits"
 msgstr "Matej Urbančič <mateju@src.gnome.org>"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:203
+#: subprojects/extensions-app/js/extensionsWindow.js:198
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -3147,19 +3191,19 @@ msgstr "Glavni meni"
 msgid "Search extensions"
 msgstr "Iskanje razširitev"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:124
+#: subprojects/extensions-app/data/ui/extensions-window.ui:123
 msgid "_Log Out…"
 msgstr "_Odjavi …"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:134
+#: subprojects/extensions-app/data/ui/extensions-window.ui:131
 msgid "_Extensions"
 msgstr "_Razširitve"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:139
+#: subprojects/extensions-app/data/ui/extensions-window.ui:136
 msgid "More Information"
 msgstr "Več podrobnosti"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:151
+#: subprojects/extensions-app/data/ui/extensions-window.ui:148
 msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
@@ -3167,31 +3211,31 @@ msgstr ""
 "Razširitve lahko vplivajo na delovanje in stabilnost programa. V primeru "
 "težav, je priporočljivo razširitve onemogočiti."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:178
+#: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid "User Extensions"
 msgstr "Uporabniške razširitve"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:198
+#: subprojects/extensions-app/data/ui/extensions-window.ui:184
 msgid "System Extensions"
 msgstr "Sistemske razširitve"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:233
+#: subprojects/extensions-app/data/ui/extensions-window.ui:203
 msgid "Search Results"
 msgstr "Zadetki iskanja"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:252
+#: subprojects/extensions-app/data/ui/extensions-window.ui:217
 msgid "No Results Found"
 msgstr "Ni najdenih zadetkov."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:253
+#: subprojects/extensions-app/data/ui/extensions-window.ui:218
 msgid "Try a different search"
 msgstr "Poskusi z drugačnim iskanjem"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:264
+#: subprojects/extensions-app/data/ui/extensions-window.ui:229
 msgid "No Installed Extensions"
 msgstr "Ni nameščenih razširitev"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:265
+#: subprojects/extensions-app/data/ui/extensions-window.ui:230
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
@@ -3199,11 +3243,11 @@ msgstr ""
 "Za iskanje in dodajanje razširitev obiščite spletne strani <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:275
+#: subprojects/extensions-app/data/ui/extensions-window.ui:240
 msgid "Something’s gone wrong"
 msgstr "Prišlo je do nepričakovane napake"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:276
+#: subprojects/extensions-app/data/ui/extensions-window.ui:241
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
