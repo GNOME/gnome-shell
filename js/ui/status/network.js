@@ -1135,6 +1135,7 @@ const NMWirelessDeviceItem = GObject.registerClass({
 
         switch (this.state) {
         case NM.ActiveConnectionState.ACTIVATING:
+        case NM.ActiveConnectionState.DEACTIVATING:
             return 'network-wireless-acquiring-symbolic';
 
         case NM.ActiveConnectionState.ACTIVATED: {
@@ -1148,7 +1149,7 @@ const NMWirelessDeviceItem = GObject.registerClass({
                 if (this._device.mode !== NM80211Mode.ADHOC)
                     console.info('An active wireless connection, in infrastructure mode, involves no access point?');
 
-                return 'network-wireless-connected-symbolic';
+                return 'network-wireless-offline-symbolic';
             }
 
             const {strength} = this._activeAccessPoint;
