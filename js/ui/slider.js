@@ -160,7 +160,7 @@ export const Slider = GObject.registerClass({
         return false;
     }
 
-    scroll(event) {
+    vfunc_scroll_event(event) {
         let direction = event.get_scroll_direction();
         let nSteps = 0;
 
@@ -182,10 +182,6 @@ export const Slider = GObject.registerClass({
         this.step(nSteps);
 
         return Clutter.EVENT_STOP;
-    }
-
-    vfunc_scroll_event(event) {
-        return this.scroll(event);
     }
 
     vfunc_motion_event(event) {
