@@ -1646,6 +1646,9 @@ update_hint_relation (StEntry *entry)
   accessible = clutter_actor_get_accessible (priv->entry);
   entry_accessible = ST_ENTRY_ACCESSIBLE (atk_object_get_parent (accessible));
 
+  if (accessible == NULL || entry_accessible == NULL)
+    return;
+
   if (entry_accessible->current_hint != NULL)
     {
       atk_object_remove_relationship (accessible,
@@ -1683,6 +1686,9 @@ update_label_relation (StEntry *entry)
 
   accessible = clutter_actor_get_accessible (priv->entry);
   entry_accessible = ST_ENTRY_ACCESSIBLE (atk_object_get_parent (accessible));
+
+  if (accessible == NULL || entry_accessible == NULL)
+    return;
 
   if (entry_accessible->current_label != NULL)
     {
