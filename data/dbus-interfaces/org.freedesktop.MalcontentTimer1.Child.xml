@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2024, 2025 GNOME Foundation, Inc.
+
+  SPDX-License-Identifier: LGPL-2.1-or-later
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Authors:
+   - Philip Withnall <pwithnall@gnome.org>
+-->
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node name="/">
+  <!--
+      org.freedesktop.MalcontentTimer1.Child:
+      @short_description: Interface for recording screen time and app usage by
+        a child user account
+
+      The `MalcontentTimer1.Child` interface allows a trusted component in a
+      child user account’s session to record screen time and app usage periods
+      for that account. Such a component might be the shell process of the
+      session, for example.
+
+      Data is recorded as tuples of
+      (start time, end time, record type, identifier), where the record type is
+      one of the following well-known values:
+
+       * `login-session`: The user’s login session. No associated identifier.
+       * `app`: Usage of an app. The app identifier (its reverse-DNS name) is
+         associated.
+
+      Each record should have an identifier in the format stipulated by its
+      record type, or the empty string.
+
+      Overlapping time spans for the same (record type, identifier) will be
+      merged. Times are given as wall clock seconds (i.e. Unix timestamps), and
+      the end time of a tuple must never be before the start time. The start and
+      end time of a tuple can be equal to represent an interval of one second,
+      i.e. end times are inclusive.
+
+      Records submitted with an unknown record type, or an invalid identifier,
+      will be rejected with error
+      `org.freedesktop.MalcontentTimer1.Child.Error.InvalidRecord`.
+
+      This documentation describes version 1 of this interface.
+  -->
+  <interface name="org.freedesktop.MalcontentTimer1.Child">
+    <!--
+        RecordUsage:
+        @usage_entries: Array of one or more usage entries to record, with each
+          entry in the form (start time, end time, record type, identifier).
+
+        Records one or more usage entries for the child account which is running
+        the calling process. The entries do not have to be related or
+        continuous; the ability to submit multiple entries at once is purely a
+        performance optimisation.
+
+        If any of the records are invalid, none of the records will be saved,
+        and `org.freedesktop.MalcontentTimer1.Child.Error.InvalidRecord` will be
+        returned.
+    -->
+    <method name="RecordUsage">
+      <arg type="a(ttss)" name="usage_entries" direction="in"/>
+    </method>
+
+    <!--
+        GetEstimatedTimes:
+        @record_type: Record type to query the time estimates for
+        @now_secs: Time the daemon considered to be ‘now’ when calculating times
+        @times_secs: Potentially empty map from identifier to tuple of
+          estimated times
+
+        Queries for the estimated start and end times of all the limits set for
+        this child account for the given @record_type. The child account is the
+        one which is running the calling process.
+
+        For example, if called with a @record_type of `login-session`, this
+        would return a map with a single entry mapping the empty string to a
+        tuple of whether the limit has been reached today, the start and
+        estimated end time of the current (or most recent) login session, and
+        the next login session. Times are calculated from the amount of time the
+        child account has spent active on the login session so far (up to
+        @now_secs), versus their configured computer use time limit. If no limit
+        applies, there is no entry in the map.
+
+        If called with a @record_type of `app`, this would return a map with
+        an entry for each app where a limit has been applied to the child’s use
+        of it, mapping the app ID to a tuple of the estimated time when the
+        child would use up their time allowance, and the time the app was
+        started (just as with login sessions). The estimate assumes the child
+        uses each app non-stop from now onwards.
+    -->
+    <method name="GetEstimatedTimes">
+      <arg type="s" name="record_type" direction="in"/>
+      <arg type="t" name="now_secs" direction="out"/>
+      <arg type="a{s(btttt)}" name="times_secs" direction="out"/>
+    </method>
+
+    <!--
+        EstimatedTimesChanged:
+
+        Emitted when one or more of the end times returned by a call to
+        org.freedesktop.MalcontentTimer1.Child.GetEstimatedTimes() has
+        potentially changed.
+
+        The updated estimates cannot be included in the signal arguments, as
+        then they’d be broadcast across the bus, potentially to other users.
+        In order to avoid the service having to maintain state about which bus
+        connections belong to which user, the signal is therefore kept
+        stateless.
+    -->
+    <signal name="EstimatedTimesChanged"/>
+  </interface>
+</node>
