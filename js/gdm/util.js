@@ -5,6 +5,7 @@ import GLib from 'gi://GLib';
 import * as Signals from '../misc/signals.js';
 
 import * as Batch from './batch.js';
+import * as Constants from './constants.js';
 import * as OVirt from './oVirt.js';
 import * as Vmware from './vmware.js';
 import * as Main from '../ui/main.js';
@@ -24,9 +25,6 @@ Gio._promisify(Gdm.UserVerifierProxy.prototype,
     'call_begin_verification_for_user');
 Gio._promisify(Gdm.UserVerifierProxy.prototype, 'call_begin_verification');
 
-export const PASSWORD_SERVICE_NAME = 'gdm-password';
-export const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
-export const SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
 export const CLONE_FADE_ANIMATION_TIME = 250;
 
 export const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
@@ -436,7 +434,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._updateDefaultService();
 
         if (this._userVerifier &&
-            !this._activeServices.has(FINGERPRINT_SERVICE_NAME)) {
+            !this._activeServices.has(Constants.FINGERPRINT_SERVICE_NAME)) {
             if (!this._hold?.isAcquired())
                 this._hold = new Batch.Hold();
             await this._maybeStartFingerprintVerification();
@@ -488,8 +486,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this.smartcardDetected = smartcardDetected;
 
             if (this.smartcardDetected)
-                this._preemptingService = SMARTCARD_SERVICE_NAME;
-            else if (this._preemptingService === SMARTCARD_SERVICE_NAME)
+                this._preemptingService = Constants.SMARTCARD_SERVICE_NAME;
+            else if (this._preemptingService === Constants.SMARTCARD_SERVICE_NAME)
                 this._preemptingService = null;
 
             this.emit('smartcard-status-changed');
@@ -606,7 +604,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 return true;
         }
 
-        return this.serviceIsForeground(SMARTCARD_SERVICE_NAME);
+        return this.serviceIsForeground(Constants.SMARTCARD_SERVICE_NAME);
     }
 
     serviceIsDefault(serviceName) {
@@ -615,7 +613,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     serviceIsFingerprint(serviceName) {
         return this._fingerprintReaderType !== FingerprintReaderType.NONE &&
-            serviceName === FINGERPRINT_SERVICE_NAME;
+            serviceName === Constants.FINGERPRINT_SERVICE_NAME;
     }
 
     _onSettingsChanged() {
@@ -632,7 +630,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._fingerprintManager = null;
             this._fingerprintReaderType = FingerprintReaderType.NONE;
 
-            if (this._activeServices.has(FINGERPRINT_SERVICE_NAME))
+            if (this._activeServices.has(Constants.FINGERPRINT_SERVICE_NAME))
                 needsReset = true;
         }
 
@@ -642,7 +640,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._smartcardManager.disconnectObject(this);
             this._smartcardManager = null;
 
-            if (this._activeServices.has(SMARTCARD_SERVICE_NAME))
+            if (this._activeServices.has(Constants.SMARTCARD_SERVICE_NAME))
                 needsReset = true;
         }
 
@@ -652,11 +650,11 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     _getDetectedDefaultService() {
         if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
-            return PASSWORD_SERVICE_NAME;
+            return Constants.PASSWORD_SERVICE_NAME;
         else if (this._smartcardManager)
-            return SMARTCARD_SERVICE_NAME;
+            return Constants.SMARTCARD_SERVICE_NAME;
         else if (this._fingerprintReaderType !== FingerprintReaderType.NONE)
-            return FINGERPRINT_SERVICE_NAME;
+            return Constants.FINGERPRINT_SERVICE_NAME;
         return null;
     }
 
@@ -666,7 +664,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         if (!this._defaultService) {
             log('no authentication service is enabled, using password authentication');
-            this._defaultService = PASSWORD_SERVICE_NAME;
+            this._defaultService = Constants.PASSWORD_SERVICE_NAME;
         }
 
         if (oldDefaultService &&
@@ -714,8 +712,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     async _maybeStartFingerprintVerification() {
         if (this._userName &&
             this._fingerprintReaderType !== FingerprintReaderType.NONE &&
-            !this.serviceIsForeground(FINGERPRINT_SERVICE_NAME))
-            await this._startService(FINGERPRINT_SERVICE_NAME);
+            !this.serviceIsForeground(Constants.FINGERPRINT_SERVICE_NAME))
+            await this._startService(Constants.FINGERPRINT_SERVICE_NAME);
     }
 
     _onChoiceListQuery(client, serviceName, promptMessage, list) {
@@ -846,7 +844,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     async _verificationFailed(serviceName, shouldRetry) {
-        if (serviceName === FINGERPRINT_SERVICE_NAME) {
+        if (serviceName === Constants.FINGERPRINT_SERVICE_NAME) {
             if (this._fingerprintFailedId)
                 GLib.source_remove(this._fingerprintFailedId);
         }
