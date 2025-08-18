@@ -67,10 +67,6 @@ class FingerprintManager extends GObject.Object {
         return this.readerType !== FingerprintReaderType.NONE;
     }
 
-    setDefaultTimeout(timeout) {
-        this._fingerprintManagerProxy.set_default_timeout(timeout);
-    }
-
     async checkReaderType(cancellable) {
         try {
             // Wrappers don't support null cancellable, so let's ignore it in case
