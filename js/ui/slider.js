@@ -177,6 +177,8 @@ export const Slider = GObject.registerClass({
             // Match physical direction
             if (event.get_scroll_flags() & Clutter.ScrollFlags.INVERTED)
                 nSteps *= -1;
+            if (this.get_text_direction() === Clutter.TextDirection.RTL)
+                nSteps *= -1;
         }
 
         this.step(nSteps);
