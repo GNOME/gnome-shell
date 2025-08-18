@@ -11,6 +11,7 @@ import St from 'gi://St';
 import * as Animation from '../ui/animation.js';
 import * as AuthList from './authList.js';
 import * as Batch from './batch.js';
+import * as Const from './const.js';
 import * as GdmUtil from './util.js';
 import * as Params from '../misc/params.js';
 import * as ShellEntry from '../ui/shellEntry.js';
@@ -540,7 +541,7 @@ export const AuthPrompt = GObject.registerClass({
         //                        with a smartcard
         //                     2) Don't reset if we've already succeeded at verification and
         //                        the user is getting logged in.
-        if (this._userVerifier.serviceIsDefault(GdmUtil.SMARTCARD_SERVICE_NAME) &&
+        if (this._userVerifier.serviceIsDefault(Const.SMARTCARD_SERVICE_NAME) &&
             (this.verificationStatus === AuthPromptStatus.VERIFYING ||
              this.verificationStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS) &&
             this.smartcardDetected)
