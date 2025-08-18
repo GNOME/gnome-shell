@@ -1,25 +1,13 @@
 import Clutter from 'gi://Clutter';
-import Gdm from 'gi://Gdm';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import * as Signals from '../misc/signals.js';
 
 import * as Batch from './batch.js';
 import * as Const from './const.js';
-import * as FingerprintManager from '../misc/fingerprintManager.js';
-import * as OVirt from './oVirt.js';
-import * as Vmware from './vmware.js';
 import * as Main from '../ui/main.js';
-import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
-import {loadInterfaceXML} from '../misc/fileUtils.js';
 import * as Params from '../misc/params.js';
-import * as SmartcardManager from '../misc/smartcardManager.js';
-
-Gio._promisify(Gdm.Client.prototype, 'open_reauthentication_channel');
-Gio._promisify(Gdm.Client.prototype, 'get_user_verifier');
-Gio._promisify(Gdm.UserVerifierProxy.prototype,
-    'call_begin_verification_for_user');
-Gio._promisify(Gdm.UserVerifierProxy.prototype, 'call_begin_verification');
+import {AuthServicesLegacy} from './authServicesLegacy.js';
 
 export const CLONE_FADE_ANIMATION_TIME = 250;
 
@@ -42,9 +30,6 @@ const USER_READ_TIME = 48;
 const USER_READ_TIME_MIN = 2000;
 const MESSAGE_TIME_MULTIPLIER = GLib.getenv('GDM_MESSAGE_TIME_MULTIPLIER') ?? 1;
 
-const FINGERPRINT_SERVICE_PROXY_TIMEOUT = 5000;
-const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
-
 /**
  * Keep messages in order by priority
  *
@@ -56,6 +41,15 @@ export const MessageType = {
     INFO: 2,
     ERROR: 3,
 };
+
+export class InitError extends Error {
+    constructor(error, message, serviceName) {
+        super(message);
+        this.error = error;
+        this.where = message;
+        this.serviceName = serviceName;
+    }
+}
 
 /**
  * @param {Clutter.Actor} actor
@@ -130,53 +124,12 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._client = client;
         this._cancellable = null;
 
-        this._defaultService = null;
-        this._preemptingService = null;
-        this._fingerprintReaderType = FingerprintManager.FingerprintReaderType.NONE;
-        this._fingerprintReaderFound = false;
-
         this._messageQueue = [];
         this._messageQueueTimeoutId = 0;
 
-        this._failCounter = 0;
-        this._activeServices = new Set();
-        this._unavailableServices = new Set();
-
-        this._credentialManagers = {};
-
-        this.reauthenticating = false;
-        this.smartcardDetected = false;
-
         this._settings = new Gio.Settings({schema_id: LOGIN_SCREEN_SCHEMA});
         this._settings.connect('changed', () => this._onSettingsChanged());
-        this._updateEnabledServices();
-        this._updateDefaultService();
-
-        this.addCredentialManager(OVirt.SERVICE_NAME, OVirt.getOVirtCredentialsManager());
-        this.addCredentialManager(Vmware.SERVICE_NAME, Vmware.getVmwareCredentialsManager());
-    }
-
-    addCredentialManager(serviceName, credentialManager) {
-        if (this._credentialManagers[serviceName])
-            return;
-
-        this._credentialManagers[serviceName] = credentialManager;
-        if (credentialManager.token) {
-            this._onCredentialManagerAuthenticated(credentialManager,
-                credentialManager.token);
-        }
-
-        credentialManager.connectObject('user-authenticated',
-            this._onCredentialManagerAuthenticated.bind(this), this);
-    }
-
-    removeCredentialManager(serviceName) {
-        const credentialManager = this._credentialManagers[serviceName];
-        if (!credentialManager)
-            return;
-
-        credentialManager.disconnectObject(this);
-        delete this._credentialManagers[serviceName];
+        this._updateAuthServices();
     }
 
     get hasPendingMessages() {
@@ -191,79 +144,72 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         return this._messageQueue ? this._messageQueue[0] : null;
     }
 
-    begin(userName, hold) {
+    async begin(userName, hold) {
+        this._cancellable?.cancel();
         this._cancellable = new Gio.Cancellable();
-        this._hold = hold;
-        this._userName = userName;
-        this.reauthenticating = false;
 
-        this._fingerprintManager?.checkReaderType(this._cancellable);
+        try {
+            const proxies = await this._getUserVerifierProxies(userName, this._cancellable);
+            await this._authServicesLegacy?.beginVerification(userName, proxies);
+            this._userVerifier = proxies.userVerifier;
+        } catch (e) {
+            if (e instanceof InitError)
+                this._reportInitError(e);
+        }
 
-        // If possible, reauthenticate an already running session,
-        // so any session specific credentials get updated appropriately
-        if (userName)
-            this._openReauthenticationChannel(userName);
-        else
-            this._getUserVerifier();
+        hold?.release();
+    }
+
+    selectMechanism(mechanism) {
+        return this._authServicesLegacy?.selectMechanism(mechanism);
+    }
+
+    needsUsername() {
+        return this._authServicesLegacy?.needsUsername();
+    }
+
+    reset() {
+        this._authServicesLegacy?.reset();
+
+        this._userVerifier?.call_cancel_sync(null);
+
+        this.clear();
     }
 
     cancel() {
-        if (this._cancellable)
-            this._cancellable.cancel();
+        this._authServicesLegacy?.cancel();
 
-        if (this._userVerifier) {
-            this._userVerifier.call_cancel_sync(null);
-            this.clear();
-        }
-    }
+        this._userVerifier?.call_cancel_sync(null);
 
-    _clearUserVerifier() {
-        if (this._userVerifier) {
-            this._disconnectSignals();
-            this._userVerifier.get_connection().disconnectObject(this);
-            this._userVerifier = null;
-            this._userVerifierChoiceList = null;
-        }
+        this.clear();
     }
 
     clear() {
-        if (this._cancellable) {
-            this._cancellable.cancel();
-            this._cancellable = null;
-        }
+        this._authServicesLegacy?.clear();
 
-        this._clearUserVerifier();
         this._clearMessageQueue();
-        this._activeServices.clear();
+
+        this._cancellable?.cancel();
+        this._cancellable = null;
+
+        this._userVerifier = null;
     }
 
     destroy() {
+        this._authServicesLegacy?.disconnectObject(this);
+
         this.cancel();
 
         this._settings.run_dispose();
         this._settings = null;
-
-        this._smartcardManager?.disconnectObject(this);
-        this._smartcardManager = null;
-
-        this._fingerprintManager?.disconnectObject(this);
-        this._fingerprintManager = null;
-
-        for (const service in this._credentialManagers)
-            this.removeCredentialManager(service);
     }
 
     selectChoice(serviceName, key) {
-        this._userVerifierChoiceList.call_select_choice(serviceName, key, this._cancellable, null);
+        this._authServicesLegacy?.selectChoice(serviceName, key);
     }
 
-    async answerQuery(serviceName, answer) {
-        try {
-            await this._handlePendingMessages();
-            this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
-        } catch (e) {
-            logErrorUnlessCancelled(e);
-        }
+    answerQuery(serviceName, answer) {
+        this._authServicesLegacy?.answerQuery(serviceName, answer);
     }
 
     _getIntervalForMessage(message) {
@@ -275,7 +221,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             USER_READ_TIME_MIN);
     }
 
-    finishMessageQueue() {
+    _finishMessageQueue() {
         if (!this.hasPendingMessages)
             return;
 
@@ -318,7 +264,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                     this._messageQueue.shift();
                     this._queueMessageTimeout();
                 } else {
-                    this.finishMessageQueue();
+                    this._finishMessageQueue();
                 }
             });
         GLib.Source.set_name_by_id(this._messageQueueTimeoutId, '[gnome-shell] this._queueMessageTimeout');
@@ -346,7 +292,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _clearMessageQueue() {
-        this.finishMessageQueue();
+        this._finishMessageQueue();
 
         if (this._messageQueueTimeoutId !== 0) {
             GLib.source_remove(this._messageQueueTimeoutId);
@@ -355,464 +301,142 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this.emit('show-message', null, null, MessageType.NONE);
     }
 
-    async _initFingerprintManager() {
-        if (this._fingerprintManager)
-            return;
+    _reportInitError(initError) {
+        const {error, where, serviceName} = initError;
 
-        this._fingerprintManager =
-            new FingerprintManager.FingerprintManager(this._cancellable);
-        this._fingerprintManager.connectObject(
-            'reader-type-changed', () => this._onFingerprintReaderTypeChanged(),
-            this);
-
-        if (!this._getDetectedDefaultService()) {
-            // Other authentication methods would have already been detected by
-            // now as possibilities if they were available.
-            // If we're here it means that FINGERPRINT_AUTHENTICATION_KEY is
-            // true and so fingerprint authentication is our last potential
-            // option, so go ahead a synchronously look for a fingerprint device
-            // during startup or default service update.
-            // Do not wait too much for fprintd to reply, as in case it hangs
-            // we should fail early without having the shell to misbehave
-            this._fingerprintManager.setDefaultTimeout(FINGERPRINT_SERVICE_PROXY_TIMEOUT);
-            await this._fingerprintManager.checkReaderType(this._cancellable);
-        } else {
-            // Ensure fingerprint service starts, but do not wait for it
-            this._fingerprintManager.checkReaderType(this._cancellable);
-        }
-    }
-
-    _onFingerprintReaderTypeChanged() {
-        this._fingerprintReaderType = this._fingerprintManager.readerType;
-        this._fingerprintReaderFound = this._fingerprintManager.readerFound;
-        this._updateDefaultService();
-
-        if (this._userVerifier &&
-            !this._activeServices.has(Const.FINGERPRINT_SERVICE_NAME))
-            this._maybeStartFingerprintVerification();
-    }
-
-    _onCredentialManagerAuthenticated(credentialManager, _token) {
-        this._preemptingService = credentialManager.service;
-        this.emit('credential-manager-authenticated');
-    }
-
-    _initSmartcardManager() {
-        if (this._smartcardManager)
-            return;
-
-        this._smartcardManager = SmartcardManager.getSmartcardManager();
-
-        // We check for smartcards right away, since an inserted smartcard
-        // at startup should result in immediately initiating authentication.
-        // This is different than fingerprint readers, where we only check them
-        // after a user has been picked.
-        this.smartcardDetected = false;
-        this._checkForSmartcard();
-
-        this._smartcardManager.connectObject(
-            'smartcard-inserted', () => this._checkForSmartcard(),
-            'smartcard-removed', () => this._checkForSmartcard(), this);
-    }
-
-    _checkForSmartcard() {
-        let smartcardDetected;
-
-        if (!this._settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY))
-            smartcardDetected = false;
-        else if (this._reauthOnly)
-            smartcardDetected = this._smartcardManager.hasInsertedLoginToken();
-        else
-            smartcardDetected = this._smartcardManager.hasInsertedTokens();
-
-        if (smartcardDetected !== this.smartcardDetected) {
-            this.smartcardDetected = smartcardDetected;
-
-            if (this.smartcardDetected)
-                this._preemptingService = Const.SMARTCARD_SERVICE_NAME;
-            else if (this._preemptingService === Const.SMARTCARD_SERVICE_NAME)
-                this._preemptingService = null;
-
-            this.emit('smartcard-status-changed');
-        }
-    }
-
-    _reportInitError(where, error, serviceName) {
         logError(error, where);
-        this._hold?.release();
 
         this._queueMessage(serviceName, _('Authentication error'), MessageType.ERROR);
-        this._failCounter++;
         this._verificationFailed(serviceName, false);
     }
 
-    async _openReauthenticationChannel(userName) {
-        try {
-            this._clearUserVerifier();
-            this._userVerifier = await this._client.open_reauthentication_channel(
-                userName, this._cancellable);
-            this._userVerifier.get_connection().connectObject('closed',
-                () => this.clear(), this);
-        } catch (e) {
-            if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                return;
-            if (e.matches(Gio.DBusError, Gio.DBusError.ACCESS_DENIED) &&
-                !this._reauthOnly) {
-                // Gdm emits org.freedesktop.DBus.Error.AccessDenied when there
-                // is no session to reauthenticate. Fall back to performing
-                // verification from this login session
-                this._getUserVerifier();
-                return;
+    async _getUserVerifierProxies(userName, cancellable) {
+        const proxies = {};
+
+        if (userName) {
+            try {
+                proxies.userVerifier = await this._client.open_reauthentication_channel(
+                    userName, cancellable);
+            } catch (e) {
+                if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    throw e;
+                if (e.matches(Gio.DBusError, Gio.DBusError.ACCESS_DENIED) &&
+                    !this._reauthOnly) {
+                    // Gdm emits org.freedesktop.DBus.Error.AccessDenied when there
+                    // is no session to reauthenticate. Fall back to performing
+                    // verification from this login session
+                    return this._getUserVerifierProxies(null, cancellable);
+                }
+                throw new InitError(e, 'Failed to open reauthentication channel');
             }
-
-            this._reportInitError('Failed to open reauthentication channel', e);
-            return;
+        } else {
+            try {
+                proxies.userVerifier = await this._client.get_user_verifier(
+                    cancellable);
+            } catch (e) {
+                if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    throw e;
+                throw new InitError(e, 'Failed to obtain user verifier');
+            }
         }
 
-        if (this._client.get_user_verifier_choice_list)
-            this._userVerifierChoiceList = this._client.get_user_verifier_choice_list();
-        else
-            this._userVerifierChoiceList = null;
-
-        this.reauthenticating = true;
-        this._connectSignals();
-        this._beginVerification();
-        this._hold?.release();
-    }
-
-    async _getUserVerifier() {
         try {
-            this._clearUserVerifier();
-            this._userVerifier =
-                await this._client.get_user_verifier(this._cancellable);
-            this._userVerifier.get_connection().connectObject('closed',
-                () => this.clear(), this);
+            if (this._client.get_user_verifier_choice_list)
+                proxies.userVerifierChoiceList = await this._client.get_user_verifier_choice_list();
+            if (this._client.get_user_verifier_custom_json)
+                proxies.userVerifierCustomJSON = await this._client.get_user_verifier_custom_json();
         } catch (e) {
-            if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                return;
-            this._reportInitError('Failed to obtain user verifier', e);
-            return;
+            throw new InitError(e, 'Failed to obtain user verifier extensions');
         }
 
-        if (this._client.get_user_verifier_choice_list)
-            this._userVerifierChoiceList = this._client.get_user_verifier_choice_list();
-        else
-            this._userVerifierChoiceList = null;
-
-        this._connectSignals();
-        this._beginVerification();
-        this._hold?.release();
-    }
-
-    _connectSignals() {
-        this._disconnectSignals();
-
-        this._userVerifier.connectObject(
-            'info', this._onInfo.bind(this),
-            'problem', this._onProblem.bind(this),
-            'info-query', this._onInfoQuery.bind(this),
-            'secret-info-query', this._onSecretInfoQuery.bind(this),
-            'conversation-started', this._onConversationStarted.bind(this),
-            'conversation-stopped', this._onConversationStopped.bind(this),
-            'service-unavailable', this._onServiceUnavailable.bind(this),
-            'reset', this._onReset.bind(this),
-            'verification-complete', this._onVerificationComplete.bind(this),
-            this);
-
-        if (this._userVerifierChoiceList) {
-            this._userVerifierChoiceList.connectObject('choice-query',
-                this._onChoiceListQuery.bind(this), this);
-        }
-    }
-
-    _disconnectSignals() {
-        this._userVerifier?.disconnectObject(this);
-        this._userVerifierChoiceList?.disconnectObject(this);
-    }
-
-    _getForegroundService() {
-        if (this._preemptingService)
-            return this._preemptingService;
-
-        return this._defaultService;
-    }
-
-    serviceIsForeground(serviceName) {
-        return serviceName === this._getForegroundService();
-    }
-
-    foregroundServiceDeterminesUsername() {
-        for (const serviceName in this._credentialManagers) {
-            if (this.serviceIsForeground(serviceName))
-                return true;
-        }
-
-        return this.serviceIsForeground(Const.SMARTCARD_SERVICE_NAME);
-    }
-
-    serviceIsDefault(serviceName) {
-        return serviceName === this._defaultService;
+        return proxies;
     }
 
     serviceIsFingerprint(serviceName) {
-        return this._fingerprintReaderFound &&
-            serviceName === Const.FINGERPRINT_SERVICE_NAME;
+        return serviceName === Const.FINGERPRINT_SERVICE_NAME;
     }
 
     _onSettingsChanged() {
-        this._updateEnabledServices();
-        this._updateDefaultService();
+        this._updateAuthServices();
     }
 
-    _updateEnabledServices() {
-        let needsReset = false;
+    _updateAuthServices() {
+        const enabledRoles = [];
 
-        if (this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY)) {
-            this._initFingerprintManager();
-        } else if (this._fingerprintManager) {
-            this._fingerprintManager.disconnectObject(this);
-            this._fingerprintManager = null;
-            this._fingerprintReaderFound = false;
-            this._fingerprintReaderType = FingerprintReaderType.NONE;
-
-            if (this._activeServices.has(Const.FINGERPRINT_SERVICE_NAME))
-                needsReset = true;
-        }
-
-        if (this._settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY)) {
-            this._initSmartcardManager();
-        } else if (this._smartcardManager) {
-            this._smartcardManager.disconnectObject(this);
-            this._smartcardManager = null;
-
-            if (this._activeServices.has(Const.SMARTCARD_SERVICE_NAME))
-                needsReset = true;
-        }
-
-        if (needsReset)
-            this._cancelAndReset();
-    }
-
-    _getDetectedDefaultService() {
         if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
-            return Const.PASSWORD_SERVICE_NAME;
-        else if (this._smartcardManager)
-            return Const.SMARTCARD_SERVICE_NAME;
-        else if (this._fingerprintReaderFound)
-            return Const.FINGERPRINT_SERVICE_NAME;
-        return null;
-    }
+            enabledRoles.push(Const.PASSWORD_ROLE_NAME);
+        if (this._settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY))
+            enabledRoles.push(Const.SMARTCARD_ROLE_NAME);
+        if (this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY))
+            enabledRoles.push(Const.FINGERPRINT_ROLE_NAME);
 
-    _updateDefaultService() {
-        const oldDefaultService = this._defaultService;
-        this._defaultService = this._getDetectedDefaultService();
-
-        if (!this._defaultService) {
-            log('no authentication service is enabled, using password authentication');
-            this._defaultService = Const.PASSWORD_SERVICE_NAME;
-        }
-
-        if (oldDefaultService &&
-            oldDefaultService !== this._defaultService &&
-            this._activeServices.has(oldDefaultService))
-            this._cancelAndReset();
-    }
-
-    async _startService(serviceName) {
-        this._hold?.acquire();
-        try {
-            this._activeServices.add(serviceName);
-            if (this._userName) {
-                await this._userVerifier.call_begin_verification_for_user(
-                    serviceName, this._userName, this._cancellable);
-            } else {
-                await this._userVerifier.call_begin_verification(
-                    serviceName, this._cancellable);
-            }
-        } catch (e) {
-            this._activeServices.delete(serviceName);
-            if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                return;
-            if (!this.serviceIsForeground(serviceName)) {
-                logError(e,
-                    `Failed to start ${serviceName} for ${this._userName}`);
-                this._hold?.release();
-                return;
-            }
-            this._reportInitError(
-                this._userName
-                    ? `Failed to start ${serviceName} verification for user`
-                    : `Failed to start ${serviceName} verification`,
-                e, serviceName);
-            return;
-        }
-        this._hold?.release();
-    }
-
-    _beginVerification() {
-        this._startService(this._getForegroundService());
-        this._maybeStartFingerprintVerification().catch(logError);
-    }
-
-    async _maybeStartFingerprintVerification() {
-        if (this._userName &&
-            this._fingerprintReaderFound &&
-            !this.serviceIsForeground(Const.FINGERPRINT_SERVICE_NAME))
-            await this._startService(Const.FINGERPRINT_SERVICE_NAME);
-    }
-
-    _onChoiceListQuery(client, serviceName, promptMessage, list) {
-        if (!this.serviceIsForeground(serviceName))
+        if (JSON.stringify(enabledRoles) === JSON.stringify(this._enabledRoles))
             return;
 
-        const choiceList = {};
-        for (const [key, value] of Object.entries(list.deepUnpack()))
-            choiceList[key] = {title: value};
+        this._enabledRoles = enabledRoles;
 
-        this.emit('show-choice-list', serviceName, promptMessage, choiceList);
+        this._createAuthServices();
     }
 
-    _onInfo(client, serviceName, info) {
-        if (this.serviceIsForeground(serviceName)) {
-            this._queueMessage(serviceName, info, MessageType.INFO);
-        } else if (this.serviceIsFingerprint(serviceName)) {
-            // We don't show fingerprint messages directly since it's
-            // not the main auth service. Instead we use the messages
-            // as a cue to display our own message.
-            if (this._fingerprintReaderType === FingerprintManager.FingerprintReaderType.SWIPE) {
-                // Translators: this message is shown below the password entry field
-                // to indicate the user can swipe their finger on the fingerprint reader
-                this._queueMessage(serviceName, _('(or swipe finger across reader)'),
-                    MessageType.HINT);
-            } else {
-                // Translators: this message is shown below the password entry field
-                // to indicate the user can place their finger on the fingerprint reader instead
-                this._queueMessage(serviceName, _('(or place finger on reader)'),
-                    MessageType.HINT);
-            }
-        }
+    _createAuthServices() {
+        this._clearAuthServices();
+
+        const params = {
+            client: this._client,
+            enabledRoles: this._enabledRoles,
+            allowedFailures: this.allowedFailures,
+            reauthOnly: this._reauthOnly,
+        };
+        if (AuthServicesLegacy.supportsAny(this._enabledRoles))
+            this._authServicesLegacy = new AuthServicesLegacy(params);
+
+        this._connectAuthServices();
     }
 
-    _onProblem(client, serviceName, problem) {
-        const isFingerprint = this.serviceIsFingerprint(serviceName);
-
-        if (!this.serviceIsForeground(serviceName) && !isFingerprint)
-            return;
-
-        this._queuePriorityMessage(serviceName, problem, MessageType.ERROR);
-
-        if (isFingerprint) {
-            // pam_fprintd allows the user to retry multiple (maybe even infinite!
-            // times before failing the authentication conversation.
-            // We don't want this behavior to bypass the max-tries setting the user has set,
-            // so we count the problem messages to know how many times the user has failed.
-            // Once we hit the max number of failures we allow, it's time to failure the
-            // conversation from our side. We can't do that right away, however, because
-            // we may drop pending messages coming from pam_fprintd. In order to make sure
-            // the user sees everything, we queue the failure up to get handled in the
-            // near future, after we've finished up the current round of messages.
-            this._failCounter++;
-
-            if (!this._canRetry()) {
-                if (this._fingerprintFailedId)
-                    GLib.source_remove(this._fingerprintFailedId);
-
-                const cancellable = this._cancellable;
-                this._fingerprintFailedId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT,
-                    FINGERPRINT_ERROR_TIMEOUT_WAIT, () => {
-                        this._fingerprintFailedId = 0;
-                        if (!cancellable.is_cancelled())
-                            this._verificationFailed(serviceName, false);
-                    });
-            }
-        }
+    _clearAuthServices() {
+        this._authServicesLegacy?.disconnectObject(this);
+        this._authServicesLegacy?.clear();
+        this._authServicesLegacy = null;
     }
 
-    _onInfoQuery(client, serviceName, question) {
-        if (!this.serviceIsForeground(serviceName))
-            return;
-
-        this.emit('ask-question', serviceName, question, false);
+    _connectAuthServices() {
+        [this._authServicesLegacy].forEach(authServices => {
+            authServices?.connectObject(
+                'ask-question', (_, ...args) => this.emit('ask-question', ...args),
+                'queue-message', (_, ...args) => this._queueMessage(...args),
+                'queue-priority-message', (_, ...args) => this._queuePriorityMessage(...args),
+                'wait-pending-messages', (_, ...args) => this._waitPendingMessages(...args),
+                'filter-messages', (_, ...args) => this._filterServiceMessages(...args),
+                'verification-failed', (_, ...args) => this._verificationFailed(...args),
+                'verification-complete', (_, ...args) => this.emit('verification-complete', ...args),
+                'reset', (_, ...args) => this.emit('reset', ...args),
+                'show-choice-list', (_, ...args) => this.emit('show-choice-list', ...args),
+                'mechanisms-changed', (_, ...args) => this._onMechanismsChanged(...args),
+                this);
+        });
     }
 
-    _onSecretInfoQuery(client, serviceName, secretQuestion) {
-        if (!this.serviceIsForeground(serviceName))
-            return;
-
-        let token = null;
-        if (this._credentialManagers[serviceName])
-            token = this._credentialManagers[serviceName].token;
-
-        if (token) {
-            this.answerQuery(serviceName, token);
-            return;
-        }
-
-        this.emit('ask-question', serviceName, secretQuestion, true);
-    }
-
-    _onReset() {
-        // Clear previous attempts to authenticate
-        this._failCounter = 0;
-        this._activeServices.clear();
-        this._unavailableServices.clear();
-        this._updateDefaultService();
-
-        this.emit('reset');
-    }
-
-    _onVerificationComplete(_client, serviceName) {
-        const isCredentialManager = !!this._credentialManagers[serviceName];
-        const isForeground = this.serviceIsForeground(serviceName);
-        if (isCredentialManager && isForeground) {
-            this._credentialManagers[serviceName].token = null;
-            this._preemptingService = null;
-        }
-
-        this.emit('verification-complete');
-    }
-
-    _cancelAndReset() {
-        this.cancel();
-        this._onReset();
-    }
-
-    _retry(serviceName) {
-        this._connectSignals();
-        this._startService(serviceName);
-    }
-
-    _canRetry() {
-        return this._userName &&
-            (this._reauthOnly || this._failCounter < this.allowedFailures);
-    }
-
-    async _verificationFailed(serviceName, shouldRetry) {
-        if (serviceName === Const.FINGERPRINT_SERVICE_NAME) {
-            if (this._fingerprintFailedId)
-                GLib.source_remove(this._fingerprintFailedId);
-        }
-
-        // For Not Listed / enterprise logins, immediately reset
-        // the dialog
-        // Otherwise, when in login mode we allow ALLOWED_FAILURES attempts.
-        // After that, we go back to the welcome screen.
+    _verificationFailed(serviceName, canRetry) {
         this._filterServiceMessages(serviceName, MessageType.ERROR);
+        this.emit('verification-failed', serviceName, canRetry);
+    }
 
-        const doneTrying = !shouldRetry || !this._canRetry();
+    _onMechanismsChanged() {
+        const mechanisms = this._authServicesLegacy?.enabledMechanisms ?? [];
 
-        this.emit('verification-failed', serviceName, !doneTrying);
+        const selectedMechanism = this._authServicesLegacy?.selectedMechanism ??
+            mechanisms.find(m => isSelectable(m)) ??
+            {};
+
+        this.emit('mechanisms-changed', mechanisms, selectedMechanism);
+    }
+
+    async _waitPendingMessages(waiter) {
         try {
-            if (doneTrying) {
-                this._disconnectSignals();
-                await this._handlePendingMessages();
-                this._cancelAndReset();
-            } else {
-                await this._handlePendingMessages();
-                this._retry(serviceName);
-            }
+            await this._handlePendingMessages();
+            waiter.resolve();
         } catch (e) {
-            logErrorUnlessCancelled(e);
+            waiter.reject(e);
         }
     }
 
@@ -830,48 +454,5 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                     resolve();
             });
         });
-    }
-
-    _onServiceUnavailable(_client, serviceName, errorMessage) {
-        this._unavailableServices.add(serviceName);
-
-        if (!errorMessage)
-            return;
-
-        if (this.serviceIsForeground(serviceName) || this.serviceIsFingerprint(serviceName))
-            this._queueMessage(serviceName, errorMessage, MessageType.ERROR);
-    }
-
-    _onConversationStarted(client, serviceName) {
-        this._activeServices.add(serviceName);
-    }
-
-    _onConversationStopped(client, serviceName) {
-        this._activeServices.delete(serviceName);
-
-        // If the login failed with the preauthenticated oVirt credentials
-        // then discard the credentials and revert to default authentication
-        // mechanism.
-        const isCredentialManager = !!this._credentialManagers[serviceName];
-        const isForeground = this.serviceIsForeground(serviceName);
-        if (isCredentialManager && isForeground) {
-            this._credentialManagers[serviceName].token = null;
-            this._preemptingService = null;
-            this._verificationFailed(serviceName, false);
-            return;
-        }
-
-        this._filterServiceMessages(serviceName, MessageType.ERROR);
-
-        if (this._unavailableServices.has(serviceName))
-            return;
-
-        // if the password service fails, then cancel everything.
-        // But if, e.g., fingerprint fails, still give
-        // password authentication a chance to succeed
-        if (isForeground)
-            this._failCounter++;
-
-        this._verificationFailed(serviceName, true);
     }
 }
