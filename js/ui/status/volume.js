@@ -433,12 +433,27 @@ class VolumeIndicator extends SystemIndicator {
     }
 
     _handleScrollEvent(item, event) {
-        const result = item.slider.scroll(event);
-        if (result === Clutter.EVENT_PROPAGATE || item.mapped)
-            return result;
+        if (event.get_flags() & Clutter.EventFlags.FLAG_POINTER_EMULATED)
+            return Clutter.EVENT_PROPAGATE;
 
-        item.showOSD();
-        return result;
+        let direction = event.get_scroll_direction();
+        let nSteps = 0;
+        if (direction === Clutter.ScrollDirection.DOWN) {
+            nSteps = -1;
+        } else if (direction === Clutter.ScrollDirection.UP) {
+            nSteps = 1;
+        } else if (direction === Clutter.ScrollDirection.SMOOTH) {
+            let [, dy] = event.get_scroll_delta();
+            nSteps = -dy;
+            // Match physical direction
+            if (event.get_scroll_flags() & Clutter.ScrollFlags.INVERTED)
+                nSteps *= -1;
+        }
+
+        if (item.mapped || item.slider.step(nSteps))
+            item.showOSD();
+
+        return Clutter.EVENT_STOP;
     }
 });
 
