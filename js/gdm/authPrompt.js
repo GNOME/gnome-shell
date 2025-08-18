@@ -83,13 +83,10 @@ export const AuthPrompt = GObject.registerClass({
         this._userVerifier.connect('show-message', this._onShowMessage.bind(this));
         this._userVerifier.connect('show-choice-list', this._onShowChoiceList.bind(this));
         this._userVerifier.connect('mechanisms-changed', (_, ...args) => this.emit('mechanisms-changed', ...args));
-        this._userVerifier.connect('mechanism-selected', (...args) => this._onMechanismSelected(...args));
         this._userVerifier.connect('verification-failed', this._onVerificationFailed.bind(this));
         this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
         this._userVerifier.connect('reset', this._onReset.bind(this));
-        this._userVerifier.connect('smartcard-status-changed', this._onSmartcardStatusChanged.bind(this));
         this._userVerifier.connect('credential-manager-authenticated', this._onCredentialManagerAuthenticated.bind(this));
-        this.smartcardDetected = this._userVerifier.smartcardDetected;
 
         this.connect('destroy', this._onDestroy.bind(this));
         this.mechanisms = new Map();
@@ -406,31 +403,6 @@ export const AuthPrompt = GObject.registerClass({
             this.reset();
     }
 
-    _onSmartcardStatusChanged() {
-        this.smartcardDetected = this._userVerifier.smartcardDetected;
-
-        // Most of the time we want to reset if the user inserts or removes
-        // a smartcard. Smartcard insertion "preempts" what the user was
-        // doing, and smartcard removal aborts the preemption.
-        // The exceptions are: 1) Don't reset on smartcard insertion if we're already verifying
-        //                        with a smartcard
-        //                     2) Don't reset if we've already succeeded at verification and
-        //                        the user is getting logged in.
-        if (this._userVerifier.serviceIsDefault(GdmUtil.SMARTCARD_SERVICE_NAME) &&
-            (this.verificationStatus === AuthPromptStatus.VERIFYING ||
-             this.verificationStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS) &&
-            this.smartcardDetected)
-            return;
-
-        if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
-            this.reset();
-    }
-
-    _onMechanismSelected() {
-        if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
-            this.reset({ beginRequestType: BeginRequestType.REUSE_USERNAME });
-    }
-
     _onShowMessage(_userVerifier, serviceName, message, type) {
         let wiggleParameters = {duration: 0};
 
@@ -478,9 +450,16 @@ export const AuthPrompt = GObject.registerClass({
         this.clear();
     }
 
-    _onReset() {
-        this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
-        this.reset();
+    _onReset(_, resetParams) {
+        if (this.verificationStatus === AuthPromptStatus.VERIFICATION_SUCCEEDED)
+            return;
+
+        // TODO make this change in its own commit
+        const { softReset, reuseEntryText } = resetParams;
+            this.reset({
+                beginRequestType: softReset ? BeginRequestType.REUSE_USERNAME : null,
+                reuseEntryText: softReset ? reuseEntryText : false,
+            });
     }
 
     setActorInDefaultButtonWell(actor, animate) {
@@ -740,8 +719,9 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     reset(params) {
-        let {beginRequestType} = Params.parse(params, {
+        let {beginRequestType, reuseEntryText} = Params.parse(params, {
             beginRequestType: null,
+            reuseEntryText: false,
         });
 
         let oldStatus = this.verificationStatus;
@@ -750,8 +730,13 @@ export const AuthPrompt = GObject.registerClass({
         this.cancelButton.can_focus = this._hasCancelButton;
         this._preemptiveAnswer = null;
 
-        if (this._userVerifier)
-            this._userVerifier.cancel();
+        const oldEntryText = this._textEntry.text;
+        const oldPasswordText = this._passwordEntry.text;
+
+        if (beginRequestType === BeginRequestType.REUSE_USERNAME)
+            this._userVerifier?.cancel();
+        else
+            this._userVerifier?.reset();
 
         this._queryingService = null;
         this.clear();
@@ -759,6 +744,11 @@ export const AuthPrompt = GObject.registerClass({
         this.setUser(null);
         this._updateEntry(true);
         this.stopSpinning();
+
+        if (reuseEntryText) {
+            this._textEntry.text = oldEntryText;
+            this._passwordEntry.text = oldPasswordText;
+        }
 
         if (oldStatus === AuthPromptStatus.VERIFICATION_FAILED)
             this.emit('failed');

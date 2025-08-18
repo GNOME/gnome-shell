@@ -4,6 +4,8 @@
     <file>gdm/authList.js</file>
     <file>gdm/authMenuButton.js</file>
     <file>gdm/authPrompt.js</file>
+    <file>gdm/authServices.js</file>
+    <file>gdm/authServicesLegacy.js</file>
     <file>gdm/batch.js</file>
     <file>gdm/const.js</file>
     <file>gdm/credentialManager.js</file>
