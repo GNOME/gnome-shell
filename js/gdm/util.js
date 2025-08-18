@@ -251,7 +251,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         return message.length * USER_READ_TIME;
     }
 
-    finishMessageQueue() {
+    _finishMessageQueue() {
         if (!this.hasPendingMessages)
             return;
 
@@ -294,7 +294,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                     this._messageQueue.shift();
                     this._queueMessageTimeout();
                 } else {
-                    this.finishMessageQueue();
+                    this._finishMessageQueue();
                 }
 
                 return GLib.SOURCE_REMOVE;
@@ -324,7 +324,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _clearMessageQueue() {
-        this.finishMessageQueue();
+        this._finishMessageQueue();
 
         if (this._messageQueueTimeoutId !== 0) {
             GLib.source_remove(this._messageQueueTimeoutId);
