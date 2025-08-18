@@ -971,7 +971,7 @@ export const UnlockDialog = GObject.registerClass({
         this._authMenuButton.reactive = !isLoading;
     }
 
-    _onMechanismsChanged(_authPrompt, mechanisms, selectedMechanism) {
+    _onMechanismsChanged(_authPrompt, {mechanisms, selectedMechanism}) {
         this._authMenuButton.clearItems({
             sectionName: PRIMARY_UNLOCK_METHOD_SECTION_NAME,
         });
