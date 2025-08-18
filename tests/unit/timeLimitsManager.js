@@ -36,7 +36,9 @@ const {TimeLimitsState, UserState} = TimeLimitsManager;
  * of time, maintaining an internal ordered queue of events, and providing three
  * groups of mock functions which the `TimeLimitsManager` uses to interact with
  * it: mock versions of GLib’s clock and timeout functions, a mock proxy of the
- * logind `User` D-Bus object, and a mock version of `Gio.Settings`.
+ * logind `User` D-Bus object, a mock proxy around `Malcontent.Manager` object,
+ * a mock proxy of the malcontent-timerd `Child` D-Bus object, and a mock
+ * version of `Gio.Settings`.
  *
  * The internal ordered queue of events is sorted by time (in real/wall clock
  * seconds, i.e. UNIX timestamps). On each _tick(), the next event is shifted
@@ -53,7 +55,7 @@ const {TimeLimitsState, UserState} = TimeLimitsManager;
  * daily time limit is reset at a specific time each morning.
  */
 class TestHarness {
-    constructor(settings, historyFileContents = null) {
+    constructor(settings, historyFileContents = null, sessionLimitsEnabled = false) {
         this._currentTimeSecs = 0;
         this._clockOffset = 100;  // make the monotonic clock lag by 100s, arbitrarily
         this._nextSourceId = 1;
@@ -65,6 +67,8 @@ class TestHarness {
         this._settingsChangedDailyLimitSecondsCallback = null;
         this._settingsChangedDailyLimitEnabledCallback = null;
         this._settingsChangedGrayscaleCallback = null;
+        this._parentalControlsManagerSessionLimitsChangedCallback = null;
+        this._timerChildProxyEstimatedTimesChangedCallback = null;
 
         // These two emulate relevant bits of the o.fdo.login1.User API
         // See https://www.freedesktop.org/software/systemd/man/latest/org.freedesktop.login1.html#User%20Objects
@@ -87,6 +91,13 @@ class TestHarness {
             file.delete(null);
 
         this._historyFile = file;
+
+        this._sessionLimitsEnabled = sessionLimitsEnabled;
+        this._limitReached = false;
+        this._currentSessionStartTimeSecs = 0;
+        this._currentSessionEstimatedEndTimeSecs = GLib.MAX_UINT64;
+        this._nextSessionStartTimeSecs = GLib.MAX_UINT64;
+        this._nextSessionEstimatedEndTimeSecs = GLib.MAX_UINT64;
 
         // And a mock D-Bus proxy for logind.
         const harness = this;
@@ -317,6 +328,55 @@ class TestHarness {
     }
 
     /**
+     * Add a parental controls manager session limits changed event to the event
+     * queue. This simulates the `session-limits-changed` signal of the
+     * `Malcontent.Manager` object, notifying gnome-shell that the user’s
+     * session limits were changed, for example from malcontent-control.
+     *
+     * @param {string} timeStr Date/Time the event happens, in ISO 8601 format.
+     * @param {boolean} newSessionLimitsEnabled New session limits enabled setting.
+     */
+    addParentalControlsManagerSessionLimitsChangedEvent(timeStr, newSessionLimitsEnabled) {
+        return this._insertEvent({
+            type: 'parental-controls-manager-session-limits-changed',
+            time: TestHarness.timeStrToSecs(timeStr),
+            newSessionLimitsEnabled,
+        });
+    }
+
+    /**
+     * Add a timer child proxy estimated times changed event to the event
+     * queue. This simulates the `EstimatedTimesChanged` signal of the
+     * `org.freedesktop.MalcontentTimer1.Child` object, notifying gnome-shell
+     * that the user’s estimated session times were changed, for example as a
+     * result of gnome-shell recording usage.
+     *
+     * @param {string} timeStr Date/Time the event happens, in ISO 8601 format.
+     * @param {boolean} newLimitReached New limit reached setting.
+     * @param {number} newCurrentSessionStartTimeSecs New current session start
+     *    time in seconds.
+     * @param {number} newCurrentSessionEstimatedEndTimeSecs New current session
+     *    estimated end time in seconds.
+     * @param {number} newNextSessionStartTimeSecs New next session start time
+     *    in seconds.
+     * @param {number} newNextSessionEstimatedEndTimeSecs New next session
+     *    estimated end time in seconds.
+     */
+    addTimerChildProxyEstimatedTimesChangedEvent(timeStr, newLimitReached,
+        newCurrentSessionStartTimeSecs, newCurrentSessionEstimatedEndTimeSecs,
+        newNextSessionStartTimeSecs, newNextSessionEstimatedEndTimeSecs) {
+        return this._insertEvent({
+            type: 'timer-child-proxy-estimated-times-changed',
+            time: TestHarness.timeStrToSecs(timeStr),
+            newLimitReached,
+            newCurrentSessionStartTimeSecs,
+            newCurrentSessionEstimatedEndTimeSecs,
+            newNextSessionStartTimeSecs,
+            newNextSessionEstimatedEndTimeSecs,
+        });
+    }
+
+    /**
      * Add a settings change event to the event queue. This simulates dconf
      * notifying gnome-shell that the user has changed a setting, for example
      * from gnome-control-center.
@@ -410,6 +470,29 @@ class TestHarness {
         });
     }
 
+    /**
+     * Add a state assertion event to the event queue. This is a specialised
+     * form of `addAssertionEvent()` which asserts that the given
+     * start and end date/times of the most recent usage recording equal the
+     * expected values at date/time `timeStr`.
+     *
+     * @param {string} timeStr Date/Time to check the times at, in ISO 8601
+     *    format.
+     * @param {string} startStr Start date/time in ISO 8601 format.
+     * @param {string} endStr End date/time in ISO 8601 format.
+     */
+    expectUsage(timeStr, startStr, endStr) {
+        return this.addAssertionEvent(timeStr, () => {
+            const [start, end] = this._timeStore;
+            expect(start)
+                .withContext('start')
+                .toEqual(TestHarness.timeStrToSecs(startStr));
+            expect(end)
+                .withContext('end')
+                .toEqual(TestHarness.timeStrToSecs(endStr));
+        });
+    }
+
     _popEvent() {
         return this._events.shift();
     }
@@ -490,7 +573,9 @@ class TestHarness {
             this.mockClock,
             this.mockLoginManagerFactory,
             this.mockLoginUserFactory,
-            this.mockSettingsFactory);
+            this.mockSettingsFactory,
+            this.mockParentalControlsManagerFactory,
+            this.mockTimerChildProxyFactory);
     }
 
     /**
@@ -525,6 +610,92 @@ class TestHarness {
         return {
             newAsync: () => {
                 return this._mockLoginUser;
+            },
+        };
+    }
+
+    /**
+     * Get a mock parental controls manager factory for use in the
+     * `TimeLimitsManager` under test. This is an object providing constructors
+     * for `ParentalControlsManager` objects, which are proxies around the
+     * `Malcontent.Manager` objects. Each constructor returns a basic
+     * implementation of `ParentalControlsManager` which uses the daily limit
+     * and daily schedule variables passed to `TestHarness` in its constructor
+     * in the settings dictionary.
+     *
+     * This has an extra layer of indirection to match `mockSettingsFactory`.
+     */
+    get mockParentalControlsManagerFactory() {
+        return {
+            new: () => {
+                return {
+                    connectObject: (...args) => {
+                        const [
+                            sessionLimitsChangedStr, sessionLimitsChangedCallback,
+                            obj,
+                        ] = args;
+
+                        if (sessionLimitsChangedStr !== 'session-limits-changed' ||
+                            typeof obj !== 'object')
+                            fail('ParentalControlsManager.connectObject() not called in expected way');
+                        if (this._parentalControlsManagerSessionLimitsChangedCallback !== null)
+                            fail('ParentalControlsManager signals already connected');
+
+                        this._parentalControlsManagerSessionLimitsChangedCallback = sessionLimitsChangedCallback;
+                    },
+                    sessionLimitsEnabled: () => {
+                        return this._sessionLimitsEnabled;
+                    },
+                };
+            },
+        };
+    }
+
+    /**
+     * Get a mock timer child proxy factory for use in the `TimeLimitsManager`
+     * under test. This is an object providing constructors for `TimerChildProxy`
+     * objects, which are proxies around the `org.freedesktop.MalcontentTimer1.Child`
+     * D-Bus API. Each constructor returns a basic implementation of `TimerChildProxy`.
+     *
+     * This has an extra layer of indirection to match `mockSettingsFactory`.
+     */
+    get mockTimerChildProxyFactory() {
+        return {
+            new: () => {
+                return {
+                    connectSignal: (...args) => {
+                        const [
+                            estimatedTimesChangedStr, estimatedTimesChangedCallback,
+                        ] = args;
+
+                        if (estimatedTimesChangedStr !== 'EstimatedTimesChanged')
+                            fail('TimerChildProxy.connectSignal() not called in expected way');
+                        if (this._timerChildProxyEstimatedTimesChangedCallback !== null)
+                            fail('TimerChildProxy signals already connected');
+
+                        this._timerChildProxyEstimatedTimesChangedCallback = estimatedTimesChangedCallback;
+                    },
+                    RecordUsageAsync: args => {
+                        return new Promise(resolve => {
+                            const [[startSecs, endSecs]] = args;
+                            this._timeStore = [startSecs, endSecs];
+                            resolve();
+                        });
+                    },
+                    GetEstimatedTimesAsync: _ => {
+                        return new Promise(resolve => {
+                            resolve([0, {
+                                '': [
+                                    this._limitReached,
+                                    this._currentSessionStartTimeSecs,
+                                    this._currentSessionEstimatedEndTimeSecs,
+                                    this._nextSessionStartTimeSecs,
+                                    this._nextSessionEstimatedEndTimeSecs,
+                                ],
+                            }]);
+                        });
+                    },
+                };
             },
         };
     }
@@ -620,6 +791,22 @@ class TestHarness {
 
             if (this._loginUserPropertiesChangedCallback)
                 this._loginUserPropertiesChangedCallback();
+            break;
+        case 'parental-controls-manager-session-limits-changed':
+            this._sessionLimitsEnabled = event.newSessionLimitsEnabled;
+
+            if (this._parentalControlsManagerSessionLimitsChangedCallback)
+                this._parentalControlsManagerSessionLimitsChangedCallback();
+            break;
+        case 'timer-child-proxy-estimated-times-changed':
+            this._limitReached = event.newLimitReached;
+            this._currentSessionStartTimeSecs = event.newCurrentSessionStartTimeSecs;
+            this._currentSessionEstimatedEndTimeSecs = event.newCurrentSessionEstimatedEndTimeSecs;
+            this._nextSessionStartTimeSecs = event.newNextSessionStartTimeSecs;
+            this._nextSessionEstimatedEndTimeSecs = event.newNextSessionEstimatedEndTimeSecs;
+
+            if (this._timerChildProxyEstimatedTimesChangedCallback)
+                this._timerChildProxyEstimatedTimesChangedCallback();
             break;
         case 'settings-change':
             this._settings[event.schemaId][event.key] = event.newValue;
@@ -724,6 +911,35 @@ describe('Time limits manager', () => {
         harness.run();
     });
 
+    it('cannot be disabled via GSettings if parental controls enabled', () => {
+        const harness = new TestHarness(
+            {
+                'org.gnome.desktop.screen-time-limits': {
+                    'history-enabled': false,
+                    'daily-limit-enabled': false,
+                    'daily-limit-seconds': 4 * 60 * 60,
+                },
+            },
+            null,
+            {
+                'parental-enabled': true,
+            }
+        );
+        harness.initializeMockClock('2024-06-01T10:00:00Z');
+        const timeLimitsManager = harness.createTimeLimitsManager();
+
+        harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+        harness.expectState('2024-06-01T15:00:00Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+        harness.addLoginUserStateChangeEvent('2024-06-01T15:00:10Z', 'active', false);
+        harness.addLoginUserStateChangeEvent('2024-06-01T15:00:20Z', 'lingering', true);
+        harness.expectProperties('2024-06-01T15:00:30Z', timeLimitsManager, {
+            'state': TimeLimitsState.ACTIVE,
+        });
+        harness.shutdownManager('2024-06-01T15:10:00Z', timeLimitsManager);
+
+        harness.run();
+    });
+
     it('can be toggled on and off via GSettings', () => {
         const harness = new TestHarness({
             'org.gnome.desktop.screen-time-limits': {
@@ -777,6 +993,37 @@ describe('Time limits manager', () => {
         });
         harness.expectState('2024-06-01T14:00:01Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
         harness.shutdownManager('2024-06-01T14:10:00Z', timeLimitsManager);
+
+        harness.run();
+    });
+
+    it('tracks a single day’s usage with parental controls limit enabled', () => {
+        const harness = new TestHarness({
+            'org.gnome.desktop.screen-time-limits': {
+                'history-enabled': true,
+                'daily-limit-enabled': true,
+                'daily-limit-seconds': 4 * 60 * 60,
+            },
+        }, null, true);
+        harness.initializeMockClock('2024-06-01T10:00:00Z');
+        harness.addTimerChildProxyEstimatedTimesChangedEvent(
+            '2024-06-01T10:00:01Z',
+            false,
+            TestHarness.timeStrToSecs('2024-06-01T10:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-01T13:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T00:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T03:00:00Z')
+        );
+        harness.addParentalControlsManagerSessionLimitsChangedEvent(
+            '2024-06-01T10:00:02Z', true
+        );
+
+        const timeLimitsManager = harness.createTimeLimitsManager();
+
+        harness.expectState('2024-06-01T10:00:03Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+        harness.expectState('2024-06-01T12:59:59Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+        harness.expectState('2024-06-01T13:00:01Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
+        harness.shutdownManager('2024-06-01T13:00:02Z', timeLimitsManager);
 
         harness.run();
     });
@@ -909,6 +1156,189 @@ describe('Time limits manager', () => {
         });
 
         harness.shutdownManager('2024-06-01T18:10:00Z', timeLimitsManager);
+
+        harness.run();
+    });
+
+    it('resets usage if the parental controls session limit is changed', () => {
+        const harness = new TestHarness({
+            'org.gnome.desktop.screen-time-limits': {
+                'history-enabled': true,
+                'daily-limit-enabled': true,
+                'daily-limit-seconds': 4 * 60 * 60,
+            },
+        }, null, true);
+        harness.initializeMockClock('2024-06-01T10:00:00Z');
+        harness.addTimerChildProxyEstimatedTimesChangedEvent(
+            '2024-06-01T10:00:01Z',
+            false,
+            TestHarness.timeStrToSecs('2024-06-01T10:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-01T13:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T00:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T03:00:00Z')
+        );
+        harness.addParentalControlsManagerSessionLimitsChangedEvent(
+            '2024-06-01T10:00:02Z', true
+        );
+        const timeLimitsManager = harness.createTimeLimitsManager();
+
+        // Run before the limit is reached
+        harness.expectState('2024-06-01T10:00:03Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+        harness.expectState('2024-06-01T12:00:00Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+
+        // Change session limits part-way through the day in a way which means
+        // the child still has time left that day
+        harness.addTimerChildProxyEstimatedTimesChangedEvent(
+            '2024-06-01T12:30:00Z',
+            false,
+            TestHarness.timeStrToSecs('2024-06-01T10:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-01T14:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T00:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T04:00:00Z')
+        );
+        harness.addParentalControlsManagerSessionLimitsChangedEvent(
+            '2024-06-01T12:30:01Z', true
+        );
+
+        // Run before the limit is reached
+        harness.expectState('2024-06-01T12:30:02Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+        harness.expectState('2024-06-01T13:30:00Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+
+        // Change session limits part-way through the day in a way which means
+        // the child no longer has time left that day
+        harness.addTimerChildProxyEstimatedTimesChangedEvent(
+            '2024-06-01T13:45:00Z',
+            true,
+            TestHarness.timeStrToSecs('2024-06-01T10:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-01T13:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T00:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T03:00:00Z')
+        );
+        harness.addParentalControlsManagerSessionLimitsChangedEvent(
+            '2024-06-01T13:45:01Z', true
+        );
+
+        // Run before the limit is over
+        harness.expectState('2024-06-01T13:45:02Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
+        harness.expectState('2024-06-01T14:00:00Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
+
+        // Change session limits after the child has run out of time in a way
+        // which means the child has still run out of time
+        harness.addTimerChildProxyEstimatedTimesChangedEvent(
+            '2024-06-01T14:30:00Z',
+            true,
+            TestHarness.timeStrToSecs('2024-06-01T10:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-01T14:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T00:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T04:00:00Z')
+        );
+        harness.addParentalControlsManagerSessionLimitsChangedEvent(
+            '2024-06-01T14:30:01Z', true
+        );
+
+        // Run before the limit is over
+        harness.expectState('2024-06-01T14:30:02Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
+        harness.expectState('2024-06-01T15:00:00Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
+
+        // Change session limits after the child has run out of time in a way
+        // which means the child has more time remaining
+        harness.addTimerChildProxyEstimatedTimesChangedEvent(
+            '2024-06-01T15:30:00Z',
+            true,
+            TestHarness.timeStrToSecs('2024-06-01T10:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-01T16:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T00:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T06:00:00Z')
+        );
+        harness.addParentalControlsManagerSessionLimitsChangedEvent(
+            '2024-06-01T15:30:01Z', true
+        );
+
+        // Run until the limit is reached
+        harness.expectState('2024-06-01T15:30:02Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+        harness.expectState('2024-06-01T16:00:05Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
+
+        // Run before the limit is over
+        harness.expectState('2024-06-01T16:00:06Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
+        harness.expectState('2024-06-01T23:59:59Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
+
+        // After the limit is over, GetEstimatedTimes will return new values of
+        // the current and next sessions, so change the values accordingly
+        harness.addTimerChildProxyEstimatedTimesChangedEvent(
+            '2024-06-02T00:00:00Z',
+            false,
+            TestHarness.timeStrToSecs('2024-06-02T00:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T06:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-03T00:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-03T06:00:00Z')
+        );
+        harness.addParentalControlsManagerSessionLimitsChangedEvent(
+            '2024-06-02T00:00:01Z', true
+        );
+
+        // Run after the limit is over
+        harness.expectState('2024-06-02T00:00:02Z', timeLimitsManager, TimeLimitsState.ACTIVE);
+
+        harness.shutdownManager('2024-06-02T01:00:00Z', timeLimitsManager);
+
+        harness.run();
+    });
+
+    it('records usage correctly to the malcontent timer daemon', () => {
+        const harness = new TestHarness({
+            'org.gnome.desktop.screen-time-limits': {
+                'history-enabled': false,
+                'daily-limit-enabled': true,
+                'daily-limit-seconds': 4 * 60 * 60,
+            },
+        }, null, true);
+        harness.initializeMockClock('2024-06-01T10:00:00Z');
+        harness.addTimerChildProxyEstimatedTimesChangedEvent(
+            '2024-06-01T10:00:01Z',
+            false,
+            TestHarness.timeStrToSecs('2024-06-01T10:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-01T20:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T00:00:00Z'),
+            TestHarness.timeStrToSecs('2024-06-02T10:00:00Z')
+        );
+        harness.addParentalControlsManagerSessionLimitsChangedEvent(
+            '2024-06-01T10:00:02Z', true
+        );
+        const timeLimitsManager = harness.createTimeLimitsManager();
+
+        // Session limits changed
+        harness.addParentalControlsManagerSessionLimitsChangedEvent(
+            '2024-06-01T11:00:00Z', true
+        );
+        harness.expectUsage('2024-06-01T11:00:01Z', '2024-06-01T10:00:00Z', '2024-06-01T11:00:00Z');
+
+        // User state changed
+        harness.addLoginUserStateChangeEvent('2024-06-01T12:00:00Z', 'lingering', true);
+        harness.expectUsage('2024-06-01T12:00:01Z', '2024-06-01T10:00:00Z', '2024-06-01T12:00:00Z');
+
+        harness.addLoginUserStateChangeEvent('2024-06-01T13:00:00Z', 'active', false);
+        harness.expectUsage('2024-06-01T13:00:01Z', '2024-06-01T10:00:00Z', '2024-06-01T12:00:00Z');
+
+        harness.addLoginUserStateChangeEvent('2024-06-01T14:00:00Z', 'offline', true);
+        harness.expectUsage('2024-06-01T14:00:01Z', '2024-06-01T13:00:00Z', '2024-06-01T14:00:00Z');
+
+        harness.addLoginUserStateChangeEvent('2024-06-01T15:00:00Z', 'active', false);
+        harness.expectUsage('2024-06-01T15:00:01Z', '2024-06-01T13:00:00Z', '2024-06-01T14:00:00Z');
+
+        // Disable wellbeing & parental
+        harness.addParentalControlsManagerSessionLimitsChangedEvent(
+            '2024-06-01T16:00:00Z', false
+        );
+        harness.expectUsage('2024-06-01T16:00:01Z', '2024-06-01T15:00:00Z', '2024-06-01T16:00:00Z');
+
+        harness.addParentalControlsManagerSessionLimitsChangedEvent(
+            '2024-06-01T17:00:00Z', true
+        );
+        harness.expectUsage('2024-06-01T17:00:01Z', '2024-06-01T15:00:00Z', '2024-06-01T16:00:00Z');
+
+        // Shutdown
+        harness.shutdownManager('2024-06-01T18:00:00Z', timeLimitsManager);
+        harness.expectUsage('2024-06-01T18:00:00Z', '2024-06-01T17:00:00Z', '2024-06-01T18:00:00Z');
 
         harness.run();
     });

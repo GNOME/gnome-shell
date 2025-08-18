@@ -32,6 +32,13 @@ import * as Gettext from 'gettext';
 import * as LoginManager from './loginManager.js';
 import * as Main from '../ui/main.js';
 import * as MessageTray from '../ui/messageTray.js';
+import * as ParentalControlsManager from './parentalControlsManager.js';
+import * as SystemActions from './systemActions.js';
+
+import {loadInterfaceXML} from './fileUtils.js';
+
+const TimerChildIface = loadInterfaceXML('org.freedesktop.MalcontentTimer1.Child');
+const TimerChildProxy = Gio.DBusProxy.makeProxyWrapper(TimerChildIface);
 
 export const HISTORY_THRESHOLD_SECONDS = 14 * 7 * 24 * 60 * 60;  // maximum time history entries are kept
 const LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS = 10 * 60;  // notify the user 10min before their limit is reached
@@ -79,10 +86,17 @@ function userStateToString(userState) {
 
 /**
  * A manager class which tracks total active/inactive time for a user, and
+ * signals when the user has reached their session time limit for actively
+ * using the device if the user has parental controls session limits set. When
+ * they are disabled, the wellbeing daily time limit is considered, and manager
  * signals when the user has reached their daily time limit for actively using
  * the device, if limits are enabled.
  *
- * Active/Inactive time is based off the total time the user account has spent
+ * For parental controls session time limit, the manager tracks the active/inactive
+ * time via malcontent-timerd.
+ *
+ * For wellbeing daily time limit, the way in which the manager tracks the
+ * active/inactive time is based off the total time the user account has spent
  * logged in to at least one active session, not idle (and not locked, but
  * that’s a subset of idle time), and not suspended.
  * This corresponds to the `active` state from sd_uid_get_state()
@@ -123,7 +137,7 @@ export const TimeLimitsManager = GObject.registerClass({
         'daily-limit-reached': {},
     },
 }, class TimeLimitsManager extends GObject.Object {
-    constructor(historyFile, clock, loginManagerFactory, loginUserFactory, settingsFactory) {
+    constructor(historyFile, clock, loginManagerFactory, loginUserFactory, settingsFactory, parentalControlsManagerFactory, timerChildProxyFactory) {
         super();
 
         // Allow these few bits of global state to be overridden for unit testing
@@ -154,6 +168,37 @@ export const TimeLimitsManager = GObject.registerClass({
                 return loginManager.getCurrentUserProxy();
             },
         };
+
+        this._parentalControlsManagerFactory = parentalControlsManagerFactory ?? {
+            new: ParentalControlsManager.getDefault,
+        };
+        this._parentalControlsManager = this._parentalControlsManagerFactory.new();
+
+        this._parentalControlsManager.connectObject(
+            'session-limits-changed', () => this._onSessionLimitsChanged().catch(logError),
+            this);
+
+        this._estimatedTimes = [];
+        this._timerChildProxyFactory = timerChildProxyFactory ?? {
+            new: () => {
+                return TimerChildProxy(Gio.DBus.system,
+                    'org.freedesktop.MalcontentTimer1',
+                    '/org/freedesktop/MalcontentTimer1',
+                    (proxy, error) => {
+                        if (error)
+                            console.debug(`Failed to get TimerChild proxy: ${error}`);
+                    },
+                    null, /* cancellable */
+                    Gio.DBusProxyFlags.DO_NOT_AUTO_START_AT_CONSTRUCTION
+                );
+            },
+        };
+
+        this._timerChildProxy = this._timerChildProxyFactory.new();
+
+        this._timerChildProxy.connectSignal('EstimatedTimesChanged',
+            () => this._updateEstimatedTimes().catch(logError));
+
         this._settingsFactory = settingsFactory ?? {
             new: Gio.Settings.new,
         };
@@ -176,13 +221,68 @@ export const TimeLimitsManager = GObject.registerClass({
         this._timeChangeId = 0;
         this._clockOffsetSecs = 0;
         this._ignoreClockOffsetChanges = false;
+        this._latestUsageEndSecs = 0;
 
         // Start tracking timings
         this._updateStateMachine();
     }
 
+    async _recordUsage(startSecs, endSecs) {
+        console.debug('Recording usage to the parental controls daemon: ' +
+            `${this._unixToString(startSecs)} ${this._unixToString(endSecs)}`);
+        try {
+            await this._timerChildProxy.RecordUsageAsync(
+                [[startSecs, endSecs, 'login-session', '']]);
+            this._latestUsageEndSecs = endSecs;
+        } catch (e) {
+            if (e.matches(Gio.DBusError, Gio.DBusError.SERVICE_UNKNOWN)) {
+                // Limits should only be enabled when the daemon is available.
+                if (this._parentalControlsManager.sessionLimitsEnabled())
+                    throw e;
+                else
+                    console.debug('Parental controls timer daemon not available');
+            } else {
+                console.warn(`Failed to record usage: ${e.message}`);
+            }
+        }
+    }
+
+    async _onSessionLimitsChanged() {
+        // New session limits may mean that the state machine will need to start/stop.
+        this._updateStateMachine();
+
+        // Checkpoint current active usage to the parental controls timer daemon,
+        // so that it can make a correct estimate of the remaining screen time.
+        // Wellbeing monitoring uses the stored edge events (state transitions),
+        // whereas the parental controls timer daemon stores time periods only after
+        // one is finished, which is why it cannot know the start of the usage period,
+        // without recording it first. Recording will trigger EstimatedTimesChanged
+        // signal, which handler updates the estimated times and state.
+        if (this._stateTransitions.length > 0 &&
+            this._stateTransitions.at(-1).newState === UserState.ACTIVE) {
+            const startSecs = this._stateTransitions.at(-1).wallTimeSecs;
+            const endSecs = this.getCurrentTime();
+            await this._recordUsage(startSecs, endSecs);
+        }
+    }
+
+    async _updateEstimatedTimes() {
+        const [, timesSecs] = await this._timerChildProxy.GetEstimatedTimesAsync('login-session');
+        if (timesSecs[''])
+            this._estimatedTimes = timesSecs[''];
+        else
+            this._estimatedTimes = [];
+
+        this._updateState();
+    }
+
+    _storingTransitionsEnabled() {
+        return this._parentalControlsManager.sessionLimitsEnabled() ||
+            this._screenTimeLimitSettings.get_boolean('history-enabled');
+    }
+
     _updateStateMachine() {
-        if (!this._screenTimeLimitSettings.get_boolean('history-enabled')) {
+        if (!this._storingTransitionsEnabled()) {
             if (this._state !== TimeLimitsState.DISABLED) {
                 this._stopStateMachine().catch(
                     e => console.warn(`Failed to stop state machine: ${e.message}`));
@@ -308,7 +408,7 @@ export const TimeLimitsManager = GObject.registerClass({
         this._lastStateChangeTimeSecs = 0;
         this.notify('state');
 
-        if (this._screenTimeLimitSettings.get_boolean('history-enabled')) {
+        if (this._storingTransitionsEnabled()) {
             // Add a fake transition to show the shutdown.
             if (this._userState !== UserState.INACTIVE) {
                 const nowSecs = this.getCurrentTime();
@@ -497,6 +597,13 @@ export const TimeLimitsManager = GObject.registerClass({
      * if the system real time clock changes (relative to the monotonic clock).
      */
     async _loadTransitions() {
+        // When parental controls session limits are enabled, additionally update
+        // the cached estimated times from the parental controls timer daemon.
+        if (this._parentalControlsManager.sessionLimitsEnabled()) {
+            await this._updateEstimatedTimes();
+            console.debug('TimeLimitsManager: Loaded time estimates from the timer daemon');
+        }
+
         const file = this._historyFile;
 
         let contents;
@@ -604,6 +711,30 @@ export const TimeLimitsManager = GObject.registerClass({
         }
 
         this._stateTransitions = newTransitions;
+
+        // Record all of the usage records to the parental controls timer daemon
+        // if the parental controls session limits are in place.
+        if (this._parentalControlsManager.sessionLimitsEnabled()) {
+            for (var j = 0; j < this._stateTransitions.length - 1; j++) {
+                const start = this._stateTransitions[j];
+                const end = this._stateTransitions[j + 1];
+
+                // Make sure the transition is correct
+                if (start['newState'] !== UserState.ACTIVE ||
+                    end['newState'] !== UserState.INACTIVE)
+                    continue;
+
+                const startSecs = start['wallTimeSecs'];
+                const endSecs = end['wallTimeSecs'];
+
+                // Avoid re-sending the old state transitions
+                if (endSecs <= this._latestUsageEndSecs)
+                    continue;
+
+                /* eslint-disable-next-line no-await-in-loop */
+                await this._recordUsage(startSecs, endSecs);
+            }
+        }
 
         if (this._stateTransitions.length === 0) {
             try {
@@ -775,24 +906,63 @@ export const TimeLimitsManager = GObject.registerClass({
         if (startOfTodaySecs > this._lastStateChangeTimeSecs)
             newState = TimeLimitsState.ACTIVE;
 
+        const [, currentSessionStart, currentSessionEnd, nextSessionStart] = this._estimatedTimes;
+        const sessionLimitsEnabled = this._parentalControlsManager.sessionLimitsEnabled();
+
+        if (sessionLimitsEnabled) {
+            // Parental controls session limits have either just been enabled
+            // and the estimated times have not been cached yet, or disabled
+            // but the manager has not detected that yet, so skip updating state.
+            if (nextSessionStart === undefined || currentSessionEnd === undefined)
+                return;
+        }
+
+        const sessionLimitsDebug = sessionLimitsEnabled ? 'current session start: ' +
+            `${this._unixToString(currentSessionStart)}, current session end: ` +
+            `${this._unixToString(currentSessionEnd)}` : 'disabled';
+        console.debug('TimeLimitsManager: Parental controls session limits: ' +
+            `${sessionLimitsDebug}`);
+
         // Work out how much time the user has spent at the screen today.
         const activeTimeTodaySecs = this._calculateActiveTimeTodaySecs(nowSecs, startOfTodaySecs);
         const dailyLimitSecs = this._screenTimeLimitSettings.get_uint('daily-limit-seconds');
         const dailyLimitEnabled = this._screenTimeLimitSettings.get_boolean('daily-limit-enabled');
 
         const dailyLimitDebug = dailyLimitEnabled ? `${dailyLimitSecs}s` : 'disabled';
-        console.debug('TimeLimitsManager: Active time today: ' +
+        console.debug('TimeLimitsManager: Wellbeing active time today: ' +
             `${activeTimeTodaySecs}s, daily limit ${dailyLimitDebug}`);
 
-        if (dailyLimitEnabled && activeTimeTodaySecs >= dailyLimitSecs) {
+
+        // Update TimeLimitsState. When the user is inactive, there's no point
+        // scheduling anything until they become active again.
+        if (sessionLimitsEnabled) {
+            if (nextSessionStart <= nowSecs) {
+                // Just entered daily schedule, so update cached estimated times
+                // which will perform state update afterwards.
+                this._updateEstimatedTimes();
+                return;
+            }
+
+            if (nowSecs >= currentSessionEnd) {
+                newState = TimeLimitsState.LIMIT_REACHED;
+
+                // Schedule an update for when the session limit will be reset again.
+                this._scheduleUpdateState(nextSessionStart - nowSecs);
+            } else if (this._userState === UserState.ACTIVE) {
+                newState = TimeLimitsState.ACTIVE;
+
+                // Schedule an update for when we expect the session limit will be reached.
+                this._scheduleUpdateState(currentSessionEnd - nowSecs);
+            }
+        } else if (dailyLimitEnabled && activeTimeTodaySecs >= dailyLimitSecs) {
             newState = TimeLimitsState.LIMIT_REACHED;
 
-            // Schedule an update for when the limit will be reset again.
+            // Schedule an update for when the daily limit will be reset again.
             this._scheduleUpdateState(startOfTomorrowSecs - nowSecs);
         } else if (this._userState === UserState.ACTIVE) {
             newState = TimeLimitsState.ACTIVE;
 
-            // Schedule an update for when we expect the limit will be reached.
+            // Schedule an update for when we expect the daily limit will be reached.
             if (dailyLimitEnabled)
                 this._scheduleUpdateState(dailyLimitSecs - activeTimeTodaySecs);
         } else {
@@ -802,6 +972,9 @@ export const TimeLimitsManager = GObject.registerClass({
 
         // Update the saved state.
         if (newState !== this._state) {
+            console.debug('TimeLimitsManager: State changed from ' +
+                          `${timeLimitsStateToString(this._state)} ` +
+                          `to ${timeLimitsStateToString(newState)}`);
             this._state = newState;
             this._lastStateChangeTimeSecs = nowSecs;
             this.notify('state');
@@ -836,6 +1009,15 @@ export const TimeLimitsManager = GObject.registerClass({
      */
     get state() {
         return this._state;
+    }
+
+    /**
+     * Whether the parental controls session limits are enabled.
+     *
+     * @type {boolean}
+     */
+    get sessionLimitsEnabled() {
+        return this._parentalControlsManager.sessionLimitsEnabled();
     }
 
     /**
@@ -888,8 +1070,6 @@ export const TimeLimitsManager = GObject.registerClass({
     /**
      * Whether the daily limit is enabled.
      *
-     * If false, screen usage information is recorded, but no limit is enforced.
-     *
      * @type {boolean}
      */
     get dailyLimitEnabled() {
@@ -911,12 +1091,14 @@ export const TimeLimitsManager = GObject.registerClass({
  * Glue class which takes the state-based output from TimeLimitsManager and
  * converts it to event-based notifications for the user to tell them
  * when their time limit has been reached. It factors the user’s UI preferences
- * into account.
+ * into account, and whether parental controls session limits are enabled.
  */
 export const TimeLimitsDispatcher = GObject.registerClass(
 class TimeLimitsDispatcher extends GObject.Object {
     constructor(manager) {
         super();
+
+        this._systemActions = new SystemActions.getDefault();
 
         this._manager = manager;
         this._manager.connectObject(
@@ -981,6 +1163,16 @@ class TimeLimitsDispatcher extends GObject.Object {
         }
 
         case TimeLimitsState.LIMIT_REACHED: {
+            if (this._manager.sessionLimitsEnabled) {
+                // Trying to lock the screen will fail if the action is not
+                // available. This happens when admin disables lock screen,
+                // or when not running under GDM/logind. Those are corner cases
+                // which don’t need to be handled.
+                if (this._systemActions.canLockScreen)
+                    this._systemActions.activateLockScreen();
+                break;
+            }
+
             this._ensureEnabled();
 
             if (this._manager.grayscaleEnabled) {
@@ -1149,8 +1341,10 @@ class TimeLimitsNotificationSource extends GObject.Object {
 
         case TimeLimitsState.LIMIT_REACHED: {
             // Notify the user that they’ve reached their limit, when we
-            // transition from any state to LIMIT_REACHED.
-            if (this._previousState !== TimeLimitsState.LIMIT_REACHED) {
+            // transition from any state to LIMIT_REACHED. Noop if parental
+            // controls session limits are enabled, since we’re locking then.
+            if (!this._manager.sessionLimitsEnabled &&
+                this._previousState !== TimeLimitsState.LIMIT_REACHED) {
                 this._ensureNotification({
                     title: _('Screen Time Limit Reached'),
                     body: _('It’s time to stop using the device'),
