@@ -12,6 +12,7 @@ js/dbusServices/extensions/extensionPrefsDialog.js
 js/dbusServices/extensions/ui/extension-error-page.ui
 js/gdm/authList.js
 js/gdm/authPrompt.js
+js/gdm/authServicesLegacy.js
 js/gdm/loginDialog.js
 js/gdm/util.js
 js/misc/breakManager.js
