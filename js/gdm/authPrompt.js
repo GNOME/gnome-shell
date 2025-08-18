@@ -177,10 +177,7 @@ export const AuthPrompt = GObject.registerClass({
             'verification-failed', this._onVerificationFailed.bind(this),
             'verification-complete', this._onVerificationComplete.bind(this),
             'reset', this._onReset.bind(this),
-            'smartcard-status-changed', this._onSmartcardStatusChanged.bind(this),
-            'credential-manager-authenticated', this._onCredentialManagerAuthenticated.bind(this),
             this);
-        this.smartcardDetected = this._userVerifier.smartcardDetected;
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -521,31 +518,6 @@ export const AuthPrompt = GObject.registerClass({
         this.emit('prompted');
     }
 
-    _onCredentialManagerAuthenticated() {
-        if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
-            this.reset();
-    }
-
-    _onSmartcardStatusChanged() {
-        this.smartcardDetected = this._userVerifier.smartcardDetected;
-
-        // Most of the time we want to reset if the user inserts or removes
-        // a smartcard. Smartcard insertion "preempts" what the user was
-        // doing, and smartcard removal aborts the preemption.
-        // The exceptions are: 1) Don't reset on smartcard insertion if we're already verifying
-        //                        with a smartcard
-        //                     2) Don't reset if we've already succeeded at verification and
-        //                        the user is getting logged in.
-        if (this._userVerifier.serviceIsDefault(Constants.SMARTCARD_SERVICE_NAME) &&
-            (this.verificationStatus === AuthPromptStatus.VERIFYING ||
-             this.verificationStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS) &&
-            this.smartcardDetected)
-            return;
-
-        if (this.verificationStatus !== AuthPromptStatus.VERIFICATION_SUCCEEDED)
-            this.reset();
-    }
-
     _onShowMessage(_userVerifier, serviceName, message, type, showMessageResolver) {
         this.setMessage(message, type);
         this.emit('prompted');
@@ -576,7 +548,9 @@ export const AuthPrompt = GObject.registerClass({
         if (wasQueryingService)
             this._queryingService = null;
 
-        if (canRetry) {
+        // Only allow instant retrying with password authentication.
+        // The rest of authentications will retry through the reset flow.
+        if (canRetry && this._userVerifier.selectedMechanism?.role === Constants.PASSWORD_ROLE_NAME) {
             this.verificationStatus = AuthPromptStatus.VERIFYING;
             this._entry.text = '';
             this.startPreemptiveInput();
@@ -859,8 +833,10 @@ export const AuthPrompt = GObject.registerClass({
         this._promptStep = 0;
         this._updateCancelButton();
 
-        if (this._userVerifier)
-            this._userVerifier.cancel();
+        if (softReset)
+            this._userVerifier?.cancel();
+        else
+            this._userVerifier?.reset();
 
         reuseEntryText = reuseEntryText || !!this._preemptiveAnswer || this._preemptiveInput;
 
@@ -883,7 +859,7 @@ export const AuthPrompt = GObject.registerClass({
             if (oldStatus === AuthPromptStatus.VERIFICATION_CANCELLED)
                 return;
             resetType = ResetType.PROVIDE_USERNAME;
-        } else if (this._userVerifier.foregroundServiceDeterminesUsername()) {
+        } else if (!this._userVerifier.needsUsername()) {
             // We don't need to know the username if the user preempted the login screen
             // with a smartcard or with preauthenticated oVirt credentials
             resetType = ResetType.DONT_PROVIDE_USERNAME;
