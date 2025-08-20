@@ -26,6 +26,7 @@
     <file>misc/dependencies.js</file>
     <file>misc/errorUtils.js</file>
     <file>misc/extensionUtils.js</file>
+    <file>misc/fingerprintManager.js</file>
     <file>misc/fileUtils.js</file>
     <file>misc/gnomeSession.js</file>
     <file>misc/history.js</file>
