@@ -284,6 +284,15 @@ $_gdm_dialog_width: 25em;
 
     &.critical { background-color: transparentize($_gdm_fg,0.8) }
     &:active { background-color: transparentize($_gdm_fg,0.9); }
+
+    & StButton {
+         @extend %lockscreen_button;
+         background-color: transparent;
+         &:insensitive { background-color: transparent; opacity: 0.5; }
+    }
+    .message-header {
+        color: $_gdm_fg;
+    }
   }
 }
 
