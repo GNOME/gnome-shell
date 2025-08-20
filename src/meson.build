@@ -257,6 +257,7 @@ libshell_gir_includes = [
   'Clutter-@0@'.format(mutter_api_version),
   'Meta-@0@'.format(mutter_api_version),
   'Gcr-4',
+  'GioUnix-2.0',
   'PolkitAgent-1.0',
   'GdkPixbuf-2.0'
 ]
