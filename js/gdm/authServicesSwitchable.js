@@ -4,6 +4,12 @@ import * as Const from './const.js';
 import * as Util from './util.js';
 import {AuthServices} from './authServices.js';
 
+const MechanismsStatus = {
+    WAITING: 0,
+    NOT_FOUND: 1,
+    FOUND: 2,
+};
+
 export const AuthServicesSwitchable = GObject.registerClass({
 }, class AuthServicesSwitchable extends AuthServices {
     static SupportedRoles = [
@@ -16,6 +22,8 @@ export const AuthServicesSwitchable = GObject.registerClass({
 
     _init(params) {
         super._init(params);
+
+        this._mechanismsStatus = MechanismsStatus.WAITING;
     }
 
     _handleAnswerQuery(serviceName, answer) {
@@ -39,13 +47,30 @@ export const AuthServicesSwitchable = GObject.registerClass({
         }
     }
 
+    _handleGetUnsupportedRoles() {
+        // Until we know the mechanisms or wait for them,
+        // consider supportedRoles as supported
+        switch (this._mechanismsStatus) {
+        case MechanismsStatus.WAITING:
+        case MechanismsStatus.FOUND:
+            return this._enabledRoles.filter(r => !this.supportedRoles.includes(r));
+        case MechanismsStatus.NOT_FOUND:
+            return this._enabledRoles;
+        default:
+            throw new GObject.NotImplementedError(`invalid MechanismStatus: ${this._mechanismsStatus}`);
+        }
+    }
+
     _handleReset() {
         this._savedMechanism = null;
+        this._mechanismsStatus = MechanismsStatus.WAITING;
     }
 
     _handleCancel() {
-        if (this._selectedMechanism)
+        if (this._selectedMechanism) {
             this._savedMechanism = this._selectedMechanism;
+            this._mechanismsStatus = MechanismsStatus.WAITING;
+        }
     }
 
     _handleClear() {
@@ -73,6 +98,10 @@ export const AuthServicesSwitchable = GObject.registerClass({
             if (this._mechanisms)
                 this._updateEnabledMechanisms();
         }
+
+        this._mechanismsStatus = authSelection
+            ? MechanismsStatus.FOUND
+            : MechanismsStatus.NOT_FOUND;
     }
 
     _handleUpdateEnabledMechanisms() {
@@ -97,16 +126,36 @@ export const AuthServicesSwitchable = GObject.registerClass({
     }
 
     _handleOnInfo(serviceName, info) {
+        if (!this._eventExpected())
+            return;
+
         if (serviceName === this._selectedMechanism?.serviceName)
             this.emit('queue-message', serviceName, info, Util.MessageType.INFO);
     }
 
     _handleOnProblem(serviceName, problem) {
+        if (!this._eventExpected())
+            return;
+
         if (serviceName === this._selectedMechanism?.serviceName) {
             this.emit('queue-priority-message',
                 serviceName,
                 problem,
                 Util.MessageType.ERROR);
+        }
+    }
+
+    _handleOnInfoQuery() {
+        if (!this._eventExpected()) {
+            // eslint-disable-next-line no-useless-return
+            return;
+        }
+    }
+
+    _handleOnSecretInfoQuery() {
+        if (!this._eventExpected()) {
+            // eslint-disable-next-line no-useless-return
+            return;
         }
     }
 
@@ -123,7 +172,7 @@ export const AuthServicesSwitchable = GObject.registerClass({
 
     _handleCanStartService(serviceName) {
         return serviceName === Const.SWITCHABLE_AUTH_SERVICE_NAME &&
-            !this._enabledMechanisms;
+            this._mechanismsStatus === MechanismsStatus.WAITING;
     }
 
     _formatResponse(answer) {
@@ -152,6 +201,20 @@ export const AuthServicesSwitchable = GObject.registerClass({
 
         this._userVerifierCustomJSON.call_reply(
             serviceName, JSON.stringify(response), this._cancellable, null);
+    }
+
+    _eventExpected() {
+        // If legacy PAM messages are received before receiving json PAM
+        // messages informing about mechanisms, then pam_unix is being
+        // used and the user is not supported by pam_sss using json.
+        // Fallback to legacy authentication services.
+        if (this._mechanismsStatus === MechanismsStatus.WAITING) {
+            this._mechanismsStatus = MechanismsStatus.NOT_FOUND;
+            this.emit('mechanisms-changed');
+            return false;
+        }
+
+        return true;
     }
 
     _startPasswordLogin() {
