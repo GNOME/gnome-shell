@@ -105,6 +105,11 @@ export class AuthServicesLegacy extends AuthServices {
         this._smartcardInProgress = false;
     }
 
+    _handleUpdateEnabledRoles() {
+        this._selectedMechanism = null;
+        this._updateEnabledMechanisms();
+    }
+
     _handleUpdateEnabledMechanisms() {
         if (!this._fingerprintManager?.readerFound) {
             this._enabledMechanisms.push(...Mechanisms.filter(m =>
