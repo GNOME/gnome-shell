@@ -604,7 +604,7 @@ _st_create_shadow_pipeline_from_actor (StShadow            *shadow_spec,
 
       shadow_pipeline = _st_create_shadow_pipeline (shadow_spec,
                                                     paint_context,
-                                                    g_steal_pointer (&buffer),
+                                                    buffer,
                                                     resource_scale);
     }
 
