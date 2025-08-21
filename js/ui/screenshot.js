@@ -1428,7 +1428,12 @@ export const ScreenshotUI = GObject.registerClass({
             new Gio.Settings({schema_id: 'org.gnome.shell.keybindings'}),
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
             restrictedModes,
-            showScreenRecordingUI
+            () => {
+                if (this._screencastInProgress)
+                    this.stopScreencast();
+                else
+                    showScreenRecordingUI();
+            }
         );
 
         Main.wm.addKeybinding(
