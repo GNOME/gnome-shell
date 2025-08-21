@@ -143,6 +143,11 @@ export class AuthServicesLegacy extends AuthServices {
         this.emit('mechanisms-changed');
     }
 
+    _handleUpdateEnabledRoles() {
+        this._selectedMechanism = null;
+        this._updateEnabledMechanisms();
+    }
+
     _handleUpdateEnabledMechanisms() {
         this._enabledMechanisms.push(...Mechanisms.filter(m =>
             this._enabledRoles.includes(m.role)
