@@ -5,6 +5,12 @@ import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as Util from './util.js';
 import {AuthServices} from './authServices.js';
 
+const MechanismsStatus = {
+    WAITING: 0,
+    NOT_FOUND: 1,
+    FOUND: 2,
+};
+
 export class AuthServicesSSSDSwitchable extends AuthServices {
     static SupportedRoles = [
         Constants.PASSWORD_ROLE_NAME,
@@ -20,6 +26,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
     constructor(params) {
         super(params);
+
+        this._mechanismsStatus = MechanismsStatus.WAITING;
     }
 
     _handleAnswerQuery(serviceName, answer) {
@@ -51,13 +59,32 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         }
     }
 
+    _handleGetUnsupportedRoles() {
+        // While waiting for mechanisms info (WAITING) or when mechanisms are
+        // found (FOUND), use supportedRoles to get unsupported ones.
+        // When we couldn't get mechanisms (NOT_FOUND), assume all roles
+        // are unsupported.
+        switch (this._mechanismsStatus) {
+        case MechanismsStatus.WAITING:
+        case MechanismsStatus.FOUND:
+            return this._enabledRoles.filter(r => !this.supportedRoles.includes(r));
+        case MechanismsStatus.NOT_FOUND:
+            return this._enabledRoles;
+        default:
+            throw new GObject.NotImplementedError(`invalid MechanismStatus: ${this._mechanismsStatus}`);
+        }
+    }
+
     _handleReset() {
         this._savedMechanism = null;
+        this._mechanismsStatus = MechanismsStatus.WAITING;
     }
 
     _handleCancel() {
-        if (this._selectedMechanism)
+        if (this._selectedMechanism) {
             this._savedMechanism = this._selectedMechanism;
+            this._mechanismsStatus = MechanismsStatus.WAITING;
+        }
     }
 
     _handleClear() {
@@ -71,6 +98,9 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
     _handleOnCustomJSONRequest(_serviceName, _protocol, _version, json) {
         let requestObject;
+
+        if (this._mechanismsStatus !== MechanismsStatus.WAITING)
+            log('Received unexpected JSON message, something might be wrong');
 
         try {
             requestObject = JSON.parse(json);
@@ -87,6 +117,10 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             if (this._mechanisms)
                 this._updateEnabledMechanisms();
         }
+
+        this._mechanismsStatus = authSelection
+            ? MechanismsStatus.FOUND
+            : MechanismsStatus.NOT_FOUND;
     }
 
     _handleUpdateEnabledMechanisms() {
@@ -111,6 +145,9 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     }
 
     _handleOnInfo(serviceName, info) {
+        if (!this._eventExpected())
+            return;
+
         // sssd can't inform about expired password from JSON so it's needed
         // to check the info message and handle the reset using the old flow
         if (serviceName === this._selectedMechanism?.serviceName &&
@@ -123,6 +160,9 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     }
 
     _handleOnProblem(serviceName, problem) {
+        if (!this._eventExpected())
+            return;
+
         if (serviceName === this._selectedMechanism?.serviceName) {
             this.emit('queue-priority-message',
                 serviceName,
@@ -131,7 +171,16 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         }
     }
 
+    _handleOnInfoQuery() {
+        if (!this._eventExpected())
+            // eslint-disable-next-line no-useless-return
+            return;
+    }
+
     _handleOnSecretInfoQuery(serviceName, secretQuestion) {
+        if (!this._eventExpected())
+            return;
+
         if (serviceName === this._selectedMechanism?.serviceName &&
             this._selectedMechanism.role === Constants.PASSWORD_ROLE_NAME &&
             this._resettingPassword)
@@ -151,7 +200,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
     _handleCanStartService(serviceName) {
         return serviceName === Constants.SWITCHABLE_AUTH_SERVICE_NAME &&
-            !this._enabledMechanisms;
+            this._mechanismsStatus === MechanismsStatus.WAITING;
     }
 
     _formatResponse(answer) {
@@ -180,6 +229,20 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
         this._userVerifierCustomJSON.call_reply(
             serviceName, JSON.stringify(response), this._cancellable).catch(logErrorUnlessCancelled);
+    }
+
+    _eventExpected() {
+        // If legacy PAM messages are received before receiving JSON PAM
+        // messages informing about mechanisms, then pam_unix is being
+        // used and the user is not supported by pam_sss using JSON.
+        // Fallback to legacy authentication services.
+        if (this._mechanismsStatus === MechanismsStatus.WAITING) {
+            this._mechanismsStatus = MechanismsStatus.NOT_FOUND;
+            this.emit('mechanisms-changed');
+            return false;
+        }
+
+        return true;
     }
 
     _startPasswordLogin() {
