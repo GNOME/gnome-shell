@@ -98,6 +98,10 @@ export class AuthServices extends GObject.Object {
         return this.constructor.SupportedRoles;
     }
 
+    get unsupportedRoles() {
+        return this._handleGetUnsupportedRoles();
+    }
+
     selectChoice(serviceName, key) {
         this._handleSelectChoice(serviceName, key);
     }
@@ -171,6 +175,18 @@ export class AuthServices extends GObject.Object {
         this._clearUserVerifier();
 
         this._handleClear();
+    }
+
+    updateEnabledRoles(roles) {
+        if (this._enabledRoles.length === roles.length &&
+            this._enabledRoles.every(r => roles.includes(r)))
+            return false;
+
+        this._enabledRoles = roles;
+
+        this._handleUpdateEnabledRoles();
+
+        return true;
     }
 
     _clearUserVerifier() {
@@ -416,6 +432,10 @@ export class AuthServices extends GObject.Object {
         }
     }
 
+    _handleGetUnsupportedRoles() {
+        return [];
+    }
+
     _handleSelectChoice() {}
 
     async _handleAnswerQuery() {}
@@ -433,6 +453,8 @@ export class AuthServices extends GObject.Object {
     _handleCancel() {}
 
     _handleClear() {}
+
+    _handleUpdateEnabledRoles() {}
 
     _handleUpdateEnabledMechanisms() {
         throw new GObject.NotImplementedError(

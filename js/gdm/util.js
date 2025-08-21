@@ -197,6 +197,11 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._authServicesSSSDSwitchable?.clear();
         this._authServicesLegacy?.clear();
 
+        if (this._authServicesSSSDSwitchable) {
+            this._authServicesLegacy?.updateEnabledRoles(
+                this._authServicesSSSDSwitchable.unsupportedRoles);
+        }
+
         this._clearMessageQueue();
 
         this._cancellable?.cancel();
@@ -406,10 +411,14 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             reauthOnly: this._reauthOnly,
         };
         if (this._switchableAuthenticationEnabled &&
-            AuthServicesSSSDSwitchable.supportsAny(this._enabledRoles))
+            AuthServicesSSSDSwitchable.supportsAny(this._enabledRoles)) {
             this._authServicesSSSDSwitchable = new AuthServicesSSSDSwitchable(params);
-        else if (AuthServicesLegacy.supportsAny(this._enabledRoles))
+
+            params.enabledRoles = this._authServicesSSSDSwitchable.unsupportedRoles;
             this._authServicesLegacy = new AuthServicesLegacy(params);
+        } else if (AuthServicesLegacy.supportsAny(this._enabledRoles)) {
+            this._authServicesLegacy = new AuthServicesLegacy(params);
+        }
 
         this._connectAuthServices();
     }
@@ -450,9 +459,12 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _onMechanismsChanged() {
-        const mechanismsSwitchable = this._authServicesSSSDSwitchable?.enabledMechanisms ?? [];
+        if (this._enableFallbackMechanisms())
+            return;
+
+        const mechanismsSSSDSwitchable = this._authServicesSSSDSwitchable?.enabledMechanisms ?? [];
         const mechanismsLegacy = this._authServicesLegacy?.enabledMechanisms ?? [];
-        const mechanisms = [...mechanismsSwitchable, ...mechanismsLegacy];
+        const mechanisms = [...mechanismsSSSDSwitchable, ...mechanismsLegacy];
 
         const selectedMechanism =
             this._authServicesSSSDSwitchable?.selectedMechanism ??
@@ -461,6 +473,14 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             {};
 
         this.emit('mechanisms-changed', mechanisms, selectedMechanism);
+    }
+
+    _enableFallbackMechanisms() {
+        if (!this._authServicesSSSDSwitchable || !this._authServicesLegacy)
+            return false;
+
+        return this._authServicesLegacy.updateEnabledRoles(
+            this._authServicesSSSDSwitchable.unsupportedRoles);
     }
 
     async _waitPendingMessages(waiter) {
