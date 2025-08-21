@@ -140,6 +140,11 @@ export class AuthServicesLegacy extends AuthServices {
         this.emit('mechanisms-changed');
     }
 
+    _handleUpdateEnabledRoles() {
+        this._selectedMechanism = null;
+        this._updateEnabledMechanisms();
+    }
+
     _handleUpdateEnabledMechanisms() {
         if (!this._fingerprintManager?.readerFound) {
             this._enabledMechanisms.push(...Mechanisms.filter(m =>
