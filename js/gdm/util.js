@@ -191,6 +191,11 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._authServicesSwitchable?.clear();
         this._authServicesLegacy?.clear();
 
+        if (this._authServicesSwitchable) {
+            this._authServicesLegacy?.updateEnabledRoles(
+                this._authServicesSwitchable.unsupportedRoles);
+        }
+
         this._clearMessageQueue();
 
         this._cancellable?.cancel();
@@ -400,10 +405,14 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             reauthOnly: this._reauthOnly,
         };
         if (this._switchableAuthenticationEnabled &&
-            AuthServicesSwitchable.supportsAny(this._enabledRoles))
+            AuthServicesSwitchable.supportsAny(this._enabledRoles)) {
             this._authServicesSwitchable = new AuthServicesSwitchable(params);
-        else if (AuthServicesLegacy.supportsAny(this._enabledRoles))
+
+            params.enabledRoles = this._authServicesSwitchable.unsupportedRoles;
             this._authServicesLegacy = new AuthServicesLegacy(params);
+        } else if (AuthServicesLegacy.supportsAny(this._enabledRoles)) {
+            this._authServicesLegacy = new AuthServicesLegacy(params);
+        }
 
         this._connectAuthServices();
     }
@@ -444,6 +453,9 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _onMechanismsChanged() {
+        if (this._enableFallbackMechanisms())
+            return;
+
         const mechanismsSwitchable = this._authServicesSwitchable?.enabledMechanisms ?? [];
         const mechanismsLegacy = this._authServicesLegacy?.enabledMechanisms ?? [];
         const mechanisms = [...mechanismsSwitchable, ...mechanismsLegacy];
@@ -455,6 +467,14 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             {};
 
         this.emit('mechanisms-changed', mechanisms, selectedMechanism);
+    }
+
+    _enableFallbackMechanisms() {
+        if (!this._authServicesSwitchable || !this._authServicesLegacy)
+            return false;
+
+        return this._authServicesLegacy.updateEnabledRoles(
+            this._authServicesSwitchable.unsupportedRoles);
     }
 
     async _waitPendingMessages(waiter) {

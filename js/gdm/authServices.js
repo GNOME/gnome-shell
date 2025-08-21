@@ -91,6 +91,10 @@ export const AuthServices = GObject.registerClass({
         return this.constructor.SupportedRoles;
     }
 
+    get unsupportedRoles() {
+        return this._handleGetUnsupportedRoles();
+    }
+
     selectChoice(serviceName, key) {
         this._handleSelectChoice(serviceName, key);
     }
@@ -164,6 +168,18 @@ export const AuthServices = GObject.registerClass({
         this._clearUserVerifier();
 
         this._handleClear();
+    }
+
+    updateEnabledRoles(roles) {
+        if (this._enabledRoles.length === roles.length &&
+            this._enabledRoles.every(r => roles.includes(r)))
+            return false;
+
+        this._enabledRoles = roles;
+
+        this._handleUpdateEnabledRoles();
+
+        return true;
     }
 
     _clearUserVerifier() {
@@ -409,6 +425,10 @@ export const AuthServices = GObject.registerClass({
         }
     }
 
+    _handleGetUnsupportedRoles() {
+        return [];
+    }
+
     _handleSelectChoice() {}
 
     async _handleAnswerQuery() {}
@@ -426,6 +446,8 @@ export const AuthServices = GObject.registerClass({
     _handleCancel() {}
 
     _handleClear() {}
+
+    _handleUpdateEnabledRoles() {}
 
     _handleUpdateEnabledMechanisms() {}
 
