@@ -96,6 +96,13 @@ export const AuthServicesLegacy = GObject.registerClass({
         this._selectedMechanism = null;
     }
 
+    _handleUpdateEnabledRoles() {
+        this._initFingerprint();
+        this._updateEnabledMechanisms();
+
+        this._selectedMechanism = null;
+    }
+
     _handleUpdateEnabledMechanisms() {
         if (!this._fingerprintReaderFound)
             this._enabledMechanisms.push(...Mechanisms.filter(m =>
