@@ -435,7 +435,7 @@ export const AuthPrompt = GObject.registerClass({
         if (this._spinner)
             this._spinner.stop();
 
-        if (!introAlreadyUp) {
+        if (!introAlreadyUp && introMessage) {
             this._webLoginIntro = new WebLogin.WebLoginIntro({message: introMessage});
             this._webLoginIntro.set({
                 y_align: Clutter.ActorAlign.START,
