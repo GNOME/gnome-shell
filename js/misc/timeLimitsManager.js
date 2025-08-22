@@ -878,7 +878,6 @@ export const TimeLimitsManager = GObject.registerClass({
      * Whether the daily limit is enabled.
      *
      * If false, screen usage information is recorded, but no limit is enforced.
-     * reached.
      *
      * @type {boolean}
      */
