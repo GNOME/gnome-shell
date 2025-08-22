@@ -579,13 +579,13 @@ export const AuthPrompt = GObject.registerClass({
         this._authList.set({
             opacity: 0,
             visible: true,
-            reactive: false,
         });
+        this.updateSensitivity(false);
         this._authList.ease({
             opacity: 255,
             duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
             transition: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => (this._authList.reactive = true),
+            onComplete: () => this.updateSensitivity(true),
         });
     }
 
@@ -657,20 +657,27 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     updateSensitivity(sensitive) {
-        this._updateNextButtonSensitivity(sensitive && (this._entry.text.length > 0 && this.verificationStatus == AuthPromptStatus.VERIFYING));
+        let authWidget = this._entry;
 
-        if (this._entry.reactive === sensitive)
+        if (this._authList.visible)
+            authWidget = this._authList;
+
+        this._updateNextButtonSensitivity(authWidget === this._entry &&
+            sensitive && (this._entry.text.length > 0 &&
+            this.verificationStatus == AuthPromptStatus.VERIFYING));
+
+        if (authWidget.reactive === sensitive)
             return;
 
-        this._entry.reactive = sensitive;
+        authWidget.reactive = sensitive;
 
         if (sensitive) {
-            this._entry.grab_key_focus();
+            authWidget.grab_key_focus();
         } else {
             this.grab_key_focus();
 
-            if (this._entry === this._passwordEntry)
-                this._entry.password_visible = false;
+            if (authWidget === this._passwordEntry)
+                authWidget.password_visible = false;
         }
     }
 
