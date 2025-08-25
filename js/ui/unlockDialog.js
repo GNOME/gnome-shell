@@ -16,6 +16,7 @@ import * as MessageTray from './messageTray.js';
 import * as SwipeTracker from './swipeTracker.js';
 import {formatDateWithCFormatString} from '../misc/dateUtils.js';
 import * as AuthPrompt from '../gdm/authPrompt.js';
+import {AuthPromptStatus} from '../gdm/authPrompt.js';
 
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
@@ -707,8 +708,15 @@ export const UnlockDialog = GObject.registerClass({
             this._promptBox.add_child(this._authPrompt);
         }
 
-        this._authPrompt.reset();
-        this._authPrompt.updateSensitivity(true);
+        const {verificationStatus} = this._authPrompt;
+        switch (verificationStatus) {
+        case AuthPromptStatus.NOT_VERIFYING:
+        case AuthPromptStatus.VERIFICATION_CANCELLED:
+        case AuthPromptStatus.VERIFICATION_FAILED:
+            this._authPrompt.reset();
+            this._authPrompt.updateSensitivity(
+                verificationStatus === AuthPromptStatus.NOT_VERIFYING);
+        }
     }
 
     _maybeDestroyAuthPrompt() {
