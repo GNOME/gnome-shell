@@ -707,6 +707,7 @@ export const AuthPrompt = GObject.registerClass({
 
     clear() {
         this._entry.text = '';
+        this._inactiveEntry.text = '';
         this.stopSpinning();
         this._authList.clear();
         this._authList.hide();
