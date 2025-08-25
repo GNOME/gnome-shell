@@ -399,33 +399,40 @@ const GridSearchResultsLayout = GObject.registerClass({
 
     vfunc_allocate(container, box) {
         const width = box.get_width();
+        const ltr = container.get_text_direction() !== Clutter.TextDirection.RTL;
 
         const childBox = new Clutter.ActorBox();
-        childBox.x1 = 0;
-        childBox.y1 = 0;
-
+        let accumulatedWidth = 0;
         let first = true;
+
         for (let child of container) {
             if (!child.visible)
                 continue;
 
-            if (first)
-                first = false;
-            else
-                childBox.x1 += this._spacing;
-
+            const spaceDx = first ? 0 : this._spacing;
             const [childWidth] = child.get_preferred_width(-1);
             const [childHeight] = child.get_preferred_height(-1);
+            const newAccumultedWidth = accumulatedWidth + spaceDx + childWidth;
 
-            if (childBox.x1 + childWidth <= width)
-                childBox.set_size(childWidth, childHeight);
-            else
+            if (newAccumultedWidth > width) {
                 childBox.set_size(0, 0);
+                child.allocate(childBox);
+                child.can_focus = false;
+
+                continue;
+            }
+
+            first = false;
+            accumulatedWidth = newAccumultedWidth;
+            childBox.set_size(childWidth, childHeight);
+
+            if (ltr)
+                childBox.set_origin(accumulatedWidth - childWidth, 0);
+            else
+                childBox.set_origin(width - accumulatedWidth, 0);
 
             child.allocate(childBox);
-            child.can_focus = childBox.get_area() > 0;
-
-            childBox.x1 += childWidth;
+            child.can_focus = true;
         }
     }
 
