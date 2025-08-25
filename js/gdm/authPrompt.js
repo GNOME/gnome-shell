@@ -134,6 +134,7 @@ export const AuthPrompt = GObject.registerClass({
         this._inactiveEntry = null;
         this._userVerifier.destroy();
         this._userVerifier = null;
+        this._entry = null;
     }
 
     on_key_press_event(event) {
