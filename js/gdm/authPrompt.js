@@ -365,10 +365,12 @@ export const AuthPrompt = GObject.registerClass({
             this._mainBox.replace_child(this._entry, this._passwordEntry);
             this._entry = this._passwordEntry;
             this._inactiveEntry = this._textEntry;
+            this._entry.text = this._inactiveEntry.text;
         } else if (!secret && this._entry !== this._textEntry) {
             this._mainBox.replace_child(this._entry, this._textEntry);
             this._entry = this._textEntry;
             this._inactiveEntry = this._passwordEntry;
+            this._entry.text = this._inactiveEntry.text;
         }
         this._capsLockWarningLabel.visible = secret;
     }
