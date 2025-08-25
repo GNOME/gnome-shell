@@ -307,6 +307,9 @@ export const AuthPrompt = GObject.registerClass({
             this._mainBox.replace_child(this._entry, newEntry);
             this._entry = newEntry;
             this._inactiveEntry = inactiveEntry;
+
+            const {text, cursorPosition, selectionBound} = inactiveEntry.clutterText;
+            this._entry.clutterText.set({text, cursorPosition, selectionBound});
         }
 
         this._capsLockWarningLabel.visible = secret;
