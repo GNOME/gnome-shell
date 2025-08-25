@@ -399,6 +399,7 @@ const GridSearchResultsLayout = GObject.registerClass({
 
     vfunc_allocate(container, box) {
         const width = box.get_width();
+        const ltr = container.get_text_direction() !== Clutter.TextDirection.RTL;
 
         const childBox = new Clutter.ActorBox();
         let accumulatedWidth = 0;
@@ -416,7 +417,11 @@ const GridSearchResultsLayout = GObject.registerClass({
             const [childWidth] = child.get_preferred_width(-1);
             const [childHeight] = child.get_preferred_height(-1);
 
-            childBox.set_origin(accumulatedWidth, 0);
+            if (ltr)
+                childBox.set_origin(accumulatedWidth, 0);
+            else
+                childBox.set_origin(width - accumulatedWidth - childWidth, 0);
+
             accumulatedWidth += childWidth;
 
             if (accumulatedWidth <= width)
