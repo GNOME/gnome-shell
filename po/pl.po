@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-08-24 13:17+0000\n"
-"PO-Revision-Date: 2025-08-25 14:33+0200\n"
+"POT-Creation-Date: 2025-08-26 12:47+0000\n"
+"PO-Revision-Date: 2025-08-26 18:30+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -490,11 +490,11 @@ msgstr "Zmniejszenie jasności ekranu na bieżącym monitorze"
 
 #: data/org.gnome.shell.gschema.xml.in:299
 msgid "Screen brightness cycle"
-msgstr "Przełączenie jasności ekranu"
+msgstr "Zmiana jasności ekranu"
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid "Screen brightness cycle on current monitor"
-msgstr "Przełączenie jasności ekranu na bieżącym monitorze"
+msgstr "Zmiana jasności ekranu na bieżącym monitorze"
 
 #: data/org.gnome.shell.gschema.xml.in:312
 #: data/org.gnome.shell.gschema.xml.in:339
