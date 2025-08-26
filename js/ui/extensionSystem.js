@@ -5,6 +5,7 @@ import St from 'gi://St';
 import Shell from 'gi://Shell';
 import * as Signals from '../misc/signals.js';
 
+import {AsyncMutex} from '../misc/asyncMutex.js';
 import * as Config from '../misc/config.js';
 import * as ExtensionDownloader from './extensionDownloader.js';
 import {formatError} from '../misc/errorUtils.js';
@@ -30,6 +31,7 @@ export class ExtensionManager extends Signals.EventEmitter {
     constructor() {
         super();
 
+        this._enableExtensionMutex = new AsyncMutex();
         this._initializationPromise = null;
         this._updateNotified = false;
         this._updateInProgress = false;
@@ -562,6 +564,8 @@ export class ExtensionManager extends Signals.EventEmitter {
     }
 
     async _onEnabledExtensionsChanged() {
+        await this._enableExtensionMutex.hold();
+
         const newEnabledExtensions = this._getEnabledExtensions();
 
         for (const extension of this._extensions.values()) {
@@ -595,6 +599,8 @@ export class ExtensionManager extends Signals.EventEmitter {
         }
 
         this._enabledExtensions = newEnabledExtensions;
+
+        this._enableExtensionMutex.release();
     }
 
     _onSettingsWritableChanged() {
