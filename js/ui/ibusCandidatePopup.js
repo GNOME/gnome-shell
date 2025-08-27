@@ -222,11 +222,13 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
                 let rect = new Mtk.Rectangle({x, y, width: w, height: h});
                 rect = focusWindow.protocol_to_stage_rect(rect);
                 const windowActor = focusWindow.get_compositor_private();
+                // IBus GtkIMModule cannot get the shell scale.
+                const scale = windowActor.get_resource_scale();
                 this._setDummyCursorGeometry(
-                    windowActor.x + rect.x,
-                    windowActor.y + rect.y,
-                    rect.width,
-                    rect.height);
+                    windowActor.x + rect.x / scale,
+                    windowActor.y + rect.y / scale,
+                    rect.width / scale,
+                    rect.height / scale);
             });
         } catch {
             // Only recent IBus versions have support for this signal
