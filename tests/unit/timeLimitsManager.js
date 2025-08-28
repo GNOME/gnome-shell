@@ -481,6 +481,19 @@ class TestHarness {
     }
 
     /**
+     * Create `TimeLimitManager`.
+     *
+     * @returns {TimeLimitsManager} the new timeLimitsManager.
+     */
+    createTimeLimitsManager() {
+        return new TimeLimitsManager.TimeLimitsManager(this.mockHistoryFile,
+            this.mockClock,
+            this.mockLoginManagerFactory,
+            this.mockLoginUserFactory,
+            this.mockSettingsFactory);
+    }
+
+    /**
      * Get a mock login manager factory for use in the `TimeLimitsManager` under
      * test. This is an object providing a constructor for the objects returned
      * by `LoginManager.getLoginManager()`. This is roughly a wrapper around the
@@ -696,7 +709,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.DISABLED);
         harness.expectState('2024-06-01T15:00:00Z', timeLimitsManager, TimeLimitsState.DISABLED);
@@ -720,7 +733,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.addSettingsChangeEvent('2024-06-01T11:00:00Z',
@@ -755,7 +768,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.expectProperties('2024-06-01T13:59:59Z', timeLimitsManager, {
@@ -777,7 +790,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T00:30:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         harness.expectState('2024-06-01T00:30:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.expectProperties('2024-06-01T01:29:59Z', timeLimitsManager, {
@@ -799,7 +812,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.expectProperties('2024-06-01T13:59:59Z', timeLimitsManager, {
@@ -832,7 +845,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.expectProperties('2024-06-01T15:00:00Z', timeLimitsManager, {
@@ -872,7 +885,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         // Run until the limit is reached.
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
@@ -930,7 +943,7 @@ describe('Time limits manager', () => {
             },
         ]));
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         // The existing history file (above) lists two active periods,
         // 07:30–08:00 and 08:30–09:30 that morning. So the user should have
@@ -966,7 +979,7 @@ describe('Time limits manager', () => {
             },
         ]));
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         // The existing history file (above) lists one active period,
         // 04:30–08:50 that morning. So the user should have no time left today.
@@ -1005,7 +1018,7 @@ describe('Time limits manager', () => {
                 },
             }, invalidHistoryFileContents);
             harness.initializeMockClock('2024-06-01T10:00:00Z');
-            const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+            const timeLimitsManager = harness.createTimeLimitsManager();
 
             // The existing history file (above) is invalid or a no-op and
             // should be ignored.
@@ -1051,7 +1064,7 @@ describe('Time limits manager', () => {
             },
         ]));
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         // The existing history file (above) lists two active periods,
         // one of which is a long time ago and the other is ‘this’ morning in
@@ -1116,7 +1129,7 @@ describe('Time limits manager', () => {
             },
         ]));
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         // The existing history file (above) lists one active period,
         // 04:30–08:50 that morning IN THE YEAR 3000. This could have resulted
@@ -1151,7 +1164,7 @@ describe('Time limits manager', () => {
             },
         ]));
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.addSettingsChangeEvent('2024-06-01T10:00:02Z',
@@ -1187,7 +1200,7 @@ describe('Time limits manager', () => {
             },
         ]));
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
         harness.expectState('2024-06-01T14:00:01Z', timeLimitsManager, TimeLimitsState.LIMIT_REACHED);
@@ -1225,7 +1238,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         // Use up 2h of the daily limit.
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
@@ -1262,7 +1275,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         // Use up 2h of the daily limit.
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
@@ -1299,7 +1312,7 @@ describe('Time limits manager', () => {
             },
         });
         harness.initializeMockClock('2024-06-01T10:00:00Z');
-        const timeLimitsManager = new TimeLimitsManager.TimeLimitsManager(harness.mockHistoryFile, harness.mockClock, harness.mockLoginManagerFactory, harness.mockLoginUserFactory, harness.mockSettingsFactory);
+        const timeLimitsManager = harness.createTimeLimitsManager();
 
         // Use up 2h of the daily limit.
         harness.expectState('2024-06-01T10:00:01Z', timeLimitsManager, TimeLimitsState.ACTIVE);
