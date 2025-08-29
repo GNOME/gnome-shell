@@ -148,26 +148,38 @@ export const Slider = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
+    step(nSteps) {
+        const delta = nSteps * SLIDER_SCROLL_STEP;
+        const value = Math.min(Math.max(0, this._value + delta), this._maxValue);
+
+        if (value !== this.value) {
+            this.value = value;
+            return true;
+        }
+
+        return false;
+    }
+
     scroll(event) {
         let direction = event.get_scroll_direction();
-        let delta = 0;
+        let nSteps = 0;
 
         if (event.get_flags() & Clutter.EventFlags.FLAG_POINTER_EMULATED)
             return Clutter.EVENT_PROPAGATE;
 
         if (direction === Clutter.ScrollDirection.DOWN) {
-            delta = -SLIDER_SCROLL_STEP;
+            nSteps = -1;
         } else if (direction === Clutter.ScrollDirection.UP) {
-            delta = SLIDER_SCROLL_STEP;
+            nSteps = 1;
         } else if (direction === Clutter.ScrollDirection.SMOOTH) {
             let [dx] = event.get_scroll_delta();
-            delta = dx * SLIDER_SCROLL_STEP;
+            nSteps = dx;
             // Match physical direction
             if (event.get_scroll_flags() & Clutter.ScrollFlags.INVERTED)
-                delta *= -1;
+                nSteps *= -1;
         }
 
-        this.value = Math.min(Math.max(0, this._value + delta), this._maxValue);
+        this.step(nSteps);
 
         return Clutter.EVENT_STOP;
     }
