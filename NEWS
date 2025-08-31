@@ -1,3 +1,33 @@
+49.rc
+=====
+* Prefer physical scroll directions on sliders [Carlos; !3831]
+* Tweak some animations [kramo; !3830]
+* Add dedicated a11y labels to quick settings menu buttons [Lukáš; !3828]
+* Fix connecting to WPA(2) Enterprise networks [Mitchell; !3834]
+* Improve order in which extensions are enabled/disabled [Kyrill; !3835]
+* Account for scaling when setting cursor location from ibus [Takao; !3729]
+* Do not reset the unlock prompt on every tap [Marco; !3852]
+* Improve legacy tray icon support [Marco; !3818]
+* Move to ClutterGesture [Jonas; !2853]
+* Improve styling of media notifications on lock screen [Florian, Jakub; !3838]
+* Indicate when battery charging limits are in place [Florian; !3474]
+* Use a clearer icon for active wifi connections without AP [Mitchell; !3840]
+* Fixed crashes [Johannes, Daniel, Jonas; !3839, !3809]
+* Plugged leak [Sebastian; !3854]
+* Misc. bug fixes and cleanups [Florian, Óscar, Marco, Jamie, Philip, Jonas,
+  Carlos; !3832, !3833, !3837, !3256, !3846, !3853, !3220, !3726, !3842, !3850]
+
+Contributors:
+  Mitchell Augustin, Jonas Dreßler, Óscar Fernández Díaz, Takao Fujiwara,
+  Carlos Garnacho, Jamie Gravendeel, Sebastian Keller, kramo, Johannes Maibaum,
+  Florian Müllner, Jakub Steiner, Marco Trevisan (Treviño), Lukáš Tyrychtr,
+  Daniel van Vugt, Philip Withnall, Kyrill Zorin
+
+Translators:
+  Jordi Mas [ca], Martin [sl], Danial Behzadi [fa], Fran Diéguez [gl],
+  Daniel Rusek [cs], Aefgh Threenine [th], Piotr Drąg [pl],
+  Makoto Sakaguchi [ja], Yaron Shahrabani [he], Jiri Grönroos [fi]
+
 49.beta.1
 =========
 * Port to gjs-1.85/girepository-2.0 [Florian; !3801]
