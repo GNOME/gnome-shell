@@ -1,5 +1,6 @@
 import GdkPixbuf from 'gi://GdkPixbuf';
 import Gio from 'gi://Gio';
+import GioUnix from 'gi://GioUnix';
 import GLib from 'gi://GLib';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
@@ -96,7 +97,7 @@ export function loadRemoteSearchProviders(searchSettings) {
             let appInfo = null;
             try {
                 let desktopId = keyfile.get_string(group, 'DesktopId');
-                appInfo = Gio.DesktopAppInfo.new(desktopId);
+                appInfo = GioUnix.DesktopAppInfo.new(desktopId);
                 if (!appInfo.should_show())
                     return;
             } catch {

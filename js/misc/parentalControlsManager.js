@@ -127,7 +127,7 @@ const ParentalControlsManager = GObject.registerClass({
         return this._initialized;
     }
 
-    // Calculate whether the given app (a Gio.DesktopAppInfo) should be shown
+    // Calculate whether the given app (a GioUnix.DesktopAppInfo) should be shown
     // on the desktop, in search results, etc. The app should be shown if:
     //  - The .desktop file doesn’t say it should be hidden.
     //  - The executable from the .desktop file’s Exec line isn’t denied in
