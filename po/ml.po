@@ -708,7 +708,7 @@ msgstr "ശ"
 #.
 #: js/ui/calendar.js:380
 msgid "%OB"
-msgstr "OB"
+msgstr "%OB"
 
 #. *
 #. * Translators: The header displaying the month name and the year
@@ -735,7 +735,7 @@ msgstr "അടുത്ത മാസം"
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
-msgstr "[date day number format]%d"
+msgstr "%d"
 
 #: js/ui/calendar.js:665
 msgid "Week %V"
