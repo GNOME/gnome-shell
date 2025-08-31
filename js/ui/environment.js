@@ -8,7 +8,6 @@ import Cairo from 'cairo';
 import Clutter from 'gi://Clutter';
 import Gdk from 'gi://Gdk';
 import Gio from 'gi://Gio';
-import GioUnix from 'gi://GioUnix';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
@@ -340,29 +339,6 @@ Object.prototype.toString = function () {
         return base;
     }
 };
-
-// Work around https://gitlab.gnome.org/GNOME/glib/-/issues/3744
-if (!GioUnix.DesktopAppInfo.prototype.has_key) {
-    GioUnix.DesktopAppInfo.prototype.has_key = function (key) {
-        return GioUnix.DesktopAppInfo.has_key(this, key);
-    };
-
-    GioUnix.DesktopAppInfo.prototype.get_boolean = function (key) {
-        return GioUnix.DesktopAppInfo.get_boolean(this, key);
-    };
-
-    GioUnix.DesktopAppInfo.prototype.get_categories = function () {
-        return GioUnix.DesktopAppInfo.get_categories(this);
-    };
-
-    GioUnix.DesktopAppInfo.prototype.list_actions = function () {
-        return GioUnix.DesktopAppInfo.list_actions(this);
-    };
-
-    GioUnix.DesktopAppInfo.prototype.get_action_name = function (name) {
-        return GioUnix.DesktopAppInfo.get_action_name(this, name);
-    };
-}
 
 const slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
 if (slowdownEnv) {
