@@ -21,7 +21,7 @@ libmutter_test_pc = 'libmutter-test-' + mutter_api_version
 ecal_req = '>= 3.33.1'
 eds_req = '>= 3.33.1'
 gcr_req = '>= 3.90.0'
-gio_req = '>= 2.85.1'
+gio_req = '>= 2.86.0'
 gjs_req = '>= 1.85.90'
 gtk_req = '>= 4.0'
 mutter_req = '>= 49.rc'
