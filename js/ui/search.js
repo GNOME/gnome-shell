@@ -399,8 +399,7 @@ const GridSearchResultsLayout = GObject.registerClass({
         const width = box.get_width();
 
         const childBox = new Clutter.ActorBox();
-        childBox.x1 = 0;
-        childBox.y1 = 0;
+        let accumulatedWidth = 0;
 
         let first = true;
         for (let child of container) {
@@ -410,20 +409,21 @@ const GridSearchResultsLayout = GObject.registerClass({
             if (first)
                 first = false;
             else
-                childBox.x1 += this._spacing;
+                accumulatedWidth += this._spacing;
 
             const [childWidth] = child.get_preferred_width(-1);
             const [childHeight] = child.get_preferred_height(-1);
 
-            if (childBox.x1 + childWidth <= width)
+            childBox.set_origin(accumulatedWidth, 0);
+            accumulatedWidth += childWidth;
+
+            if (accumulatedWidth <= width)
                 childBox.set_size(childWidth, childHeight);
             else
                 childBox.set_size(0, 0);
 
             child.allocate(childBox);
             child.can_focus = childBox.get_area() > 0;
-
-            childBox.x1 += childWidth;
         }
     }
 
