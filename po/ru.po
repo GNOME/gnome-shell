@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-08-07 22:15+0000\n"
-"PO-Revision-Date: 2025-08-08 15:53+0300\n"
+"POT-Creation-Date: 2025-08-20 10:20+0000\n"
+"PO-Revision-Date: 2025-08-22 12:57+0300\n"
 "Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: RU\n"
 "Language: ru\n"
@@ -136,7 +136,7 @@ msgid "Record a screencast interactively"
 msgstr "Сделать запись экрана интерактивно"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1307
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1312
 msgid "System"
 msgstr "Система"
 
@@ -1270,11 +1270,11 @@ msgid "Pin to Dash"
 msgstr "Прикрепить к панели приложений"
 
 #: js/ui/appMenu.js:178
-msgid "Launch using Integrated Graphics Card"
+msgid "Launch Using Integrated Graphics Card"
 msgstr "Запустить, используя встроенную видеокарту"
 
 #: js/ui/appMenu.js:179
-msgid "Launch using Discrete Graphics Card"
+msgid "Launch Using Discrete Graphics Card"
 msgstr "Запустить, используя дискретную видеокарту"
 
 #: js/ui/audioDeviceSelection.js:46
@@ -1293,7 +1293,7 @@ msgstr "Наушники"
 msgid "Headset"
 msgstr "Гарнитура"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:366
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:367
 msgid "Microphone"
 msgstr "Микрофон"
 
@@ -2108,7 +2108,7 @@ msgstr "Система"
 msgid "Top Bar"
 msgstr "Верхняя панель"
 
-#: js/ui/quickSettings.js:185 js/ui/quickSettings.js:340
+#: js/ui/quickSettings.js:164 js/ui/quickSettings.js:263
 msgid "Open menu"
 msgstr "Открыть меню"
 
@@ -2445,6 +2445,10 @@ msgstr "Высокая"
 msgid "Keyboard"
 msgstr "Клавиатура"
 
+#: js/ui/status/backlight.js:164
+msgid "Open keyboard brightness menu"
+msgstr "Открыть меню подсветки клавиатуры"
+
 #: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
 msgid "Disconnect"
 msgstr "Отключить"
@@ -2461,30 +2465,38 @@ msgstr "Отключиться от \"%s\""
 msgid "Connect to %s"
 msgstr "Подключиться к \"%s\""
 
-#: js/ui/status/bluetooth.js:276 js/ui/status/bluetooth.js:278
+#: js/ui/status/bluetooth.js:277 js/ui/status/bluetooth.js:281
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1920
+#: js/ui/status/bluetooth.js:278
+msgid "Open Bluetooth menu"
+msgstr "Открыть меню Bluetooth"
+
+#: js/ui/status/bluetooth.js:304 js/ui/status/network.js:1924
 msgid "Bluetooth Settings"
 msgstr "Настройки Bluetooth"
 
-#: js/ui/status/bluetooth.js:348
+#: js/ui/status/bluetooth.js:351
 msgid "No available or connected devices"
 msgstr "Нет доступных или подключенных устройств"
 
-#: js/ui/status/bluetooth.js:349
+#: js/ui/status/bluetooth.js:352
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Включите Bluetooth для подключения к устройствам"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:413
+#: js/ui/status/bluetooth.js:416
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d подключено"
 msgstr[1] "%d подключено"
 msgstr[2] "%d подключено"
+
+#: js/ui/status/brightness.js:42
+msgid "Open brightness menu"
+msgstr "Открыть меню яркости"
 
 #: js/ui/status/darkMode.js:12
 msgid "Dark Style"
@@ -2579,61 +2591,81 @@ msgstr[0] "Подключено %d"
 msgstr[1] "Подключено %d"
 msgstr[2] "Подключено %d"
 
-#: js/ui/status/network.js:1544 js/ui/status/network.js:1560
+#: js/ui/status/network.js:1544 js/ui/status/network.js:1561
 msgid "VPN"
 msgstr "VPN"
 
 #: js/ui/status/network.js:1545
+msgid "Open VPN menu"
+msgstr "Открыть меню VPN"
+
+#: js/ui/status/network.js:1546
 msgid "VPN Settings"
 msgstr "Настройки VPN"
 
-#: js/ui/status/network.js:1805
+#: js/ui/status/network.js:1806
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
 #: js/ui/status/network.js:1807
+msgid "Open Wi–Fi menu"
+msgstr "Открыть меню Wi-Fi"
+
+#: js/ui/status/network.js:1809
 msgid "All Networks"
 msgstr "Все сети"
 
-#: js/ui/status/network.js:1904
+#: js/ui/status/network.js:1906
 msgid "Wired Connections"
 msgstr "Проводные подключения"
 
-#: js/ui/status/network.js:1905
+#: js/ui/status/network.js:1907
+msgid "Open wired connections menu"
+msgstr "Открыть меню проводных подключений"
+
+#: js/ui/status/network.js:1908
 msgid "Wired Settings"
 msgstr "Настройки подключения"
 
-#: js/ui/status/network.js:1919
+#: js/ui/status/network.js:1922
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth модемы"
 
+#: js/ui/status/network.js:1923
+msgid "Open Bluetooth tethers menu"
+msgstr "Открыть меню модемов Bluetooth"
+
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1926
+#: js/ui/status/network.js:1930
 msgid "Tether"
 msgstr "Модем"
 
-#: js/ui/status/network.js:1939
+#: js/ui/status/network.js:1943
 msgid "Mobile Connections"
 msgstr "Мобильные подключения"
 
-#: js/ui/status/network.js:1941
+#: js/ui/status/network.js:1944
+msgid "Open mobile connections menu"
+msgstr "Открыть меню мобильных подключений"
+
+#: js/ui/status/network.js:1946
 msgid "Mobile Broadband Settings"
 msgstr "Настройки мобильной связи"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1950
+#: js/ui/status/network.js:1955
 msgid "Mobile"
 msgstr "Мобильная"
 
-#: js/ui/status/network.js:1984
+#: js/ui/status/network.js:1989
 msgid "Sign in to Network"
 msgstr "Вход в сеть"
 
-#: js/ui/status/network.js:2171
+#: js/ui/status/network.js:2176
 msgid "Connection failed"
 msgstr "Сбой подключения"
 
-#: js/ui/status/network.js:2172
+#: js/ui/status/network.js:2177
 msgid "Activation of network connection failed"
 msgstr "Не удалось активировать сетевое подключение"
 
@@ -2661,11 +2693,15 @@ msgctxt "Power profile"
 msgid "Custom"
 msgstr "Пользовательский"
 
-#: js/ui/status/powerProfiles.js:44 js/ui/status/powerProfiles.js:74
+#: js/ui/status/powerProfiles.js:45 js/ui/status/powerProfiles.js:77
 msgid "Power Mode"
 msgstr "Режим питания"
 
-#: js/ui/status/powerProfiles.js:76
+#: js/ui/status/powerProfiles.js:46
+msgid "Open power profiles menu"
+msgstr "Открыть меню профилей питания"
+
+#: js/ui/status/powerProfiles.js:79
 msgid "Power Settings"
 msgstr "Настройки питания"
 
@@ -2763,9 +2799,17 @@ msgstr "Громкость"
 msgid "Sound Output"
 msgstr "Звуковой выход"
 
-#: js/ui/status/volume.js:384
+#: js/ui/status/volume.js:310
+msgid "Open sound output menu"
+msgstr "Открыть меню выхода звука"
+
+#: js/ui/status/volume.js:385
 msgid "Sound Input"
 msgstr "Звуковой вход"
+
+#: js/ui/status/volume.js:386
+msgid "Open sound input menu"
+msgstr "Открыть меню входа звука"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
@@ -2797,23 +2841,23 @@ msgstr "Только встроенный"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:384
+#: js/ui/unlockDialog.js:413
 msgid "%A %B %-d"
 msgstr "%A, %-d %B"
 
-#: js/ui/unlockDialog.js:390
+#: js/ui/unlockDialog.js:419
 msgid "Swipe up to unlock"
 msgstr "Проведите вверх, чтобы разблокировать"
 
-#: js/ui/unlockDialog.js:391
+#: js/ui/unlockDialog.js:420
 msgid "Click or press a key to unlock"
 msgstr "Нажмите клавишу или кнопку мыши, чтобы разблокировать"
 
-#: js/ui/unlockDialog.js:576
+#: js/ui/unlockDialog.js:605
 msgid "Unlock Window"
 msgstr "Разблокировать окно"
 
-#: js/ui/unlockDialog.js:585
+#: js/ui/unlockDialog.js:614
 msgid "Log in as another user"
 msgstr "Войти от имени другого пользователя"
 
@@ -3008,15 +3052,15 @@ msgstr ""
 "настройкой параметров расширений и удалением или отключением ненужных "
 "расширений."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Main Window"
 msgstr "Главное окно"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:81
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:82
 msgid "Available Updates"
 msgstr "Доступные обновления"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:85
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:86
 msgid "Search View"
 msgstr "Отображение поиска"
 
@@ -3061,12 +3105,12 @@ msgstr "Сведения об ошибке:"
 msgid "Version %s"
 msgstr "Версия %s"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:113
+#: subprojects/extensions-app/js/extensionsWindow.js:108
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Удалить \"%s\"?"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:114
+#: subprojects/extensions-app/js/extensionsWindow.js:109
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -3074,15 +3118,15 @@ msgstr ""
 "После удаления расширения, если потребуется использовать его снова, нужно "
 "будет загрузить и установить его заново"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:117
+#: subprojects/extensions-app/js/extensionsWindow.js:112
 msgid "_Cancel"
 msgstr "_Отменить"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:118
+#: subprojects/extensions-app/js/extensionsWindow.js:113
 msgid "_Remove"
 msgstr "_Удалить"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:158
+#: subprojects/extensions-app/js/extensionsWindow.js:153
 msgid "translator-credits"
 msgstr ""
 "Stas Solovey <whats_up@tut.by>, 2011-2020\n"
@@ -3090,7 +3134,7 @@ msgstr ""
 "Alexey Rubtsov <rushills@gmail.com>, 2021\n"
 "Aleksandr Melman <alexmelman88@gmail.com>, 2022-2023"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:203
+#: subprojects/extensions-app/js/extensionsWindow.js:198
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -3141,19 +3185,19 @@ msgstr "Главное меню"
 msgid "Search extensions"
 msgstr "Поиск расширений"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:124
+#: subprojects/extensions-app/data/ui/extensions-window.ui:123
 msgid "_Log Out…"
 msgstr "_Выйти…"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:134
+#: subprojects/extensions-app/data/ui/extensions-window.ui:131
 msgid "_Extensions"
 msgstr "_Расширения"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:139
+#: subprojects/extensions-app/data/ui/extensions-window.ui:136
 msgid "More Information"
 msgstr "Дополнительная информация"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:151
+#: subprojects/extensions-app/data/ui/extensions-window.ui:148
 msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
@@ -3162,31 +3206,31 @@ msgstr ""
 "Рекомендуется отключить все расширения, если у вас возникли проблемы с "
 "системой."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:178
+#: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid "User Extensions"
 msgstr "Пользовательские расширения"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:198
+#: subprojects/extensions-app/data/ui/extensions-window.ui:184
 msgid "System Extensions"
 msgstr "Системные расширения"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:233
+#: subprojects/extensions-app/data/ui/extensions-window.ui:203
 msgid "Search Results"
 msgstr "Результаты поиска"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:252
+#: subprojects/extensions-app/data/ui/extensions-window.ui:217
 msgid "No Results Found"
 msgstr "Результатов не найдено"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:253
+#: subprojects/extensions-app/data/ui/extensions-window.ui:218
 msgid "Try a different search"
 msgstr "Попробуйте другой поисковый запрос"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:264
+#: subprojects/extensions-app/data/ui/extensions-window.ui:229
 msgid "No Installed Extensions"
 msgstr "Нет установленных расширений"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:265
+#: subprojects/extensions-app/data/ui/extensions-window.ui:230
 msgid ""
 "To find and add extensions, visit <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
@@ -3194,11 +3238,11 @@ msgstr ""
 "Чтобы найти и добавить расширения, посетите <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:275
+#: subprojects/extensions-app/data/ui/extensions-window.ui:240
 msgid "Something’s gone wrong"
 msgstr "Что-то пошло не так"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:276
+#: subprojects/extensions-app/data/ui/extensions-window.ui:241
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -3856,9 +3900,6 @@ msgstr "Системные звуки"
 #~ msgid "Screenshot / Screencast"
 #~ msgstr "Снимок экрана / Запись экрана"
 
-#~ msgid "Power Profiles"
-#~ msgstr "Профили питания"
-
 #~ msgid "Evolution Calendar"
 #~ msgstr "Календарь Evolution"
 
@@ -4054,9 +4095,6 @@ msgstr "Системные звуки"
 
 #~ msgid "Power Off / Log Out"
 #~ msgstr "Выключить / Выйти"
-
-#~ msgid "Bluetooth On"
-#~ msgstr "Bluetooth включён"
 
 #~ msgid "Bluetooth Off"
 #~ msgstr "Bluetooth выключен"
