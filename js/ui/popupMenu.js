@@ -1123,6 +1123,13 @@ export class PopupMenu extends PopupMenuBase {
 
         this.actor.get_parent().set_child_above_sibling(this.actor, null);
 
+        /* The position calculation expects the source actor allocation to be
+         * up to date, so queue relayout on parent to ensure it gets allocated
+         * first.
+         */
+        if (!this.sourceActor?.has_allocation())
+            this.sourceActor?.get_parent().queue_relayout();
+
         this.emit('open-state-changed', true);
     }
 
