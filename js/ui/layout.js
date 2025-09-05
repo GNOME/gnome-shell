@@ -308,7 +308,7 @@ export const LayoutManager = GObject.registerClass({
 
         // A dummy actor that tracks the mouse or text cursor, based on the
         // position and size set in setDummyCursorGeometry.
-        this.dummyCursor = new St.Widget({width: 0, height: 0, opacity: 0});
+        this.dummyCursor = new St.Widget({width: 0, height: 0, opacity: 0, name: 'Dummy Cursor'});
         this.uiGroup.add_child(this.dummyCursor);
 
         const feedbackGroup = global.compositor.get_feedback_group();
