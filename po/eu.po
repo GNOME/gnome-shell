@@ -11,8 +11,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-09-02 12:09+0000\n"
-"PO-Revision-Date: 2025-09-04 12:15+0100\n"
+"POT-Creation-Date: 2025-09-06 01:38+0000\n"
+"PO-Revision-Date: 2025-09-06 12:15+0100\n"
 "Last-Translator: Asier Saratsua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -422,7 +422,6 @@ msgid "Open a new instance of application 9"
 msgstr "Ireki 9. aplikazioaren instantzia berria"
 
 #: data/org.gnome.shell.gschema.xml.in:283
-#| msgid "Brightness"
 msgid "Screen brightness up"
 msgstr "Igo pantailaren distira"
 
@@ -515,7 +514,6 @@ msgid "Utilities"
 msgstr "Tresnak"
 
 #: js/dbusServices/extensions/extensionPrefsDialog.js:71
-#| msgid "Extensions"
 msgid "Extension Error"
 msgstr "Hedapen-errorea"
 
@@ -528,7 +526,6 @@ msgstr "Ezin dira “%s” hdeapenaren ezarpenak erakutsi."
 #. Translators: Link label in the phrase "Information about this
 #. problem may be available on the extension website"
 #: js/dbusServices/extensions/extensionPrefsDialog.js:110
-#| msgid "Extensions"
 msgid "extension website"
 msgstr "hedapenaren webgunea"
 
@@ -1025,7 +1022,6 @@ msgstr "%H:%M"
 #. time string in 24h format. i.e. "Yesterday, 14:30"
 #: js/misc/dateUtils.js:161
 #, no-c-format
-#| msgid "Yesterday, %H∶%M"
 msgid "Yesterday, %H:%M"
 msgstr "Atzo, %H:%M"
 
@@ -1033,7 +1029,6 @@ msgstr "Atzo, %H:%M"
 #. string in 24h format. i.e. "Monday, 14:30"
 #: js/misc/dateUtils.js:167
 #, no-c-format
-#| msgid "%A, %H∶%M"
 msgid "%A, %H:%M"
 msgstr "%A, %H:%M"
 
@@ -1042,7 +1037,6 @@ msgstr "%A, %H:%M"
 #. i.e. "May 25, 14:30"
 #: js/misc/dateUtils.js:173
 #, no-c-format
-#| msgid "%B %-d, %H∶%M"
 msgid "%B %-d, %H:%M"
 msgstr "%B %-d, %H:%M"
 
@@ -1051,7 +1045,6 @@ msgstr "%B %-d, %H:%M"
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/dateUtils.js:179
 #, no-c-format
-#| msgid "%B %-d %Y, %H∶%M"
 msgid "%B %-d %Y, %H:%M"
 msgstr "%Y, %B %-d, %H:%M"
 
@@ -1059,7 +1052,6 @@ msgstr "%Y, %B %-d, %H:%M"
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
 #: js/misc/dateUtils.js:184
-#| msgid "%l∶%M %p"
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
@@ -1067,7 +1059,6 @@ msgstr "%l:%M %p"
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: js/misc/dateUtils.js:190
 #, no-c-format
-#| msgid "Yesterday, %l∶%M %p"
 msgid "Yesterday, %l:%M %p"
 msgstr "Atzo, %l:%M %p"
 
@@ -1075,7 +1066,6 @@ msgstr "Atzo, %l:%M %p"
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/dateUtils.js:196
 #, no-c-format
-#| msgid "%A, %l∶%M %p"
 msgid "%A, %l:%M %p"
 msgstr "%A, %l:%M %p"
 
@@ -1084,7 +1074,6 @@ msgstr "%A, %l:%M %p"
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/dateUtils.js:202
 #, no-c-format
-#| msgid "%B %-d, %l∶%M %p"
 msgid "%B %-d, %l:%M %p"
 msgstr "%B %-d, %l:%M %p"
 
@@ -1093,7 +1082,6 @@ msgstr "%B %-d, %l:%M %p"
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/dateUtils.js:208
 #, no-c-format
-#| msgid "%B %-d %Y, %l∶%M %p"
 msgid "%B %-d %Y, %l:%M %p"
 msgstr "%Y, %B %-d, %l:%M %p"
 
@@ -1165,12 +1153,10 @@ msgid "Pin to Dash"
 msgstr "Ainguratu panelean"
 
 #: js/ui/appMenu.js:178
-#| msgid "Launch using Integrated Graphics Card"
 msgid "Launch Using Integrated Graphics Card"
 msgstr "Abiarazi txartel grafiko integratua erabiliz"
 
 #: js/ui/appMenu.js:179
-#| msgid "Launch using Discrete Graphics Card"
 msgid "Launch Using Discrete Graphics Card"
 msgstr "Abiarazi txartel grafiko diskretua erabiliz"
 
@@ -2009,7 +1995,6 @@ msgstr "Aplikazio batek blokeatu du"
 
 #. Translators: notification source name for screenshots and recordings.
 #: js/ui/screenshot.js:40
-#| msgid "Screenshot captured"
 msgid "Screen Capture"
 msgstr "Pantaila-argazkia"
 
@@ -2098,7 +2083,6 @@ msgstr "Pantaila-bideoa ustekabean amaitu da"
 
 #. Translators: notification body when a screencast was recorded.
 #: js/ui/screenshot.js:2108
-#| msgid "Click here to view the video."
 msgid "Click here to view the video"
 msgstr "Klik hemen bideoa ikusteko"
 
@@ -2122,7 +2106,6 @@ msgstr "Pantaila-argazkia hartu da"
 
 #. Translators: notification body when a screenshot was captured.
 #: js/ui/screenshot.js:2351
-#| msgid "You can paste the image from the clipboard."
 msgid "You can paste the image from the clipboard"
 msgstr "Irudia arbeletik itsatsi daiteke"
 
@@ -2131,7 +2114,6 @@ msgid "Screenshot taken"
 msgstr "Pantaila-argazkia hartu da"
 
 #: js/ui/search.js:842
-#| msgid "Searching…"
 msgid "Searching"
 msgstr "Bilatzen"
 
@@ -2311,7 +2293,6 @@ msgid "Keyboard"
 msgstr "Teklatua"
 
 #: js/ui/status/backlight.js:164
-#| msgid "Keyboard Brightness"
 msgid "Open keyboard brightness menu"
 msgstr "Ireki teklatuaren distiraren menua"
 
@@ -2336,7 +2317,6 @@ msgid "Bluetooth"
 msgstr "Bluetooth-a"
 
 #: js/ui/status/bluetooth.js:278
-#| msgid "Bluetooth On"
 msgid "Open Bluetooth menu"
 msgstr "Ireki Bluetooth-aren menua"
 
@@ -2361,7 +2341,6 @@ msgstr[0] "%d konektatuta"
 msgstr[1] "%d konektatuta"
 
 #: js/ui/status/brightness.js:42
-#| msgid "Open menu"
 msgid "Open brightness menu"
 msgstr "Ireki distiraren menua"
 
@@ -2460,7 +2439,6 @@ msgid "VPN"
 msgstr "VPNak"
 
 #: js/ui/status/network.js:1546
-#| msgid "Open menu"
 msgid "Open VPN menu"
 msgstr "Ireki VPNen menua"
 
@@ -2473,7 +2451,6 @@ msgid "Wi–Fi"
 msgstr "Wifia"
 
 #: js/ui/status/network.js:1808
-#| msgid "Open menu"
 msgid "Open Wi–Fi menu"
 msgstr "Ireki wifiaren menua"
 
@@ -2486,7 +2463,6 @@ msgid "Wired Connections"
 msgstr "Haridun konexioak"
 
 #: js/ui/status/network.js:1908
-#| msgid "Wired Connections"
 msgid "Open wired connections menu"
 msgstr "Ireki haridun konexioen menua"
 
@@ -2499,7 +2475,6 @@ msgid "Bluetooth Tethers"
 msgstr "Bluetooth aingurak"
 
 #: js/ui/status/network.js:1924
-#| msgid "Bluetooth Tethers"
 msgid "Open Bluetooth tethers menu"
 msgstr "Ireki Bluetooth ainguren menua"
 
@@ -2513,7 +2488,6 @@ msgid "Mobile Connections"
 msgstr "Konexio mugikorrak"
 
 #: js/ui/status/network.js:1945
-#| msgid "Mobile Connections"
 msgid "Open mobile connections menu"
 msgstr "Ireki konexio mugikorren menua"
 
@@ -2527,7 +2501,6 @@ msgid "Mobile"
 msgstr "Mugikorra"
 
 #: js/ui/status/network.js:1990
-#| msgid "Sign Into Wi–Fi Network"
 msgid "Sign in to Network"
 msgstr "Hasi saioa sarean"
 
@@ -2568,7 +2541,6 @@ msgid "Power Mode"
 msgstr "Energiaren modua"
 
 #: js/ui/status/powerProfiles.js:46
-#| msgid "Power Profiles"
 msgid "Open power profiles menu"
 msgstr "Ireki energia-profilen menua"
 
@@ -2674,7 +2646,6 @@ msgid "Sound Input"
 msgstr "Soinu-sarrera"
 
 #: js/ui/status/volume.js:386
-#| msgid "Open menu"
 msgid "Open sound input menu"
 msgstr "Ireki soinu-sarreraren menua"
 
@@ -3033,7 +3004,6 @@ msgid "Search extensions"
 msgstr "Bilatu hedapenak"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:123
-#| msgid "Log Out…"
 msgid "_Log Out…"
 msgstr "_Amaitu saioa…"
 
@@ -3417,16 +3387,14 @@ msgid "Uninstall an extension"
 msgstr "Desinstalatu hedapen bat"
 
 #: subprojects/extensions-tool/src/command-upload.c:226
-#| msgid "List extensions"
 msgid "Login to extensions.gnome.org\n"
 msgstr "Hasi saioa extensions.gnome.org gunean\n"
 
 #: subprojects/extensions-tool/src/command-upload.c:256
 msgid "Warning! Password will be echoed"
-msgstr ""
+msgstr "Abisua! Pasahitza argitaratuko da"
 
 #: subprojects/extensions-tool/src/command-upload.c:419
-#| msgid "NAME"
 msgid "USERNAME"
 msgstr "ERABILTZAILE-IZENA"
 
@@ -3452,25 +3420,22 @@ msgid "Accept the terms of service at https://extensions.gnome.org/upload/"
 msgstr "Onartu https://extensions.gnome.org/upload/ guneko erabilera-baldintzak"
 
 #: subprojects/extensions-tool/src/command-upload.c:434
-#| msgid "FILE"
 msgid "FILE…"
 msgstr "FITXATEGIA…"
 
 #: subprojects/extensions-tool/src/command-upload.c:443
-#| msgid "Allow extension installation"
 msgid "Upload new extension versions"
 msgstr "Igo hedapen-bertsio berriak"
 
 #: subprojects/extensions-tool/src/command-upload.c:461
 msgid "Only one of --password and --password-file can be used"
-msgstr ""
+msgstr "--password eta --password-file bakarra erabili daitezke"
 
 #: subprojects/extensions-tool/src/command-upload.c:467
 msgid "You must accept the terms of service to upload extensions"
 msgstr "Erabilera-baldintzak onartu behar dituzu hedapenak igo ahal izateko"
 
 #: subprojects/extensions-tool/src/command-upload.c:473
-#| msgid "No UUID given"
 msgid "No files given"
 msgstr "Ez da fitxategirik eman"
 
