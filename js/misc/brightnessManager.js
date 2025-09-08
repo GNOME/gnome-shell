@@ -175,13 +175,14 @@ export const BrightnessManager = GObject.registerClass({
             });
         }
 
-        if (this._globalScale)
-            this._sync({showOSD: false});
+        this._sync({showOSD: false});
 
         this.emit('changed');
     }
 
     _sync({showOSD = true} = {}) {
+        if (!this._globalScale)
+            return;
         if (this._inhibitUpdates)
             return;
         this._inhibitUpdates = true;
