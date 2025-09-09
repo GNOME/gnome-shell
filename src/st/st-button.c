@@ -121,6 +121,18 @@ st_button_style_changed (StWidget *widget)
 }
 
 static void
+handle_clicked (StButton     *button,
+                unsigned int  clicked_button)
+{
+  StButtonPrivate *priv = st_button_get_instance_private (button);
+
+  if (priv->is_toggle)
+    st_button_set_checked (button, !priv->is_checked);
+
+  g_signal_emit (button, button_signals[CLICKED], 0, clicked_button);
+}
+
+static void
 button_click_gesture_recognize_cb (ClutterPressGesture *press_gesture,
                                    StButton            *button)
 {
@@ -130,10 +142,7 @@ button_click_gesture_recognize_cb (ClutterPressGesture *press_gesture,
   if ((priv->button_mask & ST_BUTTON_MASK_FROM_BUTTON (clicked_button)) == 0)
     return;
 
-  if (priv->is_toggle)
-    st_button_set_checked (button, !priv->is_checked);
-
-  g_signal_emit (button, button_signals[CLICKED], 0, clicked_button);
+  handle_clicked (button, clicked_button);
 }
 
 static void
@@ -201,7 +210,7 @@ st_button_key_release (ClutterActor *actor,
         {
           if (priv->key_pressed)
             {
-              g_signal_emit (button, button_signals[CLICKED], 0, ST_BUTTON_ONE);
+              handle_clicked (button, ST_BUTTON_ONE);
               st_widget_remove_style_pseudo_class (ST_WIDGET (actor), "active");
               priv->key_pressed = FALSE;
             }
