@@ -48,8 +48,8 @@ variables:
 .gnome-shell.fedora:
   variables:
     FDO_UPSTREAM_REPO: GNOME/gnome-shell
-    FDO_DISTRIBUTION_VERSION: 42
-    FDO_DISTRIBUTION_TAG: '2025-06-10.0'
+    FDO_DISTRIBUTION_VERSION: 43
+    FDO_DISTRIBUTION_TAG: '2025-09-10.0'
     FDO_DISTRIBUTION_PACKAGES:
       gjs
       nodejs
@@ -61,6 +61,7 @@ variables:
       'pkgconfig(gio-unix-2.0)'
       'pkgconfig(gnome-autoar-0)'
       'pkgconfig(json-glib-1.0)'
+      'pkgconfig(libsoup-3.0)'
     FDO_DISTRIBUTION_EXEC: |
       ./.gitlab-ci/install-meson-project.sh \
         https://gitlab.gnome.org/World/javascript/gjs-ci-tools.git \
