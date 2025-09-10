@@ -1,25 +1,25 @@
 # Hungarian translation for gnome-shell.
-# Copyright 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022 Free Software Foundation, Inc.
+# Copyright 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2025 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
 # Lukács Bence <lukacs.bence1 at gmail dot com>, 2012.
 # Balázs Meskó <mesko.balazs at fsf dot hu>, 2014, 2019, 2020, 2021.
-# Balázs Úr <ur.balazs at fsf dot hu>, 2012, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2012, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-15 11:55+0000\n"
-"PO-Revision-Date: 2022-09-01 02:00+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
+"POT-Creation-Date: 2025-09-10 18:32+0000\n"
+"PO-Revision-Date: 2025-09-10 23:10+0200\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
-"Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
+"Language-Team: Hungarian <openscope at fsf dot hu>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Lokalize 24.12.3\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -110,11 +110,11 @@ msgstr "Minden alkalmazás megjelenítése"
 msgid "Open the application menu"
 msgstr "Az alkalmazásmenü megnyitása"
 
-#: data/org.gnome.Shell.desktop.in.in:4
+#: data/org.gnome.Shell.desktop.in.in:3
 msgid "GNOME Shell"
 msgstr "GNOME Shell"
 
-#: data/org.gnome.Shell.desktop.in.in:5
+#: data/org.gnome.Shell.desktop.in.in:4
 msgid "Window management and application launching"
 msgstr "Ablakkezelés és alkalmazásindítás"
 
@@ -162,8 +162,8 @@ msgid ""
 msgstr ""
 "A GNOME Shell kiterjesztések rendelkeznek egy UUID tulajdonsággal; ez a "
 "kulcs felsorolja a letiltandó kiterjesztéseket. Ezek akkor is le lesznek "
-"tiltva, ha a jelenlegi mód részeként betöltésre kerültek. A listát az org."
-"gnome.Shell EnableExtension és DisableExtension D-Bus metódusaival is "
+"tiltva, ha a jelenlegi mód részeként betöltésre kerültek. A listát az "
+"org.gnome.Shell EnableExtension és DisableExtension D-Bus metódusaival is "
 "manipulálhatja. Ez a kulcs elsőbbséget élvez az „enabled-extensions” "
 "beállítással szemben."
 
@@ -413,8 +413,8 @@ msgstr "Az alkalmazás ikon mód."
 #: data/org.gnome.shell.gschema.xml.in:275
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
 msgstr ""
 "Az ablakok megjelenésének beállítása a váltóban. Lehetséges értékek: "
 "„thumbnail-only” (az ablak bélyegképének megjelenítése), „app-icon-only” (az "
@@ -484,7 +484,7 @@ msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Fókuszváltozások késleltetése a mutató mozgásának megállásáig egér módban"
 
-#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:2
 msgid "Network Login"
 msgstr "Hálózati bejelentkezés"
 
@@ -514,7 +514,7 @@ msgstr "Honlap"
 msgid "Visit extension homepage"
 msgstr "A kiterjesztés honlapjának megtekintése"
 
-#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:146 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:437 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
@@ -522,7 +522,7 @@ msgstr "A kiterjesztés honlapjának megtekintése"
 msgid "Cancel"
 msgstr "Mégse"
 
-#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:312 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
@@ -560,13 +560,13 @@ msgstr "Hitelesítési hiba"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:603
+#: js/gdm/util.js:604
 msgid "(or swipe finger across reader)"
 msgstr "(vagy húzza le az ujját az olvasón)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:608
+#: js/gdm/util.js:609
 msgid "(or place finger on reader)"
 msgstr "(vagy húzza le az ujját az olvasón)"
 
@@ -822,6 +822,10 @@ msgstr "Hozzáférés tiltása"
 msgid "Grant Access"
 msgstr "Hozzáférés megadása"
 
+#: js/ui/appDisplay.js:1801
+msgid "Unnamed Folder"
+msgstr "Névtelen mappa"
+
 #: js/ui/appFavorites.js:164
 #, javascript-format
 msgid "%s has been pinned to the dash."
@@ -956,7 +960,7 @@ msgstr "Sz"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:402
+#: js/ui/calendar.js:414
 msgid "%OB"
 msgstr "%OB"
 
@@ -969,37 +973,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:412
+#: js/ui/calendar.js:424
 msgid "%OB %Y"
 msgstr "%Y. %OB"
 
-#: js/ui/calendar.js:472
+#: js/ui/calendar.js:484
 msgid "Previous month"
 msgstr "Előző hónap"
 
-#: js/ui/calendar.js:490
+#: js/ui/calendar.js:502
 msgid "Next month"
 msgstr "Következő hónap"
 
-#: js/ui/calendar.js:642
+#: js/ui/calendar.js:654
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:701
+#: js/ui/calendar.js:713
 msgid "Week %V"
 msgstr "%V. hét"
 
-#: js/ui/calendar.js:880
+#: js/ui/calendar.js:892
 msgid "No Notifications"
 msgstr "Nincsenek értesítések"
 
-#: js/ui/calendar.js:937
+#: js/ui/calendar.js:949
 msgid "Do Not Disturb"
 msgstr "Ne zavarjanak"
 
-#: js/ui/calendar.js:958
+#: js/ui/calendar.js:970
 msgid "Clear"
 msgstr "Törlés"
 
@@ -1150,7 +1154,7 @@ msgstr "Elnézést, ez nem sikerült. Próbálja újra."
 msgid "%s is now known as %s"
 msgstr "%s mostantól %s néven ismert"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:414
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:417
 msgid "Windows"
 msgstr "Ablakok"
 
@@ -1431,31 +1435,31 @@ msgstr "Kiterjesztés-frissítések érhetők el"
 msgid "Extension updates are ready to be installed."
 msgstr "A kiterjesztés-frissítések telepítésre készek."
 
-#: js/ui/inhibitShortcutsDialog.js:79
+#: js/ui/inhibitShortcutsDialog.js:75
 msgid "Allow inhibiting shortcuts"
 msgstr "Gyorsbillentyűk megakadályozásának engedélyezése"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:82
+#: js/ui/inhibitShortcutsDialog.js:78
 #, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
 msgstr "A(z) %s alkalmazás meg akarja gátolni a gyorsbillentyűk használatát"
 
-#: js/ui/inhibitShortcutsDialog.js:83
+#: js/ui/inhibitShortcutsDialog.js:79
 msgid "An application wants to inhibit shortcuts"
 msgstr "Egy alkalmazás meg akarja gátolni a gyorsbillentyűk használatát"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
-#: js/ui/inhibitShortcutsDialog.js:90
+#: js/ui/inhibitShortcutsDialog.js:86
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "A(z) %s megnyomásával visszaállíthatja a gyorsbillentyűket."
 
-#: js/ui/inhibitShortcutsDialog.js:101
+#: js/ui/inhibitShortcutsDialog.js:97
 msgid "Deny"
 msgstr "Tiltás"
 
-#: js/ui/inhibitShortcutsDialog.js:110
+#: js/ui/inhibitShortcutsDialog.js:106
 msgid "Allow"
 msgstr "Engedélyezés"
 
@@ -1550,7 +1554,7 @@ msgstr "Engedélyezve"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:793 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:793 subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Tiltva"
 
@@ -1622,11 +1626,11 @@ msgstr "Ismeretlen cím"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:324
+#: js/ui/overviewControls.js:327
 msgid "Type to search"
 msgstr "Gépeljen a kereséshez"
 
-#: js/ui/overviewControls.js:402
+#: js/ui/overviewControls.js:405
 msgid "Applications"
 msgstr "Alkalmazások"
 
@@ -2002,11 +2006,11 @@ msgstr "Másodlagos kattintás"
 msgid "Dwell Click"
 msgstr "Rámutatási kattintás"
 
-#: js/ui/status/keyboard.js:827
+#: js/ui/status/keyboard.js:830
 msgid "Keyboard"
 msgstr "Billentyűzet"
 
-#: js/ui/status/keyboard.js:844
+#: js/ui/status/keyboard.js:847
 msgid "Show Keyboard Layout"
 msgstr "Billentyűzetkiosztás megjelenítése"
 
@@ -2442,8 +2446,6 @@ msgstr "Csak a beépített"
 #. Translators: This is a time format for a date in
 #. long format
 #: js/ui/unlockDialog.js:364
-#| msgctxt "calendar heading"
-#| msgid "%B %-d"
 msgid "%A %B %-d"
 msgstr "%B %-d. %A"
 
@@ -2585,7 +2587,7 @@ msgstr "Áthelyezés a jobb oldali kijelzőre"
 msgid "Close"
 msgstr "Bezárás"
 
-#: src/calendar-server/evolution-calendar.desktop.in:3
+#: src/calendar-server/evolution-calendar.desktop.in:2
 msgid "Evolution Calendar"
 msgstr "Evolution naptár"
 
@@ -2629,7 +2631,7 @@ msgid "Authentication dialog was dismissed by the user"
 msgstr "A hitelesítési ablakot a felhasználó bezárta"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:3
 #: subprojects/extensions-app/js/main.js:210
 #: subprojects/extensions-app/data/ui/extensions-window.ui:18
 #: subprojects/extensions-app/data/ui/extensions-window.ui:83
@@ -2654,7 +2656,7 @@ msgstr ""
 "kiterjesztésbeállítások konfigurálást és a nem kívánatos kiterjesztések "
 "eltávolítását vagy letiltását."
 
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:6
 msgid "Configure GNOME Shell Extensions"
 msgstr "GNOME Shell kiterjesztések beállítása"
 
@@ -2738,11 +2740,11 @@ msgstr "Kézileg telepített"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://"
+"extensions.gnome.org\">extensions.gnome.org</a>."
 msgstr ""
-"A kiterjesztések megtalálásához és hozzáadásához keresse fel az <a href="
-"\"https://extensions.gnome.org\">extensions.gnome.org</a> oldalt."
+"A kiterjesztések megtalálásához és hozzáadásához keresse fel az <a "
+"href=\"https://extensions.gnome.org\">extensions.gnome.org</a> oldalt."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:112
 msgid "Built-In"
@@ -2806,8 +2808,8 @@ msgstr "Leírás"
 #: subprojects/extensions-tool/src/command-create.c:336
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
+"This should be in the format of an email address "
+"(clicktofocus@janedoe.example.com)\n"
 msgstr ""
 "A UUID a kiegészítő globálisan egyedi azonosítója.\n"
 "E-mail cím formátumúnak kell lennie (clicktofocus@janedoe.example.com)\n"
@@ -2865,26 +2867,18 @@ msgstr "Ismeretlen argumentumok"
 msgid "UUID, name and description are required"
 msgstr "A UUID, név és leírás kötelező"
 
-#: subprojects/extensions-tool/src/command-disable.c:46
-#: subprojects/extensions-tool/src/command-enable.c:46
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:64
-#: subprojects/extensions-tool/src/main.c:146
-msgid "Failed to connect to GNOME Shell\n"
-msgstr "Nem sikerült kapcsolódni a GNOME Shellhez\n"
-
-#: subprojects/extensions-tool/src/command-disable.c:53
-#: subprojects/extensions-tool/src/command-enable.c:53
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "A(z) „%s” kiterjesztés nem létezik\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:101
+#: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
 msgstr "Kiterjesztés letiltása"
 
-#: subprojects/extensions-tool/src/command-disable.c:119
-#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
 #: subprojects/extensions-tool/src/command-info.c:103
 #: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
@@ -2892,8 +2886,8 @@ msgstr "Kiterjesztés letiltása"
 msgid "No UUID given"
 msgstr "Nincs UUID megadva"
 
-#: subprojects/extensions-tool/src/command-disable.c:124
-#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
 #: subprojects/extensions-tool/src/command-info.c:108
 #: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
@@ -2901,9 +2895,15 @@ msgstr "Nincs UUID megadva"
 msgid "More than one UUID given"
 msgstr "Több mint egy UUID lett megadva"
 
-#: subprojects/extensions-tool/src/command-enable.c:101
+#: subprojects/extensions-tool/src/command-enable.c:98
 msgid "Enable an extension"
 msgstr "Kiterjesztés engedélyezése"
+
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:146
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "Nem sikerült kapcsolódni a GNOME Shellhez\n"
 
 #: subprojects/extensions-tool/src/command-info.c:59
 #: subprojects/extensions-tool/src/main.c:155
@@ -3151,25 +3151,25 @@ msgstr "Kiterjesztéscsomag telepítése"
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Részletes súgóhoz használja ezt: „%s”.\n"
 
-#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:3
 msgid "Plain"
 msgstr "Egyszerű"
 
-#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
 msgid "An empty extension"
 msgstr "Egy üres kiterjesztés"
 
-#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:3
 msgid "Indicator"
 msgstr "Jelző"
 
-#: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
 msgid "Add an icon to the top bar"
 msgstr "Ikon hozzáadása a felső sávhoz"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1907
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3178,13 +3178,13 @@ msgstr[1] "%u kimenet"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1917
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u bemenet"
 msgstr[1] "%u bemenet"
 
-#: subprojects/gvc/gvc-mixer-control.c:2867
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Rendszerhangok"
