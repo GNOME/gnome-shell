@@ -49,13 +49,14 @@ variables:
   variables:
     FDO_UPSTREAM_REPO: GNOME/gnome-shell
     FDO_DISTRIBUTION_VERSION: 43
-    FDO_DISTRIBUTION_TAG: '2025-09-10.0'
+    FDO_DISTRIBUTION_TAG: '2025-09-10.1'
     FDO_DISTRIBUTION_PACKAGES:
       gjs
       nodejs
       npm
       meson
       git
+      glib-networking
       'pkgconfig(gobject-introspection-1.0)'
       'pkgconfig(gio-2.0)'
       'pkgconfig(gio-unix-2.0)'
