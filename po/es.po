@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-09-04 17:32+0000\n"
-"PO-Revision-Date: 2025-09-05 14:05+0200\n"
+"POT-Creation-Date: 2025-09-10 03:37+0000\n"
+"PO-Revision-Date: 2025-09-10 10:55+0200\n"
 "Last-Translator: Daniel Mustieles García <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -483,22 +483,20 @@ msgid "Open a new instance of application 9"
 msgstr "Abrir una nueva instancia de la aplicación 9"
 
 #: data/org.gnome.shell.gschema.xml.in:283
-#, fuzzy
-#| msgid "Brightness"
 msgid "Screen brightness up"
-msgstr "Brillo"
+msgstr "Subir el brillo de la pantalla"
 
 #: data/org.gnome.shell.gschema.xml.in:287
 msgid "Screen brightness up on current monitor"
-msgstr ""
+msgstr "Subir el brillo de la pantalla actual"
 
 #: data/org.gnome.shell.gschema.xml.in:291
 msgid "Screen brightness down"
-msgstr ""
+msgstr "Bajar el brillo de la pantalla"
 
 #: data/org.gnome.shell.gschema.xml.in:295
 msgid "Screen brightness down on current monitor"
-msgstr ""
+msgstr "Bajar el brillo de la pantalla actual"
 
 #: data/org.gnome.shell.gschema.xml.in:299
 msgid "Screen brightness cycle"
@@ -506,7 +504,7 @@ msgstr "Ciclo de brillo de la pantalla"
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid "Screen brightness cycle on current monitor"
-msgstr ""
+msgstr "Screen brightness cycle on current monitor"
 
 #: data/org.gnome.shell.gschema.xml.in:312
 #: data/org.gnome.shell.gschema.xml.in:339
@@ -585,30 +583,26 @@ msgid "Utilities"
 msgstr "Utilidades"
 
 #: js/dbusServices/extensions/extensionPrefsDialog.js:71
-#, fuzzy
-#| msgid "Extensions"
 msgid "Extension Error"
-msgstr "Extensiones"
+msgstr "Error de la extensión"
 
 #. Translators: %s is an extension name
 #: js/dbusServices/extensions/extensionPrefsDialog.js:104
 #, javascript-format
 msgid "Unable to display the settings for “%s”."
-msgstr ""
+msgstr "No se puede mostrar la configuración para «%s»."
 
 #. Translators: Link label in the phrase "Information about this
 #. problem may be available on the extension website"
 #: js/dbusServices/extensions/extensionPrefsDialog.js:110
-#, fuzzy
-#| msgid "Extensions"
 msgid "extension website"
-msgstr "Extensiones"
+msgstr "sitio web de la extensión"
 
 #. Translators: %s is "extension website"
 #: js/dbusServices/extensions/extensionPrefsDialog.js:114
 #, javascript-format
 msgid "Information about this problem may be available on the %s."
-msgstr ""
+msgstr "La información sobre este problema debe estar disponible en la %s."
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:19
 #: subprojects/extensions-app/data/ui/extension-row.ui:13
@@ -1245,14 +1239,10 @@ msgid "Pin to Dash"
 msgstr "Fijar al tablero"
 
 #: js/ui/appMenu.js:178
-#, fuzzy
-#| msgid "Launch using Integrated Graphics Card"
 msgid "Launch Using Integrated Graphics Card"
 msgstr "Lanzar usando la tarjeta gráfica integrada"
 
 #: js/ui/appMenu.js:179
-#, fuzzy
-#| msgid "Launch using Discrete Graphics Card"
 msgid "Launch Using Discrete Graphics Card"
 msgstr "Lanzar usando la tarjeta gráfica discreta"
 
@@ -2418,10 +2408,8 @@ msgid "Keyboard"
 msgstr "Teclado"
 
 #: js/ui/status/backlight.js:164
-#, fuzzy
-#| msgid "Keyboard Brightness"
 msgid "Open keyboard brightness menu"
-msgstr "Brillo del teclado"
+msgstr "Abrir el menú de brillo del teclado"
 
 #: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
 msgid "Disconnect"
@@ -2444,10 +2432,8 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: js/ui/status/bluetooth.js:278
-#, fuzzy
-#| msgid "Bluetooth On"
 msgid "Open Bluetooth menu"
-msgstr "Bluetooth encendido"
+msgstr "Abrir menú de Blietooth"
 
 #: js/ui/status/bluetooth.js:304 js/ui/status/network.js:1925
 msgid "Bluetooth Settings"
@@ -2470,10 +2456,8 @@ msgstr[0] "%d conectado"
 msgstr[1] "%d conectados"
 
 #: js/ui/status/brightness.js:42
-#, fuzzy
-#| msgid "Open menu"
 msgid "Open brightness menu"
-msgstr "Abrir menú"
+msgstr "Abrir menú de brillo"
 
 #: js/ui/status/darkMode.js:12
 msgid "Dark Style"
@@ -2608,10 +2592,8 @@ msgid "Bluetooth Tethers"
 msgstr "Conexiones Bluetooth compartidas"
 
 #: js/ui/status/network.js:1924
-#, fuzzy
-#| msgid "Bluetooth Tethers"
 msgid "Open Bluetooth tethers menu"
-msgstr "Conexiones Bluetooth compartidas"
+msgstr "Abrir el menú de conexiones Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1931
@@ -2669,7 +2651,7 @@ msgstr "Ahorro de energía"
 #: js/ui/status/powerProfiles.js:35
 msgctxt "Power profile"
 msgid "Custom"
-msgstr ""
+msgstr "Personalizado"
 
 #: js/ui/status/powerProfiles.js:45 js/ui/status/powerProfiles.js:77
 msgid "Power Mode"
@@ -3558,7 +3540,7 @@ msgstr "Iniciar sesión en extensions.gnome.org\n"
 
 #: subprojects/extensions-tool/src/command-upload.c:256
 msgid "Warning! Password will be echoed"
-msgstr ""
+msgstr "Advertencia. Se mostrará la contraseña"
 
 #: subprojects/extensions-tool/src/command-upload.c:419
 msgid "USERNAME"
@@ -3566,7 +3548,7 @@ msgstr "NOMBREDEUSUARIO"
 
 #: subprojects/extensions-tool/src/command-upload.c:421
 msgid "Username to log into https://extensions.gnome.org"
-msgstr ""
+msgstr "Nombre de usuario para iniciar sesión en https://extensions.gnome.org"
 
 #: subprojects/extensions-tool/src/command-upload.c:423
 msgid "PASSWORD"
@@ -3574,16 +3556,20 @@ msgstr "CONTRASEÑA"
 
 #: subprojects/extensions-tool/src/command-upload.c:425
 msgid "Password to log into https://extensions.gnome.org"
-msgstr ""
+msgstr "Contraseña para iniciar sesión en https://extensions.gnome.org"
 
 #: subprojects/extensions-tool/src/command-upload.c:429
 msgid ""
 "Read https://extensions.gnome.org password from file, use \"-\" for stdin"
 msgstr ""
+"Leer la contraseña de https://extensions.gnome.org de un archivo, use «-» "
+"para usar la entrada estándar"
 
 #: subprojects/extensions-tool/src/command-upload.c:432
 msgid "Accept the terms of service at https://extensions.gnome.org/upload/"
 msgstr ""
+"Aceptar los términos y condiciones del servicio en https://extensions.gnome."
+"org/upload/"
 
 #: subprojects/extensions-tool/src/command-upload.c:434
 msgid "FILE…"
@@ -3595,11 +3581,11 @@ msgstr "Subir nuevas versiones de extensiones"
 
 #: subprojects/extensions-tool/src/command-upload.c:461
 msgid "Only one of --password and --password-file can be used"
-msgstr ""
+msgstr "Sólo se puede usar de estas dos opciones: --password o --password-file"
 
 #: subprojects/extensions-tool/src/command-upload.c:467
 msgid "You must accept the terms of service to upload extensions"
-msgstr ""
+msgstr "Debe aceptar las condiciones del servicio para poder subir extensiones"
 
 #: subprojects/extensions-tool/src/command-upload.c:473
 msgid "No files given"
