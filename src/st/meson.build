@@ -225,6 +225,7 @@ if get_option('tests') and have_x11_client
 
   test('css-styling', test_theme,
     suite: 'st',
+    depends: compiled_schemas,
     workdir: meson.current_source_dir(),
   )
 endif

@@ -282,7 +282,7 @@ libshell_gir = gnome.generate_gir(libshell,
   kwargs: introspection_common,
 )
 
-executable('gnome-shell', 'main.c',
+gnome_shell_binary = executable('gnome-shell', 'main.c',
   c_args: gnome_shell_cflags + typelib_cflags,
   dependencies: gnome_shell_deps + [libshell_dep, libst_dep, mutter_dep],
   include_directories: [conf_inc],
@@ -302,7 +302,7 @@ if have_portal_helper
   )
 endif
 
-executable('gnome-shell-perf-helper', 'shell-perf-helper.c', js_resources,
+gnome_shell_perf_helper = executable('gnome-shell-perf-helper', 'shell-perf-helper.c', js_resources,
   dependencies: [gtk_dep, gio_dep, m_dep],
   include_directories: [conf_inc],
   install_dir: libexecdir,
