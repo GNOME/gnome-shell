@@ -447,7 +447,7 @@ export const AuthPrompt = GObject.registerClass({
             this.clear();
         }
 
-        this.updateSensitivity(canRetry);
+        this.updateSensitivity(false);
 
         if (!canRetry)
             this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
