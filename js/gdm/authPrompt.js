@@ -452,7 +452,7 @@ export const AuthPrompt = GObject.registerClass({
         if (wasQueryingService)
             this._queryingService = null;
 
-        this.updateSensitivity(canRetry);
+        this.updateSensitivity(false);
         this.stopSpinning();
 
         if (!canRetry)
