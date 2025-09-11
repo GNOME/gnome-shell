@@ -45,6 +45,9 @@ build_container() {
   buildah run $build_cntr dnf clean all
   buildah run $build_cntr rm -rf /var/lib/cache/dnf
 
+  # add latest malcontent to the toolbox image for testing future integration
+  buildah run $build_cntr .gitlab-ci/install-meson-project.sh https://gitlab.freedesktop.org/pwithnall/malcontent.git main
+
   # somehow the sysusers trigger from the flatpak package messes up the
   # permissions of /etc/passwd to be only readable by root
   buildah run $build_cntr chmod 644 /etc/passwd
