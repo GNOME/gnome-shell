@@ -61,24 +61,14 @@ Refer to the [README][toolbox-tools] for further information on the scripts.
 
 ## Running a nested instance
 
-It is possible to run gnome-shell as "nested" instance in a window.
+It is possible to run gnome-shell as nested instance using Devkit.
 
 The `run-gnome-shell` script will automatically do that when run from
 a graphical session, or you can run the following command:
 
 ```sh
-$ WAYLAND_DISPLAY=shell-test-1 dbus-run-session \
-    gnome-shell --wayland-display=shell-test-1 --nested
+$ dbus-run-session gnome-shell --wayland --devkit
 ```
-
-There are limitations to the nested instance, such as keyboard shortcuts
-usually not getting to the nested compositor.
-
-In order to still bring up the [Looking Glass][lg] debugger, you can
-use an [extension][lg-button] as workaround.
-
-[lg]: ./looking-glass.md
-[lg-button]: https://extensions.gnome.org/extension/2296/looking-glass-button/
 
 ## Native
 
