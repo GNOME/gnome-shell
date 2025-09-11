@@ -313,10 +313,10 @@ endif
 
 po_dir = join_paths(meson.current_source_dir(), 'po')
 
+subdir('data')
 subdir('js')
 subdir('src')
 subdir('po')
-subdir('data')
 
 if get_option('tests') and have_x11_client
   subdir('tests')
