@@ -103,4 +103,6 @@ podman login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
 build_container
 
-podman push $TOOLBOX_IMAGE
+if [[ -z "$DRY_RUN" ]]; then
+  podman push $TOOLBOX_IMAGE
+fi
