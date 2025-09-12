@@ -335,7 +335,7 @@ pages:
   stage: deploy
   needs: []
   script:
-    - .gitlab-ci/build-toolbox-image.sh $MUTTER_CI_IMAGE
+    - .gitlab-ci/build-toolbox-image.sh $MUTTER_CI_IMAGE $MUTTER_BRANCH
 
 build-toolbox:
   extends:
@@ -343,3 +343,15 @@ build-toolbox:
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PROJECT_NAMESPACE == "GNOME"'
     - if: '$CI_COMMIT_BRANCH =~ /^gnome-[0-9-]+$/ && $CI_PROJECT_NAMESPACE == "GNOME"'
+
+test-build-toolbox:
+  extends:
+    .build-toolbox
+  variables:
+    MUTTER_BRANCH: "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+    FORCE_REBUILD: 1
+    DRY_RUN: 1
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - ".gitlab-ci/build-toolbox-image.sh"
