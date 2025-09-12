@@ -131,7 +131,7 @@ st_spinner_content_set_actor (StSpinnerContent *spinner,
       clutter_timeline_set_repeat_count (spinner->timeline, -1);
       clutter_timeline_set_progress_mode (spinner->timeline, CLUTTER_LINEAR);
 
-      g_signal_connect (spinner->timeline, "new-frame", G_CALLBACK (new_frame_cb), spinner);
+      g_signal_connect_object (spinner->timeline, "new-frame", G_CALLBACK (new_frame_cb), spinner, 0);
 
       if (clutter_actor_is_mapped (actor))
         clutter_timeline_start (spinner->timeline);
