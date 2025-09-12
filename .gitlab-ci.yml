@@ -330,12 +330,16 @@ pages:
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PROJECT_NAMESPACE == "GNOME"'
 
-build-toolbox:
+.build-toolbox:
   image: quay.io/freedesktop.org/ci-templates:container-build-base-2021-07-29.0
   stage: deploy
   needs: []
   script:
     - .gitlab-ci/build-toolbox-image.sh $MUTTER_CI_IMAGE
+
+build-toolbox:
+  extends:
+    .build-toolbox
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PROJECT_NAMESPACE == "GNOME"'
     - if: '$CI_COMMIT_BRANCH =~ /^gnome-[0-9-]+$/ && $CI_PROJECT_NAMESPACE == "GNOME"'
