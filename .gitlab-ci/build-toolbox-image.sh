@@ -41,12 +41,10 @@ build_container() {
   )
   buildah run $build_cntr dnf config-manager setopt '*-openh264.enabled=0'
   buildah run $build_cntr dnf install -y "${extra_packages[@]}"
+  buildah run $build_cntr dnf builddep malcontent -y # for building libmalcontent
   buildah run $build_cntr dnf debuginfo-install -y "${debug_packages[@]}"
   buildah run $build_cntr dnf clean all
   buildah run $build_cntr rm -rf /var/lib/cache/dnf
-
-  # add latest malcontent to the toolbox image for testing future integration
-  buildah run $build_cntr .gitlab-ci/install-meson-project.sh https://gitlab.freedesktop.org/pwithnall/malcontent.git main
 
   # somehow the sysusers trigger from the flatpak package messes up the
   # permissions of /etc/passwd to be only readable by root
@@ -60,6 +58,9 @@ build_container() {
 
   local srcdir=$(realpath $(dirname $0))
   buildah copy --chmod 755 $build_cntr $srcdir/install-meson-project.sh /usr/libexec
+
+  # add latest malcontent to the toolbox image for testing future integration
+  buildah run $build_cntr /usr/libexec/install-meson-project.sh https://gitlab.freedesktop.org/pwithnall/malcontent.git main -Dlibgsystemservice:gtk_doc=false
 
   # include convenience script for updating mutter dependency
   local update_mutter=$(mktemp)
