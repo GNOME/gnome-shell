@@ -1,3 +1,30 @@
+49.0
+====
+* Fix misplaced background menu [Jonas; !3863]
+* Fix toggling buttons via keyboard [Alessandro; !3865]
+* Fix brightness controls not working after suspend [Sebastian; !3864]
+* Fix layout of app search results in RTL locales [Khalid; !3851]
+* Fix pointer a11y timeout animation [Carlos; !3877]
+* Fix notification banners sometimes getting stuck [everyx; !3861]
+* Fixed crash [Alessandro; !3872]
+* Misc. bug fixes and cleanups [Marco, Florian, Pranav, Ignacy; !3855,
+  !3866, !3867, !3856, !3868, !3836, !3870, !3869, !3871, !3876, !3875,
+  !3873, !3884, !3860]
+
+Contributors:
+  Khalid Abu Shawarib, Alessandro Astone, everyx, Carlos Garnacho,
+  Ignacy Kuchciński, Florian Müllner, Marco Trevisan (Treviño),
+  Sebastian Wick, Jonas Ådahl
+
+Translators:
+  luming zh [zh_CN], Rafael Fontenelle [pt_BR], Bruce Cowan [en_GB],
+  Balázs Úr [hu], Asier Saratsua Garmendia [eu], Ekaterine Papava [ka],
+  Danial Behzadi [fa], Artur S0 [ru], Daniel Mustieles [es],
+  Yuri Chornoivan [uk], Aurimas Aurimas Černius [lt], Anders Jonsson [sv],
+  Changwoo Ryu [ko], Sabri Ünal [tr], Emilio Sepúlveda [ia],
+  Ask Hjorth Larsen [da], Nathan Follens [nl], Pranav Jerry [ml],
+  Antonio Marin [ro], Kristjan SCHMIDT [eo]
+
 49.rc
 =====
 * Prefer physical scroll directions on sliders [Carlos; !3831]

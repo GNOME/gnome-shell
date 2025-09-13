@@ -55,20 +55,10 @@
   </description>
 
   <releases>
-    <release version="49.rc" type="development" date="2025-08-31"/>
-    <release version="49.beta.1" type="development" date="2025-08-09"/>
-    <release version="49.beta" type="development" date="2025-08-03">
+    <release version="49.0" date="2025-09-14">
       <description>
         <p>Improve keyboard navigation</p>
         <p>Use new libadwaita shortcuts dialog</p>
-      </description>
-    </release>
-    <release version="49.alpha.1" type="development" date="2025-06-28"/>
-    <release version="49.alpha.0" type="development" date="2025-06-08"/>
-    <release version="48.1" date="2025-04-12"/>
-    <release version="48.0" date="2025-03-16">
-      <description>
-        <p>Allow closing window with shortcut</p>
       </description>
     </release>
   </releases>
