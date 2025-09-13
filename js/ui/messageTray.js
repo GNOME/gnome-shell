@@ -1255,7 +1255,7 @@ export const MessageTray = GObject.registerClass({
             y: -this._bannerBin.height,
             duration,
             mode: Clutter.AnimationMode.EASE_OUT_BACK,
-            onComplete: () => {
+            onStopped: () => {
                 this._notificationState = State.HIDDEN;
                 this._hideNotificationCompleted();
                 this._updateState();
