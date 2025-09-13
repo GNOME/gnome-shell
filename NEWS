@@ -1,3 +1,21 @@
+47.10
+=====
+* Fix connecting to WPA(2) Enterprise networks [Mitchell; !3834]
+* Improve order in which extensions are enabled/disabled [Kyrill; !3835]
+* Do not reset the unlock prompt on every tap [Marco; !3852]
+* Improve legacy tray icon support [Marco; !3818]
+* Fix misplaced background menu [Jonas; !3863]
+* Fix layout of app search results in RTL locales [Khalid; !3851]
+* Fix notification banners sometimes getting stuck [everyx; !3861]
+* Fixed crashes [Johannes, Daniel, Jonas; !3839, !3809]
+* Plugged leak [Sebastian; !3854]
+* Misc. bug fixes and cleanups [Michael, Marco, Jonas; !3813, !3846, !3220, !3850, !3855, !3869]
+
+Contributors:
+  Khalid Abu Shawarib, Mitchell Augustin, Michael Catanzaro, Jonas Dreßler,
+  everyx, Sebastian Keller, Johannes Maibaum, Marco Trevisan (Treviño),
+  Daniel van Vugt, Kyrill Zorin, Jonas Ådahl
+
 47.9
 ====
 * Fix taking interactive screenshots via D-Bus [Florian; !3803]
