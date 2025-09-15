@@ -16,12 +16,14 @@ export const AuthServicesSwitchable = GObject.registerClass({
     static SupportedRoles = [
         Const.PASSWORD_ROLE_NAME,
         Const.SMARTCARD_ROLE_NAME,
+        Const.PASSKEY_ROLE_NAME,
         Const.WEB_LOGIN_ROLE_NAME,
     ];
 
     static RoleToService = {
         [Const.PASSWORD_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
         [Const.SMARTCARD_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
+        [Const.PASSKEY_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
         [Const.WEB_LOGIN_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
     };
 
@@ -54,6 +56,13 @@ export const AuthServicesSwitchable = GObject.registerClass({
             response = this._formatResponse(answer);
             this._sendResponse(response);
             break;
+        case Const.PASSKEY_ROLE_NAME:
+            response = this._formatResponse(answer);
+            this._sendResponse(response);
+
+            this.emit('show-choice-list', serviceName,
+                this._selectedMechanism.touchInstruction, {});
+            break;
         }
     }
 
@@ -64,6 +73,9 @@ export const AuthServicesSwitchable = GObject.registerClass({
             break;
         case Const.SMARTCARD_ROLE_NAME:
             this._startSmartcardLogin();
+            break;
+        case Const.PASSKEY_ROLE_NAME:
+            this._startPasskeyLogin();
             break;
         case Const.WEB_LOGIN_ROLE_NAME:
             this._startWebLogin();
@@ -189,6 +201,14 @@ export const AuthServicesSwitchable = GObject.registerClass({
         this.emit('reset', {softReset: true, reuseEntryText: true});
     }
 
+    _handlePasskeyChanged() {
+        if (!this._selectedMechanism ||
+            !this._enabledMechanisms.some(({role}) => role === Const.PASSKEY_ROLE_NAME))
+            return;
+
+        this.emit('reset', {softReset: true, reuseEntryText: true});
+    }
+
     _handleOnInfo(serviceName, info) {
         if (!this._eventExpected())
             return;
@@ -240,7 +260,7 @@ export const AuthServicesSwitchable = GObject.registerClass({
     }
 
     _formatResponse(answer) {
-        const {role, id} = this._selectedMechanism;
+        const {role, id, kerberos, cryptoChallenge} = this._selectedMechanism;
 
         let response;
         switch (role) {
@@ -251,6 +271,10 @@ export const AuthServicesSwitchable = GObject.registerClass({
         case Const.SMARTCARD_ROLE_NAME: {
             const {tokenName, moduleName, keyId, label} = this._selectedSmartcard;
             response = {pin: answer, tokenName, moduleName, keyId, label};
+            break;
+        }
+        case Const.PASSKEY_ROLE_NAME: {
+            response = {pin: answer, kerberos, cryptoChallenge};
             break;
         }
         case Const.WEB_LOGIN_ROLE_NAME: {
@@ -325,6 +349,26 @@ export const AuthServicesSwitchable = GObject.registerClass({
             : _('Select Identity');
 
         this.emit('show-choice-list', serviceName, prompt, choiceList);
+    }
+
+    _startPasskeyLogin() {
+        const {
+            serviceName,
+            keyConnected, initInstruction,
+            pinPrompt, pinAttempts,
+        } = this._selectedMechanism;
+
+        if (!keyConnected) {
+            this.emit('show-choice-list', serviceName, initInstruction, {});
+            return;
+        }
+
+        this.emit('ask-question', serviceName, pinPrompt, true);
+
+        if (pinAttempts <= 3 && pinAttempts > 0) {
+            const message = _('You have %d attempts left. If the passkey gets locked, you may not able to access your account.').format(pinAttempts);
+            this.emit('queue-message', serviceName, message, Util.MessageType.INFO);
+        }
     }
 
     _startWebLogin() {
