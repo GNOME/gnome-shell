@@ -3,6 +3,7 @@
 export const PASSWORD_ROLE_NAME = 'password';
 export const SMARTCARD_ROLE_NAME = 'smartcard';
 export const FINGERPRINT_ROLE_NAME = 'fingerprint';
+export const PASSKEY_ROLE_NAME = 'passkey';
 export const WEB_LOGIN_ROLE_NAME = 'eidp';
 
 export const PASSWORD_SERVICE_NAME = 'gdm-password';
