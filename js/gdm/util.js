@@ -479,8 +479,6 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         if (this._userVerifier &&
             !this._activeServices.has(Constants.FINGERPRINT_SERVICE_NAME)) {
-            if (!this._hold?.isAcquired())
-                this._hold = new Batch.Hold();
             await this._maybeStartFingerprintVerification();
         }
     }
@@ -540,7 +538,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     _reportInitError(where, error, serviceName) {
         logError(error, where);
-        this._hold.release();
+        this._hold?.release();
 
         this._queueMessage(serviceName, _('Authentication error'), MessageType.ERROR);
         this._failCounter++;
@@ -578,7 +576,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this.reauthenticating = true;
         this._connectSignals();
         this._beginVerification();
-        this._hold.release();
+        this._hold?.release();
     }
 
     async _getUserVerifier() {
@@ -602,7 +600,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         this._connectSignals();
         this._beginVerification();
-        this._hold.release();
+        this._hold?.release();
     }
 
     _connectSignals() {
@@ -718,7 +716,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     async _startService(serviceName) {
-        this._hold.acquire();
+        this._hold?.acquire();
         try {
             this._activeServices.add(serviceName);
             if (this._userName) {
@@ -735,7 +733,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             if (!this.serviceIsForeground(serviceName)) {
                 logError(e,
                     `Failed to start ${serviceName} for ${this._userName}`);
-                this._hold.release();
+                this._hold?.release();
                 return;
             }
             this._reportInitError(
@@ -745,7 +743,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 e, serviceName);
             return;
         }
-        this._hold.release();
+        this._hold?.release();
     }
 
     _beginVerification() {
@@ -877,7 +875,6 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _retry(serviceName) {
-        this._hold = new Batch.Hold();
         this._connectSignals();
         this._startService(serviceName);
     }
