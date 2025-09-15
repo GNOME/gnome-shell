@@ -805,11 +805,7 @@ export const AuthPrompt = GObject.registerClass({
         this.setActorInDefaultButtonWell(this._nextButton, false);
         this.updateSensitivity(false);
 
-        let hold = params.hold;
-        if (!hold)
-            hold = new Batch.Hold();
-
-        this._userVerifier.begin(params.userName, hold);
+        this._userVerifier.begin(params.userName, params.hold);
         this.verificationStatus = AuthPromptStatus.VERIFYING;
     }
 
