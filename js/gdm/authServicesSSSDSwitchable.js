@@ -16,12 +16,14 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     static SupportedRoles = [
         Constants.PASSWORD_ROLE_NAME,
         Constants.SMARTCARD_ROLE_NAME,
+        Constants.PASSKEY_ROLE_NAME,
         Constants.WEB_LOGIN_ROLE_NAME,
     ];
 
     static RoleToService = {
         [Constants.PASSWORD_ROLE_NAME]: Constants.SWITCHABLE_AUTH_SERVICE_NAME,
         [Constants.SMARTCARD_ROLE_NAME]: Constants.SWITCHABLE_AUTH_SERVICE_NAME,
+        [Constants.PASSKEY_ROLE_NAME]: Constants.SWITCHABLE_AUTH_SERVICE_NAME,
         [Constants.WEB_LOGIN_ROLE_NAME]: Constants.SWITCHABLE_AUTH_SERVICE_NAME,
     };
 
@@ -70,6 +72,15 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             response = this._formatResponse(answer);
             this._sendResponse(response);
             break;
+        case Constants.PASSKEY_ROLE_NAME:
+            response = this._formatResponse(answer);
+            this._sendResponse(response);
+
+            this.emit('show-choice-list', {
+                serviceName,
+                promptMessage: this._selectedMechanism.touchInstruction,
+            });
+            break;
         }
     }
 
@@ -80,6 +91,9 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             break;
         case Constants.SMARTCARD_ROLE_NAME:
             this._startSmartcardLogin();
+            break;
+        case Constants.PASSKEY_ROLE_NAME:
+            this._startPasskeyLogin();
             break;
         case Constants.WEB_LOGIN_ROLE_NAME:
             this._startWebLogin();
@@ -207,6 +221,14 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         this.emit('reset', {softReset: true, reuseEntryText: true});
     }
 
+    _handlePasskeyChanged() {
+        if (!this._selectedMechanism ||
+            !this._enabledMechanisms.some(({role}) => role === Constants.PASSKEY_ROLE_NAME))
+            return;
+
+        this.emit('reset', {softReset: true, reuseEntryText: true});
+    }
+
     _handleOnInfo(serviceName, info) {
         if (!this._eventExpected())
             return;
@@ -278,7 +300,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     }
 
     _formatResponse(answer) {
-        const {role, id} = this._selectedMechanism;
+        const {role, id, kerberos, cryptoChallenge} = this._selectedMechanism;
 
         let response;
         switch (role) {
@@ -289,6 +311,10 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         case Constants.SMARTCARD_ROLE_NAME: {
             const {tokenName, moduleName, keyId, label} = this._selectedSmartcard;
             response = {pin: answer, tokenName, moduleName, keyId, label};
+            break;
+        }
+        case Constants.PASSKEY_ROLE_NAME: {
+            response = {pin: answer, kerberos, cryptoChallenge};
             break;
         }
         case Constants.WEB_LOGIN_ROLE_NAME: {
@@ -374,6 +400,30 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             iconTitle: organization ? _('Organization') : null,
             iconSubtitle: organization,
         };
+    }
+
+    _startPasskeyLogin() {
+        const {
+            serviceName,
+            keyConnected, initInstruction,
+            pinPrompt, pinAttempts,
+        } = this._selectedMechanism;
+
+        if (!keyConnected) {
+            this.emit('show-choice-list', {serviceName, promptMessage: initInstruction});
+            return;
+        }
+
+        this.emit('ask-question', {serviceName, question: pinPrompt, secret: true});
+
+        if (pinAttempts <= 3 && pinAttempts > 0) {
+            const message = _('You have %d attempts left. If the passkey gets locked, you may not able to access your account.').format(pinAttempts);
+            this.emit('queue-message', {
+                serviceName,
+                message,
+                messageType: Util.MessageType.INFO,
+            });
+        }
     }
 
     _startWebLogin() {

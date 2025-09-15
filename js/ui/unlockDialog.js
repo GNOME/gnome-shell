@@ -434,6 +434,8 @@ class UnlockDialogClock extends St.BoxLayout {
 
         if (selectedAuthRole === GdmConstants.SMARTCARD_ROLE_NAME)
             text = _('Insert smartcard');
+        else if (selectedAuthRole === GdmConstants.PASSKEY_ROLE_NAME)
+            text = _('Insert security key');
         else if (this._seat.touch_mode)
             text = _('Swipe up');
         else
