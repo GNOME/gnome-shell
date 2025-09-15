@@ -2,6 +2,7 @@ import * as Constants from './constants.js';
 import * as FingerprintManager from './fingerprintManager.js';
 import * as Params from '../misc/params.js';
 import {registerDestroyableType} from '../misc/signalTracker.js';
+import * as PasskeyDeviceManager from './passkeyDeviceManager.js';
 import * as SmartcardManager from './smartcardManager.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as Util from './util.js';
@@ -90,6 +91,9 @@ export class AuthServices extends GObject.Object {
         if (this.supportedRoles.includes(Constants.SMARTCARD_ROLE_NAME) &&
             this._enabledRoles.includes(Constants.SMARTCARD_ROLE_NAME))
             this._connectSmartcardManager();
+        if (this.supportedRoles.includes(Constants.PASSKEY_ROLE_NAME) &&
+            this._enabledRoles.includes(Constants.PASSKEY_ROLE_NAME))
+            this._connectPasskeyDeviceManager();
         if (this.supportedRoles.includes(Constants.FINGERPRINT_ROLE_NAME) &&
             this._enabledRoles.includes(Constants.FINGERPRINT_ROLE_NAME))
             this._connectFingerprintManager();
@@ -230,6 +234,14 @@ export class AuthServices extends GObject.Object {
         this._smartcardManager.connectObject(
             'smartcard-inserted', () => this._handleSmartcardChanged(),
             'smartcard-removed', () => this._handleSmartcardChanged(),
+            this);
+    }
+
+    _connectPasskeyDeviceManager() {
+        this._passkeyDeviceManager = PasskeyDeviceManager.getPasskeyDeviceManager();
+        this._passkeyDeviceManager.connectObject(
+            'passkey-inserted', () => this._handlePasskeyChanged(),
+            'passkey-removed', () => this._handlePasskeyChanged(),
             this);
     }
 
@@ -464,6 +476,8 @@ export class AuthServices extends GObject.Object {
     }
 
     _handleSmartcardChanged() {}
+
+    _handlePasskeyChanged() {}
 
     _handleFingerprintChanged() {}
 
