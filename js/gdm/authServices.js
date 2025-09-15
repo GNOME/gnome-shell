@@ -2,6 +2,7 @@
 
 import * as FingerprintManager from '../misc/fingerprintManager.js';
 import * as Params from '../misc/params.js';
+import * as PasskeyDeviceManager from '../misc/passkeyDeviceManager.js';
 import * as SmartcardManager from '../misc/smartcardManager.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as Util from './util.js';
@@ -85,6 +86,7 @@ export class AuthServices extends GObject.Object {
         this._cancellable = null;
 
         this._connectSmartcardManager();
+        this._connectPasskeyDeviceManager();
         this._connectFingerprintManager();
     }
 
@@ -222,6 +224,14 @@ export class AuthServices extends GObject.Object {
         this._smartcardManager.connectObject(
             'smartcard-inserted', () => this._handleSmartcardChanged(),
             'smartcard-removed', () => this._handleSmartcardChanged(),
+            this);
+    }
+
+    _connectPasskeyDeviceManager() {
+        this._passkeyDeviceManager = PasskeyDeviceManager.getPasskeyDeviceManager();
+        this._passkeyDeviceManager.connectObject(
+            'passkey-inserted', () => this._handlePasskeyChanged(),
+            'passkey-removed', () => this._handlePasskeyChanged(),
             this);
     }
 
@@ -468,6 +478,8 @@ export class AuthServices extends GObject.Object {
     }
 
     _handleSmartcardChanged() {}
+
+    _handlePasskeyChanged() {}
 
     _handleFingerprintChanged() {}
 
