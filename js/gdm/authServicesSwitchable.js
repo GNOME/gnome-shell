@@ -16,11 +16,13 @@ export const AuthServicesSwitchable = GObject.registerClass({
     static SupportedRoles = [
         Const.PASSWORD_ROLE_NAME,
         Const.SMARTCARD_ROLE_NAME,
+        Const.PASSKEY_ROLE_NAME,
         Const.WEB_LOGIN_ROLE_NAME,
     ];
     static RoleToService = {
         [Const.PASSWORD_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
         [Const.SMARTCARD_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
+        [Const.PASSKEY_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
         [Const.WEB_LOGIN_ROLE_NAME]: Const.SWITCHABLE_AUTH_SERVICE_NAME,
     };
 
@@ -58,6 +60,13 @@ export const AuthServicesSwitchable = GObject.registerClass({
             response = this._formatResponse(this._selectedSmartcard, answer);
             this._sendResponse(response);
             break;
+        case Const.PASSKEY_ROLE_NAME:
+            response = this._formatResponse(this._selectedMechanism, answer);
+            this._sendResponse(response);
+
+            const { touch_instruction: touchInstruction } = this._selectedMechanism;
+            this.emit('show-choice-list', serviceName, touchInstruction, {});
+            break;
         }
     }
 
@@ -68,6 +77,9 @@ export const AuthServicesSwitchable = GObject.registerClass({
             break;
         case Const.SMARTCARD_ROLE_NAME:
             this._startSmartcardLogin();
+            break;
+        case Const.PASSKEY_ROLE_NAME:
+            this._startPasskeyLogin();
             break;
         case Const.WEB_LOGIN_ROLE_NAME:
             this._startWebLogin();
@@ -218,7 +230,8 @@ export const AuthServicesSwitchable = GObject.registerClass({
     }
 
     _formatResponse(mechanism, answer) {
-        const { role, id, name, module_name, key_id, label } = mechanism;
+        const { role, id, name, module_name, key_id, label,
+            kerberos, crypto_challenge } = mechanism;
 
         let response
         switch (role) {
@@ -227,6 +240,9 @@ export const AuthServicesSwitchable = GObject.registerClass({
             break;
         case Const.SMARTCARD_ROLE_NAME:
             response = { pin: answer, name, module_name, key_id, label };
+            break;
+        case Const.PASSKEY_ROLE_NAME:
+            response = { pin: answer, kerberos, crypto_challenge };
             break;
         case Const.WEB_LOGIN_ROLE_NAME:
             response = {};
@@ -309,6 +325,20 @@ export const AuthServicesSwitchable = GObject.registerClass({
             choiceList[cert.id] = cert.cert_instruction;
 
         this.emit('show-choice-list', serviceName, selectPrompt, choiceList);
+    }
+
+    _startPasskeyLogin() {
+        const {
+            serviceName,
+            pin_prompt: pinPrompt,
+            pin_request: pinRequest,
+            touch_instruction: touchInstruction,
+        } = this._selectedMechanism;
+
+        if (pinRequest)
+            this.emit('ask-question', serviceName, pinPrompt, true);
+        else
+            this.emit('show-choice-list', serviceName, touchInstruction, {});
     }
 
     _startWebLogin() {
