@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master oc\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-09-15 01:44+0000\n"
-"PO-Revision-Date: 2025-09-15 20:28+0200\n"
+"POT-Creation-Date: 2025-09-16 17:19+0000\n"
+"PO-Revision-Date: 2025-09-16 19:39+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -499,11 +499,11 @@ msgstr "Reduire la luminositat de l’ecran actual"
 
 #: data/org.gnome.shell.gschema.xml.in:299
 msgid "Screen brightness cycle"
-msgstr ""
+msgstr "Variacion de la luminositat de l’ecran"
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid "Screen brightness cycle on current monitor"
-msgstr ""
+msgstr "Variacion de la luminositat de l’ecran actual"
 
 #: data/org.gnome.shell.gschema.xml.in:312
 #: data/org.gnome.shell.gschema.xml.in:339
@@ -590,7 +590,7 @@ msgstr "Error de l’extension"
 #: js/dbusServices/extensions/extensionPrefsDialog.js:104
 #, javascript-format
 msgid "Unable to display the settings for “%s”."
-msgstr ""
+msgstr "Afichatge impossible dels paramètres per « %s »."
 
 #. Translators: Link label in the phrase "Information about this
 #. problem may be available on the extension website"
@@ -603,6 +603,7 @@ msgstr "site web de l’extension"
 #, javascript-format
 msgid "Information about this problem may be available on the %s."
 msgstr ""
+"Las informacions a prepaus d’aqueste problèma se poirián trobar sul %s."
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:19
 #: subprojects/extensions-app/data/ui/extension-row.ui:13
@@ -3580,14 +3581,12 @@ msgid "Uninstall an extension"
 msgstr "Desinstallar una extension"
 
 #: subprojects/extensions-tool/src/command-upload.c:226
-#, fuzzy
-#| msgid "Download and install '%s' from extensions.gnome.org?"
 msgid "Login to extensions.gnome.org\n"
-msgstr "Telecargar e installar « %s » a partir de extensions.gnome.org ?"
+msgstr "Se connectar a extensions.gnome.org\n"
 
 #: subprojects/extensions-tool/src/command-upload.c:256
 msgid "Warning! Password will be echoed"
-msgstr ""
+msgstr "Avertiment ! Se farà veire lo senhal"
 
 #: subprojects/extensions-tool/src/command-upload.c:419
 msgid "USERNAME"
@@ -3595,7 +3594,7 @@ msgstr "NOM D'UTILIZAIRE"
 
 #: subprojects/extensions-tool/src/command-upload.c:421
 msgid "Username to log into https://extensions.gnome.org"
-msgstr ""
+msgstr "Nom d’utilizaire per se connectar a https://extensions.gnome.org"
 
 #: subprojects/extensions-tool/src/command-upload.c:423
 msgid "PASSWORD"
@@ -3603,40 +3602,40 @@ msgstr "SENHAL"
 
 #: subprojects/extensions-tool/src/command-upload.c:425
 msgid "Password to log into https://extensions.gnome.org"
-msgstr ""
+msgstr "Senhal per se connectar a https://extensions.gnome.org"
 
 #: subprojects/extensions-tool/src/command-upload.c:429
 msgid ""
 "Read https://extensions.gnome.org password from file, use \"-\" for stdin"
 msgstr ""
+"Legir lo senhal de https://extensions.gnome.org a partir d’un fichièr, "
+"utilizar «-» per stdin"
 
 #: subprojects/extensions-tool/src/command-upload.c:432
 msgid "Accept the terms of service at https://extensions.gnome.org/upload/"
 msgstr ""
+"Acceptar las condicions d’utilizacion sus https://extensions.gnome.org/"
+"upload/"
 
 #: subprojects/extensions-tool/src/command-upload.c:434
 msgid "FILE…"
 msgstr "FICHIÈR…"
 
 #: subprojects/extensions-tool/src/command-upload.c:443
-#, fuzzy
-#| msgid "Allow extension installation"
 msgid "Upload new extension versions"
-msgstr "Autorizar l’installacion d’extensions"
+msgstr "Enviar de novèlas versions d’extension"
 
 #: subprojects/extensions-tool/src/command-upload.c:461
 msgid "Only one of --password and --password-file can be used"
-msgstr ""
+msgstr "Se pòt sonque utilizar un --password e --password-file"
 
 #: subprojects/extensions-tool/src/command-upload.c:467
 msgid "You must accept the terms of service to upload extensions"
-msgstr ""
+msgstr "Devètz acceptar las condicions d’utilizacion per enviar d’extensions"
 
 #: subprojects/extensions-tool/src/command-upload.c:473
-#, fuzzy
-#| msgid "No UUID given"
 msgid "No files given"
-msgstr "Cap d’UUID pas indicat"
+msgstr "Cap de fichièr pas indicat"
 
 #: subprojects/extensions-tool/src/main.c:76
 msgid "Do not print error messages"
