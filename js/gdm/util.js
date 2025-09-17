@@ -201,12 +201,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         if (this._userVerifier) {
             this._disconnectSignals();
             this._userVerifier.get_connection().disconnectObject(this);
-            this._userVerifier.run_dispose();
             this._userVerifier = null;
-            if (this._userVerifierChoiceList) {
-                this._userVerifierChoiceList.run_dispose();
-                this._userVerifierChoiceList = null;
-            }
+            this._userVerifierChoiceList = null;
         }
     }
 
