@@ -1051,6 +1051,13 @@ export const LoginDialog = GObject.registerClass({
 
             this._greeter = this._gdmClient.get_greeter_sync(null);
 
+            this._greeter.get_connection().connectObject('closed', connection => {
+                connection.disconnectObject(this);
+                this._greeter.disconnectObject(this);
+                this._greeter = null;
+                this._ensureGreeterProxy();
+            }, this);
+
             this._greeter.connectObject(
                 'default-session-name-changed', this._onDefaultSessionChanged.bind(this),
                 'session-opened', this._onSessionOpened.bind(this),
