@@ -200,6 +200,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     _clearUserVerifier() {
         if (this._userVerifier) {
             this._disconnectSignals();
+            this._userVerifier.get_connection().disconnectObject(this);
             this._userVerifier.run_dispose();
             this._userVerifier = null;
             if (this._userVerifierChoiceList) {
@@ -506,6 +507,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._clearUserVerifier();
             this._userVerifier = await this._client.open_reauthentication_channel(
                 userName, this._cancellable);
+            this._userVerifier.get_connection().connectObject('closed',
+                () => this.clear(), this);
         } catch (e) {
             if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 return;
@@ -538,6 +541,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._clearUserVerifier();
             this._userVerifier =
                 await this._client.get_user_verifier(this._cancellable);
+            this._userVerifier.get_connection().connectObject('closed',
+                () => this.clear(), this);
         } catch (e) {
             if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 return;
