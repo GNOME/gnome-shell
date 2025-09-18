@@ -7,14 +7,14 @@
 # Marko M. Kostić <marko.m.kostic@gmail.com>, 2016-2020.
 # Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011–2023.
 # Branko Grubic <bitlord0xff@gmail.com>, 2024.
-# Miloš Popović <gpopac@gmail.com>, 2010—20-2024.
+# Miloš Popović <gpopac@gmail.com>, 2010—20-2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2024-03-21 23:37+0000\n"
-"PO-Revision-Date: 2024-03-29 14:34+0100\n"
+"POT-Creation-Date: 2025-09-18 00:43+0000\n"
+"PO-Revision-Date: 2025-09-18 09:34+0200\n"
 "Last-Translator: Miloš Popović <gpopac@gmail.com>\n"
 "Language-Team: Serbian <Serbian <gnome-sr@googlegroups.com>>\n"
 "Language: sr\n"
@@ -23,9 +23,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
 "n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
+"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Gtranslator 47.1\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-Bookmarks: -1,167,-1,-1,-1,-1,-1,-1,-1,-1\n"
-"X-Generator: Gtranslator 45.3\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -104,31 +105,32 @@ msgid "Open new window of pinned app 9"
 msgstr "Otvori novi prozor omiljenog programa 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2276
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2292
 msgid "Screenshots"
 msgstr "Snimci ekrana"
 
 #: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:287
+#: data/org.gnome.shell.gschema.xml.in:267
 msgid "Take a screenshot interactively"
 msgstr "Napravite interaktivni snimak ekrana"
 
 #: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:299
+#: data/org.gnome.shell.gschema.xml.in:279
 msgid "Take a screenshot"
 msgstr "Napravi snimak ekrana"
 
 #: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:295
+#: data/org.gnome.shell.gschema.xml.in:275
 msgid "Take a screenshot of a window"
 msgstr "Napravi snimak prozora"
 
 #: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:291
+#: data/org.gnome.shell.gschema.xml.in:271
 msgid "Record a screencast interactively"
 msgstr "Interaktivno snimi video ekrana"
 
-#: data/50-gnome-shell-system.xml:6 js/ui/messageTray.js:1293
+#: data/50-gnome-shell-system.xml:6
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1312
 msgid "System"
 msgstr "Sistem"
 
@@ -151,14 +153,6 @@ msgstr "Prikaži pregled"
 #: data/50-gnome-shell-system.xml:21
 msgid "Show all apps"
 msgstr "Prikaži sve programe"
-
-#: data/org.gnome.Shell.desktop.in.in:4
-msgid "GNOME Shell"
-msgstr "Gnomova školjka"
-
-#: data/org.gnome.Shell.desktop.in.in:5
-msgid "Window management and application launching"
-msgstr "Upravnik prozorima i pokretač programa"
 
 #: data/org.gnome.shell.gschema.xml.in:6
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -230,8 +224,8 @@ msgid ""
 "that are already loaded, so a change only takes full effect on the next "
 "login."
 msgstr ""
-"Omogućava korisnicima da instaliraju proširenja u njihovu ličnu fasciklu. Ako je "
-"isključeno, InstallRemoteExtension D-Bas metoda neće uspeti i proširenja će "
+"Omogućava korisnicima da instaliraju proširenja u njihovu ličnu fasciklu. Ako "
+"je isključeno, InstallRemoteExtension D-Bas metoda neće uspeti i proširenja će "
 "biti učitana samo iz sistemske datoteke pri pokretanju. Ne utiče na proširenja "
 "koja su već učitana, tako da će promena biti primenjena nakon sledećeg "
 "prijavljivanja."
@@ -250,11 +244,11 @@ msgstr ""
 "pokrenuto izdanje. Uključivanje ove opcije će isključiti ovu proveru i pokušati "
 "da učita proširenja bez obzira na izdanja koja tvrde da podržavaju."
 
-#: data/org.gnome.shell.gschema.xml.in:65
+#: data/org.gnome.shell.gschema.xml.in:67
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Spisak IB datoteka radne površine sa omiljenim programima"
 
-#: data/org.gnome.shell.gschema.xml.in:66
+#: data/org.gnome.shell.gschema.xml.in:68
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -262,20 +256,20 @@ msgstr ""
 "Programi koji odgovaraju ovim odrednicama se prikazuju unutar oblasti "
 "omiljenih programima."
 
-#: data/org.gnome.shell.gschema.xml.in:73
+#: data/org.gnome.shell.gschema.xml.in:75
 msgid "History for command (Alt-F2) dialog"
 msgstr "Istorijat prozorčeta (Alt-F2) naredbi"
 
 #. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
-#: data/org.gnome.shell.gschema.xml.in:78
+#: data/org.gnome.shell.gschema.xml.in:80
 msgid "History for the looking glass dialog"
 msgstr "Istorijat prozorčeta ogledala"
 
-#: data/org.gnome.shell.gschema.xml.in:82
+#: data/org.gnome.shell.gschema.xml.in:84
 msgid "Always show the “Log Out” action in the system menu"
 msgstr "Uvek prikazuje stavku izbornika „Odjavi me“ u sistemskom izborniku."
 
-#: data/org.gnome.shell.gschema.xml.in:83
+#: data/org.gnome.shell.gschema.xml.in:85
 msgid ""
 "This key overrides the automatic hiding of the “Log out” action in the "
 "system menu for logged-in situations where there is a single, local, non-"
@@ -285,14 +279,14 @@ msgstr ""
 "slučaju jednog lokalnog korisnika, ne sistemskog korisnika i samo jedine "
 "dostupne vrste sesije (npr. Gnom na Vejlandu)."
 
-#: data/org.gnome.shell.gschema.xml.in:92
+#: data/org.gnome.shell.gschema.xml.in:94
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Da li će biti zapamćena lozinka za kačenje šifrovanih ili udaljenih sistema "
 "datoteka"
 
-#: data/org.gnome.shell.gschema.xml.in:93
+#: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -304,11 +298,11 @@ msgstr ""
 "prisutno polje za izbor „Zapamti lozinku“. Ovaj ključ podešava osnovno stanje "
 "polja za izbor."
 
-#: data/org.gnome.shell.gschema.xml.in:102
+#: data/org.gnome.shell.gschema.xml.in:104
 msgid "The last selected non-default power profile"
 msgstr "Poslednje izabrani nepodrazumevani profil napajanja"
 
-#: data/org.gnome.shell.gschema.xml.in:103
+#: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
 "Some systems support more than two power profiles. In order to still support "
 "toggling between two profiles, this key records the last selected non-"
@@ -318,11 +312,11 @@ msgstr ""
 "promenu između dva profila, ovaj ključ čuva poslednje izabrani nepodrazumevani "
 "profil."
 
-#: data/org.gnome.shell.gschema.xml.in:111
+#: data/org.gnome.shell.gschema.xml.in:113
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr "Poslednje izdanje prozorčeta „Dobro došli u Gnom“ koje je prikazano"
 
-#: data/org.gnome.shell.gschema.xml.in:112
+#: data/org.gnome.shell.gschema.xml.in:114
 msgid ""
 "This key determines for which version the “Welcome to GNOME” dialog was last "
 "shown. An empty string represents the oldest possible version, and a huge "
@@ -334,11 +328,11 @@ msgstr ""
 "predstavlja izdanja koja još ne postoje. Ovaj veliki broj se može iskoristiti "
 "za efektivno onemogućavanje prozorčeta."
 
-#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:125
 msgid "Layout of the app picker"
 msgstr "Raspored birača programa"
 
-#: data/org.gnome.shell.gschema.xml.in:146
+#: data/org.gnome.shell.gschema.xml.in:126
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -350,142 +344,166 @@ msgstr ""
 "“application id” → 'data'. Trenutno, sledeće vrednosti se čuvaju kao 'data': "
 "• “position”: položaj ikonice programa na stranici"
 
-#: data/org.gnome.shell.gschema.xml.in:165
-#: data/org.gnome.shell.gschema.xml.in:172
+#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:152
 msgid "Keybinding to shift between overview states"
 msgstr "Prečica na tastaturi za promenu između stanja pregleda"
 
-#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:146
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
 "Prečica na tastaturi za promenu između sesije, birača prozora i mreže "
 "programa"
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
 "Prečica na tastaturi za promenu između mreže programa, birača prozora i "
 "sesije"
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:159
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Prečica za otvaranje pregleda „Prikaži programe“"
 
-#: data/org.gnome.shell.gschema.xml.in:180
+#: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr "Prečica za otvaranje pregleda „Prikaži programe“ u pregledu aktivnosti."
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid "Keybinding to open the overview"
 msgstr "Prečica za otvaranje pregleda"
 
-#: data/org.gnome.shell.gschema.xml.in:188
+#: data/org.gnome.shell.gschema.xml.in:168
 msgid "Keybinding to open the Activities Overview."
 msgstr "Prečica za otvaranje pregleda aktivnosti."
 
-#: data/org.gnome.shell.gschema.xml.in:194
+#: data/org.gnome.shell.gschema.xml.in:174
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Prečica za okidanje vidljivosti spiska obaveštenja"
 
-#: data/org.gnome.shell.gschema.xml.in:195
+#: data/org.gnome.shell.gschema.xml.in:175
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Prečica za okidanje vidljivosti spiska obaveštenja."
 
-#: data/org.gnome.shell.gschema.xml.in:201
+#: data/org.gnome.shell.gschema.xml.in:181
 msgid "Keybinding to toggle the quick settings menu"
 msgstr "Prečica za promenu stanja prikaza menija brzih podešavanja"
 
-#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:182
 msgid "Keybinding to toggle the quick settings menu."
 msgstr "Prečica za promenu stanja prikaza menija brzih podešavanja."
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to focus the active notification"
 msgstr "Prečica za postavljanje u žižu radnog obaveštenja"
 
-#: data/org.gnome.shell.gschema.xml.in:209
+#: data/org.gnome.shell.gschema.xml.in:189
 msgid "Keybinding to focus the active notification."
 msgstr "Prečica za postavljanje u žižu radnog obaveštenja."
 
-#: data/org.gnome.shell.gschema.xml.in:215
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Switch to application 1"
 msgstr "Prebaci se na program 1"
 
-#: data/org.gnome.shell.gschema.xml.in:219
+#: data/org.gnome.shell.gschema.xml.in:199
 msgid "Switch to application 2"
 msgstr "Prebaci se na program 2"
 
-#: data/org.gnome.shell.gschema.xml.in:223
+#: data/org.gnome.shell.gschema.xml.in:203
 msgid "Switch to application 3"
 msgstr "Prebaci se na program 3"
 
-#: data/org.gnome.shell.gschema.xml.in:227
+#: data/org.gnome.shell.gschema.xml.in:207
 msgid "Switch to application 4"
 msgstr "Prebaci se na program 4"
 
-#: data/org.gnome.shell.gschema.xml.in:231
+#: data/org.gnome.shell.gschema.xml.in:211
 msgid "Switch to application 5"
 msgstr "Prebaci se na program 5"
 
-#: data/org.gnome.shell.gschema.xml.in:235
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid "Switch to application 6"
 msgstr "Prebaci se na program 6"
 
-#: data/org.gnome.shell.gschema.xml.in:239
+#: data/org.gnome.shell.gschema.xml.in:219
 msgid "Switch to application 7"
 msgstr "Prebaci se na program 7"
 
-#: data/org.gnome.shell.gschema.xml.in:243
+#: data/org.gnome.shell.gschema.xml.in:223
 msgid "Switch to application 8"
 msgstr "Prebaci se na program 8"
 
-#: data/org.gnome.shell.gschema.xml.in:247
+#: data/org.gnome.shell.gschema.xml.in:227
 msgid "Switch to application 9"
 msgstr "Prebaci se na program 9"
 
-#: data/org.gnome.shell.gschema.xml.in:251
+#: data/org.gnome.shell.gschema.xml.in:231
 msgid "Open a new instance of application 1"
 msgstr "Otvori novi primerak programa 1"
 
-#: data/org.gnome.shell.gschema.xml.in:255
+#: data/org.gnome.shell.gschema.xml.in:235
 msgid "Open a new instance of application 2"
 msgstr "Otvori novi primerak programa 2"
 
-#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:239
 msgid "Open a new instance of application 3"
 msgstr "Otvori novi primerak programa 3"
 
-#: data/org.gnome.shell.gschema.xml.in:263
+#: data/org.gnome.shell.gschema.xml.in:243
 msgid "Open a new instance of application 4"
 msgstr "Otvori novi primerak programa 4"
 
-#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:247
 msgid "Open a new instance of application 5"
 msgstr "Otvori novi primerak programa 5"
 
-#: data/org.gnome.shell.gschema.xml.in:271
+#: data/org.gnome.shell.gschema.xml.in:251
 msgid "Open a new instance of application 6"
 msgstr "Otvori novi primerak programa 6"
 
-#: data/org.gnome.shell.gschema.xml.in:275
+#: data/org.gnome.shell.gschema.xml.in:255
 msgid "Open a new instance of application 7"
 msgstr "Otvori novi primerak programa 7"
 
-#: data/org.gnome.shell.gschema.xml.in:279
+#: data/org.gnome.shell.gschema.xml.in:259
 msgid "Open a new instance of application 8"
 msgstr "Otvori novi primerak programa 8"
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:263
 msgid "Open a new instance of application 9"
 msgstr "Otvori novi primerak programa 9"
 
-#: data/org.gnome.shell.gschema.xml.in:308
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:283
+msgid "Screen brightness up"
+msgstr "Povećava osvetljenost ekrana"
+
+#: data/org.gnome.shell.gschema.xml.in:287
+msgid "Screen brightness up on current monitor"
+msgstr "Povećava osvetljenost ekrana trenutnog monitora"
+
+#: data/org.gnome.shell.gschema.xml.in:291
+msgid "Screen brightness down"
+msgstr "Smanjuje osvetljenost ekrana"
+
+#: data/org.gnome.shell.gschema.xml.in:295
+msgid "Screen brightness down on current monitor"
+msgstr "Smanjuje osvetljenost ekrana trenutnog monitora"
+
+#: data/org.gnome.shell.gschema.xml.in:299
+msgid "Screen brightness cycle"
+msgstr "Menja osvetljenost ekrana"
+
+#: data/org.gnome.shell.gschema.xml.in:303
+msgid "Screen brightness cycle on current monitor"
+msgstr "Menja osvetljenost ekrana trenutnog monitora"
+
+#: data/org.gnome.shell.gschema.xml.in:312
+#: data/org.gnome.shell.gschema.xml.in:339
 msgid "Limit switcher to current workspace."
 msgstr "Ograničava prebacivača na tekući radni prostor."
 
-#: data/org.gnome.shell.gschema.xml.in:309
+#: data/org.gnome.shell.gschema.xml.in:313
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -493,21 +511,21 @@ msgstr ""
 "Ako je izabrano, samo programi koji imaju prozore na tekućem radnom prostoru "
 "se prikazuju u prebacivaču. U suprotnom, svi programi su uključeni."
 
-#: data/org.gnome.shell.gschema.xml.in:326
+#: data/org.gnome.shell.gschema.xml.in:330
 msgid "The application icon mode."
 msgstr "Režim ikonice programa."
 
-#: data/org.gnome.shell.gschema.xml.in:327
+#: data/org.gnome.shell.gschema.xml.in:331
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
 msgstr ""
 "Podešava način prikazivanja prozora u prebacivaču. Ispravne mogućnosti su "
 "„thumbnail-only“ (prikazuje sličicu prozora), „app-icon-only“ (prikazuje "
 "samo ikonicu programa) ili „both“ (oba)."
 
-#: data/org.gnome.shell.gschema.xml.in:336
+#: data/org.gnome.shell.gschema.xml.in:340
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -515,81 +533,91 @@ msgstr ""
 "Ako je izabrano, samo prozori sa tekućeg radnog prostora se prikazuju u "
 "prebacivaču. U suprotnom, svi prozori su uključeni."
 
-#: data/org.gnome.shell.gschema.xml.in:346
+#: data/org.gnome.shell.gschema.xml.in:350
 msgid "Locations"
 msgstr "Lokacije"
 
-#: data/org.gnome.shell.gschema.xml.in:347
+#: data/org.gnome.shell.gschema.xml.in:351
 msgid "The locations to show in world clocks"
 msgstr "Mesta koja treba prikazivati u svetskim satovima"
 
-#: data/org.gnome.shell.gschema.xml.in:357
+#: data/org.gnome.shell.gschema.xml.in:361
 msgid "Automatic location"
 msgstr "Automatska lokacija"
 
-#: data/org.gnome.shell.gschema.xml.in:358
+#: data/org.gnome.shell.gschema.xml.in:362
 msgid "Whether to fetch the current location or not"
 msgstr "Da li treba dobaviti trenutnu lokaciju"
 
-#: data/org.gnome.shell.gschema.xml.in:365
+#: data/org.gnome.shell.gschema.xml.in:369
 msgid "Location"
 msgstr "Lokacija"
 
-#: data/org.gnome.shell.gschema.xml.in:366
+#: data/org.gnome.shell.gschema.xml.in:370
 msgid "The location for which to show a forecast"
 msgstr "Mesto za koje treba prikazati vremensku prognozu"
 
 #. Keep in sync with subprojects/extensions-app
-#: data/org.gnome.Shell.Extensions.desktop.in.in:5
+#: data/org.gnome.Shell.Extensions.desktop.in:4
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:3
 #: subprojects/extensions-app/data/ui/extensions-window.ui:57
 msgid "Extensions"
 msgstr "Proširenja"
 
-#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+#: data/org.gnome.Shell.PortalHelper.desktop.in:2
 msgid "Network Login"
 msgstr "Mrežna prijava"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:277
-msgid "Something’s gone wrong"
-msgstr "Nešto je pošlo naopako"
+#: data/X-GNOME-Shell-Utilities.directory.desktop.in:2
+msgid "Utilities"
+msgstr "Alatke"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:23
-msgid ""
-"We’re very sorry, but there’s been a problem: the settings for this "
-"extension can’t be displayed. We recommend that you report the issue to the "
-"extension authors."
-msgstr ""
-"Veoma nam je žao ali se dogodio problem, ne možemo prikazati podešavanja za "
-"ovo proširenje. Predlažemo vam da prijavite ovaj problem tvorcima proširenja."
+#: js/dbusServices/extensions/extensionPrefsDialog.js:71
+msgid "Extension Error"
+msgstr "Greška u proširenju"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:48
-msgid "Technical Details"
-msgstr "Tehničke pojedinosti"
+#. Translators: %s is an extension name
+#: js/dbusServices/extensions/extensionPrefsDialog.js:104
+#, javascript-format
+msgid "Unable to display the settings for “%s”."
+msgstr "Ne mogu da prikažem podešavanja za „%s“."
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:90
-msgid "Homepage"
-msgstr "Matična strana"
+#. Translators: Link label in the phrase "Information about this
+#. problem may be available on the extension website"
+#: js/dbusServices/extensions/extensionPrefsDialog.js:110
+msgid "extension website"
+msgstr "veb stranica proširenja"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:91
-msgid "Visit extension homepage"
-msgstr "Poseti matičnu stranu proširenj"
+#. Translators: %s is "extension website"
+#: js/dbusServices/extensions/extensionPrefsDialog.js:114
+#, javascript-format
+msgid "Information about this problem may be available on the %s."
+msgstr "Podaci o ovom problemu su možda dostupni na %s."
 
-#: js/gdm/authPrompt.js:151 js/gdm/loginDialog.js:466
-#: js/ui/audioDeviceSelection.js:66 js/ui/components/networkAgent.js:114
-#: js/ui/components/polkitAgent.js:146 js/ui/endSessionDialog.js:438
-#: js/ui/extensionDownloader.js:278 js/ui/shellMountOperation.js:384
-#: js/ui/shellMountOperation.js:394
+#: js/dbusServices/extensions/ui/extension-error-page.ui:19
+#: subprojects/extensions-app/data/ui/extension-row.ui:13
+msgid "Error Details"
+msgstr "Detalji greške"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:26
+msgid "Copy Error"
+msgstr "Greška pri kopiranju"
+
+#: js/gdm/authPrompt.js:157 js/gdm/loginDialog.js:511
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
+#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
+#: js/ui/shellMountOperation.js:392
 msgid "Cancel"
 msgstr "Otkaži"
 
-#: js/gdm/authPrompt.js:317 js/ui/components/networkAgent.js:214
+#: js/gdm/authPrompt.js:335 js/ui/components/networkAgent.js:214
 #: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
 #: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:288
-#: js/ui/shellMountOperation.js:334
+#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
+#: js/ui/shellMountOperation.js:332
+#: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
 msgstr "Lozinka"
 
@@ -597,8 +625,12 @@ msgstr "Lozinka"
 msgid "Choose Session"
 msgstr "Izaberi sesiju"
 
+#: js/gdm/loginDialog.js:417 js/ui/status/accessibility.js:35
+msgid "Accessibility"
+msgstr "Pristupačnost"
+
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:424
+#: js/gdm/loginDialog.js:469
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -610,7 +642,7 @@ msgstr ""
 "zaustaviti."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:427
+#: js/gdm/loginDialog.js:472
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -620,7 +652,7 @@ msgstr ""
 "morate se odjaviti sa postojeće sesije ili je prisilno zaustaviti."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:430
+#: js/gdm/loginDialog.js:475
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -632,7 +664,7 @@ msgstr ""
 "zaustaviti."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:433
+#: js/gdm/loginDialog.js:478
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -641,140 +673,346 @@ msgstr ""
 "Prijava nije moguća pošto se sesija već izvršava za %s. Za prijavu, morate "
 "se odjaviti sa postojeće sesije ili je prisilno zaustaviti."
 
-#: js/gdm/loginDialog.js:442
+#: js/gdm/loginDialog.js:487
 msgid "Session Already Running"
 msgstr "Sesija se već izvršava"
 
-#: js/gdm/loginDialog.js:454
+#: js/gdm/loginDialog.js:499
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
-"data loss."
+"data loss"
 msgstr ""
-"Prisilno zaustavljanje će zaustaviti sve pokrenute programe i procese, i može "
-"izazvati gubitak podataka."
+"Prisilno zaustavljanje zatvara pokrenute programe i procese, i može dovesti do "
+"gubitka podataka"
 
-#: js/gdm/loginDialog.js:474
+#: js/gdm/loginDialog.js:519
 msgid "Force Stop"
 msgstr "Primoraj izlaz"
 
-#: js/gdm/loginDialog.js:542
+#: js/gdm/loginDialog.js:597
 msgid "Not listed?"
 msgstr "Nije na spisku?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1010
+#: js/gdm/loginDialog.js:1126
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(npr., korisnik ili %s)"
 
-#: js/gdm/loginDialog.js:1015 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1131 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
+#: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Korisnik"
 
-#: js/gdm/loginDialog.js:1081
+#: js/gdm/loginDialog.js:1197
 msgid "Login Attempt Timed Out"
 msgstr "Isteklo je vreme za pokušaj prijave"
 
-#: js/gdm/loginDialog.js:1082
+#: js/gdm/loginDialog.js:1198
 msgid "Login took too long, please try again"
 msgstr "Prijava je predugo trajala, pokušajte ponovo"
 
-#: js/gdm/loginDialog.js:1427
+#: js/gdm/loginDialog.js:1547
 msgid "Login Window"
 msgstr "Prozor za prijavljivanje"
 
-#: js/gdm/util.js:497
+#: js/gdm/util.js:498
 msgid "Authentication error"
 msgstr "Greška potvrđivanja identiteta"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:728
+#: js/gdm/util.js:729
 msgid "(or swipe finger across reader)"
 msgstr "(ili prevucite prst preko čitača)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:733
+#: js/gdm/util.js:734
 msgid "(or place finger on reader)"
 msgstr "(ili postavite prst na čitač)"
 
+#: js/misc/breakManager.js:770
+msgid "Break complete sound"
+msgstr "Zvuk za kraj odmora"
+
+#: js/misc/breakManager.js:980
+#, javascript-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d sekunda"
+msgstr[1] "%d sekunde"
+msgstr[2] "%d sekundi"
+msgstr[3] "%d sekunda"
+
+#: js/misc/breakManager.js:986
+#, javascript-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d minut"
+msgstr[1] "%d minuta"
+msgstr[2] "%d minuta"
+msgstr[3] "%d minut"
+
+#: js/misc/breakManager.js:992
+#, javascript-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] "%d sat"
+msgstr[1] "%d sata"
+msgstr[2] "%d sati"
+msgstr[3] "%d sat"
+
+#: js/misc/breakManager.js:998
+#, javascript-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "%d dan"
+msgstr[1] "%d dana"
+msgstr[2] "%d dana"
+msgstr[3] "%d dan"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1081
+#, javascript-format
+msgid "It will be time for a break in %s"
+msgid_plural "It will be time for a break in %s"
+msgstr[0] "Vreme odmora će početi za %s"
+msgstr[1] "Vreme odmora će početi za %s"
+msgstr[2] "Vreme odmora će početi za %s"
+msgstr[3] "Vreme odmora će početi za %s"
+
+#: js/misc/breakManager.js:1089
+msgid "Movement Break Soon"
+msgstr "Uskoro će pauza za šetnju"
+
+#: js/misc/breakManager.js:1092
+msgid "Eyesight Break Soon"
+msgstr "Uskoro će pauza za odmor očiju"
+
+#: js/misc/breakManager.js:1095
+msgid "Break Soon"
+msgstr "Uskoro će pauza"
+
+#: js/misc/breakManager.js:1140
+msgid "Movement Break in Progress"
+msgstr "Sada je pauza za šetnju"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1143
+#, javascript-format
+msgid "Continue moving around for %s"
+msgid_plural "Continue moving around for %s"
+msgstr[0] "Nastavite da se krećete još %s"
+msgstr[1] "Nastavite da se krećete još %s"
+msgstr[2] "Nastavite da se krećete još %s"
+msgstr[3] "Nastavite da se krećete još %s"
+
+#: js/misc/breakManager.js:1149
+msgid "Eyesight Break in Progress"
+msgstr "Sada je pauza za odmor očiju"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1152
+#, javascript-format
+msgid "Continue looking away for %s"
+msgid_plural "Continue looking away for %s"
+msgstr[0] "Nastavite da gledate u daljinu još %s"
+msgstr[1] "Nastavite da gledate u daljinu još %s"
+msgstr[2] "Nastavite da gledate u daljinu još %s"
+msgstr[3] "Nastavite da gledate u daljinu još %s"
+
+#: js/misc/breakManager.js:1158
+msgid "Break in Progress"
+msgstr "Sada je pauza"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1161
+#, javascript-format
+msgid "%s left in your break"
+msgid_plural "%s left in your break"
+msgstr[0] "Ostalo je još %s za odmor"
+msgstr[1] "Ostalo je još %s za odmor"
+msgstr[2] "Ostalo je još %s za odmor"
+msgstr[3] "Ostalo je još %s za odmor"
+
+#: js/misc/breakManager.js:1200
+msgid "Time for a Movement Break"
+msgstr "Vreme je za šetnju"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1203
+#, javascript-format
+msgid "Take a break from the device and move around for %s"
+msgid_plural "Take a break from the device and move around for %s"
+msgstr[0] "Odmorite se od računara tako što prošetate %s"
+msgstr[1] "Odmorite se od računara tako što prošetate %s"
+msgstr[2] "Odmorite se od računara tako što prošetate %s"
+msgstr[3] "Odmorite se od računara tako što prošetate %s"
+
+#: js/misc/breakManager.js:1209
+msgid "Time for an Eyesight Break"
+msgstr "Vreme je za odmor očiju"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1212
+#, javascript-format
+msgid ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgid_plural ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgstr[0] "Odmorite se od ekrana. Gledajte bar 6 metara dalje od vas tokom %s"
+msgstr[1] "Odmorite se od ekrana. Gledajte bar 6 metara dalje od vas tokom %s"
+msgstr[2] "Odmorite se od ekrana. Gledajte bar 6 metara dalje od vas tokom %s"
+msgstr[3] "Odmorite se od ekrana. Gledajte bar 6 metara dalje od vas tokom %s"
+
+#: js/misc/breakManager.js:1218
+msgid "Time for a Break"
+msgstr "Vreme je za odmor"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1221
+#, javascript-format
+msgid "It’s time to take a break. Get away from the device for %s!"
+msgid_plural "It’s time to take a break. Get away from the device for %s!"
+msgstr[0] "Vreme je za odmor. Sklonite se od uređaja %s!"
+msgstr[1] "Vreme je za odmor. Sklonite se od uređaja %s!"
+msgstr[2] "Vreme je za odmor. Sklonite se od uređaja %s!"
+msgstr[3] "Vreme je za odmor. Sklonite se od uređaja %s!"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1245
+#, javascript-format
+msgid "You were due to take a break %s ago"
+msgid_plural "You were due to take a break %s ago"
+msgstr[0] "Trebalo je da se odmorite pre %s"
+msgstr[1] "Trebalo je da se odmorite pre %s"
+msgstr[2] "Trebalo je da se odmorite pre %s"
+msgstr[3] "Trebalo je da se odmorite pre %s"
+
+#: js/misc/breakManager.js:1251
+msgid "Break Overdue"
+msgstr "Kasnite na odmor"
+
+#: js/misc/breakManager.js:1267
+#, javascript-format
+msgid "There is %s remaining in your break"
+msgid_plural "There are %s remaining in your break"
+msgstr[0] "Ostalo vam je još %s odmora"
+msgstr[1] "Ostalo vam je još %s odmora"
+msgstr[2] "Ostalo vam je još %s odmora"
+msgstr[3] "Ostalo vam je još %s odmora"
+
+#: js/misc/breakManager.js:1273
+msgid "Break Interrupted"
+msgstr "Pauza je prekinuta"
+
+#. Translators: As in "Delay the break"
+#: js/misc/breakManager.js:1351
+msgid "Delay"
+msgstr "Odloži"
+
+#. Translators: As in "Skip the break"
+#: js/misc/breakManager.js:1373 js/ui/welcomeDialog.js:61
+msgid "Skip"
+msgstr "Preskoči"
+
+#. Translators: As in "Take the break"
+#: js/misc/breakManager.js:1395
+msgid "Take"
+msgstr "Započni"
+
+#. Translators: This is a notification to warn the user that a
+#. screen time break will start shortly.
+#: js/misc/breakManager.js:1458
+#, javascript-format
+msgid "Break in %d second"
+msgid_plural "Break in %d seconds"
+msgstr[0] "Pauza za %d sekundu"
+msgstr[1] "Pauza za %d sekunde"
+msgstr[2] "Pauza za %d sekundi"
+msgstr[3] "Pauza za %d sekundu"
+
+#: js/misc/brightnessManager.js:169 js/ui/status/brightness.js:10
+msgid "Brightness"
+msgstr "Osvetljenost"
+
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:91
+#: js/misc/systemActions.js:93
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Isključi"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:96
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr ""
 "power off;shutdown;isključi;ugasi;gašenje;isključi;ugasi;gašenje;iskljuci;"
 "gasenje;halt;stop;halt;stop"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:99
+#: js/misc/systemActions.js:101
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Ponovo pokreni"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:104
 msgid "reboot;restart;"
 msgstr "reboot;restart;ribut;restart;ponovno pokretanje;restartovanje;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:107
+#: js/misc/systemActions.js:109
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Zaključaj ekran"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:112
 msgid "lock screen"
 msgstr "zaključaj ekran"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:115
+#: js/misc/systemActions.js:117
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Odjavi me"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:120
 msgid "logout;log out;sign off"
 msgstr ""
 "izađi;odjavi se;odloguj se;izađi;odjavi se;odloguj se;izadji;logout;log out;"
 "sign off"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:123
+#: js/misc/systemActions.js:125
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Obustavi"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:128
 msgid "suspend;sleep"
 msgstr ""
 "suspend;sleep;obustavi;spavaj;suspenduj;obustavi;spavaj;suspenduj;suspend;"
 "sleep"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:131
+#: js/misc/systemActions.js:133
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Promeni korisnika"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:136
 msgid "switch user"
 msgstr "switch user;promeni korisnika;promeni korisnika;switch user"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:141
+#: js/misc/systemActions.js:143
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 "lock orientation;screen;rotation;zaključaj okretanje ekrana;zaključaj "
@@ -783,39 +1021,58 @@ msgstr ""
 "rotation"
 
 #. Translators: The name of the screenshot UI action in search
-#: js/misc/systemActions.js:146
+#: js/misc/systemActions.js:148
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Napravi snimak ekrana"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
-#: js/misc/systemActions.js:149
+#: js/misc/systemActions.js:151
 msgid "screenshot;screencast;snip;capture;record"
 msgstr ""
 "screenshot;screencast;snip;capture;record;snimak ekrana;video ekrana;snip;"
 "snimak ekrana;video ekrana"
 
-#: js/misc/systemActions.js:249
+#: js/misc/systemActions.js:255
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Otključaj okretanje ekrana"
 
-#: js/misc/systemActions.js:250
+#: js/misc/systemActions.js:256
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Zaključaj okretanje ekrana"
 
-#: js/misc/util.js:139
+#: js/misc/timeLimitsManager.js:342
+msgid "GNOME needs to save screen time data"
+msgstr "Gnom treba da sačuva podatke o vremenu rada ekrana"
+
+#: js/misc/timeLimitsManager.js:1124
+#, javascript-format
+msgid "Screen Time Limit in %d Minute"
+msgid_plural "Screen Time Limit in %d Minutes"
+msgstr[0] "Ograničenje korišćenja ekrana za %d minut"
+msgstr[1] "Ograničenje korišćenja ekrana za %d minuta"
+msgstr[2] "Ograničenje korišćenja ekrana za %d minuta"
+msgstr[3] "Ograničenje korišćenja ekrana za %d minut"
+
+#: js/misc/timeLimitsManager.js:1131
+msgid "Your screen time limit is approaching"
+msgstr "Uskoro će se aktivirati ograničenje korišćenja ekrana"
+
+#: js/misc/timeLimitsManager.js:1145
+msgid "Screen Time Limit Reached"
+msgstr "Sada je aktivno ograničenje korišćenja ekrana"
+
+#: js/misc/timeLimitsManager.js:1146
+msgid "It’s time to stop using the device"
+msgstr "Odmorite se od ovog uređaja"
+
+#: js/misc/util.js:130
 msgid "Command not found"
 msgstr "Naredba nije nađena"
 
-#. Replace "Error invoking GLib.shell_parse_argv: " with
-#. something nicer
-#: js/misc/util.js:179
-msgid "Could not parse command:"
-msgstr "Ne mogu da obradim naredbu:"
-
-#: js/misc/util.js:187
+#: js/misc/util.js:168
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Nije uspelo izvršavanje „%s“:"
@@ -842,7 +1099,7 @@ msgstr[1] "Pre %d sata"
 msgstr[2] "Pre %d sati"
 msgstr[3] "Pre jedan sat"
 
-#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:185
+#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:184
 msgid "Yesterday"
 msgstr "Juče"
 
@@ -884,29 +1141,29 @@ msgstr[3] "Pre godinu dana"
 
 #. Translators: Time in 24h format
 #: js/misc/dateUtils.js:155
-msgid "%H∶%M"
-msgstr "%H∶%M"
+msgid "%H:%M"
+msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
 #: js/misc/dateUtils.js:161
 #, no-c-format
-msgid "Yesterday, %H∶%M"
-msgstr "Juče, %H:%M"
+msgid "Yesterday, %H:%M"
+msgstr "Juče u %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
 #: js/misc/dateUtils.js:167
 #, no-c-format
-msgid "%A, %H∶%M"
-msgstr "%A, %H∶%M"
+msgid "%A, %H:%M"
+msgstr "%A, %H:%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
 #: js/misc/dateUtils.js:173
 #, no-c-format
-msgid "%B %-d, %H∶%M"
+msgid "%B %-d, %H:%M"
 msgstr "%-d. %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
@@ -914,28 +1171,28 @@ msgstr "%-d. %B, %H∶%M"
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/dateUtils.js:179
 #, no-c-format
-msgid "%B %-d %Y, %H∶%M"
+msgid "%B %-d %Y, %H:%M"
 msgstr "%-d. %B %Y., %H:%M"
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
 #: js/misc/dateUtils.js:184
-msgid "%l∶%M %p"
+msgid "%l:%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: js/misc/dateUtils.js:190
 #, no-c-format
-msgid "Yesterday, %l∶%M %p"
-msgstr "Juče, %l:%M %p"
+msgid "Yesterday, %l:%M %p"
+msgstr "Juče u %l:%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/dateUtils.js:196
 #, no-c-format
-msgid "%A, %l∶%M %p"
+msgid "%A, %l:%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
@@ -943,7 +1200,7 @@ msgstr "%A, %l∶%M %p"
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/dateUtils.js:202
 #, no-c-format
-msgid "%B %-d, %l∶%M %p"
+msgid "%B %-d, %l:%M %p"
 msgstr "%-d. %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
@@ -951,7 +1208,7 @@ msgstr "%-d. %B, %l∶%M %p"
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/dateUtils.js:208
 #, no-c-format
-msgid "%B %-d %Y, %l∶%M %p"
+msgid "%B %-d %Y, %l:%M %p"
 msgstr "%-d .%B %Y., %l∶%M %p"
 
 #: js/portalHelper/main.js:98
@@ -972,95 +1229,99 @@ msgstr "Prijava na vruću tačku"
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:45 js/ui/inhibitShortcutsDialog.js:92
+#: js/ui/accessDialog.js:51 js/ui/inhibitShortcutsDialog.js:92
 msgid "Deny"
 msgstr "Zabrani"
 
-#: js/ui/accessDialog.js:46 js/ui/inhibitShortcutsDialog.js:101
+#: js/ui/accessDialog.js:52 js/ui/inhibitShortcutsDialog.js:101
 msgid "Allow"
 msgstr "Dozvoli"
 
-#: js/ui/appDisplay.js:1775
+#: js/ui/appDisplay.js:1734
 msgid "Unnamed Folder"
 msgstr "Neimenovana fascikla"
 
-#: js/ui/appFavorites.js:166
+#: js/ui/appFavorites.js:89
 #, javascript-format
 msgid "%s has been pinned to the dash."
 msgstr "„%s“ je dodat na dok."
 
-#: js/ui/appFavorites.js:199
+#: js/ui/appFavorites.js:120
 #, javascript-format
 msgid "%s has been unpinned from the dash."
 msgstr "„%s“ je otkačen sa doka."
 
+#: js/ui/appFavorites.js:134 js/ui/main.js:316
+msgid "Undo"
+msgstr "Opozovi"
+
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appMenu.js:51
+#: js/ui/appMenu.js:49
 msgid "Open Windows"
 msgstr "Otvori prozore"
 
-#: js/ui/appMenu.js:59
+#: js/ui/appMenu.js:57
 msgid "New Window"
 msgstr "Novi prozor"
 
-#: js/ui/appMenu.js:86
+#: js/ui/appMenu.js:84
 msgid "App Details"
 msgstr "Detalji programa"
 
-#: js/ui/appMenu.js:102
+#: js/ui/appMenu.js:100
 msgid "Quit"
 msgstr "Izađi"
 
-#: js/ui/appMenu.js:162 js/ui/dash.js:250
+#: js/ui/appMenu.js:160 js/ui/dash.js:245
 msgid "Unpin"
 msgstr "Otkači"
 
-#: js/ui/appMenu.js:163
+#: js/ui/appMenu.js:161
 msgid "Pin to Dash"
 msgstr "Zakači na dok"
 
-#: js/ui/appMenu.js:180
-msgid "Launch using Integrated Graphics Card"
-msgstr "Pokreni sa ugrađenom grafičkom karticom"
+#: js/ui/appMenu.js:178
+msgid "Launch Using Integrated Graphics Card"
+msgstr "Pokreni sa integrisanom grafičkom karticom"
 
-#: js/ui/appMenu.js:181
-msgid "Launch using Discrete Graphics Card"
+#: js/ui/appMenu.js:179
+msgid "Launch Using Discrete Graphics Card"
 msgstr "Pokreni sa namenskom grafičkom karticom"
 
 #: js/ui/audioDeviceSelection.js:46
 msgid "Select Audio Device"
 msgstr "Izaberite zvučni uređaj"
 
-#: js/ui/audioDeviceSelection.js:61 js/ui/status/volume.js:83
+#: js/ui/audioDeviceSelection.js:67 js/ui/status/volume.js:81
 msgid "Sound Settings"
 msgstr "Podešavanja zvuka"
 
-#: js/ui/audioDeviceSelection.js:74
+#: js/ui/audioDeviceSelection.js:75
 msgid "Headphones"
 msgstr "Slušalice"
 
-#: js/ui/audioDeviceSelection.js:76
+#: js/ui/audioDeviceSelection.js:77
 msgid "Headset"
 msgstr "Slušalice sa mikrofonom"
 
-#: js/ui/audioDeviceSelection.js:78 js/ui/status/volume.js:358
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:367
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: js/ui/backgroundMenu.js:15
+#: js/ui/backgroundMenu.js:13
 msgid "Change Background…"
 msgstr "Izmeni pozadinu…"
 
-#: js/ui/backgroundMenu.js:17
+#: js/ui/backgroundMenu.js:15
 msgid "Display Settings"
 msgstr "Podešavanja prikaza"
 
-#: js/ui/backgroundMenu.js:18
+#: js/ui/backgroundMenu.js:16
 msgid "Settings"
 msgstr "Podešavanja"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:39
+#: js/ui/calendar.js:32
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -1070,43 +1331,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:65
+#: js/ui/calendar.js:58
 msgctxt "grid sunday"
 msgid "S"
 msgstr "N"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:67
+#: js/ui/calendar.js:60
 msgctxt "grid monday"
 msgid "M"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:69
+#: js/ui/calendar.js:62
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "U"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:64
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:73
+#: js/ui/calendar.js:66
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Č"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:75
+#: js/ui/calendar.js:68
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:77
+#: js/ui/calendar.js:70
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -1117,7 +1378,7 @@ msgstr "S"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:428
+#: js/ui/calendar.js:421
 msgid "%OB"
 msgstr "%OB"
 
@@ -1130,93 +1391,99 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:438
+#: js/ui/calendar.js:431
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:500
+#: js/ui/calendar.js:493
 msgid "Previous month"
 msgstr "Prethodni mesec"
 
-#: js/ui/calendar.js:518
+#: js/ui/calendar.js:511
 msgid "Next month"
 msgstr "Sledeći mesec"
 
-#: js/ui/calendar.js:669
+#: js/ui/calendar.js:662
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:728
+#: js/ui/calendar.js:721
 msgid "Week %V"
 msgstr "Sedmica %V"
 
-#: js/ui/calendar.js:920
+#: js/ui/calendar.js:773
 msgid "No Notifications"
 msgstr "Bez obaveštenja"
 
-#: js/ui/calendar.js:976
-msgid "Do Not Disturb"
-msgstr "Ne uznemiravaj"
-
-#: js/ui/calendar.js:997
+#: js/ui/calendar.js:812
 msgid "Clear"
 msgstr "Očisti"
 
 # msgid_plural "%d new notifications"
-#: js/ui/calendar.js:1001
+#: js/ui/calendar.js:816
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Očisti sva obaveštenja"
 
 #. Translators: %s is an application name
-#: js/ui/closeDialog.js:44
+#: js/ui/closeDialog.js:42
 #, javascript-format
-msgid "“%s” is not responding."
+msgid "“%s” Is Not Responding"
 msgstr "„%s“ ne odgovara."
 
-#: js/ui/closeDialog.js:45
+#: js/ui/closeDialog.js:43
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
-"quit entirely."
+"quit entirely"
 msgstr ""
-"Možete izabrati da sačekate koji trenutak da nastavi ili da primorate "
-"program da se čitav zatvori."
+"Možete sačekati koji trenutak da nastavi rad ili da primorate zatvaranje "
+"programa."
 
-#: js/ui/closeDialog.js:73
+#: js/ui/closeDialog.js:71
 msgid "Force Quit"
 msgstr "Primoraj izlaz"
 
-#: js/ui/closeDialog.js:78
+#: js/ui/closeDialog.js:76
 msgid "Wait"
 msgstr "Sačekaj"
 
-#: js/ui/components/automountManager.js:84
+#: js/ui/components/automountManager.js:82
 msgid "External drive connected"
 msgstr "Spoljni uređaj je priključen"
 
-#: js/ui/components/automountManager.js:96
+#: js/ui/components/automountManager.js:94
 msgid "External drive disconnected"
 msgstr "Spoljni uređaj je isključen"
 
-#: js/ui/components/automountManager.js:207
+#: js/ui/components/automountManager.js:208
 msgid "Unable to unlock volume"
 msgstr "Ne mogu da otključam volumen"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:209
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Instalirano izdanje udisks-a ne podržava LIČ (PIM) podešavanje"
 
-#: js/ui/components/autorunManager.js:200
+#. Translators: %s is the name of a partition on a external drive
+#: js/ui/components/autorunManager.js:189
+#, javascript-format
+msgid "“%s” connected"
+msgstr "„%s“ povezan"
+
+#: js/ui/components/autorunManager.js:190
+msgid "Disk can now be used"
+msgstr "Možete koristiti disk sada"
+
+#: js/ui/components/autorunManager.js:202
 #, javascript-format
 msgid "Open with %s"
 msgstr "Otvori programom %s"
 
 #: js/ui/components/networkAgent.js:96
 msgid ""
-"Alternatively you can connect by pushing the “WPS” button on your router."
-msgstr "Ili možete povezati pritiskom na dugme „WPS“, na vašem ruteru."
+"Alternatively you can connect by pushing the “WPS” button on your router"
+msgstr "Ili možete povezati pritiskom na dugme „WPS“, na vašem ruteru"
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
 #: js/ui/status/network.js:360 js/ui/status/network.js:444
@@ -1240,19 +1507,18 @@ msgid "Service"
 msgstr "Usluga"
 
 #: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
-#: js/ui/components/networkAgent.js:750 js/ui/components/networkAgent.js:771
+#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
 msgid "Authentication required"
 msgstr "Potrebno je potvrđivanje identiteta"
 
-#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
 #, javascript-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"“%s”."
+"Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr ""
-"Potrebne su lozinke ili ključevi šifrovanja za pristup bežičnoj mreži „%s“."
+"Potrebne su lozinke ili ključevi šifrovanja za pristup bežičnoj mreži „%s“"
 
-#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:755
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
 msgid "Wired 802.1X authentication"
 msgstr "Potvrđivanje identiteta za žičanu 802.1X vezu"
 
@@ -1260,15 +1526,15 @@ msgstr "Potvrđivanje identiteta za žičanu 802.1X vezu"
 msgid "Network name"
 msgstr "Naziv mreže"
 
-#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
 msgid "DSL authentication"
 msgstr "Potvrđivanje identiteta DSL-a"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
 msgid "PIN code required"
 msgstr "Potreban je PIN kôd"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:765
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Potreban je PIN kod za povezivanje mobilnog širokopojasnog uređaja"
 
@@ -1276,26 +1542,26 @@ msgstr "Potreban je PIN kod za povezivanje mobilnog širokopojasnog uređaja"
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:756
-#: js/ui/components/networkAgent.js:760 js/ui/components/networkAgent.js:772
-#: js/ui/components/networkAgent.js:776
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
+#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
+#: js/ui/components/networkAgent.js:771
 #, javascript-format
-msgid "A password is required to connect to “%s”."
-msgstr "Potrebna je lozinka za povezivanje na „%s“."
+msgid "A password is required to connect to “%s”"
+msgstr "Potrebna je lozinka za povezivanje na „%s“"
 
-#: js/ui/components/networkAgent.js:775
+#: js/ui/components/networkAgent.js:770
 msgid "VPN password"
 msgstr "VPN lozinka"
 
-#: js/ui/components/polkitAgent.js:46
+#: js/ui/components/polkitAgent.js:44
 msgid "Authentication Required"
 msgstr "Potrebna je prijava"
 
-#: js/ui/components/polkitAgent.js:86
+#: js/ui/components/polkitAgent.js:84
 msgid "Administrator"
 msgstr "Administrator"
 
-#: js/ui/components/polkitAgent.js:151
+#: js/ui/components/polkitAgent.js:149
 msgid "Authenticate"
 msgstr "Potvrdi identitet"
 
@@ -1303,21 +1569,21 @@ msgstr "Potvrdi identitet"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:265 js/ui/shellMountOperation.js:417
+#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:415
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Pogrešili ste! Pokušajte ponovo."
 
-#: js/ui/ctrlAltTab.js:25 js/ui/overviewControls.js:418
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:404
 msgid "Windows"
 msgstr "Prozori"
 
-#: js/ui/dash.js:206 js/ui/dash.js:252
+#: js/ui/dash.js:201 js/ui/dash.js:247
 msgid "Show Apps"
 msgstr "Prikaži programe"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the bottom of the overview
-#: js/ui/dash.js:410
+#: js/ui/dash.js:405
 msgid "Dash"
 msgstr "Dok"
 
@@ -1326,7 +1592,7 @@ msgstr "Dok"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:101
+#: js/ui/dateMenu.js:99
 msgid "%B %-d %Y"
 msgstr "%-d. %B %Y."
 
@@ -1334,34 +1600,34 @@ msgstr "%-d. %B %Y."
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:108
+#: js/ui/dateMenu.js:106
 msgid "%A %B %e %Y"
 msgstr "%A, %e. %B %Y."
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:174
+#: js/ui/dateMenu.js:173
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-d. %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:177
+#: js/ui/dateMenu.js:176
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%-d. %B %Y."
 
-#: js/ui/dateMenu.js:183
+#: js/ui/dateMenu.js:182
 msgid "Today"
 msgstr "Danas"
 
-#: js/ui/dateMenu.js:187
+#: js/ui/dateMenu.js:186
 msgid "Tomorrow"
 msgstr "Sutra"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:218
+#: js/ui/dateMenu.js:217
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Ceo dan"
@@ -1369,19 +1635,19 @@ msgstr "Ceo dan"
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
 #.
-#: js/ui/dateMenu.js:240
+#: js/ui/dateMenu.js:239
 msgid "%m/%d"
 msgstr "%d.%m."
 
-#: js/ui/dateMenu.js:291
+#: js/ui/dateMenu.js:290
 msgid "No Events"
 msgstr "Bez događaja"
 
-#: js/ui/dateMenu.js:413
-msgid "Add world clocks…"
-msgstr "Svetski satovi…"
+#: js/ui/dateMenu.js:412
+msgid "Add World Clocks…"
+msgstr "Dodaj svetski sat…"
 
-#: js/ui/dateMenu.js:414
+#: js/ui/dateMenu.js:413
 msgid "World Clocks"
 msgstr "Svetski satovi"
 
@@ -1390,145 +1656,145 @@ msgid "Loading…"
 msgstr "Učitavam…"
 
 #: js/ui/dateMenu.js:714
-msgid "Go online for weather information"
+msgid "Go Online for Weather Information"
 msgstr "Povežite se na mrežu za podatke o vremenu"
 
 #: js/ui/dateMenu.js:716
-msgid "Weather information is currently unavailable"
-msgstr "Podaci o vremenskoj prognozi trenutno nisu dostupni"
+msgid "Weather Information Unavailable"
+msgstr "Vremenska prognoza je nedostupna"
 
 #: js/ui/dateMenu.js:726
 msgid "Weather"
 msgstr "Vremenska prognoza"
 
 #: js/ui/dateMenu.js:728
-msgid "Select weather location…"
+msgid "Select Weather Location…"
 msgstr "Izaberite mesto vremenske prognoze…"
 
-#: js/ui/endSessionDialog.js:48
+#: js/ui/endSessionDialog.js:47
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Odjavi korisnika „%s“"
 
-#: js/ui/endSessionDialog.js:49
+#: js/ui/endSessionDialog.js:48
 msgctxt "title"
 msgid "Log Out"
 msgstr "Odjavi me"
 
-#: js/ui/endSessionDialog.js:52
+#: js/ui/endSessionDialog.js:51
 #, javascript-format
-msgid "%s will be logged out automatically in %d second."
-msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s će biti odjavljen za %d sekundu."
-msgstr[1] "%s će biti odjavljen za %d sekunde."
-msgstr[2] "%s će biti odjavljen za %d sekundi."
-msgstr[3] "%s će biti odjavljen za %d sekundu."
+msgid "%s will be logged out automatically in %d second"
+msgid_plural "%s will be logged out automatically in %d seconds"
+msgstr[0] "%s će biti odjavljen za %d sekundu"
+msgstr[1] "%s će biti odjavljen za %d sekunde"
+msgstr[2] "%s će biti odjavljen za %d sekundi"
+msgstr[3] "%s će biti odjavljen za %d sekundu"
 
-#: js/ui/endSessionDialog.js:58
+#: js/ui/endSessionDialog.js:57
 #, javascript-format
-msgid "You will be logged out automatically in %d second."
-msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "Bićete odjavljeni za %d sekundu."
-msgstr[1] "Bićete odjavljeni za %d sekunde."
-msgstr[2] "Bićete odjavljeni za %d sekundi."
-msgstr[3] "Bićete odjavljeni za %d sekundu."
+msgid "You will be logged out automatically in %d second"
+msgid_plural "You will be logged out automatically in %d seconds"
+msgstr[0] "Bićete odjavljeni za %d sekundu"
+msgstr[1] "Bićete odjavljeni za %d sekunde"
+msgstr[2] "Bićete odjavljeni za %d sekundi"
+msgstr[3] "Bićete odjavljeni za %d sekundu"
 
-#: js/ui/endSessionDialog.js:65
+#: js/ui/endSessionDialog.js:64
 msgctxt "button"
 msgid "Log Out"
 msgstr "Odjavi"
 
-#: js/ui/endSessionDialog.js:71 js/ui/status/system.js:176
+#: js/ui/endSessionDialog.js:70 js/ui/status/system.js:181
 msgctxt "title"
 msgid "Power Off"
 msgstr "Isključi"
 
-#: js/ui/endSessionDialog.js:72
+#: js/ui/endSessionDialog.js:71
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Instaliraj ažuriranja i isključi"
 
-#: js/ui/endSessionDialog.js:75
+#: js/ui/endSessionDialog.js:74
 #, javascript-format
-msgid "The system will power off automatically in %d second."
-msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Računar će se isključiti za %d sekundu."
-msgstr[1] "Računar će se isključiti za %d sekunde."
-msgstr[2] "Računar će se isključiti za %d sekundi."
-msgstr[3] "Računar će se isključiti za %d sekundu."
+msgid "The system will power off automatically in %d second"
+msgid_plural "The system will power off automatically in %d seconds"
+msgstr[0] "Računar će se isključiti za %d sekundu"
+msgstr[1] "Računar će se isključiti za %d sekunde"
+msgstr[2] "Računar će se isključiti za %d sekundi"
+msgstr[3] "Računar će se isključiti za %d sekundu"
 
-#: js/ui/endSessionDialog.js:79 js/ui/endSessionDialog.js:98
+#: js/ui/endSessionDialog.js:78 js/ui/endSessionDialog.js:97
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Instaliraj ažuriranja softvera na čekanju"
 
-#: js/ui/endSessionDialog.js:83
+#: js/ui/endSessionDialog.js:82
 msgctxt "button"
 msgid "Power Off"
 msgstr "Isključi"
 
-#: js/ui/endSessionDialog.js:90
+#: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Restart"
 msgstr "Ponovo pokreni"
 
-#: js/ui/endSessionDialog.js:91
+#: js/ui/endSessionDialog.js:90
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "Instaliraj ažuriranja i ponovo pokreni"
 
-#: js/ui/endSessionDialog.js:94
+#: js/ui/endSessionDialog.js:93
 #, javascript-format
-msgid "The system will restart automatically in %d second."
-msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Sistem će se ponovo pokrenuti za %d sekundu."
-msgstr[1] "Sistem će se ponovo pokrenuti za %d sekunde."
-msgstr[2] "Sistem će se ponovo pokrenuti za %d sekundi."
-msgstr[3] "Sistem će se ponovo pokrenuti za %d sekundu."
+msgid "The system will restart automatically in %d second"
+msgid_plural "The system will restart automatically in %d seconds"
+msgstr[0] "Sistem će se ponovo pokrenuti za %d sekundu"
+msgstr[1] "Sistem će se ponovo pokrenuti za %d sekunde"
+msgstr[2] "Sistem će se ponovo pokrenuti za %d sekundi"
+msgstr[3] "Sistem će se ponovo pokrenuti za %d sekundu"
 
-#: js/ui/endSessionDialog.js:102
+#: js/ui/endSessionDialog.js:101
 msgctxt "button"
 msgid "Restart"
 msgstr "Ponovo pokreni"
 
-#: js/ui/endSessionDialog.js:110
+#: js/ui/endSessionDialog.js:109
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Ponovo pokreni i instaliraj ažuriranja"
 
-#: js/ui/endSessionDialog.js:113
+#: js/ui/endSessionDialog.js:112
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
-"The system will automatically restart and install updates in %d seconds."
+"The system will automatically restart and install updates in %d seconds"
 msgstr[0] ""
-"Sistem će se sam ponovo pokrenuti i instalirati ažuriranja za %d sekundu."
+"Sistem će se sam ponovo pokrenuti i instalirati ažuriranja za %d sekundu"
 msgstr[1] ""
-"Sistem će se sam ponovo pokrenuti i instalirati ažuriranja za %d sekunde."
+"Sistem će se sam ponovo pokrenuti i instalirati ažuriranja za %d sekunde"
 msgstr[2] ""
-"Sistem će se sam ponovo pokrenuti i instalirati ažuriranja za %d sekundi."
+"Sistem će se sam ponovo pokrenuti i instalirati ažuriranja za %d sekundi"
 msgstr[3] ""
-"Sistem će se sam ponovo pokrenuti i instalirati ažuriranja za %d sekundu."
+"Sistem će se sam ponovo pokrenuti i instalirati ažuriranja za %d sekundu"
 
 # msgctxt "button"
-#: js/ui/endSessionDialog.js:120 js/ui/endSessionDialog.js:141
+#: js/ui/endSessionDialog.js:119 js/ui/endSessionDialog.js:140
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "Ponovo pokreni i instaliraj"
 
 # msgctxt "button"
-#: js/ui/endSessionDialog.js:122
+#: js/ui/endSessionDialog.js:121
 msgctxt "button"
 msgid "Install & Power Off"
 msgstr "Instaliraj i isključi"
 
-#: js/ui/endSessionDialog.js:123
+#: js/ui/endSessionDialog.js:122
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Isključi nakon instaliranja ažuriranja"
 
-#: js/ui/endSessionDialog.js:130
+#: js/ui/endSessionDialog.js:129
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Ponovo pokreni i instaliraj nadogradnju"
@@ -1536,7 +1802,7 @@ msgstr "Ponovo pokreni i instaliraj nadogradnju"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:135
+#: js/ui/endSessionDialog.js:134
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1546,46 +1812,44 @@ msgstr ""
 "ponekad može da potraje: proverite da li ste napravili rezervu vaših važnih "
 "podataka i da li je računar priključen na mrežno napajanje."
 
-#: js/ui/endSessionDialog.js:284
-msgid "Low battery power: please plug in before installing updates."
-msgstr ""
-"Baterija je skoro prazna, priključite mrežno napajanje pre instaliranja "
-"ažuriranja."
+#: js/ui/endSessionDialog.js:283
+msgid "Low battery power: please plug in before installing updates"
+msgstr "Baterija je skoro prazna, priključite punjač pre instaliranja ažuriranja"
 
-#: js/ui/endSessionDialog.js:293
+#: js/ui/endSessionDialog.js:292
 msgid "Some applications are busy or have unsaved work"
 msgstr "Neki programi su zauzeti ili imaju nesačuvani rad"
 
-#: js/ui/endSessionDialog.js:298
+#: js/ui/endSessionDialog.js:297
 msgid "Other users are logged in"
 msgstr "Drugi korisnici su prijavljeni"
 
-#: js/ui/endSessionDialog.js:468
+#: js/ui/endSessionDialog.js:467
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Opcije podizanja"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:673
+#: js/ui/endSessionDialog.js:672
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (udaljeno)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:676
+#: js/ui/endSessionDialog.js:675
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (ljuska)"
 
-#: js/ui/extensionDownloader.js:282
+#: js/ui/extensionDownloader.js:280
 msgid "Install"
 msgstr "Instaliraj"
 
-#: js/ui/extensionDownloader.js:288
+#: js/ui/extensionDownloader.js:286
 msgid "Install Extension"
 msgstr "Instaliraj proširenje"
 
-#: js/ui/extensionDownloader.js:289
+#: js/ui/extensionDownloader.js:287
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Da preuzmem i da instaliram „%s“ sa „extensions.gnome.org“-a?"
@@ -1595,8 +1859,8 @@ msgid "Extension Updates Available"
 msgstr "Dostupna su ažuriranja proširenja"
 
 #: js/ui/extensionSystem.js:355
-msgid "Extension updates are ready to be installed."
-msgstr "Ažuriranja proširenja su dostupna za instaliranje."
+msgid "Extension updates are ready to be installed"
+msgstr "Ažuriranja proširenja su dostupna za instaliranje"
 
 #: js/ui/inhibitShortcutsDialog.js:70
 msgid "Allow inhibiting shortcuts"
@@ -1615,8 +1879,8 @@ msgstr "Program želi da spreči prečice"
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:81
 #, javascript-format
-msgid "You can restore shortcuts by pressing %s."
-msgstr "Možete povratiti prečice pritiskom na „%s“."
+msgid "You can restore shortcuts by pressing %s"
+msgstr "Možete povratiti prečice pritiskom na „%s“"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid "Slow Keys Turned On"
@@ -1676,81 +1940,77 @@ msgstr "Isključi"
 msgid "Leave Off"
 msgstr "Ostavi isključeno"
 
-#: js/ui/keyboard.js:181 js/ui/status/keyboard.js:899
+#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:901
 msgid "Keyboard Settings"
 msgstr "Podešavanja tastature"
 
-#: js/ui/lookingGlass.js:724
+#: js/ui/lookingGlass.js:742
 msgid "No extensions installed"
 msgstr "Nisu instalirana proširenja"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:785
+#: js/ui/lookingGlass.js:805
 #, javascript-format
-msgid "%s has not emitted any errors."
-msgstr "%s nije objavio nikakve greške."
+msgid "%s has not emitted any errors"
+msgstr "%s nije objavio nikakve greške"
 
-#: js/ui/lookingGlass.js:791
+#: js/ui/lookingGlass.js:811
 msgid "Hide Errors"
 msgstr "Sakrij greške"
 
-#: js/ui/lookingGlass.js:795 js/ui/lookingGlass.js:872
+#: js/ui/lookingGlass.js:815 js/ui/lookingGlass.js:895
 msgid "Show Errors"
 msgstr "Prikažite greške"
 
-#: js/ui/lookingGlass.js:804
+#: js/ui/lookingGlass.js:824
 msgid "Active"
 msgstr "Aktivna"
 
-#: js/ui/lookingGlass.js:807
+#: js/ui/lookingGlass.js:827
 msgid "Inactive"
 msgstr "Neaktivna"
 
-#: js/ui/lookingGlass.js:809
+#: js/ui/lookingGlass.js:829
 msgid "Error"
 msgstr "Greška"
 
-#: js/ui/lookingGlass.js:811
+#: js/ui/lookingGlass.js:831
 msgid "Out of date"
 msgstr "Izvan datuma"
 
-#: js/ui/lookingGlass.js:813
+#: js/ui/lookingGlass.js:833
 msgid "Downloading"
 msgstr "Preuzimam"
 
-#: js/ui/lookingGlass.js:815
+#: js/ui/lookingGlass.js:835
 msgid "Deactivating"
 msgstr "Isključivanje"
 
-#: js/ui/lookingGlass.js:817
+#: js/ui/lookingGlass.js:837
 msgid "Activating"
 msgstr "Uključivanje"
 
-#: js/ui/lookingGlass.js:850
+#: js/ui/lookingGlass.js:873
 msgid "View Source"
 msgstr "Prikaži kod"
 
-#: js/ui/lookingGlass.js:861
+#: js/ui/lookingGlass.js:884
 msgid "Web Page"
 msgstr "Veb stranica"
 
-#: js/ui/main.js:279
+#: js/ui/main.js:312
 msgid "System was put in unsafe mode"
 msgstr "Sistem je postavljen u nebezbedan režim"
 
-#: js/ui/main.js:280
+#: js/ui/main.js:313
 msgid "Apps now have unrestricted access"
 msgstr "Programi sada imaju neograničen pristup"
 
-#: js/ui/main.js:283 js/ui/overview.js:54
-msgid "Undo"
-msgstr "Opozovi"
-
-#: js/ui/main.js:340
+#: js/ui/main.js:373
 msgid "Logged in as a privileged user"
 msgstr "Prijavljen kao povlašćen korisnik"
 
-#: js/ui/main.js:341
+#: js/ui/main.js:374
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1758,30 +2018,30 @@ msgstr ""
 "Pokretanje sesije pod povlašćenim korisničkim nalogom treba izbegavati iz "
 "bezbednosnih razloga. Ako je to moguće, prijavite se kao običan korisnik."
 
-#: js/ui/main.js:389
+#: js/ui/main.js:422
 msgid "Screen Lock disabled"
 msgstr "Zaključavanje ekrana onemogućeno"
 
-#: js/ui/main.js:390
-msgid "Screen Locking requires the GNOME display manager."
-msgstr "Potreban je Gnomov upravnik ekrana za mogućnost zaključavanja ekrana."
+#: js/ui/main.js:423
+msgid "Screen Locking requires the GNOME display manager"
+msgstr "Potreban je Gnomov upravnik ekrana za mogućnost zaključavanja ekrana"
 
 # msgctxt "program"
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:400
+#: js/ui/messageList.js:409
 msgid "Unknown App"
 msgstr "Nepoznat program"
 
-#: js/ui/messageTray.js:328 js/ui/messageTray.js:330
+#: js/ui/messageTray.js:325 js/ui/messageTray.js:327
 msgid "Notification sound"
 msgstr "Zvuk obaveštenja"
 
-#: js/ui/mpris.js:198
+#: js/ui/mpris.js:144
 msgid "Unknown artist"
 msgstr "Nepoznat izvođač"
 
-#: js/ui/mpris.js:208
+#: js/ui/mpris.js:154
 msgid "Unknown title"
 msgstr "Nepoznat naslov"
 
@@ -1789,241 +2049,240 @@ msgstr "Nepoznat naslov"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:342
+#: js/ui/overviewControls.js:328
 msgid "Type to search"
 msgstr "Upišite željeno"
 
-#: js/ui/overviewControls.js:406
+#: js/ui/overviewControls.js:392
 msgid "Apps"
 msgstr "Programi"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:67
+#: js/ui/overview.js:33
 msgid "Overview"
 msgstr "Pregled"
 
-#: js/ui/padOsd.js:100
+#: js/ui/padOsd.js:98
 msgid "New shortcut…"
 msgstr "Nova prečica…"
 
-#: js/ui/padOsd.js:153
+#: js/ui/padOsd.js:151
 msgid "App defined"
 msgstr "Definisani program"
 
-#: js/ui/padOsd.js:154
+#: js/ui/padOsd.js:152
 msgid "Show on-screen help"
 msgstr "Prikaži pomoć na ekranu"
 
-#: js/ui/padOsd.js:155
+#: js/ui/padOsd.js:153
 msgid "Switch monitor"
 msgstr "Promeni monitor"
 
-#: js/ui/padOsd.js:156
+#: js/ui/padOsd.js:154
 msgid "Assign keystroke"
 msgstr "Dodeli taster"
 
-#: js/ui/padOsd.js:225
+#: js/ui/padOsd.js:223
 msgid "Done"
 msgstr "Gotovo"
 
-#: js/ui/padOsd.js:728
+#: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "Uredi…"
 
-#: js/ui/padOsd.js:775
+#: js/ui/padOsd.js:791
 msgid "None"
 msgstr "Ništa"
 
-#: js/ui/padOsd.js:846
+#: js/ui/padOsd.js:868
 msgid "Press a button to configure"
 msgstr "Pritisnite dugme da podesite"
 
-#: js/ui/padOsd.js:847
+#: js/ui/padOsd.js:869
 msgid "Press Esc to exit"
 msgstr "Pritisnite „Esc“ da izađete"
 
-#: js/ui/padOsd.js:850
+#: js/ui/padOsd.js:872
 msgid "Press any key to exit"
 msgstr "Pritisnite neki taster da izađete"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:425
+#: js/ui/panel.js:208
 msgid "Activities"
 msgstr "Aktivnosti"
 
-#: js/ui/panel.js:506
+#: js/ui/panel.js:289
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:680
+#: js/ui/panel.js:465
 msgid "Top Bar"
 msgstr "Gornja traka"
 
-#: js/ui/quickSettings.js:187
+#: js/ui/quickSettings.js:164 js/ui/quickSettings.js:263
 msgid "Open menu"
 msgstr "Otvori meni"
 
-#: js/ui/runDialog.js:63
+#: js/ui/runDialog.js:61
 msgid "Run a Command"
 msgstr "Pokreni naredbu"
 
-#: js/ui/runDialog.js:78
+#: js/ui/runDialog.js:79
 msgid "Press ESC to close"
 msgstr "Pritisni Esc za izlazak"
 
-#: js/ui/runDialog.js:243
+#: js/ui/runDialog.js:256
 msgid "Restart is not available on Wayland"
 msgstr "Ponovno pokretanje nije dostupno na Vejlandu"
 
-#: js/ui/runDialog.js:248
+#: js/ui/runDialog.js:261
 msgid "Restarting…"
 msgstr "Ponovno pokrećem…"
 
-#: js/ui/screenShield.js:235
+#: js/ui/screenShield.js:233
 msgid "GNOME needs to lock the screen"
 msgstr "Gnom mora da zaključa ekran"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:669
+#: js/ui/screenShield.js:274 js/ui/screenShield.js:682
 msgid "Unable to lock"
 msgstr "Ne mogu da zaključam"
 
-#: js/ui/screenShield.js:277 js/ui/screenShield.js:670
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:683
 msgid "Lock was blocked by an app"
 msgstr "Program je blokirao zaključavanje"
 
-#: js/ui/screenshot.js:1254
+#. Translators: notification source name for screenshots and recordings.
+#: js/ui/screenshot.js:40
+msgid "Screen Capture"
+msgstr "Snimanje ekrana"
+
+#: js/ui/screenshot.js:1268
 msgid "Selection"
 msgstr "Izbor"
 
-#: js/ui/screenshot.js:1264
+#: js/ui/screenshot.js:1278
 msgid "Area Selection"
 msgstr "Izbor oblasti"
 
-#: js/ui/screenshot.js:1269
+#: js/ui/screenshot.js:1283
 msgid "Screen"
 msgstr "Ekran"
 
-#: js/ui/screenshot.js:1279
+#: js/ui/screenshot.js:1293
 msgid "Screen Selection"
 msgstr "Izbor ekrana"
 
-#: js/ui/screenshot.js:1284
+#: js/ui/screenshot.js:1298
 msgid "Window"
 msgstr "Prozor"
 
-#: js/ui/screenshot.js:1294
+#: js/ui/screenshot.js:1308
 msgid "Window Selection"
 msgstr "Izbor prozora"
 
-#. Translators: entry in the window right click menu.
-#: js/ui/screenshot.js:1319 js/ui/status/system.js:113 js/ui/windowMenu.js:30
+#: js/ui/screenshot.js:1333 js/ui/status/system.js:118
 msgid "Take Screenshot"
 msgstr "Napravi snimak ekrana"
 
-#: js/ui/screenshot.js:1335
+#: js/ui/screenshot.js:1349
 msgid "Record Screen"
 msgstr "Snimi ekran"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1352
+#: js/ui/screenshot.js:1366
 msgid "Capture"
 msgstr "Usnimi"
 
-#: js/ui/screenshot.js:1374
+#: js/ui/screenshot.js:1388
 msgid "Show Pointer"
 msgstr "Pokaži pokazivač"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1998
+#: js/ui/screenshot.js:2016
 msgid "Screencasts"
 msgstr "Video snimci"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
-#. * "Screencast from 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2003
+#. * "Screencast From 07-17-2013 10:00:46 PM"
+#: js/ui/screenshot.js:2021
 #, no-c-format
-msgid "Screencast from %d %t"
-msgstr "Video snimak napravljen dana %d %t.webm"
+msgid "Screencast From %d %t"
+msgstr "Video snimak od %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2049
+#: js/ui/screenshot.js:2067
 msgid "Screencast recorded"
 msgstr "Video snimak napravljen"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2062
+#: js/ui/screenshot.js:2080
 msgid "Screencast failed to start"
 msgstr "Video snimanje neuspelo"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2068
+#: js/ui/screenshot.js:2086
 msgid "Screencast ended: Out of disk space"
 msgstr "Snimanje ekrana je prekinuto: Nema slobodnog prostora na disku"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2074
+#: js/ui/screenshot.js:2092
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "Snimanje ekrana je prekinuto neočekivano, molim Vas pokušajte ponovo"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2077
+#: js/ui/screenshot.js:2095
 msgid "Screencast ended unexpectedly"
 msgstr "Snimanje ekrana je prekinuto neočekivano"
 
-#. Translators: notification source name.
-#: js/ui/screenshot.js:2087 js/ui/screenshot.js:2329
-msgid "Screenshot"
-msgstr "Snimak ekrana"
-
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2094
-msgid "Click here to view the video."
-msgstr "Kliknite ovde za pregled videa."
+#: js/ui/screenshot.js:2108
+msgid "Click here to view the video"
+msgstr "Kliknite ovde za pregled videa"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2102 js/ui/screenshot.js:2345
+#: js/ui/screenshot.js:2116 js/ui/screenshot.js:2359
 msgid "Show in Files"
 msgstr "Prikaži u Datotekama"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2289
+#: js/ui/screenshot.js:2305
 #, javascript-format
-msgid "Screenshot from %s"
-msgstr "Snimak ekrana napravljen dana %s"
+msgid "Screenshot From %s"
+msgstr "Snimak ekrana od %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2335
+#: js/ui/screenshot.js:2349
 msgid "Screenshot captured"
 msgstr "Snimak ekrana napravljen"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2337
-msgid "You can paste the image from the clipboard."
-msgstr "Možete ubaciti sliku iz ostave."
+#: js/ui/screenshot.js:2351
+msgid "You can paste the image from the clipboard"
+msgstr "Možete ubaciti sliku iz ostave"
 
-#: js/ui/screenshot.js:2393 js/ui/screenshot.js:2557
+#: js/ui/screenshot.js:2409 js/ui/screenshot.js:2571
 msgid "Screenshot taken"
 msgstr "Napravljen je snimak ekrana"
 
-#: js/ui/search.js:831
-msgid "Searching…"
-msgstr "Tražim…"
+#: js/ui/search.js:847
+msgid "Searching"
+msgstr "Tražim"
 
-#: js/ui/search.js:833
-msgid "No results."
-msgstr "Nema odgovarajućih rezultata."
+#: js/ui/search.js:850
+msgid "No results"
+msgstr "Nema rezultata"
 
-#: js/ui/search.js:964
+#: js/ui/search.js:982
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2032,127 +2291,123 @@ msgstr[1] "Još %d"
 msgstr[2] "Još %d"
 msgstr[3] "Još jedan"
 
-#: js/ui/searchController.js:89
+#: js/ui/searchController.js:87
 #: subprojects/extensions-app/data/ui/extensions-window.ui:73
 msgid "Search"
 msgstr "Traži"
 
-#: js/ui/shellEntry.js:23
+#: js/ui/shellEntry.js:21
 msgid "Copy"
 msgstr "Umnoži"
 
-#: js/ui/shellEntry.js:28
+#: js/ui/shellEntry.js:26
 msgid "Paste"
 msgstr "Ubaci"
 
-#: js/ui/shellEntry.js:80
+#: js/ui/shellEntry.js:78
 msgid "Show Text"
 msgstr "Prikaži tekst"
 
-#: js/ui/shellEntry.js:82
+#: js/ui/shellEntry.js:80
 msgid "Hide Text"
 msgstr "Sakrij tekst"
 
-#: js/ui/shellEntry.js:176
-msgid "Caps lock is on."
-msgstr "Taster za velika slova je pritisnut."
+#: js/ui/shellEntry.js:174
+msgid "Caps lock is on"
+msgstr "Uključena su velika slova"
 
-#: js/ui/shellMountOperation.js:288
+#: js/ui/shellMountOperation.js:286
 msgid "Hidden Volume"
 msgstr "Skriveni volumen"
 
-#: js/ui/shellMountOperation.js:291
+#: js/ui/shellMountOperation.js:289
 msgid "Windows System Volume"
 msgstr "Vindous sistemski volumen"
 
-#: js/ui/shellMountOperation.js:294
+#: js/ui/shellMountOperation.js:292
 msgid "Uses Keyfiles"
 msgstr "Koristi ključ-datoteke"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:302
+#: js/ui/shellMountOperation.js:300
 #, javascript-format
 msgid ""
-"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
 msgstr ""
 "Da biste otključali volumen koji koristi ključ-datoteke, koristite alatku "
-"<i>%s</i>."
+"<i>%s</i>"
 
-#: js/ui/shellMountOperation.js:306
+#: js/ui/shellMountOperation.js:304
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
-"keyfiles."
+"keyfiles"
 msgstr ""
 "Potreban vam je spoljni alat kao što su to <i>Diskovi</i> za otključavanje "
-"volumena koji koriste ključ-datoteke."
+"volumena koji koriste ključ-datoteke"
 
-#: js/ui/shellMountOperation.js:314
+#: js/ui/shellMountOperation.js:312
 msgid "PIM Number"
 msgstr "LIČ (PIM) broj"
 
-#: js/ui/shellMountOperation.js:373
+#: js/ui/shellMountOperation.js:371
 msgid "Remember Password"
 msgstr "Zapamti lozinku"
 
-#: js/ui/shellMountOperation.js:388
+#: js/ui/shellMountOperation.js:386
 msgid "Unlock"
 msgstr "Otključaj"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:402
+#: js/ui/shellMountOperation.js:400
 #, javascript-format
 msgid "Open %s"
 msgstr "Otvori programom %s"
 
-#: js/ui/shellMountOperation.js:438
-msgid "The PIM must be a number or empty."
-msgstr "LIČ (PIM) mora biti broj ili prazno."
+#: js/ui/shellMountOperation.js:436
+msgid "The PIM must be a number or empty"
+msgstr "LIČ (PIM) mora biti broj ili prazno"
 
-#: js/ui/status/accessibility.js:36
-msgid "Accessibility"
-msgstr "Pristupačnost"
-
-#: js/ui/status/accessibility.js:46
+#: js/ui/status/accessibility.js:45 js/ui/status/accessibility.js:155
 msgid "High Contrast"
 msgstr "Veliki kontrast"
 
-#: js/ui/status/accessibility.js:49
+#: js/ui/status/accessibility.js:48 js/ui/status/accessibility.js:171
 msgid "Zoom"
 msgstr "Zumiraj"
 
-#: js/ui/status/accessibility.js:56
+#: js/ui/status/accessibility.js:55 js/ui/status/accessibility.js:223
 msgid "Screen Reader"
 msgstr "Čitač ekrana"
 
-#: js/ui/status/accessibility.js:60
+#: js/ui/status/accessibility.js:59 js/ui/status/accessibility.js:239
 msgid "Screen Keyboard"
 msgstr "Tastatura na ekranu"
 
-#: js/ui/status/accessibility.js:64
+#: js/ui/status/accessibility.js:63 js/ui/status/accessibility.js:255
 msgid "Visual Alerts"
 msgstr "Vizuelna upozorenja"
 
-#: js/ui/status/accessibility.js:68
+#: js/ui/status/accessibility.js:67 js/ui/status/accessibility.js:271
 msgid "Sticky Keys"
 msgstr "Lepljivi tasteri"
 
-#: js/ui/status/accessibility.js:72
+#: js/ui/status/accessibility.js:71 js/ui/status/accessibility.js:287
 msgid "Slow Keys"
 msgstr "Spori tasteri"
 
-#: js/ui/status/accessibility.js:76
+#: js/ui/status/accessibility.js:75 js/ui/status/accessibility.js:303
 msgid "Bounce Keys"
 msgstr "Odskočni tasteri"
 
-#: js/ui/status/accessibility.js:80
+#: js/ui/status/accessibility.js:79 js/ui/status/accessibility.js:319
 msgid "Mouse Keys"
 msgstr "Tasteri miša"
 
-#: js/ui/status/accessibility.js:85
+#: js/ui/status/accessibility.js:84
 msgid "Accessibility Settings"
 msgstr "Podešavanja pristupačnosti"
 
-#: js/ui/status/accessibility.js:142
+#: js/ui/status/accessibility.js:124 js/ui/status/accessibility.js:187
 msgid "Large Text"
 msgstr "Veliki tekst"
 
@@ -2186,48 +2441,68 @@ msgstr[1] "%d pozadinska programa"
 msgstr[2] "%d pozadinskih programa"
 msgstr[3] "Jedan pozadinski program"
 
-#: js/ui/status/backlight.js:40
+#: js/ui/status/backlight.js:39
 msgid "Keyboard Brightness"
 msgstr "Osvetljenost tastature"
 
-#: js/ui/status/backlight.js:80
+#: js/ui/status/backlight.js:87
 msgid "Off"
 msgstr "Isklj."
 
-#: js/ui/status/backlight.js:81
+#: js/ui/status/backlight.js:88
 msgid "Low"
 msgstr "Nizak"
 
-#: js/ui/status/backlight.js:82
+#: js/ui/status/backlight.js:89
 msgid "High"
 msgstr "Visok"
 
-#: js/ui/status/backlight.js:148 js/ui/status/keyboard.js:881
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:883
 msgid "Keyboard"
 msgstr "Tastatura"
+
+#: js/ui/status/backlight.js:164
+msgid "Open keyboard brightness menu"
+msgstr "Otvara meni za osvetljenost tastature"
 
 #: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
 msgid "Disconnect"
 msgstr "Otkači"
 
-#: js/ui/status/bluetooth.js:263 js/ui/status/bluetooth.js:265
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:354
+#, javascript-format
+msgid "Disconnect %s"
+msgstr "Otkači %s"
+
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/bluetooth.js:269 js/ui/status/network.js:356
+#, javascript-format
+msgid "Connect to %s"
+msgstr "Poveži %s"
+
+#: js/ui/status/bluetooth.js:277 js/ui/status/bluetooth.js:281
 msgid "Bluetooth"
 msgstr "Blutut"
 
-#: js/ui/status/bluetooth.js:288 js/ui/status/network.js:1900
+#: js/ui/status/bluetooth.js:278
+msgid "Open Bluetooth menu"
+msgstr "Otvara meni za blutut"
+
+#: js/ui/status/bluetooth.js:304 js/ui/status/network.js:1925
 msgid "Bluetooth Settings"
 msgstr "Podešavanja Blututa"
 
-#: js/ui/status/bluetooth.js:335
+#: js/ui/status/bluetooth.js:351
 msgid "No available or connected devices"
 msgstr "Nema dostupnih ili priključenih uređaja"
 
-#: js/ui/status/bluetooth.js:336
+#: js/ui/status/bluetooth.js:352
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Uključite blutut da biste se povezali na uređaje"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:390
+#: js/ui/status/bluetooth.js:416
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2236,13 +2511,17 @@ msgstr[1] "%d povezana"
 msgstr[2] "%d povezano"
 msgstr[3] "%d povezan"
 
-#: js/ui/status/brightness.js:34
-msgid "Brightness"
-msgstr "Osvetljenost"
+#: js/ui/status/brightness.js:42
+msgid "Open brightness menu"
+msgstr "Otvara meni za osvetljenost"
 
 #: js/ui/status/darkMode.js:12
 msgid "Dark Style"
 msgstr "Tamni stil"
+
+#: js/ui/status/doNotDisturb.js:10
+msgid "Do Not Disturb"
+msgstr "Ne uznemiravaj"
 
 #: js/ui/status/dwellClick.js:15
 msgid "Single Click"
@@ -2264,31 +2543,30 @@ msgstr "Sekundarni klik"
 msgid "Dwell Click"
 msgstr "Duži klik"
 
-#: js/ui/status/keyboard.js:898
+#: js/ui/status/keyboard.js:900
 msgid "Show Keyboard Layout"
 msgstr "Pokaži raspored tastature"
 
-#: js/ui/status/location.js:339
+#: js/ui/status/location.js:337
 msgid "Allow location access"
 msgstr "Dozvoli pristup mestu"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:341
+#: js/ui/status/location.js:339
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "Program %s želi da pristupi vašem mestu"
 
-#: js/ui/status/location.js:351
-msgid "Location access can be changed at any time from the privacy settings."
+#: js/ui/status/location.js:349
+msgid "Location access can be changed at any time from the privacy settings"
 msgstr ""
-"Pristup mestu možete da izmenite u bilo koje vreme u podešavanjima "
-"privatnosti."
+"Pristup mestu možete da izmenite u bilo koje vreme u podešavanjima privatnosti"
 
-#: js/ui/status/location.js:359
+#: js/ui/status/location.js:357
 msgid "Deny Access"
 msgstr "Zabrani pristup"
 
-#: js/ui/status/location.js:364
+#: js/ui/status/location.js:362
 msgid "Grant Access"
 msgstr "Dozvoli pristup"
 
@@ -2296,44 +2574,32 @@ msgstr "Dozvoli pristup"
 msgid "<unknown>"
 msgstr "<nepoznato>"
 
-#. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:354
-#, javascript-format
-msgid "Disconnect %s"
-msgstr "Otkači %s"
-
-#. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/network.js:356
-#, javascript-format
-msgid "Connect to %s"
-msgstr "Poveži %s"
-
-#: js/ui/status/network.js:1050
+#: js/ui/status/network.js:1060
 msgid "Secure"
 msgstr "Bezbedno"
 
-#: js/ui/status/network.js:1050
+#: js/ui/status/network.js:1060
 msgid "Not secure"
 msgstr "Nije bezbedno"
 
-#: js/ui/status/network.js:1051
+#: js/ui/status/network.js:1061
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Jačina signala %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1053
+#: js/ui/status/network.js:1063
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1155
+#: js/ui/status/network.js:1166
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s hotspot"
 
-#: js/ui/status/network.js:1426
+#: js/ui/status/network.js:1447
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
@@ -2342,134 +2608,166 @@ msgstr[1] "%d povezana"
 msgstr[2] "%d povezanih"
 msgstr[3] "%d povezan"
 
-#: js/ui/status/network.js:1524 js/ui/status/network.js:1540
+#: js/ui/status/network.js:1545 js/ui/status/network.js:1562
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1525
+#: js/ui/status/network.js:1546
+msgid "Open VPN menu"
+msgstr "Otvara meni za BPN"
+
+#: js/ui/status/network.js:1547
 msgid "VPN Settings"
 msgstr "VPN podešavanja"
 
-#: js/ui/status/network.js:1785
+#: js/ui/status/network.js:1807
 msgid "Wi–Fi"
 msgstr "Bežična"
 
-#: js/ui/status/network.js:1787
+#: js/ui/status/network.js:1808
+msgid "Open Wi–Fi menu"
+msgstr "Otvara meni za bežičnu mrežu"
+
+#: js/ui/status/network.js:1810
 msgid "All Networks"
 msgstr "Sve mreže"
 
-#: js/ui/status/network.js:1884
+#: js/ui/status/network.js:1907
 msgid "Wired Connections"
 msgstr "Žičane veze"
 
-#: js/ui/status/network.js:1885
+#: js/ui/status/network.js:1908
+msgid "Open wired connections menu"
+msgstr "Otvara meni za žičanu mrežu"
+
+#: js/ui/status/network.js:1909
 msgid "Wired Settings"
 msgstr "Podešavanja žičane veze"
 
-#: js/ui/status/network.js:1899
+#: js/ui/status/network.js:1923
 msgid "Bluetooth Tethers"
-msgstr "Doseg Blututa"
+msgstr "Blutut povezivanje"
+
+#: js/ui/status/network.js:1924
+msgid "Open Bluetooth tethers menu"
+msgstr "Otvara meni za povezivanje preko blututa"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1906
+#: js/ui/status/network.js:1931
 msgid "Tether"
 msgstr "Teterovanje"
 
-#: js/ui/status/network.js:1919
+#: js/ui/status/network.js:1944
 msgid "Mobile Connections"
 msgstr "Mobilne veze"
 
-#: js/ui/status/network.js:1921
+#: js/ui/status/network.js:1945
+msgid "Open mobile connections menu"
+msgstr "Otvara meni za mobilne veze"
+
+#: js/ui/status/network.js:1947
 msgid "Mobile Broadband Settings"
 msgstr "Podešavanja mobilne širokopojasne veze"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1930
+#: js/ui/status/network.js:1956
 msgid "Mobile"
 msgstr "Mobilna"
 
-#: js/ui/status/network.js:2035
+#: js/ui/status/network.js:1990
+msgid "Sign in to Network"
+msgstr "Prijavite se na mrežu"
+
+#: js/ui/status/network.js:2177
 msgid "Connection failed"
 msgstr "Povezivanje nije uspelo"
 
-#: js/ui/status/network.js:2036
+#: js/ui/status/network.js:2178
 msgid "Activation of network connection failed"
 msgstr "Aktiviranje mrežne veze nije uspelo"
 
-#: js/ui/status/nightLight.js:21
+#: js/ui/status/nightLight.js:19
 msgid "Night Light"
 msgstr "Noćno svetlo"
 
-#: js/ui/status/powerProfiles.js:21
+#: js/ui/status/powerProfiles.js:19
 msgctxt "Power profile"
 msgid "Performance"
 msgstr "Najbrže"
 
-#: js/ui/status/powerProfiles.js:26
+#: js/ui/status/powerProfiles.js:24
 msgctxt "Power profile"
 msgid "Balanced"
 msgstr "Uravnoteženo"
 
-#: js/ui/status/powerProfiles.js:31
+#: js/ui/status/powerProfiles.js:29
 msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Čuvanje baterije"
 
-#: js/ui/status/powerProfiles.js:41 js/ui/status/powerProfiles.js:71
+#: js/ui/status/powerProfiles.js:35
+msgctxt "Power profile"
+msgid "Custom"
+msgstr "Proizvoljno"
+
+#: js/ui/status/powerProfiles.js:45 js/ui/status/powerProfiles.js:77
 msgid "Power Mode"
 msgstr "Režim napajanja"
 
-#: js/ui/status/powerProfiles.js:73
+#: js/ui/status/powerProfiles.js:46
+msgid "Open power profiles menu"
+msgstr "Otvara meni za profile napajanja"
+
+#: js/ui/status/powerProfiles.js:79
 msgid "Power Settings"
 msgstr "Podešavanja napajanja"
 
-#: js/ui/status/remoteAccess.js:76
+#: js/ui/status/remoteAccess.js:74
 msgid "Stop Screencast"
 msgstr "Zaustavi snimanje"
 
-#: js/ui/status/remoteAccess.js:146
+#: js/ui/status/remoteAccess.js:144
 msgid "Stop Screen Sharing"
 msgstr "Zaustavi deljenje ekrana"
 
-#: js/ui/status/rfkill.js:101
+#: js/ui/status/rfkill.js:97
 msgid "Airplane Mode"
 msgstr "Režim u avionu"
 
-#: js/ui/status/system.js:170
+#: js/ui/status/system.js:175
 msgid "Power Off Menu"
 msgstr "Meni gašenja"
 
-#: js/ui/status/system.js:178
+#: js/ui/status/system.js:183
 msgid "Suspend"
 msgstr "Obustavi"
 
-#: js/ui/status/system.js:183
+#: js/ui/status/system.js:188
 msgid "Restart…"
 msgstr "Ponovo pokreni…"
 
-#: js/ui/status/system.js:188
+#: js/ui/status/system.js:193
 msgid "Power Off…"
 msgstr "Isključi…"
 
-#: js/ui/status/system.js:195
-#: subprojects/extensions-app/data/ui/extensions-window.ui:124
+#: js/ui/status/system.js:200
 msgid "Log Out…"
 msgstr "Odjava…"
 
-#: js/ui/status/system.js:200
+#: js/ui/status/system.js:205
 msgid "Switch User…"
 msgstr "Promeni korisnika…"
 
-#: js/ui/status/system.js:244
+#: js/ui/status/system.js:249
 msgctxt "action"
 msgid "Lock Screen"
 msgstr "Zaključaj ekran"
 
-#: js/ui/status/thunderbolt.js:310
+#: js/ui/status/thunderbolt.js:311
 msgid "Unknown Thunderbolt device"
 msgstr "Nepoznat Tanderbolt uređaj"
 
-#: js/ui/status/thunderbolt.js:311
+#: js/ui/status/thunderbolt.js:312
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2477,140 +2775,144 @@ msgstr ""
 "Novi uređaj je uočen dok niste bili tu. Ponovo povežite uređaj da biste "
 "počeli da ga koristite."
 
-#: js/ui/status/thunderbolt.js:314
+#: js/ui/status/thunderbolt.js:315
 msgid "Unauthorized Thunderbolt device"
 msgstr "Neovlašćeni Tanderbolt uređaj"
 
-#: js/ui/status/thunderbolt.js:315
+#: js/ui/status/thunderbolt.js:316
 msgid ""
-"New device has been detected and needs to be authorized by an administrator."
+"New device has been detected and needs to be authorized by an administrator"
 msgstr ""
-"Uočen je novi uređaj i potrebno je da administrator ovlasti njegovu upotrebu."
+"Uočen je novi uređaj i potrebno je da administrator ovlasti njegovu upotrebu"
 
-#: js/ui/status/thunderbolt.js:321
+#: js/ui/status/thunderbolt.js:322
 msgid "Thunderbolt authorization error"
 msgstr "Greška u ovlašćivanju Tanderbolta"
 
-#: js/ui/status/thunderbolt.js:322
+#: js/ui/status/thunderbolt.js:323
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Ne mogu da ovlastim Tanderbolt uređaj: %s"
 
-#: js/ui/status/volume.js:220
+#: js/ui/status/volume.js:218
 msgid "Volume changed"
 msgstr "Promena jačine zvuka"
 
-#: js/ui/status/volume.js:233
+#: js/ui/status/volume.js:231
 msgid "Unmute"
 msgstr "Uključi ton"
 
-#: js/ui/status/volume.js:233
+#: js/ui/status/volume.js:231
 msgid "Mute"
 msgstr "Utišaj"
 
-#: js/ui/status/volume.js:288
+#: js/ui/status/volume.js:293
 msgid "Volume"
 msgstr "Jačina zvuka"
 
-#: js/ui/status/volume.js:304
+#: js/ui/status/volume.js:309
 msgid "Sound Output"
 msgstr "Zvučni izlaz"
 
-#: js/ui/status/volume.js:376
+#: js/ui/status/volume.js:310
+msgid "Open sound output menu"
+msgstr "Otvara meni za zvučni izlaz"
+
+#: js/ui/status/volume.js:385
 msgid "Sound Input"
 msgstr "Zvučni ulaz"
+
+#: js/ui/status/volume.js:386
+msgid "Open sound input menu"
+msgstr "Otvara meni za ulazni zvuk"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:22
+#: js/ui/switchMonitor.js:20
 msgid "Mirror"
 msgstr "Preslikaj"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:31
+#: js/ui/switchMonitor.js:29
 msgid "Join Displays"
 msgstr "Spoji ekrane"
 
 #. Translators: this is for using only external displays.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:41
+#: js/ui/switchMonitor.js:39
 msgid "External Only"
 msgstr "Samo spoljni"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:49
+#: js/ui/switchMonitor.js:47
 msgid "Built-in Only"
 msgstr "Samo ugrađeni"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:374
+#: js/ui/unlockDialog.js:414
 msgid "%A %B %-d"
 msgstr "%A, %-d. %B"
 
-#: js/ui/unlockDialog.js:380
+#: js/ui/unlockDialog.js:420
 msgid "Swipe up to unlock"
 msgstr "Prevuci za otključavanje"
 
-#: js/ui/unlockDialog.js:381
+#: js/ui/unlockDialog.js:421
 msgid "Click or press a key to unlock"
 msgstr "Klikni ili pritisni taster za otključavanje"
 
-#: js/ui/unlockDialog.js:564
+#: js/ui/unlockDialog.js:609
 msgid "Unlock Window"
 msgstr "Otključaj prozor"
 
-#: js/ui/unlockDialog.js:573
+#: js/ui/unlockDialog.js:618
 msgid "Log in as another user"
 msgstr "Prijavite se kao drugi korisnik"
 
-#: js/ui/welcomeDialog.js:49
+#: js/ui/welcomeDialog.js:47
 #, javascript-format
 msgid "GNOME %s"
 msgstr "Gnom %s"
 
-#: js/ui/welcomeDialog.js:53
+#: js/ui/welcomeDialog.js:51
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "Dobro došli u %s"
 
-#: js/ui/welcomeDialog.js:54
-msgid "If you want to learn your way around, check out the tour."
-msgstr "Ako želite da saznate više o upotrebi, pogledajte obilazak."
+#: js/ui/welcomeDialog.js:52
+msgid "If you want to learn your way around, check out the tour"
+msgstr "Ako želite da saznate više o upotrebi, pogledajte obilazak"
 
-#: js/ui/welcomeDialog.js:63
-msgid "Skip"
-msgstr "Preskoči"
-
-#: js/ui/welcomeDialog.js:68
+#: js/ui/welcomeDialog.js:66
 msgid "Take Tour"
 msgstr "Započni obilazak"
 
-#: js/ui/windowAttentionHandler.js:20
+#: js/ui/windowAttentionHandler.js:18
 #, javascript-format
 msgid "“%s” is ready"
 msgstr "„%s“ je spreman"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:69
+#: js/ui/windowManager.js:60
 msgid "Keep these display settings?"
 msgstr "Zadržati podešavanja ekrana?"
 
-#: js/ui/windowManager.js:79
+#: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "Vrati podešavanja"
 
-#: js/ui/windowManager.js:84
+#: js/ui/windowManager.js:75
 msgid "Keep Changes"
 msgstr "Zadrži izmene"
 
-#: js/ui/windowManager.js:104
+#: js/ui/windowManager.js:95
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2621,114 +2923,116 @@ msgstr[3] "Izmene podešavanja će biti vraćene za %d sekundu"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:496
+#: js/ui/windowManager.js:492
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: js/ui/windowMenu.js:42
+#. Translators: entry in the window right click menu.
+#: js/ui/windowMenu.js:27
+msgctxt "window-menu"
+msgid "Take Screenshot"
+msgstr "Napravi snimak ekrana"
+
+#: js/ui/windowMenu.js:39
 msgid "Hide"
 msgstr "Sakrij"
 
-#: js/ui/windowMenu.js:49
+#: js/ui/windowMenu.js:46
 msgid "Restore"
 msgstr "Povrati"
 
-#: js/ui/windowMenu.js:53
+#: js/ui/windowMenu.js:50
 msgid "Maximize"
 msgstr "Uvećaj"
 
-#: js/ui/windowMenu.js:60
+#: js/ui/windowMenu.js:57
 msgid "Move"
 msgstr "Premesti"
 
-#: js/ui/windowMenu.js:80
+#: js/ui/windowMenu.js:71
 msgid "Resize"
 msgstr "Promeni veličinu"
 
-#: js/ui/windowMenu.js:101
-msgid "Move Titlebar Onscreen"
-msgstr "Premesti traku naslova na ekran"
-
-#: js/ui/windowMenu.js:106
+#: js/ui/windowMenu.js:85
 msgid "Always on Top"
 msgstr "Drži iznad ostalih"
 
-#: js/ui/windowMenu.js:125
+#: js/ui/windowMenu.js:104
 msgid "Always on Visible Workspace"
 msgstr "Prikaži na svim radnim prostorima"
 
-#: js/ui/windowMenu.js:139
+#: js/ui/windowMenu.js:118
 msgid "Move to Workspace Left"
 msgstr "Premesti na levi radni prostor"
 
-#: js/ui/windowMenu.js:145
+#: js/ui/windowMenu.js:124
 msgid "Move to Workspace Right"
 msgstr "Premesti na desni radni prostor"
 
-#: js/ui/windowMenu.js:151
+#: js/ui/windowMenu.js:130
 msgid "Move to Workspace Up"
 msgstr "Premesti na radni prostor gore"
 
-#: js/ui/windowMenu.js:157
+#: js/ui/windowMenu.js:136
 msgid "Move to Workspace Down"
 msgstr "Premesti na radni prostor dole"
 
-#: js/ui/windowMenu.js:175
+#: js/ui/windowMenu.js:154
 msgid "Move to Monitor Up"
 msgstr "Premesti na gornji radni prostor"
 
-#: js/ui/windowMenu.js:184
+#: js/ui/windowMenu.js:163
 msgid "Move to Monitor Down"
 msgstr "Premesti na donji radni prostor"
 
-#: js/ui/windowMenu.js:193
+#: js/ui/windowMenu.js:172
 msgid "Move to Monitor Left"
 msgstr "Premesti ekran ulevo"
 
-#: js/ui/windowMenu.js:202
+#: js/ui/windowMenu.js:181
 msgid "Move to Monitor Right"
 msgstr "Premesti ekran udesno"
 
-#: js/ui/windowMenu.js:210
+#: js/ui/windowMenu.js:189
 msgid "Close"
 msgstr "Zatvori"
 
-#: src/main.c:529 subprojects/extensions-tool/src/main.c:336
+#: src/main.c:515 subprojects/extensions-tool/src/main.c:336
 msgid "Print version"
 msgstr "Ispisuje izdanje"
 
-#: src/main.c:535
+#: src/main.c:521
 msgid "Mode used by GDM for login screen"
 msgstr "Koji režim koristi GDM za ekran prijavljivanja"
 
-#: src/main.c:541
+#: src/main.c:527
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Koristi naročit režim, npr. „gdm“ za ekran prijavljivanja"
 
-#: src/main.c:547
+#: src/main.c:533
 msgid "List possible modes"
 msgstr "Ispisuje moguće režime"
 
-#: src/main.c:553
+#: src/main.c:539
 msgid "Force animations to be enabled"
 msgstr "Nasilno omogući animacije"
 
-#: src/shell-app.c:253
+#: src/shell-app.c:267
 msgctxt "program"
 msgid "Unknown"
 msgstr "Nepoznat"
 
-#: src/shell-app.c:504
+#: src/shell-app.c:518
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Nisam uspeo da pokrenem „%s“"
 
-#: src/shell-keyring-prompt.c:764
-msgid "Passwords do not match."
-msgstr "Lozinke se ne podudaraju."
+#: src/shell-keyring-prompt.c:779
+msgid "Passwords do not match"
+msgstr "Lozinke se ne podudaraju"
 
-#: src/shell-keyring-prompt.c:772
+#: src/shell-keyring-prompt.c:787
 msgid "Password cannot be blank"
 msgstr "Lozinka ne može biti prazna"
 
@@ -2736,12 +3040,12 @@ msgstr "Lozinka ne može biti prazna"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Korisnik je odbacio prozorče za potvrđivanje identiteta"
 
-#: src/st/st-icon-theme.c:1865
+#: src/st/st-icon-theme.c:1859
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "Ikonica „%s“ nije prisutna u temi %s"
 
-#: src/st/st-icon-theme.c:3454 src/st/st-icon-theme.c:3757
+#: src/st/st-icon-theme.c:3452 src/st/st-icon-theme.c:3755
 msgid "Failed to load icon"
 msgstr "Ne mogu da učitam ikonicu"
 
@@ -2750,11 +3054,11 @@ msgid "Manage your GNOME Extensions"
 msgstr "Podesite proširenja Gnoma"
 
 #. developer_name tag deprecated with Appstream 1.0
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:19
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:20
 msgid "The GNOME Project"
 msgstr "Gnom projekat"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:51
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:52
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
@@ -2762,19 +3066,19 @@ msgstr ""
 "Gnomova proširenja rukovode ažuriranjem proširenja, podešavanjem postavki "
 "proširenja i uklanjanjem ili onemogućavanjem proširenja."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
 msgid "Main Window"
 msgstr "Glavni prozor"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
 msgid "Available Updates"
 msgstr "Dostupna ažuriranja"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
 msgid "Search View"
 msgstr "Pregled pretrage"
 
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:6
 msgid "Configure GNOME Shell Extensions"
 msgstr "Podesite proširenja Gnomove školjke"
 
@@ -2815,12 +3119,12 @@ msgstr "Detalji greške:"
 msgid "Version %s"
 msgstr "Izdanje %s"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:113
+#: subprojects/extensions-app/js/extensionsWindow.js:108
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Ukloniti „%s“?"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:114
+#: subprojects/extensions-app/js/extensionsWindow.js:109
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2828,15 +3132,15 @@ msgstr ""
 "Ukoliko uklonite proširenje, moraćete ga ponovo preuzeti da biste ga ponovo "
 "omogućili"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:117
+#: subprojects/extensions-app/js/extensionsWindow.js:112
 msgid "_Cancel"
 msgstr "_Otkaži"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:118
+#: subprojects/extensions-app/js/extensionsWindow.js:113
 msgid "_Remove"
 msgstr "_Ukloni"
 
-#: subprojects/extensions-app/js/extensionsWindow.js:158
+#: subprojects/extensions-app/js/extensionsWindow.js:153
 msgid "translator-credits"
 msgstr ""
 "Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
@@ -2845,7 +3149,7 @@ msgstr ""
 "Marko M. Kostić <marko.m.kostic@gmail.com>\n"
 "https://gnom.srb — prevod Gnoma na srpski jezik."
 
-#: subprojects/extensions-app/js/extensionsWindow.js:203
+#: subprojects/extensions-app/js/extensionsWindow.js:198
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -2854,34 +3158,31 @@ msgstr[1] "%d proširenja biće ažurirana tokom sledećeg prijavljivanja."
 msgstr[2] "%d proširenja biće ažurirana tokom sledećeg prijavljivanja."
 msgstr[3] "Jedno proširenje biće ažurirano tokom sledećeg prijavljivanja."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:21
-msgid "Error Details"
-msgstr "Detalji greške"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:61
+#: subprojects/extensions-app/data/ui/extension-row.ui:51
 msgid "Updates Details"
 msgstr "Detalji ažuriranja"
 
 # msgid_plural "%d extensions will be updated on next login."
-#: subprojects/extensions-app/data/ui/extension-row.ui:71
+#: subprojects/extensions-app/data/ui/extension-row.ui:68
 msgid ""
 "A new version of this extension is ready and will be loaded on next login."
 msgstr ""
-"Novo izdanje ovog proširenja je spremno i biće učitano na sledećem prijvaljivanju."
+"Novo izdanje ovog proširenja je spremno i biće učitano na sledećem "
+"prijvaljivanju."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:107
+#: subprojects/extensions-app/data/ui/extension-row.ui:100
 msgid "Extension Details"
 msgstr "Prikaži pojedinosti proširenja"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:193
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "_Website"
 msgstr "_Veb stranica"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:220
+#: subprojects/extensions-app/data/ui/extension-row.ui:215
 msgid "_Settings"
 msgstr "_Podešavanja"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:247
+#: subprojects/extensions-app/data/ui/extension-row.ui:242
 msgid "_Remove…"
 msgstr "_Ukloni…"
 
@@ -2901,15 +3202,19 @@ msgstr "Glavni meni"
 msgid "Search extensions"
 msgstr "Pretraži proširenja"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:134
+#: subprojects/extensions-app/data/ui/extensions-window.ui:123
+msgid "_Log Out…"
+msgstr "_Odjavi me…"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:131
 msgid "_Extensions"
 msgstr "P_roširenja"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:143
+#: subprojects/extensions-app/data/ui/extensions-window.ui:136
 msgid "More Information"
 msgstr "Više informacija"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:153
+#: subprojects/extensions-app/data/ui/extensions-window.ui:148
 msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
@@ -2917,31 +3222,31 @@ msgstr ""
 "Proširenja mogu uticati na delotvornost i stabilnost. Onemogućite proširenja "
 "ukoliko imate problema sa vašim sistemom."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:180
+#: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid "User Extensions"
 msgstr "Korisnikova proširenja"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:200
+#: subprojects/extensions-app/data/ui/extensions-window.ui:184
 msgid "System Extensions"
 msgstr "Sistemska proširenja"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:235
+#: subprojects/extensions-app/data/ui/extensions-window.ui:203
 msgid "Search Results"
 msgstr "Rezultati pretrage"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:254
+#: subprojects/extensions-app/data/ui/extensions-window.ui:217
 msgid "No Results Found"
 msgstr "Nema rezultata"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:255
-msgid "Try a different search."
+#: subprojects/extensions-app/data/ui/extensions-window.ui:218
+msgid "Try a different search"
 msgstr "Pokušajte drugačiju pretragu"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:266
+#: subprojects/extensions-app/data/ui/extensions-window.ui:229
 msgid "No Installed Extensions"
 msgstr "Neinstalirana proširenja"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:267
+#: subprojects/extensions-app/data/ui/extensions-window.ui:230
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
@@ -2949,7 +3254,11 @@ msgstr ""
 "Da biste pronašli i dodali proširenja, posetite stranicu <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:278
+#: subprojects/extensions-app/data/ui/extensions-window.ui:240
+msgid "Something’s gone wrong"
+msgstr "Nešto je pošlo naopako"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:241
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -2957,27 +3266,27 @@ msgstr ""
 "Nažalost, nije bilo moguće dobaviti spisak instaliranih proširenja. Proverite "
 "da li ste prijavljeni u Gnom i probajte ponovo."
 
-#: subprojects/extensions-app/data/ui/help-overlay.ui:9
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:6
 msgctxt "shortcut window"
 msgid "General"
 msgstr "Opšte"
 
-#: subprojects/extensions-app/data/ui/help-overlay.ui:12
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:9
 msgctxt "shortcut window"
 msgid "Open Menu"
 msgstr "Otvori meni"
 
-#: subprojects/extensions-app/data/ui/help-overlay.ui:18
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:15
 msgctxt "shortcut window"
 msgid "Toggle Search"
 msgstr "Uključi pretragu"
 
-#: subprojects/extensions-app/data/ui/help-overlay.ui:24
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:21
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
 msgstr "Prikaži prečice"
 
-#: subprojects/extensions-app/data/ui/help-overlay.ui:30
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:27
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "_Izađi"
@@ -3209,6 +3518,7 @@ msgid "List installed extensions"
 msgstr "Izlistaj instalirana proširenja"
 
 #: subprojects/extensions-tool/src/command-pack.c:444
+#: subprojects/extensions-tool/src/command-upload.c:427
 msgid "FILE"
 msgstr "DATOTEKA"
 
@@ -3283,6 +3593,61 @@ msgstr "Nisam uspeo da deinstaliram „%s“\n"
 #: subprojects/extensions-tool/src/command-uninstall.c:86
 msgid "Uninstall an extension"
 msgstr "Deinstalira proširenje"
+
+#: subprojects/extensions-tool/src/command-upload.c:226
+msgid "Login to extensions.gnome.org\n"
+msgstr "Prijavite me na extensions.gnome.org\n"
+
+#: subprojects/extensions-tool/src/command-upload.c:256
+msgid "Warning! Password will be echoed"
+msgstr "Upozorenje! Lozinka će biti vidljiva"
+
+#: subprojects/extensions-tool/src/command-upload.c:419
+msgid "USERNAME"
+msgstr "KORISNIČKO IME"
+
+#: subprojects/extensions-tool/src/command-upload.c:421
+msgid "Username to log into https://extensions.gnome.org"
+msgstr "Korisničko ime za prijavu na https://extensions.gnome.org"
+
+#: subprojects/extensions-tool/src/command-upload.c:423
+msgid "PASSWORD"
+msgstr "LOZINKA"
+
+#: subprojects/extensions-tool/src/command-upload.c:425
+msgid "Password to log into https://extensions.gnome.org"
+msgstr "Lozinka za prijavu na https://extensions.gnome.org"
+
+#: subprojects/extensions-tool/src/command-upload.c:429
+msgid ""
+"Read https://extensions.gnome.org password from file, use \"-\" for stdin"
+msgstr ""
+"Čita lozinku za https://extensions.gnome.org iz datoteke, koristi „-“ kao "
+"standardni ulaz"
+
+#: subprojects/extensions-tool/src/command-upload.c:432
+msgid "Accept the terms of service at https://extensions.gnome.org/upload/"
+msgstr "Prihvati odredbe usluge na https://extensions.gnome.org/upload/"
+
+#: subprojects/extensions-tool/src/command-upload.c:434
+msgid "FILE…"
+msgstr "DATOTEKA…"
+
+#: subprojects/extensions-tool/src/command-upload.c:443
+msgid "Upload new extension versions"
+msgstr "Pošalji novu verziju proširenja"
+
+#: subprojects/extensions-tool/src/command-upload.c:461
+msgid "Only one of --password and --password-file can be used"
+msgstr "Možete koristiti samo jedno od --password ili --password-file"
+
+#: subprojects/extensions-tool/src/command-upload.c:467
+msgid "You must accept the terms of service to upload extensions"
+msgstr "Morate da prihvatite odredbe usluge za slanje proširenja"
+
+#: subprojects/extensions-tool/src/command-upload.c:473
+msgid "No files given"
+msgstr "Nije izabrana datoteka"
 
 #: subprojects/extensions-tool/src/main.c:76
 msgid "Do not print error messages"
@@ -3398,39 +3763,39 @@ msgstr "Instaliraj paket proširenja"
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Koristi „%s“ za detaljniju pomoć.\n"
 
-#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:3
 msgid "Plain"
 msgstr "Obično"
 
-#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
 msgid "An empty extension"
 msgstr "Prazno proširenje"
 
-#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:3
 msgid "Indicator"
 msgstr "Pokazatelj"
 
-#: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
 msgid "Add an icon to the top bar"
 msgstr "Dodaj ikonicu u gornju traku"
 
-#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:3
 msgid "Quick Settings Item"
 msgstr "Stavka brzih podešavanja"
 
-#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:5
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
 msgid "Add an item to quick settings"
 msgstr "Dodaj stavku u brza podešavanja"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1872
+#: subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Isključeno"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1879
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3441,7 +3806,7 @@ msgstr[3] "%u izlaz"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1889
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -3450,9 +3815,45 @@ msgstr[1] "%u ulaza"
 msgstr[2] "%u ulaza"
 msgstr[3] "%u ulaz"
 
-#: subprojects/gvc/gvc-mixer-control.c:2872
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sistemski zvuci"
+
+#~ msgid "GNOME Shell"
+#~ msgstr "Gnomova školjka"
+
+#~ msgid "Window management and application launching"
+#~ msgstr "Upravnik prozorima i pokretač programa"
+
+#~ msgid ""
+#~ "We’re very sorry, but there’s been a problem: the settings for this "
+#~ "extension can’t be displayed. We recommend that you report the issue to "
+#~ "the extension authors."
+#~ msgstr ""
+#~ "Veoma nam je žao ali se dogodio problem, ne možemo prikazati podešavanja "
+#~ "za ovo proširenje. Predlažemo vam da prijavite ovaj problem tvorcima "
+#~ "proširenja."
+
+#~ msgid "Technical Details"
+#~ msgstr "Tehničke pojedinosti"
+
+#~ msgid "Homepage"
+#~ msgstr "Matična strana"
+
+#~ msgid "Visit extension homepage"
+#~ msgstr "Poseti matičnu stranu proširenj"
+
+#~ msgid "Could not parse command:"
+#~ msgstr "Ne mogu da obradim naredbu:"
+
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
+
+#~ msgid "Screenshot"
+#~ msgstr "Snimak ekrana"
+
+#~ msgid "Move Titlebar Onscreen"
+#~ msgstr "Premesti traku naslova na ekran"
 
 #~ msgid "Network Manager"
 #~ msgstr "Upravnik mreže"
@@ -3559,9 +3960,6 @@ msgstr "Sistemski zvuci"
 #~ msgid "Log Out"
 #~ msgstr "Odjavi me"
 
-#~ msgid "Bluetooth On"
-#~ msgstr "Blutut uklj."
-
 #~ msgid "Bluetooth Off"
 #~ msgstr "Blutut isk."
 
@@ -3631,9 +4029,6 @@ msgstr "Sistemski zvuci"
 
 #~ msgid "Turn On Wi-Fi"
 #~ msgstr "Uključi bežičnu vezu"
-
-#~ msgid "Wi-Fi Networks"
-#~ msgstr "Bežične mreže"
 
 #~ msgid "Select a network"
 #~ msgstr "Izaberite mrežu"
@@ -3778,9 +4173,6 @@ msgstr "Sistemski zvuci"
 
 #~ msgid "On"
 #~ msgstr "Uključeno"
-
-#~ msgid "Copy Error"
-#~ msgstr "Greška pri kopiranju"
 
 #~ msgid "Username…"
 #~ msgstr "Korisnik…"
@@ -4117,13 +4509,12 @@ msgstr "Sistemski zvuci"
 #~ "at best)."
 #~ msgstr ""
 #~ "Podešava najveći nivo tačnosti mesta koju programi mogu da koriste. "
-#~ "Ispravne mogućnosti su „off“ (isključuje praćenje mesta), "
-#~ "„country“ (država), „city“ (grad), „neighborhood“ (komšiluk), "
-#~ "„street“ (ulica), i „exact“ (tačno — obično zahteva GPS prijemnik). "
-#~ "Imajte na umu da će ovo odlučiti šta će „Geo indicija“ dozvoliti "
-#~ "programima samo da vide i da mogu pronaći korisnikovo mesto na svoju ruku "
-#~ "koristeći izvorišta mreže (mada sa tačnošću na nivou ulice u najboljem "
-#~ "slučaju)."
+#~ "Ispravne mogućnosti su „off“ (isključuje praćenje mesta), „country“ "
+#~ "(država), „city“ (grad), „neighborhood“ (komšiluk), „street“ (ulica), i "
+#~ "„exact“ (tačno — obično zahteva GPS prijemnik). Imajte na umu da će ovo "
+#~ "odlučiti šta će „Geo indicija“ dozvoliti programima samo da vide i da "
+#~ "mogu pronaći korisnikovo mesto na svoju ruku koristeći izvorišta mreže "
+#~ "(mada sa tačnošću na nivou ulice u najboljem slučaju)."
 
 #~ msgid "Arrangement of buttons on the titlebar"
 #~ msgstr "Raspored dugmića na traci naslova"
