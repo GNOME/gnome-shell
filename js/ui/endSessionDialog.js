@@ -75,7 +75,7 @@ const shutdownDialogContent = {
             'The system will power off automatically in %d seconds',
             seconds).format(seconds);
     },
-    checkBoxText: C_('checkbox', 'Install pending software updates'),
+    updateCheckBoxText: C_('checkbox', 'Install pending software updates'),
     showBatteryWarning: true,
     confirmButtons: [{
         signal: 'ConfirmedShutdown',
@@ -94,7 +94,7 @@ const restartDialogContent = {
             'The system will restart automatically in %d seconds',
             seconds).format(seconds);
     },
-    checkBoxText: C_('checkbox', 'Install pending software updates'),
+    updateCheckBoxText: C_('checkbox', 'Install pending software updates'),
     showBatteryWarning: true,
     confirmButtons: [{
         signal: 'ConfirmedReboot',
@@ -274,9 +274,9 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         this._messageDialogContent = new Dialog.MessageDialogContent();
 
-        this._checkBox = new CheckBox.CheckBox();
-        this._checkBox.connect('clicked', this._sync.bind(this));
-        this._messageDialogContent.add_child(this._checkBox);
+        this._updateCheckBox = new CheckBox.CheckBox();
+        this._updateCheckBox.connect('clicked', this._sync.bind(this));
+        this._messageDialogContent.add_child(this._updateCheckBox);
 
         this._batteryWarning = new St.Label({
             style_class: 'end-session-dialog-battery-warning',
@@ -347,7 +347,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         if (!this._isBatteryLow())
             return false;
 
-        if (this._checkBox.checked)
+        if (this._updateCheckBox.checked)
             return true;
 
         // Show the warning if updates have already been triggered, but
@@ -366,7 +366,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         let subject = dialogContent.subject;
 
         // Use different title when we are installing updates
-        if (dialogContent.subjectWithUpdates && this._checkBox.checked)
+        if (dialogContent.subjectWithUpdates && this._updateCheckBox.checked)
             subject = dialogContent.subjectWithUpdates;
 
         this._batteryWarning.visible = this._shouldShowLowBatteryWarning(dialogContent);
@@ -502,9 +502,9 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     }
 
     async _confirm(signal) {
-        if (this._checkBox.visible) {
+        if (this._updateCheckBox.visible) {
             // Trigger the offline update as requested
-            if (this._checkBox.checked) {
+            if (this._updateCheckBox.checked) {
                 switch (signal) {
                 case 'ConfirmedReboot':
                     await this._triggerOfflineUpdateReboot();
@@ -761,13 +761,13 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         let updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
 
-        _setCheckBoxLabel(this._checkBox, dialogContent.checkBoxText || '');
-        this._checkBox.visible = dialogContent.checkBoxText && this._updateInfo.UpdatePrepared && updatesAllowed;
+        _setCheckBoxLabel(this._updateCheckBox, dialogContent.updateCheckBoxText || '');
+        this._updateCheckBox.visible = dialogContent.updateCheckBoxText && this._updateInfo.UpdatePrepared && updatesAllowed;
 
         if (this._type === DialogType.UPGRADE_RESTART)
-            this._checkBox.checked = this._checkBox.visible && this._updateInfo.UpdateTriggered && !this._isDischargingBattery();
+            this._updateCheckBox.checked = this._updateCheckBox.visible && this._updateInfo.UpdateTriggered && !this._isDischargingBattery();
         else
-            this._checkBox.checked = this._checkBox.visible && !this._isBatteryLow();
+            this._updateCheckBox.checked = this._updateCheckBox.visible && !this._isBatteryLow();
 
         this._batteryWarning.visible = this._shouldShowLowBatteryWarning(dialogContent);
 
