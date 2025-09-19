@@ -159,6 +159,12 @@ const DialogContent = {
     4 /* DialogType.UPGRADE_RESTART */: restartUpgradeDialogContent,
 };
 
+const RestoreMode = {
+    UNSUPPORTED: 0, /* GSM_SHELL_END_SESSION_DIALOG_RESTORE_MODE_UNSUPPORTED */
+    SUPPORTED: 1, /* GSM_SHELL_END_SESSION_DIALOG_RESTORE_MODE_SUPPORTED */
+    ENABLED: 2, /* GSM_SHELL_END_SESSION_DIALOG_RESTORE_MODE_ENABLED */
+};
+
 const MAX_USERS_IN_SESSION_DIALOG = 5;
 
 const LogindSessionIface = loadInterfaceXML('org.freedesktop.login1.Session');
@@ -273,6 +279,9 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             'changed', this._sync.bind(this), this);
 
         this._messageDialogContent = new Dialog.MessageDialogContent();
+
+        this._saveCheckBox = new CheckBox.CheckBox(_('Reopen windows when logging back in'));
+        this._messageDialogContent.add_child(this._saveCheckBox);
 
         this._updateCheckBox = new CheckBox.CheckBox();
         this._updateCheckBox.connect('clicked', this._sync.bind(this));
@@ -502,6 +511,9 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     }
 
     async _confirm(signal) {
+        if (this._saveCheckBox.visible && !this._saveCheckBox.checked)
+            this._dbusImpl.emit_signal('DiscardSavedSession', null);
+
         if (this._updateCheckBox.visible) {
             // Trigger the offline update as requested
             if (this._updateCheckBox.checked) {
@@ -707,7 +719,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     }
 
     async OpenAsync(parameters, invocation) {
-        let [type, timestamp_, totalSecondsToStayOpen, inhibitorObjectPaths] = parameters;
+        let [type, timestamp_, totalSecondsToStayOpen, inhibitorObjectPaths, restoreMode] = parameters;
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._type = type;
 
@@ -758,6 +770,9 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         if (dialogContent.showOtherSessions)
             this._loadSessions().catch(logError);
+
+        this._saveCheckBox.visible = restoreMode !== RestoreMode.UNSUPPORTED;
+        this._saveCheckBox.checked = restoreMode === RestoreMode.ENABLED;
 
         let updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
 
