@@ -5,8 +5,10 @@
       <arg type="u" direction="in"/>
       <arg type="u" direction="in"/>
       <arg type="ao" direction="in"/>
+      <arg type="u" direction="in"/>
     </method>
     <method name="Close"/>
+    <signal name="DiscardSavedSession"/>
     <signal name="ConfirmedLogout"/>
     <signal name="ConfirmedReboot"/>
     <signal name="ConfirmedShutdown"/>
