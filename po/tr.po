@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-09-01 12:50+0000\n"
+"POT-Creation-Date: 2025-09-18 10:04+0000\n"
 "PO-Revision-Date: 2025-08-28 14:15+0300\n"
 "Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
@@ -2183,15 +2183,15 @@ msgstr "Resmi panodan yapıştırabilirsiniz"
 msgid "Screenshot taken"
 msgstr "Ekran görüntüsü alındı"
 
-#: js/ui/search.js:842
+#: js/ui/search.js:847
 msgid "Searching"
 msgstr "Aranıyor"
 
-#: js/ui/search.js:845
+#: js/ui/search.js:850
 msgid "No results"
 msgstr "Sonuç yok"
 
-#: js/ui/search.js:977
+#: js/ui/search.js:982
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2958,15 +2958,15 @@ msgstr ""
 "GNOME Uzantılar; uzantıları güncellemeyi, uzantı tercihlerini yapılandırmayı "
 "ve istenmeyen uzantıları kaldırmayı veya devre dışı bırakmanızı sağlar."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:79
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
 msgid "Main Window"
 msgstr "Ana Pencere"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:83
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
 msgid "Available Updates"
 msgstr "Kullanılabilir Güncellemeler"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:87
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
 msgid "Search View"
 msgstr "Arama Görünümü"
 
@@ -3674,13 +3674,13 @@ msgstr "Hızlı ayarlara öge ekle"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1872
+#: subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Devre dışı"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1879
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3688,41 +3688,12 @@ msgstr[0] "%u Çıktı"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1889
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Girdi"
 
-#: subprojects/gvc/gvc-mixer-control.c:2872
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
-
-#~ msgid "GNOME Shell"
-#~ msgstr "GNOME Kabuğu"
-
-#~ msgid "Window management and application launching"
-#~ msgstr "Pencere yönetimi ve uygulama başlatma"
-
-#~ msgid ""
-#~ "We’re very sorry, but there’s been a problem: the settings for this "
-#~ "extension can’t be displayed. We recommend that you report the issue to "
-#~ "the extension authors."
-#~ msgstr ""
-#~ "Çok üzgünüz ancak sorun oluştu: bu uzantı için ayarlar görüntülenemiyor. "
-#~ "Sorunu uzantı yazarlarına bildirmenizi öneririz."
-
-#~ msgid "Technical Details"
-#~ msgstr "Teknik Ayrıntılar"
-
-#~ msgid "Homepage"
-#~ msgstr "Ana Sayfa"
-
-#~ msgid "Visit extension homepage"
-#~ msgstr "Uzantı ana sayfasını ziyaret et"
-
-#~ msgid "Screenshot"
-#~ msgstr "Ekran Görüntüsü"
-
-#~ msgid "%H∶%M"
-#~ msgstr "%H∶%M"
