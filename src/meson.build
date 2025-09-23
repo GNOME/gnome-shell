@@ -67,6 +67,7 @@ gnome_shell_deps = [
   atk_bridge_dep,
   gdk_pixbuf_dep,
   gjs_dep,
+  gudev_dep,
   mtk_dep,
   clutter_dep,
   gi_dep,
