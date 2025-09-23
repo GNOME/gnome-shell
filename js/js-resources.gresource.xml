@@ -40,6 +40,7 @@
     <file>misc/objectManager.js</file>
     <file>misc/params.js</file>
     <file>misc/parentalControlsManager.js</file>
+    <file>misc/passkeyManager.js</file>
     <file>misc/permissionStore.js</file>
     <file>misc/signals.js</file>
     <file>misc/signalTracker.js</file>
