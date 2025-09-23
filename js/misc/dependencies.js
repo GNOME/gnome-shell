@@ -18,6 +18,7 @@ import 'gi://GdkPixbuf?version=2.0';
 import 'gi://GnomeBG?version=4.0';
 import 'gi://GnomeDesktop?version=4.0';
 import 'gi://Graphene?version=1.0';
+import 'gi://GUdev?version=1.0';
 import 'gi://GWeather?version=4.0';
 import 'gi://IBus?version=1.0';
 import 'gi://Pango?version=1.0';
