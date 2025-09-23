@@ -10,6 +10,7 @@
     <file>gdm/fingerprintManager.js</file>
     <file>gdm/loginDialog.js</file>
     <file>gdm/oVirt.js</file>
+    <file>gdm/passkeyDeviceManager.js</file>
     <file>gdm/realmd.js</file>
     <file>gdm/util.js</file>
     <file>gdm/vmware.js</file>
