@@ -132,7 +132,7 @@ export const Slider = GObject.registerClass({
 
     vfunc_touch_event(event) {
         const backend = global.stage.get_context().get_backend();
-        const sprite = backend.get_pointer_sprite(global.stage);
+        const sprite = backend.get_sprite(global.stage, event);
 
         if (!this._dragging &&
             event.type() === Clutter.EventType.TOUCH_BEGIN) {
