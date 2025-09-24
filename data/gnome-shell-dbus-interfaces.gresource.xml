@@ -3,7 +3,6 @@
   <gresource prefix="/org/gnome/shell/dbus-interfaces">
     <file preprocess="xml-stripblanks">net.reactivated.Fprint.Device.xml</file>
     <file preprocess="xml-stripblanks">net.reactivated.Fprint.Manager.xml</file>
-    <file preprocess="xml-stripblanks">org.freedesktop.Application.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.background.Monitor.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.bolt1.Device.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.bolt1.Manager.xml</file>
