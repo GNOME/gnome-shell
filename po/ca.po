@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
 "POT-Creation-Date: 2025-08-30 21:46+0000\n"
-"PO-Revision-Date: 2025-08-31 23:30+0100\n"
+"PO-Revision-Date: 2025-09-25 23:30+0100\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -2186,12 +2186,12 @@ msgstr "Enregistrament de pantalla completat"
 #. Translators: notification title.
 #: js/ui/screenshot.js:2080
 msgid "Screencast failed to start"
-msgstr "No s'ha pogut iniciar la captura de pantalla"
+msgstr "No s'ha pogut iniciar l'enregistrament de pantalla"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2086
 msgid "Screencast ended: Out of disk space"
-msgstr "S'ha finalitzat la captura de pantalla: no hi ha espai al disc"
+msgstr "S'ha finalitzat l'enregistrament de pantalla: no hi ha prou espai al disc"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
@@ -2199,7 +2199,7 @@ msgstr "S'ha finalitzat la captura de pantalla: no hi ha espai al disc"
 #: js/ui/screenshot.js:2092
 msgid "Screencast ended unexpectedly, please try again"
 msgstr ""
-"La captura de pantalla ha acabat de manera inesperada. Torneu-ho a provar"
+"L'enregistrament de pantalla ha acabat de manera inesperada. Torneu-ho a provar"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2095
@@ -2841,7 +2841,7 @@ msgstr "GNOME %s"
 #: js/ui/welcomeDialog.js:51
 #, javascript-format
 msgid "Welcome to %s"
-msgstr "Us donem la benvinguda a  %s"
+msgstr "Us donem la benvinguda a %s"
 
 #: js/ui/welcomeDialog.js:52
 msgid "If you want to learn your way around, check out the tour"
@@ -3053,7 +3053,7 @@ msgid ""
 "The installed version of this extension is incompatible with the current "
 "version of GNOME (%s). The extension has been disabled."
 msgstr ""
-"La versió instal·lada d'aquesta extensió  és incompatible amb la versió "
+"La versió instal·lada d'aquesta extensió és incompatible amb la versió "
 "actual del GNOME (%s). S'ha desactivat l'extensió."
 
 #: subprojects/extensions-app/js/extensionManager.js:242
@@ -3205,7 +3205,7 @@ msgid ""
 "To find and add extensions, visit <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 msgstr ""
-"Per a visitar i afegir extensions, visiteu <a href=\"https://"
+"Per a trobar i afegir extensions, visiteu <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:240
@@ -3429,7 +3429,7 @@ msgstr "No s'ha especificat cap paquet d'extensió"
 
 #: subprojects/extensions-tool/src/command-install.c:225
 msgid "More than one extension bundle specified"
-msgstr "S'ha especificat més un paquet d'extensió"
+msgstr "S'ha especificat més d'un paquet d'extensió"
 
 #: subprojects/extensions-tool/src/command-list.c:140
 msgid "Show user-installed extensions"
@@ -3478,7 +3478,7 @@ msgstr "FITXER"
 
 #: subprojects/extensions-tool/src/command-pack.c:445
 msgid "Additional source to include in the bundle"
-msgstr "Font a addicional a incloure al paquet"
+msgstr "Font addicional a incloure al paquet"
 
 #: subprojects/extensions-tool/src/command-pack.c:449
 msgid "A GSettings schema that should be included"
