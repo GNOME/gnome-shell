@@ -87,7 +87,7 @@ export const Slider = GObject.registerClass({
         // sure that no 'notify::value' signal is emitted before this one.
         this.emit('drag-begin');
 
-        const coords = this._panGesture.get_centroid_abs();
+        const coords = this._panGesture.get_centroid();
         this._moveHandle(coords.x, coords.y);
         return Clutter.EVENT_STOP;
     }
@@ -107,7 +107,7 @@ export const Slider = GObject.registerClass({
     }
 
     _onPanUpdate() {
-        const coords = this._panGesture.get_centroid_abs();
+        const coords = this._panGesture.get_centroid();
         this._moveHandle(coords.x, coords.y);
     }
 
@@ -161,13 +161,11 @@ export const Slider = GObject.registerClass({
         return super.vfunc_key_press_event(event);
     }
 
-    _moveHandle(absX, _absY) {
-        let relX;
-        const [sliderX] = this.get_transformed_position();
+    _moveHandle(x, _y) {
         const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
         const width = this._barLevelWidth;
 
-        relX = absX - sliderX;
+        let relX = x;
         if (rtl)
             relX = width - relX;
 
