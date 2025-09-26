@@ -25,9 +25,14 @@ export const Slider = GObject.registerClass({
         });
 
         this._releaseId = 0;
-        this._dragging = false;
-
         this._handleRadius = 0;
+
+        this._panGesture = new Clutter.PanGesture();
+        this._panGesture.set_begin_threshold(0);
+        this._panGesture.connect('recognize', this._onPanBegin.bind(this));
+        this._panGesture.connect('pan-update', this._onPanUpdate.bind(this));
+        this._panGesture.connect('end', this._onPanEnd.bind(this));
+        this.add_action(this._panGesture);
 
         this._customAccessible.connect('get-minimum-increment', this._getMinimumIncrement.bind(this));
     }
@@ -75,76 +80,35 @@ export const Slider = GObject.registerClass({
         return Math.max(barWidth, handleWidth);
     }
 
-    vfunc_button_press_event(event) {
-        return this.startDragging(event);
-    }
-
-    startDragging(event) {
-        if (this._dragging)
-            return Clutter.EVENT_PROPAGATE;
-
-        this._dragging = true;
-
+    _onPanBegin() {
         this._grab = global.stage.grab(this);
-
-        const backend = global.stage.get_context().get_backend();
-        const sprite = backend.get_sprite(global.stage, event);
-        this._sprite = sprite;
 
         // We need to emit 'drag-begin' before moving the handle to make
         // sure that no 'notify::value' signal is emitted before this one.
         this.emit('drag-begin');
 
-        const [absX, absY] = event.get_coords();
-        this._moveHandle(absX, absY);
+        const coords = this._panGesture.get_centroid_abs();
+        this._moveHandle(coords.x, coords.y);
         return Clutter.EVENT_STOP;
     }
 
-    _endDragging() {
-        if (this._dragging) {
-            if (this._releaseId) {
-                this.disconnect(this._releaseId);
-                this._releaseId = 0;
-            }
-
-            if (this._grab) {
-                this._grab.dismiss();
-                this._grab = null;
-            }
-
-            this._dragging = false;
-
-            this.emit('drag-end');
-        }
-        return Clutter.EVENT_STOP;
-    }
-
-    vfunc_button_release_event(event) {
-        const backend = global.stage.get_context().get_backend();
-        const sprite = backend.get_sprite(global.stage, event);
-
-        if (this._dragging && this._sprite === sprite)
-            return this._endDragging();
-
-        return Clutter.EVENT_PROPAGATE;
-    }
-
-    vfunc_touch_event(event) {
-        const backend = global.stage.get_context().get_backend();
-        const sprite = backend.get_sprite(global.stage, event);
-
-        if (!this._dragging &&
-            event.type() === Clutter.EventType.TOUCH_BEGIN) {
-            this.startDragging(event);
-            return Clutter.EVENT_STOP;
-        } else if (this._sprite === sprite) {
-            if (event.type() === Clutter.EventType.TOUCH_UPDATE)
-                return this._motionEvent(this, event);
-            else if (event.type() === Clutter.EventType.TOUCH_END)
-                return this._endDragging();
+    _onPanEnd() {
+        if (this._releaseId) {
+            this.disconnect(this._releaseId);
+            this._releaseId = 0;
         }
 
-        return Clutter.EVENT_PROPAGATE;
+        if (this._grab) {
+            this._grab.dismiss();
+            this._grab = null;
+        }
+
+        this.emit('drag-end');
+    }
+
+    _onPanUpdate() {
+        const coords = this._panGesture.get_centroid_abs();
+        this._moveHandle(coords.x, coords.y);
     }
 
     step(nSteps) {
@@ -182,22 +146,6 @@ export const Slider = GObject.registerClass({
 
         this.step(nSteps);
 
-        return Clutter.EVENT_STOP;
-    }
-
-    vfunc_motion_event(event) {
-        const backend = global.stage.get_context().get_backend();
-        const sprite = backend.get_sprite(global.stage, event);
-
-        if (this._dragging && this._sprite === sprite)
-            return this._motionEvent(this, event);
-
-        return Clutter.EVENT_PROPAGATE;
-    }
-
-    _motionEvent(actor, event) {
-        const [absX, absY] = event.get_coords();
-        this._moveHandle(absX, absY);
         return Clutter.EVENT_STOP;
     }
 
