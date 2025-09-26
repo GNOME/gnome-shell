@@ -290,7 +290,9 @@ update_accent_colors (StThemeContext *context)
       break;
 
     default:
-      g_assert_not_reached ();
+      g_warning ("Unsupported accent color: %d", accent_color);
+      cogl_color_from_string (&context->accent_color, ACCENT_COLOR_BLUE);
+      break;
     }
 
   cogl_color_from_string (&context->accent_fg_color, ACCENT_FG_COLOR);
