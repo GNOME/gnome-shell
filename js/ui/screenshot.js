@@ -2811,6 +2811,13 @@ class SelectArea extends St.Widget {
             visible: false,
         });
         this.add_child(this._rubberband);
+
+        this._panGesture = new Clutter.PanGesture();
+        this._panGesture.set_begin_threshold(0);
+        this._panGesture.connect('recognize', this._onPanBegin.bind(this));
+        this._panGesture.connect('pan-update', this._onPanUpdate.bind(this));
+        this._panGesture.connect('end', this._onPanEnd.bind(this));
+        this.add_action(this._panGesture);
     }
 
     async selectAsync() {
@@ -2841,37 +2848,33 @@ class SelectArea extends St.Widget {
         });
     }
 
-    vfunc_motion_event(event) {
-        if (this._startX === -1 || this._startY === -1 || this._result)
-            return Clutter.EVENT_PROPAGATE;
+    _onPanUpdate() {
+        if (this._result)
+            return;
 
-        [this._lastX, this._lastY] = event.get_coords();
-        this._lastX = Math.floor(this._lastX);
-        this._lastY = Math.floor(this._lastY);
+        const coords = this._panGesture.get_centroid_abs();
+        this._lastX = Math.floor(coords.x);
+        this._lastY = Math.floor(coords.y);
         const geometry = this._getGeometry();
 
         this._rubberband.set_position(geometry.x, geometry.y);
         this._rubberband.set_size(geometry.width, geometry.height);
         this._rubberband.show();
-
-        return Clutter.EVENT_PROPAGATE;
     }
 
-    vfunc_button_press_event(event) {
+    _onPanBegin() {
         if (this._result)
-            return Clutter.EVENT_PROPAGATE;
+            return;
 
-        [this._startX, this._startY] = event.get_coords();
-        this._startX = Math.floor(this._startX);
-        this._startY = Math.floor(this._startY);
+        const coords = this._panGesture.get_centroid_abs();
+        this._startX = Math.floor(coords.x);
+        this._startY = Math.floor(coords.y);
         this._rubberband.set_position(this._startX, this._startY);
-
-        return Clutter.EVENT_PROPAGATE;
     }
 
-    vfunc_button_release_event() {
-        if (this._startX === -1 || this._startY === -1 || this._result)
-            return Clutter.EVENT_PROPAGATE;
+    _onPanEnd() {
+        if (this._result)
+            return;
 
         this._result = this._getGeometry();
         this.ease({
@@ -2880,7 +2883,6 @@ class SelectArea extends St.Widget {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => this._grabHelper.ungrab(),
         });
-        return Clutter.EVENT_PROPAGATE;
     }
 });
 
