@@ -102,6 +102,14 @@ export const Button = GObject.registerClass({
             accessible_role: Atk.Role.MENU,
         });
 
+        this._clickGesture = new Clutter.ClickGesture();
+        this._clickGesture.set_recognize_on_press(true);
+        this._clickGesture.connect('recognize', () => {
+            this.menu?.toggle();
+        });
+        this._clickGesture.set_enabled(!dontCreateMenu);
+        this.add_action(this._clickGesture);
+
         if (dontCreateMenu)
             this.menu = new PopupMenu.PopupDummyMenu(this);
         else
@@ -130,16 +138,8 @@ export const Button = GObject.registerClass({
             Main.uiGroup.add_child(this.menu.actor);
             this.menu.actor.hide();
         }
+        this._clickGesture.set_enabled(this.menu !== null);
         this.emit('menu-set');
-    }
-
-    vfunc_event(event) {
-        if (this.menu &&
-            (event.type() === Clutter.EventType.TOUCH_BEGIN ||
-             event.type() === Clutter.EventType.BUTTON_PRESS))
-            this.menu.toggle();
-
-        return Clutter.EVENT_PROPAGATE;
     }
 
     vfunc_hide() {
