@@ -62,10 +62,12 @@ class IconLabelButton extends St.Button {
         this.set_child(this._container);
 
         this._container.add_child(new St.Icon({icon_name: iconName}));
-        this._container.add_child(new St.Label({
+        const labelActor = new St.Label({
             text: label,
             x_align: Clutter.ActorAlign.CENTER,
-        }));
+        });
+        this.set({labelActor});
+        this._container.add_child(labelActor);
     }
 });
 
