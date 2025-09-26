@@ -256,12 +256,6 @@ const UIAreaSelector = GObject.registerClass({
     _init(params) {
         super._init(params);
 
-        // During a drag, this can be Clutter.BUTTON_PRIMARY,
-        // Clutter.BUTTON_SECONDARY or the string "touch" to identify the source
-        // of the drag operation.
-        this._dragButton = 0;
-        this._dragSequence = null;
-
         this._areaIndicator = new UIAreaIndicator();
         this._areaIndicator.add_constraint(new Clutter.BindConstraint({
             source: this,
@@ -291,6 +285,15 @@ const UIAreaSelector = GObject.registerClass({
                 this._updateCursor(x, y);
             }
         });
+
+        this._panGesture = new Clutter.PanGesture({
+            begin_threshold: 0,
+            required_button: 0,
+        });
+        this._panGesture.connect('recognize', () => this._onPanBegin());
+        this._panGesture.connect('pan-update', () => this._onPanUpdate());
+        this._panGesture.connect('end', () => this._onPanEnd());
+        this.add_action(this._panGesture);
 
         // Initialize area to out of bounds so reset() below resets it.
         this._startX = -1;
@@ -398,16 +401,10 @@ const UIAreaSelector = GObject.registerClass({
     }
 
     stopDrag() {
-        if (!this._dragButton)
-            return;
-
         if (this._dragGrab) {
             this._dragGrab.dismiss();
             this._dragGrab = null;
         }
-
-        this._dragButton = 0;
-        this._dragSequence = null;
 
         if (this._dragCursor === Clutter.CursorType.CROSSHAIR &&
             this._lastX === this._startX && this._lastY === this._startY) {
@@ -448,34 +445,28 @@ const UIAreaSelector = GObject.registerClass({
         this.set_cursor_type(cursor);
     }
 
-    _onPress(event, button, sequence) {
-        if (this._dragButton)
-            return Clutter.EVENT_PROPAGATE;
-
-        const [x, y] = event.get_coords();
-        const cursor = this._computeCursorType(x, y);
+    _onPanBegin() {
+        const centroid = this._panGesture.get_centroid_abs();
+        const cursor = this._computeCursorType(centroid.x, centroid.y);
 
         // Clicking outside of the selection, or using the right mouse button,
         // or with Ctrl results in dragging a new selection from scratch.
         if (cursor === Clutter.CursorType.CROSSHAIR ||
-            button === Clutter.BUTTON_SECONDARY ||
-            (event.get_state() & Clutter.ModifierType.CONTROL_MASK)) {
-            this._dragButton = button;
-
+            this._panGesture.get_button() === Clutter.BUTTON_SECONDARY ||
+            this._panGesture.get_state() & Clutter.ModifierType.CONTROL_MASK) {
             this._dragCursor = Clutter.CursorType.CROSSHAIR;
-            this.set_cursor_type(Clutter.CursorType.CROSSHAIR);
+            this.set_cursor_type(this._dragCursor);
 
-            [this._startX, this._startY] = event.get_coords();
+            [this._startX, this._startY] = [centroid.x, centroid.y];
             this._lastX = this._startX = Math.floor(this._startX);
             this._lastY = this._startY = Math.floor(this._startY);
 
             this._updateSelectionRect();
         } else {
             // This is a move or resize operation.
-            this._dragButton = button;
 
             this._dragCursor = cursor;
-            [this._dragStartX, this._dragStartY] = event.get_coords();
+            [this._dragStartX, this._dragStartY] = [centroid.x, centroid.y];
 
             const [leftX, topY, width, height] = this.getGeometry();
             const rightX = leftX + width - 1;
@@ -556,49 +547,27 @@ const UIAreaSelector = GObject.registerClass({
             }
         }
 
-        if (this._dragButton) {
-            this._dragGrab = global.stage.grab(this);
-            this._dragSequence = sequence;
-
-            this.emit('drag-started');
-
-            return Clutter.EVENT_STOP;
-        }
-
-        return Clutter.EVENT_PROPAGATE;
+        this._dragGrab = global.stage.grab(this);
+        this.emit('drag-started');
     }
 
-    _onRelease(event, button, sequence) {
-        if (this._dragButton !== button ||
-            this._dragSequence?.get_slot() !== sequence?.get_slot())
-            return Clutter.EVENT_PROPAGATE;
-
+    _onPanEnd() {
         this.stopDrag();
 
         // We might have finished creating a new selection, so we need to
         // update the cursor.
-        const [x, y] = event.get_coords();
+        const {x, y} = this._panGesture.get_centroid_abs();
         this._updateCursor(x, y);
-
-        return Clutter.EVENT_STOP;
     }
 
-    _onMotion(event, sequence) {
-        if (!this._dragButton) {
-            const [x, y] = event.get_coords();
-            this._updateCursor(x, y);
-            return Clutter.EVENT_PROPAGATE;
-        }
-
-        if (sequence?.get_slot() !== this._dragSequence?.get_slot())
-            return Clutter.EVENT_PROPAGATE;
-
+    _onPanUpdate() {
+        const centroid = this._panGesture.get_centroid_abs();
         if (this._dragCursor === Clutter.CursorType.CROSSHAIR) {
-            [this._lastX, this._lastY] = event.get_coords();
+            [this._lastX, this._lastY] = [centroid.x, centroid.y];
             this._lastX = Math.floor(this._lastX);
             this._lastY = Math.floor(this._lastY);
         } else {
-            const [x, y] = event.get_coords();
+            const {x, y} = centroid;
             let dx = Math.round(x - this._dragStartX);
             let dy = Math.round(y - this._dragStartY);
 
@@ -716,40 +685,13 @@ const UIAreaSelector = GObject.registerClass({
         }
 
         this._updateSelectionRect();
-
-        return Clutter.EVENT_STOP;
-    }
-
-    vfunc_button_press_event(event) {
-        const button = event.get_button();
-        if (button === Clutter.BUTTON_PRIMARY ||
-            button === Clutter.BUTTON_SECONDARY)
-            return this._onPress(event, button, null);
-
-        return Clutter.EVENT_PROPAGATE;
-    }
-
-    vfunc_button_release_event(event) {
-        const button = event.get_button();
-        if (button === Clutter.BUTTON_PRIMARY ||
-            button === Clutter.BUTTON_SECONDARY)
-            return this._onRelease(event, button, null);
-
-        return Clutter.EVENT_PROPAGATE;
     }
 
     vfunc_motion_event(event) {
-        return this._onMotion(event, null);
-    }
-
-    vfunc_touch_event(event) {
-        const eventType = event.type();
-        if (eventType === Clutter.EventType.TOUCH_BEGIN)
-            return this._onPress(event, 'touch', event.get_event_sequence());
-        else if (eventType === Clutter.EventType.TOUCH_END)
-            return this._onRelease(event, 'touch', event.get_event_sequence());
-        else if (eventType === Clutter.EventType.TOUCH_UPDATE)
-            return this._onMotion(event, event.get_event_sequence());
+        if (this._panGesture.get_state() === Clutter.GestureState.WAITING) {
+            const [x, y] = event.get_coords();
+            this._updateCursor(x, y);
+        }
 
         return Clutter.EVENT_PROPAGATE;
     }
