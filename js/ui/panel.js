@@ -218,6 +218,13 @@ class ActivitiesButton extends PanelMenu.Button {
             this);
 
         this._xdndTimeOut = 0;
+
+        this._clickGesture = new Clutter.ClickGesture();
+        this._clickGesture.connect('recognize', () => {
+            if (Main.overview.shouldToggleByCornerOrButton())
+                Main.overview.toggle();
+        });
+        this.add_action(this._clickGesture);
     }
 
     handleDragOver(source, _actor, _x, _y, _time) {
@@ -234,13 +241,7 @@ class ActivitiesButton extends PanelMenu.Button {
         return DND.DragMotionResult.CONTINUE;
     }
 
-    vfunc_event(event) {
-        if (event.type() === Clutter.EventType.TOUCH_END ||
-            event.type() === Clutter.EventType.BUTTON_RELEASE) {
-            if (Main.overview.shouldToggleByCornerOrButton())
-                Main.overview.toggle();
-        }
-
+    vfunc_scroll_event(event) {
         return Main.wm.handleWorkspaceScroll(event);
     }
 
