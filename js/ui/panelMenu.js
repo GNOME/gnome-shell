@@ -105,7 +105,7 @@ export const Button = GObject.registerClass({
         if (dontCreateMenu)
             this.menu = new PopupMenu.PopupDummyMenu(this);
         else
-            this.setMenu(new PopupMenu.PopupMenu(this, menuAlignment, St.Side.TOP, 0));
+            this.setMenu(new PopupMenu.PopupMenu(this, menuAlignment, St.Side.TOP));
 
         this.connect('key-press-event',
             (o, ev) => global.focus_manager.navigate_from_event(ev));
