@@ -18,30 +18,141 @@
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
 import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
 import St from 'gi://St';
+
+import * as Main from '../ui/main.js';
+import * as PopupMenu from '../ui/popupMenu.js';
 
 export const SCROLL_ANIMATION_TIME = 500;
 
-const AuthListItem = GObject.registerClass({
-    Signals: {'activate': {}},
-}, class AuthListItem extends St.Button {
-    _init(key, text) {
-        this.key = key;
-        const label = new St.Label({
-            text,
-            style_class: 'login-dialog-auth-list-label',
-            y_align: Clutter.ActorAlign.CENTER,
-            x_expand: true,
+const ItemIconPopup = class extends PopupMenu.PopupMenu {
+    constructor(sourceActor, title, subtitle) {
+        super(sourceActor, 0.5, St.Side.TOP);
+
+        this.box.add_style_class_name('login-dialog-item-icon-popup-box');
+        this.actor.add_style_class_name('login-dialog-item-icon-popup');
+
+        const labels = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+            style_class: 'login-dialog-item-icon-popup-labels',
+        });
+        labels.add_child(new St.Label({text: title}));
+        labels.add_child(new St.Label({text: subtitle}));
+
+        const item = new PopupMenu.PopupBaseMenuItem({
+            reactive: false,
+            can_focus: false,
+        });
+        item.add_child(labels);
+        this.addMenuItem(item);
+
+        sourceActor.connect('clicked', () => this.toggle());
+        sourceActor.connect('destroy', () => this.destroy());
+
+        this.actor.hide();
+
+        this._menuManager = new PopupMenu.PopupMenuManager(sourceActor, {
+            actionMode: Shell.ActionMode.NONE,
+        });
+        this._menuManager.addMenu(this);
+    }
+};
+
+class ItemIcon extends St.Button {
+    static [GObject.GTypeName] = 'ItemIcon';
+
+    static {
+        GObject.registerClass(this);
+    }
+
+    constructor(iconName, iconTitle, iconSubtitle) {
+        super({
+            style_class: 'login-dialog-item-icon',
+            child: new St.Icon({icon_name: iconName}),
         });
 
-        super._init({
+        this._popup = new ItemIconPopup(this, iconTitle, iconSubtitle);
+        Main.uiGroup.add_child(this._popup.actor);
+    }
+}
+
+class AuthListItem extends St.Button {
+    static [GObject.GTypeName] = 'AuthListItem';
+
+    static [GObject.signals] = {
+        'activate': {},
+    };
+
+    static {
+        GObject.registerClass(this);
+    }
+
+    constructor(key, content) {
+        const {title, subtitle, iconName, iconTitle, iconSubtitle} = content;
+
+        super({
             style_class: 'login-dialog-auth-list-item',
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             can_focus: true,
-            child: label,
             reactive: true,
+            accessible_name: [title, subtitle, iconTitle, iconSubtitle]
+                .filter(p => p)
+                .join(', '),
         });
+
+        this.key = key;
+
+        this._container = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+        });
+        this._labelBox = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+            y_align: Clutter.ActorAlign.CENTER,
+            x_expand: true,
+        });
+        this._container.add_child(this._labelBox);
+
+        if (title) {
+            const label = new St.Label({
+                text: title,
+                style_class: 'login-dialog-auth-list-item-title',
+                y_align: Clutter.ActorAlign.CENTER,
+                x_expand: true,
+            });
+            this._labelBox.add_child(label);
+        }
+
+        if (subtitle) {
+            const label = new St.Label({
+                text: subtitle,
+                style_class: 'login-dialog-auth-list-item-subtitle',
+                y_align: Clutter.ActorAlign.CENTER,
+                x_expand: true,
+            });
+            this._labelBox.add_child(label);
+        }
+
+        if (iconName && iconTitle && iconSubtitle) {
+            const icon = new ItemIcon(iconName, iconTitle, iconSubtitle);
+            icon.add_constraint(new Clutter.AlignConstraint({
+                source: this._container,
+                align_axis: Clutter.AlignAxis.X_AXIS,
+                factor: 0.5,
+            }));
+            icon.add_constraint(new Clutter.AlignConstraint({
+                source: this._container,
+                align_axis: Clutter.AlignAxis.Y_AXIS,
+                factor: 0.0,
+                pivot_point: new Graphene.Point({x: 0.0, y: 0.35}),
+            }));
+            this._container.add_child(icon);
+        }
+
+        this.set_child(this._container);
 
         this.connect('key-focus-in',
             () => this._setSelected(true));
@@ -65,24 +176,28 @@ const AuthListItem = GObject.registerClass({
             this.remove_style_pseudo_class('selected');
         }
     }
-});
+}
 
-export const AuthList = GObject.registerClass({
-    Signals: {
+export class AuthList extends St.BoxLayout {
+    static [GObject.GTypeName] = 'AuthList';
+
+    static [GObject.signals] = {
         'activate': {param_types: [GObject.TYPE_STRING]},
         'item-added': {param_types: [AuthListItem.$gtype]},
-    },
-}, class AuthList extends St.BoxLayout {
-    _init() {
-        super._init({
+    };
+
+    static {
+        GObject.registerClass(this);
+    }
+
+    constructor() {
+        super({
             orientation: Clutter.Orientation.VERTICAL,
             style_class: 'login-dialog-auth-list-layout',
-            x_align: Clutter.ActorAlign.START,
+            x_align: Clutter.ActorAlign.FILL,
             y_align: Clutter.ActorAlign.CENTER,
+            x_expand: true,
         });
-
-        this.label = new St.Label({style_class: 'login-dialog-auth-list-title'});
-        this.add_child(this.label);
 
         this._box = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
@@ -136,10 +251,10 @@ export const AuthList = GObject.registerClass({
         });
     }
 
-    addItem(key, text) {
+    addItem(key, content) {
         this.removeItem(key);
 
-        const item = new AuthListItem(key, text);
+        const item = new AuthListItem(key, content);
         this._box.add_child(item);
 
         this._items.set(key, item);
@@ -170,8 +285,7 @@ export const AuthList = GObject.registerClass({
     }
 
     clear() {
-        this.label.text = '';
         this._box.destroy_all_children();
         this._items.clear();
     }
-});
+}

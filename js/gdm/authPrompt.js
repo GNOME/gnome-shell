@@ -302,13 +302,30 @@ export const AuthPrompt = GObject.registerClass({
                 duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
+                    this._authListTitle.child.text = '';
                     this._authList.clear();
                     this._authList.hide();
                     this._userVerifier.selectChoice(this._queryingService, key);
                 },
             });
         });
-        this._mainBox.add_child(this._authList);
+        this._inputWell.add_child(this._authList);
+
+        this._authListTitle = new St.Button({
+            style_class: 'login-dialog-auth-list-title',
+            x_expand: true,
+            y_expand: true,
+            child: new St.Label({style_class: 'login-dialog-auth-list-title-label'}),
+            reactive: false,
+            can_focus: false,
+        });
+        this._authList.bind_property('visible',
+            this._authListTitle, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._authList.bind_property('opacity',
+            this._authListTitle, 'opacity',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._mainBox.add_child(this._authListTitle);
 
         this._entryArea = new St.Widget({
             style_class: 'login-dialog-prompt-entry-area',
@@ -655,6 +672,7 @@ export const AuthPrompt = GObject.registerClass({
 
         this._entryArea.hide();
         this.stopSpinning();
+        this._authListTitle.child.text = '';
         this._authList.clear();
         this._authList.hide();
 
@@ -697,10 +715,10 @@ export const AuthPrompt = GObject.registerClass({
 
     setChoiceList(promptMessage, choiceList) {
         this._authList.clear();
-        this._authList.label.text = promptMessage;
+        this._authListTitle.child.text = promptMessage;
         for (const key in choiceList) {
-            const text = choiceList[key];
-            this._authList.addItem(key, text);
+            const content = choiceList[key];
+            this._authList.addItem(key, content);
         }
 
         this._entryArea.hide();
