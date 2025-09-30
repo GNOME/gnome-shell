@@ -713,7 +713,11 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         if (!this.serviceIsForeground(serviceName))
             return;
 
-        this.emit('show-choice-list', serviceName, promptMessage, list.deepUnpack());
+        const choiceList = Object.fromEntries(
+            Object.entries(list.deepUnpack())
+            .map(([key, value]) => [key, {description: value}]));
+
+        this.emit('show-choice-list', serviceName, promptMessage, choiceList);
     }
 
     _onInfo(client, serviceName, info) {
