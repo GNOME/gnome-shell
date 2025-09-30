@@ -268,25 +268,57 @@ export const AuthPrompt = GObject.registerClass({
         this._mainBox.add_child(this.cancelButton);
 
         this._authList = new AuthList.AuthList();
-        this._authList.set({
-            visible: false,
-            x_align: Clutter.ActorAlign.FILL,
-            x_expand: true,
-        });
+        this._authList.hide();
         this._authList.connect('activate', (list, key) => {
             this._authList.reactive = false;
             this._authList.ease({
                 opacity: 0,
-                duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
+                duration: MESSAGE_FADE_OUT_ANIMATION_TIME * 0.5,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
+                    this._authListTitle.child.text = '';
                     this._authList.clear();
                     this._authList.hide();
                     this._userVerifier.selectChoice(this._queryingService, key);
                 },
             });
         });
-        this._mainBox.add_child(this._authList);
+        this._inputWell.add_child(this._authList);
+
+        // Use an insensitive button for the auth list title
+        // to get the same style as the auth list buttons
+        this._authListTitle = new St.Button({
+            style_class: 'login-dialog-auth-list-title',
+            x_expand: true,
+            y_expand: true,
+            child: new St.Label({style_class: 'login-dialog-auth-list-title-label'}),
+            reactive: false,
+            can_focus: false,
+            visible: false,
+        });
+        this._authList.bind_property('visible',
+            this._authListTitle, 'visible',
+            GObject.BindingFlags.DEFAULT);
+        this._authList.bind_property('opacity',
+            this._authListTitle, 'opacity',
+            GObject.BindingFlags.DEFAULT);
+        this._mainBox.add_child(this._authListTitle);
+
+        // BindConstraint can't be used here because BoxLayout
+        // allocation overrides constraint-set width. Defer width
+        // sync to idle to avoid queue_relayout during the parent
+        // BoxLayout's allocation cycle.
+        this._authListTitle.bind_property_full('width',
+            this._authList, 'width',
+            GObject.BindingFlags.DEFAULT,
+            (bind, value) => {
+                if (this._authList.width !== value) {
+                    GLib.idle_add_once(GLib.PRIORITY_HIGH, () =>
+                        this._authList.set_width(this._authListTitle.width));
+                }
+                return [false, value];
+            },
+            null);
 
         this._entryArea = new St.Widget({
             style_class: 'login-dialog-prompt-entry-area',
@@ -651,6 +683,7 @@ export const AuthPrompt = GObject.registerClass({
             this.stopSpinning();
         }
 
+        this._authListTitle.child.text = '';
         this._authList.clear();
         this._authList.hide();
 
@@ -685,10 +718,10 @@ export const AuthPrompt = GObject.registerClass({
 
     setChoiceList(promptMessage, choiceList) {
         this._authList.clear();
-        this._authList.label.text = promptMessage;
+        this._authListTitle.child.text = promptMessage;
         for (const key in choiceList) {
-            const text = choiceList[key];
-            this._authList.addItem(key, text);
+            const content = choiceList[key];
+            this._authList.addItem(key, content);
         }
 
         this._entryArea.hide();
