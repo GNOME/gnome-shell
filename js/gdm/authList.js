@@ -18,29 +18,45 @@
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
 import Meta from 'gi://Meta';
 import St from 'gi://St';
+
+import * as Tooltip from '../ui/tooltip.js';
 
 const SCROLL_ANIMATION_TIME = 500;
 
 const AuthListItem = GObject.registerClass({
     Signals: {'activate': {}},
 }, class AuthListItem extends St.Button {
-    _init(key, text) {
+    _init(key, content) {
         this.key = key;
-        const label = new St.Label({
-            text,
-            style_class: 'login-dialog-auth-list-label',
+
+        this._container = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+        });
+        this._labelBox = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
             y_align: Clutter.ActorAlign.CENTER,
             x_expand: true,
         });
+        this._container.add_child(this._labelBox);
+
+        const {commonName, description, organization} = content;
+        this._appendLine(commonName);
+        this._appendLine(description);
+        this._appendIcon(organization);
 
         super._init({
             style_class: 'login-dialog-auth-list-item',
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             can_focus: true,
-            child: label,
+            child: this._container,
             reactive: true,
+            accessible_name: [commonName, organization, description]
+                .filter(p => p)
+                .join(' '),
         });
 
         this.connect('key-focus-in',
@@ -51,6 +67,71 @@ const AuthListItem = GObject.registerClass({
             () => this._setSelected(this.hover));
 
         this.connect('clicked', this._onClicked.bind(this));
+    }
+
+    _appendLine(text) {
+        if (!text)
+            return;
+
+        if (!this._firstLine) {
+            const label = new St.Label({
+                text,
+                style_class: 'login-dialog-auth-list-item-first-line',
+                y_align: Clutter.ActorAlign.CENTER,
+                x_expand: true,
+            });
+            this._labelBox.add_child(label);
+            this._firstLine = label;
+        } else if (!this._secondLine) {
+            const label = new St.Label({
+                text,
+                style_class: 'login-dialog-auth-list-item-second-line',
+                y_align: Clutter.ActorAlign.CENTER,
+                x_expand: true,
+            });
+            this._labelBox.add_child(label);
+            this._secondLine = label;
+        }
+    }
+
+    _appendIcon(text) {
+        if (!text || this._icon)
+            return;
+
+        const icon = new St.Button({
+            style_class: 'login-dialog-auth-list-item-icon',
+            child: new St.Icon({icon_name: 'vcard-symbolic'}),
+        });
+        icon.add_constraint(new Clutter.AlignConstraint({
+            source: this._container,
+            align_axis: Clutter.AlignAxis.X_AXIS,
+            factor: 0.5,
+        }));
+        icon.add_constraint(new Clutter.AlignConstraint({
+            source: this._container,
+            align_axis: Clutter.AlignAxis.Y_AXIS,
+            factor: 0.0,
+            pivot_point: new Graphene.Point({x: 0.0, y: 0.35}),
+        }));
+        // Propagate icon click to item button
+        icon.connect('clicked', () => this.emit('activate'));
+
+        const tooltipLabels = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+            style_class: 'login-dialog-auth-list-item-tooltip-labels',
+        });
+        tooltipLabels.add_child(new St.Label({text: _('Organization')}));
+        tooltipLabels.add_child(new St.Label({text}));
+
+        this._tooltip = new Tooltip.Tooltip(icon, {
+            customLabel: tooltipLabels,
+            style_class: 'login-dialog-auth-list-item-tooltip',
+            position: Tooltip.Position.BOTTOM,
+            showWhenHovered: true,
+        });
+
+        this._container.add_child(icon);
+        this._icon = icon;
     }
 
     _onClicked() {
@@ -80,9 +161,6 @@ export const AuthList = GObject.registerClass({
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.CENTER,
         });
-
-        this.label = new St.Label({style_class: 'login-dialog-auth-list-title'});
-        this.add_child(this.label);
 
         this._box = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
@@ -136,10 +214,10 @@ export const AuthList = GObject.registerClass({
         });
     }
 
-    addItem(key, text) {
+    addItem(key, content) {
         this.removeItem(key);
 
-        const item = new AuthListItem(key, text);
+        const item = new AuthListItem(key, content);
         this._box.add_child(item);
 
         this._items.set(key, item);
@@ -170,7 +248,6 @@ export const AuthList = GObject.registerClass({
     }
 
     clear() {
-        this.label.text = '';
         this._box.destroy_all_children();
         this._items.clear();
     }
