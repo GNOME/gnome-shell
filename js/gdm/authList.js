@@ -28,7 +28,7 @@ const AuthListItem = GObject.registerClass({
     _init(key, text) {
         this.key = key;
         const label = new St.Label({
-            text,
+            text: text.replace(/\n/g, ' '),
             style_class: 'login-dialog-auth-list-label',
             y_align: Clutter.ActorAlign.CENTER,
             x_expand: true,
@@ -79,9 +79,6 @@ export const AuthList = GObject.registerClass({
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.CENTER,
         });
-
-        this.label = new St.Label({style_class: 'login-dialog-auth-list-title'});
-        this.add_child(this.label);
 
         this._box = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
@@ -169,7 +166,6 @@ export const AuthList = GObject.registerClass({
     }
 
     clear() {
-        this.label.text = '';
         this._box.destroy_all_children();
         this._items.clear();
     }
