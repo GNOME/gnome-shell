@@ -18,29 +18,65 @@
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
 import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
 import St from 'gi://St';
 
+import * as Main from '../ui/main.js';
+import * as PopupMenu from '../ui/popupMenu.js';
+
 const SCROLL_ANIMATION_TIME = 500;
+
+const PopupLabel = class extends PopupMenu.PopupMenu {
+    constructor(sourceActor, label) {
+        super(sourceActor, 0.5, St.Side.TOP);
+
+        const menuItem = new PopupMenu.PopupBaseMenuItem({
+            reactive: false,
+            can_focus: false,
+        });
+        menuItem.add_child(label);
+        this.addMenuItem(menuItem);
+
+        Main.uiGroup.add_child(this.actor);
+
+        // Overwrite min-width to allow smaller width than the default
+        this.actor.set_style('min-width: 0;');
+    }
+};
 
 const AuthListItem = GObject.registerClass({
     Signals: {'activate': {}},
 }, class AuthListItem extends St.Button {
-    _init(key, text) {
+    _init(key, content) {
         this.key = key;
-        const label = new St.Label({
-            text,
-            style_class: 'login-dialog-auth-list-label',
+
+        this._container = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+        });
+        this._labelBox = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
             y_align: Clutter.ActorAlign.CENTER,
             x_expand: true,
         });
+        this._container.add_child(this._labelBox);
+
+        const {commonName, description, organization} = content;
+        this._appendLine(commonName);
+        this._appendLine(description);
+        this._appendIcon(organization);
 
         super._init({
             style_class: 'login-dialog-auth-list-item',
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             can_focus: true,
-            child: label,
+            child: this._container,
             reactive: true,
+            accessible_name: [commonName, organization, description]
+                .filter(p => p)
+                .join(' '),
         });
 
         this.connect('key-focus-in',
@@ -51,6 +87,83 @@ const AuthListItem = GObject.registerClass({
             () => this._setSelected(this.hover));
 
         this.connect('clicked', this._onClicked.bind(this));
+    }
+
+    _appendLine(text) {
+        if (!text)
+            return;
+
+        if (!this._firstLine) {
+            const label = new St.Label({
+                text,
+                style_class: 'login-dialog-auth-list-item-first-line',
+                y_align: Clutter.ActorAlign.CENTER,
+                x_expand: true,
+            });
+            this._labelBox.add_child(label);
+            this._firstLine = label;
+        } else if (!this._secondLine) {
+            const label = new St.Label({
+                text,
+                style_class: 'login-dialog-auth-list-item-second-line',
+                y_align: Clutter.ActorAlign.CENTER,
+                x_expand: true,
+            });
+            this._labelBox.add_child(label);
+            this._secondLine = label;
+        }
+    }
+
+    _appendIcon(text) {
+        if (!text || this._icon)
+            return;
+
+        const icon = new St.Button({
+            style_class: 'login-dialog-auth-list-item-icon',
+            child: new St.Icon({icon_name: 'vcard-symbolic'}),
+        });
+        icon.add_constraint(new Clutter.AlignConstraint({
+            source: this._container,
+            align_axis: Clutter.AlignAxis.X_AXIS,
+            factor: 0.5,
+        }));
+        icon.add_constraint(new Clutter.AlignConstraint({
+            source: this._container,
+            align_axis: Clutter.AlignAxis.Y_AXIS,
+            factor: 0.0,
+            pivot_point: new Graphene.Point({x: 0.0, y: 0.35}),
+        }));
+
+        const textLines = [_('Organization'), text];
+        this.popupLabel = this._createPopupLabel(icon, textLines);
+
+        this._container.add_child(icon);
+        this._icon = icon;
+    }
+
+    _createPopupLabel(sourceActor, textLines) {
+        const labelsContainer = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+            style_class: 'login-dialog-auth-list-item-popup-labels',
+        });
+        textLines.forEach(text => {
+            labelsContainer.add_child(new St.Label({text}));
+        });
+
+        const popup = new PopupLabel(sourceActor, labelsContainer);
+        popup.box.add_style_class_name('login-dialog-auth-list-item-popup-box');
+        popup.actor.hide();
+
+        if (!this._menuManager) {
+            this._menuManager = new PopupMenu.PopupMenuManager(sourceActor, {
+                actionMode: Shell.ActionMode.NONE,
+            });
+        }
+        this._menuManager.addMenu(popup);
+
+        sourceActor.connect('clicked', () => popup.toggle());
+
+        return popup;
     }
 
     _onClicked() {
@@ -77,12 +190,10 @@ export const AuthList = GObject.registerClass({
         super._init({
             orientation: Clutter.Orientation.VERTICAL,
             style_class: 'login-dialog-auth-list-layout',
-            x_align: Clutter.ActorAlign.START,
+            x_align: Clutter.ActorAlign.FILL,
             y_align: Clutter.ActorAlign.CENTER,
+            x_expand: true,
         });
-
-        this.label = new St.Label({style_class: 'login-dialog-auth-list-title'});
-        this.add_child(this.label);
 
         this._box = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
@@ -136,10 +247,10 @@ export const AuthList = GObject.registerClass({
         });
     }
 
-    addItem(key, text) {
+    addItem(key, content) {
         this.removeItem(key);
 
-        const item = new AuthListItem(key, text);
+        const item = new AuthListItem(key, content);
         this._box.add_child(item);
 
         this._items.set(key, item);
@@ -170,7 +281,6 @@ export const AuthList = GObject.registerClass({
     }
 
     clear() {
-        this.label.text = '';
         this._box.destroy_all_children();
         this._items.clear();
     }
