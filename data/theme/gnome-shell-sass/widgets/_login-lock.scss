@@ -148,38 +148,45 @@ $_gdm_dialog_width: 25em;
 
 .login-dialog-auth-list {
   spacing: $base_padding;
-  margin-left: 2em;
-}
-
-.login-dialog-auth-list-title {
-  margin-left: 2em;
-  padding-bottom: $base_padding;
 }
 
 .login-dialog {
+  .login-dialog-auth-list-title,
   .login-dialog-auth-list-item {
-    @include login_dialog_item_button();
+    @include login_dialog_item_button($style:card);
+    border-radius: $base_border_radius * 1.5;
+    padding: $base_padding * 1.5 $base_padding;
+    margin: $base_margin $base_margin * 5;
+  }
 
-    border-radius: $modal_radius * 0.6;
-    padding: $base_padding * 1.2;
+  .login-dialog-auth-list-title {
+    background-color: transparentize($_gdm_fg, .96) !important;
+    color: $_gdm_fg !important;
   }
 }
 
 .unlock-dialog {
   .login-dialog-auth-list-item {
     @extend %lockscreen_button;
+    border-radius: $base_border_radius * 1.5;
+    padding: $base_padding * 1.5 $base_padding;
+    margin: $base_margin $base_margin * 5;
+  }
 
-    border-radius: $modal_radius * 0.6;
-    padding: $base_padding * 1.2;
+  .login-dialog-auth-list-title {
+    @extend %lockscreen_button;
+    background-color: transparent !important;
+    color: $system_fg_color !important;
+    padding: 0;
+    margin: 0;
   }
 }
 
 .login-dialog-auth-list-label {
   @extend %title_4;
-  &:ltr { padding-left: $base_padding * 2.5; text-align: left; }
-  &:rtl { padding-right: $base_padding * 2.5; text-align: right; }
+  &:ltr { padding: $base_padding; text-align: center; }
+  &:rtl { padding: $base_padding; text-align: center; }
 }
-
 
 // User list
 .login-dialog-user-list-view {

@@ -80,9 +80,6 @@ export const AuthList = GObject.registerClass({
             y_align: Clutter.ActorAlign.CENTER,
         });
 
-        this.label = new St.Label({style_class: 'login-dialog-auth-list-title'});
-        this.add_child(this.label);
-
         this._box = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
             style_class: 'login-dialog-auth-list',
@@ -169,7 +166,6 @@ export const AuthList = GObject.registerClass({
     }
 
     clear() {
-        this.label.text = '';
         this._box.destroy_all_children();
         this._items.clear();
     }
