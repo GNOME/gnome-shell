@@ -793,6 +793,8 @@ class MediaMessage extends Message {
                 this._player.next();
             });
 
+        Main.sessionMode.connectObject('updated',
+            () => this._applyPolicy(), this);
         this._player.connectObject('changed', this._update.bind(this), this);
         this._update();
     }
@@ -803,6 +805,12 @@ class MediaMessage extends Message {
 
         this._player.raise();
         Main.panel.closeCalendar();
+    }
+
+    _applyPolicy() {
+        this.visible =
+            this._policy.enable &&
+            (!Main.sessionMode.isLocked || this._policy.showInLockScreen);
     }
 
     _updateNavButton(button, sensitive) {
@@ -832,6 +840,22 @@ class MediaMessage extends Message {
 
         this._updateNavButton(this._prevButton, this._player.canGoPrevious);
         this._updateNavButton(this._nextButton, this._player.canGoNext);
+
+        const appId = this._player.app?.id.replace(/\.desktop$/, '');
+        if (this._policy?.id !== appId) {
+            this._policy?.disconnectObject(this);
+
+            this._policy = MessageTray.NotificationPolicy.newForApp(this._player.app);
+
+            // Register notification source
+            this._policy.store();
+
+            this._policy.connectObject(
+                'notify::enable', () => this._applyPolicy(),
+                'notify::show-in-lock-screen', () => this._applyPolicy(),
+                this);
+            this._applyPolicy();
+        }
     }
 });
 
