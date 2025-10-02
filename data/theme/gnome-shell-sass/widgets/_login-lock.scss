@@ -137,12 +137,7 @@ $_gdm_dialog_width: 25em;
 
 .login-dialog {
   .login-dialog-auth-list-item {
-    @extend %button_common;
-    @include button(normal, $tc:$_gdm_fg, $c:$system_base_color, $always_dark: true);
-    &:selected,
-    &:focus { @include button(focus, $tc:$_gdm_fg, $c:$system_base_color, $always_dark: true);}
-    &:hover { @include button(hover, $tc:$_gdm_fg, $c:$system_base_color, $always_dark: true);}
-    &:active { @include button(active, $tc:$_gdm_fg, $c:$system_base_color, $always_dark: true);}
+    @include login_dialog_item_button();
 
     border-radius: $modal_radius * 0.6;
     padding: $base_padding * 1.2;
@@ -175,14 +170,7 @@ $_gdm_dialog_width: 25em;
     spacing: $base_padding * 2;
 
     .login-dialog-user-list-item {
-      // use button styling
-      @extend %button_common;
-      @include button(normal, $tc:$_gdm_fg, $c:$system_base_color, $always_dark: true);
-      &:selected,
-      &:focus { @include button(focus, $tc:$_gdm_fg, $c:$system_base_color, $always_dark: true);}
-      &:hover { @include button(hover, $tc:$_gdm_fg, $c:$system_base_color, $always_dark: true);}
-      &:active { @include button(active, $tc:$_gdm_fg, $c:$system_base_color, $always_dark: true);}
-
+      @include login_dialog_item_button();
       border-radius: $modal_radius;
       padding: $base_padding * 1.5;
 
