@@ -25,8 +25,6 @@ class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
     _init(displayName, shortName) {
         super._init();
 
-        this.setOrnament(PopupMenu.Ornament.NO_DOT);
-
         this.label = new St.Label({
             text: displayName,
             x_expand: true,
@@ -371,6 +369,7 @@ export class InputSourceManager extends Signals.EventEmitter {
 
         this._xkbInfo = KeyboardManager.getXkbInfo();
         this._keyboardManager = KeyboardManager.getKeyboardManager();
+        this._keyboardManager.connect('keymap-changed', this._keymapChanged.bind(this));
 
         this._ibusReady = false;
         this._ibusManager = IBusManager.getIBusManager();
@@ -426,6 +425,9 @@ export class InputSourceManager extends Signals.EventEmitter {
     }
 
     _switchInputSource(display, window, event, binding) {
+        if (this._keyboardManager.isLocked())
+            return;
+
         if (this._mruSources.length < 2)
             return;
 
@@ -457,6 +459,10 @@ export class InputSourceManager extends Signals.EventEmitter {
     _keyboardModelChanged() {
         this._keyboardManager.setKeyboardModel(this._settings.keyboardModel);
         this._keyboardManager.reapply();
+    }
+
+    _keymapChanged() {
+        this.emit('keymap-changed');
     }
 
     _updateMruSettings() {
@@ -888,7 +894,8 @@ class InputSourceIndicator extends PanelMenu.Button {
         this._inputSourceManager = getInputSourceManager();
         this._inputSourceManager.connectObject(
             'sources-changed', this._sourcesChanged.bind(this),
-            'current-source-changed', this._currentSourceChanged.bind(this), this);
+            'current-source-changed', this._currentSourceChanged.bind(this),
+            'keymap-changed', this._keymapChanged.bind(this), this);
         this._inputSourceManager.reload();
     }
 
@@ -904,7 +911,78 @@ class InputSourceIndicator extends PanelMenu.Button {
         this._showLayoutItem.visible = Main.sessionMode.allowSettings;
     }
 
+    _createExternalSource(keyboardManager) {
+        const {displayName, shortName} = keyboardManager;
+        const is = new InputSource('external', 'external', displayName, shortName, -1);
+        is.locked = keyboardManager.isLocked();
+        return is;
+    }
+
+    _getCurrentSource() {
+        const {keyboardManager} = this._inputSourceManager;
+        if (keyboardManager.isExternal())
+            return this._inputSources[0];
+        else
+            return this._inputSourceManager.currentSource;
+    }
+
+    _updateInputSources() {
+        const {keyboardManager} = this._inputSourceManager;
+        if (keyboardManager.isLocked()) {
+            const is = this._createExternalSource(keyboardManager);
+            this._inputSources = [is];
+            return;
+        }
+
+        const inputSources = [];
+        if (keyboardManager.isExternal())
+            inputSources.push(this._createExternalSource(keyboardManager));
+
+        const internalSources = this._inputSourceManager.inputSources;
+        inputSources.push(
+            ...Object.keys(internalSources).sort((a, b) => a - b).map(i => internalSources[i]));
+
+        this._inputSources = inputSources;
+    }
+
+    _addSourceIndicators() {
+        const inputSources = this._inputSources;
+        for (const i in inputSources) {
+            const is = inputSources[i];
+
+            const menuItem = new LayoutMenuItem(is.displayName, is.shortName);
+            if (is.type !== 'external')
+                menuItem.connect('activate', () => is.activate(true));
+            else
+                menuItem.sensitive = false;
+
+            if (is.locked)
+                menuItem.setOrnament(PopupMenu.Ornament.HIDDEN);
+            else
+                menuItem.setOrnament(PopupMenu.Ornament.NO_DOT);
+
+            const indicatorLabel = new St.Label({
+                text: is.shortName,
+                visible: false,
+            });
+
+            const indicatorIndex = this._calculateSourceIndicatorIndex(is);
+
+            this._menuItems[indicatorIndex] = menuItem;
+            this._indicatorLabels[indicatorIndex] = indicatorLabel;
+            is.connect('changed', () => {
+                menuItem.indicator.set_text(is.shortName);
+                indicatorLabel.set_text(is.shortName);
+            });
+
+            this.menu.addMenuItem(menuItem, indicatorIndex);
+            this._container.add_child(indicatorLabel);
+        }
+    }
+
     _sourcesChanged() {
+        this._updateInputSources();
+
         for (const i in this._menuItems)
             this._menuItems[i].destroy();
         for (const i in this._indicatorLabels)
@@ -913,38 +991,34 @@ class InputSourceIndicator extends PanelMenu.Button {
         this._menuItems = {};
         this._indicatorLabels = {};
 
-        let menuIndex = 0;
-        for (const i in this._inputSourceManager.inputSources) {
-            const is = this._inputSourceManager.inputSources[i];
+        this._addSourceIndicators();
+    }
 
-            const menuItem = new LayoutMenuItem(is.displayName, is.shortName);
-            menuItem.connect('activate', () => is.activate(true));
+    _calculateSourceIndicatorIndex(source) {
+        const keyboardManager = this._inputSourceManager.keyboardManager;
+        return (keyboardManager.isExternal() ? 1 : 0) + source.index;
+    }
 
-            const indicatorLabel = new St.Label({
-                text: is.shortName,
-                visible: false,
-            });
+    _setSourceAsActive(source) {
+        const index = this._calculateSourceIndicatorIndex(source);
+        if (!source.locked)
+            this._menuItems[index]?.setOrnament(PopupMenu.Ornament.DOT);
+        this._indicatorLabels[index]?.show();
+    }
 
-            this._menuItems[i] = menuItem;
-            this._indicatorLabels[i] = indicatorLabel;
-            is.connect('changed', () => {
-                menuItem.indicator.set_text(is.shortName);
-                indicatorLabel.set_text(is.shortName);
-            });
-
-            this.menu.addMenuItem(menuItem, menuIndex++);
-            this._container.add_child(indicatorLabel);
-        }
+    _setSourceAsInactive(source) {
+        const index = this._calculateSourceIndicatorIndex(source);
+        if (!source.locked)
+            this._menuItems[index]?.setOrnament(PopupMenu.Ornament.NO_DOT);
+        this._indicatorLabels[index].hide();
     }
 
     _currentSourceChanged(manager, oldSource) {
-        const nVisibleSources = Object.keys(this._inputSourceManager.inputSources).length;
-        const newSource = this._inputSourceManager.currentSource;
+        const nVisibleSources = Object.keys(this._inputSources).length;
+        const newSource = this._getCurrentSource();
 
-        if (oldSource) {
-            this._menuItems[oldSource.index].setOrnament(PopupMenu.Ornament.NO_DOT);
-            this._indicatorLabels[oldSource.index].hide();
-        }
+        if (oldSource)
+            this._setSourceAsInactive(oldSource);
 
         if (!newSource || (nVisibleSources < 2 && !newSource.properties)) {
             // This source index might be invalid if we weren't able
@@ -962,8 +1036,12 @@ class InputSourceIndicator extends PanelMenu.Button {
 
         this._buildPropSection(newSource.properties);
 
-        this._menuItems[newSource.index].setOrnament(PopupMenu.Ornament.DOT);
-        this._indicatorLabels[newSource.index].show();
+        this._setSourceAsActive(newSource);
+    }
+
+    _keymapChanged() {
+        this._sourcesChanged();
+        this._setSourceAsActive(this._getCurrentSource());
     }
 
     _buildPropSection(properties) {
@@ -1005,9 +1083,10 @@ class InputSourceIndicator extends PanelMenu.Button {
                 else
                     text = prop.get_label().get_text();
 
-                const currentSource = this._inputSourceManager.currentSource;
+                const currentSource = this._getCurrentSource();
                 if (currentSource) {
-                    const indicatorLabel = this._indicatorLabels[currentSource.index];
+                    const index = this._calculateSourceIndicatorIndex(currentSource);
+                    const indicatorLabel = this._indicatorLabels[index];
                     const graphemeClusters = this._getGraphemeClusters(text);
                     if (graphemeClusters.length > 0 && graphemeClusters.length < 3)
                         indicatorLabel.set_text(text);
