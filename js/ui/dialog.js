@@ -263,6 +263,8 @@ export const ListSection = GObject.registerClass({
 }, class ListSection extends St.BoxLayout {
     _init(params) {
         this._title = new St.Label({style_class: 'dialog-list-title'});
+        this._title.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._title.clutter_text.line_wrap = true;
 
         this.list = new St.BoxLayout({
             style_class: 'dialog-list-box',
