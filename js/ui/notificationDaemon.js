@@ -193,6 +193,7 @@ class FdoNotificationDaemon {
                     break;
                 }
                 this._emitNotificationClosed(id, notificationClosedReason);
+                notification.disconnectObject(this);
             });
         }
 
@@ -210,6 +211,7 @@ class FdoNotificationDaemon {
             acknowledged: false,
         });
         notification.clearActions();
+        notification.disconnectObject(this);
 
         let hasDefaultAction = false;
 
@@ -228,14 +230,14 @@ class FdoNotificationDaemon {
         }
 
         if (hasDefaultAction) {
-            notification.connect('activated', () => {
+            notification.connectObject('activated', () => {
                 this._emitActivationToken(source, id);
                 this._emitActionInvoked(id, 'default');
-            });
+            }, this);
         } else {
-            notification.connect('activated', () => {
+            notification.connectObject('activated', () => {
                 source.open();
-            });
+            }, this);
         }
 
         switch (hints.urgency) {
