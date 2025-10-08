@@ -80,7 +80,6 @@ export const SearchController = GObject.registerClass({
         });
 
         this._iconClickedId = 0;
-        this._capturedEventId = 0;
 
         this._searchResults = new Search.SearchResultsView();
         this.add_child(this._searchResults);
@@ -108,6 +107,12 @@ export const SearchController = GObject.registerClass({
                 this._stageKeyPressId = 0;
             }
         });
+
+        // Will be connected to the stage when active
+        this._clickGesture = new Clutter.ClickGesture();
+        this._clickGesture.set_recognize_on_press(true);
+        this._clickGesture.connect(
+            'may-recognize', () => this._maybeCancelSearch());
     }
 
     prepareToEnterOverview() {
@@ -202,15 +207,14 @@ export const SearchController = GObject.registerClass({
     _onMapped() {
         if (this._entry.mapped) {
             // Enable 'find-as-you-type'
-            this._capturedEventId =
-                global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
             this._text.set_cursor_visible(true);
             this._text.set_selection(0, 0);
+
+            global.stage.add_action_full(
+                'reset-search', Clutter.EventPhase.CAPTURE, this._clickGesture);
         } else {
             // Disable 'find-as-you-type'
-            if (this._capturedEventId > 0)
-                global.stage.disconnect(this._capturedEventId);
-            this._capturedEventId = 0;
+            global.stage.remove_action(this._clickGesture);
         }
     }
 
@@ -306,22 +310,20 @@ export const SearchController = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onCapturedEvent(actor, event) {
-        if (event.type() === Clutter.EventType.BUTTON_PRESS) {
-            const targetActor = global.stage.get_event_actor(event);
-            if (targetActor !== this._text &&
-                this._text.has_key_focus() &&
-                this._text.text === '' &&
-                !this._text.has_preedit() &&
-                !Main.layoutManager.keyboardBox.contains(targetActor)) {
-                // the user clicked outside after activating the entry, but
-                // with no search term entered and no keyboard button pressed
-                // - cancel the search
-                this.reset();
-            }
+    _maybeCancelSearch() {
+        const event = this._clickGesture.get_point_event(0);
+        const targetActor = global.stage.get_event_actor(event);
+        if (targetActor !== this._text &&
+            this._text.has_key_focus() &&
+            this._text.text === '' &&
+            !this._text.has_preedit() &&
+            !Main.layoutManager.keyboardBox.contains(targetActor)) {
+            // the user clicked outside after activating the entry, but
+            // with no search term entered and no keyboard button pressed
+            // - cancel the search
+            this.reset();
         }
-
-        return Clutter.EVENT_PROPAGATE;
+        return false;
     }
 
     /**
