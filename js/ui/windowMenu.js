@@ -1,3 +1,4 @@
+import Clutter from 'gi://Clutter';
 import Meta from 'gi://Meta';
 import St from 'gi://St';
 
@@ -205,9 +206,13 @@ export class WindowMenuManager {
         this._manager = new PopupMenu.PopupMenuManager(Main.layoutManager.dummyCursor);
 
         this._sourceActor = new St.Widget({reactive: true, visible: false});
-        this._sourceActor.connect('button-press-event', () => {
+
+        this._clickGesture = new Clutter.ClickGesture();
+        this._clickGesture.set_recognize_on_press(true);
+        this._clickGesture.connect('recognize', () => {
             this._manager.activeMenu.toggle();
         });
+        this._sourceActor.add_action(this._clickGesture);
         Main.uiGroup.add_child(this._sourceActor);
     }
 
