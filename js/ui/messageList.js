@@ -54,26 +54,15 @@ class URLHighlighter extends St.Label {
         this.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
 
         this.setMarkup(text, allowMarkup);
+
+        this._clickGesture = new Clutter.ClickGesture();
+        this._clickGesture.connect('recognize', this._onClick.bind(this));
+        this.add_action(this._clickGesture);
     }
 
-    vfunc_button_press_event(event) {
-        // Don't try to URL highlight when invisible.
-        // The MessageTray doesn't actually hide us, so
-        // we need to check for paint opacities as well.
-        if (!this.visible || this.get_paint_opacity() === 0)
-            return Clutter.EVENT_PROPAGATE;
-
-        // Keep Notification from seeing this and taking
-        // a pointer grab, which would block our button-release-event
-        // handler, if an URL is clicked
-        return this._findUrlAtPos(event) !== -1;
-    }
-
-    vfunc_button_release_event(event) {
-        if (!this.visible || this.get_paint_opacity() === 0)
-            return Clutter.EVENT_PROPAGATE;
-
-        const urlId = this._findUrlAtPos(event);
+    _onClick() {
+        const {x, y} = this._clickGesture.get_coords_abs();
+        const urlId = this._findUrlAtPos(x, y);
         if (urlId !== -1) {
             let url = this._urls[urlId].url;
             if (!url.includes(':'))
@@ -81,16 +70,14 @@ class URLHighlighter extends St.Label {
 
             Gio.app_info_launch_default_for_uri(
                 url, global.create_app_launch_context(0, -1));
-            return Clutter.EVENT_STOP;
         }
-        return Clutter.EVENT_PROPAGATE;
     }
 
     vfunc_motion_event(event) {
         if (!this.visible || this.get_paint_opacity() === 0)
             return Clutter.EVENT_PROPAGATE;
 
-        const urlId = this._findUrlAtPos(event);
+        const urlId = this._findUrlAtPos(...event.get_coords());
         if (urlId !== -1 && !this._cursorChanged) {
             global.display.set_cursor(Meta.Cursor.POINTER);
             this._cursorChanged = true;
@@ -137,8 +124,7 @@ class URLHighlighter extends St.Label {
         this.clutter_text.set_markup(markup);
     }
 
-    _findUrlAtPos(event) {
-        let [x, y] = event.get_coords();
+    _findUrlAtPos(x, y) {
         [, x, y] = this.transform_stage_point(x, y);
         let findPos = -1;
         for (let i = 0; i < this.clutter_text.text.length; i++) {
