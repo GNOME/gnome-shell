@@ -1077,6 +1077,7 @@ export const MessageTray = GObject.registerClass({
         } else if (this._notificationState === State.SHOWING ||
                    this._notificationState === State.SHOWN) {
             let expired = (this._userActiveWhileNotificationShown &&
+                           this._notificationState === State.SHOWN &&
                            this._notificationTimeoutId === 0 &&
                            this._notification.urgency !== Urgency.CRITICAL &&
                            !this._pointerInNotification) || this._notificationExpired;
