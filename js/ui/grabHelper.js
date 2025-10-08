@@ -184,16 +184,6 @@ export class GrabHelper {
         this._grab = null;
     }
 
-    // ignoreRelease:
-    //
-    // Make sure that the next button release event evaluated by the
-    // capture event handler returns false. This is designed for things
-    // like the ComboBoxMenu that go away on press, but need to eat
-    // the next release event.
-    ignoreRelease() {
-        this._ignoreUntilRelease = true;
-    }
-
     // ungrab:
     // @params: The parameters for the grab; see below.
     //
