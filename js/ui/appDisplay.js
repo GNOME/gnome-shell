@@ -3028,7 +3028,6 @@ export const AppIcon = GObject.registerClass({
         this.emit('menu-state-changed', true);
 
         this._menu.open(BoxPointer.PopupAnimation.FULL);
-        this._menuManager.ignoreRelease();
         this.emit('sync-tooltip');
 
         return false;

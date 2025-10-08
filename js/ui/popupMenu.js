@@ -1456,9 +1456,6 @@ export class PopupMenuManager {
         this._menus.splice(position, 1);
     }
 
-    ignoreRelease() {
-    }
-
     _onMenuOpenState(menu, open) {
         if (open && this.activeMenu === menu)
             return;
