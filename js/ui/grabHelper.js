@@ -29,8 +29,6 @@ export class GrabHelper {
 
         this._grabStack = [];
 
-        this._ignoreUntilRelease = false;
-
         this._modalCount = 0;
     }
 
@@ -162,9 +160,28 @@ export class GrabHelper {
             }
 
             this._grab = grab;
+            this._clickGesture = new Clutter.ClickGesture();
+            this._clickGesture.connect('recognize', () => {
+                const event = this._clickGesture.get_point_event(0);
+                const targetActor = global.stage.get_event_actor(event);
+                if (!this.currentGrab.actor.contains(targetActor)) {
+                    const i = this._actorInGrabStack(targetActor) + 1;
+                    this.ungrab({actor: this._grabStack[i].actor, isUser: true});
+                }
+            });
+            this._owner.add_action(this._clickGesture);
             this._capturedEventId = this._owner.connect('captured-event',
                 (actor, event) => {
-                    return this.onCapturedEvent(event);
+                    const type = event.type();
+
+                    if (type === Clutter.EventType.KEY_PRESS &&
+                        event.get_key_symbol() === Clutter.KEY_Escape) {
+                        this.ungrab({isUser: true});
+                        return Clutter.EVENT_STOP;
+                    }
+
+                    Main.keyboard.maybeHandleEvent(event);
+                    return Clutter.EVENT_PROPAGATE;
                 });
         }
 
@@ -178,7 +195,7 @@ export class GrabHelper {
             return;
 
         this._owner.disconnect(this._capturedEventId);
-        this._ignoreUntilRelease = false;
+        this._owner.remove_action(this._clickGesture);
 
         Main.popModal(this._grab);
         this._grab = null;
@@ -227,57 +244,5 @@ export class GrabHelper {
             if (poppedGrab.savedFocus)
                 poppedGrab.savedFocus.grab_key_focus();
         }
-    }
-
-    onCapturedEvent(event) {
-        const type = event.type();
-
-        if (type === Clutter.EventType.KEY_PRESS &&
-            event.get_key_symbol() === Clutter.KEY_Escape) {
-            this.ungrab({isUser: true});
-            return Clutter.EVENT_STOP;
-        }
-
-        const motion = type === Clutter.EventType.MOTION;
-        const press = type === Clutter.EventType.BUTTON_PRESS;
-        const release = type === Clutter.EventType.BUTTON_RELEASE;
-        const button = press || release;
-
-        const touchUpdate = type === Clutter.EventType.TOUCH_UPDATE;
-        const touchBegin = type === Clutter.EventType.TOUCH_BEGIN;
-        const touchEnd = type === Clutter.EventType.TOUCH_END;
-        const touch = touchUpdate || touchBegin || touchEnd;
-
-        if (touch && !global.display.is_pointer_emulating_sequence(event.get_event_sequence()))
-            return Clutter.EVENT_PROPAGATE;
-
-        if (this._ignoreUntilRelease && (motion || release || touch)) {
-            if (release || touchEnd)
-                this._ignoreUntilRelease = false;
-            return Clutter.EVENT_PROPAGATE;
-        }
-
-        const targetActor = global.stage.get_event_actor(event);
-
-        if (type === Clutter.EventType.ENTER ||
-            type === Clutter.EventType.LEAVE ||
-            this.currentGrab.actor.contains(targetActor))
-            return Clutter.EVENT_PROPAGATE;
-
-        if (Main.keyboard.maybeHandleEvent(event))
-            return Clutter.EVENT_PROPAGATE;
-
-        if (button || touchBegin) {
-            // If we have a press event, ignore the next
-            // motion/release events.
-            if (press || touchBegin)
-                this._ignoreUntilRelease = true;
-
-            const i = this._actorInGrabStack(targetActor) + 1;
-            this.ungrab({actor: this._grabStack[i].actor, isUser: true});
-            return Clutter.EVENT_STOP;
-        }
-
-        return Clutter.EVENT_STOP;
     }
 }
