@@ -157,6 +157,7 @@ export const AuthPrompt = GObject.registerClass({
         this._mode = mode;
         this._defaultButtonWellActor = null;
         this._cancelledRetries = 0;
+        this._promptStep = 0;
 
         let reauthenticationOnly;
         if (this._mode === AuthPromptMode.UNLOCK_ONLY)
@@ -192,8 +193,6 @@ export const AuthPrompt = GObject.registerClass({
         });
         this.add_child(this._inputWell);
         this._mainContent = this._inputWell;
-
-        this._hasCancelButton = this._mode === AuthPromptMode.UNLOCK_OR_LOG_IN;
 
         this._initInputRow();
 
@@ -253,18 +252,16 @@ export const AuthPrompt = GObject.registerClass({
 
         this.cancelButton = new St.Button({
             style_class: 'login-dialog-button cancel-button',
-            accessible_name: _('Cancel'),
+            accessible_name: _('Back'),
             button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
-            reactive: this._hasCancelButton,
-            can_focus: this._hasCancelButton,
+            reactive: true,
+            can_focus: true,
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.CENTER,
             icon_name: 'go-previous-symbolic',
         });
-        if (this._hasCancelButton)
-            this.cancelButton.connect('clicked', () => this.cancel());
-        else
-            this.cancelButton.opacity = 0;
+        this.cancelButton.connect('clicked', () => this.cancel());
+        this._updateCancelButton();
         this._mainBox.add_child(this.cancelButton);
 
         this._authList = new AuthList.AuthList();
@@ -390,6 +387,15 @@ export const AuthPrompt = GObject.registerClass({
         }));
     }
 
+    _updateCancelButton() {
+        if (this._mode === AuthPromptMode.UNLOCK_OR_LOG_IN)
+            return;
+
+        const cancelVisible = this._promptStep > 1;
+        this.cancelButton.opacity = cancelVisible ? 255 : 0;
+        this.cancelButton.reactive = cancelVisible;
+    }
+
     showTimedLoginIndicator(time) {
         const hold = new Batch.Hold();
 
@@ -472,6 +478,8 @@ export const AuthPrompt = GObject.registerClass({
             this.clear();
 
         this._queryingService = serviceName;
+        this._promptStep++;
+        this._updateCancelButton();
 
         const preemptiveAnswer = this._preemptiveAnswer;
         this._clearPreemptiveState();
@@ -498,6 +506,8 @@ export const AuthPrompt = GObject.registerClass({
             this.clear();
 
         this._queryingService = serviceName;
+        this._promptStep++;
+        this._updateCancelButton();
 
         this._clearPreemptiveState();
 
@@ -812,10 +822,10 @@ export const AuthPrompt = GObject.registerClass({
 
         const oldStatus = this.verificationStatus;
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
-        this.cancelButton.reactive = this._hasCancelButton;
-        this.cancelButton.can_focus = this._hasCancelButton;
         if (oldStatus !== AuthPromptStatus.VERIFICATION_IN_PROGRESS)
             this._preemptiveAnswer = null;
+        this._promptStep = 0;
+        this._updateCancelButton();
 
         if (this._userVerifier)
             this._userVerifier.cancel();
@@ -925,6 +935,12 @@ export const AuthPrompt = GObject.registerClass({
     cancel() {
         if (this.verificationStatus === AuthPromptStatus.VERIFICATION_SUCCEEDED)
             return;
+
+        // If we're in a multi-step flow (step > 1), go back to step 1 instead of full reset
+        if (this._promptStep > 1) {
+            this.reset({softReset: true});
+            return;
+        }
 
         if (this.verificationStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS) {
             this._cancelledRetries++;
