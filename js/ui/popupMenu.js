@@ -338,7 +338,6 @@ export const Switch = GObject.registerClass({
 }, class Switch extends St.Widget {
     _init(state) {
         this._state = false;
-        this._dragging = false;
 
         super._init({
             style_class: 'toggle-switch',
@@ -390,9 +389,14 @@ export const Switch = GObject.registerClass({
             source: this,
         });
         this._handle.add_constraint(this._handleAlignConstraint);
-        this._handle.connect('button-press-event', (actor, event) => this._startDragging(event));
-        this._handle.connect('touch-event', this._touchDragging.bind(this));
         this.add_child(this._handle);
+
+        this._panGesture = new Clutter.PanGesture();
+        this._panGesture.set_begin_threshold(0);
+        this._panGesture.connect('recognize', this._startDragging.bind(this));
+        this._panGesture.connect('pan-update', this._dragUpdate.bind(this));
+        this._panGesture.connect('end', this._endDragging.bind(this));
+        this._handle.add_action(this._panGesture);
 
         this.state = state;
 
@@ -447,91 +451,32 @@ export const Switch = GObject.registerClass({
         this.state = !this.state;
     }
 
-    _startDragging(event) {
-        if (this._dragging)
-            return Clutter.EVENT_PROPAGATE;
-
-        this._dragging = true;
-        [this._initialGrabX] = event.get_coords();
-
+    _startDragging() {
+        const coords = this._panGesture.get_centroid_abs();
+        this._initialGrabX = coords.x;
         this._grab = global.stage.grab(this);
-
-        const backend = global.stage.get_context().get_backend();
-        const sprite = backend.get_sprite(global.stage, event);
-        this._sprite = sprite;
-
-        return Clutter.EVENT_STOP;
-    }
-
-    vfunc_motion_event(event) {
-        const backend = this.get_context().get_backend();
-        const sprite = backend.get_sprite(global.stage, event);
-
-        if (this._dragging && this._sprite === sprite)
-            return this._motionEvent(this, Clutter.get_current_event());
-
-        return Clutter.EVENT_PROPAGATE;
-    }
-
-    vfunc_button_release_event(event) {
-        const backend = this.get_context().get_backend();
-        const sprite = backend.get_sprite(global.stage, event);
-
-        if (this._dragging && this._sprite === sprite)
-            return this._endDragging();
-
-        return Clutter.EVENT_PROPAGATE;
-    }
-
-    _touchDragging(actor, event) {
-        const backend = actor.get_context().get_backend();
-        const sprite = backend.get_sprite(global.stage, event);
-
-        if (!this._dragging &&
-            event.type() === Clutter.EventType.TOUCH_BEGIN) {
-            this.startDragging(event);
-            return Clutter.EVENT_STOP;
-        } else if (this._sprite === sprite) {
-            if (event.type() === Clutter.EventType.TOUCH_UPDATE)
-                return this._motionEvent(this, event);
-            else if (event.type() === Clutter.EventType.TOUCH_END)
-                return this._endDragging();
-        }
-
-        return Clutter.EVENT_PROPAGATE;
     }
 
     _endDragging() {
-        if (!this._dragging)
-            return Clutter.EVENT_PROPAGATE;
-
         if (this._grab) {
             this._grab.dismiss();
             this._grab = null;
         }
 
-        if (this._dragged)
+        const delta = this._panGesture.get_accumulated_delta();
+        if (delta.x > 0)
             this.state = this._handleAlignConstraint.get_factor() > 0.5;
         else
             this.toggle();
-
-        this._dragged = false;
-        this._sprite = null;
-        this._dragging = false;
-
-        return Clutter.EVENT_STOP;
     }
 
-    _motionEvent(actor, event) {
-        this._dragged = true;
-
-        const [absX] = event.get_coords();
+    _dragUpdate() {
+        const coords = this._panGesture.get_centroid_abs();
+        const absX = coords.x;
         const factorDiff = (absX - this._initialGrabX) / (this.get_width() - this._handle.get_width());
         const factor = factorDiff + (this.state ? 1.0 : 0.0);
 
         this._handleAlignConstraint.set_factor(Math.clamp(factor, 0, 1));
-
-        return Clutter.EVENT_STOP;
     }
 });
 
