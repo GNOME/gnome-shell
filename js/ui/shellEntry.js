@@ -107,17 +107,14 @@ function _setMenuAlignment(entry, stageX) {
         entry.menu.setSourceAlignment(entryX / entry.width);
 }
 
-function _onButtonPressEvent(actor, event, entry) {
+function _onMenuClickGesture(gesture, entry) {
     if (entry.menu.isOpen) {
         entry.menu.close(BoxPointer.PopupAnimation.FULL);
-        return Clutter.EVENT_STOP;
-    } else if (event.get_button() === 3) {
-        const [stageX] = event.get_coords();
-        _setMenuAlignment(entry, stageX);
+    } else if (gesture.get_button() === Clutter.BUTTON_SECONDARY) {
+        const coords = gesture.get_coords_abs();
+        _setMenuAlignment(entry, coords.x);
         entry.menu.open(BoxPointer.PopupAnimation.FULL);
-        return Clutter.EVENT_STOP;
     }
-    return Clutter.EVENT_PROPAGATE;
 }
 
 function _onPopup(actor, entry) {
@@ -144,15 +141,13 @@ export function addContextMenu(entry, params) {
     });
     entry._menuManager.addMenu(entry.menu);
 
-    // Add an event handler to both the entry and its clutter_text; the former
-    // so padding is included in the clickable area, the latter because the
-    // event processing of ClutterText prevents event-bubbling.
-    entry.clutter_text.connect('button-press-event', (actor, event) => {
-        _onButtonPressEvent(actor, event, entry);
-    });
-    entry.connect('button-press-event', (actor, event) => {
-        _onButtonPressEvent(actor, event, entry);
-    });
+    const clickGesture = new Clutter.ClickGesture();
+    clickGesture.set_recognize_on_press(true);
+    clickGesture.set_required_button(Clutter.BUTTON_SECONDARY);
+    clickGesture.connect(
+        'recognize', gesture => _onMenuClickGesture(gesture, entry));
+    entry.add_action_full(
+        'menu-click-gesture', Clutter.EventPhase.CAPTURE, clickGesture);
 
     entry.connect('popup-menu', actor => _onPopup(actor, entry));
 
