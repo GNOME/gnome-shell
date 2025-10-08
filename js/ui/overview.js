@@ -166,11 +166,6 @@ export class Overview extends Signals.EventEmitter {
             reactive: true,
         });
         Main.layoutManager.overviewGroup.add_child(this._coverPane);
-        this._coverPane.connect('event', (_actor, event) => {
-            return event.type() === Clutter.EventType.ENTER ||
-                event.type() === Clutter.EventType.LEAVE
-                ? Clutter.EVENT_PROPAGATE : Clutter.EVENT_STOP;
-        });
         this._coverPane.hide();
 
         // XDND
