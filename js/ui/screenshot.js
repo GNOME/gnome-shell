@@ -716,12 +716,7 @@ const UIAreaSelector = GObject.registerClass({
     }
 
     vfunc_leave_event(event) {
-        // If we're dragging and go over the panel we still get a leave event
-        // for some reason, even though we have a grab. We don't want to switch
-        // the cursor when we're dragging.
-        if (!this._dragButton)
-            global.display.set_cursor(Meta.Cursor.DEFAULT);
-
+        global.display.set_cursor(Meta.Cursor.DEFAULT);
         return super.vfunc_leave_event(event);
     }
 });
