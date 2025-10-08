@@ -451,8 +451,13 @@ class Panel extends St.Widget {
         this._rightBox = new St.BoxLayout({name: 'panelRight'});
         this.add_child(this._rightBox);
 
-        this.connect('button-press-event', this._onButtonPress.bind(this));
-        this.connect('touch-event', this._onTouchEvent.bind(this));
+        this._clickGesture = new Clutter.ClickGesture({
+            recognize_on_press: true,
+        });
+        this._clickGesture.connect(
+            'recognize', this._onWindowDragGestureRecognize.bind(this));
+        this.add_action_full(
+            'window-drag', Clutter.EventPhase.TARGET, this._clickGesture);
 
         Main.overview.connectObject('showing',
             () => this.add_style_pseudo_class('overview'),
@@ -542,43 +547,25 @@ class Panel extends St.Widget {
         this._rightBox.allocate(childBox);
     }
 
-    _tryDragWindow(event) {
+    _onWindowDragGestureRecognize() {
         if (Main.modalCount > 0)
-            return Clutter.EVENT_PROPAGATE;
+            return;
 
+        const event = this._clickGesture.get_point_event(0);
         const backend = global.stage.get_context().get_backend();
         const sprite = backend.get_sprite(global.stage, event);
 
-        const targetActor = global.stage.get_event_actor(event);
-        if (targetActor !== this)
-            return Clutter.EVENT_PROPAGATE;
-
-        const [x, y] = event.get_coords();
-        const dragWindow = this._getDraggableWindowForPosition(x);
+        const coords = this._clickGesture.get_coords_abs();
+        const dragWindow = this._getDraggableWindowForPosition(coords.x);
 
         if (!dragWindow)
-            return Clutter.EVENT_PROPAGATE;
+            return;
 
-        const positionHint = new Graphene.Point({x, y});
-        return dragWindow.begin_grab_op(
+        dragWindow.begin_grab_op(
             Meta.GrabOp.MOVING,
             sprite,
             event.get_time(),
-            positionHint) ? Clutter.EVENT_STOP : Clutter.EVENT_PROPAGATE;
-    }
-
-    _onButtonPress(actor, event) {
-        if (event.get_button() !== Clutter.BUTTON_PRIMARY)
-            return Clutter.EVENT_PROPAGATE;
-
-        return this._tryDragWindow(event);
-    }
-
-    _onTouchEvent(actor, event) {
-        if (event.type() !== Clutter.EventType.TOUCH_BEGIN)
-            return Clutter.EVENT_PROPAGATE;
-
-        return this._tryDragWindow(event);
+            coords);
     }
 
     vfunc_key_press_event(event) {
