@@ -48,10 +48,12 @@ const CandidateArea = GObject.registerClass({
             this.add_child(box);
 
             const j = i;
-            box.connect('button-release-event', (actor, event) => {
-                this.emit('candidate-clicked', j, event.get_button(), event.get_state());
-                return Clutter.EVENT_PROPAGATE;
+            const clickGesture = new Clutter.ClickGesture();
+            clickGesture.connect('recognize', gesture => {
+                this.emit('candidate-clicked', j, gesture.get_button(),
+                    gesture.get_state());
             });
+            box.add_action(clickGesture);
         }
 
         this._buttonBox = new St.BoxLayout({style_class: 'candidate-page-button-box'});
