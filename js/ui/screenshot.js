@@ -65,6 +65,9 @@ class Tooltip extends St.Label {
             else
                 this.close();
         });
+
+        if (!this._widget.label_actor)
+            this._widget.label_actor = this;
     }
 
     open() {
