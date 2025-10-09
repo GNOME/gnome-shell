@@ -188,6 +188,9 @@ class FdoNotificationDaemon {
                 case MessageTray.NotificationDestroyedReason.SOURCE_CLOSED:
                     notificationClosedReason = NotificationClosedReason.APP_CLOSED;
                     break;
+                default:
+                    notificationClosedReason = NotificationClosedReason.UNDEFINED;
+                    break;
                 }
                 this._emitNotificationClosed(id, notificationClosedReason);
             });
