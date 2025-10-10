@@ -2193,7 +2193,6 @@ class Indicator extends SystemIndicator {
             this._mainConnectionStateChanged();
         }
 
-        this._updateIcon();
         this._syncConnectivity();
     }
 
@@ -2203,6 +2202,7 @@ class Indicator extends SystemIndicator {
     }
 
     _syncConnectivity() {
+        this._updateIcon();
         if (this._mainConnection == null ||
             this._mainConnection.state !== NM.ActiveConnectionState.ACTIVATED) {
             this._portalHandler.clear();
