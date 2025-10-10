@@ -269,7 +269,7 @@ class StickyKeysToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Sticky Keys'),
-            iconName: 'accessibility-keyboard-keys-symbolic',
+            iconName: 'accessibility-sticky-keys-symbolic',
             toggleMode: true,
         });
 
@@ -285,7 +285,7 @@ class SlowKeysToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Slow Keys'),
-            iconName: 'accessibility-keyboard-keys-symbolic',
+            iconName: 'accessibility-slow-keys-symbolic',
             toggleMode: true,
         });
 
@@ -301,7 +301,7 @@ class BounceKeysToggle extends QuickToggle {
     constructor() {
         super({
             title: _('Bounce Keys'),
-            iconName: 'accessibility-keyboard-keys-symbolic',
+            iconName: 'accessibility-bounce-keys-symbolic',
             toggleMode: true,
         });
 
