@@ -277,8 +277,10 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         if (!message)
             return 0;
 
+        const messageTimeMultiplier = GLib.getenv('GDM_MESSAGE_TIME_MULTIPLIER') ?? 1;
+
         // We probably could be smarter here
-        return message.length * USER_READ_TIME;
+        return message.length * USER_READ_TIME * messageTimeMultiplier;
     }
 
     finishMessageQueue() {
