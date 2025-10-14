@@ -29,6 +29,7 @@ export const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 export const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
 export const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
 export const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
+export const MESSAGE_TIME_MULTIPLIER_KEY = 'pam-message-time-multiplier';
 export const BANNER_MESSAGE_KEY = 'banner-message-enable';
 export const BANNER_MESSAGE_SOURCE_KEY = 'banner-message-source';
 export const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
@@ -152,6 +153,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         this._settings = new Gio.Settings({schema_id: LOGIN_SCREEN_SCHEMA});
         this._settings.connect('changed', () => this._onSettingsChanged());
+        this._messageTimeMultiplier = this._settings.get_int(MESSAGE_TIME_MULTIPLIER_KEY);
         this._updateEnabledServices();
         this._updateDefaultService();
 
@@ -278,7 +280,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             return 0;
 
         // We probably could be smarter here
-        return message.length * USER_READ_TIME;
+        return message.length * USER_READ_TIME * this._messageTimeMultiplier;
     }
 
     finishMessageQueue() {
@@ -638,6 +640,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _onSettingsChanged() {
+        this._messageTimeMultiplier = this._settings.get_int(MESSAGE_TIME_MULTIPLIER_KEY);
         this._updateEnabledServices();
         this._updateDefaultService();
     }
