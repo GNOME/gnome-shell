@@ -286,9 +286,14 @@ export class GnomeShell {
 
         const connection = this._dbusImpl.get_connection();
         const info = this._dbusImpl.get_info();
+
+        const context = global.create_app_launch_context(0, -1);
+        const token = context.get_startup_notify_id(null, []);
+
         const params = {
             'timestamp': GLib.Variant.new('u', timestamp),
             'action-mode': GLib.Variant.new('u', Main.actionMode),
+            'activation-token': GLib.Variant.new('s', token),
         };
 
         const deviceNode = device.get_device_node();
