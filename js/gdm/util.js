@@ -43,6 +43,7 @@ export const DISABLE_USER_LIST_KEY = 'disable-user-list';
 // or 2 seconds, whichever is longer
 const USER_READ_TIME = 48;
 const USER_READ_TIME_MIN = 2000;
+const MESSAGE_TIME_MULTIPLIER = GLib.getenv('GDM_MESSAGE_TIME_MULTIPLIER') ?? 1;
 
 const FINGERPRINT_SERVICE_PROXY_TIMEOUT = 5000;
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
@@ -278,7 +279,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             return 0;
 
         // We probably could be smarter here
-        return Math.max(message.length * USER_READ_TIME, USER_READ_TIME_MIN);
+        return Math.max(message.length * USER_READ_TIME * MESSAGE_TIME_MULTIPLIER,
+            USER_READ_TIME_MIN);
     }
 
     finishMessageQueue() {
