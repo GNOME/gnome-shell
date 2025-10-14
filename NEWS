@@ -1,3 +1,22 @@
+48.6
+====
+* Fix key focus on choice list on login screen [Marco; !3849]
+* Fix animation glitch when cancelling overview search [Noam; !3888]
+* Also send activation token for notifications without app [Marco; !3891]
+* Update keyboard indicator on modifier-only layout switches [Carlos; !3895]
+* Improve accessibility of screenshot UI [Lukáš; !3908]
+* Improve Hindi bolnagri input with on-screen keyboard [Mike; !3911]
+* Do not expire notifications that are about to show [Marco; !3905]
+* Misc. bug fixes and cleanups [SimonMaracine, Daniel, Marco; !3894, !3892,
+  !3907, !3904]
+
+Contributors:
+  Mike FABIAN, Carlos Garnacho, Noam Raz, SimonMaracine,
+  Marco Trevisan (Treviño), Lukáš Tyrychtr, Daniel van Vugt
+
+Translators:
+  Abduqadir Abliz [ug]
+
 48.5
 ====
 * Fix connecting to WPA(2) Enterprise networks [Mitchell; !3834]
