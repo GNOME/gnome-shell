@@ -1,3 +1,29 @@
+49.1
+====
+* Fix freeze when dragging quick settings sliders on touch [Daniel; !3887]
+* Fix key focus on choice list on login screen [Marco; !3849]
+* Fix animation glitch when cancelling overview search [Noam; !3888]
+* Also send activation token for notifications without app [Marco; !3891]
+* Unify warning styling in dialogs [Marco; !3897]
+* Update keyboard indicator on modifier-only layout switches [Carlos; !3895]
+* Improve accessibility of screenshot UI [Lukáš; !3908]
+* Improve Hindi bolnagri input with on-screen keyboard [Mike; !3911]
+* Do not expire notifications that are about to show [Marco; !3905]
+* Improve accessibility icons on login screen [Jakub; !3909]
+* Make media messages follow notification policy [Florian; !3896]
+* Misc. bug fixes and cleanups [Florian, SimonMaracine, Daniel, Marco; !3889,
+  !3894, !3892, !3898, !3907, !3904]
+
+Contributors:
+  Mike FABIAN, Carlos Garnacho, Florian Müllner, Noam Raz, SimonMaracine,
+  Jakub Steiner, Marco Trevisan (Treviño), Lukáš Tyrychtr, Daniel van Vugt
+
+Translators:
+  Quentin PAGÈS [oc], BoF ButterflyOfFire [kab], Abduqadir Abliz [ug],
+  Милош Поповић [sr, sr@latin], Sabri Ünal [tr],
+  Hugo Carvalho [pt], Jordi Mas [ca], Davide Ferracin [it],
+  twlvnn kraftwerk [bg], Jean-Marc TISSIERES [fr], Fabio Tomat [fur]
+
 49.0
 ====
 * Fix misplaced background menu [Jonas; !3863]
