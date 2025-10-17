@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-09-09 19:11+0000\n"
-"PO-Revision-Date: 2025-09-09 23:52+0200\n"
+"POT-Creation-Date: 2025-10-17 10:47+0000\n"
+"PO-Revision-Date: 2025-10-18 00:24+0200\n"
 "Last-Translator: Nathan Follens <nfollens@gnome.org>\n"
 "Language-Team: GNOME-NL https://matrix.to/#/#nl:gnome.org\n"
 "Language: nl\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.7\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Project-Style: gnome\n"
 "X-DL-Lang: nl\n"
@@ -113,7 +113,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Nieuw venster openen in toepassing 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2292
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2295
 msgid "Screenshots"
 msgstr "Schermafdrukken"
 
@@ -134,7 +134,7 @@ msgid "Record a screencast interactively"
 msgstr "Interactief een schermopname maken"
 
 #: data/50-gnome-shell-system.xml:6 data/X-GNOME-Shell-System.directory.desktop.in:2
-#: js/ui/messageTray.js:1312
+#: js/ui/messageTray.js:1313
 msgid "System"
 msgstr "Systeem"
 
@@ -996,26 +996,27 @@ msgstr "Schermoriëntatie vergrendelen"
 
 #: js/misc/timeLimitsManager.js:342
 msgid "GNOME needs to save screen time data"
-msgstr "GNOME moet schermtijdgegeven opslaan"
+msgstr "GNOME moet schermtijdsgegevens opslaan"
 
 #: js/misc/timeLimitsManager.js:1124
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
-msgstr[0] "Schermtijd limiet in %d Minuut"
-msgstr[1] "Schermtijd limiet in %d Minuten"
+msgstr[0] "Schermtijdslimiet over %d minuut"
+msgstr[1] "Schermtijdslimiet over %d minuten"
 
 #: js/misc/timeLimitsManager.js:1131
 msgid "Your screen time limit is approaching"
-msgstr "Je Schermtijd Limiet is binnenkort"
+msgstr "Uw schermtijdslimiet komt eraan"
 
 #: js/misc/timeLimitsManager.js:1145
 msgid "Screen Time Limit Reached"
-msgstr "Schermtijd Limiet Bereikt"
+msgstr "Schermtijdslimiet bereikt"
 
+# Vrij vertaald in de veronderstelling dat de meesten een draagbare computer gebruiken - Nathan
 #: js/misc/timeLimitsManager.js:1146
 msgid "It’s time to stop using the device"
-msgstr "Het is tijd om te stoppen met het gebruiken van je apparaat"
+msgstr "Het is tijd om uw apparaat aan de kant te leggen"
 
 #: js/misc/util.js:130
 msgid "Command not found"
@@ -1862,7 +1863,7 @@ msgstr "Uitschakelen"
 msgid "Leave Off"
 msgstr "Uit laten"
 
-#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:901
+#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:908
 msgid "Keyboard Settings"
 msgstr "Toetsenbordinstellingen"
 
@@ -2081,130 +2082,130 @@ msgstr "Vergrendelen is door een toepassing voorkomen"
 msgid "Screen Capture"
 msgstr "Schermopname"
 
-#: js/ui/screenshot.js:1268
+#: js/ui/screenshot.js:1271
 msgid "Selection"
 msgstr "Selectie"
 
-#: js/ui/screenshot.js:1278
+#: js/ui/screenshot.js:1281
 msgid "Area Selection"
 msgstr "Gebiedsselectie"
 
-#: js/ui/screenshot.js:1283
+#: js/ui/screenshot.js:1286
 msgid "Screen"
 msgstr "Scherm"
 
-#: js/ui/screenshot.js:1293
+#: js/ui/screenshot.js:1296
 msgid "Screen Selection"
 msgstr "Schermselectie"
 
-#: js/ui/screenshot.js:1298
+#: js/ui/screenshot.js:1301
 msgid "Window"
 msgstr "Venster"
 
-#: js/ui/screenshot.js:1308
+#: js/ui/screenshot.js:1311
 msgid "Window Selection"
 msgstr "Vensterselectie"
 
-#: js/ui/screenshot.js:1333 js/ui/status/system.js:118
+#: js/ui/screenshot.js:1336 js/ui/status/system.js:118
 msgid "Take Screenshot"
 msgstr "Schermafdruk maken"
 
-#: js/ui/screenshot.js:1349
+#: js/ui/screenshot.js:1352
 msgid "Record Screen"
 msgstr "Scherm opnemen"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1366
+#: js/ui/screenshot.js:1369
 msgid "Capture"
 msgstr "Opnemen"
 
-#: js/ui/screenshot.js:1388
+#: js/ui/screenshot.js:1391
 msgid "Show Pointer"
 msgstr "Muisaanwijzer tonen"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2016
+#: js/ui/screenshot.js:2019
 msgid "Screencasts"
 msgstr "Schermopnamen"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2021
+#: js/ui/screenshot.js:2024
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Schermopname van %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2067
+#: js/ui/screenshot.js:2070
 msgid "Screencast recorded"
 msgstr "Schermopname opgenomen"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2080
+#: js/ui/screenshot.js:2083
 msgid "Screencast failed to start"
 msgstr "Schermopname kon niet starten"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2086
+#: js/ui/screenshot.js:2089
 msgid "Screencast ended: Out of disk space"
 msgstr "Schermopname is beëindigd: geen vrije schijfruimte meer"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2095
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "Schermopname is onverwacht beëindigd, probeer het opnieuw"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2095
+#: js/ui/screenshot.js:2098
 msgid "Screencast ended unexpectedly"
 msgstr "Schermopname is onverwacht beëindigd"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2108
+#: js/ui/screenshot.js:2111
 msgid "Click here to view the video"
 msgstr "Klik hier om de video te bekijken"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2116 js/ui/screenshot.js:2359
+#: js/ui/screenshot.js:2119 js/ui/screenshot.js:2362
 msgid "Show in Files"
 msgstr "In Bestanden tonen"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2305
+#: js/ui/screenshot.js:2308
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Schermafdruk van %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2352
 msgid "Screenshot captured"
 msgstr "Schermafdruk gemaakt"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2351
+#: js/ui/screenshot.js:2354
 msgid "You can paste the image from the clipboard"
 msgstr "U kunt de afbeelding van het klembord plakken"
 
-#: js/ui/screenshot.js:2409 js/ui/screenshot.js:2571
+#: js/ui/screenshot.js:2412 js/ui/screenshot.js:2574
 msgid "Screenshot taken"
 msgstr "Schermafdruk gemaakt"
 
-#: js/ui/search.js:842
+#: js/ui/search.js:847
 msgid "Searching"
 msgstr "Zoeken"
 
-#: js/ui/search.js:845
+#: js/ui/search.js:850
 msgid "No results"
 msgstr "Geen resultaten"
 
-#: js/ui/search.js:977
+#: js/ui/search.js:982
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2371,7 +2372,7 @@ msgstr "Laag"
 msgid "High"
 msgstr "Hoog"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:883
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:890
 msgid "Keyboard"
 msgstr "Toetsenbord"
 
@@ -2455,7 +2456,7 @@ msgstr "Tweede klik"
 msgid "Dwell Click"
 msgstr "Hangklik"
 
-#: js/ui/status/keyboard.js:900
+#: js/ui/status/keyboard.js:907
 msgid "Show Keyboard Layout"
 msgstr "Toetsenbordindeling tonen"
 
@@ -2973,15 +2974,15 @@ msgstr ""
 "GNOME Uitbreidingen staat in voor het bijwerken van uitbreidingen, hun voorkeuren te "
 "configureren of ongewenste uitbreidingen te verwijderen of uit te schakelen."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:79
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Hoofdvenster"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:83
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Beschikbare updates"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:87
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Zoekweergave"
 
@@ -3230,6 +3231,7 @@ msgid "Description"
 msgstr "Beschrijving"
 
 #: subprojects/extensions-tool/src/command-create.c:416
+#, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
@@ -3238,6 +3240,7 @@ msgstr ""
 "Dit moet in het formaat van een e-mailadres zijn. (focusklik@jansmits.voorbeeld.nl)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:443
+#, c-format
 msgid "Choose one of the available templates:\n"
 msgstr "Kies een van de beschikbare sjablonen:\n"
 
@@ -3347,6 +3350,7 @@ msgstr "Schakel een uitbreiding in"
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:66
 #: subprojects/extensions-tool/src/main.c:150
+#, c-format
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "Verbinden met GNOME Shell mislukt\n"
 
@@ -3485,6 +3489,7 @@ msgid "Reset an extension"
 msgstr "Stel een uitbreiding opnieuw in"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
+#, c-format
 msgid "Cannot uninstall system extensions\n"
 msgstr "Kan systeemuitbreidingen niet verwijderen\n"
 
@@ -3498,10 +3503,12 @@ msgid "Uninstall an extension"
 msgstr "Verwijder een uitbreiding"
 
 #: subprojects/extensions-tool/src/command-upload.c:226
+#, c-format
 msgid "Login to extensions.gnome.org\n"
 msgstr "Meld u aan bij extensions.gnome.org\n"
 
 #: subprojects/extensions-tool/src/command-upload.c:256
+#, c-format
 msgid "Warning! Password will be echoed"
 msgstr "Waarschuwing! Het wachtwoord zal geëchood worden"
 
