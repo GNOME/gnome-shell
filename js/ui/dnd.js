@@ -519,7 +519,7 @@ class _Draggable extends Signals.EventEmitter {
                     },
                 });
 
-                this._dragActor.get_transition('scale-x').connect('new-frame', () => {
+                this._dragActor.get_transition('scale-x')?.connect('new-frame', () => {
                     this._updateActorPosition(origScale,
                         origDragOffsetX, origDragOffsetY, transX, transY);
                 });
