@@ -4,6 +4,7 @@
     <file>am.json</file>
     <file>ara.json</file>
     <file>at.json</file>
+    <file>at-extended.json</file>
     <file>be.json</file>
     <file>bg.json</file>
     <file>by.json</file>
@@ -12,6 +13,7 @@
     <file>ch+fr.json</file>
     <file>cz.json</file>
     <file>de.json</file>
+    <file>de-extended.json</file>
     <file>digits.json</file>
     <file>dk.json</file>
     <file>ee.json</file>
