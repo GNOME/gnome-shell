@@ -732,6 +732,25 @@ export const LoginDialog = GObject.registerClass({
         return actorBox;
     }
 
+    _getFixedTopActorAllocation(dialogBox, actor) {
+        const actorBox = new Clutter.ActorBox();
+
+        let [, , natWidth, natHeight] = actor.get_preferred_size();
+        const centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
+        const marginTop = 0.22;
+        const top = dialogBox.y1 + (dialogBox.y2 - dialogBox.y1) * marginTop;
+
+        natWidth = Math.min(natWidth, dialogBox.x2 - dialogBox.x1);
+        natHeight = Math.min(natHeight, dialogBox.y2 - dialogBox.y1);
+
+        actorBox.x1 = Math.floor(centerX - natWidth / 2);
+        actorBox.y1 = Math.floor(top);
+        actorBox.x2 = actorBox.x1 + natWidth;
+        actorBox.y2 = actorBox.y1 + natHeight;
+
+        return actorBox;
+    }
+
     _getCenterActorAllocation(dialogBox, actor) {
         const actorBox = new Clutter.ActorBox();
 
@@ -770,7 +789,7 @@ export const LoginDialog = GObject.registerClass({
         let authPromptAllocation = null;
         let authPromptWidth = 0;
         if (this._authPrompt.visible) {
-            authPromptAllocation = this._getCenterActorAllocation(dialogBox, this._authPrompt);
+            authPromptAllocation = this._getFixedTopActorAllocation(dialogBox, this._authPrompt);
             authPromptWidth = authPromptAllocation.x2 - authPromptAllocation.x1;
         }
 
