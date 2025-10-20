@@ -53,7 +53,7 @@ you can use:
 
 ## Feature requests
 
-gnome-shell is a core compoment of the GNOME desktop experience.
+gnome-shell is a core component of the GNOME desktop experience.
 As such, any changes in behavior or appearance only happen in
 accordance with the [GNOME design team][design-team].
 
