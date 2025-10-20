@@ -45,6 +45,7 @@ import * as A11y from '../ui/status/accessibility.js';
 
 const _FADE_ANIMATION_TIME = 250;
 const _SCROLL_ANIMATION_TIME = 500;
+const _FIXED_TOP_ACTOR_HEIGHT = 400;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _CONFLICTING_SESSION_DIALOG_TIMEOUT = 60;
 
@@ -732,6 +733,28 @@ export const LoginDialog = GObject.registerClass({
         return actorBox;
     }
 
+    _getFixedTopActorAllocation(dialogBox, actor) {
+        const actorBox = new Clutter.ActorBox();
+
+        let [, , natWidth, natHeight] = actor.get_preferred_size();
+        const dialogWidth = dialogBox.x2 - dialogBox.x1;
+        const dialogHeight = dialogBox.y2 - dialogBox.y1;
+        const centerX = dialogBox.x1 + dialogWidth / 2;
+        const centerY = dialogBox.y1 + dialogHeight / 2;
+
+        const top = centerY - _FIXED_TOP_ACTOR_HEIGHT / 2;
+
+        natWidth = Math.min(natWidth, dialogWidth);
+        natHeight = Math.min(natHeight, dialogHeight);
+
+        actorBox.x1 = Math.floor(centerX - natWidth / 2);
+        actorBox.y1 = Math.floor(top);
+        actorBox.x2 = actorBox.x1 + natWidth;
+        actorBox.y2 = actorBox.y1 + natHeight;
+
+        return actorBox;
+    }
+
     _getCenterActorAllocation(dialogBox, actor) {
         const actorBox = new Clutter.ActorBox();
 
@@ -770,7 +793,7 @@ export const LoginDialog = GObject.registerClass({
         let authPromptAllocation = null;
         let authPromptWidth = 0;
         if (this._authPrompt.visible) {
-            authPromptAllocation = this._getCenterActorAllocation(dialogBox, this._authPrompt);
+            authPromptAllocation = this._getFixedTopActorAllocation(dialogBox, this._authPrompt);
             authPromptWidth = authPromptAllocation.x2 - authPromptAllocation.x1;
         }
 
