@@ -473,7 +473,7 @@ class VPNRequestHandler extends Signals.EventEmitter {
             else
                 this._readStdoutOldStyle();
 
-            this._childWatch = GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid,
+            GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid,
                 this._vpnChildFinished.bind(this));
 
             this._writeConnection();
@@ -505,8 +505,6 @@ class VPNRequestHandler extends Signals.EventEmitter {
             return;
 
         this.emit('destroy');
-        if (this._childWatch)
-            GLib.source_remove(this._childWatch);
 
         this._stdin.close(null);
         // Stdout is closed when we finish reading from it
@@ -515,7 +513,8 @@ class VPNRequestHandler extends Signals.EventEmitter {
     }
 
     _vpnChildFinished(pid, status, _requestObj) {
-        this._childWatch = 0;
+        if (this._destroyed)
+            return;
         if (this._newStylePlugin) {
             // For new style plugin, all work is done in the async reading functions
             // Just reap the process here
