@@ -236,14 +236,20 @@ export const BrightnessManager = GObject.registerClass({
                 this._showOSD(this._monitorScales.values());
         }
 
-        // ensure we lock the global scale when auto brightness is in control
-        this._globalScale.locked = this._abTarget >= 0.0;
-
         // Update the actual backlight according to the new monitor brightnesses
         // and other factors, such as dimming.
         for (const scale of this._monitorScales.values()) {
+            // If auto brightness is active (_abTarget >= 0) we use the scale
+            // as a bias for the auto brightness target to determine the target
+            // brightness.
+            // Otherwise the target brightness just comes from the scale.
+            const target = this._abTarget >= 0.0
+                ? Math.clamp(this._abTarget + scale.value - 0.5, 0.0, 1.0)
+                : scale.value;
+
+            // the actual brightness is then determined by clipping to the
+            // dimming target, if dimming is enabled
             const max = this._dimmingEnabled ? this._dimmingTarget : 1.0;
-            const target = this._abTarget >= 0.0 ? this._abTarget : scale.value;
             const brightness = Math.min(max, target);
 
             scale.setBacklight(brightness);
@@ -273,10 +279,6 @@ export const BrightnessScale = GObject.registerClass({
             'value', null, null,
             GObject.ParamFlags.READWRITE,
             0, 1.0, 1.0),
-        'locked': GObject.ParamSpec.boolean(
-            'locked', null, null,
-            GObject.ParamFlags.READWRITE,
-            false),
     },
 }, class BrightnessScale extends GObject.Object {
     constructor(name, value = 1.0, nSteps = SCALE_VALUE_N_STEPS) {
@@ -284,7 +286,6 @@ export const BrightnessScale = GObject.registerClass({
 
         this._name = name;
         this._value = value;
-        this._locked = false;
         this._nSteps = nSteps;
     }
 
@@ -298,17 +299,6 @@ export const BrightnessScale = GObject.registerClass({
 
     set value(value) {
         this._setValue(value);
-    }
-
-    get locked() {
-        return this._locked;
-    }
-
-    set locked(locked) {
-        if (this._locked === locked)
-            return;
-        this._locked = locked;
-        this.notify('locked');
     }
 
     get nSteps() {
