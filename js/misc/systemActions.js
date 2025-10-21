@@ -5,6 +5,7 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
+import {logErrorUnlessCancelled} from './errorUtils.js';
 import * as GnomeSession from './gnomeSession.js';
 import * as LoginManager from './loginManager.js';
 import * as Main from '../ui/main.js';
@@ -441,21 +442,21 @@ const SystemActions = GObject.registerClass({
             throw new Error('The logout action is not available!');
 
         Main.overview.hide();
-        this._session.LogoutAsync(0).catch(logError);
+        this._session.LogoutAsync(0).catch(logErrorUnlessCancelled);
     }
 
     activatePowerOff() {
         if (!this._actions.get(POWER_OFF_ACTION_ID).available)
             throw new Error('The power-off action is not available!');
 
-        this._session.ShutdownAsync(0).catch(logError);
+        this._session.ShutdownAsync(0).catch(logErrorUnlessCancelled);
     }
 
     activateRestart() {
         if (!this._actions.get(RESTART_ACTION_ID).available)
             throw new Error('The restart action is not available!');
 
-        this._session.RebootAsync().catch(logError);
+        this._session.RebootAsync().catch(logErrorUnlessCancelled);
     }
 
     activateSuspend() {
