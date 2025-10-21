@@ -336,3 +336,12 @@ test-build-toolbox:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
         - ".gitlab-ci/build-toolbox-image.sh"
+
+rebuild-toolbox:
+  extends:
+    .build-toolbox
+  variables:
+    MUTTER_BRANCH: "main"
+    FORCE_REBUILD: "1"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "ignapk/rebuild-toolbox" && $CI_PROJECT_NAMESPACE == "GNOME"'
