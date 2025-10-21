@@ -62,6 +62,8 @@ build_container() {
 
   # add latest malcontent to the toolbox image for testing future integration
   buildah run $build_cntr /usr/libexec/install-meson-project.sh https://gitlab.freedesktop.org/pwithnall/malcontent.git main -Dlibgsystemservice:gtk_doc=false
+  # somehow installing with buildah breaks the execute bit in malcontent-client
+  buildah run $build_cntr chmod 755 /usr/bin/malcontent-client
 
   # include convenience script for updating mutter dependency
   local update_mutter=$(mktemp)
