@@ -1,4 +1,6 @@
 // Common code for displaying errors to the user in various dialogs
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
 function formatSyntaxErrorLocation(error) {
     const {fileName = '<unknown>', lineNumber = 0, columnNumber = 0} = error;
@@ -63,4 +65,27 @@ export function formatError(error, {showStack = true} = {}) {
     } catch (e) {
         return `(could not display error: ${e})`;
     }
+}
+
+/**
+ * Logs a stack trace for `error` with an optional prefix, unless the error
+ * matches `Gio.IOErrorEnum.CANCELLED`.
+ *
+ * @param {Error} error - the error to log
+ * @param {string?} prefix - optional prefix for the message
+ *
+ * @returns {boolean} whether the error was logged
+ */
+export function logErrorUnlessCancelled(error, prefix) {
+    if (error instanceof GLib.Error && Gio.DBusError.is_remote_error(error)) {
+        const errorName = Gio.DBusError.get_remote_error(error);
+        Gio.DBusError.strip_remote_error(error);
+        error = Gio.DBusError.new_for_dbus_error(errorName, error.message);
+    }
+
+    if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+        return false;
+
+    logError(error, prefix);
+    return true;
 }
