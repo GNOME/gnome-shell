@@ -8,6 +8,7 @@ import * as Batch from './batch.js';
 import * as OVirt from './oVirt.js';
 import * as Vmware from './vmware.js';
 import * as Main from '../ui/main.js';
+import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import {loadInterfaceXML} from '../misc/fileUtils.js';
 import * as Params from '../misc/params.js';
 import * as SmartcardManager from '../misc/smartcardManager.js';
@@ -240,8 +241,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             await this._handlePendingMessages();
             this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
         } catch (e) {
-            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                logError(e);
+            logErrorUnlessCancelled(e);
         }
     }
 
@@ -858,8 +858,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 this._retry(serviceName);
             }
         } catch (e) {
-            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                logError(e);
+            logErrorUnlessCancelled(e);
         }
     }
 

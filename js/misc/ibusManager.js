@@ -6,6 +6,7 @@ import Shell from 'gi://Shell';
 
 import * as Signals from './signals.js';
 import * as BoxPointer from '../ui/boxpointer.js';
+import {logErrorUnlessCancelled} from './errorUtils.js';
 
 import * as IBusCandidatePopup from '../ui/ibusCandidatePopup.js';
 
@@ -172,11 +173,8 @@ class IBusManager extends Signals.EventEmitter {
             }
             this._updateReadiness();
         } catch (e) {
-            if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                return;
-
-            logError(e);
-            this._clear();
+            if (logErrorUnlessCancelled(e))
+                this._clear();
         }
     }
 
@@ -185,10 +183,8 @@ class IBusManager extends Signals.EventEmitter {
             await this._ibus.request_name_async(IBus.SERVICE_PANEL,
                 IBus.BusNameFlag.REPLACE_EXISTING, -1, this._cancellable);
         } catch (e) {
-            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
-                logError(e);
+            if (logErrorUnlessCancelled(e))
                 this._clear();
-            }
             return;
         }
 
@@ -287,8 +283,7 @@ class IBusManager extends Signals.EventEmitter {
                 this._MAX_INPUT_SOURCE_ACTIVATION_TIME,
                 this._cancellable);
         } catch (e) {
-            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                logError(e);
+            logErrorUnlessCancelled(e);
         }
     }
 

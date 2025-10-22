@@ -4,6 +4,7 @@ import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 import IBus from 'gi://IBus';
 
+import {logErrorUnlessCancelled} from './errorUtils.js';
 import * as Keyboard from '../ui/status/keyboard.js';
 import * as Main from '../ui/main.js';
 
@@ -75,10 +76,8 @@ export const InputMethod = GObject.registerClass({
             this._context = await this._ibus.create_input_context_async(
                 'gnome-shell', -1, this._cancellable);
         } catch (e) {
-            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
-                logError(e);
+            if (logErrorUnlessCancelled(e))
                 this._clear();
-            }
             return;
         }
 
