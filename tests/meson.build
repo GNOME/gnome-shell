@@ -21,6 +21,7 @@ unit_testenv.append('GI_TYPELIB_PATH', st_typelib_path, separator: ':')
 
 unit_tests = {
   'breakManager': {},
+  'errorUtils': {},
   'extensionUtils': {},
   'highlighter': {},
   'injectionManager': {},
