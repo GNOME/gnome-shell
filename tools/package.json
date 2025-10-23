@@ -8,7 +8,7 @@
     "lint": "cd .. && ci-run-eslint"
   },
   "dependencies": {
-    "ci-run-eslint": "git+https://gitlab.gnome.org/World/javascript/ci-run-eslint.git",
-    "eslint-config-gnome": "git+https://gitlab.gnome.org/World/javascript/eslint-config-gnome.git"
+    "ci-run-eslint": "git+https://gitlab.gnome.org/World/javascript/ci-run-eslint.git#179fcc1f095d2b579ffe454505946bcad7f6a230",
+    "eslint-config-gnome": "git+https://gitlab.gnome.org/World/javascript/eslint-config-gnome.git#c479d059e8d9ea99c3b53c2ea43abf7fdb05eb51"
   }
 }
