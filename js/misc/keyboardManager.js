@@ -42,7 +42,7 @@ export function holdKeyboard() {
 
 class KeyboardManager {
     constructor() {
-        // The XKB protocol doesn't allow for more that 4 layouts in a
+        // The XKB protocol doesn't allow for more than 4 layouts in a
         // keymap. Wayland doesn't impose this limit and libxkbcommon can
         // handle up to 32 layouts but since we need to support X clients
         // even as a Wayland compositor, we can't bump this.
