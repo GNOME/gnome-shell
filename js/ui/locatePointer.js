@@ -13,7 +13,7 @@ export class LocatePointer {
     }
 
     _syncEnabled() {
-        let enabled = this._settings.get_boolean(LOCATE_POINTER_KEY);
+        const enabled = this._settings.get_boolean(LOCATE_POINTER_KEY);
         if (enabled === !!this._ripples)
             return;
 
@@ -30,7 +30,7 @@ export class LocatePointer {
         if (!this._ripples)
             return;
 
-        let [x, y] = global.get_pointer();
+        const [x, y] = global.get_pointer();
         this._ripples.playAnimation(x, y);
     }
 }

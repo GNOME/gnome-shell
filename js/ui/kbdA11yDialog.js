@@ -23,7 +23,7 @@ class KbdA11yDialog extends GObject.Object {
     }
 
     _showKbdA11yDialog(seat, newFlags, whatChanged) {
-        let dialog = new ModalDialog.ModalDialog();
+        const dialog = new ModalDialog.ModalDialog();
         let title, description;
         let key, enabled;
 
@@ -50,7 +50,7 @@ class KbdA11yDialog extends GObject.Object {
             return;
         }
 
-        let content = new Dialog.MessageDialogContent({title, description});
+        const content = new Dialog.MessageDialogContent({title, description});
         dialog.contentLayout.add_child(content);
 
         dialog.addButton({

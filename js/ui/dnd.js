@@ -170,7 +170,7 @@ class _Draggable extends Signals.EventEmitter {
                 // If the user dragged from the source, then position
                 // the dragActor over it. Otherwise, center it
                 // around the pointer
-                let [sourceX, sourceY] = this._dragActorSource.get_transformed_position();
+                const [sourceX, sourceY] = this._dragActorSource.get_transformed_position();
                 let x, y;
                 if (this._dragStartX > sourceX && this._dragStartX <= sourceX + this._dragActor.width &&
                     this._dragStartY > sourceY && this._dragStartY <= sourceY + this._dragActor.height) {
@@ -251,9 +251,9 @@ class _Draggable extends Signals.EventEmitter {
         this._snapBackY = this._dragStartY + this._dragOffsetY;
         this._snapBackScale = this._dragActor.scale_x;
 
-        let origDragOffsetX = this._dragOffsetX;
-        let origDragOffsetY = this._dragOffsetY;
-        let [transX, transY] = this._dragActor.get_translation();
+        const origDragOffsetX = this._dragOffsetX;
+        const origDragOffsetY = this._dragOffsetY;
+        const [transX, transY] = this._dragActor.get_translation();
         this._dragOffsetX -= transX;
         this._dragOffsetY -= transY;
 
@@ -262,10 +262,10 @@ class _Draggable extends Signals.EventEmitter {
             this._dragY + this._dragOffsetY);
 
         if (this._dragActorMaxSize !== undefined) {
-            let currentSize = Math.max(scaledWidth, scaledHeight);
+            const currentSize = Math.max(scaledWidth, scaledHeight);
             if (currentSize > this._dragActorMaxSize) {
-                let scale = this._dragActorMaxSize / currentSize;
-                let origScale =  this._dragActor.scale_x;
+                const scale = this._dragActorMaxSize / currentSize;
+                const origScale =  this._dragActor.scale_x;
 
                 // The position of the actor changes as we scale
                 // around the drag position, but we can't just tween
@@ -310,7 +310,7 @@ class _Draggable extends Signals.EventEmitter {
         this._updateHoverId = 0;
         let target = this._pickTargetActor();
 
-        let dragEvent = {
+        const dragEvent = {
             x: this._dragX,
             y: this._dragY,
             dragActor: this._dragActor,
@@ -319,8 +319,7 @@ class _Draggable extends Signals.EventEmitter {
         };
 
         let targetActorDestroyHandlerId;
-        let handleTargetActorDestroyClosure;
-        handleTargetActorDestroyClosure = () => {
+        const handleTargetActorDestroyClosure = () => {
             target = this._pickTargetActor();
             dragEvent.targetActor = target;
             targetActorDestroyHandlerId =
@@ -330,9 +329,9 @@ class _Draggable extends Signals.EventEmitter {
             target.connect('destroy', handleTargetActorDestroyClosure);
 
         for (let i = 0; i < dragMonitors.length; i++) {
-            let motionFunc = dragMonitors[i].dragMotion;
+            const motionFunc = dragMonitors[i].dragMotion;
             if (motionFunc) {
-                let result = motionFunc(dragEvent);
+                const result = motionFunc(dragEvent);
                 if (result !== DragMotionResult.CONTINUE) {
                     global.display.set_cursor(DRAG_CURSOR_MAP[result]);
                     dragEvent.targetActor.disconnect(targetActorDestroyHandlerId);
@@ -344,11 +343,11 @@ class _Draggable extends Signals.EventEmitter {
 
         while (target) {
             if (target._delegate && target._delegate.handleDragOver) {
-                let [r_, targX, targY] = target.transform_stage_point(this._dragX, this._dragY);
+                const [r_, targX, targY] = target.transform_stage_point(this._dragX, this._dragY);
                 // We currently loop through all parents on drag-over even if one of the children has handled it.
                 // We can check the return value of the function and break the loop if it's true if we don't want
                 // to continue checking the parents.
-                let result = target._delegate.handleDragOver(
+                const result = target._delegate.handleDragOver(
                     this.actor._delegate,
                     this._dragActor,
                     targX,
@@ -375,7 +374,7 @@ class _Draggable extends Signals.EventEmitter {
     }
 
     _updateDragPosition(event) {
-        let [stageX, stageY] = event.get_coords();
+        const [stageX, stageY] = event.get_coords();
         this._dragX = stageX;
         this._dragY = stageY;
         this._dragActor.set_position(
@@ -387,20 +386,20 @@ class _Draggable extends Signals.EventEmitter {
     }
 
     _dragActorDropped(event) {
-        let [dropX, dropY] = event.get_coords();
+        const [dropX, dropY] = event.get_coords();
         let target = this._dragActor.get_stage().get_actor_at_pos(
             Clutter.PickMode.ALL, dropX, dropY);
 
         // We call observers only once per motion with the innermost
         // target actor. If necessary, the observer can walk the
         // parent itself.
-        let dropEvent = {
+        const dropEvent = {
             dropActor: this._dragActor,
             targetActor: target,
             clutterEvent: event,
         };
         for (let i = 0; i < dragMonitors.length; i++) {
-            let dropFunc = dragMonitors[i].dragDrop;
+            const dropFunc = dragMonitors[i].dragDrop;
             if (dropFunc) {
                 switch (dropFunc(dropEvent)) {
                 case DragDropResult.FAILURE:
@@ -420,7 +419,7 @@ class _Draggable extends Signals.EventEmitter {
 
         while (target) {
             if (target._delegate && target._delegate.acceptDrop) {
-                let [r_, targX, targY] = target.transform_stage_point(dropX, dropY);
+                const [r_, targX, targY] = target.transform_stage_point(dropX, dropY);
                 let accepted = false;
                 try {
                     accepted = target._delegate.acceptDrop(this.actor._delegate,
@@ -460,14 +459,14 @@ class _Draggable extends Signals.EventEmitter {
         if (this._dragActorSource && this._dragActorSource.visible) {
             // Snap the clone back to its source
             [x, y] = this._dragActorSource.get_transformed_position();
-            let [sourceScaledWidth] = this._dragActorSource.get_transformed_size();
+            const [sourceScaledWidth] = this._dragActorSource.get_transformed_size();
             scale = sourceScaledWidth ? sourceScaledWidth / this._dragActor.width : 0;
         } else if (this._dragOrigParent) {
             // Snap the actor back to its original position within
             // its parent, adjusting for the fact that the parent
             // may have been moved or scaled
-            let [parentX, parentY] = this._dragOrigParent.get_transformed_position();
-            let parentScale = _getRealActorScale(this._dragOrigParent);
+            const [parentX, parentY] = this._dragOrigParent.get_transformed_position();
+            const parentScale = _getRealActorScale(this._dragOrigParent);
 
             x = parentX + parentScale * this._dragOrigX;
             y = parentY + parentScale * this._dragOrigY;
@@ -483,7 +482,7 @@ class _Draggable extends Signals.EventEmitter {
     }
 
     _restoreDragActor(eventTime) {
-        let [restoreX, restoreY, restoreScale] = this._getRestoreLocation();
+        const [restoreX, restoreY, restoreScale] = this._getRestoreLocation();
 
         // fade the actor back in at its original location
         this._dragActor.set_position(restoreX, restoreY);
@@ -605,7 +604,7 @@ class _Draggable extends Signals.EventEmitter {
             return;
         }
 
-        let [snapBackX, snapBackY, snapBackScale] = this._getRestoreLocation();
+        const [snapBackX, snapBackY, snapBackScale] = this._getRestoreLocation();
 
         this._animateDragEnd(eventTime, {
             x: snapBackX,

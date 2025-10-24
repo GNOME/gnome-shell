@@ -22,7 +22,7 @@ class OsdWindow extends Clutter.Actor {
         });
 
         this._monitorIndex = monitorIndex;
-        let constraint = new Layout.MonitorConstraint({index: monitorIndex});
+        const constraint = new Layout.MonitorConstraint({index: monitorIndex});
         this.add_constraint(constraint);
 
         this._hbox = new St.BoxLayout({

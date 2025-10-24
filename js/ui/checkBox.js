@@ -7,7 +7,7 @@ import St from 'gi://St';
 export const CheckBox = GObject.registerClass(
 class CheckBox extends St.Button {
     _init(label) {
-        let container = new St.BoxLayout({
+        const container = new St.BoxLayout({
             x_expand: true,
             y_expand: true,
         });

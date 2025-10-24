@@ -47,7 +47,7 @@ const CandidateArea = GObject.registerClass({
             this._candidateBoxes.push(box);
             this.add_child(box);
 
-            let j = i;
+            const j = i;
             box.connect('button-release-event', (actor, event) => {
                 this.emit('candidate-clicked', j, event.get_button(), event.get_state());
                 return Clutter.EVENT_PROPAGATE;
@@ -116,8 +116,8 @@ const CandidateArea = GObject.registerClass({
 
     setCandidates(indexes, candidates, cursorPosition, cursorVisible) {
         for (let i = 0; i < MAX_CANDIDATES_PER_PAGE; ++i) {
-            let visible = i < candidates.length;
-            let box = this._candidateBoxes[i];
+            const visible = i < candidates.length;
+            const box = this._candidateBoxes[i];
             box.visible = visible;
 
             if (!visible)
@@ -242,7 +242,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
 
             this._preeditText.text = text.get_text();
 
-            let attrs = text.get_attributes();
+            const attrs = text.get_attributes();
             if (attrs)
                 this._setTextAttributes(this._preeditText.clutter_text, attrs);
         });
@@ -272,15 +272,15 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
             this._candidateArea.visible = visible;
             this._updateVisibility();
 
-            let nCandidates = lookupTable.get_number_of_candidates();
-            let cursorPos = lookupTable.get_cursor_pos();
-            let pageSize = lookupTable.get_page_size();
-            let nPages = Math.ceil(nCandidates / pageSize);
-            let page = cursorPos === 0 ? 0 : Math.floor(cursorPos / pageSize);
-            let startIndex = page * pageSize;
-            let endIndex = Math.min((page + 1) * pageSize, nCandidates);
+            const nCandidates = lookupTable.get_number_of_candidates();
+            const cursorPos = lookupTable.get_cursor_pos();
+            const pageSize = lookupTable.get_page_size();
+            const nPages = Math.ceil(nCandidates / pageSize);
+            const page = cursorPos === 0 ? 0 : Math.floor(cursorPos / pageSize);
+            const startIndex = page * pageSize;
+            const endIndex = Math.min((page + 1) * pageSize, nCandidates);
 
-            let indexes = [];
+            const indexes = [];
             let indexLabel;
             for (let i = 0; (indexLabel = lookupTable.get_label(i)); ++i)
                 indexes.push(indexLabel.get_text());
@@ -288,12 +288,12 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
             Main.keyboard.resetSuggestions();
             Main.keyboard.setSuggestionsVisible(visible);
 
-            let candidates = [];
+            const candidates = [];
             for (let i = startIndex; i < endIndex; ++i) {
                 candidates.push(lookupTable.get_candidate(i).get_text());
 
                 Main.keyboard.addSuggestion(lookupTable.get_candidate(i).get_text(), () => {
-                    let index = i;
+                    const index = i;
                     this._panelService.candidate_clicked(index, 1, 0);
                 });
             }
@@ -330,7 +330,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
     }
 
     _updateVisibility() {
-        let isVisible = !Main.keyboard.visible &&
+        const isVisible = !Main.keyboard.visible &&
                          (this._preeditText.visible ||
                           this._auxText.visible ||
                           this._candidateArea.visible);

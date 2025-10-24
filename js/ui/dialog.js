@@ -77,18 +77,18 @@ class Dialog extends St.Widget {
         if (event.type() === Clutter.EventType.KEY_PRESS) {
             this._pressedKey = event.get_key_symbol();
         } else if (event.type() === Clutter.EventType.KEY_RELEASE) {
-            let pressedKey = this._pressedKey;
+            const pressedKey = this._pressedKey;
             this._pressedKey = null;
 
-            let symbol = event.get_key_symbol();
+            const symbol = event.get_key_symbol();
             if (symbol !== pressedKey)
                 return Clutter.EVENT_PROPAGATE;
 
-            let buttonInfo = this._buttonKeys[symbol];
+            const buttonInfo = this._buttonKeys[symbol];
             if (!buttonInfo)
                 return Clutter.EVENT_PROPAGATE;
 
-            let {button, action} = buttonInfo;
+            const {button, action} = buttonInfo;
 
             if (action && button.reactive) {
                 action();
@@ -113,8 +113,8 @@ class Dialog extends St.Widget {
     }
 
     addButton(buttonInfo) {
-        let {label, action, key} = buttonInfo;
-        let isDefault = buttonInfo['default'];
+        const {label, action, key} = buttonInfo;
+        const isDefault = buttonInfo['default'];
         let keys;
 
         if (key)
@@ -124,7 +124,7 @@ class Dialog extends St.Widget {
         else
             keys = [];
 
-        let button = new St.Button({
+        const button = new St.Button({
             style_class: 'modal-dialog-button',
             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             reactive: true,
@@ -143,7 +143,7 @@ class Dialog extends St.Widget {
         if (this._initialKeyFocus == null || isDefault)
             this._setInitialKeyFocus(button);
 
-        for (let i in keys)
+        for (const i in keys)
             this._buttonKeys[keys[i]] = buttonInfo;
 
         this.buttonLayout.add_child(button);
@@ -319,7 +319,7 @@ export const ListSectionItem = GObject.registerClass({
     _init(params) {
         this._iconActorBin = new St.Bin();
 
-        let textLayout = new St.BoxLayout({
+        const textLayout = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER,

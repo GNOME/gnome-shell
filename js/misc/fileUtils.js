@@ -17,13 +17,13 @@ export {loadInterfaceXML} from './dbusUtils.js';
  *                                              `subdir` within data directories
  */
 export function* collectFromDatadirs(subdir, includeUserDir) {
-    let dataDirs = GLib.get_system_data_dirs();
+    const dataDirs = GLib.get_system_data_dirs();
     if (includeUserDir)
         dataDirs.unshift(GLib.get_user_data_dir());
 
     for (let i = 0; i < dataDirs.length; i++) {
-        let path = GLib.build_filenamev([dataDirs[i], 'gnome-shell', subdir]);
-        let dir = Gio.File.new_for_path(path);
+        const path = GLib.build_filenamev([dataDirs[i], 'gnome-shell', subdir]);
+        const dir = Gio.File.new_for_path(path);
 
         let fileEnum;
         try {
@@ -45,13 +45,13 @@ export function* collectFromDatadirs(subdir, includeUserDir) {
  * @param {boolean} deleteParent
  */
 export function recursivelyDeleteDir(dir, deleteParent) {
-    let children = dir.enumerate_children('standard::name,standard::type',
+    const children = dir.enumerate_children('standard::name,standard::type',
         Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
 
     let info;
     while ((info = children.next_file(null)) != null) {
-        let type = info.get_file_type();
-        let child = dir.get_child(info.get_name());
+        const type = info.get_file_type();
+        const child = dir.get_child(info.get_name());
         if (type === Gio.FileType.REGULAR || type === Gio.FileType.SYMBOLIC_LINK)
             child.delete(null);
         else if (type === Gio.FileType.DIRECTORY)
@@ -67,7 +67,7 @@ export function recursivelyDeleteDir(dir, deleteParent) {
  * @param {Gio.File} destDir
  */
 export function recursivelyMoveDir(srcDir, destDir) {
-    let children = srcDir.enumerate_children('standard::name,standard::type',
+    const children = srcDir.enumerate_children('standard::name,standard::type',
         Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
 
     if (!destDir.query_exists(null))
@@ -75,9 +75,9 @@ export function recursivelyMoveDir(srcDir, destDir) {
 
     let info;
     while ((info = children.next_file(null)) != null) {
-        let type = info.get_file_type();
-        let srcChild = srcDir.get_child(info.get_name());
-        let destChild = destDir.get_child(info.get_name());
+        const type = info.get_file_type();
+        const srcChild = srcDir.get_child(info.get_name());
+        const destChild = destDir.get_child(info.get_name());
         if (type === Gio.FileType.REGULAR || type === Gio.FileType.SYMBOLIC_LINK)
             srcChild.move(destChild, Gio.FileCopyFlags.NONE, null, null);
         else if (type === Gio.FileType.DIRECTORY)

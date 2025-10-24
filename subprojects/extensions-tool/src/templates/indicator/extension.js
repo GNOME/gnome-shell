@@ -35,7 +35,7 @@ class Indicator extends PanelMenu.Button {
             style_class: 'system-status-icon',
         }));
 
-        let item = new PopupMenu.PopupMenuItem(_('Show Notification'));
+        const item = new PopupMenu.PopupMenuItem(_('Show Notification'));
         item.connect('activate', () => {
             Main.notify(_('Whatʼs up, folks?'));
         });

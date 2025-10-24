@@ -44,9 +44,9 @@ export const Slider = GObject.registerClass({
         super.vfunc_repaint();
 
         // Add handle
-        let cr = this.get_context();
-        let themeNode = this.get_theme_node();
-        let [width, height] = this.get_surface_size();
+        const cr = this.get_context();
+        const themeNode = this.get_theme_node();
+        const [width, height] = this.get_surface_size();
         const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
 
         const handleY = height / 2;
@@ -56,7 +56,7 @@ export const Slider = GObject.registerClass({
         if (rtl)
             handleX = width - handleX;
 
-        let color = themeNode.get_foreground_color();
+        const color = themeNode.get_foreground_color();
         cr.setSourceColor(color);
         cr.arc(handleX, handleY, this._handleRadius, 0, 2 * Math.PI);
         cr.fill();
@@ -95,8 +95,7 @@ export const Slider = GObject.registerClass({
         // sure that no 'notify::value' signal is emitted before this one.
         this.emit('drag-begin');
 
-        let absX, absY;
-        [absX, absY] = event.get_coords();
+        const [absX, absY] = event.get_coords();
         this._moveHandle(absX, absY);
         return Clutter.EVENT_STOP;
     }
@@ -161,7 +160,7 @@ export const Slider = GObject.registerClass({
     }
 
     vfunc_scroll_event(event) {
-        let direction = event.get_scroll_direction();
+        const direction = event.get_scroll_direction();
         let nSteps = 0;
 
         if (event.get_flags() & Clutter.EventFlags.FLAG_POINTER_EMULATED)
@@ -172,7 +171,7 @@ export const Slider = GObject.registerClass({
         } else if (direction === Clutter.ScrollDirection.UP) {
             nSteps = 1;
         } else if (direction === Clutter.ScrollDirection.SMOOTH) {
-            let [dx] = event.get_scroll_delta();
+            const [dx] = event.get_scroll_delta();
             nSteps = dx;
             // Match physical direction
             if (event.get_scroll_flags() & Clutter.ScrollFlags.INVERTED)
@@ -197,14 +196,13 @@ export const Slider = GObject.registerClass({
     }
 
     _motionEvent(actor, event) {
-        let absX, absY;
-        [absX, absY] = event.get_coords();
+        const [absX, absY] = event.get_coords();
         this._moveHandle(absX, absY);
         return Clutter.EVENT_STOP;
     }
 
     vfunc_key_press_event(event) {
-        let key = event.get_key_symbol();
+        const key = event.get_key_symbol();
         if (key === Clutter.KEY_Right || key === Clutter.KEY_Left) {
             const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
             const increaseKey = rtl ? Clutter.KEY_Left : Clutter.KEY_Right;
@@ -216,10 +214,10 @@ export const Slider = GObject.registerClass({
     }
 
     _moveHandle(absX, _absY) {
-        let relX, sliderX;
-        [sliderX] = this.get_transformed_position();
+        let relX;
+        const [sliderX] = this.get_transformed_position();
         const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
-        let width = this._barLevelWidth;
+        const width = this._barLevelWidth;
 
         relX = absX - sliderX;
         if (rtl)

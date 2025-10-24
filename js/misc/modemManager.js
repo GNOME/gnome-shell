@@ -60,9 +60,9 @@ function _findProviderForMccMnc(operatorName, operatorCode) {
     else // nothing to search
         return null;
 
-    let mpd = _getMobileProvidersDatabase();
+    const mpd = _getMobileProvidersDatabase();
     if (mpd) {
-        let provider = mpd.lookup_3gpp_mcc_mnc(needle);
+        const provider = mpd.lookup_3gpp_mcc_mnc(needle);
         if (provider)
             return provider.get_name();
     }
@@ -78,9 +78,9 @@ function _findProviderForSid(sid) {
     if (!sid)
         return null;
 
-    let mpd = _getMobileProvidersDatabase();
+    const mpd = _getMobileProvidersDatabase();
     if (mpd) {
-        let provider = mpd.lookup_cdma_sid(sid);
+        const provider = mpd.lookup_cdma_sid(sid);
         if (provider)
             return provider.get_name();
     }
@@ -254,14 +254,14 @@ export const BroadbandModem = GObject.registerClass({
         this._reloadSignalQuality();
 
         this._proxy_3gpp.connect('g-properties-changed', (proxy, properties) => {
-            let unpacked = properties.deepUnpack();
+            const unpacked = properties.deepUnpack();
             if ('OperatorName' in unpacked || 'OperatorCode' in unpacked)
                 this._reload3gppOperatorName();
         });
         this._reload3gppOperatorName();
 
         this._proxy_cdma.connect('g-properties-changed', (proxy, properties) => {
-            let unpacked = properties.deepUnpack();
+            const unpacked = properties.deepUnpack();
             if ('Nid' in unpacked || 'Sid' in unpacked)
                 this._reloadCdmaOperatorName();
         });
@@ -269,7 +269,7 @@ export const BroadbandModem = GObject.registerClass({
     }
 
     _reloadSignalQuality() {
-        let [quality, recent_] = this._proxy.SignalQuality;
+        const [quality, recent_] = this._proxy.SignalQuality;
         this._setSignalQuality(quality);
     }
 
@@ -288,14 +288,14 @@ export const BroadbandModem = GObject.registerClass({
     }
 
     _reload3gppOperatorName() {
-        let name = this._proxy_3gpp.OperatorName;
-        let code = this._proxy_3gpp.OperatorCode;
+        const name = this._proxy_3gpp.OperatorName;
+        const code = this._proxy_3gpp.OperatorCode;
         this.operator_name_3gpp = _findProviderForMccMnc(name, code);
         this._reloadOperatorName();
     }
 
     _reloadCdmaOperatorName() {
-        let sid = this._proxy_cdma.Sid;
+        const sid = this._proxy_cdma.Sid;
         this.operator_name_cdma = _findProviderForSid(sid);
         this._reloadOperatorName();
     }

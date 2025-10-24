@@ -67,7 +67,7 @@ export class InputSource extends Signals.EventEmitter {
     }
 
     _getXkbId() {
-        let engineDesc = IBusManager.getIBusManager().getEngineDesc(this.id);
+        const engineDesc = IBusManager.getIBusManager().getEngineDesc(this.id);
         if (!engineDesc)
             return this.id;
 
@@ -135,7 +135,7 @@ class InputSourceSwitcher extends SwitcherPopup.SwitcherList {
         });
         box.add_child(symbol);
 
-        let text = new St.Label({
+        const text = new St.Label({
             text: item.displayName,
             x_align: Clutter.ActorAlign.CENTER,
         });
@@ -253,9 +253,9 @@ class InputSourceSystemSettings extends InputSourceSettings {
     }
 
     get inputSources() {
-        let sourcesList = [];
-        let layouts = this._layouts.split(',');
-        let variants = this._variants.split(',');
+        const sourcesList = [];
+        const layouts = this._layouts.split(',');
+        const variants = this._variants.split(',');
 
         for (let i = 0; i < layouts.length && !!layouts[i]; i++) {
             let id = layouts[i];
@@ -294,12 +294,12 @@ class InputSourceSessionSettings extends InputSourceSettings {
     }
 
     _getSourcesList(key) {
-        let sourcesList = [];
-        let sources = this._settings.get_value(key);
-        let nSources = sources.n_children();
+        const sourcesList = [];
+        const sources = this._settings.get_value(key);
+        const nSources = sources.n_children();
 
         for (let i = 0; i < nSources; i++) {
-            let [type, id] = sources.get_child_value(i).deepUnpack();
+            const [type, id] = sources.get_child_value(i).deepUnpack();
             sourcesList.push({type, id});
         }
         return sourcesList;
@@ -314,7 +314,7 @@ class InputSourceSessionSettings extends InputSourceSettings {
     }
 
     set mruSources(sourcesList) {
-        let sources = GLib.Variant.new('a(ss)', sourcesList);
+        const sources = GLib.Variant.new('a(ss)', sourcesList);
         this._settings.set_value(this._KEY_MRU_SOURCES, sources);
     }
 
@@ -408,7 +408,7 @@ export class InputSourceManager extends Signals.EventEmitter {
     }
 
     _modifiersSwitcher() {
-        let sourceIndexes = Object.keys(this._inputSources);
+        const sourceIndexes = Object.keys(this._inputSources);
         if (sourceIndexes.length === 0) {
             KeyboardManager.releaseKeyboard();
             return true;
@@ -479,9 +479,9 @@ export class InputSourceManager extends Signals.EventEmitter {
         if (this._disableIBus)
             return;
 
-        let sourcesList = [];
+        const sourcesList = [];
         for (let i = 0; i < this._mruSources.length; ++i) {
-            let source = this._mruSources[i];
+            const source = this._mruSources[i];
             sourcesList.push([source.type, source.id]);
         }
 
@@ -496,7 +496,7 @@ export class InputSourceManager extends Signals.EventEmitter {
 
         for (let i = 1; i < this._mruSources.length; ++i) {
             if (this._mruSources[i] === newSource) {
-                let currentSource = this._mruSources.splice(i, 1);
+                const currentSource = this._mruSources.splice(i, 1);
                 this._mruSources = currentSource.concat(this._mruSources);
                 break;
             }
@@ -541,8 +541,8 @@ export class InputSourceManager extends Signals.EventEmitter {
     }
 
     _updateMruSources() {
-        let sourcesList = [];
-        for (let i of Object.keys(this._inputSources).sort((a, b) => a - b))
+        const sourcesList = [];
+        for (const i of Object.keys(this._inputSources).sort((a, b) => a - b))
             sourcesList.push(this._inputSources[i]);
 
         this._keyboardManager.setUserLayouts(sourcesList.map(x => x.xkbId));
@@ -554,13 +554,13 @@ export class InputSourceManager extends Signals.EventEmitter {
 
         // Initialize from settings when we have no MRU sources list
         if (this._mruSources.length === 0) {
-            let mruSettings = this._settings.mruSources;
+            const mruSettings = this._settings.mruSources;
             for (let i = 0; i < mruSettings.length; i++) {
-                let mruSettingSource = mruSettings[i];
+                const mruSettingSource = mruSettings[i];
                 let mruSource = null;
 
                 for (let j = 0; j < sourcesList.length; j++) {
-                    let source = sourcesList[j];
+                    const source = sourcesList[j];
                     if (source.type === mruSettingSource.type &&
                         source.id === mruSettingSource.id) {
                         mruSource = source;
@@ -590,19 +590,19 @@ export class InputSourceManager extends Signals.EventEmitter {
     }
 
     _inputSourcesChanged() {
-        let sources = this._settings.inputSources;
-        let nSources = sources.length;
+        const sources = this._settings.inputSources;
+        const nSources = sources.length;
 
         this._currentSource = null;
         this._inputSources = {};
         this._ibusSources = {};
 
-        let infosList = [];
+        const infosList = [];
         for (let i = 0; i < nSources; i++) {
             let displayName;
             let shortName;
-            let type = sources[i].type;
-            let id = sources[i].id;
+            const type = sources[i].type;
+            const id = sources[i].id;
             let exists = false;
 
             if (type === INPUT_SOURCE_TYPE_XKB) {
@@ -611,11 +611,11 @@ export class InputSourceManager extends Signals.EventEmitter {
             } else if (type === INPUT_SOURCE_TYPE_IBUS) {
                 if (this._disableIBus)
                     continue;
-                let engineDesc = this._ibusManager.getEngineDesc(id);
+                const engineDesc = this._ibusManager.getEngineDesc(id);
                 if (engineDesc) {
-                    let language = IBus.get_language_name(engineDesc.get_language());
+                    const language = IBus.get_language_name(engineDesc.get_language());
                     let longName = engineDesc.get_longname();
-                    let textdomain = engineDesc.get_textdomain();
+                    const textdomain = engineDesc.get_textdomain();
                     if (textdomain !== '')
                         longName = Gettext.dgettext(textdomain, longName);
                     exists = true;
@@ -629,15 +629,15 @@ export class InputSourceManager extends Signals.EventEmitter {
         }
 
         if (infosList.length === 0) {
-            let type = INPUT_SOURCE_TYPE_XKB;
-            let id = KeyboardManager.DEFAULT_LAYOUT;
-            let [, displayName, shortName] = this._xkbInfo.get_layout_info(id);
+            const type = INPUT_SOURCE_TYPE_XKB;
+            const id = KeyboardManager.DEFAULT_LAYOUT;
+            const [, displayName, shortName] = this._xkbInfo.get_layout_info(id);
             infosList.push({type, id, displayName, shortName});
         }
 
-        let inputSourcesByShortName = {};
+        const inputSourcesByShortName = {};
         for (let i = 0; i < infosList.length; i++) {
-            let is = new InputSource(infosList[i].type,
+            const is = new InputSource(infosList[i].type,
                 infosList[i].id,
                 infosList[i].displayName,
                 infosList[i].shortName,
@@ -654,10 +654,10 @@ export class InputSourceManager extends Signals.EventEmitter {
                 this._ibusSources[is.id] = is;
         }
 
-        for (let i in this._inputSources) {
-            let is = this._inputSources[i];
+        for (const i in this._inputSources) {
+            const is = this._inputSources[i];
             if (inputSourcesByShortName[is.shortName].length > 1) {
-                let sub = inputSourcesByShortName[is.shortName].indexOf(is) + 1;
+                const sub = inputSourcesByShortName[is.shortName].indexOf(is) + 1;
                 is.shortName += String.fromCharCode(0x2080 + sub);
             }
         }
@@ -675,11 +675,11 @@ export class InputSourceManager extends Signals.EventEmitter {
     }
 
     _makeEngineShortName(engineDesc) {
-        let symbol = engineDesc.get_symbol();
+        const symbol = engineDesc.get_symbol();
         if (symbol && symbol[0])
             return symbol;
 
-        let langCode = engineDesc.get_language().split('_', 1)[0];
+        const langCode = engineDesc.get_language().split('_', 1)[0];
         if (langCode.length === 2 || langCode.length === 3)
             return langCode.toLowerCase();
 
@@ -687,7 +687,7 @@ export class InputSourceManager extends Signals.EventEmitter {
     }
 
     _ibusPropertiesRegistered(im, engineName, props) {
-        let source = this._ibusSources[engineName];
+        const source = this._ibusSources[engineName];
         if (!source)
             return;
 
@@ -698,7 +698,7 @@ export class InputSourceManager extends Signals.EventEmitter {
     }
 
     _ibusPropertyUpdated(im, engineName, prop) {
-        let source = this._ibusSources[engineName];
+        const source = this._ibusSources[engineName];
         if (!source)
             return;
 
@@ -746,13 +746,13 @@ export class InputSourceManager extends Signals.EventEmitter {
     }
 
     _getNewInputSource(current) {
-        let sourceIndexes = Object.keys(this._inputSources);
+        const sourceIndexes = Object.keys(this._inputSources);
         if (sourceIndexes.length === 0)
             return null;
 
         if (current) {
-            for (let i in this._inputSources) {
-                let is = this._inputSources[i];
+            for (const i in this._inputSources) {
+                const is = this._inputSources[i];
                 if (is.type === current.type &&
                     is.id === current.id)
                     return is;
@@ -770,7 +770,7 @@ export class InputSourceManager extends Signals.EventEmitter {
     }
 
     _setPerWindowInputSource() {
-        let window = this._getCurrentWindow();
+        const window = this._getCurrentWindow();
         if (!window)
             return;
 
@@ -798,7 +798,7 @@ export class InputSourceManager extends Signals.EventEmitter {
             this._focusWindowNotifyId = 0;
             Main.overview.disconnectObject(this);
 
-            let windows = global.get_window_actors().map(w => w.meta_window);
+            const windows = global.get_window_actors().map(w => w.meta_window);
             for (let i = 0; i < windows.length; ++i) {
                 delete windows[i]._inputSources;
                 delete windows[i]._currentSource;
@@ -812,7 +812,7 @@ export class InputSourceManager extends Signals.EventEmitter {
         if (!this._sourcesPerWindow)
             return;
 
-        let window = this._getCurrentWindow();
+        const window = this._getCurrentWindow();
         if (!window)
             return;
 
@@ -851,7 +851,7 @@ class InputSourceIndicatorContainer extends St.Widget {
         // for the height of all children, but we ignore the results
         // for those we don't actually display.
         return this.get_children().reduce((maxWidth, child) => {
-            let width = child.get_preferred_width(forHeight);
+            const width = child.get_preferred_width(forHeight);
             return [
                 Math.max(maxWidth[0], width[0]),
                 Math.max(maxWidth[1], width[1]),
@@ -861,7 +861,7 @@ class InputSourceIndicatorContainer extends St.Widget {
 
     vfunc_get_preferred_height(forWidth) {
         return this.get_children().reduce((maxHeight, child) => {
-            let height = child.get_preferred_height(forWidth);
+            const height = child.get_preferred_height(forWidth);
             return [
                 Math.max(maxHeight[0], height[0]),
                 Math.max(maxHeight[1], height[1]),
@@ -931,19 +931,19 @@ class InputSourceIndicator extends PanelMenu.Button {
     }
 
     _sourcesChanged() {
-        for (let i in this._menuItems)
+        for (const i in this._menuItems)
             this._menuItems[i].destroy();
-        for (let i in this._indicatorLabels)
+        for (const i in this._indicatorLabels)
             this._indicatorLabels[i].destroy();
 
         this._menuItems = {};
         this._indicatorLabels = {};
 
         let menuIndex = 0;
-        for (let i in this._inputSourceManager.inputSources) {
-            let is = this._inputSourceManager.inputSources[i];
+        for (const i in this._inputSourceManager.inputSources) {
+            const is = this._inputSourceManager.inputSources[i];
 
-            let menuItem = new LayoutMenuItem(is.displayName, is.shortName);
+            const menuItem = new LayoutMenuItem(is.displayName, is.shortName);
             menuItem.connect('activate', () => is.activate(true));
 
             const indicatorLabel = new St.Label({
@@ -964,8 +964,8 @@ class InputSourceIndicator extends PanelMenu.Button {
     }
 
     _currentSourceChanged(manager, oldSource) {
-        let nVisibleSources = Object.keys(this._inputSourceManager.inputSources).length;
-        let newSource = this._inputSourceManager.currentSource;
+        const nVisibleSources = Object.keys(this._inputSourceManager.inputSources).length;
+        const newSource = this._inputSourceManager.currentSource;
 
         if (oldSource) {
             this._menuItems[oldSource.index].setOrnament(PopupMenu.Ornament.NO_DOT);
@@ -1015,11 +1015,11 @@ class InputSourceIndicator extends PanelMenu.Button {
         if (!props)
             return;
 
-        let ibusManager = IBusManager.getIBusManager();
-        let radioGroup = [];
+        const ibusManager = IBusManager.getIBusManager();
+        const radioGroup = [];
         let p;
         for (let i = 0; (p = props.get(i)) != null; ++i) {
-            let prop = p;
+            const prop = p;
 
             if (!prop.get_visible())
                 continue;
@@ -1031,9 +1031,9 @@ class InputSourceIndicator extends PanelMenu.Button {
                 else
                     text = prop.get_label().get_text();
 
-                let currentSource = this._inputSourceManager.currentSource;
+                const currentSource = this._inputSourceManager.currentSource;
                 if (currentSource) {
-                    let indicatorLabel = this._indicatorLabels[currentSource.index];
+                    const indicatorLabel = this._indicatorLabels[currentSource.index];
                     const graphemeClusters = this._getGraphemeClusters(text);
                     if (graphemeClusters.length > 0 && graphemeClusters.length < 3)
                         indicatorLabel.set_text(text);
@@ -1041,7 +1041,7 @@ class InputSourceIndicator extends PanelMenu.Button {
             }
 
             let item;
-            let type = prop.get_prop_type();
+            const type = prop.get_prop_type();
             switch (type) {
             case IBus.PropType.MENU:
                 item = new PopupMenu.PopupSubMenuMenuItem(prop.get_label().get_text());
@@ -1059,7 +1059,7 @@ class InputSourceIndicator extends PanelMenu.Button {
                     if (item.prop.get_state() === IBus.PropState.CHECKED)
                         return;
 
-                    let group = item.radioGroup;
+                    const group = item.radioGroup;
                     for (let j = 0; j < group.length; ++j) {
                         if (group[j] === item) {
                             item.setOrnament(PopupMenu.Ornament.DOT);

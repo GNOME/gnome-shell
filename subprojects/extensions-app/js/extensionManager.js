@@ -16,7 +16,7 @@ function loadInterfaceXML(iface) {
     const f = Gio.File.new_for_uri(uri);
 
     try {
-        let [ok_, bytes] = f.load_contents(null);
+        const [ok_, bytes] = f.load_contents(null);
         return new TextDecoder().decode(bytes);
     } catch {
         console.error(`Failed to load D-Bus interface ${iface}`);
@@ -380,7 +380,7 @@ export const ExtensionManager = GObject.registerClass({
     async _loadExtensions() {
         const [extensionsMap] = await this._shellProxy.ListExtensionsAsync();
 
-        for (let uuid in extensionsMap) {
+        for (const uuid in extensionsMap) {
             const extension = new Extension(extensionsMap[uuid]);
             this._extensions.append(extension);
         }

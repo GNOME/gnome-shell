@@ -12,7 +12,7 @@ export const PageIndicators = GObject.registerClass({
     Signals: {'page-activated': {param_types: [GObject.TYPE_INT]}},
 }, class PageIndicators extends St.BoxLayout {
     _init(orientation = Clutter.Orientation.VERTICAL) {
-        let vertical = orientation === Clutter.Orientation.VERTICAL;
+        const vertical = orientation === Clutter.Orientation.VERTICAL;
         super._init({
             style_class: 'page-indicators',
             orientation,
@@ -34,12 +34,12 @@ export const PageIndicators = GObject.registerClass({
         // natural height, so we chain up to St.BoxLayout, but we only request 0
         // as minimum height, since it's not that important if some indicators
         // are not shown
-        let [, natHeight] = super.vfunc_get_preferred_height(forWidth);
+        const [, natHeight] = super.vfunc_get_preferred_height(forWidth);
         return [0, natHeight];
     }
 
     setReactive(reactive) {
-        let children = this.get_children();
+        const children = this.get_children();
         for (let i = 0; i < children.length; i++)
             children[i].reactive = reactive;
 
@@ -50,10 +50,10 @@ export const PageIndicators = GObject.registerClass({
         if (this._nPages === nPages)
             return;
 
-        let diff = nPages - this._nPages;
+        const diff = nPages - this._nPages;
         if (diff > 0) {
             for (let i = 0; i < diff; i++) {
-                let pageIndex = this._nPages + i;
+                const pageIndex = this._nPages + i;
                 const indicator = new St.Button({
                     style_class: 'page-indicator',
                     button_mask: St.ButtonMask.ONE |
@@ -78,7 +78,7 @@ export const PageIndicators = GObject.registerClass({
                 this.add_child(indicator);
             }
         } else {
-            let children = this.get_children().splice(diff);
+            const children = this.get_children().splice(diff);
             for (let i = 0; i < children.length; i++)
                 children[i].destroy();
         }
@@ -87,16 +87,16 @@ export const PageIndicators = GObject.registerClass({
     }
 
     _updateIndicator(indicator, pageIndex) {
-        let progress =
+        const progress =
             Math.max(1 - Math.abs(this._currentPosition - pageIndex), 0);
 
-        let inactiveScale = indicator.pressed
+        const inactiveScale = indicator.pressed
             ? INDICATOR_INACTIVE_SCALE_PRESSED : INDICATOR_INACTIVE_SCALE;
-        let inactiveOpacity = indicator.hover
+        const inactiveOpacity = indicator.hover
             ? INDICATOR_INACTIVE_OPACITY_HOVER : INDICATOR_INACTIVE_OPACITY;
 
-        let scale = inactiveScale + (1 - inactiveScale) * progress;
-        let opacity = inactiveOpacity + (255 - inactiveOpacity) * progress;
+        const scale = inactiveScale + (1 - inactiveScale) * progress;
+        const opacity = inactiveOpacity + (255 - inactiveOpacity) * progress;
 
         indicator.child.set_scale(scale, scale);
         indicator.child.opacity = opacity;
@@ -105,7 +105,7 @@ export const PageIndicators = GObject.registerClass({
     setCurrentPosition(currentPosition) {
         this._currentPosition = currentPosition;
 
-        let children = this.get_children();
+        const children = this.get_children();
         for (let i = 0; i < children.length; i++)
             this._updateIndicator(children[i], i);
     }

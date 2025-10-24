@@ -56,9 +56,9 @@ class KeyboardManager {
     }
 
     async _applyLayoutGroup(group) {
-        let options = this._buildOptionsString();
-        let [layouts, variants] = this._buildGroupStrings(group);
-        let model = this._xkbModel;
+        const options = this._buildOptionsString();
+        const [layouts, variants] = this._buildGroupStrings(group);
+        const model = this._xkbModel;
 
         if (this._currentKeymap &&
             this._currentKeymap.layouts === layouts &&
@@ -81,7 +81,7 @@ class KeyboardManager {
     }
 
     apply(id) {
-        let info = this._layoutInfos[id];
+        const info = this._layoutInfos[id];
         if (!info)
             return;
 
@@ -107,24 +107,24 @@ class KeyboardManager {
         this._layoutInfos = {};
 
         for (const id of ids) {
-            let [found, , , layout, variant] = this._xkbInfo.get_layout_info(id);
+            const [found, , , layout, variant] = this._xkbInfo.get_layout_info(id);
             if (found)
                 this._layoutInfos[id] = {id, layout, variant};
         }
 
         let i = 0;
         let group = [];
-        for (let id in this._layoutInfos) {
+        for (const id in this._layoutInfos) {
             // We need to leave one slot on each group free so that we
             // can add a layout containing the symbols for the
             // language used in UI strings to ensure that toolkits can
             // handle mnemonics like Alt+Ф even if the user is
             // actually typing in a different layout.
-            let groupIndex = i % (this.MAX_LAYOUTS_PER_GROUP - 1);
+            const groupIndex = i % (this.MAX_LAYOUTS_PER_GROUP - 1);
             if (groupIndex === 0)
                 group = [];
 
-            let info = this._layoutInfos[id];
+            const info = this._layoutInfos[id];
             group[groupIndex] = info;
             info.group = group;
             info.groupIndex = groupIndex;
@@ -151,9 +151,9 @@ class KeyboardManager {
     }
 
     _buildGroupStrings(_group) {
-        let group = _group.concat(this._localeLayoutInfo);
-        let layouts = group.map(g => g.layout).join(',');
-        let variants = group.map(g => g.variant).join(',');
+        const group = _group.concat(this._localeLayoutInfo);
+        const layouts = group.map(g => g.layout).join(',');
+        const variants = group.map(g => g.variant).join(',');
         return [layouts, variants];
     }
 
@@ -166,7 +166,7 @@ class KeyboardManager {
     }
 
     _buildOptionsString() {
-        let options = this._xkbOptions.join(',');
+        const options = this._xkbOptions.join(',');
         return options;
     }
 

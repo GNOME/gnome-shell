@@ -133,7 +133,7 @@ export class WeatherClient extends Signals.EventEmitter {
         if (!this._locationValid)
             return;
 
-        let now = GLib.DateTime.new_now_local();
+        const now = GLib.DateTime.new_now_local();
         // Update without loading indication if the current info is recent enough
         if (this._weatherInfo.is_valid() &&
             now.difference(this._lastUpdate) < UPDATE_THRESHOLD)
@@ -180,14 +180,14 @@ export class WeatherClient extends Signals.EventEmitter {
     }
 
     _onInstalledChanged() {
-        let hadApp = this._weatherApp != null;
+        const hadApp = this._weatherApp != null;
         this._weatherApp = this._appSystem.lookup_app(WEATHER_APP_ID);
-        let haveApp = this._weatherApp != null;
+        const haveApp = this._weatherApp != null;
 
         if (hadApp !== haveApp)
             this.emit('changed');
 
-        let neededAuth = this._needsAuth;
+        const neededAuth = this._needsAuth;
         this._needsAuth = this._weatherApp === null ||
                           this._weatherApp.app_info.has_key('X-Flatpak');
 
@@ -196,7 +196,7 @@ export class WeatherClient extends Signals.EventEmitter {
     }
 
     _loadInfo() {
-        let id = this._weatherInfo.connect('updated', () => {
+        const id = this._weatherInfo.connect('updated', () => {
             this._weatherInfo.disconnect(id);
             this._loading = false;
         });
@@ -267,7 +267,7 @@ export class WeatherClient extends Signals.EventEmitter {
     }
 
     _onGClueLocationChanged() {
-        let geoLocation = this._gclueService.location;
+        const geoLocation = this._gclueService.location;
         // Provide empty name so GWeather sets location name
         const location = GWeather.Location.new_detached('',
             null,
@@ -277,7 +277,7 @@ export class WeatherClient extends Signals.EventEmitter {
     }
 
     _onAutomaticLocationChanged() {
-        let useAutoLocation = this._settings.get_boolean('automatic-location');
+        const useAutoLocation = this._settings.get_boolean('automatic-location');
         if (this._autoLocationRequested === useAutoLocation)
             return;
 
@@ -296,8 +296,8 @@ export class WeatherClient extends Signals.EventEmitter {
     }
 
     _onLocationsChanged() {
-        let locations = this._settings.get_value('locations').deepUnpack();
-        let serialized = locations.shift();
+        const locations = this._settings.get_value('locations').deepUnpack();
+        const serialized = locations.shift();
         let mostRecentLocation = null;
 
         if (serialized)
@@ -313,13 +313,13 @@ export class WeatherClient extends Signals.EventEmitter {
     }
 
     _onPermStoreChanged(proxy, sender, params) {
-        let [table, id, deleted_, data_, perms] = params;
+        const [table, id, deleted_, data_, perms] = params;
 
         if (table !== 'gnome' || id !== 'geolocation')
             return;
 
-        let permission = perms['org.gnome.Weather'] || ['NONE'];
-        let [accuracy] = permission;
+        const permission = perms['org.gnome.Weather'] || ['NONE'];
+        const [accuracy] = permission;
         this._weatherAuthorized = accuracy !== 'NONE';
 
         this._updateAutoLocation();

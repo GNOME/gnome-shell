@@ -32,7 +32,7 @@ export class Manager extends Signals.EventEmitter {
     }
 
     _reloadRealms() {
-        let realmPaths = this._aggregateProvider.Realms;
+        const realmPaths = this._aggregateProvider.Realms;
 
         if (!realmPaths)
             return;
@@ -74,8 +74,8 @@ export class Manager extends Signals.EventEmitter {
     _updateLoginFormat() {
         let newLoginFormat;
 
-        for (let realmPath in this._realms) {
-            let realm = this._realms[realmPath];
+        for (const realmPath in this._realms) {
+            const realm = this._realms[realmPath];
             if (realm.LoginFormats && realm.LoginFormats.length > 0) {
                 newLoginFormat = realm.LoginFormats[0];
                 break;

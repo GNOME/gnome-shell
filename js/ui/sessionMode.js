@@ -100,9 +100,9 @@ const _modes = {
 };
 
 function _loadMode(file, info) {
-    let name = info.get_name();
-    let suffix = name.indexOf('.json');
-    let modeName = suffix === -1 ? name : name.slice(name, suffix);
+    const name = info.get_name();
+    const suffix = name.indexOf('.json');
+    const modeName = suffix === -1 ? name : name.slice(name, suffix);
 
     if (Object.prototype.hasOwnProperty.call(_modes, modeName))
         return;
@@ -118,7 +118,7 @@ function _loadMode(file, info) {
 
     _modes[modeName] = {};
     const  excludedProps = ['unlockDialog'];
-    for (let prop in _modes[DEFAULT_MODE]) {
+    for (const prop in _modes[DEFAULT_MODE]) {
         if (newMode[prop] !== undefined &&
             !excludedProps.includes(prop))
             _modes[modeName][prop] = newMode[prop];
@@ -136,9 +136,9 @@ function _loadModes() {
 
 export function listModes() {
     _loadModes();
-    let loop = new GLib.MainLoop(null, false);
-    let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-        let names = Object.getOwnPropertyNames(_modes);
+    const loop = new GLib.MainLoop(null, false);
+    const id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+        const names = Object.getOwnPropertyNames(_modes);
         for (let i = 0; i < names.length; i++) {
             if (_modes[names[i]].isPrimary)
                 print(names[i]);
@@ -154,9 +154,9 @@ export class SessionMode extends Signals.EventEmitter {
         super();
 
         _loadModes();
-        let isPrimary = _modes[global.session_mode] &&
+        const isPrimary = _modes[global.session_mode] &&
                          _modes[global.session_mode].isPrimary;
-        let mode = isPrimary ? global.session_mode : 'user';
+        const mode = isPrimary ? global.session_mode : 'user';
         this._modeStack = [mode];
         this._sync();
     }
@@ -197,7 +197,7 @@ export class SessionMode extends Signals.EventEmitter {
 
         // A simplified version of Lang.copyProperties, handles
         // undefined as a special case for "no change / inherit from previous mode"
-        for (let prop in params) {
+        for (const prop in params) {
             if (params[prop] !== undefined)
                 this[prop] = params[prop];
         }

@@ -115,7 +115,7 @@ export async function run() {
         // to calculate the mipmaps for the windows, the second time to get
         // a clean set of numbers.
         if ((i % 2) === 0) {
-            let config = WINDOW_CONFIGS[i / 2];
+            const config = WINDOW_CONFIGS[i / 2];
             await Scripting.destroyTestWindows();
 
             for (let k = 0; k < config.count; k++) {
@@ -169,7 +169,7 @@ let overviewFrames;
 let overviewLatency;
 let mallocUsedSize = 0;
 let overviewShowCount = 0;
-let haveSwapComplete = false;
+const haveSwapComplete = false;
 let applicationsShowStart;
 let applicationsShowCount = 0;
 
@@ -254,11 +254,11 @@ function _frameDone(time) {
         finishedShowingOverview = false;
         overviewShowCount++;
 
-        let dt = (time - (overviewShowStart + overviewLatency)) / 1000000;
+        const dt = (time - (overviewShowStart + overviewLatency)) / 1000000;
 
         // If we see a start frame and an end frame, that would
         // be 1 frame for a FPS computation, hence the '- 1'
-        let fps = (overviewFrames - 1) / dt;
+        const fps = (overviewFrames - 1) / dt;
 
         if (overviewShowCount === 1) {
             METRICS.overviewLatencyFirst.value = overviewLatency;
@@ -270,7 +270,7 @@ function _frameDone(time) {
         // Other than overviewFpsFirst, we collect FPS metrics the second
         // we show each window configuration. overviewShowCount is 1,2,3...
         if (overviewShowCount % 2 === 0) {
-            let config = WINDOW_CONFIGS[(overviewShowCount / 2) - 1];
+            const config = WINDOW_CONFIGS[(overviewShowCount / 2) - 1];
             METRICS[config.metric].value = fps;
         }
     }

@@ -22,14 +22,14 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         this.prompt.connect('show-confirm', this._onShowConfirm.bind(this));
         this.prompt.connect('prompt-close', this._onHidePrompt.bind(this));
 
-        let content = new Dialog.MessageDialogContent();
+        const content = new Dialog.MessageDialogContent();
 
         this.prompt.bind_property('message',
             content, 'title', GObject.BindingFlags.SYNC_CREATE);
         this.prompt.bind_property('description',
             content, 'description', GObject.BindingFlags.SYNC_CREATE);
 
-        let passwordBox = new St.BoxLayout({
+        const passwordBox = new St.BoxLayout({
             style_class: 'prompt-dialog-password-layout',
             orientation: Clutter.Orientation.VERTICAL,
         });
@@ -59,10 +59,10 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         this.prompt.set_password_actor(this._passwordEntry.clutter_text);
         this.prompt.set_confirm_actor(this._confirmEntry.clutter_text);
 
-        let warningBox = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL});
+        const warningBox = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL});
 
-        let capsLockWarning = new ShellEntry.CapsLockWarning();
-        let syncCapsLockWarningVisibility = () => {
+        const capsLockWarning = new ShellEntry.CapsLockWarning();
+        const syncCapsLockWarningVisibility = () => {
             capsLockWarning.visible =
                 this.prompt.password_visible || this.prompt.confirm_visible;
         };
@@ -70,7 +70,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
         this.prompt.connect('notify::confirm-visible', syncCapsLockWarningVisibility);
         warningBox.add_child(capsLockWarning);
 
-        let warning = new St.Label({style_class: 'prompt-dialog-error-label'});
+        const warning = new St.Label({style_class: 'prompt-dialog-error-label'});
         warning.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         warning.clutter_text.line_wrap = true;
         this.prompt.bind_property('warning',
@@ -203,7 +203,7 @@ class KeyringPrompter extends Gcr.SystemPrompter {
     _init() {
         super._init();
         this.connect('new-prompt', () => {
-            let dialog = this._enabled
+            const dialog = this._enabled
                 ? new KeyringDialog()
                 : new KeyringDummyDialog();
             this._currentPrompt = dialog.prompt;

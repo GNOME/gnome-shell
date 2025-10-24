@@ -246,15 +246,15 @@ const SystemActions = GObject.registerClass({
     }
 
     _updateOrientationLockStatus() {
-        let locked = this._orientationSettings.get_boolean('orientation-lock');
-        let action = this._actions.get(LOCK_ORIENTATION_ACTION_ID);
+        const locked = this._orientationSettings.get_boolean('orientation-lock');
+        const action = this._actions.get(LOCK_ORIENTATION_ACTION_ID);
 
         // Translators: The name of the lock orientation action in search
         // and in the system status menu
-        let name = locked
+        const name = locked
             ? C_('search-result', 'Unlock Screen Rotation')
             : C_('search-result', 'Lock Screen Rotation');
-        let iconName = locked
+        const iconName = locked
             ? 'rotation-locked-symbolic'
             : 'rotation-allowed-symbolic';
 
@@ -288,9 +288,9 @@ const SystemActions = GObject.registerClass({
         if (terms.length === 0)
             return [];
 
-        let results = [];
+        const results = [];
 
-        for (let [key, {available, keywords}] of this._actions) {
+        for (const [key, {available, keywords}] of this._actions) {
             if (available && terms.every(t => keywords.some(k => k.startsWith(t))))
                 results.push(key);
         }
@@ -336,8 +336,8 @@ const SystemActions = GObject.registerClass({
     }
 
     _updateLockScreen() {
-        let showLock = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
-        let allowLockScreen = !this._lockdownSettings.get_boolean(DISABLE_LOCK_SCREEN_KEY);
+        const showLock = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        const allowLockScreen = !this._lockdownSettings.get_boolean(DISABLE_LOCK_SCREEN_KEY);
         this._actions.get(LOCK_SCREEN_ACTION_ID).available = showLock && allowLockScreen && LoginManager.canLock();
         this.notify('can-lock-screen');
     }
@@ -353,7 +353,7 @@ const SystemActions = GObject.registerClass({
     }
 
     _updatePowerOff() {
-        let disabled = (Main.sessionMode.isLocked &&
+        const disabled = (Main.sessionMode.isLocked &&
                         !this._screenSaverSettings.get_boolean(RESTART_ENABLED_KEY)) ||
                        (Main.sessionMode.isGreeter &&
                         this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
@@ -372,7 +372,7 @@ const SystemActions = GObject.registerClass({
     }
 
     _updateSuspend() {
-        let disabled = (Main.sessionMode.isLocked &&
+        const disabled = (Main.sessionMode.isLocked &&
                         this._suspendNeedsAuth) ||
                        (Main.sessionMode.isGreeter &&
                         this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
@@ -386,11 +386,11 @@ const SystemActions = GObject.registerClass({
     }
 
     _updateSwitchUser() {
-        let allowSwitch = !this._lockdownSettings.get_boolean(DISABLE_USER_SWITCH_KEY);
-        let multiUser = this._userManager.can_switch() && this._userManager.has_multiple_users;
-        let shouldShowInMode = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        const allowSwitch = !this._lockdownSettings.get_boolean(DISABLE_USER_SWITCH_KEY);
+        const multiUser = this._userManager.can_switch() && this._userManager.has_multiple_users;
+        const shouldShowInMode = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 
-        let visible = allowSwitch && multiUser && shouldShowInMode;
+        const visible = allowSwitch && multiUser && shouldShowInMode;
         this._actions.get(SWITCH_USER_ACTION_ID).available = visible;
         this.notify('can-switch-user');
 
@@ -398,17 +398,17 @@ const SystemActions = GObject.registerClass({
     }
 
     _updateLogout() {
-        let user = this._userManager.get_user(GLib.get_user_name());
+        const user = this._userManager.get_user(GLib.get_user_name());
 
-        let allowLogout = !this._lockdownSettings.get_boolean(DISABLE_LOG_OUT_KEY);
-        let alwaysShow = global.settings.get_boolean(ALWAYS_SHOW_LOG_OUT_KEY);
-        let systemAccount = user.system_account;
-        let localAccount = user.local_account;
-        let multiUser = this._userManager.has_multiple_users;
-        let multiSession = Gdm.get_session_ids().length > 1;
-        let shouldShowInMode = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        const allowLogout = !this._lockdownSettings.get_boolean(DISABLE_LOG_OUT_KEY);
+        const alwaysShow = global.settings.get_boolean(ALWAYS_SHOW_LOG_OUT_KEY);
+        const systemAccount = user.system_account;
+        const localAccount = user.local_account;
+        const multiUser = this._userManager.has_multiple_users;
+        const multiSession = Gdm.get_session_ids().length > 1;
+        const shouldShowInMode = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 
-        let visible = allowLogout && (alwaysShow || multiUser || multiSession || systemAccount || !localAccount) && shouldShowInMode;
+        const visible = allowLogout && (alwaysShow || multiUser || multiSession || systemAccount || !localAccount) && shouldShowInMode;
         this._actions.get(LOGOUT_ACTION_ID).available = visible;
         this.notify('can-logout');
 
@@ -419,7 +419,7 @@ const SystemActions = GObject.registerClass({
         if (!this._actions.get(LOCK_ORIENTATION_ACTION_ID).available)
             throw new Error('The lock-orientation action is not available!');
 
-        let locked = this._orientationSettings.get_boolean('orientation-lock');
+        const locked = this._orientationSettings.get_boolean('orientation-lock');
         this._orientationSettings.set_boolean('orientation-lock', !locked);
     }
 

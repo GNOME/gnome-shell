@@ -84,7 +84,7 @@ export class HistoryManager extends Signals.EventEmitter {
     }
 
     _onEntryKeyPress(entry, event) {
-        let symbol = event.get_key_symbol();
+        const symbol = event.get_key_symbol();
         if (symbol === Clutter.KEY_Up)
             return this._setPrevItem(entry.get_text().trim());
         else if (symbol === Clutter.KEY_Down)
@@ -94,7 +94,7 @@ export class HistoryManager extends Signals.EventEmitter {
     }
 
     _indexChanged() {
-        let current = this._history[this._historyIndex] || '';
+        const current = this._history[this._historyIndex] || '';
         this.emit('changed', current);
 
         if (this._entry)

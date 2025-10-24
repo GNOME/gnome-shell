@@ -41,12 +41,12 @@ const AuthenticationDialog = GObject.registerClass({
 
         this.connect('closed', this._onDialogClosed.bind(this));
 
-        let title = _('Authentication Required');
+        const title = _('Authentication Required');
 
-        let headerContent = new Dialog.MessageDialogContent({title, description});
+        const headerContent = new Dialog.MessageDialogContent({title, description});
         this.contentLayout.add_child(headerContent);
 
-        let bodyContent = new Dialog.MessageDialogContent();
+        const bodyContent = new Dialog.MessageDialogContent();
 
         if (userNames.length > 1) {
             log(`polkitAuthenticationAgent: Received ${userNames.length} ` +
@@ -62,7 +62,7 @@ const AuthenticationDialog = GObject.registerClass({
 
         this._user = AccountsService.UserManager.get_default().get_user(userName);
 
-        let userBox = new St.BoxLayout({
+        const userBox = new St.BoxLayout({
             style_class: 'polkit-dialog-user-layout',
             orientation: Clutter.Orientation.VERTICAL,
         });
@@ -85,7 +85,7 @@ const AuthenticationDialog = GObject.registerClass({
 
         userBox.add_child(this._userLabel);
 
-        let passwordBox = new St.BoxLayout({
+        const passwordBox = new St.BoxLayout({
             style_class: 'prompt-dialog-password-layout',
             orientation: Clutter.Orientation.VERTICAL,
         });
@@ -104,9 +104,9 @@ const AuthenticationDialog = GObject.registerClass({
             GObject.BindingFlags.SYNC_CREATE);
         passwordBox.add_child(this._passwordEntry);
 
-        let warningBox = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL});
+        const warningBox = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL});
 
-        let capsLockWarning = new ShellEntry.CapsLockWarning();
+        const capsLockWarning = new ShellEntry.CapsLockWarning();
         this._passwordEntry.bind_property('visible',
             capsLockWarning, 'visible',
             GObject.BindingFlags.SYNC_CREATE);
@@ -218,7 +218,7 @@ const AuthenticationDialog = GObject.registerClass({
     }
 
     _onEntryActivate() {
-        let response = this._passwordEntry.get_text();
+        const response = this._passwordEntry.get_text();
         if (response.length === 0)
             return;
 
@@ -330,7 +330,7 @@ const AuthenticationDialog = GObject.registerClass({
             this._sessionRequestTimeoutId = 0;
         }
 
-        let resetDialog = () => {
+        const resetDialog = () => {
             this._sessionRequestTimeoutId = 0;
 
             if (this.state !== ModalDialog.State.OPENED)
@@ -355,8 +355,8 @@ const AuthenticationDialog = GObject.registerClass({
         if (!this._user.is_loaded)
             return;
 
-        let userName = this._user.get_user_name();
-        let realName = this._user.get_real_name();
+        const userName = this._user.get_user_name();
+        const realName = this._user.get_real_name();
 
         if (userName !== 'root')
             this._userLabel.set_text(realName);

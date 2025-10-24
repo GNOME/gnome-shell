@@ -27,14 +27,14 @@ class ButtonBox extends St.Widget {
     }
 
     _onStyleChanged(actor) {
-        let themeNode = actor.get_theme_node();
+        const themeNode = actor.get_theme_node();
 
         this._minHPadding = themeNode.get_length('-minimum-hpadding');
         this._natHPadding = themeNode.get_length('-natural-hpadding');
     }
 
     vfunc_get_preferred_width(_forHeight) {
-        let child = this.get_first_child();
+        const child = this.get_first_child();
         let minimumSize, naturalSize;
 
         if (child)
@@ -49,7 +49,7 @@ class ButtonBox extends St.Widget {
     }
 
     vfunc_get_preferred_height(_forWidth) {
-        let child = this.get_first_child();
+        const child = this.get_first_child();
 
         if (child)
             return child.get_preferred_height(-1);
@@ -60,16 +60,16 @@ class ButtonBox extends St.Widget {
     vfunc_allocate(box) {
         this.set_allocation(box);
 
-        let child = this.get_first_child();
+        const child = this.get_first_child();
         if (!child)
             return;
 
-        let [, natWidth] = child.get_preferred_width(-1);
+        const [, natWidth] = child.get_preferred_width(-1);
 
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
+        const availWidth = box.x2 - box.x1;
+        const availHeight = box.y2 - box.y1;
 
-        let childBox = new Clutter.ActorBox();
+        const childBox = new Clutter.ActorBox();
         if (natWidth + 2 * this._natHPadding <= availWidth) {
             childBox.x1 = this._natHPadding;
             childBox.x2 = availWidth - this._natHPadding;
@@ -153,11 +153,11 @@ export const Button = GObject.registerClass({
         if (global.focus_manager.navigate_from_event(event))
             return Clutter.EVENT_STOP;
 
-        let symbol = event.get_key_symbol();
+        const symbol = event.get_key_symbol();
         if (symbol === Clutter.KEY_Left || symbol === Clutter.KEY_Right) {
-            let group = global.focus_manager.get_group(this);
+            const group = global.focus_manager.get_group(this);
             if (group) {
-                let direction = symbol === Clutter.KEY_Left ? St.DirectionType.LEFT : St.DirectionType.RIGHT;
+                const direction = symbol === Clutter.KEY_Left ? St.DirectionType.LEFT : St.DirectionType.RIGHT;
                 group.navigate_focus(this, direction, false);
                 return Clutter.EVENT_STOP;
             }
@@ -174,14 +174,14 @@ export const Button = GObject.registerClass({
         // Setting the max-height won't do any good if the minimum height of the
         // menu is higher then the screen; it's useful if part of the menu is
         // scrollable so the minimum height is smaller than the natural height
-        let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
-        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        let verticalMargins = this.menu.actor.margin_top + this.menu.actor.margin_bottom;
+        const workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
+        const scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        const verticalMargins = this.menu.actor.margin_top + this.menu.actor.margin_bottom;
 
         // The workarea and margin dimensions are in physical pixels, but CSS
         // measures are in logical pixels, so make sure to consider the scale
         // factor when computing max-height
-        let maxHeight = Math.round((workArea.height - verticalMargins) / scaleFactor);
+        const maxHeight = Math.round((workArea.height - verticalMargins) / scaleFactor);
         this.menu.actor.style = `max-height: ${maxHeight}px;`;
     }
 

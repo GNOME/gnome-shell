@@ -78,9 +78,9 @@ describe('Matching slash search', () => {
         },
     ];
 
-    for (let {name, input, output} of FindMatchingSlashParameters) {
+    for (const {name, input, output} of FindMatchingSlashParameters) {
         it(`finds a matching slash where there are ${name}`, () => {
-            let match = JsParse.findMatchingQuote(input, input.length - 1);
+            const match = JsParse.findMatchingQuote(input, input.length - 1);
             expect(match).toEqual(output);
         });
     }
@@ -120,9 +120,9 @@ describe('Matching brace search', () => {
         },
     ];
 
-    for (let {name, input, output} of FindMatchingBraceParameters) {
+    for (const {name, input, output} of FindMatchingBraceParameters) {
         it(`finds matching braces where there are ${name}`, () => {
-            let match = JsParse.findMatchingBrace(input, input.length - 1);
+            const match = JsParse.findMatchingBrace(input, input.length - 1);
             expect(match).toEqual(output);
         });
     }
@@ -224,7 +224,7 @@ describe('Expression safety determination', () => {
     for (const {name, input, output} of UnsafeExpressionParams) {
         const isOrIsNot = output ? 'is' : 'is not';
         it(`finds that an expression which is a ${name} ${isOrIsNot} safe`, () => {
-            let unsafe = JsParse.isUnsafeExpression(input);
+            const unsafe = JsParse.isUnsafeExpression(input);
             expect(unsafe).toEqual(output);
         });
     }

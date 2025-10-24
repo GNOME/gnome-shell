@@ -41,7 +41,7 @@ class SmartcardManager extends Signals.EventEmitter {
     }
 
     _onLoaded() {
-        let tokens = this._objectManager.getProxiesForInterface('org.gnome.SettingsDaemon.Smartcard.Token');
+        const tokens = this._objectManager.getProxiesForInterface('org.gnome.SettingsDaemon.Smartcard.Token');
 
         for (let i = 0; i < tokens.length; i++)
             this._addToken(tokens[i]);
@@ -58,7 +58,7 @@ class SmartcardManager extends Signals.EventEmitter {
     }
 
     _updateToken(token) {
-        let objectPath = token.get_object_path();
+        const objectPath = token.get_object_path();
 
         delete this._insertedTokens[objectPath];
 
@@ -90,7 +90,7 @@ class SmartcardManager extends Signals.EventEmitter {
     }
 
     _removeToken(token) {
-        let objectPath = token.get_object_path();
+        const objectPath = token.get_object_path();
 
         if (this._insertedTokens[objectPath] === token) {
             delete this._insertedTokens[objectPath];

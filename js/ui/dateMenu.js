@@ -32,7 +32,7 @@ const ClocksProxy = Gio.DBusProxy.makeProxyWrapper(ClocksIntegrationIface);
  * @returns {boolean}
  */
 function _isToday(date) {
-    let now = new Date();
+    const now = new Date();
     return now.getFullYear() === date.getFullYear() &&
            now.getMonth() === date.getMonth() &&
            now.getDate() === date.getDate();
@@ -269,7 +269,7 @@ class EventsSection extends St.Button {
         const events =
             this._eventSource.getEvents(this._startDate, this._endDate);
 
-        for (let event of events) {
+        for (const event of events) {
             const box = new St.BoxLayout({
                 style_class: 'event-box',
                 orientation: Clutter.Orientation.VERTICAL,
@@ -390,10 +390,10 @@ class WorldClocksSection extends St.Button {
         this._grid.destroy_all_children();
         this._locations = [];
 
-        let world = GWeather.Location.get_world();
-        let clocks = this._settings.get_value('locations').deepUnpack();
+        const world = GWeather.Location.get_world();
+        const clocks = this._settings.get_value('locations').deepUnpack();
         for (let i = 0; i < clocks.length; i++) {
-            let l = world.deserialize(clocks[i]);
+            const l = world.deserialize(clocks[i]);
             if (l && l.get_timezone() != null)
                 this._locations.push({location: l});
         }
@@ -407,7 +407,7 @@ class WorldClocksSection extends St.Button {
             return tzA.get_offset(intA) - tzB.get_offset(intB);
         });
 
-        let layout = this._grid.layout_manager;
+        const layout = this._grid.layout_manager;
         const title = this._locations.length === 0
             ? _('Add World Clocks…')
             : _('World Clocks');
@@ -429,9 +429,9 @@ class WorldClocksSection extends St.Button {
         this.label_actor = header;
 
         for (let i = 0; i < this._locations.length; i++) {
-            let l = this._locations[i].location;
+            const l = this._locations[i].location;
 
-            let name = l.get_city_name() || l.get_name();
+            const name = l.get_city_name() || l.get_name();
             const label = new St.Label({
                 style_class: 'world-clocks-city',
                 text: name,
@@ -507,7 +507,7 @@ class WorldClocksSection extends St.Button {
 
     _updateTimeLabels() {
         for (let i = 0; i < this._locations.length; i++) {
-            let l = this._locations[i];
+            const l = this._locations[i];
             const now = GLib.DateTime.new_now(l.location.get_timezone());
             l.timeLabel.text = formatTime(now, {timeOnly: true});
         }
@@ -515,7 +515,7 @@ class WorldClocksSection extends St.Button {
 
     _updateTimezoneLabels() {
         for (let i = 0; i < this._locations.length; i++) {
-            let l = this._locations[i];
+            const l = this._locations[i];
             l.tzLabel.text = this._getTimezoneOffsetAtLocation(l.location);
         }
     }
@@ -551,7 +551,7 @@ class WeatherSection extends St.Button {
 
         this._weatherClient = new Weather.WeatherClient();
 
-        let box = new St.BoxLayout({
+        const box = new St.BoxLayout({
             style_class: 'weather-box',
             orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
@@ -559,7 +559,7 @@ class WeatherSection extends St.Button {
 
         this.child = box;
 
-        let titleBox = new St.BoxLayout({style_class: 'weather-header-box'});
+        const titleBox = new St.BoxLayout({style_class: 'weather-header-box'});
         this._titleLabel = new St.Label({
             style_class: 'weather-header',
             x_align: Clutter.ActorAlign.START,
@@ -577,7 +577,7 @@ class WeatherSection extends St.Button {
         });
         titleBox.add_child(this._titleLocation);
 
-        let layout = new Clutter.GridLayout({orientation: Clutter.Orientation.VERTICAL});
+        const layout = new Clutter.GridLayout({orientation: Clutter.Orientation.VERTICAL});
         this._forecastGrid = new St.Widget({
             style_class: 'weather-grid',
             layout_manager: layout,
@@ -602,11 +602,11 @@ class WeatherSection extends St.Button {
     }
 
     _getInfos() {
-        let forecasts = this._weatherClient.info.get_forecast_list();
+        const forecasts = this._weatherClient.info.get_forecast_list();
 
-        let now = GLib.DateTime.new_now_local();
+        const now = GLib.DateTime.new_now_local();
         let current = GLib.DateTime.new_from_unix_local(0);
-        let infos = [];
+        const infos = [];
         for (let i = 0; i < forecasts.length; i++) {
             const [valid, timestamp] = forecasts[i].get_value_update();
             if (!valid || timestamp === 0)
@@ -628,34 +628,34 @@ class WeatherSection extends St.Button {
     }
 
     _addForecasts() {
-        let layout = this._forecastGrid.layout_manager;
+        const layout = this._forecastGrid.layout_manager;
 
-        let infos = this._getInfos();
+        const infos = this._getInfos();
         if (this._forecastGrid.text_direction === Clutter.TextDirection.RTL)
             infos.reverse();
 
         let col = 0;
         infos.forEach(fc => {
             const [valid_, timestamp] = fc.get_value_update();
-            let timeStr = formatTime(new Date(timestamp * 1000), {
+            const timeStr = formatTime(new Date(timestamp * 1000), {
                 timeOnly: true,
                 ampm: false,
             });
             const [, tempValue] = fc.get_value_temp(GWeather.TemperatureUnit.DEFAULT);
             const tempPrefix = Math.round(tempValue) >= 0 ? ' ' : '';
 
-            let time = new St.Label({
+            const time = new St.Label({
                 style_class: 'weather-forecast-time',
                 text: timeStr,
                 x_align: Clutter.ActorAlign.CENTER,
             });
-            let icon = new St.Icon({
+            const icon = new St.Icon({
                 style_class: 'weather-forecast-icon',
                 icon_name: fc.get_symbolic_icon_name(),
                 x_align: Clutter.ActorAlign.CENTER,
                 x_expand: true,
             });
-            let temp = new St.Label({
+            const temp = new St.Label({
                 style_class: 'weather-forecast-temp',
                 text: `${tempPrefix}${Math.round(tempValue)}°`,
                 x_align: Clutter.ActorAlign.CENTER,
@@ -672,8 +672,8 @@ class WeatherSection extends St.Button {
     }
 
     _setStatusLabel(text) {
-        let layout = this._forecastGrid.layout_manager;
-        let label = new St.Label({text});
+        const layout = this._forecastGrid.layout_manager;
+        const label = new St.Label({text});
         layout.attach(label, 0, 0, 1, 1);
     }
 
@@ -762,7 +762,7 @@ class MessagesIndicator extends St.Icon {
         Main.messageTray.connect('source-removed', this._onSourceRemoved.bind(this));
         Main.messageTray.connect('queue-changed', this._updateCount.bind(this));
 
-        let sources = Main.messageTray.getSources();
+        const sources = Main.messageTray.getSources();
         sources.forEach(source => this._onSourceAdded(null, source));
 
         this._sync();
@@ -832,7 +832,7 @@ class FreezableBinLayout extends Clutter.BinLayout {
     vfunc_allocate(container, allocation) {
         super.vfunc_allocate(container, allocation);
 
-        let [width, height] = allocation.get_size();
+        const [width, height] = allocation.get_size();
         this._savedWidth = [width, width];
         this._savedHeight = [height, height];
     }
@@ -860,8 +860,6 @@ class CalendarColumnLayout extends Clutter.BoxLayout {
 export const DateMenuButton = GObject.registerClass(
 class DateMenuButton extends PanelMenu.Button {
     _init() {
-        let hbox;
-
         super._init(0.5);
 
         this._clockDisplay = new St.Label({style_class: 'clock'});
@@ -879,7 +877,7 @@ class DateMenuButton extends PanelMenu.Button {
             coordinate: Clutter.BindCoordinate.SIZE,
         }));
 
-        let box = new St.BoxLayout({style_class: 'clock-display-box'});
+        const box = new St.BoxLayout({style_class: 'clock-display-box'});
         box.add_child(indicatorPad);
         box.add_child(this._clockDisplay);
         box.add_child(this._indicator);
@@ -888,19 +886,19 @@ class DateMenuButton extends PanelMenu.Button {
         this.add_child(box);
         this.add_style_class_name('clock-display');
 
-        let layout = new FreezableBinLayout();
-        let bin = new St.Widget({layout_manager: layout});
+        const layout = new FreezableBinLayout();
+        const bin = new St.Widget({layout_manager: layout});
         // For some minimal compatibility with PopupMenuItem
         bin._delegate = this;
         this.menu.box.add_child(bin);
         this.menu.box.add_style_class_name('datemenu-popover');
 
-        hbox = new St.BoxLayout({name: 'calendarArea'});
+        const hbox = new St.BoxLayout({name: 'calendarArea'});
         bin.add_child(hbox);
 
         this._calendar = new Calendar.Calendar();
         this._calendar.connect('selected-date-changed', (_calendar, datetime) => {
-            let date = _gDateTimeToDate(datetime);
+            const date = _gDateTimeToDate(datetime);
             layout.frozen = !_isToday(date);
             this._eventsItem.setDate(date);
         });
@@ -909,7 +907,7 @@ class DateMenuButton extends PanelMenu.Button {
         this.menu.connect('open-state-changed', (menu, isOpen) => {
             // Whenever the menu is opened, select today
             if (isOpen) {
-                let now = new Date();
+                const now = new Date();
                 this._calendar.setDate(now);
                 this._date.setDate(now);
                 this._eventsItem.setDate(now);
@@ -1000,7 +998,7 @@ class DateMenuButton extends PanelMenu.Button {
 
     _sessionUpdated() {
         let eventSource;
-        let showEvents = Main.sessionMode.showCalendarEvents;
+        const showEvents = Main.sessionMode.showCalendarEvents;
         if (showEvents)
             eventSource = this._getEventSource();
         else

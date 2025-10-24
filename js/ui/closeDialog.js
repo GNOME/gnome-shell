@@ -35,12 +35,12 @@ export const CloseDialog = GObject.registerClass({
     }
 
     _createDialogContent() {
-        let tracker = Shell.WindowTracker.get_default();
-        let windowApp = tracker.get_window_app(this._window);
+        const tracker = Shell.WindowTracker.get_default();
+        const windowApp = tracker.get_window_app(this._window);
 
         /* Translators: %s is an application name */
-        let title = _('“%s” Is Not Responding').format(windowApp.get_name());
-        let description = _('You may choose to wait a short while for it to ' +
+        const title = _('“%s” Is Not Responding').format(windowApp.get_name());
+        const description = _('You may choose to wait a short while for it to ' +
                             'continue or force the app to quit entirely');
         return new Dialog.MessageDialogContent({title, description});
     }
@@ -53,7 +53,7 @@ export const CloseDialog = GObject.registerClass({
         if (this._window.get_client_type() !== Meta.WindowClientType.WAYLAND)
             return;
 
-        let {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
+        const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
         this._dialog.set_scale(1 / scaleFactor, 1 / scaleFactor);
     }
 
@@ -61,7 +61,7 @@ export const CloseDialog = GObject.registerClass({
         if (this._dialog)
             return;
 
-        let windowActor = this._window.get_compositor_private();
+        const windowActor = this._window.get_compositor_private();
         this._dialog = new Dialog.Dialog(windowActor, 'close-dialog');
         this._dialog.width = windowActor.width;
         this._dialog.height = windowActor.height;
@@ -80,7 +80,7 @@ export const CloseDialog = GObject.registerClass({
 
         global.focus_manager.add_group(this._dialog);
 
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        const themeContext = St.ThemeContext.get_for_stage(global.stage);
         themeContext.connect('notify::scale-factor', this._updateScale.bind(this));
 
         this._updateScale();
@@ -90,16 +90,16 @@ export const CloseDialog = GObject.registerClass({
         // We set the effect on the surface actor, so the dialog itself
         // (which is a child of the MetaWindowActor) does not get the
         // effect applied itself.
-        let windowActor = this._window.get_compositor_private();
-        let surfaceActor = windowActor.get_first_child();
-        let effect = new Clutter.BrightnessContrastEffect();
+        const windowActor = this._window.get_compositor_private();
+        const surfaceActor = windowActor.get_first_child();
+        const effect = new Clutter.BrightnessContrastEffect();
         effect.set_brightness(FROZEN_WINDOW_BRIGHTNESS);
         surfaceActor.add_effect_with_name('gnome-shell-frozen-window', effect);
     }
 
     _removeWindowEffect() {
-        let windowActor = this._window.get_compositor_private();
-        let surfaceActor = windowActor.get_first_child();
+        const windowActor = this._window.get_compositor_private();
+        const surfaceActor = windowActor.get_first_child();
         surfaceActor.remove_effect_by_name('gnome-shell-frozen-window');
     }
 
@@ -115,8 +115,8 @@ export const CloseDialog = GObject.registerClass({
         if (Meta.is_wayland_compositor())
             return;
 
-        let focusWindow = global.display.focus_window;
-        let keyFocus = global.stage.key_focus;
+        const focusWindow = global.display.focus_window;
+        const keyFocus = global.stage.key_focus;
 
         let shouldTrack;
         if (focusWindow != null)
@@ -194,7 +194,7 @@ export const CloseDialog = GObject.registerClass({
 
         this._dialog._dialog.remove_all_transitions();
 
-        let dialog = this._dialog;
+        const dialog = this._dialog;
         this._dialog = null;
         this._removeWindowEffect();
 

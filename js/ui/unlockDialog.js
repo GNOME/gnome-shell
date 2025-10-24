@@ -79,8 +79,8 @@ const NotificationsBox = GObject.registerClass({
     }
 
     _onDestroy() {
-        let items = this._sources.entries();
-        for (let [source, obj] of items)
+        const items = this._sources.entries();
+        for (const [source, obj] of items)
             this._removeSource(source, obj);
 
         for (const player of this._players.keys())
@@ -95,21 +95,21 @@ const NotificationsBox = GObject.registerClass({
     }
 
     _makeNotificationSource(source, box) {
-        let iconActor = new St.Icon({
+        const iconActor = new St.Icon({
             style_class: 'unlock-dialog-notification-icon',
             fallback_icon_name: 'application-x-executable',
         });
         source.bind_property('icon', iconActor, 'gicon', GObject.BindingFlags.SYNC_CREATE);
         box.add_child(iconActor);
 
-        let textBox = new St.BoxLayout({
+        const textBox = new St.BoxLayout({
             x_expand: true,
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
         });
         box.add_child(textBox);
 
-        let title = new St.Label({
+        const title = new St.Label({
             style_class: 'unlock-dialog-notification-label',
             x_expand: true,
             x_align: Clutter.ActorAlign.START,
@@ -119,8 +119,8 @@ const NotificationsBox = GObject.registerClass({
             GObject.BindingFlags.SYNC_CREATE);
         textBox.add_child(title);
 
-        let count = source.unseenCount;
-        let countLabel = new St.Label({
+        const count = source.unseenCount;
+        const countLabel = new St.Label({
             text: `${count}`,
             visible: count > 1,
             style_class: 'unlock-dialog-notification-count-text',
@@ -132,7 +132,7 @@ const NotificationsBox = GObject.registerClass({
     }
 
     _makeNotificationDetailedSource(source, box) {
-        let iconActor = new St.Icon({
+        const iconActor = new St.Icon({
             style_class: 'unlock-dialog-notification-icon',
             fallback_icon_name: 'application-x-executable',
         });
@@ -144,7 +144,7 @@ const NotificationsBox = GObject.registerClass({
         });
         box.add_child(textBox);
 
-        let title = new St.Label({
+        const title = new St.Label({
             style_class: 'unlock-dialog-notification-label',
         });
         source.bind_property_full('title',
@@ -156,7 +156,7 @@ const NotificationsBox = GObject.registerClass({
 
         let visible = false;
         for (let i = 0; i < source.notifications.length; i++) {
-            let n = source.notifications[i];
+            const n = source.notifications[i];
 
             if (n.acknowledged)
                 continue;
@@ -169,7 +169,7 @@ const NotificationsBox = GObject.registerClass({
                     : GLib.markup_escape_text(bodyText, -1);
             }
 
-            let label = new St.Label({style_class: 'unlock-dialog-notification-count-text'});
+            const label = new St.Label({style_class: 'unlock-dialog-notification-count-text'});
             label.clutter_text.set_markup(`<b>${n.title}</b> ${body}`);
             textBox.add_child(label);
 
@@ -186,7 +186,7 @@ const NotificationsBox = GObject.registerClass({
     }
 
     _updateSourceBoxStyle(source, obj, box) {
-        let hasCriticalNotification =
+        const hasCriticalNotification =
             source.notifications.some(n => n.urgency === MessageTray.Urgency.CRITICAL);
 
         if (hasCriticalNotification !== obj.hasCriticalNotification) {
@@ -233,7 +233,7 @@ const NotificationsBox = GObject.registerClass({
     }
 
     _sourceAdded(tray, source, initial) {
-        let obj = {
+        const obj = {
             visible: source.policy.showInLockScreen,
             detailed: this._shouldShowDetails(source),
             sourceBox: null,
@@ -267,12 +267,12 @@ const NotificationsBox = GObject.registerClass({
 
         if (!initial) {
             // block scrollbars while animating, if they're not needed now
-            let boxHeight = this._notificationBox.height;
+            const boxHeight = this._notificationBox.height;
             if (this._scrollView.height >= boxHeight)
                 this._scrollView.vscrollbar_policy = St.PolicyType.NEVER;
 
-            let widget = obj.sourceBox;
-            let [, natHeight] = widget.get_preferred_height(-1);
+            const widget = obj.sourceBox;
+            const [, natHeight] = widget.get_preferred_height(-1);
             widget.height = 0;
             widget.ease({
                 height: natHeight,
@@ -296,8 +296,8 @@ const NotificationsBox = GObject.registerClass({
     _countChanged(source, obj) {
         // A change in the number of notifications may change whether we show
         // details.
-        let newDetailed = this._shouldShowDetails(source);
-        let oldDetailed = obj.detailed;
+        const newDetailed = this._shouldShowDetails(source);
+        const oldDetailed = obj.detailed;
 
         obj.detailed = newDetailed;
 
@@ -309,7 +309,7 @@ const NotificationsBox = GObject.registerClass({
             obj.titleLabel = obj.countLabel = null;
             this._showSource(source, obj, obj.sourceBox);
         } else {
-            let count = source.unseenCount;
+            const count = source.unseenCount;
             obj.countLabel.text = `${count}`;
             obj.countLabel.visible = count > 1;
         }
@@ -332,7 +332,7 @@ const NotificationsBox = GObject.registerClass({
     }
 
     _detailedChanged(source, obj) {
-        let newDetailed = this._shouldShowDetails(source);
+        const newDetailed = this._shouldShowDetails(source);
         if (obj.detailed === newDetailed)
             return;
 
@@ -408,10 +408,10 @@ class UnlockDialogClock extends St.BoxLayout {
     _updateClock() {
         this._time.text = this._wallClock.clock.trim();
 
-        let date = new Date();
+        const date = new Date();
         /* Translators: This is a time format for a date in
            long format */
-        let dateFormat = Shell.util_translate_time_string(N_('%A %B %-d'));
+        const dateFormat = Shell.util_translate_time_string(N_('%A %B %-d'));
         this._date.text = formatDateWithCFormatString(date, dateFormat);
     }
 
@@ -447,24 +447,24 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
     }
 
     vfunc_allocate(container, box) {
-        let [width, height] = box.get_size();
+        const [width, height] = box.get_size();
 
-        let tenthOfHeight = height / 10.0;
-        let thirdOfHeight = height / 3.0;
+        const tenthOfHeight = height / 10.0;
+        const thirdOfHeight = height / 3.0;
 
-        let [, , stackWidth, stackHeight] =
+        const [, , stackWidth, stackHeight] =
             this._stack.get_preferred_size();
 
-        let [, , notificationsWidth, notificationsHeight] =
+        const [, , notificationsWidth, notificationsHeight] =
             this._notifications.get_preferred_size();
 
-        let columnWidth = Math.max(stackWidth, notificationsWidth);
+        const columnWidth = Math.max(stackWidth, notificationsWidth);
 
-        let columnX1 = Math.floor((width - columnWidth) / 2.0);
-        let actorBox = new Clutter.ActorBox();
+        const columnX1 = Math.floor((width - columnWidth) / 2.0);
+        const actorBox = new Clutter.ActorBox();
 
         // Notifications
-        let maxNotificationsHeight = Math.min(
+        const maxNotificationsHeight = Math.min(
             notificationsHeight,
             height - tenthOfHeight - stackHeight);
 
@@ -476,7 +476,7 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         this._notifications.allocate(actorBox);
 
         // Authentication Box
-        let stackY = Math.min(
+        const stackY = Math.min(
             thirdOfHeight,
             height - stackHeight - maxNotificationsHeight);
 
@@ -489,7 +489,7 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
 
         // Switch User button
         if (this._switchUserButton.visible) {
-            let [, , natWidth, natHeight] =
+            const [, , natWidth, natHeight] =
                 this._switchUserButton.get_preferred_size();
 
             const textDirection = this._switchUserButton.get_text_direction();
@@ -557,7 +557,7 @@ export const UnlockDialog = GObject.registerClass({
             if (this._swipeTracker.canHandleScrollEvent(event))
                 return Clutter.EVENT_PROPAGATE;
 
-            let direction = event.get_scroll_direction();
+            const direction = event.get_scroll_direction();
             if (direction === Clutter.ScrollDirection.UP)
                 this._showClock();
             else if (direction === Clutter.ScrollDirection.DOWN)
@@ -643,7 +643,7 @@ export const UnlockDialog = GObject.registerClass({
         this._updateUserSwitchVisibility();
 
         // Main Box
-        let mainBox = new St.Widget();
+        const mainBox = new St.Widget();
         mainBox.add_constraint(new Layout.MonitorConstraint({primary: true}));
         mainBox.add_child(this._stack);
         mainBox.add_child(this._notificationsBox);
@@ -672,7 +672,7 @@ export const UnlockDialog = GObject.registerClass({
             keyval === Clutter.KEY_Caps_Lock)
             return Clutter.EVENT_PROPAGATE;
 
-        let unichar = event.get_key_unicode();
+        const unichar = event.get_key_unicode();
 
         this._showPrompt();
 
@@ -690,8 +690,8 @@ export const UnlockDialog = GObject.registerClass({
     }
 
     _createBackground(monitorIndex) {
-        let monitor = Main.layoutManager.monitors[monitorIndex];
-        let widget = new St.Widget({
+        const monitor = Main.layoutManager.monitors[monitorIndex];
+        const widget = new St.Widget({
             style_class: 'screen-shield-background',
             x: monitor.x,
             y: monitor.y,
@@ -700,7 +700,7 @@ export const UnlockDialog = GObject.registerClass({
             effect: new Shell.BlurEffect({name: 'blur'}),
         });
 
-        let bgManager = new Background.BackgroundManager({
+        const bgManager = new Background.BackgroundManager({
             container: widget,
             monitorIndex,
             controlPosition: false,
@@ -760,7 +760,7 @@ export const UnlockDialog = GObject.registerClass({
     }
 
     _maybeDestroyAuthPrompt() {
-        let focus = global.stage.key_focus;
+        const focus = global.stage.key_focus;
         if (focus === null ||
             (this._authPrompt && this._authPrompt.contains(focus)) ||
             (this._otherUserButton && focus === this._otherUserButton))
@@ -861,7 +861,7 @@ export const UnlockDialog = GObject.registerClass({
 
         this._ensureAuthPrompt();
 
-        let progress = this._adjustment.value;
+        const progress = this._adjustment.value;
         tracker.confirmSwipe(this._stack.height,
             [0, 1],
             progress,

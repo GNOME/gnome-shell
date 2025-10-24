@@ -36,7 +36,7 @@ export class EntryMenu extends PopupMenu.PopupMenu {
     }
 
     _makePasswordItem() {
-        let item = new PopupMenu.PopupMenuItem('');
+        const item = new PopupMenu.PopupMenuItem('');
         item.connect('activate', this._onPasswordActivated.bind(this));
         this.addMenuItem(item);
         this._passwordItem = item;
@@ -55,13 +55,13 @@ export class EntryMenu extends PopupMenu.PopupMenu {
         super.open(animate);
         this._entry.add_style_pseudo_class('focus');
 
-        let direction = St.DirectionType.TAB_FORWARD;
+        const direction = St.DirectionType.TAB_FORWARD;
         if (!this.actor.navigate_focus(null, direction, false))
             this.actor.grab_key_focus();
     }
 
     _updateCopyItem() {
-        let selection = this._entry.clutter_text.get_selection();
+        const selection = this._entry.clutter_text.get_selection();
         this._copyItem.setSensitive(!this._entry.clutter_text.password_char &&
                                     selection && selection !== '');
     }
@@ -81,7 +81,7 @@ export class EntryMenu extends PopupMenu.PopupMenu {
     }
 
     _onCopyActivated() {
-        let selection = this._entry.clutter_text.get_selection();
+        const selection = this._entry.clutter_text.get_selection();
         this._clipboard.set_text(St.ClipboardType.CLIPBOARD, selection);
     }
 
@@ -91,7 +91,7 @@ export class EntryMenu extends PopupMenu.PopupMenu {
                 if (!text)
                     return;
                 this._entry.clutter_text.delete_selection();
-                let pos = this._entry.clutter_text.get_cursor_position();
+                const pos = this._entry.clutter_text.get_cursor_position();
                 this._entry.clutter_text.insert_text(text, pos);
             });
     }
@@ -102,7 +102,7 @@ export class EntryMenu extends PopupMenu.PopupMenu {
 }
 
 function _setMenuAlignment(entry, stageX) {
-    let [success, entryX] = entry.transform_stage_point(stageX, 0);
+    const [success, entryX] = entry.transform_stage_point(stageX, 0);
     if (success)
         entry.menu.setSourceAlignment(entryX / entry.width);
 }
@@ -112,7 +112,7 @@ function _onButtonPressEvent(actor, event, entry) {
         entry.menu.close(BoxPointer.PopupAnimation.FULL);
         return Clutter.EVENT_STOP;
     } else if (event.get_button() === 3) {
-        let [stageX] = event.get_coords();
+        const [stageX] = event.get_coords();
         _setMenuAlignment(entry, stageX);
         entry.menu.open(BoxPointer.PopupAnimation.FULL);
         return Clutter.EVENT_STOP;
@@ -121,8 +121,8 @@ function _onButtonPressEvent(actor, event, entry) {
 }
 
 function _onPopup(actor, entry) {
-    let cursorPosition = entry.clutter_text.get_cursor_position();
-    let [success, textX, textY_, lineHeight_] = entry.clutter_text.position_to_coords(cursorPosition);
+    const cursorPosition = entry.clutter_text.get_cursor_position();
+    const [success, textX, textY_, lineHeight_] = entry.clutter_text.position_to_coords(cursorPosition);
     if (success)
         entry.menu.setSourceAlignment(textX / entry.width);
     entry.menu.open(BoxPointer.PopupAnimation.FULL);
@@ -193,13 +193,13 @@ class CapsLockWarning extends St.Label {
     }
 
     _sync(animate) {
-        let capsLockOn = this._keymap.get_caps_lock_state();
+        const capsLockOn = this._keymap.get_caps_lock_state();
 
         this.remove_all_transitions();
 
         const {naturalHeightSet} = this;
         this.natural_height_set = false;
-        let [, height] = this.get_preferred_height(-1);
+        const [, height] = this.get_preferred_height(-1);
         this.natural_height_set = naturalHeightSet;
 
         this.ease({

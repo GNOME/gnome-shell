@@ -164,11 +164,11 @@ you to inherit from a type to use it, you can do so:
         }
 
         vfunc_paint(paintContext) {
-            let framebuffer = paintContext.get_framebuffer();
-            let coglContext = framebuffer.get_context();
-            let alloc = this.get_allocation_box();
+            const framebuffer = paintContext.get_framebuffer();
+            const coglContext = framebuffer.get_context();
+            const alloc = this.get_allocation_box();
 
-            let pipeline = Cogl.Pipeline.new(coglContext);
+            const pipeline = Cogl.Pipeline.new(coglContext);
             pipeline.set_color4ub(255, 0, 0, 255);
 
             framebuffer.draw_rectangle(pipeline,
@@ -247,8 +247,8 @@ variable that can be captured in closures.
 All closures should be wrapped with Function.prototype.bind or use arrow
 notation.
 ```javascript
-    let closure1 = () => this._fnorbate();
-    let closure2 = this._fnorbate.bind(this);
+    const closure1 = () => this._fnorbate();
+    const closure2 = this._fnorbate.bind(this);
 ```
 
 A more realistic example would be connecting to a signal on a method of a
@@ -258,7 +258,7 @@ prototype:
 
     export class MyClass {
         constructor() {
-            let fnorb = new FnorbLib.Fnorb();
+            const fnorb = new FnorbLib.Fnorb();
             fnorb.connect('frobate', this._onFnorbFrobate.bind(this));
         }
 
@@ -329,7 +329,7 @@ actor (or actor meta) properties that cannot use implicit animations:
 
 ```javascript
     desaturateActor(actor, desaturate) {
-        let factor = desaturate ? 1.0 : 0.0;
+        const factor = desaturate ? 1.0 : 0.0;
         actor.ease_property('@effects.desaturate.factor', factor, {
             duration: 500, // ms
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,

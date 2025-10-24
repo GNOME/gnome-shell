@@ -35,7 +35,7 @@ class OsdMonitorLabel extends St.Widget {
     }
 
     _position() {
-        let workArea = Main.layoutManager.getWorkAreaForMonitor(this._monitor);
+        const workArea = Main.layoutManager.getWorkAreaForMonitor(this._monitor);
 
         if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
             this._box.x = workArea.x + (workArea.width - this._box.width);
@@ -59,12 +59,12 @@ export class OsdMonitorLabeler {
     }
 
     _reset() {
-        for (let i in this._osdLabels)
+        for (const i in this._osdLabels)
             this._osdLabels[i].destroy();
         this._osdLabels = [];
         this._monitorLabels = new Map();
-        let monitors = Main.layoutManager.monitors;
-        for (let i in monitors)
+        const monitors = Main.layoutManager.monitors;
+        for (const i in monitors)
             this._monitorLabels.set(monitors[i].index, []);
     }
 
@@ -97,14 +97,14 @@ export class OsdMonitorLabeler {
 
         this._reset();
 
-        for (let connector in params) {
-            let monitor = this._monitorManager.get_monitor_for_connector(connector);
+        for (const connector in params) {
+            const monitor = this._monitorManager.get_monitor_for_connector(connector);
             if (monitor === -1)
                 continue;
             this._monitorLabels.get(monitor).push(params[connector].deepUnpack());
         }
 
-        for (let [monitor, labels] of this._monitorLabels.entries()) {
+        for (const [monitor, labels] of this._monitorLabels.entries()) {
             labels.sort();
             this._osdLabels.push(new OsdMonitorLabel(monitor, labels.join(' ')));
         }

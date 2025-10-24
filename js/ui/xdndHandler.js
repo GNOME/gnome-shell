@@ -46,8 +46,8 @@ export class XdndHandler extends Signals.EventEmitter {
             if (this._cursorWindowClone)
                 return;
 
-            let windows = global.get_window_actors();
-            let cursorWindow = windows[windows.length - 1];
+            const windows = global.get_window_actors();
+            const cursorWindow = windows[windows.length - 1];
 
             // FIXME: more reliable way?
             if (!cursorWindow.get_meta_window().is_override_redirect())
@@ -79,7 +79,7 @@ export class XdndHandler extends Signals.EventEmitter {
         if (this._cursorWindowClone)
             Main.uiGroup.set_child_above_sibling(this._cursorWindowClone, null);
 
-        let dragEvent = {
+        const dragEvent = {
             x,
             y,
             dragActor: this._cursorWindowClone ?? this._dummy,
@@ -88,9 +88,9 @@ export class XdndHandler extends Signals.EventEmitter {
         };
 
         for (let i = 0; i < DND.dragMonitors.length; i++) {
-            let motionFunc = DND.dragMonitors[i].dragMotion;
+            const motionFunc = DND.dragMonitors[i].dragMotion;
             if (motionFunc) {
-                let result = motionFunc(dragEvent);
+                const result = motionFunc(dragEvent);
                 if (result !== DND.DragMotionResult.CONTINUE)
                     return;
             }
@@ -98,8 +98,8 @@ export class XdndHandler extends Signals.EventEmitter {
 
         while (pickedActor) {
             if (pickedActor._delegate && pickedActor._delegate.handleDragOver) {
-                let [r_, targX, targY] = pickedActor.transform_stage_point(x, y);
-                let result = pickedActor._delegate.handleDragOver(this,
+                const [r_, targX, targY] = pickedActor.transform_stage_point(x, y);
+                const result = pickedActor._delegate.handleDragOver(this,
                     dragEvent.dragActor,
                     targX,
                     targY,

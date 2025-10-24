@@ -167,7 +167,7 @@ class IBusManager extends Signals.EventEmitter {
             const enginesList =
                 await this._ibus.list_engines_async(-1, this._cancellable);
             for (let i = 0; i < enginesList.length; ++i) {
-                let name = enginesList[i].get_name();
+                const name = enginesList[i].get_name();
                 this._engines.set(name, enginesList[i]);
             }
             this._updateReadiness();
@@ -199,7 +199,7 @@ class IBusManager extends Signals.EventEmitter {
         this._candidatePopup.setPanelService(this._panelService);
         this._panelService.connect('update-property', this._updateProperty.bind(this));
         this._panelService.connect('set-cursor-location', (ps, x, y, w, h) => {
-            let cursorLocation = {x, y, width: w, height: h};
+            const cursorLocation = {x, y, width: w, height: h};
             this.emit('set-cursor-location', cursorLocation);
         });
         this._panelService.connect('focus-in', (panel, path) => {

@@ -33,7 +33,7 @@ const PadChooser = GObject.registerClass({
         this.currentDevice = device;
         this._padChooserMenu = null;
 
-        let arrow = new St.Icon({
+        const arrow = new St.Icon({
             style_class: 'popup-menu-arrow',
             icon_name: 'pan-down-symbolic',
             accessible_role: Atk.Role.ARROW,
@@ -69,7 +69,7 @@ const PadChooser = GObject.registerClass({
         this._menuManager.addMenu(this._padChooserMenu);
 
         for (let i = 0; i < devices.length; i++) {
-            let device = devices[i];
+            const device = devices[i];
             if (device === this.currentDevice)
                 continue;
 
@@ -122,7 +122,7 @@ const ActionComboBox = GObject.registerClass({
             orientation: Clutter.Orientation.HORIZONTAL,
             spacing: 6,
         });
-        let box = new St.Widget({layout_manager: boxLayout});
+        const box = new St.Widget({layout_manager: boxLayout});
         this.set_child(box);
 
         this._label = new St.Label({style_class: 'combo-box-label'});
@@ -155,9 +155,9 @@ const ActionComboBox = GObject.registerClass({
 
         this._buttonItems = [];
 
-        for (let [action, label] of this._actionLabels.entries()) {
-            let selectedAction = action;
-            let item = this._editMenu.addAction(label, () => {
+        for (const [action, label] of this._actionLabels.entries()) {
+            const selectedAction = action;
+            const item = this._editMenu.addAction(label, () => {
                 this._onActionSelected(selectedAction);
             });
 
@@ -246,7 +246,7 @@ const ActionEditor = GObject.registerClass({
         this._actionComboBox.setAction(this._currentAction);
         this._updateKeybindingEntryState();
 
-        let isButton = action === null;
+        const isButton = action === null;
         this._actionComboBox.setButtonActionsActive(isButton);
     }
 
@@ -305,8 +305,8 @@ const PadDiagram = GObject.registerClass({
     },
 }, class PadDiagram extends St.DrawingArea {
     _init(params) {
-        let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/pad-osd.css');
-        let [success_, css] = file.load_contents(null);
+        const file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/pad-osd.css');
+        const [success_, css] = file.load_contents(null);
         this._curEdited = null;
         this._css = new TextDecoder().decode(css);
         this._labels = [];
@@ -319,8 +319,8 @@ const PadDiagram = GObject.registerClass({
     }
 
     set image(imagePath) {
-        let originalHandle = Rsvg.Handle.new_from_file(imagePath);
-        let dimensions = originalHandle.get_dimensions();
+        const originalHandle = Rsvg.Handle.new_from_file(imagePath);
+        const dimensions = originalHandle.get_dimensions();
         this._imageWidth = dimensions.width;
         this._imageHeight = dimensions.height;
 
@@ -384,7 +384,7 @@ const PadDiagram = GObject.registerClass({
         let css = this._css;
 
         for (let i = 0; i < this._activeButtons.length; i++) {
-            let ch = String.fromCharCode('A'.charCodeAt() + this._activeButtons[i]);
+            const ch = String.fromCharCode('A'.charCodeAt() + this._activeButtons[i]);
             css += `.${ch}.Leader { stroke: ${ACTIVE_COLOR} !important; }`;
             css += `.${ch}.Button { stroke: ${ACTIVE_COLOR} !important; fill: ${ACTIVE_COLOR} !important; }`;
         }
@@ -402,7 +402,7 @@ const PadDiagram = GObject.registerClass({
         svgData += this._cssString();
         svgData += this._wrappingSvgFooter();
 
-        let istream = new Gio.MemoryInputStream();
+        const istream = new Gio.MemoryInputStream();
         istream.add_bytes(new GLib.Bytes(svgData));
 
         return Rsvg.Handle.new_from_stream_sync(istream,
@@ -411,19 +411,19 @@ const PadDiagram = GObject.registerClass({
 
     _updateDiagramScale() {
         [this._actorWidth, this._actorHeight] = this.get_size();
-        let dimensions = this._handle.get_dimensions();
-        let scaleX = this._actorWidth / dimensions.width;
-        let scaleY = this._actorHeight / dimensions.height;
+        const dimensions = this._handle.get_dimensions();
+        const scaleX = this._actorWidth / dimensions.width;
+        const scaleY = this._actorHeight / dimensions.height;
         this._scale = Math.min(scaleX, scaleY);
     }
 
     _allocateChild(child, x, y, direction) {
-        let [, natHeight] = child.get_preferred_height(-1);
-        let [, natWidth] = child.get_preferred_width(natHeight);
-        let childBox = new Clutter.ActorBox();
+        const [, natHeight] = child.get_preferred_height(-1);
+        const [, natWidth] = child.get_preferred_width(natHeight);
+        const childBox = new Clutter.ActorBox();
 
         // I miss Cairo.Matrix
-        let dimensions = this._handle.get_dimensions();
+        const dimensions = this._handle.get_dimensions();
         x = x * this._scale + this._actorWidth / 2 - dimensions.width / 2 * this._scale;
         y = y * this._scale + this._actorHeight / 2 - dimensions.height / 2 * this._scale;
 
@@ -465,9 +465,9 @@ const PadDiagram = GObject.registerClass({
         if (this._scale == null)
             this._updateDiagramScale();
 
-        let [width, height] = this.get_surface_size();
-        let dimensions = this._handle.get_dimensions();
-        let cr = this.get_context();
+        const [width, height] = this.get_surface_size();
+        const dimensions = this._handle.get_dimensions();
+        const cr = this.get_context();
 
         cr.save();
         cr.translate(width / 2, height / 2);
@@ -500,7 +500,7 @@ const PadDiagram = GObject.registerClass({
         else
             direction = RTL;
 
-        let pos = {x: labelPos.x, y: labelPos.y + labelSize.height};
+        const pos = {x: labelPos.x, y: labelPos.y + labelSize.height};
         if (this.leftHanded) {
             direction = 1 - direction;
             pos.x = this._imageWidth - pos.x;
@@ -511,31 +511,31 @@ const PadDiagram = GObject.registerClass({
     }
 
     _getButtonLabels(button) {
-        let ch = String.fromCharCode('A'.charCodeAt() + button);
+        const ch = String.fromCharCode('A'.charCodeAt() + button);
         const labelName = `Label${ch}`;
         const leaderName = `Leader${ch}`;
         return [labelName, leaderName];
     }
 
     _getRingLabels(number, dir) {
-        let numStr = number > 0 ? (number + 1).toString() : '';
-        let dirStr = dir === Meta.PadDirection.CW ? 'CW' : 'CCW';
+        const numStr = number > 0 ? (number + 1).toString() : '';
+        const dirStr = dir === Meta.PadDirection.CW ? 'CW' : 'CCW';
         const labelName = `LabelRing${numStr}${dirStr}`;
         const leaderName = `LeaderRing${numStr}${dirStr}`;
         return [labelName, leaderName];
     }
 
     _getStripLabels(number, dir) {
-        let numStr = number > 0 ? (number + 1).toString() : '';
-        let dirStr = dir === Meta.PadDirection.UP ? 'Up' : 'Down';
+        const numStr = number > 0 ? (number + 1).toString() : '';
+        const dirStr = dir === Meta.PadDirection.UP ? 'Up' : 'Down';
         const labelName = `LabelStrip${numStr}${dirStr}`;
         const leaderName = `LeaderStrip${numStr}${dirStr}`;
         return [labelName, leaderName];
     }
 
     _getDialLabels(number, dir) {
-        let numStr = number > 0 ? (number + 1).toString() : '';
-        let dirStr = dir === Meta.PadDirection.CW ? 'CW' : 'CCW';
+        const numStr = number > 0 ? (number + 1).toString() : '';
+        const dirStr = dir === Meta.PadDirection.CW ? 'CW' : 'CCW';
         const labelName = `LabelDial${numStr}${dirStr}`;
         const leaderName = `LeaderDial${numStr}${dirStr}`;
         return [labelName, leaderName];
@@ -573,11 +573,11 @@ const PadDiagram = GObject.registerClass({
     }
 
     _addLabel(action, idx, dir) {
-        let [found, x, y, arrangement] = this._getLabelCoords(action, idx, dir);
+        const [found, x, y, arrangement] = this._getLabelCoords(action, idx, dir);
         if (!found)
             return false;
 
-        let label = new St.Label();
+        const label = new St.Label();
         this._labels.push({label, action, idx, dir, x, y, arrangement});
         this.add_child(label);
         return true;
@@ -586,7 +586,7 @@ const PadDiagram = GObject.registerClass({
     updateLabels(getText) {
         for (let i = 0; i < this._labels.length; i++) {
             const {label, action, idx, dir} = this._labels[i];
-            let str = getText(action, idx, dir);
+            const str = getText(action, idx, dir);
             label.set_text(str);
         }
 
@@ -689,7 +689,7 @@ export const PadOsd = GObject.registerClass({
         Main.uiGroup.add_child(this);
 
         this._monitorIndex = monitorIndex;
-        let constraint = new Layout.MonitorConstraint({index: monitorIndex});
+        const constraint = new Layout.MonitorConstraint({index: monitorIndex});
         this.add_constraint(constraint);
 
         this._titleBox = new St.BoxLayout({
@@ -775,7 +775,7 @@ export const PadOsd = GObject.registerClass({
         if (pad === this.padDevice || !this._groupPads.includes(pad))
             return;
 
-        let editionMode = this._editionMode;
+        const editionMode = this._editionMode;
         this.destroy();
         global.display.request_pad_osd(pad, editionMode);
     }
@@ -796,7 +796,7 @@ export const PadOsd = GObject.registerClass({
     }
 
     vfunc_captured_event(event) {
-        let isModeSwitch =
+        const isModeSwitch =
             (event.type() === Clutter.EventType.PAD_BUTTON_PRESS ||
              event.type() === Clutter.EventType.PAD_BUTTON_RELEASE) &&
             this.padDevice.get_mode_switch_button_group(event.get_button()) >= 0;
@@ -828,19 +828,19 @@ export const PadOsd = GObject.registerClass({
         } else if (event.get_source_device() === this.padDevice &&
                    event.type() === Clutter.EventType.PAD_STRIP) {
             if (this._editionMode) {
-                let [retval_, number, mode] = event.get_pad_details();
+                const [retval_, number, mode] = event.get_pad_details();
                 this._startStripActionEdition(number, Meta.PadDirection.UP, mode);
             }
         } else if (event.get_source_device() === this.padDevice &&
                    event.type() === Clutter.EventType.PAD_RING) {
             if (this._editionMode) {
-                let [retval_, number, mode] = event.get_pad_details();
+                const [retval_, number, mode] = event.get_pad_details();
                 this._startRingActionEdition(number, Meta.PadDirection.CCW, mode);
             }
         } else if (event.get_source_device() === this.padDevice &&
                    event.type() === Clutter.EventType.PAD_DIAL) {
             if (this._editionMode) {
-                let [retval_, number, mode] = event.get_pad_details();
+                const [retval_, number, mode] = event.get_pad_details();
                 this._startDialActionEdition(number, Meta.PadDirection.CCW, mode);
             }
         }
@@ -929,25 +929,25 @@ export const PadOsd = GObject.registerClass({
     }
 
     _startButtonActionEdition(button) {
-        let ch = String.fromCharCode('A'.charCodeAt() + button);
-        let key = `button${ch}`;
+        const ch = String.fromCharCode('A'.charCodeAt() + button);
+        const key = `button${ch}`;
         this._startActionEdition(key, null, button);
     }
 
     _startRingActionEdition(ring, dir, mode) {
-        let ch = String.fromCharCode('A'.charCodeAt() + ring);
+        const ch = String.fromCharCode('A'.charCodeAt() + ring);
         const key = `ring${ch}-${dir === Meta.PadDirection.CCW ? 'ccw' : 'cw'}-mode-${mode}`;
         this._startActionEdition(key, Meta.PadFeatureType.RING, ring, dir, mode);
     }
 
     _startStripActionEdition(strip, dir, mode) {
-        let ch = String.fromCharCode('A'.charCodeAt() + strip);
+        const ch = String.fromCharCode('A'.charCodeAt() + strip);
         const key = `strip${ch}-${dir === Meta.PadDirection.UP ? 'up' : 'down'}-mode-${mode}`;
         this._startActionEdition(key, Meta.PadFeatureType.STRIP, strip, dir, mode);
     }
 
     _startDialActionEdition(dial, dir, mode) {
-        let ch = String.fromCharCode('A'.charCodeAt() + dial);
+        const ch = String.fromCharCode('A'.charCodeAt() + dial);
         const key = `dial${ch}-${dir === Meta.PadDirection.CCW ? 'ccw' : 'cw'}-mode-${mode}`;
         this._startActionEdition(key, Meta.PadFeatureType.DIAL, dial, dir, mode);
     }
@@ -981,9 +981,9 @@ export class PadOsdService extends Signals.EventEmitter {
     }
 
     ShowAsync(params, invocation) {
-        let [deviceNode, editionMode] = params;
+        const [deviceNode, editionMode] = params;
         const seat = global.stage.context.get_backend().get_default_seat();
-        let devices = seat.list_devices();
+        const devices = seat.list_devices();
         let padDevice = null;
 
         devices.forEach(device => {

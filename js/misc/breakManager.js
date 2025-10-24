@@ -409,7 +409,7 @@ export const BreakManager = GObject.registerClass({
     getNextBreakDue(fromTime) {
         let maxDuration = 0;
         let maxDurationType = null;
-        let dueBreakTypes = [];
+        const dueBreakTypes = [];
         let nextDueTime = 0;
 
         console.debug(`BreakManager: Current time: ${fromTime}s`);
@@ -1464,7 +1464,7 @@ class OsdBreakCountdownLabel extends St.Widget {
     }
 
     _position() {
-        let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
+        const workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
 
         if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
             this._box.x = workArea.x + (workArea.width - this._box.width);

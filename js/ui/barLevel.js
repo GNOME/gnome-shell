@@ -115,13 +115,13 @@ export const BarLevel = GObject.registerClass({
     }
 
     vfunc_repaint() {
-        let cr = this.get_context();
-        let themeNode = this.get_theme_node();
-        let [width, height] = this.get_surface_size();
+        const cr = this.get_context();
+        const themeNode = this.get_theme_node();
+        const [width, height] = this.get_surface_size();
         const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
 
         const barLevelBorderRadius = Math.min(width, this._barLevelHeight) / 2;
-        let fgColor = themeNode.get_foreground_color();
+        const fgColor = themeNode.get_foreground_color();
 
         const TAU = Math.PI * 2;
 
@@ -136,9 +136,9 @@ export const BarLevel = GObject.registerClass({
         let overdriveRatio = this._overdriveStart / this._maxValue;
         if (rtl)
             overdriveRatio = 1 - overdriveRatio;
-        let overdriveSeparatorX = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * overdriveRatio;
+        const overdriveSeparatorX = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * overdriveRatio;
 
-        let overdriveActive = this._overdriveStart !== this._maxValue;
+        const overdriveActive = this._overdriveStart !== this._maxValue;
         const overdriveSeparatorWidth = overdriveActive
             ? this._overdriveSeparatorWidth : 0;
 

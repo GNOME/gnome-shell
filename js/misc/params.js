@@ -17,7 +17,7 @@
  */
 export function parse(params = {}, defaults, allowExtras) {
     if (!allowExtras) {
-        for (let prop in params) {
+        for (const prop in params) {
             if (!(prop in defaults))
                 throw new Error(`Unrecognized parameter "${prop}"`);
         }

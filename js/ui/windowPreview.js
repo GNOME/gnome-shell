@@ -260,8 +260,8 @@ export const WindowPreview = GObject.registerClass({
         if (this.metaWindow.title)
             return this.metaWindow.title;
 
-        let tracker = Shell.WindowTracker.get_default();
-        let app = tracker.get_window_app(this.metaWindow);
+        const tracker = Shell.WindowTracker.get_default();
+        const app = tracker.get_window_app(this.metaWindow);
         return app.get_name();
     }
 
@@ -460,8 +460,8 @@ export const WindowPreview = GObject.registerClass({
     }
 
     _updateAttachedDialogs() {
-        let iter = win => {
-            let actor = win.get_compositor_private();
+        const iter = win => {
+            const actor = win.get_compositor_private();
 
             if (!actor)
                 return false;
@@ -524,8 +524,8 @@ export const WindowPreview = GObject.registerClass({
             // We'll fix up the stack after the drag
             return;
 
-        let parent = this.get_parent();
-        let actualAbove = this._getActualStackAbove();
+        const parent = this.get_parent();
+        const actualAbove = this._getActualStackAbove();
         if (actualAbove == null)
             parent.set_child_below_sibling(this, null);
         else
@@ -607,8 +607,8 @@ export const WindowPreview = GObject.registerClass({
     }
 
     vfunc_key_press_event(event) {
-        let symbol = event.get_key_symbol();
-        let isEnter = symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter;
+        const symbol = event.get_key_symbol();
+        const isEnter = symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter;
         if (isEnter) {
             this._activate();
             return true;

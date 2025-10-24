@@ -126,7 +126,7 @@ export class GnomeShell {
             return;
         }
 
-        for (let param in params)
+        for (const param in params)
             params[param] = params[param].deepUnpack();
 
         const {
@@ -209,9 +209,9 @@ export class GnomeShell {
             return;
         }
 
-        let [accel, modeFlags, grabFlags] = params;
-        let sender = invocation.get_sender();
-        let bindingAction = this._grabAcceleratorForSender(accel, modeFlags, grabFlags, sender);
+        const [accel, modeFlags, grabFlags] = params;
+        const sender = invocation.get_sender();
+        const bindingAction = this._grabAcceleratorForSender(accel, modeFlags, grabFlags, sender);
         invocation.return_value(GLib.Variant.new('(u)', [bindingAction]));
     }
 
@@ -223,11 +223,11 @@ export class GnomeShell {
             return;
         }
 
-        let [accels] = params;
-        let sender = invocation.get_sender();
-        let bindingActions = [];
+        const [accels] = params;
+        const sender = invocation.get_sender();
+        const bindingActions = [];
         for (let i = 0; i < accels.length; i++) {
-            let [accel, modeFlags, grabFlags] = accels[i];
+            const [accel, modeFlags, grabFlags] = accels[i];
             bindingActions.push(this._grabAcceleratorForSender(accel, modeFlags, grabFlags, sender));
         }
         invocation.return_value(GLib.Variant.new('(au)', [bindingActions]));
@@ -241,9 +241,9 @@ export class GnomeShell {
             return;
         }
 
-        let [action] = params;
-        let sender = invocation.get_sender();
-        let ungrabSucceeded = this._ungrabAcceleratorForSender(action, sender);
+        const [action] = params;
+        const sender = invocation.get_sender();
+        const ungrabSucceeded = this._ungrabAcceleratorForSender(action, sender);
 
         invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
     }
@@ -256,8 +256,8 @@ export class GnomeShell {
             return;
         }
 
-        let [actions] = params;
-        let sender = invocation.get_sender();
+        const [actions] = params;
+        const sender = invocation.get_sender();
         let ungrabSucceeded = true;
 
         for (let i = 0; i < actions.length; i++)
@@ -280,18 +280,18 @@ export class GnomeShell {
     }
 
     _emitAcceleratorSignal(signal, action, device, timestamp) {
-        let destination = this._grabbedAccelerators.get(action);
+        const destination = this._grabbedAccelerators.get(action);
         if (!destination)
             return;
 
-        let connection = this._dbusImpl.get_connection();
-        let info = this._dbusImpl.get_info();
-        let params = {
+        const connection = this._dbusImpl.get_connection();
+        const info = this._dbusImpl.get_info();
+        const params = {
             'timestamp': GLib.Variant.new('u', timestamp),
             'action-mode': GLib.Variant.new('u', Main.actionMode),
         };
 
-        let deviceNode = device.get_device_node();
+        const deviceNode = device.get_device_node();
         if (deviceNode)
             params['device-node'] = GLib.Variant.new('s', deviceNode);
 
@@ -314,17 +314,17 @@ export class GnomeShell {
     }
 
     _grabAcceleratorForSender(accelerator, modeFlags, grabFlags, sender) {
-        let bindingAction = global.display.grab_accelerator(accelerator, grabFlags);
+        const bindingAction = global.display.grab_accelerator(accelerator, grabFlags);
         if (bindingAction === Meta.KeyBindingAction.NONE)
             return Meta.KeyBindingAction.NONE;
 
-        let bindingName = Meta.external_binding_name_for_action(bindingAction);
+        const bindingName = Meta.external_binding_name_for_action(bindingAction);
         Main.wm.allowKeybinding(bindingName, modeFlags);
 
         this._grabbedAccelerators.set(bindingAction, sender);
 
         if (!this._grabbers.has(sender)) {
-            let id = Gio.bus_watch_name(Gio.BusType.SESSION,
+            const id = Gio.bus_watch_name(Gio.BusType.SESSION,
                 sender, 0, null, this._onGrabberBusNameVanished.bind(this));
             this._grabbers.set(sender, id);
         }
@@ -333,7 +333,7 @@ export class GnomeShell {
     }
 
     _ungrabAccelerator(action) {
-        let ungrabSucceeded = global.display.ungrab_accelerator(action);
+        const ungrabSucceeded = global.display.ungrab_accelerator(action);
         if (ungrabSucceeded)
             this._grabbedAccelerators.delete(action);
 
@@ -341,7 +341,7 @@ export class GnomeShell {
     }
 
     _ungrabAcceleratorForSender(action, sender) {
-        let grabbedBy = this._grabbedAccelerators.get(action);
+        const grabbedBy = this._grabbedAccelerators.get(action);
         if (sender !== grabbedBy)
             return false;
 
@@ -349,8 +349,8 @@ export class GnomeShell {
     }
 
     _onGrabberBusNameVanished(connection, name) {
-        let grabs = this._grabbedAccelerators.entries();
-        for (let [action, sender] of grabs) {
+        const grabs = this._grabbedAccelerators.entries();
+        for (const [action, sender] of grabs) {
             if (sender === name)
                 this._ungrabAccelerator(action);
         }
@@ -366,8 +366,8 @@ export class GnomeShell {
             return;
         }
 
-        let sender = invocation.get_sender();
-        let [dict] = params;
+        const sender = invocation.get_sender();
+        const [dict] = params;
         Main.osdMonitorLabeler.show(sender, dict);
         invocation.return_value(null);
     }
@@ -380,7 +380,7 @@ export class GnomeShell {
             return;
         }
 
-        let sender = invocation.get_sender();
+        const sender = invocation.get_sender();
         Main.osdMonitorLabeler.hide(sender);
         invocation.return_value(null);
     }
@@ -432,21 +432,21 @@ class GnomeShellExtensions {
     }
 
     ListExtensions() {
-        let out = {};
+        const out = {};
         Main.extensionManager.getUuids().forEach(uuid => {
-            let dbusObj = this.GetExtensionInfo(uuid);
+            const dbusObj = this.GetExtensionInfo(uuid);
             out[uuid] = dbusObj;
         });
         return out;
     }
 
     GetExtensionInfo(uuid) {
-        let extension = Main.extensionManager.lookup(uuid) || {};
+        const extension = Main.extensionManager.lookup(uuid) || {};
         return ExtensionUtils.serializeExtension(extension);
     }
 
     GetExtensionErrors(uuid) {
-        let extension = Main.extensionManager.lookup(uuid);
+        const extension = Main.extensionManager.lookup(uuid);
         if (!extension)
             return [];
 
@@ -504,7 +504,7 @@ class GnomeShellExtensions {
     }
 
     _extensionStateChanged(_, newState) {
-        let state = ExtensionUtils.serializeExtension(newState);
+        const state = ExtensionUtils.serializeExtension(newState);
         this._dbusImpl.emit_signal('ExtensionStateChanged',
             new GLib.Variant('(sa{sv})', [newState.uuid, state]));
 
@@ -531,7 +531,7 @@ export class ScreenSaverDBus {
     }
 
     LockAsync(parameters, invocation) {
-        let tmpId = this._screenShield.connect('lock-screen-shown', () => {
+        const tmpId = this._screenShield.connect('lock-screen-shown', () => {
             this._screenShield.disconnect(tmpId);
 
             invocation.return_value(null);
@@ -552,7 +552,7 @@ export class ScreenSaverDBus {
     }
 
     GetActiveTime() {
-        let started = this._screenShield.activationTime;
+        const started = this._screenShield.activationTime;
         if (started > 0)
             return Math.floor((GLib.get_monotonic_time() - started) / 1000000);
         else

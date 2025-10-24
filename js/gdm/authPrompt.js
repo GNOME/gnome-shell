@@ -99,7 +99,7 @@ export const AuthPrompt = GObject.registerClass({
 
         this._initInputRow();
 
-        let capsLockPlaceholder = new St.Label();
+        const capsLockPlaceholder = new St.Label();
         this.add_child(capsLockPlaceholder);
 
         this._capsLockWarningLabel = new ShellEntry.CapsLockWarning({
@@ -189,7 +189,7 @@ export const AuthPrompt = GObject.registerClass({
         });
         this._mainBox.add_child(this._authList);
 
-        let entryParams = {
+        const entryParams = {
             style_class: 'login-dialog-prompt-entry',
             can_focus: true,
             x_expand: true,
@@ -222,7 +222,7 @@ export const AuthPrompt = GObject.registerClass({
             });
 
             entry.clutter_text.connect('activate', () => {
-                let shouldSpin = entry === this._passwordEntry;
+                const shouldSpin = entry === this._passwordEntry;
                 if (entry.reactive)
                     this._activateNext(shouldSpin);
             });
@@ -244,7 +244,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     showTimedLoginIndicator(time) {
-        let hold = new Batch.Hold();
+        const hold = new Batch.Hold();
 
         this.hideTimedLoginIndicator();
 
@@ -432,7 +432,7 @@ export const AuthPrompt = GObject.registerClass({
             !actor)
             return;
 
-        let oldActor = this._defaultButtonWellActor;
+        const oldActor = this._defaultButtonWellActor;
 
         if (oldActor)
             oldActor.remove_all_transitions();
@@ -533,8 +533,8 @@ export const AuthPrompt = GObject.registerClass({
     setChoiceList(promptMessage, choiceList) {
         this._authList.clear();
         this._authList.label.text = promptMessage;
-        for (let key in choiceList) {
-            let text = choiceList[key];
+        for (const key in choiceList) {
+            const text = choiceList[key];
             this._authList.addItem(key, text);
         }
 
@@ -627,11 +627,11 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     setUser(user) {
-        let oldChild = this._userWell.get_child();
+        const oldChild = this._userWell.get_child();
         if (oldChild)
             oldChild.destroy();
 
-        let userWidget = new UserWidget.UserWidget(user, Clutter.Orientation.VERTICAL);
+        const userWidget = new UserWidget.UserWidget(user, Clutter.Orientation.VERTICAL);
         this._userWell.set_child(userWidget);
 
         if (!user)
@@ -639,7 +639,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     reset() {
-        let oldStatus = this.verificationStatus;
+        const oldStatus = this.verificationStatus;
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.cancelButton.reactive = this._hasCancelButton;
         this.cancelButton.can_focus = this._hasCancelButton;
@@ -714,7 +714,7 @@ export const AuthPrompt = GObject.registerClass({
             return;
         }
 
-        let signalId = this._userVerifier.connect('no-more-messages', () => {
+        const signalId = this._userVerifier.connect('no-more-messages', () => {
             this._userVerifier.disconnect(signalId);
             this._userVerifier.clear();
             onComplete();

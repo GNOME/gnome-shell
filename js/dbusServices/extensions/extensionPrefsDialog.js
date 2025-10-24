@@ -121,7 +121,7 @@ class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
         this._errorView.buffer.text = formattedError;
 
         // markdown for pasting in gitlab issues
-        let lines = [
+        const lines = [
             `The settings of extension ${uuid} had an error:`,
             '```',
             formattedError.replace(/\n$/, ''),  // remove trailing newline

@@ -48,7 +48,8 @@ let _desktopSettings = null;
  * @returns {{url: string, pos: number}[]} the list of match objects, as described above
  */
 export function findUrls(str) {
-    let res = [], match;
+    const res = [];
+    let match;
     while ((match = _urlRegexp.exec(str)))
         res.push({url: match[2], pos: match.index + match[1].length});
     return res;
@@ -80,7 +81,7 @@ export function spawn(argv) {
  */
 export function spawnCommandLine(commandLine) {
     try {
-        let [success_, argv] = GLib.shell_parse_argv(commandLine);
+        const [success_, argv] = GLib.shell_parse_argv(commandLine);
         trySpawn(argv);
     } catch (err) {
         _handleSpawnError(commandLine, err);
@@ -100,7 +101,7 @@ export function spawnApp(argv) {
             null,
             Gio.AppInfoCreateFlags.SUPPORTS_STARTUP_NOTIFICATION);
 
-        let context = global.create_app_launch_context(0, -1);
+        const context = global.create_app_launch_context(0, -1);
         app.launch([], context);
     } catch (err) {
         _handleSpawnError(argv[0], err);
@@ -135,7 +136,7 @@ export function trySpawn(argv) {
             //   execute child process "foo" (No such file or directory)
             // We are only interested in the part in the parentheses. (And
             // we can't pattern match the text, since it gets localized.)
-            let message = err.message.replace(/.*\((.+)\)/, '$1');
+            const message = err.message.replace(/.*\((.+)\)/, '$1');
             throw new err.constructor({code: err.code, message});
         } else {
             throw err;
@@ -212,7 +213,7 @@ export function createTimeLabel(date, params) {
     if (_desktopSettings == null)
         _desktopSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.interface'});
 
-    let label = new St.Label({text: formatTime(date, params)});
+    const label = new St.Label({text: formatTime(date, params)});
     _desktopSettings.connectObject(
         'changed::clock-format', () => (label.text = formatTime(date, params)),
         label);
@@ -276,7 +277,7 @@ function lowerBound(array, val, cmp) {
  * Returns the position at which it was inserted
  */
 export function insertSorted(array, val, cmp) {
-    let pos = lowerBound(array, val, cmp);
+    const pos = lowerBound(array, val, cmp);
     array.splice(pos, 0, val);
 
     return pos;
@@ -302,7 +303,7 @@ export function lerp(start, end, progress) {
  * 'alpha' and 'beta'. Returns NaN for unhandled 'versions'.
  */
 function _GNOMEversionToNumber(version) {
-    let ret = Number(version);
+    const ret = Number(version);
     if (!isNaN(ret))
         return ret;
     if (version === 'alpha')
@@ -329,8 +330,8 @@ export function GNOMEversionCompare(version1, version2) {
     const v2Array = version2.split('.');
 
     for (let i = 0; i < Math.max(v1Array.length, v2Array.length); i++) {
-        let elemV1 = _GNOMEversionToNumber(v1Array[i] || '0');
-        let elemV2 = _GNOMEversionToNumber(v2Array[i] || '0');
+        const elemV1 = _GNOMEversionToNumber(v1Array[i] || '0');
+        const elemV2 = _GNOMEversionToNumber(v2Array[i] || '0');
         if (elemV1 < elemV2)
             return -1;
         if (elemV1 > elemV2)
@@ -448,20 +449,20 @@ export class Highlighter {
         if (!this._highlightRegex)
             return GLib.markup_escape_text(text, -1);
 
-        let escaped = [];
+        const escaped = [];
         let lastMatchEnd = 0;
         let match;
         while ((match = this._highlightRegex.exec(text))) {
             if (match.index > lastMatchEnd) {
-                let unmatched = GLib.markup_escape_text(
+                const unmatched = GLib.markup_escape_text(
                     text.slice(lastMatchEnd, match.index), -1);
                 escaped.push(unmatched);
             }
-            let matched = GLib.markup_escape_text(match[0], -1);
+            const matched = GLib.markup_escape_text(match[0], -1);
             escaped.push(`<b>${matched}</b>`);
             lastMatchEnd = match.index + match[0].length;
         }
-        let unmatched = GLib.markup_escape_text(
+        const unmatched = GLib.markup_escape_text(
             text.slice(lastMatchEnd), -1);
         escaped.push(unmatched);
 

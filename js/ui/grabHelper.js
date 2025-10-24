@@ -35,7 +35,7 @@ export class GrabHelper {
     }
 
     _isWithinGrabbedActor(actor) {
-        let currentActor = this.currentGrab.actor;
+        const currentActor = this.currentGrab.actor;
         while (actor) {
             if (actor === currentActor)
                 return true;
@@ -69,7 +69,7 @@ export class GrabHelper {
 
     _actorInGrabStack(actor) {
         while (actor) {
-            let idx = this._findStackIndex(actor);
+            const idx = this._findStackIndex(actor);
             if (idx >= 0)
                 return idx;
             actor = actor.get_parent();
@@ -119,9 +119,9 @@ export class GrabHelper {
             onUngrab: null,
         });
 
-        let focus = global.stage.key_focus;
-        let hadFocus = focus && this._isWithinGrabbedActor(focus);
-        let newFocus = params.actor;
+        const focus = global.stage.key_focus;
+        const hadFocus = focus && this._isWithinGrabbedActor(focus);
+        const newFocus = params.actor;
 
         if (this.isActorGrabbed(params.actor))
             return true;
@@ -153,9 +153,9 @@ export class GrabHelper {
     }
 
     _takeModalGrab() {
-        let firstGrab = this._modalCount === 0;
+        const firstGrab = this._modalCount === 0;
         if (firstGrab) {
-            let grab = Main.pushModal(this._owner, this._modalParams);
+            const grab = Main.pushModal(this._owner, this._modalParams);
             if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
                 Main.popModal(grab);
                 return false;
@@ -211,20 +211,20 @@ export class GrabHelper {
             isUser: false,
         });
 
-        let grabStackIndex = this._findStackIndex(params.actor);
+        const grabStackIndex = this._findStackIndex(params.actor);
         if (grabStackIndex < 0)
             return;
 
-        let focus = global.stage.key_focus;
-        let hadFocus = focus && this._isWithinGrabbedActor(focus);
+        const focus = global.stage.key_focus;
+        const hadFocus = focus && this._isWithinGrabbedActor(focus);
 
-        let poppedGrabs = this._grabStack.slice(grabStackIndex);
+        const poppedGrabs = this._grabStack.slice(grabStackIndex);
         // "Pop" all newly ungrabbed actors off the grab stack
         // by truncating the array.
         this._grabStack.length = grabStackIndex;
 
         for (let i = poppedGrabs.length - 1; i >= 0; i--) {
-            let poppedGrab = poppedGrabs[i];
+            const poppedGrab = poppedGrabs[i];
 
             if (poppedGrab.onUngrab)
                 poppedGrab.onUngrab(params.isUser);
@@ -233,14 +233,14 @@ export class GrabHelper {
         }
 
         if (hadFocus) {
-            let poppedGrab = poppedGrabs[0];
+            const poppedGrab = poppedGrabs[0];
             if (poppedGrab.savedFocus)
                 poppedGrab.savedFocus.grab_key_focus();
         }
     }
 
     onCapturedEvent(event) {
-        let type = event.type();
+        const type = event.type();
 
         if (type === Clutter.EventType.KEY_PRESS &&
             event.get_key_symbol() === Clutter.KEY_Escape) {
@@ -248,15 +248,15 @@ export class GrabHelper {
             return Clutter.EVENT_STOP;
         }
 
-        let motion = type === Clutter.EventType.MOTION;
-        let press = type === Clutter.EventType.BUTTON_PRESS;
-        let release = type === Clutter.EventType.BUTTON_RELEASE;
-        let button = press || release;
+        const motion = type === Clutter.EventType.MOTION;
+        const press = type === Clutter.EventType.BUTTON_PRESS;
+        const release = type === Clutter.EventType.BUTTON_RELEASE;
+        const button = press || release;
 
-        let touchUpdate = type === Clutter.EventType.TOUCH_UPDATE;
-        let touchBegin = type === Clutter.EventType.TOUCH_BEGIN;
-        let touchEnd = type === Clutter.EventType.TOUCH_END;
-        let touch = touchUpdate || touchBegin || touchEnd;
+        const touchUpdate = type === Clutter.EventType.TOUCH_UPDATE;
+        const touchBegin = type === Clutter.EventType.TOUCH_BEGIN;
+        const touchEnd = type === Clutter.EventType.TOUCH_END;
+        const touch = touchUpdate || touchBegin || touchEnd;
 
         if (touch && !global.display.is_pointer_emulating_sequence(event.get_event_sequence()))
             return Clutter.EVENT_PROPAGATE;
@@ -283,7 +283,7 @@ export class GrabHelper {
             if (press || touchBegin)
                 this._ignoreUntilRelease = true;
 
-            let i = this._actorInGrabStack(targetActor) + 1;
+            const i = this._actorInGrabStack(targetActor) + 1;
             this.ungrab({actor: this._grabStack[i].actor, isUser: true});
             return Clutter.EVENT_STOP;
         }

@@ -57,8 +57,8 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
         this._countDown = monitorManager.get_display_configuration_timeout();
 
         // Translators: This string should be shorter than 30 characters
-        let title = _('Keep these display settings?');
-        let description = this._formatCountDown();
+        const title = _('Keep these display settings?');
+        const description = this._formatCountDown();
 
         this._content = new Dialog.MessageDialogContent({title, description});
         this.contentLayout.add_child(this._content);
@@ -133,13 +133,13 @@ class WindowDimmer extends Clutter.BrightnessContrastEffect {
     }
 
     _syncEnabled(dimmed) {
-        let animating = this.actor.get_transition(`@effects.${this.name}.brightness`) !== null;
+        const animating = this.actor.get_transition(`@effects.${this.name}.brightness`) !== null;
 
         this.enabled = Meta.prefs_get_attach_modal_dialogs() && (animating || dimmed);
     }
 
     setDimmed(dimmed, animate) {
-        let val = 127 * (1 + (dimmed ? 1 : 0) * DIM_BRIGHTNESS);
+        const val = 127 * (1 + (dimmed ? 1 : 0) * DIM_BRIGHTNESS);
         const color = new Cogl.Color({
             red: val,
             green: val,
@@ -187,10 +187,10 @@ class WorkspaceTracker {
 
         this._pauseWorkspaceCheck = false;
 
-        let tracker = Shell.WindowTracker.get_default();
+        const tracker = Shell.WindowTracker.get_default();
         tracker.connect('startup-sequence-changed', this._queueCheckWorkspaces.bind(this));
 
-        let workspaceManager = global.workspace_manager;
+        const workspaceManager = global.workspace_manager;
         workspaceManager.connect('notify::n-workspaces',
             this._nWorkspacesChanged.bind(this));
         workspaceManager.connect('workspaces-reordered', () => {
@@ -219,9 +219,9 @@ class WorkspaceTracker {
     }
 
     _checkWorkspaces() {
-        let workspaceManager = global.workspace_manager;
+        const workspaceManager = global.workspace_manager;
         let i;
-        let emptyWorkspaces = [];
+        const emptyWorkspaces = [];
 
         if (!Meta.prefs_get_dynamic_workspaces()) {
             this._checkWorkspacesId = 0;
@@ -233,7 +233,7 @@ class WorkspaceTracker {
             return true;
 
         for (i = 0; i < this._workspaces.length; i++) {
-            let lastRemoved = this._workspaces[i]._lastRemovedWindow;
+            const lastRemoved = this._workspaces[i]._lastRemovedWindow;
             if ((lastRemoved &&
                  (lastRemoved.get_window_type() === Meta.WindowType.SPLASHSCREEN ||
                   lastRemoved.get_window_type() === Meta.WindowType.DIALOG ||
@@ -244,22 +244,22 @@ class WorkspaceTracker {
                 emptyWorkspaces[i] = true;
         }
 
-        let sequences = Shell.WindowTracker.get_default().get_startup_sequences();
+        const sequences = Shell.WindowTracker.get_default().get_startup_sequences();
         for (i = 0; i < sequences.length; i++) {
-            let index = sequences[i].get_workspace();
+            const index = sequences[i].get_workspace();
             if (index >= 0 && index <= workspaceManager.n_workspaces)
                 emptyWorkspaces[index] = false;
         }
 
-        let windows = global.get_window_actors();
+        const windows = global.get_window_actors();
         for (i = 0; i < windows.length; i++) {
-            let actor = windows[i];
-            let win = actor.get_meta_window();
+            const actor = windows[i];
+            const win = actor.get_meta_window();
 
             if (win.is_on_all_workspaces())
                 continue;
 
-            let workspaceIndex = win.get_workspace().index();
+            const workspaceIndex = win.get_workspace().index();
             emptyWorkspaces[workspaceIndex] = false;
         }
 
@@ -275,9 +275,9 @@ class WorkspaceTracker {
             emptyWorkspaces.push(true);
         }
 
-        let lastIndex = emptyWorkspaces.length - 1;
-        let lastEmptyIndex = emptyWorkspaces.lastIndexOf(false) + 1;
-        let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
+        const lastIndex = emptyWorkspaces.length - 1;
+        const lastEmptyIndex = emptyWorkspaces.lastIndexOf(false) + 1;
+        const activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
         emptyWorkspaces[activeWorkspaceIndex] = false;
 
         // Delete empty workspaces except for the last one; do it from the end
@@ -308,7 +308,7 @@ class WorkspaceTracker {
     _windowRemoved(workspace, window) {
         workspace._lastRemovedWindow = window;
         this._queueCheckWorkspaces();
-        let id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, LAST_WINDOW_GRACE_TIME, () => {
+        const id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, LAST_WINDOW_GRACE_TIME, () => {
             if (workspace._lastRemovedWindow === window) {
                 workspace._lastRemovedWindow = null;
                 this._queueCheckWorkspaces();
@@ -341,9 +341,9 @@ class WorkspaceTracker {
     }
 
     _nWorkspacesChanged() {
-        let workspaceManager = global.workspace_manager;
-        let oldNumWorkspaces = this._workspaces.length;
-        let newNumWorkspaces = workspaceManager.n_workspaces;
+        const workspaceManager = global.workspace_manager;
+        const oldNumWorkspaces = this._workspaces.length;
+        const newNumWorkspaces = workspaceManager.n_workspaces;
 
         if (oldNumWorkspaces === newNumWorkspaces)
             return false;
@@ -364,16 +364,16 @@ class WorkspaceTracker {
             // Assume workspaces are only removed sequentially
             // (e.g. 2,3,4 - not 2,4,7)
             let removedIndex;
-            let removedNum = oldNumWorkspaces - newNumWorkspaces;
+            const removedNum = oldNumWorkspaces - newNumWorkspaces;
             for (let w = 0; w < oldNumWorkspaces; w++) {
-                let workspace = workspaceManager.get_workspace_by_index(w);
+                const workspace = workspaceManager.get_workspace_by_index(w);
                 if (this._workspaces[w] !== workspace) {
                     removedIndex = w;
                     break;
                 }
             }
 
-            let lostWorkspaces = this._workspaces.splice(removedIndex, removedNum);
+            const lostWorkspaces = this._workspaces.splice(removedIndex, removedNum);
             lostWorkspaces.forEach(workspace => workspace.disconnectObject(this));
         }
 
@@ -394,7 +394,7 @@ class TilePreview extends St.Widget {
     }
 
     open(window, tileRect, monitorIndex) {
-        let windowActor = window.get_compositor_private();
+        const windowActor = window.get_compositor_private();
         if (!windowActor)
             return;
 
@@ -403,13 +403,13 @@ class TilePreview extends St.Widget {
         if (this._rect && this._rect.equal(tileRect))
             return;
 
-        let changeMonitor = this._monitorIndex === -1 ||
+        const changeMonitor = this._monitorIndex === -1 ||
                              this._monitorIndex !== monitorIndex;
 
         this._monitorIndex = monitorIndex;
         this._rect = tileRect;
 
-        let monitor = Main.layoutManager.monitors[monitorIndex];
+        const monitor = Main.layoutManager.monitors[monitorIndex];
 
         this._updateStyle(monitor);
 
@@ -420,7 +420,7 @@ class TilePreview extends St.Widget {
                 width: monitor.width,
                 height: monitor.height,
             });
-            let [, rect] = window.get_frame_rect().intersect(monitorRect);
+            const [, rect] = window.get_frame_rect().intersect(monitorRect);
             this.set_size(rect.width, rect.height);
             this.set_position(rect.x, rect.y);
             this.opacity = 0;
@@ -459,7 +459,7 @@ class TilePreview extends St.Widget {
     }
 
     _updateStyle(monitor) {
-        let styles = ['tile-preview'];
+        const styles = ['tile-preview'];
         if (this._monitorIndex === Main.layoutManager.primaryIndex)
             styles.push('on-primary');
         if (this._rect.x === monitor.x)
@@ -489,7 +489,7 @@ class ResizePopup extends St.Widget {
     set(rect, displayW, displayH) {
         /* Translators: This represents the size of a window. The first number is
          * the width of the window and the second is the height. */
-        let text = _('%d × %d').format(displayW, displayH);
+        const text = _('%d × %d').format(displayW, displayH);
         this._label.set_text(text);
 
         this.set_position(rect.x, rect.y);
@@ -885,7 +885,7 @@ export class WindowManager {
         global.display.connect('show-resize-popup', this._showResizePopup.bind(this));
         global.display.connect('show-pad-osd', this._showPadOsd.bind(this));
         global.display.connect('show-osd', (display, monitorIndex, iconName, label) => {
-            let icon = Gio.Icon.new_for_string(iconName);
+            const icon = Gio.Icon.new_for_string(iconName);
             Main.osdWindowManager.showOne(monitorIndex, icon, label);
         });
 
@@ -919,13 +919,13 @@ export class WindowManager {
             return allowedModes & Main.actionMode;
         });
         topDragGesture.connect('end', () => {
-            let currentWindow = global.display.focus_window;
+            const currentWindow = global.display.focus_window;
             if (currentWindow)
                 currentWindow.unmake_fullscreen();
         });
 
-        let updateUnfullscreenGesture = () => {
-            let currentWindow = global.display.focus_window;
+        const updateUnfullscreenGesture = () => {
+            const currentWindow = global.display.focus_window;
             topDragGesture.enabled = currentWindow && currentWindow.is_fullscreen();
         };
 
@@ -993,10 +993,10 @@ export class WindowManager {
     }
 
     _switchApp() {
-        let windows = global.get_window_actors().filter(actor => {
-            let win = actor.metaWindow;
-            let workspaceManager = global.workspace_manager;
-            let activeWorkspace = workspaceManager.get_active_workspace();
+        const windows = global.get_window_actors().filter(actor => {
+            const win = actor.metaWindow;
+            const workspaceManager = global.workspace_manager;
+            const activeWorkspace = workspaceManager.get_active_workspace();
             return !win.is_override_redirect() &&
                     win.located_on_workspace(activeWorkspace);
         });
@@ -1004,7 +1004,7 @@ export class WindowManager {
         if (windows.length === 0)
             return;
 
-        let focusWindow = global.display.focus_window;
+        const focusWindow = global.display.focus_window;
         let nextWindow;
 
         if (focusWindow == null) {
@@ -1022,14 +1022,14 @@ export class WindowManager {
     }
 
     insertWorkspace(pos) {
-        let workspaceManager = global.workspace_manager;
+        const workspaceManager = global.workspace_manager;
 
         if (!Meta.prefs_get_dynamic_workspaces())
             return;
 
         workspaceManager.append_new_workspace(false, global.get_current_time());
 
-        let windows = global.get_window_actors().map(a => a.meta_window);
+        const windows = global.get_window_actors().map(a => a.meta_window);
 
         // To create a new workspace, we slide all the windows on workspaces
         // below us to the next workspace, leaving a blank workspace for us
@@ -1047,7 +1047,7 @@ export class WindowManager {
             if (window.on_all_workspaces)
                 return;
             // Windows on workspaces below pos don't need moving
-            let index = window.get_workspace().index();
+            const index = window.get_workspace().index();
             if (index < pos)
                 return;
             window.change_workspace_by_index(index + 1, true);
@@ -1055,9 +1055,9 @@ export class WindowManager {
 
         // If the new workspace was inserted before the active workspace,
         // activate the workspace to which its windows went
-        let activeIndex = workspaceManager.get_active_workspace_index();
+        const activeIndex = workspaceManager.get_active_workspace_index();
         if (activeIndex >= pos) {
-            let newWs = workspaceManager.get_workspace_by_index(activeIndex + 1);
+            const newWs = workspaceManager.get_workspace_by_index(activeIndex + 1);
             this._blockAnimations = true;
             newWs.activate(global.get_current_time());
             this._blockAnimations = false;
@@ -1081,7 +1081,7 @@ export class WindowManager {
     }
 
     addKeybinding(name, settings, flags, modes, handler) {
-        let action = global.display.add_keybinding(name, settings, flags, handler);
+        const action = global.display.add_keybinding(name, settings, flags, handler);
         if (action !== Meta.KeyBindingAction.NONE)
             this.allowKeybinding(name, modes);
         return action;
@@ -1154,14 +1154,14 @@ export class WindowManager {
             });
         } else {
             let xDest, yDest, xScale, yScale;
-            let [success, geom] = actor.meta_window.get_icon_geometry();
+            const [success, geom] = actor.meta_window.get_icon_geometry();
             if (success) {
                 xDest = geom.x;
                 yDest = geom.y;
                 xScale = geom.width / actor.width;
                 yScale = geom.height / actor.height;
             } else {
-                let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
+                const monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
                 if (!monitor) {
                     this._minimizeWindowDone();
                     return;
@@ -1221,14 +1221,14 @@ export class WindowManager {
                 onStopped: () => this._unminimizeWindowDone(shellwm, actor),
             });
         } else {
-            let [success, geom] = actor.meta_window.get_icon_geometry();
+            const [success, geom] = actor.meta_window.get_icon_geometry();
             if (success) {
                 actor.set_position(geom.x, geom.y);
                 actor.set_scale(
                     geom.width / actor.width,
                     geom.height / actor.height);
             } else {
-                let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
+                const monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
                 if (!monitor) {
                     actor.show();
                     this._unminimizeWindowDone();
@@ -1240,8 +1240,8 @@ export class WindowManager {
                 actor.set_scale(0, 0);
             }
 
-            let rect = actor.meta_window.get_buffer_rect();
-            let [xDest, yDest] = [rect.x, rect.y];
+            const rect = actor.meta_window.get_buffer_rect();
+            const [xDest, yDest] = [rect.x, rect.y];
 
             actor.show();
             actor.ease({
@@ -1283,8 +1283,8 @@ export class WindowManager {
     _prepareAnimationInfo(shellwm, actor, oldFrameRect, _change) {
         // Position a clone of the window on top of the old position,
         // while actor updates are frozen.
-        let actorContent = actor.paint_to_content(oldFrameRect);
-        let actorClone = new St.Widget({content: actorContent});
+        const actorContent = actor.paint_to_content(oldFrameRect);
+        const actorClone = new St.Widget({content: actorContent});
         actorClone.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
         actorClone.set_position(oldFrameRect.x, oldFrameRect.y);
         actorClone.set_size(oldFrameRect.width, oldFrameRect.height);
@@ -1313,12 +1313,12 @@ export class WindowManager {
         if (this._resizing.has(actor))
             return;
 
-        let actorClone = actor.__animationInfo.clone;
-        let targetRect = actor.meta_window.get_frame_rect();
-        let sourceRect = actor.__animationInfo.oldRect;
+        const actorClone = actor.__animationInfo.clone;
+        const targetRect = actor.meta_window.get_frame_rect();
+        const sourceRect = actor.__animationInfo.oldRect;
 
-        let scaleX = targetRect.width / sourceRect.width;
-        let scaleY = targetRect.height / sourceRect.height;
+        const scaleX = targetRect.width / sourceRect.width;
+        const scaleY = targetRect.height / sourceRect.height;
 
         this._resizePending.delete(actor);
         this._resizing.add(actor);
@@ -1407,20 +1407,20 @@ export class WindowManager {
     }
 
     _dimWindow(window) {
-        let actor = window.get_compositor_private();
+        const actor = window.get_compositor_private();
         if (!actor)
             return;
-        let dimmer = getWindowDimmer(actor);
+        const dimmer = getWindowDimmer(actor);
         if (!dimmer)
             return;
         dimmer.setDimmed(true, this._shouldAnimate());
     }
 
     _undimWindow(window) {
-        let actor = window.get_compositor_private();
+        const actor = window.get_compositor_private();
         if (!actor)
             return;
-        let dimmer = getWindowDimmer(actor);
+        const dimmer = getWindowDimmer(actor);
         if (!dimmer)
             return;
         dimmer.setDimmed(false, this._shouldAnimate());
@@ -1441,12 +1441,12 @@ export class WindowManager {
     async _mapWindow(shellwm, actor) {
         actor._windowType = actor.meta_window.get_window_type();
         actor.meta_window.connectObject('notify::window-type', () => {
-            let type = actor.meta_window.get_window_type();
+            const type = actor.meta_window.get_window_type();
             if (type === actor._windowType)
                 return;
             if (type === Meta.WindowType.MODAL_DIALOG ||
                 actor._windowType === Meta.WindowType.MODAL_DIALOG) {
-                let parent = actor.get_meta_window().get_transient_for();
+                const parent = actor.get_meta_window().get_transient_for();
                 if (parent)
                     this._checkDimming(parent);
             }
@@ -1454,7 +1454,7 @@ export class WindowManager {
             actor._windowType = type;
         }, actor);
         actor.meta_window.connect('unmanaged', window => {
-            let parent = window.get_transient_for();
+            const parent = window.get_transient_for();
             if (parent)
                 this._checkDimming(parent);
         });
@@ -1528,7 +1528,7 @@ export class WindowManager {
     }
 
     _destroyWindow(shellwm, actor) {
-        let window = actor.meta_window;
+        const window = actor.meta_window;
         window.disconnectObject(actor);
 
         if (window.is_attached_dialog())
@@ -1564,7 +1564,7 @@ export class WindowManager {
             this._destroying.add(actor);
 
             if (window.is_attached_dialog()) {
-                let parent = window.get_transient_for();
+                const parent = window.get_transient_for();
                 parent.connectObject('unmanaged', () => {
                     actor.remove_all_transitions();
                     this._destroyWindowDone(shellwm, actor);
@@ -1677,7 +1677,7 @@ export class WindowManager {
         if (this._workspaceSwitcherPopup != null)
             this._workspaceSwitcherPopup.destroy();
 
-        let tabPopup = new constructor();
+        const tabPopup = new constructor();
 
         if (!tabPopup.show(binding.is_reversed(), binding.get_name(), binding.get_mask()))
             tabPopup.destroy();
@@ -1724,7 +1724,7 @@ export class WindowManager {
     }
 
     _showWorkspaceSwitcher(display, window, event, binding) {
-        let workspaceManager = display.get_workspace_manager();
+        const workspaceManager = display.get_workspace_manager();
 
         if (!Main.sessionMode.hasWorkspaces)
             return;
@@ -1735,8 +1735,8 @@ export class WindowManager {
         let [action,,, target] = binding.get_name().split('-');
         let newWs;
         let direction;
-        let vertical = workspaceManager.layout_rows === -1;
-        let rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
+        const vertical = workspaceManager.layout_rows === -1;
+        const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
 
         if (action === 'move') {
             // "Moving" a window to another workspace doesn't make sense when
@@ -1903,7 +1903,7 @@ export class WindowManager {
     }
 
     _confirmDisplayChange() {
-        let dialog = new DisplayChangeDialog(this._shellwm);
+        const dialog = new DisplayChangeDialog(this._shellwm);
         dialog.open();
     }
 

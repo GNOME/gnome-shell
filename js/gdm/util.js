@@ -81,10 +81,10 @@ export function cloneAndFadeOutActor(actor) {
 
     Main.uiGroup.add_child(clone);
 
-    let [x, y] = actor.get_transformed_position();
+    const [x, y] = actor.get_transformed_position();
     clone.set_position(x, y);
 
-    let hold = new Batch.Hold();
+    const hold = new Batch.Hold();
     clone.ease({
         opacity: 0,
         duration: CLONE_FADE_ANIMATION_TIME,
@@ -146,7 +146,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     removeCredentialManager(serviceName) {
-        let credentialManager = this._credentialManagers[serviceName];
+        const credentialManager = this._credentialManagers[serviceName];
         if (!credentialManager)
             return;
 
@@ -227,7 +227,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         this._fingerprintManager = null;
 
-        for (let service in this._credentialManagers)
+        for (const service in this._credentialManagers)
             this.removeCredentialManager(service);
     }
 
@@ -305,7 +305,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _queueMessage(serviceName, message, messageType) {
-        let interval = this._getIntervalForMessage(message);
+        const interval = this._getIntervalForMessage(message);
 
         this._messageQueue.push({serviceName, text: message, type: messageType, interval});
         this._queueMessageTimeout();
@@ -592,7 +592,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     foregroundServiceDeterminesUsername() {
-        for (let serviceName in this._credentialManagers) {
+        for (const serviceName in this._credentialManagers) {
             if (this.serviceIsForeground(serviceName))
                 return true;
         }
@@ -869,7 +869,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         const cancellable = this._cancellable;
         return new Promise((resolve, reject) => {
-            let signalId = this.connect('no-more-messages', () => {
+            const signalId = this.connect('no-more-messages', () => {
                 this.disconnect(signalId);
                 if (cancellable.is_cancelled())
                     reject(new GLib.Error(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED, 'Operation was cancelled'));

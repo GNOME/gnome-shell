@@ -62,7 +62,7 @@ class Client extends Signals.EventEmitter {
     }
 
     async _getProxy() {
-        let nodeInfo = Gio.DBusNodeInfo.new_for_xml(BoltClientInterface);
+        const nodeInfo = Gio.DBusNodeInfo.new_for_xml(BoltClientInterface);
         try {
             this._proxy = await Gio.DBusProxy.new(
                 Gio.DBus.system,
@@ -94,8 +94,8 @@ class Client extends Signals.EventEmitter {
     }
 
     _onDeviceAdded(proxy, emitter, params) {
-        let [path] = params;
-        let device = new BoltDeviceProxy(Gio.DBus.system, BOLT_DBUS_NAME, path);
+        const [path] = params;
+        const device = new BoltDeviceProxy(Gio.DBus.system, BOLT_DBUS_NAME, path);
         this.emit('device-added', device);
     }
 
@@ -159,7 +159,7 @@ class AuthRobot extends Signals.EventEmitter {
             return;
 
         /* check if we should enroll the device */
-        let res = [false];
+        const res = [false];
         this.emit('enroll-device', dev, res);
         if (res[0] !== true)
             return;
@@ -186,9 +186,9 @@ class AuthRobot extends Signals.EventEmitter {
     }
 
     async _enrollDevicesIdle() {
-        let devices = this._devicesToEnroll;
+        const devices = this._devicesToEnroll;
 
-        let dev = devices.shift();
+        const dev = devices.shift();
         if (dev === undefined)
             return GLib.SOURCE_REMOVE;
 
@@ -278,7 +278,7 @@ class Indicator extends SystemIndicator {
 
     /* Session callbacks */
     _sync() {
-        let active = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        const active = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
         this._indicator.visible = active && this._client.probing;
     }
 
@@ -295,11 +295,11 @@ class Indicator extends SystemIndicator {
     /* AuthRobot callbacks */
     _onEnrollDevice(obj, device, policy) {
         /* only authorize new devices when in an unlocked user session */
-        let unlocked = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        const unlocked = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
         /* and if we have the permission to do so, otherwise we trigger a PolKit dialog */
-        let allowed = this._perm && this._perm.allowed;
+        const allowed = this._perm && this._perm.allowed;
 
-        let auth = unlocked && allowed;
+        const auth = unlocked && allowed;
         policy[0] = auth;
 
         log(`thunderbolt: [${device.Name}] auto enrollment: ${auth ? 'yes' : 'no'} (allowed: ${allowed ? 'yes' : 'no'})`);

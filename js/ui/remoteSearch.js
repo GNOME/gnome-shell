@@ -69,12 +69,12 @@ const SearchProvider2ProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProvide
  * @returns {RemoteSearchProvider[]} - the list of remote providers
  */
 export function loadRemoteSearchProviders(searchSettings) {
-    let objectPaths = {};
+    const objectPaths = {};
     let loadedProviders = [];
 
     function loadRemoteSearchProvider(file) {
-        let keyfile = new GLib.KeyFile();
-        let path = file.get_path();
+        const keyfile = new GLib.KeyFile();
+        const path = file.get_path();
 
         try {
             keyfile.load_from_file(path, 0);
@@ -87,16 +87,16 @@ export function loadRemoteSearchProviders(searchSettings) {
 
         let remoteProvider;
         try {
-            let group = KEY_FILE_GROUP;
-            let busName = keyfile.get_string(group, 'BusName');
-            let objectPath = keyfile.get_string(group, 'ObjectPath');
+            const group = KEY_FILE_GROUP;
+            const busName = keyfile.get_string(group, 'BusName');
+            const objectPath = keyfile.get_string(group, 'ObjectPath');
 
             if (objectPaths[objectPath])
                 return;
 
             let appInfo = null;
             try {
-                let desktopId = keyfile.get_string(group, 'DesktopId');
+                const desktopId = keyfile.get_string(group, 'DesktopId');
                 appInfo = GioUnix.DesktopAppInfo.new(desktopId);
                 if (!appInfo.should_show())
                     return;
@@ -144,13 +144,13 @@ export function loadRemoteSearchProviders(searchSettings) {
     for (const {file} of FileUtils.collectFromDatadirs('search-providers', false))
         loadRemoteSearchProvider(file);
 
-    let sortOrder = searchSettings.get_strv('sort-order');
+    const sortOrder = searchSettings.get_strv('sort-order');
 
     const disabled = searchSettings.get_strv('disabled');
     const enabled = searchSettings.get_strv('enabled');
 
     loadedProviders = loadedProviders.filter(provider => {
-        let appId = provider.appInfo.get_id();
+        const appId = provider.appInfo.get_id();
 
         if (provider.defaultEnabled)
             return !disabled.includes(appId);
@@ -159,19 +159,16 @@ export function loadRemoteSearchProviders(searchSettings) {
     });
 
     loadedProviders.sort((providerA, providerB) => {
-        let idxA, idxB;
-        let appIdA, appIdB;
+        const appIdA = providerA.appInfo.get_id();
+        const appIdB = providerB.appInfo.get_id();
 
-        appIdA = providerA.appInfo.get_id();
-        appIdB = providerB.appInfo.get_id();
-
-        idxA = sortOrder.indexOf(appIdA);
-        idxB = sortOrder.indexOf(appIdB);
+        const idxA = sortOrder.indexOf(appIdA);
+        const idxB = sortOrder.indexOf(appIdB);
 
         // if no provider is found in the order, use alphabetical order
         if ((idxA === -1) && (idxB === -1)) {
-            let nameA = providerA.appInfo.get_name();
-            let nameB = providerB.appInfo.get_name();
+            const nameA = providerA.appInfo.get_name();
+            const nameB = providerB.appInfo.get_name();
 
             return GLib.utf8_collate(nameA, nameB);
         }
@@ -249,8 +246,8 @@ class RemoteSearchProvider {
         if (results.length <= maxNumber)
             return results;
 
-        let regularResults = results.filter(r => !r.startsWith('special:'));
-        let specialResults = results.filter(r => r.startsWith('special:'));
+        const regularResults = results.filter(r => !r.startsWith('special:'));
+        const specialResults = results.filter(r => r.startsWith('special:'));
 
         return regularResults.slice(0, maxNumber).concat(specialResults.slice(0, maxNumber));
     }
@@ -287,9 +284,9 @@ class RemoteSearchProvider {
             return [];
         }
 
-        let resultMetas = [];
+        const resultMetas = [];
         for (let i = 0; i < metas.length; i++) {
-            for (let prop in metas[i]) {
+            for (const prop in metas[i]) {
                 // we can use the serialized icon variant directly
                 if (prop !== 'icon')
                     metas[i][prop] = metas[i][prop].deepUnpack();

@@ -10,7 +10,7 @@ const APP_ICON_SIZE = 96;
 export const SwitchMonitorPopup = GObject.registerClass(
 class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
-        let items = [];
+        const items = [];
 
         items.push({
             icon: 'shell-display-mirror-symbolic',
@@ -62,8 +62,8 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _initialSelection() {
-        let currentConfig = global.backend.get_monitor_manager().get_switch_config();
-        let selectConfig = (currentConfig + 1) % this._items.length;
+        const currentConfig = global.backend.get_monitor_manager().get_switch_config();
+        const selectConfig = (currentConfig + 1) % this._items.length;
         this._select(selectConfig);
     }
 
@@ -111,7 +111,7 @@ class SwitchMonitorSwitcher extends SwitcherPopup.SwitcherList {
         });
         box.add_child(icon);
 
-        let text = new St.Label({
+        const text = new St.Label({
             text: item.label,
             x_align: Clutter.ActorAlign.CENTER,
         });

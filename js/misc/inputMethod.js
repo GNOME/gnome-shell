@@ -180,10 +180,10 @@ export const InputMethod = GObject.registerClass({
     }
 
     _onForwardKeyEvent(_context, keyval, keycode, state) {
-        let press = (state & IBus.ModifierType.RELEASE_MASK) === 0;
+        const press = (state & IBus.ModifierType.RELEASE_MASK) === 0;
         state &= ~IBus.ModifierType.RELEASE_MASK;
 
-        let curEvent = Clutter.get_current_event();
+        const curEvent = Clutter.get_current_event();
         let time;
         if (curEvent)
             time = curEvent.get_time();
@@ -268,7 +268,7 @@ export const InputMethod = GObject.registerClass({
         if (!this._context || (!text && text !== ''))
             return;
 
-        let ibusText = IBus.Text.new_from_string(text);
+        const ibusText = IBus.Text.new_from_string(text);
 
         if (updateCapabilities)
             this._updateCapabilities();
@@ -350,7 +350,7 @@ export const InputMethod = GObject.registerClass({
                     return;
 
                 try {
-                    let retval = context.process_key_event_async_finish(res);
+                    const retval = context.process_key_event_async_finish(res);
                     this.notify_key_event(event, retval);
                 } catch (e) {
                     if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))

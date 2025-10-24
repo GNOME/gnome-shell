@@ -127,8 +127,8 @@ export const MprisPlayer = GObject.registerClass({
     }
 
     _updateState() {
-        let metadata = {};
-        for (let prop in this._playerProxy.Metadata)
+        const metadata = {};
+        for (const prop in this._playerProxy.Metadata)
             metadata[prop] = this._playerProxy.Metadata[prop].deepUnpack();
 
         // Validate according to the spec; some clients send buggy metadata:

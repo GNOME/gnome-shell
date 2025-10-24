@@ -37,7 +37,7 @@ export class IntrospectService {
             this._syncRunningApplications();
         });
 
-        let tracker = Shell.WindowTracker.get_default();
+        const tracker = Shell.WindowTracker.get_default();
         tracker.connect('notify::focus-app', () => {
             this._activeApplicationDirty = true;
             this._syncRunningApplications();
@@ -66,22 +66,22 @@ export class IntrospectService {
     }
 
     _getSandboxedAppId(app) {
-        let ids = app.get_windows().map(w => w.get_sandboxed_app_id());
+        const ids = app.get_windows().map(w => w.get_sandboxed_app_id());
         return ids.find(id => id != null);
     }
 
     _syncRunningApplications() {
-        let tracker = Shell.WindowTracker.get_default();
-        let apps = this._appSystem.get_running();
-        let seatName = 'seat0';
-        let newRunningApplications = {};
+        const tracker = Shell.WindowTracker.get_default();
+        const apps = this._appSystem.get_running();
+        const seatName = 'seat0';
+        const newRunningApplications = {};
 
         let newActiveApplication = null;
-        let focusedApp = tracker.focus_app;
+        const focusedApp = tracker.focus_app;
 
-        for (let app of apps) {
-            let appInfo = {};
-            let isAppActive = focusedApp === app;
+        for (const app of apps) {
+            const appInfo = {};
+            const isAppActive = focusedApp === app;
 
             if (!this._isStandaloneApp(app))
                 continue;
@@ -91,7 +91,7 @@ export class IntrospectService {
                 newActiveApplication = app.get_id();
             }
 
-            let sandboxedAppId = this._getSandboxedAppId(app);
+            const sandboxedAppId = this._getSandboxedAppId(app);
             if (sandboxedAppId)
                 appInfo['sandboxed-app-id'] = new GLib.Variant('s', sandboxedAppId);
 
@@ -114,7 +114,7 @@ export class IntrospectService {
         if (window.is_override_redirect())
             return false;
 
-        let type = window.get_window_type();
+        const type = window.get_window_type();
         return type === Meta.WindowType.NORMAL ||
             type === Meta.WindowType.DIALOG ||
             type === Meta.WindowType.MODAL_DIALOG ||
@@ -133,9 +133,9 @@ export class IntrospectService {
     }
 
     async GetWindowsAsync(params, invocation) {
-        let focusWindow = global.display.get_focus_window();
-        let apps = this._appSystem.get_running();
-        let windowsList = {};
+        const focusWindow = global.display.get_focus_window();
+        const apps = this._appSystem.get_running();
+        const windowsList = {};
 
         try {
             await this._senderChecker.checkInvocation(invocation);
@@ -144,17 +144,17 @@ export class IntrospectService {
             return;
         }
 
-        for (let app of apps) {
-            let windows = app.get_windows();
-            for (let window of windows) {
+        for (const app of apps) {
+            const windows = app.get_windows();
+            for (const window of windows) {
                 if (!this._isEligibleWindow(window))
                     continue;
 
-                let windowId = window.get_id();
-                let frameRect = window.get_frame_rect();
-                let title = window.get_title();
-                let wmClass = window.get_wm_class();
-                let sandboxedAppId = window.get_sandboxed_app_id();
+                const windowId = window.get_id();
+                const frameRect = window.get_frame_rect();
+                const title = window.get_title();
+                const wmClass = window.get_wm_class();
+                const sandboxedAppId = window.get_sandboxed_app_id();
 
                 windowsList[windowId] = {
                     'app-id': GLib.Variant.new('s', app.get_id()),
@@ -182,10 +182,10 @@ export class IntrospectService {
     }
 
     _syncAnimationsEnabled() {
-        let wasAnimationsEnabled = this._animationsEnabled;
+        const wasAnimationsEnabled = this._animationsEnabled;
         this._animationsEnabled = this._settings.enable_animations;
         if (wasAnimationsEnabled !== this._animationsEnabled) {
-            let variant = new GLib.Variant('b', this._animationsEnabled);
+            const variant = new GLib.Variant('b', this._animationsEnabled);
             this._dbusImpl.emit_property_changed('AnimationsEnabled', variant);
         }
     }

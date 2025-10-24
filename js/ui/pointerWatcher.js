@@ -57,7 +57,7 @@ class PointerWatcher {
         // Avoid unreliably calling the watch for the current position
         this._updatePointer();
 
-        let watch = new PointerWatch(this, interval, callback);
+        const watch = new PointerWatch(this, interval, callback);
         this._watches.push(watch);
         this._updateTimeout();
         return watch;
@@ -109,7 +109,7 @@ class PointerWatcher {
     }
 
     _updatePointer() {
-        let [x, y] = global.get_pointer();
+        const [x, y] = global.get_pointer();
         if (this.pointerX === x && this.pointerY === y)
             return;
 
@@ -117,7 +117,7 @@ class PointerWatcher {
         this.pointerY = y;
 
         for (let i = 0; i < this._watches.length;) {
-            let watch = this._watches[i];
+            const watch = this._watches[i];
             watch.callback(x, y);
             if (watch === this._watches[i]) // guard against self-removal
                 i++;

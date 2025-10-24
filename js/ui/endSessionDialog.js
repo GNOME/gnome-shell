@@ -213,7 +213,7 @@ function _roundSecondsToInterval(totalSeconds, secondsLeft, interval) {
 }
 
 function _setCheckBoxLabel(checkBox, text) {
-    let label = checkBox.getLabelActor();
+    const label = checkBox.getLabelActor();
 
     if (text) {
         label.set_text(text);
@@ -352,16 +352,16 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         // Show the warning if updates have already been triggered, but
         // the user doesn't have enough permissions to cancel them.
-        let updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
+        const updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
         return this._updateInfo.UpdatePrepared && this._updateInfo.UpdateTriggered && !updatesAllowed;
     }
 
     _sync() {
-        let open = this.state === ModalDialog.State.OPENING || this.state === ModalDialog.State.OPENED;
+        const open = this.state === ModalDialog.State.OPENING || this.state === ModalDialog.State.OPENED;
         if (!open)
             return;
 
-        let dialogContent = DialogContent[this._type];
+        const dialogContent = DialogContent[this._type];
 
         let subject = dialogContent.subject;
 
@@ -372,11 +372,11 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._batteryWarning.visible = this._shouldShowLowBatteryWarning(dialogContent);
 
         let description;
-        let displayTime = _roundSecondsToInterval(
+        const displayTime = _roundSecondsToInterval(
             this._totalSecondsToStayOpen, this._secondsLeft, 10);
 
         if (this._user.is_loaded) {
-            let realName = this._user.get_real_name();
+            const realName = this._user.get_real_name();
 
             if (realName != null) {
                 if (dialogContent.subjectWithUser)
@@ -402,8 +402,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._messageDialogContent.title = subject;
         this._messageDialogContent.description = description;
 
-        let hasApplications = this._applications.length > 0;
-        let hasSessions = this._sessions.length > 0;
+        const hasApplications = this._applications.length > 0;
+        const hasSessions = this._sessions.length > 0;
 
         this._applicationSection.visible = hasApplications;
         this._sessionSection.visible = hasSessions;
@@ -412,11 +412,11 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     _onCapturedEvent(actor, event) {
         let altEnabled = false;
 
-        let type = event.type();
+        const type = event.type();
         if (type !== Clutter.EventType.KEY_PRESS && type !== Clutter.EventType.KEY_RELEASE)
             return Clutter.EVENT_PROPAGATE;
 
-        let key = event.get_key_symbol();
+        const key = event.get_key_symbol();
         if (key !== Clutter.KEY_Alt_L && key !== Clutter.KEY_Alt_R)
             return Clutter.EVENT_PROPAGATE;
 
@@ -438,13 +438,13 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             key: Clutter.KEY_Escape,
         });
 
-        let dialogContent = DialogContent[this._type];
+        const dialogContent = DialogContent[this._type];
         for (let i = 0; i < dialogContent.confirmButtons.length; i++) {
-            let signal = dialogContent.confirmButtons[i].signal;
-            let label = dialogContent.confirmButtons[i].label;
-            let button = this.addButton({
+            const signal = dialogContent.confirmButtons[i].signal;
+            const label = dialogContent.confirmButtons[i].label;
+            const button = this.addButton({
                 action: () => {
-                    let signalId = this.connect('closed', () => {
+                    const signalId = this.connect('closed', () => {
                         this.disconnect(signalId);
                         this._confirm(signal).catch(logError);
                     });
@@ -459,7 +459,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                 this._rebootButtonAlt = this.addButton({
                     action: () => {
                         this.close(true);
-                        let signalId = this.connect('closed', () => {
+                        const signalId = this.connect('closed', () => {
                             this.disconnect(signalId);
                             this._confirmRebootToBootLoaderMenu();
                         });
@@ -571,12 +571,12 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     }
 
     _startTimer() {
-        let startTime = GLib.get_monotonic_time();
+        const startTime = GLib.get_monotonic_time();
         this._secondsLeft = this._totalSecondsToStayOpen;
 
         this._timerId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 1, () => {
-            let currentTime = GLib.get_monotonic_time();
-            let secondsElapsed = (currentTime - startTime) / 1000000;
+            const currentTime = GLib.get_monotonic_time();
+            const secondsElapsed = (currentTime - startTime) / 1000000;
 
             this._secondsLeft = this._totalSecondsToStayOpen - secondsElapsed;
             if (this._secondsLeft > 0) {
@@ -584,8 +584,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                 return GLib.SOURCE_CONTINUE;
             }
 
-            let dialogContent = DialogContent[this._type];
-            let button = dialogContent.confirmButtons[dialogContent.confirmButtons.length - 1];
+            const dialogContent = DialogContent[this._type];
+            const button = dialogContent.confirmButtons[dialogContent.confirmButtons.length - 1];
             this._confirm(button.signal).catch(logError);
             this._timerId = 0;
 
@@ -609,12 +609,12 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             return;
         }
 
-        let app = findAppFromInhibitor(inhibitor);
+        const app = findAppFromInhibitor(inhibitor);
         const [flags] = app ? inhibitor.GetFlagsSync() : [0];
 
         if (app && flags & GnomeSession.InhibitFlags.LOGOUT) {
-            let [description] = inhibitor.GetReasonSync();
-            let listItem = new Dialog.ListSectionItem({
+            const [description] = inhibitor.GetReasonSync();
+            const listItem = new Dialog.ListSectionItem({
                 icon_actor: app.create_icon_texture(_ITEM_ICON_SIZE),
                 title: app.get_name(),
                 description,
@@ -639,7 +639,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         const sessions = await this._loginManager.listSessions();
         for (const [id_, uid_, userName, seat_, sessionPath] of sessions) {
-            let proxy = new LogindSession(Gio.DBus.system, 'org.freedesktop.login1', sessionPath);
+            const proxy = new LogindSession(Gio.DBus.system, 'org.freedesktop.login1', sessionPath);
 
             if (proxy.Class !== 'user')
                 continue;
@@ -658,7 +658,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             };
             const nSessions = this._sessions.push(session);
 
-            let userAvatar = new UserWidget.Avatar(session.user, {
+            const userAvatar = new UserWidget.Avatar(session.user, {
                 iconSize: _ITEM_ICON_SIZE,
             });
             userAvatar.update();
@@ -676,7 +676,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             else
                 userLabelText = userName;
 
-            let listItem = new Dialog.ListSectionItem({
+            const listItem = new Dialog.ListSectionItem({
                 icon_actor: userAvatar,
                 title: userLabelText,
             });
@@ -707,7 +707,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     }
 
     async OpenAsync(parameters, invocation) {
-        let [type, timestamp_, totalSecondsToStayOpen, inhibitorObjectPaths] = parameters;
+        const [type, timestamp_, totalSecondsToStayOpen, inhibitorObjectPaths] = parameters;
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._type = type;
 
@@ -746,10 +746,10 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             return;
         }
 
-        let dialogContent = DialogContent[this._type];
+        const dialogContent = DialogContent[this._type];
 
         for (let i = 0; i < inhibitorObjectPaths.length; i++) {
-            let inhibitor = new GnomeSession.Inhibitor(inhibitorObjectPaths[i], proxy => {
+            const inhibitor = new GnomeSession.Inhibitor(inhibitorObjectPaths[i], proxy => {
                 this._onInhibitorLoaded(proxy);
             });
 
@@ -759,7 +759,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         if (dialogContent.showOtherSessions)
             this._loadSessions().catch(logError);
 
-        let updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
+        const updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
 
         _setCheckBoxLabel(this._checkBox, dialogContent.checkBoxText || '');
         this._checkBox.visible = dialogContent.checkBoxText && this._updateInfo.UpdatePrepared && updatesAllowed;
@@ -785,7 +785,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         this._sync();
 
-        let signalId = this.connect('opened', () => {
+        const signalId = this.connect('opened', () => {
             invocation.return_value(null);
             this.disconnect(signalId);
         });

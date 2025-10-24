@@ -84,7 +84,7 @@ export class Hold extends Task {
             return;
 
         this.acquire();
-        let signalId = hold.connect('release', () => {
+        const signalId = hold.connect('release', () => {
             hold.disconnect(signalId);
             this.release();
         });
@@ -173,7 +173,7 @@ export class Batch extends Task {
 
 export class ConcurrentBatch extends Batch {
     process() {
-        let hold = this.runTask();
+        const hold = this.runTask();
 
         if (hold)
             this.hold.acquireUntilAfter(hold);
@@ -187,12 +187,12 @@ export class ConcurrentBatch extends Batch {
 
 export class ConsecutiveBatch extends Batch {
     process() {
-        let hold = this.runTask();
+        const hold = this.runTask();
 
         if (hold && hold.isAcquired()) {
             // This task is inhibiting the batch. Wait on it
             // before processing the next one.
-            let signalId = hold.connect('release', () => {
+            const signalId = hold.connect('release', () => {
                 hold.disconnect(signalId);
                 this.nextTask();
             });

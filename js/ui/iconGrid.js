@@ -102,7 +102,7 @@ class BaseIcon extends Shell.SquareBin {
 
         this.icon = null;
 
-        let cache = St.TextureCache.get_default();
+        const cache = St.TextureCache.get_default();
         cache.connectObject(
             'icon-theme-changed', this._onIconThemeChanged.bind(this), this);
     }
@@ -134,7 +134,7 @@ class BaseIcon extends Shell.SquareBin {
 
     vfunc_style_changed() {
         super.vfunc_style_changed();
-        let node = this.get_theme_node();
+        const node = this.get_theme_node();
 
         let size;
         if (this._setSizeManually) {
@@ -143,7 +143,7 @@ class BaseIcon extends Shell.SquareBin {
             const {scaleFactor} =
                 St.ThemeContext.get_for_stage(global.stage);
 
-            let [found, len] = node.lookup_length('icon-size', false);
+            const [found, len] = node.lookup_length('icon-size', false);
             size = found ? len / scaleFactor : ICON_SIZE;
         }
 
@@ -179,7 +179,7 @@ class BaseIcon extends Shell.SquareBin {
  * @param {Clutter.Actor} actor
  */
 export function zoomOutActor(actor) {
-    let [x, y] = actor.get_transformed_position();
+    const [x, y] = actor.get_transformed_position();
     zoomOutActorAtPos(actor, x, y);
 }
 
@@ -192,7 +192,7 @@ function zoomOutActorAtPos(actor, x, y) {
         source: actor,
         reactive: false,
     });
-    let [width, height] = actor.get_transformed_size();
+    const [width, height] = actor.get_transformed_size();
 
     actorClone.set_size(width, height);
     actorClone.set_position(x, y);
@@ -202,12 +202,12 @@ function zoomOutActorAtPos(actor, x, y) {
     Main.uiGroup.add_child(actorClone);
 
     // Avoid monitor edges to not zoom outside the current monitor
-    let scaledWidth = width * APPICON_ANIMATION_OUT_SCALE;
-    let scaledHeight = height * APPICON_ANIMATION_OUT_SCALE;
-    let scaledX = x - (scaledWidth - width) / 2;
-    let scaledY = y - (scaledHeight - height) / 2;
-    let containedX = Math.clamp(scaledX, monitor.x, monitor.x + monitor.width - scaledWidth);
-    let containedY = Math.clamp(scaledY, monitor.y, monitor.y + monitor.height - scaledHeight);
+    const scaledWidth = width * APPICON_ANIMATION_OUT_SCALE;
+    const scaledHeight = height * APPICON_ANIMATION_OUT_SCALE;
+    const scaledX = x - (scaledWidth - width) / 2;
+    const scaledY = y - (scaledHeight - height) / 2;
+    const containedX = Math.clamp(scaledX, monitor.x, monitor.x + monitor.width - scaledWidth);
+    const containedY = Math.clamp(scaledY, monitor.y, monitor.y + monitor.height - scaledHeight);
 
     actorClone.ease({
         scale_x: APPICON_ANIMATION_OUT_SCALE,
@@ -1230,7 +1230,7 @@ export const IconGrid = GObject.registerClass({
         let closestRatio = Infinity;
         let bestMode = -1;
 
-        for (let modeIndex in this._gridModes) {
+        for (const modeIndex in this._gridModes) {
             const mode = this._gridModes[modeIndex];
             const modeRatio = mode.columns / mode.rows;
 

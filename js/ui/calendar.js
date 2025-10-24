@@ -29,12 +29,12 @@ function sameDay(dateA, dateB) {
 
 function _isWorkDay(date) {
     /* Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
-    let days = C_('calendar-no-work', '06');
+    const days = C_('calendar-no-work', '06');
     return !days.includes(date.getDay().toString());
 }
 
 function _getBeginningOfDay(date) {
-    let ret = new Date(date.getTime());
+    const ret = new Date(date.getTime());
     ret.setHours(0);
     ret.setMinutes(0);
     ret.setSeconds(0);
@@ -49,7 +49,7 @@ function _getEndOfDay(date) {
 }
 
 function _getCalendarDayAbbreviation(dayNumber) {
-    let abbreviations = [
+    const abbreviations = [
         /* Translators: Calendar grid abbreviation for Sunday.
          *
          * NOTE: These grid abbreviations are always shown together
@@ -148,7 +148,7 @@ class EmptyEventSource extends EventSourceBase {
     }
 
     getEvents(_begin, _end) {
-        let result = [];
+        const result = [];
         return result;
     }
 
@@ -309,7 +309,7 @@ class DBusEventSource extends EventSourceBase {
             const [id, summary, startTime, endTime] = appointments[n];
             const date = new Date(startTime * 1000);
             const end = new Date(endTime * 1000);
-            let event = new CalendarEvent(id, date, end, summary);
+            const event = new CalendarEvent(id, date, end, summary);
             /* It's a recurring event */
             if (!id.endsWith('\n')) {
                 const parentId = id.substring(0, id.lastIndexOf('\n') + 1);
@@ -382,20 +382,20 @@ class DBusEventSource extends EventSourceBase {
     }
 
     getEvents(begin, end) {
-        let result = [...this._getFilteredEvents(begin, end)];
+        const result = [...this._getFilteredEvents(begin, end)];
 
         result.sort((event1, event2) => {
             // sort events by end time on ending day
-            let d1 = event1.date < begin && event1.end <= end ? event1.end : event1.date;
-            let d2 = event2.date < begin && event2.end <= end ? event2.end : event2.date;
+            const d1 = event1.date < begin && event1.end <= end ? event1.end : event1.date;
+            const d2 = event2.date < begin && event2.end <= end ? event2.end : event2.date;
             return d1.getTime() - d2.getTime();
         });
         return result;
     }
 
     hasEvents(day) {
-        let dayBegin = _getBeginningOfDay(day);
-        let dayEnd = _getEndOfDay(day);
+        const dayBegin = _getBeginningOfDay(day);
+        const dayEnd = _getEndOfDay(day);
 
         const {done} = this._getFilteredEvents(dayBegin, dayEnd).next();
         return !done;
@@ -464,7 +464,7 @@ export const Calendar = GObject.registerClass({
 
         this._selectedDate = date;
 
-        let datetime = GLib.DateTime.new_from_unix_local(
+        const datetime = GLib.DateTime.new_from_unix_local(
             this._selectedDate.getTime() / 1000);
         this.emit('selected-date-changed', datetime);
 
@@ -479,8 +479,8 @@ export const Calendar = GObject.registerClass({
     }
 
     _buildHeader() {
-        let layout = this.layout_manager;
-        let offsetCols = this._useWeekdate ? 1 : 0;
+        const layout = this.layout_manager;
+        const offsetCols = this._useWeekdate ? 1 : 0;
         this.destroy_all_children();
 
         // Top line of the calendar '<| September 2009 |>'
@@ -519,14 +519,14 @@ export const Calendar = GObject.registerClass({
         // We need to figure out the abbreviated localized names for the days of the week;
         // we do this by just getting the next 7 days starting from right now and then putting
         // them in the right cell in the table. It doesn't matter if we add them in order
-        let iter = new Date(this._selectedDate);
+        const iter = new Date(this._selectedDate);
         iter.setSeconds(0); // Leap second protection. Hah!
         iter.setHours(12);
         for (let i = 0; i < 7; i++) {
             // Could use formatDateWithCFormatString(iter, '%a') but that normally gives three characters
             // and we want, ideally, a single character for e.g. S M T W T F S
-            let customDayAbbrev = _getCalendarDayAbbreviation(iter.getDay());
-            let label = new St.Label({
+            const customDayAbbrev = _getCalendarDayAbbreviation(iter.getDay());
+            const label = new St.Label({
                 style_class: 'calendar-day-heading',
                 text: customDayAbbrev,
                 can_focus: true,
@@ -561,18 +561,18 @@ export const Calendar = GObject.registerClass({
 
     _onPrevMonthButtonClicked() {
         let newDate = new Date(this._selectedDate);
-        let oldMonth = newDate.getMonth();
+        const oldMonth = newDate.getMonth();
         if (oldMonth === 0) {
             newDate.setMonth(11);
             newDate.setFullYear(newDate.getFullYear() - 1);
             if (newDate.getMonth() !== 11) {
-                let day = 32 - new Date(newDate.getFullYear() - 1, 11, 32).getDate();
+                const day = 32 - new Date(newDate.getFullYear() - 1, 11, 32).getDate();
                 newDate = new Date(newDate.getFullYear() - 1, 11, day);
             }
         } else {
             newDate.setMonth(oldMonth - 1);
             if (newDate.getMonth() !== oldMonth - 1) {
-                let day = 32 - new Date(newDate.getFullYear(), oldMonth - 1, 32).getDate();
+                const day = 32 - new Date(newDate.getFullYear(), oldMonth - 1, 32).getDate();
                 newDate = new Date(newDate.getFullYear(), oldMonth - 1, day);
             }
         }
@@ -584,18 +584,18 @@ export const Calendar = GObject.registerClass({
 
     _onNextMonthButtonClicked() {
         let newDate = new Date(this._selectedDate);
-        let oldMonth = newDate.getMonth();
+        const oldMonth = newDate.getMonth();
         if (oldMonth === 11) {
             newDate.setMonth(0);
             newDate.setFullYear(newDate.getFullYear() + 1);
             if (newDate.getMonth() !== 0) {
-                let day = 32 - new Date(newDate.getFullYear() + 1, 0, 32).getDate();
+                const day = 32 - new Date(newDate.getFullYear() + 1, 0, 32).getDate();
                 newDate = new Date(newDate.getFullYear() + 1, 0, day);
             }
         } else {
             newDate.setMonth(oldMonth + 1);
             if (newDate.getMonth() !== oldMonth + 1) {
-                let day = 32 - new Date(newDate.getFullYear(), oldMonth + 1, 32).getDate();
+                const day = 32 - new Date(newDate.getFullYear(), oldMonth + 1, 32).getDate();
                 newDate = new Date(newDate.getFullYear(), oldMonth + 1, day);
             }
         }
@@ -613,10 +613,10 @@ export const Calendar = GObject.registerClass({
     }
 
     _rebuildCalendar() {
-        let now = new Date();
+        const now = new Date();
 
         // Remove everything but the topBox and the weekday labels
-        let children = this.get_children();
+        const children = this.get_children();
         for (let i = this._firstDayIndex; i < children.length; i++)
             children[i].destroy();
 
@@ -639,30 +639,30 @@ export const Calendar = GObject.registerClass({
         // Actually computing the number of weeks is complex, but we know that the
         // problematic categories (2 and 4) always start on week start, and that
         // all months at the end have 6 weeks.
-        let beginDate = new Date(
+        const beginDate = new Date(
             this._selectedDate.getFullYear(), this._selectedDate.getMonth(), 1);
 
         this._calendarBegin = new Date(beginDate);
         this._markedAsToday = now;
 
-        let daysToWeekStart = (7 + beginDate.getDay() - this._weekStart) % 7;
-        let startsOnWeekStart = daysToWeekStart === 0;
-        let weekPadding = startsOnWeekStart ? 7 : 0;
+        const daysToWeekStart = (7 + beginDate.getDay() - this._weekStart) % 7;
+        const startsOnWeekStart = daysToWeekStart === 0;
+        const weekPadding = startsOnWeekStart ? 7 : 0;
 
         beginDate.setDate(beginDate.getDate() - (weekPadding + daysToWeekStart));
 
-        let layout = this.layout_manager;
-        let iter = new Date(beginDate);
+        const layout = this.layout_manager;
+        const iter = new Date(beginDate);
         let row = 2;
         // nRows here means 6 weeks + one header + one navbar
-        let nRows = 8;
+        const nRows = 8;
         while (row < nRows) {
-            let button = new St.Button({
+            const button = new St.Button({
                 // xgettext:no-javascript-format
                 label: formatDateWithCFormatString(iter, C_('date day number format', '%d')),
                 can_focus: true,
             });
-            let rtl = button.get_text_direction() === Clutter.TextDirection.RTL;
+            const rtl = button.get_text_direction() === Clutter.TextDirection.RTL;
 
             if (this._eventSource instanceof EmptyEventSource)
                 button.reactive = false;
@@ -674,7 +674,7 @@ export const Calendar = GObject.registerClass({
                 this._shouldDateGrabFocus = false;
             });
 
-            let hasEvents = this._eventSource.hasEvents(iter);
+            const hasEvents = this._eventSource.hasEvents(iter);
             let styleClass = 'calendar-day';
 
             if (_isWorkDay(iter))
@@ -686,7 +686,7 @@ export const Calendar = GObject.registerClass({
             if (row === 2)
                 styleClass = `calendar-day-top ${styleClass}`;
 
-            let leftMost = rtl
+            const leftMost = rtl
                 ? iter.getDay() === (this._weekStart + 6) % 7
                 : iter.getDay() === this._weekStart;
             if (leftMost)
@@ -702,7 +702,7 @@ export const Calendar = GObject.registerClass({
 
             button.style_class = styleClass;
 
-            let offsetCols = this._useWeekdate ? 1 : 0;
+            const offsetCols = this._useWeekdate ? 1 : 0;
             let col;
             if (rtl)
                 col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
@@ -718,7 +718,7 @@ export const Calendar = GObject.registerClass({
                     style_class: 'calendar-week-number',
                     can_focus: true,
                 });
-                let weekFormat = Shell.util_translate_time_string(N_('Week %V'));
+                const weekFormat = Shell.util_translate_time_string(N_('Week %V'));
                 label.clutter_text.y_align = Clutter.ActorAlign.CENTER;
                 label.accessible_name = formatDateWithCFormatString(iter, weekFormat);
                 layout.attach(label, rtl ? 7 : 0, row, 1, 1);
@@ -736,7 +736,7 @@ export const Calendar = GObject.registerClass({
     }
 
     _update() {
-        let now = new Date();
+        const now = new Date();
 
         if (sameYear(this._selectedDate, now))
             this._monthLabel.text = formatDateWithCFormatString(this._selectedDate, this._headerFormatWithoutYear);
@@ -788,7 +788,7 @@ class CalendarMessageList extends St.Widget {
         this._placeholder = new Placeholder();
         this.add_child(this._placeholder);
 
-        let box = new St.BoxLayout({
+        const box = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
             y_expand: true,
@@ -804,7 +804,7 @@ class CalendarMessageList extends St.Widget {
         });
         box.add_child(this._scrollView);
 
-        let hbox = new St.BoxLayout({style_class: 'message-list-controls'});
+        const hbox = new St.BoxLayout({style_class: 'message-list-controls'});
         box.add_child(hbox);
 
         this._clearButton = new St.Button({

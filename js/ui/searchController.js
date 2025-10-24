@@ -143,7 +143,7 @@ export const SearchController = GObject.registerClass({
         if (Main.modalCount > 1)
             return Clutter.EVENT_PROPAGATE;
 
-        let symbol = event.get_key_symbol();
+        const symbol = event.get_key_symbol();
 
         if (symbol === Clutter.KEY_Escape) {
             if (this._searchActive)
@@ -221,7 +221,7 @@ export const SearchController = GObject.registerClass({
         if (symbol === Clutter.KEY_BackSpace && this._searchActive)
             return true;
 
-        let unicode = Clutter.keysym_to_unicode(symbol);
+        const unicode = Clutter.keysym_to_unicode(symbol);
         if (unicode === 0)
             return false;
 
@@ -242,7 +242,7 @@ export const SearchController = GObject.registerClass({
     }
 
     _onTextChanged() {
-        let terms = getTermsForSearchString(this._entry.get_text());
+        const terms = getTermsForSearchString(this._entry.get_text());
 
         const searchActive = terms.length > 0;
         this._searchResults.setTerms(terms);
@@ -268,7 +268,7 @@ export const SearchController = GObject.registerClass({
     }
 
     _onKeyPress(entry, event) {
-        let symbol = event.get_key_symbol();
+        const symbol = event.get_key_symbol();
         if (symbol === Clutter.KEY_Escape) {
             if (this._isActivated()) {
                 this.reset();

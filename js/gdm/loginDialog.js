@@ -56,7 +56,7 @@ export const UserListItem = GObject.registerClass({
     Signals: {'activate': {}},
 }, class UserListItem extends St.Button {
     _init(user) {
-        let layout = new St.BoxLayout({
+        const layout = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
         });
@@ -128,18 +128,18 @@ export const UserListItem = GObject.registerClass({
     }
 
     showTimedLoginIndicator(time) {
-        let hold = new Batch.Hold();
+        const hold = new Batch.Hold();
 
         this.hideTimedLoginIndicator();
 
         this._timedLoginIndicator.visible = true;
 
-        let startTime = GLib.get_monotonic_time();
+        const startTime = GLib.get_monotonic_time();
 
         this._timedLoginTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 33,
             () => {
-                let currentTime = GLib.get_monotonic_time();
-                let elapsedTime = (currentTime - startTime) / GLib.USEC_PER_SEC;
+                const currentTime = GLib.get_monotonic_time();
+                const elapsedTime = (currentTime - startTime) / GLib.USEC_PER_SEC;
                 this._timedLoginIndicator.scale_x = elapsedTime / time;
                 if (elapsedTime >= time) {
                     this._timedLoginTimeoutId = 0;
@@ -203,7 +203,7 @@ const UserList = GObject.registerClass({
         if (global.stage.get_key_focus() !== this)
             return;
 
-        let focusSet = this.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+        const focusSet = this.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         if (!focusSet) {
             const laters = global.compositor.get_laters();
             laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
@@ -225,11 +225,11 @@ const UserList = GObject.registerClass({
     }
 
     scrollToItem(item) {
-        let box = item.get_allocation_box();
+        const box = item.get_allocation_box();
 
         const adjustment = this.vadjustment;
 
-        let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
+        const value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
         adjustment.ease(value, {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: _SCROLL_ANIMATION_TIME,
@@ -237,11 +237,11 @@ const UserList = GObject.registerClass({
     }
 
     jumpToItem(item) {
-        let box = item.get_allocation_box();
+        const box = item.get_allocation_box();
 
         const adjustment = this.vadjustment;
 
-        let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
+        const value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
 
         adjustment.set_value(value);
     }
@@ -269,14 +269,14 @@ const UserList = GObject.registerClass({
         if (user.locked)
             return;
 
-        let userName = user.get_user_name();
+        const userName = user.get_user_name();
 
         if (!userName)
             return;
 
         this.removeUser(user);
 
-        let item = new UserListItem(user);
+        const item = new UserListItem(user);
         this._box.add_child(item);
 
         this._items.set(userName, item);
@@ -295,7 +295,7 @@ const UserList = GObject.registerClass({
         if (!user.is_loaded)
             return;
 
-        let userName = user.get_user_name();
+        const userName = user.get_user_name();
 
         if (!userName)
             return;
@@ -318,7 +318,7 @@ const SessionMenuButton = GObject.registerClass({
     Signals: {'session-activated': {param_types: [GObject.TYPE_STRING]}},
 }, class SessionMenuButton extends St.Bin {
     _init() {
-        let button = new St.Button({
+        const button = new St.Button({
             style_class: 'login-dialog-button login-dialog-session-list-button',
             icon_name: 'cog-wheel-symbolic',
             reactive: true,
@@ -384,7 +384,7 @@ const SessionMenuButton = GObject.registerClass({
     }
 
     _populate() {
-        let ids = Gdm.get_session_ids();
+        const ids = Gdm.get_session_ids();
 
         if (ids.length <= 1) {
             this._button.hide();
@@ -399,7 +399,7 @@ const SessionMenuButton = GObject.registerClass({
         sessions.sort((a, b) => a.sessionName.localeCompare(b.sessionName));
 
         for (const {id, sessionName} of sessions) {
-            let item = new PopupMenu.PopupMenuItem(sessionName);
+            const item = new PopupMenu.PopupMenuItem(sessionName);
             this._menu.addMenuItem(item);
             this._items.set(id, item);
 
@@ -480,25 +480,25 @@ export const ConflictingSessionDialog = GObject.registerClass({
             /* Translators: is running for <username> */
             bannerText = _('Login is not possible because a session is already running for %s. To login, you must log out from the session or force stop it.').format(userName);
 
-        let textLayout = new St.BoxLayout({
+        const textLayout = new St.BoxLayout({
             style_class: 'conflicting-session-dialog-content',
             orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
         });
 
-        let title = new St.Label({
+        const title = new St.Label({
             text: _('Session Already Running'),
             style_class: 'conflicting-session-dialog-title',
         });
 
-        let banner = new St.Label({
+        const banner = new St.Label({
             text: bannerText,
             style_class: 'conflicting-session-dialog-desc',
         });
         banner.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         banner.clutter_text.line_wrap = true;
 
-        let warningBanner = new St.Label({
+        const warningBanner = new St.Label({
             text: _('Force stopping will quit any running apps and processes, and could result in data loss'),
             style_class: 'conflicting-session-dialog-desc-warning',
         });
@@ -596,7 +596,7 @@ export const LoginDialog = GObject.registerClass({
         // translators: this message is shown below the user list on the
         // login screen. It can be activated to reveal an entry for
         // manually entering the username.
-        let notListedLabel = new St.Label({
+        const notListedLabel = new St.Label({
             text: _('Not listed?'),
             style_class: 'login-dialog-not-listed-label',
         });
@@ -687,10 +687,10 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _getBannerAllocation(dialogBox) {
-        let actorBox = new Clutter.ActorBox();
+        const actorBox = new Clutter.ActorBox();
 
-        let [, , natWidth, natHeight] = this._bannerView.get_preferred_size();
-        let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
+        const [, , natWidth, natHeight] = this._bannerView.get_preferred_size();
+        const centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
 
         actorBox.x1 = Math.floor(centerX - natWidth / 2);
         actorBox.y1 = dialogBox.y1 + Main.layoutManager.panelBox.height;
@@ -701,10 +701,10 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _getLogoBinAllocation(dialogBox) {
-        let actorBox = new Clutter.ActorBox();
+        const actorBox = new Clutter.ActorBox();
 
-        let [, , natWidth, natHeight] = this._logoBin.get_preferred_size();
-        let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
+        const [, , natWidth, natHeight] = this._logoBin.get_preferred_size();
+        const centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
 
         actorBox.x1 = Math.floor(centerX - natWidth / 2);
         actorBox.y1 = dialogBox.y2 - natHeight;
@@ -715,7 +715,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _getBottomButtonGroupAllocation(dialogBox) {
-        let actorBox = new Clutter.ActorBox();
+        const actorBox = new Clutter.ActorBox();
 
         const [, , natWidth, natHeight] = this._bottomButtonGroup.get_preferred_size();
 
@@ -732,11 +732,11 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _getCenterActorAllocation(dialogBox, actor) {
-        let actorBox = new Clutter.ActorBox();
+        const actorBox = new Clutter.ActorBox();
 
         let [, , natWidth, natHeight] = actor.get_preferred_size();
-        let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
-        let centerY = dialogBox.y1 + (dialogBox.y2 - dialogBox.y1) / 2;
+        const centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
+        const centerY = dialogBox.y1 + (dialogBox.y2 - dialogBox.y1) / 2;
 
         natWidth = Math.min(natWidth, dialogBox.x2 - dialogBox.x1);
         natHeight = Math.min(natHeight, dialogBox.y2 - dialogBox.y1);
@@ -752,11 +752,11 @@ export const LoginDialog = GObject.registerClass({
     vfunc_allocate(dialogBox) {
         this.set_allocation(dialogBox);
 
-        let themeNode = this.get_theme_node();
+        const themeNode = this.get_theme_node();
         dialogBox = themeNode.get_content_box(dialogBox);
 
-        let dialogWidth = dialogBox.x2 - dialogBox.x1;
-        let dialogHeight = dialogBox.y2 - dialogBox.y1;
+        const dialogWidth = dialogBox.x2 - dialogBox.x1;
+        const dialogHeight = dialogBox.y2 - dialogBox.y1;
 
         // First find out what space the children require
         let bannerAllocation = null;
@@ -806,33 +806,33 @@ export const LoginDialog = GObject.registerClass({
 
             if (leftOverYSpace > 0) {
                 // First figure out how much left over space is up top
-                let leftOverTopSpace = leftOverYSpace / 2;
+                const leftOverTopSpace = leftOverYSpace / 2;
 
                 // Then, shift the banner into the middle of that extra space
-                let yShift = Math.floor(leftOverTopSpace / 2);
+                const yShift = Math.floor(leftOverTopSpace / 2);
 
                 bannerAllocation.y1 += yShift;
                 bannerAllocation.y2 += yShift;
             } else {
                 // Then figure out how much space there would be if we switched to a
                 // wide layout with banner on one side and authprompt on the other.
-                let leftOverXSpace = dialogWidth - authPromptWidth;
+                const leftOverXSpace = dialogWidth - authPromptWidth;
 
                 // In a wide view, half of the available space goes to the banner,
                 // and the other half goes to the margins.
-                let wideBannerWidth = leftOverXSpace / 2;
-                let wideSpacing  = leftOverXSpace - wideBannerWidth;
+                const wideBannerWidth = leftOverXSpace / 2;
+                const wideSpacing  = leftOverXSpace - wideBannerWidth;
 
                 // If we do go with a wide layout, we need there to be at least enough
                 // space for the banner and the auth prompt to be the same width,
                 // so it doesn't look unbalanced.
                 if (authPromptWidth > 0 && wideBannerWidth > authPromptWidth) {
-                    let centerX = dialogBox.x1 + dialogWidth / 2;
-                    let centerY = dialogBox.y1 + dialogHeight / 2;
+                    const centerX = dialogBox.x1 + dialogWidth / 2;
+                    const centerY = dialogBox.y1 + dialogHeight / 2;
 
                     // A small portion of the spacing goes down the center of the
                     // screen to help delimit the two columns of the wide view
-                    let centerGap = wideSpacing / 8;
+                    const centerGap = wideSpacing / 8;
 
                     // place the banner along the left edge of the center margin
                     bannerAllocation.x2 = Math.floor(centerX - centerGap / 2);
@@ -842,7 +842,7 @@ export const LoginDialog = GObject.registerClass({
                     // but don't let it get too close to the logo
                     let [, wideBannerHeight] = this._bannerView.get_preferred_height(wideBannerWidth);
 
-                    let maxWideHeight = dialogHeight - 3 * logoHeight;
+                    const maxWideHeight = dialogHeight - 3 * logoHeight;
                     wideBannerHeight = Math.min(maxWideHeight, wideBannerHeight);
                     bannerAllocation.y1 = Math.floor(centerY - wideBannerHeight / 2);
                     bannerAllocation.y2 = bannerAllocation.y1 + wideBannerHeight;
@@ -858,7 +858,7 @@ export const LoginDialog = GObject.registerClass({
                     leftOverYSpace += bannerHeight;
 
                     // Then figure out how much of that space is up top
-                    let availableTopSpace = Math.floor(leftOverYSpace / 2);
+                    const availableTopSpace = Math.floor(leftOverYSpace / 2);
 
                     // Then give all of that space to the banner
                     bannerAllocation.y2 = bannerAllocation.y1 + availableTopSpace;
@@ -866,11 +866,11 @@ export const LoginDialog = GObject.registerClass({
             }
         } else if (userSelectionAllocation) {
             // Grow the user list to fill the space
-            let leftOverYSpace = dialogHeight - userSelectionHeight - logoHeight;
+            const leftOverYSpace = dialogHeight - userSelectionHeight - logoHeight;
 
             if (leftOverYSpace > 0) {
-                let topExpansion = Math.floor(leftOverYSpace / 2);
-                let bottomExpansion = topExpansion;
+                const topExpansion = Math.floor(leftOverYSpace / 2);
+                const bottomExpansion = topExpansion;
 
                 userSelectionAllocation.y1 -= topExpansion;
                 userSelectionAllocation.y2 += bottomExpansion;
@@ -904,7 +904,7 @@ export const LoginDialog = GObject.registerClass({
                     }
                 });
         } else {
-            let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, this._loadUserList.bind(this));
+            const id = GLib.idle_add(GLib.PRIORITY_DEFAULT, this._loadUserList.bind(this));
             GLib.Source.set_name_by_id(id, '[gnome-shell] _loadUserList');
         }
     }
@@ -1030,7 +1030,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _updateLogo() {
-        let path = this._settings.get_string(GdmUtil.LOGO_KEY);
+        const path = this._settings.get_string(GdmUtil.LOGO_KEY);
 
         this._logoFile = path ? Gio.file_new_for_path(path) : null;
         this._updateLogoTexture(this._textureCache, this._logoFile);
@@ -1142,7 +1142,7 @@ export const LoginDialog = GObject.registerClass({
                 this._authPrompt.disconnect(this._nextSignalId);
                 this._nextSignalId = 0;
                 this._authPrompt.updateSensitivity(false);
-                let answer = this._authPrompt.getAnswer();
+                const answer = this._authPrompt.getAnswer();
                 this._user = this._userManager.get_user(answer);
                 this._authPrompt.clear();
                 this._authPrompt.begin({userName: answer});
@@ -1210,7 +1210,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _showConflictingSessionDialog(serviceName, conflictingSession) {
-        let conflictingSessionDialog = new ConflictingSessionDialog(conflictingSession,
+        const conflictingSessionDialog = new ConflictingSessionDialog(conflictingSession,
             this._greeterSessionProxy);
 
         conflictingSessionDialog.connect('cancel', () => {
@@ -1304,8 +1304,8 @@ export const LoginDialog = GObject.registerClass({
         if (item)
             return null;
 
-        let hold = new Batch.Hold();
-        let signalId = this._userList.connect('item-added',
+        const hold = new Batch.Hold();
+        const signalId = this._userList.connect('item-added',
             () => {
                 item = this._userList.getItemFromUserName(userName);
 
@@ -1319,7 +1319,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _blockTimedLoginUntilIdle() {
-        let hold = new Batch.Hold();
+        const hold = new Batch.Hold();
 
         this._timedLoginIdleTimeOutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, _TIMED_LOGIN_IDLE_THRESHOLD,
             () => {
@@ -1350,7 +1350,7 @@ export const LoginDialog = GObject.registerClass({
         let loginItem = null;
         let animationTime;
 
-        let tasks = [
+        const tasks = [
             () => {
                 if (this._disableUserList)
                     return null;
@@ -1474,8 +1474,8 @@ export const LoginDialog = GObject.registerClass({
     _beginVerificationForItem(item) {
         this._authPrompt.setUser(item.user);
 
-        let userName = item.user.get_user_name();
-        let hold = new Batch.Hold();
+        const userName = item.user.get_user_name();
+        const hold = new Batch.Hold();
 
         this._authPrompt.begin({userName, hold});
         return hold;
@@ -1513,7 +1513,7 @@ export const LoginDialog = GObject.registerClass({
 
         this._userListLoaded = true;
 
-        let users = this._userManager.list_users();
+        const users = this._userManager.list_users();
 
         for (let i = 0; i < users.length; i++)
             this._userList.addUser(users[i]);

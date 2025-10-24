@@ -71,7 +71,7 @@ export async function installExtension(uuid, invocation) {
  * @param {string} uuid
  */
 export function uninstallExtension(uuid) {
-    let extension = Main.extensionManager.lookup(uuid);
+    const extension = Main.extensionManager.lookup(uuid);
     if (!extension)
         return false;
 
@@ -195,9 +195,9 @@ export async function checkForUpdates() {
     if (!Main.extensionManager.updatesSupported)
         return;
 
-    let metadatas = {};
+    const metadatas = {};
     Main.extensionManager.getUuids().forEach(uuid => {
-        let extension = Main.extensionManager.lookup(uuid);
+        const extension = Main.extensionManager.lookup(uuid);
         if (extension.type !== ExtensionUtils.ExtensionType.PER_USER)
             return;
         if (extension.hasUpdate)
@@ -282,7 +282,7 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
             default: true,
         }]);
 
-        let content = new Dialog.MessageDialogContent({
+        const content = new Dialog.MessageDialogContent({
             title: _('Install Extension'),
             description: _('Download and install “%s” from extensions.gnome.org?').format(info.name),
         });

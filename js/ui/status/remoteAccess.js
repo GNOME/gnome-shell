@@ -17,7 +17,7 @@ class RemoteAccessApplet extends SystemIndicator {
     _init() {
         super._init();
 
-        let controller = global.backend.get_remote_access_controller();
+        const controller = global.backend.get_remote_access_controller();
 
         if (!controller)
             return;

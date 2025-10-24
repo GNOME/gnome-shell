@@ -24,11 +24,11 @@ const REMEMBER_MOUNT_PASSWORD_KEY = 'remember-mount-password';
 
 /* ------ Common Utils ------- */
 function _setButtonsForChoices(dialog, oldChoices, choices) {
-    let buttons = [];
+    const buttons = [];
     let buttonsChanged = oldChoices.length !== choices.length;
 
     for (let idx = 0; idx < choices.length; idx++) {
-        let button = idx;
+        const button = idx;
 
         buttonsChanged ||= oldChoices[idx] !== choices[idx];
 
@@ -43,7 +43,7 @@ function _setButtonsForChoices(dialog, oldChoices, choices) {
 }
 
 function _setLabelsForMessage(content, message) {
-    let labels = message.split('\n');
+    const labels = message.split('\n');
 
     content.title = labels.shift();
     content.description = labels.join('\n');
@@ -152,9 +152,9 @@ export class ShellMountOperation {
     _onShowProcesses2(op) {
         this._closeExistingDialog();
 
-        let processes = op.get_show_processes_pids();
-        let choices = op.get_show_processes_choices();
-        let message = op.get_show_processes_message();
+        const processes = op.get_show_processes_pids();
+        const choices = op.get_show_processes_choices();
+        const message = op.get_show_processes_message();
 
         if (!this._processesDialog) {
             this._processesDialog = new ShellProcessesDialog();
@@ -263,23 +263,23 @@ const ShellMountPasswordDialog = GObject.registerClass({
     },
 }, class ShellMountPasswordDialog extends ModalDialog.ModalDialog {
     _init(message, flags) {
-        let strings = message.split('\n');
-        let title = strings.shift() || null;
-        let description = strings.shift() || null;
+        const strings = message.split('\n');
+        const title = strings.shift() || null;
+        const description = strings.shift() || null;
         super._init({styleClass: 'prompt-dialog'});
 
-        let disksApp = Shell.AppSystem.get_default().lookup_app('org.gnome.DiskUtility.desktop');
+        const disksApp = Shell.AppSystem.get_default().lookup_app('org.gnome.DiskUtility.desktop');
 
-        let content = new Dialog.MessageDialogContent({title, description});
+        const content = new Dialog.MessageDialogContent({title, description});
 
-        let passwordGridLayout = new Clutter.GridLayout({orientation: Clutter.Orientation.VERTICAL});
-        let passwordGrid = new St.Widget({
+        const passwordGridLayout = new Clutter.GridLayout({orientation: Clutter.Orientation.VERTICAL});
+        const passwordGrid = new St.Widget({
             style_class: 'prompt-dialog-password-grid',
             layout_manager: passwordGridLayout,
         });
         passwordGridLayout.hookup_style(passwordGrid);
 
-        let rtl = passwordGrid.get_text_direction() === Clutter.TextDirection.RTL;
+        const rtl = passwordGrid.get_text_direction() === Clutter.TextDirection.RTL;
         let curGridRow = 0;
 
         if (flags & Gio.AskPasswordFlags.TCRYPT) {
@@ -350,9 +350,9 @@ const ShellMountPasswordDialog = GObject.registerClass({
         }
         curGridRow += 1;
 
-        let warningBox = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL});
+        const warningBox = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL});
 
-        let capsLockWarning = new ShellEntry.CapsLockWarning();
+        const capsLockWarning = new ShellEntry.CapsLockWarning();
         warningBox.add_child(capsLockWarning);
 
         this._errorMessageLabel = new St.Label({
@@ -457,7 +457,7 @@ const ShellMountPasswordDialog = GObject.registerClass({
     }
 
     _onKeyfilesCheckboxClicked() {
-        let useKeyfiles = this._keyfilesCheckbox.checked;
+        const useKeyfiles = this._keyfilesCheckbox.checked;
         this._passwordEntry.reactive = !useKeyfiles;
         this._passwordEntry.can_focus = !useKeyfiles;
         this._pimEntry.reactive = !useKeyfiles;
@@ -499,13 +499,13 @@ const ShellProcessesDialog = GObject.registerClass({
         this._applicationSection.list.destroy_all_children();
 
         pids.forEach(pid => {
-            let tracker = Shell.WindowTracker.get_default();
-            let app = tracker.get_app_from_pid(pid);
+            const tracker = Shell.WindowTracker.get_default();
+            const app = tracker.get_app_from_pid(pid);
 
             if (!app)
                 return;
 
-            let listItem = new Dialog.ListSectionItem({
+            const listItem = new Dialog.ListSectionItem({
                 icon_actor: app.create_icon_texture(LIST_ITEM_ICON_SIZE),
                 title: app.get_name(),
             });
@@ -563,9 +563,9 @@ export class GnomeShellMountOpHandler {
     }
 
     _setCurrentRequest(invocation, id, type) {
-        let oldId = this._currentId;
-        let oldType = this._currentType;
-        let requestId = `${id}@${invocation.get_sender()}`;
+        const oldId = this._currentId;
+        const oldType = this._currentType;
+        const requestId = `${id}@${invocation.get_sender()}`;
 
         this._clearCurrentRequest(Gio.MountOperationResult.UNHANDLED, {});
 
@@ -611,7 +611,7 @@ export class GnomeShellMountOpHandler {
      *      The ID must be unique in the context of the calling process.
      */
     AskPasswordAsync(params, invocation) {
-        let [id, message, iconName_, defaultUser_, defaultDomain_, flags] = params;
+        const [id, message, iconName_, defaultUser_, defaultDomain_, flags] = params;
 
         if (this._setCurrentRequest(invocation, id, ShellMountOperationType.ASK_PASSWORD)) {
             this._dialog.reaskPassword();
@@ -623,7 +623,7 @@ export class GnomeShellMountOpHandler {
         this._dialog = new ShellMountPasswordDialog(message, flags);
         this._dialog.connect('response',
             (object, choice, password, remember, hiddenVolume, systemVolume, pim) => {
-                let details = {};
+                const details = {};
                 let response;
 
                 if (choice === -1) {
@@ -631,7 +631,7 @@ export class GnomeShellMountOpHandler {
                 } else {
                     response = Gio.MountOperationResult.HANDLED;
 
-                    let passSave = remember ? Gio.PasswordSave.PERMANENTLY : Gio.PasswordSave.NEVER;
+                    const passSave = remember ? Gio.PasswordSave.PERMANENTLY : Gio.PasswordSave.NEVER;
                     details['password_save'] = GLib.Variant.new('u', passSave);
                     details['password'] = GLib.Variant.new('s', password);
                     details['hidden_volume'] = GLib.Variant.new('b', hiddenVolume);
@@ -660,7 +660,7 @@ export class GnomeShellMountOpHandler {
      * @param {Gio.DBusMethodInvocation} invocation - invocation
      */
     AskQuestionAsync(params, invocation) {
-        let [id, message, iconName_, choices] = params;
+        const [id, message, iconName_, choices] = params;
 
         if (this._setCurrentRequest(invocation, id, ShellMountOperationType.ASK_QUESTION)) {
             this._dialog.update(message, choices);
@@ -672,7 +672,7 @@ export class GnomeShellMountOpHandler {
         this._dialog = new ShellMountQuestionDialog(message);
         this._dialog.connect('response', (object, choice) => {
             let response;
-            let details = {};
+            const details = {};
 
             if (choice === -1) {
                 response = Gio.MountOperationResult.ABORTED;
@@ -706,7 +706,7 @@ export class GnomeShellMountOpHandler {
      * @param {Gio.DBusMethodInvocation} invocation - invocation
      */
     ShowProcessesAsync(params, invocation) {
-        let [id, message, iconName_, applicationPids, choices] = params;
+        const [id, message, iconName_, applicationPids, choices] = params;
 
         if (this._setCurrentRequest(invocation, id, ShellMountOperationType.SHOW_PROCESSES)) {
             this._dialog.update(message, applicationPids, choices);
@@ -718,7 +718,7 @@ export class GnomeShellMountOpHandler {
         this._dialog = new ShellProcessesDialog();
         this._dialog.connect('response', (object, choice) => {
             let response;
-            let details = {};
+            const details = {};
 
             if (choice === -1) {
                 response = Gio.MountOperationResult.ABORTED;

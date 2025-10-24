@@ -41,9 +41,9 @@ function _patchLayoutClass(layoutClass, styleProps) {
     if (styleProps) {
         layoutClass.prototype.hookup_style = function (container) {
             container.connect('style-changed', () => {
-                let node = container.get_theme_node();
-                for (let prop in styleProps) {
-                    let [found, length] = node.lookup_length(styleProps[prop], false);
+                const node = container.get_theme_node();
+                for (const prop in styleProps) {
+                    const [found, length] = node.lookup_length(styleProps[prop], false);
                     if (found)
                         this[prop] = length;
                 }
@@ -53,10 +53,10 @@ function _patchLayoutClass(layoutClass, styleProps) {
 }
 
 function _makeEaseCallback(params, cleanup) {
-    let onComplete = params.onComplete;
+    const onComplete = params.onComplete;
     delete params.onComplete;
 
-    let onStopped = params.onStopped;
+    const onStopped = params.onStopped;
     delete params.onStopped;
 
     return isFinished => {
@@ -73,7 +73,7 @@ function _getPropertyTarget(actor, propName) {
     if (!propName.startsWith('@'))
         return [actor, propName];
 
-    let [type, name, prop] = propName.split('.');
+    const [type, name, prop] = propName.split('.');
     switch (type) {
     case '@layout':
         return [actor.layout_manager, name];
@@ -134,10 +134,10 @@ function _easeActor(actor, params) {
         global.compositor.enable_unredirect();
         global.end_work();
     };
-    let callback = _makeEaseCallback(params, cleanup);
+    const callback = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transitions
-    let animatedProps = Object.keys(params).map(p => p.replace('_', '-', 'g'));
+    const animatedProps = Object.keys(params).map(p => p.replace('_', '-', 'g'));
     animatedProps.forEach(p => actor.remove_transition(p));
 
     if (actor.get_easing_duration() > 0 || !isReversed)
@@ -210,13 +210,13 @@ function _easeActorProperty(actor, propName, target, params) {
         global.compositor.enable_unredirect();
         global.end_work();
     };
-    let callback = _makeEaseCallback(params, cleanup);
+    const callback = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transition
     actor.remove_transition(propName);
 
     if (duration === 0) {
-        let [obj, prop] = _getPropertyTarget(actor, propName);
+        const [obj, prop] = _getPropertyTarget(actor, propName);
 
         if (!isReversed)
             obj[prop] = target;
@@ -227,8 +227,8 @@ function _easeActorProperty(actor, propName, target, params) {
         return;
     }
 
-    let pspec = actor.find_property(propName);
-    let transition = new Clutter.PropertyTransition({
+    const pspec = actor.find_property(propName);
+    const transition = new Clutter.PropertyTransition({
         property_name: propName,
         interval: new Clutter.Interval({value_type: pspec.value_type}),
         remove_on_complete: true,
@@ -329,7 +329,7 @@ Gio.File.prototype.touch_finish = function (result) {
 
 const origToString = Object.prototype.toString;
 Object.prototype.toString = function () {
-    let base = origToString.call(this);
+    const base = origToString.call(this);
     try {
         if ('actor' in this && this.actor instanceof Clutter.Actor)
             return base.replace(/\]$/, ` delegate for ${this.actor.toString().substring(1)}`);
@@ -342,7 +342,7 @@ Object.prototype.toString = function () {
 
 const slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
 if (slowdownEnv) {
-    let factor = parseFloat(slowdownEnv);
+    const factor = parseFloat(slowdownEnv);
     if (!isNaN(factor) && factor > 0.0)
         St.Settings.get().slow_down_factor = factor;
 }

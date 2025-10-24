@@ -110,7 +110,7 @@ const ParentalControlsManager = GObject.registerClass({
 
     async _onAppFilterChanged(manager, uid) {
         // Emit 'changed' signal only if app-filter is changed for currently logged-in user.
-        let currentUid = Shell.util_get_uid();
+        const currentUid = Shell.util_get_uid();
         if (currentUid !== uid)
             return;
 

@@ -24,8 +24,8 @@ const AutorunSetting = {
 
 // misc utils
 function shouldAutorunMount(mount) {
-    let root = mount.get_root();
-    let volume = mount.get_volume();
+    const root = mount.get_root();
+    const volume = mount.get_volume();
 
     if (!volume || !volume.allowAutorun)
         return false;
@@ -37,7 +37,7 @@ function shouldAutorunMount(mount) {
 }
 
 function isMountRootHidden(root) {
-    let path = root.get_path();
+    const path = root.get_path();
 
     // skip any mounts in hidden directory hierarchies
     return path.includes('/.');
@@ -47,7 +47,7 @@ function isMountNonLocal(mount) {
     // If the mount doesn't have an associated volume, that means it's
     // an uninteresting filesystem. Most devices that we care about will
     // have a mount, like media players and USB sticks.
-    let volume = mount.get_volume();
+    const volume = mount.get_volume();
     if (volume == null)
         return true;
 
@@ -55,8 +55,8 @@ function isMountNonLocal(mount) {
 }
 
 function startAppForMount(app, mount) {
-    let files = [];
-    let root = mount.get_root();
+    const files = [];
+    const root = mount.get_root();
     let retval = false;
 
     files.push(root);
@@ -85,8 +85,8 @@ class ContentTypeDiscoverer {
     }
 
     async guessContentTypes(mount) {
-        let autorunEnabled = !this._settings.get_boolean(SETTING_DISABLE_AUTORUN);
-        let shouldScan = autorunEnabled && !isMountNonLocal(mount);
+        const autorunEnabled = !this._settings.get_boolean(SETTING_DISABLE_AUTORUN);
+        const shouldScan = autorunEnabled && !isMountNonLocal(mount);
 
         let contentTypes = [];
         if (shouldScan) {
@@ -164,15 +164,15 @@ class AutorunDispatcher {
     }
 
     _getAutorunSettingForType(contentType) {
-        let runApp = this._settings.get_strv(SETTING_START_APP);
+        const runApp = this._settings.get_strv(SETTING_START_APP);
         if (runApp.includes(contentType))
             return AutorunSetting.RUN;
 
-        let ignore = this._settings.get_strv(SETTING_IGNORE);
+        const ignore = this._settings.get_strv(SETTING_IGNORE);
         if (ignore.includes(contentType))
             return AutorunSetting.IGNORE;
 
-        let openFiles = this._settings.get_strv(SETTING_OPEN_FOLDER);
+        const openFiles = this._settings.get_strv(SETTING_OPEN_FOLDER);
         if (openFiles.includes(contentType))
             return AutorunSetting.FILES;
 

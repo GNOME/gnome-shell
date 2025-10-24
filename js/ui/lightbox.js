@@ -168,9 +168,9 @@ export const Lightbox = GObject.registerClass({
     }
 
     _childAdded(container, newChild) {
-        let children = this._container.get_children();
-        let myIndex = children.indexOf(this);
-        let newChildIndex = children.indexOf(newChild);
+        const children = this._container.get_children();
+        const myIndex = children.indexOf(this);
+        const newChildIndex = children.indexOf(newChild);
 
         if (newChildIndex > myIndex) {
             // The child was added above the shade (presumably it was
@@ -183,7 +183,7 @@ export const Lightbox = GObject.registerClass({
             this._children.unshift(newChild);
         } else {
             // Somewhere else; insert it into the correct spot
-            let prevChild = this._children.indexOf(children[newChildIndex - 1]);
+            const prevChild = this._children.indexOf(children[newChildIndex - 1]);
             if (prevChild !== -1) // paranoia
                 this._children.splice(prevChild + 1, 0, newChild);
         }
@@ -192,12 +192,12 @@ export const Lightbox = GObject.registerClass({
     lightOn(fadeInTime) {
         this.remove_all_transitions();
 
-        let easeProps = {
+        const easeProps = {
             duration: fadeInTime || 0,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         };
 
-        let onComplete = () => {
+        const onComplete = () => {
             this._active = true;
             this.notify('active');
         };
@@ -225,12 +225,12 @@ export const Lightbox = GObject.registerClass({
         this._active = false;
         this.notify('active');
 
-        let easeProps = {
+        const easeProps = {
             duration: fadeOutTime || 0,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         };
 
-        let onComplete = () => this.hide();
+        const onComplete = () => this.hide();
 
         if (this._radialEffect) {
             this.ease_property(
@@ -243,7 +243,7 @@ export const Lightbox = GObject.registerClass({
     }
 
     _childRemoved(container, child) {
-        let index = this._children.indexOf(child);
+        const index = this._children.indexOf(child);
         if (index !== -1) // paranoia
             this._children.splice(index, 1);
 

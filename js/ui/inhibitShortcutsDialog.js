@@ -40,7 +40,7 @@ export const InhibitShortcutsDialog = GObject.registerClass({
     }
 
     get _app() {
-        let windowTracker = Shell.WindowTracker.get_default();
+        const windowTracker = Shell.WindowTracker.get_default();
         return windowTracker.get_window_app(this._window);
     }
 
@@ -66,7 +66,7 @@ export const InhibitShortcutsDialog = GObject.registerClass({
     _buildLayout() {
         const name = this._app?.get_name() ?? this._window.title;
 
-        let content = new Dialog.MessageDialogContent({
+        const content = new Dialog.MessageDialogContent({
             title: _('Allow inhibiting shortcuts'),
             description: name
                 /* Translators: %s is an application name like "Settings" */
@@ -76,7 +76,7 @@ export const InhibitShortcutsDialog = GObject.registerClass({
 
         const restoreAccel = Meta.prefs_get_keybinding_label('restore-shortcuts');
         if (restoreAccel) {
-            let restoreLabel = new St.Label({
+            const restoreLabel = new St.Label({
                 /* Translators: %s is a keyboard shortcut like "Super+x" */
                 text: _('You can restore shortcuts by pressing %s').format(restoreAccel),
                 style_class: 'message-dialog-description',
@@ -124,7 +124,7 @@ export const InhibitShortcutsDialog = GObject.registerClass({
         }
 
         /* Check with the permission store */
-        let appId = this._app.get_id();
+        const appId = this._app.get_id();
         this._permStore = new PermissionStore.PermissionStore(async (proxy, error) => {
             if (error) {
                 log(error.message);

@@ -70,24 +70,24 @@ export class CtrlAltTabManager {
         if (a.sortGroup !== b.sortGroup)
             return a.sortGroup - b.sortGroup;
 
-        let [ax] = a.proxy.get_transformed_position();
-        let [bx] = b.proxy.get_transformed_position();
+        const [ax] = a.proxy.get_transformed_position();
+        const [bx] = b.proxy.get_transformed_position();
 
         return ax - bx;
     }
 
     popup(backward, binding, mask) {
         // Start with the set of focus groups that are currently mapped
-        let items = this._items.filter(item => item.proxy.mapped);
+        const items = this._items.filter(item => item.proxy.mapped);
 
         // And add the windows metacity would show in its Ctrl-Alt-Tab list
         if (Main.sessionMode.hasWindows && !Main.overview.visible) {
-            let display = global.display;
-            let workspaceManager = global.workspace_manager;
-            let activeWorkspace = workspaceManager.get_active_workspace();
-            let windows = display.get_tab_list(Meta.TabList.DOCKS,
+            const display = global.display;
+            const workspaceManager = global.workspace_manager;
+            const activeWorkspace = workspaceManager.get_active_workspace();
+            const windows = display.get_tab_list(Meta.TabList.DOCKS,
                 activeWorkspace);
-            let windowTracker = Shell.WindowTracker.get_default();
+            const windowTracker = Shell.WindowTracker.get_default();
             for (let i = 0; i < windows.length; i++) {
                 let icon = null;
                 let iconName = null;
@@ -184,7 +184,7 @@ class CtrlAltTabSwitcher extends SwitcherPopup.SwitcherList {
         }
         box.add_child(icon);
 
-        let text = new St.Label({
+        const text = new St.Label({
             text: item.name,
             x_align: Clutter.ActorAlign.CENTER,
         });

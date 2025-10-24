@@ -26,20 +26,20 @@ class AppFavorites extends Signals.EventEmitter {
     }
 
     reload() {
-        let ids = global.settings.get_strv(this.FAVORITE_APPS_KEY);
-        let appSys = Shell.AppSystem.get_default();
-        let apps = ids.map(id => appSys.lookup_app(id))
+        const ids = global.settings.get_strv(this.FAVORITE_APPS_KEY);
+        const appSys = Shell.AppSystem.get_default();
+        const apps = ids.map(id => appSys.lookup_app(id))
                       .filter(app => app !== null && this._parentalControlsManager.shouldShowApp(app.app_info));
         this._favorites = {};
         for (let i = 0; i < apps.length; i++) {
-            let app = apps[i];
+            const app = apps[i];
             this._favorites[app.get_id()] = app;
         }
     }
 
     _getIds() {
-        let ret = [];
-        for (let id in this._favorites)
+        const ret = [];
+        for (const id in this._favorites)
             ret.push(id);
         return ret;
     }
@@ -49,8 +49,8 @@ class AppFavorites extends Signals.EventEmitter {
     }
 
     getFavorites() {
-        let ret = [];
-        for (let id in this._favorites)
+        const ret = [];
+        for (const id in this._favorites)
             ret.push(this._favorites[id]);
         return ret;
     }
@@ -63,7 +63,7 @@ class AppFavorites extends Signals.EventEmitter {
         if (appId in this._favorites)
             return false;
 
-        let app = Shell.AppSystem.get_default().lookup_app(appId);
+        const app = Shell.AppSystem.get_default().lookup_app(appId);
 
         if (!app)
             return false;
@@ -71,7 +71,7 @@ class AppFavorites extends Signals.EventEmitter {
         if (!this._parentalControlsManager.shouldShowApp(app.app_info))
             return false;
 
-        let ids = this._getIds();
+        const ids = this._getIds();
         if (pos === -1)
             ids.push(appId);
         else
@@ -104,16 +104,16 @@ class AppFavorites extends Signals.EventEmitter {
         if (!(appId in this._favorites))
             return false;
 
-        let ids = this._getIds().filter(id => id !== appId);
+        const ids = this._getIds().filter(id => id !== appId);
         global.settings.set_strv(this.FAVORITE_APPS_KEY, ids);
         return true;
     }
 
     removeFavorite(appId) {
-        let ids = this._getIds();
-        let pos = ids.indexOf(appId);
+        const ids = this._getIds();
+        const pos = ids.indexOf(appId);
 
-        let app = this._favorites[appId];
+        const app = this._favorites[appId];
         if (!this._removeFavorite(appId))
             return;
 

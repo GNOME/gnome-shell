@@ -41,9 +41,9 @@ class URLHighlighter extends St.Label {
         });
         this._linkColor = '#ccccff';
         this.connect('style-changed', () => {
-            let [hasColor, color] = this.get_theme_node().lookup_color('link-color', false);
+            const [hasColor, color] = this.get_theme_node().lookup_color('link-color', false);
             if (hasColor) {
-                let linkColor = color.to_string().substring(0, 7);
+                const linkColor = color.to_string().substring(0, 7);
                 if (linkColor !== this._linkColor) {
                     this._linkColor = linkColor;
                     this._highlightUrls();
@@ -124,12 +124,12 @@ class URLHighlighter extends St.Label {
 
     _highlightUrls() {
         // text here contain markup
-        let urls = Util.findUrls(this._text);
+        const urls = Util.findUrls(this._text);
         let markup = '';
         let pos = 0;
         for (let i = 0; i < urls.length; i++) {
-            let url = urls[i];
-            let str = this._text.substring(pos, url.pos);
+            const url = urls[i];
+            const str = this._text.substring(pos, url.pos);
             markup += `${str}<span foreground="${this._linkColor}"><u>${url.url}</u></span>`;
             pos = url.pos + url.url.length;
         }
@@ -142,7 +142,7 @@ class URLHighlighter extends St.Label {
         [, x, y] = this.transform_stage_point(x, y);
         let findPos = -1;
         for (let i = 0; i < this.clutter_text.text.length; i++) {
-            let [, px, py, lineHeight] = this.clutter_text.position_to_coords(i);
+            const [, px, py, lineHeight] = this.clutter_text.position_to_coords(i);
             if (py > y || py + lineHeight < y || x < px)
                 continue;
             findPos = i;
@@ -461,7 +461,7 @@ export const Message = GObject.registerClass({
         this.expanded = false;
         this._useBodyMarkup = false;
 
-        let vbox = new St.BoxLayout({
+        const vbox = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
         });
@@ -674,7 +674,7 @@ export const Message = GObject.registerClass({
     }
 
     vfunc_key_press_event(event) {
-        let keysym = event.get_key_symbol();
+        const keysym = event.get_key_symbol();
 
         if (keysym === Clutter.KEY_Delete ||
             keysym === Clutter.KEY_KP_Delete ||
@@ -832,8 +832,8 @@ class MediaMessage extends Message {
             icon,
         });
 
-        let isPlaying = this._player.status === 'Playing';
-        let iconName = isPlaying
+        const isPlaying = this._player.status === 'Playing';
+        const iconName = isPlaying
             ? 'media-playback-pause-symbolic'
             : 'media-playback-start-symbolic';
         this._playPauseButton.child.icon_name = iconName;
@@ -1361,7 +1361,7 @@ const MessageGroupExpanderLayout = GObject.registerClass({
 
     vfunc_allocate(container, box) {
         const childWidth = box.x2 - box.x1;
-        let fullY2 = box.y2;
+        const fullY2 = box.y2;
 
         if (this._cover.visible)
             this._cover.allocate(box);

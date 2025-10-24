@@ -68,7 +68,7 @@ export class ObjectManager extends Signals.EventEmitter {
     }
 
     async _addInterface(objectPath, interfaceName) {
-        let info = this._interfaceInfos[interfaceName];
+        const info = this._interfaceInfos[interfaceName];
 
         if (!info)
             return;
@@ -114,10 +114,10 @@ export class ObjectManager extends Signals.EventEmitter {
         if (!this._objects[objectPath])
             return;
 
-        let proxy = this._objects[objectPath][interfaceName];
+        const proxy = this._objects[objectPath][interfaceName];
 
         if (this._interfaces[interfaceName]) {
-            let index = this._interfaces[interfaceName].indexOf(proxy);
+            const index = this._interfaces[interfaceName].indexOf(proxy);
 
             if (index >= 0)
                 this._interfaces[interfaceName].splice(index, 1);
@@ -149,7 +149,7 @@ export class ObjectManager extends Signals.EventEmitter {
 
         this._managerProxy.connectSignal('InterfacesAdded',
             (objectManager, sender, [objectPath, interfaces]) => {
-                let interfaceNames = Object.keys(interfaces);
+                const interfaceNames = Object.keys(interfaces);
                 for (let i = 0; i < interfaceNames.length; i++)
                     this._addInterface(objectPath, interfaceNames[i]);
             });
@@ -199,14 +199,14 @@ export class ObjectManager extends Signals.EventEmitter {
     }
 
     _onNameVanished() {
-        let objectPaths = Object.keys(this._objects);
+        const objectPaths = Object.keys(this._objects);
         for (let i = 0; i < objectPaths.length; i++) {
-            let objectPath = objectPaths[i];
-            let object = this._objects[objectPath];
+            const objectPath = objectPaths[i];
+            const object = this._objects[objectPath];
 
-            let interfaceNames = Object.keys(object);
+            const interfaceNames = Object.keys(object);
             for (let j = 0; j < interfaceNames.length; j++) {
-                let interfaceName = interfaceNames[j];
+                const interfaceName = interfaceNames[j];
 
                 if (object[interfaceName])
                     this._removeInterface(objectPath, interfaceName);
@@ -216,13 +216,13 @@ export class ObjectManager extends Signals.EventEmitter {
 
     _registerInterfaces(interfaces) {
         for (let i = 0; i < interfaces.length; i++) {
-            let info = Gio.DBusInterfaceInfo.new_for_xml(interfaces[i]);
+            const info = Gio.DBusInterfaceInfo.new_for_xml(interfaces[i]);
             this._interfaceInfos[info.name] = info;
         }
     }
 
     getProxy(objectPath, interfaceName) {
-        let object = this._objects[objectPath];
+        const object = this._objects[objectPath];
 
         if (!object)
             return null;
@@ -231,7 +231,7 @@ export class ObjectManager extends Signals.EventEmitter {
     }
 
     getProxiesForInterface(interfaceName) {
-        let proxyList = this._interfaces[interfaceName];
+        const proxyList = this._interfaces[interfaceName];
 
         if (!proxyList)
             return [];
@@ -240,15 +240,15 @@ export class ObjectManager extends Signals.EventEmitter {
     }
 
     getAllProxies() {
-        let proxies = [];
+        const proxies = [];
 
-        let objectPaths = Object.keys(this._objects);
+        const objectPaths = Object.keys(this._objects);
         for (let i = 0; i < objectPaths.length; i++) {
-            let object = this._objects[objectPaths];
+            const object = this._objects[objectPaths];
 
-            let interfaceNames = Object.keys(object);
+            const interfaceNames = Object.keys(object);
             for (let j = 0; j < interfaceNames.length; j++) {
-                let interfaceName = interfaceNames[j];
+                const interfaceName = interfaceNames[j];
                 if (object[interfaceName])
                     proxies.push(object(interfaceName));
             }

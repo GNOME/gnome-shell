@@ -180,7 +180,7 @@ export const QuickMenuToggle = GObject.registerClass({
         });
         this._box.add_child(contents);
 
-        let separator = new St.Widget({style_class: 'quick-toggle-separator'});
+        const separator = new St.Widget({style_class: 'quick-toggle-separator'});
         this._box.add_child(separator);
 
         this._menuButton = new St.Button({

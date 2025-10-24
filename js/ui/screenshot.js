@@ -756,7 +756,7 @@ class UIWindowSelectorLayout extends Workspace.WorkspaceLayout {
 
         const nSlots = this._windowSlots.length;
         for (let i = 0; i < nSlots; i++) {
-            let [x, y, width, height, child] = this._windowSlots[i];
+            const [x, y, width, height, child] = this._windowSlots[i];
 
             childBox.set_origin(x, y);
             childBox.set_size(width, height);
@@ -1027,9 +1027,9 @@ class UIWindowSelector extends St.Widget {
 
     capture() {
         for (const actor of global.get_window_actors()) {
-            let window = actor.metaWindow;
-            let workspaceManager = global.workspace_manager;
-            let activeWorkspace = workspaceManager.get_active_workspace();
+            const window = actor.metaWindow;
+            const workspaceManager = global.workspace_manager;
+            const activeWorkspace = workspaceManager.get_active_workspace();
             if (window.is_override_redirect() ||
                 !window.located_on_workspace(activeWorkspace) ||
                 window.get_monitor() !== this._monitorIndex)
@@ -2462,7 +2462,7 @@ export class ScreenshotService {
         if (needsDisk)
             lockedDown = this._lockdownSettings.get_boolean('disable-save-to-disk');
 
-        let sender = invocation.get_sender();
+        const sender = invocation.get_sender();
         if (this._screenShooter.has(sender)) {
             invocation.return_error_literal(
                 Gio.IOErrorEnum, Gio.IOErrorEnum.BUSY,
@@ -2482,7 +2482,7 @@ export class ScreenshotService {
             }
         }
 
-        let shooter = new Shell.Screenshot();
+        const shooter = new Shell.Screenshot();
         shooter._watchNameId = Gio.bus_watch_name(Gio.BusType.SESSION,
             sender, 0, null, this._onNameVanished.bind(this));
 
@@ -2496,7 +2496,7 @@ export class ScreenshotService {
     }
 
     _removeShooterForSender(sender) {
-        let shooter = this._screenShooter.get(sender);
+        const shooter = this._screenShooter.get(sender);
         if (!shooter)
             return;
 
@@ -2514,7 +2514,7 @@ export class ScreenshotService {
     *_resolveRelativeFilename(filename) {
         filename = filename.replace(/\.png$/, '');
 
-        let path = [
+        const path = [
             GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES),
             GLib.get_home_dir(),
         ].find(p => p && GLib.file_test(p, GLib.FileTest.EXISTS));
@@ -2537,8 +2537,8 @@ export class ScreenshotService {
 
         if (GLib.path_is_absolute(filename)) {
             try {
-                let file = Gio.File.new_for_path(filename);
-                let stream = file.replace(null, false, Gio.FileCreateFlags.NONE, null);
+                const file = Gio.File.new_for_path(filename);
+                const stream = file.replace(null, false, Gio.FileCreateFlags.NONE, null);
                 return [stream, file];
             } catch (e) {
                 invocation.return_gerror(e);
@@ -2548,9 +2548,9 @@ export class ScreenshotService {
         }
 
         let err;
-        for (let file of this._resolveRelativeFilename(filename)) {
+        for (const file of this._resolveRelativeFilename(filename)) {
             try {
-                let stream = file.create(Gio.FileCreateFlags.NONE, null);
+                const stream = file.create(Gio.FileCreateFlags.NONE, null);
                 return [stream, file];
             } catch (e) {
                 err = e;
@@ -2583,17 +2583,17 @@ export class ScreenshotService {
         if (file) {
             filenameUsed = file.get_path();
         } else {
-            let bytes = stream.steal_as_bytes();
-            let clipboard = St.Clipboard.get_default();
+            const bytes = stream.steal_as_bytes();
+            const clipboard = St.Clipboard.get_default();
             clipboard.set_content(St.ClipboardType.CLIPBOARD, 'image/png', bytes);
         }
 
-        let retval = GLib.Variant.new('(bs)', [true, filenameUsed]);
+        const retval = GLib.Variant.new('(bs)', [true, filenameUsed]);
         invocation.return_value(retval);
     }
 
     _scaleArea(x, y, width, height) {
-        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        const scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         x *= scaleFactor;
         y *= scaleFactor;
         width *= scaleFactor;
@@ -2602,7 +2602,7 @@ export class ScreenshotService {
     }
 
     _unscaleArea(x, y, width, height) {
-        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        const scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         x /= scaleFactor;
         y /= scaleFactor;
         width /= scaleFactor;
@@ -2620,11 +2620,11 @@ export class ScreenshotService {
                 'Invalid params');
             return;
         }
-        let screenshot = await this._createScreenshot(invocation);
+        const screenshot = await this._createScreenshot(invocation);
         if (!screenshot)
             return;
 
-        let [stream, file] = this._createStream(filename, invocation);
+        const [stream, file] = this._createStream(filename, invocation);
         if (!stream)
             return;
 
@@ -2642,12 +2642,12 @@ export class ScreenshotService {
     }
 
     async ScreenshotWindowAsync(params, invocation) {
-        let [includeFrame, includeCursor, flash, filename] = params;
-        let screenshot = await this._createScreenshot(invocation);
+        const [includeFrame, includeCursor, flash, filename] = params;
+        const screenshot = await this._createScreenshot(invocation);
         if (!screenshot)
             return;
 
-        let [stream, file] = this._createStream(filename, invocation);
+        const [stream, file] = this._createStream(filename, invocation);
         if (!stream)
             return;
 
@@ -2665,12 +2665,12 @@ export class ScreenshotService {
     }
 
     async ScreenshotAsync(params, invocation) {
-        let [includeCursor, flash, filename] = params;
-        let screenshot = await this._createScreenshot(invocation);
+        const [includeCursor, flash, filename] = params;
+        const screenshot = await this._createScreenshot(invocation);
         if (!screenshot)
             return;
 
-        let [stream, file] = this._createStream(filename, invocation);
+        const [stream, file] = this._createStream(filename, invocation);
         if (!stream)
             return;
 
@@ -2723,10 +2723,10 @@ export class ScreenshotService {
             return;
         }
 
-        let selectArea = new SelectArea();
+        const selectArea = new SelectArea();
         try {
-            let areaRectangle = await selectArea.selectAsync();
-            let retRectangle = this._unscaleArea(
+            const areaRectangle = await selectArea.selectAsync();
+            const retRectangle = this._unscaleArea(
                 areaRectangle.x, areaRectangle.y,
                 areaRectangle.width, areaRectangle.height);
             invocation.return_value(GLib.Variant.new('(iiii)', retRectangle));
@@ -2754,7 +2754,7 @@ export class ScreenshotService {
                 'Invalid params');
             return;
         }
-        let flashspot = new Flashspot({x, y, width, height});
+        const flashspot = new Flashspot({x, y, width, height});
         flashspot.fire();
         invocation.return_value(null);
     }
@@ -2853,7 +2853,7 @@ class SelectArea extends St.Widget {
         [this._lastX, this._lastY] = event.get_coords();
         this._lastX = Math.floor(this._lastX);
         this._lastY = Math.floor(this._lastY);
-        let geometry = this._getGeometry();
+        const geometry = this._getGeometry();
 
         this._rubberband.set_position(geometry.x, geometry.y);
         this._rubberband.set_size(geometry.width, geometry.height);

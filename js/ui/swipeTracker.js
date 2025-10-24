@@ -136,7 +136,7 @@ const TouchpadSwipeGesture = GObject.registerClass({
         if (this._state === TouchpadState.IGNORED)
             return Clutter.EVENT_PROPAGATE;
 
-        let time = event.get_time();
+        const time = event.get_time();
 
         const [x, y] = event.get_coords();
         const [dx, dy] = event.get_gesture_motion_delta_unaccelerated();
@@ -283,8 +283,8 @@ const ScrollGesture = GObject.registerClass({
         const vertical = this.orientation === Clutter.Orientation.VERTICAL;
         const distance = vertical ? TOUCHPAD_BASE_HEIGHT : TOUCHPAD_BASE_WIDTH;
 
-        let time = event.get_time();
-        let [dx, dy] = event.get_scroll_delta();
+        const time = event.get_time();
+        const [dx, dy] = event.get_scroll_delta();
         if (dx === 0 && dy === 0) {
             this.emit('end', time, distance);
             this._began = false;
@@ -292,7 +292,7 @@ const ScrollGesture = GObject.registerClass({
         }
 
         if (!this._began) {
-            let [x, y] = event.get_coords();
+            const [x, y] = event.get_coords();
             this.emit('begin', time, x, y);
             this._began = true;
         }
@@ -495,7 +495,7 @@ export const SwipeTracker = GObject.registerClass({
             return;
 
         const rect = new Mtk.Rectangle({x, y, width: 1, height: 1});
-        let monitor = global.display.get_monitor_index_for_rect(rect);
+        const monitor = global.display.get_monitor_index_for_rect(rect);
 
         this.emit('begin', monitor);
     }

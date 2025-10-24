@@ -42,14 +42,14 @@ class ATIndicator extends PanelMenu.Button {
         this._a11ySettings = new Gio.Settings({schema_id: A11Y_SCHEMA});
         this._a11ySettings.connect(`changed::${KEY_ALWAYS_SHOW}`, this._queueSyncMenuVisibility.bind(this));
 
-        let highContrast = this._buildItem(_('High Contrast'), A11Y_INTERFACE_SCHEMA, KEY_HIGH_CONTRAST);
+        const highContrast = this._buildItem(_('High Contrast'), A11Y_INTERFACE_SCHEMA, KEY_HIGH_CONTRAST);
         this.menu.addMenuItem(highContrast);
 
         const magnifier = this._buildItem(_('Zoom'),
             APPLICATIONS_SCHEMA, 'screen-magnifier-enabled');
         this.menu.addMenuItem(magnifier);
 
-        let textZoom = this._buildFontItem();
+        const textZoom = this._buildFontItem();
         this.menu.addMenuItem(textZoom);
 
         const screenReader = this._buildItem(_('Screen Reader'),
@@ -90,8 +90,8 @@ class ATIndicator extends PanelMenu.Button {
     _syncMenuVisibility() {
         this._syncMenuVisibilityIdle = 0;
 
-        let alwaysShow = this._a11ySettings.get_boolean(KEY_ALWAYS_SHOW);
-        let items = this.menu._getMenuItems();
+        const alwaysShow = this._a11ySettings.get_boolean(KEY_ALWAYS_SHOW);
+        const items = this.menu._getMenuItems();
 
         this.visible = alwaysShow || items.some(f => !!f.state);
 
@@ -132,7 +132,7 @@ class ATIndicator extends PanelMenu.Button {
 
         settings.connect(`changed::${KEY_TEXT_SCALING_FACTOR}`, () => {
             factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
-            let active = factor > 1.0;
+            const active = factor > 1.0;
 
             widget.block_signal_handler(toggledId);
             widget.setToggleState(active);

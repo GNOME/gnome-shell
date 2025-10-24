@@ -58,13 +58,13 @@ class RunDialog extends ModalDialog.ModalDialog {
             },
         };
 
-        let title = _('Run a Command');
+        const title = _('Run a Command');
 
-        let content = new Dialog.MessageDialogContent({title});
+        const content = new Dialog.MessageDialogContent({title});
         this.contentLayout.add_child(content);
         const [labelActor] = content;
 
-        let entry = new St.Entry({
+        const entry = new St.Entry({
             style_class: 'run-dialog-entry',
             labelActor,
             can_focus: true,
@@ -76,7 +76,7 @@ class RunDialog extends ModalDialog.ModalDialog {
         content.add_child(entry);
         this.setInitialKeyFocus(this._entryText);
 
-        let defaultDescriptionText = _('Press ESC to close');
+        const defaultDescriptionText = _('Press ESC to close');
 
         this._descriptionLabel = new St.Label({
             style_class: 'run-dialog-description',
@@ -94,15 +94,15 @@ class RunDialog extends ModalDialog.ModalDialog {
             entry: this._entryText,
         });
         this._entryText.connect('key-press-event', (o, e) => {
-            let symbol = e.get_key_symbol();
+            const symbol = e.get_key_symbol();
             if (symbol === Clutter.KEY_Tab) {
-                let text = o.get_text();
+                const text = o.get_text();
                 let prefix;
                 if (text.lastIndexOf(' ') === -1)
                     prefix = text;
                 else
                     prefix = text.substring(text.lastIndexOf(' ') + 1);
-                let postfix = this._getCompletion(prefix);
+                const postfix = this._getCompletion(prefix);
                 if (postfix != null && postfix.length > 0) {
                     o.insert_text(postfix, -1);
                     o.set_cursor_position(text.length + postfix.length);
@@ -159,16 +159,16 @@ class RunDialog extends ModalDialog.ModalDialog {
             return s1.substring(0, k);
         }
 
-        let paths = GLib.getenv('PATH').split(':');
+        const paths = GLib.getenv('PATH').split(':');
         paths.push(GLib.get_home_dir());
-        let someResults = paths.map(path => {
-            let results = [];
+        const someResults = paths.map(path => {
+            const results = [];
             try {
-                let file = Gio.File.new_for_path(path);
-                let fileEnum = file.enumerate_children('standard::name', Gio.FileQueryInfoFlags.NONE, null);
+                const file = Gio.File.new_for_path(path);
+                const fileEnum = file.enumerate_children('standard::name', Gio.FileQueryInfoFlags.NONE, null);
                 let info;
                 while ((info = fileEnum.next_file(null))) {
-                    let name = info.get_name();
+                    const name = info.get_name();
                     if (name.slice(0, text.length) === text)
                         results.push(name);
                 }
@@ -179,12 +179,12 @@ class RunDialog extends ModalDialog.ModalDialog {
             }
             return results;
         });
-        let results = someResults.reduce((a, b) => a.concat(b), []);
+        const results = someResults.reduce((a, b) => a.concat(b), []);
 
         if (!results.length)
             return null;
 
-        let common = results.reduce(_getCommon, null);
+        const common = results.reduce(_getCommon, null);
         return common.substring(text.length);
     }
 
@@ -210,8 +210,8 @@ class RunDialog extends ModalDialog.ModalDialog {
         } else {
             try {
                 if (inTerminal) {
-                    let exec = this._terminalSettings.get_string(EXEC_KEY);
-                    let execArg = this._terminalSettings.get_string(EXEC_ARG_KEY);
+                    const exec = this._terminalSettings.get_string(EXEC_KEY);
+                    const execArg = this._terminalSettings.get_string(EXEC_ARG_KEY);
                     command = `${exec} ${execArg} ${input}`;
                 }
                 Util.trySpawnCommandLine(command);
@@ -227,7 +227,7 @@ class RunDialog extends ModalDialog.ModalDialog {
                 }
 
                 if (path && GLib.file_test(path, GLib.FileTest.EXISTS)) {
-                    let file = Gio.file_new_for_path(path);
+                    const file = Gio.file_new_for_path(path);
                     try {
                         Gio.app_info_launch_default_for_uri(file.get_uri(),
                             global.create_app_launch_context(0, -1));
@@ -236,7 +236,7 @@ class RunDialog extends ModalDialog.ModalDialog {
                         //     Error invoking Gio.app_info_launch_default_for_uri: No application
                         //     is registered as handling this file
                         // We are only interested in the part after the first colon.
-                        let message = err.message.replace(/[^:]*: *(.+)/, '$1');
+                        const message = err.message.replace(/[^:]*: *(.+)/, '$1');
                         this._showError(message);
                     }
                 } else {

@@ -18,7 +18,7 @@ const AVATAR_ICON_SIZE = 64;
 export const Avatar = GObject.registerClass(
 class Avatar extends St.Bin {
     _init(user, params) {
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        const themeContext = St.ThemeContext.get_for_stage(global.stage);
         params = Params.parse(params, {
             styleClass: 'user-icon',
             reactive: false,
@@ -49,13 +49,13 @@ class Avatar extends St.Bin {
     vfunc_style_changed() {
         super.vfunc_style_changed();
 
-        let node = this.get_theme_node();
-        let [found, iconSize] = node.lookup_length('icon-size', false);
+        const node = this.get_theme_node();
+        const [found, iconSize] = node.lookup_length('icon-size', false);
 
         if (!found)
             return;
 
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        const themeContext = St.ThemeContext.get_for_stage(global.stage);
 
         // node.lookup_length() returns a scaled value, but we
         // need unscaled
@@ -75,7 +75,7 @@ class Avatar extends St.Bin {
                 iconFile = null;
         }
 
-        let {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
+        const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
         this.set_size(
             this._iconSize * scaleFactor,
             this._iconSize * scaleFactor);
@@ -128,12 +128,12 @@ class UserWidgetLabel extends St.Widget {
     vfunc_allocate(box) {
         this.set_allocation(box);
 
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
+        const availWidth = box.x2 - box.x1;
+        const availHeight = box.y2 - box.y1;
 
-        let [, , natRealNameWidth] = this._realNameLabel.get_preferred_size();
+        const [, , natRealNameWidth] = this._realNameLabel.get_preferred_size();
 
-        let childBox = new Clutter.ActorBox();
+        const childBox = new Clutter.ActorBox();
 
         let hiddenLabel;
         if (natRealNameWidth <= availWidth) {
@@ -173,9 +173,9 @@ class UserWidget extends St.BoxLayout {
         // If user is null, that implies a username-based login authorization.
         this._user = user;
 
-        let vertical = orientation === Clutter.Orientation.VERTICAL;
-        let xAlign = vertical ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.START;
-        let styleClass = vertical ? 'user-widget vertical' : 'user-widget horizontal';
+        const vertical = orientation === Clutter.Orientation.VERTICAL;
+        const xAlign = vertical ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.START;
+        const styleClass = vertical ? 'user-widget vertical' : 'user-widget horizontal';
 
         super._init({
             styleClass,

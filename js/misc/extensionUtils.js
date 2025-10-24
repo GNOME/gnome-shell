@@ -47,7 +47,7 @@ const SERIALIZED_PROPERTIES = [
  * @returns {object}
  */
 export function serializeExtension(extension) {
-    let obj = {...extension.metadata};
+    const obj = {...extension.metadata};
 
     SERIALIZED_PROPERTIES.forEach(prop => {
         obj[prop] = extension[prop];
@@ -71,9 +71,9 @@ export function serializeExtension(extension) {
                 val = val.map(v => packValue(v));
             } else {
                 type = 'a{sv}';
-                let res = {};
-                for (let key in val) {
-                    let packed = packValue(val[key]);
+                const res = {};
+                for (const key in val) {
+                    const packed = packValue(val[key]);
                     if (packed)
                         res[key] = packed;
                 }
@@ -96,9 +96,9 @@ export function serializeExtension(extension) {
  * @returns {object}
  */
 export function deserializeExtension(variant) {
-    let res = {metadata: {}};
-    for (let prop in variant) {
-        let val = variant[prop].recursiveUnpack();
+    const res = {metadata: {}};
+    for (const prop in variant) {
+        const val = variant[prop].recursiveUnpack();
         if (SERIALIZED_PROPERTIES.includes(prop))
             res[prop] = val;
         else

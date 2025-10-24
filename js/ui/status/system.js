@@ -83,7 +83,7 @@ const PowerToggle = GObject.registerClass({
         else
             chargingState = '';
 
-        let fillLevel = 10 * Math.floor(this._proxy.Percentage / 10);
+        const fillLevel = 10 * Math.floor(this._proxy.Percentage / 10);
         const charged =
             this._proxy.State === UPower.DeviceState.FULLY_CHARGED ||
             (this._proxy.State === UPower.DeviceState.CHARGING && fillLevel === 100);

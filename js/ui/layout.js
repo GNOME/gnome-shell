@@ -142,8 +142,8 @@ export const MonitorConstraint = GObject.registerClass({
 
         let rect;
         if (this._workArea) {
-            let workspaceManager = global.workspace_manager;
-            let ws = workspaceManager.get_workspace_by_index(0);
+            const workspaceManager = global.workspace_manager;
+            const ws = workspaceManager.get_workspace_by_index(0);
             rect = ws.get_work_area_for_monitor(index);
         } else {
             rect = Main.layoutManager.monitors[index];
@@ -171,12 +171,12 @@ class Monitor {
 const UiActor = GObject.registerClass(
 class UiActor extends St.Widget {
     vfunc_get_preferred_width(_forHeight) {
-        let width = global.stage.width;
+        const width = global.stage.width;
         return [width, width];
     }
 
     vfunc_get_preferred_height(_forWidth) {
-        let height = global.stage.height;
+        const height = global.stage.height;
         return [height, height];
     }
 });
@@ -235,7 +235,7 @@ export const LayoutManager = GObject.registerClass({
                 global.compositor.get_feedback_group(),
             ];
 
-            for (let adoptedActor of adoptedUiGroupActors) {
+            for (const adoptedActor of adoptedUiGroupActors) {
                 this.uiGroup.remove_child(adoptedActor);
                 global.stage.add_child(adoptedActor);
             }
@@ -328,11 +328,11 @@ export const LayoutManager = GObject.registerClass({
             this._updateHotCorners.bind(this));
 
         // Need to update struts on new workspaces when they are added
-        let workspaceManager = global.workspace_manager;
+        const workspaceManager = global.workspace_manager;
         workspaceManager.connect('notify::n-workspaces',
             this._queueUpdateRegions.bind(this));
 
-        let display = global.display;
+        const display = global.display;
         display.connect('restacked',
             this._windowsRestacked.bind(this));
         display.connect('in-fullscreen-changed',
@@ -381,10 +381,10 @@ export const LayoutManager = GObject.registerClass({
     }
 
     _updateMonitors() {
-        let display = global.display;
+        const display = global.display;
 
         this.monitors = [];
-        let nMonitors = display.get_n_monitors();
+        const nMonitors = display.get_n_monitors();
         for (let i = 0; i < nMonitors; i++) {
             this.monitors.push(new Monitor(i,
                 display.get_monitor_geometry(i),
@@ -400,7 +400,7 @@ export const LayoutManager = GObject.registerClass({
             // to split primary from bottom.
             this.primaryIndex = this.bottomIndex = display.get_primary_monitor();
             for (let i = 0; i < this.monitors.length; i++) {
-                let monitor = this.monitors[i];
+                const monitor = this.monitors[i];
                 if (this._isAboveOrBelowPrimary(monitor)) {
                     if (monitor.y > this.monitors[this.bottomIndex].y)
                         this.bottomIndex = i;
@@ -435,28 +435,28 @@ export const LayoutManager = GObject.registerClass({
             return;
         }
 
-        let size = this.panelBox.height;
+        const size = this.panelBox.height;
 
         // build new hot corners
         for (let i = 0; i < this.monitors.length; i++) {
-            let monitor = this.monitors[i];
-            let cornerX = this._rtl ? monitor.x + monitor.width : monitor.x;
-            let cornerY = monitor.y;
+            const monitor = this.monitors[i];
+            const cornerX = this._rtl ? monitor.x + monitor.width : monitor.x;
+            const cornerY = monitor.y;
 
             let haveTopLeftCorner = true;
 
             if (i !== this.primaryIndex) {
                 // Check if we have a top left (right for RTL) corner.
                 // I.e. if there is no monitor directly above or to the left(right)
-                let besideX = this._rtl ? monitor.x + 1 : cornerX - 1;
-                let besideY = cornerY;
-                let aboveX = cornerX;
-                let aboveY = cornerY - 1;
+                const besideX = this._rtl ? monitor.x + 1 : cornerX - 1;
+                const besideY = cornerY;
+                const aboveX = cornerX;
+                const aboveY = cornerY - 1;
 
                 for (let j = 0; j < this.monitors.length; j++) {
                     if (i === j)
                         continue;
-                    let otherMonitor = this.monitors[j];
+                    const otherMonitor = this.monitors[j];
                     if (besideX >= otherMonitor.x &&
                         besideX < otherMonitor.x + otherMonitor.width &&
                         besideY >= otherMonitor.y &&
@@ -475,7 +475,7 @@ export const LayoutManager = GObject.registerClass({
             }
 
             if (haveTopLeftCorner) {
-                let corner = new HotCorner(this, monitor, cornerX, cornerY);
+                const corner = new HotCorner(this, monitor, cornerX, cornerY);
                 corner.setBarrierSize(size);
                 this.hotCorners.push(corner);
             } else {
@@ -506,7 +506,7 @@ export const LayoutManager = GObject.registerClass({
     _showSecondaryBackgrounds() {
         for (let i = 0; i < this.monitors.length; i++) {
             if (i !== this.primaryIndex) {
-                let backgroundActor = this._bgManagers[i].backgroundActor;
+                const backgroundActor = this._bgManagers[i].backgroundActor;
                 backgroundActor.show();
                 backgroundActor.opacity = 0;
                 backgroundActor.ease({
@@ -537,7 +537,7 @@ export const LayoutManager = GObject.registerClass({
             return Promise.resolve();
 
         for (let i = 0; i < this.monitors.length; i++) {
-            let bgManager = this._createBackgroundManager(i);
+            const bgManager = this._createBackgroundManager(i);
             this._bgManagers.push(bgManager);
 
             if (i !== this.primaryIndex && this._startingUp)
@@ -567,7 +567,7 @@ export const LayoutManager = GObject.registerClass({
     _panelBoxChanged() {
         this._updatePanelBarrier();
 
-        let size = this.panelBox.height;
+        const size = this.panelBox.height;
         this.hotCorners.forEach(corner => {
             if (corner)
                 corner.setBarrierSize(size);
@@ -588,7 +588,7 @@ export const LayoutManager = GObject.registerClass({
             return;
 
         if (this.panelBox.height) {
-            let primary = this.primaryMonitor;
+            const primary = this.primaryMonitor;
 
             this._rightPanelBarrier = new Meta.Barrier({
                 backend: global.backend,
@@ -612,9 +612,9 @@ export const LayoutManager = GObject.registerClass({
     }
 
     _isAboveOrBelowPrimary(monitor) {
-        let primary = this.monitors[this.primaryIndex];
-        let monitorLeft = monitor.x, monitorRight = monitor.x + monitor.width;
-        let primaryLeft = primary.x, primaryRight = primary.x + primary.width;
+        const primary = this.monitors[this.primaryIndex];
+        const monitorLeft = monitor.x, monitorRight = monitor.x + monitor.width;
+        const primaryLeft = primary.x, primaryRight = primary.x + primary.width;
 
         if ((monitorLeft >= primaryLeft && monitorLeft < primaryRight) ||
             (monitorRight > primaryLeft && monitorRight <= primaryRight) ||
@@ -626,7 +626,7 @@ export const LayoutManager = GObject.registerClass({
     }
 
     get currentMonitor() {
-        let index = global.display.get_current_monitor();
+        const index = global.display.get_current_monitor();
         return this.monitors[index];
     }
 
@@ -675,7 +675,7 @@ export const LayoutManager = GObject.registerClass({
         });
         this._systemBackground.add_constraint(constraint);
 
-        let signalId = this._systemBackground.connect('loaded', () => {
+        const signalId = this._systemBackground.connect('loaded', () => {
             this._systemBackground.disconnect(signalId);
 
             // We're mostly prepared for the startup animation
@@ -737,7 +737,7 @@ export const LayoutManager = GObject.registerClass({
         } else {
             this.keyboardBox.hide();
 
-            let monitor = this.primaryMonitor;
+            const monitor = this.primaryMonitor;
 
             if (!Main.sessionMode.hasOverview) {
                 const x = monitor.x + monitor.width / 2.0;
@@ -896,12 +896,12 @@ export const LayoutManager = GObject.registerClass({
             index = this._findActor(ancestor);
         }
 
-        let ancestorData = ancestor
+        const ancestorData = ancestor
             ? this._trackedActors[index]
             : defaultParams;
         // We can't use Params.parse here because we want to drop
         // the extra values like ancestorData.actor
-        for (let prop in defaultParams) {
+        for (const prop in defaultParams) {
             if (!Object.prototype.hasOwnProperty.call(params, prop))
                 params[prop] = ancestorData[prop];
         }
@@ -928,7 +928,7 @@ export const LayoutManager = GObject.registerClass({
 
     _findActor(actor) {
         for (let i = 0; i < this._trackedActors.length; i++) {
-            let actorData = this._trackedActors[i];
+            const actorData = this._trackedActors[i];
             if (actorData.actor === actor)
                 return i;
         }
@@ -939,7 +939,7 @@ export const LayoutManager = GObject.registerClass({
         if (this._findActor(actor) !== -1)
             throw new Error('trying to re-track existing chrome actor');
 
-        let actorData = Params.parse(params, defaultParams);
+        const actorData = Params.parse(params, defaultParams);
         actorData.actor = actor;
         actor.connectObject(
             'notify::visible', this._queueUpdateRegions.bind(this),
@@ -954,7 +954,7 @@ export const LayoutManager = GObject.registerClass({
     }
 
     _untrackActor(actor) {
-        let i = this._findActor(actor);
+        const i = this._findActor(actor);
 
         if (i === -1)
             return;
@@ -969,14 +969,14 @@ export const LayoutManager = GObject.registerClass({
         if (!actorData.trackFullscreen)
             return;
 
-        let monitor = this.findMonitorForActor(actorData.actor);
+        const monitor = this.findMonitorForActor(actorData.actor);
         actorData.actor.visible = !(global.window_group.visible &&
                                     monitor &&
                                     monitor.inFullscreen);
     }
 
     _updateVisibility() {
-        let windowsVisible = Main.sessionMode.hasWindows && !this._inOverview;
+        const windowsVisible = Main.sessionMode.hasWindows && !this._inOverview;
 
         global.window_group.visible = windowsVisible;
         global.top_window_group.visible = windowsVisible;
@@ -987,8 +987,8 @@ export const LayoutManager = GObject.registerClass({
     getWorkAreaForMonitor(monitorIndex) {
         // Assume that all workspaces will have the same
         // struts and pick the first one.
-        let workspaceManager = global.workspace_manager;
-        let ws = workspaceManager.get_workspace_by_index(0);
+        const workspaceManager = global.workspace_manager;
+        const ws = workspaceManager.get_workspace_by_index(0);
         return ws.get_work_area_for_monitor(monitorIndex);
     }
 
@@ -1005,8 +1005,8 @@ export const LayoutManager = GObject.registerClass({
     // This call guarantees that we return some monitor to simplify usage of it
     // In practice all tracked actors should be visible on some monitor anyway
     findIndexForActor(actor) {
-        let [x, y] = actor.get_transformed_position();
-        let [w, h] = actor.get_transformed_size();
+        const [x, y] = actor.get_transformed_position();
+        const [w, h] = actor.get_transformed_size();
         return this._findIndexForRect(x, y, w, h);
     }
 
@@ -1056,16 +1056,16 @@ export const LayoutManager = GObject.registerClass({
             delete this._updateRegionIdle;
         }
 
-        let rects = [], struts = [], i;
-        let isPopupMenuVisible = global.top_window_group.get_children().some(isPopupMetaWindow);
+        const rects = [], struts = [];
+        const isPopupMenuVisible = global.top_window_group.get_children().some(isPopupMetaWindow);
         const wantsInputRegion =
             !this._startingUp &&
             !isPopupMenuVisible &&
             Main.modalCount === 0 &&
             !Meta.is_wayland_compositor();
 
-        for (i = 0; i < this._trackedActors.length; i++) {
-            let actorData = this._trackedActors[i];
+        for (let i = 0; i < this._trackedActors.length; i++) {
+            const actorData = this._trackedActors[i];
             if (!(actorData.affectsInputRegion && wantsInputRegion) && !actorData.affectsStruts)
                 continue;
 
@@ -1085,10 +1085,10 @@ export const LayoutManager = GObject.registerClass({
 
             if (monitor) {
                 // Limit struts to the size of the screen
-                let x1 = Math.max(x, 0);
-                let x2 = Math.min(x + w, global.screen_width);
-                let y1 = Math.max(y, 0);
-                let y2 = Math.min(y + h, global.screen_height);
+                const x1 = Math.max(x, 0);
+                const x2 = Math.min(x + w, global.screen_width);
+                const y1 = Math.max(y, 0);
+                const y2 = Math.min(y + h, global.screen_height);
 
                 // Metacity wants to know what side of the monitor the
                 // strut is considered to be attached to. First, we find
@@ -1128,7 +1128,7 @@ export const LayoutManager = GObject.registerClass({
                 }
 
                 const strutRect = new Mtk.Rectangle({x: x1, y: y1, width: x2 - x1, height: y2 - y1});
-                let strut = new Meta.Strut({rect: strutRect, side});
+                const strut = new Meta.Strut({rect: strutRect, side});
                 struts.push(strut);
             }
         }
@@ -1138,9 +1138,9 @@ export const LayoutManager = GObject.registerClass({
 
         this._isPopupWindowVisible = isPopupMenuVisible;
 
-        let workspaceManager = global.workspace_manager;
+        const workspaceManager = global.workspace_manager;
         for (let w = 0; w < workspaceManager.n_workspaces; w++) {
-            let workspace = workspaceManager.get_workspace_by_index(w);
+            const workspace = workspaceManager.get_workspace_by_index(w);
             workspace.set_builtin_struts(struts);
         }
 
@@ -1397,19 +1397,19 @@ export class PressureBarrier extends Signals.EventEmitter {
         // oldest to newest, so just look for the first old event,
         // and then chop events after that off.
         let i = 0;
-        let threshold = this._lastTime - this._timeout;
+        const threshold = this._lastTime - this._timeout;
 
         while (i < this._barrierEvents.length) {
-            let [time, distance_] = this._barrierEvents[i];
+            const [time, distance_] = this._barrierEvents[i];
             if (time >= threshold)
                 break;
             i++;
         }
 
-        let firstNewEvent = i;
+        const firstNewEvent = i;
 
         for (i = 0; i < firstNewEvent; i++) {
-            let [time_, distance] = this._barrierEvents[i];
+            const [time_, distance] = this._barrierEvents[i];
             this._currentPressure -= distance;
         }
 
@@ -1445,7 +1445,7 @@ export class PressureBarrier extends Signals.EventEmitter {
         if (!(this._actionMode & Main.actionMode))
             return;
 
-        let slide = this._getDistanceAlongBarrier(barrier, event);
+        const slide = this._getDistanceAlongBarrier(barrier, event);
         let distance = this._getDistanceAcrossBarrier(barrier, event);
 
         if (distance >= this._threshold) {

@@ -483,7 +483,7 @@ const NMDeviceItem = GObject.registerClass({
     }
 
     _autoConnect() {
-        let connection = new NM.SimpleConnection();
+        const connection = new NM.SimpleConnection();
         this._client.add_and_activate_connection_async(connection, this._device, null, null, null);
     }
 
@@ -647,7 +647,7 @@ class NMModemDeviceItem extends NMDeviceItem {
 
         this._mobileDevice = null;
 
-        let capabilities = device.current_capabilities;
+        const capabilities = device.current_capabilities;
         if (device.udi.indexOf('/org/freedesktop/ModemManager1/Modem') === 0)
             this._mobileDevice = new ModemManager.BroadbandModem(device.udi, capabilities);
         else if (capabilities & NM.DeviceModemCapabilities.GSM_UMTS)
@@ -1058,7 +1058,7 @@ class NMWirelessNetworkItem extends PopupMenu.PopupBaseMenuItem {
 
     _updateAccessibleName() {
         const secureString = this._network.secure ? _('Secure') : _('Not secure');
-        let signalStrengthString = _('Signal strength %s%%').format(this._network.signal_strength);
+        const signalStrengthString = _('Signal strength %s%%').format(this._network.signal_strength);
         // translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
         this.accessible_name = _('%s, %s, %s').format(this._label.text, secureString, signalStrengthString);
     }
@@ -1185,7 +1185,7 @@ const NMWirelessDeviceItem = GObject.registerClass({
         if (!connection)
             return false;
 
-        let ip4config = connection.get_setting_ip4_config();
+        const ip4config = connection.get_setting_ip4_config();
         if (!ip4config)
             return false;
 
