@@ -32,6 +32,9 @@ export default defineConfig([
                 afterColon: true,
             }],
             'prefer-arrow-callback': 'error',
+            'prefer-const': ['error', {
+                destructuring: 'all',
+            }],
             'jsdoc/require-param-description': 'off',
             'jsdoc/require-jsdoc': ['error', {
                 exemptEmptyFunctions: true,
