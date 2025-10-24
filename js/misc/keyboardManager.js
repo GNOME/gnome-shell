@@ -107,9 +107,9 @@ class KeyboardManager {
         this._layoutInfos = {};
 
         for (let i = 0; i < ids.length; ++i) {
-            let [found, , , _layout, _variant] = this._xkbInfo.get_layout_info(ids[i]);
+            let [found, , , layout, variant] = this._xkbInfo.get_layout_info(ids[i]);
             if (found)
-                this._layoutInfos[ids[i]] = {id: ids[i], layout: _layout, variant: _variant};
+                this._layoutInfos[ids[i]] = {id: ids[i], layout, variant};
         }
 
         let i = 0;
@@ -142,10 +142,10 @@ class KeyboardManager {
         if (!found)
             [, , id] = GnomeDesktop.get_input_source_from_locale(DEFAULT_LOCALE);
 
-        let _layout, _variant;
-        [found, , , _layout, _variant] = this._xkbInfo.get_layout_info(id);
+        let layout, variant;
+        [found, , , layout, variant] = this._xkbInfo.get_layout_info(id);
         if (found)
-            return {layout: _layout, variant: _variant};
+            return {layout, variant};
         else
             return {layout: DEFAULT_LAYOUT, variant: DEFAULT_VARIANT};
     }
