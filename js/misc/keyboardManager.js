@@ -103,10 +103,10 @@ class KeyboardManager {
         this._current = null;
         this._layoutInfos = {};
 
-        for (let i = 0; i < ids.length; ++i) {
-            let [found, , , layout, variant] = this._xkbInfo.get_layout_info(ids[i]);
+        for (const id of ids) {
+            let [found, , , layout, variant] = this._xkbInfo.get_layout_info(id);
             if (found)
-                this._layoutInfos[ids[i]] = {id: ids[i], layout, variant};
+                this._layoutInfos[id] = {id, layout, variant};
         }
 
         let i = 0;
