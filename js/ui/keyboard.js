@@ -1914,11 +1914,21 @@ export const Keyboard = GObject.registerClass({
             ? this._focusWindowStartY - Main.layoutManager.keyboardBox.height
             : this._focusWindowStartY;
 
+        let unmanaged = false;
+        const winUnmanagedId = window.connect('unmanaged', () => {
+            unmanaged = true;
+        });
+
         windowActor.ease({
             y: finalY,
             duration: KEYBOARD_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onStopped: () => {
+                window.disconnect(winUnmanagedId);
+
+                if (unmanaged)
+                    return;
+
                 windowActor.y = finalY;
                 this._windowSlideAnimationComplete(window, finalY);
             },
