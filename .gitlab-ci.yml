@@ -97,26 +97,6 @@ check-commit-log:
     reports:
       junit: $JUNIT_REPORT
 
-check-merge-request:
-  extends:
-    - .fdo.ci-fairy
-  stage: pre-review
-  variables:
-    JUNIT_REPORT: check-merge-request-report.xml
-  script:
-    - if [[ x"$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" != "x" ]] ;
-      then
-        ci-fairy check-merge-request --require-allow-collaboration --junit-xml=$JUNIT_REPORT ;
-      else
-        echo "Not a merge request" ;
-      fi
-  rules:
-    - !reference [.pipeline-guard, rules]
-  artifacts:
-    expire_in: 1 week
-    reports:
-      junit: $JUNIT_REPORT
-
 build-fedora-container:
   extends:
     - .fdo.container-build@fedora@x86_64
