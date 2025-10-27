@@ -159,7 +159,7 @@ export const TimeLimitsManager = GObject.registerClass({
         };
         this._screenTimeLimitSettings = this._settingsFactory.new('org.gnome.desktop.screen-time-limits');
         this._screenTimeLimitSettings.connectObject(
-            'changed', () => this._updateSettings(),
+            'changed', () => this._updateStateMachine(),
             'changed::daily-limit-seconds', () => this.notify('daily-limit-time'),
             'changed::daily-limit-enabled', () => this.notify('daily-limit-enabled'),
             'changed::grayscale', () => this.notify('grayscale-enabled'),
@@ -178,10 +178,10 @@ export const TimeLimitsManager = GObject.registerClass({
         this._ignoreClockOffsetChanges = false;
 
         // Start tracking timings
-        this._updateSettings();
+        this._updateStateMachine();
     }
 
-    _updateSettings() {
+    _updateStateMachine() {
         if (!this._screenTimeLimitSettings.get_boolean('history-enabled')) {
             if (this._state !== TimeLimitsState.DISABLED) {
                 this._stopStateMachine().catch(
@@ -190,7 +190,7 @@ export const TimeLimitsManager = GObject.registerClass({
             return false;
         }
 
-        // If this is the first time _updateSettings() has been called, start
+        // If this is the first time _updateStateMachine() has been called, start
         // the state machine.
         if (this._state === TimeLimitsState.DISABLED) {
             this._startStateMachine().catch(
