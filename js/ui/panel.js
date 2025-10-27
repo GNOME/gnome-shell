@@ -402,7 +402,7 @@ class QuickSettings extends PanelMenu.Button {
      * Insert indicator and quick settings items at
      * appropriate positions
      *
-     * @param {PanelMenu.Button} indicator
+     * @param {SystemIndicator} indicator
      * @param {number=} colSpan
      */
     addExternalIndicator(indicator, colSpan = 1) {
