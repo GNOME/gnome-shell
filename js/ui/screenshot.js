@@ -14,6 +14,7 @@ import * as Layout from './layout.js';
 import * as Lightbox from './lightbox.js';
 import * as Main from './main.js';
 import * as MessageTray from './messageTray.js';
+import * as Tooltip from './tooltip.js';
 import * as Workspace from './workspace.js';
 
 Gio._promisify(Shell.Screenshot.prototype, 'pick_color');
@@ -66,77 +67,6 @@ class IconLabelButton extends St.Button {
             text: label,
             x_align: Clutter.ActorAlign.CENTER,
         }));
-    }
-});
-
-export const Tooltip = GObject.registerClass(
-class Tooltip extends St.Label {
-    _init(widget, params) {
-        super._init(params);
-
-        this._widget = widget;
-        this._timeoutId = null;
-
-        this._widget.connect('notify::hover', () => {
-            if (this._widget.hover)
-                this.open();
-            else
-                this.close();
-        });
-
-        if (!this._widget.label_actor)
-            this._widget.label_actor = this;
-    }
-
-    open() {
-        if (this._timeoutId)
-            return;
-
-        this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 300, () => {
-            this.opacity = 0;
-            this.show();
-
-            const extents = this._widget.get_transformed_extents();
-
-            const xOffset = Math.floor((extents.get_width() - this.width) / 2);
-            const x =
-                Math.clamp(extents.get_x() + xOffset, 0, global.stage.width - this.width);
-
-            const node = this.get_theme_node();
-            const yOffset = node.get_length('-y-offset');
-
-            const y = extents.get_y() - this.height - yOffset;
-
-            this.set_position(x, y);
-            this.ease({
-                opacity: 255,
-                duration: 150,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-
-            this._timeoutId = null;
-            return GLib.SOURCE_REMOVE;
-        });
-        GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] tooltip.open');
-    }
-
-    close() {
-        if (this._timeoutId) {
-            GLib.source_remove(this._timeoutId);
-            this._timeoutId = null;
-            return;
-        }
-
-        if (!this.visible)
-            return;
-
-        this.remove_all_transitions();
-        this.ease({
-            opacity: 0,
-            duration: 100,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this.hide(),
-        });
     }
 });
 
@@ -1272,10 +1202,10 @@ export const ScreenshotUI = GObject.registerClass({
             this._onSelectionButtonToggled.bind(this));
         this._typeButtonContainer.add_child(this._selectionButton);
 
-        this.add_child(new Tooltip(this._selectionButton, {
+        this.add_child(new Tooltip.Tooltip(this._selectionButton, {
             text: _('Area Selection'),
             style_class: 'screenshot-ui-tooltip',
-            visible: false,
+            showWhenHovered: true,
         }));
 
         this._screenButton = new IconLabelButton('screenshot-ui-display-symbolic', _('Screen'), {
@@ -1287,10 +1217,10 @@ export const ScreenshotUI = GObject.registerClass({
             this._onScreenButtonToggled.bind(this));
         this._typeButtonContainer.add_child(this._screenButton);
 
-        this.add_child(new Tooltip(this._screenButton, {
+        this.add_child(new Tooltip.Tooltip(this._screenButton, {
             text: _('Screen Selection'),
             style_class: 'screenshot-ui-tooltip',
-            visible: false,
+            showWhenHovered: true,
         }));
 
         this._windowButton = new IconLabelButton('screenshot-ui-window-symbolic', _('Window'), {
@@ -1302,10 +1232,10 @@ export const ScreenshotUI = GObject.registerClass({
             this._onWindowButtonToggled.bind(this));
         this._typeButtonContainer.add_child(this._windowButton);
 
-        this.add_child(new Tooltip(this._windowButton, {
+        this.add_child(new Tooltip.Tooltip(this._windowButton, {
             text: _('Window Selection'),
             style_class: 'screenshot-ui-tooltip',
-            visible: false,
+            showWhenHovered: true,
         }));
 
         this._bottomRowContainer = new St.Widget({layout_manager: new Clutter.BinLayout()});
@@ -1327,10 +1257,10 @@ export const ScreenshotUI = GObject.registerClass({
             this._onShotButtonToggled.bind(this));
         this._shotCastContainer.add_child(this._shotButton);
 
-        this.add_child(new Tooltip(this._shotButton, {
+        this.add_child(new Tooltip.Tooltip(this._shotButton, {
             text: _('Take Screenshot'),
             style_class: 'screenshot-ui-tooltip',
-            visible: false,
+            showWhenHovered: true,
         }));
 
         this._castButton = new St.Button({
@@ -1343,10 +1273,10 @@ export const ScreenshotUI = GObject.registerClass({
             this._onCastButtonToggled.bind(this));
         this._shotCastContainer.add_child(this._castButton);
 
-        this.add_child(new Tooltip(this._castButton, {
+        this.add_child(new Tooltip.Tooltip(this._castButton, {
             text: _('Record Screen'),
             style_class: 'screenshot-ui-tooltip',
-            visible: false,
+            showWhenHovered: true,
         }));
 
         this._shotButton.bind_property('checked', this._castButton, 'checked',
@@ -1358,12 +1288,12 @@ export const ScreenshotUI = GObject.registerClass({
             x_expand: true,
             y_expand: true,
         }));
-        this.add_child(new Tooltip(this._captureButton, {
+        this.add_child(new Tooltip.Tooltip(this._captureButton, {
             /* Translators: since this string refers to an action,
             it needs to be phrased as a verb. */
             text: _('Capture'),
             style_class: 'screenshot-ui-tooltip',
-            visible: false,
+            showWhenHovered: true,
         }));
         this._captureButton.connect('clicked',
             () => this._onCaptureButtonClicked().catch(logError));
@@ -1382,10 +1312,10 @@ export const ScreenshotUI = GObject.registerClass({
         });
         this._showPointerButtonContainer.add_child(this._showPointerButton);
 
-        this.add_child(new Tooltip(this._showPointerButton, {
+        this.add_child(new Tooltip.Tooltip(this._showPointerButton, {
             text: _('Show Pointer'),
             style_class: 'screenshot-ui-tooltip',
-            visible: false,
+            showWhenHovered: true,
         }));
 
         this._showPointerButton.connect('notify::checked', () => {

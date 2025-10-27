@@ -117,6 +117,7 @@
     <file>ui/swipeTracker.js</file>
     <file>ui/switcherPopup.js</file>
     <file>ui/switchMonitor.js</file>
+    <file>ui/tooltip.js</file>
     <file>ui/unlockDialog.js</file>
     <file>ui/userWidget.js</file>
     <file>ui/welcomeDialog.js</file>
