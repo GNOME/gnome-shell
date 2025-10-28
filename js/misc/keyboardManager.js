@@ -76,8 +76,8 @@ class KeyboardManager {
     }
 
     async _doApply(info) {
-        await this._applyLayoutGroupIndex(info.groupIndex);
         await this._applyLayoutGroup(info.group);
+        await this._applyLayoutGroupIndex(info.groupIndex);
     }
 
     apply(id) {
