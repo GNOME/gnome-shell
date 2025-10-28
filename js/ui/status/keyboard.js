@@ -380,7 +380,6 @@ export class InputSourceManager extends Signals.EventEmitter {
         this._ibusManager.connect('set-content-type', this._ibusSetContentType.bind(this));
 
         global.display.connect('modifiers-accelerator-activated', this._modifiersSwitcher.bind(this));
-        global.backend.connect('keymap-layout-group-changed', this._layoutGroupChanged.bind(this));
 
         this._sourcesPerWindow = false;
         this._focusWindowNotifyId = 0;
@@ -427,12 +426,6 @@ export class InputSourceManager extends Signals.EventEmitter {
 
         is.activate(true);
         return true;
-    }
-
-    _layoutGroupChanged(backend, idx) {
-        const is = this._inputSources[idx];
-        this._currentInputSourceChanged(is);
-        this._keyboardManager.apply(is.xkbId);
     }
 
     _switchInputSource(display, window, event, binding) {
