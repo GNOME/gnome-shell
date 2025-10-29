@@ -510,17 +510,14 @@ export class InputSourceManager extends Signals.EventEmitter {
             KeyboardManager.holdKeyboard();
         this._keyboardManager.apply(is.xkbId);
 
-        // All the "xkb:..." IBus engines simply "echo" back symbols,
-        // despite their naming implying differently, so we always set
-        // one in order for XIM applications to work given that we set
-        // XMODIFIERS=@im=ibus in the first place so that they can
-        // work without restarting when/if the user adds an IBus input
-        // source.
         let engine;
-        if (is.type === INPUT_SOURCE_TYPE_IBUS)
+        if (is.type === INPUT_SOURCE_TYPE_IBUS) {
             engine = is.id;
-        else
-            engine = 'xkb:us::eng';
+        } else {
+            const [name, variant = ''] = is.id.split('+');
+            const [lang = 'eng'] = this._xkbInfo.get_languages_for_layout(is.id);
+            engine = `xkb:${name}:${variant}:${lang}`;
+        }
 
         this._ibusManager.setEngine(engine).then(() => {
             if (holdKeyboard)
