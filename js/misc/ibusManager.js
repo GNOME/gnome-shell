@@ -28,6 +28,8 @@ const IBUS_SYSTEMD_SERVICE = 'org.freedesktop.IBus.session.GNOME.service';
 
 const TYPING_BOOSTER_ENGINE = 'typing-booster';
 
+const FALLBACK_ENGINE_ID = 'xkb:us::eng';
+
 function _checkIBusVersion(requiredMajor, requiredMinor, requiredMicro) {
     if ((IBus.MAJOR_VERSION > requiredMajor) ||
         (IBus.MAJOR_VERSION === requiredMajor && IBus.MINOR_VERSION > requiredMinor) ||
@@ -283,7 +285,16 @@ class IBusManager extends Signals.EventEmitter {
                 this._MAX_INPUT_SOURCE_ACTIVATION_TIME,
                 this._cancellable);
         } catch (e) {
-            logErrorUnlessCancelled(e);
+            if (!logErrorUnlessCancelled(e))
+                return;
+
+            try {
+                await this._ibus.set_global_engine_async(FALLBACK_ENGINE_ID,
+                    this._MAX_INPUT_SOURCE_ACTIVATION_TIME,
+                    this._cancellable);
+            } catch (e2) {
+                logErrorUnlessCancelled(e2);
+            }
         }
     }
 
