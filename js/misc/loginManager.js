@@ -160,7 +160,7 @@ class LoginManagerSystemd extends Signals.EventEmitter {
                 Gio.DBus.system, 'org.freedesktop.login1', objectPath);
             return this._currentSession;
         } catch (error) {
-            logError(error, 'Could not get a proxy for the current session');
+            logError(error, `Could not get proxy for session ${sessionId}`);
             return null;
         }
     }
