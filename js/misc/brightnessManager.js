@@ -331,10 +331,7 @@ export const BrightnessScale = GObject.registerClass({
     }
 
     _setValue(value) {
-        value = Math.clamp(value, 0.0, 1.0);
-        if (Math.abs(value - this._value) < SCALE_VALUE_CHANGE_EPSILON)
-            return;
-        this._value = value;
+        this._value = Math.clamp(value, 0.0, 1.0);
         this.notify('value');
     }
 });
