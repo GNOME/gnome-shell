@@ -127,33 +127,17 @@ class LoginManagerSystemd extends Signals.EventEmitter {
         let sessionId = GLib.getenv('XDG_SESSION_ID');
         if (!sessionId) {
             log('Unset XDG_SESSION_ID, getCurrentSessionProxy() called outside a user session. Asking logind directly.');
-            const userProxy = await this.getCurrentUserProxy();
-            let [session, objectPath] = userProxy.Display;
-            if (session) {
-                log(`Will monitor session ${session}`);
-                sessionId = session;
-            } else {
-                log('Failed to find "Display" session; are we the greeter?');
-
-                for ([session, objectPath] of userProxy.Sessions) {
-                    const sessionProxy = new SystemdLoginSession(Gio.DBus.system,
-                        'org.freedesktop.login1',
-                        objectPath);
-                    log(`Considering ${session}, class=${sessionProxy.Class}`);
-                    if (sessionProxy.Class === 'greeter') {
-                        log(`Yes, will monitor session ${session}`);
-                        sessionId = session;
-                        break;
-                    }
-                }
-
-                if (!sessionId) {
-                    log('No, failed to get session from logind.');
-                    return null;
-                }
+            try {
+                const autoSession = await SystemdLoginSession.newAsync(
+                    Gio.DBus.system, 'org.freedesktop.login1', '/org/freedesktop/login1/session/auto');
+                sessionId = autoSession.Id;
+            } catch (error) {
+                logError(error, 'Failed to get session from logind');
+                return null;
             }
         }
 
+        log(`Will monitor session ${sessionId}`);
         try {
             const [objectPath] = await this._proxy.GetSessionAsync(sessionId);
             this._currentSession = await SystemdLoginSession.newAsync(
