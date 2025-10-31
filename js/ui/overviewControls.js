@@ -51,7 +51,8 @@ class ControlsManagerLayout extends Clutter.LayoutManager {
         this._cachedWorkspaceBoxes = new Map();
         this._postAllocationCallbacks = [];
 
-        stateAdjustment.connect('notify::value', () => this.layout_changed());
+        stateAdjustment.connectObject('notify::value',
+            () => this.layout_changed(), this);
 
         this._workAreaBox = new Clutter.ActorBox();
         global.display.connectObject(
@@ -346,14 +347,14 @@ class ControlsManager extends St.Widget {
         this._searchController = new SearchController.SearchController(
             this._searchEntry,
             this.dash.showAppsButton);
-        this._searchController.connect('notify::search-active', this._onSearchChanged.bind(this));
+        this._searchController.connectObject('notify::search-active',
+            () => this._onSearchChanged(), this);
 
-        Main.layoutManager.connect('monitors-changed', () => {
-            this._thumbnailsBox.setMonitorIndex(Main.layoutManager.primaryIndex);
-        });
+        Main.layoutManager.connectObject('monitors-changed', () =>
+            this._thumbnailsBox.setMonitorIndex(Main.layoutManager.primaryIndex), this);
         this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox(
             this._workspaceAdjustment, Main.layoutManager.primaryIndex);
-        this._thumbnailsBox.connect('notify::should-show', () => {
+        this._thumbnailsBox.connectObject('notify::should-show', () => {
             this._thumbnailsBox.show();
             this._thumbnailsBox.ease_property('expand-fraction',
                 this._thumbnailsBox.should_show ? 1 : 0, {
@@ -361,7 +362,7 @@ class ControlsManager extends St.Widget {
                     mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                     onComplete: () => this._updateThumbnailsBox(),
                 });
-        });
+        }, this);
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay(
             this,
@@ -385,8 +386,8 @@ class ControlsManager extends St.Widget {
             this.dash,
             this._stateAdjustment);
 
-        this.dash.showAppsButton.connect('notify::checked',
-            this._onShowAppsButtonToggled.bind(this));
+        this.dash.showAppsButton.connectObject('notify::checked',
+            () => this._onShowAppsButtonToggled(), this);
 
         Main.ctrlAltTabManager.addGroup(
             this.appDisplay,
@@ -415,7 +416,7 @@ class ControlsManager extends St.Widget {
         this._a11ySettings = new Gio.Settings({schema_id: A11Y_SCHEMA});
 
         this._lastOverlayKeyTime = 0;
-        global.display.connect('overlay-key', () => {
+        global.display.connectObject('overlay-key', () => {
             if (this._a11ySettings.get_boolean('stickykeys-enable'))
                 return;
 
@@ -434,7 +435,7 @@ class ControlsManager extends St.Widget {
                 this._shiftState(Meta.MotionDirection.UP);
             else
                 Main.overview.toggle();
-        });
+        }, this);
 
         // connect_after to give search controller first dibs on the event
         global.stage.connect_after('key-press-event', (actor, event) => {
