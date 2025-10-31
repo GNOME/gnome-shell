@@ -127,7 +127,7 @@ exceeds_cancel_threshold (ShellEdgeDragGesture *self,
   clutter_gesture_get_point_coords_abs (CLUTTER_GESTURE (self),
                                         point,
                                         &latest_coords);
-  
+
   graphene_point_distance (&latest_coords, &begin_coords, &distance_x, &distance_y);
 
   switch (self->side)
@@ -194,7 +194,7 @@ shell_edge_drag_gesture_should_handle_sequence (ClutterGesture     *gesture,
   return FALSE;
 }
 
-static gboolean
+static void
 on_cancel_timeout (gpointer data)
 {
   ShellEdgeDragGesture *self = data;
@@ -203,7 +203,6 @@ on_cancel_timeout (gpointer data)
     clutter_gesture_set_state (CLUTTER_GESTURE (self), CLUTTER_GESTURE_STATE_CANCELLED);
 
   self->cancel_timeout_id = 0;
-  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -223,7 +222,7 @@ shell_edge_drag_gesture_point_began (ClutterGesture *gesture,
   self->cancel_timeout_point = point;
 
   g_assert (self->cancel_timeout_id == 0);
-  self->cancel_timeout_id = g_timeout_add (CANCEL_TIMEOUT_MS, on_cancel_timeout, self);
+  self->cancel_timeout_id = g_timeout_add_once (CANCEL_TIMEOUT_MS, on_cancel_timeout, self);
 }
 
 static void
