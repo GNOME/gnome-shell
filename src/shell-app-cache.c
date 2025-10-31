@@ -194,7 +194,7 @@ apply_update_cb (GObject      *object,
   cache_state_free (state);
 }
 
-static gboolean
+static void
 shell_app_cache_do_update (gpointer user_data)
 {
   ShellAppCache *cache = user_data;
@@ -213,8 +213,6 @@ shell_app_cache_do_update (gpointer user_data)
   task = g_task_new (cache, cache->cancellable, apply_update_cb, NULL);
   g_task_set_source_tag (task, shell_app_cache_do_update);
   g_task_run_in_thread (task, shell_app_cache_worker);
-
-  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -225,9 +223,9 @@ shell_app_cache_queue_update (ShellAppCache *self)
   if (self->queued_update != 0)
     g_source_remove (self->queued_update);
 
-  self->queued_update = g_timeout_add_seconds (DEFAULT_TIMEOUT_SECONDS,
-                                               shell_app_cache_do_update,
-                                               self);
+  self->queued_update = g_timeout_add_seconds_once (DEFAULT_TIMEOUT_SECONDS,
+                                                    shell_app_cache_do_update,
+                                                    self);
 }
 
 static void

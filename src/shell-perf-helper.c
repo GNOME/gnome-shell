@@ -88,7 +88,7 @@ static void destroy_windows           (PerfHelperApp *app);
 static void finish_wait_windows       (PerfHelperApp *app);
 static void check_finish_wait_windows (PerfHelperApp *app);
 
-static gboolean
+static void
 on_timeout (gpointer data)
 {
   PerfHelperApp *app = data;
@@ -96,8 +96,6 @@ on_timeout (gpointer data)
 
   destroy_windows (app);
   g_application_quit (G_APPLICATION (app));
-
-  return FALSE;
 }
 
 static void
@@ -105,7 +103,7 @@ establish_timeout (PerfHelperApp *app)
 {
   g_clear_handle_id (&app->timeout_id, g_source_remove);
 
-  app->timeout_id = g_timeout_add (opt_idle_timeout * 1000, on_timeout, app);
+  app->timeout_id = g_timeout_add_once (opt_idle_timeout * 1000, on_timeout, app);
   g_source_set_name_by_id (app->timeout_id, "[gnome-shell] on_timeout");
 }
 
