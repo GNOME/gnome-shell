@@ -193,20 +193,21 @@ test:
   variables:
     XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
     NO_AT_BRIDGE: "1"
+    BUILD_DIR: "build-tests"
   before_script:
     - sudo meson install -C mutter/build
     - mkdir -m 700 $XDG_RUNTIME_DIR
     - mkdir -m 1777 /tmp/.X11-unix
   script:
     # Start with a fresh build dir to ensure test dependencies are correct
-    - meson setup build-test -Dman=false -Dgtk_doc=false
-    - dbus-run-session -- meson test -C build-test --timeout-multiplier 5
+    - meson setup "$BUILD_DIR" -Dman=false -Dgtk_doc=false
+    - dbus-run-session -- meson test -C "$BUILD_DIR" --timeout-multiplier 5
   artifacts:
     expire_in: 1 day
     paths:
-      - build/meson-logs/testlog.txt
+      - "$BUILD_DIR/meson-logs/testlog.txt"
     reports:
-      junit: build/meson-logs/testlog.junit.xml
+      junit: "$BUILD_DIR/meson-logs/testlog.junit.xml"
     when: on_failure
 
 test-coverity:
