@@ -340,7 +340,8 @@ class ControlsManager extends St.Widget {
         this._workspaceAdjustment = Main.createWorkspacesAdjustment(this);
 
         this._stateAdjustment = new OverviewAdjustment(this);
-        this._stateAdjustment.connect('notify::value', this._update.bind(this));
+        this._stateAdjustment.connectObject('notify::value',
+            () => this._update(), this);
 
         this._searchController = new SearchController.SearchController(
             this._searchEntry,
