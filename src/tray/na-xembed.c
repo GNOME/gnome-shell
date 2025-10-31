@@ -253,7 +253,7 @@ na_xembed_synchronize_size (NaXembed *xembed)
     }
 }
 
-static gboolean
+static void
 synchronize_size_cb (gpointer user_data)
 {
   NaXembed *xembed = user_data;
@@ -261,8 +261,6 @@ synchronize_size_cb (gpointer user_data)
 
   na_xembed_synchronize_size (xembed);
   priv->resize_id = 0;
-
-  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -299,7 +297,7 @@ na_xembed_resize (NaXembed *xembed)
   priv->have_size = TRUE;
   mtk_x11_error_trap_pop (xdisplay);
 
-  priv->resize_id = g_idle_add (synchronize_size_cb, xembed);
+  priv->resize_id = g_idle_add_once (synchronize_size_cb, xembed);
 }
 
 static gboolean
@@ -851,7 +849,7 @@ na_xembed_set_root_position (NaXembed *xembed,
   priv->root_y = y;
 
   if (priv->resize_id == 0)
-    priv->resize_id = g_idle_add (synchronize_size_cb, xembed);
+    priv->resize_id = g_idle_add_once (synchronize_size_cb, xembed);
 }
 
 MetaX11Display *
