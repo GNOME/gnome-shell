@@ -128,7 +128,6 @@ foreach shell_test : shell_tests
       gnome_shell_perf_helper,
       tests_dependencies,
     ],
-    is_parallel: false,
     env: shell_testenv,
   )
 endforeach
