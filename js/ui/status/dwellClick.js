@@ -1,6 +1,5 @@
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
-import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import St from 'gi://St';
 
@@ -65,8 +64,6 @@ class DwellClickIndicator extends PanelMenu.Button {
         this.visible =
           this._a11ySettings.get_boolean(KEY_DWELL_CLICK_ENABLED) &&
            this._a11ySettings.get_string(KEY_DWELL_MODE) === DWELL_MODE_WINDOW;
-
-        return GLib.SOURCE_REMOVE;
     }
 
     _addDwellAction(mode) {
