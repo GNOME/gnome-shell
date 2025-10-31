@@ -36,7 +36,7 @@ class AutomountManager {
             'drive-disconnected', this._onDriveDisconnected.bind(this),
             'drive-eject-button', this._onDriveEjectButton.bind(this), this);
 
-        this._mountAllId = GLib.idle_add(GLib.PRIORITY_DEFAULT, this._startupMountAll.bind(this));
+        this._mountAllId = GLib.idle_add_once(GLib.PRIORITY_DEFAULT, this._startupMountAll.bind(this));
         GLib.Source.set_name_by_id(this._mountAllId, '[gnome-shell] this._startupMountAll');
     }
 
@@ -68,7 +68,6 @@ class AutomountManager {
         });
 
         this._mountAllId = 0;
-        return GLib.SOURCE_REMOVE;
     }
 
     _onDriveConnected() {
@@ -244,10 +243,9 @@ class AutomountManager {
     }
 
     _allowAutorunExpire(volume) {
-        const id = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, AUTORUN_EXPIRE_TIMEOUT_SECS, () => {
+        const id = GLib.timeout_add_seconds_once(GLib.PRIORITY_DEFAULT, AUTORUN_EXPIRE_TIMEOUT_SECS, () => {
             volume.allowAutorun = false;
             delete volume._allowAutorunExpireId;
-            return GLib.SOURCE_REMOVE;
         });
         volume._allowAutorunExpireId = id;
         GLib.Source.set_name_by_id(id, '[gnome-shell] volume.allowAutorun');

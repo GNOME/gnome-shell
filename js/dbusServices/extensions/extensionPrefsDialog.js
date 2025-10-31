@@ -52,10 +52,9 @@ export class ExtensionPrefsDialog extends Adw.PreferencesWindow {
 
     set_titlebar() {
         // intercept fatal libadwaita error, show error page instead
-        GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+        GLib.idle_add_once(GLib.PRIORITY_DEFAULT, () => {
             this._showErrorPage(
                 new Error('set_titlebar() is not supported for Adw.Window'));
-            return GLib.SOURCE_REMOVE;
         });
     }
 

@@ -187,7 +187,6 @@ export const ScreenSharingIndicator = GObject.registerClass({
     _hideIndicator() {
         this.hide();
         delete this._hideIndicatorId;
-        return GLib.SOURCE_REMOVE;
     }
 
     _sync() {
@@ -210,7 +209,7 @@ export const ScreenSharingIndicator = GObject.registerClass({
                 const timeUntilHideUs =
                     MIN_SHARED_INDICATOR_VISIBLE_TIME_US - timeSinceVisibleUs;
                 this._hideIndicatorId =
-                    GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                    GLib.timeout_add_once(GLib.PRIORITY_DEFAULT,
                         timeUntilHideUs / GLib.TIME_SPAN_MILLISECOND,
                         () => this._hideIndicator());
             }

@@ -691,11 +691,10 @@ var BaseAppView = GObject.registerClass({
         this.goToPage(nextPage);
 
         this._canScroll = false;
-        this._scrollTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+        this._scrollTimeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT,
             SCROLL_TIMEOUT_TIME, () => {
                 this._canScroll = true;
                 this._scrollTimeoutId = 0;
-                return GLib.SOURCE_REMOVE;
             });
 
         return Clutter.EVENT_STOP;
@@ -797,12 +796,11 @@ var BaseAppView = GObject.registerClass({
                 position,
                 source,
                 destroyId: source.connect('destroy', () => this._removeDelayedMove()),
-                timeoutId: GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                timeoutId: GLib.timeout_add_once(GLib.PRIORITY_DEFAULT,
                     DELAYED_MOVE_TIMEOUT, () => {
                         this._moveItem(source, page, position);
                         this._delayedMoveData.timeoutId = 0;
                         this._removeDelayedMove();
-                        return GLib.SOURCE_REMOVE;
                     }),
             };
         }
@@ -909,14 +907,13 @@ var BaseAppView = GObject.registerClass({
         const {targetActor} = dragEvent;
 
         this._dragPageSwitchInitialTimeoutId =
-            GLib.timeout_add(GLib.PRIORITY_DEFAULT, DRAG_PAGE_SWITCH_INITIAL_TIMEOUT, () => {
+            GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, DRAG_PAGE_SWITCH_INITIAL_TIMEOUT, () => {
                 const direction = targetActor === this._prevPageIndicator ? -1 : 1;
 
                 this.goToPage(this._grid.currentPage + direction);
                 this._setupDragPageSwitchRepeat(direction);
 
                 delete this._dragPageSwitchInitialTimeoutId;
-                return GLib.SOURCE_REMOVE;
             });
     }
 
@@ -2815,10 +2812,9 @@ export const AppFolderDialog = GObject.registerClass({
             return;
 
         this._popdownTimeoutId =
-            GLib.timeout_add(GLib.PRIORITY_DEFAULT, POPDOWN_DIALOG_TIMEOUT, () => {
+            GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, POPDOWN_DIALOG_TIMEOUT, () => {
                 this._popdownTimeoutId = 0;
                 this.popdown();
-                return GLib.SOURCE_REMOVE;
             });
     }
 
@@ -3115,11 +3111,10 @@ export const AppIcon = GObject.registerClass({
                 return;
 
             this._folderPreviewId =
-                GLib.timeout_add(GLib.PRIORITY_DEFAULT, 500, () => {
+                GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, 500, () => {
                     this.add_style_pseudo_class('drop');
                     this._showFolderPreview();
                     this._folderPreviewId = 0;
-                    return GLib.SOURCE_REMOVE;
                 });
         } else {
             if (this._folderPreviewId > 0) {

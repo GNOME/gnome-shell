@@ -282,7 +282,7 @@ const Key = GObject.registerClass({
 
     _press(button) {
         if (button === this.keyButton) {
-            this._pressTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+            this._pressTimeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT,
                 KEY_LONG_PRESS_TIME,
                 () => {
                     this._pressTimeoutId = 0;
@@ -296,8 +296,6 @@ const Key = GObject.registerClass({
                         this.keyButton.fake_release();
                         this._showSubkeys();
                     }
-
-                    return GLib.SOURCE_REMOVE;
                 });
         }
 
@@ -1379,10 +1377,9 @@ export const Keyboard = GObject.registerClass({
         }
 
         if (!this._showIdleId) {
-            this._showIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+            this._showIdleId = GLib.idle_add_once(GLib.PRIORITY_DEFAULT_IDLE, () => {
                 this.open(Main.layoutManager.focusIndex);
                 this._showIdleId = 0;
-                return GLib.SOURCE_REMOVE;
             });
             GLib.Source.set_name_by_id(this._showIdleId, '[gnome-shell] this.open');
         }
@@ -1716,12 +1713,11 @@ export const Keyboard = GObject.registerClass({
             return;
         }
 
-        this._keyboardRestingId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+        this._keyboardRestingId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT,
             KEYBOARD_REST_TIME,
             () => {
                 this._clearKeyboardRestTimer();
                 this._open();
-                return GLib.SOURCE_REMOVE;
             });
         GLib.Source.set_name_by_id(this._keyboardRestingId, '[gnome-shell] this._clearKeyboardRestTimer');
     }
@@ -1751,12 +1747,11 @@ export const Keyboard = GObject.registerClass({
             return;
         }
 
-        this._keyboardRestingId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+        this._keyboardRestingId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT,
             KEYBOARD_REST_TIME,
             () => {
                 this._clearKeyboardRestTimer();
                 this._close();
-                return GLib.SOURCE_REMOVE;
             });
         GLib.Source.set_name_by_id(this._keyboardRestingId, '[gnome-shell] this._clearKeyboardRestTimer');
     }
@@ -2186,10 +2181,9 @@ class KeyboardController extends Signals.EventEmitter {
                             this._surroundingUpdateTimeoutId = 0;
                         }
                         this._surroundingUpdateTimeoutId =
-                            GLib.timeout_add(GLib.PRIORITY_DEFAULT, KEY_RELEASE_TIMEOUT, () => {
+                            GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, KEY_RELEASE_TIMEOUT, () => {
                                 func(text, cursor, cursor);
                                 this._surroundingUpdateTimeoutId = 0;
-                                return GLib.SOURCE_REMOVE;
                             });
                     }
                 });

@@ -219,10 +219,9 @@ export const InputMethod = GObject.registerClass({
             this._preeditStr = null;
         }
 
-        this._hidePanelId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, HIDE_PANEL_TIME, () => {
+        this._hidePanelId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, HIDE_PANEL_TIME, () => {
             this.set_input_panel_state(Clutter.InputPanelState.OFF);
             this._hidePanelId = 0;
-            return GLib.SOURCE_REMOVE;
         });
     }
 

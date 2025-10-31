@@ -106,7 +106,7 @@ class OsdWindow extends Clutter.Actor {
 
         if (this._hideTimeoutId)
             GLib.source_remove(this._hideTimeoutId);
-        this._hideTimeoutId = GLib.timeout_add(
+        this._hideTimeoutId = GLib.timeout_add_once(
             GLib.PRIORITY_DEFAULT, HIDE_TIMEOUT, this._hide.bind(this));
         GLib.Source.set_name_by_id(this._hideTimeoutId, '[gnome-shell] this._hide');
     }
@@ -130,7 +130,6 @@ class OsdWindow extends Clutter.Actor {
                 global.compositor.enable_unredirect();
             },
         });
-        return GLib.SOURCE_REMOVE;
     }
 
     _reset() {

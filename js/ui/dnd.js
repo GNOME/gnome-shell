@@ -333,7 +333,7 @@ class _Draggable extends Signals.EventEmitter {
                 if (result !== DragMotionResult.CONTINUE) {
                     this._updateCursor(DRAG_CURSOR_MAP[result]);
                     dragEvent.targetActor.disconnect(targetActorDestroyHandlerId);
-                    return GLib.SOURCE_REMOVE;
+                    return;
                 }
             }
         }
@@ -353,20 +353,19 @@ class _Draggable extends Signals.EventEmitter {
                     0);
                 if (result !== DragMotionResult.CONTINUE) {
                     this._updateCursor(DRAG_CURSOR_MAP[result]);
-                    return GLib.SOURCE_REMOVE;
+                    return;
                 }
             }
             target = target.get_parent();
         }
         this._updateCursor(Clutter.CursorType.NO_DROP);
-        return GLib.SOURCE_REMOVE;
     }
 
     _queueUpdateDragHover() {
         if (this._updateHoverId)
             return;
 
-        this._updateHoverId = GLib.idle_add(GLib.PRIORITY_DEFAULT,
+        this._updateHoverId = GLib.idle_add_once(GLib.PRIORITY_DEFAULT,
             this._updateDragHover.bind(this));
         GLib.Source.set_name_by_id(this._updateHoverId, '[gnome-shell] this._updateDragHover');
     }

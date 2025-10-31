@@ -233,7 +233,7 @@ class ActivitiesButton extends PanelMenu.Button {
 
         if (this._xdndTimeOut !== 0)
             GLib.source_remove(this._xdndTimeOut);
-        this._xdndTimeOut = GLib.timeout_add(GLib.PRIORITY_DEFAULT, BUTTON_DND_ACTIVATION_TIMEOUT, () => {
+        this._xdndTimeOut = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, BUTTON_DND_ACTIVATION_TIMEOUT, () => {
             this._xdndToggleOverview();
         });
         GLib.Source.set_name_by_id(this._xdndTimeOut, '[gnome-shell] this._xdndToggleOverview');
@@ -266,7 +266,6 @@ class ActivitiesButton extends PanelMenu.Button {
 
         GLib.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = 0;
-        return GLib.SOURCE_REMOVE;
     }
 });
 

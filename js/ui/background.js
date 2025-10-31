@@ -177,9 +177,8 @@ class BackgroundCache extends Signals.EventEmitter {
         let animation = this._animations[params.settingsSchema];
         if (animation && _fileEqual0(animation.file, params.file)) {
             if (params.onLoaded) {
-                const id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                const id = GLib.idle_add_once(GLib.PRIORITY_DEFAULT, () => {
                     params.onLoaded(this._animations[params.settingsSchema]);
-                    return GLib.SOURCE_REMOVE;
                 });
                 GLib.Source.set_name_by_id(id, '[gnome-shell] params.onLoaded');
             }
@@ -192,9 +191,8 @@ class BackgroundCache extends Signals.EventEmitter {
             this._animations[params.settingsSchema] = animation;
 
             if (params.onLoaded) {
-                const id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                const id = GLib.idle_add_once(GLib.PRIORITY_DEFAULT, () => {
                     params.onLoaded(this._animations[params.settingsSchema]);
-                    return GLib.SOURCE_REMOVE;
                 });
                 GLib.Source.set_name_by_id(id, '[gnome-shell] params.onLoaded');
             }
@@ -313,10 +311,9 @@ const Background = GObject.registerClass({
         if (this._changedIdleId)
             return;
 
-        this._changedIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+        this._changedIdleId = GLib.idle_add_once(GLib.PRIORITY_DEFAULT, () => {
             this._changedIdleId = 0;
             this.emit('bg-changed');
-            return GLib.SOURCE_REMOVE;
         });
         GLib.Source.set_name_by_id(this._changedIdleId,
             '[gnome-shell] Background._emitChangedSignal');
@@ -343,9 +340,8 @@ const Background = GObject.registerClass({
         if (this._cancellable?.is_cancelled())
             return;
 
-        const id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+        const id = GLib.idle_add_once(GLib.PRIORITY_DEFAULT, () => {
             this.emit('loaded');
-            return GLib.SOURCE_REMOVE;
         });
         GLib.Source.set_name_by_id(id, '[gnome-shell] Background._setLoaded Idle');
     }
@@ -449,12 +445,11 @@ const Background = GObject.registerClass({
         if (interval > GLib.MAXUINT32)
             return;
 
-        this._updateAnimationTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+        this._updateAnimationTimeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT,
             interval,
             () => {
                 this._updateAnimationTimeoutId = 0;
                 this._updateAnimation();
-                return GLib.SOURCE_REMOVE;
             });
         GLib.Source.set_name_by_id(this._updateAnimationTimeoutId, '[gnome-shell] this._updateAnimation');
     }
@@ -544,9 +539,8 @@ export const SystemBackground = GObject.registerClass({
         });
         this.content.background = _systemBackground;
 
-        const id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+        const id = GLib.idle_add_once(GLib.PRIORITY_DEFAULT, () => {
             this.emit('loaded');
-            return GLib.SOURCE_REMOVE;
         });
         GLib.Source.set_name_by_id(id, '[gnome-shell] SystemBackground.loaded');
     }
@@ -818,9 +812,8 @@ export class BackgroundManager extends Signals.EventEmitter {
 
         let loadedSignalId;
         if (background.isLoaded) {
-            GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            GLib.idle_add_once(GLib.PRIORITY_DEFAULT, () => {
                 this.emit('loaded');
-                return GLib.SOURCE_REMOVE;
             });
         } else {
             loadedSignalId = background.connect('loaded', () => {

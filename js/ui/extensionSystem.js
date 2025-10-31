@@ -65,11 +65,10 @@ export class ExtensionManager extends Signals.EventEmitter {
         const shutdownId = global.connect('shutdown',
             () => disableFile.delete(null));
 
-        GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
+        GLib.timeout_add_seconds_once(GLib.PRIORITY_DEFAULT, 60, () => {
             global.disconnect(shutdownId);
 
             disableFile.delete(null);
-            return GLib.SOURCE_REMOVE;
         });
 
         this._installExtensionUpdates();

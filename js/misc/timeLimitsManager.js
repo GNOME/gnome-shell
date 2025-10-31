@@ -1336,11 +1336,10 @@ class TimeLimitsNotificationSource extends GObject.Object {
 
         console.debug(`TimeLimitsNotificationSource: Scheduling notification state update in ${timeoutSeconds}s`);
 
-        this._timerId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, timeoutSeconds, () => {
+        this._timerId = GLib.timeout_add_seconds_once(GLib.PRIORITY_DEFAULT, timeoutSeconds, () => {
             this._timerId = 0;
             console.debug('TimeLimitsNotificationSource: Scheduled notification state update');
             this._updateState();
-            return GLib.SOURCE_REMOVE;
         });
     }
 

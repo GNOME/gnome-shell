@@ -271,10 +271,9 @@ class PortalWindow extends Gtk.ApplicationWindow {
                 const seconds =
                     (CONNECTIVITY_RECHECK_RATELIMIT_TIMEOUT - timeSinceLastRecheck) /
                     GLib.USEC_PER_SEC;
-                this._recheckTimeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, seconds, () => {
+                this._recheckTimeoutId = GLib.timeout_add_seconds_once(GLib.PRIORITY_DEFAULT, seconds, () => {
                     this._statusChangedCallback(PortalHelperResult.RECHECK);
                     this._recheckTimeoutId = 0;
-                    return GLib.SOURCE_REMOVE;
                 });
             }
         }

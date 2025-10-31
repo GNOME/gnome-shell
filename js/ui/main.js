@@ -311,10 +311,9 @@ async function _initializeUI() {
     endSessionDialog = new EndSessionDialog.EndSessionDialog();
 
     // We're ready for the session manager to move to the next phase
-    GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+    GLib.idle_add_once(GLib.PRIORITY_DEFAULT, () => {
         Shell.util_sd_notify();
         global.context.notify_ready();
-        return GLib.SOURCE_REMOVE;
     });
 
     _startDate = new Date();
@@ -998,10 +997,9 @@ export function queueDeferredWork(workId) {
     if (data.actor.mapped) {
         _queueBeforeRedraw(workId);
     } else if (_deferredTimeoutId === 0) {
-        _deferredTimeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, DEFERRED_TIMEOUT_SECONDS, () => {
+        _deferredTimeoutId = GLib.timeout_add_seconds_once(GLib.PRIORITY_DEFAULT, DEFERRED_TIMEOUT_SECONDS, () => {
             _runAllDeferredWork();
             _deferredTimeoutId = 0;
-            return GLib.SOURCE_REMOVE;
         });
         GLib.Source.set_name_by_id(_deferredTimeoutId, '[gnome-shell] _runAllDeferredWork');
     }

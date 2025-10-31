@@ -309,7 +309,7 @@ export class Overview extends Signals.EventEmitter {
 
         if (targetIsWindow) {
             this._lastHoveredWindow = dragEvent.targetActor._delegate.metaWindow;
-            this._windowSwitchTimeoutId = GLib.timeout_add(
+            this._windowSwitchTimeoutId = GLib.timeout_add_once(
                 GLib.PRIORITY_DEFAULT,
                 DND_WINDOW_SWITCH_TIMEOUT,
                 () => {
@@ -318,7 +318,6 @@ export class Overview extends Signals.EventEmitter {
                         this._windowSwitchTimestamp);
                     this.hide();
                     this._lastHoveredWindow = null;
-                    return GLib.SOURCE_REMOVE;
                 });
             GLib.Source.set_name_by_id(this._windowSwitchTimeoutId, '[gnome-shell] Main.activateWindow');
         }

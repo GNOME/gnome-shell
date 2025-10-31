@@ -181,7 +181,7 @@ class AuthRobot extends Signals.EventEmitter {
             return;
 
         this._enrolling = true;
-        GLib.idle_add(GLib.PRIORITY_DEFAULT,
+        GLib.idle_add_once(GLib.PRIORITY_DEFAULT,
             this._enrollDevicesIdle.bind(this));
     }
 
@@ -190,7 +190,7 @@ class AuthRobot extends Signals.EventEmitter {
 
         const dev = devices.shift();
         if (dev === undefined)
-            return GLib.SOURCE_REMOVE;
+            return;
 
         try {
             await this._client.enrollDevice(dev.Uid, Policy.DEFAULT);
@@ -202,13 +202,12 @@ class AuthRobot extends Signals.EventEmitter {
             this._enrolling = this._devicesToEnroll.length > 0;
 
             if (this._enrolling) {
-                GLib.idle_add(GLib.PRIORITY_DEFAULT,
+                GLib.idle_add_once(GLib.PRIORITY_DEFAULT,
                     this._enrollDevicesIdle.bind(this));
             }
         } catch (error) {
             this.emit('enroll-failed', null, error);
         }
-        return GLib.SOURCE_REMOVE;
     }
 }
 

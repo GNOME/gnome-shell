@@ -194,10 +194,9 @@ const StreamSlider = GObject.registerClass({
 
         const volumeChanged = this._stream.volume !== prevVolume;
         if (volumeChanged && !this._notifyVolumeChangeId && !this._inDrag) {
-            this._notifyVolumeChangeId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 30, () => {
+            this._notifyVolumeChangeId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, 30, () => {
                 this._notifyVolumeChange();
                 this._notifyVolumeChangeId = 0;
-                return GLib.SOURCE_REMOVE;
             });
             GLib.Source.set_name_by_id(this._notifyVolumeChangeId,
                 '[gnome-shell] this._notifyVolumeChangeId');

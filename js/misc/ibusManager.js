@@ -329,7 +329,7 @@ class IBusManager extends Signals.EventEmitter {
         }
 
         this._preloadEnginesId =
-            GLib.timeout_add_seconds(
+            GLib.timeout_add_seconds_once(
                 GLib.PRIORITY_DEFAULT,
                 this._PRELOAD_ENGINES_DELAY_TIME,
                 () => {
@@ -339,7 +339,6 @@ class IBusManager extends Signals.EventEmitter {
                         this._cancellable,
                         null);
                     this._preloadEnginesId = 0;
-                    return GLib.SOURCE_REMOVE;
                 });
     }
 

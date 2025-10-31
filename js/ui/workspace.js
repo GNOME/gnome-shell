@@ -1188,11 +1188,10 @@ class Workspace extends St.Widget {
         if (!win) {
             // Newly-created windows are added to a workspace before
             // the compositor finds out about them...
-            const id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            const id = GLib.idle_add_once(GLib.PRIORITY_DEFAULT, () => {
                 if (metaWin.get_compositor_private() &&
                     metaWin.get_workspace() === this.metaWorkspace)
                     this._doAddWindow(metaWin);
-                return GLib.SOURCE_REMOVE;
             });
             GLib.Source.set_name_by_id(id, '[gnome-shell] this._doAddWindow');
             return;

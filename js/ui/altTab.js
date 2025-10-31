@@ -349,7 +349,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             this._thumbnails.highlight(window, forceAppFocus);
         } else if (this._items[this._selectedIndex].cachedWindows.length > 1 &&
                    !forceAppFocus) {
-            this._thumbnailTimeoutId = GLib.timeout_add(
+            this._thumbnailTimeoutId = GLib.timeout_add_once(
                 GLib.PRIORITY_DEFAULT,
                 THUMBNAIL_POPUP_TIME,
                 this._timeoutPopupThumbnails.bind(this));
@@ -362,7 +362,6 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             this._createThumbnails();
         this._thumbnailTimeoutId = 0;
         this._thumbnailsFocused = false;
-        return GLib.SOURCE_REMOVE;
     }
 
     _destroyThumbnails() {
@@ -826,14 +825,13 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
 
         if (this._altTabPopup.thumbnailsVisible) {
             this._delayedHighlighted = index;
-            this._mouseTimeOutId = GLib.timeout_add(
+            this._mouseTimeOutId = GLib.timeout_add_once(
                 GLib.PRIORITY_DEFAULT,
                 APP_ICON_HOVER_TIMEOUT,
                 () => {
                     this._enterItem(index);
                     this._delayedHighlighted = -1;
                     this._mouseTimeOutId = 0;
-                    return GLib.SOURCE_REMOVE;
                 });
             GLib.Source.set_name_by_id(this._mouseTimeOutId, '[gnome-shell] this._enterItem');
         } else {

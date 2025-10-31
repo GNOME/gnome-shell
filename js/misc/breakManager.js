@@ -805,7 +805,7 @@ class BreakDispatcher extends GObject.Object {
 
                 if (this._countdownTimerId !== 0)
                     GLib.source_remove(this._countdownTimerId);
-                this._countdownTimerId = GLib.timeout_add_seconds(
+                this._countdownTimerId = GLib.timeout_add_seconds_once(
                     GLib.PRIORITY_DEFAULT,
                     countdownStart, () => {
                         if (this._countdownOsd == null) {
@@ -814,7 +814,6 @@ class BreakDispatcher extends GObject.Object {
                                 () => (this._countdownOsd = null));
                         }
                         this._countdownTimerId = 0;
-                        return GLib.SOURCE_REMOVE;
                     });
             }
 
@@ -1035,11 +1034,10 @@ class BreakNotificationSource extends GObject.Object {
 
         console.debug(`BreakNotificationSource: Scheduling notification state update in ${timeoutSeconds}s`);
 
-        this._timerId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, timeoutSeconds, () => {
+        this._timerId = GLib.timeout_add_seconds_once(GLib.PRIORITY_DEFAULT, timeoutSeconds, () => {
             this._timerId = 0;
             console.debug('BreakNotificationSource: Scheduled notification state update');
             this._updateState();
-            return GLib.SOURCE_REMOVE;
         });
     }
 

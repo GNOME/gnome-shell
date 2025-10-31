@@ -904,7 +904,7 @@ export const LoginDialog = GObject.registerClass({
                     }
                 });
         } else {
-            const id = GLib.idle_add(GLib.PRIORITY_DEFAULT, this._loadUserList.bind(this));
+            const id = GLib.idle_add_once(GLib.PRIORITY_DEFAULT, this._loadUserList.bind(this));
             GLib.Source.set_name_by_id(id, '[gnome-shell] _loadUserList');
         }
     }
@@ -1229,11 +1229,10 @@ export const LoginDialog = GObject.registerClass({
             }
         }, conflictingSessionDialog);
 
-        const closeDialogTimeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, _CONFLICTING_SESSION_DIALOG_TIMEOUT, () => {
+        const closeDialogTimeoutId = GLib.timeout_add_seconds_once(GLib.PRIORITY_DEFAULT, _CONFLICTING_SESSION_DIALOG_TIMEOUT, () => {
             this._notifyConflictingSessionDialogClosed();
             conflictingSessionDialog.close();
             this._authPrompt.reset();
-            return GLib.SOURCE_REMOVE;
         });
 
         conflictingSessionDialog.connect('closed', () => {
@@ -1321,11 +1320,10 @@ export const LoginDialog = GObject.registerClass({
     _blockTimedLoginUntilIdle() {
         const hold = new Batch.Hold();
 
-        this._timedLoginIdleTimeOutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, _TIMED_LOGIN_IDLE_THRESHOLD,
+        this._timedLoginIdleTimeOutId = GLib.timeout_add_seconds_once(GLib.PRIORITY_DEFAULT, _TIMED_LOGIN_IDLE_THRESHOLD,
             () => {
                 this._timedLoginIdleTimeOutId = 0;
                 hold.release();
-                return GLib.SOURCE_REMOVE;
             });
         GLib.Source.set_name_by_id(this._timedLoginIdleTimeOutId, '[gnome-shell] this._timedLoginIdleTimeOutId');
         return hold;
@@ -1509,7 +1507,7 @@ export const LoginDialog = GObject.registerClass({
 
     _loadUserList() {
         if (this._userListLoaded)
-            return GLib.SOURCE_REMOVE;
+            return;
 
         this._userListLoaded = true;
 
@@ -1536,8 +1534,6 @@ export const LoginDialog = GObject.registerClass({
                     this._userList.addUser(user);
                 this._updateDisableUserList();
             }, this);
-
-        return GLib.SOURCE_REMOVE;
     }
 
     activate() {

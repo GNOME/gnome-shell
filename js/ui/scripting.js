@@ -37,9 +37,8 @@ import {loadInterfaceXML} from '../misc/fileUtils.js';
  */
 export function sleep(milliseconds) {
     return new Promise(resolve => {
-        const id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, milliseconds, () => {
+        const id = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, milliseconds, () => {
             resolve();
-            return GLib.SOURCE_REMOVE;
         });
         GLib.Source.set_name_by_id(id, '[gnome-shell] sleep');
     });

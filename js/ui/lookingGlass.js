@@ -1379,10 +1379,9 @@ class LookingGlass extends St.BoxLayout {
         gcButton.connect('clicked', () => {
             gcButton.child.icon_name = 'user-trash-symbolic';
             System.gc();
-            this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 500, () => {
+            this._timeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, 500, () => {
                 gcButton.child.icon_name = 'user-trash-full-symbolic';
                 this._timeoutId = 0;
-                return GLib.SOURCE_REMOVE;
             });
             GLib.Source.set_name_by_id(
                 this._timeoutId,

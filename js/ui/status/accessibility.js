@@ -94,15 +94,13 @@ class ATIndicator extends PanelMenu.Button {
         const items = this.menu._getMenuItems();
 
         this.visible = alwaysShow || items.some(f => !!f.state);
-
-        return GLib.SOURCE_REMOVE;
     }
 
     _queueSyncMenuVisibility() {
         if (this._syncMenuVisibilityIdle)
             return;
 
-        this._syncMenuVisibilityIdle = GLib.idle_add(GLib.PRIORITY_DEFAULT, this._syncMenuVisibility.bind(this));
+        this._syncMenuVisibilityIdle = GLib.idle_add_once(GLib.PRIORITY_DEFAULT, this._syncMenuVisibility.bind(this));
         GLib.Source.set_name_by_id(this._syncMenuVisibilityIdle, '[gnome-shell] this._syncMenuVisibility');
     }
 

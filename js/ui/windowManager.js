@@ -297,10 +297,9 @@ class WorkspaceTracker {
         if (workspace._keepAliveId)
             GLib.source_remove(workspace._keepAliveId);
 
-        workspace._keepAliveId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, duration, () => {
+        workspace._keepAliveId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, duration, () => {
             workspace._keepAliveId = 0;
             this._queueCheckWorkspaces();
-            return GLib.SOURCE_REMOVE;
         });
         GLib.Source.set_name_by_id(workspace._keepAliveId, '[gnome-shell] this._queueCheckWorkspaces');
     }
@@ -308,12 +307,11 @@ class WorkspaceTracker {
     _windowRemoved(workspace, window) {
         workspace._lastRemovedWindow = window;
         this._queueCheckWorkspaces();
-        const id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, LAST_WINDOW_GRACE_TIME, () => {
+        const id = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, LAST_WINDOW_GRACE_TIME, () => {
             if (workspace._lastRemovedWindow === window) {
                 workspace._lastRemovedWindow = null;
                 this._queueCheckWorkspaces();
             }
-            return GLib.SOURCE_REMOVE;
         });
         GLib.Source.set_name_by_id(id, '[gnome-shell] this._queueCheckWorkspaces');
     }
@@ -1890,10 +1888,9 @@ export class WindowManager {
         this.actionMoveWorkspace(ws);
 
         this._canScroll = false;
-        GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+        GLib.timeout_add_once(GLib.PRIORITY_DEFAULT,
             SCROLL_TIMEOUT_TIME, () => {
                 this._canScroll = true;
-                return GLib.SOURCE_REMOVE;
             });
 
         return Clutter.EVENT_STOP;

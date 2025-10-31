@@ -120,13 +120,11 @@ export class ServiceImplementation {
         if (this._shutdownTimeoutId)
             GLib.source_remove(this._shutdownTimeoutId);
 
-        this._shutdownTimeoutId = GLib.timeout_add_seconds(
+        this._shutdownTimeoutId = GLib.timeout_add_seconds_once(
             GLib.PRIORITY_DEFAULT, IDLE_SHUTDOWN_TIME,
             () => {
                 this._shutdownTimeoutId = 0;
                 this._maybeShutdown();
-
-                return GLib.SOURCE_REMOVE;
             });
     }
 

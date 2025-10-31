@@ -158,12 +158,11 @@ export const SwitcherPopup = GObject.registerClass({
 
         // We delay showing the popup so that fast Alt+Tab users aren't
         // disturbed by the popup briefly flashing.
-        this._initialDelayTimeoutId = GLib.timeout_add(
+        this._initialDelayTimeoutId = GLib.timeout_add_once(
             GLib.PRIORITY_DEFAULT,
             POPUP_DELAY_TIMEOUT,
             () => {
                 this._showImmediately();
-                return GLib.SOURCE_REMOVE;
             });
         GLib.Source.set_name_by_id(this._initialDelayTimeoutId, '[gnome-shell] Main.osdWindow.cancel');
         return true;
@@ -294,14 +293,13 @@ export const SwitcherPopup = GObject.registerClass({
         if (this._motionTimeoutId !== 0)
             GLib.source_remove(this._motionTimeoutId);
 
-        this._motionTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, DISABLE_HOVER_TIMEOUT, this._mouseTimedOut.bind(this));
+        this._motionTimeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, DISABLE_HOVER_TIMEOUT, this._mouseTimedOut.bind(this));
         GLib.Source.set_name_by_id(this._motionTimeoutId, '[gnome-shell] this._mouseTimedOut');
     }
 
     _mouseTimedOut() {
         this._motionTimeoutId = 0;
         this.mouseActive = true;
-        return GLib.SOURCE_REMOVE;
     }
 
     _isActorOutside(actor) {
@@ -312,13 +310,12 @@ export const SwitcherPopup = GObject.registerClass({
         if (this._noModsTimeoutId !== 0)
             GLib.source_remove(this._noModsTimeoutId);
 
-        this._noModsTimeoutId = GLib.timeout_add(
+        this._noModsTimeoutId = GLib.timeout_add_once(
             GLib.PRIORITY_DEFAULT,
             NO_MODS_TIMEOUT,
             () => {
                 this._finish(global.display.get_current_time_roundtrip());
                 this._noModsTimeoutId = 0;
-                return GLib.SOURCE_REMOVE;
             });
     }
 

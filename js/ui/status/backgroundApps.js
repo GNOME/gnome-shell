@@ -113,12 +113,11 @@ const BackgroundAppMenuItem = GObject.registerClass({
     async _quitApp() {
         this._spinner.play();
         this._spinnerTimeoutId =
-            GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, SPINNER_TIMEOUT,
+            GLib.timeout_add_seconds_once(GLib.PRIORITY_DEFAULT, SPINNER_TIMEOUT,
                 () => {
                     // Assume the quit request has failed, stop the spinner
                     this._spinner.stop();
                     delete this._spinnerTimeoutId;
-                    return GLib.SOURCE_REMOVE;
                 });
 
         try {

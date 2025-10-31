@@ -546,12 +546,11 @@ export const Dash = GObject.registerClass({
         if (shouldShow) {
             if (this._showLabelTimeoutId === 0) {
                 const timeout = this._labelShowing ? 0 : DASH_ITEM_HOVER_TIMEOUT;
-                this._showLabelTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, timeout,
+                this._showLabelTimeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, timeout,
                     () => {
                         this._labelShowing = true;
                         item.showLabel();
                         this._showLabelTimeoutId = 0;
-                        return GLib.SOURCE_REMOVE;
                     });
                 GLib.Source.set_name_by_id(this._showLabelTimeoutId, '[gnome-shell] item.showLabel');
                 if (this._resetHoverTimeoutId > 0) {
@@ -565,11 +564,10 @@ export const Dash = GObject.registerClass({
             this._showLabelTimeoutId = 0;
             item.hideLabel();
             if (this._labelShowing) {
-                this._resetHoverTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, DASH_ITEM_HOVER_TIMEOUT,
+                this._resetHoverTimeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, DASH_ITEM_HOVER_TIMEOUT,
                     () => {
                         this._labelShowing = false;
                         this._resetHoverTimeoutId = 0;
-                        return GLib.SOURCE_REMOVE;
                     });
                 GLib.Source.set_name_by_id(this._resetHoverTimeoutId, '[gnome-shell] this._labelShowing');
             }

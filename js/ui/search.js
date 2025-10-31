@@ -727,7 +727,6 @@ export const SearchResultsView = GObject.registerClass({
     _onSearchTimeout() {
         this._searchTimeoutId = 0;
         this._doSearch();
-        return GLib.SOURCE_REMOVE;
     }
 
     setTerms(terms) {
@@ -759,7 +758,7 @@ export const SearchResultsView = GObject.registerClass({
         this._updateSearchProgress();
 
         if (this._searchTimeoutId === 0)
-            this._searchTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, this._onSearchTimeout.bind(this));
+            this._searchTimeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, 150, this._onSearchTimeout.bind(this));
 
         this._highlighter = new Highlighter(this._terms);
 

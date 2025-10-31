@@ -85,7 +85,7 @@ class WorkspaceSwitcherPopup extends Clutter.Actor {
 
         if (this._timeoutId !== 0)
             GLib.source_remove(this._timeoutId);
-        this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, DISPLAY_TIMEOUT, this._onTimeout.bind(this));
+        this._timeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, DISPLAY_TIMEOUT, this._onTimeout.bind(this));
         GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._onTimeout');
 
         this._redisplayAllPopups();
@@ -101,7 +101,6 @@ class WorkspaceSwitcherPopup extends Clutter.Actor {
     }
 
     _onTimeout() {
-        GLib.source_remove(this._timeoutId);
         this._timeoutId = 0;
         this.ease({
             opacity: 0.0,
@@ -109,7 +108,6 @@ class WorkspaceSwitcherPopup extends Clutter.Actor {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => this.destroy(),
         });
-        return GLib.SOURCE_REMOVE;
     }
 
     _onDestroy() {

@@ -261,13 +261,12 @@ export class ScreenShield extends Signals.EventEmitter {
             const lockTimeout = Math.max(
                 adjustAnimationTime(STANDARD_FADE_TIME),
                 this._settings.get_uint(LOCK_DELAY_KEY) * 1000);
-            this._lockTimeoutId = GLib.timeout_add(
+            this._lockTimeoutId = GLib.timeout_add_once(
                 GLib.PRIORITY_DEFAULT,
                 lockTimeout,
                 () => {
                     this._lockTimeoutId = 0;
                     this.lock(false);
-                    return GLib.SOURCE_REMOVE;
                 });
             GLib.Source.set_name_by_id(this._lockTimeoutId, '[gnome-shell] this.lock');
         }
@@ -480,9 +479,8 @@ export class ScreenShield extends Signals.EventEmitter {
         if (params.fadeToBlack && params.animateFade) {
             // Take a beat
 
-            const id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, MANUAL_FADE_TIME, () => {
+            const id = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, MANUAL_FADE_TIME, () => {
                 this._activateFade(this._shortLightbox, MANUAL_FADE_TIME);
-                return GLib.SOURCE_REMOVE;
             });
             GLib.Source.set_name_by_id(id, '[gnome-shell] this._activateFade');
         } else {

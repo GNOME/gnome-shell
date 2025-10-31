@@ -94,7 +94,7 @@ class Tooltip extends St.Label {
         if (this._timeoutId)
             return;
 
-        this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 300, () => {
+        this._timeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, 300, () => {
             this.opacity = 0;
             this.show();
 
@@ -117,7 +117,6 @@ class Tooltip extends St.Label {
             });
 
             this._timeoutId = null;
-            return GLib.SOURCE_REMOVE;
         });
         GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] tooltip.open');
     }
@@ -2836,9 +2835,8 @@ class SelectArea extends St.Widget {
         try {
             await this._grabHelper.grabAsync({actor: this});
         } finally {
-            GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            GLib.idle_add_once(GLib.PRIORITY_DEFAULT, () => {
                 this.destroy();
-                return GLib.SOURCE_REMOVE;
             });
         }
 
@@ -3083,9 +3081,8 @@ class PickPixel extends St.Widget {
         } finally {
             this._previewCursor.destroy();
 
-            GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            GLib.idle_add_once(GLib.PRIORITY_DEFAULT, () => {
                 this.destroy();
-                return GLib.SOURCE_REMOVE;
             });
         }
 

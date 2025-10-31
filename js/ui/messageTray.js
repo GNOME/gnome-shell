@@ -366,10 +366,9 @@ export class Notification extends GObject.Object {
                 delete this._updateDatetimeId;
             } else if (!this._updateDatetimeId) {
                 this._updateDatetimeId =
-                    GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                    GLib.idle_add_once(GLib.PRIORITY_DEFAULT, () => {
                         delete this._updateDatetimeId;
                         this.datetime = GLib.DateTime.new_now_local();
-                        return GLib.SOURCE_REMOVE;
                     });
             }
         });
@@ -993,7 +992,7 @@ export const MessageTray = GObject.registerClass({
             // We wait for a longer period if the notification popped up where the mouse pointer was already positioned.
             // That gives the user more time to mouse away from the notification and mouse back in in order to expand it.
             const timeout = this._useLongerNotificationLeftTimeout ? LONGER_HIDE_TIMEOUT : HIDE_TIMEOUT;
-            this._notificationLeftTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, timeout, this._onNotificationLeftTimeout.bind(this));
+            this._notificationLeftTimeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, timeout, this._onNotificationLeftTimeout.bind(this));
             GLib.Source.set_name_by_id(this._notificationLeftTimeoutId, '[gnome-shell] this._onNotificationLeftTimeout');
         }
     }
@@ -1022,7 +1021,7 @@ export const MessageTray = GObject.registerClass({
             x < this._notificationLeftMouseX + MOUSE_LEFT_ACTOR_THRESHOLD &&
             x > this._notificationLeftMouseX - MOUSE_LEFT_ACTOR_THRESHOLD) {
             this._notificationLeftMouseX = -1;
-            this._notificationLeftTimeoutId = GLib.timeout_add(
+            this._notificationLeftTimeoutId = GLib.timeout_add_once(
                 GLib.PRIORITY_DEFAULT,
                 LONGER_HIDE_TIMEOUT,
                 this._onNotificationLeftTimeout.bind(this));
@@ -1034,7 +1033,6 @@ export const MessageTray = GObject.registerClass({
             this._updateNotificationTimeout(0);
             this._updateState();
         }
-        return GLib.SOURCE_REMOVE;
     }
 
     // All of the logic for what happens when occurs here; the various
@@ -1208,7 +1206,7 @@ export const MessageTray = GObject.registerClass({
         }
         if (timeout > 0) {
             this._notificationTimeoutId =
-                GLib.timeout_add(GLib.PRIORITY_DEFAULT, timeout,
+                GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, timeout,
                     this._notificationTimeout.bind(this));
             GLib.Source.set_name_by_id(this._notificationTimeoutId, '[gnome-shell] this._notificationTimeout');
         }
@@ -1235,7 +1233,6 @@ export const MessageTray = GObject.registerClass({
 
         this._lastSeenMouseX = x;
         this._lastSeenMouseY = y;
-        return GLib.SOURCE_REMOVE;
     }
 
     _hideNotification(animate) {

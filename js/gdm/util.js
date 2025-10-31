@@ -291,7 +291,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         delete this._currentMessageExtraInterval;
         this.emit('show-message', message.serviceName, message.text, message.type);
 
-        this._messageQueueTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+        this._messageQueueTimeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT,
             message.interval + (this._currentMessageExtraInterval | 0), () => {
                 this._messageQueueTimeoutId = 0;
 
@@ -301,8 +301,6 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 } else {
                     this.finishMessageQueue();
                 }
-
-                return GLib.SOURCE_REMOVE;
             });
         GLib.Source.set_name_by_id(this._messageQueueTimeoutId, '[gnome-shell] this._queueMessageTimeout');
     }
@@ -765,12 +763,11 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                     GLib.source_remove(this._fingerprintFailedId);
 
                 const cancellable = this._cancellable;
-                this._fingerprintFailedId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                this._fingerprintFailedId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT,
                     FINGERPRINT_ERROR_TIMEOUT_WAIT, () => {
                         this._fingerprintFailedId = 0;
                         if (!cancellable.is_cancelled())
                             this._verificationFailed(serviceName, false);
-                        return GLib.SOURCE_REMOVE;
                     });
             }
         }
