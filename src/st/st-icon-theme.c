@@ -493,7 +493,7 @@ free_dir_mtime (IconThemeDirMtime *dir_mtime)
   g_free (dir_mtime);
 }
 
-static gboolean
+static void
 theme_changed_idle (gpointer user_data)
 {
   StIconTheme *icon_theme;
@@ -503,8 +503,6 @@ theme_changed_idle (gpointer user_data)
   g_signal_emit (icon_theme, signals[CHANGED], 0);
 
   icon_theme->theme_changed_idle = 0;
-
-  return FALSE;
 }
 
 static void
@@ -512,7 +510,7 @@ queue_theme_changed (StIconTheme *icon_theme)
 {
   if (!icon_theme->theme_changed_idle)
     {
-      icon_theme->theme_changed_idle = g_idle_add (theme_changed_idle, icon_theme);
+      icon_theme->theme_changed_idle = g_idle_add_once (theme_changed_idle, icon_theme);
       g_source_set_name_by_id (icon_theme->theme_changed_idle, "theme_changed_idle");
     }
 }

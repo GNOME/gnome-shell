@@ -1512,7 +1512,7 @@ find_nearest_visible_forward (ClutterActor *actor)
   return next;
 }
 
-static gboolean
+static void
 st_widget_update_child_styles (StWidget *widget)
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
@@ -1540,7 +1540,6 @@ st_widget_update_child_styles (StWidget *widget)
     }
 
   priv->update_child_styles_id = 0;
-  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -1551,7 +1550,7 @@ st_widget_queue_child_styles_update (StWidget *widget)
   if (priv->update_child_styles_id != 0)
     return;
 
-  priv->update_child_styles_id = g_idle_add ((GSourceFunc) st_widget_update_child_styles, widget);
+  priv->update_child_styles_id = g_idle_add_once ((GSourceOnceFunc) st_widget_update_child_styles, widget);
 }
 
 static void

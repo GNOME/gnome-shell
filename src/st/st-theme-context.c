@@ -346,13 +346,6 @@ on_font_name_changed (StSettings     *settings,
   pango_font_description_free (font_desc);
 }
 
-static gboolean
-changed_idle (gpointer userdata)
-{
-  st_theme_context_changed (userdata);
-  return FALSE;
-}
-
 static void
 on_icon_theme_changed (StTextureCache *cache,
                        StThemeContext *context)
@@ -364,8 +357,8 @@ on_icon_theme_changed (StTextureCache *cache,
    * icon_name => icon lookup, faking a theme context change is a good way
    * to force users such as StIcon to look up icons again.
    */
-  id = g_idle_add ((GSourceFunc) changed_idle, context);
-  g_source_set_name_by_id (id, "[gnome-shell] changed_idle");
+  id = g_idle_add_once ((GSourceOnceFunc) st_theme_context_changed, context);
+  g_source_set_name_by_id (id, "[gnome-shell] st_theme_context_changed");
 }
 
 /**
