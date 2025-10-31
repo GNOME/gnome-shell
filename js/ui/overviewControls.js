@@ -803,11 +803,16 @@ class ControlsManager extends St.Widget {
 
         this.prepareToEnterOverview();
 
+        const startupPromises = [];
+
         this._stateAdjustment.value = ControlsState.HIDDEN;
-        this._stateAdjustment.ease(ControlsState.WINDOW_PICKER, {
-            duration: Overview.ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
+        startupPromises.push(new Promise(resolve => {
+            this._stateAdjustment.ease(ControlsState.WINDOW_PICKER, {
+                duration: Overview.ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onStopped: resolve,
+            });
+        }));
 
         this.dash.showAppsButton.checked = false;
         this._ignoreShowAppsButtonToggle = false;
@@ -819,11 +824,14 @@ class ControlsManager extends St.Widget {
         await this.layout_manager.ensureAllocation();
 
         // Opacity
-        this.ease({
-            opacity: 255,
-            duration: STARTUP_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
+        startupPromises.push(new Promise(resolve => {
+            this.ease({
+                opacity: 255,
+                duration: STARTUP_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onStopped: resolve,
+            });
+        }));
 
         // Search bar falls from the ceiling
         const {primaryMonitor} = Main.layoutManager;
@@ -831,16 +839,19 @@ class ControlsManager extends St.Widget {
         const yOffset = y - primaryMonitor.y;
 
         this._searchEntryBin.translation_y = -(yOffset + this._searchEntryBin.height);
-        this._searchEntryBin.ease({
-            translation_y: 0,
-            duration: STARTUP_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
+        startupPromises.push(new Promise(resolve => {
+            this._searchEntryBin.ease({
+                translation_y: 0,
+                duration: STARTUP_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onStopped: resolve,
+            });
+        }));
 
         // The Dash rises from the bottom. This is the last animation to finish,
         // so resolve the promise there.
         this.dash.translation_y = this.dash.height + this.dash.margin_bottom;
-        return new Promise(resolve => {
+        startupPromises.push(new Promise(resolve => {
             this.dash.ease({
                 translation_y: 0,
                 delay: STARTUP_ANIMATION_TIME,
@@ -848,7 +859,9 @@ class ControlsManager extends St.Widget {
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onStopped: () => resolve(),
             });
-        });
+        }));
+
+        return Promise.allSettled(startupPromises);
     }
 
     get searchController() {
