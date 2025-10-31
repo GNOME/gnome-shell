@@ -412,12 +412,11 @@ export const ExtensionManager = GObject.registerClass({
         if (this._updatesCheckId)
             return;
 
-        this._updatesCheckId = GLib.timeout_add_seconds(
+        this._updatesCheckId = GLib.timeout_add_seconds_once(
             GLib.PRIORITY_DEFAULT, 1, () => {
                 this.notify('n-updates');
 
                 delete this._updatesCheckId;
-                return GLib.SOURCE_REMOVE;
             });
     }
 });
