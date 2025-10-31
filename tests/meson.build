@@ -86,6 +86,9 @@ shell_tests = [
     'name': 'closeWithActiveWindows',
   },
   {
+    'name': 'multiMonitor',
+  },
+  {
     'name': 'headlessStart',
     'options': ['--hotplug'],
   },
