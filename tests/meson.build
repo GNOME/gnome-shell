@@ -77,6 +77,9 @@ endforeach
 
 shell_tests = [
   {
+    'name': 'minimal',
+  },
+  {
     'name': 'basic',
   },
   {
