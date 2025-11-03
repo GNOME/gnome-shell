@@ -16,6 +16,7 @@
  */
 
 import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
 import St from 'gi://St';
@@ -114,7 +115,7 @@ export const AuthList = GObject.registerClass({
             const laters = global.compositor.get_laters();
             laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._moveFocusToItems();
-                return false;
+                return GLib.SOURCE_REMOVE;
             });
         }
     }

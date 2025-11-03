@@ -225,12 +225,12 @@ class WorkspaceTracker {
 
         if (!Meta.prefs_get_dynamic_workspaces()) {
             this._checkWorkspacesId = 0;
-            return false;
+            return GLib.SOURCE_REMOVE;
         }
 
         // Update workspaces only if Dynamic Workspace Management has not been paused by some other function
         if (this._pauseWorkspaceCheck)
-            return true;
+            return GLib.SOURCE_CONTINUE;
 
         for (i = 0; i < this._workspaces.length; i++) {
             let lastRemoved = this._workspaces[i]._lastRemovedWindow;
@@ -290,7 +290,7 @@ class WorkspaceTracker {
         }
 
         this._checkWorkspacesId = 0;
-        return false;
+        return GLib.SOURCE_REMOVE;
     }
 
     keepWorkspaceAlive(workspace, duration) {
