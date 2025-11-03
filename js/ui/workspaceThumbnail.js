@@ -1187,7 +1187,10 @@ export const ThumbnailsBox = GObject.registerClass({
 
         const laters = global.compositor.get_laters();
         this._updateStateId = laters.add(
-            Meta.LaterType.BEFORE_REDRAW, () => this._updateStates());
+            Meta.LaterType.BEFORE_REDRAW, () => {
+                this._updateStates();
+                return GLib.SOURCE_REMOVE;
+            });
     }
 
     _unqueueUpdateStates() {
@@ -1344,6 +1347,7 @@ export const ThumbnailsBox = GObject.registerClass({
                     Meta.LaterType.BEFORE_REDRAW, () => {
                         this._dropPlaceholder.hide();
                         delete this._dropPlaceholderLater;
+                        return GLib.SOURCE_REMOVE;
                     });
             }
         }
@@ -1380,6 +1384,7 @@ export const ThumbnailsBox = GObject.registerClass({
                         Meta.LaterType.BEFORE_REDRAW, () => {
                             this._dropPlaceholder.show();
                             delete this._dropPlaceholderLater;
+                            return GLib.SOURCE_REMOVE;
                         });
                 }
                 x += placeholderWidth + spacing;
