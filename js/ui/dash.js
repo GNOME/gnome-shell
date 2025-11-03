@@ -264,7 +264,7 @@ class ShowAppsIcon extends DashItemContainer {
         const laters = global.compositor.get_laters();
         laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
             AppFavorites.getAppFavorites().removeFavorite(id);
-            return false;
+            return GLib.SOURCE_REMOVE;
         });
 
         return true;
@@ -978,7 +978,7 @@ export const Dash = GObject.registerClass({
                 appFavorites.moveFavoriteToPos(id, favPos);
             else
                 appFavorites.addFavoriteAtPos(id, favPos);
-            return false;
+            return GLib.SOURCE_REMOVE;
         });
 
         return true;

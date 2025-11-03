@@ -944,7 +944,7 @@ function _queueBeforeRedraw(workId) {
         const laters = global.compositor.get_laters();
         laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
             _runBeforeRedrawQueue();
-            return false;
+            return GLib.SOURCE_REMOVE;
         });
     }
 }
