@@ -204,7 +204,7 @@ const UserList = GObject.registerClass({
             const laters = global.compositor.get_laters();
             laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._moveFocusToItems();
-                return false;
+                return GLib.SOURCE_REMOVE;
             });
         }
     }
