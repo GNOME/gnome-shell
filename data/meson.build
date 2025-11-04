@@ -115,15 +115,6 @@ if have_systemd
   unitconf = configuration_data()
   unitconf.set('bindir', bindir)
   supported_sessions = ['wayland']
-  if have_x11
-    configure_file(
-      input: 'org.gnome.Shell@x11.service.in',
-      output: 'org.gnome.Shell@x11.service',
-      configuration: unitconf,
-      install_dir: systemduserunitdir
-    )
-    supported_sessions += ['x11']
-  endif
 
   configure_file(
     input: 'org.gnome.Shell@wayland.service.in',

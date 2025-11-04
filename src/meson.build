@@ -13,7 +13,7 @@ introspection_common = {
 subdir('calendar-server')
 subdir('hotplug-sniffer')
 subdir('st')
-if have_x11_client
+if have_xwayland
   subdir('tray')
 endif
 
@@ -77,7 +77,7 @@ gnome_shell_deps = [
   pango_dep,
 ]
 
-if have_x11_client
+if have_xwayland
   gnome_shell_deps += x11_dep
 endif
 
@@ -132,7 +132,7 @@ libshell_public_headers = [
   'shell-workspace-background.h'
 ]
 
-if have_x11_client
+if have_xwayland
   libshell_public_headers += [
     'shell-tray-icon.h',
     'shell-tray-manager.h',
@@ -152,7 +152,7 @@ libshell_private_headers = [
   'shell-wm-private.h'
 ]
 
-if have_x11_client
+if have_xwayland
   libshell_private_headers += [
     'shell-tray-icon-private.h',
   ]
@@ -189,7 +189,7 @@ libshell_sources = [
   'shell-workspace-background.c'
 ]
 
-if have_x11_client
+if have_xwayland
   libshell_sources += [
     'shell-tray-icon.c',
     'shell-tray-manager.c',
@@ -233,7 +233,7 @@ dbus_generated += gnome.gdbus_codegen('switcheroo-control',
 libshell_no_gir_sources += dbus_generated
 
 libshell_link_with = []
-if have_x11_client
+if have_xwayland
   libshell_link_with += [libtray]
 endif
 

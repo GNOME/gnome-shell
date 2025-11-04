@@ -184,7 +184,6 @@ class UiActor extends St.Widget {
 const defaultParams = {
     trackFullscreen: false,
     affectsStruts: false,
-    affectsInputRegion: true,
 };
 
 export const LayoutManager = GObject.registerClass({
@@ -846,8 +845,7 @@ export const LayoutManager = GObject.registerClass({
     // @actor: an actor to add to the chrome
     // @params: (optional) additional params
     //
-    // Adds @actor to the chrome, and (unless %affectsInputRegion in
-    // @params is %false) extends the input region to include it.
+    // Adds @actor to the chrome.
     // Changes in @actor's size, position, and visibility will
     // automatically result in appropriate changes to the input
     // region.
@@ -1056,17 +1054,12 @@ export const LayoutManager = GObject.registerClass({
             delete this._updateRegionIdle;
         }
 
-        const rects = [], struts = [];
+        const struts = [];
         const isPopupMenuVisible = global.top_window_group.get_children().some(isPopupMetaWindow);
-        const wantsInputRegion =
-            !this._startingUp &&
-            !isPopupMenuVisible &&
-            Main.modalCount === 0 &&
-            !Meta.is_wayland_compositor();
 
         for (let i = 0; i < this._trackedActors.length; i++) {
             const actorData = this._trackedActors[i];
-            if (!(actorData.affectsInputRegion && wantsInputRegion) && !actorData.affectsStruts)
+            if (!actorData.affectsStruts)
                 continue;
 
             let [x, y] = actorData.actor.get_transformed_position();
@@ -1075,9 +1068,6 @@ export const LayoutManager = GObject.registerClass({
             y = Math.round(y);
             w = Math.round(w);
             h = Math.round(h);
-
-            if (actorData.affectsInputRegion && wantsInputRegion && actorData.actor.get_paint_visibility())
-                rects.push(new Mtk.Rectangle({x, y, width: w, height: h}));
 
             let monitor = null;
             if (actorData.affectsStruts)
@@ -1132,9 +1122,6 @@ export const LayoutManager = GObject.registerClass({
                 struts.push(strut);
             }
         }
-
-        if (wantsInputRegion)
-            global.set_stage_input_region(rects);
 
         this._isPopupWindowVisible = isPopupMenuVisible;
 

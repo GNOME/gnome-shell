@@ -40,8 +40,5 @@
 /* Define to 1 if the <elf.h> and <link.h> header file exist. */
 #mesondefine HAVE_EXE_INTROSPECTION
 
-/* Whether GNOME Shell is built with X11 support */
-#mesondefine HAVE_X11
-
-/* Whether GNOME Shell is built with X11 clients support */
-#mesondefine HAVE_X11_CLIENT
+/* Whether GNOME Shell is built with XWayland support */
+#mesondefine HAVE_XWAYLAND

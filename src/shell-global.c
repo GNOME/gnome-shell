@@ -27,7 +27,7 @@
 #include <meta/meta-workspace-manager.h>
 #include <mtk/mtk.h>
 
-#ifdef HAVE_X11
+#ifdef HAVE_XWAYLAND
 #include <meta/meta-x11-display.h>
 #endif
 
@@ -686,50 +686,6 @@ _shell_global_destroy_gjs_context (ShellGlobal *self)
 }
 
 /**
- * shell_global_set_stage_input_region:
- * @global: the #ShellGlobal
- * @rectangles: (element-type Mtk.Rectangle): a list of #MtkRectangle
- * describing the input region.
- *
- * Sets the area of the stage that is responsive to mouse clicks when
- * we don't have a modal or grab.
- */
-void
-shell_global_set_stage_input_region (ShellGlobal *global,
-                                     GSList      *rectangles)
-{
-#ifdef HAVE_X11
-  MtkRectangle *rect;
-  XRectangle *rects;
-  int nrects, i;
-  GSList *r;
-  MetaDisplay *display;
-  MetaX11Display *x11_display;
-
-  g_return_if_fail (SHELL_IS_GLOBAL (global));
-
-  if (meta_is_wayland_compositor ())
-    return;
-
-  display = global->meta_display;
-  x11_display = meta_display_get_x11_display (display);
-  nrects = g_slist_length (rectangles);
-  rects = g_new (XRectangle, nrects);
-  for (r = rectangles, i = 0; r; r = r->next, i++)
-    {
-      rect = (MtkRectangle *)r->data;
-      rects[i].x = rect->x;
-      rects[i].y = rect->y;
-      rects[i].width = rect->width;
-      rects[i].height = rect->height;
-    }
-
-  meta_x11_display_set_stage_input_region (x11_display, rects, nrects);
-  g_free (rects);
-#endif
-}
-
-/**
  * shell_global_get_backend:
  *
  * Return value: (transfer none): The #MetaBackend
@@ -1010,7 +966,7 @@ entry_cursor_func (StEntry  *entry,
                            use_ibeam ? META_CURSOR_TEXT : META_CURSOR_DEFAULT);
 }
 
-#ifdef HAVE_X11
+#ifdef HAVE_XWAYLAND
 static void
 on_x11_display_closed (MetaDisplay *display,
                        ShellGlobal *global)
@@ -1027,7 +983,7 @@ _shell_global_set_plugin (ShellGlobal *global,
   MetaDisplay *display;
   MetaBackend *backend;
   MetaSettings *settings;
-#ifdef HAVE_X11
+#ifdef HAVE_XWAYLAND
   MetaX11Display *x11_display;
 #endif
 
@@ -1080,7 +1036,7 @@ _shell_global_set_plugin (ShellGlobal *global,
                                "End of frame, possibly including swap time",
                                "");
 
-#ifdef HAVE_X11
+#ifdef HAVE_XWAYLAND
   x11_display = meta_display_get_x11_display (display);
   if (x11_display && meta_x11_display_get_xdisplay (x11_display))
     g_signal_connect_object (global->meta_display, "x11-display-closing",

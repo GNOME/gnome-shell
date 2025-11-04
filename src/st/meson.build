@@ -213,7 +213,7 @@ libst_dep = declare_dependency(
   include_directories: [st_inc],
 )
 
-if get_option('tests') and have_x11_client
+if get_option('tests') and have_xwayland
   mutter_test_dep = dependency(libmutter_test_pc, version: mutter_req)
   test_theme = executable('test-theme',
     sources: 'test-theme.c',

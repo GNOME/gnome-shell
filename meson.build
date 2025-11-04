@@ -88,9 +88,8 @@ gnome_desktop_dep = dependency('gnome-desktop-4', version: gnome_desktop_req)
 pango_dep = dependency('pango', version: pango_req)
 
 have_fonts = mutter_dep.get_variable('have_fonts') == 'true'
-have_x11 = mutter_dep.get_variable('have_x11') == 'true'
-have_x11_client = mutter_dep.get_variable('have_x11_client') == 'true'
-if have_x11_client or have_x11
+have_xwayland = mutter_dep.get_variable('have_xwayland') == 'true'
+if have_xwayland
   x11_dep = dependency('x11')
   xext_dep = dependency('xext')
   xfixes_dep = dependency('xfixes')
@@ -157,8 +156,7 @@ cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
 cdata.set('HAVE_NETWORKMANAGER', have_networkmanager)
 cdata.set('HAVE_PIPEWIRE', have_pipewire)
 cdata.set('HAVE_SYSTEMD', have_systemd)
-cdata.set('HAVE_X11', have_x11)
-cdata.set('HAVE_X11_CLIENT', have_x11_client)
+cdata.set('HAVE_XWAYLAND', have_xwayland)
 
 cdata.set('HAVE_FDWALK', cc.has_function('fdwalk'))
 cdata.set('HAVE_MALLINFO', cc.has_function('mallinfo'))
@@ -318,7 +316,7 @@ subdir('js')
 subdir('src')
 subdir('po')
 
-if get_option('tests') and have_x11_client
+if get_option('tests') and have_xwayland
   subdir('tests')
 endif
 
@@ -335,8 +333,7 @@ meson.add_dist_script('build-aux/generate-stylesheets.py')
 meson.add_dist_script('build-aux/check-version.py', meson.project_version(), 'NEWS')
 
 summary_options = {
-  'x11': have_x11,
-  'x11_client': have_x11_client,
+  'have_xwayland': have_xwayland,
   'camera_monitor': get_option('camera_monitor'),
   'networkmanager': get_option('networkmanager'),
   'systemd': get_option('systemd'),

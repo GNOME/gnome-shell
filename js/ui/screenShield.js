@@ -633,11 +633,6 @@ export class ScreenShield extends Signals.EventEmitter {
             animateLockScreen: animate,
             fadeToBlack: true,
         });
-        // On wayland, a crash brings down the entire session, so we don't
-        // need to defend against being restarted unlocked
-        if (!Meta.is_wayland_compositor())
-            global.set_runtime_state(LOCKED_STATE_STR, GLib.Variant.new('b', true));
-
         // We used to set isActive and emit active-changed here,
         // but now we do that from lockScreenShown, which means
         // there is a 0.3 seconds window during which the lock

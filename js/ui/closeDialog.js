@@ -6,7 +6,6 @@ import Shell from 'gi://Shell';
 import St from 'gi://St';
 
 import * as Dialog from './dialog.js';
-import * as Main from './main.js';
 
 const FROZEN_WINDOW_BRIGHTNESS = -0.3;
 const DIALOG_TRANSITION_TIME = 150;
@@ -22,7 +21,6 @@ export const CloseDialog = GObject.registerClass({
         super._init();
         this._window = window;
         this._dialog = null;
-        this._tracked = undefined;
         this._timeoutId = 0;
     }
 
@@ -111,38 +109,6 @@ export const CloseDialog = GObject.registerClass({
         this.response(Meta.CloseDialogResponse.FORCE_CLOSE);
     }
 
-    _onFocusChanged() {
-        if (Meta.is_wayland_compositor())
-            return;
-
-        const focusWindow = global.display.focus_window;
-        const keyFocus = global.stage.key_focus;
-
-        let shouldTrack;
-        if (focusWindow != null)
-            shouldTrack = focusWindow === this._window;
-        else
-            shouldTrack = keyFocus && this._dialog.contains(keyFocus);
-
-        if (this._tracked === shouldTrack)
-            return;
-
-        if (shouldTrack) {
-            Main.layoutManager.trackChrome(this._dialog,
-                {affectsInputRegion: true});
-        } else {
-            Main.layoutManager.untrackChrome(this._dialog);
-        }
-
-        // The buttons are broken when they aren't added to the input region,
-        // so disable them properly in that case
-        this._dialog.buttonLayout.get_children().forEach(b => {
-            b.reactive = shouldTrack;
-        });
-
-        this._tracked = shouldTrack;
-    }
-
     vfunc_show() {
         if (this._dialog != null)
             return;
@@ -154,12 +120,6 @@ export const CloseDialog = GObject.registerClass({
                 this._window.check_alive(global.display.get_current_time_roundtrip());
                 return GLib.SOURCE_CONTINUE;
             });
-
-        global.display.connectObject(
-            'notify::focus-window', this._onFocusChanged.bind(this), this);
-
-        global.stage.connectObject(
-            'notify::key-focus', this._onFocusChanged.bind(this), this);
 
         this._addWindowEffect();
         this._initDialog();
@@ -176,7 +136,6 @@ export const CloseDialog = GObject.registerClass({
             scale_y: 1,
             mode: Clutter.AnimationMode.EASE_OUT_BACK,
             duration: DIALOG_TRANSITION_TIME,
-            onComplete: this._onFocusChanged.bind(this),
         });
     }
 

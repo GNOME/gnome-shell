@@ -757,8 +757,8 @@ export const MessageTray = GObject.registerClass({
         this._notificationTimeoutId = 0;
         this._notificationRemoved = false;
 
-        Main.layoutManager.addChrome(this, {affectsInputRegion: false});
-        Main.layoutManager.trackChrome(this._bannerBin, {affectsInputRegion: true});
+        Main.layoutManager.addChrome(this);
+        Main.layoutManager.trackChrome(this._bannerBin);
 
         global.display.connect('in-fullscreen-changed', this._updateState.bind(this));
 

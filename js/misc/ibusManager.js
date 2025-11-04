@@ -1,7 +1,6 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import IBus from 'gi://IBus';
-import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
 
 import * as Signals from './signals.js';
@@ -98,7 +97,7 @@ class IBusManager extends Signals.EventEmitter {
     async _queueSpawn() {
         const isSystemdService = await this._ibusSystemdServiceExists();
         if (!isSystemdService)
-            this._spawn(Meta.is_wayland_compositor() ? [] : ['--xim']);
+            this._spawn([]);
     }
 
     _tryAppendEnv(env, varname) {

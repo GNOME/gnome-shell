@@ -23,7 +23,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <meta/meta-context.h>
 #include <meta/display.h>
-#ifdef HAVE_X11_CLIENT
+#ifdef HAVE_XWAYLAND
 #include <meta/meta-x11-display.h>
 #endif
 
@@ -789,7 +789,7 @@ gboolean
 shell_util_has_x11_display_extension (MetaDisplay *display,
                                       const char  *extension)
 {
-#ifdef HAVE_X11_CLIENT
+#ifdef HAVE_XWAYLAND
   MetaX11Display *x11_display;
   Display *xdisplay;
   int op, event, error;

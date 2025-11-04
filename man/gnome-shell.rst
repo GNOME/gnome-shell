@@ -35,45 +35,17 @@ OPTIONS
 
   Run as a full display server, rather than nested
 
-``--nested``
-
-  Run as a nested compositor
-
 ``--no-x11``
 
   Run wayland compositor without starting Xwayland
-
-``--x11``
-
-  Run with X11 backend
 
 ``--wayland-display``\ =\ *DISPLAY*
 
   Wayland display name to use
 
-``-d``, ``--display``\ =\ *DISPLAY*
-
-  X display to use
-
 ``-r``, ``--replace``
 
   Replace the running window manager
-
-``--sm-disable``
-
-  Disable connection to the session manager
-
-``--sm-client-id``\ =\ *ID*
-
-  Specify session management *ID*
-
-``--sm-save-file``\ =\ *FILE*
-
-  Initialize session from *FILE*
-
-``--sync``
-
-  Make X calls synchronous
 
 ``--mode=MODE``
 
