@@ -467,7 +467,7 @@ export const TimeLimitsManager = GObject.registerClass({
 
         if (debugLog) {
             console.debug('TimeLimitsManager: User state changed from ' +
-                `${userStateToString(oldState)} to ${userStateToString(newState)} at ${wallTimeSecs}s`);
+                `${userStateToString(oldState)} to ${userStateToString(newState)} at ${this._unixToString(wallTimeSecs)}`);
         }
 
         // This potentially changed the limit time and timeout calculations.
@@ -749,6 +749,17 @@ export const TimeLimitsManager = GObject.registerClass({
 
         // Limit not reached yet.
         return 0;
+    }
+
+    /**
+     * Convert unix epoch to ISO 8601 formatted string for logging purposes.
+     *
+     * @param {number} secs Unix time to represent in human readable form
+     * @returns {string}
+     */
+    _unixToString(secs) {
+        const dateTime = GLib.DateTime.new_from_unix_local(secs);
+        return dateTime.format_iso8601();
     }
 
     _updateState() {
