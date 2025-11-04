@@ -938,11 +938,14 @@ class ProviderInfo extends St.Button {
             style_class: 'list-search-provider-details',
             orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
+            y_expand: false,
         });
 
         const nameLabel = new St.Label({
             text: provider.appInfo.get_name(),
             x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.CENTER,
+            y_expand: true,
         });
 
         this._moreLabel = new St.Label({x_align: Clutter.ActorAlign.START});
