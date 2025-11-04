@@ -1,4 +1,3 @@
-import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GioUnix from 'gi://GioUnix';
 import GLib from 'gi://GLib';
@@ -21,7 +20,6 @@ import * as InputMethod from '../misc/inputMethod.js';
 import * as Introspect from '../misc/introspect.js';
 import * as Keyboard from './keyboard.js';
 import * as MessageTray from './messageTray.js';
-import * as ModalDialog from './modalDialog.js';
 import * as OsdWindow from './osdWindow.js';
 import * as OsdMonitorLabeler from './osdMonitorLabeler.js';
 import * as Overview from './overview.js';
@@ -286,16 +284,6 @@ async function _initializeUI() {
 
     global.connect('locate-pointer', () => {
         locatePointer.show();
-    });
-
-    global.display.connect('show-restart-message', (display, message) => {
-        showRestartMessage(message);
-        return true;
-    });
-
-    global.display.connect('restart', () => {
-        global.reexec_self();
-        return true;
     });
 
     global.display.connect('gl-video-memory-purged', loadTheme);
@@ -1017,32 +1005,6 @@ export function queueDeferredWork(workId) {
         });
         GLib.Source.set_name_by_id(_deferredTimeoutId, '[gnome-shell] _runAllDeferredWork');
     }
-}
-
-const RestartMessage = GObject.registerClass(
-class RestartMessage extends ModalDialog.ModalDialog {
-    _init(message) {
-        super._init({
-            shellReactive: true,
-            styleClass: 'restart-message',
-            shouldFadeIn: false,
-            destroyOnClose: true,
-        });
-
-        const label = new St.Label({
-            text: message,
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-
-        this.contentLayout.add_child(label);
-        this.buttonLayout.hide();
-    }
-});
-
-function showRestartMessage(message) {
-    const restartMessage = new RestartMessage(message);
-    restartMessage.open();
 }
 
 class AnimationsSettings {

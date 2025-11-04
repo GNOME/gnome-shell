@@ -49,9 +49,6 @@ def start_shell(wrap=None, perf_output=None):
 
     args.append('--force-animations')
 
-    if options.replace:
-        args.append('--replace')
-
     if options.wayland or options.nested or options.headless:
         args.append('--wayland')
         if options.nested:
@@ -80,13 +77,6 @@ def run_shell(wrap=None, perf_output=None):
     shell = start_shell(wrap=wrap, perf_output=perf_output)
     shell.wait()
     return shell.returncode == 0
-
-def restore_shell():
-    pid = os.fork()
-    if (pid == 0):
-        os.execlp("gnome-shell", "gnome-shell", "--replace")
-    else:
-        sys.exit(0)
 
 def upload_performance_report(report_text):
     try:
@@ -309,8 +299,6 @@ parser.add_argument("--version", action="version",
 
 parser.add_argument("--wrap")
 
-parser.add_argument("-r", "--replace", action="store_true",
-                    help="Replace the running window manager")
 parser.add_argument("-w", "--wayland", action="store_true",
                     help="Run as a Wayland compositor")
 parser.add_argument("-n", "--nested", action="store_true",
@@ -331,8 +319,5 @@ if options.script == 'hwtest':
     options.extra_filter.append('Gedit')
 
 normal_exit = run_performance_test(wrap=options.wrap)
-if normal_exit:
-    if not options.hwtest and options.replace:
-        restore_shell()
-else:
+if not normal_exit:
     sys.exit(1)

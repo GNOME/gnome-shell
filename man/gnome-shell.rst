@@ -43,10 +43,6 @@ OPTIONS
 
   Wayland display name to use
 
-``-r``, ``--replace``
-
-  Replace the running window manager
-
 ``--mode=MODE``
 
   Use a specific mode, e.g. "gdm" for login screen

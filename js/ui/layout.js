@@ -729,9 +729,7 @@ export const LayoutManager = GObject.registerClass({
         // windows restore to the right size.
         this._updateRegions();
 
-        if (Meta.is_restart()) {
-            // On restart, we don't do an animation.
-        } else if (Main.sessionMode.isGreeter) {
+        if (Main.sessionMode.isGreeter) {
             this.panelBox.translation_y = -this.panelBox.height;
         } else {
             this.keyboardBox.hide();
@@ -768,9 +766,6 @@ export const LayoutManager = GObject.registerClass({
     }
 
     async _startupAnimation() {
-        if (Meta.is_restart())
-            return;
-
         if (Main.sessionMode.isGreeter)
             await this._startupAnimationGreeter();
         else

@@ -2,7 +2,6 @@ import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
@@ -39,11 +38,6 @@ class RunDialog extends ModalDialog.ModalDialog {
 
         this._internalCommands = {
             'lg': () => Main.createLookingGlass().open(),
-
-            'r': this._restart.bind(this),
-
-            // Developer brain backwards compatibility
-            'restart': this._restart.bind(this),
 
             'debugexit': () => global.context.terminate(),
 
@@ -251,15 +245,6 @@ class RunDialog extends ModalDialog.ModalDialog {
         this._descriptionLabel.set_text(message);
     }
 
-    _restart() {
-        if (Meta.is_wayland_compositor()) {
-            this._showError(_('Restart is not available on Wayland'));
-            return;
-        }
-        this._shouldFadeOut = false;
-        this.close();
-        Meta.restart(_('Restarting…'), global.context);
-    }
 
     open() {
         this._history.lastItem();

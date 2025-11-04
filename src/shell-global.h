@@ -90,8 +90,6 @@ void     shell_global_notify_error              (ShellGlobal  *global,
                                                  const char   *msg,
                                                  const char   *details);
 
-void     shell_global_reexec_self               (ShellGlobal  *global);
-
 const char *     shell_global_get_session_mode  (ShellGlobal  *global);
 
 void     shell_global_set_runtime_state         (ShellGlobal  *global,

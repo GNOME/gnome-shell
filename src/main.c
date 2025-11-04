@@ -82,7 +82,7 @@ shell_dbus_acquire_name (GDBusProxy  *bus,
 }
 
 static void
-shell_dbus_init (gboolean replace)
+shell_dbus_init ()
 {
   GDBusConnection *session;
   GDBusProxy *bus;
@@ -113,8 +113,6 @@ shell_dbus_init (gboolean replace)
     }
 
   request_name_flags = G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
-  if (replace)
-    request_name_flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
 
   shell_dbus_acquire_name (bus,
                            request_name_flags,
@@ -123,7 +121,7 @@ shell_dbus_init (gboolean replace)
   if (!(request_name_result == DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER
         || request_name_result == DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER))
     {
-      g_printerr (SHELL_DBUS_SERVICE " already exists on bus and --replace not specified\n");
+      g_printerr (SHELL_DBUS_SERVICE " already exists on bus\n");
       exit (1);
     }
 
@@ -668,7 +666,7 @@ main (int argc, char **argv)
 
   shell_init_debug (g_getenv ("SHELL_DEBUG"));
 
-  shell_dbus_init (meta_context_is_replacing (context));
+  shell_dbus_init ();
   shell_a11y_init ();
   shell_perf_log_init ();
   shell_introspection_init ();
