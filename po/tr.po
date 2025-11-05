@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-09-18 10:04+0000\n"
+"POT-Creation-Date: 2025-10-24 11:54+0000\n"
 "PO-Revision-Date: 2025-08-28 14:15+0300\n"
 "Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
@@ -105,7 +105,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Sabitlenmiş 9. uygulamanın yeni penceresini aç"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2292
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2295
 msgid "Screenshots"
 msgstr "Ekran Görüntüleri"
 
@@ -130,7 +130,7 @@ msgid "Record a screencast interactively"
 msgstr "Etkileşimli olarak ekranı kaydet"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1312
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1313
 msgid "System"
 msgstr "Sistem"
 
@@ -1849,7 +1849,7 @@ msgstr "Kapat"
 msgid "Leave Off"
 msgstr "Kapalı Bırak"
 
-#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:901
+#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:908
 msgid "Keyboard Settings"
 msgstr "Klavye Ayarları"
 
@@ -1917,14 +1917,14 @@ msgstr "Şimdi uygulamaların sınırsız erişimi var"
 
 #: js/ui/main.js:373
 msgid "Logged in as a privileged user"
-msgstr "Yetkili kullanıcı olarak oturum açılmış"
+msgstr "Ayrıcalıklı kullanıcı olarak oturum açılmış"
 
 #: js/ui/main.js:374
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
 msgstr ""
-"Oturumu öncelikli kullanıcı olarak çalıştırmaktan güvenlik nedeniyle "
+"Oturumu ayrıcalıklı kullanıcı olarak çalıştırmaktan güvenlik nedeniyle "
 "kaçınılmalıdır. Eğer yapabiliyorsanız sıradan kullanıcı olarak oturum "
 "açmalısınız."
 
@@ -2068,118 +2068,118 @@ msgstr "Kilitleme bir uygulamaca engellendi"
 msgid "Screen Capture"
 msgstr "Ekran Yakalama"
 
-#: js/ui/screenshot.js:1268
+#: js/ui/screenshot.js:1271
 msgid "Selection"
 msgstr "Seçim"
 
-#: js/ui/screenshot.js:1278
+#: js/ui/screenshot.js:1281
 msgid "Area Selection"
 msgstr "Alan Seçimi"
 
-#: js/ui/screenshot.js:1283
+#: js/ui/screenshot.js:1286
 msgid "Screen"
 msgstr "Ekran"
 
-#: js/ui/screenshot.js:1293
+#: js/ui/screenshot.js:1296
 msgid "Screen Selection"
 msgstr "Ekran Seçimi"
 
-#: js/ui/screenshot.js:1298
+#: js/ui/screenshot.js:1301
 msgid "Window"
 msgstr "Pencere"
 
-#: js/ui/screenshot.js:1308
+#: js/ui/screenshot.js:1311
 msgid "Window Selection"
 msgstr "Pencere Seçimi"
 
-#: js/ui/screenshot.js:1333 js/ui/status/system.js:118
+#: js/ui/screenshot.js:1336 js/ui/status/system.js:118
 msgid "Take Screenshot"
 msgstr "Ekran Görüntüsü Al"
 
-#: js/ui/screenshot.js:1349
+#: js/ui/screenshot.js:1352
 msgid "Record Screen"
 msgstr "Ekranı Kaydet"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1366
+#: js/ui/screenshot.js:1369
 msgid "Capture"
 msgstr "Yakala"
 
-#: js/ui/screenshot.js:1388
+#: js/ui/screenshot.js:1391
 msgid "Show Pointer"
 msgstr "İmleci Göster"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2016
+#: js/ui/screenshot.js:2019
 msgid "Screencasts"
 msgstr "Ekran Kaydı"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2021
+#: js/ui/screenshot.js:2024
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Ekran Kaydı %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2067
+#: js/ui/screenshot.js:2070
 msgid "Screencast recorded"
 msgstr "Ekran kaydı yakalandı"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2080
+#: js/ui/screenshot.js:2083
 msgid "Screencast failed to start"
 msgstr "Ekran kaydı başlatılamadı"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2086
+#: js/ui/screenshot.js:2089
 msgid "Screencast ended: Out of disk space"
 msgstr "Ekran kaydı bitti: Disk alanı doldu"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2095
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "Ekran kaydı beklenmedik biçimde bitti, lütfen yeniden deneyin"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2095
+#: js/ui/screenshot.js:2098
 msgid "Screencast ended unexpectedly"
 msgstr "Ekran kaydı beklenmedik biçimde bitti"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2108
+#: js/ui/screenshot.js:2111
 msgid "Click here to view the video"
 msgstr "Videoyu görmek için buraya tıkla"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2116 js/ui/screenshot.js:2359
+#: js/ui/screenshot.js:2119 js/ui/screenshot.js:2362
 msgid "Show in Files"
 msgstr "Dosyalar’da Göster"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2305
+#: js/ui/screenshot.js:2308
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Ekran Görüntüsü %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2352
 msgid "Screenshot captured"
 msgstr "Ekran görüntüsü yakalandı"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2351
+#: js/ui/screenshot.js:2354
 msgid "You can paste the image from the clipboard"
 msgstr "Resmi panodan yapıştırabilirsiniz"
 
-#: js/ui/screenshot.js:2409 js/ui/screenshot.js:2571
+#: js/ui/screenshot.js:2412 js/ui/screenshot.js:2574
 msgid "Screenshot taken"
 msgstr "Ekran görüntüsü alındı"
 
@@ -2360,7 +2360,7 @@ msgstr "Düşük"
 msgid "High"
 msgstr "Yüksek"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:883
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:890
 msgid "Keyboard"
 msgstr "Klavye"
 
@@ -2443,7 +2443,7 @@ msgstr "İkincil Tık"
 msgid "Dwell Click"
 msgstr "Durağan Tık"
 
-#: js/ui/status/keyboard.js:900
+#: js/ui/status/keyboard.js:907
 msgid "Show Keyboard Layout"
 msgstr "Klavye Düzenini Göster"
 
@@ -2958,15 +2958,15 @@ msgstr ""
 "GNOME Uzantılar; uzantıları güncellemeyi, uzantı tercihlerini yapılandırmayı "
 "ve istenmeyen uzantıları kaldırmayı veya devre dışı bırakmanızı sağlar."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Ana Pencere"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Kullanılabilir Güncellemeler"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Arama Görünümü"
 
@@ -3211,6 +3211,7 @@ msgid "Description"
 msgstr "Açıklama"
 
 #: subprojects/extensions-tool/src/command-create.c:416
+#, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address "
@@ -3220,6 +3221,7 @@ msgstr ""
 "E-posta biçiminde olmalıdır (tiklayarakodakla@birisi.ornek.com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:443
+#, c-format
 msgid "Choose one of the available templates:\n"
 msgstr "Uygun şablonlardan birini seçin:\n"
 
@@ -3329,6 +3331,7 @@ msgstr "Uzantı etkinleştir"
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:66
 #: subprojects/extensions-tool/src/main.c:150
+#, c-format
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "GNOME Kabuğu’na bağlanılamadı\n"
 
@@ -3467,6 +3470,7 @@ msgid "Reset an extension"
 msgstr "Uzantıyı sıfırla"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
+#, c-format
 msgid "Cannot uninstall system extensions\n"
 msgstr "Sistem uzantıları kaldırılamaz\n"
 
@@ -3480,10 +3484,12 @@ msgid "Uninstall an extension"
 msgstr "Uzantı kaldır"
 
 #: subprojects/extensions-tool/src/command-upload.c:226
+#, c-format
 msgid "Login to extensions.gnome.org\n"
 msgstr "Gir: extensions.gnome.org\n"
 
 #: subprojects/extensions-tool/src/command-upload.c:256
+#, c-format
 msgid "Warning! Password will be echoed"
 msgstr "Uyarı! Parola gösterilecek"
 
@@ -3674,13 +3680,13 @@ msgstr "Hızlı ayarlara öge ekle"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Devre dışı"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3688,12 +3694,12 @@ msgstr[0] "%u Çıktı"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Girdi"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
