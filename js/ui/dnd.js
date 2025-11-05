@@ -1,6 +1,5 @@
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
-import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 import * as Signals from '../misc/signals.js';
@@ -24,9 +23,9 @@ export const DragMotionResult = {
 };
 
 const DRAG_CURSOR_MAP = {
-    0: Meta.Cursor.NO_DROP,
-    1: Meta.Cursor.COPY,
-    2: Meta.Cursor.MOVE,
+    0: Clutter.CursorType.NO_DROP,
+    1: Clutter.CursorType.COPY,
+    2: Clutter.CursorType.MOVE,
 };
 
 export const DragDropResult = {
@@ -132,6 +131,10 @@ class _Draggable extends Signals.EventEmitter {
         this._sprite = null;
     }
 
+    _updateCursor(cursorType) {
+        global.stage.get_grab_actor()?.set_cursor_type(cursorType);
+    }
+
     _gestureRecognized() {
         const pointBeginEvent = this._dndGesture.get_point_begin_event();
         [this._dragStartX, this._dragStartY] = pointBeginEvent.get_coords();
@@ -149,7 +152,7 @@ class _Draggable extends Signals.EventEmitter {
             return;
 
         this.emit('drag-begin', time);
-        global.display.set_cursor(Meta.Cursor.NO_DROP);
+        this._updateCursor(Clutter.CursorType.NO_DROP);
 
         this._dragX = stageX;
         this._dragY = stageY;
@@ -333,7 +336,7 @@ class _Draggable extends Signals.EventEmitter {
             if (motionFunc) {
                 const result = motionFunc(dragEvent);
                 if (result !== DragMotionResult.CONTINUE) {
-                    global.display.set_cursor(DRAG_CURSOR_MAP[result]);
+                    this._updateCursor(DRAG_CURSOR_MAP[result]);
                     dragEvent.targetActor.disconnect(targetActorDestroyHandlerId);
                     return GLib.SOURCE_REMOVE;
                 }
@@ -354,13 +357,13 @@ class _Draggable extends Signals.EventEmitter {
                     targY,
                     0);
                 if (result !== DragMotionResult.CONTINUE) {
-                    global.display.set_cursor(DRAG_CURSOR_MAP[result]);
+                    this._updateCursor(DRAG_CURSOR_MAP[result]);
                     return GLib.SOURCE_REMOVE;
                 }
             }
             target = target.get_parent();
         }
-        global.display.set_cursor(Meta.Cursor.NO_DROP);
+        this._updateCursor(Clutter.CursorType.NO_DROP);
         return GLib.SOURCE_REMOVE;
     }
 
@@ -440,7 +443,7 @@ class _Draggable extends Signals.EventEmitter {
                         }
                     }
 
-                    global.display.set_cursor(Meta.Cursor.DEFAULT);
+                    this._updateCursor(Clutter.CursorType.DEFAULT);
                     this.emit('drag-end', event.get_time(), true);
                     this._dragComplete();
                     return;
@@ -515,7 +518,7 @@ class _Draggable extends Signals.EventEmitter {
         this._animationInProgress = false;
         this._dragComplete();
 
-        global.display.set_cursor(Meta.Cursor.DEFAULT);
+        this._updateCursor(Clutter.CursorType.DEFAULT);
     }
 
     _onAnimationComplete(eventTime) {
@@ -595,7 +598,7 @@ class _Draggable extends Signals.EventEmitter {
         this.emit('drag-cancelled', eventTime);
 
         if (!this._dragActor) {
-            global.display.set_cursor(Meta.Cursor.DEFAULT);
+            this._updateCursor(Clutter.CursorType.DEFAULT);
             this._dragComplete();
             this.emit('drag-end', eventTime, false);
             if (!this._dragOrigParent && this._dragActor)
