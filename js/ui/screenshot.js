@@ -304,7 +304,7 @@ const UIAreaSelector = GObject.registerClass({
 
     reset() {
         this.stopDrag();
-        global.display.set_cursor(Meta.Cursor.DEFAULT);
+        this.set_cursor_type(Clutter.CursorType.INHERIT);
 
         // Preserve area selection if possible. If the area goes out of bounds,
         // the monitors might have changed, so reset the area.
@@ -360,13 +360,13 @@ const UIAreaSelector = GObject.registerClass({
         // Check if the cursor overlaps the handles first.
         const limit = (this._handleSize / 2) ** 2;
         if ((leftX - x) ** 2 + (topY - y) ** 2 <= limit)
-            return Meta.Cursor.NW_RESIZE;
+            return Clutter.CursorType.NW_RESIZE;
         else if ((rightX - x) ** 2 + (topY - y) ** 2 <= limit)
-            return Meta.Cursor.NE_RESIZE;
+            return Clutter.CursorType.NE_RESIZE;
         else if ((leftX - x) ** 2 + (bottomY - y) ** 2 <= limit)
-            return Meta.Cursor.SW_RESIZE;
+            return Clutter.CursorType.SW_RESIZE;
         else if ((rightX - x) ** 2 + (bottomY - y) ** 2 <= limit)
-            return Meta.Cursor.SE_RESIZE;
+            return Clutter.CursorType.SE_RESIZE;
 
         // Now check the rest of the rectangle.
         const threshold =
@@ -374,28 +374,28 @@ const UIAreaSelector = GObject.registerClass({
 
         if (leftX - x >= 0 && leftX - x <= threshold) {
             if (topY - y >= 0 && topY - y <= threshold)
-                return Meta.Cursor.NW_RESIZE;
+                return Clutter.CursorType.NW_RESIZE;
             else if (y - bottomY >= 0 && y - bottomY <= threshold)
-                return Meta.Cursor.SW_RESIZE;
+                return Clutter.CursorType.SW_RESIZE;
             else if (topY - y < 0 && y - bottomY < 0)
-                return Meta.Cursor.W_RESIZE;
+                return Clutter.CursorType.W_RESIZE;
         } else if (x - rightX >= 0 && x - rightX <= threshold) {
             if (topY - y >= 0 && topY - y <= threshold)
-                return Meta.Cursor.NE_RESIZE;
+                return Clutter.CursorType.NE_RESIZE;
             else if (y - bottomY >= 0 && y - bottomY <= threshold)
-                return Meta.Cursor.SE_RESIZE;
+                return Clutter.CursorType.SE_RESIZE;
             else if (topY - y < 0 && y - bottomY < 0)
-                return Meta.Cursor.E_RESIZE;
+                return Clutter.CursorType.E_RESIZE;
         } else if (leftX - x < 0 && x - rightX < 0) {
             if (topY - y >= 0 && topY - y <= threshold)
-                return Meta.Cursor.N_RESIZE;
+                return Clutter.CursorType.N_RESIZE;
             else if (y - bottomY >= 0 && y - bottomY <= threshold)
-                return Meta.Cursor.S_RESIZE;
+                return Clutter.CursorType.S_RESIZE;
             else if (topY - y < 0 && y - bottomY < 0)
-                return Meta.Cursor.MOVE;
+                return Clutter.CursorType.MOVE;
         }
 
-        return Meta.Cursor.CROSSHAIR;
+        return Clutter.CursorType.CROSSHAIR;
     }
 
     stopDrag() {
@@ -410,7 +410,7 @@ const UIAreaSelector = GObject.registerClass({
         this._dragButton = 0;
         this._dragSequence = null;
 
-        if (this._dragCursor === Meta.Cursor.CROSSHAIR &&
+        if (this._dragCursor === Clutter.CursorType.CROSSHAIR &&
             this._lastX === this._startX && this._lastY === this._startY) {
             // The user clicked without dragging. Make up a larger selection
             // to reduce confusion.
@@ -446,7 +446,7 @@ const UIAreaSelector = GObject.registerClass({
 
     _updateCursor(x, y) {
         const cursor = this._computeCursorType(x, y);
-        global.display.set_cursor(cursor);
+        this.set_cursor_type(cursor);
     }
 
     _onPress(event, button, sequence) {
@@ -458,13 +458,13 @@ const UIAreaSelector = GObject.registerClass({
 
         // Clicking outside of the selection, or using the right mouse button,
         // or with Ctrl results in dragging a new selection from scratch.
-        if (cursor === Meta.Cursor.CROSSHAIR ||
+        if (cursor === Clutter.CursorType.CROSSHAIR ||
             button === Clutter.BUTTON_SECONDARY ||
             (event.get_state() & Clutter.ModifierType.CONTROL_MASK)) {
             this._dragButton = button;
 
-            this._dragCursor = Meta.Cursor.CROSSHAIR;
-            global.display.set_cursor(Meta.Cursor.CROSSHAIR);
+            this._dragCursor = Clutter.CursorType.CROSSHAIR;
+            this.set_cursor_type(Clutter.CursorType.CROSSHAIR);
 
             [this._startX, this._startY] = event.get_coords();
             this._lastX = this._startX = Math.floor(this._startX);
@@ -484,7 +484,7 @@ const UIAreaSelector = GObject.registerClass({
 
             // For moving, start X and Y are the top left corner, while
             // last X and Y are the bottom right corner.
-            if (cursor === Meta.Cursor.MOVE) {
+            if (cursor === Clutter.CursorType.MOVE) {
                 this._startX = leftX;
                 this._startY = topY;
                 this._lastX = rightX;
@@ -493,27 +493,27 @@ const UIAreaSelector = GObject.registerClass({
 
             // Start X and Y are set to the stationary sides, while last X
             // and Y are set to the moving sides.
-            if (cursor === Meta.Cursor.NW_RESIZE ||
-                cursor === Meta.Cursor.W_RESIZE ||
-                cursor === Meta.Cursor.SW_RESIZE) {
+            if (cursor === Clutter.CursorType.NW_RESIZE ||
+                cursor === Clutter.CursorType.W_RESIZE ||
+                cursor === Clutter.CursorType.SW_RESIZE) {
                 this._startX = rightX;
                 this._lastX = leftX;
             }
-            if (cursor === Meta.Cursor.NE_RESIZE ||
-                cursor === Meta.Cursor.E_RESIZE ||
-                cursor === Meta.Cursor.SE_RESIZE) {
+            if (cursor === Clutter.CursorType.NE_RESIZE ||
+                cursor === Clutter.CursorType.E_RESIZE ||
+                cursor === Clutter.CursorType.SE_RESIZE) {
                 this._startX = leftX;
                 this._lastX = rightX;
             }
-            if (cursor === Meta.Cursor.NW_RESIZE ||
-                cursor === Meta.Cursor.N_RESIZE ||
-                cursor === Meta.Cursor.NE_RESIZE) {
+            if (cursor === Clutter.CursorType.NW_RESIZE ||
+                cursor === Clutter.CursorType.N_RESIZE ||
+                cursor === Clutter.CursorType.NE_RESIZE) {
                 this._startY = bottomY;
                 this._lastY = topY;
             }
-            if (cursor === Meta.Cursor.SW_RESIZE ||
-                cursor === Meta.Cursor.S_RESIZE ||
-                cursor === Meta.Cursor.SE_RESIZE) {
+            if (cursor === Clutter.CursorType.SW_RESIZE ||
+                cursor === Clutter.CursorType.S_RESIZE ||
+                cursor === Clutter.CursorType.SE_RESIZE) {
                 this._startY = topY;
                 this._lastY = bottomY;
             }
@@ -556,7 +556,7 @@ const UIAreaSelector = GObject.registerClass({
         if (sequence?.get_slot() !== this._dragSequence?.get_slot())
             return Clutter.EVENT_PROPAGATE;
 
-        if (this._dragCursor === Meta.Cursor.CROSSHAIR) {
+        if (this._dragCursor === Clutter.CursorType.CROSSHAIR) {
             [this._lastX, this._lastY] = event.get_coords();
             this._lastX = Math.floor(this._lastX);
             this._lastY = Math.floor(this._lastY);
@@ -565,7 +565,7 @@ const UIAreaSelector = GObject.registerClass({
             let dx = Math.round(x - this._dragStartX);
             let dy = Math.round(y - this._dragStartY);
 
-            if (this._dragCursor === Meta.Cursor.MOVE) {
+            if (this._dragCursor === Clutter.CursorType.MOVE) {
                 const [,, selectionWidth, selectionHeight] = this.getGeometry();
 
                 let newStartX = this._startX + dx;
@@ -607,11 +607,11 @@ const UIAreaSelector = GObject.registerClass({
                 this._lastX = newLastX;
                 this._lastY = newLastY;
             } else {
-                if (this._dragCursor === Meta.Cursor.W_RESIZE ||
-                    this._dragCursor === Meta.Cursor.E_RESIZE)
+                if (this._dragCursor === Clutter.CursorType.W_RESIZE ||
+                    this._dragCursor === Clutter.CursorType.E_RESIZE)
                     dy = 0;
-                if (this._dragCursor === Meta.Cursor.N_RESIZE ||
-                    this._dragCursor === Meta.Cursor.S_RESIZE)
+                if (this._dragCursor === Clutter.CursorType.N_RESIZE ||
+                    this._dragCursor === Clutter.CursorType.S_RESIZE)
                     dx = 0;
 
                 // Make sure last X and Y are clamped between 0 and size - 1,
@@ -638,40 +638,40 @@ const UIAreaSelector = GObject.registerClass({
                 // If we drag the handle past a selection side, update which
                 // handles are which.
                 if (this._lastX > this._startX) {
-                    if (this._dragCursor === Meta.Cursor.NW_RESIZE)
-                        this._dragCursor = Meta.Cursor.NE_RESIZE;
-                    else if (this._dragCursor === Meta.Cursor.SW_RESIZE)
-                        this._dragCursor = Meta.Cursor.SE_RESIZE;
-                    else if (this._dragCursor === Meta.Cursor.W_RESIZE)
-                        this._dragCursor = Meta.Cursor.E_RESIZE;
+                    if (this._dragCursor === Clutter.CursorType.NW_RESIZE)
+                        this._dragCursor = Clutter.CursorType.NE_RESIZE;
+                    else if (this._dragCursor === Clutter.CursorType.SW_RESIZE)
+                        this._dragCursor = Clutter.CursorType.SE_RESIZE;
+                    else if (this._dragCursor === Clutter.CursorType.W_RESIZE)
+                        this._dragCursor = Clutter.CursorType.E_RESIZE;
                 } else {
                     // eslint-disable-next-line no-lonely-if
-                    if (this._dragCursor === Meta.Cursor.NE_RESIZE)
-                        this._dragCursor = Meta.Cursor.NW_RESIZE;
-                    else if (this._dragCursor === Meta.Cursor.SE_RESIZE)
-                        this._dragCursor = Meta.Cursor.SW_RESIZE;
-                    else if (this._dragCursor === Meta.Cursor.E_RESIZE)
-                        this._dragCursor = Meta.Cursor.W_RESIZE;
+                    if (this._dragCursor === Clutter.CursorType.NE_RESIZE)
+                        this._dragCursor = Clutter.CursorType.NW_RESIZE;
+                    else if (this._dragCursor === Clutter.CursorType.SE_RESIZE)
+                        this._dragCursor = Clutter.CursorType.SW_RESIZE;
+                    else if (this._dragCursor === Clutter.CursorType.E_RESIZE)
+                        this._dragCursor = Clutter.CursorType.W_RESIZE;
                 }
 
                 if (this._lastY > this._startY) {
-                    if (this._dragCursor === Meta.Cursor.NW_RESIZE)
-                        this._dragCursor = Meta.Cursor.SW_RESIZE;
-                    else if (this._dragCursor === Meta.Cursor.NE_RESIZE)
-                        this._dragCursor = Meta.Cursor.SE_RESIZE;
-                    else if (this._dragCursor === Meta.Cursor.N_RESIZE)
-                        this._dragCursor = Meta.Cursor.S_RESIZE;
+                    if (this._dragCursor === Clutter.CursorType.NW_RESIZE)
+                        this._dragCursor = Clutter.CursorType.SW_RESIZE;
+                    else if (this._dragCursor === Clutter.CursorType.NE_RESIZE)
+                        this._dragCursor = Clutter.CursorType.SE_RESIZE;
+                    else if (this._dragCursor === Clutter.CursorType.N_RESIZE)
+                        this._dragCursor = Clutter.CursorType.S_RESIZE;
                 } else {
                     // eslint-disable-next-line no-lonely-if
-                    if (this._dragCursor === Meta.Cursor.SW_RESIZE)
-                        this._dragCursor = Meta.Cursor.NW_RESIZE;
-                    else if (this._dragCursor === Meta.Cursor.SE_RESIZE)
-                        this._dragCursor = Meta.Cursor.NE_RESIZE;
-                    else if (this._dragCursor === Meta.Cursor.S_RESIZE)
-                        this._dragCursor = Meta.Cursor.N_RESIZE;
+                    if (this._dragCursor === Clutter.CursorType.SW_RESIZE)
+                        this._dragCursor = Clutter.CursorType.NW_RESIZE;
+                    else if (this._dragCursor === Clutter.CursorType.SE_RESIZE)
+                        this._dragCursor = Clutter.CursorType.NE_RESIZE;
+                    else if (this._dragCursor === Clutter.CursorType.S_RESIZE)
+                        this._dragCursor = Clutter.CursorType.N_RESIZE;
                 }
 
-                global.display.set_cursor(this._dragCursor);
+                this.set_cursor_type(this._dragCursor);
             }
 
             this._dragStartX += dx;
@@ -718,7 +718,7 @@ const UIAreaSelector = GObject.registerClass({
     }
 
     vfunc_leave_event(event) {
-        global.display.set_cursor(Meta.Cursor.DEFAULT);
+        this.set_cursor_type(Clutter.Cursor.INHERIT);
         return super.vfunc_leave_event(event);
     }
 });
@@ -1752,7 +1752,7 @@ export const ScreenshotUI = GObject.registerClass({
             this._selectionButton.toggle_mode = true;
 
             this._areaSelector.stopDrag();
-            global.display.set_cursor(Meta.Cursor.DEFAULT);
+            this.set_cursor_type(Clutter.CursorType.INHERIT);
 
             this._areaSelector.remove_all_transitions();
             this._areaSelector.reactive = false;
@@ -2825,18 +2825,17 @@ class SelectArea extends St.Widget {
         this._panGesture.connect('pan-update', this._onPanUpdate.bind(this));
         this._panGesture.connect('end', this._onPanEnd.bind(this));
         this.add_action(this._panGesture);
+
+        this.set_cursor_type(Clutter.CursorType.CROSSHAIR);
     }
 
     async selectAsync() {
-        global.display.set_cursor(Meta.Cursor.CROSSHAIR);
         Main.uiGroup.set_child_above_sibling(this, null);
         this.show();
 
         try {
             await this._grabHelper.grabAsync({actor: this});
         } finally {
-            global.display.set_cursor(Meta.Cursor.DEFAULT);
-
             GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
                 this.destroy();
                 return GLib.SOURCE_REMOVE;
@@ -3069,10 +3068,11 @@ class PickPixel extends St.Widget {
             visible: false,
         });
         Main.uiGroup.add_child(this._previewCursor);
+
+        this.set_cursor_type(Clutter.CursorType.NONE);
     }
 
     async pickAsync() {
-        global.display.set_cursor(Meta.Cursor.NONE);
         Main.uiGroup.set_child_above_sibling(this, null);
         this.show();
 
@@ -3081,7 +3081,6 @@ class PickPixel extends St.Widget {
         try {
             await this._grabHelper.grabAsync({actor: this});
         } finally {
-            global.display.set_cursor(Meta.Cursor.DEFAULT);
             this._previewCursor.destroy();
 
             GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
