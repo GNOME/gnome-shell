@@ -1,6 +1,5 @@
 import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
-import Meta from 'gi://Meta';
 import St from 'gi://St';
 import * as Main from './main.js';
 import Cairo from 'gi://cairo';
@@ -123,7 +122,7 @@ export class PointerA11yTimeout {
             this._pieTimer.start(x, y, timeout);
 
             if (type === Clutter.PointerA11yTimeoutType.GESTURE)
-                global.display.set_cursor(Meta.Cursor.CROSSHAIR);
+                global.stage.set_cursor_type(Clutter.CursorType.CROSSHAIR);
         });
 
         seat.connect('ptr-a11y-timeout-stopped', (o, type, clicked) => {
@@ -131,7 +130,7 @@ export class PointerA11yTimeout {
                 this._pieTimer?.destroy();
 
             if (type === Clutter.PointerA11yTimeoutType.GESTURE)
-                global.display.set_cursor(Meta.Cursor.DEFAULT);
+                global.stage.set_cursor_type(Clutter.CursorType.DEFAULT);
         });
     }
 }
