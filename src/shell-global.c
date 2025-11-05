@@ -955,17 +955,6 @@ ui_scaling_factor_changed (MetaSettings *settings,
   update_scaling_factor (global, settings);
 }
 
-static void
-entry_cursor_func (StEntry  *entry,
-                   gboolean  use_ibeam,
-                   gpointer  user_data)
-{
-  ShellGlobal *global = user_data;
-
-  meta_display_set_cursor (global->meta_display,
-                           use_ibeam ? META_CURSOR_TEXT : META_CURSOR_DEFAULT);
-}
-
 #ifdef HAVE_XWAYLAND
 static void
 on_x11_display_closed (MetaDisplay *display,
@@ -1004,7 +993,6 @@ _shell_global_set_plugin (ShellGlobal *global,
 
   global->stage = CLUTTER_STAGE (meta_backend_get_stage (global->backend));
 
-  st_entry_set_cursor_func (entry_cursor_func, global);
   st_clipboard_set_selection (meta_display_get_selection (display));
 
   g_signal_connect (global->stage, "notify::width",

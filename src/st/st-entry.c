@@ -103,8 +103,6 @@ struct _StEntryPrivate
 
   gfloat        spacing;
 
-  gboolean      has_ibeam;
-
   StShadow     *shadow_spec;
 
   CoglPipeline *text_shadow_pipeline;
@@ -776,60 +774,6 @@ st_entry_key_focus_in (ClutterActor *actor)
   clutter_actor_grab_key_focus (priv->entry);
 }
 
-static StEntryCursorFunc cursor_func = NULL;
-static gpointer          cursor_func_data = NULL;
-
-/**
- * st_entry_set_cursor_func: (skip)
- *
- * This function is for private use by libgnome-shell.
- * Do not ever use.
- */
-void
-st_entry_set_cursor_func (StEntryCursorFunc func,
-                          gpointer          data)
-{
-  cursor_func = func;
-  cursor_func_data = data;
-}
-
-static void
-st_entry_set_cursor (StEntry  *entry,
-                     gboolean  use_ibeam)
-{
-  if (cursor_func)
-    cursor_func (entry, use_ibeam, cursor_func_data);
-
-  ((StEntryPrivate *)ST_ENTRY_PRIV (entry))->has_ibeam = use_ibeam;
-}
-
-static gboolean
-st_entry_enter_event (ClutterActor *actor,
-                      ClutterEvent *event)
-{
-  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
-  ClutterStage *stage;
-  ClutterActor *target;
-
-  stage = CLUTTER_STAGE (clutter_actor_get_stage (actor));
-  target = clutter_stage_get_event_actor (stage, event);
-
-  if (target == priv->entry &&
-      clutter_event_get_related (event) != NULL)
-    st_entry_set_cursor (ST_ENTRY (actor), TRUE);
-
-  return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->enter_event (actor, event);
-}
-
-static gboolean
-st_entry_leave_event (ClutterActor *actor,
-                      ClutterEvent *event)
-{
-  st_entry_set_cursor (ST_ENTRY (actor), FALSE);
-
-  return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->leave_event (actor, event);
-}
-
 static void
 st_entry_paint_node (ClutterActor        *actor,
                      ClutterPaintNode    *node,
@@ -875,16 +819,6 @@ st_entry_paint_node (ClutterActor        *actor,
     }
 }
 
-static void
-st_entry_unmap (ClutterActor *actor)
-{
-  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
-  if (priv->has_ibeam)
-    st_entry_set_cursor (ST_ENTRY (actor), FALSE);
-
-  CLUTTER_ACTOR_CLASS (st_entry_parent_class)->unmap (actor);
-}
-
 static gboolean
 st_entry_get_paint_volume (ClutterActor       *actor,
                            ClutterPaintVolume *volume)
@@ -908,14 +842,10 @@ st_entry_class_init (StEntryClass *klass)
   actor_class->get_preferred_height = st_entry_get_preferred_height;
   actor_class->allocate = st_entry_allocate;
   actor_class->paint_node = st_entry_paint_node;
-  actor_class->unmap = st_entry_unmap;
   actor_class->get_paint_volume = st_entry_get_paint_volume;
 
   actor_class->key_press_event = st_entry_key_press_event;
   actor_class->key_focus_in = st_entry_key_focus_in;
-
-  actor_class->enter_event = st_entry_enter_event;
-  actor_class->leave_event = st_entry_leave_event;
 
   widget_class->style_changed = st_entry_style_changed;
   widget_class->navigate_focus = st_entry_navigate_focus;
@@ -1103,6 +1033,8 @@ st_entry_init (StEntry *entry)
 
   /* set cursor hidden until we receive focus */
   clutter_text_set_cursor_visible ((ClutterText *) priv->entry, FALSE);
+
+  clutter_actor_set_cursor_type (CLUTTER_ACTOR (entry), CLUTTER_CURSOR_TEXT);
 }
 
 /**
