@@ -5,7 +5,6 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Graphene from 'gi://Graphene';
-import Meta from 'gi://Meta';
 import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
@@ -88,10 +87,10 @@ class URLHighlighter extends St.Label {
 
         const urlId = this._findUrlAtPos(...event.get_coords());
         if (urlId !== -1 && !this._cursorChanged) {
-            global.display.set_cursor(Meta.Cursor.POINTER);
+            this.set_cursor_type(Clutter.CursorType.POINTER);
             this._cursorChanged = true;
         } else if (urlId === -1) {
-            global.display.set_cursor(Meta.Cursor.DEFAULT);
+            this.set_cursor_type(Clutter.CursorType.DEFAULT);
             this._cursorChanged = false;
         }
         return Clutter.EVENT_PROPAGATE;
@@ -103,7 +102,7 @@ class URLHighlighter extends St.Label {
 
         if (this._cursorChanged) {
             this._cursorChanged = false;
-            global.display.set_cursor(Meta.Cursor.DEFAULT);
+            this.set_cursor_type(Clutter.CursorType.DEFAULT);
         }
         return super.vfunc_leave_event(event);
     }
