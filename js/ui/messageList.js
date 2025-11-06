@@ -56,8 +56,16 @@ class URLHighlighter extends St.Label {
         this.setMarkup(text, allowMarkup);
 
         this._clickGesture = new Clutter.ClickGesture();
-        this._clickGesture.connect('recognize', this._onClick.bind(this));
+        this._clickGesture.connectObject(
+            'recognize', this._onClick.bind(this),
+            'may-recognize', this._checkInUrl.bind(this));
         this.add_action(this._clickGesture);
+    }
+
+    _checkInUrl() {
+        const {x, y} = this._clickGesture.get_coords_abs();
+        const urlId = this._findUrlAtPos(x, y);
+        return urlId !== -1;
     }
 
     _onClick() {
