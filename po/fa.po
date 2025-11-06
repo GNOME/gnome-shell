@@ -4,23 +4,30 @@
 # Mahyar Moghimi <mahyar.moqimi@gmail.com>, 2010.
 # Arash Mousavi <mousavi.arash@gmail.com>, 2010-2017.
 # Danial behzadi <dani.behzi@ubuntu.com>, 2018-2025.
+# میر سبحان <me@mirsobhan.ir>, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-09-04 09:42+0000\n"
-"PO-Revision-Date: 2025-09-04 16:39+0330\n"
-"Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
-"Language-Team: Persian <>\n"
+"POT-Creation-Date: 2025-10-18 19:47+0000\n"
+"PO-Revision-Date: 2025-10-19 12:45+0330\n"
+"Last-Translator: میر سبحان <me@mirsobhan.ir>\n"
+"Language-Team: Persian\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-DamnedLies-Scope: partial\n"
-"X-Generator: Poedit 3.7\n"
+"X-Generator: Poedit 3.6\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-DL-VCS-Web: https://gitlab.gnome.org/GNOME/gnome-shell/\n"
+"X-DL-Lang: fa\n"
+"X-DL-Module: gnome-shell\n"
+"X-DL-Branch: main\n"
+"X-DL-Domain: po\n"
+"X-DL-State: Translating\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -99,7 +106,7 @@ msgid "Open new window of pinned app 9"
 msgstr "گشودن پنجره‌ای جدید از کارهٔ سنجاق شدهٔ ۹"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2292
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2295
 msgid "Screenshots"
 msgstr "نماگرفت‌ها"
 
@@ -120,13 +127,13 @@ msgid "Record a screencast interactively"
 msgstr "ضبط کنش‌پذیر صفحه"
 
 #: data/50-gnome-shell-system.xml:6 data/X-GNOME-Shell-System.directory.desktop.in:2
-#: js/ui/messageTray.js:1312
+#: js/ui/messageTray.js:1313
 msgid "System"
 msgstr "سامانه"
 
 #: data/50-gnome-shell-system.xml:9
 msgid "Show the notification list"
-msgstr "نمایش فهرست آگاهی‌ها"
+msgstr "نمایش سیاههٔ آگاهی‌ها"
 
 #: data/50-gnome-shell-system.xml:12
 msgid "Open the quick settings menu"
@@ -164,9 +171,9 @@ msgid ""
 "also manipulate this list with the EnableExtension and DisableExtension D-Bus "
 "methods on org.gnome.Shell."
 msgstr ""
-"افزونه‌های گنوم‌شل مشخصهٔ UUID دارند؛ این کلید، افزونه‌هایی که باید بار شوند را فهرست "
-"می‌کند. هر افزونه‌ای که می‌خواهد بار شود، باید در این فهرست باشد. شما همچنین می‌توانید "
-"این فهرست را از طریق EnableExtension و DisableExtension (روش‌های D-Bus) در "
+"افزونه‌های گنوم‌شل مشخصهٔ UUID دارند؛ این کلید، افزونه‌هایی که باید بار شوند را سیاهه "
+"می‌کند. هر افزونه‌ای که می‌خواهد بار شود، باید در این سیاهه باشد. شما همچنین می‌توانید "
+"این سیاهه را از طریق EnableExtension و DisableExtension (روش‌های D-Bus) در "
 "org.gnome.Shell نیز بسازید."
 
 #: data/org.gnome.shell.gschema.xml.in:26
@@ -181,8 +188,8 @@ msgid ""
 "org.gnome.Shell. This key takes precedence over the “enabled-extensions” setting."
 msgstr ""
 "افزونه‌های پوستهٔ گنوم شل شناسه‌ای یکتا دارند؛ این کلید، افزونه‌هایی که باید غیرفعّال "
-"شوند را فهرست می‌کند، حتا اگر به عنوان بخشی از حالت فعلی بار شده باشند. می‌توانید این "
-"فهرست را از طریق روش‌های دی‌باس EnableExtension و DisableExtension در org.gnome.Shell "
+"شوند را سیاهه می‌کند، حتا اگر به عنوان بخشی از حالت فعلی بار شده باشند. می‌توانید این "
+"سیاهه را از طریق روش‌های دی‌باس EnableExtension و DisableExtension در org.gnome.Shell "
 "نیز تغییر دهید."
 
 #: data/org.gnome.shell.gschema.xml.in:37
@@ -229,7 +236,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:67
 msgid "List of desktop file IDs for favorite applications"
-msgstr "فهرست شناسه‌های پروندهٔ میزکار برای برنامه‌های مورد علاقه"
+msgstr "سیاههٔ شناسه‌های پروندهٔ میزکار برای برنامه‌های مورد علاقه"
 
 #: data/org.gnome.shell.gschema.xml.in:68
 msgid ""
@@ -351,11 +358,11 @@ msgstr "ترکیب کلید برای گشودن نمای کلّی فعّالیت
 
 #: data/org.gnome.shell.gschema.xml.in:174
 msgid "Keybinding to toggle the visibility of the notification list"
-msgstr "ترکیب کلید برای تغییر وضعیت نمایش فهرست پیام‌ها"
+msgstr "ترکیب کلید برای تغییر وضعیت نمایش سیاههٔ پیام‌ها"
 
 #: data/org.gnome.shell.gschema.xml.in:175
 msgid "Keybinding to toggle the visibility of the notification list."
-msgstr "ترکیب کلید برای تغییر وضعیت نمایش فهرست پیام‌ها."
+msgstr "ترکیب کلید برای تغییر وضعیت نمایش سیاههٔ پیام‌ها."
 
 #: data/org.gnome.shell.gschema.xml.in:181
 msgid "Keybinding to toggle the quick settings menu"
@@ -656,7 +663,7 @@ msgstr "توقّف اجباری"
 
 #: js/gdm/loginDialog.js:597
 msgid "Not listed?"
-msgstr "فهرست نشده؟"
+msgstr "سیاهه نشده؟"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
@@ -1839,7 +1846,7 @@ msgstr "خاموش کردن"
 msgid "Leave Off"
 msgstr "خاموش گذاشتن"
 
-#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:901
+#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:908
 msgid "Keyboard Settings"
 msgstr "تنظیمات صفحه‌کلید"
 
@@ -2057,130 +2064,130 @@ msgstr "قفل به دست کاره‌ای مسدود شده بود"
 msgid "Screen Capture"
 msgstr "ضبط صفحه"
 
-#: js/ui/screenshot.js:1268
+#: js/ui/screenshot.js:1271
 msgid "Selection"
 msgstr "گزینش"
 
-#: js/ui/screenshot.js:1278
+#: js/ui/screenshot.js:1281
 msgid "Area Selection"
 msgstr "گزینش ناحیه"
 
-#: js/ui/screenshot.js:1283
+#: js/ui/screenshot.js:1286
 msgid "Screen"
 msgstr "صفحه"
 
-#: js/ui/screenshot.js:1293
+#: js/ui/screenshot.js:1296
 msgid "Screen Selection"
 msgstr "گزینش صفحه"
 
-#: js/ui/screenshot.js:1298
+#: js/ui/screenshot.js:1301
 msgid "Window"
 msgstr "پنجره‌"
 
-#: js/ui/screenshot.js:1308
+#: js/ui/screenshot.js:1311
 msgid "Window Selection"
 msgstr "گزینش پنجره"
 
-#: js/ui/screenshot.js:1333 js/ui/status/system.js:118
+#: js/ui/screenshot.js:1336 js/ui/status/system.js:118
 msgid "Take Screenshot"
 msgstr "گرفتن نماگرفت"
 
-#: js/ui/screenshot.js:1349
+#: js/ui/screenshot.js:1352
 msgid "Record Screen"
 msgstr "ضبط صفحه"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1366
+#: js/ui/screenshot.js:1369
 msgid "Capture"
 msgstr "ضبط"
 
-#: js/ui/screenshot.js:1388
+#: js/ui/screenshot.js:1391
 msgid "Show Pointer"
 msgstr "نمایش اشاره‌گر"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2016
+#: js/ui/screenshot.js:2019
 msgid "Screencasts"
 msgstr "ضبط‌های صفحه"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2021
+#: js/ui/screenshot.js:2024
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "ضبط صفحه از %Id %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2067
+#: js/ui/screenshot.js:2070
 msgid "Screencast recorded"
 msgstr "صفحه ضبط شد"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2080
+#: js/ui/screenshot.js:2083
 msgid "Screencast failed to start"
 msgstr "آغاز ضبط صفحه شکست خورد"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2086
+#: js/ui/screenshot.js:2089
 msgid "Screencast ended: Out of disk space"
 msgstr "صفحه ضبط پایان یافت: بدون فضای دیسک"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2095
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "صفحه ضبط به طور غیرمنتظره‌ای پایان یافت. لطفاً دوباره تلاش کنید"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2095
+#: js/ui/screenshot.js:2098
 msgid "Screencast ended unexpectedly"
 msgstr "صفحه ضبط به طور غیرمنتظره‌ای پایان یافت"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2108
+#: js/ui/screenshot.js:2111
 msgid "Click here to view the video"
 msgstr "زدن برای دیدن ویدیو"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2116 js/ui/screenshot.js:2359
+#: js/ui/screenshot.js:2119 js/ui/screenshot.js:2362
 msgid "Show in Files"
 msgstr "نمایش در پرونده‌ها"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2305
+#: js/ui/screenshot.js:2308
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "نماگرفت از %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2352
 msgid "Screenshot captured"
 msgstr "نماگرفت ضبط شد"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2351
+#: js/ui/screenshot.js:2354
 msgid "You can paste the image from the clipboard"
 msgstr "می‌توانید تصویر را از تخته‌گیره بچسبانید"
 
-#: js/ui/screenshot.js:2409 js/ui/screenshot.js:2571
+#: js/ui/screenshot.js:2412 js/ui/screenshot.js:2574
 msgid "Screenshot taken"
 msgstr "نماگرفت انجام شد"
 
-#: js/ui/search.js:842
+#: js/ui/search.js:847
 msgid "Searching"
 msgstr "جست‌وجو کردن"
 
-#: js/ui/search.js:845
+#: js/ui/search.js:850
 msgid "No results"
 msgstr "بدون نتیجه"
 
-#: js/ui/search.js:977
+#: js/ui/search.js:982
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2348,7 +2355,7 @@ msgstr "کم"
 msgid "High"
 msgstr "زیاد"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:883
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:890
 msgid "Keyboard"
 msgstr "صفحه‌کلید"
 
@@ -2432,7 +2439,7 @@ msgstr "کلیک دوم"
 msgid "Dwell Click"
 msgstr "کلیک طولانی"
 
-#: js/ui/status/keyboard.js:900
+#: js/ui/status/keyboard.js:907
 msgid "Show Keyboard Layout"
 msgstr "نمایش چیدمان صفحه‌کلید"
 
@@ -2596,13 +2603,23 @@ msgctxt "Power profile"
 msgid "Custom"
 msgstr "سفارشی"
 
-#: js/ui/status/powerProfiles.js:45 js/ui/status/powerProfiles.js:77
+#: js/ui/status/powerProfiles.js:45
+#, fuzzy
+#| msgid "Power Mode"
+msgctxt "Quick settings button title"
 msgid "Power Mode"
 msgstr "حالت نیرو"
 
 #: js/ui/status/powerProfiles.js:46
 msgid "Open power profiles menu"
 msgstr "گشودن فهرست نماگرهای نیرو"
+
+#: js/ui/status/powerProfiles.js:77
+#, fuzzy
+#| msgid "Power Mode"
+msgctxt "Quick settings menu header"
+msgid "Power Mode"
+msgstr "حالت نیرو"
 
 #: js/ui/status/powerProfiles.js:79
 msgid "Power Settings"
@@ -2894,7 +2911,7 @@ msgstr "استفاده از یک حالت مشخص، مثلاً «gdm» برای
 
 #: src/main.c:533
 msgid "List possible modes"
-msgstr "فهرست کردن حالت‌های ممکن"
+msgstr "سیاهه کردن حالت‌های ممکن"
 
 #: src/main.c:539
 msgid "Force animations to be enabled"
@@ -2948,15 +2965,15 @@ msgstr ""
 "افزونه‌های گنوم؛ به‌روز رسانی، پیکربندی، برداشتن یا از کار انداختن افزونه‌ها را مدیریت "
 "می‌کند."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:79
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "پنجرهٔ اصلی"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:83
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "به‌روز رسانی‌های موجود"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:87
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "نمای جست‌وجو"
 
@@ -3132,7 +3149,7 @@ msgid ""
 "We’re very sorry, but it was not possible to get the list of installed extensions. "
 "Make sure you are logged into GNOME and try again."
 msgstr ""
-"متأسفیم، ولی امکان گرفتن فهرست افزونه‌های نصب‌شده نبود. مطمئن شوید که به گنوم وارد "
+"متأسفیم، ولی امکان گرفتن سیاههٔ افزونه‌های نصب‌شده نبود. مطمئن شوید که به گنوم وارد "
 "شده‌اید و دوباره تلاش کنید."
 
 #: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:6
@@ -3195,6 +3212,7 @@ msgid "Description"
 msgstr "شرح"
 
 #: subprojects/extensions-tool/src/command-create.c:416
+#, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address "
@@ -3204,6 +3222,7 @@ msgstr ""
 "این شناسه باید در قالب یک نشانی رایانامه باشد (clicktofocus@janedoe.example.com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:443
+#, c-format
 msgid "Choose one of the available templates:\n"
 msgstr "گزینش یکی از الگوهای موجود:\n"
 
@@ -3313,6 +3332,7 @@ msgstr "به کار انداختن یک افزونه"
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:66
 #: subprojects/extensions-tool/src/main.c:150
+#, c-format
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "شکست در وصل شدن به پوستهٔ گنوم\n"
 
@@ -3384,7 +3404,7 @@ msgstr "چاپ جزییات افزونه"
 
 #: subprojects/extensions-tool/src/command-list.c:172
 msgid "List installed extensions"
-msgstr "فهرست افزونه‌های نصب‌شده"
+msgstr "سیاههٔ افزونه‌های نصب‌شده"
 
 #: subprojects/extensions-tool/src/command-pack.c:444
 #: subprojects/extensions-tool/src/command-upload.c:427
@@ -3451,6 +3471,7 @@ msgid "Reset an extension"
 msgstr "بازنشانی یک افزونه"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
+#, c-format
 msgid "Cannot uninstall system extensions\n"
 msgstr "نمی‌توان افزونه‌های سامانه‌ای را حذف نصب کرد\n"
 
@@ -3464,10 +3485,12 @@ msgid "Uninstall an extension"
 msgstr "حذف نصب یک افزونه"
 
 #: subprojects/extensions-tool/src/command-upload.c:226
+#, c-format
 msgid "Login to extensions.gnome.org\n"
 msgstr "ورود به extensions.gnome.org\n"
 
 #: subprojects/extensions-tool/src/command-upload.c:256
+#, c-format
 msgid "Warning! Password will be echoed"
 msgstr "هشدار! گذرواژه نوشته خواهد شد"
 
@@ -3603,7 +3626,7 @@ msgstr "حذف نصب افزونه"
 
 #: subprojects/extensions-tool/src/main.c:341
 msgid "List extensions"
-msgstr "فهرست افزونه‌ها"
+msgstr "سیاههٔ افزونه‌ها"
 
 #: subprojects/extensions-tool/src/main.c:342
 #: subprojects/extensions-tool/src/main.c:343
