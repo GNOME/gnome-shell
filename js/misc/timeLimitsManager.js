@@ -227,13 +227,34 @@ export const TimeLimitsManager = GObject.registerClass({
         this._updateStateMachine();
     }
 
-    async _recordUsage(startSecs, endSecs) {
-        console.debug('Recording usage to the parental controls daemon: ' +
-            `${this._unixToString(startSecs)} ${this._unixToString(endSecs)}`);
+    async _recordUsage(records) {
+        // Build the array of records expected by the D-Bus API
+        const augmentedRecords = [];
+        let latestUsageEndSecs = 0;
+
+        for (let i = 0; i < records.length; i++) {
+            console.debug('Recording usage to the parental controls daemon: ' +
+                `${this._unixToString(records[i].startSecs)} ${this._unixToString(records[i].endSecs)}`);
+
+            augmentedRecords.push([
+                records[i].startSecs,
+                records[i].endSecs,
+                'login-session',
+                '',
+            ]);
+
+            // Update the limit of which records to re-send in future. We expect
+            // all the records to be in order, but it seems more robust to
+            // assume they might not be, just in case. Records might end up
+            // being out of order wrt this._latestUsageEndSecs when initially
+            // loading the session history at startup.
+            if (records[i].endSecs > latestUsageEndSecs)
+                latestUsageEndSecs = records[i].endSecs;
+        }
+
         try {
-            await this._timerChildProxy.RecordUsageAsync(
-                [[startSecs, endSecs, 'login-session', '']]);
-            this._latestUsageEndSecs = endSecs;
+            await this._timerChildProxy.RecordUsageAsync(augmentedRecords);
+            this._latestUsageEndSecs = latestUsageEndSecs;
         } catch (e) {
             if (e.matches(Gio.DBusError, Gio.DBusError.SERVICE_UNKNOWN)) {
                 // Limits should only be enabled when the daemon is available.
@@ -262,7 +283,7 @@ export const TimeLimitsManager = GObject.registerClass({
             this._stateTransitions.at(-1).newState === UserState.ACTIVE) {
             const startSecs = this._stateTransitions.at(-1).wallTimeSecs;
             const endSecs = this.getCurrentTime();
-            await this._recordUsage(startSecs, endSecs);
+            await this._recordUsage([{startSecs, endSecs}]);
         }
     }
 
@@ -715,6 +736,8 @@ export const TimeLimitsManager = GObject.registerClass({
         // Record all of the usage records to the parental controls timer daemon
         // if the parental controls session limits are in place.
         if (this._parentalControlsManager.sessionLimitsEnabled()) {
+            const usageRecords = [];
+
             for (var j = 0; j < this._stateTransitions.length - 1; j++) {
                 const start = this._stateTransitions[j];
                 const end = this._stateTransitions[j + 1];
@@ -731,9 +754,11 @@ export const TimeLimitsManager = GObject.registerClass({
                 if (endSecs <= this._latestUsageEndSecs)
                     continue;
 
-                /* eslint-disable-next-line no-await-in-loop */
-                await this._recordUsage(startSecs, endSecs);
+                usageRecords.push({startSecs, endSecs});
             }
+
+            if (usageRecords.length > 0)
+                await this._recordUsage(usageRecords);
         }
 
         if (this._stateTransitions.length === 0) {
