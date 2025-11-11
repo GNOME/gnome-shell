@@ -294,6 +294,11 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         super._onDestroy();
     }
 
+    _isActorOutside(actor) {
+        return super._isActorOutside(actor) &&
+               !this._thumbnails?.contains(actor);
+    }
+
     /**
      * _select:
      *

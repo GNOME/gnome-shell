@@ -76,7 +76,7 @@ export const SwitcherPopup = GObject.registerClass({
             const actorAtCoords =
                 global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, coords.x, coords.y);
 
-            return !this._switcherList?.contains(actorAtCoords);
+            return this._isActorOutside(actorAtCoords);
         });
         longPressGesture.connect('recognize', () => {
             // User clicked outside
@@ -307,6 +307,10 @@ export const SwitcherPopup = GObject.registerClass({
         this._motionTimeoutId = 0;
         this.mouseActive = true;
         return GLib.SOURCE_REMOVE;
+    }
+
+    _isActorOutside(actor) {
+        return !this._switcherList?.contains(actor);
     }
 
     _resetNoModsTimeout() {
