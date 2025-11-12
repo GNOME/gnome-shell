@@ -23,9 +23,18 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         super(params);
     }
 
-    _handleAnswerQuery(serviceName, answer) {
+    async _handleAnswerQuery(serviceName, answer) {
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
+
+        if (this._selectedMechanism.role === Const.PASSWORD_ROLE_NAME &&
+            this._resettingPassword) {
+            await this._userVerifier.call_answer_query(serviceName,
+                answer,
+                this._cancellable,
+                null);
+            return;
+        }
 
         let response;
         switch (this._selectedMechanism.role) {
@@ -58,6 +67,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         this._priorityList = null;
         this._enabledMechanisms = null;
         this._selectedMechanism = null;
+
+        this._resettingPassword = false;
     }
 
     _handleOnCustomJSONRequest(_serviceName, _protocol, _version, json) {
@@ -102,6 +113,13 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     }
 
     _handleOnInfo(serviceName, info) {
+        // sssd can't inform about expired password from JSON so it's needed
+        // to check the info message and handle the reset using the old flow
+        if (serviceName === this._selectedMechanism?.serviceName &&
+            this._selectedMechanism.role === Const.PASSWORD_ROLE_NAME &&
+            info.includes('Password expired. Change your password now'))
+            this._resettingPassword = true;
+
         if (serviceName === this._selectedMechanism?.serviceName)
             this.emit('queue-message', serviceName, info, Util.MessageType.INFO);
     }
@@ -113,6 +131,13 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
                 problem,
                 Util.MessageType.ERROR);
         }
+    }
+
+    _handleOnSecretInfoQuery(serviceName, secretQuestion) {
+        if (serviceName === this._selectedMechanism?.serviceName &&
+            this._selectedMechanism.role === Const.PASSWORD_ROLE_NAME &&
+            this._resettingPassword)
+            this.emit('ask-question', serviceName, secretQuestion, true);
     }
 
     _handleOnConversationStopped(serviceName) {
