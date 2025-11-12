@@ -962,8 +962,8 @@ export const TimeLimitsManager = GObject.registerClass({
         // scheduling anything until they become active again.
         if (sessionLimitsEnabled) {
             if (nextSessionStart <= nowSecs) {
-                // Just entered daily schedule, so update cached estimated times
-                // which will perform state update afterwards.
+                // Just entered daily schedule or a new day, so update cached
+                // estimated times, which will perform state update afterwards.
                 this._updateEstimatedTimes();
                 return;
             }
