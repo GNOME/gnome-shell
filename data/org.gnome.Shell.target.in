@@ -1,9 +1,0 @@
-[Unit]
-Description=GNOME Shell
-DefaultDependencies=no
-
-Requisite=gnome-session-initialized.target
-PartOf=gnome-session-initialized.target
-Before=gnome-session-initialized.target
-
-Wants=@SUPPORTED_SESSIONS@
