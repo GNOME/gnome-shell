@@ -353,13 +353,13 @@ class QuickSettings extends PanelMenu.Button {
         this._indicators.add_child(this._darkMode);
         this._indicators.add_child(this._doNotDisturb);
         this._indicators.add_child(this._backlight);
-        this._indicators.add_child(this._powerProfiles);
         if (this._bluetooth)
             this._indicators.add_child(this._bluetooth);
         this._indicators.add_child(this._rfkill);
         this._indicators.add_child(this._autoRotate);
         this._indicators.add_child(this._volumeOutput);
         this._indicators.add_child(this._unsafeMode);
+        this._indicators.add_child(this._powerProfiles);
         this._indicators.add_child(this._system);
 
         // add our quick settings items before any external ones
