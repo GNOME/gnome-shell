@@ -136,6 +136,17 @@ class Indicator extends SystemIndicator {
     _init() {
         super._init();
 
-        this.quickSettingsItems.push(new PowerProfilesToggle());
+        this._indicator = this._addIndicator();
+
+        this._powerProfilesToggle = new PowerProfilesToggle();
+
+        this._powerProfilesToggle.bind_property('icon-name',
+            this._indicator, 'icon-name',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._powerProfilesToggle.bind_property('checked',
+            this._indicator, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this.quickSettingsItems.push(this._powerProfilesToggle);
     }
 });
