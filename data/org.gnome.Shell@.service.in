@@ -1,6 +1,5 @@
 [Unit]
-Description=GNOME Shell on Wayland
-# On wayland, force a session shutdown
+Description=GNOME Shell
 OnFailure=org.gnome.Shell-disable-extensions.service gnome-session-shutdown.target
 OnFailureJobMode=replace-irreversibly
 CollectMode=inactive-or-failed
@@ -13,17 +12,17 @@ Requisite=gnome-session-initialized.target
 PartOf=gnome-session-initialized.target
 Before=gnome-session-initialized.target
 
-ConditionEnvironment=XDG_SESSION_TYPE=%I
+AssertEnvironment=XDG_SESSION_TYPE=wayland
 
 [Service]
 Slice=session.slice
 Type=notify
-ExecStart=@bindir@/gnome-shell
+ExecStart=@bindir@/gnome-shell --mode=%i
 # Exit code 1 means we are probably *not* dealing with an extension failure
 SuccessExitStatus=1
 
 # unset some environment variables that were set by the shell and won't work now that the shell is gone
-ExecStopPost=-/bin/sh -c 'test "$SERVICE_RESULT" != "exec-condition" && systemctl --user unset-environment GNOME_SETUP_DISPLAY WAYLAND_DISPLAY DISPLAY XAUTHORITY'
+ExecStopPost=-systemctl --user unset-environment GNOME_SETUP_DISPLAY WAYLAND_DISPLAY DISPLAY XAUTHORITY
 
 # On wayland we cannot restart
 Restart=no
