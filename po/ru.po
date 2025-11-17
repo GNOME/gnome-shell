@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-08-20 10:20+0000\n"
-"PO-Revision-Date: 2025-08-22 12:57+0300\n"
+"POT-Creation-Date: 2025-11-15 11:53+0000\n"
+"PO-Revision-Date: 2025-11-15 18:47+0300\n"
 "Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: RU\n"
 "Language: ru\n"
@@ -31,7 +31,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.8\n"
 
 # Запуск приложений, как другой вариант
 #: data/50-gnome-shell-launchers.xml:6
@@ -111,7 +111,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Открыть новое окно закрепленного приложения 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2292
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2290
 msgid "Screenshots"
 msgstr "Снимки экрана"
 
@@ -136,7 +136,7 @@ msgid "Record a screencast interactively"
 msgstr "Сделать запись экрана интерактивно"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1312
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1313
 msgid "System"
 msgstr "Система"
 
@@ -617,7 +617,7 @@ msgstr "Сведения об ошибке"
 msgid "Copy Error"
 msgstr "Копировать ошибку"
 
-#: js/gdm/authPrompt.js:156 js/gdm/loginDialog.js:514
+#: js/gdm/authPrompt.js:157 js/gdm/loginDialog.js:514
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -625,7 +625,7 @@ msgstr "Копировать ошибку"
 msgid "Cancel"
 msgstr "Отменить"
 
-#: js/gdm/authPrompt.js:324 js/ui/components/networkAgent.js:214
+#: js/gdm/authPrompt.js:335 js/ui/components/networkAgent.js:214
 #: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
 #: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
 #: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
@@ -634,7 +634,7 @@ msgstr "Отменить"
 msgid "Password"
 msgstr "Пароль"
 
-#: js/gdm/loginDialog.js:330
+#: js/gdm/loginDialog.js:327
 msgid "Choose Session"
 msgstr "Выбрать сеанс"
 
@@ -947,102 +947,102 @@ msgid "Brightness"
 msgstr "Яркость"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:93
+#: js/misc/systemActions.js:94
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Выключить"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:96
+#: js/misc/systemActions.js:97
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "выключение;завершение;остановка;стоп"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:101
+#: js/misc/systemActions.js:102
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Перезапустить"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:104
+#: js/misc/systemActions.js:105
 msgid "reboot;restart;"
 msgstr "перезагрузить;перезапустить;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:110
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Заблокировать экран"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:112
+#: js/misc/systemActions.js:113
 msgid "lock screen"
 msgstr "заблокировать экран"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:117
+#: js/misc/systemActions.js:118
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Выйти"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:120
+#: js/misc/systemActions.js:121
 msgid "logout;log out;sign off"
 msgstr "logout;log out;sign off;выйти"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:125
+#: js/misc/systemActions.js:126
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Режим ожидания"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:128
+#: js/misc/systemActions.js:129
 msgid "suspend;sleep"
 msgstr "ждущий;спящий режим"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:133
+#: js/misc/systemActions.js:134
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Сменить пользователя"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:136
+#: js/misc/systemActions.js:137
 msgid "switch user"
 msgstr "переключить;сменить пользователя"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:143
+#: js/misc/systemActions.js:144
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "заблокировать ориентацию;экран;поворот;вращение"
 
 #. Translators: The name of the screenshot UI action in search
-#: js/misc/systemActions.js:148
+#: js/misc/systemActions.js:149
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Сделать снимок экрана"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
-#: js/misc/systemActions.js:151
+#: js/misc/systemActions.js:152
 msgid "screenshot;screencast;snip;capture;record"
 msgstr "screenshot;screencast;snip;capture;record;скриншот;снимок;захват;запись"
 
-#: js/misc/systemActions.js:255
+#: js/misc/systemActions.js:256
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Разблокировать ориентацию экрана"
 
-#: js/misc/systemActions.js:256
+#: js/misc/systemActions.js:257
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Заблокировать ориентацию экрана"
 
-#: js/misc/timeLimitsManager.js:342
+#: js/misc/timeLimitsManager.js:463
 msgid "GNOME needs to save screen time data"
 msgstr "GNOME необходимо сохранить данные экранного времени"
 
-#: js/misc/timeLimitsManager.js:1123
+#: js/misc/timeLimitsManager.js:1351
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
@@ -1050,23 +1050,23 @@ msgstr[0] "Ограничение экранного времени в %d мин
 msgstr[1] "Ограничение экранного времени в %d минуты"
 msgstr[2] "Ограничение экранного времени в %d минут"
 
-#: js/misc/timeLimitsManager.js:1130
+#: js/misc/timeLimitsManager.js:1358
 msgid "Your screen time limit is approaching"
 msgstr "Приближается ограничение вашего экранного времени"
 
-#: js/misc/timeLimitsManager.js:1144
+#: js/misc/timeLimitsManager.js:1374
 msgid "Screen Time Limit Reached"
 msgstr "Достигнуто ограничение экранного времени"
 
-#: js/misc/timeLimitsManager.js:1145
+#: js/misc/timeLimitsManager.js:1375
 msgid "It’s time to stop using the device"
 msgstr "Пора прекратить использование устройства"
 
-#: js/misc/util.js:130
+#: js/misc/util.js:131
 msgid "Command not found"
 msgstr "Команда не найдена"
 
-#: js/misc/util.js:168
+#: js/misc/util.js:169
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Не удалось выполнить \"%s\":"
@@ -1226,7 +1226,7 @@ msgstr "Отказать"
 msgid "Allow"
 msgstr "Разрешить"
 
-#: js/ui/appDisplay.js:1762
+#: js/ui/appDisplay.js:1734
 msgid "Unnamed Folder"
 msgstr "Безымянная папка"
 
@@ -1240,7 +1240,7 @@ msgstr "Приложение \"%s\" было закреплено на пане�
 msgid "%s has been unpinned from the dash."
 msgstr "Приложение \"%s\" было откреплено от панели приложений."
 
-#: js/ui/appFavorites.js:134 js/ui/main.js:315
+#: js/ui/appFavorites.js:134 js/ui/main.js:304
 msgid "Undo"
 msgstr "Отменить"
 
@@ -1416,12 +1416,12 @@ msgid "Clear all notifications"
 msgstr "Очистить все уведомления"
 
 #. Translators: %s is an application name
-#: js/ui/closeDialog.js:42
+#: js/ui/closeDialog.js:40
 #, javascript-format
 msgid "“%s” Is Not Responding"
 msgstr "Приложение \"%s\" не отвечает"
 
-#: js/ui/closeDialog.js:43
+#: js/ui/closeDialog.js:41
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
 "quit entirely"
@@ -1429,11 +1429,11 @@ msgstr ""
 "Вы можете подождать отклика приложения некоторое время, или принудительно "
 "завершить его работу"
 
-#: js/ui/closeDialog.js:71
+#: js/ui/closeDialog.js:69
 msgid "Force Quit"
 msgstr "Принудительно завершить"
 
-#: js/ui/closeDialog.js:76
+#: js/ui/closeDialog.js:74
 msgid "Wait"
 msgstr "Подождать"
 
@@ -1497,18 +1497,18 @@ msgid "Service"
 msgstr "Служба"
 
 #: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
-#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
+#: js/ui/components/networkAgent.js:744 js/ui/components/networkAgent.js:765
 msgid "Authentication required"
 msgstr "Требуется подтверждение подлинности"
 
-#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:745
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr ""
 "Для доступа к беспроводной сети \"%s\" требуется пароль или ключ шифрования"
 
-#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:749
 msgid "Wired 802.1X authentication"
 msgstr "Проводная аутентификация 802.1X"
 
@@ -1516,15 +1516,15 @@ msgstr "Проводная аутентификация 802.1X"
 msgid "Network name"
 msgstr "Название сети"
 
-#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:753
 msgid "DSL authentication"
 msgstr "Аутентификация DSL"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:758
 msgid "PIN code required"
 msgstr "Требуется PIN-код"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:759
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Для устройства мобильной связи требуется PIN-код"
 
@@ -1532,14 +1532,14 @@ msgstr "Для устройства мобильной связи требует
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
-#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
-#: js/ui/components/networkAgent.js:771
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:750
+#: js/ui/components/networkAgent.js:754 js/ui/components/networkAgent.js:766
+#: js/ui/components/networkAgent.js:770
 #, javascript-format
 msgid "A password is required to connect to “%s”"
 msgstr "Для подключения к \"%s\" требуется пароль"
 
-#: js/ui/components/networkAgent.js:770
+#: js/ui/components/networkAgent.js:769
 msgid "VPN password"
 msgstr "Пароль VPN"
 
@@ -1563,7 +1563,7 @@ msgstr "Подтвердить"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Не удалось подтвердить подлинность. Попробуйте снова."
 
-#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:404
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:406
 msgid "Windows"
 msgstr "Окна"
 
@@ -1693,7 +1693,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "Выйти"
 
-#: js/ui/endSessionDialog.js:70 js/ui/status/system.js:174
+#: js/ui/endSessionDialog.js:70 js/ui/status/system.js:181
 msgctxt "title"
 msgid "Power Off"
 msgstr "Выключение"
@@ -1926,7 +1926,7 @@ msgstr "Выключить"
 msgid "Leave Off"
 msgstr "Оставить выключенными"
 
-#: js/ui/keyboard.js:180 js/ui/status/keyboard.js:901
+#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:901
 msgid "Keyboard Settings"
 msgstr "Настройки клавиатуры"
 
@@ -1984,19 +1984,19 @@ msgstr "Показать код"
 msgid "Web Page"
 msgstr "Веб-страница"
 
-#: js/ui/main.js:311
+#: js/ui/main.js:300
 msgid "System was put in unsafe mode"
 msgstr "Система была переведена в небезопасный режим"
 
-#: js/ui/main.js:312
+#: js/ui/main.js:301
 msgid "Apps now have unrestricted access"
 msgstr "Приложения теперь имеют неограниченный доступ"
 
-#: js/ui/main.js:372
+#: js/ui/main.js:363
 msgid "Logged in as a privileged user"
 msgstr "Авторизован как привилегированный пользователь"
 
-#: js/ui/main.js:373
+#: js/ui/main.js:364
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -2005,17 +2005,17 @@ msgstr ""
 "привилегированного пользователя. Если это возможно, вам следует войти от "
 "имени обычного пользователя."
 
-#: js/ui/main.js:421
+#: js/ui/main.js:410
 msgid "Screen Lock disabled"
 msgstr "Блокировка экрана отключена"
 
-#: js/ui/main.js:422
+#: js/ui/main.js:411
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "Для блокировки экрана требуется дисплейный менеджер GNOME"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:409
+#: js/ui/messageList.js:403
 msgid "Unknown App"
 msgstr "Неизвестное приложение"
 
@@ -2035,11 +2035,11 @@ msgstr "Неизвестное название"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:328
+#: js/ui/overviewControls.js:329
 msgid "Type to search"
 msgstr "Введите для поиска"
 
-#: js/ui/overviewControls.js:392
+#: js/ui/overviewControls.js:394
 msgid "Apps"
 msgstr "Приложения"
 
@@ -2099,12 +2099,12 @@ msgstr "Нажмите любую клавишу для выхода"
 msgid "Activities"
 msgstr "Обзор"
 
-#: js/ui/panel.js:289
+#: js/ui/panel.js:290
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:465
+#: js/ui/panel.js:466
 msgid "Top Bar"
 msgstr "Верхняя панель"
 
@@ -2112,31 +2112,23 @@ msgstr "Верхняя панель"
 msgid "Open menu"
 msgstr "Открыть меню"
 
-#: js/ui/runDialog.js:61
+#: js/ui/runDialog.js:55
 msgid "Run a Command"
 msgstr "Выполнить команду"
 
-#: js/ui/runDialog.js:79
+#: js/ui/runDialog.js:73
 msgid "Press ESC to close"
 msgstr "Нажмите Esc чтобы закрыть"
-
-#: js/ui/runDialog.js:256
-msgid "Restart is not available on Wayland"
-msgstr "Перезапуск не доступен при использовании Wayland"
-
-#: js/ui/runDialog.js:261
-msgid "Restarting…"
-msgstr "Перезапуск…"
 
 #: js/ui/screenShield.js:233
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME необходимо заблокировать экран"
 
-#: js/ui/screenShield.js:274 js/ui/screenShield.js:682
+#: js/ui/screenShield.js:274 js/ui/screenShield.js:677
 msgid "Unable to lock"
 msgstr "Не удалось заблокировать"
 
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:683
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:678
 msgid "Lock was blocked by an app"
 msgstr "Блокировке помешало приложение"
 
@@ -2145,130 +2137,130 @@ msgstr "Блокировке помешало приложение"
 msgid "Screen Capture"
 msgstr "Запись экрана"
 
-#: js/ui/screenshot.js:1268
+#: js/ui/screenshot.js:1266
 msgid "Selection"
 msgstr "Область"
 
-#: js/ui/screenshot.js:1278
+#: js/ui/screenshot.js:1276
 msgid "Area Selection"
 msgstr "Выбор области"
 
-#: js/ui/screenshot.js:1283
+#: js/ui/screenshot.js:1281
 msgid "Screen"
 msgstr "Экран"
 
-#: js/ui/screenshot.js:1293
+#: js/ui/screenshot.js:1291
 msgid "Screen Selection"
 msgstr "Выбор экрана"
 
-#: js/ui/screenshot.js:1298
+#: js/ui/screenshot.js:1296
 msgid "Window"
 msgstr "Окно"
 
-#: js/ui/screenshot.js:1308
+#: js/ui/screenshot.js:1306
 msgid "Window Selection"
 msgstr "Выбор окна"
 
-#: js/ui/screenshot.js:1333 js/ui/status/system.js:111
+#: js/ui/screenshot.js:1331 js/ui/status/system.js:118
 msgid "Take Screenshot"
 msgstr "Сделать снимок экрана"
 
-#: js/ui/screenshot.js:1349
+#: js/ui/screenshot.js:1347
 msgid "Record Screen"
 msgstr "Записать экран"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1366
+#: js/ui/screenshot.js:1364
 msgid "Capture"
 msgstr "Снять"
 
-#: js/ui/screenshot.js:1388
+#: js/ui/screenshot.js:1386
 msgid "Show Pointer"
 msgstr "Показать курсор мыши"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2016
+#: js/ui/screenshot.js:2014
 msgid "Screencasts"
 msgstr "Записи экрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2021
+#: js/ui/screenshot.js:2019
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Запись экрана от %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2067
+#: js/ui/screenshot.js:2065
 msgid "Screencast recorded"
 msgstr "Запись экрана сделана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2080
+#: js/ui/screenshot.js:2078
 msgid "Screencast failed to start"
 msgstr "Не удалось начать запись экрана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2086
+#: js/ui/screenshot.js:2084
 msgid "Screencast ended: Out of disk space"
 msgstr "Запись экрана завершилась: Закончилось место на диске"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2090
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "Запись экрана неожиданно завершилась, попробуйте еще раз"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2095
+#: js/ui/screenshot.js:2093
 msgid "Screencast ended unexpectedly"
 msgstr "Запись экрана неожиданно завершилась"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2108
+#: js/ui/screenshot.js:2106
 msgid "Click here to view the video"
 msgstr "Нажмите здесь, чтобы посмотреть видео"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2116 js/ui/screenshot.js:2359
+#: js/ui/screenshot.js:2114 js/ui/screenshot.js:2357
 msgid "Show in Files"
 msgstr "Показать в Файлах"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2305
+#: js/ui/screenshot.js:2303
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Снимок экрана от %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2347
 msgid "Screenshot captured"
 msgstr "Снимок экрана сделан"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2351
+#: js/ui/screenshot.js:2349
 msgid "You can paste the image from the clipboard"
 msgstr "Вы можете вставить изображение из буфера обмена"
 
-#: js/ui/screenshot.js:2409 js/ui/screenshot.js:2571
+#: js/ui/screenshot.js:2407 js/ui/screenshot.js:2569
 msgid "Screenshot taken"
 msgstr "Сделан снимок экрана"
 
-#: js/ui/search.js:842
+#: js/ui/search.js:847
 msgid "Searching"
 msgstr "Поиск"
 
-#: js/ui/search.js:845
+#: js/ui/search.js:850
 msgid "No results"
 msgstr "Результатов нет"
 
-#: js/ui/search.js:977
+#: js/ui/search.js:985
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2276,7 +2268,7 @@ msgstr[0] "%d ещё"
 msgstr[1] "%d ещё"
 msgstr[2] "%d ещё"
 
-#: js/ui/searchController.js:87
+#: js/ui/searchController.js:86
 #: subprojects/extensions-app/data/ui/extensions-window.ui:73
 msgid "Search"
 msgstr "Поиск"
@@ -2297,7 +2289,7 @@ msgstr "Показать текст"
 msgid "Hide Text"
 msgstr "Скрыть текст"
 
-#: js/ui/shellEntry.js:174
+#: js/ui/shellEntry.js:169
 msgid "Caps lock is on"
 msgstr "Включён Caps Lock"
 
@@ -2473,7 +2465,7 @@ msgstr "Bluetooth"
 msgid "Open Bluetooth menu"
 msgstr "Открыть меню Bluetooth"
 
-#: js/ui/status/bluetooth.js:304 js/ui/status/network.js:1924
+#: js/ui/status/bluetooth.js:304 js/ui/status/network.js:1925
 msgid "Bluetooth Settings"
 msgstr "Настройки Bluetooth"
 
@@ -2506,23 +2498,23 @@ msgstr "Темный стиль"
 msgid "Do Not Disturb"
 msgstr "Не беспокоить"
 
-#: js/ui/status/dwellClick.js:15
+#: js/ui/status/dwellClick.js:14
 msgid "Single Click"
 msgstr "Одиночное нажатие левой кнопки мыши"
 
-#: js/ui/status/dwellClick.js:20
+#: js/ui/status/dwellClick.js:19
 msgid "Double Click"
 msgstr "Двойное нажатие левой кнопки мыши"
 
-#: js/ui/status/dwellClick.js:25
+#: js/ui/status/dwellClick.js:24
 msgid "Drag"
 msgstr "Перетаскивание"
 
-#: js/ui/status/dwellClick.js:30
+#: js/ui/status/dwellClick.js:29
 msgid "Secondary Click"
 msgstr "Нажатие правой кнопки мыши"
 
-#: js/ui/status/dwellClick.js:39
+#: js/ui/status/dwellClick.js:38
 msgid "Dwell Click"
 msgstr "Нажатие левой кнопки мыши после задержки над кнопкой"
 
@@ -2578,12 +2570,12 @@ msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1165
+#: js/ui/status/network.js:1166
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Точка доступа \"%s\""
 
-#: js/ui/status/network.js:1446
+#: js/ui/status/network.js:1447
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
@@ -2591,81 +2583,81 @@ msgstr[0] "Подключено %d"
 msgstr[1] "Подключено %d"
 msgstr[2] "Подключено %d"
 
-#: js/ui/status/network.js:1544 js/ui/status/network.js:1561
+#: js/ui/status/network.js:1545 js/ui/status/network.js:1562
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1545
+#: js/ui/status/network.js:1546
 msgid "Open VPN menu"
 msgstr "Открыть меню VPN"
 
-#: js/ui/status/network.js:1546
+#: js/ui/status/network.js:1547
 msgid "VPN Settings"
 msgstr "Настройки VPN"
 
-#: js/ui/status/network.js:1806
+#: js/ui/status/network.js:1807
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1807
+#: js/ui/status/network.js:1808
 msgid "Open Wi–Fi menu"
 msgstr "Открыть меню Wi-Fi"
 
-#: js/ui/status/network.js:1809
+#: js/ui/status/network.js:1810
 msgid "All Networks"
 msgstr "Все сети"
 
-#: js/ui/status/network.js:1906
+#: js/ui/status/network.js:1907
 msgid "Wired Connections"
 msgstr "Проводные подключения"
 
-#: js/ui/status/network.js:1907
+#: js/ui/status/network.js:1908
 msgid "Open wired connections menu"
 msgstr "Открыть меню проводных подключений"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1909
 msgid "Wired Settings"
 msgstr "Настройки подключения"
 
-#: js/ui/status/network.js:1922
+#: js/ui/status/network.js:1923
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth модемы"
 
-#: js/ui/status/network.js:1923
+#: js/ui/status/network.js:1924
 msgid "Open Bluetooth tethers menu"
 msgstr "Открыть меню модемов Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1930
+#: js/ui/status/network.js:1931
 msgid "Tether"
 msgstr "Модем"
 
-#: js/ui/status/network.js:1943
+#: js/ui/status/network.js:1944
 msgid "Mobile Connections"
 msgstr "Мобильные подключения"
 
-#: js/ui/status/network.js:1944
+#: js/ui/status/network.js:1945
 msgid "Open mobile connections menu"
 msgstr "Открыть меню мобильных подключений"
 
-#: js/ui/status/network.js:1946
+#: js/ui/status/network.js:1947
 msgid "Mobile Broadband Settings"
 msgstr "Настройки мобильной связи"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1955
+#: js/ui/status/network.js:1956
 msgid "Mobile"
 msgstr "Мобильная"
 
-#: js/ui/status/network.js:1989
+#: js/ui/status/network.js:1990
 msgid "Sign in to Network"
 msgstr "Вход в сеть"
 
-#: js/ui/status/network.js:2176
+#: js/ui/status/network.js:2177
 msgid "Connection failed"
 msgstr "Сбой подключения"
 
-#: js/ui/status/network.js:2177
+#: js/ui/status/network.js:2178
 msgid "Activation of network connection failed"
 msgstr "Не удалось активировать сетевое подключение"
 
@@ -2676,40 +2668,46 @@ msgstr "Ночной свет"
 #: js/ui/status/powerProfiles.js:19
 msgctxt "Power profile"
 msgid "Performance"
-msgstr "Производительный"
+msgstr "Производительность"
 
 #: js/ui/status/powerProfiles.js:24
 msgctxt "Power profile"
 msgid "Balanced"
-msgstr "Сбалансированный"
+msgstr "Баланс"
 
 #: js/ui/status/powerProfiles.js:29
 msgctxt "Power profile"
 msgid "Power Saver"
-msgstr "Энергосберегающий"
+msgstr "Энергосбережение"
 
 #: js/ui/status/powerProfiles.js:35
 msgctxt "Power profile"
 msgid "Custom"
 msgstr "Пользовательский"
 
-#: js/ui/status/powerProfiles.js:45 js/ui/status/powerProfiles.js:77
+#: js/ui/status/powerProfiles.js:45
+msgctxt "Quick settings button title"
 msgid "Power Mode"
-msgstr "Режим питания"
+msgstr "Питание"
 
 #: js/ui/status/powerProfiles.js:46
 msgid "Open power profiles menu"
 msgstr "Открыть меню профилей питания"
 
+#: js/ui/status/powerProfiles.js:77
+msgctxt "Quick settings menu header"
+msgid "Power Mode"
+msgstr "Режим питания"
+
 #: js/ui/status/powerProfiles.js:79
 msgid "Power Settings"
 msgstr "Настройки питания"
 
-#: js/ui/status/remoteAccess.js:74
+#: js/ui/status/remoteAccess.js:73
 msgid "Stop Screencast"
 msgstr "Остановить запись экрана"
 
-#: js/ui/status/remoteAccess.js:144
+#: js/ui/status/remoteAccess.js:141
 msgid "Stop Screen Sharing"
 msgstr "Остановить совместный доступ к экрану"
 
@@ -2718,31 +2716,31 @@ msgstr "Остановить совместный доступ к экрану"
 msgid "Airplane Mode"
 msgstr "Авиарежим"
 
-#: js/ui/status/system.js:168
+#: js/ui/status/system.js:175
 msgid "Power Off Menu"
 msgstr "Меню выключения"
 
-#: js/ui/status/system.js:176
+#: js/ui/status/system.js:183
 msgid "Suspend"
 msgstr "Режим ожидания"
 
-#: js/ui/status/system.js:181
+#: js/ui/status/system.js:188
 msgid "Restart…"
 msgstr "Перезапуск…"
 
-#: js/ui/status/system.js:186
+#: js/ui/status/system.js:193
 msgid "Power Off…"
 msgstr "Выключение…"
 
-#: js/ui/status/system.js:193
+#: js/ui/status/system.js:200
 msgid "Log Out…"
 msgstr "Выйти…"
 
-#: js/ui/status/system.js:198
+#: js/ui/status/system.js:205
 msgid "Switch User…"
 msgstr "Сменить пользователя…"
 
-#: js/ui/status/system.js:242
+#: js/ui/status/system.js:249
 msgctxt "action"
 msgid "Lock Screen"
 msgstr "Заблокировать экран"
@@ -2841,23 +2839,23 @@ msgstr "Только встроенный"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:413
+#: js/ui/unlockDialog.js:414
 msgid "%A %B %-d"
 msgstr "%A, %-d %B"
 
-#: js/ui/unlockDialog.js:419
+#: js/ui/unlockDialog.js:420
 msgid "Swipe up to unlock"
 msgstr "Проведите вверх, чтобы разблокировать"
 
-#: js/ui/unlockDialog.js:420
+#: js/ui/unlockDialog.js:421
 msgid "Click or press a key to unlock"
 msgstr "Нажмите клавишу или кнопку мыши, чтобы разблокировать"
 
-#: js/ui/unlockDialog.js:605
+#: js/ui/unlockDialog.js:609
 msgid "Unlock Window"
 msgstr "Разблокировать окно"
 
-#: js/ui/unlockDialog.js:614
+#: js/ui/unlockDialog.js:618
 msgid "Log in as another user"
 msgstr "Войти от имени другого пользователя"
 
@@ -2885,19 +2883,19 @@ msgid "“%s” is ready"
 msgstr "Окно \"%s\" ожидает"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:61
+#: js/ui/windowManager.js:60
 msgid "Keep these display settings?"
 msgstr "Сохранить эти настройки дисплея?"
 
-#: js/ui/windowManager.js:71
+#: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "Вернуть настройки"
 
-#: js/ui/windowManager.js:76
+#: js/ui/windowManager.js:75
 msgid "Keep Changes"
 msgstr "Сохранить изменения"
 
-#: js/ui/windowManager.js:96
+#: js/ui/windowManager.js:95
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2907,7 +2905,7 @@ msgstr[2] "Изменения настроек будут отменены че�
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:493
+#: js/ui/windowManager.js:492
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2934,72 +2932,72 @@ msgstr "Развернуть"
 msgid "Move"
 msgstr "Переместить"
 
-#: js/ui/windowMenu.js:78
+#: js/ui/windowMenu.js:72
 msgid "Resize"
 msgstr "Изменить размер"
 
-#: js/ui/windowMenu.js:98
+#: js/ui/windowMenu.js:86
 msgid "Always on Top"
 msgstr "Всегда сверху"
 
-#: js/ui/windowMenu.js:117
+#: js/ui/windowMenu.js:105
 msgid "Always on Visible Workspace"
 msgstr "Всегда на видимом рабочем столе"
 
-#: js/ui/windowMenu.js:131
+#: js/ui/windowMenu.js:119
 msgid "Move to Workspace Left"
 msgstr "Переместить на рабочий стол влево"
 
-#: js/ui/windowMenu.js:137
+#: js/ui/windowMenu.js:125
 msgid "Move to Workspace Right"
 msgstr "Переместить на рабочий стол вправо"
 
-#: js/ui/windowMenu.js:143
+#: js/ui/windowMenu.js:131
 msgid "Move to Workspace Up"
 msgstr "Переместить на рабочий стол вверх"
 
-#: js/ui/windowMenu.js:149
+#: js/ui/windowMenu.js:137
 msgid "Move to Workspace Down"
 msgstr "Переместить на рабочий стол вниз"
 
-#: js/ui/windowMenu.js:167
+#: js/ui/windowMenu.js:155
 msgid "Move to Monitor Up"
 msgstr "Переместить на экран вверх"
 
-#: js/ui/windowMenu.js:176
+#: js/ui/windowMenu.js:164
 msgid "Move to Monitor Down"
 msgstr "Переместить на экран вниз"
 
-#: js/ui/windowMenu.js:185
+#: js/ui/windowMenu.js:173
 msgid "Move to Monitor Left"
 msgstr "Переместить на экран влево"
 
-#: js/ui/windowMenu.js:194
+#: js/ui/windowMenu.js:182
 msgid "Move to Monitor Right"
 msgstr "Переместить на экран вправо"
 
-#: js/ui/windowMenu.js:202
+#: js/ui/windowMenu.js:190
 msgid "Close"
 msgstr "Закрыть"
 
-#: src/main.c:515 subprojects/extensions-tool/src/main.c:336
+#: src/main.c:513 subprojects/extensions-tool/src/main.c:336
 msgid "Print version"
 msgstr "Показать номер версии"
 
-#: src/main.c:521
+#: src/main.c:519
 msgid "Mode used by GDM for login screen"
 msgstr "Режим, используемый GDM для окна входа в систему"
 
-#: src/main.c:527
+#: src/main.c:525
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Использовать для экрана входа в систему определённый режим, например \"gdm\""
 
-#: src/main.c:533
+#: src/main.c:531
 msgid "List possible modes"
 msgstr "Список возможных режимов"
 
-#: src/main.c:539
+#: src/main.c:537
 msgid "Force animations to be enabled"
 msgstr "Принудительное включение анимации"
 
@@ -3052,15 +3050,15 @@ msgstr ""
 "настройкой параметров расширений и удалением или отключением ненужных "
 "расширений."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Main Window"
 msgstr "Главное окно"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:82
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Available Updates"
 msgstr "Доступные обновления"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:86
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
 msgid "Search View"
 msgstr "Отображение поиска"
 
@@ -3310,6 +3308,7 @@ msgid "Description"
 msgstr "Описание"
 
 #: subprojects/extensions-tool/src/command-create.c:416
+#, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address "
@@ -3320,6 +3319,7 @@ msgstr ""
 "(clicktofocus@janedoe.example.com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:443
+#, c-format
 msgid "Choose one of the available templates:\n"
 msgstr "Выберите один из доступных шаблонов:\n"
 
@@ -3429,6 +3429,7 @@ msgstr "Включить расширение"
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:66
 #: subprojects/extensions-tool/src/main.c:150
+#, c-format
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "Невозможно подключиться к GNOME Shell\n"
 
@@ -3567,6 +3568,7 @@ msgid "Reset an extension"
 msgstr "Сбросить расширение"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
+#, c-format
 msgid "Cannot uninstall system extensions\n"
 msgstr "Не удалось удалить системные расширения\n"
 
@@ -3580,10 +3582,12 @@ msgid "Uninstall an extension"
 msgstr "Удалить расширение"
 
 #: subprojects/extensions-tool/src/command-upload.c:226
+#, c-format
 msgid "Login to extensions.gnome.org\n"
 msgstr "Войти в extensions.gnome.org\n"
 
 #: subprojects/extensions-tool/src/command-upload.c:256
+#, c-format
 msgid "Warning! Password will be echoed"
 msgstr "Внимание! Пароль будет выведен на экран"
 
@@ -3804,6 +3808,12 @@ msgstr[2] "%u входов"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Системные звуки"
+
+#~ msgid "Restart is not available on Wayland"
+#~ msgstr "Перезапуск не доступен при использовании Wayland"
+
+#~ msgid "Restarting…"
+#~ msgstr "Перезапуск…"
 
 #~ msgid ""
 #~ "We’re very sorry, but there’s been a problem: the settings for this "
