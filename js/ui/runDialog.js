@@ -8,6 +8,7 @@ import St from 'gi://St';
 import * as Dialog from './dialog.js';
 import * as Main from './main.js';
 import * as ModalDialog from './modalDialog.js';
+import * as ParentalControlsManager from '../misc/parentalControlsManager.js';
 import * as ShellEntry from './shellEntry.js';
 import * as Util from '../misc/util.js';
 import * as History from '../misc/history.js';
@@ -27,6 +28,11 @@ class RunDialog extends ModalDialog.ModalDialog {
         super._init({
             styleClass: 'run-dialog',
             destroyOnClose: false,
+        });
+
+        this._parentalControlsManager = ParentalControlsManager.getDefault();
+        this._parentalControlsManager.connect('notify::any-parental-controls-enabled', () => {
+            this._updateEnableInternalCommands();
         });
 
         this._lockdownSettings = new Gio.Settings({schema_id: LOCKDOWN_SCHEMA});
@@ -119,7 +125,9 @@ class RunDialog extends ModalDialog.ModalDialog {
     }
 
     _updateEnableInternalCommands() {
-        this._enableInternalCommands = global.settings.get_boolean('development-tools');
+        this._enableInternalCommands =
+            !this._parentalControlsManager.anyParentalControlsEnabled &&
+            global.settings.get_boolean('development-tools');
     }
 
     vfunc_key_press_event(event) {
