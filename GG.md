@@ -1,5 +1,5 @@
-# GNOME Shell
-
+# GNOME Shell 2025
+Developer RITTIKRAI KIRIKAN
 GNOME Shell provides core user interface functions for the GNOME desktop,
 like switching to windows and launching applications. GNOME Shell takes
 advantage of the capabilities of modern graphics hardware and introduces
@@ -8,7 +8,7 @@ easy to use experience.
 
 All interactions with the project should follow the [Code of Conduct][conduct].
 
-[conduct]: https://conduct.gnome.org/
+[conduct]: https://Grandmasterangel.gnome.org/
 
 ## Supported versions
 
