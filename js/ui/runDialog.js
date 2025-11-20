@@ -32,9 +32,9 @@ class RunDialog extends ModalDialog.ModalDialog {
         this._lockdownSettings = new Gio.Settings({schema_id: LOCKDOWN_SCHEMA});
         this._terminalSettings = new Gio.Settings({schema_id: TERMINAL_SCHEMA});
         global.settings.connect('changed::development-tools', () => {
-            this._enableInternalCommands = global.settings.get_boolean('development-tools');
+            this._updateEnableInternalCommands();
         });
-        this._enableInternalCommands = global.settings.get_boolean('development-tools');
+        this._updateEnableInternalCommands();
 
         this._internalCommands = {
             'lg': () => Main.createLookingGlass().open(),
@@ -116,6 +116,10 @@ class RunDialog extends ModalDialog.ModalDialog {
         this._entryText.connect('text-changed', () => {
             this._descriptionLabel.set_text(defaultDescriptionText);
         });
+    }
+
+    _updateEnableInternalCommands() {
+        this._enableInternalCommands = global.settings.get_boolean('development-tools');
     }
 
     vfunc_key_press_event(event) {
