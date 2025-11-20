@@ -653,8 +653,8 @@ export const SwipeTracker = GObject.registerClass({
     _endPanGesture(panGesture) {
         const velocity = panGesture.get_velocity();
         const v = this.orientation === Clutter.Orientation.HORIZONTAL
-            ? -velocity.get_x()
-            : -velocity.get_y();
+            ? this._getGestureDirFactor() * velocity.get_x()
+            : this._getGestureDirFactor() * velocity.get_y();
 
         this._endGesture(v, this._distance, false);
     }
@@ -677,6 +677,14 @@ export const SwipeTracker = GObject.registerClass({
 
         this._cancelled = true;
         this._endGesture(0, this._distance, false);
+    }
+
+    _getGestureDirFactor() {
+        if (this.orientation === Clutter.Orientation.HORIZONTAL &&
+            Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
+            return 1;
+
+        return -1;
     }
 
     /**
