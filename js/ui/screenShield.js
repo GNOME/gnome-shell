@@ -340,7 +340,7 @@ export class ScreenShield extends Signals.EventEmitter {
 
     _onShortLightbox(lightBox) {
         if (lightBox.active)
-            this._completeLockScreenShown();
+            this._setActive(true);
     }
 
     showDialog() {
@@ -514,12 +514,9 @@ export class ScreenShield extends Signals.EventEmitter {
             if (params.fadeToBlack)
                 this._activateFade(this._shortLightbox, 0);
 
-            this._completeLockScreenShown();
+            this._setActive(true);
         }
-    }
 
-    _completeLockScreenShown() {
-        this._setActive(true);
         this.emit('lock-screen-shown');
     }
 
