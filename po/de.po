@@ -17,7 +17,7 @@
 # Wolfgang Stöggl <c72578@yahoo.de>, 2012, 2014, 2017-2018, 2020.
 # Tim Sabsch <tim@sabsch.com>, 2018-2020, 2022-2023.
 # Philipp Kiemle <l10n@prly.mozmail.com>, 2020-2021, 2023-2025.
-# Jürgen Benvenuti <gastornis@posteo.org>, 2022-2024.
+# Jürgen Benvenuti <gastornis@posteo.org>, 2022-2025.
 # Christian Kirbach <christian.kirbach@gmail.com>, 2009-2024.
 # Michael Oppliger <mj.oppliger@gmail.com>, 2025.
 #
@@ -25,16 +25,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-10-16 16:10+0000\n"
-"PO-Revision-Date: 2025-10-17 12:45+0200\n"
-"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
+"POT-Creation-Date: 2025-11-11 13:51+0000\n"
+"PO-Revision-Date: 2025-11-21 20:41+0100\n"
+"Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.8\n"
 "X-DamnedLies-Scope: partial\n"
 
 #: data/50-gnome-shell-launchers.xml:6
@@ -441,6 +441,26 @@ msgstr "Eine neue Instanz von Anwendung 9 öffnen"
 #: data/org.gnome.shell.gschema.xml.in:283
 msgid "Screen brightness up"
 msgstr "Bildschirmhelligkeit erhöhen"
+
+#: data/org.gnome.shell.gschema.xml.in:287
+msgid "Screen brightness up on current monitor"
+msgstr "Bildschirmhelligkeit auf dem aktuellen Bildschirm erhöhen"
+
+#: data/org.gnome.shell.gschema.xml.in:291
+msgid "Screen brightness down"
+msgstr "Bildschirmhelligkeit verringern"
+
+#: data/org.gnome.shell.gschema.xml.in:295
+msgid "Screen brightness down on current monitor"
+msgstr "Bildschirmhelligkeit auf dem aktuellen Bildschirm verringern"
+
+#: data/org.gnome.shell.gschema.xml.in:299
+msgid "Screen brightness cycle"
+msgstr "Bildschirmhelligkeit durchwechseln"
+
+#: data/org.gnome.shell.gschema.xml.in:303
+msgid "Screen brightness cycle on current monitor"
+msgstr "Bildschirmhelligkeit auf dem aktuellen Bildschirm durchwechseln"
 
 #: data/org.gnome.shell.gschema.xml.in:312 data/org.gnome.shell.gschema.xml.in:339
 msgid "Limit switcher to current workspace."
@@ -2117,10 +2137,8 @@ msgid "Screenshot taken"
 msgstr "Bildschirmfoto aufgenommen"
 
 #: js/ui/search.js:847
-#, fuzzy
-#| msgid "Searching…"
 msgid "Searching"
-msgstr "Suche läuft …"
+msgstr "Suchen"
 
 #: js/ui/search.js:850
 msgid "No results"
@@ -2966,7 +2984,7 @@ msgstr ""
 "Tim Sabsch <tim@sabsch.com>, 2020, 2022\n"
 "Christian Kirbach <christian.kirbach@gmail.com>, 2020-2024\n"
 "Philipp Kiemle <l10n@prly.mozmail.com>, 2020-2021, 2023-2025\n"
-"Jürgen Benvenuti <gastornis@posteo.org>, 2022-2024"
+"Jürgen Benvenuti <gastornis@posteo.org>, 2022-2025"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:198
 #, javascript-format
@@ -3392,7 +3410,6 @@ msgstr "Eine Erweiterung deinstallieren"
 
 #: subprojects/extensions-tool/src/command-upload.c:226
 #, c-format
-#| msgid "List extensions"
 msgid "Login to extensions.gnome.org\n"
 msgstr "Bei extensions.gnome.org anmelden\n"
 
