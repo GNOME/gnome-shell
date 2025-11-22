@@ -876,7 +876,7 @@ export const TimeLimitsManager = GObject.registerClass({
      * @returns {number}
      */
     _calculateDailyLimitReachedAtSecs(nowSecs, dailyLimitSecs, startOfTodaySecs) {
-        console.assert(this.dailyLimitEnabled,
+        console.assert(this.wellbeingDailyLimitEnabled,
             'Daily limit reached-at time only makes sense if limits are enabled');
 
         // NOTE: This might return -1.
@@ -1046,6 +1046,15 @@ export const TimeLimitsManager = GObject.registerClass({
     }
 
     /**
+     * Whether the wellbeing daily limit is enabled.
+     *
+     * @type {boolean}
+     */
+    get wellbeingDailyLimitEnabled() {
+        return this._screenTimeLimitSettings.get_boolean('daily-limit-enabled');
+    }
+
+    /**
      * The time when the daily limit will be reached. If the user is currently
      * active, and has not reached the limit, this is a non-zero value in the
      * future. If the user has already reached the limit, this is the time when
@@ -1060,7 +1069,7 @@ export const TimeLimitsManager = GObject.registerClass({
         case TimeLimitsState.DISABLED:
             return 0;
         case TimeLimitsState.ACTIVE: {
-            if (!this.dailyLimitEnabled)
+            if (!this.wellbeingDailyLimitEnabled)
                 return 0;
 
             const nowSecs = this.getCurrentTime();
@@ -1098,7 +1107,7 @@ export const TimeLimitsManager = GObject.registerClass({
      * @type {boolean}
      */
     get dailyLimitEnabled() {
-        return this._screenTimeLimitSettings.get_boolean('daily-limit-enabled');
+        return this.wellbeingDailyLimitEnabled;
     }
 
     /**
