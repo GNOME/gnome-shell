@@ -175,8 +175,11 @@ export const TimeLimitsManager = GObject.registerClass({
         this._parentalControlsManager = this._parentalControlsManagerFactory.new();
 
         this._parentalControlsManager.connectObject(
-            'session-limits-changed', () => this._onSessionLimitsChanged().catch(logError),
-            this);
+            'session-limits-changed', () => {
+                this._onSessionLimitsChanged().catch(logError);
+                this.notify('daily-limit-time');
+                this.notify('daily-limit-enabled');
+            }, this);
 
         this._estimatedTimes = [];
         this._timerChildProxyFactory = timerChildProxyFactory ?? {
@@ -295,6 +298,7 @@ export const TimeLimitsManager = GObject.registerClass({
             this._estimatedTimes = [];
 
         this._updateState();
+        this.notify('daily-limit-time');
     }
 
     _storingTransitionsEnabled() {
@@ -1064,9 +1068,22 @@ export const TimeLimitsManager = GObject.registerClass({
      * limit, or if time limits are disabled, this is zero.
      * It’s measured in real time seconds.
      *
+     * Considers both the malcontent and wellbeing limits.
+     *
      * @type {number}
      */
     get dailyLimitTime() {
+        // Check parental controls session limits
+        if (this.malcontentSessionLimitsEnabled) {
+            if (this._state === TimeLimitsState.DISABLED ||
+                this._userState === UserState.INACTIVE)
+                return 0;
+
+            const [, , currentSessionEnd] = this._estimatedTimes;
+            return currentSessionEnd;
+        }
+
+        // Handle wellbeing daily limit otherwise
         switch (this._state) {
         case TimeLimitsState.DISABLED:
             return 0;
@@ -1108,10 +1125,13 @@ export const TimeLimitsManager = GObject.registerClass({
     /**
      * Whether the daily limit is enabled.
      *
+     * Considers both the malcontent and wellbeing limits.
+     *
      * @type {boolean}
      */
     get dailyLimitEnabled() {
-        return this.wellbeingDailyLimitEnabled;
+        return this.malcontentSessionLimitsEnabled ||
+            this.wellbeingDailyLimitEnabled;
     }
 
     /**
@@ -1192,7 +1212,11 @@ class TimeLimitsDispatcher extends GObject.Object {
         case TimeLimitsState.ACTIVE: {
             if (this._manager.dailyLimitEnabled) {
                 this._ensureEnabled();
-                this._desaturationEffect.set_enabled(false);
+
+                if (this._manager.wellbeingDailyLimitEnabled)
+                    // Grayscale is in effect only when the wellbeing
+                    // daily limit is enabled.
+                    this._desaturationEffect.set_enabled(false);
             } else {
                 this._ensureDisabled();
             }
@@ -1357,7 +1381,11 @@ class TimeLimitsNotificationSource extends GObject.Object {
                 // time is reached.
                 this._scheduleUpdateState(remainingSecs - LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS);
                 break;
-            } else if (Math.ceil(remainingSecs) === LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS) {
+            } else if (Math.ceil(remainingSecs) === LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS ||
+                       // Also check if we're late 1 second due to waiting for
+                       // caching the estimated times for the parental controls
+                       // session limits over D-Bus from the timer daemon.
+                       Math.ceil(remainingSecs + 1) === LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS) {
                 // Bang on time to show this notification.
                 const remainingMinutes = Math.floor(LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS / 60);
                 const titleText = Gettext.ngettext(
