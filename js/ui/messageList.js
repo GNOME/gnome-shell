@@ -613,6 +613,9 @@ export const Message = GObject.registerClass({
     }
 
     expand(animate) {
+        if (this.expanded)
+            return;
+
         this.expanded = true;
 
         this._actionBin.visible = !!this._actionBin.child;
