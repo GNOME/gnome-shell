@@ -931,10 +931,11 @@ export const TimeLimitsManager = GObject.registerClass({
         if (startOfTodaySecs > this._lastStateChangeTimeSecs)
             newState = TimeLimitsState.ACTIVE;
 
+        // Work out estimated times for the parental controls session limits calculations.
         const [, currentSessionStart, currentSessionEnd, nextSessionStart] = this._estimatedTimes;
-        const sessionLimitsEnabled = this._parentalControlsManager.sessionLimitsEnabled();
+        const parentalControlsSessionLimitsEnabled = this._parentalControlsManager.sessionLimitsEnabled();
 
-        if (sessionLimitsEnabled) {
+        if (parentalControlsSessionLimitsEnabled) {
             // Parental controls session limits have either just been enabled
             // and the estimated times have not been cached yet, or disabled
             // but the manager has not detected that yet, so skip updating state.
@@ -942,11 +943,11 @@ export const TimeLimitsManager = GObject.registerClass({
                 return;
         }
 
-        const sessionLimitsDebug = sessionLimitsEnabled ? 'current session start: ' +
+        const parentalControlsSessionLimitsDebug = parentalControlsSessionLimitsEnabled ? 'current session start: ' +
             `${this._unixToString(currentSessionStart)}, current session end: ` +
             `${this._unixToString(currentSessionEnd)}` : 'disabled';
         console.debug('TimeLimitsManager: Parental controls session limits: ' +
-            `${sessionLimitsDebug}`);
+            `${parentalControlsSessionLimitsDebug}`);
 
         // Work out how much time the user has spent at the screen today
         // for the wellbeing daily limit calculations.
@@ -961,7 +962,7 @@ export const TimeLimitsManager = GObject.registerClass({
 
         // Update TimeLimitsState. When the user is inactive, there's no point
         // scheduling anything until they become active again.
-        if (sessionLimitsEnabled) {
+        if (parentalControlsSessionLimitsEnabled) {
             if (nextSessionStart <= nowSecs) {
                 // Just entered daily schedule or a new day, so update cached
                 // estimated times, which will perform state update afterwards.
@@ -1042,7 +1043,7 @@ export const TimeLimitsManager = GObject.registerClass({
      *
      * @type {boolean}
      */
-    get sessionLimitsEnabled() {
+    get parentalControlsSessionLimitsEnabled() {
         return this._parentalControlsManager.sessionLimitsEnabled();
     }
 
@@ -1200,7 +1201,7 @@ class TimeLimitsDispatcher extends GObject.Object {
         }
 
         case TimeLimitsState.LIMIT_REACHED: {
-            if (this._manager.sessionLimitsEnabled) {
+            if (this._manager.parentalControlsSessionLimitsEnabled) {
                 // Trying to lock the screen will fail if the action is not
                 // available. This happens when admin disables lock screen,
                 // or when not running under GDM/logind. Those are corner cases
@@ -1380,7 +1381,7 @@ class TimeLimitsNotificationSource extends GObject.Object {
             // Notify the user that they’ve reached their limit, when we
             // transition from any state to LIMIT_REACHED. Noop if parental
             // controls session limits are enabled, since we’re locking then.
-            if (!this._manager.sessionLimitsEnabled &&
+            if (!this._manager.parentalControlsSessionLimitsEnabled &&
                 this._previousState !== TimeLimitsState.LIMIT_REACHED) {
                 this._ensureNotification({
                     title: _('Screen Time Limit Reached'),
