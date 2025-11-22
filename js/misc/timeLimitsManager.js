@@ -42,6 +42,7 @@ const TimerChildProxy = Gio.DBusProxy.makeProxyWrapper(TimerChildIface);
 
 export const HISTORY_THRESHOLD_SECONDS = 14 * 7 * 24 * 60 * 60;  // maximum time history entries are kept
 const LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS = 10 * 60;  // notify the user 10min before their limit is reached
+const PARENTAL_CONTROLS_LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS = 60; // notify the child 60s before their limit is reached
 const GRAYSCALE_FADE_TIME_SECONDS = 3;
 const GRAYSCALE_SATURATION = 1.0;  // saturation ([0.0, 1.0]) when grayscale mode is activated, 1.0 means full desaturation
 
@@ -175,8 +176,11 @@ export const TimeLimitsManager = GObject.registerClass({
         this._parentalControlsManager = this._parentalControlsManagerFactory.new();
 
         this._parentalControlsManager.connectObject(
-            'session-limits-changed', () => this._onSessionLimitsChanged().catch(logError),
-            this);
+            'session-limits-changed', () => {
+                this._onSessionLimitsChanged().catch(logError);
+                this.notify('daily-limit-time');
+                this.notify('daily-limit-enabled');
+            }, this);
 
         this._estimatedTimes = [];
         this._timerChildProxyFactory = timerChildProxyFactory ?? {
@@ -295,6 +299,7 @@ export const TimeLimitsManager = GObject.registerClass({
             this._estimatedTimes = [];
 
         this._updateState();
+        this.notify('daily-limit-time');
     }
 
     _storingTransitionsEnabled() {
@@ -1064,9 +1069,22 @@ export const TimeLimitsManager = GObject.registerClass({
      * limit, or if time limits are disabled, this is zero.
      * It’s measured in real time seconds.
      *
+     * Considers both the parental controls and wellbeing limits.
+     *
      * @type {number}
      */
     get dailyLimitTime() {
+        // Check parental controls session limits
+        if (this.parentalControlsSessionLimitsEnabled) {
+            if (this._state === TimeLimitsState.DISABLED ||
+                this._userState === UserState.INACTIVE)
+                return 0;
+
+            const [, , currentSessionEnd] = this._estimatedTimes;
+            return currentSessionEnd;
+        }
+
+        // Handle wellbeing daily limit otherwise
         switch (this._state) {
         case TimeLimitsState.DISABLED:
             return 0;
@@ -1108,10 +1126,13 @@ export const TimeLimitsManager = GObject.registerClass({
     /**
      * Whether the daily limit is enabled.
      *
+     * Considers both the parental controls and wellbeing limits.
+     *
      * @type {boolean}
      */
     get dailyLimitEnabled() {
-        return this.wellbeingDailyLimitEnabled;
+        return this.parentalControlsSessionLimitsEnabled ||
+            this.wellbeingDailyLimitEnabled;
     }
 
     /**
@@ -1349,26 +1370,46 @@ class TimeLimitsNotificationSource extends GObject.Object {
             const remainingSecs = limitDueTime - currentTime;
             console.debug(`TimeLimitsNotificationSource: ${remainingSecs}s left before limit is reached`);
 
-            if (remainingSecs > LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS) {
+            let timeoutLimit;
+
+            if (this._manager.parentalControlsSessionLimitsEnabled)
+                timeoutLimit = PARENTAL_CONTROLS_LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS;
+            else
+                timeoutLimit = LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS;
+
+            if (remainingSecs > timeoutLimit) {
                 this._notification?.destroy();
                 this._notification = null;
 
                 // Schedule to show a notification when the upcoming notification
                 // time is reached.
-                this._scheduleUpdateState(remainingSecs - LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS);
+                this._scheduleUpdateState(remainingSecs - timeoutLimit);
                 break;
-            } else if (Math.ceil(remainingSecs) === LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS) {
-                // Bang on time to show this notification.
-                const remainingMinutes = Math.floor(LIMIT_UPCOMING_NOTIFICATION_TIME_SECONDS / 60);
-                const titleText = Gettext.ngettext(
-                    'Screen Time Limit in %d Minute',
-                    'Screen Time Limit in %d Minutes',
-                    remainingMinutes
-                ).format(remainingMinutes);
+            } else if (Math.ceil(remainingSecs) === timeoutLimit) {
+                let remainingTime, titleText, bodyText;
+
+                if (this._manager.parentalControlsSessionLimitsEnabled) {
+                    remainingTime = timeoutLimit;
+                    titleText = _('Screen Time Limit is almost up');
+                    bodyText = Gettext.ngettext(
+                        'The computer will lock in %d second.',
+                        'The computer will lock in %d seconds.',
+                        remainingTime
+                    ).format(remainingTime);
+                } else {
+                    // Bang on time to show this notification.
+                    remainingTime = Math.floor(timeoutLimit / 60);
+                    titleText = Gettext.ngettext(
+                        'Screen Time Limit in %d Minute',
+                        'Screen Time Limit in %d Minutes',
+                        remainingTime
+                    ).format(remainingTime);
+                    bodyText = _('Your screen time limit is approaching');
+                }
 
                 this._ensureNotification({
                     title: titleText,
-                    body: _('Your screen time limit is approaching'),
+                    body: bodyText,
                     urgency: MessageTray.Urgency.HIGH,
                 });
                 this._source.addNotification(this._notification);
