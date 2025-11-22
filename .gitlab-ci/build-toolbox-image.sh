@@ -41,7 +41,6 @@ build_container() {
   )
   buildah run $build_cntr dnf config-manager setopt '*-openh264.enabled=0'
   buildah run $build_cntr dnf install -y "${extra_packages[@]}"
-  buildah run $build_cntr dnf reinstall -y gdk-pixbuf2 # reinstall with glycin support
   buildah run $build_cntr dnf builddep malcontent -y # for building libmalcontent
   buildah run $build_cntr dnf debuginfo-install -y "${debug_packages[@]}"
   buildah run $build_cntr dnf clean all
