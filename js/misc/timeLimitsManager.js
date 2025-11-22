@@ -866,16 +866,16 @@ export const TimeLimitsManager = GObject.registerClass({
     }
 
     /**
-     * Work out the timestamp at which the daily limit was reached.
+     * Work out the timestamp at which the wellbeing daily limit was reached.
      *
-     * If the user has not reached the daily limit yet today, this will return 0.
+     * If the user has not reached the wellbeing daily limit yet today, this will return 0.
      *
      * @param {number} nowSecs ‘Current’ time to calculate from.
-     * @param {number} dailyLimitSecs Daily limit in seconds.
+     * @param {number} wellbeingDailyLimitSecs Wellbeing daily limit in seconds.
      * @param {number} startOfTodaySecs Time for the start of today.
      * @returns {number}
      */
-    _calculateDailyLimitReachedAtSecs(nowSecs, dailyLimitSecs, startOfTodaySecs) {
+    _calculateWellbeingDailyLimitReachedAtSecs(nowSecs, wellbeingDailyLimitSecs, startOfTodaySecs) {
         console.assert(this.wellbeingDailyLimitEnabled,
             'Daily limit reached-at time only makes sense if limits are enabled');
 
@@ -892,16 +892,16 @@ export const TimeLimitsManager = GObject.registerClass({
             else if (this._stateTransitions[i]['oldState'] === UserState.ACTIVE)
                 activeTimeTodaySecs += Math.max(this._stateTransitions[i]['wallTimeSecs'] - activeStartTimeSecs, 0);
 
-            if (activeTimeTodaySecs >= dailyLimitSecs)
-                return this._stateTransitions[i]['wallTimeSecs'] - (activeTimeTodaySecs - dailyLimitSecs);
+            if (activeTimeTodaySecs >= wellbeingDailyLimitSecs)
+                return this._stateTransitions[i]['wallTimeSecs'] - (activeTimeTodaySecs - wellbeingDailyLimitSecs);
         }
 
         if (this._stateTransitions.length > 0 &&
             this._stateTransitions.at(-1)['newState'] === UserState.ACTIVE)
             activeTimeTodaySecs += Math.max(nowSecs - activeStartTimeSecs, 0);
 
-        if (activeTimeTodaySecs >= dailyLimitSecs)
-            return nowSecs - (activeTimeTodaySecs - dailyLimitSecs);
+        if (activeTimeTodaySecs >= wellbeingDailyLimitSecs)
+            return nowSecs - (activeTimeTodaySecs - wellbeingDailyLimitSecs);
 
         // Limit not reached yet.
         return 0;
@@ -948,14 +948,15 @@ export const TimeLimitsManager = GObject.registerClass({
         console.debug('TimeLimitsManager: Parental controls session limits: ' +
             `${sessionLimitsDebug}`);
 
-        // Work out how much time the user has spent at the screen today.
+        // Work out how much time the user has spent at the screen today
+        // for the wellbeing daily limit calculations.
         const activeTimeTodaySecs = this._calculateActiveTimeTodaySecs(nowSecs, startOfTodaySecs);
-        const dailyLimitSecs = this._screenTimeLimitSettings.get_uint('daily-limit-seconds');
-        const dailyLimitEnabled = this._screenTimeLimitSettings.get_boolean('daily-limit-enabled');
+        const wellbeingDailyLimitSecs = this._screenTimeLimitSettings.get_uint('daily-limit-seconds');
+        const wellbeingDailyLimitEnabled = this._screenTimeLimitSettings.get_boolean('daily-limit-enabled');
 
-        const dailyLimitDebug = dailyLimitEnabled ? `${dailyLimitSecs}s` : 'disabled';
+        const wellbeingDailyLimitDebug = wellbeingDailyLimitEnabled ? `${wellbeingDailyLimitSecs}s` : 'disabled';
         console.debug('TimeLimitsManager: Wellbeing active time today: ' +
-            `${activeTimeTodaySecs}s, daily limit ${dailyLimitDebug}`);
+            `${activeTimeTodaySecs}s, daily limit ${wellbeingDailyLimitDebug}`);
 
 
         // Update TimeLimitsState. When the user is inactive, there's no point
@@ -979,7 +980,7 @@ export const TimeLimitsManager = GObject.registerClass({
                 // Schedule an update for when we expect the session limit will be reached.
                 this._scheduleUpdateState(currentSessionEnd - nowSecs);
             }
-        } else if (dailyLimitEnabled && activeTimeTodaySecs >= dailyLimitSecs) {
+        } else if (wellbeingDailyLimitEnabled && activeTimeTodaySecs >= wellbeingDailyLimitSecs) {
             newState = TimeLimitsState.LIMIT_REACHED;
 
             // Schedule an update for when the daily limit will be reset again.
@@ -987,9 +988,9 @@ export const TimeLimitsManager = GObject.registerClass({
         } else if (this._userState === UserState.ACTIVE) {
             newState = TimeLimitsState.ACTIVE;
 
-            // Schedule an update for when we expect the daily limit will be reached.
-            if (dailyLimitEnabled)
-                this._scheduleUpdateState(dailyLimitSecs - activeTimeTodaySecs);
+            // Schedule an update for when we expect the wellbeing daily limit will be reached.
+            if (wellbeingDailyLimitEnabled)
+                this._scheduleUpdateState(wellbeingDailyLimitSecs - activeTimeTodaySecs);
         } else {
             // User is inactive, so no point scheduling anything until they become
             // active again.
@@ -1075,25 +1076,27 @@ export const TimeLimitsManager = GObject.registerClass({
             const nowSecs = this.getCurrentTime();
             const [startOfTodaySecs] = this._getStartOfTodaySecs(nowSecs);
             const activeTimeTodaySecs = this._calculateActiveTimeTodaySecs(nowSecs, startOfTodaySecs);
-            const dailyLimitSecs = this._screenTimeLimitSettings.get_uint('daily-limit-seconds');
+            const wellbeingDailyLimitSecs = this._screenTimeLimitSettings.get_uint('daily-limit-seconds');
 
-            console.assert(dailyLimitSecs >= activeTimeTodaySecs, 'Active time unexpectedly high');
+            console.assert(wellbeingDailyLimitSecs >= activeTimeTodaySecs, 'Active time unexpectedly high');
 
             if (this._userState === UserState.ACTIVE)
-                return nowSecs + (dailyLimitSecs - activeTimeTodaySecs);
+                return nowSecs + (wellbeingDailyLimitSecs - activeTimeTodaySecs);
             else
                 return 0;
         }
         case TimeLimitsState.LIMIT_REACHED: {
             const nowSecs = this.getCurrentTime();
             const [startOfTodaySecs] = this._getStartOfTodaySecs(nowSecs);
-            const dailyLimitSecs = this._screenTimeLimitSettings.get_uint('daily-limit-seconds');
-            const dailyLimitReachedAtSecs = this._calculateDailyLimitReachedAtSecs(nowSecs, dailyLimitSecs, startOfTodaySecs);
+            const wellbeingDailyLimitSecs = this._screenTimeLimitSettings.get_uint('daily-limit-seconds');
+            const wellbeingDailyLimitReachedAtSecs =
+                this._calculateWellbeingDailyLimitReachedAtSecs(nowSecs,
+                    wellbeingDailyLimitSecs, startOfTodaySecs);
 
-            console.assert(dailyLimitReachedAtSecs > 0,
+            console.assert(wellbeingDailyLimitReachedAtSecs > 0,
                 'Daily limit reached-at unexpectedly low');
 
-            return dailyLimitReachedAtSecs;
+            return wellbeingDailyLimitReachedAtSecs;
         }
         default:
             console.assert(false, `Unexpected state ${this._state}`);
