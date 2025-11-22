@@ -1,3 +1,35 @@
+49.2
+====
+* Fix lock screen notification setting for MPRIS clients without DesktopEntry
+  [Sebastian K.; !3921]
+* Fix wrong network icon on connectivity loss [Antoine; !3910]
+* Sort session list on login screen by display name [Balló; !3920]
+* Add extended OSK layouts for German and Austrian [Leonidas; !3923]
+* Fix leaving VPN auth helper zombie processes [Michael; !3926]
+* Fix freeze on modifier-only layout switch shortcut [Sebastian K.; !3939]
+* Show OSD for any attempted brightness change [Sebastian W.; !3941]
+* Use slider as bias when auto brightness is being used [Sebastian W.; !3935]
+* Fix glitch in list search results [Florian; !3951]
+* Fix swipe gestures behaving erroneously in RTL locales [Florian; !3967]
+* Fix misplaced separator in dash after unpinning running app [Raghuveer; !1973]
+* Fixed crash [Sebastian K.; !3933]
+* Misc. bug fixes and cleanups [Sebastian K., Leonidas, Florian, Jonas,
+  ClarityStorm, Alessandro, Marco, Carls, Ignacy, Adrian, Sebastian W.,
+  SymphonySimper; !3922, !3925, !3931, !3927, !3932, !3924, !3937, !3929,
+  !3940, !3942, !3945, !3946, !3943, !3950, !3938, !3912, !3841, !3708, !3917,
+  !3971, !3978]
+
+Contributors:
+  Leonidas Adaktylos, Alessandro Bono, Michael Catanzaro, ClarityStorm,
+  Carlos Garnacho, Balló György, Raghuveer Kasaraneni, Sebastian Keller,
+  Ignacy Kuchciński, Antoine Lassagne, Florian Müllner, SymphonySimper,
+  Marco Trevisan (Treviño), Adrian Vovk, Sebastian Wick, Jonas Ådahl
+
+Translators:
+  Christian Kirbach [de], Nathan Follens [nl], Efstathios Iosifidis [el],
+  Antonio Marin [ro], Emin Tufan Çetin [tr], Cheng-Chia Tseng [zh_TW],
+  Jürgen Benvenuti [de], Andika Triwidada [id]
+
 49.1
 ====
 * Fix freeze when dragging quick settings sliders on touch [Daniel; !3887]
