@@ -1,3 +1,27 @@
+48.7
+====
+* Fix wrong network icon on connectivity loss [Antoine; !3910]
+* Sort session list on login screen by display name [Balló; !3920]
+* Add extended OSK layouts for German and Austrian [Leonidas; !3923]
+* Fix leaving VPN auth helper zombie processes [Michael; !3926]
+* Fix freeze on modifier-only layout switch shortcut [Sebastian; !3939]
+* Fix glitch in list search results [Florian; !3951]
+* Fix swipe gestures behaving erroneously in RTL locales [Florian; !3967]
+* Fix misplaced separator in dash after unpinning running app [Raghuveer; !1973]
+* Fixed crash [Sebastian; !3933]
+* Misc. bug fixes and cleanups [Sebastian, Leonidas, Florian, Jonas,
+  ClarityStorm, Alessandro, Marco, Adrian, Carlos; !3922, !3925, !3931, !3927,
+  !3932, !3924, !3937, !3940, !3942, !3946, !3943, !3950, !3708, !3917, !3971]
+
+Contributors:
+  Leonidas Adaktylos, Alessandro Bono, Michael Catanzaro, ClarityStorm,
+  Carlos Garnacho, Balló György, Raghuveer Kasaraneni, Sebastian Keller,
+  Antoine Lassagne, Florian Müllner, Marco Trevisan (Treviño), Adrian Vovk,
+  Jonas Ådahl
+
+Translators:
+  Antonio Marin [ro]
+
 48.6
 ====
 * Fix key focus on choice list on login screen [Marco; !3849]
