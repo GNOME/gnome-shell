@@ -14,6 +14,7 @@ const POWER_SCHEMA = 'org.gnome.settings-daemon.plugins.power';
 export const BrightnessManager = GObject.registerClass({
     Signals: {
         'changed': {},
+        'user-update': {},
     },
 }, class BrightnessManager extends GObject.Object {
     constructor() {
@@ -153,6 +154,7 @@ export const BrightnessManager = GObject.registerClass({
                         return;
                     scale._scaleChanged = true;
                     this._sync();
+                    this.emit('user-update');
                 }, this);
 
             this._monitorScales.set(monitor, scale);
@@ -172,6 +174,7 @@ export const BrightnessManager = GObject.registerClass({
                     return;
                 this._globalScaleChanged = true;
                 this._sync();
+                this.emit('user-update');
             });
         }
 
