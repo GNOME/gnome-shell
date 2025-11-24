@@ -309,10 +309,12 @@ class FdoNotificationDaemon {
 
     _emitActivationToken(source, id) {
         const context = global.create_app_launch_context(0, -1);
-        const appInfo = source.app?.get_app_info() ?? null;
-        const token = context.get_startup_notify_id(appInfo, []);
-        this._dbusImpl.emit_signal('ActivationToken',
-            GLib.Variant.new('(us)', [id, token]));
+        const info = source.app?.get_app_info();
+        if (info) {
+            const token = context.get_startup_notify_id(info, []);
+            this._dbusImpl.emit_signal('ActivationToken',
+                GLib.Variant.new('(us)', [id, token]));
+        }
     }
 }
 
