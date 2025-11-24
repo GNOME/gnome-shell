@@ -41,5 +41,12 @@
     -->
     <property name="HasBrightnessControl" type="b" access="read"/>
 
+    <!--
+        BrightnessChanged:
+
+        Brightness was changed by the user.
+    -->
+    <signal name="BrightnessChanged" />
+
   </interface>
 </node>

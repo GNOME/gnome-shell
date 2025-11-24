@@ -602,7 +602,10 @@ export class BrightnessDBus {
         Gio.DBus.session.own_name('org.gnome.Shell.Brightness',
             Gio.BusNameOwnerFlags.NONE, null, null);
 
-        this._manager.connectObject('changed', this._sync.bind(this), this);
+        this._manager.connectObject(
+            'changed', () => this._sync(),
+            'user-update', () => this._userChange(),
+            this);
         this._sync();
     }
 
@@ -614,6 +617,10 @@ export class BrightnessDBus {
         this._hasBrightnessControl = hasBrightnessControl;
         this._dbusImpl.emit_property_changed('HasBrightnessControl',
             new GLib.Variant('b', this._hasBrightnessControl));
+    }
+
+    _userChange() {
+        this._dbusImpl.emit_signal('BrightnessChanged', null);
     }
 
     SetDimming(enable) {
