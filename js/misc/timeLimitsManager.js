@@ -1043,6 +1043,15 @@ export const TimeLimitsManager = GObject.registerClass({
     }
 
     /**
+     * Whether the daily limit has been reached or not.
+     *
+     * @type {boolean}
+     */
+    get dailyLimitReached() {
+        return this._state === TimeLimitsState.LIMIT_REACHED;
+    }
+
+    /**
      * Whether the parental controls session limits are enabled.
      *
      * @type {boolean}
