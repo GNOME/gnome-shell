@@ -642,6 +642,13 @@ export const UnlockDialog = GObject.registerClass({
 
         this._updateUserSwitchVisibility();
 
+        // When parental controls session limits are enabled, the screen will be
+        // locked upon reaching the time limit. In those cases, tweak the lock screen,
+        // so that the children cannot unlock without parental supervision.
+        Main.timeLimitsManager.connectObject(
+            'notify::state', () => this._updateLockability(),
+            this);
+
         // Main Box
         const mainBox = new St.Widget();
         mainBox.add_constraint(new Layout.MonitorConstraint({primary: true}));
@@ -912,6 +919,14 @@ export const UnlockDialog = GObject.registerClass({
             this._userManager.has_multiple_users &&
             this._screenSaverSettings.get_boolean('user-switch-enabled') &&
             !this._lockdownSettings.get_boolean('disable-user-switching');
+    }
+
+    _updateLockability() {
+        if (Main.timeLimitsManager.dailyLimitReached) {
+            // FIXME: Prevent unlocking
+        } else {
+            // FIXME: Allow unlocking
+        }
     }
 
     cancel() {
