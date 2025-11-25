@@ -103,8 +103,8 @@ function _easeActor(actor, params) {
     const animationRequired = params.animationRequired;
     delete params.animationRequired;
 
-    if (params.duration !== undefined)
-        actor.set_easing_duration(params.duration, {animationRequired});
+    const duration = params.duration ?? actor.get_easing_duration();
+    actor.set_easing_duration(duration, {animationRequired});
     delete params.duration;
 
     if (params.delay !== undefined)
