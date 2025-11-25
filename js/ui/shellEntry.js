@@ -1,3 +1,4 @@
+import Atk from 'gi://Atk';
 import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
 import Pango from 'gi://Pango';
@@ -201,6 +202,14 @@ class CapsLockWarning extends St.Label {
         this.natural_height_set = false;
         let [, height] = this.get_preferred_height(-1);
         this.natural_height_set = naturalHeightSet;
+
+        if (capsLockOn) {
+            this.add_accessible_state(Atk.StateType.SHOWING);
+            this.add_accessible_state(Atk.StateType.VISIBLE);
+        } else {
+            this.remove_accessible_state(Atk.StateType.SHOWING);
+            this.remove_accessible_state(Atk.StateType.VISIBLE);
+        }
 
         this.ease({
             height: capsLockOn ? height : 0,
