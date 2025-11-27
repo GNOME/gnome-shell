@@ -2,7 +2,6 @@
 # -*- mode: Python; indent-tabs-mode: nil; -*-
 
 import datetime
-from gi.repository import GLib, GObject, Gio
 try:
     import json
 except ImportError:
