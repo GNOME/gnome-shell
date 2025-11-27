@@ -355,7 +355,7 @@ export const LayoutManager = GObject.registerClass({
     init() {
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
 
-        this._loadBackground().catch(logError);
+        this._doStartupAnimation().catch(logError);
     }
 
     showOverview() {
@@ -664,6 +664,22 @@ export const LayoutManager = GObject.registerClass({
         return this._keyboardIndex;
     }
 
+    async _doStartupAnimation() {
+        await this._loadBackground();
+
+        this._systemBackground.show();
+        global.stage.show();
+
+        try {
+            await this._prepareStartupAnimation();
+            await this._startupAnimation();
+        } catch (e) {
+            logError(e);
+        } finally {
+            this._startupAnimationComplete();
+        }
+    }
+
     async _loadBackground() {
         await this._ensurePrimaryMonitor();
 
@@ -685,10 +701,6 @@ export const LayoutManager = GObject.registerClass({
         });
 
         await promise;
-
-        this._systemBackground.show();
-        global.stage.show();
-        this._prepareStartupAnimation().catch(logError);
     }
 
     // Startup Animations
@@ -753,12 +765,6 @@ export const LayoutManager = GObject.registerClass({
             setTimeout(() => this.emit('startup-prepared'), 200);
         else
             this.emit('startup-prepared');
-
-        try {
-            await this._startupAnimation();
-        } finally {
-            this._startupAnimationComplete();
-        }
     }
 
     async _startupAnimation() {
