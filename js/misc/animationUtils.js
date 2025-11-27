@@ -2,6 +2,7 @@ import St from 'gi://St';
 import Clutter from 'gi://Clutter';
 
 import * as Params from './params.js';
+import {logErrorUnlessCancelled} from './errorUtils.js';
 
 const SCROLL_TIME = 100;
 
@@ -83,7 +84,7 @@ export function ensureActorVisibleInScrollView(scrollView, actor) {
  * @param {number} params.duration - the amount of time to move the actor per-wiggle
  * @param {number} params.wiggleCount - the number of times to wiggle the actor
  */
-export function wiggle(actor, params) {
+export async function wiggle(actor, params) {
     if (!St.Settings.get().enable_animations)
         return;
 
@@ -94,28 +95,30 @@ export function wiggle(actor, params) {
     });
     actor.translation_x = 0;
 
-    // Accelerate before wiggling
-    actor.ease({
-        translation_x: -params.offset,
-        duration: params.duration,
-        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        onComplete: () => {
-            // Wiggle
-            actor.ease({
-                translation_x: params.offset,
-                duration: params.duration,
-                mode: Clutter.AnimationMode.LINEAR,
-                repeatCount: params.wiggleCount,
-                autoReverse: true,
-                onComplete: () => {
-                    // Decelerate and return to the original position
-                    actor.ease({
-                        translation_x: 0,
-                        duration: params.duration,
-                        mode: Clutter.AnimationMode.EASE_IN_QUAD,
-                    });
-                },
-            });
-        },
-    });
+    try {
+        // Accelerate before wiggling
+        await actor.easeAsync({
+            translation_x: -params.offset,
+            duration: params.duration,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
+        // Wiggle
+        await actor.easeAsync({
+            translation_x: params.offset,
+            duration: params.duration,
+            mode: Clutter.AnimationMode.LINEAR,
+            repeatCount: params.wiggleCount,
+            autoReverse: true,
+        });
+
+        // Decelerate and return to the original position
+        await actor.easeAsync({
+            translation_x: 0,
+            duration: params.duration,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
+        });
+    } catch (e) {
+        logErrorUnlessCancelled(e);
+    }
 }
