@@ -11,6 +11,20 @@ import os
 import subprocess
 import sys
 import tempfile
+from configparser import ConfigParser
+from pathlib import Path
+
+class GSettingsConfig(ConfigParser):
+    def add(self, path, key, value):
+        if not path in self:
+            self[path] = {}
+        self[path][key] = value
+
+    def save(self, xdg_home):
+        dir = f'{xdg_home}/config/glib-2.0/settings'
+        Path(dir).mkdir(parents=True)
+        with open(f'{dir}/keyfile', 'w') as keyfile:
+            self.write(keyfile)
 
 def show_version(option, opt_str, value, parser):
     print("GNOME Shell Test Tool @VERSION@")
@@ -29,6 +43,10 @@ def start_shell(xdg_home, wrap=None, perf_output=None):
 
     if perf_output is not None:
         env['SHELL_PERF_OUTPUT'] = perf_output
+
+    env['GSETTINGS_BACKEND'] = 'keyfile'
+
+    gsettings_config = GSettingsConfig()
 
     # A fixed background image
     if os.getenv('SHELL_BACKGROUND_IMAGE') is None:
@@ -57,6 +75,8 @@ def start_shell(xdg_home, wrap=None, perf_output=None):
             args.append('--display-server')
         args.append('--wayland-display')
         args.append('gnome-shell-test-display')
+
+    gsettings_config.save(xdg_home)
 
     print("args: {}".format(args))
     return subprocess.Popen(args, env=env)
