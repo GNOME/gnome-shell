@@ -86,7 +86,8 @@ on_decide_destination (AutoarExtractor *extractor,
 
 static int
 install_extension (const char *bundle,
-                   gboolean    force)
+                   gboolean    force,
+                   gboolean    print_uuid)
 {
   g_autoptr (AutoarExtractor) extractor = NULL;
   g_autoptr (JsonObject) metadata = NULL;
@@ -165,6 +166,9 @@ install_extension (const char *bundle,
         goto err;
     }
 
+  if (print_uuid)
+    g_print ("%s\n", uuid);
+
   return 0;
 
 err:
@@ -184,10 +188,14 @@ handle_install (int argc, char *argv[], gboolean do_help)
   g_autoptr (GError) error = NULL;
   g_auto (GStrv) filenames = NULL;
   gboolean force = FALSE;
+  gboolean print_uuid = FALSE;
   GOptionEntry entries[] = {
     { .long_name = "force", .short_name = 'f',
       .arg = G_OPTION_ARG_NONE, .arg_data = &force,
       .description = _("Overwrite an existing extension") },
+    { .long_name = "print-uuid",
+      .arg = G_OPTION_ARG_NONE, .arg_data = &print_uuid,
+      .description = _("Print extension UUID on success") },
     { .long_name = G_OPTION_REMAINING,
       .arg_description =_("EXTENSION_BUNDLE"),
       .arg = G_OPTION_ARG_FILENAME_ARRAY, .arg_data = &filenames },
@@ -226,5 +234,5 @@ handle_install (int argc, char *argv[], gboolean do_help)
       return 1;
     }
 
-  return install_extension (*filenames, force);
+  return install_extension (*filenames, force, print_uuid);
 }
