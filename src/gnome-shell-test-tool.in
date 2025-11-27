@@ -8,16 +8,9 @@ except ImportError:
     import simplejson as json
 import argparse
 import os
-import re
 import subprocess
 import sys
 import tempfile
-import base64
-from configparser import RawConfigParser
-import hashlib
-import hmac
-from http import client
-from urllib import parse
 
 def show_version(option, opt_str, value, parser):
     print("GNOME Shell Test Tool @VERSION@")
@@ -76,87 +69,6 @@ def run_shell(wrap=None, perf_output=None):
     shell = start_shell(wrap=wrap, perf_output=perf_output)
     shell.wait()
     return shell.returncode == 0
-
-def upload_performance_report(report_text):
-    try:
-        config_home = os.environ['XDG_CONFIG_HOME']
-    except KeyError:
-        config_home = None
-
-    if not config_home:
-        config_home = os.path.expanduser("~/.config")
-
-    config_file = os.path.join(config_home, "gnome-shell/perf.ini")
-
-    try:
-        config = RawConfigParser()
-        f = open(config_file)
-        config.readfp(f)
-        f.close()
-
-        base_url = config.get('upload', 'url')
-        system_name = config.get('upload', 'name')
-        secret_key = config.get('upload', 'key')
-    except Exception as e:
-        print("Can't read upload configuration from %s: %s" % (config_file, str(e)))
-        sys.exit(1)
-
-    # Determine host, port and upload URL from provided data, we're
-    # a bit extra-careful about normalization since the URL is part
-    # of the signature.
-
-    split = parse.urlsplit(base_url)
-    scheme = split[0].lower()
-    netloc = split[1]
-    base_path = split[2]
-
-    m = re.match(r'^(.*?)(?::(\d+))?$', netloc)
-    if m.group(2):
-        host, port = m.group(1), int(m.group(2))
-    else:
-        host, port = m.group(1), None
-
-    if scheme != "http":
-        print("'%s' is not a HTTP URL" % base_url)
-        sys.exit(1)
-
-    if port is None:
-        port = 80
-
-    if base_path.endswith('/'):
-        base_path = base_path[:-1]
-
-    if port == 80:
-        normalized_base = "%s://%s%s" % (scheme, host, base_path)
-    else:
-        normalized_base = "%s://%s:%d%s" % (scheme, host, port, base_path)
-
-    upload_url = normalized_base + '/system/%s/upload' % system_name
-    upload_path = parse.urlsplit(upload_url)[2] # path portion
-
-    # Create signature based on upload URL and the report data
-
-    signature_data = 'POST&' + upload_url + "&&"
-    h = hmac.new(secret_key, digestmod=hashlib.sha1)
-    h.update(signature_data)
-    h.update(report_text)
-    signature = parse.quote(base64.b64encode(h.digest()), "~")
-
-    headers = {
-        'User-Agent': 'gnome-shell-performance-tool/@VERSION@',
-        'Content-Type': 'application/json',
-        'X-Shell-Signature': 'HMAC-SHA1 ' + signature
-    };
-
-    connection = client.HTTPConnection(host, port)
-    connection.request('POST', upload_path, report_text, headers)
-    response = connection.getresponse()
-
-    if response.status == 200:
-        print("Performance report upload succeeded")
-    else:
-        print("Performance report upload failed with status %d" % response.status)
-        print(response.read())
 
 def gnome_hwtest_log(*args):
     command = ['gnome-hwtest-log', '-t', 'gnome-shell-perf-tool']
@@ -222,7 +134,7 @@ def run_performance_test(wrap=None):
 
         logs.append(output['log'])
 
-    if options.perf_output or options.perf_upload:
+    if options.perf_output:
         # Write a complete report, formatted as JSON. The Javascript/C code that
         # generates the individual reports we are summarizing here is very careful
         # to format them nicely, but we just dump out a compressed no-whitespace
@@ -253,9 +165,6 @@ def run_performance_test(wrap=None):
             f = open(options.perf_output, 'w')
             json.dump(report, f)
             f.close()
-
-        if options.perf_upload:
-            upload_performance_report(json.dumps(report))
     elif options.hwtest:
         # Log to systemd journal
         for metric in sorted(metric_summaries.keys()):
@@ -287,8 +196,6 @@ parser.add_argument("--perf-warmup", action="store_true",
                     help="Run a dry run before performance tests")
 parser.add_argument("--perf-output", metavar="OUTPUT_FILE",
                     help="Output file to write performance report")
-parser.add_argument("--perf-upload", action="store_true",
-                    help="Upload performance report to server")
 parser.add_argument("--extra-filter", action="append",
                     help="add an extra window class that should be allowed")
 parser.add_argument("--hwtest", action="store_true",
