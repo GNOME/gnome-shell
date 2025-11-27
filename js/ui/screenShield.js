@@ -244,6 +244,7 @@ export class ScreenShield extends Signals.EventEmitter {
 
     _prepareForSleep(loginManager, aboutToSuspend) {
         if (aboutToSuspend) {
+            this._dialog?.cancel();
             if (this._settings.get_boolean(LOCK_ENABLED_KEY))
                 this.lock(true);
         } else {
