@@ -43,7 +43,7 @@ const AUTO_COMPLETE_DOUBLE_TAB_DELAY = 500;
 const AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION = 200;
 const AUTO_COMPLETE_GLOBAL_KEYWORDS = _getAutoCompleteGlobalKeywords();
 
-const LG_ANIMATION_TIME = 500;
+export const LG_ANIMATION_TIME = 500;
 
 const CLUTTER_DEBUG_FLAG_CATEGORIES = new Map([
     // Paint debugging can easily result in a non-responsive session

@@ -17,7 +17,7 @@ import * as PageIndicators from './pageIndicators.js';
 import * as PopupMenu from './popupMenu.js';
 import * as SwipeTracker from './swipeTracker.js';
 
-const KEYBOARD_ANIMATION_TIME = 150;
+export const KEYBOARD_ANIMATION_TIME = 150;
 const KEYBOARD_REST_TIME = KEYBOARD_ANIMATION_TIME * 2;
 const KEY_LONG_PRESS_TIME = 250;
 

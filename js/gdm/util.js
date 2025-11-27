@@ -27,7 +27,7 @@ Gio._promisify(Gdm.UserVerifierProxy.prototype, 'call_begin_verification');
 export const PASSWORD_SERVICE_NAME = 'gdm-password';
 export const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 export const SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
-const CLONE_FADE_ANIMATION_TIME = 250;
+export const CLONE_FADE_ANIMATION_TIME = 250;
 
 export const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 export const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';

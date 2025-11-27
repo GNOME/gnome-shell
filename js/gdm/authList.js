@@ -21,7 +21,7 @@ import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
 import St from 'gi://St';
 
-const SCROLL_ANIMATION_TIME = 500;
+export const SCROLL_ANIMATION_TIME = 500;
 
 const AuthListItem = GObject.registerClass({
     Signals: {'activate': {}},

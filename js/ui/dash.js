@@ -13,7 +13,7 @@ import * as IconGrid from './iconGrid.js';
 import * as Main from './main.js';
 import * as Overview from './overview.js';
 
-const DASH_ANIMATION_TIME = 200;
+export const DASH_ANIMATION_TIME = 200;
 const DASH_ITEM_LABEL_SHOW_TIME = 150;
 const DASH_ITEM_LABEL_HIDE_TIME = 100;
 const DASH_ITEM_HOVER_TIMEOUT = 300;

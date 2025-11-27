@@ -9,11 +9,11 @@ import * as Main from './main.js';
 import * as Params from '../misc/params.js';
 
 // Time to scale down to maxDragActorSize
-const SCALE_ANIMATION_TIME = 250;
+export const SCALE_ANIMATION_TIME = 250;
 // Time to animate to original position on cancel
-const SNAP_BACK_ANIMATION_TIME = 250;
+export const SNAP_BACK_ANIMATION_TIME = 250;
 // Time to animate to original position on success
-const REVERT_ANIMATION_TIME = 750;
+export const REVERT_ANIMATION_TIME = 750;
 
 /** @enum {number} */
 export const DragMotionResult = {

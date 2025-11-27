@@ -119,7 +119,7 @@ const PICTURE_URI_DARK_KEY = 'picture-uri-dark';
 const INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 const COLOR_SCHEME_KEY = 'color-scheme';
 
-const FADE_ANIMATION_TIME = 1000;
+export const FADE_ANIMATION_TIME = 1000;
 
 // These parameters affect how often we redraw.
 // The first is how different (percent crossfaded) the slide show

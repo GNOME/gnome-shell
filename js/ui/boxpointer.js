@@ -11,7 +11,7 @@ export const PopupAnimation = {
     FULL:  ~0,
 };
 
-const POPUP_ANIMATION_TIME = 150;
+export const POPUP_ANIMATION_TIME = 150;
 
 /**
  * BoxPointer:

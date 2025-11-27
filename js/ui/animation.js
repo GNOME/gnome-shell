@@ -4,7 +4,7 @@ import St from 'gi://St';
 
 import * as Params from '../misc/params.js';
 
-const SPINNER_ANIMATION_TIME = 300;
+export const SPINNER_ANIMATION_TIME = 300;
 const SPINNER_ANIMATION_DELAY = 1000;
 
 export const Spinner = GObject.registerClass(

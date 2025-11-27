@@ -7,7 +7,7 @@ import St from 'gi://St';
 import * as Layout from './layout.js';
 import * as Main from './main.js';
 
-const ANIMATION_TIME = 100;
+export const ANIMATION_TIME = 100;
 const DISPLAY_TIMEOUT = 600;
 
 export const MonitorWorkspaceSwitcherPopup = GObject.registerClass(

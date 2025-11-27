@@ -16,7 +16,7 @@ import {Slider} from './slider.js';
 import {PopupAnimation} from './boxpointer.js';
 
 const DIM_BRIGHTNESS = -0.4;
-const POPUP_ANIMATION_TIME = 400;
+export const POPUP_ANIMATION_TIME = 400;
 
 export const QuickSettingsItem = GObject.registerClass({
     Properties: {

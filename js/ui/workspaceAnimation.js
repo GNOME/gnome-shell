@@ -11,7 +11,7 @@ import * as Util from '../misc/util.js';
 
 import * as Main from './main.js';
 
-const WINDOW_ANIMATION_TIME = 250;
+export const WINDOW_ANIMATION_TIME = 250;
 export const WORKSPACE_SPACING = 100;
 
 export const WorkspaceGroup = GObject.registerClass(

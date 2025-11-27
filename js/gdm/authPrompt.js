@@ -17,9 +17,9 @@ import {wiggle} from '../misc/animationUtils.js';
 
 const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
 const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
-const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
+export const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 
-const MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
+export const MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
 
 /** @enum {number} */
 export const AuthPromptMode = {

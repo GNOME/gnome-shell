@@ -17,7 +17,7 @@ import * as Params from '../misc/params.js';
 import * as Ripples from './ripples.js';
 
 export const STARTUP_ANIMATION_TIME = 500;
-const BACKGROUND_FADE_ANIMATION_TIME = 1000;
+export const BACKGROUND_FADE_ANIMATION_TIME = 1000;
 
 const HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
 const HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms

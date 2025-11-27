@@ -18,7 +18,7 @@ import * as Util from '../misc/util.js';
 import {formatTimeSpan} from '../misc/dateUtils.js';
 
 const MAX_NOTIFICATION_BUTTONS = 3;
-const MESSAGE_ANIMATION_TIME = 100;
+export const MESSAGE_ANIMATION_TIME = 100;
 
 const EXPANDED_GROUP_OVERSHOT_HEIGHT = 50;
 const DEFAULT_EXPAND_LINES = 6;

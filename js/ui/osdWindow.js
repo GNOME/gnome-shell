@@ -9,7 +9,7 @@ import * as Main from './main.js';
 
 const HIDE_TIMEOUT = 1500;
 const FADE_TIME = 100;
-const LEVEL_ANIMATION_TIME = 100;
+export const LEVEL_ANIMATION_TIME = 100;
 
 export const OsdWindow = GObject.registerClass(
 class OsdWindow extends Clutter.Actor {
