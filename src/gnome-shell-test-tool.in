@@ -16,12 +16,16 @@ def show_version(option, opt_str, value, parser):
     print("GNOME Shell Test Tool @VERSION@")
     sys.exit()
 
-def start_shell(wrap=None, perf_output=None):
+def start_shell(xdg_home, wrap=None, perf_output=None):
     # Set up environment
     env = dict(os.environ)
 
     filters = ['Gnome-shell-perf-helper'] + options.extra_filter
     env['MUTTER_WM_CLASS_FILTER'] = ','.join(filters)
+
+    env['XDG_CACHE_HOME'] = f'{xdg_home}/cache'
+    env['XDG_CONFIG_HOME'] = f'{xdg_home}/config'
+    env['XDG_DATA_HOME'] = f'{xdg_home}/data'
 
     if perf_output is not None:
         env['SHELL_PERF_OUTPUT'] = perf_output
@@ -58,13 +62,14 @@ def start_shell(wrap=None, perf_output=None):
     return subprocess.Popen(args, env=env)
 
 def run_shell(wrap=None, perf_output=None):
-    # we do no additional supervision of gnome-shell,
-    # beyond that of wait
-    # in particular, we don't kill the shell upon
-    # receiving a KeyboardInterrupt, as we expect to be
-    # in the same process group
-    shell = start_shell(wrap=wrap, perf_output=perf_output)
-    shell.wait()
+    with tempfile.TemporaryDirectory() as xdg_home:
+        # we do no additional supervision of gnome-shell,
+        # beyond that of wait
+        # in particular, we don't kill the shell upon
+        # receiving a KeyboardInterrupt, as we expect to be
+        # in the same process group
+        shell = start_shell(xdg_home=xdg_home, wrap=wrap, perf_output=perf_output)
+        shell.wait()
     return shell.returncode == 0
 
 def gnome_hwtest_log(*args):
