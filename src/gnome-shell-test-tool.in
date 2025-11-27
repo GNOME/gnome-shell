@@ -41,10 +41,10 @@ def start_shell(wrap=None, perf_output=None):
 
     args.append('--force-animations')
 
-    if options.wayland or options.nested or options.headless:
+    if options.wayland or options.devkit or options.headless:
         args.append('--wayland')
-        if options.nested:
-            args.append('--nested')
+        if options.devkit:
+            args.append('--devkit')
         elif options.headless:
             args.append('--headless')
             if not options.hotplug:
@@ -207,8 +207,8 @@ parser.add_argument("--wrap")
 
 parser.add_argument("-w", "--wayland", action="store_true",
                     help="Run as a Wayland compositor")
-parser.add_argument("-n", "--nested", action="store_true",
-                    help="Run as a Wayland nested compositor")
+parser.add_argument("--devkit", action="store_true",
+                    help="Run development kit")
 parser.add_argument("-x", "--x11", action="store_true",
                     help="Run as an X11 compositor")
 parser.add_argument("--headless", action="store_true",
