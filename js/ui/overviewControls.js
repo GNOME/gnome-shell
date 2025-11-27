@@ -8,7 +8,6 @@ import St from 'gi://St';
 
 import * as AppDisplay from './appDisplay.js';
 import * as Dash from './dash.js';
-import * as Layout from './layout.js';
 import * as Main from './main.js';
 import * as Overview from './overview.js';
 import * as SearchController from './searchController.js';
@@ -16,6 +15,8 @@ import * as Util from '../misc/util.js';
 import * as WindowManager from './windowManager.js';
 import * as WorkspaceThumbnail from './workspaceThumbnail.js';
 import * as WorkspacesView from './workspacesView.js';
+
+import {STARTUP_ANIMATION_TIME} from './layout.js';
 
 export const SMALL_WORKSPACE_RATIO = 0.15;
 const DASH_MAX_HEIGHT_RATIO = 0.16;
@@ -816,8 +817,6 @@ class ControlsManager extends St.Widget {
 
         // We can't run the animation before the first allocation happens
         await this.layout_manager.ensureAllocation();
-
-        const {STARTUP_ANIMATION_TIME} = Layout;
 
         // Opacity
         this.ease({
