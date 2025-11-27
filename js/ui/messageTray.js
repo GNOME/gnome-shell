@@ -760,7 +760,8 @@ export const MessageTray = GObject.registerClass({
         Main.layoutManager.addChrome(this, {affectsInputRegion: false});
         Main.layoutManager.trackChrome(this._bannerBin, {affectsInputRegion: true});
 
-        global.display.connect('in-fullscreen-changed', this._updateState.bind(this));
+        global.display.connectObject('in-fullscreen-changed',
+            () => this._updateState(), this);
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
 
