@@ -61,7 +61,10 @@ def start_shell(xdg_home, wrap=None, perf_output=None):
     args.append('--automation-script')
     args.append(options.script)
 
-    args.append('--force-animations')
+    if options.disable_animations:
+        gsettings_config.add('org/gnome/desktop/interface', 'enable-animations', 'false')
+    else:
+        args.append('--force-animations')
 
     if options.devkit or options.headless:
         if options.devkit:
@@ -233,6 +236,9 @@ parser.add_argument("--headless", action="store_true",
                     help="Run as a headless Wayland compositor")
 parser.add_argument("--hotplug", action="store_true",
                     help="Start without a virtual monitor attached")
+
+parser.add_argument("--disable-animations", action="store_true",
+                    help="Run with animations disabled")
 
 options = parser.parse_args()
 
