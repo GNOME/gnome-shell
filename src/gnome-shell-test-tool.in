@@ -41,8 +41,7 @@ def start_shell(wrap=None, perf_output=None):
 
     args.append('--force-animations')
 
-    if options.wayland or options.devkit or options.headless:
-        args.append('--wayland')
+    if options.devkit or options.headless:
         if options.devkit:
             args.append('--devkit')
         elif options.headless:
@@ -54,8 +53,6 @@ def start_shell(wrap=None, perf_output=None):
             args.append('--display-server')
         args.append('--wayland-display')
         args.append('gnome-shell-test-display')
-    elif options.x11:
-        args.append('--x11')
 
     print("args: {}".format(args))
     return subprocess.Popen(args, env=env)
@@ -205,12 +202,8 @@ parser.add_argument("--version", action="version",
 
 parser.add_argument("--wrap")
 
-parser.add_argument("-w", "--wayland", action="store_true",
-                    help="Run as a Wayland compositor")
 parser.add_argument("--devkit", action="store_true",
                     help="Run development kit")
-parser.add_argument("-x", "--x11", action="store_true",
-                    help="Run as an X11 compositor")
 parser.add_argument("--headless", action="store_true",
                     help="Run as a headless Wayland compositor")
 parser.add_argument("--hotplug", action="store_true",
