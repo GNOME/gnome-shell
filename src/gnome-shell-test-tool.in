@@ -26,6 +26,17 @@ class GSettingsConfig(ConfigParser):
         with open(f'{dir}/keyfile', 'w') as keyfile:
             self.write(keyfile)
 
+def install_extension(extension, env):
+    self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+    args = []
+    args.append(os.path.join(self_dir, 'gnome-extensions'))
+    args.append('install')
+    args.append('--print-uuid')
+    args.append(extension)
+
+    proc = subprocess.run(args, env=env, check=True, capture_output=True, text=True)
+    return proc.stdout.strip()
+
 def show_version(option, opt_str, value, parser):
     print("GNOME Shell Test Tool @VERSION@")
     sys.exit()
@@ -51,6 +62,10 @@ def start_shell(xdg_home, wrap=None, perf_output=None):
     # A fixed background image
     if os.getenv('SHELL_BACKGROUND_IMAGE') is None:
       env['SHELL_BACKGROUND_IMAGE'] = '@pkgdatadir@/perf-background.xml'
+
+    if options.extension:
+        uuid = install_extension(options.extension, env=env)
+        gsettings_config.add('org/gnome/shell', 'enabled-extensions', f'["{uuid}"]')
 
     self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
     args = []
@@ -239,6 +254,8 @@ parser.add_argument("--hotplug", action="store_true",
 
 parser.add_argument("--disable-animations", action="store_true",
                     help="Run with animations disabled")
+parser.add_argument("--extension",
+                    help="Run with extension installed and enabled")
 
 options = parser.parse_args()
 
