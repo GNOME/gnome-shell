@@ -201,6 +201,7 @@ export const LayoutManager = GObject.registerClass({
         this._rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
         this.monitors = [];
         this.primaryMonitor = null;
+        this._primaryMonitorReadyResolver = null;
         this.primaryIndex = -1;
         this.hotCorners = [];
 
@@ -214,7 +215,6 @@ export const LayoutManager = GObject.registerClass({
         this._topActors = [];
         this._isPopupWindowVisible = false;
         this._startingUp = true;
-        this._pendingLoadBackground = false;
 
         // Set up stage hierarchy to group all UI actors under one container.
         this.uiGroup = new UiActor({name: 'uiGroup'});
@@ -355,7 +355,7 @@ export const LayoutManager = GObject.registerClass({
     init() {
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
 
-        this._loadBackground();
+        this._loadBackground().catch(logError);
     }
 
     showOverview() {
@@ -377,6 +377,15 @@ export const LayoutManager = GObject.registerClass({
     _sessionUpdated() {
         this._updateVisibility();
         this._queueUpdateRegions();
+    }
+
+    async _ensurePrimaryMonitor() {
+        if (this.primaryMonitor)
+            return;
+
+        const {promise, resolve} = Promise.withResolvers();
+        this._primaryMonitorReadyResolver = resolve;
+        await promise;
     }
 
     _updateMonitors() {
@@ -410,10 +419,7 @@ export const LayoutManager = GObject.registerClass({
             this.primaryMonitor = this.monitors[this.primaryIndex];
             this.bottomMonitor = this.monitors[this.bottomIndex];
 
-            if (this._pendingLoadBackground) {
-                this._loadBackground();
-                this._pendingLoadBackground = false;
-            }
+            this._primaryMonitorReadyResolver?.call();
         } else {
             this.primaryMonitor = null;
             this.bottomMonitor = null;
@@ -658,11 +664,9 @@ export const LayoutManager = GObject.registerClass({
         return this._keyboardIndex;
     }
 
-    _loadBackground() {
-        if (!this.primaryMonitor) {
-            this._pendingLoadBackground = true;
-            return;
-        }
+    async _loadBackground() {
+        await this._ensurePrimaryMonitor();
+
         this._systemBackground = new Background.SystemBackground();
         this._systemBackground.hide();
 
@@ -684,14 +688,10 @@ export const LayoutManager = GObject.registerClass({
             // This helps to prevent us from running the animation
             // when the system is bogged down
             const id = GLib.idle_add(GLib.PRIORITY_LOW, () => {
-                if (this.primaryMonitor) {
-                    this._systemBackground.show();
-                    global.stage.show();
-                    this._prepareStartupAnimation().catch(logError);
-                    return GLib.SOURCE_REMOVE;
-                } else {
-                    return GLib.SOURCE_CONTINUE;
-                }
+                this._systemBackground.show();
+                global.stage.show();
+                this._prepareStartupAnimation().catch(logError);
+                return GLib.SOURCE_REMOVE;
             });
             GLib.Source.set_name_by_id(id, '[gnome-shell] Startup Animation');
         });
@@ -713,6 +713,8 @@ export const LayoutManager = GObject.registerClass({
     // of the screen.
 
     async _prepareStartupAnimation() {
+        await this._ensurePrimaryMonitor();
+
         // During the initial transition, add a simple actor to block all events,
         // so they don't get delivered to X11 windows that have been transformed.
         this._coverPane = new Clutter.Actor({
