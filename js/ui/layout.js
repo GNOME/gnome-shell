@@ -681,18 +681,7 @@ export const LayoutManager = GObject.registerClass({
         const {promise, resolve} = Promise.withResolvers();
         const signalId = this._systemBackground.connect('loaded', () => {
             this._systemBackground.disconnect(signalId);
-
-            // We're mostly prepared for the startup animation
-            // now, but since a lot is going on asynchronously
-            // during startup, let's defer the startup animation
-            // until the event loop is uncontended and idle.
-            // This helps to prevent us from running the animation
-            // when the system is bogged down
-            const id = GLib.idle_add(GLib.PRIORITY_LOW, () => {
-                resolve();
-                return GLib.SOURCE_REMOVE;
-            });
-            GLib.Source.set_name_by_id(id, '[gnome-shell] Startup Animation');
+            resolve();
         });
 
         await promise;
