@@ -678,6 +678,7 @@ export const LayoutManager = GObject.registerClass({
         });
         this._systemBackground.add_constraint(constraint);
 
+        const {promise, resolve} = Promise.withResolvers();
         const signalId = this._systemBackground.connect('loaded', () => {
             this._systemBackground.disconnect(signalId);
 
@@ -688,13 +689,17 @@ export const LayoutManager = GObject.registerClass({
             // This helps to prevent us from running the animation
             // when the system is bogged down
             const id = GLib.idle_add(GLib.PRIORITY_LOW, () => {
-                this._systemBackground.show();
-                global.stage.show();
-                this._prepareStartupAnimation().catch(logError);
+                resolve();
                 return GLib.SOURCE_REMOVE;
             });
             GLib.Source.set_name_by_id(id, '[gnome-shell] Startup Animation');
         });
+
+        await promise;
+
+        this._systemBackground.show();
+        global.stage.show();
+        this._prepareStartupAnimation().catch(logError);
     }
 
     // Startup Animations
