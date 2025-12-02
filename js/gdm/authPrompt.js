@@ -17,6 +17,33 @@ import {wiggle} from '../misc/animationUtils.js';
 
 const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
 const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
+
+// A widget displayed instead of the unlock prompt
+// when parental controls session limits are reached
+const ParentalControlsShield = GObject.registerClass(
+class ParentalControlsShield extends St.BoxLayout {
+    _init() {
+        super._init({
+            style_class: 'parental-controls-shield',
+            orientation: Clutter.Orientation.VERTICAL,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+
+        this._titleLabel = new St.Label({
+            style_class: 'parental-controls-shield-title',
+            text: _('Screen Time Limit Reached'),
+        });
+        this.add_child(this._titleLabel);
+
+        this._descriptionLabel = new St.Label({
+            style_class: 'parental-controls-shield-description',
+            text: _('Daily limit for screen time on this device has been reached. Resume tomorrow.'),
+        });
+        this._descriptionLabel.clutter_text.line_wrap = true;
+        this.add_child(this._descriptionLabel);
+    }
+});
+
 export const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 
 export const MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
@@ -102,6 +129,7 @@ export const AuthPrompt = GObject.registerClass({
             x_expand: true,
         });
         this.add_child(this._inputWell);
+        this._mainContent = this._inputWell;
 
         this._hasCancelButton = this._mode === AuthPromptMode.UNLOCK_OR_LOG_IN;
 
@@ -697,6 +725,25 @@ export const AuthPrompt = GObject.registerClass({
 
         this._entry.grab_key_focus();
         this._entry.clutter_text.insert_unichar(unichar);
+    }
+
+    /*
+     * Set whether to block the authentication with the parental controls shield.
+     *
+     * @param {boolean} shouldBlock Whether to block the authentication
+     */
+    setAuthBlocked(shouldBlock) {
+        if (!this._parentalControlsShield)
+            this._parentalControlsShield = new ParentalControlsShield();
+
+        const newMainContent = shouldBlock
+            ? this._parentalControlsShield
+            : this._inputWell;
+
+        if (newMainContent !== this._mainContent) {
+            this.replace_child(this._mainContent, newMainContent);
+            this._mainContent = newMainContent;
+        }
     }
 
     begin(params) {
