@@ -13,6 +13,7 @@ import * as GdmUtil from './util.js';
 import * as Params from '../misc/params.js';
 import * as ShellEntry from '../ui/shellEntry.js';
 import * as UserWidget from '../ui/userWidget.js';
+import * as ParentalControlsShield from '../ui/parentalControlsShield.js';
 import {wiggle} from '../misc/animationUtils.js';
 
 const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
@@ -102,6 +103,7 @@ export const AuthPrompt = GObject.registerClass({
             x_expand: true,
         });
         this.add_child(this._inputWell);
+        this._mainContent = this._inputWell;
 
         this._hasCancelButton = this._mode === AuthPromptMode.UNLOCK_OR_LOG_IN;
 
@@ -131,6 +133,9 @@ export const AuthPrompt = GObject.registerClass({
         this._message.clutter_text.line_wrap = true;
         this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._inputWell.add_child(this._message);
+
+        if (this._mode === AuthPromptMode.UNLOCK_ONLY)
+            this._parentalControlsShield = new ParentalControlsShield.ParentalControlsShield();
     }
 
     _createUserVerifier(gdmClient, params) {
@@ -697,6 +702,25 @@ export const AuthPrompt = GObject.registerClass({
 
         this._entry.grab_key_focus();
         this._entry.clutter_text.insert_unichar(unichar);
+    }
+
+    /*
+     * Set whether to block the authentication with the parental controls shield.
+     *
+     * @param {boolean} shouldBlock Whether to block the authentication
+     */
+    setAuthBlocked(shouldBlock) {
+        if (!this._parentalControlsShield)
+            return;
+
+        const newMainContent = shouldBlock
+            ? this._parentalControlsShield
+            : this._inputWell;
+
+        if (newMainContent !== this._mainContent) {
+            this.replace_child(this._mainContent, newMainContent);
+            this._mainContent = newMainContent;
+        }
     }
 
     begin(params) {

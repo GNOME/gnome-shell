@@ -97,6 +97,7 @@
     <file>ui/pageIndicators.js</file>
     <file>ui/panel.js</file>
     <file>ui/panelMenu.js</file>
+    <file>ui/parentalControlsShield.js</file>
     <file>ui/pointerA11yTimeout.js</file>
     <file>ui/pointerWatcher.js</file>
     <file>ui/popupMenu.js</file>
