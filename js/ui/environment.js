@@ -62,7 +62,7 @@ function _makeEaseCallback(params, cleanup) {
     delete params.onStopped;
 
     return isFinished => {
-        cleanup();
+        cleanup?.();
 
         if (onStopped)
             onStopped(isFinished);
@@ -71,7 +71,10 @@ function _makeEaseCallback(params, cleanup) {
     };
 }
 
-function _makeEasePrepareAndCleanup() {
+function _makeEasePrepareAndCleanup(duration) {
+    if (!duration)
+        return {prepare: null, cleanup: null};
+
     const prepare = () => {
         global.compositor.disable_unredirect();
         global.begin_work();
@@ -141,14 +144,15 @@ function _easeActor(actor, params) {
         actor.set_easing_mode(params.mode);
     delete params.mode;
 
-    const {prepare, cleanup} = _makeEasePrepareAndCleanup();
+    const easingDuration = actor.get_easing_duration();
+    const {prepare, cleanup} = _makeEasePrepareAndCleanup(easingDuration);
     const callback = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transitions
     const animatedProps = Object.keys(params).map(p => p.replace('_', '-', 'g'));
     animatedProps.forEach(p => actor.remove_transition(p));
 
-    if (actor.get_easing_duration() > 0 || !isReversed)
+    if (easingDuration > 0 || !isReversed)
         actor.set(params);
     actor.restore_easing_state();
 
@@ -160,10 +164,12 @@ function _easeActor(actor, params) {
 
     const [transition] = transitions;
 
-    if (transition && transition.delay)
-        transition.connectObject('started', () => prepare(), sessionSignalHolder);
-    else
-        prepare();
+    if (prepare) {
+        if (transition?.delay)
+            transition.connectObject('started', () => prepare(), sessionSignalHolder);
+        else
+            prepare();
+    }
 
     if (transition) {
         transition.connectObject('stopped', (t, finished) => callback(finished),
@@ -215,7 +221,7 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
     if (!actor?.mapped)
         duration = 0;
 
-    const {prepare, cleanup} = _makeEasePrepareAndCleanup();
+    const {prepare, cleanup} = _makeEasePrepareAndCleanup(duration);
     const callback = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transition
@@ -227,7 +233,7 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
         if (!isReversed)
             obj[prop] = target;
 
-        prepare();
+        prepare?.();
         callback(true);
 
         return;
@@ -246,10 +252,12 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
 
     transition.set_to(target);
 
-    if (transition.delay)
-        transition.connectObject('started', () => prepare(), sessionSignalHolder);
-    else
-        prepare();
+    if (prepare) {
+        if (transition.delay)
+            transition.connectObject('started', () => prepare(), sessionSignalHolder);
+        else
+            prepare();
+    }
 
     transition.connectObject('stopped',
         (t, finished) => callback(finished), sessionSignalHolder);
