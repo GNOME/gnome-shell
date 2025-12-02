@@ -1,6 +1,7 @@
 $_gdm_bg: $system_base_color;
 $_gdm_fg: $system_fg_color;
-$_gdm_dialog_width: 25em;
+$_gdm_dialog_width: 35em;
+$_gdm_input_width: 20em;
 
 // common style for login and lockscreen
 .login-dialog,
@@ -14,6 +15,11 @@ $_gdm_dialog_width: 25em;
 
   .login-dialog-prompt-layout {
     width: $_gdm_dialog_width;
+    spacing: $base_padding * 1.5;
+  }
+
+  .login-input-prompt-layout {
+    width: $_gdm_input_width;
     spacing: $base_padding * 1.5;
   }
 }
@@ -256,6 +262,13 @@ $_gdm_dialog_width: 25em;
     border-radius: $base_border_radius * 2;
     font-weight: bold;
   }
+}
+
+// Parental controls
+.parental-controls-shield-title {
+  margin-top: 0.5em;
+  @extend %title_4;
+  margin-bottom: 1em;
 }
 
 // Notifications

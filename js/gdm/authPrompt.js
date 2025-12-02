@@ -96,7 +96,7 @@ export const AuthPrompt = GObject.registerClass({
         this.add_child(this._userWell);
 
         this._inputWell = new St.BoxLayout({
-            style_class: 'login-dialog-prompt-layout',
+            style_class: 'login-input-prompt-layout',
             orientation: Clutter.Orientation.VERTICAL,
             x_align: Clutter.ActorAlign.CENTER,
             x_expand: true,
@@ -131,6 +131,23 @@ export const AuthPrompt = GObject.registerClass({
         this._message.clutter_text.line_wrap = true;
         this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._inputWell.add_child(this._message);
+
+        this._parentalControlsShield = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+        });
+
+        this._parentalControlsShieldTitle = new St.Label({
+            style_class: 'parental-controls-shield-title',
+            text: _('Screen Time Limit Reached'),
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        this._parentalControlsShield.add_child(this._parentalControlsShieldTitle);
+
+        this._parentalControlsShieldDescription = new St.Label({
+            text: _('Will be able to resume the session in 13 hours and 40 minutes.'),
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        this._parentalControlsShield.add_child(this._parentalControlsShieldDescription);
     }
 
     _createUserVerifier(gdmClient, params) {
@@ -697,6 +714,14 @@ export const AuthPrompt = GObject.registerClass({
 
         this._entry.grab_key_focus();
         this._entry.clutter_text.insert_unichar(unichar);
+    }
+
+    updateLockability(dailyLimitReached) {
+        console.debug(`${dailyLimitReached ? 'DIS' : 'EN'}ABLING UNLOCKING`);
+        if (dailyLimitReached)
+            this.replace_child(this._inputWell, this._parentalControlsShield);
+        else
+            this.replace_child(this._parentalControlsShield, this._inputWell);
     }
 
     begin(params) {
