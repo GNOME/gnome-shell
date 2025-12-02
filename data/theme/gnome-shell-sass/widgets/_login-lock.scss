@@ -258,6 +258,21 @@ $_gdm_dialog_width: 25em;
   }
 }
 
+// Parental controls
+.parental-controls-shield {
+  spacing: 0.75em;
+
+  .parental-controls-shield-title {
+    margin-top: 0.6em;
+    @extend %title_4;
+    text-align: center;
+  }
+
+  .parental-controls-shield-description {
+    text-align: center;
+  }
+}
+
 // Notifications
 #unlockDialogNotifications {
   > .vhandle, > .hhandle {
