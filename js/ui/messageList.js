@@ -16,6 +16,7 @@ import * as Mpris from './mpris.js';
 
 import * as Util from '../misc/util.js';
 import {formatTimeSpan} from '../misc/dateUtils.js';
+import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 
 const MAX_NOTIFICATION_BUTTONS = 3;
 export const MESSAGE_ANIMATION_TIME = 100;
@@ -979,13 +980,10 @@ export const NotificationMessageGroup = GObject.registerClass({
         this.notify('expanded');
         this._cover.hide();
 
-        await new Promise((resolve, _) => {
-            this.ease_property('@layout.expansion', 1, {
-                progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                duration: GROUP_EXPENSION_TIME,
-                onComplete: () => resolve(),
-            });
-        });
+        await this.ease_property_async('@layout.expansion', 1, {
+            progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: GROUP_EXPENSION_TIME,
+        }).catch(logErrorUnlessCancelled);
     }
 
     async collapse() {
@@ -1003,13 +1001,10 @@ export const NotificationMessageGroup = GObject.registerClass({
         this._cover.show();
         this._updateStackedMessagesFade();
 
-        await new Promise((resolve, _) => {
-            this.ease_property('@layout.expansion', 0, {
-                progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                duration: GROUP_EXPENSION_TIME,
-                onComplete: () => resolve(),
-            });
-        });
+        await this.ease_property_async_async('@layout.expansion', 0, {
+            progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: GROUP_EXPENSION_TIME,
+        }).catch(logErrorUnlessCancelled);
 
         this._headerBox.hide();
     }

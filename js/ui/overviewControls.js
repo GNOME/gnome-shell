@@ -806,13 +806,11 @@ class ControlsManager extends St.Widget {
         const startupPromises = [];
 
         this._stateAdjustment.value = ControlsState.HIDDEN;
-        startupPromises.push(new Promise(resolve => {
-            this._stateAdjustment.ease(ControlsState.WINDOW_PICKER, {
+        startupPromises.push(
+            this._stateAdjustment.easeAsync(ControlsState.WINDOW_PICKER, {
                 duration: Overview.ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: resolve,
-            });
-        }));
+            }));
 
         this.dash.showAppsButton.checked = false;
         this._ignoreShowAppsButtonToggle = false;
@@ -824,14 +822,12 @@ class ControlsManager extends St.Widget {
         await this.layout_manager.ensureAllocation();
 
         // Opacity
-        startupPromises.push(new Promise(resolve => {
-            this.ease({
+        startupPromises.push(
+            this.easeAsync({
                 opacity: 255,
                 duration: STARTUP_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: resolve,
-            });
-        }));
+            }));
 
         // Search bar falls from the ceiling
         const {primaryMonitor} = Main.layoutManager;
@@ -839,27 +835,23 @@ class ControlsManager extends St.Widget {
         const yOffset = y - primaryMonitor.y;
 
         this._searchEntryBin.translation_y = -(yOffset + this._searchEntryBin.height);
-        startupPromises.push(new Promise(resolve => {
-            this._searchEntryBin.ease({
+        startupPromises.push(
+            this._searchEntryBin.easeAsync({
                 translation_y: 0,
                 duration: STARTUP_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: resolve,
-            });
-        }));
+            }));
 
         // The Dash rises from the bottom. This is the last animation to finish,
         // so resolve the promise there.
         this.dash.translation_y = this.dash.height + this.dash.margin_bottom;
-        startupPromises.push(new Promise(resolve => {
-            this.dash.ease({
+        startupPromises.push(
+            this.dash.easeAsync({
                 translation_y: 0,
                 delay: STARTUP_ANIMATION_TIME,
                 duration: STARTUP_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: () => resolve(),
-            });
-        }));
+            }));
 
         return Promise.allSettled(startupPromises);
     }

@@ -16,6 +16,8 @@ import * as Main from './main.js';
 import * as Params from '../misc/params.js';
 import * as Ripples from './ripples.js';
 
+import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
+
 export const STARTUP_ANIMATION_TIME = 500;
 export const BACKGROUND_FADE_ANIMATION_TIME = 1000;
 
@@ -775,30 +777,24 @@ export const LayoutManager = GObject.registerClass({
     }
 
     async _startupAnimationGreeter() {
-        await new Promise(resolve => {
-            this.panelBox.ease({
-                translation_y: 0,
-                duration: STARTUP_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: () => resolve(),
-            });
-        });
+        await this.panelBox.easeAsync({
+            translation_y: 0,
+            duration: STARTUP_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        }).catch(logErrorUnlessCancelled);
     }
 
     async _startupAnimationSession() {
         if (Main.sessionMode.hasOverview) {
             await Main.overview.runStartupAnimation();
         } else {
-            await new Promise(resolve => {
-                this.uiGroup.ease({
-                    scale_x: 1,
-                    scale_y: 1,
-                    opacity: 255,
-                    duration: STARTUP_ANIMATION_TIME,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                    onStopped: () => resolve(),
-                });
-            });
+            await this.uiGroup.easeAsync({
+                scale_x: 1,
+                scale_y: 1,
+                opacity: 255,
+                duration: STARTUP_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            }).catch(logErrorUnlessCancelled);
         }
     }
 
