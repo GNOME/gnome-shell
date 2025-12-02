@@ -102,6 +102,7 @@ export const AuthPrompt = GObject.registerClass({
             x_expand: true,
         });
         this.add_child(this._inputWell);
+        this._mainContent = this._inputWell;
 
         this._hasCancelButton = this._mode === AuthPromptMode.UNLOCK_OR_LOG_IN;
 
@@ -131,6 +132,23 @@ export const AuthPrompt = GObject.registerClass({
         this._message.clutter_text.line_wrap = true;
         this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._inputWell.add_child(this._message);
+
+        this._parentalControlsShield = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+        });
+
+        this._parentalControlsShieldTitle = new St.Label({
+            style_class: 'parental-controls-shield-title',
+            text: _('Screen Time Limit Reached'),
+        });
+        this._parentalControlsShield.add_child(this._parentalControlsShieldTitle);
+
+        this._parentalControlsShieldDescription = new St.Label({
+            style_class: 'parental-controls-shield-description',
+            text: _('Daily limit for screen time on this device has been reached. Resume tomorrow.'),
+        });
+        this._parentalControlsShieldDescription.clutter_text.line_wrap = true;
+        this._parentalControlsShield.add_child(this._parentalControlsShieldDescription);
     }
 
     _createUserVerifier(gdmClient, params) {
@@ -697,6 +715,27 @@ export const AuthPrompt = GObject.registerClass({
 
         this._entry.grab_key_focus();
         this._entry.clutter_text.insert_unichar(unichar);
+    }
+
+    /*
+     * Update the ability to unlock the lock screen, based on whether the
+     * parental controls session limit has been reached.
+     *
+     * @param {boolean} dailyLimitReached Whether the daily limit is reached.
+     * @param {number} timeRemainingSecs Time left until the shield is lifted.
+     */
+    updateLockability(dailyLimitReached) {
+        let newMainContent;
+
+        if (dailyLimitReached && this._mainContent !== this._parentalControlsShield)
+            newMainContent = this._parentalControlsShield;
+        else if (!dailyLimitReached && this._mainContent !== this._inputWell)
+            newMainContent = this._inputWell;
+
+        if (newMainContent) {
+            this.replace_child(this._mainContent, newMainContent);
+            this._mainContent = newMainContent;
+        }
     }
 
     begin(params) {
