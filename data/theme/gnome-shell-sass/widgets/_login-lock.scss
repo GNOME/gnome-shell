@@ -1,6 +1,7 @@
 $_gdm_bg: $system_base_color;
 $_gdm_fg: $system_fg_color;
 $_gdm_dialog_width: 25em;
+$_gdm_dialog_width_wide: 30em;
 
 // common style for login and lockscreen
 .login-dialog,
@@ -14,6 +15,11 @@ $_gdm_dialog_width: 25em;
 
   .login-dialog-prompt-layout {
     width: $_gdm_dialog_width;
+    spacing: $base_padding * 1.5;
+  }
+
+  .login-dialog-prompt-layout-wide {
+    width: $_gdm_dialog_width_wide;
     spacing: $base_padding * 1.5;
   }
 }
