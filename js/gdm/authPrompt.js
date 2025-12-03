@@ -95,18 +95,26 @@ export const AuthPrompt = GObject.registerClass({
         });
         this.add_child(this._userWell);
 
+        this._inputWell = new St.BoxLayout({
+            style_class: 'login-dialog-prompt-layout',
+            orientation: Clutter.Orientation.VERTICAL,
+            x_align: Clutter.ActorAlign.CENTER,
+            x_expand: true,
+        });
+        this.add_child(this._inputWell);
+
         this._hasCancelButton = this._mode === AuthPromptMode.UNLOCK_OR_LOG_IN;
 
         this._initInputRow();
 
         const capsLockPlaceholder = new St.Label();
-        this.add_child(capsLockPlaceholder);
+        this._inputWell.add_child(capsLockPlaceholder);
 
         this._capsLockWarningLabel = new ShellEntry.CapsLockWarning({
             x_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
         });
-        this.add_child(this._capsLockWarningLabel);
+        this._inputWell.add_child(this._capsLockWarningLabel);
 
         this._capsLockWarningLabel.bind_property('visible',
             capsLockPlaceholder, 'visible',
@@ -122,7 +130,7 @@ export const AuthPrompt = GObject.registerClass({
         });
         this._message.clutter_text.line_wrap = true;
         this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this.add_child(this._message);
+        this._inputWell.add_child(this._message);
     }
 
     _createUserVerifier(gdmClient, params) {
@@ -150,7 +158,7 @@ export const AuthPrompt = GObject.registerClass({
             style_class: 'login-dialog-button-box',
             orientation: Clutter.Orientation.HORIZONTAL,
         });
-        this.add_child(this._mainBox);
+        this._inputWell.add_child(this._mainBox);
 
         this.cancelButton = new St.Button({
             style_class: 'login-dialog-button cancel-button',
@@ -213,7 +221,7 @@ export const AuthPrompt = GObject.registerClass({
             scale_x: 0,
         });
 
-        this.add_child(this._timedLoginIndicator);
+        this._inputWell.add_child(this._timedLoginIndicator);
 
         [this._textEntry, this._passwordEntry].forEach(entry => {
             entry.clutter_text.connect('text-changed', () => {
