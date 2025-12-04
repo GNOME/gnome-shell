@@ -820,25 +820,42 @@ export const UnlockDialog = GObject.registerClass({
         });
 
         const {scaleFactor} = St.ThemeContext.get_for_stage(global.stage);
+        const {reducedMotion} = St.Settings.get();
+        const useMotion = reducedMotion !== St.ReducedMotion.REDUCE;
+
+        const promptMotionParams = useMotion
+            ? {
+                scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
+                scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
+                translation_y: FADE_OUT_TRANSLATION * (1 - progress) * scaleFactor,
+            } : {};
 
         this._promptBox.set({
             opacity: 255 * progress,
-            scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
-            scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
-            translation_y: FADE_OUT_TRANSLATION * (1 - progress) * scaleFactor,
+            ...promptMotionParams,
         });
+
+        const clockMotionParams = useMotion
+            ? {
+                scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * (1 - progress),
+                scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * (1 - progress),
+                translation_y: -FADE_OUT_TRANSLATION * progress * scaleFactor,
+            } : {};
 
         this._clock.set({
             opacity: 255 * (1 - progress),
-            scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * (1 - progress),
-            scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * (1 - progress),
-            translation_y: -FADE_OUT_TRANSLATION * progress * scaleFactor,
+            ...clockMotionParams,
         });
+
+        const otherUserButtonMotionParams = useMotion
+            ? {
+                scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
+                scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
+            } : {};
 
         this._otherUserButton.set({
             opacity: 255 * progress,
-            scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
-            scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
+            ...otherUserButtonMotionParams,
         });
     }
 
