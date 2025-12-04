@@ -163,7 +163,7 @@ function _easeActor(actor, params) {
         callback(true);
 }
 
-function _easeActorProperty(actor, propName, target, params) {
+function _easeAnimatableProperty(animatable, propName, target, params) {
     params = {
         repeatCount: 0,
         autoReverse: false,
@@ -199,7 +199,7 @@ function _easeActorProperty(actor, propName, target, params) {
 
     // Copy Clutter's behavior for implicit animations, see
     // should_skip_implicit_transition()
-    if (actor instanceof Clutter.Actor && !actor.mapped)
+    if (animatable instanceof Clutter.Actor && !animatable.mapped)
         duration = 0;
 
     const prepare = () => {
@@ -213,10 +213,10 @@ function _easeActorProperty(actor, propName, target, params) {
     const callback = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transition
-    actor.remove_transition(propName);
+    animatable.remove_transition(propName);
 
     if (duration === 0) {
-        const [obj, prop] = _getPropertyTarget(actor, propName);
+        const [obj, prop] = _getPropertyTarget(animatable, propName);
 
         if (!isReversed)
             obj[prop] = target;
@@ -227,7 +227,7 @@ function _easeActorProperty(actor, propName, target, params) {
         return;
     }
 
-    const pspec = actor.find_property(propName);
+    const pspec = animatable.find_property(propName);
     const transition = new Clutter.PropertyTransition({
         property_name: propName,
         interval: new Clutter.Interval({value_type: pspec.value_type}),
@@ -236,7 +236,7 @@ function _easeActorProperty(actor, propName, target, params) {
         auto_reverse: autoReverse,
         ...params,
     });
-    actor.add_transition(propName, transition);
+    animatable.add_transition(propName, transition);
 
     transition.set_to(target);
 
@@ -303,12 +303,12 @@ Clutter.Actor.prototype.ease = function (props) {
     _easeActor(this, props);
 };
 Clutter.Actor.prototype.ease_property = function (propName, target, params) {
-    _easeActorProperty(this, propName, target, params);
+    _easeAnimatableProperty(this, propName, target, params);
 };
 St.Adjustment.prototype.ease = function (target, params) {
     // we're not an actor of course, but we implement the same
     // transition API as Clutter.Actor, so this works anyway
-    _easeActorProperty(this, 'value', target, params);
+    _easeAnimatableProperty(this, 'value', target, params);
 };
 
 Clutter.Actor.prototype[Symbol.iterator] = function* () {
