@@ -197,9 +197,12 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
     // whether the transition should finish where it started
     const isReversed = autoReverse && numIterations % 2 === 0;
 
+    // The object is a Clutter.Animatable.
+    const actor = animatable.get_actor();
+
     // Copy Clutter's behavior for implicit animations, see
     // should_skip_implicit_transition()
-    if (animatable instanceof Clutter.Actor && !animatable.mapped)
+    if (!actor?.mapped)
         duration = 0;
 
     const prepare = () => {
