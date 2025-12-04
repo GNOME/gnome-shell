@@ -29,6 +29,11 @@
 G_BEGIN_DECLS
 
 typedef enum {
+  ST_REDUCED_MOTION_NO_PREFERENCE = G_DESKTOP_REDUCED_MOTION_NO_PREFERENCE,
+  ST_REDUCED_MOTION_REDUCE = G_DESKTOP_REDUCED_MOTION_REDUCE,
+} StReducedMotion;
+
+typedef enum {
   ST_SYSTEM_COLOR_SCHEME_DEFAULT = G_DESKTOP_COLOR_SCHEME_DEFAULT,
   ST_SYSTEM_COLOR_SCHEME_PREFER_DARK = G_DESKTOP_COLOR_SCHEME_PREFER_DARK,
   ST_SYSTEM_COLOR_SCHEME_PREFER_LIGHT = G_DESKTOP_COLOR_SCHEME_PREFER_LIGHT,
@@ -64,6 +69,7 @@ const char * st_settings_get_gtk_icon_theme (StSettings *settings);
 StSystemColorScheme st_settings_get_color_scheme (StSettings *settings);
 StSystemAccentColor st_settings_get_accent_color (StSettings *settings);
 gboolean st_settings_get_high_contrast (StSettings *settings);
+StReducedMotion st_settings_get_reduced_motion (StSettings *settings);
 
 gboolean st_settings_get_magnifier_active (StSettings *settings);
 gboolean st_settings_get_disable_show_password (StSettings *settings);

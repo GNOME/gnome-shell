@@ -33,6 +33,7 @@
 #define KEY_COLOR_SCHEME          "color-scheme"
 #define KEY_ACCENT_COLOR          "accent-color"
 #define KEY_HIGH_CONTRAST         "high-contrast"
+#define KEY_REDUCED_MOTION        "reduced-motion"
 #define KEY_GTK_ICON_THEME        "icon-theme"
 #define KEY_MAGNIFIER_ACTIVE      "screen-magnifier-enabled"
 #define KEY_DISABLE_SHOW_PASSWORD "disable-show-password"
@@ -46,6 +47,7 @@ enum {
   PROP_COLOR_SCHEME,
   PROP_ACCENT_COLOR,
   PROP_HIGH_CONTRAST,
+  PROP_REDUCED_MOTION,
   PROP_GTK_ICON_THEME,
   PROP_MAGNIFIER_ACTIVE,
   PROP_SLOW_DOWN_FACTOR,
@@ -74,6 +76,7 @@ struct _StSettings
   gboolean disable_show_password;
   gint drag_threshold;
   double slow_down_factor;
+  StReducedMotion reduced_motion;
   StSystemColorScheme color_scheme;
   StSystemAccentColor accent_color;
 };
@@ -153,6 +156,14 @@ st_settings_get_high_contrast (StSettings *settings)
   g_return_val_if_fail (ST_IS_SETTINGS (settings), FALSE);
 
   return settings->high_contrast;
+}
+
+StReducedMotion
+st_settings_get_reduced_motion (StSettings *settings)
+{
+  g_return_val_if_fail (ST_IS_SETTINGS (settings), FALSE);
+
+  return settings->reduced_motion;
 }
 
 gboolean
@@ -277,6 +288,9 @@ st_settings_get_property (GObject    *object,
     case PROP_HIGH_CONTRAST:
       g_value_set_boolean (value, settings->high_contrast);
       break;
+    case PROP_REDUCED_MOTION:
+      g_value_set_enum (value, settings->reduced_motion);
+      break;
     case PROP_GTK_ICON_THEME:
       g_value_set_string (value, settings->gtk_icon_theme);
       break;
@@ -354,6 +368,16 @@ st_settings_class_init (StSettingsClass *klass)
   props[PROP_HIGH_CONTRAST] = g_param_spec_boolean ("high-contrast", NULL, NULL,
                                                     FALSE,
                                                     ST_PARAM_READABLE);
+
+  /**
+   * StSettings:reduced-motion:
+   *
+   * Whether animations should be reduced to essential motions.
+   */
+  props[PROP_REDUCED_MOTION] = g_param_spec_enum ("reduced-motion", NULL, NULL,
+                                                  ST_TYPE_REDUCED_MOTION,
+                                                  ST_REDUCED_MOTION_NO_PREFERENCE,
+                                                  ST_PARAM_READABLE);
 
   /**
    * StSettings:gtk-icon-theme:
@@ -489,6 +513,11 @@ on_a11y_interface_settings_changed (GSettings   *g_settings,
       settings->high_contrast = g_settings_get_boolean (g_settings, key);
       g_object_notify_by_pspec (G_OBJECT (settings), props[PROP_HIGH_CONTRAST]);
     }
+  else if (g_str_equal (key, KEY_REDUCED_MOTION))
+    {
+      settings->reduced_motion = g_settings_get_enum (g_settings, key);
+      g_object_notify_by_pspec (G_OBJECT (settings), props[PROP_REDUCED_MOTION]);
+    }
 }
 
 static void
@@ -544,6 +573,8 @@ st_settings_init (StSettings *settings)
                                                        KEY_MAGNIFIER_ACTIVE);
   settings->high_contrast = g_settings_get_boolean (settings->a11y_interface_settings,
                                                     KEY_HIGH_CONTRAST);
+  settings->reduced_motion = g_settings_get_enum (settings->a11y_interface_settings,
+                                                  KEY_REDUCED_MOTION);
   settings->slow_down_factor = 1.;
   settings->disable_show_password = g_settings_get_boolean (settings->lockdown_settings, KEY_DISABLE_SHOW_PASSWORD);
 }
