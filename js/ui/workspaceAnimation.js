@@ -14,10 +14,10 @@ import * as Main from './main.js';
 const WINDOW_ANIMATION_TIME = 250;
 export const WORKSPACE_SPACING = 100;
 
-export const WorkspaceGroup = GObject.registerClass(
-class WorkspaceGroup extends Clutter.Actor {
-    _init(workspace, monitor, movingWindow) {
-        super._init({
+export const BaseWorkspaceGroup = GObject.registerClass(
+class BaseWorkspaceGroup extends Clutter.Actor {
+    constructor(workspace, monitor) {
+        super({
             width: monitor.width,
             height: monitor.height,
             clip_to_allocation: true,
@@ -25,31 +25,81 @@ class WorkspaceGroup extends Clutter.Actor {
 
         this._workspace = workspace;
         this._monitor = monitor;
-        this._movingWindow = movingWindow;
         this._windowRecords = [];
 
-        if (this._workspace) {
-            this._background = new Meta.BackgroundGroup();
-
-            this.add_child(this._background);
-
-            this._bgManager = new Background.BackgroundManager({
-                container: this._background,
-                monitorIndex: this._monitor.index,
-                controlPosition: false,
-            });
-            this._createDesktopWindows();
-        }
-
+        this._createBackground();
         this._createWindows();
 
         this.connect('destroy', this._onDestroy.bind(this));
-        global.display.connectObject('restacked',
-            this._syncStacking.bind(this), this);
     }
 
     get workspace() {
         return this._workspace;
+    }
+
+    _shouldShowWindow(_window) {
+        throw new GObject.NotImplementedError();
+    }
+
+    _isDesktopWindow(metaWindow) {
+        return metaWindow.get_window_type() === Meta.WindowType.DESKTOP;
+    }
+
+    _windowIsOnThisMonitor(metawindow) {
+        const geometry = global.display.get_monitor_geometry(this._monitor.index);
+        const [intersects] = metawindow.get_frame_rect().intersect(geometry);
+        return intersects;
+    }
+
+    _createBackground() {
+    }
+
+    _createWindows() {
+        const windowActors = global.get_window_actors().filter(w =>
+            this._shouldShowWindow(w.meta_window));
+
+        windowActors.map(a => this._createClone(a)).forEach(clone => this.add_child(clone));
+    }
+
+    _createClone(windowActor) {
+        const clone = new Clutter.Clone({
+            source: windowActor,
+            x: windowActor.x - this._monitor.x,
+            y: windowActor.y - this._monitor.y,
+        });
+
+        const record = {windowActor, clone};
+
+        windowActor.connectObject('destroy', () => {
+            clone.destroy();
+            this._windowRecords.splice(this._windowRecords.indexOf(record), 1);
+        }, this);
+
+        this._windowRecords.push(record);
+        return clone;
+    }
+
+    _removeWindows() {
+        for (const record of this._windowRecords)
+            record.clone.destroy();
+
+        this._windowRecords = [];
+    }
+
+    _onDestroy() {
+        this._removeWindows();
+    }
+});
+
+export const WorkspaceGroup = GObject.registerClass(
+class WorkspaceGroup extends BaseWorkspaceGroup {
+    constructor(workspace, monitor, movingWindow) {
+        super(workspace, monitor);
+
+        this._movingWindow = movingWindow;
+
+        global.display.connectObject('restacked',
+            () => this._syncStacking(), this);
     }
 
     _shouldShowWindow(window) {
@@ -89,14 +139,19 @@ class WorkspaceGroup extends Clutter.Actor {
         }
     }
 
-    _isDesktopWindow(metaWindow) {
-        return metaWindow.get_window_type() === Meta.WindowType.DESKTOP;
-    }
+    _createBackground() {
+        if (!this._workspace)
+            return;
 
-    _windowIsOnThisMonitor(metawindow) {
-        const geometry = global.display.get_monitor_geometry(this._monitor.index);
-        const [intersects] = metawindow.get_frame_rect().intersect(geometry);
-        return intersects;
+        this._background = new Meta.BackgroundGroup();
+        this.add_child(this._background);
+
+        this._bgManager = new Background.BackgroundManager({
+            container: this._background,
+            monitorIndex: this._monitor.index,
+            controlPosition: false,
+        });
+        this._createDesktopWindows();
     }
 
     _createDesktopWindows() {
@@ -106,40 +161,8 @@ class WorkspaceGroup extends Clutter.Actor {
         desktopActors.map(a => this._createClone(a)).forEach(clone => this._background.add_child(clone));
     }
 
-    _createWindows() {
-        const windowActors = global.get_window_actors().filter(w =>
-            this._shouldShowWindow(w.meta_window));
-
-        windowActors.map(a => this._createClone(a)).forEach(clone => this.add_child(clone));
-    }
-
-    _createClone(windowActor) {
-        const clone = new Clutter.Clone({
-            source: windowActor,
-            x: windowActor.x - this._monitor.x,
-            y: windowActor.y - this._monitor.y,
-        });
-
-        const record = {windowActor, clone};
-
-        windowActor.connectObject('destroy', () => {
-            clone.destroy();
-            this._windowRecords.splice(this._windowRecords.indexOf(record), 1);
-        }, this);
-
-        this._windowRecords.push(record);
-        return clone;
-    }
-
-    _removeWindows() {
-        for (const record of this._windowRecords)
-            record.clone.destroy();
-
-        this._windowRecords = [];
-    }
-
     _onDestroy() {
-        this._removeWindows();
+        super._onDestroy();
 
         if (this._workspace)
             this._bgManager.destroy();
