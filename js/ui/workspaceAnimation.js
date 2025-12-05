@@ -143,29 +143,33 @@ class WorkspaceGroup extends BaseWorkspaceGroup {
         if (!this._workspace)
             return;
 
-        this._background = new Meta.BackgroundGroup();
+        this._background = new WorkspaceBackground(this._workspace, this._monitor);
         this.add_child(this._background);
+    }
+});
+
+export const WorkspaceBackground = GObject.registerClass(
+class WorkspaceBackground extends BaseWorkspaceGroup {
+    _shouldShowWindow(window) {
+        return this._isDesktopWindow(window) &&
+            this._windowIsOnThisMonitor(window);
+    }
+
+    _createBackground() {
+        const background = new Meta.BackgroundGroup();
+        this.add_child(background);
 
         this._bgManager = new Background.BackgroundManager({
-            container: this._background,
+            container: background,
             monitorIndex: this._monitor.index,
             controlPosition: false,
         });
-        this._createDesktopWindows();
-    }
-
-    _createDesktopWindows() {
-        const desktopActors = global.get_window_actors().filter(w => {
-            return this._isDesktopWindow(w.meta_window) && this._windowIsOnThisMonitor(w.meta_window);
-        });
-        desktopActors.map(a => this._createClone(a)).forEach(clone => this._background.add_child(clone));
     }
 
     _onDestroy() {
         super._onDestroy();
 
-        if (this._workspace)
-            this._bgManager.destroy();
+        this._bgManager.destroy();
     }
 });
 
