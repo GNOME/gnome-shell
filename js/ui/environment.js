@@ -19,6 +19,8 @@ import St from 'gi://St';
 import * as SignalTracker from '../misc/signalTracker.js';
 import {adjustAnimationTime} from '../misc/animationUtils.js';
 
+const sessionSignalHolder = new SignalTracker.TransientSignalHolder();
+
 setConsoleLogDomain('GNOME Shell');
 
 Gio._promisify(Gio.DataInputStream.prototype, 'fill_async');
@@ -152,14 +154,16 @@ function _easeActor(actor, params) {
     const [transition] = transitions;
 
     if (transition && transition.delay)
-        transition.connect('started', () => prepare());
+        transition.connectObject('started', () => prepare(), sessionSignalHolder);
     else
         prepare();
 
-    if (transition)
-        transition.connect('stopped', (t, finished) => callback(finished));
-    else
+    if (transition) {
+        transition.connectObject('stopped', (t, finished) => callback(finished),
+            sessionSignalHolder);
+    } else {
         callback(true);
+    }
 }
 
 function _easeAnimatableProperty(animatable, propName, target, params) {
@@ -243,11 +247,12 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
     transition.set_to(target);
 
     if (transition.delay)
-        transition.connect('started', () => prepare());
+        transition.connectObject('started', () => prepare(), sessionSignalHolder);
     else
         prepare();
 
-    transition.connect('stopped', (t, finished) => callback(finished));
+    transition.connectObject('stopped',
+        (t, finished) => callback(finished), sessionSignalHolder);
 }
 
 // Add some bindings to the global JS namespace
@@ -274,6 +279,9 @@ GObject.Object.prototype.disconnect_object = function (...args) {
 };
 
 SignalTracker.registerDestroyableType(Clutter.Actor);
+
+global.connectObject('shutdown', () => sessionSignalHolder.destroy(),
+    sessionSignalHolder);
 
 Cairo.Context.prototype.setSourceColor = function (color) {
     const {red, green, blue, alpha} = color;
