@@ -70,6 +70,19 @@ function _makeEaseCallback(params, cleanup) {
     };
 }
 
+function _makeEasePrepareAndCleanup() {
+    const prepare = () => {
+        global.compositor.disable_unredirect();
+        global.begin_work();
+    };
+    const cleanup = () => {
+        global.compositor.enable_unredirect();
+        global.end_work();
+    };
+
+    return {prepare, cleanup};
+}
+
 function _getPropertyTarget(actor, propName) {
     if (!propName.startsWith('@'))
         return [actor, propName];
@@ -127,15 +140,8 @@ function _easeActor(actor, params) {
         actor.set_easing_mode(params.mode);
     delete params.mode;
 
-    const prepare = () => {
-        global.compositor.disable_unredirect();
-        global.begin_work();
-    };
-    const cleanup = () => {
-        global.compositor.enable_unredirect();
-        global.end_work();
-    };
-    let callback = _makeEaseCallback(params, cleanup);
+    const {prepare, cleanup} = _makeEasePrepareAndCleanup();
+    const callback = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transitions
     let animatedProps = Object.keys(params).map(p => p.replace('_', '-', 'g'));
@@ -208,15 +214,8 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
     if (!actor?.mapped)
         duration = 0;
 
-    const prepare = () => {
-        global.compositor.disable_unredirect();
-        global.begin_work();
-    };
-    const cleanup = () => {
-        global.compositor.enable_unredirect();
-        global.end_work();
-    };
-    let callback = _makeEaseCallback(params, cleanup);
+    const {prepare, cleanup} = _makeEasePrepareAndCleanup();
+    const callback = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transition
     animatable.remove_transition(propName);
