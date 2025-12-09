@@ -103,7 +103,7 @@ const TouchpadSwipeGesture = GObject.registerClass({
         'end':    {param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE]},
     },
 }, class TouchpadSwipeGesture extends GObject.Object {
-    _init(allowedModes) {
+    _init(actor, allowedModes) {
         super._init();
         this._allowedModes = allowedModes;
         this._state = TouchpadState.NONE;
@@ -113,8 +113,8 @@ const TouchpadSwipeGesture = GObject.registerClass({
             schema_id: 'org.gnome.desktop.peripherals.touchpad',
         });
 
-        global.stage.connectObject(
-            'captured-event::touchpad', this._handleEvent.bind(this), this);
+        actor.connectObject(
+            'event::touchpad', this._handleEvent.bind(this), this);
     }
 
     _handleEvent(actor, event) {
@@ -405,7 +405,7 @@ export const SwipeTracker = GObject.registerClass({
             null);
         actor.add_action_full(params.name, params.phase, this._panGesture);
 
-        this._touchpadGesture = new TouchpadSwipeGesture(allowedModes);
+        this._touchpadGesture = new TouchpadSwipeGesture(actor, allowedModes);
         this._touchpadGesture.connect('begin', this._beginTouchpadGesture.bind(this));
         this._touchpadGesture.connect('update', this._updateTouchpadGesture.bind(this));
         this._touchpadGesture.connect('end', this._endTouchpadGesture.bind(this));
