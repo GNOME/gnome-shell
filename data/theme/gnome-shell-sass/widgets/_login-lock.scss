@@ -276,6 +276,16 @@ $_gdm_dialog_width_wide: 30em;
   text-align: center;
 }
 
+.parental-controls-shield-button {
+  margin-top: 1.5em;
+  @extend %lockscreen_button;
+  @extend %title_4;
+  padding: $base_margin * 4 $base_margin * 11;
+  color: $_gdm_fg;
+  background-color: transparentize($_gdm_fg, .9);
+  border-radius: $forced_circular_radius;
+}
+
 // Notifications
 #unlockDialogNotifications {
   > .vhandle, > .hhandle {

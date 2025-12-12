@@ -1,4 +1,5 @@
 import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Atk from 'gi://Atk';
 import GObject from 'gi://GObject';
@@ -14,6 +15,11 @@ import * as Params from '../misc/params.js';
 import * as ShellEntry from '../ui/shellEntry.js';
 import * as UserWidget from '../ui/userWidget.js';
 import {wiggle} from '../misc/animationUtils.js';
+
+import {loadInterfaceXML} from '../misc/fileUtils.js';
+
+const TimerChildIface = loadInterfaceXML('org.freedesktop.MalcontentTimer1.Child');
+const TimerChildProxy = Gio.DBusProxy.makeProxyWrapper(TimerChildIface);
 
 const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
 const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
@@ -68,6 +74,21 @@ export const AuthPrompt = GObject.registerClass({
         this._mode = mode;
         this._defaultButtonWellActor = null;
         this._cancelledRetries = 0;
+        this._requestExtensionCookie = 0;
+
+        this._timerChildProxy = TimerChildProxy(Gio.DBus.system,
+            'org.freedesktop.MalcontentTimer1',
+            '/org/freedesktop/MalcontentTimer1',
+            (proxy, error) => {
+                if (error)
+                    console.debug(`Failed to get TimerChild proxy: ${error}`);
+            },
+            null, /* cancellable */
+            Gio.DBusProxyFlags.DO_NOT_AUTO_START_AT_CONSTRUCTION
+        );
+
+        this._timerChildProxy.connectSignal('ExtensionResponse', (proxy, sender, params) =>
+            this._onExtensionResponse(proxy, sender, params));
 
         let reauthenticationOnly;
         if (this._mode === AuthPromptMode.UNLOCK_ONLY)
@@ -149,6 +170,15 @@ export const AuthPrompt = GObject.registerClass({
         });
         this._parentalControlsShieldDescription.clutter_text.line_wrap = true;
         this._parentalControlsShield.add_child(this._parentalControlsShieldDescription);
+
+        this._parentalControlsShieldButton = new St.Button({
+            style_class: 'parental-controls-shield-button',
+            label: _('Ignore'),
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        this._parentalControlsShieldButton.connect('clicked',
+            () => this._onParentalControlsShieldButtonClicked());
+        this._parentalControlsShield.add_child(this._parentalControlsShieldButton);
     }
 
     _createUserVerifier(gdmClient, params) {
@@ -161,6 +191,7 @@ export const AuthPrompt = GObject.registerClass({
         this._userVerifier.destroy();
         this._userVerifier = null;
         this._entry = null;
+        this._requestExtensionCookie = 0;
     }
 
     on_key_press_event(event) {
@@ -715,6 +746,31 @@ export const AuthPrompt = GObject.registerClass({
 
         this._entry.grab_key_focus();
         this._entry.clutter_text.insert_unichar(unichar);
+    }
+
+    async _onParentalControlsShieldButtonClicked() {
+        if (!this._requestExtensionCookie) {
+            try {
+                [this._requestExtensionCookie] = await this._timerChildProxy.RequestExtensionAsync(
+                    'login-session',
+                    '',
+                    0,
+                    {},
+                    Gio.DBusCallFlags.ALLOW_INTERACTIVE_AUTHORIZATION
+                );
+            } catch (e) {
+                console.warn(`Failed to obtain screen time extension: ${e.message}`);
+            }
+        }
+    }
+
+    _onExtensionResponse(proxy, sender, [granted, cookie]) {
+        if (cookie !== this._requestExtensionCookie)
+            return;
+
+        console.debug(`granted=${granted}, cookie=${cookie}`);
+
+        this._requestExtensionCookie = 0;
     }
 
     /*
