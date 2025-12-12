@@ -31,8 +31,9 @@
 
       The `MalcontentTimer1.Child` interface allows a trusted component in a
       child user account’s session to record screen time and app usage periods
-      for that account. Such a component might be the shell process of the
-      session, for example.
+      for that account, to query the time remaining before the limit is reached,
+      and to request extensions to the screen time limits. Such a component
+      might be the shell process of the session, for example.
 
       Data is recorded as tuples of
       (start time, end time, record type, identifier), where the record type is
@@ -123,5 +124,90 @@
         stateless.
     -->
     <signal name="EstimatedTimesChanged"/>
+
+    <!--
+        RequestExtension:
+        @record_type: Record type to request an extension for
+        @identifier: Identifier to request an extension for
+        @duration_secs: Duration of the extension being requested, in seconds,
+          or zero to indicate the duration be chosen by the parent
+        @extra_data: Potentially empty dictionary of additional data for the
+          request
+        @cookie: Cookie to uniquely identify the extension request — this is in
+          an arbitrary format which should not be parsed, but which is
+          guaranteed to be non-empty
+
+        Requests an extension to the screen time limit for the calling user,
+        for the given @record_type and @identifier.
+
+        When a decision is available about the request, the `ExtensionResponse`
+        signal will be emitted with the cookie returned in @cookie. In order to
+        avoid race conditions in listening for this signal, the calling process
+        must subscribe to matching signals _before_ calling this method.
+
+        Currently there are no supported keys for @extra_data. Unsupported keys
+        will be ignored.
+
+        If @record_type or @identifier are invalid,
+        `org.freedesktop.MalcontentTimer1.Child.Error.InvalidRecord` will be
+        returned.
+
+        If the request is cancelled before a response is received,
+        `org.freedesktop.MalcontentTimer1.Child.Error.RequestCancelled` will be
+        returned.
+
+        If the calling user can’t be identified,
+        `org.freedesktop.MalcontentTimer1.Child.Error.IdentifyingUser` will be
+        returned.
+
+        `org.freedesktop.MalcontentTimer1.Child.Error.CommunicatingWithAgent`
+        may be returned if there are internal errors.
+    -->
+    <method name="RequestExtension">
+      <arg type="s" name="record_type" direction="in"/>
+      <arg type="s" name="identifier" direction="in"/>
+      <arg type="t" name="duration_secs" direction="in"/>
+      <arg type="a{sv}" name="extra_data" direction="in"/>
+      <!-- This has type `o` not because we currently use it as a path, but just to give ourselves the option to expand it to a full object in future if needed: -->
+      <arg type="o" name="cookie" direction="out"/>
+    </method>
+
+    <!--
+        ExtensionResponse:
+        @granted: Whether the request was granted
+        @cookie: Cookie to match the signal to a previous `RequestExtension()`
+          call
+        @extra_data: Potentially empty dictionary of additional data from the
+          response
+
+        Emitted when a decision has been made about an extension request made
+        using `RequestExtension()`, or the extension request was cancelled.
+
+        If the extension request is granted, `EstimatedTimesChanged` will be
+        emitted as well to indicate the updated time limits, which should then
+        be queried by calling `GetEstimatedTimes()`.
+
+        This will be emitted exactly once for each successful call to
+        `RequestExtension()`. It will not be emitted if `RequestExtension()`
+        returned an error. It can be thought of as a reply to the
+        `RequestExtension()` call, but it cannot be implemented as a reply
+        because it may take many minutes to get a response to an extension
+        request (as the parent has to think about it) and a method reply might
+        time out.
+
+        The @cookie matches the cookie returned from the `RequestExtension()`
+        call.
+
+        Currently the supported keys for @extra_data are as below. Unsupported
+        keys must be ignored.
+
+          * `error-name`: A D-Bus error name describing the error, if the
+            request failed due to an error.
+    -->
+    <signal name="ExtensionResponse">
+      <arg type="b" name="granted"/>
+      <arg type="o" name="cookie"/>
+      <arg type="a{sv}" name="extra_data"/>
+    </signal>
   </interface>
 </node>
