@@ -653,7 +653,7 @@ class ControlsManager extends St.Widget {
         this._stateAdjustment.remove_transition('value');
         this._stateAdjustment.ease(value, {
             duration: SIDE_CONTROLS_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            mode: Clutter.AnimationMode.EASE_OUT_SINE,
         });
     }
 
@@ -724,7 +724,7 @@ class ControlsManager extends St.Widget {
         this._stateAdjustment.value = ControlsState.HIDDEN;
         this._stateAdjustment.ease(state, {
             duration: Overview.ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            mode: Clutter.AnimationMode.EASE_OUT_SINE,
             onStopped: () => {
                 if (callback)
                     callback();
