@@ -82,6 +82,7 @@ export const InputMethod = GObject.registerClass({
         }
 
         this._context.set_client_commit_preedit(true);
+        this._context.set_preedit_format(IBus.PreeditFormat.HINT);
         this._context.connect('commit-text', this._onCommitText.bind(this));
         this._context.connect('delete-surrounding-text', this._onDeleteSurroundingText.bind(this));
         this._context.connect('update-preedit-text-with-mode', this._onUpdatePreeditText.bind(this));
@@ -113,6 +114,57 @@ export const InputMethod = GObject.registerClass({
         this._preeditPos = 0;
         this._preeditAnchor = 0;
         this._preeditVisible = false;
+    }
+
+    _translatePreeditAttributes(ibusAttributes) {
+        const clutterAttrs = [];
+
+        for (let i = 0; ibusAttributes.get(i) != null; i++) {
+            const ibusAttr = ibusAttributes.get(i);
+
+            // Ignore all explicit style attributes
+            if (ibusAttr.get_attr_type() !== IBus.AttrType.HINT)
+                continue;
+
+            let preeditHint;
+
+            switch (ibusAttr.get_value()) {
+            case IBus.AttrPreedit.DEFAULT:
+                preeditHint = Clutter.PreeditStyleHint.NONE;
+                break;
+            case IBus.AttrPreedit.WHOLE:
+                preeditHint = Clutter.PreeditStyleHint.WHOLE;
+                break;
+            case IBus.AttrPreedit.SELECTION:
+                preeditHint = Clutter.PreeditStyleHint.SELECTION;
+                break;
+            case IBus.AttrPreedit.PREDICTION:
+                preeditHint = Clutter.PreeditStyleHint.PREDICTION;
+                break;
+            case IBus.AttrPreedit.PREFIX:
+                preeditHint = Clutter.PreeditStyleHint.PREFIX;
+                break;
+            case IBus.AttrPreedit.SUFFIX:
+                preeditHint = Clutter.PreeditStyleHint.SUFFIX;
+                break;
+            case IBus.AttrPreedit.ERROR_SPELLING:
+                preeditHint = Clutter.PreeditStyleHint.SPELLING_ERROR;
+                break;
+            case IBus.AttrPreedit.ERROR_COMPOSE:
+                preeditHint = Clutter.PreeditStyleHint.COMPOSE_ERROR;
+                break;
+            default:
+                continue;
+            }
+
+            clutterAttrs.push(new Clutter.PreeditAttribute({
+                hint: preeditHint,
+                start: ibusAttr.start_index,
+                end: ibusAttr.end_index,
+            }));
+        }
+
+        return clutterAttrs;
     }
 
     _emitRequestSurrounding() {
@@ -151,24 +203,41 @@ export const InputMethod = GObject.registerClass({
         if (preedit === '')
             preedit = null;
 
+        const preeditHints =
+              this._translatePreeditAttributes(text.get_attributes());
         const anchor = pos;
-        if (visible)
-            this.set_preedit_text(preedit, pos, anchor, mode);
-        else if (this._preeditVisible)
+
+        if (visible) {
+            try {
+                this.set_preedit_text_with_attrs(
+                    preedit, pos, anchor, mode, preeditHints);
+            } catch {
+                this.set_preedit_text(null, pos, anchor, mode);
+            }
+        } else if (this._preeditVisible) {
             this.set_preedit_text(null, pos, anchor, mode);
+        }
 
         this._preeditStr = preedit;
         this._preeditPos = pos;
         this._preeditAnchor = anchor;
         this._preeditVisible = visible;
         this._preeditCommitMode = mode;
+        this._preeditHints = preeditHints;
     }
 
     _onShowPreeditText() {
         this._preeditVisible = true;
-        this.set_preedit_text(
-            this._preeditStr, this._preeditPos, this._preeditAnchor,
-            this._preeditCommitMode);
+
+        try {
+            this.set_preedit_text_with_attrs(
+                this._preeditStr, this._preeditPos, this._preeditAnchor,
+                this._preeditCommitMode, this._preeditHints);
+        } catch {
+            this.set_preedit_text(
+                this._preeditStr, this._preeditPos, this._preeditAnchor,
+                this._preeditCommitMode);
+        }
     }
 
     _onHidePreeditText() {
