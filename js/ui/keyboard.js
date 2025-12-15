@@ -1298,6 +1298,13 @@ export const Keyboard = GObject.registerClass({
         this._relayout();
     }
 
+    _shouldShowEmoji() {
+        return this._purpose === Clutter.InputContentPurpose.NORMAL ||
+            this._purpose === Clutter.InputContentPurpose.ALPHA ||
+            this._purpose === Clutter.InputContentPurpose.PASSWORD ||
+            this._purpose === Clutter.InputContentPurpose.TERMINAL;
+    }
+
     _onContentHintsChanged(controller, contentHints) {
         this._contentHints = contentHints;
         this._updateLevelFromHints(false);
@@ -1426,10 +1433,7 @@ export const Keyboard = GObject.registerClass({
                 return;
         }
 
-        const emojiVisible = purpose === Clutter.InputContentPurpose.NORMAL ||
-            purpose === Clutter.InputContentPurpose.ALPHA ||
-            purpose === Clutter.InputContentPurpose.PASSWORD ||
-            purpose === Clutter.InputContentPurpose.TERMINAL;
+        this._emojiVisible = this._shouldShowEmoji();
 
         keyboardModel.getLevels().forEach(currentLevel => {
             const levelLayout = new KeyContainer();
@@ -1439,7 +1443,7 @@ export const Keyboard = GObject.registerClass({
             const rows = currentLevel.rows;
             rows.forEach(row => {
                 levelLayout.appendRow();
-                this._addRowKeys(row, levelLayout, emojiVisible);
+                this._addRowKeys(row, levelLayout, this._emojiVisible);
             });
 
             layers[currentLevel.level] = levelLayout;
