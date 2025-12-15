@@ -1299,6 +1299,9 @@ export const Keyboard = GObject.registerClass({
     }
 
     _shouldShowEmoji() {
+        if ((this._contentHints & Clutter.InputContentHintFlags.NO_EMOJI) !== 0)
+            return false;
+
         return this._purpose === Clutter.InputContentPurpose.NORMAL ||
             this._purpose === Clutter.InputContentPurpose.ALPHA ||
             this._purpose === Clutter.InputContentPurpose.PASSWORD ||
@@ -1312,7 +1315,11 @@ export const Keyboard = GObject.registerClass({
             (contentHints & Clutter.InputContentHintFlags.INHIBIT_OSK) !== 0) {
             this.close();
         } else {
-            this._updateLevelFromHints(false);
+            const emojiVisible = this._shouldShowEmoji();
+            if (emojiVisible !== this._emojiVisible)
+                this._updateKeys();
+            else
+                this._updateLevelFromHints(false);
         }
     }
 
