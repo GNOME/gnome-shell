@@ -1298,8 +1298,8 @@ export const Keyboard = GObject.registerClass({
         this._relayout();
     }
 
-    _onContentHintsChanged(controller, contentHint) {
-        this._contentHint = contentHint;
+    _onContentHintsChanged(controller, contentHints) {
+        this._contentHints = contentHints;
         this._updateLevelFromHints(false);
     }
 
@@ -1308,7 +1308,7 @@ export const Keyboard = GObject.registerClass({
         if (this._latched)
             return;
 
-        if ((this._contentHint & Clutter.InputContentHintFlags.LOWERCASE) !== 0) {
+        if ((this._contentHints & Clutter.InputContentHintFlags.LOWERCASE) !== 0) {
             this._setActiveLevel('default');
             return;
         }
@@ -1316,12 +1316,12 @@ export const Keyboard = GObject.registerClass({
         if (!this._layers['shift'])
             return;
 
-        if ((this._contentHint & Clutter.InputContentHintFlags.UPPERCASE) !== 0) {
+        if ((this._contentHints & Clutter.InputContentHintFlags.UPPERCASE) !== 0) {
             this._setActiveLevel('shift');
             return;
         }
 
-        if ((this._contentHint &
+        if ((this._contentHints &
              (Clutter.InputContentHintFlags.AUTO_CAPITALIZATION |
               Clutter.InputContentHintFlags.TITLECASE)) !== 0) {
             if (this._surroundingTextId)
@@ -1338,12 +1338,12 @@ export const Keyboard = GObject.registerClass({
 
                     const beforeCursor = GLib.utf8_substring(text, 0, cursor);
 
-                    if ((this._contentHint & Clutter.InputContentHintFlags.TITLECASE) !== 0) {
+                    if ((this._contentHints & Clutter.InputContentHintFlags.TITLECASE) !== 0) {
                         if (beforeCursor.charAt(beforeCursor.length - 1) === ' ')
                             this._setActiveLevel('shift');
                         else
                             this._setActiveLevel('default');
-                    } else if ((this._contentHint & Clutter.InputContentHintFlags.AUTO_CAPITALIZATION) !== 0) {
+                    } else if ((this._contentHints & Clutter.InputContentHintFlags.AUTO_CAPITALIZATION) !== 0) {
                         if (beforeCursor.charAt(beforeCursor.trimEnd().length - 1) === '.')
                             this._setActiveLevel('shift');
                         else
