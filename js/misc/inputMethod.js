@@ -293,6 +293,8 @@ export const InputMethod = GObject.registerClass({
             ibusHints |= IBus.InputHints.PRIVATE;
         if (hints & Clutter.InputContentHintFlags.HIDDEN_TEXT)
             ibusHints |= IBus.InputHints.HIDDEN_TEXT;
+        if ((hints & Clutter.InputContentHintFlags.NO_EMOJI) !== 0)
+            ibusHints |= IBus.InputHints.NO_EMOJI;
 
         this._hints = ibusHints;
         if (this._context)
