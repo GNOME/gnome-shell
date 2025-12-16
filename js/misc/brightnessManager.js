@@ -1,4 +1,5 @@
 import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
@@ -10,6 +11,59 @@ const SCALE_VALUE_CHANGE_EPSILON = 0.001;
 
 const KEYBINDING_SCHEMA = 'org.gnome.shell.keybindings';
 const POWER_SCHEMA = 'org.gnome.settings-daemon.plugins.power';
+
+class MonitorId {
+    constructor(options) {
+        this._vendor = options.vendor;
+        this._product = options.product;
+        this._serial = options.serial;
+        this._colorMode = options.colorMode;
+        this._connector = options.connector;
+    }
+
+    static fromMonitor(logicalMonitor) {
+        const monitor = logicalMonitor.get_monitors()[0];
+        return new MonitorId({
+            vendor: monitor.get_vendor(),
+            product: monitor.get_product(),
+            serial: monitor.get_serial(),
+            colorMode: monitor.get_color_mode_string(),
+            connector: monitor.get_connector(),
+        });
+    }
+
+    equals(other) {
+        return this._vendor === other._vendor &&
+               this._product === other._product &&
+               this._serial === other._serial &&
+               this._colorMode === other._colorMode;
+    }
+
+    equalsExact(other) {
+        return this.equals(other) &&
+               this._connector === other._connector;
+    }
+
+    toTuple() {
+        return [
+            this._vendor,
+            this._product,
+            this._serial,
+            this._colorMode,
+            this._connector,
+        ];
+    }
+
+    static fromTuple(tuple) {
+        return new MonitorId({
+            vendor: tuple[0],
+            product: tuple[1],
+            serial: tuple[2],
+            colorMode: tuple[3],
+            connector: tuple[4],
+        });
+    }
+}
 
 export const BrightnessManager = GObject.registerClass({
     Signals: {
@@ -28,6 +82,8 @@ export const BrightnessManager = GObject.registerClass({
         const powerSettings = new Gio.Settings({schema_id: POWER_SCHEMA});
         this._dimmingTarget = powerSettings.get_int('idle-brightness') / 100;
         this._dimmingEnabled = false;
+
+        this._loadBrightnesses();
 
         this._abTarget = -1.0;
 
@@ -132,6 +188,68 @@ export const BrightnessManager = GObject.registerClass({
         this._monitorScales.get(monitor)?.cycleUp();
     }
 
+    _loadBrightnesses() {
+        const monitors = [...this._monitorScales.values()].map(s => s.monitor);
+        const brightnesses = this._getSavedBrightnesses(monitors);
+
+        for (const scale of this._monitorScales.values())
+            scale.value = brightnesses.get(scale.monitor);
+    }
+
+    _getState() {
+        return global.get_persistent_state('a(sssssd)', 'brightnesses')
+            ?.deepUnpack().map(tuple => {
+                const brightness = tuple.pop();
+                return {id: MonitorId.fromTuple(tuple), brightness};
+            }) ?? [];
+    }
+
+    _setState(values) {
+        const tuple = new GLib.Variant('a(sssssd)', [...values].map(value => {
+            const {id, brightness} = value;
+            return [...id.toTuple(), brightness];
+        }));
+        global.set_persistent_state('brightnesses', tuple);
+    }
+
+    _getSavedBrightnesses(monitors) {
+        const map = new Map();
+        const saved = this._getState();
+
+        for (const logicalMonitor of monitors) {
+            const mId = MonitorId.fromMonitor(logicalMonitor);
+            const {brightness} = saved.find(s => s.id.equalsExact(mId)) ??
+                saved.find(s => s.id.equals(mId)) ??
+                {brightness: -1.0};
+
+            map.set(logicalMonitor, brightness);
+        }
+
+        return map;
+    }
+
+    _saveBrightnesses() {
+        if (this._saveBrightnessId) {
+            GLib.source_remove(this._saveBrightnessId);
+            this._saveBrightnessId = 0;
+        }
+
+        this._saveBrightnessId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, 300, () => {
+            this._saveBrightnessId = 0;
+
+            let values = this._getState();
+
+            for (const scale of this._monitorScales.values()) {
+                const mId = MonitorId.fromMonitor(scale.monitor);
+
+                values = values.filter(v => !v.id.equalsExact(mId));
+                values.push({id: mId, brightness: scale.value});
+            }
+
+            this._setState(values);
+        });
+    }
+
     _monitorsChanged() {
         const monitors = global.backend
             .get_monitor_manager()
@@ -143,8 +261,11 @@ export const BrightnessManager = GObject.registerClass({
 
         this._monitorScales.clear();
 
+        const brightnesses = this._getSavedBrightnesses(monitors);
+
         for (const monitor of monitors) {
-            const scale = new MonitorBrightnessScale(monitor, 1.0);
+            const initialValue = brightnesses.get(monitor);
+            const scale = new MonitorBrightnessScale(monitor, initialValue);
             scale._scaleChanged = true;
 
             scale.connectObject(
@@ -206,6 +327,8 @@ export const BrightnessManager = GObject.registerClass({
             return c;
         });
 
+        let scalesUpdated = true;
+
         if (changedScales.length > 0) {
             // update the factors of all the scales when a scale changes
 
@@ -237,6 +360,8 @@ export const BrightnessManager = GObject.registerClass({
 
             if (showOSD)
                 this._showOSD(this._monitorScales.values());
+        } else {
+            scalesUpdated = false;
         }
 
         // Update the actual backlight according to the new monitor brightnesses
@@ -257,6 +382,9 @@ export const BrightnessManager = GObject.registerClass({
 
             scale.setBacklight(brightness);
         }
+
+        if (scalesUpdated)
+            this._saveBrightnesses();
 
         this._inhibitUpdates = false;
     }
@@ -334,7 +462,7 @@ const MonitorBrightnessScale = GObject.registerClass({
         'backlights-changed': {},
     },
 }, class MonitorBrightnessScale extends BrightnessScale {
-    constructor(monitor, value = 1.0) {
+    constructor(monitor, initialValue = -1.0) {
         const name = monitor.get_monitors()[0].get_display_name();
 
         // Handle backlights with just a few steps
@@ -346,11 +474,16 @@ const MonitorBrightnessScale = GObject.registerClass({
             }));
         const nSteps = Math.min(maxSteps, SCALE_VALUE_N_STEPS);
 
-        super(name, value, nSteps);
+        super(name, initialValue >= 0 ? initialValue : 1.0, nSteps);
 
         this._monitor = monitor;
         this._currentBacklightBrightness = -1;
         this._scaleFactor = 1.0;
+
+        if (initialValue >= 0)
+            this.setBacklight(initialValue);
+        else
+            this.syncWithBacklight();
 
         for (const backlight of this._getBacklights()) {
             backlight.connectObject('notify::brightness', () => {
