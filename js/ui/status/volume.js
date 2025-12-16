@@ -502,8 +502,6 @@ class InputIndicator extends VolumeIndicator {
     constructor() {
         super();
 
-        this._indicator.add_style_class_name('privacy-indicator');
-
         this._indicator.connect('scroll-event',
             (actor, event) => this._handleScrollEvent(this._input, event));
 
@@ -519,6 +517,7 @@ class InputIndicator extends VolumeIndicator {
 
             if (icon)
                 this._indicator.icon_name = icon;
+            this._updatePrivacyIndicator();
         });
 
         this._input.bind_property('visible',
@@ -528,6 +527,15 @@ class InputIndicator extends VolumeIndicator {
         this.quickSettingsItems.push(this._input);
 
         this._onControlStateChanged();
+    }
+
+    _updatePrivacyIndicator() {
+        // Muted microphone doesn't need privacy indicator (no privacy concern)
+        const {isMuted} = this._input._stream;
+        if (isMuted)
+            this._indicator.remove_style_class_name('privacy-indicator');
+        else
+            this._indicator.add_style_class_name('privacy-indicator');
     }
 
     _onControlStateChanged() {
