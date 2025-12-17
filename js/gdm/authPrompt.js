@@ -55,7 +55,7 @@ export const AuthPrompt = GObject.registerClass({
 }, class AuthPrompt extends St.BoxLayout {
     _init(gdmClient, mode) {
         super._init({
-            style_class: 'login-dialog-prompt-layout',
+            style_class: 'login-dialog-prompt-layout-wide',
             orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
