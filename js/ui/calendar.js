@@ -770,7 +770,10 @@ class Placeholder extends St.BoxLayout {
         this._icon = new St.Icon({icon_name: 'no-notifications-symbolic'});
         this.add_child(this._icon);
 
-        this._label = new St.Label({text: _('No Notifications')});
+        this._label = new St.Label({
+            text: _('No Notifications'),
+            x_align: Clutter.ActorAlign.CENTER,
+        });
         this.add_child(this._label);
     }
 });
