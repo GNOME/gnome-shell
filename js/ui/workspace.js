@@ -724,8 +724,14 @@ export const WorkspaceLayout = GObject.registerClass({
             // actually larger than the target layout size, that is while
             // animating between the session and the window picker.
             if (inSessionTransition) {
-                workspaceBoxWidth = Math.max(workspaceBoxWidth, width);
-                workspaceBoxHeight = Math.max(workspaceBoxHeight, height);
+                const maxWidth = Math.max(workspaceBoxWidth, width);
+                const maxHeight = Math.max(workspaceBoxHeight, height);
+
+                workspaceBoxX = workspaceBoxX + workspaceBoxWidth / 2 - maxWidth / 2;
+                workspaceBoxY = workspaceBoxY + workspaceBoxHeight / 2 - maxHeight / 2;
+
+                workspaceBoxWidth = maxWidth;
+                workspaceBoxHeight = maxHeight;
             }
 
             x = Util.lerp(workspaceBoxX, x, stateAdjustementValue);
