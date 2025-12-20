@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-09-15 01:44+0000\n"
-"PO-Revision-Date: 2025-09-22 15:19+0100\n"
+"POT-Creation-Date: 2025-12-10 17:51+0000\n"
+"PO-Revision-Date: 2025-12-20 10:58+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.7\n"
+"X-Generator: Poedit 3.8\n"
 "X-Project-Style: gnome\n"
 "X-Language: pt_PT\n"
 "X-Source-Language: C\n"
@@ -108,7 +108,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Abrir nova janela da aplicação preferida 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2292
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2290
 msgid "Screenshots"
 msgstr "Capturas de ecrã"
 
@@ -133,7 +133,7 @@ msgid "Record a screencast interactively"
 msgstr "Gravar o ecrã de forma interativa"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1312
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1313
 msgid "System"
 msgstr "Sistema"
 
@@ -614,7 +614,7 @@ msgstr "Detalhes do erro"
 msgid "Copy Error"
 msgstr "Erro de cópia"
 
-#: js/gdm/authPrompt.js:157 js/gdm/loginDialog.js:511
+#: js/gdm/authPrompt.js:157 js/gdm/loginDialog.js:514
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -635,12 +635,12 @@ msgstr "Palavra-passe"
 msgid "Choose Session"
 msgstr "Escolher sessão"
 
-#: js/gdm/loginDialog.js:417 js/ui/status/accessibility.js:35
+#: js/gdm/loginDialog.js:420 js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "Acessibilidade"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:469
+#: js/gdm/loginDialog.js:472
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -651,7 +651,7 @@ msgstr ""
 "%s. Para aceder remotamente, tem que fechar a sessão em curso."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:472
+#: js/gdm/loginDialog.js:475
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -661,7 +661,7 @@ msgstr ""
 "%s. Para entrar, tem que desligar a sessão remota ou forçar a sua paragem."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:475
+#: js/gdm/loginDialog.js:478
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -673,7 +673,7 @@ msgstr ""
 "sua paragem."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:478
+#: js/gdm/loginDialog.js:481
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -682,11 +682,11 @@ msgstr ""
 "Não é possível entrar nesta conta porque já existe uma sessão a correr para "
 "%s. Para conseguir entrar, tem que sair da sessão ou forçar a sua paragem."
 
-#: js/gdm/loginDialog.js:487
+#: js/gdm/loginDialog.js:490
 msgid "Session Already Running"
 msgstr "Já existe uma sessão em curso"
 
-#: js/gdm/loginDialog.js:499
+#: js/gdm/loginDialog.js:502
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -694,37 +694,37 @@ msgstr ""
 "Forçar a saída vai obrigar a abandonar e encerrar qualquer aplicação ou "
 "processo em funcionamento, podendo originar perda de trabalho"
 
-#: js/gdm/loginDialog.js:519
+#: js/gdm/loginDialog.js:522
 msgid "Force Stop"
 msgstr "Forçar o encerramento"
 
-#: js/gdm/loginDialog.js:597
+#: js/gdm/loginDialog.js:600
 msgid "Not listed?"
 msgstr "Não está listado?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1126
+#: js/gdm/loginDialog.js:1129
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(por ex., utilizador ou %s)"
 
-#: js/gdm/loginDialog.js:1131 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1134 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Utilizador"
 
-#: js/gdm/loginDialog.js:1197
+#: js/gdm/loginDialog.js:1200
 msgid "Login Attempt Timed Out"
 msgstr "Esgotou o tempo para a tentativa de acesso"
 
-#: js/gdm/loginDialog.js:1198
+#: js/gdm/loginDialog.js:1201
 msgid "Login took too long, please try again"
 msgstr ""
 "A tentativa de acesso demorou demasiado tempo, por favor tente novamente"
 
-#: js/gdm/loginDialog.js:1547
+#: js/gdm/loginDialog.js:1550
 msgid "Login Window"
 msgstr "Janela de acesso"
 
@@ -924,93 +924,93 @@ msgid "Brightness"
 msgstr "Luminosidade"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:93
+#: js/misc/systemActions.js:94
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Desligar"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:96
+#: js/misc/systemActions.js:97
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "desligar;encerrar;parar"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:101
+#: js/misc/systemActions.js:102
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Reiniciar"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:104
+#: js/misc/systemActions.js:105
 msgid "reboot;restart;"
-msgstr "reiniciar;"
+msgstr "reinício;reiniciar;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:110
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Bloquear ecrã"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:112
+#: js/misc/systemActions.js:113
 msgid "lock screen"
 msgstr "bloquear ecrã"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:117
+#: js/misc/systemActions.js:118
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Sair"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:120
+#: js/misc/systemActions.js:121
 msgid "logout;log out;sign off"
 msgstr "terminar sessão;sair"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:125
+#: js/misc/systemActions.js:126
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Suspender"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:128
+#: js/misc/systemActions.js:129
 msgid "suspend;sleep"
 msgstr "suspender"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:133
+#: js/misc/systemActions.js:134
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Mudar de utilizador"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:136
+#: js/misc/systemActions.js:137
 msgid "switch user"
 msgstr "mudar de utilizador"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:143
+#: js/misc/systemActions.js:144
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "bloquear orientação;desbloquear orientação;ecrã;rotação"
 
 #. Translators: The name of the screenshot UI action in search
-#: js/misc/systemActions.js:148
+#: js/misc/systemActions.js:149
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Capturar ecrã"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
-#: js/misc/systemActions.js:151
+#: js/misc/systemActions.js:152
 msgid "screenshot;screencast;snip;capture;record"
 msgstr "screenshot;screencast;capturar;gravar;ecrã;cortar"
 
-#: js/misc/systemActions.js:255
+#: js/misc/systemActions.js:256
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Desbloquear rotação de ecrã"
 
-#: js/misc/systemActions.js:256
+#: js/misc/systemActions.js:257
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Bloquear rotação de ecrã"
@@ -1019,22 +1019,22 @@ msgstr "Bloquear rotação de ecrã"
 msgid "GNOME needs to save screen time data"
 msgstr "O GNOME precisa de guardar dados de tempo de ecrã"
 
-#: js/misc/timeLimitsManager.js:1124
+#: js/misc/timeLimitsManager.js:1123
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "Limite de Tempo de ecrã em %d minuto"
 msgstr[1] "Limite de Tempo de ecrã em %d minutos"
 
-#: js/misc/timeLimitsManager.js:1131
+#: js/misc/timeLimitsManager.js:1130
 msgid "Your screen time limit is approaching"
 msgstr "O limite de Tempo de ecrã está a aproximar-se"
 
-#: js/misc/timeLimitsManager.js:1145
+#: js/misc/timeLimitsManager.js:1144
 msgid "Screen Time Limit Reached"
 msgstr "Limite de Tempo de ecrã alcançado"
 
-#: js/misc/timeLimitsManager.js:1146
+#: js/misc/timeLimitsManager.js:1145
 msgid "It’s time to stop using the device"
 msgstr "Está na hora de parar de usar este dispositivo"
 
@@ -1465,11 +1465,11 @@ msgid "Service"
 msgstr "Serviço"
 
 #: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
-#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
+#: js/ui/components/networkAgent.js:744 js/ui/components/networkAgent.js:765
 msgid "Authentication required"
 msgstr "Autenticação necessária"
 
-#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:745
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
@@ -1477,7 +1477,7 @@ msgstr ""
 "São necessárias palavras-passe ou chaves de encriptação para aceder à rede "
 "sem fios “%s”"
 
-#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:749
 msgid "Wired 802.1X authentication"
 msgstr "Autenticação para 802.1X por cabo"
 
@@ -1485,15 +1485,15 @@ msgstr "Autenticação para 802.1X por cabo"
 msgid "Network name"
 msgstr "Nome da rede"
 
-#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:753
 msgid "DSL authentication"
 msgstr "Autenticação DSL"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:758
 msgid "PIN code required"
 msgstr "Necessário código PIN"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:759
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "É necessário o código PIN para o dispositivo de banda larga móvel"
 
@@ -1501,14 +1501,14 @@ msgstr "É necessário o código PIN para o dispositivo de banda larga móvel"
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
-#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
-#: js/ui/components/networkAgent.js:771
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:750
+#: js/ui/components/networkAgent.js:754 js/ui/components/networkAgent.js:766
+#: js/ui/components/networkAgent.js:770
 #, javascript-format
 msgid "A password is required to connect to “%s”"
 msgstr "É necessária uma palavra-passe para se ligar a “%s”"
 
-#: js/ui/components/networkAgent.js:770
+#: js/ui/components/networkAgent.js:769
 msgid "VPN password"
 msgstr "Palavra-passe da VPN"
 
@@ -1532,7 +1532,7 @@ msgstr "Autenticar"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Não funcionou. Tente novamente."
 
-#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:404
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:406
 msgid "Windows"
 msgstr "Janelas"
 
@@ -1695,7 +1695,7 @@ msgstr "Reiniciar"
 #: js/ui/endSessionDialog.js:90
 msgctxt "title"
 msgid "Install Updates & Restart"
-msgstr "Instalar atualizações e Reiniciar"
+msgstr "Instalar atualizações e reiniciar"
 
 #: js/ui/endSessionDialog.js:93
 #, javascript-format
@@ -1729,7 +1729,7 @@ msgstr[1] ""
 #: js/ui/endSessionDialog.js:119 js/ui/endSessionDialog.js:140
 msgctxt "button"
 msgid "Restart & Install"
-msgstr "Reiniciar &amp; Instalar"
+msgstr "Reiniciar e instalar"
 
 #: js/ui/endSessionDialog.js:121
 msgctxt "button"
@@ -1954,11 +1954,11 @@ msgstr "O sistema foi colocado em modo inseguro"
 msgid "Apps now have unrestricted access"
 msgstr "As aplicações têm agora acesso sem restrições"
 
-#: js/ui/main.js:373
+#: js/ui/main.js:375
 msgid "Logged in as a privileged user"
 msgstr "Em sessão como utilizador privilegiado"
 
-#: js/ui/main.js:374
+#: js/ui/main.js:376
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1996,11 +1996,11 @@ msgstr "Titulo desconhecido"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:328
+#: js/ui/overviewControls.js:329
 msgid "Type to search"
 msgstr "Escreva para pesquisar"
 
-#: js/ui/overviewControls.js:392
+#: js/ui/overviewControls.js:394
 msgid "Apps"
 msgstr "Aplicações"
 
@@ -2093,11 +2093,11 @@ msgstr "A reiniciar…"
 msgid "GNOME needs to lock the screen"
 msgstr "O GNOME precisa de bloquear o ecrã"
 
-#: js/ui/screenShield.js:274 js/ui/screenShield.js:682
+#: js/ui/screenShield.js:274 js/ui/screenShield.js:679
 msgid "Unable to lock"
 msgstr "Impossível bloquear"
 
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:683
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:680
 msgid "Lock was blocked by an app"
 msgstr "Uma aplicação impediu o bloqueio"
 
@@ -2106,118 +2106,118 @@ msgstr "Uma aplicação impediu o bloqueio"
 msgid "Screen Capture"
 msgstr "Captura de ecrã"
 
-#: js/ui/screenshot.js:1268
+#: js/ui/screenshot.js:1266
 msgid "Selection"
 msgstr "Seleção"
 
-#: js/ui/screenshot.js:1278
+#: js/ui/screenshot.js:1276
 msgid "Area Selection"
 msgstr "Seleção da área"
 
-#: js/ui/screenshot.js:1283
+#: js/ui/screenshot.js:1281
 msgid "Screen"
 msgstr "Ecrã"
 
-#: js/ui/screenshot.js:1293
+#: js/ui/screenshot.js:1291
 msgid "Screen Selection"
 msgstr "Seleção do ecrã"
 
-#: js/ui/screenshot.js:1298
+#: js/ui/screenshot.js:1296
 msgid "Window"
 msgstr "Janela"
 
-#: js/ui/screenshot.js:1308
+#: js/ui/screenshot.js:1306
 msgid "Window Selection"
 msgstr "Seleção de janelas"
 
-#: js/ui/screenshot.js:1333 js/ui/status/system.js:118
+#: js/ui/screenshot.js:1331 js/ui/status/system.js:118
 msgid "Take Screenshot"
 msgstr "Capturar ecrã"
 
-#: js/ui/screenshot.js:1349
+#: js/ui/screenshot.js:1347
 msgid "Record Screen"
 msgstr "Gravar o ecrã"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1366
+#: js/ui/screenshot.js:1364
 msgid "Capture"
 msgstr "Captura"
 
-#: js/ui/screenshot.js:1388
+#: js/ui/screenshot.js:1386
 msgid "Show Pointer"
 msgstr "Mostrar cursor"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2016
+#: js/ui/screenshot.js:2014
 msgid "Screencasts"
 msgstr "Gravações de ecrã"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2021
+#: js/ui/screenshot.js:2019
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Gravação de ecrã de %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2067
+#: js/ui/screenshot.js:2065
 msgid "Screencast recorded"
 msgstr "Gravação de ecrã efetuada"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2080
+#: js/ui/screenshot.js:2078
 msgid "Screencast failed to start"
 msgstr "Erro no início da gravação de ecrã"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2086
+#: js/ui/screenshot.js:2084
 msgid "Screencast ended: Out of disk space"
 msgstr "A gravação de ecrã terminou por falta de espaço em disco"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2092
+#: js/ui/screenshot.js:2090
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "A gravação de ecrã terminou inesperadamente, tente de novo"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2095
+#: js/ui/screenshot.js:2093
 msgid "Screencast ended unexpectedly"
 msgstr "A gravação de ecrã terminou inesperadamente"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2108
+#: js/ui/screenshot.js:2106
 msgid "Click here to view the video"
 msgstr "Clicar aqui para ver o vídeo"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2116 js/ui/screenshot.js:2359
+#: js/ui/screenshot.js:2114 js/ui/screenshot.js:2357
 msgid "Show in Files"
 msgstr "Mostrar em Ficheiros"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2305
+#: js/ui/screenshot.js:2303
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Captura de ecrã de %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2347
 msgid "Screenshot captured"
 msgstr "Captura de ecrã efetuada"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2351
+#: js/ui/screenshot.js:2349
 msgid "You can paste the image from the clipboard"
 msgstr "Pode colar a imagem a partir da área de transferência"
 
-#: js/ui/screenshot.js:2409 js/ui/screenshot.js:2571
+#: js/ui/screenshot.js:2407 js/ui/screenshot.js:2569
 msgid "Screenshot taken"
 msgstr "Captura de ecrã tirada"
 
@@ -2229,7 +2229,7 @@ msgstr "A procurar"
 msgid "No results"
 msgstr "Nenhum resultado"
 
-#: js/ui/search.js:982
+#: js/ui/search.js:985
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2464,23 +2464,23 @@ msgstr "Estilo escuro"
 msgid "Do Not Disturb"
 msgstr "Não incomodar"
 
-#: js/ui/status/dwellClick.js:15
+#: js/ui/status/dwellClick.js:14
 msgid "Single Click"
 msgstr "Clique único"
 
-#: js/ui/status/dwellClick.js:20
+#: js/ui/status/dwellClick.js:19
 msgid "Double Click"
 msgstr "Clique duplo"
 
-#: js/ui/status/dwellClick.js:25
+#: js/ui/status/dwellClick.js:24
 msgid "Drag"
 msgstr "Arrastar"
 
-#: js/ui/status/dwellClick.js:30
+#: js/ui/status/dwellClick.js:29
 msgid "Secondary Click"
 msgstr "Clique secundário"
 
-#: js/ui/status/dwellClick.js:39
+#: js/ui/status/dwellClick.js:38
 msgid "Dwell Click"
 msgstr "Clique permanente"
 
@@ -3007,15 +3007,15 @@ msgstr ""
 "preferências de extensões e remoção ou desativação de extensões já não "
 "desejadas."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:71
 msgid "Main Window"
 msgstr "Janela de Principal"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:75
 msgid "Available Updates"
 msgstr "Actualizações disponíveis"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:77
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:79
 msgid "Search View"
 msgstr "Procurar"
 
@@ -3269,6 +3269,7 @@ msgid "Description"
 msgstr "Descrição"
 
 #: subprojects/extensions-tool/src/command-create.c:416
+#, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address "
@@ -3279,6 +3280,7 @@ msgstr ""
 "(cliqueparafoco@janedoe.example.com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:443
+#, c-format
 msgid "Choose one of the available templates:\n"
 msgstr "Escolher um dos modelos disponíveis:\n"
 
@@ -3388,6 +3390,7 @@ msgstr "Ativar uma extensão"
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:66
 #: subprojects/extensions-tool/src/main.c:150
+#, c-format
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "Ligar à Interface GNOME falhou\n"
 
@@ -3529,6 +3532,7 @@ msgid "Reset an extension"
 msgstr "Repor uma extensão"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
+#, c-format
 msgid "Cannot uninstall system extensions\n"
 msgstr "Não é possível desinstalar as extensões do sistema\n"
 
@@ -3542,10 +3546,12 @@ msgid "Uninstall an extension"
 msgstr "Desinstalar uma extensão"
 
 #: subprojects/extensions-tool/src/command-upload.c:226
+#, c-format
 msgid "Login to extensions.gnome.org\n"
 msgstr "Entrar em https://extensions.gnome.org\n"
 
 #: subprojects/extensions-tool/src/command-upload.c:256
+#, c-format
 msgid "Warning! Password will be echoed"
 msgstr "Atenção! A password será replicada"
 
@@ -3736,13 +3742,13 @@ msgstr "Adicionar um item às definições rápidas"
 
 #. translators:
 #. * The device has been disabled
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Inativo"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -3751,14 +3757,14 @@ msgstr[1] "%u saídas"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrada"
 msgstr[1] "%u entradas"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Sons de sistema"
 
