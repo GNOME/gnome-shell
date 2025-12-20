@@ -331,18 +331,7 @@ const UIAreaSelector = GObject.registerClass({
             this._lastX = 0;
             this._lastY = 0;
 
-            // This can happen when running headless without any monitors.
-            if (Main.layoutManager.primaryIndex !== -1) {
-                const monitor =
-                    Main.layoutManager.monitors[Main.layoutManager.primaryIndex];
-
-                this._startX = monitor.x + Math.floor(monitor.width * 3 / 8);
-                this._startY = monitor.y + Math.floor(monitor.height * 3 / 8);
-                this._lastX = monitor.x + Math.floor(monitor.width * 5 / 8) - 1;
-                this._lastY = monitor.y + Math.floor(monitor.height * 5 / 8) - 1;
-            }
-
-            this._updateSelectionRect();
+            this.resetArea();
         }
     }
 
@@ -360,6 +349,21 @@ const UIAreaSelector = GObject.registerClass({
         this._lastResizeDirection = direction;
         this._currentSide = direction;
         return true;
+    }
+
+    resetArea() {
+        // This can called when running headless without any monitors.
+        if (Main.layoutManager.primaryIndex !== -1) {
+            const monitor =
+                Main.layoutManager.monitors[Main.layoutManager.primaryIndex];
+
+            this._startX = monitor.x + Math.floor(monitor.width * 3 / 8);
+            this._startY = monitor.y + Math.floor(monitor.height * 3 / 8);
+            this._lastX = monitor.x + Math.floor(monitor.width * 5 / 8) - 1;
+            this._lastY = monitor.y + Math.floor(monitor.height * 5 / 8) - 1;
+        }
+
+        this._updateSelectionRect();
     }
 
     resizeInDirection(direction) {
@@ -1247,6 +1251,13 @@ export class ScreenshotUI extends St.Widget {
             'move-down', Clutter.KEY_Down, 0,
             obj => {
                 obj._moveFocus(St.DirectionType.DOWN);
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'reset', Clutter.KEY_r, 0,
+            obj => {
+                obj._areaSelector.resetArea();
                 return Clutter.EVENT_STOP;
             }
         );
