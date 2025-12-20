@@ -250,6 +250,8 @@ class UIAreaIndicator extends St.Widget {
     }
 });
 
+const SELECTION_KEYBOARD_INCREMENT = 5;
+
 const UIAreaSelector = GObject.registerClass({
     Signals: {'drag-started': {}, 'drag-ended': {}},
 }, class UIAreaSelector extends St.Widget {
@@ -315,6 +317,9 @@ const UIAreaSelector = GObject.registerClass({
         this.stopDrag();
         this.set_cursor_type(Clutter.CursorType.INHERIT);
 
+        this._currentSide = St.DirectionType.LEFT;
+        this._lastResizeDirection = St.DirectionType.LEFT;
+
         // Preserve area selection if possible. If the area goes out of bounds,
         // the monitors might have changed, so reset the area.
         const [x, y, w, h] = this.getGeometry();
@@ -339,6 +344,85 @@ const UIAreaSelector = GObject.registerClass({
 
             this._updateSelectionRect();
         }
+    }
+
+    _maybeChangeResizeDirection(direction) {
+        function isVertical(dir) {
+            return dir === St.DirectionType.UP || dir === St.DirectionType.DOWN;
+        }
+
+        if (isVertical(direction) && isVertical(this._lastResizeDirection))
+            return false;
+
+        if (!isVertical(direction) && !isVertical(this._lastResizeDirection))
+            return false;
+
+        this._lastResizeDirection = direction;
+        this._currentSide = direction;
+        return true;
+    }
+
+    resizeInDirection(direction) {
+        let newStartX = this._startX;
+        let newStartY = this._startY;
+        let newLastX = this._lastX;
+        let newLastY = this._lastY;
+
+        // Only move the current side of the area selected in the corresponding
+        // direction to the key just pressed if the pressed key is on the same axis,
+        // otherwise exit early.
+        if (this._maybeChangeResizeDirection(direction))
+            return;
+
+        switch (direction) {
+        case St.DirectionType.LEFT:
+            if (this._currentSide === St.DirectionType.LEFT)
+                newStartX -= SELECTION_KEYBOARD_INCREMENT;
+            else if (this._currentSide === St.DirectionType.RIGHT)
+                newLastX -= SELECTION_KEYBOARD_INCREMENT;
+            break;
+
+        case St.DirectionType.RIGHT:
+            if (this._currentSide === St.DirectionType.LEFT)
+                newStartX += SELECTION_KEYBOARD_INCREMENT;
+            else if (this._currentSide === St.DirectionType.RIGHT)
+                newLastX += SELECTION_KEYBOARD_INCREMENT;
+            break;
+
+        case St.DirectionType.UP:
+            if (this._currentSide === St.DirectionType.UP)
+                newStartY -= SELECTION_KEYBOARD_INCREMENT;
+            else if (this._currentSide === St.DirectionType.DOWN)
+                newLastY -= SELECTION_KEYBOARD_INCREMENT;
+            break;
+
+        case St.DirectionType.DOWN:
+            if (this._currentSide === St.DirectionType.UP)
+                newStartY += SELECTION_KEYBOARD_INCREMENT;
+            else if (this._currentSide === St.DirectionType.DOWN)
+                newLastY += SELECTION_KEYBOARD_INCREMENT;
+            break;
+        }
+
+        // Ensure new resized area does not go off the stage edge.
+        if (newStartX < 0)
+            newStartX = 0;
+        else if (newLastX > this.width - 1)
+            newLastX = this.width - 1;
+
+        if (newStartY < 0)
+            newStartY = 0;
+        else if (newLastY > this.height - 1)
+            newLastY = this.height - 1;
+
+        // Update selection rectangle props.
+        this._startX = newStartX;
+        this._startY = newStartY;
+        this._lastX = newLastX;
+        this._lastY = newLastY;
+        this._lastResizeDirection = direction;
+
+        this._updateSelectionRect();
     }
 
     getGeometry() {
@@ -2252,6 +2336,8 @@ export class ScreenshotUI extends St.Widget {
             const screen =
                   this._screenSelectors.find(selector => selector.checked) ?? null;
             this.navigate_focus(screen, direction, false);
+        } else if (this._selectionButton.checked) {
+            this._areaSelector.resizeInDirection(direction);
         }
     }
 }
