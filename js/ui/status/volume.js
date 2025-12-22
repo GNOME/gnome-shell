@@ -235,8 +235,13 @@ const StreamSlider = GObject.registerClass({
     _amplifySettingsChanged() {
         this._allowAmplified = this._soundSettings.get_boolean(ALLOW_AMPLIFIED_VOLUME_KEY);
 
-        this.slider.maximum_value = this._allowAmplified
+        const maxLevel = this._allowAmplified
             ? this.getMaxLevel() : 1;
+        this.slider.maximum_value = maxLevel;
+
+        this.slider.clearMarks();
+        if (this._allowAmplified)
+            this.slider.addMark(1);
 
         if (this._stream)
             this._updateVolume();
