@@ -5,6 +5,7 @@ import GObject from 'gi://GObject';
 import * as BarLevel from './barLevel.js';
 
 const SLIDER_SCROLL_STEP = 0.02; /* Slider scrolling step in % */
+const SNAP_THRESHOLD = 0.04; /* Snap to marks within 4% */
 
 export const Slider = GObject.registerClass({
     Signals: {
@@ -35,6 +36,25 @@ export const Slider = GObject.registerClass({
         this.add_action(this._panGesture);
 
         this._customAccessible.connect('get-minimum-increment', this._getMinimumIncrement.bind(this));
+
+        this._marks = new Set();
+        this._unsnappedValue = null;
+    }
+
+    addMark(value) {
+        this._marks.add(value);
+    }
+
+    clearMarks() {
+        this._marks.clear();
+    }
+
+    _snapToMark(value) {
+        for (const mark of this._marks) {
+            if (Math.abs(value - mark) < SNAP_THRESHOLD)
+                return mark;
+        }
+        return value;
     }
 
     vfunc_style_changed() {
@@ -111,16 +131,19 @@ export const Slider = GObject.registerClass({
         this._moveHandle(coords.x, coords.y);
     }
 
+    _applyDelta(delta) {
+        // Track unsnapped value to allow escaping snap zones when scrolling/using arrow keys.
+        // Without this, if the scroll step is smaller than the snap threshold,
+        // the slider gets stuck at the mark because each scroll snaps back.
+        const base = this._unsnappedValue ?? this._value;
+        const oldValue = this._value;
+        this._unsnappedValue = Math.clamp(base + delta, 0, this._maxValue);
+        this.value = this._snapToMark(this._unsnappedValue);
+        return this._value !== oldValue;
+    }
+
     step(nSteps) {
-        const delta = nSteps * SLIDER_SCROLL_STEP;
-        const value = Math.min(Math.max(0, this._value + delta), this._maxValue);
-
-        if (value !== this.value) {
-            this.value = value;
-            return true;
-        }
-
-        return false;
+        return this._applyDelta(nSteps * SLIDER_SCROLL_STEP);
     }
 
     vfunc_scroll_event(event) {
@@ -155,7 +178,7 @@ export const Slider = GObject.registerClass({
             const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
             const increaseKey = rtl ? Clutter.KEY_Left : Clutter.KEY_Right;
             const delta = key === increaseKey ? 0.1 : -0.1;
-            this.value = Math.max(0, Math.min(this._value + delta, this._maxValue));
+            this._applyDelta(delta);
             return Clutter.EVENT_STOP;
         }
         return super.vfunc_key_press_event(event);
@@ -176,7 +199,8 @@ export const Slider = GObject.registerClass({
             newvalue = 1;
         else
             newvalue = (relX - this._handleRadius) / (width - 2 * this._handleRadius);
-        this.value = newvalue * this._maxValue;
+        this._unsnappedValue = newvalue * this._maxValue;
+        this.value = this._snapToMark(this._unsnappedValue);
     }
 
     _getMinimumIncrement() {
