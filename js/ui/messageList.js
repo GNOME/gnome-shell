@@ -1001,7 +1001,7 @@ export const NotificationMessageGroup = GObject.registerClass({
         this._cover.show();
         this._updateStackedMessagesFade();
 
-        await this.ease_property_async_async('@layout.expansion', 0, {
+        await this.ease_property_async('@layout.expansion', 0, {
             progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: GROUP_EXPENSION_TIME,
         }).catch(logErrorUnlessCancelled);
