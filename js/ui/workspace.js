@@ -295,8 +295,8 @@ class UnalignedLayoutStrategy extends LayoutStrategy {
         // we need to bump up the size just a bit to make sure it looks
         // good. We'll use a multiplier of 1.5 for this.
 
-        // Map from [0, 1] to [1.5, 1]
-        return Util.lerp(1.5, 1, ratio);
+        // Map from [0, 1] to [1.5, WINDOW_PREVIEW_MAXIMUM_SCALE]
+        return Util.lerp(1.5, WINDOW_PREVIEW_MAXIMUM_SCALE, ratio);
     }
 
     computeWindowSlots(layout, area) {
