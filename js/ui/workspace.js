@@ -667,7 +667,7 @@ export const WorkspaceLayout = GObject.registerClass({
         }
 
         let layoutChanged = false;
-        if (!this._layoutFrozen || !this._lastBox) {
+        if (Main.overview.closing || !this._layoutFrozen || !this._lastBox) {
             if (this._needsLayout) {
                 this._layout = this._createBestLayout(this._workarea);
                 this._needsLayout = false;
