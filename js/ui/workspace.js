@@ -1296,7 +1296,6 @@ class Workspace extends St.Widget {
             this._layoutFrozenId = 0;
         }
 
-        this._container.layout_manager.layout_frozen = true;
         Main.overview.connectObject(
             'hidden', this._doneLeavingOverview.bind(this), this);
     }
