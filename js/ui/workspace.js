@@ -724,14 +724,20 @@ export const WorkspaceLayout = GObject.registerClass({
             // actually larger than the target layout size, that is while
             // animating between the session and the window picker.
             if (inSessionTransition) {
-                const finalWidth = Math.max(workspaceBoxWidth, width);
-                const finalHeight = Math.max(workspaceBoxHeight, height);
+                const scale = Math.min(
+                    this._layoutStrategy.computeWindowScale(child), WINDOW_PREVIEW_MAXIMUM_SCALE);
 
-                workspaceBoxX += (workspaceBoxWidth - finalWidth) / 2;
-                workspaceBoxY += (workspaceBoxHeight - finalHeight) / 2;
+                const finalWidth = child.boundingBox.width * scale;
+                const finalHeight = child.boundingBox.height * scale;
 
-                workspaceBoxWidth = finalWidth;
-                workspaceBoxHeight = finalHeight;
+                const currentWidth = Util.lerp(child.boundingBox.width, finalWidth, stateAdjustementValue);
+                const currentHeight = Util.lerp(child.boundingBox.height, finalHeight, stateAdjustementValue);
+
+                workspaceBoxX += (workspaceBoxWidth - currentWidth) / 2;
+                workspaceBoxY += (workspaceBoxHeight - currentHeight) / 2;
+
+                workspaceBoxWidth = currentWidth;
+                workspaceBoxHeight = currentHeight;
             }
 
             x = Util.lerp(workspaceBoxX, x, stateAdjustementValue);
