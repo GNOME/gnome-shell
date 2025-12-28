@@ -724,7 +724,7 @@ class ControlsManager extends St.Widget {
         this._stateAdjustment.value = ControlsState.HIDDEN;
         this._stateAdjustment.ease(state, {
             duration: Overview.ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_SINE,
+            mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
             onStopped: () => {
                 if (callback)
                     callback();
