@@ -63,7 +63,7 @@ const BACKGROUND_CORNER_RADIUS_PIXELS = 30;
 // computing an optimal scale for each window that fits the constraints,
 // and doesn't make the thumbnail too small to see. There are two factors
 // involved in thumbnail scale to make sure that these two goals are met:
-// the window scale (calculated by _computeWindowScale) and the layout
+// the window scale (calculated by computeWindowScale) and the layout
 // scale (calculated by computeSizeAndScale).
 //
 // The calculation logic becomes slightly more complicated because row
@@ -163,24 +163,6 @@ class UnalignedLayoutStrategy extends LayoutStrategy {
         };
     }
 
-    // Computes and returns an individual scaling factor for @window,
-    // to be applied in addition to the overall layout scale.
-    _computeWindowScale(window) {
-        // Since we align windows next to each other, the height of the
-        // thumbnails is much more important to preserve than the width of
-        // them, so two windows with equal height, but maybe differering
-        // widths line up.
-        const ratio = window.boundingBox.height / this._monitor.height;
-
-        // The purpose of this manipulation here is to prevent windows
-        // from getting too small. For something like a calculator window,
-        // we need to bump up the size just a bit to make sure it looks
-        // good. We'll use a multiplier of 1.5 for this.
-
-        // Map from [0, 1] to [1.5, 1]
-        return Util.lerp(1.5, 1, ratio);
-    }
-
     _computeRowSizes(layout) {
         const {rows, scale} = layout;
         for (let i = 0; i < rows.length; i++) {
@@ -223,7 +205,7 @@ class UnalignedLayoutStrategy extends LayoutStrategy {
         let totalWidth = 0;
         for (let i = 0; i < windows.length; i++) {
             const window = windows[i];
-            const s = this._computeWindowScale(window);
+            const s = this.computeWindowScale(window);
             totalWidth += window.boundingBox.width * s;
         }
 
@@ -241,7 +223,7 @@ class UnalignedLayoutStrategy extends LayoutStrategy {
 
             for (; windowIdx < sortedWindows.length; windowIdx++) {
                 const window = sortedWindows[windowIdx];
-                const s = this._computeWindowScale(window);
+                const s = this.computeWindowScale(window);
                 const width = window.boundingBox.width * s;
                 const height = window.boundingBox.height * s;
                 row.fullHeight = Math.max(row.fullHeight, height);
@@ -297,6 +279,24 @@ class UnalignedLayoutStrategy extends LayoutStrategy {
         layout.scale = scale;
 
         return [scale, space];
+    }
+
+    // Computes and returns an individual scaling factor for @window,
+    // to be applied in addition to the overall layout scale.
+    computeWindowScale(window) {
+        // Since we align windows next to each other, the height of the
+        // thumbnails is much more important to preserve than the width of
+        // them, so two windows with equal height, but maybe differering
+        // widths line up.
+        const ratio = window.boundingBox.height / this._monitor.height;
+
+        // The purpose of this manipulation here is to prevent windows
+        // from getting too small. For something like a calculator window,
+        // we need to bump up the size just a bit to make sure it looks
+        // good. We'll use a multiplier of 1.5 for this.
+
+        // Map from [0, 1] to [1.5, 1]
+        return Util.lerp(1.5, 1, ratio);
     }
 
     computeWindowSlots(layout, area) {
@@ -356,7 +356,7 @@ class UnalignedLayoutStrategy extends LayoutStrategy {
             for (let j = 0; j < row.windows.length; j++) {
                 const window = row.windows[j];
 
-                let s = scale * this._computeWindowScale(window) * row.additionalScale;
+                let s = scale * this.computeWindowScale(window) * row.additionalScale;
                 const cellWidth = window.boundingBox.width * s;
                 const cellHeight = window.boundingBox.height * s;
 
