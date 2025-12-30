@@ -124,11 +124,6 @@ export const SwitcherPopup = GObject.registerClass({
             return false;
 
         const grab = Main.pushModal(this);
-        // We expect at least a keyboard grab here
-        if ((grab.get_seat_state() & Clutter.GrabState.KEYBOARD) === 0) {
-            Main.popModal(grab);
-            return false;
-        }
         this._grab = grab;
         this._haveModal = true;
         this._modifierMask = primaryModifier(mask);
@@ -709,4 +704,3 @@ export function drawArrow(area, side) {
     cr.fill();
     cr.$dispose();
 }
-
