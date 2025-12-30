@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-10-21 18:41+0000\n"
-"PO-Revision-Date: 2025-10-22 08:59+0900\n"
+"POT-Creation-Date: 2025-12-17 15:36+0000\n"
+"PO-Revision-Date: 2025-12-18 09:08+0900\n"
 "Last-Translator: Makoto Sakaguchi <ycco34vx@gmail.com>\n"
 "Language-Team: Japanese <https://l10n.gnome.org/teams/ja/>\n"
 "Language: ja\n"
@@ -108,7 +108,7 @@ msgstr "ピン留めしたアプリ 9 を新しいウィンドウで開く"
 
 # スクショが保存されるディレクトリです。英語のままとします (Kusano)
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2295
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2297
 msgid "Screenshots"
 msgstr "Screenshots"
 
@@ -133,7 +133,7 @@ msgid "Record a screencast interactively"
 msgstr "スクリーンキャストを対話的に記録する"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1313
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1314
 msgid "System"
 msgstr "システム"
 
@@ -900,129 +900,139 @@ msgid "Brightness"
 msgstr "明るさ"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:93
+#: js/misc/systemActions.js:94
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "電源オフ"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:96
+#: js/misc/systemActions.js:97
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr ""
 "power off;poweroff;shutdown;halt;stop;電源オフ;パワーオフ;シャットダウン;停止"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:101
+#: js/misc/systemActions.js:102
 msgctxt "search-result"
 msgid "Restart"
 msgstr "再起動"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:104
+#: js/misc/systemActions.js:105
 msgid "reboot;restart;"
 msgstr "reboot;restart;リブート;リスタート;再起動;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:110
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "画面ロック"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:112
+#: js/misc/systemActions.js:113
 msgid "lock screen"
 msgstr "lock screen;画面ロック"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:117
+#: js/misc/systemActions.js:118
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "ログアウト"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:120
+#: js/misc/systemActions.js:121
 msgid "logout;log out;sign off"
 msgstr "logout;log out;sign off;ログアウト;ログアウト;サインオフ"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:125
+#: js/misc/systemActions.js:126
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "サスペンド"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:128
+#: js/misc/systemActions.js:129
 msgid "suspend;sleep"
 msgstr "suspend;sleep;サスペンド;スリープ"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:133
+#: js/misc/systemActions.js:134
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "ユーザーを切り替え"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:136
+#: js/misc/systemActions.js:137
 msgid "switch user"
 msgstr "switch user;ユーザー切り替え"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:143
+#: js/misc/systemActions.js:144
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 "lock orientation;unlock orientation;screen;rotation;ロックの向き;ロック解除の"
 "向き;スクリーン;回転"
 
 #. Translators: The name of the screenshot UI action in search
-#: js/misc/systemActions.js:148
+#: js/misc/systemActions.js:149
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "スクリーンショットを撮る"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
-#: js/misc/systemActions.js:151
+#: js/misc/systemActions.js:152
 msgid "screenshot;screencast;snip;capture;record"
 msgstr ""
 "screenshot;screencast;snip;capture;record;スクリーンショット;スクリーンキャス"
 "ト;切り抜き;キャプチャ;レコーディング;撮影;録画;画面;記録"
 
-#: js/misc/systemActions.js:255
+#: js/misc/systemActions.js:256
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "画面の回転をロック解除"
 
-#: js/misc/systemActions.js:256
+#: js/misc/systemActions.js:257
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "画面の回転をロック"
 
-#: js/misc/timeLimitsManager.js:342
+#: js/misc/timeLimitsManager.js:468
 msgid "GNOME needs to save screen time data"
 msgstr "GNOME はスクリーンタイムのデータを保存する必要があります"
 
-#: js/misc/timeLimitsManager.js:1124
+#: js/misc/timeLimitsManager.js:1393
+msgid "Screen Time Limit is almost up"
+msgstr "スクリーンタイムのリミットまであとわずかです"
+
+#: js/misc/timeLimitsManager.js:1395
+#, javascript-format
+msgid "The computer will lock in %d second."
+msgid_plural "The computer will lock in %d seconds."
+msgstr[0] "%d 秒後にコンピューターをロックします"
+
+#: js/misc/timeLimitsManager.js:1403
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "スクリーンタイムのリミットまで %d 分"
 
-#: js/misc/timeLimitsManager.js:1131
+#: js/misc/timeLimitsManager.js:1407
 msgid "Your screen time limit is approaching"
 msgstr "スクリーンタイムのリミットが近づいています"
 
-#: js/misc/timeLimitsManager.js:1145
+#: js/misc/timeLimitsManager.js:1428
 msgid "Screen Time Limit Reached"
 msgstr "スクリーンタイムのリミットとなりました"
 
-#: js/misc/timeLimitsManager.js:1146
+#: js/misc/timeLimitsManager.js:1429
 msgid "It’s time to stop using the device"
 msgstr "デバイスの使用を止める時間です"
 
-#: js/misc/util.js:130
+#: js/misc/util.js:131
 msgid "Command not found"
 msgstr "コマンドが見つかりませんでした"
 
-#: js/misc/util.js:168
+#: js/misc/util.js:169
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "“%s”の実行に失敗しました:"
@@ -1183,7 +1193,7 @@ msgstr "%s をダッシュボードにピン留めしました。"
 msgid "%s has been unpinned from the dash."
 msgstr "%s をダッシュからピン留めを外しました。"
 
-#: js/ui/appFavorites.js:134 js/ui/main.js:316
+#: js/ui/appFavorites.js:134 js/ui/main.js:304
 msgid "Undo"
 msgstr "元に戻す"
 
@@ -1361,22 +1371,22 @@ msgid "Clear all notifications"
 msgstr "すべての通知を消去する"
 
 #. Translators: %s is an application name
-#: js/ui/closeDialog.js:42
+#: js/ui/closeDialog.js:40
 #, javascript-format
 msgid "“%s” Is Not Responding"
 msgstr "“%s” の応答がありません"
 
-#: js/ui/closeDialog.js:43
+#: js/ui/closeDialog.js:41
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
 "quit entirely"
 msgstr "しばらく応答を待つか、アプリケーションを強制終了することができます"
 
-#: js/ui/closeDialog.js:71
+#: js/ui/closeDialog.js:69
 msgid "Force Quit"
 msgstr "強制終了"
 
-#: js/ui/closeDialog.js:76
+#: js/ui/closeDialog.js:74
 msgid "Wait"
 msgstr "応答を待つ"
 
@@ -1506,7 +1516,7 @@ msgstr "認証"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "申し訳ありません、認証に失敗しました。もう一度お試しください。"
 
-#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:404
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:407
 msgid "Windows"
 msgstr "ウィンドウ"
 
@@ -1852,7 +1862,7 @@ msgstr "オフにする"
 msgid "Leave Off"
 msgstr "オフのままにする"
 
-#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:908
+#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:901
 msgid "Keyboard Settings"
 msgstr "キーボード設定"
 
@@ -1910,19 +1920,19 @@ msgstr "ソースを表示"
 msgid "Web Page"
 msgstr "ウェブページ"
 
-#: js/ui/main.js:312
+#: js/ui/main.js:300
 msgid "System was put in unsafe mode"
 msgstr "システムはアンセーフモードです"
 
-#: js/ui/main.js:313
+#: js/ui/main.js:301
 msgid "Apps now have unrestricted access"
 msgstr "アプリは現在、無制限のアクセス権限を持っています"
 
-#: js/ui/main.js:373
+#: js/ui/main.js:363
 msgid "Logged in as a privileged user"
 msgstr "特権ユーザーとしてログインしています"
 
-#: js/ui/main.js:374
+#: js/ui/main.js:364
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1930,17 +1940,17 @@ msgstr ""
 "セキュリティ上の理由により、特権ユーザーとしてのセッション実行は避けるべきで"
 "す。可能であれば、一般ユーザーとしてログインしてください。"
 
-#: js/ui/main.js:422
+#: js/ui/main.js:410
 msgid "Screen Lock disabled"
 msgstr "画面ロックが無効です"
 
-#: js/ui/main.js:423
+#: js/ui/main.js:411
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "画面ロックには GNOME ディスプレイマネージャーが必要です"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:409
+#: js/ui/messageList.js:403
 msgid "Unknown App"
 msgstr "不明なアプリ"
 
@@ -1960,11 +1970,11 @@ msgstr "不明なタイトル"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:328
+#: js/ui/overviewControls.js:330
 msgid "Type to search"
 msgstr "検索ワードを入力"
 
-#: js/ui/overviewControls.js:392
+#: js/ui/overviewControls.js:395
 msgid "Apps"
 msgstr "アプリ"
 
@@ -2024,12 +2034,12 @@ msgstr "キーを押すと終了します"
 msgid "Activities"
 msgstr "アクティビティ"
 
-#: js/ui/panel.js:289
+#: js/ui/panel.js:290
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "システム"
 
-#: js/ui/panel.js:465
+#: js/ui/panel.js:466
 msgid "Top Bar"
 msgstr "トップバー"
 
@@ -2045,23 +2055,15 @@ msgstr "コマンドを実行"
 msgid "Press ESC to close"
 msgstr "Esc を押すと閉じます"
 
-#: js/ui/runDialog.js:256
-msgid "Restart is not available on Wayland"
-msgstr "Wayland 上では再起動できません"
-
-#: js/ui/runDialog.js:261
-msgid "Restarting…"
-msgstr "再起動中…"
-
-#: js/ui/screenShield.js:233
+#: js/ui/screenShield.js:227
 msgid "GNOME needs to lock the screen"
 msgstr "画面をロックする必要があります"
 
-#: js/ui/screenShield.js:274 js/ui/screenShield.js:682
+#: js/ui/screenShield.js:269 js/ui/screenShield.js:675
 msgid "Unable to lock"
 msgstr "ロックできません"
 
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:683
+#: js/ui/screenShield.js:270 js/ui/screenShield.js:676
 msgid "Lock was blocked by an app"
 msgstr "アプリによってロックがブロックされました"
 
@@ -2070,53 +2072,53 @@ msgstr "アプリによってロックがブロックされました"
 msgid "Screen Capture"
 msgstr "画面キャプチャ"
 
-#: js/ui/screenshot.js:1271
+#: js/ui/screenshot.js:1268
 msgid "Selection"
 msgstr "選択範囲"
 
-#: js/ui/screenshot.js:1281
+#: js/ui/screenshot.js:1278
 msgid "Area Selection"
 msgstr "範囲を指定してください"
 
-#: js/ui/screenshot.js:1286
+#: js/ui/screenshot.js:1283
 msgid "Screen"
 msgstr "画面"
 
 # 「Area Selection」の訳語と合わせる。
-#: js/ui/screenshot.js:1296
+#: js/ui/screenshot.js:1293
 msgid "Screen Selection"
 msgstr "画面を指定してください"
 
-#: js/ui/screenshot.js:1301
+#: js/ui/screenshot.js:1298
 msgid "Window"
 msgstr "ウィンドウ"
 
-#: js/ui/screenshot.js:1311
+#: js/ui/screenshot.js:1308
 msgid "Window Selection"
 msgstr "ウィンドウを指定してください"
 
-#: js/ui/screenshot.js:1336 js/ui/status/system.js:118
+#: js/ui/screenshot.js:1333 js/ui/status/system.js:118
 msgid "Take Screenshot"
 msgstr "スクリーンショット"
 
-#: js/ui/screenshot.js:1352
+#: js/ui/screenshot.js:1349
 msgid "Record Screen"
 msgstr "画面録画"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1369
+#: js/ui/screenshot.js:1366
 msgid "Capture"
 msgstr "撮影"
 
-#: js/ui/screenshot.js:1391
+#: js/ui/screenshot.js:1388
 msgid "Show Pointer"
 msgstr "ポインターを表示"
 
 # 画面の録画が保存されるディレクトリです。英語のままにします (Kusano)
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2019
+#: js/ui/screenshot.js:2021
 msgid "Screencasts"
 msgstr "Screencasts"
 
@@ -2124,68 +2126,68 @@ msgstr "Screencasts"
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2024
+#: js/ui/screenshot.js:2026
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Screencast From %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2070
+#: js/ui/screenshot.js:2072
 msgid "Screencast recorded"
 msgstr "スクリーンキャストが記録されました"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2083
+#: js/ui/screenshot.js:2085
 msgid "Screencast failed to start"
 msgstr "スクリーンキャストの開始に失敗しました"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2089
+#: js/ui/screenshot.js:2091
 msgid "Screencast ended: Out of disk space"
 msgstr "スクリーンキャストが終了しました: ディスク容量不足"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2095
+#: js/ui/screenshot.js:2097
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "スクリーンキャストが予期せず終了しました。もう一度お試しください"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2098
+#: js/ui/screenshot.js:2100
 msgid "Screencast ended unexpectedly"
 msgstr "スクリーンキャストが予期せず終了しました"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2111
+#: js/ui/screenshot.js:2113
 msgid "Click here to view the video"
 msgstr "クリックして動画を再生"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2119 js/ui/screenshot.js:2362
+#: js/ui/screenshot.js:2121 js/ui/screenshot.js:2364
 msgid "Show in Files"
 msgstr "“ファイル”で表示"
 
 # ここは英語のままの方がいいようなので翻訳しません (sicklylife)
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2308
+#: js/ui/screenshot.js:2310
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Screenshot From %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2352
+#: js/ui/screenshot.js:2354
 msgid "Screenshot captured"
 msgstr "スクリーンショットを撮影しました"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2354
+#: js/ui/screenshot.js:2356
 msgid "You can paste the image from the clipboard"
 msgstr "クリップボードから画像を貼り付けできます"
 
-#: js/ui/screenshot.js:2412 js/ui/screenshot.js:2574
+#: js/ui/screenshot.js:2414 js/ui/screenshot.js:2576
 msgid "Screenshot taken"
 msgstr "スクリーンショットを撮影しました"
 
@@ -2197,34 +2199,34 @@ msgstr "検索中"
 msgid "No results"
 msgstr "一致するものがありません"
 
-#: js/ui/search.js:982
+#: js/ui/search.js:985
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
 msgstr[0] "他 %d 件"
 
-#: js/ui/searchController.js:87
+#: js/ui/searchController.js:86
 #: subprojects/extensions-app/data/ui/extensions-window.ui:73
 msgid "Search"
 msgstr "検索"
 
-#: js/ui/shellEntry.js:21
+#: js/ui/shellEntry.js:22
 msgid "Copy"
 msgstr "コピー"
 
-#: js/ui/shellEntry.js:26
+#: js/ui/shellEntry.js:27
 msgid "Paste"
 msgstr "貼り付け"
 
-#: js/ui/shellEntry.js:78
+#: js/ui/shellEntry.js:79
 msgid "Show Text"
 msgstr "文字を表示"
 
-#: js/ui/shellEntry.js:80
+#: js/ui/shellEntry.js:81
 msgid "Hide Text"
 msgstr "文字を非表示"
 
-#: js/ui/shellEntry.js:174
+#: js/ui/shellEntry.js:170
 msgid "Caps lock is on"
 msgstr "Caps Lock がオンになっています"
 
@@ -2366,7 +2368,7 @@ msgstr "暗く"
 msgid "High"
 msgstr "明るく"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:890
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:883
 msgid "Keyboard"
 msgstr "キーボード"
 
@@ -2429,27 +2431,27 @@ msgstr "暗いスタイル"
 msgid "Do Not Disturb"
 msgstr "通知ポップアップを表示しない"
 
-#: js/ui/status/dwellClick.js:15
+#: js/ui/status/dwellClick.js:14
 msgid "Single Click"
 msgstr "シングルクリック"
 
-#: js/ui/status/dwellClick.js:20
+#: js/ui/status/dwellClick.js:19
 msgid "Double Click"
 msgstr "ダブルクリック"
 
-#: js/ui/status/dwellClick.js:25
+#: js/ui/status/dwellClick.js:24
 msgid "Drag"
 msgstr "ドラッグ"
 
-#: js/ui/status/dwellClick.js:30
+#: js/ui/status/dwellClick.js:29
 msgid "Secondary Click"
 msgstr "セカンダリークリック"
 
-#: js/ui/status/dwellClick.js:39
+#: js/ui/status/dwellClick.js:38
 msgid "Dwell Click"
 msgstr "ホバークリック"
 
-#: js/ui/status/keyboard.js:907
+#: js/ui/status/keyboard.js:900
 msgid "Show Keyboard Layout"
 msgstr "キーボードレイアウトを表示"
 
@@ -2630,11 +2632,11 @@ msgstr "電源モード"
 msgid "Power Settings"
 msgstr "電源設定"
 
-#: js/ui/status/remoteAccess.js:74
+#: js/ui/status/remoteAccess.js:73
 msgid "Stop Screencast"
 msgstr "スクリーンキャストを終了"
 
-#: js/ui/status/remoteAccess.js:144
+#: js/ui/status/remoteAccess.js:141
 msgid "Stop Screen Sharing"
 msgstr "画面共有を終了"
 
@@ -2833,92 +2835,92 @@ msgid "%d × %d"
 msgstr "%d × %d"
 
 #. Translators: entry in the window right click menu.
-#: js/ui/windowMenu.js:27
+#: js/ui/windowMenu.js:28
 msgctxt "window-menu"
 msgid "Take Screenshot"
 msgstr "スクリーンショットを撮影"
 
-#: js/ui/windowMenu.js:39
+#: js/ui/windowMenu.js:40
 msgid "Hide"
 msgstr "隠す"
 
-#: js/ui/windowMenu.js:46
+#: js/ui/windowMenu.js:47
 msgid "Restore"
 msgstr "元に戻す"
 
-#: js/ui/windowMenu.js:50
+#: js/ui/windowMenu.js:51
 msgid "Maximize"
 msgstr "最大化"
 
-#: js/ui/windowMenu.js:57
+#: js/ui/windowMenu.js:58
 msgid "Move"
 msgstr "移動"
 
-#: js/ui/windowMenu.js:71
+#: js/ui/windowMenu.js:72
 msgid "Resize"
 msgstr "サイズを変更"
 
-#: js/ui/windowMenu.js:85
+#: js/ui/windowMenu.js:86
 msgid "Always on Top"
 msgstr "常に最前面に表示"
 
-#: js/ui/windowMenu.js:104
+#: js/ui/windowMenu.js:105
 msgid "Always on Visible Workspace"
 msgstr "すべてのワークスペースに表示する"
 
-#: js/ui/windowMenu.js:118
+#: js/ui/windowMenu.js:119
 msgid "Move to Workspace Left"
 msgstr "左側のワークスペースへ移動する"
 
-#: js/ui/windowMenu.js:124
+#: js/ui/windowMenu.js:125
 msgid "Move to Workspace Right"
 msgstr "右側のワークスペースへ移動する"
 
-#: js/ui/windowMenu.js:130
+#: js/ui/windowMenu.js:131
 msgid "Move to Workspace Up"
 msgstr "上側のワークスペースへ移動する"
 
-#: js/ui/windowMenu.js:136
+#: js/ui/windowMenu.js:137
 msgid "Move to Workspace Down"
 msgstr "下側のワークスペースへ移動する"
 
-#: js/ui/windowMenu.js:154
+#: js/ui/windowMenu.js:155
 msgid "Move to Monitor Up"
 msgstr "上側のモニターへ移動する"
 
-#: js/ui/windowMenu.js:163
+#: js/ui/windowMenu.js:164
 msgid "Move to Monitor Down"
 msgstr "下側のモニターへ移動する"
 
-#: js/ui/windowMenu.js:172
+#: js/ui/windowMenu.js:173
 msgid "Move to Monitor Left"
 msgstr "左側のモニターへ移動する"
 
-#: js/ui/windowMenu.js:181
+#: js/ui/windowMenu.js:182
 msgid "Move to Monitor Right"
 msgstr "右側のモニターへ移動する"
 
-#: js/ui/windowMenu.js:189
+#: js/ui/windowMenu.js:190
 msgid "Close"
 msgstr "閉じる"
 
-#: src/main.c:515 subprojects/extensions-tool/src/main.c:336
+#: src/main.c:513 subprojects/extensions-tool/src/main.c:336
 msgid "Print version"
 msgstr "バージョンを表示する"
 
-#: src/main.c:521
+#: src/main.c:519
 msgid "Mode used by GDM for login screen"
 msgstr "ログイン画面で GDM が使用するモード"
 
-#: src/main.c:527
+#: src/main.c:525
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "指定したモードを使用する (例: ログイン画面用の“gdm”)"
 
-#: src/main.c:533
+#: src/main.c:531
 msgid "List possible modes"
 msgstr "使用可能なモードを一覧表示"
 
-#: src/main.c:539
+#: src/main.c:537
 msgid "Force animations to be enabled"
 msgstr "アニメーションを強制的に有効にする"
 
@@ -3376,23 +3378,27 @@ msgstr "拡張機能 “%s” は存在しません\n"
 msgid "Show extensions info"
 msgstr "拡張機能の情報を表示する"
 
-#: subprojects/extensions-tool/src/command-install.c:190
+#: subprojects/extensions-tool/src/command-install.c:195
 msgid "Overwrite an existing extension"
 msgstr "既存の拡張機能を上書きする"
 
-#: subprojects/extensions-tool/src/command-install.c:192
+#: subprojects/extensions-tool/src/command-install.c:198
+msgid "Print extension UUID on success"
+msgstr "成功時に拡張機能の UUID を出力する"
+
+#: subprojects/extensions-tool/src/command-install.c:200
 msgid "EXTENSION_BUNDLE"
 msgstr "拡張機能バンドル"
 
-#: subprojects/extensions-tool/src/command-install.c:201
+#: subprojects/extensions-tool/src/command-install.c:209
 msgid "Install an extension bundle"
 msgstr "拡張機能バンドルをインストールする"
 
-#: subprojects/extensions-tool/src/command-install.c:219
+#: subprojects/extensions-tool/src/command-install.c:227
 msgid "No extension bundle specified"
 msgstr "拡張機能バンドルが指定されていません"
 
-#: subprojects/extensions-tool/src/command-install.c:225
+#: subprojects/extensions-tool/src/command-install.c:233
 msgid "More than one extension bundle specified"
 msgstr "複数の拡張機能バンドルが指定されています"
 
@@ -3734,6 +3740,12 @@ msgstr[0] "入力数: %u"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "システムサウンド"
+
+#~ msgid "Restart is not available on Wayland"
+#~ msgstr "Wayland 上では再起動できません"
+
+#~ msgid "Restarting…"
+#~ msgstr "再起動中…"
 
 #~ msgid ""
 #~ "We’re very sorry, but there’s been a problem: the settings for this "
