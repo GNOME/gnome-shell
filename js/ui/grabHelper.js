@@ -154,11 +154,6 @@ export class GrabHelper {
         const firstGrab = this._modalCount === 0;
         if (firstGrab) {
             const grab = Main.pushModal(this._owner, this._modalParams);
-            if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
-                Main.popModal(grab);
-                return false;
-            }
-
             this._grab = grab;
             this._clickGesture = new Clutter.ClickGesture();
             this._clickGesture.connect('recognize', () => {
