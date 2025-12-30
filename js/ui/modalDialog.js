@@ -234,11 +234,6 @@ export const ModalDialog = GObject.registerClass({
             return true;
 
         const grab = Main.pushModal(this, {actionMode: this._actionMode});
-        if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
-            Main.popModal(grab);
-            return false;
-        }
-
         this._grab = grab;
         Main.layoutManager.emit('system-modal-opened');
 
