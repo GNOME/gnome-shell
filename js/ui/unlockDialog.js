@@ -952,11 +952,6 @@ export const UnlockDialog = GObject.registerClass({
 
         const grab = Main.pushModal(Main.uiGroup,
             {actionMode: Shell.ActionMode.UNLOCK_SCREEN});
-        if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
-            Main.popModal(grab);
-            return false;
-        }
-
         this._grab = grab;
         this._isModal = true;
 
