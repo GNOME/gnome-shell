@@ -1,8 +1,6 @@
 import GLib from 'gi://GLib';
 import GnomeDesktop from 'gi://GnomeDesktop';
 
-import * as Main from '../ui/main.js';
-
 export const DEFAULT_LOCALE = 'en_US';
 export const DEFAULT_LAYOUT = 'us';
 export const DEFAULT_VARIANT = '';
@@ -27,17 +25,6 @@ export function getKeyboardManager() {
     if (_keyboardManager == null)
         _keyboardManager = new KeyboardManager();
     return _keyboardManager;
-}
-
-export function releaseKeyboard() {
-    if (Main.modalCount > 0)
-        global.backend.unfreeze_keyboard(global.get_current_time());
-    else
-        global.backend.ungrab_keyboard(global.get_current_time());
-}
-
-export function holdKeyboard() {
-    global.backend.freeze_keyboard(global.get_current_time());
 }
 
 class KeyboardManager {
