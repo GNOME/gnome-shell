@@ -116,11 +116,6 @@ class _Draggable extends Signals.EventEmitter {
 
     _grabEvents(sprite) {
         const grab = Main.pushModal(_getEventHandlerActor());
-        if ((grab.get_seat_state() & Clutter.GrabState.POINTER) === 0) {
-            Main.popModal(grab);
-            return;
-        }
-
         this._grab = grab;
         this._sprite = sprite;
     }
