@@ -405,10 +405,18 @@ export class WorkspaceAnimationController {
         }
 
         global.compositor.disable_unredirect();
+        this._grab = Main.pushModal(global.stage, {
+            actionMode: Shell.ActionMode.NORMAL,
+        });
     }
 
     _finishWorkspaceSwitch(switchData) {
         global.compositor.enable_unredirect();
+
+        if (this._grab) {
+            Main.popModal(this._grab);
+            this._grab = null;
+        }
 
         this._switchData = null;
 
