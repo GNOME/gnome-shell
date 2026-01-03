@@ -9,7 +9,6 @@ import Shell from 'gi://Shell';
 import St from 'gi://St';
 
 import * as Dialog from '../dialog.js';
-import * as Main from '../main.js';
 import * as ModalDialog from '../modalDialog.js';
 import * as ShellEntry from '../shellEntry.js';
 import * as UserWidget from '../userWidget.js';
@@ -34,10 +33,6 @@ const AuthenticationDialog = GObject.registerClass({
         this.actionId = actionId;
         this.message = description;
         this.userNames = userNames;
-
-        Main.sessionMode.connectObject('updated', () => {
-            this.visible = !Main.sessionMode.isLocked;
-        }, this);
 
         this.connect('closed', this._onDialogClosed.bind(this));
 
@@ -386,20 +381,11 @@ const AuthenticationDialog = GObject.registerClass({
         }
     }
 
-    close(timestamp) {
-        // Ensure cleanup if the dialog was never shown
-        if (this.state === ModalDialog.State.CLOSED)
-            this._onDialogClosed();
-        super.close(timestamp);
-    }
-
     cancel() {
         this._emitDone(true);
     }
 
     _onDialogClosed() {
-        Main.sessionMode.disconnectObject(this);
-
         if (this._sessionRequestTimeoutId)
             GLib.source_remove(this._sessionRequestTimeoutId);
         this._sessionRequestTimeoutId = 0;
@@ -419,7 +405,6 @@ class AuthenticationAgent extends Shell.PolkitAuthenticationAgent {
         this._currentDialog = null;
         this.connect('initiate', this._onInitiate.bind(this));
         this.connect('cancel', this._onCancel.bind(this));
-        this._sessionUpdatedId = 0;
     }
 
     enable() {
@@ -439,16 +424,6 @@ class AuthenticationAgent extends Shell.PolkitAuthenticationAgent {
     }
 
     _onInitiate(nativeAgent, actionId, message, iconName, cookie, userNames) {
-        // Don't pop up a dialog while locked
-        if (Main.sessionMode.isLocked) {
-            Main.sessionMode.connectObject('updated', () => {
-                Main.sessionMode.disconnectObject(this);
-
-                this._onInitiate(nativeAgent, actionId, message, iconName, cookie, userNames);
-            }, this);
-            return;
-        }
-
         this._currentDialog = new AuthenticationDialog(actionId, message, cookie, userNames);
         this._currentDialog.connect('done', this._onDialogDone.bind(this));
     }
@@ -464,8 +439,6 @@ class AuthenticationAgent extends Shell.PolkitAuthenticationAgent {
     _completeRequest(dismissed) {
         this._currentDialog.close();
         this._currentDialog = null;
-
-        Main.sessionMode.disconnectObject(this);
 
         this.complete(dismissed);
     }
