@@ -1663,7 +1663,6 @@ class LookingGlass extends St.BoxLayout {
         }
 
         this._grab = grab;
-        this._notebook.selectIndex(0);
         this.show();
         this._open = true;
         this._history.lastItem();
