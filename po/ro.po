@@ -6,14 +6,14 @@
 # Răpițeanu Viorel-Cătălin <rapiteanu.catalin@gmail.com>, 2013.
 # Viorel-Cătălin Răpițeanu <rapiteanu.catalin@gmail.com>, 2014.
 # Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>, 2015, 2018.
-# Antonio Marin <gnmer.6qxyg@slmail.me>, 2025.
+# Antonio Marin <gnmer.6qxyg@slmail.me>, 2025-2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-12-01 10:45+0000\n"
-"PO-Revision-Date: 2025-12-01 17:59+0100\n"
+"POT-Creation-Date: 2025-12-19 20:42+0000\n"
+"PO-Revision-Date: 2026-01-03 18:34+0100\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -105,7 +105,7 @@ msgstr "Deschide o fereastră nouă a aplicației fixate 9"
 
 # Instantaneu=Imagine sau fotografie obținută printr-o expunere foarte scurtă. Captură=Totalitatea bunurilor materiale capturate de la inamic.
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2290
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2297
 msgid "Screenshots"
 msgstr "Instantanee"
 
@@ -1039,12 +1039,24 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Blochează rotația ecranului"
 
-#: js/misc/timeLimitsManager.js:463
+#: js/misc/timeLimitsManager.js:468
 msgid "GNOME needs to save screen time data"
 msgstr ""
 "GNOME trebuie să înregistreze datele privind timpul de utilizare a ecranului"
 
-#: js/misc/timeLimitsManager.js:1351
+#: js/misc/timeLimitsManager.js:1393
+msgid "Screen Time Limit is almost up"
+msgstr "Limita de utilizare a ecranului este aproape"
+
+#: js/misc/timeLimitsManager.js:1395
+#, javascript-format
+msgid "The computer will lock in %d second."
+msgid_plural "The computer will lock in %d seconds."
+msgstr[0] "Calculatorul se va bloca peste %d secundă"
+msgstr[1] "Calculatorul se va bloca peste %d secunde"
+msgstr[2] "Calculatorul se va bloca peste %d de secunde"
+
+#: js/misc/timeLimitsManager.js:1403
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
@@ -1052,15 +1064,15 @@ msgstr[0] "Limită de utilizare a ecranului peste %d minut"
 msgstr[1] "Limită de utilizare a ecranului peste %d minute"
 msgstr[2] "Limită de utilizare a ecranului peste %d de minute"
 
-#: js/misc/timeLimitsManager.js:1358
+#: js/misc/timeLimitsManager.js:1407
 msgid "Your screen time limit is approaching"
 msgstr "Limita de utilizare a ecranului se apropie"
 
-#: js/misc/timeLimitsManager.js:1374
+#: js/misc/timeLimitsManager.js:1428
 msgid "Screen Time Limit Reached"
 msgstr "Limita de utilizare a ecranului a fost atinsă"
 
-#: js/misc/timeLimitsManager.js:1375
+#: js/misc/timeLimitsManager.js:1429
 msgid "It’s time to stop using the device"
 msgstr "Este timpul să nu mai folosești aparatul"
 
@@ -1403,15 +1415,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "Săptămâna %V"
 
-#: js/ui/calendar.js:773
+#: js/ui/calendar.js:774
 msgid "No Notifications"
 msgstr "Nicio notificare"
 
-#: js/ui/calendar.js:812
+#: js/ui/calendar.js:815
 msgid "Clear"
 msgstr "Șterge"
 
-#: js/ui/calendar.js:816
+#: js/ui/calendar.js:819
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Șterge notificările"
@@ -1924,7 +1936,7 @@ msgstr "Oprește"
 msgid "Leave Off"
 msgstr "Lasă oprit"
 
-#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:901
+#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:898
 msgid "Keyboard Settings"
 msgstr "Opțiuni tastatură"
 
@@ -2013,7 +2025,7 @@ msgstr "Blocarea ecranului are nevoie de administratorul de afișaj GNOME"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:403
+#: js/ui/messageList.js:404
 msgid "Unknown App"
 msgstr "Aplicație necunoscută"
 
@@ -2118,15 +2130,15 @@ msgstr "Execută o comandă"
 msgid "Press ESC to close"
 msgstr "Apasă ESC pentru a închide"
 
-#: js/ui/screenShield.js:233
+#: js/ui/screenShield.js:227
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME trebuie să blocheze ecranul"
 
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:675
+#: js/ui/screenShield.js:269 js/ui/screenShield.js:675
 msgid "Unable to lock"
 msgstr "Blocare nereușită"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:676
+#: js/ui/screenShield.js:270 js/ui/screenShield.js:676
 msgid "Lock was blocked by an app"
 msgstr "Blocarea a fost împiedicată de o aplicație"
 
@@ -2135,118 +2147,118 @@ msgstr "Blocarea a fost împiedicată de o aplicație"
 msgid "Screen Capture"
 msgstr "Înregistrare ecran"
 
-#: js/ui/screenshot.js:1266
+#: js/ui/screenshot.js:1268
 msgid "Selection"
 msgstr "Zonă"
 
-#: js/ui/screenshot.js:1276
+#: js/ui/screenshot.js:1278
 msgid "Area Selection"
 msgstr "Alege zona"
 
-#: js/ui/screenshot.js:1281
+#: js/ui/screenshot.js:1283
 msgid "Screen"
 msgstr "Ecran"
 
-#: js/ui/screenshot.js:1291
+#: js/ui/screenshot.js:1293
 msgid "Screen Selection"
 msgstr "Alege ecranul"
 
-#: js/ui/screenshot.js:1296
+#: js/ui/screenshot.js:1298
 msgid "Window"
 msgstr "Fereastră"
 
-#: js/ui/screenshot.js:1306
+#: js/ui/screenshot.js:1308
 msgid "Window Selection"
 msgstr "Alege fereastra"
 
-#: js/ui/screenshot.js:1331 js/ui/status/system.js:118
+#: js/ui/screenshot.js:1333 js/ui/status/system.js:118
 msgid "Take Screenshot"
 msgstr "Fă un instantaneu"
 
-#: js/ui/screenshot.js:1347
+#: js/ui/screenshot.js:1349
 msgid "Record Screen"
 msgstr "Înregistrează ecranul"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1364
+#: js/ui/screenshot.js:1366
 msgid "Capture"
 msgstr "Apasă"
 
-#: js/ui/screenshot.js:1386
+#: js/ui/screenshot.js:1388
 msgid "Show Pointer"
 msgstr "Arată indicatorul"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2014
+#: js/ui/screenshot.js:2021
 msgid "Screencasts"
 msgstr "Înregistrări de ecran"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2019
+#: js/ui/screenshot.js:2026
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "ÎnregistrareDeEcranDin%d-%m-%Y_%H:%M:%S"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2065
+#: js/ui/screenshot.js:2072
 msgid "Screencast recorded"
 msgstr "Înregistrare de ecran efectuată"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2078
+#: js/ui/screenshot.js:2085
 msgid "Screencast failed to start"
 msgstr "Înregistrarea ecranului nu a putut începe"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2084
+#: js/ui/screenshot.js:2091
 msgid "Screencast ended: Out of disk space"
 msgstr "Înregistrarea ecranului s-a terminat: nu mai există spațiu pe disc"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2090
+#: js/ui/screenshot.js:2097
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "Înregistrarea ecranului s-a terminat neașteptat, încearcă din nou"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2093
+#: js/ui/screenshot.js:2100
 msgid "Screencast ended unexpectedly"
 msgstr "Înregistrarea de ecran s-a terminat neașteptat"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2106
+#: js/ui/screenshot.js:2113
 msgid "Click here to view the video"
 msgstr "Clic aici pentru a vedea înregistrarea"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2114 js/ui/screenshot.js:2357
+#: js/ui/screenshot.js:2121 js/ui/screenshot.js:2364
 msgid "Show in Files"
 msgstr "Arată în Fișiere"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2303
+#: js/ui/screenshot.js:2310
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Instantaneu din %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2347
+#: js/ui/screenshot.js:2354
 msgid "Screenshot captured"
 msgstr "Instantaneu de ecran efectuat"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2356
 msgid "You can paste the image from the clipboard"
 msgstr "Imaginea copiată poate fi lipită"
 
-#: js/ui/screenshot.js:2407 js/ui/screenshot.js:2569
+#: js/ui/screenshot.js:2414 js/ui/screenshot.js:2576
 msgid "Screenshot taken"
 msgstr "Instantaneu de ecran efectuat"
 
@@ -2431,7 +2443,7 @@ msgstr "Scăzută"
 msgid "High"
 msgstr "Ridicată"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:883
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:880
 msgid "Keyboard"
 msgstr "Tastatură"
 
@@ -2516,7 +2528,7 @@ msgstr "Clic secundar"
 msgid "Dwell Click"
 msgstr "Clic prelungit"
 
-#: js/ui/status/keyboard.js:900
+#: js/ui/status/keyboard.js:897
 msgid "Show Keyboard Layout"
 msgstr "Afișează aranjamentul tastaturii"
 
