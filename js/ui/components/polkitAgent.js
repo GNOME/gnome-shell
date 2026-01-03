@@ -439,8 +439,10 @@ class AuthenticationAgent extends Shell.PolkitAuthenticationAgent {
     }
 
     _onInitiate(nativeAgent, actionId, message, iconName, cookie, userNames) {
-        // Don't pop up a dialog while locked
-        if (Main.sessionMode.isLocked) {
+        // Don't pop up a dialog while locked, unless it's triggered by user
+        // action from the lock screen, such as extending the session limits
+        if (Main.sessionMode.isLocked &&
+            actionId !== 'org.freedesktop.Malcontent.SessionLimits.Extend') {
             Main.sessionMode.connectObject('updated', () => {
                 Main.sessionMode.disconnectObject(this);
 
