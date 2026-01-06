@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
 "POT-Creation-Date: 2025-12-10 17:51+0000\n"
-"PO-Revision-Date: 2026-01-06 14:36+0100\n"
+"PO-Revision-Date: 2026-01-06 22:56+0100\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -2165,7 +2165,7 @@ msgstr "Înregistrări de ecran"
 #: js/ui/screenshot.js:2006
 #, no-c-format
 msgid "Screencast From %d %t"
-msgstr "ÎnregistrareDeEcranDin%d-%m-%Y_%H:%M:%S"
+msgstr "Video din %d %t"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2052
