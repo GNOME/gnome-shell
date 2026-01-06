@@ -723,7 +723,7 @@ export const WorkspaceLayout = GObject.registerClass({
             // We only want to apply this when the scaled floating size is
             // actually larger than the target layout size, that is while
             // animating between the session and the window picker.
-            if (inSessionTransition) {
+            if (inSessionTransition && stateAdjustementValue > 0) {
                 const scale = Math.min(
                     this._layoutStrategy.computeWindowScale(child), WINDOW_PREVIEW_MAXIMUM_SCALE);
 
