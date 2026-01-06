@@ -6,14 +6,14 @@
 # Răpițeanu Viorel-Cătălin <rapiteanu.catalin@gmail.com>, 2013.
 # Viorel-Cătălin Răpițeanu <rapiteanu.catalin@gmail.com>, 2014.
 # Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>, 2015, 2018.
-# Antonio Marin <gnmer.6qxyg@slmail.me>, 2025.
+# Antonio Marin <gnmer.6qxyg@slmail.me>, 2025-2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-11-24 14:01+0000\n"
-"PO-Revision-Date: 2025-11-30 15:36+0100\n"
+"POT-Creation-Date: 2025-11-24 13:53+0000\n"
+"PO-Revision-Date: 2026-01-06 14:36+0100\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -107,7 +107,7 @@ msgstr "Deschide o fereastră nouă a aplicației fixate 9"
 #. Translators: name of the folder under ~/Pictures for screenshots.
 #: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2290
 msgid "Screenshots"
-msgstr "Instantanee"
+msgstr "Instantanee de ecran"
 
 #: data/50-gnome-shell-screenshots.xml:9
 #: data/org.gnome.shell.gschema.xml.in:267
@@ -2506,7 +2506,7 @@ msgstr "Nu deranja"
 
 #: js/ui/status/dwellClick.js:14
 msgid "Single Click"
-msgstr "Clic simplu"
+msgstr "Clic"
 
 #: js/ui/status/dwellClick.js:19
 msgid "Double Click"
@@ -2518,7 +2518,7 @@ msgstr "Trage"
 
 #: js/ui/status/dwellClick.js:29
 msgid "Secondary Click"
-msgstr "Clic secundar"
+msgstr "Clic-dreapta"
 
 #: js/ui/status/dwellClick.js:38
 msgid "Dwell Click"
@@ -3124,10 +3124,9 @@ msgstr "_Elimină"
 #: subprojects/extensions-app/js/extensionsWindow.js:153
 msgid "translator-credits"
 msgstr ""
-"Florentina Mușat <florentina [dot] musat [dot] 28 [at] gmail [dot] com>, "
-"2020-2021, 2023-2024\n"
-"Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>, 2021\n"
-"Antonio Marin <gnmer.6qxyg@slmail.me>, 2025"
+"Florentina Mușat <florentina [dot] musat [dot] 28 [at] gmail [dot] com>\n"
+"Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>\n"
+"Antonio Marin <gnmer.6qxyg@slmail.me>"
 
 #: subprojects/extensions-app/js/extensionsWindow.js:198
 #, javascript-format
