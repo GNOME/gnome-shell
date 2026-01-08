@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
 "POT-Creation-Date: 2025-11-24 13:53+0000\n"
-"PO-Revision-Date: 2026-01-09 00:07+0100\n"
+"PO-Revision-Date: 2026-01-09 00:12+0100\n"
 "Last-Translator: Kjartan Maraas <kjartan.maraas@gmail.com>\n"
 "Language-Team: \n"
 "Language: nb\n"
@@ -461,6 +461,29 @@ msgstr "Åpne app 9 i nytt vindu"
 
 #: data/org.gnome.shell.gschema.xml.in:283
 msgid "Screen brightness up"
+msgstr "Lysstyrke opp"
+
+#: data/org.gnome.shell.gschema.xml.in:287
+msgid "Screen brightness up on current monitor"
+msgstr "Lysstyrke opp på aktiv monitor"
+
+#: data/org.gnome.shell.gschema.xml.in:291
+msgid "Screen brightness down"
+msgstr "Lysstyrke opp"
+
+#: data/org.gnome.shell.gschema.xml.in:295
+msgid "Screen brightness down on current monitor"
+msgstr "Lysstyrke ned på aktiv monitor"
+
+#: data/org.gnome.shell.gschema.xml.in:299
+#, fuzzy
+msgid "Screen brightness cycle"
+msgstr "Lysstyrke opp"
+
+#: data/org.gnome.shell.gschema.xml.in:303
+#, fuzzy
+#| msgid "Screen brightness up"
+msgid "Screen brightness cycle on current monitor"
 msgstr "Lysstyrke opp"
 
 #: data/org.gnome.shell.gschema.xml.in:312
@@ -3495,7 +3518,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-upload.c:423
 msgid "PASSWORD"
-msgstr ""
+msgstr "PASSORD"
 
 #: subprojects/extensions-tool/src/command-upload.c:425
 msgid "Password to log into https://extensions.gnome.org"
@@ -3697,85 +3720,3 @@ msgstr[1] "%u innganger"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Systemlyder"
-
-#~ msgid "GNOME Shell"
-#~ msgstr "GNOME Shell"
-
-#~ msgid "Window management and application launching"
-#~ msgstr "Styr systemet og åpne apper"
-
-#~ msgid ""
-#~ "We’re very sorry, but there’s been a problem: the settings for this "
-#~ "extension can’t be displayed. We recommend that you report the issue to "
-#~ "the extension authors."
-#~ msgstr ""
-#~ "Noe har gått galt: Innstillingene for denne utvidelsen kan ikke vises. "
-#~ "Feilen kan rapporteres til forfatterne av utvidelsen."
-
-#~ msgid "Technical Details"
-#~ msgstr "Teknisk informasjon"
-
-#~ msgid "Homepage"
-#~ msgstr "Hjemmeside"
-
-#~ msgid "Visit extension homepage"
-#~ msgstr "Besøk hjemmesiden til utvidelsen"
-
-#~ msgid "%H∶%M"
-#~ msgstr "%H∶%M"
-
-#~ msgid "Screenshot"
-#~ msgstr "Skjermbilde"
-
-#~ msgid "Could not parse command:"
-#~ msgstr "Kunne ikke tolke kommando:"
-
-#~ msgid "Move Titlebar Onscreen"
-#~ msgstr "Flytt"
-
-#~ msgid "Stop conflicting session dialog closed"
-#~ msgstr "Vindu lukket"
-
-#, javascript-format
-#~ msgid "Try to login again to start a session for user %s."
-#~ msgstr "Prøv å logge inn igjen eller starte en økt med %s."
-
-#, javascript-format
-#~ msgid "%s is now known as %s"
-#~ msgstr "%s byttet navn til %s"
-
-#~ msgid "Network Manager"
-#~ msgstr "Nettverk"
-
-#~ msgid "Disabling"
-#~ msgstr "Slår av"
-
-#~ msgid "Enabling"
-#~ msgstr "Slår på"
-
-#~ msgid "Thunderbolt"
-#~ msgstr "Thunderbolt"
-
-#~ msgid "No Thanks"
-#~ msgstr "Nei takk"
-
-#~ msgid "No Matches"
-#~ msgstr "Ingen treff"
-
-#~ msgid "The extension had an error"
-#~ msgstr "Utvidelsen støtte på et problem"
-
-#~ msgid "The extension can be updated"
-#~ msgstr "Utvidelsen kan oppdateres"
-
-#~ msgid "Help"
-#~ msgstr "Hjelp"
-
-#~ msgid "Manually Installed"
-#~ msgstr "Manuelt installert"
-
-#~ msgid "Built-In"
-#~ msgstr "Innebygget"
-
-#~ msgid "Extension Updates Ready"
-#~ msgstr "Utvidelser kan oppdateres"
