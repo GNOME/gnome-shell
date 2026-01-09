@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
 "POT-Creation-Date: 2025-11-24 13:53+0000\n"
-"PO-Revision-Date: 2026-01-06 22:57+0100\n"
+"PO-Revision-Date: 2026-01-09 10:12+0100\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -117,7 +117,7 @@ msgstr "Fă un instantaneu de ecran în mod interactiv"
 #: data/50-gnome-shell-screenshots.xml:12
 #: data/org.gnome.shell.gschema.xml.in:279
 msgid "Take a screenshot"
-msgstr "Fă un instantaneu"
+msgstr "Instantaneu de ecran"
 
 #: data/50-gnome-shell-screenshots.xml:15
 #: data/org.gnome.shell.gschema.xml.in:275
@@ -1020,7 +1020,7 @@ msgstr ""
 #: js/misc/systemActions.js:149
 msgctxt "search-result"
 msgid "Take a Screenshot"
-msgstr "Fă un instantaneu"
+msgstr "Instantaneu de ecran"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
 #: js/misc/systemActions.js:152
@@ -2169,7 +2169,7 @@ msgstr "Alege fereastra"
 
 #: js/ui/screenshot.js:1331 js/ui/status/system.js:118
 msgid "Take Screenshot"
-msgstr "Fă un instantaneu"
+msgstr "Instantaneu de ecran"
 
 #: js/ui/screenshot.js:1347
 msgid "Record Screen"
@@ -2197,7 +2197,7 @@ msgstr "Înregistrări de ecran"
 #: js/ui/screenshot.js:2019
 #, no-c-format
 msgid "Screencast From %d %t"
-msgstr "Video din %d %t"
+msgstr "Video %d %t"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2065
@@ -2242,7 +2242,7 @@ msgstr "Arată în Fișiere"
 #: js/ui/screenshot.js:2303
 #, javascript-format
 msgid "Screenshot From %s"
-msgstr "Instantaneu din %s"
+msgstr "Imagine %s"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2347
