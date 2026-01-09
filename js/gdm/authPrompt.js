@@ -807,6 +807,9 @@ export const AuthPrompt = GObject.registerClass({
             this.replace_child(this._mainContent, newMainContent);
             this._mainContent = newMainContent;
         }
+
+        if (this._mainContent === this._inputWell)
+            this._entry.grab_key_focus();
     }
 
     begin(params) {
