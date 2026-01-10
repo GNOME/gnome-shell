@@ -151,7 +151,10 @@ if get_option('man')
   subdir('man')
 endif
 
+have_asan_tests = get_option('b_sanitize') == 'address'
+
 mutter_typelibdir = mutter_dep.get_variable('typelibdir')
+mutter_pkglibdir = mutter_dep.get_variable('pkglibdir')
 python = find_program('python3')
 gjs = find_program('gjs')
 generate_app_list = find_program('build-aux/generate-app-list.py')
@@ -299,6 +302,16 @@ if get_option('tests')
   common_test_env.set('GSETTINGS_SCHEMA_DIR', meson.project_build_root() / 'data')
   common_test_env.set('GSETTINGS_BACKEND', 'memory')
   common_test_env.set('XDG_CURRENT_DESKTOP', '')
+  if have_asan_tests
+    asan_options = [
+      'halt_on_error=1',
+      'abort_on_error=1',
+      'detect_leaks=0',
+      'verify_asan_link_order=0',
+    ]
+    common_test_env.set('ASAN_OPTIONS', ':'.join(asan_options))
+    common_test_env.set('LD_PRELOAD', mutter_pkglibdir / 'libasan-preloader.so')
+  endif
 
   jasmine = find_program('jasmine')
 
