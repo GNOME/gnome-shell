@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-11-29 16:53+0000\n"
-"PO-Revision-Date: 2025-11-30 16:25+0300\n"
+"POT-Creation-Date: 2025-12-17 15:36+0000\n"
+"PO-Revision-Date: 2025-12-17 19:40+0300\n"
 "Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: RU\n"
 "Language: ru\n"
@@ -111,7 +111,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Открыть новое окно закрепленного приложения 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2290
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2297
 msgid "Screenshots"
 msgstr "Снимки экрана"
 
@@ -1034,11 +1034,23 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Заблокировать ориентацию экрана"
 
-#: js/misc/timeLimitsManager.js:463
+#: js/misc/timeLimitsManager.js:468
 msgid "GNOME needs to save screen time data"
 msgstr "GNOME необходимо сохранить данные экранного времени"
 
-#: js/misc/timeLimitsManager.js:1351
+#: js/misc/timeLimitsManager.js:1393
+msgid "Screen Time Limit is almost up"
+msgstr "Ограничение экранного времени почти истекло"
+
+#: js/misc/timeLimitsManager.js:1395
+#, javascript-format
+msgid "The computer will lock in %d second."
+msgid_plural "The computer will lock in %d seconds."
+msgstr[0] "Компьютер будет заблокирован через %d секунду."
+msgstr[1] "Компьютер будет заблокирован через %d секунды."
+msgstr[2] "Компьютер будет заблокирован через %d секунд."
+
+#: js/misc/timeLimitsManager.js:1403
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
@@ -1046,15 +1058,15 @@ msgstr[0] "Ограничение экранного времени в %d мин
 msgstr[1] "Ограничение экранного времени в %d минуты"
 msgstr[2] "Ограничение экранного времени в %d минут"
 
-#: js/misc/timeLimitsManager.js:1358
+#: js/misc/timeLimitsManager.js:1407
 msgid "Your screen time limit is approaching"
 msgstr "Приближается ограничение вашего экранного времени"
 
-#: js/misc/timeLimitsManager.js:1374
+#: js/misc/timeLimitsManager.js:1428
 msgid "Screen Time Limit Reached"
 msgstr "Достигнуто ограничение экранного времени"
 
-#: js/misc/timeLimitsManager.js:1375
+#: js/misc/timeLimitsManager.js:1429
 msgid "It’s time to stop using the device"
 msgstr "Пора прекратить использование устройства"
 
@@ -2114,15 +2126,15 @@ msgstr "Выполнить команду"
 msgid "Press ESC to close"
 msgstr "Нажмите Esc чтобы закрыть"
 
-#: js/ui/screenShield.js:233
+#: js/ui/screenShield.js:227
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME необходимо заблокировать экран"
 
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:675
+#: js/ui/screenShield.js:269 js/ui/screenShield.js:675
 msgid "Unable to lock"
 msgstr "Не удалось заблокировать"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:676
+#: js/ui/screenShield.js:270 js/ui/screenShield.js:676
 msgid "Lock was blocked by an app"
 msgstr "Блокировке помешало приложение"
 
@@ -2131,118 +2143,118 @@ msgstr "Блокировке помешало приложение"
 msgid "Screen Capture"
 msgstr "Запись экрана"
 
-#: js/ui/screenshot.js:1266
+#: js/ui/screenshot.js:1268
 msgid "Selection"
 msgstr "Область"
 
-#: js/ui/screenshot.js:1276
+#: js/ui/screenshot.js:1278
 msgid "Area Selection"
 msgstr "Выбор области"
 
-#: js/ui/screenshot.js:1281
+#: js/ui/screenshot.js:1283
 msgid "Screen"
 msgstr "Экран"
 
-#: js/ui/screenshot.js:1291
+#: js/ui/screenshot.js:1293
 msgid "Screen Selection"
 msgstr "Выбор экрана"
 
-#: js/ui/screenshot.js:1296
+#: js/ui/screenshot.js:1298
 msgid "Window"
 msgstr "Окно"
 
-#: js/ui/screenshot.js:1306
+#: js/ui/screenshot.js:1308
 msgid "Window Selection"
 msgstr "Выбор окна"
 
-#: js/ui/screenshot.js:1331 js/ui/status/system.js:118
+#: js/ui/screenshot.js:1333 js/ui/status/system.js:118
 msgid "Take Screenshot"
 msgstr "Сделать снимок экрана"
 
-#: js/ui/screenshot.js:1347
+#: js/ui/screenshot.js:1349
 msgid "Record Screen"
 msgstr "Записать экран"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1364
+#: js/ui/screenshot.js:1366
 msgid "Capture"
 msgstr "Снять"
 
-#: js/ui/screenshot.js:1386
+#: js/ui/screenshot.js:1388
 msgid "Show Pointer"
 msgstr "Показать курсор мыши"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2014
+#: js/ui/screenshot.js:2021
 msgid "Screencasts"
 msgstr "Записи экрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2019
+#: js/ui/screenshot.js:2026
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Запись экрана от %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2065
+#: js/ui/screenshot.js:2072
 msgid "Screencast recorded"
 msgstr "Запись экрана сделана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2078
+#: js/ui/screenshot.js:2085
 msgid "Screencast failed to start"
 msgstr "Не удалось начать запись экрана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2084
+#: js/ui/screenshot.js:2091
 msgid "Screencast ended: Out of disk space"
 msgstr "Запись экрана завершилась: Закончилось место на диске"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2090
+#: js/ui/screenshot.js:2097
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "Запись экрана неожиданно завершилась, попробуйте еще раз"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2093
+#: js/ui/screenshot.js:2100
 msgid "Screencast ended unexpectedly"
 msgstr "Запись экрана неожиданно завершилась"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2106
+#: js/ui/screenshot.js:2113
 msgid "Click here to view the video"
 msgstr "Нажмите здесь, чтобы посмотреть видео"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2114 js/ui/screenshot.js:2357
+#: js/ui/screenshot.js:2121 js/ui/screenshot.js:2364
 msgid "Show in Files"
 msgstr "Показать в Файлах"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2303
+#: js/ui/screenshot.js:2310
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Снимок экрана от %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2347
+#: js/ui/screenshot.js:2354
 msgid "Screenshot captured"
 msgstr "Снимок экрана сделан"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2356
 msgid "You can paste the image from the clipboard"
 msgstr "Вы можете вставить изображение из буфера обмена"
 
-#: js/ui/screenshot.js:2407 js/ui/screenshot.js:2569
+#: js/ui/screenshot.js:2414 js/ui/screenshot.js:2576
 msgid "Screenshot taken"
 msgstr "Сделан снимок экрана"
 
@@ -2267,23 +2279,23 @@ msgstr[2] "%d ещё"
 msgid "Search"
 msgstr "Поиск"
 
-#: js/ui/shellEntry.js:21
+#: js/ui/shellEntry.js:22
 msgid "Copy"
 msgstr "Копировать"
 
-#: js/ui/shellEntry.js:26
+#: js/ui/shellEntry.js:27
 msgid "Paste"
 msgstr "Вставить"
 
-#: js/ui/shellEntry.js:78
+#: js/ui/shellEntry.js:79
 msgid "Show Text"
 msgstr "Показать текст"
 
-#: js/ui/shellEntry.js:80
+#: js/ui/shellEntry.js:81
 msgid "Hide Text"
 msgstr "Скрыть текст"
 
-#: js/ui/shellEntry.js:169
+#: js/ui/shellEntry.js:170
 msgid "Caps lock is on"
 msgstr "Включён Caps Lock"
 
