@@ -250,11 +250,12 @@ class WebView extends MetaWindowEmbedded {
 export const WebLoginPrompt = GObject.registerClass(
 class WebLoginPrompt extends St.BoxLayout {
     _init(params) {
-        const {iconSize, message, url, code} = Params.parse(params, {
+        const {iconSize, message, url, code, useEmbeddedWebView} = Params.parse(params, {
             iconSize: QR_CODE_SIZE,
             message: null,
             url: null,
             code: null,
+            useEmbeddedWebView: false,
         });
 
         super._init({
@@ -297,29 +298,49 @@ class WebLoginPrompt extends St.BoxLayout {
         });
         this._codeBox.add_child(this._codeLabel);
 
-        this.update({message, url, code});
+        this.update({message, url, code, useEmbeddedWebView});
     }
 
     update(params) {
-        const {message, url, code} = Params.parse(params, {
+        const {message, url, code, useEmbeddedWebView} = Params.parse(params, {
             message: null,
             url: null,
             code: null,
+            useEmbeddedWebView: false,
         });
 
-        if (message !== null)
-            this._urlTitleLabel.text = message;
+        if (useEmbeddedWebView) {
+            this._urlTitleLabel.visible = false;
+            this._qrCode.visible = false;
+            this._urlLabel.visible = false;
 
-        if (url !== null) {
-            this._qrCode.setUrl(url);
+            if (!this._webView) {
+                this._webView = new WebView(url);
+                this.insert_child_at_index(this._webView, 0);
+            } else {
+                this._webView.setUrl(url);
+            }
+        } else {
+            this.closeWebView();
 
-            const formattedUrl = this._formatURLForDisplay(url);
-            this._urlLabel.text = formattedUrl;
+            this._urlTitleLabel.visible = true;
+            this._qrCode.visible = true;
+            this._urlLabel.visible = true;
 
-            if (formattedUrl.length > 45)
-                this._urlLabel.add_style_class_name('web-login-url-label-long');
-            else
-                this._urlLabel.remove_style_class_name('web-login-url-label-long');
+            if (message !== null)
+                this._urlTitleLabel.text = message;
+
+            if (url !== null) {
+                this._qrCode.setUrl(url);
+
+                const formattedUrl = this._formatURLForDisplay(url);
+                this._urlLabel.text = formattedUrl;
+
+                if (formattedUrl.length > 45)
+                    this._urlLabel.add_style_class_name('web-login-url-label-long');
+                else
+                    this._urlLabel.remove_style_class_name('web-login-url-label-long');
+            }
         }
 
         if (code !== null) {
@@ -331,6 +352,11 @@ class WebLoginPrompt extends St.BoxLayout {
             if (this._codeBox.get_parent())
                 this.remove_child(this._codeBox);
         }
+    }
+
+    closeWebView() {
+        this._webView?.destroy();
+        this._webView = null;
     }
 
     _formatURLForDisplay(url) {
@@ -360,11 +386,12 @@ export const WebLoginDialog = GObject.registerClass({
     },
 }, class WebLoginDialog extends St.Widget {
     _init(params) {
-        const {message, url, code, buttons} = Params.parse(params, {
+        const {message, url, code, buttons, useEmbeddedWebView} = Params.parse(params, {
             message: null,
             url: null,
             code: null,
             buttons: [],
+            useEmbeddedWebView: false,
         });
 
         super._init({
@@ -386,7 +413,7 @@ export const WebLoginDialog = GObject.registerClass({
         });
         this.add_child(this._contentBox);
 
-        this._webLoginPrompt = new WebLoginPrompt({code, message, url});
+        this._webLoginPrompt = new WebLoginPrompt({code, message, url, useEmbeddedWebView});
         this._contentBox.add_child(this._webLoginPrompt);
 
         this._buttonBox = new St.BoxLayout({
@@ -408,6 +435,11 @@ export const WebLoginDialog = GObject.registerClass({
             hideOnStop: true,
         });
         this._spinnerFrame.add_child(this._spinner);
+
+        this.connect('notify::visible', () => {
+            if (!this.visible)
+                this._webLoginPrompt.closeWebView();
+        });
     }
 
     _updateButtons(buttons) {
@@ -458,16 +490,17 @@ export const WebLoginDialog = GObject.registerClass({
     }
 
     update(params) {
-        const {message, url, code, buttons} = Params.parse(params, {
+        const {message, url, code, buttons, useEmbeddedWebView} = Params.parse(params, {
             message: null,
             url: null,
             code: null,
             buttons: [],
+            useEmbeddedWebView: false,
         });
 
         this.stopLoading();
 
-        this._webLoginPrompt.update({message, url, code});
+        this._webLoginPrompt.update({message, url, code, useEmbeddedWebView});
 
         this._updateButtons(buttons);
     }

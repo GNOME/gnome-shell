@@ -455,7 +455,8 @@ export const AuthPrompt = GObject.registerClass({
         this._promptStep++;
         this._updateCancelButton();
 
-        this._webLoginParams = {message, url, code, buttons};
+        // FIXME: useEmbeddedWebView is hardcoded, should be configurable
+        this._webLoginParams = {message, url, code, buttons, useEmbeddedWebView: true};
 
         this._entryArea.hide();
 
