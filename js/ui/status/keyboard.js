@@ -409,7 +409,7 @@ export class InputSourceManager extends Signals.EventEmitter {
     _modifiersSwitcher() {
         const sourceIndexes = Object.keys(this._inputSources);
         if (sourceIndexes.length === 0)
-            return true;
+            return;
 
         let is = this._currentSource;
         if (!is)
@@ -423,7 +423,6 @@ export class InputSourceManager extends Signals.EventEmitter {
             nextIndex += 1;
 
         is.activate(true);
-        return true;
     }
 
     _switchInputSource(display, window, event, binding) {
