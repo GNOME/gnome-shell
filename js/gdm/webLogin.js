@@ -10,6 +10,7 @@ import Gio from 'gi://Gio';
 import GnomeQR from 'gi://GnomeQR';
 import Pango from 'gi://Pango';
 import St from 'gi://St';
+import {MetaWindowEmbedded} from './metaWindowEmbedded.js';
 import {Spinner} from '../ui/animation.js';
 import * as Params from '../misc/params.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
@@ -140,6 +141,129 @@ class QrCode extends St.Bin {
             blue: color.blue,
             alpha: color.alpha,
         });
+    }
+});
+
+export const WebView = GObject.registerClass(
+class WebView extends MetaWindowEmbedded {
+    _init(params) {
+        super._init({
+            style_class: 'web-view-embedded',
+        });
+
+        // FXME: Currently hardcoded, should be configurable
+        const {url, wmClass, command, terminateCommand} = Params.parse(params, {
+            url: null,
+            wmClass: 'firefox',
+            command: ['flatpak', 'run', 'org.mozilla.firefox'],
+            terminateCommand: ['flatpak', 'kill', 'org.mozilla.firefox'],
+        });
+
+        this._url = url;
+        this._wmClass = wmClass;
+        this._command = command;
+        this._terminateCommand = terminateCommand;
+
+        if (this._url && this._wmClass && this._command)
+            this._launch();
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _launch() {
+        if (this._process) {
+            log('WebView: already running');
+            return;
+        }
+
+        if (!this._windowCreatedId) {
+            this._windowCreatedId = global.display.connect(
+                'window-created', (_, window) => this._reparentWindow(window));
+        }
+
+        try {
+            const launcher = Gio.SubprocessLauncher.new(Gio.SubprocessFlags.NONE);
+            this._process = launcher.spawnv([...this._command, this._url]);
+
+            log(`WebView: ${this._command} launched successfully, pid ${this._process.get_identifier()}`);
+
+            this._process.wait_async(null, (proc, res) => {
+                try {
+                    proc.wait_finish(res);
+                    log(`WebView: process ${proc.get_identifier()} terminated`);
+                } catch (e) {
+                    logError(e, 'WebView: error waiting for process');
+                } finally {
+                    this._process = null;
+                }
+            });
+        } catch (e) {
+            logError(e, `WebView: could not start webview command ${this._command}`);
+            this._process = null;
+        }
+    }
+
+    _reparentWindow(window) {
+        const wmClass = window.get_wm_class();
+        // If the window doesn't have a wmClass yet, wait for it
+        if (!wmClass) {
+            const id = window.connect(
+                'notify::wm-class', () => {
+                    window.disconnect(id);
+                    this._reparentWindow(window);
+                });
+            return;
+        }
+
+        if (!wmClass.includes(this._wmClass))
+            return;
+
+        global.display.disconnect(this._windowCreatedId);
+        this._windowCreatedId = 0;
+
+        this.setMetaWindow(window);
+    }
+
+    setUrl(url) {
+        this._url = url;
+
+        this._terminate();
+
+        this.setMetaWindow(null);
+
+        this._launch();
+    }
+
+    _onDestroy() {
+        if (this._windowCreatedId)
+            global.display.disconnect(this._windowCreatedId);
+        this._windowCreatedId = 0;
+
+        this._terminate();
+    }
+
+    _terminate() {
+        if (!this._process)
+            return;
+
+        log(`WebView: terminating process ${this._process.get_identifier()}`);
+
+        if (this._terminateCommand) {
+            try {
+                const launcher = Gio.SubprocessLauncher.new(Gio.SubprocessFlags.NONE);
+                launcher.spawnv(this._terminateCommand);
+                return;
+            } catch (e) {
+                logError(e, `WebView: could not run terminate command ${this._terminateCommand}`);
+            }
+        }
+
+        try {
+            const SIGTERM = 15;
+            this._process.send_signal(SIGTERM);
+        } catch (e) {
+            logError(e, `WebView: could not send SIGTERM to process ${this._process.get_identifier()}`);
+        }
     }
 });
 
