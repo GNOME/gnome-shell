@@ -1,4 +1,5 @@
 import Clutter from 'gi://Clutter';
+import GDesktopEnums from 'gi://GDesktopEnums';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
@@ -12,6 +13,7 @@ import {formatDateWithCFormatString} from '../misc/dateUtils.js';
 import {loadInterfaceXML} from '../misc/fileUtils.js';
 
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
+const WEEK_START_DAY_KEY = 'week-start-day';
 
 const NC_ = (context, str) => `${context}\u0004${str}`;
 
@@ -406,8 +408,10 @@ export const Calendar = GObject.registerClass({
     Signals: {'selected-date-changed': {param_types: [GLib.DateTime.$gtype]}},
 }, class Calendar extends St.Widget {
     _init() {
-        this._weekStart = Shell.util_get_week_start();
         this._settings = new Gio.Settings({schema_id: 'org.gnome.desktop.calendar'});
+
+        this._settings.connect(`changed::${WEEK_START_DAY_KEY}`, this._onSettingsChange.bind(this));
+        this._weekStart = this._getWeekStartDay();
 
         this._settings.connect(`changed::${SHOW_WEEKDATE_KEY}`, this._onSettingsChange.bind(this));
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
@@ -476,6 +480,14 @@ export const Calendar = GObject.registerClass({
         // the date might have changed.
         this._rebuildCalendar();
         this._update();
+    }
+
+    _getWeekStartDay() {
+        const weekStartDay = this._settings.get_enum(WEEK_START_DAY_KEY);
+        if (weekStartDay === GDesktopEnums.Weekday.DEFAULT)
+            return Shell.util_get_week_start();
+
+        return weekStartDay % 7;
     }
 
     _buildHeader() {
@@ -606,6 +618,7 @@ export const Calendar = GObject.registerClass({
     }
 
     _onSettingsChange() {
+        this._weekStart = this._getWeekStartDay();
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
         this._buildHeader();
         this._rebuildCalendar();
