@@ -123,31 +123,11 @@ const restartUpdateDialogContent = {
     showOtherSessions: true,
 };
 
-const restartUpgradeDialogContent = {
-
-    subject: C_('title', 'Restart & Install Upgrade'),
-    upgradeDescription(distroName, distroVersion) {
-        /* Translators: This is the text displayed for system upgrades in the
-           shut down dialog. First %s gets replaced with the distro name and
-           second %s with the distro version to upgrade to */
-        return _('%s %s will be installed after restart. Upgrade installation can take a long time: ensure that you have backed up and that the computer is plugged in.').format(distroName, distroVersion);
-    },
-    disableTimer: true,
-    showBatteryWarning: false,
-    confirmButtons: [{
-        signal: 'ConfirmedReboot',
-        label: C_('button', 'Restart & Install'),
-    }],
-    iconName: 'view-refresh-symbolic',
-    showOtherSessions: true,
-};
-
 const DialogType = {
     LOGOUT: 0 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_LOGOUT */,
     SHUTDOWN: 1 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_SHUTDOWN */,
     RESTART: 2 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_RESTART */,
     UPDATE_RESTART: 3,
-    UPGRADE_RESTART: 4,
 };
 
 const DialogContent = {
@@ -155,7 +135,6 @@ const DialogContent = {
     1 /* DialogType.SHUTDOWN */: shutdownDialogContent,
     2 /* DialogType.RESTART */: restartDialogContent,
     3 /* DialogType.UPDATE_RESTART */: restartUpdateDialogContent,
-    4 /* DialogType.UPGRADE_RESTART */: restartUpgradeDialogContent,
 };
 
 const MAX_USERS_IN_SESSION_DIALOG = 5;
