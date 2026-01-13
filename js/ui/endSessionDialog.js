@@ -21,7 +21,6 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Pango from 'gi://Pango';
-import Polkit from 'gi://Polkit';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 import UPower from 'gi://UPowerGlib';
@@ -164,8 +163,10 @@ const MAX_USERS_IN_SESSION_DIALOG = 5;
 const LogindSessionIface = loadInterfaceXML('org.freedesktop.login1.Session');
 const LogindSession = Gio.DBusProxy.makeProxyWrapper(LogindSessionIface);
 
-const PkOfflineIface = loadInterfaceXML('org.freedesktop.PackageKit.Offline');
-const PkOfflineProxy = Gio.DBusProxy.makeProxyWrapper(PkOfflineIface);
+const OFFLINE_UPDATE_ACTION_REBOOT = 'reboot';
+const OFFLINE_UPDATE_ACTION_SHUTDOWN = 'shutdown';
+const SoftwareOfflineUpdatesIface = loadInterfaceXML('org.gnome.Software.OfflineUpdates');
+const SoftwareOfflineUpdatesProxy = Gio.DBusProxy.makeProxyWrapper(SoftwareOfflineUpdatesIface);
 
 const UPowerIface = loadInterfaceXML('org.freedesktop.UPower.Device');
 const UPowerProxy = Gio.DBusProxy.makeProxyWrapper(UPowerIface);
@@ -238,12 +239,11 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         this._userManager = AccountsService.UserManager.get_default();
         this._user = this._userManager.get_user(GLib.get_user_name());
-        this._updatesPermission = null;
 
-        this._pkOfflineProxy = new PkOfflineProxy(Gio.DBus.system,
-            'org.freedesktop.PackageKit',
-            '/org/freedesktop/PackageKit',
-            this._onPkOfflineProxyCreated.bind(this));
+        // open the gnome-software proxy only when the dialog is opening,
+        // to avoid early start of the gnome-software, which is delayed by
+        // its systemd file, to not use too many resources right after login
+        this._softwareOfflineUpdatesProxy = null;
 
         this._powerProxy = new UPowerProxy(Gio.DBus.system,
             'org.freedesktop.UPower',
@@ -307,26 +307,21 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._canRebootToBootLoaderMenu = canRebootToBootLoaderMenu;
     }
 
-    async _onPkOfflineProxyCreated(proxy, error) {
-        if (error) {
-            log(error.message);
+    async _ensureSoftwareOfflineUpdatesProxy() {
+        if (this._softwareOfflineUpdatesProxy !== null)
             return;
-        }
 
-        // Creating a D-Bus proxy won't propagate SERVICE_UNKNOWN or NAME_HAS_NO_OWNER
-        // errors if PackageKit is not available, but the GIO implementation will make
-        // sure in that case that the proxy's g-name-owner is set to null, so check that.
-        if (this._pkOfflineProxy.g_name_owner === null) {
-            this._pkOfflineProxy = null;
-            return;
-        }
-
-        // It only makes sense to check for this permission if PackageKit is available.
         try {
-            this._updatesPermission = await Polkit.Permission.new(
-                'org.freedesktop.packagekit.trigger-offline-update', null, null);
-        } catch (e) {
-            log(`No permission to trigger offline updates: ${e}`);
+            this._softwareOfflineUpdatesProxy = await SoftwareOfflineUpdatesProxy.newAsync(
+                Gio.DBus.session, 'org.gnome.Software', '/org/gnome/Software/OfflineUpdates');
+
+            // Creating a D-Bus proxy won't propagate SERVICE_UNKNOWN or NAME_HAS_NO_OWNER
+            // errors if gnome-software is not available, but the GIO implementation will make
+            // sure in that case that the proxy's g-name-owner is set to null, so check that.
+            if (this._softwareOfflineUpdatesProxy.g_name_owner === null)
+                this._softwareOfflineUpdatesProxy = null;
+        } catch (error) {
+            log(error.message);
         }
     }
 
@@ -350,10 +345,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         if (this._checkBox.checked)
             return true;
 
-        // Show the warning if updates have already been triggered, but
-        // the user doesn't have enough permissions to cancel them.
-        const updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
-        return this._updateInfo.UpdatePrepared && this._updateInfo.UpdateTriggered && !updatesAllowed;
+        // Show the warning if updates have already been triggered.
+        return this._updateScheduled;
     }
 
     _sync() {
@@ -385,14 +378,6 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                 if (dialogContent.descriptionWithUser)
                     description = dialogContent.descriptionWithUser(realName, displayTime);
             }
-        }
-
-        // Use a different description when we are installing a system upgrade
-        // if the PackageKit proxy is available (i.e. PackageKit is available).
-        if (dialogContent.upgradeDescription) {
-            const {name, version} = this._updateInfo.PreparedUpgrade;
-            if (name != null && version != null)
-                description = dialogContent.upgradeDescription(name, version);
         }
 
         // Fall back to regular description
@@ -507,14 +492,19 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             if (this._checkBox.checked) {
                 switch (signal) {
                 case 'ConfirmedReboot':
-                    await this._triggerOfflineUpdateReboot();
+                    await this._setPostUpdateAction(OFFLINE_UPDATE_ACTION_REBOOT);
                     break;
                 case 'ConfirmedShutdown':
-                    // To actually trigger the offline update, we need to
-                    // reboot to do the upgrade. When the upgrade is complete,
-                    // the computer will shut down automatically.
-                    signal = 'ConfirmedReboot';
-                    await this._triggerOfflineUpdateShutdown();
+                    // The app may not necessarily require reboot to apply the updates,
+                    // thus do that only if the action was changed; it may fail to set
+                    // the action too, then the right way is to shutdown, not reboot
+                    if (await this._setPostUpdateAction(OFFLINE_UPDATE_ACTION_SHUTDOWN)) {
+                        // The app supports changing action after the offline updates
+                        // are applied, thus reboot now, to apply the offline updates
+                        // immediately and the app with shutdown the computer for us
+                        // when the update is finished.
+                        signal = 'ConfirmedReboot';
+                    }
                     break;
                 default:
                     break;
@@ -534,37 +524,31 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._sync();
     }
 
-    async _triggerOfflineUpdateReboot() {
-        // Handle this gracefully if PackageKit is not available.
-        if (!this._pkOfflineProxy)
-            return;
+    async _setPostUpdateAction(action) {
+        // Handle this gracefully if gnome-software is not available.
+        if (!this._softwareOfflineUpdatesProxy)
+            return false;
 
+        let actionChanged = false;
         try {
-            await this._pkOfflineProxy.TriggerAsync('reboot');
+            await this._softwareOfflineUpdatesProxy.SetActionAsync(action);
+            actionChanged = true;
         } catch (error) {
-            log(error.message);
+            // Not all implementations can change the action after the update is applied;
+            // it's indicated by returning the "not-supported" error by the gnome-software
+            if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_SUPPORTED))
+                console.log(error.message);
         }
-    }
-
-    async _triggerOfflineUpdateShutdown() {
-        // Handle this gracefully if PackageKit is not available.
-        if (!this._pkOfflineProxy)
-            return;
-
-        try {
-            await this._pkOfflineProxy.TriggerAsync('power-off');
-        } catch (error) {
-            log(error.message);
-        }
+        return actionChanged;
     }
 
     async _triggerOfflineUpdateCancel() {
-        // Handle this gracefully if PackageKit is not available.
-        if (!this._pkOfflineProxy)
+        // Handle this gracefully if gnome-software is not available.
+        if (!this._softwareOfflineUpdatesProxy)
             return;
 
         try {
-            await this._pkOfflineProxy.CancelAsync();
+            await this._softwareOfflineUpdatesProxy.CancelAsync();
         } catch (error) {
             log(error.message);
         }
@@ -690,20 +674,12 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._sync();
     }
 
-    async _getUpdateInfo() {
-        const connection = this._pkOfflineProxy.get_connection();
-        const reply = await connection.call(
-            this._pkOfflineProxy.g_name,
-            this._pkOfflineProxy.g_object_path,
-            'org.freedesktop.DBus.Properties',
-            'GetAll',
-            new GLib.Variant('(s)', [this._pkOfflineProxy.g_interface_name]),
-            null,
-            Gio.DBusCallFlags.NONE,
-            -1,
-            null);
-        const [info] = reply.recursiveUnpack();
-        return info;
+    async _getUpdateState() {
+        await this._ensureSoftwareOfflineUpdatesProxy();
+        if (this._softwareOfflineUpdatesProxy === null)
+            return 'unknown';
+        const [state] = await this._softwareOfflineUpdatesProxy.GetStateAsync();
+        return state;
     }
 
     async OpenAsync(parameters, invocation) {
@@ -712,25 +688,19 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._type = type;
 
         try {
-            this._updateInfo = await this._getUpdateInfo();
+            const state = await this._getUpdateState();
+            this._updateScheduled = state === 'scheduled';
         } catch (e) {
-            if (this._pkOfflineProxy !== null)
-                log(`Failed to get update info from PackageKit: ${e.message}`);
+            if (this._softwareOfflineUpdatesProxy !== null)
+                log(`Failed to get update info from gnome-software: ${e.message}`);
 
-            this._updateInfo = {
-                UpdateTriggered: false,
-                UpdatePrepared: false,
-                UpgradeTriggered: false,
-                PreparedUpgrade: {},
-            };
+            this._updateScheduled = false;
         }
 
-        // Only consider updates and upgrades if PackageKit is available.
-        if (this._pkOfflineProxy && this._type === DialogType.RESTART) {
-            if (this._updateInfo.UpdateTriggered)
+        // Only consider updates if gnome-software is available.
+        if (this._softwareOfflineUpdatesProxy && this._type === DialogType.RESTART) {
+            if (this._updateScheduled)
                 this._type = DialogType.UPDATE_RESTART;
-            else if (this._updateInfo.UpgradeTriggered)
-                this._type = DialogType.UPGRADE_RESTART;
         }
 
         this._applications = [];
@@ -759,15 +729,10 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         if (dialogContent.showOtherSessions)
             this._loadSessions().catch(logError);
 
-        const updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
-
         _setCheckBoxLabel(this._checkBox, dialogContent.checkBoxText || '');
-        this._checkBox.visible = dialogContent.checkBoxText && this._updateInfo.UpdatePrepared && updatesAllowed;
+        this._checkBox.visible = dialogContent.checkBoxText && this._updateScheduled;
 
-        if (this._type === DialogType.UPGRADE_RESTART)
-            this._checkBox.checked = this._checkBox.visible && this._updateInfo.UpdateTriggered && !this._isDischargingBattery();
-        else
-            this._checkBox.checked = this._checkBox.visible && !this._isBatteryLow();
+        this._checkBox.checked = this._checkBox.visible && !this._isBatteryLow();
 
         this._batteryWarning.visible = this._shouldShowLowBatteryWarning(dialogContent);
 

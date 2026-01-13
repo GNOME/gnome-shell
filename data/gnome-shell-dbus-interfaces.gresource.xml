@@ -22,7 +22,6 @@
     <file preprocess="xml-stripblanks">org.freedesktop.ModemManager.Modem.Cdma.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.ModemManager.Modem.Gsm.Network.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.Notifications.xml</file>
-    <file preprocess="xml-stripblanks">org.freedesktop.PackageKit.Offline.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.realmd.Provider.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.realmd.Realm.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.realmd.Service.xml</file>
@@ -53,6 +52,7 @@
     <file preprocess="xml-stripblanks">org.gnome.Shell.Wacom.PadOsd.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.WeatherIntegration.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.xml</file>
+    <file preprocess="xml-stripblanks">org.gnome.Software.OfflineUpdates.xml</file>
     <file preprocess="xml-stripblanks">org.Gtk.MountOperationHandler.xml</file>
     <file preprocess="xml-stripblanks">org.gtk.Notifications.xml</file>
     <file preprocess="xml-stripblanks">org.mpris.MediaPlayer2.Player.xml</file>

@@ -1,0 +1,39 @@
+<!DOCTYPE node PUBLIC
+"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+<!--
+ SPDX-FileCopyrightText: (C) 2026 Red Hat <www.redhat.com>
+ SPDX-License-Identifier: LGPL-2.0-or-later
+
+ This is meant to be used by gnome-shell, to operate with offline updates.
+ The interface itself is unstable.
+-->
+<node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
+  <interface name="org.gnome.Software.OfflineUpdates">
+    <!--
+    string GetState(void):
+    Gets state of any offline updates. The returned values can be:
+    "none" - no offline update is scheduled
+    "scheduled" - an offline update is scheduled
+    -->
+    <method name="GetState">
+      <arg type="s" name="state" direction="out" />
+    </method>
+
+    <!--
+    void Cancel(void):
+    Cancels any prepared offline update. Does nothing, when none is prepared.
+    -->
+    <method name="Cancel" />
+
+    <!--
+    void SetAction(string action):
+    Sets what to do when the offline update is finished.
+    Expected actions are "reboot" or "shutdown".
+    -->
+    <method name="SetAction">
+      <arg type="s" name="action" direction="in" />
+    </method>
+  </interface>
+</node>
