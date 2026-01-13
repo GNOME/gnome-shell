@@ -8,8 +8,11 @@ import Cogl from 'gi://Cogl';
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import GnomeQR from 'gi://GnomeQR';
+import Meta from 'gi://Meta';
 import Pango from 'gi://Pango';
 import St from 'gi://St';
+import * as Config from '../misc/config.js';
+import {MetaWindowEmbedded} from './metaWindowEmbedded.js';
 import {Spinner} from '../ui/animation.js';
 import * as Params from '../misc/params.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
@@ -140,6 +143,107 @@ class QrCode extends St.Bin {
             blue: color.blue,
             alpha: color.alpha,
         });
+    }
+});
+
+export const WebView = GObject.registerClass(
+class WebView extends MetaWindowEmbedded {
+    _init(url) {
+        super._init({
+            style_class: 'web-view-embedded',
+        });
+
+        this._url = url;
+        this._command = Config.EMBEDDED_WEBVIEW_COMMAND;
+        this._client = null;
+
+        this._launch();
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _launch() {
+        if (this._client) {
+            log('WebView: already running');
+            return;
+        }
+
+        if (!this._url) {
+            log('WebView: url parameter is required');
+            return;
+        }
+
+        if (!this._windowCreatedId) {
+            this._windowCreatedId = global.display.connect(
+                'window-created', (_, window) => this._reparentWindow(window));
+        }
+
+        try {
+            const context = global.get_context();
+            const launcher = Gio.SubprocessLauncher.new(Gio.SubprocessFlags.NONE);
+            this._client = Meta.WaylandClient.new_subprocess(
+                context, launcher, [this._command, this._url]);
+
+            const subprocess = this._client.get_subprocess();
+            log(`WebView: ${this._command} launched successfully, pid ${subprocess.get_identifier()}`);
+
+            this._client.connect('client-destroyed', () => {
+                log('WebView: client destroyed');
+                this._client = null;
+            });
+        } catch (e) {
+            logError(e, `WebView: could not start webview command ${this._command}`);
+            this._client = null;
+        }
+    }
+
+    _reparentWindow(window) {
+        if (!this._client)
+            return;
+
+        if (!this._client.owns_window(window))
+            return;
+
+        global.display.disconnect(this._windowCreatedId);
+        this._windowCreatedId = 0;
+
+        this.setMetaWindow(window);
+    }
+
+    setUrl(url) {
+        this._url = url;
+
+        this._terminate();
+
+        this.setMetaWindow(null);
+
+        this._launch();
+    }
+
+    _onDestroy() {
+        if (this._windowCreatedId)
+            global.display.disconnect(this._windowCreatedId);
+        this._windowCreatedId = 0;
+
+        this._terminate();
+    }
+
+    _terminate() {
+        if (!this._client)
+            return;
+
+        const subprocess = this._client.get_subprocess();
+        if (!subprocess)
+            return;
+
+        log(`WebView: terminating process ${subprocess.get_identifier()}`);
+
+        try {
+            const SIGTERM = 15;
+            subprocess.send_signal(SIGTERM);
+        } catch (e) {
+            logError(e, `WebView: could not send SIGTERM to process ${subprocess.get_identifier()}`);
+        }
     }
 });
 
