@@ -17,7 +17,7 @@ $_gdm_dialog_width: 25em;
     spacing: $base_padding * 1.5;
 
     &.web-login-active {
-      width: $_gdm_dialog_width * 1.5;
+      width: $_gdm_dialog_width * 2;
     }
   }
 
@@ -366,6 +366,11 @@ $_gdm_dialog_width: 25em;
   padding-left: $base_padding * 4.5;
   padding-right: $base_padding * 4.5;
   spacing: 1.75em;
+}
+
+.web-view-embedded {
+  width: $_gdm_dialog_width * 2;
+  height: 400px;
 }
 
 .web-login-button-label {
