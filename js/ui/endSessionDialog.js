@@ -472,11 +472,14 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                     await this._triggerOfflineUpdateReboot();
                     break;
                 case 'ConfirmedShutdown':
-                    // To actually trigger the offline update, we need to
-                    // reboot to do the upgrade. When the upgrade is complete,
-                    // the computer will shut down automatically.
-                    signal = 'ConfirmedReboot';
-                    await this._triggerOfflineUpdateShutdown();
+                    // The implementation may not support shutdown after applying
+                    // the updates, thus do that only if its supported
+                    if (await this._triggerOfflineUpdateShutdown()) {
+                        // To actually trigger the offline update, we need to
+                        // reboot to do the upgrade. When the upgrade is complete,
+                        // the computer will shut down automatically.
+                        signal = 'ConfirmedReboot';
+                    }
                     break;
                 default:
                     break;
@@ -511,13 +514,19 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     async _triggerOfflineUpdateShutdown() {
         // Handle this gracefully if gnome-software is not available.
         if (!this._softwareOfflineUpdatesProxy)
-            return;
+            return true;
 
+        let canChangeAction = true;
         try {
             await this._softwareOfflineUpdatesProxy.SetActionAsync('shutdown');
         } catch (error) {
-            log(error.message);
+            // Not all implementations can change the action after the update is applied
+            if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_SUPPORTED))
+                canChangeAction = false;
+            else
+                log(error.message);
         }
+        return canChangeAction;
     }
 
     async _triggerOfflineUpdateCancel() {
