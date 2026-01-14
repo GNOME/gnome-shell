@@ -1,3 +1,24 @@
+49.3
+====
+* Fix activating app-switcher thumbnails via click [Håkon; !3959]
+* Fix lost focus on lock screen after resume from suspend [Lukas; !3962]
+* Correctly expose/hide caps-lock warning to a11y tree [Lukáš; !3981]
+* Improve accessibility of icon buttons in screenshot tool [Lukáš; !3893]
+* Fix user deselection after idle on login screen [Lukas; !3993]
+* Improve readability of insensitive text [Sam; !3998]
+* Misc. bug fixes and cleanups [Marco, Florian, Hari, revisto, Takao, sudigit,
+  Carlos; !3983, !3982, !3986, !3987, !3944, !3991, !3996, !3995, !3992, !3997,
+  !4000, !4005, !3784, !4027, !3979]
+
+Contributors:
+  Takao Fujiwara, Carlos Garnacho, Sam Hewitt, Håkon Hægland,
+  Florian Müllner, Hari Rana, revisto, Lukas Schmelting, sudigit,
+  Marco Trevisan (Treviño), Lukáš Tyrychtr
+
+Translators:
+  Antonio Marin [ro], Hugo Carvalho [pt], Baxrom Raxmatov [uz],
+  Baurzhan Muftakhidinov [kk], Kjartan Maraas [nb], Bjørn Mørkedal [nn]
+
 49.2
 ====
 * Fix lock screen notification setting for MPRIS clients without DesktopEntry
