@@ -3,6 +3,9 @@
     <method name="GetAppId">
       <arg type="s" direction="out"/>
     </method>
+    <method name="GetDisplayName">
+      <arg type="s" direction="out"/>
+    </method>
     <method name="GetFlags">
       <arg type="u" direction="out"/>
     </method>
