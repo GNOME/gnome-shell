@@ -61,4 +61,6 @@ export const InhibitFlags = {
     SUSPEND: 1 << 2,
     IDLE: 1 << 3,
     AUTOMOUNT: 1 << 4,
+    POWEROFF: 1 << 5,
+    STRONG: 1 << 6,
 };
