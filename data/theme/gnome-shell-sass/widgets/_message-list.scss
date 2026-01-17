@@ -152,7 +152,7 @@
     // add margin to close button to balance it with the expand button
     .message-close-button {
       margin: $base_padding * 0.5;
-      padding: 4px;
+      padding: $base_padding;
     }
   }
 
