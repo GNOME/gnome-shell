@@ -8,6 +8,9 @@
     <method name="CanShutdown">
       <arg type="u" direction="out"/>
     </method>
+    <method name="CanReboot">
+      <arg type="u" direction="out"/>
+    </method>
     <method name="IsInhibited">
       <arg type="u" direction="in"/>
       <arg type="b" direction="out"/>
