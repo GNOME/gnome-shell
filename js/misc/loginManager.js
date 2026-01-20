@@ -154,7 +154,7 @@ class LoginManagerSystemd extends Signals.EventEmitter {
 
         try {
             const [result] = await this._proxy.CanSuspendAsync();
-            needsAuth = result === 'challenge';
+            needsAuth = result === 'challenge' || result === 'inhibited';
             canSuspend = needsAuth || result === 'yes';
         } catch {
             canSuspend = false;
