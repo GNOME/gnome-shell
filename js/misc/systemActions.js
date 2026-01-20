@@ -82,7 +82,11 @@ const SystemActions = GObject.registerClass({
         super._init();
 
         this._canHavePowerOff = true;
+        this._powerOffNeedsAuth = false;
+        this._canHaveReboot = true;
+        this._rebootNeedsAuth = false;
         this._canHaveSuspend = true;
+        this._suspendNeedsAuth = false;
 
         function tokenizeKeywords(keywords) {
             return keywords.split(';').map(keyword => GLib.str_tokenize_and_fold(keyword, null)).flat(2);
@@ -183,11 +187,15 @@ const SystemActions = GObject.registerClass({
         this._lockdownSettings.connect(`changed::${DISABLE_LOCK_SCREEN_KEY}`,
             () => this._updateLockScreen());
 
-        this._lockdownSettings.connect(`changed::${DISABLE_LOG_OUT_KEY}`,
-            () => this._updateHaveShutdown());
+        this._lockdownSettings.connect(`changed::${DISABLE_LOG_OUT_KEY}`, () => {
+            this._updateHaveShutdown();
+            this._updateHaveReboot();
+        });
 
-        this._screenSaverSettings.connect(`changed::${RESTART_ENABLED_KEY}`,
-            () => this._updateHaveShutdown());
+        this._screenSaverSettings.connect(`changed::${RESTART_ENABLED_KEY}`, () => {
+            this._updateHaveShutdown();
+            this._updateHaveReboot();
+        });
 
         this.forceUpdate();
 
@@ -268,6 +276,7 @@ const SystemActions = GObject.registerClass({
     _sessionUpdated() {
         this._updateLockScreen();
         this._updatePowerOff();
+        this._updateReboot();
         this._updateSuspend();
         this._updateMultiUser();
     }
@@ -277,6 +286,7 @@ const SystemActions = GObject.registerClass({
         // settings and Polkit policy - we don't get change notifications for the
         // latter, so their value may be outdated; force an update now
         this._updateHaveShutdown();
+        this._updateHaveReboot();
         this._updateHaveSuspend();
     }
 
@@ -345,10 +355,12 @@ const SystemActions = GObject.registerClass({
 
     async _updateHaveShutdown() {
         try {
-            const [canShutdown] = await this._session.CanShutdownAsync();
+            const [canShutdown, needsAuth] = await this._session.CanShutdownAsync();
             this._canHavePowerOff = canShutdown;
+            this._powerOffNeedsAuth = needsAuth;
         } catch {
             this._canHavePowerOff = false;
+            this._powerOffNeedsAuth = false;
         }
         this._updatePowerOff();
     }
@@ -356,12 +368,32 @@ const SystemActions = GObject.registerClass({
     _updatePowerOff() {
         const disabled = (Main.sessionMode.isLocked &&
                         !this._screenSaverSettings.get_boolean(RESTART_ENABLED_KEY)) ||
+                       (Main.sessionMode.isLocked && this._powerOffNeedsAuth) ||
                        (Main.sessionMode.isGreeter &&
                         this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
         this._actions.get(POWER_OFF_ACTION_ID).available = this._canHavePowerOff && !disabled;
         this.notify('can-power-off');
+    }
 
-        this._actions.get(RESTART_ACTION_ID).available = this._canHavePowerOff && !disabled;
+    async _updateHaveReboot() {
+        try {
+            const [canReboot, needsAuth] = await this._session.CanRebootAsync();
+            this._canHaveReboot = canReboot;
+            this._rebootNeedsAuth = needsAuth;
+        } catch {
+            this._canHaveReboot = false;
+            this._rebootNeedsAuth = false;
+        }
+        this._updateReboot();
+    }
+
+    _updateReboot() {
+        const disabled = (Main.sessionMode.isLocked &&
+                        !this._screenSaverSettings.get_boolean(RESTART_ENABLED_KEY)) ||
+                       (Main.sessionMode.isLocked && this._rebootNeedsAuth) ||
+                       (Main.sessionMode.isGreeter &&
+                        this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
+        this._actions.get(RESTART_ACTION_ID).available = this._canHaveReboot && !disabled;
         this.notify('can-restart');
     }
 
