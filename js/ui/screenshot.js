@@ -366,6 +366,59 @@ const UIAreaSelector = GObject.registerClass({
         this._updateSelectionRect();
     }
 
+    moveInDirection(direction) {
+        const [,, selectionWidth, selectionHeight] = this.getGeometry();
+
+        let newStartX = this._startX;
+        let newStartY = this._startY;
+        let newLastX = this._lastX;
+        let newLastY = this._lastY;
+
+        switch (direction) {
+        case St.DirectionType.LEFT:
+            newStartX -= SELECTION_KEYBOARD_INCREMENT;
+            newLastX -= SELECTION_KEYBOARD_INCREMENT;
+            break;
+        case St.DirectionType.RIGHT:
+            newStartX += SELECTION_KEYBOARD_INCREMENT;
+            newLastX += SELECTION_KEYBOARD_INCREMENT;
+            break;
+        case St.DirectionType.UP:
+            newStartY -= SELECTION_KEYBOARD_INCREMENT;
+            newLastY -= SELECTION_KEYBOARD_INCREMENT;
+            break;
+        case St.DirectionType.DOWN:
+            newStartY += SELECTION_KEYBOARD_INCREMENT;
+            newLastY += SELECTION_KEYBOARD_INCREMENT;
+            break;
+        }
+
+        // Ensure area does not move off the stage edge.
+        if (newStartX < 0 || newLastX < 0) {
+            newStartX = 0;
+            newLastX = newStartX + (selectionWidth - 1);
+        } else if (newLastX > this.width - 1) {
+            newLastX = this.width - 1;
+            newStartX = newLastX - (selectionWidth - 1);
+        }
+
+        if (newStartY < 0 || newLastY < 0) {
+            newStartY = 0;
+            newLastY = newStartY + (selectionHeight - 1);
+        } else if (newLastY > this.height - 1) {
+            newLastY = this.height - 1;
+            newStartY = newLastY - (selectionHeight - 1);
+        }
+
+        // Update selection rectangle props.
+        this._startX = newStartX;
+        this._startY = newStartY;
+        this._lastX = newLastX;
+        this._lastY = newLastY;
+
+        this._updateSelectionRect();
+    }
+
     resizeInDirection(direction) {
         let newStartX = this._startX;
         let newStartY = this._startY;
@@ -1250,6 +1303,36 @@ export class ScreenshotUI extends St.Widget {
                 return Clutter.EVENT_STOP;
             }
         );
+
+        bindingPool.install_closure(
+            'move-selection-left', Clutter.KEY_Left, Clutter.ModifierType.MOD1_MASK,
+            obj => {
+                obj._areaSelector.moveInDirection(St.DirectionType.LEFT);
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'move-selection-right', Clutter.KEY_Right, Clutter.ModifierType.MOD1_MASK,
+            obj => {
+                obj._areaSelector.moveInDirection(St.DirectionType.RIGHT);
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'move-selection-up', Clutter.KEY_Up, Clutter.ModifierType.MOD1_MASK,
+            obj => {
+                obj._areaSelector.moveInDirection(St.DirectionType.UP);
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'move-selection-down', Clutter.KEY_Down, Clutter.ModifierType.MOD1_MASK,
+            obj => {
+                obj._areaSelector.moveInDirection(St.DirectionType.DOWN);
+                return Clutter.EVENT_STOP;
+            }
+        );
+
         bindingPool.install_closure(
             'reset', Clutter.KEY_r, 0,
             obj => {
