@@ -1,7 +1,7 @@
 <node>
   <interface name="org.freedesktop.login1.Manager">
-    <method name="Suspend">
-      <arg type="b" direction="in"/>
+    <method name="SuspendWithFlags">
+      <arg type="t" direction="in"/>
     </method>
     <method name="CanSuspend">
       <arg type="s" direction="out"/>
