@@ -14,6 +14,14 @@ const SystemdLoginManager = Gio.DBusProxy.makeProxyWrapper(SystemdLoginManagerIf
 const SystemdLoginSession = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIface);
 const SystemdLoginUser = Gio.DBusProxy.makeProxyWrapper(SystemdLoginUserIface);
 
+const SystemdLoginPowerFlags = {
+    ROOT_CHECK_INHIBITORS: 1,
+    KEXEC_REBOOT: 2,
+    SOFT_REBOOT: 4,
+    SOFT_REBOOT_IF_NEXTROOT_SET_UP: 8,
+    SKIP_INHIBITORS: 16,
+};
+
 function haveSystemd() {
     return GLib.access('/run/systemd/seats', 0) >= 0;
 }
@@ -196,7 +204,9 @@ class LoginManagerSystemd extends Signals.EventEmitter {
     }
 
     suspend() {
-        this._proxy.SuspendAsync(true);
+        const sd_flags = SystemdLoginPowerFlags.SKIP_INHIBITORS;
+        const dbus_flags = Gio.DBusCallFlags.ALLOW_INTERACTIVE_AUTHORIZATION;
+        this._proxy.SuspendWithFlagsAsync(sd_flags, dbus_flags);
     }
 
     async inhibit(reason, cancellable) {
