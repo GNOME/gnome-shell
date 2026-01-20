@@ -409,15 +409,11 @@ const UIAreaSelector = GObject.registerClass({
         }
 
         // Ensure new resized area does not go off the stage edge.
-        if (newStartX < 0)
-            newStartX = 0;
-        else if (newLastX > this.width - 1)
-            newLastX = this.width - 1;
+        newStartX = Math.clamp(newStartX, 0, this.width - 1);
+        newLastX = Math.clamp(newLastX, 0, this.width - 1);
 
-        if (newStartY < 0)
-            newStartY = 0;
-        else if (newLastY > this.height - 1)
-            newLastY = this.height - 1;
+        newStartY = Math.clamp(newStartY, 0, this.height - 1);
+        newLastY = Math.clamp(newLastY, 0, this.height - 1);
 
         // Update selection rectangle props.
         this._startX = newStartX;
