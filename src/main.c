@@ -52,6 +52,7 @@ enum {
 };
 static int _shell_debug;
 static gboolean _tracked_signals[NSIG] = { 0 };
+static GThread *main_thread;
 
 static void
 shell_dbus_acquire_name (GDBusProxy  *bus,
@@ -382,7 +383,8 @@ default_log_writer (GLogLevelFlags   log_level,
 
   if ((_shell_debug & SHELL_DEBUG_BACKTRACE_WARNINGS) &&
       ((log_level & G_LOG_LEVEL_CRITICAL) ||
-       (log_level & G_LOG_LEVEL_WARNING)))
+       (log_level & G_LOG_LEVEL_WARNING)) &&
+      g_thread_self () == main_thread)
     {
       const char *log_domain = NULL;
 
@@ -608,6 +610,8 @@ main (int argc, char **argv)
    */
   g_setenv ("GJS_DEBUG_OUTPUT", "stderr", TRUE);
   g_setenv ("GJS_DEBUG_TOPICS", "JS ERROR;JS LOG", TRUE);
+
+  main_thread = g_thread_self ();
 
   context = meta_create_context (WM_NAME);
   meta_context_add_option_entries (context, gnome_shell_options,
