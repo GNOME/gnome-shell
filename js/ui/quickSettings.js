@@ -734,6 +734,8 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
         this.actor.add_child(this._boxPointer);
         this.actor._delegate = this;
 
+        global.focus_manager.add_group(this.actor);
+
         this.connect('menu-closed', () => this.actor.hide());
 
         Main.layoutManager.connectObject('system-modal-opened',
