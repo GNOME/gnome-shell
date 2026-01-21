@@ -95,7 +95,7 @@ adjusting the timeouts of the service as well. This command can be used to
 create such a drop-in file for the current user:
 
 ```sh
-$ systemctl --user edit org.gnome.Shell@wayland.service --drop-in valgrind
+$ systemctl --user edit org.gnome.Shell@user.service --drop-in valgrind
 ```
 
 This opens an editor in which the following content has to be added:
@@ -117,7 +117,5 @@ needs to be removed again before starting the next session. Otherwise the log
 will get overwritten. This can be done using following command from a VT:
 
 ```sh
-$ systemctl --user revert org.gnome.Shell@wayland.service
+$ systemctl --user revert org.gnome.Shell@user.service
 ```
-
-For X11 sessions use `org.gnome.Shell@x11.service` in these commands instead.
