@@ -656,7 +656,8 @@ export const AuthPrompt = GObject.registerClass({
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.cancelButton.reactive = this._hasCancelButton;
         this.cancelButton.can_focus = this._hasCancelButton;
-        this._preemptiveAnswer = null;
+        if (oldStatus !== AuthPromptStatus.VERIFICATION_IN_PROGRESS)
+            this._preemptiveAnswer = null;
 
         if (this._userVerifier)
             this._userVerifier.cancel();
