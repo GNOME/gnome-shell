@@ -78,8 +78,22 @@ st_spinner_content_init (StSpinnerContent *spinner)
 }
 
 static void
+st_spinner_content_finalize (GObject *gobject)
+{
+  StSpinnerContent *spinner = ST_SPINNER_CONTENT (gobject);
+
+  g_clear_object (&spinner->timeline);
+  g_clear_object (&spinner->actor);
+  g_clear_object (&spinner->texture);
+  g_clear_object (&spinner->buffer);
+
+  G_OBJECT_CLASS (st_spinner_content_parent_class)->finalize (gobject);
+}
+
+static void
 st_spinner_content_class_init (StSpinnerContentClass *klass)
 {
+  G_OBJECT_CLASS (klass)->finalize = st_spinner_content_finalize;
 }
 
 static void
