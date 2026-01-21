@@ -144,6 +144,18 @@ export const AuthPrompt = GObject.registerClass({
             this.cancel();
             return Clutter.EVENT_STOP;
         }
+
+        if (this._preemptiveInput && !this._pendingActivate) {
+            const unichar = event.get_key_unicode();
+            if (event.get_key_symbol() === Clutter.KEY_Return) {
+                this._pendingActivate = true;
+            } else if (GLib.unichar_isgraph(unichar)) {
+                this._entry.clutter_text.insert_text(unichar,
+                    this._entry.clutter_text.cursor_position);
+            }
+            return Clutter.EVENT_STOP;
+        }
+
         return Clutter.EVENT_PROPAGATE;
     }
 
@@ -564,8 +576,18 @@ export const AuthPrompt = GObject.registerClass({
             opacity: 255,
             duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
             transition: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this.updateSensitivity(true),
+            onComplete: () => {
+                this.updateSensitivity(true);
+                this._endPreemptiveInput(element);
+            },
         });
+    }
+
+    _endPreemptiveInput(element) {
+        if (element === this._entryArea && this._pendingActivate)
+            this._activateNext();
+        this._preemptiveInput = false;
+        this._pendingActivate = false;
     }
 
     setChoiceList(promptMessage, choiceList) {
@@ -706,7 +728,7 @@ export const AuthPrompt = GObject.registerClass({
         this._updateEntry(true);
         this.stopSpinning();
 
-        if (reuseEntryText) {
+        if (reuseEntryText || this._preemptiveInput) {
             this._textEntry.text = oldEntryText;
             this._passwordEntry.text = oldPasswordText;
         }
@@ -740,12 +762,10 @@ export const AuthPrompt = GObject.registerClass({
         this.emit('reset', beginRequestType);
     }
 
-    addCharacter(unichar) {
-        if (!this._entry.visible)
-            return;
-
-        this._entry.grab_key_focus();
-        this._entry.clutter_text.insert_unichar(unichar);
+    startPreemptiveInput(unichar) {
+        this._preemptiveInput = true;
+        this._entry.clutter_text.insert_text(unichar, this._entry.clutter_text.cursor_position);
+        this.grab_key_focus();
     }
 
     begin(params) {
