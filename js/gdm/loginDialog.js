@@ -1589,10 +1589,6 @@ export const LoginDialog = GObject.registerClass({
         this._authPrompt.cancel();
     }
 
-    addCharacter(_unichar) {
-        // Don't allow type ahead at the login screen
-    }
-
     finish(onComplete) {
         this._authPrompt.finish(onComplete);
     }
