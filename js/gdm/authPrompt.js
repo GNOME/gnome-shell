@@ -418,6 +418,8 @@ export const AuthPrompt = GObject.registerClass({
         else
             this._preemptiveAnswer = this._entry.text;
 
+        this._preemptiveInput = false;
+
         this.emit('next');
     }
 
@@ -449,9 +451,11 @@ export const AuthPrompt = GObject.registerClass({
             this.clear();
 
         this._queryingService = serviceName;
-        if (this._preemptiveAnswer) {
-            this._userVerifier.answerQuery(this._queryingService, this._preemptiveAnswer);
-            this._preemptiveAnswer = null;
+
+        const preemptiveAnswer = this._preemptiveAnswer;
+        this._clearPreemptiveState();
+        if (preemptiveAnswer) {
+            this._userVerifier.answerQuery(this._queryingService, preemptiveAnswer);
             return;
         }
 
@@ -474,8 +478,7 @@ export const AuthPrompt = GObject.registerClass({
 
         this._queryingService = serviceName;
 
-        if (this._preemptiveAnswer)
-            this._preemptiveAnswer = null;
+        this._clearPreemptiveState();
 
         this.setChoiceList(promptMessage, choiceList);
         this.updateSensitivity({sensitive: true});
@@ -735,6 +738,9 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     updateSensitivity({sensitive}) {
+        if (sensitive && this._preemptiveAnswer)
+            return;
+
         const authWidget = [
             this._authList,
         ].find(widget => widget.visible) ?? this._entry;
@@ -778,7 +784,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     reset(params) {
-        const {reuseEntryText, softReset} = Params.parse(params, {
+        let {reuseEntryText, softReset} = Params.parse(params, {
             reuseEntryText: false,
             softReset: false,
         });
@@ -792,6 +798,8 @@ export const AuthPrompt = GObject.registerClass({
 
         if (this._userVerifier)
             this._userVerifier.cancel();
+
+        reuseEntryText = reuseEntryText || this._preemptiveInput;
 
         this._queryingService = null;
         this.clear({reuseEntryText});
@@ -827,12 +835,16 @@ export const AuthPrompt = GObject.registerClass({
         this.emit('reset', resetType);
     }
 
-    addCharacter(unichar) {
-        if (!this._entry.visible)
-            return;
+    startPreemptiveInput(unichar) {
+        this._preemptiveInput = true;
+        this.updateSensitivity({sensitive: true});
+        if (unichar)
+            this._entry.clutter_text.insert_unichar(unichar);
+    }
 
-        this._entry.grab_key_focus();
-        this._entry.clutter_text.insert_unichar(unichar);
+    _clearPreemptiveState() {
+        this._preemptiveInput = false;
+        this._preemptiveAnswer = null;
     }
 
     /*
@@ -863,7 +875,8 @@ export const AuthPrompt = GObject.registerClass({
             hold: null,
         });
 
-        this.updateSensitivity({sensitive: false});
+        if (!this._preemptiveInput)
+            this.updateSensitivity({sensitive: false});
 
         let hold = params.hold;
         if (!hold)
