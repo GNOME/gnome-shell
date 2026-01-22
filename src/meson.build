@@ -34,6 +34,14 @@ test_tool = configure_file(
   install_dir: bindir
 )
 
+configure_file(
+  input: 'gnome-shell-embedded-webview.in',
+  output: 'gnome-shell-embedded-webview',
+  configuration: script_data,
+  install_dir: libexecdir,
+  install_mode: 'rwxr-xr-x'
+)
+
 if get_option('extensions_tool')
   configure_file(
     input: 'gnome-shell-extension-tool.in',

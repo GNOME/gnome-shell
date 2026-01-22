@@ -15,6 +15,7 @@ export const LOCALEDIR = '@datadir@/locale';
 /* other standard directories */
 export const LIBEXECDIR = '@libexecdir@';
 export const PKGDATADIR = '@datadir@/@PACKAGE_NAME@';
+export const EMBEDDED_WEBVIEW_COMMAND = '@libexecdir@/gnome-shell-embedded-webview';
 /* g-i package versions */
 export const LIBMUTTER_API_VERSION = '@LIBMUTTER_API_VERSION@';
 

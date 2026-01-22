@@ -92,6 +92,7 @@ keybinding_files = [
 
 install_data(keybinding_files, install_dir: keysdir)
 
+install_subdir('firefox-greeter-profile', install_dir: pkgdatadir)
 
 schemaconf = configuration_data()
 schemaconf.set('GETTEXT_PACKAGE', meson.project_name())

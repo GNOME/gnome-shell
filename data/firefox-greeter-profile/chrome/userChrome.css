@@ -1,0 +1,48 @@
+/* Instead of hiding individual bars, hide the entire toolbox container.
+   This covers: Tabs, Nav Bar, Bookmarks, Menu Bar, and Title Bar. */
+#navigator-toolbox {
+    display: none !important;
+}
+
+/* If the OS sends these events (min/max/close), you might still need
+   them, but visually removing them prevents user clicking. */
+.titlebar-buttonbox-container {
+    display: none !important;
+}
+
+/* Hides the popup at the bottom-left showing URL destinations. */
+#statuspanel {
+    display: none !important;
+}
+
+/* Prevents the sidebar panel from appearing even if triggered. */
+#sidebar-box,
+#sidebar-header {
+    visibility: collapse !important;
+    display: none !important;
+}
+
+/* Prevents the search bar from appearing at the bottom. */
+findbar {
+    display: none !important;
+}
+
+/* This is critical for preventing "Inspect Element" or "Save Page As".
+   Note: This hides the menu visuals, but the event still fires. */
+#contentAreaContextMenu,
+#tabContextMenu,
+#toolbar-context-menu,
+#placesContext {
+    display: none !important;
+}
+
+/* Prevents browser UI tooltips from appearing. */
+tooltip {
+    display: none !important;
+}
+
+/* Hides the URL bar autocomplete dropdown if it somehow gets triggered. */
+#urlbar-results,
+.urlbarView {
+    display: none !important;
+}

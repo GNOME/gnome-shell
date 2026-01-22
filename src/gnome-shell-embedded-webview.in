@@ -1,0 +1,24 @@
+#!/bin/sh
+
+PROFILE_TEMPLATE="@pkgdatadir@/firefox-greeter-profile"
+PROFILE_DIR="${XDG_RUNTIME_DIR}/gnome-shell-firefox-greeter"
+
+if [ ! -d "$PROFILE_DIR" ] && [ -d "$PROFILE_TEMPLATE" ]; then
+    cp -r "$PROFILE_TEMPLATE" "$PROFILE_DIR"
+fi
+
+cleanup() {
+    flatpak kill org.mozilla.firefox
+}
+
+trap cleanup SIGTERM SIGINT
+
+# inherit-wayland-socket is required because this is launched by
+# Meta.WaylandClient and it sets a WAYLAND_SOCKET
+flatpak run \
+    --socket=inherit-wayland-socket \
+    --filesystem="$PROFILE_DIR" \
+    org.mozilla.firefox --profile "$PROFILE_DIR" "$@" &
+
+PID=$!
+wait $PID
