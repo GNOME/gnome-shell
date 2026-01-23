@@ -7,12 +7,33 @@ import * as BarLevel from './barLevel.js';
 const SLIDER_SCROLL_STEP = 0.02; /* Slider scrolling step in % */
 const SNAP_THRESHOLD = 0.04; /* Snap to marks within 4% */
 
-export const Slider = GObject.registerClass({
-    Signals: {
+export class Slider extends BarLevel.BarLevel {
+    static [GObject.signals] = {
         'drag-begin': {},
         'drag-end': {},
-    },
-}, class Slider extends BarLevel.BarLevel {
+    };
+
+    static {
+        GObject.registerClass(this);
+
+        const bindingPool = this.get_binding_pool();
+
+        bindingPool.install_closure(
+            'left', Clutter.KEY_Left, 0,
+            obj => {
+                obj._moveLeft();
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'right', Clutter.KEY_Right, 0,
+            obj => {
+                obj._moveRight();
+                return Clutter.EVENT_STOP;
+            }
+        );
+    }
+
     _init(value) {
         super._init({
             value,
@@ -172,16 +193,16 @@ export const Slider = GObject.registerClass({
         return Clutter.EVENT_STOP;
     }
 
-    vfunc_key_press_event(event) {
-        const key = event.get_key_symbol();
-        if (key === Clutter.KEY_Right || key === Clutter.KEY_Left) {
-            const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
-            const increaseKey = rtl ? Clutter.KEY_Left : Clutter.KEY_Right;
-            const delta = key === increaseKey ? 0.1 : -0.1;
-            this._applyDelta(delta);
-            return Clutter.EVENT_STOP;
-        }
-        return super.vfunc_key_press_event(event);
+    _moveLeft() {
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
+        const delta = rtl ? 0.1 : -0.1;
+        this._applyDelta(delta);
+    }
+
+    _moveRight() {
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
+        const delta = rtl ? -0.1 : 0.1;
+        this._applyDelta(delta);
     }
 
     _moveHandle(x, _y) {
@@ -206,4 +227,4 @@ export const Slider = GObject.registerClass({
     _getMinimumIncrement() {
         return 0.1;
     }
-});
+}
