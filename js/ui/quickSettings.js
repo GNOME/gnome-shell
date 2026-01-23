@@ -327,17 +327,15 @@ export const QuickSlider = GObject.registerClass({
             style_class: 'slider-bin',
             child: this.slider,
             reactive: true,
-            can_focus: true,
             x_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
         });
         box.add_child(sliderBin);
 
-        // Make the slider bin transparent for a11y
-        const sliderAccessible = this.slider.get_accessible();
-        sliderAccessible.set_parent(sliderBin.get_parent().get_accessible());
-        sliderBin.set_accessible(sliderAccessible);
-        sliderBin.connect('event', (bin, event) => this.slider.event(event, false));
+        this.slider.connectObject(
+            'key-focus-in', () => sliderBin.add_style_pseudo_class('focus'),
+            'key-focus-out', () => sliderBin.remove_style_pseudo_class('focus'),
+            this);
 
         this._menuButton = new St.Button({
             child: new St.Icon({icon_name: 'go-next-symbolic'}),
