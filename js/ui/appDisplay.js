@@ -1403,7 +1403,7 @@ class AppDisplay extends BaseAppView {
     }
 
     _ensureDefaultFolders() {
-        if (this._folderSettings.get_strv('folder-children').length > 0)
+        if (this._folderSettings.get_user_value('folder-children') !== null)
             return;
 
         const appSys = Shell.AppSystem.get_default();
