@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master oc\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-12-19 20:42+0000\n"
-"PO-Revision-Date: 2025-12-26 10:17+0100\n"
+"POT-Creation-Date: 2026-01-20 13:00+0000\n"
+"PO-Revision-Date: 2026-01-25 18:21+0100\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -614,7 +614,22 @@ msgstr "Detalhs de l’error"
 msgid "Copy Error"
 msgstr "Afichar l’error"
 
-#: js/gdm/authPrompt.js:157 js/gdm/loginDialog.js:514
+#: js/gdm/authPrompt.js:58 js/misc/timeLimitsManager.js:1428
+msgid "Screen Time Limit Reached"
+msgstr "Limit de temps d’ecran atench"
+
+#: js/gdm/authPrompt.js:64
+msgid ""
+"Daily limit for screen time on this device has been reached. Resume tomorrow."
+msgstr ""
+"Lo limit jornalièr d’ecran es atenh sus aqueste aparelh. Reprenètz deman."
+
+#. Translators: this is for ignoring a screen time limit for parental controls
+#: js/gdm/authPrompt.js:72
+msgid "Ignore"
+msgstr "Ignorar"
+
+#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:514
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -622,7 +637,7 @@ msgstr "Afichar l’error"
 msgid "Cancel"
 msgstr "Anullar"
 
-#: js/gdm/authPrompt.js:335 js/ui/components/networkAgent.js:214
+#: js/gdm/authPrompt.js:434 js/ui/components/networkAgent.js:214
 #: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
 #: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
 #: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
@@ -922,7 +937,7 @@ msgid_plural "Break in %d seconds"
 msgstr[0] "Pausa d’aquí %d segonda"
 msgstr[1] "Pausa d’aquí %d segondas"
 
-#: js/misc/brightnessManager.js:169 js/ui/status/brightness.js:10
+#: js/misc/brightnessManager.js:171 js/ui/status/brightness.js:10
 msgid "Brightness"
 msgstr "Luminositat"
 
@@ -1043,10 +1058,6 @@ msgstr[1] "Limit de temps d’ecran d’aquí %d minutas"
 #: js/misc/timeLimitsManager.js:1407
 msgid "Your screen time limit is approaching"
 msgstr "Lo limit de temps d’ecran apròcha"
-
-#: js/misc/timeLimitsManager.js:1428
-msgid "Screen Time Limit Reached"
-msgstr "Limit de temps d’ecran atench"
 
 #: js/misc/timeLimitsManager.js:1429
 msgid "It’s time to stop using the device"
@@ -1296,7 +1307,7 @@ msgid "Settings"
 msgstr "Paramètres"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:32
+#: js/ui/calendar.js:34
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -1306,43 +1317,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:58
+#: js/ui/calendar.js:60
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:60
+#: js/ui/calendar.js:62
 msgctxt "grid monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:62
+#: js/ui/calendar.js:64
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:64
+#: js/ui/calendar.js:66
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:66
+#: js/ui/calendar.js:68
 msgctxt "grid thursday"
 msgid "T"
 msgstr "J"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:68
+#: js/ui/calendar.js:70
 msgctxt "grid friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:72
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -1353,7 +1364,7 @@ msgstr "S"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:421
+#: js/ui/calendar.js:425
 msgid "%OB"
 msgstr "%OB"
 
@@ -1366,37 +1377,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:431
+#: js/ui/calendar.js:435
 msgid "%OB %Y"
 msgstr "%OB de %Y"
 
-#: js/ui/calendar.js:493
+#: js/ui/calendar.js:505
 msgid "Previous month"
 msgstr "Mes precedent"
 
-#: js/ui/calendar.js:511
+#: js/ui/calendar.js:523
 msgid "Next month"
 msgstr "Mes seguent"
 
-#: js/ui/calendar.js:662
+#: js/ui/calendar.js:675
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:721
+#: js/ui/calendar.js:734
 msgid "Week %V"
 msgstr "Setmana %V"
 
-#: js/ui/calendar.js:774
+#: js/ui/calendar.js:787
 msgid "No Notifications"
 msgstr "Pas cap de notificacion"
 
-#: js/ui/calendar.js:815
+#: js/ui/calendar.js:828
 msgid "Clear"
 msgstr "Escafar"
 
-#: js/ui/calendar.js:819
+#: js/ui/calendar.js:832
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Escafar totas las notificacions"
@@ -1944,61 +1955,61 @@ msgstr "Atudar"
 msgid "Leave Off"
 msgstr "Daissar atudat"
 
-#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:898
+#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:882
 msgid "Keyboard Settings"
 msgstr "Paramètres del clavièr"
 
-#: js/ui/lookingGlass.js:742
+#: js/ui/lookingGlass.js:737
 msgid "No extensions installed"
 msgstr "Cap d'extension pas installada"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:805
+#: js/ui/lookingGlass.js:800
 #, javascript-format
 msgid "%s has not emitted any errors"
 msgstr "%s a pas emés cap d'error"
 
-#: js/ui/lookingGlass.js:811
+#: js/ui/lookingGlass.js:806
 msgid "Hide Errors"
 msgstr "Amagar las errors"
 
-#: js/ui/lookingGlass.js:815 js/ui/lookingGlass.js:895
+#: js/ui/lookingGlass.js:810 js/ui/lookingGlass.js:890
 msgid "Show Errors"
 msgstr "Afichar las errors"
 
-#: js/ui/lookingGlass.js:824
+#: js/ui/lookingGlass.js:819
 msgid "Active"
 msgstr "Actiu"
 
-#: js/ui/lookingGlass.js:827
+#: js/ui/lookingGlass.js:822
 msgid "Inactive"
 msgstr "Inactiva"
 
-#: js/ui/lookingGlass.js:829
+#: js/ui/lookingGlass.js:824
 msgid "Error"
 msgstr "Error"
 
-#: js/ui/lookingGlass.js:831
+#: js/ui/lookingGlass.js:826
 msgid "Out of date"
 msgstr "Perimit"
 
-#: js/ui/lookingGlass.js:833
+#: js/ui/lookingGlass.js:828
 msgid "Downloading"
 msgstr "Telecargament"
 
-#: js/ui/lookingGlass.js:835
+#: js/ui/lookingGlass.js:830
 msgid "Deactivating"
 msgstr "Desactivacion"
 
-#: js/ui/lookingGlass.js:837
+#: js/ui/lookingGlass.js:832
 msgid "Activating"
 msgstr "Activacion"
 
-#: js/ui/lookingGlass.js:873
+#: js/ui/lookingGlass.js:868
 msgid "View Source"
 msgstr "Afichar la font"
 
-#: js/ui/lookingGlass.js:884
+#: js/ui/lookingGlass.js:879
 msgid "Web Page"
 msgstr "Pagina Web"
 
@@ -2033,7 +2044,7 @@ msgstr "Lo verrolhatge d’ecran requerís lo gestionari d’afichatge GNOME"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:404
+#: js/ui/messageList.js:403
 msgid "Unknown App"
 msgstr "Aplicacion desconeguda"
 
@@ -2122,7 +2133,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistèma"
 
-#: js/ui/panel.js:466
+#: js/ui/panel.js:471
 msgid "Top Bar"
 msgstr "Barra superiora"
 
@@ -2138,17 +2149,9 @@ msgstr "Executar una comanda"
 msgid "Press ESC to close"
 msgstr "Quichatz sus Escap. per quitar"
 
-#: js/ui/screenShield.js:227
+#: js/ui/screenShield.js:220
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME a besonh de verrolhar l'ecran"
-
-#: js/ui/screenShield.js:269 js/ui/screenShield.js:675
-msgid "Unable to lock"
-msgstr "Impossible de verrolhar"
-
-#: js/ui/screenShield.js:270 js/ui/screenShield.js:676
-msgid "Lock was blocked by an app"
-msgstr "Lo verrolhatge es estat blocat per una aplicacion"
 
 #. Translators: notification source name for screenshots and recordings.
 #: js/ui/screenshot.js:40
@@ -2451,7 +2454,7 @@ msgstr "Feble"
 msgid "High"
 msgstr "Elevat"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:880
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:864
 msgid "Keyboard"
 msgstr "Clavièr"
 
@@ -2535,7 +2538,7 @@ msgstr "Clic segondari"
 msgid "Dwell Click"
 msgstr "Clic per manten"
 
-#: js/ui/status/keyboard.js:897
+#: js/ui/status/keyboard.js:881
 msgid "Show Keyboard Layout"
 msgstr "Afichar la disposicion del clavièr"
 
@@ -2854,23 +2857,23 @@ msgstr "Pas que l’integrat"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:414
+#: js/ui/unlockDialog.js:415
 msgid "%A %B %-d"
 msgstr "%A %d %B"
 
-#: js/ui/unlockDialog.js:420
+#: js/ui/unlockDialog.js:421
 msgid "Swipe up to unlock"
 msgstr "Far lisar ennaut per desverrolhar"
 
-#: js/ui/unlockDialog.js:421
+#: js/ui/unlockDialog.js:422
 msgid "Click or press a key to unlock"
 msgstr "Clicatz o quichatz una tòca per desverrolhar"
 
-#: js/ui/unlockDialog.js:609
+#: js/ui/unlockDialog.js:610
 msgid "Unlock Window"
 msgstr "Fenèstra de desverrolhatge"
 
-#: js/ui/unlockDialog.js:618
+#: js/ui/unlockDialog.js:619
 msgid "Log in as another user"
 msgstr "Se connectar en tant qu'un autre utilizaire"
 
@@ -3063,15 +3066,15 @@ msgstr ""
 "preferéncias d'extensions e la supression o desactivacion de las extensions "
 "pas volguda."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:64
 msgid "Main Window"
 msgstr "Fenèstra principala"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
 msgid "Available Updates"
 msgstr "Mesas a jorn disponiblas"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
 msgid "Search View"
 msgstr "Vista recèrca"
 
@@ -3821,6 +3824,12 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Sons sistèma"
+
+#~ msgid "Unable to lock"
+#~ msgstr "Impossible de verrolhar"
+
+#~ msgid "Lock was blocked by an app"
+#~ msgstr "Lo verrolhatge es estat blocat per una aplicacion"
 
 #~ msgid "Restart is not available on Wayland"
 #~ msgstr "La reaviada es pas disponibla sus Wayland"
