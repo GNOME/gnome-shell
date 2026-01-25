@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-01-19 16:28+0000\n"
-"PO-Revision-Date: 2026-01-21 13:30+0000\n"
+"POT-Creation-Date: 2026-01-20 13:00+0000\n"
+"PO-Revision-Date: 2026-01-25 22:26+0000\n"
 "Last-Translator: Flynn Peck <cirilla@tuta.io>\n"
 "Language-Team: kw\n"
 "Language: kw\n"
@@ -935,12 +935,12 @@ msgstr "Golewder"
 #: js/misc/systemActions.js:94
 msgctxt "search-result"
 msgid "Power Off"
-msgstr "Marowya"
+msgstr "Marowhe"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:97
 msgid "power off;poweroff;shutdown;halt;stop"
-msgstr "marowya;marow;astel;"
+msgstr "marowhe;marow;astel;"
 
 #. Translators: The name of the restart action in search
 #: js/misc/systemActions.js:102
@@ -1677,19 +1677,19 @@ msgstr "Omdhigelmi"
 #: js/ui/endSessionDialog.js:70 js/ui/status/system.js:181
 msgctxt "title"
 msgid "Power Off"
-msgstr "Marowya"
+msgstr "Marowhe"
 
 #: js/ui/endSessionDialog.js:71
 msgctxt "title"
 msgid "Install Updates & Power Off"
-msgstr "Lea Nowdhyansow & Marowya"
+msgstr "Lea Nowdhyansow & Marowhe"
 
 #: js/ui/endSessionDialog.js:74
 #, javascript-format
 msgid "The system will power off automatically in %d second"
 msgid_plural "The system will power off automatically in %d seconds"
-msgstr[0] "An system a wra marowya yn awtomatek yn %d eylen"
-msgstr[1] "An system a wra marowya yn awtomatek yn %d eylennow"
+msgstr[0] "An system a wra marowhe yn awtomatek yn %d eylen"
+msgstr[1] "An system a wra marowhe yn awtomatek yn %d eylennow"
 
 #: js/ui/endSessionDialog.js:78 js/ui/endSessionDialog.js:97
 msgctxt "checkbox"
@@ -1699,7 +1699,7 @@ msgstr "Lea nowedhyansow medhelweyth ow gortos"
 #: js/ui/endSessionDialog.js:82
 msgctxt "button"
 msgid "Power Off"
-msgstr "Marowya"
+msgstr "Marowhe"
 
 #: js/ui/endSessionDialog.js:89
 msgctxt "title"
@@ -1746,12 +1746,12 @@ msgstr "Dastalleth & Lea"
 #: js/ui/endSessionDialog.js:121
 msgctxt "button"
 msgid "Install & Power Off"
-msgstr "Lea & Marowya"
+msgstr "Lea & Marowhe"
 
 #: js/ui/endSessionDialog.js:122
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
-msgstr "Marowya wosa nowedhyansow yw leys"
+msgstr "Marowhe wosa nowedhyansow yw leys"
 
 #: js/ui/endSessionDialog.js:129
 msgctxt "title"
@@ -1879,7 +1879,7 @@ msgid ""
 "keyboard works."
 msgstr ""
 "Ty namnygen tavys diw alhwedhennow war-not, po tavys an alhwedhen Shift 5 "
-"prys. Ma marowya an nas Alhwedhennow Syger, may menni fatel dha bysowek "
+"prys. Ma marowhe an nas Alhwedhennow Syger, may menni fatel dha bysowek "
 "oberi."
 
 #: js/ui/kbdA11yDialog.js:57
@@ -1892,7 +1892,7 @@ msgstr "Gul Byw"
 
 #: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
 msgid "Turn Off"
-msgstr "Marowya"
+msgstr "Marowhe"
 
 #: js/ui/kbdA11yDialog.js:67
 msgid "Leave Off"
@@ -1942,7 +1942,7 @@ msgstr "Ow Iskarga"
 
 #: js/ui/lookingGlass.js:830
 msgid "Deactivating"
-msgstr "Ow Marowya"
+msgstr "Ow Marowhe"
 
 #: js/ui/lookingGlass.js:832
 msgid "Activating"
@@ -2075,7 +2075,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "System"
 
-#: js/ui/panel.js:466
+#: js/ui/panel.js:471
 msgid "Top Bar"
 msgstr "Penn-Barr"
 
@@ -2674,7 +2674,7 @@ msgstr "Fordh Ayren"
 
 #: js/ui/status/system.js:175
 msgid "Power Off Menu"
-msgstr "Rol Marowya"
+msgstr "Rol Marowhe"
 
 #: js/ui/status/system.js:183
 msgid "Suspend"
@@ -2686,7 +2686,7 @@ msgstr "Dastalleth…"
 
 #: js/ui/status/system.js:193
 msgid "Power Off…"
-msgstr "Marowya…"
+msgstr "Marowhe…"
 
 #: js/ui/status/system.js:200
 msgid "Log Out…"
@@ -3042,7 +3042,7 @@ msgid ""
 "is resolved."
 msgstr ""
 "Unn error yw happys yn an ystynnans ma. Ma kawsya martesen kudynnow yn leow "
-"aral yn an system. Yth yw komendys dhe marowya an ystynnans erna an error yw "
+"aral yn an system. Yth yw komendys dhe marowhe an ystynnans erna an error yw "
 "digelmys."
 
 #. translators: Details for an extension error
