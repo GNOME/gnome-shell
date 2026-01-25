@@ -1268,8 +1268,11 @@ apply_discrete_gpu_env (GAppLaunchContext *context,
                         ShellGlobal       *global)
 {
   GDBusProxy *proxy;
-  GVariant* variant;
+  GVariant *variant;
   guint num_children, i;
+  g_autoptr(GVariant) first_nondefault_discrete = NULL;
+  g_autoptr(GVariant) first_discrete = NULL;
+  g_autoptr(GVariant) first_nondefault = NULL;
 
   proxy = shell_global_get_switcheroo_control (global);
   if (!proxy)
@@ -1289,19 +1292,47 @@ apply_discrete_gpu_env (GAppLaunchContext *context,
   for (i = 0; i < num_children; i++)
     {
       g_autoptr(GVariant) gpu = NULL;
-      g_autoptr(GVariant) env = NULL;
       g_autoptr(GVariant) default_variant = NULL;
-      g_autofree const char **env_s = NULL;
-      guint j;
+      g_autoptr(GVariant) discrete_variant = NULL;
+      gboolean is_default = FALSE;
+      gboolean is_discrete = FALSE;
 
       gpu = g_variant_get_child_value (variant, i);
       if (!gpu ||
           !g_variant_is_of_type (gpu, G_VARIANT_TYPE ("a{s*}")))
         continue;
 
-      /* Skip over the default GPU */
-      default_variant = g_variant_lookup_value (gpu, "Default", NULL);
-      if (!default_variant || g_variant_get_boolean (default_variant))
+      default_variant = g_variant_lookup_value (gpu, "Default", G_VARIANT_TYPE_BOOLEAN);
+      if (default_variant)
+        is_default = g_variant_get_boolean (default_variant);
+
+      discrete_variant = g_variant_lookup_value (gpu, "Discrete", G_VARIANT_TYPE_BOOLEAN);
+      if (discrete_variant)
+        is_discrete = g_variant_get_boolean (discrete_variant);
+
+      if (is_discrete)
+        {
+          if (first_nondefault_discrete == NULL && !is_default)
+            first_nondefault_discrete = g_variant_ref (gpu);
+
+          if (first_discrete == NULL)
+            first_discrete = g_variant_ref (gpu);
+        }
+
+      if (first_nondefault == NULL && !is_default)
+        first_nondefault = g_variant_ref (gpu);
+    }
+
+  GVariant *gpu_list[] = { first_nondefault_discrete, first_discrete, first_nondefault };
+  
+  for (i = 0; i < G_N_ELEMENTS (gpu_list); ++i)
+    {
+      GVariant *gpu = gpu_list[i];
+      g_autoptr(GVariant) env = NULL;
+      g_autofree const char **env_s = NULL;
+      guint j;
+
+      if (!gpu)
         continue;
 
       env = g_variant_lookup_value (gpu, "Environment", NULL);
