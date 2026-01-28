@@ -331,11 +331,13 @@ st_password_entry_set_password_visible (StPasswordEntry *entry,
     {
       clutter_text_set_password_char (clutter_text, 0);
       st_icon_set_icon_name (ST_ICON (priv->peek_password_icon), "view-conceal-symbolic");
+      st_entry_set_input_purpose (ST_ENTRY (entry), CLUTTER_INPUT_CONTENT_PURPOSE_NORMAL);
     }
   else
     {
       clutter_text_set_password_char (clutter_text, BLACK_CIRCLE);
       st_icon_set_icon_name (ST_ICON (priv->peek_password_icon), "view-reveal-symbolic");
+      st_entry_set_input_purpose (ST_ENTRY (entry), CLUTTER_INPUT_CONTENT_PURPOSE_PASSWORD);
     }
 
   g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_PASSWORD_VISIBLE]);
