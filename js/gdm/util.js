@@ -43,7 +43,10 @@ export const LOGO_KEY = 'logo';
 export const DISABLE_USER_LIST_KEY = 'disable-user-list';
 
 // Give user 48ms to read each character of a PAM message
+// or 2 seconds, whichever is longer
 const USER_READ_TIME = 48;
+const USER_READ_TIME_MIN = 2000;
+
 const FINGERPRINT_SERVICE_PROXY_TIMEOUT = 5000;
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 
@@ -250,7 +253,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             return 0;
 
         // We probably could be smarter here
-        return message.length * USER_READ_TIME;
+        return Math.max(message.length * USER_READ_TIME, USER_READ_TIME_MIN);
     }
 
     finishMessageQueue() {
