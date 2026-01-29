@@ -54,6 +54,7 @@ const WELCOME_DIALOG_LAST_SHOWN_VERSION = 'welcome-dialog-last-shown-version';
 const WELCOME_DIALOG_LAST_TOUR_CHANGE = '40.beta';
 const LOG_DOMAIN = 'GNOME Shell';
 const GNOMESHELL_STARTED_MESSAGE_ID = 'f3ea493c22934e26811cd62abe8e203a';
+const REGISTER_SESSION_TIMEOUT_S = 10;
 
 export let componentManager = null;
 export let extensionManager = null;
@@ -322,7 +323,12 @@ async function _initializeUI() {
     extensionManager = new ExtensionSystem.ExtensionManager();
     extensionManager.init();
 
-    LoginManager.registerSessionWithGDM();
+    let timeoutRegisterSession = GLib.timeout_add_seconds_once(
+        GLib.PRIORITY_DEFAULT, REGISTER_SESSION_TIMEOUT_S,
+        () => {
+            LoginManager.registerSessionWithGDM();
+            timeoutRegisterSession = 0;
+        });
 
     if (sessionMode.isGreeter && screenShield) {
         layoutManager.connect('startup-prepared', () => {
@@ -369,6 +375,12 @@ async function _initializeUI() {
         if (sessionMode.currentMode !== 'gdm' &&
             sessionMode.currentMode !== 'initial-setup')
             _handleLockScreenWarning();
+
+        if (timeoutRegisterSession) {
+            GLib.source_remove(timeoutRegisterSession);
+            timeoutRegisterSession = 0;
+            LoginManager.registerSessionWithGDM();
+        }
 
         if (perfModule) {
             const perfOutput = GLib.getenv('SHELL_PERF_OUTPUT');
