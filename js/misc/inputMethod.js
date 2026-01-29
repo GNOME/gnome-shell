@@ -292,6 +292,8 @@ export const InputMethod = GObject.registerClass({
             ibusHints |= IBus.InputHints.UPPERCASE_WORDS;
         if (hints & Clutter.InputContentHintFlags.SENSITIVE_DATA)
             ibusHints |= IBus.InputHints.PRIVATE;
+        if (hints & Clutter.InputContentHintFlags.HIDDEN_TEXT)
+            ibusHints |= IBus.InputHints.HIDDEN_TEXT;
 
         this._hints = ibusHints;
         if (this._context)
