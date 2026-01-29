@@ -250,6 +250,7 @@ class UIAreaIndicator extends St.Widget {
     }
 });
 
+const CTRL_SELECTION_KEYBOARD_INCREMENT = 1;
 const SELECTION_KEYBOARD_INCREMENT = 5;
 
 const UIAreaSelector = GObject.registerClass({
@@ -366,7 +367,8 @@ const UIAreaSelector = GObject.registerClass({
         this._updateSelectionRect();
     }
 
-    moveInDirection(direction) {
+
+    moveInDirection(direction, increment) {
         const [,, selectionWidth, selectionHeight] = this.getGeometry();
 
         let newStartX = this._startX;
@@ -376,20 +378,20 @@ const UIAreaSelector = GObject.registerClass({
 
         switch (direction) {
         case St.DirectionType.LEFT:
-            newStartX -= SELECTION_KEYBOARD_INCREMENT;
-            newLastX -= SELECTION_KEYBOARD_INCREMENT;
+            newStartX -= increment;
+            newLastX -= increment;
             break;
         case St.DirectionType.RIGHT:
-            newStartX += SELECTION_KEYBOARD_INCREMENT;
-            newLastX += SELECTION_KEYBOARD_INCREMENT;
+            newStartX += increment;
+            newLastX += increment;
             break;
         case St.DirectionType.UP:
-            newStartY -= SELECTION_KEYBOARD_INCREMENT;
-            newLastY -= SELECTION_KEYBOARD_INCREMENT;
+            newStartY -= increment;
+            newLastY -= increment;
             break;
         case St.DirectionType.DOWN:
-            newStartY += SELECTION_KEYBOARD_INCREMENT;
-            newLastY += SELECTION_KEYBOARD_INCREMENT;
+            newStartY += increment;
+            newLastY += increment;
             break;
         }
 
@@ -419,7 +421,7 @@ const UIAreaSelector = GObject.registerClass({
         this._updateSelectionRect();
     }
 
-    resizeInDirection(direction) {
+    resizeInDirection(direction, increment) {
         let newStartX = this._startX;
         let newStartY = this._startY;
         let newLastX = this._lastX;
@@ -434,30 +436,30 @@ const UIAreaSelector = GObject.registerClass({
         switch (direction) {
         case St.DirectionType.LEFT:
             if (this._currentSide === St.DirectionType.LEFT)
-                newStartX -= SELECTION_KEYBOARD_INCREMENT;
+                newStartX -= increment;
             else if (this._currentSide === St.DirectionType.RIGHT)
-                newLastX -= SELECTION_KEYBOARD_INCREMENT;
+                newLastX -= increment;
             break;
 
         case St.DirectionType.RIGHT:
             if (this._currentSide === St.DirectionType.LEFT)
-                newStartX += SELECTION_KEYBOARD_INCREMENT;
+                newStartX += increment;
             else if (this._currentSide === St.DirectionType.RIGHT)
-                newLastX += SELECTION_KEYBOARD_INCREMENT;
+                newLastX += increment;
             break;
 
         case St.DirectionType.UP:
             if (this._currentSide === St.DirectionType.UP)
-                newStartY -= SELECTION_KEYBOARD_INCREMENT;
+                newStartY -= increment;
             else if (this._currentSide === St.DirectionType.DOWN)
-                newLastY -= SELECTION_KEYBOARD_INCREMENT;
+                newLastY -= increment;
             break;
 
         case St.DirectionType.DOWN:
             if (this._currentSide === St.DirectionType.UP)
-                newStartY += SELECTION_KEYBOARD_INCREMENT;
+                newStartY += increment;
             else if (this._currentSide === St.DirectionType.DOWN)
-                newLastY += SELECTION_KEYBOARD_INCREMENT;
+                newLastY += increment;
             break;
         }
 
@@ -1305,30 +1307,151 @@ export class ScreenshotUI extends St.Widget {
         );
 
         bindingPool.install_closure(
+            'resize-selection-left-control', Clutter.KEY_Left, Clutter.ModifierType.CONTROL_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._resizeSelection(St.DirectionType.LEFT, modifier);
+                return Clutter.EVENT_STOP;
+            }
+        );
+
+        bindingPool.install_closure(
+            'resize-selection-left-shift', Clutter.KEY_Left, Clutter.ModifierType.SHIFT_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._resizeSelection(St.DirectionType.LEFT, modifier);
+                return Clutter.EVENT_STOP;
+            }
+        );
+
+        bindingPool.install_closure(
+            'resize-selection-right-control', Clutter.KEY_Right, Clutter.ModifierType.CONTROL_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._resizeSelection(St.DirectionType.RIGHT, modifier);
+                return Clutter.EVENT_STOP;
+            }
+        );
+
+        bindingPool.install_closure(
+            'resize-selection-right-shift', Clutter.KEY_Right, Clutter.ModifierType.SHIFT_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._resizeSelection(St.DirectionType.RIGHT, modifier);
+                return Clutter.EVENT_STOP;
+            }
+        );
+
+        bindingPool.install_closure(
+            'resize-selection-up-control', Clutter.KEY_Up, Clutter.ModifierType.CONTROL_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._resizeSelection(St.DirectionType.UP, modifier);
+                return Clutter.EVENT_STOP;
+            }
+        );
+
+        bindingPool.install_closure(
+            'resize-selection-up-shift', Clutter.KEY_Up, Clutter.ModifierType.SHIFT_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._resizeSelection(St.DirectionType.UP, modifier);
+                return Clutter.EVENT_STOP;
+            }
+        );
+
+        bindingPool.install_closure(
+            'resize-selection-down-control', Clutter.KEY_Down, Clutter.ModifierType.CONTROL_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._resizeSelection(St.DirectionType.DOWN, modifier);
+                return Clutter.EVENT_STOP;
+            }
+        );
+
+        bindingPool.install_closure(
+            'resize-selection-down-shift', Clutter.KEY_Down, Clutter.ModifierType.SHIFT_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._resizeSelection(St.DirectionType.DOWN, modifier);
+                return Clutter.EVENT_STOP;
+            }
+        );
+
+        bindingPool.install_closure(
             'move-selection-left', Clutter.KEY_Left, Clutter.ModifierType.MOD1_MASK,
-            obj => {
-                obj._areaSelector.moveInDirection(St.DirectionType.LEFT);
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._areaSelector.moveInDirection(St.DirectionType.LEFT, obj._getIncrement(modifier));
                 return Clutter.EVENT_STOP;
             }
         );
         bindingPool.install_closure(
             'move-selection-right', Clutter.KEY_Right, Clutter.ModifierType.MOD1_MASK,
-            obj => {
-                obj._areaSelector.moveInDirection(St.DirectionType.RIGHT);
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._areaSelector.moveInDirection(St.DirectionType.RIGHT, obj._getIncrement(modifier));
                 return Clutter.EVENT_STOP;
             }
         );
         bindingPool.install_closure(
             'move-selection-up', Clutter.KEY_Up, Clutter.ModifierType.MOD1_MASK,
-            obj => {
-                obj._areaSelector.moveInDirection(St.DirectionType.UP);
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._areaSelector.moveInDirection(St.DirectionType.UP, obj._getIncrement(modifier));
                 return Clutter.EVENT_STOP;
             }
         );
         bindingPool.install_closure(
             'move-selection-down', Clutter.KEY_Down, Clutter.ModifierType.MOD1_MASK,
-            obj => {
-                obj._areaSelector.moveInDirection(St.DirectionType.DOWN);
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._areaSelector.moveInDirection(St.DirectionType.DOWN, obj._getIncrement(modifier));
+                return Clutter.EVENT_STOP;
+            }
+        );
+
+        bindingPool.install_closure(
+            'move-selection-left-control', Clutter.KEY_Left, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.CONTROL_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._areaSelector.moveInDirection(St.DirectionType.LEFT, obj._getIncrement(St.DirectionType.LEFT, modifier));
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'move-selection-left-shift', Clutter.KEY_Left, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.SHIFT_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._areaSelector.moveInDirection(St.DirectionType.LEFT, obj._getIncrement(St.DirectionType.LEFT, modifier));
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'move-selection-right-control', Clutter.KEY_Right, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.CONTROL_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._areaSelector.moveInDirection(St.DirectionType.RIGHT, obj._getIncrement(St.DirectionType.RIGHT, modifier));
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'move-selection-right-shift', Clutter.KEY_Right, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.SHIFT_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._areaSelector.moveInDirection(St.DirectionType.RIGHT, obj._getIncrement(St.DirectionType.RIGHT, modifier));
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'move-selection-up-control', Clutter.KEY_Up, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.CONTROL_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._areaSelector.moveInDirection(St.DirectionType.UP, obj._getIncrement(St.DirectionType.UP, modifier));
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'move-selection-up-shift', Clutter.KEY_Up, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.SHIFT_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._areaSelector.moveInDirection(St.DirectionType.UP, obj._getIncrement(St.DirectionType.UP, modifier));
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'move-selection-down-control', Clutter.KEY_Down, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.CONTROL_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._areaSelector.moveInDirection(St.DirectionType.DOWN, obj._getIncrement(St.DirectionType.DOWN, modifier));
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'move-selection-down-shift', Clutter.KEY_Down, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.SHIFT_MASK,
+            (obj, _actionName, _keyVal, modifier) => {
+                obj._areaSelector.moveInDirection(St.DirectionType.DOWN, obj._getIncrement(St.DirectionType.DOWN, modifier));
                 return Clutter.EVENT_STOP;
             }
         );
@@ -2416,6 +2539,28 @@ export class ScreenshotUI extends St.Widget {
         this._onCaptureButtonClicked().catch(logError);
     }
 
+    _getIncrement(direction, modifier) {
+        let increment;
+
+        if (modifier & Clutter.ModifierType.CONTROL_MASK) {
+            increment = CTRL_SELECTION_KEYBOARD_INCREMENT;
+        } else if (modifier & Clutter.ModifierType.SHIFT_MASK) {
+            if (direction === St.DirectionType.LEFT || direction === St.DirectionType.RIGHT)
+                increment = Main.layoutManager.primaryMonitor.width;
+            else if (direction === St.DirectionType.DOWN || direction === St.DirectionType.UP)
+                increment = Main.layoutManager.primaryMonitor.height;
+        } else {
+            increment = SELECTION_KEYBOARD_INCREMENT;
+        }
+
+        return increment;
+    }
+
+    _resizeSelection(direction, modifier) {
+        if (this._selectionButton.checked)
+            this._areaSelector.resizeInDirection(direction, this._getIncrement(direction, modifier));
+    }
+
     _moveFocus(direction) {
         if (this._windowButton.checked) {
             const window =
@@ -2426,8 +2571,8 @@ export class ScreenshotUI extends St.Widget {
             const screen =
                   this._screenSelectors.find(selector => selector.checked) ?? null;
             this.navigate_focus(screen, direction, false);
-        } else if (this._selectionButton.checked) {
-            this._areaSelector.resizeInDirection(direction);
+        } else {
+            this._resizeSelection(direction, null);
         }
     }
 }
