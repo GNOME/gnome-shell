@@ -439,15 +439,13 @@ query_info_async_ready_cb (GObject *source,
   deep_count_start (self);
 }
 
-static gboolean
+static void
 watchdog_timeout_reached_cb (gpointer user_data)
 {
   ShellMimeSniffer *self = user_data;
 
   self->watchdog_id = 0;
   g_cancellable_cancel (self->cancellable);
-
-  return FALSE;
 }
 
 static void
@@ -565,8 +563,8 @@ shell_mime_sniffer_sniff_async (ShellMimeSniffer *self,
                            callback, user_data);
 
   self->watchdog_id =
-    g_timeout_add (WATCHDOG_TIMEOUT,
-                   watchdog_timeout_reached_cb, self);
+    g_timeout_add_once (WATCHDOG_TIMEOUT,
+                        watchdog_timeout_reached_cb, self);
   g_source_set_name_by_id (self->watchdog_id, "[gnome-shell] watchdog_timeout_reached_cb");
 
   start_loading_file (self);

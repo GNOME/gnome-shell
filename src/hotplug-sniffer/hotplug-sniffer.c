@@ -43,15 +43,13 @@ static GDBusNodeInfo *introspection_data = NULL;
 static GMainLoop     *loop = NULL;
 static guint          autoquit_id = 0;
 
-static gboolean
+static void
 autoquit_timeout_cb (gpointer _unused)
 {
   print_debug ("Timeout reached, quitting...");
 
   autoquit_id = 0;
   g_main_loop_quit (loop);
-
-  return FALSE;
 }
 
 static void
@@ -69,9 +67,9 @@ ensure_autoquit_on (void)
   if (g_getenv ("HOTPLUG_SNIFFER_PERSIST") != NULL)
     return;
 
-  autoquit_id = 
-    g_timeout_add_seconds (AUTOQUIT_TIMEOUT,
-                           autoquit_timeout_cb, NULL);
+  autoquit_id =
+    g_timeout_add_seconds_once (AUTOQUIT_TIMEOUT,
+                                autoquit_timeout_cb, NULL);
   g_source_set_name_by_id (autoquit_id, "[gnome-shell] autoquit_timeout_cb");
 }
 
@@ -139,7 +137,7 @@ handle_sniff_uri (InvocationData *data)
 
   ensure_autoquit_off ();
 
-  g_variant_get (data->parameters, 
+  g_variant_get (data->parameters,
                  "(&s)", &uri,
                  NULL);
   file = g_file_new_for_uri (uri);
