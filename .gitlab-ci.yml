@@ -222,8 +222,8 @@ test-coverity:
     - sudo meson install -C mutter/build
   script:
     - .gitlab-ci/download-coverity-tarball.sh
-    - CC=clang meson coverity-build -Dman=false
-    - ./coverity/cov-analysis-linux64-*/bin/cov-build --fs-capture-search js --dir cov-int meson compile -C coverity-build
+    - CC=clang meson setup coverity-build -Dman=false
+    - ./coverity/cov-analysis-linux64-*/bin/cov-build --dir cov-int meson compile -C coverity-build
     - tar czf cov-int.tar.gz cov-int
     - curl https://scan.coverity.com/builds?project=GNOME+Shell
       --form token=$COVERITY_TOKEN --form email=carlosg@gnome.org
