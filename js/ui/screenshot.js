@@ -367,6 +367,44 @@ const UIAreaSelector = GObject.registerClass({
         this._updateSelectionRect();
     }
 
+    _centerCursor() {
+        const [leftX, topY, selectionWidth, selectionHeight] = this.getGeometry();
+        const [rightX, bottomY] = [leftX + selectionWidth - 1, topY + selectionHeight - 1];
+        const seat = global.stage.context.get_backend().get_default_seat();
+        const cursorX = ((rightX - leftX) / 2) + leftX;
+        const cursorY = ((topY - bottomY) / 2) + bottomY;
+
+        seat.warp_pointer(cursorX, cursorY);
+        this._updateCursor(cursorX, cursorY);
+    }
+
+    _moveCursorToSide(direction) {
+        const seat = global.stage.context.get_backend().get_default_seat();
+        const [leftX, topY, width, height] = this.getGeometry();
+        const [rightX, bottomY] = [leftX + width - 1, topY + height - 1];
+        let cursorX, cursorY;
+
+        switch (direction) {
+        case St.DirectionType.LEFT:
+            cursorX = leftX;
+            cursorY = ((topY - bottomY) / 2) + bottomY;
+            break;
+        case St.DirectionType.RIGHT:
+            cursorX = rightX;
+            cursorY = ((topY - bottomY) / 2) + bottomY;
+            break;
+        case St.DirectionType.UP:
+            cursorX = ((rightX - leftX) / 2) + leftX;
+            cursorY = topY;
+            break;
+        case St.DirectionType.DOWN:
+            cursorX = ((rightX - leftX) / 2) + leftX;
+            cursorY = bottomY;
+            break;
+        }
+        seat.warp_pointer(cursorX, cursorY);
+        this._updateCursor(cursorX, cursorY);
+    }
 
     moveInDirection(direction, increment) {
         const [,, selectionWidth, selectionHeight] = this.getGeometry();
@@ -419,19 +457,24 @@ const UIAreaSelector = GObject.registerClass({
         this._lastY = newLastY;
 
         this._updateSelectionRect();
+
+        // Update cursor to center of the selection rectangle
+        this._centerCursor();
     }
 
     resizeInDirection(direction, increment) {
+        // Only move the current side of the area selected in the corresponding
+        // direction to the key just pressed if the pressed key is on the same axis,
+        // otherwise change cursor direction and exit early.
+        if (this._maybeChangeResizeDirection(direction)) {
+            this._moveCursorToSide(direction);
+            return;
+        }
+
         let newStartX = this._startX;
         let newStartY = this._startY;
         let newLastX = this._lastX;
         let newLastY = this._lastY;
-
-        // Only move the current side of the area selected in the corresponding
-        // direction to the key just pressed if the pressed key is on the same axis,
-        // otherwise exit early.
-        if (this._maybeChangeResizeDirection(direction))
-            return;
 
         switch (direction) {
         case St.DirectionType.LEFT:
@@ -478,6 +521,8 @@ const UIAreaSelector = GObject.registerClass({
         this._lastResizeDirection = direction;
 
         this._updateSelectionRect();
+
+        this._moveCursorToSide(this._currentSide);
     }
 
     getGeometry() {
