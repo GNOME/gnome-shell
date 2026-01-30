@@ -333,6 +333,20 @@ Meta.Rectangle = function (params = {}) {
     return new Mtk.Rectangle(params);
 };
 
+if (!Meta.IdleMonitor.prototype.add_idle_watch_full) {
+    Meta.IdleMonitorWatchFlags = {
+        NONE: 0,
+        UNINHIBITABLE: 1,
+        START_NOW: 2,
+    };
+
+    Meta.IdleMonitor.prototype.add_idle_watch_full = function (interval, callback, flags = 0) {
+        if (flags !== 0)
+            console.warn('IdleMonitor does not support flags, the watch will not work as expected');
+        this.add_idle_watch(interval, callback);
+    };
+}
+
 Gio.File.prototype.touch_async = function (callback) {
     Shell.util_touch_file_async(this, callback);
 };
