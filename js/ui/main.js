@@ -370,6 +370,8 @@ async function _initializeUI() {
             sessionMode.currentMode !== 'initial-setup')
             _handleLockScreenWarning();
 
+        LoginManager.registerDisplayWithGDM();
+
         if (perfModule) {
             const perfOutput = GLib.getenv('SHELL_PERF_OUTPUT');
             Scripting.runPerfScript(perfModule, perfOutput);
