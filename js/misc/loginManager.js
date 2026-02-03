@@ -61,7 +61,7 @@ export async function registerSessionWithGDM() {
             '/org/gnome/DisplayManager/Manager',
             'org.gnome.DisplayManager.Manager',
             'RegisterSession',
-            GLib.Variant.new('(a{sv})', [{}]), null,
+            null, null,
             Gio.DBusCallFlags.NONE, -1, null);
     } catch (e) {
         if (!e.matches(Gio.DBusError, Gio.DBusError.UNKNOWN_METHOD))
