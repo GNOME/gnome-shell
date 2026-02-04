@@ -523,7 +523,14 @@ export const SwipeTracker = GObject.registerClass({
     }
 
     _findPreviousPoint(pos) {
-        return this._snapPoints.findLastIndex(p => p <= pos);
+        const index =
+            this._snapPoints.findLastIndex(p => p <= pos);
+        if (index !== -1)
+            return index;
+
+        console.trace(`Invalid position ${pos}`);
+        // also out-of-bounds, but somehow callers fail less hard than with -1
+        return this._snapPoints.length;
     }
 
     _findPointForProjection(pos, velocity) {
