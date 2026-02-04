@@ -55,6 +55,7 @@
   </description>
 
   <releases>
+    <release version="50.beta" type="development" date="2026-02-04"/>
     <release version="50.alpha" type="development" date="2026-01-13"/>
   </releases>
 

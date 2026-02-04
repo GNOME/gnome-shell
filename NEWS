@@ -1,3 +1,34 @@
+50.beta
+=======
+* Allow parents to extend screen time limits [Ignacy; !3980, !3999]
+* Do not recreate default folders after they were removed [Sebastian; !4047]
+* Use gnome-software for offline update support [Milan; !4034]
+* Improve discrete GPU detection [Jan200101; !3193]
+* Fix tab focus behavior in quick settings menu [Ramez; !4043]
+* Handle external/locked keyboard layout sources in indicator [Jonas; !3901]
+* Fix screen time tracking with idle inhibitors [Sebastian; !3709]
+* Snap volume slider to 100% when using over-amplification [revisto; !4004]
+* Do not expose password text in IM pre-edits [Joan; !4053]
+* Plugged leak [Sebastian; !4045]
+* Misc. bug fixes and cleanups [Carlos, Sebastian, Florian, Joan, Marco,
+  Gabriel, Ramez; !3952, !4020, !4021, !4044, !4048, !4052, !4054, !4055,
+  !3947, !3885, !4059, !4041, !4046, !4062, !4063, !4057]
+
+Contributors:
+  Milan Crha, Carlos Garnacho, Jan200101, Sebastian Keller, Ignacy Kuchciński,
+  Ramez Medhat, Florian Müllner, Flynn Peck, Gabriel Poliker-Paul, revisto,
+  Joan Torres Lopez, Marco Trevisan (Treviño), Jonas Ådahl
+
+Translators:
+  Martin [sl], BoF ButterflyOfFire [kab], Antonio Marin [ro], Sabri Ünal [tr],
+  Kjartan Maraas [nb], Flynn Peck [kw], Rafael Fontenelle [pt_BR],
+  Ekaterine Papava [ka], Quentin PAGÈS [oc], Yuri Chornoivan [uk],
+  Artur S0 [ru], Cheng-Chia Tseng [zh_TW], Abduqadir Abliz [ug],
+  Baurzhan Muftakhidinov [kk], Yaron Shahrabani [he],
+  Aurimas Aurimas Černius [lt], Aefgh Threenine [th], twlvnn kraftwerk [bg],
+  Victor Dargallo [ca], Jean-Marc TISSIERES [fr], Danial Behzadi [fa],
+  Seiji Iizuka [ja], Daniel Rusek [cs]
+
 50.alpha
 ========
 * Fix lock screen notification setting for MPRIS clients without DesktopEntry
