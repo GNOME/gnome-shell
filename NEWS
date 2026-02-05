@@ -1,3 +1,21 @@
+49.4
+====
+* Fix screen time tracking with idle inhibitors [Sebastian; !4058]
+* Do not recreate default folders after they were removed [Sebastian; !4047]
+* Fix tab focus behavior in quick settings menu [Ramez; !4043]
+* Do not expose password text in IM pre-edits [Joan; !4053]
+* Plugged leak [Sebastian; !4045]
+* Misc. bug fixes and cleanups [Carlos, Joan, Florian, Marco, Gabriel, Ramez,
+  Sebastian; !4060, !4054, !3947, !3885, !4059, !4041, !4046, !4062, !4063]
+
+Contributors:
+  Carlos Garnacho, Sebastian Keller, Ramez Medhat, Florian Müllner,
+  Gabriel Poliker-Paul, Joan Torres Lopez, Marco Trevisan (Treviño)
+
+Translators:
+  Aefgh Threenine [th], Daniel Rusek [cs], Efstathios Iosifidis [el],
+  Baurzhan Muftakhidinov [kk]
+
 49.3
 ====
 * Fix activating app-switcher thumbnails via click [Håkon; !3959]
