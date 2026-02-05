@@ -34,7 +34,6 @@ Gio._promisify(Gio.File.prototype, 'query_info_async');
 Gio._promisify(Polkit.Permission, 'new');
 Gio._promisify(Shell.App.prototype, 'activate_action');
 Gio._promisify(Meta.Backend.prototype, 'set_keymap_async');
-Gio._promisify(Meta.Backend.prototype, 'set_keymap_layout_group_async');
 
 // We can't import shell JS modules yet, because they may have
 // variable initializations, etc, that depend on this file's
