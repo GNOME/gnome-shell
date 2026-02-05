@@ -378,7 +378,7 @@ export const AuthPrompt = GObject.registerClass({
 
     _activateNext(shouldSpin) {
         this.verificationStatus = AuthPromptStatus.VERIFICATION_IN_PROGRESS;
-        this.updateSensitivity(false);
+        this.updateSensitivity({sensitive: false});
 
         if (shouldSpin)
             this.startSpinning();
@@ -435,7 +435,7 @@ export const AuthPrompt = GObject.registerClass({
         else
             this.setQuestion(question.replace(/[:：] *$/, '').trim());
 
-        this.updateSensitivity(true);
+        this.updateSensitivity({sensitive: true});
         this.emit('prompted');
     }
 
@@ -449,7 +449,7 @@ export const AuthPrompt = GObject.registerClass({
             this._preemptiveAnswer = null;
 
         this.setChoiceList(promptMessage, choiceList);
-        this.updateSensitivity(true);
+        this.updateSensitivity({sensitive: true});
         this.emit('prompted');
     }
 
@@ -504,7 +504,7 @@ export const AuthPrompt = GObject.registerClass({
             this.clear();
         }
 
-        this.updateSensitivity(canRetry);
+        this.updateSensitivity({sensitive: canRetry});
         this.setActorInDefaultButtonWell(null);
 
         if (!canRetry)
@@ -620,12 +620,12 @@ export const AuthPrompt = GObject.registerClass({
             opacity: 0,
             visible: true,
         });
-        this.updateSensitivity(false);
+        this.updateSensitivity({sensitive: false});
         this._authList.ease({
             opacity: 255,
             duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
             transition: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this.updateSensitivity(true),
+            onComplete: () => this.updateSensitivity({sensitive: true}),
         });
     }
 
@@ -691,7 +691,7 @@ export const AuthPrompt = GObject.registerClass({
         wiggle(this._message, wiggleParameters);
     }
 
-    updateSensitivity(sensitive) {
+    updateSensitivity({sensitive}) {
         let authWidget;
 
         if (this._authList.visible)
@@ -721,7 +721,7 @@ export const AuthPrompt = GObject.registerClass({
 
         this.setUser(null);
 
-        this.updateSensitivity(true);
+        this.updateSensitivity({sensitive: true});
         this._entry.set_text('');
     }
 
@@ -818,7 +818,7 @@ export const AuthPrompt = GObject.registerClass({
             hold: null,
         });
 
-        this.updateSensitivity(false);
+        this.updateSensitivity({sensitive: false});
 
         let hold = params.hold;
         if (!hold)

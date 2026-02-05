@@ -774,7 +774,7 @@ export const UnlockDialog = GObject.registerClass({
         case AuthPromptStatus.VERIFICATION_FAILED:
             this._authPrompt.reset();
             this._authPrompt.updateSensitivity(
-                verificationStatus === AuthPromptStatus.NOT_VERIFYING);
+                {sensitive: verificationStatus === AuthPromptStatus.NOT_VERIFYING});
         }
 
         this._updateAuthBlocked();

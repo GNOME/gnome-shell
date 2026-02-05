@@ -1148,7 +1148,7 @@ export const LoginDialog = GObject.registerClass({
             () => {
                 this._authPrompt.disconnect(this._nextSignalId);
                 this._nextSignalId = 0;
-                this._authPrompt.updateSensitivity(false);
+                this._authPrompt.updateSensitivity({sensitive: false});
                 const answer = this._authPrompt.getAnswer();
                 this._user = this._userManager.get_user(answer);
                 this._authPrompt.clear();
@@ -1158,7 +1158,7 @@ export const LoginDialog = GObject.registerClass({
         this._updateCancelButton();
 
         this._sessionMenuButton.updateSensitivity(false);
-        this._authPrompt.updateSensitivity(true);
+        this._authPrompt.updateSensitivity({sensitive: true});
         this._showPrompt();
     }
 
