@@ -620,12 +620,12 @@ msgstr "Φτάσατε το Όριο Χρόνου Οθόνης"
 #: js/gdm/authPrompt.js:64
 msgid ""
 "Daily limit for screen time on this device has been reached. Resume tomorrow."
-msgstr ""
+msgstr "ο ημερήσιο όριο χρήσης της οθόνης σε αυτή τη συσκευή έχει εξαντληθεί. Συνεχίστε αύριο."
 
 #. Translators: this is for ignoring a screen time limit for parental controls
 #: js/gdm/authPrompt.js:72
 msgid "Ignore"
-msgstr ""
+msgstr "Αγνόηση"
 
 #: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:514
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
@@ -1037,20 +1037,19 @@ msgid "GNOME needs to save screen time data"
 msgstr "Το GNOME χρειάζεται να αποθηκεύσει δεδομένα χρόνου οθόνης"
 
 #: js/misc/timeLimitsManager.js:1392
-#, fuzzy
 #| msgid "Screen Time Limit in %d Minute"
 #| msgid_plural "Screen Time Limit in %d Minutes"
 msgid "Screen Time Limit is almost up"
-msgstr "Όριο Χρόνου Οθόνης σε %d Λεπτό"
+msgstr "Ο χρόνος χρήσης της οθόνης έχει σχεδόν τελειώσει"
 
 #: js/misc/timeLimitsManager.js:1394
-#, fuzzy, javascript-format
+#, javascript-format
 #| msgid "The system will restart automatically in %d second"
 #| msgid_plural "The system will restart automatically in %d seconds"
 msgid "The computer will lock in %d second."
 msgid_plural "The computer will lock in %d seconds."
-msgstr[0] "Το σύστημα θα επανεκκινήσει αυτόματα σε %d δευτερόλεπτο"
-msgstr[1] "Το σύστημα θα επανεκκινήσει αυτόματα σε %d δευτερόλεπτα"
+msgstr[0] "Ο υπολογιστής θα κλειδώσει σε %d δευτερόλεπτο"
+msgstr[1] "Ο υπολογιστής θα κλειδώσει σε %d δευτερόλεπτα."
 
 #: js/misc/timeLimitsManager.js:1402
 #, javascript-format
@@ -2653,7 +2652,6 @@ msgid "Custom"
 msgstr "Προσαρμοσμένο"
 
 #: js/ui/status/powerProfiles.js:45
-#, fuzzy
 #| msgid "Power Mode"
 msgctxt "Quick settings button title"
 msgid "Power Mode"
@@ -2664,7 +2662,6 @@ msgid "Open power profiles menu"
 msgstr "Άνοιγμα μενού προφίλ ισχύος"
 
 #: js/ui/status/powerProfiles.js:77
-#, fuzzy
 #| msgid "Power Mode"
 msgctxt "Quick settings menu header"
 msgid "Power Mode"
@@ -3419,10 +3416,9 @@ msgid "Overwrite an existing extension"
 msgstr "Αντικατάσταση μιας υπάρχουσας επέκτασης"
 
 #: subprojects/extensions-tool/src/command-install.c:198
-#, fuzzy
 #| msgid "Print extension details"
 msgid "Print extension UUID on success"
-msgstr "Εμφάνιση λεπτομερειών επέκτασης"
+msgstr "Εμφάνιση UUID επέκτασης σε περίπτωση επιτυχίας"
 
 #: subprojects/extensions-tool/src/command-install.c:200
 msgid "EXTENSION_BUNDLE"
