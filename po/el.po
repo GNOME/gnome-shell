@@ -2807,7 +2807,7 @@ msgstr "Μόνο ενσωματωμένο"
 #. long format
 #: js/ui/unlockDialog.js:414
 msgid "%A %B %-d"
-msgstr "%A %B %-d"
+msgstr "%A %-d %B"
 
 #: js/ui/unlockDialog.js:420
 msgid "Swipe up to unlock"
