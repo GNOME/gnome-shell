@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.po.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-10-17 22:26+0000\n"
+"POT-Creation-Date: 2026-02-05 16:09+0000\n"
 "PO-Revision-Date: 2025-10-18 22:44+0300\n"
 "Last-Translator: Efstathios Iosifidis <eiosifidis@gnome.org>\n"
 "Language-Team: Greek, Modern (1453-) <gnome-el-list@gnome.org>\n"
@@ -98,7 +98,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Άνοιγμα νέου παραθύρου της καρφιτσωμένης εφαρμογής 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2295
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2292
 msgid "Screenshots"
 msgstr "Στιγμιότυπα οθόνης"
 
@@ -123,7 +123,7 @@ msgid "Record a screencast interactively"
 msgstr "Καταγραφή βίντεο οθόνης διαδραστικά"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1313
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1314
 msgid "System"
 msgstr "Σύστημα"
 
@@ -613,7 +613,7 @@ msgstr "Λεπτομέρειες σφάλματος"
 msgid "Copy Error"
 msgstr "Αντιγραφή σφάλματος"
 
-#: js/gdm/authPrompt.js:157 js/gdm/loginDialog.js:511
+#: js/gdm/authPrompt.js:157 js/gdm/loginDialog.js:514
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -634,12 +634,12 @@ msgstr "Συνθηματικό"
 msgid "Choose Session"
 msgstr "Επιλογή συνεδρίας"
 
-#: js/gdm/loginDialog.js:417 js/ui/status/accessibility.js:35
+#: js/gdm/loginDialog.js:420 js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "Προσιτότητα"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:469
+#: js/gdm/loginDialog.js:472
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -651,7 +651,7 @@ msgstr ""
 "αποσυνδεθείτε από την απομακρυσμένη συνεδρία ή να τη διακόψετε εξαναγκαστικά."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:472
+#: js/gdm/loginDialog.js:475
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -662,7 +662,7 @@ msgstr ""
 "συνεδρία ή να τη διακόψετε εξαναγκαστικά."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:475
+#: js/gdm/loginDialog.js:478
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -674,7 +674,7 @@ msgstr ""
 "αποσυνδεθείτε από την τοπική συνεδρία ή να τη διακόψετε εξαναγκαστικά."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:478
+#: js/gdm/loginDialog.js:481
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -684,11 +684,11 @@ msgstr ""
 "συνδεθείτε, πρέπει να αποσυνδεθείτε από τη συνεδρία ή να τη διακόψετε "
 "εξαναγκαστικά."
 
-#: js/gdm/loginDialog.js:487
+#: js/gdm/loginDialog.js:490
 msgid "Session Already Running"
 msgstr "Συνεδρία εκτελείται ήδη"
 
-#: js/gdm/loginDialog.js:499
+#: js/gdm/loginDialog.js:502
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -696,36 +696,36 @@ msgstr ""
 "Η εξαναγκαστική διακοπή θα τερματίσει όλες τις εφαρμογές και διεργασίες που "
 "εκτελούνται και θα μπορούσε να οδηγήσει σε απώλεια δεδομένων"
 
-#: js/gdm/loginDialog.js:519
+#: js/gdm/loginDialog.js:522
 msgid "Force Stop"
 msgstr "Εξαναγκαστική διακοπή"
 
-#: js/gdm/loginDialog.js:597
+#: js/gdm/loginDialog.js:600
 msgid "Not listed?"
 msgstr "Δεν είστε στη λίστα;"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1126
+#: js/gdm/loginDialog.js:1136
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(π.χ., χρήστης ή %s)"
 
-#: js/gdm/loginDialog.js:1131 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1141 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Όνομα χρήστη"
 
-#: js/gdm/loginDialog.js:1197
+#: js/gdm/loginDialog.js:1207
 msgid "Login Attempt Timed Out"
 msgstr "Λήξη χρονικού ορίου προσπάθειας σύνδεσης"
 
-#: js/gdm/loginDialog.js:1198
+#: js/gdm/loginDialog.js:1208
 msgid "Login took too long, please try again"
 msgstr "Η σύνδεση διήρκησε πολύ, παρακαλώ δοκιμάστε ξανά"
 
-#: js/gdm/loginDialog.js:1547
+#: js/gdm/loginDialog.js:1557
 msgid "Login Window"
 msgstr "Παράθυρο σύνδεσης"
 
@@ -735,42 +735,42 @@ msgstr "Σφάλμα πιστοποίησης"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:729
+#: js/gdm/util.js:733
 msgid "(or swipe finger across reader)"
 msgstr "(ή σύρετε το δάκτυλο στον αναγνώστη)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:734
+#: js/gdm/util.js:738
 msgid "(or place finger on reader)"
 msgstr "(ή τοποθετήστε το δάκτυλο στον αναγνώστη)"
 
-#: js/misc/breakManager.js:770
+#: js/misc/breakManager.js:774
 msgid "Break complete sound"
 msgstr "Ήχος ολοκλήρωσης διαλείμματος"
 
-#: js/misc/breakManager.js:980
+#: js/misc/breakManager.js:984
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d δευτερόλεπτο"
 msgstr[1] "%d δευτερόλεπτα"
 
-#: js/misc/breakManager.js:986
+#: js/misc/breakManager.js:990
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d λεπτό"
 msgstr[1] "%d λεπτά"
 
-#: js/misc/breakManager.js:992
+#: js/misc/breakManager.js:996
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d ώρα"
 msgstr[1] "%d ώρες"
 
-#: js/misc/breakManager.js:998
+#: js/misc/breakManager.js:1002
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -778,79 +778,79 @@ msgstr[0] "%d ημέρα"
 msgstr[1] "%d ημέρες"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1081
+#: js/misc/breakManager.js:1085
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "Θα είναι ώρα για διάλειμμα σε %s"
 msgstr[1] "Θα είναι ώρα για διάλειμμα σε %s"
 
-#: js/misc/breakManager.js:1089
+#: js/misc/breakManager.js:1093
 msgid "Movement Break Soon"
 msgstr "Διάλειμμα Κίνησης Σύντομα"
 
-#: js/misc/breakManager.js:1092
+#: js/misc/breakManager.js:1096
 msgid "Eyesight Break Soon"
 msgstr "Διάλειμμα Όρασης Σύντομα"
 
-#: js/misc/breakManager.js:1095
+#: js/misc/breakManager.js:1099
 msgid "Break Soon"
 msgstr "Διάλειμμα Σύντομα"
 
-#: js/misc/breakManager.js:1140
+#: js/misc/breakManager.js:1144
 msgid "Movement Break in Progress"
 msgstr "Διάλειμμα Κίνησης σε Εξέλιξη"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1143
+#: js/misc/breakManager.js:1147
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "Συνεχίστε να κινείστε για %s"
 msgstr[1] "Συνεχίστε να κινείστε για %s"
 
-#: js/misc/breakManager.js:1149
+#: js/misc/breakManager.js:1153
 msgid "Eyesight Break in Progress"
 msgstr "Διάλειμμα Όρασης σε Εξέλιξη"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1152
+#: js/misc/breakManager.js:1156
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "Συνεχίστε να κοιτάτε μακριά για %s"
 msgstr[1] "Συνεχίστε να κοιτάτε μακριά για %s"
 
-#: js/misc/breakManager.js:1158
+#: js/misc/breakManager.js:1162
 msgid "Break in Progress"
 msgstr "Διάλειμμα σε Εξέλιξη"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1161
+#: js/misc/breakManager.js:1165
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "%s απομένει στο διάλειμμά σας"
 msgstr[1] "%s απομένουν στο διάλειμμά σας"
 
-#: js/misc/breakManager.js:1200
+#: js/misc/breakManager.js:1204
 msgid "Time for a Movement Break"
 msgstr "Ώρα για Διάλειμμα Κίνησης"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1203
+#: js/misc/breakManager.js:1207
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "Κάντε διάλειμμα από τη συσκευή και κινηθείτε για %s"
 msgstr[1] "Κάντε διάλειμμα από τη συσκευή και κινηθείτε για %s"
 
-#: js/misc/breakManager.js:1209
+#: js/misc/breakManager.js:1213
 msgid "Time for an Eyesight Break"
 msgstr "Ώρα για Διάλειμμα Όρασης"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1212
+#: js/misc/breakManager.js:1216
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -863,12 +863,12 @@ msgstr[1] ""
 "Κάντε διάλειμμα από την οθόνη. Κοιτάξτε τουλάχιστον 6 μέτρα μακριά για "
 "τουλάχιστον %s"
 
-#: js/misc/breakManager.js:1218
+#: js/misc/breakManager.js:1222
 msgid "Time for a Break"
 msgstr "Ώρα για Διάλειμμα"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1221
+#: js/misc/breakManager.js:1225
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -876,144 +876,144 @@ msgstr[0] "Είναι ώρα για διάλειμμα. Απομακρυνθεί
 msgstr[1] "Είναι ώρα για διάλειμμα. Απομακρυνθείτε από τη συσκευή για %s!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1245
+#: js/misc/breakManager.js:1249
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] "Θα έπρεπε να έχετε κάνει διάλειμμα %s πριν"
 msgstr[1] "Θα έπρεπε να έχετε κάνει διάλειμμα %s πριν"
 
-#: js/misc/breakManager.js:1251
+#: js/misc/breakManager.js:1255
 msgid "Break Overdue"
 msgstr "Καθυστερημένο Διάλειμμα"
 
-#: js/misc/breakManager.js:1267
+#: js/misc/breakManager.js:1271
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "Απομένει %s στο διάλειμμά σας"
 msgstr[1] "Απομένουν %s στο διάλειμμά σας"
 
-#: js/misc/breakManager.js:1273
+#: js/misc/breakManager.js:1277
 msgid "Break Interrupted"
 msgstr "Διάλειμμα Διακοπή"
 
 #. Translators: As in "Delay the break"
-#: js/misc/breakManager.js:1351
+#: js/misc/breakManager.js:1355
 msgid "Delay"
 msgstr "Καθυστέρηση"
 
 #. Translators: As in "Skip the break"
-#: js/misc/breakManager.js:1373 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1377 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Παράλειψη"
 
 #. Translators: As in "Take the break"
-#: js/misc/breakManager.js:1395
+#: js/misc/breakManager.js:1399
 msgid "Take"
 msgstr "Κάντε"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1458
+#: js/misc/breakManager.js:1462
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
 msgstr[0] "Διάλειμμα σε %d δευτερόλεπτο"
 msgstr[1] "Διάλειμμα σε %d δευτερόλεπτα"
 
-#: js/misc/brightnessManager.js:169 js/ui/status/brightness.js:10
+#: js/misc/brightnessManager.js:171 js/ui/status/brightness.js:10
 msgid "Brightness"
 msgstr "Φωτεινότητα"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:93
+#: js/misc/systemActions.js:94
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Απενεργοποίηση"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:96
+#: js/misc/systemActions.js:97
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "απενεργοποίηση;poweroff;τερματισμός;διακοπή;stop"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:101
+#: js/misc/systemActions.js:102
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Επανεκκίνηση"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:104
+#: js/misc/systemActions.js:105
 msgid "reboot;restart;"
 msgstr "επανεκκίνηση;restart;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:110
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Κλείδωμα Οθόνης"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:112
+#: js/misc/systemActions.js:113
 msgid "lock screen"
 msgstr "κλείδωμα οθόνης"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:117
+#: js/misc/systemActions.js:118
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Αποσύνδεση"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:120
+#: js/misc/systemActions.js:121
 msgid "logout;log out;sign off"
 msgstr "αποσύνδεση;log out;sign off"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:125
+#: js/misc/systemActions.js:126
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Αναστολή"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:128
+#: js/misc/systemActions.js:129
 msgid "suspend;sleep"
 msgstr "αναστολή;sleep"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:133
+#: js/misc/systemActions.js:134
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Αλλαγή Χρήστη"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:136
+#: js/misc/systemActions.js:137
 msgid "switch user"
 msgstr "αλλαγή χρήστη"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:143
+#: js/misc/systemActions.js:144
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "κλείδωμα προσανατολισμού;ξεκλείδωμα προσανατολισμού;οθόνη;περιστροφή"
 
 #. Translators: The name of the screenshot UI action in search
-#: js/misc/systemActions.js:148
+#: js/misc/systemActions.js:149
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Λήψη Στιγμιότυπου Οθόνης"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
-#: js/misc/systemActions.js:151
+#: js/misc/systemActions.js:152
 msgid "screenshot;screencast;snip;capture;record"
 msgstr "στιγμιότυπο οθόνης;βίντεο οθόνης;απόκομμα;καταγραφή;εγγραφή"
 
-#: js/misc/systemActions.js:255
+#: js/misc/systemActions.js:256
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Ξεκλείδωμα Περιστροφής Οθόνης"
 
-#: js/misc/systemActions.js:256
+#: js/misc/systemActions.js:257
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Κλείδωμα Περιστροφής Οθόνης"
@@ -1022,22 +1022,22 @@ msgstr "Κλείδωμα Περιστροφής Οθόνης"
 msgid "GNOME needs to save screen time data"
 msgstr "Το GNOME χρειάζεται να αποθηκεύσει δεδομένα χρόνου οθόνης"
 
-#: js/misc/timeLimitsManager.js:1124
+#: js/misc/timeLimitsManager.js:1123
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "Όριο Χρόνου Οθόνης σε %d Λεπτό"
 msgstr[1] "Όριο Χρόνου Οθόνης σε %d Λεπτά"
 
-#: js/misc/timeLimitsManager.js:1131
+#: js/misc/timeLimitsManager.js:1130
 msgid "Your screen time limit is approaching"
 msgstr "Το όριο χρόνου οθόνης σας πλησιάζει"
 
-#: js/misc/timeLimitsManager.js:1145
+#: js/misc/timeLimitsManager.js:1144
 msgid "Screen Time Limit Reached"
 msgstr "Φτάσατε το Όριο Χρόνου Οθόνης"
 
-#: js/misc/timeLimitsManager.js:1146
+#: js/misc/timeLimitsManager.js:1145
 msgid "It’s time to stop using the device"
 msgstr "Είναι ώρα να σταματήσετε τη χρήση της συσκευής"
 
@@ -1125,7 +1125,7 @@ msgstr "%A, %H:%M"
 #: js/misc/dateUtils.js:173
 #, no-c-format
 msgid "%B %-d, %H:%M"
-msgstr "%B %-d, %H:%M"
+msgstr "%-d %B, %H:%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
@@ -1133,7 +1133,7 @@ msgstr "%B %-d, %H:%M"
 #: js/misc/dateUtils.js:179
 #, no-c-format
 msgid "%B %-d %Y, %H:%M"
-msgstr "%B %-d %Y, %H:%M"
+msgstr "%-d %B %Y, %H:%M"
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
@@ -1170,7 +1170,7 @@ msgstr "%B %-d, %l:%M %p"
 #: js/misc/dateUtils.js:208
 #, no-c-format
 msgid "%B %-d %Y, %l:%M %p"
-msgstr "%B %-d %Y, %l:%M %p"
+msgstr "%-d %B %Y, %l:%M %p"
 
 #: js/portalHelper/main.js:98
 msgid "Your connection seems to be secure"
@@ -1375,15 +1375,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "Εβδομάδα %V"
 
-#: js/ui/calendar.js:773
+#: js/ui/calendar.js:774
 msgid "No Notifications"
 msgstr "Καμία ειδοποίηση"
 
-#: js/ui/calendar.js:812
+#: js/ui/calendar.js:815
 msgid "Clear"
 msgstr "Εκκαθάριση"
 
-#: js/ui/calendar.js:816
+#: js/ui/calendar.js:819
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Εκκαθάριση όλων των ειδοποιήσεων"
@@ -1470,11 +1470,11 @@ msgid "Service"
 msgstr "Υπηρεσία"
 
 #: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
-#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
+#: js/ui/components/networkAgent.js:744 js/ui/components/networkAgent.js:765
 msgid "Authentication required"
 msgstr "Απαιτείται πιστοποίηση"
 
-#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:745
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
@@ -1482,7 +1482,7 @@ msgstr ""
 "Απαιτούνται κωδικοί πρόσβασης ή κλειδιά κρυπτογράφησης για πρόσβαση στο "
 "ασύρματο δίκτυο «%s»"
 
-#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:749
 msgid "Wired 802.1X authentication"
 msgstr "Πιστοποίηση ενσύρματου 802.1X"
 
@@ -1490,15 +1490,15 @@ msgstr "Πιστοποίηση ενσύρματου 802.1X"
 msgid "Network name"
 msgstr "Όνομα δικτύου"
 
-#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:753
 msgid "DSL authentication"
 msgstr "Πιστοποίηση DSL"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:758
 msgid "PIN code required"
 msgstr "Απαιτείται κωδικός PIN"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:759
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Ο κωδικός PIN απαιτείται για τη συσκευή κινητής ευρυζωνικής σύνδεσης"
 
@@ -1506,14 +1506,14 @@ msgstr "Ο κωδικός PIN απαιτείται για τη συσκευή κ
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
-#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
-#: js/ui/components/networkAgent.js:771
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:750
+#: js/ui/components/networkAgent.js:754 js/ui/components/networkAgent.js:766
+#: js/ui/components/networkAgent.js:770
 #, javascript-format
 msgid "A password is required to connect to “%s”"
 msgstr "Απαιτείται συνθηματικό για σύνδεση στο «%s»"
 
-#: js/ui/components/networkAgent.js:770
+#: js/ui/components/networkAgent.js:769
 msgid "VPN password"
 msgstr "Συνθηματικό VPN"
 
@@ -1537,7 +1537,7 @@ msgstr "Πιστοποίηση"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Συγγνώμη, αυτό δεν λειτούργησε. Παρακαλούμε προσπαθήστε ξανά."
 
-#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:404
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:407
 msgid "Windows"
 msgstr "Παράθυρα"
 
@@ -1558,7 +1558,7 @@ msgstr "Ταμπλό"
 #.
 #: js/ui/dateMenu.js:99
 msgid "%B %-d %Y"
-msgstr "%B %-d %Y"
+msgstr "%-d %B %Y"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
@@ -1572,13 +1572,13 @@ msgstr "%A %e %B %Y"
 #: js/ui/dateMenu.js:173
 msgctxt "calendar heading"
 msgid "%B %-d"
-msgstr "%B %-d"
+msgstr "%-d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: js/ui/dateMenu.js:176
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
-msgstr "%B %-d %Y"
+msgstr "%-d %B %Y"
 
 #: js/ui/dateMenu.js:182
 msgid "Today"
@@ -1897,7 +1897,7 @@ msgstr "Απενεργοποίηση"
 msgid "Leave Off"
 msgstr "Να Παραμείνει Ανενεργό"
 
-#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:908
+#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:898
 msgid "Keyboard Settings"
 msgstr "Ρυθμίσεις Πληκτρολογίου"
 
@@ -2006,11 +2006,11 @@ msgstr "Άγνωστος Τίτλος"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:328
+#: js/ui/overviewControls.js:330
 msgid "Type to search"
 msgstr "Πληκτρολογήστε για Αναζήτηση"
 
-#: js/ui/overviewControls.js:392
+#: js/ui/overviewControls.js:395
 msgid "Apps"
 msgstr "Εφαρμογές"
 
@@ -2099,15 +2099,15 @@ msgstr "Η Επανεκκίνηση δεν είναι Διαθέσιμη στο 
 msgid "Restarting…"
 msgstr "Επανεκκίνηση…"
 
-#: js/ui/screenShield.js:233
+#: js/ui/screenShield.js:227
 msgid "GNOME needs to lock the screen"
 msgstr "Το GNOME χρειάζεται να Κλειδώσει την Οθόνη"
 
-#: js/ui/screenShield.js:274 js/ui/screenShield.js:682
+#: js/ui/screenShield.js:269 js/ui/screenShield.js:680
 msgid "Unable to lock"
 msgstr "Αδυναμία Κλειδώματος"
 
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:683
+#: js/ui/screenShield.js:270 js/ui/screenShield.js:681
 msgid "Lock was blocked by an app"
 msgstr "Το Κλείδωμα Εμποδίσθηκε από μια Εφαρμογή"
 
@@ -2116,118 +2116,118 @@ msgstr "Το Κλείδωμα Εμποδίσθηκε από μια Εφαρμο�
 msgid "Screen Capture"
 msgstr "Αποτύπωση Οθόνης"
 
-#: js/ui/screenshot.js:1271
+#: js/ui/screenshot.js:1268
 msgid "Selection"
 msgstr "Επιλογή"
 
-#: js/ui/screenshot.js:1281
+#: js/ui/screenshot.js:1278
 msgid "Area Selection"
 msgstr "Επιλογή Περιοχής"
 
-#: js/ui/screenshot.js:1286
+#: js/ui/screenshot.js:1283
 msgid "Screen"
 msgstr "Οθόνη"
 
-#: js/ui/screenshot.js:1296
+#: js/ui/screenshot.js:1293
 msgid "Screen Selection"
 msgstr "Επιλογή Οθόνης"
 
-#: js/ui/screenshot.js:1301
+#: js/ui/screenshot.js:1298
 msgid "Window"
 msgstr "Παράθυρο"
 
-#: js/ui/screenshot.js:1311
+#: js/ui/screenshot.js:1308
 msgid "Window Selection"
 msgstr "Επιλογή Παραθύρου"
 
-#: js/ui/screenshot.js:1336 js/ui/status/system.js:118
+#: js/ui/screenshot.js:1333 js/ui/status/system.js:118
 msgid "Take Screenshot"
 msgstr "Λήψη Στιγμιότυπου Οθόνης"
 
-#: js/ui/screenshot.js:1352
+#: js/ui/screenshot.js:1349
 msgid "Record Screen"
 msgstr "Εγγραφή Οθόνης"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1369
+#: js/ui/screenshot.js:1366
 msgid "Capture"
 msgstr "Αποτύπωση"
 
-#: js/ui/screenshot.js:1391
+#: js/ui/screenshot.js:1388
 msgid "Show Pointer"
 msgstr "Εμφάνιση Δρομέα"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2019
+#: js/ui/screenshot.js:2016
 msgid "Screencasts"
 msgstr "Βίντεο Οθόνης"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2024
+#: js/ui/screenshot.js:2021
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Βίντεο Οθόνης από %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2070
+#: js/ui/screenshot.js:2067
 msgid "Screencast recorded"
 msgstr "Καταγράφηκε Βίντεο Οθόνης"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2083
+#: js/ui/screenshot.js:2080
 msgid "Screencast failed to start"
 msgstr "Αποτυχία Εκκίνησης Βίντεο Οθόνης"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2089
+#: js/ui/screenshot.js:2086
 msgid "Screencast ended: Out of disk space"
 msgstr "Το Βίντεο Οθόνης Τερματίστηκε: Δεν Υπάρχει Χώρος στο Δίσκο"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2095
+#: js/ui/screenshot.js:2092
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "Το Βίντεο Οθόνης Τερματίστηκε, Παρακαλούμε Ξαναπροσπαθήστε"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2098
+#: js/ui/screenshot.js:2095
 msgid "Screencast ended unexpectedly"
 msgstr "Η Εγγραφή Οθόνης Τερματίστηκε Απροσδόκητα"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2111
+#: js/ui/screenshot.js:2108
 msgid "Click here to view the video"
 msgstr "Κάντε Κλικ Εδώ για Προβολή του Βίντεο"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2119 js/ui/screenshot.js:2362
+#: js/ui/screenshot.js:2116 js/ui/screenshot.js:2359
 msgid "Show in Files"
 msgstr "Εμφάνιση στα Αρχεία"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2308
+#: js/ui/screenshot.js:2305
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Στιγμιότυπο Οθόνης από %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2352
+#: js/ui/screenshot.js:2349
 msgid "Screenshot captured"
 msgstr "Καταγράφηκε Στιγμιότυπο Οθόνης"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2354
+#: js/ui/screenshot.js:2351
 msgid "You can paste the image from the clipboard"
 msgstr "Μπορείτε να Επικολλήσετε την Εικόνα από το Πρόχειρο"
 
-#: js/ui/screenshot.js:2412 js/ui/screenshot.js:2574
+#: js/ui/screenshot.js:2409 js/ui/screenshot.js:2571
 msgid "Screenshot taken"
 msgstr "Ελήφθη Στιγμιότυπο Οθόνης"
 
@@ -2239,7 +2239,7 @@ msgstr "Αναζήτηση"
 msgid "No results"
 msgstr "Δε Βρέθηκαν Αποτελέσματα"
 
-#: js/ui/search.js:982
+#: js/ui/search.js:985
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2251,23 +2251,23 @@ msgstr[1] "%d περισσότερα"
 msgid "Search"
 msgstr "Αναζήτηση"
 
-#: js/ui/shellEntry.js:21
+#: js/ui/shellEntry.js:22
 msgid "Copy"
 msgstr "Αντιγραφή"
 
-#: js/ui/shellEntry.js:26
+#: js/ui/shellEntry.js:27
 msgid "Paste"
 msgstr "Επικόλληση"
 
-#: js/ui/shellEntry.js:78
+#: js/ui/shellEntry.js:79
 msgid "Show Text"
 msgstr "Εμφάνιση Κειμένου"
 
-#: js/ui/shellEntry.js:80
+#: js/ui/shellEntry.js:81
 msgid "Hide Text"
 msgstr "Απόκρυψη Κειμένου"
 
-#: js/ui/shellEntry.js:174
+#: js/ui/shellEntry.js:175
 msgid "Caps lock is on"
 msgstr "Τα Κεφαλαία είναι Ενεργοποιημένα"
 
@@ -2410,7 +2410,7 @@ msgstr "Χαμηλό"
 msgid "High"
 msgstr "Υψηλό"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:890
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:880
 msgid "Keyboard"
 msgstr "Πληκτρολόγιο"
 
@@ -2474,27 +2474,27 @@ msgstr "Σκούρο Θέμα"
 msgid "Do Not Disturb"
 msgstr "Μην Ενοχλείτε"
 
-#: js/ui/status/dwellClick.js:15
+#: js/ui/status/dwellClick.js:14
 msgid "Single Click"
 msgstr "Μονό Κλικ"
 
-#: js/ui/status/dwellClick.js:20
+#: js/ui/status/dwellClick.js:19
 msgid "Double Click"
 msgstr "Διπλό Κλικ"
 
-#: js/ui/status/dwellClick.js:25
+#: js/ui/status/dwellClick.js:24
 msgid "Drag"
 msgstr "Σύρσιμο"
 
-#: js/ui/status/dwellClick.js:30
+#: js/ui/status/dwellClick.js:29
 msgid "Secondary Click"
 msgstr "Δευτερεύον Κλικ"
 
-#: js/ui/status/dwellClick.js:39
+#: js/ui/status/dwellClick.js:38
 msgid "Dwell Click"
 msgstr "Κράτημα Κλικ"
 
-#: js/ui/status/keyboard.js:907
+#: js/ui/status/keyboard.js:897
 msgid "Show Keyboard Layout"
 msgstr "Εμφάνιση Διάταξης Πληκτρολογίου"
 
@@ -2945,24 +2945,24 @@ msgstr "Μετακίνηση στη δεξιά οθόνη"
 msgid "Close"
 msgstr "Κλείσιμο"
 
-#: src/main.c:515 subprojects/extensions-tool/src/main.c:336
+#: src/main.c:517 subprojects/extensions-tool/src/main.c:336
 msgid "Print version"
 msgstr "Εμφάνιση έκδοσης"
 
-#: src/main.c:521
+#: src/main.c:523
 msgid "Mode used by GDM for login screen"
 msgstr "Λειτουργία που χρησιμοποιείται από το GDM για την οθόνη σύνδεσης"
 
-#: src/main.c:527
+#: src/main.c:529
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Χρήση μιας συγκεκριμένης λειτουργίας, π.χ. «gdm» για την οθόνη σύνδεσης"
 
-#: src/main.c:533
+#: src/main.c:535
 msgid "List possible modes"
 msgstr "Λίστα πιθανών λειτουργιών"
 
-#: src/main.c:539
+#: src/main.c:541
 msgid "Force animations to be enabled"
 msgstr "Αναγκαστική ενεργοποίηση κίνησης"
 
@@ -2984,16 +2984,16 @@ msgstr "Τα συνθηματικά δεν ταιριάζουν"
 msgid "Password cannot be blank"
 msgstr "Το συνθηματικό δεν μπορεί να είναι κενός"
 
-#: src/shell-polkit-authentication-agent.c:344
+#: src/shell-polkit-authentication-agent.c:342
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Το παράθυρο πιστοποίησης έκλεισε από τον χρήστη"
 
-#: src/st/st-icon-theme.c:1859
+#: src/st/st-icon-theme.c:1857
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "Το εικονίδιο '%s' δεν υπάρχει στο θέμα %s"
 
-#: src/st/st-icon-theme.c:3452 src/st/st-icon-theme.c:3755
+#: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3753
 msgid "Failed to load icon"
 msgstr "Αδυναμία φόρτωσης εικονιδίου"
 
@@ -3015,15 +3015,15 @@ msgstr ""
 "ρύθμιση προτιμήσεων και την αφαίρεση ή απενεργοποίηση ανεπιθύμητων "
 "επεκτάσεων."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
 msgid "Main Window"
 msgstr "Κυρίως παράθυρο"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:76
 msgid "Available Updates"
 msgstr "Διαθέσιμες ενημερώσεις"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:80
 msgid "Search View"
 msgstr "Προβολή αναζήτησης"
 
