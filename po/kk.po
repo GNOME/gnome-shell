@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-01-29 15:16+0000\n"
-"PO-Revision-Date: 2026-01-30 06:59+0500\n"
+"POT-Creation-Date: 2026-02-04 22:50+0000\n"
+"PO-Revision-Date: 2026-02-08 21:21+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -705,142 +705,142 @@ msgstr "Тізімде жоқсыз ба?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1129
+#: js/gdm/loginDialog.js:1136
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(мыс., пайдаланушы немесе %s)"
 
-#: js/gdm/loginDialog.js:1134 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1141 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Пайдаланушы аты"
 
-#: js/gdm/loginDialog.js:1200
+#: js/gdm/loginDialog.js:1207
 msgid "Login Attempt Timed Out"
 msgstr "Жүйеге кіру талабының уақыты бітті"
 
-#: js/gdm/loginDialog.js:1201
+#: js/gdm/loginDialog.js:1208
 msgid "Login took too long, please try again"
 msgstr "Жүйеге кіру талабы тым көп уақыт алды, қайталап көріңіз"
 
-#: js/gdm/loginDialog.js:1546
+#: js/gdm/loginDialog.js:1553
 msgid "Login Window"
 msgstr "Жүйеге кіру терезесі"
 
-#: js/gdm/util.js:499
+#: js/gdm/util.js:496
 msgid "Authentication error"
 msgstr "Аутентификация қатесі"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:730
+#: js/gdm/util.js:731
 msgid "(or swipe finger across reader)"
 msgstr "(немесе саусағыңызды оқу құралынан өткізіңіз)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:735
+#: js/gdm/util.js:736
 msgid "(or place finger on reader)"
 msgstr "(немесе саусақты оқу құралына орналастырыңыз)"
 
-#: js/misc/breakManager.js:770
+#: js/misc/breakManager.js:774
 msgid "Break complete sound"
 msgstr "Үзілістің аяқталу дыбысы"
 
-#: js/misc/breakManager.js:979
+#: js/misc/breakManager.js:983
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d секунд"
 
-#: js/misc/breakManager.js:985
+#: js/misc/breakManager.js:989
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d минут"
 
-#: js/misc/breakManager.js:991
+#: js/misc/breakManager.js:995
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d сағат"
 
-#: js/misc/breakManager.js:997
+#: js/misc/breakManager.js:1001
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] "%d күн"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1079
+#: js/misc/breakManager.js:1083
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "Үзіліс %s уақытынан кейін орын алады"
 
-#: js/misc/breakManager.js:1087
+#: js/misc/breakManager.js:1091
 msgid "Movement Break Soon"
 msgstr "Жақын арада қозғалыс үзілісі"
 
-#: js/misc/breakManager.js:1090
+#: js/misc/breakManager.js:1094
 msgid "Eyesight Break Soon"
 msgstr "Жақын арада көзге арналған үзіліс"
 
-#: js/misc/breakManager.js:1093
+#: js/misc/breakManager.js:1097
 msgid "Break Soon"
 msgstr "Жақын арада үзіліс"
 
-#: js/misc/breakManager.js:1138
+#: js/misc/breakManager.js:1142
 msgid "Movement Break in Progress"
 msgstr "Қозғалыс үзілісі орындалуда"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1141
+#: js/misc/breakManager.js:1145
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "%s бойы қозғала беріңіз"
 
-#: js/misc/breakManager.js:1147
+#: js/misc/breakManager.js:1151
 msgid "Eyesight Break in Progress"
 msgstr "Көзді демалдыру үзілісі орындалуда"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1150
+#: js/misc/breakManager.js:1154
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "%s бойы ары қарай қарай беріңіз"
 
-#: js/misc/breakManager.js:1156
+#: js/misc/breakManager.js:1160
 msgid "Break in Progress"
 msgstr "Үзіліс орындалуда"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1159
+#: js/misc/breakManager.js:1163
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "Үзілісте %s қалды"
 
-#: js/misc/breakManager.js:1198
+#: js/misc/breakManager.js:1202
 msgid "Time for a Movement Break"
 msgstr "Қозғалыс үзілісінің уақыты келді"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1201
+#: js/misc/breakManager.js:1205
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "Құрылғыдан үзіліс алып, %s бойы қозғалыңыз"
 
-#: js/misc/breakManager.js:1207
+#: js/misc/breakManager.js:1211
 msgid "Time for an Eyesight Break"
 msgstr "Көзді демалдыру үзілісінің уақыты келді"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1210
+#: js/misc/breakManager.js:1214
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -850,56 +850,56 @@ msgstr[0] ""
 "Экраннан үзіліс алыңыз. Кем дегенде 6 метр қашықтыққа қараңыз, кем дегенде %s "
 "бойы"
 
-#: js/misc/breakManager.js:1216
+#: js/misc/breakManager.js:1220
 msgid "Time for a Break"
 msgstr "Үзіліс уақыты"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1219
+#: js/misc/breakManager.js:1223
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
 msgstr[0] "Үзіліс уақыты келді. Құрылғыдан %s уақытына алыстаңыз!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1243
+#: js/misc/breakManager.js:1247
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] "Сіз %s бұрын үзіліс алуыңыз керек еді"
 
-#: js/misc/breakManager.js:1249
+#: js/misc/breakManager.js:1253
 msgid "Break Overdue"
 msgstr "Үзіліс уақыты өтіп кетті"
 
-#: js/misc/breakManager.js:1265
+#: js/misc/breakManager.js:1269
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "Үзілісіңізде %s қалды"
 
-#: js/misc/breakManager.js:1271
+#: js/misc/breakManager.js:1275
 msgid "Break Interrupted"
 msgstr "Үзіліс үзілді"
 
 #. Translators: As in "Delay the break"
-#: js/misc/breakManager.js:1349
+#: js/misc/breakManager.js:1353
 msgid "Delay"
 msgstr "Кейінге қалдыру"
 
 #. Translators: As in "Skip the break"
-#: js/misc/breakManager.js:1371 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1375 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Аттап кету"
 
 #. Translators: As in "Take the break"
-#: js/misc/breakManager.js:1393
+#: js/misc/breakManager.js:1397
 msgid "Take"
 msgstr "Бастау"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1456
+#: js/misc/breakManager.js:1460
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -1250,7 +1250,7 @@ msgstr "Құлаққап"
 msgid "Headset"
 msgstr "Микрофонды құлаққап"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:366
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:371
 msgid "Microphone"
 msgstr "Микрофон"
 
@@ -1508,7 +1508,7 @@ msgstr "Әкімші"
 
 #: js/ui/components/polkitAgent.js:149
 msgid "Authenticate"
-msgstr "Аутентификация"
+msgstr "Аутентификациялау"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
@@ -1929,11 +1929,11 @@ msgstr ""
 "салдарынан аулақ болу керек. Мүмкін болса, қалыпты пайдаланушы ретінде жүйеге "
 "кіріңіз."
 
-#: js/ui/main.js:409
+#: js/ui/main.js:411
 msgid "Screen Lock disabled"
 msgstr "Экранды блоктау сөндірілген"
 
-#: js/ui/main.js:410
+#: js/ui/main.js:412
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "Экранды блоктау GNOME дисплейлер басқарушысын талап етеді"
 
@@ -2692,23 +2692,23 @@ msgstr "Дыбысты қайтару"
 msgid "Mute"
 msgstr "Дыбысын өшіру"
 
-#: js/ui/status/volume.js:292
+#: js/ui/status/volume.js:297
 msgid "Volume"
 msgstr "Дыбыс деңгейі"
 
-#: js/ui/status/volume.js:308
+#: js/ui/status/volume.js:313
 msgid "Sound Output"
 msgstr "Дыбыс шығысы"
 
-#: js/ui/status/volume.js:309
+#: js/ui/status/volume.js:314
 msgid "Open sound output menu"
 msgstr "Дыбыс шығысы мәзірін ашу"
 
-#: js/ui/status/volume.js:384
+#: js/ui/status/volume.js:389
 msgid "Sound Input"
 msgstr "Дыбыс кірісі"
 
-#: js/ui/status/volume.js:385
+#: js/ui/status/volume.js:390
 msgid "Open sound input menu"
 msgstr "Дыбыс кірісі мәзірін ашу"
 
@@ -2881,23 +2881,23 @@ msgstr "Оң жақ мониторға жылжыту"
 msgid "Close"
 msgstr "Жабу"
 
-#: src/main.c:513 subprojects/extensions-tool/src/main.c:336
+#: src/main.c:515 subprojects/extensions-tool/src/main.c:336
 msgid "Print version"
 msgstr "Баспа нұсқасы"
 
-#: src/main.c:519
+#: src/main.c:521
 msgid "Mode used by GDM for login screen"
 msgstr "GDM жүйеге кіру экраны үшін қолданатын режимі"
 
-#: src/main.c:525
+#: src/main.c:527
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Жүйеге кіру экраны үшін арнайы режимді, мыс. \"gdm\", қолдану"
 
-#: src/main.c:531
+#: src/main.c:533
 msgid "List possible modes"
 msgstr "Қолжетерлік режимдерді тізіп шығу"
 
-#: src/main.c:537
+#: src/main.c:539
 msgid "Force animations to be enabled"
 msgstr "Анимацияны мәжбүрлі түрде іске қосу"
 
@@ -2949,15 +2949,15 @@ msgstr ""
 "GNOME кеңейтулері көмегімен кеңейтулерді жаңарту, баптау және оларды өшіру "
 "немесе сөндіруге болады."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:64
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:65
 msgid "Main Window"
 msgstr "Басты терезе"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
 msgid "Available Updates"
 msgstr "Қолжетімді жаңартулар"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
 msgid "Search View"
 msgstr "Іздеу көрінісі"
 
