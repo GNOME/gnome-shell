@@ -525,16 +525,25 @@ export const LayoutManager = GObject.registerClass({
         }
     }
 
-    _waitLoaded(bgManager) {
-        return new Promise(resolve => {
-            const id = bgManager.connect('loaded', () => {
-                bgManager.disconnect(id);
-                resolve();
-            });
+    _waitLoaded(bgManager, cancellable) {
+        const {promise, resolve, reject} = Promise.withResolvers();
+        const cancelId = cancellable.connect(() => {
+            reject(new GLib.Error(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
+                'Background loading was cancelled'));
         });
+        const loadedId = bgManager.connect('loaded', () => {
+            bgManager.disconnect(loadedId);
+            cancellable.disconnect(cancelId);
+            resolve();
+        });
+
+        return promise;
     }
 
     _updateBackgrounds() {
+        this._bgLoadCancellable?.cancel();
+        this._bgLoadCancellable = null;
+
         for (let i = 0; i < this._bgManagers.length; i++)
             this._bgManagers[i].destroy();
 
@@ -542,6 +551,9 @@ export const LayoutManager = GObject.registerClass({
 
         if (Main.sessionMode.isGreeter)
             return Promise.resolve();
+
+        const cancellable = new Gio.Cancellable();
+        this._bgLoadCancellable = cancellable;
 
         for (let i = 0; i < this.monitors.length; i++) {
             const bgManager = this._createBackgroundManager(i);
@@ -551,7 +563,8 @@ export const LayoutManager = GObject.registerClass({
                 bgManager.backgroundActor.hide();
         }
 
-        return Promise.all(this._bgManagers.map(this._waitLoaded));
+        return Promise.all(
+            this._bgManagers.map(mgr => this._waitLoaded(mgr, cancellable)));
     }
 
     _updateKeyboardBox() {
