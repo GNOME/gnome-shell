@@ -530,13 +530,29 @@ export const LayoutManager = GObject.registerClass({
             const id = bgManager.connect('loaded', () => {
                 bgManager.disconnect(id);
                 resolve();
+
+                if (bgManager._waitingForLoaded) {
+                    bgManager._waitingForLoaded = false;
+
+                    let isInUse = false;
+                    for (let i = 0; i < this._bgManagers.length; i++) {
+                        if (bgManager === this._bgManagers[i]) {
+                            isInUse = true;
+                            break;
+                        }
+                    }
+                    if (!isInUse)
+                        bgManager.destroy();
+                }
             });
         });
     }
 
     _updateBackgrounds() {
-        for (let i = 0; i < this._bgManagers.length; i++)
-            this._bgManagers[i].destroy();
+        for (let i = 0; i < this._bgManagers.length; i++) {
+            if (!this._bgManagers[i]._waitingForLoaded)
+                this._bgManagers[i].destroy();
+        }
 
         this._bgManagers = [];
 
@@ -545,13 +561,15 @@ export const LayoutManager = GObject.registerClass({
 
         for (let i = 0; i < this.monitors.length; i++) {
             const bgManager = this._createBackgroundManager(i);
+
+            bgManager._waitingForLoaded = true;
             this._bgManagers.push(bgManager);
 
             if (i !== this.primaryIndex && this._startingUp)
                 bgManager.backgroundActor.hide();
         }
 
-        return Promise.all(this._bgManagers.map(this._waitLoaded));
+        return Promise.all(this._bgManagers.map(this._waitLoaded, this));
     }
 
     _updateKeyboardBox() {
