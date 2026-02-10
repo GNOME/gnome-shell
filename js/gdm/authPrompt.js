@@ -540,7 +540,11 @@ export const AuthPrompt = GObject.registerClass({
         if (wasQueryingService)
             this._queryingService = null;
 
-        this.updateSensitivity({sensitive: canRetry});
+        if (canRetry) {
+            this.verificationStatus = AuthPromptStatus.VERIFYING;
+            this._entry.text = '';
+            this.startPreemptiveInput();
+        }
         this.stopSpinning();
 
         if (!canRetry)
@@ -799,7 +803,7 @@ export const AuthPrompt = GObject.registerClass({
         if (this._userVerifier)
             this._userVerifier.cancel();
 
-        reuseEntryText = reuseEntryText || this._preemptiveInput;
+        reuseEntryText = reuseEntryText || !!this._preemptiveAnswer || this._preemptiveInput;
 
         this._queryingService = null;
         this.clear({reuseEntryText});
