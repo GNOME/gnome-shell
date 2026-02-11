@@ -531,6 +531,38 @@ shell_app_activate_full (ShellApp      *app,
     }
 }
 
+static GVariant *
+get_platform_data (ShellApp *app,
+                   guint     timestamp,
+                   int       workspace)
+{
+  GVariantBuilder builder;
+  ShellGlobal *global;
+  g_autoptr (GAppLaunchContext) context = NULL;
+  gchar *startup_id;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
+
+  global = shell_global_get ();
+  context = shell_global_create_app_launch_context (global, timestamp, workspace);
+
+  if (!context)
+    return g_variant_builder_end (&builder);
+
+  startup_id = g_app_launch_context_get_startup_notify_id (context, NULL, NULL);
+
+  if (!startup_id)
+    return g_variant_builder_end (&builder);
+
+
+  g_variant_builder_add (&builder, "{sv}",
+      "desktop-startup-id", g_variant_new_string (startup_id));
+  g_variant_builder_add (&builder, "{sv}",
+      "activation-token", g_variant_new_take_string (g_steal_pointer (&startup_id)));
+
+  return g_variant_builder_end (&builder);
+}
+
 /**
  * shell_app_open_new_window:
  * @app: a #ShellApp
@@ -571,8 +603,8 @@ shell_app_open_new_window (ShellApp      *app,
       g_action_group_has_action (group, "app.new-window") &&
       g_action_group_get_action_parameter_type (group, "app.new-window") == NULL)
     {
-      g_action_group_activate_action (group, "app.new-window", NULL);
-
+      gtk_action_muxer_activate_action_full (GTK_ACTION_MUXER (group), "app.new-window",
+                                             NULL, get_platform_data (app, 0, workspace));
       return;
     }
 
@@ -1458,38 +1490,6 @@ object_path_from_app_id (const gchar *app_id)
     }
 
   return app_id_path;
-}
-
-static GVariant *
-get_platform_data (ShellApp *app,
-                   guint     timestamp,
-                   int       workspace)
-{
-  GVariantBuilder builder;
-  ShellGlobal *global;
-  g_autoptr (GAppLaunchContext) context = NULL;
-  gchar *startup_id;
-
-  g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
-
-  global = shell_global_get ();
-  context = shell_global_create_app_launch_context (global, timestamp, workspace);
-
-  if (!context)
-    return g_variant_builder_end (&builder);
-
-  startup_id = g_app_launch_context_get_startup_notify_id (context, NULL, NULL);
-
-  if (!startup_id)
-    return g_variant_builder_end (&builder);
-
-
-  g_variant_builder_add (&builder, "{sv}",
-      "desktop-startup-id", g_variant_new_string (startup_id));
-  g_variant_builder_add (&builder, "{sv}",
-      "activation-token", g_variant_new_take_string (g_steal_pointer (&startup_id)));
-
-  return g_variant_builder_end (&builder);
 }
 
 static void
