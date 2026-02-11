@@ -695,7 +695,7 @@ export const UnlockDialog = GObject.registerClass({
 
         this._showPrompt();
 
-        if (GLib.unichar_isgraph(unichar))
+        if (GLib.unichar_isprint(unichar))
             this._authPrompt.addCharacter(unichar);
 
         return Clutter.EVENT_PROPAGATE;
