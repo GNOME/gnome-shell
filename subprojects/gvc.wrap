@@ -2,5 +2,5 @@
 directory=gvc
 url=https://gitlab.gnome.org/GNOME/libgnome-volume-control.git
 push-url=ssh://git@gitlab.gnome.org:GNOME/libgnome-volume-control.git
-revision=664eba4c054ecc4a140f0ef01ae9297422b71fdc
+revision=d2442f455844e5292cb4a74ffc66ecc8d7595a9f
 depth=1
