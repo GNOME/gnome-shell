@@ -917,6 +917,30 @@ gtk_action_muxer_get_primary_accel (GtkActionMuxer *muxer,
   return gtk_action_muxer_get_primary_accel (muxer->parent, action_and_target);
 }
 
+void
+gtk_action_muxer_activate_action_full (GtkActionMuxer *muxer,
+                                       const gchar    *action_name,
+                                       GVariant       *parameter,
+                                       GVariant       *platform_data)
+{
+  Group *group;
+  const gchar *unprefixed_name;
+
+  group = gtk_action_muxer_find_group (muxer, action_name, &unprefixed_name);
+
+  if (group)
+    {
+      if (G_IS_REMOTE_ACTION_GROUP (group->group))
+        g_remote_action_group_activate_action_full (G_REMOTE_ACTION_GROUP (group->group),
+                                                    unprefixed_name, parameter,
+                                                    platform_data);
+      else
+        g_action_group_activate_action (group->group, unprefixed_name, parameter);
+    }
+  else if (muxer->parent)
+    g_action_group_activate_action (G_ACTION_GROUP (muxer->parent), action_name, parameter);
+}
+
 gchar *
 gtk_print_action_and_target (const gchar *action_namespace,
                              const gchar *action_name,
