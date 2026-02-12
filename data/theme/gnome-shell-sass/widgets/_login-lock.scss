@@ -14,6 +14,7 @@ $_gdm_dialog_width: 25em;
 
   .login-dialog-prompt-layout {
     width: $_gdm_dialog_width;
+    margin-top: 80px;
     spacing: $base_padding * 1.5;
   }
 }
@@ -226,6 +227,7 @@ $_gdm_dialog_width: 25em;
 .unlock-dialog-clock {
   color: $_gdm_fg;
   spacing: 2em;
+  margin-top: 150px;
 
   .unlock-dialog-clock-time {
     @extend %numeric;
