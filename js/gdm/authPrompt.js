@@ -467,7 +467,6 @@ export const AuthPrompt = GObject.registerClass({
         else
             this.setQuestion(question.replace(/[:：] *$/, '').trim());
 
-        this.updateSensitivity({sensitive: true});
         this.emit('prompted');
     }
 
@@ -531,10 +530,8 @@ export const AuthPrompt = GObject.registerClass({
     _onVerificationFailed(userVerifier, serviceName, canRetry) {
         const wasQueryingService = this._queryingService === serviceName;
 
-        if (wasQueryingService) {
+        if (wasQueryingService)
             this._queryingService = null;
-            this.clear();
-        }
 
         this.updateSensitivity({sensitive: canRetry});
         this.setActorInDefaultButtonWell(this._nextButton);
@@ -640,6 +637,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     clear() {
+        this._entryArea.hide();
         this._entry.text = '';
         this._inactiveEntry.text = '';
         this.stopSpinning();
@@ -656,8 +654,7 @@ export const AuthPrompt = GObject.registerClass({
 
         this._authList.hide();
 
-        this._entryArea.show();
-        this._entry.grab_key_focus();
+        this._fadeInElement(this._entryArea);
     }
 
     _fadeInElement(element) {
