@@ -692,12 +692,9 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     updateSensitivity({sensitive}) {
-        let authWidget;
-
-        if (this._authList.visible)
-            authWidget = this._authList;
-        else
-            authWidget = this._entry;
+        const authWidget = [
+            this._authList,
+        ].find(widget => widget.visible) ?? this._entry;
 
         if (authWidget.reactive === sensitive)
             return;
