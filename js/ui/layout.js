@@ -540,7 +540,7 @@ export const LayoutManager = GObject.registerClass({
         return promise;
     }
 
-    _updateBackgrounds() {
+    async _updateBackgrounds() {
         this._bgLoadCancellable?.cancel();
         this._bgLoadCancellable = null;
 
@@ -563,8 +563,19 @@ export const LayoutManager = GObject.registerClass({
                 bgManager.backgroundActor.hide();
         }
 
-        return Promise.all(
-            this._bgManagers.map(mgr => this._waitLoaded(mgr, cancellable)));
+        if (!this._updateBackgroundsResolvers)
+            this._updateBackgroundsResolvers = Promise.withResolvers();
+
+        const {promise, resolve} = this._updateBackgroundsResolvers;
+        try {
+            await Promise.all(
+                this._bgManagers.map(mgr => this._waitLoaded(mgr, cancellable)));
+
+            delete this._updateBackgroundsResolvers;
+            resolve();
+        } catch {}
+
+        return promise;
     }
 
     _updateKeyboardBox() {
