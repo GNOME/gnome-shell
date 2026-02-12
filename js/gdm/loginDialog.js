@@ -1171,7 +1171,6 @@ export const LoginDialog = GObject.registerClass({
         this._updateCancelButton();
 
         this._sessionMenuButton.updateSensitivity(false);
-        this._authPrompt.updateSensitivity({sensitive: true});
         this._showPrompt();
     }
 
