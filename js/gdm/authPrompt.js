@@ -21,8 +21,10 @@ import {loadInterfaceXML} from '../misc/fileUtils.js';
 const TimerChildIface = loadInterfaceXML('org.freedesktop.MalcontentTimer1.Child');
 const TimerChildProxy = Gio.DBusProxy.makeProxyWrapper(TimerChildIface);
 
-const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
-const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
+export const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
+export const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
+export const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
+export const MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
 
 // A widget displayed instead of the unlock prompt
 // when parental controls session limits are reached
@@ -106,10 +108,6 @@ class ParentalControlsShield extends St.BoxLayout {
         this._requestExtensionCookie = null;
     }
 });
-
-export const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
-
-export const MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
 
 /** @enum {number} */
 export const AuthPromptMode = {
