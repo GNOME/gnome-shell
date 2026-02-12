@@ -23,7 +23,6 @@ const TimerChildIface = loadInterfaceXML('org.freedesktop.MalcontentTimer1.Child
 const TimerChildProxy = Gio.DBusProxy.makeProxyWrapper(TimerChildIface);
 
 export const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
-export const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
 export const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 export const MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
 
@@ -141,6 +140,7 @@ export const AuthPrompt = GObject.registerClass({
         'prompted': {},
         'reset': {param_types: [GObject.TYPE_UINT]},
         'verification-complete': {},
+        'loading': {param_types: [GObject.TYPE_BOOLEAN]},
     },
 }, class AuthPrompt extends St.BoxLayout {
     _init(gdmClient, mode) {
@@ -341,11 +341,7 @@ export const AuthPrompt = GObject.registerClass({
                     this._fadeOutMessage();
             });
 
-            entry.clutter_text.connect('activate', () => {
-                const shouldSpin = entry === this._passwordEntry;
-                if (entry.reactive)
-                    this._activateNext(shouldSpin);
-            });
+            entry.clutter_text.connect('activate', () => this._activateNext());
         });
 
         this._defaultButtonWell = new St.Widget({
@@ -408,11 +404,14 @@ export const AuthPrompt = GObject.registerClass({
         this._timedLoginIndicator.scale_x = 0.;
     }
 
-    _activateNext(shouldSpin) {
+    _activateNext() {
+        if (!this._entry.reactive)
+            return;
+
         this.verificationStatus = AuthPromptStatus.VERIFICATION_IN_PROGRESS;
         this.updateSensitivity({sensitive: false});
 
-        if (shouldSpin)
+        if (this._entry === this._passwordEntry)
             this.startSpinning();
 
         if (this._queryingService)
@@ -542,7 +541,7 @@ export const AuthPrompt = GObject.registerClass({
             this._queryingService = null;
 
         this.updateSensitivity({sensitive: canRetry});
-        this.setActorInDefaultButtonWell(this._nextButton);
+        this.stopSpinning();
 
         if (!canRetry)
             this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
@@ -552,7 +551,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     _onVerificationComplete() {
-        this.setActorInDefaultButtonWell(this._nextButton, true);
+        this.stopSpinning(true);
         this.verificationStatus = AuthPromptStatus.VERIFICATION_SUCCEEDED;
 
         this._mainBox.reactive = false;
@@ -572,76 +571,64 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     setActorInDefaultButtonWell(actor, animate) {
-        if (!this._defaultButtonWellActor &&
-            !actor)
+        if (!this._defaultButtonWellActor && !actor)
             return;
 
         const oldActor = this._defaultButtonWellActor;
+        const wasSpinner = oldActor === this._spinner;
 
         if (oldActor)
             oldActor.remove_all_transitions();
 
-        let wasSpinner;
-        if (oldActor === this._spinner)
-            wasSpinner = true;
-        else
-            wasSpinner = false;
-
-        let isSpinner;
         if (actor === this._spinner)
-            isSpinner = true;
-        else
-            isSpinner = false;
+            this._spinner.play();
 
-        if (this._defaultButtonWellActor !== actor && oldActor) {
-            if (!animate) {
+        if (!animate) {
+            if (oldActor) {
                 oldActor.opacity = 0;
-
-                if (wasSpinner) {
-                    if (this._spinner)
-                        this._spinner.stop();
-                }
-            } else {
-                oldActor.ease({
-                    opacity: 0,
-                    duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
-                    delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
-                    mode: Clutter.AnimationMode.LINEAR,
-                    onComplete: () => {
-                        if (wasSpinner) {
-                            if (this._spinner)
-                                this._spinner.stop();
-                        }
-                    },
-                });
+                if (wasSpinner)
+                    this._spinner.stop();
             }
+            if (actor)
+                actor.opacity = 255;
+
+            this._defaultButtonWellActor = actor;
+            return;
         }
 
+        if (oldActor) {
+            oldActor.opacity = 255;
+            oldActor.ease({
+                opacity: 0,
+                duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.LINEAR,
+                onComplete: () => {
+                    if (wasSpinner)
+                        this._spinner.stop();
+                },
+            });
+        }
         if (actor) {
-            if (isSpinner)
-                this._spinner.play();
-
-            if (!animate) {
-                actor.opacity = 255;
-            } else {
-                actor.ease({
-                    opacity: 255,
-                    duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
-                    delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
-                    mode: Clutter.AnimationMode.LINEAR,
-                });
-            }
+            actor.opacity = 0;
+            actor.ease({
+                opacity: 255,
+                duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
+                delay: oldActor ? DEFAULT_BUTTON_WELL_ANIMATION_TIME : 0,
+                mode: Clutter.AnimationMode.LINEAR,
+            });
         }
 
         this._defaultButtonWellActor = actor;
     }
 
     startSpinning() {
+        this.emit('loading', true);
         this.setActorInDefaultButtonWell(this._spinner, true);
     }
 
-    stopSpinning() {
-        this.setActorInDefaultButtonWell(null, false);
+    stopSpinning(animate) {
+        this.emit('loading', false);
+        this.setActorInDefaultButtonWell(this._nextButton, animate);
     }
 
     clear() {
@@ -765,7 +752,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     vfunc_hide() {
-        this.setActorInDefaultButtonWell(this._nextButton, true);
+        this.stopSpinning();
         super.vfunc_hide();
         this._message.opacity = 0;
 
