@@ -126,7 +126,7 @@ export const AuthPromptStatus = {
 };
 
 /** @enum {number} */
-export const BeginRequestType = {
+export const ResetType = {
     PROVIDE_USERNAME: 0,
     DONT_PROVIDE_USERNAME: 1,
     REUSE_USERNAME: 2,
@@ -811,28 +811,28 @@ export const AuthPrompt = GObject.registerClass({
         else if (oldStatus === AuthPromptStatus.VERIFICATION_CANCELLED)
             this.emit('cancelled');
 
-        let beginRequestType;
+        let resetType;
 
         if (this._mode === AuthPromptMode.UNLOCK_ONLY) {
             // The user is constant at the unlock screen, so it will immediately
             // respond to the request with the username
             if (oldStatus === AuthPromptStatus.VERIFICATION_CANCELLED)
                 return;
-            beginRequestType = BeginRequestType.PROVIDE_USERNAME;
+            resetType = ResetType.PROVIDE_USERNAME;
         } else if (this._userVerifier.foregroundServiceDeterminesUsername()) {
             // We don't need to know the username if the user preempted the login screen
             // with a smartcard or with preauthenticated oVirt credentials
-            beginRequestType = BeginRequestType.DONT_PROVIDE_USERNAME;
+            resetType = ResetType.DONT_PROVIDE_USERNAME;
         } else if (oldStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS ||
             softReset) {
             // We're going back to retry with current user
-            beginRequestType = BeginRequestType.REUSE_USERNAME;
+            resetType = ResetType.REUSE_USERNAME;
         } else {
             // In all other cases, we should get the username up front.
-            beginRequestType = BeginRequestType.PROVIDE_USERNAME;
+            resetType = ResetType.PROVIDE_USERNAME;
         }
 
-        this.emit('reset', beginRequestType);
+        this.emit('reset', resetType);
     }
 
     addCharacter(unichar) {

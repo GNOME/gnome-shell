@@ -857,9 +857,9 @@ export const UnlockDialog = GObject.registerClass({
         this.emit('failed');
     }
 
-    _onReset(authPrompt, beginRequest) {
+    _onReset(authPrompt, resetType) {
         let userName;
-        if (beginRequest !== AuthPrompt.BeginRequestType.DONT_PROVIDE_USERNAME) {
+        if (resetType !== AuthPrompt.ResetType.DONT_PROVIDE_USERNAME) {
             this._authPrompt.setUser(this._user);
             userName = this._userName;
         } else {
