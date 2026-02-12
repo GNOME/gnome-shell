@@ -34,6 +34,8 @@ const FADE_OUT_SCALE = 0.3;
 const BLUR_BRIGHTNESS = 0.65;
 const BLUR_RADIUS = 90;
 
+const FIXED_PROMPT_HEIGHT = 550;
+
 const NotificationsBox = GObject.registerClass({
     Signals: {'wake-up-screen': {}},
 }, class NotificationsBox extends St.BoxLayout {
@@ -451,7 +453,7 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         const [width, height] = box.get_size();
 
         const tenthOfHeight = height / 10.0;
-        const thirdOfHeight = height / 3.0;
+        const centerY = height / 2.0;
 
         const [, , stackWidth, stackHeight] =
             this._stack.get_preferred_size();
@@ -478,7 +480,7 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
 
         // Authentication Box
         const stackY = Math.min(
-            thirdOfHeight,
+            Math.floor(centerY - FIXED_PROMPT_HEIGHT / 2.0),
             height - stackHeight - maxNotificationsHeight);
 
         actorBox.x1 = columnX1;
