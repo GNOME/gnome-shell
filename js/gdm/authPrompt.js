@@ -330,11 +330,7 @@ export const AuthPrompt = GObject.registerClass({
                     this._fadeOutMessage();
             });
 
-            entry.clutter_text.connect('activate', () => {
-                const shouldSpin = entry === this._passwordEntry;
-                if (entry.reactive)
-                    this._activateNext(shouldSpin);
-            });
+            entry.clutter_text.connect('activate', () => this._activateNext());
         });
 
         this._defaultButtonWell = new St.Widget({
@@ -407,12 +403,15 @@ export const AuthPrompt = GObject.registerClass({
         this._timedLoginIndicator.scale_x = 0.;
     }
 
-    _activateNext(shouldSpin) {
+    _activateNext() {
+        if (!this._entry.reactive)
+            return;
+
         this.verificationStatus = AuthPromptStatus.VERIFICATION_IN_PROGRESS;
         this.updateSensitivity({sensitive: false});
 
-        if (shouldSpin)
-            this.startSpinning();
+        if (this._entry === this._passwordEntry)
+            this.startSpinning({animate: true});
 
         if (this._queryingService)
             this._userVerifier.answerQuery(this._queryingService, this._entry.text);
@@ -569,64 +568,51 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     setActorInDefaultButtonWell(actor, animate) {
-        if (!this._defaultButtonWellActor &&
-            !actor)
+        if (!this._defaultButtonWellActor && !actor)
             return;
 
         const oldActor = this._defaultButtonWellActor;
+        const wasSpinner = oldActor === this._spinner;
 
         if (oldActor)
             oldActor.remove_all_transitions();
 
-        let wasSpinner;
-        if (oldActor === this._spinner)
-            wasSpinner = true;
-        else
-            wasSpinner = false;
-
-        let isSpinner;
         if (actor === this._spinner)
-            isSpinner = true;
-        else
-            isSpinner = false;
+            this._spinner.play();
 
-        if (this._defaultButtonWellActor !== actor && oldActor) {
-            if (!animate) {
+        if (!animate) {
+            if (oldActor) {
                 oldActor.opacity = 0;
-
-                if (wasSpinner) {
-                    if (this._spinner)
-                        this._spinner.stop();
-                }
-            } else {
-                oldActor.ease({
-                    opacity: 0,
-                    duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
-                    mode: Clutter.AnimationMode.LINEAR,
-                    onComplete: () => {
-                        if (wasSpinner) {
-                            if (this._spinner)
-                                this._spinner.stop();
-                        }
-                    },
-                });
+                if (wasSpinner)
+                    this._spinner.stop();
             }
+            if (actor)
+                actor.opacity = 255;
+
+            this._defaultButtonWellActor = actor;
+            return;
         }
 
+        if (oldActor) {
+            oldActor.opacity = 255;
+            oldActor.ease({
+                opacity: 0,
+                duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.LINEAR,
+                onComplete: () => {
+                    if (wasSpinner)
+                        this._spinner.stop();
+                },
+            });
+        }
         if (actor) {
-            if (isSpinner)
-                this._spinner.play();
-
-            if (!animate) {
-                actor.opacity = 255;
-            } else {
-                actor.ease({
-                    opacity: 255,
-                    duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
-                    delay: oldActor ? DEFAULT_BUTTON_WELL_ANIMATION_TIME : 0,
-                    mode: Clutter.AnimationMode.LINEAR,
-                });
-            }
+            actor.opacity = 0;
+            actor.ease({
+                opacity: 255,
+                duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
+                delay: oldActor ? DEFAULT_BUTTON_WELL_ANIMATION_TIME : 0,
+                mode: Clutter.AnimationMode.LINEAR,
+            });
         }
 
         this._defaultButtonWellActor = actor;
