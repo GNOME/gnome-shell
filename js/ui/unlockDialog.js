@@ -901,8 +901,7 @@ export const UnlockDialog = GObject.registerClass({
     }
 
     _otherUserClicked() {
-        Gdm.goto_login_session_sync(null);
-
+        this._authPrompt.connect('destroy', () => Gdm.goto_login_session_sync(null));
         this._authPrompt.cancel();
     }
 
