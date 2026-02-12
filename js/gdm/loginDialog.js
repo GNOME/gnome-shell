@@ -1066,7 +1066,7 @@ export const LoginDialog = GObject.registerClass({
         }
     }
 
-    _onReset(authPrompt, beginRequest) {
+    _onReset(authPrompt, resetType) {
         this._ensureGreeterProxy();
         this._sessionMenuButton.updateSensitivity(true);
 
@@ -1078,11 +1078,11 @@ export const LoginDialog = GObject.registerClass({
             this._nextSignalId = 0;
         }
 
-        if (previousUser && beginRequest === AuthPrompt.BeginRequestType.REUSE_USERNAME) {
+        if (previousUser && resetType === AuthPrompt.ResetType.REUSE_USERNAME) {
             this._user = previousUser;
             this._authPrompt.setUser(this._user);
             this._authPrompt.begin({userName: previousUser.get_user_name()});
-        } else if (beginRequest === AuthPrompt.BeginRequestType.PROVIDE_USERNAME) {
+        } else if (resetType === AuthPrompt.ResetType.PROVIDE_USERNAME) {
             if (!this._disableUserList)
                 this._showUserList();
             else
