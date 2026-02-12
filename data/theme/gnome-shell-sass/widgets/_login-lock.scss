@@ -13,12 +13,28 @@ $_gdm_dialog_width: 25em;
   }
 
   .login-dialog-prompt-layout {
-    width: $_gdm_dialog_width;
+    width: $_gdm_dialog_width * 1.2;
     margin-top: 80px;
   }
 
   .login-dialog-input-well {
     spacing: $base_padding * 1.5;
+  }
+
+  .login-dialog-prompt-entry-area {
+    margin: 0.5em $base_margin * 5;
+  }
+
+  .login-dialog-prompt-entry {
+    border-radius: $base_border_radius * 1.5;
+    // Make room for button-well inside entry
+    :ltr { padding-right: 2.5em; }
+    :rtl { padding-left: 2.5em; }
+  }
+
+  .login-dialog-default-button-well {
+    :ltr { margin-right: 0.5em; }
+    :rtl { margin-left: 0.5em; }
   }
 }
 
@@ -37,7 +53,7 @@ $_gdm_dialog_width: 25em;
 
 // buttons on login screen
 .login-dialog-button {
-
+  &.next-button,
   &.a11y-button,
   &.cancel-button,
   &.switch-user-button,
@@ -48,13 +64,19 @@ $_gdm_dialog_width: 25em;
     padding: to_em(16px);
   }
 
+  &.next-button {
+    background-color: transparent !important;
+    padding: 0;
+  }
+
   &.cancel-button {
-    padding: $base_padding * 1.5;
+    padding: $base_padding * 2;
+    margin: 0.5em 0;
   }
 }
 
 .login-dialog-button-box {
-  spacing: $base_padding * 2;
+  height: 4em;
 }
 
 .conflicting-session-dialog-content {
