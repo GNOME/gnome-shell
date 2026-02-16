@@ -226,11 +226,12 @@ const SearchResultsBase = GObject.registerClass({
             return;
 
         this._cancellable.cancel();
-        this._cancellable = new Gio.Cancellable();
+        const cancellable = new Gio.Cancellable();
+        this._cancellable = cancellable;
 
-        const metas = await this.provider.getResultMetas(metasNeeded, this._cancellable);
+        const metas = await this.provider.getResultMetas(metasNeeded, cancellable);
 
-        if (this._cancellable.is_cancelled()) {
+        if (cancellable.is_cancelled()) {
             if (metas.length > 0)
                 throw new Error(`Search provider ${this.provider.id} returned results after the request was canceled`);
         }
