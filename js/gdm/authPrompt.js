@@ -168,14 +168,16 @@ export const AuthPrompt = GObject.registerClass({
 
         this._userVerifier = this._createUserVerifier(this._gdmClient, {reauthenticationOnly});
 
-        this._userVerifier.connect('ask-question', this._onAskQuestion.bind(this));
-        this._userVerifier.connect('show-message', this._onShowMessage.bind(this));
-        this._userVerifier.connect('show-choice-list', this._onShowChoiceList.bind(this));
-        this._userVerifier.connect('verification-failed', this._onVerificationFailed.bind(this));
-        this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
-        this._userVerifier.connect('reset', this._onReset.bind(this));
-        this._userVerifier.connect('smartcard-status-changed', this._onSmartcardStatusChanged.bind(this));
-        this._userVerifier.connect('credential-manager-authenticated', this._onCredentialManagerAuthenticated.bind(this));
+        this._userVerifier.connectObject(
+            'ask-question', this._onAskQuestion.bind(this),
+            'show-message', this._onShowMessage.bind(this),
+            'show-choice-list', this._onShowChoiceList.bind(this),
+            'verification-failed', this._onVerificationFailed.bind(this),
+            'verification-complete', this._onVerificationComplete.bind(this),
+            'reset', this._onReset.bind(this),
+            'smartcard-status-changed', this._onSmartcardStatusChanged.bind(this),
+            'credential-manager-authenticated', this._onCredentialManagerAuthenticated.bind(this),
+            this);
         this.smartcardDetected = this._userVerifier.smartcardDetected;
 
         this.connect('destroy', this._onDestroy.bind(this));
@@ -232,6 +234,7 @@ export const AuthPrompt = GObject.registerClass({
     _onDestroy() {
         this._inactiveEntry.destroy();
         this._inactiveEntry = null;
+        this._userVerifier.disconnectObject(this);
         this._userVerifier.destroy();
         this._userVerifier = null;
         this._entry = null;
