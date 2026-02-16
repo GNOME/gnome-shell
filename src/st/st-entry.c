@@ -1305,6 +1305,7 @@ _st_entry_set_icon (StEntry       *entry,
 
       clutter_actor_set_reactive (*icon, TRUE);
       clutter_actor_add_child (CLUTTER_ACTOR (entry), *icon);
+      clutter_actor_set_cursor_type (*icon, CLUTTER_CURSOR_DEFAULT);
 
       click_gesture = clutter_click_gesture_new ();
       clutter_actor_add_action_with_name (*icon, "entry-icon-click-gesture", click_gesture);
