@@ -10,6 +10,7 @@ import * as Vmware from './vmware.js';
 import {AuthServices} from './authServices.js';
 
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
+const FINGERPRINT_READY_TIMEOUT_MS = 500;
 
 const Mechanisms = [
     {
@@ -54,6 +55,8 @@ export class AuthServicesLegacy extends AuthServices {
         this._credentialManagers = {};
         this.addCredentialManager(OVirt.SERVICE_NAME, OVirt.getOVirtCredentialsManager());
         this.addCredentialManager(Vmware.SERVICE_NAME, Vmware.getVmwareCredentialsManager());
+
+        this._fingerprintReadyTimeoutId = 0;
     }
 
     _handleSelectChoice(serviceName, key) {
@@ -100,6 +103,40 @@ export class AuthServicesLegacy extends AuthServices {
 
     _handleClear() {
         this._smartcardInProgress = false;
+        this._clearFingerprintReadyTimeout();
+    }
+
+    _clearFingerprintReadyTimeout() {
+        if (this._fingerprintReadyTimeoutId) {
+            GLib.source_remove(this._fingerprintReadyTimeoutId);
+            this._fingerprintReadyTimeoutId = 0;
+        }
+    }
+
+    _handleOnConversationStarted(serviceName) {
+        if (serviceName !== Constants.FINGERPRINT_SERVICE_NAME ||
+            this._fingerprintReadyTimeoutId !== 0)
+            return;
+
+        this._fingerprintReadyTimeoutId = GLib.timeout_add_once(
+            GLib.PRIORITY_DEFAULT,
+            FINGERPRINT_READY_TIMEOUT_MS,
+            () => {
+                this._fingerprintReadyTimeoutId = 0;
+                this._setFingerprintReady(true);
+            });
+    }
+
+    _setFingerprintReady(ready) {
+        const mechanism = this._enabledMechanisms.find(m =>
+            m.role === Constants.FINGERPRINT_ROLE_NAME);
+
+        if (!mechanism || mechanism.ready === ready)
+            return;
+
+        mechanism.ready = ready;
+
+        this.emit('mechanisms-changed');
     }
 
     _handleUpdateEnabledMechanisms() {
@@ -112,6 +149,10 @@ export class AuthServicesLegacy extends AuthServices {
             this._enabledMechanisms.push(...Mechanisms.filter(m =>
                 this._enabledRoles.includes(m.role)
             ));
+
+            // Mark fingerprint as not ready until service confirms
+            // it's working for this user
+            this._setFingerprintReady(false);
         }
     }
 
@@ -229,11 +270,10 @@ export class AuthServicesLegacy extends AuthServices {
             return;
         }
 
-        if (serviceName === Constants.FINGERPRINT_SERVICE_NAME &&
-            this._unavailableServices.has(serviceName)) {
-            this._enabledMechanisms = this._enabledMechanisms
-                .filter(m => m.serviceName !== serviceName);
-            this.emit('mechanisms-changed');
+        if (serviceName === Constants.FINGERPRINT_SERVICE_NAME) {
+            this._clearFingerprintReadyTimeout();
+            if (this._unavailableServices.has(serviceName))
+                this._setFingerprintReady(false);
         }
 
         if (this._unavailableServices.has(serviceName))
