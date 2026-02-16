@@ -497,7 +497,7 @@ class GridSearchResults extends SearchResultsBase {
         super._onDestroy();
     }
 
-    updateSearch(...args) {
+    async updateSearch(...args) {
         if (this._notifyAllocationId)
             this.disconnect(this._notifyAllocationId);
         if (this._updateSearchLater) {
@@ -519,7 +519,7 @@ class GridSearchResults extends SearchResultsBase {
             });
         });
 
-        super.updateSearch(...args);
+        await super.updateSearch(...args);
     }
 
     _getMaxDisplayedResults() {
