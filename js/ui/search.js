@@ -15,6 +15,7 @@ import {ensureActorVisibleInScrollView} from '../misc/animationUtils.js';
 
 import {Highlighter} from '../misc/util.js';
 import {Spinner} from './animation.js';
+import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 
 const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 
@@ -274,7 +275,8 @@ const SearchResultsBase = GObject.registerClass({
                     resultId => this._addItem(this._resultDisplays[resultId]));
                 this._setMoreCount(this.provider.canLaunchSearch ? moreCount : 0);
                 this.show();
-            } catch {
+            } catch (e) {
+                logErrorUnlessCancelled(e);
                 this._clearResultDisplay();
             }
         }
@@ -511,7 +513,7 @@ class GridSearchResults extends SearchResultsBase {
             const laters = global.compositor.get_laters();
             this._updateSearchLater = laters.add(Meta.LaterType.BEFORE_REDRAW, () => {
                 delete this._updateSearchLater;
-                super.updateSearch(...args);
+                super.updateSearch(...args).catch(logErrorUnlessCancelled);
                 return GLib.SOURCE_REMOVE;
             });
         });
@@ -713,7 +715,8 @@ export const SearchResultsView = GObject.registerClass({
 
         this._providers.forEach(provider => {
             const previousProviderResults = previousResults[provider.id];
-            this._doProviderSearch(provider, previousProviderResults);
+            this._doProviderSearch(provider, previousProviderResults).catch(
+                logErrorUnlessCancelled);
         });
 
         this._updateSearchProgress();
