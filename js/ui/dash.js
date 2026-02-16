@@ -387,18 +387,14 @@ export const Dash = GObject.registerClass({
         AppFavorites.getAppFavorites().connect('changed', this._queueRedisplay.bind(this));
         this._appSystem.connect('app-state-changed', this._queueRedisplay.bind(this));
 
-        Main.overview.connect('item-drag-begin',
-            this._onItemDragBegin.bind(this));
-        Main.overview.connect('item-drag-end',
-            this._onItemDragEnd.bind(this));
-        Main.overview.connect('item-drag-cancelled',
-            this._onItemDragCancelled.bind(this));
-        Main.overview.connect('window-drag-begin',
-            this._onWindowDragBegin.bind(this));
-        Main.overview.connect('window-drag-cancelled',
-            this._onWindowDragEnd.bind(this));
-        Main.overview.connect('window-drag-end',
-            this._onWindowDragEnd.bind(this));
+        Main.overview.connectObject(
+            'item-drag-begin', () => this._onItemDragBegin(),
+            'item-drag-end', () => this._onItemDragEnd(),
+            'item-drag-cancelled', () => this._onItemDragCancelled(),
+            'window-drag-begin', () => this._onWindowDragBegin(),
+            'window-drag-cancelled', () => this._onWindowDragEnd(),
+            'window-drag-end', () => this._onWindowDragEnd(),
+            this);
 
         // Translators: this is the name of the dock/favorites area on
         // the bottom of the overview
