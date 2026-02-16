@@ -168,14 +168,16 @@ export const AuthPrompt = GObject.registerClass({
 
         this._userVerifier = this._createUserVerifier(this._gdmClient, {reauthenticationOnly});
 
-        this._userVerifier.connect('ask-question', this._onAskQuestion.bind(this));
-        this._userVerifier.connect('show-message', this._onShowMessage.bind(this));
-        this._userVerifier.connect('show-choice-list', this._onShowChoiceList.bind(this));
-        this._userVerifier.connect('verification-failed', this._onVerificationFailed.bind(this));
-        this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
-        this._userVerifier.connect('reset', this._onReset.bind(this));
-        this._userVerifier.connect('smartcard-status-changed', this._onSmartcardStatusChanged.bind(this));
-        this._userVerifier.connect('credential-manager-authenticated', this._onCredentialManagerAuthenticated.bind(this));
+        this._userVerifier.connectObject(
+            'ask-question', (_, ...args) => this._onAskQuestion(...args),
+            'show-message', (_, ...args) => this._onShowMessage(...args),
+            'show-choice-list', (_, ...args) => this._onShowChoiceList(...args),
+            'verification-failed', (_, ...args) => this._onVerificationFailed(...args),
+            'verification-complete', () => this._onVerificationComplete(),
+            'reset', () => this._onReset(),
+            'smartcard-status-changed', () => this._onSmartcardStatusChanged(),
+            'credential-manager-authenticated', () => this._onCredentialManagerAuthenticated(),
+            this);
         this.smartcardDetected = this._userVerifier.smartcardDetected;
 
         this.connect('destroy', this._onDestroy.bind(this));
@@ -230,6 +232,7 @@ export const AuthPrompt = GObject.registerClass({
     _onDestroy() {
         this._inactiveEntry.destroy();
         this._inactiveEntry = null;
+        this._userVerifier.disconnectObject(this);
         this._userVerifier.destroy();
         this._userVerifier = null;
         this._entry = null;
@@ -413,7 +416,7 @@ export const AuthPrompt = GObject.registerClass({
         this._capsLockWarningLabel.visible = secret;
     }
 
-    _onAskQuestion(verifier, serviceName, question, secret) {
+    _onAskQuestion(serviceName, question, secret) {
         if (this._queryingService)
             this.clear();
 
@@ -438,7 +441,7 @@ export const AuthPrompt = GObject.registerClass({
         this.emit('prompted');
     }
 
-    _onShowChoiceList(userVerifier, serviceName, promptMessage, choiceList) {
+    _onShowChoiceList(serviceName, promptMessage, choiceList) {
         if (this._queryingService)
             this.clear();
 
@@ -477,7 +480,7 @@ export const AuthPrompt = GObject.registerClass({
             this.reset();
     }
 
-    _onShowMessage(_userVerifier, serviceName, message, type, showMessageResolver) {
+    _onShowMessage(serviceName, message, type, showMessageResolver) {
         this.setMessage(message, type);
         this.emit('prompted');
 
@@ -491,7 +494,7 @@ export const AuthPrompt = GObject.registerClass({
         showMessageResolver?.(wigglePromise);
     }
 
-    _onVerificationFailed(userVerifier, serviceName, canRetry) {
+    _onVerificationFailed(serviceName, canRetry) {
         const wasQueryingService = this._queryingService === serviceName;
 
         if (wasQueryingService) {
