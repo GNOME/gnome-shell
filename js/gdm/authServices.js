@@ -87,7 +87,7 @@ export class AuthServices extends GObject.Object {
     }
 
     get enabledMechanisms() {
-        return this._enabledMechanisms;
+        return this._enabledMechanisms?.filter(m => m.ready !== false);
     }
 
     get _roleToService() {
