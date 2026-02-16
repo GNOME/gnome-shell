@@ -250,12 +250,11 @@ const SearchResultsBase = GObject.registerClass({
         });
     }
 
-    async updateSearch(providerResults, terms, callback) {
+    async updateSearch(providerResults, terms) {
         this._terms = terms;
         if (providerResults.length === 0) {
             this._clearResultDisplay();
             this.hide();
-            callback();
         } else {
             const maxResults = this._getMaxDisplayedResults();
             const results = maxResults > -1
@@ -275,10 +274,8 @@ const SearchResultsBase = GObject.registerClass({
                     resultId => this._addItem(this._resultDisplays[resultId]));
                 this._setMoreCount(this.provider.canLaunchSearch ? moreCount : 0);
                 this.show();
-                callback();
             } catch {
                 this._clearResultDisplay();
-                callback();
             }
         }
     }
@@ -705,7 +702,7 @@ export const SearchResultsView = GObject.registerClass({
         }
 
         this._results[provider.id] = results;
-        this._updateResults(provider, results);
+        await this._updateResults(provider, results);
     }
 
     _doSearch() {
@@ -851,16 +848,18 @@ export const SearchResultsView = GObject.registerClass({
         }
     }
 
-    _updateResults(provider, results) {
+    async _updateResults(provider, results) {
         const terms = this._terms;
         const display = provider.display;
 
-        display.updateSearch(results, terms, () => {
+        try {
+            await display.updateSearch(results, terms);
+        } finally {
             provider.searchInProgress = false;
 
             this._maybeSetInitialSelection();
             this._updateSearchProgress();
-        });
+        }
     }
 
     activateDefault() {
