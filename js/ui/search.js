@@ -223,7 +223,7 @@ const SearchResultsBase = GObject.registerClass({
             return;
 
         this._cancellable.cancel();
-        this._cancellable.reset();
+        this._cancellable = new Gio.Cancellable();
 
         const metas = await this.provider.getResultMetas(metasNeeded, this._cancellable);
 
@@ -734,7 +734,7 @@ export const SearchResultsView = GObject.registerClass({
         this._startingSearch = true;
 
         this._cancellable.cancel();
-        this._cancellable.reset();
+        this._cancellable = new Gio.Cancellable();
 
         if (terms.length === 0) {
             this._reset();
