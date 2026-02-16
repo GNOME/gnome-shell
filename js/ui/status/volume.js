@@ -548,6 +548,6 @@ class InputIndicator extends VolumeIndicator {
     }
 
     _readInput() {
-        this._input.stream = this._control.get_default_source();
+        this._input._stream = this._control.get_default_source();
     }
 });
