@@ -534,6 +534,9 @@ class InputIndicator extends VolumeIndicator {
     }
 
     _updatePrivacyIndicator() {
+        if (!this._input._stream)
+            return;
+
         // Muted microphone doesn't need privacy indicator (no privacy concern)
         const {isMuted} = this._input._stream;
         if (isMuted)
