@@ -1146,34 +1146,40 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _showConflictingSessionDialog(serviceName, conflictingSession) {
-        const conflictingSessionDialog = new ConflictingSessionDialog(conflictingSession,
-            this._greeterSessionProxy);
-
-        conflictingSessionDialog.connect('cancel', () => {
-            this._authPrompt.reset();
-            conflictingSessionDialog.close();
-        });
-        conflictingSessionDialog.connect('force-stop', () => {
-            this._greeter.call_stop_conflicting_session_sync(null);
-        });
-
+        const conflictingSessionDialog =
+            new ConflictingSessionDialog(conflictingSession, this._greeterSessionProxy);
         const loginManager = LoginManager.getLoginManager();
-        loginManager.connectObject('session-removed', (lm, sessionId) => {
-            if (sessionId === conflictingSession.Id) {
+
+        const closeDialogTimeoutId = GLib.timeout_add_seconds_once(
+            GLib.PRIORITY_DEFAULT,
+            _CONFLICTING_SESSION_DIALOG_TIMEOUT,
+            () => {
+                this._notifyConflictingSessionDialogClosed();
                 conflictingSessionDialog.close();
-                this._authPrompt.finish(() => this._startSession(serviceName));
-            }
-        }, conflictingSessionDialog);
+                this._authPrompt.reset();
+            });
 
-        const closeDialogTimeoutId = GLib.timeout_add_seconds_once(GLib.PRIORITY_DEFAULT, _CONFLICTING_SESSION_DIALOG_TIMEOUT, () => {
-            this._notifyConflictingSessionDialogClosed();
-            conflictingSessionDialog.close();
-            this._authPrompt.reset();
-        });
+        loginManager.connectObject(
+            'session-removed', (lm, sessionId) => {
+                if (sessionId === conflictingSession.Id) {
+                    conflictingSessionDialog.close();
+                    this._authPrompt.finish(() => this._startSession(serviceName));
+                }
+            }, this);
 
-        conflictingSessionDialog.connect('closed', () => {
-            GLib.source_remove(closeDialogTimeoutId);
-        });
+        conflictingSessionDialog.connectObject(
+            'cancel', () => {
+                conflictingSessionDialog.close();
+                this._authPrompt.reset();
+            },
+            'force-stop', () => {
+                this._greeter.call_stop_conflicting_session_sync(null);
+            },
+            'closed', () => {
+                GLib.source_remove(closeDialogTimeoutId);
+                conflictingSessionDialog.disconnectObject(this);
+                loginManager.disconnectObject(this);
+            }, this);
 
         conflictingSessionDialog.open();
     }
