@@ -692,20 +692,22 @@ export const SearchResultsView = GObject.registerClass({
     async _doProviderSearch(provider, previousResults) {
         provider.searchInProgress = true;
 
-        let results;
-        if (this._isSubSearch && previousResults) {
-            results = await provider.getSubsearchResultSet(
-                previousResults,
-                this._terms,
-                this._cancellable);
-        } else {
-            results = await provider.getInitialResultSet(
-                this._terms,
-                this._cancellable);
+        let results = [];
+        try {
+            if (this._isSubSearch && previousResults) {
+                results = await provider.getSubsearchResultSet(
+                    previousResults,
+                    this._terms,
+                    this._cancellable);
+            } else {
+                results = await provider.getInitialResultSet(
+                    this._terms,
+                    this._cancellable);
+            }
+        } finally {
+            this._results[provider.id] = results;
+            await this._updateResults(provider, results);
         }
-
-        this._results[provider.id] = results;
-        await this._updateResults(provider, results);
     }
 
     _doSearch() {
