@@ -4,6 +4,7 @@
     <file>gdm/authList.js</file>
     <file>gdm/authPrompt.js</file>
     <file>gdm/batch.js</file>
+    <file>gdm/conflictingSessionDialog.js</file>
     <file>gdm/credentialManager.js</file>
     <file>gdm/loginDialog.js</file>
     <file>gdm/oVirt.js</file>
