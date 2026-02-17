@@ -11,6 +11,7 @@ data/X-GNOME-Shell-Utilities.directory.desktop.in
 js/dbusServices/extensions/extensionPrefsDialog.js
 js/dbusServices/extensions/ui/extension-error-page.ui
 js/gdm/authPrompt.js
+js/gdm/conflictingSessionDialog.js
 js/gdm/loginDialog.js
 js/gdm/util.js
 js/misc/breakManager.js
