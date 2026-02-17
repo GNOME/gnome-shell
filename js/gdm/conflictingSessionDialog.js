@@ -16,11 +16,19 @@
  */
 
 import Clutter from 'gi://Clutter';
+import Cogl from 'gi://Cogl';
 import GObject from 'gi://GObject';
 import Pango from 'gi://Pango';
 import St from 'gi://St';
 
+import {Spinner} from '../ui/animation.js';
 import {ModalDialog} from '../ui/modalDialog.js';
+
+const SPINNER_SIZE = 32;
+const DIM_BRIGHTNESS = 0.7;
+const DIM_BRIGHTNESS_NAME = 'conflicting-session-dialog-dim';
+const SPINNER_DELAY = 3000;
+const SPINNER_ANIMATION_TIME = 200;
 
 export class ConflictingSessionDialog extends ModalDialog {
     static [GObject.signals] = {
@@ -80,6 +88,8 @@ export class ConflictingSessionDialog extends ModalDialog {
         textLayout.add_child(warningBanner);
         this.contentLayout.add_child(textLayout);
 
+        this._createSpinner();
+
         this._cancelButton = this.addButton({
             label: _('Cancel'),
             action: () => this.emit('cancel'),
@@ -90,8 +100,65 @@ export class ConflictingSessionDialog extends ModalDialog {
         this._forceStopButton = this.addButton({
             label: _('Force Stop'),
             action: () => {
+                this._startSpinning();
                 this.emit('force-stop');
             },
         });
+    }
+
+    _createSpinner() {
+        this._dimEffect = new Clutter.BrightnessContrastEffect({
+            name: DIM_BRIGHTNESS_NAME,
+            enabled: false,
+        });
+        this.dialogLayout.add_effect(this._dimEffect);
+
+        this._spinner = new Spinner(SPINNER_SIZE, {hideOnStop: true});
+        this._spinner.add_constraint(new Clutter.BindConstraint({
+            source: this.dialogLayout,
+            coordinate: Clutter.BindCoordinate.POSITION,
+        }));
+        this._spinner.add_constraint(new Clutter.AlignConstraint({
+            source: this.dialogLayout,
+            align_axis: Clutter.AlignAxis.BOTH,
+            factor: 0.5,
+        }));
+        this.backgroundStack.add_child(this._spinner);
+    }
+
+    _startSpinning() {
+        this.popModal();
+
+        this._cancelButton.reactive = false;
+        this._cancelButton.can_focus = false;
+        this._forceStopButton.reactive = false;
+        this._forceStopButton.can_focus = false;
+
+        this._spinner.play();
+        this._spinner.opacity = 0;
+        this._spinner.ease({
+            opacity: 255,
+            delay: SPINNER_DELAY,
+            duration: SPINNER_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
+        this._animateDimEffect();
+    }
+
+    _animateDimEffect() {
+        const val = 127 * DIM_BRIGHTNESS;
+        const color = new Cogl.Color({
+            red: val,
+            green: val,
+            blue: val,
+            alpha: 255,
+        });
+        this._dimEffect.actor.ease_property(`@effects.${DIM_BRIGHTNESS_NAME}.brightness`, color, {
+            delay: SPINNER_DELAY,
+            duration: SPINNER_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+        this._dimEffect.set_enabled(true);
     }
 }
