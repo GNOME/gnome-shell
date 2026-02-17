@@ -693,20 +693,21 @@ export const SearchResultsView = GObject.registerClass({
         provider.searchInProgress = true;
 
         let results = [];
+        const terms = this._terms;
         try {
             if (this._isSubSearch && previousResults) {
                 results = await provider.getSubsearchResultSet(
                     previousResults,
-                    this._terms,
+                    terms,
                     this._cancellable);
             } else {
                 results = await provider.getInitialResultSet(
-                    this._terms,
+                    terms,
                     this._cancellable);
             }
         } finally {
             this._results[provider.id] = results;
-            await this._updateResults(provider, results);
+            await this._updateResults(provider, terms, results);
         }
     }
 
@@ -854,8 +855,7 @@ export const SearchResultsView = GObject.registerClass({
         }
     }
 
-    async _updateResults(provider, results) {
-        const terms = this._terms;
+    async _updateResults(provider, terms, results) {
         const display = provider.display;
 
         try {
