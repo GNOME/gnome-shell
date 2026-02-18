@@ -50,6 +50,10 @@ const _CONFLICTING_SESSION_DIALOG_TIMEOUT = 60;
 
 const N_A11Y_MENU_COLUMNS = 2;
 
+Gio._promisify(Gdm.Greeter.prototype, 'call_begin_auto_login');
+Gio._promisify(Gdm.Greeter.prototype, 'call_select_session');
+Gio._promisify(Gdm.Greeter.prototype, 'call_start_session_when_ready');
+Gio._promisify(Gdm.Greeter.prototype, 'call_stop_conflicting_session');
 Gio._promisify(Gio.File.prototype, 'load_contents_async');
 
 export const UserListItem = GObject.registerClass({
@@ -575,7 +579,7 @@ export const LoginDialog = GObject.registerClass({
         this._sessionMenuButton = new SessionMenuButton();
         this._sessionMenuButton.connect('session-activated',
             (list, sessionId) => {
-                this._greeter.call_select_session_sync(sessionId, null);
+                this._greeter.call_select_session(sessionId, null).catch(logError);
             });
         this._sessionMenuButton.opacity = 0;
         this._sessionMenuButton.show();
@@ -1173,7 +1177,7 @@ export const LoginDialog = GObject.registerClass({
                 this._authPrompt.reset();
             },
             'force-stop', () => {
-                this._greeter.call_stop_conflicting_session_sync(null);
+                this._greeter.call_stop_conflicting_session(null).catch(logError);
             },
             'closed', () => {
                 GLib.source_remove(closeDialogTimeoutId);
@@ -1191,7 +1195,7 @@ export const LoginDialog = GObject.registerClass({
             duration: _FADE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
-                this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
+                this._greeter.call_start_session_when_ready(serviceName, true, null).catch(logError);
                 this._unbindOpacity();
             },
         });
@@ -1354,7 +1358,7 @@ export const LoginDialog = GObject.registerClass({
 
             () => {
                 this._timedLoginBatch = null;
-                this._greeter.call_begin_auto_login_sync(userName, null);
+                this._greeter.call_begin_auto_login(userName, null).catch(logError);
             },
         ];
 
