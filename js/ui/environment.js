@@ -148,7 +148,7 @@ function _easeActor(actor, params) {
     const callback = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transitions
-    let animatedProps = Object.keys(params).map(p => p.replace('_', '-', 'g'));
+    let animatedProps = Object.keys(params).map(p => p.replaceAll('_', '-'));
     animatedProps.forEach(p => actor.remove_transition(p));
 
     if (easingDuration > 0 || !isReversed)
