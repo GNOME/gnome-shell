@@ -1452,7 +1452,7 @@ class LookingGlass extends St.BoxLayout {
             let text = o.get_text();
             // Ensure we don't get newlines in the command; the history file is
             // newline-separated.
-            text = text.replace('\n', ' ');
+            text = text.replaceAll('\n', ' ');
             this._evaluate(text).catch(logError);
             return true;
         });
