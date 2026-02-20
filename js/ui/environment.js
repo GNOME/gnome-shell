@@ -54,7 +54,7 @@ function _patchLayoutClass(layoutClass, styleProps) {
     }
 }
 
-function _makeEaseCallback(params, cleanup) {
+function _makeEaseCallback(params) {
     const onComplete = params.onComplete;
     delete params.onComplete;
 
@@ -63,8 +63,6 @@ function _makeEaseCallback(params, cleanup) {
 
     const {promise, resolve, reject} = Promise.withResolvers();
     const callback = isFinished => {
-        cleanup?.();
-
         if (onStopped)
             onStopped(isFinished);
         if (onComplete && isFinished)
@@ -156,7 +154,7 @@ function _easeActor(actor, params) {
 
     const easingDuration = actor.get_easing_duration();
     const {prepare, cleanup} = _makeEasePrepareAndCleanup(easingDuration);
-    const {promise, callback} = _makeEaseCallback(params, cleanup);
+    const {promise, callback} = _makeEaseCallback(params);
 
     // cancel overwritten transitions
     const animatedProps = Object.keys(params).map(p => p.replace('_', '-', 'g'));
@@ -182,10 +180,13 @@ function _easeActor(actor, params) {
     }
 
     if (transition) {
-        transition.connectObject('stopped', (t, finished) => callback(finished),
-            sessionSignalHolder);
+        transition.connectObject('stopped', (t, finished) => {
+            callback(finished);
+            cleanup?.();
+        }, sessionSignalHolder);
     } else {
         callback(true);
+        cleanup?.();
     }
 
     return promise;
@@ -234,7 +235,7 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
         duration = 0;
 
     const {prepare, cleanup} = _makeEasePrepareAndCleanup(duration);
-    const {promise, callback} = _makeEaseCallback(params, cleanup);
+    const {promise, callback} = _makeEaseCallback(params);
 
     // cancel overwritten transition
     animatable.remove_transition(propName);
@@ -247,6 +248,7 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
 
         prepare?.();
         callback(true);
+        cleanup?.();
 
         return promise;
     }
@@ -271,8 +273,11 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
             prepare();
     }
 
-    transition.connectObject('stopped',
-        (t, finished) => callback(finished), sessionSignalHolder);
+    transition.connectObject('stopped', (t, finished) => {
+            callback(finished);
+            cleanup?.();
+        }, sessionSignalHolder);
+
     return promise;
 }
 
