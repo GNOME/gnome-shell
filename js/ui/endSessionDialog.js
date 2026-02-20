@@ -774,7 +774,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._updateButtons();
 
         if (!this.open()) {
-            invocation.return_error_literal(
+            invocation.return_error_literal(ModalDialogErrors,
                 ModalDialogError.GRAB_FAILED,
                 'Cannot grab pointer and keyboard');
             return;
