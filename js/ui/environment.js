@@ -81,6 +81,25 @@ function _makeEaseCallback(params, cleanup) {
     return {promise, callback};
 }
 
+function _setupTransitionCompletion(transition, callback, prepare) {
+    const signalHolder = new SignalTracker.TransientSignalHolder(sessionSignalHolder);
+
+    const complete = finished => {
+        signalHolder.destroy();
+        callback(finished);
+    };
+
+    if (prepare) {
+        if (transition.delay)
+            transition.connectObject('started', () => prepare(), signalHolder);
+        else
+            prepare();
+    }
+
+    transition.connectObject('stopped', (_, finished) =>
+        complete(finished), signalHolder);
+}
+
 function _makeEasePrepareAndCleanup(duration) {
     if (!duration)
         return {prepare: null, cleanup: null};
@@ -178,19 +197,10 @@ function _easeActor(actor, params) {
 
     const [transition] = transitions;
 
-    if (prepare) {
-        if (transition?.delay)
-            transition.connectObject('started', () => prepare(), sessionSignalHolder);
-        else
-            prepare();
-    }
-
     if (transition) {
-        transition.connectObject('stopped', (t, finished) => {
-            transition.disconnectObject(sessionSignalHolder);
-            callback(finished);
-        }, sessionSignalHolder);
+        _setupTransitionCompletion(transition, callback, prepare);
     } else {
+        prepare?.();
         callback(true);
     }
 
@@ -270,17 +280,8 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
 
     transition.set_to(target);
 
-    if (prepare) {
-        if (transition.delay)
-            transition.connectObject('started', () => prepare(), sessionSignalHolder);
-        else
-            prepare();
-    }
+    _setupTransitionCompletion(transition, callback, prepare);
 
-    transition.connectObject('stopped', (t, finished) => {
-        transition.disconnectObject(sessionSignalHolder);
-        callback(finished);
-    }, sessionSignalHolder);
     return promise;
 }
 
