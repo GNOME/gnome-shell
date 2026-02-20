@@ -79,7 +79,7 @@ function _makeEaseCallback(params) {
     return {promise, callback};
 }
 
-function _setupTransitionCompletion({transition, callback, prepare, cleanup}) {
+function _setupTransitionCompletion({transition, actor, callback, prepare, cleanup}) {
     const signalHolder = new SignalTracker.TransientSignalHolder(sessionSignalHolder);
 
     const complete = ({finished, shouldCleanup}) => {
@@ -96,8 +96,11 @@ function _setupTransitionCompletion({transition, callback, prepare, cleanup}) {
             prepare();
     }
 
-    transition.connectObject('stopped', (_t, finished) =>
+    transition.connectObject('stopped', (_, finished) =>
         complete({finished, shouldCleanup: true}), signalHolder);
+
+    actor?.connectObject('destroy', () =>
+        complete({finished: false, shouldCleanup: transition.is_playing()}), signalHolder);
 }
 
 function _makeEasePrepareAndCleanup(duration) {
@@ -194,7 +197,7 @@ function _easeActor(actor, params) {
     const [transition] = transitions;
 
     if (transition) {
-        _setupTransitionCompletion({transition, callback, prepare, cleanup});
+        _setupTransitionCompletion({transition, actor, callback, prepare, cleanup});
     } else {
         prepare?.();
         callback(true);
@@ -278,7 +281,7 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
 
     transition.set_to(target);
 
-    _setupTransitionCompletion({transition, callback, prepare, cleanup, propName});
+    _setupTransitionCompletion({transition, actor, callback, prepare, cleanup, propName});
 
     return promise;
 }
