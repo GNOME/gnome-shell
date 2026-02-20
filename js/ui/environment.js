@@ -79,6 +79,27 @@ function _makeEaseCallback(params) {
     return {promise, callback};
 }
 
+function _setupTransitionCompletion({transition, callback, prepare, cleanup}) {
+    const signalHolder = new SignalTracker.TransientSignalHolder(sessionSignalHolder);
+
+    const complete = ({finished, shouldCleanup}) => {
+        signalHolder.destroy();
+        callback(finished);
+        if (shouldCleanup)
+            cleanup?.();
+    };
+
+    if (prepare) {
+        if (transition.delay)
+            transition.connectObject('started', () => prepare(), signalHolder);
+        else
+            prepare();
+    }
+
+    transition.connectObject('stopped', (_t, finished) =>
+        complete({finished, shouldCleanup: true}), signalHolder);
+}
+
 function _makeEasePrepareAndCleanup(duration) {
     if (!duration)
         return {prepare: null, cleanup: null};
@@ -172,19 +193,10 @@ function _easeActor(actor, params) {
 
     const [transition] = transitions;
 
-    if (prepare) {
-        if (transition?.delay)
-            transition.connectObject('started', () => prepare(), sessionSignalHolder);
-        else
-            prepare();
-    }
-
     if (transition) {
-        transition.connectObject('stopped', (t, finished) => {
-            callback(finished);
-            cleanup?.();
-        }, sessionSignalHolder);
+        _setupTransitionCompletion({transition, callback, prepare, cleanup});
     } else {
+        prepare?.();
         callback(true);
         cleanup?.();
     }
@@ -266,17 +278,7 @@ function _easeAnimatableProperty(animatable, propName, target, params) {
 
     transition.set_to(target);
 
-    if (prepare) {
-        if (transition.delay)
-            transition.connectObject('started', () => prepare(), sessionSignalHolder);
-        else
-            prepare();
-    }
-
-    transition.connectObject('stopped', (t, finished) => {
-            callback(finished);
-            cleanup?.();
-        }, sessionSignalHolder);
+    _setupTransitionCompletion({transition, callback, prepare, cleanup, propName});
 
     return promise;
 }
