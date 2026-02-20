@@ -25,7 +25,6 @@ export const PageIndicators = GObject.registerClass({
         this._nPages = 0;
         this._currentPosition = 0;
         this._reactive = true;
-        this._reactive = true;
         this._orientation = orientation;
     }
 
