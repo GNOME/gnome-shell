@@ -85,11 +85,15 @@ function _makeEasePrepareAndCleanup(duration) {
     if (!duration)
         return {prepare: null, cleanup: null};
 
+    let canCleanup = false;
     const prepare = () => {
         global.compositor.disable_unredirect();
         global.begin_work();
+        canCleanup = true;
     };
     const cleanup = () => {
+        if (!canCleanup)
+            return;
         global.compositor.enable_unredirect();
         global.end_work();
     };
