@@ -5,10 +5,14 @@
     </method>
     <method name="Shutdown"/>
     <method name="Reboot"/>
+    <method name="Suspend"/>
     <method name="CanShutdown">
       <arg type="u" direction="out"/>
     </method>
     <method name="CanReboot">
+      <arg type="u" direction="out"/>
+    </method>
+    <method name="CanSuspend">
       <arg type="u" direction="out"/>
     </method>
     <method name="IsInhibited">

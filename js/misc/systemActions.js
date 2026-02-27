@@ -86,6 +86,7 @@ const SystemActions = GObject.registerClass({
         this._canHaveReboot = true;
         this._rebootNeedsAuth = false;
         this._canHaveSuspend = true;
+        this._suspendNeedsAuth = false;
 
         function tokenizeKeywords(keywords) {
             return keywords.split(';').map(keyword => GLib.str_tokenize_and_fold(keyword, null)).flat(2);
@@ -162,7 +163,6 @@ const SystemActions = GObject.registerClass({
         this._screenSaverSettings = new Gio.Settings({schema_id: SCREENSAVER_SCHEMA});
 
         this._session = new GnomeSession.SessionManager();
-        this._loginManager = LoginManager.getLoginManager();
         this._monitorManager = global.backend.get_monitor_manager();
 
         this._userManager = AccountsService.UserManager.get_default();
@@ -397,15 +397,19 @@ const SystemActions = GObject.registerClass({
     }
 
     async _updateHaveSuspend() {
-        const {canSuspend, needsAuth} = await this._loginManager.canSuspend();
-        this._canHaveSuspend = canSuspend;
-        this._suspendNeedsAuth = needsAuth;
+        try {
+            const [availability] = await this._session.CanSuspendAsync();
+            this._canHaveSuspend = availability !== GnomeSession.ActionAvailability.UNAVAILABLE;
+            this._suspendNeedsAuth = availability === GnomeSession.ActionAvailability.CHALLENGE;
+        } catch {
+            this._canHaveSuspend = false;
+            this._suspendNeedsAuth = false;
+        }
         this._updateSuspend();
     }
 
     _updateSuspend() {
-        const disabled = (Main.sessionMode.isLocked &&
-                        this._suspendNeedsAuth) ||
+        const disabled = (Main.sessionMode.isLocked && this._suspendNeedsAuth) ||
                        (Main.sessionMode.isGreeter &&
                         this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
         this._actions.get(SUSPEND_ACTION_ID).available = this._canHaveSuspend && !disabled;
@@ -501,7 +505,7 @@ const SystemActions = GObject.registerClass({
         if (!this._actions.get(SUSPEND_ACTION_ID).available)
             throw new Error('The suspend action is not available!');
 
-        this._loginManager.suspend();
+        this._session.SuspendAsync().catch(logErrorUnlessCancelled);
     }
 
     activateScreenshotUI() {

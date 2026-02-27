@@ -167,20 +167,6 @@ class LoginManagerSystemd extends Signals.EventEmitter {
         }
     }
 
-    async canSuspend() {
-        let canSuspend, needsAuth;
-
-        try {
-            const [result] = await this._proxy.CanSuspendAsync();
-            needsAuth = result === 'challenge';
-            canSuspend = needsAuth || result === 'yes';
-        } catch {
-            canSuspend = false;
-            needsAuth = false;
-        }
-        return {canSuspend, needsAuth};
-    }
-
     async canRebootToBootLoaderMenu() {
         let canRebootToBootLoaderMenu, needsAuth;
 
@@ -211,10 +197,6 @@ class LoginManagerSystemd extends Signals.EventEmitter {
 
     getSession(objectPath) {
         return new SystemdLoginSession(Gio.DBus.system, 'org.freedesktop.login1', objectPath);
-    }
-
-    suspend() {
-        this._proxy.SuspendAsync(true);
     }
 
     async inhibit(reason, cancellable) {
@@ -268,13 +250,6 @@ class LoginManagerDummy extends Signals.EventEmitter  {
         return new Promise(() => {});
     }
 
-    canSuspend() {
-        return new Promise(resolve => resolve({
-            canSuspend: false,
-            needsAuth: false,
-        }));
-    }
-
     canRebootToBootLoaderMenu() {
         return new Promise(resolve => resolve({
             canRebootToBootLoaderMenu: false,
@@ -291,13 +266,6 @@ class LoginManagerDummy extends Signals.EventEmitter  {
 
     getSession(_objectPath) {
         return null;
-    }
-
-    suspend() {
-        this._preparingForSleep = true;
-        this.emit('prepare-for-sleep', true);
-        this._preparingForSleep = false;
-        this.emit('prepare-for-sleep', false);
     }
 
     get preparingForSleep() {
