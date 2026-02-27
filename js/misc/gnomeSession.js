@@ -62,3 +62,10 @@ export const InhibitFlags = {
     IDLE: 1 << 3,
     AUTOMOUNT: 1 << 4,
 };
+
+export const ActionAvailability = {
+    UNAVAILABLE: 0,
+    BLOCKED: 1,
+    CHALLENGE: 2,
+    AVAILABLE: 3,
+};

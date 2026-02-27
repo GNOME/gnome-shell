@@ -82,6 +82,7 @@ const SystemActions = GObject.registerClass({
         super._init();
 
         this._canHavePowerOff = true;
+        this._powerOffNeedsAuth = false;
         this._canHaveSuspend = true;
 
         function tokenizeKeywords(keywords) {
@@ -345,10 +346,12 @@ const SystemActions = GObject.registerClass({
 
     async _updateHaveShutdown() {
         try {
-            const [canShutdown] = await this._session.CanShutdownAsync();
-            this._canHavePowerOff = canShutdown;
+            const [availability] = await this._session.CanShutdownAsync();
+            this._canHavePowerOff = availability !== GnomeSession.ActionAvailability.UNAVAILABLE;
+            this._powerOffNeedsAuth = availability === GnomeSession.ActionAvailability.CHALLENGE;
         } catch {
             this._canHavePowerOff = false;
+            this._powerOffNeedsAuth = false;
         }
         this._updatePowerOff();
     }
@@ -356,6 +359,7 @@ const SystemActions = GObject.registerClass({
     _updatePowerOff() {
         const disabled = (Main.sessionMode.isLocked &&
                         !this._screenSaverSettings.get_boolean(RESTART_ENABLED_KEY)) ||
+                       (Main.sessionMode.isLocked && this._powerOffNeedsAuth) ||
                        (Main.sessionMode.isGreeter &&
                         this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
         this._actions.get(POWER_OFF_ACTION_ID).available = this._canHavePowerOff && !disabled;
