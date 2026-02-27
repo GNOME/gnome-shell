@@ -16,7 +16,7 @@ export const WORKSPACE_SPACING = 100;
 
 export const BaseWorkspaceGroup = GObject.registerClass(
 class BaseWorkspaceGroup extends Clutter.Actor {
-    constructor(workspace, monitor) {
+    constructor(workspace, monitor, movingWindow) {
         super({
             width: monitor.width,
             height: monitor.height,
@@ -25,6 +25,7 @@ class BaseWorkspaceGroup extends Clutter.Actor {
 
         this._workspace = workspace;
         this._monitor = monitor;
+        this._movingWindow = movingWindow;
         this._windowRecords = [];
 
         this._createBackground();
@@ -94,9 +95,7 @@ class BaseWorkspaceGroup extends Clutter.Actor {
 export const WorkspaceGroup = GObject.registerClass(
 class WorkspaceGroup extends BaseWorkspaceGroup {
     constructor(workspace, monitor, movingWindow) {
-        super(workspace, monitor);
-
-        this._movingWindow = movingWindow;
+        super(workspace, monitor, movingWindow);
 
         global.display.connectObject('restacked',
             () => this._syncStacking(), this);
@@ -150,6 +149,10 @@ class WorkspaceGroup extends BaseWorkspaceGroup {
 
 export const WorkspaceBackground = GObject.registerClass(
 class WorkspaceBackground extends BaseWorkspaceGroup {
+    constructor(workspace, monitor) {
+        super(workspace, monitor, null);
+    }
+
     _shouldShowWindow(window) {
         return this._isDesktopWindow(window) &&
             this._windowIsOnThisMonitor(window);
