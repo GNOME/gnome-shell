@@ -224,6 +224,7 @@ st_password_entry_init (StPasswordEntry *entry)
                                            "style-class", "peek-password",
                                            "icon-name", "view-reveal-symbolic",
                                            NULL);
+  g_object_ref_sink (priv->peek_password_icon);
   st_entry_set_secondary_icon (ST_ENTRY (entry), priv->peek_password_icon);
 
   st_password_entry_set_show_peek_icon (entry, TRUE);
