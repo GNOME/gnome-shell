@@ -1,5 +1,5 @@
 # Portuguese translation for gnome-shell.
-# Copyright © 2010-2025 gnome-shell.
+# Copyright © 2010-2026 gnome-shell.
 # This file is distributed under the same license as the gnome-shell package.
 # Duarte Loreto <happyguy_pt@hotmail.com>, 2010, 2011, 2012, 2013, 2014.
 # Rui Gouveia <rui.gouveia@gmail.com>, 2011.
@@ -10,15 +10,15 @@
 # Sérgio Cardeira <cardeira dot sergio at gmail dot com>, 2016.
 # Juliano de Souza Camargo <julianosc@protonmail.com>, 2020.
 # José Vieira <jvieira33@sapo.pt>, 2020, 2021.
-# Hugo Carvalho <hugokarvalho@hotmail.com>, 2020, 2021, 2022, 2023, 2024, 2025.
+# Hugo Carvalho <hugokarvalho@hotmail.com>, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
 # João Carvalhinho <joao.carvalhinho@gmail.com>, 2024, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-03-05 12:21+0000\n"
-"PO-Revision-Date: 2025-03-05 18:29+0000\n"
+"POT-Creation-Date: 2026-01-30 16:12+0000\n"
+"PO-Revision-Date: 2026-02-28 22:48+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.8\n"
 "X-Project-Style: gnome\n"
 "X-Language: pt_PT\n"
 "X-Source-Language: C\n"
@@ -108,7 +108,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Abrir nova janela da aplicação preferida 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2272
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2282
 msgid "Screenshots"
 msgstr "Capturas de ecrã"
 
@@ -133,7 +133,7 @@ msgid "Record a screencast interactively"
 msgstr "Gravar o ecrã de forma interativa"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:3 js/ui/messageTray.js:1307
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1308
 msgid "System"
 msgstr "Sistema"
 
@@ -157,11 +157,11 @@ msgstr "Mostrar a vista geral"
 msgid "Show all apps"
 msgstr "Mostrar todas as aplicações"
 
-#: data/org.gnome.Shell.desktop.in.in:4
+#: data/org.gnome.Shell.desktop.in.in:3
 msgid "GNOME Shell"
 msgstr "Interface GNOME"
 
-#: data/org.gnome.Shell.desktop.in.in:5
+#: data/org.gnome.Shell.desktop.in.in:4
 msgid "Window management and application launching"
 msgstr "Gestão de janelas e iniciação de aplicações"
 
@@ -512,12 +512,12 @@ msgstr "O modo do ícone da aplicação."
 #: data/org.gnome.shell.gschema.xml.in:307
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
 msgstr ""
-"Configura a exibição das janelas. As opções válidas são \"apenas-"
-"miniatura\" (mostra uma miniatura da janela), \"apenas-ícone-"
-"aplicação\" (mostra só o ícone da aplicação) ou \"ambas\"."
+"Configura a exibição das janelas. As opções válidas são \"apenas-miniatura\" "
+"(mostra uma miniatura da janela), \"apenas-ícone-aplicação\" (mostra só o "
+"ícone da aplicação) ou \"ambas\"."
 
 #: data/org.gnome.shell.gschema.xml.in:316
 msgid ""
@@ -552,27 +552,27 @@ msgid "The location for which to show a forecast"
 msgstr "A localização para a qual deve ser mostrada uma previsão"
 
 #. Keep in sync with subprojects/extensions-app
-#: data/org.gnome.Shell.Extensions.desktop.in.in:5
+#: data/org.gnome.Shell.Extensions.desktop.in.in:4
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:3
 #: subprojects/extensions-app/data/ui/extensions-window.ui:57
 msgid "Extensions"
 msgstr "Extensões"
 
-#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:2
 msgid "Network Login"
 msgstr "Acesso pela rede"
 
-#: data/X-GNOME-Shell-Utilities.directory.desktop.in:3
+#: data/X-GNOME-Shell-Utilities.directory.desktop.in:2
 msgid "Utilities"
 msgstr "Utilitários"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:15
+#: js/dbusServices/extensions/ui/extension-error-page.ui:12
 #: subprojects/extensions-app/data/ui/extensions-window.ui:275
 msgid "Something’s gone wrong"
 msgstr "Alguma coisa correu mal"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:23
+#: js/dbusServices/extensions/ui/extension-error-page.ui:20
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -581,19 +581,19 @@ msgstr ""
 "Houve um problema: não é possível mostrar as configurações desta extensão. "
 "Recomendamos que relate o problema aos autores da extensão."
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:48
+#: js/dbusServices/extensions/ui/extension-error-page.ui:45
 msgid "Technical Details"
 msgstr "Informação técnica"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:90
+#: js/dbusServices/extensions/ui/extension-error-page.ui:87
 msgid "Homepage"
 msgstr "Página inicial"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:91
+#: js/dbusServices/extensions/ui/extension-error-page.ui:88
 msgid "Visit extension homepage"
 msgstr "Visitar a página inicial da extensão"
 
-#: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
+#: js/gdm/authPrompt.js:157 js/gdm/loginDialog.js:468
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -601,7 +601,7 @@ msgstr "Visitar a página inicial da extensão"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
+#: js/gdm/authPrompt.js:335 js/ui/components/networkAgent.js:214
 #: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
 #: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
 #: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
@@ -609,7 +609,7 @@ msgstr "Cancelar"
 msgid "Password"
 msgstr "Palavra-passe"
 
-#: js/gdm/loginDialog.js:328
+#: js/gdm/loginDialog.js:326
 msgid "Choose Session"
 msgstr "Escolher sessão"
 
@@ -678,26 +678,26 @@ msgstr "Não está listado?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1071
+#: js/gdm/loginDialog.js:1075
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(por ex., utilizador ou %s)"
 
-#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1080 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 msgid "Username"
 msgstr "Utilizador"
 
-#: js/gdm/loginDialog.js:1142
+#: js/gdm/loginDialog.js:1146
 msgid "Login Attempt Timed Out"
 msgstr "Esgotou o tempo para a tentativa de acesso"
 
-#: js/gdm/loginDialog.js:1143
+#: js/gdm/loginDialog.js:1147
 msgid "Login took too long, please try again"
 msgstr ""
 "A tentativa de acesso demorou demasiado tempo, por favor tente novamente"
 
-#: js/gdm/loginDialog.js:1492
+#: js/gdm/loginDialog.js:1496
 msgid "Login Window"
 msgstr "Janela de acesso"
 
@@ -717,32 +717,32 @@ msgstr "(ou passe o dedo pelo leitor)"
 msgid "(or place finger on reader)"
 msgstr "(ou coloque o dedo no leitor)"
 
-#: js/misc/breakManager.js:765
+#: js/misc/breakManager.js:774
 msgid "Break complete sound"
 msgstr "Aviso sonoro de pausa completa"
 
-#: js/misc/breakManager.js:982
+#: js/misc/breakManager.js:984
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d segundo"
 msgstr[1] "%d segundos"
 
-#: js/misc/breakManager.js:988
+#: js/misc/breakManager.js:990
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d minuto"
 msgstr[1] "%d minutos"
 
-#: js/misc/breakManager.js:994
+#: js/misc/breakManager.js:996
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d hora"
 msgstr[1] "%d horas"
 
-#: js/misc/breakManager.js:1000
+#: js/misc/breakManager.js:1002
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -750,79 +750,79 @@ msgstr[0] "%d dia"
 msgstr[1] "%d dias"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1083
+#: js/misc/breakManager.js:1085
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "Próxima pausa em %s"
 msgstr[1] "Próxima pausa em %s"
 
-#: js/misc/breakManager.js:1091
+#: js/misc/breakManager.js:1093
 msgid "Movement Break Soon"
 msgstr "Pausa para Movimento em breve"
 
-#: js/misc/breakManager.js:1094
+#: js/misc/breakManager.js:1096
 msgid "Eyesight Break Soon"
 msgstr "Pausa para descanso de visão em breve"
 
-#: js/misc/breakManager.js:1097
+#: js/misc/breakManager.js:1099
 msgid "Break Soon"
 msgstr "Pausa brevemente"
 
-#: js/misc/breakManager.js:1141
+#: js/misc/breakManager.js:1144
 msgid "Movement Break in Progress"
 msgstr "Pausa de Movimento em curso"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1144
+#: js/misc/breakManager.js:1147
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "Continue a movimentar-se durante %s"
 msgstr[1] "Continue a movimentar-se durante %s"
 
-#: js/misc/breakManager.js:1150
+#: js/misc/breakManager.js:1153
 msgid "Eyesight Break in Progress"
 msgstr "Pausa para descanso de visão em curso"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1153
+#: js/misc/breakManager.js:1156
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "Continue a olhar à sua volta durante %s"
 msgstr[1] "Continue a olhar à sua volta durante %s"
 
-#: js/misc/breakManager.js:1159
+#: js/misc/breakManager.js:1162
 msgid "Break in Progress"
 msgstr "Pausa em curso"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1162
+#: js/misc/breakManager.js:1165
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "%s em falta na sua pausa"
 msgstr[1] "%s em falta na sua pausa"
 
-#: js/misc/breakManager.js:1201
+#: js/misc/breakManager.js:1204
 msgid "Time for a Movement Break"
 msgstr "É tempo de fazer uma pausa e movimentar-se"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1204
+#: js/misc/breakManager.js:1207
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "Faça uma pausa deste dispositivo e mexa-se durante %s"
 msgstr[1] "Faça uma pausa deste dispositivo e mexa-se durante %s"
 
-#: js/misc/breakManager.js:1210
+#: js/misc/breakManager.js:1213
 msgid "Time for an Eyesight Break"
 msgstr "É tempo para fazer uma pausa e descansar a Visão"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1213
+#: js/misc/breakManager.js:1216
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -833,12 +833,12 @@ msgstr[0] ""
 msgstr[1] ""
 "Faça uma pausa deste ecrã. Olhe para algo à distância de 6 metros durante %s"
 
-#: js/misc/breakManager.js:1219
+#: js/misc/breakManager.js:1222
 msgid "Time for a Break"
 msgstr "Tempo para uma Pausa"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1222
+#: js/misc/breakManager.js:1225
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -846,44 +846,46 @@ msgstr[0] "É tempo para fazer uma Pausa. Afaste-se deste dispositivo por %s!"
 msgstr[1] "É tempo para fazer uma Pausa. Afaste-se deste dispositivo por %s!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1244
+#: js/misc/breakManager.js:1249
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] "Já devia ter feito uma Pausa há %s"
 msgstr[1] "Já devia ter feito uma Pausa há %s"
 
-#: js/misc/breakManager.js:1250
+#: js/misc/breakManager.js:1255
 msgid "Break Overdue"
 msgstr "Já devia ter feito uma Pausa"
 
-#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1264
+#: js/misc/breakManager.js:1271
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "Ainda tem %s na sua Pausa"
 msgstr[1] "Ainda tem %s na sua Pausa"
 
-#: js/misc/breakManager.js:1270
+#: js/misc/breakManager.js:1277
 msgid "Break Interrupted"
 msgstr "Pausa interrompida"
 
-#: js/misc/breakManager.js:1341
+#. Translators: As in "Delay the break"
+#: js/misc/breakManager.js:1355
 msgid "Delay"
 msgstr "Atrasar"
 
-#: js/misc/breakManager.js:1362 js/ui/welcomeDialog.js:61
+#. Translators: As in "Skip the break"
+#: js/misc/breakManager.js:1377 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Saltar"
 
-#: js/misc/breakManager.js:1383
+#. Translators: As in "Take the break"
+#: js/misc/breakManager.js:1399
 msgid "Take"
 msgstr "Tomar"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1446
+#: js/misc/breakManager.js:1462
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -891,117 +893,117 @@ msgstr[0] "Pausa em %d segundo"
 msgstr[1] "Pausa em %d segundos"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:91
+#: js/misc/systemActions.js:92
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Desligar"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:95
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "desligar;encerrar;parar"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:99
+#: js/misc/systemActions.js:100
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Reiniciar"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:103
 msgid "reboot;restart;"
-msgstr "reiniciar;"
+msgstr "reinício;reiniciar;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:107
+#: js/misc/systemActions.js:108
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Bloquear ecrã"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:111
 msgid "lock screen"
 msgstr "bloquear ecrã"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:115
+#: js/misc/systemActions.js:116
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Sair"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:119
 msgid "logout;log out;sign off"
 msgstr "terminar sessão;sair"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:123
+#: js/misc/systemActions.js:124
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Suspender"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:127
 msgid "suspend;sleep"
 msgstr "suspender"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:131
+#: js/misc/systemActions.js:132
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Mudar de utilizador"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:135
 msgid "switch user"
 msgstr "mudar de utilizador"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:141
+#: js/misc/systemActions.js:142
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "bloquear orientação;desbloquear orientação;ecrã;rotação"
 
 #. Translators: The name of the screenshot UI action in search
-#: js/misc/systemActions.js:146
+#: js/misc/systemActions.js:147
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Capturar ecrã"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
-#: js/misc/systemActions.js:149
+#: js/misc/systemActions.js:150
 msgid "screenshot;screencast;snip;capture;record"
 msgstr "screenshot;screencast;capturar;gravar;ecrã;cortar"
 
-#: js/misc/systemActions.js:249
+#: js/misc/systemActions.js:250
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Desbloquear rotação de ecrã"
 
-#: js/misc/systemActions.js:250
+#: js/misc/systemActions.js:251
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Bloquear rotação de ecrã"
 
-#: js/misc/timeLimitsManager.js:338
+#: js/misc/timeLimitsManager.js:342
 msgid "GNOME needs to save screen time data"
 msgstr "O GNOME precisa de guardar dados de tempo de ecrã"
 
-#: js/misc/timeLimitsManager.js:1102
+#: js/misc/timeLimitsManager.js:1124
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "Limite de Tempo de ecrã em %d minuto"
 msgstr[1] "Limite de Tempo de ecrã em %d minutos"
 
-#: js/misc/timeLimitsManager.js:1109
+#: js/misc/timeLimitsManager.js:1131
 msgid "Your screen time limit is approaching"
 msgstr "O limite de Tempo de ecrã está a aproximar-se"
 
-#: js/misc/timeLimitsManager.js:1123
+#: js/misc/timeLimitsManager.js:1145
 msgid "Screen Time Limit Reached"
 msgstr "Limite de Tempo de ecrã alcançado"
 
-#: js/misc/timeLimitsManager.js:1124
+#: js/misc/timeLimitsManager.js:1146
 msgid "It’s time to stop using the device"
 msgstr "Está na hora de parar de usar este dispositivo"
 
@@ -1032,7 +1034,7 @@ msgid_plural "%d hours ago"
 msgstr[0] "há %d hora atrás"
 msgstr[1] "há %d horas atrás"
 
-#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:183
+#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:184
 msgid "Yesterday"
 msgstr "Ontem"
 
@@ -1176,7 +1178,7 @@ msgstr "%s foi afixado ao Painel."
 msgid "%s has been unpinned from the dash."
 msgstr "%s foi desafixado do Painel."
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:309
+#: js/ui/appFavorites.js:208 js/ui/main.js:310
 msgid "Undo"
 msgstr "Desfazer"
 
@@ -1436,11 +1438,11 @@ msgid "Service"
 msgstr "Serviço"
 
 #: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
-#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
+#: js/ui/components/networkAgent.js:744 js/ui/components/networkAgent.js:765
 msgid "Authentication required"
 msgstr "Autenticação necessária"
 
-#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:745
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
@@ -1448,7 +1450,7 @@ msgstr ""
 "São necessárias palavras-passe ou chaves de encriptação para aceder à rede "
 "sem fios “%s”"
 
-#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:749
 msgid "Wired 802.1X authentication"
 msgstr "Autenticação para 802.1X por cabo"
 
@@ -1456,15 +1458,15 @@ msgstr "Autenticação para 802.1X por cabo"
 msgid "Network name"
 msgstr "Nome da rede"
 
-#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:753
 msgid "DSL authentication"
 msgstr "Autenticação DSL"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:758
 msgid "PIN code required"
 msgstr "Necessário código PIN"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:759
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "É necessário o código PIN para o dispositivo de banda larga móvel"
 
@@ -1472,14 +1474,14 @@ msgstr "É necessário o código PIN para o dispositivo de banda larga móvel"
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
-#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
-#: js/ui/components/networkAgent.js:771
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:750
+#: js/ui/components/networkAgent.js:754 js/ui/components/networkAgent.js:766
+#: js/ui/components/networkAgent.js:770
 #, javascript-format
 msgid "A password is required to connect to “%s”"
 msgstr "É necessária uma palavra-passe para se ligar a “%s”"
 
-#: js/ui/components/networkAgent.js:770
+#: js/ui/components/networkAgent.js:769
 msgid "VPN password"
 msgstr "Palavra-passe da VPN"
 
@@ -1503,7 +1505,7 @@ msgstr "Autenticar"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Não funcionou. Tente novamente."
 
-#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:404
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:406
 msgid "Windows"
 msgstr "Janelas"
 
@@ -1535,29 +1537,29 @@ msgid "%A %B %e %Y"
 msgstr "%A, %e de %B de %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:172
+#: js/ui/dateMenu.js:173
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:175
+#: js/ui/dateMenu.js:176
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%-d de %B de %Y"
 
-#: js/ui/dateMenu.js:181
+#: js/ui/dateMenu.js:182
 msgid "Today"
 msgstr "Hoje"
 
-#: js/ui/dateMenu.js:185
+#: js/ui/dateMenu.js:186
 msgid "Tomorrow"
 msgstr "Amanhã"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:216
+#: js/ui/dateMenu.js:217
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Dia completo"
@@ -1565,39 +1567,39 @@ msgstr "Dia completo"
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
 #.
-#: js/ui/dateMenu.js:238
+#: js/ui/dateMenu.js:239
 msgid "%m/%d"
 msgstr "%m/%d"
 
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:290
 msgid "No Events"
 msgstr "Sem eventos"
 
-#: js/ui/dateMenu.js:411
+#: js/ui/dateMenu.js:412
 msgid "Add World Clocks…"
 msgstr "Adicionar relógios do mundo…"
 
-#: js/ui/dateMenu.js:412
+#: js/ui/dateMenu.js:413
 msgid "World Clocks"
 msgstr "Relógios do mundo"
 
-#: js/ui/dateMenu.js:702
+#: js/ui/dateMenu.js:704
 msgid "Loading…"
 msgstr "A carregar…"
 
-#: js/ui/dateMenu.js:712
+#: js/ui/dateMenu.js:714
 msgid "Go Online for Weather Information"
 msgstr "Procurar informação meteorológica na rede"
 
-#: js/ui/dateMenu.js:714
+#: js/ui/dateMenu.js:716
 msgid "Weather Information Unavailable"
 msgstr "Informação meteorológica indisponível"
 
-#: js/ui/dateMenu.js:724
+#: js/ui/dateMenu.js:726
 msgid "Weather"
 msgstr "Meteorologia"
 
-#: js/ui/dateMenu.js:726
+#: js/ui/dateMenu.js:728
 msgid "Select Weather Location…"
 msgstr "Selecione uma localização meteorológica…"
 
@@ -1666,7 +1668,7 @@ msgstr "Reiniciar"
 #: js/ui/endSessionDialog.js:90
 msgctxt "title"
 msgid "Install Updates & Restart"
-msgstr "Instalar atualizações e Reiniciar"
+msgstr "Instalar atualizações e reiniciar"
 
 #: js/ui/endSessionDialog.js:93
 #, javascript-format
@@ -1700,7 +1702,7 @@ msgstr[1] ""
 #: js/ui/endSessionDialog.js:119 js/ui/endSessionDialog.js:140
 msgctxt "button"
 msgid "Restart & Install"
-msgstr "Reiniciar &amp; Instalar"
+msgstr "Reiniciar e instalar"
 
 #: js/ui/endSessionDialog.js:121
 msgctxt "button"
@@ -1917,19 +1919,19 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Página Web"
 
-#: js/ui/main.js:305
+#: js/ui/main.js:306
 msgid "System was put in unsafe mode"
 msgstr "O sistema foi colocado em modo inseguro"
 
-#: js/ui/main.js:306
+#: js/ui/main.js:307
 msgid "Apps now have unrestricted access"
 msgstr "As aplicações têm agora acesso sem restrições"
 
-#: js/ui/main.js:366
+#: js/ui/main.js:367
 msgid "Logged in as a privileged user"
 msgstr "Em sessão como utilizador privilegiado"
 
-#: js/ui/main.js:367
+#: js/ui/main.js:368
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1937,11 +1939,11 @@ msgstr ""
 "Executar uma sessão como utilizador privilegiado deve ser evitado por "
 "motivos de segurança. Se possível, aceder como utilizador normal."
 
-#: js/ui/main.js:415
+#: js/ui/main.js:416
 msgid "Screen Lock disabled"
 msgstr "Bloqueio de ecrã desligado"
 
-#: js/ui/main.js:416
+#: js/ui/main.js:417
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "O bloqueio de ecrã requer o gestor de exibição do GNOME"
 
@@ -1967,11 +1969,11 @@ msgstr "Titulo desconhecido"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:328
+#: js/ui/overviewControls.js:329
 msgid "Type to search"
 msgstr "Escreva para pesquisar"
 
-#: js/ui/overviewControls.js:392
+#: js/ui/overviewControls.js:394
 msgid "Apps"
 msgstr "Aplicações"
 
@@ -2048,15 +2050,15 @@ msgstr "Abrir menu"
 msgid "Run a Command"
 msgstr "Executar um comando"
 
-#: js/ui/runDialog.js:76
+#: js/ui/runDialog.js:79
 msgid "Press ESC to close"
 msgstr "Premir Esc para fechar"
 
-#: js/ui/runDialog.js:253
+#: js/ui/runDialog.js:256
 msgid "Restart is not available on Wayland"
 msgstr "O reinício não está disponível no Wayland"
 
-#: js/ui/runDialog.js:258
+#: js/ui/runDialog.js:261
 msgid "Restarting…"
 msgstr "A reiniciar…"
 
@@ -2064,143 +2066,143 @@ msgstr "A reiniciar…"
 msgid "GNOME needs to lock the screen"
 msgstr "O GNOME precisa de bloquear o ecrã"
 
-#: js/ui/screenShield.js:274 js/ui/screenShield.js:667
+#: js/ui/screenShield.js:274 js/ui/screenShield.js:664
 msgid "Unable to lock"
 msgstr "Impossível bloquear"
 
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:668
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:665
 msgid "Lock was blocked by an app"
 msgstr "Uma aplicação impediu o bloqueio"
 
-#: js/ui/screenshot.js:1250
+#: js/ui/screenshot.js:1253
 msgid "Selection"
 msgstr "Seleção"
 
-#: js/ui/screenshot.js:1260
+#: js/ui/screenshot.js:1263
 msgid "Area Selection"
 msgstr "Seleção da área"
 
-#: js/ui/screenshot.js:1265
+#: js/ui/screenshot.js:1268
 msgid "Screen"
 msgstr "Ecrã"
 
-#: js/ui/screenshot.js:1275
+#: js/ui/screenshot.js:1278
 msgid "Screen Selection"
 msgstr "Seleção do ecrã"
 
-#: js/ui/screenshot.js:1280
+#: js/ui/screenshot.js:1283
 msgid "Window"
 msgstr "Janela"
 
-#: js/ui/screenshot.js:1290
+#: js/ui/screenshot.js:1293
 msgid "Window Selection"
 msgstr "Seleção de janelas"
 
-#: js/ui/screenshot.js:1315 js/ui/status/system.js:111
+#: js/ui/screenshot.js:1318 js/ui/status/system.js:111
 msgid "Take Screenshot"
 msgstr "Capturar ecrã"
 
-#: js/ui/screenshot.js:1331
+#: js/ui/screenshot.js:1334
 msgid "Record Screen"
 msgstr "Gravar o ecrã"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1348
+#: js/ui/screenshot.js:1351
 msgid "Capture"
 msgstr "Captura"
 
-#: js/ui/screenshot.js:1370
+#: js/ui/screenshot.js:1373
 msgid "Show Pointer"
 msgstr "Mostrar cursor"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1994
+#: js/ui/screenshot.js:2001
 msgid "Screencasts"
 msgstr "Gravações de ecrã"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:1999
+#: js/ui/screenshot.js:2006
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Gravação de ecrã de %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2045
+#: js/ui/screenshot.js:2052
 msgid "Screencast recorded"
 msgstr "Gravação de ecrã efetuada"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2058
+#: js/ui/screenshot.js:2065
 msgid "Screencast failed to start"
 msgstr "Erro no início da gravação de ecrã"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2064
+#: js/ui/screenshot.js:2071
 msgid "Screencast ended: Out of disk space"
 msgstr "A gravação de ecrã terminou por falta de espaço em disco"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2070
+#: js/ui/screenshot.js:2077
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "A gravação de ecrã terminou inesperadamente, tente de novo"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2073
+#: js/ui/screenshot.js:2080
 msgid "Screencast ended unexpectedly"
 msgstr "A gravação de ecrã terminou inesperadamente"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2327
+#: js/ui/screenshot.js:2090 js/ui/screenshot.js:2337
 msgid "Screenshot"
 msgstr "Captura de ecrã"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2090
+#: js/ui/screenshot.js:2097
 msgid "Click here to view the video."
 msgstr "Clicar aqui para ver o vídeo."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2343
+#: js/ui/screenshot.js:2105 js/ui/screenshot.js:2353
 msgid "Show in Files"
 msgstr "Mostrar em Ficheiros"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2285
+#: js/ui/screenshot.js:2295
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Captura de ecrã de %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2333
+#: js/ui/screenshot.js:2343
 msgid "Screenshot captured"
 msgstr "Captura de ecrã efetuada"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2335
+#: js/ui/screenshot.js:2345
 msgid "You can paste the image from the clipboard."
 msgstr "Pode colar a imagem a partir da área de transferência."
 
-#: js/ui/screenshot.js:2391 js/ui/screenshot.js:2555
+#: js/ui/screenshot.js:2404 js/ui/screenshot.js:2568
 msgid "Screenshot taken"
 msgstr "Captura de ecrã tirada"
 
-#: js/ui/search.js:832
+#: js/ui/search.js:837
 msgid "Searching…"
 msgstr "A procurar…"
 
-#: js/ui/search.js:834
+#: js/ui/search.js:839
 msgid "No results"
 msgstr "Nenhum resultado"
 
-#: js/ui/search.js:965
+#: js/ui/search.js:973
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2384,35 +2386,35 @@ msgid "Disconnect"
 msgstr "Desligar"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:265 js/ui/status/network.js:354
+#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:354
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Desligar %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:356
+#: js/ui/status/bluetooth.js:269 js/ui/status/network.js:356
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Ligar a %s"
 
-#: js/ui/status/bluetooth.js:274 js/ui/status/bluetooth.js:276
+#: js/ui/status/bluetooth.js:276 js/ui/status/bluetooth.js:278
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:299 js/ui/status/network.js:1909
+#: js/ui/status/bluetooth.js:301 js/ui/status/network.js:1920
 msgid "Bluetooth Settings"
 msgstr "Definições Bluetooth"
 
-#: js/ui/status/bluetooth.js:346
+#: js/ui/status/bluetooth.js:348
 msgid "No available or connected devices"
 msgstr "Nenhum dispositivo disponível ou ligado"
 
-#: js/ui/status/bluetooth.js:347
+#: js/ui/status/bluetooth.js:349
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "Ativar o Bluetooth para se ligar a dispositivos"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:411
+#: js/ui/status/bluetooth.js:413
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -2427,23 +2429,23 @@ msgstr "Luminosidade"
 msgid "Dark Style"
 msgstr "Estilo escuro"
 
-#: js/ui/status/dwellClick.js:15
+#: js/ui/status/dwellClick.js:14
 msgid "Single Click"
 msgstr "Clique único"
 
-#: js/ui/status/dwellClick.js:20
+#: js/ui/status/dwellClick.js:19
 msgid "Double Click"
 msgstr "Clique duplo"
 
-#: js/ui/status/dwellClick.js:25
+#: js/ui/status/dwellClick.js:24
 msgid "Drag"
 msgstr "Arrastar"
 
-#: js/ui/status/dwellClick.js:30
+#: js/ui/status/dwellClick.js:29
 msgid "Secondary Click"
 msgstr "Clique secundário"
 
-#: js/ui/status/dwellClick.js:39
+#: js/ui/status/dwellClick.js:38
 msgid "Dwell Click"
 msgstr "Clique permanente"
 
@@ -2479,93 +2481,93 @@ msgstr "Conceder acesso"
 msgid "<unknown>"
 msgstr "<desconhecido>"
 
-#: js/ui/status/network.js:1059
+#: js/ui/status/network.js:1060
 msgid "Secure"
 msgstr "Seguro"
 
-#: js/ui/status/network.js:1059
+#: js/ui/status/network.js:1060
 msgid "Not secure"
 msgstr "Não seguro"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Intensidade do sinal %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1062
+#: js/ui/status/network.js:1063
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1164
+#: js/ui/status/network.js:1165
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Ponto de acesso %s"
 
-#: js/ui/status/network.js:1435
+#: js/ui/status/network.js:1446
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d ligado"
 msgstr[1] "%d ligados"
 
-#: js/ui/status/network.js:1533 js/ui/status/network.js:1549
+#: js/ui/status/network.js:1544 js/ui/status/network.js:1560
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1534
+#: js/ui/status/network.js:1545
 msgid "VPN Settings"
 msgstr "Definições de VPN"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1805
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1796
+#: js/ui/status/network.js:1807
 msgid "All Networks"
 msgstr "Todas as redes"
 
-#: js/ui/status/network.js:1893
+#: js/ui/status/network.js:1904
 msgid "Wired Connections"
 msgstr "Ligações por cabo de rede"
 
-#: js/ui/status/network.js:1894
+#: js/ui/status/network.js:1905
 msgid "Wired Settings"
 msgstr "Definições de ligação por cabo"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1919
 msgid "Bluetooth Tethers"
 msgstr "Tethers Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1915
+#: js/ui/status/network.js:1926
 msgid "Tether"
 msgstr "Tether"
 
-#: js/ui/status/network.js:1928
+#: js/ui/status/network.js:1939
 msgid "Mobile Connections"
 msgstr "Ligações móveis"
 
-#: js/ui/status/network.js:1930
+#: js/ui/status/network.js:1941
 msgid "Mobile Broadband Settings"
 msgstr "Definições da banda larga móvel"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1939
+#: js/ui/status/network.js:1950
 msgid "Mobile"
 msgstr "Móvel"
 
-#: js/ui/status/network.js:1973
+#: js/ui/status/network.js:1984
 msgid "Sign Into Wi–Fi Network"
 msgstr "Iniciar sessão na rede Wi-Fi"
 
-#: js/ui/status/network.js:2160
+#: js/ui/status/network.js:2171
 msgid "Connection failed"
 msgstr "Falha na ligação"
 
-#: js/ui/status/network.js:2161
+#: js/ui/status/network.js:2172
 msgid "Activation of network connection failed"
 msgstr "Falha na ativação da ligação à rede"
 
@@ -2604,7 +2606,7 @@ msgstr "Parar a gravação de ecrã"
 msgid "Stop Screen Sharing"
 msgstr "Parar a partilha de ecrã"
 
-#: js/ui/status/rfkill.js:99
+#: js/ui/status/rfkill.js:97
 msgid "Airplane Mode"
 msgstr "Modo de avião"
 
@@ -2638,11 +2640,11 @@ msgctxt "action"
 msgid "Lock Screen"
 msgstr "Bloquear ecrã"
 
-#: js/ui/status/thunderbolt.js:308
+#: js/ui/status/thunderbolt.js:311
 msgid "Unknown Thunderbolt device"
 msgstr "Dispositivo Thunderbolt desconhecido"
 
-#: js/ui/status/thunderbolt.js:309
+#: js/ui/status/thunderbolt.js:312
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2650,22 +2652,22 @@ msgstr ""
 "Um novo dispositivo foi detetado enquanto estava ausente. Desligue e volte a "
 "ligar o dispositivo para começar a usá-lo."
 
-#: js/ui/status/thunderbolt.js:312
+#: js/ui/status/thunderbolt.js:315
 msgid "Unauthorized Thunderbolt device"
 msgstr "Dispositivo Thunderbolt não autorizado"
 
-#: js/ui/status/thunderbolt.js:313
+#: js/ui/status/thunderbolt.js:316
 msgid ""
 "New device has been detected and needs to be authorized by an administrator"
 msgstr ""
 "Um novo dispositivo foi detetado e precisa de ser autorizado por um "
 "administrador"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:322
 msgid "Thunderbolt authorization error"
 msgstr "Erro de autorização do Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:320
+#: js/ui/status/thunderbolt.js:323
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Não foi possível autorizar o dispositivo Thunderbolt: %s"
@@ -2724,23 +2726,23 @@ msgstr "Apenas interno"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:384
+#: js/ui/unlockDialog.js:385
 msgid "%A %B %-d"
 msgstr "%A, %d de %B"
 
-#: js/ui/unlockDialog.js:390
+#: js/ui/unlockDialog.js:391
 msgid "Swipe up to unlock"
 msgstr "Deslizar para desbloquear"
 
-#: js/ui/unlockDialog.js:391
+#: js/ui/unlockDialog.js:392
 msgid "Click or press a key to unlock"
 msgstr "Clicar ou premir uma tecla para desbloquear"
 
-#: js/ui/unlockDialog.js:576
+#: js/ui/unlockDialog.js:577
 msgid "Unlock Window"
 msgstr "Desbloquear janela"
 
-#: js/ui/unlockDialog.js:585
+#: js/ui/unlockDialog.js:586
 msgid "Log in as another user"
 msgstr "Iniciar sessão como outro utilizador"
 
@@ -2934,19 +2936,19 @@ msgstr ""
 "preferências de extensões e remoção ou desativação de extensões já não "
 "desejadas."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:75
 msgid "Main Window"
 msgstr "Janela de Principal"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:79
 msgid "Available Updates"
 msgstr "Actualizações disponíveis"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:83
 msgid "Search View"
 msgstr "Procurar"
 
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:6
 msgid "Configure GNOME Shell Extensions"
 msgstr "Configurar o Extensões à interface GNOME"
 
@@ -3118,11 +3120,11 @@ msgstr "Não há extensões instaladas"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:265
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://"
+"extensions.gnome.org\">extensions.gnome.org</a>."
 msgstr ""
-"Para encontrar e adicionar extensões, visite <a href=\"https://extensions."
-"gnome.org\">extensions.gnome.org</a>."
+"Para encontrar e adicionar extensões, visite <a href=\"https://"
+"extensions.gnome.org\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:276
 msgid ""
@@ -3192,16 +3194,18 @@ msgid "Description"
 msgstr "Descrição"
 
 #: subprojects/extensions-tool/src/command-create.c:416
+#, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
+"This should be in the format of an email address "
+"(clicktofocus@janedoe.example.com)\n"
 msgstr ""
 "O UUID é um identificador global único para a extensão.\n"
 "Deve estar no formato de endereço de correio eletrónico "
 "(cliqueparafoco@janedoe.example.com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:443
+#, c-format
 msgid "Choose one of the available templates:\n"
 msgstr "Escolher um dos modelos disponíveis:\n"
 
@@ -3311,6 +3315,7 @@ msgstr "Ativar uma extensão"
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:66
 #: subprojects/extensions-tool/src/main.c:150
+#, c-format
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "Ligar à Interface GNOME falhou\n"
 
@@ -3451,6 +3456,7 @@ msgid "Reset an extension"
 msgstr "Repor uma extensão"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
+#, c-format
 msgid "Cannot uninstall system extensions\n"
 msgstr "Não é possível desinstalar as extensões do sistema\n"
 
@@ -3577,27 +3583,27 @@ msgstr "Instalar pacote da extensão"
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Usar “%s” para obter ajuda detalhada.\n"
 
-#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:3
 msgid "Plain"
 msgstr "Em branco"
 
-#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
 msgid "An empty extension"
 msgstr "Uma extensão vazia"
 
-#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:3
 msgid "Indicator"
 msgstr "Indicador"
 
-#: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
 msgid "Add an icon to the top bar"
 msgstr "Adicionar um ícone à barra superior"
 
-#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:3
 msgid "Quick Settings Item"
 msgstr "Item de definições rápidas"
 
-#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:5
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
 msgid "Add an item to quick settings"
 msgstr "Adicionar um item às definições rápidas"
 
