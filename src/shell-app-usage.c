@@ -334,6 +334,8 @@ shell_app_usage_finalize (GObject *object)
 
   g_object_unref (self->session_proxy);
 
+  g_clear_pointer (&self->app_usages, g_hash_table_destroy);
+
   G_OBJECT_CLASS (shell_app_usage_parent_class)->finalize(object);
 }
 
