@@ -89,6 +89,9 @@ struct _ShellGlobal {
   gboolean frame_timestamps;
   gboolean frame_finish_timestamp;
 
+  guint before_paint_id;
+  guint after_swap_id;
+
   GDBusProxy *switcheroo_control;
   GCancellable *switcheroo_cancellable;
 
@@ -467,6 +470,11 @@ shell_global_finalize (GObject *object)
   g_clear_object (&global->app_system);
   g_clear_object (&global->app_cache);
   g_clear_object (&global->app_usage);
+
+  g_clear_handle_id (&global->before_paint_id,
+                     clutter_threads_remove_repaint_func);
+  g_clear_handle_id (&global->after_swap_id,
+                     clutter_threads_remove_repaint_func);
 
   the_object = NULL;
 
@@ -1000,16 +1008,18 @@ _shell_global_set_plugin (ShellGlobal *global,
   g_signal_connect (global->stage, "notify::height",
                     G_CALLBACK (global_stage_notify_height), global);
 
-  clutter_threads_add_repaint_func (CLUTTER_REPAINT_FLAGS_PRE_PAINT,
-                                    global_stage_before_paint,
-                                    global, NULL);
+  global->before_paint_id =
+    clutter_threads_add_repaint_func (CLUTTER_REPAINT_FLAGS_PRE_PAINT,
+                                      global_stage_before_paint,
+                                      global, NULL);
 
   g_signal_connect (global->stage, "after-paint",
                     G_CALLBACK (global_stage_after_paint), global);
 
-  clutter_threads_add_repaint_func (CLUTTER_REPAINT_FLAGS_POST_PAINT,
-                                    global_stage_after_swap,
-                                    global, NULL);
+  global->after_swap_id =
+    clutter_threads_add_repaint_func (CLUTTER_REPAINT_FLAGS_POST_PAINT,
+                                      global_stage_after_swap,
+                                      global, NULL);
 
   shell_perf_log_define_event (shell_perf_log_get_default(),
                                "clutter.stagePaintStart",
