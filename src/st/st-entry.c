@@ -1360,7 +1360,7 @@ _st_entry_set_icon (StEntry       *entry,
 {
   if (*icon)
     {
-      clutter_actor_remove_action_by_name (*icon, "entry-icon-action");
+      clutter_actor_remove_action_by_name (*icon, "entry-icon-click-gesture");
       clutter_actor_remove_child (CLUTTER_ACTOR (entry), *icon);
       *icon = NULL;
     }
