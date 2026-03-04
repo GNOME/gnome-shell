@@ -135,3 +135,23 @@ compiled_schemas = custom_target('compile-schemas',
   output: 'gschemas.compiled',
   command: [find_program('glib-compile-schemas'), '--strict', data_builddir],
 )
+
+# PAM test module
+pam_dep = cc.find_library('pam', required: false)
+gdm_pam_extensions_dep = dependency('gdm-pam-extensions', required: false)
+json_glib_dep = dependency('json-glib-1.0')
+glib_dep = dependency('glib-2.0')
+if pam_dep.found() and gdm_pam_extensions_dep.found()
+  shared_module('pam_gdm_test',
+    'pam-services/pam_gdm_test.c',
+    dependencies: [glib_dep, json_glib_dep, pam_dep, gdm_pam_extensions_dep],
+    name_prefix: '',
+    install: true,
+    install_dir: get_option('libdir') / 'security',
+  )
+
+  install_data(
+    'pam-services/gdm-switchable-auth-test',
+    install_dir: get_option('sysconfdir') / 'pam.d',
+  )
+endif

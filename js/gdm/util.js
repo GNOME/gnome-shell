@@ -418,20 +418,29 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     _updateAuthServices() {
         const enabledRoles = [];
+        let switchableAuthentication;
 
-        if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
+        if (Constants.SWITCHABLE_AUTH_TEST_MODE) {
             enabledRoles.push(Constants.PASSWORD_ROLE_NAME);
-        if (this._settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY))
             enabledRoles.push(Constants.SMARTCARD_ROLE_NAME);
-        if (this._settings.get_boolean(PASSKEY_AUTHENTICATION_KEY))
             enabledRoles.push(Constants.PASSKEY_ROLE_NAME);
-        if (this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY))
-            enabledRoles.push(Constants.FINGERPRINT_ROLE_NAME);
-        if (this._settings.get_boolean(WEB_AUTHENTICATION_KEY))
             enabledRoles.push(Constants.WEB_LOGIN_ROLE_NAME);
+            switchableAuthentication = true;
+        } else {
+            if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
+                enabledRoles.push(Constants.PASSWORD_ROLE_NAME);
+            if (this._settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY))
+                enabledRoles.push(Constants.SMARTCARD_ROLE_NAME);
+            if (this._settings.get_boolean(PASSKEY_AUTHENTICATION_KEY))
+                enabledRoles.push(Constants.PASSKEY_ROLE_NAME);
+            if (this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY))
+                enabledRoles.push(Constants.FINGERPRINT_ROLE_NAME);
+            if (this._settings.get_boolean(WEB_AUTHENTICATION_KEY))
+                enabledRoles.push(Constants.WEB_LOGIN_ROLE_NAME);
 
-        const switchableAuthentication =
-            this._settings.get_boolean(SWITCHABLE_AUTHENTICATION_KEY);
+            switchableAuthentication =
+                this._settings.get_boolean(SWITCHABLE_AUTHENTICATION_KEY);
+        }
 
         if (JSON.stringify(enabledRoles) === JSON.stringify(this._enabledRoles) &&
             switchableAuthentication === this._switchableAuthenticationEnabled)

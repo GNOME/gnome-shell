@@ -1,0 +1,21 @@
+# PAM configuration for gdm-switchable-auth-test
+# This service is used for testing switchable authentication mechanisms
+# when GDM_SWITCHABLE_AUTH_TEST environment variable is set.
+
+auth     required                    pam_gdm_test.so
+auth     optional                    pam_gnome_keyring.so
+
+account  required                    pam_nologin.so
+account  include                     system-auth
+
+password substack                    system-auth
+password optional                    pam_gnome_keyring.so use_authtok
+
+session  required                    pam_selinux.so close
+session  required                    pam_loginuid.so
+session  optional                    pam_keyinit.so force revoke
+session  required                    pam_selinux.so open
+session  required                    pam_namespace.so
+session  optional                    pam_gnome_keyring.so auto_start
+session  include                     system-auth
+session  include                     postlogin
