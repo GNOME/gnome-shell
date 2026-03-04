@@ -1,3 +1,4 @@
+import Atk from 'gi://Atk';
 import Clutter from 'gi://Clutter';
 import Cogl from 'gi://Cogl';
 import GLib from 'gi://GLib';
@@ -2315,6 +2316,9 @@ export const FolderIcon = GObject.registerClass({
             button_mask: St.ButtonMask.ONE,
             can_focus: true,
         }, global.settings.is_writable('app-picker-layout'));
+
+        this.add_accessible_state(Atk.StateType.EXPANDABLE);
+
         this._id = id;
         this._name = '';
         this._parentView = parentView;
@@ -2474,6 +2478,11 @@ export const FolderIcon = GObject.registerClass({
                     mode,
                     delay: isOpen ? 0 : FOLDER_DIALOG_ANIMATION_TIME - duration,
                 });
+
+                if (isOpen)
+                    this.add_accessible_state(Atk.StateType.EXPANDED);
+                else
+                    this.remove_accessible_state(Atk.StateType.EXPANDED);
             });
         }
     }
@@ -2490,6 +2499,8 @@ export const AppFolderDialog = GObject.registerClass({
             x_expand: true,
             y_expand: true,
             reactive: true,
+            accessible_name: source.name,
+            accessible_role: Atk.Role.PANEL,
         });
 
         this.add_constraint(new Layout.MonitorConstraint({primary: true}));
