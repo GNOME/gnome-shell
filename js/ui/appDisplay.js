@@ -2552,6 +2552,7 @@ export const AppFolderDialog = GObject.registerClass({
             style_class: 'folder-name-entry',
             opacity: 0,
             reactive: false,
+            accessible_name: _('Folder name'),
         });
         this._entry.clutter_text.set({
             x_expand: true,
@@ -2574,6 +2575,7 @@ export const AppFolderDialog = GObject.registerClass({
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.CENTER,
             icon_name: 'document-edit-symbolic',
+            accessible_name: _('Edit folder name'),
         });
 
         this._editButton.connect('notify::checked', () => {
