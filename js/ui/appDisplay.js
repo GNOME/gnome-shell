@@ -156,6 +156,8 @@ export const AppGrid = GObject.registerClass({
         super._init(layoutParams);
 
         this._indicatorsPadding = new Clutter.Margin();
+        this.set_accessible_name(_('App grid'));
+        this.set_accessible_role(Atk.Role.GROUPING);
     }
 
     _updatePadding() {
