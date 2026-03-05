@@ -2313,7 +2313,6 @@ export const FolderIcon = GObject.registerClass({
         super._init({
             style_class: 'overview-tile app-folder',
             button_mask: St.ButtonMask.ONE,
-            toggle_mode: true,
             can_focus: true,
         }, global.settings.is_writable('app-picker-layout'));
         this._id = id;
@@ -2475,9 +2474,6 @@ export const FolderIcon = GObject.registerClass({
                     mode,
                     delay: isOpen ? 0 : FOLDER_DIALOG_ANIMATION_TIME - duration,
                 });
-
-                if (!isOpen)
-                    this.checked = false;
             });
         }
     }
