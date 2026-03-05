@@ -467,7 +467,13 @@ export class Notification extends GObject.Object {
     }
 
     activate() {
+        console.assert(!this._destroyed, 'Activating a destroyed notification');
+
         this.emit('activated');
+
+        // Avoid double destruction after activation
+        if (this._destroyed)
+            return;
 
         // We don't hide a resident notification when the user invokes one of its actions,
         // because it is common for such notifications to update themselves with new
@@ -481,6 +487,8 @@ export class Notification extends GObject.Object {
 
     destroy(reason = NotificationDestroyedReason.DISMISSED) {
         this.emit('destroy', reason);
+
+        this._destroyed = true;
 
         if (this._updateDatetimeId)
             GLib.source_remove(this._updateDatetimeId);
