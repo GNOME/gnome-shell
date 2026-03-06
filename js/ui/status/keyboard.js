@@ -487,13 +487,11 @@ export class InputSourceManager extends Signals.EventEmitter {
 
         this.emit('current-source-changed', oldSource);
 
-        for (let i = 1; i < this._mruSources.length; ++i) {
-            if (this._mruSources[i] === newSource) {
-                let currentSource = this._mruSources.splice(i, 1);
-                this._mruSources = currentSource.concat(this._mruSources);
-                break;
-            }
-        }
+        this._mruSources = [
+            newSource,
+            ...this._mruSources.filter(s => s !== newSource),
+        ];
+
         this._changePerWindowSource();
     }
 
