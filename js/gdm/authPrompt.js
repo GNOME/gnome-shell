@@ -563,6 +563,9 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     _onReset() {
+        if (this.verificationStatus === AuthPromptStatus.VERIFICATION_SUCCEEDED)
+            return;
+
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.reset();
     }
