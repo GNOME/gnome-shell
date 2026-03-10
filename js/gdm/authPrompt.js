@@ -609,17 +609,18 @@ export const AuthPrompt = GObject.registerClass({
         this._entry.grab_key_focus();
     }
 
-    _fadeInChoiceList() {
-        this._authList.set({
+    _fadeInElement(element) {
+        if (element.visible)
+            return;
+
+        element.set({
             opacity: 0,
             visible: true,
         });
-        this.updateSensitivity({sensitive: false});
-        this._authList.ease({
+        element.ease({
             opacity: 255,
             duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
-            transition: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this.updateSensitivity({sensitive: true}),
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
@@ -634,7 +635,8 @@ export const AuthPrompt = GObject.registerClass({
         this._entry.hide();
         if (this._message.text === '')
             this._message.hide();
-        this._fadeInChoiceList();
+        this._fadeInElement(this._authList);
+        this.updateSensitivity({sensitive: true});
     }
 
     getAnswer() {
