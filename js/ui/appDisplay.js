@@ -2604,13 +2604,14 @@ export const AppFolderDialog = GObject.registerClass({
     }
 
     _switchActor(from, to) {
-        to.reactive = true;
+        to.reactive = to.can_focus = true;
         to.ease({
             opacity: 255,
             duration: 300,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
 
+        from.can_focus = false;
         from.ease({
             opacity: 0,
             duration: 300,
