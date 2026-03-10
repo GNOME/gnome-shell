@@ -186,10 +186,8 @@ export const AuthPrompt = GObject.registerClass({
         this.add_child(this._userWell);
 
         this._inputWell = new St.BoxLayout({
-            style_class: 'login-dialog-prompt-layout',
+            style_class: 'login-dialog-input-well',
             orientation: Clutter.Orientation.VERTICAL,
-            x_align: Clutter.ActorAlign.CENTER,
-            x_expand: true,
         });
         this.add_child(this._inputWell);
         this._mainContent = this._inputWell;
