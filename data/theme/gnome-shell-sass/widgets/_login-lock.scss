@@ -15,6 +15,9 @@ $_gdm_dialog_width: 25em;
   .login-dialog-prompt-layout {
     width: $_gdm_dialog_width;
     margin-top: 80px;
+  }
+
+  .login-dialog-input-well {
     spacing: $base_padding * 1.5;
   }
 }
