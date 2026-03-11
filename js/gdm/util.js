@@ -99,6 +99,40 @@ export function cloneAndFadeOutActor(actor) {
     return hold;
 }
 
+/**
+ * @param {object} mechanism
+ * @returns {boolean}
+ */
+export function isSelectable(mechanism) {
+    switch (mechanism.role) {
+    case Constants.PASSWORD_ROLE_NAME:
+    case Constants.SMARTCARD_ROLE_NAME:
+        return true;
+    case Constants.FINGERPRINT_ROLE_NAME:
+        return false;
+    default:
+        throw new Error(`Failed checking mechanism is selectable: ${mechanism.role}`);
+    }
+}
+
+/**
+ * @param {object} mechanism
+ * @returns {string}
+ */
+export function getNonSelectableIconName(mechanism) {
+    // This is only used for non selectable mechanisms.
+    // Currently only fingerprint is non selectable
+    if (isSelectable(mechanism))
+        throw new Error(`Failed getting mechanism icon: ${mechanism.role}, is selectable`);
+
+    switch (mechanism.role) {
+    case Constants.FINGERPRINT_ROLE_NAME:
+        return 'fingerprint-auth-symbolic';
+    default:
+        throw new Error(`Failed getting mechanism icon: ${mechanism.role}`);
+    }
+}
+
 export class ShellUserVerifier extends Signals.EventEmitter {
     constructor(client, params) {
         super();
