@@ -1025,11 +1025,11 @@ class AnimationsSettings {
     }
 
     _shouldEnableAnimations() {
-        if (this._handles.size > 0)
-            return false;
-
         if (global.force_animations)
             return true;
+
+        if (this._handles.size > 0)
+            return false;
 
         const backend = global.backend;
         if (!backend.is_rendering_hardware_accelerated())
