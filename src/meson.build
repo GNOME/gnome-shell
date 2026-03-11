@@ -239,7 +239,7 @@ endif
 
 libshell = library('shell-' + mutter_api_version,
   sources: libshell_gir_sources + libshell_no_gir_sources,
-  dependencies: gnome_shell_deps + [libshell_menu_dep, libst_dep, mutter_dep, gnome_desktop_dep, m_dep],
+  dependencies: gnome_shell_deps + [libshell_menu_dep, libst_dep, mutter_dep, gnome_desktop_dep, m_dep, cairo_dep],
   include_directories: [conf_inc, include_directories('tray')],
   c_args: gnome_shell_cflags,
   link_with: libshell_link_with,

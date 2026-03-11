@@ -1,5 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+#include <cairo.h>
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
 #include <meta/display.h>
@@ -34,6 +35,8 @@ enum
 };
 
 static guint signals[LAST_SIGNAL] = { 0, };
+
+static cairo_user_data_key_t surface_data_key;
 
 typedef struct _ShellScreenshot
 {
@@ -588,6 +591,8 @@ grab_window_screenshot (ShellScreenshot     *screenshot,
   MetaWindow *window = meta_display_get_focus_window (display);
   ClutterActor *window_actor;
   gfloat actor_x, actor_y;
+  uint8_t *data;
+  int width, height, stride;
   MtkRectangle rect;
 
   window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
@@ -600,16 +605,21 @@ grab_window_screenshot (ShellScreenshot     *screenshot,
 
   screenshot->screenshot_area = rect;
 
-  screenshot->image = meta_window_actor_get_image (META_WINDOW_ACTOR (window_actor),
-                                                   NULL);
-
-  if (!screenshot->image)
+  if (!meta_window_actor_get_image (META_WINDOW_ACTOR (window_actor), NULL,
+                                    COGL_PIXEL_FORMAT_CAIRO_ARGB32_COMPAT,
+                                    &width, &height, &stride, &data))
     {
       g_task_report_new_error (screenshot, on_screenshot_written, result, NULL,
                                G_IO_ERROR, G_IO_ERROR_FAILED,
                                "Capturing window failed");
       return;
     }
+
+  screenshot->image = cairo_image_surface_create_for_data (data, CAIRO_FORMAT_ARGB32,
+                                                           width, height, stride);
+
+  /* Attach buffer to surface for automatic cleanup */
+  cairo_surface_set_user_data (screenshot->image, &surface_data_key, data, g_free);
 
   screenshot->datetime = g_date_time_new_now_local ();
 

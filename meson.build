@@ -68,6 +68,7 @@ else
 endif
 
 atk_bridge_dep = dependency('atk-bridge-2.0')
+cairo_dep = dependency('cairo')
 ecal_dep = dependency('libecal-2.0', version: ecal_req)
 eds_dep = dependency('libedataserver-1.2', version: eds_req)
 gcr_dep = dependency('gcr-4', version: gcr_req)
