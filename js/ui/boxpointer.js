@@ -647,7 +647,7 @@ export const BoxPointer = GObject.registerClass({
 
     updateArrowSide(side) {
         this._arrowSide = side;
-        this._border.queue_repaint();
+        this.queue_relayout();
 
         this.emit('arrow-side-changed');
     }
