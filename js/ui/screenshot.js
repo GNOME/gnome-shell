@@ -386,20 +386,20 @@ const UIAreaSelector = GObject.registerClass({
 
         switch (direction) {
         case St.DirectionType.LEFT:
-            cursorX = leftX;
+            cursorX = this._startX < this._lastX ? leftX : rightX;
             cursorY = ((topY - bottomY) / 2) + bottomY;
             break;
         case St.DirectionType.RIGHT:
-            cursorX = rightX;
+            cursorX = this._startX < this._lastX ? rightX : leftX;
             cursorY = ((topY - bottomY) / 2) + bottomY;
             break;
         case St.DirectionType.UP:
             cursorX = ((rightX - leftX) / 2) + leftX;
-            cursorY = topY;
+            cursorY = this._startY < this._lastY ? topY : bottomY;
             break;
         case St.DirectionType.DOWN:
             cursorX = ((rightX - leftX) / 2) + leftX;
-            cursorY = bottomY;
+            cursorY = this._startY < this._lastY ? bottomY : topY;
             break;
         }
         seat.warp_pointer(cursorX, cursorY);
