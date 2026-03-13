@@ -176,6 +176,10 @@ const SystemActions = GObject.registerClass({
         this._userManager.connect('user-removed',
             () => this._updateMultiUser());
 
+        this._user = this._userManager.get_user(GLib.get_user_name());
+
+        this._user.connect('notify::is-loaded', () => this._updateLogout());
+
         this._lockdownSettings.connect(`changed::${DISABLE_USER_SWITCH_KEY}`,
             () => this._updateSwitchUser());
         this._lockdownSettings.connect(`changed::${DISABLE_LOG_OUT_KEY}`,
@@ -434,12 +438,9 @@ const SystemActions = GObject.registerClass({
     }
 
     _updateLogout() {
-        const user = this._userManager.get_user(GLib.get_user_name());
-
         const allowLogout = !this._lockdownSettings.get_boolean(DISABLE_LOG_OUT_KEY);
         const alwaysShow = global.settings.get_boolean(ALWAYS_SHOW_LOG_OUT_KEY);
-        const systemAccount = user.system_account;
-        const localAccount = user.local_account;
+        const {systemAccount, localAccount} = this._user;
         const multiUser = this._userManager.has_multiple_users;
         const multiSession = Gdm.get_session_ids().length > 1;
         const shouldShowInMode = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
