@@ -364,7 +364,6 @@ export class Overview extends Signals.EventEmitter {
             this._shown = true;
             this._visible = true;
             this._visibleTarget = true;
-            this._animationInProgress = true;
 
             Main.layoutManager.overviewGroup.set_child_above_sibling(
                 this._coverPane, null);
@@ -373,6 +372,8 @@ export class Overview extends Signals.EventEmitter {
 
             Main.layoutManager.showOverview();
             this._syncGrab();
+
+            this._animationInProgress = true;
         }
 
         this._overview.controls.gestureProgress(progress);
