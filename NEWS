@@ -1,3 +1,20 @@
+50.0
+====
+* Improve accessibility of app folders [Sergio; !4109, !4116]
+* Also respect --force-animation flag in remote sessions [Florian; !4118]
+* Fix logout action showing up erroneously [Sebastian; !4121]
+* Fix keyboard layout changing after leaving password entry [Maksim; !4101]
+* Misc. bug fixes and cleanups [Sebastian, Florian, Daniel; !4113, !4114,
+  !4119, !4120, !4128]
+
+Contributors:
+  Sergio Costas Rodriguez, Sebastian Keller, Maksim Mazko, Florian Müllner,
+  Daniel Rusek
+
+Translators:
+  Victoria [pl], Bruce Cowan [en_GB], Ask Hjorth Larsen [da],
+  Christian Kirbach [de]
+
 50.rc
 =====
 * Fix cursor glitch on entry icons [Carlos; !4078]
