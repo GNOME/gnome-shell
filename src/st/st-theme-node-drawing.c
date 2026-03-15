@@ -184,7 +184,7 @@ create_corner_pipeline (StCornerSpec *corner)
   cairo_surface_destroy (surface);
 
   texture = cogl_texture_2d_new_from_data (corner->cogl_context, size, size,
-                                           COGL_PIXEL_FORMAT_CAIRO_ARGB32_COMPAT,
+                                           COGL_PIXEL_FORMAT_ARGB32_NATIVE,
                                            rowstride,
                                            data,
                                            &error);
@@ -1404,7 +1404,7 @@ st_theme_node_prerender_background (StThemeNode *node,
   texture = cogl_texture_2d_new_from_data (ctx,
                                            texture_width,
                                            texture_height,
-                                           COGL_PIXEL_FORMAT_CAIRO_ARGB32_COMPAT,
+                                           COGL_PIXEL_FORMAT_ARGB32_NATIVE,
                                            rowstride,
                                            data,
                                            &error);

@@ -210,7 +210,7 @@ st_drawing_area_emit_repaint (StDrawingArea *area)
       priv->buffer = cogl_bitmap_new_with_size (ctx,
                                                 real_width,
                                                 real_height,
-                                                COGL_PIXEL_FORMAT_CAIRO_ARGB32_COMPAT);
+                                                COGL_PIXEL_FORMAT_ARGB32_NATIVE);
     }
 
   buffer = COGL_BUFFER (cogl_bitmap_get_buffer (priv->buffer));
