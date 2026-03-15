@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-02-04 22:50+0000\n"
-"PO-Revision-Date: 2026-02-06 23:20+0100\n"
+"POT-Creation-Date: 2026-03-03 15:56+0000\n"
+"PO-Revision-Date: 2026-03-04 21:13+0100\n"
 "Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -444,23 +444,23 @@ msgstr "Bildschirmhelligkeit erhöhen"
 
 #: data/org.gnome.shell.gschema.xml.in:287
 msgid "Screen brightness up on current monitor"
-msgstr ""
+msgstr "Bildschirmhelligkeit auf aktuellem Bildschirm erhöhen"
 
 #: data/org.gnome.shell.gschema.xml.in:291
 msgid "Screen brightness down"
-msgstr ""
+msgstr "Bildschirmhelligkeit reduzieren"
 
 #: data/org.gnome.shell.gschema.xml.in:295
 msgid "Screen brightness down on current monitor"
-msgstr ""
+msgstr "Bildschirmhelligkeit auf aktuellem Bildschirm reduzieren"
 
 #: data/org.gnome.shell.gschema.xml.in:299
 msgid "Screen brightness cycle"
-msgstr ""
+msgstr "Bildschirmhelligkeit durchwechseln"
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid "Screen brightness cycle on current monitor"
-msgstr ""
+msgstr "Bildschirmhelligkeit auf aktuellem Bildschirm durchwechseln"
 
 #: data/org.gnome.shell.gschema.xml.in:312 data/org.gnome.shell.gschema.xml.in:339
 msgid "Limit switcher to current workspace."
@@ -565,7 +565,7 @@ msgstr "Bildschirmzeit-Begrenzung erreicht"
 
 #: js/gdm/authPrompt.js:64
 msgid "Daily limit for screen time on this device has been reached. Resume tomorrow."
-msgstr ""
+msgstr "Die tägliche Begrenzung der Bildschirmzeit wurde auf diesem Gerät erreicht. Morgen können Sie weitermachen."
 
 #. Translators: this is for ignoring a screen time limit for parental controls
 #: js/gdm/authPrompt.js:72
@@ -689,9 +689,8 @@ msgid "(or place finger on reader)"
 msgstr "(oder legen Sie einen Finger auf den Leser)"
 
 #: js/misc/breakManager.js:774
-#, fuzzy
 msgid "Break complete sound"
-msgstr "Ton bei abgeschlossener Pause"
+msgstr "Ton für Pausenende"
 
 #: js/misc/breakManager.js:983
 #, javascript-format
@@ -848,10 +847,8 @@ msgstr "Überspringen"
 
 #. Translators: As in "Take the break"
 #: js/misc/breakManager.js:1397
-#, fuzzy
-#| msgid "Take Tour"
 msgid "Take"
-msgstr "Einführung starten"
+msgstr "Machen"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
@@ -867,93 +864,93 @@ msgid "Brightness"
 msgstr "Helligkeit"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:98
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Ausschalten"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:97
+#: js/misc/systemActions.js:101
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "power off;poweroff;shutdown;halt;stop;ausschalten;herunterfahren;halten;stoppen"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:106
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Neu starten"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:105
+#: js/misc/systemActions.js:109
 msgid "reboot;restart;"
 msgstr "reboot;restart;neustarten;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:114
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Bildschirm sperren"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:113
+#: js/misc/systemActions.js:117
 msgid "lock screen"
 msgstr "Bildschirm sperren"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:122
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Abmelden"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:121
+#: js/misc/systemActions.js:125
 msgid "logout;log out;sign off"
 msgstr "logout;log out;sign off;abmelden;verlassen"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:130
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Bereitschaft"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:129
+#: js/misc/systemActions.js:133
 msgid "suspend;sleep"
 msgstr "suspend;sleep;Bereitschaft;Schlafen"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:138
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Benutzer wechseln"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:137
+#: js/misc/systemActions.js:141
 msgid "switch user"
 msgstr "Benutzer wechseln"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:144
+#: js/misc/systemActions.js:148
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "lock orientation;unlock orientation;screen;rotation;Ausrichtung sperren;Ausrichtung entsperren;Bildschirm;Drehung;drehen"
 
 #. Translators: The name of the screenshot UI action in search
-#: js/misc/systemActions.js:149
+#: js/misc/systemActions.js:153
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Ein Bildschirmfoto aufnehmen"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
-#: js/misc/systemActions.js:152
+#: js/misc/systemActions.js:156
 msgid "screenshot;screencast;snip;capture;record"
 msgstr "screenshot;screencast;snip;capture;recordBildschirmfoto;Bildschirmaufzeichnung;Bildschirmvideo;aufnehmen;Aufnahme;aufzeichnen"
 
-#: js/misc/systemActions.js:256
+#: js/misc/systemActions.js:263
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Bildschirmdrehung entsperren"
 
-#: js/misc/systemActions.js:257
+#: js/misc/systemActions.js:264
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Bildschirmdrehung sperren"
@@ -963,20 +960,15 @@ msgid "GNOME needs to save screen time data"
 msgstr "GNOME muss Bildschirmzeit-Daten speichern"
 
 #: js/misc/timeLimitsManager.js:1392
-#, fuzzy
-#| msgid "Screen Time Limit in %d Minute"
-#| msgid_plural "Screen Time Limit in %d Minutes"
 msgid "Screen Time Limit is almost up"
-msgstr "Bildschirmzeit-Begrenzung in %d Minute"
+msgstr "Die Bildschirmzeit-Begrenzung ist fast erreicht"
 
 #: js/misc/timeLimitsManager.js:1394
-#, fuzzy, javascript-format
-#| msgid "The system will restart automatically in %d second"
-#| msgid_plural "The system will restart automatically in %d seconds"
+#, javascript-format
 msgid "The computer will lock in %d second."
 msgid_plural "The computer will lock in %d seconds."
-msgstr[0] "Das System wird automatisch in %d Sekunde neu gestartet"
-msgstr[1] "Das System wird automatisch in %d Sekunden neu gestartet"
+msgstr[0] "Der Rechner wird automatisch in %d Sekunde gesperrt."
+msgstr[1] "Der Rechner wird automatisch in %d Sekunden gesperrt."
 
 #: js/misc/timeLimitsManager.js:1402
 #, javascript-format
@@ -1150,7 +1142,7 @@ msgstr "Ablehnen"
 msgid "Allow"
 msgstr "Zulassen"
 
-#: js/ui/appDisplay.js:1731
+#: js/ui/appDisplay.js:1732
 msgid "Unnamed Folder"
 msgstr "Unbenannter Ordner"
 
@@ -2130,15 +2122,15 @@ msgstr "Sie können das Bild aus der Zwischenablage einfügen"
 msgid "Screenshot taken"
 msgstr "Bildschirmfoto aufgenommen"
 
-#: js/ui/search.js:846
+#: js/ui/search.js:850
 msgid "Searching"
 msgstr "Suchvorgang"
 
-#: js/ui/search.js:849
+#: js/ui/search.js:853
 msgid "No results"
 msgstr "Keine Ergebnisse"
 
-#: js/ui/search.js:984
+#: js/ui/search.js:989
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2912,15 +2904,15 @@ msgstr ""
 "GNOME-Erweiterungen dient der Aktualisierung von Erweiterungen, dem Konfigurieren der Voreinstellungen von Erweiterungen und dem "
 "Entfernen oder Deaktivieren nicht gewünschter Erweiterungen."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:65
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:66
 msgid "Main Window"
 msgstr "Hauptfenster"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Available Updates"
 msgstr "Verfügbare Aktualisierungen"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Search View"
 msgstr "Suchansicht"
 
@@ -2984,7 +2976,7 @@ msgstr "Entfe_rnen"
 msgid "translator-credits"
 msgstr ""
 "Tim Sabsch <tim@sabsch.com>, 2020, 2022\n"
-"Christian Kirbach <christian.kirbach@gmail.com>, 2020-2024\n"
+"Christian Kirbach <christian.kirbach@gmail.com>, 2020-2026\n"
 "Philipp Kiemle <l10n@prly.mozmail.com>, 2020-2021, 2023-2025\n"
 "Jürgen Benvenuti <gastornis@posteo.org>, 2022-2024"
 
@@ -3279,10 +3271,8 @@ msgid "Overwrite an existing extension"
 msgstr "Eine bestehende Erweiterung überschreiben"
 
 #: subprojects/extensions-tool/src/command-install.c:198
-#, fuzzy
-#| msgid "Print extension details"
 msgid "Print extension UUID on success"
-msgstr "Erweiterungsdetails ausgeben"
+msgstr "UUID der Erweiterung bei Erfolg ausgeben"
 
 #: subprojects/extensions-tool/src/command-install.c:200
 msgid "EXTENSION_BUNDLE"
