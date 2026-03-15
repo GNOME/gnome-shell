@@ -277,7 +277,7 @@ create_texture_for_frame (StCursor      *cursor,
 
   texture = cogl_texture_2d_new_from_data (cogl_context,
                                            w, h,
-                                           COGL_PIXEL_FORMAT_CAIRO_ARGB32_COMPAT,
+                                           COGL_PIXEL_FORMAT_ARGB32_NATIVE,
                                            cairo_image_surface_get_stride (cairo_surface),
                                            cairo_image_surface_get_data (cairo_surface),
                                            NULL);
