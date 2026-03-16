@@ -10,14 +10,9 @@
 //   (This is separate from the fading for an animated background,
 //   since using two actors is quite inefficient.)
 //
-// MetaBackgroundImage
-//   An object represented an image file that will be used for drawing
-//   the background. MetaBackgroundImage objects asynchronously load,
-//   so they are first created in an unloaded state, then later emit
-//   a ::loaded signal when the Cogl object becomes available.
-//
-// MetaBackgroundImageCache
-//   A cache from filename to MetaBackgroundImage.
+// BackgroundTextureCache
+//   Shell-side cache from filename to CoglTexture. Handles image loading
+//   using glycin, creates textures, and manages GL video memory purge events.
 //
 // BackgroundSource
 //   An object that is created for each GSettings schema (separate
@@ -26,11 +21,12 @@
 //
 // MetaBackground
 //   Holds the specification of a background - a background color
-//   or gradient and one or two images blended together.
+//   or gradient and one or two textures blended together.
 //
 // Background
-//   JS delegate object that Connects a MetaBackground to the GSettings
-//   schema for the background.
+//   JS delegate object that connects a MetaBackground to the GSettings
+//   schema for the background. Loads images via BackgroundTextureCache
+//   and provides textures to MetaBackground.
 //
 // Animation
 //   A helper object that handles loading a XML-based animation; it is a
@@ -59,14 +55,14 @@
 //         \               |               /
 //          `------- MetaBackground ------'
 //                         |
-//                MetaBackgroundImage            looked up in MetaBackgroundImageCache
+//                   CoglTexture                 looked up in BackgroundTextureCache
 //
-// The animated case is tricker because the animation XML file can specify different
+// The animated case is trickier because the animation XML file can specify different
 // files for different monitor resolutions and aspect ratios. For this reason,
-// the BackgroundSource provides different Background share a single Animation object,
-// which tracks the animation, but use different MetaBackground objects. In the
-// common case, the different MetaBackground objects will be created for the
-// same filename and look up the *same* MetaBackgroundImage object, so there is
+// the BackgroundSource provides different Background objects that share a single
+// Animation object, which tracks the animation, but use different MetaBackground
+// objects. In the common case, the different MetaBackground objects will be created
+// for the same filename and look up the *same* CoglTexture object, so there is
 // little wasted memory:
 //
 // BackgroundManager               BackgroundManager
@@ -80,16 +76,16 @@
 //         \      |                |       /
 //      MetaBackground           MetaBackground
 //                 \                 /
-//                MetaBackgroundImage            looked up in MetaBackgroundImageCache
-//                MetaBackgroundImage
+//                   CoglTexture                 looked up in BackgroundTextureCache
+//                   CoglTexture
 //
 // But the case of different filenames and different background images
 // is possible as well:
 //                        ....
 //      MetaBackground              MetaBackground
 //             |                          |
-//     MetaBackgroundImage         MetaBackgroundImage
-//     MetaBackgroundImage         MetaBackgroundImage
+//        CoglTexture                CoglTexture
+//        CoglTexture                CoglTexture
 
 import Clutter from 'gi://Clutter';
 import Cogl from 'gi://Cogl';
@@ -97,6 +93,7 @@ import GDesktopEnums from 'gi://GDesktopEnums';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import Glycin from 'gi://Gly';
 import GnomeBG from 'gi://GnomeBG';
 import GnomeDesktop from 'gi://GnomeDesktop';
 import Meta from 'gi://Meta';
@@ -129,6 +126,7 @@ const ANIMATION_OPACITY_STEP_INCREMENT = 4.0;
 const ANIMATION_MIN_WAKEUP_INTERVAL = 1.0;
 
 let _backgroundCache = null;
+let _backgroundTextureCache = null;
 
 function _fileEqual0(file1, file2) {
     if (file1 === file2)
@@ -234,6 +232,164 @@ function getBackgroundCache() {
     return _backgroundCache;
 }
 
+class BackgroundTextureCache {
+    constructor() {
+        this._textures = new Map(); // uri -> {texture, colorState}
+
+        global.display.connect('gl-video-memory-purged', () => {
+            this._textures.clear();
+        });
+    }
+
+    async load(file, cancellable) {
+        const uri = file.get_uri();
+
+        if (this._textures.has(uri))
+            return this._textures.get(uri);
+
+        // Load image using glycin
+        const [frameData, colorState] = await this._loadGlycinFrame(file, cancellable);
+
+        // Create CoglTexture from glycin frame data
+        const texture = this._createTexture(frameData);
+
+        const entry = {texture, colorState};
+        this._textures.set(uri, entry);
+        return entry;
+    }
+
+    async _loadGlycinFrame(file, cancellable) {
+        const stream = await file.read_async(GLib.PRIORITY_DEFAULT, cancellable);
+        const loader = Glycin.Loader.new_for_stream(stream);
+
+        loader.set_accepted_memory_formats(
+            Glycin.MemoryFormatSelection.B8G8R8A8_PREMULTIPLIED |
+            Glycin.MemoryFormatSelection.A8R8G8B8_PREMULTIPLIED |
+            Glycin.MemoryFormatSelection.R8G8B8A8_PREMULTIPLIED |
+            Glycin.MemoryFormatSelection.B8G8R8A8 |
+            Glycin.MemoryFormatSelection.A8R8G8B8 |
+            Glycin.MemoryFormatSelection.R8G8B8A8 |
+            Glycin.MemoryFormatSelection.A8B8G8R8 |
+            Glycin.MemoryFormatSelection.R8G8B8 |
+            Glycin.MemoryFormatSelection.B8G8R8 |
+            Glycin.MemoryFormatSelection.R16G16B16A16_PREMULTIPLIED |
+            Glycin.MemoryFormatSelection.R16G16B16A16 |
+            Glycin.MemoryFormatSelection.R16G16B16A16_FLOAT |
+            Glycin.MemoryFormatSelection.R32G32B32A32_FLOAT_PREMULTIPLIED |
+            Glycin.MemoryFormatSelection.R32G32B32A32_FLOAT
+        );
+
+        const image = loader.load();
+        const frame = image.next_frame();
+
+        const width = frame.get_width();
+        const height = frame.get_height();
+        const stride = frame.get_stride();
+        const bytes = frame.get_buf_bytes();
+        const format = frame.get_memory_format();
+        const cicp = frame.get_color_cicp();
+
+        let colorState = null;
+        if (cicp) {
+            const clutterCicp = new Clutter.Cicp({
+                primaries: cicp.color_primaries,
+                transfer: cicp.transfer_characteristics,
+                matrix_coefficients: cicp.matrix_coefficients,
+                video_full_range_flag: cicp.video_full_range_flag,
+            });
+
+            try {
+                const clutterContext = global.stage.context;
+                colorState = Clutter.ColorStateParams.new_from_cicp(clutterContext, clutterCicp);
+            } catch (e) {
+                logError(e, 'Failed to create color state from CICP');
+            }
+        }
+
+        return [{width, height, stride, bytes, format}, colorState];
+    }
+
+    _glyMemoryFormatToCogl(format) {
+        switch (format) {
+        case Glycin.MemoryFormat.B8G8R8A8_PREMULTIPLIED:
+            return Cogl.PixelFormat.BGRA_8888_PRE;
+        case Glycin.MemoryFormat.A8R8G8B8_PREMULTIPLIED:
+            return Cogl.PixelFormat.ARGB_8888_PRE;
+        case Glycin.MemoryFormat.R8G8B8A8_PREMULTIPLIED:
+            return Cogl.PixelFormat.RGBA_8888_PRE;
+        case Glycin.MemoryFormat.B8G8R8A8:
+            return Cogl.PixelFormat.BGRA_8888;
+        case Glycin.MemoryFormat.A8R8G8B8:
+            return Cogl.PixelFormat.ARGB_8888;
+        case Glycin.MemoryFormat.R8G8B8A8:
+            return Cogl.PixelFormat.RGBA_8888;
+        case Glycin.MemoryFormat.A8B8G8R8:
+            return Cogl.PixelFormat.ABGR_8888;
+        case Glycin.MemoryFormat.R8G8B8:
+            return Cogl.PixelFormat.RGB_888;
+        case Glycin.MemoryFormat.B8G8R8:
+            return Cogl.PixelFormat.BGR_888;
+        case Glycin.MemoryFormat.R16G16B16A16_PREMULTIPLIED:
+            return Cogl.PixelFormat.RGBA_16161616_PRE;
+        case Glycin.MemoryFormat.R16G16B16A16:
+            return Cogl.PixelFormat.RGBA_16161616;
+        case Glycin.MemoryFormat.R16G16B16A16_FLOAT:
+            return Cogl.PixelFormat.RGBA_FP_16161616;
+        case Glycin.MemoryFormat.R32G32B32A32_FLOAT_PREMULTIPLIED:
+            return Cogl.PixelFormat.RGBA_FP_32323232_PRE;
+        case Glycin.MemoryFormat.R32G32B32A32_FLOAT:
+            return Cogl.PixelFormat.RGBA_FP_32323232;
+        default:
+            throw new Error(`Unsupported glycin memory format: ${format}`);
+        }
+    }
+
+    _createTexture(frameData) {
+        const {width, height, stride, bytes, format} = frameData;
+
+        const coglFormat = this._glyMemoryFormatToCogl(format);
+        const data = bytes.get_data();
+        const clutterContext = global.stage.context;
+        const clutterBackend = clutterContext.get_backend();
+        const ctx = clutterBackend.get_cogl_context();
+
+        const hasAlpha = Glycin.memory_format_has_alpha(format);
+        const components = hasAlpha
+            ? Cogl.TextureComponents.RGBA
+            : Cogl.TextureComponents.RGB;
+
+        let texture = Cogl.Texture2D.new_with_size(ctx, width, height);
+        texture.set_components(components);
+
+        // Try to allocate
+        // if it fails (texture too large), use sliced
+        try {
+            texture.allocate();
+        } catch {
+            texture = Cogl.Texture2DSliced.new_with_size(ctx, width, height, Cogl.TEXTURE_MAX_WASTE);
+            texture.set_components(components);
+        }
+
+        if (!texture.set_data(coglFormat, stride, data, 0))
+            throw new Error('Failed to set texture data');
+
+        return texture;
+    }
+
+    purge(file) {
+        this._textures.delete(file.get_uri());
+    }
+}
+
+/**
+ * @returns {BackgroundTextureCache}
+ */
+function getBackgroundTextureCache() {
+    if (!_backgroundTextureCache)
+        _backgroundTextureCache = new BackgroundTextureCache();
+    return _backgroundTextureCache;
+}
+
 const Background = GObject.registerClass({
     Signals: {'loaded': {}, 'bg-changed': {}},
 }, class Background extends Meta.Background {
@@ -280,6 +436,9 @@ const Background = GObject.registerClass({
         this._interfaceSettings.connectObject(`changed::${COLOR_SCHEME_KEY}`,
             this._emitChangedSignal.bind(this), this);
 
+        this._videoMemoryPurgedId = global.display.connect('gl-video-memory-purged',
+            () => this._load());
+
         this._load();
     }
 
@@ -297,6 +456,7 @@ const Background = GObject.registerClass({
         this._clock.disconnectObject(this);
         this._clock = null;
 
+        global.display.disconnect(this._videoMemoryPurgedId);
         LoginManager.getLoginManager().disconnectObject(this);
         this._settings.disconnectObject(this);
         this._interfaceSettings.disconnectObject(this);
@@ -369,8 +529,8 @@ const Background = GObject.registerClass({
         const signalId = this._cache.connect('file-changed',
             (cache, changedFile) => {
                 if (changedFile.equal(file)) {
-                    const imageCache = Meta.BackgroundImageCache.get_default();
-                    imageCache.purge(changedFile);
+                    const textureCache = getBackgroundTextureCache();
+                    textureCache.purge(changedFile);
                     this._emitChangedSignal();
                 }
             });
@@ -384,44 +544,50 @@ const Background = GObject.registerClass({
         }
     }
 
-    _updateAnimation() {
+    async _updateAnimation() {
         this._updateAnimationTimeoutId = 0;
 
         this._animation.update(this._layoutManager.monitors[this._monitorIndex]);
         const files = this._animation.keyFrameFiles;
 
-        const finish = () => {
+        if (files.length === 0) {
+            this.set_file(null, this._style);
             this._setLoaded();
-            if (files.length > 1) {
-                this.set_blend(files[0], files[1],
-                    this._animation.transitionProgress,
-                    this._style);
-            } else if (files.length > 0) {
-                this.set_file(files[0], this._style);
-            } else {
-                this.set_file(null, this._style);
-            }
             this._queueUpdateAnimation();
-        };
+            return;
+        }
 
-        const cache = Meta.BackgroundImageCache.get_default();
-        let numPendingImages = files.length;
-        for (let i = 0; i < files.length; i++) {
-            this._watchFile(files[i]);
-            const image = cache.load(files[i]);
-            if (image.is_loaded()) {
-                numPendingImages--;
-                if (numPendingImages === 0)
-                    finish();
-            } else {
-                // eslint-disable-next-line no-loop-func
-                const id = image.connect('loaded', () => {
-                    image.disconnect(id);
-                    numPendingImages--;
-                    if (numPendingImages === 0)
-                        finish();
-                });
+        const cache = getBackgroundTextureCache();
+
+        try {
+            const entries = await Promise.all(
+                files.map(f => {
+                    this._watchFile(f);
+                    return cache.load(f, this._cancellable);
+                })
+            );
+
+            const textures = entries.map(e => e.texture);
+            const colorState = entries[0]?.colorState || null;
+
+            if (textures.length > 1) {
+                this.set_blend_textures(
+                    textures[0],
+                    textures[1],
+                    this._animation.transitionProgress,
+                    this._style,
+                    colorState
+                );
+            } else if (textures.length > 0) {
+                this.set_texture(textures[0], this._style, colorState);
             }
+
+            this._setLoaded();
+            this._queueUpdateAnimation();
+        } catch (err) {
+            if (!err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                logError(err, 'Failed to load animation');
+            this._setLoaded();
         }
     }
 
@@ -472,19 +638,19 @@ const Background = GObject.registerClass({
         });
     }
 
-    _loadImage(file) {
-        this.set_file(file, this._style);
+    async _loadImage(file) {
         this._watchFile(file);
 
-        const cache = Meta.BackgroundImageCache.get_default();
-        const image = cache.load(file);
-        if (image.is_loaded()) {
+        const cache = getBackgroundTextureCache();
+
+        try {
+            const {texture, colorState} = await cache.load(file, this._cancellable);
+            this.set_texture(texture, this._style, colorState);
             this._setLoaded();
-        } else {
-            const id = image.connect('loaded', () => {
-                this._setLoaded();
-                image.disconnect(id);
-            });
+        } catch (err) {
+            if (!err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                logError(err, 'Failed to load background');
+            this._setLoaded();
         }
     }
 

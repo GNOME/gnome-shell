@@ -33,6 +33,7 @@ pipewire_req = '>= 0.3.49'
 pango_req = '>= 1.46.0'
 json_glib_req = '>= 1.6'
 rsvg_req = '>= 2.46'
+glycin_req = '>= 2.0.beta.2'
 
 nm_req = '>= 1.10.4'
 secret_req = '>= 0.18'
@@ -90,6 +91,7 @@ gnome_desktop_dep = dependency('gnome-desktop-4', version: gnome_desktop_req)
 pango_dep = dependency('pango', version: pango_req)
 json_glib_dep = dependency('json-glib-1.0', version: json_glib_req)
 rsvg_dep = dependency('librsvg-2.0', version: rsvg_req)
+glycin_dep = dependency('glycin-2', version: glycin_req)
 
 have_fonts = mutter_dep.get_variable('have_fonts') == 'true'
 have_xwayland = mutter_dep.get_variable('have_xwayland') == 'true'
