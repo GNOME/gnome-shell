@@ -286,8 +286,6 @@ async function _initializeUI() {
         locatePointer.show();
     });
 
-    global.display.connect('gl-video-memory-purged', loadTheme);
-
     global.context.connect('notify::unsafe-mode', () => {
         if (!global.context.unsafe_mode)
             return; // we're safe
