@@ -53,10 +53,6 @@ has_devkit() {
   toolbox --container $TOOLBOX run gnome-shell --help | grep -q -- --devkit
 }
 
-has_nested() {
-  toolbox --container $TOOLBOX run gnome-shell --help | grep -q -- --nested
-}
-
 # load defaults
 if [[ -e "$CONFIG_FILE" ]]; then
   . $CONFIG_FILE
@@ -167,8 +163,6 @@ done
 if should_run_nested; then
   if has_devkit; then
     SHELL_ARGS+=( --devkit )
-  elif has_nested; then
-    SHELL_ARGS+=( --nested )
   else
     die Mutter has to be built with devkit or x11 support
   fi
