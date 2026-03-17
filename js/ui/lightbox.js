@@ -24,8 +24,9 @@ vec2 position = cogl_tex_coord_in[0].xy - 0.5;                             \n\
 float t = clamp(length(1.41421 * position), 0.0, 1.0);                     \n\
 float pixel_brightness = mix(1.0, 1.0 - vignette_sharpness, t);            \n\
 cogl_color_out.a *= 1.0 - pixel_brightness * brightness;                   \n\
-float noise_magnitude = (2.0 / ((1.0 - cogl_color_out.a) * 255.0));        \n\
-cogl_color_out.a += (rand(position) - 0.5) * noise_magnitude;              \n';
+float noise = 2.0 * rand(position + 0.5) - 1.0;                            \n\
+noise = sign(noise) * (1.0 - sqrt(1.0 - abs(noise)));                      \n\
+cogl_color_out.a += noise / ((1.0 - cogl_color_out.a) * 255.0);            \n';
 
 
 const RadialShaderEffect = GObject.registerClass({
