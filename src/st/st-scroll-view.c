@@ -78,6 +78,8 @@ struct _StScrollViewPrivate
   StAdjustment *vadjustment;
   ClutterActor *vscroll;
 
+  ClutterPanGesture *pan_gesture;
+
   StPolicyType hscrollbar_policy;
   StPolicyType vscrollbar_policy;
 
@@ -87,6 +89,7 @@ struct _StScrollViewPrivate
   guint         row_size_set : 1;
   guint         column_size_set : 1;
   guint         mouse_scroll : 1;
+  guint         touch_scroll : 1;
   guint         overlay_scrollbars : 1;
   guint         hscrollbar_visible : 1;
   guint         vscrollbar_visible : 1;
@@ -105,6 +108,7 @@ enum {
   PROP_HSCROLLBAR_VISIBLE,
   PROP_VSCROLLBAR_VISIBLE,
   PROP_MOUSE_SCROLL,
+  PROP_TOUCH_SCROLL,
   PROP_OVERLAY_SCROLLBARS,
 
   N_PROPS
@@ -146,6 +150,9 @@ st_scroll_view_get_property (GObject    *object,
       break;
     case PROP_MOUSE_SCROLL:
       g_value_set_boolean (value, priv->mouse_scroll);
+      break;
+    case PROP_TOUCH_SCROLL:
+      g_value_set_boolean (value, priv->touch_scroll);
       break;
     case PROP_OVERLAY_SCROLLBARS:
       g_value_set_boolean (value, priv->overlay_scrollbars);
@@ -215,6 +222,10 @@ st_scroll_view_set_property (GObject      *object,
       break;
     case PROP_MOUSE_SCROLL:
       st_scroll_view_set_mouse_scrolling (self,
+                                          g_value_get_boolean (value));
+      break;
+    case PROP_TOUCH_SCROLL:
+      st_scroll_view_set_touch_scrolling (self,
                                           g_value_get_boolean (value));
       break;
     case PROP_OVERLAY_SCROLLBARS:
@@ -934,6 +945,15 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
+   * StScrollView:enable-touch-scrolling: (getter get_touch_scrolling) (setter set_touch_scrolling):
+   *
+   * Whether to enable automatic touch scrolling.
+   */
+  props[PROP_TOUCH_SCROLL] =
+    g_param_spec_boolean ("enable-touch-scrolling", NULL, NULL,
+                          TRUE, ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
    * StScrollView:overlay-scrollbars:
    *
    * Whether scrollbars are painted on top of the content.
@@ -1004,6 +1024,35 @@ child_removed (ClutterActor *container,
 }
 
 static void
+pan_update_cb (ClutterPanGesture *pan_gesture,
+               StScrollView      *self)
+{
+  StScrollViewPrivate *priv = st_scroll_view_get_instance_private (self);
+  graphene_vec2_t delta;
+  gfloat delta_x, delta_y, height, width;
+  gdouble h_page_size, v_page_size, h_value, v_value;
+
+  if (!priv->touch_scroll)
+    return;
+
+  clutter_pan_gesture_get_delta (pan_gesture, &delta);
+  delta_x = graphene_vec2_get_x (&delta);
+  delta_y = graphene_vec2_get_y (&delta);
+  height = clutter_actor_get_height (CLUTTER_ACTOR (self));
+  width = clutter_actor_get_width (CLUTTER_ACTOR (self));
+  h_page_size = st_adjustment_get_page_size (priv->hadjustment);
+  v_page_size = st_adjustment_get_page_size (priv->vadjustment);
+  h_value = st_adjustment_get_value (priv->hadjustment);
+  v_value = st_adjustment_get_value (priv->vadjustment);
+
+  st_adjustment_set_value (priv->hadjustment,
+                           h_value - (delta_x / width * h_page_size));
+
+  st_adjustment_set_value (priv->vadjustment,
+                           v_value - (delta_y / height * v_page_size));
+}
+
+static void
 st_scroll_view_init (StScrollView *self)
 {
   StScrollViewPrivate *priv = st_scroll_view_get_instance_private (self);
@@ -1033,8 +1082,19 @@ st_scroll_view_init (StScrollView *self)
   clutter_actor_add_child (CLUTTER_ACTOR (self), priv->hscroll);
   clutter_actor_add_child (CLUTTER_ACTOR (self), priv->vscroll);
 
-  /* mouse scroll is enabled by default, so we also need to be reactive */
+  priv->pan_gesture = CLUTTER_PAN_GESTURE (clutter_pan_gesture_new ());
+
+  clutter_actor_meta_set_name (CLUTTER_ACTOR_META (priv->pan_gesture),
+                               "StScrollView pan");
+
+  g_signal_connect (priv->pan_gesture, "pan-update",
+                    G_CALLBACK (pan_update_cb), self);
+
+  clutter_actor_add_action (CLUTTER_ACTOR (self), CLUTTER_ACTION (priv->pan_gesture));
+
+  /* mouse/touch scroll is enabled by default, so we also need to be reactive */
   priv->mouse_scroll = TRUE;
+  priv->touch_scroll = TRUE;
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
   /* Connect these *after* we've added our internal actors */
@@ -1313,6 +1373,55 @@ st_scroll_view_get_mouse_scrolling (StScrollView *scroll)
   priv = st_scroll_view_get_instance_private (scroll);
 
   return priv->mouse_scroll;
+}
+
+/**
+ * st_scroll_view_set_touch_scrolling:
+ * @scroll: a #StScrollView
+ * @enabled: %TRUE or %FALSE
+ *
+ * Sets automatic touch scrolling to enabled or disabled.
+ */
+void
+st_scroll_view_set_touch_scrolling (StScrollView *scroll,
+                                    gboolean      enabled)
+{
+  StScrollViewPrivate *priv;
+
+  g_return_if_fail (ST_IS_SCROLL_VIEW (scroll));
+
+  priv = st_scroll_view_get_instance_private (scroll);
+
+  if (priv->touch_scroll != enabled)
+    {
+      priv->touch_scroll = enabled;
+
+      /* make sure we can receive touch events */
+      if (enabled)
+        clutter_actor_set_reactive ((ClutterActor *) scroll, TRUE);
+
+      g_object_notify_by_pspec (G_OBJECT (scroll), props[PROP_TOUCH_SCROLL]);
+    }
+}
+
+/**
+ * st_scroll_view_get_touch_scrolling:
+ * @scroll: a #StScrollView
+ *
+ * Get whether automatic touch scrolling is enabled or disabled.
+ *
+ * Returns: %TRUE if enabled, %FALSE otherwise
+ */
+gboolean
+st_scroll_view_get_touch_scrolling (StScrollView *scroll)
+{
+  StScrollViewPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_SCROLL_VIEW (scroll), FALSE);
+
+  priv = st_scroll_view_get_instance_private (scroll);
+
+  return priv->touch_scroll;
 }
 
 /**

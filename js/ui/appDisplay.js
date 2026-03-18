@@ -495,6 +495,7 @@ var BaseAppView = GObject.registerClass({
             y_expand: true,
             reactive: true,
             enable_mouse_scrolling: false,
+            enable_touch_scrolling: false,
             hscrollbar_policy: St.PolicyType.EXTERNAL,
             vscrollbar_policy: St.PolicyType.NEVER,
             child: this._grid,

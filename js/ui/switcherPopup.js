@@ -413,6 +413,7 @@ export const SwitcherList = GObject.registerClass({
         this._scrollView = new St.ScrollView({
             style_class: 'hfade',
             enable_mouse_scrolling: false,
+            enable_touch_scrolling: false,
             hscrollbar_policy: St.PolicyType.NEVER,
             vscrollbar_policy: St.PolicyType.NEVER,
             child: this._list,
