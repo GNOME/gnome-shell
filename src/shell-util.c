@@ -153,7 +153,7 @@ shell_util_translate_time_string (const char *str)
 {
   const char *locale = g_getenv ("LC_TIME");
   const char *res;
-  char *sep;
+  const char *sep;
   locale_t old_loc;
   locale_t loc = (locale_t) 0;
 
