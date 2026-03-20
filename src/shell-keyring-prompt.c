@@ -601,7 +601,7 @@ shell_keyring_prompt_get_confirm_actor (ShellKeyringPrompt *self)
 static guint
 calculate_password_strength (const gchar *password)
 {
-  int upper, lower, digit, misc;
+  int upper, digit, misc;
   gdouble pwstrength;
   int length, i;
 
@@ -619,7 +619,6 @@ calculate_password_strength (const gchar *password)
     return 0;
 
   upper = 0;
-  lower = 0;
   digit = 0;
   misc = 0;
 
@@ -627,8 +626,6 @@ calculate_password_strength (const gchar *password)
     {
       if (g_ascii_isdigit (password[i]))
         digit++;
-      else if (g_ascii_islower (password[i]))
-        lower++;
       else if (g_ascii_isupper (password[i]))
         upper++;
       else
