@@ -628,7 +628,7 @@ calculate_password_strength (const gchar *password)
         digit++;
       else if (g_ascii_isupper (password[i]))
         upper++;
-      else
+      else if (!g_ascii_islower (password[i]))
         misc++;
     }
 
