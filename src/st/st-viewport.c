@@ -534,34 +534,28 @@ st_viewport_get_paint_volume (ClutterActor       *actor,
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
+  graphene_point3d_t origin = { 0 };
   int x, y;
+  double width, height;
 
   /* Setting the paint volume does not make sense when we don't have any allocation */
   if (!clutter_actor_has_allocation (actor))
     return FALSE;
 
-  if (!priv->clip_to_view)
+  if (!priv->clip_to_view || !(priv->hadjustment || priv->vadjustment))
     return CLUTTER_ACTOR_CLASS (st_viewport_parent_class)->get_paint_volume (actor, volume);
 
   /* When have an adjustment we are clipped to the content box, so base
    * our paint volume on that. */
-  if (priv->hadjustment || priv->vadjustment)
-    {
-      double width, height;
 
-      clutter_actor_get_allocation_box (actor, &allocation_box);
-      st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
+  clutter_actor_get_allocation_box (actor, &allocation_box);
+  st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
 
-      width = content_box.x2 - content_box.x1;
-      height = content_box.y2 - content_box.y1;
+  width = content_box.x2 - content_box.x1;
+  height = content_box.y2 - content_box.y1;
 
-      clutter_paint_volume_set_width (volume, width);
-      clutter_paint_volume_set_height (volume, height);
-    }
-  else if (!CLUTTER_ACTOR_CLASS (st_viewport_parent_class)->get_paint_volume (actor, volume))
-    {
-      return FALSE;
-    }
+  clutter_paint_volume_set_width (volume, width);
+  clutter_paint_volume_set_height (volume, height);
 
   /* When scrolled, st_viewport_apply_transform() includes the scroll offset
    * and affects paint volumes. This is right for our children, but our paint volume
@@ -569,15 +563,10 @@ st_viewport_get_paint_volume (ClutterActor       *actor,
    * to reverse-compensate here, the same as we do when painting.
    */
   get_border_paint_offsets (viewport, &x, &y);
-  if (x != 0 || y != 0)
-    {
-      graphene_point3d_t origin;
+  origin.x = content_box.x1 + x;
+  origin.y = content_box.y1 + y;
 
-      clutter_paint_volume_get_origin (volume, &origin);
-      origin.x += x;
-      origin.y += y;
-      clutter_paint_volume_set_origin (volume, &origin);
-    }
+  clutter_paint_volume_set_origin (volume, &origin);
 
   return TRUE;
 }
