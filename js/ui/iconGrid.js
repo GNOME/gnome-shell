@@ -1042,7 +1042,7 @@ export const IconGridLayout = GObject.registerClass({
             : Math.floor(x / this._pageWidth);
 
         // Out of bounds
-        if (page >= this._pages.length)
+        if (page < 0 || page >= this._pages.length)
             return [0, 0, DragLocation.INVALID];
 
         if (isRtl && this._orientation === Clutter.Orientation.HORIZONTAL)
