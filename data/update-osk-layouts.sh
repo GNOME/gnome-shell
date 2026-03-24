@@ -34,7 +34,7 @@ EOF
 
 for f in $DESTDIR/*.json
 do
-    echo "    <file>$(basename $f)</file>" >>$TMP_GRESOURCE_FILE
+  echo "    <file>$(basename $f)</file>" >>$TMP_GRESOURCE_FILE
 done
 
 cat >>$TMP_GRESOURCE_FILE <<EOF

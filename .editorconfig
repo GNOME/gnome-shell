@@ -21,3 +21,6 @@ indent_size = 2
 
 [meson.build]
 indent_size = 2
+
+[*.sh]
+indent_size = 2
