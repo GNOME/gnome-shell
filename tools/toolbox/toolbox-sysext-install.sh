@@ -94,7 +94,9 @@ relabel_command() {
 }
 
 # load defaults
-. $CONFIG_FILE
+if [[ -e "$CONFIG_FILE" ]]; then
+  . $CONFIG_FILE
+fi
 TOOLBOX=$DEFAULT_TOOLBOX
 
 TEMP=$(getopt \

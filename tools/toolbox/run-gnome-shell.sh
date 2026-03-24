@@ -58,7 +58,9 @@ has_nested() {
 }
 
 # load defaults
-. $CONFIG_FILE
+if [[ -e "$CONFIG_FILE" ]]; then
+  . $CONFIG_FILE
+fi
 TOOLBOX=$DEFAULT_TOOLBOX
 
 SHELL_ENV=(XDG_CURRENT_DESKTOP=GNOME)
