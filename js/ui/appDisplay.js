@@ -1010,7 +1010,8 @@ var BaseAppView = GObject.registerClass({
             const position = page < nPages ? -1 : 0;
 
             this._moveItem(source, page, position);
-            this.goToPage(page);
+            const realPage = this._grid.getItemPage(source); // could be the next page, if the requested one was full
+            this.goToPage(realPage);
         } else if (this._delayedMoveData) {
             // Dropped before the icon was moved
             const {page, position} = this._delayedMoveData;
