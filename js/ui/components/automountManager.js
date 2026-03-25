@@ -77,7 +77,8 @@ class AutomountManager {
             return;
 
         const player = global.display.get_sound_player();
-        player.play_from_theme('device-added-media',
+        player.play_from_file(
+            Gio.File.new_for_path(`${global.datadir}/sounds/device-added.oga`),
             _('External drive connected'),
             null);
     }
@@ -89,7 +90,8 @@ class AutomountManager {
             return;
 
         const player = global.display.get_sound_player();
-        player.play_from_theme('device-removed-media',
+        player.play_from_file(
+            Gio.File.new_for_path(`${global.datadir}/sounds/device-removed.oga`),
             _('External drive disconnected'),
             null);
     }

@@ -771,7 +771,9 @@ class BreakDispatcher extends GObject.Object {
         if (this._manager.breakTypeShouldPlaySound(this._previousBreakType)) {
             const player = global.display.get_sound_player();
 
-            player.play_from_theme('complete', _('Break complete sound'), null);
+            player.play_from_file(
+                Gio.File.new_for_path(`${global.datadir}/sounds/complete.oga`),
+                _('Break complete sound'), null);
         }
     }
 

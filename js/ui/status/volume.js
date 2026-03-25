@@ -213,7 +213,8 @@ const StreamSlider = GObject.registerClass({
 
         this._volumeCancellable = new Gio.Cancellable();
         const player = global.display.get_sound_player();
-        player.play_from_theme('audio-volume-change',
+        player.play_from_file(
+            Gio.File.new_for_path(`${global.datadir}/sounds/audio-volume-change.oga`),
             _('Volume changed'), this._volumeCancellable);
     }
 

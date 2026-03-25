@@ -2447,8 +2447,9 @@ export async function captureScreenshot(texture, geometry, scale, cursor) {
     if (cursor === null)
         cursor = {texture: null, x: 0, y: 0, scale: 1};
 
-    global.display.get_sound_player().play_from_theme(
-        'screen-capture', _('Screenshot taken'), null);
+    global.display.get_sound_player().play_from_file(
+        Gio.File.new_for_path(`${global.datadir}/sounds/screen-capture.oga`),
+        _('Screenshot taken'), null);
 
     const pixbuf = await Shell.Screenshot.composite_to_stream(
         texture,
@@ -2609,8 +2610,9 @@ export class ScreenshotService {
                 const flashspot = new Flashspot(area);
                 flashspot.fire(resolve);
 
-                global.display.get_sound_player().play_from_theme(
-                    'screen-capture', _('Screenshot taken'), null);
+                global.display.get_sound_player().play_from_file(
+                    Gio.File.new_for_path(`${global.datadir}/sounds/screen-capture.oga`),
+                    _('Screenshot taken'), null);
             });
         });
     }

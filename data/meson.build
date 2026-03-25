@@ -59,6 +59,8 @@ data_resources = [
   {'name': 'osk-layouts'},
   {'name': 'theme', 'deps': theme_deps}
 ]
+
+install_subdir('sounds', install_dir: pkgdatadir)
 data_resources_targets = []
 foreach resource : data_resources
   name = resource.get('name')
