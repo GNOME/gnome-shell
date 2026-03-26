@@ -1646,7 +1646,8 @@ export const Keyboard = GObject.registerClass({
     }
 
     _relayout() {
-        let monitor = Main.layoutManager.keyboardMonitor;
+        const monitor = Main.layoutManager.keyboardMonitor;
+        const [minHeight] = this.get_preferred_height(-1);
 
         if (!monitor)
             return;
@@ -1657,6 +1658,8 @@ export const Keyboard = GObject.registerClass({
             this.height = monitor.height / 3;
         else
             this.height = monitor.height / 4;
+
+        this.height = Math.clamp(this.height, minHeight, monitor.height / 2);
     }
 
     _updateKeys() {
