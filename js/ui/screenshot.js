@@ -482,6 +482,44 @@ const UIAreaSelector = GObject.registerClass({
             const rightX = leftX + width - 1;
             const bottomY = topY + height - 1;
 
+            let snapX = this._dragStartX;
+            let snapY = this._dragStartY;
+
+            switch (cursor) {
+            case Clutter.CursorType.NW_RESIZE:
+                snapX = leftX;
+                snapY = topY;
+                break;
+            case Clutter.CursorType.NE_RESIZE:
+                snapX = rightX;
+                snapY = topY;
+                break;
+            case Clutter.CursorType.SW_RESIZE:
+                snapX = leftX;
+                snapY = bottomY;
+                break;
+            case Clutter.CursorType.SE_RESIZE:
+                snapX = rightX;
+                snapY = bottomY;
+                break;
+            case Clutter.CursorType.N_RESIZE:
+                snapY = topY;
+                break;
+            case Clutter.CursorType.S_RESIZE:
+                snapY = bottomY;
+                break;
+            case Clutter.CursorType.W_RESIZE:
+                snapX = leftX;
+                break;
+            case Clutter.CursorType.E_RESIZE:
+                snapX = rightX;
+                break;
+            }
+
+            const backend = this.get_context().get_backend();
+            backend.get_default_seat().warp_pointer(snapX, snapY);
+            [this._dragStartX, this._dragStartY] = [snapX, snapY];
+
             // For moving, start X and Y are the top left corner, while
             // last X and Y are the bottom right corner.
             if (cursor === Meta.Cursor.MOVE) {
