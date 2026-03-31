@@ -157,8 +157,6 @@ class PortalWindow extends Gtk.ApplicationWindow {
         this.set_child(this._webView);
         this.maximize();
         this.present_with_time(timestamp);
-
-        this.application.set_accels_for_action('app.quit', ['<Primary>q', '<Primary>w']);
     }
 
     _syncUri() {
@@ -303,6 +301,8 @@ class WebPortalHelper extends Adw.Application {
         let action = new Gio.SimpleAction({name: 'quit'});
         action.connect('activate', () => this.active_window.destroy());
         this.add_action(action);
+
+        this.set_accels_for_action('app.quit', ['<Primary>q', '<Primary>w']);
     }
 
     vfunc_dbus_register(connection, path) {
