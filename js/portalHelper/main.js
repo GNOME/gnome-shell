@@ -25,6 +25,12 @@ const PortalHelperSecurityLevel = {
     INSECURE: 2,
 };
 
+const ZoomAction = {
+    NORMAL: 0,
+    IN: 1,
+    OUT: 2,
+};
+
 const HTTP_URI_FLAGS =
     GLib.UriFlags.HAS_PASSWORD |
     GLib.UriFlags.ENCODED_PATH |
@@ -116,6 +122,18 @@ class PortalWindow extends Gtk.ApplicationWindow {
             default_width: 600,
             default_height: 450,
         });
+
+        this.add_action_entries(
+            [{
+                name: 'zoom-in',
+                activate: () => this._setZoom(ZoomAction.IN),
+            }, {
+                name: 'zoom-out',
+                activate: () => this._setZoom(ZoomAction.OUT),
+            }, {
+                name: 'zoom-normal',
+                activate: () => this._setZoom(ZoomAction.NORMAL),
+            }]);
 
         const headerbar = new Gtk.HeaderBar();
         this._secureMenu = new PortalSecurityButton();
@@ -284,6 +302,58 @@ class PortalWindow extends Gtk.ApplicationWindow {
         decision.use();
         return true;
     }
+
+    _getChangedZoomLevel(zoomAction) {
+        if (zoomAction === ZoomAction.NORMAL)
+            return 1.0;
+
+        // Adapted from ephy-zoom.c
+        const zoomSteps = [
+            0.30,
+            0.50,
+            0.67,
+            0.80,
+            0.90,
+            1.00,
+            1.10,
+            1.20,
+            1.33,
+            1.50,
+            1.70,
+            2.00,
+            2.40,
+            3.00,
+        ];
+
+        const {zoomLevel} = this._webView;
+
+        let i = zoomSteps.indexOf(zoomLevel);
+
+        if (i < 0) {
+            // No exact match found, try to find the nearest value
+            i = zoomSteps.findLastIndex(v => v < zoomLevel);
+        }
+
+        if (i < 0) {
+            // Still no match? Return default
+            return 1.0;
+        }
+
+        let newLevel;
+        if (zoomAction === ZoomAction.OUT && i > 0)
+            newLevel = zoomSteps[i - 1];
+        else if (zoomAction === ZoomAction.IN && i < zoomSteps.length - 1)
+            newLevel = zoomSteps[i + 1];
+        else
+            newLevel = zoomLevel; // ensure that we have a consistent value
+
+        return newLevel;
+    }
+
+    _setZoom(zoomAction) {
+        const zoomLevel = this._getChangedZoomLevel(zoomAction);
+        this._webView.set_zoom_level(zoomLevel);
+    }
 });
 
 const WebPortalHelper = GObject.registerClass(
@@ -302,6 +372,12 @@ class WebPortalHelper extends Adw.Application {
         action.connect('activate', () => this.active_window.destroy());
         this.add_action(action);
 
+        this.set_accels_for_action('win.zoom-in',
+            ['<Primary>plus', '<Primary>KP_Add', '<Primary>equal', 'ZoomIn']);
+        this.set_accels_for_action('win.zoom-out',
+            ['<Primary>minus', '<Primary>KP_Subtract', 'ZoomOut']);
+        this.set_accels_for_action('win.zoom-normal',
+            ['<Primary>0', '<Primary>KP_0']);
         this.set_accels_for_action('app.quit', ['<Primary>q', '<Primary>w']);
     }
 
