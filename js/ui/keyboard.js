@@ -1307,7 +1307,13 @@ export const Keyboard = GObject.registerClass({
 
     _onContentHintsChanged(controller, contentHints) {
         this._contentHints = contentHints;
-        this._updateLevelFromHints(false);
+
+        if (this.visible &&
+            (contentHints & Clutter.InputContentHintFlags.INHIBIT_OSK) !== 0) {
+            this.close();
+        } else {
+            this._updateLevelFromHints(false);
+        }
     }
 
     _updateLevelFromHints(userInputHappened) {
@@ -1663,6 +1669,9 @@ export const Keyboard = GObject.registerClass({
             enabled = this._keyboardVisible === false;
         else
             return;
+
+        if ((this._contentHints & Clutter.InputContentHintFlags.INHIBIT_OSK) !== 0)
+            enabled = false;
 
         if (enabled)
             this.open(Main.layoutManager.focusIndex);
