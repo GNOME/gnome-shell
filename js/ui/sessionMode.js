@@ -67,7 +67,9 @@ const _modes = {
     'unlock-dialog': {
         isLocked: true,
         unlockDialog: undefined,
-        components: ['polkitAgent'],
+        components: Config.HAVE_NETWORKMANAGER
+            ? ['networkAgent', 'polkitAgent']
+            : ['polkitAgent'],
         panel: {
             left: [],
             center: [],
