@@ -257,8 +257,7 @@ st_widget_remove_transition (StWidget *widget)
   if (priv->transition_animation)
     {
       g_object_run_dispose (G_OBJECT (priv->transition_animation));
-      g_object_unref (priv->transition_animation);
-      priv->transition_animation = NULL;
+      g_clear_object (&priv->transition_animation);
     }
 }
 
@@ -2382,8 +2381,7 @@ st_widget_set_label_actor (StWidget     *widget,
 
   if (priv->label_actor != label)
     {
-      if (priv->label_actor)
-        g_object_unref (priv->label_actor);
+      g_clear_object (&priv->label_actor);
 
       if (label != NULL)
         priv->label_actor = g_object_ref (label);

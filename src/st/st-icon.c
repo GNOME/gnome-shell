@@ -176,17 +176,12 @@ st_icon_dispose (GObject *gobject)
 {
   StIconPrivate *priv = ST_ICON (gobject)->priv;
 
-  if (priv->icon_texture)
-    {
-      clutter_actor_destroy (priv->icon_texture);
-      priv->icon_texture = NULL;
-    }
+  g_clear_pointer (&priv->icon_texture, clutter_actor_destroy);
 
   if (priv->pending_texture)
     {
       clutter_actor_destroy (priv->pending_texture);
-      g_object_unref (priv->pending_texture);
-      priv->pending_texture = NULL;
+      g_clear_object (&priv->pending_texture);
     }
 
   g_clear_signal_handler (&priv->icon_theme_changed_id,
@@ -551,8 +546,7 @@ st_icon_update (StIcon *icon)
   if (priv->pending_texture)
     {
       clutter_actor_destroy (priv->pending_texture);
-      g_object_unref (priv->pending_texture);
-      priv->pending_texture = NULL;
+      g_clear_object (&priv->pending_texture);
       priv->opacity_handler_id = 0;
     }
 
@@ -626,8 +620,7 @@ st_icon_update (StIcon *icon)
     }
   else if (priv->icon_texture)
     {
-      clutter_actor_destroy (priv->icon_texture);
-      priv->icon_texture = NULL;
+      g_clear_pointer (&priv->icon_texture, clutter_actor_destroy);
     }
 }
 

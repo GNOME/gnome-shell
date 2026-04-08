@@ -83,11 +83,7 @@ shell_mount_operation_show_processes (GMountOperation *operation,
 {
   ShellMountOperation *self = SHELL_MOUNT_OPERATION (operation);
 
-  if (self->pids != NULL)
-    {
-      g_array_unref (self->pids);
-      self->pids = NULL;
-    }
+  g_clear_pointer (&self->pids, g_array_unref);
 
   g_free (self->message);
   g_strfreev (self->choices);
@@ -107,12 +103,7 @@ shell_mount_operation_finalize (GObject *obj)
 
   g_strfreev (self->choices);
   g_free (self->message);
-
-  if (self->pids != NULL)
-    {
-      g_array_unref (self->pids);
-      self->pids = NULL;
-    }
+  g_clear_pointer (&self->pids, g_array_unref);
 
   G_OBJECT_CLASS (shell_mount_operation_parent_class)->finalize (obj);
 }

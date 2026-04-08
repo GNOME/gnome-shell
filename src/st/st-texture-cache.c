@@ -301,17 +301,10 @@ texture_load_data_free (gpointer p)
 {
   AsyncTextureLoadData *data = p;
 
-  if (data->icon_info)
-    {
-      g_object_unref (data->icon_info);
-      if (data->colors)
-        st_icon_colors_unref (data->colors);
-    }
-  else if (data->file)
-    g_object_unref (data->file);
-
-  if (data->key)
-    g_free (data->key);
+  g_clear_object (&data->icon_info);
+  g_clear_pointer (&data->colors, st_icon_colors_unref);
+  g_clear_object (&data->file);
+  g_clear_pointer (&data->key, g_free);
 
   if (data->actors)
     g_slist_free_full (data->actors, (GDestroyNotify) g_object_unref);

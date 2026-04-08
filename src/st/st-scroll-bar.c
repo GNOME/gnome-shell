@@ -187,17 +187,8 @@ st_scroll_bar_dispose (GObject *gobject)
   if (priv->adjustment)
     st_scroll_bar_set_adjustment (bar, NULL);
 
-  if (priv->handle)
-    {
-      clutter_actor_destroy (priv->handle);
-      priv->handle = NULL;
-    }
-
-  if (priv->trough)
-    {
-      clutter_actor_destroy (priv->trough);
-      priv->trough = NULL;
-    }
+  g_clear_pointer (&priv->handle, clutter_actor_destroy);
+  g_clear_pointer (&priv->trough, clutter_actor_destroy);
 
   G_OBJECT_CLASS (st_scroll_bar_parent_class)->dispose (gobject);
 }
@@ -965,8 +956,7 @@ st_scroll_bar_set_adjustment (StScrollBar  *bar,
       g_signal_handlers_disconnect_by_func (priv->adjustment,
                                             on_changed,
                                             bar);
-      g_object_unref (priv->adjustment);
-      priv->adjustment = NULL;
+      g_clear_object (&priv->adjustment);
     }
 
   if (adjustment)

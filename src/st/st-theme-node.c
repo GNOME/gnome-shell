@@ -64,17 +64,12 @@ maybe_free_properties (StThemeNode *node)
 {
   if (node->properties)
     {
-      g_free (node->properties);
-      node->properties = NULL;
+      g_clear_pointer (&node->properties, g_free);
       node->n_properties = 0;
     }
 
-  if (node->inline_properties)
-    {
-      /* This destroys the list, not just the head of the list */
-      cr_declaration_destroy (node->inline_properties);
-      node->inline_properties = NULL;
-    }
+  /* This destroys the list, not just the head of the list */
+  g_clear_pointer (&node->inline_properties, cr_declaration_destroy);
 }
 
 static void
@@ -82,23 +77,9 @@ st_theme_node_dispose (GObject *gobject)
 {
   StThemeNode *node = ST_THEME_NODE (gobject);
 
-  if (node->parent_node)
-    {
-      g_object_unref (node->parent_node);
-      node->parent_node = NULL;
-    }
-
-  if (node->border_image)
-    {
-      g_object_unref (node->border_image);
-      node->border_image = NULL;
-    }
-
-  if (node->icon_colors)
-    {
-      st_icon_colors_unref (node->icon_colors);
-      node->icon_colors = NULL;
-    }
+  g_clear_object (&node->parent_node);
+  g_clear_object (&node->border_image);
+  g_clear_pointer (&node->icon_colors, st_icon_colors_unref);
 
   st_theme_node_paint_state_free (&node->cached_state);
 
