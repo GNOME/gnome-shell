@@ -7,3 +7,4 @@ org.gnome.font-viewer.desktop             # Fonts
 org.gnome.Loupe.desktop                   # Image Viewer
 org.gnome.seahorse.Application.desktop    # Passwords and Keys (old desktop name)
 org.gnome.Seahorse.desktop                # Passwords and Keys
+org.gnome.Showtime.desktop                # Video Player
