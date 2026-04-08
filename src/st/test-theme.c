@@ -78,8 +78,7 @@ assert_font_features (StThemeNode *node,
       fail = TRUE;
     }
 
-  if (value)
-    g_free (value);
+  g_free (value);
 }
 
 static char *
