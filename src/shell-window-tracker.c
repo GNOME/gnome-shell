@@ -14,7 +14,6 @@
 #include <meta/meta-x11-group.h>
 #endif
 
-#include "shell-window-tracker-private.h"
 #include "shell-app-private.h"
 #include "shell-global.h"
 #include "st.h"

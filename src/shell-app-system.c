@@ -11,7 +11,6 @@
 
 #include "shell-app-cache-private.h"
 #include "shell-app-private.h"
-#include "shell-window-tracker-private.h"
 #include "shell-app-system-private.h"
 #include "shell-global.h"
 #include "shell-util.h"

@@ -17,9 +17,6 @@ G_DECLARE_FINAL_TYPE (StDndStartGesture, st_dnd_start_gesture,
 void st_dnd_start_gesture_start_drag (StDndStartGesture  *self,
                                       const ClutterEvent *start_event);
 
-void st_dnd_start_gesture_get_drag_coords (StDndStartGesture *self,
-                                           graphene_point_t  *coords_out);
-
 const ClutterEvent * st_dnd_start_gesture_get_point_begin_event (StDndStartGesture *self);
 
 const ClutterEvent * st_dnd_start_gesture_get_drag_triggering_event (StDndStartGesture *self);

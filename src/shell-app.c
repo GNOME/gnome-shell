@@ -15,7 +15,6 @@
 #include "shell-global.h"
 #include "shell-util.h"
 #include "shell-app-system-private.h"
-#include "shell-window-tracker-private.h"
 #include "st.h"
 #include "gtkactionmuxer.h"
 #include "org-gtk-application.h"
