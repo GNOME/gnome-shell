@@ -15,7 +15,6 @@ import * as Main from '../main.js';
 import * as PopupMenu from '../popupMenu.js';
 import * as PanelMenu from '../panelMenu.js';
 import * as SwitcherPopup from '../switcherPopup.js';
-import * as Util from '../../misc/util.js';
 
 export const INPUT_SOURCE_TYPE_XKB = 'xkb';
 export const INPUT_SOURCE_TYPE_IBUS = 'ibus';
@@ -1114,8 +1113,10 @@ class InputSourceIndicator extends PanelMenu.Button {
     }
 
     _showLayout() {
-        Main.overview.hide();
+        const app =
+            Shell.AppSystem.get_default().lookup_app('org.gnome.Tecla.desktop');
 
-        Util.spawn(['tecla']);
+        Main.overview.hide();
+        app?.activate();
     }
 });
