@@ -54,4 +54,8 @@ ShellBlurMode shell_blur_effect_get_mode (ShellBlurEffect *self);
 void shell_blur_effect_set_mode (ShellBlurEffect *self,
                                  ShellBlurMode    mode);
 
+float shell_blur_effect_get_corner_radius (ShellBlurEffect *self);
+void shell_blur_effect_set_corner_radius (ShellBlurEffect *self,
+                                          float            corner_radius);
+
 G_END_DECLS

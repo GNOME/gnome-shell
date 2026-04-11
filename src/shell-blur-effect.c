@@ -50,6 +50,19 @@ static const gchar *brightness_glsl_declarations =
 static const gchar *brightness_glsl =
 "  cogl_color_out.rgb *= brightness;                                       \n";
 
+static const gchar *mask_glsl_declarations =
+"uniform float u_corner_radius;                                            \n"
+"uniform vec2  u_size;                                                     \n";
+
+static const gchar *mask_glsl =
+"  vec2 uv = cogl_tex_coord_in[0].st;                                      \n"
+"  vec2 p  = uv * u_size;                                                  \n"
+"  vec2 q  = abs (p - 0.5 * u_size) - (0.5 * u_size - u_corner_radius);    \n"
+"  float dist = length (max (q, vec2 (0.0))) - u_corner_radius;            \n"
+"  float m = step (dist, 0.0);                                             \n"
+"  cogl_color_out.rgb *= m;                                                \n"
+"  cogl_color_out.a   *= m;                                                \n";
+
 #define MIN_DOWNSCALE_SIZE 256.f
 #define MAX_RADIUS 12.f
 
@@ -82,11 +95,15 @@ struct _ShellBlurEffect
   FramebufferData background_fb;
   FramebufferData brightness_fb;
   int brightness_uniform;
+  FramebufferData mask_fb;
+  int corner_radius_uniform;
+  int mask_size_uniform;
 
   ShellBlurMode mode;
   float downscale_factor;
   float brightness;
   int radius;
+  float corner_radius;
 };
 
 G_DEFINE_TYPE (ShellBlurEffect, shell_blur_effect, CLUTTER_TYPE_EFFECT)
@@ -96,6 +113,7 @@ enum {
   PROP_RADIUS,
   PROP_BRIGHTNESS,
   PROP_MODE,
+  PROP_CORNER_RADIUS,
   N_PROPS
 };
 
@@ -151,6 +169,27 @@ create_brightness_pipeline (void)
   return cogl_pipeline_copy (brightness_pipeline);
 }
 
+static CoglPipeline*
+create_mask_pipeline (void)
+{
+  static CoglPipeline *mask_pipeline = NULL;
+
+  if (G_UNLIKELY (mask_pipeline == NULL))
+    {
+      CoglSnippet *snippet;
+
+      mask_pipeline = create_base_pipeline ();
+
+      snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                                  mask_glsl_declarations,
+                                  mask_glsl);
+      cogl_pipeline_add_snippet (mask_pipeline, snippet);
+      g_object_unref (snippet);
+    }
+
+  return cogl_pipeline_copy (mask_pipeline);
+}
+
 
 static void
 update_brightness (ShellBlurEffect *self,
@@ -168,6 +207,31 @@ update_brightness (ShellBlurEffect *self,
       cogl_pipeline_set_uniform_1f (self->brightness_fb.pipeline,
                                     self->brightness_uniform,
                                     self->brightness);
+    }
+}
+
+static void
+update_mask_uniforms (ShellBlurEffect *self,
+                      float            width,
+                      float            height)
+{
+  if (!self->mask_fb.pipeline)
+    return;
+
+  if (self->corner_radius_uniform > -1)
+    {
+      cogl_pipeline_set_uniform_1f (self->mask_fb.pipeline,
+                                    self->corner_radius_uniform,
+                                    self->corner_radius);
+    }
+
+  if (self->mask_size_uniform > -1)
+    {
+      const float size[2] = { width, height };
+
+      cogl_pipeline_set_uniform_float (self->mask_fb.pipeline,
+                                       self->mask_size_uniform,
+                                       2, 1, size);
     }
 }
 
@@ -265,6 +329,25 @@ update_brightness_fbo (ShellBlurEffect *self,
 }
 
 static gboolean
+update_mask_fbo (ShellBlurEffect *self,
+                 unsigned int     width,
+                 unsigned int     height,
+                 float            downscale_factor)
+{
+  if (self->tex_width == width &&
+      self->tex_height == height &&
+      self->downscale_factor == downscale_factor &&
+      self->mask_fb.framebuffer)
+    {
+      return TRUE;
+    }
+
+  return update_fbo (&self->mask_fb,
+                     width, height,
+                     downscale_factor);
+}
+
+static gboolean
 update_background_fbo (ShellBlurEffect *self,
                        unsigned int     width,
                        unsigned int     height)
@@ -328,6 +411,7 @@ shell_blur_effect_set_actor (ClutterActorMeta *meta,
   clear_framebuffer_data (&self->actor_fb);
   clear_framebuffer_data (&self->background_fb);
   clear_framebuffer_data (&self->brightness_fb);
+  clear_framebuffer_data (&self->mask_fb);
 
   /* we keep a back pointer here, to avoid going through the ActorMeta */
   self->actor = clutter_actor_meta_get_actor (meta);
@@ -396,8 +480,9 @@ add_blurred_pipeline (ShellBlurEffect  *self,
   clutter_actor_get_size (self->actor, &width, &height);
 
   update_brightness (self, paint_opacity);
+  update_mask_uniforms (self, width, height);
 
-  pipeline_node = clutter_pipeline_node_new (self->brightness_fb.pipeline);
+  pipeline_node = clutter_pipeline_node_new (self->mask_fb.pipeline);
   clutter_paint_node_set_static_name (pipeline_node, "ShellBlurEffect (final)");
   clutter_paint_node_add_child (node, pipeline_node);
 
@@ -416,20 +501,33 @@ create_blur_nodes (ShellBlurEffect  *self,
 {
   g_autoptr (ClutterPaintNode) brightness_node = NULL;
   g_autoptr (ClutterPaintNode) blur_node = NULL;
+  g_autoptr (ClutterPaintNode) mask_node = NULL;
   float width;
   float height;
 
   clutter_actor_get_size (self->actor, &width, &height);
 
+  update_mask_uniforms (self, width, height);
+  mask_node = clutter_layer_node_new_to_framebuffer (self->mask_fb.framebuffer,
+                                                     self->mask_fb.pipeline);
+  clutter_paint_node_set_static_name (mask_node, "ShellBlurEffect (mask)");
+  clutter_paint_node_add_child (node, mask_node);
+  clutter_paint_node_add_rectangle (mask_node,
+                                    &(ClutterActorBox) {
+                                      0.f, 0.f,
+                                      width, height,
+                                    });
+
   update_brightness (self, paint_opacity);
   brightness_node = clutter_layer_node_new_to_framebuffer (self->brightness_fb.framebuffer,
                                                            self->brightness_fb.pipeline);
   clutter_paint_node_set_static_name (brightness_node, "ShellBlurEffect (brightness)");
-  clutter_paint_node_add_child (node, brightness_node);
+  clutter_paint_node_add_child (mask_node, brightness_node);
   clutter_paint_node_add_rectangle (brightness_node,
                                     &(ClutterActorBox) {
                                       0.f, 0.f,
-                                      width, height,
+                                      cogl_texture_get_width (self->mask_fb.texture),
+                                      cogl_texture_get_height (self->mask_fb.texture),
                                     });
 
   blur_node = clutter_blur_node_new (self->tex_width / self->downscale_factor,
@@ -440,8 +538,8 @@ create_blur_nodes (ShellBlurEffect  *self,
   clutter_paint_node_add_rectangle (blur_node,
                                     &(ClutterActorBox) {
                                       0.f, 0.f,
-                                      cogl_texture_get_width (self->brightness_fb.texture),
-                                      cogl_texture_get_height (self->brightness_fb.texture),
+                                      cogl_texture_get_width (self->mask_fb.texture),
+                                      cogl_texture_get_height (self->mask_fb.texture),
                                     });
 
   self->cache_flags |= BLUR_APPLIED;
@@ -511,7 +609,8 @@ update_framebuffers (ShellBlurEffect     *self,
   downscale_factor = calculate_downscale_factor (width, height, self->radius);
 
   updated = update_actor_fbo (self, width, height, downscale_factor) &&
-            update_brightness_fbo (self, width, height, downscale_factor);
+            update_brightness_fbo (self, width, height, downscale_factor) &&
+            update_mask_fbo (self, width, height, downscale_factor);
 
   if (self->mode == SHELL_BLUR_MODE_BACKGROUND)
     updated = updated && update_background_fbo (self, width, height);
@@ -709,10 +808,12 @@ shell_blur_effect_finalize (GObject *object)
   clear_framebuffer_data (&self->actor_fb);
   clear_framebuffer_data (&self->background_fb);
   clear_framebuffer_data (&self->brightness_fb);
+  clear_framebuffer_data (&self->mask_fb);
 
   g_clear_object (&self->actor_fb.pipeline);
   g_clear_object (&self->background_fb.pipeline);
   g_clear_object (&self->brightness_fb.pipeline);
+  g_clear_object (&self->mask_fb.pipeline);
 
   G_OBJECT_CLASS (shell_blur_effect_parent_class)->finalize (object);
 }
@@ -737,6 +838,10 @@ shell_blur_effect_get_property (GObject    *object,
 
     case PROP_MODE:
       g_value_set_enum (value, self->mode);
+      break;
+
+    case PROP_CORNER_RADIUS:
+      g_value_set_float (value, self->corner_radius);
       break;
 
     default:
@@ -764,6 +869,10 @@ shell_blur_effect_set_property (GObject      *object,
 
     case PROP_MODE:
       shell_blur_effect_set_mode (self, g_value_get_enum (value));
+      break;
+
+    case PROP_CORNER_RADIUS:
+      shell_blur_effect_set_corner_radius (self, g_value_get_float (value));
       break;
 
     default:
@@ -802,6 +911,11 @@ shell_blur_effect_class_init (ShellBlurEffectClass *klass)
                        SHELL_BLUR_MODE_ACTOR,
                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
+  properties[PROP_CORNER_RADIUS] =
+    g_param_spec_float ("corner-radius", NULL, NULL,
+                        0.f, G_MAXFLOAT, 0.f,
+                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
+
   g_object_class_install_properties (object_class, N_PROPS, properties);
 }
 
@@ -811,12 +925,18 @@ shell_blur_effect_init (ShellBlurEffect *self)
   self->mode = SHELL_BLUR_MODE_ACTOR;
   self->radius = 0;
   self->brightness = 1.f;
+  self->corner_radius = 0.f;
 
   self->actor_fb.pipeline = create_base_pipeline ();
   self->background_fb.pipeline = create_base_pipeline ();
   self->brightness_fb.pipeline = create_brightness_pipeline ();
+  self->mask_fb.pipeline = create_mask_pipeline ();
   self->brightness_uniform =
     cogl_pipeline_get_uniform_location (self->brightness_fb.pipeline, "brightness");
+  self->corner_radius_uniform =
+    cogl_pipeline_get_uniform_location (self->mask_fb.pipeline, "u_corner_radius");
+  self->mask_size_uniform =
+    cogl_pipeline_get_uniform_location (self->mask_fb.pipeline, "u_size");
 }
 
 ShellBlurEffect *
@@ -913,4 +1033,30 @@ shell_blur_effect_set_mode (ShellBlurEffect *self,
     clutter_effect_queue_repaint (CLUTTER_EFFECT (self));
 
   g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_MODE]);
+}
+
+float
+shell_blur_effect_get_corner_radius (ShellBlurEffect *self)
+{
+  g_return_val_if_fail (SHELL_IS_BLUR_EFFECT (self), 0.f);
+
+  return self->corner_radius;
+}
+
+void
+shell_blur_effect_set_corner_radius (ShellBlurEffect *self,
+                                     float            corner_radius)
+{
+  g_return_if_fail (SHELL_IS_BLUR_EFFECT (self));
+
+  if (self->corner_radius == corner_radius)
+    return;
+
+  self->corner_radius = MAX (0.f, corner_radius);
+  self->cache_flags &= ~BLUR_APPLIED;
+
+  if (self->actor)
+    clutter_effect_queue_repaint (CLUTTER_EFFECT (self));
+
+  g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_CORNER_RADIUS]);
 }
