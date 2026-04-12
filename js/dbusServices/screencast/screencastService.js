@@ -36,7 +36,7 @@ const PIPELINES = [
         pipelineString:
             'capsfilter caps=video/x-raw(memory:DMABuf),format=DMA_DRM,max-framerate=%F/1 ! \
              vapostproc ! \
-             vah264lpenc ! \
+             vah264lpenc rate-control=vbr bitrate=2048 target-percentage=50 ! \
              queue ! \
              h264parse ! \
              mp4mux fragment-duration=500 fragment-mode=first-moov-then-finalise',
@@ -47,7 +47,7 @@ const PIPELINES = [
         pipelineString:
             'capsfilter caps=video/x-raw(memory:DMABuf),format=DMA_DRM,max-framerate=%F/1 ! \
              vapostproc ! \
-             vah264enc ! \
+             vah264enc rate-control=vbr bitrate=2048 target-percentage=50 ! \
              queue ! \
              h264parse ! \
              mp4mux fragment-duration=500 fragment-mode=first-moov-then-finalise',
