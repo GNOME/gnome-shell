@@ -71,6 +71,8 @@ st_image_content_constructed (GObject *object)
   if (self->width < 0 || self->height < 0)
     g_warning ("StImageContent initialized with invalid preferred size: %dx%d\n",
                self->width, self->height);
+
+  G_OBJECT_CLASS (st_image_content_parent_class)->constructed (object);
 }
 
 static void
