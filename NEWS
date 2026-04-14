@@ -1,3 +1,20 @@
+49.6
+====
+* Use triangular noise shape for dithering lightbox vignette [Michel; !4137]
+* Fix glitch in quick settings with wrapped text in menu [Sebastian; !4136]
+* Fit on-screen keyboard better on very small screens [Sebastian; !4156]
+* Enable network agent on lock screen [Mitchell; !4160]
+* Add basic zoom support to captive portal [Florian; !4159]
+* Plugged leak [Sebastian; !4168]
+* Misc. bug fixes and cleanups [Daniel, Florian, DaPigGuy, Sebastian, Peter,
+  rayjonesjay, Jonas, Bilal, Mohamed; !4139, !4141, !4142, !4143, !4146, !4152,
+  !4155, !4150, !4162, !4165, !4169, !4153]
+
+Contributors:
+  Mohamed Abdulla, Mitchell Augustin, DaPigGuy, Michel Dänzer,
+  Bilal Elmoussaoui, Peter Hutterer, Sebastian Keller, Florian Müllner,
+  rayjonesjay, Daniel van Vugt, Jonas Ådahl
+
 49.5
 ====
 * Fix stale folder icon after pinning apps to dash [Shivam; !4088]
