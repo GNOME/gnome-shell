@@ -104,7 +104,7 @@ shell_agent_request_free (gpointer data)
 static void
 shell_agent_request_cancel (ShellAgentRequest *request)
 {
-  GError *error;
+  GError *error = NULL;
   ShellNetworkAgent *self;
 
   self = request->self;
@@ -132,7 +132,7 @@ static void
 shell_network_agent_finalize (GObject *object)
 {
   ShellNetworkAgent *self = SHELL_NETWORK_AGENT (object);
-  GError *error;
+  GError *error = NULL;
   GHashTableIter iter;
   gpointer key;
   gpointer value;
