@@ -379,10 +379,7 @@ export const Dash = GObject.registerClass({
 
         this._appSystem = Shell.AppSystem.get_default();
 
-        this._appSystem.connect('installed-changed', () => {
-            AppFavorites.getAppFavorites().reload();
-            this._queueRedisplay();
-        });
+        this._appSystem.connect('installed-changed', () => this._queueRedisplay());
         AppFavorites.getAppFavorites().connect('changed', this._queueRedisplay.bind(this));
         this._appSystem.connect('app-state-changed', this._queueRedisplay.bind(this));
 
