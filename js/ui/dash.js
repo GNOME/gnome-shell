@@ -378,10 +378,13 @@ export const Dash = GObject.registerClass({
         this._workId = Main.initializeDeferredWork(this._box, this._redisplay.bind(this));
 
         this._appSystem = Shell.AppSystem.get_default();
+        this._appSystem.connectObject(
+            'installed-changed', () => this._queueRedisplay(),
+            'app-state-changed', () => this._queueRedisplay(),
+            this);
 
-        this._appSystem.connect('installed-changed', () => this._queueRedisplay());
-        AppFavorites.getAppFavorites().connect('changed', this._queueRedisplay.bind(this));
-        this._appSystem.connect('app-state-changed', this._queueRedisplay.bind(this));
+        AppFavorites.getAppFavorites().connectObject('changed',
+            () => this._queueRedisplay(), this);
 
         Main.overview.connectObject(
             'item-drag-begin', () => this._onItemDragBegin(),
