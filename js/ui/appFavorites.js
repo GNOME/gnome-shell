@@ -9,20 +9,32 @@ class AppFavorites extends Signals.EventEmitter {
 
         // Filter the apps through the user’s parental controls.
         this._parentalControlsManager = ParentalControlsManager.getDefault();
-        this._parentalControlsManager.connect('app-filter-changed', () => {
-            this.reload();
-            this.emit('changed');
-        });
+        this._parentalControlsManager.connect('app-filter-changed',
+            () => this._updateFavorites());
 
         this.FAVORITE_APPS_KEY = 'favorite-apps';
         this._favorites = {};
-        global.settings.connect(`changed::${this.FAVORITE_APPS_KEY}`, this._onFavsChanged.bind(this));
+        global.settings.connect(`changed::${this.FAVORITE_APPS_KEY}`,
+            () => this._updateFavorites());
+
         this.reload();
     }
 
-    _onFavsChanged() {
+    _updateFavorites() {
+        const oldIDs = this._getIds();
         this.reload();
-        this.emit('changed');
+        const newIDs = this._getIds();
+
+        const haveChanged = () => {
+            if (oldIDs.length !== newIDs.length)
+                return true;
+
+            return oldIDs.some(
+                (id, i) => id !== newIDs[i] || !this.isFavorite(id));
+        };
+
+        if (haveChanged())
+            this.emit('changed');
     }
 
     reload() {
