@@ -204,7 +204,7 @@ export const MprisSource = GObject.registerClass({
     }
 
     get players() {
-        return [...this._players.values()];
+        return [...this._players.values()].filter(player => player.canPlay);
     }
 
     _addPlayer(busName) {
