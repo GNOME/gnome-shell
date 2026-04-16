@@ -65,7 +65,6 @@ class DashItemContainer extends St.Widget {
         this.label.hide();
         Main.layoutManager.addChrome(this.label);
         this.label.connectObject('destroy', () => (this.label = null), this);
-        this.label_actor = this.label;
 
         this.child = null;
         this.animatingOut = false;
