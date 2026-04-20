@@ -63,22 +63,18 @@ G_DEFINE_TYPE_WITH_CODE (StAdjustment, st_adjustment, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_ANIMATABLE,
                                                 animatable_iface_init));
 
-enum
+typedef enum
 {
-  PROP_0,
-
-  PROP_ACTOR,
+  PROP_ACTOR = 1,
   PROP_LOWER,
   PROP_UPPER,
   PROP_VALUE,
   PROP_STEP_INC,
   PROP_PAGE_INC,
   PROP_PAGE_SIZE,
+} StAdjustmentProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_PAGE_SIZE + 1] = { NULL, };
 
 enum
 {
@@ -137,7 +133,7 @@ st_adjustment_get_property (GObject    *gobject,
 {
   StAdjustmentPrivate *priv = st_adjustment_get_instance_private (ST_ADJUSTMENT (gobject));
 
-  switch (prop_id)
+  switch ((StAdjustmentProps) prop_id)
     {
     case PROP_ACTOR:
       g_value_set_object (value, priv->actor);
@@ -241,7 +237,7 @@ st_adjustment_set_property (GObject      *gobject,
 {
   StAdjustment *adj = ST_ADJUSTMENT (gobject);
 
-  switch (prop_id)
+  switch ((StAdjustmentProps) prop_id)
     {
     case PROP_ACTOR:
       st_adjustment_set_actor (adj, g_value_get_object (value));
@@ -423,7 +419,7 @@ st_adjustment_class_init (StAdjustmentClass *klass)
                          G_PARAM_CONSTRUCT |
                          G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 
   /**
    * StAdjustment::changed:

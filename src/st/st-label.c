@@ -46,17 +46,13 @@
 
 #include <st/st-widget-accessible.h>
 
-enum
+typedef enum
 {
-  PROP_0,
-
-  PROP_CLUTTER_TEXT,
+  PROP_CLUTTER_TEXT = 1,
   PROP_TEXT,
+} StLabelProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_TEXT + 1] = { NULL, };
 
 struct _StLabelPrivate
 {
@@ -84,7 +80,7 @@ st_label_set_property (GObject      *gobject,
 {
   StLabel *label = ST_LABEL (gobject);
 
-  switch (prop_id)
+  switch ((StLabelProps) prop_id)
     {
     case PROP_TEXT:
       st_label_set_text (label, g_value_get_string (value));
@@ -104,7 +100,7 @@ st_label_get_property (GObject    *gobject,
 {
   StLabelPrivate *priv = ST_LABEL (gobject)->priv;
 
-  switch (prop_id)
+  switch ((StLabelProps) prop_id)
     {
     case PROP_CLUTTER_TEXT:
       g_value_set_object (value, priv->label);
@@ -306,7 +302,7 @@ st_label_class_init (StLabelClass *klass)
                            NULL,
                            ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 }
 
 static void

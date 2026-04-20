@@ -55,16 +55,12 @@
 #include "st-scrollable.h"
 
 
-enum {
-  PROP_0,
-
-  PROP_ORIENTATION,
+typedef enum {
+  PROP_ORIENTATION = 1,
   PROP_VERTICAL,
+} StBoxLayoutProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_VERTICAL + 1] = { NULL, };
 
 struct _StBoxLayoutPrivate
 {
@@ -84,7 +80,7 @@ st_box_layout_get_property (GObject    *object,
   ClutterLayoutManager *layout;
   ClutterOrientation orientation;
 
-  switch (property_id)
+  switch ((StBoxLayoutProps) property_id)
     {
     case PROP_ORIENTATION:
       layout = clutter_actor_get_layout_manager (CLUTTER_ACTOR (object));
@@ -110,7 +106,7 @@ st_box_layout_set_property (GObject      *object,
 {
   StBoxLayout *box = ST_BOX_LAYOUT (object);
 
-  switch (property_id)
+  switch ((StBoxLayoutProps) property_id)
     {
     case PROP_ORIENTATION:
       st_box_layout_set_orientation (box, g_value_get_enum (value));
@@ -201,7 +197,7 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
                           FALSE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY | G_PARAM_DEPRECATED);
 
-  g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 
   clutter_actor_class_set_layout_manager_type (actor_class, CLUTTER_TYPE_BOX_LAYOUT);
 }

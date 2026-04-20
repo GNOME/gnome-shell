@@ -34,17 +34,13 @@ struct _StImageContent
   gboolean is_symbolic;
 };
 
-enum
+typedef enum
 {
-  PROP_0,
-
-  PROP_PREFERRED_WIDTH,
+  PROP_PREFERRED_WIDTH = 1,
   PROP_PREFERRED_HEIGHT,
+} StImageContentProps;
 
-  N_PROPS,
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_PREFERRED_HEIGHT + 1] = { NULL, };
 
 static void clutter_content_interface_init (ClutterContentInterface *iface);
 static void g_icon_interface_init (GIconIface *iface);
@@ -83,7 +79,7 @@ st_image_content_get_property (GObject    *object,
 {
   StImageContent *self = ST_IMAGE_CONTENT (object);
 
-  switch (prop_id)
+  switch ((StImageContentProps) prop_id)
     {
     case PROP_PREFERRED_WIDTH:
       g_value_set_int (value, self->width);
@@ -107,7 +103,7 @@ st_image_content_set_property (GObject      *object,
 {
   StImageContent *self = ST_IMAGE_CONTENT (object);
 
-  switch (prop_id)
+  switch ((StImageContentProps) prop_id)
     {
     case PROP_PREFERRED_WIDTH:
       st_image_content_set_preferred_width (self, g_value_get_int (value));
@@ -153,7 +149,7 @@ st_image_content_class_init (StImageContentClass *klass)
                       -1, G_MAXINT, -1,
                       G_PARAM_CONSTRUCT_ONLY | ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 }
 
 static gboolean

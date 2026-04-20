@@ -48,15 +48,11 @@ struct _ShellWindowTracker
 
 G_DEFINE_TYPE (ShellWindowTracker, shell_window_tracker, G_TYPE_OBJECT);
 
-enum {
-  PROP_0,
+typedef enum {
+  PROP_FOCUS_APP = 1,
+} ShellWindowTrackerProps;
 
-  PROP_FOCUS_APP,
-
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_FOCUS_APP + 1] = { NULL, };
 
 enum {
   STARTUP_SEQUENCE_CHANGED,
@@ -83,7 +79,7 @@ shell_window_tracker_get_property (GObject    *gobject,
 {
   ShellWindowTracker *tracker = SHELL_WINDOW_TRACKER (gobject);
 
-  switch (prop_id)
+  switch ((ShellWindowTrackerProps) prop_id)
     {
     case PROP_FOCUS_APP:
       g_value_set_object (value, tracker->focus_app);
@@ -107,7 +103,7 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
                          SHELL_TYPE_APP,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 
   signals[STARTUP_SEQUENCE_CHANGED] = g_signal_new ("startup-sequence-changed",
                                    SHELL_TYPE_WINDOW_TRACKER,

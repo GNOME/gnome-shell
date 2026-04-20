@@ -15,16 +15,12 @@ struct _ShellWindowPreviewLayoutPrivate
   ClutterActorBox bounding_box;
 };
 
-enum
+typedef enum
 {
-  PROP_0,
+  PROP_BOUNDING_BOX = 1,
+} ShellWindowPreviewLayoutProps;
 
-  PROP_BOUNDING_BOX,
-
-  PROP_LAST
-};
-
-static GParamSpec *obj_props[PROP_LAST] = { NULL, };
+static GParamSpec *obj_props[PROP_BOUNDING_BOX + 1] = { NULL, };
 
 G_DEFINE_TYPE_WITH_PRIVATE (ShellWindowPreviewLayout, shell_window_preview_layout,
                             CLUTTER_TYPE_LAYOUT_MANAGER);
@@ -51,7 +47,7 @@ shell_window_preview_layout_get_property (GObject      *object,
 
   priv = shell_window_preview_layout_get_instance_private (self);
 
-  switch (property_id)
+  switch ((ShellWindowPreviewLayoutProps) property_id)
     {
     case PROP_BOUNDING_BOX:
       g_value_set_boxed (value, &priv->bounding_box);
@@ -342,7 +338,7 @@ shell_window_preview_layout_class_init (ShellWindowPreviewLayoutClass *klass)
                         G_PARAM_READABLE |
                         G_PARAM_STATIC_STRINGS);
 
-  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (obj_props), obj_props);
 }
 
 /**

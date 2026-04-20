@@ -72,17 +72,14 @@ struct _StTheme
   CRCascade *cascade;
 };
 
-enum
+typedef enum
 {
-  PROP_0,
-  PROP_APPLICATION_STYLESHEET,
+  PROP_APPLICATION_STYLESHEET = 1,
   PROP_THEME_STYLESHEET,
   PROP_DEFAULT_STYLESHEET,
+} StThemeProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_DEFAULT_STYLESHEET + 1] = { NULL, };
 
 enum
 {
@@ -159,7 +156,7 @@ st_theme_class_init (StThemeClass *klass)
                                                         G_TYPE_FILE,
                                                         ST_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
-  g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 
   signals[STYLESHEETS_CHANGED] =
     g_signal_new ("custom-stylesheets-changed",
@@ -413,7 +410,7 @@ st_theme_set_property (GObject      *object,
 {
   StTheme *theme = ST_THEME (object);
 
-  switch (prop_id)
+  switch ((StThemeProps) prop_id)
     {
     case PROP_APPLICATION_STYLESHEET:
       {
@@ -468,7 +465,7 @@ st_theme_get_property (GObject    *object,
 {
   StTheme *theme = ST_THEME (object);
 
-  switch (prop_id)
+  switch ((StThemeProps) prop_id)
     {
     case PROP_APPLICATION_STYLESHEET:
       g_value_set_object (value, theme->application_stylesheet);

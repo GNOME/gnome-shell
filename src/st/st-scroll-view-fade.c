@@ -54,17 +54,13 @@ G_DEFINE_TYPE (StScrollViewFade,
                st_scroll_view_fade,
                CLUTTER_TYPE_SHADER_EFFECT);
 
-enum {
-  PROP_0,
-
-  PROP_FADE_MARGINS,
+typedef enum {
+  PROP_FADE_MARGINS = 1,
   PROP_FADE_EDGES,
   PROP_EXTEND_FADE_AREA,
+} StScrollViewFadeProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_EXTEND_FADE_AREA + 1] = { NULL, };
 
 static char *
 st_scroll_view_fade_get_static_shader_source (ClutterShaderEffect *effect)
@@ -347,7 +343,7 @@ st_scroll_view_fade_set_property (GObject *object,
 {
   StScrollViewFade *self = ST_SCROLL_VIEW_FADE (object);
 
-  switch (prop_id)
+  switch ((StScrollViewFadeProps) prop_id)
     {
     case PROP_FADE_MARGINS:
       st_scroll_view_fade_set_fade_margins (self, g_value_get_boxed (value));
@@ -372,7 +368,7 @@ st_scroll_view_fade_get_property (GObject *object,
 {
   StScrollViewFade *self = ST_SCROLL_VIEW_FADE (object);
 
-  switch (prop_id)
+  switch ((StScrollViewFadeProps) prop_id)
     {
     case PROP_FADE_MARGINS:
       g_value_set_boxed (value, &self->fade_margins);
@@ -439,7 +435,7 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
                           FALSE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 }
 
 static void

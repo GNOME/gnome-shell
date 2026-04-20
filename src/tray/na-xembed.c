@@ -98,13 +98,11 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0, };
 
-enum {
-  PROP_0,
-  PROP_X11_DISPLAY,
-  N_PROPS
-};
+typedef enum {
+  PROP_X11_DISPLAY = 1,
+} NaXembedProps;
 
-static GParamSpec *props[N_PROPS] = { 0, };
+static GParamSpec *props[PROP_X11_DISPLAY + 1] = { 0, };
 
 static void
 xembed_send_message (NaXembed          *xembed,
@@ -689,7 +687,7 @@ na_xembed_set_property (GObject      *object,
   NaXembed *xembed = NA_XEMBED (object);
   NaXembedPrivate *priv = na_xembed_get_instance_private (xembed);
 
-  switch (prop_id)
+  switch ((NaXembedProps) prop_id)
     {
     case PROP_X11_DISPLAY:
       priv->x11_display = g_value_get_object (value);
@@ -709,7 +707,7 @@ na_xembed_get_property (GObject    *object,
   NaXembed *xembed = NA_XEMBED (object);
   NaXembedPrivate *priv = na_xembed_get_instance_private (xembed);
 
-  switch (prop_id)
+  switch ((NaXembedProps) prop_id)
     {
     case PROP_X11_DISPLAY:
       g_value_set_object (value, priv->x11_display);
@@ -798,7 +796,7 @@ na_xembed_class_init (NaXembedClass *klass)
                          META_TYPE_X11_DISPLAY,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NAME);
 
-  g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 }
 
 static void

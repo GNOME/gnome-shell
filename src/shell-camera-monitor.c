@@ -31,13 +31,11 @@
 #define RECONNECT_DELAY_MS 5000
 #define DISABLE_DELAY_MS 500
 
-enum {
-  PROP_0,
-  PROP_CAMERAS_IN_USE,
-  PROP_LAST
-};
+typedef enum {
+  PROP_CAMERAS_IN_USE = 1,
+} ShellCameraMonitorProps;
 
-static GParamSpec *obj_props[PROP_LAST];
+static GParamSpec *obj_props[PROP_CAMERAS_IN_USE + 1];
 
 struct _ShellCameraMonitor {
   GObject parent;
@@ -397,7 +395,7 @@ shell_camera_monitor_get_property (GObject    *object,
 {
   ShellCameraMonitor *monitor = SHELL_CAMERA_MONITOR (object);
 
-  switch (prop_id)
+  switch ((ShellCameraMonitorProps) prop_id)
     {
     case PROP_CAMERAS_IN_USE:
       g_value_set_boolean (value, monitor->cameras_in_use);
@@ -421,7 +419,7 @@ shell_camera_monitor_class_init (ShellCameraMonitorClass *klass)
                           FALSE,
                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
-  g_object_class_install_properties (object_class, PROP_LAST, obj_props);
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (obj_props), obj_props);
 }
 
 static void

@@ -44,17 +44,13 @@ struct _StPasswordEntryPrivate
   gboolean      show_peek_icon;
 };
 
-enum
+typedef enum
 {
-  PROP_0,
-
-  PROP_PASSWORD_VISIBLE,
+  PROP_PASSWORD_VISIBLE = 1,
   PROP_SHOW_PEEK_ICON,
+} StPasswordEntryProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_SHOW_PEEK_ICON + 1] = { NULL, };
 
 G_DEFINE_TYPE_WITH_PRIVATE (StPasswordEntry, st_password_entry, ST_TYPE_ENTRY);
 
@@ -86,7 +82,7 @@ st_password_entry_get_property (GObject    *gobject,
   StPasswordEntry *entry = ST_PASSWORD_ENTRY (gobject);
   StPasswordEntryPrivate *priv = ST_PASSWORD_ENTRY_PRIV (gobject);
 
-  switch (prop_id)
+  switch ((StPasswordEntryProps) prop_id)
     {
     case PROP_PASSWORD_VISIBLE:
       g_value_set_boolean (value, priv->password_visible);
@@ -110,7 +106,7 @@ st_password_entry_set_property (GObject      *gobject,
 {
   StPasswordEntry *entry = ST_PASSWORD_ENTRY (gobject);
 
-  switch (prop_id)
+  switch ((StPasswordEntryProps) prop_id)
     {
     case PROP_PASSWORD_VISIBLE:
       st_password_entry_set_password_visible (entry, g_value_get_boolean (value));
@@ -167,7 +163,7 @@ st_password_entry_class_init (StPasswordEntryClass *klass)
                                                      TRUE,
                                                      ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 }
 
 static void

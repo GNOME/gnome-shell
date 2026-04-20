@@ -25,17 +25,13 @@ struct _StDndStartGesturePrivate
   guint32 timeout_threshold_ms;
 };
 
-enum
+typedef enum
 {
-  PROP_0,
-
-  PROP_MANUAL_MODE,
+  PROP_MANUAL_MODE = 1,
   PROP_TIMEOUT_THRESHOLD,
+} StDndStartGestureProps;
 
-  PROP_LAST
-};
-
-static GParamSpec *obj_props[PROP_LAST] = { NULL, };
+static GParamSpec *obj_props[PROP_TIMEOUT_THRESHOLD + 1] = { NULL, };
 
 G_DEFINE_TYPE_WITH_PRIVATE (StDndStartGesture, st_dnd_start_gesture,
                             CLUTTER_TYPE_GESTURE);
@@ -180,7 +176,7 @@ st_dnd_start_gesture_set_property (GObject      *gobject,
 {
   StDndStartGesture *self = ST_DND_START_GESTURE (gobject);
 
-  switch (prop_id)
+  switch ((StDndStartGestureProps) prop_id)
     {
     case PROP_MANUAL_MODE:
       st_dnd_start_gesture_set_manual_mode (self, g_value_get_boolean (value));
@@ -204,7 +200,7 @@ st_dnd_start_gesture_get_property (GObject      *gobject,
 {
   StDndStartGesture *self = ST_DND_START_GESTURE (gobject);
 
-  switch (prop_id)
+  switch ((StDndStartGestureProps) prop_id)
     {
     case PROP_MANUAL_MODE:
       g_value_set_boolean (value, st_dnd_start_gesture_get_manual_mode (self));
@@ -254,7 +250,7 @@ st_dnd_start_gesture_class_init (StDndStartGestureClass *klass)
                        G_PARAM_STATIC_STRINGS |
                        G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (obj_props), obj_props);
 }
 
 void

@@ -73,17 +73,13 @@ G_DEFINE_TYPE_WITH_PRIVATE (StScrollBar, st_scroll_bar, ST_TYPE_WIDGET)
 
 #define ST_SCROLL_BAR_PRIVATE(sb) st_scroll_bar_get_instance_private (ST_SCROLL_BAR (sb))
 
-enum
+typedef enum
 {
-  PROP_0,
-
-  PROP_ADJUSTMENT,
+  PROP_ADJUSTMENT = 1,
   PROP_ORIENTATION,
+} StScrollBarProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_ORIENTATION + 1] = { NULL, };
 
 enum
 {
@@ -138,7 +134,7 @@ st_scroll_bar_get_property (GObject    *gobject,
 {
   StScrollBarPrivate *priv = ST_SCROLL_BAR_PRIVATE (gobject);
 
-  switch (prop_id)
+  switch ((StScrollBarProps) prop_id)
     {
     case PROP_ADJUSTMENT:
       g_value_set_object (value, priv->adjustment);
@@ -162,7 +158,7 @@ st_scroll_bar_set_property (GObject      *gobject,
 {
   StScrollBar *bar = ST_SCROLL_BAR (gobject);
 
-  switch (prop_id)
+  switch ((StScrollBarProps) prop_id)
     {
     case PROP_ADJUSTMENT:
       st_scroll_bar_set_adjustment (bar, g_value_get_object (value));
@@ -548,7 +544,7 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
                        CLUTTER_ORIENTATION_HORIZONTAL,
                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 
 
   /**

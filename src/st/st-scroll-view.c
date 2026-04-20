@@ -94,10 +94,8 @@ struct _StScrollViewPrivate
 
 G_DEFINE_TYPE_WITH_PRIVATE (StScrollView, st_scroll_view, ST_TYPE_WIDGET)
 
-enum {
-  PROP_0,
-
-  PROP_CHILD,
+typedef enum {
+  PROP_CHILD = 1,
   PROP_HADJUSTMENT,
   PROP_VADJUSTMENT,
   PROP_HSCROLLBAR_POLICY,
@@ -106,11 +104,9 @@ enum {
   PROP_VSCROLLBAR_VISIBLE,
   PROP_MOUSE_SCROLL,
   PROP_OVERLAY_SCROLLBARS,
+} StScrollViewProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_OVERLAY_SCROLLBARS + 1] = { NULL, };
 
 static void
 st_scroll_view_get_property (GObject    *object,
@@ -121,7 +117,7 @@ st_scroll_view_get_property (GObject    *object,
   StScrollViewPrivate *priv =
     st_scroll_view_get_instance_private (ST_SCROLL_VIEW (object));
 
-  switch (property_id)
+  switch ((StScrollViewProps) property_id)
     {
     case PROP_CHILD:
       g_value_set_object (value, priv->child);
@@ -208,7 +204,7 @@ st_scroll_view_set_property (GObject      *object,
   StScrollView *self = ST_SCROLL_VIEW (object);
   StScrollViewPrivate *priv = st_scroll_view_get_instance_private (self);
 
-  switch (property_id)
+  switch ((StScrollViewProps) property_id)
     {
     case PROP_CHILD:
       st_scroll_view_set_child (self, g_value_get_object (value));
@@ -943,7 +939,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                           FALSE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 }
 
 static void

@@ -86,20 +86,16 @@ struct _ShellApp
   char *name_collation_key;
 };
 
-enum {
-  PROP_0,
-
-  PROP_STATE,
+typedef enum {
+  PROP_STATE = 1,
   PROP_BUSY,
   PROP_ID,
   PROP_ACTION_GROUP,
   PROP_ICON,
   PROP_APP_INFO,
+} ShellAppProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_APP_INFO + 1] = { NULL, };
 
 enum {
   WINDOWS_CHANGED,
@@ -121,7 +117,7 @@ shell_app_get_property (GObject    *gobject,
 {
   ShellApp *app = SHELL_APP (gobject);
 
-  switch (prop_id)
+  switch ((ShellAppProps) prop_id)
     {
     case PROP_STATE:
       g_value_set_enum (value, app->state);
@@ -156,7 +152,7 @@ shell_app_set_property (GObject      *gobject,
 {
   ShellApp *app = SHELL_APP (gobject);
 
-  switch (prop_id)
+  switch ((ShellAppProps) prop_id)
     {
     case PROP_APP_INFO:
       _shell_app_set_app_info (app, g_value_get_object (value));
@@ -1870,5 +1866,5 @@ shell_app_class_init(ShellAppClass *klass)
                          G_TYPE_DESKTOP_APP_INFO,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 }

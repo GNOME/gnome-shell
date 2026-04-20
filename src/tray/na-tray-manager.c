@@ -41,14 +41,12 @@ enum
 
 static guint manager_signals[LAST_SIGNAL];
 
-enum
+typedef enum
 {
-  PROP_0,
-  PROP_X11_DISPLAY,
-  N_PROPS,
-};
+  PROP_X11_DISPLAY = 1,
+} NaTrayManagerProps;
 
-static GParamSpec *props[N_PROPS];
+static GParamSpec *props[PROP_X11_DISPLAY + 1];
 
 typedef struct
 {
@@ -179,7 +177,7 @@ na_tray_manager_class_init (NaTrayManagerClass *klass)
                          META_TYPE_X11_DISPLAY,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NAME);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 }
 
 static void
@@ -205,7 +203,7 @@ na_tray_manager_set_property (GObject      *object,
 {
   NaTrayManager *manager = NA_TRAY_MANAGER (object);
 
-  switch (prop_id)
+  switch ((NaTrayManagerProps) prop_id)
     {
     case PROP_X11_DISPLAY:
       manager->x11_display = g_value_get_object (value);
@@ -224,7 +222,7 @@ na_tray_manager_get_property (GObject    *object,
 {
   NaTrayManager *manager = NA_TRAY_MANAGER (object);
 
-  switch (prop_id)
+  switch ((NaTrayManagerProps) prop_id)
     {
     case PROP_X11_DISPLAY:
       g_value_set_object (value, manager->x11_display);

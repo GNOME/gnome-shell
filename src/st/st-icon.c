@@ -34,11 +34,9 @@
 #include "st-private.h"
 #include "st-image-content-private.h"
 
-enum
+typedef enum
 {
-  PROP_0,
-
-  PROP_GICON,
+  PROP_GICON = 1,
   PROP_FALLBACK_GICON,
 
   PROP_ICON_NAME,
@@ -46,11 +44,9 @@ enum
   PROP_FALLBACK_ICON_NAME,
 
   PROP_IS_SYMBOLIC,
+} StIconProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_IS_SYMBOLIC + 1] = { NULL, };
 
 struct _StIconPrivate
 {
@@ -103,7 +99,7 @@ st_icon_set_property (GObject      *gobject,
 {
   StIcon *icon = ST_ICON (gobject);
 
-  switch (prop_id)
+  switch ((StIconProps) prop_id)
     {
     case PROP_GICON:
       st_icon_set_gicon (icon, g_value_get_object (value));
@@ -139,7 +135,7 @@ st_icon_get_property (GObject    *gobject,
 {
   StIcon *icon = ST_ICON (gobject);
 
-  switch (prop_id)
+  switch ((StIconProps) prop_id)
     {
     case PROP_GICON:
       g_value_set_object (value, st_icon_get_gicon (icon));
@@ -361,7 +357,7 @@ st_icon_class_init (StIconClass *klass)
                           FALSE,
                           ST_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 }
 
 static void

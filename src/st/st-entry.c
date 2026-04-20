@@ -61,11 +61,9 @@
 
 
 /* properties */
-enum
+typedef enum
 {
-  PROP_0,
-
-  PROP_CLUTTER_TEXT,
+  PROP_CLUTTER_TEXT = 1,
   PROP_PRIMARY_ICON,
   PROP_SECONDARY_ICON,
   PROP_HINT_TEXT,
@@ -73,11 +71,9 @@ enum
   PROP_TEXT,
   PROP_INPUT_PURPOSE,
   PROP_INPUT_HINTS,
+} StEntryProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_INPUT_HINTS + 1] = { NULL, };
 
 /* signals */
 enum
@@ -130,7 +126,7 @@ st_entry_set_property (GObject      *gobject,
 {
   StEntry *entry = ST_ENTRY (gobject);
 
-  switch (prop_id)
+  switch ((StEntryProps) prop_id)
     {
     case PROP_PRIMARY_ICON:
       st_entry_set_primary_icon (entry, g_value_get_object (value));
@@ -174,7 +170,7 @@ st_entry_get_property (GObject    *gobject,
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (gobject);
 
-  switch (prop_id)
+  switch ((StEntryProps) prop_id)
     {
     case PROP_CLUTTER_TEXT:
       g_value_set_object (value, priv->entry);
@@ -937,7 +933,7 @@ st_entry_class_init (StEntryClass *klass)
                         0,
                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 
   /* signals */
   /**

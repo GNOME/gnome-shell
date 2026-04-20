@@ -98,10 +98,8 @@ struct _ShellGlobal {
   gboolean force_animations;
 };
 
-enum {
-  PROP_0,
-
-  PROP_SESSION_MODE,
+typedef enum {
+  PROP_SESSION_MODE = 1,
   PROP_BACKEND,
   PROP_CONTEXT,
   PROP_DISPLAY,
@@ -122,11 +120,9 @@ enum {
   PROP_SWITCHEROO_CONTROL,
   PROP_FORCE_ANIMATIONS,
   PROP_AUTOMATION_SCRIPT,
+} ShellGlobalProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_AUTOMATION_SCRIPT + 1] = { NULL, };
 
 /* Signals */
 enum
@@ -220,7 +216,7 @@ shell_global_set_property(GObject         *object,
 {
   ShellGlobal *global = SHELL_GLOBAL (object);
 
-  switch (prop_id)
+  switch ((ShellGlobalProps) prop_id)
     {
     case PROP_SESSION_MODE:
       g_clear_pointer (&global->session_mode, g_free);
@@ -252,7 +248,7 @@ shell_global_get_property(GObject         *object,
 {
   ShellGlobal *global = SHELL_GLOBAL (object);
 
-  switch (prop_id)
+  switch ((ShellGlobalProps) prop_id)
     {
     case PROP_SESSION_MODE:
       g_value_set_string (value, shell_global_get_session_mode (global));
@@ -631,7 +627,7 @@ shell_global_class_init (ShellGlobalClass *klass)
                          G_TYPE_FILE,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 }
 
 /*

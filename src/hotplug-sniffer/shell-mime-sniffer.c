@@ -43,17 +43,16 @@
 #define DIRECTORY_LOAD_ITEMS_PER_CALLBACK 100
 #define HIGH_SCORE_RATIO 0.10
 
-enum {
+typedef enum {
   PROP_FILE = 1,
-  NUM_PROPERTIES
-};
+} ShellMimeSnifferProps;
 
 static GHashTable *image_type_table = NULL;
 static GHashTable *audio_type_table = NULL;
 static GHashTable *video_type_table = NULL;
 static GHashTable *docs_type_table = NULL;
 
-static GParamSpec *properties[NUM_PROPERTIES] = { NULL, };
+static GParamSpec *properties[PROP_FILE + 1] = { NULL, };
 
 typedef struct {
   ShellMimeSniffer *self;
@@ -490,7 +489,7 @@ shell_mime_sniffer_get_property (GObject *object,
 {
   ShellMimeSniffer *self = SHELL_MIME_SNIFFER (object);
 
-  switch (prop_id) {
+  switch ((ShellMimeSnifferProps) prop_id) {
   case PROP_FILE:
     g_value_set_object (value, self->file);
     break;
@@ -508,7 +507,7 @@ shell_mime_sniffer_set_property (GObject *object,
 {
   ShellMimeSniffer *self = SHELL_MIME_SNIFFER (object);
 
-  switch (prop_id) {
+  switch ((ShellMimeSnifferProps) prop_id) {
   case PROP_FILE:
     shell_mime_sniffer_set_file (self, g_value_get_object (value));
     break;
@@ -533,7 +532,7 @@ shell_mime_sniffer_class_init (ShellMimeSnifferClass *klass)
                          G_TYPE_FILE,
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
-  g_object_class_install_properties (oclass, NUM_PROPERTIES, properties);
+  g_object_class_install_properties (oclass, G_N_ELEMENTS (properties), properties);
 }
 
 static void

@@ -47,21 +47,17 @@
 
 #include <st/st-widget-accessible.h>
 
-enum
+typedef enum
 {
-  PROP_0,
-
-  PROP_LABEL,
+  PROP_LABEL = 1,
   PROP_ICON_NAME,
   PROP_BUTTON_MASK,
   PROP_TOGGLE_MODE,
   PROP_CHECKED,
   PROP_PRESSED,
+} StButtonProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_PRESSED + 1] = { NULL, };
 
 enum
 {
@@ -246,7 +242,7 @@ st_button_set_property (GObject      *gobject,
 {
   StButton *button = ST_BUTTON (gobject);
 
-  switch (prop_id)
+  switch ((StButtonProps) prop_id)
     {
     case PROP_LABEL:
       st_button_set_label (button, g_value_get_string (value));
@@ -279,7 +275,7 @@ st_button_get_property (GObject    *gobject,
 {
   StButtonPrivate *priv = st_button_get_instance_private (ST_BUTTON (gobject));
 
-  switch (prop_id)
+  switch ((StButtonProps) prop_id)
     {
     case PROP_LABEL:
       g_value_set_string (value, priv->text);
@@ -399,7 +395,7 @@ st_button_class_init (StButtonClass *klass)
                           FALSE,
                           ST_PARAM_READABLE | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 
 
   /**

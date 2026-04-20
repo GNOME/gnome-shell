@@ -27,16 +27,12 @@
 
 #include "shell-network-agent.h"
 
-enum
+typedef enum
 {
-  PROP_0,
+  PROP_FORCE_ALWAYS_ASK = 1,
+} ShellNetworkAgentProps;
 
-  PROP_FORCE_ALWAYS_ASK,
-
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_FORCE_ALWAYS_ASK + 1] = { NULL, };
 
 enum {
   SIGNAL_NEW_REQUEST,
@@ -869,7 +865,7 @@ shell_network_agent_set_property (GObject      *object,
 {
   ShellNetworkAgent *self = SHELL_NETWORK_AGENT (object);
 
-  switch (prop_id)
+  switch ((ShellNetworkAgentProps) prop_id)
     {
     case PROP_FORCE_ALWAYS_ASK:
       self->force_always_ask = g_value_get_boolean (value);
@@ -889,7 +885,7 @@ shell_network_agent_get_property (GObject    *object,
 {
   ShellNetworkAgent *self = SHELL_NETWORK_AGENT (object);
 
-  switch (prop_id)
+  switch ((ShellNetworkAgentProps) prop_id)
     {
     case PROP_FORCE_ALWAYS_ASK:
       g_value_set_boolean (value, self->force_always_ask);
@@ -921,7 +917,7 @@ shell_network_agent_class_init (ShellNetworkAgentClass *klass)
                            FALSE,
                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NAME);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 
   signals[SIGNAL_NEW_REQUEST] = g_signal_new ("new-request",
 					      G_TYPE_FROM_CLASS (klass),

@@ -8,17 +8,13 @@
 
 #define BACKGROUND_MARGIN 12
 
-enum
+typedef enum
 {
-  PROP_0,
-
-  PROP_MONITOR_INDEX,
+  PROP_MONITOR_INDEX = 1,
   PROP_STATE_ADJUSTMENT_VALUE,
+} ShellWorkspaceBackgroundProps;
 
-  PROP_LAST
-};
-
-static GParamSpec *obj_props[PROP_LAST] = { NULL, };
+static GParamSpec *obj_props[PROP_STATE_ADJUSTMENT_VALUE + 1] = { NULL, };
 
 struct _ShellWorkspaceBackground
 {
@@ -129,7 +125,7 @@ shell_workspace_background_get_property (GObject      *gobject,
 {
   ShellWorkspaceBackground *self = SHELL_WORKSPACE_BACKGROUND (gobject);
 
-  switch (property_id)
+  switch ((ShellWorkspaceBackgroundProps) property_id)
     {
     case PROP_MONITOR_INDEX:
       g_value_set_int (value, self->monitor_index);
@@ -152,7 +148,7 @@ shell_workspace_background_set_property (GObject      *gobject,
 {
   ShellWorkspaceBackground *self = SHELL_WORKSPACE_BACKGROUND (gobject);
 
-  switch (property_id)
+  switch ((ShellWorkspaceBackgroundProps) property_id)
     {
     case PROP_MONITOR_INDEX:
       self->monitor_index = g_value_get_int (value);
@@ -199,7 +195,7 @@ shell_workspace_background_class_init (ShellWorkspaceBackgroundClass *klass)
                          G_PARAM_STATIC_STRINGS |
                          G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (obj_props), obj_props);
 }
 
 static void

@@ -76,14 +76,12 @@ G_DEFINE_TYPE_WITH_CODE (GtkActionMuxer, gtk_action_muxer, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_GROUP, gtk_action_muxer_group_iface_init)
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_ACTION_OBSERVABLE, gtk_action_muxer_observable_iface_init))
 
-enum
+typedef enum
 {
-  PROP_0,
-  PROP_PARENT,
-  NUM_PROPERTIES
-};
+  PROP_PARENT = 1,
+} GObjectProps;
 
-static GParamSpec *properties[NUM_PROPERTIES];
+static GParamSpec *properties[PROP_PARENT + 1];
 
 guint accel_signal;
 
@@ -607,7 +605,7 @@ gtk_action_muxer_get_property (GObject    *object,
 {
   GtkActionMuxer *muxer = GTK_ACTION_MUXER (object);
 
-  switch (property_id)
+  switch ((GObjectProps) property_id)
     {
     case PROP_PARENT:
       g_value_set_object (value, gtk_action_muxer_get_parent (muxer));
@@ -626,7 +624,7 @@ gtk_action_muxer_set_property (GObject      *object,
 {
   GtkActionMuxer *muxer = GTK_ACTION_MUXER (object);
 
-  switch (property_id)
+  switch ((GObjectProps) property_id)
     {
     case PROP_PARENT:
       gtk_action_muxer_set_parent (muxer, g_value_get_object (value));
@@ -676,7 +674,7 @@ gtk_action_muxer_class_init (GObjectClass *class)
                                                  G_PARAM_READWRITE |
                                                  G_PARAM_STATIC_STRINGS);
 
-  g_object_class_install_properties (class, NUM_PROPERTIES, properties);
+  g_object_class_install_properties (class, G_N_ELEMENTS (properties), properties);
 }
 
 /**

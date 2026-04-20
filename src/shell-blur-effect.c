@@ -91,15 +91,13 @@ struct _ShellBlurEffect
 
 G_DEFINE_TYPE (ShellBlurEffect, shell_blur_effect, CLUTTER_TYPE_EFFECT)
 
-enum {
-  PROP_0,
-  PROP_RADIUS,
+typedef enum {
+  PROP_RADIUS = 1,
   PROP_BRIGHTNESS,
   PROP_MODE,
-  N_PROPS
-};
+} ShellBlurEffectProps;
 
-static GParamSpec *properties [N_PROPS] = { NULL, };
+static GParamSpec *properties [PROP_MODE + 1] = { NULL, };
 
 static CoglPipeline*
 create_base_pipeline (void)
@@ -725,7 +723,7 @@ shell_blur_effect_get_property (GObject    *object,
 {
   ShellBlurEffect *self = SHELL_BLUR_EFFECT (object);
 
-  switch (prop_id)
+  switch ((ShellBlurEffectProps) prop_id)
     {
     case PROP_RADIUS:
       g_value_set_int (value, self->radius);
@@ -752,7 +750,7 @@ shell_blur_effect_set_property (GObject      *object,
 {
   ShellBlurEffect *self = SHELL_BLUR_EFFECT (object);
 
-  switch (prop_id)
+  switch ((ShellBlurEffectProps) prop_id)
     {
     case PROP_RADIUS:
       shell_blur_effect_set_radius (self, g_value_get_int (value));
@@ -802,7 +800,7 @@ shell_blur_effect_class_init (ShellBlurEffectClass *klass)
                        SHELL_BLUR_MODE_ACTOR,
                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (object_class, N_PROPS, properties);
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (properties), properties);
 }
 
 static void

@@ -98,22 +98,18 @@ struct _StWidgetPrivate
  * to obey to a certain #StStyle.
  */
 
-enum
+typedef enum
 {
-  PROP_0,
-
-  PROP_PSEUDO_CLASS,
+  PROP_PSEUDO_CLASS = 1,
   PROP_STYLE_CLASS,
   PROP_STYLE,
   PROP_TRACK_HOVER,
   PROP_HOVER,
   PROP_CAN_FOCUS,
   PROP_LABEL_ACTOR,
+} StWidgetProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_LABEL_ACTOR + 1] = { NULL, };
 
 enum
 {
@@ -161,7 +157,7 @@ st_widget_set_property (GObject      *gobject,
 {
   StWidget *actor = ST_WIDGET (gobject);
 
-  switch (prop_id)
+  switch ((StWidgetProps) prop_id)
     {
     case PROP_PSEUDO_CLASS:
       st_widget_set_style_pseudo_class (actor, g_value_get_string (value));
@@ -205,7 +201,7 @@ st_widget_get_property (GObject    *gobject,
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (ST_WIDGET (gobject));
 
-  switch (prop_id)
+  switch ((StWidgetProps) prop_id)
     {
     case PROP_PSEUDO_CLASS:
       g_value_set_string (value, priv->pseudo_class);
@@ -990,7 +986,7 @@ st_widget_class_init (StWidgetClass *klass)
                           CLUTTER_TYPE_ACTOR,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 
   /**
    * StWidget::style-changed:

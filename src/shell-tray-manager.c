@@ -29,14 +29,11 @@ typedef struct {
   ClutterActor *actor;
 } ShellTrayManagerChild;
 
-enum {
-  PROP_0,
+typedef enum {
+  PROP_BG_COLOR = 1,
+} ShellTrayManagerProps;
 
-  PROP_BG_COLOR,
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_BG_COLOR + 1] = { NULL, };
 
 /* Signals */
 enum
@@ -84,7 +81,7 @@ shell_tray_manager_set_property(GObject         *object,
 {
   ShellTrayManager *manager = SHELL_TRAY_MANAGER (object);
 
-  switch (prop_id)
+  switch ((ShellTrayManagerProps) prop_id)
     {
     case PROP_BG_COLOR:
       {
@@ -109,7 +106,7 @@ shell_tray_manager_get_property(GObject         *object,
 {
   ShellTrayManager *manager = SHELL_TRAY_MANAGER (object);
 
-  switch (prop_id)
+  switch ((ShellTrayManagerProps) prop_id)
     {
     case PROP_BG_COLOR:
       g_value_set_boxed (value, &manager->bg_color);
@@ -170,7 +167,7 @@ shell_tray_manager_class_init (ShellTrayManagerClass *klass)
                                              COGL_TYPE_COLOR,
                                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NAME);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 }
 
 ShellTrayManager *

@@ -2,16 +2,12 @@
 
 #include "shell-window-preview.h"
 
-enum
+typedef enum
 {
-  PROP_0,
+  PROP_WINDOW_CONTAINER = 1,
+} ShellWindowPreviewProps;
 
-  PROP_WINDOW_CONTAINER,
-
-  PROP_LAST
-};
-
-static GParamSpec *obj_props[PROP_LAST] = { NULL, };
+static GParamSpec *obj_props[PROP_WINDOW_CONTAINER + 1] = { NULL, };
 
 struct _ShellWindowPreview
 {
@@ -31,7 +27,7 @@ shell_window_preview_get_property (GObject      *gobject,
 {
   ShellWindowPreview *self = SHELL_WINDOW_PREVIEW (gobject);
 
-  switch (property_id)
+  switch ((ShellWindowPreviewProps) property_id)
     {
     case PROP_WINDOW_CONTAINER:
       g_value_set_object (value, self->window_container);
@@ -50,7 +46,7 @@ shell_window_preview_set_property (GObject      *gobject,
 {
   ShellWindowPreview *self = SHELL_WINDOW_PREVIEW (gobject);
 
-  switch (property_id)
+  switch ((ShellWindowPreviewProps) property_id)
     {
     case PROP_WINDOW_CONTAINER:
       g_set_object (&self->window_container, g_value_get_object (value));
@@ -171,7 +167,7 @@ shell_window_preview_class_init (ShellWindowPreviewClass *klass)
                          G_PARAM_EXPLICIT_NOTIFY |
                          G_PARAM_STATIC_STRINGS);
 
-  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (obj_props), obj_props);
 }
 
 /**

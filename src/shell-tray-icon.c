@@ -10,17 +10,13 @@
 
 #include <X11/Xatom.h>
 
-enum {
-   PROP_0,
-
-   PROP_PID,
+typedef enum {
+   PROP_PID = 1,
    PROP_TITLE,
    PROP_WM_CLASS,
+} ShellTrayIconProps;
 
-   N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_WM_CLASS + 1] = { NULL, };
 
 typedef struct _ShellTrayIconPrivate ShellTrayIconPrivate;
 
@@ -117,7 +113,7 @@ shell_tray_icon_get_property (GObject         *object,
 {
   ShellTrayIcon *icon = SHELL_TRAY_ICON (object);
 
-  switch (prop_id)
+  switch ((ShellTrayIconProps) prop_id)
     {
     case PROP_PID:
       g_value_set_uint (value, icon->pid);
@@ -226,7 +222,7 @@ shell_tray_icon_class_init (ShellTrayIconClass *klass)
                                               NULL,
                                               G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
-  g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 }
 
 static void

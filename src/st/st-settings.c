@@ -37,9 +37,8 @@
 #define KEY_MAGNIFIER_ACTIVE      "screen-magnifier-enabled"
 #define KEY_DISABLE_SHOW_PASSWORD "disable-show-password"
 
-enum {
-  PROP_0,
-  PROP_ENABLE_ANIMATIONS,
+typedef enum {
+  PROP_ENABLE_ANIMATIONS = 1,
   PROP_PRIMARY_PASTE,
   PROP_DRAG_THRESHOLD,
   PROP_FONT_NAME,
@@ -50,10 +49,9 @@ enum {
   PROP_MAGNIFIER_ACTIVE,
   PROP_SLOW_DOWN_FACTOR,
   PROP_DISABLE_SHOW_PASSWORD,
-  N_PROPS
-};
+} StSettingsProps;
 
-GParamSpec *props[N_PROPS] = { 0 };
+GParamSpec *props[PROP_DISABLE_SHOW_PASSWORD + 1] = { 0 };
 
 struct _StSettings
 {
@@ -242,7 +240,7 @@ st_settings_set_property (GObject      *object,
 {
   StSettings *settings = ST_SETTINGS (object);
 
-  switch (prop_id)
+  switch ((StSettingsProps) prop_id)
     {
     case PROP_SLOW_DOWN_FACTOR:
       st_settings_set_slow_down_factor (settings, g_value_get_double (value));
@@ -260,7 +258,7 @@ st_settings_get_property (GObject    *object,
 {
   StSettings *settings = ST_SETTINGS (object);
 
-  switch (prop_id)
+  switch ((StSettingsProps) prop_id)
     {
     case PROP_ENABLE_ANIMATIONS:
       g_value_set_boolean (value, get_enable_animations (settings));
@@ -411,7 +409,7 @@ st_settings_class_init (StSettingsClass *klass)
                                                            FALSE,
                                                            ST_PARAM_READABLE);
 
-  g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 }
 
 static void

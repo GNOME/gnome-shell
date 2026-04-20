@@ -41,16 +41,12 @@ struct _StBinPrivate
   ClutterActor *child;
 };
 
-enum
+typedef enum
 {
-  PROP_0,
+  PROP_CHILD = 1,
+} StBinProps;
 
-  PROP_CHILD,
-
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_CHILD + 1] = { NULL, };
 
 G_DEFINE_TYPE_WITH_PRIVATE (StBin, st_bin, ST_TYPE_WIDGET)
 
@@ -151,7 +147,7 @@ st_bin_set_property (GObject      *gobject,
 {
   StBin *bin = ST_BIN (gobject);
 
-  switch (prop_id)
+  switch ((StBinProps) prop_id)
     {
     case PROP_CHILD:
       st_bin_set_child (bin, g_value_get_object (value));
@@ -170,7 +166,7 @@ st_bin_get_property (GObject    *gobject,
 {
   StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (gobject));
 
-  switch (prop_id)
+  switch ((StBinProps) prop_id)
     {
     case PROP_CHILD:
       g_value_set_object (value, priv->child);
@@ -208,7 +204,7 @@ st_bin_class_init (StBinClass *klass)
                          CLUTTER_TYPE_ACTOR,
                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 
   clutter_actor_class_set_layout_manager_type (actor_class, CLUTTER_TYPE_BIN_LAYOUT);
 }

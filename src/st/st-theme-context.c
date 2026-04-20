@@ -60,15 +60,12 @@ struct _StThemeContext {
   int scale_factor;
 };
 
-enum
+typedef enum
 {
-  PROP_0,
-  PROP_SCALE_FACTOR,
+  PROP_SCALE_FACTOR = 1,
+} StThemeContextProps;
 
-  N_PROPS
-};
-
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_SCALE_FACTOR + 1] = { NULL, };
 
 enum
 {
@@ -151,7 +148,7 @@ st_theme_context_class_init (StThemeContextClass *klass)
                       0, G_MAXINT, 1,
                       ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (object_class, N_PROPS, props);
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 
   /**
    * StThemeContext::changed:
@@ -203,7 +200,7 @@ st_theme_context_set_property (GObject      *object,
 {
   StThemeContext *context = ST_THEME_CONTEXT (object);
 
-  switch (prop_id)
+  switch ((StThemeContextProps) prop_id)
     {
     case PROP_SCALE_FACTOR:
       st_theme_context_set_scale_factor (context, g_value_get_int (value));
@@ -222,7 +219,7 @@ st_theme_context_get_property (GObject    *object,
 {
   StThemeContext *context = ST_THEME_CONTEXT (object);
 
-  switch (prop_id)
+  switch ((StThemeContextProps) prop_id)
     {
     case PROP_SCALE_FACTOR:
       g_value_set_int (value, context->scale_factor);

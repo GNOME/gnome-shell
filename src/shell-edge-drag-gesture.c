@@ -37,14 +37,10 @@ struct _ShellEdgeDragGesture
   guint cancel_timeout_id;
 };
 
-enum
+typedef enum
 {
-  PROP_0,
-
-  PROP_SIDE,
-
-  PROP_LAST
-};
+  PROP_SIDE = 1,
+} ShellEdgeDragGestureProps;
 
 enum
 {
@@ -53,7 +49,7 @@ enum
   LAST_SIGNAL
 };
 
-static GParamSpec *obj_props[PROP_LAST] = { NULL, };
+static GParamSpec *obj_props[PROP_SIDE + 1] = { NULL, };
 static unsigned int obj_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_FINAL_TYPE (ShellEdgeDragGesture, shell_edge_drag_gesture, CLUTTER_TYPE_GESTURE);
@@ -301,7 +297,7 @@ shell_edge_drag_gesture_set_property (GObject      *gobject,
 {
   ShellEdgeDragGesture *self = SHELL_EDGE_DRAG_GESTURE (gobject);
 
-  switch (prop_id)
+  switch ((ShellEdgeDragGestureProps) prop_id)
     {
     case PROP_SIDE:
       shell_edge_drag_gesture_set_side (self, g_value_get_enum (value));
@@ -321,7 +317,7 @@ shell_edge_drag_gesture_get_property (GObject      *gobject,
 {
   ShellEdgeDragGesture *self = SHELL_EDGE_DRAG_GESTURE (gobject);
 
-  switch (prop_id)
+  switch ((ShellEdgeDragGestureProps) prop_id)
     {
     case PROP_SIDE:
       g_value_set_enum (value, shell_edge_drag_gesture_get_side (self));
@@ -367,7 +363,7 @@ shell_edge_drag_gesture_class_init (ShellEdgeDragGestureClass *klass)
                        G_PARAM_STATIC_STRINGS |
                        G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (gobject_class, PROP_LAST, obj_props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (obj_props), obj_props);
 
   /**
    * ShellEdgeDragGesture::progress:
