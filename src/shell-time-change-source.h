@@ -19,8 +19,7 @@
  * Author: Philip Withnall <pwithnall@gnome.org>
  */
 
-#ifndef __SHELL_TIME_CHANGE_SOURCE_H__
-#define __SHELL_TIME_CHANGE_SOURCE_H__
+#pragma once
 
 #include <glib.h>
 
@@ -29,5 +28,3 @@ G_BEGIN_DECLS
 GSource *shell_time_change_source_new (GError **error);
 
 G_END_DECLS
-
-#endif /* __SHELL_TIME_CHANGE_SOURCE_H__ */
