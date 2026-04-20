@@ -127,8 +127,7 @@ cr_attr_sel_to_string (CRAttrSel const * a_this)
                                           cur->name->stryng->len);
                         if (name) {
                                 g_string_append (str_buf, (const gchar *) name);
-                                g_free (name);
-                                name = NULL;
+                                g_clear_pointer (&name, g_free);
                         }
                 }
 
@@ -161,8 +160,7 @@ cr_attr_sel_to_string (CRAttrSel const * a_this)
                                 g_string_append_printf
                                         (str_buf, "\"%s\"", value);
 
-                                g_free (value);
-                                value = NULL;
+                                g_clear_pointer (&value, g_free);
                         }
                 }
         }
@@ -193,8 +191,7 @@ cr_attr_sel_dump (CRAttrSel const * a_this, FILE * a_fp)
 
         if (tmp_str) {
                 fprintf (a_fp, "%s", tmp_str);
-                g_free (tmp_str);
-                tmp_str = NULL;
+                g_clear_pointer (&tmp_str, g_free);
         }
 }
 

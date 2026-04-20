@@ -77,8 +77,7 @@ cr_stylesheet_to_string (CRStyleSheet const *a_this)
 		str = cr_statement_to_string (cur_stmt, 0) ;
 		if (str) {
 			g_string_append (stringue, str) ;
-			g_free (str) ;
-			str = NULL ;
+			g_clear_pointer (&str, g_free);
 		}
         }
 	if (stringue) {
@@ -103,8 +102,7 @@ cr_stylesheet_dump (CRStyleSheet const * a_this, FILE * a_fp)
 	str = cr_stylesheet_to_string (a_this) ;
 	if (str) {
 		fprintf (a_fp, "%s", str) ;
-		g_free (str) ;
-		str = NULL ;
+		g_clear_pointer (&str, g_free);
 	}
 }
 

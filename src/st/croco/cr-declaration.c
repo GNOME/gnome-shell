@@ -51,8 +51,7 @@ dump (CRDeclaration const * a_this, FILE * a_fp, glong a_indent)
         str = (guchar *) cr_declaration_to_string (a_this, a_indent);
         if (str) {
                 fprintf (a_fp, "%s", str);
-                g_free (str);
-                str = NULL;
+                g_clear_pointer (&str, g_free);
         }
 }
 
@@ -517,8 +516,7 @@ cr_declaration_to_string (CRDeclaration const * a_this, gulong a_indent)
 			cr_utils_dump_n_chars2 (' ', stringue, 
 						a_indent);
 			g_string_append (stringue, str);
-			g_free (str);
-			str = NULL;
+			g_clear_pointer (&str, g_free);
 		} else
                         goto error;
 
@@ -777,8 +775,7 @@ cr_declaration_destroy (CRDeclaration * a_this)
          * Meanwhile, free each property/value pair contained in the list.
          */
         for (; cur; cur = cur->prev) {
-                g_free (cur->next);
-                cur->next = NULL;
+                g_clear_pointer (&cur->next, g_free);
 
                 if (cur->property) {
                         cr_string_destroy (cur->property);

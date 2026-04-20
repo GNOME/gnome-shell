@@ -447,8 +447,7 @@ cr_additional_sel_dump (CRAdditionalSel const * a_this, FILE * a_fp)
                 tmp_str = cr_additional_sel_to_string (a_this);
                 if (tmp_str) {
                         fprintf (a_fp, "%s", tmp_str);
-                        g_free (tmp_str);
-                        tmp_str = NULL;
+                        g_clear_pointer (&tmp_str, g_free);
                 }
         }
 }

@@ -149,8 +149,7 @@ cr_selector_to_string (CRSelector const * a_this)
 
                                         g_string_append (str_buf, (const gchar *) tmp_str);
 
-                                        g_free (tmp_str);
-                                        tmp_str = NULL;
+                                        g_clear_pointer (&tmp_str, g_free);
                                 }
                         }
                 }
@@ -181,8 +180,7 @@ cr_selector_dump (CRSelector const * a_this, FILE * a_fp)
                 tmp_buf = cr_selector_to_string (a_this);
                 if (tmp_buf) {
                         fprintf (a_fp, "%s", tmp_buf);
-                        g_free (tmp_buf);
-                        tmp_buf = NULL;
+                        g_clear_pointer (&tmp_buf, g_free);
                 }
         }
 }

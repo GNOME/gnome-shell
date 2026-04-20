@@ -134,8 +134,7 @@ cr_simple_sel_to_string (CRSimpleSel const * a_this)
                                 }
 
                                 g_string_append (str_buf, (const gchar *) str);
-                                g_free (str);
-                                str = NULL;
+                                g_clear_pointer (&str, g_free);
                         }
                 }
 
@@ -145,8 +144,7 @@ cr_simple_sel_to_string (CRSimpleSel const * a_this)
                         tmp_str = cr_additional_sel_to_string (cur->add_sel);
                         if (tmp_str) {
                                 g_string_append (str_buf, (const gchar *) tmp_str);
-                                g_free (tmp_str);
-                                tmp_str = NULL;
+                                g_clear_pointer (&tmp_str, g_free);
                         }
                 }
         }
@@ -175,8 +173,7 @@ cr_simple_sel_one_to_string (CRSimpleSel const * a_this)
 
                 if (str) {
                         g_string_append_printf (str_buf, "%s", str);
-                        g_free (str);
-                        str = NULL;
+                        g_clear_pointer (&str, g_free);
                 }
         }
 
@@ -187,8 +184,7 @@ cr_simple_sel_one_to_string (CRSimpleSel const * a_this)
                 if (tmp_str) {
                         g_string_append_printf
                                 (str_buf, "%s", tmp_str);
-                        g_free (tmp_str);
-                        tmp_str = NULL;
+                        g_clear_pointer (&tmp_str, g_free);
                 }
         }
 
@@ -222,8 +218,7 @@ cr_simple_sel_dump (CRSimpleSel const * a_this, FILE * a_fp)
                 tmp_str = cr_simple_sel_to_string (a_this);
                 if (tmp_str) {
                         fprintf (a_fp, "%s", tmp_str);
-                        g_free (tmp_str);
-                        tmp_str = NULL;
+                        g_clear_pointer (&tmp_str, g_free);
                 }
         }
 

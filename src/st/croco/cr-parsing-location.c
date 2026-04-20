@@ -150,8 +150,7 @@ cr_parsing_location_dump (CRParsingLocation const *a_this,
 	str = cr_parsing_location_to_string (a_this, a_mask) ;
 	if (str) {
 		fprintf (a_fp, "%s", str) ;
-		g_free (str) ;
-		str = NULL ;
+		g_clear_pointer (&str, g_free);
 	}
 }
 

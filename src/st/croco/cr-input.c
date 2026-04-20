@@ -156,8 +156,7 @@ cr_input_new_from_buf (guchar * a_buf,
                         goto error;
                 PRIVATE (result)->free_in_buf = TRUE;
                 if (a_free_buf == TRUE && a_buf) {
-                        g_free (a_buf) ;
-                        a_buf = NULL ;
+                        g_clear_pointer (&a_buf, g_free);
                 }                
                 PRIVATE (result)->nb_bytes = PRIVATE (result)->in_buf_size;
         } else {
@@ -282,8 +281,7 @@ cr_input_destroy (CRInput * a_this)
 
         if (PRIVATE (a_this)) {
                 if (PRIVATE (a_this)->in_buf && PRIVATE (a_this)->free_in_buf) {
-                        g_free (PRIVATE (a_this)->in_buf);
-                        PRIVATE (a_this)->in_buf = NULL;
+                        g_clear_pointer (&PRIVATE (a_this)->in_buf, g_free);
                 }
 
                 g_free (PRIVATE (a_this));

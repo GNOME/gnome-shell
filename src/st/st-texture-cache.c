@@ -392,8 +392,7 @@ impl_load_pixbuf_data (const guchar   *data,
   if (width_before_rotation != width_after_rotation)
     {
       g_object_unref (pixbuf_loader);
-      g_object_unref (rotated_pixbuf);
-      rotated_pixbuf = NULL;
+      g_clear_object (&rotated_pixbuf);
 
       pixbuf_loader = gdk_pixbuf_loader_new ();
 

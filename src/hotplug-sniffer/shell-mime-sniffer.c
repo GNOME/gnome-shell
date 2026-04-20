@@ -327,8 +327,7 @@ deep_count_more_files_callback (GObject *source_object,
   if (files == NULL)
     {
       g_file_enumerator_close_async (state->enumerator, 0, NULL, NULL, NULL);
-      g_object_unref (state->enumerator);
-      state->enumerator = NULL;
+      g_clear_object (&state->enumerator);
 
       deep_count_next_dir (state);
     }

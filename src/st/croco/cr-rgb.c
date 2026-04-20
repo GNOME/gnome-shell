@@ -299,8 +299,7 @@ cr_rgb_dump (CRRgb const * a_this, FILE * a_fp)
 
         if (str) {
                 fprintf (a_fp, "%s", str);
-                g_free (str);
-                str = NULL;
+                g_clear_pointer (&str, g_free);
         }
 }
 

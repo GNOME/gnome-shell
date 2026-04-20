@@ -604,8 +604,7 @@ cr_statement_ruleset_to_string (CRStatement const * a_this, glong a_indent)
                                                sel_list);
                 if (tmp_str) {
                         g_string_append (stringue, tmp_str);
-                        g_free (tmp_str);
-                        tmp_str = NULL;
+                        g_clear_pointer (&tmp_str, g_free);
                 }
         }
         g_string_append (stringue, " {\n");
@@ -615,8 +614,7 @@ cr_statement_ruleset_to_string (CRStatement const * a_this, glong a_indent)
                          a_indent + DECLARATION_INDENT_NB, TRUE);
                 if (tmp_str) {
                         g_string_append (stringue, tmp_str);
-                        g_free (tmp_str);
-                        tmp_str = NULL;
+                        g_clear_pointer (&tmp_str, g_free);
                 }
                 g_string_append (stringue, "\n");
                 cr_utils_dump_n_chars2 (' ', stringue, a_indent);
@@ -665,8 +663,7 @@ cr_statement_font_face_rule_to_string (CRStatement const * a_this,
                 if (tmp_str) {
                         g_string_append (stringue,
                                          tmp_str) ;
-                        g_free (tmp_str) ;
-                        tmp_str = NULL ;
+                        g_clear_pointer (&tmp_str, g_free);
                 }
                 g_string_append (stringue, "\n}");
         }
@@ -762,8 +759,7 @@ cr_statement_at_page_rule_to_string (CRStatement const *a_this,
                          a_indent + DECLARATION_INDENT_NB, TRUE) ;
                 if (str) {
                         g_string_append (stringue, str) ;
-                        g_free (str) ;
-                        str = NULL ;
+                        g_clear_pointer (&str, g_free);
                 }
                 g_string_append (stringue, "\n}\n");
         }
@@ -811,8 +807,7 @@ cr_statement_media_rule_to_string (CRStatement const *a_this,
                                         g_string_append_printf 
                                                 (stringue, 
                                                  " %s", str2);
-                                        g_free (str2);
-                                        str2 = NULL;
+                                        g_clear_pointer (&str2, g_free);
                                 }
                         }
                 }
@@ -822,8 +817,7 @@ cr_statement_media_rule_to_string (CRStatement const *a_this,
                          a_indent + DECLARATION_INDENT_NB) ;
                 if (str) {
                         g_string_append (stringue, str) ;
-                        g_free (str) ;
-                        str = NULL ;
+                        g_clear_pointer (&str, g_free);
                 }
                 g_string_append (stringue, "\n}");
         }
@@ -857,8 +851,7 @@ cr_statement_import_rule_to_string (CRStatement const *a_this,
                         g_string_append_printf (stringue,
                                                 "@import url(\"%s\")", 
                                                 str);
-                        g_free (str);
-                        str = NULL ;
+                        g_clear_pointer (&str, g_free);
                 } else          /*there is no url, so no import rule, get out! */
                         return NULL;
 
@@ -2540,8 +2533,7 @@ cr_statement_list_to_string (CRStatement const *a_this, gulong a_indent)
                                 g_string_append_printf 
                                         (stringue, "\n%s", str) ;
                         }
-                        g_free (str) ;
-                        str = NULL ;
+                        g_clear_pointer (&str, g_free);
                 }                
         }
         str = g_string_free_and_steal (stringue) ;
@@ -2568,8 +2560,7 @@ cr_statement_dump (CRStatement const * a_this, FILE * a_fp, gulong a_indent)
         str = cr_statement_to_string (a_this, a_indent) ;
         if (str) {
                 fprintf (a_fp, "%s",str) ;
-                g_free (str) ;
-                str = NULL ;
+                g_clear_pointer (&str, g_free);
         }
 }
 
@@ -2591,8 +2582,7 @@ cr_statement_dump_ruleset (CRStatement const * a_this, FILE * a_fp, glong a_inde
         str = cr_statement_ruleset_to_string (a_this, a_indent);
         if (str) {
                 fprintf (a_fp, "%s", str);
-                g_free (str);
-                str = NULL;
+                g_clear_pointer (&str, g_free);
         }
 }
 
@@ -2617,8 +2607,7 @@ cr_statement_dump_font_face_rule (CRStatement const * a_this, FILE * a_fp,
                                                      a_indent) ;
         if (str) {
                 fprintf (a_fp, "%s", str) ;
-                g_free (str) ;
-                str = NULL ;
+                g_clear_pointer (&str, g_free);
         }
 }
 
@@ -2642,8 +2631,7 @@ cr_statement_dump_charset (CRStatement const * a_this, FILE * a_fp, gulong a_ind
                                               a_indent) ;
         if (str) {
                 fprintf (a_fp, "%s", str) ;
-                g_free (str) ;
-                str = NULL ;
+                g_clear_pointer (&str, g_free);
         }
 }
 
@@ -2669,8 +2657,7 @@ cr_statement_dump_page (CRStatement const * a_this, FILE * a_fp, gulong a_indent
         str = cr_statement_at_page_rule_to_string (a_this, a_indent) ;
         if (str) {
                 fprintf (a_fp, "%s", str);
-                g_free (str) ;
-                str = NULL ; 
+                g_clear_pointer (&str, g_free);
         }
 }
 
@@ -2695,8 +2682,7 @@ cr_statement_dump_media_rule (CRStatement const * a_this,
         str = cr_statement_media_rule_to_string (a_this, a_indent) ;
         if (str) {
                 fprintf (a_fp, "%s", str) ;
-                g_free (str) ;
-                str = NULL ;
+                g_clear_pointer (&str, g_free);
         }
 }
 
@@ -2721,8 +2707,7 @@ cr_statement_dump_import_rule (CRStatement const * a_this, FILE * a_fp,
         str = cr_statement_import_rule_to_string (a_this, a_indent) ;
         if (str) {
                 fprintf (a_fp, "%s", str) ;
-                g_free (str) ;
-                str = NULL ;
+                g_clear_pointer (&str, g_free);
         }
 }
 
@@ -2764,6 +2749,5 @@ cr_statement_destroy (CRStatement * a_this)
         /*free the one remaining list */
         g_clear_pointer (&cur->next, g_free);
 
-        g_free (cur);
-        cur = NULL;
+        g_clear_pointer (&cur, g_free);
 }

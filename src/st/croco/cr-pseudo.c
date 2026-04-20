@@ -73,8 +73,7 @@ cr_pseudo_to_string (CRPseudo const * a_this)
 
                 if (name) {
                         g_string_append (str_buf, (const gchar *) name);
-                        g_free (name);
-                        name = NULL;
+                        g_clear_pointer (&name, g_free);
                 }
         } else if (a_this->type == FUNCTION_PSEUDO) {
                 guchar *name = NULL,
@@ -93,13 +92,11 @@ cr_pseudo_to_string (CRPseudo const * a_this)
 
                 if (name) {
                         g_string_append_printf (str_buf, "%s(", name);
-                        g_free (name);
-                        name = NULL;
+                        g_clear_pointer (&name, g_free);
 
                         if (arg) {
                                 g_string_append (str_buf, (const gchar *) arg);
-                                g_free (arg);
-                                arg = NULL;
+                                g_clear_pointer (&arg, g_free);
                         }
 
                         g_string_append_c (str_buf, ')');
@@ -135,8 +132,7 @@ cr_pseudo_dump (CRPseudo const * a_this, FILE * a_fp)
                 tmp_str = cr_pseudo_to_string (a_this);
                 if (tmp_str) {
                         fprintf (a_fp, "%s", tmp_str);
-                        g_free (tmp_str);
-                        tmp_str = NULL;
+                        g_clear_pointer (&tmp_str, g_free);
                 }
         }
 }
