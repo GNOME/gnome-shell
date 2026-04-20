@@ -462,8 +462,7 @@ static void
 shell_mime_sniffer_set_file (ShellMimeSniffer *self,
                             GFile *file)
 {
-  g_clear_object (&self->file);
-  self->file = g_object_ref (file);
+  g_set_object (&self->file, file);
 }
 
 static void

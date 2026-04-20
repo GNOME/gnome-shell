@@ -189,8 +189,7 @@ st_theme_node_transition_update (StThemeNodeTransition *transition,
 
           clutter_timeline_set_duration (transition->timeline, new_duration);
 
-          g_object_unref (transition->new_theme_node);
-          transition->new_theme_node = g_object_ref (new_node);
+          g_set_object (&transition->new_theme_node, new_node);
 
           st_theme_node_paint_state_invalidate (&transition->new_paint_state);
         }

@@ -2451,8 +2451,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
             }
           else if (term_is_inherit (decl->value))
             {
-              g_clear_object (&node->background_image);
-              node->background_image = g_object_ref (st_theme_node_get_background_image (node->parent_node));
+              g_set_object (&node->background_image, st_theme_node_get_background_image (node->parent_node));
             }
           else if (term_is_none (decl->value))
             {
