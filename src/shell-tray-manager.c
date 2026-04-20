@@ -32,8 +32,11 @@ typedef struct {
 enum {
   PROP_0,
 
-  PROP_BG_COLOR
+  PROP_BG_COLOR,
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 /* Signals */
 enum
@@ -163,11 +166,11 @@ shell_tray_manager_class_init (ShellTrayManagerClass *klass)
    * iterate through the icons, reset the background pixmap, and
    * call na_tray_child_force_redraw()
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_BG_COLOR,
-                                   g_param_spec_boxed ("bg-color", NULL, NULL,
-                                                       COGL_TYPE_COLOR,
-                                                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NAME));
+  props[PROP_BG_COLOR] = g_param_spec_boxed ("bg-color", NULL, NULL,
+                                             COGL_TYPE_COLOR,
+                                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NAME);
+
+  g_object_class_install_properties (gobject_class, N_PROPS, props);
 }
 
 ShellTrayManager *
