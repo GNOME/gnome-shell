@@ -37,7 +37,7 @@
  * dump:
  *@a_this: the current instance of #CRDeclaration.
  *@a_fp: the destination file pointer.
- *@a_indent: the number of indentation white char. 
+ *@a_indent: the number of indentation white char.
  *
  *Dumps (serializes) one css declaration to a file.
  */
@@ -507,13 +507,13 @@ cr_declaration_to_string (CRDeclaration const * a_this, gulong a_indent)
 
 	stringue = g_string_new (NULL);
 
-	if (a_this->property 
+	if (a_this->property
 	    && a_this->property->stryng
 	    && a_this->property->stryng->str) {
 		str = g_strndup (a_this->property->stryng->str,
 				 a_this->property->stryng->len);
 		if (str) {
-			cr_utils_dump_n_chars2 (' ', stringue, 
+			cr_utils_dump_n_chars2 (' ', stringue,
 						a_indent);
 			g_string_append (stringue, str);
 			g_clear_pointer (&str, g_free);
@@ -663,7 +663,7 @@ cr_declaration_nr_props (CRDeclaration const * a_this)
  *
  *Use an index to get a CRDeclaration from the declaration list.
  *
- *Returns #CRDeclaration at position itemnr, 
+ *Returns #CRDeclaration at position itemnr,
  *if itemnr > number of declarations - 1,
  *it will return NULL.
  */
@@ -699,11 +699,11 @@ cr_declaration_get_by_prop_name (CRDeclaration * a_this,
         g_return_val_if_fail (a_prop, NULL);
 
         for (cur = a_this; cur; cur = cur->next) {
-		if (cur->property 
+		if (cur->property
 		    && cur->property->stryng
 		    && cur->property->stryng->str) {
-			if (!strcmp (cur->property->stryng->str, 
-				     (const char *) a_prop)) {
+			if (strcmp (cur->property->stryng->str,
+				     (const char *) a_prop) == 0) {
 				return cur;
 			}
 		}

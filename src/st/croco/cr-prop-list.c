@@ -106,7 +106,7 @@ cr_prop_list_append (CRPropList * a_this, CRPropList * a_to_append)
  */
 CRPropList *
 cr_prop_list_append2 (CRPropList * a_this,
-                      CRString * a_prop, 
+                      CRString * a_prop,
 		      CRDeclaration * a_decl)
 {
         CRPropList *list = NULL,
@@ -156,7 +156,7 @@ cr_prop_list_prepend (CRPropList * a_this, CRPropList * a_to_prepend)
  *@a_prop_name: property name to append
  *@a_decl: the property value to append.
  *
- *Prepends a property to a list of properties 
+ *Prepends a property to a list of properties
  *
  *Returns the new property list.
  */
@@ -282,8 +282,8 @@ cr_prop_list_lookup_prop (CRPropList * a_this,
                     && PRIVATE (cur)->prop->stryng->str
 		    && a_prop->stryng
                     && a_prop->stryng->str
-                    && !strcmp (PRIVATE (cur)->prop->stryng->str, 
-				a_prop->stryng->str))
+                    && strcmp (PRIVATE (cur)->prop->stryng->str,
+				a_prop->stryng->str) == 0)
                         break;
         }
 
@@ -301,7 +301,7 @@ cr_prop_list_lookup_prop (CRPropList * a_this,
  *
  *Gets the next prop/decl pair in the list
  *
- *Returns the next prop/declaration pair of the list, 
+ *Returns the next prop/declaration pair of the list,
  *or NULL if we reached end of list (or if an error occurs)
  */
 CRPropList *
@@ -318,7 +318,7 @@ cr_prop_list_get_next (CRPropList * a_this)
  *
  *Gets the previous prop/decl pair in the list
  *
- *Returns the previous prop/declaration pair of the list, 
+ *Returns the previous prop/declaration pair of the list,
  *or NULL if we reached end of list (or if an error occurs)
  */
 CRPropList *

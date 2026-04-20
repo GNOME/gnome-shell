@@ -333,8 +333,8 @@ st_theme_node_equal (StThemeNode *node_a, StThemeNode *node_b)
       node_a->theme != node_b->theme ||
       node_a->element_type != node_b->element_type ||
       node_a->cached_scale_factor != node_b->cached_scale_factor ||
-      g_strcmp0 (node_a->element_id, node_b->element_id) ||
-      g_strcmp0 (node_a->inline_style, node_b->inline_style))
+      g_strcmp0 (node_a->element_id, node_b->element_id) != 0 ||
+      g_strcmp0 (node_a->inline_style, node_b->inline_style) != 0)
     return FALSE;
 
   if ((node_a->element_classes == NULL) != (node_b->element_classes == NULL))
@@ -350,7 +350,7 @@ st_theme_node_equal (StThemeNode *node_a, StThemeNode *node_b)
       for (i = 0; ; i++)
         {
           if (g_strcmp0 (node_a->element_classes[i],
-                         node_b->element_classes[i]))
+                         node_b->element_classes[i]) != 0)
             return FALSE;
 
           if (node_a->element_classes[i] == NULL)
@@ -365,7 +365,7 @@ st_theme_node_equal (StThemeNode *node_a, StThemeNode *node_b)
       for (i = 0; ; i++)
         {
           if (g_strcmp0 (node_a->pseudo_classes[i],
-                         node_b->pseudo_classes[i]))
+                         node_b->pseudo_classes[i]) != 0)
             return FALSE;
 
           if (node_a->pseudo_classes[i] == NULL)
