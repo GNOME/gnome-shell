@@ -194,7 +194,7 @@ class AutorunDispatcher {
             title,
             body,
         });
-        notification.connect('activate', () => {
+        notification.connect('activated', () => {
             const app = Gio.app_info_get_default_for_type('inode/directory', false);
             startAppForMount(app, mount);
         });
