@@ -636,6 +636,8 @@ export const AuthPrompt = GObject.registerClass({
         });
 
         if (!reuseEntryText) {
+            this._entry.hint_text = '';
+            this._inactiveEntry.hint_text = '';
             this._entryArea.hide();
             this._entry.text = '';
             this._inactiveEntry.text = '';
