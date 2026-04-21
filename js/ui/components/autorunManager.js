@@ -132,7 +132,8 @@ class AutorunManager {
 
     enable() {
         this._volumeMonitor.connectObject(
-            'mount-added', this._onMountAdded.bind(this),
+            'mount-added',
+            (monitor, mount) => this._onMountAdded(monitor, mount).catch(logError),
             'mount-removed', this._onMountRemoved.bind(this), this);
     }
 
