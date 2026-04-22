@@ -63,17 +63,13 @@ struct _ShellKeyringPrompt
   gboolean shown;
 };
 
-enum {
-  PROP_0,
-
-  PROP_PASSWORD_VISIBLE,
+typedef enum {
+  PROP_PASSWORD_VISIBLE = 1,
   PROP_CONFIRM_VISIBLE,
   PROP_WARNING_VISIBLE,
   PROP_CHOICE_VISIBLE,
   PROP_PASSWORD_ACTOR,
   PROP_CONFIRM_ACTOR,
-
-  N_PROPS,
 
   /* GcrPrompt */
   PROP_TITLE,
@@ -87,9 +83,9 @@ enum {
   PROP_CALLER_WINDOW,
   PROP_CONTINUE_LABEL,
   PROP_CANCEL_LABEL
-};
+} ShellKeyringPromptProps;
 
-static GParamSpec *props[N_PROPS] = { NULL, };
+static GParamSpec *props[PROP_CONFIRM_ACTOR + 1] = { NULL, };
 
 static void    shell_keyring_prompt_iface     (GcrPromptInterface *iface);
 
@@ -148,7 +144,7 @@ shell_keyring_prompt_set_property (GObject      *obj,
 {
   ShellKeyringPrompt *self = SHELL_KEYRING_PROMPT (obj);
 
-  switch (prop_id) {
+  switch ((ShellKeyringPromptProps) prop_id) {
   case PROP_TITLE:
     g_free (self->title);
     self->title = g_value_dup_string (value);
@@ -189,6 +185,9 @@ shell_keyring_prompt_set_property (GObject      *obj,
     g_object_notify (obj, "password-new");
     g_object_notify_by_pspec (obj, props[PROP_CONFIRM_VISIBLE]);
     break;
+  case PROP_PASSWORD_STRENGTH:
+    /* ignored */
+    break;
   case PROP_CALLER_WINDOW:
     /* ignored */
     break;
@@ -208,8 +207,17 @@ shell_keyring_prompt_set_property (GObject      *obj,
   case PROP_CONFIRM_ACTOR:
     shell_keyring_prompt_set_confirm_actor (self, g_value_get_object (value));
     break;
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, pspec);
+  case PROP_PASSWORD_VISIBLE:
+    g_assert_not_reached ();
+    break;
+  case PROP_CONFIRM_VISIBLE:
+    g_assert_not_reached ();
+    break;
+  case PROP_WARNING_VISIBLE:
+    g_assert_not_reached ();
+    break;
+  case PROP_CHOICE_VISIBLE:
+    g_assert_not_reached ();
     break;
   }
 }
@@ -222,7 +230,7 @@ shell_keyring_prompt_get_property (GObject    *obj,
 {
   ShellKeyringPrompt *self = SHELL_KEYRING_PROMPT (obj);
 
-  switch (prop_id) {
+  switch ((ShellKeyringPromptProps)prop_id) {
   case PROP_TITLE:
     g_value_set_string (value, self->title ? self->title : "");
     break;
@@ -273,9 +281,6 @@ shell_keyring_prompt_get_property (GObject    *obj,
     break;
   case PROP_CONFIRM_ACTOR:
     g_value_set_object (value, shell_keyring_prompt_get_confirm_actor (self));
-    break;
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, pspec);
     break;
   }
 }
@@ -406,7 +411,7 @@ shell_keyring_prompt_class_init (ShellKeyringPromptClass *klass)
                          CLUTTER_TYPE_TEXT,
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
-  g_object_class_install_properties (gobject_class, N_PROPS, props);
+  g_object_class_install_properties (gobject_class, G_N_ELEMENTS (props), props);
 
   signals[SIGNAL_SHOW_PASSWORD] = g_signal_new ("show-password", G_TYPE_FROM_CLASS (klass),
                                                 0, 0, NULL, NULL,
