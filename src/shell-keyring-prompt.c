@@ -438,10 +438,10 @@ shell_keyring_prompt_password_async (GcrPrompt          *prompt,
   g_task_set_source_tag (self->task, shell_keyring_prompt_password_async);
 
   obj = G_OBJECT (self);
-  g_object_notify (obj, "password-visible");
-  g_object_notify (obj, "confirm-visible");
-  g_object_notify (obj, "warning-visible");
-  g_object_notify (obj, "choice-visible");
+  g_object_notify_by_pspec (obj, props[PROP_PASSWORD_VISIBLE]);
+  g_object_notify_by_pspec (obj, props[PROP_CONFIRM_VISIBLE]);
+  g_object_notify_by_pspec (obj, props[PROP_WARNING_VISIBLE]);
+  g_object_notify_by_pspec (obj, props[PROP_CHOICE_VISIBLE]);
 
   self->shown = TRUE;
   g_signal_emit (self, signals[SIGNAL_SHOW_PASSWORD], 0);
@@ -478,10 +478,10 @@ shell_keyring_prompt_confirm_async (GcrPrompt          *prompt,
   g_task_set_source_tag (self->task, shell_keyring_prompt_confirm_async);
 
   obj = G_OBJECT (self);
-  g_object_notify (obj, "password-visible");
-  g_object_notify (obj, "confirm-visible");
-  g_object_notify (obj, "warning-visible");
-  g_object_notify (obj, "choice-visible");
+  g_object_notify_by_pspec (obj, props[PROP_PASSWORD_VISIBLE]);
+  g_object_notify_by_pspec (obj, props[PROP_CONFIRM_VISIBLE]);
+  g_object_notify_by_pspec (obj, props[PROP_WARNING_VISIBLE]);
+  g_object_notify_by_pspec (obj, props[PROP_CHOICE_VISIBLE]);
 
   self->shown = TRUE;
   g_signal_emit (self, signals[SIGNAL_SHOW_CONFIRM], 0);
